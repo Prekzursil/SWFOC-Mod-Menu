@@ -20,7 +20,7 @@ public sealed class SaveCodecTests
 
         var codec = new BinarySaveCodec(options, NullLogger<BinarySaveCodec>.Instance);
 
-        var tempFile = Path.GetTempFileName();
+        var tempFile = Path.Combine(Path.GetTempPath(), $"swfoc-codec-test-{Guid.NewGuid():N}.sav");
         try
         {
             var bytes = new byte[300_000];
