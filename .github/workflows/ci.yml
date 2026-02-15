@@ -62,6 +62,11 @@ jobs:
             "aotr-modpath"     = @{ profileId = "aotr_1397421866_swfoc"; reasonCode = "modpath_hint_aotr" }
             "sweaw-base"       = @{ profileId = "base_sweaw"; reasonCode = "exe_target_sweaw" }
             "starwarsg-no-cmd" = @{ profileId = "base_swfoc"; reasonCode = "foc_safe_starwarsg_fallback" }
+            "mixed-steammod-aotr-modpath-roe" = @{ profileId = "aotr_1397421866_swfoc"; reasonCode = "steammod_exact_aotr" }
+            "mixed-steammod-roe-modpath-aotr" = @{ profileId = "roe_3447786229_swfoc"; reasonCode = "steammod_exact_roe" }
+            "aotr-modpath-spaces" = @{ profileId = "aotr_1397421866_swfoc"; reasonCode = "modpath_hint_aotr" }
+            "roe-modpath-order66" = @{ profileId = "roe_3447786229_swfoc"; reasonCode = "modpath_hint_roe" }
+            "swfoc-base-no-mod" = @{ profileId = "base_swfoc"; reasonCode = "foc_safe_starwarsg_fallback" }
           }
 
           $seen = @{}

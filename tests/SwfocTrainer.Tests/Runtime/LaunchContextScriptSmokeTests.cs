@@ -71,23 +71,30 @@ public sealed class LaunchContextScriptSmokeTests
                 obj => obj,
                 StringComparer.OrdinalIgnoreCase);
 
-        byName["roe-steammod"]["profileRecommendation"]!["profileId"]!.GetValue<string>().Should().Be("roe_3447786229_swfoc");
-        byName["roe-steammod"]["profileRecommendation"]!["reasonCode"]!.GetValue<string>().Should().Be("steammod_exact_roe");
+        var expected = new Dictionary<string, (string ProfileId, string ReasonCode)>(StringComparer.OrdinalIgnoreCase)
+        {
+            ["roe-steammod"] = ("roe_3447786229_swfoc", "steammod_exact_roe"),
+            ["aotr-steammod"] = ("aotr_1397421866_swfoc", "steammod_exact_aotr"),
+            ["roe-modpath"] = ("roe_3447786229_swfoc", "modpath_hint_roe"),
+            ["aotr-modpath"] = ("aotr_1397421866_swfoc", "modpath_hint_aotr"),
+            ["sweaw-base"] = ("base_sweaw", "exe_target_sweaw"),
+            ["starwarsg-no-cmd"] = ("base_swfoc", "foc_safe_starwarsg_fallback"),
+            ["mixed-steammod-aotr-modpath-roe"] = ("aotr_1397421866_swfoc", "steammod_exact_aotr"),
+            ["mixed-steammod-roe-modpath-aotr"] = ("roe_3447786229_swfoc", "steammod_exact_roe"),
+            ["aotr-modpath-spaces"] = ("aotr_1397421866_swfoc", "modpath_hint_aotr"),
+            ["roe-modpath-order66"] = ("roe_3447786229_swfoc", "modpath_hint_roe"),
+            ["swfoc-base-no-mod"] = ("base_swfoc", "foc_safe_starwarsg_fallback"),
+        };
 
-        byName["aotr-steammod"]["profileRecommendation"]!["profileId"]!.GetValue<string>().Should().Be("aotr_1397421866_swfoc");
-        byName["aotr-steammod"]["profileRecommendation"]!["reasonCode"]!.GetValue<string>().Should().Be("steammod_exact_aotr");
-
-        byName["roe-modpath"]["profileRecommendation"]!["profileId"]!.GetValue<string>().Should().Be("roe_3447786229_swfoc");
-        byName["roe-modpath"]["profileRecommendation"]!["reasonCode"]!.GetValue<string>().Should().Be("modpath_hint_roe");
-
-        byName["aotr-modpath"]["profileRecommendation"]!["profileId"]!.GetValue<string>().Should().Be("aotr_1397421866_swfoc");
-        byName["aotr-modpath"]["profileRecommendation"]!["reasonCode"]!.GetValue<string>().Should().Be("modpath_hint_aotr");
-
-        byName["sweaw-base"]["profileRecommendation"]!["profileId"]!.GetValue<string>().Should().Be("base_sweaw");
-        byName["sweaw-base"]["profileRecommendation"]!["reasonCode"]!.GetValue<string>().Should().Be("exe_target_sweaw");
-
-        byName["starwarsg-no-cmd"]["profileRecommendation"]!["profileId"]!.GetValue<string>().Should().Be("base_swfoc");
-        byName["starwarsg-no-cmd"]["profileRecommendation"]!["reasonCode"]!.GetValue<string>().Should().Be("foc_safe_starwarsg_fallback");
+        foreach (var (caseName, expectedRecommendation) in expected)
+        {
+            byName.Should().ContainKey(caseName);
+            var recommendation = byName[caseName]["profileRecommendation"]!;
+            recommendation["profileId"]!.GetValue<string>()
+                .Should().Be(expectedRecommendation.ProfileId, $"case={caseName}");
+            recommendation["reasonCode"]!.GetValue<string>()
+                .Should().Be(expectedRecommendation.ReasonCode, $"case={caseName}");
+        }
     }
 
     private static (string FileName, string PrefixArgs)? ResolvePythonLauncher()

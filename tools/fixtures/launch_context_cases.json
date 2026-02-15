@@ -35,6 +35,36 @@
       "processName": "StarWarsG",
       "processPath": "D:/SteamLibrary/steamapps/common/Star Wars Empire at War/corruption/StarWarsG.exe",
       "commandLine": null
+    },
+    {
+      "name": "mixed-steammod-aotr-modpath-roe",
+      "processName": "StarWarsG",
+      "processPath": "D:/SteamLibrary/steamapps/common/Star Wars Empire at War/corruption/StarWarsG.exe",
+      "commandLine": "StarWarsG.exe STEAMMOD=1397421866 MODPATH=\"D:/mods/3447786229(submod)\""
+    },
+    {
+      "name": "mixed-steammod-roe-modpath-aotr",
+      "processName": "StarWarsG",
+      "processPath": "D:/SteamLibrary/steamapps/common/Star Wars Empire at War/corruption/StarWarsG.exe",
+      "commandLine": "StarWarsG.exe STEAMMOD=3447786229 MODPATH=Mods\\AOTR"
+    },
+    {
+      "name": "aotr-modpath-spaces",
+      "processName": "StarWarsG",
+      "processPath": "D:/SteamLibrary/steamapps/common/Star Wars Empire at War/corruption/StarWarsG.exe",
+      "commandLine": "StarWarsG.exe MODPATH=\"C:/Mod Library/Awakening of the Rebellion\""
+    },
+    {
+      "name": "roe-modpath-order66",
+      "processName": "StarWarsG",
+      "processPath": "D:/SteamLibrary/steamapps/common/Star Wars Empire at War/corruption/StarWarsG.exe",
+      "commandLine": "StarWarsG.exe MODPATH=\"C:/mods/Order 66 Submod\""
+    },
+    {
+      "name": "swfoc-base-no-mod",
+      "processName": "swfoc",
+      "processPath": "D:/SteamLibrary/steamapps/common/Star Wars Empire at War/corruption/swfoc.exe",
+      "commandLine": "swfoc.exe"
     }
   ]
 }
