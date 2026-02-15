@@ -29,7 +29,7 @@ jobs:
         run: ./tools/package-portable.ps1 -Configuration Release
 
       - name: Upload Portable Artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         with:
           name: swfoc-trainer-portable
           path: artifacts/SwfocTrainer-portable.zip
