@@ -1,0 +1,35 @@
+name: release-portable
+
+on:
+  workflow_dispatch:
+  push:
+    tags:
+      - "v*"
+
+jobs:
+  package:
+    runs-on: windows-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: "8.0.x"
+
+      - name: Restore
+        run: dotnet restore SwfocTrainer.sln
+
+      - name: Build
+        run: dotnet build SwfocTrainer.sln -c Release --no-restore
+
+      - name: Package Portable Zip
+        shell: pwsh
+        run: ./tools/package-portable.ps1 -Configuration Release
+
+      - name: Upload Portable Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: swfoc-trainer-portable
+          path: artifacts/SwfocTrainer-portable.zip

@@ -1,0 +1,33 @@
+* text=auto eol=lf
+
+# C# / solution files
+*.cs text eol=lf
+*.csproj text eol=lf
+*.sln text eol=crlf
+*.props text eol=lf
+*.targets text eol=lf
+
+# Scripts
+*.ps1 text eol=crlf
+*.py text eol=lf
+*.sh text eol=lf
+
+# Data/config
+*.json text eol=lf
+*.md text eol=lf
+*.yml text eol=lf
+*.yaml text eol=lf
+*.xml text eol=lf
+
+# Treat heavy game/media formats as binary
+*.meg binary
+*.bik binary
+*.alo binary
+*.ala binary
+*.mtd binary
+*.tga binary
+*.dds binary
+*.wav binary
+*.png binary
+*.jpg binary
+*.ico binary

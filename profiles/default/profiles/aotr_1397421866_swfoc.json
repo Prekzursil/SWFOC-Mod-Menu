@@ -1,0 +1,72 @@
+{
+  "id": "aotr_1397421866_swfoc",
+  "displayName": "Awakening of the Rebellion (1397421866)",
+  "inherits": "base_swfoc",
+  "exeTarget": "Swfoc",
+  "steamWorkshopId": "1397421866",
+  "signatureSets": [],
+  "fallbackOffsets": {},
+  "actions": {
+    "set_hero_state_helper": {
+      "id": "set_hero_state_helper",
+      "category": "Hero",
+      "mode": "Galactic",
+      "executionKind": "Helper",
+      "payloadSchema": {
+        "required": [
+          "helperHookId",
+          "globalKey",
+          "intValue"
+        ]
+      },
+      "verifyReadback": false,
+      "cooldownMs": 250,
+      "description": "Set AOTR hero global state via helper"
+    }
+  },
+  "featureFlags": {
+    "aotr_profile": true,
+    "mod_dependency_required": true,
+    "helper_hero_state": true
+  },
+  "catalogSources": [
+    {
+      "type": "json",
+      "path": "profiles/default/catalog/aotr_1397421866_swfoc/catalog.json",
+      "required": false,
+      "description": "Prebuilt AOTR catalog"
+    },
+    {
+      "type": "xml",
+      "path": "D:\\SteamLibrary\\steamapps\\workshop\\content\\32470\\1397421866\\Data\\XML\\Gameobjectfiles.xml",
+      "required": false,
+      "description": "Workshop AOTR game object index"
+    },
+    {
+      "type": "xml",
+      "path": "1397421866(original mod)/Data/XML/Gameobjectfiles.xml",
+      "required": false,
+      "description": "Local AOTR mirror game object index"
+    }
+  ],
+  "saveSchemaId": "aotr_1397421866_swfoc_v1",
+  "helperModHooks": [
+    {
+      "id": "aotr_hero_state_bridge",
+      "script": "scripts/aotr/hero_state_bridge.lua",
+      "version": "1.0.0",
+      "entryPoint": "SWFOC_Trainer_Set_Hero_Respawn",
+      "metadata": {
+        "sha256": "08e66b00bb7fc6c58cb91ac070cfcdf9c272b54db8f053592cec1b49df9c07dc"
+      }
+    }
+  ],
+  "metadata": {
+    "profileLineage": "base_swfoc -> aotr_1397421866_swfoc",
+    "requiredWorkshopIds": "1397421866",
+    "requiredMarkerFile": "Data/XML/Gameobjectfiles.xml",
+    "dependencySensitiveActions": "spawn_unit_helper,set_hero_state_helper",
+    "localPathHints": "aotr,awakening of the rebellion,awakening-of-the-rebellion,1397421866",
+    "profileAliases": "aotr_1397421866_swfoc,aotr,awakening"
+  }
+}

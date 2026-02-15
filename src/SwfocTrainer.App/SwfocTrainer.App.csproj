@@ -1,0 +1,27 @@
+<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <UseWPF>true</UseWPF>
+    <EnableWindowsTargeting>true</EnableWindowsTargeting>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="../SwfocTrainer.Core/SwfocTrainer.Core.csproj" />
+    <ProjectReference Include="../SwfocTrainer.Runtime/SwfocTrainer.Runtime.csproj" />
+    <ProjectReference Include="../SwfocTrainer.Profiles/SwfocTrainer.Profiles.csproj" />
+    <ProjectReference Include="../SwfocTrainer.Catalog/SwfocTrainer.Catalog.csproj" />
+    <ProjectReference Include="../SwfocTrainer.Helper/SwfocTrainer.Helper.csproj" />
+    <ProjectReference Include="../SwfocTrainer.Saves/SwfocTrainer.Saves.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="8.0.1" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="8.0.1" />
+    <PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.2" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="../../profiles/default/**/*">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <Link>profiles/default/%(RecursiveDir)%(Filename)%(Extension)</Link>
+    </Content>
+  </ItemGroup>
+</Project>

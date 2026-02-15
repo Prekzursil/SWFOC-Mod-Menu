@@ -1,0 +1,380 @@
+{
+  "id": "base_swfoc",
+  "displayName": "Base FoC (swfoc.exe)",
+  "inherits": null,
+  "exeTarget": "Swfoc",
+  "steamWorkshopId": null,
+  "signatureSets": [
+    {
+      "name": "foc_steam_legacy",
+      "gameBuild": "foc_steam_1.1.0",
+      "signatures": [
+        { "name": "credits", "pattern": "8B 0D ?? ?? ?? ?? 41 B8 0C 00 00 00 48 8B 14 C8", "offset": 2, "addressMode": "ReadRipRelative32AtOffset", "valueType": "Int32" },
+        { "name": "game_timer_freeze", "pattern": "80 3D ?? ?? ?? ?? 00 44 0F B6 7C 24 40 75", "offset": 2, "addressMode": "ReadRipRelative32AtOffset", "valueType": "Bool" },
+        { "name": "fog_reveal", "pattern": "80 3D ?? ?? ?? ?? 00 75", "offset": 2, "addressMode": "ReadRipRelative32AtOffset", "valueType": "Bool" },
+        { "name": "ai_enabled", "pattern": "C6 05 ?? ?? ?? ?? 01 8B", "offset": 2, "addressMode": "ReadRipRelative32AtOffset", "valueType": "Bool" },
+        { "name": "instant_build", "pattern": "F3 0F 10 05 ?? ?? ?? ?? 48 8D 05 B1 33 10 00 F3", "offset": 4, "addressMode": "ReadRipRelative32AtOffset", "valueType": "Float" },
+        { "name": "selected_hp", "pattern": "F3 0F 11 05 ?? ?? ?? ?? 48 8D 0D 42 B8 0F 00 66", "offset": 4, "addressMode": "ReadRipRelative32AtOffset", "valueType": "Float" },
+        { "name": "selected_shield", "pattern": "F3 0F 11 05 ?? ?? ?? ?? 48 89 05 F2 98 15 00 48", "offset": 4, "addressMode": "ReadRipRelative32AtOffset", "valueType": "Float" },
+        { "name": "selected_speed", "pattern": "F3 0F 11 05 ?? ?? ?? ?? 48 89 05 F2 97 15 00 48", "offset": 4, "addressMode": "ReadRipRelative32AtOffset", "valueType": "Float" },
+        { "name": "selected_damage_multiplier", "pattern": "F3 0F 11 05 ?? ?? ?? ?? 48 89 05 B2 97 15 00 48", "offset": 4, "addressMode": "ReadRipRelative32AtOffset", "valueType": "Float" },
+        { "name": "selected_cooldown_multiplier", "pattern": "F3 0F 11 05 ?? ?? ?? ?? 48 89 05 42 CA 15 00 48", "offset": 4, "addressMode": "ReadRipRelative32AtOffset", "valueType": "Float" },
+        { "name": "selected_veterancy", "pattern": "89 05 ?? ?? ?? ?? 48 C7 05 F7 97 15 00 00 00 00", "offset": 2, "addressMode": "ReadRipRelative32AtOffset", "valueType": "Int32" },
+        { "name": "selected_owner_faction", "pattern": "89 05 ?? ?? ?? ?? 48 C7 05 B7 97 15 00 00 00 00", "offset": 2, "addressMode": "ReadRipRelative32AtOffset", "valueType": "Int32" },
+        { "name": "tactical_god_mode", "pattern": "80 3D ?? ?? ?? ?? 00 74", "offset": 2, "addressMode": "ReadRipRelative32AtOffset", "valueType": "Bool" },
+        { "name": "tactical_one_hit_mode", "pattern": "80 3D ?? ?? ?? ?? 00 75 ?? 4D 85 F6 0F 85", "offset": 2, "addressMode": "ReadRipRelative32AtOffset", "valueType": "Bool" },
+        { "name": "planet_owner", "pattern": "89 35 ?? ?? ?? ?? 48 C7 05 ?? ?? ?? ?? ?? ?? ?? ??", "offset": 2, "addressMode": "ReadRipRelative32AtOffset", "valueType": "Int32" },
+        { "name": "hero_respawn_timer", "pattern": "8B 35 ?? ?? ?? ?? 4C 8B 3D EE B5 10 00 48 B8 FF", "offset": 2, "addressMode": "ReadRipRelative32AtOffset", "valueType": "Int32" },
+        { "name": "unit_cap", "pattern": "48 8B 74 24 68 8B C7", "offset": 0, "addressMode": "HitPlusOffset", "valueType": "Byte" },
+        { "name": "game_speed", "pattern": "F3 0F 11 05 ?? ?? ?? ?? C3 CC CC CC CC CC CC CC F3 0F 10 05", "offset": 4, "addressMode": "ReadRipRelative32AtOffset", "valueType": "Float" }
+      ]
+    }
+  ],
+  "fallbackOffsets": {
+    "credits": 10882632,
+    "game_timer_freeze": 1418853,
+    "fog_reveal": 1418852,
+    "ai_enabled": 1418376,
+    "instant_build": 1068908,
+    "selected_hp": 1422772,
+    "selected_shield": 1423728,
+    "selected_speed": 1423792,
+    "selected_damage_multiplier": 1423856,
+    "selected_cooldown_multiplier": 1439504,
+    "selected_veterancy": 1423800,
+    "selected_owner_faction": 1423864,
+    "tactical_god_mode": 1377912,
+    "tactical_one_hit_mode": 1418854,
+    "planet_owner": 1523152,
+    "hero_respawn_timer": 1384560,
+    "unit_cap": 2804047,
+    "game_speed": 0
+  },
+  "actions": {
+    "read_symbol": {
+      "id": "read_symbol",
+      "category": "Global",
+      "mode": "Unknown",
+      "executionKind": "Memory",
+      "payloadSchema": {
+        "required": ["symbol"]
+      },
+      "verifyReadback": false,
+      "cooldownMs": 0,
+      "description": "Read a resolved symbol value (debug/calibration helper)"
+    },
+    "set_credits": {
+      "id": "set_credits",
+      "category": "Economy",
+      "mode": "Unknown",
+      "executionKind": "Memory",
+      "payloadSchema": {
+        "required": ["symbol", "intValue"]
+      },
+      "verifyReadback": true,
+      "cooldownMs": 250,
+      "description": "Set player credits to absolute value (one-shot by default; optional lockCredits)"
+    },
+    "freeze_timer": {
+      "id": "freeze_timer",
+      "category": "Global",
+      "mode": "Unknown",
+      "executionKind": "Memory",
+      "payloadSchema": {
+        "required": ["symbol", "boolValue"]
+      },
+      "verifyReadback": false,
+      "cooldownMs": 100,
+      "description": "Freeze or unfreeze game timer"
+    },
+    "toggle_fog_reveal": {
+      "id": "toggle_fog_reveal",
+      "category": "Global",
+      "mode": "Unknown",
+      "executionKind": "Memory",
+      "payloadSchema": {
+        "required": ["symbol", "boolValue"]
+      },
+      "verifyReadback": false,
+      "cooldownMs": 100,
+      "description": "Toggle global fog reveal"
+    },
+    "toggle_ai": {
+      "id": "toggle_ai",
+      "category": "Global",
+      "mode": "Unknown",
+      "executionKind": "Memory",
+      "payloadSchema": {
+        "required": ["symbol", "boolValue"]
+      },
+      "verifyReadback": false,
+      "cooldownMs": 100,
+      "description": "Toggle AI processing"
+    },
+    "set_instant_build_multiplier": {
+      "id": "set_instant_build_multiplier",
+      "category": "Campaign",
+      "mode": "Galactic",
+      "executionKind": "Memory",
+      "payloadSchema": {
+        "required": ["symbol", "floatValue"]
+      },
+      "verifyReadback": true,
+      "cooldownMs": 100,
+      "description": "Set build/research speed multiplier"
+    },
+    "spawn_unit_helper": {
+      "id": "spawn_unit_helper",
+      "category": "Unit",
+      "mode": "Unknown",
+      "executionKind": "Helper",
+      "payloadSchema": {
+        "required": ["helperHookId", "unitId", "entryMarker", "faction"]
+      },
+      "verifyReadback": false,
+      "cooldownMs": 250,
+      "description": "Spawn any unit via helper bridge"
+    },
+    "set_selected_hp": {
+      "id": "set_selected_hp",
+      "category": "Unit",
+      "mode": "Tactical",
+      "executionKind": "Memory",
+      "payloadSchema": {
+        "required": ["symbol", "floatValue"]
+      },
+      "verifyReadback": true,
+      "cooldownMs": 80,
+      "description": "Set selected unit hull HP"
+    },
+    "set_selected_shield": {
+      "id": "set_selected_shield",
+      "category": "Unit",
+      "mode": "Tactical",
+      "executionKind": "Memory",
+      "payloadSchema": {
+        "required": ["symbol", "floatValue"]
+      },
+      "verifyReadback": true,
+      "cooldownMs": 80,
+      "description": "Set selected unit shield HP"
+    },
+    "set_selected_speed": {
+      "id": "set_selected_speed",
+      "category": "Unit",
+      "mode": "Tactical",
+      "executionKind": "Memory",
+      "payloadSchema": {
+        "required": ["symbol", "floatValue"]
+      },
+      "verifyReadback": true,
+      "cooldownMs": 80,
+      "description": "Set selected unit speed"
+    },
+    "set_selected_damage_multiplier": {
+      "id": "set_selected_damage_multiplier",
+      "category": "Unit",
+      "mode": "Tactical",
+      "executionKind": "Memory",
+      "payloadSchema": {
+        "required": ["symbol", "floatValue"]
+      },
+      "verifyReadback": true,
+      "cooldownMs": 80,
+      "description": "Set selected unit damage multiplier"
+    },
+    "set_selected_cooldown_multiplier": {
+      "id": "set_selected_cooldown_multiplier",
+      "category": "Unit",
+      "mode": "Tactical",
+      "executionKind": "Memory",
+      "payloadSchema": {
+        "required": ["symbol", "floatValue"]
+      },
+      "verifyReadback": true,
+      "cooldownMs": 80,
+      "description": "Set selected unit cooldown multiplier"
+    },
+    "set_selected_veterancy": {
+      "id": "set_selected_veterancy",
+      "category": "Unit",
+      "mode": "Tactical",
+      "executionKind": "Memory",
+      "payloadSchema": {
+        "required": ["symbol", "intValue"]
+      },
+      "verifyReadback": true,
+      "cooldownMs": 80,
+      "description": "Set selected unit veterancy level"
+    },
+    "set_selected_owner_faction": {
+      "id": "set_selected_owner_faction",
+      "category": "Unit",
+      "mode": "Tactical",
+      "executionKind": "Memory",
+      "payloadSchema": {
+        "required": ["symbol", "intValue"]
+      },
+      "verifyReadback": true,
+      "cooldownMs": 80,
+      "description": "Set selected unit owner faction"
+    },
+    "set_planet_owner": {
+      "id": "set_planet_owner",
+      "category": "Campaign",
+      "mode": "Galactic",
+      "executionKind": "Memory",
+      "payloadSchema": {
+        "required": ["symbol", "intValue"]
+      },
+      "verifyReadback": true,
+      "cooldownMs": 200,
+      "description": "Set selected planet owner faction id"
+    },
+    "set_hero_respawn_timer": {
+      "id": "set_hero_respawn_timer",
+      "category": "Hero",
+      "mode": "Galactic",
+      "executionKind": "Memory",
+      "payloadSchema": {
+        "required": ["symbol", "intValue"]
+      },
+      "verifyReadback": true,
+      "cooldownMs": 200,
+      "description": "Set hero respawn timer"
+    },
+    "toggle_tactical_god_mode": {
+      "id": "toggle_tactical_god_mode",
+      "category": "Tactical",
+      "mode": "Tactical",
+      "executionKind": "Memory",
+      "payloadSchema": {
+        "required": ["symbol", "boolValue"]
+      },
+      "verifyReadback": false,
+      "cooldownMs": 120,
+      "description": "Toggle tactical invulnerability"
+    },
+    "toggle_tactical_one_hit_mode": {
+      "id": "toggle_tactical_one_hit_mode",
+      "category": "Tactical",
+      "mode": "Tactical",
+      "executionKind": "Memory",
+      "payloadSchema": {
+        "required": ["symbol", "boolValue"]
+      },
+      "verifyReadback": false,
+      "cooldownMs": 120,
+      "description": "Toggle tactical one-hit mode"
+    },
+    "set_unit_cap": {
+      "id": "set_unit_cap",
+      "category": "Global",
+      "mode": "Unknown",
+      "executionKind": "CodePatch",
+      "payloadSchema": {
+        "required": ["intValue"]
+      },
+      "verifyReadback": false,
+      "cooldownMs": 200,
+      "description": "Set unit cap via runtime hook (intValue = desired cap; optional enable=false restores)."
+    },
+    "toggle_instant_build_patch": {
+      "id": "toggle_instant_build_patch",
+      "category": "Global",
+      "mode": "Unknown",
+      "executionKind": "CodePatch",
+      "payloadSchema": {
+        "required": ["enable"]
+      },
+      "verifyReadback": false,
+      "cooldownMs": 200,
+      "description": "Toggle instant-build injection (forces 1 second / 1 credit build)."
+    },
+    "set_game_speed": {
+      "id": "set_game_speed",
+      "category": "Global",
+      "mode": "Unknown",
+      "executionKind": "Memory",
+      "payloadSchema": {
+        "required": ["symbol", "floatValue"]
+      },
+      "verifyReadback": true,
+      "cooldownMs": 100,
+      "description": "Set game speed multiplier (1.0 = normal, 2.0 = double, 0.5 = half)"
+    },
+    "freeze_symbol": {
+      "id": "freeze_symbol",
+      "category": "Global",
+      "mode": "Unknown",
+      "executionKind": "Freeze",
+      "payloadSchema": {
+        "required": ["symbol", "freeze"]
+      },
+      "verifyReadback": false,
+      "cooldownMs": 0,
+      "description": "Start continuously re-writing a symbol value (supply intValue, floatValue, or boolValue)"
+    },
+    "unfreeze_symbol": {
+      "id": "unfreeze_symbol",
+      "category": "Global",
+      "mode": "Unknown",
+      "executionKind": "Freeze",
+      "payloadSchema": {
+        "required": ["symbol"]
+      },
+      "verifyReadback": false,
+      "cooldownMs": 0,
+      "description": "Stop continuously re-writing a symbol value"
+    },
+    "save_patch_field": {
+      "id": "save_patch_field",
+      "category": "Save",
+      "mode": "SaveEditor",
+      "executionKind": "Save",
+      "payloadSchema": {
+        "required": ["nodePath", "value"]
+      },
+      "verifyReadback": false,
+      "cooldownMs": 0,
+      "description": "Patch save field through schema codec"
+    }
+  },
+  "featureFlags": {
+    "runtime_attach": true,
+    "save_editor": true,
+    "helper_mod": true,
+    "planet_owner_edit": true,
+    "hero_respawn_control": true,
+    "multiplayer_guard": false
+  },
+  "catalogSources": [
+    {
+      "type": "json",
+      "path": "profiles/default/catalog/base_swfoc/catalog.json",
+      "required": false,
+      "description": "Prebuilt base FoC catalog"
+    }
+  ],
+  "saveSchemaId": "base_swfoc_steam_v1",
+  "helperModHooks": [
+    {
+      "id": "spawn_bridge",
+      "script": "scripts/common/spawn_bridge.lua",
+      "version": "1.0.0",
+      "entryPoint": "SWFOC_Trainer_Spawn",
+      "metadata": {
+        "sha256": "d249abd37ba84f7ec485ca1916d9d7c77d6c4dc6cf152ff30258a0e35f663514"
+      }
+    }
+  ],
+  "metadata": {
+    "profileLineage": "base",
+    "targetExecutable": "swfoc.exe",
+    "saveRootDefault": "C:\\Users\\Prekzursil\\Saved Games\\Petroglyph",
+    "profileAliases": "base_swfoc,swfoc,forces of corruption,foc",
+    "localPathHints": "swfoc,corruption,forces of corruption",
+    "criticalSymbols": "credits,planet_owner,hero_respawn_timer,game_speed,unit_cap",
+    "symbolValidationRules": "[{\"Symbol\":\"credits\",\"IntMin\":0,\"IntMax\":2000000000,\"Critical\":true},{\"Symbol\":\"planet_owner\",\"IntMin\":0,\"IntMax\":16,\"Critical\":true},{\"Symbol\":\"hero_respawn_timer\",\"IntMin\":0,\"IntMax\":86400,\"Critical\":true},{\"Symbol\":\"game_speed\",\"FloatMin\":0.05,\"FloatMax\":8.0,\"Critical\":true},{\"Symbol\":\"selected_hp\",\"Mode\":\"Tactical\",\"FloatMin\":0.0,\"FloatMax\":5000000.0},{\"Symbol\":\"selected_shield\",\"Mode\":\"Tactical\",\"FloatMin\":0.0,\"FloatMax\":5000000.0}]"
+  }
+}

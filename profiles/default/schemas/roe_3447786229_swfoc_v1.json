@@ -1,0 +1,47 @@
+{
+  "schemaId": "roe_3447786229_swfoc_v1",
+  "gameBuild": "roe_order66_1.0",
+  "endianness": "little",
+  "rootBlocks": [
+    { "id": "header", "name": "Header", "offset": 0, "length": 512, "type": "struct", "fields": ["file_magic", "file_version", "save_ticks", "campaign_mode"] },
+    { "id": "economy", "name": "Economy", "offset": 9216, "length": 4096, "type": "struct", "fields": ["credits_empire", "credits_rebel", "credits_cis", "credits_neutral"] },
+    { "id": "hero_state", "name": "Hero State", "offset": 28672, "length": 8192, "type": "struct", "fields": ["hero_vader_alive", "hero_vader_respawn", "hero_tarkin_alive", "hero_tarkin_respawn", "hero_palpatine_alive", "hero_palpatine_respawn"] },
+    { "id": "planets", "name": "Planets", "offset": 57344, "length": 16384, "type": "array", "fields": ["planet_0_owner", "planet_1_owner", "planet_2_owner", "planet_3_owner"] }
+  ],
+  "fieldDefs": [
+    { "id": "file_magic", "name": "File Magic", "valueType": "ascii", "offset": 0, "length": 8, "path": "/header/file_magic" },
+    { "id": "file_version", "name": "File Version", "valueType": "int32", "offset": 8, "length": 4, "path": "/header/file_version" },
+    { "id": "save_ticks", "name": "Save Ticks", "valueType": "int64", "offset": 16, "length": 8, "path": "/header/save_ticks" },
+    { "id": "campaign_mode", "name": "Campaign Mode", "valueType": "int32", "offset": 48, "length": 4, "path": "/header/campaign_mode" },
+
+    { "id": "credits_empire", "name": "Empire Credits", "valueType": "int32", "offset": 9216, "length": 4, "path": "/economy/credits_empire" },
+    { "id": "credits_rebel", "name": "Rebel Credits", "valueType": "int32", "offset": 9220, "length": 4, "path": "/economy/credits_rebel" },
+    { "id": "credits_cis", "name": "CIS Credits", "valueType": "int32", "offset": 9224, "length": 4, "path": "/economy/credits_cis" },
+    { "id": "credits_neutral", "name": "Neutral Credits", "valueType": "int32", "offset": 9228, "length": 4, "path": "/economy/credits_neutral" },
+
+    { "id": "hero_vader_alive", "name": "Vader Alive", "valueType": "bool", "offset": 28672, "length": 1, "path": "/hero_state/vader/alive" },
+    { "id": "hero_vader_respawn", "name": "Vader Respawn Timer", "valueType": "int32", "offset": 28676, "length": 4, "path": "/hero_state/vader/respawn_timer" },
+    { "id": "hero_tarkin_alive", "name": "Tarkin Alive", "valueType": "bool", "offset": 28704, "length": 1, "path": "/hero_state/tarkin/alive" },
+    { "id": "hero_tarkin_respawn", "name": "Tarkin Respawn Timer", "valueType": "int32", "offset": 28708, "length": 4, "path": "/hero_state/tarkin/respawn_timer" },
+    { "id": "hero_palpatine_alive", "name": "Palpatine Alive", "valueType": "bool", "offset": 28736, "length": 1, "path": "/hero_state/palpatine/alive" },
+    { "id": "hero_palpatine_respawn", "name": "Palpatine Respawn Timer", "valueType": "int32", "offset": 28740, "length": 4, "path": "/hero_state/palpatine/respawn_timer" },
+
+    { "id": "planet_0_owner", "name": "Planet[0] Owner", "valueType": "int32", "offset": 57344, "length": 4, "path": "/planets/0/owner" },
+    { "id": "planet_1_owner", "name": "Planet[1] Owner", "valueType": "int32", "offset": 57368, "length": 4, "path": "/planets/1/owner" },
+    { "id": "planet_2_owner", "name": "Planet[2] Owner", "valueType": "int32", "offset": 57392, "length": 4, "path": "/planets/2/owner" },
+    { "id": "planet_3_owner", "name": "Planet[3] Owner", "valueType": "int32", "offset": 57416, "length": 4, "path": "/planets/3/owner" }
+  ],
+  "arrayDefs": [
+    { "id": "planet_table", "name": "Planet Table", "elementType": "planet_struct", "offset": 57344, "count": 240, "stride": 24, "path": "/planets" },
+    { "id": "hero_table", "name": "Hero Table", "elementType": "hero_struct", "offset": 28672, "count": 192, "stride": 48, "path": "/hero_state" }
+  ],
+  "validationRules": [
+    { "id": "credits_empire_non_negative", "rule": "field_non_negative", "target": "credits_empire", "message": "Empire credits cannot be negative", "severity": "error" },
+    { "id": "credits_rebel_non_negative", "rule": "field_non_negative", "target": "credits_rebel", "message": "Rebel credits cannot be negative", "severity": "error" },
+    { "id": "credits_cis_non_negative", "rule": "field_non_negative", "target": "credits_cis", "message": "CIS credits cannot be negative", "severity": "error" },
+    { "id": "credits_neutral_non_negative", "rule": "field_non_negative", "target": "credits_neutral", "message": "Neutral credits cannot be negative", "severity": "warning" }
+  ],
+  "checksumRules": [
+    { "id": "header_crc32", "algorithm": "crc32", "startOffset": 0, "endOffset": 262144, "outputOffset": 508, "outputLength": 4 }
+  ]
+}

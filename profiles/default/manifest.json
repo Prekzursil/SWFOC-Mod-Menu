@@ -1,0 +1,38 @@
+{
+  "version": "1.0.0",
+  "publishedAt": "2026-02-13T00:00:00Z",
+  "profiles": [
+    {
+      "id": "base_sweaw",
+      "version": "1.0.0",
+      "sha256": "a4da040d526dbfb9e054c8a1f6342cacbec122a54eb133dd46a722aa5f097ae7",
+      "downloadUrl": "https://github.com/your-org/swfoc-trainer-profiles/releases/download/v1.0.0/base_sweaw.zip",
+      "minAppVersion": "1.0.0",
+      "description": "Base Empire at War profile for sweaw.exe"
+    },
+    {
+      "id": "base_swfoc",
+      "version": "1.0.0",
+      "sha256": "521ffcd8783e337cd200cd37b7d442c7317aa7076b561c256b5142feff85653d",
+      "downloadUrl": "https://github.com/your-org/swfoc-trainer-profiles/releases/download/v1.0.0/base_swfoc.zip",
+      "minAppVersion": "1.0.0",
+      "description": "Base Forces of Corruption profile for swfoc.exe"
+    },
+    {
+      "id": "aotr_1397421866_swfoc",
+      "version": "1.0.0",
+      "sha256": "e22bff1c902b23522f7c65597128b9fd8564d3fdcc42b9982aeb1aea485878af",
+      "downloadUrl": "https://github.com/your-org/swfoc-trainer-profiles/releases/download/v1.0.0/aotr_1397421866_swfoc.zip",
+      "minAppVersion": "1.0.0",
+      "description": "Awakening of the Rebellion (Workshop ID 1397421866)"
+    },
+    {
+      "id": "roe_3447786229_swfoc",
+      "version": "1.0.0",
+      "sha256": "9119a713e0c98a5ff20d9b40448eca602126e1f0608ef84f84443969b04dd105",
+      "downloadUrl": "https://github.com/your-org/swfoc-trainer-profiles/releases/download/v1.0.0/roe_3447786229_swfoc.zip",
+      "minAppVersion": "1.0.0",
+      "description": "Order 66 submod profile inheriting AOTR (Workshop ID 3447786229)"
+    }
+  ]
+}

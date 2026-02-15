@@ -1,0 +1,40 @@
+{
+  "cases": [
+    {
+      "name": "roe-steammod",
+      "processName": "StarWarsG",
+      "processPath": "D:/SteamLibrary/steamapps/common/Star Wars Empire at War/corruption/StarWarsG.exe",
+      "commandLine": "StarWarsG.exe STEAMMOD=3447786229"
+    },
+    {
+      "name": "aotr-steammod",
+      "processName": "StarWarsG",
+      "processPath": "D:/SteamLibrary/steamapps/common/Star Wars Empire at War/corruption/StarWarsG.exe",
+      "commandLine": "StarWarsG.exe STEAMMOD=1397421866"
+    },
+    {
+      "name": "roe-modpath",
+      "processName": "StarWarsG",
+      "processPath": "D:/SteamLibrary/steamapps/common/Star Wars Empire at War/corruption/StarWarsG.exe",
+      "commandLine": "StarWarsG.exe MODPATH=\"D:/mods/3447786229(submod)\""
+    },
+    {
+      "name": "aotr-modpath",
+      "processName": "StarWarsG",
+      "processPath": "D:/SteamLibrary/steamapps/common/Star Wars Empire at War/corruption/StarWarsG.exe",
+      "commandLine": "StarWarsG.exe MODPATH=Mods\\AOTR"
+    },
+    {
+      "name": "sweaw-base",
+      "processName": "sweaw",
+      "processPath": "D:/SteamLibrary/steamapps/common/Star Wars Empire at War/GameData/sweaw.exe",
+      "commandLine": "sweaw.exe"
+    },
+    {
+      "name": "starwarsg-no-cmd",
+      "processName": "StarWarsG",
+      "processPath": "D:/SteamLibrary/steamapps/common/Star Wars Empire at War/corruption/StarWarsG.exe",
+      "commandLine": null
+    }
+  ]
+}

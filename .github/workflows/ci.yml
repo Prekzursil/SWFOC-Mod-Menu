@@ -1,0 +1,93 @@
+name: ci
+
+on:
+  push:
+    branches:
+      - main
+      - "feature/**"
+      - "fix/**"
+      - "chore/**"
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build-test:
+    runs-on: windows-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: "8.0.x"
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Restore
+        run: dotnet restore SwfocTrainer.sln
+
+      - name: Build
+        run: dotnet build SwfocTrainer.sln -c Release --no-restore
+
+      - name: Test (deterministic suite)
+        run: >
+          dotnet test tests/SwfocTrainer.Tests/SwfocTrainer.Tests.csproj
+          -c Release
+          --no-build
+          --logger "trx;LogFileName=tests.trx"
+          --results-directory TestResults
+          --filter "FullyQualifiedName!~SwfocTrainer.Tests.Profiles.Live&FullyQualifiedName!~RuntimeAttachSmokeTests"
+
+      - name: Launch-context fixture smoke
+        shell: pwsh
+        run: |
+          python tools/detect-launch-context.py --from-process-json tools/fixtures/launch_context_cases.json --profile-root profiles/default > launch_context_results.json
+          python - <<'PY'
+          import json
+          with open("launch_context_results.json","r",encoding="utf-8") as f:
+              data = json.load(f)
+          expected = {
+              "roe-steammod": ("roe_3447786229_swfoc", "steammod_exact_roe"),
+              "aotr-steammod": ("aotr_1397421866_swfoc", "steammod_exact_aotr"),
+              "roe-modpath": ("roe_3447786229_swfoc", "modpath_hint_roe"),
+              "aotr-modpath": ("aotr_1397421866_swfoc", "modpath_hint_aotr"),
+              "sweaw-base": ("base_sweaw", "exe_target_sweaw"),
+              "starwarsg-no-cmd": ("base_swfoc", "foc_safe_starwarsg_fallback"),
+          }
+          seen = {}
+          for entry in data.get("results", []):
+              name = (entry.get("input") or {}).get("name")
+              rec = entry.get("profileRecommendation") or {}
+              if name:
+                  seen[name] = (rec.get("profileId"), rec.get("reasonCode"))
+          missing = []
+          mismatched = []
+          for name, value in expected.items():
+              if name not in seen:
+                  missing.append(name)
+                  continue
+              if seen[name] != value:
+                  mismatched.append((name, value, seen[name]))
+          if missing or mismatched:
+              raise SystemExit(f"launch-context smoke failed. missing={missing} mismatched={mismatched}")
+          print("launch-context smoke passed")
+          PY
+
+      - name: Upload Test Results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-results
+          path: TestResults
+
+      - name: Upload Launch Context Results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: launch-context-results
+          path: launch_context_results.json

@@ -1,0 +1,47 @@
+# Build
+bin/
+obj/
+artifacts/
+**/bin/
+**/obj/
+
+# User-specific
+*.user
+*.suo
+*.userprefs
+.vs/
+
+# Logs
+*.log
+logs/
+
+# Rider / VSCode
+.idea/
+.vscode/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Generated profile cache
+cache/
+
+# Test output
+TestResults/
+coverage/
+
+# NuGet
+*.nupkg
+packages/
+
+# Local heavyweight mod mirrors (do not track in code repo)
+1397421866(original mod)/
+3447786229(submod)/
+3661482670(cheat_mode_example)/
+
+# Local environment notes
+original_game_path.txt
+mod_resources.txt
+
+# Optional local calibration outputs
+artifacts/calibration/

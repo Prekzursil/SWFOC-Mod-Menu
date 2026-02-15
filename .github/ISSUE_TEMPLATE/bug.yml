@@ -1,0 +1,39 @@
+name: Bug Report
+description: Report a runtime/editor defect
+title: "[Bug] "
+labels:
+  - type:bug
+body:
+  - type: markdown
+    attributes:
+      value: "Please include enough detail to reproduce reliably."
+  - type: input
+    id: profile
+    attributes:
+      label: Affected profile
+      placeholder: base_swfoc / aotr_1397421866_swfoc / roe_3447786229_swfoc
+    validations:
+      required: true
+  - type: textarea
+    id: summary
+    attributes:
+      label: What happened?
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Reproduction steps
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+    validations:
+      required: true
+  - type: textarea
+    id: diagnostics
+    attributes:
+      label: Diagnostics / logs
+      description: Include launchKind, reasonCode, confidence, dependencyValidation if available.

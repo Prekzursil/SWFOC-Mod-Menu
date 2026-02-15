@@ -1,0 +1,43 @@
+name: Calibration Report
+description: Report symbol/signature drift and attach calibration evidence
+title: "[Calibration] "
+labels:
+  - type:calibration
+  - area:runtime
+body:
+  - type: input
+    id: profile
+    attributes:
+      label: Profile ID
+      placeholder: base_swfoc / aotr_1397421866_swfoc / roe_3447786229_swfoc
+    validations:
+      required: true
+  - type: input
+    id: build
+    attributes:
+      label: Game build context
+      placeholder: swfoc.exe build/version hash if known
+  - type: textarea
+    id: launch_context
+    attributes:
+      label: Launch context evidence
+      description: Include launchKind, reasonCode, confidence, STEAMMOD/MODPATH data.
+    validations:
+      required: true
+  - type: textarea
+    id: symbol_state
+    attributes:
+      label: Symbol state
+      description: Include affected symbols, source (Signature/Fallback), health status, and observed failures.
+    validations:
+      required: true
+  - type: textarea
+    id: artifacts
+    attributes:
+      label: Calibration artifacts
+      description: Paste paths/links to calibration report JSON and logs.
+  - type: textarea
+    id: candidate_patterns
+    attributes:
+      label: Candidate signature data
+      description: Include candidate AOB patterns / diagnostics where available.

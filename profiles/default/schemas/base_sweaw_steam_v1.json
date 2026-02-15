@@ -1,0 +1,42 @@
+{
+  "schemaId": "base_sweaw_steam_v1",
+  "gameBuild": "eaw_steam_1.1.0",
+  "endianness": "little",
+  "rootBlocks": [
+    { "id": "header", "name": "Header", "offset": 0, "length": 256, "type": "struct", "fields": ["file_magic", "file_version", "save_ticks", "player_count"] },
+    { "id": "economy", "name": "Economy", "offset": 4096, "length": 1024, "type": "struct", "fields": ["credits_empire", "credits_rebel", "credits_underworld"] },
+    { "id": "hero_state", "name": "Hero State", "offset": 16384, "length": 2048, "type": "struct", "fields": ["hero_vader_alive", "hero_vader_respawn", "hero_palpatine_alive", "hero_palpatine_respawn"] },
+    { "id": "planets", "name": "Planets", "offset": 32768, "length": 8192, "type": "array", "fields": ["planet_0_owner", "planet_1_owner", "planet_2_owner"] }
+  ],
+  "fieldDefs": [
+    { "id": "file_magic", "name": "File Magic", "valueType": "ascii", "offset": 0, "length": 8, "path": "/header/file_magic" },
+    { "id": "file_version", "name": "File Version", "valueType": "int32", "offset": 8, "length": 4, "path": "/header/file_version" },
+    { "id": "save_ticks", "name": "Save Ticks", "valueType": "int64", "offset": 16, "length": 8, "path": "/header/save_ticks" },
+    { "id": "player_count", "name": "Player Count", "valueType": "int32", "offset": 40, "length": 4, "path": "/header/player_count" },
+
+    { "id": "credits_empire", "name": "Empire Credits", "valueType": "int32", "offset": 4096, "length": 4, "path": "/economy/credits_empire" },
+    { "id": "credits_rebel", "name": "Rebel Credits", "valueType": "int32", "offset": 4100, "length": 4, "path": "/economy/credits_rebel" },
+    { "id": "credits_underworld", "name": "Underworld Credits", "valueType": "int32", "offset": 4104, "length": 4, "path": "/economy/credits_underworld" },
+
+    { "id": "hero_vader_alive", "name": "Vader Alive", "valueType": "bool", "offset": 16384, "length": 1, "path": "/hero_state/vader/alive" },
+    { "id": "hero_vader_respawn", "name": "Vader Respawn Timer", "valueType": "int32", "offset": 16388, "length": 4, "path": "/hero_state/vader/respawn_timer" },
+    { "id": "hero_palpatine_alive", "name": "Palpatine Alive", "valueType": "bool", "offset": 16416, "length": 1, "path": "/hero_state/palpatine/alive" },
+    { "id": "hero_palpatine_respawn", "name": "Palpatine Respawn Timer", "valueType": "int32", "offset": 16420, "length": 4, "path": "/hero_state/palpatine/respawn_timer" },
+
+    { "id": "planet_0_owner", "name": "Planet[0] Owner", "valueType": "int32", "offset": 32768, "length": 4, "path": "/planets/0/owner" },
+    { "id": "planet_1_owner", "name": "Planet[1] Owner", "valueType": "int32", "offset": 32784, "length": 4, "path": "/planets/1/owner" },
+    { "id": "planet_2_owner", "name": "Planet[2] Owner", "valueType": "int32", "offset": 32800, "length": 4, "path": "/planets/2/owner" }
+  ],
+  "arrayDefs": [
+    { "id": "planet_table", "name": "Planet Table", "elementType": "planet_struct", "offset": 32768, "count": 128, "stride": 16, "path": "/planets" },
+    { "id": "hero_table", "name": "Hero Table", "elementType": "hero_struct", "offset": 16384, "count": 64, "stride": 32, "path": "/hero_state" }
+  ],
+  "validationRules": [
+    { "id": "credits_empire_non_negative", "rule": "field_non_negative", "target": "credits_empire", "message": "Empire credits cannot be negative", "severity": "error" },
+    { "id": "credits_rebel_non_negative", "rule": "field_non_negative", "target": "credits_rebel", "message": "Rebel credits cannot be negative", "severity": "error" },
+    { "id": "credits_underworld_non_negative", "rule": "field_non_negative", "target": "credits_underworld", "message": "Underworld credits cannot be negative", "severity": "error" }
+  ],
+  "checksumRules": [
+    { "id": "header_crc32", "algorithm": "crc32", "startOffset": 0, "endOffset": 65536, "outputOffset": 252, "outputLength": 4 }
+  ]
+}

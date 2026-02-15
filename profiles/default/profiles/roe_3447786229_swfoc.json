@@ -1,0 +1,72 @@
+{
+  "id": "roe_3447786229_swfoc",
+  "displayName": "Republic at War: Order 66 Submod (3447786229)",
+  "inherits": "aotr_1397421866_swfoc",
+  "exeTarget": "Swfoc",
+  "steamWorkshopId": "3447786229",
+  "signatureSets": [],
+  "fallbackOffsets": {},
+  "actions": {
+    "toggle_roe_respawn_helper": {
+      "id": "toggle_roe_respawn_helper",
+      "category": "Hero",
+      "mode": "Galactic",
+      "executionKind": "Helper",
+      "payloadSchema": {
+        "required": [
+          "helperHookId",
+          "boolValue"
+        ]
+      },
+      "verifyReadback": false,
+      "cooldownMs": 200,
+      "description": "Toggle ROE respawn thread state via helper"
+    }
+  },
+  "featureFlags": {
+    "roe_profile": true,
+    "requires_parent_mod": true,
+    "helper_respawn_toggle": true
+  },
+  "catalogSources": [
+    {
+      "type": "json",
+      "path": "profiles/default/catalog/roe_3447786229_swfoc/catalog.json",
+      "required": false,
+      "description": "Prebuilt ROE catalog"
+    },
+    {
+      "type": "xml",
+      "path": "D:\\SteamLibrary\\steamapps\\workshop\\content\\32470\\3447786229\\Data\\XML\\Gameobjectfiles.xml",
+      "required": false,
+      "description": "Workshop ROE game object index"
+    },
+    {
+      "type": "xml",
+      "path": "3447786229(submod)/Data/XML/Gameobjectfiles.xml",
+      "required": false,
+      "description": "Local ROE mirror game object index"
+    }
+  ],
+  "saveSchemaId": "roe_3447786229_swfoc_v1",
+  "helperModHooks": [
+    {
+      "id": "roe_respawn_bridge",
+      "script": "scripts/roe/respawn_bridge.lua",
+      "version": "1.0.0",
+      "entryPoint": "SWFOC_Trainer_Toggle_Respawn",
+      "metadata": {
+        "sha256": "e3eefa9702c3c648049eb83bca60874c7ae00926c9f96f951f23144e7ae3a88b"
+      }
+    }
+  ],
+  "metadata": {
+    "profileLineage": "base_swfoc -> aotr_1397421866_swfoc -> roe_3447786229_swfoc",
+    "requiredWorkshopIds": "1397421866,3447786229",
+    "requiredMarkerFile": "Data/XML/Gameobjectfiles.xml",
+    "dependencySensitiveActions": "spawn_unit_helper,set_hero_state_helper,toggle_roe_respawn_helper",
+    "localPathHints": "roe,order 66,order-66,3447786229",
+    "localParentPathHints": "1397421866,aotr,awakening of the rebellion,awakening-of-the-rebellion",
+    "profileAliases": "roe_3447786229_swfoc,roe,order66,order 66 submod"
+  }
+}

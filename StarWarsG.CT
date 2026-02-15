@@ -1,0 +1,1130 @@
+<?xml version="1.0" encoding="utf-8"?>
+<CheatTable ApoctEngineTableVersion="45">
+  <CheatEntries>
+    <CheatEntry>
+      <ID>150</ID>
+      <Description>"Empire At War"</Description>
+      <GroupHeader>1</GroupHeader>
+      <Address/>
+      <CheatEntries>
+        <CheatEntry>
+          <ID>151</ID>
+          <Description>"Infinite Credits"</Description>
+          <VariableType>Auto Assembler Script</VariableType>
+          <AssemblerScript>{ Game   : StarWarsG.exe
+  Version:
+  Date   : 2024-08-28
+  Author : Apocalypticx
+
+  This script does infinite credits
+}
+
+[ENABLE]
+
+aobscanmodule(credits1,StarWarsG.exe,F3 0F 2C 50 70 89 57) // should be unique
+alloc(newmem,$1000,credits1)
+
+label(code)
+label(return)
+
+newmem:
+mov [rax+70],(float)1000000
+
+code:
+  cvttss2si edx,[rax+70]
+  jmp return
+
+credits1:
+  jmp newmem
+return:
+registersymbol(credits1)
+
+[DISABLE]
+
+credits1:
+  db F3 0F 2C 50 70
+
+unregistersymbol(credits1)
+dealloc(newmem)
+
+{
+// ORIGINAL CODE - INJECTION POINT: StarWarsG.exe+2FCFC
+
+StarWarsG.exe+2FCC2: 44 0F 28 8C 24 90 00 00 00  - movaps xmm9,[rsp+00000090]
+StarWarsG.exe+2FCCB: 0F 28 BC 24 B0 00 00 00     - movaps xmm7,[rsp+000000B0]
+StarWarsG.exe+2FCD3: 4C 8B BC 24 D0 00 00 00     - mov r15,[rsp+000000D0]
+StarWarsG.exe+2FCDB: 48 85 C9                    - test rcx,rcx
+StarWarsG.exe+2FCDE: 74 29                       - je StarWarsG.exe+2FD09
+StarWarsG.exe+2FCE0: 80 B9 98 00 00 00 00        - cmp byte ptr [rcx+00000098],00
+StarWarsG.exe+2FCE7: 74 20                       - je StarWarsG.exe+2FD09
+StarWarsG.exe+2FCE9: 48 8D 0D E0 F2 9D 00        - lea rcx,[StarWarsG.exe+A0EFD0]
+StarWarsG.exe+2FCF0: E8 BB 4C 26 00              - call StarWarsG.exe+2949B0
+StarWarsG.exe+2FCF5: 48 8D 0D 94 FE AE 00        - lea rcx,[StarWarsG.exe+B1FB90]
+// ---------- INJECTING HERE ----------
+StarWarsG.exe+2FCFC: F3 0F 2C 50 70              - cvttss2si edx,[rax+70]
+// ---------- DONE INJECTING  ----------
+StarWarsG.exe+2FD01: 89 57 58                    - mov [rdi+58],edx
+StarWarsG.exe+2FD04: E8 F7 5D 3B 00              - call StarWarsG.exe+3E5B00
+StarWarsG.exe+2FD09: 48 8B CF                    - mov rcx,rdi
+StarWarsG.exe+2FD0C: E8 1F DC 00 00              - call StarWarsG.exe+3D930
+StarWarsG.exe+2FD11: 48 8B 0D 40 D3 AD 00        - mov rcx,[StarWarsG.exe+B0D058]
+StarWarsG.exe+2FD18: 48 85 C9                    - test rcx,rcx
+StarWarsG.exe+2FD1B: 0F 84 1F 01 00 00           - je StarWarsG.exe+2FE40
+StarWarsG.exe+2FD21: 80 B9 98 00 00 00 01        - cmp byte ptr [rcx+00000098],01
+StarWarsG.exe+2FD28: 0F 85 A7 00 00 00           - jne StarWarsG.exe+2FDD5
+StarWarsG.exe+2FD2E: 48 8B 01                    - mov rax,[rcx]
+}
+
+</AssemblerScript>
+        </CheatEntry>
+        <CheatEntry>
+          <ID>149</ID>
+          <Description>"Maphack"</Description>
+          <VariableType>Auto Assembler Script</VariableType>
+          <AssemblerScript>{ Game   : StarWarsG.exe
+  Version: 
+  Date   : 2024-09-19
+  Author : Apocalypticx
+
+  This script does full maphack for eaw
+}
+
+[ENABLE]
+
+aobscanmodule(maphack2,StarWarsG.exe,80 3C 06 00 74 1A) // should be unique
+alloc(newmem,$1000,maphack2)
+
+label(code)
+label(return)
+
+newmem:
+
+code:
+  cmp byte ptr [rsi+rax],00
+//  je StarWarsG.exe+451994     remove the jump for maphack
+  jmp return
+
+maphack2:
+  jmp newmem
+  nop
+return:
+registersymbol(maphack2)
+
+[DISABLE]
+
+maphack2:
+  db 80 3C 06 00 74 1A
+
+unregistersymbol(maphack2)
+dealloc(newmem)
+
+{
+// ORIGINAL CODE - INJECTION POINT: StarWarsG.exe+451974
+
+StarWarsG.exe+451949: 75 E5                 - jne StarWarsG.exe+451930
+StarWarsG.exe+45194B: 40 88 3D 7E 5A 60 00  - mov [StarWarsG.exe+A573D0],dil
+StarWarsG.exe+451952: 39 7B 20              - cmp [rbx+20],edi
+StarWarsG.exe+451955: 0F 8E 87 00 00 00     - jng StarWarsG.exe+4519E2
+StarWarsG.exe+45195B: 48 89 74 24 40        - mov [rsp+40],rsi
+StarWarsG.exe+451960: 48 8B F7              - mov rsi,rdi
+StarWarsG.exe+451963: 4C 89 74 24 48        - mov [rsp+48],r14
+StarWarsG.exe+451968: 4C 8D 35 61 5A 60 00  - lea r14,[StarWarsG.exe+A573D0]
+StarWarsG.exe+45196F: 90                    - nop 
+StarWarsG.exe+451970: 48 8B 43 08           - mov rax,[rbx+08]
+// ---------- INJECTING HERE ----------
+StarWarsG.exe+451974: 80 3C 06 00           - cmp byte ptr [rsi+rax],00
+// ---------- DONE INJECTING  ----------
+StarWarsG.exe+451978: 74 1A                 - je StarWarsG.exe+451994
+StarWarsG.exe+45197A: 48 8B 43 10           - mov rax,[rbx+10]
+StarWarsG.exe+45197E: 0F B6 0C 06           - movzx ecx,byte ptr [rsi+rax]
+StarWarsG.exe+451982: 48 8B 03              - mov rax,[rbx]
+StarWarsG.exe+451985: F6 D1                 - not cl
+StarWarsG.exe+451987: 88 0C 06              - mov [rsi+rax],cl
+StarWarsG.exe+45198A: 48 8B 43 10           - mov rax,[rbx+10]
+StarWarsG.exe+45198E: C6 04 06 00           - mov byte ptr [rsi+rax],00
+StarWarsG.exe+451992: EB 3A                 - jmp StarWarsG.exe+4519CE
+StarWarsG.exe+451994: 48 8B 13              - mov rdx,[rbx]
+}
+</AssemblerScript>
+        </CheatEntry>
+        <CheatEntry>
+          <ID>168</ID>
+          <Description>"1Sec/1Credit Build S"</Description>
+          <VariableType>Auto Assembler Script</VariableType>
+          <AssemblerScript>{ Game   : StarWarsG.exe
+  Version: 
+  Date   : 2024-09-20
+  Author : Apocalypticx
+
+  This script does 1 second build and 1 credit cost
+}
+
+[ENABLE]
+
+aobscanmodule(building1,StarWarsG.exe,8B 83 04 09 00 00 48) // should be unique
+alloc(newmem,$1000,building1)
+
+label(code)
+label(return)
+
+newmem:
+mov [rbx+00000904],(int)1
+mov [rbx+00000908],(int)1
+
+code:
+  mov eax,[rbx+00000904]
+  jmp return
+
+building1:
+  jmp newmem
+  nop
+return:
+registersymbol(building1)
+
+[DISABLE]
+
+building1:
+  db 8B 83 04 09 00 00
+
+unregistersymbol(building1)
+dealloc(newmem)
+
+{
+// ORIGINAL CODE - INJECTION POINT: StarWarsG.exe+333E73
+
+StarWarsG.exe+333E50: 40 53                 - push rbx
+StarWarsG.exe+333E52: 48 83 EC 20           - sub rsp,20
+StarWarsG.exe+333E56: 48 8B D9              - mov rbx,rcx
+StarWarsG.exe+333E59: 48 8D 0D A0 8F 70 00  - lea rcx,[StarWarsG.exe+A3CE00]
+StarWarsG.exe+333E60: E8 DB 28 F2 FF        - call StarWarsG.exe+256740
+StarWarsG.exe+333E65: 3C 01                 - cmp al,01
+StarWarsG.exe+333E67: 74 0A                 - je StarWarsG.exe+333E73
+StarWarsG.exe+333E69: 8B 83 00 09 00 00     - mov eax,[rbx+00000900]
+StarWarsG.exe+333E6F: 85 C0                 - test eax,eax
+StarWarsG.exe+333E71: 7F 06                 - jg StarWarsG.exe+333E79
+// ---------- INJECTING HERE ----------
+StarWarsG.exe+333E73: 8B 83 04 09 00 00     - mov eax,[rbx+00000904]
+// ---------- DONE INJECTING  ----------
+StarWarsG.exe+333E79: 48 83 C4 20           - add rsp,20
+StarWarsG.exe+333E7D: 5B                    - pop rbx
+StarWarsG.exe+333E7E: C3                    - ret 
+StarWarsG.exe+333E7F: CC                    - int 3 
+StarWarsG.exe+333E80: 48 89 5C 24 08        - mov [rsp+08],rbx
+StarWarsG.exe+333E85: 48 89 74 24 10        - mov [rsp+10],rsi
+StarWarsG.exe+333E8A: 57                    - push rdi
+StarWarsG.exe+333E8B: 48 83 EC 20           - sub rsp,20
+StarWarsG.exe+333E8F: 48 8B F9              - mov rdi,rcx
+StarWarsG.exe+333E92: 49 63 F0              - movsxd  rsi,r8d
+}
+</AssemblerScript>
+        </CheatEntry>
+        <CheatEntry>
+          <ID>248</ID>
+          <Description>"1Sec/1 Cred Build C"</Description>
+          <VariableType>Auto Assembler Script</VariableType>
+          <AssemblerScript>{ Game   : StarWarsG.exe
+  Version: 
+  Date   : 2025-07-20
+  Author : Apocalypticx
+
+  This script does 1 second build and 1 credit cost
+}
+
+[ENABLE]
+
+aobscanmodule(building2,StarWarsG.exe,83 BB 78 07 00 00 00) // should be unique
+alloc(newmem,$1000,building2)
+
+label(code)
+label(return)
+
+newmem:
+mov [rbx+778],(int)1
+mov [rbx+794],(int)1
+
+code:
+cmp dword ptr [rbx+00000778],00
+jmp return
+
+building2:
+  jmp newmem
+  nop
+  nop
+return:
+registersymbol(building2)
+
+[DISABLE]
+
+building2:
+  db 83 BB 78 07 00 00 00
+
+unregistersymbol(building2)
+dealloc(newmem)
+
+{
+// ORIGINAL CODE - INJECTION POINT: build5
+
+StarWarsG.exe+3A1B21: 49 8B 8E D0 00 00 00        - mov rcx,[r14+000000D0]
+StarWarsG.exe+3A1B28: 44 0F 28 C8                 - movaps xmm9,xmm0
+StarWarsG.exe+3A1B2C: F3 44 0F 10 05 AF DD 3B 00  - movss xmm8,[StarWarsG.exe+75F8E4]
+StarWarsG.exe+3A1B35: 41 0F 28 F8                 - movaps xmm7,xmm8
+StarWarsG.exe+3A1B39: 48 85 C9                    - test rcx,rcx
+StarWarsG.exe+3A1B3C: 74 0E                       - je build5
+StarWarsG.exe+3A1B3E: 4C 8B C3                    - mov r8,rbx
+StarWarsG.exe+3A1B41: 49 8B D6                    - mov rdx,r14
+StarWarsG.exe+3A1B44: E8 97 03 16 00              - call StarWarsG.exe+501EE0
+StarWarsG.exe+3A1B49: 0F 28 F8                    - movaps xmm7,xmm0
+// ---------- INJECTING HERE ----------
+StarWarsG.exe+3A1B4C: - 83 BB 78070000 00     - cmp dword ptr [rbx+00000778],00
+// ---------- DONE INJECTING  ----------
+StarWarsG.exe+3A1B53: 41 0F 28 F0                 - movaps xmm6,xmm8
+StarWarsG.exe+3A1B57: 49 8B BE B8 00 00 00        - mov rdi,[r14+000000B8]
+StarWarsG.exe+3A1B5E: 7E 22                       - jle StarWarsG.exe+3A1B82
+StarWarsG.exe+3A1B60: 83 BB 0C 0E 00 00 00        - cmp dword ptr [rbx+00000E0C],00
+StarWarsG.exe+3A1B67: 0F 87 88 00 00 00           - ja StarWarsG.exe+3A1BF5
+StarWarsG.exe+3A1B6D: BA 53 00 00 00              - mov edx,00000053
+StarWarsG.exe+3A1B72: 48 8B CB                    - mov rcx,rbx
+StarWarsG.exe+3A1B75: 44 8D 42 AC                 - lea r8d,[rdx-54]
+StarWarsG.exe+3A1B79: E8 E2 F4 F8 FF              - call StarWarsG.exe+331060
+StarWarsG.exe+3A1B7E: 84 C0                       - test al,al
+}
+</AssemblerScript>
+        </CheatEntry>
+        <CheatEntry>
+          <ID>250</ID>
+          <Description>"Max Unit Cap 99k"</Description>
+          <VariableType>Auto Assembler Script</VariableType>
+          <AssemblerScript>{ Game   : StarWarsG.exe
+  Version: 
+  Date   : 2025-08-14
+  Author : Apocalypticx
+
+  This script does blah blah blah
+}
+
+[ENABLE]
+
+aobscanmodule(maxunit1,StarWarsG.exe,48 8B 74 24 68 8B C7) // should be unique
+alloc(newmem,$1000,maxunit1)
+
+label(code)
+label(return)
+
+StarWarsG.exe+253FC9:
+nop
+nop
+StarWarsG.exe+253FD8:
+jmp StarWarsG.exe+254002
+
+newmem:
+mov edi,(int)99999
+
+code:
+  mov rsi,[rsp+68]
+  jmp return
+
+maxunit1:
+  jmp newmem
+return:
+registersymbol(maxunit1)
+
+[DISABLE]
+
+maxunit1:
+  db 48 8B 74 24 68
+StarWarsG.exe+253FC9:
+jle StarWarsG.exe+254002
+StarWarsG.exe+253FD8:
+jl StarWarsG.exe+254002
+
+
+
+unregistersymbol(maxunit1)
+dealloc(newmem)
+
+{
+// ORIGINAL CODE - INJECTION POINT: StarWarsG.exe+28DF6F
+
+StarWarsG.exe+28DF44: 03 B9 78 1F 00 00     - add edi,[rcx+00001F78]
+StarWarsG.exe+28DF4A: 48 8B 52 08           - mov rdx,[rdx+08]
+StarWarsG.exe+28DF4E: 49 3B D0              - cmp rdx,r8
+StarWarsG.exe+28DF51: 75 CD                 - jne StarWarsG.exe+28DF20
+StarWarsG.exe+28DF53: 48 8B 05 4E C7 6B 00  - mov rax,[StarWarsG.exe+94A6A8]
+StarWarsG.exe+28DF5A: FF C6                 - inc esi
+StarWarsG.exe+28DF5C: 48 2B 05 3D C7 6B 00  - sub rax,[StarWarsG.exe+94A6A0]
+StarWarsG.exe+28DF63: 48 C1 F8 03           - sar rax,03
+StarWarsG.exe+28DF67: 3B F0                 - cmp esi,eax
+StarWarsG.exe+28DF69: 0F 8C 61 FF FF FF     - jl StarWarsG.exe+28DED0
+// ---------- INJECTING HERE ----------
+StarWarsG.exe+28DF6F: 48 8B 74 24 68        - mov rsi,[rsp+68]
+// ---------- DONE INJECTING  ----------
+StarWarsG.exe+28DF74: 8B C7                 - mov eax,edi
+StarWarsG.exe+28DF76: 48 8B 7C 24 28        - mov rdi,[rsp+28]
+StarWarsG.exe+28DF7B: 48 8B 6C 24 60        - mov rbp,[rsp+60]
+StarWarsG.exe+28DF80: 48 8B 5C 24 50        - mov rbx,[rsp+50]
+StarWarsG.exe+28DF85: 48 83 C4 30           - add rsp,30
+StarWarsG.exe+28DF89: 41 5E                 - pop r14
+StarWarsG.exe+28DF8B: 41 5D                 - pop r13
+StarWarsG.exe+28DF8D: 41 5C                 - pop r12
+StarWarsG.exe+28DF8F: C3                    - ret 
+StarWarsG.exe+28DF90: 33 C0                 - xor eax,eax
+}
+</AssemblerScript>
+        </CheatEntry>
+      </CheatEntries>
+    </CheatEntry>
+    <CheatEntry>
+      <ID>169</ID>
+      <Description>"Forces Of Corruption"</Description>
+      <GroupHeader>1</GroupHeader>
+      <Address/>
+      <CheatEntries>
+        <CheatEntry>
+          <ID>38</ID>
+          <Description>"Infinite Credits"</Description>
+          <VariableType>Auto Assembler Script</VariableType>
+          <AssemblerScript>{ Game   : StarWarsG.exe
+  Version: 
+  Date   : 2024-08-28
+  Author : Apocalypticx
+
+  This script does infinite credits
+}
+
+[ENABLE]
+
+aobscanmodule(credits1,StarWarsG.exe,F3 0F 2C 50 70 89 57) // should be unique
+alloc(newmem,$1000,credits1)
+
+label(code)
+label(return)
+
+newmem:
+mov [rax+70],(float)1000000
+
+code:
+  cvttss2si edx,[rax+70]
+  jmp return
+
+credits1:
+  jmp newmem
+return:
+registersymbol(credits1)
+
+[DISABLE]
+
+credits1:
+  db F3 0F 2C 50 70
+
+unregistersymbol(credits1)
+dealloc(newmem)
+
+{
+// ORIGINAL CODE - INJECTION POINT: StarWarsG.exe+2FCFC
+
+StarWarsG.exe+2FCC2: 44 0F 28 8C 24 90 00 00 00  - movaps xmm9,[rsp+00000090]
+StarWarsG.exe+2FCCB: 0F 28 BC 24 B0 00 00 00     - movaps xmm7,[rsp+000000B0]
+StarWarsG.exe+2FCD3: 4C 8B BC 24 D0 00 00 00     - mov r15,[rsp+000000D0]
+StarWarsG.exe+2FCDB: 48 85 C9                    - test rcx,rcx
+StarWarsG.exe+2FCDE: 74 29                       - je StarWarsG.exe+2FD09
+StarWarsG.exe+2FCE0: 80 B9 98 00 00 00 00        - cmp byte ptr [rcx+00000098],00
+StarWarsG.exe+2FCE7: 74 20                       - je StarWarsG.exe+2FD09
+StarWarsG.exe+2FCE9: 48 8D 0D E0 F2 9D 00        - lea rcx,[StarWarsG.exe+A0EFD0]
+StarWarsG.exe+2FCF0: E8 BB 4C 26 00              - call StarWarsG.exe+2949B0
+StarWarsG.exe+2FCF5: 48 8D 0D 94 FE AE 00        - lea rcx,[StarWarsG.exe+B1FB90]
+// ---------- INJECTING HERE ----------
+StarWarsG.exe+2FCFC: F3 0F 2C 50 70              - cvttss2si edx,[rax+70]
+// ---------- DONE INJECTING  ----------
+StarWarsG.exe+2FD01: 89 57 58                    - mov [rdi+58],edx
+StarWarsG.exe+2FD04: E8 F7 5D 3B 00              - call StarWarsG.exe+3E5B00
+StarWarsG.exe+2FD09: 48 8B CF                    - mov rcx,rdi
+StarWarsG.exe+2FD0C: E8 1F DC 00 00              - call StarWarsG.exe+3D930
+StarWarsG.exe+2FD11: 48 8B 0D 40 D3 AD 00        - mov rcx,[StarWarsG.exe+B0D058]
+StarWarsG.exe+2FD18: 48 85 C9                    - test rcx,rcx
+StarWarsG.exe+2FD1B: 0F 84 1F 01 00 00           - je StarWarsG.exe+2FE40
+StarWarsG.exe+2FD21: 80 B9 98 00 00 00 01        - cmp byte ptr [rcx+00000098],01
+StarWarsG.exe+2FD28: 0F 85 A7 00 00 00           - jne StarWarsG.exe+2FDD5
+StarWarsG.exe+2FD2E: 48 8B 01                    - mov rax,[rcx]
+}
+</AssemblerScript>
+        </CheatEntry>
+        <CheatEntry>
+          <ID>249</ID>
+          <Description>"Maphack"</Description>
+          <VariableType>Auto Assembler Script</VariableType>
+          <AssemblerScript>{ Game   : StarWarsG.exe
+  Version: 
+  Date   : 2025-07-21
+  Author : Apocalypticx
+
+  This script does maphack
+}
+
+[ENABLE]
+
+aobscanmodule(maphack1,StarWarsG.exe,66 83 3C 70 00 74) // should be unique
+alloc(newmem,$1000,maphack1)
+
+label(code)
+label(return)
+
+newmem:
+
+code:
+cmp word ptr [rax+rsi*2],00
+//je StarWarsG.exe+4C1785        kill the jump for the maphack
+jmp return
+
+maphack1:
+jmp newmem
+nop
+nop
+return:
+registersymbol(maphack1)
+
+[DISABLE]
+
+maphack1:
+  db 66 83 3C 70 00 74 1A
+
+unregistersymbol(maphack1)
+dealloc(newmem)
+
+{
+// ORIGINAL CODE - INJECTION POINT: StarWarsG.exe+4C1764
+
+StarWarsG.exe+4C1739: 75 E5                 - jne StarWarsG.exe+4C1720
+StarWarsG.exe+4C173B: 40 88 3D 7E 00 67 00  - mov [StarWarsG.exe+B317C0],dil
+StarWarsG.exe+4C1742: 39 7B 20              - cmp [rbx+20],edi
+StarWarsG.exe+4C1745: 0F 8E 88 00 00 00     - jng StarWarsG.exe+4C17D3
+StarWarsG.exe+4C174B: 48 89 74 24 40        - mov [rsp+40],rsi
+StarWarsG.exe+4C1750: 48 8B F7              - mov rsi,rdi
+StarWarsG.exe+4C1753: 4C 89 74 24 48        - mov [rsp+48],r14
+StarWarsG.exe+4C1758: 4C 8D 35 61 00 67 00  - lea r14,[StarWarsG.exe+B317C0]
+StarWarsG.exe+4C175F: 90                    - nop 
+StarWarsG.exe+4C1760: 48 8B 43 08           - mov rax,[rbx+08]
+// ---------- INJECTING HERE ----------
+StarWarsG.exe+4C1764: 66 83 3C 70 00        - cmp word ptr [rax+rsi*2],00
+// ---------- DONE INJECTING  ----------
+StarWarsG.exe+4C1769: 74 1A                 - je StarWarsG.exe+4C1785
+StarWarsG.exe+4C176B: 48 8B 43 10           - mov rax,[rbx+10]
+StarWarsG.exe+4C176F: 0F B6 0C 30           - movzx ecx,byte ptr [rax+rsi]
+StarWarsG.exe+4C1773: 48 8B 03              - mov rax,[rbx]
+StarWarsG.exe+4C1776: F6 D1                 - not cl
+StarWarsG.exe+4C1778: 88 0C 06              - mov [rsi+rax],cl
+StarWarsG.exe+4C177B: 48 8B 43 10           - mov rax,[rbx+10]
+StarWarsG.exe+4C177F: C6 04 06 00           - mov byte ptr [rsi+rax],00
+StarWarsG.exe+4C1783: EB 3A                 - jmp StarWarsG.exe+4C17BF
+StarWarsG.exe+4C1785: 48 8B 13              - mov rdx,[rbx]
+}
+</AssemblerScript>
+        </CheatEntry>
+        <CheatEntry>
+          <ID>237</ID>
+          <Description>"1 Sec/1 Cred Build S"</Description>
+          <VariableType>Auto Assembler Script</VariableType>
+          <AssemblerScript>{ Game   : Star Wars: Empire at War: Forces of Corruption
+  Version: 
+  Date   : 2024-11-28
+  Author : Apocalypticx
+
+  This script does 1 sec build and 1 credit cost
+}
+
+[ENABLE]
+
+aobscanmodule(building1,StarWarsG.exe,8B 83 FC 09 00 00 48) // should be unique
+alloc(newmem,$1000,building1)
+
+label(code)
+label(return)
+
+newmem:
+mov [rbx+000009FC],(int)1
+mov [rbx+00000A00],(int)1
+
+code:
+  mov eax,[rbx+000009FC]
+  jmp return
+
+building1:
+  jmp newmem
+  nop
+return:
+registersymbol(building1)
+
+[DISABLE]
+
+building1:
+  db 8B 83 FC 09 00 00
+
+unregistersymbol(building1)
+dealloc(newmem)
+
+{
+// ORIGINAL CODE - INJECTION POINT: StarWarsG.exe+374413
+
+StarWarsG.exe+3743F0: 40 53                 - push rbx
+StarWarsG.exe+3743F2: 48 83 EC 20           - sub rsp,20
+StarWarsG.exe+3743F6: 48 8B D9              - mov rbx,rcx
+StarWarsG.exe+3743F9: 48 8D 0D E0 0F 7A 00  - lea rcx,[StarWarsG.exe+B153E0]
+StarWarsG.exe+374400: E8 AB 6B F1 FF        - call StarWarsG.exe+28AFB0
+StarWarsG.exe+374405: 3C 01                 - cmp al,01
+StarWarsG.exe+374407: 74 0A                 - je StarWarsG.exe+374413
+StarWarsG.exe+374409: 8B 83 F8 09 00 00     - mov eax,[rbx+000009F8]
+StarWarsG.exe+37440F: 85 C0                 - test eax,eax
+StarWarsG.exe+374411: 7F 06                 - jg StarWarsG.exe+374419
+// ---------- INJECTING HERE ----------
+StarWarsG.exe+374413: 8B 83 FC 09 00 00     - mov eax,[rbx+000009FC]
+// ---------- DONE INJECTING  ----------
+StarWarsG.exe+374419: 48 83 C4 20           - add rsp,20
+StarWarsG.exe+37441D: 5B                    - pop rbx
+StarWarsG.exe+37441E: C3                    - ret 
+StarWarsG.exe+37441F: CC                    - int 3 
+StarWarsG.exe+374420: 48 89 5C 24 08        - mov [rsp+08],rbx
+StarWarsG.exe+374425: 48 89 74 24 10        - mov [rsp+10],rsi
+StarWarsG.exe+37442A: 57                    - push rdi
+StarWarsG.exe+37442B: 48 83 EC 20           - sub rsp,20
+StarWarsG.exe+37442F: 48 8B F9              - mov rdi,rcx
+StarWarsG.exe+374432: 49 63 F0              - movsxd  rsi,r8d
+}
+</AssemblerScript>
+        </CheatEntry>
+        <CheatEntry>
+          <ID>247</ID>
+          <Description>"1Sec/1 Cred Build C"</Description>
+          <VariableType>Auto Assembler Script</VariableType>
+          <AssemblerScript>{ Game   : StarWarsG.exe
+  Version: 
+  Date   : 2025-05-08
+  Author : Apocalypticx
+
+  This script does 1 second build and 1 credit cost
+}
+
+[ENABLE]
+
+aobscanmodule(build2,StarWarsG.exe,83 BB 6C 08 00 00 00 41) // should be unique
+alloc(newmem,$1000,build2)
+
+label(code)
+label(return)
+
+newmem:
+mov [rbx+0000086C],(int)1
+mov [rbx+00000890],(int)1
+
+code:
+  cmp dword ptr [rbx+0000086C],00
+  jmp return
+
+build2:
+  jmp newmem
+  nop
+  nop
+return:
+registersymbol(build2)
+
+[DISABLE]
+
+build2:
+  db 83 BB 6C 08 00 00 00
+
+unregistersymbol(build2)
+dealloc(newmem)
+
+{
+// ORIGINAL CODE - INJECTION POINT: StarWarsG.exe+400427
+
+StarWarsG.exe+4003FC: 48 8B 8D D0 00 00 00        - mov rcx,[rbp+000000D0]
+StarWarsG.exe+400403: 44 0F 28 D0                 - movaps xmm10,xmm0
+StarWarsG.exe+400407: F3 44 0F 10 05 E8 F6 3F 00  - movss xmm8,[StarWarsG.exe+7FFAF8]
+StarWarsG.exe+400410: 41 0F 28 F0                 - movaps xmm6,xmm8
+StarWarsG.exe+400414: 48 85 C9                    - test rcx,rcx
+StarWarsG.exe+400417: 74 0E                       - je StarWarsG.exe+400427
+StarWarsG.exe+400419: 4C 8B C3                    - mov r8,rbx
+StarWarsG.exe+40041C: 48 8B D5                    - mov rdx,rbp
+StarWarsG.exe+40041F: E8 EC 9B 15 00              - call StarWarsG.exe+55A010
+StarWarsG.exe+400424: 0F 28 F0                    - movaps xmm6,xmm0
+// ---------- INJECTING HERE ----------
+StarWarsG.exe+400427: 83 BB 6C 08 00 00 00        - cmp dword ptr [rbx+0000086C],00
+// ---------- DONE INJECTING  ----------
+StarWarsG.exe+40042E: 41 0F 28 F8                 - movaps xmm7,xmm8
+StarWarsG.exe+400432: 48 8B BD B8 00 00 00        - mov rdi,[rbp+000000B8]
+StarWarsG.exe+400439: 7E 22                       - jle StarWarsG.exe+40045D
+StarWarsG.exe+40043B: 83 BB 0C 0F 00 00 00        - cmp dword ptr [rbx+00000F0C],00
+StarWarsG.exe+400442: 0F 87 88 00 00 00           - ja StarWarsG.exe+4004D0
+StarWarsG.exe+400448: BA 5F 00 00 00              - mov edx,0000005F
+StarWarsG.exe+40044D: 48 8B CB                    - mov rcx,rbx
+StarWarsG.exe+400450: 44 8D 42 A0                 - lea r8d,[rdx-60]
+StarWarsG.exe+400454: E8 C7 FE F6 FF              - call StarWarsG.exe+370320
+StarWarsG.exe+400459: 84 C0                       - test al,al
+}
+</AssemblerScript>
+        </CheatEntry>
+        <CheatEntry>
+          <ID>252</ID>
+          <Description>"Max Unit Cap 99k"</Description>
+          <VariableType>Auto Assembler Script</VariableType>
+          <AssemblerScript>{ Game   : StarWarsG.exe
+  Version: 
+  Date   : 2025-08-14
+  Author : Apocalypticx
+
+  This script does 99k unit cap
+}
+
+[ENABLE]
+
+aobscanmodule(maxunitcap1,StarWarsG.exe,48 8B 74 24 68 8B C7) // should be unique
+alloc(newmem,$1000,maxunitcap1)
+
+label(code)
+label(return)
+
+newmem:
+mov edi,(int)99999
+
+code:
+  mov rsi,[rsp+68]
+  jmp return
+
+maxunitcap1:
+  jmp newmem
+return:
+registersymbol(maxunitcap1)
+
+[DISABLE]
+
+maxunitcap1:
+  db 48 8B 74 24 68
+
+unregistersymbol(maxunitcap1)
+dealloc(newmem)
+
+{
+// ORIGINAL CODE - INJECTION POINT: StarWarsG.exe+2AC94F
+
+StarWarsG.exe+2AC924: 03 B9 20 21 00 00     - add edi,[rcx+00002120]
+StarWarsG.exe+2AC92A: 48 8B 52 08           - mov rdx,[rdx+08]
+StarWarsG.exe+2AC92E: 49 3B D0              - cmp rdx,r8
+StarWarsG.exe+2AC931: 75 CD                 - jne StarWarsG.exe+2AC900
+StarWarsG.exe+2AC933: 48 8B 05 9E A6 76 00  - mov rax,[StarWarsG.exe+A16FD8]
+StarWarsG.exe+2AC93A: FF C6                 - inc esi
+StarWarsG.exe+2AC93C: 48 2B 05 8D A6 76 00  - sub rax,[StarWarsG.exe+A16FD0]
+StarWarsG.exe+2AC943: 48 C1 F8 03           - sar rax,03
+StarWarsG.exe+2AC947: 3B F0                 - cmp esi,eax
+StarWarsG.exe+2AC949: 0F 8C 61 FF FF FF     - jl StarWarsG.exe+2AC8B0
+// ---------- INJECTING HERE ----------
+StarWarsG.exe+2AC94F: 48 8B 74 24 68        - mov rsi,[rsp+68]
+// ---------- DONE INJECTING  ----------
+StarWarsG.exe+2AC954: 8B C7                 - mov eax,edi
+StarWarsG.exe+2AC956: 48 8B 7C 24 28        - mov rdi,[rsp+28]
+StarWarsG.exe+2AC95B: 48 8B 6C 24 60        - mov rbp,[rsp+60]
+StarWarsG.exe+2AC960: 48 8B 5C 24 50        - mov rbx,[rsp+50]
+StarWarsG.exe+2AC965: 48 83 C4 30           - add rsp,30
+StarWarsG.exe+2AC969: 41 5E                 - pop r14
+StarWarsG.exe+2AC96B: 41 5D                 - pop r13
+StarWarsG.exe+2AC96D: 41 5C                 - pop r12
+StarWarsG.exe+2AC96F: C3                    - ret 
+StarWarsG.exe+2AC970: 33 C0                 - xor eax,eax
+}
+</AssemblerScript>
+        </CheatEntry>
+      </CheatEntries>
+    </CheatEntry>
+    <CheatEntry>
+      <ID>39</ID>
+      <Description>"Donate Paypal"</Description>
+      <VariableType>Auto Assembler Script</VariableType>
+      <AssemblerScript>[ENABLE]
+{$lua}
+--NO_ACTIVATE
+if syntaxcheck then return end
+if memrec then print(memrec.Description) end
+
+shellExecute('https://paypal.me/apocalypticx?country.x=GB&amp;locale.x=en_GB')
+
+getLuaEngine().MenuItem1.DoClick()
+getLuaEngine().Close()
+
+[DISABLE]
+
+</AssemblerScript>
+    </CheatEntry>
+  </CheatEntries>
+  <CheatCodes>
+    <CodeEntry GroupHeader="1">
+      <Description>EAW Build Read Conquest</Description>
+    </CodeEntry>
+    <CodeEntry>
+      <Description>Code :cmp dword ptr [rbx+00000778],00</Description>
+      <AddressString>StarWarsG.exe+3A1B4C</AddressString>
+      <Before>
+        <Byte>16</Byte>
+        <Byte>00</Byte>
+        <Byte>0F</Byte>
+        <Byte>28</Byte>
+        <Byte>F8</Byte>
+      </Before>
+      <Actual>
+        <Byte>83</Byte>
+        <Byte>BB</Byte>
+        <Byte>78</Byte>
+        <Byte>07</Byte>
+        <Byte>00</Byte>
+        <Byte>00</Byte>
+        <Byte>00</Byte>
+      </Actual>
+      <After>
+        <Byte>41</Byte>
+        <Byte>0F</Byte>
+        <Byte>28</Byte>
+        <Byte>F0</Byte>
+        <Byte>49</Byte>
+      </After>
+    </CodeEntry>
+    <CodeEntry GroupHeader="1">
+      <Description>XYZ</Description>
+    </CodeEntry>
+    <CodeEntry>
+      <Description>Code :addss xmm2,[rax+78]</Description>
+      <AddressString>StarWarsG.exe+3A6296</AddressString>
+      <Before>
+        <Byte>00</Byte>
+        <Byte>48</Byte>
+        <Byte>8B</Byte>
+        <Byte>42</Byte>
+        <Byte>F0</Byte>
+      </Before>
+      <Actual>
+        <Byte>F3</Byte>
+        <Byte>0F</Byte>
+        <Byte>58</Byte>
+        <Byte>50</Byte>
+        <Byte>78</Byte>
+      </Actual>
+      <After>
+        <Byte>F3</Byte>
+        <Byte>0F</Byte>
+        <Byte>58</Byte>
+        <Byte>58</Byte>
+        <Byte>7C</Byte>
+      </After>
+    </CodeEntry>
+    <CodeEntry>
+      <Description>Code :addss xmm3,[rax+7C]</Description>
+      <AddressString>StarWarsG.exe+3A629B</AddressString>
+      <Before>
+        <Byte>F3</Byte>
+        <Byte>0F</Byte>
+        <Byte>58</Byte>
+        <Byte>50</Byte>
+        <Byte>78</Byte>
+      </Before>
+      <Actual>
+        <Byte>F3</Byte>
+        <Byte>0F</Byte>
+        <Byte>58</Byte>
+        <Byte>58</Byte>
+        <Byte>7C</Byte>
+      </Actual>
+      <After>
+        <Byte>F3</Byte>
+        <Byte>0F</Byte>
+        <Byte>58</Byte>
+        <Byte>A0</Byte>
+        <Byte>80</Byte>
+      </After>
+    </CodeEntry>
+    <CodeEntry GroupHeader="1">
+      <Description>EAW current Unit Cap</Description>
+    </CodeEntry>
+    <CodeEntry>
+      <Description>Code :mov eax,[rsi+000003AC]</Description>
+      <AddressString>StarWarsG.exe+253FBD</AddressString>
+      <Before>
+        <Byte>95</Byte>
+        <Byte>03</Byte>
+        <Byte>00</Byte>
+        <Byte>8B</Byte>
+        <Byte>D8</Byte>
+      </Before>
+      <Actual>
+        <Byte>8B</Byte>
+        <Byte>86</Byte>
+        <Byte>AC</Byte>
+        <Byte>03</Byte>
+        <Byte>00</Byte>
+        <Byte>00</Byte>
+      </Actual>
+      <After>
+        <Byte>85</Byte>
+        <Byte>C0</Byte>
+        <Byte>7E</Byte>
+        <Byte>3B</Byte>
+        <Byte>3B</Byte>
+      </After>
+    </CodeEntry>
+    <CodeEntry>
+      <Description>Change of jle StarWarsG.exe+254002</Description>
+      <AddressString>StarWarsG.exe+253FC9</AddressString>
+      <Before>
+        <Byte>C0</Byte>
+        <Byte>7E</Byte>
+        <Byte>3B</Byte>
+        <Byte>3B</Byte>
+        <Byte>D8</Byte>
+      </Before>
+      <Actual>
+        <Byte>7E</Byte>
+        <Byte>37</Byte>
+      </Actual>
+      <After>
+        <Byte>41</Byte>
+        <Byte>8B</Byte>
+        <Byte>D6</Byte>
+        <Byte>48</Byte>
+        <Byte>8B</Byte>
+      </After>
+    </CodeEntry>
+    <CodeEntry>
+      <Description>Code :jl StarWarsG.exe+254002</Description>
+      <AddressString>StarWarsG.exe+253FD8</AddressString>
+      <Before>
+        <Byte>9D</Byte>
+        <Byte>03</Byte>
+        <Byte>00</Byte>
+        <Byte>3B</Byte>
+        <Byte>D8</Byte>
+      </Before>
+      <Actual>
+        <Byte>7C</Byte>
+        <Byte>28</Byte>
+      </Actual>
+      <After>
+        <Byte>48</Byte>
+        <Byte>8B</Byte>
+        <Byte>46</Byte>
+        <Byte>68</Byte>
+        <Byte>48</Byte>
+      </After>
+    </CodeEntry>
+    <CodeEntry>
+      <Description>Code :call StarWarsG.exe+2A4770</Description>
+      <AddressString>StarWarsG.exe+253FFD</AddressString>
+      <Before>
+        <Byte>0D</Byte>
+        <Byte>D3</Byte>
+        <Byte>B2</Byte>
+        <Byte>7F</Byte>
+        <Byte>00</Byte>
+      </Before>
+      <Actual>
+        <Byte>E8</Byte>
+        <Byte>6E</Byte>
+        <Byte>07</Byte>
+        <Byte>05</Byte>
+        <Byte>00</Byte>
+      </Actual>
+      <After>
+        <Byte>89</Byte>
+        <Byte>9E</Byte>
+        <Byte>AC</Byte>
+        <Byte>03</Byte>
+        <Byte>00</Byte>
+      </After>
+    </CodeEntry>
+    <CodeEntry>
+      <Description>Code :mov [rsi+000003AC],ebx</Description>
+      <AddressString>StarWarsG.exe+254002</AddressString>
+      <Before>
+        <Byte>E8</Byte>
+        <Byte>6E</Byte>
+        <Byte>07</Byte>
+        <Byte>05</Byte>
+        <Byte>00</Byte>
+      </Before>
+      <Actual>
+        <Byte>89</Byte>
+        <Byte>9E</Byte>
+        <Byte>AC</Byte>
+        <Byte>03</Byte>
+        <Byte>00</Byte>
+        <Byte>00</Byte>
+      </Actual>
+      <After>
+        <Byte>EB</Byte>
+        <Byte>5F</Byte>
+        <Byte>48</Byte>
+        <Byte>8B</Byte>
+        <Byte>03</Byte>
+      </After>
+    </CodeEntry>
+    <CodeEntry GroupHeader="1">
+      <Description>FOC Current Unit Cap </Description>
+    </CodeEntry>
+    <CodeEntry>
+      <Description>Code :call StarWarsG.exe+2AC700</Description>
+      <AddressString>StarWarsG.exe+2885E1</AddressString>
+      <Before>
+        <Byte>8B</Byte>
+        <Byte>D6</Byte>
+        <Byte>48</Byte>
+        <Byte>8B</Byte>
+        <Byte>CF</Byte>
+      </Before>
+      <Actual>
+        <Byte>E8</Byte>
+        <Byte>1A</Byte>
+        <Byte>41</Byte>
+        <Byte>02</Byte>
+        <Byte>00</Byte>
+      </Actual>
+      <After>
+        <Byte>3B</Byte>
+        <Byte>D8</Byte>
+        <Byte>7C</Byte>
+        <Byte>28</Byte>
+        <Byte>48</Byte>
+      </After>
+    </CodeEntry>
+  </CheatCodes>
+  <UserdefinedSymbols>
+    <SymbolEntry>
+      <Name>newmem</Name>
+      <Address>1B37EA40000</Address>
+    </SymbolEntry>
+    <SymbolEntry>
+      <Name>CPUBas</Name>
+      <Address>13FFB0010</Address>
+    </SymbolEntry>
+    <SymbolEntry>
+      <Name>PHealth</Name>
+      <Address>13EA60010</Address>
+    </SymbolEntry>
+    <SymbolEntry>
+      <Name>penhel</Name>
+      <Address>13EA60000</Address>
+    </SymbolEntry>
+    <SymbolEntry>
+      <Name>flashlight</Name>
+      <Address>F5D932F32C</Address>
+    </SymbolEntry>
+    <SymbolEntry>
+      <Name>cave_light</Name>
+      <Address>7FF7BB950010</Address>
+    </SymbolEntry>
+    <SymbolEntry>
+      <Name>end1</Name>
+      <Address>F592A40030</Address>
+    </SymbolEntry>
+    <SymbolEntry>
+      <Name>pTimer</Name>
+      <Address>7FF6C26C0000</Address>
+    </SymbolEntry>
+    <SymbolEntry>
+      <Name>pSpeed</Name>
+      <Address>7FF788F80000</Address>
+    </SymbolEntry>
+    <SymbolEntry>
+      <Name>pPoints</Name>
+      <Address>7FF788FD0030</Address>
+    </SymbolEntry>
+    <SymbolEntry>
+      <Name>pPoints2</Name>
+      <Address>7FF788FD0020</Address>
+    </SymbolEntry>
+    <SymbolEntry>
+      <Name>pPoints3</Name>
+      <Address>7FF788FD0010</Address>
+    </SymbolEntry>
+    <SymbolEntry>
+      <Name>pPoints4</Name>
+      <Address>7FF788FD0000</Address>
+    </SymbolEntry>
+    <SymbolEntry>
+      <Name>pPointsPlayer</Name>
+      <Address>7FF788FD0010</Address>
+    </SymbolEntry>
+    <SymbolEntry>
+      <Name>CurrentProduction</Name>
+      <Address>064C0016</Address>
+    </SymbolEntry>
+    <SymbolEntry>
+      <Name>DMMenu</Name>
+      <Address>00494CF1</Address>
+    </SymbolEntry>
+    <SymbolEntry>
+      <Name>teleport</Name>
+      <Address>00A9ADB6</Address>
+    </SymbolEntry>
+    <SymbolEntry>
+      <Name>1hit</Name>
+      <Address>00581529</Address>
+    </SymbolEntry>
+    <SymbolEntry>
+      <Name>breath</Name>
+      <Address>00AB29A0</Address>
+    </SymbolEntry>
+    <SymbolEntry>
+      <Name>addgold</Name>
+      <Address>00BBED13</Address>
+    </SymbolEntry>
+    <SymbolEntry>
+      <Name>ammo</Name>
+      <Address>00C06C73</Address>
+    </SymbolEntry>
+    <SymbolEntry>
+      <Name>noreload</Name>
+      <Address>00C06CE2</Address>
+    </SymbolEntry>
+    <SymbolEntry>
+      <Name>possession</Name>
+      <Address>00BE4C0B</Address>
+    </SymbolEntry>
+    <SymbolEntry>
+      <Name>mana</Name>
+      <Address>00AA2DE0</Address>
+    </SymbolEntry>
+    <SymbolEntry>
+      <Name>godmode</Name>
+      <Address>00AAD86E</Address>
+    </SymbolEntry>
+    <SymbolEntry>
+      <Name>notimer</Name>
+      <Address>00BE5E0E</Address>
+    </SymbolEntry>
+    <SymbolEntry>
+      <Name>stoptime</Name>
+      <Address>009FB201</Address>
+    </SymbolEntry>
+    <SymbolEntry>
+      <Name>SPEED_MULTIPLIER</Name>
+      <Address>14800000</Address>
+    </SymbolEntry>
+    <SymbolEntry>
+      <Name>I_MovementSpeed</Name>
+      <Address>00B4A992</Address>
+    </SymbolEntry>
+  </UserdefinedSymbols>
+  <Comments>Info about this table:
+</Comments>
+  <DisassemblerComments>
+    <DisassemblerComment>
+      <Address>"motogp24-Win64-Shipping.exe"+248A33E</Address>
+      <Comment>Temp Tyre 
+</Comment>
+    </DisassemblerComment>
+    <DisassemblerComment>
+      <Address>"motogp24-Win64-Shipping.exe"+248A384</Address>
+      <Comment>Temp Tyre b
+</Comment>
+    </DisassemblerComment>
+    <DisassemblerComment>
+      <Address>"motogp24-Win64-Shipping.exe"+248A3C7</Address>
+      <Comment>Temp Tyre c
+</Comment>
+    </DisassemblerComment>
+  </DisassemblerComments>
+</CheatTable>
