@@ -46,6 +46,10 @@ Rule for completion: every `[x]` item includes evidence as one of:
   evidence: test `tests/SwfocTrainer.Tests/Profiles/LiveHeroHelperWorkflowTests.cs`
   evidence: manual `2026-02-15` `dotnet test tests/SwfocTrainer.Tests/SwfocTrainer.Tests.csproj -c Release --no-build` passed 69 tests, skipped 4 live-gated tests
 - [ ] Execute live-machine M1 validation run and attach evidence to issues `#34` and `#19`.
+  note: local attempt `2026-02-16` produced explicit skips because no live SWFOC process was running.
+  note: use `pwsh ./tools/run-live-validation.ps1 -Configuration Release -NoBuild` and post templates from `TestResults/` to `#34` and `#19`.
+  evidence-progress: `#34` comment `https://github.com/Prekzursil/SWFOC-Mod-Menu/issues/34#issuecomment-3905270711`
+  evidence-progress: `#19` comment `https://github.com/Prekzursil/SWFOC-Mod-Menu/issues/19#issuecomment-3905270874`
 - [x] Close/reconcile M0 carryover issues (`#15`, `#16`, `#17`, `#18`) with evidence comments.
   evidence: issue `https://github.com/Prekzursil/SWFOC-Mod-Menu/issues/15`
 - [x] Track plan archive under `(new)codex(plans)/` with explicit contributor convention.
