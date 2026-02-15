@@ -57,3 +57,20 @@ Notes:
 - [ ] Add a "Calibrate symbol" debug panel that prints candidate RIP-relative patterns (based on the existing smoke-test scanners).
 - [ ] Add optional patch-mode fallback action for fog/maphack using CT-derived branch-bypass AOBs when symbol toggles regress.
 - [ ] Evaluate a patch-mode unit-cap feature (`future:set_unit_cap`) from CT patterns, while keeping profile-driven memory actions as primary path.
+
+## Live Checklist Template (Issue #19)
+
+Use this evidence template for each live run:
+
+- Date:
+- Build:
+- Profile:
+- Launch recommendation: `profileId`, `reasonCode`, `confidence`
+- Attach summary: symbol healthy/degraded/unresolved counts
+- Tactical toggles smoke:
+  - `toggle_tactical_god_mode`
+  - `toggle_tactical_one_hit_mode`
+- Hero-state helper smoke:
+  - AOTR: `set_hero_state_helper`
+  - ROE: `toggle_roe_respawn_helper`
+- Notes / regressions:

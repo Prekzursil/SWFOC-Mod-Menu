@@ -1,0 +1,35 @@
+{
+  "schemaVersion": "1.0",
+  "presets": [
+    {
+      "id": "aotr_armytrooper_line",
+      "name": "AOTR Armytrooper Line",
+      "unitId": "ARMYTROOPER",
+      "faction": "EMPIRE",
+      "entryMarker": "AUTO",
+      "defaultQuantity": 6,
+      "defaultDelayMs": 90,
+      "description": "AOTR infantry line push"
+    },
+    {
+      "id": "aotr_dark_trooper_raider",
+      "name": "AOTR Dark Trooper Raid",
+      "unitId": "DARK_TROOPER_PHASEI",
+      "faction": "EMPIRE",
+      "entryMarker": "AUTO",
+      "defaultQuantity": 3,
+      "defaultDelayMs": 150,
+      "description": "Shock assault package"
+    },
+    {
+      "id": "aotr_csa_fighter_screen",
+      "name": "AOTR CSA Fighter Screen",
+      "unitId": "CSA_Z95_HEADHUNTER",
+      "faction": "PIRATES",
+      "entryMarker": "AUTO",
+      "defaultQuantity": 5,
+      "defaultDelayMs": 120,
+      "description": "Light fighter interference swarm"
+    }
+  ]
+}

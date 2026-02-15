@@ -10,6 +10,14 @@
   - edit key fields
   - validate rules
   - roundtrip write/load
+- `ActionReliabilityServiceTests`
+  - verifies `stable`/`experimental`/`unavailable` scoring
+  - verifies unknown-mode strict gating and dependency soft-block handling
+- `SelectedUnitTransactionServiceTests`
+  - verifies apply/rollback semantics for selected-unit edits
+  - verifies `RevertLast` and baseline restore behavior
+- `SpawnPresetServiceTests`
+  - verifies preset loading, batch expansion, stop-on-failure and continue-on-failure execution
 
 ## Manual runtime checks
 
@@ -28,3 +36,29 @@ For each profile (`base_sweaw`, `base_swfoc`, `aotr_1397421866_swfoc`, `roe_3447
    - edit credits + hero respawn fields
    - validate + write edited save
    - load in-game to confirm integrity.
+
+## Live Ops checklist (M1)
+
+For tactical sessions:
+
+1. Open `Live Ops` tab.
+2. `Capture Unit Baseline`, modify 2+ selected-unit fields, click `Apply Draft`.
+3. Validate effects in-game.
+4. Click `Revert Last` and confirm values are restored.
+
+For spawn workflows:
+
+1. Load profile-specific spawn presets.
+2. Run a small batch (`quantity=3`) with `Stop on first failure` enabled.
+3. Run a second batch with `Stop on first failure` disabled and confirm aggregated partial-failure reporting.
+
+For reliability diagnostics:
+
+1. Refresh reliability after attach.
+2. Record at least one action in each state (`stable`, `experimental`, `unavailable`) when applicable.
+3. Capture status line and action reason codes in issue evidence.
+
+Live test classes:
+
+- `tests/SwfocTrainer.Tests/Profiles/LiveTacticalToggleWorkflowTests.cs`
+- `tests/SwfocTrainer.Tests/Profiles/LiveHeroHelperWorkflowTests.cs`

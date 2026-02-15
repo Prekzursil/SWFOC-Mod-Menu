@@ -30,6 +30,9 @@ public sealed class MainViewModel : INotifyPropertyChanged
     private readonly IHelperModService _helper;
     private readonly IProfileUpdateService _updates;
     private readonly IValueFreezeService _freezeService;
+    private readonly IActionReliabilityService _actionReliability;
+    private readonly ISelectedUnitTransactionService _selectedUnitTransactions;
+    private readonly ISpawnPresetService _spawnPresets;
     private readonly DispatcherTimer _freezeUiTimer;
 
     private string? _selectedProfileId;
@@ -45,6 +48,19 @@ public sealed class MainViewModel : INotifyPropertyChanged
     private bool _creditsFreeze;
     private int _resolvedSymbolsCount;
     private HotkeyBindingItem? _selectedHotkey;
+    private string _selectedUnitHp = string.Empty;
+    private string _selectedUnitShield = string.Empty;
+    private string _selectedUnitSpeed = string.Empty;
+    private string _selectedUnitDamageMultiplier = string.Empty;
+    private string _selectedUnitCooldownMultiplier = string.Empty;
+    private string _selectedUnitVeterancy = string.Empty;
+    private string _selectedUnitOwnerFaction = string.Empty;
+    private string _selectedEntryMarker = "AUTO";
+    private string _selectedFaction = "EMPIRE";
+    private string _spawnQuantity = "1";
+    private string _spawnDelayMs = "125";
+    private bool _spawnStopOnFailure = true;
+    private SpawnPresetViewItem? _selectedSpawnPreset;
 
     private SaveDocument? _loadedSave;
     private byte[]? _loadedSaveOriginal;
@@ -103,7 +119,10 @@ public sealed class MainViewModel : INotifyPropertyChanged
         ISaveCodec saveCodec,
         IHelperModService helper,
         IProfileUpdateService updates,
-        IValueFreezeService freezeService)
+        IValueFreezeService freezeService,
+        IActionReliabilityService actionReliability,
+        ISelectedUnitTransactionService selectedUnitTransactions,
+        ISpawnPresetService spawnPresets)
     {
         _profiles = profiles;
         _processLocator = processLocator;
@@ -115,6 +134,9 @@ public sealed class MainViewModel : INotifyPropertyChanged
         _helper = helper;
         _updates = updates;
         _freezeService = freezeService;
+        _actionReliability = actionReliability;
+        _selectedUnitTransactions = selectedUnitTransactions;
+        _spawnPresets = spawnPresets;
 
         Profiles = new ObservableCollection<string>();
         Actions = new ObservableCollection<string>();
@@ -124,6 +146,10 @@ public sealed class MainViewModel : INotifyPropertyChanged
         Hotkeys = new ObservableCollection<HotkeyBindingItem>();
         SaveFields = new ObservableCollection<SaveFieldViewItem>();
         FilteredSaveFields = new ObservableCollection<SaveFieldViewItem>();
+        ActionReliability = new ObservableCollection<ActionReliabilityViewItem>();
+        SelectedUnitTransactions = new ObservableCollection<SelectedUnitTransactionViewItem>();
+        SpawnPresets = new ObservableCollection<SpawnPresetViewItem>();
+        LiveOpsDiagnostics = new ObservableCollection<string>();
 
         LoadProfilesCommand = new AsyncCommand(LoadProfilesAsync);
         AttachCommand = new AsyncCommand(AttachAsync, () => !string.IsNullOrWhiteSpace(SelectedProfileId));
@@ -145,6 +171,13 @@ public sealed class MainViewModel : INotifyPropertyChanged
         SaveHotkeysCommand = new AsyncCommand(SaveHotkeysAsync);
         AddHotkeyCommand = new AsyncCommand(AddHotkeyAsync);
         RemoveHotkeyCommand = new AsyncCommand(RemoveHotkeyAsync, () => SelectedHotkey is not null);
+        RefreshActionReliabilityCommand = new AsyncCommand(RefreshActionReliabilityAsync, () => _runtime.IsAttached && !string.IsNullOrWhiteSpace(SelectedProfileId));
+        CaptureSelectedUnitBaselineCommand = new AsyncCommand(CaptureSelectedUnitBaselineAsync, () => _runtime.IsAttached);
+        ApplySelectedUnitDraftCommand = new AsyncCommand(ApplySelectedUnitDraftAsync, () => _runtime.IsAttached);
+        RevertSelectedUnitTransactionCommand = new AsyncCommand(RevertSelectedUnitTransactionAsync, () => _runtime.IsAttached);
+        RestoreSelectedUnitBaselineCommand = new AsyncCommand(RestoreSelectedUnitBaselineAsync, () => _runtime.IsAttached);
+        LoadSpawnPresetsCommand = new AsyncCommand(LoadSpawnPresetsAsync, () => !string.IsNullOrWhiteSpace(SelectedProfileId));
+        RunSpawnBatchCommand = new AsyncCommand(RunSpawnBatchAsync, () => _runtime.IsAttached && SelectedSpawnPreset is not null && !string.IsNullOrWhiteSpace(SelectedProfileId));
 
         // Quick-action commands (one-click trainer buttons)
         QuickSetCreditsCommand = new AsyncCommand(QuickSetCreditsAsync, () => _runtime.IsAttached);
@@ -182,6 +215,14 @@ public sealed class MainViewModel : INotifyPropertyChanged
     public ObservableCollection<SaveFieldViewItem> SaveFields { get; }
 
     public ObservableCollection<SaveFieldViewItem> FilteredSaveFields { get; }
+
+    public ObservableCollection<ActionReliabilityViewItem> ActionReliability { get; }
+
+    public ObservableCollection<SelectedUnitTransactionViewItem> SelectedUnitTransactions { get; }
+
+    public ObservableCollection<SpawnPresetViewItem> SpawnPresets { get; }
+
+    public ObservableCollection<string> LiveOpsDiagnostics { get; }
 
     public string? SelectedProfileId
     {
@@ -269,6 +310,90 @@ public sealed class MainViewModel : INotifyPropertyChanged
         set => SetField(ref _selectedHotkey, value);
     }
 
+    public SpawnPresetViewItem? SelectedSpawnPreset
+    {
+        get => _selectedSpawnPreset;
+        set
+        {
+            if (SetField(ref _selectedSpawnPreset, value))
+            {
+                CommandManager.InvalidateRequerySuggested();
+            }
+        }
+    }
+
+    public string SelectedUnitHp
+    {
+        get => _selectedUnitHp;
+        set => SetField(ref _selectedUnitHp, value);
+    }
+
+    public string SelectedUnitShield
+    {
+        get => _selectedUnitShield;
+        set => SetField(ref _selectedUnitShield, value);
+    }
+
+    public string SelectedUnitSpeed
+    {
+        get => _selectedUnitSpeed;
+        set => SetField(ref _selectedUnitSpeed, value);
+    }
+
+    public string SelectedUnitDamageMultiplier
+    {
+        get => _selectedUnitDamageMultiplier;
+        set => SetField(ref _selectedUnitDamageMultiplier, value);
+    }
+
+    public string SelectedUnitCooldownMultiplier
+    {
+        get => _selectedUnitCooldownMultiplier;
+        set => SetField(ref _selectedUnitCooldownMultiplier, value);
+    }
+
+    public string SelectedUnitVeterancy
+    {
+        get => _selectedUnitVeterancy;
+        set => SetField(ref _selectedUnitVeterancy, value);
+    }
+
+    public string SelectedUnitOwnerFaction
+    {
+        get => _selectedUnitOwnerFaction;
+        set => SetField(ref _selectedUnitOwnerFaction, value);
+    }
+
+    public string SpawnQuantity
+    {
+        get => _spawnQuantity;
+        set => SetField(ref _spawnQuantity, value);
+    }
+
+    public string SpawnDelayMs
+    {
+        get => _spawnDelayMs;
+        set => SetField(ref _spawnDelayMs, value);
+    }
+
+    public string SelectedFaction
+    {
+        get => _selectedFaction;
+        set => SetField(ref _selectedFaction, value);
+    }
+
+    public string SelectedEntryMarker
+    {
+        get => _selectedEntryMarker;
+        set => SetField(ref _selectedEntryMarker, value);
+    }
+
+    public bool SpawnStopOnFailure
+    {
+        get => _spawnStopOnFailure;
+        set => SetField(ref _spawnStopOnFailure, value);
+    }
+
     public ICommand LoadProfilesCommand { get; }
 
     public ICommand AttachCommand { get; }
@@ -308,6 +433,20 @@ public sealed class MainViewModel : INotifyPropertyChanged
     public ICommand AddHotkeyCommand { get; }
 
     public ICommand RemoveHotkeyCommand { get; }
+
+    public ICommand RefreshActionReliabilityCommand { get; }
+
+    public ICommand CaptureSelectedUnitBaselineCommand { get; }
+
+    public ICommand ApplySelectedUnitDraftCommand { get; }
+
+    public ICommand RevertSelectedUnitTransactionCommand { get; }
+
+    public ICommand RestoreSelectedUnitBaselineCommand { get; }
+
+    public ICommand LoadSpawnPresetsCommand { get; }
+
+    public ICommand RunSpawnBatchCommand { get; }
 
     public string CreditsValue
     {
@@ -357,6 +496,7 @@ public sealed class MainViewModel : INotifyPropertyChanged
         if (!string.IsNullOrWhiteSpace(SelectedProfileId))
         {
             await LoadActionsAsync();
+            await LoadSpawnPresetsAsync();
         }
     }
 
@@ -468,6 +608,9 @@ public sealed class MainViewModel : INotifyPropertyChanged
             // Loading actions is profile-driven and doesn't require a process attach, but
             // doing it here avoids a common "Action is empty" confusion.
             await LoadActionsAsync();
+            await LoadSpawnPresetsAsync();
+            RefreshLiveOpsDiagnostics();
+            await RefreshActionReliabilityAsync();
         }
         catch (Exception ex)
         {
@@ -655,6 +798,9 @@ public sealed class MainViewModel : INotifyPropertyChanged
     {
         _orchestrator.UnfreezeAll();
         await _runtime.DetachAsync();
+        ActionReliability.Clear();
+        SelectedUnitTransactions.Clear();
+        LiveOpsDiagnostics.Clear();
         Status = "Detached";
     }
 
@@ -685,6 +831,11 @@ public sealed class MainViewModel : INotifyPropertyChanged
         Status = filteredOut > 0
             ? $"Loaded {Actions.Count} actions ({filteredOut} hidden: unresolved symbols)"
             : $"Loaded {Actions.Count} actions";
+
+        if (_runtime.IsAttached)
+        {
+            await RefreshActionReliabilityAsync();
+        }
     }
 
     private async Task ExecuteActionAsync()
@@ -707,7 +858,12 @@ public sealed class MainViewModel : INotifyPropertyChanged
                 return;
             }
 
-            var result = await _orchestrator.ExecuteAsync(SelectedProfileId, SelectedActionId, payloadNode, RuntimeMode);
+            var result = await _orchestrator.ExecuteAsync(
+                SelectedProfileId,
+                SelectedActionId,
+                payloadNode,
+                RuntimeMode,
+                BuildActionContext(SelectedActionId));
             Status = result.Succeeded ? $"Action succeeded: {result.Message}" : $"Action failed: {result.Message}";
         }
         catch (Exception ex)
@@ -1023,6 +1179,347 @@ public sealed class MainViewModel : INotifyPropertyChanged
         return input;
     }
 
+    private async Task RefreshActionReliabilityAsync()
+    {
+        ActionReliability.Clear();
+        if (SelectedProfileId is null || _runtime.CurrentSession is null)
+        {
+            return;
+        }
+
+        RefreshLiveOpsDiagnostics();
+
+        var profile = await _profiles.ResolveInheritedProfileAsync(SelectedProfileId);
+        IReadOnlyDictionary<string, IReadOnlyList<string>>? catalog = null;
+        try
+        {
+            catalog = await _catalog.LoadCatalogAsync(SelectedProfileId);
+        }
+        catch
+        {
+            // Catalog is optional for reliability scoring.
+        }
+
+        var reliability = _actionReliability.Evaluate(profile, _runtime.CurrentSession, catalog);
+        foreach (var item in reliability)
+        {
+            ActionReliability.Add(new ActionReliabilityViewItem(
+                item.ActionId,
+                item.State.ToString().ToLowerInvariant(),
+                item.ReasonCode,
+                item.Confidence,
+                item.Detail ?? string.Empty));
+        }
+    }
+
+    private void RefreshLiveOpsDiagnostics()
+    {
+        LiveOpsDiagnostics.Clear();
+        var session = _runtime.CurrentSession;
+        if (session is null)
+        {
+            return;
+        }
+
+        LiveOpsDiagnostics.Add($"mode: {session.Process.Mode}");
+        LiveOpsDiagnostics.Add($"launch: {session.Process.LaunchContext?.LaunchKind ?? LaunchKind.Unknown}");
+        LiveOpsDiagnostics.Add($"recommendation: {session.Process.LaunchContext?.Recommendation.ProfileId ?? "none"}");
+
+        if (session.Process.Metadata is not null &&
+            session.Process.Metadata.TryGetValue("dependencyValidation", out var dependency))
+        {
+            var dependencyMessage = session.Process.Metadata.TryGetValue("dependencyValidationMessage", out var rawMessage)
+                ? rawMessage
+                : string.Empty;
+            LiveOpsDiagnostics.Add(string.IsNullOrWhiteSpace(dependencyMessage)
+                ? $"dependency: {dependency}"
+                : $"dependency: {dependency} ({dependencyMessage})");
+        }
+
+        var healthy = session.Symbols.Symbols.Values.Count(x => x.HealthStatus == SymbolHealthStatus.Healthy);
+        var degraded = session.Symbols.Symbols.Values.Count(x => x.HealthStatus == SymbolHealthStatus.Degraded);
+        var unresolved = session.Symbols.Symbols.Values.Count(x => x.HealthStatus == SymbolHealthStatus.Unresolved || x.Address == nint.Zero);
+        LiveOpsDiagnostics.Add($"symbols: healthy={healthy}, degraded={degraded}, unresolved={unresolved}");
+    }
+
+    private async Task CaptureSelectedUnitBaselineAsync()
+    {
+        if (!_runtime.IsAttached)
+        {
+            Status = "✗ Not attached to game.";
+            return;
+        }
+
+        try
+        {
+            var snapshot = await _selectedUnitTransactions.CaptureAsync();
+            ApplyDraftFromSnapshot(snapshot);
+            RefreshSelectedUnitTransactions();
+            Status = $"Selected-unit baseline captured at {snapshot.CapturedAt:HH:mm:ss} UTC.";
+        }
+        catch (Exception ex)
+        {
+            Status = $"✗ Capture selected-unit baseline failed: {ex.Message}";
+        }
+    }
+
+    private async Task ApplySelectedUnitDraftAsync()
+    {
+        if (SelectedProfileId is null)
+        {
+            return;
+        }
+
+        var draftResult = BuildSelectedUnitDraft();
+        if (!draftResult.Succeeded)
+        {
+            Status = $"✗ {draftResult.Message}";
+            return;
+        }
+
+        var result = await _selectedUnitTransactions.ApplyAsync(SelectedProfileId, draftResult.Draft!, RuntimeMode);
+        RefreshSelectedUnitTransactions();
+        if (result.Succeeded)
+        {
+            var latest = await _selectedUnitTransactions.CaptureAsync();
+            ApplyDraftFromSnapshot(latest);
+        }
+
+        Status = result.Succeeded
+            ? $"✓ Selected-unit transaction applied ({result.TransactionId})."
+            : $"✗ Selected-unit apply failed: {result.Message}";
+    }
+
+    private async Task RevertSelectedUnitTransactionAsync()
+    {
+        if (SelectedProfileId is null)
+        {
+            return;
+        }
+
+        var result = await _selectedUnitTransactions.RevertLastAsync(SelectedProfileId, RuntimeMode);
+        RefreshSelectedUnitTransactions();
+        if (result.Succeeded)
+        {
+            var latest = await _selectedUnitTransactions.CaptureAsync();
+            ApplyDraftFromSnapshot(latest);
+        }
+
+        Status = result.Succeeded
+            ? $"✓ Reverted selected-unit transaction ({result.TransactionId})."
+            : $"✗ Revert failed: {result.Message}";
+    }
+
+    private async Task RestoreSelectedUnitBaselineAsync()
+    {
+        if (SelectedProfileId is null)
+        {
+            return;
+        }
+
+        var result = await _selectedUnitTransactions.RestoreBaselineAsync(SelectedProfileId, RuntimeMode);
+        RefreshSelectedUnitTransactions();
+        if (result.Succeeded)
+        {
+            var latest = await _selectedUnitTransactions.CaptureAsync();
+            ApplyDraftFromSnapshot(latest);
+        }
+
+        Status = result.Succeeded
+            ? $"✓ Selected-unit baseline restored ({result.TransactionId})."
+            : $"✗ Baseline restore failed: {result.Message}";
+    }
+
+    private async Task LoadSpawnPresetsAsync()
+    {
+        if (SelectedProfileId is null)
+        {
+            return;
+        }
+
+        SpawnPresets.Clear();
+        var presets = await _spawnPresets.LoadPresetsAsync(SelectedProfileId);
+        foreach (var preset in presets)
+        {
+            SpawnPresets.Add(new SpawnPresetViewItem(
+                preset.Id,
+                preset.Name,
+                preset.UnitId,
+                preset.Faction,
+                preset.EntryMarker,
+                preset.DefaultQuantity,
+                preset.DefaultDelayMs,
+                preset.Description ?? string.Empty));
+        }
+
+        SelectedSpawnPreset = SpawnPresets.FirstOrDefault();
+        Status = $"Loaded {SpawnPresets.Count} spawn preset(s).";
+    }
+
+    private async Task RunSpawnBatchAsync()
+    {
+        if (SelectedProfileId is null || SelectedSpawnPreset is null)
+        {
+            return;
+        }
+
+        if (RuntimeMode == RuntimeMode.Unknown)
+        {
+            Status = "✗ Spawn batch blocked: runtime mode is unknown.";
+            return;
+        }
+
+        if (!int.TryParse(SpawnQuantity, out var quantity) || quantity <= 0)
+        {
+            Status = "✗ Invalid spawn quantity.";
+            return;
+        }
+
+        if (!int.TryParse(SpawnDelayMs, out var delayMs) || delayMs < 0)
+        {
+            Status = "✗ Invalid spawn delay (ms).";
+            return;
+        }
+
+        var preset = SelectedSpawnPreset.ToCorePreset();
+        var plan = _spawnPresets.BuildBatchPlan(
+            SelectedProfileId,
+            preset,
+            quantity,
+            delayMs,
+            SelectedFaction,
+            SelectedEntryMarker,
+            SpawnStopOnFailure);
+
+        var result = await _spawnPresets.ExecuteBatchAsync(SelectedProfileId, plan, RuntimeMode);
+        Status = result.Succeeded
+            ? $"✓ {result.Message}"
+            : $"✗ {result.Message}";
+    }
+
+    private void ApplyDraftFromSnapshot(SelectedUnitSnapshot snapshot)
+    {
+        SelectedUnitHp = snapshot.Hp.ToString("0.###");
+        SelectedUnitShield = snapshot.Shield.ToString("0.###");
+        SelectedUnitSpeed = snapshot.Speed.ToString("0.###");
+        SelectedUnitDamageMultiplier = snapshot.DamageMultiplier.ToString("0.###");
+        SelectedUnitCooldownMultiplier = snapshot.CooldownMultiplier.ToString("0.###");
+        SelectedUnitVeterancy = snapshot.Veterancy.ToString();
+        SelectedUnitOwnerFaction = snapshot.OwnerFaction.ToString();
+    }
+
+    private void RefreshSelectedUnitTransactions()
+    {
+        SelectedUnitTransactions.Clear();
+        foreach (var item in _selectedUnitTransactions.History.OrderByDescending(x => x.Timestamp))
+        {
+            SelectedUnitTransactions.Add(new SelectedUnitTransactionViewItem(
+                item.TransactionId,
+                item.Timestamp,
+                item.IsRollback,
+                item.Message,
+                string.Join(",", item.AppliedActions)));
+        }
+    }
+
+    private DraftBuildResult BuildSelectedUnitDraft()
+    {
+        if (!TryParseOptionalFloat(SelectedUnitHp, out var hp))
+        {
+            return DraftBuildResult.Failed("HP must be a number.");
+        }
+
+        if (!TryParseOptionalFloat(SelectedUnitShield, out var shield))
+        {
+            return DraftBuildResult.Failed("Shield must be a number.");
+        }
+
+        if (!TryParseOptionalFloat(SelectedUnitSpeed, out var speed))
+        {
+            return DraftBuildResult.Failed("Speed must be a number.");
+        }
+
+        if (!TryParseOptionalFloat(SelectedUnitDamageMultiplier, out var damage))
+        {
+            return DraftBuildResult.Failed("Damage multiplier must be a number.");
+        }
+
+        if (!TryParseOptionalFloat(SelectedUnitCooldownMultiplier, out var cooldown))
+        {
+            return DraftBuildResult.Failed("Cooldown multiplier must be a number.");
+        }
+
+        if (!TryParseOptionalInt(SelectedUnitVeterancy, out var veterancy))
+        {
+            return DraftBuildResult.Failed("Veterancy must be an integer.");
+        }
+
+        if (!TryParseOptionalInt(SelectedUnitOwnerFaction, out var ownerFaction))
+        {
+            return DraftBuildResult.Failed("Owner faction must be an integer.");
+        }
+
+        var draft = new SelectedUnitDraft(
+            Hp: hp,
+            Shield: shield,
+            Speed: speed,
+            DamageMultiplier: damage,
+            CooldownMultiplier: cooldown,
+            Veterancy: veterancy,
+            OwnerFaction: ownerFaction);
+
+        return draft.IsEmpty
+            ? DraftBuildResult.Failed("No selected-unit values entered.")
+            : DraftBuildResult.FromDraft(draft);
+    }
+
+    private static bool TryParseOptionalFloat(string input, out float? value)
+    {
+        if (string.IsNullOrWhiteSpace(input))
+        {
+            value = null;
+            return true;
+        }
+
+        if (float.TryParse(input, out var parsed))
+        {
+            value = parsed;
+            return true;
+        }
+
+        value = null;
+        return false;
+    }
+
+    private static bool TryParseOptionalInt(string input, out int? value)
+    {
+        if (string.IsNullOrWhiteSpace(input))
+        {
+            value = null;
+            return true;
+        }
+
+        if (int.TryParse(input, out var parsed))
+        {
+            value = parsed;
+            return true;
+        }
+
+        value = null;
+        return false;
+    }
+
+    private IReadOnlyDictionary<string, object?> BuildActionContext(string actionId)
+    {
+        var reliability = ActionReliability.FirstOrDefault(x => x.ActionId.Equals(actionId, StringComparison.OrdinalIgnoreCase));
+        return new Dictionary<string, object?>
+        {
+            ["reliabilityState"] = reliability?.State ?? "unknown",
+            ["reliabilityReasonCode"] = reliability?.ReasonCode ?? "unknown",
+            ["bundleGateResult"] = reliability is null ? "unknown" : reliability.State == "unavailable" ? "blocked" : "bundle_pass"
+        };
+    }
+
     // ── Quick-Action Methods ──────────────────────────────────────────────
 
     /// <summary>Toggle tracking to know which bool/toggle cheats are currently "on".</summary>
@@ -1033,7 +1530,12 @@ public sealed class MainViewModel : INotifyPropertyChanged
         if (!_runtime.IsAttached || string.IsNullOrWhiteSpace(SelectedProfileId)) return;
         try
         {
-            var result = await _orchestrator.ExecuteAsync(SelectedProfileId, actionId, payload, RuntimeMode);
+            var result = await _orchestrator.ExecuteAsync(
+                SelectedProfileId,
+                actionId,
+                payload,
+                RuntimeMode,
+                BuildActionContext(actionId));
             if (toggleKey is not null && result.Succeeded)
             {
                 if (_activeToggles.Contains(toggleKey))
@@ -1082,7 +1584,12 @@ public sealed class MainViewModel : INotifyPropertyChanged
 
         try
         {
-            var result = await _orchestrator.ExecuteAsync(SelectedProfileId, "set_credits", payload, RuntimeMode);
+            var result = await _orchestrator.ExecuteAsync(
+                SelectedProfileId,
+                "set_credits",
+                payload,
+                RuntimeMode,
+                BuildActionContext("set_credits"));
 
             if (!result.Succeeded)
             {
@@ -1308,7 +1815,12 @@ public sealed class MainViewModel : INotifyPropertyChanged
             payloadNode = BuildDefaultHotkeyPayload(binding.ActionId);
         }
 
-        var result = await _orchestrator.ExecuteAsync(SelectedProfileId, binding.ActionId, payloadNode, RuntimeMode);
+        var result = await _orchestrator.ExecuteAsync(
+            SelectedProfileId,
+            binding.ActionId,
+            payloadNode,
+            RuntimeMode,
+            BuildActionContext(binding.ActionId));
         Status = result.Succeeded
             ? $"Hotkey {gesture}: {binding.ActionId} succeeded"
             : $"Hotkey {gesture}: {binding.ActionId} failed ({result.Message})";
@@ -1330,6 +1842,13 @@ public sealed class MainViewModel : INotifyPropertyChanged
             "unfreeze_symbol" => new JsonObject { ["symbol"] = "credits", ["freeze"] = false },
             _ => new JsonObject()
         };
+    }
+
+    private sealed record DraftBuildResult(bool Succeeded, string Message, SelectedUnitDraft? Draft)
+    {
+        public static DraftBuildResult Failed(string message) => new(false, message, null);
+
+        public static DraftBuildResult FromDraft(SelectedUnitDraft draft) => new(true, "ok", draft);
     }
 
     public event PropertyChangedEventHandler? PropertyChanged;

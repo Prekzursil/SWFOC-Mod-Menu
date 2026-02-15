@@ -1,0 +1,35 @@
+{
+  "schemaVersion": "1.0",
+  "presets": [
+    {
+      "id": "roe_cis_b1_front",
+      "name": "ROE CIS B1 Frontline",
+      "unitId": "CIS_B1_BATTLE_DROID",
+      "faction": "HOSTILE",
+      "entryMarker": "AUTO",
+      "defaultQuantity": 8,
+      "defaultDelayMs": 75,
+      "description": "Massed droid frontline wave"
+    },
+    {
+      "id": "roe_cis_hailfire_strike",
+      "name": "ROE Hailfire Strike",
+      "unitId": "CIS_HAILFIRE_TANK",
+      "faction": "HOSTILE",
+      "entryMarker": "AUTO",
+      "defaultQuantity": 3,
+      "defaultDelayMs": 140,
+      "description": "Mobile anti-armor strike team"
+    },
+    {
+      "id": "roe_cis_vulture_cover",
+      "name": "ROE Vulture Cover",
+      "unitId": "CIS_VULTURE_DROID",
+      "faction": "HOSTILE",
+      "entryMarker": "AUTO",
+      "defaultQuantity": 6,
+      "defaultDelayMs": 100,
+      "description": "Fast-response aerospace cover"
+    }
+  ]
+}

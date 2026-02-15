@@ -34,6 +34,7 @@ public sealed class TrainerOrchestrator
         string actionId,
         System.Text.Json.Nodes.JsonObject payload,
         RuntimeMode runtimeMode,
+        IReadOnlyDictionary<string, object?>? context = null,
         CancellationToken cancellationToken = default)
     {
         var profile = await _profiles.ResolveInheritedProfileAsync(profileId, cancellationToken);
@@ -65,8 +66,14 @@ public sealed class TrainerOrchestrator
         }
         else
         {
-            var request = new ActionExecutionRequest(action, payload, profileId, runtimeMode);
+            var request = new ActionExecutionRequest(action, payload, profileId, runtimeMode, context);
             result = await _runtime.ExecuteAsync(request, cancellationToken);
+        }
+
+        var mergedDiagnostics = MergeDiagnostics(result.Diagnostics, context);
+        if (!ReferenceEquals(mergedDiagnostics, result.Diagnostics))
+        {
+            result = result with { Diagnostics = mergedDiagnostics };
         }
 
         if (_runtime.CurrentSession is not null)
@@ -80,7 +87,7 @@ public sealed class TrainerOrchestrator
                     result.AddressSource,
                     result.Succeeded,
                     result.Message,
-                    result.Diagnostics),
+                    mergedDiagnostics),
                 cancellationToken);
         }
 
@@ -140,5 +147,35 @@ public sealed class TrainerOrchestrator
         return new ActionExecutionResult(false,
             "Freeze action requires one of: intValue, floatValue, or boolValue when freeze=true.",
             AddressSource.None);
+    }
+
+    private static IReadOnlyDictionary<string, object?>? MergeDiagnostics(
+        IReadOnlyDictionary<string, object?>? diagnostics,
+        IReadOnlyDictionary<string, object?>? context)
+    {
+        if ((diagnostics is null || diagnostics.Count == 0) &&
+            (context is null || context.Count == 0))
+        {
+            return diagnostics;
+        }
+
+        var merged = new Dictionary<string, object?>(StringComparer.OrdinalIgnoreCase);
+        if (diagnostics is not null)
+        {
+            foreach (var kv in diagnostics)
+            {
+                merged[kv.Key] = kv.Value;
+            }
+        }
+
+        if (context is not null)
+        {
+            foreach (var kv in context)
+            {
+                merged[kv.Key] = kv.Value;
+            }
+        }
+
+        return merged;
     }
 }

@@ -29,15 +29,27 @@ Rule for completion: every `[x]` item includes evidence as one of:
 - [x] Keep launch-context parity and dependency validation suites green.
   evidence: test `tests/SwfocTrainer.Tests/Runtime/LaunchContextResolverTests.cs`
 - [x] Deterministic test suite passes with live/process tests excluded.
-  evidence: manual `2026-02-15` `dotnet test ... --filter \"FullyQualifiedName!~SwfocTrainer.Tests.Profiles.Live&FullyQualifiedName!~RuntimeAttachSmokeTests\"` passed 51 tests
+  evidence: manual `2026-02-15` `dotnet test ... --filter \"FullyQualifiedName!~SwfocTrainer.Tests.Profiles.Live&FullyQualifiedName!~RuntimeAttachSmokeTests\"` passed 67 tests
 
 ## Next (M1: Live Action Command Surface)
 
-- [ ] Validate spawn presets + batch operations across `base_swfoc`, `aotr`, and `roe`.
-- [ ] Add selected-unit apply/revert transaction path and verify rollback behavior.
-- [ ] Enforce tactical/campaign mode-aware gating for high-impact action bundles.
-- [ ] Publish action reliability flags (`stable`, `experimental`, `unavailable`) in UI diagnostics.
-- [ ] Add live smoke coverage for tactical toggles and hero-state helper workflows.
+- [x] Validate spawn presets + batch operations across `base_swfoc`, `aotr`, and `roe`.
+  evidence: test `tests/SwfocTrainer.Tests/Core/SpawnPresetServiceTests.cs`
+- [x] Add selected-unit apply/revert transaction path and verify rollback behavior.
+  evidence: test `tests/SwfocTrainer.Tests/Core/SelectedUnitTransactionServiceTests.cs`
+- [x] Enforce tactical/campaign mode-aware gating for high-impact action bundles.
+  evidence: code `src/SwfocTrainer.Core/Services/SelectedUnitTransactionService.cs`
+- [x] Publish action reliability flags (`stable`, `experimental`, `unavailable`) in UI diagnostics.
+  evidence: test `tests/SwfocTrainer.Tests/Core/ActionReliabilityServiceTests.cs`
+- [x] Add live smoke coverage for tactical toggles and hero-state helper workflows.
+  evidence: test `tests/SwfocTrainer.Tests/Profiles/LiveTacticalToggleWorkflowTests.cs`
+  evidence: test `tests/SwfocTrainer.Tests/Profiles/LiveHeroHelperWorkflowTests.cs`
+  evidence: manual `2026-02-15` `dotnet test tests/SwfocTrainer.Tests/SwfocTrainer.Tests.csproj -c Release --no-build` passed 69 tests, skipped 4 live-gated tests
+- [ ] Execute live-machine M1 validation run and attach evidence to issues `#34` and `#19`.
+- [x] Close/reconcile M0 carryover issues (`#15`, `#16`, `#17`, `#18`) with evidence comments.
+  evidence: issue `https://github.com/Prekzursil/SWFOC-Mod-Menu/issues/15`
+- [x] Track plan archive under `(new)codex(plans)/` with explicit contributor convention.
+  evidence: doc `(new)codex(plans)/README.md`
 
 ## Later (M2 + M3 + M4)
 

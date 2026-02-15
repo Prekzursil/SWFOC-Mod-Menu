@@ -126,6 +126,147 @@
                 </Grid>
             </TabItem>
 
+            <TabItem Header="Live Ops">
+                <Grid Margin="12">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="2*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+
+                    <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
+                        <Button Content="Refresh Reliability" Command="{Binding RefreshActionReliabilityCommand}"/>
+                        <Button Content="Load Spawn Presets" Command="{Binding LoadSpawnPresetsCommand}" Margin="8,0,0,0"/>
+                        <Button Content="Capture Unit Baseline" Command="{Binding CaptureSelectedUnitBaselineCommand}" Margin="8,0,0,0"/>
+                    </StackPanel>
+
+                    <Grid Grid.Row="1" Grid.Column="0" Margin="0,0,10,0">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+
+                        <GroupBox Header="Selected Unit Transaction Lab" Margin="0,0,0,10">
+                            <Grid Margin="8">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                </Grid.RowDefinitions>
+
+                                <TextBlock Text="Hull HP" VerticalAlignment="Center" Margin="0,0,8,6"/>
+                                <TextBox Grid.Column="1" Text="{Binding SelectedUnitHp}" Margin="0,0,8,6"/>
+                                <TextBlock Grid.Column="2" Text="Shield" VerticalAlignment="Center" Margin="0,0,8,6"/>
+                                <TextBox Grid.Column="3" Text="{Binding SelectedUnitShield}" Margin="0,0,0,6"/>
+
+                                <TextBlock Grid.Row="1" Text="Speed" VerticalAlignment="Center" Margin="0,0,8,6"/>
+                                <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding SelectedUnitSpeed}" Margin="0,0,8,6"/>
+                                <TextBlock Grid.Row="1" Grid.Column="2" Text="Damage x" VerticalAlignment="Center" Margin="0,0,8,6"/>
+                                <TextBox Grid.Row="1" Grid.Column="3" Text="{Binding SelectedUnitDamageMultiplier}" Margin="0,0,0,6"/>
+
+                                <TextBlock Grid.Row="2" Text="Cooldown x" VerticalAlignment="Center" Margin="0,0,8,6"/>
+                                <TextBox Grid.Row="2" Grid.Column="1" Text="{Binding SelectedUnitCooldownMultiplier}" Margin="0,0,8,6"/>
+                                <TextBlock Grid.Row="2" Grid.Column="2" Text="Veterancy" VerticalAlignment="Center" Margin="0,0,8,6"/>
+                                <TextBox Grid.Row="2" Grid.Column="3" Text="{Binding SelectedUnitVeterancy}" Margin="0,0,0,6"/>
+
+                                <TextBlock Grid.Row="3" Text="Owner Faction" VerticalAlignment="Center" Margin="0,0,8,6"/>
+                                <TextBox Grid.Row="3" Grid.Column="1" Text="{Binding SelectedUnitOwnerFaction}" Margin="0,0,8,6"/>
+
+                                <StackPanel Grid.Row="4" Grid.ColumnSpan="4" Orientation="Horizontal" Margin="0,8,0,0">
+                                    <Button Content="Apply Draft" Command="{Binding ApplySelectedUnitDraftCommand}"/>
+                                    <Button Content="Revert Last" Command="{Binding RevertSelectedUnitTransactionCommand}" Margin="8,0,0,0"/>
+                                    <Button Content="Restore Baseline" Command="{Binding RestoreSelectedUnitBaselineCommand}" Margin="8,0,0,0"/>
+                                </StackPanel>
+                            </Grid>
+                        </GroupBox>
+
+                        <GroupBox Grid.Row="1" Header="Spawn Preset Studio">
+                            <Grid Margin="8">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="*"/>
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+
+                                <TextBlock Text="Preset" VerticalAlignment="Center" Margin="0,0,8,6"/>
+                                <ComboBox Grid.Column="1" Grid.ColumnSpan="3"
+                                          ItemsSource="{Binding SpawnPresets}"
+                                          SelectedItem="{Binding SelectedSpawnPreset}"
+                                          DisplayMemberPath="Name"
+                                          Margin="0,0,0,6"/>
+
+                                <TextBlock Grid.Row="1" Text="Quantity" VerticalAlignment="Center" Margin="0,0,8,6"/>
+                                <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding SpawnQuantity}" Margin="0,0,8,6"/>
+                                <TextBlock Grid.Row="1" Grid.Column="2" Text="Delay (ms)" VerticalAlignment="Center" Margin="0,0,8,6"/>
+                                <TextBox Grid.Row="1" Grid.Column="3" Text="{Binding SpawnDelayMs}" Margin="0,0,0,6"/>
+
+                                <TextBlock Grid.Row="2" Text="Faction" VerticalAlignment="Center" Margin="0,0,8,6"/>
+                                <TextBox Grid.Row="2" Grid.Column="1" Text="{Binding SelectedFaction}" Margin="0,0,8,6"/>
+                                <TextBlock Grid.Row="2" Grid.Column="2" Text="Entry Marker" VerticalAlignment="Center" Margin="0,0,8,6"/>
+                                <TextBox Grid.Row="2" Grid.Column="3" Text="{Binding SelectedEntryMarker}" Margin="0,0,0,6"/>
+
+                                <StackPanel Grid.Row="3" Grid.ColumnSpan="4" Orientation="Horizontal">
+                                    <CheckBox Content="Stop on first failure" IsChecked="{Binding SpawnStopOnFailure}" VerticalAlignment="Center"/>
+                                    <Button Content="Run Spawn Batch" Command="{Binding RunSpawnBatchCommand}" Margin="8,0,0,0"/>
+                                </StackPanel>
+                            </Grid>
+                        </GroupBox>
+                    </Grid>
+
+                    <Grid Grid.Column="1" Grid.Row="1">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+
+                        <GroupBox Header="Operational Diagnostics">
+                            <ListBox ItemsSource="{Binding LiveOpsDiagnostics}" Height="110"/>
+                        </GroupBox>
+
+                        <GroupBox Grid.Row="1" Header="Action Reliability" Margin="0,10,0,0">
+                            <DataGrid ItemsSource="{Binding ActionReliability}" AutoGenerateColumns="False" IsReadOnly="True">
+                                <DataGrid.Columns>
+                                    <DataGridTextColumn Header="Action" Binding="{Binding ActionId}" Width="2*"/>
+                                    <DataGridTextColumn Header="State" Binding="{Binding State}" Width="*"/>
+                                    <DataGridTextColumn Header="Reason" Binding="{Binding ReasonCode}" Width="2*"/>
+                                    <DataGridTextColumn Header="Confidence" Binding="{Binding Confidence}" Width="*"/>
+                                </DataGrid.Columns>
+                            </DataGrid>
+                        </GroupBox>
+
+                        <GroupBox Grid.Row="2" Header="Selected Unit Transaction History" Margin="0,10,0,0">
+                            <DataGrid ItemsSource="{Binding SelectedUnitTransactions}" AutoGenerateColumns="False" IsReadOnly="True">
+                                <DataGrid.Columns>
+                                    <DataGridTextColumn Header="Txn" Binding="{Binding TransactionId}" Width="*"/>
+                                    <DataGridTextColumn Header="Time" Binding="{Binding Timestamp}" Width="*"/>
+                                    <DataGridTextColumn Header="Rollback" Binding="{Binding IsRollback}" Width="*"/>
+                                    <DataGridTextColumn Header="Operation" Binding="{Binding Operation}" Width="*"/>
+                                </DataGrid.Columns>
+                            </DataGrid>
+                        </GroupBox>
+                    </Grid>
+                </Grid>
+            </TabItem>
+
             <TabItem Header="Save Editor">
                 <Grid Margin="12">
                     <Grid.RowDefinitions>
