@@ -23,6 +23,7 @@ Threat model boundary for this wave:
 | 22 | `cs/path-injection` | `src/SwfocTrainer.Saves/Services/BinarySaveCodec.cs` | fixed | Roundtrip temp path is canonicalized and constrained under system temp root. |
 | 23 | `cs/path-injection` | `src/SwfocTrainer.Saves/Services/BinarySaveCodec.cs` | fixed | Roundtrip temp file deletion occurs only on validated temp path. |
 | 24-29 | `cs/path-injection` | `tests/SwfocTrainer.Tests/Runtime/ModDependencyValidatorTests.cs` | dismissed | Test-only code intentionally creates temp directories/files from controlled fixtures; not shipped runtime surface. |
+| 30-32 | `cs/path-injection` | `tests/SwfocTrainer.Tests/Saves/SaveCodecTests.cs` | dismissed | Deterministic test harness creates temporary `.sav` files under temp root to validate codec behavior; not runtime user input surface. |
 | 3-13 | `py/path-injection` | `tools/*.py` | dismissed | Offline diagnostics/tooling scripts accept operator-supplied file paths by design; no privileged runtime path writes. |
 
 ## Revalidation Procedure
