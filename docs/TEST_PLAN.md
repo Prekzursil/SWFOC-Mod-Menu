@@ -62,3 +62,16 @@ Live test classes:
 
 - `tests/SwfocTrainer.Tests/Profiles/LiveTacticalToggleWorkflowTests.cs`
 - `tests/SwfocTrainer.Tests/Profiles/LiveHeroHelperWorkflowTests.cs`
+
+## Live evidence run pack
+
+Use the scripted run pack when preparing issue evidence for M1 closure:
+
+```powershell
+pwsh ./tools/run-live-validation.ps1 -Configuration Release -NoBuild
+```
+
+This writes TRX + launch context outputs and prefilled issue comment templates to
+`TestResults/`. See `docs/LIVE_VALIDATION_RUNBOOK.md`.
+If Python is unavailable in the running shell, the run pack still emits
+`launch-context-fixture.json` with a machine-readable failure status.
