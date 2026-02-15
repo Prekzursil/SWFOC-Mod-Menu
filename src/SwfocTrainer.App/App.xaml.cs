@@ -3,6 +3,7 @@ using System.Net.Http;
 using System.Windows;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using SwfocTrainer.Core.IO;
 using SwfocTrainer.App.ViewModels;
 using SwfocTrainer.Catalog.Config;
 using SwfocTrainer.Catalog.Services;
@@ -47,8 +48,7 @@ public partial class App : Application
 
     private static void ConfigureServices(IServiceCollection services)
     {
-        var appData = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "SwfocTrainer");
-        Directory.CreateDirectory(appData);
+        var appData = TrustedPathPolicy.GetOrCreateAppDataRoot();
 
         var profilesRoot = Path.Combine(AppContext.BaseDirectory, "profiles", "default");
         var remoteManifest = Environment.GetEnvironmentVariable("SWFOC_PROFILE_MANIFEST_URL");

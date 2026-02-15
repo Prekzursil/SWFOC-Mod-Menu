@@ -4,7 +4,18 @@ updates:
     directory: "/"
     schedule:
       interval: "weekly"
-    open-pull-requests-limit: 10
+    open-pull-requests-limit: 3
+    groups:
+      nuget-patch-minor:
+        patterns:
+          - "*"
+        update-types:
+          - "patch"
+          - "minor"
+    ignore:
+      - dependency-name: "*"
+        update-types:
+          - "version-update:semver-major"
     labels:
       - "type:chore"
       - "area:ci"
@@ -14,7 +25,15 @@ updates:
     directory: "/"
     schedule:
       interval: "weekly"
-    open-pull-requests-limit: 10
+    open-pull-requests-limit: 3
+    groups:
+      github-actions-grouped:
+        patterns:
+          - "*"
+    ignore:
+      - dependency-name: "*"
+        update-types:
+          - "version-update:semver-major"
     labels:
       - "type:chore"
       - "area:ci"

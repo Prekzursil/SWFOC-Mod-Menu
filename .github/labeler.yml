@@ -1,0 +1,44 @@
+area:ci:
+  - changed-files:
+      - any-glob-to-any-file:
+          - ".github/**"
+
+area:runtime:
+  - changed-files:
+      - any-glob-to-any-file:
+          - "src/SwfocTrainer.Runtime/**"
+
+area:app:
+  - changed-files:
+      - any-glob-to-any-file:
+          - "src/SwfocTrainer.App/**"
+
+area:profiles:
+  - changed-files:
+      - any-glob-to-any-file:
+          - "profiles/**"
+          - "src/SwfocTrainer.Profiles/**"
+
+area:saves:
+  - changed-files:
+      - any-glob-to-any-file:
+          - "src/SwfocTrainer.Saves/**"
+
+area:tooling:
+  - changed-files:
+      - any-glob-to-any-file:
+          - "tools/**"
+
+area:docs:
+  - changed-files:
+      - any-glob-to-any-file:
+          - "docs/**"
+          - "*.md"
+
+dependencies:
+  - head-branch:
+      - "^dependabot/.+"
+
+type:chore:
+  - head-branch:
+      - "^dependabot/.+"

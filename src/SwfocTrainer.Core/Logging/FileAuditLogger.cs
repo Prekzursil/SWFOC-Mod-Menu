@@ -1,6 +1,7 @@
 using System.Text;
 using System.Text.Json;
 using SwfocTrainer.Core.Contracts;
+using SwfocTrainer.Core.IO;
 
 namespace SwfocTrainer.Core.Logging;
 
@@ -15,10 +16,10 @@ public sealed class FileAuditLogger : IAuditLogger
 
     public FileAuditLogger(string? logDirectory = null)
     {
-        _logDirectory = logDirectory ?? Path.Combine(
-            Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
-            "SwfocTrainer",
-            "logs");
+        var appRoot = TrustedPathPolicy.GetOrCreateAppDataRoot();
+        _logDirectory = string.IsNullOrWhiteSpace(logDirectory)
+            ? TrustedPathPolicy.CombineUnderRoot(appRoot, "logs")
+            : TrustedPathPolicy.EnsureSubPath(appRoot, logDirectory);
 
         Directory.CreateDirectory(_logDirectory);
     }

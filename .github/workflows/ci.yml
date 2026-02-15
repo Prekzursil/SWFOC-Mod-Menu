@@ -11,6 +11,9 @@ on:
     branches:
       - main
 
+permissions:
+  contents: read
+
 jobs:
   build-test:
     runs-on: windows-latest
@@ -47,36 +50,53 @@ jobs:
         shell: pwsh
         run: |
           python tools/detect-launch-context.py --from-process-json tools/fixtures/launch_context_cases.json --profile-root profiles/default > launch_context_results.json
-          python - <<'PY'
-          import json
-          with open("launch_context_results.json","r",encoding="utf-8") as f:
-              data = json.load(f)
-          expected = {
-              "roe-steammod": ("roe_3447786229_swfoc", "steammod_exact_roe"),
-              "aotr-steammod": ("aotr_1397421866_swfoc", "steammod_exact_aotr"),
-              "roe-modpath": ("roe_3447786229_swfoc", "modpath_hint_roe"),
-              "aotr-modpath": ("aotr_1397421866_swfoc", "modpath_hint_aotr"),
-              "sweaw-base": ("base_sweaw", "exe_target_sweaw"),
-              "starwarsg-no-cmd": ("base_swfoc", "foc_safe_starwarsg_fallback"),
+          if (!(Test-Path -Path launch_context_results.json)) {
+            throw "launch-context smoke failed. launch_context_results.json was not generated."
           }
-          seen = {}
-          for entry in data.get("results", []):
-              name = (entry.get("input") or {}).get("name")
-              rec = entry.get("profileRecommendation") or {}
-              if name:
-                  seen[name] = (rec.get("profileId"), rec.get("reasonCode"))
-          missing = []
-          mismatched = []
-          for name, value in expected.items():
-              if name not in seen:
-                  missing.append(name)
-                  continue
-              if seen[name] != value:
-                  mismatched.append((name, value, seen[name]))
-          if missing or mismatched:
-              raise SystemExit(f"launch-context smoke failed. missing={missing} mismatched={mismatched}")
-          print("launch-context smoke passed")
-          PY
+
+          $data = Get-Content -Raw -Path launch_context_results.json | ConvertFrom-Json
+          $expected = @{
+            "roe-steammod"     = @{ profileId = "roe_3447786229_swfoc"; reasonCode = "steammod_exact_roe" }
+            "aotr-steammod"    = @{ profileId = "aotr_1397421866_swfoc"; reasonCode = "steammod_exact_aotr" }
+            "roe-modpath"      = @{ profileId = "roe_3447786229_swfoc"; reasonCode = "modpath_hint_roe" }
+            "aotr-modpath"     = @{ profileId = "aotr_1397421866_swfoc"; reasonCode = "modpath_hint_aotr" }
+            "sweaw-base"       = @{ profileId = "base_sweaw"; reasonCode = "exe_target_sweaw" }
+            "starwarsg-no-cmd" = @{ profileId = "base_swfoc"; reasonCode = "foc_safe_starwarsg_fallback" }
+          }
+
+          $seen = @{}
+          foreach ($entry in ($data.results | Where-Object { $_ -ne $null })) {
+            $name = $entry.input.name
+            if ([string]::IsNullOrWhiteSpace($name)) {
+              continue
+            }
+
+            $seen[$name] = @{
+              profileId = $entry.profileRecommendation.profileId
+              reasonCode = $entry.profileRecommendation.reasonCode
+            }
+          }
+
+          $missing = New-Object System.Collections.Generic.List[string]
+          $mismatched = New-Object System.Collections.Generic.List[string]
+          foreach ($name in $expected.Keys) {
+            if (-not $seen.ContainsKey($name)) {
+              [void]$missing.Add($name)
+              continue
+            }
+
+            $want = $expected[$name]
+            $actual = $seen[$name]
+            if ($actual.profileId -ne $want.profileId -or $actual.reasonCode -ne $want.reasonCode) {
+              [void]$mismatched.Add("$name expected=$($want.profileId):$($want.reasonCode) actual=$($actual.profileId):$($actual.reasonCode)")
+            }
+          }
+
+          if ($missing.Count -gt 0 -or $mismatched.Count -gt 0) {
+            throw "launch-context smoke failed. missing=[$(($missing -join ', '))] mismatched=[$(($mismatched -join '; '))]"
+          }
+
+          Write-Host "launch-context smoke passed"
 
       - name: Upload Test Results
         if: always()

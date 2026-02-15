@@ -2,6 +2,7 @@ using System.Buffers.Binary;
 using System.Globalization;
 using Microsoft.Extensions.Logging;
 using SwfocTrainer.Core.Contracts;
+using SwfocTrainer.Core.IO;
 using SwfocTrainer.Core.Models;
 using SwfocTrainer.Saves.Checksum;
 using SwfocTrainer.Saves.Config;
@@ -11,6 +12,7 @@ namespace SwfocTrainer.Saves.Services;
 
 public sealed class BinarySaveCodec : ISaveCodec
 {
+    private static readonly string[] AllowedSaveExtensions = [".sav"];
     private readonly SaveSchemaRepository _schemaRepository;
     private readonly ILogger<BinarySaveCodec> _logger;
 
@@ -22,10 +24,11 @@ public sealed class BinarySaveCodec : ISaveCodec
 
     public async Task<SaveDocument> LoadAsync(string path, string schemaId, CancellationToken cancellationToken = default)
     {
+        var normalizedPath = NormalizeSaveFilePath(path, requireExistingFile: true);
         var schema = await _schemaRepository.LoadSchemaAsync(schemaId, cancellationToken);
-        var bytes = await File.ReadAllBytesAsync(path, cancellationToken);
+        var bytes = await File.ReadAllBytesAsync(normalizedPath, cancellationToken);
         var root = BuildNodeTree(schema, bytes);
-        return new SaveDocument(path, schemaId, bytes, root);
+        return new SaveDocument(normalizedPath, schemaId, bytes, root);
     }
 
     public async Task EditAsync(SaveDocument document, string nodePath, object? value, CancellationToken cancellationToken = default)
@@ -89,14 +92,26 @@ public sealed class BinarySaveCodec : ISaveCodec
 
     public async Task WriteAsync(SaveDocument document, string outputPath, CancellationToken cancellationToken = default)
     {
+        var normalizedOutput = NormalizeSaveFilePath(outputPath, requireExistingFile: false);
+        var outputDirectory = Path.GetDirectoryName(normalizedOutput);
+        if (string.IsNullOrWhiteSpace(outputDirectory))
+        {
+            throw new InvalidOperationException($"Output path '{outputPath}' has no parent directory.");
+        }
+
+        Directory.CreateDirectory(outputDirectory);
         var schema = await _schemaRepository.LoadSchemaAsync(document.SchemaId, cancellationToken);
         ApplyChecksums(schema, document.Raw);
-        await File.WriteAllBytesAsync(outputPath, document.Raw, cancellationToken);
+        await File.WriteAllBytesAsync(normalizedOutput, document.Raw, cancellationToken);
     }
 
     public async Task<bool> RoundTripCheckAsync(SaveDocument document, CancellationToken cancellationToken = default)
     {
-        var tempPath = Path.Combine(Path.GetTempPath(), $"swfoc-roundtrip-{Guid.NewGuid():N}.sav");
+        var tempRoot = Path.GetFullPath(Path.GetTempPath());
+        var tempPath = NormalizeSaveFilePath(
+            Path.Combine(tempRoot, $"swfoc-roundtrip-{Guid.NewGuid():N}.sav"),
+            requireExistingFile: false);
+        TrustedPathPolicy.EnsureSubPath(tempRoot, tempPath);
         try
         {
             await WriteAsync(document, tempPath, cancellationToken);
@@ -110,6 +125,18 @@ public sealed class BinarySaveCodec : ISaveCodec
                 File.Delete(tempPath);
             }
         }
+    }
+
+    private static string NormalizeSaveFilePath(string path, bool requireExistingFile)
+    {
+        var normalized = TrustedPathPolicy.NormalizeAbsolute(path);
+        TrustedPathPolicy.EnsureAllowedExtension(normalized, AllowedSaveExtensions);
+        if (requireExistingFile && !File.Exists(normalized))
+        {
+            throw new FileNotFoundException($"Save file '{normalized}' does not exist.", normalized);
+        }
+
+        return normalized;
     }
 
     private static SaveNode BuildNodeTree(SaveSchema schema, byte[] raw)

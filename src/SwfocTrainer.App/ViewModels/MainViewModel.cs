@@ -11,6 +11,7 @@ using Microsoft.Win32;
 using SwfocTrainer.App.Infrastructure;
 using SwfocTrainer.App.Models;
 using SwfocTrainer.Core.Contracts;
+using SwfocTrainer.Core.IO;
 using SwfocTrainer.Core.Models;
 using SwfocTrainer.Core.Services;
 using SwfocTrainer.Saves.Services;
@@ -916,9 +917,8 @@ public sealed class MainViewModel : INotifyPropertyChanged
             return;
         }
 
-        var output = Path.Combine(
-            Path.GetDirectoryName(_loadedSave.Path) ?? string.Empty,
-            $"{Path.GetFileNameWithoutExtension(_loadedSave.Path)}.edited{Path.GetExtension(_loadedSave.Path)}");
+        var output = TrustedPathPolicy.BuildSiblingFilePath(_loadedSave.Path, ".edited");
+        TrustedPathPolicy.EnsureAllowedExtension(output, ".sav");
 
         await _saveCodec.WriteAsync(_loadedSave, output);
         Status = $"Wrote edited save: {output}";
@@ -1223,15 +1223,15 @@ public sealed class MainViewModel : INotifyPropertyChanged
         }
     }
 
-    private string HotkeyFilePath => Path.Combine(
-        Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
-        "SwfocTrainer",
+    private string HotkeyFilePath => TrustedPathPolicy.CombineUnderRoot(
+        TrustedPathPolicy.GetOrCreateAppDataRoot(),
         "hotkeys.json");
 
     private async Task LoadHotkeysAsync()
     {
         Hotkeys.Clear();
         var path = HotkeyFilePath;
+        TrustedPathPolicy.EnsureSubPath(TrustedPathPolicy.GetOrCreateAppDataRoot(), path);
         if (!File.Exists(path))
         {
             Hotkeys.Add(new HotkeyBindingItem { Gesture = "Ctrl+Shift+1", ActionId = "set_credits", PayloadJson = "{\"symbol\":\"credits\",\"intValue\":1000000,\"lockCredits\":false}" });
@@ -1255,9 +1255,11 @@ public sealed class MainViewModel : INotifyPropertyChanged
 
     private async Task SaveHotkeysAsync()
     {
-        Directory.CreateDirectory(Path.GetDirectoryName(HotkeyFilePath)!);
+        var hotkeyPath = HotkeyFilePath;
+        TrustedPathPolicy.EnsureSubPath(TrustedPathPolicy.GetOrCreateAppDataRoot(), hotkeyPath);
+        Directory.CreateDirectory(Path.GetDirectoryName(hotkeyPath)!);
         var json = JsonSerializer.Serialize(Hotkeys, new JsonSerializerOptions { WriteIndented = true });
-        await File.WriteAllTextAsync(HotkeyFilePath, json);
+        await File.WriteAllTextAsync(hotkeyPath, json);
         Status = $"Saved {Hotkeys.Count} hotkey bindings";
     }
 
