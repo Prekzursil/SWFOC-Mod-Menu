@@ -30,6 +30,10 @@ Excluded:
 - Attach/process selection for SWFOC launch realities (`STEAMMOD`, `MODPATH`, `StarWarsG`)
 - Signature-first symbol resolution with validated fallback offsets
 - Runtime memory actions, code patches, helper actions, and freeze orchestration
+- Live Ops workflows:
+  - selected-unit transaction lab (apply/revert/baseline restore)
+  - action reliability surface (`stable`/`experimental`/`unavailable`)
+  - spawn preset studio with batch operations
 - Save decode/edit/validate/write workflow
 - Dependency-aware action gating for mod/submod contexts
 - Launch-context detector script for reproducible diagnostics
@@ -88,8 +92,9 @@ Output: `artifacts/SwfocTrainer-portable.zip`
 
 ## Roadmap and Execution
 
-- Program roadmap: `PLAN.md`
 - Execution board: `TODO.md`
+- Roadmap workflow: `docs/ROADMAP_WORKFLOW.md`
+- Plan archive: `(new)codex(plans)/`
 - Profile format contract: `docs/PROFILE_FORMAT.md`
 
 ## Security and Reporting

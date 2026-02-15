@@ -23,7 +23,7 @@ public sealed class LiveCreditsTests
 
     public LiveCreditsTests(ITestOutputHelper output) => _output = output;
 
-    [Fact]
+    [SkippableFact]
     public async Task Credits_LiveDiagnostic_Should_Identify_Working_Strategy()
     {
         // ── 1. ATTACH ────────────────────────────────────────────────────────
@@ -31,8 +31,7 @@ public sealed class LiveCreditsTests
         var running = await locator.FindBestMatchAsync(ExeTarget.Swfoc);
         if (running is null)
         {
-            _output.WriteLine("SKIP — no swfoc process found.");
-            return;
+            throw LiveSkip.For(_output, "no swfoc process found.");
         }
 
         var repoRoot = TestPaths.FindRepoRoot();
@@ -320,7 +319,7 @@ public sealed class LiveCreditsTests
 
     /// <summary>
     /// Starting from hitOffset, look within nextN bytes for a RIP-relative store
-    /// (89 ModRM with ModRM & 0xC7 == 0x05 or 0x0D) whose target RVA matches creditsRva.
+    /// (89 ModRM with ModRM &amp; 0xC7 == 0x05 or 0x0D) whose target RVA matches creditsRva.
     /// </summary>
     private static string FindNearbyRipRelativeStore(byte[] module, int hitOffset, int nextN, long creditsRva, long moduleBase)
     {

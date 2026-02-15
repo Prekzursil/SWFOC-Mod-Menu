@@ -1,0 +1,35 @@
+{
+  "schemaVersion": "1.0",
+  "presets": [
+    {
+      "id": "empire_stormtrooper_wave",
+      "name": "Empire Stormtrooper Wave",
+      "unitId": "STORMTROOPER",
+      "faction": "EMPIRE",
+      "entryMarker": "AUTO",
+      "defaultQuantity": 5,
+      "defaultDelayMs": 100,
+      "description": "Fast infantry reinforcement wave"
+    },
+    {
+      "id": "rebel_xwing_screen",
+      "name": "Rebel X-Wing Screen",
+      "unitId": "X_WING",
+      "faction": "REBEL",
+      "entryMarker": "AUTO",
+      "defaultQuantity": 4,
+      "defaultDelayMs": 125,
+      "description": "Space superiority escort package"
+    },
+    {
+      "id": "empire_armor_push",
+      "name": "Empire Armor Push",
+      "unitId": "AT_AT",
+      "faction": "EMPIRE",
+      "entryMarker": "AUTO",
+      "defaultQuantity": 2,
+      "defaultDelayMs": 250,
+      "description": "Heavy ground armor spearhead"
+    }
+  ]
+}

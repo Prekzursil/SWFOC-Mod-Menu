@@ -66,3 +66,9 @@ If touching signatures, fallbacks, or runtime attach logic:
 
 - Use issue templates for bug/feature/calibration work.
 - Link PRs to issues and milestones.
+
+## Plan Archive Workflow
+
+- `(new)codex(plans)/` is intentionally tracked as versioned planning history.
+- Keep plan files additive and include execution evidence once implemented.
+- Use `TODO.md` and milestone issues as the authoritative execution board.

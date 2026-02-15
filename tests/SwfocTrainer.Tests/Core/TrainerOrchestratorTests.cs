@@ -41,7 +41,7 @@ public sealed class TrainerOrchestratorTests
     private sealed class StubRuntimeAdapter : IRuntimeAdapter
     {
         public bool IsAttached => true;
-        public AttachSession? CurrentSession => null;
+        public AttachSession? CurrentSession { get; set; }
 
         public List<ActionExecutionRequest> ReceivedRequests { get; } = new();
 
@@ -169,6 +169,20 @@ public sealed class TrainerOrchestratorTests
         var freeze = new RecordingFreezeService();
         var audit = new StubAuditLogger();
         var repo = new StubProfileRepository(profile);
+        runtime.CurrentSession = new AttachSession(
+            profile.Id,
+            new ProcessMetadata(
+                777,
+                "swfoc",
+                @"C:\Games\swfoc.exe",
+                null,
+                ExeTarget.Swfoc,
+                RuntimeMode.Galactic,
+                null,
+                null),
+            new ProfileBuild(profile.Id, "test_build", @"C:\Games\swfoc.exe", ExeTarget.Swfoc),
+            new SymbolMap(new Dictionary<string, SymbolInfo>(StringComparer.OrdinalIgnoreCase)),
+            DateTimeOffset.UtcNow);
         var orchestrator = new TrainerOrchestrator(repo, runtime, freeze, audit);
         return (orchestrator, runtime, freeze, audit);
     }
@@ -196,6 +210,41 @@ public sealed class TrainerOrchestratorTests
         result.Message.Should().Contain("credits");
         freeze.FrozenCalls.Should().ContainSingle()
             .Which.Should().Be(("credits", "int", 999999));
+    }
+
+    [Fact]
+    public async Task ExecuteAsync_WithContext_ShouldMergeContextIntoDiagnosticsAndAudit()
+    {
+        var profile = BuildProfile(MakeMemoryAction("set_credits", RuntimeMode.Unknown, "symbol", "intValue"));
+        var (orchestrator, _, _, audit) = CreateOrchestrator(profile);
+        var payload = new JsonObject
+        {
+            ["symbol"] = "credits",
+            ["intValue"] = 123
+        };
+        var context = new Dictionary<string, object?>
+        {
+            ["reliabilityState"] = "stable",
+            ["reliabilityReasonCode"] = "healthy_signature",
+            ["bundleGateResult"] = "bundle_pass"
+        };
+
+        var result = await orchestrator.ExecuteAsync(
+            "test_profile",
+            "set_credits",
+            payload,
+            RuntimeMode.Galactic,
+            context);
+
+        result.Succeeded.Should().BeTrue();
+        result.Diagnostics.Should().NotBeNull();
+        result.Diagnostics!["reliabilityState"].Should().Be("stable");
+        result.Diagnostics!["bundleGateResult"].Should().Be("bundle_pass");
+
+        audit.Records.Should().NotBeEmpty();
+        var latest = audit.Records[^1];
+        latest.Diagnostics.Should().NotBeNull();
+        latest.Diagnostics!["reliabilityReasonCode"].Should().Be("healthy_signature");
     }
 
     [Fact]

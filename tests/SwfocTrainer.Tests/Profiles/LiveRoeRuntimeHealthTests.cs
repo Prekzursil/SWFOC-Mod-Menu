@@ -22,7 +22,7 @@ public sealed class LiveRoeRuntimeHealthTests
 
     public LiveRoeRuntimeHealthTests(ITestOutputHelper output) => _output = output;
 
-    [Fact]
+    [SkippableFact]
     public async Task Roe_Attach_And_Credits_Action_Should_Succeed_On_Live_Process()
     {
         var locator = new ProcessLocator();
@@ -33,8 +33,7 @@ public sealed class LiveRoeRuntimeHealthTests
 
         if (roeCandidates.Length == 0)
         {
-            _output.WriteLine("SKIP — no live FoC process with STEAMMOD=3447786229 found.");
-            return;
+            throw LiveSkip.For(_output, "no live FoC process with STEAMMOD=3447786229 found.");
         }
 
         var hasSwfoc = roeCandidates.Any(x => x.ProcessName.Equals("swfoc", StringComparison.OrdinalIgnoreCase) ||

@@ -146,3 +146,45 @@ Current reason codes:
 - `launchContext`
 - `profileRecommendation`
 - `dependencyHints`
+
+## Spawn Preset Contract
+
+Live Ops spawn presets are profile-scoped and optional.
+
+- Path convention:
+  - `profiles/default/presets/<profileId>/spawn_presets.json`
+- JSON shape:
+  - `schemaVersion` (string)
+  - `presets` (array)
+  - Each preset field:
+    - `id` (string, unique per profile)
+    - `name` (string)
+    - `unitId` (string)
+    - `faction` (string)
+    - `entryMarker` (string)
+    - `defaultQuantity` (int, optional, defaults to `1`)
+    - `defaultDelayMs` (int, optional, defaults to `125`)
+    - `description` (string, optional)
+
+Behavior:
+
+- If a preset file is missing, runtime tooling can generate fallback presets from catalog sources.
+- Preset files are additive and do not change profile inheritance semantics.
+
+## Action Reliability States
+
+Live Ops surfaces action reliability as:
+
+- `stable`
+  - mode/dependency gates pass and symbol quality is healthy.
+- `experimental`
+  - action can run but uses degraded/fallback confidence paths.
+- `unavailable`
+  - strict mode gate fails, dependency blocks action, or required symbols are unresolved.
+
+Diagnostics keys attached to action results/audit may include:
+
+- `reliabilityState`
+- `reliabilityReasonCode`
+- `bundleGateResult`
+- `transactionId` (for selected-unit transaction workflows)

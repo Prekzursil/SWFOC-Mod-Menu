@@ -84,3 +84,10 @@ public enum SymbolHealthStatus
     Degraded = 1,
     Unresolved = 2
 }
+
+public enum ActionReliabilityState
+{
+    Stable = 0,
+    Experimental = 1,
+    Unavailable = 2
+}
