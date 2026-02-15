@@ -16,8 +16,8 @@ Rule for completion: every `[x]` item includes evidence as one of:
   evidence: manual `2026-02-15` `gh repo view` + branch protection API response
 - [x] Seed roadmap milestones, label taxonomy, epic issues, and first-sprint actionable issues.
   evidence: issue `https://github.com/Prekzursil/SWFOC-Mod-Menu/issues/6`
-- [ ] Create GitHub Project board `SWFOC-Mod-Menu Roadmap` with `Now/Next/Later` lanes and link seeded issues.
-  evidence: blocked `2026-02-15` token lacks `project` scope (`Resource not accessible by personal access token`)
+- [x] Create GitHub Project board `SWFOC-Mod-Menu Roadmap` with `Now/Next/Later` lanes and link seeded issues.
+  evidence: issue `https://github.com/users/Prekzursil/projects/1`
 - [x] Add symbol health model (`Healthy/Degraded/Unresolved`) and runtime diagnostics enrichment (health/confidence/source per symbol).
   evidence: test `tests/SwfocTrainer.Tests/Runtime/SymbolHealthServiceTests.cs`
 - [x] Add critical write reliability path (value sanity checks + single re-resolve retry + explicit failure reason codes).
