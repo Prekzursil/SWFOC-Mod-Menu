@@ -13,7 +13,8 @@ public enum ExecutionKind
     Helper,
     Save,
     CodePatch,
-    Freeze
+    Freeze,
+    Sdk
 }
 
 public enum ActionCategory

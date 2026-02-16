@@ -45,9 +45,14 @@ public sealed class LiveTacticalToggleWorkflowTests
         var context = running.LaunchContext ?? new LaunchContextResolver().Resolve(running, profiles);
         var profileId = context.Recommendation.ProfileId ?? "base_swfoc";
         var session = await runtime.AttachAsync(profileId);
-        if (session.Process.Mode != RuntimeMode.Tactical)
+        var tacticalSymbolsReadable = await TryProbeTacticalSymbolsAsync(runtime);
+        if (session.Process.Mode != RuntimeMode.Tactical && !tacticalSymbolsReadable)
         {
             throw LiveSkip.For(_output, $"runtime mode is {session.Process.Mode}, tactical checks require Tactical.");
+        }
+        if (session.Process.Mode == RuntimeMode.Unknown && tacticalSymbolsReadable)
+        {
+            _output.WriteLine("Runtime mode is Unknown but tactical symbols are readable; allowing tactical workflow execution.");
         }
 
         var profile = await profileRepo.ResolveInheritedProfileAsync(profileId);
@@ -117,6 +122,20 @@ public sealed class LiveTacticalToggleWorkflowTests
         godRevert.Succeeded.Should().BeTrue($"god revert failed: {godRevert.Message}");
         oneHitToggle.Succeeded.Should().BeTrue($"one-hit toggle failed: {oneHitToggle.Message}");
         oneHitRevert.Succeeded.Should().BeTrue($"one-hit revert failed: {oneHitRevert.Message}");
+    }
+
+    private static async Task<bool> TryProbeTacticalSymbolsAsync(RuntimeAdapter runtime)
+    {
+        try
+        {
+            _ = await runtime.ReadAsync<byte>("tactical_god_mode");
+            _ = await runtime.ReadAsync<byte>("tactical_one_hit_mode");
+            return true;
+        }
+        catch
+        {
+            return false;
+        }
     }
 
     private static async Task<IReadOnlyList<TrainerProfile>> ResolveProfilesAsync(FileSystemProfileRepository profileRepo)

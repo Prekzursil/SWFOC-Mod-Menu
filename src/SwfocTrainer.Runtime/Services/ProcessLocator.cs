@@ -116,33 +116,62 @@ public sealed class ProcessLocator : IProcessLocator
     public async Task<ProcessMetadata?> FindBestMatchAsync(ExeTarget target, CancellationToken cancellationToken = default)
     {
         var all = await FindSupportedProcessesAsync(cancellationToken);
-        var direct = all.FirstOrDefault(x => x.ExeTarget == target);
-        if (direct is not null)
+        return SelectBestMatch(target, all);
+    }
+
+    internal static ProcessMetadata? SelectBestMatch(ExeTarget target, IReadOnlyList<ProcessMetadata> all)
+    {
+        var directMatches = all
+            .Where(x => x.ExeTarget == target)
+            .ToArray();
+        if (directMatches.Length > 0)
         {
-            return direct;
+            if (target == ExeTarget.Swfoc)
+            {
+                var host = directMatches.FirstOrDefault(IsStarWarsGProcess);
+                if (host is not null)
+                {
+                    return AttachSelectionReason(host, "find_best_host_preferred");
+                }
+            }
+
+            var ranked = directMatches
+                .OrderByDescending(x => !string.IsNullOrWhiteSpace(x.CommandLine))
+                .ThenByDescending(x => TryGetMainModuleSize(x.ProcessId))
+                .ToArray();
+            return AttachSelectionReason(ranked[0], "find_best_ranked_direct");
         }
 
         // FoC/EaW launches can both show as StarWarsG.exe with ambiguous target hints.
         if (target is ExeTarget.Swfoc or ExeTarget.Sweaw)
         {
-            return all.FirstOrDefault(x =>
+            var fallback = all.FirstOrDefault(x =>
                 x.Metadata is not null &&
                 x.Metadata.TryGetValue("isStarWarsG", out var raw) &&
                 bool.TryParse(raw, out var isStarWarsG) &&
                 isStarWarsG);
+            if (fallback is not null)
+            {
+                return AttachSelectionReason(fallback, "find_best_starwarsg_fallback");
+            }
         }
 
         return null;
     }
 
+    internal static ExeTarget InferTargetForTesting(string processName, string? processPath, string? commandLine)
+    {
+        return GetProcessDetection(processName, processPath, commandLine).ExeTarget;
+    }
+
     private static ProcessDetection GetProcessDetection(string processName, string? processPath, string? commandLine)
     {
-        if (IsProcessName(processName, "sweaw") || ContainsToken(processPath, "sweaw.exe") || ContainsToken(commandLine, "sweaw.exe"))
+        if (IsProcessName(processName, "sweaw") || ContainsToken(processPath, "sweaw.exe"))
         {
             return new ProcessDetection(ExeTarget.Sweaw, IsStarWarsG: false, DetectedVia: "name_or_path_sweaw");
         }
 
-        if (IsProcessName(processName, "swfoc") || ContainsToken(processPath, "swfoc.exe") || ContainsToken(commandLine, "swfoc.exe"))
+        if (IsProcessName(processName, "swfoc") || ContainsToken(processPath, "swfoc.exe"))
         {
             return new ProcessDetection(ExeTarget.Swfoc, IsStarWarsG: false, DetectedVia: "name_or_path_swfoc");
         }
@@ -249,6 +278,52 @@ public sealed class ProcessLocator : IProcessLocator
             ? processName[..^4]
             : processName;
         return normalized.Equals(expectedWithoutExtension, StringComparison.OrdinalIgnoreCase);
+    }
+
+    private static bool IsStarWarsGProcess(ProcessMetadata process)
+    {
+        if (process.ProcessName.Equals("StarWarsG", StringComparison.OrdinalIgnoreCase) ||
+            process.ProcessName.Equals("StarWarsG.exe", StringComparison.OrdinalIgnoreCase))
+        {
+            return true;
+        }
+
+        if (process.Metadata is not null &&
+            process.Metadata.TryGetValue("isStarWarsG", out var raw) &&
+            bool.TryParse(raw, out var parsed))
+        {
+            return parsed;
+        }
+
+        return process.ProcessPath.Contains("StarWarsG.exe", StringComparison.OrdinalIgnoreCase);
+    }
+
+    private static int TryGetMainModuleSize(int processId)
+    {
+        try
+        {
+            using var process = Process.GetProcessById(processId);
+            return process.MainModule?.ModuleMemorySize ?? 0;
+        }
+        catch
+        {
+            return 0;
+        }
+    }
+
+    private static ProcessMetadata AttachSelectionReason(ProcessMetadata process, string reason)
+    {
+        var metadata = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+        if (process.Metadata is not null)
+        {
+            foreach (var kv in process.Metadata)
+            {
+                metadata[kv.Key] = kv.Value;
+            }
+        }
+
+        metadata["processSelectionReason"] = reason;
+        return process with { Metadata = metadata };
     }
 
     private static string[] ExtractSteamModIds(string? commandLine)

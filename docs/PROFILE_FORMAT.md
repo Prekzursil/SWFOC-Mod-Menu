@@ -147,6 +147,35 @@ Current reason codes:
 - `profileRecommendation`
 - `dependencyHints`
 
+## Experimental SDK Operation Map Contract
+
+Branch-only path (`rd/hardcore-sdk-v1`) supports profile-scoped SDK capability maps.
+
+- Path convention:
+  - `profiles/default/sdk/<profileId>/sdk_operation_map.json`
+- Top-level fields:
+  - `schemaVersion` (string)
+  - `operations` (array)
+- Operation fields:
+  - `operationId` (required)
+  - `readOnly` (bool, default `false`)
+  - `requiredMode` (`Unknown`, `Galactic`, `Tactical`, optional)
+  - `requiredSymbols` (string array)
+  - `validators` (string array, optional)
+  - `argumentSchema` (object, optional)
+
+Capability resolution behavior:
+
+- all required symbols resolved + healthy: `Available`
+- partial required symbols resolved: `Degraded`
+- none resolved or map missing: `Unavailable`
+
+Safety behavior:
+
+- mutating operations are blocked when capability is `Degraded` or `Unavailable`
+- read-only operations can execute in `Degraded`
+- unresolved capabilities are never executed by blind offsets
+
 ## Spawn Preset Contract
 
 Live Ops spawn presets are profile-scoped and optional.

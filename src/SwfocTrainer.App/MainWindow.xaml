@@ -236,6 +236,7 @@
                             <RowDefinition Height="Auto"/>
                             <RowDefinition Height="*"/>
                             <RowDefinition Height="*"/>
+                            <RowDefinition Height="*"/>
                         </Grid.RowDefinitions>
 
                         <GroupBox Header="Operational Diagnostics">
@@ -260,6 +261,26 @@
                                     <DataGridTextColumn Header="Time" Binding="{Binding Timestamp}" Width="*"/>
                                     <DataGridTextColumn Header="Rollback" Binding="{Binding IsRollback}" Width="*"/>
                                     <DataGridTextColumn Header="Operation" Binding="{Binding Operation}" Width="*"/>
+                                </DataGrid.Columns>
+                            </DataGrid>
+                        </GroupBox>
+
+                        <GroupBox Grid.Row="3" Header="SDK Ops (Experimental)" Margin="0,10,0,0">
+                            <GroupBox.Style>
+                                <Style TargetType="GroupBox">
+                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding ExperimentalSdkEnabled}" Value="True">
+                                            <Setter Property="Visibility" Value="Visible"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </GroupBox.Style>
+                            <DataGrid ItemsSource="{Binding SdkCapabilities}" AutoGenerateColumns="False" IsReadOnly="True">
+                                <DataGrid.Columns>
+                                    <DataGridTextColumn Header="Operation" Binding="{Binding OperationId}" Width="2*"/>
+                                    <DataGridTextColumn Header="State" Binding="{Binding State}" Width="*"/>
+                                    <DataGridTextColumn Header="Reason" Binding="{Binding ReasonCode}" Width="2*"/>
                                 </DataGrid.Columns>
                             </DataGrid>
                         </GroupBox>

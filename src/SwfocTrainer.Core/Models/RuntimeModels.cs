@@ -47,3 +47,18 @@ public sealed record AttachSession(
     ProfileBuild Build,
     SymbolMap Symbols,
     DateTimeOffset AttachedAt);
+
+public sealed record RuntimeModeProbeObservation(
+    string Name,
+    bool Readable,
+    string ValueSummary,
+    double Score,
+    string ReasonCode);
+
+public sealed record RuntimeModeProbeResult(
+    RuntimeMode HintMode,
+    RuntimeMode EffectiveMode,
+    string ReasonCode,
+    double TacticalScore,
+    double GalacticScore,
+    IReadOnlyList<RuntimeModeProbeObservation> Observations);

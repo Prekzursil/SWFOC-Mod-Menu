@@ -60,6 +60,7 @@ public sealed class MainViewModel : INotifyPropertyChanged
     private string _spawnQuantity = "1";
     private string _spawnDelayMs = "125";
     private bool _spawnStopOnFailure = true;
+    private readonly bool _experimentalSdkEnabled;
     private SpawnPresetViewItem? _selectedSpawnPreset;
 
     private SaveDocument? _loadedSave;
@@ -137,6 +138,7 @@ public sealed class MainViewModel : INotifyPropertyChanged
         _actionReliability = actionReliability;
         _selectedUnitTransactions = selectedUnitTransactions;
         _spawnPresets = spawnPresets;
+        _experimentalSdkEnabled = ResolveExperimentalSdkFlag();
 
         Profiles = new ObservableCollection<string>();
         Actions = new ObservableCollection<string>();
@@ -150,6 +152,7 @@ public sealed class MainViewModel : INotifyPropertyChanged
         SelectedUnitTransactions = new ObservableCollection<SelectedUnitTransactionViewItem>();
         SpawnPresets = new ObservableCollection<SpawnPresetViewItem>();
         LiveOpsDiagnostics = new ObservableCollection<string>();
+        SdkCapabilities = new ObservableCollection<SdkCapabilityViewItem>();
 
         LoadProfilesCommand = new AsyncCommand(LoadProfilesAsync);
         AttachCommand = new AsyncCommand(AttachAsync, () => !string.IsNullOrWhiteSpace(SelectedProfileId));
@@ -223,6 +226,10 @@ public sealed class MainViewModel : INotifyPropertyChanged
     public ObservableCollection<SpawnPresetViewItem> SpawnPresets { get; }
 
     public ObservableCollection<string> LiveOpsDiagnostics { get; }
+
+    public ObservableCollection<SdkCapabilityViewItem> SdkCapabilities { get; }
+
+    public bool ExperimentalSdkEnabled => _experimentalSdkEnabled;
 
     public string? SelectedProfileId
     {
@@ -711,6 +718,29 @@ public sealed class MainViewModel : INotifyPropertyChanged
         return process.ProcessPath.Contains("StarWarsG.exe", StringComparison.OrdinalIgnoreCase);
     }
 
+    private static bool ResolveExperimentalSdkFlag()
+    {
+        var raw = Environment.GetEnvironmentVariable("SWFOC_EXPERIMENTAL_SDK");
+        if (string.IsNullOrWhiteSpace(raw))
+        {
+            return false;
+        }
+
+        if (bool.TryParse(raw, out var asBool))
+        {
+            return asBool;
+        }
+
+        if (int.TryParse(raw, out var asInt))
+        {
+            return asInt != 0;
+        }
+
+        return raw.Equals("on", StringComparison.OrdinalIgnoreCase) ||
+               raw.Equals("yes", StringComparison.OrdinalIgnoreCase) ||
+               raw.Equals("enabled", StringComparison.OrdinalIgnoreCase);
+    }
+
     private static string BuildProcessDiagnosticSummary(ProcessMetadata process)
     {
         var cmdAvailable = process.Metadata is not null &&
@@ -746,6 +776,34 @@ public sealed class MainViewModel : INotifyPropertyChanged
                              process.Metadata.TryGetValue("unresolvedSymbolRate", out var unresolvedRateRaw)
             ? unresolvedRateRaw
             : "n/a";
+        var selectionReason = process.Metadata is not null &&
+                              process.Metadata.TryGetValue("processSelectionReason", out var processSelectionReasonRaw)
+            ? processSelectionReasonRaw
+            : "n/a";
+        var runtimeModeHint = process.Metadata is not null &&
+                              process.Metadata.TryGetValue("runtimeModeHint", out var runtimeModeHintRaw)
+            ? runtimeModeHintRaw
+            : process.Mode.ToString();
+        var runtimeModeEffective = process.Metadata is not null &&
+                                   process.Metadata.TryGetValue("runtimeModeEffective", out var runtimeModeEffectiveRaw)
+            ? runtimeModeEffectiveRaw
+            : process.Mode.ToString();
+        var runtimeModeReason = process.Metadata is not null &&
+                                process.Metadata.TryGetValue("runtimeModeReasonCode", out var runtimeModeReasonRaw)
+            ? runtimeModeReasonRaw
+            : "n/a";
+        var sdkAvailable = process.Metadata is not null &&
+                           process.Metadata.TryGetValue("sdkCapabilitiesAvailable", out var sdkAvailableRaw)
+            ? sdkAvailableRaw
+            : "0";
+        var sdkDegraded = process.Metadata is not null &&
+                          process.Metadata.TryGetValue("sdkCapabilitiesDegraded", out var sdkDegradedRaw)
+            ? sdkDegradedRaw
+            : "0";
+        var sdkUnavailable = process.Metadata is not null &&
+                             process.Metadata.TryGetValue("sdkCapabilitiesUnavailable", out var sdkUnavailableRaw)
+            ? sdkUnavailableRaw
+            : "0";
         var launchKind = process.LaunchContext?.LaunchKind.ToString() ?? "Unknown";
         var modPath = process.LaunchContext?.ModPathNormalized;
         var recProfile = process.LaunchContext?.Recommendation.ProfileId ?? "none";
@@ -754,7 +812,7 @@ public sealed class MainViewModel : INotifyPropertyChanged
             ? "0.00"
             : process.LaunchContext.Recommendation.Confidence.ToString("0.00");
         var modPathSegment = string.IsNullOrWhiteSpace(modPath) ? "modPath=none" : $"modPath={modPath}";
-        return $"target={process.ExeTarget} | launch={launchKind} | cmdLine={cmdAvailable} | mods={mods} | {modPathSegment} | rec={recProfile}:{recReason}:{recConfidence} | via={via} | {dependencySegment} | fallbackRate={fallbackRate} | unresolvedRate={unresolvedRate}";
+        return $"target={process.ExeTarget} | launch={launchKind} | mode={runtimeModeEffective} (hint={runtimeModeHint}, reason={runtimeModeReason}) | cmdLine={cmdAvailable} | mods={mods} | {modPathSegment} | rec={recProfile}:{recReason}:{recConfidence} | via={via} | selection={selectionReason} | sdk={sdkAvailable}/{sdkDegraded}/{sdkUnavailable} | {dependencySegment} | fallbackRate={fallbackRate} | unresolvedRate={unresolvedRate}";
     }
 
     private static bool IsActionAvailableForCurrentSession(string actionId, ActionSpec spec, AttachSession session)
@@ -801,6 +859,7 @@ public sealed class MainViewModel : INotifyPropertyChanged
         ActionReliability.Clear();
         SelectedUnitTransactions.Clear();
         LiveOpsDiagnostics.Clear();
+        SdkCapabilities.Clear();
         Status = "Detached";
     }
 
@@ -1215,6 +1274,7 @@ public sealed class MainViewModel : INotifyPropertyChanged
     private void RefreshLiveOpsDiagnostics()
     {
         LiveOpsDiagnostics.Clear();
+        SdkCapabilities.Clear();
         var session = _runtime.CurrentSession;
         if (session is null)
         {
@@ -1240,6 +1300,46 @@ public sealed class MainViewModel : INotifyPropertyChanged
         var degraded = session.Symbols.Symbols.Values.Count(x => x.HealthStatus == SymbolHealthStatus.Degraded);
         var unresolved = session.Symbols.Symbols.Values.Count(x => x.HealthStatus == SymbolHealthStatus.Unresolved || x.Address == nint.Zero);
         LiveOpsDiagnostics.Add($"symbols: healthy={healthy}, degraded={degraded}, unresolved={unresolved}");
+
+        if (session.Process.Metadata is not null &&
+            session.Process.Metadata.TryGetValue("sdkExperimentalEnabled", out var sdkGate))
+        {
+            var available = session.Process.Metadata.TryGetValue("sdkCapabilitiesAvailable", out var availableRaw) ? availableRaw : "0";
+            var degradedCount = session.Process.Metadata.TryGetValue("sdkCapabilitiesDegraded", out var degradedRaw) ? degradedRaw : "0";
+            var unavailable = session.Process.Metadata.TryGetValue("sdkCapabilitiesUnavailable", out var unavailableRaw) ? unavailableRaw : "0";
+            LiveOpsDiagnostics.Add($"sdk: gate={sdkGate}, available={available}, degraded={degradedCount}, unavailable={unavailable}");
+        }
+
+        RefreshSdkCapabilities(session.Process);
+    }
+
+    private void RefreshSdkCapabilities(ProcessMetadata process)
+    {
+        SdkCapabilities.Clear();
+        if (!_experimentalSdkEnabled || process.Metadata is null)
+        {
+            return;
+        }
+
+        if (!process.Metadata.TryGetValue("sdkCapabilitiesSummary", out var summary) ||
+            string.IsNullOrWhiteSpace(summary))
+        {
+            return;
+        }
+
+        foreach (var entry in summary.Split(';', StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries))
+        {
+            var parts = entry.Split(':', 3, StringSplitOptions.TrimEntries);
+            if (parts.Length < 3)
+            {
+                continue;
+            }
+
+            SdkCapabilities.Add(new SdkCapabilityViewItem(
+                parts[0],
+                parts[1],
+                parts[2]));
+        }
     }
 
     private async Task CaptureSelectedUnitBaselineAsync()

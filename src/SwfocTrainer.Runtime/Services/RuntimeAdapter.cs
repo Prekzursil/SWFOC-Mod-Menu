@@ -50,6 +50,11 @@ public sealed class RuntimeAdapter : IRuntimeAdapter
     private readonly ISignatureResolver _signatureResolver;
     private readonly IModDependencyValidator _modDependencyValidator;
     private readonly ISymbolHealthService _symbolHealthService;
+    private readonly RuntimeModeProbeResolver _runtimeModeProbeResolver;
+    private readonly ISdkCapabilityResolver _sdkCapabilityResolver;
+    private readonly ISdkRuntimeAdapter _sdkRuntimeAdapter;
+    private readonly IDebugConsoleFallbackAdapter _debugConsoleFallbackAdapter;
+    private readonly bool _experimentalSdkEnabled;
     private readonly ILogger<RuntimeAdapter> _logger;
     private readonly string _calibrationArtifactRoot;
     private static readonly JsonSerializerOptions SymbolValidationJsonOptions = new()
@@ -92,6 +97,7 @@ public sealed class RuntimeAdapter : IRuntimeAdapter
     private readonly Dictionary<string, int> _actionSuccessCounters = new(StringComparer.OrdinalIgnoreCase);
     private readonly Dictionary<string, int> _actionFailureCounters = new(StringComparer.OrdinalIgnoreCase);
     private readonly Dictionary<string, int> _symbolSourceCounters = new(StringComparer.OrdinalIgnoreCase);
+    private SdkCapabilityReport? _sdkCapabilityReport;
 
     public RuntimeAdapter(
         IProcessLocator processLocator,
@@ -99,13 +105,22 @@ public sealed class RuntimeAdapter : IRuntimeAdapter
         ISignatureResolver signatureResolver,
         IModDependencyValidator? modDependencyValidator,
         ISymbolHealthService? symbolHealthService,
-        ILogger<RuntimeAdapter> logger)
+        ILogger<RuntimeAdapter> logger,
+        RuntimeModeProbeResolver? runtimeModeProbeResolver = null,
+        ISdkCapabilityResolver? sdkCapabilityResolver = null,
+        ISdkRuntimeAdapter? sdkRuntimeAdapter = null,
+        IDebugConsoleFallbackAdapter? debugConsoleFallbackAdapter = null)
     {
         _processLocator = processLocator;
         _profileRepository = profileRepository;
         _signatureResolver = signatureResolver;
         _modDependencyValidator = modDependencyValidator ?? new ModDependencyValidator();
         _symbolHealthService = symbolHealthService ?? new SymbolHealthService();
+        _runtimeModeProbeResolver = runtimeModeProbeResolver ?? new RuntimeModeProbeResolver();
+        _sdkCapabilityResolver = sdkCapabilityResolver ?? new SdkCapabilityResolver();
+        _sdkRuntimeAdapter = sdkRuntimeAdapter ?? new ExperimentalSdkRuntimeAdapter();
+        _debugConsoleFallbackAdapter = debugConsoleFallbackAdapter ?? new DebugConsoleFallbackAdapter();
+        _experimentalSdkEnabled = ResolveExperimentalSdkFlag();
         _logger = logger;
         _calibrationArtifactRoot = Path.Combine(
             Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
@@ -168,8 +183,13 @@ public sealed class RuntimeAdapter : IRuntimeAdapter
 
         InitializeProfileSymbolPolicy(profile);
         var resolvedSymbols = await _signatureResolver.ResolveAsync(build, signatureSets, profile.FallbackOffsets, cancellationToken);
+        var modeProbe = ProbeRuntimeMode(process, resolvedSymbols);
+        process = process with { Mode = modeProbe.EffectiveMode };
+        process = AttachRuntimeModeDiagnostics(process, modeProbe);
         var symbols = ApplySymbolHealth(profile, process.Mode, resolvedSymbols);
         process = AttachSymbolHealthDiagnostics(process, symbols);
+        _sdkCapabilityReport = _sdkCapabilityResolver.Resolve(profile, process, symbols);
+        process = AttachSdkCapabilityDiagnostics(process, _sdkCapabilityReport);
 
         var calibrationArtifactPath = TryEmitCalibrationSnapshot(profile, process, build, symbols);
         if (!string.IsNullOrWhiteSpace(calibrationArtifactPath))
@@ -186,10 +206,45 @@ public sealed class RuntimeAdapter : IRuntimeAdapter
         return CurrentSession;
     }
 
+    private RuntimeModeProbeResult ProbeRuntimeMode(ProcessMetadata process, SymbolMap symbols)
+    {
+        try
+        {
+            using var probeMemory = new ProcessMemoryAccessor(process.ProcessId);
+            return _runtimeModeProbeResolver.Resolve(symbols, probeMemory, process.Mode);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogWarning(ex, "Runtime mode probe failed for pid {Pid}; falling back to hint mode {Mode}.", process.ProcessId, process.Mode);
+            return new RuntimeModeProbeResult(
+                process.Mode,
+                process.Mode,
+                "probe_error_hint_fallback",
+                0,
+                0,
+                new[]
+                {
+                    new RuntimeModeProbeObservation("probe_runtime_error", false, ex.GetType().Name, 0, "probe_exception")
+                });
+        }
+    }
+
+    private static ProcessMetadata AttachRuntimeModeDiagnostics(ProcessMetadata process, RuntimeModeProbeResult probeResult)
+    {
+        var summary = string.Join(
+            "; ",
+            probeResult.Observations.Select(x => $"{x.Name}:{x.ReasonCode}:{x.ValueSummary}"));
+        var withHint = AttachMetadataValue(process, "runtimeModeHint", probeResult.HintMode.ToString());
+        var withEffective = AttachMetadataValue(withHint, "runtimeModeEffective", probeResult.EffectiveMode.ToString());
+        var withReason = AttachMetadataValue(withEffective, "runtimeModeReasonCode", probeResult.ReasonCode);
+        return AttachMetadataValue(withReason, "runtimeModeProbeSummary", summary);
+    }
+
     private async Task<ProcessMetadata?> SelectProcessForProfileAsync(TrainerProfile profile, CancellationToken cancellationToken)
     {
         var processes = await _processLocator.FindSupportedProcessesAsync(cancellationToken);
         var matches = processes.Where(x => x.ExeTarget == profile.ExeTarget).ToArray();
+        var selectionReason = "direct_target_matches";
         if (matches.Length == 0)
         {
             // StarWarsG.exe can be ambiguous (or misclassified when command-line is unavailable).
@@ -197,6 +252,7 @@ public sealed class RuntimeAdapter : IRuntimeAdapter
             matches = processes
                 .Where(IsStarWarsGProcess)
                 .ToArray();
+            selectionReason = "starwarsg_target_fallback";
 
             if (matches.Length > 0)
             {
@@ -224,6 +280,14 @@ public sealed class RuntimeAdapter : IRuntimeAdapter
             : looseWorkshopMatches.Length > 0
                 ? looseWorkshopMatches
                 : matches;
+        if (strictWorkshopMatches.Length > 0)
+        {
+            selectionReason = "required_workshop_strict_match";
+        }
+        else if (looseWorkshopMatches.Length > 0)
+        {
+            selectionReason = "required_workshop_loose_match";
+        }
 
         var recommendedMatches = pool
             .Where(x => x.LaunchContext?.Recommendation.ProfileId?.Equals(profile.Id, StringComparison.OrdinalIgnoreCase) == true)
@@ -231,6 +295,7 @@ public sealed class RuntimeAdapter : IRuntimeAdapter
         if (recommendedMatches.Length > 0)
         {
             pool = recommendedMatches;
+            selectionReason = "launch_context_recommendation_match";
         }
 
         // For FoC, StarWarsG is typically the real game host while swfoc.exe can be a thin launcher.
@@ -241,12 +306,13 @@ public sealed class RuntimeAdapter : IRuntimeAdapter
             if (starWarsGCandidates.Length > 0)
             {
                 pool = starWarsGCandidates;
+                selectionReason = "foc_host_starwarsg_preferred";
             }
         }
 
         if (pool.Length == 1)
         {
-            return pool[0];
+            return AttachMetadataValue(pool[0], "processSelectionReason", $"{selectionReason}:single_candidate");
         }
 
         var ranked = pool
@@ -274,7 +340,7 @@ public sealed class RuntimeAdapter : IRuntimeAdapter
             profile.Id,
             ranked.Length,
             ranked[0].MainModuleSize);
-        return selected;
+        return AttachMetadataValue(selected, "processSelectionReason", $"{selectionReason}:ranked");
     }
 
     private static HashSet<string> CollectRequiredWorkshopIds(TrainerProfile profile)
@@ -354,6 +420,53 @@ public sealed class RuntimeAdapter : IRuntimeAdapter
 
         metadata[key] = value;
         return process with { Metadata = metadata };
+    }
+
+    private static bool ResolveExperimentalSdkFlag()
+    {
+        var raw = Environment.GetEnvironmentVariable("SWFOC_EXPERIMENTAL_SDK");
+        if (string.IsNullOrWhiteSpace(raw))
+        {
+            return false;
+        }
+
+        if (bool.TryParse(raw, out var asBool))
+        {
+            return asBool;
+        }
+
+        if (int.TryParse(raw, out var asInt))
+        {
+            return asInt != 0;
+        }
+
+        return raw.Equals("on", StringComparison.OrdinalIgnoreCase) ||
+               raw.Equals("yes", StringComparison.OrdinalIgnoreCase) ||
+               raw.Equals("enabled", StringComparison.OrdinalIgnoreCase);
+    }
+
+    private ProcessMetadata AttachSdkCapabilityDiagnostics(ProcessMetadata process, SdkCapabilityReport? capabilityReport)
+    {
+        var withGate = AttachMetadataValue(process, "sdkExperimentalEnabled", _experimentalSdkEnabled.ToString());
+        if (capabilityReport is null)
+        {
+            return AttachMetadataValue(withGate, "sdkCapabilityReport", "missing");
+        }
+
+        var available = capabilityReport.Operations.Count(x => x.Status == SdkCapabilityStatus.Available);
+        var degraded = capabilityReport.Operations.Count(x => x.Status == SdkCapabilityStatus.Degraded);
+        var unavailable = capabilityReport.Operations.Count(x => x.Status == SdkCapabilityStatus.Unavailable);
+        var summary = string.Join(
+            ";",
+            capabilityReport.Operations
+                .OrderBy(x => x.OperationId)
+                .Select(x => $"{x.OperationId}:{x.Status}:{x.ReasonCode}"));
+
+        var withProfile = AttachMetadataValue(withGate, "sdkCapabilityProfile", capabilityReport.ProfileId);
+        var withAvailable = AttachMetadataValue(withProfile, "sdkCapabilitiesAvailable", available.ToString());
+        var withDegraded = AttachMetadataValue(withAvailable, "sdkCapabilitiesDegraded", degraded.ToString());
+        var withUnavailable = AttachMetadataValue(withDegraded, "sdkCapabilitiesUnavailable", unavailable.ToString());
+        return AttachMetadataValue(withUnavailable, "sdkCapabilitiesSummary", summary);
     }
 
     private void InitializeProfileSymbolPolicy(TrainerProfile profile)
@@ -700,6 +813,7 @@ public sealed class RuntimeAdapter : IRuntimeAdapter
                 ExecutionKind.Helper => await ExecuteHelperActionAsync(request, cancellationToken),
                 ExecutionKind.Save => await ExecuteSaveActionAsync(request, cancellationToken),
                 ExecutionKind.CodePatch => await ExecuteCodePatchActionAsync(request, cancellationToken),
+                ExecutionKind.Sdk => await ExecuteSdkActionAsync(request, cancellationToken),
                 ExecutionKind.Freeze => new ActionExecutionResult(false, "Freeze actions must be handled by the orchestrator, not the runtime adapter.", AddressSource.None),
                 _ => new ActionExecutionResult(false, "Unsupported execution kind", AddressSource.None)
             };
@@ -740,8 +854,354 @@ public sealed class RuntimeAdapter : IRuntimeAdapter
         _attachedProfile = null;
         _symbolValidationRules.Clear();
         _criticalSymbols.Clear();
+        _sdkCapabilityReport = null;
         CurrentSession = null;
         return Task.CompletedTask;
+    }
+
+    private async Task<ActionExecutionResult> ExecuteSdkActionAsync(ActionExecutionRequest request, CancellationToken cancellationToken)
+    {
+        if (!_experimentalSdkEnabled)
+        {
+            return new ActionExecutionResult(
+                false,
+                "SDK execution is disabled. Set SWFOC_EXPERIMENTAL_SDK=1 to enable the branch-only experimental backend.",
+                AddressSource.None,
+                new Dictionary<string, object?>
+                {
+                    ["failureReasonCode"] = "sdk_feature_gate_disabled",
+                    ["sdkFeatureGate"] = "SWFOC_EXPERIMENTAL_SDK"
+                });
+        }
+
+        if (CurrentSession is null || _sdkCapabilityReport is null)
+        {
+            return new ActionExecutionResult(
+                false,
+                "SDK execution is unavailable because no capability report is active.",
+                AddressSource.None,
+                new Dictionary<string, object?>
+                {
+                    ["failureReasonCode"] = "sdk_capability_report_missing"
+                });
+        }
+
+        if (!TryResolveSdkOperationId(request, out var operationId))
+        {
+            return new ActionExecutionResult(
+                false,
+                $"Could not resolve SDK operation id from action '{request.Action.Id}'.",
+                AddressSource.None,
+                new Dictionary<string, object?>
+                {
+                    ["failureReasonCode"] = "sdk_operation_unmapped",
+                    ["actionId"] = request.Action.Id
+                });
+        }
+
+        if (!_sdkCapabilityReport.TryGetCapability(operationId, out var capability) || capability is null)
+        {
+            return new ActionExecutionResult(
+                false,
+                $"SDK capability missing for operation '{operationId}'.",
+                AddressSource.None,
+                new Dictionary<string, object?>
+                {
+                    ["failureReasonCode"] = "capability_unavailable",
+                    ["sdkOperationId"] = operationId.ToString()
+                });
+        }
+
+        var runtimeMode = CurrentSession.Process.Mode == RuntimeMode.Unknown
+            ? request.RuntimeMode
+            : CurrentSession.Process.Mode;
+
+        if (capability.RequiredMode != RuntimeMode.Unknown && runtimeMode != capability.RequiredMode)
+        {
+            return BuildSdkBlockedResult(
+                request,
+                operationId,
+                capability,
+                runtimeMode,
+                "mode_mismatch",
+                $"SDK operation '{operationId}' requires mode {capability.RequiredMode}, current mode is {runtimeMode}.",
+                attemptFallback: false);
+        }
+
+        if (capability.Status == SdkCapabilityStatus.Unavailable)
+        {
+            return BuildSdkBlockedResult(
+                request,
+                operationId,
+                capability,
+                runtimeMode,
+                "capability_unavailable",
+                $"SDK capability for '{operationId}' is unavailable ({capability.ReasonCode}).",
+                attemptFallback: true);
+        }
+
+        if (capability.Status == SdkCapabilityStatus.Degraded && !capability.ReadOnly)
+        {
+            return BuildSdkBlockedResult(
+                request,
+                operationId,
+                capability,
+                runtimeMode,
+                "capability_degraded_mutating_blocked",
+                $"SDK capability for '{operationId}' is degraded and mutation is blocked by safety policy.",
+                attemptFallback: true);
+        }
+
+        var sdkRequest = new SdkCommandRequest(
+            operationId,
+            request.Payload,
+            request.ProfileId,
+            runtimeMode,
+            request.Context);
+        var sdkResult = await _sdkRuntimeAdapter.ExecuteAsync(sdkRequest, CurrentSession, capability, cancellationToken);
+
+        var diagnostics = new Dictionary<string, object?>(StringComparer.OrdinalIgnoreCase)
+        {
+            ["sdkOperationId"] = operationId.ToString(),
+            ["sdkCapabilityState"] = capability.Status.ToString(),
+            ["sdkCapabilityReasonCode"] = capability.ReasonCode,
+            ["fallbackMode"] = "none"
+        };
+
+        if (capability.Diagnostics is not null &&
+            capability.Diagnostics.TryGetValue("requiredSymbols", out var requiredSymbols))
+        {
+            diagnostics["sdkResolverSignatureSet"] = requiredSymbols;
+        }
+
+        if (sdkResult.Diagnostics is not null)
+        {
+            foreach (var kv in sdkResult.Diagnostics)
+            {
+                diagnostics[kv.Key] = kv.Value;
+            }
+        }
+
+        if (!sdkResult.Succeeded && !diagnostics.ContainsKey("failureReasonCode"))
+        {
+            diagnostics["failureReasonCode"] = "sdk_command_failed";
+        }
+
+        return new ActionExecutionResult(
+            sdkResult.Succeeded,
+            sdkResult.Message,
+            AddressSource.None,
+            diagnostics);
+    }
+
+    private ActionExecutionResult BuildSdkBlockedResult(
+        ActionExecutionRequest request,
+        SdkOperationId operationId,
+        SdkOperationCapability capability,
+        RuntimeMode runtimeMode,
+        string failureReasonCode,
+        string message,
+        bool attemptFallback)
+    {
+        var diagnostics = new Dictionary<string, object?>(StringComparer.OrdinalIgnoreCase)
+        {
+            ["sdkOperationId"] = operationId.ToString(),
+            ["sdkCapabilityState"] = capability.Status.ToString(),
+            ["sdkCapabilityReasonCode"] = capability.ReasonCode,
+            ["failureReasonCode"] = failureReasonCode
+        };
+
+        if (capability.Diagnostics is not null &&
+            capability.Diagnostics.TryGetValue("requiredSymbols", out var requiredSymbols))
+        {
+            diagnostics["sdkResolverSignatureSet"] = requiredSymbols;
+        }
+
+        if (!attemptFallback)
+        {
+            diagnostics["fallbackMode"] = "none";
+            return new ActionExecutionResult(false, message, AddressSource.None, diagnostics);
+        }
+
+        var fallback = _debugConsoleFallbackAdapter.Prepare(
+            operationId,
+            request.ProfileId,
+            runtimeMode,
+            ToPayloadDictionary(request.Payload));
+        diagnostics["fallbackMode"] = fallback.Mode;
+        diagnostics["fallbackReasonCode"] = fallback.ReasonCode;
+        if (fallback.Supported && !string.IsNullOrWhiteSpace(fallback.PreparedCommand))
+        {
+            diagnostics["debugConsoleCommand"] = fallback.PreparedCommand;
+            return new ActionExecutionResult(
+                false,
+                $"{message} Prepared debug-console fallback command: {fallback.PreparedCommand}",
+                AddressSource.None,
+                diagnostics);
+        }
+
+        return new ActionExecutionResult(
+            false,
+            $"{message} Debug-console fallback is not supported for this operation.",
+            AddressSource.None,
+            diagnostics);
+    }
+
+    private static bool TryResolveSdkOperationId(ActionExecutionRequest request, out SdkOperationId operationId)
+    {
+        if (TryParseSdkOperationId(request.Payload["sdkOperationId"], out operationId) ||
+            TryParseSdkOperationId(request.Payload["operationId"], out operationId))
+        {
+            return true;
+        }
+
+        return TryParseSdkOperationId(request.Action.Id, out operationId);
+    }
+
+    private static bool TryParseSdkOperationId(JsonNode? node, out SdkOperationId operationId)
+    {
+        if (node is null)
+        {
+            operationId = default;
+            return false;
+        }
+
+        return TryParseSdkOperationId(node.ToString(), out operationId);
+    }
+
+    private static bool TryParseSdkOperationId(string? raw, out SdkOperationId operationId)
+    {
+        if (string.IsNullOrWhiteSpace(raw))
+        {
+            operationId = default;
+            return false;
+        }
+
+        if (Enum.TryParse<SdkOperationId>(raw, ignoreCase: true, out operationId))
+        {
+            return true;
+        }
+
+        var normalized = NormalizeSdkOperationId(raw);
+        operationId = normalized switch
+        {
+            "listselected" => SdkOperationId.ListSelected,
+            "listnearby" => SdkOperationId.ListNearby,
+            "spawn" => SdkOperationId.Spawn,
+            "kill" => SdkOperationId.Kill,
+            "setowner" => SdkOperationId.SetOwner,
+            "teleport" => SdkOperationId.Teleport,
+            "setplanetowner" => SdkOperationId.SetPlanetOwner,
+            "sethp" => SdkOperationId.SetHp,
+            "setshield" => SdkOperationId.SetShield,
+            "setcooldown" => SdkOperationId.SetCooldown,
+            "sdklistselected" => SdkOperationId.ListSelected,
+            "sdklistnearby" => SdkOperationId.ListNearby,
+            "sdkspawn" => SdkOperationId.Spawn,
+            "sdkkill" => SdkOperationId.Kill,
+            "sdksetowner" => SdkOperationId.SetOwner,
+            "sdkteleport" => SdkOperationId.Teleport,
+            "sdksetplanetowner" => SdkOperationId.SetPlanetOwner,
+            "sdksethp" => SdkOperationId.SetHp,
+            "sdksetshield" => SdkOperationId.SetShield,
+            "sdksetcooldown" => SdkOperationId.SetCooldown,
+            "setselectedownerfaction" => SdkOperationId.SetOwner,
+            "setselectedhp" => SdkOperationId.SetHp,
+            "setselectedshield" => SdkOperationId.SetShield,
+            "setselectedcooldownmultiplier" => SdkOperationId.SetCooldown,
+            _ => default
+        };
+
+        return normalized is
+            "listselected" or
+            "listnearby" or
+            "spawn" or
+            "kill" or
+            "setowner" or
+            "teleport" or
+            "setplanetowner" or
+            "sethp" or
+            "setshield" or
+            "setcooldown" or
+            "sdklistselected" or
+            "sdklistnearby" or
+            "sdkspawn" or
+            "sdkkill" or
+            "sdksetowner" or
+            "sdkteleport" or
+            "sdksetplanetowner" or
+            "sdksethp" or
+            "sdksetshield" or
+            "sdksetcooldown" or
+            "setselectedownerfaction" or
+            "setselectedhp" or
+            "setselectedshield" or
+            "setselectedcooldownmultiplier";
+    }
+
+    private static string NormalizeSdkOperationId(string raw)
+    {
+        var chars = raw
+            .Where(char.IsLetterOrDigit)
+            .Select(char.ToLowerInvariant)
+            .ToArray();
+        return new string(chars);
+    }
+
+    private static IReadOnlyDictionary<string, object?> ToPayloadDictionary(JsonObject payload)
+    {
+        var dict = new Dictionary<string, object?>(StringComparer.OrdinalIgnoreCase);
+        foreach (var (key, node) in payload)
+        {
+            dict[key] = JsonNodeToPrimitive(node);
+        }
+
+        return dict;
+    }
+
+    private static object? JsonNodeToPrimitive(JsonNode? node)
+    {
+        if (node is null)
+        {
+            return null;
+        }
+
+        if (node is not JsonValue value)
+        {
+            return node.ToJsonString();
+        }
+
+        if (value.TryGetValue<bool>(out var asBool))
+        {
+            return asBool;
+        }
+
+        if (value.TryGetValue<int>(out var asInt))
+        {
+            return asInt;
+        }
+
+        if (value.TryGetValue<long>(out var asLong))
+        {
+            return asLong;
+        }
+
+        if (value.TryGetValue<float>(out var asFloat))
+        {
+            return asFloat;
+        }
+
+        if (value.TryGetValue<double>(out var asDouble))
+        {
+            return asDouble;
+        }
+
+        if (value.TryGetValue<string>(out var asString))
+        {
+            return asString;
+        }
+
+        return value.ToString();
     }
 
     private async Task<ActionExecutionResult> ExecuteMemoryActionAsync(ActionExecutionRequest request, CancellationToken cancellationToken)

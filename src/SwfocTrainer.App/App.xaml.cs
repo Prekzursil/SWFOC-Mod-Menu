@@ -97,6 +97,9 @@ public partial class App : Application
         services.AddSingleton<IModDependencyValidator, ModDependencyValidator>();
         services.AddSingleton<IActionReliabilityService, ActionReliabilityService>();
         services.AddSingleton<ISymbolHealthService, SymbolHealthService>();
+        services.AddSingleton<ISdkCapabilityResolver, SdkCapabilityResolver>();
+        services.AddSingleton<ISdkRuntimeAdapter, ExperimentalSdkRuntimeAdapter>();
+        services.AddSingleton<IDebugConsoleFallbackAdapter, DebugConsoleFallbackAdapter>();
         services.AddSingleton<IProcessLocator, ProcessLocator>();
         services.AddSingleton<ISignatureResolver, SignatureResolver>();
         services.AddSingleton<IRuntimeAdapter, RuntimeAdapter>();

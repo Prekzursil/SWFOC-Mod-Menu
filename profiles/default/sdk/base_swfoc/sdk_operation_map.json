@@ -1,0 +1,101 @@
+{
+  "schemaVersion": "1.0",
+  "operations": [
+    {
+      "operationId": "list_selected",
+      "readOnly": true,
+      "requiredMode": "Unknown",
+      "requiredSymbols": ["selected_hp", "selected_shield", "selected_speed", "selected_owner_faction"],
+      "validators": ["selected_unit_snapshot"],
+      "argumentSchema": {}
+    },
+    {
+      "operationId": "list_nearby",
+      "readOnly": true,
+      "requiredMode": "Unknown",
+      "requiredSymbols": ["selected_hp"],
+      "validators": ["nearby_probe_placeholder"],
+      "argumentSchema": {}
+    },
+    {
+      "operationId": "spawn",
+      "readOnly": false,
+      "requiredMode": "Unknown",
+      "requiredSymbols": ["selected_owner_faction"],
+      "validators": ["spawn_anchor_validation"],
+      "argumentSchema": {
+        "required": ["unitId", "faction"]
+      }
+    },
+    {
+      "operationId": "kill",
+      "readOnly": false,
+      "requiredMode": "Tactical",
+      "requiredSymbols": ["selected_hp", "selected_shield"],
+      "validators": ["selected_target_present"],
+      "argumentSchema": {
+        "required": ["hpValue"]
+      }
+    },
+    {
+      "operationId": "set_owner",
+      "readOnly": false,
+      "requiredMode": "Unknown",
+      "requiredSymbols": ["selected_owner_faction"],
+      "validators": ["owner_faction_range"],
+      "argumentSchema": {
+        "required": ["intValue"]
+      }
+    },
+    {
+      "operationId": "teleport",
+      "readOnly": false,
+      "requiredMode": "Tactical",
+      "requiredSymbols": ["selected_speed"],
+      "validators": ["position_pointer_validation"],
+      "argumentSchema": {
+        "required": ["x", "y", "z"]
+      }
+    },
+    {
+      "operationId": "set_planet_owner",
+      "readOnly": false,
+      "requiredMode": "Galactic",
+      "requiredSymbols": ["planet_owner"],
+      "validators": ["planet_owner_range"],
+      "argumentSchema": {
+        "required": ["intValue"]
+      }
+    },
+    {
+      "operationId": "set_hp",
+      "readOnly": false,
+      "requiredMode": "Tactical",
+      "requiredSymbols": ["selected_hp"],
+      "validators": ["hp_range"],
+      "argumentSchema": {
+        "required": ["floatValue"]
+      }
+    },
+    {
+      "operationId": "set_shield",
+      "readOnly": false,
+      "requiredMode": "Tactical",
+      "requiredSymbols": ["selected_shield"],
+      "validators": ["shield_range"],
+      "argumentSchema": {
+        "required": ["floatValue"]
+      }
+    },
+    {
+      "operationId": "set_cooldown",
+      "readOnly": false,
+      "requiredMode": "Tactical",
+      "requiredSymbols": ["selected_cooldown_multiplier"],
+      "validators": ["cooldown_range"],
+      "argumentSchema": {
+        "required": ["floatValue"]
+      }
+    }
+  ]
+}
