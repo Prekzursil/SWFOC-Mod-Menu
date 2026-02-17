@@ -81,8 +81,7 @@ public partial class App : Application
 
         services.AddSingleton(new SaveOptions
         {
-            SchemaRootPath = Path.Combine(profilesRoot, "schemas"),
-            DefaultSaveRootPath = @"C:\Users\Prekzursil\Saved Games\Petroglyph"
+            SchemaRootPath = Path.Combine(profilesRoot, "schemas")
         });
 
         services.AddSingleton(new LiveOpsOptions
@@ -106,6 +105,8 @@ public partial class App : Application
         services.AddSingleton<ICatalogService, CatalogService>();
         services.AddSingleton<IHelperModService, HelperModService>();
         services.AddSingleton<ISaveCodec, BinarySaveCodec>();
+        services.AddSingleton<ISavePatchPackService, SavePatchPackService>();
+        services.AddSingleton<ISavePatchApplyService, SavePatchApplyService>();
 
         services.AddSingleton<HttpClient>();
         services.AddSingleton<IProfileUpdateService, GitHubProfileUpdateService>();

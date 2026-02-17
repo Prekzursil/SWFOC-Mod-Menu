@@ -46,23 +46,33 @@ Reliability rule for runtime/mod tasks:
   evidence: code `src/SwfocTrainer.Core/Services/SelectedUnitTransactionService.cs`
 - [x] Publish action reliability flags (`stable`, `experimental`, `unavailable`) in UI diagnostics.
   evidence: test `tests/SwfocTrainer.Tests/Core/ActionReliabilityServiceTests.cs`
-- [x] Add live smoke coverage for tactical toggles and hero-state helper workflows.
-  evidence: test `tests/SwfocTrainer.Tests/Profiles/LiveTacticalToggleWorkflowTests.cs`
-  evidence: test `tests/SwfocTrainer.Tests/Profiles/LiveHeroHelperWorkflowTests.cs`
-  evidence: manual `2026-02-15` `dotnet test tests/SwfocTrainer.Tests/SwfocTrainer.Tests.csproj -c Release --no-build` passed 69 tests, skipped 4 live-gated tests
-- [ ] Execute live-machine M1 validation run and attach evidence to issues `#34` and `#19`.
-  note: local attempt `2026-02-16` produced explicit skips because no live SWFOC process was running.
-  note: use `pwsh ./tools/run-live-validation.ps1 -Configuration Release -NoBuild -Scope FULL -EmitReproBundle $true` and post templates from `TestResults/runs/<runId>/` to `#34` and `#19`.
-  evidence-progress: `#34` comment `https://github.com/Prekzursil/SWFOC-Mod-Menu/issues/34#issuecomment-3905270711`
-  evidence-progress: `#19` comment `https://github.com/Prekzursil/SWFOC-Mod-Menu/issues/19#issuecomment-3905270874`
 - [x] Close/reconcile M0 carryover issues (`#15`, `#16`, `#17`, `#18`) with evidence comments.
   evidence: issue `https://github.com/Prekzursil/SWFOC-Mod-Menu/issues/15`
 - [x] Track plan archive under `(new)codex(plans)/` with explicit contributor convention.
   evidence: doc `(new)codex(plans)/README.md`
+- [x] M2/S1 define Save Lab patch-pack contract + schema fixture (`tools/schemas/save-patch-pack.schema.json`).
+  evidence: test `tests/SwfocTrainer.Tests/Saves/SavePatchPackServiceTests.cs`
+- [x] M2/S2 implement patch-pack export/import + compatibility preview service.
+  evidence: test `tests/SwfocTrainer.Tests/Saves/SavePatchPackServiceTests.cs`
+- [x] M2/S3 implement atomic apply + backup/receipt + rollback pipeline.
+  evidence: test `tests/SwfocTrainer.Tests/Saves/SavePatchApplyServiceTests.cs`
+- [x] M2/S4 integrate Save Lab patch-pack UX into Save Editor tab.
+  evidence: code `src/SwfocTrainer.App/MainWindow.xaml`
+- [x] M2/S5 add deterministic CI/schema tooling for patch-pack contract.
+  evidence: workflow `.github/workflows/ci.yml`
+  evidence: tool `tools/validate-save-patch-pack.ps1`
+- [x] M2 hardening wave: strict apply toggle, preview target-profile fix, field selector fallback, and contract enforcement (`newValue` required).
+  evidence: test `tests/SwfocTrainer.Tests/Saves/SavePatchPackServiceTests.cs`
+  evidence: test `tests/SwfocTrainer.Tests/Saves/SavePatchApplyServiceTests.cs`
+  evidence: test `tests/SwfocTrainer.Tests/Saves/SaveCodecTests.cs`
+  evidence: manual `2026-02-17` `dotnet build SwfocTrainer.sln -c Release --no-restore`
+  evidence: manual `2026-02-17` `dotnet test tests/SwfocTrainer.Tests/SwfocTrainer.Tests.csproj -c Release --no-build --filter "FullyQualifiedName~SavePatch"` => `Passed: 17`
+  evidence: manual `2026-02-17` `dotnet test tests/SwfocTrainer.Tests/SwfocTrainer.Tests.csproj -c Release --no-build --filter "FullyQualifiedName!~SwfocTrainer.Tests.Profiles.Live&FullyQualifiedName!~RuntimeAttachSmokeTests"` => `Passed: 85`
+  evidence: manual `2026-02-17` `powershell.exe -NoProfile -ExecutionPolicy Bypass -Command "& '.\\tools\\validate-save-patch-pack.ps1' -PatchPackPath 'tools/fixtures/save_patch_pack_sample.json' -SchemaPath 'tools/schemas/save-patch-pack.schema.json' -Strict"` => `validation passed`
+  evidence: manual `2026-02-17` `pwsh.exe ./tools/export-save-patch-pack.ps1 ...` + `pwsh.exe ./tools/apply-save-patch-pack.ps1 ... -Strict:$true` => `Classification=Applied`, backup/receipt under `TestResults/savepatch-smoke/`
 
 ## Later (M2 + M3 + M4)
 
-- [ ] Save Lab patch-pack export/import with deterministic compatibility checks.
 - [ ] Extend save schema validation coverage and corpus round-trip checks.
 - [ ] Build custom-mod onboarding wizard (bootstrap profile + hint/dependency scaffolding).
 - [ ] Add signature calibration flow and compatibility report card for newly onboarded mods.

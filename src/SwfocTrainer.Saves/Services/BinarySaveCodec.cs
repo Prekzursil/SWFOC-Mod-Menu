@@ -1,5 +1,6 @@
 using System.Buffers.Binary;
 using System.Globalization;
+using System.Text;
 using Microsoft.Extensions.Logging;
 using SwfocTrainer.Core.Contracts;
 using SwfocTrainer.Core.IO;
@@ -181,6 +182,7 @@ public sealed class BinarySaveCodec : ISaveCodec
             "uint32" when field.Length >= 4 => little ? BinaryPrimitives.ReadUInt32LittleEndian(span) : BinaryPrimitives.ReadUInt32BigEndian(span),
             "int64" when field.Length >= 8 => little ? BinaryPrimitives.ReadInt64LittleEndian(span) : BinaryPrimitives.ReadInt64BigEndian(span),
             "float" when field.Length >= 4 => ReadSingle(span[..4], little),
+            "double" when field.Length >= 8 => ReadDouble(span[..8], little),
             "byte" => span[0],
             "bool" => span[0] != 0,
             "ascii" => System.Text.Encoding.ASCII.GetString(span).TrimEnd('\0'),
@@ -197,6 +199,17 @@ public sealed class BinarySaveCodec : ISaveCodec
         }
 
         return BitConverter.ToSingle(buffer, 0);
+    }
+
+    private static double ReadDouble(ReadOnlySpan<byte> bytes, bool littleEndian)
+    {
+        var buffer = bytes.ToArray();
+        if (BitConverter.IsLittleEndian != littleEndian)
+        {
+            Array.Reverse(buffer);
+        }
+
+        return BitConverter.ToDouble(buffer, 0);
     }
 
     private static void ApplyFieldEdit(byte[] raw, SaveFieldDefinition field, object? value, string endianness)
@@ -258,14 +271,51 @@ public sealed class BinarySaveCodec : ISaveCodec
                 span[0] = Convert.ToByte(value, CultureInfo.InvariantCulture);
                 break;
             }
+            case "float":
+            {
+                var floatValue = Convert.ToSingle(value, CultureInfo.InvariantCulture);
+                WriteFloatingPoint(span, BitConverter.GetBytes(floatValue), little);
+                break;
+            }
+            case "double":
+            {
+                var doubleValue = Convert.ToDouble(value, CultureInfo.InvariantCulture);
+                WriteFloatingPoint(span, BitConverter.GetBytes(doubleValue), little);
+                break;
+            }
             case "bool":
             {
                 span[0] = Convert.ToBoolean(value, CultureInfo.InvariantCulture) ? (byte)1 : (byte)0;
                 break;
             }
+            case "ascii":
+            {
+                var text = Convert.ToString(value, CultureInfo.InvariantCulture) ?? string.Empty;
+                var bytes = Encoding.ASCII.GetBytes(text);
+                span.Clear();
+                var copyLength = Math.Min(bytes.Length, span.Length);
+                bytes.AsSpan(0, copyLength).CopyTo(span);
+                break;
+            }
             default:
                 throw new NotSupportedException($"Unsupported field type for editing: {field.ValueType}");
         }
+    }
+
+    private static void WriteFloatingPoint(Span<byte> target, byte[] sourceBytes, bool littleEndian)
+    {
+        if (sourceBytes.Length > target.Length)
+        {
+            throw new InvalidOperationException("Floating point source bytes exceed target field length.");
+        }
+
+        if (BitConverter.IsLittleEndian != littleEndian)
+        {
+            Array.Reverse(sourceBytes);
+        }
+
+        target.Clear();
+        sourceBytes.AsSpan().CopyTo(target);
     }
 
     private static string? EvaluateRule(ValidationRule rule, SaveSchema schema, byte[] raw)

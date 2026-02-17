@@ -29,6 +29,20 @@
 2. **Direct int write** (fallback): Always writes to resolved `credits` symbol address regardless of hook status. Works even when AOB scan fails.
 3. Diagnostics in result: `hookInstalled`, `hookError`, `hookTickObserved`, `forcedFloatBits`, context addresses.
 
+## Save Lab patch-pack pipeline (M2)
+
+1. Load target save through `ISaveCodec`.
+2. Export typed field diff using `ISavePatchPackService.ExportAsync`.
+3. Validate compatibility + preview with:
+   - `ISavePatchPackService.ValidateCompatibilityAsync`
+   - `ISavePatchPackService.PreviewApplyAsync`
+4. Apply atomically via `ISavePatchApplyService.ApplyAsync`:
+   - in-memory operation apply
+   - schema validation before write
+   - backup file `<target>.bak.<runId>.sav`
+   - receipt file `<target>.apply-receipt.<runId>.json`
+5. Roll back using `ISavePatchApplyService.RestoreLastBackupAsync`.
+
 ## Projects
 
 - `SwfocTrainer.Core`: contracts, records, orchestrator, audit logger.
@@ -36,7 +50,7 @@
 - `SwfocTrainer.Profiles`: manifest/profile loading, inheritance, updates.
 - `SwfocTrainer.Catalog`: prebuilt catalog loading and XML fallback parser.
 - `SwfocTrainer.Helper`: helper-mod deployment and hash verification.
-- `SwfocTrainer.Saves`: schema-driven save parse/edit/validate/write.
+- `SwfocTrainer.Saves`: schema-driven save parse/edit/validate/write + patch-pack export/apply/rollback.
 - `SwfocTrainer.App`: WPF shell and user workflows.
 
 ## Data roots

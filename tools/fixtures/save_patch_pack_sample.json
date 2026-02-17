@@ -1,0 +1,36 @@
+{
+  "metadata": {
+    "schemaVersion": "1.0",
+    "profileId": "base_swfoc",
+    "schemaId": "base_swfoc_steam_v1",
+    "sourceHash": "5ed97e608ecf9146aee52de6f00f5f0bded8f6d1e2d7f9f07f3ab4381b7a1d52",
+    "createdAtUtc": "2026-02-17T00:00:00Z"
+  },
+  "compatibility": {
+    "allowedProfileIds": [
+      "base_swfoc"
+    ],
+    "requiredSchemaId": "base_swfoc_steam_v1",
+    "saveBuildHint": "foc_steam_1.1.0"
+  },
+  "operations": [
+    {
+      "kind": "SetValue",
+      "fieldPath": "/economy/credits_empire",
+      "fieldId": "credits_empire",
+      "valueType": "int32",
+      "oldValue": 0,
+      "newValue": 5000,
+      "offset": 6144
+    },
+    {
+      "kind": "SetValue",
+      "fieldPath": "/hero_state/vader/respawn_timer",
+      "fieldId": "hero_vader_respawn",
+      "valueType": "int32",
+      "oldValue": 0,
+      "newValue": 120,
+      "offset": 20484
+    }
+  ]
+}

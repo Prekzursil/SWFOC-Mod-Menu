@@ -1,0 +1,53 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://swfoc-mod-menu.local/schemas/save-patch-pack.schema.json",
+  "title": "SavePatchPack",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["metadata", "compatibility", "operations"],
+  "properties": {
+    "metadata": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["schemaVersion", "profileId", "schemaId", "sourceHash", "createdAtUtc"],
+      "properties": {
+        "schemaVersion": { "type": "string", "const": "1.0" },
+        "profileId": { "type": "string", "minLength": 1 },
+        "schemaId": { "type": "string", "minLength": 1 },
+        "sourceHash": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+        "createdAtUtc": { "type": "string", "format": "date-time" }
+      }
+    },
+    "compatibility": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["allowedProfileIds", "requiredSchemaId"],
+      "properties": {
+        "allowedProfileIds": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "type": "string", "minLength": 1 }
+        },
+        "requiredSchemaId": { "type": "string", "minLength": 1 },
+        "saveBuildHint": { "type": ["string", "null"] }
+      }
+    },
+    "operations": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["kind", "fieldPath", "fieldId", "valueType", "newValue", "offset"],
+        "properties": {
+          "kind": { "type": "string", "enum": ["SetValue"] },
+          "fieldPath": { "type": "string", "minLength": 1 },
+          "fieldId": { "type": "string", "minLength": 1 },
+          "valueType": { "type": "string", "minLength": 1 },
+          "oldValue": {},
+          "newValue": {},
+          "offset": { "type": "integer", "minimum": 0 }
+        }
+      }
+    }
+  }
+}

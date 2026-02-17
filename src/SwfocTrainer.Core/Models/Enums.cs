@@ -91,3 +91,23 @@ public enum ActionReliabilityState
     Experimental = 1,
     Unavailable = 2
 }
+
+/// <summary>
+/// Supported patch operation kinds for Save Lab patch-pack v1.
+/// </summary>
+public enum SavePatchOperationKind
+{
+    SetValue = 0
+}
+
+/// <summary>
+/// High-level outcome classification for patch-pack apply attempts.
+/// </summary>
+public enum SavePatchApplyClassification
+{
+    Applied = 0,
+    ValidationFailed = 1,
+    CompatibilityFailed = 2,
+    WriteFailed = 3,
+    RolledBack = 4
+}

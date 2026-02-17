@@ -1,10 +1,12 @@
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text.Json;
 using System.Text.Json.Nodes;
+using System.Text.Json.Serialization;
 using System.Windows.Input;
 using System.Windows.Threading;
 using Microsoft.Win32;
@@ -27,6 +29,8 @@ public sealed class MainViewModel : INotifyPropertyChanged
     private readonly TrainerOrchestrator _orchestrator;
     private readonly ICatalogService _catalog;
     private readonly ISaveCodec _saveCodec;
+    private readonly ISavePatchPackService _savePatchPackService;
+    private readonly ISavePatchApplyService _savePatchApplyService;
     private readonly IHelperModService _helper;
     private readonly IProfileUpdateService _updates;
     private readonly IValueFreezeService _freezeService;
@@ -44,6 +48,9 @@ public sealed class MainViewModel : INotifyPropertyChanged
     private string _saveNodePath = string.Empty;
     private string _saveEditValue = string.Empty;
     private string _saveSearchQuery = string.Empty;
+    private string _savePatchPackPath = string.Empty;
+    private string _savePatchMetadataSummary = "No patch pack loaded.";
+    private string _savePatchApplySummary = string.Empty;
     private string _creditsValue = "1000000";
     private bool _creditsFreeze;
     private int _resolvedSymbolsCount;
@@ -60,10 +67,13 @@ public sealed class MainViewModel : INotifyPropertyChanged
     private string _spawnQuantity = "1";
     private string _spawnDelayMs = "125";
     private bool _spawnStopOnFailure = true;
+    private bool _isStrictPatchApply = true;
     private SpawnPresetViewItem? _selectedSpawnPreset;
 
     private SaveDocument? _loadedSave;
     private byte[]? _loadedSaveOriginal;
+    private SavePatchPack? _loadedPatchPack;
+    private SavePatchPreview? _loadedPatchPreview;
 
     private IReadOnlyDictionary<string, ActionSpec> _loadedActionSpecs =
         new Dictionary<string, ActionSpec>(StringComparer.OrdinalIgnoreCase);
@@ -71,6 +81,12 @@ public sealed class MainViewModel : INotifyPropertyChanged
     private static readonly JsonSerializerOptions PrettyJson = new()
     {
         WriteIndented = true
+    };
+
+    private static readonly JsonSerializerOptions SavePatchJson = new()
+    {
+        WriteIndented = true,
+        Converters = { new JsonStringEnumConverter() }
     };
 
     private static readonly IReadOnlyDictionary<string, string> DefaultSymbolByActionId =
@@ -117,6 +133,8 @@ public sealed class MainViewModel : INotifyPropertyChanged
         TrainerOrchestrator orchestrator,
         ICatalogService catalog,
         ISaveCodec saveCodec,
+        ISavePatchPackService savePatchPackService,
+        ISavePatchApplyService savePatchApplyService,
         IHelperModService helper,
         IProfileUpdateService updates,
         IValueFreezeService freezeService,
@@ -131,6 +149,8 @@ public sealed class MainViewModel : INotifyPropertyChanged
         _orchestrator = orchestrator;
         _catalog = catalog;
         _saveCodec = saveCodec;
+        _savePatchPackService = savePatchPackService;
+        _savePatchApplyService = savePatchApplyService;
         _helper = helper;
         _updates = updates;
         _freezeService = freezeService;
@@ -146,6 +166,8 @@ public sealed class MainViewModel : INotifyPropertyChanged
         Hotkeys = new ObservableCollection<HotkeyBindingItem>();
         SaveFields = new ObservableCollection<SaveFieldViewItem>();
         FilteredSaveFields = new ObservableCollection<SaveFieldViewItem>();
+        SavePatchOperations = new ObservableCollection<SavePatchOperationViewItem>();
+        SavePatchCompatibility = new ObservableCollection<SavePatchCompatibilityViewItem>();
         ActionReliability = new ObservableCollection<ActionReliabilityViewItem>();
         SelectedUnitTransactions = new ObservableCollection<SelectedUnitTransactionViewItem>();
         SpawnPresets = new ObservableCollection<SpawnPresetViewItem>();
@@ -167,6 +189,12 @@ public sealed class MainViewModel : INotifyPropertyChanged
         ValidateSaveCommand = new AsyncCommand(ValidateSaveAsync, () => _loadedSave is not null);
         RefreshDiffCommand = new AsyncCommand(RefreshDiffAsync, () => _loadedSave is not null && _loadedSaveOriginal is not null);
         WriteSaveCommand = new AsyncCommand(WriteSaveAsync, () => _loadedSave is not null);
+        BrowsePatchPackCommand = new AsyncCommand(BrowsePatchPackAsync);
+        ExportPatchPackCommand = new AsyncCommand(ExportPatchPackAsync, () => _loadedSave is not null && _loadedSaveOriginal is not null && !string.IsNullOrWhiteSpace(SelectedProfileId));
+        LoadPatchPackCommand = new AsyncCommand(LoadPatchPackAsync, () => !string.IsNullOrWhiteSpace(SavePatchPackPath));
+        PreviewPatchPackCommand = new AsyncCommand(PreviewPatchPackAsync, () => _loadedSave is not null && _loadedPatchPack is not null && !string.IsNullOrWhiteSpace(SelectedProfileId));
+        ApplyPatchPackCommand = new AsyncCommand(ApplyPatchPackAsync, () => _loadedPatchPack is not null && !string.IsNullOrWhiteSpace(SavePath) && !string.IsNullOrWhiteSpace(SelectedProfileId));
+        RestoreBackupCommand = new AsyncCommand(RestoreBackupAsync, () => !string.IsNullOrWhiteSpace(SavePath));
         LoadHotkeysCommand = new AsyncCommand(LoadHotkeysAsync);
         SaveHotkeysCommand = new AsyncCommand(SaveHotkeysAsync);
         AddHotkeyCommand = new AsyncCommand(AddHotkeyAsync);
@@ -215,6 +243,10 @@ public sealed class MainViewModel : INotifyPropertyChanged
     public ObservableCollection<SaveFieldViewItem> SaveFields { get; }
 
     public ObservableCollection<SaveFieldViewItem> FilteredSaveFields { get; }
+
+    public ObservableCollection<SavePatchOperationViewItem> SavePatchOperations { get; }
+
+    public ObservableCollection<SavePatchCompatibilityViewItem> SavePatchCompatibility { get; }
 
     public ObservableCollection<ActionReliabilityViewItem> ActionReliability { get; }
 
@@ -294,6 +326,30 @@ public sealed class MainViewModel : INotifyPropertyChanged
                 ApplySaveSearch();
             }
         }
+    }
+
+    public string SavePatchPackPath
+    {
+        get => _savePatchPackPath;
+        set
+        {
+            if (SetField(ref _savePatchPackPath, value))
+            {
+                CommandManager.InvalidateRequerySuggested();
+            }
+        }
+    }
+
+    public string SavePatchMetadataSummary
+    {
+        get => _savePatchMetadataSummary;
+        set => SetField(ref _savePatchMetadataSummary, value);
+    }
+
+    public string SavePatchApplySummary
+    {
+        get => _savePatchApplySummary;
+        set => SetField(ref _savePatchApplySummary, value);
     }
 
     public int ResolvedSymbolsCount
@@ -394,6 +450,12 @@ public sealed class MainViewModel : INotifyPropertyChanged
         set => SetField(ref _spawnStopOnFailure, value);
     }
 
+    public bool IsStrictPatchApply
+    {
+        get => _isStrictPatchApply;
+        set => SetField(ref _isStrictPatchApply, value);
+    }
+
     public ICommand LoadProfilesCommand { get; }
 
     public ICommand AttachCommand { get; }
@@ -425,6 +487,18 @@ public sealed class MainViewModel : INotifyPropertyChanged
     public ICommand RefreshDiffCommand { get; }
 
     public ICommand WriteSaveCommand { get; }
+
+    public ICommand BrowsePatchPackCommand { get; }
+
+    public ICommand ExportPatchPackCommand { get; }
+
+    public ICommand LoadPatchPackCommand { get; }
+
+    public ICommand PreviewPatchPackCommand { get; }
+
+    public ICommand ApplyPatchPackCommand { get; }
+
+    public ICommand RestoreBackupCommand { get; }
 
     public ICommand LoadHotkeysCommand { get; }
 
@@ -1036,7 +1110,10 @@ public sealed class MainViewModel : INotifyPropertyChanged
         _loadedSaveOriginal = _loadedSave.Raw.ToArray();
         RebuildSaveFieldRows();
         await RefreshDiffAsync();
+        ClearPatchPreviewState(clearLoadedPack: false);
+        SavePatchApplySummary = string.Empty;
         Status = $"Loaded save with schema {profile.SaveSchemaId} ({_loadedSave.Raw.Length} bytes)";
+        CommandManager.InvalidateRequerySuggested();
     }
 
     private async Task EditSaveAsync()
@@ -1050,6 +1127,7 @@ public sealed class MainViewModel : INotifyPropertyChanged
         await _saveCodec.EditAsync(_loadedSave, SaveNodePath, value);
         RebuildSaveFieldRows();
         await RefreshDiffAsync();
+        ClearPatchPreviewState(clearLoadedPack: false);
         Status = $"Edited save field: {SaveNodePath}";
     }
 
@@ -1078,6 +1156,177 @@ public sealed class MainViewModel : INotifyPropertyChanged
 
         await _saveCodec.WriteAsync(_loadedSave, output);
         Status = $"Wrote edited save: {output}";
+    }
+
+    private Task BrowsePatchPackAsync()
+    {
+        var dialog = new OpenFileDialog
+        {
+            Filter = "Patch pack (*.json)|*.json|All files (*.*)|*.*",
+            Multiselect = false
+        };
+
+        if (dialog.ShowDialog() == true)
+        {
+            SavePatchPackPath = dialog.FileName;
+            Status = $"Selected patch pack: {SavePatchPackPath}";
+        }
+
+        return Task.CompletedTask;
+    }
+
+    private async Task ExportPatchPackAsync()
+    {
+        if (_loadedSave is null || _loadedSaveOriginal is null || string.IsNullOrWhiteSpace(SelectedProfileId))
+        {
+            return;
+        }
+
+        var originalDocument = _loadedSave with { Raw = _loadedSaveOriginal.ToArray() };
+        var pack = await _savePatchPackService.ExportAsync(originalDocument, _loadedSave, SelectedProfileId);
+
+        var dialog = new SaveFileDialog
+        {
+            Filter = "Patch pack (*.json)|*.json|All files (*.*)|*.*",
+            FileName = $"{Path.GetFileNameWithoutExtension(_loadedSave.Path)}.patch.json",
+            AddExtension = true,
+            DefaultExt = ".json"
+        };
+
+        if (dialog.ShowDialog() != true)
+        {
+            Status = "Patch-pack export canceled.";
+            return;
+        }
+
+        var outputPath = TrustedPathPolicy.NormalizeAbsolute(dialog.FileName);
+        TrustedPathPolicy.EnsureAllowedExtension(outputPath, ".json");
+        var outputDirectory = Path.GetDirectoryName(outputPath);
+        if (string.IsNullOrWhiteSpace(outputDirectory))
+        {
+            throw new InvalidOperationException("Patch-pack export path has no parent directory.");
+        }
+
+        Directory.CreateDirectory(outputDirectory);
+        var json = JsonSerializer.Serialize(pack, SavePatchJson);
+        await File.WriteAllTextAsync(outputPath, json);
+
+        SetLoadedPatchPack(pack, outputPath);
+        SavePatchApplySummary = string.Empty;
+        Status = $"Exported patch pack ({pack.Operations.Count} op(s)): {outputPath}";
+    }
+
+    private async Task LoadPatchPackAsync()
+    {
+        var pack = await _savePatchPackService.LoadPackAsync(SavePatchPackPath);
+        SetLoadedPatchPack(pack, SavePatchPackPath);
+        SavePatchApplySummary = string.Empty;
+        Status = $"Loaded patch pack ({pack.Operations.Count} op(s)).";
+    }
+
+    private async Task PreviewPatchPackAsync()
+    {
+        if (_loadedPatchPack is null || _loadedSave is null || string.IsNullOrWhiteSpace(SelectedProfileId))
+        {
+            return;
+        }
+
+        var compatibility = await _savePatchPackService.ValidateCompatibilityAsync(_loadedPatchPack, _loadedSave, SelectedProfileId);
+        var preview = await _savePatchPackService.PreviewApplyAsync(_loadedPatchPack, _loadedSave, SelectedProfileId);
+        _loadedPatchPreview = preview;
+
+        SavePatchOperations.Clear();
+        foreach (var operation in preview.OperationsToApply)
+        {
+            SavePatchOperations.Add(new SavePatchOperationViewItem(
+                operation.Kind.ToString(),
+                operation.FieldPath,
+                operation.FieldId,
+                operation.ValueType,
+                FormatPatchValue(operation.OldValue),
+                FormatPatchValue(operation.NewValue)));
+        }
+
+        SavePatchCompatibility.Clear();
+        SavePatchCompatibility.Add(new SavePatchCompatibilityViewItem(
+            "info",
+            "source_hash_match",
+            compatibility.SourceHashMatches ? "Source hash matches target save." : "Source hash mismatch (strict apply blocks this)."));
+        SavePatchCompatibility.Add(new SavePatchCompatibilityViewItem(
+            "info",
+            "strict_apply_mode",
+            IsStrictPatchApply
+                ? "Strict apply is ON: source hash mismatch blocks apply."
+                : "Strict apply is OFF: source hash mismatch warning will not block apply."));
+        foreach (var warning in compatibility.Warnings)
+        {
+            SavePatchCompatibility.Add(new SavePatchCompatibilityViewItem("warning", "compatibility_warning", warning));
+        }
+
+        foreach (var warning in preview.Warnings)
+        {
+            SavePatchCompatibility.Add(new SavePatchCompatibilityViewItem("warning", "preview_warning", warning));
+        }
+
+        foreach (var error in compatibility.Errors)
+        {
+            SavePatchCompatibility.Add(new SavePatchCompatibilityViewItem("error", "compatibility_error", error));
+        }
+
+        foreach (var error in preview.Errors)
+        {
+            SavePatchCompatibility.Add(new SavePatchCompatibilityViewItem("error", "preview_error", error));
+        }
+
+        SavePatchMetadataSummary =
+            $"Patch {(_loadedPatchPack.Metadata.SchemaVersion)} | profile={_loadedPatchPack.Metadata.ProfileId} | schema={_loadedPatchPack.Metadata.SchemaId} | ops={_loadedPatchPack.Operations.Count}";
+        SavePatchApplySummary = string.Empty;
+        Status = preview.IsCompatible && compatibility.IsCompatible
+            ? $"Patch preview ready: {SavePatchOperations.Count} operation(s) would be applied."
+            : "Patch preview blocked by compatibility/validation errors.";
+    }
+
+    private async Task ApplyPatchPackAsync()
+    {
+        if (_loadedPatchPack is null || string.IsNullOrWhiteSpace(SelectedProfileId))
+        {
+            return;
+        }
+
+        var expectedOperationCount = _loadedPatchPreview?.OperationsToApply.Count ?? _loadedPatchPack.Operations.Count;
+        var result = await _savePatchApplyService.ApplyAsync(SavePath, _loadedPatchPack, SelectedProfileId, strict: IsStrictPatchApply);
+        SavePatchApplySummary = $"{result.Classification}: {result.Message}";
+        if (result.Applied)
+        {
+            await LoadSaveAsync();
+            if (!string.IsNullOrWhiteSpace(result.BackupPath))
+            {
+                SavePatchCompatibility.Add(new SavePatchCompatibilityViewItem("info", "backup_path", result.BackupPath));
+            }
+
+            if (!string.IsNullOrWhiteSpace(result.ReceiptPath))
+            {
+                SavePatchCompatibility.Add(new SavePatchCompatibilityViewItem("info", "receipt_path", result.ReceiptPath));
+            }
+        }
+
+        Status = result.Applied
+            ? $"Patch applied successfully ({result.Classification}, ops={expectedOperationCount})."
+            : $"Patch apply failed ({result.Classification}): {result.Message}";
+    }
+
+    private async Task RestoreBackupAsync()
+    {
+        var result = await _savePatchApplyService.RestoreLastBackupAsync(SavePath);
+        SavePatchApplySummary = result.Message;
+        if (result.Restored && !string.IsNullOrWhiteSpace(SelectedProfileId))
+        {
+            await LoadSaveAsync();
+        }
+
+        Status = result.Restored
+            ? $"Backup restored: {result.BackupPath}"
+            : $"Backup restore skipped: {result.Message}";
     }
 
     private Task RefreshDiffAsync()
@@ -1159,14 +1408,58 @@ public sealed class MainViewModel : INotifyPropertyChanged
         }
     }
 
+    private void SetLoadedPatchPack(SavePatchPack pack, string path)
+    {
+        _loadedPatchPack = pack;
+        SavePatchPackPath = path;
+        SavePatchMetadataSummary =
+            $"Patch {pack.Metadata.SchemaVersion} | profile={pack.Metadata.ProfileId} | schema={pack.Metadata.SchemaId} | ops={pack.Operations.Count}";
+        ClearPatchPreviewState(clearLoadedPack: false);
+        CommandManager.InvalidateRequerySuggested();
+    }
+
+    private void ClearPatchPreviewState(bool clearLoadedPack)
+    {
+        if (clearLoadedPack)
+        {
+            _loadedPatchPack = null;
+            SavePatchMetadataSummary = "No patch pack loaded.";
+        }
+
+        _loadedPatchPreview = null;
+        SavePatchOperations.Clear();
+        SavePatchCompatibility.Clear();
+        CommandManager.InvalidateRequerySuggested();
+    }
+
+    private static string FormatPatchValue(object? value)
+    {
+        if (value is null)
+        {
+            return "null";
+        }
+
+        if (value is JsonElement element)
+        {
+            return element.ValueKind switch
+            {
+                JsonValueKind.String => element.GetString() ?? string.Empty,
+                JsonValueKind.Null => "null",
+                _ => element.ToString()
+            };
+        }
+
+        return value.ToString() ?? string.Empty;
+    }
+
     private static object ParsePrimitive(string input)
     {
-        if (int.TryParse(input, out var intValue))
+        if (int.TryParse(input, NumberStyles.Integer, CultureInfo.InvariantCulture, out var intValue))
         {
             return intValue;
         }
 
-        if (long.TryParse(input, out var longValue))
+        if (long.TryParse(input, NumberStyles.Integer, CultureInfo.InvariantCulture, out var longValue))
         {
             return longValue;
         }
@@ -1174,6 +1467,18 @@ public sealed class MainViewModel : INotifyPropertyChanged
         if (bool.TryParse(input, out var boolValue))
         {
             return boolValue;
+        }
+
+        var trimmed = input.Trim();
+        if (trimmed.EndsWith("f", StringComparison.OrdinalIgnoreCase) &&
+            float.TryParse(trimmed[..^1], NumberStyles.Float | NumberStyles.AllowThousands, CultureInfo.InvariantCulture, out var floatValue))
+        {
+            return floatValue;
+        }
+
+        if (double.TryParse(trimmed, NumberStyles.Float | NumberStyles.AllowThousands, CultureInfo.InvariantCulture, out var doubleValue))
+        {
+            return doubleValue;
         }
 
         return input;
