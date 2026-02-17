@@ -199,6 +199,12 @@ public sealed class SavePatchPackService : ISavePatchPackService
                 continue;
             }
 
+            if (operation.NewValue is null)
+            {
+                errors.Add($"Operation '{operation.FieldId}' is missing required newValue.");
+                continue;
+            }
+
             var field = ResolveField(fieldByPath, fieldById, operation, warnings);
             if (field is null)
             {
@@ -412,6 +418,12 @@ public sealed class SavePatchPackService : ISavePatchPackService
                 {
                     errors.Add($"operations[{index}].{field} is required");
                 }
+            }
+
+            if (TryGetPropertyIgnoreCase(operation, "newValue", out var newValue) &&
+                newValue.ValueKind == JsonValueKind.Null)
+            {
+                errors.Add($"operations[{index}].newValue cannot be null");
             }
 
             index++;

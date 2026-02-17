@@ -1098,7 +1098,10 @@ public sealed class MainViewModel : INotifyPropertyChanged
         return Task.CompletedTask;
     }
 
-    private async Task LoadSaveAsync()
+    private Task LoadSaveAsync()
+        => LoadSaveAsync(clearPatchSummary: true);
+
+    private async Task LoadSaveAsync(bool clearPatchSummary)
     {
         if (SelectedProfileId is null)
         {
@@ -1111,7 +1114,11 @@ public sealed class MainViewModel : INotifyPropertyChanged
         RebuildSaveFieldRows();
         await RefreshDiffAsync();
         ClearPatchPreviewState(clearLoadedPack: false);
-        SavePatchApplySummary = string.Empty;
+        if (clearPatchSummary)
+        {
+            SavePatchApplySummary = string.Empty;
+        }
+
         Status = $"Loaded save with schema {profile.SaveSchemaId} ({_loadedSave.Raw.Length} bytes)";
         CommandManager.InvalidateRequerySuggested();
     }
@@ -1295,19 +1302,16 @@ public sealed class MainViewModel : INotifyPropertyChanged
 
         var expectedOperationCount = _loadedPatchPreview?.OperationsToApply.Count ?? _loadedPatchPack.Operations.Count;
         var result = await _savePatchApplyService.ApplyAsync(SavePath, _loadedPatchPack, SelectedProfileId, strict: IsStrictPatchApply);
-        SavePatchApplySummary = $"{result.Classification}: {result.Message}";
+        var summary = $"{result.Classification}: {result.Message}";
         if (result.Applied)
         {
-            await LoadSaveAsync();
-            if (!string.IsNullOrWhiteSpace(result.BackupPath))
-            {
-                SavePatchCompatibility.Add(new SavePatchCompatibilityViewItem("info", "backup_path", result.BackupPath));
-            }
-
-            if (!string.IsNullOrWhiteSpace(result.ReceiptPath))
-            {
-                SavePatchCompatibility.Add(new SavePatchCompatibilityViewItem("info", "receipt_path", result.ReceiptPath));
-            }
+            await LoadSaveAsync(clearPatchSummary: false);
+            SavePatchApplySummary = summary;
+            AppendPatchArtifactRows(result.BackupPath, result.ReceiptPath);
+        }
+        else
+        {
+            SavePatchApplySummary = summary;
         }
 
         Status = result.Applied
@@ -1318,10 +1322,16 @@ public sealed class MainViewModel : INotifyPropertyChanged
     private async Task RestoreBackupAsync()
     {
         var result = await _savePatchApplyService.RestoreLastBackupAsync(SavePath);
-        SavePatchApplySummary = result.Message;
+        var summary = result.Message;
         if (result.Restored && !string.IsNullOrWhiteSpace(SelectedProfileId))
         {
-            await LoadSaveAsync();
+            await LoadSaveAsync(clearPatchSummary: false);
+            SavePatchApplySummary = summary;
+            AppendPatchArtifactRows(result.BackupPath, null);
+        }
+        else
+        {
+            SavePatchApplySummary = summary;
         }
 
         Status = result.Restored
@@ -1430,6 +1440,19 @@ public sealed class MainViewModel : INotifyPropertyChanged
         SavePatchOperations.Clear();
         SavePatchCompatibility.Clear();
         CommandManager.InvalidateRequerySuggested();
+    }
+
+    private void AppendPatchArtifactRows(string? backupPath, string? receiptPath)
+    {
+        if (!string.IsNullOrWhiteSpace(backupPath))
+        {
+            SavePatchCompatibility.Add(new SavePatchCompatibilityViewItem("info", "backup_path", backupPath));
+        }
+
+        if (!string.IsNullOrWhiteSpace(receiptPath))
+        {
+            SavePatchCompatibility.Add(new SavePatchCompatibilityViewItem("info", "receipt_path", receiptPath));
+        }
     }
 
     private static string FormatPatchValue(object? value)

@@ -38,6 +38,11 @@ internal static class SavePatchFieldCodec
     public static object? NormalizePatchValue(object? rawValue, string valueType)
     {
         var scalar = rawValue is JsonElement element ? ExtractJsonElementScalar(element) : rawValue;
+        if (scalar is null)
+        {
+            return null;
+        }
+
         return valueType.ToLowerInvariant() switch
         {
             "int32" => Convert.ToInt32(scalar, CultureInfo.InvariantCulture),

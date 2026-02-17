@@ -77,7 +77,29 @@ For a successful apply on `C:\...\campaign.sav`:
 - `ValidationFailed`: operations applied in-memory but schema validation failed.
 - `WriteFailed` / `RolledBack`: write path failure; rollback attempted automatically.
 
+### Sanitized User Messages
+
+- Save Lab apply/restore results are reason-code-first and user-safe.
+- UI summary text does not expose raw exception/file-system internals.
+- Deep exception context is kept in logs for diagnostics.
+
+Common reason codes:
+
+- `target_load_failed`
+- `compatibility_failed`
+- `source_hash_mismatch`
+- `new_value_missing`
+- `value_normalization_failed`
+- `field_apply_failed_all_selectors`
+- `validation_failed`
+- `write_failed_rolled_back`
+- `write_failed`
+
+### Backup Receipt Recovery
+
 ## Notes
 
 - Patch operations require `newValue`; `oldValue` is optional in v1.
 - Preview evaluates compatibility against the selected target profile (not only pack metadata profile).
+- Restore resolves backups from receipts newest-first, but receipt parse/path errors are non-fatal.
+- If receipts are malformed or stale, restore falls back to backup file scan (`*.bak.*.sav`) newest-first.

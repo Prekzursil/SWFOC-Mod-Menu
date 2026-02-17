@@ -61,15 +61,16 @@ Reliability rule for runtime/mod tasks:
 - [x] M2/S5 add deterministic CI/schema tooling for patch-pack contract.
   evidence: workflow `.github/workflows/ci.yml`
   evidence: tool `tools/validate-save-patch-pack.ps1`
-- [x] M2 hardening wave: strict apply toggle, preview target-profile fix, field selector fallback, and contract enforcement (`newValue` required).
+- [x] M2 hardening wave: strict apply toggle, preview target-profile fix, field selector fallback, contract enforcement (`newValue` required), sanitized Save Lab failures, and receipt fallback recovery.
   evidence: test `tests/SwfocTrainer.Tests/Saves/SavePatchPackServiceTests.cs`
   evidence: test `tests/SwfocTrainer.Tests/Saves/SavePatchApplyServiceTests.cs`
   evidence: test `tests/SwfocTrainer.Tests/Saves/SaveCodecTests.cs`
-  evidence: manual `2026-02-17` `dotnet build SwfocTrainer.sln -c Release --no-restore`
-  evidence: manual `2026-02-17` `dotnet test tests/SwfocTrainer.Tests/SwfocTrainer.Tests.csproj -c Release --no-build --filter "FullyQualifiedName~SavePatch"` => `Passed: 17`
-  evidence: manual `2026-02-17` `dotnet test tests/SwfocTrainer.Tests/SwfocTrainer.Tests.csproj -c Release --no-build --filter "FullyQualifiedName!~SwfocTrainer.Tests.Profiles.Live&FullyQualifiedName!~RuntimeAttachSmokeTests"` => `Passed: 85`
-  evidence: manual `2026-02-17` `powershell.exe -NoProfile -ExecutionPolicy Bypass -Command "& '.\\tools\\validate-save-patch-pack.ps1' -PatchPackPath 'tools/fixtures/save_patch_pack_sample.json' -SchemaPath 'tools/schemas/save-patch-pack.schema.json' -Strict"` => `validation passed`
-  evidence: manual `2026-02-17` `pwsh.exe ./tools/export-save-patch-pack.ps1 ...` + `pwsh.exe ./tools/apply-save-patch-pack.ps1 ... -Strict:$true` => `Classification=Applied`, backup/receipt under `TestResults/savepatch-smoke/`
+  evidence: manual `2026-02-18` `dotnet build SwfocTrainer.sln -c Release --no-restore`
+  evidence: manual `2026-02-18` `dotnet test tests/SwfocTrainer.Tests/SwfocTrainer.Tests.csproj -c Release --filter "FullyQualifiedName~SavePatchPackServiceTests|FullyQualifiedName~SavePatchApplyServiceTests"` => `Passed: 24`
+  evidence: manual `2026-02-18` `dotnet test tests/SwfocTrainer.Tests/SwfocTrainer.Tests.csproj -c Release --no-build --filter "FullyQualifiedName!~SwfocTrainer.Tests.Profiles.Live&FullyQualifiedName!~RuntimeAttachSmokeTests"` => `Passed: 92`
+  evidence: manual `2026-02-18` `pwsh.exe ./tools/validate-save-patch-pack.ps1 -PatchPackPath tools/fixtures/save_patch_pack_sample.json -SchemaPath tools/schemas/save-patch-pack.schema.json -Strict` => `validation passed`
+  evidence: manual `2026-02-18` `pwsh.exe ./tools/export-save-patch-pack.ps1 ...` + `pwsh.exe ./tools/apply-save-patch-pack.ps1 ... -Strict:$true` => `Classification=Applied`, backup/receipt under `TestResults/m2s6-smoke-20260218012211/`
+  evidence: manual `2026-02-18` Save Lab summary persistence verified in code path (`ApplyPatchPackAsync`/`RestoreBackupAsync` assign summary after reload + re-append backup/receipt rows)
 - [x] Add REST-only reviewer automation with soft fallback when no non-author reviewer is available.
   evidence: code `tools/request-pr-reviewers.ps1`
   evidence: workflow `.github/workflows/reviewer-automation.yml`

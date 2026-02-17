@@ -199,6 +199,104 @@ public sealed class SavePatchPackServiceTests
     }
 
     [Fact]
+    public async Task LoadPackAsync_ShouldRejectExplicitNullNewValue()
+    {
+        var service = CreateService();
+        var tempPath = Path.Combine(Path.GetTempPath(), $"swfoc-invalid-null-newvalue-{Guid.NewGuid():N}.json");
+
+        try
+        {
+            var invalidJson = """
+            {
+              "metadata": {
+                "schemaVersion": "1.0",
+                "profileId": "base_swfoc",
+                "schemaId": "base_swfoc_steam_v1",
+                "sourceHash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+                "createdAtUtc": "2026-02-17T00:00:00Z"
+              },
+              "compatibility": {
+                "allowedProfileIds": ["base_swfoc"],
+                "requiredSchemaId": "base_swfoc_steam_v1"
+              },
+              "operations": [
+                {
+                  "kind": "SetValue",
+                  "fieldPath": "/economy/credits_empire",
+                  "fieldId": "credits_empire",
+                  "valueType": "int32",
+                  "newValue": null,
+                  "offset": 6144
+                }
+              ]
+            }
+            """;
+
+            await File.WriteAllTextAsync(tempPath, invalidJson);
+            var act = () => service.LoadPackAsync(tempPath);
+            var ex = await act.Should().ThrowAsync<InvalidDataException>();
+            ex.Which.Message.Should().Contain("operations[0].newValue");
+        }
+        finally
+        {
+            if (File.Exists(tempPath))
+            {
+                File.Delete(tempPath);
+            }
+        }
+    }
+
+    [Fact]
+    public async Task LoadPackAsync_ShouldPreserveNullableOldValue_WithoutCoercion()
+    {
+        var service = CreateService();
+        var tempPath = Path.Combine(Path.GetTempPath(), $"swfoc-null-oldvalue-{Guid.NewGuid():N}.json");
+
+        try
+        {
+            var json = """
+            {
+              "metadata": {
+                "schemaVersion": "1.0",
+                "profileId": "base_swfoc",
+                "schemaId": "base_swfoc_steam_v1",
+                "sourceHash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+                "createdAtUtc": "2026-02-17T00:00:00Z"
+              },
+              "compatibility": {
+                "allowedProfileIds": ["base_swfoc"],
+                "requiredSchemaId": "base_swfoc_steam_v1"
+              },
+              "operations": [
+                {
+                  "kind": "SetValue",
+                  "fieldPath": "/economy/credits_empire",
+                  "fieldId": "credits_empire",
+                  "valueType": "int32",
+                  "oldValue": null,
+                  "newValue": 1234,
+                  "offset": 6144
+                }
+              ]
+            }
+            """;
+
+            await File.WriteAllTextAsync(tempPath, json);
+            var pack = await service.LoadPackAsync(tempPath);
+            pack.Operations.Should().HaveCount(1);
+            pack.Operations[0].OldValue.Should().BeNull();
+            pack.Operations[0].NewValue.Should().Be(1234);
+        }
+        finally
+        {
+            if (File.Exists(tempPath))
+            {
+                File.Delete(tempPath);
+            }
+        }
+    }
+
+    [Fact]
     public async Task PreviewApplyAsync_ShouldWarnWhenFieldPathDiffersFromCanonicalPath()
     {
         var patchPackService = CreateService();

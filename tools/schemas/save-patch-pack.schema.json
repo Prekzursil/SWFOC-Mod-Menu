@@ -44,7 +44,9 @@
           "fieldId": { "type": "string", "minLength": 1 },
           "valueType": { "type": "string", "minLength": 1 },
           "oldValue": {},
-          "newValue": {},
+          "newValue": {
+            "not": { "type": "null" }
+          },
           "offset": { "type": "integer", "minimum": 0 }
         }
       }
