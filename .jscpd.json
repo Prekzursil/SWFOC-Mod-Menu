@@ -1,0 +1,30 @@
+{
+  "threshold": 1,
+  "minLines": 25,
+  "minTokens": 90,
+  "reporters": [
+    "console",
+    "json"
+  ],
+  "output": "jscpd-report",
+  "format": [
+    "csharp",
+    "powershell",
+    "json",
+    "yaml",
+    "markdown",
+    "javascript",
+    "python"
+  ],
+  "absolute": false,
+  "ignore": [
+    "**/bin/**",
+    "**/obj/**",
+    "**/.git/**",
+    "**/TestResults/**",
+    "**/artifacts/**",
+    "1397421866(original mod)/**",
+    "3447786229(submod)/**",
+    "3661482670(cheat_mode_example)/**"
+  ]
+}

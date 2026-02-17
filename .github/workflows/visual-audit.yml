@@ -1,0 +1,72 @@
+name: visual-audit
+
+on:
+  workflow_dispatch:
+    inputs:
+      run_id:
+        description: Run ID to audit (maps to TestResults/runs/<run_id>/visual-pack)
+        required: true
+        type: string
+      baseline_dir:
+        description: Baseline directory
+        required: false
+        default: artifacts/visual-baselines
+        type: string
+      candidate_dir:
+        description: Candidate visual pack directory (optional override)
+        required: false
+        default: ""
+        type: string
+
+permissions:
+  contents: read
+
+jobs:
+  compare-visual-pack:
+    runs-on: windows-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Resolve visual paths
+        id: paths
+        shell: pwsh
+        run: |
+          $runId = "${{ github.event.inputs.run_id }}"
+          $candidateOverride = "${{ github.event.inputs.candidate_dir }}"
+          if ([string]::IsNullOrWhiteSpace($candidateOverride)) {
+            $candidate = "TestResults/runs/$runId/visual-pack"
+          }
+          else {
+            $candidate = $candidateOverride
+          }
+
+          $baseline = "${{ github.event.inputs.baseline_dir }}"
+          $output = "TestResults/runs/$runId/visual-pack/visual-compare.json"
+
+          "baseline=$baseline" >> $env:GITHUB_OUTPUT
+          "candidate=$candidate" >> $env:GITHUB_OUTPUT
+          "output=$output" >> $env:GITHUB_OUTPUT
+
+      - name: Compare visual pack
+        shell: pwsh
+        run: |
+          pwsh ./tools/compare-visual-pack.ps1 `
+            -BaselineDir "${{ steps.paths.outputs.baseline }}" `
+            -CandidateDir "${{ steps.paths.outputs.candidate }}" `
+            -OutputPath "${{ steps.paths.outputs.output }}"
+
+      - name: Applitools availability note
+        if: ${{ secrets.APPLITOOLS_API_KEY != '' }}
+        shell: pwsh
+        run: |
+          Write-Host "APPLITOOLS_API_KEY is configured. Visual pack can be uploaded for external review."
+
+      - name: Upload visual compare report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: visual-compare
+          path: |
+            ${{ steps.paths.outputs.output }}
+            ${{ steps.paths.outputs.candidate }}

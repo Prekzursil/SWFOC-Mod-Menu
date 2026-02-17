@@ -13,6 +13,27 @@ body:
     validations:
       required: true
   - type: input
+    id: run_id
+    attributes:
+      label: Run ID
+      placeholder: 20260217-010203
+    validations:
+      required: true
+  - type: input
+    id: bundle_json
+    attributes:
+      label: Repro bundle JSON path/link
+      placeholder: TestResults/runs/20260217-010203/repro-bundle.json
+    validations:
+      required: true
+  - type: input
+    id: bundle_md
+    attributes:
+      label: Repro bundle markdown path/link
+      placeholder: TestResults/runs/20260217-010203/repro-bundle.md
+    validations:
+      required: true
+  - type: input
     id: build
     attributes:
       label: Game build context
@@ -32,10 +53,19 @@ body:
     validations:
       required: true
   - type: textarea
+    id: runtime_mode
+    attributes:
+      label: Runtime mode evidence
+      description: Include runtimeModeHint/runtimeModeEffective/runtimeModeReasonCode and any tactical/galactic gating outcomes.
+    validations:
+      required: true
+  - type: textarea
     id: artifacts
     attributes:
       label: Calibration artifacts
       description: Paste paths/links to calibration report JSON and logs.
+    validations:
+      required: true
   - type: textarea
     id: candidate_patterns
     attributes:

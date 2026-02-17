@@ -19,6 +19,20 @@
 - `SpawnPresetServiceTests`
   - verifies preset loading, batch expansion, stop-on-failure and continue-on-failure execution
 
+## Tooling contract tests
+
+- Launch-context fixture parity:
+
+```powershell
+python tools/detect-launch-context.py --from-process-json tools/fixtures/launch_context_cases.json --profile-root profiles/default --pretty
+```
+
+- Repro bundle schema + semantic validation:
+
+```powershell
+pwsh ./tools/validate-repro-bundle.ps1 -BundlePath tools/fixtures/repro_bundle_sample.json -SchemaPath tools/schemas/repro-bundle.schema.json -Strict
+```
+
 ## Manual runtime checks
 
 For each profile (`base_sweaw`, `base_swfoc`, `aotr_1397421866_swfoc`, `roe_3447786229_swfoc`):
@@ -58,20 +72,13 @@ For reliability diagnostics:
 2. Record at least one action in each state (`stable`, `experimental`, `unavailable`) when applicable.
 3. Capture status line and action reason codes in issue evidence.
 
-Live test classes:
-
-- `tests/SwfocTrainer.Tests/Profiles/LiveTacticalToggleWorkflowTests.cs`
-- `tests/SwfocTrainer.Tests/Profiles/LiveHeroHelperWorkflowTests.cs`
-
 ## Live evidence run pack
 
-Use the scripted run pack when preparing issue evidence for M1 closure:
+Use the scripted run pack when preparing issue evidence:
 
 ```powershell
-pwsh ./tools/run-live-validation.ps1 -Configuration Release -NoBuild
+pwsh ./tools/run-live-validation.ps1 -Configuration Release -NoBuild -Scope FULL -EmitReproBundle $true
 ```
 
-This writes TRX + launch context outputs and prefilled issue comment templates to
-`TestResults/`. See `docs/LIVE_VALIDATION_RUNBOOK.md`.
-If Python is unavailable in the running shell, the run pack still emits
-`launch-context-fixture.json` with a machine-readable failure status.
+This writes TRX + launch context outputs + repro bundle + prefilled issue templates to `TestResults/runs/<runId>/`.
+If Python is unavailable in the running shell, the run pack still emits `launch-context-fixture.json` with a machine-readable failure status.

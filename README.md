@@ -74,6 +74,15 @@ python tools/detect-launch-context.py --from-process-json tools/fixtures/launch_
 
 This emits normalized launch context + profile recommendation JSON for runtime parity validation.
 
+## Repro Bundle Tooling
+
+```powershell
+pwsh ./tools/run-live-validation.ps1 -Configuration Release -NoBuild -Scope FULL -EmitReproBundle $true
+pwsh ./tools/validate-repro-bundle.ps1 -BundlePath TestResults/runs/<runId>/repro-bundle.json -SchemaPath tools/schemas/repro-bundle.schema.json -Strict
+```
+
+Runtime/mod triage should attach `repro-bundle.json` + `repro-bundle.md` from `TestResults/runs/<runId>/`.
+
 ## Calibration Workflow (Realtime Reliability)
 
 1. Run live attach against target profile.

@@ -103,6 +103,11 @@ jobs:
 
           Write-Host "launch-context smoke passed"
 
+      - name: Repro-bundle schema smoke
+        shell: pwsh
+        run: |
+          pwsh ./tools/validate-repro-bundle.ps1 -BundlePath tools/fixtures/repro_bundle_sample.json -SchemaPath tools/schemas/repro-bundle.schema.json -Strict
+
       - name: Upload Test Results
         if: always()
         uses: actions/upload-artifact@v4

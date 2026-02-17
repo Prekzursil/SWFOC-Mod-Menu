@@ -1,0 +1,67 @@
+name: policy-contract
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+permissions:
+  contents: read
+  pull-requests: read
+
+jobs:
+  validate-policy-contracts:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Validate policy contracts
+        shell: pwsh
+        run: |
+          pwsh ./tools/validate-policy-contracts.ps1
+
+  enforce-pr-evidence:
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Enforce runtime/tooling/test evidence policy
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const pr = context.payload.pull_request;
+            const owner = context.repo.owner;
+            const repo = context.repo.repo;
+            const number = pr.number;
+
+            const files = await github.paginate(github.rest.pulls.listFiles, {
+              owner,
+              repo,
+              pull_number: number,
+              per_page: 100
+            });
+
+            const touchesSensitiveSurface = files.some(f =>
+              f.filename.startsWith('src/SwfocTrainer.Runtime/') ||
+              f.filename.startsWith('tools/') ||
+              f.filename.startsWith('tests/')
+            );
+
+            if (!touchesSensitiveSurface) {
+              core.info('Sensitive surfaces not touched; evidence policy not enforced for this PR.');
+              return;
+            }
+
+            const body = (pr.body || '').toLowerCase();
+            const hasBundleField = body.includes('repro bundle json:');
+            const hasClassification = body.includes('classification:');
+            const hasSkipJustification = body.includes('justified skip');
+
+            if (!hasBundleField || (!hasClassification && !hasSkipJustification)) {
+              core.setFailed(
+                'PR touches runtime/tooling/tests but is missing reliability evidence. Required: Repro bundle JSON field and either classification or justified skip rationale.'
+              );
+            }
