@@ -44,7 +44,9 @@ $requiredFiles = @(
     "tests/AGENTS.md",
     ".github/pull_request_template.md",
     ".github/ISSUE_TEMPLATE/bug.yml",
-    ".github/ISSUE_TEMPLATE/calibration.yml"
+    ".github/ISSUE_TEMPLATE/calibration.yml",
+    ".github/workflows/reviewer-automation.yml",
+    "config/reviewer-roster.json"
 )
 
 foreach ($path in $requiredFiles) {
@@ -78,6 +80,24 @@ Require-Contains -Path ".github/ISSUE_TEMPLATE/calibration.yml" -Needles @(
     "id: bundle_md",
     "id: runtime_mode"
 )
+
+if (Test-Path -Path "config/reviewer-roster.json") {
+    try {
+        $roster = Get-Content -Raw -Path "config/reviewer-roster.json" | ConvertFrom-Json
+        foreach ($key in @("version", "users", "teams", "fallbackLabel", "fallbackCommentEnabled")) {
+            if (-not ($roster.PSObject.Properties.Name -contains $key)) {
+                Add-Error "config/reviewer-roster.json missing key: $key"
+            }
+        }
+
+        if ([string]::IsNullOrWhiteSpace($roster.fallbackLabel)) {
+            Add-Error "config/reviewer-roster.json fallbackLabel must be non-empty"
+        }
+    }
+    catch {
+        Add-Error "config/reviewer-roster.json is not valid JSON: $($_.Exception.Message)"
+    }
+}
 
 if ($errors.Count -gt 0) {
     Write-Host "policy contract validation failed:" -ForegroundColor Red

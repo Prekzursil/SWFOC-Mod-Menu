@@ -70,6 +70,15 @@ Reliability rule for runtime/mod tasks:
   evidence: manual `2026-02-17` `dotnet test tests/SwfocTrainer.Tests/SwfocTrainer.Tests.csproj -c Release --no-build --filter "FullyQualifiedName!~SwfocTrainer.Tests.Profiles.Live&FullyQualifiedName!~RuntimeAttachSmokeTests"` => `Passed: 85`
   evidence: manual `2026-02-17` `powershell.exe -NoProfile -ExecutionPolicy Bypass -Command "& '.\\tools\\validate-save-patch-pack.ps1' -PatchPackPath 'tools/fixtures/save_patch_pack_sample.json' -SchemaPath 'tools/schemas/save-patch-pack.schema.json' -Strict"` => `validation passed`
   evidence: manual `2026-02-17` `pwsh.exe ./tools/export-save-patch-pack.ps1 ...` + `pwsh.exe ./tools/apply-save-patch-pack.ps1 ... -Strict:$true` => `Classification=Applied`, backup/receipt under `TestResults/savepatch-smoke/`
+- [x] Add REST-only reviewer automation with soft fallback when no non-author reviewer is available.
+  evidence: code `tools/request-pr-reviewers.ps1`
+  evidence: workflow `.github/workflows/reviewer-automation.yml`
+  evidence: config `config/reviewer-roster.json`
+  evidence: doc `docs/REVIEWER_AUTOMATION.md`
+  evidence: manual `2026-02-17` `pwsh ./tools/request-pr-reviewers.ps1 -RepoOwner Prekzursil -RepoName SWFOC-Mod-Menu -PullNumber 46 -RosterPath config/reviewer-roster.json` (fallback label/comment path)
+  evidence: issue `https://github.com/Prekzursil/SWFOC-Mod-Menu/pull/46`
+- [x] Queue M2/S6 hardening as draft PR stub from `feature/m2-save-lab-next-slice`.
+  evidence: issue `<to-be-added-after-pr-create>`
 
 ## Later (M2 + M3 + M4)
 
