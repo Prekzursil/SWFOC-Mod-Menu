@@ -78,7 +78,7 @@ Reliability rule for runtime/mod tasks:
   evidence: manual `2026-02-17` `pwsh ./tools/request-pr-reviewers.ps1 -RepoOwner Prekzursil -RepoName SWFOC-Mod-Menu -PullNumber 46 -RosterPath config/reviewer-roster.json` (fallback label/comment path)
   evidence: issue `https://github.com/Prekzursil/SWFOC-Mod-Menu/pull/46`
 - [x] Queue M2/S6 hardening as draft PR stub from `feature/m2-save-lab-next-slice`.
-  evidence: issue `<to-be-added-after-pr-create>`
+  evidence: issue `https://github.com/Prekzursil/SWFOC-Mod-Menu/pull/47`
 
 ## Later (M2 + M3 + M4)
 
