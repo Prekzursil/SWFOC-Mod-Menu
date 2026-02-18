@@ -14,12 +14,14 @@ Profile-driven trainer/editor for **Star Wars: Empire at War / Forces of Corrupt
 This repository is **code-first** and intentionally excludes full local mod mirrors and large game assets.
 
 Included:
+
 - .NET solution and runtime/editor code
 - profile packs, schemas, catalogs, and helper hooks
 - tests and CI workflows
 - diagnostics and launch-context tooling
 
 Excluded:
+
 - full Workshop/local mod content trees
 - large media/model assets
 - generated build artifacts
@@ -94,6 +96,7 @@ For troubleshooting test failures, build issues, or environment setup problems, 
 ## CI
 
 GitHub Actions workflows:
+
 - `.github/workflows/ci.yml`: restore, build, deterministic tests, launch-context fixture smoke checks
 - `.github/workflows/release-portable.yml`: portable package + checksum + GitHub Release publish on tags
 
@@ -106,6 +109,7 @@ Reviewer assignment is handled by a REST-only workflow to avoid GraphQL fragilit
 - Script: `tools/request-pr-reviewers.ps1`
 
 Behavior:
+
 - Requests non-author reviewers from the configured roster.
 - If no eligible reviewer exists, applies fallback label/comment (`needs-reviewer`) and keeps workflow green.
 
