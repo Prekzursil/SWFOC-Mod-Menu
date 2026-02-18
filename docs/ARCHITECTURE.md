@@ -9,9 +9,31 @@
 5. Action validation (`ActionPayloadValidator`).
 6. Execution routing (`TrainerOrchestrator.ExecuteAsync`):
    - **Freeze** actions → `IValueFreezeService` (orchestrator-local, avoids circular DI).
-   - **Memory / CodePatch / Helper / Save** actions → `IRuntimeAdapter.ExecuteAsync`.
+   - **Memory / CodePatch / Helper / Save / Sdk** actions → `IRuntimeAdapter.ExecuteAsync`.
 7. Readback verification for memory actions.
 8. Audit logging (`IAuditLogger`) in `%LOCALAPPDATA%\SwfocTrainer\logs`.
+
+## Tiered backend routing (vNext)
+
+Mutating actions now use a fail-closed backend decision tree before execution:
+
+1. Probe extender capability (`IExecutionBackend.ProbeCapabilitiesAsync`).
+2. Resolve route (`IBackendRouter.Resolve`) using:
+   - profile `backendPreference`
+   - profile `requiredCapabilities`
+   - current mode/context and process host metadata
+3. Route by priority:
+   - Layer A: `Extender` backend (named-pipe bridge to native host)
+   - Layer B: `Helper` backend (Lua helper scripts)
+   - Layer C: `Memory` backend (legacy symbol/code-patch path)
+4. If capability is uncertain for a mutating action and profile preference is hard-extender:
+   - block execution with explicit `SAFETY_FAIL_CLOSED` reason code.
+
+Route diagnostics are emitted on every action result:
+- `backendRoute`
+- `routeReasonCode`
+- `capabilityProbeReasonCode`
+- `capabilityCount`
 
 ## ExecutionKind dispatch
 
@@ -21,13 +43,17 @@
 | `CodePatch` | `RuntimeAdapter`      | NOP/toggle patches with rollback               |
 | `Helper`    | `RuntimeAdapter`      | Lua helper-mod script execution                |
 | `Save`      | `RuntimeAdapter`      | Schema-driven save edits                       |
+| `Sdk`       | `RuntimeAdapter`      | Extender-routed command path (`Extender` layer) |
 | `Freeze`    | `TrainerOrchestrator` | Delegates to `IValueFreezeService`             |
 
-## Credits system fallback chain
+## Credits extender path
 
-1. **Trampoline hook** (ideal): AOB `F3 0F 2C 50 70 89 57` → code-cave injection at `cvttss2si` → captures float context pointer → supports lock mode.
-2. **Direct int write** (fallback): Always writes to resolved `credits` symbol address regardless of hook status. Works even when AOB scan fails.
-3. Diagnostics in result: `hookInstalled`, `hookError`, `hookTickObserved`, `forcedFloatBits`, context addresses.
+`set_credits` for FoC profiles is routed through `ExecutionKind.Sdk` and must resolve to the `Extender` backend:
+
+1. Probe extender bridge capabilities (`probe_capabilities`).
+2. If `set_credits` is unavailable/unknown and mutation is requested, route is fail-closed (`SAFETY_MUTATION_BLOCKED`).
+3. If available, execute `set_credits` over named pipe with one-shot or lock semantics.
+4. Result diagnostics include stable route and hook tags (`backendRoute`, `routeReasonCode`, `hookState`).
 
 ## Save Lab patch-pack pipeline (M2)
 
@@ -52,6 +78,7 @@
 - `SwfocTrainer.Helper`: helper-mod deployment and hash verification.
 - `SwfocTrainer.Saves`: schema-driven save parse/edit/validate/write + patch-pack export/apply/rollback.
 - `SwfocTrainer.App`: WPF shell and user workflows.
+- `native/SwfocExtender.*`: native extender skeleton (`Core`, `Bridge`, `Overlay`, `Plugins`) for in-process vNext capabilities.
 
 ## Data roots
 
