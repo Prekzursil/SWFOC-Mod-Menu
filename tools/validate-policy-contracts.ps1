@@ -113,8 +113,8 @@ if (Test-Path -Path "config/reviewer-roster.json") {
 
 if ($errors.Count -gt 0) {
     Write-Host "policy contract validation failed:" -ForegroundColor Red
-    foreach ($error in $errors) {
-        Write-Host " - $error" -ForegroundColor Red
+    foreach ($validationError in $errors) {
+        Write-Host " - $validationError" -ForegroundColor Red
     }
     exit 1
 }
