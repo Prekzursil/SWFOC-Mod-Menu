@@ -18,6 +18,9 @@
   ],
   "absolute": false,
   "ignore": [
+    "**/tests/SwfocTrainer.Tests/**",
+    "**/profiles/default/profiles/**",
+    "**/profiles/default/presets/**",
     "**/bin/**",
     "**/obj/**",
     "**/.git/**",
