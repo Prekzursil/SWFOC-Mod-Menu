@@ -3,13 +3,11 @@
 - What changed?
 - Why was it needed?
 
-## Scope
+## Risk
 
-- [ ] Runtime logic
-- [ ] Profile metadata/schema
-- [ ] UI/App behavior
-- [ ] CI/Tooling
-- [ ] Docs only
+- Risk level: `low | medium | high`
+- Regression surface (runtime/profile/app/tooling):
+- Security/runtime safety impact:
 
 ## Affected Profiles
 
@@ -19,36 +17,32 @@
 - [ ] `roe_3447786229_swfoc`
 - [ ] `custom`
 
-## Reliability Evidence
+## Evidence
 
-- Repro bundle JSON: `<path or artifact URL>`
-- Repro bundle markdown: `<path or artifact URL>`
-- Launch reason code(s): `<reasonCode list>`
-- Runtime mode diagnostics: `<hint/effective/reasonCode>`
-- Classification: `<passed|skipped|failed|blocked_environment|blocked_profile_mismatch>`
-
-## Validation Evidence
-
-- [ ] Deterministic tests run
-- [ ] Launch-context fixture smoke run
-- [ ] Repro bundle validated (`tools/validate-repro-bundle.ps1`)
-- [ ] Live/manual verification (if applicable)
+- [ ] Deterministic tests executed
+- [ ] Repro bundle included (runtime/mod bugfixes)
+- [ ] Launch reason code diagnostics included
 
 ### Commands / Results
 
-Paste key command outputs or concise summaries.
+Paste exact commands and outcomes.
 
-## Runtime Safety Checklist
+### Repro Bundle Paths
 
+- Repro bundle JSON: `<path or artifact URL>`
+- Repro bundle markdown: `<path or artifact URL>`
+- Classification: `<passed|skipped|failed|blocked_environment|blocked_profile_mismatch>`
+
+## Rollback
+
+- Rollback steps if this change causes regressions:
+
+## Scope Guard
+
+- [ ] Change is minimal and task-focused
+- [ ] Profile compatibility impact reviewed
+- [ ] Signature/fallback changes include rationale
 - [ ] No destructive behavior added
-- [ ] Profile compatibility impact reviewed (`base`, `aotr`, `roe`, `custom`)
-- [ ] Signature/fallback changes include explicit rationale
-- [ ] Dependency-sensitive actions behavior verified
-
-## Metadata / Contract Changes
-
-- [ ] No public contract changes
-- [ ] Contract changed and docs updated (`docs/PROFILE_FORMAT.md`)
 
 ## Linked Issues
 

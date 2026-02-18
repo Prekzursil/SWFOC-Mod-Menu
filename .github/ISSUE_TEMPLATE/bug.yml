@@ -7,6 +7,18 @@ body:
   - type: markdown
     attributes:
       value: "Please include enough detail to reproduce reliably. Runtime/mod issues require repro-bundle artifacts."
+
+  - type: dropdown
+    id: risk
+    attributes:
+      label: Risk level
+      options:
+        - low
+        - medium
+        - high
+    validations:
+      required: true
+
   - type: input
     id: profile
     attributes:
@@ -14,6 +26,7 @@ body:
       placeholder: base_swfoc / aotr_1397421866_swfoc / roe_3447786229_swfoc
     validations:
       required: true
+
   - type: input
     id: run_id
     attributes:
@@ -22,6 +35,7 @@ body:
       placeholder: 20260217-010203
     validations:
       required: true
+
   - type: input
     id: repro_bundle_json
     attributes:
@@ -30,6 +44,7 @@ body:
       placeholder: TestResults/runs/20260217-010203/repro-bundle.json
     validations:
       required: true
+
   - type: input
     id: repro_bundle_md
     attributes:
@@ -38,6 +53,7 @@ body:
       placeholder: TestResults/runs/20260217-010203/repro-bundle.md
     validations:
       required: true
+
   - type: dropdown
     id: classification
     attributes:
@@ -50,24 +66,28 @@ body:
         - blocked_profile_mismatch
     validations:
       required: true
+
   - type: textarea
     id: summary
     attributes:
       label: What happened?
     validations:
       required: true
+
   - type: textarea
     id: steps
     attributes:
       label: Reproduction steps
     validations:
       required: true
+
   - type: textarea
     id: expected
     attributes:
       label: Expected behavior
     validations:
       required: true
+
   - type: textarea
     id: launch_context
     attributes:
@@ -75,6 +95,7 @@ body:
       description: Include launchKind, reasonCode, confidence, and detected STEAMMOD/MODPATH data.
     validations:
       required: true
+
   - type: textarea
     id: diagnostics
     attributes:

@@ -1,0 +1,81 @@
+name: Agent Task
+description: Structured task packet for @copilot/Codex implementation.
+title: "[Agent Task] "
+labels:
+  - agent:ready
+body:
+  - type: textarea
+    id: problem_statement
+    attributes:
+      label: Problem statement
+    validations:
+      required: true
+
+  - type: textarea
+    id: current_behavior
+    attributes:
+      label: Current behavior
+    validations:
+      required: true
+
+  - type: textarea
+    id: target_behavior
+    attributes:
+      label: Target behavior
+    validations:
+      required: true
+
+  - type: textarea
+    id: non_goals
+    attributes:
+      label: Non-goals
+    validations:
+      required: true
+
+  - type: dropdown
+    id: risk
+    attributes:
+      label: Risk level
+      options:
+        - low
+        - medium
+        - high
+    validations:
+      required: true
+
+  - type: dropdown
+    id: primary_area
+    attributes:
+      label: Primary area
+      options:
+        - area:backend
+        - area:infra
+        - area:docs
+        - area:security
+        - area:release
+    validations:
+      required: true
+
+  - type: textarea
+    id: profile_impact
+    attributes:
+      label: Profile impact
+      description: List affected profile IDs and expected compatibility behavior.
+    validations:
+      required: true
+
+  - type: textarea
+    id: acceptance_criteria
+    attributes:
+      label: Acceptance criteria
+    validations:
+      required: true
+
+  - type: textarea
+    id: evidence_commands
+    attributes:
+      label: Evidence command list
+      value: |
+        dotnet test tests/SwfocTrainer.Tests/SwfocTrainer.Tests.csproj -c Release --no-build --filter "FullyQualifiedName!~SwfocTrainer.Tests.Profiles.Live&FullyQualifiedName!~RuntimeAttachSmokeTests"
+    validations:
+      required: true

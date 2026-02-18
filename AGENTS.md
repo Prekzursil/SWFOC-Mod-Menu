@@ -15,6 +15,11 @@ Scoped contracts in subdirectories can add stricter rules but cannot weaken this
 - `TestResults/runs/<runId>/repro-bundle.md`
 3. PRs must include affected profile IDs and reason-code-level diagnostics when runtime behavior changes.
 
+## Risk Policy
+- Default merge policy: human-reviewed only.
+- Use explicit risk labels: `risk:low`, `risk:medium`, `risk:high`.
+- High-risk runtime changes require explicit rollback notes.
+
 ## Reliability Loop
 1. Intake issue with reproduction details.
 2. Run live-validation tooling to collect a reproducible bundle.
@@ -29,10 +34,14 @@ Scoped contracts in subdirectories can add stricter rules but cannot weaken this
 3. Keep profile compatibility explicit (`base`, `aotr`, `roe`, `custom`).
 4. Prefer additive, reversible changes.
 
-## Default Commands
-```powershell
-dotnet restore SwfocTrainer.sln
-dotnet build SwfocTrainer.sln -c Release
+## Canonical Verification Command
+Run this command before completion claims:
+
+```bash
 dotnet test tests/SwfocTrainer.Tests/SwfocTrainer.Tests.csproj -c Release --no-build --filter "FullyQualifiedName!~SwfocTrainer.Tests.Profiles.Live&FullyQualifiedName!~RuntimeAttachSmokeTests"
-pwsh ./tools/run-live-validation.ps1 -Configuration Release -NoBuild -EmitReproBundle
 ```
+
+## Agent Queue Contract
+- Intake work via `.github/ISSUE_TEMPLATE/agent_task.yml`.
+- Queue with label `agent:ready`.
+- Queue workflow posts execution packet and notifies `@copilot`.
