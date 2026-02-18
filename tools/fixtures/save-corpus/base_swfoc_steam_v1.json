@@ -1,0 +1,5 @@
+{
+  "schemaId": "base_swfoc_steam_v1",
+  "syntheticByteLength": 300000,
+  "description": "Synthetic deterministic corpus fixture for base SWFOC schema"
+}

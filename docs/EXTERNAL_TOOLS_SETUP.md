@@ -26,3 +26,12 @@ Configure these repository secrets in GitHub:
 - Config: `.jscpd.json`
 - Workflow: `.github/workflows/duplication-check.yml`
 - Report artifact: `jscpd-report`
+
+## GitHub Releases (Distribution Channel)
+
+- Workflow: `.github/workflows/release-portable.yml`
+- Uses built-in `GITHUB_TOKEN` for release publish.
+- Produces:
+  - `SwfocTrainer-portable.zip`
+  - `SwfocTrainer-portable.zip.sha256`
+- Operational instructions: `docs/RELEASE_RUNBOOK.md`

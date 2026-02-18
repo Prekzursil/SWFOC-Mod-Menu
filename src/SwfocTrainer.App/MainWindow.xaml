@@ -404,15 +404,98 @@
                 <Grid Margin="12">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
                         <RowDefinition Height="*"/>
                     </Grid.RowDefinitions>
 
                     <StackPanel Orientation="Horizontal">
                         <Button Content="Check Updates" Command="{Binding CheckUpdatesCommand}"/>
                         <Button Content="Install Selected Profile" Command="{Binding InstallUpdateCommand}" Margin="8,0,0,0"/>
+                        <Button Content="Rollback Selected Profile" Command="{Binding RollbackProfileUpdateCommand}" Margin="8,0,0,0"/>
                     </StackPanel>
 
-                    <ListBox Grid.Row="1" ItemsSource="{Binding Updates}" Margin="0,12,0,0"/>
+                    <Grid Grid.Row="1" Margin="0,12,0,0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <GroupBox Header="Mod Compatibility Studio" Margin="0,0,8,0">
+                            <Grid Margin="8">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="*"/>
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+
+                                <TextBlock Text="Base Profile" VerticalAlignment="Center" Margin="0,0,8,6"/>
+                                <TextBox Grid.Column="1" Text="{Binding OnboardingBaseProfileId}" Margin="0,0,0,6"/>
+
+                                <TextBlock Grid.Row="1" Text="Draft Profile Id" VerticalAlignment="Center" Margin="0,0,8,6"/>
+                                <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding OnboardingDraftProfileId}" Margin="0,0,0,6"/>
+
+                                <TextBlock Grid.Row="2" Text="Display Name" VerticalAlignment="Center" Margin="0,0,8,6"/>
+                                <TextBox Grid.Row="2" Grid.Column="1" Text="{Binding OnboardingDisplayName}" Margin="0,0,0,6"/>
+
+                                <TextBlock Grid.Row="3" Text="Launch Samples" VerticalAlignment="Top" Margin="0,0,8,6"/>
+                                <TextBox Grid.Row="3" Grid.Column="1" Text="{Binding OnboardingLaunchSample}" AcceptsReturn="True" Height="90" VerticalScrollBarVisibility="Auto" Margin="0,0,0,6"/>
+
+                                <StackPanel Grid.Row="4" Grid.ColumnSpan="2" Orientation="Horizontal">
+                                    <Button Content="Scaffold Draft" Command="{Binding ScaffoldModProfileCommand}"/>
+                                    <Button Content="Export Calibration Artifact" Command="{Binding ExportCalibrationArtifactCommand}" Margin="8,0,0,0"/>
+                                    <Button Content="Build Compatibility Report" Command="{Binding BuildCompatibilityReportCommand}" Margin="8,0,0,0"/>
+                                </StackPanel>
+                            </Grid>
+                        </GroupBox>
+
+                        <GroupBox Grid.Column="1" Header="Ops Hardening">
+                            <Grid Margin="8">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="*"/>
+                                </Grid.RowDefinitions>
+
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="Output Dir:" VerticalAlignment="Center" Margin="0,0,8,0"/>
+                                    <TextBox Text="{Binding SupportBundleOutputDirectory}" Width="420"/>
+                                </StackPanel>
+
+                                <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="0,8,0,0">
+                                    <Button Content="Export Support Bundle" Command="{Binding ExportSupportBundleCommand}"/>
+                                    <Button Content="Export Telemetry Snapshot" Command="{Binding ExportTelemetrySnapshotCommand}" Margin="8,0,0,0"/>
+                                </StackPanel>
+
+                                <TextBlock Grid.Row="2" Text="{Binding ModCompatibilitySummary}" TextWrapping="Wrap" Margin="0,8,0,0"/>
+
+                                <ListBox Grid.Row="3" ItemsSource="{Binding ModCompatibilityRows}" Margin="0,8,0,0"/>
+                            </Grid>
+                        </GroupBox>
+                    </Grid>
+
+                    <Grid Grid.Row="2" Margin="0,12,0,0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <GroupBox Header="Update Feed" Margin="0,0,8,0">
+                            <ListBox ItemsSource="{Binding Updates}" />
+                        </GroupBox>
+                        <GroupBox Grid.Column="1" Header="Onboarding / Ops Summary">
+                            <StackPanel Margin="8">
+                                <TextBlock Text="{Binding OnboardingSummary}" TextWrapping="Wrap"/>
+                                <Separator Margin="0,8,0,8"/>
+                                <TextBlock Text="{Binding OpsArtifactSummary}" TextWrapping="Wrap"/>
+                            </StackPanel>
+                        </GroupBox>
+                    </Grid>
                 </Grid>
             </TabItem>
         </TabControl>

@@ -5,6 +5,7 @@ using System.Text.Json;
 using SwfocTrainer.Core.Contracts;
 using SwfocTrainer.Core.Models;
 using SwfocTrainer.Profiles.Config;
+using SwfocTrainer.Profiles.Validation;
 
 namespace SwfocTrainer.Profiles.Services;
 
@@ -56,31 +57,103 @@ public sealed class GitHubProfileUpdateService : IProfileUpdateService
 
     public async Task<string> InstallProfileAsync(string profileId, CancellationToken cancellationToken = default)
     {
-        if (string.IsNullOrWhiteSpace(_options.RemoteManifestUrl))
+        var result = await InstallProfileTransactionalAsync(profileId, cancellationToken);
+        if (!result.Succeeded)
         {
-            throw new InvalidOperationException("Remote manifest URL is not configured.");
+            throw new InvalidOperationException(result.Message);
         }
 
-        var remote = await _httpClient.GetFromJsonAsync<ProfileManifest>(_options.RemoteManifestUrl, _jsonOptions, cancellationToken)
-            ?? throw new InvalidDataException("Failed to fetch remote manifest.");
+        return result.InstalledPath;
+    }
+
+    public async Task<ProfileInstallResult> InstallProfileTransactionalAsync(string profileId, CancellationToken cancellationToken = default)
+    {
+        if (string.IsNullOrWhiteSpace(_options.RemoteManifestUrl))
+        {
+            return new ProfileInstallResult(
+                Succeeded: false,
+                ProfileId: profileId,
+                InstalledPath: string.Empty,
+                BackupPath: null,
+                ReceiptPath: null,
+                Message: "Remote manifest URL is not configured.",
+                ReasonCode: "remote_manifest_not_configured");
+        }
+
+        ProfileManifest? remote;
+        try
+        {
+            remote = await _httpClient.GetFromJsonAsync<ProfileManifest>(_options.RemoteManifestUrl, _jsonOptions, cancellationToken);
+        }
+        catch (Exception ex)
+        {
+            return new ProfileInstallResult(
+                Succeeded: false,
+                ProfileId: profileId,
+                InstalledPath: string.Empty,
+                BackupPath: null,
+                ReceiptPath: null,
+                Message: $"Failed to fetch remote manifest: {ex.Message}",
+                ReasonCode: "manifest_fetch_failed");
+        }
+
+        if (remote is null)
+        {
+            return new ProfileInstallResult(
+                Succeeded: false,
+                ProfileId: profileId,
+                InstalledPath: string.Empty,
+                BackupPath: null,
+                ReceiptPath: null,
+                Message: "Remote manifest payload is empty.",
+                ReasonCode: "manifest_empty");
+        }
 
         var entry = remote.Profiles.FirstOrDefault(x => string.Equals(x.Id, profileId, StringComparison.OrdinalIgnoreCase));
         if (entry is null)
         {
-            throw new InvalidDataException($"Profile '{profileId}' is not present in remote manifest.");
+            return new ProfileInstallResult(
+                Succeeded: false,
+                ProfileId: profileId,
+                InstalledPath: string.Empty,
+                BackupPath: null,
+                ReceiptPath: null,
+                Message: $"Profile '{profileId}' is not present in remote manifest.",
+                ReasonCode: "profile_missing_in_manifest");
         }
 
         var zipPath = Path.Combine(_options.DownloadCachePath, $"{profileId}-{entry.Version}.zip");
-        await using (var stream = await _httpClient.GetStreamAsync(entry.DownloadUrl, cancellationToken))
-        await using (var file = File.Create(zipPath))
+        try
         {
-            await stream.CopyToAsync(file, cancellationToken);
+            await using (var stream = await _httpClient.GetStreamAsync(entry.DownloadUrl, cancellationToken))
+            await using (var file = File.Create(zipPath))
+            {
+                await stream.CopyToAsync(file, cancellationToken);
+            }
+        }
+        catch (Exception ex)
+        {
+            return new ProfileInstallResult(
+                Succeeded: false,
+                ProfileId: profileId,
+                InstalledPath: string.Empty,
+                BackupPath: null,
+                ReceiptPath: null,
+                Message: $"Failed to download package: {ex.Message}",
+                ReasonCode: "download_failed");
         }
 
         var sha = ComputeSha256(zipPath);
         if (!string.Equals(sha, entry.Sha256, StringComparison.OrdinalIgnoreCase))
         {
-            throw new InvalidDataException($"SHA mismatch for {profileId}. Expected {entry.Sha256}, got {sha}");
+            return new ProfileInstallResult(
+                Succeeded: false,
+                ProfileId: profileId,
+                InstalledPath: string.Empty,
+                BackupPath: null,
+                ReceiptPath: null,
+                Message: $"SHA mismatch for {profileId}. Expected {entry.Sha256}, got {sha}",
+                ReasonCode: "sha_mismatch");
         }
 
         var profilesDir = Path.Combine(_options.ProfilesRootPath, "profiles");
@@ -92,23 +165,150 @@ public sealed class GitHubProfileUpdateService : IProfileUpdateService
             Directory.Delete(extractDir, recursive: true);
         }
 
-        ZipFile.ExtractToDirectory(zipPath, extractDir);
+        try
+        {
+            ZipFile.ExtractToDirectory(zipPath, extractDir);
+        }
+        catch (Exception ex)
+        {
+            return new ProfileInstallResult(
+                Succeeded: false,
+                ProfileId: profileId,
+                InstalledPath: string.Empty,
+                BackupPath: null,
+                ReceiptPath: null,
+                Message: $"Failed to extract package: {ex.Message}",
+                ReasonCode: "extract_failed");
+        }
 
         var targetProfileJson = Directory.GetFiles(extractDir, $"{profileId}.json", SearchOption.AllDirectories).FirstOrDefault();
         if (targetProfileJson is null)
         {
-            throw new InvalidDataException($"Downloaded package does not contain '{profileId}.json'");
+            return new ProfileInstallResult(
+                Succeeded: false,
+                ProfileId: profileId,
+                InstalledPath: string.Empty,
+                BackupPath: null,
+                ReceiptPath: null,
+                Message: $"Downloaded package does not contain '{profileId}.json'.",
+                ReasonCode: "profile_json_missing");
+        }
+
+        var profileJson = await File.ReadAllTextAsync(targetProfileJson, cancellationToken);
+        var parsedProfile = JsonProfileSerializer.Deserialize<TrainerProfile>(profileJson);
+        if (parsedProfile is null)
+        {
+            return new ProfileInstallResult(
+                Succeeded: false,
+                ProfileId: profileId,
+                InstalledPath: string.Empty,
+                BackupPath: null,
+                ReceiptPath: null,
+                Message: "Downloaded profile JSON failed to deserialize.",
+                ReasonCode: "profile_deserialize_failed");
+        }
+
+        try
+        {
+            ProfileValidator.Validate(parsedProfile);
+        }
+        catch (Exception ex)
+        {
+            return new ProfileInstallResult(
+                Succeeded: false,
+                ProfileId: profileId,
+                InstalledPath: string.Empty,
+                BackupPath: null,
+                ReceiptPath: null,
+                Message: $"Downloaded profile failed validation: {ex.Message}",
+                ReasonCode: "profile_validation_failed");
         }
 
         var destination = Path.Combine(profilesDir, $"{profileId}.json");
-        var backup = destination + ".bak";
+        var backup = $"{destination}.bak.{DateTimeOffset.UtcNow:yyyyMMddHHmmss}";
+        string? backupPath = null;
         if (File.Exists(destination))
         {
             File.Copy(destination, backup, overwrite: true);
+            backupPath = backup;
         }
 
-        File.Copy(targetProfileJson, destination, overwrite: true);
-        return destination;
+        var tempInstallPath = $"{destination}.tmp";
+        File.Copy(targetProfileJson, tempInstallPath, overwrite: true);
+        try
+        {
+            File.Copy(tempInstallPath, destination, overwrite: true);
+        }
+        finally
+        {
+            if (File.Exists(tempInstallPath))
+            {
+                File.Delete(tempInstallPath);
+            }
+        }
+
+        var receiptPath = await WriteInstallReceiptAsync(
+            profileId,
+            destination,
+            backupPath,
+            entry.Version,
+            entry.Sha256,
+            cancellationToken);
+
+        return new ProfileInstallResult(
+            Succeeded: true,
+            ProfileId: profileId,
+            InstalledPath: destination,
+            BackupPath: backupPath,
+            ReceiptPath: receiptPath,
+            Message: $"Installed profile update '{profileId}' ({entry.Version}).",
+            ReasonCode: null);
+    }
+
+    public async Task<ProfileRollbackResult> RollbackLastInstallAsync(string profileId, CancellationToken cancellationToken = default)
+    {
+        var profilesDir = Path.Combine(_options.ProfilesRootPath, "profiles");
+        Directory.CreateDirectory(profilesDir);
+        var destination = Path.Combine(profilesDir, $"{profileId}.json");
+        var backupPattern = $"{profileId}.json.bak.*";
+
+        var backup = Directory.GetFiles(profilesDir, backupPattern, SearchOption.TopDirectoryOnly)
+            .OrderByDescending(File.GetLastWriteTimeUtc)
+            .FirstOrDefault();
+
+        if (backup is null)
+        {
+            return new ProfileRollbackResult(
+                Restored: false,
+                ProfileId: profileId,
+                RestoredPath: destination,
+                BackupPath: null,
+                Message: $"No rollback backup found for '{profileId}'.",
+                ReasonCode: "backup_not_found");
+        }
+
+        try
+        {
+            File.Copy(backup, destination, overwrite: true);
+            await WriteRollbackReceiptAsync(profileId, destination, backup, cancellationToken);
+            return new ProfileRollbackResult(
+                Restored: true,
+                ProfileId: profileId,
+                RestoredPath: destination,
+                BackupPath: backup,
+                Message: $"Rollback restored '{profileId}' from backup.",
+                ReasonCode: null);
+        }
+        catch (Exception ex)
+        {
+            return new ProfileRollbackResult(
+                Restored: false,
+                ProfileId: profileId,
+                RestoredPath: destination,
+                BackupPath: backup,
+                Message: $"Rollback failed: {ex.Message}",
+                ReasonCode: "rollback_copy_failed");
+        }
     }
 
     private static string ComputeSha256(string path)
@@ -117,5 +317,55 @@ public sealed class GitHubProfileUpdateService : IProfileUpdateService
         using var stream = File.OpenRead(path);
         var hash = sha.ComputeHash(stream);
         return Convert.ToHexString(hash).ToLowerInvariant();
+    }
+
+    private async Task<string> WriteInstallReceiptAsync(
+        string profileId,
+        string installedPath,
+        string? backupPath,
+        string version,
+        string expectedSha256,
+        CancellationToken cancellationToken)
+    {
+        var receiptsRoot = Path.Combine(_options.DownloadCachePath, "install-receipts");
+        Directory.CreateDirectory(receiptsRoot);
+        var receiptPath = Path.Combine(receiptsRoot, $"install-{profileId}-{DateTimeOffset.UtcNow:yyyyMMddHHmmss}.json");
+
+        var payload = new
+        {
+            type = "install",
+            generatedAtUtc = DateTimeOffset.UtcNow,
+            profileId,
+            installedPath,
+            backupPath,
+            version,
+            expectedSha256
+        };
+
+        await File.WriteAllTextAsync(receiptPath, JsonSerializer.Serialize(payload, _jsonOptions), cancellationToken);
+        return receiptPath;
+    }
+
+    private async Task<string> WriteRollbackReceiptAsync(
+        string profileId,
+        string restoredPath,
+        string backupPath,
+        CancellationToken cancellationToken)
+    {
+        var receiptsRoot = Path.Combine(_options.DownloadCachePath, "install-receipts");
+        Directory.CreateDirectory(receiptsRoot);
+        var receiptPath = Path.Combine(receiptsRoot, $"rollback-{profileId}-{DateTimeOffset.UtcNow:yyyyMMddHHmmss}.json");
+
+        var payload = new
+        {
+            type = "rollback",
+            generatedAtUtc = DateTimeOffset.UtcNow,
+            profileId,
+            restoredPath,
+            backupPath
+        };
+
+        await File.WriteAllTextAsync(receiptPath, JsonSerializer.Serialize(payload, _jsonOptions), cancellationToken);
+        return receiptPath;
     }
 }

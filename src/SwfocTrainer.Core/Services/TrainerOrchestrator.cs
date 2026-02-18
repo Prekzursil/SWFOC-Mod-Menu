@@ -11,17 +11,20 @@ public sealed class TrainerOrchestrator
     private readonly IRuntimeAdapter _runtime;
     private readonly IValueFreezeService _freezeService;
     private readonly IAuditLogger _auditLogger;
+    private readonly ITelemetrySnapshotService _telemetry;
 
     public TrainerOrchestrator(
         IProfileRepository profiles,
         IRuntimeAdapter runtime,
         IValueFreezeService freezeService,
-        IAuditLogger auditLogger)
+        IAuditLogger auditLogger,
+        ITelemetrySnapshotService? telemetry = null)
     {
         _profiles = profiles;
         _runtime = runtime;
         _freezeService = freezeService;
         _auditLogger = auditLogger;
+        _telemetry = telemetry ?? new TelemetrySnapshotService();
     }
 
     /// <summary>
@@ -91,6 +94,7 @@ public sealed class TrainerOrchestrator
                 cancellationToken);
         }
 
+        _telemetry.RecordAction(actionId, result.AddressSource, result.Succeeded);
         return result;
     }
 

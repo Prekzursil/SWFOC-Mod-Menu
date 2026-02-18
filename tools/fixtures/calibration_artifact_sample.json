@@ -1,0 +1,31 @@
+{
+  "schemaVersion": "1.0",
+  "generatedAtUtc": "2026-02-18T05:10:00Z",
+  "profileId": "aotr_1397421866_swfoc",
+  "moduleFingerprint": "d7f6bba91f5a3c7d15b7a13fbc17a1c0b6208d8fd6b4382f4f2a3fd537e0f4e1",
+  "operatorNotes": "Sample calibration artifact fixture.",
+  "process": {
+    "pid": 4567,
+    "name": "StarWarsG.exe",
+    "path": "C:\\Games\\Empire at War\\corruption\\StarWarsG.exe",
+    "commandLineAvailable": true,
+    "launchKind": "Workshop",
+    "launchReasonCode": "steammod_exact_aotr"
+  },
+  "candidates": [
+    {
+      "symbol": "credits",
+      "source": "Signature",
+      "healthStatus": "Healthy",
+      "confidence": 0.98,
+      "notes": "signature_set=core"
+    },
+    {
+      "symbol": "selected_hp",
+      "source": "Fallback",
+      "healthStatus": "Degraded",
+      "confidence": 0.62,
+      "notes": "fallback_only"
+    }
+  ]
+}

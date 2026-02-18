@@ -46,7 +46,13 @@ $requiredFiles = @(
     ".github/ISSUE_TEMPLATE/bug.yml",
     ".github/ISSUE_TEMPLATE/calibration.yml",
     ".github/workflows/reviewer-automation.yml",
-    "config/reviewer-roster.json"
+    ".github/workflows/release-portable.yml",
+    "config/reviewer-roster.json",
+    "docs/MOD_ONBOARDING_RUNBOOK.md",
+    "docs/RELEASE_RUNBOOK.md",
+    "docs/release-notes-template.md",
+    "tools/schemas/calibration-artifact.schema.json",
+    "tools/schemas/support-bundle-manifest.schema.json"
 )
 
 foreach ($path in $requiredFiles) {
@@ -79,6 +85,12 @@ Require-Contains -Path ".github/ISSUE_TEMPLATE/calibration.yml" -Needles @(
     "id: bundle_json",
     "id: bundle_md",
     "id: runtime_mode"
+)
+
+Require-Contains -Path ".github/workflows/release-portable.yml" -Needles @(
+    "SwfocTrainer-portable.zip.sha256",
+    "gh release",
+    "publish_release"
 )
 
 if (Test-Path -Path "config/reviewer-roster.json") {

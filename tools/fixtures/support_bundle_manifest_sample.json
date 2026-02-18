@@ -1,0 +1,16 @@
+{
+  "schemaVersion": "1.0",
+  "generatedAtUtc": "2026-02-18T05:15:00Z",
+  "profileId": "base_swfoc",
+  "notes": "Sample support bundle fixture.",
+  "includedFiles": [
+    "manifest.json",
+    "runtime-snapshot.json",
+    "telemetry/telemetry-snapshot-20260218051500.json",
+    "runs/20260218050000/repro-bundle.json",
+    "runs/20260218050000/repro-bundle.md"
+  ],
+  "warnings": [
+    "Calibration artifact directory not found in LocalAppData."
+  ]
+}

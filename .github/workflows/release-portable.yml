@@ -2,12 +2,27 @@ name: release-portable
 
 on:
   workflow_dispatch:
+    inputs:
+      tag_name:
+        description: Tag to publish (required for manual release publish).
+        required: false
+        type: string
+      publish_release:
+        description: Publish or update a GitHub Release.
+        required: false
+        default: false
+        type: boolean
+      prerelease:
+        description: Mark manual release as prerelease.
+        required: false
+        default: true
+        type: boolean
   push:
     tags:
       - "v*"
 
 permissions:
-  contents: read
+  contents: write
 
 jobs:
   package:
@@ -31,8 +46,63 @@ jobs:
         shell: pwsh
         run: ./tools/package-portable.ps1 -Configuration Release
 
-      - name: Upload Portable Artifact
+      - name: Generate SHA256 checksum
+        shell: pwsh
+        run: |
+          $zip = Resolve-Path "artifacts/SwfocTrainer-portable.zip"
+          $hash = Get-FileHash -Path $zip -Algorithm SHA256
+          $checksumFile = "artifacts/SwfocTrainer-portable.zip.sha256"
+          "$($hash.Hash.ToLowerInvariant()) *SwfocTrainer-portable.zip" | Set-Content -Path $checksumFile -Encoding ascii
+
+      - name: Upload Release Bundle Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: swfoc-trainer-portable
-          path: artifacts/SwfocTrainer-portable.zip
+          name: swfoc-trainer-release-bundle
+          path: |
+            artifacts/SwfocTrainer-portable.zip
+            artifacts/SwfocTrainer-portable.zip.sha256
+
+      - name: Publish GitHub Release
+        if: ${{ startsWith(github.ref, 'refs/tags/v') || inputs.publish_release == true }}
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          $tag = "${{ github.ref_name }}"
+          if ("${{ github.ref_type }}" -ne "tag") {
+            $tag = "${{ inputs.tag_name }}"
+          }
+
+          if ([string]::IsNullOrWhiteSpace($tag)) {
+            throw "tag_name input is required when publish_release=true on workflow_dispatch."
+          }
+
+          $zipPath = (Resolve-Path "artifacts/SwfocTrainer-portable.zip").Path
+          $checksumPath = (Resolve-Path "artifacts/SwfocTrainer-portable.zip.sha256").Path
+          $notesSource = "docs/release-notes-template.md"
+          if (-not (Test-Path -Path $notesSource)) {
+            throw "Release notes template not found: $notesSource"
+          }
+
+          $notesPath = Join-Path $env:RUNNER_TEMP "release-notes.md"
+          Copy-Item -Path $notesSource -Destination $notesPath -Force
+
+          gh release view $tag *> $null
+          if ($LASTEXITCODE -eq 0) {
+            gh release upload $tag $zipPath $checksumPath --clobber
+            exit 0
+          }
+
+          $args = @(
+            "release", "create", $tag, $zipPath, $checksumPath,
+            "--title", "SWFOC Trainer $tag",
+            "--notes-file", $notesPath,
+            "--verify-tag"
+          )
+
+          $manualPrerelease = "${{ inputs.prerelease }}" -eq "true"
+          if ($manualPrerelease -and "${{ github.ref_type }}" -ne "tag") {
+            $args += "--prerelease"
+          }
+
+          gh @args
