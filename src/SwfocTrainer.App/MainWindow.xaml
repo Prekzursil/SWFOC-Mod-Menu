@@ -273,6 +273,7 @@
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
                         <RowDefinition Height="*"/>
                     </Grid.RowDefinitions>
 
@@ -297,7 +298,75 @@
                         <Button Content="Write Edited Save" Command="{Binding WriteSaveCommand}" Margin="8,0,0,0"/>
                     </StackPanel>
 
-                    <Grid Grid.Row="3" Margin="0,16,0,0">
+                    <GroupBox Grid.Row="3" Header="Save Lab Patch Packs" Margin="0,14,0,0">
+                        <Grid Margin="8">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="180"/>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="2*"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <StackPanel Orientation="Horizontal" Grid.ColumnSpan="2">
+                                <TextBlock Text="Patch Pack:" VerticalAlignment="Center" Margin="0,0,8,0"/>
+                                <TextBox Text="{Binding SavePatchPackPath}" Width="540"/>
+                                <Button Content="Browse" Command="{Binding BrowsePatchPackCommand}" Margin="8,0,0,0"/>
+                                <Button Content="Load Patch Pack" Command="{Binding LoadPatchPackCommand}" Margin="8,0,0,0"/>
+                                <Button Content="Export Patch Pack" Command="{Binding ExportPatchPackCommand}" Margin="8,0,0,0"/>
+                            </StackPanel>
+
+                            <StackPanel Orientation="Horizontal" Grid.Row="1" Grid.ColumnSpan="2" Margin="0,8,0,0">
+                                <CheckBox Content="Strict (require exact source hash)"
+                                          IsChecked="{Binding IsStrictPatchApply}"
+                                          VerticalAlignment="Center"
+                                          Margin="0,0,12,0"/>
+                                <Button Content="Preview Patch Apply" Command="{Binding PreviewPatchPackCommand}"/>
+                                <Button Content="Apply Patch Pack" Command="{Binding ApplyPatchPackCommand}" Margin="8,0,0,0"/>
+                                <Button Content="Restore Last Backup" Command="{Binding RestoreBackupCommand}" Margin="8,0,0,0"/>
+                                <TextBlock Text="{Binding SavePatchApplySummary}" Margin="12,0,0,0" VerticalAlignment="Center"/>
+                            </StackPanel>
+
+                            <TextBlock Grid.Row="2"
+                                       Grid.ColumnSpan="2"
+                                       Text="{Binding SavePatchMetadataSummary}"
+                                       Margin="0,8,0,0"
+                                       TextWrapping="Wrap"/>
+
+                            <DataGrid Grid.Row="3"
+                                      ItemsSource="{Binding SavePatchOperations}"
+                                      AutoGenerateColumns="False"
+                                      IsReadOnly="True"
+                                      Margin="0,8,8,0">
+                                <DataGrid.Columns>
+                                    <DataGridTextColumn Header="Kind" Binding="{Binding Kind}" Width="*"/>
+                                    <DataGridTextColumn Header="Field Path" Binding="{Binding FieldPath}" Width="2*"/>
+                                    <DataGridTextColumn Header="Field Id" Binding="{Binding FieldId}" Width="*"/>
+                                    <DataGridTextColumn Header="Type" Binding="{Binding ValueType}" Width="*"/>
+                                    <DataGridTextColumn Header="Old" Binding="{Binding OldValue}" Width="*"/>
+                                    <DataGridTextColumn Header="New" Binding="{Binding NewValue}" Width="*"/>
+                                </DataGrid.Columns>
+                            </DataGrid>
+
+                            <DataGrid Grid.Row="3"
+                                      Grid.Column="1"
+                                      ItemsSource="{Binding SavePatchCompatibility}"
+                                      AutoGenerateColumns="False"
+                                      IsReadOnly="True"
+                                      Margin="0,8,0,0">
+                                <DataGrid.Columns>
+                                    <DataGridTextColumn Header="Severity" Binding="{Binding Severity}" Width="*"/>
+                                    <DataGridTextColumn Header="Code" Binding="{Binding Code}" Width="*"/>
+                                    <DataGridTextColumn Header="Message" Binding="{Binding Message}" Width="2*"/>
+                                </DataGrid.Columns>
+                            </DataGrid>
+                        </Grid>
+                    </GroupBox>
+
+                    <Grid Grid.Row="4" Margin="0,16,0,0">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto"/>
                             <RowDefinition Height="Auto"/>

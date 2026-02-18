@@ -35,6 +35,12 @@ Excluded:
   - action reliability surface (`stable`/`experimental`/`unavailable`)
   - spawn preset studio with batch operations
 - Save decode/edit/validate/write workflow
+- Save Lab patch-pack workflow:
+  - schema-path typed patch export/import
+  - compatibility preview (profile/schema/hash)
+  - strict/non-strict apply toggle (strict default ON)
+  - atomic apply with backup + receipt
+  - rollback from latest backup
 - Dependency-aware action gating for mod/submod contexts
 - Launch-context detector script for reproducible diagnostics
 
@@ -51,6 +57,13 @@ Excluded:
 dotnet restore SwfocTrainer.sln
 dotnet build SwfocTrainer.sln -c Release
 ```
+
+Quick Windows launchers in repo root (double-click):
+
+- `launch-app-release.cmd` builds Release if needed, then starts `SwfocTrainer.App.exe`.
+- `launch-app-debug.cmd` builds Debug if needed, then starts `SwfocTrainer.App.exe`.
+- `run-deterministic-tests.cmd` runs the non-live deterministic test suite.
+- `run-live-tests.cmd` runs live profile tests (expected to skip when no live SWFOC process is available).
 
 Deterministic test suite:
 
@@ -83,6 +96,14 @@ pwsh ./tools/validate-repro-bundle.ps1 -BundlePath TestResults/runs/<runId>/repr
 
 Runtime/mod triage should attach `repro-bundle.json` + `repro-bundle.md` from `TestResults/runs/<runId>/`.
 
+## Save Patch-Pack Tooling
+
+```powershell
+pwsh ./tools/validate-save-patch-pack.ps1 -PatchPackPath tools/fixtures/save_patch_pack_sample.json -SchemaPath tools/schemas/save-patch-pack.schema.json -Strict
+pwsh ./tools/export-save-patch-pack.ps1 -OriginalSavePath <original.sav> -EditedSavePath <edited.sav> -ProfileId base_swfoc -SchemaId base_swfoc_steam_v1 -OutputPath TestResults/patches/example.patch.json -BuildIfNeeded
+pwsh ./tools/apply-save-patch-pack.ps1 -TargetSavePath <target.sav> -PatchPackPath TestResults/patches/example.patch.json -TargetProfileId base_swfoc -Strict $true -BuildIfNeeded
+```
+
 ## Calibration Workflow (Realtime Reliability)
 
 1. Run live attach against target profile.
@@ -103,6 +124,7 @@ Output: `artifacts/SwfocTrainer-portable.zip`
 
 - Execution board: `TODO.md`
 - Roadmap workflow: `docs/ROADMAP_WORKFLOW.md`
+- Save Lab operator workflow: `docs/SAVE_LAB_RUNBOOK.md`
 - Plan archive: `(new)codex(plans)/`
 - Profile format contract: `docs/PROFILE_FORMAT.md`
 

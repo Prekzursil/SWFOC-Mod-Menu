@@ -147,6 +147,39 @@ Current reason codes:
 - `profileRecommendation`
 - `dependencyHints`
 
+## Save Patch-Pack Contract (M2)
+
+Save Lab patch packs are schema-path JSON artifacts validated against:
+
+- `tools/schemas/save-patch-pack.schema.json`
+
+Top-level fields:
+
+- `metadata`
+  - `schemaVersion` (`1.0`)
+  - `profileId`
+  - `schemaId`
+  - `sourceHash` (`sha256` lowercase hex)
+  - `createdAtUtc` (UTC timestamp)
+- `compatibility`
+  - `allowedProfileIds` (array of profile IDs or wildcard `*`)
+  - `requiredSchemaId`
+  - `saveBuildHint` (optional)
+- `operations`
+  - `kind` (`SetValue` in v1)
+  - `fieldPath`
+  - `fieldId`
+  - `valueType`
+  - `oldValue` (optional in v1)
+  - `newValue` (required in v1)
+  - `offset`
+
+V1 scope:
+
+- typed field operations only (no raw byte patch payloads)
+- strict atomic apply path with automatic backup + receipt
+- strict-mode apply blocks source-hash mismatch (UI now exposes strict toggle, default ON).
+
 ## Spawn Preset Contract
 
 Live Ops spawn presets are profile-scoped and optional.

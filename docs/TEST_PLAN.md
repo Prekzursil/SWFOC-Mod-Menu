@@ -10,6 +10,19 @@
   - edit key fields
   - validate rules
   - roundtrip write/load
+  - extended edit types (`float`, `double`, `ascii`) via deterministic temp schema
+- `SavePatchPackServiceTests`
+  - deterministic patch-pack export from typed save edits
+  - schema/profile compatibility checks (includes all four shipped profiles)
+  - invalid contract rejection for import path
+  - JSON disk roundtrip load/preview regression coverage
+  - field path/id drift preview warnings
+- `SavePatchApplyServiceTests`
+  - atomic apply success path with backup + receipt artifacts
+  - compatibility-block behavior for profile mismatch
+  - validation-failure rollback behavior with hash preservation
+  - stale `fieldPath` fallback to `fieldId`
+  - strict-off source-hash mismatch apply behavior
 - `ActionReliabilityServiceTests`
   - verifies `stable`/`experimental`/`unavailable` scoring
   - verifies unknown-mode strict gating and dependency soft-block handling
@@ -33,6 +46,12 @@ python tools/detect-launch-context.py --from-process-json tools/fixtures/launch_
 pwsh ./tools/validate-repro-bundle.ps1 -BundlePath tools/fixtures/repro_bundle_sample.json -SchemaPath tools/schemas/repro-bundle.schema.json -Strict
 ```
 
+- Save patch-pack schema validation:
+
+```powershell
+pwsh ./tools/validate-save-patch-pack.ps1 -PatchPackPath tools/fixtures/save_patch_pack_sample.json -SchemaPath tools/schemas/save-patch-pack.schema.json -Strict
+```
+
 ## Manual runtime checks
 
 For each profile (`base_sweaw`, `base_swfoc`, `aotr_1397421866_swfoc`, `roe_3447786229_swfoc`):
@@ -48,7 +67,9 @@ For each profile (`base_sweaw`, `base_swfoc`, `aotr_1397421866_swfoc`, `roe_3447
 4. Save editor pass:
    - load save
    - edit credits + hero respawn fields
+   - optionally edit `ascii`/floating fields where schema supports them
    - validate + write edited save
+   - export patch pack, reload patch pack, preview/apply, restore backup
    - load in-game to confirm integrity.
 
 ## Live Ops checklist (M1)
