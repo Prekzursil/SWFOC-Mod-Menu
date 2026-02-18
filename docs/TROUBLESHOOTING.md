@@ -58,9 +58,10 @@ error NETSDK1045: The current .NET SDK does not support targeting .NET 8.0
 **Cause:** The installed .NET SDK version doesn't match the version pinned in `global.json`.
 
 **Resolution:**
+
 1. Check required version: `cat global.json`
 2. Check installed version: `dotnet --version`
-3. Install the required .NET 8.x SDK from https://dotnet.microsoft.com/download
+3. Install the required .NET 8.x SDK from <https://dotnet.microsoft.com/download>
 4. Restart your terminal/IDE after installation
 
 ### 2. Build Artifacts Missing
@@ -103,12 +104,14 @@ Ensure the filter excludes both `Live` and `RuntimeAttachSmokeTests`:
 Tests pass on your machine but fail in GitHub Actions.
 
 **Common causes:**
+
 - **Path separators:** Use `/` in cross-platform paths or `Path.Combine()`
 - **Line endings:** Git autocrlf causing snapshot comparison failures
 - **Timezone differences:** Use UTC for timestamp tests
 - **File system case sensitivity:** Linux is case-sensitive, Windows is not
 
 **Resolution:**
+
 1. Check `.gitattributes` for proper line ending configuration
 2. Run tests in a Linux container locally to reproduce
 3. Review test assertions for hardcoded paths or timestamps
@@ -121,11 +124,13 @@ Access to the path '...' is denied
 ```
 
 **Common causes:**
+
 - File is open in another application (Visual Studio, IDE, antivirus scanner)
 - Process hasn't released file handle
 - Insufficient permissions
 
 **Resolution:**
+
 1. Close IDEs and file explorers
 2. Check for locked processes: `tasklist | findstr SwfocTrainer`
 3. Run as Administrator if necessary (though shouldn't be required)
@@ -148,6 +153,7 @@ run-deterministic-tests.cmd
 ```
 
 **Option 2:** Install Make for Windows:
+
 - Install via Chocolatey: `choco install make`
 - Install via Scoop: `scoop install make`
 - Install Git Bash (includes Make)
@@ -166,11 +172,13 @@ No test is available in ...
 ```
 
 **Common causes:**
+
 - Test method missing `[Fact]` or `[Theory]` attribute
 - Test class not public
 - Project not properly built
 
 **Resolution:**
+
 1. Rebuild the solution: `make build`
 2. Check that test classes are `public`
 3. Verify xUnit attributes are present
@@ -241,13 +249,17 @@ Passed!  - Failed: 0, Passed: 47, Skipped: 0, Total: 47, Duration: 2.5s
 ```
 
 ### Skipped Tests
+
 If tests are skipped, check:
+
 1. Are conditional tests requiring specific environment setup?
 2. Is the skip intentional (documented with `[Fact(Skip = "reason")]`)?
 3. Review test output for skip reasons
 
 ### Failed Tests
+
 When tests fail:
+
 1. Review the test output for the specific assertion that failed
 2. Check if recent code changes affected the test
 3. Run the individual test with verbose output:
@@ -261,6 +273,7 @@ When tests fail:
 ### Slow Test Execution
 
 If tests are taking longer than expected:
+
 1. Check for unintentional live test inclusion (should complete in < 10s)
 2. Profile individual slow tests
 3. Verify no antivirus/security software is scanning test assemblies
@@ -277,6 +290,7 @@ dotnet build SwfocTrainer.sln -c Debug --no-restore
 ## Getting Help
 
 If issues persist:
+
 1. Check existing GitHub Issues for similar problems
 2. Review recent commits for breaking changes
 3. Ensure all prerequisites are installed (see README.md)
