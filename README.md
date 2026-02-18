@@ -79,6 +79,20 @@ GitHub Actions workflows:
 - `.github/workflows/ci.yml`: restore, build, deterministic tests, launch-context fixture smoke checks
 - `.github/workflows/release-portable.yml`: manual/tag-triggered portable package artifact
 
+## Reviewer Automation
+
+Reviewer assignment is handled by a REST-only workflow to avoid GraphQL fragility:
+
+- Workflow: `.github/workflows/reviewer-automation.yml`
+- Roster contract: `config/reviewer-roster.json`
+- Script: `tools/request-pr-reviewers.ps1`
+
+Behavior:
+- Requests non-author reviewers from the configured roster.
+- If no eligible reviewer exists, applies fallback label/comment (`needs-reviewer`) and keeps workflow green.
+
+Runbook: `docs/REVIEWER_AUTOMATION.md`
+
 ## Launch Context Tooling
 
 ```powershell

@@ -1,0 +1,42 @@
+name: reviewer-automation
+
+on:
+  pull_request:
+    types:
+      - opened
+      - reopened
+      - ready_for_review
+      - synchronize
+
+permissions:
+  contents: read
+  pull-requests: write
+  issues: write
+
+jobs:
+  request-reviewers:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Request reviewers (or apply fallback)
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          $result = pwsh ./tools/request-pr-reviewers.ps1 `
+            -RepoOwner "${{ github.repository_owner }}" `
+            -RepoName "${{ github.event.repository.name }}" `
+            -PullNumber ${{ github.event.pull_request.number }} `
+            -RosterPath config/reviewer-roster.json
+
+          $result | Out-File -FilePath reviewer-automation-result.json -Encoding utf8
+          Write-Host $result
+
+      - name: Upload reviewer automation result
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: reviewer-automation-result
+          path: reviewer-automation-result.json

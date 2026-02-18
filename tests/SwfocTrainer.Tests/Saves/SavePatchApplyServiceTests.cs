@@ -1,4 +1,5 @@
 using System.Security.Cryptography;
+using System.Text.Json.Nodes;
 using FluentAssertions;
 using Microsoft.Extensions.Logging.Abstractions;
 using SwfocTrainer.Core.Contracts;
@@ -161,6 +162,133 @@ public sealed class SavePatchApplyServiceTests
 
         var reloaded = await fixture.Codec.LoadAsync(targetPath, "base_swfoc_steam_v1");
         BitConverter.ToInt32(reloaded.Raw, 6144).Should().Be(4321);
+    }
+
+    [Fact]
+    public async Task ApplyAsync_ShouldPreferFieldId_WhenFieldPathPointsToDifferentValidField()
+    {
+        var fixture = CreateFixture();
+        var tempDir = CreateTempDirectory();
+        var targetPath = Path.Combine(tempDir, "campaign.sav");
+
+        await File.WriteAllBytesAsync(targetPath, CreateSyntheticBytes());
+        var patch = await BuildPatchAsync(fixture.Codec, fixture.PatchPackService, targetPath, "/economy/credits_empire", 2468, "base_swfoc");
+
+        var wrongButValidPathPack = patch with
+        {
+            Operations = patch.Operations.Select(op => op.FieldId == "credits_empire"
+                ? op with { FieldPath = "/economy/credits_rebel" }
+                : op).ToArray()
+        };
+
+        var result = await fixture.ApplyService.ApplyAsync(targetPath, wrongButValidPathPack, "base_swfoc", strict: true);
+
+        result.Classification.Should().Be(SavePatchApplyClassification.Applied);
+        result.Applied.Should().BeTrue();
+
+        var reloaded = await fixture.Codec.LoadAsync(targetPath, "base_swfoc_steam_v1");
+        BitConverter.ToInt32(reloaded.Raw, 6144).Should().Be(2468);
+        BitConverter.ToInt32(reloaded.Raw, 6148).Should().Be(0);
+    }
+
+    [Fact]
+    public async Task ApplyAsync_ShouldRejectNullNewValue_WithValidationFailed()
+    {
+        var fixture = CreateFixture();
+        var tempDir = CreateTempDirectory();
+        var targetPath = Path.Combine(tempDir, "campaign.sav");
+
+        await File.WriteAllBytesAsync(targetPath, CreateSyntheticBytes());
+        var patch = await BuildPatchAsync(fixture.Codec, fixture.PatchPackService, targetPath, "/economy/credits_empire", 4444, "base_swfoc");
+
+        var nullValuePack = patch with
+        {
+            Operations = patch.Operations.Select(op => op.FieldId == "credits_empire"
+                ? op with { NewValue = null }
+                : op).ToArray()
+        };
+
+        var result = await fixture.ApplyService.ApplyAsync(targetPath, nullValuePack, "base_swfoc", strict: true);
+
+        result.Applied.Should().BeFalse();
+        result.Classification.Should().Be(SavePatchApplyClassification.ValidationFailed);
+        result.Failure.Should().NotBeNull();
+        result.Failure!.ReasonCode.Should().Be("new_value_missing");
+    }
+
+    [Fact]
+    public async Task RestoreLastBackupAsync_ShouldFallback_WhenLatestReceiptIsMalformed()
+    {
+        var fixture = CreateFixture();
+        var tempDir = CreateTempDirectory();
+        var targetPath = Path.Combine(tempDir, "campaign.sav");
+
+        await File.WriteAllBytesAsync(targetPath, CreateSyntheticBytes());
+        var preHash = ComputeFileHash(targetPath);
+        var patch = await BuildPatchAsync(fixture.Codec, fixture.PatchPackService, targetPath, "/economy/credits_empire", 7777, "base_swfoc");
+        var apply = await fixture.ApplyService.ApplyAsync(targetPath, patch, "base_swfoc", strict: true);
+        apply.Applied.Should().BeTrue();
+
+        var malformedReceipt = $"{targetPath}.apply-receipt.999999999999999.json";
+        await File.WriteAllTextAsync(malformedReceipt, "{ this is not valid json");
+        File.SetLastWriteTimeUtc(malformedReceipt, DateTime.UtcNow.AddMinutes(1));
+
+        var rollback = await fixture.ApplyService.RestoreLastBackupAsync(targetPath);
+
+        rollback.Restored.Should().BeTrue();
+        ComputeFileHash(targetPath).Should().Be(preHash);
+    }
+
+    [Fact]
+    public async Task RestoreLastBackupAsync_ShouldUseBackupScan_WhenReceiptBackupPathMissing()
+    {
+        var fixture = CreateFixture();
+        var tempDir = CreateTempDirectory();
+        var targetPath = Path.Combine(tempDir, "campaign.sav");
+
+        await File.WriteAllBytesAsync(targetPath, CreateSyntheticBytes());
+        var preHash = ComputeFileHash(targetPath);
+        var patch = await BuildPatchAsync(fixture.Codec, fixture.PatchPackService, targetPath, "/economy/credits_empire", 7000, "base_swfoc");
+        var apply = await fixture.ApplyService.ApplyAsync(targetPath, patch, "base_swfoc", strict: true);
+        apply.Applied.Should().BeTrue();
+        apply.ReceiptPath.Should().NotBeNullOrWhiteSpace();
+
+        var receiptJson = await File.ReadAllTextAsync(apply.ReceiptPath!);
+        var receiptNode = JsonNode.Parse(receiptJson)!.AsObject();
+        receiptNode["BackupPath"] = Path.Combine(tempDir, "missing-backup.sav");
+        var newerReceiptPath = $"{targetPath}.apply-receipt.999999999999999.json";
+        await File.WriteAllTextAsync(newerReceiptPath, receiptNode.ToJsonString(new System.Text.Json.JsonSerializerOptions { WriteIndented = true }));
+        File.SetLastWriteTimeUtc(newerReceiptPath, DateTime.UtcNow.AddMinutes(2));
+
+        var rollback = await fixture.ApplyService.RestoreLastBackupAsync(targetPath);
+
+        rollback.Restored.Should().BeTrue();
+        ComputeFileHash(targetPath).Should().Be(preHash);
+    }
+
+    [Fact]
+    public async Task ApplyAsync_ShouldReturnSanitizedFailureMessage_OnTargetLoadFailure()
+    {
+        var fixture = CreateFixture();
+        var tempDir = CreateTempDirectory();
+        var targetPath = Path.Combine(tempDir, "campaign.sav");
+
+        await File.WriteAllBytesAsync(targetPath, CreateSyntheticBytes());
+        var patch = await BuildPatchAsync(fixture.Codec, fixture.PatchPackService, targetPath, "/economy/credits_empire", 2000, "base_swfoc");
+        var invalidSchemaPack = patch with
+        {
+            Metadata = patch.Metadata with { SchemaId = "schema_does_not_exist" }
+        };
+
+        var result = await fixture.ApplyService.ApplyAsync(targetPath, invalidSchemaPack, "base_swfoc", strict: true);
+
+        result.Applied.Should().BeFalse();
+        result.Classification.Should().Be(SavePatchApplyClassification.CompatibilityFailed);
+        result.Failure.Should().NotBeNull();
+        result.Failure!.ReasonCode.Should().Be("target_load_failed");
+        result.Message.Should().NotContain("schema_does_not_exist");
+        result.Message.Should().NotContain("\\");
+        result.Failure.Message.Should().NotContain("\\");
     }
 
     private static async Task<SavePatchPack> BuildPatchAsync(
