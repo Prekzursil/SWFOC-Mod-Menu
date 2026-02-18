@@ -1,0 +1,142 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TestRun id="458f8158-13a4-4569-a3ac-f412180d1918" name="Prekzursil@DESKTOP-A60S9GP 2026-02-18 23:41:26" runUser="DESKTOP-A60S9GP\Prekzursil" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <Times creation="2026-02-18T23:41:26.6761041+02:00" queuing="2026-02-18T23:41:26.6761046+02:00" start="2026-02-18T23:40:43.1322385+02:00" finish="2026-02-18T23:41:26.6869639+02:00" />
+  <TestSettings name="default" id="640d0804-90f1-4015-a747-03c46175b7e4">
+    <Deployment runDeploymentRoot="Prekzursil_DESKTOP-A60S9GP_2026-02-18_23_41_26" />
+  </TestSettings>
+  <Results>
+    <UnitTestResult executionId="77473b92-ddcd-46ac-9a4a-591884178c46" testId="f63cb700-a077-d6ee-ccad-07bdb86ec236" testName="SwfocTrainer.Tests.Profiles.LiveCreditsTests.Credits_LiveDiagnostic_Should_Identify_Working_Strategy" computerName="DESKTOP-A60S9GP" duration="00:00:42.5623847" startTime="2026-02-18T23:41:26.4384218+02:00" endTime="2026-02-18T23:41:26.4384476+02:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="77473b92-ddcd-46ac-9a4a-591884178c46">
+      <Output>
+        <StdOut>Profile: roe_3447786229_swfoc (reason=steammod_exact_roe, confidence=1.00) PID: 45908&#xD;
+Credits symbol: addr=0x7FF758F80E48  source=Fallback  currentValue=-1&#xD;
+
+=== TEST 1: Direct int write ===&#xD;
+Writing 12344 to credits int address...&#xD;
+Immediate readback: 12344  (expected 12344, match=True)&#xD;
+After 200ms: 12344  (expected 12344, match=True)&#xD;
+Raw int write persists after 200ms: True&#xD;
+
+=== SCANNING for credits float→int sync instruction ===&#xD;
+Module: base=0x7FF758520000  size=0xCC0000&#xD;
+Credits int RVA: 0xA60E48&#xD;
+  Pattern 'exact_hook' (F3 0F 2C 50 70 89 57): 1 hit(s)&#xD;
+    hit RVA=0x2FCFC  addr=0x7FF75854FCFC  bytes=F3 0F 2C 50 70 89 57 58 E8 B7 70 3B 00 48 8B CF E8 3F DC 00  storeToCredits=no&#xD;
+  Pattern 'cvttss2si_edx_rax_70' (F3 0F 2C 50 70): 2 hit(s)&#xD;
+    hit RVA=0x2FCFC  addr=0x7FF75854FCFC  bytes=F3 0F 2C 50 70 89 57 58 E8 B7 70 3B 00 48 8B CF E8 3F DC 00  storeToCredits=no&#xD;
+    hit RVA=0x3C9C1  addr=0x7FF75855C9C1  bytes=F3 0F 2C 50 70 89 53 58 48 83 C4 20 5B E9 ED A3 3A 00 48 83  storeToCredits=no&#xD;
+  Pattern 'cvttss2si_ecx_rax_70' (F3 0F 2C 48 70): 2 hit(s)&#xD;
+    hit RVA=0xEDFBB  addr=0x7FF75860DFBB  bytes=F3 0F 2C 48 70 8B 05 C2 92 72 00 89 45 E8 0F B7 05 BC 92 72  storeToCredits=no&#xD;
+    hit RVA=0xEE445  addr=0x7FF75860E445  bytes=F3 0F 2C 48 70 89 0D C8 3D 97 00 E8 9B 15 00 00 48 83 C4 58  storeToCredits=no&#xD;
+  Pattern 'cvttss2si_eax_rax_70' (F3 0F 2C 40 70): 0 hit(s)&#xD;
+  Pattern 'cvttss2si_edx_rcx_70' (F3 0F 2C 51 70): 0 hit(s)&#xD;
+  Pattern 'cvttss2si_edx_rdx_70' (F3 0F 2C 52 70): 0 hit(s)&#xD;
+  Pattern 'cvttss2si_edx_rbx_70' (F3 0F 2C 53 70): 0 hit(s)&#xD;
+  Pattern 'cvttss2si_edx_rax_78' (F3 0F 2C 50 78): 0 hit(s)&#xD;
+  Pattern 'cvttss2si_edx_rax_68' (F3 0F 2C 50 68): 0 hit(s)&#xD;
+  Pattern 'cvttss2si_any_70' (F3 0F 2C ?? 70): 6 hit(s)&#xD;
+    hit RVA=0x2FCFC  addr=0x7FF75854FCFC  bytes=F3 0F 2C 50 70 89 57 58 E8 B7 70 3B 00 48 8B CF E8 3F DC 00  storeToCredits=no&#xD;
+    hit RVA=0x3C9C1  addr=0x7FF75855C9C1  bytes=F3 0F 2C 50 70 89 53 58 48 83 C4 20 5B E9 ED A3 3A 00 48 83  storeToCredits=no&#xD;
+    hit RVA=0xEDFBB  addr=0x7FF75860DFBB  bytes=F3 0F 2C 48 70 8B 05 C2 92 72 00 89 45 E8 0F B7 05 BC 92 72  storeToCredits=no&#xD;
+    hit RVA=0xEE445  addr=0x7FF75860E445  bytes=F3 0F 2C 48 70 89 0D C8 3D 97 00 E8 9B 15 00 00 48 83 C4 58  storeToCredits=no&#xD;
+    hit RVA=0x288DCA  addr=0x7FF7587A8DCA  bytes=F3 0F 2C 4D 70 3B C8 7D 11 38 5D 62 74 0C 38 1D 42 CD 88 00  storeToCredits=no&#xD;
+    hit RVA=0x3448E7  addr=0x7FF7588648E7  bytes=F3 0F 2C 47 70 43 8B 4C 20 0C 3B C1 0F 8C 0E 07 00 00 43 8B  storeToCredits=no&#xD;
+  Pattern 'cvttss2si_any_any' (F3 0F 2C): 50 hit(s)&#xD;
+    hit RVA=0x2FCFC  addr=0x7FF75854FCFC  bytes=F3 0F 2C 50 70 89 57 58 E8 B7 70 3B 00 48 8B CF E8 3F DC 00  storeToCredits=no&#xD;
+    hit RVA=0x3315C  addr=0x7FF75855315C  bytes=F3 0F 2C 05 AC E6 A2 00 89 45 8F F3 0F 2C 05 A5 E6 A2 00 89  storeToCredits=no&#xD;
+    hit RVA=0x33167  addr=0x7FF758553167  bytes=F3 0F 2C 05 A5 E6 A2 00 89 45 93 E8 C9 B8 22 00 48 8B C8 48  storeToCredits=no&#xD;
+    hit RVA=0x3639E  addr=0x7FF75855639E  bytes=F3 0F 2C 16 E8 29 4F 38 00 E9 D0 00 00 00 F3 44 0F 2C 46 04  storeToCredits=no&#xD;
+    hit RVA=0x363C6  addr=0x7FF7585563C6  bytes=F3 0F 2C 16 0F 29 74 24 70 44 0F 29 44 24 60 E8 96 B6 22 00  storeToCredits=no&#xD;
+    hit RVA=0x36670  addr=0x7FF758556670  bytes=F3 0F 2C 12 E8 F7 B3 22 00 48 8B 43 40 48 85 C0 74 07 F3 0F  storeToCredits=no&#xD;
+    hit RVA=0x3B5B8  addr=0x7FF75855B5B8  bytes=F3 0F 2C 17 E8 0F FD 37 00 F2 0F 10 44 24 30 48 8D 0D 12 9E  storeToCredits=no&#xD;
+    hit RVA=0x3B689  addr=0x7FF75855B689  bytes=F3 0F 2C D0 E8 3E FC 37 00 F2 0F 10 44 24 40 4C 8D 44 24 30  storeToCredits=no&#xD;
+    hit RVA=0x3B80A  addr=0x7FF75855B80A  bytes=F3 0F 2C 17 E8 5D 62 22 00 F3 0F 10 6D 8F 48 8D 0D C1 9B AD  storeToCredits=no&#xD;
+    hit RVA=0x3B953  addr=0x7FF75855B953  bytes=F3 0F 2C D0 E8 14 61 22 00 F3 0F 10 6C 24 48 48 8D 44 24 30  storeToCredits=no&#xD;
+    hit RVA=0x3B9A3  addr=0x7FF75855B9A3  bytes=F3 0F 2C 17 0F 28 C4 F3 0F 5C FA F3 0F 5C C5 0F 28 F3 F3 0F  storeToCredits=no&#xD;
+    hit RVA=0x3C9C1  addr=0x7FF75855C9C1  bytes=F3 0F 2C 50 70 89 53 58 48 83 C4 20 5B E9 ED A3 3A 00 48 83  storeToCredits=no&#xD;
+    hit RVA=0x3D4C7  addr=0x7FF75855D4C7  bytes=F3 0F 2C 5D 58 B8 89 88 88 88 48 8D 0D 48 44 A2 00 FF C3 F7  storeToCredits=no&#xD;
+    hit RVA=0x3DA67  addr=0x7FF75855DA67  bytes=F3 0F 2C 12 0F 29 78 A8 44 0F 29 48 98 48 8D 45 A7 48 89 44  storeToCredits=no&#xD;
+    hit RVA=0x3E5B2  addr=0x7FF75855E5B2  bytes=F3 0F 2C C0 66 0F 6E C8 0F 5B C9 F3 41 0F 59 C8 F3 0F 5C F1  storeToCredits=no&#xD;
+    hit RVA=0x3F9EE  addr=0x7FF75855F9EE  bytes=F3 0F 2C C8 3B C8 0F 4C C1 48 63 D0 48 8D 04 5B 48 8B 8C C7  storeToCredits=no&#xD;
+    hit RVA=0x3FA5B  addr=0x7FF75855FA5B  bytes=F3 0F 2C C8 3B C8 0F 4C C1 48 63 D0 48 8D 04 5B 48 8B 8C C7  storeToCredits=no&#xD;
+    hit RVA=0x3FAD1  addr=0x7FF75855FAD1  bytes=F3 0F 2C C8 3B C8 0F 4C C1 48 63 D0 48 8D 04 5B 48 8B 8C C7  storeToCredits=no&#xD;
+    hit RVA=0x3FBD2  addr=0x7FF75855FBD2  bytes=F3 0F 2C C8 3B C8 0F 4C C1 48 63 D0 48 8D 04 5B 48 8B 8C C7  storeToCredits=no&#xD;
+    hit RVA=0x3FC49  addr=0x7FF75855FC49  bytes=F3 0F 2C C8 3B C8 0F 4C C1 48 63 D0 48 8D 04 5B 48 8B 8C C7  storeToCredits=no&#xD;
+    hit RVA=0x3FCD8  addr=0x7FF75855FCD8  bytes=F3 0F 2C C8 3B C8 0F 4C C1 4B 8D 0C 40 48 63 D0 49 8B 84 C9  storeToCredits=no&#xD;
+    hit RVA=0x3FD38  addr=0x7FF75855FD38  bytes=F3 0F 2C C8 3B C8 0F 4C C1 4B 8D 0C 40 48 63 D0 49 8B 84 C9  storeToCredits=no&#xD;
+    hit RVA=0x3FD98  addr=0x7FF75855FD98  bytes=F3 0F 2C C8 3B C8 0F 4C C1 4B 8D 0C 40 48 63 D0 49 8B 84 C9  storeToCredits=no&#xD;
+    hit RVA=0x3FDF8  addr=0x7FF75855FDF8  bytes=F3 0F 2C C8 3B C8 0F 4C C1 4B 8D 0C 40 48 63 D0 49 8B 84 C9  storeToCredits=no&#xD;
+    hit RVA=0x3FE58  addr=0x7FF75855FE58  bytes=F3 0F 2C C8 3B C8 0F 4C C1 4B 8D 0C 40 48 63 D0 49 8B 84 C9  storeToCredits=no&#xD;
+    hit RVA=0x401E3  addr=0x7FF7585601E3  bytes=F3 0F 2C 16 E8 84 18 22 00 F3 0F 10 75 DF 4C 8D 45 F7 F3 0F  storeToCredits=no&#xD;
+    hit RVA=0x40352  addr=0x7FF758560352  bytes=F3 0F 2C 16 E8 75 AF 37 00 F3 0F 10 45 C7 4C 8D 45 C7 F3 0F  storeToCredits=no&#xD;
+    hit RVA=0x4049A  addr=0x7FF75856049A  bytes=F3 0F 2C 17 0F 29 B4 24 90 00 00 00 0F 29 BC 24 80 00 00 00  storeToCredits=no&#xD;
+    hit RVA=0x405C4  addr=0x7FF7585605C4  bytes=F3 0F 2C 17 E8 03 AD 37 00 F3 0F 10 44 24 38 4C 8D 44 24 30  storeToCredits=no&#xD;
+    hit RVA=0x44176  addr=0x7FF758564176  bytes=F3 0F 2C 17 E8 51 71 37 00 E9 DE 00 00 00 48 85 C9 74 10 48  storeToCredits=no&#xD;
+    hit RVA=0x441BE  addr=0x7FF7585641BE  bytes=F3 0F 2C 17 0F 29 74 24 70 0F 29 7C 24 60 44 0F 29 44 24 50  storeToCredits=no&#xD;
+    hit RVA=0x80C85  addr=0x7FF7585A0C85  bytes=F3 0F 2C C2 0F 57 D2 F3 0F 2A D0 F3 0F 5E D0 41 0F 28 C8 48  storeToCredits=no&#xD;
+    hit RVA=0x80DA3  addr=0x7FF7585A0DA3  bytes=F3 0F 2C C2 F3 0F 2A C8 F3 0F 5E C8 F3 41 0F 59 C9 48 8D 0D  storeToCredits=no&#xD;
+    hit RVA=0x80E92  addr=0x7FF7585A0E92  bytes=F3 0F 2C C7 44 2B C0 E8 62 2C 18 00 B9 20 00 00 00 E8 B0 8D  storeToCredits=no&#xD;
+    hit RVA=0x812A5  addr=0x7FF7585A12A5  bytes=F3 0F 2C DE E8 62 DE 0B 00 33 FF 85 DB 79 04 8B DF EB 05 3B  storeToCredits=no&#xD;
+    hit RVA=0x81414  addr=0x7FF7585A1414  bytes=F3 0F 2C DE E8 F3 DC 0B 00 85 DB 79 04 8B DF EB 05 3B D8 0F  storeToCredits=no&#xD;
+    hit RVA=0x8165C  addr=0x7FF7585A165C  bytes=F3 0F 2C C1 F3 0F 2A C0 F3 0F 5E C3 0F 28 34 24 48 83 C4 18  storeToCredits=no&#xD;
+    hit RVA=0x88D95  addr=0x7FF7585A8D95  bytes=F3 0F 2C C0 3B 05 F9 8E 9D 00 74 0B 89 05 F1 8E 9D 00 E8 94  storeToCredits=no&#xD;
+    hit RVA=0x88E8E  addr=0x7FF7585A8E8E  bytes=F3 0F 2C C0 3B 05 04 8E 9D 00 0F 84 0E FF FF FF 89 05 F8 8D  storeToCredits=no&#xD;
+    hit RVA=0x89D23  addr=0x7FF7585A9D23  bytes=F3 0F 2C F8 66 0F 6E CF 0F 5B C9 F3 0F 5C F1 F3 0F 59 F7 0F  storeToCredits=no&#xD;
+    hit RVA=0x89D3E  addr=0x7FF7585A9D3E  bytes=F3 0F 2C D8 66 0F 6E CB 0F 5B C9 F3 0F 5C F1 F3 0F 59 F7 0F  storeToCredits=no&#xD;
+    hit RVA=0x89D59  addr=0x7FF7585A9D59  bytes=F3 0F 2C C0 44 8B CB 4C 89 6D 50 44 8B C7 4C 89 6D 60 48 8D  storeToCredits=no&#xD;
+    hit RVA=0xA245C  addr=0x7FF7585C245C  bytes=F3 0F 2C C0 48 83 C4 58 C3 E8 62 ED 6C 00 CC CC CC CC CC CC  storeToCredits=no&#xD;
+    hit RVA=0xA2554  addr=0x7FF7585C2554  bytes=F3 0F 2C C0 48 83 C4 58 C3 E8 6A EC 6C 00 CC CC CC CC CC CC  storeToCredits=no&#xD;
+    hit RVA=0xD2978  addr=0x7FF7585F2978  bytes=F3 0F 2C C6 44 88 6C 24 30 89 44 24 28 44 89 64 24 20 E8 41  storeToCredits=no&#xD;
+    hit RVA=0xECBE5  addr=0x7FF75860CBE5  bytes=F3 0F 2C C8 81 C1 E7 03 00 00 F7 E9 C1 FA 06 8B C2 C1 E8 1F  storeToCredits=no&#xD;
+    hit RVA=0xECF71  addr=0x7FF75860CF71  bytes=F3 0F 2C CE 0F 28 74 24 40 83 C1 05 F7 E9 C1 FA 02 8B C2 C1  storeToCredits=no&#xD;
+    hit RVA=0xED072  addr=0x7FF75860D072  bytes=F3 0F 2C CE 83 C1 05 F7 E9 C1 FA 02 8B C2 C1 E8 1F 03 D0 8B  storeToCredits=no&#xD;
+    hit RVA=0xED5C8  addr=0x7FF75860D5C8  bytes=F3 0F 2C C0 03 C3 3B C3 7C 0F 3B 05 18 4C 97 00 8B D8 0F 4F  storeToCredits=no&#xD;
+    hit RVA=0xED71D  addr=0x7FF75860D71D  bytes=F3 0F 2C C8 03 CF 3B C8 7C 07 3B CB 8B C1 0F 4F C3 48 8B 7C  storeToCredits=no&#xD;
+
+=== No credits sync instruction identified via store correlation. ===&#xD;
+
+=== TEST 3a: Regular freeze (50ms) ===&#xD;
+Froze credits to 77776. Sampling over 2 seconds...&#xD;
+Regular freeze samples: 39/40 matched target (97.5%)&#xD;
+Sample values: -1, 77776, 77776, 77776, 77776, 77776, 77776, 77776, 77776, 77776, 77776, 77776, 77776, 77776, 77776, 77776, 77776, 77776, 77776, 77776&#xD;
+
+=== TEST 3b: Aggressive freeze (~1ms) ===&#xD;
+Aggressive-froze credits to 88887. Sampling over 2 seconds...&#xD;
+Aggressive freeze samples: 40/40 matched target (100.0%)&#xD;
+Sample values: 88887, 88887, 88887, 88887, 88887, 88887, 88887, 88887, 88887, 88887, 88887, 88887, 88887, 88887, 88887, 88887, 88887, 88887, 88887, 88887&#xD;
+
+=== FREEZE COMPARISON ===&#xD;
+Regular 50ms: 97.5% match rate&#xD;
+Aggressive ~1ms: 100.0% match rate&#xD;
+
+=== Scanning for ALL stores to credits int address (RVA 0xA60E48) ===&#xD;
+Found 0 store instruction(s) targeting credits int:&#xD;
+
+Done. Detached.</StdOut>
+      </Output>
+    </UnitTestResult>
+  </Results>
+  <TestDefinitions>
+    <UnitTest name="SwfocTrainer.Tests.Profiles.LiveCreditsTests.Credits_LiveDiagnostic_Should_Identify_Working_Strategy" storage="c:\users\prekzursil\downloads\swfoc editor\tests\swfoctrainer.tests\bin\release\net8.0-windows\swfoctrainer.tests.dll" id="f63cb700-a077-d6ee-ccad-07bdb86ec236">
+      <Execution id="77473b92-ddcd-46ac-9a4a-591884178c46" />
+      <TestMethod codeBase="C:\Users\Prekzursil\Downloads\SWFOC editor\tests\SwfocTrainer.Tests\bin\Release\net8.0-windows\SwfocTrainer.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="SwfocTrainer.Tests.Profiles.LiveCreditsTests" name="Credits_LiveDiagnostic_Should_Identify_Working_Strategy" />
+    </UnitTest>
+  </TestDefinitions>
+  <TestEntries>
+    <TestEntry testId="f63cb700-a077-d6ee-ccad-07bdb86ec236" executionId="77473b92-ddcd-46ac-9a4a-591884178c46" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+  </TestEntries>
+  <TestLists>
+    <TestList name="Results Not in a List" id="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestList name="All Loaded Results" id="19431567-8539-422a-85d7-44ee4e166bda" />
+  </TestLists>
+  <ResultSummary outcome="Completed">
+    <Counters total="1" executed="1" passed="1" failed="0" error="0" timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" completed="0" inProgress="0" pending="0" />
+    <Output>
+      <StdOut>[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v2.8.2+699d445a1a (64-bit .NET 8.0.0)&#xD;
+[xUnit.net 00:00:00.10]   Discovering: SwfocTrainer.Tests&#xD;
+[xUnit.net 00:00:00.20]   Discovered:  SwfocTrainer.Tests&#xD;
+[xUnit.net 00:00:00.21]   Starting:    SwfocTrainer.Tests&#xD;
+[xUnit.net 00:00:42.83]   Finished:    SwfocTrainer.Tests&#xD;
+</StdOut>
+    </Output>
+  </ResultSummary>
+</TestRun>
