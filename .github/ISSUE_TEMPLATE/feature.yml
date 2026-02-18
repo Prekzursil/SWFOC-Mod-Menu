@@ -4,19 +4,21 @@ title: "[Feature] "
 labels:
   - type:feature
 body:
-  - type: input
+  - type: textarea
     id: objective
     attributes:
       label: Objective
       placeholder: What user outcome should this enable?
     validations:
       required: true
+
   - type: textarea
     id: proposal
     attributes:
       label: Proposed approach
     validations:
       required: true
+
   - type: textarea
     id: acceptance
     attributes:
@@ -24,6 +26,18 @@ body:
       description: Include concrete validation criteria.
     validations:
       required: true
+
+  - type: dropdown
+    id: risk
+    attributes:
+      label: Risk level
+      options:
+        - low
+        - medium
+        - high
+    validations:
+      required: true
+
   - type: dropdown
     id: area
     attributes:
@@ -36,5 +50,14 @@ body:
         - tooling
         - ci
         - docs
+    validations:
+      required: true
+
+  - type: textarea
+    id: evidence_commands
+    attributes:
+      label: Evidence command list
+      value: |
+        dotnet test tests/SwfocTrainer.Tests/SwfocTrainer.Tests.csproj -c Release --no-build --filter "FullyQualifiedName!~SwfocTrainer.Tests.Profiles.Live&FullyQualifiedName!~RuntimeAttachSmokeTests"
     validations:
       required: true
