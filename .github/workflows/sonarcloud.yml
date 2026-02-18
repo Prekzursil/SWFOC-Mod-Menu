@@ -26,14 +26,28 @@ jobs:
         with:
           dotnet-version: "8.0.x"
 
+      - name: Install SonarScanner
+        shell: bash
+        run: |
+          dotnet tool install --global dotnet-sonarscanner
+          echo "$HOME/.dotnet/tools" >> "$GITHUB_PATH"
+
       - name: Restore
         run: dotnet restore SwfocTrainer.sln
+
+      - name: Sonar Begin
+        shell: bash
+        run: |
+          dotnet-sonarscanner begin \
+            /k:"Prekzursil_SWFOC-Mod-Menu" \
+            /o:"prekzursil" \
+            /d:sonar.token="${{ secrets.SONAR_TOKEN }}" \
+            /d:sonar.host.url="https://sonarcloud.io"
 
       - name: Build
         run: dotnet build SwfocTrainer.sln -c Release --no-restore
 
-      - name: SonarCloud Scan
-        uses: SonarSource/sonarqube-scan-action@v5
-        env:
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-          SONAR_HOST_URL: https://sonarcloud.io
+      - name: Sonar End
+        shell: bash
+        run: |
+          dotnet-sonarscanner end /d:sonar.token="${{ secrets.SONAR_TOKEN }}"
