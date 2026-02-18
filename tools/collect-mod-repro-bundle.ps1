@@ -59,12 +59,26 @@ function Get-ProcessSnapshot {
     $snapshot = New-Object System.Collections.Generic.List[object]
     foreach ($proc in $processes) {
         $steamIds = Parse-SteamModIds -CommandLine $proc.CommandLine
+        $hostRole = if ($proc.Name -ieq "StarWarsG.exe") { "game_host" } elseif ($proc.Name -match "^(swfoc\\.exe|sweaw\\.exe)$") { "launcher" } else { "unknown" }
+        $moduleSize = 0
+        try {
+            $psProc = Get-Process -Id ([int]$proc.ProcessId) -ErrorAction Stop
+            $moduleSize = [int]$psProc.MainModule.ModuleMemorySize
+        } catch {
+            $moduleSize = 0
+        }
+        $hostScore = if ($hostRole -eq "game_host") { 200 } elseif ($hostRole -eq "launcher") { 100 } else { 0 }
+        $selectionScore = ([double]($steamIds.Count * 1000)) + [double]$hostScore + ($(if ([string]::IsNullOrWhiteSpace([string]$proc.CommandLine)) { 0 } else { 10 })) + ([double]$moduleSize / 1000000.0)
         $snapshot.Add([PSCustomObject]@{
             pid = [int]$proc.ProcessId
             name = [string]$proc.Name
             path = [string]$proc.ExecutablePath
             commandLine = [string]$proc.CommandLine
             steamModIds = $steamIds
+            hostRole = $hostRole
+            mainModuleSize = $moduleSize
+            workshopMatchCount = [int]$steamIds.Count
+            selectionScore = [math]::Round($selectionScore, 2)
         })
     }
 
@@ -181,6 +195,57 @@ function Detect-LaunchContext {
             confidence = 0.0
             launchKind = "Unknown"
         }
+    }
+}
+
+function Get-ProfileRequiredCapabilities {
+    param(
+        [string]$ProfileRootPath,
+        [string]$ProfileId
+    )
+
+    if ([string]::IsNullOrWhiteSpace($ProfileId)) {
+        return @()
+    }
+
+    $profilePath = Join-Path (Join-Path $ProfileRootPath "profiles") "$ProfileId.json"
+    if (-not (Test-Path -Path $profilePath)) {
+        return @()
+    }
+
+    try {
+        $json = Get-Content -Raw -Path $profilePath | ConvertFrom-Json
+        if ($null -eq $json.requiredCapabilities) {
+            return @()
+        }
+
+        $values = New-Object System.Collections.Generic.List[string]
+        foreach ($item in @($json.requiredCapabilities)) {
+            if (-not [string]::IsNullOrWhiteSpace([string]$item)) {
+                $values.Add([string]$item)
+            }
+        }
+
+        return @($values)
+    }
+    catch {
+        return @()
+    }
+}
+
+function Get-RuntimeEvidence {
+    param([string]$RunDirectoryPath)
+
+    $path = Join-Path $RunDirectoryPath "live-roe-runtime-evidence.json"
+    if (-not (Test-Path -Path $path)) {
+        return $null
+    }
+
+    try {
+        return Get-Content -Raw -Path $path | ConvertFrom-Json
+    }
+    catch {
+        return $null
     }
 }
 
@@ -359,6 +424,8 @@ $preferredProcess = Get-PreferredProcess -Snapshot $processSnapshot
 $launchContext = Detect-LaunchContext -Process $preferredProcess -ProfileRootPath $ProfileRoot
 $runtimeMode = Get-RuntimeMode -LiveTests $relevantLiveTests
 $classification = Get-Classification -Relevant $relevantLiveTests -ProcessSnapshot $processSnapshot -SelectedScope $Scope
+$requiredCapabilities = Get-ProfileRequiredCapabilities -ProfileRootPath $ProfileRoot -ProfileId ([string]$launchContext.profileId)
+$runtimeEvidence = Get-RuntimeEvidence -RunDirectoryPath $RunDirectory
 
 $nextAction = switch ($classification) {
     "passed" { "Attach bundle to issue and continue with fix or closure workflow." }
@@ -366,6 +433,88 @@ $nextAction = switch ($classification) {
     "blocked_profile_mismatch" { "Relaunch with required STEAMMOD/MODPATH markers for selected scope and rerun." }
     "failed" { "Inspect failed/missing test artifacts and runtime diagnostics before retry." }
     default { "Review skipped reasons and gather additional live context for this scope." }
+}
+
+$selectedHostProcess = if ($null -eq $preferredProcess) {
+    [ordered]@{
+        pid = $null
+        name = $null
+        hostRole = "unknown"
+        selectionScore = 0.0
+        workshopMatchCount = 0
+        mainModuleSize = 0
+    }
+} else {
+    [ordered]@{
+        pid = [int]$preferredProcess.pid
+        name = [string]$preferredProcess.name
+        hostRole = [string]$preferredProcess.hostRole
+        selectionScore = [double]$preferredProcess.selectionScore
+        workshopMatchCount = [int]$preferredProcess.workshopMatchCount
+        mainModuleSize = [int]$preferredProcess.mainModuleSize
+    }
+}
+
+$backendRouteDecision = if ($null -ne $runtimeEvidence) {
+    [ordered]@{
+        backend = if ([string]::IsNullOrWhiteSpace([string]$runtimeEvidence.result.backendRoute)) { "unknown" } else { [string]$runtimeEvidence.result.backendRoute }
+        allowed = [bool]$runtimeEvidence.result.succeeded
+        reasonCode = if ([string]::IsNullOrWhiteSpace([string]$runtimeEvidence.result.routeReasonCode)) { "UNKNOWN" } else { [string]$runtimeEvidence.result.routeReasonCode }
+        message = [string]$runtimeEvidence.result.message
+        source = "live-roe-runtime-evidence.json"
+    }
+}
+else {
+    [ordered]@{
+        backend = "memory"
+        allowed = $true
+        reasonCode = "CAPABILITY_BACKEND_UNAVAILABLE"
+        message = "Runtime evidence file missing; route reflects fallback default."
+        source = "fallback_default"
+    }
+}
+
+$capabilityProbeSnapshot = if ($null -ne $runtimeEvidence) {
+    [ordered]@{
+        backend = "extender"
+        probeReasonCode = if ([string]::IsNullOrWhiteSpace([string]$runtimeEvidence.result.capabilityProbeReasonCode)) { "CAPABILITY_UNKNOWN" } else { [string]$runtimeEvidence.result.capabilityProbeReasonCode }
+        capabilityCount = 1
+        requiredCapabilities = @($requiredCapabilities)
+        source = "live-roe-runtime-evidence.json"
+    }
+}
+else {
+    [ordered]@{
+        backend = "extender"
+        probeReasonCode = "CAPABILITY_BACKEND_UNAVAILABLE"
+        capabilityCount = 0
+        requiredCapabilities = @($requiredCapabilities)
+        source = "fallback_default"
+    }
+}
+
+$hookInstallReport = if ($null -ne $runtimeEvidence) {
+    [ordered]@{
+        state = if ([string]::IsNullOrWhiteSpace([string]$runtimeEvidence.result.hookState)) { "unknown" } else { [string]$runtimeEvidence.result.hookState }
+        reasonCode = if ([bool]$runtimeEvidence.result.succeeded) { "CAPABILITY_PROBE_PASS" } else { "HOOK_INSTALL_FAILED" }
+        details = "Derived from runtime action diagnostics."
+        source = "live-roe-runtime-evidence.json"
+    }
+}
+else {
+    [ordered]@{
+        state = "unknown"
+        reasonCode = "HOOK_INSTALL_FAILED"
+        details = "Hook lifecycle state not available (runtime evidence missing)."
+        source = "fallback_default"
+    }
+}
+
+$overlayState = [ordered]@{
+    available = $false
+    visible = $false
+    reasonCode = "CAPABILITY_BACKEND_UNAVAILABLE"
+    source = if ($null -ne $runtimeEvidence) { "runtime_reported_unavailable" } else { "fallback_default" }
 }
 
 $bundle = [ordered]@{
@@ -376,6 +525,11 @@ $bundle = [ordered]@{
     processSnapshot = @($processSnapshot)
     launchContext = $launchContext
     runtimeMode = $runtimeMode
+    selectedHostProcess = $selectedHostProcess
+    backendRouteDecision = $backendRouteDecision
+    capabilityProbeSnapshot = $capabilityProbeSnapshot
+    hookInstallReport = $hookInstallReport
+    overlayState = $overlayState
     liveTests = @($liveTests)
     diagnostics = [ordered]@{
         dependencyState = "unknown"
@@ -397,21 +551,25 @@ $liveRows = $liveTests | ForEach-Object {
 @"
 # Repro Bundle Summary
 
-- runId: `$RunId`
-- scope: `$Scope`
-- classification: `$classification`
-- launch profile: `$($launchContext.profileId)`
-- launch reason: `$($launchContext.reasonCode)`
-- confidence: `$($launchContext.confidence)`
-- launch kind: `$($launchContext.launchKind)`
-- runtime mode effective: `$($runtimeMode.effective)`
-- runtime mode reason: `$($runtimeMode.reasonCode)`
+- runId: $RunId
+- scope: $Scope
+- classification: $classification
+- launch profile: $($launchContext.profileId)
+- launch reason: $($launchContext.reasonCode)
+- confidence: $($launchContext.confidence)
+- launch kind: $($launchContext.launchKind)
+- runtime mode effective: $($runtimeMode.effective)
+- runtime mode reason: $($runtimeMode.reasonCode)
+- selected host: $($selectedHostProcess.name) (pid=$($selectedHostProcess.pid), role=$($selectedHostProcess.hostRole), score=$($selectedHostProcess.selectionScore))
+- backend route: $($backendRouteDecision.backend) ($($backendRouteDecision.reasonCode))
+- capability probe: $($capabilityProbeSnapshot.backend) ($($capabilityProbeSnapshot.probeReasonCode), required=$((@($capabilityProbeSnapshot.requiredCapabilities) -join ', ')))
+- overlay: available=$($overlayState.available) visible=$($overlayState.visible) ($($overlayState.reasonCode))
 
 ## Process Snapshot
 
-| PID | Name | SteamModIds | Command Line |
-|---|---|---|---|
-$((@($processSnapshot | ForEach-Object { "| $($_.pid) | $($_.name) | $(@($_.steamModIds) -join ',') | $([string]$_.commandLine).Replace('|','/') |" }) -join "`n"))
+| PID | Name | Role | Score | SteamModIds | Command Line |
+|---|---|---|---:|---|---|
+$((@($processSnapshot | ForEach-Object { "| $($_.pid) | $($_.name) | $($_.hostRole) | $($_.selectionScore) | $(@($_.steamModIds) -join ',') | $([string]$_.commandLine).Replace('|','/') |" }) -join "`n"))
 
 ## Live Tests
 

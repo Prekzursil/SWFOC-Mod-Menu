@@ -89,14 +89,29 @@ public partial class App : Application
             PresetRootPath = Path.Combine(profilesRoot, "presets")
         });
 
+        var capabilityMapsRoot = Path.Combine(profilesRoot, "sdk", "maps");
+
         services.AddSingleton<IAuditLogger>(_ => new FileAuditLogger(Path.Combine(appData, "logs")));
 
         services.AddSingleton<IProfileRepository, FileSystemProfileRepository>();
         services.AddSingleton<ILaunchContextResolver, LaunchContextResolver>();
         services.AddSingleton<IModDependencyValidator, ModDependencyValidator>();
+        services.AddSingleton<IBinaryFingerprintService, BinaryFingerprintService>();
+        services.AddSingleton<ICapabilityMapResolver>(provider =>
+            new CapabilityMapResolver(
+                capabilityMapsRoot,
+                provider.GetRequiredService<ILogger<CapabilityMapResolver>>()));
+        services.AddSingleton<ISdkExecutionGuard, SdkExecutionGuard>();
+        services.AddSingleton<IProfileVariantResolver, ProfileVariantResolver>();
+        services.AddSingleton<ISdkRuntimeAdapter, NoopSdkRuntimeAdapter>();
+        services.AddSingleton<ISdkDiagnosticsSink, NullSdkDiagnosticsSink>();
+        services.AddSingleton<ISdkOperationRouter, SdkOperationRouter>();
+        services.AddSingleton<IBackendRouter, BackendRouter>();
+        services.AddSingleton<IExecutionBackend, NamedPipeExtenderBackend>();
         services.AddSingleton<IActionReliabilityService, ActionReliabilityService>();
         services.AddSingleton<IModCalibrationService, ModCalibrationService>();
         services.AddSingleton<ISymbolHealthService, SymbolHealthService>();
+        services.AddSingleton<RuntimeModeProbeResolver>();
         services.AddSingleton<ITelemetrySnapshotService, TelemetrySnapshotService>();
         services.AddSingleton<IProcessLocator, ProcessLocator>();
         services.AddSingleton<ISignatureResolver, SignatureResolver>();

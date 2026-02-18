@@ -123,6 +123,16 @@ jobs:
         run: |
           pwsh ./tools/validate-support-bundle-manifest.ps1 -ManifestPath tools/fixtures/support_bundle_manifest_sample.json -SchemaPath tools/schemas/support-bundle-manifest.schema.json -Strict
 
+      - name: Binary fingerprint schema smoke
+        shell: pwsh
+        run: |
+          pwsh ./tools/validate-binary-fingerprint.ps1 -FingerprintPath tools/fixtures/binary_fingerprint_sample.json -SchemaPath tools/schemas/binary-fingerprint.schema.json -Strict
+
+      - name: Signature pack schema smoke
+        shell: pwsh
+        run: |
+          pwsh ./tools/validate-signature-pack.ps1 -SignaturePackPath tools/fixtures/signature_pack_sample.json -SchemaPath tools/schemas/signature-pack.schema.json -Strict
+
       - name: Upload Test Results
         if: always()
         uses: actions/upload-artifact@v4

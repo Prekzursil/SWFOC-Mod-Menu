@@ -1,6 +1,7 @@
 using FluentAssertions;
 using Microsoft.Extensions.Logging.Abstractions;
 using System.Text.Json.Nodes;
+using System.Text.Json;
 using SwfocTrainer.Core.Models;
 using SwfocTrainer.Profiles.Config;
 using SwfocTrainer.Profiles.Services;
@@ -62,11 +63,13 @@ public sealed class LiveRoeRuntimeHealthTests
         session.Symbols.TryGetValue("credits", out var creditsSymbol).Should().BeTrue("credits must resolve for ROE profile");
 
         var currentCredits = await runtime.ReadAsync<int>("credits");
+        var requestedCredits = currentCredits < 0 ? 0 : currentCredits;
+        _output.WriteLine($"Live credits readback={currentCredits}; normalized request value={requestedCredits}");
         var action = profile.Actions["set_credits"];
         var payload = new JsonObject
         {
             ["symbol"] = "credits",
-            ["intValue"] = currentCredits,
+            ["intValue"] = requestedCredits,
             ["lockCredits"] = false
         };
 
@@ -81,6 +84,11 @@ public sealed class LiveRoeRuntimeHealthTests
                 _output.WriteLine($"diag[{kv.Key}]={kv.Value}");
             }
         }
+
+        TryWriteRuntimeEvidence(
+            session.Process,
+            profileId,
+            result);
 
         result.Succeeded.Should().BeTrue($"set_credits should succeed on live ROE process. Message: {result.Message}");
         await runtime.DetachAsync();
@@ -126,5 +134,46 @@ public sealed class LiveRoeRuntimeHealthTests
         }
 
         return false;
+    }
+
+    private static void TryWriteRuntimeEvidence(
+        ProcessMetadata process,
+        string profileId,
+        ActionExecutionResult result)
+    {
+        var outputDir = Environment.GetEnvironmentVariable("SWFOC_LIVE_OUTPUT_DIR");
+        if (string.IsNullOrWhiteSpace(outputDir))
+        {
+            return;
+        }
+
+        Directory.CreateDirectory(outputDir);
+        var payload = new
+        {
+            testName = nameof(LiveRoeRuntimeHealthTests),
+            profileId,
+            process = new
+            {
+                process.ProcessId,
+                process.ProcessName,
+                process.HostRole,
+                process.SelectionScore,
+                process.WorkshopMatchCount
+            },
+            result = new
+            {
+                result.Succeeded,
+                result.Message,
+                backendRoute = result.Diagnostics is not null && result.Diagnostics.TryGetValue("backendRoute", out var backendRoute) ? backendRoute?.ToString() : null,
+                routeReasonCode = result.Diagnostics is not null && result.Diagnostics.TryGetValue("routeReasonCode", out var routeReasonCode) ? routeReasonCode?.ToString() : null,
+                capabilityProbeReasonCode = result.Diagnostics is not null && result.Diagnostics.TryGetValue("capabilityProbeReasonCode", out var capabilityProbeReasonCode) ? capabilityProbeReasonCode?.ToString() : null,
+                hookState = result.Diagnostics is not null && result.Diagnostics.TryGetValue("hookState", out var hookState) ? hookState?.ToString() : null,
+                diagnostics = result.Diagnostics
+            },
+            capturedAtUtc = DateTimeOffset.UtcNow
+        };
+
+        var path = Path.Combine(outputDir, "live-roe-runtime-evidence.json");
+        File.WriteAllText(path, JsonSerializer.Serialize(payload, new JsonSerializerOptions { WriteIndented = true }));
     }
 }

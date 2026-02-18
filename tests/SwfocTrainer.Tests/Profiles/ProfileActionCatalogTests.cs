@@ -125,6 +125,26 @@ public sealed class ProfileActionCatalogTests
     }
 
     [Fact]
+    public async Task SwfocProfiles_Should_Route_SetCredits_Via_Sdk()
+    {
+        var root = TestPaths.FindRepoRoot();
+        var options = new ProfileRepositoryOptions
+        {
+            ProfilesRootPath = Path.Combine(root, "profiles", "default")
+        };
+
+        var repo = new FileSystemProfileRepository(options);
+        var swfocProfiles = new[] { "base_swfoc", "aotr_1397421866_swfoc", "roe_3447786229_swfoc" };
+
+        foreach (var pid in swfocProfiles)
+        {
+            var profile = await repo.ResolveInheritedProfileAsync(pid);
+            profile.Actions["set_credits"].ExecutionKind.Should().Be(ExecutionKind.Sdk,
+                because: $"profile '{pid}' should enforce extender-routed credits writes");
+        }
+    }
+
+    [Fact]
     public async Task FreezeAction_Schema_Should_Require_Symbol()
     {
         var root = TestPaths.FindRepoRoot();

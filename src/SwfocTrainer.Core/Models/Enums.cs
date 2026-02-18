@@ -13,7 +13,8 @@ public enum ExecutionKind
     Helper,
     Save,
     CodePatch,
-    Freeze
+    Freeze,
+    Sdk
 }
 
 public enum ActionCategory
@@ -69,6 +70,13 @@ public enum LaunchKind
     Workshop,
     LocalModPath,
     Mixed
+}
+
+public enum ProcessHostRole
+{
+    Unknown = 0,
+    Launcher,
+    GameHost
 }
 
 public enum DependencyValidationStatus

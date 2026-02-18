@@ -11,6 +11,11 @@
     "processSnapshot",
     "launchContext",
     "runtimeMode",
+    "selectedHostProcess",
+    "backendRouteDecision",
+    "capabilityProbeSnapshot",
+    "hookInstallReport",
+    "overlayState",
     "liveTests",
     "diagnostics",
     "classification",
@@ -57,6 +62,59 @@
       "properties": {
         "hint": { "type": "string" },
         "effective": { "type": "string" },
+        "reasonCode": { "type": "string" }
+      }
+    },
+    "selectedHostProcess": {
+      "type": "object",
+      "required": ["pid", "name", "hostRole", "selectionScore"],
+      "properties": {
+        "pid": { "type": ["integer", "null"] },
+        "name": { "type": ["string", "null"] },
+        "hostRole": { "type": "string" },
+        "selectionScore": { "type": "number" },
+        "workshopMatchCount": { "type": "integer" },
+        "mainModuleSize": { "type": "integer" }
+      }
+    },
+    "backendRouteDecision": {
+      "type": "object",
+      "required": ["backend", "allowed", "reasonCode"],
+      "properties": {
+        "backend": { "type": "string" },
+        "allowed": { "type": "boolean" },
+        "reasonCode": { "type": "string" },
+        "message": { "type": ["string", "null"] }
+      }
+    },
+    "capabilityProbeSnapshot": {
+      "type": "object",
+      "required": ["backend", "probeReasonCode", "capabilityCount"],
+      "properties": {
+        "backend": { "type": "string" },
+        "probeReasonCode": { "type": "string" },
+        "capabilityCount": { "type": "integer" },
+        "requiredCapabilities": {
+          "type": "array",
+          "items": { "type": "string" }
+        }
+      }
+    },
+    "hookInstallReport": {
+      "type": "object",
+      "required": ["state", "reasonCode"],
+      "properties": {
+        "state": { "type": "string" },
+        "reasonCode": { "type": "string" },
+        "details": { "type": ["string", "null"] }
+      }
+    },
+    "overlayState": {
+      "type": "object",
+      "required": ["available", "visible", "reasonCode"],
+      "properties": {
+        "available": { "type": "boolean" },
+        "visible": { "type": "boolean" },
         "reasonCode": { "type": "string" }
       }
     },

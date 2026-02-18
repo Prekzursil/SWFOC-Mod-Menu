@@ -22,9 +22,12 @@ namespace SwfocTrainer.App.ViewModels;
 
 public sealed class MainViewModel : INotifyPropertyChanged
 {
+    private const string UniversalProfileId = "universal_auto";
+
     private readonly IProfileRepository _profiles;
     private readonly IProcessLocator _processLocator;
     private readonly ILaunchContextResolver _launchContextResolver;
+    private readonly IProfileVariantResolver _profileVariantResolver;
     private readonly IRuntimeAdapter _runtime;
     private readonly TrainerOrchestrator _orchestrator;
     private readonly ICatalogService _catalog;
@@ -146,6 +149,7 @@ public sealed class MainViewModel : INotifyPropertyChanged
         IProfileRepository profiles,
         IProcessLocator processLocator,
         ILaunchContextResolver launchContextResolver,
+        IProfileVariantResolver profileVariantResolver,
         IRuntimeAdapter runtime,
         TrainerOrchestrator orchestrator,
         ICatalogService catalog,
@@ -166,6 +170,7 @@ public sealed class MainViewModel : INotifyPropertyChanged
         _profiles = profiles;
         _processLocator = processLocator;
         _launchContextResolver = launchContextResolver;
+        _profileVariantResolver = profileVariantResolver;
         _runtime = runtime;
         _orchestrator = orchestrator;
         _catalog = catalog;
@@ -663,9 +668,11 @@ public sealed class MainViewModel : INotifyPropertyChanged
         var recommended = await RecommendProfileIdAsync();
         if (string.IsNullOrWhiteSpace(SelectedProfileId) || !Profiles.Contains(SelectedProfileId))
         {
-            SelectedProfileId = !string.IsNullOrWhiteSpace(recommended) && Profiles.Contains(recommended)
-                ? recommended
-                : Profiles.FirstOrDefault();
+            SelectedProfileId = Profiles.Contains(UniversalProfileId)
+                ? UniversalProfileId
+                : !string.IsNullOrWhiteSpace(recommended) && Profiles.Contains(recommended)
+                    ? recommended
+                    : Profiles.FirstOrDefault();
         }
 
         Status = !string.IsNullOrWhiteSpace(recommended)
@@ -771,9 +778,26 @@ public sealed class MainViewModel : INotifyPropertyChanged
 
         try
         {
-            Status = $"Attaching using profile '{SelectedProfileId}'...";
+            var requestedProfileId = SelectedProfileId;
+            var effectiveProfileId = requestedProfileId;
+            ProfileVariantResolution? variant = null;
 
-            var session = await _runtime.AttachAsync(SelectedProfileId);
+            if (string.Equals(requestedProfileId, UniversalProfileId, StringComparison.OrdinalIgnoreCase))
+            {
+                var processes = await _processLocator.FindSupportedProcessesAsync();
+                variant = await _profileVariantResolver.ResolveAsync(requestedProfileId, processes);
+                effectiveProfileId = variant.ResolvedProfileId;
+            }
+
+            Status = variant is null
+                ? $"Attaching using profile '{effectiveProfileId}'..."
+                : $"Attaching using universal profile -> '{effectiveProfileId}' ({variant.ReasonCode}, conf={variant.Confidence:0.00})...";
+
+            var session = await _runtime.AttachAsync(effectiveProfileId);
+            if (variant is not null)
+            {
+                SelectedProfileId = effectiveProfileId;
+            }
             RuntimeMode = session.Process.Mode;
             ResolvedSymbolsCount = session.Symbols.Symbols.Count;
             var signatureCount = session.Symbols.Symbols.Values.Count(x => x.Source == AddressSource.Signature);
@@ -926,6 +950,18 @@ public sealed class MainViewModel : INotifyPropertyChanged
                              process.Metadata.TryGetValue("unresolvedSymbolRate", out var unresolvedRateRaw)
             ? unresolvedRateRaw
             : "n/a";
+        var resolvedVariant = process.Metadata is not null &&
+                              process.Metadata.TryGetValue("resolvedVariant", out var resolvedVariantRaw)
+            ? resolvedVariantRaw
+            : "n/a";
+        var resolvedVariantReason = process.Metadata is not null &&
+                                    process.Metadata.TryGetValue("resolvedVariantReasonCode", out var resolvedVariantReasonRaw)
+            ? resolvedVariantReasonRaw
+            : "n/a";
+        var resolvedVariantConfidence = process.Metadata is not null &&
+                                        process.Metadata.TryGetValue("resolvedVariantConfidence", out var resolvedVariantConfidenceRaw)
+            ? resolvedVariantConfidenceRaw
+            : "0.00";
         var launchKind = process.LaunchContext?.LaunchKind.ToString() ?? "Unknown";
         var modPath = process.LaunchContext?.ModPathNormalized;
         var recProfile = process.LaunchContext?.Recommendation.ProfileId ?? "none";
@@ -933,8 +969,12 @@ public sealed class MainViewModel : INotifyPropertyChanged
         var recConfidence = process.LaunchContext is null
             ? "0.00"
             : process.LaunchContext.Recommendation.Confidence.ToString("0.00");
+        var hostRole = process.HostRole.ToString().ToLowerInvariant();
+        var moduleSize = process.MainModuleSize > 0 ? process.MainModuleSize.ToString(CultureInfo.InvariantCulture) : "n/a";
+        var workshopMatchCount = process.WorkshopMatchCount.ToString(CultureInfo.InvariantCulture);
+        var selectionScore = process.SelectionScore.ToString("0.00", CultureInfo.InvariantCulture);
         var modPathSegment = string.IsNullOrWhiteSpace(modPath) ? "modPath=none" : $"modPath={modPath}";
-        return $"target={process.ExeTarget} | launch={launchKind} | cmdLine={cmdAvailable} | mods={mods} | {modPathSegment} | rec={recProfile}:{recReason}:{recConfidence} | via={via} | {dependencySegment} | fallbackRate={fallbackRate} | unresolvedRate={unresolvedRate}";
+        return $"target={process.ExeTarget} | launch={launchKind} | hostRole={hostRole} | score={selectionScore} | module={moduleSize} | workshopMatches={workshopMatchCount} | cmdLine={cmdAvailable} | mods={mods} | {modPathSegment} | rec={recProfile}:{recReason}:{recConfidence} | variant={resolvedVariant}:{resolvedVariantReason}:{resolvedVariantConfidence} | via={via} | {dependencySegment} | fallbackRate={fallbackRate} | unresolvedRate={unresolvedRate}";
     }
 
     private static bool IsActionAvailableForCurrentSession(string actionId, ActionSpec spec, AttachSession session)
@@ -1044,7 +1084,9 @@ public sealed class MainViewModel : INotifyPropertyChanged
                 payloadNode,
                 RuntimeMode,
                 BuildActionContext(SelectedActionId));
-            Status = result.Succeeded ? $"Action succeeded: {result.Message}" : $"Action failed: {result.Message}";
+            Status = result.Succeeded
+                ? $"Action succeeded: {result.Message}{BuildBackendRouteSuffix(result)}"
+                : $"Action failed: {result.Message}{BuildBackendRouteSuffix(result)}";
         }
         catch (Exception ex)
         {
@@ -1459,6 +1501,15 @@ public sealed class MainViewModel : INotifyPropertyChanged
             return;
         }
 
+        if (!ValidateSaveRuntimeVariant(SelectedProfileId, out var variantMessage))
+        {
+            SavePatchCompatibility.Clear();
+            SavePatchCompatibility.Add(new SavePatchCompatibilityViewItem("error", "save_variant_mismatch", variantMessage));
+            SavePatchApplySummary = variantMessage;
+            Status = variantMessage;
+            return;
+        }
+
         var compatibility = await _savePatchPackService.ValidateCompatibilityAsync(_loadedPatchPack, _loadedSave, SelectedProfileId);
         var preview = await _savePatchPackService.PreviewApplyAsync(_loadedPatchPack, _loadedSave, SelectedProfileId);
         _loadedPatchPreview = preview;
@@ -1521,6 +1572,13 @@ public sealed class MainViewModel : INotifyPropertyChanged
             return;
         }
 
+        if (!ValidateSaveRuntimeVariant(SelectedProfileId, out var variantMessage))
+        {
+            SavePatchApplySummary = variantMessage;
+            Status = variantMessage;
+            return;
+        }
+
         var expectedOperationCount = _loadedPatchPreview?.OperationsToApply.Count ?? _loadedPatchPack.Operations.Count;
         var result = await _savePatchApplyService.ApplyAsync(SavePath, _loadedPatchPack, SelectedProfileId, strict: IsStrictPatchApply);
         var summary = $"{result.Classification}: {result.Message}";
@@ -1558,6 +1616,35 @@ public sealed class MainViewModel : INotifyPropertyChanged
         Status = result.Restored
             ? $"Backup restored: {result.BackupPath}"
             : $"Backup restore skipped: {result.Message}";
+    }
+
+    private bool ValidateSaveRuntimeVariant(string requestedProfileId, out string message)
+    {
+        message = string.Empty;
+        var session = _runtime.CurrentSession;
+        if (session?.Process.Metadata is null)
+        {
+            return true;
+        }
+
+        if (!session.Process.Metadata.TryGetValue("resolvedVariant", out var runtimeVariant) ||
+            string.IsNullOrWhiteSpace(runtimeVariant))
+        {
+            return true;
+        }
+
+        if (requestedProfileId.Equals(UniversalProfileId, StringComparison.OrdinalIgnoreCase))
+        {
+            return true;
+        }
+
+        if (runtimeVariant.Equals(requestedProfileId, StringComparison.OrdinalIgnoreCase))
+        {
+            return true;
+        }
+
+        message = $"Blocked by runtime/save variant mismatch (reasonCode=save_variant_mismatch): runtime={runtimeVariant}, selected={requestedProfileId}.";
+        return false;
     }
 
     private Task RefreshDiffAsync()
@@ -1771,8 +1858,25 @@ public sealed class MainViewModel : INotifyPropertyChanged
         }
 
         LiveOpsDiagnostics.Add($"mode: {session.Process.Mode}");
+        if (session.Process.Metadata is not null &&
+            session.Process.Metadata.TryGetValue("runtimeModeReasonCode", out var modeReason))
+        {
+            LiveOpsDiagnostics.Add($"mode_reason: {modeReason}");
+        }
+
         LiveOpsDiagnostics.Add($"launch: {session.Process.LaunchContext?.LaunchKind ?? LaunchKind.Unknown}");
         LiveOpsDiagnostics.Add($"recommendation: {session.Process.LaunchContext?.Recommendation.ProfileId ?? "none"}");
+        if (session.Process.Metadata is not null &&
+            session.Process.Metadata.TryGetValue("resolvedVariant", out var resolvedVariant))
+        {
+            var reason = session.Process.Metadata.TryGetValue("resolvedVariantReasonCode", out var variantReason)
+                ? variantReason
+                : "unknown";
+            var confidence = session.Process.Metadata.TryGetValue("resolvedVariantConfidence", out var variantConfidence)
+                ? variantConfidence
+                : "0.00";
+            LiveOpsDiagnostics.Add($"variant: {resolvedVariant} ({reason}, conf={confidence})");
+        }
 
         if (session.Process.Metadata is not null &&
             session.Process.Metadata.TryGetValue("dependencyValidation", out var dependency))
@@ -2069,6 +2173,36 @@ public sealed class MainViewModel : INotifyPropertyChanged
         };
     }
 
+    private static string BuildBackendRouteSuffix(ActionExecutionResult result)
+    {
+        if (result.Diagnostics is null)
+        {
+            return string.Empty;
+        }
+
+        var backend = TryGetDiagnosticString(result.Diagnostics, "backendRoute");
+        var reason = TryGetDiagnosticString(result.Diagnostics, "routeReasonCode")
+            ?? TryGetDiagnosticString(result.Diagnostics, "reasonCode");
+        if (string.IsNullOrWhiteSpace(backend) && string.IsNullOrWhiteSpace(reason))
+        {
+            return string.Empty;
+        }
+
+        var backendText = string.IsNullOrWhiteSpace(backend) ? "unknown" : backend;
+        var reasonText = string.IsNullOrWhiteSpace(reason) ? "unknown" : reason;
+        return $" [backend={backendText}, reason={reasonText}]";
+    }
+
+    private static string? TryGetDiagnosticString(IReadOnlyDictionary<string, object?> diagnostics, string key)
+    {
+        if (!diagnostics.TryGetValue(key, out var value) || value is null)
+        {
+            return null;
+        }
+
+        return value as string ?? value.ToString();
+    }
+
     // ── Quick-Action Methods ──────────────────────────────────────────────
 
     /// <summary>Toggle tracking to know which bool/toggle cheats are currently "on".</summary>
@@ -2092,7 +2226,9 @@ public sealed class MainViewModel : INotifyPropertyChanged
                 else
                     _activeToggles.Add(toggleKey);
             }
-            Status = result.Succeeded ? $"✓ {actionId}: {result.Message}" : $"✗ {actionId}: {result.Message}";
+            Status = result.Succeeded
+                ? $"✓ {actionId}: {result.Message}{BuildBackendRouteSuffix(result)}"
+                : $"✗ {actionId}: {result.Message}{BuildBackendRouteSuffix(result)}";
         }
         catch (Exception ex)
         {

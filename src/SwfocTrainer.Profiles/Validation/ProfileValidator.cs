@@ -30,5 +30,25 @@ public static class ProfileValidator
         {
             throw new InvalidDataException($"Profile '{profile.Id}' requires saveSchemaId.");
         }
+
+        var backendPreference = (profile.BackendPreference ?? string.Empty).Trim();
+        if (backendPreference.Length > 0 &&
+            !backendPreference.Equals("auto", StringComparison.OrdinalIgnoreCase) &&
+            !backendPreference.Equals("extender", StringComparison.OrdinalIgnoreCase) &&
+            !backendPreference.Equals("helper", StringComparison.OrdinalIgnoreCase) &&
+            !backendPreference.Equals("memory", StringComparison.OrdinalIgnoreCase))
+        {
+            throw new InvalidDataException(
+                $"Profile '{profile.Id}' backendPreference must be one of: auto|extender|helper|memory.");
+        }
+
+        var hostPreference = (profile.HostPreference ?? string.Empty).Trim();
+        if (hostPreference.Length > 0 &&
+            !hostPreference.Equals("starwarsg_preferred", StringComparison.OrdinalIgnoreCase) &&
+            !hostPreference.Equals("any", StringComparison.OrdinalIgnoreCase))
+        {
+            throw new InvalidDataException(
+                $"Profile '{profile.Id}' hostPreference must be one of: starwarsg_preferred|any.");
+        }
     }
 }

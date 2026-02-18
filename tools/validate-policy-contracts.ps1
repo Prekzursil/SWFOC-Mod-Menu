@@ -51,8 +51,22 @@ $requiredFiles = @(
     "docs/MOD_ONBOARDING_RUNBOOK.md",
     "docs/RELEASE_RUNBOOK.md",
     "docs/release-notes-template.md",
+    "docs/RESEARCH_GAME_WORKFLOW.md",
+    "tools/research/source-corpus.md",
+    "tools/research/build-fingerprint.md",
+    "tools/research/capture-binary-fingerprint.ps1",
+    "tools/research/extract-pe-metadata.ps1",
+    "tools/research/generate-signature-candidates.ps1",
+    "tools/research/normalize-signature-pack.ps1",
+    "tools/research/run-capability-intel.ps1",
+    "tools/validate-binary-fingerprint.ps1",
+    "tools/validate-signature-pack.ps1",
     "tools/schemas/calibration-artifact.schema.json",
-    "tools/schemas/support-bundle-manifest.schema.json"
+    "tools/schemas/binary-fingerprint.schema.json",
+    "tools/schemas/signature-pack.schema.json",
+    "tools/schemas/support-bundle-manifest.schema.json",
+    "tools/fixtures/binary_fingerprint_sample.json",
+    "tools/fixtures/signature_pack_sample.json"
 )
 
 foreach ($path in $requiredFiles) {
