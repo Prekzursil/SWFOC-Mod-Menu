@@ -11,10 +11,27 @@
 - [ ] CI/Tooling
 - [ ] Docs only
 
+## Affected Profiles
+
+- [ ] `base_sweaw`
+- [ ] `base_swfoc`
+- [ ] `aotr_1397421866_swfoc`
+- [ ] `roe_3447786229_swfoc`
+- [ ] `custom`
+
+## Reliability Evidence
+
+- Repro bundle JSON: `<path or artifact URL>`
+- Repro bundle markdown: `<path or artifact URL>`
+- Launch reason code(s): `<reasonCode list>`
+- Runtime mode diagnostics: `<hint/effective/reasonCode>`
+- Classification: `<passed|skipped|failed|blocked_environment|blocked_profile_mismatch>`
+
 ## Validation Evidence
 
 - [ ] Deterministic tests run
 - [ ] Launch-context fixture smoke run
+- [ ] Repro bundle validated (`tools/validate-repro-bundle.ps1`)
 - [ ] Live/manual verification (if applicable)
 
 ### Commands / Results

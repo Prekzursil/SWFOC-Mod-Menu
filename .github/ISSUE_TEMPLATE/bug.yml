@@ -6,12 +6,48 @@ labels:
 body:
   - type: markdown
     attributes:
-      value: "Please include enough detail to reproduce reliably."
+      value: "Please include enough detail to reproduce reliably. Runtime/mod issues require repro-bundle artifacts."
   - type: input
     id: profile
     attributes:
       label: Affected profile
       placeholder: base_swfoc / aotr_1397421866_swfoc / roe_3447786229_swfoc
+    validations:
+      required: true
+  - type: input
+    id: run_id
+    attributes:
+      label: Run ID
+      description: Value from `tools/run-live-validation.ps1 -RunId ...`
+      placeholder: 20260217-010203
+    validations:
+      required: true
+  - type: input
+    id: repro_bundle_json
+    attributes:
+      label: Repro bundle JSON path/link
+      description: `TestResults/runs/<runId>/repro-bundle.json` or uploaded artifact URL
+      placeholder: TestResults/runs/20260217-010203/repro-bundle.json
+    validations:
+      required: true
+  - type: input
+    id: repro_bundle_md
+    attributes:
+      label: Repro bundle markdown path/link
+      description: `TestResults/runs/<runId>/repro-bundle.md`
+      placeholder: TestResults/runs/20260217-010203/repro-bundle.md
+    validations:
+      required: true
+  - type: dropdown
+    id: classification
+    attributes:
+      label: Bundle classification
+      options:
+        - passed
+        - skipped
+        - failed
+        - blocked_environment
+        - blocked_profile_mismatch
     validations:
       required: true
   - type: textarea
@@ -33,7 +69,16 @@ body:
     validations:
       required: true
   - type: textarea
+    id: launch_context
+    attributes:
+      label: Launch context diagnostics
+      description: Include launchKind, reasonCode, confidence, and detected STEAMMOD/MODPATH data.
+    validations:
+      required: true
+  - type: textarea
     id: diagnostics
     attributes:
       label: Diagnostics / logs
-      description: Include launchKind, reasonCode, confidence, dependencyValidation if available.
+      description: Include runtimeModeHint/runtimeModeEffective/runtimeModeReasonCode, dependency state, helper readiness, symbol health summary.
+    validations:
+      required: true

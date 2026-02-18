@@ -2,7 +2,12 @@ param(
     [string]$Configuration = "Release",
     [string]$ResultsDirectory = "TestResults",
     [string]$ProfileRoot = "profiles/default",
-    [switch]$NoBuild = $true
+    [switch]$NoBuild = $true,
+    [string]$RunId = "",
+    [ValidateSet("AOTR", "ROE", "TACTICAL", "FULL")][string]$Scope = "FULL",
+    [bool]$EmitReproBundle = $true,
+    [switch]$FailOnMissingArtifacts,
+    [switch]$Strict
 )
 
 Set-StrictMode -Version Latest
@@ -10,6 +15,15 @@ $ErrorActionPreference = "Stop"
 
 $repoRoot = Resolve-Path (Join-Path $PSScriptRoot "..")
 Set-Location $repoRoot
+
+if ([string]::IsNullOrWhiteSpace($RunId)) {
+    $RunId = (Get-Date).ToUniversalTime().ToString("yyyyMMdd-HHmmss")
+}
+
+$runResultsDirectory = Join-Path $ResultsDirectory (Join-Path "runs" $RunId)
+if (-not (Test-Path -Path $runResultsDirectory)) {
+    New-Item -ItemType Directory -Path $runResultsDirectory -Force | Out-Null
+}
 
 function Resolve-DotnetCommand {
     $dotnet = Get-Command dotnet -ErrorAction SilentlyContinue
@@ -74,23 +88,20 @@ function Resolve-PythonCommand {
         }
     }
 
-    return $null
+    return @()
 }
 
-$dotnetExe = Resolve-DotnetCommand
-$resolvedPython = Resolve-PythonCommand
-if ($null -eq $resolvedPython) {
-    $pythonCmd = @()
-}
-elseif ($resolvedPython -is [System.Array]) {
-    $pythonCmd = @($resolvedPython | ForEach-Object { $_ })
-}
-else {
-    $pythonCmd = @($resolvedPython)
-}
+function Should-RunTest {
+    param(
+        [string[]]$Scopes,
+        [string]$SelectedScope
+    )
 
-if (-not (Test-Path -Path $ResultsDirectory)) {
-    New-Item -ItemType Directory -Path $ResultsDirectory | Out-Null
+    if ($SelectedScope -eq "FULL") {
+        return $true
+    }
+
+    return $Scopes -contains $SelectedScope
 }
 
 function Invoke-LiveTest {
@@ -108,16 +119,21 @@ function Invoke-LiveTest {
         "-c", $Configuration,
         "--filter", $Filter,
         "--logger", "trx;LogFileName=$TrxName",
-        "--results-directory", $ResultsDirectory
+        "--results-directory", $runResultsDirectory
     )
 
     if ($NoBuild) {
-        $args = $args[0..4] + "--no-build" + $args[5..($args.Count - 1)]
+        $args += "--no-build"
     }
 
     & $dotnetExe @args
 
-    return Join-Path $ResultsDirectory $TrxName
+    $exitCode = if (Get-Variable -Name LASTEXITCODE -Scope Global -ErrorAction SilentlyContinue) { [int]$global:LASTEXITCODE } else { 0 }
+    if ($exitCode -ne 0) {
+        throw "dotnet test failed for '$Name' with exit code $exitCode"
+    }
+
+    return Join-Path $runResultsDirectory $TrxName
 }
 
 function Read-TrxSummary {
@@ -176,21 +192,119 @@ function Read-TrxSummary {
     }
 }
 
+$dotnetExe = Resolve-DotnetCommand
+$pythonCmd = @(Resolve-PythonCommand)
 $runTimestamp = Get-Date
 $iso = $runTimestamp.ToString("yyyy-MM-dd HH:mm:ss zzz")
+$runStartedUtc = $runTimestamp.ToUniversalTime().ToString("o")
 
-$trxTactical = Invoke-LiveTest -Name "Live Tactical Toggles" -Filter "FullyQualifiedName~LiveTacticalToggleWorkflowTests" -TrxName "live-tactical.trx"
-$trxHeroHelper = Invoke-LiveTest -Name "Live Hero Helper" -Filter "FullyQualifiedName~LiveHeroHelperWorkflowTests" -TrxName "live-hero-helper.trx"
-$trxRoeHealth = Invoke-LiveTest -Name "Live ROE Runtime Health" -Filter "FullyQualifiedName~LiveRoeRuntimeHealthTests" -TrxName "live-roe-health.trx"
-$trxCredits = Invoke-LiveTest -Name "Live Credits" -Filter "FullyQualifiedName~LiveCreditsTests" -TrxName "live-credits.trx"
+$testDefinitions = @(
+    [PSCustomObject]@{
+        Name = "Live Tactical Toggles"
+        TestName = "LiveTacticalToggleWorkflowTests"
+        Filter = "FullyQualifiedName~LiveTacticalToggleWorkflowTests"
+        TrxBase = "live-tactical.trx"
+        Scopes = @("AOTR", "ROE", "TACTICAL")
+    },
+    [PSCustomObject]@{
+        Name = "Live Hero Helper"
+        TestName = "LiveHeroHelperWorkflowTests"
+        Filter = "FullyQualifiedName~LiveHeroHelperWorkflowTests"
+        TrxBase = "live-hero-helper.trx"
+        Scopes = @("AOTR", "ROE")
+    },
+    [PSCustomObject]@{
+        Name = "Live ROE Runtime Health"
+        TestName = "LiveRoeRuntimeHealthTests"
+        Filter = "FullyQualifiedName~LiveRoeRuntimeHealthTests"
+        TrxBase = "live-roe-health.trx"
+        Scopes = @("ROE")
+    },
+    [PSCustomObject]@{
+        Name = "Live Credits"
+        TestName = "LiveCreditsTests"
+        Filter = "FullyQualifiedName~LiveCreditsTests"
+        TrxBase = "live-credits.trx"
+        Scopes = @("AOTR", "ROE")
+    }
+)
 
-$launchContextJson = Join-Path $ResultsDirectory "launch-context-fixture.json"
+$summaries = New-Object System.Collections.Generic.List[object]
+$fatalError = $null
+
+foreach ($test in $testDefinitions) {
+    $trxPath = Join-Path $runResultsDirectory ("{0}-{1}" -f $RunId, $test.TrxBase)
+
+    if (-not (Should-RunTest -Scopes $test.Scopes -SelectedScope $Scope)) {
+        $summaries.Add([PSCustomObject]@{
+            Name = $test.TestName
+            Summary = [PSCustomObject]@{
+                Trx = $trxPath
+                Outcome = "Skipped"
+                Passed = 0
+                Failed = 0
+                Skipped = 1
+                Message = "scope_not_selected"
+            }
+        })
+        continue
+    }
+
+    if ($null -ne $fatalError) {
+        $summaries.Add([PSCustomObject]@{
+            Name = $test.TestName
+            Summary = [PSCustomObject]@{
+                Trx = $trxPath
+                Outcome = "Missing"
+                Passed = 0
+                Failed = 0
+                Skipped = 0
+                Message = "not_executed_due_to_prior_failure"
+            }
+        })
+        continue
+    }
+
+    try {
+        $executedTrx = Invoke-LiveTest -Name $test.Name -Filter $test.Filter -TrxName ("{0}-{1}" -f $RunId, $test.TrxBase)
+        $summary = Read-TrxSummary -TrxPath $executedTrx
+        $summaries.Add([PSCustomObject]@{
+            Name = $test.TestName
+            Summary = $summary
+        })
+    }
+    catch {
+        $fatalError = $_.Exception
+        $summaries.Add([PSCustomObject]@{
+            Name = $test.TestName
+            Summary = [PSCustomObject]@{
+                Trx = $trxPath
+                Outcome = "Failed"
+                Passed = 0
+                Failed = 1
+                Skipped = 0
+                Message = $fatalError.Message
+            }
+        })
+    }
+}
+
+$missingCount = (@($summaries | Where-Object { $_.Summary.Outcome -eq "Missing" })).Count
+if ($FailOnMissingArtifacts -and $missingCount -gt 0) {
+    $fatalError = [InvalidOperationException]::new("Missing TRX artifacts detected ($missingCount).")
+}
+
+$summaryPath = Join-Path $runResultsDirectory "live-validation-summary.json"
+$summaries | ConvertTo-Json -Depth 6 | Set-Content -Path $summaryPath
+
+$launchContextJson = Join-Path $runResultsDirectory "launch-context-fixture.json"
 $pythonArgs = @(
     "tools/detect-launch-context.py",
     "--from-process-json", "tools/fixtures/launch_context_cases.json",
     "--profile-root", $ProfileRoot,
     "--pretty"
 )
+
 if ($pythonCmd.Count -eq 0 -or $null -eq $pythonCmd[0]) {
     Write-Warning "Python was not found in this shell; skipping launch-context fixture generation."
     [PSCustomObject]@{
@@ -208,12 +322,7 @@ else {
 
         $pythonInvocationArgs += $pythonArgs
         $launchContextOutput = & $pythonCmd[0] @pythonInvocationArgs 2>&1
-        if (Get-Variable -Name LASTEXITCODE -Scope Global -ErrorAction SilentlyContinue) {
-            $exitCode = [int]$global:LASTEXITCODE
-        }
-        else {
-            $exitCode = 0
-        }
+        $exitCode = if (Get-Variable -Name LASTEXITCODE -Scope Global -ErrorAction SilentlyContinue) { [int]$global:LASTEXITCODE } else { 0 }
         $outputText = ($launchContextOutput | Out-String).Trim()
 
         if ($exitCode -ne 0) {
@@ -237,37 +346,89 @@ else {
     }
 }
 
-$summaries = @(
-    [PSCustomObject]@{ Name = "LiveTacticalToggleWorkflowTests"; Summary = Read-TrxSummary -TrxPath $trxTactical },
-    [PSCustomObject]@{ Name = "LiveHeroHelperWorkflowTests"; Summary = Read-TrxSummary -TrxPath $trxHeroHelper },
-    [PSCustomObject]@{ Name = "LiveRoeRuntimeHealthTests"; Summary = Read-TrxSummary -TrxPath $trxRoeHealth },
-    [PSCustomObject]@{ Name = "LiveCreditsTests"; Summary = Read-TrxSummary -TrxPath $trxCredits }
-)
+$bundlePath = Join-Path $runResultsDirectory "repro-bundle.json"
+$bundleMdPath = Join-Path $runResultsDirectory "repro-bundle.md"
+if ($EmitReproBundle) {
+    try {
+        & (Join-Path $PSScriptRoot "collect-mod-repro-bundle.ps1") `
+            -RunId $RunId `
+            -RunDirectory $runResultsDirectory `
+            -SummaryPath $summaryPath `
+            -Scope $Scope `
+            -ProfileRoot $ProfileRoot `
+            -StartedAtUtc $runStartedUtc
 
-$summaryPath = Join-Path $ResultsDirectory "live-validation-summary.json"
-$summaries | ConvertTo-Json -Depth 6 | Set-Content -Path $summaryPath
+        $collectExitCode = if (Get-Variable -Name LASTEXITCODE -Scope Global -ErrorAction SilentlyContinue) { [int]$global:LASTEXITCODE } else { 0 }
+        if ($collectExitCode -ne 0) {
+            throw "collect-mod-repro-bundle.ps1 failed with exit code $collectExitCode"
+        }
+
+        & (Join-Path $PSScriptRoot "validate-repro-bundle.ps1") `
+            -BundlePath $bundlePath `
+            -SchemaPath "tools/schemas/repro-bundle.schema.json" `
+            -Strict:$Strict
+
+        $validateExitCode = if (Get-Variable -Name LASTEXITCODE -Scope Global -ErrorAction SilentlyContinue) { [int]$global:LASTEXITCODE } else { 0 }
+        if ($validateExitCode -ne 0) {
+            throw "validate-repro-bundle.ps1 failed with exit code $validateExitCode"
+        }
+    }
+    catch {
+        Write-Warning ("Repro bundle generation/validation failed: {0}" -f $_.Exception.Message)
+        $fatalError = $_.Exception
+    }
+}
 
 Write-Host ""
 Write-Host "=== Live Validation Summary ($iso) ==="
+Write-Host "run id: $RunId"
+Write-Host "scope: $Scope"
 foreach ($entry in $summaries) {
     $s = $entry.Summary
     Write-Host ("{0}: outcome={1} passed={2} failed={3} skipped={4} message='{5}'" -f $entry.Name, $s.Outcome, $s.Passed, $s.Failed, $s.Skipped, $s.Message)
 }
 Write-Host "launch-context fixture: $launchContextJson"
 Write-Host "summary json: $summaryPath"
+if ($EmitReproBundle) {
+    Write-Host "repro bundle json: $bundlePath"
+    Write-Host "repro bundle markdown: $bundleMdPath"
+}
 
-$template34 = Join-Path $ResultsDirectory "issue-34-evidence-template.md"
-$template19 = Join-Path $ResultsDirectory "issue-19-evidence-template.md"
+$byName = @{}
+foreach ($entry in $summaries) {
+    $byName[$entry.Name] = $entry.Summary
+}
 
-$lineTactical = $summaries[0].Summary
-$lineHero = $summaries[1].Summary
-$lineRoe = $summaries[2].Summary
-$lineCredits = $summaries[3].Summary
+function Get-Line {
+    param([string]$Name)
+    if ($byName.ContainsKey($Name)) {
+        return $byName[$Name]
+    }
+
+    return [PSCustomObject]@{
+        Trx = ""
+        Outcome = "Missing"
+        Passed = 0
+        Failed = 0
+        Skipped = 0
+        Message = "missing_summary_entry"
+    }
+}
+
+$lineTactical = Get-Line -Name "LiveTacticalToggleWorkflowTests"
+$lineHero = Get-Line -Name "LiveHeroHelperWorkflowTests"
+$lineRoe = Get-Line -Name "LiveRoeRuntimeHealthTests"
+$lineCredits = Get-Line -Name "LiveCreditsTests"
+
+$template34 = Join-Path $runResultsDirectory "issue-34-evidence-template.md"
+$template19 = Join-Path $runResultsDirectory "issue-19-evidence-template.md"
 
 @"
 Live validation evidence update ($iso)
 
+- runId: $RunId
 - Date/time: $iso
+- Scope: $Scope
 - Profile id: <fill from live attach output>
 - Launch recommendation: <profileId/reasonCode/confidence from live attach output>
 - Runtime mode at attach: <fill>
@@ -280,13 +441,15 @@ Live validation evidence update ($iso)
 - Credits live diagnostic: $($lineCredits.Outcome) (p=$($lineCredits.Passed), f=$($lineCredits.Failed), s=$($lineCredits.Skipped))
   - detail: $($lineCredits.Message)
 - Diagnostics for degraded/unavailable actions: <fill>
+- Repro bundle: $bundlePath
 - Artifacts:
-  - $trxTactical
-  - $trxHeroHelper
-  - $trxRoeHealth
-  - $trxCredits
+  - $($lineTactical.Trx)
+  - $($lineHero.Trx)
+  - $($lineRoe.Trx)
+  - $($lineCredits.Trx)
   - $launchContextJson
   - $summaryPath
+  - $bundleMdPath
 
 Status gate for closure:
 - [ ] At least one successful tactical toggle + revert in tactical mode
@@ -295,6 +458,10 @@ Status gate for closure:
 
 @"
 AOTR/ROE checklist evidence update ($iso)
+
+- runId: $RunId
+- scope: $Scope
+- repro bundle: $bundlePath
 
 | Profile | Attach summary | Tactical toggle workflow | Hero helper workflow | Result |
 |---|---|---|---|---|
@@ -310,7 +477,13 @@ Current local run snapshot:
 Artifacts:
 - $summaryPath
 - $launchContextJson
+- $bundlePath
+- $bundleMdPath
 "@ | Set-Content -Path $template19
 
 Write-Host "issue template (34): $template34"
 Write-Host "issue template (19): $template19"
+
+if ($null -ne $fatalError) {
+    throw $fatalError
+}

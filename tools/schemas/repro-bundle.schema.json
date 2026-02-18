@@ -1,0 +1,103 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://swfoc-mod-menu.local/schemas/repro-bundle.schema.json",
+  "title": "SWFOC Repro Bundle",
+  "type": "object",
+  "required": [
+    "schemaVersion",
+    "runId",
+    "startedAtUtc",
+    "scope",
+    "processSnapshot",
+    "launchContext",
+    "runtimeMode",
+    "liveTests",
+    "diagnostics",
+    "classification",
+    "nextAction"
+  ],
+  "properties": {
+    "schemaVersion": { "type": "string", "const": "1.0" },
+    "runId": { "type": "string", "minLength": 1 },
+    "startedAtUtc": { "type": "string", "format": "date-time" },
+    "scope": {
+      "type": "string",
+      "enum": ["AOTR", "ROE", "TACTICAL", "FULL"]
+    },
+    "processSnapshot": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["pid", "name", "commandLine"],
+        "properties": {
+          "pid": { "type": "integer" },
+          "name": { "type": "string" },
+          "path": { "type": ["string", "null"] },
+          "commandLine": { "type": ["string", "null"] },
+          "steamModIds": {
+            "type": "array",
+            "items": { "type": "string" }
+          }
+        }
+      }
+    },
+    "launchContext": {
+      "type": "object",
+      "required": ["profileId", "reasonCode", "confidence", "launchKind"],
+      "properties": {
+        "profileId": { "type": ["string", "null"] },
+        "reasonCode": { "type": ["string", "null"] },
+        "confidence": { "type": ["number", "null"] },
+        "launchKind": { "type": ["string", "null"] }
+      }
+    },
+    "runtimeMode": {
+      "type": "object",
+      "required": ["hint", "effective", "reasonCode"],
+      "properties": {
+        "hint": { "type": "string" },
+        "effective": { "type": "string" },
+        "reasonCode": { "type": "string" }
+      }
+    },
+    "liveTests": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["name", "outcome", "trxPath", "message"],
+        "properties": {
+          "name": { "type": "string" },
+          "outcome": {
+            "type": "string",
+            "enum": ["Passed", "Failed", "Skipped", "Missing", "Unknown"]
+          },
+          "passed": { "type": "integer" },
+          "failed": { "type": "integer" },
+          "skipped": { "type": "integer" },
+          "trxPath": { "type": "string" },
+          "message": { "type": ["string", "null"] }
+        }
+      }
+    },
+    "diagnostics": {
+      "type": "object",
+      "required": ["dependencyState", "helperReadiness", "symbolHealthSummary"],
+      "properties": {
+        "dependencyState": { "type": "string" },
+        "helperReadiness": { "type": "string" },
+        "symbolHealthSummary": { "type": "string" }
+      }
+    },
+    "classification": {
+      "type": "string",
+      "enum": [
+        "passed",
+        "skipped",
+        "failed",
+        "blocked_environment",
+        "blocked_profile_mismatch"
+      ]
+    },
+    "nextAction": { "type": "string", "minLength": 1 }
+  }
+}

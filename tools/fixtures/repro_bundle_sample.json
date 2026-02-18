@@ -1,0 +1,44 @@
+{
+  "schemaVersion": "1.0",
+  "runId": "sample-20260217",
+  "startedAtUtc": "2026-02-17T00:00:00Z",
+  "scope": "AOTR",
+  "processSnapshot": [
+    {
+      "pid": 4242,
+      "name": "StarWarsG.exe",
+      "path": "C:\\Games\\SWFOC\\corruption\\StarWarsG.exe",
+      "commandLine": "StarWarsG.exe LANGUAGE=ENGLISH STEAMMOD=1397421866",
+      "steamModIds": ["1397421866"]
+    }
+  ],
+  "launchContext": {
+    "profileId": "aotr_1397421866_swfoc",
+    "reasonCode": "steammod_exact_aotr",
+    "confidence": 1.0,
+    "launchKind": "Workshop"
+  },
+  "runtimeMode": {
+    "hint": "Unknown",
+    "effective": "Tactical",
+    "reasonCode": "tactical_test_passed"
+  },
+  "liveTests": [
+    {
+      "name": "LiveTacticalToggleWorkflowTests",
+      "outcome": "Passed",
+      "passed": 1,
+      "failed": 0,
+      "skipped": 0,
+      "trxPath": "TestResults/runs/sample-20260217/live-tactical.trx",
+      "message": ""
+    }
+  ],
+  "diagnostics": {
+    "dependencyState": "unknown",
+    "helperReadiness": "unknown",
+    "symbolHealthSummary": "not-captured"
+  },
+  "classification": "passed",
+  "nextAction": "Proceed with issue update using generated bundle evidence."
+}

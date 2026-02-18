@@ -5,6 +5,11 @@ Rule for completion: every `[x]` item includes evidence as one of:
 - `evidence: test <path>`
 - `evidence: manual <date> <note>`
 - `evidence: issue <url>`
+- `evidence: bundle TestResults/runs/<runId>/repro-bundle.json`
+
+Reliability rule for runtime/mod tasks:
+
+- issue and PR evidence must include `runId`, classification, launch `reasonCode`, and bundle link.
 
 ## Now (Bootstrap + M0 Reliability)
 
@@ -47,7 +52,7 @@ Rule for completion: every `[x]` item includes evidence as one of:
   evidence: manual `2026-02-15` `dotnet test tests/SwfocTrainer.Tests/SwfocTrainer.Tests.csproj -c Release --no-build` passed 69 tests, skipped 4 live-gated tests
 - [ ] Execute live-machine M1 validation run and attach evidence to issues `#34` and `#19`.
   note: local attempt `2026-02-16` produced explicit skips because no live SWFOC process was running.
-  note: use `pwsh ./tools/run-live-validation.ps1 -Configuration Release -NoBuild` and post templates from `TestResults/` to `#34` and `#19`.
+  note: use `pwsh ./tools/run-live-validation.ps1 -Configuration Release -NoBuild -Scope FULL -EmitReproBundle $true` and post templates from `TestResults/runs/<runId>/` to `#34` and `#19`.
   evidence-progress: `#34` comment `https://github.com/Prekzursil/SWFOC-Mod-Menu/issues/34#issuecomment-3905270711`
   evidence-progress: `#19` comment `https://github.com/Prekzursil/SWFOC-Mod-Menu/issues/19#issuecomment-3905270874`
 - [x] Close/reconcile M0 carryover issues (`#15`, `#16`, `#17`, `#18`) with evidence comments.

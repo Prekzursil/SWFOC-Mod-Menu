@@ -61,6 +61,7 @@ If touching signatures, fallbacks, or runtime attach logic:
 - include before/after behavior
 - include launch-context evidence (`reasonCode`, `confidence`, `launchKind`)
 - record whether change impacts base, AOTR, ROE, or custom mods
+- include `runId` and repro bundle evidence (`repro-bundle.json`, `repro-bundle.md`) or a justified skip note.
 
 ## Issue Workflow
 

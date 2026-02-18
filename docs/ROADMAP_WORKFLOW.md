@@ -13,12 +13,20 @@ This project executes roadmap slices through three synchronized surfaces:
 - Update `TODO.md` only when evidence exists.
 - Every completed slice must include at least one evidence link:
   - test path, issue URL, PR URL, or commit SHA.
+- Runtime/mod issues are not ready-for-fix without `repro-bundle.json` + classification + launch reason code.
 
 ## Evidence Priority
 
 1. Deterministic tests in CI
 2. Live-machine validation notes for runtime features
 3. Manual UX verification screenshots/notes
+
+## Board Lane Policy
+
+- `Now`: only issues with explicit artifact acceptance criteria and assigned owner.
+- `Next`: implementation-defined issues with dependencies resolved.
+- `Later`: research or blocked work; no active implementation.
+- Closure rule for runtime/mod issues: linked bundle evidence + reason code + fix validation notes.
 
 ## M1 Guidance
 
