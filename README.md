@@ -41,6 +41,14 @@ Excluded:
   - strict/non-strict apply toggle (strict default ON)
   - atomic apply with backup + receipt
   - rollback from latest backup
+- Mod Compatibility Studio (M3):
+  - draft profile onboarding from launch samples (`STEAMMOD`/`MODPATH`)
+  - calibration artifact export
+  - compatibility report with promotion gate verdict
+- Ops Hardening (M4):
+  - transactional profile update install + rollback
+  - support bundle export (logs/runtime/repro bundles/telemetry)
+  - telemetry snapshot export for drift diagnostics
 - Dependency-aware action gating for mod/submod contexts
 - Launch-context detector script for reproducible diagnostics
 
@@ -77,7 +85,7 @@ dotnet test tests/SwfocTrainer.Tests/SwfocTrainer.Tests.csproj `
 
 GitHub Actions workflows:
 - `.github/workflows/ci.yml`: restore, build, deterministic tests, launch-context fixture smoke checks
-- `.github/workflows/release-portable.yml`: manual/tag-triggered portable package artifact
+- `.github/workflows/release-portable.yml`: portable package + checksum + GitHub Release publish on tags
 
 ## Reviewer Automation
 
@@ -134,11 +142,15 @@ pwsh ./tools/package-portable.ps1 -Configuration Release
 
 Output: `artifacts/SwfocTrainer-portable.zip`
 
+GitHub Releases are the primary distribution channel. See `docs/RELEASE_RUNBOOK.md` for tag policy, checksum verification, and rollback steps.
+
 ## Roadmap and Execution
 
 - Execution board: `TODO.md`
 - Roadmap workflow: `docs/ROADMAP_WORKFLOW.md`
 - Save Lab operator workflow: `docs/SAVE_LAB_RUNBOOK.md`
+- Mod onboarding workflow: `docs/MOD_ONBOARDING_RUNBOOK.md`
+- Release operations: `docs/RELEASE_RUNBOOK.md`
 - Plan archive: `(new)codex(plans)/`
 - Profile format contract: `docs/PROFILE_FORMAT.md`
 

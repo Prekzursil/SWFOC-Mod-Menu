@@ -113,6 +113,16 @@ jobs:
         run: |
           pwsh ./tools/validate-save-patch-pack.ps1 -PatchPackPath tools/fixtures/save_patch_pack_sample.json -SchemaPath tools/schemas/save-patch-pack.schema.json -Strict
 
+      - name: Calibration artifact schema smoke
+        shell: pwsh
+        run: |
+          pwsh ./tools/validate-calibration-artifact.ps1 -ArtifactPath tools/fixtures/calibration_artifact_sample.json -SchemaPath tools/schemas/calibration-artifact.schema.json -Strict
+
+      - name: Support bundle manifest schema smoke
+        shell: pwsh
+        run: |
+          pwsh ./tools/validate-support-bundle-manifest.ps1 -ManifestPath tools/fixtures/support_bundle_manifest_sample.json -SchemaPath tools/schemas/support-bundle-manifest.schema.json -Strict
+
       - name: Upload Test Results
         if: always()
         uses: actions/upload-artifact@v4

@@ -83,7 +83,26 @@ Reliability rule for runtime/mod tasks:
 
 ## Later (M2 + M3 + M4)
 
-- [ ] Extend save schema validation coverage and corpus round-trip checks.
-- [ ] Build custom-mod onboarding wizard (bootstrap profile + hint/dependency scaffolding).
-- [ ] Add signature calibration flow and compatibility report card for newly onboarded mods.
-- [ ] Implement profile-pack operational hardening (rollback-safe updates + diagnostics bundle export).
+- [x] Extend save schema validation coverage and corpus round-trip checks.
+  evidence: test `tests/SwfocTrainer.Tests/Saves/SaveCorpusRoundTripTests.cs`
+  evidence: manual `2026-02-18` `dotnet test tests/SwfocTrainer.Tests/SwfocTrainer.Tests.csproj -c Release --no-build --filter "FullyQualifiedName~SaveCorpusRoundTripTests"` => `Passed: 1`
+- [x] Build custom-mod onboarding wizard (bootstrap profile + hint/dependency scaffolding).
+  evidence: code `src/SwfocTrainer.Profiles/Services/ModOnboardingService.cs`
+  evidence: code `src/SwfocTrainer.App/MainWindow.xaml`
+  evidence: test `tests/SwfocTrainer.Tests/Profiles/ModOnboardingServiceTests.cs`
+- [x] Add signature calibration flow and compatibility report card for newly onboarded mods.
+  evidence: code `src/SwfocTrainer.Core/Services/ModCalibrationService.cs`
+  evidence: schema `tools/schemas/calibration-artifact.schema.json`
+  evidence: test `tests/SwfocTrainer.Tests/Profiles/ModCalibrationServiceTests.cs`
+  evidence: manual `2026-02-18` `powershell.exe -File tools/validate-calibration-artifact.ps1 -ArtifactPath tools/fixtures/calibration_artifact_sample.json -SchemaPath tools/schemas/calibration-artifact.schema.json -Strict`
+- [x] Implement profile-pack operational hardening (rollback-safe updates + diagnostics bundle export).
+  evidence: code `src/SwfocTrainer.Profiles/Services/GitHubProfileUpdateService.cs`
+  evidence: code `src/SwfocTrainer.Core/Services/SupportBundleService.cs`
+  evidence: code `src/SwfocTrainer.Core/Services/TelemetrySnapshotService.cs`
+  evidence: test `tests/SwfocTrainer.Tests/Profiles/ProfileUpdateServiceTransactionalTests.cs`
+  evidence: test `tests/SwfocTrainer.Tests/Core/SupportBundleServiceTests.cs`
+  evidence: test `tests/SwfocTrainer.Tests/Core/TelemetrySnapshotServiceTests.cs`
+- [x] Implement deployment strategy on GitHub Releases (portable artifact + checksum + runbook).
+  evidence: workflow `.github/workflows/release-portable.yml`
+  evidence: doc `docs/RELEASE_RUNBOOK.md`
+  evidence: doc `docs/release-notes-template.md`

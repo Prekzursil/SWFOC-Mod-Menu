@@ -33,6 +33,10 @@ public sealed class MainViewModel : INotifyPropertyChanged
     private readonly ISavePatchApplyService _savePatchApplyService;
     private readonly IHelperModService _helper;
     private readonly IProfileUpdateService _updates;
+    private readonly IModOnboardingService _modOnboarding;
+    private readonly IModCalibrationService _modCalibration;
+    private readonly ISupportBundleService _supportBundles;
+    private readonly ITelemetrySnapshotService _telemetry;
     private readonly IValueFreezeService _freezeService;
     private readonly IActionReliabilityService _actionReliability;
     private readonly ISelectedUnitTransactionService _selectedUnitTransactions;
@@ -68,6 +72,19 @@ public sealed class MainViewModel : INotifyPropertyChanged
     private string _spawnDelayMs = "125";
     private bool _spawnStopOnFailure = true;
     private bool _isStrictPatchApply = true;
+    private string _onboardingBaseProfileId = "base_swfoc";
+    private string _onboardingDraftProfileId = "custom_my_mod";
+    private string _onboardingDisplayName = "Custom Mod Draft";
+    private string _onboardingNamespaceRoot = "custom";
+    private string _onboardingLaunchSample = string.Empty;
+    private string _onboardingSummary = string.Empty;
+    private string _calibrationNotes = string.Empty;
+    private string _modCompatibilitySummary = string.Empty;
+    private string _opsArtifactSummary = string.Empty;
+    private string _supportBundleOutputDirectory = Path.Combine(
+        Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
+        "SwfocTrainer",
+        "support");
     private SpawnPresetViewItem? _selectedSpawnPreset;
 
     private SaveDocument? _loadedSave;
@@ -137,6 +154,10 @@ public sealed class MainViewModel : INotifyPropertyChanged
         ISavePatchApplyService savePatchApplyService,
         IHelperModService helper,
         IProfileUpdateService updates,
+        IModOnboardingService modOnboarding,
+        IModCalibrationService modCalibration,
+        ISupportBundleService supportBundles,
+        ITelemetrySnapshotService telemetry,
         IValueFreezeService freezeService,
         IActionReliabilityService actionReliability,
         ISelectedUnitTransactionService selectedUnitTransactions,
@@ -153,6 +174,10 @@ public sealed class MainViewModel : INotifyPropertyChanged
         _savePatchApplyService = savePatchApplyService;
         _helper = helper;
         _updates = updates;
+        _modOnboarding = modOnboarding;
+        _modCalibration = modCalibration;
+        _supportBundles = supportBundles;
+        _telemetry = telemetry;
         _freezeService = freezeService;
         _actionReliability = actionReliability;
         _selectedUnitTransactions = selectedUnitTransactions;
@@ -172,6 +197,7 @@ public sealed class MainViewModel : INotifyPropertyChanged
         SelectedUnitTransactions = new ObservableCollection<SelectedUnitTransactionViewItem>();
         SpawnPresets = new ObservableCollection<SpawnPresetViewItem>();
         LiveOpsDiagnostics = new ObservableCollection<string>();
+        ModCompatibilityRows = new ObservableCollection<string>();
 
         LoadProfilesCommand = new AsyncCommand(LoadProfilesAsync);
         AttachCommand = new AsyncCommand(AttachAsync, () => !string.IsNullOrWhiteSpace(SelectedProfileId));
@@ -183,6 +209,7 @@ public sealed class MainViewModel : INotifyPropertyChanged
         VerifyHelperCommand = new AsyncCommand(VerifyHelperAsync, () => !string.IsNullOrWhiteSpace(SelectedProfileId));
         CheckUpdatesCommand = new AsyncCommand(CheckUpdatesAsync);
         InstallUpdateCommand = new AsyncCommand(InstallUpdateAsync, () => !string.IsNullOrWhiteSpace(SelectedProfileId));
+        RollbackProfileUpdateCommand = new AsyncCommand(RollbackProfileUpdateAsync, () => !string.IsNullOrWhiteSpace(SelectedProfileId));
         BrowseSaveCommand = new AsyncCommand(BrowseSaveAsync);
         LoadSaveCommand = new AsyncCommand(LoadSaveAsync, () => !string.IsNullOrWhiteSpace(SavePath) && !string.IsNullOrWhiteSpace(SelectedProfileId));
         EditSaveCommand = new AsyncCommand(EditSaveAsync, () => _loadedSave is not null && !string.IsNullOrWhiteSpace(SaveNodePath));
@@ -206,6 +233,11 @@ public sealed class MainViewModel : INotifyPropertyChanged
         RestoreSelectedUnitBaselineCommand = new AsyncCommand(RestoreSelectedUnitBaselineAsync, () => _runtime.IsAttached);
         LoadSpawnPresetsCommand = new AsyncCommand(LoadSpawnPresetsAsync, () => !string.IsNullOrWhiteSpace(SelectedProfileId));
         RunSpawnBatchCommand = new AsyncCommand(RunSpawnBatchAsync, () => _runtime.IsAttached && SelectedSpawnPreset is not null && !string.IsNullOrWhiteSpace(SelectedProfileId));
+        ScaffoldModProfileCommand = new AsyncCommand(ScaffoldModProfileAsync, () => !string.IsNullOrWhiteSpace(OnboardingDraftProfileId) && !string.IsNullOrWhiteSpace(OnboardingDisplayName));
+        ExportCalibrationArtifactCommand = new AsyncCommand(ExportCalibrationArtifactAsync, () => !string.IsNullOrWhiteSpace(SelectedProfileId));
+        BuildCompatibilityReportCommand = new AsyncCommand(BuildCompatibilityReportAsync, () => !string.IsNullOrWhiteSpace(SelectedProfileId));
+        ExportSupportBundleCommand = new AsyncCommand(ExportSupportBundleAsync, () => !string.IsNullOrWhiteSpace(SupportBundleOutputDirectory));
+        ExportTelemetrySnapshotCommand = new AsyncCommand(ExportTelemetrySnapshotAsync, () => !string.IsNullOrWhiteSpace(SupportBundleOutputDirectory));
 
         // Quick-action commands (one-click trainer buttons)
         QuickSetCreditsCommand = new AsyncCommand(QuickSetCreditsAsync, () => _runtime.IsAttached);
@@ -255,6 +287,8 @@ public sealed class MainViewModel : INotifyPropertyChanged
     public ObservableCollection<SpawnPresetViewItem> SpawnPresets { get; }
 
     public ObservableCollection<string> LiveOpsDiagnostics { get; }
+
+    public ObservableCollection<string> ModCompatibilityRows { get; }
 
     public string? SelectedProfileId
     {
@@ -456,6 +490,66 @@ public sealed class MainViewModel : INotifyPropertyChanged
         set => SetField(ref _isStrictPatchApply, value);
     }
 
+    public string OnboardingBaseProfileId
+    {
+        get => _onboardingBaseProfileId;
+        set => SetField(ref _onboardingBaseProfileId, value);
+    }
+
+    public string OnboardingDraftProfileId
+    {
+        get => _onboardingDraftProfileId;
+        set => SetField(ref _onboardingDraftProfileId, value);
+    }
+
+    public string OnboardingDisplayName
+    {
+        get => _onboardingDisplayName;
+        set => SetField(ref _onboardingDisplayName, value);
+    }
+
+    public string OnboardingNamespaceRoot
+    {
+        get => _onboardingNamespaceRoot;
+        set => SetField(ref _onboardingNamespaceRoot, value);
+    }
+
+    public string OnboardingLaunchSample
+    {
+        get => _onboardingLaunchSample;
+        set => SetField(ref _onboardingLaunchSample, value);
+    }
+
+    public string OnboardingSummary
+    {
+        get => _onboardingSummary;
+        set => SetField(ref _onboardingSummary, value);
+    }
+
+    public string CalibrationNotes
+    {
+        get => _calibrationNotes;
+        set => SetField(ref _calibrationNotes, value);
+    }
+
+    public string ModCompatibilitySummary
+    {
+        get => _modCompatibilitySummary;
+        set => SetField(ref _modCompatibilitySummary, value);
+    }
+
+    public string OpsArtifactSummary
+    {
+        get => _opsArtifactSummary;
+        set => SetField(ref _opsArtifactSummary, value);
+    }
+
+    public string SupportBundleOutputDirectory
+    {
+        get => _supportBundleOutputDirectory;
+        set => SetField(ref _supportBundleOutputDirectory, value);
+    }
+
     public ICommand LoadProfilesCommand { get; }
 
     public ICommand AttachCommand { get; }
@@ -475,6 +569,8 @@ public sealed class MainViewModel : INotifyPropertyChanged
     public ICommand CheckUpdatesCommand { get; }
 
     public ICommand InstallUpdateCommand { get; }
+
+    public ICommand RollbackProfileUpdateCommand { get; }
 
     public ICommand BrowseSaveCommand { get; }
 
@@ -521,6 +617,16 @@ public sealed class MainViewModel : INotifyPropertyChanged
     public ICommand LoadSpawnPresetsCommand { get; }
 
     public ICommand RunSpawnBatchCommand { get; }
+
+    public ICommand ScaffoldModProfileCommand { get; }
+
+    public ICommand ExportCalibrationArtifactCommand { get; }
+
+    public ICommand BuildCompatibilityReportCommand { get; }
+
+    public ICommand ExportSupportBundleCommand { get; }
+
+    public ICommand ExportTelemetrySnapshotCommand { get; }
 
     public string CreditsValue
     {
@@ -1077,8 +1183,123 @@ public sealed class MainViewModel : INotifyPropertyChanged
             return;
         }
 
-        var path = await _updates.InstallProfileAsync(SelectedProfileId);
-        Status = $"Installed profile update: {path}";
+        var result = await _updates.InstallProfileTransactionalAsync(SelectedProfileId);
+        if (!result.Succeeded)
+        {
+            Status = $"Profile update failed: {result.Message}";
+            OpsArtifactSummary = $"install failed ({result.ReasonCode ?? "unknown"})";
+            return;
+        }
+
+        Status = $"Installed profile update: {result.InstalledPath}";
+        var receiptPart = string.IsNullOrWhiteSpace(result.ReceiptPath) ? "no receipt" : result.ReceiptPath;
+        var backupPart = string.IsNullOrWhiteSpace(result.BackupPath) ? "no backup" : result.BackupPath;
+        OpsArtifactSummary = $"install receipt: {receiptPart} | backup: {backupPart}";
+    }
+
+    private async Task RollbackProfileUpdateAsync()
+    {
+        if (SelectedProfileId is null)
+        {
+            return;
+        }
+
+        var rollback = await _updates.RollbackLastInstallAsync(SelectedProfileId);
+        if (!rollback.Restored)
+        {
+            Status = $"Rollback failed: {rollback.Message}";
+            OpsArtifactSummary = $"rollback failed ({rollback.ReasonCode ?? "unknown"})";
+            return;
+        }
+
+        Status = rollback.Message;
+        OpsArtifactSummary = $"rollback source: {rollback.BackupPath ?? "n/a"}";
+    }
+
+    private async Task ScaffoldModProfileAsync()
+    {
+        var launchLines = OnboardingLaunchSample
+            .Split(Environment.NewLine, StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries)
+            .ToArray();
+        var launchSamples = launchLines
+            .Select(line => new ModLaunchSample(ProcessName: null, ProcessPath: null, CommandLine: line))
+            .ToArray();
+
+        var request = new ModOnboardingRequest(
+            DraftProfileId: OnboardingDraftProfileId,
+            DisplayName: OnboardingDisplayName,
+            BaseProfileId: string.IsNullOrWhiteSpace(OnboardingBaseProfileId) ? "base_swfoc" : OnboardingBaseProfileId,
+            LaunchSamples: launchSamples,
+            ProfileAliases: new[] { OnboardingDraftProfileId, OnboardingDisplayName },
+            NamespaceRoot: OnboardingNamespaceRoot,
+            Notes: "Generated by Mod Compatibility Studio");
+
+        var result = await _modOnboarding.ScaffoldDraftProfileAsync(request);
+        var warnings = result.Warnings.Count == 0
+            ? "none"
+            : string.Join("; ", result.Warnings);
+
+        OnboardingSummary = $"draft={result.ProfileId} output={result.OutputPath} workshop=[{string.Join(',', result.InferredWorkshopIds)}] hints=[{string.Join(',', result.InferredPathHints)}] warnings={warnings}";
+        Status = $"Draft profile scaffolded: {result.ProfileId}";
+    }
+
+    private async Task ExportCalibrationArtifactAsync()
+    {
+        var profileId = SelectedProfileId ?? OnboardingDraftProfileId;
+        var outputDir = Path.Combine(SupportBundleOutputDirectory, "calibration");
+        Directory.CreateDirectory(outputDir);
+
+        var request = new ModCalibrationArtifactRequest(
+            ProfileId: profileId,
+            OutputDirectory: outputDir,
+            Session: _runtime.CurrentSession,
+            OperatorNotes: CalibrationNotes);
+
+        var result = await _modCalibration.ExportCalibrationArtifactAsync(request);
+        OpsArtifactSummary = result.ArtifactPath;
+        Status = result.Succeeded
+            ? $"Calibration artifact exported: {result.ArtifactPath}"
+            : "Calibration artifact export failed.";
+    }
+
+    private async Task BuildCompatibilityReportAsync()
+    {
+        var profileId = SelectedProfileId ?? OnboardingDraftProfileId;
+        var profile = await _profiles.ResolveInheritedProfileAsync(profileId);
+        var report = await _modCalibration.BuildCompatibilityReportAsync(
+            profile,
+            _runtime.CurrentSession);
+
+        ModCompatibilityRows.Clear();
+        foreach (var action in report.Actions)
+        {
+            ModCompatibilityRows.Add($"{action.ActionId} | {action.State} | {action.ReasonCode} | {action.Confidence:0.00}");
+        }
+
+        ModCompatibilitySummary = $"promotionReady={report.PromotionReady} dependency={report.DependencyStatus} unresolvedCritical={report.UnresolvedCriticalSymbols}";
+        Status = $"Compatibility report generated for {profileId}";
+    }
+
+    private async Task ExportSupportBundleAsync()
+    {
+        var result = await _supportBundles.ExportAsync(new SupportBundleRequest(
+            OutputDirectory: SupportBundleOutputDirectory,
+            ProfileId: SelectedProfileId,
+            Notes: "Exported from Profiles & Updates tab"));
+
+        OpsArtifactSummary = result.BundlePath;
+        Status = result.Succeeded
+            ? $"Support bundle exported: {result.BundlePath}"
+            : "Support bundle export failed.";
+    }
+
+    private async Task ExportTelemetrySnapshotAsync()
+    {
+        var telemetryDir = Path.Combine(SupportBundleOutputDirectory, "telemetry");
+        Directory.CreateDirectory(telemetryDir);
+        var path = await _telemetry.ExportSnapshotAsync(telemetryDir);
+        OpsArtifactSummary = path;
+        Status = $"Telemetry snapshot exported: {path}";
     }
 
     private Task BrowseSaveAsync()

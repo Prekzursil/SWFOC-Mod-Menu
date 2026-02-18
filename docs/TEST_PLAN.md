@@ -31,6 +31,20 @@
   - verifies `RevertLast` and baseline restore behavior
 - `SpawnPresetServiceTests`
   - verifies preset loading, batch expansion, stop-on-failure and continue-on-failure execution
+- `SaveCorpusRoundTripTests`
+  - schema round-trip checks driven from tracked corpus fixtures under `tools/fixtures/save-corpus`
+  - covers all shipped schemas (`base_sweaw`, `base_swfoc`, `aotr`, `roe`)
+- `ModOnboardingServiceTests`
+  - scaffolds deterministic custom profile draft from launch sample hints
+  - validates workshop/path hint inference and profile output contract
+- `ModCalibrationServiceTests`
+  - validates calibration artifact generation and compatibility gate behavior
+- `ProfileUpdateServiceTransactionalTests`
+  - verifies transactional install receipt/backup behavior and rollback success path
+- `TelemetrySnapshotServiceTests`
+  - verifies counter aggregation and deterministic snapshot export
+- `SupportBundleServiceTests`
+  - verifies support-bundle zip + manifest generation and expected payload presence
 
 ## Tooling contract tests
 
@@ -50,6 +64,18 @@ pwsh ./tools/validate-repro-bundle.ps1 -BundlePath tools/fixtures/repro_bundle_s
 
 ```powershell
 pwsh ./tools/validate-save-patch-pack.ps1 -PatchPackPath tools/fixtures/save_patch_pack_sample.json -SchemaPath tools/schemas/save-patch-pack.schema.json -Strict
+```
+
+- Calibration artifact schema validation:
+
+```powershell
+pwsh ./tools/validate-calibration-artifact.ps1 -ArtifactPath tools/fixtures/calibration_artifact_sample.json -SchemaPath tools/schemas/calibration-artifact.schema.json -Strict
+```
+
+- Support bundle manifest schema validation:
+
+```powershell
+pwsh ./tools/validate-support-bundle-manifest.ps1 -ManifestPath tools/fixtures/support_bundle_manifest_sample.json -SchemaPath tools/schemas/support-bundle-manifest.schema.json -Strict
 ```
 
 ## Manual runtime checks

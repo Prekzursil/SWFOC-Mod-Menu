@@ -1,0 +1,9 @@
+{
+  "schemaVersion": "1.0",
+  "fixtures": [
+    "base_sweaw_steam_v1.json",
+    "base_swfoc_steam_v1.json",
+    "aotr_1397421866_swfoc_v1.json",
+    "roe_3447786229_swfoc_v1.json"
+  ]
+}

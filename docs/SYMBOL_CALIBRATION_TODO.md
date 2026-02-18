@@ -74,3 +74,19 @@ Use this evidence template for each live run:
   - AOTR: `set_hero_state_helper`
   - ROE: `toggle_roe_respawn_helper`
 - Notes / regressions:
+
+### Standardized Evidence Payload (Required)
+
+When posting closure evidence for `#19`/`#34`, include:
+
+- `runId`
+- `classification` (`passed|skipped|failed|blocked_environment|blocked_profile_mismatch`)
+- `profileId`
+- launch recommendation (`reasonCode`, `confidence`)
+- runtime mode (`hint`, `effective`, `reasonCode`)
+- tactical toggle outcome (`pass|skip|fail` + reason)
+- helper workflow outcome (`pass|skip|fail` + reason)
+- artifact paths:
+  - `TestResults/runs/<runId>/repro-bundle.json`
+  - `TestResults/runs/<runId>/repro-bundle.md`
+  - TRX files used for the run

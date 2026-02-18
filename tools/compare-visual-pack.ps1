@@ -25,7 +25,7 @@ function Get-ImageFiles {
         ForEach-Object {
             [PSCustomObject]@{
                 FullPath = $_.FullName
-                RelativePath = $_.FullName.Substring((Resolve-Path $Root).Path.Length).TrimStart('\\', '/')
+                RelativePath = ($_.FullName.Substring((Resolve-Path $Root).Path.Length) -replace '^[\\/]+', '')
                 Hash = (Get-FileHash -Path $_.FullName -Algorithm SHA256).Hash
             }
         }
