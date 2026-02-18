@@ -17,11 +17,11 @@
 - [ ] `roe_3447786229_swfoc`
 - [ ] `custom`
 
-## Evidence
+## Reliability Evidence
 
 - [ ] Deterministic tests executed
 - [ ] Repro bundle included (runtime/mod bugfixes)
-- [ ] Launch reason code diagnostics included
+- [ ] Launch reason code(s) diagnostics included
 
 ### Commands / Results
 
@@ -32,6 +32,7 @@ Paste exact commands and outcomes.
 - Repro bundle JSON: `<path or artifact URL>`
 - Repro bundle markdown: `<path or artifact URL>`
 - Classification: `<passed|skipped|failed|blocked_environment|blocked_profile_mismatch>`
+- Launch reason code(s): `<reason_code_1, reason_code_2>`
 
 ## Rollback
 
