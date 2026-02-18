@@ -66,6 +66,14 @@ dotnet restore SwfocTrainer.sln
 dotnet build SwfocTrainer.sln -c Release
 ```
 
+Quick verification using Makefile:
+
+```bash
+make verify    # Run deterministic test suite
+make build     # Build the solution
+make clean     # Clean build artifacts
+```
+
 Quick Windows launchers in repo root (double-click):
 
 - `launch-app-release.cmd` builds Release if needed, then starts `SwfocTrainer.App.exe`.
@@ -73,13 +81,15 @@ Quick Windows launchers in repo root (double-click):
 - `run-deterministic-tests.cmd` runs the non-live deterministic test suite.
 - `run-live-tests.cmd` runs live profile tests (expected to skip when no live SWFOC process is available).
 
-Deterministic test suite:
+Deterministic test suite (direct command):
 
 ```powershell
 dotnet test tests/SwfocTrainer.Tests/SwfocTrainer.Tests.csproj `
   -c Release --no-build `
   --filter "FullyQualifiedName!~SwfocTrainer.Tests.Profiles.Live&FullyQualifiedName!~RuntimeAttachSmokeTests"
 ```
+
+For troubleshooting test failures, build issues, or environment setup problems, see `docs/TROUBLESHOOTING.md`.
 
 ## CI
 
