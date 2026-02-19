@@ -1,0 +1,128 @@
+{
+    "schemaVersion":  "1.0",
+    "runId":  "20260218-213838",
+    "startedAtUtc":  "2026-02-18T21:38:38.4921273Z",
+    "scope":  "ROE",
+    "processSnapshot":  [
+                            {
+                                "pid":  45908,
+                                "name":  "swfoc.exe",
+                                "path":  "D:\\SteamLibrary\\steamapps\\common\\Star Wars Empire at War\\corruption\\swfoc.exe",
+                                "commandLine":  "\"D:\\SteamLibrary\\steamapps\\common\\Star Wars Empire at War\\corruption\\swfoc.exe\" STEAMMOD=3447786229 STEAMMOD=1397421866 ",
+                                "steamModIds":  [
+                                                    "3447786229",
+                                                    "1397421866"
+                                                ],
+                                "hostRole":  "unknown",
+                                "mainModuleSize":  1814528,
+                                "workshopMatchCount":  2,
+                                "selectionScore":  2011.81
+                            },
+                            {
+                                "pid":  32952,
+                                "name":  "StarWarsG.exe",
+                                "path":  "D:\\SteamLibrary\\steamapps\\common\\Star Wars Empire at War\\corruption\\StarWarsG.exe",
+                                "commandLine":  "StarWarsG.exe STEAMMOD=3447786229 STEAMMOD=1397421866  NOARTPROCESS IGNOREASSERTS",
+                                "steamModIds":  [
+                                                    "3447786229",
+                                                    "1397421866"
+                                                ],
+                                "hostRole":  "game_host",
+                                "mainModuleSize":  13369344,
+                                "workshopMatchCount":  2,
+                                "selectionScore":  2223.37
+                            }
+                        ],
+    "launchContext":  {
+                          "profileId":  null,
+                          "reasonCode":  "python_not_found",
+                          "confidence":  0,
+                          "launchKind":  "Unknown"
+                      },
+    "runtimeMode":  {
+                        "hint":  "Unknown",
+                        "effective":  "Tactical",
+                        "reasonCode":  "tactical_test_passed"
+                    },
+    "selectedHostProcess":  {
+                                "pid":  32952,
+                                "name":  "StarWarsG.exe",
+                                "hostRole":  "game_host",
+                                "selectionScore":  2223.37,
+                                "workshopMatchCount":  2,
+                                "mainModuleSize":  13369344
+                            },
+    "backendRouteDecision":  {
+                                 "backend":  "Extender",
+                                 "allowed":  true,
+                                 "reasonCode":  "CAPABILITY_PROBE_PASS",
+                                 "message":  "Credits one-shot applied via extender economy plugin.",
+                                 "source":  "live-roe-runtime-evidence.json"
+                             },
+    "capabilityProbeSnapshot":  {
+                                    "backend":  "extender",
+                                    "probeReasonCode":  "CAPABILITY_PROBE_PASS",
+                                    "capabilityCount":  1,
+                                    "requiredCapabilities":  [
+
+                                                             ],
+                                    "source":  "live-roe-runtime-evidence.json"
+                                },
+    "hookInstallReport":  {
+                              "state":  "HOOK_ONESHOT",
+                              "reasonCode":  "CAPABILITY_PROBE_PASS",
+                              "details":  "Derived from runtime action diagnostics.",
+                              "source":  "live-roe-runtime-evidence.json"
+                          },
+    "overlayState":  {
+                         "available":  false,
+                         "visible":  false,
+                         "reasonCode":  "CAPABILITY_BACKEND_UNAVAILABLE",
+                         "source":  "runtime_reported_unavailable"
+                     },
+    "liveTests":  [
+                      {
+                          "name":  "LiveTacticalToggleWorkflowTests",
+                          "outcome":  "Passed",
+                          "passed":  1,
+                          "failed":  0,
+                          "skipped":  0,
+                          "trxPath":  "C:\\Users\\Prekzursil\\Downloads\\SWFOC editor\\TestResults\\runs\\20260218-213838\\20260218-213838-live-tactical.trx",
+                          "message":  ""
+                      },
+                      {
+                          "name":  "LiveHeroHelperWorkflowTests",
+                          "outcome":  "Passed",
+                          "passed":  1,
+                          "failed":  0,
+                          "skipped":  0,
+                          "trxPath":  "C:\\Users\\Prekzursil\\Downloads\\SWFOC editor\\TestResults\\runs\\20260218-213838\\20260218-213838-live-hero-helper.trx",
+                          "message":  ""
+                      },
+                      {
+                          "name":  "LiveRoeRuntimeHealthTests",
+                          "outcome":  "Passed",
+                          "passed":  1,
+                          "failed":  0,
+                          "skipped":  0,
+                          "trxPath":  "C:\\Users\\Prekzursil\\Downloads\\SWFOC editor\\TestResults\\runs\\20260218-213838\\20260218-213838-live-roe-health.trx",
+                          "message":  ""
+                      },
+                      {
+                          "name":  "LiveCreditsTests",
+                          "outcome":  "Passed",
+                          "passed":  1,
+                          "failed":  0,
+                          "skipped":  0,
+                          "trxPath":  "C:\\Users\\Prekzursil\\Downloads\\SWFOC editor\\TestResults\\runs\\20260218-213838\\20260218-213838-live-credits.trx",
+                          "message":  ""
+                      }
+                  ],
+    "diagnostics":  {
+                        "dependencyState":  "unknown",
+                        "helperReadiness":  "unknown",
+                        "symbolHealthSummary":  "not-captured"
+                    },
+    "classification":  "passed",
+    "nextAction":  "Attach bundle to issue and continue with fix or closure workflow."
+}

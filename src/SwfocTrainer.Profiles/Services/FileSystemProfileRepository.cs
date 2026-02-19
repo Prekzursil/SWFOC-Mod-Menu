@@ -110,6 +110,16 @@ public sealed class FileSystemProfileRepository : IProfileRepository
         var mergedCatalog = parent.CatalogSources.Concat(child.CatalogSources).ToArray();
         var mergedHooks = parent.HelperModHooks.Concat(child.HelperModHooks).ToArray();
         var mergedSignatures = parent.SignatureSets.Concat(child.SignatureSets).ToArray();
+        var mergedRequiredCapabilities = (parent.RequiredCapabilities ?? Array.Empty<string>())
+            .Concat(child.RequiredCapabilities ?? Array.Empty<string>())
+            .Where(x => !string.IsNullOrWhiteSpace(x))
+            .Distinct(StringComparer.OrdinalIgnoreCase)
+            .ToArray();
+        var mergedExperimentalFeatures = (parent.ExperimentalFeatures ?? Array.Empty<string>())
+            .Concat(child.ExperimentalFeatures ?? Array.Empty<string>())
+            .Where(x => !string.IsNullOrWhiteSpace(x))
+            .Distinct(StringComparer.OrdinalIgnoreCase)
+            .ToArray();
 
         var metadata = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
         if (parent.Metadata is not null)
@@ -141,6 +151,10 @@ public sealed class FileSystemProfileRepository : IProfileRepository
             CatalogSources: mergedCatalog,
             SaveSchemaId: string.IsNullOrWhiteSpace(child.SaveSchemaId) ? parent.SaveSchemaId : child.SaveSchemaId,
             HelperModHooks: mergedHooks,
-            Metadata: metadata);
+            Metadata: metadata,
+            BackendPreference: string.IsNullOrWhiteSpace(child.BackendPreference) ? parent.BackendPreference : child.BackendPreference,
+            RequiredCapabilities: mergedRequiredCapabilities,
+            HostPreference: string.IsNullOrWhiteSpace(child.HostPreference) ? parent.HostPreference : child.HostPreference,
+            ExperimentalFeatures: mergedExperimentalFeatures);
     }
 }

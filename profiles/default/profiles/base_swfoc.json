@@ -4,6 +4,17 @@
   "inherits": null,
   "exeTarget": "Swfoc",
   "steamWorkshopId": null,
+  "backendPreference": "auto",
+  "requiredCapabilities": [
+    "set_credits"
+  ],
+  "hostPreference": "starwarsg_preferred",
+  "experimentalFeatures": [
+    "game_speed",
+    "planet_owner",
+    "tactical_god_mode",
+    "tactical_one_hit_mode"
+  ],
   "signatureSets": [
     {
       "name": "foc_steam_legacy",
@@ -67,13 +78,13 @@
       "id": "set_credits",
       "category": "Economy",
       "mode": "Unknown",
-      "executionKind": "Memory",
+      "executionKind": "Sdk",
       "payloadSchema": {
         "required": ["symbol", "intValue"]
       },
       "verifyReadback": true,
       "cooldownMs": 250,
-      "description": "Set player credits to absolute value (one-shot by default; optional lockCredits)"
+      "description": "Set player credits via extender path (one-shot by default; optional lockCredits/forcePatchHook alias)"
     },
     "freeze_timer": {
       "id": "freeze_timer",

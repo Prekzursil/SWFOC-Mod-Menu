@@ -43,7 +43,11 @@ public sealed record TrainerProfile(
     IReadOnlyList<CatalogSource> CatalogSources,
     string SaveSchemaId,
     IReadOnlyList<HelperHookSpec> HelperModHooks,
-    IReadOnlyDictionary<string, string>? Metadata = null);
+    IReadOnlyDictionary<string, string>? Metadata = null,
+    string BackendPreference = "auto",
+    IReadOnlyList<string>? RequiredCapabilities = null,
+    string HostPreference = "starwarsg_preferred",
+    IReadOnlyList<string>? ExperimentalFeatures = null);
 
 public sealed record ProfileBuild(
     string ProfileId,

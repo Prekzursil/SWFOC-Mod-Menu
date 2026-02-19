@@ -7,7 +7,8 @@ param(
     [ValidateSet("AOTR", "ROE", "TACTICAL", "FULL")][string]$Scope = "FULL",
     [bool]$EmitReproBundle = $true,
     [switch]$FailOnMissingArtifacts,
-    [switch]$Strict
+    [switch]$Strict,
+    [switch]$RequireNonBlockedClassification
 )
 
 Set-StrictMode -Version Latest
@@ -24,6 +25,7 @@ $runResultsDirectory = Join-Path $ResultsDirectory (Join-Path "runs" $RunId)
 if (-not (Test-Path -Path $runResultsDirectory)) {
     New-Item -ItemType Directory -Path $runResultsDirectory -Force | Out-Null
 }
+$runResultsDirectory = (Resolve-Path -Path $runResultsDirectory).Path
 
 function Resolve-DotnetCommand {
     $dotnet = Get-Command dotnet -ErrorAction SilentlyContinue
@@ -104,6 +106,17 @@ function Should-RunTest {
     return $Scopes -contains $SelectedScope
 }
 
+function Resolve-ArtifactPath {
+    param([Parameter(Mandatory = $true)][string]$Path)
+
+    $candidate = $Path
+    if (-not [System.IO.Path]::IsPathRooted($candidate)) {
+        $candidate = Join-Path (Get-Location) $candidate
+    }
+
+    return [System.IO.Path]::GetFullPath($candidate)
+}
+
 function Invoke-LiveTest {
     param(
         [Parameter(Mandatory = $true)][string]$Name,
@@ -126,31 +139,75 @@ function Invoke-LiveTest {
         $args += "--no-build"
     }
 
-    & $dotnetExe @args
+    $previousOutputDir = $env:SWFOC_LIVE_OUTPUT_DIR
+    $previousTestName = $env:SWFOC_LIVE_TEST_NAME
+    $env:SWFOC_LIVE_OUTPUT_DIR = $runResultsDirectory
+    $env:SWFOC_LIVE_TEST_NAME = $Name
+
+    try {
+        & $dotnetExe @args
+    }
+    finally {
+        if ($null -eq $previousOutputDir) {
+            Remove-Item Env:SWFOC_LIVE_OUTPUT_DIR -ErrorAction SilentlyContinue
+        }
+        else {
+            $env:SWFOC_LIVE_OUTPUT_DIR = $previousOutputDir
+        }
+
+        if ($null -eq $previousTestName) {
+            Remove-Item Env:SWFOC_LIVE_TEST_NAME -ErrorAction SilentlyContinue
+        }
+        else {
+            $env:SWFOC_LIVE_TEST_NAME = $previousTestName
+        }
+    }
 
     $exitCode = if (Get-Variable -Name LASTEXITCODE -Scope Global -ErrorAction SilentlyContinue) { [int]$global:LASTEXITCODE } else { 0 }
     if ($exitCode -ne 0) {
         throw "dotnet test failed for '$Name' with exit code $exitCode"
     }
 
-    return Join-Path $runResultsDirectory $TrxName
+    return Resolve-ArtifactPath -Path (Join-Path $runResultsDirectory $TrxName)
 }
 
 function Read-TrxSummary {
     param([Parameter(Mandatory = $true)][string]$TrxPath)
 
-    if (-not (Test-Path -Path $TrxPath)) {
+    $resolvedTrxPath = Resolve-ArtifactPath -Path $TrxPath
+    $deadline = [DateTime]::UtcNow.AddSeconds(120)
+    $lastReadError = ""
+    $doc = $null
+    while ([DateTime]::UtcNow -lt $deadline) {
+        if (Test-Path -Path $resolvedTrxPath) {
+            try {
+                [xml]$doc = Get-Content -Raw -Path $resolvedTrxPath
+                break
+            }
+            catch {
+                $lastReadError = $_.Exception.Message
+            }
+        }
+
+        Start-Sleep -Milliseconds 250
+    }
+
+    if ($null -eq $doc) {
+        $message = if ([string]::IsNullOrWhiteSpace($lastReadError)) {
+            "TRX file not found"
+        }
+        else {
+            "TRX file was not readable before timeout: $lastReadError"
+        }
         return [PSCustomObject]@{
-            Trx = $TrxPath
+            Trx = $resolvedTrxPath
             Outcome = "Missing"
             Passed = 0
             Failed = 0
             Skipped = 0
-            Message = "TRX file not found"
+            Message = $message
         }
     }
-
-    [xml]$doc = Get-Content -Raw -Path $TrxPath
     $ns = New-Object System.Xml.XmlNamespaceManager($doc.NameTable)
     $ns.AddNamespace("t", "http://microsoft.com/schemas/VisualStudio/TeamTest/2010")
 
@@ -183,7 +240,7 @@ function Read-TrxSummary {
     }
 
     return [PSCustomObject]@{
-        Trx = $TrxPath
+        Trx = $resolvedTrxPath
         Outcome = $outcome
         Passed = $passed
         Failed = $failed
@@ -348,6 +405,7 @@ else {
 
 $bundlePath = Join-Path $runResultsDirectory "repro-bundle.json"
 $bundleMdPath = Join-Path $runResultsDirectory "repro-bundle.md"
+$bundleClassification = ""
 if ($EmitReproBundle) {
     try {
         & (Join-Path $PSScriptRoot "collect-mod-repro-bundle.ps1") `
@@ -372,10 +430,28 @@ if ($EmitReproBundle) {
         if ($validateExitCode -ne 0) {
             throw "validate-repro-bundle.ps1 failed with exit code $validateExitCode"
         }
+
+        if (Test-Path -Path $bundlePath) {
+            $bundleJson = Get-Content -Raw -Path $bundlePath | ConvertFrom-Json
+            $bundleClassification = [string]$bundleJson.classification
+        }
     }
     catch {
         Write-Warning ("Repro bundle generation/validation failed: {0}" -f $_.Exception.Message)
         $fatalError = $_.Exception
+    }
+}
+
+if ($RequireNonBlockedClassification) {
+    if (-not $EmitReproBundle) {
+        $fatalError = [InvalidOperationException]::new("-RequireNonBlockedClassification requires repro-bundle emission.")
+    }
+    elseif ([string]::IsNullOrWhiteSpace($bundleClassification)) {
+        $fatalError = [InvalidOperationException]::new("Hard gate could not determine repro-bundle classification.")
+    }
+    elseif ($bundleClassification -in @("blocked_environment", "blocked_profile_mismatch")) {
+        $fatalError = [InvalidOperationException]::new(
+            "Hard gate failed: classification '$bundleClassification' is blocked. Launch with correct process context and rerun.")
     }
 }
 
@@ -392,6 +468,9 @@ Write-Host "summary json: $summaryPath"
 if ($EmitReproBundle) {
     Write-Host "repro bundle json: $bundlePath"
     Write-Host "repro bundle markdown: $bundleMdPath"
+    if (-not [string]::IsNullOrWhiteSpace($bundleClassification)) {
+        Write-Host "repro bundle classification: $bundleClassification"
+    }
 }
 
 $byName = @{}

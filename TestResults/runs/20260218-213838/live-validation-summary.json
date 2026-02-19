@@ -1,0 +1,46 @@
+[
+    {
+        "Name":  "LiveTacticalToggleWorkflowTests",
+        "Summary":  {
+                        "Trx":  "C:\\Users\\Prekzursil\\Downloads\\SWFOC editor\\TestResults\\runs\\20260218-213838\\20260218-213838-live-tactical.trx",
+                        "Outcome":  "Passed",
+                        "Passed":  1,
+                        "Failed":  0,
+                        "Skipped":  0,
+                        "Message":  ""
+                    }
+    },
+    {
+        "Name":  "LiveHeroHelperWorkflowTests",
+        "Summary":  {
+                        "Trx":  "C:\\Users\\Prekzursil\\Downloads\\SWFOC editor\\TestResults\\runs\\20260218-213838\\20260218-213838-live-hero-helper.trx",
+                        "Outcome":  "Passed",
+                        "Passed":  1,
+                        "Failed":  0,
+                        "Skipped":  0,
+                        "Message":  ""
+                    }
+    },
+    {
+        "Name":  "LiveRoeRuntimeHealthTests",
+        "Summary":  {
+                        "Trx":  "C:\\Users\\Prekzursil\\Downloads\\SWFOC editor\\TestResults\\runs\\20260218-213838\\20260218-213838-live-roe-health.trx",
+                        "Outcome":  "Passed",
+                        "Passed":  1,
+                        "Failed":  0,
+                        "Skipped":  0,
+                        "Message":  ""
+                    }
+    },
+    {
+        "Name":  "LiveCreditsTests",
+        "Summary":  {
+                        "Trx":  "C:\\Users\\Prekzursil\\Downloads\\SWFOC editor\\TestResults\\runs\\20260218-213838\\20260218-213838-live-credits.trx",
+                        "Outcome":  "Passed",
+                        "Passed":  1,
+                        "Failed":  0,
+                        "Skipped":  0,
+                        "Message":  ""
+                    }
+    }
+]

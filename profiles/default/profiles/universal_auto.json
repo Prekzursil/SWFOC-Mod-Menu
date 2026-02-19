@@ -1,0 +1,34 @@
+{
+  "id": "universal_auto",
+  "displayName": "Universal Auto (EAW/FoC/AOTR/ROE)",
+  "inherits": "base_swfoc",
+  "exeTarget": "Swfoc",
+  "steamWorkshopId": null,
+  "backendPreference": "extender",
+  "requiredCapabilities": [
+    "set_credits",
+    "freeze_timer",
+    "toggle_fog_reveal",
+    "set_unit_cap",
+    "toggle_instant_build_patch"
+  ],
+  "hostPreference": "starwarsg_preferred",
+  "experimentalFeatures": [
+    "overlay_ui"
+  ],
+  "signatureSets": [],
+  "fallbackOffsets": {},
+  "actions": {},
+  "featureFlags": {
+    "universal_auto": true,
+    "variant_resolution_required": true
+  },
+  "catalogSources": [],
+  "saveSchemaId": "base_swfoc_steam_v1",
+  "helperModHooks": [],
+  "metadata": {
+    "profileLineage": "virtual_universal_auto",
+    "profileAliases": "universal_auto,universal,auto,detect",
+    "localPathHints": "aotr,roe,corruption,empire at war"
+  }
+}

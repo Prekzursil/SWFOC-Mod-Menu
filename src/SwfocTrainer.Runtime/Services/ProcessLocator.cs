@@ -36,9 +36,12 @@ public sealed class ProcessLocator : IProcessLocator
         foreach (var process in Process.GetProcesses())
         {
             string path;
+            var mainModuleSize = 0;
             try
             {
-                path = process.MainModule?.FileName ?? string.Empty;
+                var mainModule = process.MainModule;
+                path = mainModule?.FileName ?? string.Empty;
+                mainModuleSize = mainModule?.ModuleMemorySize ?? 0;
             }
             catch
             {
@@ -67,6 +70,7 @@ public sealed class ProcessLocator : IProcessLocator
             var mode = InferMode(commandLine);
             var steamModIds = ExtractSteamModIds(commandLine);
             var modPathRaw = ExtractModPath(commandLine);
+            var hostRole = DetermineHostRole(detection);
             var metadata = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
             {
                 ["targetHint"] = detection.ExeTarget.ToString(),
@@ -75,7 +79,11 @@ public sealed class ProcessLocator : IProcessLocator
                 ["detectedVia"] = detection.DetectedVia,
                 ["commandLineAvailable"] = (!string.IsNullOrWhiteSpace(commandLine)).ToString(),
                 ["isStarWarsG"] = detection.IsStarWarsG.ToString(),
-                ["steamModIdsDetected"] = steamModIds.Length == 0 ? string.Empty : string.Join(",", steamModIds)
+                ["steamModIdsDetected"] = steamModIds.Length == 0 ? string.Empty : string.Join(",", steamModIds),
+                ["hostRole"] = hostRole.ToString().ToLowerInvariant(),
+                ["mainModuleSize"] = mainModuleSize.ToString(),
+                ["workshopMatchCount"] = steamModIds.Length.ToString(),
+                ["selectionScore"] = "0.00"
             };
 
             var provisional = new ProcessMetadata(
@@ -85,7 +93,11 @@ public sealed class ProcessLocator : IProcessLocator
                 commandLine,
                 detection.ExeTarget,
                 mode,
-                metadata);
+                metadata,
+                HostRole: hostRole,
+                MainModuleSize: mainModuleSize,
+                WorkshopMatchCount: steamModIds.Length,
+                SelectionScore: 0d);
             var launchContext = _launchContextResolver.Resolve(provisional, profiles);
             metadata["launchKind"] = launchContext.LaunchKind.ToString();
             metadata["modPathRaw"] = launchContext.ModPathRaw ?? string.Empty;
@@ -107,7 +119,11 @@ public sealed class ProcessLocator : IProcessLocator
                 detection.ExeTarget,
                 mode,
                 metadata,
-                launchContext));
+                launchContext,
+                hostRole,
+                mainModuleSize,
+                steamModIds.Length,
+                0d));
         }
 
         return list;
@@ -277,6 +293,18 @@ public sealed class ProcessLocator : IProcessLocator
         }
 
         return ids.OrderBy(x => x, StringComparer.Ordinal).ToArray();
+    }
+
+    private static ProcessHostRole DetermineHostRole(ProcessDetection detection)
+    {
+        if (detection.IsStarWarsG)
+        {
+            return ProcessHostRole.GameHost;
+        }
+
+        return detection.ExeTarget is ExeTarget.Sweaw or ExeTarget.Swfoc
+            ? ProcessHostRole.Launcher
+            : ProcessHostRole.Unknown;
     }
 
     private static string? ExtractModPath(string? commandLine)

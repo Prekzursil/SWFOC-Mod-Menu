@@ -1,0 +1,47 @@
+namespace SwfocTrainer.Core.Models;
+
+/// <summary>
+/// Stable reason-code taxonomy used by attach, capability routing, runtime execution,
+/// helper fallback, safety gating, and rollback diagnostics.
+/// </summary>
+public enum RuntimeReasonCode
+{
+    UNKNOWN = 0,
+
+    // ATTACH_*
+    ATTACH_HOST_SELECTED,
+    ATTACH_NO_PROCESS,
+    ATTACH_TARGET_MISMATCH,
+    ATTACH_HOST_AMBIGUOUS,
+    ATTACH_PROFILE_MISMATCH,
+
+    // CAPABILITY_*
+    CAPABILITY_PROBE_PASS,
+    CAPABILITY_UNKNOWN,
+    CAPABILITY_REQUIRED_MISSING,
+    CAPABILITY_BACKEND_UNAVAILABLE,
+    CAPABILITY_FEATURE_EXPERIMENTAL,
+
+    // MODE_*
+    MODE_GUARD_BLOCKED,
+    MODE_UNKNOWN,
+
+    // HOOK_*
+    HOOK_INSTALL_FAILED,
+    HOOK_UNINSTALL_FAILED,
+    HOOK_BYTES_MISMATCH,
+    HOOK_CONFLICT,
+
+    // HELPER_*
+    HELPER_NOT_DEPLOYED,
+    HELPER_NOT_VERIFIED,
+    HELPER_ROUTE_SELECTED,
+
+    // SAFETY_*
+    SAFETY_FAIL_CLOSED,
+    SAFETY_MUTATION_BLOCKED,
+
+    // ROLLBACK_*
+    ROLLBACK_SUCCESS,
+    ROLLBACK_FAILED
+}

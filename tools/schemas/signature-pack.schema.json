@@ -1,0 +1,57 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://swfoc-mod-menu.local/schemas/signature-pack.schema.json",
+  "title": "SWFOC Signature Pack",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schemaVersion",
+    "runId",
+    "generatedAtUtc",
+    "fingerprintId",
+    "defaultProfileId",
+    "anchors",
+    "operations"
+  ],
+  "properties": {
+    "schemaVersion": { "type": "string", "const": "1.0" },
+    "runId": { "type": "string", "minLength": 1 },
+    "generatedAtUtc": { "type": "string", "format": "date-time" },
+    "fingerprintId": { "type": "string", "minLength": 1 },
+    "defaultProfileId": { "type": "string", "minLength": 1 },
+    "sourceProfilePath": { "type": ["string", "null"] },
+    "anchors": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "kind", "pattern", "required"],
+        "properties": {
+          "id": { "type": "string", "minLength": 1 },
+          "kind": { "type": "string", "minLength": 1 },
+          "pattern": { "type": "string", "minLength": 1 },
+          "required": { "type": "boolean" },
+          "notes": { "type": ["string", "null"] }
+        }
+      }
+    },
+    "operations": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["requiredAnchors", "optionalAnchors"],
+        "properties": {
+          "requiredAnchors": {
+            "type": "array",
+            "items": { "type": "string", "minLength": 1 }
+          },
+          "optionalAnchors": {
+            "type": "array",
+            "items": { "type": "string", "minLength": 1 }
+          }
+        }
+      }
+    }
+  }
+}

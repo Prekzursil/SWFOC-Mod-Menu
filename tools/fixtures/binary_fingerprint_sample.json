@@ -1,0 +1,17 @@
+{
+  "schemaVersion": "1.0",
+  "runId": "sample-20260218-0001",
+  "generatedAtUtc": "2026-02-18T00:00:00Z",
+  "fingerprintId": "starwarsg_d3e0b6d3a9a31f42",
+  "fileSha256": "d3e0b6d3a9a31f42c0f0b1f2d4e6a8b0c2d4e6f80123456789abcdef01234567",
+  "moduleName": "StarWarsG.exe",
+  "productVersion": "1.0.0",
+  "fileVersion": "1.0.0.0",
+  "timestampUtc": "2026-02-17T23:58:00Z",
+  "moduleList": [
+    "StarWarsG.exe",
+    "kernel32.dll",
+    "user32.dll"
+  ],
+  "sourcePath": "C:/Games/Star Wars Empire at War/corruption/StarWarsG.exe"
+}

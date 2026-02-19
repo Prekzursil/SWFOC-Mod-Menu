@@ -45,6 +45,26 @@
   - verifies counter aggregation and deterministic snapshot export
 - `SupportBundleServiceTests`
   - verifies support-bundle zip + manifest generation and expected payload presence
+- `BinaryFingerprintServiceTests`
+  - verifies deterministic fingerprint capture and stable hash/id derivation
+- `CapabilityMapResolverTests`
+  - verifies fail-closed behavior for missing/partial capability anchors
+- `ProfileVariantResolverTests`
+  - verifies universal profile resolution for ROE workshop, sweaw fallback, and no-process fallback
+- `RuntimeModeProbeResolverTests`
+  - verifies runtime-effective tactical/galactic inference from symbol-health probes
+- `SdkExecutionGuardTests`
+  - verifies degraded-read allowance and mutating fail-closed behavior
+- `SdkOperationRouterTests`
+  - verifies feature-flag gate, missing runtime context gate, and mode mismatch blocking
+- `BackendRouterTests`
+  - verifies fail-closed mutating behavior for hard-extender profiles
+  - verifies extender route promotion only when capability proof is present
+  - verifies capability contract blocking and legacy memory fallback behavior
+- `NamedPipeExtenderBackendTests`
+  - verifies deterministic unhealthy state when extender bridge is unavailable
+- `ProfileValidatorTests`
+  - verifies `backendPreference` and `hostPreference` contract enforcement
 
 ## Tooling contract tests
 
@@ -78,6 +98,18 @@ pwsh ./tools/validate-calibration-artifact.ps1 -ArtifactPath tools/fixtures/cali
 pwsh ./tools/validate-support-bundle-manifest.ps1 -ManifestPath tools/fixtures/support_bundle_manifest_sample.json -SchemaPath tools/schemas/support-bundle-manifest.schema.json -Strict
 ```
 
+- Binary fingerprint schema validation:
+
+```powershell
+pwsh ./tools/validate-binary-fingerprint.ps1 -FingerprintPath tools/fixtures/binary_fingerprint_sample.json -SchemaPath tools/schemas/binary-fingerprint.schema.json -Strict
+```
+
+- Signature pack schema validation:
+
+```powershell
+pwsh ./tools/validate-signature-pack.ps1 -SignaturePackPath tools/fixtures/signature_pack_sample.json -SchemaPath tools/schemas/signature-pack.schema.json -Strict
+```
+
 ## Manual runtime checks
 
 For each profile (`base_sweaw`, `base_swfoc`, `aotr_1397421866_swfoc`, `roe_3447786229_swfoc`):
@@ -90,7 +122,13 @@ For each profile (`base_sweaw`, `base_swfoc`, `aotr_1397421866_swfoc`, `roe_3447
    - fog reveal toggle
    - selected unit HP/shield/speed edit (tactical)
    - helper spawn action
-4. Save editor pass:
+   - capture status diagnostics showing `backendRoute` and reason code
+4. Verify attach diagnostics include host ranking fields:
+   - `hostRole`
+   - `mainModuleSize`
+   - `workshopMatchCount`
+   - `selectionScore`
+5. Save editor pass:
    - load save
    - edit credits + hero respawn fields
    - optionally edit `ascii`/floating fields where schema supports them

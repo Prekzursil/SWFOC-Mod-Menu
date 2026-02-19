@@ -33,6 +33,14 @@
       "downloadUrl": "https://github.com/your-org/swfoc-trainer-profiles/releases/download/v1.0.0/roe_3447786229_swfoc.zip",
       "minAppVersion": "1.0.0",
       "description": "Order 66 submod profile inheriting AOTR (Workshop ID 3447786229)"
+    },
+    {
+      "id": "universal_auto",
+      "version": "1.0.0-rd",
+      "sha256": "rd-generated-locally",
+      "downloadUrl": "https://github.com/your-org/swfoc-trainer-profiles/releases/download/v1.0.0/universal_auto.zip",
+      "minAppVersion": "1.0.0",
+      "description": "User-facing universal auto profile that resolves to concrete internal variants."
     }
   ]
 }
