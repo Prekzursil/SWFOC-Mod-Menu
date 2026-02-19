@@ -37,9 +37,9 @@ body:
     attributes:
       label: Risk level
       options:
-        - low
-        - medium
-        - high
+        - risk:low
+        - risk:medium
+        - risk:high
     validations:
       required: true
 
