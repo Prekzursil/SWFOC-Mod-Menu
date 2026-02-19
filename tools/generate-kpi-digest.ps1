@@ -36,7 +36,7 @@ $ErrorActionPreference = "Stop"
 $repoRoot = Resolve-Path (Join-Path $PSScriptRoot "..")
 Set-Location $repoRoot
 
-Write-Host "Generating KPI digest for last $DaysBack days..." -ForegroundColor Cyan
+Write-Output "Generating KPI digest for last $DaysBack days..."
 
 $now = Get-Date
 $since = $now.AddDays(-$DaysBack)
@@ -55,8 +55,8 @@ $completedIssues = 0
 $ghAvailable = $null -ne (Get-Command gh -ErrorAction SilentlyContinue)
 
 if ($ghAvailable) {
-    Write-Host "Using gh CLI to fetch repository metrics..." -ForegroundColor Green
-    
+    Write-Output "Using gh CLI to fetch repository metrics..."
+
     # Fetch PR metrics
     try {
         $prsJson = gh pr list --state all --json number,state,createdAt,mergedAt,closedAt --limit 200 2>&1
@@ -70,17 +70,17 @@ if ($ghAvailable) {
     catch {
         Write-Warning "Failed to fetch PR metrics: $($_.Exception.Message)"
     }
-    
+
     # Fetch issue metrics
     try {
         $issuesJson = gh issue list --state open --json number,labels,title --limit 200 2>&1
         if ($LASTEXITCODE -eq 0) {
             $issues = $issuesJson | ConvertFrom-Json
-            $openAgentIssues = ($issues | Where-Object { 
+            $openAgentIssues = ($issues | Where-Object {
                 $labels = $_.labels | ForEach-Object { $_.name }
                 ($labels -contains "agent:ready") -or ($labels -contains "agent:in-progress") -or ($labels -contains "agent:blocked")
             }).Count
-            
+
             $openRegressionIssues = ($issues | Where-Object {
                 $labels = $_.labels | ForEach-Object { $_.name }
                 $labels -contains "regression:escaped"
@@ -90,7 +90,7 @@ if ($ghAvailable) {
     catch {
         Write-Warning "Failed to fetch issue metrics: $($_.Exception.Message)"
     }
-    
+
     # Fetch completed issues
     try {
         $closedIssuesJson = gh issue list --state closed --json number,closedAt --limit 200 2>&1
@@ -192,14 +192,14 @@ if ($OutputPath) {
     if ($outputDir -and -not (Test-Path -Path $outputDir)) {
         New-Item -ItemType Directory -Path $outputDir -Force | Out-Null
     }
-    
+
     $digest | Out-File -FilePath $OutputPath -Encoding UTF8
-    Write-Host "KPI digest saved to: $OutputPath" -ForegroundColor Green
+    Write-Output "KPI digest saved to: $OutputPath"
 }
 else {
-    Write-Host ""
-    Write-Host $digest
+    Write-Output ""
+    Write-Output $digest
 }
 
-Write-Host ""
-Write-Host "KPI digest generation complete." -ForegroundColor Cyan
+Write-Output ""
+Write-Output "KPI digest generation complete."
