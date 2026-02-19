@@ -45,3 +45,6 @@ dotnet test tests/SwfocTrainer.Tests/SwfocTrainer.Tests.csproj -c Release --no-b
 - Intake work via `.github/ISSUE_TEMPLATE/agent_task.yml`.
 - Queue with label `agent:ready`.
 - Queue workflow posts execution packet and notifies `@copilot`.
+
+## Queue Trigger Warning
+Applying label `agent:ready` triggers the queue workflow immediately.
