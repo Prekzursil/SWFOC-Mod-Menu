@@ -7,6 +7,7 @@ This document defines the weekly KPI baseline for AI-assisted engineering operat
 ### Automated workflow
 
 A GitHub Actions workflow runs every Monday at 06:15 UTC to generate a KPI digest issue automatically:
+
 - Workflow: `.github/workflows/kpi-weekly-digest.yml`
 - Trigger: Weekly schedule (Monday 06:15 UTC) or manual dispatch
 
@@ -31,6 +32,7 @@ pwsh ./tools/generate-kpi-digest.ps1 -DaysBack 14
 ```
 
 **Requirements:**
+
 - PowerShell Core 7.x+
 - GitHub CLI (`gh`) for automated metric collection (optional but recommended)
 
