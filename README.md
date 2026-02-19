@@ -165,6 +165,8 @@ GitHub Releases are the primary distribution channel. See `docs/RELEASE_RUNBOOK.
 - Save Lab operator workflow: `docs/SAVE_LAB_RUNBOOK.md`
 - Mod onboarding workflow: `docs/MOD_ONBOARDING_RUNBOOK.md`
 - Release operations: `docs/RELEASE_RUNBOOK.md`
+- KPI baseline and governance: `docs/KPI_BASELINE.md`
+- Fleet baseline lite (for repo rollout): `docs/FLEET_BASELINE_LITE.md`
 - Plan archive: `(new)codex(plans)/`
 - Profile format contract: `docs/PROFILE_FORMAT.md`
 
