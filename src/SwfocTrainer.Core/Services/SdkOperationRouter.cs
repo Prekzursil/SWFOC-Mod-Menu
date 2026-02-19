@@ -145,7 +145,7 @@ public sealed class SdkOperationRouter : ISdkOperationRouter
             var values = jsonArray
                 .Select(x => x?.GetValue<string>())
                 .Where(x => !string.IsNullOrWhiteSpace(x))
-                .Cast<string>()
+                .Select(static x => x!)
                 .ToArray();
             return new HashSet<string>(values, StringComparer.OrdinalIgnoreCase);
         }

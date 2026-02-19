@@ -177,34 +177,26 @@ public sealed class CapabilityMapResolver : ICapabilityMapResolver
 
     private static bool ContainsAnchor(IReadOnlySet<string> anchors, string value, StringComparer comparer)
     {
-        foreach (var anchor in anchors)
-        {
-            if (comparer.Equals(anchor, value))
-            {
-                return true;
-            }
-        }
-
-        return false;
+        return anchors.Any(anchor => comparer.Equals(anchor, value));
     }
 
     private sealed class CapabilityMapDto
     {
-        public string? SchemaVersion { get; set; }
+        public string? SchemaVersion { get; set; } = null;
 
-        public string? FingerprintId { get; set; }
+        public string? FingerprintId { get; set; } = null;
 
-        public string? DefaultProfileId { get; set; }
+        public string? DefaultProfileId { get; set; } = null;
 
-        public DateTimeOffset GeneratedAtUtc { get; set; }
+        public DateTimeOffset GeneratedAtUtc { get; set; } = default;
 
-        public Dictionary<string, CapabilityOperationDto>? Operations { get; set; }
+        public Dictionary<string, CapabilityOperationDto>? Operations { get; set; } = null;
     }
 
     private sealed class CapabilityOperationDto
     {
-        public string[]? RequiredAnchors { get; set; }
+        public string[]? RequiredAnchors { get; set; } = null;
 
-        public string[]? OptionalAnchors { get; set; }
+        public string[]? OptionalAnchors { get; set; } = null;
     }
 }

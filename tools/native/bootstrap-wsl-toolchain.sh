@@ -36,6 +36,7 @@ download() {
   local url="$1"
   local out="$2"
   curl -fsSL "$url" -o "$out"
+  return 0
 }
 
 if [[ $have_cmake -eq 0 ]]; then

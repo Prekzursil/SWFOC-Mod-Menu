@@ -13,6 +13,7 @@ public sealed class NamedPipeExtenderBackend : IExecutionBackend
     private const int DefaultConnectTimeoutMs = 2000;
     private const int DefaultResponseTimeoutMs = 2000;
     private const string DefaultPipeName = "SwfocExtenderBridge";
+    private const string ExtenderBackendId = "extender";
     private static readonly object HostSync = new();
     private static Process? _bridgeHostProcess;
 
@@ -45,7 +46,7 @@ public sealed class NamedPipeExtenderBackend : IExecutionBackend
             {
                 Diagnostics = new Dictionary<string, object?>
                 {
-                    ["backend"] = "extender",
+                    ["backend"] = ExtenderBackendId,
                     ["pipe"] = DefaultPipeName,
                     ["reasonCode"] = result.ReasonCode.ToString(),
                     ["message"] = result.Message
@@ -68,7 +69,7 @@ public sealed class NamedPipeExtenderBackend : IExecutionBackend
             RuntimeReasonCode.CAPABILITY_PROBE_PASS,
             new Dictionary<string, object?>
             {
-                ["backend"] = "extender",
+                ["backend"] = ExtenderBackendId,
                 ["pipe"] = DefaultPipeName,
                 ["hookState"] = result.HookState
             });
@@ -125,7 +126,7 @@ public sealed class NamedPipeExtenderBackend : IExecutionBackend
             TimestampUtc: DateTimeOffset.UtcNow), cancellationToken);
 
         return new BackendHealth(
-            BackendId: "extender",
+            BackendId: ExtenderBackendId,
             Backend: ExecutionBackendKind.Extender,
             IsHealthy: probe.Succeeded,
             ReasonCode: probe.ReasonCode,
@@ -185,7 +186,7 @@ public sealed class NamedPipeExtenderBackend : IExecutionBackend
                     CommandId: command.CommandId,
                     Succeeded: false,
                     ReasonCode: RuntimeReasonCode.CAPABILITY_BACKEND_UNAVAILABLE,
-                    Backend: "extender",
+                    Backend: ExtenderBackendId,
                     HookState: "no_response",
                     Message: "Extender pipe did not return a response.");
             }
@@ -195,7 +196,7 @@ public sealed class NamedPipeExtenderBackend : IExecutionBackend
                 CommandId: command.CommandId,
                 Succeeded: false,
                 ReasonCode: RuntimeReasonCode.CAPABILITY_BACKEND_UNAVAILABLE,
-                Backend: "extender",
+                Backend: ExtenderBackendId,
                 HookState: "invalid_response",
                 Message: "Extender response payload was invalid.");
         }
@@ -205,7 +206,7 @@ public sealed class NamedPipeExtenderBackend : IExecutionBackend
                 CommandId: command.CommandId,
                 Succeeded: false,
                 ReasonCode: RuntimeReasonCode.CAPABILITY_BACKEND_UNAVAILABLE,
-                Backend: "extender",
+                Backend: ExtenderBackendId,
                 HookState: "timeout",
                 Message: "Extender pipe request timed out.");
         }
@@ -215,7 +216,7 @@ public sealed class NamedPipeExtenderBackend : IExecutionBackend
                 CommandId: command.CommandId,
                 Succeeded: false,
                 ReasonCode: RuntimeReasonCode.CAPABILITY_BACKEND_UNAVAILABLE,
-                Backend: "extender",
+                Backend: ExtenderBackendId,
                 HookState: "unreachable",
                 Message: $"Extender pipe unavailable: {ex.Message}");
         }
@@ -278,47 +279,91 @@ public sealed class NamedPipeExtenderBackend : IExecutionBackend
         IReadOnlyDictionary<string, object?>? diagnostics)
     {
         var capabilities = new Dictionary<string, BackendCapability>(StringComparer.OrdinalIgnoreCase);
-        if (diagnostics is null || diagnostics.Count == 0)
+        if (!TryGetCapabilitiesElement(diagnostics, out var element))
         {
             return capabilities;
         }
 
-        if (!diagnostics.TryGetValue("capabilities", out var rawCapabilities) || rawCapabilities is null)
+        foreach (var property in element.EnumerateObject())
         {
-            return capabilities;
-        }
-
-        if (rawCapabilities is JsonElement element && element.ValueKind == JsonValueKind.Object)
-        {
-            foreach (var property in element.EnumerateObject())
+            if (!TryParseCapability(property, out var capability))
             {
-                var featureId = property.Name;
-                var value = property.Value;
-                if (value.ValueKind != JsonValueKind.Object)
-                {
-                    continue;
-                }
-
-                var available = value.TryGetProperty("available", out var availableElement) &&
-                                availableElement.ValueKind is JsonValueKind.True or JsonValueKind.False &&
-                                availableElement.GetBoolean();
-                var state = value.TryGetProperty("state", out var stateElement) && stateElement.ValueKind == JsonValueKind.String
-                    ? ParseCapabilityConfidence(stateElement.GetString())
-                    : CapabilityConfidenceState.Unknown;
-                var reasonCode = value.TryGetProperty("reasonCode", out var reasonElement) && reasonElement.ValueKind == JsonValueKind.String
-                    ? ParseRuntimeReasonCode(reasonElement.GetString())
-                    : RuntimeReasonCode.CAPABILITY_UNKNOWN;
-
-                capabilities[featureId] = new BackendCapability(
-                    FeatureId: featureId,
-                    Available: available,
-                    Confidence: state,
-                    ReasonCode: reasonCode,
-                    Notes: "Feature returned by extender capability probe.");
+                continue;
             }
+
+            capabilities[property.Name] = capability;
         }
 
         return capabilities;
+    }
+
+    private static bool TryGetCapabilitiesElement(
+        IReadOnlyDictionary<string, object?>? diagnostics,
+        out JsonElement capabilitiesElement)
+    {
+        capabilitiesElement = default;
+        if (diagnostics is null || diagnostics.Count == 0)
+        {
+            return false;
+        }
+
+        if (!diagnostics.TryGetValue("capabilities", out var rawCapabilities) || rawCapabilities is not JsonElement element)
+        {
+            return false;
+        }
+
+        if (element.ValueKind != JsonValueKind.Object)
+        {
+            return false;
+        }
+
+        capabilitiesElement = element;
+        return true;
+    }
+
+    private static bool TryParseCapability(JsonProperty property, out BackendCapability capability)
+    {
+        capability = null!;
+        var value = property.Value;
+        if (value.ValueKind != JsonValueKind.Object)
+        {
+            return false;
+        }
+
+        var available = IsAvailable(value);
+        var state = TryGetStringProperty(value, "state", out var rawState)
+            ? ParseCapabilityConfidence(rawState)
+            : CapabilityConfidenceState.Unknown;
+        var reasonCode = TryGetStringProperty(value, "reasonCode", out var rawReasonCode)
+            ? ParseRuntimeReasonCode(rawReasonCode)
+            : RuntimeReasonCode.CAPABILITY_UNKNOWN;
+
+        capability = new BackendCapability(
+            FeatureId: property.Name,
+            Available: available,
+            Confidence: state,
+            ReasonCode: reasonCode,
+            Notes: "Feature returned by extender capability probe.");
+        return true;
+    }
+
+    private static bool IsAvailable(JsonElement value)
+    {
+        return value.TryGetProperty("available", out var availableElement) &&
+               availableElement.ValueKind is JsonValueKind.True or JsonValueKind.False &&
+               availableElement.GetBoolean();
+    }
+
+    private static bool TryGetStringProperty(JsonElement value, string propertyName, out string? propertyValue)
+    {
+        propertyValue = null;
+        if (!value.TryGetProperty(propertyName, out var propertyElement) || propertyElement.ValueKind != JsonValueKind.String)
+        {
+            return false;
+        }
+
+        propertyValue = propertyElement.GetString();
+        return true;
     }
 
     private static CapabilityConfidenceState ParseCapabilityConfidence(string? rawState)

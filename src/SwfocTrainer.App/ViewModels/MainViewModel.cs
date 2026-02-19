@@ -668,11 +668,18 @@ public sealed class MainViewModel : INotifyPropertyChanged
         var recommended = await RecommendProfileIdAsync();
         if (string.IsNullOrWhiteSpace(SelectedProfileId) || !Profiles.Contains(SelectedProfileId))
         {
-            SelectedProfileId = Profiles.Contains(UniversalProfileId)
-                ? UniversalProfileId
-                : !string.IsNullOrWhiteSpace(recommended) && Profiles.Contains(recommended)
-                    ? recommended
-                    : Profiles.FirstOrDefault();
+            var resolvedProfileId = Profiles.FirstOrDefault();
+            if (!string.IsNullOrWhiteSpace(recommended) && Profiles.Contains(recommended))
+            {
+                resolvedProfileId = recommended;
+            }
+
+            if (Profiles.Contains(UniversalProfileId))
+            {
+                resolvedProfileId = UniversalProfileId;
+            }
+
+            SelectedProfileId = resolvedProfileId;
         }
 
         Status = !string.IsNullOrWhiteSpace(recommended)
@@ -1857,42 +1864,47 @@ public sealed class MainViewModel : INotifyPropertyChanged
             return;
         }
 
+        var metadata = session.Process.Metadata;
         LiveOpsDiagnostics.Add($"mode: {session.Process.Mode}");
-        if (session.Process.Metadata is not null &&
-            session.Process.Metadata.TryGetValue("runtimeModeReasonCode", out var modeReason))
+        if (metadata is not null && metadata.TryGetValue("runtimeModeReasonCode", out var modeReason))
         {
             LiveOpsDiagnostics.Add($"mode_reason: {modeReason}");
         }
 
         LiveOpsDiagnostics.Add($"launch: {session.Process.LaunchContext?.LaunchKind ?? LaunchKind.Unknown}");
         LiveOpsDiagnostics.Add($"recommendation: {session.Process.LaunchContext?.Recommendation.ProfileId ?? "none"}");
-        if (session.Process.Metadata is not null &&
-            session.Process.Metadata.TryGetValue("resolvedVariant", out var resolvedVariant))
+        if (metadata is not null && metadata.TryGetValue("resolvedVariant", out var resolvedVariant))
         {
-            var reason = session.Process.Metadata.TryGetValue("resolvedVariantReasonCode", out var variantReason)
-                ? variantReason
-                : "unknown";
-            var confidence = session.Process.Metadata.TryGetValue("resolvedVariantConfidence", out var variantConfidence)
-                ? variantConfidence
-                : "0.00";
+            var reason = GetMetadataValueOrDefault(metadata, "resolvedVariantReasonCode", "unknown");
+            var confidence = GetMetadataValueOrDefault(metadata, "resolvedVariantConfidence", "0.00");
             LiveOpsDiagnostics.Add($"variant: {resolvedVariant} ({reason}, conf={confidence})");
         }
 
-        if (session.Process.Metadata is not null &&
-            session.Process.Metadata.TryGetValue("dependencyValidation", out var dependency))
+        if (metadata is not null && metadata.TryGetValue("dependencyValidation", out var dependency))
         {
-            var dependencyMessage = session.Process.Metadata.TryGetValue("dependencyValidationMessage", out var rawMessage)
-                ? rawMessage
-                : string.Empty;
-            LiveOpsDiagnostics.Add(string.IsNullOrWhiteSpace(dependencyMessage)
-                ? $"dependency: {dependency}"
-                : $"dependency: {dependency} ({dependencyMessage})");
+            var dependencyMessage = GetMetadataValueOrDefault(metadata, "dependencyValidationMessage", string.Empty);
+            LiveOpsDiagnostics.Add(BuildDependencyDiagnostic(dependency, dependencyMessage));
         }
 
         var healthy = session.Symbols.Symbols.Values.Count(x => x.HealthStatus == SymbolHealthStatus.Healthy);
         var degraded = session.Symbols.Symbols.Values.Count(x => x.HealthStatus == SymbolHealthStatus.Degraded);
         var unresolved = session.Symbols.Symbols.Values.Count(x => x.HealthStatus == SymbolHealthStatus.Unresolved || x.Address == nint.Zero);
         LiveOpsDiagnostics.Add($"symbols: healthy={healthy}, degraded={degraded}, unresolved={unresolved}");
+    }
+
+    private static string GetMetadataValueOrDefault(
+        IReadOnlyDictionary<string, string> metadata,
+        string key,
+        string fallback)
+    {
+        return metadata.TryGetValue(key, out var value) ? value : fallback;
+    }
+
+    private static string BuildDependencyDiagnostic(string dependency, string dependencyMessage)
+    {
+        return string.IsNullOrWhiteSpace(dependencyMessage)
+            ? $"dependency: {dependency}"
+            : $"dependency: {dependency} ({dependencyMessage})";
     }
 
     private async Task CaptureSelectedUnitBaselineAsync()

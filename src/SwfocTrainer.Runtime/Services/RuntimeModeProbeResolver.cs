@@ -28,7 +28,7 @@ public sealed class RuntimeModeProbeResolver
         "credits"
     ];
 
-    public RuntimeModeProbeResult Resolve(RuntimeMode modeHint, SymbolMap symbols)
+    public static RuntimeModeProbeResult Resolve(RuntimeMode modeHint, SymbolMap symbols)
     {
         var tacticalSignalCount = CountSignals(symbols, TacticalIndicators);
         var galacticSignalCount = CountSignals(symbols, GalacticIndicators);

@@ -10,13 +10,12 @@ public sealed class RuntimeModeProbeResolverTests
     [Fact]
     public void Resolve_ShouldReturnTactical_WhenOnlyTacticalSignalsPresent()
     {
-        var resolver = new RuntimeModeProbeResolver();
         var symbols = BuildSymbolMap(new Dictionary<string, SymbolInfo>(StringComparer.OrdinalIgnoreCase)
         {
             ["selected_hp"] = Symbol("selected_hp", 0x1000)
         });
 
-        var result = resolver.Resolve(RuntimeMode.Unknown, symbols);
+        var result = RuntimeModeProbeResolver.Resolve(RuntimeMode.Unknown, symbols);
 
         result.EffectiveMode.Should().Be(RuntimeMode.Tactical);
         result.ReasonCode.Should().Be("mode_probe_tactical_signals");
@@ -27,13 +26,12 @@ public sealed class RuntimeModeProbeResolverTests
     [Fact]
     public void Resolve_ShouldReturnGalactic_WhenOnlyGalacticSignalsPresent()
     {
-        var resolver = new RuntimeModeProbeResolver();
         var symbols = BuildSymbolMap(new Dictionary<string, SymbolInfo>(StringComparer.OrdinalIgnoreCase)
         {
             ["planet_owner"] = Symbol("planet_owner", 0x2000)
         });
 
-        var result = resolver.Resolve(RuntimeMode.Unknown, symbols);
+        var result = RuntimeModeProbeResolver.Resolve(RuntimeMode.Unknown, symbols);
 
         result.EffectiveMode.Should().Be(RuntimeMode.Galactic);
         result.ReasonCode.Should().Be("mode_probe_galactic_signals");
@@ -44,14 +42,13 @@ public sealed class RuntimeModeProbeResolverTests
     [Fact]
     public void Resolve_ShouldKeepHint_WhenSignalsAreAmbiguous()
     {
-        var resolver = new RuntimeModeProbeResolver();
         var symbols = BuildSymbolMap(new Dictionary<string, SymbolInfo>(StringComparer.OrdinalIgnoreCase)
         {
             ["selected_hp"] = Symbol("selected_hp", 0x1000),
             ["planet_owner"] = Symbol("planet_owner", 0x2000)
         });
 
-        var result = resolver.Resolve(RuntimeMode.Galactic, symbols);
+        var result = RuntimeModeProbeResolver.Resolve(RuntimeMode.Galactic, symbols);
 
         result.EffectiveMode.Should().Be(RuntimeMode.Galactic);
         result.ReasonCode.Should().Be("mode_probe_ambiguous_keep_hint");
@@ -60,10 +57,9 @@ public sealed class RuntimeModeProbeResolverTests
     [Fact]
     public void Resolve_ShouldUseHint_WhenNoSignalsPresent()
     {
-        var resolver = new RuntimeModeProbeResolver();
         var symbols = BuildSymbolMap(new Dictionary<string, SymbolInfo>(StringComparer.OrdinalIgnoreCase));
 
-        var result = resolver.Resolve(RuntimeMode.Tactical, symbols);
+        var result = RuntimeModeProbeResolver.Resolve(RuntimeMode.Tactical, symbols);
 
         result.EffectiveMode.Should().Be(RuntimeMode.Tactical);
         result.ReasonCode.Should().Be("mode_probe_no_signals_use_hint");

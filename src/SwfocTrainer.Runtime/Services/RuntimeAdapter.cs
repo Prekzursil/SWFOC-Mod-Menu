@@ -55,7 +55,6 @@ public sealed class RuntimeAdapter : IRuntimeAdapter
     private readonly ISdkOperationRouter? _sdkOperationRouter;
     private readonly IBackendRouter _backendRouter;
     private readonly IExecutionBackend? _extenderBackend;
-    private readonly RuntimeModeProbeResolver _runtimeModeProbeResolver;
     private readonly ILogger<RuntimeAdapter> _logger;
     private readonly string _calibrationArtifactRoot;
     private static readonly JsonSerializerOptions SymbolValidationJsonOptions = new()
@@ -103,39 +102,23 @@ public sealed class RuntimeAdapter : IRuntimeAdapter
         IProcessLocator processLocator,
         IProfileRepository profileRepository,
         ISignatureResolver signatureResolver,
-        IModDependencyValidator? modDependencyValidator,
-        ISymbolHealthService? symbolHealthService,
-        IProfileVariantResolver? profileVariantResolver,
-        ISdkOperationRouter? sdkOperationRouter,
-        IBackendRouter? backendRouter,
-        IExecutionBackend? extenderBackend,
-        RuntimeModeProbeResolver? runtimeModeProbeResolver,
-        ILogger<RuntimeAdapter> logger)
+        ILogger<RuntimeAdapter> logger,
+        IServiceProvider? serviceProvider = null)
     {
         _processLocator = processLocator;
         _profileRepository = profileRepository;
         _signatureResolver = signatureResolver;
-        _modDependencyValidator = modDependencyValidator ?? new ModDependencyValidator();
-        _symbolHealthService = symbolHealthService ?? new SymbolHealthService();
-        _profileVariantResolver = profileVariantResolver;
-        _sdkOperationRouter = sdkOperationRouter;
-        _backendRouter = backendRouter ?? new BackendRouter();
-        _extenderBackend = extenderBackend ?? new NamedPipeExtenderBackend();
-        _runtimeModeProbeResolver = runtimeModeProbeResolver ?? new RuntimeModeProbeResolver();
+        _modDependencyValidator = ResolveOptionalService<IModDependencyValidator>(serviceProvider) ?? new ModDependencyValidator();
+        _symbolHealthService = ResolveOptionalService<ISymbolHealthService>(serviceProvider) ?? new SymbolHealthService();
+        _profileVariantResolver = ResolveOptionalService<IProfileVariantResolver>(serviceProvider);
+        _sdkOperationRouter = ResolveOptionalService<ISdkOperationRouter>(serviceProvider);
+        _backendRouter = ResolveOptionalService<IBackendRouter>(serviceProvider) ?? new BackendRouter();
+        _extenderBackend = ResolveOptionalService<IExecutionBackend>(serviceProvider) ?? new NamedPipeExtenderBackend();
         _logger = logger;
         _calibrationArtifactRoot = Path.Combine(
             Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
             "SwfocTrainer",
             "calibration");
-    }
-
-    public RuntimeAdapter(
-        IProcessLocator processLocator,
-        IProfileRepository profileRepository,
-        ISignatureResolver signatureResolver,
-        ILogger<RuntimeAdapter> logger)
-        : this(processLocator, profileRepository, signatureResolver, null, null, null, null, null, null, null, logger)
-    {
     }
 
     public bool IsAttached => CurrentSession is not null;
@@ -203,7 +186,7 @@ public sealed class RuntimeAdapter : IRuntimeAdapter
         InitializeProfileSymbolPolicy(profile);
         var resolvedSymbols = await _signatureResolver.ResolveAsync(build, signatureSets, profile.FallbackOffsets, cancellationToken);
         var symbols = ApplySymbolHealth(profile, process.Mode, resolvedSymbols);
-        var modeProbe = _runtimeModeProbeResolver.Resolve(process.Mode, symbols);
+        var modeProbe = RuntimeModeProbeResolver.Resolve(process.Mode, symbols);
         process = process with { Mode = modeProbe.EffectiveMode };
         process = AttachMetadataValue(process, "runtimeModeHint", modeProbe.HintMode.ToString());
         process = AttachMetadataValue(process, "runtimeModeEffective", modeProbe.EffectiveMode.ToString());
@@ -408,6 +391,12 @@ public sealed class RuntimeAdapter : IRuntimeAdapter
             top.SelectionScore,
             top.MainModuleSize);
         return selected;
+    }
+
+    private static T? ResolveOptionalService<T>(IServiceProvider? serviceProvider)
+        where T : class
+    {
+        return serviceProvider?.GetService(typeof(T)) as T;
     }
 
     private static HashSet<string> CollectRequiredWorkshopIds(TrainerProfile profile)
