@@ -1,5 +1,5 @@
 {
-    "schemaVersion":  "1.0",
+    "schemaVersion":  "1.1",
     "runId":  "20260218-213838",
     "startedAtUtc":  "2026-02-18T21:38:38.4921273Z",
     "scope":  "ROE",
@@ -7,8 +7,8 @@
                             {
                                 "pid":  45908,
                                 "name":  "swfoc.exe",
-                                "path":  "D:\\SteamLibrary\\steamapps\\common\\Star Wars Empire at War\\corruption\\swfoc.exe",
-                                "commandLine":  "\"D:\\SteamLibrary\\steamapps\\common\\Star Wars Empire at War\\corruption\\swfoc.exe\" STEAMMOD=3447786229 STEAMMOD=1397421866 ",
+                                "path":  "[REDACTED_GAME_PATH]\\swfoc.exe",
+                                "commandLine":  "\"[REDACTED_GAME_PATH]\\swfoc.exe\" STEAMMOD=3447786229 STEAMMOD=1397421866 ",
                                 "steamModIds":  [
                                                     "3447786229",
                                                     "1397421866"
@@ -21,7 +21,7 @@
                             {
                                 "pid":  32952,
                                 "name":  "StarWarsG.exe",
-                                "path":  "D:\\SteamLibrary\\steamapps\\common\\Star Wars Empire at War\\corruption\\StarWarsG.exe",
+                                "path":  "[REDACTED_GAME_PATH]\\StarWarsG.exe",
                                 "commandLine":  "StarWarsG.exe STEAMMOD=3447786229 STEAMMOD=1397421866  NOARTPROCESS IGNOREASSERTS",
                                 "steamModIds":  [
                                                     "3447786229",
@@ -87,7 +87,7 @@
                           "passed":  1,
                           "failed":  0,
                           "skipped":  0,
-                          "trxPath":  "C:\\Users\\Prekzursil\\Downloads\\SWFOC editor\\TestResults\\runs\\20260218-213838\\20260218-213838-live-tactical.trx",
+                          "trxPath":  "TestResults/runs/20260218-213838/20260218-213838-live-tactical.trx",
                           "message":  ""
                       },
                       {
@@ -96,7 +96,7 @@
                           "passed":  1,
                           "failed":  0,
                           "skipped":  0,
-                          "trxPath":  "C:\\Users\\Prekzursil\\Downloads\\SWFOC editor\\TestResults\\runs\\20260218-213838\\20260218-213838-live-hero-helper.trx",
+                          "trxPath":  "TestResults/runs/20260218-213838/20260218-213838-live-hero-helper.trx",
                           "message":  ""
                       },
                       {
@@ -105,7 +105,7 @@
                           "passed":  1,
                           "failed":  0,
                           "skipped":  0,
-                          "trxPath":  "C:\\Users\\Prekzursil\\Downloads\\SWFOC editor\\TestResults\\runs\\20260218-213838\\20260218-213838-live-roe-health.trx",
+                          "trxPath":  "TestResults/runs/20260218-213838/20260218-213838-live-roe-health.trx",
                           "message":  ""
                       },
                       {
@@ -114,7 +114,7 @@
                           "passed":  1,
                           "failed":  0,
                           "skipped":  0,
-                          "trxPath":  "C:\\Users\\Prekzursil\\Downloads\\SWFOC editor\\TestResults\\runs\\20260218-213838\\20260218-213838-live-credits.trx",
+                          "trxPath":  "TestResults/runs/20260218-213838/20260218-213838-live-credits.trx",
                           "message":  ""
                       }
                   ],

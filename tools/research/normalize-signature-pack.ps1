@@ -40,4 +40,4 @@ $result = [ordered]@{
 }
 
 ($result | ConvertTo-Json -Depth 12) | Set-Content -Path $OutputPath -Encoding UTF8
-Write-Host "Normalized signature pack written: $OutputPath"
+Write-Output "Normalized signature pack written: $OutputPath"

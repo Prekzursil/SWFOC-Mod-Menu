@@ -792,7 +792,7 @@ public sealed class MainViewModel : INotifyPropertyChanged
             if (string.Equals(requestedProfileId, UniversalProfileId, StringComparison.OrdinalIgnoreCase))
             {
                 var processes = await _processLocator.FindSupportedProcessesAsync();
-                variant = await _profileVariantResolver.ResolveAsync(requestedProfileId, processes);
+                variant = await _profileVariantResolver.ResolveAsync(requestedProfileId, processes, CancellationToken.None);
                 effectiveProfileId = variant.ResolvedProfileId;
             }
 

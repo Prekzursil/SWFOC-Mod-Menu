@@ -9,6 +9,10 @@ public interface IProfileVariantResolver
 {
     Task<ProfileVariantResolution> ResolveAsync(
         string requestedProfileId,
-        IReadOnlyList<ProcessMetadata>? processes = null,
-        CancellationToken cancellationToken = default);
+        CancellationToken cancellationToken);
+
+    Task<ProfileVariantResolution> ResolveAsync(
+        string requestedProfileId,
+        IReadOnlyList<ProcessMetadata>? processes,
+        CancellationToken cancellationToken);
 }

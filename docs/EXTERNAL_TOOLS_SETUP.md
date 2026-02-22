@@ -43,11 +43,13 @@ The native bridge/extender tree is under `native/` and supports both WSL and Win
 ### WSL path (preferred for this shell)
 
 1. Bootstrap toolchain:
+
 ```bash
 bash tools/native/bootstrap-wsl-toolchain.sh
 ```
 
 2. Build:
+
 ```bash
 bash tools/native/build-native.sh
 ```
@@ -57,27 +59,32 @@ If apt install is unavailable (for example sudo password prompts in non-interact
 ### Windows path
 
 Prerequisites:
+
 - `cmake.exe` (resolved by `tools/native/resolve-cmake.ps1`).
 - A native compiler toolchain:
   - Visual Studio / Build Tools with VC workload (`Microsoft.VisualStudio.Component.VC.Tools.x86.x64`), or
   - Ninja + compatible C/C++ toolchain configured for CMake.
 
 `tools/native/resolve-cmake.ps1 -AsJson` reports:
+
 - `vsInstancePath`
 - `vsProductLineVersion`
 - `recommendedGenerator` (for example `Visual Studio 18 2026` or `Visual Studio 17 2022`)
 
 1. Resolve cmake:
+
 ```powershell
 pwsh ./tools/native/resolve-cmake.ps1
 ```
 
 2. Build (Auto mode prefers Windows, then falls back to WSL):
+
 ```powershell
 pwsh ./tools/native/build-native.ps1 -Mode Auto -Configuration Release
 ```
 
 3. Force Windows-only path:
+
 ```powershell
 pwsh ./tools/native/build-native.ps1 -Mode Windows -Configuration Release
 ```

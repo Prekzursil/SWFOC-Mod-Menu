@@ -8,13 +8,23 @@ public interface IExecutionBackend
 
     Task<CapabilityReport> ProbeCapabilitiesAsync(
         string profileId,
+        ProcessMetadata processContext);
+
+    Task<CapabilityReport> ProbeCapabilitiesAsync(
+        string profileId,
         ProcessMetadata processContext,
-        CancellationToken cancellationToken = default);
+        CancellationToken cancellationToken);
+
+    Task<ActionExecutionResult> ExecuteAsync(
+        ActionExecutionRequest command,
+        CapabilityReport capabilityReport);
 
     Task<ActionExecutionResult> ExecuteAsync(
         ActionExecutionRequest command,
         CapabilityReport capabilityReport,
-        CancellationToken cancellationToken = default);
+        CancellationToken cancellationToken);
 
-    Task<BackendHealth> GetHealthAsync(CancellationToken cancellationToken = default);
+    Task<BackendHealth> GetHealthAsync();
+
+    Task<BackendHealth> GetHealthAsync(CancellationToken cancellationToken);
 }

@@ -145,6 +145,7 @@ pwsh ./tools/validate-signature-pack.ps1 -SignaturePackPath tools/fixtures/signa
 ```
 
 Contracts:
+
 - `docs/RESEARCH_GAME_WORKFLOW.md`
 - `tools/research/build-fingerprint.md`
 - `tools/schemas/binary-fingerprint.schema.json`

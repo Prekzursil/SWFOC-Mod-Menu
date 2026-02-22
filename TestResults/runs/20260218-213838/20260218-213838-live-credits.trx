@@ -1,11 +1,11 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<TestRun id="458f8158-13a4-4569-a3ac-f412180d1918" name="Prekzursil@DESKTOP-A60S9GP 2026-02-18 23:41:26" runUser="DESKTOP-A60S9GP\Prekzursil" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+<TestRun id="458f8158-13a4-4569-a3ac-f412180d1918" name="REDACTED_USER@REDACTED_HOST 2026-02-18 23:41:26" runUser="REDACTED_HOST\REDACTED_USER" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
   <Times creation="2026-02-18T23:41:26.6761041+02:00" queuing="2026-02-18T23:41:26.6761046+02:00" start="2026-02-18T23:40:43.1322385+02:00" finish="2026-02-18T23:41:26.6869639+02:00" />
   <TestSettings name="default" id="640d0804-90f1-4015-a747-03c46175b7e4">
-    <Deployment runDeploymentRoot="Prekzursil_DESKTOP-A60S9GP_2026-02-18_23_41_26" />
+    <Deployment runDeploymentRoot="REDACTED_RUNROOT" />
   </TestSettings>
   <Results>
-    <UnitTestResult executionId="77473b92-ddcd-46ac-9a4a-591884178c46" testId="f63cb700-a077-d6ee-ccad-07bdb86ec236" testName="SwfocTrainer.Tests.Profiles.LiveCreditsTests.Credits_LiveDiagnostic_Should_Identify_Working_Strategy" computerName="DESKTOP-A60S9GP" duration="00:00:42.5623847" startTime="2026-02-18T23:41:26.4384218+02:00" endTime="2026-02-18T23:41:26.4384476+02:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="77473b92-ddcd-46ac-9a4a-591884178c46">
+    <UnitTestResult executionId="77473b92-ddcd-46ac-9a4a-591884178c46" testId="f63cb700-a077-d6ee-ccad-07bdb86ec236" testName="SwfocTrainer.Tests.Profiles.LiveCreditsTests.Credits_LiveDiagnostic_Should_Identify_Working_Strategy" computerName="REDACTED_HOST" duration="00:00:42.5623847" startTime="2026-02-18T23:41:26.4384218+02:00" endTime="2026-02-18T23:41:26.4384476+02:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="77473b92-ddcd-46ac-9a4a-591884178c46">
       <Output>
         <StdOut>Profile: roe_3447786229_swfoc (reason=steammod_exact_roe, confidence=1.00) PID: 45908&#xD;
 Credits symbol: addr=0x7FF758F80E48  source=Fallback  currentValue=-1&#xD;
@@ -116,9 +116,9 @@ Done. Detached.</StdOut>
     </UnitTestResult>
   </Results>
   <TestDefinitions>
-    <UnitTest name="SwfocTrainer.Tests.Profiles.LiveCreditsTests.Credits_LiveDiagnostic_Should_Identify_Working_Strategy" storage="c:\users\prekzursil\downloads\swfoc editor\tests\swfoctrainer.tests\bin\release\net8.0-windows\swfoctrainer.tests.dll" id="f63cb700-a077-d6ee-ccad-07bdb86ec236">
+    <UnitTest name="SwfocTrainer.Tests.Profiles.LiveCreditsTests.Credits_LiveDiagnostic_Should_Identify_Working_Strategy" storage="[REDACTED_TEST_BINARY_PATH]\swfoctrainer.tests.dll" id="f63cb700-a077-d6ee-ccad-07bdb86ec236">
       <Execution id="77473b92-ddcd-46ac-9a4a-591884178c46" />
-      <TestMethod codeBase="C:\Users\Prekzursil\Downloads\SWFOC editor\tests\SwfocTrainer.Tests\bin\Release\net8.0-windows\SwfocTrainer.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="SwfocTrainer.Tests.Profiles.LiveCreditsTests" name="Credits_LiveDiagnostic_Should_Identify_Working_Strategy" />
+      <TestMethod codeBase="[REDACTED_TEST_BINARY_PATH]\SwfocTrainer.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="SwfocTrainer.Tests.Profiles.LiveCreditsTests" name="Credits_LiveDiagnostic_Should_Identify_Working_Strategy" />
     </UnitTest>
   </TestDefinitions>
   <TestEntries>

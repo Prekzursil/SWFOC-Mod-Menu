@@ -7,5 +7,7 @@ namespace SwfocTrainer.Core.Contracts;
 /// </summary>
 public interface ISdkOperationRouter
 {
-    Task<SdkOperationResult> ExecuteAsync(SdkOperationRequest request, CancellationToken cancellationToken = default);
+    Task<SdkOperationResult> ExecuteAsync(SdkOperationRequest request);
+
+    Task<SdkOperationResult> ExecuteAsync(SdkOperationRequest request, CancellationToken cancellationToken);
 }

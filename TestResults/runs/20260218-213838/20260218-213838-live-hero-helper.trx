@@ -1,11 +1,11 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<TestRun id="fe9f889d-d3d4-4f73-9c36-ecef32ed6863" name="Prekzursil@DESKTOP-A60S9GP 2026-02-18 23:39:54" runUser="DESKTOP-A60S9GP\Prekzursil" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+<TestRun id="fe9f889d-d3d4-4f73-9c36-ecef32ed6863" name="REDACTED_USER@REDACTED_HOST 2026-02-18 23:39:54" runUser="REDACTED_HOST\REDACTED_USER" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
   <Times creation="2026-02-18T23:39:54.8276090+02:00" queuing="2026-02-18T23:39:54.8276096+02:00" start="2026-02-18T23:39:17.1544618+02:00" finish="2026-02-18T23:39:54.8371467+02:00" />
   <TestSettings name="default" id="3aa8a298-4d55-4a35-bbd7-f1e401a28986">
-    <Deployment runDeploymentRoot="Prekzursil_DESKTOP-A60S9GP_2026-02-18_23_39_54" />
+    <Deployment runDeploymentRoot="REDACTED_RUNROOT" />
   </TestSettings>
   <Results>
-    <UnitTestResult executionId="9710c75c-5036-4b09-aef6-4e5586e57aea" testId="479eb020-0507-d2fe-90ed-980229450fbf" testName="SwfocTrainer.Tests.Profiles.LiveHeroHelperWorkflowTests.Hero_Helper_Workflow_Should_Return_Action_Result_For_Aotr_Or_Roe" computerName="DESKTOP-A60S9GP" duration="00:00:35.6825566" startTime="2026-02-18T23:39:54.6550605+02:00" endTime="2026-02-18T23:39:54.6551039+02:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="9710c75c-5036-4b09-aef6-4e5586e57aea">
+    <UnitTestResult executionId="9710c75c-5036-4b09-aef6-4e5586e57aea" testId="479eb020-0507-d2fe-90ed-980229450fbf" testName="SwfocTrainer.Tests.Profiles.LiveHeroHelperWorkflowTests.Hero_Helper_Workflow_Should_Return_Action_Result_For_Aotr_Or_Roe" computerName="REDACTED_HOST" duration="00:00:35.6825566" startTime="2026-02-18T23:39:54.6550605+02:00" endTime="2026-02-18T23:39:54.6551039+02:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="9710c75c-5036-4b09-aef6-4e5586e57aea">
       <Output>
         <StdOut>Attached for helper smoke: profile=roe_3447786229_swfoc pid=32952 mode=Tactical&#xD;
 helper action=toggle_roe_respawn_helper success=True message=Helper action 'roe_respawn_bridge' dispatched.</StdOut>
@@ -13,9 +13,9 @@ helper action=toggle_roe_respawn_helper success=True message=Helper action 'roe_
     </UnitTestResult>
   </Results>
   <TestDefinitions>
-    <UnitTest name="SwfocTrainer.Tests.Profiles.LiveHeroHelperWorkflowTests.Hero_Helper_Workflow_Should_Return_Action_Result_For_Aotr_Or_Roe" storage="c:\users\prekzursil\downloads\swfoc editor\tests\swfoctrainer.tests\bin\release\net8.0-windows\swfoctrainer.tests.dll" id="479eb020-0507-d2fe-90ed-980229450fbf">
+    <UnitTest name="SwfocTrainer.Tests.Profiles.LiveHeroHelperWorkflowTests.Hero_Helper_Workflow_Should_Return_Action_Result_For_Aotr_Or_Roe" storage="[REDACTED_TEST_BINARY_PATH]\swfoctrainer.tests.dll" id="479eb020-0507-d2fe-90ed-980229450fbf">
       <Execution id="9710c75c-5036-4b09-aef6-4e5586e57aea" />
-      <TestMethod codeBase="C:\Users\Prekzursil\Downloads\SWFOC editor\tests\SwfocTrainer.Tests\bin\Release\net8.0-windows\SwfocTrainer.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="SwfocTrainer.Tests.Profiles.LiveHeroHelperWorkflowTests" name="Hero_Helper_Workflow_Should_Return_Action_Result_For_Aotr_Or_Roe" />
+      <TestMethod codeBase="[REDACTED_TEST_BINARY_PATH]\SwfocTrainer.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="SwfocTrainer.Tests.Profiles.LiveHeroHelperWorkflowTests" name="Hero_Helper_Workflow_Should_Return_Action_Result_For_Aotr_Or_Roe" />
     </UnitTest>
   </TestDefinitions>
   <TestEntries>

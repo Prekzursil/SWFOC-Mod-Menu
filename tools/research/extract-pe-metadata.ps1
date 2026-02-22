@@ -35,4 +35,4 @@ $result = [ordered]@{
 }
 
 ($result | ConvertTo-Json -Depth 6) | Set-Content -Path $OutputPath -Encoding UTF8
-Write-Host "PE metadata written: $OutputPath"
+Write-Output "PE metadata written: $OutputPath"

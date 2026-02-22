@@ -15,7 +15,8 @@ public sealed class ProfileVariantResolverTests
 
         var result = await resolver.ResolveAsync(
             requestedProfileId: "base_swfoc",
-            processes: Array.Empty<ProcessMetadata>());
+            processes: Array.Empty<ProcessMetadata>(),
+            cancellationToken: CancellationToken.None);
 
         result.ResolvedProfileId.Should().Be("base_swfoc");
         result.ReasonCode.Should().Be("explicit_profile_selection");
@@ -42,7 +43,8 @@ public sealed class ProfileVariantResolverTests
 
         var result = await resolver.ResolveAsync(
             requestedProfileId: "universal_auto",
-            processes: new[] { process });
+            processes: new[] { process },
+            cancellationToken: CancellationToken.None);
 
         result.ResolvedProfileId.Should().Be("roe_3447786229_swfoc");
         result.ReasonCode.Should().Be("steammod_exact_roe");
@@ -64,7 +66,8 @@ public sealed class ProfileVariantResolverTests
 
         var result = await resolver.ResolveAsync(
             requestedProfileId: "universal_auto",
-            processes: new[] { process });
+            processes: new[] { process },
+            cancellationToken: CancellationToken.None);
 
         result.ResolvedProfileId.Should().Be("base_sweaw");
         result.Confidence.Should().BeGreaterThan(0.5d);
@@ -77,7 +80,8 @@ public sealed class ProfileVariantResolverTests
 
         var result = await resolver.ResolveAsync(
             requestedProfileId: "universal_auto",
-            processes: Array.Empty<ProcessMetadata>());
+            processes: Array.Empty<ProcessMetadata>(),
+            cancellationToken: CancellationToken.None);
 
         result.ResolvedProfileId.Should().Be("base_swfoc");
         result.ReasonCode.Should().Be("no_process_detected");

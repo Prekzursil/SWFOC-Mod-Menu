@@ -108,7 +108,12 @@ public sealed class SdkOperationRouterTests
 
     private sealed class FakeSdkRuntimeAdapter : ISdkRuntimeAdapter
     {
-        public Task<SdkOperationResult> ExecuteAsync(SdkOperationRequest request, CancellationToken cancellationToken = default)
+        public Task<SdkOperationResult> ExecuteAsync(SdkOperationRequest request)
+        {
+            return ExecuteAsync(request, CancellationToken.None);
+        }
+
+        public Task<SdkOperationResult> ExecuteAsync(SdkOperationRequest request, CancellationToken cancellationToken)
         {
             return Task.FromResult(new SdkOperationResult(true, "ok", CapabilityReasonCode.AllRequiredAnchorsPresent, SdkCapabilityStatus.Available));
         }
@@ -116,7 +121,12 @@ public sealed class SdkOperationRouterTests
 
     private sealed class FakeProfileVariantResolver : IProfileVariantResolver
     {
-        public Task<ProfileVariantResolution> ResolveAsync(string requestedProfileId, IReadOnlyList<ProcessMetadata>? processes = null, CancellationToken cancellationToken = default)
+        public Task<ProfileVariantResolution> ResolveAsync(string requestedProfileId, CancellationToken cancellationToken)
+        {
+            return ResolveAsync(requestedProfileId, null, cancellationToken);
+        }
+
+        public Task<ProfileVariantResolution> ResolveAsync(string requestedProfileId, IReadOnlyList<ProcessMetadata>? processes, CancellationToken cancellationToken)
         {
             return Task.FromResult(new ProfileVariantResolution(requestedProfileId, "base_swfoc", "test", 1.0d));
         }
@@ -124,7 +134,22 @@ public sealed class SdkOperationRouterTests
 
     private sealed class FakeBinaryFingerprintService : IBinaryFingerprintService
     {
-        public Task<BinaryFingerprint> CaptureFromPathAsync(string modulePath, int? processId = null, CancellationToken cancellationToken = default)
+        public Task<BinaryFingerprint> CaptureFromPathAsync(string modulePath)
+        {
+            return CaptureFromPathAsync(modulePath, CancellationToken.None);
+        }
+
+        public Task<BinaryFingerprint> CaptureFromPathAsync(string modulePath, CancellationToken cancellationToken)
+        {
+            return CaptureFromPathAsync(modulePath, 0, cancellationToken);
+        }
+
+        public Task<BinaryFingerprint> CaptureFromPathAsync(string modulePath, int processId)
+        {
+            return CaptureFromPathAsync(modulePath, processId, CancellationToken.None);
+        }
+
+        public Task<BinaryFingerprint> CaptureFromPathAsync(string modulePath, int processId, CancellationToken cancellationToken)
         {
             return Task.FromResult(new BinaryFingerprint(
                 "fp",
@@ -140,7 +165,12 @@ public sealed class SdkOperationRouterTests
 
     private sealed class FakeCapabilityMapResolver : ICapabilityMapResolver
     {
-        public Task<CapabilityResolutionResult> ResolveAsync(BinaryFingerprint fingerprint, string requestedProfileId, string operationId, IReadOnlySet<string> resolvedAnchors, CancellationToken cancellationToken = default)
+        public Task<CapabilityResolutionResult> ResolveAsync(BinaryFingerprint fingerprint, string requestedProfileId, string operationId, IReadOnlySet<string> resolvedAnchors)
+        {
+            return ResolveAsync(fingerprint, requestedProfileId, operationId, resolvedAnchors, CancellationToken.None);
+        }
+
+        public Task<CapabilityResolutionResult> ResolveAsync(BinaryFingerprint fingerprint, string requestedProfileId, string operationId, IReadOnlySet<string> resolvedAnchors, CancellationToken cancellationToken)
         {
             return Task.FromResult(new CapabilityResolutionResult(
                 requestedProfileId,
@@ -153,7 +183,12 @@ public sealed class SdkOperationRouterTests
                 Array.Empty<string>()));
         }
 
-        public Task<string?> ResolveDefaultProfileIdAsync(BinaryFingerprint fingerprint, CancellationToken cancellationToken = default)
+        public Task<string?> ResolveDefaultProfileIdAsync(BinaryFingerprint fingerprint)
+        {
+            return ResolveDefaultProfileIdAsync(fingerprint, CancellationToken.None);
+        }
+
+        public Task<string?> ResolveDefaultProfileIdAsync(BinaryFingerprint fingerprint, CancellationToken cancellationToken)
         {
             return Task.FromResult<string?>("base_swfoc");
         }

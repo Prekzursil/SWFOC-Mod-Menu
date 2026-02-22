@@ -5,6 +5,12 @@
 #include <string>
 #include <thread>
 
+/*
+Cppcheck note (targeted): if cppcheck runs without STL include paths,
+suppress only this header:
+  --suppress=missingIncludeSystem:native/SwfocExtender.Bridge/include/swfoc_extender/bridge/NamedPipeBridgeServer.hpp
+*/
+
 namespace swfoc::extender::bridge {
 
 struct BridgeCommand {

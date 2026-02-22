@@ -15,16 +15,17 @@ Live validation evidence update (2026-02-18 23:38:38 +02:00)
 - Credits live diagnostic: Passed (p=1, f=0, s=0)
   - detail: 
 - Diagnostics for degraded/unavailable actions: <fill>
-- Repro bundle: C:\Users\Prekzursil\Downloads\SWFOC editor\TestResults\runs\20260218-213838\repro-bundle.json
+- Repro bundle: TestResults\runs\20260218-213838\repro-bundle.json
 - Artifacts:
-  - C:\Users\Prekzursil\Downloads\SWFOC editor\TestResults\runs\20260218-213838\20260218-213838-live-tactical.trx
-  - C:\Users\Prekzursil\Downloads\SWFOC editor\TestResults\runs\20260218-213838\20260218-213838-live-hero-helper.trx
-  - C:\Users\Prekzursil\Downloads\SWFOC editor\TestResults\runs\20260218-213838\20260218-213838-live-roe-health.trx
-  - C:\Users\Prekzursil\Downloads\SWFOC editor\TestResults\runs\20260218-213838\20260218-213838-live-credits.trx
-  - C:\Users\Prekzursil\Downloads\SWFOC editor\TestResults\runs\20260218-213838\launch-context-fixture.json
-  - C:\Users\Prekzursil\Downloads\SWFOC editor\TestResults\runs\20260218-213838\live-validation-summary.json
-  - C:\Users\Prekzursil\Downloads\SWFOC editor\TestResults\runs\20260218-213838\repro-bundle.md
+  - TestResults\runs\20260218-213838\20260218-213838-live-tactical.trx
+  - TestResults\runs\20260218-213838\20260218-213838-live-hero-helper.trx
+  - TestResults\runs\20260218-213838\20260218-213838-live-roe-health.trx
+  - TestResults\runs\20260218-213838\20260218-213838-live-credits.trx
+  - TestResults\runs\20260218-213838\launch-context-fixture.json
+  - TestResults\runs\20260218-213838\live-validation-summary.json
+  - TestResults\runs\20260218-213838\repro-bundle.md
 
 Status gate for closure:
+
 - [ ] At least one successful tactical toggle + revert in tactical mode
 - [ ] At least one helper workflow result captured per target profile (AOTR + ROE)

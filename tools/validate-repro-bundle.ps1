@@ -24,8 +24,8 @@ foreach ($required in $schema.required) {
     Require-ValidationField -Object $bundle -Field ([string]$required) -Errors $errors
 }
 
-if ($bundle.schemaVersion -ne "1.0") {
-    Add-ValidationError -Errors $errors -Message "schemaVersion must be 1.0"
+if ($bundle.schemaVersion -ne "1.1") {
+    Add-ValidationError -Errors $errors -Message "schemaVersion must be 1.1"
 }
 
 $allowedScopes = @("AOTR", "ROE", "TACTICAL", "FULL")

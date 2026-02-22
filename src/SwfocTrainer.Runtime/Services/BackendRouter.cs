@@ -19,10 +19,48 @@ public sealed class BackendRouter : IBackendRouter
         var missingRequired = requiredCapabilities
             .Where(featureId => !capabilityReport.IsFeatureAvailable(featureId))
             .ToArray();
-        var enforceCapabilityContract = preferredBackend == ExecutionBackendKind.Extender ||
-                                        string.Equals(profile.BackendPreference, "extender", StringComparison.OrdinalIgnoreCase);
+        var diagnostics = BuildDiagnostics(
+            request,
+            profile,
+            process,
+            capabilityReport,
+            defaultBackend,
+            preferredBackend,
+            profileRequiredCapabilities,
+            requiredCapabilities,
+            missingRequired);
 
-        var diagnostics = new Dictionary<string, object?>(StringComparer.OrdinalIgnoreCase)
+        var requiredCapabilityDecision = TryResolveRequiredCapabilityContract(
+            preferredBackend,
+            profile.BackendPreference,
+            isMutating,
+            missingRequired,
+            diagnostics);
+        if (requiredCapabilityDecision is not null)
+        {
+            return requiredCapabilityDecision;
+        }
+
+        if (preferredBackend != ExecutionBackendKind.Extender)
+        {
+            return CreateRoutedDecision(preferredBackend, diagnostics);
+        }
+
+        return ResolveExtenderRoute(request, profile, capabilityReport, isMutating, diagnostics);
+    }
+
+    private static Dictionary<string, object?> BuildDiagnostics(
+        ActionExecutionRequest request,
+        TrainerProfile profile,
+        ProcessMetadata process,
+        CapabilityReport capabilityReport,
+        ExecutionBackendKind defaultBackend,
+        ExecutionBackendKind preferredBackend,
+        IReadOnlyList<string> profileRequiredCapabilities,
+        IReadOnlyList<string> requiredCapabilities,
+        IReadOnlyList<string> missingRequired)
+    {
+        return new Dictionary<string, object?>(StringComparer.OrdinalIgnoreCase)
         {
             ["requestedExecutionKind"] = request.Action.ExecutionKind.ToString(),
             ["defaultBackend"] = defaultBackend.ToString(),
@@ -34,81 +72,116 @@ public sealed class BackendRouter : IBackendRouter
             ["requiredCapabilities"] = requiredCapabilities,
             ["missingRequiredCapabilities"] = missingRequired
         };
+    }
 
-        if (missingRequired.Length > 0 && isMutating && enforceCapabilityContract)
+    private static BackendRouteDecision? TryResolveRequiredCapabilityContract(
+        ExecutionBackendKind preferredBackend,
+        string? backendPreference,
+        bool isMutating,
+        IReadOnlyCollection<string> missingRequired,
+        IReadOnlyDictionary<string, object?> diagnostics)
+    {
+        var enforceCapabilityContract = preferredBackend == ExecutionBackendKind.Extender ||
+                                        IsHardExtenderPreference(backendPreference);
+        if (missingRequired.Count == 0 || !isMutating || !enforceCapabilityContract)
         {
-            return new BackendRouteDecision(
-                Allowed: false,
-                Backend: preferredBackend,
-                ReasonCode: RuntimeReasonCode.CAPABILITY_REQUIRED_MISSING,
-                Message: $"Blocked by required capability contract: {string.Join(", ", missingRequired)}.",
-                Diagnostics: diagnostics);
-        }
-
-        if (preferredBackend != ExecutionBackendKind.Extender)
-        {
-            return new BackendRouteDecision(
-                Allowed: true,
-                Backend: preferredBackend,
-                ReasonCode: RuntimeReasonCode.CAPABILITY_PROBE_PASS,
-                Message: $"Routed to backend '{preferredBackend}'.",
-                Diagnostics: diagnostics);
-        }
-
-        // Extender selected. Apply fail-closed policy for mutations when capability is not proven.
-        if (!capabilityReport.IsFeatureAvailable(request.Action.Id))
-        {
-            diagnostics["requestedFeatureId"] = request.Action.Id;
-
-            var preferenceIsHardExtender =
-                string.Equals(profile.BackendPreference, "extender", StringComparison.OrdinalIgnoreCase);
-
-            if (isMutating)
-            {
-                if (preferenceIsHardExtender)
-                {
-                    return new BackendRouteDecision(
-                        Allowed: false,
-                        Backend: ExecutionBackendKind.Extender,
-                        ReasonCode: RuntimeReasonCode.SAFETY_FAIL_CLOSED,
-                        Message: "Extender capability is not proven for this mutating operation (fail-closed).",
-                        Diagnostics: diagnostics);
-                }
-
-                var fallback = ResolveAutoFallbackBackend(request.Action.ExecutionKind);
-                if (fallback == ExecutionBackendKind.Unknown)
-                {
-                    return new BackendRouteDecision(
-                        Allowed: false,
-                        Backend: ExecutionBackendKind.Extender,
-                        ReasonCode: RuntimeReasonCode.SAFETY_MUTATION_BLOCKED,
-                        Message: "No safe fallback backend is available for this mutating operation. Ensure SwfocExtender host bridge is running for extender-routed actions.",
-                        Diagnostics: diagnostics);
-                }
-
-                diagnostics["fallbackBackend"] = fallback.ToString();
-                return new BackendRouteDecision(
-                    Allowed: true,
-                    Backend: fallback,
-                    ReasonCode: RuntimeReasonCode.CAPABILITY_BACKEND_UNAVAILABLE,
-                    Message: $"Extender capability unavailable; routed to fallback backend '{fallback}'.",
-                    Diagnostics: diagnostics);
-            }
-
-            return new BackendRouteDecision(
-                Allowed: true,
-                Backend: ExecutionBackendKind.Extender,
-                ReasonCode: RuntimeReasonCode.CAPABILITY_FEATURE_EXPERIMENTAL,
-                Message: "Read-only operation allowed with experimental extender capability state.",
-                Diagnostics: diagnostics);
+            return null;
         }
 
         return new BackendRouteDecision(
+            Allowed: false,
+            Backend: preferredBackend,
+            ReasonCode: RuntimeReasonCode.CAPABILITY_REQUIRED_MISSING,
+            Message: $"Blocked by required capability contract: {string.Join(", ", missingRequired)}.",
+            Diagnostics: diagnostics);
+    }
+
+    private static BackendRouteDecision CreateRoutedDecision(
+        ExecutionBackendKind backend,
+        IReadOnlyDictionary<string, object?> diagnostics)
+    {
+        return new BackendRouteDecision(
+            Allowed: true,
+            Backend: backend,
+            ReasonCode: RuntimeReasonCode.CAPABILITY_PROBE_PASS,
+            Message: $"Routed to backend '{backend}'.",
+            Diagnostics: diagnostics);
+    }
+
+    private static BackendRouteDecision ResolveExtenderRoute(
+        ActionExecutionRequest request,
+        TrainerProfile profile,
+        CapabilityReport capabilityReport,
+        bool isMutating,
+        Dictionary<string, object?> diagnostics)
+    {
+        if (capabilityReport.IsFeatureAvailable(request.Action.Id))
+        {
+            return new BackendRouteDecision(
+                Allowed: true,
+                Backend: ExecutionBackendKind.Extender,
+                ReasonCode: RuntimeReasonCode.CAPABILITY_PROBE_PASS,
+                Message: "Routed to extender backend.",
+                Diagnostics: diagnostics);
+        }
+
+        diagnostics["requestedFeatureId"] = request.Action.Id;
+        if (!isMutating)
+        {
+            return CreateExperimentalReadOnlyDecision(diagnostics);
+        }
+
+        return ResolveMutatingExtenderRoute(profile.BackendPreference, request.Action.ExecutionKind, diagnostics);
+    }
+
+    private static BackendRouteDecision CreateExperimentalReadOnlyDecision(IReadOnlyDictionary<string, object?> diagnostics)
+    {
+        return new BackendRouteDecision(
             Allowed: true,
             Backend: ExecutionBackendKind.Extender,
-            ReasonCode: RuntimeReasonCode.CAPABILITY_PROBE_PASS,
-            Message: "Routed to extender backend.",
+            ReasonCode: RuntimeReasonCode.CAPABILITY_FEATURE_EXPERIMENTAL,
+            Message: "Read-only operation allowed with experimental extender capability state.",
             Diagnostics: diagnostics);
+    }
+
+    private static BackendRouteDecision ResolveMutatingExtenderRoute(
+        string? backendPreference,
+        ExecutionKind executionKind,
+        Dictionary<string, object?> diagnostics)
+    {
+        if (IsHardExtenderPreference(backendPreference))
+        {
+            return new BackendRouteDecision(
+                Allowed: false,
+                Backend: ExecutionBackendKind.Extender,
+                ReasonCode: RuntimeReasonCode.SAFETY_FAIL_CLOSED,
+                Message: "Extender capability is not proven for this mutating operation (fail-closed).",
+                Diagnostics: diagnostics);
+        }
+
+        var fallback = ResolveAutoFallbackBackend(executionKind);
+        if (fallback == ExecutionBackendKind.Unknown)
+        {
+            return new BackendRouteDecision(
+                Allowed: false,
+                Backend: ExecutionBackendKind.Extender,
+                ReasonCode: RuntimeReasonCode.SAFETY_MUTATION_BLOCKED,
+                Message: "No safe fallback backend is available for this mutating operation. Ensure SwfocExtender host bridge is running for extender-routed actions.",
+                Diagnostics: diagnostics);
+        }
+
+        diagnostics["fallbackBackend"] = fallback.ToString();
+        return new BackendRouteDecision(
+            Allowed: true,
+            Backend: fallback,
+            ReasonCode: RuntimeReasonCode.CAPABILITY_BACKEND_UNAVAILABLE,
+            Message: $"Extender capability unavailable; routed to fallback backend '{fallback}'.",
+            Diagnostics: diagnostics);
+    }
+
+    private static bool IsHardExtenderPreference(string? backendPreference)
+    {
+        return string.Equals(backendPreference, "extender", StringComparison.OrdinalIgnoreCase);
     }
 
     private static ExecutionBackendKind ResolvePreferredBackend(string? backendPreference, ExecutionBackendKind defaultBackend)

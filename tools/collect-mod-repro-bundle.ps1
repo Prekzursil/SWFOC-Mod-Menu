@@ -518,7 +518,7 @@ $overlayState = [ordered]@{
 }
 
 $bundle = [ordered]@{
-    schemaVersion = "1.0"
+    schemaVersion = "1.1"
     runId = $RunId
     startedAtUtc = if ([string]::IsNullOrWhiteSpace($StartedAtUtc)) { (Get-Date).ToUniversalTime().ToString("o") } else { $StartedAtUtc }
     scope = $Scope

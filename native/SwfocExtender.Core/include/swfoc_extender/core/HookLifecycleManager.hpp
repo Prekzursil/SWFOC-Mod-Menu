@@ -3,6 +3,12 @@
 #include <string>
 #include <unordered_map>
 
+/*
+Cppcheck note (targeted): if cppcheck runs without STL include paths,
+suppress only this header:
+  --suppress=missingIncludeSystem:native/SwfocExtender.Core/include/swfoc_extender/core/HookLifecycleManager.hpp
+*/
+
 namespace swfoc::extender::core {
 
 enum class HookState {

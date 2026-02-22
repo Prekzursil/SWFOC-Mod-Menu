@@ -61,4 +61,4 @@ $result = [ordered]@{
 }
 
 ($result | ConvertTo-Json -Depth 8) | Set-Content -Path $OutputPath -Encoding UTF8
-Write-Host "Fingerprint written: $OutputPath"
+Write-Output "Fingerprint written: $OutputPath"

@@ -124,7 +124,7 @@ function Invoke-LiveTest {
         [Parameter(Mandatory = $true)][string]$TrxName
     )
 
-    Write-Host "=== Running $Name ==="
+    Write-Output "=== Running $Name ==="
 
     $args = @(
         "test",
@@ -455,21 +455,21 @@ if ($RequireNonBlockedClassification) {
     }
 }
 
-Write-Host ""
-Write-Host "=== Live Validation Summary ($iso) ==="
-Write-Host "run id: $RunId"
-Write-Host "scope: $Scope"
+Write-Output ""
+Write-Output "=== Live Validation Summary ($iso) ==="
+Write-Output "run id: $RunId"
+Write-Output "scope: $Scope"
 foreach ($entry in $summaries) {
     $s = $entry.Summary
-    Write-Host ("{0}: outcome={1} passed={2} failed={3} skipped={4} message='{5}'" -f $entry.Name, $s.Outcome, $s.Passed, $s.Failed, $s.Skipped, $s.Message)
+    Write-Output ("{0}: outcome={1} passed={2} failed={3} skipped={4} message='{5}'" -f $entry.Name, $s.Outcome, $s.Passed, $s.Failed, $s.Skipped, $s.Message)
 }
-Write-Host "launch-context fixture: $launchContextJson"
-Write-Host "summary json: $summaryPath"
+Write-Output "launch-context fixture: $launchContextJson"
+Write-Output "summary json: $summaryPath"
 if ($EmitReproBundle) {
-    Write-Host "repro bundle json: $bundlePath"
-    Write-Host "repro bundle markdown: $bundleMdPath"
+    Write-Output "repro bundle json: $bundlePath"
+    Write-Output "repro bundle markdown: $bundleMdPath"
     if (-not [string]::IsNullOrWhiteSpace($bundleClassification)) {
-        Write-Host "repro bundle classification: $bundleClassification"
+        Write-Output "repro bundle classification: $bundleClassification"
     }
 }
 
@@ -560,8 +560,8 @@ Artifacts:
 - $bundleMdPath
 "@ | Set-Content -Path $template19
 
-Write-Host "issue template (34): $template34"
-Write-Host "issue template (19): $template19"
+Write-Output "issue template (34): $template34"
+Write-Output "issue template (19): $template19"
 
 if ($null -ne $fatalError) {
     throw $fatalError

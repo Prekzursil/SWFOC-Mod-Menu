@@ -3,9 +3,9 @@
 
 #include <atomic>
 #include <chrono>
-#include <cctype>
 #include <cstdlib>
 #include <iostream>
+#include <map>
 #include <sstream>
 #include <string>
 #include <thread>
@@ -16,6 +16,18 @@
 #endif
 
 namespace {
+
+using swfoc::extender::bridge::BridgeCommand;
+using swfoc::extender::bridge::BridgeResult;
+
+constexpr const char* kBackendName = "extender";
+constexpr const char* kDefaultPipeName = "SwfocExtenderBridge";
+
+/*
+Cppcheck note (targeted): if cppcheck runs without STL/Windows SDK include paths,
+missingIncludeSystem can be suppressed per translation unit with:
+  --suppress=missingIncludeSystem:native/SwfocExtender.Bridge/src/BridgeHostMain.cpp
+*/
 
 std::string EscapeJson(const std::string& value) {
     std::string escaped;
@@ -61,20 +73,25 @@ std::string ToDiagnosticsJson(const std::map<std::string, std::string>& values) 
     return out.str();
 }
 
-bool TryReadBool(const std::string& payloadJson, const std::string& key, bool& value) {
+bool TryFindValueStart(const std::string& payloadJson, const std::string& key, std::size_t& start) {
     const auto quotedKey = "\"" + key + "\"";
-    auto keyPos = payloadJson.find(quotedKey);
+    const auto keyPos = payloadJson.find(quotedKey);
     if (keyPos == std::string::npos) {
         return false;
     }
 
-    auto colonPos = payloadJson.find(':', keyPos + quotedKey.size());
+    const auto colonPos = payloadJson.find(':', keyPos + quotedKey.size());
     if (colonPos == std::string::npos) {
         return false;
     }
 
-    auto start = payloadJson.find_first_not_of(" \t\r\n", colonPos + 1);
-    if (start == std::string::npos) {
+    start = payloadJson.find_first_not_of(" \t\r\n", colonPos + 1);
+    return start != std::string::npos;
+}
+
+bool TryReadBool(const std::string& payloadJson, const std::string& key, bool& value) {
+    std::size_t start = 0;
+    if (!TryFindValueStart(payloadJson, key, start)) {
         return false;
     }
 
@@ -92,40 +109,150 @@ bool TryReadBool(const std::string& payloadJson, const std::string& key, bool& v
 }
 
 bool TryReadInt(const std::string& payloadJson, const std::string& key, int& value) {
-    const auto quotedKey = "\"" + key + "\"";
-    auto keyPos = payloadJson.find(quotedKey);
-    if (keyPos == std::string::npos) {
+    std::size_t start = 0;
+    if (!TryFindValueStart(payloadJson, key, start)) {
         return false;
     }
 
-    auto colonPos = payloadJson.find(':', keyPos + quotedKey.size());
-    if (colonPos == std::string::npos) {
-        return false;
-    }
-
-    auto start = payloadJson.find_first_not_of(" \t\r\n", colonPos + 1);
-    if (start == std::string::npos) {
-        return false;
-    }
-
-    auto end = start;
-    if (payloadJson[end] == '-') {
-        ++end;
-    }
-    while (end < payloadJson.size() && std::isdigit(static_cast<unsigned char>(payloadJson[end])) != 0) {
-        ++end;
-    }
-
-    if (end <= start) {
+    if (payloadJson[start] == '+') {
         return false;
     }
 
     try {
-        value = std::stoi(payloadJson.substr(start, end - start));
-        return true;
+        std::size_t consumed = 0;
+        value = std::stoi(payloadJson.substr(start), &consumed);
+        return consumed != 0;
     } catch (...) {
         return false;
     }
+}
+
+BridgeResult BuildHealthResult(const BridgeCommand& command) {
+    return BridgeResult{
+        .commandId = command.commandId,
+        .succeeded = true,
+        .reasonCode = "CAPABILITY_PROBE_PASS",
+        .backend = kBackendName,
+        .hookState = "RUNNING",
+        .message = "Extender bridge is healthy.",
+        .diagnosticsJson = "{\"bridge\":\"active\"}"
+    };
+}
+
+BridgeResult BuildCapabilityProbeResult(
+    const BridgeCommand& command,
+    const swfoc::extender::plugins::EconomyPlugin& economyPlugin) {
+    const auto capability = economyPlugin.capabilitySnapshot();
+    std::ostringstream diagnostics;
+    diagnostics
+        << "{"
+        << "\"bridge\":\"active\","
+        << "\"capabilities\":{"
+        << "\"set_credits\":{"
+        << "\"available\":" << (capability.creditsAvailable ? "true" : "false") << ","
+        << "\"state\":\"" << EscapeJson(capability.creditsState) << "\","
+        << "\"reasonCode\":\"" << EscapeJson(capability.reasonCode) << "\""
+        << "}"
+        << "}"
+        << "}";
+
+    return BridgeResult{
+        .commandId = command.commandId,
+        .succeeded = true,
+        .reasonCode = "CAPABILITY_PROBE_PASS",
+        .backend = kBackendName,
+        .hookState = capability.creditsAvailable ? "HOOK_READY" : "HOOK_NOT_INSTALLED",
+        .message = "Capability probe completed.",
+        .diagnosticsJson = diagnostics.str()
+    };
+}
+
+bool ResolveLockCredits(const std::string& payloadJson) {
+    bool lockCredits = false;
+    if (TryReadBool(payloadJson, "lockCredits", lockCredits)) {
+        return lockCredits;
+    }
+
+    bool legacyForce = false;
+    return TryReadBool(payloadJson, "forcePatchHook", legacyForce) && legacyForce;
+}
+
+BridgeResult BuildMissingIntValueResult(const BridgeCommand& command) {
+    return BridgeResult{
+        .commandId = command.commandId,
+        .succeeded = false,
+        .reasonCode = "CAPABILITY_REQUIRED_MISSING",
+        .backend = kBackendName,
+        .hookState = "DENIED",
+        .message = "Payload is missing required intValue.",
+        .diagnosticsJson = "{\"requiredField\":\"intValue\"}"
+    };
+}
+
+BridgeResult BuildSetCreditsResult(
+    const BridgeCommand& command,
+    swfoc::extender::plugins::EconomyPlugin& economyPlugin) {
+    int intValue = 0;
+    if (!TryReadInt(command.payloadJson, "intValue", intValue)) {
+        return BuildMissingIntValueResult(command);
+    }
+
+    const auto pluginResult = economyPlugin.execute(
+        swfoc::extender::plugins::PluginRequest{
+            .featureId = command.featureId,
+            .profileId = command.profileId,
+            .intValue = intValue,
+            .lockValue = ResolveLockCredits(command.payloadJson)
+        });
+
+    return BridgeResult{
+        .commandId = command.commandId,
+        .succeeded = pluginResult.succeeded,
+        .reasonCode = pluginResult.reasonCode,
+        .backend = kBackendName,
+        .hookState = pluginResult.hookState,
+        .message = pluginResult.message,
+        .diagnosticsJson = ToDiagnosticsJson(pluginResult.diagnostics)
+    };
+}
+
+BridgeResult BuildUnsupportedFeatureResult(const BridgeCommand& command) {
+    return BridgeResult{
+        .commandId = command.commandId,
+        .succeeded = false,
+        .reasonCode = "CAPABILITY_REQUIRED_MISSING",
+        .backend = kBackendName,
+        .hookState = "DENIED",
+        .message = "Feature not supported by current extender host.",
+        .diagnosticsJson = "{\"featureId\":\"" + EscapeJson(command.featureId) + "\"}"
+    };
+}
+
+BridgeResult HandleBridgeCommand(
+    const BridgeCommand& command,
+    swfoc::extender::plugins::EconomyPlugin& economyPlugin) {
+    if (command.featureId == "health") {
+        return BuildHealthResult(command);
+    }
+
+    if (command.featureId == "probe_capabilities") {
+        return BuildCapabilityProbeResult(command, economyPlugin);
+    }
+
+    if (command.featureId == "set_credits") {
+        return BuildSetCreditsResult(command, economyPlugin);
+    }
+
+    return BuildUnsupportedFeatureResult(command);
+}
+
+std::string ResolvePipeName() {
+    const auto* envPipe = std::getenv("SWFOC_EXTENDER_PIPE_NAME");
+    if (envPipe == nullptr || *envPipe == '\0') {
+        return kDefaultPipeName;
+    }
+
+    return envPipe;
 }
 
 std::atomic<bool> g_running {true};
@@ -143,109 +270,28 @@ BOOL WINAPI CtrlHandler(DWORD signalType) {
 }
 #endif
 
-} // namespace
-
-int main() {
+void InstallCtrlHandler() {
 #if defined(_WIN32)
     SetConsoleCtrlHandler(CtrlHandler, TRUE);
 #endif
+}
 
-    const auto* envPipe = std::getenv("SWFOC_EXTENDER_PIPE_NAME");
-    std::string pipeName = envPipe == nullptr || std::string(envPipe).empty()
-        ? "SwfocExtenderBridge"
-        : std::string(envPipe);
+void WaitForShutdownSignal() {
+    while (g_running.load()) {
+        std::this_thread::sleep_for(std::chrono::milliseconds(100));
+    }
+}
+
+} // namespace
+
+int main() {
+    InstallCtrlHandler();
+    const auto pipeName = ResolvePipeName();
 
     swfoc::extender::plugins::EconomyPlugin economyPlugin;
     swfoc::extender::bridge::NamedPipeBridgeServer server(pipeName);
-    server.setHandler([&economyPlugin](const swfoc::extender::bridge::BridgeCommand& command) {
-        if (command.featureId == "health") {
-            return swfoc::extender::bridge::BridgeResult{
-                .commandId = command.commandId,
-                .succeeded = true,
-                .reasonCode = "CAPABILITY_PROBE_PASS",
-                .backend = "extender",
-                .hookState = "RUNNING",
-                .message = "Extender bridge is healthy.",
-                .diagnosticsJson = "{\"bridge\":\"active\"}"
-            };
-        }
-
-        if (command.featureId == "probe_capabilities") {
-            const auto capability = economyPlugin.capabilitySnapshot();
-            std::ostringstream diagnostics;
-            diagnostics
-                << "{"
-                << "\"bridge\":\"active\","
-                << "\"capabilities\":{"
-                << "\"set_credits\":{"
-                << "\"available\":" << (capability.creditsAvailable ? "true" : "false") << ","
-                << "\"state\":\"" << EscapeJson(capability.creditsState) << "\","
-                << "\"reasonCode\":\"" << EscapeJson(capability.reasonCode) << "\""
-                << "}"
-                << "}"
-                << "}";
-
-            return swfoc::extender::bridge::BridgeResult{
-                .commandId = command.commandId,
-                .succeeded = true,
-                .reasonCode = "CAPABILITY_PROBE_PASS",
-                .backend = "extender",
-                .hookState = capability.creditsAvailable ? "HOOK_READY" : "HOOK_NOT_INSTALLED",
-                .message = "Capability probe completed.",
-                .diagnosticsJson = diagnostics.str()
-            };
-        }
-
-        if (command.featureId == "set_credits") {
-            int intValue = 0;
-            if (!TryReadInt(command.payloadJson, "intValue", intValue)) {
-                return swfoc::extender::bridge::BridgeResult{
-                    .commandId = command.commandId,
-                    .succeeded = false,
-                    .reasonCode = "CAPABILITY_REQUIRED_MISSING",
-                    .backend = "extender",
-                    .hookState = "DENIED",
-                    .message = "Payload is missing required intValue.",
-                    .diagnosticsJson = "{\"requiredField\":\"intValue\"}"
-                };
-            }
-
-            bool lockCredits = false;
-            if (!TryReadBool(command.payloadJson, "lockCredits", lockCredits)) {
-                bool legacyForce = false;
-                if (TryReadBool(command.payloadJson, "forcePatchHook", legacyForce) && legacyForce) {
-                    lockCredits = true;
-                }
-            }
-
-            const auto pluginResult = economyPlugin.execute(
-                swfoc::extender::plugins::PluginRequest{
-                    .featureId = command.featureId,
-                    .profileId = command.profileId,
-                    .intValue = intValue,
-                    .lockValue = lockCredits
-                });
-
-            return swfoc::extender::bridge::BridgeResult{
-                .commandId = command.commandId,
-                .succeeded = pluginResult.succeeded,
-                .reasonCode = pluginResult.reasonCode,
-                .backend = "extender",
-                .hookState = pluginResult.hookState,
-                .message = pluginResult.message,
-                .diagnosticsJson = ToDiagnosticsJson(pluginResult.diagnostics)
-            };
-        }
-
-        return swfoc::extender::bridge::BridgeResult{
-            .commandId = command.commandId,
-            .succeeded = false,
-            .reasonCode = "CAPABILITY_REQUIRED_MISSING",
-            .backend = "extender",
-            .hookState = "DENIED",
-            .message = "Feature not supported by current extender host.",
-            .diagnosticsJson = "{\"featureId\":\"" + EscapeJson(command.featureId) + "\"}"
-        };
+    server.setHandler([&economyPlugin](const BridgeCommand& command) {
+        return HandleBridgeCommand(command, economyPlugin);
     });
 
     if (!server.start()) {
@@ -254,9 +300,7 @@ int main() {
     }
 
     std::cout << "SwfocExtender bridge host started on pipe: " << pipeName << std::endl;
-    while (g_running.load()) {
-        std::this_thread::sleep_for(std::chrono::milliseconds(100));
-    }
+    WaitForShutdownSignal();
 
     server.stop();
     std::cout << "SwfocExtender bridge host stopped." << std::endl;

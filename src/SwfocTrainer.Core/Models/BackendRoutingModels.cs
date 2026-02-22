@@ -35,7 +35,12 @@ public sealed record CapabilityReport(
     RuntimeReasonCode ProbeReasonCode,
     IReadOnlyDictionary<string, object?>? Diagnostics = null)
 {
-    public static CapabilityReport Unknown(string profileId, RuntimeReasonCode reasonCode = RuntimeReasonCode.CAPABILITY_UNKNOWN)
+    public static CapabilityReport Unknown(string profileId)
+    {
+        return Unknown(profileId, RuntimeReasonCode.CAPABILITY_UNKNOWN);
+    }
+
+    public static CapabilityReport Unknown(string profileId, RuntimeReasonCode reasonCode)
     {
         return new CapabilityReport(
             profileId,

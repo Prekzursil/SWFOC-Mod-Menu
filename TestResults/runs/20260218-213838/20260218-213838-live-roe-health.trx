@@ -1,11 +1,11 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<TestRun id="c9675130-fbdb-49e6-9d11-8b7b0a466e82" name="Prekzursil@DESKTOP-A60S9GP 2026-02-18 23:40:41" runUser="DESKTOP-A60S9GP\Prekzursil" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+<TestRun id="c9675130-fbdb-49e6-9d11-8b7b0a466e82" name="REDACTED_USER@REDACTED_HOST 2026-02-18 23:40:41" runUser="REDACTED_HOST\REDACTED_USER" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
   <Times creation="2026-02-18T23:40:41.5416890+02:00" queuing="2026-02-18T23:40:41.5416902+02:00" start="2026-02-18T23:39:57.3877649+02:00" finish="2026-02-18T23:40:41.5490023+02:00" />
   <TestSettings name="default" id="d93c7f80-7d41-4182-bd3c-5208d845e381">
-    <Deployment runDeploymentRoot="Prekzursil_DESKTOP-A60S9GP_2026-02-18_23_40_41" />
+    <Deployment runDeploymentRoot="REDACTED_RUNROOT" />
   </TestSettings>
   <Results>
-    <UnitTestResult executionId="ded46b26-c27b-4b74-808b-fd9c3c8b16e9" testId="57e58755-d2a2-c7c6-ba62-dcecdc0694b8" testName="SwfocTrainer.Tests.Profiles.LiveRoeRuntimeHealthTests.Roe_Attach_And_Credits_Action_Should_Succeed_On_Live_Process" computerName="DESKTOP-A60S9GP" duration="00:00:43.0269228" startTime="2026-02-18T23:40:41.4080898+02:00" endTime="2026-02-18T23:40:41.4081333+02:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="ded46b26-c27b-4b74-808b-fd9c3c8b16e9">
+    <UnitTestResult executionId="ded46b26-c27b-4b74-808b-fd9c3c8b16e9" testId="57e58755-d2a2-c7c6-ba62-dcecdc0694b8" testName="SwfocTrainer.Tests.Profiles.LiveRoeRuntimeHealthTests.Roe_Attach_And_Credits_Action_Should_Succeed_On_Live_Process" computerName="REDACTED_HOST" duration="00:00:43.0269228" startTime="2026-02-18T23:40:41.4080898+02:00" endTime="2026-02-18T23:40:41.4081333+02:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="ded46b26-c27b-4b74-808b-fd9c3c8b16e9">
       <Output>
         <StdOut>Live ROE candidates: 2 (swfoc=True, StarWarsG=True)&#xD;
 Attached PID=32952 Name=StarWarsG Symbols=18&#xD;
@@ -27,9 +27,9 @@ diag[capabilityCount]=2</StdOut>
     </UnitTestResult>
   </Results>
   <TestDefinitions>
-    <UnitTest name="SwfocTrainer.Tests.Profiles.LiveRoeRuntimeHealthTests.Roe_Attach_And_Credits_Action_Should_Succeed_On_Live_Process" storage="c:\users\prekzursil\downloads\swfoc editor\tests\swfoctrainer.tests\bin\release\net8.0-windows\swfoctrainer.tests.dll" id="57e58755-d2a2-c7c6-ba62-dcecdc0694b8">
+    <UnitTest name="SwfocTrainer.Tests.Profiles.LiveRoeRuntimeHealthTests.Roe_Attach_And_Credits_Action_Should_Succeed_On_Live_Process" storage="[REDACTED_TEST_BINARY_PATH]\swfoctrainer.tests.dll" id="57e58755-d2a2-c7c6-ba62-dcecdc0694b8">
       <Execution id="ded46b26-c27b-4b74-808b-fd9c3c8b16e9" />
-      <TestMethod codeBase="C:\Users\Prekzursil\Downloads\SWFOC editor\tests\SwfocTrainer.Tests\bin\Release\net8.0-windows\SwfocTrainer.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="SwfocTrainer.Tests.Profiles.LiveRoeRuntimeHealthTests" name="Roe_Attach_And_Credits_Action_Should_Succeed_On_Live_Process" />
+      <TestMethod codeBase="[REDACTED_TEST_BINARY_PATH]\SwfocTrainer.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="SwfocTrainer.Tests.Profiles.LiveRoeRuntimeHealthTests" name="Roe_Attach_And_Credits_Action_Should_Succeed_On_Live_Process" />
     </UnitTest>
   </TestDefinitions>
   <TestEntries>

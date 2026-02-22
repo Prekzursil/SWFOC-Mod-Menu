@@ -86,6 +86,25 @@ public sealed class NamedPipeExtenderBackendTests
             PipeTransmissionMode.Byte,
             PipeOptions.Asynchronous);
         var backend = new NamedPipeExtenderBackend();
+        var request = BuildSetCreditsRequest();
+        var capabilityReport = BuildCapabilityReport(request.ProfileId, request.Action.Id);
+
+        var waitTask = server.WaitForConnectionAsync(cts.Token);
+        var executeTask = backend.ExecuteAsync(request, capabilityReport, cts.Token);
+        await waitTask;
+
+        using var reader = new StreamReader(server);
+        await using var writer = new StreamWriter(server) { AutoFlush = true };
+        var (commandId, forcePatchHook) = await ReadCommandEnvelopeAsync(reader, cts.Token);
+        var response = BuildExecuteResponse(commandId, forcePatchHook);
+        await writer.WriteLineAsync(response.AsMemory(), cts.Token);
+        var result = await executeTask;
+
+        AssertHookLockResult(result);
+    }
+
+    private static ActionExecutionRequest BuildSetCreditsRequest()
+    {
         var action = new ActionSpec(
             Id: "set_credits",
             Category: ActionCategory.Economy,
@@ -95,7 +114,7 @@ public sealed class NamedPipeExtenderBackendTests
             VerifyReadback: true,
             CooldownMs: 0,
             Description: "set credits");
-        var request = new ActionExecutionRequest(
+        return new ActionExecutionRequest(
             Action: action,
             Payload: new JsonObject
             {
@@ -105,32 +124,39 @@ public sealed class NamedPipeExtenderBackendTests
             },
             ProfileId: "roe_3447786229_swfoc",
             RuntimeMode: RuntimeMode.Galactic);
-        var capabilityReport = new CapabilityReport(
-            "roe_3447786229_swfoc",
+    }
+
+    private static CapabilityReport BuildCapabilityReport(string profileId, string featureId)
+    {
+        return new CapabilityReport(
+            profileId,
             DateTimeOffset.UtcNow,
             new Dictionary<string, BackendCapability>(StringComparer.OrdinalIgnoreCase)
             {
-                ["set_credits"] = new BackendCapability(
-                    "set_credits",
+                [featureId] = new BackendCapability(
+                    featureId,
                     Available: true,
                     CapabilityConfidenceState.Verified,
                     RuntimeReasonCode.CAPABILITY_PROBE_PASS)
             },
             RuntimeReasonCode.CAPABILITY_PROBE_PASS);
+    }
 
-        var waitTask = server.WaitForConnectionAsync(cts.Token);
-        var executeTask = backend.ExecuteAsync(request, capabilityReport, cts.Token);
-        await waitTask;
-
-        using var reader = new StreamReader(server);
-        await using var writer = new StreamWriter(server) { AutoFlush = true };
-        var requestJson = await reader.ReadLineAsync(cts.Token) ?? string.Empty;
+    private static async Task<(string CommandId, bool ForcePatchHook)> ReadCommandEnvelopeAsync(
+        StreamReader reader,
+        CancellationToken cancellationToken)
+    {
+        var requestJson = await reader.ReadLineAsync(cancellationToken) ?? string.Empty;
         using var requestDoc = JsonDocument.Parse(requestJson);
         var root = requestDoc.RootElement;
         var commandId = root.GetProperty("commandId").GetString() ?? string.Empty;
-        var payload = root.GetProperty("payload");
-        var forcePatchHook = payload.GetProperty("forcePatchHook").GetBoolean();
-        var response = JsonSerializer.Serialize(new
+        var forcePatchHook = root.GetProperty("payload").GetProperty("forcePatchHook").GetBoolean();
+        return (commandId, forcePatchHook);
+    }
+
+    private static string BuildExecuteResponse(string commandId, bool forcePatchHook)
+    {
+        return JsonSerializer.Serialize(new
         {
             commandId,
             succeeded = true,
@@ -143,10 +169,12 @@ public sealed class NamedPipeExtenderBackendTests
                 forcePatchHook = forcePatchHook.ToString().ToLowerInvariant()
             }
         });
-        await writer.WriteLineAsync(response.AsMemory(), cts.Token);
-        var result = await executeTask;
+    }
 
-        result.Succeeded.Should().BeTrue($"message={result.Message} diagnostics={System.Text.Json.JsonSerializer.Serialize(result.Diagnostics)}");
+    private static void AssertHookLockResult(ActionExecutionResult result)
+    {
+        result.Succeeded.Should().BeTrue(
+            $"message={result.Message} diagnostics={System.Text.Json.JsonSerializer.Serialize(result.Diagnostics)}");
         result.Diagnostics.Should().ContainKey("hookState");
         result.Diagnostics!["hookState"]!.ToString().Should().Be("HOOK_LOCK");
     }

@@ -7,5 +7,7 @@ namespace SwfocTrainer.Core.Contracts;
 /// </summary>
 public interface ISdkRuntimeAdapter
 {
-    Task<SdkOperationResult> ExecuteAsync(SdkOperationRequest request, CancellationToken cancellationToken = default);
+    Task<SdkOperationResult> ExecuteAsync(SdkOperationRequest request);
+
+    Task<SdkOperationResult> ExecuteAsync(SdkOperationRequest request, CancellationToken cancellationToken);
 }

@@ -31,7 +31,7 @@ public sealed class SupportBundleServiceTests
         var runId = $"support-bundle-test-{Guid.NewGuid():N}";
         var runRoot = Path.Combine(Directory.GetCurrentDirectory(), "TestResults", "runs", runId);
         Directory.CreateDirectory(runRoot);
-        await File.WriteAllTextAsync(Path.Combine(runRoot, "repro-bundle.json"), "{\"schemaVersion\":\"1.0\"}");
+        await File.WriteAllTextAsync(Path.Combine(runRoot, "repro-bundle.json"), "{\"schemaVersion\":\"1.1\"}");
         await File.WriteAllTextAsync(Path.Combine(runRoot, "repro-bundle.md"), "# repro");
 
         var outputDir = Path.Combine(Path.GetTempPath(), $"swfoc-support-{Guid.NewGuid():N}");

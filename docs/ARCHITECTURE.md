@@ -30,6 +30,7 @@ Mutating actions now use a fail-closed backend decision tree before execution:
    - block execution with explicit `SAFETY_FAIL_CLOSED` reason code.
 
 Route diagnostics are emitted on every action result:
+
 - `backendRoute`
 - `routeReasonCode`
 - `capabilityProbeReasonCode`

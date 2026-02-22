@@ -111,7 +111,6 @@ public partial class App : Application
         services.AddSingleton<IActionReliabilityService, ActionReliabilityService>();
         services.AddSingleton<IModCalibrationService, ModCalibrationService>();
         services.AddSingleton<ISymbolHealthService, SymbolHealthService>();
-        services.AddSingleton<RuntimeModeProbeResolver>();
         services.AddSingleton<ITelemetrySnapshotService, TelemetrySnapshotService>();
         services.AddSingleton<IProcessLocator, ProcessLocator>();
         services.AddSingleton<ISignatureResolver, SignatureResolver>();

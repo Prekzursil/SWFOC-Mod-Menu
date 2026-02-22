@@ -25,10 +25,17 @@ public sealed class NamedPipeExtenderBackend : IExecutionBackend
 
     public ExecutionBackendKind BackendKind => ExecutionBackendKind.Extender;
 
+    public Task<CapabilityReport> ProbeCapabilitiesAsync(
+        string profileId,
+        ProcessMetadata processContext)
+    {
+        return ProbeCapabilitiesAsync(profileId, processContext, CancellationToken.None);
+    }
+
     public async Task<CapabilityReport> ProbeCapabilitiesAsync(
         string profileId,
         ProcessMetadata processContext,
-        CancellationToken cancellationToken = default)
+        CancellationToken cancellationToken)
     {
         var pingCommand = new ExtenderCommand(
             CommandId: Guid.NewGuid().ToString("N"),
@@ -75,10 +82,17 @@ public sealed class NamedPipeExtenderBackend : IExecutionBackend
             });
     }
 
+    public Task<ActionExecutionResult> ExecuteAsync(
+        ActionExecutionRequest command,
+        CapabilityReport capabilityReport)
+    {
+        return ExecuteAsync(command, capabilityReport, CancellationToken.None);
+    }
+
     public async Task<ActionExecutionResult> ExecuteAsync(
         ActionExecutionRequest command,
         CapabilityReport capabilityReport,
-        CancellationToken cancellationToken = default)
+        CancellationToken cancellationToken)
     {
         var extenderCommand = new ExtenderCommand(
             CommandId: Guid.NewGuid().ToString("N"),
@@ -114,7 +128,12 @@ public sealed class NamedPipeExtenderBackend : IExecutionBackend
             diagnostics);
     }
 
-    public async Task<BackendHealth> GetHealthAsync(CancellationToken cancellationToken = default)
+    public Task<BackendHealth> GetHealthAsync()
+    {
+        return GetHealthAsync(CancellationToken.None);
+    }
+
+    public async Task<BackendHealth> GetHealthAsync(CancellationToken cancellationToken)
     {
         var probe = await SendAsync(new ExtenderCommand(
             CommandId: Guid.NewGuid().ToString("N"),
@@ -158,68 +177,119 @@ public sealed class NamedPipeExtenderBackend : IExecutionBackend
     {
         try
         {
-            using var timeoutCts = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
-            timeoutCts.CancelAfter(DefaultResponseTimeoutMs + DefaultConnectTimeoutMs + 100);
-
-            using var client = new NamedPipeClientStream(
-                serverName: ".",
-                pipeName: DefaultPipeName,
-                direction: PipeDirection.InOut,
-                options: PipeOptions.Asynchronous);
+            using var timeoutCts = CreateRequestTimeoutTokenSource(cancellationToken);
+            using var client = CreatePipeClient();
 
             await client.ConnectAsync(DefaultConnectTimeoutMs, timeoutCts.Token);
 
-            using var writer = new StreamWriter(client, new UTF8Encoding(false), leaveOpen: true)
-            {
-                AutoFlush = true
-            };
-            using var reader = new StreamReader(client, Encoding.UTF8, leaveOpen: true);
+            using var writer = CreatePipeWriter(client);
+            using var reader = CreatePipeReader(client);
 
-            var payload = JsonSerializer.Serialize(command, JsonOptions);
-            await writer.WriteLineAsync(payload.AsMemory(), timeoutCts.Token);
-
-            var readTask = reader.ReadLineAsync(timeoutCts.Token).AsTask();
-            var line = await readTask;
-            if (string.IsNullOrWhiteSpace(line))
-            {
-                return new ExtenderResult(
-                    CommandId: command.CommandId,
-                    Succeeded: false,
-                    ReasonCode: RuntimeReasonCode.CAPABILITY_BACKEND_UNAVAILABLE,
-                    Backend: ExtenderBackendId,
-                    HookState: "no_response",
-                    Message: "Extender pipe did not return a response.");
-            }
-
-            var result = JsonSerializer.Deserialize<ExtenderResult>(line, JsonOptions);
-            return result ?? new ExtenderResult(
-                CommandId: command.CommandId,
-                Succeeded: false,
-                ReasonCode: RuntimeReasonCode.CAPABILITY_BACKEND_UNAVAILABLE,
-                Backend: ExtenderBackendId,
-                HookState: "invalid_response",
-                Message: "Extender response payload was invalid.");
+            await WriteCommandAsync(writer, command, timeoutCts.Token);
+            var line = await reader.ReadLineAsync(timeoutCts.Token).AsTask();
+            return ParseResponse(command.CommandId, line);
         }
         catch (OperationCanceledException)
         {
-            return new ExtenderResult(
-                CommandId: command.CommandId,
-                Succeeded: false,
-                ReasonCode: RuntimeReasonCode.CAPABILITY_BACKEND_UNAVAILABLE,
-                Backend: ExtenderBackendId,
-                HookState: "timeout",
-                Message: "Extender pipe request timed out.");
+            return CreateTimeoutResult(command.CommandId);
         }
         catch (Exception ex)
         {
-            return new ExtenderResult(
-                CommandId: command.CommandId,
-                Succeeded: false,
-                ReasonCode: RuntimeReasonCode.CAPABILITY_BACKEND_UNAVAILABLE,
-                Backend: ExtenderBackendId,
-                HookState: "unreachable",
-                Message: $"Extender pipe unavailable: {ex.Message}");
+            return CreateUnreachableResult(command.CommandId, ex.Message);
         }
+    }
+
+    private static CancellationTokenSource CreateRequestTimeoutTokenSource(CancellationToken cancellationToken)
+    {
+        var timeoutCts = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
+        timeoutCts.CancelAfter(DefaultResponseTimeoutMs + DefaultConnectTimeoutMs + 100);
+        return timeoutCts;
+    }
+
+    private static NamedPipeClientStream CreatePipeClient()
+    {
+        return new NamedPipeClientStream(
+            serverName: ".",
+            pipeName: DefaultPipeName,
+            direction: PipeDirection.InOut,
+            options: PipeOptions.Asynchronous);
+    }
+
+    private static StreamWriter CreatePipeWriter(NamedPipeClientStream client)
+    {
+        return new StreamWriter(client, new UTF8Encoding(false), leaveOpen: true)
+        {
+            AutoFlush = true
+        };
+    }
+
+    private static StreamReader CreatePipeReader(NamedPipeClientStream client)
+    {
+        return new StreamReader(client, Encoding.UTF8, leaveOpen: true);
+    }
+
+    private static async Task WriteCommandAsync(
+        StreamWriter writer,
+        ExtenderCommand command,
+        CancellationToken cancellationToken)
+    {
+        var payload = JsonSerializer.Serialize(command, JsonOptions);
+        await writer.WriteLineAsync(payload.AsMemory(), cancellationToken);
+    }
+
+    private static ExtenderResult ParseResponse(string commandId, string? responseLine)
+    {
+        if (string.IsNullOrWhiteSpace(responseLine))
+        {
+            return CreateNoResponseResult(commandId);
+        }
+
+        var result = JsonSerializer.Deserialize<ExtenderResult>(responseLine, JsonOptions);
+        return result ?? CreateInvalidResponseResult(commandId);
+    }
+
+    private static ExtenderResult CreateNoResponseResult(string commandId)
+    {
+        return new ExtenderResult(
+            CommandId: commandId,
+            Succeeded: false,
+            ReasonCode: RuntimeReasonCode.CAPABILITY_BACKEND_UNAVAILABLE,
+            Backend: ExtenderBackendId,
+            HookState: "no_response",
+            Message: "Extender pipe did not return a response.");
+    }
+
+    private static ExtenderResult CreateInvalidResponseResult(string commandId)
+    {
+        return new ExtenderResult(
+            CommandId: commandId,
+            Succeeded: false,
+            ReasonCode: RuntimeReasonCode.CAPABILITY_BACKEND_UNAVAILABLE,
+            Backend: ExtenderBackendId,
+            HookState: "invalid_response",
+            Message: "Extender response payload was invalid.");
+    }
+
+    private static ExtenderResult CreateTimeoutResult(string commandId)
+    {
+        return new ExtenderResult(
+            CommandId: commandId,
+            Succeeded: false,
+            ReasonCode: RuntimeReasonCode.CAPABILITY_BACKEND_UNAVAILABLE,
+            Backend: ExtenderBackendId,
+            HookState: "timeout",
+            Message: "Extender pipe request timed out.");
+    }
+
+    private static ExtenderResult CreateUnreachableResult(string commandId, string exceptionMessage)
+    {
+        return new ExtenderResult(
+            CommandId: commandId,
+            Succeeded: false,
+            ReasonCode: RuntimeReasonCode.CAPABILITY_BACKEND_UNAVAILABLE,
+            Backend: ExtenderBackendId,
+            HookState: "unreachable",
+            Message: $"Extender pipe unavailable: {exceptionMessage}");
     }
 
     private static bool TryStartBridgeHostProcess()

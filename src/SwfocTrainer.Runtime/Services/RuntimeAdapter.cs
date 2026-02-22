@@ -103,7 +103,7 @@ public sealed class RuntimeAdapter : IRuntimeAdapter
         IProfileRepository profileRepository,
         ISignatureResolver signatureResolver,
         ILogger<RuntimeAdapter> logger,
-        IServiceProvider? serviceProvider = null)
+        IServiceProvider serviceProvider)
     {
         _processLocator = processLocator;
         _profileRepository = profileRepository;
@@ -119,6 +119,15 @@ public sealed class RuntimeAdapter : IRuntimeAdapter
             Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
             "SwfocTrainer",
             "calibration");
+    }
+
+    public RuntimeAdapter(
+        IProcessLocator processLocator,
+        IProfileRepository profileRepository,
+        ISignatureResolver signatureResolver,
+        ILogger<RuntimeAdapter> logger)
+        : this(processLocator, profileRepository, signatureResolver, logger, EmptyServiceProvider.Instance)
+    {
     }
 
     public bool IsAttached => CurrentSession is not null;
@@ -397,6 +406,13 @@ public sealed class RuntimeAdapter : IRuntimeAdapter
         where T : class
     {
         return serviceProvider?.GetService(typeof(T)) as T;
+    }
+
+    private sealed class EmptyServiceProvider : IServiceProvider
+    {
+        public static readonly EmptyServiceProvider Instance = new();
+
+        public object? GetService(Type serviceType) => null;
     }
 
     private static HashSet<string> CollectRequiredWorkshopIds(TrainerProfile profile)

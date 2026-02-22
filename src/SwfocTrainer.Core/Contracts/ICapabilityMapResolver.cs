@@ -11,8 +11,16 @@ public interface ICapabilityMapResolver
         BinaryFingerprint fingerprint,
         string requestedProfileId,
         string operationId,
-        IReadOnlySet<string> resolvedAnchors,
-        CancellationToken cancellationToken = default);
+        IReadOnlySet<string> resolvedAnchors);
 
-    Task<string?> ResolveDefaultProfileIdAsync(BinaryFingerprint fingerprint, CancellationToken cancellationToken = default);
+    Task<CapabilityResolutionResult> ResolveAsync(
+        BinaryFingerprint fingerprint,
+        string requestedProfileId,
+        string operationId,
+        IReadOnlySet<string> resolvedAnchors,
+        CancellationToken cancellationToken);
+
+    Task<string?> ResolveDefaultProfileIdAsync(BinaryFingerprint fingerprint);
+
+    Task<string?> ResolveDefaultProfileIdAsync(BinaryFingerprint fingerprint, CancellationToken cancellationToken);
 }

@@ -14,6 +14,20 @@ namespace swfoc::extender::bridge {
 
 namespace {
 
+constexpr auto kServerPollDelay = std::chrono::milliseconds(100);
+constexpr auto kClientWakePollDelay = std::chrono::milliseconds(25);
+constexpr std::size_t kPipeBufferSize = 16 * 1024;
+
+/*
+Cppcheck note (targeted): if cppcheck runs without STL/Windows SDK include paths,
+missingIncludeSystem can be suppressed per translation unit with:
+  --suppress=missingIncludeSystem:native/SwfocExtender.Bridge/src/NamedPipeBridgeServer.cpp
+*/
+
+std::string BuildFullPipeName(const std::string& pipeName) {
+    return std::string("\\\\.\\pipe\\") + pipeName;
+}
+
 std::string ExtractStringValue(const std::string& json, const std::string& key) {
     const auto quotedKey = "\"" + key + "\"";
     auto keyPos = json.find(quotedKey);
@@ -114,6 +128,64 @@ std::string ToJsonLine(const BridgeResult& result) {
     return out.str();
 }
 
+#if defined(_WIN32)
+HANDLE CreateBridgePipe(const std::string& fullPipeName) {
+    return CreateNamedPipeA(
+        fullPipeName.c_str(),
+        PIPE_ACCESS_DUPLEX,
+        PIPE_TYPE_MESSAGE | PIPE_READMODE_MESSAGE | PIPE_WAIT,
+        PIPE_UNLIMITED_INSTANCES,
+        kPipeBufferSize,
+        kPipeBufferSize,
+        0,
+        nullptr);
+}
+
+bool TryConnectClient(HANDLE pipe) {
+    const BOOL connected = ConnectNamedPipe(pipe, nullptr)
+        ? TRUE
+        : (GetLastError() == ERROR_PIPE_CONNECTED);
+    return connected != FALSE;
+}
+
+std::string ReadCommandLine(HANDLE pipe, std::array<char, kPipeBufferSize>& buffer) {
+    std::string commandLine;
+    DWORD bytesRead = 0;
+    while (ReadFile(pipe, buffer.data(), static_cast<DWORD>(buffer.size()), &bytesRead, nullptr) && bytesRead > 0) {
+        commandLine.append(buffer.data(), bytesRead);
+        const auto linePos = commandLine.find('\n');
+        if (linePos != std::string::npos) {
+            commandLine = commandLine.substr(0, linePos);
+            break;
+        }
+
+        if (bytesRead < buffer.size()) {
+            break;
+        }
+    }
+
+    while (!commandLine.empty() && (commandLine.back() == '\r' || commandLine.back() == '\n')) {
+        commandLine.pop_back();
+    }
+
+    return commandLine;
+}
+
+void WriteResponse(HANDLE pipe, const BridgeResult& result) {
+    auto response = ToJsonLine(result);
+    response.push_back('\n');
+
+    DWORD bytesWritten = 0;
+    WriteFile(pipe, response.data(), static_cast<DWORD>(response.size()), &bytesWritten, nullptr);
+    FlushFileBuffers(pipe);
+}
+
+void CloseServerPipe(HANDLE pipe) {
+    DisconnectNamedPipe(pipe);
+    CloseHandle(pipe);
+}
+#endif
+
 } // namespace
 
 NamedPipeBridgeServer::NamedPipeBridgeServer(std::string pipeName)
@@ -138,7 +210,7 @@ void NamedPipeBridgeServer::stop() {
     }
 
 #if defined(_WIN32)
-    auto fullPipeName = std::string("\\\\.\\pipe\\") + pipeName_;
+    const auto fullPipeName = BuildFullPipeName(pipeName_);
     auto deadline = std::chrono::steady_clock::now() + std::chrono::milliseconds(800);
     while (std::chrono::steady_clock::now() < deadline) {
         auto client = CreateFileA(
@@ -153,7 +225,7 @@ void NamedPipeBridgeServer::stop() {
             CloseHandle(client);
             break;
         }
-        std::this_thread::sleep_for(std::chrono::milliseconds(25));
+        std::this_thread::sleep_for(kClientWakePollDelay);
     }
 #endif
 
@@ -215,66 +287,28 @@ BridgeResult NamedPipeBridgeServer::handleRawCommand(const std::string& jsonLine
 void NamedPipeBridgeServer::runLoop() {
 #if !defined(_WIN32)
     while (running_.load()) {
-        std::this_thread::sleep_for(std::chrono::milliseconds(100));
+        std::this_thread::sleep_for(kServerPollDelay);
     }
     return;
 #else
-    const auto fullPipeName = std::string("\\\\.\\pipe\\") + pipeName_;
-    constexpr DWORD bufferSize = 16 * 1024;
-    std::array<char, bufferSize> buffer {};
+    const auto fullPipeName = BuildFullPipeName(pipeName_);
+    std::array<char, kPipeBufferSize> buffer {};
 
     while (running_.load()) {
-        HANDLE pipe = CreateNamedPipeA(
-            fullPipeName.c_str(),
-            PIPE_ACCESS_DUPLEX,
-            PIPE_TYPE_MESSAGE | PIPE_READMODE_MESSAGE | PIPE_WAIT,
-            PIPE_UNLIMITED_INSTANCES,
-            bufferSize,
-            bufferSize,
-            0,
-            nullptr);
-
+        HANDLE pipe = CreateBridgePipe(fullPipeName);
         if (pipe == INVALID_HANDLE_VALUE) {
-            std::this_thread::sleep_for(std::chrono::milliseconds(100));
+            std::this_thread::sleep_for(kServerPollDelay);
             continue;
         }
 
-        const BOOL connected = ConnectNamedPipe(pipe, nullptr)
-            ? TRUE
-            : (GetLastError() == ERROR_PIPE_CONNECTED);
-        if (!connected) {
+        if (!TryConnectClient(pipe)) {
             CloseHandle(pipe);
             continue;
         }
 
-        std::string commandLine;
-        DWORD bytesRead = 0;
-        while (ReadFile(pipe, buffer.data(), static_cast<DWORD>(buffer.size()), &bytesRead, nullptr) && bytesRead > 0) {
-            commandLine.append(buffer.data(), bytesRead);
-            const auto linePos = commandLine.find('\n');
-            if (linePos != std::string::npos) {
-                commandLine = commandLine.substr(0, linePos);
-                break;
-            }
-
-            if (bytesRead < buffer.size()) {
-                break;
-            }
-        }
-
-        while (!commandLine.empty() && (commandLine.back() == '\r' || commandLine.back() == '\n')) {
-            commandLine.pop_back();
-        }
-
-        auto result = handleRawCommand(commandLine);
-        auto response = ToJsonLine(result);
-        response.push_back('\n');
-
-        DWORD bytesWritten = 0;
-        WriteFile(pipe, response.data(), static_cast<DWORD>(response.size()), &bytesWritten, nullptr);
-        FlushFileBuffers(pipe);
-        DisconnectNamedPipe(pipe);
-        CloseHandle(pipe);
+        const auto commandLine = ReadCommandLine(pipe, buffer);
+        WriteResponse(pipe, handleRawCommand(commandLine));
+        CloseServerPipe(pipe);
     }
 #endif
 }

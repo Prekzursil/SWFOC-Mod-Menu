@@ -23,105 +23,59 @@ public sealed class CapabilityMapResolver : ICapabilityMapResolver
         _logger = logger;
     }
 
+    public Task<CapabilityResolutionResult> ResolveAsync(
+        BinaryFingerprint fingerprint,
+        string requestedProfileId,
+        string operationId,
+        IReadOnlySet<string> resolvedAnchors)
+    {
+        return ResolveAsync(fingerprint, requestedProfileId, operationId, resolvedAnchors, CancellationToken.None);
+    }
+
     public async Task<CapabilityResolutionResult> ResolveAsync(
         BinaryFingerprint fingerprint,
         string requestedProfileId,
         string operationId,
         IReadOnlySet<string> resolvedAnchors,
-        CancellationToken cancellationToken = default)
+        CancellationToken cancellationToken)
     {
         var map = await LoadMapAsync(fingerprint, cancellationToken);
         if (map is null)
         {
-            return new CapabilityResolutionResult(
+            return BuildUnavailableResult(
+                fingerprint,
                 requestedProfileId,
                 operationId,
-                SdkCapabilityStatus.Unavailable,
-                CapabilityReasonCode.FingerprintMapMissing,
-                0.0d,
-                fingerprint.FingerprintId,
-                Array.Empty<string>(),
-                Array.Empty<string>());
+                CapabilityReasonCode.FingerprintMapMissing);
         }
 
-        if (!string.IsNullOrWhiteSpace(map.DefaultProfileId) &&
-            !string.Equals(requestedProfileId, map.DefaultProfileId, StringComparison.OrdinalIgnoreCase) &&
-            !string.Equals(requestedProfileId, "universal_auto", StringComparison.OrdinalIgnoreCase))
+        if (IsRequestedProfileMismatch(requestedProfileId, map.DefaultProfileId))
         {
-            return new CapabilityResolutionResult(
+            return BuildUnavailableResult(
+                fingerprint,
                 requestedProfileId,
                 operationId,
-                SdkCapabilityStatus.Unavailable,
-                CapabilityReasonCode.RequestedProfileMismatch,
-                0.0d,
-                fingerprint.FingerprintId,
-                Array.Empty<string>(),
-                Array.Empty<string>());
+                CapabilityReasonCode.RequestedProfileMismatch);
         }
 
         if (!map.Operations.TryGetValue(operationId, out var op))
         {
-            return new CapabilityResolutionResult(
+            return BuildUnavailableResult(
+                fingerprint,
                 requestedProfileId,
                 operationId,
-                SdkCapabilityStatus.Unavailable,
-                CapabilityReasonCode.OperationNotMapped,
-                0.0d,
-                fingerprint.FingerprintId,
-                Array.Empty<string>(),
-                Array.Empty<string>());
+                CapabilityReasonCode.OperationNotMapped);
         }
 
-        var comparer = StringComparer.OrdinalIgnoreCase;
-        var matched = op.RequiredAnchors
-            .Where(anchor => ContainsAnchor(resolvedAnchors, anchor, comparer))
-            .ToArray();
-        var missingRequired = op.RequiredAnchors
-            .Where(anchor => !ContainsAnchor(resolvedAnchors, anchor, comparer))
-            .ToArray();
-
-        if (missingRequired.Length > 0)
-        {
-            return new CapabilityResolutionResult(
-                requestedProfileId,
-                operationId,
-                SdkCapabilityStatus.Degraded,
-                CapabilityReasonCode.RequiredAnchorsMissing,
-                BuildConfidence(matched.Length, op.RequiredAnchors.Count),
-                fingerprint.FingerprintId,
-                matched,
-                missingRequired);
-        }
-
-        var missingOptional = op.OptionalAnchors
-            .Where(anchor => !ContainsAnchor(resolvedAnchors, anchor, comparer))
-            .ToArray();
-
-        if (missingOptional.Length > 0)
-        {
-            return new CapabilityResolutionResult(
-                requestedProfileId,
-                operationId,
-                SdkCapabilityStatus.Degraded,
-                CapabilityReasonCode.OptionalAnchorsMissing,
-                0.85d,
-                fingerprint.FingerprintId,
-                matched,
-                missingOptional);
-        }
-
-        return new CapabilityResolutionResult(
-            requestedProfileId,
-            operationId,
-            SdkCapabilityStatus.Available,
-            CapabilityReasonCode.AllRequiredAnchorsPresent,
-            1.0d,
-            fingerprint.FingerprintId,
-            matched,
-            Array.Empty<string>());
+        return ResolveOperationAnchors(fingerprint, requestedProfileId, operationId, op, resolvedAnchors);
     }
 
-    public async Task<string?> ResolveDefaultProfileIdAsync(BinaryFingerprint fingerprint, CancellationToken cancellationToken = default)
+    public Task<string?> ResolveDefaultProfileIdAsync(BinaryFingerprint fingerprint)
+    {
+        return ResolveDefaultProfileIdAsync(fingerprint, CancellationToken.None);
+    }
+
+    public async Task<string?> ResolveDefaultProfileIdAsync(BinaryFingerprint fingerprint, CancellationToken cancellationToken)
     {
         var map = await LoadMapAsync(fingerprint, cancellationToken);
         return map?.DefaultProfileId;
@@ -138,31 +92,189 @@ public sealed class CapabilityMapResolver : ICapabilityMapResolver
         try
         {
             var json = await File.ReadAllTextAsync(mapPath, cancellationToken);
-            var dto = JsonSerializer.Deserialize<CapabilityMapDto>(json, JsonOptions);
-            if (dto is null)
-            {
-                return null;
-            }
-
-            var operations = dto.Operations?.ToDictionary(
-                kv => kv.Key,
-                kv => new CapabilityOperationMap(
-                    kv.Value.RequiredAnchors ?? Array.Empty<string>(),
-                    kv.Value.OptionalAnchors ?? Array.Empty<string>()),
-                StringComparer.OrdinalIgnoreCase) ?? new Dictionary<string, CapabilityOperationMap>(StringComparer.OrdinalIgnoreCase);
-
-            return new CapabilityMap(
-                SchemaVersion: dto.SchemaVersion ?? "1.0",
-                FingerprintId: dto.FingerprintId ?? fingerprint.FingerprintId,
-                DefaultProfileId: dto.DefaultProfileId,
-                GeneratedAtUtc: dto.GeneratedAtUtc == default ? DateTimeOffset.UtcNow : dto.GeneratedAtUtc,
-                Operations: operations);
+            return DeserializeCapabilityMap(json, fingerprint);
         }
         catch (Exception ex)
         {
             _logger.LogWarning(ex, "Failed to parse capability map for fingerprint {FingerprintId}", fingerprint.FingerprintId);
             return null;
         }
+    }
+
+    private static CapabilityResolutionResult BuildUnavailableResult(
+        BinaryFingerprint fingerprint,
+        string requestedProfileId,
+        string operationId,
+        CapabilityReasonCode reasonCode)
+    {
+        return new CapabilityResolutionResult(
+            requestedProfileId,
+            operationId,
+            SdkCapabilityStatus.Unavailable,
+            reasonCode,
+            0.0d,
+            fingerprint.FingerprintId,
+            Array.Empty<string>(),
+            Array.Empty<string>());
+    }
+
+    private static bool IsRequestedProfileMismatch(string requestedProfileId, string? defaultProfileId)
+    {
+        if (string.IsNullOrWhiteSpace(defaultProfileId))
+        {
+            return false;
+        }
+
+        return !string.Equals(requestedProfileId, defaultProfileId, StringComparison.OrdinalIgnoreCase) &&
+               !string.Equals(requestedProfileId, "universal_auto", StringComparison.OrdinalIgnoreCase);
+    }
+
+    private static CapabilityResolutionResult ResolveOperationAnchors(
+        BinaryFingerprint fingerprint,
+        string requestedProfileId,
+        string operationId,
+        CapabilityOperationMap operation,
+        IReadOnlySet<string> resolvedAnchors)
+    {
+        var comparer = StringComparer.OrdinalIgnoreCase;
+        var matched = operation.RequiredAnchors
+            .Where(anchor => ContainsAnchor(resolvedAnchors, anchor, comparer))
+            .ToArray();
+        var missingRequired = operation.RequiredAnchors
+            .Where(anchor => !ContainsAnchor(resolvedAnchors, anchor, comparer))
+            .ToArray();
+        if (missingRequired.Length > 0)
+        {
+            return BuildRequiredAnchorsMissingResult(
+                requestedProfileId,
+                operationId,
+                operation,
+                fingerprint,
+                matched,
+                missingRequired);
+        }
+
+        var missingOptional = operation.OptionalAnchors
+            .Where(anchor => !ContainsAnchor(resolvedAnchors, anchor, comparer))
+            .ToArray();
+        if (missingOptional.Length > 0)
+        {
+            return BuildOptionalAnchorsMissingResult(
+                requestedProfileId,
+                operationId,
+                fingerprint.FingerprintId,
+                matched,
+                missingOptional);
+        }
+
+        return BuildAllRequiredAnchorsPresentResult(requestedProfileId, operationId, fingerprint.FingerprintId, matched);
+    }
+
+    private static CapabilityResolutionResult BuildRequiredAnchorsMissingResult(
+        string requestedProfileId,
+        string operationId,
+        CapabilityOperationMap operation,
+        BinaryFingerprint fingerprint,
+        IReadOnlyList<string> matchedAnchors,
+        IReadOnlyList<string> missingAnchors)
+    {
+        return BuildAnchorResult(
+            requestedProfileId,
+            operationId,
+            SdkCapabilityStatus.Degraded,
+            CapabilityReasonCode.RequiredAnchorsMissing,
+            BuildConfidence(matchedAnchors.Count, operation.RequiredAnchors.Count),
+            fingerprint.FingerprintId,
+            matchedAnchors,
+            missingAnchors);
+    }
+
+    private static CapabilityResolutionResult BuildOptionalAnchorsMissingResult(
+        string requestedProfileId,
+        string operationId,
+        string fingerprintId,
+        IReadOnlyList<string> matchedAnchors,
+        IReadOnlyList<string> missingAnchors)
+    {
+        return BuildAnchorResult(
+            requestedProfileId,
+            operationId,
+            SdkCapabilityStatus.Degraded,
+            CapabilityReasonCode.OptionalAnchorsMissing,
+            0.85d,
+            fingerprintId,
+            matchedAnchors,
+            missingAnchors);
+    }
+
+    private static CapabilityResolutionResult BuildAllRequiredAnchorsPresentResult(
+        string requestedProfileId,
+        string operationId,
+        string fingerprintId,
+        IReadOnlyList<string> matchedAnchors)
+    {
+        return BuildAnchorResult(
+            requestedProfileId,
+            operationId,
+            SdkCapabilityStatus.Available,
+            CapabilityReasonCode.AllRequiredAnchorsPresent,
+            1.0d,
+            fingerprintId,
+            matchedAnchors,
+            Array.Empty<string>());
+    }
+
+    private static CapabilityResolutionResult BuildAnchorResult(
+        string requestedProfileId,
+        string operationId,
+        SdkCapabilityStatus status,
+        CapabilityReasonCode reasonCode,
+        double confidence,
+        string fingerprintId,
+        IReadOnlyList<string> matchedAnchors,
+        IReadOnlyList<string> missingAnchors)
+    {
+        return new CapabilityResolutionResult(
+            requestedProfileId,
+            operationId,
+            status,
+            reasonCode,
+            confidence,
+            fingerprintId,
+            matchedAnchors,
+            missingAnchors);
+    }
+
+    private static CapabilityMap? DeserializeCapabilityMap(string json, BinaryFingerprint fingerprint)
+    {
+        var dto = JsonSerializer.Deserialize<CapabilityMapDto>(json, JsonOptions);
+        if (dto is null)
+        {
+            return null;
+        }
+
+        return new CapabilityMap(
+            SchemaVersion: dto.SchemaVersion ?? "1.0",
+            FingerprintId: dto.FingerprintId ?? fingerprint.FingerprintId,
+            DefaultProfileId: dto.DefaultProfileId,
+            GeneratedAtUtc: dto.GeneratedAtUtc == default ? DateTimeOffset.UtcNow : dto.GeneratedAtUtc,
+            Operations: BuildOperations(dto.Operations));
+    }
+
+    private static Dictionary<string, CapabilityOperationMap> BuildOperations(
+        IReadOnlyDictionary<string, CapabilityOperationDto>? operations)
+    {
+        if (operations is null || operations.Count == 0)
+        {
+            return new Dictionary<string, CapabilityOperationMap>(StringComparer.OrdinalIgnoreCase);
+        }
+
+        return operations.ToDictionary(
+            kv => kv.Key,
+            kv => new CapabilityOperationMap(
+                kv.Value.RequiredAnchors ?? Array.Empty<string>(),
+                kv.Value.OptionalAnchors ?? Array.Empty<string>()),
+            StringComparer.OrdinalIgnoreCase);
     }
 
     private static double BuildConfidence(int matchedRequired, int totalRequired)
@@ -182,21 +294,21 @@ public sealed class CapabilityMapResolver : ICapabilityMapResolver
 
     private sealed class CapabilityMapDto
     {
-        public string? SchemaVersion { get; set; } = null;
+        public string? SchemaVersion { get; set; }
 
-        public string? FingerprintId { get; set; } = null;
+        public string? FingerprintId { get; set; }
 
-        public string? DefaultProfileId { get; set; } = null;
+        public string? DefaultProfileId { get; set; }
 
-        public DateTimeOffset GeneratedAtUtc { get; set; } = default;
+        public DateTimeOffset GeneratedAtUtc { get; set; }
 
-        public Dictionary<string, CapabilityOperationDto>? Operations { get; set; } = null;
+        public Dictionary<string, CapabilityOperationDto>? Operations { get; set; }
     }
 
     private sealed class CapabilityOperationDto
     {
-        public string[]? RequiredAnchors { get; set; } = null;
+        public string[]? RequiredAnchors { get; set; }
 
-        public string[]? OptionalAnchors { get; set; } = null;
+        public string[]? OptionalAnchors { get; set; }
     }
 }

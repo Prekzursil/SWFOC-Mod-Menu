@@ -77,4 +77,4 @@ $result = [ordered]@{
 }
 
 ($result | ConvertTo-Json -Depth 12) | Set-Content -Path $OutputPath -Encoding UTF8
-Write-Host "Signature candidates written: $OutputPath"
+Write-Output "Signature candidates written: $OutputPath"

@@ -53,7 +53,7 @@ $notes = @"
 
 $notes | Set-Content -Path $notesPath -Encoding UTF8
 
-Write-Host "Capability intel run complete"
-Write-Host " - fingerprint: $fingerprintPath"
-Write-Host " - signature pack: $signaturePath"
-Write-Host " - notes: $notesPath"
+Write-Output "Capability intel run complete"
+Write-Output " - fingerprint: $fingerprintPath"
+Write-Output " - signature pack: $signaturePath"
+Write-Output " - notes: $notesPath"

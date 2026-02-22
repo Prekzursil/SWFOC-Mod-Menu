@@ -189,20 +189,20 @@ if ($AsJson) {
 }
 else {
     if ($result.found) {
-        Write-Host "cmake: $($result.primary)"
+        Write-Output "cmake: $($result.primary)"
     }
     else {
-        Write-Host "cmake: not found"
+        Write-Output "cmake: not found"
     }
 
     if (-not [string]::IsNullOrWhiteSpace($result.vsProductLineVersion)) {
-        Write-Host "visual studio: $($result.vsProductLineVersion) ($($result.vsInstancePath))"
+        Write-Output "visual studio: $($result.vsProductLineVersion) ($($result.vsInstancePath))"
     }
     else {
-        Write-Host "visual studio: not detected"
+        Write-Output "visual studio: not detected"
     }
 
     if (-not [string]::IsNullOrWhiteSpace($result.recommendedGenerator)) {
-        Write-Host "recommended generator: $($result.recommendedGenerator)"
+        Write-Output "recommended generator: $($result.recommendedGenerator)"
     }
 }

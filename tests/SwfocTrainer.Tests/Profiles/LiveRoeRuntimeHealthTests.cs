@@ -27,30 +27,16 @@ public sealed class LiveRoeRuntimeHealthTests
     public async Task Roe_Attach_And_Credits_Action_Should_Succeed_On_Live_Process()
     {
         var locator = new ProcessLocator();
-        var supported = await locator.FindSupportedProcessesAsync();
-        var roeCandidates = supported
-            .Where(x => x.ExeTarget == ExeTarget.Swfoc && ProcessContainsWorkshopId(x, RoeWorkshopId))
-            .ToArray();
-
-        if (roeCandidates.Length == 0)
-        {
-            throw LiveSkip.For(_output, "no live FoC process with STEAMMOD=3447786229 found.");
-        }
+        var roeCandidates = await FindRoeCandidatesAsync(locator);
+        EnsureRoeCandidatesOrSkip(roeCandidates);
 
         var hasSwfoc = roeCandidates.Any(x => x.ProcessName.Equals("swfoc", StringComparison.OrdinalIgnoreCase) ||
                                               x.ProcessName.Equals("swfoc.exe", StringComparison.OrdinalIgnoreCase));
         var hasStarWarsG = roeCandidates.Any(IsStarWarsGProcess);
         _output.WriteLine($"Live ROE candidates: {roeCandidates.Length} (swfoc={hasSwfoc}, StarWarsG={hasStarWarsG})");
 
-        var repoRoot = TestPaths.FindRepoRoot();
-        var profileRepo = new FileSystemProfileRepository(new ProfileRepositoryOptions
-        {
-            ProfilesRootPath = Path.Combine(repoRoot, "profiles", "default")
-        });
-        var resolver = new SignatureResolver(NullLogger<SignatureResolver>.Instance);
-        var runtime = new RuntimeAdapter(locator, profileRepo, resolver, NullLogger<RuntimeAdapter>.Instance);
-
         var profileId = "roe_3447786229_swfoc";
+        var runtime = BuildRuntimeAdapter(locator, out var profileRepo);
         var profile = await profileRepo.ResolveInheritedProfileAsync(profileId);
         var session = await runtime.AttachAsync(profileId);
         _output.WriteLine($"Attached PID={session.Process.ProcessId} Name={session.Process.ProcessName} Symbols={session.Symbols.Symbols.Count}");
@@ -66,24 +52,11 @@ public sealed class LiveRoeRuntimeHealthTests
         var requestedCredits = currentCredits < 0 ? 0 : currentCredits;
         _output.WriteLine($"Live credits readback={currentCredits}; normalized request value={requestedCredits}");
         var action = profile.Actions["set_credits"];
-        var payload = new JsonObject
-        {
-            ["symbol"] = "credits",
-            ["intValue"] = requestedCredits,
-            ["lockCredits"] = false
-        };
-
+        var payload = BuildSetCreditsPayload(requestedCredits);
         var result = await runtime.ExecuteAsync(
             new ActionExecutionRequest(action, payload, profileId, session.Process.Mode));
 
-        _output.WriteLine($"set_credits result: success={result.Succeeded} source={result.AddressSource} message={result.Message}");
-        if (result.Diagnostics is not null)
-        {
-            foreach (var kv in result.Diagnostics)
-            {
-                _output.WriteLine($"diag[{kv.Key}]={kv.Value}");
-            }
-        }
+        WriteSetCreditsResult(result);
 
         TryWriteRuntimeEvidence(
             session.Process,
@@ -92,6 +65,57 @@ public sealed class LiveRoeRuntimeHealthTests
 
         result.Succeeded.Should().BeTrue($"set_credits should succeed on live ROE process. Message: {result.Message}");
         await runtime.DetachAsync();
+    }
+
+    private async Task<ProcessMetadata[]> FindRoeCandidatesAsync(ProcessLocator locator)
+    {
+        var supported = await locator.FindSupportedProcessesAsync();
+        return supported
+            .Where(x => x.ExeTarget == ExeTarget.Swfoc && ProcessContainsWorkshopId(x, RoeWorkshopId))
+            .ToArray();
+    }
+
+    private void EnsureRoeCandidatesOrSkip(IReadOnlyList<ProcessMetadata> roeCandidates)
+    {
+        if (roeCandidates.Count == 0)
+        {
+            throw LiveSkip.For(_output, "no live FoC process with STEAMMOD=3447786229 found.");
+        }
+    }
+
+    private static RuntimeAdapter BuildRuntimeAdapter(ProcessLocator locator, out FileSystemProfileRepository profileRepo)
+    {
+        var repoRoot = TestPaths.FindRepoRoot();
+        profileRepo = new FileSystemProfileRepository(new ProfileRepositoryOptions
+        {
+            ProfilesRootPath = Path.Combine(repoRoot, "profiles", "default")
+        });
+        var resolver = new SignatureResolver(NullLogger<SignatureResolver>.Instance);
+        return new RuntimeAdapter(locator, profileRepo, resolver, NullLogger<RuntimeAdapter>.Instance);
+    }
+
+    private static JsonObject BuildSetCreditsPayload(int requestedCredits)
+    {
+        return new JsonObject
+        {
+            ["symbol"] = "credits",
+            ["intValue"] = requestedCredits,
+            ["lockCredits"] = false
+        };
+    }
+
+    private void WriteSetCreditsResult(ActionExecutionResult result)
+    {
+        _output.WriteLine($"set_credits result: success={result.Succeeded} source={result.AddressSource} message={result.Message}");
+        if (result.Diagnostics is null)
+        {
+            return;
+        }
+
+        foreach (var kv in result.Diagnostics)
+        {
+            _output.WriteLine($"diag[{kv.Key}]={kv.Value}");
+        }
     }
 
     private static bool IsStarWarsGProcess(ProcessMetadata process)
@@ -141,14 +165,34 @@ public sealed class LiveRoeRuntimeHealthTests
         string profileId,
         ActionExecutionResult result)
     {
-        var outputDir = Environment.GetEnvironmentVariable("SWFOC_LIVE_OUTPUT_DIR");
-        if (string.IsNullOrWhiteSpace(outputDir))
+        if (!TryGetLiveOutputDirectory(out var outputDir))
         {
             return;
         }
 
+        var payload = BuildRuntimeEvidencePayload(process, profileId, result);
+        var path = Path.Combine(outputDir, "live-roe-runtime-evidence.json");
+        File.WriteAllText(path, JsonSerializer.Serialize(payload, new JsonSerializerOptions { WriteIndented = true }));
+    }
+
+    private static bool TryGetLiveOutputDirectory(out string outputDir)
+    {
+        outputDir = Environment.GetEnvironmentVariable("SWFOC_LIVE_OUTPUT_DIR") ?? string.Empty;
+        if (string.IsNullOrWhiteSpace(outputDir))
+        {
+            return false;
+        }
+
         Directory.CreateDirectory(outputDir);
-        var payload = new
+        return true;
+    }
+
+    private static object BuildRuntimeEvidencePayload(
+        ProcessMetadata process,
+        string profileId,
+        ActionExecutionResult result)
+    {
+        return new
         {
             testName = nameof(LiveRoeRuntimeHealthTests),
             profileId,
@@ -164,16 +208,23 @@ public sealed class LiveRoeRuntimeHealthTests
             {
                 result.Succeeded,
                 result.Message,
-                backendRoute = result.Diagnostics is not null && result.Diagnostics.TryGetValue("backendRoute", out var backendRoute) ? backendRoute?.ToString() : null,
-                routeReasonCode = result.Diagnostics is not null && result.Diagnostics.TryGetValue("routeReasonCode", out var routeReasonCode) ? routeReasonCode?.ToString() : null,
-                capabilityProbeReasonCode = result.Diagnostics is not null && result.Diagnostics.TryGetValue("capabilityProbeReasonCode", out var capabilityProbeReasonCode) ? capabilityProbeReasonCode?.ToString() : null,
-                hookState = result.Diagnostics is not null && result.Diagnostics.TryGetValue("hookState", out var hookState) ? hookState?.ToString() : null,
+                backendRoute = ReadDiagnosticString(result.Diagnostics, "backendRoute"),
+                routeReasonCode = ReadDiagnosticString(result.Diagnostics, "routeReasonCode"),
+                capabilityProbeReasonCode = ReadDiagnosticString(result.Diagnostics, "capabilityProbeReasonCode"),
+                hookState = ReadDiagnosticString(result.Diagnostics, "hookState"),
                 diagnostics = result.Diagnostics
             },
             capturedAtUtc = DateTimeOffset.UtcNow
         };
+    }
 
-        var path = Path.Combine(outputDir, "live-roe-runtime-evidence.json");
-        File.WriteAllText(path, JsonSerializer.Serialize(payload, new JsonSerializerOptions { WriteIndented = true }));
+    private static string? ReadDiagnosticString(IReadOnlyDictionary<string, object?>? diagnostics, string key)
+    {
+        if (diagnostics is null || !diagnostics.TryGetValue(key, out var rawValue))
+        {
+            return null;
+        }
+
+        return rawValue?.ToString();
     }
 }

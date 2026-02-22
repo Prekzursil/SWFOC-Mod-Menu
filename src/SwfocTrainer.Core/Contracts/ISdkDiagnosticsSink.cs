@@ -7,5 +7,7 @@ namespace SwfocTrainer.Core.Contracts;
 /// </summary>
 public interface ISdkDiagnosticsSink
 {
-    Task WriteAsync(SdkOperationRequest request, SdkOperationResult result, CancellationToken cancellationToken = default);
+    Task WriteAsync(SdkOperationRequest request, SdkOperationResult result);
+
+    Task WriteAsync(SdkOperationRequest request, SdkOperationResult result, CancellationToken cancellationToken);
 }

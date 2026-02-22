@@ -7,5 +7,11 @@ namespace SwfocTrainer.Core.Contracts;
 /// </summary>
 public interface IBinaryFingerprintService
 {
-    Task<BinaryFingerprint> CaptureFromPathAsync(string modulePath, int? processId = null, CancellationToken cancellationToken = default);
+    Task<BinaryFingerprint> CaptureFromPathAsync(string modulePath);
+
+    Task<BinaryFingerprint> CaptureFromPathAsync(string modulePath, CancellationToken cancellationToken);
+
+    Task<BinaryFingerprint> CaptureFromPathAsync(string modulePath, int processId);
+
+    Task<BinaryFingerprint> CaptureFromPathAsync(string modulePath, int processId, CancellationToken cancellationToken);
 }

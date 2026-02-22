@@ -57,7 +57,7 @@ public sealed class SupportBundleService : ISupportBundleService
 
             var manifestPayload = new
             {
-                schemaVersion = "1.0",
+                schemaVersion = "1.1",
                 generatedAtUtc = DateTimeOffset.UtcNow,
                 profileId = request.ProfileId,
                 notes = request.Notes,

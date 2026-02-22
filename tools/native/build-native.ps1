@@ -89,12 +89,12 @@ function Invoke-WindowsBuild {
     $expectedGenerator = [string]$generatorPlan.Name
     $configureArgs = @("-S", "native", "-B", $OutDir)
     $configureArgs += @($generatorPlan.Args)
-    Write-Host "Windows native configure generator: $expectedGenerator"
+    Write-Output "Windows native configure generator: $expectedGenerator"
     if (-not [string]::IsNullOrWhiteSpace($VsProductLineVersion)) {
-        Write-Host "Visual Studio product line: $VsProductLineVersion"
+        Write-Output "Visual Studio product line: $VsProductLineVersion"
     }
     if (-not [string]::IsNullOrWhiteSpace($VsInstancePath)) {
-        Write-Host "Visual Studio instance: $VsInstancePath"
+        Write-Output "Visual Studio instance: $VsInstancePath"
     }
 
     $cachePath = Join-Path $OutDir "CMakeCache.txt"
@@ -145,7 +145,7 @@ function Invoke-WindowsBuild {
         throw "native build completed but SwfocExtender.Host.exe artifact was not found under '$OutDir'."
     }
 
-    Write-Host "Windows host artifact: $artifact"
+    Write-Output "Windows host artifact: $artifact"
 
     $runtimeDir = Join-Path $repoRoot "native/runtime"
     if (-not (Test-Path -Path $runtimeDir)) {
@@ -154,7 +154,7 @@ function Invoke-WindowsBuild {
 
     $runtimeArtifact = Join-Path $runtimeDir "SwfocExtender.Host.exe"
     Copy-Item -Path $artifact -Destination $runtimeArtifact -Force
-    Write-Host "Runtime host artifact: $runtimeArtifact"
+    Write-Output "Runtime host artifact: $runtimeArtifact"
 }
 
 function Invoke-WslBuild {
@@ -214,4 +214,4 @@ switch ($Mode) {
     }
 }
 
-Write-Host "Native build completed ($Mode mode request, config=$Configuration)."
+Write-Output "Native build completed ($Mode mode request, config=$Configuration)."

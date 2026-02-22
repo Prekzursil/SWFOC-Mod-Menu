@@ -4,7 +4,12 @@
 
 #include <atomic>
 #include <cstdint>
-#include <string>
+
+/*
+Cppcheck note (targeted): if cppcheck runs without STL include paths,
+suppress only this header:
+  --suppress=missingIncludeSystem:native/SwfocExtender.Plugins/include/swfoc_extender/plugins/EconomyPlugin.hpp
+*/
 
 namespace swfoc::extender::plugins {
 

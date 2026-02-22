@@ -50,6 +50,7 @@ Per run, artifacts are emitted under:
 - `TestResults/runs/<runId>/`
 
 Expected outputs:
+
 - `*-live-tactical.trx`
 - `*-live-hero-helper.trx`
 - `*-live-roe-health.trx`
@@ -63,6 +64,7 @@ Expected outputs:
 - `issue-19-evidence-template.md`
 
 `repro-bundle.json` classification values:
+
 - `passed`
 - `skipped`
 - `failed`
@@ -70,6 +72,7 @@ Expected outputs:
 - `blocked_profile_mismatch`
 
 vNext bundle sections (required for runtime-affecting changes):
+
 - `selectedHostProcess`
 - `backendRouteDecision`
 - `capabilityProbeSnapshot`
@@ -98,6 +101,7 @@ Do not close issues from placeholder-only or skip-only runs.
 ## 6. Closure Criteria
 
 Close issues only when all required evidence is present:
+
 - At least one successful tactical toggle + revert in tactical mode.
 - Helper workflow evidence for both AOTR and ROE.
 - Launch recommendation reason code + confidence captured.

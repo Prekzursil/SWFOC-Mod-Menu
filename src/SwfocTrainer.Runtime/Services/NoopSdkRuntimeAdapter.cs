@@ -5,7 +5,12 @@ namespace SwfocTrainer.Runtime.Services;
 
 public sealed class NoopSdkRuntimeAdapter : ISdkRuntimeAdapter
 {
-    public Task<SdkOperationResult> ExecuteAsync(SdkOperationRequest request, CancellationToken cancellationToken = default)
+    public Task<SdkOperationResult> ExecuteAsync(SdkOperationRequest request)
+    {
+        return ExecuteAsync(request, CancellationToken.None);
+    }
+
+    public Task<SdkOperationResult> ExecuteAsync(SdkOperationRequest request, CancellationToken cancellationToken)
     {
         var result = new SdkOperationResult(
             false,

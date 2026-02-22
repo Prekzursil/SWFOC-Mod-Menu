@@ -15,7 +15,27 @@ public sealed class BinaryFingerprintService : IBinaryFingerprintService
         _logger = logger;
     }
 
-    public async Task<BinaryFingerprint> CaptureFromPathAsync(string modulePath, int? processId = null, CancellationToken cancellationToken = default)
+    public Task<BinaryFingerprint> CaptureFromPathAsync(string modulePath)
+    {
+        return CaptureFromPathAsync(modulePath, null, CancellationToken.None);
+    }
+
+    public Task<BinaryFingerprint> CaptureFromPathAsync(string modulePath, CancellationToken cancellationToken)
+    {
+        return CaptureFromPathAsync(modulePath, null, cancellationToken);
+    }
+
+    public Task<BinaryFingerprint> CaptureFromPathAsync(string modulePath, int processId)
+    {
+        return CaptureFromPathAsync(modulePath, processId, CancellationToken.None);
+    }
+
+    public Task<BinaryFingerprint> CaptureFromPathAsync(string modulePath, int processId, CancellationToken cancellationToken)
+    {
+        return CaptureFromPathAsync(modulePath, (int?)processId, cancellationToken);
+    }
+
+    private async Task<BinaryFingerprint> CaptureFromPathAsync(string modulePath, int? processId, CancellationToken cancellationToken)
     {
         if (string.IsNullOrWhiteSpace(modulePath))
         {

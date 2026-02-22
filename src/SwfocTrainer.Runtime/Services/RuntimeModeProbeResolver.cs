@@ -5,7 +5,7 @@ namespace SwfocTrainer.Runtime.Services;
 /// <summary>
 /// Computes an effective runtime mode using resolved symbol health as evidence.
 /// </summary>
-public sealed class RuntimeModeProbeResolver
+public static class RuntimeModeProbeResolver
 {
     private static readonly string[] TacticalIndicators =
     [
@@ -32,70 +32,17 @@ public sealed class RuntimeModeProbeResolver
     {
         var tacticalSignalCount = CountSignals(symbols, TacticalIndicators);
         var galacticSignalCount = CountSignals(symbols, GalacticIndicators);
-
-        if (tacticalSignalCount > 0 && galacticSignalCount == 0)
+        if (TryResolveSingleSignalMode(modeHint, tacticalSignalCount, galacticSignalCount, out var singleSignalResult))
         {
-            return new RuntimeModeProbeResult(
-                modeHint,
-                RuntimeMode.Tactical,
-                "mode_probe_tactical_signals",
-                tacticalSignalCount,
-                galacticSignalCount);
-        }
-
-        if (galacticSignalCount > 0 && tacticalSignalCount == 0)
-        {
-            return new RuntimeModeProbeResult(
-                modeHint,
-                RuntimeMode.Galactic,
-                "mode_probe_galactic_signals",
-                tacticalSignalCount,
-                galacticSignalCount);
+            return singleSignalResult;
         }
 
         if (tacticalSignalCount > 0 && galacticSignalCount > 0)
         {
-            if (modeHint is RuntimeMode.Tactical or RuntimeMode.Galactic)
-            {
-                return new RuntimeModeProbeResult(
-                    modeHint,
-                    modeHint,
-                    "mode_probe_ambiguous_keep_hint",
-                    tacticalSignalCount,
-                    galacticSignalCount);
-            }
-
-            var effective = tacticalSignalCount >= galacticSignalCount
-                ? RuntimeMode.Tactical
-                : RuntimeMode.Galactic;
-            var reason = tacticalSignalCount >= galacticSignalCount
-                ? "mode_probe_ambiguous_bias_tactical"
-                : "mode_probe_ambiguous_bias_galactic";
-
-            return new RuntimeModeProbeResult(
-                modeHint,
-                effective,
-                reason,
-                tacticalSignalCount,
-                galacticSignalCount);
+            return ResolveAmbiguousMode(modeHint, tacticalSignalCount, galacticSignalCount);
         }
 
-        if (modeHint is RuntimeMode.Tactical or RuntimeMode.Galactic)
-        {
-            return new RuntimeModeProbeResult(
-                modeHint,
-                modeHint,
-                "mode_probe_no_signals_use_hint",
-                tacticalSignalCount,
-                galacticSignalCount);
-        }
-
-        return new RuntimeModeProbeResult(
-            modeHint,
-            RuntimeMode.Unknown,
-            "mode_probe_no_signals_unknown",
-            tacticalSignalCount,
-            galacticSignalCount);
+        return ResolveNoSignalMode(modeHint, tacticalSignalCount, galacticSignalCount);
     }
 
     private static int CountSignals(SymbolMap symbols, IReadOnlyList<string> indicatorNames)
@@ -117,6 +64,76 @@ public sealed class RuntimeModeProbeResolver
         }
 
         return count;
+    }
+
+    private static bool TryResolveSingleSignalMode(
+        RuntimeMode modeHint,
+        int tacticalSignalCount,
+        int galacticSignalCount,
+        out RuntimeModeProbeResult result)
+    {
+        if (tacticalSignalCount > 0 && galacticSignalCount == 0)
+        {
+            result = new RuntimeModeProbeResult(
+                modeHint,
+                RuntimeMode.Tactical,
+                "mode_probe_tactical_signals",
+                tacticalSignalCount,
+                galacticSignalCount);
+            return true;
+        }
+
+        if (galacticSignalCount > 0 && tacticalSignalCount == 0)
+        {
+            result = new RuntimeModeProbeResult(
+                modeHint,
+                RuntimeMode.Galactic,
+                "mode_probe_galactic_signals",
+                tacticalSignalCount,
+                galacticSignalCount);
+            return true;
+        }
+
+        result = default;
+        return false;
+    }
+
+    private static RuntimeModeProbeResult ResolveAmbiguousMode(
+        RuntimeMode modeHint,
+        int tacticalSignalCount,
+        int galacticSignalCount)
+    {
+        if (modeHint is RuntimeMode.Tactical or RuntimeMode.Galactic)
+        {
+            return new RuntimeModeProbeResult(
+                modeHint,
+                modeHint,
+                "mode_probe_ambiguous_keep_hint",
+                tacticalSignalCount,
+                galacticSignalCount);
+        }
+
+        var tacticalWins = tacticalSignalCount >= galacticSignalCount;
+        return new RuntimeModeProbeResult(
+            modeHint,
+            tacticalWins ? RuntimeMode.Tactical : RuntimeMode.Galactic,
+            tacticalWins ? "mode_probe_ambiguous_bias_tactical" : "mode_probe_ambiguous_bias_galactic",
+            tacticalSignalCount,
+            galacticSignalCount);
+    }
+
+    private static RuntimeModeProbeResult ResolveNoSignalMode(
+        RuntimeMode modeHint,
+        int tacticalSignalCount,
+        int galacticSignalCount)
+    {
+        var hasHint = modeHint is RuntimeMode.Tactical or RuntimeMode.Galactic;
+        return new RuntimeModeProbeResult(
+            modeHint,
+            hasHint ? modeHint : RuntimeMode.Unknown,
+            hasHint ? "mode_probe_no_signals_use_hint" : "mode_probe_no_signals_unknown",
+            tacticalSignalCount,
+            galacticSignalCount);
     }
 }
 
