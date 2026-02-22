@@ -3,11 +3,11 @@
 namespace swfoc::extender::core {
 
 void CapabilityProbe::markAvailable(const std::string& featureId, const std::string& reasonCode) {
-    capabilities_[featureId] = CapabilityEntry{
-        .available = true,
-        .state = CapabilityState::Verified,
-        .reasonCode = reasonCode
-    };
+    CapabilityEntry entry {};
+    entry.available = true;
+    entry.state = CapabilityState::Verified;
+    entry.reasonCode = reasonCode;
+    capabilities_[featureId] = entry;
 }
 
 bool CapabilityProbe::isAvailable(const std::string& featureId) const {

@@ -1,5 +1,5 @@
-#pragma once
 // cppcheck-suppress-file missingIncludeSystem
+#pragma once
 
 #include <atomic>
 #include <functional>
@@ -15,23 +15,23 @@ suppress only this header:
 namespace swfoc::extender::bridge {
 
 struct BridgeCommand {
-    std::string commandId;
-    std::string featureId;
-    std::string profileId;
-    std::string mode;
-    std::string requestedBy;
-    std::string timestampUtc;
-    std::string payloadJson;
+    [[maybe_unused]] std::string commandId;
+    [[maybe_unused]] std::string featureId;
+    [[maybe_unused]] std::string profileId;
+    [[maybe_unused]] std::string mode;
+    [[maybe_unused]] std::string requestedBy;
+    [[maybe_unused]] std::string timestampUtc;
+    [[maybe_unused]] std::string payloadJson;
 };
 
 struct BridgeResult {
-    std::string commandId;
-    bool succeeded {false};
-    std::string reasonCode {"CAPABILITY_BACKEND_UNAVAILABLE"};
-    std::string backend {"extender"};
-    std::string hookState {"uninitialized"};
-    std::string message {"Bridge not started."};
-    std::string diagnosticsJson {"{}"};
+    [[maybe_unused]] std::string commandId;
+    [[maybe_unused]] bool succeeded {false};
+    [[maybe_unused]] std::string reasonCode {"CAPABILITY_BACKEND_UNAVAILABLE"};
+    [[maybe_unused]] std::string backend {"extender"};
+    [[maybe_unused]] std::string hookState {"uninitialized"};
+    [[maybe_unused]] std::string message {"Bridge not started."};
+    [[maybe_unused]] std::string diagnosticsJson {"{}"};
 };
 
 class NamedPipeBridgeServer {
@@ -49,7 +49,7 @@ private:
     void runLoop();
     BridgeResult handleRawCommand(const std::string& jsonLine) const;
 
-    std::string pipeName_;
+    [[maybe_unused]] std::string pipeName_;
     Handler handler_;
     std::atomic<bool> running_ {false};
     std::thread worker_;

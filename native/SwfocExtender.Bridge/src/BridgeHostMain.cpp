@@ -1,6 +1,6 @@
+// cppcheck-suppress-file missingIncludeSystem
 #include "swfoc_extender/bridge/NamedPipeBridgeServer.hpp"
 #include "swfoc_extender/plugins/EconomyPlugin.hpp"
-// cppcheck-suppress-file missingIncludeSystem
 
 #include <atomic>
 #include <chrono>
@@ -129,15 +129,15 @@ bool TryReadInt(const std::string& payloadJson, const std::string& key, int& val
 }
 
 BridgeResult BuildHealthResult(const BridgeCommand& command) {
-    return BridgeResult{
-        .commandId = command.commandId,
-        .succeeded = true,
-        .reasonCode = "CAPABILITY_PROBE_PASS",
-        .backend = kBackendName,
-        .hookState = "RUNNING",
-        .message = "Extender bridge is healthy.",
-        .diagnosticsJson = "{\"bridge\":\"active\"}"
-    };
+    BridgeResult result {};
+    result.commandId = command.commandId;
+    result.succeeded = true;
+    result.reasonCode = "CAPABILITY_PROBE_PASS";
+    result.backend = kBackendName;
+    result.hookState = "RUNNING";
+    result.message = "Extender bridge is healthy.";
+    result.diagnosticsJson = "{\"bridge\":\"active\"}";
+    return result;
 }
 
 BridgeResult BuildCapabilityProbeResult(
@@ -157,15 +157,15 @@ BridgeResult BuildCapabilityProbeResult(
         << "}"
         << "}";
 
-    return BridgeResult{
-        .commandId = command.commandId,
-        .succeeded = true,
-        .reasonCode = "CAPABILITY_PROBE_PASS",
-        .backend = kBackendName,
-        .hookState = capability.creditsAvailable ? "HOOK_READY" : "HOOK_NOT_INSTALLED",
-        .message = "Capability probe completed.",
-        .diagnosticsJson = diagnostics.str()
-    };
+    BridgeResult result {};
+    result.commandId = command.commandId;
+    result.succeeded = true;
+    result.reasonCode = "CAPABILITY_PROBE_PASS";
+    result.backend = kBackendName;
+    result.hookState = capability.creditsAvailable ? "HOOK_READY" : "HOOK_NOT_INSTALLED";
+    result.message = "Capability probe completed.";
+    result.diagnosticsJson = diagnostics.str();
+    return result;
 }
 
 bool ResolveLockCredits(const std::string& payloadJson) {
@@ -179,15 +179,15 @@ bool ResolveLockCredits(const std::string& payloadJson) {
 }
 
 BridgeResult BuildMissingIntValueResult(const BridgeCommand& command) {
-    return BridgeResult{
-        .commandId = command.commandId,
-        .succeeded = false,
-        .reasonCode = "CAPABILITY_REQUIRED_MISSING",
-        .backend = kBackendName,
-        .hookState = "DENIED",
-        .message = "Payload is missing required intValue.",
-        .diagnosticsJson = "{\"requiredField\":\"intValue\"}"
-    };
+    BridgeResult result {};
+    result.commandId = command.commandId;
+    result.succeeded = false;
+    result.reasonCode = "CAPABILITY_REQUIRED_MISSING";
+    result.backend = kBackendName;
+    result.hookState = "DENIED";
+    result.message = "Payload is missing required intValue.";
+    result.diagnosticsJson = "{\"requiredField\":\"intValue\"}";
+    return result;
 }
 
 BridgeResult BuildSetCreditsResult(
@@ -198,35 +198,35 @@ BridgeResult BuildSetCreditsResult(
         return BuildMissingIntValueResult(command);
     }
 
-    const auto pluginResult = economyPlugin.execute(
-        swfoc::extender::plugins::PluginRequest{
-            .featureId = command.featureId,
-            .profileId = command.profileId,
-            .intValue = intValue,
-            .lockValue = ResolveLockCredits(command.payloadJson)
-        });
+    swfoc::extender::plugins::PluginRequest pluginRequest {};
+    pluginRequest.featureId = command.featureId;
+    pluginRequest.profileId = command.profileId;
+    pluginRequest.intValue = intValue;
+    pluginRequest.lockValue = ResolveLockCredits(command.payloadJson);
 
-    return BridgeResult{
-        .commandId = command.commandId,
-        .succeeded = pluginResult.succeeded,
-        .reasonCode = pluginResult.reasonCode,
-        .backend = kBackendName,
-        .hookState = pluginResult.hookState,
-        .message = pluginResult.message,
-        .diagnosticsJson = ToDiagnosticsJson(pluginResult.diagnostics)
-    };
+    const auto pluginResult = economyPlugin.execute(pluginRequest);
+
+    BridgeResult result {};
+    result.commandId = command.commandId;
+    result.succeeded = pluginResult.succeeded;
+    result.reasonCode = pluginResult.reasonCode;
+    result.backend = kBackendName;
+    result.hookState = pluginResult.hookState;
+    result.message = pluginResult.message;
+    result.diagnosticsJson = ToDiagnosticsJson(pluginResult.diagnostics);
+    return result;
 }
 
 BridgeResult BuildUnsupportedFeatureResult(const BridgeCommand& command) {
-    return BridgeResult{
-        .commandId = command.commandId,
-        .succeeded = false,
-        .reasonCode = "CAPABILITY_REQUIRED_MISSING",
-        .backend = kBackendName,
-        .hookState = "DENIED",
-        .message = "Feature not supported by current extender host.",
-        .diagnosticsJson = "{\"featureId\":\"" + EscapeJson(command.featureId) + "\"}"
-    };
+    BridgeResult result {};
+    result.commandId = command.commandId;
+    result.succeeded = false;
+    result.reasonCode = "CAPABILITY_REQUIRED_MISSING";
+    result.backend = kBackendName;
+    result.hookState = "DENIED";
+    result.message = "Feature not supported by current extender host.";
+    result.diagnosticsJson = "{\"featureId\":\"" + EscapeJson(command.featureId) + "\"}";
+    return result;
 }
 
 BridgeResult HandleBridgeCommand(

@@ -1,5 +1,5 @@
-#pragma once
 // cppcheck-suppress-file missingIncludeSystem
+#pragma once
 
 #include <string>
 #include <unordered_map>
@@ -19,9 +19,9 @@ enum class CapabilityState {
 };
 
 struct CapabilityEntry {
-    bool available {false};
-    CapabilityState state {CapabilityState::Unknown};
-    std::string reasonCode {"CAPABILITY_UNKNOWN"};
+    [[maybe_unused]] bool available {false};
+    [[maybe_unused]] CapabilityState state {CapabilityState::Unknown};
+    [[maybe_unused]] std::string reasonCode {"CAPABILITY_UNKNOWN"};
 };
 
 class CapabilityProbe {
@@ -33,7 +33,7 @@ public:
     const std::unordered_map<std::string, CapabilityEntry>& snapshot() const noexcept;
 
 private:
-    std::unordered_map<std::string, CapabilityEntry> capabilities_;
+    [[maybe_unused]] std::unordered_map<std::string, CapabilityEntry> capabilities_;
 };
 
 } // namespace swfoc::extender::core

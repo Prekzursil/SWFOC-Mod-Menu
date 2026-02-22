@@ -1,5 +1,5 @@
-#pragma once
 // cppcheck-suppress-file missingIncludeSystem
+#pragma once
 
 #include <cstdint>
 #include <map>
@@ -14,24 +14,24 @@ suppress only this header:
 namespace swfoc::extender::plugins {
 
 struct PluginRequest {
-    std::string featureId;
-    std::string profileId;
-    std::int32_t intValue {0};
-    bool lockValue {false};
+    [[maybe_unused]] std::string featureId;
+    [[maybe_unused]] std::string profileId;
+    [[maybe_unused]] std::int32_t intValue {0};
+    [[maybe_unused]] bool lockValue {false};
 };
 
 struct CapabilitySnapshot {
-    bool creditsAvailable {false};
-    std::string creditsState {"Unknown"};
-    std::string reasonCode {"CAPABILITY_BACKEND_UNAVAILABLE"};
+    [[maybe_unused]] bool creditsAvailable {false};
+    [[maybe_unused]] std::string creditsState {"Unknown"};
+    [[maybe_unused]] std::string reasonCode {"CAPABILITY_BACKEND_UNAVAILABLE"};
 };
 
 struct PluginResult {
-    bool succeeded {false};
-    std::string reasonCode {"CAPABILITY_UNKNOWN"};
-    std::string hookState {"none"};
-    std::string message {};
-    std::map<std::string, std::string> diagnostics {};
+    [[maybe_unused]] bool succeeded {false};
+    [[maybe_unused]] std::string reasonCode {"CAPABILITY_UNKNOWN"};
+    [[maybe_unused]] std::string hookState {"none"};
+    [[maybe_unused]] std::string message {};
+    [[maybe_unused]] std::map<std::string, std::string> diagnostics {};
 };
 
 class IPlugin {

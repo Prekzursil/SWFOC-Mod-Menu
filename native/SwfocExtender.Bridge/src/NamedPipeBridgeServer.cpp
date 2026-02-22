@@ -1,5 +1,5 @@
-#include "swfoc_extender/bridge/NamedPipeBridgeServer.hpp"
 // cppcheck-suppress-file missingIncludeSystem
+#include "swfoc_extender/bridge/NamedPipeBridgeServer.hpp"
 
 #include <array>
 #include <chrono>
@@ -250,27 +250,27 @@ BridgeResult NamedPipeBridgeServer::handleRawCommand(const std::string& jsonLine
     command.payloadJson = ExtractObjectJson(jsonLine, "payload");
 
     if (command.commandId.empty()) {
-        return BridgeResult{
-            .commandId = {},
-            .succeeded = false,
-            .reasonCode = "CAPABILITY_BACKEND_UNAVAILABLE",
-            .backend = "extender",
-            .hookState = "invalid_command",
-            .message = "Command payload missing commandId.",
-            .diagnosticsJson = "{\"parseError\":\"missing_commandId\"}"
-        };
+        BridgeResult result {};
+        result.commandId = {};
+        result.succeeded = false;
+        result.reasonCode = "CAPABILITY_BACKEND_UNAVAILABLE";
+        result.backend = "extender";
+        result.hookState = "invalid_command";
+        result.message = "Command payload missing commandId.";
+        result.diagnosticsJson = "{\"parseError\":\"missing_commandId\"}";
+        return result;
     }
 
     if (!handler_) {
-        return BridgeResult{
-            .commandId = command.commandId,
-            .succeeded = false,
-            .reasonCode = "CAPABILITY_BACKEND_UNAVAILABLE",
-            .backend = "extender",
-            .hookState = "handler_missing",
-            .message = "Bridge handler is not configured.",
-            .diagnosticsJson = "{\"handler\":\"missing\"}"
-        };
+        BridgeResult result {};
+        result.commandId = command.commandId;
+        result.succeeded = false;
+        result.reasonCode = "CAPABILITY_BACKEND_UNAVAILABLE";
+        result.backend = "extender";
+        result.hookState = "handler_missing";
+        result.message = "Bridge handler is not configured.";
+        result.diagnosticsJson = "{\"handler\":\"missing\"}";
+        return result;
     }
 
     auto result = handler_(command);

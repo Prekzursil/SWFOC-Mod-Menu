@@ -1,5 +1,5 @@
-#pragma once
 // cppcheck-suppress-file missingIncludeSystem
+#pragma once
 
 #include <string>
 #include <unordered_map>
@@ -20,8 +20,8 @@ enum class HookState {
 };
 
 struct HookRecord {
-    HookState state {HookState::NotInstalled};
-    std::string reasonCode {"HOOK_NOT_INSTALLED"};
+    [[maybe_unused]] HookState state {HookState::NotInstalled};
+    [[maybe_unused]] std::string reasonCode {"HOOK_NOT_INSTALLED"};
 };
 
 class HookLifecycleManager {
@@ -34,7 +34,7 @@ public:
     HookRecord get(const std::string& hookId) const;
 
 private:
-    std::unordered_map<std::string, HookRecord> hooks_;
+    [[maybe_unused]] std::unordered_map<std::string, HookRecord> hooks_;
 };
 
 } // namespace swfoc::extender::core
