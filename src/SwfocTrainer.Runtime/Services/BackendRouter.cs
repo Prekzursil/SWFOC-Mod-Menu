@@ -19,7 +19,7 @@ public sealed class BackendRouter : IBackendRouter
         var missingRequired = requiredCapabilities
             .Where(featureId => !capabilityReport.IsFeatureAvailable(featureId))
             .ToArray();
-        var diagnostics = BuildDiagnostics(
+        var diagnostics = BuildDiagnostics(new BackendDiagnosticsContext(
             request,
             profile,
             process,
@@ -28,7 +28,7 @@ public sealed class BackendRouter : IBackendRouter
             preferredBackend,
             profileRequiredCapabilities,
             requiredCapabilities,
-            missingRequired);
+            missingRequired));
 
         var requiredCapabilityDecision = TryResolveRequiredCapabilityContract(
             preferredBackend,
@@ -49,28 +49,19 @@ public sealed class BackendRouter : IBackendRouter
         return ResolveExtenderRoute(request, profile, capabilityReport, isMutating, diagnostics);
     }
 
-    private static Dictionary<string, object?> BuildDiagnostics(
-        ActionExecutionRequest request,
-        TrainerProfile profile,
-        ProcessMetadata process,
-        CapabilityReport capabilityReport,
-        ExecutionBackendKind defaultBackend,
-        ExecutionBackendKind preferredBackend,
-        IReadOnlyList<string> profileRequiredCapabilities,
-        IReadOnlyList<string> requiredCapabilities,
-        IReadOnlyList<string> missingRequired)
+    private static Dictionary<string, object?> BuildDiagnostics(BackendDiagnosticsContext context)
     {
         return new Dictionary<string, object?>(StringComparer.OrdinalIgnoreCase)
         {
-            ["requestedExecutionKind"] = request.Action.ExecutionKind.ToString(),
-            ["defaultBackend"] = defaultBackend.ToString(),
-            ["preferredBackend"] = preferredBackend.ToString(),
-            ["profileBackendPreference"] = profile.BackendPreference,
-            ["hostRole"] = process.HostRole.ToString(),
-            ["probeReasonCode"] = capabilityReport.ProbeReasonCode.ToString(),
-            ["profileRequiredCapabilities"] = profileRequiredCapabilities,
-            ["requiredCapabilities"] = requiredCapabilities,
-            ["missingRequiredCapabilities"] = missingRequired
+            ["requestedExecutionKind"] = context.Request.Action.ExecutionKind.ToString(),
+            ["defaultBackend"] = context.DefaultBackend.ToString(),
+            ["preferredBackend"] = context.PreferredBackend.ToString(),
+            ["profileBackendPreference"] = context.Profile.BackendPreference,
+            ["hostRole"] = context.Process.HostRole.ToString(),
+            ["probeReasonCode"] = context.CapabilityReport.ProbeReasonCode.ToString(),
+            ["profileRequiredCapabilities"] = context.ProfileRequiredCapabilities,
+            ["requiredCapabilities"] = context.RequiredCapabilities,
+            ["missingRequiredCapabilities"] = context.MissingRequired
         };
     }
 
@@ -261,4 +252,15 @@ public sealed class BackendRouter : IBackendRouter
             .Where(featureId => featureId.Equals(actionId, StringComparison.OrdinalIgnoreCase))
             .ToArray();
     }
+
+    private readonly record struct BackendDiagnosticsContext(
+        ActionExecutionRequest Request,
+        TrainerProfile Profile,
+        ProcessMetadata Process,
+        CapabilityReport CapabilityReport,
+        ExecutionBackendKind DefaultBackend,
+        ExecutionBackendKind PreferredBackend,
+        IReadOnlyList<string> ProfileRequiredCapabilities,
+        IReadOnlyList<string> RequiredCapabilities,
+        IReadOnlyList<string> MissingRequired);
 }

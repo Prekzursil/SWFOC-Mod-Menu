@@ -178,7 +178,7 @@ public sealed class CapabilityMapResolver : ICapabilityMapResolver
         IReadOnlyList<string> matchedAnchors,
         IReadOnlyList<string> missingAnchors)
     {
-        return BuildAnchorResult(
+        return new CapabilityResolutionResult(
             requestedProfileId,
             operationId,
             SdkCapabilityStatus.Degraded,
@@ -196,7 +196,7 @@ public sealed class CapabilityMapResolver : ICapabilityMapResolver
         IReadOnlyList<string> matchedAnchors,
         IReadOnlyList<string> missingAnchors)
     {
-        return BuildAnchorResult(
+        return new CapabilityResolutionResult(
             requestedProfileId,
             operationId,
             SdkCapabilityStatus.Degraded,
@@ -213,7 +213,7 @@ public sealed class CapabilityMapResolver : ICapabilityMapResolver
         string fingerprintId,
         IReadOnlyList<string> matchedAnchors)
     {
-        return BuildAnchorResult(
+        return new CapabilityResolutionResult(
             requestedProfileId,
             operationId,
             SdkCapabilityStatus.Available,
@@ -222,27 +222,6 @@ public sealed class CapabilityMapResolver : ICapabilityMapResolver
             fingerprintId,
             matchedAnchors,
             Array.Empty<string>());
-    }
-
-    private static CapabilityResolutionResult BuildAnchorResult(
-        string requestedProfileId,
-        string operationId,
-        SdkCapabilityStatus status,
-        CapabilityReasonCode reasonCode,
-        double confidence,
-        string fingerprintId,
-        IReadOnlyList<string> matchedAnchors,
-        IReadOnlyList<string> missingAnchors)
-    {
-        return new CapabilityResolutionResult(
-            requestedProfileId,
-            operationId,
-            status,
-            reasonCode,
-            confidence,
-            fingerprintId,
-            matchedAnchors,
-            missingAnchors);
     }
 
     private static CapabilityMap? DeserializeCapabilityMap(string json, BinaryFingerprint fingerprint)
@@ -294,21 +273,21 @@ public sealed class CapabilityMapResolver : ICapabilityMapResolver
 
     private sealed class CapabilityMapDto
     {
-        public string? SchemaVersion { get; set; }
+        public string? SchemaVersion { get; set; } = string.Empty;
 
-        public string? FingerprintId { get; set; }
+        public string? FingerprintId { get; set; } = string.Empty;
 
-        public string? DefaultProfileId { get; set; }
+        public string? DefaultProfileId { get; set; } = string.Empty;
 
-        public DateTimeOffset GeneratedAtUtc { get; set; }
+        public DateTimeOffset GeneratedAtUtc { get; set; } = DateTimeOffset.UtcNow;
 
-        public Dictionary<string, CapabilityOperationDto>? Operations { get; set; }
+        public Dictionary<string, CapabilityOperationDto>? Operations { get; set; } = new(StringComparer.OrdinalIgnoreCase);
     }
 
     private sealed class CapabilityOperationDto
     {
-        public string[]? RequiredAnchors { get; set; }
+        public string[]? RequiredAnchors { get; set; } = Array.Empty<string>();
 
-        public string[]? OptionalAnchors { get; set; }
+        public string[]? OptionalAnchors { get; set; } = Array.Empty<string>();
     }
 }
