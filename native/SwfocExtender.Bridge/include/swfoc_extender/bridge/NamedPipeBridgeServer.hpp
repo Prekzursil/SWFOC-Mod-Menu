@@ -1,4 +1,5 @@
 // cppcheck-suppress-file missingIncludeSystem
+// cppcheck-suppress-file unusedStructMember
 #pragma once
 
 #include <atomic>
