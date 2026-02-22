@@ -1,4 +1,5 @@
 #pragma once
+// cppcheck-suppress-file missingIncludeSystem
 
 #include <cstdint>
 #include <map>

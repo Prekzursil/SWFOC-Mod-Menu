@@ -126,7 +126,7 @@ function Invoke-LiveTest {
 
     Write-Output "=== Running $Name ==="
 
-    $args = @(
+    $dotnetArgs = @(
         "test",
         "tests/SwfocTrainer.Tests/SwfocTrainer.Tests.csproj",
         "-c", $Configuration,
@@ -136,7 +136,7 @@ function Invoke-LiveTest {
     )
 
     if ($NoBuild) {
-        $args += "--no-build"
+        $dotnetArgs += "--no-build"
     }
 
     $previousOutputDir = $env:SWFOC_LIVE_OUTPUT_DIR
@@ -145,7 +145,7 @@ function Invoke-LiveTest {
     $env:SWFOC_LIVE_TEST_NAME = $Name
 
     try {
-        & $dotnetExe @args
+        & $dotnetExe @dotnetArgs
     }
     finally {
         if ($null -eq $previousOutputDir) {

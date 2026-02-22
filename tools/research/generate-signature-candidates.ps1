@@ -35,8 +35,8 @@ if ([string]::IsNullOrWhiteSpace($OutputPath)) {
     New-Item -ItemType Directory -Path $outputDir -Force | Out-Null
 }
 
-$profile = Get-Content -Raw -Path $ProfilePath | ConvertFrom-Json
-$signatureSets = @($profile.signatureSets)
+$profileData = Get-Content -Raw -Path $ProfilePath | ConvertFrom-Json
+$signatureSets = @($profileData.signatureSets)
 $anchors = @()
 foreach ($set in $signatureSets) {
     foreach ($sig in @($set.signatures)) {
@@ -70,7 +70,7 @@ $result = [ordered]@{
     runId = $RunId
     generatedAtUtc = (Get-Date).ToUniversalTime().ToString("o")
     fingerprintId = [string]$fingerprint.fingerprintId
-    defaultProfileId = [string]$profile.id
+    defaultProfileId = [string]$profileData.id
     sourceProfilePath = [System.IO.Path]::GetFullPath($ProfilePath)
     anchors = $anchors
     operations = $operations

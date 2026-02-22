@@ -1,4 +1,5 @@
 #pragma once
+// cppcheck-suppress-file missingIncludeSystem
 
 #include "swfoc_extender/plugins/PluginContracts.hpp"
 

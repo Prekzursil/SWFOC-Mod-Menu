@@ -1,4 +1,5 @@
 #include "swfoc_extender/bridge/NamedPipeBridgeServer.hpp"
+// cppcheck-suppress-file missingIncludeSystem
 
 #include <array>
 #include <chrono>

@@ -38,14 +38,14 @@ function Resolve-WindowsGeneratorPlan {
     )
 
     if (-not [string]::IsNullOrWhiteSpace($RecommendedGenerator)) {
-        $args = @("-G", $RecommendedGenerator, "-A", "x64")
+        $generatorArgs = @("-G", $RecommendedGenerator, "-A", "x64")
         if (-not [string]::IsNullOrWhiteSpace($VsInstancePath) -and (Test-Path -Path $VsInstancePath)) {
-            $args += "-DCMAKE_GENERATOR_INSTANCE=$VsInstancePath"
+            $generatorArgs += "-DCMAKE_GENERATOR_INSTANCE=$VsInstancePath"
         }
 
         return [PSCustomObject]@{
             Name = $RecommendedGenerator
-            Args = $args
+            Args = $generatorArgs
             UsesMultiConfig = $true
         }
     }

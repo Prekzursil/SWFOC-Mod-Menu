@@ -42,6 +42,11 @@ _Generated from `tmp_codacy_pr49_issues.json` on 2026-02-22 10:51:47Z.
 - `native/SwfocExtender.Plugins/include/swfoc_extender/plugins/EconomyPlugin.hpp` (3)
 - `native/SwfocExtender.Plugins/include/swfoc_extender/plugins/PluginContracts.hpp` (3)
 
+Targeted suppression policy:
+
+- Added `// cppcheck-suppress-file missingIncludeSystem` only on the seven native bridge/core/plugin files listed above.
+- No global cppcheck disable and no broad folder-level Codacy exclusion was introduced.
+
 ### `SonarCSharp_S2360` (27)
 
 - `src/SwfocTrainer.Core/Contracts/IBinaryFingerprintService.cs` (1)

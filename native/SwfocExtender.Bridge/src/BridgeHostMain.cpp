@@ -1,5 +1,6 @@
 #include "swfoc_extender/bridge/NamedPipeBridgeServer.hpp"
 #include "swfoc_extender/plugins/EconomyPlugin.hpp"
+// cppcheck-suppress-file missingIncludeSystem
 
 #include <atomic>
 #include <chrono>
