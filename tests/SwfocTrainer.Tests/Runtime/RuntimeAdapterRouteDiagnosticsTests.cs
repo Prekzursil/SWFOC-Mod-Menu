@@ -1,0 +1,74 @@
+using System.Reflection;
+using FluentAssertions;
+using SwfocTrainer.Core.Models;
+using SwfocTrainer.Runtime.Services;
+using Xunit;
+
+namespace SwfocTrainer.Tests.Runtime;
+
+public sealed class RuntimeAdapterRouteDiagnosticsTests
+{
+    [Fact]
+    public void ApplyBackendRouteDiagnostics_ShouldEmitBackendRouteAndHybridKeys()
+    {
+        var result = new ActionExecutionResult(
+            Succeeded: true,
+            Message: "ok",
+            AddressSource: AddressSource.Signature,
+            Diagnostics: new Dictionary<string, object?>
+            {
+                ["state"] = "installed"
+            });
+
+        var routeDecision = new BackendRouteDecision(
+            Allowed: true,
+            Backend: ExecutionBackendKind.Extender,
+            ReasonCode: RuntimeReasonCode.CAPABILITY_PROBE_PASS,
+            Message: "routed",
+            Diagnostics: new Dictionary<string, object?>
+            {
+                ["hybridExecution"] = true
+            });
+
+        var capabilityReport = new CapabilityReport(
+            ProfileId: "roe_3447786229_swfoc",
+            ProbedAtUtc: DateTimeOffset.UtcNow,
+            Capabilities: new Dictionary<string, BackendCapability>(StringComparer.OrdinalIgnoreCase)
+            {
+                ["set_unit_cap"] = new BackendCapability(
+                    "set_unit_cap",
+                    Available: true,
+                    CapabilityConfidenceState.Verified,
+                    RuntimeReasonCode.CAPABILITY_PROBE_PASS)
+            },
+            ProbeReasonCode: RuntimeReasonCode.CAPABILITY_PROBE_PASS,
+            Diagnostics: new Dictionary<string, object?>
+            {
+                ["hookState"] = "HOOK_READY"
+            });
+
+        var applied = InvokeApplyBackendRouteDiagnostics(result, routeDecision, capabilityReport);
+
+        applied.Diagnostics.Should().NotBeNull();
+        applied.Diagnostics.Should().ContainKey("backend");
+        applied.Diagnostics.Should().ContainKey("routeReasonCode");
+        applied.Diagnostics.Should().ContainKey("capabilityProbeReasonCode");
+        applied.Diagnostics.Should().ContainKey("hookState");
+        applied.Diagnostics.Should().ContainKey("hybridExecution");
+    }
+
+    private static ActionExecutionResult InvokeApplyBackendRouteDiagnostics(
+        ActionExecutionResult result,
+        BackendRouteDecision routeDecision,
+        CapabilityReport capabilityReport)
+    {
+        var method = typeof(RuntimeAdapter).GetMethod(
+            "ApplyBackendRouteDiagnostics",
+            BindingFlags.NonPublic | BindingFlags.Static);
+
+        method.Should().NotBeNull("RuntimeAdapter should normalize backend routing diagnostics.");
+        var invoked = method!.Invoke(null, new object?[] { result, routeDecision, capabilityReport });
+        invoked.Should().BeOfType<ActionExecutionResult>();
+        return (ActionExecutionResult)invoked!;
+    }
+}

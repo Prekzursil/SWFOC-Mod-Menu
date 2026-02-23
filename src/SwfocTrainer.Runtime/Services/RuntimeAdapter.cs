@@ -46,6 +46,15 @@ public sealed class RuntimeAdapter : IRuntimeAdapter
     private const int InstantBuildHookJumpLength = 5;
     private const int InstantBuildHookCaveSize = 31;
 
+    private static readonly HashSet<string> HybridManagedActionIds = new(StringComparer.OrdinalIgnoreCase)
+    {
+        "freeze_timer",
+        "toggle_fog_reveal",
+        "toggle_ai",
+        "set_unit_cap",
+        "toggle_instant_build_patch"
+    };
+
     private readonly IProcessLocator _processLocator;
     private readonly IProfileRepository _profileRepository;
     private readonly ISignatureResolver _signatureResolver;
@@ -836,19 +845,17 @@ public sealed class RuntimeAdapter : IRuntimeAdapter
         var routeDecision = _backendRouter.Resolve(request, attachedProfile, CurrentSession!.Process, capabilityReport);
         if (!routeDecision.Allowed)
         {
-            var blockedDiagnostics = MergeDiagnostics(
-                routeDecision.Diagnostics,
-                new Dictionary<string, object?>
-                {
-                    ["reasonCode"] = routeDecision.ReasonCode.ToString(),
-                    ["backendRoute"] = routeDecision.Backend.ToString(),
-                    ["capabilityProbeReasonCode"] = capabilityReport.ProbeReasonCode.ToString()
-                });
             var blocked = new ActionExecutionResult(
                 false,
                 routeDecision.Message,
                 AddressSource.None,
-                blockedDiagnostics);
+                MergeDiagnostics(
+                    routeDecision.Diagnostics,
+                    new Dictionary<string, object?>
+                    {
+                        ["reasonCode"] = routeDecision.ReasonCode.ToString()
+                    }));
+            blocked = ApplyBackendRouteDiagnostics(blocked, routeDecision, capabilityReport);
             RecordActionTelemetry(request, blocked);
             return blocked;
         }
@@ -857,6 +864,8 @@ public sealed class RuntimeAdapter : IRuntimeAdapter
         {
             var result = routeDecision.Backend switch
             {
+                ExecutionBackendKind.Extender when IsHybridManagedAction(request.Action.Id) =>
+                    await ExecuteHybridManagedActionAsync(request, cancellationToken),
                 ExecutionBackendKind.Extender => await ExecuteExtenderBackendActionAsync(request, capabilityReport, cancellationToken),
                 ExecutionBackendKind.Helper => await ExecuteHelperActionAsync(request, cancellationToken),
                 ExecutionBackendKind.Save => await ExecuteSaveActionAsync(request, cancellationToken),
@@ -874,11 +883,14 @@ public sealed class RuntimeAdapter : IRuntimeAdapter
                 false,
                 ex.Message,
                 AddressSource.None,
-                new Dictionary<string, object?>
-                {
-                    ["failureReasonCode"] = "action_exception",
-                    ["exceptionType"] = ex.GetType().Name
-                });
+                MergeDiagnostics(
+                    routeDecision.Diagnostics,
+                    new Dictionary<string, object?>
+                    {
+                        ["failureReasonCode"] = "action_exception",
+                        ["exceptionType"] = ex.GetType().Name
+                    }));
+            failed = ApplyBackendRouteDiagnostics(failed, routeDecision, capabilityReport);
             RecordActionTelemetry(request, failed);
             return failed;
         }
@@ -926,6 +938,25 @@ public sealed class RuntimeAdapter : IRuntimeAdapter
         };
     }
 
+    private async Task<ActionExecutionResult> ExecuteHybridManagedActionAsync(
+        ActionExecutionRequest request,
+        CancellationToken cancellationToken)
+    {
+        return request.Action.ExecutionKind switch
+        {
+            ExecutionKind.Memory => await ExecuteMemoryActionAsync(request, cancellationToken),
+            ExecutionKind.CodePatch => await ExecuteCodePatchActionAsync(request, cancellationToken),
+            _ => new ActionExecutionResult(
+                false,
+                $"Hybrid managed execution does not support action '{request.Action.Id}' with execution kind '{request.Action.ExecutionKind}'.",
+                AddressSource.None,
+                new Dictionary<string, object?>
+                {
+                    ["failureReasonCode"] = "hybrid_execution_kind_unsupported"
+                })
+        };
+    }
+
     private async Task<ActionExecutionResult> ExecuteExtenderBackendActionAsync(
         ActionExecutionRequest request,
         CapabilityReport capabilityReport,
@@ -952,16 +983,106 @@ public sealed class RuntimeAdapter : IRuntimeAdapter
         BackendRouteDecision routeDecision,
         CapabilityReport capabilityReport)
     {
+        var baseDiagnostics = MergeDiagnostics(routeDecision.Diagnostics, result.Diagnostics);
+        var hybridExecution = ResolveHybridExecutionFlag(baseDiagnostics);
+        var backend = ResolveBackendDiagnosticValue(baseDiagnostics, routeDecision.Backend, hybridExecution);
+        var hookState = ResolveHookStateDiagnosticValue(baseDiagnostics, capabilityReport.Diagnostics, hybridExecution);
         var diagnostics = MergeDiagnostics(
-            result.Diagnostics,
+            baseDiagnostics,
             new Dictionary<string, object?>
             {
+                ["backend"] = backend,
                 ["backendRoute"] = routeDecision.Backend.ToString(),
                 ["routeReasonCode"] = routeDecision.ReasonCode.ToString(),
                 ["capabilityProbeReasonCode"] = capabilityReport.ProbeReasonCode.ToString(),
+                ["hookState"] = hookState,
+                ["hybridExecution"] = hybridExecution,
                 ["capabilityCount"] = capabilityReport.Capabilities.Count
             });
         return result with { Diagnostics = diagnostics };
+    }
+
+    private static bool ResolveHybridExecutionFlag(IReadOnlyDictionary<string, object?>? diagnostics)
+    {
+        if (!TryReadDiagnosticString(diagnostics, "hybridExecution", out var hybridRaw) ||
+            string.IsNullOrWhiteSpace(hybridRaw))
+        {
+            return false;
+        }
+
+        return bool.TryParse(hybridRaw, out var parsed) && parsed;
+    }
+
+    private static string ResolveBackendDiagnosticValue(
+        IReadOnlyDictionary<string, object?>? diagnostics,
+        ExecutionBackendKind routeBackend,
+        bool hybridExecution)
+    {
+        if (TryReadDiagnosticString(diagnostics, "backend", out var backend) &&
+            !string.IsNullOrWhiteSpace(backend))
+        {
+            return backend!;
+        }
+
+        if (hybridExecution)
+        {
+            return "hybrid_managed";
+        }
+
+        return routeBackend.ToString();
+    }
+
+    private static string ResolveHookStateDiagnosticValue(
+        IReadOnlyDictionary<string, object?>? resultDiagnostics,
+        IReadOnlyDictionary<string, object?>? capabilityDiagnostics,
+        bool hybridExecution)
+    {
+        if (TryReadDiagnosticString(resultDiagnostics, "hookState", out var hookState) &&
+            !string.IsNullOrWhiteSpace(hookState))
+        {
+            return hookState!;
+        }
+
+        if (TryReadDiagnosticString(resultDiagnostics, "creditsStateTag", out var creditsState) &&
+            !string.IsNullOrWhiteSpace(creditsState))
+        {
+            return creditsState!;
+        }
+
+        if (TryReadDiagnosticString(resultDiagnostics, "state", out var stateTag) &&
+            !string.IsNullOrWhiteSpace(stateTag))
+        {
+            return stateTag!;
+        }
+
+        if (TryReadDiagnosticString(capabilityDiagnostics, "hookState", out var probeHookState) &&
+            !string.IsNullOrWhiteSpace(probeHookState))
+        {
+            return probeHookState!;
+        }
+
+        return hybridExecution ? "managed" : "unknown";
+    }
+
+    private static bool TryReadDiagnosticString(
+        IReadOnlyDictionary<string, object?>? diagnostics,
+        string key,
+        out string? value)
+    {
+        value = null;
+        if (diagnostics is null || !diagnostics.TryGetValue(key, out var raw) || raw is null)
+        {
+            return false;
+        }
+
+        value = raw.ToString();
+        return !string.IsNullOrWhiteSpace(value);
+    }
+
+    private static bool IsHybridManagedAction(string actionId)
+    {
+        return !string.IsNullOrWhiteSpace(actionId) &&
+               HybridManagedActionIds.Contains(actionId);
     }
 
     private static IReadOnlyDictionary<string, object?>? MergeDiagnostics(
