@@ -15,6 +15,7 @@
     <PackageReference Include="Xunit.SkippableFact" Version="1.5.61" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="../../src/SwfocTrainer.App/SwfocTrainer.App.csproj" />
     <ProjectReference Include="../../src/SwfocTrainer.Core/SwfocTrainer.Core.csproj" />
     <ProjectReference Include="../../src/SwfocTrainer.Profiles/SwfocTrainer.Profiles.csproj" />
     <ProjectReference Include="../../src/SwfocTrainer.Saves/SwfocTrainer.Saves.csproj" />

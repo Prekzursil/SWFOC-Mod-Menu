@@ -1015,12 +1015,15 @@ public sealed class MainViewModel : INotifyPropertyChanged
             return null;
         }
 
-        if (session.Symbols.TryGetValue(requiredSymbol, out _))
+        if (!session.Symbols.TryGetValue(requiredSymbol, out var symbolInfo) ||
+            symbolInfo is null ||
+            symbolInfo.Address == nint.Zero ||
+            symbolInfo.HealthStatus == SymbolHealthStatus.Unresolved)
         {
-            return null;
+            return $"required symbol '{requiredSymbol}' is unresolved for this attachment.";
         }
 
-        return $"required symbol '{requiredSymbol}' is unresolved for this attachment.";
+        return null;
     }
 
     private static bool IsDependencyDisabledAction(string actionId, AttachSession session)
@@ -1038,7 +1041,7 @@ public sealed class MainViewModel : INotifyPropertyChanged
 
     private static string? ResolveRequiredSymbolForSessionGate(string actionId, ActionSpec spec)
     {
-        if (spec.ExecutionKind is not (ExecutionKind.Memory or ExecutionKind.CodePatch or ExecutionKind.Freeze))
+        if (spec.ExecutionKind is not (ExecutionKind.Memory or ExecutionKind.CodePatch or ExecutionKind.Freeze or ExecutionKind.Sdk))
         {
             return null;
         }
