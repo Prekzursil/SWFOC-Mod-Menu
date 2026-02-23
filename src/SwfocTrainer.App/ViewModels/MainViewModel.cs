@@ -2327,8 +2327,16 @@ public sealed class MainViewModel : INotifyPropertyChanged
 
     private async Task QuickRunActionAsync(string actionId, JsonObject payload, string? toggleKey = null)
     {
-        if (!_runtime.IsAttached || string.IsNullOrWhiteSpace(SelectedProfileId)) return;
-        if (!await EnsureActionAvailableForCurrentSessionAsync(actionId, actionId)) return;
+        if (!_runtime.IsAttached || string.IsNullOrWhiteSpace(SelectedProfileId))
+        {
+            return;
+        }
+
+        if (!await EnsureActionAvailableForCurrentSessionAsync(actionId, actionId))
+        {
+            return;
+        }
+
         try
         {
             var result = await _orchestrator.ExecuteAsync(

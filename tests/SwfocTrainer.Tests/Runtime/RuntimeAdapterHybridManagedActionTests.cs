@@ -93,6 +93,7 @@ public sealed class RuntimeAdapterHybridManagedActionTests
 
         public Task<SdkOperationResult> ExecuteAsync(SdkOperationRequest request, CancellationToken cancellationToken)
         {
+            _ = cancellationToken;
             CallCount++;
             LastRequest = request;
             return Task.FromResult(new SdkOperationResult(
@@ -127,26 +128,52 @@ public sealed class RuntimeAdapterHybridManagedActionTests
     {
         public Task<IReadOnlyList<ProcessMetadata>> FindSupportedProcessesAsync(CancellationToken cancellationToken = default)
         {
+            _ = cancellationToken;
             return Task.FromResult<IReadOnlyList<ProcessMetadata>>(Array.Empty<ProcessMetadata>());
         }
 
         public Task<ProcessMetadata?> FindBestMatchAsync(ExeTarget target, CancellationToken cancellationToken = default)
         {
+            _ = target;
+            _ = cancellationToken;
             return Task.FromResult<ProcessMetadata?>(null);
         }
     }
 
     private sealed class ThrowingProfileRepository : IProfileRepository
     {
-        public Task<ProfileManifest> LoadManifestAsync(CancellationToken cancellationToken = default) => throw CreateNotUsedException();
+        public Task<ProfileManifest> LoadManifestAsync(CancellationToken cancellationToken = default)
+        {
+            _ = cancellationToken;
+            throw CreateNotUsedException();
+        }
 
-        public Task<TrainerProfile> LoadProfileAsync(string profileId, CancellationToken cancellationToken = default) => throw CreateNotUsedException();
+        public Task<TrainerProfile> LoadProfileAsync(string profileId, CancellationToken cancellationToken = default)
+        {
+            _ = profileId;
+            _ = cancellationToken;
+            throw CreateNotUsedException();
+        }
 
-        public Task<TrainerProfile> ResolveInheritedProfileAsync(string profileId, CancellationToken cancellationToken = default) => throw CreateNotUsedException();
+        public Task<TrainerProfile> ResolveInheritedProfileAsync(string profileId, CancellationToken cancellationToken = default)
+        {
+            _ = profileId;
+            _ = cancellationToken;
+            throw CreateNotUsedException();
+        }
 
-        public Task ValidateProfileAsync(TrainerProfile profile, CancellationToken cancellationToken = default) => throw CreateNotUsedException();
+        public Task ValidateProfileAsync(TrainerProfile profile, CancellationToken cancellationToken = default)
+        {
+            _ = profile;
+            _ = cancellationToken;
+            throw CreateNotUsedException();
+        }
 
-        public Task<IReadOnlyList<string>> ListAvailableProfilesAsync(CancellationToken cancellationToken = default) => throw CreateNotUsedException();
+        public Task<IReadOnlyList<string>> ListAvailableProfilesAsync(CancellationToken cancellationToken = default)
+        {
+            _ = cancellationToken;
+            throw CreateNotUsedException();
+        }
 
         private static NotSupportedException CreateNotUsedException()
         {
@@ -162,6 +189,10 @@ public sealed class RuntimeAdapterHybridManagedActionTests
             IReadOnlyDictionary<string, long> fallbackOffsets,
             CancellationToken cancellationToken = default)
         {
+            _ = profileBuild;
+            _ = signatureSets;
+            _ = fallbackOffsets;
+            _ = cancellationToken;
             return Task.FromResult(new SymbolMap(new Dictionary<string, SymbolInfo>(StringComparer.OrdinalIgnoreCase)));
         }
     }
