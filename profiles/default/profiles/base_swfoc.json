@@ -6,7 +6,12 @@
   "steamWorkshopId": null,
   "backendPreference": "auto",
   "requiredCapabilities": [
-    "set_credits"
+    "set_credits",
+    "freeze_timer",
+    "toggle_fog_reveal",
+    "toggle_ai",
+    "set_unit_cap",
+    "toggle_instant_build_patch"
   ],
   "hostPreference": "starwarsg_preferred",
   "experimentalFeatures": [
@@ -90,7 +95,7 @@
       "id": "freeze_timer",
       "category": "Global",
       "mode": "Unknown",
-      "executionKind": "Memory",
+      "executionKind": "Sdk",
       "payloadSchema": {
         "required": ["symbol", "boolValue"]
       },
@@ -102,7 +107,7 @@
       "id": "toggle_fog_reveal",
       "category": "Global",
       "mode": "Unknown",
-      "executionKind": "Memory",
+      "executionKind": "Sdk",
       "payloadSchema": {
         "required": ["symbol", "boolValue"]
       },
@@ -114,7 +119,7 @@
       "id": "toggle_ai",
       "category": "Global",
       "mode": "Unknown",
-      "executionKind": "Memory",
+      "executionKind": "Sdk",
       "payloadSchema": {
         "required": ["symbol", "boolValue"]
       },
@@ -282,7 +287,7 @@
       "id": "set_unit_cap",
       "category": "Global",
       "mode": "Unknown",
-      "executionKind": "CodePatch",
+      "executionKind": "Sdk",
       "payloadSchema": {
         "required": ["intValue"]
       },
@@ -294,7 +299,7 @@
       "id": "toggle_instant_build_patch",
       "category": "Global",
       "mode": "Unknown",
-      "executionKind": "CodePatch",
+      "executionKind": "Sdk",
       "payloadSchema": {
         "required": ["enable"]
       },

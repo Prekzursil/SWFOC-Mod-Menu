@@ -8,8 +8,7 @@ using Xunit;
 namespace SwfocTrainer.Tests.Profiles;
 
 /// <summary>
-/// Verifies that freeze/unfreeze and CodePatch actions are correctly defined
-/// in the base profiles and survive inheritance resolution.
+/// Verifies FoC action execution-kind and capability contracts survive inheritance resolution.
 /// </summary>
 public sealed class ProfileActionCatalogTests
 {
@@ -37,7 +36,7 @@ public sealed class ProfileActionCatalogTests
     }
 
     [Fact]
-    public async Task BaseSwfoc_Should_Contain_CodePatch_Action()
+    public async Task BaseSwfoc_Should_Route_Promoted_Actions_Via_Sdk()
     {
         var root = TestPaths.FindRepoRoot();
         var options = new ProfileRepositoryOptions
@@ -48,16 +47,23 @@ public sealed class ProfileActionCatalogTests
         var repo = new FileSystemProfileRepository(options);
         var profile = await repo.ResolveInheritedProfileAsync("base_swfoc");
 
+        profile.Actions.Should().ContainKey("freeze_timer");
+        profile.Actions.Should().ContainKey("toggle_fog_reveal");
+        profile.Actions.Should().ContainKey("toggle_ai");
         profile.Actions.Should().ContainKey("set_unit_cap");
         profile.Actions.Should().ContainKey("toggle_instant_build_patch");
 
+        profile.Actions["freeze_timer"].ExecutionKind.Should().Be(ExecutionKind.Sdk);
+        profile.Actions["toggle_fog_reveal"].ExecutionKind.Should().Be(ExecutionKind.Sdk);
+        profile.Actions["toggle_ai"].ExecutionKind.Should().Be(ExecutionKind.Sdk);
+
         var cap = profile.Actions["set_unit_cap"];
-        cap.ExecutionKind.Should().Be(ExecutionKind.CodePatch);
+        cap.ExecutionKind.Should().Be(ExecutionKind.Sdk);
         var capRequired = cap.PayloadSchema["required"]!.AsArray().Select(x => x!.GetValue<string>()).ToList();
         capRequired.Should().Contain("intValue");
 
         var instantBuild = profile.Actions["toggle_instant_build_patch"];
-        instantBuild.ExecutionKind.Should().Be(ExecutionKind.CodePatch);
+        instantBuild.ExecutionKind.Should().Be(ExecutionKind.Sdk);
         var instantRequired = instantBuild.PayloadSchema["required"]!.AsArray().Select(x => x!.GetValue<string>()).ToList();
         instantRequired.Should().Contain("enable");
     }
@@ -82,7 +88,7 @@ public sealed class ProfileActionCatalogTests
     }
 
     [Fact]
-    public async Task RoeProfile_Should_Inherit_Freeze_Actions_From_Base()
+    public async Task RoeProfile_Should_Inherit_Promoted_Sdk_Actions_From_Base()
     {
         var root = TestPaths.FindRepoRoot();
         var options = new ProfileRepositoryOptions
@@ -96,12 +102,15 @@ public sealed class ProfileActionCatalogTests
         // ROE inherits from AOTR which inherits from base_swfoc
         profile.Actions.Should().ContainKey("freeze_symbol");
         profile.Actions.Should().ContainKey("unfreeze_symbol");
+        profile.Actions["freeze_timer"].ExecutionKind.Should().Be(ExecutionKind.Sdk);
+        profile.Actions["toggle_fog_reveal"].ExecutionKind.Should().Be(ExecutionKind.Sdk);
+        profile.Actions["toggle_ai"].ExecutionKind.Should().Be(ExecutionKind.Sdk);
 
-        // Also verify the CodePatch action survives inheritance
+        // Also verify promoted former CodePatch actions survive inheritance as SDK-routed actions.
         profile.Actions.Should().ContainKey("set_unit_cap");
-        profile.Actions["set_unit_cap"].ExecutionKind.Should().Be(ExecutionKind.CodePatch);
+        profile.Actions["set_unit_cap"].ExecutionKind.Should().Be(ExecutionKind.Sdk);
         profile.Actions.Should().ContainKey("toggle_instant_build_patch");
-        profile.Actions["toggle_instant_build_patch"].ExecutionKind.Should().Be(ExecutionKind.CodePatch);
+        profile.Actions["toggle_instant_build_patch"].ExecutionKind.Should().Be(ExecutionKind.Sdk);
     }
 
     [Fact]
@@ -141,6 +150,34 @@ public sealed class ProfileActionCatalogTests
             var profile = await repo.ResolveInheritedProfileAsync(pid);
             profile.Actions["set_credits"].ExecutionKind.Should().Be(ExecutionKind.Sdk,
                 because: $"profile '{pid}' should enforce extender-routed credits writes");
+        }
+    }
+
+    [Fact]
+    public async Task SwfocProfiles_Should_Require_Promoted_Sdk_Action_Capabilities()
+    {
+        var root = TestPaths.FindRepoRoot();
+        var options = new ProfileRepositoryOptions
+        {
+            ProfilesRootPath = Path.Combine(root, "profiles", "default")
+        };
+
+        var repo = new FileSystemProfileRepository(options);
+        var swfocProfiles = new[] { "base_swfoc", "aotr_1397421866_swfoc", "roe_3447786229_swfoc" };
+        var promotedSdkActions = new[]
+        {
+            "freeze_timer",
+            "toggle_fog_reveal",
+            "toggle_ai",
+            "set_unit_cap",
+            "toggle_instant_build_patch"
+        };
+
+        foreach (var pid in swfocProfiles)
+        {
+            var profile = await repo.ResolveInheritedProfileAsync(pid);
+            profile.RequiredCapabilities.Should().Contain(promotedSdkActions,
+                because: $"profile '{pid}' should gate promoted FoC actions behind capability contract");
         }
     }
 
