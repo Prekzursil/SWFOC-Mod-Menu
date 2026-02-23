@@ -995,47 +995,68 @@ public sealed class MainViewModel : INotifyPropertyChanged
         AttachSession session,
         out string? unavailableReason)
     {
-        unavailableReason = null;
-        if (session.Process.Metadata is not null &&
-            session.Process.Metadata.TryGetValue("dependencyDisabledActions", out var disabledIdsRaw) &&
-            !string.IsNullOrWhiteSpace(disabledIdsRaw))
+        unavailableReason = ResolveActionUnavailableReason(actionId, spec, session);
+        return string.IsNullOrWhiteSpace(unavailableReason);
+    }
+
+    private static string? ResolveActionUnavailableReason(
+        string actionId,
+        ActionSpec spec,
+        AttachSession session)
+    {
+        if (IsDependencyDisabledAction(actionId, session))
         {
-            var disabledIds = disabledIdsRaw.Split(',', StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries);
-            if (disabledIds.Any(x => x.Equals(actionId, StringComparison.OrdinalIgnoreCase)))
-            {
-                unavailableReason = "action is disabled by dependency validation for this attachment.";
-                return false;
-            }
+            return "action is disabled by dependency validation for this attachment.";
         }
 
+        var requiredSymbol = ResolveRequiredSymbolForSessionGate(actionId, spec);
+        if (string.IsNullOrWhiteSpace(requiredSymbol))
+        {
+            return null;
+        }
+
+        if (session.Symbols.TryGetValue(requiredSymbol, out _))
+        {
+            return null;
+        }
+
+        return $"required symbol '{requiredSymbol}' is unresolved for this attachment.";
+    }
+
+    private static bool IsDependencyDisabledAction(string actionId, AttachSession session)
+    {
+        if (session.Process.Metadata is null ||
+            !session.Process.Metadata.TryGetValue("dependencyDisabledActions", out var disabledIdsRaw) ||
+            string.IsNullOrWhiteSpace(disabledIdsRaw))
+        {
+            return false;
+        }
+
+        var disabledIds = disabledIdsRaw.Split(',', StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries);
+        return disabledIds.Any(x => x.Equals(actionId, StringComparison.OrdinalIgnoreCase));
+    }
+
+    private static string? ResolveRequiredSymbolForSessionGate(string actionId, ActionSpec spec)
+    {
         if (spec.ExecutionKind is not (ExecutionKind.Memory or ExecutionKind.CodePatch or ExecutionKind.Freeze))
         {
-            return true;
+            return null;
         }
 
         if (!spec.PayloadSchema.TryGetPropertyValue("required", out var requiredNode) || requiredNode is not JsonArray required)
         {
-            return true;
+            return null;
         }
 
         var requiresSymbol = required.Any(x => string.Equals(x?.GetValue<string>(), "symbol", StringComparison.OrdinalIgnoreCase));
         if (!requiresSymbol)
         {
-            return true;
+            return null;
         }
 
-        if (!DefaultSymbolByActionId.TryGetValue(actionId, out var symbol) || string.IsNullOrWhiteSpace(symbol))
-        {
-            return true;
-        }
-
-        if (session.Symbols.TryGetValue(symbol, out _))
-        {
-            return true;
-        }
-
-        unavailableReason = $"required symbol '{symbol}' is unresolved for this attachment.";
-        return false;
+        return DefaultSymbolByActionId.TryGetValue(actionId, out var symbol) && !string.IsNullOrWhiteSpace(symbol)
+            ? symbol
+            : null;
     }
 
     private async Task<ActionSpec?> ResolveActionSpecAsync(string actionId)
@@ -2259,42 +2280,31 @@ public sealed class MainViewModel : INotifyPropertyChanged
             return string.Empty;
         }
 
-        var backend = TryGetDiagnosticString(result.Diagnostics, "backendRoute")
-            ?? TryGetDiagnosticString(result.Diagnostics, "backend");
-        var routeReasonCode = TryGetDiagnosticString(result.Diagnostics, "routeReasonCode")
-            ?? TryGetDiagnosticString(result.Diagnostics, "reasonCode");
-        var capabilityProbeReasonCode = TryGetDiagnosticString(result.Diagnostics, "capabilityProbeReasonCode")
-            ?? TryGetDiagnosticString(result.Diagnostics, "probeReasonCode");
-        var hookState = TryGetDiagnosticString(result.Diagnostics, "hookState");
-        var hybridExecution = TryGetDiagnosticString(result.Diagnostics, "hybridExecution");
-
         var segments = new List<string>(capacity: 5);
-        if (!string.IsNullOrWhiteSpace(backend))
-        {
-            segments.Add($"backend={backend}");
-        }
-
-        if (!string.IsNullOrWhiteSpace(routeReasonCode))
-        {
-            segments.Add($"routeReasonCode={routeReasonCode}");
-        }
-
-        if (!string.IsNullOrWhiteSpace(capabilityProbeReasonCode))
-        {
-            segments.Add($"capabilityProbeReasonCode={capabilityProbeReasonCode}");
-        }
-
-        if (!string.IsNullOrWhiteSpace(hookState))
-        {
-            segments.Add($"hookState={hookState}");
-        }
-
-        if (!string.IsNullOrWhiteSpace(hybridExecution))
-        {
-            segments.Add($"hybridExecution={hybridExecution}");
-        }
+        AppendDiagnosticSegment(segments, result.Diagnostics, "backend", "backendRoute", "backend");
+        AppendDiagnosticSegment(segments, result.Diagnostics, "routeReasonCode", "routeReasonCode", "reasonCode");
+        AppendDiagnosticSegment(segments, result.Diagnostics, "capabilityProbeReasonCode", "capabilityProbeReasonCode", "probeReasonCode");
+        AppendDiagnosticSegment(segments, result.Diagnostics, "hookState", "hookState");
+        AppendDiagnosticSegment(segments, result.Diagnostics, "hybridExecution", "hybridExecution");
 
         return segments.Count == 0 ? string.Empty : $" [{string.Join(", ", segments)}]";
+    }
+
+    private static void AppendDiagnosticSegment(
+        ICollection<string> segments,
+        IReadOnlyDictionary<string, object?> diagnostics,
+        string segmentKey,
+        params string[] candidateKeys)
+    {
+        foreach (var key in candidateKeys)
+        {
+            var value = TryGetDiagnosticString(diagnostics, key);
+            if (!string.IsNullOrWhiteSpace(value))
+            {
+                segments.Add($"{segmentKey}={value}");
+                return;
+            }
+        }
     }
 
     private static string? TryGetDiagnosticString(IReadOnlyDictionary<string, object?> diagnostics, string key)
