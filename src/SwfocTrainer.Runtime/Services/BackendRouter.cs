@@ -20,7 +20,7 @@ public sealed class BackendRouter : IBackendRouter
         ProcessMetadata process,
         CapabilityReport capabilityReport)
     {
-        var isHybridManagedAction = IsHybridManagedAction(request.Action.Id);
+        var isHybridManagedAction = IsHybridManagedAction(request.Action.Id, profile, process);
         var defaultBackend = MapDefaultBackend(request.Action.ExecutionKind, isHybridManagedAction);
         var preferredBackend = ResolvePreferredBackend(profile.BackendPreference, defaultBackend, isHybridManagedAction);
         var isMutating = IsMutating(request.Action.Id);
@@ -293,10 +293,20 @@ public sealed class BackendRouter : IBackendRouter
         return required.ToArray();
     }
 
-    private static bool IsHybridManagedAction(string actionId)
+    private static bool IsHybridManagedAction(
+        string actionId,
+        TrainerProfile profile,
+        ProcessMetadata process)
     {
-        return !string.IsNullOrWhiteSpace(actionId) &&
+        return IsFoCContext(profile, process) &&
+               !string.IsNullOrWhiteSpace(actionId) &&
                HybridManagedActionIds.Contains(actionId);
+    }
+
+    private static bool IsFoCContext(TrainerProfile profile, ProcessMetadata process)
+    {
+        return profile.ExeTarget == ExeTarget.Swfoc ||
+               process.ExeTarget == ExeTarget.Swfoc;
     }
 
     private readonly record struct BackendDiagnosticsContext(
