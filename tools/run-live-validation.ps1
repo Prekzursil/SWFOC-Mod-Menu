@@ -124,7 +124,7 @@ function Invoke-LiveTest {
         [Parameter(Mandatory = $true)][string]$TrxName
     )
 
-    Write-Output "=== Running $Name ==="
+    Write-Information "=== Running $Name ===" -InformationAction Continue
 
     $dotnetArgs = @(
         "test",
