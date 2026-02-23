@@ -4,6 +4,17 @@
   "inherits": "aotr_1397421866_swfoc",
   "exeTarget": "Swfoc",
   "steamWorkshopId": "3447786229",
+  "backendPreference": "auto",
+  "requiredCapabilities": [
+    "set_credits",
+    "set_hero_state_helper",
+    "toggle_roe_respawn_helper"
+  ],
+  "hostPreference": "starwarsg_preferred",
+  "experimentalFeatures": [
+    "toggle_fog_reveal",
+    "freeze_timer"
+  ],
   "signatureSets": [],
   "fallbackOffsets": {},
   "actions": {

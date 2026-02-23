@@ -1,0 +1,34 @@
+{
+  "testName": "LiveRoeRuntimeHealthTests",
+  "profileId": "roe_3447786229_swfoc",
+  "process": {
+    "ProcessId": 32952,
+    "ProcessName": "StarWarsG",
+    "HostRole": 2,
+    "SelectionScore": 2523.369344,
+    "WorkshopMatchCount": 2
+  },
+  "result": {
+    "Succeeded": true,
+    "Message": "Credits one-shot applied via extender economy plugin.",
+    "backendRoute": "Extender",
+    "routeReasonCode": "CAPABILITY_PROBE_PASS",
+    "capabilityProbeReasonCode": "CAPABILITY_PROBE_PASS",
+    "hookState": "HOOK_ONESHOT",
+    "diagnostics": {
+      "reasonCode": "CAPABILITY_PROBE_PASS",
+      "backend": "extender",
+      "hookState": "HOOK_ONESHOT",
+      "extenderCommandId": "4ae31ddcf2e74e9d9382eb473ae9e69b",
+      "probeReasonCode": "CAPABILITY_PROBE_PASS",
+      "hookInstalled": "true",
+      "intValue": "0",
+      "lockCredits": "false",
+      "backendRoute": "Extender",
+      "routeReasonCode": "CAPABILITY_PROBE_PASS",
+      "capabilityProbeReasonCode": "CAPABILITY_PROBE_PASS",
+      "capabilityCount": 2
+    }
+  },
+  "capturedAtUtc": "2026-02-18T21:40:41.3616719+00:00"
+}

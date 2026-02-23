@@ -8,6 +8,7 @@ Profile-driven trainer/editor for **Star Wars: Empire at War / Forces of Corrupt
 - `base_swfoc` (base Forces of Corruption)
 - `aotr_1397421866_swfoc` (Awakening of the Rebellion)
 - `roe_3447786229_swfoc` (ROE submod)
+- `universal_auto` (user-facing auto resolver that maps to concrete internal profile variants)
 
 ## What This Repository Contains
 
@@ -131,6 +132,24 @@ pwsh ./tools/validate-repro-bundle.ps1 -BundlePath TestResults/runs/<runId>/repr
 ```
 
 Runtime/mod triage should attach `repro-bundle.json` + `repro-bundle.md` from `TestResults/runs/<runId>/`.
+
+## R&D Research Tooling (Deep RE Track)
+
+```powershell
+pwsh ./tools/research/run-capability-intel.ps1 -ModulePath "C:\\Games\\Star Wars Empire at War\\corruption\\swfoc.exe" -ProfilePath profiles/default/profiles/base_swfoc.json
+pwsh ./tools/research/capture-binary-fingerprint.ps1 -ModulePath "C:\\Games\\Star Wars Empire at War\\corruption\\swfoc.exe"
+pwsh ./tools/research/generate-signature-candidates.ps1 -FingerprintPath TestResults/research/<runId>/fingerprint.json
+pwsh ./tools/research/normalize-signature-pack.ps1 -InputPath TestResults/research/<runId>/signature-pack.json
+pwsh ./tools/validate-binary-fingerprint.ps1 -FingerprintPath tools/fixtures/binary_fingerprint_sample.json -SchemaPath tools/schemas/binary-fingerprint.schema.json -Strict
+pwsh ./tools/validate-signature-pack.ps1 -SignaturePackPath tools/fixtures/signature_pack_sample.json -SchemaPath tools/schemas/signature-pack.schema.json -Strict
+```
+
+Contracts:
+
+- `docs/RESEARCH_GAME_WORKFLOW.md`
+- `tools/research/build-fingerprint.md`
+- `tools/schemas/binary-fingerprint.schema.json`
+- `tools/schemas/signature-pack.schema.json`
 
 ## Save Patch-Pack Tooling
 

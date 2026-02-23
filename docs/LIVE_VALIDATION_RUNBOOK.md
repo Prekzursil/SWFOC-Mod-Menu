@@ -5,6 +5,8 @@ Use this runbook to gather real-machine evidence for runtime/mod issues and mile
 ## 1. Preconditions
 
 - Launch the target game session first (`swfoc.exe` / `StarWarsG.exe`).
+- Ensure extender bridge host is running for extender-routed credits checks:
+  - `SwfocExtender.Host` on pipe `SwfocExtenderBridge`.
 - For AOTR: ensure launch context resolves to `aotr_1397421866_swfoc`.
 - For ROE: ensure launch context resolves to `roe_3447786229_swfoc`.
 - From repo root, run on Windows PowerShell.
@@ -19,6 +21,18 @@ pwsh ./tools/run-live-validation.ps1 `
   -EmitReproBundle $true `
   -FailOnMissingArtifacts `
   -Strict
+```
+
+Final ROE hard gate (fails if bundle classification is blocked):
+
+```powershell
+pwsh ./tools/run-live-validation.ps1 `
+  -Configuration Release `
+  -NoBuild `
+  -Scope ROE `
+  -EmitReproBundle $true `
+  -Strict `
+  -RequireNonBlockedClassification
 ```
 
 Optional scope-specific runs:
@@ -36,23 +50,34 @@ Per run, artifacts are emitted under:
 - `TestResults/runs/<runId>/`
 
 Expected outputs:
+
 - `*-live-tactical.trx`
 - `*-live-hero-helper.trx`
 - `*-live-roe-health.trx`
 - `*-live-credits.trx`
 - `launch-context-fixture.json`
 - `live-validation-summary.json`
+- `live-roe-runtime-evidence.json` (when ROE runtime health test executes set_credits path)
 - `repro-bundle.json`
 - `repro-bundle.md`
 - `issue-34-evidence-template.md`
 - `issue-19-evidence-template.md`
 
 `repro-bundle.json` classification values:
+
 - `passed`
 - `skipped`
 - `failed`
 - `blocked_environment`
 - `blocked_profile_mismatch`
+
+vNext bundle sections (required for runtime-affecting changes):
+
+- `selectedHostProcess`
+- `backendRouteDecision`
+- `capabilityProbeSnapshot`
+- `hookInstallReport`
+- `overlayState`
 
 ## 4. Bundle Validation
 
@@ -76,9 +101,13 @@ Do not close issues from placeholder-only or skip-only runs.
 ## 6. Closure Criteria
 
 Close issues only when all required evidence is present:
+
 - At least one successful tactical toggle + revert in tactical mode.
 - Helper workflow evidence for both AOTR and ROE.
 - Launch recommendation reason code + confidence captured.
+- Selected host process includes deterministic host ranking diagnostics (`hostRole`, `selectionScore`).
+- Backend route and capability probe sections are present with explicit reason codes.
+- Extender credits path evidence includes `backendRoute=Extender` and hook state tag (`HOOK_LOCK` / `HOOK_ONESHOT`) in runtime diagnostics.
 - Valid `repro-bundle.json` linked in issue evidence.
 
 Then run:

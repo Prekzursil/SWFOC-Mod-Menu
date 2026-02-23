@@ -106,3 +106,16 @@ Reliability rule for runtime/mod tasks:
   evidence: workflow `.github/workflows/release-portable.yml`
   evidence: doc `docs/RELEASE_RUNBOOK.md`
   evidence: doc `docs/release-notes-template.md`
+- [x] R&D Deep RE-first universal profile foundation (fingerprint/capability pipeline, universal auto resolver, SDK safety gating, runtime mode probe metadata).
+  evidence: code `src/SwfocTrainer.Runtime/Services/ProfileVariantResolver.cs`
+  evidence: code `src/SwfocTrainer.Runtime/Services/RuntimeModeProbeResolver.cs`
+  evidence: code `src/SwfocTrainer.Core/Services/SdkOperationRouter.cs`
+  evidence: test `tests/SwfocTrainer.Tests/Runtime/BinaryFingerprintServiceTests.cs`
+  evidence: test `tests/SwfocTrainer.Tests/Runtime/CapabilityMapResolverTests.cs`
+  evidence: test `tests/SwfocTrainer.Tests/Runtime/ProfileVariantResolverTests.cs`
+  evidence: test `tests/SwfocTrainer.Tests/Runtime/RuntimeModeProbeResolverTests.cs`
+  evidence: test `tests/SwfocTrainer.Tests/Runtime/SdkExecutionGuardTests.cs`
+  evidence: test `tests/SwfocTrainer.Tests/Core/SdkOperationRouterTests.cs`
+  evidence: tool `tools/research/run-capability-intel.ps1`
+  evidence: tool `tools/validate-binary-fingerprint.ps1`
+  evidence: tool `tools/validate-signature-pack.ps1`

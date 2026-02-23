@@ -1,0 +1,6 @@
+{
+    "status":  "failed",
+    "reason":  "python_invocation_failed",
+    "detail":  "python produced no output. executable: [REDACTED_LOCAL_PYTHON_PATH]",
+    "generatedAtUtc":  "2026-02-18T21:41:26Z"
+}

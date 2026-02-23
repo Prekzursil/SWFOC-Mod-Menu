@@ -4,6 +4,10 @@
   "inherits": null,
   "exeTarget": "Sweaw",
   "steamWorkshopId": null,
+  "backendPreference": "auto",
+  "requiredCapabilities": [],
+  "hostPreference": "any",
+  "experimentalFeatures": [],
   "signatureSets": [
     {
       "name": "eaw_steam_legacy",

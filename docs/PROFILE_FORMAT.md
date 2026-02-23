@@ -15,6 +15,10 @@ Each profile JSON maps to `TrainerProfile` in `SwfocTrainer.Core`.
 - `saveSchemaId`
 - `helperModHooks`
 - `metadata`
+- `backendPreference` (`auto` | `extender` | `helper` | `memory`)
+- `requiredCapabilities` (array of feature IDs required for mutation route promotion)
+- `hostPreference` (`starwarsg_preferred` | `any`)
+- `experimentalFeatures` (array of feature IDs shown as experimental in diagnostics)
 
 ## Signature Fields
 
@@ -59,6 +63,7 @@ Runtime memory actions currently accept:
 Credits actions also support:
 
 - `set_credits`: `lockCredits` (optional, default `false`)
+- For FoC profiles, `set_credits` should use `executionKind: "Sdk"` so it is routed through extender capability gates.
 
 Backward compatibility:
 
@@ -149,6 +154,61 @@ Current reason codes:
 - `exe_target_sweaw`
 - `foc_safe_starwarsg_fallback`
 - `unknown`
+
+## Runtime Host Selection Diagnostics
+
+`ProcessMetadata` and attach diagnostics now include deterministic host-ranking fields:
+
+- `hostRole`
+  - `launcher` / `game_host` / `unknown`
+- `mainModuleSize`
+  - integer module memory size in bytes
+- `workshopMatchCount`
+  - number of required workshop IDs matched for the selected profile
+- `selectionScore`
+  - numeric ranking score used to break candidate ties deterministically
+
+For FoC profiles with `hostPreference=starwarsg_preferred`, host ranking prefers `StarWarsG.exe` over `swfoc.exe` when both are present.
+
+## Universal Auto Profile (R&D)
+
+- User-facing profile ID: `universal_auto`.
+- Purpose: provide one default selection while resolving to concrete internal variants (`base_sweaw`, `base_swfoc`, `aotr_1397421866_swfoc`, `roe_3447786229_swfoc`).
+- Resolution priority:
+  - executable family (`sweaw` vs `swfoc`),
+  - launch-context recommendation (workshop/modpath),
+  - fingerprint map default profile,
+  - safe fallback by exe target.
+
+Runtime diagnostics metadata keys:
+
+- `requestedProfileId`
+- `resolvedVariant`
+- `resolvedVariantReasonCode`
+- `resolvedVariantConfidence`
+- `resolvedVariantFingerprintId` (optional)
+- `runtimeModeHint`
+- `runtimeModeEffective`
+- `runtimeModeReasonCode`
+
+## SDK Capability Maps (R&D)
+
+Capability maps are fingerprint-scoped contracts stored under:
+
+- `profiles/default/sdk/maps/<fingerprintId>.json`
+
+Generated research artifacts:
+
+- `TestResults/research/<runId>/fingerprint.json`
+- `TestResults/research/<runId>/signature-pack.json`
+- `TestResults/research/<runId>/analysis-notes.md`
+
+Validation commands:
+
+```powershell
+pwsh ./tools/validate-binary-fingerprint.ps1 -FingerprintPath tools/fixtures/binary_fingerprint_sample.json -SchemaPath tools/schemas/binary-fingerprint.schema.json -Strict
+pwsh ./tools/validate-signature-pack.ps1 -SignaturePackPath tools/fixtures/signature_pack_sample.json -SchemaPath tools/schemas/signature-pack.schema.json -Strict
+```
 
 ## Tooling Contract
 

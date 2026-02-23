@@ -24,8 +24,8 @@ foreach ($required in $schema.required) {
     Require-ValidationField -Object $bundle -Field ([string]$required) -Errors $errors
 }
 
-if ($bundle.schemaVersion -ne "1.0") {
-    Add-ValidationError -Errors $errors -Message "schemaVersion must be 1.0"
+if ($bundle.schemaVersion -ne "1.1") {
+    Add-ValidationError -Errors $errors -Message "schemaVersion must be 1.1"
 }
 
 $allowedScopes = @("AOTR", "ROE", "TACTICAL", "FULL")
@@ -72,6 +72,27 @@ foreach ($required in @("profileId", "reasonCode", "confidence", "launchKind")) 
 
 foreach ($required in @("hint", "effective", "reasonCode")) {
     Require-ValidationField -Object $bundle.runtimeMode -Field $required -Errors $errors
+}
+
+foreach ($required in @("pid", "name", "hostRole", "selectionScore")) {
+    $allowNull = $required -in @("pid", "name")
+    Require-ValidationField -Object $bundle.selectedHostProcess -Field $required -Errors $errors -AllowNull:$allowNull
+}
+
+foreach ($required in @("backend", "allowed", "reasonCode")) {
+    Require-ValidationField -Object $bundle.backendRouteDecision -Field $required -Errors $errors
+}
+
+foreach ($required in @("backend", "probeReasonCode", "capabilityCount")) {
+    Require-ValidationField -Object $bundle.capabilityProbeSnapshot -Field $required -Errors $errors
+}
+
+foreach ($required in @("state", "reasonCode")) {
+    Require-ValidationField -Object $bundle.hookInstallReport -Field $required -Errors $errors
+}
+
+foreach ($required in @("available", "visible", "reasonCode")) {
+    Require-ValidationField -Object $bundle.overlayState -Field $required -Errors $errors
 }
 
 foreach ($required in @("dependencyState", "helperReadiness", "symbolHealthSummary")) {

@@ -1,5 +1,5 @@
 {
-  "schemaVersion": "1.0",
+  "schemaVersion": "1.1",
   "runId": "sample-20260217",
   "startedAtUtc": "2026-02-17T00:00:00Z",
   "scope": "AOTR",
@@ -22,6 +22,38 @@
     "hint": "Unknown",
     "effective": "Tactical",
     "reasonCode": "tactical_test_passed"
+  },
+  "selectedHostProcess": {
+    "pid": 4242,
+    "name": "StarWarsG.exe",
+    "hostRole": "game_host",
+    "selectionScore": 1213.42,
+    "workshopMatchCount": 1,
+    "mainModuleSize": 303104000
+  },
+  "backendRouteDecision": {
+    "backend": "memory",
+    "allowed": true,
+    "reasonCode": "CAPABILITY_BACKEND_UNAVAILABLE",
+    "message": "Collector fallback route."
+  },
+  "capabilityProbeSnapshot": {
+    "backend": "extender",
+    "probeReasonCode": "CAPABILITY_BACKEND_UNAVAILABLE",
+    "capabilityCount": 0,
+    "requiredCapabilities": [
+      "set_credits"
+    ]
+  },
+  "hookInstallReport": {
+    "state": "unknown",
+    "reasonCode": "HOOK_INSTALL_FAILED",
+    "details": "Not captured in sample."
+  },
+  "overlayState": {
+    "available": false,
+    "visible": false,
+    "reasonCode": "CAPABILITY_BACKEND_UNAVAILABLE"
   },
   "liveTests": [
     {

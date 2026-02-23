@@ -25,10 +25,13 @@ public sealed class ProfileInheritanceTests
         profile.Actions.Should().ContainKey("toggle_roe_respawn_helper");
         profile.HelperModHooks.Should().NotBeEmpty();
         profile.FeatureFlags.Should().ContainKey("roe_profile");
+        profile.HostPreference.Should().Be("starwarsg_preferred");
+        profile.BackendPreference.Should().Be("auto");
+        profile.RequiredCapabilities.Should().Contain("set_credits");
     }
 
     [Fact]
-    public async Task Manifest_Should_List_All_Four_Target_Profiles()
+    public async Task Manifest_Should_List_All_Target_Profiles()
     {
         var root = TestPaths.FindRepoRoot();
         var options = new ProfileRepositoryOptions
@@ -43,7 +46,8 @@ public sealed class ProfileInheritanceTests
             "base_sweaw",
             "base_swfoc",
             "aotr_1397421866_swfoc",
-            "roe_3447786229_swfoc"
+            "roe_3447786229_swfoc",
+            "universal_auto"
         ]);
     }
 }

@@ -14,7 +14,11 @@ public sealed record ProcessMetadata(
     ExeTarget ExeTarget,
     RuntimeMode Mode,
     IReadOnlyDictionary<string, string>? Metadata = null,
-    LaunchContext? LaunchContext = null);
+    LaunchContext? LaunchContext = null,
+    ProcessHostRole HostRole = ProcessHostRole.Unknown,
+    int MainModuleSize = 0,
+    int WorkshopMatchCount = 0,
+    double SelectionScore = 0d);
 
 public sealed record ProfileRecommendation(
     string? ProfileId,

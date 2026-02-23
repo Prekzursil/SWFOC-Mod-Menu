@@ -45,3 +45,19 @@ mod_resources.txt
 
 # Optional local calibration outputs
 artifacts/calibration/
+
+# Native extender local builds/runtime artifacts
+native/build/
+native/build-*/
+native/**/CMakeFiles/
+native/**/CMakeCache.txt
+native/**/cmake_install.cmake
+native/**/Makefile
+native/**/*.ninja
+native/**/*.ninja_deps
+native/**/*.ninja_log
+native/**/*.vcxproj*
+native/**/*.sln
+native/runtime/
+native/logs/
+*.pid

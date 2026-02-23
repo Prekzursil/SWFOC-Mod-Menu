@@ -4,6 +4,16 @@
   "inherits": "base_swfoc",
   "exeTarget": "Swfoc",
   "steamWorkshopId": "1397421866",
+  "backendPreference": "auto",
+  "requiredCapabilities": [
+    "set_credits",
+    "set_hero_state_helper"
+  ],
+  "hostPreference": "starwarsg_preferred",
+  "experimentalFeatures": [
+    "toggle_fog_reveal",
+    "freeze_timer"
+  ],
   "signatureSets": [],
   "fallbackOffsets": {},
   "actions": {
