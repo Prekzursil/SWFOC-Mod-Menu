@@ -48,6 +48,12 @@ public sealed class RuntimeAdapter : IRuntimeAdapter
     private const string DiagnosticKeyHookState = "hookState";
     private const string DiagnosticKeyCreditsStateTag = "creditsStateTag";
     private const string DiagnosticKeyState = "state";
+    private static readonly string[] ResultHookStateKeys =
+    [
+        DiagnosticKeyHookState,
+        DiagnosticKeyCreditsStateTag,
+        DiagnosticKeyState
+    ];
 
     private static readonly HashSet<string> HybridManagedActionIds = new(StringComparer.OrdinalIgnoreCase)
     {
@@ -1040,31 +1046,36 @@ public sealed class RuntimeAdapter : IRuntimeAdapter
         IReadOnlyDictionary<string, object?>? capabilityDiagnostics,
         bool hybridExecution)
     {
-        if (TryReadDiagnosticString(resultDiagnostics, DiagnosticKeyHookState, out var hookState) &&
-            !string.IsNullOrWhiteSpace(hookState))
+        if (TryResolveFirstDiagnosticValue(resultDiagnostics, ResultHookStateKeys, out var hookState))
         {
             return hookState!;
         }
 
-        if (TryReadDiagnosticString(resultDiagnostics, DiagnosticKeyCreditsStateTag, out var creditsState) &&
-            !string.IsNullOrWhiteSpace(creditsState))
-        {
-            return creditsState!;
-        }
-
-        if (TryReadDiagnosticString(resultDiagnostics, DiagnosticKeyState, out var stateTag) &&
-            !string.IsNullOrWhiteSpace(stateTag))
-        {
-            return stateTag!;
-        }
-
-        if (TryReadDiagnosticString(capabilityDiagnostics, DiagnosticKeyHookState, out var probeHookState) &&
-            !string.IsNullOrWhiteSpace(probeHookState))
+        if (TryResolveFirstDiagnosticValue(capabilityDiagnostics, [DiagnosticKeyHookState], out var probeHookState))
         {
             return probeHookState!;
         }
 
         return hybridExecution ? "managed" : "unknown";
+    }
+
+    private static bool TryResolveFirstDiagnosticValue(
+        IReadOnlyDictionary<string, object?>? diagnostics,
+        IReadOnlyList<string> keys,
+        out string? value)
+    {
+        value = null;
+        foreach (var key in keys)
+        {
+            if (TryReadDiagnosticString(diagnostics, key, out var resolved) &&
+                !string.IsNullOrWhiteSpace(resolved))
+            {
+                value = resolved;
+                return true;
+            }
+        }
+
+        return false;
     }
 
     private static bool TryReadDiagnosticString(
