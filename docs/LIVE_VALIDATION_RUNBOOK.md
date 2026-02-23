@@ -78,6 +78,7 @@ vNext bundle sections (required for runtime-affecting changes):
 - `capabilityProbeSnapshot`
 - `hookInstallReport`
 - `overlayState`
+- `actionStatusDiagnostics` (captured status strings for promoted quick action/hotkey flows)
 
 ## 4. Bundle Validation
 
@@ -108,6 +109,7 @@ Close issues only when all required evidence is present:
 - Selected host process includes deterministic host ranking diagnostics (`hostRole`, `selectionScore`).
 - Backend route and capability probe sections are present with explicit reason codes.
 - Extender credits path evidence includes `backendRoute=Extender` and hook state tag (`HOOK_LOCK` / `HOOK_ONESHOT`) in runtime diagnostics.
+- Captured action status diagnostics include `backend`, `routeReasonCode`, `capabilityProbeReasonCode`, and when present `hookState`/`hybridExecution`.
 - Valid `repro-bundle.json` linked in issue evidence.
 
 Then run:

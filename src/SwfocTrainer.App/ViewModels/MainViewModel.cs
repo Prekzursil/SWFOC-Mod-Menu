@@ -986,6 +986,16 @@ public sealed class MainViewModel : INotifyPropertyChanged
 
     private static bool IsActionAvailableForCurrentSession(string actionId, ActionSpec spec, AttachSession session)
     {
+        return IsActionAvailableForCurrentSession(actionId, spec, session, out _);
+    }
+
+    private static bool IsActionAvailableForCurrentSession(
+        string actionId,
+        ActionSpec spec,
+        AttachSession session,
+        out string? unavailableReason)
+    {
+        unavailableReason = null;
         if (session.Process.Metadata is not null &&
             session.Process.Metadata.TryGetValue("dependencyDisabledActions", out var disabledIdsRaw) &&
             !string.IsNullOrWhiteSpace(disabledIdsRaw))
@@ -993,6 +1003,7 @@ public sealed class MainViewModel : INotifyPropertyChanged
             var disabledIds = disabledIdsRaw.Split(',', StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries);
             if (disabledIds.Any(x => x.Equals(actionId, StringComparison.OrdinalIgnoreCase)))
             {
+                unavailableReason = "action is disabled by dependency validation for this attachment.";
                 return false;
             }
         }
@@ -1018,7 +1029,63 @@ public sealed class MainViewModel : INotifyPropertyChanged
             return true;
         }
 
-        return session.Symbols.TryGetValue(symbol, out _);
+        if (session.Symbols.TryGetValue(symbol, out _))
+        {
+            return true;
+        }
+
+        unavailableReason = $"required symbol '{symbol}' is unresolved for this attachment.";
+        return false;
+    }
+
+    private async Task<ActionSpec?> ResolveActionSpecAsync(string actionId)
+    {
+        if (_loadedActionSpecs.TryGetValue(actionId, out var actionSpec))
+        {
+            return actionSpec;
+        }
+
+        if (string.IsNullOrWhiteSpace(SelectedProfileId))
+        {
+            return null;
+        }
+
+        try
+        {
+            var profile = await _profiles.ResolveInheritedProfileAsync(SelectedProfileId);
+            _loadedActionSpecs = profile.Actions;
+            return _loadedActionSpecs.TryGetValue(actionId, out actionSpec) ? actionSpec : null;
+        }
+        catch
+        {
+            return null;
+        }
+    }
+
+    private async Task<bool> EnsureActionAvailableForCurrentSessionAsync(string actionId, string statusPrefix)
+    {
+        var session = _runtime.CurrentSession;
+        if (session is null)
+        {
+            return true;
+        }
+
+        var actionSpec = await ResolveActionSpecAsync(actionId);
+        if (actionSpec is null)
+        {
+            return true;
+        }
+
+        if (IsActionAvailableForCurrentSession(actionId, actionSpec, session, out var unavailableReason))
+        {
+            return true;
+        }
+
+        var reason = string.IsNullOrWhiteSpace(unavailableReason)
+            ? "action is unavailable for this attachment."
+            : unavailableReason;
+        Status = $"✗ {statusPrefix}: {reason}";
+        return false;
     }
 
     private async Task DetachAsync()
@@ -1092,8 +1159,8 @@ public sealed class MainViewModel : INotifyPropertyChanged
                 RuntimeMode,
                 BuildActionContext(SelectedActionId));
             Status = result.Succeeded
-                ? $"Action succeeded: {result.Message}{BuildBackendRouteSuffix(result)}"
-                : $"Action failed: {result.Message}{BuildBackendRouteSuffix(result)}";
+                ? $"Action succeeded: {result.Message}{BuildDiagnosticsStatusSuffix(result)}"
+                : $"Action failed: {result.Message}{BuildDiagnosticsStatusSuffix(result)}";
         }
         catch (Exception ex)
         {
@@ -2185,24 +2252,49 @@ public sealed class MainViewModel : INotifyPropertyChanged
         };
     }
 
-    private static string BuildBackendRouteSuffix(ActionExecutionResult result)
+    private static string BuildDiagnosticsStatusSuffix(ActionExecutionResult result)
     {
         if (result.Diagnostics is null)
         {
             return string.Empty;
         }
 
-        var backend = TryGetDiagnosticString(result.Diagnostics, "backendRoute");
-        var reason = TryGetDiagnosticString(result.Diagnostics, "routeReasonCode")
+        var backend = TryGetDiagnosticString(result.Diagnostics, "backendRoute")
+            ?? TryGetDiagnosticString(result.Diagnostics, "backend");
+        var routeReasonCode = TryGetDiagnosticString(result.Diagnostics, "routeReasonCode")
             ?? TryGetDiagnosticString(result.Diagnostics, "reasonCode");
-        if (string.IsNullOrWhiteSpace(backend) && string.IsNullOrWhiteSpace(reason))
+        var capabilityProbeReasonCode = TryGetDiagnosticString(result.Diagnostics, "capabilityProbeReasonCode")
+            ?? TryGetDiagnosticString(result.Diagnostics, "probeReasonCode");
+        var hookState = TryGetDiagnosticString(result.Diagnostics, "hookState");
+        var hybridExecution = TryGetDiagnosticString(result.Diagnostics, "hybridExecution");
+
+        var segments = new List<string>(capacity: 5);
+        if (!string.IsNullOrWhiteSpace(backend))
         {
-            return string.Empty;
+            segments.Add($"backend={backend}");
         }
 
-        var backendText = string.IsNullOrWhiteSpace(backend) ? "unknown" : backend;
-        var reasonText = string.IsNullOrWhiteSpace(reason) ? "unknown" : reason;
-        return $" [backend={backendText}, reason={reasonText}]";
+        if (!string.IsNullOrWhiteSpace(routeReasonCode))
+        {
+            segments.Add($"routeReasonCode={routeReasonCode}");
+        }
+
+        if (!string.IsNullOrWhiteSpace(capabilityProbeReasonCode))
+        {
+            segments.Add($"capabilityProbeReasonCode={capabilityProbeReasonCode}");
+        }
+
+        if (!string.IsNullOrWhiteSpace(hookState))
+        {
+            segments.Add($"hookState={hookState}");
+        }
+
+        if (!string.IsNullOrWhiteSpace(hybridExecution))
+        {
+            segments.Add($"hybridExecution={hybridExecution}");
+        }
+
+        return segments.Count == 0 ? string.Empty : $" [{string.Join(", ", segments)}]";
     }
 
     private static string? TryGetDiagnosticString(IReadOnlyDictionary<string, object?> diagnostics, string key)
@@ -2223,6 +2315,7 @@ public sealed class MainViewModel : INotifyPropertyChanged
     private async Task QuickRunActionAsync(string actionId, JsonObject payload, string? toggleKey = null)
     {
         if (!_runtime.IsAttached || string.IsNullOrWhiteSpace(SelectedProfileId)) return;
+        if (!await EnsureActionAvailableForCurrentSessionAsync(actionId, actionId)) return;
         try
         {
             var result = await _orchestrator.ExecuteAsync(
@@ -2239,8 +2332,8 @@ public sealed class MainViewModel : INotifyPropertyChanged
                     _activeToggles.Add(toggleKey);
             }
             Status = result.Succeeded
-                ? $"✓ {actionId}: {result.Message}{BuildBackendRouteSuffix(result)}"
-                : $"✗ {actionId}: {result.Message}{BuildBackendRouteSuffix(result)}";
+                ? $"✓ {actionId}: {result.Message}{BuildDiagnosticsStatusSuffix(result)}"
+                : $"✗ {actionId}: {result.Message}{BuildDiagnosticsStatusSuffix(result)}";
         }
         catch (Exception ex)
         {
@@ -2259,6 +2352,11 @@ public sealed class MainViewModel : INotifyPropertyChanged
         if (!_runtime.IsAttached || string.IsNullOrWhiteSpace(SelectedProfileId))
         {
             Status = "✗ Not attached to game.";
+            return;
+        }
+
+        if (!await EnsureActionAvailableForCurrentSessionAsync("set_credits", "Credits"))
+        {
             return;
         }
 
@@ -2287,10 +2385,11 @@ public sealed class MainViewModel : INotifyPropertyChanged
                 payload,
                 RuntimeMode,
                 BuildActionContext("set_credits"));
+            var diagnosticsSuffix = BuildDiagnosticsStatusSuffix(result);
 
             if (!result.Succeeded)
             {
-                Status = $"✗ Credits: {result.Message}";
+                Status = $"✗ Credits: {result.Message}{diagnosticsSuffix}";
                 return;
             }
 
@@ -2308,22 +2407,22 @@ public sealed class MainViewModel : INotifyPropertyChanged
                     // Register with freeze service only for UI/diagnostics visibility.
                     _freezeService.FreezeInt("credits", value);
                     RefreshActiveFreezes();
-                    Status = $"✓ [HOOK_LOCK] Credits locked to {value:N0} (float+int hook active)";
+                    Status = $"✓ [HOOK_LOCK] Credits locked to {value:N0} (float+int hook active){diagnosticsSuffix}";
                 }
                 else
                 {
-                    Status = $"✗ Credits: unexpected state '{stateTag}' for lock mode.";
+                    Status = $"✗ Credits: unexpected state '{stateTag}' for lock mode.{diagnosticsSuffix}";
                 }
             }
             else
             {
                 if (stateTag.Equals("HOOK_ONESHOT", StringComparison.OrdinalIgnoreCase))
                 {
-                    Status = $"✓ [HOOK_ONESHOT] Credits set to {value:N0} (float+int sync)";
+                    Status = $"✓ [HOOK_ONESHOT] Credits set to {value:N0} (float+int sync){diagnosticsSuffix}";
                 }
                 else
                 {
-                    Status = $"✗ Credits: unexpected state '{stateTag}' for one-shot mode.";
+                    Status = $"✗ Credits: unexpected state '{stateTag}' for one-shot mode.{diagnosticsSuffix}";
                 }
             }
         }
@@ -2501,6 +2600,11 @@ public sealed class MainViewModel : INotifyPropertyChanged
             return false;
         }
 
+        if (!await EnsureActionAvailableForCurrentSessionAsync(binding.ActionId, $"Hotkey {gesture}"))
+        {
+            return true;
+        }
+
         JsonObject payloadNode;
         try
         {
@@ -2519,8 +2623,8 @@ public sealed class MainViewModel : INotifyPropertyChanged
             RuntimeMode,
             BuildActionContext(binding.ActionId));
         Status = result.Succeeded
-            ? $"Hotkey {gesture}: {binding.ActionId} succeeded"
-            : $"Hotkey {gesture}: {binding.ActionId} failed ({result.Message})";
+            ? $"Hotkey {gesture}: {binding.ActionId} succeeded{BuildDiagnosticsStatusSuffix(result)}"
+            : $"Hotkey {gesture}: {binding.ActionId} failed ({result.Message}){BuildDiagnosticsStatusSuffix(result)}";
 
         return true;
     }
