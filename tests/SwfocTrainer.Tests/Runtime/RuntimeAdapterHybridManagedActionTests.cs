@@ -91,9 +91,8 @@ public sealed class RuntimeAdapterHybridManagedActionTests
             return ExecuteAsync(request, CancellationToken.None);
         }
 
-        public Task<SdkOperationResult> ExecuteAsync(SdkOperationRequest request, CancellationToken cancellationToken)
+        public Task<SdkOperationResult> ExecuteAsync(SdkOperationRequest request, CancellationToken _)
         {
-            _ = cancellationToken;
             CallCount++;
             LastRequest = request;
             return Task.FromResult(new SdkOperationResult(
@@ -126,52 +125,41 @@ public sealed class RuntimeAdapterHybridManagedActionTests
 
     private sealed class NoOpProcessLocator : IProcessLocator
     {
-        public Task<IReadOnlyList<ProcessMetadata>> FindSupportedProcessesAsync(CancellationToken cancellationToken = default)
+        public Task<IReadOnlyList<ProcessMetadata>> FindSupportedProcessesAsync(CancellationToken _ = default)
         {
-            _ = cancellationToken;
             return Task.FromResult<IReadOnlyList<ProcessMetadata>>(Array.Empty<ProcessMetadata>());
         }
 
-        public Task<ProcessMetadata?> FindBestMatchAsync(ExeTarget target, CancellationToken cancellationToken = default)
+        public Task<ProcessMetadata?> FindBestMatchAsync(ExeTarget _, CancellationToken __ = default)
         {
-            _ = target;
-            _ = cancellationToken;
             return Task.FromResult<ProcessMetadata?>(null);
         }
     }
 
     private sealed class ThrowingProfileRepository : IProfileRepository
     {
-        public Task<ProfileManifest> LoadManifestAsync(CancellationToken cancellationToken = default)
+        public Task<ProfileManifest> LoadManifestAsync(CancellationToken _ = default)
         {
-            _ = cancellationToken;
             throw CreateNotUsedException();
         }
 
-        public Task<TrainerProfile> LoadProfileAsync(string profileId, CancellationToken cancellationToken = default)
+        public Task<TrainerProfile> LoadProfileAsync(string _, CancellationToken __ = default)
         {
-            _ = profileId;
-            _ = cancellationToken;
             throw CreateNotUsedException();
         }
 
-        public Task<TrainerProfile> ResolveInheritedProfileAsync(string profileId, CancellationToken cancellationToken = default)
+        public Task<TrainerProfile> ResolveInheritedProfileAsync(string _, CancellationToken __ = default)
         {
-            _ = profileId;
-            _ = cancellationToken;
             throw CreateNotUsedException();
         }
 
-        public Task ValidateProfileAsync(TrainerProfile profile, CancellationToken cancellationToken = default)
+        public Task ValidateProfileAsync(TrainerProfile _, CancellationToken __ = default)
         {
-            _ = profile;
-            _ = cancellationToken;
             throw CreateNotUsedException();
         }
 
-        public Task<IReadOnlyList<string>> ListAvailableProfilesAsync(CancellationToken cancellationToken = default)
+        public Task<IReadOnlyList<string>> ListAvailableProfilesAsync(CancellationToken _ = default)
         {
-            _ = cancellationToken;
             throw CreateNotUsedException();
         }
 
@@ -184,15 +172,11 @@ public sealed class RuntimeAdapterHybridManagedActionTests
     private sealed class EmptySignatureResolver : ISignatureResolver
     {
         public Task<SymbolMap> ResolveAsync(
-            ProfileBuild profileBuild,
-            IReadOnlyList<SignatureSet> signatureSets,
-            IReadOnlyDictionary<string, long> fallbackOffsets,
-            CancellationToken cancellationToken = default)
+            ProfileBuild _,
+            IReadOnlyList<SignatureSet> __,
+            IReadOnlyDictionary<string, long> ___,
+            CancellationToken ____ = default)
         {
-            _ = profileBuild;
-            _ = signatureSets;
-            _ = fallbackOffsets;
-            _ = cancellationToken;
             return Task.FromResult(new SymbolMap(new Dictionary<string, SymbolInfo>(StringComparer.OrdinalIgnoreCase)));
         }
     }
