@@ -955,6 +955,7 @@ public sealed class RuntimeAdapter : IRuntimeAdapter
         {
             ExecutionKind.Memory => await ExecuteMemoryActionAsync(request, cancellationToken),
             ExecutionKind.CodePatch => await ExecuteCodePatchActionAsync(request, cancellationToken),
+            ExecutionKind.Sdk => await ExecuteSdkActionAsync(request, cancellationToken),
             _ => new ActionExecutionResult(
                 false,
                 $"Hybrid managed execution does not support action '{request.Action.Id}' with execution kind '{request.Action.ExecutionKind}'.",
