@@ -45,6 +45,9 @@ public sealed class RuntimeAdapter : IRuntimeAdapter
     private const int InstantBuildHookInstructionLength = 6;
     private const int InstantBuildHookJumpLength = 5;
     private const int InstantBuildHookCaveSize = 31;
+    private const string DiagnosticKeyHookState = "hookState";
+    private const string DiagnosticKeyCreditsStateTag = "creditsStateTag";
+    private const string DiagnosticKeyState = "state";
 
     private static readonly HashSet<string> HybridManagedActionIds = new(StringComparer.OrdinalIgnoreCase)
     {
@@ -995,7 +998,7 @@ public sealed class RuntimeAdapter : IRuntimeAdapter
                 ["backendRoute"] = routeDecision.Backend.ToString(),
                 ["routeReasonCode"] = routeDecision.ReasonCode.ToString(),
                 ["capabilityProbeReasonCode"] = capabilityReport.ProbeReasonCode.ToString(),
-                ["hookState"] = hookState,
+                [DiagnosticKeyHookState] = hookState,
                 ["hybridExecution"] = hybridExecution,
                 ["capabilityCount"] = capabilityReport.Capabilities.Count
             });
@@ -1037,25 +1040,25 @@ public sealed class RuntimeAdapter : IRuntimeAdapter
         IReadOnlyDictionary<string, object?>? capabilityDiagnostics,
         bool hybridExecution)
     {
-        if (TryReadDiagnosticString(resultDiagnostics, "hookState", out var hookState) &&
+        if (TryReadDiagnosticString(resultDiagnostics, DiagnosticKeyHookState, out var hookState) &&
             !string.IsNullOrWhiteSpace(hookState))
         {
             return hookState!;
         }
 
-        if (TryReadDiagnosticString(resultDiagnostics, "creditsStateTag", out var creditsState) &&
+        if (TryReadDiagnosticString(resultDiagnostics, DiagnosticKeyCreditsStateTag, out var creditsState) &&
             !string.IsNullOrWhiteSpace(creditsState))
         {
             return creditsState!;
         }
 
-        if (TryReadDiagnosticString(resultDiagnostics, "state", out var stateTag) &&
+        if (TryReadDiagnosticString(resultDiagnostics, DiagnosticKeyState, out var stateTag) &&
             !string.IsNullOrWhiteSpace(stateTag))
         {
             return stateTag!;
         }
 
-        if (TryReadDiagnosticString(capabilityDiagnostics, "hookState", out var probeHookState) &&
+        if (TryReadDiagnosticString(capabilityDiagnostics, DiagnosticKeyHookState, out var probeHookState) &&
             !string.IsNullOrWhiteSpace(probeHookState))
         {
             return probeHookState!;
@@ -1887,7 +1890,7 @@ public sealed class RuntimeAdapter : IRuntimeAdapter
             if (isAlreadyPatched)
             {
                 return Task.FromResult(new ActionExecutionResult(true, $"Code patch '{symbol}' is already active.", symbolInfo.Source,
-                    new Dictionary<string, object?> { ["address"] = $"0x{address.ToInt64():X}", ["state"] = "already_patched" }));
+                    new Dictionary<string, object?> { ["address"] = $"0x{address.ToInt64():X}", [DiagnosticKeyState] = "already_patched" }));
             }
 
             if (!isOriginal)
@@ -1906,7 +1909,7 @@ public sealed class RuntimeAdapter : IRuntimeAdapter
                 new Dictionary<string, object?>
                 {
                     ["address"] = $"0x{address.ToInt64():X}",
-                    ["state"] = "patched",
+                    [DiagnosticKeyState] = "patched",
                     ["bytesWritten"] = BitConverter.ToString(patchBytes)
                 }));
         }
@@ -1923,7 +1926,7 @@ public sealed class RuntimeAdapter : IRuntimeAdapter
                     new Dictionary<string, object?>
                     {
                         ["address"] = $"0x{saved.Address.ToInt64():X}",
-                        ["state"] = "restored",
+                        [DiagnosticKeyState] = "restored",
                         ["bytesWritten"] = BitConverter.ToString(saved.OriginalBytes)
                     }));
             }
@@ -1931,7 +1934,7 @@ public sealed class RuntimeAdapter : IRuntimeAdapter
             // Patch not active — write original bytes anyway as a safety measure
             _memory!.WriteBytes(address, originalBytes, executablePatch: true);
             return Task.FromResult(new ActionExecutionResult(true, $"Code patch '{symbol}' was not active, wrote original bytes as safety restore.", symbolInfo.Source,
-                new Dictionary<string, object?> { ["address"] = $"0x{address.ToInt64():X}", ["state"] = "force_restored" }));
+                new Dictionary<string, object?> { ["address"] = $"0x{address.ToInt64():X}", [DiagnosticKeyState] = "force_restored" }));
         }
     }
 
@@ -2052,7 +2055,7 @@ public sealed class RuntimeAdapter : IRuntimeAdapter
         if (!hookAvailable)
         {
             diagnostics["hookError"] = patchResult.Message;
-            diagnostics["creditsStateTag"] = "HOOK_REQUIRED";
+            diagnostics[DiagnosticKeyCreditsStateTag] = "HOOK_REQUIRED";
             diagnostics["creditsRequestedValue"] = value;
             return new ActionExecutionResult(
                 false,
@@ -2109,7 +2112,7 @@ public sealed class RuntimeAdapter : IRuntimeAdapter
                 _memory.Write(_creditsHookLockEnabledAddress, 0);
             }
 
-            diagnostics["creditsStateTag"] = "HOOK_REQUIRED";
+            diagnostics[DiagnosticKeyCreditsStateTag] = "HOOK_REQUIRED";
             diagnostics["creditsRequestedValue"] = value;
             return new ActionExecutionResult(
                 false,
@@ -2165,7 +2168,7 @@ public sealed class RuntimeAdapter : IRuntimeAdapter
         message = lockCredits
             ? "[HOOK_LOCK] Set credits and enabled persistent lock (float+int sync)."
             : "[HOOK_ONESHOT] Set credits with one-shot float+int sync.";
-        diagnostics["creditsStateTag"] = stateTag;
+        diagnostics[DiagnosticKeyCreditsStateTag] = stateTag;
         diagnostics["creditsRequestedValue"] = value;
 
         return new ActionExecutionResult(
@@ -2226,7 +2229,7 @@ public sealed class RuntimeAdapter : IRuntimeAdapter
                 {
                     ["hookAddress"] = ToHex(_creditsHookInjectionAddress),
                     ["hookCaveAddress"] = ToHex(_creditsHookCodeCaveAddress),
-                    ["hookState"] = "already_installed"
+                    [DiagnosticKeyHookState] = "already_installed"
                 });
         }
 
@@ -2445,7 +2448,7 @@ public sealed class RuntimeAdapter : IRuntimeAdapter
                     ["hookAddress"] = ToHex(_unitCapHookInjectionAddress),
                     ["hookCaveAddress"] = ToHex(_unitCapHookCodeCaveAddress),
                     ["unitCapValue"] = capValue,
-                    ["state"] = "updated"
+                    [DiagnosticKeyState] = "updated"
                 });
         }
 
@@ -2499,7 +2502,7 @@ public sealed class RuntimeAdapter : IRuntimeAdapter
                     ["hookAddress"] = ToHex(injectionAddress),
                     ["hookCaveAddress"] = ToHex(caveAddress),
                     ["unitCapValue"] = capValue,
-                    ["state"] = "installed"
+                    [DiagnosticKeyState] = "installed"
                 });
         }
         catch (Exception ex)
@@ -2529,7 +2532,7 @@ public sealed class RuntimeAdapter : IRuntimeAdapter
         if (_unitCapHookOriginalBytesBackup is null || _unitCapHookInjectionAddress == nint.Zero)
         {
             return new ActionExecutionResult(true, "Unit cap hook is not active.", AddressSource.None,
-                new Dictionary<string, object?> { ["state"] = "not_active" });
+                new Dictionary<string, object?> { [DiagnosticKeyState] = "not_active" });
         }
 
         _memory.WriteBytes(_unitCapHookInjectionAddress, _unitCapHookOriginalBytesBackup, executablePatch: true);
@@ -2541,7 +2544,7 @@ public sealed class RuntimeAdapter : IRuntimeAdapter
         var address = _unitCapHookInjectionAddress;
         ClearUnitCapHookState();
         return new ActionExecutionResult(true, "Unit cap hook disabled and original bytes restored.", AddressSource.Signature,
-            new Dictionary<string, object?> { ["hookAddress"] = ToHex(address), ["state"] = "restored" });
+            new Dictionary<string, object?> { ["hookAddress"] = ToHex(address), [DiagnosticKeyState] = "restored" });
     }
 
     private ActionExecutionResult EnsureInstantBuildHookInstalled()
@@ -2561,7 +2564,7 @@ public sealed class RuntimeAdapter : IRuntimeAdapter
                 {
                     ["hookAddress"] = ToHex(_instantBuildHookInjectionAddress),
                     ["hookCaveAddress"] = ToHex(_instantBuildHookCodeCaveAddress),
-                    ["state"] = "already_installed"
+                    [DiagnosticKeyState] = "already_installed"
                 });
         }
 
@@ -2613,7 +2616,7 @@ public sealed class RuntimeAdapter : IRuntimeAdapter
                 {
                     ["hookAddress"] = ToHex(injectionAddress),
                     ["hookCaveAddress"] = ToHex(caveAddress),
-                    ["state"] = "installed"
+                    [DiagnosticKeyState] = "installed"
                 });
         }
         catch (Exception ex)
@@ -2643,7 +2646,7 @@ public sealed class RuntimeAdapter : IRuntimeAdapter
         if (_instantBuildHookOriginalBytesBackup is null || _instantBuildHookInjectionAddress == nint.Zero)
         {
             return new ActionExecutionResult(true, "Instant build hook is not active.", AddressSource.None,
-                new Dictionary<string, object?> { ["state"] = "not_active" });
+                new Dictionary<string, object?> { [DiagnosticKeyState] = "not_active" });
         }
 
         _memory.WriteBytes(_instantBuildHookInjectionAddress, _instantBuildHookOriginalBytesBackup, executablePatch: true);
@@ -2655,7 +2658,7 @@ public sealed class RuntimeAdapter : IRuntimeAdapter
         var address = _instantBuildHookInjectionAddress;
         ClearInstantBuildHookState();
         return new ActionExecutionResult(true, "Instant build hook disabled and original bytes restored.", AddressSource.Signature,
-            new Dictionary<string, object?> { ["hookAddress"] = ToHex(address), ["state"] = "restored" });
+            new Dictionary<string, object?> { ["hookAddress"] = ToHex(address), [DiagnosticKeyState] = "restored" });
     }
 
     private UnitCapHookResolution ResolveUnitCapHookInjectionAddress()

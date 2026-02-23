@@ -77,7 +77,7 @@ public sealed class BackendRouter : IBackendRouter
             ["profileRequiredCapabilities"] = context.ProfileRequiredCapabilities,
             ["requiredCapabilities"] = context.RequiredCapabilities,
             ["missingRequiredCapabilities"] = context.MissingRequired,
-            ["hybridExecution"] = context.IsHybridManagedAction
+            ["hybridExecution"] = context.IsHybridManagedRoute
         };
     }
 
@@ -309,5 +309,5 @@ public sealed class BackendRouter : IBackendRouter
         IReadOnlyList<string> ProfileRequiredCapabilities,
         IReadOnlyList<string> RequiredCapabilities,
         IReadOnlyList<string> MissingRequired,
-        bool IsHybridManagedAction);
+        bool IsHybridManagedRoute);
 }
