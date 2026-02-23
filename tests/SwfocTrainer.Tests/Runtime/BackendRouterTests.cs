@@ -8,6 +8,68 @@ namespace SwfocTrainer.Tests.Runtime;
 
 public sealed class BackendRouterTests
 {
+    [Theory]
+    [InlineData("freeze_timer", ExecutionKind.Memory)]
+    [InlineData("toggle_fog_reveal", ExecutionKind.Memory)]
+    [InlineData("toggle_ai", ExecutionKind.Memory)]
+    [InlineData("set_unit_cap", ExecutionKind.CodePatch)]
+    [InlineData("toggle_instant_build_patch", ExecutionKind.CodePatch)]
+    public void Resolve_ShouldPromoteHybridActions_ToExtender_WhenCapabilityIsAvailable(
+        string actionId,
+        ExecutionKind executionKind)
+    {
+        var router = new BackendRouter();
+        var request = BuildRequest(actionId, executionKind);
+        var profile = BuildProfile(backendPreference: "auto");
+        var process = BuildProcess();
+        var report = new CapabilityReport(
+            profile.Id,
+            DateTimeOffset.UtcNow,
+            new Dictionary<string, BackendCapability>(StringComparer.OrdinalIgnoreCase)
+            {
+                [actionId] = new BackendCapability(
+                    actionId,
+                    Available: true,
+                    CapabilityConfidenceState.Verified,
+                    RuntimeReasonCode.CAPABILITY_PROBE_PASS)
+            },
+            RuntimeReasonCode.CAPABILITY_PROBE_PASS);
+
+        var decision = router.Resolve(request, profile, process, report);
+
+        decision.Allowed.Should().BeTrue();
+        decision.Backend.Should().Be(ExecutionBackendKind.Extender);
+        decision.ReasonCode.Should().Be(RuntimeReasonCode.CAPABILITY_PROBE_PASS);
+        decision.Diagnostics.Should().ContainKey("hybridExecution");
+        decision.Diagnostics!["hybridExecution"].Should().Be(true);
+    }
+
+    [Theory]
+    [InlineData("freeze_timer", ExecutionKind.Memory)]
+    [InlineData("toggle_fog_reveal", ExecutionKind.Memory)]
+    [InlineData("toggle_ai", ExecutionKind.Memory)]
+    [InlineData("set_unit_cap", ExecutionKind.CodePatch)]
+    [InlineData("toggle_instant_build_patch", ExecutionKind.CodePatch)]
+    public void Resolve_ShouldBlockHybridActions_WhenCapabilityIsMissing(
+        string actionId,
+        ExecutionKind executionKind)
+    {
+        var router = new BackendRouter();
+        var request = BuildRequest(actionId, executionKind);
+        var profile = BuildProfile(backendPreference: "auto");
+        var process = BuildProcess();
+        var report = CapabilityReport.Unknown(profile.Id, RuntimeReasonCode.CAPABILITY_UNKNOWN);
+
+        var decision = router.Resolve(request, profile, process, report);
+
+        decision.Allowed.Should().BeFalse();
+        decision.Backend.Should().Be(ExecutionBackendKind.Extender);
+        decision.ReasonCode.Should().Be(RuntimeReasonCode.CAPABILITY_REQUIRED_MISSING);
+        decision.Diagnostics.Should().ContainKey("hybridExecution");
+        decision.Diagnostics!["hybridExecution"].Should().Be(true);
+        decision.Diagnostics.Should().NotContainKey("fallbackBackend");
+    }
+
     [Fact]
     public void Resolve_ShouldFailClosed_WhenExtenderIsRequiredButCapabilityUnknownForMutation()
     {
@@ -22,6 +84,32 @@ public sealed class BackendRouterTests
         decision.Allowed.Should().BeFalse();
         decision.Backend.Should().Be(ExecutionBackendKind.Extender);
         decision.ReasonCode.Should().Be(RuntimeReasonCode.SAFETY_FAIL_CLOSED);
+    }
+
+    [Fact]
+    public void Resolve_ShouldKeepLegacyMemoryRoute_ForHybridActionId_WhenProfileTargetsSweaw()
+    {
+        var router = new BackendRouter();
+        var request = BuildRequest("freeze_timer", ExecutionKind.Memory, profileId: "base_sweaw");
+        var profile = BuildProfile(
+            backendPreference: "auto",
+            id: "base_sweaw",
+            displayName: "Base EAW",
+            exeTarget: ExeTarget.Sweaw);
+        var process = BuildProcess(
+            exeTarget: ExeTarget.Sweaw,
+            processName: "sweaw.exe",
+            processPath: "C:/Games/EmpireAtWar/sweaw.exe",
+            commandLine: "sweaw.exe");
+        var report = CapabilityReport.Unknown(profile.Id, RuntimeReasonCode.CAPABILITY_UNKNOWN);
+
+        var decision = router.Resolve(request, profile, process, report);
+
+        decision.Allowed.Should().BeTrue();
+        decision.Backend.Should().Be(ExecutionBackendKind.Memory);
+        decision.ReasonCode.Should().Be(RuntimeReasonCode.CAPABILITY_PROBE_PASS);
+        decision.Diagnostics.Should().ContainKey("hybridExecution");
+        decision.Diagnostics!["hybridExecution"].Should().Be(false);
     }
 
     [Fact]
@@ -137,7 +225,10 @@ public sealed class BackendRouterTests
         decision.ReasonCode.Should().Be(RuntimeReasonCode.CAPABILITY_PROBE_PASS);
     }
 
-    private static ActionExecutionRequest BuildRequest(string actionId, ExecutionKind executionKind)
+    private static ActionExecutionRequest BuildRequest(
+        string actionId,
+        ExecutionKind executionKind,
+        string profileId = "roe_3447786229_swfoc")
     {
         var action = new ActionSpec(
             Id: actionId,
@@ -148,16 +239,21 @@ public sealed class BackendRouterTests
             VerifyReadback: false,
             CooldownMs: 0,
             Description: "test");
-        return new ActionExecutionRequest(action, new JsonObject(), "roe_3447786229_swfoc", RuntimeMode.Galactic);
+        return new ActionExecutionRequest(action, new JsonObject(), profileId, RuntimeMode.Galactic);
     }
 
-    private static TrainerProfile BuildProfile(string backendPreference, IReadOnlyList<string>? requiredCapabilities = null)
+    private static TrainerProfile BuildProfile(
+        string backendPreference,
+        IReadOnlyList<string>? requiredCapabilities = null,
+        string id = "roe_3447786229_swfoc",
+        string displayName = "ROE",
+        ExeTarget exeTarget = ExeTarget.Swfoc)
     {
         return new TrainerProfile(
-            Id: "roe_3447786229_swfoc",
-            DisplayName: "ROE",
+            Id: id,
+            DisplayName: displayName,
             Inherits: null,
-            ExeTarget: ExeTarget.Swfoc,
+            ExeTarget: exeTarget,
             SteamWorkshopId: "3447786229",
             SignatureSets: Array.Empty<SignatureSet>(),
             FallbackOffsets: new Dictionary<string, long>(),
@@ -173,14 +269,18 @@ public sealed class BackendRouterTests
             ExperimentalFeatures: Array.Empty<string>());
     }
 
-    private static ProcessMetadata BuildProcess()
+    private static ProcessMetadata BuildProcess(
+        ExeTarget exeTarget = ExeTarget.Swfoc,
+        string processName = "StarWarsG.exe",
+        string processPath = "C:/Games/Corruption/StarWarsG.exe",
+        string commandLine = "StarWarsG.exe STEAMMOD=3447786229")
     {
         return new ProcessMetadata(
             ProcessId: 1234,
-            ProcessName: "StarWarsG.exe",
-            ProcessPath: "C:/Games/Corruption/StarWarsG.exe",
-            CommandLine: "StarWarsG.exe STEAMMOD=3447786229",
-            ExeTarget: ExeTarget.Swfoc,
+            ProcessName: processName,
+            ProcessPath: processPath,
+            CommandLine: commandLine,
+            ExeTarget: exeTarget,
             Mode: RuntimeMode.Galactic,
             Metadata: new Dictionary<string, string>(),
             LaunchContext: null,

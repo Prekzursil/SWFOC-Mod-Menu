@@ -53,7 +53,8 @@ Notes:
 
 ## Engineering TODOs (To Avoid Regressions)
 - [x] Add fallback-offset range validation in `SignatureResolver` so offsets outside module bounds are ignored.
-- [ ] In UI/action layer: hide/disable actions when required symbols are missing or unresolved.
+- [x] In UI/action layer: hide/disable actions when required symbols are missing or unresolved.
+  - Promoted in Phase 2 UI: quick actions/hotkeys now honor the same session gate for `Memory`/`CodePatch`/`Freeze` actions while keeping `Sdk` actions executable when symbol gating is not required.
 - [ ] Add a "Calibrate symbol" debug panel that prints candidate RIP-relative patterns (based on the existing smoke-test scanners).
 - [ ] Add optional patch-mode fallback action for fog/maphack using CT-derived branch-bypass AOBs when symbol toggles regress.
 - [ ] Evaluate a patch-mode unit-cap feature (`future:set_unit_cap`) from CT patterns, while keeping profile-driven memory actions as primary path.
@@ -86,6 +87,7 @@ When posting closure evidence for `#19`/`#34`, include:
 - runtime mode (`hint`, `effective`, `reasonCode`)
 - tactical toggle outcome (`pass|skip|fail` + reason)
 - helper workflow outcome (`pass|skip|fail` + reason)
+- status diagnostics (`backend`, `routeReasonCode`, `capabilityProbeReasonCode`, and when present `hookState`/`hybridExecution`)
 - artifact paths:
   - `TestResults/runs/<runId>/repro-bundle.json`
   - `TestResults/runs/<runId>/repro-bundle.md`

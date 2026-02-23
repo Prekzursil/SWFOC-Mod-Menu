@@ -122,7 +122,7 @@ For each profile (`base_sweaw`, `base_swfoc`, `aotr_1397421866_swfoc`, `roe_3447
    - fog reveal toggle
    - selected unit HP/shield/speed edit (tactical)
    - helper spawn action
-   - capture status diagnostics showing `backendRoute` and reason code
+   - capture status diagnostics showing `backend`, `routeReasonCode`, `capabilityProbeReasonCode`, plus `hookState`/`hybridExecution` when present
 4. Verify attach diagnostics include host ranking fields:
    - `hostRole`
    - `mainModuleSize`
@@ -135,6 +135,23 @@ For each profile (`base_sweaw`, `base_swfoc`, `aotr_1397421866_swfoc`, `roe_3447
    - validate + write edited save
    - export patch pack, reload patch pack, preview/apply, restore backup
    - load in-game to confirm integrity.
+
+## Phase 2 quick action and hotkey checks
+
+1. Attach to a SWFOC profile where `set_credits` executes as `Sdk`.
+2. Run quick actions:
+   - `Set Credits` (SDK-backed route)
+   - `Freeze Timer` (symbol-backed memory route)
+3. Trigger equivalent bindings from `Hotkeys` (default `Ctrl+Shift+1/2`).
+4. Verify status lines include route diagnostics when available:
+   - `backend`
+   - `routeReasonCode`
+   - `capabilityProbeReasonCode`
+   - `hookState` (when backend emits it)
+   - `hybridExecution` (when backend emits it)
+5. Verify symbol/dependency gating behavior:
+   - actions requiring unresolved symbols remain blocked/hidden for `Memory`, `CodePatch`, and `Freeze` execution kinds
+   - SDK actions remain executable when symbol gating is not required by execution kind
 
 ## Live Ops checklist (M1)
 
@@ -167,3 +184,4 @@ pwsh ./tools/run-live-validation.ps1 -Configuration Release -NoBuild -Scope FULL
 
 This writes TRX + launch context outputs + repro bundle + prefilled issue templates to `TestResults/runs/<runId>/`.
 If Python is unavailable in the running shell, the run pack still emits `launch-context-fixture.json` with a machine-readable failure status.
+Include at least one captured status line in issue evidence that demonstrates Phase 2 route diagnostics for a mutating action.

@@ -45,6 +45,24 @@ public sealed class RuntimeAdapter : IRuntimeAdapter
     private const int InstantBuildHookInstructionLength = 6;
     private const int InstantBuildHookJumpLength = 5;
     private const int InstantBuildHookCaveSize = 31;
+    private const string DiagnosticKeyHookState = "hookState";
+    private const string DiagnosticKeyCreditsStateTag = "creditsStateTag";
+    private const string DiagnosticKeyState = "state";
+    private static readonly string[] ResultHookStateKeys =
+    [
+        DiagnosticKeyHookState,
+        DiagnosticKeyCreditsStateTag,
+        DiagnosticKeyState
+    ];
+
+    private static readonly HashSet<string> HybridManagedActionIds = new(StringComparer.OrdinalIgnoreCase)
+    {
+        "freeze_timer",
+        "toggle_fog_reveal",
+        "toggle_ai",
+        "set_unit_cap",
+        "toggle_instant_build_patch"
+    };
 
     private readonly IProcessLocator _processLocator;
     private readonly IProfileRepository _profileRepository;
@@ -836,19 +854,17 @@ public sealed class RuntimeAdapter : IRuntimeAdapter
         var routeDecision = _backendRouter.Resolve(request, attachedProfile, CurrentSession!.Process, capabilityReport);
         if (!routeDecision.Allowed)
         {
-            var blockedDiagnostics = MergeDiagnostics(
-                routeDecision.Diagnostics,
-                new Dictionary<string, object?>
-                {
-                    ["reasonCode"] = routeDecision.ReasonCode.ToString(),
-                    ["backendRoute"] = routeDecision.Backend.ToString(),
-                    ["capabilityProbeReasonCode"] = capabilityReport.ProbeReasonCode.ToString()
-                });
             var blocked = new ActionExecutionResult(
                 false,
                 routeDecision.Message,
                 AddressSource.None,
-                blockedDiagnostics);
+                MergeDiagnostics(
+                    routeDecision.Diagnostics,
+                    new Dictionary<string, object?>
+                    {
+                        ["reasonCode"] = routeDecision.ReasonCode.ToString()
+                    }));
+            blocked = ApplyBackendRouteDiagnostics(blocked, routeDecision, capabilityReport);
             RecordActionTelemetry(request, blocked);
             return blocked;
         }
@@ -857,6 +873,8 @@ public sealed class RuntimeAdapter : IRuntimeAdapter
         {
             var result = routeDecision.Backend switch
             {
+                ExecutionBackendKind.Extender when ShouldExecuteHybridManagedAction(request, routeDecision) =>
+                    await ExecuteHybridManagedActionAsync(request, cancellationToken),
                 ExecutionBackendKind.Extender => await ExecuteExtenderBackendActionAsync(request, capabilityReport, cancellationToken),
                 ExecutionBackendKind.Helper => await ExecuteHelperActionAsync(request, cancellationToken),
                 ExecutionBackendKind.Save => await ExecuteSaveActionAsync(request, cancellationToken),
@@ -874,11 +892,14 @@ public sealed class RuntimeAdapter : IRuntimeAdapter
                 false,
                 ex.Message,
                 AddressSource.None,
-                new Dictionary<string, object?>
-                {
-                    ["failureReasonCode"] = "action_exception",
-                    ["exceptionType"] = ex.GetType().Name
-                });
+                MergeDiagnostics(
+                    routeDecision.Diagnostics,
+                    new Dictionary<string, object?>
+                    {
+                        ["failureReasonCode"] = "action_exception",
+                        ["exceptionType"] = ex.GetType().Name
+                    }));
+            failed = ApplyBackendRouteDiagnostics(failed, routeDecision, capabilityReport);
             RecordActionTelemetry(request, failed);
             return failed;
         }
@@ -926,6 +947,53 @@ public sealed class RuntimeAdapter : IRuntimeAdapter
         };
     }
 
+    private async Task<ActionExecutionResult> ExecuteHybridManagedActionAsync(
+        ActionExecutionRequest request,
+        CancellationToken cancellationToken)
+    {
+        var managedExecutionKind = ResolveHybridManagedExecutionKind(request.Action.Id, request.Action.ExecutionKind);
+        return managedExecutionKind switch
+        {
+            ExecutionKind.Memory => await ExecuteMemoryActionAsync(request, cancellationToken),
+            ExecutionKind.CodePatch => await ExecuteCodePatchActionAsync(request, cancellationToken),
+            _ => new ActionExecutionResult(
+                false,
+                $"Hybrid managed execution does not support action '{request.Action.Id}' with execution kind '{managedExecutionKind}'.",
+                AddressSource.None,
+                new Dictionary<string, object?>
+                {
+                    ["failureReasonCode"] = "hybrid_execution_kind_unsupported"
+                })
+        };
+    }
+
+    private static bool ShouldExecuteHybridManagedAction(
+        ActionExecutionRequest request,
+        BackendRouteDecision routeDecision)
+    {
+        if (routeDecision.Backend != ExecutionBackendKind.Extender || !IsHybridManagedAction(request.Action.Id))
+        {
+            return false;
+        }
+
+        return TryReadDiagnosticBool(routeDecision.Diagnostics, "hybridExecution");
+    }
+
+    private static ExecutionKind ResolveHybridManagedExecutionKind(string actionId, ExecutionKind requestedKind)
+    {
+        if (!IsHybridManagedAction(actionId))
+        {
+            return requestedKind;
+        }
+
+        return actionId switch
+        {
+            "freeze_timer" or "toggle_fog_reveal" or "toggle_ai" => ExecutionKind.Memory,
+            "set_unit_cap" or "toggle_instant_build_patch" => ExecutionKind.CodePatch,
+            _ => requestedKind
+        };
+    }
+
     private async Task<ActionExecutionResult> ExecuteExtenderBackendActionAsync(
         ActionExecutionRequest request,
         CapabilityReport capabilityReport,
@@ -952,16 +1020,128 @@ public sealed class RuntimeAdapter : IRuntimeAdapter
         BackendRouteDecision routeDecision,
         CapabilityReport capabilityReport)
     {
+        var baseDiagnostics = MergeDiagnostics(routeDecision.Diagnostics, result.Diagnostics);
+        var hybridExecution = ResolveHybridExecutionFlag(baseDiagnostics);
+        var backend = ResolveBackendDiagnosticValue(baseDiagnostics, routeDecision.Backend, hybridExecution);
+        var hookState = ResolveHookStateDiagnosticValue(baseDiagnostics, capabilityReport.Diagnostics, hybridExecution);
         var diagnostics = MergeDiagnostics(
-            result.Diagnostics,
+            baseDiagnostics,
             new Dictionary<string, object?>
             {
+                ["backend"] = backend,
                 ["backendRoute"] = routeDecision.Backend.ToString(),
                 ["routeReasonCode"] = routeDecision.ReasonCode.ToString(),
                 ["capabilityProbeReasonCode"] = capabilityReport.ProbeReasonCode.ToString(),
+                [DiagnosticKeyHookState] = hookState,
+                ["hybridExecution"] = hybridExecution,
                 ["capabilityCount"] = capabilityReport.Capabilities.Count
             });
         return result with { Diagnostics = diagnostics };
+    }
+
+    private static bool ResolveHybridExecutionFlag(IReadOnlyDictionary<string, object?>? diagnostics)
+    {
+        if (!TryReadDiagnosticString(diagnostics, "hybridExecution", out var hybridRaw) ||
+            string.IsNullOrWhiteSpace(hybridRaw))
+        {
+            return false;
+        }
+
+        return bool.TryParse(hybridRaw, out var parsed) && parsed;
+    }
+
+    private static string ResolveBackendDiagnosticValue(
+        IReadOnlyDictionary<string, object?>? diagnostics,
+        ExecutionBackendKind routeBackend,
+        bool hybridExecution)
+    {
+        if (TryReadDiagnosticString(diagnostics, "backend", out var backend) &&
+            !string.IsNullOrWhiteSpace(backend))
+        {
+            return backend!;
+        }
+
+        if (hybridExecution)
+        {
+            return "hybrid_managed";
+        }
+
+        return routeBackend.ToString();
+    }
+
+    private static string ResolveHookStateDiagnosticValue(
+        IReadOnlyDictionary<string, object?>? resultDiagnostics,
+        IReadOnlyDictionary<string, object?>? capabilityDiagnostics,
+        bool hybridExecution)
+    {
+        if (TryResolveFirstDiagnosticValue(resultDiagnostics, ResultHookStateKeys, out var hookState))
+        {
+            return hookState!;
+        }
+
+        if (TryResolveFirstDiagnosticValue(capabilityDiagnostics, [DiagnosticKeyHookState], out var probeHookState))
+        {
+            return probeHookState!;
+        }
+
+        return hybridExecution ? "managed" : "unknown";
+    }
+
+    private static bool TryResolveFirstDiagnosticValue(
+        IReadOnlyDictionary<string, object?>? diagnostics,
+        IReadOnlyList<string> keys,
+        out string? value)
+    {
+        value = null;
+        foreach (var key in keys)
+        {
+            if (TryReadDiagnosticString(diagnostics, key, out var resolved) &&
+                !string.IsNullOrWhiteSpace(resolved))
+            {
+                value = resolved;
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    private static bool TryReadDiagnosticString(
+        IReadOnlyDictionary<string, object?>? diagnostics,
+        string key,
+        out string? value)
+    {
+        value = null;
+        if (diagnostics is null || !diagnostics.TryGetValue(key, out var raw) || raw is null)
+        {
+            return false;
+        }
+
+        value = raw.ToString();
+        return !string.IsNullOrWhiteSpace(value);
+    }
+
+    private static bool TryReadDiagnosticBool(
+        IReadOnlyDictionary<string, object?>? diagnostics,
+        string key)
+    {
+        if (diagnostics is null || !diagnostics.TryGetValue(key, out var raw) || raw is null)
+        {
+            return false;
+        }
+
+        if (raw is bool boolValue)
+        {
+            return boolValue;
+        }
+
+        return bool.TryParse(raw.ToString(), out var parsed) && parsed;
+    }
+
+    private static bool IsHybridManagedAction(string actionId)
+    {
+        return !string.IsNullOrWhiteSpace(actionId) &&
+               HybridManagedActionIds.Contains(actionId);
     }
 
     private static IReadOnlyDictionary<string, object?>? MergeDiagnostics(
@@ -1766,7 +1946,7 @@ public sealed class RuntimeAdapter : IRuntimeAdapter
             if (isAlreadyPatched)
             {
                 return Task.FromResult(new ActionExecutionResult(true, $"Code patch '{symbol}' is already active.", symbolInfo.Source,
-                    new Dictionary<string, object?> { ["address"] = $"0x{address.ToInt64():X}", ["state"] = "already_patched" }));
+                    new Dictionary<string, object?> { ["address"] = $"0x{address.ToInt64():X}", [DiagnosticKeyState] = "already_patched" }));
             }
 
             if (!isOriginal)
@@ -1785,7 +1965,7 @@ public sealed class RuntimeAdapter : IRuntimeAdapter
                 new Dictionary<string, object?>
                 {
                     ["address"] = $"0x{address.ToInt64():X}",
-                    ["state"] = "patched",
+                    [DiagnosticKeyState] = "patched",
                     ["bytesWritten"] = BitConverter.ToString(patchBytes)
                 }));
         }
@@ -1802,7 +1982,7 @@ public sealed class RuntimeAdapter : IRuntimeAdapter
                     new Dictionary<string, object?>
                     {
                         ["address"] = $"0x{saved.Address.ToInt64():X}",
-                        ["state"] = "restored",
+                        [DiagnosticKeyState] = "restored",
                         ["bytesWritten"] = BitConverter.ToString(saved.OriginalBytes)
                     }));
             }
@@ -1810,7 +1990,7 @@ public sealed class RuntimeAdapter : IRuntimeAdapter
             // Patch not active — write original bytes anyway as a safety measure
             _memory!.WriteBytes(address, originalBytes, executablePatch: true);
             return Task.FromResult(new ActionExecutionResult(true, $"Code patch '{symbol}' was not active, wrote original bytes as safety restore.", symbolInfo.Source,
-                new Dictionary<string, object?> { ["address"] = $"0x{address.ToInt64():X}", ["state"] = "force_restored" }));
+                new Dictionary<string, object?> { ["address"] = $"0x{address.ToInt64():X}", [DiagnosticKeyState] = "force_restored" }));
         }
     }
 
@@ -1931,7 +2111,7 @@ public sealed class RuntimeAdapter : IRuntimeAdapter
         if (!hookAvailable)
         {
             diagnostics["hookError"] = patchResult.Message;
-            diagnostics["creditsStateTag"] = "HOOK_REQUIRED";
+            diagnostics[DiagnosticKeyCreditsStateTag] = "HOOK_REQUIRED";
             diagnostics["creditsRequestedValue"] = value;
             return new ActionExecutionResult(
                 false,
@@ -1988,7 +2168,7 @@ public sealed class RuntimeAdapter : IRuntimeAdapter
                 _memory.Write(_creditsHookLockEnabledAddress, 0);
             }
 
-            diagnostics["creditsStateTag"] = "HOOK_REQUIRED";
+            diagnostics[DiagnosticKeyCreditsStateTag] = "HOOK_REQUIRED";
             diagnostics["creditsRequestedValue"] = value;
             return new ActionExecutionResult(
                 false,
@@ -2044,7 +2224,7 @@ public sealed class RuntimeAdapter : IRuntimeAdapter
         message = lockCredits
             ? "[HOOK_LOCK] Set credits and enabled persistent lock (float+int sync)."
             : "[HOOK_ONESHOT] Set credits with one-shot float+int sync.";
-        diagnostics["creditsStateTag"] = stateTag;
+        diagnostics[DiagnosticKeyCreditsStateTag] = stateTag;
         diagnostics["creditsRequestedValue"] = value;
 
         return new ActionExecutionResult(
@@ -2105,7 +2285,7 @@ public sealed class RuntimeAdapter : IRuntimeAdapter
                 {
                     ["hookAddress"] = ToHex(_creditsHookInjectionAddress),
                     ["hookCaveAddress"] = ToHex(_creditsHookCodeCaveAddress),
-                    ["hookState"] = "already_installed"
+                    [DiagnosticKeyHookState] = "already_installed"
                 });
         }
 
@@ -2324,7 +2504,7 @@ public sealed class RuntimeAdapter : IRuntimeAdapter
                     ["hookAddress"] = ToHex(_unitCapHookInjectionAddress),
                     ["hookCaveAddress"] = ToHex(_unitCapHookCodeCaveAddress),
                     ["unitCapValue"] = capValue,
-                    ["state"] = "updated"
+                    [DiagnosticKeyState] = "updated"
                 });
         }
 
@@ -2378,7 +2558,7 @@ public sealed class RuntimeAdapter : IRuntimeAdapter
                     ["hookAddress"] = ToHex(injectionAddress),
                     ["hookCaveAddress"] = ToHex(caveAddress),
                     ["unitCapValue"] = capValue,
-                    ["state"] = "installed"
+                    [DiagnosticKeyState] = "installed"
                 });
         }
         catch (Exception ex)
@@ -2408,7 +2588,7 @@ public sealed class RuntimeAdapter : IRuntimeAdapter
         if (_unitCapHookOriginalBytesBackup is null || _unitCapHookInjectionAddress == nint.Zero)
         {
             return new ActionExecutionResult(true, "Unit cap hook is not active.", AddressSource.None,
-                new Dictionary<string, object?> { ["state"] = "not_active" });
+                new Dictionary<string, object?> { [DiagnosticKeyState] = "not_active" });
         }
 
         _memory.WriteBytes(_unitCapHookInjectionAddress, _unitCapHookOriginalBytesBackup, executablePatch: true);
@@ -2420,7 +2600,7 @@ public sealed class RuntimeAdapter : IRuntimeAdapter
         var address = _unitCapHookInjectionAddress;
         ClearUnitCapHookState();
         return new ActionExecutionResult(true, "Unit cap hook disabled and original bytes restored.", AddressSource.Signature,
-            new Dictionary<string, object?> { ["hookAddress"] = ToHex(address), ["state"] = "restored" });
+            new Dictionary<string, object?> { ["hookAddress"] = ToHex(address), [DiagnosticKeyState] = "restored" });
     }
 
     private ActionExecutionResult EnsureInstantBuildHookInstalled()
@@ -2440,7 +2620,7 @@ public sealed class RuntimeAdapter : IRuntimeAdapter
                 {
                     ["hookAddress"] = ToHex(_instantBuildHookInjectionAddress),
                     ["hookCaveAddress"] = ToHex(_instantBuildHookCodeCaveAddress),
-                    ["state"] = "already_installed"
+                    [DiagnosticKeyState] = "already_installed"
                 });
         }
 
@@ -2492,7 +2672,7 @@ public sealed class RuntimeAdapter : IRuntimeAdapter
                 {
                     ["hookAddress"] = ToHex(injectionAddress),
                     ["hookCaveAddress"] = ToHex(caveAddress),
-                    ["state"] = "installed"
+                    [DiagnosticKeyState] = "installed"
                 });
         }
         catch (Exception ex)
@@ -2522,7 +2702,7 @@ public sealed class RuntimeAdapter : IRuntimeAdapter
         if (_instantBuildHookOriginalBytesBackup is null || _instantBuildHookInjectionAddress == nint.Zero)
         {
             return new ActionExecutionResult(true, "Instant build hook is not active.", AddressSource.None,
-                new Dictionary<string, object?> { ["state"] = "not_active" });
+                new Dictionary<string, object?> { [DiagnosticKeyState] = "not_active" });
         }
 
         _memory.WriteBytes(_instantBuildHookInjectionAddress, _instantBuildHookOriginalBytesBackup, executablePatch: true);
@@ -2534,7 +2714,7 @@ public sealed class RuntimeAdapter : IRuntimeAdapter
         var address = _instantBuildHookInjectionAddress;
         ClearInstantBuildHookState();
         return new ActionExecutionResult(true, "Instant build hook disabled and original bytes restored.", AddressSource.Signature,
-            new Dictionary<string, object?> { ["hookAddress"] = ToHex(address), ["state"] = "restored" });
+            new Dictionary<string, object?> { ["hookAddress"] = ToHex(address), [DiagnosticKeyState] = "restored" });
     }
 
     private UnitCapHookResolution ResolveUnitCapHookInjectionAddress()

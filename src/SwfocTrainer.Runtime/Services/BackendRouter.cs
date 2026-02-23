@@ -5,17 +5,30 @@ namespace SwfocTrainer.Runtime.Services;
 
 public sealed class BackendRouter : IBackendRouter
 {
+    private static readonly HashSet<string> HybridManagedActionIds = new(StringComparer.OrdinalIgnoreCase)
+    {
+        "freeze_timer",
+        "toggle_fog_reveal",
+        "toggle_ai",
+        "set_unit_cap",
+        "toggle_instant_build_patch"
+    };
+
     public BackendRouteDecision Resolve(
         ActionExecutionRequest request,
         TrainerProfile profile,
         ProcessMetadata process,
         CapabilityReport capabilityReport)
     {
-        var defaultBackend = MapDefaultBackend(request.Action.ExecutionKind);
-        var preferredBackend = ResolvePreferredBackend(profile.BackendPreference, defaultBackend);
+        var isHybridManagedAction = IsHybridManagedAction(request.Action.Id, profile, process);
+        var defaultBackend = MapDefaultBackend(request.Action.ExecutionKind, isHybridManagedAction);
+        var preferredBackend = ResolvePreferredBackend(profile.BackendPreference, defaultBackend, isHybridManagedAction);
         var isMutating = IsMutating(request.Action.Id);
         var profileRequiredCapabilities = profile.RequiredCapabilities ?? Array.Empty<string>();
-        var requiredCapabilities = ResolveRequiredCapabilitiesForAction(profileRequiredCapabilities, request.Action.Id);
+        var requiredCapabilities = ResolveRequiredCapabilitiesForAction(
+            profileRequiredCapabilities,
+            request.Action.Id,
+            isHybridManagedAction);
         var missingRequired = requiredCapabilities
             .Where(featureId => !capabilityReport.IsFeatureAvailable(featureId))
             .ToArray();
@@ -28,14 +41,16 @@ public sealed class BackendRouter : IBackendRouter
             preferredBackend,
             profileRequiredCapabilities,
             requiredCapabilities,
-            missingRequired));
+            missingRequired,
+            isHybridManagedAction));
 
         var requiredCapabilityDecision = TryResolveRequiredCapabilityContract(
             preferredBackend,
             profile.BackendPreference,
             isMutating,
             missingRequired,
-            diagnostics);
+            diagnostics,
+            isHybridManagedAction);
         if (requiredCapabilityDecision is not null)
         {
             return requiredCapabilityDecision;
@@ -61,7 +76,8 @@ public sealed class BackendRouter : IBackendRouter
             ["probeReasonCode"] = context.CapabilityReport.ProbeReasonCode.ToString(),
             ["profileRequiredCapabilities"] = context.ProfileRequiredCapabilities,
             ["requiredCapabilities"] = context.RequiredCapabilities,
-            ["missingRequiredCapabilities"] = context.MissingRequired
+            ["missingRequiredCapabilities"] = context.MissingRequired,
+            ["hybridExecution"] = context.IsHybridManagedRoute
         };
     }
 
@@ -70,10 +86,12 @@ public sealed class BackendRouter : IBackendRouter
         string? backendPreference,
         bool isMutating,
         IReadOnlyCollection<string> missingRequired,
-        IReadOnlyDictionary<string, object?> diagnostics)
+        IReadOnlyDictionary<string, object?> diagnostics,
+        bool isHybridManagedAction)
     {
         var enforceCapabilityContract = preferredBackend == ExecutionBackendKind.Extender ||
-                                        IsHardExtenderPreference(backendPreference);
+                                        IsHardExtenderPreference(backendPreference) ||
+                                        isHybridManagedAction;
         if (missingRequired.Count == 0 || !isMutating || !enforceCapabilityContract)
         {
             return null;
@@ -175,8 +193,16 @@ public sealed class BackendRouter : IBackendRouter
         return string.Equals(backendPreference, "extender", StringComparison.OrdinalIgnoreCase);
     }
 
-    private static ExecutionBackendKind ResolvePreferredBackend(string? backendPreference, ExecutionBackendKind defaultBackend)
+    private static ExecutionBackendKind ResolvePreferredBackend(
+        string? backendPreference,
+        ExecutionBackendKind defaultBackend,
+        bool forceExtenderGate)
     {
+        if (forceExtenderGate)
+        {
+            return ExecutionBackendKind.Extender;
+        }
+
         if (string.Equals(backendPreference, "extender", StringComparison.OrdinalIgnoreCase))
         {
             return ExecutionBackendKind.Extender;
@@ -213,8 +239,13 @@ public sealed class BackendRouter : IBackendRouter
         };
     }
 
-    private static ExecutionBackendKind MapDefaultBackend(ExecutionKind executionKind)
+    private static ExecutionBackendKind MapDefaultBackend(ExecutionKind executionKind, bool forceExtenderGate)
     {
+        if (forceExtenderGate)
+        {
+            return ExecutionBackendKind.Extender;
+        }
+
         return executionKind switch
         {
             ExecutionKind.Helper => ExecutionBackendKind.Helper,
@@ -241,16 +272,41 @@ public sealed class BackendRouter : IBackendRouter
 
     private static string[] ResolveRequiredCapabilitiesForAction(
         IReadOnlyList<string> profileRequiredCapabilities,
-        string actionId)
+        string actionId,
+        bool isHybridManagedAction)
     {
-        if (profileRequiredCapabilities.Count == 0 || string.IsNullOrWhiteSpace(actionId))
+        if (string.IsNullOrWhiteSpace(actionId))
         {
             return Array.Empty<string>();
         }
 
-        return profileRequiredCapabilities
+        var required = profileRequiredCapabilities
             .Where(featureId => featureId.Equals(actionId, StringComparison.OrdinalIgnoreCase))
-            .ToArray();
+            .ToList();
+
+        if (isHybridManagedAction &&
+            !required.Contains(actionId, StringComparer.OrdinalIgnoreCase))
+        {
+            required.Add(actionId);
+        }
+
+        return required.ToArray();
+    }
+
+    private static bool IsHybridManagedAction(
+        string actionId,
+        TrainerProfile profile,
+        ProcessMetadata process)
+    {
+        return IsFoCContext(profile, process) &&
+               !string.IsNullOrWhiteSpace(actionId) &&
+               HybridManagedActionIds.Contains(actionId);
+    }
+
+    private static bool IsFoCContext(TrainerProfile profile, ProcessMetadata process)
+    {
+        return profile.ExeTarget == ExeTarget.Swfoc ||
+               process.ExeTarget == ExeTarget.Swfoc;
     }
 
     private readonly record struct BackendDiagnosticsContext(
@@ -262,5 +318,6 @@ public sealed class BackendRouter : IBackendRouter
         ExecutionBackendKind PreferredBackend,
         IReadOnlyList<string> ProfileRequiredCapabilities,
         IReadOnlyList<string> RequiredCapabilities,
-        IReadOnlyList<string> MissingRequired);
+        IReadOnlyList<string> MissingRequired,
+        bool IsHybridManagedRoute);
 }
