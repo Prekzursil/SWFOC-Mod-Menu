@@ -1,8 +1,6 @@
 using System.Reflection;
 using System.Text.Json.Nodes;
 using FluentAssertions;
-using Microsoft.Extensions.Logging.Abstractions;
-using SwfocTrainer.Core.Contracts;
 using SwfocTrainer.Core.Models;
 using SwfocTrainer.Runtime.Services;
 using Xunit;
@@ -12,38 +10,44 @@ namespace SwfocTrainer.Tests.Runtime;
 public sealed class RuntimeAdapterHybridManagedActionTests
 {
     [Theory]
-    [InlineData("freeze_timer")]
-    [InlineData("toggle_fog_reveal")]
-    [InlineData("toggle_ai")]
-    [InlineData("set_unit_cap")]
-    [InlineData("toggle_instant_build_patch")]
-    public async Task ExecuteHybridManagedActionAsync_ShouldRoutePromotedSdkActions_ThroughSdkPath(string actionId)
+    [InlineData("freeze_timer", ExecutionKind.Memory)]
+    [InlineData("toggle_fog_reveal", ExecutionKind.Memory)]
+    [InlineData("toggle_ai", ExecutionKind.Memory)]
+    [InlineData("set_unit_cap", ExecutionKind.CodePatch)]
+    [InlineData("toggle_instant_build_patch", ExecutionKind.CodePatch)]
+    public void ResolveHybridManagedExecutionKind_ShouldMapPromotedActionsToManagedKinds(
+        string actionId,
+        ExecutionKind expectedExecutionKind)
     {
-        var sdkRouter = new RecordingSdkOperationRouter();
-        var adapter = CreateAdapter(sdkRouter);
-        var request = BuildSdkRequest(actionId);
-
-        var result = await InvokeExecuteHybridManagedActionAsync(adapter, request);
-
-        result.Succeeded.Should().BeTrue();
-        result.Message.Should().Be("sdk ok");
-        result.Diagnostics.Should().NotBeNull();
-        result.Diagnostics.Should().ContainKey("sdkReasonCode");
-        result.Diagnostics!["sdkReasonCode"].Should().Be(CapabilityReasonCode.AllRequiredAnchorsPresent.ToString());
-        result.Diagnostics.Should().ContainKey("sdkCapabilityState");
-        result.Diagnostics!["sdkCapabilityState"].Should().Be(SdkCapabilityStatus.Available.ToString());
-        sdkRouter.CallCount.Should().Be(1);
-        sdkRouter.LastRequest.Should().NotBeNull();
-        sdkRouter.LastRequest!.OperationId.Should().Be(actionId);
+        var resolved = InvokeResolveHybridManagedExecutionKind(actionId, ExecutionKind.Sdk);
+        resolved.Should().Be(expectedExecutionKind);
     }
 
-    private static ActionExecutionRequest BuildSdkRequest(string actionId)
+    [Fact]
+    public void ResolveHybridManagedExecutionKind_ShouldKeepOriginalKind_ForNonPromotedActions()
+    {
+        var resolved = InvokeResolveHybridManagedExecutionKind("set_credits", ExecutionKind.Sdk);
+        resolved.Should().Be(ExecutionKind.Sdk);
+    }
+
+    [Fact]
+    public void ShouldExecuteHybridManagedAction_ShouldRequireHybridRouteFlag()
+    {
+        var request = BuildRequest("freeze_timer", ExecutionKind.Sdk);
+        var extenderWithoutHybrid = BuildRouteDecision(hybridExecution: false);
+        var extenderWithHybrid = BuildRouteDecision(hybridExecution: true);
+
+        InvokeShouldExecuteHybridManagedAction(request, extenderWithoutHybrid).Should().BeFalse();
+        InvokeShouldExecuteHybridManagedAction(request, extenderWithHybrid).Should().BeTrue();
+    }
+
+    private static ActionExecutionRequest BuildRequest(string actionId, ExecutionKind executionKind)
     {
         var action = new ActionSpec(
             Id: actionId,
             Category: ActionCategory.Global,
             Mode: RuntimeMode.Galactic,
-            ExecutionKind: ExecutionKind.Sdk,
+            ExecutionKind: executionKind,
             PayloadSchema: new JsonObject(),
             VerifyReadback: false,
             CooldownMs: 0,
@@ -51,133 +55,43 @@ public sealed class RuntimeAdapterHybridManagedActionTests
 
         return new ActionExecutionRequest(
             Action: action,
-            Payload: new JsonObject { ["enable"] = true },
+            Payload: new JsonObject(),
             ProfileId: "roe_3447786229_swfoc",
             RuntimeMode: RuntimeMode.Galactic);
     }
 
-    private static RuntimeAdapter CreateAdapter(ISdkOperationRouter sdkRouter)
+    private static BackendRouteDecision BuildRouteDecision(bool hybridExecution)
     {
-        return new RuntimeAdapter(
-            processLocator: new NoOpProcessLocator(),
-            profileRepository: new ThrowingProfileRepository(),
-            signatureResolver: new EmptySignatureResolver(),
-            logger: NullLogger<RuntimeAdapter>.Instance,
-            serviceProvider: new TestServiceProvider(sdkRouter));
+        return new BackendRouteDecision(
+            Allowed: true,
+            Backend: ExecutionBackendKind.Extender,
+            ReasonCode: RuntimeReasonCode.CAPABILITY_PROBE_PASS,
+            Message: "ok",
+            Diagnostics: new Dictionary<string, object?>
+            {
+                ["hybridExecution"] = hybridExecution
+            });
     }
 
-    private static async Task<ActionExecutionResult> InvokeExecuteHybridManagedActionAsync(
-        RuntimeAdapter adapter,
-        ActionExecutionRequest request)
+    private static ExecutionKind InvokeResolveHybridManagedExecutionKind(string actionId, ExecutionKind requestedKind)
     {
         var method = typeof(RuntimeAdapter).GetMethod(
-            "ExecuteHybridManagedActionAsync",
-            BindingFlags.NonPublic | BindingFlags.Instance);
-
-        method.Should().NotBeNull("RuntimeAdapter should route promoted hybrid actions through managed handlers.");
-        var invoked = method!.Invoke(adapter, new object?[] { request, CancellationToken.None });
-        invoked.Should().BeAssignableTo<Task<ActionExecutionResult>>();
-        return await (Task<ActionExecutionResult>)invoked!;
+            "ResolveHybridManagedExecutionKind",
+            BindingFlags.NonPublic | BindingFlags.Static);
+        method.Should().NotBeNull("RuntimeAdapter should normalize promoted hybrid action ids to managed execution kinds.");
+        var invoked = method!.Invoke(null, new object?[] { actionId, requestedKind });
+        invoked.Should().BeOfType<ExecutionKind>();
+        return (ExecutionKind)invoked!;
     }
 
-    private sealed class RecordingSdkOperationRouter : ISdkOperationRouter
+    private static bool InvokeShouldExecuteHybridManagedAction(ActionExecutionRequest request, BackendRouteDecision decision)
     {
-        public int CallCount { get; private set; }
-
-        public SdkOperationRequest? LastRequest { get; private set; }
-
-        public Task<SdkOperationResult> ExecuteAsync(SdkOperationRequest request)
-        {
-            return ExecuteAsync(request, CancellationToken.None);
-        }
-
-        public Task<SdkOperationResult> ExecuteAsync(SdkOperationRequest request, CancellationToken _)
-        {
-            CallCount++;
-            LastRequest = request;
-            return Task.FromResult(new SdkOperationResult(
-                Succeeded: true,
-                Message: "sdk ok",
-                ReasonCode: CapabilityReasonCode.AllRequiredAnchorsPresent,
-                CapabilityState: SdkCapabilityStatus.Available));
-        }
-    }
-
-    private sealed class TestServiceProvider : IServiceProvider
-    {
-        private readonly ISdkOperationRouter _sdkRouter;
-
-        public TestServiceProvider(ISdkOperationRouter sdkRouter)
-        {
-            _sdkRouter = sdkRouter;
-        }
-
-        public object? GetService(Type serviceType)
-        {
-            if (serviceType == typeof(ISdkOperationRouter))
-            {
-                return _sdkRouter;
-            }
-
-            return null;
-        }
-    }
-
-    private sealed class NoOpProcessLocator : IProcessLocator
-    {
-        public Task<IReadOnlyList<ProcessMetadata>> FindSupportedProcessesAsync(CancellationToken _ = default)
-        {
-            return Task.FromResult<IReadOnlyList<ProcessMetadata>>(Array.Empty<ProcessMetadata>());
-        }
-
-        public Task<ProcessMetadata?> FindBestMatchAsync(ExeTarget _, CancellationToken __ = default)
-        {
-            return Task.FromResult<ProcessMetadata?>(null);
-        }
-    }
-
-    private sealed class ThrowingProfileRepository : IProfileRepository
-    {
-        public Task<ProfileManifest> LoadManifestAsync(CancellationToken _ = default)
-        {
-            throw CreateNotUsedException();
-        }
-
-        public Task<TrainerProfile> LoadProfileAsync(string _, CancellationToken __ = default)
-        {
-            throw CreateNotUsedException();
-        }
-
-        public Task<TrainerProfile> ResolveInheritedProfileAsync(string _, CancellationToken __ = default)
-        {
-            throw CreateNotUsedException();
-        }
-
-        public Task ValidateProfileAsync(TrainerProfile _, CancellationToken __ = default)
-        {
-            throw CreateNotUsedException();
-        }
-
-        public Task<IReadOnlyList<string>> ListAvailableProfilesAsync(CancellationToken _ = default)
-        {
-            throw CreateNotUsedException();
-        }
-
-        private static NotSupportedException CreateNotUsedException()
-        {
-            return new NotSupportedException("Profile repository should not be called in this unit test.");
-        }
-    }
-
-    private sealed class EmptySignatureResolver : ISignatureResolver
-    {
-        public Task<SymbolMap> ResolveAsync(
-            ProfileBuild _,
-            IReadOnlyList<SignatureSet> __,
-            IReadOnlyDictionary<string, long> ___,
-            CancellationToken ____ = default)
-        {
-            return Task.FromResult(new SymbolMap(new Dictionary<string, SymbolInfo>(StringComparer.OrdinalIgnoreCase)));
-        }
+        var method = typeof(RuntimeAdapter).GetMethod(
+            "ShouldExecuteHybridManagedAction",
+            BindingFlags.NonPublic | BindingFlags.Static);
+        method.Should().NotBeNull("RuntimeAdapter should honor route diagnostics before dispatching hybrid managed actions.");
+        var invoked = method!.Invoke(null, new object?[] { request, decision });
+        invoked.Should().BeOfType<bool>();
+        return (bool)invoked!;
     }
 }

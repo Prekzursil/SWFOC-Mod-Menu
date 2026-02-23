@@ -873,7 +873,7 @@ public sealed class RuntimeAdapter : IRuntimeAdapter
         {
             var result = routeDecision.Backend switch
             {
-                ExecutionBackendKind.Extender when IsHybridManagedAction(request.Action.Id) =>
+                ExecutionBackendKind.Extender when ShouldExecuteHybridManagedAction(request, routeDecision) =>
                     await ExecuteHybridManagedActionAsync(request, cancellationToken),
                 ExecutionBackendKind.Extender => await ExecuteExtenderBackendActionAsync(request, capabilityReport, cancellationToken),
                 ExecutionBackendKind.Helper => await ExecuteHelperActionAsync(request, cancellationToken),
@@ -951,19 +951,46 @@ public sealed class RuntimeAdapter : IRuntimeAdapter
         ActionExecutionRequest request,
         CancellationToken cancellationToken)
     {
-        return request.Action.ExecutionKind switch
+        var managedExecutionKind = ResolveHybridManagedExecutionKind(request.Action.Id, request.Action.ExecutionKind);
+        return managedExecutionKind switch
         {
             ExecutionKind.Memory => await ExecuteMemoryActionAsync(request, cancellationToken),
             ExecutionKind.CodePatch => await ExecuteCodePatchActionAsync(request, cancellationToken),
-            ExecutionKind.Sdk => await ExecuteSdkActionAsync(request, cancellationToken),
             _ => new ActionExecutionResult(
                 false,
-                $"Hybrid managed execution does not support action '{request.Action.Id}' with execution kind '{request.Action.ExecutionKind}'.",
+                $"Hybrid managed execution does not support action '{request.Action.Id}' with execution kind '{managedExecutionKind}'.",
                 AddressSource.None,
                 new Dictionary<string, object?>
                 {
                     ["failureReasonCode"] = "hybrid_execution_kind_unsupported"
                 })
+        };
+    }
+
+    private static bool ShouldExecuteHybridManagedAction(
+        ActionExecutionRequest request,
+        BackendRouteDecision routeDecision)
+    {
+        if (routeDecision.Backend != ExecutionBackendKind.Extender || !IsHybridManagedAction(request.Action.Id))
+        {
+            return false;
+        }
+
+        return TryReadDiagnosticBool(routeDecision.Diagnostics, "hybridExecution");
+    }
+
+    private static ExecutionKind ResolveHybridManagedExecutionKind(string actionId, ExecutionKind requestedKind)
+    {
+        if (!IsHybridManagedAction(actionId))
+        {
+            return requestedKind;
+        }
+
+        return actionId switch
+        {
+            "freeze_timer" or "toggle_fog_reveal" or "toggle_ai" => ExecutionKind.Memory,
+            "set_unit_cap" or "toggle_instant_build_patch" => ExecutionKind.CodePatch,
+            _ => requestedKind
         };
     }
 
@@ -1092,6 +1119,23 @@ public sealed class RuntimeAdapter : IRuntimeAdapter
 
         value = raw.ToString();
         return !string.IsNullOrWhiteSpace(value);
+    }
+
+    private static bool TryReadDiagnosticBool(
+        IReadOnlyDictionary<string, object?>? diagnostics,
+        string key)
+    {
+        if (diagnostics is null || !diagnostics.TryGetValue(key, out var raw) || raw is null)
+        {
+            return false;
+        }
+
+        if (raw is bool boolValue)
+        {
+            return boolValue;
+        }
+
+        return bool.TryParse(raw.ToString(), out var parsed) && parsed;
     }
 
     private static bool IsHybridManagedAction(string actionId)

@@ -2284,7 +2284,7 @@ public sealed class MainViewModel : INotifyPropertyChanged
         }
 
         var segments = new List<string>(capacity: 5);
-        AppendDiagnosticSegment(segments, result.Diagnostics, "backend", "backendRoute", "backend");
+        AppendDiagnosticSegment(segments, result.Diagnostics, "backend", "backend", "backendRoute");
         AppendDiagnosticSegment(segments, result.Diagnostics, "routeReasonCode", "routeReasonCode", "reasonCode");
         AppendDiagnosticSegment(segments, result.Diagnostics, "capabilityProbeReasonCode", "capabilityProbeReasonCode", "probeReasonCode");
         AppendDiagnosticSegment(segments, result.Diagnostics, "hookState", "hookState");
