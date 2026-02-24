@@ -1,0 +1,56 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "SWFOC Ghidra Analysis Summary",
+  "type": "object",
+  "required": [
+    "schemaVersion",
+    "analysisRunId",
+    "binaryPath",
+    "toolVersions",
+    "coverageStats",
+    "warnings",
+    "artifactPointers"
+  ],
+  "properties": {
+    "schemaVersion": {
+      "type": "string",
+      "enum": ["1.0"]
+    },
+    "analysisRunId": { "type": "string", "minLength": 1 },
+    "binaryPath": { "type": "string", "minLength": 1 },
+    "toolVersions": {
+      "type": "object",
+      "required": ["ghidra", "emitter"],
+      "properties": {
+        "ghidra": { "type": "string", "minLength": 1 },
+        "emitter": { "type": "string", "minLength": 1 }
+      },
+      "additionalProperties": true
+    },
+    "coverageStats": {
+      "type": "object",
+      "required": ["rawSymbolCount", "anchorCount", "availableCapabilityCount"],
+      "properties": {
+        "rawSymbolCount": { "type": "integer", "minimum": 0 },
+        "anchorCount": { "type": "integer", "minimum": 0 },
+        "availableCapabilityCount": { "type": "integer", "minimum": 0 }
+      },
+      "additionalProperties": true
+    },
+    "warnings": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "artifactPointers": {
+      "type": "object",
+      "required": ["rawSymbolsPath", "symbolPackPath"],
+      "properties": {
+        "rawSymbolsPath": { "type": "string", "minLength": 1 },
+        "symbolPackPath": { "type": "string", "minLength": 1 },
+        "decompileArchivePath": { "type": "string" }
+      },
+      "additionalProperties": true
+    }
+  },
+  "additionalProperties": true
+}
