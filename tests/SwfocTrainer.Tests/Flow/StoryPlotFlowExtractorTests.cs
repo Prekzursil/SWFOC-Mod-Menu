@@ -60,6 +60,6 @@ public sealed class StoryPlotFlowExtractorTests
 
         report.Plots.Should().ContainSingle();
         report.Plots[0].PlotId.Should().Be("SkirmishFlow");
-        report.AllEvents.Should().ContainSingle(x => x.ModeHint == FlowModeHint.TacticalSpace);
+        report.GetAllEvents().Should().ContainSingle(x => x.ModeHint == FlowModeHint.TacticalSpace);
     }
 }

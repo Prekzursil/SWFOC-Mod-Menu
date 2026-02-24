@@ -5,7 +5,7 @@ namespace SwfocTrainer.Flow.Services;
 
 public sealed class StoryPlotFlowExtractor
 {
-    private static readonly string[] ScriptAttributeCandidates =
+    private readonly string[] _scriptAttributeCandidates =
     [
         "Script",
         "LuaScript",
@@ -14,7 +14,7 @@ public sealed class StoryPlotFlowExtractor
         "ScriptName"
     ];
 
-    private static readonly HashSet<string> IgnoredEventAttributeNames =
+    private readonly HashSet<string> _ignoredEventAttributeNames =
     [
         "Name"
     ];
@@ -64,7 +64,7 @@ public sealed class StoryPlotFlowExtractor
         return new FlowIndexReport(plots, diagnostics);
     }
 
-    private static IReadOnlyList<FlowEventRecord> ExtractEvents(XElement? root, string sourceFile)
+    private IReadOnlyList<FlowEventRecord> ExtractEvents(XElement? root, string sourceFile)
     {
         if (root is null)
         {
@@ -83,13 +83,13 @@ public sealed class StoryPlotFlowExtractor
 
             var attributes = node
                 .Attributes()
-                .Where(attribute => !IgnoredEventAttributeNames.Contains(attribute.Name.LocalName))
+                .Where(attribute => !_ignoredEventAttributeNames.Contains(attribute.Name.LocalName))
                 .ToDictionary(
                     attribute => attribute.Name.LocalName,
                     attribute => attribute.Value,
                     StringComparer.OrdinalIgnoreCase);
 
-            var scriptReference = ReadFirstNonEmptyAttribute(node, ScriptAttributeCandidates);
+            var scriptReference = ReadFirstNonEmptyAttribute(node, _scriptAttributeCandidates);
             var modeHint = ResolveModeHint(eventName);
             events.Add(new FlowEventRecord(eventName, modeHint, sourceFile, scriptReference, attributes));
         }

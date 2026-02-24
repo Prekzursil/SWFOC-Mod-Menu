@@ -30,7 +30,7 @@ public sealed record FlowIndexReport(
         Array.Empty<FlowPlotRecord>(),
         Array.Empty<string>());
 
-    public IReadOnlyList<FlowEventRecord> AllEvents =>
+    public IReadOnlyList<FlowEventRecord> GetAllEvents() =>
         new ReadOnlyCollection<FlowEventRecord>(
             Plots.SelectMany(plot => plot.Events).ToArray());
 }

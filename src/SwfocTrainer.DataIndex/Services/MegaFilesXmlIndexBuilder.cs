@@ -5,7 +5,7 @@ namespace SwfocTrainer.DataIndex.Services;
 
 public sealed class MegaFilesXmlIndexBuilder
 {
-    private static readonly string[] NameAttributeCandidates = ["Name", "File", "Filename", "Path"];
+    private readonly string[] _nameAttributeCandidates = ["Name", "File", "Filename", "Path"];
 
     public MegaFilesIndex Build(string megaFilesXmlContent)
     {
@@ -35,7 +35,7 @@ public sealed class MegaFilesXmlIndexBuilder
                 continue;
             }
 
-            var fileName = ReadFirstNonEmptyAttribute(node, NameAttributeCandidates);
+            var fileName = ReadFirstNonEmptyAttribute(node, _nameAttributeCandidates);
             if (string.IsNullOrWhiteSpace(fileName))
             {
                 diagnostics.Add($"Skipped MegaFile entry at line with no filename attribute (order={loadOrder}).");
