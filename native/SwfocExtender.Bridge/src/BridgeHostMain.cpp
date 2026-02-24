@@ -248,6 +248,9 @@ std::size_t SkipAsciiWhitespace(const std::string& value, std::size_t cursor) {
     return value.find_first_not_of(" \t\r\n", cursor);
 }
 
+bool TryParseFlatStringMapEntryKey(const std::string& objectJson, std::size_t& cursor, std::string& key);
+bool TryParseFlatStringMapEntryValue(const std::string& objectJson, std::size_t& cursor, std::string& value);
+
 bool TryParseFlatStringMapEntry(
     const std::string& objectJson,
     std::size_t& cursor,
@@ -258,6 +261,23 @@ bool TryParseFlatStringMapEntry(
         return false;
     }
 
+    if (!TryParseFlatStringMapEntryKey(objectJson, cursor, key)) {
+        return false;
+    }
+
+    if (!TryParseFlatStringMapEntryValue(objectJson, cursor, value)) {
+        return false;
+    }
+
+    cursor = SkipAsciiWhitespace(objectJson, cursor);
+    if (cursor != std::string::npos && objectJson[cursor] == ',') {
+        ++cursor;
+    }
+
+    return true;
+}
+
+bool TryParseFlatStringMapEntryKey(const std::string& objectJson, std::size_t& cursor, std::string& key) {
     if (objectJson[cursor] != '"') {
         return false;
     }
@@ -275,10 +295,10 @@ bool TryParseFlatStringMapEntry(
 
     ++cursor;
     cursor = SkipAsciiWhitespace(objectJson, cursor);
-    if (cursor == std::string::npos) {
-        return false;
-    }
+    return cursor != std::string::npos;
+}
 
+bool TryParseFlatStringMapEntryValue(const std::string& objectJson, std::size_t& cursor, std::string& value) {
     if (objectJson[cursor] == '"') {
         const auto valueEnd = FindUnescapedQuote(objectJson, cursor + 1);
         if (valueEnd == std::string::npos) {
@@ -295,11 +315,6 @@ bool TryParseFlatStringMapEntry(
 
         value = TrimAsciiWhitespace(objectJson.substr(cursor, tokenEnd - cursor));
         cursor = tokenEnd;
-    }
-
-    cursor = SkipAsciiWhitespace(objectJson, cursor);
-    if (cursor != std::string::npos && objectJson[cursor] == ',') {
-        ++cursor;
     }
 
     return true;
