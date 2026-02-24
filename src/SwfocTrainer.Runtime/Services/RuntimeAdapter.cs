@@ -1704,17 +1704,7 @@ public sealed class RuntimeAdapter : IRuntimeAdapter
             var requestedValidation = ValidateRequestedIntValue(symbol, value, validationRule);
             if (!requestedValidation.IsValid)
             {
-                return new ActionExecutionResult(
-                    false,
-                    requestedValidation.Message,
-                    symbolInfo.Source,
-                    new Dictionary<string, object?>
-                    {
-                        [DiagnosticKeyAddress] = $"0x{symbolInfo.Address.ToInt64():X}",
-                        [DiagnosticKeyFailureReasonCode] = requestedValidation.ReasonCode,
-                        [DiagnosticKeySymbolHealthStatus] = symbolInfo.HealthStatus.ToString(),
-                        [DiagnosticKeySymbolConfidence] = symbolInfo.Confidence
-                    });
+                return CreateRequestedValidationFailureResult(symbolInfo, requestedValidation);
             }
 
             return await WriteWithOptionalRetryAsync(
@@ -1741,17 +1731,7 @@ public sealed class RuntimeAdapter : IRuntimeAdapter
             var requestedValidation = ValidateRequestedFloatValue(symbol, value, validationRule);
             if (!requestedValidation.IsValid)
             {
-                return new ActionExecutionResult(
-                    false,
-                    requestedValidation.Message,
-                    symbolInfo.Source,
-                    new Dictionary<string, object?>
-                    {
-                        [DiagnosticKeyAddress] = $"0x{symbolInfo.Address.ToInt64():X}",
-                        [DiagnosticKeyFailureReasonCode] = requestedValidation.ReasonCode,
-                        [DiagnosticKeySymbolHealthStatus] = symbolInfo.HealthStatus.ToString(),
-                        [DiagnosticKeySymbolConfidence] = symbolInfo.Confidence
-                    });
+                return CreateRequestedValidationFailureResult(symbolInfo, requestedValidation);
             }
 
             return await WriteWithOptionalRetryAsync(
@@ -1776,17 +1756,7 @@ public sealed class RuntimeAdapter : IRuntimeAdapter
             var requestedValidation = ValidateRequestedIntValue(symbol, value, validationRule);
             if (!requestedValidation.IsValid)
             {
-                return new ActionExecutionResult(
-                    false,
-                    requestedValidation.Message,
-                    symbolInfo.Source,
-                    new Dictionary<string, object?>
-                    {
-                        [DiagnosticKeyAddress] = $"0x{symbolInfo.Address.ToInt64():X}",
-                        [DiagnosticKeyFailureReasonCode] = requestedValidation.ReasonCode,
-                        [DiagnosticKeySymbolHealthStatus] = symbolInfo.HealthStatus.ToString(),
-                        [DiagnosticKeySymbolConfidence] = symbolInfo.Confidence
-                    });
+                return CreateRequestedValidationFailureResult(symbolInfo, requestedValidation);
             }
 
             return await WriteWithOptionalRetryAsync(
@@ -2037,6 +2007,23 @@ public sealed class RuntimeAdapter : IRuntimeAdapter
         }
 
         return diagnostics;
+    }
+
+    private static ActionExecutionResult CreateRequestedValidationFailureResult(
+        SymbolInfo symbolInfo,
+        ValidationOutcome requestedValidation)
+    {
+        return new ActionExecutionResult(
+            false,
+            requestedValidation.Message,
+            symbolInfo.Source,
+            new Dictionary<string, object?>
+            {
+                [DiagnosticKeyAddress] = $"0x{symbolInfo.Address.ToInt64():X}",
+                [DiagnosticKeyFailureReasonCode] = requestedValidation.ReasonCode,
+                [DiagnosticKeySymbolHealthStatus] = symbolInfo.HealthStatus.ToString(),
+                [DiagnosticKeySymbolConfidence] = symbolInfo.Confidence
+            });
     }
 
     private static string FormatValidationRuleRange(SymbolValidationRule rule)
