@@ -25,10 +25,10 @@ public sealed class BackendRouter : IBackendRouter
         var requiredCapabilityDecision = TryResolveRequiredCapabilityContract(
             state.PreferredBackend,
             profile.BackendPreference,
-            state.IsMutating,
+            state.MutatingAction,
             state.MissingRequired,
             state.Diagnostics,
-            state.IsPromotedExtenderAction);
+            state.PromotedExtenderAction);
         if (requiredCapabilityDecision is not null)
         {
             return requiredCapabilityDecision;
@@ -39,7 +39,7 @@ public sealed class BackendRouter : IBackendRouter
             state.PreferredBackend,
             capabilityReport,
             state.Diagnostics,
-            state.IsPromotedExtenderAction);
+            state.PromotedExtenderAction);
         if (promotedGateDecision is not null)
         {
             return promotedGateDecision;
@@ -50,7 +50,7 @@ public sealed class BackendRouter : IBackendRouter
             return CreateRoutedDecision(state.PreferredBackend, state.Diagnostics);
         }
 
-        return ResolveExtenderRoute(request, profile, capabilityReport, state.IsMutating, state.Diagnostics);
+        return ResolveExtenderRoute(request, profile, capabilityReport, state.MutatingAction, state.Diagnostics);
     }
 
     private static RouteResolutionState CreateRouteResolutionState(
@@ -84,10 +84,10 @@ public sealed class BackendRouter : IBackendRouter
             isPromotedExtenderAction));
         return new RouteResolutionState(
             PreferredBackend: preferredBackend,
-            IsMutating: isMutating,
+            MutatingAction: isMutating,
             MissingRequired: missingRequired,
             Diagnostics: diagnostics,
-            IsPromotedExtenderAction: isPromotedExtenderAction);
+            PromotedExtenderAction: isPromotedExtenderAction);
     }
 
     private static Dictionary<string, object?> BuildDiagnostics(BackendDiagnosticsContext context)
@@ -392,8 +392,8 @@ public sealed class BackendRouter : IBackendRouter
 
     private readonly record struct RouteResolutionState(
         ExecutionBackendKind PreferredBackend,
-        bool IsMutating,
+        bool MutatingAction,
         IReadOnlyList<string> MissingRequired,
         Dictionary<string, object?> Diagnostics,
-        bool IsPromotedExtenderAction);
+        bool PromotedExtenderAction);
 }

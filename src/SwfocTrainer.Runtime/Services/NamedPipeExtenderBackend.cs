@@ -15,6 +15,9 @@ public sealed class NamedPipeExtenderBackend : IExecutionBackend
     private const int DefaultResponseTimeoutMs = 2000;
     private const string DefaultPipeName = "SwfocExtenderBridge";
     private const string ExtenderBackendId = "extender";
+    private const string NativeDirectoryName = "native";
+    private const string BridgeHostWindowsExecutableName = "SwfocExtender.Host.exe";
+    private const string BridgeHostPosixExecutableName = "SwfocExtender.Host";
     private static readonly string[] NativeAuthoritativeFeatureIds =
     [
         "freeze_timer",
@@ -381,7 +384,7 @@ public sealed class NamedPipeExtenderBackend : IExecutionBackend
             .Where(File.Exists)
             .Select(path => new FileInfo(path))
             .OrderByDescending(file => file.LastWriteTimeUtc)
-            .ThenByDescending(file => file.Name.Equals("SwfocExtender.Host.exe", StringComparison.OrdinalIgnoreCase))
+            .ThenByDescending(file => file.Name.Equals(BridgeHostWindowsExecutableName, StringComparison.OrdinalIgnoreCase))
             .Select(file => file.FullName)
             .FirstOrDefault();
     }
@@ -400,12 +403,12 @@ public sealed class NamedPipeExtenderBackend : IExecutionBackend
     {
         var known = new[]
         {
-            Path.Combine(root, "native", "runtime", "SwfocExtender.Host.exe"),
-            Path.Combine(root, "native", "build-win-vs", "SwfocExtender.Bridge", "Release", "SwfocExtender.Host.exe"),
-            Path.Combine(root, "native", "build-win-vs", "SwfocExtender.Bridge", "x64", "Release", "SwfocExtender.Host.exe"),
-            Path.Combine(root, "native", "build-win-codex", "SwfocExtender.Bridge", "Release", "SwfocExtender.Host.exe"),
-            Path.Combine(root, "native", "build-win", "SwfocExtender.Host.exe"),
-            Path.Combine(root, "native", "build-wsl", "SwfocExtender.Host")
+            Path.Combine(root, NativeDirectoryName, "runtime", BridgeHostWindowsExecutableName),
+            Path.Combine(root, NativeDirectoryName, "build-win-vs", "SwfocExtender.Bridge", "Release", BridgeHostWindowsExecutableName),
+            Path.Combine(root, NativeDirectoryName, "build-win-vs", "SwfocExtender.Bridge", "x64", "Release", BridgeHostWindowsExecutableName),
+            Path.Combine(root, NativeDirectoryName, "build-win-codex", "SwfocExtender.Bridge", "Release", BridgeHostWindowsExecutableName),
+            Path.Combine(root, NativeDirectoryName, "build-win", BridgeHostWindowsExecutableName),
+            Path.Combine(root, NativeDirectoryName, "build-wsl", BridgeHostPosixExecutableName)
         };
 
         foreach (var path in known)
@@ -416,7 +419,7 @@ public sealed class NamedPipeExtenderBackend : IExecutionBackend
 
     private static void AddDiscoveredNativeBuildCandidates(HashSet<string> candidates, string root)
     {
-        var nativeRoot = Path.Combine(root, "native");
+        var nativeRoot = Path.Combine(root, NativeDirectoryName);
         if (!Directory.Exists(nativeRoot))
         {
             return;
@@ -424,12 +427,12 @@ public sealed class NamedPipeExtenderBackend : IExecutionBackend
 
         try
         {
-            foreach (var path in Directory.EnumerateFiles(nativeRoot, "SwfocExtender.Host.exe", SearchOption.AllDirectories))
+            foreach (var path in Directory.EnumerateFiles(nativeRoot, BridgeHostWindowsExecutableName, SearchOption.AllDirectories))
             {
                 candidates.Add(path);
             }
 
-            foreach (var path in Directory.EnumerateFiles(nativeRoot, "SwfocExtender.Host", SearchOption.AllDirectories))
+            foreach (var path in Directory.EnumerateFiles(nativeRoot, BridgeHostPosixExecutableName, SearchOption.AllDirectories))
             {
                 candidates.Add(path);
             }

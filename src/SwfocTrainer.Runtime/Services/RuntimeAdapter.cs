@@ -415,7 +415,7 @@ public sealed class RuntimeAdapter : IRuntimeAdapter
         return ApplyFoCHostPreference(profile, pool);
     }
 
-    private ProcessMetadata[] ResolveWorkshopFilteredPool(
+    private static ProcessMetadata[] ResolveWorkshopFilteredPool(
         ProcessMetadata[] matches,
         IReadOnlyCollection<string> requiredWorkshopIds)
     {
@@ -1016,7 +1016,7 @@ public sealed class RuntimeAdapter : IRuntimeAdapter
         return true;
     }
 
-    private ActionExecutionResult CreateBlockedRouteResult(
+    private static ActionExecutionResult CreateBlockedRouteResult(
         BackendRouteDecision routeDecision,
         CapabilityReport capabilityReport)
     {
