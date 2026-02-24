@@ -1210,9 +1210,14 @@ public sealed class MainViewModel : INotifyPropertyChanged
 
     private static bool TryGetRequiredPayloadKeys(ActionSpec action, out JsonArray required)
     {
-        required = default!;
-        return action.PayloadSchema.TryGetPropertyValue("required", out var requiredNode) && requiredNode is JsonArray array &&
-               (required = array) is not null;
+        if (!action.PayloadSchema.TryGetPropertyValue("required", out var requiredNode) || requiredNode is not JsonArray array)
+        {
+            required = default!;
+            return false;
+        }
+
+        required = array;
+        return true;
     }
 
     private JsonObject BuildPayloadTemplate(JsonArray required)
@@ -1461,7 +1466,7 @@ public sealed class MainViewModel : INotifyPropertyChanged
             Multiselect = false
         };
 
-        if (dialog.ShowDialog() is true)
+        if (dialog.ShowDialog().GetValueOrDefault())
         {
             SavePath = dialog.FileName;
             Status = $"Selected save: {SavePath}";
@@ -1545,7 +1550,7 @@ public sealed class MainViewModel : INotifyPropertyChanged
             Multiselect = false
         };
 
-        if (dialog.ShowDialog() is true)
+        if (dialog.ShowDialog().GetValueOrDefault())
         {
             SavePatchPackPath = dialog.FileName;
             Status = $"Selected patch pack: {SavePatchPackPath}";
@@ -1572,7 +1577,7 @@ public sealed class MainViewModel : INotifyPropertyChanged
             DefaultExt = ".json"
         };
 
-        if (dialog.ShowDialog() is not true)
+        if (!dialog.ShowDialog().GetValueOrDefault())
         {
             Status = "Patch-pack export canceled.";
             return;
