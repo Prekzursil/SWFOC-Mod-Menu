@@ -5,6 +5,8 @@ namespace SwfocTrainer.Flow.Services;
 
 public sealed class FlowLabSnapshotBuilder
 {
+    private readonly StringComparer _scriptReferenceComparer = StringComparer.OrdinalIgnoreCase;
+
     public FlowLabSnapshot Build(FlowIndexReport flowReport, MegaFilesIndex megaFilesIndex)
     {
         ArgumentNullException.ThrowIfNull(flowReport);
@@ -21,8 +23,8 @@ public sealed class FlowLabSnapshotBuilder
             .Select(evt => evt.ScriptReference)
             .Where(reference => !string.IsNullOrWhiteSpace(reference))
             .Select(reference => reference!.Trim())
-            .Distinct(StringComparer.OrdinalIgnoreCase)
-            .OrderBy(reference => reference, StringComparer.OrdinalIgnoreCase)
+            .Distinct(_scriptReferenceComparer)
+            .OrderBy(reference => reference, _scriptReferenceComparer)
             .ToArray();
 
         var megaLoadOrder = megaFilesIndex.Files
