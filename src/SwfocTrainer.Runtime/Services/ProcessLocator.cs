@@ -271,6 +271,8 @@ public sealed class ProcessLocator : IProcessLocator
         {
             // ignored, command line can be unavailable if permissions are insufficient.
         }
+#else
+        _ = processId;
 #endif
         return null;
     }
@@ -301,21 +303,25 @@ public sealed class ProcessLocator : IProcessLocator
         }
 
         var ids = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
-        foreach (Match match in Regex.Matches(commandLine, @"steammod\s*=\s*(\d+)", RegexOptions.IgnoreCase))
+        var steamModGroups = Regex
+            .Matches(commandLine, @"steammod\s*=\s*(\d+)", RegexOptions.IgnoreCase)
+            .Select(match => match.Groups)
+            .Where(groups => groups.Count > 1 && !string.IsNullOrWhiteSpace(groups[1].Value))
+            .Select(groups => groups[1].Value);
+        foreach (var id in steamModGroups)
         {
-            if (match.Groups.Count > 1 && !string.IsNullOrWhiteSpace(match.Groups[1].Value))
-            {
-                ids.Add(match.Groups[1].Value);
-            }
+            ids.Add(id);
         }
 
         // Also infer IDs from mod paths containing workshop content folder segments.
-        foreach (Match match in Regex.Matches(commandLine, @"[\\/]+32470[\\/]+(\d+)", RegexOptions.IgnoreCase))
+        var workshopPathGroups = Regex
+            .Matches(commandLine, @"[\\/]+32470[\\/]+(\d+)", RegexOptions.IgnoreCase)
+            .Select(match => match.Groups)
+            .Where(groups => groups.Count > 1 && !string.IsNullOrWhiteSpace(groups[1].Value))
+            .Select(groups => groups[1].Value);
+        foreach (var id in workshopPathGroups)
         {
-            if (match.Groups.Count > 1 && !string.IsNullOrWhiteSpace(match.Groups[1].Value))
-            {
-                ids.Add(match.Groups[1].Value);
-            }
+            ids.Add(id);
         }
 
         return ids.OrderBy(x => x, StringComparer.Ordinal).ToArray();

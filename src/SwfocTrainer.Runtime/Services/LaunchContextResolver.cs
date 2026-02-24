@@ -153,9 +153,10 @@ public sealed class LaunchContextResolver : ILaunchContextResolver
                 continue;
             }
 
-            foreach (var part in raw.Split(',', StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries))
+            foreach (var normalized in raw
+                         .Split(',', StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries)
+                         .Select(NormalizeToken))
             {
-                var normalized = NormalizeToken(part);
                 if (!string.IsNullOrWhiteSpace(normalized))
                 {
                     hints.Add(normalized);
@@ -211,11 +212,11 @@ public sealed class LaunchContextResolver : ILaunchContextResolver
         var ids = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
         if (!string.IsNullOrWhiteSpace(process.CommandLine))
         {
-            foreach (Match match in SteamModRegex.Matches(process.CommandLine))
+            foreach (var groups in SteamModRegex.Matches(process.CommandLine).Select(match => match.Groups))
             {
-                if (match.Groups.Count > 1 && !string.IsNullOrWhiteSpace(match.Groups[1].Value))
+                if (groups.Count > 1 && !string.IsNullOrWhiteSpace(groups[1].Value))
                 {
-                    ids.Add(match.Groups[1].Value);
+                    ids.Add(groups[1].Value);
                 }
             }
         }

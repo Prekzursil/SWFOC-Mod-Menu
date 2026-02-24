@@ -18,7 +18,7 @@ internal static class ProcessMemoryScanner
         }
 
         var handle = NativeMethods.OpenProcess(
-            NativeMethods.ProcessAccessFlags.QueryInformation | NativeMethods.ProcessAccessFlags.VmRead,
+            NativeMethods.ProcessAccess.QueryInformation | NativeMethods.ProcessAccess.VmRead,
             false,
             processId);
 
@@ -102,7 +102,7 @@ internal static class ProcessMemoryScanner
         }
 
         var handle = NativeMethods.OpenProcess(
-            NativeMethods.ProcessAccessFlags.QueryInformation | NativeMethods.ProcessAccessFlags.VmRead,
+            NativeMethods.ProcessAccess.QueryInformation | NativeMethods.ProcessAccess.VmRead,
             false,
             processId);
 

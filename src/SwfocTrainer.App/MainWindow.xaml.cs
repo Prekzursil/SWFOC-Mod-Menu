@@ -19,15 +19,19 @@ public partial class MainWindow : Window
         PreviewKeyDown += OnPreviewKeyDown;
     }
 
-    private async void OnPreviewKeyDown(object sender, KeyEventArgs e)
+    private static async void OnPreviewKeyDown(object sender, KeyEventArgs e)
     {
+        if (sender is not MainWindow window || window.DataContext is not MainViewModel vm)
+        {
+            return;
+        }
+
         var gesture = NormalizeGesture(e);
         if (string.IsNullOrWhiteSpace(gesture))
         {
             return;
         }
 
-        var vm = (MainViewModel)DataContext;
         var consumed = await vm.ExecuteHotkeyAsync(gesture);
         if (consumed)
         {

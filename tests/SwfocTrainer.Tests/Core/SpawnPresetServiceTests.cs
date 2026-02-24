@@ -243,7 +243,7 @@ public sealed class SpawnPresetServiceTests
 
     private sealed class FreezeStub : IValueFreezeService
     {
-        public IReadOnlyCollection<string> FrozenSymbols => Array.Empty<string>();
+        public IReadOnlyCollection<string> GetFrozenSymbols() => Array.Empty<string>();
         public void FreezeInt(string symbol, int value) { }
         public void FreezeIntAggressive(string symbol, int value) { }
         public void FreezeFloat(string symbol, float value) { }

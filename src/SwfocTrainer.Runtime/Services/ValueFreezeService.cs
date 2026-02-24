@@ -22,7 +22,6 @@ public sealed class ValueFreezeService : IValueFreezeService
     private readonly ILogger<ValueFreezeService> _logger;
     private readonly ConcurrentDictionary<string, FreezeEntry> _entries = new(StringComparer.OrdinalIgnoreCase);
     private readonly Timer _timer;
-    private readonly int _pulseIntervalMs;
     private volatile bool _disposed;
 
     // ── Aggressive freeze thread ─────────────────────────────────────────
@@ -35,8 +34,7 @@ public sealed class ValueFreezeService : IValueFreezeService
     {
         _runtime = runtime;
         _logger = logger;
-        _pulseIntervalMs = pulseIntervalMs;
-        _timer = new Timer(PulseCallback, null, _pulseIntervalMs, _pulseIntervalMs);
+        _timer = new Timer(PulseCallback, null, pulseIntervalMs, pulseIntervalMs);
     }
 
     public ValueFreezeService(IRuntimeAdapter runtime, ILogger<ValueFreezeService> logger)
@@ -44,8 +42,10 @@ public sealed class ValueFreezeService : IValueFreezeService
     {
     }
 
-    public IReadOnlyCollection<string> FrozenSymbols =>
-        _entries.Keys.Concat(_aggressiveEntries.Keys).Distinct(StringComparer.OrdinalIgnoreCase).ToArray();
+    public IReadOnlyCollection<string> GetFrozenSymbols()
+    {
+        return _entries.Keys.Concat(_aggressiveEntries.Keys).Distinct(StringComparer.OrdinalIgnoreCase).ToArray();
+    }
 
     public void FreezeInt(string symbol, int value)
     {

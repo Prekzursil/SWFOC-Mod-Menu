@@ -23,6 +23,9 @@ namespace SwfocTrainer.App.ViewModels;
 public sealed class MainViewModel : INotifyPropertyChanged
 {
     private const string UniversalProfileId = "universal_auto";
+    private const string DefaultBaseSwfocProfileId = "base_swfoc";
+    private const string UnknownReason = "unknown";
+    private const string CompactFloatFormat = "0.###";
 
     private readonly IProfileRepository _profiles;
     private readonly IProcessLocator _processLocator;
@@ -75,7 +78,7 @@ public sealed class MainViewModel : INotifyPropertyChanged
     private string _spawnDelayMs = "125";
     private bool _spawnStopOnFailure = true;
     private bool _isStrictPatchApply = true;
-    private string _onboardingBaseProfileId = "base_swfoc";
+    private string _onboardingBaseProfileId = DefaultBaseSwfocProfileId;
     private string _onboardingDraftProfileId = "custom_my_mod";
     private string _onboardingDisplayName = "Custom Mod Draft";
     private string _onboardingNamespaceRoot = "custom";
@@ -740,14 +743,14 @@ public sealed class MainViewModel : INotifyPropertyChanged
             var swfoc = processes.FirstOrDefault(x => x.ExeTarget == ExeTarget.Swfoc);
             if (swfoc is not null)
             {
-                return "base_swfoc";
+                return DefaultBaseSwfocProfileId;
             }
 
             var starWarsG = processes.FirstOrDefault(IsStarWarsGProcess);
             if (starWarsG is not null)
             {
                 // FoC-safe default when StarWarsG is running but command-line hints are unavailable.
-                return "base_swfoc";
+                return DefaultBaseSwfocProfileId;
             }
 
             var sweaw = processes.FirstOrDefault(x => x.ExeTarget == ExeTarget.Sweaw);
@@ -857,11 +860,11 @@ public sealed class MainViewModel : INotifyPropertyChanged
                     var via = x.Metadata is not null &&
                               x.Metadata.TryGetValue("detectedVia", out var detectedVia)
                         ? detectedVia
-                        : "unknown";
+                        : UnknownReason;
                     var ctx = x.LaunchContext;
                     var launch = ctx is null ? "n/a" : ctx.LaunchKind.ToString();
                     var recommended = ctx?.Recommendation.ProfileId ?? string.Empty;
-                    var reason = ctx?.Recommendation.ReasonCode ?? "unknown";
+                    var reason = ctx?.Recommendation.ReasonCode ?? UnknownReason;
                     var confidence = ctx is null ? "0.00" : ctx.Recommendation.Confidence.ToString("0.00");
                     return $"{x.ProcessName}:{x.ProcessId}:{x.ExeTarget}:cmd={cmd}:mods={mods}:launch={launch}:rec={recommended}:{reason}:{confidence}:via={via}";
                 }));
@@ -928,14 +931,17 @@ public sealed class MainViewModel : INotifyPropertyChanged
                            process.Metadata.TryGetValue("commandLineAvailable", out var cmdRaw)
             ? cmdRaw
             : "False";
-        var mods = process.Metadata is not null &&
-                   process.Metadata.TryGetValue("steamModIdsDetected", out var ids)
-            ? (string.IsNullOrWhiteSpace(ids) ? "none" : ids)
-            : "none";
+        var mods = "none";
+        if (process.Metadata is not null &&
+            process.Metadata.TryGetValue("steamModIdsDetected", out var ids) &&
+            !string.IsNullOrWhiteSpace(ids))
+        {
+            mods = ids;
+        }
         var via = process.Metadata is not null &&
                   process.Metadata.TryGetValue("detectedVia", out var detectedVia)
             ? detectedVia
-            : "unknown";
+            : UnknownReason;
         var dependencyState = process.Metadata is not null &&
                               process.Metadata.TryGetValue("dependencyValidation", out var validation)
             ? validation
@@ -972,7 +978,7 @@ public sealed class MainViewModel : INotifyPropertyChanged
         var launchKind = process.LaunchContext?.LaunchKind.ToString() ?? "Unknown";
         var modPath = process.LaunchContext?.ModPathNormalized;
         var recProfile = process.LaunchContext?.Recommendation.ProfileId ?? "none";
-        var recReason = process.LaunchContext?.Recommendation.ReasonCode ?? "unknown";
+        var recReason = process.LaunchContext?.Recommendation.ReasonCode ?? UnknownReason;
         var recConfidence = process.LaunchContext is null
             ? "0.00"
             : process.LaunchContext.Recommendation.Confidence.ToString("0.00");
@@ -1327,7 +1333,7 @@ public sealed class MainViewModel : INotifyPropertyChanged
         if (!result.Succeeded)
         {
             Status = $"Profile update failed: {result.Message}";
-            OpsArtifactSummary = $"install failed ({result.ReasonCode ?? "unknown"})";
+            OpsArtifactSummary = $"install failed ({result.ReasonCode ?? UnknownReason})";
             return;
         }
 
@@ -1348,7 +1354,7 @@ public sealed class MainViewModel : INotifyPropertyChanged
         if (!rollback.Restored)
         {
             Status = $"Rollback failed: {rollback.Message}";
-            OpsArtifactSummary = $"rollback failed ({rollback.ReasonCode ?? "unknown"})";
+            OpsArtifactSummary = $"rollback failed ({rollback.ReasonCode ?? UnknownReason})";
             return;
         }
 
@@ -1368,7 +1374,7 @@ public sealed class MainViewModel : INotifyPropertyChanged
         var request = new ModOnboardingRequest(
             DraftProfileId: OnboardingDraftProfileId,
             DisplayName: OnboardingDisplayName,
-            BaseProfileId: string.IsNullOrWhiteSpace(OnboardingBaseProfileId) ? "base_swfoc" : OnboardingBaseProfileId,
+            BaseProfileId: string.IsNullOrWhiteSpace(OnboardingBaseProfileId) ? DefaultBaseSwfocProfileId : OnboardingBaseProfileId,
             LaunchSamples: launchSamples,
             ProfileAliases: new[] { OnboardingDraftProfileId, OnboardingDisplayName },
             NamespaceRoot: OnboardingNamespaceRoot,
@@ -1966,7 +1972,7 @@ public sealed class MainViewModel : INotifyPropertyChanged
         LiveOpsDiagnostics.Add($"recommendation: {session.Process.LaunchContext?.Recommendation.ProfileId ?? "none"}");
         if (metadata is not null && metadata.TryGetValue("resolvedVariant", out var resolvedVariant))
         {
-            var reason = GetMetadataValueOrDefault(metadata, "resolvedVariantReasonCode", "unknown");
+            var reason = GetMetadataValueOrDefault(metadata, "resolvedVariantReasonCode", UnknownReason);
             var confidence = GetMetadataValueOrDefault(metadata, "resolvedVariantConfidence", "0.00");
             LiveOpsDiagnostics.Add($"variant: {resolvedVariant} ({reason}, conf={confidence})");
         }
@@ -2155,11 +2161,11 @@ public sealed class MainViewModel : INotifyPropertyChanged
 
     private void ApplyDraftFromSnapshot(SelectedUnitSnapshot snapshot)
     {
-        SelectedUnitHp = snapshot.Hp.ToString("0.###");
-        SelectedUnitShield = snapshot.Shield.ToString("0.###");
-        SelectedUnitSpeed = snapshot.Speed.ToString("0.###");
-        SelectedUnitDamageMultiplier = snapshot.DamageMultiplier.ToString("0.###");
-        SelectedUnitCooldownMultiplier = snapshot.CooldownMultiplier.ToString("0.###");
+        SelectedUnitHp = snapshot.Hp.ToString(CompactFloatFormat);
+        SelectedUnitShield = snapshot.Shield.ToString(CompactFloatFormat);
+        SelectedUnitSpeed = snapshot.Speed.ToString(CompactFloatFormat);
+        SelectedUnitDamageMultiplier = snapshot.DamageMultiplier.ToString(CompactFloatFormat);
+        SelectedUnitCooldownMultiplier = snapshot.CooldownMultiplier.ToString(CompactFloatFormat);
         SelectedUnitVeterancy = snapshot.Veterancy.ToString();
         SelectedUnitOwnerFaction = snapshot.OwnerFaction.ToString();
     }
@@ -2270,10 +2276,20 @@ public sealed class MainViewModel : INotifyPropertyChanged
         var reliability = ActionReliability.FirstOrDefault(x => x.ActionId.Equals(actionId, StringComparison.OrdinalIgnoreCase));
         return new Dictionary<string, object?>
         {
-            ["reliabilityState"] = reliability?.State ?? "unknown",
-            ["reliabilityReasonCode"] = reliability?.ReasonCode ?? "unknown",
-            ["bundleGateResult"] = reliability is null ? "unknown" : reliability.State == "unavailable" ? "blocked" : "bundle_pass"
+            ["reliabilityState"] = reliability?.State ?? UnknownReason,
+            ["reliabilityReasonCode"] = reliability?.ReasonCode ?? UnknownReason,
+            ["bundleGateResult"] = ResolveBundleGateResult(reliability)
         };
+    }
+
+    private static string ResolveBundleGateResult(ActionReliabilityViewItem? reliability)
+    {
+        if (reliability is null)
+        {
+            return UnknownReason;
+        }
+
+        return reliability.State == "unavailable" ? "blocked" : "bundle_pass";
     }
 
     private static string BuildDiagnosticsStatusSuffix(ActionExecutionResult result)
@@ -2532,8 +2548,13 @@ public sealed class MainViewModel : INotifyPropertyChanged
 
     private void RefreshActiveFreezes()
     {
+        if (!_freezeUiTimer.IsEnabled)
+        {
+            _freezeUiTimer.Start();
+        }
+
         ActiveFreezes.Clear();
-        foreach (var symbol in _freezeService.FrozenSymbols)
+        foreach (var symbol in _freezeService.GetFrozenSymbols())
         {
             ActiveFreezes.Add($"❄️ {symbol}");
         }
@@ -2547,7 +2568,7 @@ public sealed class MainViewModel : INotifyPropertyChanged
         }
     }
 
-    private string HotkeyFilePath => TrustedPathPolicy.CombineUnderRoot(
+    private static string HotkeyFilePath => TrustedPathPolicy.CombineUnderRoot(
         TrustedPathPolicy.GetOrCreateAppDataRoot(),
         "hotkeys.json");
 

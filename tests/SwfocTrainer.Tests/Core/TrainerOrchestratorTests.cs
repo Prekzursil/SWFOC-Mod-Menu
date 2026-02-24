@@ -69,7 +69,7 @@ public sealed class TrainerOrchestratorTests
         public List<(string Symbol, string Type, object Value)> FrozenCalls { get; } = new();
         public List<string> UnfrozenCalls { get; } = new();
         public bool UnfreezeAllCalled { get; private set; }
-        public IReadOnlyCollection<string> FrozenSymbols => FrozenCalls.Select(c => c.Symbol).Distinct().ToList();
+        public IReadOnlyCollection<string> GetFrozenSymbols() => FrozenCalls.Select(c => c.Symbol).Distinct().ToList();
 
         public void FreezeInt(string symbol, int value) => FrozenCalls.Add((symbol, "int", value));
         public void FreezeIntAggressive(string symbol, int value) => FrozenCalls.Add((symbol, "int_aggressive", value));
