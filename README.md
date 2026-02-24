@@ -64,7 +64,9 @@ Excluded:
 ## Build and Test
 
 ```powershell
+
 # from repo root
+
 dotnet restore SwfocTrainer.sln
 dotnet build SwfocTrainer.sln -c Release
 ```

@@ -25,7 +25,7 @@ $pack = Get-Content -Raw -Path $SignaturePackPath | ConvertFrom-Json
 $schema = Get-Content -Raw -Path $SchemaPath | ConvertFrom-Json
 
 foreach ($required in $schema.required) {
-    Require-ValidationField -Object $pack -Field $required -Errors $errors
+    Confirm-ValidationField -Object $pack -Field $required -Errors $errors
 }
 
 if ($Strict) {
@@ -37,7 +37,7 @@ if ($Strict) {
     for ($i = 0; $i -lt $anchors.Count; $i++) {
         $anchor = $anchors[$i]
         foreach ($requiredAnchorField in @("id", "kind", "pattern", "required")) {
-            Require-ValidationField -Object $anchor -Field $requiredAnchorField -Errors $errors -Prefix "anchors[$i]"
+            Confirm-ValidationField -Object $anchor -Field $requiredAnchorField -Errors $errors -Prefix "anchors[$i]"
         }
     }
 
@@ -53,7 +53,7 @@ if ($Strict) {
         foreach ($opName in $operationNames) {
             $operation = $pack.operations.$opName
             foreach ($requiredOpField in @("requiredAnchors", "optionalAnchors")) {
-                Require-ValidationField -Object $operation -Field $requiredOpField -Errors $errors -Prefix "operations.$opName"
+                Confirm-ValidationField -Object $operation -Field $requiredOpField -Errors $errors -Prefix "operations.$opName"
             }
         }
     }

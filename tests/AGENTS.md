@@ -1,9 +1,11 @@
 # Tests Agent Contract
 
 ## Purpose
+
 Ensure deterministic tests remain authoritative while live tests remain explicit and auditable.
 
 ## Scope
+
 Applies to files under `tests/`.
 
 ## Required Evidence

@@ -7,5 +7,10 @@ namespace SwfocTrainer.Core.Contracts;
 /// </summary>
 public interface IModOnboardingService
 {
-    Task<ModOnboardingResult> ScaffoldDraftProfileAsync(ModOnboardingRequest request, CancellationToken cancellationToken = default);
+    Task<ModOnboardingResult> ScaffoldDraftProfileAsync(ModOnboardingRequest request, CancellationToken cancellationToken);
+
+    Task<ModOnboardingResult> ScaffoldDraftProfileAsync(ModOnboardingRequest request)
+    {
+        return ScaffoldDraftProfileAsync(request, CancellationToken.None);
+    }
 }

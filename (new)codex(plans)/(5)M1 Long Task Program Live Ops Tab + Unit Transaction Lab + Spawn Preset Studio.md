@@ -1,6 +1,7 @@
 # M1 Long Task Program: Live Ops Tab + Unit Transaction Lab + Spawn Preset Studio
 
 ## Summary
+
 This is the best next long task because M0 reliability foundations are largely in place, open PR backlog is cleared, CI/security are green, and the highest-impact unfinished scope is M1 (`#7`) with clear acceptance criteria.
 
 Chosen direction (locked from your decisions):

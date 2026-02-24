@@ -14,11 +14,33 @@ public interface ISavePatchApplyService
         string targetSavePath,
         SavePatchPack pack,
         string targetProfileId,
-        bool strict = true,
-        CancellationToken cancellationToken = default);
+        bool strict,
+        CancellationToken cancellationToken);
+
+    Task<SavePatchApplyResult> ApplyAsync(
+        string targetSavePath,
+        SavePatchPack pack,
+        string targetProfileId)
+    {
+        return ApplyAsync(targetSavePath, pack, targetProfileId, strict: true, CancellationToken.None);
+    }
+
+    Task<SavePatchApplyResult> ApplyAsync(
+        string targetSavePath,
+        SavePatchPack pack,
+        string targetProfileId,
+        bool strict)
+    {
+        return ApplyAsync(targetSavePath, pack, targetProfileId, strict, CancellationToken.None);
+    }
 
     /// <summary>
     /// Restores the most recent backup written for a save path.
     /// </summary>
-    Task<SaveRollbackResult> RestoreLastBackupAsync(string targetSavePath, CancellationToken cancellationToken = default);
+    Task<SaveRollbackResult> RestoreLastBackupAsync(string targetSavePath, CancellationToken cancellationToken);
+
+    Task<SaveRollbackResult> RestoreLastBackupAsync(string targetSavePath)
+    {
+        return RestoreLastBackupAsync(targetSavePath, CancellationToken.None);
+    }
 }

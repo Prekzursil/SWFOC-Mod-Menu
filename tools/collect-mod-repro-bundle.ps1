@@ -32,16 +32,16 @@ function Resolve-PythonCommand {
     return @()
 }
 
-function Parse-SteamModIds {
+function Get-SteamModIdsFromCommandLine {
     param([string]$CommandLine)
 
     if ([string]::IsNullOrWhiteSpace($CommandLine)) {
         return @()
     }
 
-    $matches = [regex]::Matches($CommandLine, "STEAMMOD\s*=\s*([0-9]{4,})", [System.Text.RegularExpressions.RegexOptions]::IgnoreCase)
+    $regexMatches = [regex]::Matches($CommandLine, "STEAMMOD\s*=\s*([0-9]{4,})", [System.Text.RegularExpressions.RegexOptions]::IgnoreCase)
     $ids = New-Object System.Collections.Generic.HashSet[string]([StringComparer]::OrdinalIgnoreCase)
-    foreach ($match in $matches) {
+    foreach ($match in $regexMatches) {
         if ($match.Groups.Count -gt 1) {
             [void]$ids.Add($match.Groups[1].Value)
         }
@@ -59,7 +59,7 @@ function Get-ProcessSnapshot {
     $snapshot = New-Object System.Collections.Generic.List[object]
     foreach ($proc in $processes) {
         $steamIds = @(
-            Parse-SteamModIds -CommandLine $proc.CommandLine
+            Get-SteamModIdsFromCommandLine -CommandLine $proc.CommandLine
         )
         $steamIdCount = @($steamIds).Count
         $hostRole = if ($proc.Name -ieq "StarWarsG.exe") { "game_host" } elseif ($proc.Name -match "^(swfoc\\.exe|sweaw\\.exe)$") { "launcher" } else { "unknown" }
@@ -134,7 +134,7 @@ function Get-PreferredProcess {
     return $items[0]
 }
 
-function Detect-LaunchContext {
+function Get-LaunchContext {
     param(
         [object]$Process,
         [string]$ProfileRootPath
@@ -333,7 +333,7 @@ function Get-ActionStatusDiagnostics {
     }
 }
 
-function Map-LiveTests {
+function ConvertTo-LiveTestSummary {
     param([object[]]$SummaryEntries)
 
     $tests = New-Object System.Collections.Generic.List[object]
@@ -498,7 +498,7 @@ if (-not (Test-Path -Path $RunDirectory)) {
 $summaryRaw = Get-Content -Raw -Path $SummaryPath | ConvertFrom-Json
 $summaryEntries = @($summaryRaw)
 $liveTests = @()
-foreach ($test in (Map-LiveTests -SummaryEntries $summaryEntries)) {
+foreach ($test in (ConvertTo-LiveTestSummary -SummaryEntries $summaryEntries)) {
     $liveTests += $test
 }
 $relevantNames = Get-RelevantTestNames -SelectedScope $Scope
@@ -508,7 +508,7 @@ foreach ($process in (Get-ProcessSnapshot)) {
     $processSnapshot += $process
 }
 $preferredProcess = Get-PreferredProcess -Snapshot $processSnapshot
-$launchContext = Detect-LaunchContext -Process $preferredProcess -ProfileRootPath $ProfileRoot
+$launchContext = Get-LaunchContext -Process $preferredProcess -ProfileRootPath $ProfileRoot
 $runtimeMode = Get-RuntimeMode -LiveTests $relevantLiveTests
 $classification = Get-Classification -Relevant $relevantLiveTests -ProcessSnapshot $processSnapshot -SelectedScope $Scope
 $requiredCapabilities = Get-ProfileRequiredCapabilities -ProfileRootPath $ProfileRoot -ProfileId ([string]$launchContext.profileId)
@@ -694,5 +694,5 @@ $($actionStatusRows -join "`n")
 $nextAction
 "@ | Set-Content -Path $bundleMdPath
 
-Write-Host "repro bundle json: $bundlePath"
-Write-Host "repro bundle markdown: $bundleMdPath"
+Write-Output "repro bundle json: $bundlePath"
+Write-Output "repro bundle markdown: $bundleMdPath"

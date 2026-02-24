@@ -101,4 +101,4 @@ if ([string]::IsNullOrWhiteSpace($parent)) {
 [System.IO.File]::WriteAllText($normalizedOutput, $json)
 
 & (Join-Path $PSScriptRoot "validate-save-patch-pack.ps1") -PatchPackPath $normalizedOutput -SchemaPath (Join-Path $PSScriptRoot "schemas/save-patch-pack.schema.json") -Strict
-Write-Host "Exported save patch pack: $normalizedOutput"
+Write-Output "Exported save patch pack: $normalizedOutput"

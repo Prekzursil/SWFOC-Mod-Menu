@@ -2,7 +2,9 @@ namespace SwfocTrainer.Saves.Services;
 
 public static class SaveDiffService
 {
-    public static IReadOnlyList<string> BuildDiffPreview(byte[] original, byte[] current, int maxEntries = 200)
+    private const int DefaultMaxEntries = 200;
+
+    public static IReadOnlyList<string> BuildDiffPreview(byte[] original, byte[] current, int maxEntries)
     {
         var result = new List<string>();
         var len = Math.Min(original.Length, current.Length);
@@ -26,5 +28,10 @@ public static class SaveDiffService
         }
 
         return result;
+    }
+
+    public static IReadOnlyList<string> BuildDiffPreview(byte[] original, byte[] current)
+    {
+        return BuildDiffPreview(original, current, DefaultMaxEntries);
     }
 }

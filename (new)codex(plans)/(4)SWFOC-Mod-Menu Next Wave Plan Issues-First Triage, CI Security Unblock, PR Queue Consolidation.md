@@ -1,6 +1,7 @@
 # SWFOC-Mod-Menu Next Wave Plan: Issues-First Triage, CI/Security Unblock, PR Queue Consolidation
 
 ## Summary
+
 This execution plan starts with issue/project hygiene, then unblocks CI/security, then consolidates the 14 Dependabot PRs, and defers Pages/deployment work for now.
 
 Locked preferences applied:
@@ -51,6 +52,7 @@ Completion gate:
 ---
 
 ## Phase 1: Continuous Integration Unblock
+
 Files:
 
 - `.github/workflows/ci.yml`
@@ -78,6 +80,7 @@ Completion gate:
 ---
 
 ## Phase 2: Security Workflow Hardening (CodeQL + dependency guardrail)
+
 Files:
 
 - `.github/workflows/codeql.yml` (new)
@@ -110,6 +113,7 @@ Completion gate:
 ---
 
 ## Phase 3: Address 29 Code Scanning Alerts (fix + triage policy)
+
 Target state:
 
 - **No open alerts** in production/runtime/workflow paths.
@@ -152,6 +156,7 @@ Completion gate:
 ---
 
 ## Phase 4: Handle 14 Open PRs (Consolidate then prune)
+
 Files:
 
 - `.github/dependabot.yml`
@@ -189,6 +194,7 @@ Completion gate:
 ---
 
 ## Phase 5: Minimal Automation Bundle (selected scope)
+
 Files:
 
 - `.github/workflows/pr-labeler.yml` (new)
@@ -209,6 +215,7 @@ Completion gate:
 ---
 
 ## Phase 6: Deployment and Pages (deferred in this phase)
+
 Decision:
 
 - No Pages deployment now.

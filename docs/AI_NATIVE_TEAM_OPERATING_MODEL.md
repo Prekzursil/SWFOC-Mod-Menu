@@ -1,6 +1,7 @@
 # AI-Native Team Operating Model
 
 ## Goal
+
 Turn SWFOC runtime/mod debugging into an evidence-first loop where each failure becomes one reproducible run artifact with clear classification and next action.
 
 ## Operating Loop
@@ -39,6 +40,7 @@ Turn SWFOC runtime/mod debugging into an evidence-first loop where each failure 
 - Test contract: `tests/AGENTS.md`
 
 ## PR Readiness
+
 A PR touching runtime/tooling/tests must include:
 
 1. affected profile IDs
