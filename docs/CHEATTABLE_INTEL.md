@@ -30,6 +30,7 @@ It keeps AOB/patch techniques that are useful for trainer calibration and ignore
 ## Detailed Entries
 
 ### Empire At War / Infinite Credits
+
 - Technique: `code_cave_override`
 - Trainer mapping: `set_credits (+ mirror sync)`
 - Injection points: `StarWarsG.exe+2FCFC`
@@ -43,6 +44,7 @@ It keeps AOB/patch techniques that are useful for trainer calibration and ignore
   - Uses code-cave trampoline with immediate writes.
 
 ### Empire At War / Maphack
+
 - Technique: `branch_bypass_patch`
 - Trainer mapping: `toggle_fog_reveal (or code-patch fallback)`
 - Injection points: `StarWarsG.exe+451974`
@@ -54,6 +56,7 @@ It keeps AOB/patch techniques that are useful for trainer calibration and ignore
   - Branch behavior is bypassed/patched.
 
 ### Empire At War / 1Sec/1Credit Build S
+
 - Technique: `code_cave_override`
 - Trainer mapping: `set_instant_build_multiplier (or patch-mode feature)`
 - Injection points: `StarWarsG.exe+333E73`
@@ -68,6 +71,7 @@ It keeps AOB/patch techniques that are useful for trainer calibration and ignore
   - Uses code-cave trampoline with immediate writes.
 
 ### Empire At War / 1Sec/1 Cred Build C
+
 - Technique: `code_cave_override`
 - Trainer mapping: `set_instant_build_multiplier (or patch-mode feature)`
 - Injection points: `build5`
@@ -82,6 +86,7 @@ It keeps AOB/patch techniques that are useful for trainer calibration and ignore
   - Uses code-cave trampoline with immediate writes.
 
 ### Empire At War / Max Unit Cap 99k
+
 - Technique: `branch_bypass_patch`
 - Trainer mapping: `future:set_unit_cap`
 - Injection points: `StarWarsG.exe+28DF6F`
@@ -93,6 +98,7 @@ It keeps AOB/patch techniques that are useful for trainer calibration and ignore
   - Branch behavior is bypassed/patched.
 
 ### Forces Of Corruption / Infinite Credits
+
 - Technique: `code_cave_override`
 - Trainer mapping: `set_credits (+ mirror sync)`
 - Injection points: `StarWarsG.exe+2FCFC`
@@ -106,6 +112,7 @@ It keeps AOB/patch techniques that are useful for trainer calibration and ignore
   - Uses code-cave trampoline with immediate writes.
 
 ### Forces Of Corruption / Maphack
+
 - Technique: `branch_bypass_patch`
 - Trainer mapping: `toggle_fog_reveal (or code-patch fallback)`
 - Injection points: `StarWarsG.exe+4C1764`
@@ -117,6 +124,7 @@ It keeps AOB/patch techniques that are useful for trainer calibration and ignore
   - Branch behavior is bypassed/patched.
 
 ### Forces Of Corruption / 1 Sec/1 Cred Build S
+
 - Technique: `code_cave_override`
 - Trainer mapping: `set_instant_build_multiplier (or patch-mode feature)`
 - Injection points: `StarWarsG.exe+374413`
@@ -131,6 +139,7 @@ It keeps AOB/patch techniques that are useful for trainer calibration and ignore
   - Uses code-cave trampoline with immediate writes.
 
 ### Forces Of Corruption / 1Sec/1 Cred Build C
+
 - Technique: `code_cave_override`
 - Trainer mapping: `set_instant_build_multiplier (or patch-mode feature)`
 - Injection points: `StarWarsG.exe+400427`
@@ -145,6 +154,7 @@ It keeps AOB/patch techniques that are useful for trainer calibration and ignore
   - Uses code-cave trampoline with immediate writes.
 
 ### Forces Of Corruption / Max Unit Cap 99k
+
 - Technique: `code_cave_patch`
 - Trainer mapping: `future:set_unit_cap`
 - Injection points: `StarWarsG.exe+2AC94F`

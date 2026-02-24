@@ -4,12 +4,14 @@
 This plan bootstraps `https://github.com/Prekzursil/SWFOC-Mod-Menu` from the current workspace as a clean, code-focused repo, then configures GitHub operations end-to-end (description, governance, CI, backlog, project board, issue/PR flow), and finally defines an implementation track to make runtime value resolution reliable across build/mod variance.
 
 Current facts discovered from environment:
+
 1. Local workspace is **not** a git repo yet.
 2. Remote repo exists and is empty (no branches, no contents, no issues/PRs).
 3. Workspace contains ~25 GB due to local mod mirrors; many files exceed GitHub normal file limits.
 4. `dotnet` is not available in this shell, so compile/test verification must run in Windows/GitHub Actions.
 
 ## Locked decisions (confirmed)
+
 1. First push scope: **Code + profiles only**.
 2. License: **MIT**.
 3. Bootstrap depth: **Full PM setup**.
@@ -21,6 +23,7 @@ Current facts discovered from environment:
 9. Issue seeding: **Epics + actionable first-sprint tasks**.
 
 ## Phase 1 — Repository bootstrap (safe first push)
+
 1. Initialize git in current workspace with `main` as default branch.
 2. Harden `.gitignore` to permanently exclude local heavyweight mod mirrors and generated outputs.
 3. Exclude these paths explicitly: `1397421866(original mod)/`, `3447786229(submod)/`, `3661482670(cheat_mode_example)/`, `artifacts/`, all `bin/` and `obj/`, plus local-path helper files as needed.
@@ -30,6 +33,7 @@ Current facts discovered from environment:
 7. Add remote `origin` to `Prekzursil/SWFOC-Mod-Menu` and push `main` as first branch.
 
 ## Phase 2 — GitHub repo metadata and settings
+
 1. Set repository description to: `Profile-driven SWFOC trainer/editor for base game, AOTR, and ROE with launch-context detection, save tooling, and calibration-first runtime reliability.`
 2. Set homepage URL initially blank; keep public visibility.
 3. Keep Issues and Projects enabled; disable Wiki unless actively used.
@@ -38,6 +42,7 @@ Current facts discovered from environment:
 6. Apply branch protection/ruleset for `main`: PR required, at least 1 review, stale review dismissal, conversation resolution required, force-push/delete blocked, required status checks enabled.
 
 ## Phase 3 — Governance files and contributor UX
+
 1. Add `LICENSE` (MIT).
 2. Add/refresh `README.md` for this new repo context; include architecture, supported profiles, setup, CI, and calibration workflow.
 3. Add `CONTRIBUTING.md` with branch naming, commit/PR conventions, test commands, and evidence requirements.
@@ -48,6 +53,7 @@ Current facts discovered from environment:
 8. Add `CODE_OF_CONDUCT.md` (Contributor Covenant).
 
 ## Phase 4 — CI/CD and automation baseline
+
 1. Replace/split workflows into:
    1. `ci.yml`: restore, build, deterministic tests, launch-context fixture smoke checks.
    2. `release-portable.yml`: manual/tag-triggered portable packaging artifact.
@@ -64,6 +70,7 @@ Current facts discovered from environment:
 5. Add `dependabot.yml` for NuGet and GitHub Actions updates.
 
 ## Phase 5 — Backlog and project management seeding
+
 1. Create milestones aligned to roadmap with concrete names:
    1. `M0 Runtime Fidelity + Context Normalization`
    2. `M1 Live Action Command Surface`
@@ -88,6 +95,7 @@ Current facts discovered from environment:
 5. Create one GitHub Project board `SWFOC-Mod-Menu Roadmap` with columns `Now`, `Next`, `Later`, auto-linked to seeded issues and milestones.
 
 ## Phase 6 — Realtime value reliability program (hybrid stability-first)
+
 1. Keep current hierarchy but formalize it:
    1. Signature-first resolution.
    2. Validated fallback offsets.
@@ -112,6 +120,7 @@ Current facts discovered from environment:
    2. Track fallback-hit rate and unresolved symbol rate for drift detection.
 
 ## Important changes or additions to public APIs/interfaces/types
+
 1. Add `SymbolHealthStatus` enum in core models: `Healthy`, `Degraded`, `Unresolved`.
 2. Extend `SymbolInfo` to include health fields: `HealthStatus`, `HealthReason`, `LastValidatedAt`.
 3. Add `SymbolValidationRule` model (range/type/mode constraints) loaded from profile metadata.
@@ -124,6 +133,7 @@ Current facts discovered from environment:
    2. `criticalSymbols` for actions requiring strict resolution quality.
 
 ## Test cases and scenarios
+
 1. Repository bootstrap validation:
    1. `git push` succeeds on first attempt.
    2. No large mod mirrors tracked in history.
@@ -147,6 +157,7 @@ Current facts discovered from environment:
    3. Profile inheritance behavior remains unchanged for shipped profiles.
 
 ## Assumptions and defaults
+
 1. This repo will track the trainer/editor codebase only, not full mod asset mirrors.
 2. Full local mod trees remain local reference data and are not published to GitHub.
 3. First commit goes directly to `main`; branch protection is applied immediately after.

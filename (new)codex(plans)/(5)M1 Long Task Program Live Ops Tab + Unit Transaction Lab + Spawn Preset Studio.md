@@ -4,6 +4,7 @@
 This is the best next long task because M0 reliability foundations are largely in place, open PR backlog is cleared, CI/security are green, and the highest-impact unfinished scope is M1 (`#7`) with clear acceptance criteria.
 
 Chosen direction (locked from your decisions):
+
 - Primary track: **M1 Live Action Command Surface**
 - Delivery style: **Milestone slices**
 - Validation: **Hybrid live-machine + deterministic CI**
@@ -17,6 +18,7 @@ Chosen direction (locked from your decisions):
 ## Execution Program (Decision-Complete)
 
 ### Slice 0: Stabilization + M0 Carryover Closure
+
 - Objective: close or reconcile `#15`, `#16`, `#17`, `#18` before deep M1 implementation.
 - Implementation: verify runtime telemetry/re-resolve/calibration/doc guardrail acceptance against current code, then either close with evidence comments or open exact follow-up deltas scoped to M1.
 - Implementation: add explicit repo convention for `(new)codex(plans)/` as versioned planning history, including naming and evidence linkage rules.
@@ -24,6 +26,7 @@ Chosen direction (locked from your decisions):
 - Exit gate: issues `#15/#16/#17/#18` are closed or each has a narrowly scoped follow-up issue with owner, acceptance, and milestone mapping.
 
 ### Slice 1: Live Ops Domain Foundation (Core Contracts + Services)
+
 - Objective: introduce reusable domain services so UI is thin and testable.
 - Implementation: add action reliability evaluation service that classifies each action as `stable`, `experimental`, or `unavailable` using runtime mode, symbol health/source, dependency disable list, and helper availability.
 - Implementation: add selected-unit transaction service with snapshot capture, staged apply, rollback-on-failure, and transaction history.
@@ -32,6 +35,7 @@ Chosen direction (locked from your decisions):
 - Exit gate: deterministic unit tests cover reliability classification matrix, transaction rollback semantics, and spawn plan expansion.
 
 ### Slice 2: Unit Transaction Lab Engine (First Functional Vertical)
+
 - Objective: deliver safe apply/revert editing for selected-unit stats.
 - Implementation: capture baseline snapshot for selected-unit symbols (`hp`, `shield`, `speed`, `damage`, `cooldown`, `veterancy`, `owner_faction`).
 - Implementation: apply transaction as ordered writes through orchestrator/runtime with per-field diagnostics; if any write fails, auto-rollback already-applied fields.
@@ -41,6 +45,7 @@ Chosen direction (locked from your decisions):
 - Exit gate: unit tests prove atomic-like behavior (apply failure triggers rollback) and tactical gating behavior.
 
 ### Slice 3: New Live Ops Tab (UI Integration)
+
 - Objective: add dedicated M1 UX without destabilizing existing runtime tab.
 - Implementation: new `Live Ops` tab with three panes:
 - Implementation: Selected Unit Lab pane (capture baseline, edit fields, apply, revert last, restore baseline, transaction history).
@@ -51,6 +56,7 @@ Chosen direction (locked from your decisions):
 - Exit gate: manual UX pass on desktop + minimum window size, no binding errors, and deterministic view-model tests for tab command flows.
 
 ### Slice 4: Spawn Preset Studio + Batch Operations
+
 - Objective: deliver catalog-driven spawn workflows for base/AOTR/ROE.
 - Implementation: add preset schema and files under `profiles/default/presets/<profileId>/spawn_presets.json`.
 - Implementation: build batch planner with configurable quantity, delay, faction, and entry marker override.
@@ -60,6 +66,7 @@ Chosen direction (locked from your decisions):
 - Exit gate: deterministic tests for preset loading and plan expansion across `base_swfoc`, `aotr_1397421866_swfoc`, and `roe_3447786229_swfoc`.
 
 ### Slice 5: Deterministic Mode Bundle Gatekeeper + Reliability Surfacing
+
 - Objective: make high-impact bundles deterministic and transparent.
 - Implementation: enforce strict mode gate for bundle actions (transaction/spawn/tactical bundles) independent from manual low-level action execution.
 - Implementation: reliability state rules:
@@ -71,6 +78,7 @@ Chosen direction (locked from your decisions):
 - Exit gate: deterministic classification tests and audit record verification for reliability metadata.
 
 ### Slice 6: Live Validation, Documentation, and Issue Closure
+
 - Objective: finalize M1 with live-machine evidence and close milestone issues cleanly.
 - Implementation: add/extend live tests for tactical toggles and hero-state helper workflows with skip-graceful behavior.
 - Implementation: produce standardized live checklist artifacts for AOTR/ROE (`#19`) including launch-context reason codes, attach diagnostics, and action evidence format.
@@ -81,6 +89,7 @@ Chosen direction (locked from your decisions):
 ---
 
 ## Important Changes or Additions to Public APIs / Interfaces / Types
+
 1. Add `ActionReliabilityState` enum in `src/SwfocTrainer.Core/Models/Enums.cs`.
 Values: `Stable`, `Experimental`, `Unavailable`.
 
@@ -97,10 +106,12 @@ Methods: `CaptureAsync`, `ApplyAsync`, `RevertLastAsync`, `RestoreBaselineAsync`
 Methods: `LoadPresetsAsync`, `BuildBatchPlan`, `ExecuteBatchAsync`.
 
 6. Extend profile/preset documentation contract.
+
 - New preset file convention: `profiles/default/presets/<profileId>/spawn_presets.json`.
 - Keep profile JSON backward compatible; no breaking required fields added.
 
 7. Extend action audit diagnostics payload (non-breaking).
+
 - Add keys such as `reliabilityState`, `reliabilityReasonCode`, `transactionId`, `bundleGateResult`.
 
 ---
@@ -108,12 +119,14 @@ Methods: `LoadPresetsAsync`, `BuildBatchPlan`, `ExecuteBatchAsync`.
 ## Test Cases and Scenarios
 
 1. Deterministic reliability classification tests.
+
 - `mode=tactical`, healthy symbols, helper valid => relevant tactical actions classify `stable`.
 - `mode=unknown` and tactical-only bundle action => `unavailable` with `mode_unknown_strict_gate`.
 - dependency soft-disabled helper action => `unavailable` with `dependency_soft_blocked`.
 - fallback + degraded symbol for non-critical action => `experimental`.
 
 2. Unit transaction engine tests.
+
 - capture snapshot reads all selected-unit symbols successfully.
 - apply draft with all writes successful => transaction committed and history incremented.
 - apply draft with mid-stream failure => automatic rollback of previously written fields and failure reason code.
@@ -121,23 +134,27 @@ Methods: `LoadPresetsAsync`, `BuildBatchPlan`, `ExecuteBatchAsync`.
 - restore baseline after multiple transactions returns to baseline values.
 
 3. Spawn preset and batch tests.
+
 - preset loader resolves profile-specific preset files and validates required fields.
 - batch plan expands quantity/repeat correctly with deterministic item count.
 - execution early-stop path halts on first failed spawn when configured.
 - execution continue-on-failure path records partial failures and final aggregate status.
 
 4. ViewModel/UI behavior tests.
+
 - Live Ops commands are disabled when not attached.
 - Unit Transaction pane disabled outside tactical mode.
 - Reliability list updates after attach and after mode changes.
 - spawn controls reflect helper/dependency availability state.
 
 5. Live tests (skip-graceful).
+
 - tactical toggles smoke run in tactical session and revert correctly.
 - hero-state helper workflow smoke on AOTR/ROE runs when helper is present.
 - no-process and wrong-mode conditions skip gracefully with explicit skip notes.
 
 6. CI acceptance.
+
 - deterministic suite remains green in `ci.yml` (live tests excluded by filter).
 - launch-context fixture smoke remains green.
 - added M1 deterministic tests run under `windows-latest`.
@@ -145,6 +162,7 @@ Methods: `LoadPresetsAsync`, `BuildBatchPlan`, `ExecuteBatchAsync`.
 ---
 
 ## Issue / Board Mapping
+
 1. Keep `#7` as umbrella epic and create M1 sub-issues for each slice (`Slice1` through `Slice6`), each with acceptance gates copied from this plan.
 2. Execute Slice 0 first and close/reconcile `#15/#16/#17/#18`.
 3. Keep `#19` open until Slice 6 live checklist is delivered.
@@ -154,6 +172,7 @@ Methods: `LoadPresetsAsync`, `BuildBatchPlan`, `ExecuteBatchAsync`.
 ---
 
 ## Assumptions and Defaults
+
 1. Safe-method boundary remains strict: no new invasive injection architecture beyond current runtime model.
 2. Runtime target remains Windows; this shell may not have `dotnet`, so compile/test authority is Windows dev machine + GitHub Actions.
 3. Existing four shipped profiles remain first-class and are the only hard acceptance targets for M1.
