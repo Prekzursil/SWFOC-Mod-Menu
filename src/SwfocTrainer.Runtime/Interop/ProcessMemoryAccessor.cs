@@ -40,7 +40,7 @@ internal sealed class ProcessMemoryAccessor : IDisposable
     {
         var size = Marshal.SizeOf<T>();
         var buffer = new byte[size];
-        MemoryMarshal.Write(buffer.AsSpan(), ref value);
+        MemoryMarshal.Write(buffer.AsSpan(), in value);
 
         if (!NativeMethods.WriteProcessMemory(_handle, address, buffer, size, out var written) || written.ToInt64() != size)
         {

@@ -94,7 +94,7 @@ public static class RuntimeModeProbeResolver
             return true;
         }
 
-        result = default;
+        result = default!;
         return false;
     }
 

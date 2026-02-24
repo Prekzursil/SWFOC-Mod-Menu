@@ -302,7 +302,7 @@ public sealed class LiveCreditsTests
             var matched = true;
             for (var j = 0; j < sig.Length; j++)
             {
-                if (sig[j].HasValue && memory[i + j] != sig[j].Value)
+                if (sig[j] is byte expected && memory[i + j] != expected)
                 {
                     matched = false;
                     break;
