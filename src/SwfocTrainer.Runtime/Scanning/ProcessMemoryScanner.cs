@@ -17,12 +17,7 @@ internal static class ProcessMemoryScanner
             return Array.Empty<nint>();
         }
 
-        var handle = NativeMethods.OpenProcess(
-            (NativeMethods.ProcessAccess)(
-                (uint)NativeMethods.ProcessAccess.QueryInformation |
-                (uint)NativeMethods.ProcessAccess.VmRead),
-            false,
-            processId);
+        var handle = OpenReadHandle(processId);
 
         if (handle == nint.Zero)
         {
@@ -103,12 +98,7 @@ internal static class ProcessMemoryScanner
             tolerance = 0;
         }
 
-        var handle = NativeMethods.OpenProcess(
-            (NativeMethods.ProcessAccess)(
-                (uint)NativeMethods.ProcessAccess.QueryInformation |
-                (uint)NativeMethods.ProcessAccess.VmRead),
-            false,
-            processId);
+        var handle = OpenReadHandle(processId);
 
         if (handle == nint.Zero)
         {
@@ -304,5 +294,15 @@ internal static class ProcessMemoryScanner
                            NativeMethods.PageWriteCopy |
                            NativeMethods.PageExecuteReadWrite |
                            NativeMethods.PageExecuteWriteCopy)) != 0;
+    }
+
+    private static nint OpenReadHandle(int processId)
+    {
+        return NativeMethods.OpenProcess(
+            (NativeMethods.ProcessAccess)(
+                (uint)NativeMethods.ProcessAccess.QueryInformation |
+                (uint)NativeMethods.ProcessAccess.VmRead),
+            false,
+            processId);
     }
 }

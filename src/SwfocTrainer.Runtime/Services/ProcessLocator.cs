@@ -13,6 +13,8 @@ namespace SwfocTrainer.Runtime.Services;
 
 public sealed class ProcessLocator : IProcessLocator
 {
+    private static readonly TimeSpan RegexMatchTimeout = TimeSpan.FromMilliseconds(250);
+
     private readonly ILaunchContextResolver _launchContextResolver;
     private readonly IProfileRepository? _profileRepository;
 
@@ -304,7 +306,7 @@ public sealed class ProcessLocator : IProcessLocator
 
         var ids = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
         var steamModGroups = Regex
-            .Matches(commandLine, @"steammod\s*=\s*(\d+)", RegexOptions.IgnoreCase)
+            .Matches(commandLine, @"steammod\s*=\s*(\d+)", RegexOptions.IgnoreCase, RegexMatchTimeout)
             .Select(match => match.Groups)
             .Where(groups => groups.Count > 1 && !string.IsNullOrWhiteSpace(groups[1].Value))
             .Select(groups => groups[1].Value);
@@ -315,7 +317,7 @@ public sealed class ProcessLocator : IProcessLocator
 
         // Also infer IDs from mod paths containing workshop content folder segments.
         var workshopPathGroups = Regex
-            .Matches(commandLine, @"[\\/]+32470[\\/]+(\d+)", RegexOptions.IgnoreCase)
+            .Matches(commandLine, @"[\\/]+32470[\\/]+(\d+)", RegexOptions.IgnoreCase, RegexMatchTimeout)
             .Select(match => match.Groups)
             .Where(groups => groups.Count > 1 && !string.IsNullOrWhiteSpace(groups[1].Value))
             .Select(groups => groups[1].Value);
