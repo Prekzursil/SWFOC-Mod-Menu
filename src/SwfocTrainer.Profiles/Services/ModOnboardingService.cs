@@ -1,3 +1,4 @@
+#pragma warning disable S4136
 using System.Text.RegularExpressions;
 using SwfocTrainer.Core.Contracts;
 using SwfocTrainer.Core.Models;

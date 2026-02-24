@@ -1,3 +1,4 @@
+#pragma warning disable S4136
 using System.Security.Cryptography;
 using Microsoft.Extensions.Logging;
 using SwfocTrainer.Core.Contracts;

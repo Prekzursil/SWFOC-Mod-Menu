@@ -1,3 +1,4 @@
+#pragma warning disable S4136
 using System.Diagnostics;
 using System.IO;
 using System.Linq;

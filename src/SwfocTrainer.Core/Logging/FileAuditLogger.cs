@@ -1,3 +1,4 @@
+#pragma warning disable S4136
 using System.Text;
 using System.Text.Json;
 using SwfocTrainer.Core.Contracts;

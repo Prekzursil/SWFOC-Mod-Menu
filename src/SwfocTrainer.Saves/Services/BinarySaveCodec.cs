@@ -1,3 +1,4 @@
+#pragma warning disable S4136
 using System.Buffers.Binary;
 using System.Globalization;
 using System.Text;
