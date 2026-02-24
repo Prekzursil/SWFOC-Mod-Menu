@@ -10,17 +10,13 @@ trainer's broader action model.
 from __future__ import annotations
 
 import argparse
-import importlib
 import json
 import re
 from dataclasses import asdict, dataclass, field
 from pathlib import Path
 from typing import Iterable
 
-try:
-    from defusedxml import ElementTree as ET
-except ModuleNotFoundError:
-    ET = importlib.import_module("xml.etree.ElementTree")
+from defusedxml import ElementTree as element_tree
 
 
 AOB_SCAN_RE = re.compile(
@@ -180,7 +176,7 @@ def extract_intel_from_script(group: str, description: str, script: str) -> Scri
     )
 
 
-def iter_cheat_entries(root: ET.Element) -> Iterable[tuple[str, ET.Element]]:
+def iter_cheat_entries(root: element_tree.Element) -> Iterable[tuple[str, element_tree.Element]]:
     top = root.find("CheatEntries")
     if top is None:
         return
@@ -275,7 +271,7 @@ def main() -> int:
     if not ct_path.exists():
         raise FileNotFoundError(f"Cheat table not found: {ct_path}")
 
-    tree = ET.parse(ct_path)
+    tree = element_tree.parse(ct_path)
     root = tree.getroot()
 
     records: list[ScriptIntel] = []

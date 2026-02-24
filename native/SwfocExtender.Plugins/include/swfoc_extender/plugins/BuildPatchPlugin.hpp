@@ -18,6 +18,9 @@ public:
     CapabilitySnapshot capabilitySnapshot() const;
 
 private:
+    void ApplyUnitCapState(bool enablePatch, std::int32_t unitCapValue);
+    void ApplyInstantBuildState(bool enablePatch);
+
     std::atomic<bool> unitCapPatchInstalled_ {false};
     std::atomic<bool> instantBuildPatchInstalled_ {false};
     std::atomic<bool> unitCapPatchEnabled_ {false};

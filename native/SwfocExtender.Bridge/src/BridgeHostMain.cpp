@@ -24,6 +24,7 @@ namespace {
 
 using swfoc::extender::bridge::BridgeCommand;
 using swfoc::extender::bridge::BridgeResult;
+using swfoc::extender::bridge::NamedPipeBridgeServer;
 using swfoc::extender::plugins::BuildPatchPlugin;
 using swfoc::extender::plugins::CapabilitySnapshot;
 using swfoc::extender::plugins::CapabilityState;
@@ -128,6 +129,16 @@ bool TryReadBool(const std::string& payloadJson, const std::string& key, bool& v
     return false;
 }
 
+bool TryParseIntFromText(const std::string& valueText, int& value) {
+    try {
+        std::size_t consumed = 0;
+        value = std::stoi(valueText, &consumed);
+        return consumed != 0;
+    } catch (...) {
+        return false;
+    }
+}
+
 bool TryReadInt(const std::string& payloadJson, const std::string& key, int& value) {
     std::size_t start = 0;
     if (!TryFindValueStart(payloadJson, key, start)) {
@@ -138,13 +149,7 @@ bool TryReadInt(const std::string& payloadJson, const std::string& key, int& val
         return false;
     }
 
-    try {
-        std::size_t consumed = 0;
-        value = std::stoi(payloadJson.substr(start), &consumed);
-        return consumed != 0;
-    } catch (...) {
-        return false;
-    }
+    return TryParseIntFromText(payloadJson.substr(start), value);
 }
 
 std::string ExtractStringValue(const std::string& json, const std::string& key) {
@@ -239,6 +244,67 @@ std::string TrimAsciiWhitespace(std::string value) {
     return std::string(first, last);
 }
 
+std::size_t SkipAsciiWhitespace(const std::string& value, std::size_t cursor) {
+    return value.find_first_not_of(" \t\r\n", cursor);
+}
+
+bool TryParseFlatStringMapEntry(
+    const std::string& objectJson,
+    std::size_t& cursor,
+    std::string& key,
+    std::string& value) {
+    cursor = SkipAsciiWhitespace(objectJson, cursor);
+    if (cursor == std::string::npos || objectJson[cursor] == '}') {
+        return false;
+    }
+
+    if (objectJson[cursor] != '"') {
+        return false;
+    }
+
+    const auto keyEnd = FindUnescapedQuote(objectJson, cursor + 1);
+    if (keyEnd == std::string::npos) {
+        return false;
+    }
+
+    key = objectJson.substr(cursor + 1, keyEnd - cursor - 1);
+    cursor = objectJson.find(':', keyEnd + 1);
+    if (cursor == std::string::npos) {
+        return false;
+    }
+
+    ++cursor;
+    cursor = SkipAsciiWhitespace(objectJson, cursor);
+    if (cursor == std::string::npos) {
+        return false;
+    }
+
+    if (objectJson[cursor] == '"') {
+        const auto valueEnd = FindUnescapedQuote(objectJson, cursor + 1);
+        if (valueEnd == std::string::npos) {
+            return false;
+        }
+
+        value = objectJson.substr(cursor + 1, valueEnd - cursor - 1);
+        cursor = valueEnd + 1;
+    } else {
+        auto tokenEnd = cursor;
+        while (tokenEnd < objectJson.size() && objectJson[tokenEnd] != ',' && objectJson[tokenEnd] != '}') {
+            ++tokenEnd;
+        }
+
+        value = TrimAsciiWhitespace(objectJson.substr(cursor, tokenEnd - cursor));
+        cursor = tokenEnd;
+    }
+
+    cursor = SkipAsciiWhitespace(objectJson, cursor);
+    if (cursor != std::string::npos && objectJson[cursor] == ',') {
+        ++cursor;
+    }
+
+    return true;
+}
+
 std::map<std::string, std::string> ParseFlatStringMapObject(const std::string& objectJson) {
     std::map<std::string, std::string> parsed;
     auto cursor = objectJson.find('{');
@@ -247,59 +313,11 @@ std::map<std::string, std::string> ParseFlatStringMapObject(const std::string& o
     }
 
     ++cursor;
-    while (cursor < objectJson.size()) {
-        cursor = objectJson.find_first_not_of(" \t\r\n", cursor);
-        if (cursor == std::string::npos || objectJson[cursor] == '}') {
-            break;
-        }
-
-        if (objectJson[cursor] != '"') {
-            break;
-        }
-
-        const auto keyEnd = FindUnescapedQuote(objectJson, cursor + 1);
-        if (keyEnd == std::string::npos) {
-            break;
-        }
-
-        const auto key = objectJson.substr(cursor + 1, keyEnd - cursor - 1);
-        cursor = objectJson.find(':', keyEnd + 1);
-        if (cursor == std::string::npos) {
-            break;
-        }
-
-        ++cursor;
-        cursor = objectJson.find_first_not_of(" \t\r\n", cursor);
-        if (cursor == std::string::npos) {
-            break;
-        }
-
-        std::string value;
-        if (objectJson[cursor] == '"') {
-            const auto valueEnd = FindUnescapedQuote(objectJson, cursor + 1);
-            if (valueEnd == std::string::npos) {
-                break;
-            }
-
-            value = objectJson.substr(cursor + 1, valueEnd - cursor - 1);
-            cursor = valueEnd + 1;
-        } else {
-            auto tokenEnd = cursor;
-            while (tokenEnd < objectJson.size() && objectJson[tokenEnd] != ',' && objectJson[tokenEnd] != '}') {
-                ++tokenEnd;
-            }
-
-            value = TrimAsciiWhitespace(objectJson.substr(cursor, tokenEnd - cursor));
-            cursor = tokenEnd;
-        }
-
+    std::string key;
+    std::string value;
+    while (TryParseFlatStringMapEntry(objectJson, cursor, key, value)) {
         if (!key.empty()) {
             parsed[key] = value;
-        }
-
-        cursor = objectJson.find_first_not_of(" \t\r\n", cursor);
-        if (cursor != std::string::npos && objectJson[cursor] == ',') {
-            ++cursor;
         }
     }
 
@@ -628,6 +646,36 @@ void WaitForShutdownSignal() {
     }
 }
 
+void ConfigureBridgeHandler(
+    NamedPipeBridgeServer& server,
+    EconomyPlugin& economyPlugin,
+    GlobalTogglePlugin& globalTogglePlugin,
+    BuildPatchPlugin& buildPatchPlugin) {
+    server.setHandler([&economyPlugin, &globalTogglePlugin, &buildPatchPlugin](const BridgeCommand& command) {
+        return HandleBridgeCommand(command, economyPlugin, globalTogglePlugin, buildPatchPlugin);
+    });
+}
+
+int RunBridgeHost(
+    const std::string& pipeName,
+    EconomyPlugin& economyPlugin,
+    GlobalTogglePlugin& globalTogglePlugin,
+    BuildPatchPlugin& buildPatchPlugin) {
+    NamedPipeBridgeServer server(pipeName);
+    ConfigureBridgeHandler(server, economyPlugin, globalTogglePlugin, buildPatchPlugin);
+
+    if (!server.start()) {
+        std::cerr << "Failed to start extender bridge host." << std::endl;
+        return 1;
+    }
+
+    std::cout << "SwfocExtender bridge host started on pipe: " << pipeName << std::endl;
+    WaitForShutdownSignal();
+    server.stop();
+    std::cout << "SwfocExtender bridge host stopped." << std::endl;
+    return 0;
+}
+
 } // namespace
 
 int main() {
@@ -637,21 +685,5 @@ int main() {
     EconomyPlugin economyPlugin;
     GlobalTogglePlugin globalTogglePlugin;
     BuildPatchPlugin buildPatchPlugin;
-
-    swfoc::extender::bridge::NamedPipeBridgeServer server(pipeName);
-    server.setHandler([&economyPlugin, &globalTogglePlugin, &buildPatchPlugin](const BridgeCommand& command) {
-        return HandleBridgeCommand(command, economyPlugin, globalTogglePlugin, buildPatchPlugin);
-    });
-
-    if (!server.start()) {
-        std::cerr << "Failed to start extender bridge host." << std::endl;
-        return 1;
-    }
-
-    std::cout << "SwfocExtender bridge host started on pipe: " << pipeName << std::endl;
-    WaitForShutdownSignal();
-
-    server.stop();
-    std::cout << "SwfocExtender bridge host stopped." << std::endl;
-    return 0;
+    return RunBridgeHost(pipeName, economyPlugin, globalTogglePlugin, buildPatchPlugin);
 }

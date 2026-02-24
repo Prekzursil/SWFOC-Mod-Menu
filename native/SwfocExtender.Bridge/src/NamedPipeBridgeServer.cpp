@@ -163,6 +163,67 @@ std::string TrimAsciiWhitespace(std::string value) {
     return std::string(first, last);
 }
 
+std::size_t SkipAsciiWhitespace(const std::string& value, std::size_t cursor) {
+    return value.find_first_not_of(" \t\r\n", cursor);
+}
+
+bool TryParseFlatStringMapEntry(
+    const std::string& objectJson,
+    std::size_t& cursor,
+    std::string& key,
+    std::string& value) {
+    cursor = SkipAsciiWhitespace(objectJson, cursor);
+    if (cursor == std::string::npos || objectJson[cursor] == '}') {
+        return false;
+    }
+
+    if (objectJson[cursor] != '"') {
+        return false;
+    }
+
+    const auto keyEnd = FindUnescapedQuote(objectJson, cursor + 1);
+    if (keyEnd == std::string::npos) {
+        return false;
+    }
+
+    key = objectJson.substr(cursor + 1, keyEnd - cursor - 1);
+    cursor = objectJson.find(':', keyEnd + 1);
+    if (cursor == std::string::npos) {
+        return false;
+    }
+
+    ++cursor;
+    cursor = SkipAsciiWhitespace(objectJson, cursor);
+    if (cursor == std::string::npos) {
+        return false;
+    }
+
+    if (objectJson[cursor] == '"') {
+        const auto valueEnd = FindUnescapedQuote(objectJson, cursor + 1);
+        if (valueEnd == std::string::npos) {
+            return false;
+        }
+
+        value = objectJson.substr(cursor + 1, valueEnd - cursor - 1);
+        cursor = valueEnd + 1;
+    } else {
+        auto tokenEnd = cursor;
+        while (tokenEnd < objectJson.size() && objectJson[tokenEnd] != ',' && objectJson[tokenEnd] != '}') {
+            ++tokenEnd;
+        }
+
+        value = TrimAsciiWhitespace(objectJson.substr(cursor, tokenEnd - cursor));
+        cursor = tokenEnd;
+    }
+
+    cursor = SkipAsciiWhitespace(objectJson, cursor);
+    if (cursor != std::string::npos && objectJson[cursor] == ',') {
+        ++cursor;
+    }
+
+    return true;
+}
+
 std::map<std::string, std::string> ParseFlatStringMapObject(const std::string& objectJson) {
     std::map<std::string, std::string> parsed;
     auto cursor = objectJson.find('{');
@@ -171,59 +232,11 @@ std::map<std::string, std::string> ParseFlatStringMapObject(const std::string& o
     }
 
     ++cursor;
-    while (cursor < objectJson.size()) {
-        cursor = objectJson.find_first_not_of(" \t\r\n", cursor);
-        if (cursor == std::string::npos || objectJson[cursor] == '}') {
-            break;
-        }
-
-        if (objectJson[cursor] != '"') {
-            break;
-        }
-
-        const auto keyEnd = FindUnescapedQuote(objectJson, cursor + 1);
-        if (keyEnd == std::string::npos) {
-            break;
-        }
-
-        const auto key = objectJson.substr(cursor + 1, keyEnd - cursor - 1);
-        cursor = objectJson.find(':', keyEnd + 1);
-        if (cursor == std::string::npos) {
-            break;
-        }
-
-        ++cursor;
-        cursor = objectJson.find_first_not_of(" \t\r\n", cursor);
-        if (cursor == std::string::npos) {
-            break;
-        }
-
-        std::string value;
-        if (objectJson[cursor] == '"') {
-            const auto valueEnd = FindUnescapedQuote(objectJson, cursor + 1);
-            if (valueEnd == std::string::npos) {
-                break;
-            }
-
-            value = objectJson.substr(cursor + 1, valueEnd - cursor - 1);
-            cursor = valueEnd + 1;
-        } else {
-            auto tokenEnd = cursor;
-            while (tokenEnd < objectJson.size() && objectJson[tokenEnd] != ',' && objectJson[tokenEnd] != '}') {
-                ++tokenEnd;
-            }
-
-            value = TrimAsciiWhitespace(objectJson.substr(cursor, tokenEnd - cursor));
-            cursor = tokenEnd;
-        }
-
+    std::string key;
+    std::string value;
+    while (TryParseFlatStringMapEntry(objectJson, cursor, key, value)) {
         if (!key.empty()) {
             parsed[key] = value;
-        }
-
-        cursor = objectJson.find_first_not_of(" \t\r\n", cursor);
-        if (cursor != std::string::npos && objectJson[cursor] == ',') {
-            ++cursor;
         }
     }
 
@@ -298,6 +311,21 @@ bool TryConnectClient(HANDLE pipe) {
     return connected != FALSE;
 }
 
+bool TryCreateConnectedPipe(const std::string& fullPipeName, HANDLE& pipe) {
+    pipe = CreateBridgePipe(fullPipeName);
+    if (pipe == INVALID_HANDLE_VALUE) {
+        std::this_thread::sleep_for(kServerPollDelay);
+        return false;
+    }
+
+    if (!TryConnectClient(pipe)) {
+        CloseHandle(pipe);
+        return false;
+    }
+
+    return true;
+}
+
 std::string ReadCommandLine(HANDLE pipe, std::array<char, kPipeBufferSize>& buffer) {
     std::string commandLine;
     DWORD bytesRead = 0;
@@ -333,6 +361,16 @@ void WriteResponse(HANDLE pipe, const BridgeResult& result) {
 void CloseServerPipe(HANDLE pipe) {
     DisconnectNamedPipe(pipe);
     CloseHandle(pipe);
+}
+
+template <typename CommandHandler>
+void ProcessConnectedClient(
+    HANDLE pipe,
+    std::array<char, kPipeBufferSize>& buffer,
+    CommandHandler&& handler) {
+    const auto commandLine = ReadCommandLine(pipe, buffer);
+    WriteResponse(pipe, handler(commandLine));
+    CloseServerPipe(pipe);
 }
 #endif
 
@@ -449,22 +487,17 @@ void NamedPipeBridgeServer::runLoop() {
 #else
     const auto fullPipeName = BuildFullPipeName(pipeName_);
     std::array<char, kPipeBufferSize> buffer {};
+    const auto handleCommand = [this](const std::string& commandLine) {
+        return handleRawCommand(commandLine);
+    };
 
     while (running_.load()) {
-        HANDLE pipe = CreateBridgePipe(fullPipeName);
-        if (pipe == INVALID_HANDLE_VALUE) {
-            std::this_thread::sleep_for(kServerPollDelay);
+        HANDLE pipe = INVALID_HANDLE_VALUE;
+        if (!TryCreateConnectedPipe(fullPipeName, pipe)) {
             continue;
         }
 
-        if (!TryConnectClient(pipe)) {
-            CloseHandle(pipe);
-            continue;
-        }
-
-        const auto commandLine = ReadCommandLine(pipe, buffer);
-        WriteResponse(pipe, handleRawCommand(commandLine));
-        CloseServerPipe(pipe);
+        ProcessConnectedClient(pipe, buffer, handleCommand);
     }
 #endif
 }

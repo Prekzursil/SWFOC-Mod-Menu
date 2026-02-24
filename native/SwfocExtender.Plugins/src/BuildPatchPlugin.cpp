@@ -1,8 +1,12 @@
 #include "swfoc_extender/plugins/BuildPatchPlugin.hpp"
 
+// cppcheck-suppress missingIncludeSystem
 #include <array>
+// cppcheck-suppress missingIncludeSystem
 #include <optional>
+// cppcheck-suppress missingIncludeSystem
 #include <string>
+// cppcheck-suppress missingIncludeSystem
 #include <string_view>
 
 namespace swfoc::extender::plugins {
@@ -85,6 +89,44 @@ CapabilityState BuildCapabilityState() {
     return state;
 }
 
+const char* BoolToString(bool value) {
+    return value ? "true" : "false";
+}
+
+bool IsUnitCapOutOfBounds(const PluginRequest& request, bool enablePatch) {
+    return enablePatch && (request.intValue < kMinUnitCap || request.intValue > kMaxUnitCap);
+}
+
+PluginResult BuildAcceptedMutationResult(
+    const PluginRequest& request,
+    bool enablePatch,
+    const std::optional<AnchorMatch>& resolvedAnchor) {
+    PluginResult result {};
+    result.succeeded = true;
+    result.reasonCode = "CAPABILITY_PROBE_PASS";
+    result.hookState = enablePatch ? "HOOK_PATCH_ENABLED" : "HOOK_PATCH_DISABLED";
+    result.message = "Build patch mutation accepted by extender plugin.";
+
+    std::string anchorProvided = "false";
+    std::string anchorKey = "none";
+    std::string anchorValue = "none";
+    if (resolvedAnchor.has_value()) {
+        anchorProvided = "true";
+        anchorKey = resolvedAnchor->first;
+        anchorValue = resolvedAnchor->second;
+    }
+
+    result.diagnostics = {
+        {"featureId", request.featureId},
+        {"processId", std::to_string(request.processId)},
+        {"anchorProvided", anchorProvided},
+        {"anchorKey", anchorKey},
+        {"anchorValue", anchorValue},
+        {"enable", BoolToString(enablePatch)},
+        {"intValue", std::to_string(request.intValue)}};
+    return result;
+}
+
 } // namespace
 
 const char* BuildPatchPlugin::id() const noexcept {
@@ -104,34 +146,16 @@ PluginResult BuildPatchPlugin::execute(const PluginRequest& request) {
 
     const bool enablePatch = request.enable || request.boolValue;
     if (request.featureId == "set_unit_cap") {
-        if (enablePatch && (request.intValue < kMinUnitCap || request.intValue > kMaxUnitCap)) {
+        if (IsUnitCapOutOfBounds(request, enablePatch)) {
             return BuildInvalidUnitCapResult(request);
         }
 
-        unitCapPatchInstalled_.store(true);
-        unitCapPatchEnabled_.store(enablePatch);
-        if (enablePatch) {
-            unitCapValue_.store(request.intValue);
-        }
+        ApplyUnitCapState(enablePatch, request.intValue);
     } else {
-        instantBuildPatchInstalled_.store(true);
-        instantBuildPatchEnabled_.store(enablePatch);
+        ApplyInstantBuildState(enablePatch);
     }
 
-    PluginResult result {};
-    result.succeeded = true;
-    result.reasonCode = "CAPABILITY_PROBE_PASS";
-    result.hookState = enablePatch ? "HOOK_PATCH_ENABLED" : "HOOK_PATCH_DISABLED";
-    result.message = "Build patch mutation accepted by extender plugin.";
-    result.diagnostics = {
-        {"featureId", request.featureId},
-        {"processId", std::to_string(request.processId)},
-        {"anchorProvided", resolvedAnchor.has_value() ? "true" : "false"},
-        {"anchorKey", resolvedAnchor.has_value() ? resolvedAnchor->first : "none"},
-        {"anchorValue", resolvedAnchor.has_value() ? resolvedAnchor->second : "none"},
-        {"enable", enablePatch ? "true" : "false"},
-        {"intValue", std::to_string(request.intValue)}};
-    return result;
+    return BuildAcceptedMutationResult(request, enablePatch, resolvedAnchor);
 }
 
 CapabilitySnapshot BuildPatchPlugin::capabilitySnapshot() const {
@@ -141,6 +165,21 @@ CapabilitySnapshot BuildPatchPlugin::capabilitySnapshot() const {
         "toggle_instant_build_patch",
         BuildCapabilityState());
     return snapshot;
+}
+
+void BuildPatchPlugin::ApplyUnitCapState(bool enablePatch, std::int32_t unitCapValue) {
+    unitCapPatchInstalled_.store(true);
+    unitCapPatchEnabled_.store(enablePatch);
+    if (!enablePatch) {
+        return;
+    }
+
+    unitCapValue_.store(unitCapValue);
+}
+
+void BuildPatchPlugin::ApplyInstantBuildState(bool enablePatch) {
+    instantBuildPatchInstalled_.store(true);
+    instantBuildPatchEnabled_.store(enablePatch);
 }
 
 } // namespace swfoc::extender::plugins

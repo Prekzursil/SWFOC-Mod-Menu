@@ -1,8 +1,12 @@
 #include "swfoc_extender/plugins/GlobalTogglePlugin.hpp"
 
+// cppcheck-suppress missingIncludeSystem
 #include <array>
+// cppcheck-suppress missingIncludeSystem
 #include <optional>
+// cppcheck-suppress missingIncludeSystem
 #include <string>
+// cppcheck-suppress missingIncludeSystem
 #include <string_view>
 
 namespace swfoc::extender::plugins {
