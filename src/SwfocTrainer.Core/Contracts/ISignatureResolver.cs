@@ -8,5 +8,13 @@ public interface ISignatureResolver
         ProfileBuild profileBuild,
         IReadOnlyList<SignatureSet> signatureSets,
         IReadOnlyDictionary<string, long> fallbackOffsets,
-        CancellationToken cancellationToken = default);
+        CancellationToken cancellationToken);
+
+    Task<SymbolMap> ResolveAsync(
+        ProfileBuild profileBuild,
+        IReadOnlyList<SignatureSet> signatureSets,
+        IReadOnlyDictionary<string, long> fallbackOffsets)
+    {
+        return ResolveAsync(profileBuild, signatureSets, fallbackOffsets, CancellationToken.None);
+    }
 }

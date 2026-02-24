@@ -25,7 +25,7 @@ $fingerprint = Get-Content -Raw -Path $FingerprintPath | ConvertFrom-Json
 $schema = Get-Content -Raw -Path $SchemaPath | ConvertFrom-Json
 
 foreach ($required in $schema.required) {
-    Require-ValidationField -Object $fingerprint -Field $required -Errors $errors
+    Confirm-ValidationField -Object $fingerprint -Field $required -Errors $errors
 }
 
 if ($Strict) {

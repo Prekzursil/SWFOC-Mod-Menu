@@ -7,5 +7,10 @@ namespace SwfocTrainer.Core.Contracts;
 /// </summary>
 public interface ISupportBundleService
 {
-    Task<SupportBundleResult> ExportAsync(SupportBundleRequest request, CancellationToken cancellationToken = default);
+    Task<SupportBundleResult> ExportAsync(SupportBundleRequest request, CancellationToken cancellationToken);
+
+    Task<SupportBundleResult> ExportAsync(SupportBundleRequest request)
+    {
+        return ExportAsync(request, CancellationToken.None);
+    }
 }

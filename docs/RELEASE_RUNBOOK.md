@@ -1,6 +1,7 @@
 # Release Runbook
 
 ## Channel Decision
+
 GitHub Releases is the primary distribution channel for SWFOC Trainer.
 
 ## Triggering a Release
@@ -20,12 +21,14 @@ This triggers `.github/workflows/release-portable.yml` to:
 - publish both files to GitHub Releases.
 
 ### Manual dispatch
+
 Use workflow dispatch for dry runs or controlled publish.
 
 - `publish_release=false`: package + artifact only (no GitHub Release publish).
 - `publish_release=true`: publish/update release for `tag_name`.
 
 ## Artifact Verification
+
 Before using or distributing a release package:
 
 ```powershell
@@ -49,6 +52,7 @@ The computed hash must match the `.sha256` file.
 4. If needed, create a hotfix tag and publish via the same release workflow.
 
 ## Dry-Run Evidence Template
+
 Use this in issue/PR comments:
 
 - Workflow run URL

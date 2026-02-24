@@ -33,9 +33,21 @@ jobs:
       - name: Resolve visual paths
         id: paths
         shell: pwsh
+        env:
+          RUN_ID_INPUT: ${{ github.event.inputs.run_id }}
+          BASELINE_DIR_INPUT: ${{ github.event.inputs.baseline_dir }}
+          CANDIDATE_DIR_INPUT: ${{ github.event.inputs.candidate_dir }}
         run: |
-          $runId = "${{ github.event.inputs.run_id }}"
-          $candidateOverride = "${{ github.event.inputs.candidate_dir }}"
+          $runId = $env:RUN_ID_INPUT
+          if ([string]::IsNullOrWhiteSpace($runId) -or $runId -notmatch '^[A-Za-z0-9._-]+$') {
+            throw "Invalid run_id input."
+          }
+
+          $candidateOverride = $env:CANDIDATE_DIR_INPUT
+          if (-not [string]::IsNullOrWhiteSpace($candidateOverride) -and $candidateOverride -notmatch '^[A-Za-z0-9._:\\/\\-]+$') {
+            throw "Invalid candidate_dir input."
+          }
+
           if ([string]::IsNullOrWhiteSpace($candidateOverride)) {
             $candidate = "TestResults/runs/$runId/visual-pack"
           }
@@ -43,7 +55,11 @@ jobs:
             $candidate = $candidateOverride
           }
 
-          $baseline = "${{ github.event.inputs.baseline_dir }}"
+          $baseline = $env:BASELINE_DIR_INPUT
+          if ([string]::IsNullOrWhiteSpace($baseline) -or $baseline -notmatch '^[A-Za-z0-9._:\\/\\-]+$') {
+            throw "Invalid baseline_dir input."
+          }
+
           $output = "TestResults/runs/$runId/visual-pack/visual-compare.json"
 
           "baseline=$baseline" >> $env:GITHUB_OUTPUT

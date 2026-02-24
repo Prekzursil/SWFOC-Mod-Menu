@@ -72,18 +72,30 @@ public sealed class TelemetrySnapshotService : ITelemetrySnapshotService
         }
     }
 
-    public async Task<string> ExportSnapshotAsync(string outputDirectory, CancellationToken cancellationToken = default)
+    public async Task<string> ExportSnapshotAsync(string outputDirectory, CancellationToken cancellationToken)
     {
         if (string.IsNullOrWhiteSpace(outputDirectory))
         {
             throw new InvalidDataException("Output directory is required.");
         }
 
-        Directory.CreateDirectory(outputDirectory);
+        var normalizedOutputDirectory = ResolveOutputDirectory(outputDirectory);
+        Directory.CreateDirectory(normalizedOutputDirectory);
         var snapshot = CreateSnapshot();
-        var path = Path.Combine(outputDirectory, $"telemetry-snapshot-{snapshot.GeneratedAtUtc:yyyyMMddHHmmss}.json");
+        var fileName = $"telemetry-snapshot-{snapshot.GeneratedAtUtc:yyyyMMddHHmmss}.json";
+        var path = Path.GetFullPath(Path.Combine(normalizedOutputDirectory, fileName));
+        if (!path.StartsWith(normalizedOutputDirectory, StringComparison.OrdinalIgnoreCase))
+        {
+            throw new InvalidDataException("Output path must remain within the selected directory.");
+        }
+
         await File.WriteAllTextAsync(path, JsonSerializer.Serialize(snapshot, JsonOptions), cancellationToken);
         return path;
+    }
+
+    public Task<string> ExportSnapshotAsync(string outputDirectory)
+    {
+        return ExportSnapshotAsync(outputDirectory, CancellationToken.None);
     }
 
     public void Reset()
@@ -94,5 +106,14 @@ public sealed class TelemetrySnapshotService : ITelemetrySnapshotService
             _actionFailure.Clear();
             _sourceCounters.Clear();
         }
+    }
+
+    private static string ResolveOutputDirectory(string outputDirectory)
+    {
+        var rootPath = Path.IsPathRooted(outputDirectory)
+            ? outputDirectory
+            : Path.Combine(AppContext.BaseDirectory, outputDirectory);
+        var fullPath = Path.GetFullPath(rootPath);
+        return fullPath.TrimEnd(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar);
     }
 }

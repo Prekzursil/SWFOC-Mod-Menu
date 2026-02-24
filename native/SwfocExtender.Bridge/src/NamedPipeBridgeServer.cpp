@@ -116,7 +116,7 @@ bool TryReadInt(const std::string& json, const std::string& key, std::int32_t& v
 
     try {
         std::size_t consumed = 0;
-        const auto parsed = std::stoi(json.substr(start), &consumed);
+        const auto parsed = std::stoi(json.c_str() + start, &consumed);
         if (consumed == 0) {
             return false;
         }

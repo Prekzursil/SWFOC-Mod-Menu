@@ -18,13 +18,22 @@ public sealed class TrainerOrchestrator
         IRuntimeAdapter runtime,
         IValueFreezeService freezeService,
         IAuditLogger auditLogger,
-        ITelemetrySnapshotService? telemetry = null)
+        ITelemetrySnapshotService telemetry)
     {
         _profiles = profiles;
         _runtime = runtime;
         _freezeService = freezeService;
         _auditLogger = auditLogger;
-        _telemetry = telemetry ?? new TelemetrySnapshotService();
+        _telemetry = telemetry;
+    }
+
+    public TrainerOrchestrator(
+        IProfileRepository profiles,
+        IRuntimeAdapter runtime,
+        IValueFreezeService freezeService,
+        IAuditLogger auditLogger)
+        : this(profiles, runtime, freezeService, auditLogger, new TelemetrySnapshotService())
+    {
     }
 
     /// <summary>
@@ -37,8 +46,8 @@ public sealed class TrainerOrchestrator
         string actionId,
         System.Text.Json.Nodes.JsonObject payload,
         RuntimeMode runtimeMode,
-        IReadOnlyDictionary<string, object?>? context = null,
-        CancellationToken cancellationToken = default)
+        IReadOnlyDictionary<string, object?>? context,
+        CancellationToken cancellationToken)
     {
         var profile = await _profiles.ResolveInheritedProfileAsync(profileId, cancellationToken);
         if (!profile.Actions.TryGetValue(actionId, out var action))
@@ -96,6 +105,25 @@ public sealed class TrainerOrchestrator
 
         _telemetry.RecordAction(actionId, result.AddressSource, result.Succeeded);
         return result;
+    }
+
+    public Task<ActionExecutionResult> ExecuteAsync(
+        string profileId,
+        string actionId,
+        System.Text.Json.Nodes.JsonObject payload,
+        RuntimeMode runtimeMode)
+    {
+        return ExecuteAsync(profileId, actionId, payload, runtimeMode, null, CancellationToken.None);
+    }
+
+    public Task<ActionExecutionResult> ExecuteAsync(
+        string profileId,
+        string actionId,
+        System.Text.Json.Nodes.JsonObject payload,
+        RuntimeMode runtimeMode,
+        IReadOnlyDictionary<string, object?>? context)
+    {
+        return ExecuteAsync(profileId, actionId, payload, runtimeMode, context, CancellationToken.None);
     }
 
     private ActionExecutionResult ExecuteFreezeAction(ActionSpec action, System.Text.Json.Nodes.JsonObject payload)

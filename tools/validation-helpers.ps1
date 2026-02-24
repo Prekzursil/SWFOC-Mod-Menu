@@ -13,7 +13,7 @@ function Add-ValidationError {
     [void]$Errors.Add($Message)
 }
 
-function Require-ValidationField {
+function Confirm-ValidationField {
     param(
         [Parameter(Mandatory = $true)][object]$Object,
         [Parameter(Mandatory = $true)][string]$Field,
@@ -49,13 +49,13 @@ function Write-ValidationResult {
     )
 
     if ($Errors.Count -gt 0) {
-        Write-Host "$Label validation failed:" -ForegroundColor Red
+        Write-Output "$Label validation failed:"
         foreach ($err in $Errors) {
-            Write-Host " - $err" -ForegroundColor Red
+            Write-Output " - $err"
         }
 
         exit 1
     }
 
-    Write-Host "$Label validation passed: $Path"
+    Write-Output "$Label validation passed: $Path"
 }

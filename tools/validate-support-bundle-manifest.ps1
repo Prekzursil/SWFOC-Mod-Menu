@@ -21,7 +21,7 @@ $schema = Get-Content -Raw -Path $SchemaPath | ConvertFrom-Json
 $errors = New-ValidationErrorList
 
 foreach ($required in $schema.required) {
-    Require-ValidationField -Object $manifest -Field ([string]$required) -Errors $errors
+    Confirm-ValidationField -Object $manifest -Field ([string]$required) -Errors $errors
 }
 
 if ($manifest.schemaVersion -ne "1.0") {

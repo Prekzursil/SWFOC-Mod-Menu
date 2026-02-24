@@ -104,7 +104,7 @@ $options = [System.Text.Json.JsonSerializerOptions]::new()
 $options.WriteIndented = $true
 $options.Converters.Add([System.Text.Json.Serialization.JsonStringEnumConverter]::new())
 $serialized = [System.Text.Json.JsonSerializer]::Serialize($result, $options)
-Write-Host $serialized
+Write-Output $serialized
 
 if (-not $result.Applied) {
     exit 1

@@ -1,3 +1,4 @@
+#pragma warning disable S4136
 using System.Security.Cryptography;
 using Microsoft.Extensions.Logging;
 using SwfocTrainer.Core.Contracts;
@@ -18,7 +19,7 @@ public sealed class HelperModService : IHelperModService
         _logger = logger;
     }
 
-    public async Task<string> DeployAsync(string profileId, CancellationToken cancellationToken = default)
+    public async Task<string> DeployAsync(string profileId, CancellationToken cancellationToken)
     {
         var profile = await _profiles.ResolveInheritedProfileAsync(profileId, cancellationToken);
         var targetRoot = Path.Combine(_options.InstallRoot, profileId);
@@ -46,7 +47,7 @@ public sealed class HelperModService : IHelperModService
         return targetRoot;
     }
 
-    public async Task<bool> VerifyAsync(string profileId, CancellationToken cancellationToken = default)
+    public async Task<bool> VerifyAsync(string profileId, CancellationToken cancellationToken)
     {
         var profile = await _profiles.ResolveInheritedProfileAsync(profileId, cancellationToken);
         var targetRoot = Path.Combine(_options.InstallRoot, profileId);
@@ -80,5 +81,15 @@ public sealed class HelperModService : IHelperModService
         using var sha = SHA256.Create();
         using var stream = File.OpenRead(path);
         return Convert.ToHexString(sha.ComputeHash(stream)).ToLowerInvariant();
+    }
+
+    public Task<string> DeployAsync(string profileId)
+    {
+        return DeployAsync(profileId, CancellationToken.None);
+    }
+
+    public Task<bool> VerifyAsync(string profileId)
+    {
+        return VerifyAsync(profileId, CancellationToken.None);
     }
 }

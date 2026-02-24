@@ -1,6 +1,7 @@
 # SWFOC Editor Program Plan (Ambitious, Safe-Method Track)
 
 ## Mission
+
 Build a production-grade trainer/editor for Star Wars: Empire at War / Forces of Corruption that supports:
 
 - Base game (`base_sweaw`, `base_swfoc`)

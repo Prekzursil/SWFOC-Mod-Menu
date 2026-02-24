@@ -29,5 +29,5 @@ if (Test-Path $zipPath) {
 Compress-Archive -Path "$packRoot/*" -DestinationPath $zipPath -Force
 
 $sha = (Get-FileHash $zipPath -Algorithm SHA256).Hash.ToLower()
-Write-Host "Built: $zipPath"
-Write-Host "SHA256: $sha"
+Write-Output "Built: $zipPath"
+Write-Output "SHA256: $sha"

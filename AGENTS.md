@@ -1,10 +1,12 @@
 # SWFOC Agent Operating Contract
 
 ## Purpose
+
 This repository uses an evidence-first AI engineering workflow for SWFOC runtime/mod reliability.
 Every change must produce verifiable artifacts that explain what was tested, what failed, and why.
 
 ## Scope
+
 Applies to all contributors and all automation agents working in this repository.
 Scoped contracts in subdirectories can add stricter rules but cannot weaken this contract.
 
@@ -41,6 +43,7 @@ Scoped contracts in subdirectories can add stricter rules but cannot weaken this
 4. Prefer additive, reversible changes.
 
 ## Canonical Verification Command
+
 Run this command before completion claims:
 
 ```bash
@@ -54,4 +57,5 @@ dotnet test tests/SwfocTrainer.Tests/SwfocTrainer.Tests.csproj -c Release --no-b
 - Queue workflow posts execution packet and notifies `@copilot`.
 
 ## Queue Trigger Warning
+
 Applying label `agent:ready` triggers the queue workflow immediately.

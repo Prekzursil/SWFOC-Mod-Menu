@@ -21,7 +21,7 @@ $schema = Get-Content -Raw -Path $SchemaPath | ConvertFrom-Json
 $errors = New-ValidationErrorList
 
 foreach ($required in $schema.required) {
-    Require-ValidationField -Object $bundle -Field ([string]$required) -Errors $errors
+    Confirm-ValidationField -Object $bundle -Field ([string]$required) -Errors $errors
 }
 
 if ($bundle.schemaVersion -ne "1.1") {
@@ -47,7 +47,7 @@ if ($liveTests.Count -eq 0) {
 foreach ($test in $liveTests) {
     foreach ($required in @("name", "outcome", "trxPath", "message")) {
         $allowNull = $required -eq "message"
-        Require-ValidationField -Object $test -Field $required -Errors $errors -AllowNull:$allowNull -Prefix "liveTests[$($test.name)]"
+        Confirm-ValidationField -Object $test -Field $required -Errors $errors -AllowNull:$allowNull -Prefix "liveTests[$($test.name)]"
     }
 
     if ($allowedOutcomes -notcontains [string]$test.outcome) {
@@ -61,42 +61,42 @@ foreach ($test in $liveTests) {
 
 $processSnapshot = @($bundle.processSnapshot)
 foreach ($process in $processSnapshot) {
-    Require-ValidationField -Object $process -Field "pid" -Errors $errors
-    Require-ValidationField -Object $process -Field "name" -Errors $errors
-    Require-ValidationField -Object $process -Field "commandLine" -Errors $errors -AllowNull
+    Confirm-ValidationField -Object $process -Field "pid" -Errors $errors
+    Confirm-ValidationField -Object $process -Field "name" -Errors $errors
+    Confirm-ValidationField -Object $process -Field "commandLine" -Errors $errors -AllowNull
 }
 
 foreach ($required in @("profileId", "reasonCode", "confidence", "launchKind")) {
-    Require-ValidationField -Object $bundle.launchContext -Field $required -Errors $errors -AllowNull
+    Confirm-ValidationField -Object $bundle.launchContext -Field $required -Errors $errors -AllowNull
 }
 
 foreach ($required in @("hint", "effective", "reasonCode")) {
-    Require-ValidationField -Object $bundle.runtimeMode -Field $required -Errors $errors
+    Confirm-ValidationField -Object $bundle.runtimeMode -Field $required -Errors $errors
 }
 
 foreach ($required in @("pid", "name", "hostRole", "selectionScore")) {
     $allowNull = $required -in @("pid", "name")
-    Require-ValidationField -Object $bundle.selectedHostProcess -Field $required -Errors $errors -AllowNull:$allowNull
+    Confirm-ValidationField -Object $bundle.selectedHostProcess -Field $required -Errors $errors -AllowNull:$allowNull
 }
 
 foreach ($required in @("backend", "allowed", "reasonCode")) {
-    Require-ValidationField -Object $bundle.backendRouteDecision -Field $required -Errors $errors
+    Confirm-ValidationField -Object $bundle.backendRouteDecision -Field $required -Errors $errors
 }
 
 foreach ($required in @("backend", "probeReasonCode", "capabilityCount")) {
-    Require-ValidationField -Object $bundle.capabilityProbeSnapshot -Field $required -Errors $errors
+    Confirm-ValidationField -Object $bundle.capabilityProbeSnapshot -Field $required -Errors $errors
 }
 
 foreach ($required in @("state", "reasonCode")) {
-    Require-ValidationField -Object $bundle.hookInstallReport -Field $required -Errors $errors
+    Confirm-ValidationField -Object $bundle.hookInstallReport -Field $required -Errors $errors
 }
 
 foreach ($required in @("available", "visible", "reasonCode")) {
-    Require-ValidationField -Object $bundle.overlayState -Field $required -Errors $errors
+    Confirm-ValidationField -Object $bundle.overlayState -Field $required -Errors $errors
 }
 
 foreach ($required in @("dependencyState", "helperReadiness", "symbolHealthSummary")) {
-    Require-ValidationField -Object $bundle.diagnostics -Field $required -Errors $errors
+    Confirm-ValidationField -Object $bundle.diagnostics -Field $required -Errors $errors
 }
 
 if ($Strict) {
