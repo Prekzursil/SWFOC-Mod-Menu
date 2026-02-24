@@ -24,19 +24,10 @@ jobs:
         shell: pwsh
         env:
           GH_TOKEN: ${{ github.token }}
-          PR_NUMBER: ${{ github.event.pull_request.number }}
         run: |
-          $prNumberRaw = $env.PR_NUMBER
-          if ([string]::IsNullOrWhiteSpace($prNumberRaw) -and
-              -not [string]::IsNullOrWhiteSpace($env.GITHUB_EVENT_PATH) -and
-              (Test-Path -LiteralPath $env.GITHUB_EVENT_PATH)) {
-            $eventPayload = Get-Content -Raw -LiteralPath $env.GITHUB_EVENT_PATH | ConvertFrom-Json
-            $prNumberRaw = [string]$eventPayload.pull_request.number
-          }
-
-          [int]$pullNumber = 0
-          if (-not [int]::TryParse($prNumberRaw, [ref]$pullNumber)) {
-            throw "Invalid pull request number: '$prNumberRaw'"
+          [int]$pullNumber = [int]'${{ github.event.pull_request.number }}'
+          if ($pullNumber -le 0) {
+            throw "Invalid pull request number from event payload: '${{ github.event.pull_request.number }}'"
           }
 
           $result = pwsh ./tools/request-pr-reviewers.ps1 `
