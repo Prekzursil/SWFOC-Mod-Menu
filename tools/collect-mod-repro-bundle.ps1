@@ -58,7 +58,10 @@ function Get-ProcessSnapshot {
 
     $snapshot = New-Object System.Collections.Generic.List[object]
     foreach ($proc in $processes) {
-        $steamIds = Parse-SteamModIds -CommandLine $proc.CommandLine
+        $steamIds = @(
+            Parse-SteamModIds -CommandLine $proc.CommandLine
+        )
+        $steamIdCount = @($steamIds).Count
         $hostRole = if ($proc.Name -ieq "StarWarsG.exe") { "game_host" } elseif ($proc.Name -match "^(swfoc\\.exe|sweaw\\.exe)$") { "launcher" } else { "unknown" }
         $moduleSize = 0
         try {
@@ -68,7 +71,7 @@ function Get-ProcessSnapshot {
             $moduleSize = 0
         }
         $hostScore = if ($hostRole -eq "game_host") { 200 } elseif ($hostRole -eq "launcher") { 100 } else { 0 }
-        $selectionScore = ([double]($steamIds.Count * 1000)) + [double]$hostScore + ($(if ([string]::IsNullOrWhiteSpace([string]$proc.CommandLine)) { 0 } else { 10 })) + ([double]$moduleSize / 1000000.0)
+        $selectionScore = ([double]($steamIdCount * 1000)) + [double]$hostScore + ($(if ([string]::IsNullOrWhiteSpace([string]$proc.CommandLine)) { 0 } else { 10 })) + ([double]$moduleSize / 1000000.0)
         $snapshot.Add([PSCustomObject]@{
             pid = [int]$proc.ProcessId
             name = [string]$proc.Name
@@ -77,7 +80,7 @@ function Get-ProcessSnapshot {
             steamModIds = $steamIds
             hostRole = $hostRole
             mainModuleSize = $moduleSize
-            workshopMatchCount = [int]$steamIds.Count
+            workshopMatchCount = [int]$steamIdCount
             selectionScore = [math]::Round($selectionScore, 2)
         })
     }

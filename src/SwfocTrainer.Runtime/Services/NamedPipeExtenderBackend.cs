@@ -154,7 +154,7 @@ public sealed class NamedPipeExtenderBackend : IExecutionBackend
 
     public async Task<BackendHealth> GetHealthAsync(CancellationToken cancellationToken)
     {
-        var probe = await SendAsync(new ExtenderCommand(
+        var probe = await SendCoreAsync(new ExtenderCommand(
             CommandId: Guid.NewGuid().ToString("N"),
             FeatureId: "health",
             ProfileId: "unknown",
@@ -357,14 +357,115 @@ public sealed class NamedPipeExtenderBackend : IExecutionBackend
             return fromEnv;
         }
 
-        var candidates = new[]
+        var candidates = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+        foreach (var root in ResolveSearchRoots())
         {
-            Path.Combine(AppContext.BaseDirectory, "native", "runtime", "SwfocExtender.Host.exe"),
-            Path.Combine(AppContext.BaseDirectory, "native", "build-win", "SwfocExtender.Host.exe"),
-            Path.Combine(AppContext.BaseDirectory, "native", "build-wsl", "SwfocExtender.Host")
+            AddKnownCandidatePaths(candidates, root);
+            AddDiscoveredNativeBuildCandidates(candidates, root);
+        }
+
+        return candidates
+            .Where(File.Exists)
+            .Select(path => new FileInfo(path))
+            .OrderByDescending(file => file.LastWriteTimeUtc)
+            .ThenByDescending(file => file.Name.Equals("SwfocExtender.Host.exe", StringComparison.OrdinalIgnoreCase))
+            .Select(file => file.FullName)
+            .FirstOrDefault();
+    }
+
+    private static IEnumerable<string> ResolveSearchRoots()
+    {
+        var roots = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+        TryAddRoot(roots, AppContext.BaseDirectory);
+        TryAddRoot(roots, Environment.CurrentDirectory);
+        TryAddAncestorRoots(roots, AppContext.BaseDirectory, 6);
+        TryAddAncestorRoots(roots, Environment.CurrentDirectory, 6);
+        return roots;
+    }
+
+    private static void AddKnownCandidatePaths(HashSet<string> candidates, string root)
+    {
+        var known = new[]
+        {
+            Path.Combine(root, "native", "runtime", "SwfocExtender.Host.exe"),
+            Path.Combine(root, "native", "build-win-vs", "SwfocExtender.Bridge", "Release", "SwfocExtender.Host.exe"),
+            Path.Combine(root, "native", "build-win-vs", "SwfocExtender.Bridge", "x64", "Release", "SwfocExtender.Host.exe"),
+            Path.Combine(root, "native", "build-win-codex", "SwfocExtender.Bridge", "Release", "SwfocExtender.Host.exe"),
+            Path.Combine(root, "native", "build-win", "SwfocExtender.Host.exe"),
+            Path.Combine(root, "native", "build-wsl", "SwfocExtender.Host")
         };
 
-        return candidates.FirstOrDefault(File.Exists);
+        foreach (var path in known)
+        {
+            candidates.Add(path);
+        }
+    }
+
+    private static void AddDiscoveredNativeBuildCandidates(HashSet<string> candidates, string root)
+    {
+        var nativeRoot = Path.Combine(root, "native");
+        if (!Directory.Exists(nativeRoot))
+        {
+            return;
+        }
+
+        try
+        {
+            foreach (var path in Directory.EnumerateFiles(nativeRoot, "SwfocExtender.Host.exe", SearchOption.AllDirectories))
+            {
+                candidates.Add(path);
+            }
+
+            foreach (var path in Directory.EnumerateFiles(nativeRoot, "SwfocExtender.Host", SearchOption.AllDirectories))
+            {
+                candidates.Add(path);
+            }
+        }
+        catch
+        {
+            // ignored: candidate discovery is best-effort.
+        }
+    }
+
+    private static void TryAddRoot(HashSet<string> roots, string? path)
+    {
+        if (string.IsNullOrWhiteSpace(path))
+        {
+            return;
+        }
+
+        try
+        {
+            roots.Add(Path.GetFullPath(path));
+        }
+        catch
+        {
+            // ignored
+        }
+    }
+
+    private static void TryAddAncestorRoots(HashSet<string> roots, string? startPath, int maxDepth)
+    {
+        if (string.IsNullOrWhiteSpace(startPath))
+        {
+            return;
+        }
+
+        DirectoryInfo? directory = null;
+        try
+        {
+            directory = new DirectoryInfo(startPath);
+        }
+        catch
+        {
+            return;
+        }
+
+        for (var depth = 0; directory is not null && depth < maxDepth; depth++)
+        {
+            TryAddRoot(roots, directory.FullName);
+            directory = directory.Parent;
+        }
     }
 
     private static Dictionary<string, BackendCapability> ParseCapabilities(
@@ -553,49 +654,108 @@ public sealed class NamedPipeExtenderBackend : IExecutionBackend
             return;
         }
 
-        if (rawAnchors is JsonObject jsonObject)
+        if (TryMergeJsonObjectAnchors(destination, rawAnchors) ||
+            TryMergeJsonElementAnchors(destination, rawAnchors) ||
+            TryMergeObjectDictionaryAnchors(destination, rawAnchors) ||
+            TryMergeStringPairAnchors(destination, rawAnchors))
         {
-            foreach (var kv in jsonObject)
-            {
-                if (kv.Value is null)
-                {
-                    continue;
-                }
-
-                destination[kv.Key] = kv.Value.ToString();
-            }
-
             return;
         }
 
-        if (rawAnchors is JsonElement element && element.ValueKind == JsonValueKind.Object)
+        TryMergeSerializedAnchors(destination, rawAnchors);
+    }
+
+    private static bool TryMergeJsonObjectAnchors(JsonObject destination, object rawAnchors)
+    {
+        if (rawAnchors is not JsonObject jsonObject)
         {
-            foreach (var property in element.EnumerateObject())
+            return false;
+        }
+
+        foreach (var kv in jsonObject)
+        {
+            if (kv.Value is null)
             {
-                destination[property.Name] = property.Value.ToString();
+                continue;
             }
 
+            destination[kv.Key] = kv.Value.ToString();
+        }
+
+        return true;
+    }
+
+    private static bool TryMergeJsonElementAnchors(JsonObject destination, object rawAnchors)
+    {
+        if (rawAnchors is not JsonElement element || element.ValueKind != JsonValueKind.Object)
+        {
+            return false;
+        }
+
+        foreach (var property in element.EnumerateObject())
+        {
+            destination[property.Name] = property.Value.ToString();
+        }
+
+        return true;
+    }
+
+    private static bool TryMergeObjectDictionaryAnchors(JsonObject destination, object rawAnchors)
+    {
+        if (rawAnchors is not IReadOnlyDictionary<string, object?> dictionary)
+        {
+            return false;
+        }
+
+        foreach (var kv in dictionary)
+        {
+            if (kv.Value is null)
+            {
+                continue;
+            }
+
+            destination[kv.Key] = kv.Value.ToString();
+        }
+
+        return true;
+    }
+
+    private static bool TryMergeStringPairAnchors(JsonObject destination, object rawAnchors)
+    {
+        if (rawAnchors is not IEnumerable<KeyValuePair<string, string>> stringPairs)
+        {
+            return false;
+        }
+
+        foreach (var kv in stringPairs)
+        {
+            if (string.IsNullOrWhiteSpace(kv.Value))
+            {
+                continue;
+            }
+
+            destination[kv.Key] = kv.Value;
+        }
+
+        return true;
+    }
+
+    private static void TryMergeSerializedAnchors(JsonObject destination, object rawAnchors)
+    {
+        if (rawAnchors is not string serialized || string.IsNullOrWhiteSpace(serialized))
+        {
             return;
         }
 
-        if (rawAnchors is IReadOnlyDictionary<string, object?> dictionary)
+        try
         {
-            foreach (var kv in dictionary)
+            var parsed = JsonSerializer.Deserialize<Dictionary<string, string>>(serialized, JsonOptions);
+            if (parsed is null)
             {
-                if (kv.Value is null)
-                {
-                    continue;
-                }
-
-                destination[kv.Key] = kv.Value.ToString();
+                return;
             }
 
-            return;
-        }
-
-        if (rawAnchors is IEnumerable<KeyValuePair<string, string>> stringPairs)
-        {
-            foreach (var kv in stringPairs)
+            foreach (var kv in parsed)
             {
                 if (string.IsNullOrWhiteSpace(kv.Value))
                 {
@@ -604,35 +764,10 @@ public sealed class NamedPipeExtenderBackend : IExecutionBackend
 
                 destination[kv.Key] = kv.Value;
             }
-
-            return;
         }
-
-        if (rawAnchors is string serialized &&
-            !string.IsNullOrWhiteSpace(serialized))
+        catch
         {
-            try
-            {
-                var parsed = JsonSerializer.Deserialize<Dictionary<string, string>>(serialized, JsonOptions);
-                if (parsed is null)
-                {
-                    return;
-                }
-
-                foreach (var kv in parsed)
-                {
-                    if (string.IsNullOrWhiteSpace(kv.Value))
-                    {
-                        continue;
-                    }
-
-                    destination[kv.Key] = kv.Value;
-                }
-            }
-            catch
-            {
-                // ignored
-            }
+            // ignored
         }
     }
 

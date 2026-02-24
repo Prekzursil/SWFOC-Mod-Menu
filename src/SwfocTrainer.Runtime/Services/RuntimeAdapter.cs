@@ -48,6 +48,10 @@ public sealed class RuntimeAdapter : IRuntimeAdapter
     private const string DiagnosticKeyHookState = "hookState";
     private const string DiagnosticKeyCreditsStateTag = "creditsStateTag";
     private const string DiagnosticKeyState = "state";
+    private const string ActionIdSetUnitCap = "set_unit_cap";
+    private const string ActionIdToggleInstantBuildPatch = "toggle_instant_build_patch";
+    private const string ActionIdSetCredits = "set_credits";
+    private const string SymbolCredits = "credits";
     private static readonly string[] ResultHookStateKeys =
     [
         DiagnosticKeyHookState,
@@ -60,8 +64,8 @@ public sealed class RuntimeAdapter : IRuntimeAdapter
         "freeze_timer",
         "toggle_fog_reveal",
         "toggle_ai",
-        "set_unit_cap",
-        "toggle_instant_build_patch"
+        ActionIdSetUnitCap,
+        ActionIdToggleInstantBuildPatch
     };
 
     private readonly IProcessLocator _processLocator;
@@ -1297,27 +1301,26 @@ public sealed class RuntimeAdapter : IRuntimeAdapter
             "freeze_timer" => ["game_timer_freeze", "freeze_timer"],
             "toggle_fog_reveal" => ["fog_reveal", "toggle_fog_reveal"],
             "toggle_ai" => ["ai_enabled", "toggle_ai"],
-            "set_unit_cap" => ["unit_cap", "set_unit_cap"],
-            "toggle_instant_build_patch" => ["instant_build_patch", "toggle_instant_build_patch"],
-            "set_credits" => ["credits", "set_credits"],
+            ActionIdSetUnitCap => ["unit_cap", ActionIdSetUnitCap],
+            ActionIdToggleInstantBuildPatch => ["instant_build_patch", ActionIdToggleInstantBuildPatch],
+            ActionIdSetCredits => [SymbolCredits, ActionIdSetCredits],
             _ => Array.Empty<string>()
         };
     }
 
-    private bool TryAddResolvedSymbolAnchor(IDictionary<string, string> anchors, string symbol)
+    private void TryAddResolvedSymbolAnchor(IDictionary<string, string> anchors, string symbol)
     {
         if (string.IsNullOrWhiteSpace(symbol) || anchors.ContainsKey(symbol))
         {
-            return false;
+            return;
         }
 
         if (!TryResolveSessionSymbolAddress(symbol, out var address))
         {
-            return false;
+            return;
         }
 
         anchors[symbol] = ToHex(address);
-        return true;
     }
 
     private bool TryResolveSessionSymbolAddress(string symbol, out nint address)
@@ -1384,88 +1387,108 @@ public sealed class RuntimeAdapter : IRuntimeAdapter
             return;
         }
 
-        if (raw is JsonObject jsonObject)
+        if (TryMergeAnchorJsonObject(destination, raw) ||
+            TryMergeAnchorJsonElement(destination, raw) ||
+            TryMergeAnchorObjectDictionary(destination, raw) ||
+            TryMergeAnchorStringPairs(destination, raw))
         {
-            foreach (var kv in jsonObject)
-            {
-                if (kv.Value is null)
-                {
-                    continue;
-                }
-
-                var value = kv.Value.ToString();
-                if (!string.IsNullOrWhiteSpace(value))
-                {
-                    destination[kv.Key] = value;
-                }
-            }
-
             return;
         }
 
-        if (raw is JsonElement element && element.ValueKind == JsonValueKind.Object)
-        {
-            foreach (var property in element.EnumerateObject())
-            {
-                var value = property.Value.ToString();
-                if (!string.IsNullOrWhiteSpace(value))
-                {
-                    destination[property.Name] = value;
-                }
-            }
+        TryMergeSerializedAnchorMap(destination, raw);
+    }
 
+    private static bool TryMergeAnchorJsonObject(IDictionary<string, string> destination, object raw)
+    {
+        if (raw is not JsonObject jsonObject)
+        {
+            return false;
+        }
+
+        foreach (var kv in jsonObject)
+        {
+            AddAnchorIfNotEmpty(destination, kv.Key, kv.Value?.ToString());
+        }
+
+        return true;
+    }
+
+    private static bool TryMergeAnchorJsonElement(IDictionary<string, string> destination, object raw)
+    {
+        if (raw is not JsonElement element || element.ValueKind != JsonValueKind.Object)
+        {
+            return false;
+        }
+
+        foreach (var property in element.EnumerateObject())
+        {
+            AddAnchorIfNotEmpty(destination, property.Name, property.Value.ToString());
+        }
+
+        return true;
+    }
+
+    private static bool TryMergeAnchorObjectDictionary(IDictionary<string, string> destination, object raw)
+    {
+        if (raw is not IReadOnlyDictionary<string, object?> dictionary)
+        {
+            return false;
+        }
+
+        foreach (var kv in dictionary)
+        {
+            AddAnchorIfNotEmpty(destination, kv.Key, kv.Value?.ToString());
+        }
+
+        return true;
+    }
+
+    private static bool TryMergeAnchorStringPairs(IDictionary<string, string> destination, object raw)
+    {
+        if (raw is not IEnumerable<KeyValuePair<string, string>> pairs)
+        {
+            return false;
+        }
+
+        foreach (var kv in pairs.Where(static kv => !string.IsNullOrWhiteSpace(kv.Value)))
+        {
+            destination[kv.Key] = kv.Value;
+        }
+
+        return true;
+    }
+
+    private static void TryMergeSerializedAnchorMap(IDictionary<string, string> destination, object raw)
+    {
+        if (raw is not string serialized || string.IsNullOrWhiteSpace(serialized))
+        {
             return;
         }
 
-        if (raw is IReadOnlyDictionary<string, object?> dictionary)
+        try
         {
-            foreach (var kv in dictionary)
+            var parsed = JsonSerializer.Deserialize<Dictionary<string, string>>(serialized);
+            if (parsed is null)
             {
-                var value = kv.Value?.ToString();
-                if (!string.IsNullOrWhiteSpace(value))
-                {
-                    destination[kv.Key] = value;
-                }
+                return;
             }
 
-            return;
+            foreach (var kv in parsed.Where(static kv => !string.IsNullOrWhiteSpace(kv.Value)))
+            {
+                destination[kv.Key] = kv.Value;
+            }
         }
-
-        if (raw is IEnumerable<KeyValuePair<string, string>> pairs)
+        catch
         {
-            foreach (var kv in pairs)
-            {
-                if (!string.IsNullOrWhiteSpace(kv.Value))
-                {
-                    destination[kv.Key] = kv.Value;
-                }
-            }
-
-            return;
+            // ignored
         }
+    }
 
-        if (raw is string serialized && !string.IsNullOrWhiteSpace(serialized))
+    private static void AddAnchorIfNotEmpty(IDictionary<string, string> destination, string key, string? value)
+    {
+        if (!string.IsNullOrWhiteSpace(value))
         {
-            try
-            {
-                var parsed = JsonSerializer.Deserialize<Dictionary<string, string>>(serialized);
-                if (parsed is null)
-                {
-                    return;
-                }
-
-                foreach (var kv in parsed)
-                {
-                    if (!string.IsNullOrWhiteSpace(kv.Value))
-                    {
-                        destination[kv.Key] = kv.Value;
-                    }
-                }
-            }
-            catch
-            {
-                // ignored
-            }
+            destination[key] = value;
         }
     }
 
@@ -2098,12 +2121,12 @@ public sealed class RuntimeAdapter : IRuntimeAdapter
     /// </summary>
     private Task<ActionExecutionResult> ExecuteCodePatchActionAsync(ActionExecutionRequest request, CancellationToken cancellationToken)
     {
-        if (request.Action.Id.Equals("set_unit_cap", StringComparison.OrdinalIgnoreCase))
+        if (request.Action.Id.Equals(ActionIdSetUnitCap, StringComparison.OrdinalIgnoreCase))
         {
             return ExecuteUnitCapHookAsync(request);
         }
 
-        if (request.Action.Id.Equals("toggle_instant_build_patch", StringComparison.OrdinalIgnoreCase))
+        if (request.Action.Id.Equals(ActionIdToggleInstantBuildPatch, StringComparison.OrdinalIgnoreCase))
         {
             return ExecuteInstantBuildHookAsync(request);
         }
@@ -2292,7 +2315,7 @@ public sealed class RuntimeAdapter : IRuntimeAdapter
         SymbolInfo creditsSymbol;
         try
         {
-            creditsSymbol = ResolveSymbol("credits");
+            creditsSymbol = ResolveSymbol(SymbolCredits);
             diagnostics["creditsAddress"] = ToHex(creditsSymbol.Address);
         }
         catch (KeyNotFoundException)
@@ -3213,7 +3236,7 @@ public sealed class RuntimeAdapter : IRuntimeAdapter
             long creditsRva = -1;
             try
             {
-                var creditsSymbol = ResolveSymbol("credits");
+                var creditsSymbol = ResolveSymbol(SymbolCredits);
                 creditsRva = creditsSymbol.Address.ToInt64() - baseAddress.ToInt64();
             }
             catch { /* credits symbol unavailable — correlation disabled */ }
@@ -3659,8 +3682,8 @@ public sealed class RuntimeAdapter : IRuntimeAdapter
 
     private static bool IsCreditsWrite(ActionExecutionRequest request, string symbol)
     {
-        return request.Action.Id.Equals("set_credits", StringComparison.OrdinalIgnoreCase) ||
-               symbol.Equals("credits", StringComparison.OrdinalIgnoreCase);
+        return request.Action.Id.Equals(ActionIdSetCredits, StringComparison.OrdinalIgnoreCase) ||
+               symbol.Equals(SymbolCredits, StringComparison.OrdinalIgnoreCase);
     }
 
     private static bool TryReadBooleanPayload(JsonObject payload, string key, out bool value)

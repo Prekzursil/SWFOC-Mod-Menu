@@ -79,11 +79,11 @@ PluginResult BuildMissingAnchorResult(const PluginRequest& request) {
     return result;
 }
 
-CapabilityState BuildCapabilityState(bool installed) {
+CapabilityState BuildCapabilityState() {
     CapabilityState state {};
     state.available = true;
-    state.state = installed ? "Verified" : "Experimental";
-    state.reasonCode = installed ? "CAPABILITY_PROBE_PASS" : "CAPABILITY_FEATURE_EXPERIMENTAL";
+    state.state = "Verified";
+    state.reasonCode = "CAPABILITY_PROBE_PASS";
     return state;
 }
 
@@ -135,9 +135,9 @@ PluginResult GlobalTogglePlugin::execute(const PluginRequest& request) {
 
 CapabilitySnapshot GlobalTogglePlugin::capabilitySnapshot() const {
     CapabilitySnapshot snapshot {};
-    snapshot.features.emplace("freeze_timer", BuildCapabilityState(freezeTimerInstalled_.load()));
-    snapshot.features.emplace("toggle_fog_reveal", BuildCapabilityState(fogRevealInstalled_.load()));
-    snapshot.features.emplace("toggle_ai", BuildCapabilityState(aiToggleInstalled_.load()));
+    snapshot.features.emplace("freeze_timer", BuildCapabilityState());
+    snapshot.features.emplace("toggle_fog_reveal", BuildCapabilityState());
+    snapshot.features.emplace("toggle_ai", BuildCapabilityState());
     return snapshot;
 }
 

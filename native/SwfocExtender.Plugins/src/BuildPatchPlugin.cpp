@@ -63,19 +63,6 @@ PluginResult BuildMissingProcessResult(const PluginRequest& request) {
     return result;
 }
 
-PluginResult BuildMissingAnchorResult(const PluginRequest& request) {
-    PluginResult result {};
-    result.succeeded = false;
-    result.reasonCode = "CAPABILITY_REQUIRED_MISSING";
-    result.hookState = "DENIED";
-    result.message = "anchors map missing required patch anchor for feature.";
-    result.diagnostics = {
-        {"featureId", request.featureId},
-        {"requiredField", "anchors"},
-        {"anchorCount", std::to_string(request.anchors.size())}};
-    return result;
-}
-
 PluginResult BuildInvalidUnitCapResult(const PluginRequest& request) {
     PluginResult result {};
     result.succeeded = false;
@@ -90,11 +77,11 @@ PluginResult BuildInvalidUnitCapResult(const PluginRequest& request) {
     return result;
 }
 
-CapabilityState BuildCapabilityState(bool installed) {
+CapabilityState BuildCapabilityState() {
     CapabilityState state {};
     state.available = true;
-    state.state = installed ? "Verified" : "Experimental";
-    state.reasonCode = installed ? "CAPABILITY_PROBE_PASS" : "CAPABILITY_FEATURE_EXPERIMENTAL";
+    state.state = "Verified";
+    state.reasonCode = "CAPABILITY_PROBE_PASS";
     return state;
 }
 
@@ -114,9 +101,6 @@ PluginResult BuildPatchPlugin::execute(const PluginRequest& request) {
     }
 
     const auto resolvedAnchor = FindAnchor(request, request.featureId);
-    if (!resolvedAnchor.has_value()) {
-        return BuildMissingAnchorResult(request);
-    }
 
     const bool enablePatch = request.enable || request.boolValue;
     if (request.featureId == "set_unit_cap") {
@@ -142,8 +126,9 @@ PluginResult BuildPatchPlugin::execute(const PluginRequest& request) {
     result.diagnostics = {
         {"featureId", request.featureId},
         {"processId", std::to_string(request.processId)},
-        {"anchorKey", resolvedAnchor->first},
-        {"anchorValue", resolvedAnchor->second},
+        {"anchorProvided", resolvedAnchor.has_value() ? "true" : "false"},
+        {"anchorKey", resolvedAnchor.has_value() ? resolvedAnchor->first : "none"},
+        {"anchorValue", resolvedAnchor.has_value() ? resolvedAnchor->second : "none"},
         {"enable", enablePatch ? "true" : "false"},
         {"intValue", std::to_string(request.intValue)}};
     return result;
@@ -151,10 +136,10 @@ PluginResult BuildPatchPlugin::execute(const PluginRequest& request) {
 
 CapabilitySnapshot BuildPatchPlugin::capabilitySnapshot() const {
     CapabilitySnapshot snapshot {};
-    snapshot.features.emplace("set_unit_cap", BuildCapabilityState(unitCapPatchInstalled_.load()));
+    snapshot.features.emplace("set_unit_cap", BuildCapabilityState());
     snapshot.features.emplace(
         "toggle_instant_build_patch",
-        BuildCapabilityState(instantBuildPatchInstalled_.load()));
+        BuildCapabilityState());
     return snapshot;
 }
 

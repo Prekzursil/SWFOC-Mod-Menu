@@ -89,7 +89,7 @@ public sealed class BackendRouter : IBackendRouter
             ["requiredCapabilities"] = context.RequiredCapabilities,
             ["missingRequiredCapabilities"] = context.MissingRequired,
             ["hybridExecution"] = false,
-            ["promotedExtenderAction"] = context.IsPromotedExtenderAction
+            ["promotedExtenderAction"] = context.PromotedExtenderAction
         };
     }
 
@@ -373,5 +373,5 @@ public sealed class BackendRouter : IBackendRouter
         IReadOnlyList<string> ProfileRequiredCapabilities,
         IReadOnlyList<string> RequiredCapabilities,
         IReadOnlyList<string> MissingRequired,
-        bool IsPromotedExtenderAction);
+        bool PromotedExtenderAction);
 }
