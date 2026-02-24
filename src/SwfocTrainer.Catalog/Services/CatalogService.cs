@@ -19,7 +19,7 @@ public sealed class CatalogService : ICatalogService
         _logger = logger;
     }
 
-    public async Task<IReadOnlyDictionary<string, IReadOnlyList<string>>> LoadCatalogAsync(string profileId, CancellationToken cancellationToken = default)
+    public async Task<IReadOnlyDictionary<string, IReadOnlyList<string>>> LoadCatalogAsync(string profileId, CancellationToken cancellationToken)
     {
         var result = new Dictionary<string, IReadOnlyList<string>>(StringComparer.OrdinalIgnoreCase);
 
@@ -97,6 +97,11 @@ public sealed class CatalogService : ICatalogService
         result["action_constraints"] = profile.Actions.Keys.OrderBy(x => x).ToArray();
 
         return result;
+    }
+
+    public Task<IReadOnlyDictionary<string, IReadOnlyList<string>>> LoadCatalogAsync(string profileId)
+    {
+        return LoadCatalogAsync(profileId, CancellationToken.None);
     }
 
     private async Task<Dictionary<string, IReadOnlyList<string>>> LoadPrebuiltCatalogAsync(string profileId, CancellationToken cancellationToken)

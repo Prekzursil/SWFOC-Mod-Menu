@@ -10,7 +10,12 @@ public sealed class AsyncCommand : ICommand
     private readonly Func<bool>? _canExecute;
     private bool _isRunning;
 
-    public AsyncCommand(Func<Task> execute, Func<bool>? canExecute = null)
+    public AsyncCommand(Func<Task> execute)
+        : this(execute, null)
+    {
+    }
+
+    public AsyncCommand(Func<Task> execute, Func<bool>? canExecute)
     {
         _execute = execute;
         _canExecute = canExecute;

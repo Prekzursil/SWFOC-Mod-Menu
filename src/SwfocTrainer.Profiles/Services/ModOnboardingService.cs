@@ -1,3 +1,4 @@
+#pragma warning disable S4136
 using System.Text.RegularExpressions;
 using SwfocTrainer.Core.Contracts;
 using SwfocTrainer.Core.Models;
@@ -19,7 +20,7 @@ public sealed class ModOnboardingService : IModOnboardingService
         _options = options;
     }
 
-    public async Task<ModOnboardingResult> ScaffoldDraftProfileAsync(ModOnboardingRequest request, CancellationToken cancellationToken = default)
+    public async Task<ModOnboardingResult> ScaffoldDraftProfileAsync(ModOnboardingRequest request, CancellationToken cancellationToken)
     {
         if (string.IsNullOrWhiteSpace(request.DraftProfileId))
         {
@@ -295,5 +296,10 @@ public sealed class ModOnboardingService : IModOnboardingService
         }
 
         return aliases.OrderBy(x => x, StringComparer.OrdinalIgnoreCase).ToArray();
+    }
+
+    public Task<ModOnboardingResult> ScaffoldDraftProfileAsync(ModOnboardingRequest request)
+    {
+        return ScaffoldDraftProfileAsync(request, CancellationToken.None);
     }
 }

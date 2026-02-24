@@ -21,7 +21,7 @@ $schema = Get-Content -Raw -Path $SchemaPath | ConvertFrom-Json
 $errors = New-ValidationErrorList
 
 foreach ($required in $schema.required) {
-    Require-ValidationField -Object $artifact -Field ([string]$required) -Errors $errors
+    Confirm-ValidationField -Object $artifact -Field ([string]$required) -Errors $errors
 }
 
 if ($artifact.schemaVersion -ne "1.0") {
@@ -29,7 +29,7 @@ if ($artifact.schemaVersion -ne "1.0") {
 }
 
 foreach ($required in @("generatedAtUtc", "profileId", "moduleFingerprint", "candidates")) {
-    Require-ValidationField -Object $artifact -Field $required -Errors $errors
+    Confirm-ValidationField -Object $artifact -Field $required -Errors $errors
 }
 
 $candidates = @($artifact.candidates)
@@ -40,7 +40,7 @@ if ($candidates.Count -eq 0) {
 for ($i = 0; $i -lt $candidates.Count; $i++) {
     $candidate = $candidates[$i]
     foreach ($required in @("symbol", "source", "healthStatus", "confidence")) {
-        Require-ValidationField -Object $candidate -Field $required -Errors $errors -Prefix "candidates[$i]"
+        Confirm-ValidationField -Object $candidate -Field $required -Errors $errors -Prefix "candidates[$i]"
     }
 
     $confidence = [double]$candidate.confidence
@@ -51,7 +51,7 @@ for ($i = 0; $i -lt $candidates.Count; $i++) {
 
 if ($null -ne $artifact.process) {
     foreach ($required in @("pid", "name", "path", "commandLineAvailable", "launchKind", "launchReasonCode")) {
-        Require-ValidationField -Object $artifact.process -Field $required -Errors $errors -Prefix "process"
+        Confirm-ValidationField -Object $artifact.process -Field $required -Errors $errors -Prefix "process"
     }
 }
 

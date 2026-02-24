@@ -22,7 +22,12 @@ public interface ISelectedUnitTransactionService
     /// </summary>
     /// <param name="cancellationToken">Cancellation token.</param>
     /// <returns>Current selected-unit snapshot.</returns>
-    Task<SelectedUnitSnapshot> CaptureAsync(CancellationToken cancellationToken = default);
+    Task<SelectedUnitSnapshot> CaptureAsync(CancellationToken cancellationToken);
+
+    Task<SelectedUnitSnapshot> CaptureAsync()
+    {
+        return CaptureAsync(CancellationToken.None);
+    }
 
     /// <summary>
     /// Applies a selected-unit draft as an ordered transaction with rollback-on-failure behavior.
@@ -36,7 +41,15 @@ public interface ISelectedUnitTransactionService
         string profileId,
         SelectedUnitDraft draft,
         RuntimeMode runtimeMode,
-        CancellationToken cancellationToken = default);
+        CancellationToken cancellationToken);
+
+    Task<SelectedUnitTransactionResult> ApplyAsync(
+        string profileId,
+        SelectedUnitDraft draft,
+        RuntimeMode runtimeMode)
+    {
+        return ApplyAsync(profileId, draft, runtimeMode, CancellationToken.None);
+    }
 
     /// <summary>
     /// Reverts the most recent committed transaction.
@@ -48,7 +61,14 @@ public interface ISelectedUnitTransactionService
     Task<SelectedUnitTransactionResult> RevertLastAsync(
         string profileId,
         RuntimeMode runtimeMode,
-        CancellationToken cancellationToken = default);
+        CancellationToken cancellationToken);
+
+    Task<SelectedUnitTransactionResult> RevertLastAsync(
+        string profileId,
+        RuntimeMode runtimeMode)
+    {
+        return RevertLastAsync(profileId, runtimeMode, CancellationToken.None);
+    }
 
     /// <summary>
     /// Restores selected-unit values back to the captured baseline snapshot.
@@ -60,5 +80,12 @@ public interface ISelectedUnitTransactionService
     Task<SelectedUnitTransactionResult> RestoreBaselineAsync(
         string profileId,
         RuntimeMode runtimeMode,
-        CancellationToken cancellationToken = default);
+        CancellationToken cancellationToken);
+
+    Task<SelectedUnitTransactionResult> RestoreBaselineAsync(
+        string profileId,
+        RuntimeMode runtimeMode)
+    {
+        return RestoreBaselineAsync(profileId, runtimeMode, CancellationToken.None);
+    }
 }

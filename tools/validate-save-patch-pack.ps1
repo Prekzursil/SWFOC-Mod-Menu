@@ -25,7 +25,7 @@ function Add-Error {
     $script:errors.Add($Message)
 }
 
-function Require-Field {
+function Confirm-Field {
     param(
         [object]$Object,
         [string]$Field,
@@ -55,7 +55,7 @@ function Require-Field {
 }
 
 foreach ($required in $schema.required) {
-    Require-Field -Object $pack -Field ([string]$required)
+    Confirm-Field -Object $pack -Field ([string]$required)
 }
 
 if ($pack.metadata -eq $null) {
@@ -63,7 +63,7 @@ if ($pack.metadata -eq $null) {
 }
 else {
     foreach ($required in @("schemaVersion", "profileId", "schemaId", "sourceHash", "createdAtUtc")) {
-        Require-Field -Object $pack.metadata -Field $required
+        Confirm-Field -Object $pack.metadata -Field $required
     }
 
     if ([string]$pack.metadata.schemaVersion -ne "1.0") {
@@ -80,7 +80,7 @@ if ($pack.compatibility -eq $null) {
 }
 else {
     foreach ($required in @("allowedProfileIds", "requiredSchemaId")) {
-        Require-Field -Object $pack.compatibility -Field $required
+        Confirm-Field -Object $pack.compatibility -Field $required
     }
 
     $allowed = @($pack.compatibility.allowedProfileIds)
@@ -104,7 +104,7 @@ if ($operations.Count -lt 1 -and $Strict) {
 for ($index = 0; $index -lt $operations.Count; $index++) {
     $operation = $operations[$index]
     foreach ($required in @("kind", "fieldPath", "fieldId", "valueType", "newValue", "offset")) {
-        Require-Field -Object $operation -Field $required
+        Confirm-Field -Object $operation -Field $required
     }
 
     if ([string]$operation.kind -ne "SetValue") {
@@ -117,11 +117,11 @@ for ($index = 0; $index -lt $operations.Count; $index++) {
 }
 
 if ($errors.Count -gt 0) {
-    Write-Host "save patch-pack validation failed:" -ForegroundColor Red
+    Write-Output "save patch-pack validation failed:"
     foreach ($err in $errors) {
-        Write-Host " - $err" -ForegroundColor Red
+        Write-Output " - $err"
     }
     exit 1
 }
 
-Write-Host "save patch-pack validation passed: $PatchPackPath"
+Write-Output "save patch-pack validation passed: $PatchPackPath"

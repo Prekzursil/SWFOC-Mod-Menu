@@ -23,7 +23,7 @@ public sealed class ActionReliabilityService : IActionReliabilityService
     public IReadOnlyList<ActionReliabilityInfo> Evaluate(
         TrainerProfile profile,
         AttachSession session,
-        IReadOnlyDictionary<string, IReadOnlyList<string>>? catalog = null)
+        IReadOnlyDictionary<string, IReadOnlyList<string>>? catalog)
     {
         var disabledActions = ParseCsvSet(session.Process.Metadata, "dependencyDisabledActions");
         var criticalSymbols = ParseCsvSet(profile.Metadata, "criticalSymbols");
@@ -41,6 +41,13 @@ public sealed class ActionReliabilityService : IActionReliabilityService
         }
 
         return results;
+    }
+
+    public IReadOnlyList<ActionReliabilityInfo> Evaluate(
+        TrainerProfile profile,
+        AttachSession session)
+    {
+        return Evaluate(profile, session, null);
     }
 
     private static ActionReliabilityInfo EvaluateAction(

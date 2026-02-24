@@ -1,9 +1,11 @@
 # Tooling Agent Contract
 
 ## Purpose
+
 Tooling must produce reproducible, machine-readable evidence for mod/runtime triage.
 
 ## Scope
+
 Applies to files under `tools/`.
 
 ## Required Evidence

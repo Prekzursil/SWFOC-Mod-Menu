@@ -1,3 +1,4 @@
+#pragma warning disable S4136
 using System.Text.Json;
 using System.Text.Json.Nodes;
 using SwfocTrainer.Core.Contracts;
@@ -30,7 +31,7 @@ public sealed class SpawnPresetService : ISpawnPresetService
         _options = options;
     }
 
-    public async Task<IReadOnlyList<SpawnPreset>> LoadPresetsAsync(string profileId, CancellationToken cancellationToken = default)
+    public async Task<IReadOnlyList<SpawnPreset>> LoadPresetsAsync(string profileId, CancellationToken cancellationToken)
     {
         var presetPath = BuildPresetPath(profileId);
         if (File.Exists(presetPath))
@@ -79,7 +80,7 @@ public sealed class SpawnPresetService : ISpawnPresetService
         string profileId,
         SpawnBatchPlan plan,
         RuntimeMode runtimeMode,
-        CancellationToken cancellationToken = default)
+        CancellationToken cancellationToken)
     {
         if (runtimeMode == RuntimeMode.Unknown)
         {
@@ -182,6 +183,19 @@ public sealed class SpawnPresetService : ISpawnPresetService
             failedCount,
             false,
             results);
+    }
+
+    public Task<IReadOnlyList<SpawnPreset>> LoadPresetsAsync(string profileId)
+    {
+        return LoadPresetsAsync(profileId, CancellationToken.None);
+    }
+
+    public Task<SpawnBatchExecutionResult> ExecuteBatchAsync(
+        string profileId,
+        SpawnBatchPlan plan,
+        RuntimeMode runtimeMode)
+    {
+        return ExecuteBatchAsync(profileId, plan, runtimeMode, CancellationToken.None);
     }
 
     private string BuildPresetPath(string profileId)

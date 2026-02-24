@@ -1,6 +1,7 @@
 # M1 Consolidation Wave: Fixes + Next Tasks (Decision-Complete)
 
 ## Summary
+
 This wave will finalize and ship the currently uncommitted M1 work in a single PR, apply the selected fixes, and set up clean handoff to post-merge live validation plus the next long program (M2 Save Lab).
 
 Locked decisions applied:

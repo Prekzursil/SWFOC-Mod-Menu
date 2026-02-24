@@ -1,9 +1,11 @@
 # Runtime Agent Contract
 
 ## Purpose
+
 Protect runtime attach/memory workflows with deterministic diagnostics and fail-safe behavior.
 
 ## Scope
+
 Applies to files under `src/SwfocTrainer.Runtime/`.
 
 ## Required Evidence

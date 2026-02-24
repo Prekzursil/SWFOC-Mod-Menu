@@ -4,5 +4,10 @@ namespace SwfocTrainer.Core.Contracts;
 
 public interface IAuditLogger
 {
-    Task WriteAsync(ActionAuditRecord record, CancellationToken cancellationToken = default);
+    Task WriteAsync(ActionAuditRecord record, CancellationToken cancellationToken);
+
+    Task WriteAsync(ActionAuditRecord record)
+    {
+        return WriteAsync(record, CancellationToken.None);
+    }
 }

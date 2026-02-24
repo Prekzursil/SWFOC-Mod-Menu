@@ -11,14 +11,14 @@ function Add-Error {
     $script:errors.Add($Message)
 }
 
-function Require-File {
+function Confirm-File {
     param([string]$Path)
     if (-not (Test-Path -Path $Path)) {
         Add-Error "missing file: $Path"
     }
 }
 
-function Require-Contains {
+function Confirm-Contains {
     param(
         [string]$Path,
         [string[]]$Needles
@@ -78,23 +78,23 @@ $requiredFiles = @(
 )
 
 foreach ($path in $requiredFiles) {
-    Require-File -Path $path
+    Confirm-File -Path $path
 }
 
 $agentsRequiredHeaders = @("## Purpose", "## Scope", "## Required Evidence")
-Require-Contains -Path "AGENTS.md" -Needles $agentsRequiredHeaders
-Require-Contains -Path "src/SwfocTrainer.Runtime/AGENTS.md" -Needles $agentsRequiredHeaders
-Require-Contains -Path "tools/AGENTS.md" -Needles $agentsRequiredHeaders
-Require-Contains -Path "tests/AGENTS.md" -Needles $agentsRequiredHeaders
+Confirm-Contains -Path "AGENTS.md" -Needles $agentsRequiredHeaders
+Confirm-Contains -Path "src/SwfocTrainer.Runtime/AGENTS.md" -Needles $agentsRequiredHeaders
+Confirm-Contains -Path "tools/AGENTS.md" -Needles $agentsRequiredHeaders
+Confirm-Contains -Path "tests/AGENTS.md" -Needles $agentsRequiredHeaders
 
-Require-Contains -Path ".github/pull_request_template.md" -Needles @(
+Confirm-Contains -Path ".github/pull_request_template.md" -Needles @(
     "## Affected Profiles",
     "## Reliability Evidence",
     "Launch reason code(s)",
     "Classification"
 )
 
-Require-Contains -Path ".github/ISSUE_TEMPLATE/bug.yml" -Needles @(
+Confirm-Contains -Path ".github/ISSUE_TEMPLATE/bug.yml" -Needles @(
     "id: run_id",
     "id: repro_bundle_json",
     "id: repro_bundle_md",
@@ -102,14 +102,14 @@ Require-Contains -Path ".github/ISSUE_TEMPLATE/bug.yml" -Needles @(
     "id: launch_context"
 )
 
-Require-Contains -Path ".github/ISSUE_TEMPLATE/calibration.yml" -Needles @(
+Confirm-Contains -Path ".github/ISSUE_TEMPLATE/calibration.yml" -Needles @(
     "id: run_id",
     "id: bundle_json",
     "id: bundle_md",
     "id: runtime_mode"
 )
 
-Require-Contains -Path ".github/workflows/release-portable.yml" -Needles @(
+Confirm-Contains -Path ".github/workflows/release-portable.yml" -Needles @(
     "SwfocTrainer-portable.zip.sha256",
     "gh release",
     "publish_release"
@@ -134,11 +134,11 @@ if (Test-Path -Path "config/reviewer-roster.json") {
 }
 
 if ($errors.Count -gt 0) {
-    Write-Host "policy contract validation failed:" -ForegroundColor Red
+    Write-Output "policy contract validation failed:"
     foreach ($validationError in $errors) {
-        Write-Host " - $validationError" -ForegroundColor Red
+        Write-Output " - $validationError"
     }
     exit 1
 }
 
-Write-Host "policy contract validation passed"
+Write-Output "policy contract validation passed"

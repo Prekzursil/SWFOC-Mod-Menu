@@ -31,10 +31,18 @@ public sealed class SignatureResolver : ISignatureResolver
         ProfileBuild profileBuild,
         IReadOnlyList<SignatureSet> signatureSets,
         IReadOnlyDictionary<string, long> fallbackOffsets,
-        CancellationToken cancellationToken = default)
+        CancellationToken cancellationToken)
     {
         // Signature scanning is CPU-bound and can take noticeable time. Run off the UI thread.
         return Task.Run(() => ResolveInternal(profileBuild, signatureSets, fallbackOffsets, cancellationToken), cancellationToken);
+    }
+
+    public Task<SymbolMap> ResolveAsync(
+        ProfileBuild profileBuild,
+        IReadOnlyList<SignatureSet> signatureSets,
+        IReadOnlyDictionary<string, long> fallbackOffsets)
+    {
+        return ResolveAsync(profileBuild, signatureSets, fallbackOffsets, CancellationToken.None);
     }
 
     private SymbolMap ResolveInternal(
