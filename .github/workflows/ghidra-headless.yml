@@ -22,12 +22,11 @@ on:
         required: false
         default: "/bin/ls"
 
-permissions:
-  contents: read
-
 jobs:
   emitter-smoke:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -71,6 +70,8 @@ jobs:
   headless-analysis:
     if: ${{ github.event_name == 'workflow_dispatch' }}
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
