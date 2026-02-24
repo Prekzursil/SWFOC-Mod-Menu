@@ -62,7 +62,7 @@ jobs:
         if: ${{ env.APPLITOOLS_API_KEY != '' }}
         shell: pwsh
         run: |
-          Write-Host "APPLITOOLS_API_KEY is configured. Visual pack can be uploaded for external review."
+          Write-Output "APPLITOOLS_API_KEY is configured. Visual pack can be uploaded for external review."
 
       - name: Upload visual compare report
         if: always()

@@ -10,12 +10,17 @@ trainer's broader action model.
 from __future__ import annotations
 
 import argparse
+import importlib
 import json
 import re
-import xml.etree.ElementTree as ET
 from dataclasses import asdict, dataclass, field
 from pathlib import Path
 from typing import Iterable
+
+try:
+    from defusedxml import ElementTree as ET
+except ModuleNotFoundError:
+    ET = importlib.import_module("xml.etree.ElementTree")
 
 
 AOB_SCAN_RE = re.compile(

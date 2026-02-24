@@ -140,7 +140,7 @@ function Resolve-PythonCommand {
     return @()
 }
 
-function Ensure-NativeHostPreflight {
+function Test-NativeHostPreflight {
     param(
         [string]$Config,
         [bool]$Enabled
@@ -171,7 +171,7 @@ function Ensure-NativeHostPreflight {
     }
 }
 
-function Should-RunTest {
+function Test-RunSelection {
     param(
         [string[]]$Scopes,
         [string]$SelectedScope
@@ -329,7 +329,7 @@ function Read-TrxSummary {
 
 $dotnetExe = Resolve-DotnetCommand
 $pythonCmd = @(Resolve-PythonCommand)
-Ensure-NativeHostPreflight -Config $Configuration -Enabled $PreflightNativeHost
+Test-NativeHostPreflight -Config $Configuration -Enabled $PreflightNativeHost
 $runTimestamp = Get-Date
 $iso = $runTimestamp.ToString("yyyy-MM-dd HH:mm:ss zzz")
 $runStartedUtc = $runTimestamp.ToUniversalTime().ToString("o")
@@ -378,7 +378,7 @@ $fatalError = $null
 foreach ($test in $testDefinitions) {
     $trxPath = Join-Path $runResultsDirectory ("{0}-{1}" -f $RunId, $test.TrxBase)
 
-    if (-not (Should-RunTest -Scopes $test.Scopes -SelectedScope $Scope)) {
+    if (-not (Test-RunSelection -Scopes $test.Scopes -SelectedScope $Scope)) {
         $summaries.Add([PSCustomObject]@{
             Name = $test.TestName
             Summary = [PSCustomObject]@{

@@ -24,15 +24,21 @@ jobs:
         shell: pwsh
         env:
           GH_TOKEN: ${{ github.token }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
         run: |
+          [int]$pullNumber = 0
+          if (-not [int]::TryParse($env.PR_NUMBER, [ref]$pullNumber)) {
+            throw "Invalid pull request number: '$($env.PR_NUMBER)'"
+          }
+
           $result = pwsh ./tools/request-pr-reviewers.ps1 `
             -RepoOwner "${{ github.repository_owner }}" `
             -RepoName "${{ github.event.repository.name }}" `
-            -PullNumber ${{ github.event.pull_request.number }} `
+            -PullNumber $pullNumber `
             -RosterPath config/reviewer-roster.json
 
           $result | Out-File -FilePath reviewer-automation-result.json -Encoding utf8
-          Write-Host $result
+          Write-Output $result
 
       - name: Upload reviewer automation result
         if: always()

@@ -12,7 +12,6 @@ import argparse
 import datetime as dt
 import glob
 import json
-import os
 import re
 import sys
 from dataclasses import dataclass

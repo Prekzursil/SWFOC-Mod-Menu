@@ -101,7 +101,7 @@ jobs:
             throw "launch-context smoke failed. missing=[$(($missing -join ', '))] mismatched=[$(($mismatched -join '; '))]"
           }
 
-          Write-Host "launch-context smoke passed"
+          Write-Output "launch-context smoke passed"
 
       - name: Repro-bundle schema smoke
         shell: pwsh
