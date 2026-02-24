@@ -20,6 +20,45 @@ public sealed class BackendRouter : IBackendRouter
         ProcessMetadata process,
         CapabilityReport capabilityReport)
     {
+        var state = CreateRouteResolutionState(request, profile, process, capabilityReport);
+
+        var requiredCapabilityDecision = TryResolveRequiredCapabilityContract(
+            state.PreferredBackend,
+            profile.BackendPreference,
+            state.IsMutating,
+            state.MissingRequired,
+            state.Diagnostics,
+            state.IsPromotedExtenderAction);
+        if (requiredCapabilityDecision is not null)
+        {
+            return requiredCapabilityDecision;
+        }
+
+        var promotedGateDecision = TryResolvePromotedCapabilityVerificationContract(
+            request.Action.Id,
+            state.PreferredBackend,
+            capabilityReport,
+            state.Diagnostics,
+            state.IsPromotedExtenderAction);
+        if (promotedGateDecision is not null)
+        {
+            return promotedGateDecision;
+        }
+
+        if (state.PreferredBackend != ExecutionBackendKind.Extender)
+        {
+            return CreateRoutedDecision(state.PreferredBackend, state.Diagnostics);
+        }
+
+        return ResolveExtenderRoute(request, profile, capabilityReport, state.IsMutating, state.Diagnostics);
+    }
+
+    private static RouteResolutionState CreateRouteResolutionState(
+        ActionExecutionRequest request,
+        TrainerProfile profile,
+        ProcessMetadata process,
+        CapabilityReport capabilityReport)
+    {
         var isPromotedExtenderAction = IsPromotedExtenderAction(request.Action.Id, profile, process);
         var defaultBackend = MapDefaultBackend(request.Action.ExecutionKind, isPromotedExtenderAction);
         var preferredBackend = ResolvePreferredBackend(profile.BackendPreference, defaultBackend, isPromotedExtenderAction);
@@ -43,36 +82,12 @@ public sealed class BackendRouter : IBackendRouter
             requiredCapabilities,
             missingRequired,
             isPromotedExtenderAction));
-
-        var requiredCapabilityDecision = TryResolveRequiredCapabilityContract(
-            preferredBackend,
-            profile.BackendPreference,
-            isMutating,
-            missingRequired,
-            diagnostics,
-            isPromotedExtenderAction);
-        if (requiredCapabilityDecision is not null)
-        {
-            return requiredCapabilityDecision;
-        }
-
-        var promotedGateDecision = TryResolvePromotedCapabilityVerificationContract(
-            request.Action.Id,
-            preferredBackend,
-            capabilityReport,
-            diagnostics,
-            isPromotedExtenderAction);
-        if (promotedGateDecision is not null)
-        {
-            return promotedGateDecision;
-        }
-
-        if (preferredBackend != ExecutionBackendKind.Extender)
-        {
-            return CreateRoutedDecision(preferredBackend, diagnostics);
-        }
-
-        return ResolveExtenderRoute(request, profile, capabilityReport, isMutating, diagnostics);
+        return new RouteResolutionState(
+            PreferredBackend: preferredBackend,
+            IsMutating: isMutating,
+            MissingRequired: missingRequired,
+            Diagnostics: diagnostics,
+            IsPromotedExtenderAction: isPromotedExtenderAction);
     }
 
     private static Dictionary<string, object?> BuildDiagnostics(BackendDiagnosticsContext context)
@@ -374,4 +389,11 @@ public sealed class BackendRouter : IBackendRouter
         IReadOnlyList<string> RequiredCapabilities,
         IReadOnlyList<string> MissingRequired,
         bool PromotedExtenderAction);
+
+    private readonly record struct RouteResolutionState(
+        ExecutionBackendKind PreferredBackend,
+        bool IsMutating,
+        IReadOnlyList<string> MissingRequired,
+        Dictionary<string, object?> Diagnostics,
+        bool IsPromotedExtenderAction);
 }

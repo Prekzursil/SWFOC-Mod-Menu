@@ -48,7 +48,18 @@ public sealed class NamedPipeExtenderBackend : IExecutionBackend
         ProcessMetadata processContext,
         CancellationToken cancellationToken)
     {
-        var pingCommand = new ExtenderCommand(
+        var result = await SendAsync(CreateProbeCommand(profileId, processContext), cancellationToken);
+        if (!result.Succeeded)
+        {
+            return CreateProbeFailureReport(profileId, result);
+        }
+
+        return CreateProbeSuccessReport(profileId, result);
+    }
+
+    private static ExtenderCommand CreateProbeCommand(string profileId, ProcessMetadata processContext)
+    {
+        return new ExtenderCommand(
             CommandId: Guid.NewGuid().ToString("N"),
             FeatureId: "probe_capabilities",
             ProfileId: profileId,
@@ -59,22 +70,24 @@ public sealed class NamedPipeExtenderBackend : IExecutionBackend
             ResolvedAnchors: new System.Text.Json.Nodes.JsonObject(),
             RequestedBy: "runtime_adapter",
             TimestampUtc: DateTimeOffset.UtcNow);
+    }
 
-        var result = await SendAsync(pingCommand, cancellationToken);
-        if (!result.Succeeded)
+    private static CapabilityReport CreateProbeFailureReport(string profileId, ExtenderResult result)
+    {
+        return CapabilityReport.Unknown(profileId, result.ReasonCode) with
         {
-            return CapabilityReport.Unknown(profileId, result.ReasonCode) with
+            Diagnostics = new Dictionary<string, object?>
             {
-                Diagnostics = new Dictionary<string, object?>
-                {
-                    ["backend"] = ExtenderBackendId,
-                    ["pipe"] = DefaultPipeName,
-                    ["reasonCode"] = result.ReasonCode.ToString(),
-                    ["message"] = result.Message
-                }
-            };
-        }
+                ["backend"] = ExtenderBackendId,
+                ["pipe"] = DefaultPipeName,
+                ["reasonCode"] = result.ReasonCode.ToString(),
+                ["message"] = result.Message
+            }
+        };
+    }
 
+    private static CapabilityReport CreateProbeSuccessReport(string profileId, ExtenderResult result)
+    {
         var capabilities = ParseCapabilities(result.Diagnostics);
         capabilities["probe_capabilities"] = new BackendCapability(
             FeatureId: "probe_capabilities",
