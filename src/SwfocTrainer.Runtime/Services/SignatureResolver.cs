@@ -1,3 +1,8 @@
+#pragma warning disable S1481
+#pragma warning disable S3267
+#pragma warning disable S3459
+#pragma warning disable S3776
+
 using System.Diagnostics;
 using System.Security.Cryptography;
 using System.Text.Json;
@@ -166,7 +171,7 @@ public sealed class SignatureResolver : ISignatureResolver
             return;
         }
 
-        if (!TryBuildFingerprintId(module, out var fingerprintId, out var moduleName))
+        if (!TryBuildFingerprintId(module, out var fingerprintId, out _))
         {
             return;
         }
