@@ -5,7 +5,7 @@ namespace SwfocTrainer.Runtime.Services;
 
 public sealed class BackendRouter : IBackendRouter
 {
-    private static readonly HashSet<string> HybridManagedActionIds = new(StringComparer.OrdinalIgnoreCase)
+    private static readonly HashSet<string> PromotedExtenderActionIds = new(StringComparer.OrdinalIgnoreCase)
     {
         "freeze_timer",
         "toggle_fog_reveal",
@@ -20,15 +20,15 @@ public sealed class BackendRouter : IBackendRouter
         ProcessMetadata process,
         CapabilityReport capabilityReport)
     {
-        var isHybridManagedAction = IsHybridManagedAction(request.Action.Id, profile, process);
-        var defaultBackend = MapDefaultBackend(request.Action.ExecutionKind, isHybridManagedAction);
-        var preferredBackend = ResolvePreferredBackend(profile.BackendPreference, defaultBackend, isHybridManagedAction);
+        var isPromotedExtenderAction = IsPromotedExtenderAction(request.Action.Id, profile, process);
+        var defaultBackend = MapDefaultBackend(request.Action.ExecutionKind, isPromotedExtenderAction);
+        var preferredBackend = ResolvePreferredBackend(profile.BackendPreference, defaultBackend, isPromotedExtenderAction);
         var isMutating = IsMutating(request.Action.Id);
         var profileRequiredCapabilities = profile.RequiredCapabilities ?? Array.Empty<string>();
         var requiredCapabilities = ResolveRequiredCapabilitiesForAction(
             profileRequiredCapabilities,
             request.Action.Id,
-            isHybridManagedAction);
+            isPromotedExtenderAction);
         var missingRequired = requiredCapabilities
             .Where(featureId => !capabilityReport.IsFeatureAvailable(featureId))
             .ToArray();
@@ -42,7 +42,7 @@ public sealed class BackendRouter : IBackendRouter
             profileRequiredCapabilities,
             requiredCapabilities,
             missingRequired,
-            isHybridManagedAction));
+            isPromotedExtenderAction));
 
         var requiredCapabilityDecision = TryResolveRequiredCapabilityContract(
             preferredBackend,
@@ -50,10 +50,21 @@ public sealed class BackendRouter : IBackendRouter
             isMutating,
             missingRequired,
             diagnostics,
-            isHybridManagedAction);
+            isPromotedExtenderAction);
         if (requiredCapabilityDecision is not null)
         {
             return requiredCapabilityDecision;
+        }
+
+        var promotedGateDecision = TryResolvePromotedCapabilityVerificationContract(
+            request.Action.Id,
+            preferredBackend,
+            capabilityReport,
+            diagnostics,
+            isPromotedExtenderAction);
+        if (promotedGateDecision is not null)
+        {
+            return promotedGateDecision;
         }
 
         if (preferredBackend != ExecutionBackendKind.Extender)
@@ -77,7 +88,8 @@ public sealed class BackendRouter : IBackendRouter
             ["profileRequiredCapabilities"] = context.ProfileRequiredCapabilities,
             ["requiredCapabilities"] = context.RequiredCapabilities,
             ["missingRequiredCapabilities"] = context.MissingRequired,
-            ["hybridExecution"] = context.IsHybridManagedRoute
+            ["hybridExecution"] = false,
+            ["promotedExtenderAction"] = context.IsPromotedExtenderAction
         };
     }
 
@@ -87,11 +99,11 @@ public sealed class BackendRouter : IBackendRouter
         bool isMutating,
         IReadOnlyCollection<string> missingRequired,
         IReadOnlyDictionary<string, object?> diagnostics,
-        bool isHybridManagedAction)
+        bool isPromotedExtenderAction)
     {
         var enforceCapabilityContract = preferredBackend == ExecutionBackendKind.Extender ||
                                         IsHardExtenderPreference(backendPreference) ||
-                                        isHybridManagedAction;
+                                        isPromotedExtenderAction;
         if (missingRequired.Count == 0 || !isMutating || !enforceCapabilityContract)
         {
             return null;
@@ -102,6 +114,48 @@ public sealed class BackendRouter : IBackendRouter
             Backend: preferredBackend,
             ReasonCode: RuntimeReasonCode.CAPABILITY_REQUIRED_MISSING,
             Message: $"Blocked by required capability contract: {string.Join(", ", missingRequired)}.",
+            Diagnostics: diagnostics);
+    }
+
+    private static BackendRouteDecision? TryResolvePromotedCapabilityVerificationContract(
+        string actionId,
+        ExecutionBackendKind preferredBackend,
+        CapabilityReport capabilityReport,
+        Dictionary<string, object?> diagnostics,
+        bool isPromotedExtenderAction)
+    {
+        if (!isPromotedExtenderAction || preferredBackend != ExecutionBackendKind.Extender)
+        {
+            return null;
+        }
+
+        if (!capabilityReport.Capabilities.TryGetValue(actionId, out var capability))
+        {
+            diagnostics["requestedFeatureId"] = actionId;
+            diagnostics["promotedCapabilityGate"] = "missing";
+            return new BackendRouteDecision(
+                Allowed: false,
+                Backend: ExecutionBackendKind.Extender,
+                ReasonCode: RuntimeReasonCode.SAFETY_FAIL_CLOSED,
+                Message: "Promoted extender capability is missing for this mutating operation (fail-closed).",
+                Diagnostics: diagnostics);
+        }
+
+        if (capability.Available && capability.Confidence == CapabilityConfidenceState.Verified)
+        {
+            return null;
+        }
+
+        diagnostics["requestedFeatureId"] = actionId;
+        diagnostics["promotedCapabilityGate"] = "unverified";
+        diagnostics["promotedCapabilityAvailable"] = capability.Available;
+        diagnostics["promotedCapabilityConfidence"] = capability.Confidence.ToString();
+        diagnostics["promotedCapabilityReasonCode"] = capability.ReasonCode.ToString();
+        return new BackendRouteDecision(
+            Allowed: false,
+            Backend: ExecutionBackendKind.Extender,
+            ReasonCode: RuntimeReasonCode.SAFETY_FAIL_CLOSED,
+            Message: "Promoted extender capability is not verified for this mutating operation (fail-closed).",
             Diagnostics: diagnostics);
     }
 
@@ -273,7 +327,7 @@ public sealed class BackendRouter : IBackendRouter
     private static string[] ResolveRequiredCapabilitiesForAction(
         IReadOnlyList<string> profileRequiredCapabilities,
         string actionId,
-        bool isHybridManagedAction)
+        bool isPromotedExtenderAction)
     {
         if (string.IsNullOrWhiteSpace(actionId))
         {
@@ -284,7 +338,7 @@ public sealed class BackendRouter : IBackendRouter
             .Where(featureId => featureId.Equals(actionId, StringComparison.OrdinalIgnoreCase))
             .ToList();
 
-        if (isHybridManagedAction &&
+        if (isPromotedExtenderAction &&
             !required.Contains(actionId, StringComparer.OrdinalIgnoreCase))
         {
             required.Add(actionId);
@@ -293,14 +347,14 @@ public sealed class BackendRouter : IBackendRouter
         return required.ToArray();
     }
 
-    private static bool IsHybridManagedAction(
+    private static bool IsPromotedExtenderAction(
         string actionId,
         TrainerProfile profile,
         ProcessMetadata process)
     {
         return IsFoCContext(profile, process) &&
                !string.IsNullOrWhiteSpace(actionId) &&
-               HybridManagedActionIds.Contains(actionId);
+               PromotedExtenderActionIds.Contains(actionId);
     }
 
     private static bool IsFoCContext(TrainerProfile profile, ProcessMetadata process)
@@ -319,5 +373,5 @@ public sealed class BackendRouter : IBackendRouter
         IReadOnlyList<string> ProfileRequiredCapabilities,
         IReadOnlyList<string> RequiredCapabilities,
         IReadOnlyList<string> MissingRequired,
-        bool IsHybridManagedRoute);
+        bool IsPromotedExtenderAction);
 }

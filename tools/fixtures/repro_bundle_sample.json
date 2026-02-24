@@ -66,6 +66,29 @@
       "message": ""
     }
   ],
+  "actionStatusDiagnostics": {
+    "status": "captured",
+    "source": "live-promoted-action-matrix.json",
+    "summary": {
+      "total": 15,
+      "passed": 15,
+      "failed": 0,
+      "skipped": 0
+    },
+    "entries": [
+      {
+        "profileId": "base_swfoc",
+        "actionId": "freeze_timer",
+        "outcome": "Passed",
+        "backendRoute": "Extender",
+        "routeReasonCode": "CAPABILITY_PROBE_PASS",
+        "capabilityProbeReasonCode": "CAPABILITY_PROBE_PASS",
+        "hybridExecution": false,
+        "hasFallbackMarker": false,
+        "message": "Sample fixture entry."
+      }
+    ]
+  },
   "diagnostics": {
     "dependencyState": "unknown",
     "helperReadiness": "unknown",

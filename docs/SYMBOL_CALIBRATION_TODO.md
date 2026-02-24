@@ -78,7 +78,7 @@ Use this evidence template for each live run:
 
 ### Standardized Evidence Payload (Required)
 
-When posting closure evidence for `#19`/`#34`, include:
+When posting closure evidence for `#7`/`#19`/`#34`, include:
 
 - `runId`
 - `classification` (`passed|skipped|failed|blocked_environment|blocked_profile_mismatch`)
@@ -87,7 +87,9 @@ When posting closure evidence for `#19`/`#34`, include:
 - runtime mode (`hint`, `effective`, `reasonCode`)
 - tactical toggle outcome (`pass|skip|fail` + reason)
 - helper workflow outcome (`pass|skip|fail` + reason)
-- status diagnostics (`backend`, `routeReasonCode`, `capabilityProbeReasonCode`, and when present `hookState`/`hybridExecution`)
+- promoted action matrix summary (`actionStatusDiagnostics.status`, `actionStatusDiagnostics.source`, `summary.total`, `summary.passed`, `summary.failed`, `summary.skipped`)
+- promoted action matrix entry diagnostics (`profileId`, `actionId`, `outcome`, `backendRoute`, `routeReasonCode`, `capabilityProbeReasonCode`, `hybridExecution`, `hasFallbackMarker`, `skipReasonCode`)
+- issue `#7` gate snapshot (`base_swfoc`/`aotr_1397421866_swfoc`/`roe_3447786229_swfoc` x five promoted actions with no fallback markers)
 - artifact paths:
   - `TestResults/runs/<runId>/repro-bundle.json`
   - `TestResults/runs/<runId>/repro-bundle.md`

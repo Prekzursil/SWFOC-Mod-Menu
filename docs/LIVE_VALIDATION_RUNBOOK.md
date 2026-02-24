@@ -7,6 +7,9 @@ Use this runbook to gather real-machine evidence for runtime/mod issues and mile
 - Launch the target game session first (`swfoc.exe` / `StarWarsG.exe`).
 - Ensure extender bridge host is running for extender-routed credits checks:
   - `SwfocExtender.Host` on pipe `SwfocExtenderBridge`.
+- Promoted actions are extender-authoritative and fail-closed:
+  - no managed/memory fallback is accepted for promoted matrix evidence.
+  - missing or unverified promoted capability must surface fail-closed diagnostics.
 - For AOTR: ensure launch context resolves to `aotr_1397421866_swfoc`.
 - For ROE: ensure launch context resolves to `roe_3447786229_swfoc`.
 - From repo root, run on Windows PowerShell.
@@ -58,6 +61,7 @@ Expected outputs:
 - `launch-context-fixture.json`
 - `live-validation-summary.json`
 - `live-roe-runtime-evidence.json` (when ROE runtime health test executes set_credits path)
+- `live-promoted-action-matrix.json`
 - `repro-bundle.json`
 - `repro-bundle.md`
 - `issue-34-evidence-template.md`
@@ -78,9 +82,36 @@ vNext bundle sections (required for runtime-affecting changes):
 - `capabilityProbeSnapshot`
 - `hookInstallReport`
 - `overlayState`
-- `actionStatusDiagnostics` (captured status strings for promoted quick action/hotkey flows)
+- `actionStatusDiagnostics` (promoted action matrix diagnostics from `live-promoted-action-matrix.json`)
 
-## 4. Bundle Validation
+## 4. Promoted Action Matrix Evidence (Issue #7)
+
+Promoted matrix evidence must cover 3 profiles x 5 actions (15 total checks):
+
+| Action ID | `base_swfoc` | `aotr_1397421866_swfoc` | `roe_3447786229_swfoc` |
+|---|---|---|---|
+| `freeze_timer` | required | required | required |
+| `toggle_fog_reveal` | required | required | required |
+| `toggle_ai` | required | required | required |
+| `set_unit_cap` | required | required | required |
+| `toggle_instant_build_patch` | required | required | required |
+
+`actionStatusDiagnostics` expected keys in `repro-bundle.json`:
+
+- top-level: `status`, `source`, `summary`, `entries`
+- summary: `total`, `passed`, `failed`, `skipped`
+- entry keys: `profileId`, `actionId`, `outcome`, `backendRoute`, `routeReasonCode`, `capabilityProbeReasonCode`, `hybridExecution`, `hasFallbackMarker`, `message`, `skipReasonCode`
+
+Expected evidence behavior for promoted actions:
+
+- `backendRoute=Extender`
+- `routeReasonCode=CAPABILITY_PROBE_PASS`
+- `capabilityProbeReasonCode=CAPABILITY_PROBE_PASS`
+- `hybridExecution=false`
+- `hasFallbackMarker=false`
+- fail-closed outcomes use explicit route diagnostics (`SAFETY_FAIL_CLOSED`) and block issue `#7` closure.
+
+## 5. Bundle Validation
 
 ```powershell
 pwsh ./tools/validate-repro-bundle.ps1 `
@@ -89,7 +120,7 @@ pwsh ./tools/validate-repro-bundle.ps1 `
   -Strict
 ```
 
-## 5. Post Evidence to GitHub Issues
+## 6. Post Evidence to GitHub Issues
 
 ```powershell
 gh issue comment 34 --body-file TestResults/runs/<runId>/issue-34-evidence-template.md
@@ -99,7 +130,7 @@ gh issue comment 19 --body-file TestResults/runs/<runId>/issue-19-evidence-templ
 Before posting, replace placeholder fields with actual attach/mode/profile details.
 Do not close issues from placeholder-only or skip-only runs.
 
-## 6. Closure Criteria
+## 7. Closure Criteria
 
 Close issues only when all required evidence is present:
 
@@ -109,8 +140,15 @@ Close issues only when all required evidence is present:
 - Selected host process includes deterministic host ranking diagnostics (`hostRole`, `selectionScore`).
 - Backend route and capability probe sections are present with explicit reason codes.
 - Extender credits path evidence includes `backendRoute=Extender` and hook state tag (`HOOK_LOCK` / `HOOK_ONESHOT`) in runtime diagnostics.
-- Captured action status diagnostics include `backend`, `routeReasonCode`, `capabilityProbeReasonCode`, and when present `hookState`/`hybridExecution`.
+- Captured action status diagnostics include `backendRoute`, `routeReasonCode`, `capabilityProbeReasonCode`, and for promoted matrix entries `hybridExecution` + `hasFallbackMarker`.
 - Valid `repro-bundle.json` linked in issue evidence.
+
+Issue `#7` evidence decision gate:
+
+- `actionStatusDiagnostics.status` is `captured`.
+- `actionStatusDiagnostics.summary.total=15`, `passed=15`, `failed=0`, `skipped=0`.
+- every matrix entry for the five promoted actions across `base_swfoc`, `aotr_1397421866_swfoc`, and `roe_3447786229_swfoc` is present.
+- no matrix entry includes fallback markers or blocked diagnostics (`hasFallbackMarker=true`, `backendRoute` not `Extender`, or non-pass route/probe reason codes).
 
 Then run:
 

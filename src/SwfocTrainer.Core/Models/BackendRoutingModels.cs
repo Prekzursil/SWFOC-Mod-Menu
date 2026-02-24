@@ -76,6 +76,9 @@ public sealed record ExtenderCommand(
     string ProfileId,
     RuntimeMode Mode,
     JsonObject Payload,
+    int ProcessId,
+    string ProcessName,
+    JsonObject ResolvedAnchors,
     string RequestedBy,
     DateTimeOffset TimestampUtc);
 

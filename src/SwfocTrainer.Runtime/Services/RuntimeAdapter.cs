@@ -55,7 +55,7 @@ public sealed class RuntimeAdapter : IRuntimeAdapter
         DiagnosticKeyState
     ];
 
-    private static readonly HashSet<string> HybridManagedActionIds = new(StringComparer.OrdinalIgnoreCase)
+    private static readonly HashSet<string> PromotedExtenderActionIds = new(StringComparer.OrdinalIgnoreCase)
     {
         "freeze_timer",
         "toggle_fog_reveal",
@@ -873,8 +873,6 @@ public sealed class RuntimeAdapter : IRuntimeAdapter
         {
             var result = routeDecision.Backend switch
             {
-                ExecutionBackendKind.Extender when ShouldExecuteHybridManagedAction(request, routeDecision) =>
-                    await ExecuteHybridManagedActionAsync(request, cancellationToken),
                 ExecutionBackendKind.Extender => await ExecuteExtenderBackendActionAsync(request, capabilityReport, cancellationToken),
                 ExecutionBackendKind.Helper => await ExecuteHelperActionAsync(request, cancellationToken),
                 ExecutionBackendKind.Save => await ExecuteSaveActionAsync(request, cancellationToken),
@@ -947,53 +945,6 @@ public sealed class RuntimeAdapter : IRuntimeAdapter
         };
     }
 
-    private async Task<ActionExecutionResult> ExecuteHybridManagedActionAsync(
-        ActionExecutionRequest request,
-        CancellationToken cancellationToken)
-    {
-        var managedExecutionKind = ResolveHybridManagedExecutionKind(request.Action.Id, request.Action.ExecutionKind);
-        return managedExecutionKind switch
-        {
-            ExecutionKind.Memory => await ExecuteMemoryActionAsync(request, cancellationToken),
-            ExecutionKind.CodePatch => await ExecuteCodePatchActionAsync(request, cancellationToken),
-            _ => new ActionExecutionResult(
-                false,
-                $"Hybrid managed execution does not support action '{request.Action.Id}' with execution kind '{managedExecutionKind}'.",
-                AddressSource.None,
-                new Dictionary<string, object?>
-                {
-                    ["failureReasonCode"] = "hybrid_execution_kind_unsupported"
-                })
-        };
-    }
-
-    private static bool ShouldExecuteHybridManagedAction(
-        ActionExecutionRequest request,
-        BackendRouteDecision routeDecision)
-    {
-        if (routeDecision.Backend != ExecutionBackendKind.Extender || !IsHybridManagedAction(request.Action.Id))
-        {
-            return false;
-        }
-
-        return TryReadDiagnosticBool(routeDecision.Diagnostics, "hybridExecution");
-    }
-
-    private static ExecutionKind ResolveHybridManagedExecutionKind(string actionId, ExecutionKind requestedKind)
-    {
-        if (!IsHybridManagedAction(actionId))
-        {
-            return requestedKind;
-        }
-
-        return actionId switch
-        {
-            "freeze_timer" or "toggle_fog_reveal" or "toggle_ai" => ExecutionKind.Memory,
-            "set_unit_cap" or "toggle_instant_build_patch" => ExecutionKind.CodePatch,
-            _ => requestedKind
-        };
-    }
-
     private async Task<ActionExecutionResult> ExecuteExtenderBackendActionAsync(
         ActionExecutionRequest request,
         CapabilityReport capabilityReport,
@@ -1012,7 +963,12 @@ public sealed class RuntimeAdapter : IRuntimeAdapter
                 });
         }
 
-        return await _extenderBackend.ExecuteAsync(request, capabilityReport, cancellationToken);
+        var extenderRequest = request with
+        {
+            Context = BuildExtenderContext(request)
+        };
+
+        return await _extenderBackend.ExecuteAsync(extenderRequest, capabilityReport, cancellationToken);
     }
 
     private static ActionExecutionResult ApplyBackendRouteDiagnostics(
@@ -1022,8 +978,8 @@ public sealed class RuntimeAdapter : IRuntimeAdapter
     {
         var baseDiagnostics = MergeDiagnostics(routeDecision.Diagnostics, result.Diagnostics);
         var hybridExecution = ResolveHybridExecutionFlag(baseDiagnostics);
-        var backend = ResolveBackendDiagnosticValue(baseDiagnostics, routeDecision.Backend, hybridExecution);
-        var hookState = ResolveHookStateDiagnosticValue(baseDiagnostics, capabilityReport.Diagnostics, hybridExecution);
+        var backend = ResolveBackendDiagnosticValue(baseDiagnostics, routeDecision.Backend);
+        var hookState = ResolveHookStateDiagnosticValue(baseDiagnostics, capabilityReport.Diagnostics);
         var diagnostics = MergeDiagnostics(
             baseDiagnostics,
             new Dictionary<string, object?>
@@ -1052,8 +1008,7 @@ public sealed class RuntimeAdapter : IRuntimeAdapter
 
     private static string ResolveBackendDiagnosticValue(
         IReadOnlyDictionary<string, object?>? diagnostics,
-        ExecutionBackendKind routeBackend,
-        bool hybridExecution)
+        ExecutionBackendKind routeBackend)
     {
         if (TryReadDiagnosticString(diagnostics, "backend", out var backend) &&
             !string.IsNullOrWhiteSpace(backend))
@@ -1061,18 +1016,12 @@ public sealed class RuntimeAdapter : IRuntimeAdapter
             return backend!;
         }
 
-        if (hybridExecution)
-        {
-            return "hybrid_managed";
-        }
-
         return routeBackend.ToString();
     }
 
     private static string ResolveHookStateDiagnosticValue(
         IReadOnlyDictionary<string, object?>? resultDiagnostics,
-        IReadOnlyDictionary<string, object?>? capabilityDiagnostics,
-        bool hybridExecution)
+        IReadOnlyDictionary<string, object?>? capabilityDiagnostics)
     {
         if (TryResolveFirstDiagnosticValue(resultDiagnostics, ResultHookStateKeys, out var hookState))
         {
@@ -1084,7 +1033,7 @@ public sealed class RuntimeAdapter : IRuntimeAdapter
             return probeHookState!;
         }
 
-        return hybridExecution ? "managed" : "unknown";
+        return "unknown";
     }
 
     private static bool TryResolveFirstDiagnosticValue(
@@ -1121,27 +1070,10 @@ public sealed class RuntimeAdapter : IRuntimeAdapter
         return !string.IsNullOrWhiteSpace(value);
     }
 
-    private static bool TryReadDiagnosticBool(
-        IReadOnlyDictionary<string, object?>? diagnostics,
-        string key)
-    {
-        if (diagnostics is null || !diagnostics.TryGetValue(key, out var raw) || raw is null)
-        {
-            return false;
-        }
-
-        if (raw is bool boolValue)
-        {
-            return boolValue;
-        }
-
-        return bool.TryParse(raw.ToString(), out var parsed) && parsed;
-    }
-
-    private static bool IsHybridManagedAction(string actionId)
+    private static bool IsPromotedExtenderAction(string actionId)
     {
         return !string.IsNullOrWhiteSpace(actionId) &&
-               HybridManagedActionIds.Contains(actionId);
+               PromotedExtenderActionIds.Contains(actionId);
     }
 
     private static IReadOnlyDictionary<string, object?>? MergeDiagnostics(
@@ -1268,6 +1200,273 @@ public sealed class RuntimeAdapter : IRuntimeAdapter
         }
 
         return merged;
+    }
+
+    private IReadOnlyDictionary<string, object?> BuildExtenderContext(ActionExecutionRequest request)
+    {
+        var merged = new Dictionary<string, object?>(StringComparer.OrdinalIgnoreCase);
+        if (request.Context is not null)
+        {
+            foreach (var kv in request.Context)
+            {
+                merged[kv.Key] = kv.Value;
+            }
+        }
+
+        if (CurrentSession is not null)
+        {
+            merged["processId"] = CurrentSession.Process.ProcessId;
+            merged["processName"] = CurrentSession.Process.ProcessName;
+            merged["processPath"] = CurrentSession.Process.ProcessPath;
+        }
+
+        var resolvedAnchors = BuildResolvedAnchors(request);
+        if (resolvedAnchors.Count > 0)
+        {
+            merged["resolvedAnchors"] = resolvedAnchors;
+        }
+
+        return merged;
+    }
+
+    private Dictionary<string, string> BuildResolvedAnchors(ActionExecutionRequest request)
+    {
+        var anchors = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+
+        if (TryReadContextValue(request.Context, "resolvedAnchors", out var existingResolved))
+        {
+            MergeAnchorMap(anchors, existingResolved);
+        }
+
+        if (anchors.Count == 0 &&
+            TryReadContextValue(request.Context, "anchors", out var existingLegacy))
+        {
+            MergeAnchorMap(anchors, existingLegacy);
+        }
+
+        if (TryReadPayloadString(request.Payload, "symbol", out var payloadSymbol))
+        {
+            TryAddResolvedSymbolAnchor(anchors, payloadSymbol!);
+        }
+
+        if (IsPromotedExtenderAction(request.Action.Id))
+        {
+            foreach (var alias in ResolvePromotedAnchorAliases(request.Action.Id))
+            {
+                TryAddResolvedSymbolAnchor(anchors, alias);
+            }
+        }
+
+        if (_creditsHookInjectionAddress != nint.Zero)
+        {
+            anchors["credits_hook_injection"] = ToHex(_creditsHookInjectionAddress);
+        }
+
+        if (_unitCapHookInjectionAddress != nint.Zero)
+        {
+            anchors["unit_cap_hook_injection"] = ToHex(_unitCapHookInjectionAddress);
+        }
+
+        if (_unitCapHookCodeCaveAddress != nint.Zero)
+        {
+            anchors["unit_cap_hook_cave"] = ToHex(_unitCapHookCodeCaveAddress);
+        }
+
+        if (_unitCapHookValueAddress != nint.Zero)
+        {
+            anchors["unit_cap_hook_value"] = ToHex(_unitCapHookValueAddress);
+        }
+
+        if (_instantBuildHookInjectionAddress != nint.Zero)
+        {
+            anchors["instant_build_patch_injection"] = ToHex(_instantBuildHookInjectionAddress);
+        }
+
+        if (_instantBuildHookCodeCaveAddress != nint.Zero)
+        {
+            anchors["instant_build_patch_cave"] = ToHex(_instantBuildHookCodeCaveAddress);
+        }
+
+        return anchors;
+    }
+
+    private static string[] ResolvePromotedAnchorAliases(string actionId)
+    {
+        return actionId switch
+        {
+            "freeze_timer" => ["game_timer_freeze", "freeze_timer"],
+            "toggle_fog_reveal" => ["fog_reveal", "toggle_fog_reveal"],
+            "toggle_ai" => ["ai_enabled", "toggle_ai"],
+            "set_unit_cap" => ["unit_cap", "set_unit_cap"],
+            "toggle_instant_build_patch" => ["instant_build_patch", "toggle_instant_build_patch"],
+            "set_credits" => ["credits", "set_credits"],
+            _ => Array.Empty<string>()
+        };
+    }
+
+    private bool TryAddResolvedSymbolAnchor(IDictionary<string, string> anchors, string symbol)
+    {
+        if (string.IsNullOrWhiteSpace(symbol) || anchors.ContainsKey(symbol))
+        {
+            return false;
+        }
+
+        if (!TryResolveSessionSymbolAddress(symbol, out var address))
+        {
+            return false;
+        }
+
+        anchors[symbol] = ToHex(address);
+        return true;
+    }
+
+    private bool TryResolveSessionSymbolAddress(string symbol, out nint address)
+    {
+        address = nint.Zero;
+        if (CurrentSession is null)
+        {
+            return false;
+        }
+
+        if (!CurrentSession.Symbols.Symbols.TryGetValue(symbol, out var info) ||
+            info.Address == nint.Zero)
+        {
+            return false;
+        }
+
+        address = info.Address;
+        return true;
+    }
+
+    private static bool TryReadPayloadString(JsonObject payload, string key, out string? value)
+    {
+        value = null;
+        if (!payload.TryGetPropertyValue(key, out var node) || node is null)
+        {
+            return false;
+        }
+
+        try
+        {
+            value = node.GetValue<string>();
+            return !string.IsNullOrWhiteSpace(value);
+        }
+        catch
+        {
+            return false;
+        }
+    }
+
+    private static bool TryReadContextValue(
+        IReadOnlyDictionary<string, object?>? context,
+        string key,
+        out object? value)
+    {
+        value = null;
+        if (context is null)
+        {
+            return false;
+        }
+
+        if (!context.TryGetValue(key, out var raw))
+        {
+            return false;
+        }
+
+        value = raw;
+        return true;
+    }
+
+    private static void MergeAnchorMap(IDictionary<string, string> destination, object? raw)
+    {
+        if (raw is null)
+        {
+            return;
+        }
+
+        if (raw is JsonObject jsonObject)
+        {
+            foreach (var kv in jsonObject)
+            {
+                if (kv.Value is null)
+                {
+                    continue;
+                }
+
+                var value = kv.Value.ToString();
+                if (!string.IsNullOrWhiteSpace(value))
+                {
+                    destination[kv.Key] = value;
+                }
+            }
+
+            return;
+        }
+
+        if (raw is JsonElement element && element.ValueKind == JsonValueKind.Object)
+        {
+            foreach (var property in element.EnumerateObject())
+            {
+                var value = property.Value.ToString();
+                if (!string.IsNullOrWhiteSpace(value))
+                {
+                    destination[property.Name] = value;
+                }
+            }
+
+            return;
+        }
+
+        if (raw is IReadOnlyDictionary<string, object?> dictionary)
+        {
+            foreach (var kv in dictionary)
+            {
+                var value = kv.Value?.ToString();
+                if (!string.IsNullOrWhiteSpace(value))
+                {
+                    destination[kv.Key] = value;
+                }
+            }
+
+            return;
+        }
+
+        if (raw is IEnumerable<KeyValuePair<string, string>> pairs)
+        {
+            foreach (var kv in pairs)
+            {
+                if (!string.IsNullOrWhiteSpace(kv.Value))
+                {
+                    destination[kv.Key] = kv.Value;
+                }
+            }
+
+            return;
+        }
+
+        if (raw is string serialized && !string.IsNullOrWhiteSpace(serialized))
+        {
+            try
+            {
+                var parsed = JsonSerializer.Deserialize<Dictionary<string, string>>(serialized);
+                if (parsed is null)
+                {
+                    return;
+                }
+
+                foreach (var kv in parsed)
+                {
+                    if (!string.IsNullOrWhiteSpace(kv.Value))
+                    {
+                        destination[kv.Key] = kv.Value;
+                    }
+                }
+            }
+            catch
+            {
+                // ignored
+            }
+        }
     }
 
     private async Task<ActionExecutionResult> ExecuteMemoryActionAsync(ActionExecutionRequest request, CancellationToken cancellationToken)

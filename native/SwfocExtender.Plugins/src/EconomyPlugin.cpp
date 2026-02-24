@@ -49,9 +49,11 @@ PluginResult EconomyPlugin::execute(const PluginRequest& request) {
 CapabilitySnapshot EconomyPlugin::capabilitySnapshot() const {
     const auto installed = hookInstalled_.load();
     CapabilitySnapshot snapshot {};
-    snapshot.creditsAvailable = true;
-    snapshot.creditsState = installed ? "Verified" : "Experimental";
-    snapshot.reasonCode = installed ? "CAPABILITY_PROBE_PASS" : "CAPABILITY_FEATURE_EXPERIMENTAL";
+    CapabilityState state {};
+    state.available = true;
+    state.state = installed ? "Verified" : "Experimental";
+    state.reasonCode = installed ? "CAPABILITY_PROBE_PASS" : "CAPABILITY_FEATURE_EXPERIMENTAL";
+    snapshot.features.emplace("set_credits", state);
     return snapshot;
 }
 

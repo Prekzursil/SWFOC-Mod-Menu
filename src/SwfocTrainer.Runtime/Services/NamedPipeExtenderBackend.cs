@@ -2,6 +2,7 @@ using System.Diagnostics;
 using System.IO.Pipes;
 using System.Text;
 using System.Text.Json;
+using System.Text.Json.Nodes;
 using System.Text.Json.Serialization;
 using SwfocTrainer.Core.Contracts;
 using SwfocTrainer.Core.Models;
@@ -14,6 +15,16 @@ public sealed class NamedPipeExtenderBackend : IExecutionBackend
     private const int DefaultResponseTimeoutMs = 2000;
     private const string DefaultPipeName = "SwfocExtenderBridge";
     private const string ExtenderBackendId = "extender";
+    private static readonly string[] NativeAuthoritativeFeatureIds =
+    [
+        "freeze_timer",
+        "toggle_fog_reveal",
+        "toggle_ai",
+        "set_unit_cap",
+        "toggle_instant_build_patch",
+        "set_credits"
+    ];
+
     private static readonly object HostSync = new();
     private static Process? _bridgeHostProcess;
 
@@ -43,6 +54,9 @@ public sealed class NamedPipeExtenderBackend : IExecutionBackend
             ProfileId: profileId,
             Mode: processContext.Mode,
             Payload: new System.Text.Json.Nodes.JsonObject(),
+            ProcessId: processContext.ProcessId,
+            ProcessName: processContext.ProcessName,
+            ResolvedAnchors: new System.Text.Json.Nodes.JsonObject(),
             RequestedBy: "runtime_adapter",
             TimestampUtc: DateTimeOffset.UtcNow);
 
@@ -94,23 +108,23 @@ public sealed class NamedPipeExtenderBackend : IExecutionBackend
         CapabilityReport capabilityReport,
         CancellationToken cancellationToken)
     {
+        var commandContext = command.Context;
         var extenderCommand = new ExtenderCommand(
             CommandId: Guid.NewGuid().ToString("N"),
             FeatureId: command.Action.Id,
             ProfileId: command.ProfileId,
             Mode: command.RuntimeMode,
             Payload: command.Payload,
+            ProcessId: ReadContextInt(commandContext, "processId"),
+            ProcessName: ReadContextString(commandContext, "processName"),
+            ResolvedAnchors: ReadContextAnchors(commandContext),
             RequestedBy: "external_app",
             TimestampUtc: DateTimeOffset.UtcNow);
 
         var result = await SendAsync(extenderCommand, cancellationToken);
         var diagnostics = new Dictionary<string, object?>(StringComparer.OrdinalIgnoreCase)
         {
-            ["reasonCode"] = result.ReasonCode.ToString(),
-            ["backend"] = result.Backend,
-            ["hookState"] = result.HookState,
-            ["extenderCommandId"] = result.CommandId,
-            ["probeReasonCode"] = capabilityReport.ProbeReasonCode.ToString()
+            ["extenderCommandId"] = result.CommandId
         };
 
         if (result.Diagnostics is not null)
@@ -120,6 +134,11 @@ public sealed class NamedPipeExtenderBackend : IExecutionBackend
                 diagnostics[kv.Key] = kv.Value;
             }
         }
+
+        diagnostics["reasonCode"] = result.ReasonCode.ToString();
+        diagnostics["backend"] = result.Backend;
+        diagnostics["hookState"] = result.HookState;
+        diagnostics["probeReasonCode"] = capabilityReport.ProbeReasonCode.ToString();
 
         return new ActionExecutionResult(
             result.Succeeded,
@@ -141,6 +160,9 @@ public sealed class NamedPipeExtenderBackend : IExecutionBackend
             ProfileId: "unknown",
             Mode: RuntimeMode.Unknown,
             Payload: new System.Text.Json.Nodes.JsonObject(),
+            ProcessId: 0,
+            ProcessName: string.Empty,
+            ResolvedAnchors: new System.Text.Json.Nodes.JsonObject(),
             RequestedBy: "runtime_adapter",
             TimestampUtc: DateTimeOffset.UtcNow), cancellationToken);
 
@@ -351,6 +373,7 @@ public sealed class NamedPipeExtenderBackend : IExecutionBackend
         var capabilities = new Dictionary<string, BackendCapability>(StringComparer.OrdinalIgnoreCase);
         if (!TryGetCapabilitiesElement(diagnostics, out var element))
         {
+            EnsureNativeFeatureEntries(capabilities);
             return capabilities;
         }
 
@@ -364,7 +387,26 @@ public sealed class NamedPipeExtenderBackend : IExecutionBackend
             capabilities[property.Name] = capability;
         }
 
+        EnsureNativeFeatureEntries(capabilities);
         return capabilities;
+    }
+
+    private static void EnsureNativeFeatureEntries(Dictionary<string, BackendCapability> capabilities)
+    {
+        foreach (var featureId in NativeAuthoritativeFeatureIds)
+        {
+            if (capabilities.ContainsKey(featureId))
+            {
+                continue;
+            }
+
+            capabilities[featureId] = new BackendCapability(
+                FeatureId: featureId,
+                Available: false,
+                Confidence: CapabilityConfidenceState.Unknown,
+                ReasonCode: RuntimeReasonCode.CAPABILITY_REQUIRED_MISSING,
+                Notes: "Feature omitted from capability probe payload.");
+        }
     }
 
     private static bool TryGetCapabilitiesElement(
@@ -456,5 +498,161 @@ public sealed class NamedPipeExtenderBackend : IExecutionBackend
         return Enum.TryParse<RuntimeReasonCode>(rawCode, ignoreCase: true, out var parsed)
             ? parsed
             : RuntimeReasonCode.CAPABILITY_UNKNOWN;
+    }
+
+    private static int ReadContextInt(IReadOnlyDictionary<string, object?>? context, string key)
+    {
+        if (!TryReadContextValue(context, key, out var raw) || raw is null)
+        {
+            return 0;
+        }
+
+        if (raw is int intValue)
+        {
+            return intValue;
+        }
+
+        if (raw is long longValue && longValue >= int.MinValue && longValue <= int.MaxValue)
+        {
+            return (int)longValue;
+        }
+
+        return int.TryParse(raw.ToString(), out var parsed) ? parsed : 0;
+    }
+
+    private static string ReadContextString(IReadOnlyDictionary<string, object?>? context, string key)
+    {
+        if (!TryReadContextValue(context, key, out var raw) || raw is null)
+        {
+            return string.Empty;
+        }
+
+        return raw as string ?? raw.ToString() ?? string.Empty;
+    }
+
+    private static JsonObject ReadContextAnchors(IReadOnlyDictionary<string, object?>? context)
+    {
+        var resolved = new JsonObject();
+        if (TryReadContextValue(context, "resolvedAnchors", out var anchorsRaw))
+        {
+            MergeAnchors(resolved, anchorsRaw);
+        }
+
+        if (resolved.Count == 0 && TryReadContextValue(context, "anchors", out var legacyAnchorsRaw))
+        {
+            MergeAnchors(resolved, legacyAnchorsRaw);
+        }
+
+        return resolved;
+    }
+
+    private static void MergeAnchors(JsonObject destination, object? rawAnchors)
+    {
+        if (rawAnchors is null)
+        {
+            return;
+        }
+
+        if (rawAnchors is JsonObject jsonObject)
+        {
+            foreach (var kv in jsonObject)
+            {
+                if (kv.Value is null)
+                {
+                    continue;
+                }
+
+                destination[kv.Key] = kv.Value.ToString();
+            }
+
+            return;
+        }
+
+        if (rawAnchors is JsonElement element && element.ValueKind == JsonValueKind.Object)
+        {
+            foreach (var property in element.EnumerateObject())
+            {
+                destination[property.Name] = property.Value.ToString();
+            }
+
+            return;
+        }
+
+        if (rawAnchors is IReadOnlyDictionary<string, object?> dictionary)
+        {
+            foreach (var kv in dictionary)
+            {
+                if (kv.Value is null)
+                {
+                    continue;
+                }
+
+                destination[kv.Key] = kv.Value.ToString();
+            }
+
+            return;
+        }
+
+        if (rawAnchors is IEnumerable<KeyValuePair<string, string>> stringPairs)
+        {
+            foreach (var kv in stringPairs)
+            {
+                if (string.IsNullOrWhiteSpace(kv.Value))
+                {
+                    continue;
+                }
+
+                destination[kv.Key] = kv.Value;
+            }
+
+            return;
+        }
+
+        if (rawAnchors is string serialized &&
+            !string.IsNullOrWhiteSpace(serialized))
+        {
+            try
+            {
+                var parsed = JsonSerializer.Deserialize<Dictionary<string, string>>(serialized, JsonOptions);
+                if (parsed is null)
+                {
+                    return;
+                }
+
+                foreach (var kv in parsed)
+                {
+                    if (string.IsNullOrWhiteSpace(kv.Value))
+                    {
+                        continue;
+                    }
+
+                    destination[kv.Key] = kv.Value;
+                }
+            }
+            catch
+            {
+                // ignored
+            }
+        }
+    }
+
+    private static bool TryReadContextValue(
+        IReadOnlyDictionary<string, object?>? context,
+        string key,
+        out object? value)
+    {
+        value = null;
+        if (context is null)
+        {
+            return false;
+        }
+
+        if (!context.TryGetValue(key, out var raw))
+        {
+            return false;
+        }
+
+        value = raw;
+        return true;
     }
 }

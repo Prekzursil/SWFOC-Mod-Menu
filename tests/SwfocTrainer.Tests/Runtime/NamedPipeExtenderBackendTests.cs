@@ -24,7 +24,7 @@ public sealed class NamedPipeExtenderBackendTests
     }
 
     [Fact]
-    public async Task ProbeCapabilitiesAsync_ShouldMarkSetCreditsVerified_WhenBridgeReportsCapability()
+    public async Task ProbeCapabilitiesAsync_ShouldParseAllPromotedAndCreditsCapabilities_WhenBridgeReportsMultiFeatureProbe()
     {
         using var cts = new CancellationTokenSource(TimeSpan.FromSeconds(3));
         await using var server = new NamedPipeServerStream(
@@ -45,6 +45,8 @@ public sealed class NamedPipeExtenderBackendTests
         await using var writer = new StreamWriter(server) { AutoFlush = true };
         var requestJson = await reader.ReadLineAsync(cts.Token) ?? string.Empty;
         using var requestDoc = JsonDocument.Parse(requestJson);
+        requestDoc.RootElement.GetProperty("processId").GetInt32().Should().Be(4242);
+        requestDoc.RootElement.GetProperty("processName").GetString().Should().Be("StarWarsG.exe");
         var commandId = requestDoc.RootElement.GetProperty("commandId").GetString() ?? string.Empty;
         var response = JsonSerializer.Serialize(new
         {
@@ -58,6 +60,36 @@ public sealed class NamedPipeExtenderBackendTests
             {
                 capabilities = new
                 {
+                    freeze_timer = new
+                    {
+                        available = true,
+                        state = "Verified",
+                        reasonCode = "CAPABILITY_PROBE_PASS"
+                    },
+                    toggle_fog_reveal = new
+                    {
+                        available = true,
+                        state = "Verified",
+                        reasonCode = "CAPABILITY_PROBE_PASS"
+                    },
+                    toggle_ai = new
+                    {
+                        available = false,
+                        state = "Unknown",
+                        reasonCode = "CAPABILITY_REQUIRED_MISSING"
+                    },
+                    set_unit_cap = new
+                    {
+                        available = true,
+                        state = "Experimental",
+                        reasonCode = "CAPABILITY_FEATURE_EXPERIMENTAL"
+                    },
+                    toggle_instant_build_patch = new
+                    {
+                        available = false,
+                        state = "Unknown",
+                        reasonCode = "CAPABILITY_REQUIRED_MISSING"
+                    },
                     set_credits = new
                     {
                         available = true,
@@ -70,8 +102,15 @@ public sealed class NamedPipeExtenderBackendTests
         await writer.WriteLineAsync(response.AsMemory(), cts.Token);
         var report = await reportTask;
 
+        report.Capabilities.Should().ContainKey("freeze_timer");
+        report.Capabilities.Should().ContainKey("toggle_fog_reveal");
+        report.Capabilities.Should().ContainKey("toggle_ai");
+        report.Capabilities.Should().ContainKey("set_unit_cap");
+        report.Capabilities.Should().ContainKey("toggle_instant_build_patch");
+        report.Capabilities.Should().ContainKey("set_credits");
         report.IsFeatureAvailable("set_credits").Should().BeTrue(
             $"probeReason={report.ProbeReasonCode} diagnostics={System.Text.Json.JsonSerializer.Serialize(report.Diagnostics)}");
+        report.Capabilities["set_unit_cap"].Confidence.Should().Be(CapabilityConfidenceState.Experimental);
         report.Capabilities["set_credits"].Confidence.Should().Be(CapabilityConfidenceState.Verified);
     }
 
@@ -103,6 +142,44 @@ public sealed class NamedPipeExtenderBackendTests
         AssertHookLockResult(result);
     }
 
+    [Fact]
+    public async Task ExecuteAsync_ShouldSendProcessContextAndResolvedAnchors_FromRequestContext()
+    {
+        using var cts = new CancellationTokenSource(TimeSpan.FromSeconds(3));
+        await using var server = new NamedPipeServerStream(
+            "SwfocExtenderBridge",
+            PipeDirection.InOut,
+            1,
+            PipeTransmissionMode.Byte,
+            PipeOptions.Asynchronous);
+        var backend = new NamedPipeExtenderBackend();
+        var request = BuildFreezeTimerRequestWithContext();
+        var capabilityReport = BuildCapabilityReport(request.ProfileId, request.Action.Id);
+
+        var waitTask = server.WaitForConnectionAsync(cts.Token);
+        var executeTask = backend.ExecuteAsync(request, capabilityReport, cts.Token);
+        await waitTask;
+
+        using var reader = new StreamReader(server);
+        await using var writer = new StreamWriter(server) { AutoFlush = true };
+        var requestJson = await reader.ReadLineAsync(cts.Token) ?? string.Empty;
+        using var requestDoc = JsonDocument.Parse(requestJson);
+        var root = requestDoc.RootElement;
+        var commandId = root.GetProperty("commandId").GetString() ?? string.Empty;
+
+        root.GetProperty("processId").GetInt32().Should().Be(4242);
+        root.GetProperty("processName").GetString().Should().Be("StarWarsG.exe");
+        var anchors = root.GetProperty("resolvedAnchors");
+        anchors.GetProperty("freeze_timer").GetString().Should().Be("0x1234ABCD");
+        anchors.GetProperty("game_timer_freeze").GetString().Should().Be("0x1234ABCD");
+
+        var response = BuildExecuteResponse(commandId, forcePatchHook: false);
+        await writer.WriteLineAsync(response.AsMemory(), cts.Token);
+        var result = await executeTask;
+
+        result.Succeeded.Should().BeTrue();
+    }
+
     private static ActionExecutionRequest BuildSetCreditsRequest()
     {
         var action = new ActionSpec(
@@ -124,6 +201,38 @@ public sealed class NamedPipeExtenderBackendTests
             },
             ProfileId: "roe_3447786229_swfoc",
             RuntimeMode: RuntimeMode.Galactic);
+    }
+
+    private static ActionExecutionRequest BuildFreezeTimerRequestWithContext()
+    {
+        var action = new ActionSpec(
+            Id: "freeze_timer",
+            Category: ActionCategory.Global,
+            Mode: RuntimeMode.Unknown,
+            ExecutionKind: ExecutionKind.Sdk,
+            PayloadSchema: new JsonObject(),
+            VerifyReadback: false,
+            CooldownMs: 0,
+            Description: "freeze timer");
+        return new ActionExecutionRequest(
+            Action: action,
+            Payload: new JsonObject
+            {
+                ["symbol"] = "game_timer_freeze",
+                ["boolValue"] = true
+            },
+            ProfileId: "roe_3447786229_swfoc",
+            RuntimeMode: RuntimeMode.Galactic,
+            Context: new Dictionary<string, object?>(StringComparer.OrdinalIgnoreCase)
+            {
+                ["processId"] = 4242,
+                ["processName"] = "StarWarsG.exe",
+                ["resolvedAnchors"] = new Dictionary<string, object?>(StringComparer.OrdinalIgnoreCase)
+                {
+                    ["freeze_timer"] = "0x1234ABCD",
+                    ["game_timer_freeze"] = "0x1234ABCD"
+                }
+            });
     }
 
     private static CapabilityReport BuildCapabilityReport(string profileId, string featureId)

@@ -249,6 +249,87 @@ function Get-RuntimeEvidence {
     }
 }
 
+function Get-ActionStatusDiagnostics {
+    param([string]$RunDirectoryPath)
+
+    $path = Join-Path $RunDirectoryPath "live-promoted-action-matrix.json"
+    if (-not (Test-Path -Path $path)) {
+        return [ordered]@{
+            status = "missing"
+            source = "live-promoted-action-matrix.json"
+            summary = [ordered]@{
+                total = 0
+                passed = 0
+                failed = 0
+                skipped = 0
+            }
+            entries = @()
+        }
+    }
+
+    try {
+        $payload = Get-Content -Raw -Path $path | ConvertFrom-Json
+        $rawDiagnostics = if ($null -ne $payload.PSObject.Properties["actionStatusDiagnostics"]) {
+            $payload.actionStatusDiagnostics
+        }
+        else {
+            $payload
+        }
+
+        $entries = New-Object System.Collections.Generic.List[object]
+        foreach ($entry in @($rawDiagnostics.entries)) {
+            $entries.Add([ordered]@{
+                profileId = [string]$entry.profileId
+                actionId = [string]$entry.actionId
+                outcome = [string]$entry.outcome
+                backendRoute = if ([string]::IsNullOrWhiteSpace([string]$entry.backendRoute)) { $null } else { [string]$entry.backendRoute }
+                routeReasonCode = if ([string]::IsNullOrWhiteSpace([string]$entry.routeReasonCode)) { $null } else { [string]$entry.routeReasonCode }
+                capabilityProbeReasonCode = if ([string]::IsNullOrWhiteSpace([string]$entry.capabilityProbeReasonCode)) { $null } else { [string]$entry.capabilityProbeReasonCode }
+                hybridExecution = if ($null -eq $entry.hybridExecution) { $null } else { [bool]$entry.hybridExecution }
+                hasFallbackMarker = [bool]$entry.hasFallbackMarker
+                message = [string]$entry.message
+                skipReasonCode = if ([string]::IsNullOrWhiteSpace([string]$entry.skipReasonCode)) { $null } else { [string]$entry.skipReasonCode }
+            })
+        }
+
+        $derivedSummary = [ordered]@{
+            total = @($entries).Count
+            passed = @($entries | Where-Object { $_.outcome -eq "Passed" }).Count
+            failed = @($entries | Where-Object { $_.outcome -eq "Failed" }).Count
+            skipped = @($entries | Where-Object { $_.outcome -eq "Skipped" }).Count
+        }
+
+        $rawSummary = $rawDiagnostics.summary
+        $summary = [ordered]@{
+            total = if ($null -ne $rawSummary -and $null -ne $rawSummary.total) { [int]$rawSummary.total } else { [int]$derivedSummary.total }
+            passed = if ($null -ne $rawSummary -and $null -ne $rawSummary.passed) { [int]$rawSummary.passed } else { [int]$derivedSummary.passed }
+            failed = if ($null -ne $rawSummary -and $null -ne $rawSummary.failed) { [int]$rawSummary.failed } else { [int]$derivedSummary.failed }
+            skipped = if ($null -ne $rawSummary -and $null -ne $rawSummary.skipped) { [int]$rawSummary.skipped } else { [int]$derivedSummary.skipped }
+        }
+
+        return [ordered]@{
+            status = if ([string]::IsNullOrWhiteSpace([string]$rawDiagnostics.status)) { "captured" } else { [string]$rawDiagnostics.status }
+            source = if ([string]::IsNullOrWhiteSpace([string]$rawDiagnostics.source)) { "live-promoted-action-matrix.json" } else { [string]$rawDiagnostics.source }
+            summary = $summary
+            entries = @($entries)
+        }
+    }
+    catch {
+        return [ordered]@{
+            status = "parse_error"
+            source = "live-promoted-action-matrix.json"
+            summary = [ordered]@{
+                total = 0
+                passed = 0
+                failed = 0
+                skipped = 0
+            }
+            entries = @()
+            error = $_.Exception.Message
+        }
+    }
+}
+
 function Map-LiveTests {
     param([object[]]$SummaryEntries)
 
@@ -277,7 +358,8 @@ function Get-RelevantTestNames {
             return @(
                 "LiveTacticalToggleWorkflowTests",
                 "LiveHeroHelperWorkflowTests",
-                "LiveCreditsTests"
+                "LiveCreditsTests",
+                "LivePromotedActionMatrixTests"
             )
         }
         "ROE" {
@@ -285,7 +367,8 @@ function Get-RelevantTestNames {
                 "LiveTacticalToggleWorkflowTests",
                 "LiveHeroHelperWorkflowTests",
                 "LiveRoeRuntimeHealthTests",
-                "LiveCreditsTests"
+                "LiveCreditsTests",
+                "LivePromotedActionMatrixTests"
             )
         }
         "TACTICAL" {
@@ -296,7 +379,8 @@ function Get-RelevantTestNames {
                 "LiveTacticalToggleWorkflowTests",
                 "LiveHeroHelperWorkflowTests",
                 "LiveRoeRuntimeHealthTests",
-                "LiveCreditsTests"
+                "LiveCreditsTests",
+                "LivePromotedActionMatrixTests"
             )
         }
     }
@@ -426,6 +510,7 @@ $runtimeMode = Get-RuntimeMode -LiveTests $relevantLiveTests
 $classification = Get-Classification -Relevant $relevantLiveTests -ProcessSnapshot $processSnapshot -SelectedScope $Scope
 $requiredCapabilities = Get-ProfileRequiredCapabilities -ProfileRootPath $ProfileRoot -ProfileId ([string]$launchContext.profileId)
 $runtimeEvidence = Get-RuntimeEvidence -RunDirectoryPath $RunDirectory
+$actionStatusDiagnostics = Get-ActionStatusDiagnostics -RunDirectoryPath $RunDirectory
 
 $nextAction = switch ($classification) {
     "passed" { "Attach bundle to issue and continue with fix or closure workflow." }
@@ -530,6 +615,7 @@ $bundle = [ordered]@{
     capabilityProbeSnapshot = $capabilityProbeSnapshot
     hookInstallReport = $hookInstallReport
     overlayState = $overlayState
+    actionStatusDiagnostics = $actionStatusDiagnostics
     liveTests = @($liveTests)
     diagnostics = [ordered]@{
         dependencyState = "unknown"
@@ -546,6 +632,22 @@ $bundle | ConvertTo-Json -Depth 8 | Set-Content -Path $bundlePath
 $bundleMdPath = Join-Path $RunDirectory "repro-bundle.md"
 $liveRows = $liveTests | ForEach-Object {
     "| {0} | {1} | {2}/{3}/{4} | {5} | {6} |" -f $_.name, $_.outcome, $_.passed, $_.failed, $_.skipped, $_.trxPath, ([string]$_.message).Replace("|", "/")
+}
+$actionStatusRows = @($actionStatusDiagnostics.entries | ForEach-Object {
+    "| {0} | {1} | {2} | {3} | {4} | {5} | {6} | {7} | {8} |" -f `
+        ([string]$_.profileId), `
+        ([string]$_.actionId), `
+        ([string]$_.outcome), `
+        ([string](if ($null -eq $_.backendRoute) { "n/a" } else { $_.backendRoute })), `
+        ([string](if ($null -eq $_.routeReasonCode) { "n/a" } else { $_.routeReasonCode })), `
+        ([string](if ($null -eq $_.capabilityProbeReasonCode) { "n/a" } else { $_.capabilityProbeReasonCode })), `
+        ([string](if ($null -eq $_.hybridExecution) { "n/a" } else { $_.hybridExecution })), `
+        ([string]$_.hasFallbackMarker), `
+        (([string]$_.message).Replace("|", "/"))
+})
+
+if (@($actionStatusRows).Count -eq 0) {
+    $actionStatusRows = @("| _none_ | _none_ | _none_ | _none_ | _none_ | _none_ | _none_ | _none_ | _none_ |")
 }
 
 @"
@@ -564,6 +666,7 @@ $liveRows = $liveTests | ForEach-Object {
 - backend route: $($backendRouteDecision.backend) ($($backendRouteDecision.reasonCode))
 - capability probe: $($capabilityProbeSnapshot.backend) ($($capabilityProbeSnapshot.probeReasonCode), required=$((@($capabilityProbeSnapshot.requiredCapabilities) -join ', ')))
 - overlay: available=$($overlayState.available) visible=$($overlayState.visible) ($($overlayState.reasonCode))
+- promoted action diagnostics: status=$($actionStatusDiagnostics.status) checks=$($actionStatusDiagnostics.summary.total) passed=$($actionStatusDiagnostics.summary.passed) failed=$($actionStatusDiagnostics.summary.failed) skipped=$($actionStatusDiagnostics.summary.skipped)
 
 ## Process Snapshot
 
@@ -576,6 +679,12 @@ $((@($processSnapshot | ForEach-Object { "| $($_.pid) | $($_.name) | $($_.hostRo
 | Test | Outcome | Pass/Fail/Skip | TRX | Message |
 |---|---|---|---|---|
 $($liveRows -join "`n")
+
+## Action Status Diagnostics
+
+| Profile | Action | Outcome | Backend | Route Reason | Probe Reason | Hybrid | Fallback Marker | Message |
+|---|---|---|---|---|---|---|---|---|
+$($actionStatusRows -join "`n")
 
 ## Next Action
 

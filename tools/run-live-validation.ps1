@@ -283,6 +283,13 @@ $testDefinitions = @(
         Filter = "FullyQualifiedName~LiveCreditsTests"
         TrxBase = "live-credits.trx"
         Scopes = @("AOTR", "ROE")
+    },
+    [PSCustomObject]@{
+        Name = "Live Promoted Action Matrix"
+        TestName = "LivePromotedActionMatrixTests"
+        Filter = "FullyQualifiedName~LivePromotedActionMatrixTests"
+        TrxBase = "live-promoted-action-matrix.trx"
+        Scopes = @("AOTR", "ROE")
     }
 )
 
@@ -498,6 +505,7 @@ $lineTactical = Get-Line -Name "LiveTacticalToggleWorkflowTests"
 $lineHero = Get-Line -Name "LiveHeroHelperWorkflowTests"
 $lineRoe = Get-Line -Name "LiveRoeRuntimeHealthTests"
 $lineCredits = Get-Line -Name "LiveCreditsTests"
+$linePromoted = Get-Line -Name "LivePromotedActionMatrixTests"
 
 $template34 = Join-Path $runResultsDirectory "issue-34-evidence-template.md"
 $template19 = Join-Path $runResultsDirectory "issue-19-evidence-template.md"
@@ -519,6 +527,8 @@ Live validation evidence update ($iso)
   - detail: $($lineRoe.Message)
 - Credits live diagnostic: $($lineCredits.Outcome) (p=$($lineCredits.Passed), f=$($lineCredits.Failed), s=$($lineCredits.Skipped))
   - detail: $($lineCredits.Message)
+- Promoted action matrix: $($linePromoted.Outcome) (p=$($linePromoted.Passed), f=$($linePromoted.Failed), s=$($linePromoted.Skipped))
+  - detail: $($linePromoted.Message)
 - Diagnostics for degraded/unavailable actions: <fill>
 - Repro bundle: $bundlePath
 - Artifacts:
@@ -526,6 +536,7 @@ Live validation evidence update ($iso)
   - $($lineHero.Trx)
   - $($lineRoe.Trx)
   - $($lineCredits.Trx)
+  - $($linePromoted.Trx)
   - $launchContextJson
   - $summaryPath
   - $bundleMdPath
@@ -542,16 +553,17 @@ AOTR/ROE checklist evidence update ($iso)
 - scope: $Scope
 - repro bundle: $bundlePath
 
-| Profile | Attach summary | Tactical toggle workflow | Hero helper workflow | Result |
-|---|---|---|---|---|
-| aotr_1397421866_swfoc | <fill pid/mode/reasonCode> | <pass/fail/skip + reason> | <pass/fail/skip + reason> | <overall> |
-| roe_3447786229_swfoc | <fill pid/mode/reasonCode> | <pass/fail/skip + reason> | <pass/fail/skip + reason> | <overall> |
+| Profile | Attach summary | Tactical toggle workflow | Hero helper workflow | Promoted action matrix | Result |
+|---|---|---|---|---|---|
+| aotr_1397421866_swfoc | <fill pid/mode/reasonCode> | <pass/fail/skip + reason> | <pass/fail/skip + reason> | <pass/fail/skip + reason> | <overall> |
+| roe_3447786229_swfoc | <fill pid/mode/reasonCode> | <pass/fail/skip + reason> | <pass/fail/skip + reason> | <pass/fail/skip + reason> | <overall> |
 
 Current local run snapshot:
 - LiveTacticalToggleWorkflowTests: $($lineTactical.Outcome) ($($lineTactical.Message))
 - LiveHeroHelperWorkflowTests: $($lineHero.Outcome) ($($lineHero.Message))
 - LiveRoeRuntimeHealthTests: $($lineRoe.Outcome) ($($lineRoe.Message))
 - LiveCreditsTests: $($lineCredits.Outcome) ($($lineCredits.Message))
+- LivePromotedActionMatrixTests: $($linePromoted.Outcome) ($($linePromoted.Message))
 
 Artifacts:
 - $summaryPath
