@@ -2145,9 +2145,10 @@ public sealed class RuntimeAdapter : IRuntimeAdapter
                 diagnostics);
         }
 
-        diagnostics[DiagnosticKeyFailureReasonCode] = initial.ReasonCode;
+        diagnostics["initialFailureReasonCode"] = initial.ReasonCode;
         if (!isCriticalSymbol)
         {
+            diagnostics[DiagnosticKeyFailureReasonCode] = initial.ReasonCode;
             return new ActionExecutionResult(false, initial.Message, symbolInfo.Source, diagnostics);
         }
 

@@ -155,12 +155,11 @@ public sealed class LaunchContextResolver : ILaunchContextResolver
 
             foreach (var normalized in raw
                          .Split(',', StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries)
-                         .Select(NormalizeToken))
+                         .Select(NormalizeToken)
+                         .Where(static value => !string.IsNullOrWhiteSpace(value))
+                         .Select(static value => value!))
             {
-                if (!string.IsNullOrWhiteSpace(normalized))
-                {
-                    hints.Add(normalized);
-                }
+                hints.Add(normalized);
             }
         }
 
