@@ -5,6 +5,8 @@ namespace SwfocTrainer.Runtime.Scanning;
 
 internal static class ProcessMemoryScanner
 {
+    private readonly record struct FloatScanCriteria(float Value, float Tolerance);
+
     public static IReadOnlyList<nint> ScanInt32(
         int processId,
         int value,
@@ -17,67 +19,13 @@ internal static class ProcessMemoryScanner
             return Array.Empty<nint>();
         }
 
-        var handle = OpenReadHandle(processId);
-
-        if (handle == nint.Zero)
-        {
-            throw new InvalidOperationException($"Failed to open process {processId} for scan. Win32={Marshal.GetLastWin32Error()}");
-        }
-
-        try
-        {
-            var results = new List<nint>(capacity: Math.Min(maxResults, 256));
-            var mbiSize = (nuint)Marshal.SizeOf<NativeMethods.MemoryBasicInformation>();
-
-            var address = nint.Zero;
-            var lastAddress = nint.MinValue;
-
-            while (results.Count < maxResults)
-            {
-                cancellationToken.ThrowIfCancellationRequested();
-
-                if (address == lastAddress)
-                {
-                    // Avoid infinite loops if something goes wrong with address advancement.
-                    break;
-                }
-                lastAddress = address;
-
-                var queried = NativeMethods.VirtualQueryEx(handle, address, out var mbi, mbiSize);
-                if (queried == 0)
-                {
-                    break;
-                }
-
-                var regionSize = (long)mbi.RegionSize;
-                if (regionSize <= 0)
-                {
-                    // Ensure we always make forward progress.
-                    address += 0x1000;
-                    continue;
-                }
-
-                if (mbi.State == NativeMethods.MemCommit && IsReadable(mbi.Protect) && (!writableOnly || IsWritable(mbi.Protect)))
-                {
-                    ScanRegion(handle, mbi.BaseAddress, regionSize, value, results, maxResults, cancellationToken);
-                }
-
-                try
-                {
-                    address = mbi.BaseAddress + (nint)regionSize;
-                }
-                catch
-                {
-                    break;
-                }
-            }
-
-            return results;
-        }
-        finally
-        {
-            NativeMethods.CloseHandle(handle);
-        }
+        return ScanReadableRegions(
+            processId,
+            writableOnly,
+            maxResults,
+            cancellationToken,
+            (handle, regionBase, regionSize, results, max, token) =>
+                ScanRegion(handle, regionBase, regionSize, value, results, max, token));
     }
 
     public static IReadOnlyList<nint> ScanFloatApprox(
@@ -98,65 +46,14 @@ internal static class ProcessMemoryScanner
             tolerance = 0;
         }
 
-        var handle = OpenReadHandle(processId);
-
-        if (handle == nint.Zero)
-        {
-            throw new InvalidOperationException($"Failed to open process {processId} for float scan. Win32={Marshal.GetLastWin32Error()}");
-        }
-
-        try
-        {
-            var results = new List<nint>(capacity: Math.Min(maxResults, 256));
-            var mbiSize = (nuint)Marshal.SizeOf<NativeMethods.MemoryBasicInformation>();
-
-            var address = nint.Zero;
-            var lastAddress = nint.MinValue;
-
-            while (results.Count < maxResults)
-            {
-                cancellationToken.ThrowIfCancellationRequested();
-
-                if (address == lastAddress)
-                {
-                    break;
-                }
-                lastAddress = address;
-
-                var queried = NativeMethods.VirtualQueryEx(handle, address, out var mbi, mbiSize);
-                if (queried == 0)
-                {
-                    break;
-                }
-
-                var regionSize = (long)mbi.RegionSize;
-                if (regionSize <= 0)
-                {
-                    address += 0x1000;
-                    continue;
-                }
-
-                if (mbi.State == NativeMethods.MemCommit && IsReadable(mbi.Protect) && (!writableOnly || IsWritable(mbi.Protect)))
-                {
-                    ScanRegionFloatApprox(handle, mbi.BaseAddress, regionSize, value, tolerance, results, maxResults, cancellationToken);
-                }
-
-                try
-                {
-                    address = mbi.BaseAddress + (nint)regionSize;
-                }
-                catch
-                {
-                    break;
-                }
-            }
-
-            return results;
-        }
-        finally
-        {
-            NativeMethods.CloseHandle(handle);
-        }
+        var criteria = new FloatScanCriteria(value, tolerance);
+        return ScanReadableRegions(
+            processId,
+            writableOnly,
+            maxResults,
+            cancellationToken,
+            (handle, regionBase, regionSize, results, max, token) =>
+                ScanRegionFloatApprox(handle, regionBase, regionSize, criteria, results, max, token));
     }
 
     private static void ScanRegion(
@@ -215,8 +112,7 @@ internal static class ProcessMemoryScanner
         nint handle,
         nint regionBase,
         long regionSize,
-        float value,
-        float tolerance,
+        FloatScanCriteria criteria,
         List<nint> results,
         int maxResults,
         CancellationToken cancellationToken)
@@ -260,11 +156,78 @@ internal static class ProcessMemoryScanner
                     continue;
                 }
 
-                if (MathF.Abs(candidate - value) <= tolerance)
+                if (MathF.Abs(candidate - criteria.Value) <= criteria.Tolerance)
                 {
                     results.Add(regionBase + (nint)offset + i);
                 }
             }
+        }
+    }
+
+    private static IReadOnlyList<nint> ScanReadableRegions(
+        int processId,
+        bool writableOnly,
+        int maxResults,
+        CancellationToken cancellationToken,
+        Action<nint, nint, long, List<nint>, int, CancellationToken> regionScanner)
+    {
+        var handle = OpenReadHandle(processId);
+        if (handle == nint.Zero)
+        {
+            throw new InvalidOperationException($"Failed to open process {processId} for scan. Win32={Marshal.GetLastWin32Error()}");
+        }
+
+        try
+        {
+            var results = new List<nint>(capacity: Math.Min(maxResults, 256));
+            var mbiSize = (nuint)Marshal.SizeOf<NativeMethods.MemoryBasicInformation>();
+            var address = nint.Zero;
+            var lastAddress = nint.MinValue;
+
+            while (results.Count < maxResults)
+            {
+                cancellationToken.ThrowIfCancellationRequested();
+                if (address == lastAddress)
+                {
+                    break;
+                }
+
+                lastAddress = address;
+                var queried = NativeMethods.VirtualQueryEx(handle, address, out var mbi, mbiSize);
+                if (queried == 0)
+                {
+                    break;
+                }
+
+                var regionSize = (long)mbi.RegionSize;
+                if (regionSize <= 0)
+                {
+                    address += 0x1000;
+                    continue;
+                }
+
+                if (mbi.State == NativeMethods.MemCommit &&
+                    IsReadable(mbi.Protect) &&
+                    (!writableOnly || IsWritable(mbi.Protect)))
+                {
+                    regionScanner(handle, mbi.BaseAddress, regionSize, results, maxResults, cancellationToken);
+                }
+
+                try
+                {
+                    address = mbi.BaseAddress + (nint)regionSize;
+                }
+                catch
+                {
+                    break;
+                }
+            }
+
+            return results;
+        }
+        finally
+        {
+            NativeMethods.CloseHandle(handle);
         }
     }
 
