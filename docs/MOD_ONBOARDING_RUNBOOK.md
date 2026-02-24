@@ -3,6 +3,7 @@
 This runbook covers the Mod Compatibility Studio flow for onboarding a custom mod profile.
 
 ## Goal
+
 Generate a draft custom profile, export calibration evidence, and compute a promotion readiness report.
 
 ## UI Flow (Profiles & Updates tab)
@@ -15,6 +16,7 @@ Generate a draft custom profile, export calibration evidence, and compute a prom
 6. Click `Build Compatibility Report`.
 
 ## Draft Profile Output
+
 Draft profile files are emitted under:
 
 - `profiles/custom/profiles/<draftProfileId>.json` by default.
@@ -26,6 +28,7 @@ The scaffold process infers:
 - `profileAliases` from draft id + display name (+ optional aliases)
 
 ## Calibration Artifacts
+
 Artifacts are written to:
 
 - `%LOCALAPPDATA%\\SwfocTrainer\\support\\calibration` (default app path)
@@ -41,6 +44,7 @@ pwsh ./tools/validate-calibration-artifact.ps1 -ArtifactPath <artifact.json> -Sc
 ```
 
 ## Compatibility Report Interpretation
+
 Promotion is blocked when any of these are true:
 
 - dependency status is `HardFail`
@@ -50,6 +54,7 @@ Promotion is blocked when any of these are true:
 Use the report output list to prioritize calibration and dependency fixes.
 
 ## Evidence Checklist
+
 For issue/PR evidence, include:
 
 - draft profile path

@@ -1,6 +1,7 @@
 # SWFOC Runtime Hardening + Launch Context Detector + Ambitious Roadmap Refresh
 
 ## Summary
+
 Implement three coordinated outcomes in order:
 
 1. Harden attach/profile selection against real SWFOC launch realities (`STEAMMOD`, `MODPATH`, `StarWarsG`, command-line-unavailable sessions).

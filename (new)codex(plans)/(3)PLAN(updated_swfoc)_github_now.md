@@ -1,6 +1,7 @@
 # SWFOC-Mod-Menu Bootstrap + Realtime Reliability Plan
 
 ## Summary
+
 This plan bootstraps `https://github.com/Prekzursil/SWFOC-Mod-Menu` from the current workspace as a clean, code-focused repo, then configures GitHub operations end-to-end (description, governance, CI, backlog, project board, issue/PR flow), and finally defines an implementation track to make runtime value resolution reliable across build/mod variance.
 
 Current facts discovered from environment:

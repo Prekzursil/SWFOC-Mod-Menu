@@ -75,7 +75,9 @@ Could not find file '.../bin/Release/net8.0/SwfocTrainer.Tests.dll'
 
 **Resolution:**
 ```bash
+
 # Build first, then run tests
+
 make build
 make verify
 ```
@@ -190,20 +192,26 @@ No test is available in ...
 
 Before committing changes:
 ```bash
+
 # 1. Build
+
 make build
 
 # 2. Run deterministic tests
+
 make verify
 
 # 3. Check git status
+
 git status
 ```
 
 ### Full Build + Test Cycle
 
 ```bash
+
 # Clean, build, and verify in one go
+
 make clean && make build && make verify
 ```
 
@@ -283,7 +291,9 @@ If tests are taking longer than expected:
 
 For faster builds during development:
 ```bash
+
 # Build only what changed
+
 dotnet build SwfocTrainer.sln -c Debug --no-restore
 ```
 

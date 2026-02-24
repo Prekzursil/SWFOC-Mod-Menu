@@ -25,4 +25,5 @@ Get-Content .\SwfocTrainer-portable.zip.sha256
 ```
 
 ## Rollback
+
 If this release is invalid, follow `docs/RELEASE_RUNBOOK.md` rollback steps and revert consumers to the last known-good tag.

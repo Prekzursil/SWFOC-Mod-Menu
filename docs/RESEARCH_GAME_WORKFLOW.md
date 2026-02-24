@@ -9,6 +9,7 @@ This document defines the reverse-engineering evidence contract for the `rd/deep
 - Never commit proprietary game binaries, workshop archives, or extracted copyrighted content.
 
 ## Mandatory Artifact Set
+
 Each research run must emit:
 
 - `TestResults/research/<runId>/fingerprint.json`
@@ -16,6 +17,7 @@ Each research run must emit:
 - `TestResults/research/<runId>/analysis-notes.md`
 
 ## Provenance Requirements
+
 For every conclusion, record:
 
 1. Source module path.
@@ -31,6 +33,7 @@ For every conclusion, record:
 3. Unknown fingerprints default to fail-closed behavior.
 
 ## Promotion Rule
+
 No R&D signature/capability artifact may be promoted to mainline without:
 
 - deterministic tests,
