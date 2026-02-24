@@ -397,7 +397,7 @@ public sealed class RuntimeAdapter : IRuntimeAdapter
         return matches;
     }
 
-    private ProcessMetadata[] ResolveCandidatePool(
+    private static ProcessMetadata[] ResolveCandidatePool(
         TrainerProfile profile,
         ProcessMetadata[] matches,
         IReadOnlyCollection<string> requiredWorkshopIds)
