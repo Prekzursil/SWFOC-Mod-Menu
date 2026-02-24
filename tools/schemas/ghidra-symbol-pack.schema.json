@@ -1,0 +1,79 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "SWFOC Ghidra Symbol Pack",
+  "type": "object",
+  "required": [
+    "schemaVersion",
+    "binaryFingerprint",
+    "buildMetadata",
+    "anchors",
+    "capabilities"
+  ],
+  "properties": {
+    "schemaVersion": {
+      "type": "string",
+      "enum": ["1.0"]
+    },
+    "binaryFingerprint": {
+      "type": "object",
+      "required": ["fingerprintId", "moduleName", "fileSha256"],
+      "properties": {
+        "fingerprintId": { "type": "string", "minLength": 1 },
+        "moduleName": { "type": "string", "minLength": 1 },
+        "fileSha256": { "type": "string", "pattern": "^[a-fA-F0-9]{64}$" }
+      },
+      "additionalProperties": true
+    },
+    "buildMetadata": {
+      "type": "object",
+      "required": ["analysisRunId", "generatedAtUtc", "toolchain"],
+      "properties": {
+        "analysisRunId": { "type": "string", "minLength": 1 },
+        "generatedAtUtc": { "type": "string", "format": "date-time" },
+        "toolchain": { "type": "string", "minLength": 1 },
+        "notes": { "type": "string" }
+      },
+      "additionalProperties": true
+    },
+    "anchors": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "address", "module", "confidence", "source"],
+        "properties": {
+          "id": { "type": "string", "minLength": 1 },
+          "address": {
+            "oneOf": [
+              { "type": "integer", "minimum": 0 },
+              { "type": "string", "pattern": "^0x[0-9a-fA-F]+$" }
+            ]
+          },
+          "module": { "type": "string", "minLength": 1 },
+          "confidence": { "type": "number", "minimum": 0.0, "maximum": 1.0 },
+          "source": { "type": "string", "minLength": 1 },
+          "valueType": { "type": "string" }
+        },
+        "additionalProperties": true
+      }
+    },
+    "capabilities": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["featureId", "available", "state", "reasonCode", "requiredAnchors"],
+        "properties": {
+          "featureId": { "type": "string", "minLength": 1 },
+          "available": { "type": "boolean" },
+          "state": { "type": "string", "minLength": 1 },
+          "reasonCode": { "type": "string", "minLength": 1 },
+          "requiredAnchors": {
+            "type": "array",
+            "items": { "type": "string", "minLength": 1 }
+          }
+        },
+        "additionalProperties": true
+      }
+    }
+  },
+  "additionalProperties": true
+}

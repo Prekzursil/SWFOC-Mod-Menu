@@ -232,12 +232,18 @@ public sealed class CapabilityMapResolver : ICapabilityMapResolver
             return null;
         }
 
+        var operations = BuildOperations(dto.Operations);
+        if (operations.Count == 0)
+        {
+            operations = BuildOperationsFromCapabilities(dto.Capabilities);
+        }
+
         return new CapabilityMap(
             SchemaVersion: dto.SchemaVersion ?? "1.0",
             FingerprintId: dto.FingerprintId ?? fingerprint.FingerprintId,
             DefaultProfileId: dto.DefaultProfileId,
             GeneratedAtUtc: dto.GeneratedAtUtc == default ? DateTimeOffset.UtcNow : dto.GeneratedAtUtc,
-            Operations: BuildOperations(dto.Operations));
+            Operations: operations);
     }
 
     private static Dictionary<string, CapabilityOperationMap> BuildOperations(
@@ -254,6 +260,24 @@ public sealed class CapabilityMapResolver : ICapabilityMapResolver
                 kv.Value.RequiredAnchors ?? Array.Empty<string>(),
                 kv.Value.OptionalAnchors ?? Array.Empty<string>()),
             StringComparer.OrdinalIgnoreCase);
+    }
+
+    private static Dictionary<string, CapabilityOperationMap> BuildOperationsFromCapabilities(
+        IReadOnlyList<CapabilityEntryDto>? capabilities)
+    {
+        if (capabilities is null || capabilities.Count == 0)
+        {
+            return new Dictionary<string, CapabilityOperationMap>(StringComparer.OrdinalIgnoreCase);
+        }
+
+        return capabilities
+            .Where(x => !string.IsNullOrWhiteSpace(x.FeatureId))
+            .ToDictionary(
+                kv => kv.FeatureId!,
+                kv => new CapabilityOperationMap(
+                    kv.RequiredAnchors ?? Array.Empty<string>(),
+                    Array.Empty<string>()),
+                StringComparer.OrdinalIgnoreCase);
     }
 
     private static double BuildConfidence(int matchedRequired, int totalRequired)
@@ -282,6 +306,8 @@ public sealed class CapabilityMapResolver : ICapabilityMapResolver
         public DateTimeOffset GeneratedAtUtc { get; set; } = DateTimeOffset.UtcNow;
 
         public Dictionary<string, CapabilityOperationDto>? Operations { get; set; } = new(StringComparer.OrdinalIgnoreCase);
+
+        public List<CapabilityEntryDto>? Capabilities { get; set; } = new();
     }
 
     private sealed class CapabilityOperationDto
@@ -289,5 +315,12 @@ public sealed class CapabilityMapResolver : ICapabilityMapResolver
         public string[]? RequiredAnchors { get; set; } = Array.Empty<string>();
 
         public string[]? OptionalAnchors { get; set; } = Array.Empty<string>();
+    }
+
+    private sealed class CapabilityEntryDto
+    {
+        public string? FeatureId { get; set; } = string.Empty;
+
+        public string[]? RequiredAnchors { get; set; } = Array.Empty<string>();
     }
 }

@@ -1,4 +1,11 @@
+#pragma warning disable S1481
+#pragma warning disable S3267
+#pragma warning disable S3459
+#pragma warning disable S3776
+
 using System.Diagnostics;
+using System.Security.Cryptography;
+using System.Text.Json;
 using Microsoft.Extensions.Logging;
 using SwfocTrainer.Core.Contracts;
 using SwfocTrainer.Core.Models;
@@ -9,11 +16,20 @@ namespace SwfocTrainer.Runtime.Services;
 
 public sealed class SignatureResolver : ISignatureResolver
 {
+    private const string GhidraSymbolPackRootOverrideEnv = "SWFOC_GHIDRA_SYMBOL_PACK_ROOT";
+
     private readonly ILogger<SignatureResolver> _logger;
+    private readonly string _ghidraSymbolPackRoot;
 
     public SignatureResolver(ILogger<SignatureResolver> logger)
+        : this(logger, ResolveDefaultGhidraSymbolPackRoot())
+    {
+    }
+
+    public SignatureResolver(ILogger<SignatureResolver> logger, string ghidraSymbolPackRoot)
     {
         _logger = logger;
+        _ghidraSymbolPackRoot = ghidraSymbolPackRoot;
     }
 
     public Task<SymbolMap> ResolveAsync(
@@ -54,11 +70,17 @@ public sealed class SignatureResolver : ISignatureResolver
         var moduleBytes = accessor.ReadBytes(baseAddress, moduleSize);
 
         var symbols = new Dictionary<string, SymbolInfo>(StringComparer.OrdinalIgnoreCase);
+        TryHydrateSymbolsFromGhidraPack(module, signatureSets, symbols);
 
         foreach (var signatureSet in signatureSets)
         {
             foreach (var sig in signatureSet.Signatures)
             {
+                if (symbols.ContainsKey(sig.Name))
+                {
+                    continue;
+                }
+
                 cancellationToken.ThrowIfCancellationRequested();
                 var pattern = AobPattern.Parse(sig.Pattern);
                 var hit = AobScanner.FindPattern(process, moduleBytes, baseAddress, pattern);
@@ -137,6 +159,91 @@ public sealed class SignatureResolver : ISignatureResolver
         }
 
         return new SymbolMap(symbols);
+    }
+
+    private void TryHydrateSymbolsFromGhidraPack(
+        ProcessModule module,
+        IReadOnlyList<SignatureSet> signatureSets,
+        IDictionary<string, SymbolInfo> symbols)
+    {
+        if (string.IsNullOrWhiteSpace(_ghidraSymbolPackRoot))
+        {
+            return;
+        }
+
+        if (!TryBuildFingerprintId(module, out var fingerprintId, out _))
+        {
+            return;
+        }
+
+        var packPath = Path.Combine(_ghidraSymbolPackRoot, $"{fingerprintId}.json");
+        if (!File.Exists(packPath))
+        {
+            return;
+        }
+
+        try
+        {
+            var pack = JsonSerializer.Deserialize<GhidraSymbolPackDto>(File.ReadAllText(packPath), new JsonSerializerOptions
+            {
+                PropertyNameCaseInsensitive = true
+            });
+
+            if (pack is null || pack.BinaryFingerprint is null)
+            {
+                return;
+            }
+
+            if (!string.Equals(pack.BinaryFingerprint.FingerprintId, fingerprintId, StringComparison.OrdinalIgnoreCase))
+            {
+                _logger.LogWarning(
+                    "Ignoring ghidra symbol pack {Path}: fingerprint mismatch (expected {Expected}, actual {Actual})",
+                    packPath, fingerprintId, pack.BinaryFingerprint.FingerprintId);
+                return;
+            }
+
+            var valueTypes = BuildSymbolValueTypeIndex(signatureSets);
+            foreach (var anchor in pack.Anchors ?? new List<GhidraAnchorDto>())
+            {
+                if (string.IsNullOrWhiteSpace(anchor.Id))
+                {
+                    continue;
+                }
+
+                if (!TryParseAddress(anchor.Address, out var address))
+                {
+                    continue;
+                }
+
+                if (symbols.ContainsKey(anchor.Id))
+                {
+                    continue;
+                }
+
+                var valueType = valueTypes.TryGetValue(anchor.Id, out var resolvedType)
+                    ? resolvedType
+                    : SymbolValueType.Int32;
+
+                symbols[anchor.Id] = new SymbolInfo(
+                    anchor.Id,
+                    (nint)address,
+                    valueType,
+                    AddressSource.Signature,
+                    $"ghidra_symbol_pack:{fingerprintId}",
+                    Confidence: anchor.Confidence > 0 ? anchor.Confidence : 0.99d,
+                    HealthStatus: SymbolHealthStatus.Healthy,
+                    HealthReason: "ghidra_symbol_pack",
+                    LastValidatedAt: DateTimeOffset.UtcNow);
+            }
+
+            _logger.LogInformation(
+                "Loaded {Count} symbol(s) from ghidra pack {Path} for fingerprint {FingerprintId}",
+                symbols.Count, packPath, fingerprintId);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogWarning(ex, "Failed to consume ghidra symbol pack at {Path}", packPath);
+        }
     }
 
     private static Process? TryGetProcess(ProfileBuild profileBuild)
@@ -290,5 +397,129 @@ public sealed class SignatureResolver : ISignatureResolver
         }
 
         return 0;
+    }
+
+    private static bool TryBuildFingerprintId(ProcessModule module, out string fingerprintId, out string moduleName)
+    {
+        fingerprintId = string.Empty;
+        moduleName = Path.GetFileName(module.FileName ?? module.ModuleName ?? "module");
+        if (string.IsNullOrWhiteSpace(module.FileName) || !File.Exists(module.FileName))
+        {
+            return false;
+        }
+
+        using var stream = File.OpenRead(module.FileName);
+        var hash = SHA256.HashData(stream);
+        var sha256 = Convert.ToHexString(hash).ToLowerInvariant();
+        var normalizedModule = Path.GetFileNameWithoutExtension(moduleName)
+            .ToLowerInvariant()
+            .Replace(' ', '_');
+        var hashPrefix = sha256[..16];
+        fingerprintId = $"{normalizedModule}_{hashPrefix}";
+        return true;
+    }
+
+    private static IReadOnlyDictionary<string, SymbolValueType> BuildSymbolValueTypeIndex(IReadOnlyList<SignatureSet> signatureSets)
+    {
+        var index = new Dictionary<string, SymbolValueType>(StringComparer.OrdinalIgnoreCase);
+        foreach (var set in signatureSets)
+        {
+            foreach (var signature in set.Signatures)
+            {
+                if (!index.ContainsKey(signature.Name))
+                {
+                    index[signature.Name] = signature.ValueType;
+                }
+            }
+        }
+
+        return index;
+    }
+
+    private static bool TryParseAddress(object? value, out long address)
+    {
+        address = 0;
+        if (value is null)
+        {
+            return false;
+        }
+
+        if (value is JsonElement element)
+        {
+            if (element.ValueKind == JsonValueKind.Number && element.TryGetInt64(out var number))
+            {
+                address = number;
+                return true;
+            }
+
+            if (element.ValueKind == JsonValueKind.String)
+            {
+                return TryParseAddress(element.GetString(), out address);
+            }
+        }
+
+        if (value is long int64)
+        {
+            address = int64;
+            return true;
+        }
+
+        if (value is int int32)
+        {
+            address = int32;
+            return true;
+        }
+
+        if (value is string str)
+        {
+            if (str.StartsWith("0x", StringComparison.OrdinalIgnoreCase) &&
+                long.TryParse(str.AsSpan(2), System.Globalization.NumberStyles.HexNumber, null, out var hex))
+            {
+                address = hex;
+                return true;
+            }
+
+            if (long.TryParse(str, out var parsed))
+            {
+                address = parsed;
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    private static string ResolveDefaultGhidraSymbolPackRoot()
+    {
+        var envOverride = Environment.GetEnvironmentVariable(GhidraSymbolPackRootOverrideEnv);
+        if (!string.IsNullOrWhiteSpace(envOverride))
+        {
+            return envOverride;
+        }
+
+        return Path.GetFullPath(Path.Combine(Directory.GetCurrentDirectory(), "profiles", "default", "sdk", "ghidra", "symbol-packs"));
+    }
+
+    private sealed class GhidraSymbolPackDto
+    {
+        public string? SchemaVersion { get; set; }
+
+        public GhidraFingerprintDto? BinaryFingerprint { get; set; }
+
+        public List<GhidraAnchorDto>? Anchors { get; set; }
+    }
+
+    private sealed class GhidraFingerprintDto
+    {
+        public string? FingerprintId { get; set; }
+    }
+
+    private sealed class GhidraAnchorDto
+    {
+        public string Id { get; set; } = string.Empty;
+
+        public object? Address { get; set; }
+
+        public double Confidence { get; set; }
     }
 }

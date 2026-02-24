@@ -1,0 +1,17 @@
+{
+  "schemaVersion": "1.0",
+  "programName": "StarWarsG.exe",
+  "generatedAtUtc": "2026-02-24T00:00:00Z",
+  "symbols": [
+    {
+      "name": "credits_value",
+      "address": "0x140123450",
+      "kind": "label"
+    },
+    {
+      "name": "freeze_timer_gate",
+      "address": "0x140220010",
+      "kind": "function"
+    }
+  ]
+}

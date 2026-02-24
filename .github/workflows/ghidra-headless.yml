@@ -1,0 +1,114 @@
+name: ghidra-headless
+
+on:
+  pull_request:
+    paths:
+      - "tools/ghidra/**"
+      - "tools/schemas/ghidra-*.json"
+      - "tools/validate-ghidra-symbol-pack.ps1"
+      - ".github/workflows/ghidra-headless.yml"
+  push:
+    branches:
+      - main
+    paths:
+      - "tools/ghidra/**"
+      - "tools/schemas/ghidra-*.json"
+      - "tools/validate-ghidra-symbol-pack.ps1"
+      - ".github/workflows/ghidra-headless.yml"
+  workflow_dispatch:
+    inputs:
+      binary_path:
+        description: "Binary path for headless analysis (default /bin/ls)"
+        required: false
+        default: "/bin/ls"
+
+jobs:
+  emitter-smoke:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Emit symbol pack from fixture
+        run: |
+          mkdir -p TestResults/ghidra-smoke
+          python3 tools/ghidra/emit-symbol-pack.py \
+            --raw-symbols tools/fixtures/ghidra_raw_symbols_sample.json \
+            --binary-path README.md \
+            --analysis-run-id ghidra-smoke-${{ github.run_id }} \
+            --output-pack TestResults/ghidra-smoke/symbol-pack.json \
+            --output-summary TestResults/ghidra-smoke/analysis-summary.json
+      - name: Validate generated outputs against schemas
+        run: |
+          python3 -m pip install --quiet jsonschema
+          python3 - <<'PY'
+          import json
+          from jsonschema import Draft202012Validator
+
+          with open("tools/schemas/ghidra-symbol-pack.schema.json", "r", encoding="utf-8") as f:
+              pack_schema = json.load(f)
+          with open("tools/schemas/ghidra-analysis-summary.schema.json", "r", encoding="utf-8") as f:
+              summary_schema = json.load(f)
+          with open("TestResults/ghidra-smoke/symbol-pack.json", "r", encoding="utf-8") as f:
+              symbol_pack = json.load(f)
+          with open("TestResults/ghidra-smoke/analysis-summary.json", "r", encoding="utf-8") as f:
+              summary = json.load(f)
+
+          Draft202012Validator(pack_schema).validate(symbol_pack)
+          Draft202012Validator(summary_schema).validate(summary)
+          print("ghidra smoke schema validation passed")
+          PY
+      - name: Upload smoke artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: ghidra-smoke-${{ github.run_id }}
+          path: TestResults/ghidra-smoke
+
+  headless-analysis:
+    if: ${{ github.event_name == 'workflow_dispatch' }}
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Install Ghidra
+        run: |
+          GHIDRA_VERSION=11.1.2
+          GHIDRA_ZIP=ghidra_${GHIDRA_VERSION}_PUBLIC_20240709.zip
+          curl --fail --silent --show-error --location \
+            --proto '=https' \
+            --proto-redir '=https' \
+            --tlsv1.2 \
+            --output /tmp/${GHIDRA_ZIP} \
+            https://github.com/NationalSecurityAgency/ghidra/releases/download/Ghidra_${GHIDRA_VERSION}_build/${GHIDRA_ZIP}
+          unzip -q /tmp/${GHIDRA_ZIP} -d /tmp
+          echo "GHIDRA_HOME=/tmp/ghidra_${GHIDRA_VERSION}_PUBLIC" >> $GITHUB_ENV
+          echo "GHIDRA_VERSION=${GHIDRA_VERSION}" >> $GITHUB_ENV
+      - name: Run headless analysis
+        run: |
+          chmod +x tools/ghidra/run-headless.sh
+          tools/ghidra/run-headless.sh "${{ inputs.binary_path || '/bin/ls' }}" "TestResults/ghidra-headless"
+      - name: Validate symbol pack
+        run: |
+          python3 -m pip install --quiet jsonschema
+          python3 - <<'PY'
+          import json
+          from jsonschema import Draft202012Validator
+          with open("tools/schemas/ghidra-symbol-pack.schema.json", "r", encoding="utf-8") as f:
+              schema = json.load(f)
+          with open("TestResults/ghidra-headless/symbol-pack.json", "r", encoding="utf-8") as f:
+              pack = json.load(f)
+          Draft202012Validator(schema).validate(pack)
+          print("headless symbol pack schema validation passed")
+          PY
+      - name: Upload headless artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: ghidra-headless-${{ github.run_id }}
+          path: TestResults/ghidra-headless

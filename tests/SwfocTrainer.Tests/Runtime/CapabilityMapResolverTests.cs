@@ -146,4 +146,57 @@ public sealed class CapabilityMapResolverTests
             Directory.Delete(mapsRoot, recursive: true);
         }
     }
+
+    [Fact]
+    public async Task ResolveAsync_ShouldSupportCapabilitiesArrayShape_WhenOperationsMissing()
+    {
+        var mapsRoot = Path.Combine(Path.GetTempPath(), $"swfoc-cap-map-{Guid.NewGuid():N}");
+        Directory.CreateDirectory(mapsRoot);
+
+        try
+        {
+            var fingerprint = new BinaryFingerprint(
+                FingerprintId: "fp-ghidra",
+                FileSha256: "abc123",
+                ModuleName: "StarWarsG.exe",
+                ProductVersion: "1.0",
+                FileVersion: "1.0.0.0",
+                TimestampUtc: DateTimeOffset.UtcNow,
+                ModuleList: Array.Empty<string>(),
+                SourcePath: "C:/games/StarWarsG.exe");
+
+            var mapJson = """
+            {
+              "schemaVersion": "1.0",
+              "fingerprintId": "fp-ghidra",
+              "defaultProfileId": "base_swfoc",
+              "generatedAtUtc": "2026-02-24T00:00:00Z",
+              "capabilities": [
+                {
+                  "featureId": "freeze_timer",
+                  "available": true,
+                  "state": "Verified",
+                  "reasonCode": "CAPABILITY_PROBE_PASS",
+                  "requiredAnchors": ["freeze_timer_patch"]
+                }
+              ]
+            }
+            """;
+            await File.WriteAllTextAsync(Path.Combine(mapsRoot, "fp-ghidra.json"), mapJson);
+
+            var resolver = new CapabilityMapResolver(mapsRoot, NullLogger<CapabilityMapResolver>.Instance);
+            var result = await resolver.ResolveAsync(
+                fingerprint,
+                requestedProfileId: "base_swfoc",
+                operationId: "freeze_timer",
+                resolvedAnchors: new HashSet<string>(StringComparer.OrdinalIgnoreCase) { "freeze_timer_patch" });
+
+            result.State.Should().Be(SdkCapabilityStatus.Available);
+            result.ReasonCode.Should().Be(CapabilityReasonCode.AllRequiredAnchorsPresent);
+        }
+        finally
+        {
+            Directory.Delete(mapsRoot, recursive: true);
+        }
+    }
 }

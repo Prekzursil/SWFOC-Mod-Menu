@@ -1,0 +1,22 @@
+{
+  "schemaVersion": "1.0",
+  "analysisRunId": "ghidra-sample-20260224-0001",
+  "binaryPath": "C:/Games/Star Wars Empire at War/corruption/StarWarsG.exe",
+  "toolVersions": {
+    "ghidra": "11.1.2",
+    "emitter": "emit-symbol-pack.py@1.0"
+  },
+  "coverageStats": {
+    "rawSymbolCount": 42190,
+    "anchorCount": 2,
+    "availableCapabilityCount": 1
+  },
+  "warnings": [
+    "feature freeze_timer unavailable; required anchors missing"
+  ],
+  "artifactPointers": {
+    "rawSymbolsPath": "TestResults/research/sample/raw-symbols.json",
+    "symbolPackPath": "TestResults/research/sample/symbol-pack.json",
+    "decompileArchivePath": "TestResults/research/sample/decompile-output.zip"
+  }
+}
