@@ -65,47 +65,23 @@ internal static class ProcessMemoryScanner
         int maxResults,
         CancellationToken cancellationToken)
     {
-        const int chunkSize = 64 * 1024;
-        var buffer = new byte[chunkSize];
-
-        for (long offset = 0; offset < regionSize && results.Count < maxResults; offset += chunkSize)
-        {
-            cancellationToken.ThrowIfCancellationRequested();
-
-            var toReadLong = Math.Min(chunkSize, regionSize - offset);
-            if (toReadLong <= 0)
+        ScanRegionChunks(
+            handle,
+            regionBase,
+            regionSize,
+            results,
+            maxResults,
+            cancellationToken,
+            (buffer, read, chunkBase) =>
             {
-                break;
-            }
-
-            var toRead = (int)toReadLong;
-
-            // Ensure buffer is large enough for last partial read.
-            if (buffer.Length != toRead)
-            {
-                buffer = new byte[toRead];
-            }
-
-            if (!NativeMethods.ReadProcessMemory(handle, regionBase + (nint)offset, buffer, toRead, out var readRaw))
-            {
-                continue;
-            }
-
-            var read = (int)readRaw;
-            if (read < 4)
-            {
-                continue;
-            }
-
-            // Scan unaligned; it's slower but more reliable.
-            for (var i = 0; i <= read - 4 && results.Count < maxResults; i++)
-            {
-                if (BitConverter.ToInt32(buffer, i) == value)
+                for (var i = 0; i <= read - 4 && results.Count < maxResults; i++)
                 {
-                    results.Add(regionBase + (nint)offset + i);
+                    if (BitConverter.ToInt32(buffer, i) == value)
+                    {
+                        results.Add(chunkBase + i);
+                    }
                 }
-            }
-        }
+            });
     }
 
     private static void ScanRegionFloatApprox(
@@ -117,51 +93,83 @@ internal static class ProcessMemoryScanner
         int maxResults,
         CancellationToken cancellationToken)
     {
+        ScanRegionChunks(
+            handle,
+            regionBase,
+            regionSize,
+            results,
+            maxResults,
+            cancellationToken,
+            (buffer, read, chunkBase) =>
+            {
+                for (var i = 0; i <= read - 4 && results.Count < maxResults; i += 4)
+                {
+                    var candidate = BitConverter.ToSingle(buffer, i);
+                    if (!float.IsFinite(candidate))
+                    {
+                        continue;
+                    }
+
+                    if (MathF.Abs(candidate - criteria.Value) <= criteria.Tolerance)
+                    {
+                        results.Add(chunkBase + i);
+                    }
+                }
+            });
+    }
+
+    private static void ScanRegionChunks(
+        nint handle,
+        nint regionBase,
+        long regionSize,
+        List<nint> results,
+        int maxResults,
+        CancellationToken cancellationToken,
+        Action<byte[], int, nint> chunkScanner)
+    {
         const int chunkSize = 64 * 1024;
         var buffer = new byte[chunkSize];
 
         for (long offset = 0; offset < regionSize && results.Count < maxResults; offset += chunkSize)
         {
             cancellationToken.ThrowIfCancellationRequested();
-
-            var toReadLong = Math.Min(chunkSize, regionSize - offset);
-            if (toReadLong <= 0)
+            var toRead = (int)Math.Min(chunkSize, regionSize - offset);
+            if (toRead <= 0)
             {
                 break;
             }
 
-            var toRead = (int)toReadLong;
-            if (buffer.Length != toRead)
-            {
-                buffer = new byte[toRead];
-            }
-
-            if (!NativeMethods.ReadProcessMemory(handle, regionBase + (nint)offset, buffer, toRead, out var readRaw))
+            buffer = EnsureBufferSize(buffer, toRead);
+            if (!TryReadChunk(handle, regionBase, offset, buffer, toRead, out var read))
             {
                 continue;
             }
 
-            var read = (int)readRaw;
-            if (read < 4)
-            {
-                continue;
-            }
-
-            // Step by 4 bytes for float scanning. Fast and sufficient for typical game float fields.
-            for (var i = 0; i <= read - 4 && results.Count < maxResults; i += 4)
-            {
-                var candidate = BitConverter.ToSingle(buffer, i);
-                if (!float.IsFinite(candidate))
-                {
-                    continue;
-                }
-
-                if (MathF.Abs(candidate - criteria.Value) <= criteria.Tolerance)
-                {
-                    results.Add(regionBase + (nint)offset + i);
-                }
-            }
+            chunkScanner(buffer, read, regionBase + (nint)offset);
         }
+    }
+
+    private static byte[] EnsureBufferSize(byte[] buffer, int requiredLength)
+    {
+        return buffer.Length == requiredLength ? buffer : new byte[requiredLength];
+    }
+
+    private static bool TryReadChunk(
+        nint handle,
+        nint regionBase,
+        long offset,
+        byte[] buffer,
+        int toRead,
+        out int read)
+    {
+        read = 0;
+        if (!NativeMethods.ReadProcessMemory(handle, regionBase + (nint)offset, buffer, toRead, out var readRaw))
+        {
+            return false;
+        }
+
+        read = (int)readRaw;
+        return read >= 4;
     }
 
     private static IReadOnlyList<nint> ScanReadableRegions(

@@ -1114,7 +1114,7 @@ public sealed class RuntimeAdapter : IRuntimeAdapter
             ExecutionKind.Memory => await ExecuteMemoryActionAsync(request, cancellationToken),
             ExecutionKind.Helper => await ExecuteHelperActionAsync(request),
             ExecutionKind.Save => await ExecuteSaveActionAsync(),
-            ExecutionKind.CodePatch => await ExecuteCodePatchActionAsync(request, cancellationToken),
+            ExecutionKind.CodePatch => await ExecuteCodePatchActionAsync(request),
             ExecutionKind.Freeze => new ActionExecutionResult(false, "Freeze actions must be handled by the orchestrator, not the runtime adapter.", AddressSource.None),
             ExecutionKind.Sdk => await ExecuteSdkActionAsync(request, cancellationToken),
             _ => new ActionExecutionResult(false, "Unsupported execution kind", AddressSource.None)
@@ -1678,20 +1678,10 @@ public sealed class RuntimeAdapter : IRuntimeAdapter
             throw new InvalidOperationException("Memory action payload requires 'symbol'.");
         }
 
-        // Route credits writes to the specialised handler BEFORE generic symbol resolution.
-        // SetCreditsAsync performs its own resolution with late-fallback logic, so it must
-        // not be blocked by a missing entry in the attach-time SymbolMap.
-        if (payload[PayloadKeyIntValue] is not null && IsCreditsWrite(request, symbol))
+        var creditsResult = await TryExecuteCreditsWriteAsync(request, symbol, payload, cancellationToken);
+        if (creditsResult is not null)
         {
-            var value = payload[PayloadKeyIntValue]!.GetValue<int>();
-            var lockCredits =
-                TryReadBooleanPayload(payload, "lockCredits", out var lockFromPayload) ? lockFromPayload :
-                TryReadBooleanPayload(payload, "forcePatchHook", out var legacyForcePatchHook) && legacyForcePatchHook;
-            return await SetCreditsAsync(
-                value,
-                lockCredits,
-                verifyReadback: request.Action.VerifyReadback,
-                cancellationToken);
+            return creditsResult;
         }
 
         var symbolInfo = ResolveSymbol(symbol);
@@ -1700,83 +1690,164 @@ public sealed class RuntimeAdapter : IRuntimeAdapter
 
         if (payload[PayloadKeyIntValue] is not null)
         {
-            var value = payload[PayloadKeyIntValue]!.GetValue<int>();
-            var requestedValidation = ValidateRequestedIntValue(symbol, value, validationRule);
-            if (!requestedValidation.IsValid)
-            {
-                return CreateRequestedValidationFailureResult(symbolInfo, requestedValidation);
-            }
-
-            return await WriteWithOptionalRetryAsync(
-                symbol,
-                symbolInfo,
-                value,
-                request.Action.VerifyReadback,
-                isCriticalSymbol,
-                request.RuntimeMode,
-                validationRule,
-                readValue: address => _memory!.Read<int>(address),
-                writeValue: (address, requestedValue) => _memory!.Write(address, requestedValue),
-                compareValues: (expected, actual) => actual == expected,
-                validateObservedValue: observed => ValidateObservedIntValue(symbol, observed, validationRule),
-                formatValue: observed => observed.ToString(),
-                cancellationToken: cancellationToken);
+            return await ExecuteIntMemoryWriteAsync(request, symbol, payload, symbolInfo, validationRule, isCriticalSymbol, cancellationToken);
         }
 
         if (payload["floatValue"] is not null)
         {
-            float value;
-            try { value = payload["floatValue"]!.GetValue<float>(); }
-            catch (InvalidOperationException) { value = (float)payload["floatValue"]!.GetValue<double>(); }
-            var requestedValidation = ValidateRequestedFloatValue(symbol, value, validationRule);
-            if (!requestedValidation.IsValid)
-            {
-                return CreateRequestedValidationFailureResult(symbolInfo, requestedValidation);
-            }
-
-            return await WriteWithOptionalRetryAsync(
-                symbol,
-                symbolInfo,
-                value,
-                request.Action.VerifyReadback,
-                isCriticalSymbol,
-                request.RuntimeMode,
-                validationRule,
-                readValue: address => _memory!.Read<float>(address),
-                writeValue: (address, requestedValue) => _memory!.Write(address, requestedValue),
-                compareValues: (expected, actual) => Math.Abs(actual - expected) <= 0.0001f,
-                validateObservedValue: observed => ValidateObservedFloatValue(symbol, observed, validationRule),
-                formatValue: observed => observed.ToString("0.####"),
-                cancellationToken: cancellationToken);
+            return await ExecuteFloatMemoryWriteAsync(request, symbol, payload, symbolInfo, validationRule, isCriticalSymbol, cancellationToken);
         }
 
         if (payload[PayloadKeyBoolValue] is not null)
         {
-            var value = payload[PayloadKeyBoolValue]!.GetValue<bool>() ? (byte)1 : (byte)0;
-            var requestedValidation = ValidateRequestedIntValue(symbol, value, validationRule);
-            if (!requestedValidation.IsValid)
-            {
-                return CreateRequestedValidationFailureResult(symbolInfo, requestedValidation);
-            }
-
-            return await WriteWithOptionalRetryAsync(
-                symbol,
-                symbolInfo,
-                value,
-                request.Action.VerifyReadback,
-                isCriticalSymbol,
-                request.RuntimeMode,
-                validationRule,
-                readValue: address => _memory!.Read<byte>(address),
-                writeValue: (address, requestedValue) => _memory!.Write(address, requestedValue),
-                compareValues: (expected, actual) => actual == expected,
-                validateObservedValue: observed => ValidateObservedIntValue(symbol, observed, validationRule),
-                formatValue: observed => (observed != 0).ToString(),
-                cancellationToken: cancellationToken);
+            return await ExecuteBoolMemoryWriteAsync(request, symbol, payload, symbolInfo, validationRule, isCriticalSymbol, cancellationToken);
         }
 
-        // Debug convenience: if no value is supplied, treat this as a read.
-        // This is handy for calibration (e.g., verifying that a resolved symbol actually matches in-game values).
+        return ExecuteMemoryRead(symbol, symbolInfo, validationRule, isCriticalSymbol);
+    }
+
+    private async Task<ActionExecutionResult?> TryExecuteCreditsWriteAsync(
+        ActionExecutionRequest request,
+        string symbol,
+        JsonObject payload,
+        CancellationToken cancellationToken)
+    {
+        if (payload[PayloadKeyIntValue] is null || !IsCreditsWrite(request, symbol))
+        {
+            return null;
+        }
+
+        var value = payload[PayloadKeyIntValue]!.GetValue<int>();
+        var lockCredits =
+            TryReadBooleanPayload(payload, "lockCredits", out var lockFromPayload) ? lockFromPayload :
+            TryReadBooleanPayload(payload, "forcePatchHook", out var legacyForcePatchHook) && legacyForcePatchHook;
+        return await SetCreditsAsync(
+            value,
+            lockCredits,
+            verifyReadback: request.Action.VerifyReadback,
+            cancellationToken);
+    }
+
+    private async Task<ActionExecutionResult> ExecuteIntMemoryWriteAsync(
+        ActionExecutionRequest request,
+        string symbol,
+        JsonObject payload,
+        SymbolInfo symbolInfo,
+        SymbolValidationRule? validationRule,
+        bool isCriticalSymbol,
+        CancellationToken cancellationToken)
+    {
+        var value = payload[PayloadKeyIntValue]!.GetValue<int>();
+        var requestedValidation = ValidateRequestedIntValue(symbol, value, validationRule);
+        if (!requestedValidation.IsValid)
+        {
+            return CreateRequestedValidationFailureResult(symbolInfo, requestedValidation);
+        }
+
+        return await WriteWithOptionalRetryAsync(
+            new WriteOperation<int>
+            {
+                Symbol = symbol,
+                SymbolInfo = symbolInfo,
+                RequestedValue = value,
+                VerifyReadback = request.Action.VerifyReadback,
+                IsCriticalSymbol = isCriticalSymbol,
+                RuntimeMode = request.RuntimeMode,
+                ValidationRule = validationRule,
+                ReadValue = address => _memory!.Read<int>(address),
+                WriteValue = (address, requestedValue) => _memory!.Write(address, requestedValue),
+                CompareValues = (expected, actual) => actual == expected,
+                ValidateObservedValue = observed => ValidateObservedIntValue(symbol, observed, validationRule),
+                FormatValue = observed => observed.ToString()
+            },
+            cancellationToken);
+    }
+
+    private async Task<ActionExecutionResult> ExecuteFloatMemoryWriteAsync(
+        ActionExecutionRequest request,
+        string symbol,
+        JsonObject payload,
+        SymbolInfo symbolInfo,
+        SymbolValidationRule? validationRule,
+        bool isCriticalSymbol,
+        CancellationToken cancellationToken)
+    {
+        float value;
+        try
+        {
+            value = payload["floatValue"]!.GetValue<float>();
+        }
+        catch (InvalidOperationException)
+        {
+            value = (float)payload["floatValue"]!.GetValue<double>();
+        }
+
+        var requestedValidation = ValidateRequestedFloatValue(symbol, value, validationRule);
+        if (!requestedValidation.IsValid)
+        {
+            return CreateRequestedValidationFailureResult(symbolInfo, requestedValidation);
+        }
+
+        return await WriteWithOptionalRetryAsync(
+            new WriteOperation<float>
+            {
+                Symbol = symbol,
+                SymbolInfo = symbolInfo,
+                RequestedValue = value,
+                VerifyReadback = request.Action.VerifyReadback,
+                IsCriticalSymbol = isCriticalSymbol,
+                RuntimeMode = request.RuntimeMode,
+                ValidationRule = validationRule,
+                ReadValue = address => _memory!.Read<float>(address),
+                WriteValue = (address, requestedValue) => _memory!.Write(address, requestedValue),
+                CompareValues = (expected, actual) => Math.Abs(actual - expected) <= 0.0001f,
+                ValidateObservedValue = observed => ValidateObservedFloatValue(symbol, observed, validationRule),
+                FormatValue = observed => observed.ToString("0.####")
+            },
+            cancellationToken);
+    }
+
+    private async Task<ActionExecutionResult> ExecuteBoolMemoryWriteAsync(
+        ActionExecutionRequest request,
+        string symbol,
+        JsonObject payload,
+        SymbolInfo symbolInfo,
+        SymbolValidationRule? validationRule,
+        bool isCriticalSymbol,
+        CancellationToken cancellationToken)
+    {
+        var value = payload[PayloadKeyBoolValue]!.GetValue<bool>() ? (byte)1 : (byte)0;
+        var requestedValidation = ValidateRequestedIntValue(symbol, value, validationRule);
+        if (!requestedValidation.IsValid)
+        {
+            return CreateRequestedValidationFailureResult(symbolInfo, requestedValidation);
+        }
+
+        return await WriteWithOptionalRetryAsync(
+            new WriteOperation<byte>
+            {
+                Symbol = symbol,
+                SymbolInfo = symbolInfo,
+                RequestedValue = value,
+                VerifyReadback = request.Action.VerifyReadback,
+                IsCriticalSymbol = isCriticalSymbol,
+                RuntimeMode = request.RuntimeMode,
+                ValidationRule = validationRule,
+                ReadValue = address => _memory!.Read<byte>(address),
+                WriteValue = (address, requestedValue) => _memory!.Write(address, requestedValue),
+                CompareValues = (expected, actual) => actual == expected,
+                ValidateObservedValue = observed => ValidateObservedIntValue(symbol, observed, validationRule),
+                FormatValue = observed => (observed != 0).ToString()
+            },
+            cancellationToken);
+    }
+
+    private ActionExecutionResult ExecuteMemoryRead(
+        string symbol,
+        SymbolInfo symbolInfo,
+        SymbolValidationRule? validationRule,
+        bool isCriticalSymbol)
+    {
         var read = symbolInfo.ValueType switch
         {
             SymbolValueType.Int32 => (object)_memory!.Read<int>(symbolInfo.Address),
@@ -1800,7 +1871,6 @@ public sealed class RuntimeAdapter : IRuntimeAdapter
         var observedValidation = ValidateObservedReadValue(symbol, read, symbolInfo.ValueType, validationRule);
         readDiagnostics["validationStatus"] = observedValidation.IsValid ? "pass" : "degraded";
         readDiagnostics["validationReasonCode"] = observedValidation.ReasonCode;
-
         if (!observedValidation.IsValid)
         {
             return new ActionExecutionResult(
@@ -2042,42 +2112,59 @@ public sealed class RuntimeAdapter : IRuntimeAdapter
         return parts.Count == 0 ? "none" : string.Join(";", parts);
     }
 
+    private sealed class WriteOperation<T>
+        where T : struct
+    {
+        public required string Symbol { get; init; }
+
+        public required SymbolInfo SymbolInfo { get; init; }
+
+        public required T RequestedValue { get; init; }
+
+        public required bool VerifyReadback { get; init; }
+
+        public required bool IsCriticalSymbol { get; init; }
+
+        public required RuntimeMode RuntimeMode { get; init; }
+
+        public required SymbolValidationRule? ValidationRule { get; init; }
+
+        public required Func<nint, T> ReadValue { get; init; }
+
+        public required Action<nint, T> WriteValue { get; init; }
+
+        public required Func<T, T, bool> CompareValues { get; init; }
+
+        public required Func<T, ValidationOutcome> ValidateObservedValue { get; init; }
+
+        public required Func<T, string> FormatValue { get; init; }
+    }
+
     private async Task<ActionExecutionResult> WriteWithOptionalRetryAsync<T>(
-        string symbol,
-        SymbolInfo symbolInfo,
-        T requestedValue,
-        bool verifyReadback,
-        bool isCriticalSymbol,
-        RuntimeMode runtimeMode,
-        SymbolValidationRule? validationRule,
-        Func<nint, T> readValue,
-        Action<nint, T> writeValue,
-        Func<T, T, bool> compareValues,
-        Func<T, ValidationOutcome> validateObservedValue,
-        Func<T, string> formatValue,
+        WriteOperation<T> operation,
         CancellationToken cancellationToken)
         where T : struct
     {
-        var diagnostics = CreateSymbolDiagnostics(symbolInfo, validationRule, isCriticalSymbol);
-        diagnostics["requestedValue"] = formatValue(requestedValue);
+        var diagnostics = CreateSymbolDiagnostics(operation.SymbolInfo, operation.ValidationRule, operation.IsCriticalSymbol);
+        diagnostics["requestedValue"] = operation.FormatValue(operation.RequestedValue);
 
         (bool Success, string ReasonCode, string Message, bool HasObservedValue, T ObservedValue) AttemptWrite(SymbolInfo activeSymbol, string attemptPrefix)
         {
             try
             {
-                writeValue(activeSymbol.Address, requestedValue);
+                operation.WriteValue(activeSymbol.Address, operation.RequestedValue);
             }
             catch (Exception ex)
             {
                 return (
                     false,
                     $"{attemptPrefix}_write_exception",
-                    $"Write failed for symbol '{symbol}' at {ToHex(activeSymbol.Address)}: {ex.Message}",
+                    $"Write failed for symbol '{operation.Symbol}' at {ToHex(activeSymbol.Address)}: {ex.Message}",
                     false,
                     default);
             }
 
-            if (!verifyReadback)
+            if (!operation.VerifyReadback)
             {
                 return (true, "ok", string.Empty, false, default);
             }
@@ -2085,20 +2172,20 @@ public sealed class RuntimeAdapter : IRuntimeAdapter
             T observed;
             try
             {
-                observed = readValue(activeSymbol.Address);
+                observed = operation.ReadValue(activeSymbol.Address);
             }
             catch (Exception ex)
             {
                 return (
                     false,
                     $"{attemptPrefix}_readback_exception",
-                    $"Readback failed for symbol '{symbol}' at {ToHex(activeSymbol.Address)}: {ex.Message}",
+                    $"Readback failed for symbol '{operation.Symbol}' at {ToHex(activeSymbol.Address)}: {ex.Message}",
                     false,
                     default);
             }
 
-            var matches = compareValues(requestedValue, observed);
-            var observedValidation = validateObservedValue(observed);
+            var matches = operation.CompareValues(operation.RequestedValue, observed);
+            var observedValidation = operation.ValidateObservedValue(observed);
             if (matches && observedValidation.IsValid)
             {
                 return (true, "ok", string.Empty, true, observed);
@@ -2109,7 +2196,7 @@ public sealed class RuntimeAdapter : IRuntimeAdapter
                 return (
                     false,
                     $"{attemptPrefix}_readback_mismatch",
-                    $"Readback mismatch for {symbol}: expected {formatValue(requestedValue)}, got {formatValue(observed)}",
+                    $"Readback mismatch for {operation.Symbol}: expected {operation.FormatValue(operation.RequestedValue)}, got {operation.FormatValue(observed)}",
                     true,
                     observed);
             }
@@ -2117,35 +2204,35 @@ public sealed class RuntimeAdapter : IRuntimeAdapter
             return (false, observedValidation.ReasonCode, observedValidation.Message, true, observed);
         }
 
-        var initial = AttemptWrite(symbolInfo, "initial");
+        var initial = AttemptWrite(operation.SymbolInfo, "initial");
         if (initial.HasObservedValue)
         {
-            diagnostics["readbackValue"] = formatValue(initial.ObservedValue);
+            diagnostics["readbackValue"] = operation.FormatValue(initial.ObservedValue);
         }
 
         if (initial.Success)
         {
             return new ActionExecutionResult(
                 true,
-                $"Wrote value {formatValue(requestedValue)} to symbol {symbol}",
-                symbolInfo.Source,
+                $"Wrote value {operation.FormatValue(operation.RequestedValue)} to symbol {operation.Symbol}",
+                operation.SymbolInfo.Source,
                 diagnostics);
         }
 
         diagnostics["initialFailureReasonCode"] = initial.ReasonCode;
-        if (!isCriticalSymbol)
+        if (!operation.IsCriticalSymbol)
         {
             diagnostics[DiagnosticKeyFailureReasonCode] = initial.ReasonCode;
-            return new ActionExecutionResult(false, initial.Message, symbolInfo.Source, diagnostics);
+            return new ActionExecutionResult(false, initial.Message, operation.SymbolInfo.Source, diagnostics);
         }
 
         diagnostics["retryAttempted"] = true;
-        var reresolve = await TryReResolveSymbolAsync(symbol, runtimeMode, cancellationToken);
+        var reresolve = await TryReResolveSymbolAsync(operation.Symbol, operation.RuntimeMode, cancellationToken);
         diagnostics["retryReasonCode"] = reresolve.ReasonCode;
         if (!reresolve.Succeeded || reresolve.Symbol is null)
         {
             diagnostics[DiagnosticKeyFailureReasonCode] = reresolve.ReasonCode;
-            return new ActionExecutionResult(false, reresolve.Message, symbolInfo.Source, diagnostics);
+            return new ActionExecutionResult(false, reresolve.Message, operation.SymbolInfo.Source, diagnostics);
         }
 
         var refreshedSymbol = reresolve.Symbol;
@@ -2157,7 +2244,7 @@ public sealed class RuntimeAdapter : IRuntimeAdapter
         var retryAttempt = AttemptWrite(refreshedSymbol, "retry");
         if (retryAttempt.HasObservedValue)
         {
-            diagnostics["retryReadbackValue"] = formatValue(retryAttempt.ObservedValue);
+            diagnostics["retryReadbackValue"] = operation.FormatValue(retryAttempt.ObservedValue);
         }
 
         if (retryAttempt.Success)
@@ -2165,7 +2252,7 @@ public sealed class RuntimeAdapter : IRuntimeAdapter
             diagnostics.Remove(DiagnosticKeyFailureReasonCode);
             return new ActionExecutionResult(
                 true,
-                $"Wrote value {formatValue(requestedValue)} to symbol {symbol} after re-resolve retry.",
+                $"Wrote value {operation.FormatValue(operation.RequestedValue)} to symbol {operation.Symbol} after re-resolve retry.",
                 refreshedSymbol.Source,
                 diagnostics);
         }
@@ -2284,7 +2371,7 @@ public sealed class RuntimeAdapter : IRuntimeAdapter
     ///   - "patchBytes"   : hex string of bytes to write when enabling (e.g. "90 90 90 90 90")
     ///   - "originalBytes" : hex string of expected original bytes for validation (e.g. "48 8B 74 24 68")
     /// </summary>
-    private Task<ActionExecutionResult> ExecuteCodePatchActionAsync(ActionExecutionRequest request, CancellationToken cancellationToken)
+    private Task<ActionExecutionResult> ExecuteCodePatchActionAsync(ActionExecutionRequest request)
     {
         if (request.Action.Id.Equals(ActionIdSetUnitCap, StringComparison.OrdinalIgnoreCase))
         {
