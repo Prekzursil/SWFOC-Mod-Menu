@@ -26,6 +26,27 @@ public sealed class MainViewModel : INotifyPropertyChanged
     private const string DefaultBaseSwfocProfileId = "base_swfoc";
     private const string UnknownReason = "unknown";
     private const string CompactFloatFormat = "0.###";
+    private const string ActionIdReadSymbol = "read_symbol";
+    private const string ActionIdSetCredits = "set_credits";
+    private const string ActionIdFreezeTimer = "freeze_timer";
+    private const string ActionIdToggleFogReveal = "toggle_fog_reveal";
+    private const string ActionIdToggleAi = "toggle_ai";
+    private const string ActionIdSetInstantBuildMultiplier = "set_instant_build_multiplier";
+    private const string ActionIdSetUnitCap = "set_unit_cap";
+    private const string ActionIdFreezeSymbol = "freeze_symbol";
+    private const string ActionIdUnfreezeSymbol = "unfreeze_symbol";
+    private const string ActionIdToggleTacticalGodMode = "toggle_tactical_god_mode";
+    private const string ActionIdToggleTacticalOneHitMode = "toggle_tactical_one_hit_mode";
+    private const string SymbolCredits = "credits";
+    private const string SymbolGameTimerFreeze = "game_timer_freeze";
+    private const string SymbolFogReveal = "fog_reveal";
+    private const string SymbolAiEnabled = "ai_enabled";
+    private const string SymbolTacticalGodMode = "tactical_god_mode";
+    private const string SymbolTacticalOneHitMode = "tactical_one_hit_mode";
+    private const string PayloadKeySymbol = "symbol";
+    private const string PayloadKeyIntValue = "intValue";
+    private const string PayloadKeyBoolValue = "boolValue";
+    private const string PayloadKeyEnable = "enable";
 
     private readonly IProfileRepository _profiles;
     private readonly IProcessLocator _processLocator;
@@ -115,12 +136,12 @@ public sealed class MainViewModel : INotifyPropertyChanged
     private static readonly IReadOnlyDictionary<string, string> DefaultSymbolByActionId =
         new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
         {
-            ["read_symbol"] = "credits",
-            ["set_credits"] = "credits",
-            ["freeze_timer"] = "game_timer_freeze",
-            ["toggle_fog_reveal"] = "fog_reveal",
-            ["toggle_ai"] = "ai_enabled",
-            ["set_instant_build_multiplier"] = "instant_build",
+            [ActionIdReadSymbol] = SymbolCredits,
+            [ActionIdSetCredits] = SymbolCredits,
+            [ActionIdFreezeTimer] = SymbolGameTimerFreeze,
+            [ActionIdToggleFogReveal] = SymbolFogReveal,
+            [ActionIdToggleAi] = SymbolAiEnabled,
+            [ActionIdSetInstantBuildMultiplier] = "instant_build",
 
             ["set_selected_hp"] = "selected_hp",
             ["set_selected_shield"] = "selected_shield",
@@ -133,11 +154,11 @@ public sealed class MainViewModel : INotifyPropertyChanged
             ["set_planet_owner"] = "planet_owner",
             ["set_hero_respawn_timer"] = "hero_respawn_timer",
 
-            ["toggle_tactical_god_mode"] = "tactical_god_mode",
-            ["toggle_tactical_one_hit_mode"] = "tactical_one_hit_mode",
+            [ActionIdToggleTacticalGodMode] = SymbolTacticalGodMode,
+            [ActionIdToggleTacticalOneHitMode] = SymbolTacticalOneHitMode,
             ["set_game_speed"] = "game_speed",
-            ["freeze_symbol"] = "credits",
-            ["unfreeze_symbol"] = "credits",
+            [ActionIdFreezeSymbol] = SymbolCredits,
+            [ActionIdUnfreezeSymbol] = SymbolCredits,
         };
 
     private static readonly IReadOnlyDictionary<string, string> DefaultHelperHookByActionId =
@@ -148,48 +169,28 @@ public sealed class MainViewModel : INotifyPropertyChanged
             ["toggle_roe_respawn_helper"] = "roe_respawn_bridge",
         };
 
-    public MainViewModel(
-        IProfileRepository profiles,
-        IProcessLocator processLocator,
-        ILaunchContextResolver launchContextResolver,
-        IProfileVariantResolver profileVariantResolver,
-        IRuntimeAdapter runtime,
-        TrainerOrchestrator orchestrator,
-        ICatalogService catalog,
-        ISaveCodec saveCodec,
-        ISavePatchPackService savePatchPackService,
-        ISavePatchApplyService savePatchApplyService,
-        IHelperModService helper,
-        IProfileUpdateService updates,
-        IModOnboardingService modOnboarding,
-        IModCalibrationService modCalibration,
-        ISupportBundleService supportBundles,
-        ITelemetrySnapshotService telemetry,
-        IValueFreezeService freezeService,
-        IActionReliabilityService actionReliability,
-        ISelectedUnitTransactionService selectedUnitTransactions,
-        ISpawnPresetService spawnPresets)
+    public MainViewModel(MainViewModelDependencies dependencies)
     {
-        _profiles = profiles;
-        _processLocator = processLocator;
-        _launchContextResolver = launchContextResolver;
-        _profileVariantResolver = profileVariantResolver;
-        _runtime = runtime;
-        _orchestrator = orchestrator;
-        _catalog = catalog;
-        _saveCodec = saveCodec;
-        _savePatchPackService = savePatchPackService;
-        _savePatchApplyService = savePatchApplyService;
-        _helper = helper;
-        _updates = updates;
-        _modOnboarding = modOnboarding;
-        _modCalibration = modCalibration;
-        _supportBundles = supportBundles;
-        _telemetry = telemetry;
-        _freezeService = freezeService;
-        _actionReliability = actionReliability;
-        _selectedUnitTransactions = selectedUnitTransactions;
-        _spawnPresets = spawnPresets;
+        _profiles = dependencies.Profiles;
+        _processLocator = dependencies.ProcessLocator;
+        _launchContextResolver = dependencies.LaunchContextResolver;
+        _profileVariantResolver = dependencies.ProfileVariantResolver;
+        _runtime = dependencies.Runtime;
+        _orchestrator = dependencies.Orchestrator;
+        _catalog = dependencies.Catalog;
+        _saveCodec = dependencies.SaveCodec;
+        _savePatchPackService = dependencies.SavePatchPackService;
+        _savePatchApplyService = dependencies.SavePatchApplyService;
+        _helper = dependencies.Helper;
+        _updates = dependencies.Updates;
+        _modOnboarding = dependencies.ModOnboarding;
+        _modCalibration = dependencies.ModCalibration;
+        _supportBundles = dependencies.SupportBundles;
+        _telemetry = dependencies.Telemetry;
+        _freezeService = dependencies.FreezeService;
+        _actionReliability = dependencies.ActionReliability;
+        _selectedUnitTransactions = dependencies.SelectedUnitTransactions;
+        _spawnPresets = dependencies.SpawnPresets;
 
         Profiles = new ObservableCollection<string>();
         Actions = new ObservableCollection<string>();
@@ -845,29 +846,7 @@ public sealed class MainViewModel : INotifyPropertyChanged
                 return "Detected game processes: none. Ensure the game is running and try launching trainer as Administrator.";
             }
 
-            var summary = string.Join(", ", all
-                .Take(3)
-                .Select(x =>
-                {
-                    var cmd = x.Metadata is not null &&
-                              x.Metadata.TryGetValue("commandLineAvailable", out var cmdValue)
-                        ? cmdValue
-                        : "False";
-                    var mods = x.Metadata is not null &&
-                               x.Metadata.TryGetValue("steamModIdsDetected", out var ids)
-                        ? ids
-                        : string.Empty;
-                    var via = x.Metadata is not null &&
-                              x.Metadata.TryGetValue("detectedVia", out var detectedVia)
-                        ? detectedVia
-                        : UnknownReason;
-                    var ctx = x.LaunchContext;
-                    var launch = ctx is null ? "n/a" : ctx.LaunchKind.ToString();
-                    var recommended = ctx?.Recommendation.ProfileId ?? string.Empty;
-                    var reason = ctx?.Recommendation.ReasonCode ?? UnknownReason;
-                    var confidence = ctx is null ? "0.00" : ctx.Recommendation.Confidence.ToString("0.00");
-                    return $"{x.ProcessName}:{x.ProcessId}:{x.ExeTarget}:cmd={cmd}:mods={mods}:launch={launch}:rec={recommended}:{reason}:{confidence}:via={via}";
-                }));
+            var summary = string.Join(", ", all.Take(3).Select(BuildAttachHintSegment));
             var more = all.Count > 3 ? $", +{all.Count - 3} more" : string.Empty;
             return $"Detected game processes: {summary}{more}";
         }
@@ -875,6 +854,18 @@ public sealed class MainViewModel : INotifyPropertyChanged
         {
             return "Could not enumerate process diagnostics.";
         }
+    }
+
+    private static string BuildAttachHintSegment(ProcessMetadata process)
+    {
+        var cmd = ReadProcessMetadataValue(process, "commandLineAvailable", "False");
+        var mods = ReadProcessMetadataValue(process, "steamModIdsDetected", string.Empty);
+        var via = ReadProcessMetadataValue(process, "detectedVia", UnknownReason);
+        var launch = process.LaunchContext?.LaunchKind.ToString() ?? "n/a";
+        var recommended = process.LaunchContext?.Recommendation.ProfileId ?? string.Empty;
+        var reason = process.LaunchContext?.Recommendation.ReasonCode ?? UnknownReason;
+        var confidence = process.LaunchContext?.Recommendation.Confidence.ToString("0.00") ?? "0.00";
+        return $"{process.ProcessName}:{process.ProcessId}:{process.ExeTarget}:cmd={cmd}:mods={mods}:launch={launch}:rec={recommended}:{reason}:{confidence}:via={via}";
     }
 
     private static bool HasSteamModId(IEnumerable<ProcessMetadata> processes, string workshopId)
@@ -927,54 +918,17 @@ public sealed class MainViewModel : INotifyPropertyChanged
 
     private static string BuildProcessDiagnosticSummary(ProcessMetadata process)
     {
-        var cmdAvailable = process.Metadata is not null &&
-                           process.Metadata.TryGetValue("commandLineAvailable", out var cmdRaw)
-            ? cmdRaw
-            : "False";
-        var mods = "none";
-        if (process.Metadata is not null &&
-            process.Metadata.TryGetValue("steamModIdsDetected", out var ids) &&
-            !string.IsNullOrWhiteSpace(ids))
-        {
-            mods = ids;
-        }
-        var via = process.Metadata is not null &&
-                  process.Metadata.TryGetValue("detectedVia", out var detectedVia)
-            ? detectedVia
-            : UnknownReason;
-        var dependencyState = process.Metadata is not null &&
-                              process.Metadata.TryGetValue("dependencyValidation", out var validation)
-            ? validation
-            : "Pass";
-        var dependencyMessage = process.Metadata is not null &&
-                                process.Metadata.TryGetValue("dependencyValidationMessage", out var message)
-            ? message
-            : string.Empty;
-
-        var dependencySegment = dependencyState.Equals("Pass", StringComparison.OrdinalIgnoreCase) ||
-                                string.IsNullOrWhiteSpace(dependencyMessage)
-            ? $"dependency={dependencyState}"
-            : $"dependency={dependencyState} ({dependencyMessage})";
-        var fallbackRate = process.Metadata is not null &&
-                           process.Metadata.TryGetValue("fallbackHitRate", out var fallbackRateRaw)
-            ? fallbackRateRaw
-            : "n/a";
-        var unresolvedRate = process.Metadata is not null &&
-                             process.Metadata.TryGetValue("unresolvedSymbolRate", out var unresolvedRateRaw)
-            ? unresolvedRateRaw
-            : "n/a";
-        var resolvedVariant = process.Metadata is not null &&
-                              process.Metadata.TryGetValue("resolvedVariant", out var resolvedVariantRaw)
-            ? resolvedVariantRaw
-            : "n/a";
-        var resolvedVariantReason = process.Metadata is not null &&
-                                    process.Metadata.TryGetValue("resolvedVariantReasonCode", out var resolvedVariantReasonRaw)
-            ? resolvedVariantReasonRaw
-            : "n/a";
-        var resolvedVariantConfidence = process.Metadata is not null &&
-                                        process.Metadata.TryGetValue("resolvedVariantConfidence", out var resolvedVariantConfidenceRaw)
-            ? resolvedVariantConfidenceRaw
-            : "0.00";
+        var cmdAvailable = ReadProcessMetadataValue(process, "commandLineAvailable", "False");
+        var mods = ReadProcessMetadataValue(process, "steamModIdsDetected", "none");
+        var via = ReadProcessMetadataValue(process, "detectedVia", UnknownReason);
+        var dependencyState = ReadProcessMetadataValue(process, "dependencyValidation", "Pass");
+        var dependencyMessage = ReadProcessMetadataValue(process, "dependencyValidationMessage", string.Empty);
+        var dependencySegment = BuildDependencySegment(dependencyState, dependencyMessage);
+        var fallbackRate = ReadProcessMetadataValue(process, "fallbackHitRate", "n/a");
+        var unresolvedRate = ReadProcessMetadataValue(process, "unresolvedSymbolRate", "n/a");
+        var resolvedVariant = ReadProcessMetadataValue(process, "resolvedVariant", "n/a");
+        var resolvedVariantReason = ReadProcessMetadataValue(process, "resolvedVariantReasonCode", "n/a");
+        var resolvedVariantConfidence = ReadProcessMetadataValue(process, "resolvedVariantConfidence", "0.00");
         var launchKind = process.LaunchContext?.LaunchKind.ToString() ?? "Unknown";
         var modPath = process.LaunchContext?.ModPathNormalized;
         var recProfile = process.LaunchContext?.Recommendation.ProfileId ?? "none";
@@ -988,6 +942,27 @@ public sealed class MainViewModel : INotifyPropertyChanged
         var selectionScore = process.SelectionScore.ToString("0.00", CultureInfo.InvariantCulture);
         var modPathSegment = string.IsNullOrWhiteSpace(modPath) ? "modPath=none" : $"modPath={modPath}";
         return $"target={process.ExeTarget} | launch={launchKind} | hostRole={hostRole} | score={selectionScore} | module={moduleSize} | workshopMatches={workshopMatchCount} | cmdLine={cmdAvailable} | mods={mods} | {modPathSegment} | rec={recProfile}:{recReason}:{recConfidence} | variant={resolvedVariant}:{resolvedVariantReason}:{resolvedVariantConfidence} | via={via} | {dependencySegment} | fallbackRate={fallbackRate} | unresolvedRate={unresolvedRate}";
+    }
+
+    private static string ReadProcessMetadataValue(ProcessMetadata process, string key, string fallback)
+    {
+        if (process.Metadata is null || !process.Metadata.TryGetValue(key, out var value) || string.IsNullOrWhiteSpace(value))
+        {
+            return fallback;
+        }
+
+        return value;
+    }
+
+    private static string BuildDependencySegment(string dependencyState, string dependencyMessage)
+    {
+        if (dependencyState.Equals("Pass", StringComparison.OrdinalIgnoreCase) ||
+            string.IsNullOrWhiteSpace(dependencyMessage))
+        {
+            return $"dependency={dependencyState}";
+        }
+
+        return $"dependency={dependencyState} ({dependencyMessage})";
     }
 
     private static bool IsActionAvailableForCurrentSession(string actionId, ActionSpec spec, AttachSession session)
@@ -1057,7 +1032,7 @@ public sealed class MainViewModel : INotifyPropertyChanged
             return null;
         }
 
-        var requiresSymbol = required.Any(x => string.Equals(x?.GetValue<string>(), "symbol", StringComparison.OrdinalIgnoreCase));
+        var requiresSymbol = required.Any(x => string.Equals(x?.GetValue<string>(), PayloadKeySymbol, StringComparison.OrdinalIgnoreCase));
         if (!requiresSymbol)
         {
             return null;
@@ -1200,75 +1175,105 @@ public sealed class MainViewModel : INotifyPropertyChanged
 
     private void ApplyPayloadTemplateForSelectedAction()
     {
-        if (string.IsNullOrWhiteSpace(SelectedActionId))
+        if (!TryResolveTemplateAction(out var action))
         {
             return;
         }
 
-        if (!_loadedActionSpecs.TryGetValue(SelectedActionId, out var action))
+        if (!TryGetRequiredPayloadKeys(action, out var required))
         {
             return;
         }
 
-        if (!action.PayloadSchema.TryGetPropertyValue("required", out var requiredNode) || requiredNode is not JsonArray required)
-        {
-            return;
-        }
-
-        var payload = new JsonObject();
-
-        foreach (var node in required)
-        {
-            var key = node?.GetValue<string>();
-            if (string.IsNullOrWhiteSpace(key))
-            {
-                continue;
-            }
-
-            payload[key] = key switch
-            {
-                "symbol" => DefaultSymbolByActionId.TryGetValue(SelectedActionId, out var sym) ? sym : string.Empty,
-                "intValue" => SelectedActionId switch
-                {
-                    "set_credits" => 1000000,
-                    "set_unit_cap" => 99999,
-                    _ => 0
-                },
-                "floatValue" => (float)1.0,
-                "boolValue" => true,
-                "enable" => true,
-                "freeze" => !SelectedActionId.Equals("unfreeze_symbol", StringComparison.OrdinalIgnoreCase),
-                "patchBytes" => "90 90 90 90 90",
-                "originalBytes" => "48 8B 74 24 68",
-                "helperHookId" => DefaultHelperHookByActionId.TryGetValue(SelectedActionId, out var hook) ? hook : SelectedActionId,
-                "unitId" => string.Empty,
-                "entryMarker" => string.Empty,
-                "faction" => string.Empty,
-                "globalKey" => string.Empty,
-                "nodePath" => string.Empty,
-                "value" => string.Empty,
-                _ => string.Empty
-            };
-        }
-
-        if (SelectedActionId.Equals("set_credits", StringComparison.OrdinalIgnoreCase))
-        {
-            payload["lockCredits"] = false;
-        }
-
-        // For freeze_symbol, include a default intValue so the user has a working template.
-        if (SelectedActionId.Equals("freeze_symbol", StringComparison.OrdinalIgnoreCase) && !payload.ContainsKey("intValue"))
-        {
-            payload["intValue"] = 1000000;
-        }
-
-        // Only apply a template when it would actually help. Don't clobber the user's JSON with "{}".
+        var payload = BuildPayloadTemplate(required);
+        AddActionSpecificPayloadDefaults(payload);
         if (payload.Count == 0)
         {
             return;
         }
 
         PayloadJson = payload.ToJsonString(PrettyJson);
+    }
+
+    private bool TryResolveTemplateAction(out ActionSpec action)
+    {
+        if (!string.IsNullOrWhiteSpace(SelectedActionId) &&
+            _loadedActionSpecs.TryGetValue(SelectedActionId, out var resolved))
+        {
+            action = resolved;
+            return true;
+        }
+
+        action = null!;
+        return false;
+    }
+
+    private static bool TryGetRequiredPayloadKeys(ActionSpec action, out JsonArray required)
+    {
+        required = default!;
+        return action.PayloadSchema.TryGetPropertyValue("required", out var requiredNode) && requiredNode is JsonArray array &&
+               (required = array) is not null;
+    }
+
+    private JsonObject BuildPayloadTemplate(JsonArray required)
+    {
+        var payload = new JsonObject();
+        foreach (var key in required
+                     .Select(node => node?.GetValue<string>())
+                     .Where(static key => !string.IsNullOrWhiteSpace(key))
+                     .Select(static key => key!))
+        {
+            payload[key] = JsonValue.Create(BuildDefaultPayloadValue(key));
+        }
+
+        return payload;
+    }
+
+    private object BuildDefaultPayloadValue(string key)
+    {
+        return key switch
+        {
+            PayloadKeySymbol => DefaultSymbolByActionId.TryGetValue(SelectedActionId, out var symbol) ? symbol : string.Empty,
+            PayloadKeyIntValue => GetDefaultIntPayloadValue(),
+            "floatValue" => 1.0f,
+            PayloadKeyBoolValue => true,
+            PayloadKeyEnable => true,
+            "freeze" => !SelectedActionId.Equals(ActionIdUnfreezeSymbol, StringComparison.OrdinalIgnoreCase),
+            "patchBytes" => "90 90 90 90 90",
+            "originalBytes" => "48 8B 74 24 68",
+            "helperHookId" => DefaultHelperHookByActionId.TryGetValue(SelectedActionId, out var hook) ? hook : SelectedActionId,
+            "unitId" => string.Empty,
+            "entryMarker" => string.Empty,
+            "faction" => string.Empty,
+            "globalKey" => string.Empty,
+            "nodePath" => string.Empty,
+            "value" => string.Empty,
+            _ => string.Empty
+        };
+    }
+
+    private int GetDefaultIntPayloadValue()
+    {
+        return SelectedActionId switch
+        {
+            ActionIdSetCredits => 1000000,
+            ActionIdSetUnitCap => 99999,
+            _ => 0
+        };
+    }
+
+    private void AddActionSpecificPayloadDefaults(JsonObject payload)
+    {
+        if (SelectedActionId.Equals(ActionIdSetCredits, StringComparison.OrdinalIgnoreCase))
+        {
+            payload["lockCredits"] = false;
+        }
+
+        if (SelectedActionId.Equals(ActionIdFreezeSymbol, StringComparison.OrdinalIgnoreCase) &&
+            !payload.ContainsKey(PayloadKeyIntValue))
+        {
+            payload[PayloadKeyIntValue] = 1000000;
+        }
     }
 
     private async Task LoadCatalogAsync()
@@ -1456,7 +1461,7 @@ public sealed class MainViewModel : INotifyPropertyChanged
             Multiselect = false
         };
 
-        if (dialog.ShowDialog() == true)
+        if (dialog.ShowDialog() is true)
         {
             SavePath = dialog.FileName;
             Status = $"Selected save: {SavePath}";
@@ -1540,7 +1545,7 @@ public sealed class MainViewModel : INotifyPropertyChanged
             Multiselect = false
         };
 
-        if (dialog.ShowDialog() == true)
+        if (dialog.ShowDialog() is true)
         {
             SavePatchPackPath = dialog.FileName;
             Status = $"Selected patch pack: {SavePatchPackPath}";
@@ -1567,7 +1572,7 @@ public sealed class MainViewModel : INotifyPropertyChanged
             DefaultExt = ".json"
         };
 
-        if (dialog.ShowDialog() != true)
+        if (dialog.ShowDialog() is not true)
         {
             Status = "Patch-pack export canceled.";
             return;
@@ -2380,9 +2385,8 @@ public sealed class MainViewModel : INotifyPropertyChanged
 
     private async Task QuickSetCreditsAsync()
     {
-        if (!int.TryParse(CreditsValue, out var value) || value < 0)
+        if (!TryParseCreditsValue(out var value))
         {
-            Status = "✗ Invalid credits value. Enter a positive whole number.";
             return;
         }
 
@@ -2392,81 +2396,104 @@ public sealed class MainViewModel : INotifyPropertyChanged
             return;
         }
 
-        if (!await EnsureActionAvailableForCurrentSessionAsync("set_credits", "Credits"))
+        if (!await EnsureActionAvailableForCurrentSessionAsync(ActionIdSetCredits, "Credits"))
         {
             return;
         }
 
-        // Clear any existing freeze / hook lock first.
-        if (_freezeService.IsFrozen("credits"))
-        {
-            _freezeService.Unfreeze("credits");
-        }
-
-        // Route through the full action pipeline which installs a trampoline hook
-        // on the game's cvttss2si instruction to force the FLOAT source value.
-        // This is the only reliable way — writing the int alone is useless because
-        // the game overwrites it from the float every frame.
-        var payload = new JsonObject
-        {
-            ["symbol"] = "credits",
-            ["intValue"] = value,
-            ["lockCredits"] = CreditsFreeze
-        };
+        ResetCreditsFreezeState();
+        var payload = BuildCreditsPayload(value);
 
         try
         {
             var result = await _orchestrator.ExecuteAsync(
                 SelectedProfileId,
-                "set_credits",
+                ActionIdSetCredits,
                 payload,
                 RuntimeMode,
-                BuildActionContext("set_credits"));
-            var diagnosticsSuffix = BuildDiagnosticsStatusSuffix(result);
-
-            if (!result.Succeeded)
-            {
-                Status = $"✗ Credits: {result.Message}{diagnosticsSuffix}";
-                return;
-            }
-
-            var stateTag = ReadDiagnosticString(result.Diagnostics, "creditsStateTag");
-            if (string.IsNullOrWhiteSpace(stateTag))
-            {
-                stateTag = CreditsFreeze ? "HOOK_LOCK" : "HOOK_ONESHOT";
-            }
-
-            if (CreditsFreeze)
-            {
-                if (stateTag.Equals("HOOK_LOCK", StringComparison.OrdinalIgnoreCase))
-                {
-                    // Hook lock is active — the cave code forces the float every frame.
-                    // Register with freeze service only for UI/diagnostics visibility.
-                    _freezeService.FreezeInt("credits", value);
-                    RefreshActiveFreezes();
-                    Status = $"✓ [HOOK_LOCK] Credits locked to {value:N0} (float+int hook active){diagnosticsSuffix}";
-                }
-                else
-                {
-                    Status = $"✗ Credits: unexpected state '{stateTag}' for lock mode.{diagnosticsSuffix}";
-                }
-            }
-            else
-            {
-                if (stateTag.Equals("HOOK_ONESHOT", StringComparison.OrdinalIgnoreCase))
-                {
-                    Status = $"✓ [HOOK_ONESHOT] Credits set to {value:N0} (float+int sync){diagnosticsSuffix}";
-                }
-                else
-                {
-                    Status = $"✗ Credits: unexpected state '{stateTag}' for one-shot mode.{diagnosticsSuffix}";
-                }
-            }
+                BuildActionContext(ActionIdSetCredits));
+            Status = BuildCreditsStatusMessage(value, result);
         }
         catch (Exception ex)
         {
             Status = $"✗ Credits: {ex.Message}";
         }
+    }
+
+    private bool TryParseCreditsValue(out int value)
+    {
+        if (!int.TryParse(CreditsValue, out value) || value < 0)
+        {
+            Status = "✗ Invalid credits value. Enter a positive whole number.";
+            return false;
+        }
+
+        return true;
+    }
+
+    private void ResetCreditsFreezeState()
+    {
+        if (_freezeService.IsFrozen(SymbolCredits))
+        {
+            _freezeService.Unfreeze(SymbolCredits);
+        }
+    }
+
+    private JsonObject BuildCreditsPayload(int value)
+    {
+        return new JsonObject
+        {
+            [PayloadKeySymbol] = SymbolCredits,
+            [PayloadKeyIntValue] = value,
+            ["lockCredits"] = CreditsFreeze
+        };
+    }
+
+    private string BuildCreditsStatusMessage(int value, ActionExecutionResult result)
+    {
+        var diagnosticsSuffix = BuildDiagnosticsStatusSuffix(result);
+        if (!result.Succeeded)
+        {
+            return $"✗ Credits: {result.Message}{diagnosticsSuffix}";
+        }
+
+        var stateTag = ResolveCreditsStateTag(result.Diagnostics);
+        if (CreditsFreeze)
+        {
+            return BuildFreezeCreditsStatus(value, stateTag, diagnosticsSuffix);
+        }
+
+        return BuildOneShotCreditsStatus(value, stateTag, diagnosticsSuffix);
+    }
+
+    private string ResolveCreditsStateTag(IReadOnlyDictionary<string, object?>? diagnostics)
+    {
+        var stateTag = ReadDiagnosticString(diagnostics, "creditsStateTag");
+        if (!string.IsNullOrWhiteSpace(stateTag))
+        {
+            return stateTag;
+        }
+
+        return CreditsFreeze ? "HOOK_LOCK" : "HOOK_ONESHOT";
+    }
+
+    private string BuildFreezeCreditsStatus(int value, string stateTag, string diagnosticsSuffix)
+    {
+        if (!stateTag.Equals("HOOK_LOCK", StringComparison.OrdinalIgnoreCase))
+        {
+            return $"✗ Credits: unexpected state '{stateTag}' for lock mode.{diagnosticsSuffix}";
+        }
+
+        _freezeService.FreezeInt(SymbolCredits, value);
+        RefreshActiveFreezes();
+        return $"✓ [HOOK_LOCK] Credits locked to {value:N0} (float+int hook active){diagnosticsSuffix}";
+    }
+
+    private static string BuildOneShotCreditsStatus(int value, string stateTag, string diagnosticsSuffix)
+    {
+        return stateTag.Equals("HOOK_ONESHOT", StringComparison.OrdinalIgnoreCase)
+            ? $"✓ [HOOK_ONESHOT] Credits set to {value:N0} (float+int sync){diagnosticsSuffix}"
+            : $"✗ Credits: unexpected state '{stateTag}' for one-shot mode.{diagnosticsSuffix}";
     }
 
     private static string ReadDiagnosticString(IReadOnlyDictionary<string, object?>? diagnostics, string key)
@@ -2486,55 +2513,55 @@ public sealed class MainViewModel : INotifyPropertyChanged
 
     private Task QuickFreezeTimerAsync()
     {
-        var currentValue = !_activeToggles.Contains("game_timer_freeze");
-        return QuickRunActionAsync("freeze_timer",
-            new JsonObject { ["symbol"] = "game_timer_freeze", ["boolValue"] = currentValue },
-            "game_timer_freeze");
+        var currentValue = !_activeToggles.Contains(SymbolGameTimerFreeze);
+        return QuickRunActionAsync(ActionIdFreezeTimer,
+            new JsonObject { [PayloadKeySymbol] = SymbolGameTimerFreeze, [PayloadKeyBoolValue] = currentValue },
+            SymbolGameTimerFreeze);
     }
 
     private Task QuickToggleFogAsync()
     {
-        var currentValue = !_activeToggles.Contains("fog_reveal");
-        return QuickRunActionAsync("toggle_fog_reveal",
-            new JsonObject { ["symbol"] = "fog_reveal", ["boolValue"] = currentValue },
-            "fog_reveal");
+        var currentValue = !_activeToggles.Contains(SymbolFogReveal);
+        return QuickRunActionAsync(ActionIdToggleFogReveal,
+            new JsonObject { [PayloadKeySymbol] = SymbolFogReveal, [PayloadKeyBoolValue] = currentValue },
+            SymbolFogReveal);
     }
 
     private Task QuickToggleAiAsync()
     {
         // ai_enabled: toggling to false disables AI, true re-enables
-        var currentValue = _activeToggles.Contains("ai_enabled"); // flip: if active (=disabled), re-enable
-        return QuickRunActionAsync("toggle_ai",
-            new JsonObject { ["symbol"] = "ai_enabled", ["boolValue"] = currentValue },
-            "ai_enabled");
+        var currentValue = _activeToggles.Contains(SymbolAiEnabled); // flip: if active (=disabled), re-enable
+        return QuickRunActionAsync(ActionIdToggleAi,
+            new JsonObject { [PayloadKeySymbol] = SymbolAiEnabled, [PayloadKeyBoolValue] = currentValue },
+            SymbolAiEnabled);
     }
 
     private Task QuickInstantBuildAsync()
     {
         var enable = !_activeToggles.Contains("instant_build_nop");
         return QuickRunActionAsync("toggle_instant_build_patch",
-            new JsonObject { ["enable"] = enable },
+            new JsonObject { [PayloadKeyEnable] = enable },
             "instant_build_nop");
     }
 
     private Task QuickUnitCapAsync()
-        => QuickRunActionAsync("set_unit_cap",
-            new JsonObject { ["symbol"] = "unit_cap", ["intValue"] = 99999, ["enable"] = true });
+        => QuickRunActionAsync(ActionIdSetUnitCap,
+            new JsonObject { [PayloadKeySymbol] = "unit_cap", [PayloadKeyIntValue] = 99999, [PayloadKeyEnable] = true });
 
     private Task QuickGodModeAsync()
     {
-        var currentValue = !_activeToggles.Contains("tactical_god_mode");
-        return QuickRunActionAsync("toggle_tactical_god_mode",
-            new JsonObject { ["symbol"] = "tactical_god_mode", ["boolValue"] = currentValue },
-            "tactical_god_mode");
+        var currentValue = !_activeToggles.Contains(SymbolTacticalGodMode);
+        return QuickRunActionAsync(ActionIdToggleTacticalGodMode,
+            new JsonObject { [PayloadKeySymbol] = SymbolTacticalGodMode, [PayloadKeyBoolValue] = currentValue },
+            SymbolTacticalGodMode);
     }
 
     private Task QuickOneHitAsync()
     {
-        var currentValue = !_activeToggles.Contains("tactical_one_hit_mode");
-        return QuickRunActionAsync("toggle_tactical_one_hit_mode",
-            new JsonObject { ["symbol"] = "tactical_one_hit_mode", ["boolValue"] = currentValue },
-            "tactical_one_hit_mode");
+        var currentValue = !_activeToggles.Contains(SymbolTacticalOneHitMode);
+        return QuickRunActionAsync(ActionIdToggleTacticalOneHitMode,
+            new JsonObject { [PayloadKeySymbol] = SymbolTacticalOneHitMode, [PayloadKeyBoolValue] = currentValue },
+            SymbolTacticalOneHitMode);
     }
 
     private Task QuickUnfreezeAllAsync()
@@ -2579,11 +2606,11 @@ public sealed class MainViewModel : INotifyPropertyChanged
         TrustedPathPolicy.EnsureSubPath(TrustedPathPolicy.GetOrCreateAppDataRoot(), path);
         if (!File.Exists(path))
         {
-            Hotkeys.Add(new HotkeyBindingItem { Gesture = "Ctrl+Shift+1", ActionId = "set_credits", PayloadJson = "{\"symbol\":\"credits\",\"intValue\":1000000,\"lockCredits\":false}" });
-            Hotkeys.Add(new HotkeyBindingItem { Gesture = "Ctrl+Shift+2", ActionId = "freeze_timer", PayloadJson = "{\"symbol\":\"game_timer_freeze\",\"boolValue\":true}" });
-            Hotkeys.Add(new HotkeyBindingItem { Gesture = "Ctrl+Shift+3", ActionId = "toggle_fog_reveal", PayloadJson = "{\"symbol\":\"fog_reveal\",\"boolValue\":true}" });
+            Hotkeys.Add(new HotkeyBindingItem { Gesture = "Ctrl+Shift+1", ActionId = ActionIdSetCredits, PayloadJson = "{\"symbol\":\"credits\",\"intValue\":1000000,\"lockCredits\":false}" });
+            Hotkeys.Add(new HotkeyBindingItem { Gesture = "Ctrl+Shift+2", ActionId = ActionIdFreezeTimer, PayloadJson = "{\"symbol\":\"game_timer_freeze\",\"boolValue\":true}" });
+            Hotkeys.Add(new HotkeyBindingItem { Gesture = "Ctrl+Shift+3", ActionId = ActionIdToggleFogReveal, PayloadJson = "{\"symbol\":\"fog_reveal\",\"boolValue\":true}" });
             Hotkeys.Add(new HotkeyBindingItem { Gesture = "Ctrl+Shift+4", ActionId = "toggle_instant_build_patch", PayloadJson = "{\"enable\":true}" });
-            Hotkeys.Add(new HotkeyBindingItem { Gesture = "Ctrl+Shift+5", ActionId = "freeze_symbol", PayloadJson = "{\"symbol\":\"credits\",\"freeze\":true,\"intValue\":1000000}" });
+            Hotkeys.Add(new HotkeyBindingItem { Gesture = "Ctrl+Shift+5", ActionId = ActionIdFreezeSymbol, PayloadJson = "{\"symbol\":\"credits\",\"freeze\":true,\"intValue\":1000000}" });
             Status = "Created default hotkey bindings in memory";
             return;
         }
@@ -2675,14 +2702,14 @@ public sealed class MainViewModel : INotifyPropertyChanged
     {
         return actionId switch
         {
-            "set_credits" => new JsonObject { ["symbol"] = "credits", ["intValue"] = 1000000, ["lockCredits"] = false },
-            "freeze_timer" => new JsonObject { ["symbol"] = "game_timer_freeze", ["boolValue"] = true },
-            "toggle_fog_reveal" => new JsonObject { ["symbol"] = "fog_reveal", ["boolValue"] = true },
-            "set_unit_cap" => new JsonObject { ["symbol"] = "unit_cap", ["intValue"] = 99999, ["enable"] = true },
-            "toggle_instant_build_patch" => new JsonObject { ["enable"] = true },
-            "set_game_speed" => new JsonObject { ["symbol"] = "game_speed", ["floatValue"] = (float)2.0 },
-            "freeze_symbol" => new JsonObject { ["symbol"] = "credits", ["freeze"] = true, ["intValue"] = 1000000 },
-            "unfreeze_symbol" => new JsonObject { ["symbol"] = "credits", ["freeze"] = false },
+            ActionIdSetCredits => new JsonObject { [PayloadKeySymbol] = SymbolCredits, [PayloadKeyIntValue] = 1000000, ["lockCredits"] = false },
+            ActionIdFreezeTimer => new JsonObject { [PayloadKeySymbol] = SymbolGameTimerFreeze, [PayloadKeyBoolValue] = true },
+            ActionIdToggleFogReveal => new JsonObject { [PayloadKeySymbol] = SymbolFogReveal, [PayloadKeyBoolValue] = true },
+            ActionIdSetUnitCap => new JsonObject { [PayloadKeySymbol] = "unit_cap", [PayloadKeyIntValue] = 99999, [PayloadKeyEnable] = true },
+            "toggle_instant_build_patch" => new JsonObject { [PayloadKeyEnable] = true },
+            "set_game_speed" => new JsonObject { [PayloadKeySymbol] = "game_speed", ["floatValue"] = (float)2.0 },
+            ActionIdFreezeSymbol => new JsonObject { [PayloadKeySymbol] = SymbolCredits, ["freeze"] = true, [PayloadKeyIntValue] = 1000000 },
+            ActionIdUnfreezeSymbol => new JsonObject { [PayloadKeySymbol] = SymbolCredits, ["freeze"] = false },
             _ => new JsonObject()
         };
     }

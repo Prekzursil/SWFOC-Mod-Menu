@@ -50,53 +50,15 @@ public sealed class ModDependencyValidator : IModDependencyValidator
         }
 
         var localRoots = ResolveLocalDependencyRoots(profile, process);
-        if (unresolvedIds.Count > 0 && localRoots.Count > 0)
+        var resolvedByLocal = ResolveDependenciesFromLocalRoots(unresolvedIds, localRoots, marker);
+        if (resolvedByLocal.Count > 0)
         {
-            var availableRoots = localRoots.ToList();
-            var resolvedByLocal = new List<string>();
-            foreach (var unresolved in unresolvedIds.ToArray())
-            {
-                var root = availableRoots.FirstOrDefault(path =>
-                    string.IsNullOrWhiteSpace(marker) || HasMarker(path, marker));
-                if (root is null)
-                {
-                    continue;
-                }
-
-                resolvedByLocal.Add($"{unresolved}->{root}");
-                availableRoots.Remove(root);
-                unresolvedIds.Remove(unresolved);
-            }
-
-            if (resolvedByLocal.Count > 0)
-            {
-                issues.Add($"resolved by local mod paths [{string.Join(", ", resolvedByLocal)}]");
-            }
+            issues.Add($"resolved by local mod paths [{string.Join(", ", resolvedByLocal)}]");
         }
 
-        if (unresolvedIds.Count == 0)
-        {
-            return new DependencyValidationResult(
-                DependencyValidationStatus.Pass,
-                issues.Count == 0
-                    ? "Workshop/local dependencies verified."
-                    : $"Dependencies verified ({string.Join("; ", issues)}).",
-                new HashSet<string>(StringComparer.OrdinalIgnoreCase));
-        }
-
-        var unresolvedSegment = $"missing dependencies [{string.Join(", ", unresolvedIds.OrderBy(x => x, StringComparer.OrdinalIgnoreCase))}]";
-        if (workshopRoots.Count == 0)
-        {
-            issues.Add("no workshop roots discovered");
-        }
-
-        issues.Insert(0, unresolvedSegment);
-        var message = $"Dependency verification soft-failed: {string.Join("; ", issues)}. " +
-                      "Attach will continue, but dependency-sensitive actions are temporarily disabled.";
-        return new DependencyValidationResult(
-            DependencyValidationStatus.SoftFail,
-            message,
-            dependencySensitiveActions);
+        return unresolvedIds.Count == 0
+            ? BuildDependencyPassResult(issues)
+            : BuildDependencySoftFailResult(unresolvedIds, workshopRoots.Count, issues, dependencySensitiveActions);
     }
 
     private static HashSet<string> CollectRequiredWorkshopIds(TrainerProfile profile)
@@ -165,12 +127,9 @@ public sealed class ModDependencyValidator : IModDependencyValidator
                      "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/32470",
                      "/mnt/d/SteamLibrary/steamapps/workshop/content/32470",
                      "/mnt/c/SteamLibrary/steamapps/workshop/content/32470",
-                 })
+                 }.Where(Directory.Exists))
         {
-            if (Directory.Exists(linuxCandidate))
-            {
-                roots.Add(linuxCandidate);
-            }
+            roots.Add(linuxCandidate);
         }
 
         return roots.OrderBy(x => x, StringComparer.OrdinalIgnoreCase).ToArray();
@@ -193,21 +152,11 @@ public sealed class ModDependencyValidator : IModDependencyValidator
             return;
         }
 
-        foreach (Match match in Regex.Matches(content, @"""path""\s*""([^""]+)""", RegexOptions.IgnoreCase))
+        foreach (var pathValue in Regex.Matches(content, @"""path""\s*""([^""]+)""", RegexOptions.IgnoreCase)
+                     .Select(static match => match.Groups.Count < 2 ? string.Empty : match.Groups[1].Value)
+                     .Select(static raw => raw.Replace(@"\\", @"\", StringComparison.Ordinal).Trim())
+                     .Where(static raw => !string.IsNullOrWhiteSpace(raw)))
         {
-            if (match.Groups.Count < 2)
-            {
-                continue;
-            }
-
-            var pathValue = match.Groups[1].Value
-                .Replace(@"\\", @"\", StringComparison.Ordinal)
-                .Trim();
-            if (string.IsNullOrWhiteSpace(pathValue))
-            {
-                continue;
-            }
-
             var workshopRoot = Path.Combine(pathValue, "steamapps", "workshop", "content", "32470");
             if (Directory.Exists(workshopRoot))
             {
@@ -252,12 +201,10 @@ public sealed class ModDependencyValidator : IModDependencyValidator
             return roots.ToArray();
         }
 
-        foreach (var candidate in BuildPossibleModRoots(modPathRaw, process.ProcessPath))
+        foreach (var candidate in BuildPossibleModRoots(modPathRaw, process.ProcessPath)
+                     .Where(Directory.Exists))
         {
-            if (Directory.Exists(candidate))
-            {
-                roots.Add(candidate);
-            }
+            roots.Add(candidate);
         }
 
         var parentHints = ParseCsvMetadata(profile, "localParentPathHints");
@@ -372,5 +319,66 @@ public sealed class ModDependencyValidator : IModDependencyValidator
         }
 
         return profile.Metadata.TryGetValue(key, out var value) ? value : null;
+    }
+
+    private static List<string> ResolveDependenciesFromLocalRoots(
+        HashSet<string> unresolvedIds,
+        IReadOnlyList<string> localRoots,
+        string? marker)
+    {
+        if (unresolvedIds.Count == 0 || localRoots.Count == 0)
+        {
+            return [];
+        }
+
+        var availableRoots = localRoots.ToList();
+        var resolvedByLocal = new List<string>();
+        foreach (var unresolved in unresolvedIds.ToArray())
+        {
+            var root = availableRoots.FirstOrDefault(path =>
+                string.IsNullOrWhiteSpace(marker) || HasMarker(path, marker));
+            if (root is null)
+            {
+                continue;
+            }
+
+            resolvedByLocal.Add($"{unresolved}->{root}");
+            availableRoots.Remove(root);
+            unresolvedIds.Remove(unresolved);
+        }
+
+        return resolvedByLocal;
+    }
+
+    private static DependencyValidationResult BuildDependencyPassResult(IReadOnlyList<string> issues)
+    {
+        var message = issues.Count == 0
+            ? "Workshop/local dependencies verified."
+            : $"Dependencies verified ({string.Join("; ", issues)}).";
+        return new DependencyValidationResult(
+            DependencyValidationStatus.Pass,
+            message,
+            new HashSet<string>(StringComparer.OrdinalIgnoreCase));
+    }
+
+    private static DependencyValidationResult BuildDependencySoftFailResult(
+        HashSet<string> unresolvedIds,
+        int workshopRootCount,
+        List<string> issues,
+        HashSet<string> dependencySensitiveActions)
+    {
+        var unresolvedSegment = $"missing dependencies [{string.Join(", ", unresolvedIds.OrderBy(x => x, StringComparer.OrdinalIgnoreCase))}]";
+        if (workshopRootCount == 0)
+        {
+            issues.Add("no workshop roots discovered");
+        }
+
+        issues.Insert(0, unresolvedSegment);
+        var message = $"Dependency verification soft-failed: {string.Join("; ", issues)}. " +
+                      "Attach will continue, but dependency-sensitive actions are temporarily disabled.";
+        return new DependencyValidationResult(
+            DependencyValidationStatus.SoftFail,
+            message,
+            dependencySensitiveActions);
     }
 }
