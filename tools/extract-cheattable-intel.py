@@ -12,10 +12,11 @@ from __future__ import annotations
 import argparse
 import json
 import re
-import xml.etree.ElementTree as ET
 from dataclasses import asdict, dataclass, field
 from pathlib import Path
 from typing import Iterable
+
+from defusedxml import ElementTree as element_tree
 
 
 AOB_SCAN_RE = re.compile(
@@ -175,7 +176,7 @@ def extract_intel_from_script(group: str, description: str, script: str) -> Scri
     )
 
 
-def iter_cheat_entries(root: ET.Element) -> Iterable[tuple[str, ET.Element]]:
+def iter_cheat_entries(root: element_tree.Element) -> Iterable[tuple[str, element_tree.Element]]:
     top = root.find("CheatEntries")
     if top is None:
         return
@@ -270,7 +271,7 @@ def main() -> int:
     if not ct_path.exists():
         raise FileNotFoundError(f"Cheat table not found: {ct_path}")
 
-    tree = ET.parse(ct_path)
+    tree = element_tree.parse(ct_path)
     root = tree.getroot()
 
     records: list[ScriptIntel] = []

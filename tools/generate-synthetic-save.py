@@ -9,7 +9,6 @@ verified in CI and local tests.
 from __future__ import annotations
 
 import argparse
-import os
 import struct
 from pathlib import Path
 

@@ -3,6 +3,7 @@
 This file tracks GitHub code-scanning alert disposition for `SWFOC-Mod-Menu`.
 
 Threat model boundary for this wave:
+
 - Runtime/app paths that can affect normal product execution are treated as production-risk and fixed in code.
 - Test fixtures and offline tooling paths are allowed to accept local file arguments by design; those alerts are triaged with explicit rationale.
 

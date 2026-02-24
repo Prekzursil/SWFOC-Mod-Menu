@@ -18,13 +18,21 @@ struct PluginRequest {
     [[maybe_unused]] std::string featureId;
     [[maybe_unused]] std::string profileId;
     [[maybe_unused]] std::int32_t intValue {0};
+    [[maybe_unused]] bool boolValue {false};
+    [[maybe_unused]] bool enable {false};
     [[maybe_unused]] bool lockValue {false};
+    [[maybe_unused]] std::int32_t processId {0};
+    [[maybe_unused]] std::map<std::string, std::string> anchors {};
+};
+
+struct CapabilityState {
+    [[maybe_unused]] bool available {false};
+    [[maybe_unused]] std::string state {"Unknown"};
+    [[maybe_unused]] std::string reasonCode {"CAPABILITY_BACKEND_UNAVAILABLE"};
 };
 
 struct CapabilitySnapshot {
-    [[maybe_unused]] bool creditsAvailable {false};
-    [[maybe_unused]] std::string creditsState {"Unknown"};
-    [[maybe_unused]] std::string reasonCode {"CAPABILITY_BACKEND_UNAVAILABLE"};
+    [[maybe_unused]] std::map<std::string, CapabilityState> features {};
 };
 
 struct PluginResult {

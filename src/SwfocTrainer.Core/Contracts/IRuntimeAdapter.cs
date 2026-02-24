@@ -4,15 +4,29 @@ namespace SwfocTrainer.Core.Contracts;
 
 public interface IRuntimeAdapter
 {
-    Task<AttachSession> AttachAsync(string profileId, CancellationToken cancellationToken = default);
+    Task<AttachSession> AttachAsync(string profileId) =>
+        AttachAsync(profileId, CancellationToken.None);
 
-    Task<T> ReadAsync<T>(string symbol, CancellationToken cancellationToken = default) where T : unmanaged;
+    Task<AttachSession> AttachAsync(string profileId, CancellationToken cancellationToken);
 
-    Task WriteAsync<T>(string symbol, T value, CancellationToken cancellationToken = default) where T : unmanaged;
+    Task<T> ReadAsync<T>(string symbol) where T : unmanaged =>
+        ReadAsync<T>(symbol, CancellationToken.None);
 
-    Task<ActionExecutionResult> ExecuteAsync(ActionExecutionRequest request, CancellationToken cancellationToken = default);
+    Task<T> ReadAsync<T>(string symbol, CancellationToken cancellationToken) where T : unmanaged;
 
-    Task DetachAsync(CancellationToken cancellationToken = default);
+    Task WriteAsync<T>(string symbol, T value) where T : unmanaged =>
+        WriteAsync(symbol, value, CancellationToken.None);
+
+    Task WriteAsync<T>(string symbol, T value, CancellationToken cancellationToken) where T : unmanaged;
+
+    Task<ActionExecutionResult> ExecuteAsync(ActionExecutionRequest request) =>
+        ExecuteAsync(request, CancellationToken.None);
+
+    Task<ActionExecutionResult> ExecuteAsync(ActionExecutionRequest request, CancellationToken cancellationToken);
+
+    Task DetachAsync() => DetachAsync(CancellationToken.None);
+
+    Task DetachAsync(CancellationToken cancellationToken);
 
     bool IsAttached { get; }
 

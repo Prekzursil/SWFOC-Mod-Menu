@@ -98,6 +98,7 @@ Common reason codes:
 ### Backup Receipt Recovery
 
 Receipt resolution runs newest-first and is fault-tolerant:
+
 - malformed/stale receipt JSON is logged and skipped
 - invalid receipt backup path is rejected
 - restore falls back to backup pattern scan (`*.bak.*.sav`) when receipts are unusable
@@ -107,11 +108,13 @@ Receipt resolution runs newest-first and is fault-tolerant:
 Patch packs are profile/schema scoped. Cross-profile apply is intentionally blocked.
 
 Expected compatibility errors:
+
 - `profile not allowed: <targetProfileId>`
 - `schema mismatch: pack=<schemaA>, target=<schemaB>`
 
 This is a safety guard to prevent accidental writes against incompatible schema layouts.
 
 ## Notes
+
 - Patch operations require `newValue`; `oldValue` is optional in v1.
 - Preview evaluates compatibility against the selected target profile (not only pack metadata profile).

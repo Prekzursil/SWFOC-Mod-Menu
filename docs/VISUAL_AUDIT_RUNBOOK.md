@@ -9,6 +9,7 @@ Capture visual artifacts under:
 - `TestResults/runs/<runId>/visual-pack/<surface>/<checkpoint>.png`
 
 Naming guidance:
+
 - `<surface>`: `live-ops`, `runtime-tab`, `attach-dialog`, `tactical`, `galactic`
 - `<checkpoint>`: concise state marker, for example `attached-aotr`, `mode-tactical`, `spawn-panel-open`
 

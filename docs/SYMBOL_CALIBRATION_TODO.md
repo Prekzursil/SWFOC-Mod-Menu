@@ -4,6 +4,7 @@ This file tracks which runtime symbols are known-good on the 64-bit Steam build
 of `swfoc.exe` and which still need calibration/verification.
 
 Notes:
+
 - "RVA" means `address - moduleBase` for `swfoc.exe` main module.
 - We prioritize `Signature` resolution; fallback RVAs are only a safety net.
 - Mods from Workshop do not change `swfoc.exe`, so symbol addresses should be
@@ -14,6 +15,7 @@ Notes:
 ## Base FoC / AOTR / ROE (x64 Steam `swfoc.exe`)
 
 ### Core Globals
+
 - [x] `credits` (Int32): Calibrated fallback to `RVA 0xA60E48` (`addr 0x7FF76D700E48` in sample run)
   - Previous mapping (`RVA 0x176AE8`) was incorrect (`read_symbol` returned `1210066044` while in-game was `26677`).
   - Two-snapshot narrowing:
@@ -31,12 +33,14 @@ Notes:
 - [x] `ai_enabled` (Bool/Byte): Signature resolved (RVA `0x15A488`)
 
 ### Campaign / Economy
+
 - [x] `instant_build` (Float): Signature resolved (RVA `0x104F6C`)
 - [x] `planet_owner` (Int32): Signature resolved (RVA `0x173DD0`)
 - [ ] `hero_respawn_timer` (Int32): Signature resolves + reads `15` (RVA `0x152070`)
   Next: verify in-game semantics (does changing it actually change hero wound/respawn time?)
 
 ### Tactical / Selected Unit Matrix
+
 - [x] `selected_hp` (Float): Signature resolved (RVA `0x15B5B4`)
 - [x] `selected_shield` (Float): Signature resolved (RVA `0x15B970`)
 - [x] `selected_speed` (Float): Signature resolved (RVA `0x15B9B0`)
@@ -46,12 +50,14 @@ Notes:
 - [x] `selected_owner_faction` (Int32): Signature resolved (RVA `0x15B9F8`)
 
 ### Tactical Toggles
+
 - [ ] `tactical_god_mode` (Bool/Byte): Signature resolves (RVA `0x150678`)
   Next: verify in-game effect (invulnerability) in an actual tactical battle.
 - [ ] `tactical_one_hit_mode` (Bool/Byte): Signature resolves (RVA `0x15A666`)
   Next: verify in-game effect (damage one-hit) in an actual tactical battle.
 
 ## Engineering TODOs (To Avoid Regressions)
+
 - [x] Add fallback-offset range validation in `SignatureResolver` so offsets outside module bounds are ignored.
 - [x] In UI/action layer: hide/disable actions when required symbols are missing or unresolved.
   - Promoted in Phase 2 UI: quick actions/hotkeys now honor the same session gate for `Memory`/`CodePatch`/`Freeze` actions while keeping `Sdk` actions executable when symbol gating is not required.
@@ -78,7 +84,7 @@ Use this evidence template for each live run:
 
 ### Standardized Evidence Payload (Required)
 
-When posting closure evidence for `#19`/`#34`, include:
+When posting closure evidence for `#7`/`#19`/`#34`, include:
 
 - `runId`
 - `classification` (`passed|skipped|failed|blocked_environment|blocked_profile_mismatch`)
@@ -87,7 +93,9 @@ When posting closure evidence for `#19`/`#34`, include:
 - runtime mode (`hint`, `effective`, `reasonCode`)
 - tactical toggle outcome (`pass|skip|fail` + reason)
 - helper workflow outcome (`pass|skip|fail` + reason)
-- status diagnostics (`backend`, `routeReasonCode`, `capabilityProbeReasonCode`, and when present `hookState`/`hybridExecution`)
+- promoted action matrix summary (`actionStatusDiagnostics.status`, `actionStatusDiagnostics.source`, `summary.total`, `summary.passed`, `summary.failed`, `summary.skipped`)
+- promoted action matrix entry diagnostics (`profileId`, `actionId`, `outcome`, `backendRoute`, `routeReasonCode`, `capabilityProbeReasonCode`, `hybridExecution`, `hasFallbackMarker`, `skipReasonCode`)
+- issue `#7` gate snapshot (`base_swfoc`/`aotr_1397421866_swfoc`/`roe_3447786229_swfoc` x five promoted actions with no fallback markers)
 - artifact paths:
   - `TestResults/runs/<runId>/repro-bundle.json`
   - `TestResults/runs/<runId>/repro-bundle.md`

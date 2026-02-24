@@ -122,7 +122,7 @@ For each profile (`base_sweaw`, `base_swfoc`, `aotr_1397421866_swfoc`, `roe_3447
    - fog reveal toggle
    - selected unit HP/shield/speed edit (tactical)
    - helper spawn action
-   - capture status diagnostics showing `backend`, `routeReasonCode`, `capabilityProbeReasonCode`, plus `hookState`/`hybridExecution` when present
+   - capture status diagnostics showing `backendRoute`, `routeReasonCode`, `capabilityProbeReasonCode`, plus `hookState`/`hybridExecution` when present
 4. Verify attach diagnostics include host ranking fields:
    - `hostRole`
    - `mainModuleSize`
@@ -136,22 +136,37 @@ For each profile (`base_sweaw`, `base_swfoc`, `aotr_1397421866_swfoc`, `roe_3447
    - export patch pack, reload patch pack, preview/apply, restore backup
    - load in-game to confirm integrity.
 
-## Phase 2 quick action and hotkey checks
+## Phase 2 promoted action and hotkey checks
 
-1. Attach to a SWFOC profile where `set_credits` executes as `Sdk`.
-2. Run quick actions:
-   - `Set Credits` (SDK-backed route)
-   - `Freeze Timer` (symbol-backed memory route)
-3. Trigger equivalent bindings from `Hotkeys` (default `Ctrl+Shift+1/2`).
-4. Verify status lines include route diagnostics when available:
-   - `backend`
-   - `routeReasonCode`
-   - `capabilityProbeReasonCode`
-   - `hookState` (when backend emits it)
-   - `hybridExecution` (when backend emits it)
-5. Verify symbol/dependency gating behavior:
-   - actions requiring unresolved symbols remain blocked/hidden for `Memory`, `CodePatch`, and `Freeze` execution kinds
-   - SDK actions remain executable when symbol gating is not required by execution kind
+Promoted actions are extender-authoritative and fail-closed for FoC profiles.
+Evidence must come from `actionStatusDiagnostics` in `repro-bundle.json` (source `live-promoted-action-matrix.json`).
+
+Required profile/action matrix:
+
+| Profile | `freeze_timer` | `toggle_fog_reveal` | `toggle_ai` | `set_unit_cap` | `toggle_instant_build_patch` |
+|---|---|---|---|---|---|
+| `base_swfoc` | required | required | required | required | required |
+| `aotr_1397421866_swfoc` | required | required | required | required | required |
+| `roe_3447786229_swfoc` | required | required | required | required | required |
+
+Verification checklist:
+
+1. Attach to each target FoC profile with extender bridge available.
+2. Trigger quick actions/hotkeys for at least `Set Credits` and `Freeze Timer` in UI; run full promoted matrix via live validation pack.
+3. Verify `actionStatusDiagnostics` contains required keys:
+   - top-level: `status`, `source`, `summary`, `entries`
+   - summary: `total`, `passed`, `failed`, `skipped`
+   - each entry: `profileId`, `actionId`, `outcome`, `backendRoute`, `routeReasonCode`, `capabilityProbeReasonCode`, `hybridExecution`, `hasFallbackMarker`, `message`, `skipReasonCode`
+4. Verify promoted matrix entry outcomes for issue `#7` closure gate:
+   - `summary.total=15`, `summary.passed=15`, `summary.failed=0`, `summary.skipped=0`
+   - all entries report `backendRoute=Extender`
+   - all entries report `routeReasonCode=CAPABILITY_PROBE_PASS`
+   - all entries report `capabilityProbeReasonCode=CAPABILITY_PROBE_PASS`
+   - all entries report `hybridExecution=false`
+   - all entries report `hasFallbackMarker=false`
+5. Verify fail-closed behavior remains explicit when environment is unhealthy:
+   - promoted actions must not silently route to fallback backend
+   - blocked runs surface explicit reason codes and must not be used for issue `#7` closure
 
 ## Live Ops checklist (M1)
 
@@ -184,4 +199,4 @@ pwsh ./tools/run-live-validation.ps1 -Configuration Release -NoBuild -Scope FULL
 
 This writes TRX + launch context outputs + repro bundle + prefilled issue templates to `TestResults/runs/<runId>/`.
 If Python is unavailable in the running shell, the run pack still emits `launch-context-fixture.json` with a machine-readable failure status.
-Include at least one captured status line in issue evidence that demonstrates Phase 2 route diagnostics for a mutating action.
+Include captured status diagnostics for promoted matrix evidence in issue reports (`actionStatusDiagnostics` summary + representative entries).

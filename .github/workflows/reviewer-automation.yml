@@ -25,14 +25,19 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
+          [int]$pullNumber = [int]'${{ github.event.pull_request.number }}'
+          if ($pullNumber -le 0) {
+            throw "Invalid pull request number from event payload: '${{ github.event.pull_request.number }}'"
+          }
+
           $result = pwsh ./tools/request-pr-reviewers.ps1 `
             -RepoOwner "${{ github.repository_owner }}" `
             -RepoName "${{ github.event.repository.name }}" `
-            -PullNumber ${{ github.event.pull_request.number }} `
+            -PullNumber $pullNumber `
             -RosterPath config/reviewer-roster.json
 
           $result | Out-File -FilePath reviewer-automation-result.json -Encoding utf8
-          Write-Host $result
+          Write-Output $result
 
       - name: Upload reviewer automation result
         if: always()

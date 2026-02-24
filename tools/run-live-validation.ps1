@@ -6,6 +6,7 @@ param(
     [string]$RunId = "",
     [ValidateSet("AOTR", "ROE", "TACTICAL", "FULL")][string]$Scope = "FULL",
     [bool]$EmitReproBundle = $true,
+    [bool]$PreflightNativeHost = $true,
     [switch]$FailOnMissingArtifacts,
     [switch]$Strict,
     [switch]$RequireNonBlockedClassification
@@ -47,20 +48,59 @@ function Resolve-DotnetCommand {
     throw "Could not resolve dotnet executable. Install .NET SDK or add dotnet to PATH."
 }
 
+function Get-LastExitCodeOrZero {
+    if (Get-Variable -Name LASTEXITCODE -Scope Global -ErrorAction SilentlyContinue) {
+        return [int]$global:LASTEXITCODE
+    }
+
+    return 0
+}
+
+function Test-PythonInterpreter {
+    param([string[]]$Command)
+
+    if ($Command.Count -eq 0 -or [string]::IsNullOrWhiteSpace($Command[0])) {
+        return $false
+    }
+
+    $probeArgs = @()
+    if ($Command.Count -gt 1) {
+        $probeArgs += $Command[1..($Command.Count - 1)]
+    }
+
+    $probeArgs += @("-c", "print('ok')")
+
+    try {
+        $output = & $Command[0] @probeArgs 2>&1
+        $exitCode = Get-LastExitCodeOrZero
+        if ($exitCode -ne 0) {
+            return $false
+        }
+
+        $text = ($output | Out-String).Trim()
+        return -not [string]::IsNullOrWhiteSpace($text) -and $text -match "(^|\r?\n)ok(\r?\n|$)"
+    }
+    catch {
+        return $false
+    }
+}
+
 function Resolve-PythonCommand {
+    $candidates = New-Object System.Collections.Generic.List[string[]]
+
     $python = Get-Command python -ErrorAction SilentlyContinue
     if ($null -ne $python) {
-        return @($python.Source)
+        $candidates.Add(@($python.Source))
     }
 
     $python3 = Get-Command python3 -ErrorAction SilentlyContinue
     if ($null -ne $python3) {
-        return @($python3.Source)
+        $candidates.Add(@($python3.Source))
     }
 
     $py = Get-Command py -ErrorAction SilentlyContinue
     if ($null -ne $py) {
-        return @($py.Source, "-3")
+        $candidates.Add(@($py.Source, "-3"))
     }
 
     $pathCandidates = @(
@@ -83,17 +123,55 @@ function Resolve-PythonCommand {
 
         if (Test-Path -Path $candidate) {
             if ($candidate.ToLowerInvariant().EndsWith("py.exe")) {
-                return @($candidate, "-3")
+                $candidates.Add(@($candidate, "-3"))
+                continue
             }
 
-            return @($candidate)
+            $candidates.Add(@($candidate))
+        }
+    }
+
+    foreach ($candidate in $candidates) {
+        if (Test-PythonInterpreter -Command $candidate) {
+            return $candidate
         }
     }
 
     return @()
 }
 
-function Should-RunTest {
+function Test-NativeHostPreflight {
+    param(
+        [string]$Config,
+        [bool]$Enabled
+    )
+
+    if (-not $Enabled) {
+        return
+    }
+
+    $buildScript = Join-Path $PSScriptRoot "native/build-native.ps1"
+    if (-not (Test-Path -Path $buildScript)) {
+        throw "ATTACH_NATIVE_HOST_PRECHECK_FAILED: build-native script missing at '$buildScript'."
+    }
+
+    # Stop a previously launched host process to avoid runtime artifact lock
+    # collisions when build-native.ps1 refreshes native/runtime/SwfocExtender.Host.exe.
+    Get-Process -Name "SwfocExtender.Host" -ErrorAction SilentlyContinue | Stop-Process -Force
+
+    & $buildScript -Mode Windows -Configuration $Config
+    $buildExitCode = Get-LastExitCodeOrZero
+    if ($buildExitCode -ne 0) {
+        throw "ATTACH_NATIVE_HOST_PRECHECK_FAILED: native host build exited with code $buildExitCode."
+    }
+
+    $runtimeHostPath = Join-Path $repoRoot "native/runtime/SwfocExtender.Host.exe"
+    if (-not (Test-Path -Path $runtimeHostPath)) {
+        throw "ATTACH_NATIVE_HOST_MISSING: expected host artifact not found at '$runtimeHostPath'."
+    }
+}
+
+function Test-RunSelection {
     param(
         [string[]]$Scopes,
         [string]$SelectedScope
@@ -251,6 +329,7 @@ function Read-TrxSummary {
 
 $dotnetExe = Resolve-DotnetCommand
 $pythonCmd = @(Resolve-PythonCommand)
+Test-NativeHostPreflight -Config $Configuration -Enabled $PreflightNativeHost
 $runTimestamp = Get-Date
 $iso = $runTimestamp.ToString("yyyy-MM-dd HH:mm:ss zzz")
 $runStartedUtc = $runTimestamp.ToUniversalTime().ToString("o")
@@ -283,6 +362,13 @@ $testDefinitions = @(
         Filter = "FullyQualifiedName~LiveCreditsTests"
         TrxBase = "live-credits.trx"
         Scopes = @("AOTR", "ROE")
+    },
+    [PSCustomObject]@{
+        Name = "Live Promoted Action Matrix"
+        TestName = "LivePromotedActionMatrixTests"
+        Filter = "FullyQualifiedName~LivePromotedActionMatrixTests"
+        TrxBase = "live-promoted-action-matrix.trx"
+        Scopes = @("AOTR", "ROE")
     }
 )
 
@@ -292,7 +378,7 @@ $fatalError = $null
 foreach ($test in $testDefinitions) {
     $trxPath = Join-Path $runResultsDirectory ("{0}-{1}" -f $RunId, $test.TrxBase)
 
-    if (-not (Should-RunTest -Scopes $test.Scopes -SelectedScope $Scope)) {
+    if (-not (Test-RunSelection -Scopes $test.Scopes -SelectedScope $Scope)) {
         $summaries.Add([PSCustomObject]@{
             Name = $test.TestName
             Summary = [PSCustomObject]@{
@@ -498,6 +584,7 @@ $lineTactical = Get-Line -Name "LiveTacticalToggleWorkflowTests"
 $lineHero = Get-Line -Name "LiveHeroHelperWorkflowTests"
 $lineRoe = Get-Line -Name "LiveRoeRuntimeHealthTests"
 $lineCredits = Get-Line -Name "LiveCreditsTests"
+$linePromoted = Get-Line -Name "LivePromotedActionMatrixTests"
 
 $template34 = Join-Path $runResultsDirectory "issue-34-evidence-template.md"
 $template19 = Join-Path $runResultsDirectory "issue-19-evidence-template.md"
@@ -519,6 +606,8 @@ Live validation evidence update ($iso)
   - detail: $($lineRoe.Message)
 - Credits live diagnostic: $($lineCredits.Outcome) (p=$($lineCredits.Passed), f=$($lineCredits.Failed), s=$($lineCredits.Skipped))
   - detail: $($lineCredits.Message)
+- Promoted action matrix: $($linePromoted.Outcome) (p=$($linePromoted.Passed), f=$($linePromoted.Failed), s=$($linePromoted.Skipped))
+  - detail: $($linePromoted.Message)
 - Diagnostics for degraded/unavailable actions: <fill>
 - Repro bundle: $bundlePath
 - Artifacts:
@@ -526,6 +615,7 @@ Live validation evidence update ($iso)
   - $($lineHero.Trx)
   - $($lineRoe.Trx)
   - $($lineCredits.Trx)
+  - $($linePromoted.Trx)
   - $launchContextJson
   - $summaryPath
   - $bundleMdPath
@@ -542,16 +632,17 @@ AOTR/ROE checklist evidence update ($iso)
 - scope: $Scope
 - repro bundle: $bundlePath
 
-| Profile | Attach summary | Tactical toggle workflow | Hero helper workflow | Result |
-|---|---|---|---|---|
-| aotr_1397421866_swfoc | <fill pid/mode/reasonCode> | <pass/fail/skip + reason> | <pass/fail/skip + reason> | <overall> |
-| roe_3447786229_swfoc | <fill pid/mode/reasonCode> | <pass/fail/skip + reason> | <pass/fail/skip + reason> | <overall> |
+| Profile | Attach summary | Tactical toggle workflow | Hero helper workflow | Promoted action matrix | Result |
+|---|---|---|---|---|---|
+| aotr_1397421866_swfoc | <fill pid/mode/reasonCode> | <pass/fail/skip + reason> | <pass/fail/skip + reason> | <pass/fail/skip + reason> | <overall> |
+| roe_3447786229_swfoc | <fill pid/mode/reasonCode> | <pass/fail/skip + reason> | <pass/fail/skip + reason> | <pass/fail/skip + reason> | <overall> |
 
 Current local run snapshot:
 - LiveTacticalToggleWorkflowTests: $($lineTactical.Outcome) ($($lineTactical.Message))
 - LiveHeroHelperWorkflowTests: $($lineHero.Outcome) ($($lineHero.Message))
 - LiveRoeRuntimeHealthTests: $($lineRoe.Outcome) ($($lineRoe.Message))
 - LiveCreditsTests: $($lineCredits.Outcome) ($($lineCredits.Message))
+- LivePromotedActionMatrixTests: $($linePromoted.Outcome) ($($linePromoted.Message))
 
 Artifacts:
 - $summaryPath

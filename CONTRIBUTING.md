@@ -12,6 +12,7 @@ Thanks for contributing to SWFOC-Mod-Menu.
 ## Branch Naming
 
 Use one of:
+
 - `feature/<short-description>`
 - `fix/<short-description>`
 - `chore/<short-description>`
@@ -20,6 +21,7 @@ Use one of:
 ## Commit Style
 
 Recommended:
+
 - `feat: ...`
 - `fix: ...`
 - `chore: ...`
@@ -50,8 +52,10 @@ Each PR should include:
 1. Scope summary and rationale.
 2. Risk notes (runtime safety / profile compatibility).
 3. Evidence of validation:
+
 - deterministic test output and/or
 - live/manual notes with exact profile + build context.
+
 4. Any metadata/profile schema changes called out explicitly.
 
 ## Runtime Reliability Changes

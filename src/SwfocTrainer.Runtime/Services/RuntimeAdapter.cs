@@ -48,6 +48,10 @@ public sealed class RuntimeAdapter : IRuntimeAdapter
     private const string DiagnosticKeyHookState = "hookState";
     private const string DiagnosticKeyCreditsStateTag = "creditsStateTag";
     private const string DiagnosticKeyState = "state";
+    private const string ActionIdSetUnitCap = "set_unit_cap";
+    private const string ActionIdToggleInstantBuildPatch = "toggle_instant_build_patch";
+    private const string ActionIdSetCredits = "set_credits";
+    private const string SymbolCredits = "credits";
     private static readonly string[] ResultHookStateKeys =
     [
         DiagnosticKeyHookState,
@@ -55,13 +59,13 @@ public sealed class RuntimeAdapter : IRuntimeAdapter
         DiagnosticKeyState
     ];
 
-    private static readonly HashSet<string> HybridManagedActionIds = new(StringComparer.OrdinalIgnoreCase)
+    private static readonly HashSet<string> PromotedExtenderActionIds = new(StringComparer.OrdinalIgnoreCase)
     {
         "freeze_timer",
         "toggle_fog_reveal",
         "toggle_ai",
-        "set_unit_cap",
-        "toggle_instant_build_patch"
+        ActionIdSetUnitCap,
+        ActionIdToggleInstantBuildPatch
     };
 
     private readonly IProcessLocator _processLocator;
@@ -152,15 +156,53 @@ public sealed class RuntimeAdapter : IRuntimeAdapter
 
     public AttachSession? CurrentSession { get; private set; }
 
-    public async Task<AttachSession> AttachAsync(string profileId, CancellationToken cancellationToken = default)
+    public Task<AttachSession> AttachAsync(string profileId)
+    {
+        return AttachAsync(profileId, CancellationToken.None);
+    }
+
+    public async Task<AttachSession> AttachAsync(string profileId, CancellationToken cancellationToken)
     {
         if (IsAttached)
         {
             return CurrentSession!;
         }
 
+        var profileContext = await ResolveAttachProfileContextAsync(profileId, cancellationToken);
+        var profile = await _profileRepository.ResolveInheritedProfileAsync(profileContext.ResolvedProfileId, cancellationToken);
+        _attachedProfile = profile;
+        var process = await SelectProcessForProfileAsync(profile, cancellationToken)
+            ?? throw new InvalidOperationException($"{RuntimeReasonCode.ATTACH_NO_PROCESS}: No running process found for target {profile.ExeTarget}");
+
+        process = ApplyDependencyValidation(profile, process);
+        var attachPreparation = await PrepareAttachSessionArtifactsAsync(
+            profile,
+            process,
+            profileContext.RequestedProfileId,
+            profileContext.VariantResolution,
+            cancellationToken);
+
+        _memory = new ProcessMemoryAccessor(attachPreparation.Process.ProcessId);
+        ClearCreditsHookState();
+        ClearUnitCapHookState();
+        ClearInstantBuildHookState();
+        CurrentSession = new AttachSession(
+            profile.Id,
+            attachPreparation.Process,
+            attachPreparation.Build,
+            attachPreparation.Symbols,
+            DateTimeOffset.UtcNow);
+        _logger.LogInformation("Attached to process {Pid} for profile {Profile}", attachPreparation.Process.ProcessId, profile.Id);
+        return CurrentSession;
+    }
+
+    private async Task<AttachProfileContext> ResolveAttachProfileContextAsync(
+        string profileId,
+        CancellationToken cancellationToken)
+    {
         var requestedProfileId = profileId;
         ProfileVariantResolution? variantResolution = null;
+        var resolvedProfileId = profileId;
 
         if (string.Equals(profileId, ProfileVariantResolver.UniversalProfileId, StringComparison.OrdinalIgnoreCase) &&
             _profileVariantResolver is not null)
@@ -173,15 +215,15 @@ public sealed class RuntimeAdapter : IRuntimeAdapter
                     variantResolution.ResolvedProfileId,
                     variantResolution.ReasonCode,
                     variantResolution.Confidence);
-                profileId = variantResolution.ResolvedProfileId;
+                resolvedProfileId = variantResolution.ResolvedProfileId;
             }
         }
 
-        var profile = await _profileRepository.ResolveInheritedProfileAsync(profileId, cancellationToken);
-        _attachedProfile = profile;
-        var process = await SelectProcessForProfileAsync(profile, cancellationToken)
-            ?? throw new InvalidOperationException($"{RuntimeReasonCode.ATTACH_NO_PROCESS}: No running process found for target {profile.ExeTarget}");
+        return new AttachProfileContext(requestedProfileId, resolvedProfileId, variantResolution);
+    }
 
+    private ProcessMetadata ApplyDependencyValidation(TrainerProfile profile, ProcessMetadata process)
+    {
         var dependencyValidation = _modDependencyValidator.Validate(profile, process);
         _dependencyValidationStatus = dependencyValidation.Status;
         _dependencyValidationMessage = dependencyValidation.Message;
@@ -194,8 +236,16 @@ public sealed class RuntimeAdapter : IRuntimeAdapter
             throw new InvalidOperationException($"{RuntimeReasonCode.ATTACH_PROFILE_MISMATCH}: {dependencyValidation.Message}");
         }
 
-        process = AttachDependencyDiagnostics(process, dependencyValidation);
+        return AttachDependencyDiagnostics(process, dependencyValidation);
+    }
 
+    private async Task<AttachPreparation> PrepareAttachSessionArtifactsAsync(
+        TrainerProfile profile,
+        ProcessMetadata process,
+        string requestedProfileId,
+        ProfileVariantResolution? variantResolution,
+        CancellationToken cancellationToken)
+    {
         var signatureSets = profile.SignatureSets.ToArray();
         if (signatureSets.Length == 0)
         {
@@ -213,6 +263,24 @@ public sealed class RuntimeAdapter : IRuntimeAdapter
         InitializeProfileSymbolPolicy(profile);
         var resolvedSymbols = await _signatureResolver.ResolveAsync(build, signatureSets, profile.FallbackOffsets, cancellationToken);
         var symbols = ApplySymbolHealth(profile, process.Mode, resolvedSymbols);
+        process = AttachSessionDiagnostics(process, symbols, requestedProfileId, profile.Id, variantResolution);
+
+        var calibrationArtifactPath = TryEmitCalibrationSnapshot(profile, process, build, symbols);
+        if (!string.IsNullOrWhiteSpace(calibrationArtifactPath))
+        {
+            process = AttachMetadataValue(process, "calibrationArtifactPath", calibrationArtifactPath);
+        }
+
+        return new AttachPreparation(process, build, symbols);
+    }
+
+    private ProcessMetadata AttachSessionDiagnostics(
+        ProcessMetadata process,
+        SymbolMap symbols,
+        string requestedProfileId,
+        string resolvedProfileId,
+        ProfileVariantResolution? variantResolution)
+    {
         var modeProbe = RuntimeModeProbeResolver.Resolve(process.Mode, symbols);
         process = process with { Mode = modeProbe.EffectiveMode };
         process = AttachMetadataValue(process, "runtimeModeHint", modeProbe.HintMode.ToString());
@@ -220,17 +288,10 @@ public sealed class RuntimeAdapter : IRuntimeAdapter
         process = AttachMetadataValue(process, "runtimeModeReasonCode", modeProbe.ReasonCode);
         process = AttachMetadataValue(process, "runtimeModeTacticalSignals", modeProbe.TacticalSignalCount.ToString(CultureInfo.InvariantCulture));
         process = AttachMetadataValue(process, "runtimeModeGalacticSignals", modeProbe.GalacticSignalCount.ToString(CultureInfo.InvariantCulture));
-        process = AttachMetadataValue(
-            process,
-            "processSelectionReason",
-            process.Metadata is not null &&
-            process.Metadata.TryGetValue("recommendationReason", out var reason) &&
-            !string.IsNullOrWhiteSpace(reason)
-                ? reason
-                : "exe_target_match");
-
+        process = AttachMetadataValue(process, "processSelectionReason", ResolveProcessSelectionReason(process));
         process = AttachMetadataValue(process, "requestedProfileId", requestedProfileId);
-        process = AttachMetadataValue(process, "resolvedVariant", profile.Id);
+        process = AttachMetadataValue(process, "resolvedVariant", resolvedProfileId);
+
         if (variantResolution is not null)
         {
             process = AttachMetadataValue(process, "resolvedVariantReasonCode", variantResolution.ReasonCode);
@@ -246,148 +307,45 @@ public sealed class RuntimeAdapter : IRuntimeAdapter
             process = AttachMetadataValue(process, "resolvedVariantConfidence", "1.00");
         }
 
-        process = AttachSymbolHealthDiagnostics(process, symbols);
+        return AttachSymbolHealthDiagnostics(process, symbols);
+    }
 
-        var calibrationArtifactPath = TryEmitCalibrationSnapshot(profile, process, build, symbols);
-        if (!string.IsNullOrWhiteSpace(calibrationArtifactPath))
+    private static string ResolveProcessSelectionReason(ProcessMetadata process)
+    {
+        if (process.Metadata is not null &&
+            process.Metadata.TryGetValue("recommendationReason", out var reason) &&
+            !string.IsNullOrWhiteSpace(reason))
         {
-            process = AttachMetadataValue(process, "calibrationArtifactPath", calibrationArtifactPath);
+            return reason;
         }
 
-        _memory = new ProcessMemoryAccessor(process.ProcessId);
-        ClearCreditsHookState();
-        ClearUnitCapHookState();
-        ClearInstantBuildHookState();
-        CurrentSession = new AttachSession(profile.Id, process, build, symbols, DateTimeOffset.UtcNow);
-        _logger.LogInformation("Attached to process {Pid} for profile {Profile}", process.ProcessId, profile.Id);
-        return CurrentSession;
+        return "exe_target_match";
     }
 
     private async Task<ProcessMetadata?> SelectProcessForProfileAsync(TrainerProfile profile, CancellationToken cancellationToken)
     {
         var processes = await _processLocator.FindSupportedProcessesAsync(cancellationToken);
-        var matches = processes.Where(x => x.ExeTarget == profile.ExeTarget).ToArray();
-        if (matches.Length == 0)
-        {
-            // StarWarsG.exe can be ambiguous (or misclassified when command-line is unavailable).
-            // Prefer profile-aware fallback instead of hard-failing attach.
-            matches = processes
-                .Where(IsStarWarsGProcess)
-                .ToArray();
-
-            if (matches.Length > 0)
-            {
-                _logger.LogInformation(
-                    "No direct process match for target {Target}; using StarWarsG fallback candidates ({Count}).",
-                    profile.ExeTarget, matches.Length);
-            }
-        }
-
+        var matches = ResolveInitialProcessMatches(profile, processes);
         if (matches.Length == 0)
         {
             return null;
         }
 
         var requiredWorkshopIds = CollectRequiredWorkshopIds(profile);
-        var strictWorkshopMatches = requiredWorkshopIds.Count == 0
-            ? Array.Empty<ProcessMetadata>()
-            : matches.Where(x => requiredWorkshopIds.All(id => ProcessContainsWorkshopId(x, id))).ToArray();
-        var looseWorkshopMatches = requiredWorkshopIds.Count == 0
-            ? Array.Empty<ProcessMetadata>()
-            : matches.Where(x => requiredWorkshopIds.Any(id => ProcessContainsWorkshopId(x, id))).ToArray();
-
-        var pool = strictWorkshopMatches.Length > 0
-            ? strictWorkshopMatches
-            : looseWorkshopMatches.Length > 0
-                ? looseWorkshopMatches
-                : matches;
-
-        var recommendedMatches = pool
-            .Where(x => x.LaunchContext?.Recommendation.ProfileId?.Equals(profile.Id, StringComparison.OrdinalIgnoreCase) == true)
-            .ToArray();
-        if (recommendedMatches.Length > 0)
-        {
-            pool = recommendedMatches;
-        }
-
-        // For FoC, StarWarsG is typically the real game host while swfoc.exe can be a thin launcher.
-        // Prefer StarWarsG whenever both are present.
-        var preferStarWarsGHost = !string.Equals(profile.HostPreference, "any", StringComparison.OrdinalIgnoreCase);
-        if (profile.ExeTarget == ExeTarget.Swfoc && preferStarWarsGHost)
-        {
-            var starWarsGCandidates = pool
-                .Where(x => x.HostRole == ProcessHostRole.GameHost || IsStarWarsGProcess(x))
-                .ToArray();
-            if (starWarsGCandidates.Length > 0)
-            {
-                pool = starWarsGCandidates;
-            }
-        }
+        var pool = ResolveCandidatePool(profile, matches, requiredWorkshopIds);
 
         if (pool.Length == 1)
         {
-            var only = pool[0];
-            var workshopMatchCount = requiredWorkshopIds.Count == 0
-                ? 0
-                : requiredWorkshopIds.Count(id => ProcessContainsWorkshopId(only, id));
-            var mainModuleSize = only.MainModuleSize > 0 ? only.MainModuleSize : TryGetMainModuleSize(only.ProcessId);
-            var hostRoleScore = only.HostRole switch
-            {
-                ProcessHostRole.GameHost => 2,
-                ProcessHostRole.Launcher => 1,
-                _ => 0
-            };
-            var selectionScore =
-                (workshopMatchCount * 1000d) +
-                ((only.LaunchContext?.Recommendation.ProfileId?.Equals(profile.Id, StringComparison.OrdinalIgnoreCase) == true) ? 300d : 0d) +
-                (hostRoleScore * 100d) +
-                (!string.IsNullOrWhiteSpace(only.CommandLine) ? 10d : 0d) +
-                (mainModuleSize / 1_000_000d);
-            only = only with
-            {
-                MainModuleSize = mainModuleSize,
-                WorkshopMatchCount = workshopMatchCount,
-                SelectionScore = selectionScore
-            };
-            only = AttachMetadataValue(only, "hostRole", only.HostRole.ToString().ToLowerInvariant());
-            only = AttachMetadataValue(only, "mainModuleSize", only.MainModuleSize.ToString(CultureInfo.InvariantCulture));
-            only = AttachMetadataValue(only, "workshopMatchCount", only.WorkshopMatchCount.ToString(CultureInfo.InvariantCulture));
-            only = AttachMetadataValue(only, "selectionScore", only.SelectionScore.ToString("0.00", CultureInfo.InvariantCulture));
-            return only;
+            var singleCandidate = CreateProcessSelectionCandidate(profile, pool[0], requiredWorkshopIds);
+            return FinalizeProcessSelection(
+                singleCandidate.Process,
+                singleCandidate.MainModuleSize,
+                singleCandidate.WorkshopMatchCount,
+                singleCandidate.SelectionScore);
         }
 
         var ranked = pool
-            .Select(candidate => new
-            {
-                Process = candidate,
-                WorkshopMatchCount = requiredWorkshopIds.Count == 0
-                    ? 0
-                    : requiredWorkshopIds.Count(id => ProcessContainsWorkshopId(candidate, id)),
-                RecommendationMatch = candidate.LaunchContext?.Recommendation.ProfileId?.Equals(profile.Id, StringComparison.OrdinalIgnoreCase) == true,
-                MainModuleSize = candidate.MainModuleSize > 0 ? candidate.MainModuleSize : TryGetMainModuleSize(candidate.ProcessId),
-                HasCommandLine = !string.IsNullOrWhiteSpace(candidate.CommandLine),
-                HostRoleScore = candidate.HostRole switch
-                {
-                    ProcessHostRole.GameHost => 2,
-                    ProcessHostRole.Launcher => 1,
-                    _ => 0
-                }
-            })
-            .Select(x => new
-            {
-                x.Process,
-                x.WorkshopMatchCount,
-                x.RecommendationMatch,
-                x.MainModuleSize,
-                x.HasCommandLine,
-                x.HostRoleScore,
-                SelectionScore =
-                    (x.WorkshopMatchCount * 1000d) +
-                    (x.RecommendationMatch ? 300d : 0d) +
-                    (x.HostRoleScore * 100d) +
-                    (x.HasCommandLine ? 10d : 0d) +
-                    (x.MainModuleSize / 1_000_000d)
-            })
+            .Select(candidate => CreateProcessSelectionCandidate(profile, candidate, requiredWorkshopIds))
             .OrderByDescending(x => x.SelectionScore)
             .ThenByDescending(x => x.WorkshopMatchCount)
             .ThenByDescending(x => x.RecommendationMatch)
@@ -396,16 +354,11 @@ public sealed class RuntimeAdapter : IRuntimeAdapter
             .ToArray();
 
         var top = ranked[0];
-        var selected = top.Process with
-        {
-            MainModuleSize = top.MainModuleSize,
-            WorkshopMatchCount = top.WorkshopMatchCount,
-            SelectionScore = top.SelectionScore
-        };
-        selected = AttachMetadataValue(selected, "hostRole", selected.HostRole.ToString().ToLowerInvariant());
-        selected = AttachMetadataValue(selected, "mainModuleSize", selected.MainModuleSize.ToString(CultureInfo.InvariantCulture));
-        selected = AttachMetadataValue(selected, "workshopMatchCount", selected.WorkshopMatchCount.ToString(CultureInfo.InvariantCulture));
-        selected = AttachMetadataValue(selected, "selectionScore", selected.SelectionScore.ToString("0.00", CultureInfo.InvariantCulture));
+        var selected = FinalizeProcessSelection(
+            top.Process,
+            top.MainModuleSize,
+            top.WorkshopMatchCount,
+            top.SelectionScore);
 
         _logger.LogInformation(
             "Selected process {Pid} ({Name}) for profile {Profile}. Candidates={Count}, hostRole={HostRole}, workshopMatches={WorkshopMatches}, selectionScore={SelectionScore:0.00}, chosenModuleSize=0x{ModuleSize:X}",
@@ -419,6 +372,166 @@ public sealed class RuntimeAdapter : IRuntimeAdapter
             top.MainModuleSize);
         return selected;
     }
+
+    private ProcessMetadata[] ResolveInitialProcessMatches(
+        TrainerProfile profile,
+        IReadOnlyCollection<ProcessMetadata> processes)
+    {
+        var matches = processes.Where(x => x.ExeTarget == profile.ExeTarget).ToArray();
+        if (matches.Length > 0)
+        {
+            return matches;
+        }
+
+        // StarWarsG.exe can be ambiguous (or misclassified when command-line is unavailable).
+        // Prefer profile-aware fallback instead of hard-failing attach.
+        matches = processes.Where(IsStarWarsGProcess).ToArray();
+        if (matches.Length > 0)
+        {
+            _logger.LogInformation(
+                "No direct process match for target {Target}; using StarWarsG fallback candidates ({Count}).",
+                profile.ExeTarget,
+                matches.Length);
+        }
+
+        return matches;
+    }
+
+    private static ProcessMetadata[] ResolveCandidatePool(
+        TrainerProfile profile,
+        ProcessMetadata[] matches,
+        IReadOnlyCollection<string> requiredWorkshopIds)
+    {
+        var pool = ResolveWorkshopFilteredPool(matches, requiredWorkshopIds);
+
+        var recommendedMatches = pool
+            .Where(x => x.LaunchContext?.Recommendation.ProfileId?.Equals(profile.Id, StringComparison.OrdinalIgnoreCase) == true)
+            .ToArray();
+        if (recommendedMatches.Length > 0)
+        {
+            pool = recommendedMatches;
+        }
+
+        return ApplyFoCHostPreference(profile, pool);
+    }
+
+    private static ProcessMetadata[] ResolveWorkshopFilteredPool(
+        ProcessMetadata[] matches,
+        IReadOnlyCollection<string> requiredWorkshopIds)
+    {
+        if (requiredWorkshopIds.Count == 0)
+        {
+            return matches;
+        }
+
+        var strictWorkshopMatches = matches
+            .Where(x => requiredWorkshopIds.All(id => ProcessContainsWorkshopId(x, id)))
+            .ToArray();
+        if (strictWorkshopMatches.Length > 0)
+        {
+            return strictWorkshopMatches;
+        }
+
+        var looseWorkshopMatches = matches
+            .Where(x => requiredWorkshopIds.Any(id => ProcessContainsWorkshopId(x, id)))
+            .ToArray();
+        return looseWorkshopMatches.Length > 0 ? looseWorkshopMatches : matches;
+    }
+
+    private static ProcessMetadata[] ApplyFoCHostPreference(TrainerProfile profile, ProcessMetadata[] pool)
+    {
+        // For FoC, StarWarsG is typically the real game host while swfoc.exe can be a thin launcher.
+        // Prefer StarWarsG whenever both are present.
+        var preferStarWarsGHost = !string.Equals(profile.HostPreference, "any", StringComparison.OrdinalIgnoreCase);
+        if (profile.ExeTarget != ExeTarget.Swfoc || !preferStarWarsGHost)
+        {
+            return pool;
+        }
+
+        var starWarsGCandidates = pool
+            .Where(x => x.HostRole == ProcessHostRole.GameHost || IsStarWarsGProcess(x))
+            .ToArray();
+        return starWarsGCandidates.Length > 0 ? starWarsGCandidates : pool;
+    }
+
+    private static ProcessSelectionCandidate CreateProcessSelectionCandidate(
+        TrainerProfile profile,
+        ProcessMetadata process,
+        IReadOnlyCollection<string> requiredWorkshopIds)
+    {
+        var workshopMatchCount = requiredWorkshopIds.Count == 0
+            ? 0
+            : requiredWorkshopIds.Count(id => ProcessContainsWorkshopId(process, id));
+        var recommendationMatch = process.LaunchContext?.Recommendation.ProfileId?.Equals(profile.Id, StringComparison.OrdinalIgnoreCase) == true;
+        var mainModuleSize = process.MainModuleSize > 0 ? process.MainModuleSize : TryGetMainModuleSize(process.ProcessId);
+        var hasCommandLine = !string.IsNullOrWhiteSpace(process.CommandLine);
+        var hostRoleScore = process.HostRole switch
+        {
+            ProcessHostRole.GameHost => 2,
+            ProcessHostRole.Launcher => 1,
+            _ => 0
+        };
+        var selectionScore = ComputeSelectionScore(workshopMatchCount, recommendationMatch, hostRoleScore, hasCommandLine, mainModuleSize);
+        return new ProcessSelectionCandidate(
+            process,
+            workshopMatchCount,
+            recommendationMatch,
+            mainModuleSize,
+            hasCommandLine,
+            selectionScore);
+    }
+
+    private static double ComputeSelectionScore(
+        int workshopMatchCount,
+        bool recommendationMatch,
+        int hostRoleScore,
+        bool hasCommandLine,
+        int mainModuleSize)
+    {
+        return
+            (workshopMatchCount * 1000d) +
+            (recommendationMatch ? 300d : 0d) +
+            (hostRoleScore * 100d) +
+            (hasCommandLine ? 10d : 0d) +
+            (mainModuleSize / 1_000_000d);
+    }
+
+    private static ProcessMetadata FinalizeProcessSelection(
+        ProcessMetadata selected,
+        int mainModuleSize,
+        int workshopMatchCount,
+        double selectionScore)
+    {
+        selected = selected with
+        {
+            MainModuleSize = mainModuleSize,
+            WorkshopMatchCount = workshopMatchCount,
+            SelectionScore = selectionScore
+        };
+        selected = AttachMetadataValue(selected, "hostRole", selected.HostRole.ToString().ToLowerInvariant());
+        selected = AttachMetadataValue(selected, "mainModuleSize", selected.MainModuleSize.ToString(CultureInfo.InvariantCulture));
+        selected = AttachMetadataValue(selected, "workshopMatchCount", selected.WorkshopMatchCount.ToString(CultureInfo.InvariantCulture));
+        selected = AttachMetadataValue(selected, "selectionScore", selected.SelectionScore.ToString("0.00", CultureInfo.InvariantCulture));
+        return selected;
+    }
+
+    private readonly record struct AttachProfileContext(
+        string RequestedProfileId,
+        string ResolvedProfileId,
+        ProfileVariantResolution? VariantResolution);
+
+    private readonly record struct AttachPreparation(
+        ProcessMetadata Process,
+        ProfileBuild Build,
+        SymbolMap Symbols);
+
+    private readonly record struct ProcessSelectionCandidate(
+        ProcessMetadata Process,
+        int WorkshopMatchCount,
+        bool RecommendationMatch,
+        int MainModuleSize,
+        bool HasCommandLine,
+        double SelectionScore);
 
     private static T? ResolveOptionalService<T>(IServiceProvider? serviceProvider)
         where T : class
@@ -813,7 +926,12 @@ public sealed class RuntimeAdapter : IRuntimeAdapter
         return false;
     }
 
-    public Task<T> ReadAsync<T>(string symbol, CancellationToken cancellationToken = default) where T : unmanaged
+    public Task<T> ReadAsync<T>(string symbol) where T : unmanaged
+    {
+        return ReadAsync<T>(symbol, CancellationToken.None);
+    }
+
+    public Task<T> ReadAsync<T>(string symbol, CancellationToken cancellationToken) where T : unmanaged
     {
         EnsureAttached();
         var sym = ResolveSymbol(symbol);
@@ -821,7 +939,12 @@ public sealed class RuntimeAdapter : IRuntimeAdapter
         return Task.FromResult(value);
     }
 
-    public Task WriteAsync<T>(string symbol, T value, CancellationToken cancellationToken = default) where T : unmanaged
+    public Task WriteAsync<T>(string symbol, T value) where T : unmanaged
+    {
+        return WriteAsync(symbol, value, CancellationToken.None);
+    }
+
+    public Task WriteAsync<T>(string symbol, T value, CancellationToken cancellationToken) where T : unmanaged
     {
         EnsureAttached();
         var sym = ResolveSymbol(symbol);
@@ -829,23 +952,17 @@ public sealed class RuntimeAdapter : IRuntimeAdapter
         return Task.CompletedTask;
     }
 
-    public async Task<ActionExecutionResult> ExecuteAsync(ActionExecutionRequest request, CancellationToken cancellationToken = default)
+    public Task<ActionExecutionResult> ExecuteAsync(ActionExecutionRequest request)
+    {
+        return ExecuteAsync(request, CancellationToken.None);
+    }
+
+    public async Task<ActionExecutionResult> ExecuteAsync(ActionExecutionRequest request, CancellationToken cancellationToken)
     {
         EnsureAttached();
-        if (_dependencySoftDisabledActions.Contains(request.Action.Id))
+        if (TryCreateDependencyDisabledResult(request, out var dependencyDisabled))
         {
-            return new ActionExecutionResult(
-                false,
-                _dependencyValidationStatus == DependencyValidationStatus.SoftFail
-                    ? $"Action '{request.Action.Id}' is disabled due to dependency verification soft-fail. {_dependencyValidationMessage}"
-                    : $"Action '{request.Action.Id}' is disabled for the current attachment.",
-                AddressSource.None,
-                new Dictionary<string, object?>
-                {
-                    ["dependencyValidation"] = _dependencyValidationStatus.ToString(),
-                    ["dependencyValidationMessage"] = _dependencyValidationMessage,
-                    ["disabledActionId"] = request.Action.Id
-                });
+            return dependencyDisabled;
         }
 
         var attachedProfile = _attachedProfile
@@ -854,55 +971,103 @@ public sealed class RuntimeAdapter : IRuntimeAdapter
         var routeDecision = _backendRouter.Resolve(request, attachedProfile, CurrentSession!.Process, capabilityReport);
         if (!routeDecision.Allowed)
         {
-            var blocked = new ActionExecutionResult(
-                false,
-                routeDecision.Message,
-                AddressSource.None,
-                MergeDiagnostics(
-                    routeDecision.Diagnostics,
-                    new Dictionary<string, object?>
-                    {
-                        ["reasonCode"] = routeDecision.ReasonCode.ToString()
-                    }));
-            blocked = ApplyBackendRouteDiagnostics(blocked, routeDecision, capabilityReport);
+            var blocked = CreateBlockedRouteResult(routeDecision, capabilityReport);
             RecordActionTelemetry(request, blocked);
             return blocked;
         }
 
         try
         {
-            var result = routeDecision.Backend switch
-            {
-                ExecutionBackendKind.Extender when ShouldExecuteHybridManagedAction(request, routeDecision) =>
-                    await ExecuteHybridManagedActionAsync(request, cancellationToken),
-                ExecutionBackendKind.Extender => await ExecuteExtenderBackendActionAsync(request, capabilityReport, cancellationToken),
-                ExecutionBackendKind.Helper => await ExecuteHelperActionAsync(request, cancellationToken),
-                ExecutionBackendKind.Save => await ExecuteSaveActionAsync(request, cancellationToken),
-                ExecutionBackendKind.Memory => await ExecuteLegacyBackendActionAsync(request, cancellationToken),
-                _ => new ActionExecutionResult(false, "Unsupported execution backend.", AddressSource.None)
-            };
+            var result = await ExecuteByRouteAsync(routeDecision, request, capabilityReport, cancellationToken);
             result = ApplyBackendRouteDiagnostics(result, routeDecision, capabilityReport);
             RecordActionTelemetry(request, result);
             return result;
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Action execution failed for {Action}", request.Action.Id);
-            var failed = new ActionExecutionResult(
-                false,
-                ex.Message,
-                AddressSource.None,
-                MergeDiagnostics(
-                    routeDecision.Diagnostics,
-                    new Dictionary<string, object?>
-                    {
-                        ["failureReasonCode"] = "action_exception",
-                        ["exceptionType"] = ex.GetType().Name
-                    }));
-            failed = ApplyBackendRouteDiagnostics(failed, routeDecision, capabilityReport);
+            var failed = CreateExecutionExceptionResult(request, routeDecision, capabilityReport, ex);
             RecordActionTelemetry(request, failed);
             return failed;
         }
+    }
+
+    private bool TryCreateDependencyDisabledResult(
+        ActionExecutionRequest request,
+        out ActionExecutionResult result)
+    {
+        if (!_dependencySoftDisabledActions.Contains(request.Action.Id))
+        {
+            result = default!;
+            return false;
+        }
+
+        result = new ActionExecutionResult(
+            false,
+            _dependencyValidationStatus == DependencyValidationStatus.SoftFail
+                ? $"Action '{request.Action.Id}' is disabled due to dependency verification soft-fail. {_dependencyValidationMessage}"
+                : $"Action '{request.Action.Id}' is disabled for the current attachment.",
+            AddressSource.None,
+            new Dictionary<string, object?>
+            {
+                ["dependencyValidation"] = _dependencyValidationStatus.ToString(),
+                ["dependencyValidationMessage"] = _dependencyValidationMessage,
+                ["disabledActionId"] = request.Action.Id
+            });
+        return true;
+    }
+
+    private static ActionExecutionResult CreateBlockedRouteResult(
+        BackendRouteDecision routeDecision,
+        CapabilityReport capabilityReport)
+    {
+        var blocked = new ActionExecutionResult(
+            false,
+            routeDecision.Message,
+            AddressSource.None,
+            MergeDiagnostics(
+                routeDecision.Diagnostics,
+                new Dictionary<string, object?>
+                {
+                    ["reasonCode"] = routeDecision.ReasonCode.ToString()
+                }));
+        return ApplyBackendRouteDiagnostics(blocked, routeDecision, capabilityReport);
+    }
+
+    private async Task<ActionExecutionResult> ExecuteByRouteAsync(
+        BackendRouteDecision routeDecision,
+        ActionExecutionRequest request,
+        CapabilityReport capabilityReport,
+        CancellationToken cancellationToken)
+    {
+        return routeDecision.Backend switch
+        {
+            ExecutionBackendKind.Extender => await ExecuteExtenderBackendActionAsync(request, capabilityReport, cancellationToken),
+            ExecutionBackendKind.Helper => await ExecuteHelperActionAsync(request, cancellationToken),
+            ExecutionBackendKind.Save => await ExecuteSaveActionAsync(request, cancellationToken),
+            ExecutionBackendKind.Memory => await ExecuteLegacyBackendActionAsync(request, cancellationToken),
+            _ => new ActionExecutionResult(false, "Unsupported execution backend.", AddressSource.None)
+        };
+    }
+
+    private ActionExecutionResult CreateExecutionExceptionResult(
+        ActionExecutionRequest request,
+        BackendRouteDecision routeDecision,
+        CapabilityReport capabilityReport,
+        Exception ex)
+    {
+        _logger.LogError(ex, "Action execution failed for {Action}", request.Action.Id);
+        var failed = new ActionExecutionResult(
+            false,
+            ex.Message,
+            AddressSource.None,
+            MergeDiagnostics(
+                routeDecision.Diagnostics,
+                new Dictionary<string, object?>
+                {
+                    ["failureReasonCode"] = "action_exception",
+                    ["exceptionType"] = ex.GetType().Name
+                }));
+        return ApplyBackendRouteDiagnostics(failed, routeDecision, capabilityReport);
     }
 
     private async Task<CapabilityReport> ProbeCapabilitiesAsync(TrainerProfile profile, CancellationToken cancellationToken)
@@ -947,53 +1112,6 @@ public sealed class RuntimeAdapter : IRuntimeAdapter
         };
     }
 
-    private async Task<ActionExecutionResult> ExecuteHybridManagedActionAsync(
-        ActionExecutionRequest request,
-        CancellationToken cancellationToken)
-    {
-        var managedExecutionKind = ResolveHybridManagedExecutionKind(request.Action.Id, request.Action.ExecutionKind);
-        return managedExecutionKind switch
-        {
-            ExecutionKind.Memory => await ExecuteMemoryActionAsync(request, cancellationToken),
-            ExecutionKind.CodePatch => await ExecuteCodePatchActionAsync(request, cancellationToken),
-            _ => new ActionExecutionResult(
-                false,
-                $"Hybrid managed execution does not support action '{request.Action.Id}' with execution kind '{managedExecutionKind}'.",
-                AddressSource.None,
-                new Dictionary<string, object?>
-                {
-                    ["failureReasonCode"] = "hybrid_execution_kind_unsupported"
-                })
-        };
-    }
-
-    private static bool ShouldExecuteHybridManagedAction(
-        ActionExecutionRequest request,
-        BackendRouteDecision routeDecision)
-    {
-        if (routeDecision.Backend != ExecutionBackendKind.Extender || !IsHybridManagedAction(request.Action.Id))
-        {
-            return false;
-        }
-
-        return TryReadDiagnosticBool(routeDecision.Diagnostics, "hybridExecution");
-    }
-
-    private static ExecutionKind ResolveHybridManagedExecutionKind(string actionId, ExecutionKind requestedKind)
-    {
-        if (!IsHybridManagedAction(actionId))
-        {
-            return requestedKind;
-        }
-
-        return actionId switch
-        {
-            "freeze_timer" or "toggle_fog_reveal" or "toggle_ai" => ExecutionKind.Memory,
-            "set_unit_cap" or "toggle_instant_build_patch" => ExecutionKind.CodePatch,
-            _ => requestedKind
-        };
-    }
-
     private async Task<ActionExecutionResult> ExecuteExtenderBackendActionAsync(
         ActionExecutionRequest request,
         CapabilityReport capabilityReport,
@@ -1012,7 +1130,12 @@ public sealed class RuntimeAdapter : IRuntimeAdapter
                 });
         }
 
-        return await _extenderBackend.ExecuteAsync(request, capabilityReport, cancellationToken);
+        var extenderRequest = request with
+        {
+            Context = BuildExtenderContext(request)
+        };
+
+        return await _extenderBackend.ExecuteAsync(extenderRequest, capabilityReport, cancellationToken);
     }
 
     private static ActionExecutionResult ApplyBackendRouteDiagnostics(
@@ -1022,8 +1145,8 @@ public sealed class RuntimeAdapter : IRuntimeAdapter
     {
         var baseDiagnostics = MergeDiagnostics(routeDecision.Diagnostics, result.Diagnostics);
         var hybridExecution = ResolveHybridExecutionFlag(baseDiagnostics);
-        var backend = ResolveBackendDiagnosticValue(baseDiagnostics, routeDecision.Backend, hybridExecution);
-        var hookState = ResolveHookStateDiagnosticValue(baseDiagnostics, capabilityReport.Diagnostics, hybridExecution);
+        var backend = ResolveBackendDiagnosticValue(baseDiagnostics, routeDecision.Backend);
+        var hookState = ResolveHookStateDiagnosticValue(baseDiagnostics, capabilityReport.Diagnostics);
         var diagnostics = MergeDiagnostics(
             baseDiagnostics,
             new Dictionary<string, object?>
@@ -1052,8 +1175,7 @@ public sealed class RuntimeAdapter : IRuntimeAdapter
 
     private static string ResolveBackendDiagnosticValue(
         IReadOnlyDictionary<string, object?>? diagnostics,
-        ExecutionBackendKind routeBackend,
-        bool hybridExecution)
+        ExecutionBackendKind routeBackend)
     {
         if (TryReadDiagnosticString(diagnostics, "backend", out var backend) &&
             !string.IsNullOrWhiteSpace(backend))
@@ -1061,18 +1183,12 @@ public sealed class RuntimeAdapter : IRuntimeAdapter
             return backend!;
         }
 
-        if (hybridExecution)
-        {
-            return "hybrid_managed";
-        }
-
         return routeBackend.ToString();
     }
 
     private static string ResolveHookStateDiagnosticValue(
         IReadOnlyDictionary<string, object?>? resultDiagnostics,
-        IReadOnlyDictionary<string, object?>? capabilityDiagnostics,
-        bool hybridExecution)
+        IReadOnlyDictionary<string, object?>? capabilityDiagnostics)
     {
         if (TryResolveFirstDiagnosticValue(resultDiagnostics, ResultHookStateKeys, out var hookState))
         {
@@ -1084,7 +1200,7 @@ public sealed class RuntimeAdapter : IRuntimeAdapter
             return probeHookState!;
         }
 
-        return hybridExecution ? "managed" : "unknown";
+        return "unknown";
     }
 
     private static bool TryResolveFirstDiagnosticValue(
@@ -1121,27 +1237,10 @@ public sealed class RuntimeAdapter : IRuntimeAdapter
         return !string.IsNullOrWhiteSpace(value);
     }
 
-    private static bool TryReadDiagnosticBool(
-        IReadOnlyDictionary<string, object?>? diagnostics,
-        string key)
-    {
-        if (diagnostics is null || !diagnostics.TryGetValue(key, out var raw) || raw is null)
-        {
-            return false;
-        }
-
-        if (raw is bool boolValue)
-        {
-            return boolValue;
-        }
-
-        return bool.TryParse(raw.ToString(), out var parsed) && parsed;
-    }
-
-    private static bool IsHybridManagedAction(string actionId)
+    private static bool IsPromotedExtenderAction(string actionId)
     {
         return !string.IsNullOrWhiteSpace(actionId) &&
-               HybridManagedActionIds.Contains(actionId);
+               PromotedExtenderActionIds.Contains(actionId);
     }
 
     private static IReadOnlyDictionary<string, object?>? MergeDiagnostics(
@@ -1174,7 +1273,12 @@ public sealed class RuntimeAdapter : IRuntimeAdapter
         return merged;
     }
 
-    public Task DetachAsync(CancellationToken cancellationToken = default)
+    public Task DetachAsync()
+    {
+        return DetachAsync(CancellationToken.None);
+    }
+
+    public Task DetachAsync(CancellationToken cancellationToken)
     {
         TryRestoreCodePatchesOnDetach();
         TryRestoreCreditsHookOnDetach();
@@ -1268,6 +1372,292 @@ public sealed class RuntimeAdapter : IRuntimeAdapter
         }
 
         return merged;
+    }
+
+    private IReadOnlyDictionary<string, object?> BuildExtenderContext(ActionExecutionRequest request)
+    {
+        var merged = new Dictionary<string, object?>(StringComparer.OrdinalIgnoreCase);
+        if (request.Context is not null)
+        {
+            foreach (var kv in request.Context)
+            {
+                merged[kv.Key] = kv.Value;
+            }
+        }
+
+        if (CurrentSession is not null)
+        {
+            merged["processId"] = CurrentSession.Process.ProcessId;
+            merged["processName"] = CurrentSession.Process.ProcessName;
+            merged["processPath"] = CurrentSession.Process.ProcessPath;
+        }
+
+        var resolvedAnchors = BuildResolvedAnchors(request);
+        if (resolvedAnchors.Count > 0)
+        {
+            merged["resolvedAnchors"] = resolvedAnchors;
+        }
+
+        return merged;
+    }
+
+    private Dictionary<string, string> BuildResolvedAnchors(ActionExecutionRequest request)
+    {
+        var anchors = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+
+        if (TryReadContextValue(request.Context, "resolvedAnchors", out var existingResolved))
+        {
+            MergeAnchorMap(anchors, existingResolved);
+        }
+
+        if (anchors.Count == 0 &&
+            TryReadContextValue(request.Context, "anchors", out var existingLegacy))
+        {
+            MergeAnchorMap(anchors, existingLegacy);
+        }
+
+        if (TryReadPayloadString(request.Payload, "symbol", out var payloadSymbol))
+        {
+            TryAddResolvedSymbolAnchor(anchors, payloadSymbol!);
+        }
+
+        if (IsPromotedExtenderAction(request.Action.Id))
+        {
+            foreach (var alias in ResolvePromotedAnchorAliases(request.Action.Id))
+            {
+                TryAddResolvedSymbolAnchor(anchors, alias);
+            }
+        }
+
+        if (_creditsHookInjectionAddress != nint.Zero)
+        {
+            anchors["credits_hook_injection"] = ToHex(_creditsHookInjectionAddress);
+        }
+
+        if (_unitCapHookInjectionAddress != nint.Zero)
+        {
+            anchors["unit_cap_hook_injection"] = ToHex(_unitCapHookInjectionAddress);
+        }
+
+        if (_unitCapHookCodeCaveAddress != nint.Zero)
+        {
+            anchors["unit_cap_hook_cave"] = ToHex(_unitCapHookCodeCaveAddress);
+        }
+
+        if (_unitCapHookValueAddress != nint.Zero)
+        {
+            anchors["unit_cap_hook_value"] = ToHex(_unitCapHookValueAddress);
+        }
+
+        if (_instantBuildHookInjectionAddress != nint.Zero)
+        {
+            anchors["instant_build_patch_injection"] = ToHex(_instantBuildHookInjectionAddress);
+        }
+
+        if (_instantBuildHookCodeCaveAddress != nint.Zero)
+        {
+            anchors["instant_build_patch_cave"] = ToHex(_instantBuildHookCodeCaveAddress);
+        }
+
+        return anchors;
+    }
+
+    private static string[] ResolvePromotedAnchorAliases(string actionId)
+    {
+        return actionId switch
+        {
+            "freeze_timer" => ["game_timer_freeze", "freeze_timer"],
+            "toggle_fog_reveal" => ["fog_reveal", "toggle_fog_reveal"],
+            "toggle_ai" => ["ai_enabled", "toggle_ai"],
+            ActionIdSetUnitCap => ["unit_cap", ActionIdSetUnitCap],
+            ActionIdToggleInstantBuildPatch => ["instant_build_patch", ActionIdToggleInstantBuildPatch],
+            ActionIdSetCredits => [SymbolCredits, ActionIdSetCredits],
+            _ => Array.Empty<string>()
+        };
+    }
+
+    private void TryAddResolvedSymbolAnchor(IDictionary<string, string> anchors, string symbol)
+    {
+        if (string.IsNullOrWhiteSpace(symbol) || anchors.ContainsKey(symbol))
+        {
+            return;
+        }
+
+        if (!TryResolveSessionSymbolAddress(symbol, out var address))
+        {
+            return;
+        }
+
+        anchors[symbol] = ToHex(address);
+    }
+
+    private bool TryResolveSessionSymbolAddress(string symbol, out nint address)
+    {
+        address = nint.Zero;
+        if (CurrentSession is null)
+        {
+            return false;
+        }
+
+        if (!CurrentSession.Symbols.Symbols.TryGetValue(symbol, out var info) ||
+            info.Address == nint.Zero)
+        {
+            return false;
+        }
+
+        address = info.Address;
+        return true;
+    }
+
+    private static bool TryReadPayloadString(JsonObject payload, string key, out string? value)
+    {
+        value = null;
+        if (!payload.TryGetPropertyValue(key, out var node) || node is null)
+        {
+            return false;
+        }
+
+        try
+        {
+            value = node.GetValue<string>();
+            return !string.IsNullOrWhiteSpace(value);
+        }
+        catch
+        {
+            return false;
+        }
+    }
+
+    private static bool TryReadContextValue(
+        IReadOnlyDictionary<string, object?>? context,
+        string key,
+        out object? value)
+    {
+        value = null;
+        if (context is null)
+        {
+            return false;
+        }
+
+        if (!context.TryGetValue(key, out var raw))
+        {
+            return false;
+        }
+
+        value = raw;
+        return true;
+    }
+
+    private static void MergeAnchorMap(IDictionary<string, string> destination, object? raw)
+    {
+        if (raw is null)
+        {
+            return;
+        }
+
+        if (TryMergeAnchorJsonObject(destination, raw) ||
+            TryMergeAnchorJsonElement(destination, raw) ||
+            TryMergeAnchorObjectDictionary(destination, raw) ||
+            TryMergeAnchorStringPairs(destination, raw))
+        {
+            return;
+        }
+
+        TryMergeSerializedAnchorMap(destination, raw);
+    }
+
+    private static bool TryMergeAnchorJsonObject(IDictionary<string, string> destination, object raw)
+    {
+        if (raw is not JsonObject jsonObject)
+        {
+            return false;
+        }
+
+        foreach (var kv in jsonObject)
+        {
+            AddAnchorIfNotEmpty(destination, kv.Key, kv.Value?.ToString());
+        }
+
+        return true;
+    }
+
+    private static bool TryMergeAnchorJsonElement(IDictionary<string, string> destination, object raw)
+    {
+        if (raw is not JsonElement element || element.ValueKind != JsonValueKind.Object)
+        {
+            return false;
+        }
+
+        foreach (var property in element.EnumerateObject())
+        {
+            AddAnchorIfNotEmpty(destination, property.Name, property.Value.ToString());
+        }
+
+        return true;
+    }
+
+    private static bool TryMergeAnchorObjectDictionary(IDictionary<string, string> destination, object raw)
+    {
+        if (raw is not IReadOnlyDictionary<string, object?> dictionary)
+        {
+            return false;
+        }
+
+        foreach (var kv in dictionary)
+        {
+            AddAnchorIfNotEmpty(destination, kv.Key, kv.Value?.ToString());
+        }
+
+        return true;
+    }
+
+    private static bool TryMergeAnchorStringPairs(IDictionary<string, string> destination, object raw)
+    {
+        if (raw is not IEnumerable<KeyValuePair<string, string>> pairs)
+        {
+            return false;
+        }
+
+        foreach (var kv in pairs.Where(static kv => !string.IsNullOrWhiteSpace(kv.Value)))
+        {
+            destination[kv.Key] = kv.Value;
+        }
+
+        return true;
+    }
+
+    private static void TryMergeSerializedAnchorMap(IDictionary<string, string> destination, object raw)
+    {
+        if (raw is not string serialized || string.IsNullOrWhiteSpace(serialized))
+        {
+            return;
+        }
+
+        try
+        {
+            var parsed = JsonSerializer.Deserialize<Dictionary<string, string>>(serialized);
+            if (parsed is null)
+            {
+                return;
+            }
+
+            foreach (var kv in parsed.Where(static kv => !string.IsNullOrWhiteSpace(kv.Value)))
+            {
+                destination[kv.Key] = kv.Value;
+            }
+        }
+        catch
+        {
+            // ignored
+        }
+    }
+
+    private static void AddAnchorIfNotEmpty(IDictionary<string, string> destination, string key, string? value)
+    {
+        if (!string.IsNullOrWhiteSpace(value))
+        {
+            destination[key] = value;
+        }
     }
 
     private async Task<ActionExecutionResult> ExecuteMemoryActionAsync(ActionExecutionRequest request, CancellationToken cancellationToken)
@@ -1899,12 +2289,12 @@ public sealed class RuntimeAdapter : IRuntimeAdapter
     /// </summary>
     private Task<ActionExecutionResult> ExecuteCodePatchActionAsync(ActionExecutionRequest request, CancellationToken cancellationToken)
     {
-        if (request.Action.Id.Equals("set_unit_cap", StringComparison.OrdinalIgnoreCase))
+        if (request.Action.Id.Equals(ActionIdSetUnitCap, StringComparison.OrdinalIgnoreCase))
         {
             return ExecuteUnitCapHookAsync(request);
         }
 
-        if (request.Action.Id.Equals("toggle_instant_build_patch", StringComparison.OrdinalIgnoreCase))
+        if (request.Action.Id.Equals(ActionIdToggleInstantBuildPatch, StringComparison.OrdinalIgnoreCase))
         {
             return ExecuteInstantBuildHookAsync(request);
         }
@@ -2093,7 +2483,7 @@ public sealed class RuntimeAdapter : IRuntimeAdapter
         SymbolInfo creditsSymbol;
         try
         {
-            creditsSymbol = ResolveSymbol("credits");
+            creditsSymbol = ResolveSymbol(SymbolCredits);
             diagnostics["creditsAddress"] = ToHex(creditsSymbol.Address);
         }
         catch (KeyNotFoundException)
@@ -3014,7 +3404,7 @@ public sealed class RuntimeAdapter : IRuntimeAdapter
             long creditsRva = -1;
             try
             {
-                var creditsSymbol = ResolveSymbol("credits");
+                var creditsSymbol = ResolveSymbol(SymbolCredits);
                 creditsRva = creditsSymbol.Address.ToInt64() - baseAddress.ToInt64();
             }
             catch { /* credits symbol unavailable — correlation disabled */ }
@@ -3460,8 +3850,8 @@ public sealed class RuntimeAdapter : IRuntimeAdapter
 
     private static bool IsCreditsWrite(ActionExecutionRequest request, string symbol)
     {
-        return request.Action.Id.Equals("set_credits", StringComparison.OrdinalIgnoreCase) ||
-               symbol.Equals("credits", StringComparison.OrdinalIgnoreCase);
+        return request.Action.Id.Equals(ActionIdSetCredits, StringComparison.OrdinalIgnoreCase) ||
+               symbol.Equals(SymbolCredits, StringComparison.OrdinalIgnoreCase);
     }
 
     private static bool TryReadBooleanPayload(JsonObject payload, string key, out bool value)

@@ -3,7 +3,9 @@
 #pragma once
 
 #include <atomic>
+#include <cstdint>
 #include <functional>
+#include <map>
 #include <string>
 #include <thread>
 
@@ -23,6 +25,9 @@ struct BridgeCommand {
     [[maybe_unused]] std::string requestedBy;
     [[maybe_unused]] std::string timestampUtc;
     [[maybe_unused]] std::string payloadJson;
+    [[maybe_unused]] std::int32_t processId {0};
+    [[maybe_unused]] std::string processName;
+    [[maybe_unused]] std::map<std::string, std::string> resolvedAnchors {};
 };
 
 struct BridgeResult {

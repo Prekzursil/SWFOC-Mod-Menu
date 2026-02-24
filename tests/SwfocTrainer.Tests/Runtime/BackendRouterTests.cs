@@ -41,7 +41,9 @@ public sealed class BackendRouterTests
         decision.Backend.Should().Be(ExecutionBackendKind.Extender);
         decision.ReasonCode.Should().Be(RuntimeReasonCode.CAPABILITY_PROBE_PASS);
         decision.Diagnostics.Should().ContainKey("hybridExecution");
-        decision.Diagnostics!["hybridExecution"].Should().Be(true);
+        decision.Diagnostics!["hybridExecution"].Should().Be(false);
+        decision.Diagnostics.Should().ContainKey("promotedExtenderAction");
+        decision.Diagnostics!["promotedExtenderAction"].Should().Be(true);
     }
 
     [Theory]
@@ -66,7 +68,48 @@ public sealed class BackendRouterTests
         decision.Backend.Should().Be(ExecutionBackendKind.Extender);
         decision.ReasonCode.Should().Be(RuntimeReasonCode.CAPABILITY_REQUIRED_MISSING);
         decision.Diagnostics.Should().ContainKey("hybridExecution");
-        decision.Diagnostics!["hybridExecution"].Should().Be(true);
+        decision.Diagnostics!["hybridExecution"].Should().Be(false);
+        decision.Diagnostics.Should().ContainKey("promotedExtenderAction");
+        decision.Diagnostics!["promotedExtenderAction"].Should().Be(true);
+        decision.Diagnostics.Should().NotContainKey("fallbackBackend");
+    }
+
+    [Theory]
+    [InlineData("freeze_timer", ExecutionKind.Memory)]
+    [InlineData("toggle_fog_reveal", ExecutionKind.Memory)]
+    [InlineData("toggle_ai", ExecutionKind.Memory)]
+    [InlineData("set_unit_cap", ExecutionKind.CodePatch)]
+    [InlineData("toggle_instant_build_patch", ExecutionKind.CodePatch)]
+    public void Resolve_ShouldFailClosedForPromotedActions_WhenCapabilityIsUnverified(
+        string actionId,
+        ExecutionKind executionKind)
+    {
+        var router = new BackendRouter();
+        var request = BuildRequest(actionId, executionKind);
+        var profile = BuildProfile(backendPreference: "auto");
+        var process = BuildProcess();
+        var report = new CapabilityReport(
+            profile.Id,
+            DateTimeOffset.UtcNow,
+            new Dictionary<string, BackendCapability>(StringComparer.OrdinalIgnoreCase)
+            {
+                [actionId] = new BackendCapability(
+                    actionId,
+                    Available: true,
+                    Confidence: CapabilityConfidenceState.Experimental,
+                    ReasonCode: RuntimeReasonCode.CAPABILITY_FEATURE_EXPERIMENTAL)
+            },
+            RuntimeReasonCode.CAPABILITY_PROBE_PASS);
+
+        var decision = router.Resolve(request, profile, process, report);
+
+        decision.Allowed.Should().BeFalse();
+        decision.Backend.Should().Be(ExecutionBackendKind.Extender);
+        decision.ReasonCode.Should().Be(RuntimeReasonCode.SAFETY_FAIL_CLOSED);
+        decision.Diagnostics.Should().ContainKey("hybridExecution");
+        decision.Diagnostics!["hybridExecution"].Should().Be(false);
+        decision.Diagnostics.Should().ContainKey("promotedExtenderAction");
+        decision.Diagnostics!["promotedExtenderAction"].Should().Be(true);
         decision.Diagnostics.Should().NotContainKey("fallbackBackend");
     }
 
@@ -110,6 +153,8 @@ public sealed class BackendRouterTests
         decision.ReasonCode.Should().Be(RuntimeReasonCode.CAPABILITY_PROBE_PASS);
         decision.Diagnostics.Should().ContainKey("hybridExecution");
         decision.Diagnostics!["hybridExecution"].Should().Be(false);
+        decision.Diagnostics.Should().ContainKey("promotedExtenderAction");
+        decision.Diagnostics!["promotedExtenderAction"].Should().Be(false);
     }
 
     [Fact]

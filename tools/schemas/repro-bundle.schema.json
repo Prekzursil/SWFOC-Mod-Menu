@@ -16,6 +16,7 @@
     "capabilityProbeSnapshot",
     "hookInstallReport",
     "overlayState",
+    "actionStatusDiagnostics",
     "liveTests",
     "diagnostics",
     "classification",
@@ -116,6 +117,58 @@
         "available": { "type": "boolean" },
         "visible": { "type": "boolean" },
         "reasonCode": { "type": "string" }
+      }
+    },
+    "actionStatusDiagnostics": {
+      "type": "object",
+      "required": ["status", "source", "summary", "entries"],
+      "properties": {
+        "status": { "type": "string" },
+        "source": { "type": "string" },
+        "summary": {
+          "type": "object",
+          "required": ["total", "passed", "failed", "skipped"],
+          "properties": {
+            "total": { "type": "integer", "minimum": 0 },
+            "passed": { "type": "integer", "minimum": 0 },
+            "failed": { "type": "integer", "minimum": 0 },
+            "skipped": { "type": "integer", "minimum": 0 }
+          }
+        },
+        "entries": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "profileId",
+              "actionId",
+              "outcome",
+              "backendRoute",
+              "routeReasonCode",
+              "capabilityProbeReasonCode",
+              "hybridExecution",
+              "hasFallbackMarker",
+              "message",
+              "skipReasonCode"
+            ],
+            "properties": {
+              "profileId": { "type": "string" },
+              "actionId": { "type": "string" },
+              "outcome": {
+                "type": "string",
+                "enum": ["Passed", "Failed", "Skipped", "Missing", "Unknown"]
+              },
+              "backendRoute": { "type": ["string", "null"] },
+              "routeReasonCode": { "type": ["string", "null"] },
+              "capabilityProbeReasonCode": { "type": ["string", "null"] },
+              "hybridExecution": { "type": ["boolean", "null"] },
+              "hasFallbackMarker": { "type": "boolean" },
+              "message": { "type": ["string", "null"] },
+              "skipReasonCode": { "type": ["string", "null"] }
+            }
+          }
+        },
+        "error": { "type": ["string", "null"] }
       }
     },
     "liveTests": {

@@ -2,6 +2,7 @@ using System.Diagnostics;
 using System.IO.Pipes;
 using System.Text;
 using System.Text.Json;
+using System.Text.Json.Nodes;
 using System.Text.Json.Serialization;
 using SwfocTrainer.Core.Contracts;
 using SwfocTrainer.Core.Models;
@@ -14,6 +15,19 @@ public sealed class NamedPipeExtenderBackend : IExecutionBackend
     private const int DefaultResponseTimeoutMs = 2000;
     private const string DefaultPipeName = "SwfocExtenderBridge";
     private const string ExtenderBackendId = "extender";
+    private const string NativeDirectoryName = "native";
+    private const string BridgeHostWindowsExecutableName = "SwfocExtender.Host.exe";
+    private const string BridgeHostPosixExecutableName = "SwfocExtender.Host";
+    private static readonly string[] NativeAuthoritativeFeatureIds =
+    [
+        "freeze_timer",
+        "toggle_fog_reveal",
+        "toggle_ai",
+        "set_unit_cap",
+        "toggle_instant_build_patch",
+        "set_credits"
+    ];
+
     private static readonly object HostSync = new();
     private static Process? _bridgeHostProcess;
 
@@ -37,30 +51,46 @@ public sealed class NamedPipeExtenderBackend : IExecutionBackend
         ProcessMetadata processContext,
         CancellationToken cancellationToken)
     {
-        var pingCommand = new ExtenderCommand(
+        var result = await SendAsync(CreateProbeCommand(profileId, processContext), cancellationToken);
+        if (!result.Succeeded)
+        {
+            return CreateProbeFailureReport(profileId, result);
+        }
+
+        return CreateProbeSuccessReport(profileId, result);
+    }
+
+    private static ExtenderCommand CreateProbeCommand(string profileId, ProcessMetadata processContext)
+    {
+        return new ExtenderCommand(
             CommandId: Guid.NewGuid().ToString("N"),
             FeatureId: "probe_capabilities",
             ProfileId: profileId,
             Mode: processContext.Mode,
             Payload: new System.Text.Json.Nodes.JsonObject(),
+            ProcessId: processContext.ProcessId,
+            ProcessName: processContext.ProcessName,
+            ResolvedAnchors: new System.Text.Json.Nodes.JsonObject(),
             RequestedBy: "runtime_adapter",
             TimestampUtc: DateTimeOffset.UtcNow);
+    }
 
-        var result = await SendAsync(pingCommand, cancellationToken);
-        if (!result.Succeeded)
+    private static CapabilityReport CreateProbeFailureReport(string profileId, ExtenderResult result)
+    {
+        return CapabilityReport.Unknown(profileId, result.ReasonCode) with
         {
-            return CapabilityReport.Unknown(profileId, result.ReasonCode) with
+            Diagnostics = new Dictionary<string, object?>
             {
-                Diagnostics = new Dictionary<string, object?>
-                {
-                    ["backend"] = ExtenderBackendId,
-                    ["pipe"] = DefaultPipeName,
-                    ["reasonCode"] = result.ReasonCode.ToString(),
-                    ["message"] = result.Message
-                }
-            };
-        }
+                ["backend"] = ExtenderBackendId,
+                ["pipe"] = DefaultPipeName,
+                ["reasonCode"] = result.ReasonCode.ToString(),
+                ["message"] = result.Message
+            }
+        };
+    }
 
+    private static CapabilityReport CreateProbeSuccessReport(string profileId, ExtenderResult result)
+    {
         var capabilities = ParseCapabilities(result.Diagnostics);
         capabilities["probe_capabilities"] = new BackendCapability(
             FeatureId: "probe_capabilities",
@@ -94,23 +124,23 @@ public sealed class NamedPipeExtenderBackend : IExecutionBackend
         CapabilityReport capabilityReport,
         CancellationToken cancellationToken)
     {
+        var commandContext = command.Context;
         var extenderCommand = new ExtenderCommand(
             CommandId: Guid.NewGuid().ToString("N"),
             FeatureId: command.Action.Id,
             ProfileId: command.ProfileId,
             Mode: command.RuntimeMode,
             Payload: command.Payload,
+            ProcessId: ReadContextInt(commandContext, "processId"),
+            ProcessName: ReadContextString(commandContext, "processName"),
+            ResolvedAnchors: ReadContextAnchors(commandContext),
             RequestedBy: "external_app",
             TimestampUtc: DateTimeOffset.UtcNow);
 
         var result = await SendAsync(extenderCommand, cancellationToken);
         var diagnostics = new Dictionary<string, object?>(StringComparer.OrdinalIgnoreCase)
         {
-            ["reasonCode"] = result.ReasonCode.ToString(),
-            ["backend"] = result.Backend,
-            ["hookState"] = result.HookState,
-            ["extenderCommandId"] = result.CommandId,
-            ["probeReasonCode"] = capabilityReport.ProbeReasonCode.ToString()
+            ["extenderCommandId"] = result.CommandId
         };
 
         if (result.Diagnostics is not null)
@@ -120,6 +150,11 @@ public sealed class NamedPipeExtenderBackend : IExecutionBackend
                 diagnostics[kv.Key] = kv.Value;
             }
         }
+
+        diagnostics["reasonCode"] = result.ReasonCode.ToString();
+        diagnostics["backend"] = result.Backend;
+        diagnostics["hookState"] = result.HookState;
+        diagnostics["probeReasonCode"] = capabilityReport.ProbeReasonCode.ToString();
 
         return new ActionExecutionResult(
             result.Succeeded,
@@ -135,12 +170,15 @@ public sealed class NamedPipeExtenderBackend : IExecutionBackend
 
     public async Task<BackendHealth> GetHealthAsync(CancellationToken cancellationToken)
     {
-        var probe = await SendAsync(new ExtenderCommand(
+        var probe = await SendCoreAsync(new ExtenderCommand(
             CommandId: Guid.NewGuid().ToString("N"),
             FeatureId: "health",
             ProfileId: "unknown",
             Mode: RuntimeMode.Unknown,
             Payload: new System.Text.Json.Nodes.JsonObject(),
+            ProcessId: 0,
+            ProcessName: string.Empty,
+            ResolvedAnchors: new System.Text.Json.Nodes.JsonObject(),
             RequestedBy: "runtime_adapter",
             TimestampUtc: DateTimeOffset.UtcNow), cancellationToken);
 
@@ -335,14 +373,115 @@ public sealed class NamedPipeExtenderBackend : IExecutionBackend
             return fromEnv;
         }
 
-        var candidates = new[]
+        var candidates = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+        foreach (var root in ResolveSearchRoots())
         {
-            Path.Combine(AppContext.BaseDirectory, "native", "runtime", "SwfocExtender.Host.exe"),
-            Path.Combine(AppContext.BaseDirectory, "native", "build-win", "SwfocExtender.Host.exe"),
-            Path.Combine(AppContext.BaseDirectory, "native", "build-wsl", "SwfocExtender.Host")
+            AddKnownCandidatePaths(candidates, root);
+            AddDiscoveredNativeBuildCandidates(candidates, root);
+        }
+
+        return candidates
+            .Where(File.Exists)
+            .Select(path => new FileInfo(path))
+            .OrderByDescending(file => file.LastWriteTimeUtc)
+            .ThenByDescending(file => file.Name.Equals(BridgeHostWindowsExecutableName, StringComparison.OrdinalIgnoreCase))
+            .Select(file => file.FullName)
+            .FirstOrDefault();
+    }
+
+    private static IEnumerable<string> ResolveSearchRoots()
+    {
+        var roots = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+        TryAddRoot(roots, AppContext.BaseDirectory);
+        TryAddRoot(roots, Environment.CurrentDirectory);
+        TryAddAncestorRoots(roots, AppContext.BaseDirectory, 6);
+        TryAddAncestorRoots(roots, Environment.CurrentDirectory, 6);
+        return roots;
+    }
+
+    private static void AddKnownCandidatePaths(HashSet<string> candidates, string root)
+    {
+        var known = new[]
+        {
+            Path.Combine(root, NativeDirectoryName, "runtime", BridgeHostWindowsExecutableName),
+            Path.Combine(root, NativeDirectoryName, "build-win-vs", "SwfocExtender.Bridge", "Release", BridgeHostWindowsExecutableName),
+            Path.Combine(root, NativeDirectoryName, "build-win-vs", "SwfocExtender.Bridge", "x64", "Release", BridgeHostWindowsExecutableName),
+            Path.Combine(root, NativeDirectoryName, "build-win-codex", "SwfocExtender.Bridge", "Release", BridgeHostWindowsExecutableName),
+            Path.Combine(root, NativeDirectoryName, "build-win", BridgeHostWindowsExecutableName),
+            Path.Combine(root, NativeDirectoryName, "build-wsl", BridgeHostPosixExecutableName)
         };
 
-        return candidates.FirstOrDefault(File.Exists);
+        foreach (var path in known)
+        {
+            candidates.Add(path);
+        }
+    }
+
+    private static void AddDiscoveredNativeBuildCandidates(HashSet<string> candidates, string root)
+    {
+        var nativeRoot = Path.Combine(root, NativeDirectoryName);
+        if (!Directory.Exists(nativeRoot))
+        {
+            return;
+        }
+
+        try
+        {
+            foreach (var path in Directory.EnumerateFiles(nativeRoot, BridgeHostWindowsExecutableName, SearchOption.AllDirectories))
+            {
+                candidates.Add(path);
+            }
+
+            foreach (var path in Directory.EnumerateFiles(nativeRoot, BridgeHostPosixExecutableName, SearchOption.AllDirectories))
+            {
+                candidates.Add(path);
+            }
+        }
+        catch
+        {
+            // ignored: candidate discovery is best-effort.
+        }
+    }
+
+    private static void TryAddRoot(HashSet<string> roots, string? path)
+    {
+        if (string.IsNullOrWhiteSpace(path))
+        {
+            return;
+        }
+
+        try
+        {
+            roots.Add(Path.GetFullPath(path));
+        }
+        catch
+        {
+            // ignored
+        }
+    }
+
+    private static void TryAddAncestorRoots(HashSet<string> roots, string? startPath, int maxDepth)
+    {
+        if (string.IsNullOrWhiteSpace(startPath))
+        {
+            return;
+        }
+
+        DirectoryInfo? directory = null;
+        try
+        {
+            directory = new DirectoryInfo(startPath);
+        }
+        catch
+        {
+            return;
+        }
+
+        for (var depth = 0; directory is not null && depth < maxDepth; depth++)
+        {
+            TryAddRoot(roots, directory.FullName);
+            directory = directory.Parent;
+        }
     }
 
     private static Dictionary<string, BackendCapability> ParseCapabilities(
@@ -351,6 +490,7 @@ public sealed class NamedPipeExtenderBackend : IExecutionBackend
         var capabilities = new Dictionary<string, BackendCapability>(StringComparer.OrdinalIgnoreCase);
         if (!TryGetCapabilitiesElement(diagnostics, out var element))
         {
+            EnsureNativeFeatureEntries(capabilities);
             return capabilities;
         }
 
@@ -364,7 +504,26 @@ public sealed class NamedPipeExtenderBackend : IExecutionBackend
             capabilities[property.Name] = capability;
         }
 
+        EnsureNativeFeatureEntries(capabilities);
         return capabilities;
+    }
+
+    private static void EnsureNativeFeatureEntries(Dictionary<string, BackendCapability> capabilities)
+    {
+        foreach (var featureId in NativeAuthoritativeFeatureIds)
+        {
+            if (capabilities.ContainsKey(featureId))
+            {
+                continue;
+            }
+
+            capabilities[featureId] = new BackendCapability(
+                FeatureId: featureId,
+                Available: false,
+                Confidence: CapabilityConfidenceState.Unknown,
+                ReasonCode: RuntimeReasonCode.CAPABILITY_REQUIRED_MISSING,
+                Notes: "Feature omitted from capability probe payload.");
+        }
     }
 
     private static bool TryGetCapabilitiesElement(
@@ -456,5 +615,195 @@ public sealed class NamedPipeExtenderBackend : IExecutionBackend
         return Enum.TryParse<RuntimeReasonCode>(rawCode, ignoreCase: true, out var parsed)
             ? parsed
             : RuntimeReasonCode.CAPABILITY_UNKNOWN;
+    }
+
+    private static int ReadContextInt(IReadOnlyDictionary<string, object?>? context, string key)
+    {
+        if (!TryReadContextValue(context, key, out var raw) || raw is null)
+        {
+            return 0;
+        }
+
+        if (raw is int intValue)
+        {
+            return intValue;
+        }
+
+        if (raw is long longValue && longValue >= int.MinValue && longValue <= int.MaxValue)
+        {
+            return (int)longValue;
+        }
+
+        return int.TryParse(raw.ToString(), out var parsed) ? parsed : 0;
+    }
+
+    private static string ReadContextString(IReadOnlyDictionary<string, object?>? context, string key)
+    {
+        if (!TryReadContextValue(context, key, out var raw) || raw is null)
+        {
+            return string.Empty;
+        }
+
+        return raw as string ?? raw.ToString() ?? string.Empty;
+    }
+
+    private static JsonObject ReadContextAnchors(IReadOnlyDictionary<string, object?>? context)
+    {
+        var resolved = new JsonObject();
+        if (TryReadContextValue(context, "resolvedAnchors", out var anchorsRaw))
+        {
+            MergeAnchors(resolved, anchorsRaw);
+        }
+
+        if (resolved.Count == 0 && TryReadContextValue(context, "anchors", out var legacyAnchorsRaw))
+        {
+            MergeAnchors(resolved, legacyAnchorsRaw);
+        }
+
+        return resolved;
+    }
+
+    private static void MergeAnchors(JsonObject destination, object? rawAnchors)
+    {
+        if (rawAnchors is null)
+        {
+            return;
+        }
+
+        if (TryMergeJsonObjectAnchors(destination, rawAnchors) ||
+            TryMergeJsonElementAnchors(destination, rawAnchors) ||
+            TryMergeObjectDictionaryAnchors(destination, rawAnchors) ||
+            TryMergeStringPairAnchors(destination, rawAnchors))
+        {
+            return;
+        }
+
+        TryMergeSerializedAnchors(destination, rawAnchors);
+    }
+
+    private static bool TryMergeJsonObjectAnchors(JsonObject destination, object rawAnchors)
+    {
+        if (rawAnchors is not JsonObject jsonObject)
+        {
+            return false;
+        }
+
+        foreach (var kv in jsonObject)
+        {
+            if (kv.Value is null)
+            {
+                continue;
+            }
+
+            destination[kv.Key] = kv.Value.ToString();
+        }
+
+        return true;
+    }
+
+    private static bool TryMergeJsonElementAnchors(JsonObject destination, object rawAnchors)
+    {
+        if (rawAnchors is not JsonElement element || element.ValueKind != JsonValueKind.Object)
+        {
+            return false;
+        }
+
+        foreach (var property in element.EnumerateObject())
+        {
+            destination[property.Name] = property.Value.ToString();
+        }
+
+        return true;
+    }
+
+    private static bool TryMergeObjectDictionaryAnchors(JsonObject destination, object rawAnchors)
+    {
+        if (rawAnchors is not IReadOnlyDictionary<string, object?> dictionary)
+        {
+            return false;
+        }
+
+        foreach (var kv in dictionary)
+        {
+            if (kv.Value is null)
+            {
+                continue;
+            }
+
+            destination[kv.Key] = kv.Value.ToString();
+        }
+
+        return true;
+    }
+
+    private static bool TryMergeStringPairAnchors(JsonObject destination, object rawAnchors)
+    {
+        if (rawAnchors is not IEnumerable<KeyValuePair<string, string>> stringPairs)
+        {
+            return false;
+        }
+
+        foreach (var kv in stringPairs)
+        {
+            if (string.IsNullOrWhiteSpace(kv.Value))
+            {
+                continue;
+            }
+
+            destination[kv.Key] = kv.Value;
+        }
+
+        return true;
+    }
+
+    private static void TryMergeSerializedAnchors(JsonObject destination, object rawAnchors)
+    {
+        if (rawAnchors is not string serialized || string.IsNullOrWhiteSpace(serialized))
+        {
+            return;
+        }
+
+        try
+        {
+            var parsed = JsonSerializer.Deserialize<Dictionary<string, string>>(serialized, JsonOptions);
+            if (parsed is null)
+            {
+                return;
+            }
+
+            foreach (var kv in parsed)
+            {
+                if (string.IsNullOrWhiteSpace(kv.Value))
+                {
+                    continue;
+                }
+
+                destination[kv.Key] = kv.Value;
+            }
+        }
+        catch
+        {
+            // ignored
+        }
+    }
+
+    private static bool TryReadContextValue(
+        IReadOnlyDictionary<string, object?>? context,
+        string key,
+        out object? value)
+    {
+        value = null;
+        if (context is null)
+        {
+            return false;
+        }
+
+        if (!context.TryGetValue(key, out var raw))
+        {
+            return false;
+        }
+
+        value = raw;
+        return true;
     }
 }
