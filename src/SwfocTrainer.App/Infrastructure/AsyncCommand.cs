@@ -65,5 +65,5 @@ public sealed class AsyncCommand : ICommand
         remove => CommandManager.RequerySuggested -= value;
     }
 
-    public void RaiseCanExecuteChanged() => CommandManager.InvalidateRequerySuggested();
+    public static void RaiseCanExecuteChanged() => CommandManager.InvalidateRequerySuggested();
 }

@@ -25,15 +25,15 @@ public sealed class HelperModService : IHelperModService
         var targetRoot = Path.Combine(_options.InstallRoot, profileId);
         Directory.CreateDirectory(targetRoot);
 
-        foreach (var hook in profile.HelperModHooks)
+        foreach (var script in profile.HelperModHooks.Select(hook => hook.Script))
         {
-            var sourcePath = Path.Combine(_options.SourceRoot, hook.Script);
+            var sourcePath = Path.Combine(_options.SourceRoot, script);
             if (!File.Exists(sourcePath))
             {
                 throw new FileNotFoundException($"Helper hook source not found: {sourcePath}");
             }
 
-            var destination = Path.Combine(targetRoot, hook.Script);
+            var destination = Path.Combine(targetRoot, script);
             var destinationDir = Path.GetDirectoryName(destination);
             if (!string.IsNullOrWhiteSpace(destinationDir))
             {

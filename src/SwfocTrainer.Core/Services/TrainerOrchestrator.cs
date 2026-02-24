@@ -7,6 +7,10 @@ namespace SwfocTrainer.Core.Services;
 
 public sealed class TrainerOrchestrator
 {
+    private const string PayloadKeySymbol = "symbol";
+    private const string DiagnosticKeySymbol = "symbol";
+    private const string DiagnosticKeyFrozen = "frozen";
+
     private readonly IProfileRepository _profiles;
     private readonly IRuntimeAdapter _runtime;
     private readonly IValueFreezeService _freezeService;
@@ -128,10 +132,10 @@ public sealed class TrainerOrchestrator
 
     private ActionExecutionResult ExecuteFreezeAction(ActionSpec action, System.Text.Json.Nodes.JsonObject payload)
     {
-        var symbol = payload["symbol"]?.GetValue<string>();
+        var symbol = payload[PayloadKeySymbol]?.GetValue<string>();
         if (string.IsNullOrWhiteSpace(symbol))
         {
-            return new ActionExecutionResult(false, "Freeze action requires 'symbol' in payload.", AddressSource.None);
+            return new ActionExecutionResult(false, $"Freeze action requires '{PayloadKeySymbol}' in payload.", AddressSource.None);
         }
 
         // Determine freeze vs unfreeze
@@ -144,7 +148,7 @@ public sealed class TrainerOrchestrator
             return new ActionExecutionResult(true,
                 removed ? $"Unfroze symbol '{symbol}'." : $"Symbol '{symbol}' was not frozen.",
                 AddressSource.None,
-                new Dictionary<string, object?> { ["symbol"] = symbol, ["frozen"] = false });
+                new Dictionary<string, object?> { [DiagnosticKeySymbol] = symbol, [DiagnosticKeyFrozen] = false });
         }
 
         if (payload["intValue"] is not null)
@@ -153,7 +157,7 @@ public sealed class TrainerOrchestrator
             _freezeService.FreezeInt(symbol, value);
             return new ActionExecutionResult(true, $"Froze '{symbol}' to int {value}.",
                 AddressSource.None,
-                new Dictionary<string, object?> { ["symbol"] = symbol, ["frozen"] = true, ["value"] = value });
+                new Dictionary<string, object?> { [DiagnosticKeySymbol] = symbol, [DiagnosticKeyFrozen] = true, ["value"] = value });
         }
 
         if (payload["floatValue"] is not null)
@@ -164,7 +168,7 @@ public sealed class TrainerOrchestrator
             _freezeService.FreezeFloat(symbol, value);
             return new ActionExecutionResult(true, $"Froze '{symbol}' to float {value}.",
                 AddressSource.None,
-                new Dictionary<string, object?> { ["symbol"] = symbol, ["frozen"] = true, ["value"] = value });
+                new Dictionary<string, object?> { [DiagnosticKeySymbol] = symbol, [DiagnosticKeyFrozen] = true, ["value"] = value });
         }
 
         if (payload["boolValue"] is not null)
@@ -173,7 +177,7 @@ public sealed class TrainerOrchestrator
             _freezeService.FreezeBool(symbol, value);
             return new ActionExecutionResult(true, $"Froze '{symbol}' to bool {value}.",
                 AddressSource.None,
-                new Dictionary<string, object?> { ["symbol"] = symbol, ["frozen"] = true, ["value"] = value });
+                new Dictionary<string, object?> { [DiagnosticKeySymbol] = symbol, [DiagnosticKeyFrozen] = true, ["value"] = value });
         }
 
         return new ActionExecutionResult(false,

@@ -2,11 +2,13 @@ namespace SwfocTrainer.Core.Services;
 
 internal static class ActionSymbolRegistry
 {
+    private const string SymbolCredits = "credits";
+
     private static readonly IReadOnlyDictionary<string, string> ActionSymbols =
         new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
         {
-            ["read_symbol"] = "credits",
-            ["set_credits"] = "credits",
+            ["read_symbol"] = SymbolCredits,
+            ["set_credits"] = SymbolCredits,
             ["freeze_timer"] = "game_timer_freeze",
             ["toggle_fog_reveal"] = "fog_reveal",
             ["toggle_ai"] = "ai_enabled",
@@ -23,8 +25,8 @@ internal static class ActionSymbolRegistry
             ["toggle_tactical_god_mode"] = "tactical_god_mode",
             ["toggle_tactical_one_hit_mode"] = "tactical_one_hit_mode",
             ["set_game_speed"] = "game_speed",
-            ["freeze_symbol"] = "credits",
-            ["unfreeze_symbol"] = "credits",
+            ["freeze_symbol"] = SymbolCredits,
+            ["unfreeze_symbol"] = SymbolCredits,
             ["set_unit_cap"] = "unit_cap",
         };
 

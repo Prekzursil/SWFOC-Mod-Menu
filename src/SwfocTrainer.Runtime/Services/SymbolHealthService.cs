@@ -33,14 +33,14 @@ public sealed class SymbolHealthService : ISymbolHealthService
         var confidence = symbol.Source == AddressSource.Signature ? 0.95d : 0.65d;
 
         var matchingRule = GetMatchingRule(profile, symbol.Name, mode);
-        if (matchingRule is not null && matchingRule.Mode is not null && mode != RuntimeMode.Unknown)
+        if (matchingRule is not null &&
+            matchingRule.Mode is not null &&
+            mode != RuntimeMode.Unknown &&
+            matchingRule.Mode.Value != mode)
         {
-            if (matchingRule.Mode.Value != mode)
-            {
-                status = SymbolHealthStatus.Degraded;
-                reason = $"{reason}+mode_mismatch";
-                confidence = Math.Min(confidence, 0.60d);
-            }
+            status = SymbolHealthStatus.Degraded;
+            reason = $"{reason}+mode_mismatch";
+            confidence = Math.Min(confidence, 0.60d);
         }
 
         if (isCritical && status == SymbolHealthStatus.Degraded)

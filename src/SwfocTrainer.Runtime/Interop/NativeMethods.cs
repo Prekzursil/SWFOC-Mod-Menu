@@ -4,8 +4,7 @@ namespace SwfocTrainer.Runtime.Interop;
 
 internal static class NativeMethods
 {
-    [Flags]
-    internal enum ProcessAccessFlags : uint
+    internal enum ProcessAccess : uint
     {
         VmRead = 0x0010,
         VmWrite = 0x0020,
@@ -18,7 +17,7 @@ internal static class NativeMethods
     }
 
     [DllImport("kernel32.dll", SetLastError = true)]
-    internal static extern nint OpenProcess(ProcessAccessFlags access, bool inheritHandle, int processId);
+    internal static extern nint OpenProcess(ProcessAccess access, bool inheritHandle, int processId);
 
     [DllImport("kernel32.dll", SetLastError = true)]
     internal static extern bool CloseHandle(nint handle);

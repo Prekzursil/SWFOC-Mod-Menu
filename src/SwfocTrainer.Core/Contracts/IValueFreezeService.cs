@@ -44,5 +44,5 @@ public interface IValueFreezeService : IDisposable
     /// <summary>
     /// Returns all currently frozen symbol names.
     /// </summary>
-    IReadOnlyCollection<string> FrozenSymbols { get; }
+    IReadOnlyCollection<string> GetFrozenSymbols();
 }

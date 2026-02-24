@@ -18,7 +18,7 @@ Scoped contracts in subdirectories can add stricter rules but cannot weaken this
 - `TestResults/runs/<runId>/repro-bundle.json`
 - `TestResults/runs/<runId>/repro-bundle.md`
 
-3. PRs must include affected profile IDs and reason-code-level diagnostics when runtime behavior changes.
+1. PRs must include affected profile IDs and reason-code-level diagnostics when runtime behavior changes.
 
 ## Risk Policy
 
