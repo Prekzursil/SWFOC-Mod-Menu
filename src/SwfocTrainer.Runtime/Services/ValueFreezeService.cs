@@ -31,12 +31,17 @@ public sealed class ValueFreezeService : IValueFreezeService
     private volatile bool _aggressiveRunning;
     private readonly object _aggressiveLock = new();
 
-    public ValueFreezeService(IRuntimeAdapter runtime, ILogger<ValueFreezeService> logger, int pulseIntervalMs = DefaultPulseIntervalMs)
+    public ValueFreezeService(IRuntimeAdapter runtime, ILogger<ValueFreezeService> logger, int pulseIntervalMs)
     {
         _runtime = runtime;
         _logger = logger;
         _pulseIntervalMs = pulseIntervalMs;
         _timer = new Timer(PulseCallback, null, _pulseIntervalMs, _pulseIntervalMs);
+    }
+
+    public ValueFreezeService(IRuntimeAdapter runtime, ILogger<ValueFreezeService> logger)
+        : this(runtime, logger, DefaultPulseIntervalMs)
+    {
     }
 
     public IReadOnlyCollection<string> FrozenSymbols =>

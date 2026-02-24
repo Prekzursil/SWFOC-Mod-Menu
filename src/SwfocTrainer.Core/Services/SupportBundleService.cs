@@ -23,7 +23,7 @@ public sealed class SupportBundleService : ISupportBundleService
         _telemetry = telemetry;
     }
 
-    public async Task<SupportBundleResult> ExportAsync(SupportBundleRequest request, CancellationToken cancellationToken = default)
+    public async Task<SupportBundleResult> ExportAsync(SupportBundleRequest request, CancellationToken cancellationToken)
     {
         if (string.IsNullOrWhiteSpace(request.OutputDirectory))
         {
@@ -92,6 +92,11 @@ public sealed class SupportBundleService : ISupportBundleService
                 Directory.Delete(stagingRoot, recursive: true);
             }
         }
+    }
+
+    public Task<SupportBundleResult> ExportAsync(SupportBundleRequest request)
+    {
+        return ExportAsync(request, CancellationToken.None);
     }
 
     private static void CopyLogs(string stagingRoot, List<string> included, List<string> warnings)

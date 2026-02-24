@@ -106,5 +106,5 @@ if (-not [string]::IsNullOrWhiteSpace($parentDir) -and -not (Test-Path -Path $pa
 }
 
 $result | ConvertTo-Json -Depth 8 | Set-Content -Path $OutputPath
-Write-Host "visual compare report: $OutputPath"
-Write-Host "status: $status"
+Write-Output "visual compare report: $OutputPath"
+Write-Output "status: $status"

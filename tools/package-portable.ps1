@@ -41,4 +41,4 @@ Copy-Item "$repoRoot/profiles" "$publishDir/profiles" -Recurse -Force
 
 # Zip
 Compress-Archive -Path "$publishDir/*" -DestinationPath $zipPath -Force
-Write-Host "Portable package written: $zipPath"
+Write-Output "Portable package written: $zipPath"

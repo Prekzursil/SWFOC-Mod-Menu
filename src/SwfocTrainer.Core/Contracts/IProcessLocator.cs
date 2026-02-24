@@ -4,7 +4,17 @@ namespace SwfocTrainer.Core.Contracts;
 
 public interface IProcessLocator
 {
-    Task<IReadOnlyList<ProcessMetadata>> FindSupportedProcessesAsync(CancellationToken cancellationToken = default);
+    Task<IReadOnlyList<ProcessMetadata>> FindSupportedProcessesAsync(CancellationToken cancellationToken);
 
-    Task<ProcessMetadata?> FindBestMatchAsync(ExeTarget target, CancellationToken cancellationToken = default);
+    Task<IReadOnlyList<ProcessMetadata>> FindSupportedProcessesAsync()
+    {
+        return FindSupportedProcessesAsync(CancellationToken.None);
+    }
+
+    Task<ProcessMetadata?> FindBestMatchAsync(ExeTarget target, CancellationToken cancellationToken);
+
+    Task<ProcessMetadata?> FindBestMatchAsync(ExeTarget target)
+    {
+        return FindBestMatchAsync(target, CancellationToken.None);
+    }
 }

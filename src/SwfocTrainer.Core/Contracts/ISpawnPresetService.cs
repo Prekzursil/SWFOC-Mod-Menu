@@ -13,7 +13,12 @@ public interface ISpawnPresetService
     /// <param name="profileId">Profile identifier.</param>
     /// <param name="cancellationToken">Cancellation token.</param>
     /// <returns>Preset definitions resolved from profile preset files.</returns>
-    Task<IReadOnlyList<SpawnPreset>> LoadPresetsAsync(string profileId, CancellationToken cancellationToken = default);
+    Task<IReadOnlyList<SpawnPreset>> LoadPresetsAsync(string profileId, CancellationToken cancellationToken);
+
+    Task<IReadOnlyList<SpawnPreset>> LoadPresetsAsync(string profileId)
+    {
+        return LoadPresetsAsync(profileId, CancellationToken.None);
+    }
 
     /// <summary>
     /// Expands a preset and run options into an executable batch plan.
@@ -47,5 +52,13 @@ public interface ISpawnPresetService
         string profileId,
         SpawnBatchPlan plan,
         RuntimeMode runtimeMode,
-        CancellationToken cancellationToken = default);
+        CancellationToken cancellationToken);
+
+    Task<SpawnBatchExecutionResult> ExecuteBatchAsync(
+        string profileId,
+        SpawnBatchPlan plan,
+        RuntimeMode runtimeMode)
+    {
+        return ExecuteBatchAsync(profileId, plan, runtimeMode, CancellationToken.None);
+    }
 }

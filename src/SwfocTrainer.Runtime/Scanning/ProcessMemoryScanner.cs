@@ -10,7 +10,7 @@ internal static class ProcessMemoryScanner
         int value,
         bool writableOnly,
         int maxResults,
-        CancellationToken cancellationToken = default)
+        CancellationToken cancellationToken)
     {
         if (maxResults <= 0)
         {
@@ -89,7 +89,7 @@ internal static class ProcessMemoryScanner
         float tolerance,
         bool writableOnly,
         int maxResults,
-        CancellationToken cancellationToken = default)
+        CancellationToken cancellationToken)
     {
         if (maxResults <= 0)
         {

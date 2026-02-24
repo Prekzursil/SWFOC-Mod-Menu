@@ -142,49 +142,38 @@ def reason_code_for_profile(profile_id: str, source: str) -> str:
     return "unknown"
 
 
-def recommend_profile(
-    profiles: dict[str, ProfileInfo],
-    steam_ids: list[str],
-    modpath_norm: str | None,
-    exe_hint: str,
-) -> dict[str, Any]:
-    # 1) Exact workshop-id match.
-    steam_matches: list[ProfileInfo] = []
+def profile_priority_key(profile: ProfileInfo) -> tuple[bool, bool, str]:
+    profile_id = profile.profile_id.lower()
+    return ("roe_" not in profile_id, "aotr_" not in profile_id, profile.profile_id)
+
+
+def steam_profile_matches(profiles: dict[str, ProfileInfo], steam_ids: list[str]) -> list[ProfileInfo]:
+    return [
+        profile
+        for profile in profiles.values()
+        if profile.steam_workshop_id and profile.steam_workshop_id in steam_ids
+    ]
+
+
+def best_modpath_match(profiles: dict[str, ProfileInfo], modpath_norm: str) -> ProfileInfo | None:
+    hint_matches: list[tuple[int, ProfileInfo]] = []
     for profile in profiles.values():
-        if profile.steam_workshop_id and profile.steam_workshop_id in steam_ids:
-            steam_matches.append(profile)
+        hints = gather_hints(profile)
+        score = 0
+        for hint in hints:
+            if hint and hint in modpath_norm:
+                score = max(score, len(hint))
+        if score > 0:
+            hint_matches.append((score, profile))
 
-    if steam_matches:
-        steam_matches.sort(key=lambda p: ("roe_" not in p.profile_id.lower(), "aotr_" not in p.profile_id.lower(), p.profile_id))
-        best = steam_matches[0]
-        return {
-            "profileId": best.profile_id,
-            "reasonCode": reason_code_for_profile(best.profile_id, "steam"),
-            "confidence": 1.0,
-        }
+    if not hint_matches:
+        return None
 
-    # 2) MODPATH hint match from profile metadata.
-    if modpath_norm:
-        hint_matches: list[tuple[int, ProfileInfo]] = []
-        for profile in profiles.values():
-            hints = gather_hints(profile)
-            score = 0
-            for hint in hints:
-                if hint and hint in modpath_norm:
-                    score = max(score, len(hint))
-            if score > 0:
-                hint_matches.append((score, profile))
+    hint_matches.sort(key=lambda pair: (-pair[0],) + profile_priority_key(pair[1]))
+    return hint_matches[0][1]
 
-        if hint_matches:
-            hint_matches.sort(key=lambda pair: (-pair[0], "roe_" not in pair[1].profile_id.lower(), "aotr_" not in pair[1].profile_id.lower(), pair[1].profile_id))
-            best = hint_matches[0][1]
-            return {
-                "profileId": best.profile_id,
-                "reasonCode": reason_code_for_profile(best.profile_id, "modpath"),
-                "confidence": 0.95,
-            }
 
-    # 3) Exe fallback.
+def fallback_profile_for_exe(exe_hint: str, profiles: dict[str, ProfileInfo]) -> dict[str, Any] | None:
     if exe_hint == "sweaw" and "base_sweaw" in profiles:
         return {
             "profileId": "base_sweaw",
@@ -198,6 +187,41 @@ def recommend_profile(
             "reasonCode": "foc_safe_starwarsg_fallback",
             "confidence": 0.55 if exe_hint == "starwarsg" else 0.65,
         }
+
+    return None
+
+
+def recommend_profile(
+    profiles: dict[str, ProfileInfo],
+    steam_ids: list[str],
+    modpath_norm: str | None,
+    exe_hint: str,
+) -> dict[str, Any]:
+    # 1) Exact workshop-id match.
+    steam_matches = steam_profile_matches(profiles, steam_ids)
+    if steam_matches:
+        steam_matches.sort(key=profile_priority_key)
+        best = steam_matches[0]
+        return {
+            "profileId": best.profile_id,
+            "reasonCode": reason_code_for_profile(best.profile_id, "steam"),
+            "confidence": 1.0,
+        }
+
+    # 2) MODPATH hint match from profile metadata.
+    if modpath_norm:
+        best = best_modpath_match(profiles, modpath_norm)
+        if best:
+            return {
+                "profileId": best.profile_id,
+                "reasonCode": reason_code_for_profile(best.profile_id, "modpath"),
+                "confidence": 0.95,
+            }
+
+    # 3) Exe fallback.
+    fallback = fallback_profile_for_exe(exe_hint, profiles)
+    if fallback:
+        return fallback
 
     return {
         "profileId": None,

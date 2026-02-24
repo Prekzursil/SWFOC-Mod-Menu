@@ -23,7 +23,7 @@ public sealed class FileSystemProfileRepository : IProfileRepository
         _options = options;
     }
 
-    public async Task<ProfileManifest> LoadManifestAsync(CancellationToken cancellationToken = default)
+    public async Task<ProfileManifest> LoadManifestAsync(CancellationToken cancellationToken)
     {
         var manifestPath = Path.Combine(_options.ProfilesRootPath, _options.ManifestFileName);
         if (!File.Exists(manifestPath))
@@ -36,13 +36,13 @@ public sealed class FileSystemProfileRepository : IProfileRepository
         return manifest ?? throw new InvalidDataException("Failed to deserialize manifest.json");
     }
 
-    public async Task<IReadOnlyList<string>> ListAvailableProfilesAsync(CancellationToken cancellationToken = default)
+    public async Task<IReadOnlyList<string>> ListAvailableProfilesAsync(CancellationToken cancellationToken)
     {
         var manifest = await LoadManifestAsync(cancellationToken);
         return manifest.Profiles.Select(x => x.Id).ToArray();
     }
 
-    public async Task<TrainerProfile> LoadProfileAsync(string profileId, CancellationToken cancellationToken = default)
+    public async Task<TrainerProfile> LoadProfileAsync(string profileId, CancellationToken cancellationToken)
     {
         var profilePath = Path.Combine(_options.ProfilesRootPath, "profiles", $"{profileId}.json");
         if (!File.Exists(profilePath))
@@ -58,7 +58,7 @@ public sealed class FileSystemProfileRepository : IProfileRepository
         return profile;
     }
 
-    public async Task<TrainerProfile> ResolveInheritedProfileAsync(string profileId, CancellationToken cancellationToken = default)
+    public async Task<TrainerProfile> ResolveInheritedProfileAsync(string profileId, CancellationToken cancellationToken)
     {
         var seen = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
         return await ResolveInternalAsync(profileId, seen, cancellationToken);
@@ -81,10 +81,35 @@ public sealed class FileSystemProfileRepository : IProfileRepository
         return Merge(parent, current);
     }
 
-    public Task ValidateProfileAsync(TrainerProfile profile, CancellationToken cancellationToken = default)
+    public Task ValidateProfileAsync(TrainerProfile profile, CancellationToken cancellationToken)
     {
         ProfileValidator.Validate(profile);
         return Task.CompletedTask;
+    }
+
+    public Task<ProfileManifest> LoadManifestAsync()
+    {
+        return LoadManifestAsync(CancellationToken.None);
+    }
+
+    public Task<IReadOnlyList<string>> ListAvailableProfilesAsync()
+    {
+        return ListAvailableProfilesAsync(CancellationToken.None);
+    }
+
+    public Task<TrainerProfile> LoadProfileAsync(string profileId)
+    {
+        return LoadProfileAsync(profileId, CancellationToken.None);
+    }
+
+    public Task<TrainerProfile> ResolveInheritedProfileAsync(string profileId)
+    {
+        return ResolveInheritedProfileAsync(profileId, CancellationToken.None);
+    }
+
+    public Task ValidateProfileAsync(TrainerProfile profile)
+    {
+        return ValidateProfileAsync(profile, CancellationToken.None);
     }
 
     private static TrainerProfile Merge(TrainerProfile parent, TrainerProfile child)

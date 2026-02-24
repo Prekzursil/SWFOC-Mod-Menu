@@ -35,8 +35,8 @@ public sealed class SavePatchApplyService : ISavePatchApplyService
         string targetSavePath,
         SavePatchPack pack,
         string targetProfileId,
-        bool strict = true,
-        CancellationToken cancellationToken = default)
+        bool strict,
+        CancellationToken cancellationToken)
     {
         var normalizedTargetPath = NormalizeTargetPath(targetSavePath);
         var runId = DateTimeOffset.UtcNow.ToString("yyyyMMddHHmmssfff");
@@ -209,7 +209,24 @@ public sealed class SavePatchApplyService : ISavePatchApplyService
         }
     }
 
-    public async Task<SaveRollbackResult> RestoreLastBackupAsync(string targetSavePath, CancellationToken cancellationToken = default)
+    public Task<SavePatchApplyResult> ApplyAsync(
+        string targetSavePath,
+        SavePatchPack pack,
+        string targetProfileId)
+    {
+        return ApplyAsync(targetSavePath, pack, targetProfileId, strict: true, CancellationToken.None);
+    }
+
+    public Task<SavePatchApplyResult> ApplyAsync(
+        string targetSavePath,
+        SavePatchPack pack,
+        string targetProfileId,
+        bool strict)
+    {
+        return ApplyAsync(targetSavePath, pack, targetProfileId, strict, CancellationToken.None);
+    }
+
+    public async Task<SaveRollbackResult> RestoreLastBackupAsync(string targetSavePath, CancellationToken cancellationToken)
     {
         var normalizedTargetPath = NormalizeTargetPath(targetSavePath);
         var backupPath = await ResolveLatestBackupPathAsync(normalizedTargetPath, cancellationToken);
@@ -243,6 +260,11 @@ public sealed class SavePatchApplyService : ISavePatchApplyService
                 TargetPath: normalizedTargetPath,
                 BackupPath: backupPath);
         }
+    }
+
+    public Task<SaveRollbackResult> RestoreLastBackupAsync(string targetSavePath)
+    {
+        return RestoreLastBackupAsync(targetSavePath, CancellationToken.None);
     }
 
     private static string NormalizeTargetPath(string path)

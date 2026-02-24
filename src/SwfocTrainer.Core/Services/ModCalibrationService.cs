@@ -22,7 +22,7 @@ public sealed class ModCalibrationService : IModCalibrationService
         _actionReliability = actionReliability;
     }
 
-    public async Task<ModCalibrationArtifactResult> ExportCalibrationArtifactAsync(ModCalibrationArtifactRequest request, CancellationToken cancellationToken = default)
+    public async Task<ModCalibrationArtifactResult> ExportCalibrationArtifactAsync(ModCalibrationArtifactRequest request, CancellationToken cancellationToken)
     {
         if (string.IsNullOrWhiteSpace(request.ProfileId))
         {
@@ -103,9 +103,9 @@ public sealed class ModCalibrationService : IModCalibrationService
     public Task<ModCompatibilityReport> BuildCompatibilityReportAsync(
         TrainerProfile profile,
         AttachSession? session,
-        DependencyValidationResult? dependencyValidation = null,
-        IReadOnlyDictionary<string, IReadOnlyList<string>>? catalog = null,
-        CancellationToken cancellationToken = default)
+        DependencyValidationResult? dependencyValidation,
+        IReadOnlyDictionary<string, IReadOnlyList<string>>? catalog,
+        CancellationToken cancellationToken)
     {
         var runtimeMode = session?.Process.Mode ?? RuntimeMode.Unknown;
         var dependencyStatus = dependencyValidation?.Status ?? InferDependencyStatus(session);
@@ -164,6 +164,27 @@ public sealed class ModCalibrationService : IModCalibrationService
             PromotionReady: promotionReady,
             Actions: actionRows,
             Notes: notes));
+    }
+
+    public Task<ModCalibrationArtifactResult> ExportCalibrationArtifactAsync(ModCalibrationArtifactRequest request)
+    {
+        return ExportCalibrationArtifactAsync(request, CancellationToken.None);
+    }
+
+    public Task<ModCompatibilityReport> BuildCompatibilityReportAsync(
+        TrainerProfile profile,
+        AttachSession? session)
+    {
+        return BuildCompatibilityReportAsync(profile, session, null, null, CancellationToken.None);
+    }
+
+    public Task<ModCompatibilityReport> BuildCompatibilityReportAsync(
+        TrainerProfile profile,
+        AttachSession? session,
+        DependencyValidationResult? dependencyValidation,
+        IReadOnlyDictionary<string, IReadOnlyList<string>>? catalog)
+    {
+        return BuildCompatibilityReportAsync(profile, session, dependencyValidation, catalog, CancellationToken.None);
     }
 
     private static DependencyValidationStatus InferDependencyStatus(AttachSession? session)

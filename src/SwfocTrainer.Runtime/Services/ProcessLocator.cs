@@ -20,14 +20,29 @@ public sealed class ProcessLocator : IProcessLocator
     private static readonly TimeSpan ProfileCacheTtl = TimeSpan.FromSeconds(5);
 
     public ProcessLocator(
-        ILaunchContextResolver? launchContextResolver = null,
-        IProfileRepository? profileRepository = null)
+        ILaunchContextResolver? launchContextResolver,
+        IProfileRepository? profileRepository)
     {
         _launchContextResolver = launchContextResolver ?? new LaunchContextResolver();
         _profileRepository = profileRepository;
     }
 
-    public async Task<IReadOnlyList<ProcessMetadata>> FindSupportedProcessesAsync(CancellationToken cancellationToken = default)
+    public ProcessLocator()
+        : this(null, null)
+    {
+    }
+
+    public ProcessLocator(ILaunchContextResolver launchContextResolver)
+        : this(launchContextResolver, null)
+    {
+    }
+
+    public ProcessLocator(IProfileRepository profileRepository)
+        : this(null, profileRepository)
+    {
+    }
+
+    public async Task<IReadOnlyList<ProcessMetadata>> FindSupportedProcessesAsync(CancellationToken cancellationToken)
     {
         var list = new List<ProcessMetadata>();
         var wmiByPid = GetWmiProcessInfoByPid();
@@ -129,7 +144,7 @@ public sealed class ProcessLocator : IProcessLocator
         return list;
     }
 
-    public async Task<ProcessMetadata?> FindBestMatchAsync(ExeTarget target, CancellationToken cancellationToken = default)
+    public async Task<ProcessMetadata?> FindBestMatchAsync(ExeTarget target, CancellationToken cancellationToken)
     {
         var all = await FindSupportedProcessesAsync(cancellationToken);
         var direct = all.FirstOrDefault(x => x.ExeTarget == target);
@@ -149,6 +164,16 @@ public sealed class ProcessLocator : IProcessLocator
         }
 
         return null;
+    }
+
+    public Task<IReadOnlyList<ProcessMetadata>> FindSupportedProcessesAsync()
+    {
+        return FindSupportedProcessesAsync(CancellationToken.None);
+    }
+
+    public Task<ProcessMetadata?> FindBestMatchAsync(ExeTarget target)
+    {
+        return FindBestMatchAsync(target, CancellationToken.None);
     }
 
     private static ProcessDetection GetProcessDetection(string processName, string? processPath, string? commandLine)

@@ -31,7 +31,7 @@ public sealed class SelectedUnitTransactionService : ISelectedUnitTransactionSer
 
     public IReadOnlyList<SelectedUnitTransactionRecord> History => _history;
 
-    public async Task<SelectedUnitSnapshot> CaptureAsync(CancellationToken cancellationToken = default)
+    public async Task<SelectedUnitSnapshot> CaptureAsync(CancellationToken cancellationToken)
     {
         EnsureAttached();
         var snapshot = await ReadSnapshotAsync(cancellationToken);
@@ -43,7 +43,7 @@ public sealed class SelectedUnitTransactionService : ISelectedUnitTransactionSer
         string profileId,
         SelectedUnitDraft draft,
         RuntimeMode runtimeMode,
-        CancellationToken cancellationToken = default)
+        CancellationToken cancellationToken)
     {
         if (runtimeMode == RuntimeMode.Unknown)
         {
@@ -124,7 +124,7 @@ public sealed class SelectedUnitTransactionService : ISelectedUnitTransactionSer
     public async Task<SelectedUnitTransactionResult> RevertLastAsync(
         string profileId,
         RuntimeMode runtimeMode,
-        CancellationToken cancellationToken = default)
+        CancellationToken cancellationToken)
     {
         if (_history.Count == 0)
         {
@@ -146,7 +146,7 @@ public sealed class SelectedUnitTransactionService : ISelectedUnitTransactionSer
     public Task<SelectedUnitTransactionResult> RestoreBaselineAsync(
         string profileId,
         RuntimeMode runtimeMode,
-        CancellationToken cancellationToken = default)
+        CancellationToken cancellationToken)
     {
         if (Baseline is null)
         {
@@ -160,6 +160,33 @@ public sealed class SelectedUnitTransactionService : ISelectedUnitTransactionSer
             $"baseline-{Guid.NewGuid():N}",
             "restore_baseline",
             cancellationToken);
+    }
+
+    public Task<SelectedUnitSnapshot> CaptureAsync()
+    {
+        return CaptureAsync(CancellationToken.None);
+    }
+
+    public Task<SelectedUnitTransactionResult> ApplyAsync(
+        string profileId,
+        SelectedUnitDraft draft,
+        RuntimeMode runtimeMode)
+    {
+        return ApplyAsync(profileId, draft, runtimeMode, CancellationToken.None);
+    }
+
+    public Task<SelectedUnitTransactionResult> RevertLastAsync(
+        string profileId,
+        RuntimeMode runtimeMode)
+    {
+        return RevertLastAsync(profileId, runtimeMode, CancellationToken.None);
+    }
+
+    public Task<SelectedUnitTransactionResult> RestoreBaselineAsync(
+        string profileId,
+        RuntimeMode runtimeMode)
+    {
+        return RestoreBaselineAsync(profileId, runtimeMode, CancellationToken.None);
     }
 
     private async Task<SelectedUnitTransactionResult> ApplySnapshotAsync(

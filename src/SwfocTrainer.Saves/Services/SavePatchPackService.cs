@@ -31,7 +31,7 @@ public sealed class SavePatchPackService : ISavePatchPackService
         SaveDocument originalDoc,
         SaveDocument editedDoc,
         string profileId,
-        CancellationToken cancellationToken = default)
+        CancellationToken cancellationToken)
     {
         if (string.IsNullOrWhiteSpace(profileId))
         {
@@ -86,7 +86,7 @@ public sealed class SavePatchPackService : ISavePatchPackService
         return new SavePatchPack(metadata, compatibility, operations);
     }
 
-    public async Task<SavePatchPack> LoadPackAsync(string path, CancellationToken cancellationToken = default)
+    public async Task<SavePatchPack> LoadPackAsync(string path, CancellationToken cancellationToken)
     {
         var normalizedPath = TrustedPathPolicy.NormalizeAbsolute(path);
         TrustedPathPolicy.EnsureAllowedExtension(normalizedPath, ".json");
@@ -133,7 +133,7 @@ public sealed class SavePatchPackService : ISavePatchPackService
         SavePatchPack pack,
         SaveDocument targetDoc,
         string targetProfileId,
-        CancellationToken cancellationToken = default)
+        CancellationToken cancellationToken)
     {
         cancellationToken.ThrowIfCancellationRequested();
 
@@ -177,7 +177,7 @@ public sealed class SavePatchPackService : ISavePatchPackService
         SavePatchPack pack,
         SaveDocument targetDoc,
         string targetProfileId,
-        CancellationToken cancellationToken = default)
+        CancellationToken cancellationToken)
     {
         var schema = await _schemaRepository.LoadSchemaAsync(targetDoc.SchemaId, cancellationToken);
         var compatibility = await ValidateCompatibilityAsync(pack, targetDoc, targetProfileId, cancellationToken);
@@ -227,6 +227,35 @@ public sealed class SavePatchPackService : ISavePatchPackService
             Errors: errors,
             Warnings: warnings,
             OperationsToApply: operations);
+    }
+
+    public Task<SavePatchPack> ExportAsync(
+        SaveDocument originalDoc,
+        SaveDocument editedDoc,
+        string profileId)
+    {
+        return ExportAsync(originalDoc, editedDoc, profileId, CancellationToken.None);
+    }
+
+    public Task<SavePatchPack> LoadPackAsync(string path)
+    {
+        return LoadPackAsync(path, CancellationToken.None);
+    }
+
+    public Task<SavePatchCompatibilityResult> ValidateCompatibilityAsync(
+        SavePatchPack pack,
+        SaveDocument targetDoc,
+        string targetProfileId)
+    {
+        return ValidateCompatibilityAsync(pack, targetDoc, targetProfileId, CancellationToken.None);
+    }
+
+    public Task<SavePatchPreview> PreviewApplyAsync(
+        SavePatchPack pack,
+        SaveDocument targetDoc,
+        string targetProfileId)
+    {
+        return PreviewApplyAsync(pack, targetDoc, targetProfileId, CancellationToken.None);
     }
 
     private static IReadOnlyList<(int Start, int End)> BuildChecksumOutputRanges(SaveSchema schema)

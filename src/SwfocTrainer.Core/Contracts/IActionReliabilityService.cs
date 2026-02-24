@@ -17,5 +17,12 @@ public interface IActionReliabilityService
     IReadOnlyList<ActionReliabilityInfo> Evaluate(
         TrainerProfile profile,
         AttachSession session,
-        IReadOnlyDictionary<string, IReadOnlyList<string>>? catalog = null);
+        IReadOnlyDictionary<string, IReadOnlyList<string>>? catalog);
+
+    IReadOnlyList<ActionReliabilityInfo> Evaluate(
+        TrainerProfile profile,
+        AttachSession session)
+    {
+        return Evaluate(profile, session, null);
+    }
 }

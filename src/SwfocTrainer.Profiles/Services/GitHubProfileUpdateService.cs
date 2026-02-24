@@ -27,7 +27,7 @@ public sealed class GitHubProfileUpdateService : IProfileUpdateService
         Directory.CreateDirectory(_options.DownloadCachePath);
     }
 
-    public async Task<IReadOnlyList<string>> CheckForUpdatesAsync(CancellationToken cancellationToken = default)
+    public async Task<IReadOnlyList<string>> CheckForUpdatesAsync(CancellationToken cancellationToken)
     {
         if (string.IsNullOrWhiteSpace(_options.RemoteManifestUrl))
         {
@@ -55,7 +55,7 @@ public sealed class GitHubProfileUpdateService : IProfileUpdateService
         return updates;
     }
 
-    public async Task<string> InstallProfileAsync(string profileId, CancellationToken cancellationToken = default)
+    public async Task<string> InstallProfileAsync(string profileId, CancellationToken cancellationToken)
     {
         var result = await InstallProfileTransactionalAsync(profileId, cancellationToken);
         if (!result.Succeeded)
@@ -66,7 +66,7 @@ public sealed class GitHubProfileUpdateService : IProfileUpdateService
         return result.InstalledPath;
     }
 
-    public async Task<ProfileInstallResult> InstallProfileTransactionalAsync(string profileId, CancellationToken cancellationToken = default)
+    public async Task<ProfileInstallResult> InstallProfileTransactionalAsync(string profileId, CancellationToken cancellationToken)
     {
         if (string.IsNullOrWhiteSpace(_options.RemoteManifestUrl))
         {
@@ -265,7 +265,7 @@ public sealed class GitHubProfileUpdateService : IProfileUpdateService
             ReasonCode: null);
     }
 
-    public async Task<ProfileRollbackResult> RollbackLastInstallAsync(string profileId, CancellationToken cancellationToken = default)
+    public async Task<ProfileRollbackResult> RollbackLastInstallAsync(string profileId, CancellationToken cancellationToken)
     {
         var profilesDir = Path.Combine(_options.ProfilesRootPath, "profiles");
         Directory.CreateDirectory(profilesDir);
@@ -309,6 +309,26 @@ public sealed class GitHubProfileUpdateService : IProfileUpdateService
                 Message: $"Rollback failed: {ex.Message}",
                 ReasonCode: "rollback_copy_failed");
         }
+    }
+
+    public Task<IReadOnlyList<string>> CheckForUpdatesAsync()
+    {
+        return CheckForUpdatesAsync(CancellationToken.None);
+    }
+
+    public Task<string> InstallProfileAsync(string profileId)
+    {
+        return InstallProfileAsync(profileId, CancellationToken.None);
+    }
+
+    public Task<ProfileInstallResult> InstallProfileTransactionalAsync(string profileId)
+    {
+        return InstallProfileTransactionalAsync(profileId, CancellationToken.None);
+    }
+
+    public Task<ProfileRollbackResult> RollbackLastInstallAsync(string profileId)
+    {
+        return RollbackLastInstallAsync(profileId, CancellationToken.None);
     }
 
     private static string ComputeSha256(string path)

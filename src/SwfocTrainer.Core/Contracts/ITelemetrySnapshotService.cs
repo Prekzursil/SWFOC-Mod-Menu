@@ -11,7 +11,12 @@ public interface ITelemetrySnapshotService
 
     TelemetrySnapshot CreateSnapshot();
 
-    Task<string> ExportSnapshotAsync(string outputDirectory, CancellationToken cancellationToken = default);
+    Task<string> ExportSnapshotAsync(string outputDirectory, CancellationToken cancellationToken);
+
+    Task<string> ExportSnapshotAsync(string outputDirectory)
+    {
+        return ExportSnapshotAsync(outputDirectory, CancellationToken.None);
+    }
 
     void Reset();
 }

@@ -23,7 +23,7 @@ public sealed class BinarySaveCodec : ISaveCodec
         _logger = logger;
     }
 
-    public async Task<SaveDocument> LoadAsync(string path, string schemaId, CancellationToken cancellationToken = default)
+    public async Task<SaveDocument> LoadAsync(string path, string schemaId, CancellationToken cancellationToken)
     {
         var normalizedPath = NormalizeSaveFilePath(path, requireExistingFile: true);
         var schema = await _schemaRepository.LoadSchemaAsync(schemaId, cancellationToken);
@@ -32,7 +32,7 @@ public sealed class BinarySaveCodec : ISaveCodec
         return new SaveDocument(normalizedPath, schemaId, bytes, root);
     }
 
-    public async Task EditAsync(SaveDocument document, string nodePath, object? value, CancellationToken cancellationToken = default)
+    public async Task EditAsync(SaveDocument document, string nodePath, object? value, CancellationToken cancellationToken)
     {
         var schema = await _schemaRepository.LoadSchemaAsync(document.SchemaId, cancellationToken);
 
@@ -48,7 +48,7 @@ public sealed class BinarySaveCodec : ISaveCodec
         ApplyFieldEdit(document.Raw, targetField, value, schema.Endianness);
     }
 
-    public async Task<SaveValidationResult> ValidateAsync(SaveDocument document, CancellationToken cancellationToken = default)
+    public async Task<SaveValidationResult> ValidateAsync(SaveDocument document, CancellationToken cancellationToken)
     {
         var schema = await _schemaRepository.LoadSchemaAsync(document.SchemaId, cancellationToken);
         var errors = new List<string>();
@@ -91,7 +91,7 @@ public sealed class BinarySaveCodec : ISaveCodec
         return new SaveValidationResult(errors.Count == 0, errors, warnings);
     }
 
-    public async Task WriteAsync(SaveDocument document, string outputPath, CancellationToken cancellationToken = default)
+    public async Task WriteAsync(SaveDocument document, string outputPath, CancellationToken cancellationToken)
     {
         var normalizedOutput = NormalizeSaveFilePath(outputPath, requireExistingFile: false);
         var outputDirectory = Path.GetDirectoryName(normalizedOutput);
@@ -106,7 +106,7 @@ public sealed class BinarySaveCodec : ISaveCodec
         await File.WriteAllBytesAsync(normalizedOutput, document.Raw, cancellationToken);
     }
 
-    public async Task<bool> RoundTripCheckAsync(SaveDocument document, CancellationToken cancellationToken = default)
+    public async Task<bool> RoundTripCheckAsync(SaveDocument document, CancellationToken cancellationToken)
     {
         var tempRoot = Path.GetFullPath(Path.GetTempPath());
         var tempPath = NormalizeSaveFilePath(
@@ -126,6 +126,31 @@ public sealed class BinarySaveCodec : ISaveCodec
                 File.Delete(tempPath);
             }
         }
+    }
+
+    public Task<SaveDocument> LoadAsync(string path, string schemaId)
+    {
+        return LoadAsync(path, schemaId, CancellationToken.None);
+    }
+
+    public Task EditAsync(SaveDocument document, string nodePath, object? value)
+    {
+        return EditAsync(document, nodePath, value, CancellationToken.None);
+    }
+
+    public Task<SaveValidationResult> ValidateAsync(SaveDocument document)
+    {
+        return ValidateAsync(document, CancellationToken.None);
+    }
+
+    public Task WriteAsync(SaveDocument document, string outputPath)
+    {
+        return WriteAsync(document, outputPath, CancellationToken.None);
+    }
+
+    public Task<bool> RoundTripCheckAsync(SaveDocument document)
+    {
+        return RoundTripCheckAsync(document, CancellationToken.None);
     }
 
     private static string NormalizeSaveFilePath(string path, bool requireExistingFile)
