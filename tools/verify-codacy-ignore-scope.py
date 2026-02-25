@@ -109,7 +109,7 @@ def parse_exclude_paths(codacy_path: Path) -> list[str]:
     for line in lines:
         stripped = line.strip()
         if not in_block:
-            in_block = stripped == "exclude_paths:"
+            in_block = strip_inline_comment(stripped) == "exclude_paths:"
             continue
 
         if is_top_level_key(line, stripped):
