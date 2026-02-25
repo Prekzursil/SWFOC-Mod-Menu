@@ -115,54 +115,15 @@ public sealed class FileSystemProfileRepository : IProfileRepository
 
     private static TrainerProfile Merge(TrainerProfile parent, TrainerProfile child)
     {
-        var mergedActions = new Dictionary<string, ActionSpec>(parent.Actions, StringComparer.OrdinalIgnoreCase);
-        foreach (var kv in child.Actions)
-        {
-            mergedActions[kv.Key] = kv.Value;
-        }
-
-        var mergedFlags = new Dictionary<string, bool>(parent.FeatureFlags, StringComparer.OrdinalIgnoreCase);
-        foreach (var kv in child.FeatureFlags)
-        {
-            mergedFlags[kv.Key] = kv.Value;
-        }
-
-        var mergedOffsets = new Dictionary<string, long>(parent.FallbackOffsets, StringComparer.OrdinalIgnoreCase);
-        foreach (var kv in child.FallbackOffsets)
-        {
-            mergedOffsets[kv.Key] = kv.Value;
-        }
-
+        var mergedActions = MergeKeyedValues(parent.Actions, child.Actions);
+        var mergedFlags = MergeKeyedValues(parent.FeatureFlags, child.FeatureFlags);
+        var mergedOffsets = MergeKeyedValues(parent.FallbackOffsets, child.FallbackOffsets);
         var mergedCatalog = parent.CatalogSources.Concat(child.CatalogSources).ToArray();
         var mergedHooks = parent.HelperModHooks.Concat(child.HelperModHooks).ToArray();
         var mergedSignatures = parent.SignatureSets.Concat(child.SignatureSets).ToArray();
-        var mergedRequiredCapabilities = (parent.RequiredCapabilities ?? Array.Empty<string>())
-            .Concat(child.RequiredCapabilities ?? Array.Empty<string>())
-            .Where(x => !string.IsNullOrWhiteSpace(x))
-            .Distinct(StringComparer.OrdinalIgnoreCase)
-            .ToArray();
-        var mergedExperimentalFeatures = (parent.ExperimentalFeatures ?? Array.Empty<string>())
-            .Concat(child.ExperimentalFeatures ?? Array.Empty<string>())
-            .Where(x => !string.IsNullOrWhiteSpace(x))
-            .Distinct(StringComparer.OrdinalIgnoreCase)
-            .ToArray();
-
-        var metadata = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
-        if (parent.Metadata is not null)
-        {
-            foreach (var kv in parent.Metadata)
-            {
-                metadata[kv.Key] = kv.Value;
-            }
-        }
-
-        if (child.Metadata is not null)
-        {
-            foreach (var kv in child.Metadata)
-            {
-                metadata[kv.Key] = kv.Value;
-            }
-        }
+        var mergedRequiredCapabilities = MergeDistinctNonEmpty(parent.RequiredCapabilities, child.RequiredCapabilities);
+        var mergedExperimentalFeatures = MergeDistinctNonEmpty(parent.ExperimentalFeatures, child.ExperimentalFeatures);
+        var metadata = MergeMetadata(parent.Metadata, child.Metadata);
 
         return new TrainerProfile(
             Id: child.Id,
@@ -182,5 +143,52 @@ public sealed class FileSystemProfileRepository : IProfileRepository
             RequiredCapabilities: mergedRequiredCapabilities,
             HostPreference: string.IsNullOrWhiteSpace(child.HostPreference) ? parent.HostPreference : child.HostPreference,
             ExperimentalFeatures: mergedExperimentalFeatures);
+    }
+
+    private static Dictionary<string, TValue> MergeKeyedValues<TValue>(
+        IReadOnlyDictionary<string, TValue> parent,
+        IReadOnlyDictionary<string, TValue> child)
+    {
+        var merged = new Dictionary<string, TValue>(parent, StringComparer.OrdinalIgnoreCase);
+        foreach (var kv in child)
+        {
+            merged[kv.Key] = kv.Value;
+        }
+
+        return merged;
+    }
+
+    private static string[] MergeDistinctNonEmpty(IReadOnlyList<string>? parent, IReadOnlyList<string>? child)
+    {
+        return (parent ?? Array.Empty<string>())
+            .Concat(child ?? Array.Empty<string>())
+            .Where(x => !string.IsNullOrWhiteSpace(x))
+            .Distinct(StringComparer.OrdinalIgnoreCase)
+            .ToArray();
+    }
+
+    private static Dictionary<string, string> MergeMetadata(
+        IReadOnlyDictionary<string, string>? parent,
+        IReadOnlyDictionary<string, string>? child)
+    {
+        var metadata = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+        MergeMetadataInto(metadata, parent);
+        MergeMetadataInto(metadata, child);
+        return metadata;
+    }
+
+    private static void MergeMetadataInto(
+        IDictionary<string, string> destination,
+        IReadOnlyDictionary<string, string>? source)
+    {
+        if (source is null)
+        {
+            return;
+        }
+
+        foreach (var kv in source)
+        {
+            destination[kv.Key] = kv.Value;
+        }
     }
 }

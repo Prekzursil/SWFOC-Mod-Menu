@@ -2,8 +2,11 @@
 """Detect SWFOC launch context and emit normalized recommendation JSON.
 
 Examples:
-  python tools/detect-launch-context.py --process-name StarWarsG --process-path "D:/.../corruption/StarWarsG.exe" --command-line "StarWarsG.exe STEAMMOD=3447786229" --pretty
-  python tools/detect-launch-context.py --from-process-json tools/fixtures/launch_context_cases.json --pretty
+  python tools/detect-launch-context.py --process-name StarWarsG \
+    --process-path "D:/.../corruption/StarWarsG.exe" \
+    --command-line "StarWarsG.exe STEAMMOD=3447786229" --pretty
+  python tools/detect-launch-context.py --from-process-json \
+    tools/fixtures/launch_context_cases.json --pretty
 """
 
 from __future__ import annotations

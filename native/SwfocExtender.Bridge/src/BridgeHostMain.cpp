@@ -453,29 +453,30 @@ CapabilityState BuildProbeState(bool available) {
     return state;
 }
 
+void AddProbeFeature(
+    CapabilitySnapshot& snapshot,
+    const PluginRequest& probeContext,
+    const char* featureId,
+    std::initializer_list<const char*> anchorCandidates) {
+    const auto available =
+        (probeContext.processId > 0) &&
+        HasNonEmptyAnchor(probeContext.anchors, anchorCandidates);
+    snapshot.features.emplace(featureId, BuildProbeState(available));
+}
+
 CapabilitySnapshot BuildCapabilityProbeSnapshot(const PluginRequest& probeContext) {
     CapabilitySnapshot snapshot {};
 
-    const auto hasProcessContext = probeContext.processId > 0;
-    snapshot.features.emplace(
-        "set_credits",
-        BuildProbeState(hasProcessContext && HasNonEmptyAnchor(probeContext.anchors, {"credits", "set_credits"})));
-    snapshot.features.emplace(
-        "freeze_timer",
-        BuildProbeState(hasProcessContext && HasNonEmptyAnchor(probeContext.anchors, {"game_timer_freeze", "freeze_timer"})));
-    snapshot.features.emplace(
-        "toggle_fog_reveal",
-        BuildProbeState(hasProcessContext && HasNonEmptyAnchor(probeContext.anchors, {"fog_reveal", "toggle_fog_reveal"})));
-    snapshot.features.emplace(
-        "toggle_ai",
-        BuildProbeState(hasProcessContext && HasNonEmptyAnchor(probeContext.anchors, {"ai_enabled", "toggle_ai"})));
-    snapshot.features.emplace(
-        "set_unit_cap",
-        BuildProbeState(hasProcessContext && HasNonEmptyAnchor(probeContext.anchors, {"unit_cap", "set_unit_cap"})));
-    snapshot.features.emplace(
+    AddProbeFeature(snapshot, probeContext, "set_credits", {"credits", "set_credits"});
+    AddProbeFeature(snapshot, probeContext, "freeze_timer", {"game_timer_freeze", "freeze_timer"});
+    AddProbeFeature(snapshot, probeContext, "toggle_fog_reveal", {"fog_reveal", "toggle_fog_reveal"});
+    AddProbeFeature(snapshot, probeContext, "toggle_ai", {"ai_enabled", "toggle_ai"});
+    AddProbeFeature(snapshot, probeContext, "set_unit_cap", {"unit_cap", "set_unit_cap"});
+    AddProbeFeature(
+        snapshot,
+        probeContext,
         "toggle_instant_build_patch",
-        BuildProbeState(hasProcessContext &&
-                        HasNonEmptyAnchor(probeContext.anchors, {"instant_build_patch", "toggle_instant_build_patch"})));
+        {"instant_build_patch", "toggle_instant_build_patch"});
 
     EnsureCapabilityEntries(snapshot);
     return snapshot;
@@ -511,16 +512,26 @@ std::string ResolveProbeHookState(const CapabilitySnapshot& snapshot) {
     return "HOOK_NOT_INSTALLED";
 }
 
-BridgeResult BuildHealthResult(const BridgeCommand& command) {
+BridgeResult BuildBridgeResult(
+    const BridgeCommand& command,
+    bool succeeded,
+    const std::string& reasonCode,
+    const std::string& hookState,
+    const std::string& message,
+    const std::string& diagnosticsJson) {
     BridgeResult result {};
     result.commandId = command.commandId;
-    result.succeeded = true;
-    result.reasonCode = "CAPABILITY_PROBE_PASS";
+    result.succeeded = succeeded;
+    result.reasonCode = reasonCode;
     result.backend = kBackendName;
-    result.hookState = "RUNNING";
-    result.message = "Extender bridge is healthy.";
-    result.diagnosticsJson = "{\"bridge\":\"active\"}";
+    result.hookState = hookState;
+    result.message = message;
+    result.diagnosticsJson = diagnosticsJson;
     return result;
+}
+
+BridgeResult BuildHealthResult(const BridgeCommand& command) {
+    return BuildBridgeResult(command, true, "CAPABILITY_PROBE_PASS", "RUNNING", "Extender bridge is healthy.", "{\"bridge\":\"active\"}");
 }
 
 BridgeResult BuildCapabilityProbeResult(
@@ -534,33 +545,18 @@ BridgeResult BuildCapabilityProbeResult(
     std::ostringstream diagnostics;
     diagnostics
         << "{"
-        << "\"bridge\":\"active\"," 
+        << "\"bridge\":\"active\","
         << "\"processId\":" << probeContext.processId << ','
         << "\"anchorCount\":" << probeContext.anchors.size() << ','
         << "\"capabilities\":" << CapabilitySnapshotToJson(merged)
         << "}";
 
-    BridgeResult result {};
-    result.commandId = command.commandId;
-    result.succeeded = true;
-    result.reasonCode = "CAPABILITY_PROBE_PASS";
-    result.backend = kBackendName;
-    result.hookState = ResolveProbeHookState(merged);
-    result.message = "Capability probe completed.";
-    result.diagnosticsJson = diagnostics.str();
-    return result;
+    return BuildBridgeResult(command, true, "CAPABILITY_PROBE_PASS", ResolveProbeHookState(merged), "Capability probe completed.", diagnostics.str());
 }
 
 BridgeResult BuildMissingIntValueResult(const BridgeCommand& command) {
-    BridgeResult result {};
-    result.commandId = command.commandId;
-    result.succeeded = false;
-    result.reasonCode = "CAPABILITY_REQUIRED_MISSING";
-    result.backend = kBackendName;
-    result.hookState = "DENIED";
-    result.message = "Payload is missing required intValue.";
-    result.diagnosticsJson = "{\"requiredField\":\"intValue\"}";
-    return result;
+    return BuildBridgeResult(
+        command, false, "CAPABILITY_REQUIRED_MISSING", "DENIED", "Payload is missing required intValue.", "{\"requiredField\":\"intValue\"}");
 }
 
 BridgeResult BuildBridgeResultFromPlugin(
@@ -580,15 +576,7 @@ BridgeResult BuildBridgeResultFromPlugin(
 
     diagnostics["anchorCount"] = std::to_string(pluginRequest.anchors.size());
 
-    BridgeResult result {};
-    result.commandId = command.commandId;
-    result.succeeded = pluginResult.succeeded;
-    result.reasonCode = pluginResult.reasonCode;
-    result.backend = kBackendName;
-    result.hookState = pluginResult.hookState;
-    result.message = pluginResult.message;
-    result.diagnosticsJson = ToDiagnosticsJson(diagnostics);
-    return result;
+    return BuildBridgeResult(command, pluginResult.succeeded, pluginResult.reasonCode, pluginResult.hookState, pluginResult.message, ToDiagnosticsJson(diagnostics));
 }
 
 BridgeResult BuildSetCreditsResult(const BridgeCommand& command, EconomyPlugin& economyPlugin) {
@@ -614,15 +602,8 @@ BridgeResult BuildPatchResult(const BridgeCommand& command, BuildPatchPlugin& bu
 }
 
 BridgeResult BuildUnsupportedFeatureResult(const BridgeCommand& command) {
-    BridgeResult result {};
-    result.commandId = command.commandId;
-    result.succeeded = false;
-    result.reasonCode = "CAPABILITY_REQUIRED_MISSING";
-    result.backend = kBackendName;
-    result.hookState = "DENIED";
-    result.message = "Feature not supported by current extender host.";
-    result.diagnosticsJson = "{\"featureId\":\"" + EscapeJson(command.featureId) + "\"}";
-    return result;
+    return BuildBridgeResult(
+        command, false, "CAPABILITY_REQUIRED_MISSING", "DENIED", "Feature not supported by current extender host.", "{\"featureId\":\"" + EscapeJson(command.featureId) + "\"}");
 }
 
 BridgeResult HandleBridgeCommand(

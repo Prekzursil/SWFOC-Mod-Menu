@@ -120,18 +120,7 @@ public sealed class ValueFreezeService : IValueFreezeService
         {
             try
             {
-                switch (entry.Kind)
-                {
-                    case FreezeKind.Int32:
-                        await _runtime.WriteAsync(entry.Symbol, entry.IntValue);
-                        break;
-                    case FreezeKind.Float:
-                        await _runtime.WriteAsync(entry.Symbol, entry.FloatValue);
-                        break;
-                    case FreezeKind.Bool:
-                        await _runtime.WriteAsync(entry.Symbol, entry.BoolValue ? (byte)1 : (byte)0);
-                        break;
-                }
+                await WriteEntryAsync(entry);
             }
             catch (Exception ex)
             {
@@ -139,6 +128,17 @@ public sealed class ValueFreezeService : IValueFreezeService
                 // Don't remove the entry — it may succeed on the next pulse (e.g., transient memory protection issue).
             }
         }
+    }
+
+    private Task WriteEntryAsync(FreezeEntry entry)
+    {
+        return entry.Kind switch
+        {
+            FreezeKind.Int32 => _runtime.WriteAsync(entry.Symbol, entry.IntValue),
+            FreezeKind.Float => _runtime.WriteAsync(entry.Symbol, entry.FloatValue),
+            FreezeKind.Bool => _runtime.WriteAsync(entry.Symbol, entry.BoolValue ? (byte)1 : (byte)0),
+            _ => Task.CompletedTask
+        };
     }
 
     // ── Aggressive ~1 ms thread (for game-overwritten symbols like credits) ──

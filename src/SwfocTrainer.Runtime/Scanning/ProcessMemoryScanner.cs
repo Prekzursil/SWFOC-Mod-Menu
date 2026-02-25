@@ -188,47 +188,14 @@ internal static class ProcessMemoryScanner
         try
         {
             var results = new List<nint>(capacity: Math.Min(maxResults, 256));
-            var mbiSize = (nuint)Marshal.SizeOf<NativeMethods.MemoryBasicInformation>();
-            var address = nint.Zero;
-            var lastAddress = nint.MinValue;
-
-            while (results.Count < maxResults)
+            foreach (var (regionBase, regionSize) in EnumerateReadableRegions(handle, writableOnly, cancellationToken))
             {
-                cancellationToken.ThrowIfCancellationRequested();
-                if (address == lastAddress)
+                if (results.Count >= maxResults)
                 {
                     break;
                 }
 
-                lastAddress = address;
-                var queried = NativeMethods.VirtualQueryEx(handle, address, out var mbi, mbiSize);
-                if (queried == 0)
-                {
-                    break;
-                }
-
-                var regionSize = (long)mbi.RegionSize;
-                if (regionSize <= 0)
-                {
-                    address += 0x1000;
-                    continue;
-                }
-
-                if (mbi.State == NativeMethods.MemCommit &&
-                    IsReadable(mbi.Protect) &&
-                    (!writableOnly || IsWritable(mbi.Protect)))
-                {
-                    regionScanner(handle, mbi.BaseAddress, regionSize, results, maxResults, cancellationToken);
-                }
-
-                try
-                {
-                    address = mbi.BaseAddress + (nint)regionSize;
-                }
-                catch
-                {
-                    break;
-                }
+                regionScanner(handle, regionBase, regionSize, results, maxResults, cancellationToken);
             }
 
             return results;
@@ -236,6 +203,80 @@ internal static class ProcessMemoryScanner
         finally
         {
             NativeMethods.CloseHandle(handle);
+        }
+    }
+
+    private static IEnumerable<(nint RegionBase, long RegionSize)> EnumerateReadableRegions(
+        nint handle,
+        bool writableOnly,
+        CancellationToken cancellationToken)
+    {
+        var mbiSize = (nuint)Marshal.SizeOf<NativeMethods.MemoryBasicInformation>();
+        var address = nint.Zero;
+        var lastAddress = nint.MinValue;
+
+        while (true)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            if (address == lastAddress)
+            {
+                yield break;
+            }
+
+            lastAddress = address;
+            if (!TryQueryRegion(handle, address, mbiSize, out var mbi, out var regionSize))
+            {
+                yield break;
+            }
+
+            if (regionSize <= 0)
+            {
+                address += 0x1000;
+                continue;
+            }
+
+            if (IsScannableRegion(mbi, writableOnly))
+            {
+                yield return (mbi.BaseAddress, regionSize);
+            }
+
+            if (!TryAdvanceAddress(mbi.BaseAddress, regionSize, out address))
+            {
+                yield break;
+            }
+        }
+    }
+
+    private static bool TryQueryRegion(
+        nint handle,
+        nint address,
+        nuint mbiSize,
+        out NativeMethods.MemoryBasicInformation mbi,
+        out long regionSize)
+    {
+        var queried = NativeMethods.VirtualQueryEx(handle, address, out mbi, mbiSize);
+        regionSize = (long)mbi.RegionSize;
+        return queried != 0;
+    }
+
+    private static bool IsScannableRegion(NativeMethods.MemoryBasicInformation mbi, bool writableOnly)
+    {
+        return mbi.State == NativeMethods.MemCommit &&
+               IsReadable(mbi.Protect) &&
+               (!writableOnly || IsWritable(mbi.Protect));
+    }
+
+    private static bool TryAdvanceAddress(nint baseAddress, long regionSize, out nint nextAddress)
+    {
+        try
+        {
+            nextAddress = baseAddress + (nint)regionSize;
+            return true;
+        }
+        catch
+        {
+            nextAddress = nint.Zero;
+            return false;
         }
     }
 

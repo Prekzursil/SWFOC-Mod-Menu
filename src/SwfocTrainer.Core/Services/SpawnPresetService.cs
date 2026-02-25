@@ -84,14 +84,7 @@ public sealed class SpawnPresetService : ISpawnPresetService
     {
         if (runtimeMode == RuntimeMode.Unknown)
         {
-            return new SpawnBatchExecutionResult(
-                false,
-                "Spawn batch blocked: runtime mode is unknown.",
-                0,
-                0,
-                0,
-                true,
-                Array.Empty<SpawnBatchItemResult>());
+            return BuildFailedBatchResult("Spawn batch blocked: runtime mode is unknown.", blockedByMode: true);
         }
 
         if (plan.Items.Count == 0)
@@ -102,67 +95,30 @@ public sealed class SpawnPresetService : ISpawnPresetService
         var profile = await _profiles.ResolveInheritedProfileAsync(profileId, cancellationToken);
         if (!profile.Actions.ContainsKey("spawn_unit_helper"))
         {
-            return new SpawnBatchExecutionResult(
-                false,
+            return BuildFailedBatchResult(
                 $"Profile '{profileId}' does not expose spawn_unit_helper action.",
-                0,
-                0,
-                0,
-                false,
-                Array.Empty<SpawnBatchItemResult>());
+                blockedByMode: false);
         }
 
-        var helperHookId = profile.HelperModHooks
-            .Select(x => x.Id)
-            .FirstOrDefault(id => id.Contains("spawn", StringComparison.OrdinalIgnoreCase))
-            ?? "spawn_bridge";
+        var helperHookId = ResolveHelperHookId(profile);
+        return await ExecuteBatchPlanAsync(profileId, plan, runtimeMode, helperHookId, cancellationToken);
+    }
 
+    private async Task<SpawnBatchExecutionResult> ExecuteBatchPlanAsync(
+        string profileId,
+        SpawnBatchPlan plan,
+        RuntimeMode runtimeMode,
+        string helperHookId,
+        CancellationToken cancellationToken)
+    {
         var results = new List<SpawnBatchItemResult>(plan.Items.Count);
         foreach (var item in plan.Items)
         {
-            var payload = new JsonObject
-            {
-                ["helperHookId"] = helperHookId,
-                ["unitId"] = item.UnitId,
-                ["entryMarker"] = item.EntryMarker,
-                ["faction"] = item.Faction,
-            };
-
-            var context = new Dictionary<string, object?>
-            {
-                ["bundleGateResult"] = "bundle_pass",
-                ["spawnPresetId"] = plan.PresetId,
-                ["spawnSequence"] = item.Sequence
-            };
-
-            var result = await _orchestrator.ExecuteAsync(
-                profileId,
-                "spawn_unit_helper",
-                payload,
-                runtimeMode,
-                context,
-                cancellationToken);
-
-            results.Add(new SpawnBatchItemResult(
-                item.Sequence,
-                item.UnitId,
-                result.Succeeded,
-                result.Message,
-                result.Diagnostics));
-
+            var result = await ExecuteBatchItemAsync(profileId, plan.PresetId, runtimeMode, helperHookId, item, cancellationToken);
+            results.Add(result);
             if (!result.Succeeded && plan.StopOnFailure)
             {
-                var attempted = results.Count;
-                var succeeded = results.Count(x => x.Succeeded);
-                var failed = attempted - succeeded;
-                return new SpawnBatchExecutionResult(
-                    false,
-                    $"Spawn batch stopped at item {item.Sequence} after failure.",
-                    attempted,
-                    succeeded,
-                    failed,
-                    true,
-                    results);
+                return BuildStoppedBatchResult(item.Sequence, results);
             }
 
             if (item.DelayMs > 0)
@@ -171,6 +127,91 @@ public sealed class SpawnPresetService : ISpawnPresetService
             }
         }
 
+        return BuildCompletedBatchResult(results);
+    }
+
+    private async Task<SpawnBatchItemResult> ExecuteBatchItemAsync(
+        string profileId,
+        string presetId,
+        RuntimeMode runtimeMode,
+        string helperHookId,
+        SpawnBatchItem item,
+        CancellationToken cancellationToken)
+    {
+        var result = await _orchestrator.ExecuteAsync(
+            profileId,
+            "spawn_unit_helper",
+            BuildSpawnPayload(helperHookId, item),
+            runtimeMode,
+            BuildSpawnContext(presetId, item.Sequence),
+            cancellationToken);
+
+        return new SpawnBatchItemResult(
+            item.Sequence,
+            item.UnitId,
+            result.Succeeded,
+            result.Message,
+            result.Diagnostics);
+    }
+
+    private static JsonObject BuildSpawnPayload(string helperHookId, SpawnBatchItem item)
+    {
+        return new JsonObject
+        {
+            ["helperHookId"] = helperHookId,
+            ["unitId"] = item.UnitId,
+            ["entryMarker"] = item.EntryMarker,
+            ["faction"] = item.Faction,
+        };
+    }
+
+    private static IReadOnlyDictionary<string, object?> BuildSpawnContext(string presetId, int sequence)
+    {
+        return new Dictionary<string, object?>
+        {
+            ["bundleGateResult"] = "bundle_pass",
+            ["spawnPresetId"] = presetId,
+            ["spawnSequence"] = sequence
+        };
+    }
+
+    private static string ResolveHelperHookId(TrainerProfile profile)
+    {
+        return profile.HelperModHooks
+                   .Select(x => x.Id)
+                   .FirstOrDefault(id => id.Contains("spawn", StringComparison.OrdinalIgnoreCase))
+               ?? "spawn_bridge";
+    }
+
+    private static SpawnBatchExecutionResult BuildFailedBatchResult(string message, bool blockedByMode)
+    {
+        return new SpawnBatchExecutionResult(
+            false,
+            message,
+            0,
+            0,
+            0,
+            blockedByMode,
+            Array.Empty<SpawnBatchItemResult>());
+    }
+
+    private static SpawnBatchExecutionResult BuildStoppedBatchResult(int failedSequence, IReadOnlyList<SpawnBatchItemResult> results)
+    {
+        var attempted = results.Count;
+        var succeeded = results.Count(x => x.Succeeded);
+        var failed = attempted - succeeded;
+        return new SpawnBatchExecutionResult(
+            false,
+            $"Spawn batch stopped at item {failedSequence} after failure.",
+            attempted,
+            succeeded,
+            failed,
+            true,
+            results);
+    }
+
+    private static SpawnBatchExecutionResult BuildCompletedBatchResult(IReadOnlyList<SpawnBatchItemResult> results)
+    {
         var succeededCount = results.Count(x => x.Succeeded);
         var failedCount = results.Count - succeededCount;
         return new SpawnBatchExecutionResult(

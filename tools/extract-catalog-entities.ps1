@@ -9,8 +9,8 @@ function Get-EntityNames {
     $names = @()
     if (Test-Path $FilePath) {
         $content = Get-Content $FilePath -Raw -Encoding UTF8
-        $matches = [regex]::Matches($content, $ElementPattern)
-        foreach ($m in $matches) {
+        $entityMatches = [regex]::Matches($content, $ElementPattern)
+        foreach ($m in $entityMatches) {
             $names += $m.Groups[1].Value
         }
     }

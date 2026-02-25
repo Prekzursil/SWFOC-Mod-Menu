@@ -17,57 +17,16 @@ public sealed class ProfileUpdateServiceTransactionalTests
     [Fact]
     public async Task InstallProfileTransactionalAsync_ShouldInstallAndRollback()
     {
-        var tempRoot = Path.Combine(Path.GetTempPath(), $"swfoc-profile-update-{Guid.NewGuid():N}");
-        var profilesRoot = Path.Combine(tempRoot, "default");
-        var profilesDir = Path.Combine(profilesRoot, "profiles");
-        var cacheDir = Path.Combine(tempRoot, "cache");
-        Directory.CreateDirectory(profilesDir);
-        Directory.CreateDirectory(cacheDir);
+        var workspace = CreateWorkspace();
 
         try
         {
-            var profileId = "base_swfoc";
-            var existingPath = Path.Combine(profilesDir, $"{profileId}.json");
-            await File.WriteAllTextAsync(existingPath, "{\"id\":\"base_swfoc\",\"displayName\":\"old\",\"inherits\":null,\"exeTarget\":\"Swfoc\",\"steamWorkshopId\":null,\"signatureSets\":[{\"name\":\"x\",\"gameBuild\":\"x\",\"signatures\":[]}],\"fallbackOffsets\":{},\"actions\":{},\"featureFlags\":{},\"catalogSources\":[],\"saveSchemaId\":\"base_swfoc_steam_v1\",\"helperModHooks\":[]}");
+            const string profileId = "base_swfoc";
+            var existingPath = Path.Combine(workspace.ProfilesDir, $"{profileId}.json");
+            await File.WriteAllTextAsync(existingPath, BuildProfileJson("old"));
 
-            var downloadedProfileJson = "{\"id\":\"base_swfoc\",\"displayName\":\"new\",\"inherits\":null,\"exeTarget\":\"Swfoc\",\"steamWorkshopId\":null,\"signatureSets\":[{\"name\":\"x\",\"gameBuild\":\"x\",\"signatures\":[]}],\"fallbackOffsets\":{},\"actions\":{},\"featureFlags\":{},\"catalogSources\":[],\"saveSchemaId\":\"base_swfoc_steam_v1\",\"helperModHooks\":[]}";
-            var zipBytes = BuildZipWithProfile(profileId, downloadedProfileJson);
-            var sha = ComputeSha256(zipBytes);
-
-            var manifestJson = JsonSerializer.Serialize(new
-            {
-                version = "1.0.0",
-                publishedAt = "2026-01-01T00:00:00Z",
-                profiles = new[]
-                {
-                    new
-                    {
-                        id = profileId,
-                        version = "1.2.3",
-                        sha256 = sha,
-                        downloadUrl = $"https://example.invalid/{profileId}.zip",
-                        minAppVersion = "1.0.0",
-                        description = "test"
-                    }
-                }
-            });
-
-            var handler = new StubHttpMessageHandler(new Dictionary<string, (string ContentType, byte[] Body)>
-            {
-                ["https://example.invalid/manifest.json"] = ("application/json", Encoding.UTF8.GetBytes(manifestJson)),
-                [$"https://example.invalid/{profileId}.zip"] = ("application/zip", zipBytes)
-            });
-            var client = new HttpClient(handler);
-
-            var options = new ProfileRepositoryOptions
-            {
-                ProfilesRootPath = profilesRoot,
-                ManifestFileName = "manifest.json",
-                DownloadCachePath = cacheDir,
-                RemoteManifestUrl = "https://example.invalid/manifest.json"
-            };
-
-            var service = new GitHubProfileUpdateService(client, options, new StubProfileRepository());
+            var zipBytes = BuildZipWithProfile(profileId, BuildProfileJson("new"));
+            var service = CreateService(workspace, profileId, zipBytes);
             var install = await service.InstallProfileTransactionalAsync(profileId);
 
             install.Succeeded.Should().BeTrue();
@@ -88,68 +47,24 @@ public sealed class ProfileUpdateServiceTransactionalTests
         }
         finally
         {
-            if (Directory.Exists(tempRoot))
-            {
-                Directory.Delete(tempRoot, recursive: true);
-            }
+            DeleteWorkspace(workspace);
         }
     }
 
     [Fact]
     public async Task InstallProfileTransactionalAsync_ShouldFailWhenArchiveContainsDriveQualifiedPath()
     {
-        var tempRoot = Path.Combine(Path.GetTempPath(), $"swfoc-profile-update-{Guid.NewGuid():N}");
-        var profilesRoot = Path.Combine(tempRoot, "default");
-        var profilesDir = Path.Combine(profilesRoot, "profiles");
-        var cacheDir = Path.Combine(tempRoot, "cache");
-        Directory.CreateDirectory(profilesDir);
-        Directory.CreateDirectory(cacheDir);
+        var workspace = CreateWorkspace();
 
         try
         {
-            var profileId = "base_swfoc";
-            var downloadedProfileJson = "{\"id\":\"base_swfoc\",\"displayName\":\"new\",\"inherits\":null,\"exeTarget\":\"Swfoc\",\"steamWorkshopId\":null,\"signatureSets\":[{\"name\":\"x\",\"gameBuild\":\"x\",\"signatures\":[]}],\"fallbackOffsets\":{},\"actions\":{},\"featureFlags\":{},\"catalogSources\":[],\"saveSchemaId\":\"base_swfoc_steam_v1\",\"helperModHooks\":[]}";
+            const string profileId = "base_swfoc";
             var zipBytes = BuildZipWithEntries(new Dictionary<string, string>
             {
-                [$"profiles/{profileId}.json"] = downloadedProfileJson,
+                [$"profiles/{profileId}.json"] = BuildProfileJson("new"),
                 ["C:evil.txt"] = "bad"
             });
-            var sha = ComputeSha256(zipBytes);
-
-            var manifestJson = JsonSerializer.Serialize(new
-            {
-                version = "1.0.0",
-                publishedAt = "2026-01-01T00:00:00Z",
-                profiles = new[]
-                {
-                    new
-                    {
-                        id = profileId,
-                        version = "1.2.3",
-                        sha256 = sha,
-                        downloadUrl = $"https://example.invalid/{profileId}.zip",
-                        minAppVersion = "1.0.0",
-                        description = "test"
-                    }
-                }
-            });
-
-            var handler = new StubHttpMessageHandler(new Dictionary<string, (string ContentType, byte[] Body)>
-            {
-                ["https://example.invalid/manifest.json"] = ("application/json", Encoding.UTF8.GetBytes(manifestJson)),
-                [$"https://example.invalid/{profileId}.zip"] = ("application/zip", zipBytes)
-            });
-            var client = new HttpClient(handler);
-
-            var options = new ProfileRepositoryOptions
-            {
-                ProfilesRootPath = profilesRoot,
-                ManifestFileName = "manifest.json",
-                DownloadCachePath = cacheDir,
-                RemoteManifestUrl = "https://example.invalid/manifest.json"
-            };
-
-            var service = new GitHubProfileUpdateService(client, options, new StubProfileRepository());
+            var service = CreateService(workspace, profileId, zipBytes);
             var result = await service.InstallProfileTransactionalAsync(profileId);
 
             result.Succeeded.Should().BeFalse();
@@ -158,68 +73,24 @@ public sealed class ProfileUpdateServiceTransactionalTests
         }
         finally
         {
-            if (Directory.Exists(tempRoot))
-            {
-                Directory.Delete(tempRoot, recursive: true);
-            }
+            DeleteWorkspace(workspace);
         }
     }
 
     [Fact]
     public async Task InstallProfileTransactionalAsync_ShouldFailWhenArchiveContainsTraversalPath()
     {
-        var tempRoot = Path.Combine(Path.GetTempPath(), $"swfoc-profile-update-{Guid.NewGuid():N}");
-        var profilesRoot = Path.Combine(tempRoot, "default");
-        var profilesDir = Path.Combine(profilesRoot, "profiles");
-        var cacheDir = Path.Combine(tempRoot, "cache");
-        Directory.CreateDirectory(profilesDir);
-        Directory.CreateDirectory(cacheDir);
+        var workspace = CreateWorkspace();
 
         try
         {
-            var profileId = "base_swfoc";
-            var downloadedProfileJson = "{\"id\":\"base_swfoc\",\"displayName\":\"new\",\"inherits\":null,\"exeTarget\":\"Swfoc\",\"steamWorkshopId\":null,\"signatureSets\":[{\"name\":\"x\",\"gameBuild\":\"x\",\"signatures\":[]}],\"fallbackOffsets\":{},\"actions\":{},\"featureFlags\":{},\"catalogSources\":[],\"saveSchemaId\":\"base_swfoc_steam_v1\",\"helperModHooks\":[]}";
+            const string profileId = "base_swfoc";
             var zipBytes = BuildZipWithEntries(new Dictionary<string, string>
             {
-                [$"profiles/{profileId}.json"] = downloadedProfileJson,
+                [$"profiles/{profileId}.json"] = BuildProfileJson("new"),
                 ["../escape.txt"] = "bad"
             });
-            var sha = ComputeSha256(zipBytes);
-
-            var manifestJson = JsonSerializer.Serialize(new
-            {
-                version = "1.0.0",
-                publishedAt = "2026-01-01T00:00:00Z",
-                profiles = new[]
-                {
-                    new
-                    {
-                        id = profileId,
-                        version = "1.2.3",
-                        sha256 = sha,
-                        downloadUrl = $"https://example.invalid/{profileId}.zip",
-                        minAppVersion = "1.0.0",
-                        description = "test"
-                    }
-                }
-            });
-
-            var handler = new StubHttpMessageHandler(new Dictionary<string, (string ContentType, byte[] Body)>
-            {
-                ["https://example.invalid/manifest.json"] = ("application/json", Encoding.UTF8.GetBytes(manifestJson)),
-                [$"https://example.invalid/{profileId}.zip"] = ("application/zip", zipBytes)
-            });
-            var client = new HttpClient(handler);
-
-            var options = new ProfileRepositoryOptions
-            {
-                ProfilesRootPath = profilesRoot,
-                ManifestFileName = "manifest.json",
-                DownloadCachePath = cacheDir,
-                RemoteManifestUrl = "https://example.invalid/manifest.json"
-            };
-
-            var service = new GitHubProfileUpdateService(client, options, new StubProfileRepository());
+            var service = CreateService(workspace, profileId, zipBytes);
             var result = await service.InstallProfileTransactionalAsync(profileId);
 
             result.Succeeded.Should().BeFalse();
@@ -228,12 +99,73 @@ public sealed class ProfileUpdateServiceTransactionalTests
         }
         finally
         {
-            if (Directory.Exists(tempRoot))
-            {
-                Directory.Delete(tempRoot, recursive: true);
-            }
+            DeleteWorkspace(workspace);
         }
     }
+
+    private static ProfileUpdateTestWorkspace CreateWorkspace()
+    {
+        var tempRoot = Path.Combine(Path.GetTempPath(), $"swfoc-profile-update-{Guid.NewGuid():N}");
+        var profilesRoot = Path.Combine(tempRoot, "default");
+        var profilesDir = Path.Combine(profilesRoot, "profiles");
+        var cacheDir = Path.Combine(tempRoot, "cache");
+        Directory.CreateDirectory(profilesDir);
+        Directory.CreateDirectory(cacheDir);
+        return new ProfileUpdateTestWorkspace(tempRoot, profilesRoot, profilesDir, cacheDir);
+    }
+
+    private static void DeleteWorkspace(ProfileUpdateTestWorkspace workspace)
+    {
+        if (Directory.Exists(workspace.TempRoot))
+        {
+            Directory.Delete(workspace.TempRoot, recursive: true);
+        }
+    }
+
+    private static GitHubProfileUpdateService CreateService(
+        ProfileUpdateTestWorkspace workspace,
+        string profileId,
+        byte[] zipBytes)
+    {
+        var sha = ComputeSha256(zipBytes);
+        var manifestJson = BuildManifestJson(profileId, sha);
+        var handler = new StubHttpMessageHandler(new Dictionary<string, (string ContentType, byte[] Body)>
+        {
+            ["https://example.invalid/manifest.json"] = ("application/json", Encoding.UTF8.GetBytes(manifestJson)),
+            [$"https://example.invalid/{profileId}.zip"] = ("application/zip", zipBytes)
+        });
+        var client = new HttpClient(handler);
+        var options = new ProfileRepositoryOptions
+        {
+            ProfilesRootPath = workspace.ProfilesRoot,
+            ManifestFileName = "manifest.json",
+            DownloadCachePath = workspace.CacheDir,
+            RemoteManifestUrl = "https://example.invalid/manifest.json"
+        };
+        return new GitHubProfileUpdateService(client, options, new StubProfileRepository());
+    }
+
+    private static string BuildManifestJson(string profileId, string sha256)
+        => JsonSerializer.Serialize(new
+        {
+            version = "1.0.0",
+            publishedAt = "2026-01-01T00:00:00Z",
+            profiles = new[]
+            {
+                new
+                {
+                    id = profileId,
+                    version = "1.2.3",
+                    sha256,
+                    downloadUrl = $"https://example.invalid/{profileId}.zip",
+                    minAppVersion = "1.0.0",
+                    description = "test"
+                }
+            }
+        });
+
+    private static string BuildProfileJson(string displayName)
+        => $"{{\"id\":\"base_swfoc\",\"displayName\":\"{displayName}\",\"inherits\":null,\"exeTarget\":\"Swfoc\",\"steamWorkshopId\":null,\"signatureSets\":[{{\"name\":\"x\",\"gameBuild\":\"x\",\"signatures\":[]}}],\"fallbackOffsets\":{{}},\"actions\":{{}},\"featureFlags\":{{}},\"catalogSources\":[],\"saveSchemaId\":\"base_swfoc_steam_v1\",\"helperModHooks\":[]}}";
 
     private static byte[] BuildZipWithProfile(string profileId, string profileJson)
     {
@@ -315,4 +247,10 @@ public sealed class ProfileUpdateServiceTransactionalTests
         public Task<IReadOnlyList<string>> ListAvailableProfilesAsync(CancellationToken cancellationToken = default)
             => Task.FromResult<IReadOnlyList<string>>(Array.Empty<string>());
     }
+
+    private sealed record ProfileUpdateTestWorkspace(
+        string TempRoot,
+        string ProfilesRoot,
+        string ProfilesDir,
+        string CacheDir);
 }

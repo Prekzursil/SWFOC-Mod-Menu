@@ -136,12 +136,12 @@ For each profile (`base_sweaw`, `base_swfoc`, `aotr_1397421866_swfoc`, `roe_3447
    - selected unit HP/shield/speed edit (tactical)
    - helper spawn action
   - capture status diagnostics showing `backendRoute`, `routeReasonCode`, `capabilityProbeReasonCode`, `capabilityMapReasonCode`, `capabilityMapState`, `capabilityDeclaredAvailable`, plus `hookState`/`hybridExecution` when present
-4. Verify attach diagnostics include host ranking fields:
+1. Verify attach diagnostics include host ranking fields:
    - `hostRole`
    - `mainModuleSize`
    - `workshopMatchCount`
    - `selectionScore`
-5. Save editor pass:
+2. Save editor pass:
    - load save
    - edit credits + hero respawn fields
    - optionally edit `ascii`/floating fields where schema supports them

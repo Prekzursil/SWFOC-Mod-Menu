@@ -27,11 +27,30 @@ public sealed class LiveActionSmokeTests
     [Fact]
     public async Task LiveSmoke_Attach_Read_And_OptionalToggleRevert_Should_Succeed()
     {
+        var context = await TryAttachForLiveSmokeAsync();
+        if (context is null)
+        {
+            return;
+        }
+
+        var values = await ReadTargetValuesAsync(context.Runtime);
+        LogResolvedSymbols(context.Session);
+        RunConditionalDebugScans(context.Session, values);
+        RunSymbolCalibrationDebugScan(context.Session);
+        WriteReadFailures(values.ReadFailures);
+        await RunToggleAndVerificationChecksAsync(context.Runtime, values);
+
+        await context.Runtime.DetachAsync();
+        context.Runtime.IsAttached.Should().BeFalse();
+    }
+
+    private async Task<LiveSmokeContext?> TryAttachForLiveSmokeAsync()
+    {
         var locator = new ProcessLocator();
         var running = await locator.FindBestMatchAsync(ExeTarget.Swfoc);
         if (running is null)
         {
-            return;
+            return null;
         }
 
         var repoRoot = TestPaths.FindRepoRoot();
@@ -39,20 +58,23 @@ public sealed class LiveActionSmokeTests
         {
             ProfilesRootPath = Path.Combine(repoRoot, "profiles", "default")
         });
-
         var resolver = new SignatureResolver(NullLogger<SignatureResolver>.Instance);
         var runtime = new RuntimeAdapter(locator, profileRepo, resolver, NullLogger<RuntimeAdapter>.Instance);
 
         var profiles = await ResolveProfilesAsync(profileRepo);
-        var context = running.LaunchContext ?? new LaunchContextResolver().Resolve(running, profiles);
-        var profileId = context.Recommendation.ProfileId ?? "base_swfoc";
-
+        var launchContext = running.LaunchContext ?? new LaunchContextResolver().Resolve(running, profiles);
+        var profileId = launchContext.Recommendation.ProfileId ?? "base_swfoc";
         _output.WriteLine(
-            $"Selected profile for live smoke: {profileId} (reason={context.Recommendation.ReasonCode}, confidence={context.Recommendation.Confidence:0.00})");
+            $"Selected profile for live smoke: {profileId} (reason={launchContext.Recommendation.ReasonCode}, confidence={launchContext.Recommendation.Confidence:0.00})");
+
         var session = await runtime.AttachAsync(profileId);
         session.Process.ProcessId.Should().Be(running.ProcessId);
         session.Symbols.Symbols.Count.Should().BeGreaterThan(0);
+        return new LiveSmokeContext(runtime, session);
+    }
 
+    private void LogResolvedSymbols(AttachSession session)
+    {
         _output.WriteLine($"Resolved symbols: {session.Symbols.Symbols.Count}");
         foreach (var symbolName in session.Symbols.Symbols.Keys.OrderBy(x => x))
         {
@@ -62,109 +84,53 @@ public sealed class LiveActionSmokeTests
                     $"{symbolName}: 0x{symbol.Address.ToInt64():X} source={symbol.Source} diag={symbol.Diagnostics}");
             }
         }
+    }
 
-        byte? fog = null;
-        byte? timerFreeze = null;
-        byte? tacticalGod = null;
-        byte? tacticalOneHit = null;
-        int? credits = null;
-        int? heroRespawn = null;
-        float? instantBuild = null;
-        float? selectedHp = null;
-        int? planetOwner = null;
+    private async Task<LiveSmokeReadValues> ReadTargetValuesAsync(RuntimeAdapter runtime)
+    {
         var readFailures = new List<string>();
+        var credits = await TryReadValueAsync<int>(runtime, "credits", readFailures);
+        var heroRespawn = await TryReadValueAsync<int>(runtime, "hero_respawn_timer", readFailures);
+        var instantBuild = await TryReadValueAsync<float>(runtime, "instant_build", readFailures);
+        var selectedHp = await TryReadValueAsync<float>(runtime, "selected_hp", readFailures);
+        var planetOwner = await TryReadValueAsync<int>(runtime, "planet_owner", readFailures);
+        var fog = await TryReadValueAsync<byte>(runtime, "fog_reveal", readFailures);
+        var timerFreeze = await TryReadValueAsync<byte>(runtime, "game_timer_freeze", readFailures);
+        var tacticalGod = await TryReadValueAsync<byte>(runtime, "tactical_god_mode", readFailures);
+        var tacticalOneHit = await TryReadValueAsync<byte>(runtime, "tactical_one_hit_mode", readFailures);
 
+        return new LiveSmokeReadValues(
+            Fog: fog,
+            TimerFreeze: timerFreeze,
+            TacticalGod: tacticalGod,
+            TacticalOneHit: tacticalOneHit,
+            Credits: credits,
+            HeroRespawn: heroRespawn,
+            InstantBuild: instantBuild,
+            SelectedHp: selectedHp,
+            PlanetOwner: planetOwner,
+            ReadFailures: readFailures);
+    }
+
+    private async Task<T?> TryReadValueAsync<T>(RuntimeAdapter runtime, string symbol, ICollection<string> readFailures)
+        where T : unmanaged
+    {
         try
         {
-            credits = await runtime.ReadAsync<int>("credits");
-            _output.WriteLine($"Credits read succeeded: {credits}");
+            var value = await runtime.ReadAsync<T>(symbol);
+            _output.WriteLine($"{symbol} read succeeded: {value}");
+            return value;
         }
         catch (Exception ex)
         {
-            readFailures.Add($"credits: {ex.Message}");
+            readFailures.Add($"{symbol}: {ex.Message}");
+            return null;
         }
+    }
 
-        try
-        {
-            heroRespawn = await runtime.ReadAsync<int>("hero_respawn_timer");
-            _output.WriteLine($"hero_respawn_timer read succeeded: {heroRespawn}");
-        }
-        catch (Exception ex)
-        {
-            readFailures.Add($"hero_respawn_timer: {ex.Message}");
-        }
-
-        try
-        {
-            instantBuild = await runtime.ReadAsync<float>("instant_build");
-            _output.WriteLine($"instant_build read succeeded: {instantBuild}");
-        }
-        catch (Exception ex)
-        {
-            readFailures.Add($"instant_build: {ex.Message}");
-        }
-
-        try
-        {
-            selectedHp = await runtime.ReadAsync<float>("selected_hp");
-            _output.WriteLine($"selected_hp read succeeded: {selectedHp}");
-        }
-        catch (Exception ex)
-        {
-            readFailures.Add($"selected_hp: {ex.Message}");
-        }
-
-        try
-        {
-            planetOwner = await runtime.ReadAsync<int>("planet_owner");
-            _output.WriteLine($"planet_owner read succeeded: {planetOwner}");
-        }
-        catch (Exception ex)
-        {
-            readFailures.Add($"planet_owner: {ex.Message}");
-        }
-
-        try
-        {
-            fog = await runtime.ReadAsync<byte>("fog_reveal");
-            _output.WriteLine($"fog_reveal read succeeded: {fog}");
-        }
-        catch (Exception ex)
-        {
-            readFailures.Add($"fog_reveal: {ex.Message}");
-        }
-
-        try
-        {
-            timerFreeze = await runtime.ReadAsync<byte>("game_timer_freeze");
-            _output.WriteLine($"game_timer_freeze read succeeded: {timerFreeze}");
-        }
-        catch (Exception ex)
-        {
-            readFailures.Add($"game_timer_freeze: {ex.Message}");
-        }
-
-        try
-        {
-            tacticalGod = await runtime.ReadAsync<byte>("tactical_god_mode");
-            _output.WriteLine($"tactical_god_mode read succeeded: {tacticalGod}");
-        }
-        catch (Exception ex)
-        {
-            readFailures.Add($"tactical_god_mode: {ex.Message}");
-        }
-
-        try
-        {
-            tacticalOneHit = await runtime.ReadAsync<byte>("tactical_one_hit_mode");
-            _output.WriteLine($"tactical_one_hit_mode read succeeded: {tacticalOneHit}");
-        }
-        catch (Exception ex)
-        {
-            readFailures.Add($"tactical_one_hit_mode: {ex.Message}");
-        }
-
-        if (fog.HasValue && timerFreeze is null)
+    private void RunConditionalDebugScans(AttachSession session, LiveSmokeReadValues values)
+    {
+        if (values.Fog.HasValue && values.TimerFreeze is null)
         {
             try
             {
@@ -177,7 +143,7 @@ public sealed class LiveActionSmokeTests
             }
         }
 
-        if (credits is null)
+        if (values.Credits is null)
         {
             try
             {
@@ -188,9 +154,10 @@ public sealed class LiveActionSmokeTests
                 _output.WriteLine($"Credits debug scan failed: {ex.Message}");
             }
         }
+    }
 
-        // Calibration helpers: if these are fallback-only, dump RIP-relative references to their current RVA
-        // so we can craft stable AOB patterns for signatures.
+    private void RunSymbolCalibrationDebugScan(AttachSession session)
+    {
         try
         {
             var snapshot = ReadMainModuleSnapshot(session);
@@ -199,15 +166,13 @@ public sealed class LiveActionSmokeTests
             {
                 ("instant_build", SymbolValueType.Float),
                 ("selected_hp", SymbolValueType.Float),
-                ("planet_owner", SymbolValueType.Int32),
+                ("planet_owner", SymbolValueType.Int32)
             });
 
-            // If fallback offsets are stale (common on x64), dump candidate signatures based on code patterns instead.
             DumpInstantBuildCandidates(session, snapshot, maxTargets: 12);
             DumpSelectedHpCandidates(session, snapshot, maxHits: 12);
             DumpPlanetOwnerCandidates(session, snapshot, maxHits: 12);
 
-            // If specific pattern scans come up empty, fall back to "top RIP-relative targets" to locate globals.
             DumpTopRipRelativeFloatTargets(snapshot, top: 20);
             DumpTopRipRelativeFloatArithmeticTargets(snapshot, top: 30);
             DumpTopRipRelativeInt32StoreTargets(snapshot, top: 20);
@@ -215,111 +180,114 @@ public sealed class LiveActionSmokeTests
             DumpTopRipRelativeByteCompareTargets(snapshot, top: 40);
             DumpTopRipRelativeByteImmediateStoreTargets(snapshot, top: 40);
 
-            // Quick sanity check: ensure our expected planet_owner AOB actually exists in module bytes.
-            try
-            {
-                using var p = Process.GetProcessById(session.Process.ProcessId);
-                var expected = AobPattern.Parse("89 35 ?? ?? ?? ?? 48 C7 05 ?? ?? ?? ?? ?? ?? ?? ??");
-                var hit = AobScanner.FindPattern(p, snapshot.Bytes, snapshot.BaseAddress, expected);
-                var hitRva = hit == nint.Zero ? -1 : hit.ToInt64() - snapshot.BaseAddress.ToInt64();
-                _output.WriteLine(hit == nint.Zero
-                    ? "Planet-owner expected AOB did NOT match anywhere in module."
-                    : $"Planet-owner expected AOB matched at RVA 0x{hitRva:X} (addr=0x{hit.ToInt64():X}).");
-            }
-            catch (Exception ex)
-            {
-                _output.WriteLine($"Planet-owner AOB sanity check failed: {ex.Message}");
-            }
+            RunPlanetOwnerAobSanityCheck(session, snapshot);
         }
         catch (Exception ex)
         {
             _output.WriteLine($"Symbol calibration debug scan failed: {ex.Message}");
         }
+    }
 
-        if (readFailures.Count > 0)
+    private void RunPlanetOwnerAobSanityCheck(AttachSession session, ModuleSnapshot snapshot)
+    {
+        try
         {
-            _output.WriteLine("Read failures:");
-            foreach (var failure in readFailures)
-            {
-                _output.WriteLine($" - {failure}");
-            }
+            using var process = Process.GetProcessById(session.Process.ProcessId);
+            var expected = AobPattern.Parse("89 35 ?? ?? ?? ?? 48 C7 05 ?? ?? ?? ?? ?? ?? ?? ??");
+            var hit = AobScanner.FindPattern(process, snapshot.Bytes, snapshot.BaseAddress, expected);
+            var hitRva = hit == nint.Zero ? -1 : hit.ToInt64() - snapshot.BaseAddress.ToInt64();
+            _output.WriteLine(hit == nint.Zero
+                ? "Planet-owner expected AOB did NOT match anywhere in module."
+                : $"Planet-owner expected AOB matched at RVA 0x{hitRva:X} (addr=0x{hit.ToInt64():X}).");
+        }
+        catch (Exception ex)
+        {
+            _output.WriteLine($"Planet-owner AOB sanity check failed: {ex.Message}");
+        }
+    }
+
+    private void WriteReadFailures(IReadOnlyCollection<string> readFailures)
+    {
+        if (readFailures.Count == 0)
+        {
+            return;
         }
 
-        if (credits is null && fog is null && timerFreeze is null)
+        _output.WriteLine("Read failures:");
+        foreach (var failure in readFailures)
+        {
+            _output.WriteLine($" - {failure}");
+        }
+    }
+
+    private async Task RunToggleAndVerificationChecksAsync(RuntimeAdapter runtime, LiveSmokeReadValues values)
+    {
+        if (values.Credits is null && values.Fog is null && values.TimerFreeze is null)
         {
             _output.WriteLine("No target symbols were readable in this build. Likely requires signature/offset calibration.");
+            return;
         }
-        else
+
+        if (values.Fog.HasValue)
         {
-            if (fog.HasValue)
-            {
-                await runtime.WriteAsync("fog_reveal", fog.Value);
-            }
-            if (timerFreeze.HasValue)
-            {
-                await runtime.WriteAsync("game_timer_freeze", timerFreeze.Value);
-            }
-
-            {
-                var toggledAny = false;
-                if (fog.HasValue)
-                {
-                    var toggledFog = (byte)(fog.Value == 0 ? 1 : 0);
-                    await runtime.WriteAsync("fog_reveal", toggledFog);
-                    await runtime.WriteAsync("fog_reveal", fog.Value);
-                    toggledAny = true;
-                    _output.WriteLine("Toggle-revert check executed for fog_reveal.");
-                }
-
-                if (timerFreeze.HasValue)
-                {
-                    var toggledTimer = (byte)(timerFreeze.Value == 0 ? 1 : 0);
-                    await runtime.WriteAsync("game_timer_freeze", toggledTimer);
-                    await runtime.WriteAsync("game_timer_freeze", timerFreeze.Value);
-                    toggledAny = true;
-                    _output.WriteLine("Toggle-revert check executed for game_timer_freeze.");
-                }
-
-                if (tacticalGod.HasValue)
-                {
-                    var toggledGod = (byte)(tacticalGod.Value == 0 ? 1 : 0);
-                    await runtime.WriteAsync("tactical_god_mode", toggledGod);
-                    await runtime.WriteAsync("tactical_god_mode", tacticalGod.Value);
-                    toggledAny = true;
-                    _output.WriteLine("Toggle-revert check executed for tactical_god_mode.");
-                }
-
-                if (tacticalOneHit.HasValue)
-                {
-                    var toggledOneHit = (byte)(tacticalOneHit.Value == 0 ? 1 : 0);
-                    await runtime.WriteAsync("tactical_one_hit_mode", toggledOneHit);
-                    await runtime.WriteAsync("tactical_one_hit_mode", tacticalOneHit.Value);
-                    toggledAny = true;
-                    _output.WriteLine("Toggle-revert check executed for tactical_one_hit_mode.");
-                }
-
-                if (!toggledAny)
-                {
-                    _output.WriteLine("No toggle-safe symbols were readable in this build.");
-                }
-            }
-
-            if (fog.HasValue)
-            {
-                var fogAfter = await runtime.ReadAsync<byte>("fog_reveal");
-                fogAfter.Should().Be(fog.Value);
-            }
-
-            if (timerFreeze.HasValue)
-            {
-                var timerAfter = await runtime.ReadAsync<byte>("game_timer_freeze");
-                timerAfter.Should().Be(timerFreeze.Value);
-            }
+            await runtime.WriteAsync("fog_reveal", values.Fog.Value);
         }
 
-        await runtime.DetachAsync();
-        runtime.IsAttached.Should().BeFalse();
+        if (values.TimerFreeze.HasValue)
+        {
+            await runtime.WriteAsync("game_timer_freeze", values.TimerFreeze.Value);
+        }
+
+        var toggledAny = false;
+        toggledAny |= await TryToggleRevertByteValueAsync(runtime, "fog_reveal", values.Fog);
+        toggledAny |= await TryToggleRevertByteValueAsync(runtime, "game_timer_freeze", values.TimerFreeze);
+        toggledAny |= await TryToggleRevertByteValueAsync(runtime, "tactical_god_mode", values.TacticalGod);
+        toggledAny |= await TryToggleRevertByteValueAsync(runtime, "tactical_one_hit_mode", values.TacticalOneHit);
+        if (!toggledAny)
+        {
+            _output.WriteLine("No toggle-safe symbols were readable in this build.");
+        }
+
+        if (values.Fog.HasValue)
+        {
+            var fogAfter = await runtime.ReadAsync<byte>("fog_reveal");
+            fogAfter.Should().Be(values.Fog.Value);
+        }
+
+        if (values.TimerFreeze.HasValue)
+        {
+            var timerAfter = await runtime.ReadAsync<byte>("game_timer_freeze");
+            timerAfter.Should().Be(values.TimerFreeze.Value);
+        }
     }
+
+    private async Task<bool> TryToggleRevertByteValueAsync(RuntimeAdapter runtime, string symbol, byte? originalValue)
+    {
+        if (!originalValue.HasValue)
+        {
+            return false;
+        }
+
+        var toggledValue = (byte)(originalValue.Value == 0 ? 1 : 0);
+        await runtime.WriteAsync(symbol, toggledValue);
+        await runtime.WriteAsync(symbol, originalValue.Value);
+        _output.WriteLine($"Toggle-revert check executed for {symbol}.");
+        return true;
+    }
+
+    private sealed record LiveSmokeContext(RuntimeAdapter Runtime, AttachSession Session);
+
+    private sealed record LiveSmokeReadValues(
+        byte? Fog,
+        byte? TimerFreeze,
+        byte? TacticalGod,
+        byte? TacticalOneHit,
+        int? Credits,
+        int? HeroRespawn,
+        float? InstantBuild,
+        float? SelectedHp,
+        int? PlanetOwner,
+        IReadOnlyList<string> ReadFailures);
 
     private void DumpNearbyRipRelativeByteTargets(AttachSession session, string anchorSymbol, int window)
     {

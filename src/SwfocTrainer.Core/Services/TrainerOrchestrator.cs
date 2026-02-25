@@ -54,37 +54,22 @@ public sealed class TrainerOrchestrator
         CancellationToken cancellationToken)
     {
         var profile = await _profiles.ResolveInheritedProfileAsync(profileId, cancellationToken);
-        if (!profile.Actions.TryGetValue(actionId, out var action))
+        if (!TryGetAction(profile, profileId, actionId, out var action, out var actionLookupFailure))
         {
-            return new ActionExecutionResult(false, $"Action '{actionId}' not found in profile '{profileId}'", AddressSource.None);
+            return actionLookupFailure;
         }
 
-        // Mode detection is best-effort (often Unknown). Only enforce the mode gate when
-        // the runtime adapter could actually infer a specific mode.
-        if (runtimeMode != RuntimeMode.Unknown && action.Mode != RuntimeMode.Unknown && action.Mode != runtimeMode)
+        if (!TryValidateRuntimeMode(actionId, runtimeMode, action.Mode, out var modeFailure))
         {
-            return new ActionExecutionResult(false, $"Action '{actionId}' not allowed for runtime mode {runtimeMode}", AddressSource.None);
+            return modeFailure;
         }
 
-        var validation = ActionPayloadValidator.Validate(action.PayloadSchema, payload);
-        if (!validation.IsValid)
+        if (!TryValidatePayload(action.PayloadSchema, payload, out var payloadFailure))
         {
-            return new ActionExecutionResult(false, validation.Message, AddressSource.None);
+            return payloadFailure;
         }
 
-        ActionExecutionResult result;
-
-        // Freeze actions are handled directly by the orchestrator to avoid a circular
-        // dependency between IRuntimeAdapter and IValueFreezeService.
-        if (action.ExecutionKind == ExecutionKind.Freeze)
-        {
-            result = ExecuteFreezeAction(action, payload);
-        }
-        else
-        {
-            var request = new ActionExecutionRequest(action, payload, profileId, runtimeMode, context);
-            result = await _runtime.ExecuteAsync(request, cancellationToken);
-        }
+        var result = await ExecuteActionAsync(action, profileId, payload, runtimeMode, context, cancellationToken);
 
         var mergedDiagnostics = MergeDiagnostics(result.Diagnostics, context);
         if (!ReferenceEquals(mergedDiagnostics, result.Diagnostics))
@@ -130,6 +115,25 @@ public sealed class TrainerOrchestrator
         return ExecuteAsync(profileId, actionId, payload, runtimeMode, context, CancellationToken.None);
     }
 
+    private async Task<ActionExecutionResult> ExecuteActionAsync(
+        ActionSpec action,
+        string profileId,
+        System.Text.Json.Nodes.JsonObject payload,
+        RuntimeMode runtimeMode,
+        IReadOnlyDictionary<string, object?>? context,
+        CancellationToken cancellationToken)
+    {
+        // Freeze actions are handled directly by the orchestrator to avoid a circular
+        // dependency between IRuntimeAdapter and IValueFreezeService.
+        if (action.ExecutionKind == ExecutionKind.Freeze)
+        {
+            return ExecuteFreezeAction(action, payload);
+        }
+
+        var request = new ActionExecutionRequest(action, payload, profileId, runtimeMode, context);
+        return await _runtime.ExecuteAsync(request, cancellationToken);
+    }
+
     private ActionExecutionResult ExecuteFreezeAction(ActionSpec action, System.Text.Json.Nodes.JsonObject payload)
     {
         var symbol = payload[PayloadKeySymbol]?.GetValue<string>();
@@ -144,45 +148,160 @@ public sealed class TrainerOrchestrator
 
         if (!freeze)
         {
-            var removed = _freezeService.Unfreeze(symbol);
-            return new ActionExecutionResult(true,
-                removed ? $"Unfroze symbol '{symbol}'." : $"Symbol '{symbol}' was not frozen.",
-                AddressSource.None,
-                new Dictionary<string, object?> { [DiagnosticKeySymbol] = symbol, [DiagnosticKeyFrozen] = false });
+            return ExecuteUnfreeze(symbol);
         }
 
-        if (payload["intValue"] is not null)
+        if (TryExecuteIntFreeze(symbol, payload, out var intResult))
         {
-            var value = payload["intValue"]!.GetValue<int>();
-            _freezeService.FreezeInt(symbol, value);
-            return new ActionExecutionResult(true, $"Froze '{symbol}' to int {value}.",
-                AddressSource.None,
-                new Dictionary<string, object?> { [DiagnosticKeySymbol] = symbol, [DiagnosticKeyFrozen] = true, ["value"] = value });
+            return intResult;
         }
 
-        if (payload["floatValue"] is not null)
+        if (TryExecuteFloatFreeze(symbol, payload, out var floatResult))
         {
-            float value;
-            try { value = payload["floatValue"]!.GetValue<float>(); }
-            catch (InvalidOperationException) { value = (float)payload["floatValue"]!.GetValue<double>(); }
-            _freezeService.FreezeFloat(symbol, value);
-            return new ActionExecutionResult(true, $"Froze '{symbol}' to float {value}.",
-                AddressSource.None,
-                new Dictionary<string, object?> { [DiagnosticKeySymbol] = symbol, [DiagnosticKeyFrozen] = true, ["value"] = value });
+            return floatResult;
         }
 
-        if (payload["boolValue"] is not null)
+        if (TryExecuteBoolFreeze(symbol, payload, out var boolResult))
         {
-            var value = payload["boolValue"]!.GetValue<bool>();
-            _freezeService.FreezeBool(symbol, value);
-            return new ActionExecutionResult(true, $"Froze '{symbol}' to bool {value}.",
-                AddressSource.None,
-                new Dictionary<string, object?> { [DiagnosticKeySymbol] = symbol, [DiagnosticKeyFrozen] = true, ["value"] = value });
+            return boolResult;
         }
 
         return new ActionExecutionResult(false,
             "Freeze action requires one of: intValue, floatValue, or boolValue when freeze=true.",
             AddressSource.None);
+    }
+
+    private static bool TryGetAction(
+        TrainerProfile profile,
+        string profileId,
+        string actionId,
+        out ActionSpec action,
+        out ActionExecutionResult failure)
+    {
+        if (profile.Actions.TryGetValue(actionId, out action))
+        {
+            failure = null!;
+            return true;
+        }
+
+        action = null!;
+        failure = new ActionExecutionResult(false, $"Action '{actionId}' not found in profile '{profileId}'", AddressSource.None);
+        return false;
+    }
+
+    private static bool TryValidateRuntimeMode(
+        string actionId,
+        RuntimeMode runtimeMode,
+        RuntimeMode actionMode,
+        out ActionExecutionResult failure)
+    {
+        // Mode detection is best-effort (often Unknown). Only enforce the mode gate when
+        // the runtime adapter could actually infer a specific mode.
+        if (runtimeMode == RuntimeMode.Unknown ||
+            actionMode == RuntimeMode.Unknown ||
+            actionMode == runtimeMode)
+        {
+            failure = null!;
+            return true;
+        }
+
+        failure = new ActionExecutionResult(false, $"Action '{actionId}' not allowed for runtime mode {runtimeMode}", AddressSource.None);
+        return false;
+    }
+
+    private static bool TryValidatePayload(
+        System.Text.Json.Nodes.JsonObject payloadSchema,
+        System.Text.Json.Nodes.JsonObject payload,
+        out ActionExecutionResult failure)
+    {
+        var validation = ActionPayloadValidator.Validate(payloadSchema, payload);
+        if (validation.IsValid)
+        {
+            failure = null!;
+            return true;
+        }
+
+        failure = new ActionExecutionResult(false, validation.Message, AddressSource.None);
+        return false;
+    }
+
+    private ActionExecutionResult ExecuteUnfreeze(string symbol)
+    {
+        var removed = _freezeService.Unfreeze(symbol);
+        return new ActionExecutionResult(
+            true,
+            removed ? $"Unfroze symbol '{symbol}'." : $"Symbol '{symbol}' was not frozen.",
+            AddressSource.None,
+            new Dictionary<string, object?> { [DiagnosticKeySymbol] = symbol, [DiagnosticKeyFrozen] = false });
+    }
+
+    private bool TryExecuteIntFreeze(
+        string symbol,
+        System.Text.Json.Nodes.JsonObject payload,
+        out ActionExecutionResult result)
+    {
+        if (payload["intValue"] is null)
+        {
+            result = null!;
+            return false;
+        }
+
+        var value = payload["intValue"]!.GetValue<int>();
+        _freezeService.FreezeInt(symbol, value);
+        result = BuildFreezeSuccess(symbol, value, "int");
+        return true;
+    }
+
+    private bool TryExecuteFloatFreeze(
+        string symbol,
+        System.Text.Json.Nodes.JsonObject payload,
+        out ActionExecutionResult result)
+    {
+        if (payload["floatValue"] is null)
+        {
+            result = null!;
+            return false;
+        }
+
+        float value;
+        try
+        {
+            value = payload["floatValue"]!.GetValue<float>();
+        }
+        catch (InvalidOperationException)
+        {
+            value = (float)payload["floatValue"]!.GetValue<double>();
+        }
+
+        _freezeService.FreezeFloat(symbol, value);
+        result = BuildFreezeSuccess(symbol, value, "float");
+        return true;
+    }
+
+    private bool TryExecuteBoolFreeze(
+        string symbol,
+        System.Text.Json.Nodes.JsonObject payload,
+        out ActionExecutionResult result)
+    {
+        if (payload["boolValue"] is null)
+        {
+            result = null!;
+            return false;
+        }
+
+        var value = payload["boolValue"]!.GetValue<bool>();
+        _freezeService.FreezeBool(symbol, value);
+        result = BuildFreezeSuccess(symbol, value, "bool");
+        return true;
+    }
+
+    private static ActionExecutionResult BuildFreezeSuccess(string symbol, object value, string valueType)
+    {
+        return new ActionExecutionResult(
+            true,
+            $"Froze '{symbol}' to {valueType} {value}.",
+            AddressSource.None,
+            new Dictionary<string, object?> { [DiagnosticKeySymbol] = symbol, [DiagnosticKeyFrozen] = true, ["value"] = value });
     }
 
     private static IReadOnlyDictionary<string, object?>? MergeDiagnostics(

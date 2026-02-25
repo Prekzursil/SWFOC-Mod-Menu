@@ -105,7 +105,7 @@ foreach ($seed in $seeds) {
         requiredWorkshopIds = ($steamModIds | Select-Object -Unique) -join ","
     }
 
-    $profile = [ordered]@{
+    $profilePayload = [ordered]@{
         id = $profileId
         displayName = $title
         inherits = $baseProfile
@@ -127,7 +127,7 @@ foreach ($seed in $seeds) {
         metadata = $metadata
     }
 
-    $profile | ConvertTo-Json -Depth 12 | Set-Content -Path $outputPath
+    $profilePayload | ConvertTo-Json -Depth 12 | Set-Content -Path $outputPath
 
     $results.Add([PSCustomObject]@{
         profileId = $profileId

@@ -11,11 +11,11 @@
 - `StoryPlotFlowExtractor` that parses story XML and extracts `STORY_*` events.
 - Event records carry source file, script reference, mode hint, and attributes.
 
-2. `SwfocTrainer.DataIndex` project
+1. `SwfocTrainer.DataIndex` project
 - `MegaFilesXmlIndexBuilder` that parses MegaFiles-style XML declarations.
 - Produces ordered file index with enabled/disabled state and diagnostics for invalid entries.
 
-3. Test coverage
+1. Test coverage
 - `StoryPlotFlowExtractorTests` validates tactical/galactic event mapping and synthetic-plot fallback.
 - `MegaFilesXmlIndexBuilderTests` validates load-order parsing, enabled-state parsing, and diagnostics.
 

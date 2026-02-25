@@ -16,9 +16,9 @@ Turn SWFOC runtime/mod debugging into an evidence-first loop where each failure 
 - `blocked_environment`
 - `blocked_profile_mismatch`
 
-4. Implement fix on branch.
-5. Attach evidence in PR.
-6. Close issue only with linked evidence.
+1. Implement fix on branch.
+2. Attach evidence in PR.
+3. Close issue only with linked evidence.
 
 ## Decision Rules
 

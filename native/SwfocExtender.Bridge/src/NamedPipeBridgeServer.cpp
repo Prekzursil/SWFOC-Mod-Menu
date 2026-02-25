@@ -348,7 +348,7 @@ std::string ReadCommandLine(HANDLE pipe, std::array<char, kPipeBufferSize>& buff
         commandLine.append(buffer.data(), bytesRead);
         const auto linePos = commandLine.find('\n');
         if (linePos != std::string::npos) {
-            commandLine = commandLine.substr(0, linePos);
+            commandLine.erase(linePos);
             break;
         }
 

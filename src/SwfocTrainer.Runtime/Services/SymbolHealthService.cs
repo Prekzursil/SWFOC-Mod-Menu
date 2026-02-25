@@ -24,32 +24,56 @@ public sealed class SymbolHealthService : ISymbolHealthService
         }
 
         var isCritical = IsCriticalSymbol(profile, symbol.Name);
-        var status = symbol.Source == AddressSource.Signature
-            ? SymbolHealthStatus.Healthy
-            : SymbolHealthStatus.Degraded;
-        var reason = symbol.Source == AddressSource.Signature
-            ? "signature_resolved"
-            : "fallback_offset";
-        var confidence = symbol.Source == AddressSource.Signature ? 0.95d : 0.65d;
+        var state = BuildInitialValidationState(symbol.Source);
+        state = ApplyModeRuleState(state, GetMatchingRule(profile, symbol.Name, mode), mode);
+        state = ApplyCriticalState(state, isCritical);
+        return new SymbolValidationResult(state.Status, state.Reason, state.Confidence, isCritical);
+    }
 
-        var matchingRule = GetMatchingRule(profile, symbol.Name, mode);
-        if (matchingRule is not null &&
-            matchingRule.Mode is not null &&
-            mode != RuntimeMode.Unknown &&
-            matchingRule.Mode.Value != mode)
+    private static SymbolValidationState BuildInitialValidationState(AddressSource source)
+    {
+        return source == AddressSource.Signature
+            ? new SymbolValidationState(SymbolHealthStatus.Healthy, "signature_resolved", 0.95d)
+            : new SymbolValidationState(SymbolHealthStatus.Degraded, "fallback_offset", 0.65d);
+    }
+
+    private static SymbolValidationState ApplyModeRuleState(
+        SymbolValidationState state,
+        SymbolValidationRule? matchingRule,
+        RuntimeMode mode)
+    {
+        if (!IsModeMismatch(matchingRule, mode))
         {
-            status = SymbolHealthStatus.Degraded;
-            reason = $"{reason}+mode_mismatch";
-            confidence = Math.Min(confidence, 0.60d);
+            return state;
         }
 
-        if (isCritical && status == SymbolHealthStatus.Degraded)
+        return state with
         {
-            reason = $"{reason}+critical";
-            confidence = Math.Min(confidence, 0.55d);
+            Status = SymbolHealthStatus.Degraded,
+            Reason = $"{state.Reason}+mode_mismatch",
+            Confidence = Math.Min(state.Confidence, 0.60d)
+        };
+    }
+
+    private static bool IsModeMismatch(SymbolValidationRule? matchingRule, RuntimeMode mode)
+    {
+        return matchingRule?.Mode is not null &&
+               mode != RuntimeMode.Unknown &&
+               matchingRule.Mode.Value != mode;
+    }
+
+    private static SymbolValidationState ApplyCriticalState(SymbolValidationState state, bool isCritical)
+    {
+        if (!isCritical || state.Status != SymbolHealthStatus.Degraded)
+        {
+            return state;
         }
 
-        return new SymbolValidationResult(status, reason, confidence, isCritical);
+        return state with
+        {
+            Reason = $"{state.Reason}+critical",
+            Confidence = Math.Min(state.Confidence, 0.55d)
+        };
     }
 
     private static SymbolValidationRule? GetMatchingRule(TrainerProfile profile, string symbolName, RuntimeMode mode)
@@ -117,4 +141,6 @@ public sealed class SymbolHealthService : ISymbolHealthService
         var symbols = raw.Split(',', StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries);
         return symbols.Any(s => s.Equals(symbolName, StringComparison.OrdinalIgnoreCase));
     }
+
+    private sealed record SymbolValidationState(SymbolHealthStatus Status, string Reason, double Confidence);
 }

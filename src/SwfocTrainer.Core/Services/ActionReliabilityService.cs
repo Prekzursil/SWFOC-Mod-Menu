@@ -58,21 +58,10 @@ public sealed class ActionReliabilityService : IActionReliabilityService
         IReadOnlySet<string> criticalSymbols,
         IReadOnlyDictionary<string, IReadOnlyList<string>>? catalog)
     {
-        var dependencyGate = EvaluateDependencyGate(actionId, disabledActions);
-        if (dependencyGate is not null)
+        var gateResult = ResolveActionGate(actionId, action, session.Process.Mode, disabledActions, catalog);
+        if (gateResult is not null)
         {
-            return dependencyGate;
-        }
-
-        var modeGate = EvaluateModeGate(actionId, action, session.Process.Mode);
-        if (modeGate is not null)
-        {
-            return modeGate;
-        }
-
-        if (action.ExecutionKind == ExecutionKind.Helper)
-        {
-            return EvaluateHelperAction(actionId, catalog);
+            return gateResult;
         }
 
         if (!RequiresSymbol(action))
@@ -80,18 +69,63 @@ public sealed class ActionReliabilityService : IActionReliabilityService
             return new ActionReliabilityInfo(actionId, ActionReliabilityState.Stable, "non_symbol_action", 0.85d);
         }
 
-        if (!ActionSymbolRegistry.TryGetSymbol(actionId, out var symbol))
+        if (!TryGetResolvedSymbol(actionId, session.Symbols, out var symbol, out var symbolInfo, out var resolution))
         {
-            return BuildMissingSymbolHintResult(actionId);
-        }
-
-        var symbolResolution = TryResolveSymbolState(actionId, symbol, session.Symbols, out var symbolInfo);
-        if (symbolResolution is not null || symbolInfo is null)
-        {
-            return symbolResolution ?? BuildMissingSymbolHintResult(actionId);
+            return resolution;
         }
 
         return EvaluateResolvedSymbol(actionId, symbol, symbolInfo, criticalSymbols);
+    }
+
+    private static ActionReliabilityInfo? ResolveActionGate(
+        string actionId,
+        ActionSpec action,
+        RuntimeMode runtimeMode,
+        IReadOnlySet<string> disabledActions,
+        IReadOnlyDictionary<string, IReadOnlyList<string>>? catalog)
+    {
+        var dependencyGate = EvaluateDependencyGate(actionId, disabledActions);
+        if (dependencyGate is not null)
+        {
+            return dependencyGate;
+        }
+
+        var modeGate = EvaluateModeGate(actionId, action, runtimeMode);
+        if (modeGate is not null)
+        {
+            return modeGate;
+        }
+
+        return action.ExecutionKind == ExecutionKind.Helper
+            ? EvaluateHelperAction(actionId, catalog)
+            : null;
+    }
+
+    private static bool TryGetResolvedSymbol(
+        string actionId,
+        SymbolMap symbols,
+        out string symbol,
+        out SymbolInfo symbolInfo,
+        out ActionReliabilityInfo resolution)
+    {
+        if (!ActionSymbolRegistry.TryGetSymbol(actionId, out symbol))
+        {
+            symbolInfo = null!;
+            resolution = BuildMissingSymbolHintResult(actionId);
+            return false;
+        }
+
+        var symbolResolution = TryResolveSymbolState(actionId, symbol, symbols, out var resolvedInfo);
+        if (symbolResolution is not null || resolvedInfo is null)
+        {
+            symbolInfo = null!;
+            resolution = symbolResolution ?? BuildMissingSymbolHintResult(actionId);
+            return false;
+        }
+
+        symbolInfo = resolvedInfo;
+        resolution = null!;
+        return true;
     }
 
     private static ActionReliabilityInfo? EvaluateDependencyGate(string actionId, IReadOnlySet<string> disabledActions)

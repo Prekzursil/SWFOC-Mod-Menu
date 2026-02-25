@@ -160,11 +160,11 @@ function Get-LaunchContext {
         }
     }
 
-    $args = @()
+    $pythonArgs = @()
     if ($pythonCmd.Count -gt 1) {
-        $args += $pythonCmd[1..($pythonCmd.Count - 1)]
+        $pythonArgs += $pythonCmd[1..($pythonCmd.Count - 1)]
     }
-    $args += @(
+    $pythonArgs += @(
         "tools/detect-launch-context.py",
         "--command-line", $Process.commandLine,
         "--process-name", $Process.name,
@@ -174,7 +174,7 @@ function Get-LaunchContext {
     )
 
     try {
-        $output = & $pythonCmd[0] @args 2>&1
+        $output = & $pythonCmd[0] @pythonArgs 2>&1
         if ($LASTEXITCODE -ne 0) {
             throw "detect-launch-context.py exited with $LASTEXITCODE"
         }

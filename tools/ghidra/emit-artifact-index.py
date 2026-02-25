@@ -41,23 +41,36 @@ def _build_fingerprint_id(module_name: str, file_sha256: str) -> str:
     return f"{Path(module_name).stem.lower().replace(' ', '_')}_{file_sha256[:16]}"
 
 
+def _load_symbol_pack_fingerprint(symbol_pack_path: Path) -> dict[str, str] | None:
+    if not symbol_pack_path.exists():
+        return None
+
+    try:
+        symbol_pack = _read_json(symbol_pack_path)
+    except (OSError, ValueError, TypeError, json.JSONDecodeError):
+        return None
+
+    raw = symbol_pack.get("binaryFingerprint", {})
+    if not isinstance(raw, dict):
+        return None
+
+    fingerprint_id = str(raw.get("fingerprintId", "")).strip()
+    module_name = str(raw.get("moduleName", "")).strip()
+    file_sha256 = str(raw.get("fileSha256", "")).strip()
+    if not (fingerprint_id and module_name and file_sha256):
+        return None
+
+    return {
+        "fingerprintId": fingerprint_id,
+        "moduleName": module_name,
+        "fileSha256": file_sha256,
+    }
+
+
 def _resolve_binary_fingerprint(symbol_pack_path: Path, binary_path: Path) -> dict[str, str]:
-    if symbol_pack_path.exists():
-        try:
-            symbol_pack = _read_json(symbol_pack_path)
-            raw = symbol_pack.get("binaryFingerprint", {})
-            if isinstance(raw, dict):
-                fingerprint_id = str(raw.get("fingerprintId", "")).strip()
-                module_name = str(raw.get("moduleName", "")).strip()
-                file_sha256 = str(raw.get("fileSha256", "")).strip()
-                if fingerprint_id and module_name and file_sha256:
-                    return {
-                        "fingerprintId": fingerprint_id,
-                        "moduleName": module_name,
-                        "fileSha256": file_sha256,
-                    }
-        except Exception:
-            pass
+    fingerprint = _load_symbol_pack_fingerprint(symbol_pack_path)
+    if fingerprint is not None:
+        return fingerprint
 
     module_name = binary_path.name
     file_sha256 = _sha256(binary_path)

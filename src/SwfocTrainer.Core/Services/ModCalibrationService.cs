@@ -25,66 +25,14 @@ public sealed class ModCalibrationService : IModCalibrationService
 
     public async Task<ModCalibrationArtifactResult> ExportCalibrationArtifactAsync(ModCalibrationArtifactRequest request, CancellationToken cancellationToken)
     {
-        if (string.IsNullOrWhiteSpace(request.ProfileId))
-        {
-            throw new InvalidDataException("ProfileId is required.");
-        }
-
-        if (string.IsNullOrWhiteSpace(request.OutputDirectory))
-        {
-            throw new InvalidDataException("OutputDirectory is required.");
-        }
+        ValidateArtifactRequest(request);
 
         Directory.CreateDirectory(request.OutputDirectory);
 
         var warnings = new List<string>();
-        var candidates = new List<CalibrationCandidate>();
-        string moduleFingerprint;
-
-        if (request.Session is null)
-        {
-            moduleFingerprint = "session_unavailable";
-            warnings.Add("No attach session was provided; artifact contains no symbol candidates.");
-        }
-        else
-        {
-            moduleFingerprint = ComputeModuleFingerprint(request.Session);
-            foreach (var symbol in request.Session.Symbols.Symbols.Values.OrderBy(x => x.Name, StringComparer.OrdinalIgnoreCase))
-            {
-                candidates.Add(new CalibrationCandidate(
-                    Symbol: symbol.Name,
-                    Source: symbol.Source.ToString(),
-                    HealthStatus: symbol.HealthStatus.ToString(),
-                    Confidence: symbol.Confidence,
-                    Notes: symbol.Diagnostics));
-            }
-
-            if (candidates.Count == 0)
-            {
-                warnings.Add("Attach session does not contain resolved symbols.");
-            }
-        }
-
-        var payload = new
-        {
-            schemaVersion = "1.0",
-            generatedAtUtc = DateTimeOffset.UtcNow,
-            profileId = request.ProfileId,
-            moduleFingerprint,
-            operatorNotes = request.OperatorNotes,
-            process = request.Session is null
-                ? null
-                : new
-                {
-                    pid = request.Session.Process.ProcessId,
-                    name = request.Session.Process.ProcessName,
-                    path = request.Session.Process.ProcessPath,
-                    commandLineAvailable = request.Session.Process.LaunchContext?.CommandLineAvailable ?? false,
-                    launchKind = request.Session.Process.LaunchContext?.LaunchKind.ToString() ?? "Unknown",
-                    launchReasonCode = request.Session.Process.LaunchContext?.Recommendation.ReasonCode ?? "unknown"
-                },
-            candidates
-        };
+        var candidates = CollectCalibrationCandidates(request.Session);
+        var moduleFingerprint = ResolveModuleFingerprint(request.Session, warnings, candidates.Count);
+        var payload = BuildCalibrationPayload(request, moduleFingerprint, candidates);
 
         var safeProfileId = SanitizeFileToken(request.ProfileId);
         var artifactPath = Path.Combine(
@@ -110,51 +58,10 @@ public sealed class ModCalibrationService : IModCalibrationService
     {
         var runtimeMode = session?.Process.Mode ?? RuntimeMode.Unknown;
         var dependencyStatus = dependencyValidation?.Status ?? InferDependencyStatus(session);
-        var notes = new List<string>();
-
-        var reliability = session is null
-            ? profile.Actions.Keys
-                .OrderBy(x => x, StringComparer.OrdinalIgnoreCase)
-                .Select(actionId => new ActionReliabilityInfo(actionId, ActionReliabilityState.Unavailable, "session_unavailable", 0.00d))
-                .ToArray()
-            : _actionReliability.Evaluate(profile, session, catalog).ToArray();
-
-        var actionRows = reliability
-            .OrderBy(x => x.ActionId, StringComparer.OrdinalIgnoreCase)
-            .Select(x => new ModActionCompatibility(x.ActionId, x.State, x.ReasonCode, x.Confidence))
-            .ToArray();
-
-        var criticalSymbols = ParseCriticalSymbols(profile.Metadata);
-        var unresolvedCritical = session is null
-            ? criticalSymbols.Count
-            : session.Symbols.Symbols
-                .Where(x => criticalSymbols.Contains(x.Key))
-                .Count(x => x.Value.HealthStatus == SymbolHealthStatus.Unresolved);
-
-        var hasUnavailableActions = actionRows.Any(x => x.State == ActionReliabilityState.Unavailable);
-        var promotionReady = dependencyStatus != DependencyValidationStatus.HardFail &&
-                             unresolvedCritical == 0 &&
-                             !hasUnavailableActions;
-
-        if (session is null)
-        {
-            notes.Add("No attach session was provided. Report reflects static profile analysis only.");
-        }
-
-        if (dependencyStatus == DependencyValidationStatus.SoftFail)
-        {
-            notes.Add("Dependency validation returned SoftFail; helper-dependent actions may be blocked.");
-        }
-
-        if (dependencyStatus == DependencyValidationStatus.HardFail)
-        {
-            notes.Add("Dependency validation returned HardFail; promotion gate is blocked.");
-        }
-
-        if (unresolvedCritical > 0)
-        {
-            notes.Add($"{unresolvedCritical} critical symbol(s) unresolved.");
-        }
+        var actionRows = BuildActionCompatibilityRows(profile, session, catalog);
+        var unresolvedCritical = CountUnresolvedCriticalSymbols(profile, session);
+        var promotionReady = IsPromotionReady(dependencyStatus, unresolvedCritical, actionRows);
+        var notes = BuildCompatibilityNotes(session, dependencyStatus, unresolvedCritical);
 
         return Task.FromResult(new ModCompatibilityReport(
             ProfileId: profile.Id,
@@ -165,6 +72,167 @@ public sealed class ModCalibrationService : IModCalibrationService
             PromotionReady: promotionReady,
             Actions: actionRows,
             Notes: notes));
+    }
+
+    private static void ValidateArtifactRequest(ModCalibrationArtifactRequest request)
+    {
+        if (string.IsNullOrWhiteSpace(request.ProfileId))
+        {
+            throw new InvalidDataException("ProfileId is required.");
+        }
+
+        if (string.IsNullOrWhiteSpace(request.OutputDirectory))
+        {
+            throw new InvalidDataException("OutputDirectory is required.");
+        }
+    }
+
+    private static IReadOnlyList<CalibrationCandidate> CollectCalibrationCandidates(AttachSession? session)
+    {
+        if (session is null)
+        {
+            return Array.Empty<CalibrationCandidate>();
+        }
+
+        return session.Symbols.Symbols.Values
+            .OrderBy(x => x.Name, StringComparer.OrdinalIgnoreCase)
+            .Select(symbol => new CalibrationCandidate(
+                Symbol: symbol.Name,
+                Source: symbol.Source.ToString(),
+                HealthStatus: symbol.HealthStatus.ToString(),
+                Confidence: symbol.Confidence,
+                Notes: symbol.Diagnostics))
+            .ToArray();
+    }
+
+    private static string ResolveModuleFingerprint(
+        AttachSession? session,
+        ICollection<string> warnings,
+        int candidateCount)
+    {
+        if (session is null)
+        {
+            warnings.Add("No attach session was provided; artifact contains no symbol candidates.");
+            return "session_unavailable";
+        }
+
+        if (candidateCount == 0)
+        {
+            warnings.Add("Attach session does not contain resolved symbols.");
+        }
+
+        return ComputeModuleFingerprint(session);
+    }
+
+    private static object BuildCalibrationPayload(
+        ModCalibrationArtifactRequest request,
+        string moduleFingerprint,
+        IReadOnlyList<CalibrationCandidate> candidates)
+    {
+        return new
+        {
+            schemaVersion = "1.0",
+            generatedAtUtc = DateTimeOffset.UtcNow,
+            profileId = request.ProfileId,
+            moduleFingerprint,
+            operatorNotes = request.OperatorNotes,
+            process = request.Session is null ? null : BuildProcessPayload(request.Session),
+            candidates
+        };
+    }
+
+    private static object BuildProcessPayload(AttachSession session)
+    {
+        return new
+        {
+            pid = session.Process.ProcessId,
+            name = session.Process.ProcessName,
+            path = session.Process.ProcessPath,
+            commandLineAvailable = session.Process.LaunchContext?.CommandLineAvailable ?? false,
+            launchKind = session.Process.LaunchContext?.LaunchKind.ToString() ?? "Unknown",
+            launchReasonCode = session.Process.LaunchContext?.Recommendation.ReasonCode ?? "unknown"
+        };
+    }
+
+    private IReadOnlyList<ModActionCompatibility> BuildActionCompatibilityRows(
+        TrainerProfile profile,
+        AttachSession? session,
+        IReadOnlyDictionary<string, IReadOnlyList<string>>? catalog)
+    {
+        var reliability = session is null
+            ? BuildSessionUnavailableReliability(profile)
+            : _actionReliability.Evaluate(profile, session, catalog);
+
+        return reliability
+            .OrderBy(x => x.ActionId, StringComparer.OrdinalIgnoreCase)
+            .Select(x => new ModActionCompatibility(x.ActionId, x.State, x.ReasonCode, x.Confidence))
+            .ToArray();
+    }
+
+    private static IReadOnlyList<ActionReliabilityInfo> BuildSessionUnavailableReliability(TrainerProfile profile)
+    {
+        return profile.Actions.Keys
+            .OrderBy(x => x, StringComparer.OrdinalIgnoreCase)
+            .Select(actionId => new ActionReliabilityInfo(actionId, ActionReliabilityState.Unavailable, "session_unavailable", 0.00d))
+            .ToArray();
+    }
+
+    private static int CountUnresolvedCriticalSymbols(TrainerProfile profile, AttachSession? session)
+    {
+        var criticalSymbols = ParseCriticalSymbols(profile.Metadata);
+        if (session is null)
+        {
+            return criticalSymbols.Count;
+        }
+
+        return session.Symbols.Symbols
+            .Where(x => criticalSymbols.Contains(x.Key))
+            .Count(x => x.Value.HealthStatus == SymbolHealthStatus.Unresolved);
+    }
+
+    private static bool IsPromotionReady(
+        DependencyValidationStatus dependencyStatus,
+        int unresolvedCritical,
+        IReadOnlyList<ModActionCompatibility> actionRows)
+    {
+        var hasUnavailableActions = actionRows.Any(x => x.State == ActionReliabilityState.Unavailable);
+        return dependencyStatus != DependencyValidationStatus.HardFail &&
+               unresolvedCritical == 0 &&
+               !hasUnavailableActions;
+    }
+
+    private static IReadOnlyList<string> BuildCompatibilityNotes(
+        AttachSession? session,
+        DependencyValidationStatus dependencyStatus,
+        int unresolvedCritical)
+    {
+        var notes = new List<string>();
+        if (session is null)
+        {
+            notes.Add("No attach session was provided. Report reflects static profile analysis only.");
+        }
+
+        AddDependencyNote(dependencyStatus, notes);
+        if (unresolvedCritical > 0)
+        {
+            notes.Add($"{unresolvedCritical} critical symbol(s) unresolved.");
+        }
+
+        return notes;
+    }
+
+    private static void AddDependencyNote(DependencyValidationStatus dependencyStatus, ICollection<string> notes)
+    {
+        if (dependencyStatus == DependencyValidationStatus.SoftFail)
+        {
+            notes.Add("Dependency validation returned SoftFail; helper-dependent actions may be blocked.");
+            return;
+        }
+
+        if (dependencyStatus == DependencyValidationStatus.HardFail)
+        {
+            notes.Add("Dependency validation returned HardFail; promotion gate is blocked.");
+        }
     }
 
     public Task<ModCalibrationArtifactResult> ExportCalibrationArtifactAsync(ModCalibrationArtifactRequest request)

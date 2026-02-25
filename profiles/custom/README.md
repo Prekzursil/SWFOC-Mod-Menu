@@ -10,20 +10,20 @@ This folder stores generated draft profiles for workshop mods that are outside t
 python3 tools/workshop/discover-top-mods.py --output TestResults/mod-discovery/<runId>/top-mods.json --limit 10
 ```
 
-2. Enrich top-mod records into onboarding seeds:
+1. Enrich top-mod records into onboarding seeds:
 
 ```powershell
 python3 tools/workshop/enrich-mod-metadata.py --input TestResults/mod-discovery/<runId>/top-mods.json --output TestResults/mod-discovery/<runId>/generated-profile-seeds.json --source-run-id <runId>
 ```
 
-3. Validate artifact contracts:
+1. Validate artifact contracts:
 
 ```powershell
 pwsh tools/validate-workshop-topmods.ps1 -Path TestResults/mod-discovery/<runId>/top-mods.json -Strict
 pwsh tools/validate-generated-profile-seed.ps1 -Path TestResults/mod-discovery/<runId>/generated-profile-seeds.json -Strict
 ```
 
-4. Generate draft profiles:
+1. Generate draft profiles:
 
 ```powershell
 pwsh tools/workshop/generate-profiles-from-seeds.ps1 -SeedPath TestResults/mod-discovery/<runId>/generated-profile-seeds.json -OutputRoot profiles/custom -NamespaceRoot custom -Force
