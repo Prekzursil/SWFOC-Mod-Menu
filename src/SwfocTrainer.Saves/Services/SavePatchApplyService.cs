@@ -17,6 +17,21 @@ public sealed class SavePatchApplyService : ISavePatchApplyService
         WriteIndented = true
     };
 
+    private const string RunIdFormat = "yyyyMMddHHmmssfff";
+    private const string SaveExtension = ".sav";
+    private const string ReasonTargetLoadFailed = "target_load_failed";
+    private const string ReasonCompatibilityFailed = "compatibility_failed";
+    private const string ReasonSourceHashMismatch = "source_hash_mismatch";
+    private const string ReasonUnsupportedOperationKind = "unsupported_operation_kind";
+    private const string ReasonNewValueMissing = "new_value_missing";
+    private const string ReasonValueNormalizationFailed = "value_normalization_failed";
+    private const string ReasonFieldApplyFailed = "field_apply_failed_all_selectors";
+    private const string ReasonValidationFailed = "validation_failed";
+    private const string ReasonWriteFailedRolledBack = "write_failed_rolled_back";
+    private const string ReasonWriteFailed = "write_failed";
+    private const string SelectorNotFoundInSchemaText = "not found in schema";
+    private const string SelectorUnknownFieldText = "unknown save field selector";
+
     private readonly ISaveCodec _saveCodec;
     private readonly ISavePatchPackService _patchPackService;
     private readonly ILogger<SavePatchApplyService> _logger;
@@ -39,44 +54,24 @@ public sealed class SavePatchApplyService : ISavePatchApplyService
         CancellationToken cancellationToken)
     {
         var normalizedTargetPath = NormalizeTargetPath(targetSavePath);
-        var runId = DateTimeOffset.UtcNow.ToString("yyyyMMddHHmmssfff");
+        var runId = DateTimeOffset.UtcNow.ToString(RunIdFormat);
         var backupPath = $"{normalizedTargetPath}.bak.{runId}.sav";
         var receiptPath = $"{normalizedTargetPath}.apply-receipt.{runId}.json";
         var tempOutputPath = $"{normalizedTargetPath}.tmp.{runId}.sav";
 
-        SaveDocument targetDoc;
-        try
+        var targetLoad = await TryLoadTargetDocumentAsync(normalizedTargetPath, pack.Metadata.SchemaId, cancellationToken);
+        if (targetLoad.Failure is not null)
         {
-            targetDoc = await _saveCodec.LoadAsync(normalizedTargetPath, pack.Metadata.SchemaId, cancellationToken);
+            return targetLoad.Failure;
         }
-        catch (Exception ex)
-        {
-            _logger.LogError(ex, "Target save load failed for patch apply. Target={TargetPath} Schema={SchemaId}", normalizedTargetPath, pack.Metadata.SchemaId);
-            return BuildFailure(
-                SavePatchApplyClassification.CompatibilityFailed,
-                "target_load_failed",
-                "Target save could not be loaded.");
-        }
+
+        var targetDoc = targetLoad.Document!;
 
         var compatibility = await _patchPackService.ValidateCompatibilityAsync(pack, targetDoc, targetProfileId, cancellationToken);
-        if (!compatibility.IsCompatible)
+        var compatibilityFailure = ValidateCompatibility(targetProfileId, strict, compatibility);
+        if (compatibilityFailure is not null)
         {
-            _logger.LogWarning(
-                "Patch compatibility check failed for profile {ProfileId}. Errors={Errors}",
-                targetProfileId,
-                string.Join(" | ", compatibility.Errors));
-            return BuildFailure(
-                SavePatchApplyClassification.CompatibilityFailed,
-                "compatibility_failed",
-                "Compatibility checks failed for this patch pack.");
-        }
-
-        if (strict && !compatibility.SourceHashMatches)
-        {
-            return BuildFailure(
-                SavePatchApplyClassification.CompatibilityFailed,
-                "source_hash_mismatch",
-                "Strict apply blocked this patch because source hash does not match target save.");
+            return compatibilityFailure;
         }
 
         var preApplyBytes = targetDoc.Raw.ToArray();
@@ -86,33 +81,24 @@ public sealed class SavePatchApplyService : ISavePatchApplyService
             return operationFailure;
         }
 
-        var validation = await _saveCodec.ValidateAsync(targetDoc, cancellationToken);
-        if (!validation.IsValid)
+        var validationFailure = await ValidatePatchedDocumentAsync(targetDoc, preApplyBytes, cancellationToken);
+        if (validationFailure is not null)
         {
-            _logger.LogWarning(
-                "Patched save failed validation. Errors={Errors}",
-                string.Join(" | ", validation.Errors));
-            RestoreRawSnapshot(targetDoc.Raw, preApplyBytes);
-            return BuildFailure(
-                SavePatchApplyClassification.ValidationFailed,
-                "validation_failed",
-                "Patched save failed validation checks.");
+            return validationFailure;
         }
 
-        var writeContext = new ApplyWriteContext
-        {
-            TargetDoc = targetDoc,
-            Pack = pack,
-            TargetProfileId = targetProfileId,
-            Compatibility = compatibility,
-            NormalizedTargetPath = normalizedTargetPath,
-            PreApplyBytes = preApplyBytes,
-            BackupPath = backupPath,
-            ReceiptPath = receiptPath,
-            TempOutputPath = tempOutputPath,
-            RunId = runId
-        };
-        return await WritePatchedSaveAsync(writeContext, cancellationToken);
+        return await PersistPatchedSaveAsync(
+            targetDoc,
+            pack,
+            compatibility,
+            targetProfileId,
+            normalizedTargetPath,
+            backupPath,
+            receiptPath,
+            tempOutputPath,
+            runId,
+            preApplyBytes,
+            cancellationToken);
     }
 
     public Task<SavePatchApplyResult> ApplyAsync(
@@ -130,220 +116,6 @@ public sealed class SavePatchApplyService : ISavePatchApplyService
         bool strict)
     {
         return ApplyAsync(targetSavePath, pack, targetProfileId, strict, CancellationToken.None);
-    }
-
-    private sealed class ApplyWriteContext
-    {
-        public required SaveDocument TargetDoc { get; init; }
-
-        public required SavePatchPack Pack { get; init; }
-
-        public required string TargetProfileId { get; init; }
-
-        public required SavePatchCompatibilityResult Compatibility { get; init; }
-
-        public required string NormalizedTargetPath { get; init; }
-
-        public required byte[] PreApplyBytes { get; init; }
-
-        public required string BackupPath { get; init; }
-
-        public required string ReceiptPath { get; init; }
-
-        public required string TempOutputPath { get; init; }
-
-        public required string RunId { get; init; }
-    }
-
-    private async Task<SavePatchApplyResult?> ApplyOperationsAsync(
-        SaveDocument targetDoc,
-        IReadOnlyList<SavePatchOperation> operations,
-        byte[] preApplyBytes,
-        CancellationToken cancellationToken)
-    {
-        foreach (var operation in operations.OrderBy(x => x.Offset))
-        {
-            if (!TryValidateOperationKind(operation, targetDoc.Raw, preApplyBytes, out var validationFailure))
-            {
-                return validationFailure;
-            }
-
-            if (!TryNormalizeOperationValue(operation, targetDoc.Raw, preApplyBytes, out var value, out var normalizationFailure))
-            {
-                return normalizationFailure;
-            }
-
-            if (!await TryApplyOperationAsync(targetDoc, operation, value, preApplyBytes, cancellationToken))
-            {
-                return BuildFailure(
-                    SavePatchApplyClassification.ValidationFailed,
-                    "field_apply_failed_all_selectors",
-                    "Patch operation could not be applied to target field.",
-                    operation.FieldId,
-                    operation.FieldPath);
-            }
-        }
-
-        return null;
-    }
-
-    private static bool TryValidateOperationKind(
-        SavePatchOperation operation,
-        byte[] targetRaw,
-        byte[] preApplyBytes,
-        out SavePatchApplyResult failure)
-    {
-        if (operation.Kind == SavePatchOperationKind.SetValue && operation.NewValue is not null)
-        {
-            failure = null!;
-            return true;
-        }
-
-        RestoreRawSnapshot(targetRaw, preApplyBytes);
-        failure = operation.Kind != SavePatchOperationKind.SetValue
-            ? BuildFailure(
-                SavePatchApplyClassification.ValidationFailed,
-                "unsupported_operation_kind",
-                "Patch operation kind is not supported.",
-                operation.FieldId,
-                operation.FieldPath)
-            : BuildFailure(
-                SavePatchApplyClassification.ValidationFailed,
-                "new_value_missing",
-                "Patch operation is missing required newValue.",
-                operation.FieldId,
-                operation.FieldPath);
-        return false;
-    }
-
-    private bool TryNormalizeOperationValue(
-        SavePatchOperation operation,
-        byte[] targetRaw,
-        byte[] preApplyBytes,
-        out object? value,
-        out SavePatchApplyResult failure)
-    {
-        try
-        {
-            value = SavePatchFieldCodec.NormalizePatchValue(operation.NewValue, operation.ValueType);
-            failure = null!;
-            return true;
-        }
-        catch (Exception ex)
-        {
-            _logger.LogWarning(ex, "Patch value normalization failed for field {FieldId}", operation.FieldId);
-            RestoreRawSnapshot(targetRaw, preApplyBytes);
-            value = null;
-            failure = BuildFailure(
-                SavePatchApplyClassification.ValidationFailed,
-                "value_normalization_failed",
-                "Patch operation value could not be normalized.",
-                operation.FieldId,
-                operation.FieldPath);
-            return false;
-        }
-    }
-
-    private async Task<bool> TryApplyOperationAsync(
-        SaveDocument targetDoc,
-        SavePatchOperation operation,
-        object? value,
-        byte[] preApplyBytes,
-        CancellationToken cancellationToken)
-    {
-        try
-        {
-            await ApplyFieldWithFallbackSelectorAsync(targetDoc, operation, value, cancellationToken);
-            return true;
-        }
-        catch (Exception ex)
-        {
-            _logger.LogWarning(ex, "Patch field apply failed for {FieldId}", operation.FieldId);
-            RestoreRawSnapshot(targetDoc.Raw, preApplyBytes);
-            return false;
-        }
-    }
-
-    private async Task<SavePatchApplyResult> WritePatchedSaveAsync(
-        ApplyWriteContext context,
-        CancellationToken cancellationToken)
-    {
-        try
-        {
-            await File.WriteAllBytesAsync(context.BackupPath, context.PreApplyBytes, cancellationToken);
-            await _saveCodec.WriteAsync(context.TargetDoc, context.TempOutputPath, cancellationToken);
-            File.Move(context.TempOutputPath, context.NormalizedTargetPath, overwrite: true);
-            await WriteApplyReceiptAsync(context, cancellationToken);
-            return new SavePatchApplyResult(
-                SavePatchApplyClassification.Applied,
-                Applied: true,
-                Message: $"Applied {context.Pack.Operations.Count} operation(s).",
-                OutputPath: context.NormalizedTargetPath,
-                BackupPath: context.BackupPath,
-                ReceiptPath: context.ReceiptPath);
-        }
-        catch (Exception ex)
-        {
-            _logger.LogError(ex, "Patch apply write path failed for {TargetSavePath}", context.NormalizedTargetPath);
-            return await RollbackFailedWriteAsync(
-                context.NormalizedTargetPath,
-                context.PreApplyBytes,
-                context.BackupPath,
-                context.ReceiptPath,
-                context.TempOutputPath,
-                cancellationToken);
-        }
-    }
-
-    private static async Task WriteApplyReceiptAsync(
-        ApplyWriteContext context,
-        CancellationToken cancellationToken)
-    {
-        var appliedHash = SavePatchFieldCodec.ComputeSha256Hex(await File.ReadAllBytesAsync(context.NormalizedTargetPath, cancellationToken));
-        await WriteReceiptAsync(context.ReceiptPath, new SavePatchApplyReceipt(
-            RunId: context.RunId,
-            AppliedAtUtc: DateTimeOffset.UtcNow,
-            TargetPath: context.NormalizedTargetPath,
-            BackupPath: context.BackupPath,
-            ReceiptPath: context.ReceiptPath,
-            ProfileId: context.TargetProfileId,
-            SchemaId: context.Pack.Metadata.SchemaId,
-            Classification: SavePatchApplyClassification.Applied.ToString(),
-            SourceHash: context.Pack.Metadata.SourceHash,
-            TargetHash: context.Compatibility.TargetHash,
-            AppliedHash: appliedHash,
-            OperationsApplied: context.Pack.Operations.Count), cancellationToken);
-    }
-
-    private async Task<SavePatchApplyResult> RollbackFailedWriteAsync(
-        string normalizedTargetPath,
-        byte[] preApplyBytes,
-        string backupPath,
-        string receiptPath,
-        string tempOutputPath,
-        CancellationToken cancellationToken)
-    {
-        TryDeleteTempOutput(tempOutputPath);
-        try
-        {
-            await File.WriteAllBytesAsync(normalizedTargetPath, preApplyBytes, cancellationToken);
-            return BuildFailure(
-                SavePatchApplyClassification.RolledBack,
-                "write_failed_rolled_back",
-                "Save write failed and original bytes were restored.",
-                backupPath: File.Exists(backupPath) ? backupPath : null,
-                receiptPath: File.Exists(receiptPath) ? receiptPath : null);
-        }
-        catch (Exception rollbackEx)
-        {
-            _logger.LogError(rollbackEx, "Rollback failed after write failure for {TargetSavePath}", normalizedTargetPath);
-            return BuildFailure(
-                SavePatchApplyClassification.WriteFailed,
-                "write_failed",
-                "Save write failed and automatic rollback did not complete.",
-                backupPath: File.Exists(backupPath) ? backupPath : null,
-                receiptPath: File.Exists(receiptPath) ? receiptPath : null);
-        }
     }
 
     public async Task<SaveRollbackResult> RestoreLastBackupAsync(string targetSavePath, CancellationToken cancellationToken)
@@ -387,10 +159,240 @@ public sealed class SavePatchApplyService : ISavePatchApplyService
         return RestoreLastBackupAsync(targetSavePath, CancellationToken.None);
     }
 
+    private async Task<(SaveDocument? Document, SavePatchApplyResult? Failure)> TryLoadTargetDocumentAsync(
+        string normalizedTargetPath,
+        string schemaId,
+        CancellationToken cancellationToken)
+    {
+        try
+        {
+            var targetDoc = await _saveCodec.LoadAsync(normalizedTargetPath, schemaId, cancellationToken);
+            return (targetDoc, null);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Target save load failed for patch apply. Target={TargetPath} Schema={SchemaId}", normalizedTargetPath, schemaId);
+            return (
+                null,
+                BuildFailure(
+                    SavePatchApplyClassification.CompatibilityFailed,
+                    ReasonTargetLoadFailed,
+                    "Target save could not be loaded."));
+        }
+    }
+
+    private SavePatchApplyResult? ValidateCompatibility(
+        string targetProfileId,
+        bool strict,
+        SavePatchCompatibilityResult compatibility)
+    {
+        if (!compatibility.IsCompatible)
+        {
+            _logger.LogWarning(
+                "Patch compatibility check failed for profile {ProfileId}. Errors={Errors}",
+                targetProfileId,
+                string.Join(" | ", compatibility.Errors));
+            return BuildFailure(
+                SavePatchApplyClassification.CompatibilityFailed,
+                ReasonCompatibilityFailed,
+                "Compatibility checks failed for this patch pack.");
+        }
+
+        if (strict && !compatibility.SourceHashMatches)
+        {
+            return BuildFailure(
+                SavePatchApplyClassification.CompatibilityFailed,
+                ReasonSourceHashMismatch,
+                "Strict apply blocked this patch because source hash does not match target save.");
+        }
+
+        return null;
+    }
+
+    private async Task<SavePatchApplyResult?> ApplyOperationsAsync(
+        SaveDocument targetDoc,
+        IReadOnlyList<SavePatchOperation> operations,
+        byte[] preApplyBytes,
+        CancellationToken cancellationToken)
+    {
+        foreach (var operation in operations.OrderBy(x => x.Offset))
+        {
+            var failure = await ApplyOperationAsync(targetDoc, operation, cancellationToken);
+            if (failure is null)
+            {
+                continue;
+            }
+
+            RestoreRawSnapshot(targetDoc.Raw, preApplyBytes);
+            return failure;
+        }
+
+        return null;
+    }
+
+    private async Task<SavePatchApplyResult?> ApplyOperationAsync(
+        SaveDocument targetDoc,
+        SavePatchOperation operation,
+        CancellationToken cancellationToken)
+    {
+        if (operation.Kind != SavePatchOperationKind.SetValue)
+        {
+            return BuildFailure(
+                SavePatchApplyClassification.ValidationFailed,
+                ReasonUnsupportedOperationKind,
+                "Patch operation kind is not supported.",
+                operation.FieldId,
+                operation.FieldPath);
+        }
+
+        if (operation.NewValue is null)
+        {
+            return BuildFailure(
+                SavePatchApplyClassification.ValidationFailed,
+                ReasonNewValueMissing,
+                "Patch operation is missing required newValue.",
+                operation.FieldId,
+                operation.FieldPath);
+        }
+
+        object? value;
+        try
+        {
+            value = SavePatchFieldCodec.NormalizePatchValue(operation.NewValue, operation.ValueType);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogWarning(ex, "Patch value normalization failed for field {FieldId}", operation.FieldId);
+            return BuildFailure(
+                SavePatchApplyClassification.ValidationFailed,
+                ReasonValueNormalizationFailed,
+                "Patch operation value could not be normalized.",
+                operation.FieldId,
+                operation.FieldPath);
+        }
+
+        try
+        {
+            await ApplyFieldWithFallbackSelectorAsync(targetDoc, operation, value, cancellationToken);
+            return null;
+        }
+        catch (Exception ex)
+        {
+            _logger.LogWarning(ex, "Patch field apply failed for {FieldId}", operation.FieldId);
+            return BuildFailure(
+                SavePatchApplyClassification.ValidationFailed,
+                ReasonFieldApplyFailed,
+                "Patch operation could not be applied to target field.",
+                operation.FieldId,
+                operation.FieldPath);
+        }
+    }
+
+    private async Task<SavePatchApplyResult?> ValidatePatchedDocumentAsync(
+        SaveDocument targetDoc,
+        byte[] preApplyBytes,
+        CancellationToken cancellationToken)
+    {
+        var validation = await _saveCodec.ValidateAsync(targetDoc, cancellationToken);
+        if (validation.IsValid)
+        {
+            return null;
+        }
+
+        _logger.LogWarning(
+            "Patched save failed validation. Errors={Errors}",
+            string.Join(" | ", validation.Errors));
+        RestoreRawSnapshot(targetDoc.Raw, preApplyBytes);
+        return BuildFailure(
+            SavePatchApplyClassification.ValidationFailed,
+            ReasonValidationFailed,
+            "Patched save failed validation checks.");
+    }
+
+    private async Task<SavePatchApplyResult> PersistPatchedSaveAsync(
+        SaveDocument targetDoc,
+        SavePatchPack pack,
+        SavePatchCompatibilityResult compatibility,
+        string targetProfileId,
+        string normalizedTargetPath,
+        string backupPath,
+        string receiptPath,
+        string tempOutputPath,
+        string runId,
+        byte[] preApplyBytes,
+        CancellationToken cancellationToken)
+    {
+        try
+        {
+            await File.WriteAllBytesAsync(backupPath, preApplyBytes, cancellationToken);
+
+            await _saveCodec.WriteAsync(targetDoc, tempOutputPath, cancellationToken);
+            File.Move(tempOutputPath, normalizedTargetPath, overwrite: true);
+
+            var appliedHash = SavePatchFieldCodec.ComputeSha256Hex(await File.ReadAllBytesAsync(normalizedTargetPath, cancellationToken));
+            await WriteReceiptAsync(receiptPath, new SavePatchApplyReceipt(
+                RunId: runId,
+                AppliedAtUtc: DateTimeOffset.UtcNow,
+                TargetPath: normalizedTargetPath,
+                BackupPath: backupPath,
+                ReceiptPath: receiptPath,
+                ProfileId: targetProfileId,
+                SchemaId: pack.Metadata.SchemaId,
+                Classification: SavePatchApplyClassification.Applied.ToString(),
+                SourceHash: pack.Metadata.SourceHash,
+                TargetHash: compatibility.TargetHash,
+                AppliedHash: appliedHash,
+                OperationsApplied: pack.Operations.Count), cancellationToken);
+
+            return new SavePatchApplyResult(
+                SavePatchApplyClassification.Applied,
+                Applied: true,
+                Message: $"Applied {pack.Operations.Count} operation(s).",
+                OutputPath: normalizedTargetPath,
+                BackupPath: backupPath,
+                ReceiptPath: receiptPath);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Patch apply write path failed for {TargetSavePath}", normalizedTargetPath);
+            TryDeleteTempOutput(tempOutputPath);
+            return await RestoreAfterWriteFailureAsync(normalizedTargetPath, preApplyBytes, backupPath, receiptPath, cancellationToken);
+        }
+    }
+
+    private async Task<SavePatchApplyResult> RestoreAfterWriteFailureAsync(
+        string normalizedTargetPath,
+        byte[] preApplyBytes,
+        string backupPath,
+        string receiptPath,
+        CancellationToken cancellationToken)
+    {
+        try
+        {
+            await File.WriteAllBytesAsync(normalizedTargetPath, preApplyBytes, cancellationToken);
+            return BuildFailure(
+                SavePatchApplyClassification.RolledBack,
+                ReasonWriteFailedRolledBack,
+                "Save write failed and original bytes were restored.",
+                backupPath: File.Exists(backupPath) ? backupPath : null,
+                receiptPath: File.Exists(receiptPath) ? receiptPath : null);
+        }
+        catch (Exception rollbackEx)
+        {
+            _logger.LogError(rollbackEx, "Rollback failed after write failure for {TargetSavePath}", normalizedTargetPath);
+            return BuildFailure(
+                SavePatchApplyClassification.WriteFailed,
+                ReasonWriteFailed,
+                "Save write failed and automatic rollback did not complete.",
+                backupPath: File.Exists(backupPath) ? backupPath : null,
+                receiptPath: File.Exists(receiptPath) ? receiptPath : null);
+        }
+    }
+
     private static string NormalizeTargetPath(string path)
     {
         var normalized = TrustedPathPolicy.NormalizeAbsolute(path);
-        TrustedPathPolicy.EnsureAllowedExtension(normalized, ".sav");
+        TrustedPathPolicy.EnsureAllowedExtension(normalized, SaveExtension);
         if (!File.Exists(normalized))
         {
             throw new FileNotFoundException($"Save file not found: {normalized}", normalized);
@@ -532,8 +534,8 @@ public sealed class SavePatchApplyService : ISavePatchApplyService
             return false;
         }
 
-        return exception.Message.Contains("not found in schema", StringComparison.OrdinalIgnoreCase)
-               || exception.Message.Contains("unknown save field selector", StringComparison.OrdinalIgnoreCase);
+        return exception.Message.Contains(SelectorNotFoundInSchemaText, StringComparison.OrdinalIgnoreCase)
+               || exception.Message.Contains(SelectorUnknownFieldText, StringComparison.OrdinalIgnoreCase);
     }
 
     private static bool TryNormalizeBackupCandidatePath(string? path, out string? normalized, out string invalidReason)

@@ -50,16 +50,32 @@ public partial class App : Application
     private static void ConfigureServices(IServiceCollection services)
     {
         var appData = TrustedPathPolicy.GetOrCreateAppDataRoot();
-
         var profilesRoot = Path.Combine(AppContext.BaseDirectory, "profiles", "default");
         var remoteManifest = Environment.GetEnvironmentVariable("SWFOC_PROFILE_MANIFEST_URL");
+        var capabilityMapsRoot = Path.Combine(profilesRoot, "sdk", "maps");
 
+        ConfigureLogging(services);
+        RegisterOptions(services, appData, profilesRoot, remoteManifest);
+        RegisterCoreServices(services, appData, capabilityMapsRoot);
+        RegisterProfileUpdateServices(services);
+        RegisterUiServices(services);
+    }
+
+    private static void ConfigureLogging(IServiceCollection services)
+    {
         services.AddLogging(builder =>
         {
             builder.AddConsole();
             builder.SetMinimumLevel(LogLevel.Information);
         });
+    }
 
+    private static void RegisterOptions(
+        IServiceCollection services,
+        string appData,
+        string profilesRoot,
+        string? remoteManifest)
+    {
         services.AddSingleton(new ProfileRepositoryOptions
         {
             ProfilesRootPath = profilesRoot,
@@ -88,9 +104,13 @@ public partial class App : Application
         {
             PresetRootPath = Path.Combine(profilesRoot, "presets")
         });
+    }
 
-        var capabilityMapsRoot = Path.Combine(profilesRoot, "sdk", "maps");
-
+    private static void RegisterCoreServices(
+        IServiceCollection services,
+        string appData,
+        string capabilityMapsRoot)
+    {
         services.AddSingleton<IAuditLogger>(_ => new FileAuditLogger(Path.Combine(appData, "logs")));
 
         services.AddSingleton<IProfileRepository, FileSystemProfileRepository>();
@@ -125,10 +145,16 @@ public partial class App : Application
         services.AddSingleton<ISaveCodec, BinarySaveCodec>();
         services.AddSingleton<ISavePatchPackService, SavePatchPackService>();
         services.AddSingleton<ISavePatchApplyService, SavePatchApplyService>();
+    }
 
+    private static void RegisterProfileUpdateServices(IServiceCollection services)
+    {
         services.AddSingleton<HttpClient>();
         services.AddSingleton<IProfileUpdateService, GitHubProfileUpdateService>();
+    }
 
+    private static void RegisterUiServices(IServiceCollection services)
+    {
         services.AddSingleton<TrainerOrchestrator>();
         services.AddSingleton(provider => new MainViewModelDependencies
         {
@@ -154,7 +180,6 @@ public partial class App : Application
             SpawnPresets = provider.GetRequiredService<ISpawnPresetService>()
         });
         services.AddSingleton<MainViewModel>();
-
         services.AddSingleton<MainWindow>();
     }
 }

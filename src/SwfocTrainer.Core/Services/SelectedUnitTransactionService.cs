@@ -7,19 +7,30 @@ namespace SwfocTrainer.Core.Services;
 
 public sealed class SelectedUnitTransactionService : ISelectedUnitTransactionService
 {
+    private const string SelectedHpSymbol = "selected_hp";
+    private const string SelectedShieldSymbol = "selected_shield";
+    private const string SelectedSpeedSymbol = "selected_speed";
+    private const string SelectedDamageMultiplierSymbol = "selected_damage_multiplier";
+    private const string SelectedCooldownMultiplierSymbol = "selected_cooldown_multiplier";
+    private const string SelectedVeterancySymbol = "selected_veterancy";
+    private const string SelectedOwnerFactionSymbol = "selected_owner_faction";
+    private const string BundlePassResult = "bundle_pass";
+    private const string BundleRollbackResult = "bundle_rollback";
+    private const float FloatComparisonTolerance = 0.0001f;
+
     private readonly IRuntimeAdapter _runtime;
     private readonly TrainerOrchestrator _orchestrator;
     private readonly List<SelectedUnitTransactionRecord> _history = new();
 
     private static readonly IReadOnlyList<FieldBinding> Bindings = new[]
     {
-        new FieldBinding("selected_hp", "set_selected_hp", isFloat: true),
-        new FieldBinding("selected_shield", "set_selected_shield", isFloat: true),
-        new FieldBinding("selected_speed", "set_selected_speed", isFloat: true),
-        new FieldBinding("selected_damage_multiplier", "set_selected_damage_multiplier", isFloat: true),
-        new FieldBinding("selected_cooldown_multiplier", "set_selected_cooldown_multiplier", isFloat: true),
-        new FieldBinding("selected_veterancy", "set_selected_veterancy", isFloat: false),
-        new FieldBinding("selected_owner_faction", "set_selected_owner_faction", isFloat: false),
+        new FieldBinding(SelectedHpSymbol, "set_selected_hp", isFloat: true),
+        new FieldBinding(SelectedShieldSymbol, "set_selected_shield", isFloat: true),
+        new FieldBinding(SelectedSpeedSymbol, "set_selected_speed", isFloat: true),
+        new FieldBinding(SelectedDamageMultiplierSymbol, "set_selected_damage_multiplier", isFloat: true),
+        new FieldBinding(SelectedCooldownMultiplierSymbol, "set_selected_cooldown_multiplier", isFloat: true),
+        new FieldBinding(SelectedVeterancySymbol, "set_selected_veterancy", isFloat: false),
+        new FieldBinding(SelectedOwnerFactionSymbol, "set_selected_owner_faction", isFloat: false),
     };
 
     public SelectedUnitTransactionService(IRuntimeAdapter runtime, TrainerOrchestrator orchestrator)
@@ -83,7 +94,7 @@ public sealed class SelectedUnitTransactionService : ISelectedUnitTransactionSer
                 transactionId,
                 "apply",
                 change.ActionId,
-                "bundle_pass");
+                BundlePassResult);
             var result = await ExecuteChangeAsync(profileId, runtimeMode, change, context, cancellationToken);
             steps.Add(result);
             if (!result.Succeeded)
@@ -239,7 +250,7 @@ public sealed class SelectedUnitTransactionService : ISelectedUnitTransactionSer
                 transactionId,
                 operation,
                 change.ActionId,
-                "bundle_pass");
+                BundlePassResult);
             var result = await ExecuteChangeAsync(profileId, runtimeMode, change, context, cancellationToken);
             steps.Add(result);
             if (!result.Succeeded)
@@ -295,7 +306,7 @@ public sealed class SelectedUnitTransactionService : ISelectedUnitTransactionSer
                 transactionId,
                 "rollback",
                 rollback.ActionId,
-                "bundle_rollback");
+                BundleRollbackResult);
             rollbackResults.Add(await ExecuteChangeAsync(profileId, runtimeMode, rollback, context, cancellationToken));
         }
 
@@ -349,66 +360,51 @@ public sealed class SelectedUnitTransactionService : ISelectedUnitTransactionSer
     private static List<SelectedUnitChange> BuildChanges(SelectedUnitSnapshot before, SelectedUnitDraft draft)
     {
         var changes = new List<SelectedUnitChange>(Bindings.Count);
-        AddFloatChangeIfDifferent(changes, before.Hp, draft.Hp, "selected_hp");
-        AddFloatChangeIfDifferent(changes, before.Shield, draft.Shield, "selected_shield");
-        AddFloatChangeIfDifferent(changes, before.Speed, draft.Speed, "selected_speed");
-        AddFloatChangeIfDifferent(changes, before.DamageMultiplier, draft.DamageMultiplier, "selected_damage_multiplier");
-        AddFloatChangeIfDifferent(changes, before.CooldownMultiplier, draft.CooldownMultiplier, "selected_cooldown_multiplier");
-        AddIntChangeIfDifferent(changes, before.Veterancy, draft.Veterancy, "selected_veterancy");
-        AddIntChangeIfDifferent(changes, before.OwnerFaction, draft.OwnerFaction, "selected_owner_faction");
+        foreach (var binding in Bindings)
+        {
+            var change = BuildChangeForBinding(before, draft, binding);
+            if (change is not null)
+            {
+                changes.Add(change);
+            }
+        }
+
         return changes;
     }
 
-    private static void AddFloatChangeIfDifferent(
-        ICollection<SelectedUnitChange> changes,
-        float beforeValue,
-        float? draftValue,
-        string symbol)
+    private static SelectedUnitChange? BuildChangeForBinding(SelectedUnitSnapshot before, SelectedUnitDraft draft, FieldBinding binding)
     {
-        if (draftValue is null || ApproximatelyEqual(beforeValue, draftValue.Value))
+        return binding.Symbol switch
         {
-            return;
-        }
-
-        if (!TryGetBinding(symbol, out var binding))
-        {
-            return;
-        }
-
-        changes.Add(new SelectedUnitChange(binding.Symbol, binding.ActionId, beforeValue, draftValue.Value, IsFloat: true));
+            SelectedHpSymbol => BuildFloatChange(binding, before.Hp, draft.Hp),
+            SelectedShieldSymbol => BuildFloatChange(binding, before.Shield, draft.Shield),
+            SelectedSpeedSymbol => BuildFloatChange(binding, before.Speed, draft.Speed),
+            SelectedDamageMultiplierSymbol => BuildFloatChange(binding, before.DamageMultiplier, draft.DamageMultiplier),
+            SelectedCooldownMultiplierSymbol => BuildFloatChange(binding, before.CooldownMultiplier, draft.CooldownMultiplier),
+            SelectedVeterancySymbol => BuildIntChange(binding, before.Veterancy, draft.Veterancy),
+            SelectedOwnerFactionSymbol => BuildIntChange(binding, before.OwnerFaction, draft.OwnerFaction),
+            _ => null
+        };
     }
 
-    private static void AddIntChangeIfDifferent(
-        ICollection<SelectedUnitChange> changes,
-        int beforeValue,
-        int? draftValue,
-        string symbol)
+    private static SelectedUnitChange? BuildFloatChange(FieldBinding binding, float currentValue, float? draftValue)
     {
-        if (draftValue is null || beforeValue == draftValue.Value)
+        if (draftValue is null || ApproximatelyEqual(currentValue, draftValue.Value))
         {
-            return;
+            return null;
         }
 
-        if (!TryGetBinding(symbol, out var binding))
-        {
-            return;
-        }
-
-        changes.Add(new SelectedUnitChange(binding.Symbol, binding.ActionId, beforeValue, draftValue.Value, IsFloat: false));
+        return new SelectedUnitChange(binding.Symbol, binding.ActionId, currentValue, draftValue.Value, IsFloat: true);
     }
 
-    private static bool TryGetBinding(string symbol, out FieldBinding binding)
+    private static SelectedUnitChange? BuildIntChange(FieldBinding binding, int currentValue, int? draftValue)
     {
-        var resolved = Bindings.FirstOrDefault(candidate =>
-            candidate.Symbol.Equals(symbol, StringComparison.OrdinalIgnoreCase));
-        if (resolved is null)
+        if (draftValue is null || currentValue == draftValue.Value)
         {
-            binding = null!;
-            return false;
+            return null;
         }
 
-        binding = resolved;
-        return true;
+        return new SelectedUnitChange(binding.Symbol, binding.ActionId, currentValue, draftValue.Value, IsFloat: false);
     }
 
     private void EnsureAttached()
@@ -455,7 +451,7 @@ public sealed class SelectedUnitTransactionService : ISelectedUnitTransactionSer
 
     private static bool ApproximatelyEqual(float left, float right)
     {
-        return MathF.Abs(left - right) < 0.0001f;
+        return MathF.Abs(left - right) < FloatComparisonTolerance;
     }
 
     private sealed record FieldBinding(string Symbol, string ActionId, bool isFloat)

@@ -247,51 +247,15 @@ public sealed class BinarySaveCodec : ISaveCodec
 
         var little = !endianness.Equals("big", StringComparison.OrdinalIgnoreCase);
         var span = raw.AsSpan(field.Offset, field.Length);
+        var valueType = field.ValueType.ToLowerInvariant();
 
-        switch (field.ValueType.ToLowerInvariant())
+        if (TryWriteIntegerField(valueType, span, value, little))
         {
-            case "int32":
-            {
-                var intValue = Convert.ToInt32(value, CultureInfo.InvariantCulture);
-                if (little)
-                {
-                    BinaryPrimitives.WriteInt32LittleEndian(span, intValue);
-                }
-                else
-                {
-                    BinaryPrimitives.WriteInt32BigEndian(span, intValue);
-                }
+            return;
+        }
 
-                break;
-            }
-            case "uint32":
-            {
-                var uintValue = Convert.ToUInt32(value, CultureInfo.InvariantCulture);
-                if (little)
-                {
-                    BinaryPrimitives.WriteUInt32LittleEndian(span, uintValue);
-                }
-                else
-                {
-                    BinaryPrimitives.WriteUInt32BigEndian(span, uintValue);
-                }
-
-                break;
-            }
-            case "int64":
-            {
-                var longValue = Convert.ToInt64(value, CultureInfo.InvariantCulture);
-                if (little)
-                {
-                    BinaryPrimitives.WriteInt64LittleEndian(span, longValue);
-                }
-                else
-                {
-                    BinaryPrimitives.WriteInt64BigEndian(span, longValue);
-                }
-
-                break;
-            }
+        switch (valueType)
+        {
             case "byte":
             {
                 span[0] = Convert.ToByte(value, CultureInfo.InvariantCulture);
@@ -299,14 +263,12 @@ public sealed class BinarySaveCodec : ISaveCodec
             }
             case "float":
             {
-                var floatValue = Convert.ToSingle(value, CultureInfo.InvariantCulture);
-                WriteFloatingPoint(span, BitConverter.GetBytes(floatValue), little);
+                WriteFloatingPoint(span, BitConverter.GetBytes(Convert.ToSingle(value, CultureInfo.InvariantCulture)), little);
                 break;
             }
             case "double":
             {
-                var doubleValue = Convert.ToDouble(value, CultureInfo.InvariantCulture);
-                WriteFloatingPoint(span, BitConverter.GetBytes(doubleValue), little);
+                WriteFloatingPoint(span, BitConverter.GetBytes(Convert.ToDouble(value, CultureInfo.InvariantCulture)), little);
                 break;
             }
             case "bool":
@@ -326,6 +288,57 @@ public sealed class BinarySaveCodec : ISaveCodec
             default:
                 throw new NotSupportedException($"Unsupported field type for editing: {field.ValueType}");
         }
+    }
+
+    private static bool TryWriteIntegerField(string valueType, Span<byte> span, object? value, bool littleEndian)
+    {
+        switch (valueType)
+        {
+            case "int32":
+                WriteInt32(span, Convert.ToInt32(value, CultureInfo.InvariantCulture), littleEndian);
+                return true;
+            case "uint32":
+                WriteUInt32(span, Convert.ToUInt32(value, CultureInfo.InvariantCulture), littleEndian);
+                return true;
+            case "int64":
+                WriteInt64(span, Convert.ToInt64(value, CultureInfo.InvariantCulture), littleEndian);
+                return true;
+            default:
+                return false;
+        }
+    }
+
+    private static void WriteInt32(Span<byte> span, int value, bool littleEndian)
+    {
+        if (littleEndian)
+        {
+            BinaryPrimitives.WriteInt32LittleEndian(span, value);
+            return;
+        }
+
+        BinaryPrimitives.WriteInt32BigEndian(span, value);
+    }
+
+    private static void WriteUInt32(Span<byte> span, uint value, bool littleEndian)
+    {
+        if (littleEndian)
+        {
+            BinaryPrimitives.WriteUInt32LittleEndian(span, value);
+            return;
+        }
+
+        BinaryPrimitives.WriteUInt32BigEndian(span, value);
+    }
+
+    private static void WriteInt64(Span<byte> span, long value, bool littleEndian)
+    {
+        if (littleEndian)
+        {
+            BinaryPrimitives.WriteInt64LittleEndian(span, value);
+            return;
+        }
+
+        BinaryPrimitives.WriteInt64BigEndian(span, value);
     }
 
     private static void WriteFloatingPoint(Span<byte> target, byte[] sourceBytes, bool littleEndian)

@@ -6,34 +6,72 @@ namespace SwfocTrainer.Runtime.Services;
 
 public sealed class ModDependencyValidator : IModDependencyValidator
 {
-    private static readonly TimeSpan RegexTimeout = TimeSpan.FromMilliseconds(250);
+    private const string WorkshopAppId = "32470";
+    private const string PathTraversalToken = "..";
+    private const string DependencyMetadataMarkerKey = "requiredMarkerFile";
+    private const string DependencySoftFailSuffix = "Attach will continue, but dependency-sensitive actions are temporarily disabled.";
+    private const string LibraryFolderPathPattern = "\"path\"\\s*\"([^\"]+)\"";
+    private const string ModPathPattern = "modpath\\s*=\\s*(?:\"(?<quoted>[^\"]+)\"|(?<unquoted>[^\\s]+))";
+    private static readonly IReadOnlyList<string> LinuxWorkshopCandidates =
+    [
+        "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/32470",
+        "/mnt/d/SteamLibrary/steamapps/workshop/content/32470",
+        "/mnt/c/SteamLibrary/steamapps/workshop/content/32470"
+    ];
 
     public DependencyValidationResult Validate(TrainerProfile profile, ProcessMetadata process)
     {
-        var marker = ReadMetadata(profile, "requiredMarkerFile");
-        if (!string.IsNullOrWhiteSpace(marker) && marker.Contains("..", StringComparison.Ordinal))
+        var marker = ReadMetadata(profile, DependencyMetadataMarkerKey);
+        var markerFailure = ValidateMarkerMetadata(marker);
+        if (markerFailure is not null)
         {
-            return new DependencyValidationResult(
-                DependencyValidationStatus.HardFail,
-                $"Invalid dependency marker path '{marker}' in profile metadata.",
-                new HashSet<string>(StringComparer.OrdinalIgnoreCase));
+            return markerFailure;
         }
 
         var requiredIds = CollectRequiredWorkshopIds(profile);
         if (requiredIds.Count == 0)
         {
-            return new DependencyValidationResult(
-                DependencyValidationStatus.Pass,
-                "No workshop dependencies declared for this profile.",
-                new HashSet<string>(StringComparer.OrdinalIgnoreCase));
+            return BuildNoDependenciesDeclaredResult();
         }
 
         var dependencySensitiveActions = GetDependencySensitiveActions(profile);
         var workshopRoots = DiscoverWorkshopRoots();
-
-        var unresolvedIds = new HashSet<string>(requiredIds, StringComparer.OrdinalIgnoreCase);
         var issues = new List<string>();
+        var unresolvedIds = ResolveWorkshopDependencies(requiredIds, workshopRoots, marker, issues);
 
+        ResolveLocalDependencies(profile, process, marker, unresolvedIds, issues);
+
+        return BuildDependencyValidationResult(unresolvedIds, workshopRoots, issues, dependencySensitiveActions);
+    }
+
+    private static DependencyValidationResult? ValidateMarkerMetadata(string? marker)
+    {
+        if (string.IsNullOrWhiteSpace(marker) || !marker.Contains(PathTraversalToken, StringComparison.Ordinal))
+        {
+            return null;
+        }
+
+        return new DependencyValidationResult(
+            DependencyValidationStatus.HardFail,
+            $"Invalid dependency marker path '{marker}' in profile metadata.",
+            new HashSet<string>(StringComparer.OrdinalIgnoreCase));
+    }
+
+    private static DependencyValidationResult BuildNoDependenciesDeclaredResult()
+    {
+        return new DependencyValidationResult(
+            DependencyValidationStatus.Pass,
+            "No workshop dependencies declared for this profile.",
+            new HashSet<string>(StringComparer.OrdinalIgnoreCase));
+    }
+
+    private static HashSet<string> ResolveWorkshopDependencies(
+        IReadOnlyCollection<string> requiredIds,
+        IReadOnlyList<string> workshopRoots,
+        string? marker,
+        ICollection<string> issues)
+    {
+        var unresolvedIds = new HashSet<string>(requiredIds, StringComparer.OrdinalIgnoreCase);
         foreach (var id in requiredIds)
         {
             var folder = FindWorkshopFolder(id, workshopRoots);
@@ -51,16 +89,71 @@ public sealed class ModDependencyValidator : IModDependencyValidator
             unresolvedIds.Remove(id);
         }
 
+        return unresolvedIds;
+    }
+
+    private static void ResolveLocalDependencies(
+        TrainerProfile profile,
+        ProcessMetadata process,
+        string? marker,
+        ISet<string> unresolvedIds,
+        ICollection<string> issues)
+    {
         var localRoots = ResolveLocalDependencyRoots(profile, process);
-        var resolvedByLocal = ResolveDependenciesFromLocalRoots(unresolvedIds, localRoots, marker);
+        if (unresolvedIds.Count == 0 || localRoots.Count == 0)
+        {
+            return;
+        }
+
+        var availableRoots = localRoots.ToList();
+        var resolvedByLocal = new List<string>();
+        foreach (var unresolved in unresolvedIds.ToArray())
+        {
+            var root = availableRoots.FirstOrDefault(path => string.IsNullOrWhiteSpace(marker) || HasMarker(path, marker));
+            if (root is null)
+            {
+                continue;
+            }
+
+            resolvedByLocal.Add($"{unresolved}->{root}");
+            availableRoots.Remove(root);
+            unresolvedIds.Remove(unresolved);
+        }
+
         if (resolvedByLocal.Count > 0)
         {
             issues.Add($"resolved by local mod paths [{string.Join(", ", resolvedByLocal)}]");
         }
+    }
 
-        return unresolvedIds.Count == 0
-            ? BuildDependencyPassResult(issues)
-            : BuildDependencySoftFailResult(unresolvedIds, workshopRoots.Count, issues, dependencySensitiveActions);
+    private static DependencyValidationResult BuildDependencyValidationResult(
+        IReadOnlyCollection<string> unresolvedIds,
+        IReadOnlyCollection<string> workshopRoots,
+        IList<string> issues,
+        HashSet<string> dependencySensitiveActions)
+    {
+        if (unresolvedIds.Count == 0)
+        {
+            return new DependencyValidationResult(
+                DependencyValidationStatus.Pass,
+                issues.Count == 0
+                    ? "Workshop/local dependencies verified."
+                    : $"Dependencies verified ({string.Join("; ", issues)}).",
+                new HashSet<string>(StringComparer.OrdinalIgnoreCase));
+        }
+
+        var unresolvedSegment = $"missing dependencies [{string.Join(", ", unresolvedIds.OrderBy(x => x, StringComparer.OrdinalIgnoreCase))}]";
+        if (workshopRoots.Count == 0)
+        {
+            issues.Add("no workshop roots discovered");
+        }
+
+        issues.Insert(0, unresolvedSegment);
+        var message = $"Dependency verification soft-failed: {string.Join("; ", issues)}. {DependencySoftFailSuffix}";
+        return new DependencyValidationResult(
+            DependencyValidationStatus.SoftFail,
+            message,
+            dependencySensitiveActions);
     }
 
     private static HashSet<string> CollectRequiredWorkshopIds(TrainerProfile profile)
@@ -113,7 +206,7 @@ public sealed class ModDependencyValidator : IModDependencyValidator
 
             foreach (var steamRoot in steamCandidates)
             {
-                var workshopRoot = Path.Combine(steamRoot, "steamapps", "workshop", "content", "32470");
+                var workshopRoot = Path.Combine(steamRoot, "steamapps", "workshop", "content", WorkshopAppId);
                 if (Directory.Exists(workshopRoot))
                 {
                     roots.Add(workshopRoot);
@@ -124,14 +217,12 @@ public sealed class ModDependencyValidator : IModDependencyValidator
             }
         }
 
-        foreach (var linuxCandidate in new[]
-                 {
-                     "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/32470",
-                     "/mnt/d/SteamLibrary/steamapps/workshop/content/32470",
-                     "/mnt/c/SteamLibrary/steamapps/workshop/content/32470",
-                 }.Where(Directory.Exists))
+        foreach (var linuxCandidate in LinuxWorkshopCandidates)
         {
-            roots.Add(linuxCandidate);
+            if (Directory.Exists(linuxCandidate))
+            {
+                roots.Add(linuxCandidate);
+            }
         }
 
         return roots.OrderBy(x => x, StringComparer.OrdinalIgnoreCase).ToArray();
@@ -149,17 +240,27 @@ public sealed class ModDependencyValidator : IModDependencyValidator
         {
             content = File.ReadAllText(libraryFoldersPath);
         }
-        catch
+        catch (Exception)
         {
             return;
         }
 
-        foreach (var pathValue in Regex.Matches(content, @"""path""\s*""([^""]+)""", RegexOptions.IgnoreCase, RegexTimeout)
-                     .Select(static match => match.Groups.Count < 2 ? string.Empty : match.Groups[1].Value)
-                     .Select(static raw => raw.Replace(@"\\", @"\", StringComparison.Ordinal).Trim())
-                     .Where(static raw => !string.IsNullOrWhiteSpace(raw)))
+        foreach (Match match in Regex.Matches(content, LibraryFolderPathPattern, RegexOptions.IgnoreCase))
         {
-            var workshopRoot = Path.Combine(pathValue, "steamapps", "workshop", "content", "32470");
+            if (match.Groups.Count < 2)
+            {
+                continue;
+            }
+
+            var pathValue = match.Groups[1].Value
+                .Replace("\\\\", "\\", StringComparison.Ordinal)
+                .Trim();
+            if (string.IsNullOrWhiteSpace(pathValue))
+            {
+                continue;
+            }
+
+            var workshopRoot = Path.Combine(pathValue, "steamapps", "workshop", "content", WorkshopAppId);
             if (Directory.Exists(workshopRoot))
             {
                 roots.Add(workshopRoot);
@@ -191,71 +292,54 @@ public sealed class ModDependencyValidator : IModDependencyValidator
     private static IReadOnlyList<string> ResolveLocalDependencyRoots(TrainerProfile profile, ProcessMetadata process)
     {
         var roots = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
-        var modPathRaw = ResolveModPath(process);
+        var launchContext = process.LaunchContext;
+        var modPathRaw = launchContext?.ModPathRaw;
+        if (string.IsNullOrWhiteSpace(modPathRaw))
+        {
+            modPathRaw = ExtractModPath(process.CommandLine);
+        }
+
         if (string.IsNullOrWhiteSpace(modPathRaw))
         {
             return roots.ToArray();
         }
 
-        AddExistingRoots(roots, BuildPossibleModRoots(modPathRaw, process.ProcessPath));
-        AddParentHintedRoots(roots, ParseCsvMetadata(profile, "localParentPathHints"));
+        foreach (var candidate in BuildPossibleModRoots(modPathRaw, process.ProcessPath))
+        {
+            if (Directory.Exists(candidate))
+            {
+                roots.Add(candidate);
+            }
+        }
+
+        var parentHints = ParseCsvMetadata(profile, "localParentPathHints");
+        if (parentHints.Count > 0 && roots.Count > 0)
+        {
+            foreach (var root in roots.ToArray())
+            {
+                var parent = Directory.GetParent(root)?.FullName;
+                if (string.IsNullOrWhiteSpace(parent))
+                {
+                    continue;
+                }
+
+                foreach (var hint in parentHints)
+                {
+                    if (hint.Contains(PathTraversalToken, StringComparison.Ordinal))
+                    {
+                        continue;
+                    }
+
+                    var hintedPath = Path.Combine(parent, hint);
+                    if (Directory.Exists(hintedPath))
+                    {
+                        roots.Add(hintedPath);
+                    }
+                }
+            }
+        }
 
         return roots.OrderBy(x => x, StringComparer.OrdinalIgnoreCase).ToArray();
-    }
-
-    private static string? ResolveModPath(ProcessMetadata process)
-    {
-        var modPathRaw = process.LaunchContext?.ModPathRaw;
-        return string.IsNullOrWhiteSpace(modPathRaw)
-            ? ExtractModPath(process.CommandLine)
-            : modPathRaw;
-    }
-
-    private static void AddExistingRoots(HashSet<string> roots, IEnumerable<string> candidates)
-    {
-        foreach (var candidate in candidates.Where(Directory.Exists))
-        {
-            roots.Add(candidate);
-        }
-    }
-
-    private static void AddParentHintedRoots(HashSet<string> roots, IReadOnlyList<string> parentHints)
-    {
-        if (parentHints.Count == 0 || roots.Count == 0)
-        {
-            return;
-        }
-
-        foreach (var root in roots.ToArray())
-        {
-            var parent = Directory.GetParent(root)?.FullName;
-            if (string.IsNullOrWhiteSpace(parent))
-            {
-                continue;
-            }
-
-            foreach (var hintedPath in ResolveHintedPaths(parent, parentHints))
-            {
-                roots.Add(hintedPath);
-            }
-        }
-    }
-
-    private static IEnumerable<string> ResolveHintedPaths(string parent, IReadOnlyList<string> parentHints)
-    {
-        foreach (var hint in parentHints)
-        {
-            if (hint.Contains("..", StringComparison.Ordinal))
-            {
-                continue;
-            }
-
-            var hintedPath = Path.Combine(parent, hint);
-            if (Directory.Exists(hintedPath))
-            {
-                yield return hintedPath;
-            }
-        }
     }
 
     private static IReadOnlyList<string> BuildPossibleModRoots(string modPathRaw, string processPath)
@@ -298,11 +382,7 @@ public sealed class ModDependencyValidator : IModDependencyValidator
             return null;
         }
 
-        var match = Regex.Match(
-            commandLine,
-            @"modpath\s*=\s*(?:""(?<quoted>[^""]+)""|(?<unquoted>[^\s]+))",
-            RegexOptions.IgnoreCase,
-            RegexTimeout);
+        var match = Regex.Match(commandLine, ModPathPattern, RegexOptions.IgnoreCase);
         if (!match.Success)
         {
             return null;
@@ -344,66 +424,5 @@ public sealed class ModDependencyValidator : IModDependencyValidator
         }
 
         return profile.Metadata.TryGetValue(key, out var value) ? value : null;
-    }
-
-    private static List<string> ResolveDependenciesFromLocalRoots(
-        HashSet<string> unresolvedIds,
-        IReadOnlyList<string> localRoots,
-        string? marker)
-    {
-        if (unresolvedIds.Count == 0 || localRoots.Count == 0)
-        {
-            return [];
-        }
-
-        var availableRoots = localRoots.ToList();
-        var resolvedByLocal = new List<string>();
-        foreach (var unresolved in unresolvedIds.ToArray())
-        {
-            var root = availableRoots.FirstOrDefault(path =>
-                string.IsNullOrWhiteSpace(marker) || HasMarker(path, marker));
-            if (root is null)
-            {
-                continue;
-            }
-
-            resolvedByLocal.Add($"{unresolved}->{root}");
-            availableRoots.Remove(root);
-            unresolvedIds.Remove(unresolved);
-        }
-
-        return resolvedByLocal;
-    }
-
-    private static DependencyValidationResult BuildDependencyPassResult(IReadOnlyList<string> issues)
-    {
-        var message = issues.Count == 0
-            ? "Workshop/local dependencies verified."
-            : $"Dependencies verified ({string.Join("; ", issues)}).";
-        return new DependencyValidationResult(
-            DependencyValidationStatus.Pass,
-            message,
-            new HashSet<string>(StringComparer.OrdinalIgnoreCase));
-    }
-
-    private static DependencyValidationResult BuildDependencySoftFailResult(
-        HashSet<string> unresolvedIds,
-        int workshopRootCount,
-        List<string> issues,
-        HashSet<string> dependencySensitiveActions)
-    {
-        var unresolvedSegment = $"missing dependencies [{string.Join(", ", unresolvedIds.OrderBy(x => x, StringComparer.OrdinalIgnoreCase))}]";
-        if (workshopRootCount == 0)
-        {
-            issues.Add("no workshop roots discovered");
-        }
-
-        issues.Insert(0, unresolvedSegment);
-        var message = $"Dependency verification soft-failed: {string.Join("; ", issues)}. " +
-                      "Attach will continue, but dependency-sensitive actions are temporarily disabled.";
-        return new DependencyValidationResult(
-            DependencyValidationStatus.SoftFail,
-            message,
-            dependencySensitiveActions);
     }
 }
