@@ -1,15 +1,7 @@
-# Temporary broad exclusions for analyzer-zero merge wave.
-# Scope is intentionally wide to unblock CI while native-authoritative
-# runtime contracts are still being stabilized in parallel lanes.
+# Minimal Codacy exclusions: keep only generated and heavy local mirrors out.
+# Source, tests, tooling, workflows, and docs must stay analyzable.
 exclude_paths:
   - "(new)codex(plans)/**"
-  - "docs/**"
-  - "**/*.md"
-  - ".github/**"
-  - "tools/**"
-  - "tests/**"
-  - "native/**"
-  - "src/**"
   - "1397421866(original mod)/**"
   - "3447786229(submod)/**"
   - "3661482670(cheat_mode_example)/**"

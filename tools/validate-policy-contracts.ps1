@@ -37,6 +37,43 @@ function Confirm-Contains {
     }
 }
 
+function Resolve-PythonCommand {
+    foreach ($candidate in @("python3", "python", "py")) {
+        $command = Get-Command $candidate -ErrorAction SilentlyContinue
+        if ($null -ne $command) {
+            return $candidate
+        }
+    }
+
+    return $null
+}
+
+function Invoke-CodacyIgnoreScopeValidation {
+    param([string]$ScriptPath)
+
+    if (-not (Test-Path -Path $ScriptPath)) {
+        Add-Error "missing file: $ScriptPath"
+        return
+    }
+
+    $pythonCommand = Resolve-PythonCommand
+    if ($null -eq $pythonCommand) {
+        Add-Error "python interpreter not found for Codacy ignore scope validation"
+        return
+    }
+
+    $args = @()
+    if ($pythonCommand -eq "py") {
+        $args += "-3"
+    }
+    $args += @($ScriptPath, "--strict")
+
+    $commandOutput = & $pythonCommand @args 2>&1
+    if (Test-Path variable:LASTEXITCODE -and $LASTEXITCODE -ne 0) {
+        Add-Error "Codacy ignore scope validation failed: $commandOutput"
+    }
+}
+
 $requiredFiles = @(
     "AGENTS.md",
     "src/SwfocTrainer.Runtime/AGENTS.md",
@@ -67,6 +104,7 @@ $requiredFiles = @(
     "tools/workshop/discover-top-mods.py",
     "tools/workshop/enrich-mod-metadata.py",
     "tools/workshop/generate-profiles-from-seeds.ps1",
+    "tools/verify-codacy-ignore-scope.py",
     "tools/validate-ghidra-symbol-pack.ps1",
     "tools/validate-ghidra-artifact-index.ps1",
     "tools/validate-workshop-topmods.ps1",
@@ -95,6 +133,8 @@ $requiredFiles = @(
 foreach ($path in $requiredFiles) {
     Confirm-File -Path $path
 }
+
+Invoke-CodacyIgnoreScopeValidation -ScriptPath "tools/verify-codacy-ignore-scope.py"
 
 $agentsRequiredHeaders = @("## Purpose", "## Scope", "## Required Evidence")
 Confirm-Contains -Path "AGENTS.md" -Needles $agentsRequiredHeaders
