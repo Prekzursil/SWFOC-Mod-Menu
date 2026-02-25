@@ -111,6 +111,7 @@ public sealed class ValueFreezeService : IValueFreezeService
 
     private async void PulseCallback(object? _)
     {
+        _ = state;
         if (_disposed || !_runtime.IsAttached || _entries.IsEmpty)
         {
             return;

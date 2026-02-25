@@ -206,6 +206,7 @@ public sealed class SpawnPresetServiceTests
 
         public Task<ActionExecutionResult> ExecuteAsync(ActionExecutionRequest request, CancellationToken cancellationToken = default)
         {
+            _ = request;
             _ = cancellationToken;
             _counter++;
             if (FailOnSequence > 0 && _counter == FailOnSequence)
@@ -286,9 +287,9 @@ public sealed class SpawnPresetServiceTests
         public void FreezeIntAggressive(string symbol, int value) { _ = symbol; _ = value; /* no-op stub */ }
         public void FreezeFloat(string symbol, float value) { _ = symbol; _ = value; /* no-op stub */ }
         public void FreezeBool(string symbol, bool value) { _ = symbol; _ = value; /* no-op stub */ }
-        public bool Unfreeze(string symbol) => true;
+        public bool Unfreeze(string symbol) { _ = symbol; return true; }
         public void UnfreezeAll() { /* no-op stub */ }
-        public bool IsFrozen(string symbol) => false;
+        public bool IsFrozen(string symbol) { _ = symbol; return false; }
         public void Dispose() { /* no-op stub */ }
     }
 

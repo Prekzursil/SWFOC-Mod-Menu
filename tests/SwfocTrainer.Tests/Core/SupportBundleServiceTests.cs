@@ -93,10 +93,39 @@ public sealed class SupportBundleServiceTests
     {
         public bool IsAttached => CurrentSession is not null;
         public AttachSession? CurrentSession { get; set; }
-        public Task<AttachSession> AttachAsync(string profileId, CancellationToken cancellationToken = default) => Task.FromResult(CurrentSession!);
-        public Task<T> ReadAsync<T>(string symbol, CancellationToken cancellationToken = default) where T : unmanaged => throw new NotImplementedException();
-        public Task WriteAsync<T>(string symbol, T value, CancellationToken cancellationToken = default) where T : unmanaged => throw new NotImplementedException();
-        public Task<ActionExecutionResult> ExecuteAsync(ActionExecutionRequest request, CancellationToken cancellationToken = default) => throw new NotImplementedException();
-        public Task DetachAsync(CancellationToken cancellationToken = default) => Task.CompletedTask;
+        public Task<AttachSession> AttachAsync(string profileId, CancellationToken cancellationToken = default)
+        {
+            _ = profileId;
+            _ = cancellationToken;
+            return Task.FromResult(CurrentSession!);
+        }
+
+        public Task<T> ReadAsync<T>(string symbol, CancellationToken cancellationToken = default) where T : unmanaged
+        {
+            _ = symbol;
+            _ = cancellationToken;
+            throw new NotImplementedException();
+        }
+
+        public Task WriteAsync<T>(string symbol, T value, CancellationToken cancellationToken = default) where T : unmanaged
+        {
+            _ = symbol;
+            _ = value;
+            _ = cancellationToken;
+            throw new NotImplementedException();
+        }
+
+        public Task<ActionExecutionResult> ExecuteAsync(ActionExecutionRequest request, CancellationToken cancellationToken = default)
+        {
+            _ = request;
+            _ = cancellationToken;
+            throw new NotImplementedException();
+        }
+
+        public Task DetachAsync(CancellationToken cancellationToken = default)
+        {
+            _ = cancellationToken;
+            return Task.CompletedTask;
+        }
     }
 }

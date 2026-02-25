@@ -347,6 +347,7 @@ public sealed class ProcessLocator : IProcessLocator
 
     private static string? TryGetCommandLine(int processId)
     {
+        _ = processId;
 #if WINDOWS
         try
         {

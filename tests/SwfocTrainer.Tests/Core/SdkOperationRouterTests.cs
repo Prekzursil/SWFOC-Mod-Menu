@@ -199,6 +199,7 @@ public sealed class SdkOperationRouterTests
 
         public Task<string?> ResolveDefaultProfileIdAsync(BinaryFingerprint fingerprint, CancellationToken cancellationToken)
         {
+            _ = fingerprint;
             _ = cancellationToken;
             return Task.FromResult<string?>("base_swfoc");
         }

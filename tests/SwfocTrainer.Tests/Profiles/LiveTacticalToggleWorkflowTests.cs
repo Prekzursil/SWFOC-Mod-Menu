@@ -151,7 +151,11 @@ public sealed class LiveTacticalToggleWorkflowTests
         public static readonly NullAuditLogger Instance = new();
 
         public Task WriteAsync(SwfocTrainer.Core.Logging.ActionAuditRecord record, CancellationToken cancellationToken = default)
-            => Task.CompletedTask;
+        {
+            _ = record;
+            _ = cancellationToken;
+            return Task.CompletedTask;
+        }
     }
 
     private sealed record ServiceDependencies(
