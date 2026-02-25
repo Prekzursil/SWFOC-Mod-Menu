@@ -52,13 +52,13 @@ function Invoke-CodacyIgnoreScopeValidation {
     param([string]$ScriptPath)
 
     if (-not (Test-Path -Path $ScriptPath)) {
-        Add-Error "missing file: $ScriptPath"
+        Add-Error "POLICY_CODACY_SCOPE_MISSING_SCRIPT: missing file: $ScriptPath"
         return
     }
 
     $pythonCommand = Resolve-PythonCommand
     if ($null -eq $pythonCommand) {
-        Add-Error "python interpreter not found for Codacy ignore scope validation"
+        Add-Error "POLICY_CODACY_SCOPE_PYTHON_NOT_FOUND: python interpreter not found for Codacy ignore scope validation"
         return
     }
 
@@ -70,7 +70,7 @@ function Invoke-CodacyIgnoreScopeValidation {
 
     $commandOutput = & $pythonCommand @commandArgs 2>&1
     if ((Test-Path variable:LASTEXITCODE) -and ($LASTEXITCODE -ne 0)) {
-        Add-Error "Codacy ignore scope validation failed: $commandOutput"
+        Add-Error "POLICY_CODACY_SCOPE_VALIDATION_FAILED: Codacy ignore scope validation failed: $commandOutput"
     }
 }
 

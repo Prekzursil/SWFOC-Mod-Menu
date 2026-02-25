@@ -169,24 +169,38 @@ def build_report(repo_root: Path, codacy_file: Path, patterns: list[str]) -> dic
     }
 
 
-def strict_violations(patterns: list[str], ignored_files: list[str]) -> list[str]:
-    violations: list[str] = []
+def strict_violations(patterns: list[str], ignored_files: list[str]) -> list[dict[str, object]]:
+    violations: list[dict[str, object]] = []
 
     for disallowed in DEFAULT_DISALLOWED_BROAD_PATTERNS:
         if disallowed in patterns:
-            violations.append(f"disallowed broad Codacy exclude pattern present: {disallowed}")
+            violations.append(
+                {
+                    "code": "CODACY_SCOPE_DISALLOWED_BROAD_PATTERN",
+                    "message": f"disallowed broad Codacy exclude pattern present: {disallowed}",
+                    "pattern": disallowed,
+                }
+            )
 
     unexpected = sorted(set(patterns) - set(DEFAULT_ALLOWED_PATTERNS))
     if unexpected:
         violations.append(
-            "unexpected Codacy exclude pattern(s): " + ", ".join(unexpected)
+            {
+                "code": "CODACY_SCOPE_UNEXPECTED_PATTERN",
+                "message": "unexpected Codacy exclude pattern(s): " + ", ".join(unexpected),
+                "patterns": unexpected,
+            }
         )
 
     protected_ignored = [f for f in ignored_files if any(f.startswith(prefix) for prefix in PROTECTED_PREFIXES)]
     if protected_ignored:
-        sample = ", ".join(protected_ignored[:10])
+        sample = protected_ignored[:10]
         violations.append(
-            "protected code/docs paths are ignored by Codacy config (sample): " + sample
+            {
+                "code": "CODACY_SCOPE_PROTECTED_PATH_IGNORED",
+                "message": "protected code/docs paths are ignored by Codacy config",
+                "sample": sample,
+            }
         )
 
     return violations
@@ -223,13 +237,22 @@ def main() -> int:
     codacy_file = (repo_root / args.codacy_file).resolve()
 
     if not codacy_file.exists():
-        print(json.dumps({"error": f"codacy file not found: {codacy_file.as_posix()}"}))
+        print(
+            json.dumps(
+                {
+                    "error": {
+                        "code": "CODACY_SCOPE_CONFIG_NOT_FOUND",
+                        "message": f"codacy file not found: {codacy_file.as_posix()}",
+                    }
+                }
+            )
+        )
         return 1
 
     patterns = parse_exclude_paths(codacy_file)
     report = build_report(repo_root, codacy_file.relative_to(repo_root), patterns)
 
-    violations: list[str] = []
+    violations: list[dict[str, object]] = []
     if args.strict:
         # Recompute full ignored list for strict checks to avoid sample-only validation.
         full_ignored, _ = match_ignored_files(list_repository_files(repo_root), patterns)
