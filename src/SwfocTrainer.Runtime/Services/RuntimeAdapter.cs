@@ -3656,7 +3656,7 @@ public sealed class RuntimeAdapter : IRuntimeAdapter
             "Credits hook: exact-pattern candidate at RVA 0x{Rva:X}, offset=0x{Off:X2}, reg={Reg}");
     }
 
-    private List<CreditsHookCandidate> ParseCreditsHookCandidates(byte[] moduleBytes, IEnumerable<int> offsets)
+    private static List<CreditsHookCandidate> ParseCreditsHookCandidates(byte[] moduleBytes, IEnumerable<int> offsets)
     {
         return offsets
             .Select(hit =>
