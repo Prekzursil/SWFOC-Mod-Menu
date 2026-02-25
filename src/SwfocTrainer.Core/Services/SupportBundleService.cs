@@ -32,48 +32,42 @@ public sealed class SupportBundleService : ISupportBundleService
 
         Directory.CreateDirectory(request.OutputDirectory);
 
-        var paths = BuildBundlePaths(request.OutputDirectory);
+        var runId = DateTimeOffset.UtcNow.ToString("yyyyMMddHHmmss");
+        var stagingRoot = Path.Combine(request.OutputDirectory, $"support-bundle-{runId}");
+        var bundlePath = Path.Combine(request.OutputDirectory, $"support-bundle-{runId}.zip");
+        var manifestPath = Path.Combine(request.OutputDirectory, $"support-bundle-{runId}.manifest.json");
 
         var included = new List<string>();
         var warnings = new List<string>();
 
-        if (Directory.Exists(paths.StagingRoot))
+        if (Directory.Exists(stagingRoot))
         {
-            Directory.Delete(paths.StagingRoot, recursive: true);
+            Directory.Delete(stagingRoot, recursive: true);
         }
 
-        Directory.CreateDirectory(paths.StagingRoot);
+        Directory.CreateDirectory(stagingRoot);
 
         try
         {
-            CopyLogs(paths.StagingRoot, included, warnings);
-            CopyCalibrationArtifacts(paths.StagingRoot, included, warnings);
-            CopyRecentReproBundles(paths.StagingRoot, included, warnings, request.MaxRecentRuns);
-            await WriteRuntimeSnapshotAsync(paths.StagingRoot, included, warnings, request.ProfileId, request.Notes, cancellationToken);
-            await WriteTelemetrySnapshotAsync(paths.StagingRoot, included, cancellationToken);
+            CopyLogs(stagingRoot, included, warnings);
+            CopyCalibrationArtifacts(stagingRoot, included, warnings);
+            CopyRecentReproBundles(stagingRoot, included, warnings, request.MaxRecentRuns);
+            await WriteRuntimeSnapshotAsync(stagingRoot, included, warnings, request.ProfileId, request.Notes, cancellationToken);
+            await WriteTelemetrySnapshotAsync(stagingRoot, included, cancellationToken);
 
-            await WriteManifestFilesAsync(paths, request, included, warnings, cancellationToken);
+            var manifestPayload = BuildManifestPayload(request, included, warnings);
+            await WriteJsonAsync(manifestPath, manifestPayload, cancellationToken);
+            var manifestInBundlePath = Path.Combine(stagingRoot, "manifest.json");
+            await WriteJsonAsync(manifestInBundlePath, manifestPayload, cancellationToken);
             included.Add("manifest.json");
-
-            if (File.Exists(paths.BundlePath))
-            {
-                File.Delete(paths.BundlePath);
-            }
-
-            ZipFile.CreateFromDirectory(paths.StagingRoot, paths.BundlePath, CompressionLevel.Optimal, includeBaseDirectory: false);
-
-            return new SupportBundleResult(
-                Succeeded: true,
-                BundlePath: paths.BundlePath,
-                ManifestPath: paths.ManifestPath,
-                IncludedFiles: included.OrderBy(x => x, StringComparer.OrdinalIgnoreCase).ToArray(),
-                Warnings: warnings);
+            RecreateBundle(bundlePath, stagingRoot);
+            return BuildSuccess(bundlePath, manifestPath, included, warnings);
         }
         finally
         {
-            if (Directory.Exists(paths.StagingRoot))
+            if (Directory.Exists(stagingRoot))
             {
-                Directory.Delete(paths.StagingRoot, recursive: true);
+                Directory.Delete(stagingRoot, recursive: true);
             }
         }
     }
@@ -185,24 +179,14 @@ public sealed class SupportBundleService : ISupportBundleService
         CancellationToken cancellationToken)
     {
         var path = Path.Combine(stagingRoot, "runtime-snapshot.json");
-
         if (_runtime.CurrentSession is null)
         {
-            await WriteRuntimeSnapshotJsonAsync(path, BuildDetachedSnapshot(profileId, notes), cancellationToken);
-            included.Add("runtime-snapshot.json");
-            warnings.Add("Runtime adapter is not attached; snapshot contains no live process state.");
-            return;
+            await WriteDetachedRuntimeSnapshotAsync(path, profileId, notes, included, warnings, cancellationToken);
         }
-
-        var session = _runtime.CurrentSession;
-        var symbolSummary = session.Symbols.Symbols.Values
-            .GroupBy(x => x.HealthStatus)
-            .ToDictionary(x => x.Key.ToString(), x => x.Count(), StringComparer.OrdinalIgnoreCase);
-        await WriteRuntimeSnapshotJsonAsync(
-            path,
-            BuildAttachedSnapshot(session, profileId, notes, symbolSummary),
-            cancellationToken);
-        included.Add("runtime-snapshot.json");
+        else
+        {
+            await WriteAttachedRuntimeSnapshotAsync(path, profileId, notes, included, cancellationToken);
+        }
     }
 
     private async Task WriteTelemetrySnapshotAsync(string stagingRoot, List<string> included, CancellationToken cancellationToken)
@@ -213,23 +197,12 @@ public sealed class SupportBundleService : ISupportBundleService
         included.Add($"telemetry/{Path.GetFileName(telemetryPath)}");
     }
 
-    private static BundlePaths BuildBundlePaths(string outputDirectory)
-    {
-        var runId = DateTimeOffset.UtcNow.ToString("yyyyMMddHHmmss");
-        return new BundlePaths(
-            Path.Combine(outputDirectory, $"support-bundle-{runId}"),
-            Path.Combine(outputDirectory, $"support-bundle-{runId}.zip"),
-            Path.Combine(outputDirectory, $"support-bundle-{runId}.manifest.json"));
-    }
-
-    private async Task WriteManifestFilesAsync(
-        BundlePaths paths,
+    private static object BuildManifestPayload(
         SupportBundleRequest request,
-        IReadOnlyList<string> included,
-        IReadOnlyList<string> warnings,
-        CancellationToken cancellationToken)
+        IReadOnlyCollection<string> included,
+        IReadOnlyList<string> warnings)
     {
-        var manifestPayload = new
+        return new
         {
             schemaVersion = "1.1",
             generatedAtUtc = DateTimeOffset.UtcNow,
@@ -238,30 +211,70 @@ public sealed class SupportBundleService : ISupportBundleService
             includedFiles = included.OrderBy(x => x, StringComparer.OrdinalIgnoreCase).ToArray(),
             warnings
         };
-
-        var manifestJson = JsonSerializer.Serialize(manifestPayload, JsonOptions);
-        await File.WriteAllTextAsync(paths.ManifestPath, manifestJson, cancellationToken);
-        await File.WriteAllTextAsync(Path.Combine(paths.StagingRoot, "manifest.json"), manifestJson, cancellationToken);
     }
 
-    private static object BuildDetachedSnapshot(string? profileId, string? notes)
+    private static Task WriteJsonAsync(string path, object payload, CancellationToken cancellationToken)
     {
-        return new
+        return File.WriteAllTextAsync(path, JsonSerializer.Serialize(payload, JsonOptions), cancellationToken);
+    }
+
+    private static void RecreateBundle(string bundlePath, string stagingRoot)
+    {
+        if (File.Exists(bundlePath))
+        {
+            File.Delete(bundlePath);
+        }
+
+        ZipFile.CreateFromDirectory(stagingRoot, bundlePath, CompressionLevel.Optimal, includeBaseDirectory: false);
+    }
+
+    private static SupportBundleResult BuildSuccess(
+        string bundlePath,
+        string manifestPath,
+        IReadOnlyCollection<string> included,
+        IReadOnlyList<string> warnings)
+    {
+        return new SupportBundleResult(
+            Succeeded: true,
+            BundlePath: bundlePath,
+            ManifestPath: manifestPath,
+            IncludedFiles: included.OrderBy(x => x, StringComparer.OrdinalIgnoreCase).ToArray(),
+            Warnings: warnings);
+    }
+
+    private async Task WriteDetachedRuntimeSnapshotAsync(
+        string path,
+        string? profileId,
+        string? notes,
+        List<string> included,
+        List<string> warnings,
+        CancellationToken cancellationToken)
+    {
+        var payload = new
         {
             generatedAtUtc = DateTimeOffset.UtcNow,
             profileId,
             notes,
             attached = false
         };
+
+        await WriteJsonAsync(path, payload, cancellationToken);
+        included.Add("runtime-snapshot.json");
+        warnings.Add("Runtime adapter is not attached; snapshot contains no live process state.");
     }
 
-    private static object BuildAttachedSnapshot(
-        AttachSession session,
+    private async Task WriteAttachedRuntimeSnapshotAsync(
+        string path,
         string? profileId,
         string? notes,
-        IReadOnlyDictionary<string, int> symbolSummary)
+        List<string> included,
+        CancellationToken cancellationToken)
     {
-        return new
+        var session = _runtime.CurrentSession!;
+        var symbolSummary = session.Symbols.Symbols.Values
+            .GroupBy(x => x.HealthStatus)
+            .ToDictionary(x => x.Key.ToString(), x => x.Count(), StringComparer.OrdinalIgnoreCase);
+        var payload = new
         {
             generatedAtUtc = DateTimeOffset.UtcNow,
             profileId = profileId ?? session.ProfileId,
@@ -279,12 +292,8 @@ public sealed class SupportBundleService : ISupportBundleService
             runtimeMode = session.Process.Mode.ToString(),
             symbolHealthSummary = symbolSummary
         };
-    }
 
-    private static Task WriteRuntimeSnapshotJsonAsync(string path, object payload, CancellationToken cancellationToken)
-    {
-        return File.WriteAllTextAsync(path, JsonSerializer.Serialize(payload, JsonOptions), cancellationToken);
+        await WriteJsonAsync(path, payload, cancellationToken);
+        included.Add("runtime-snapshot.json");
     }
-
-    private sealed record BundlePaths(string StagingRoot, string BundlePath, string ManifestPath);
 }

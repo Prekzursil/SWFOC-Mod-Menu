@@ -48,10 +48,40 @@ public sealed class SaveCodecTests
     [Fact]
     public async Task Codec_Should_Edit_Float_Double_And_Ascii_Fields()
     {
+        var schemaRoot = await CreateExtendedSchemaAsync();
+        var options = new SaveOptions { SchemaRootPath = schemaRoot };
+        var codec = new BinarySaveCodec(options, NullLogger<BinarySaveCodec>.Instance);
+        const string schemaId = "save_codec_extended_types";
+
+        var tempFile = Path.Combine(Path.GetTempPath(), $"swfoc-codec-extended-{Guid.NewGuid():N}.sav");
+        var output = Path.Combine(Path.GetTempPath(), $"swfoc-codec-extended-out-{Guid.NewGuid():N}.sav");
+        try
+        {
+            await File.WriteAllBytesAsync(tempFile, new byte[128]);
+            var doc = await codec.LoadAsync(tempFile, schemaId);
+
+            await codec.EditAsync(doc, "/header/test_ascii", "HELLO");
+            await codec.EditAsync(doc, "/header/test_float", 3.5f);
+            await codec.EditAsync(doc, "/header/test_double", 9.25d);
+
+            await codec.WriteAsync(doc, output);
+
+            var reloaded = await codec.LoadAsync(output, schemaId);
+            AssertExtendedFieldValues(reloaded);
+        }
+        finally
+        {
+            DeleteFileIfExists(tempFile);
+            DeleteFileIfExists(output);
+            DeleteDirectoryIfExists(schemaRoot);
+        }
+    }
+
+    private static async Task<string> CreateExtendedSchemaAsync()
+    {
         var schemaRoot = Path.Combine(Path.GetTempPath(), $"swfoc-codec-schema-{Guid.NewGuid():N}");
         Directory.CreateDirectory(schemaRoot);
-
-        var schemaId = "save_codec_extended_types";
+        const string schemaId = "save_codec_extended_types";
         var schemaPath = Path.Combine(schemaRoot, $"{schemaId}.json");
         var schemaJson = """
         {
@@ -72,49 +102,33 @@ public sealed class SaveCodecTests
         }
         """;
         await File.WriteAllTextAsync(schemaPath, schemaJson);
+        return schemaRoot;
+    }
 
-        var options = new SaveOptions { SchemaRootPath = schemaRoot };
-        var codec = new BinarySaveCodec(options, NullLogger<BinarySaveCodec>.Instance);
+    private static void AssertExtendedFieldValues(SwfocTrainer.Core.Models.SaveDocument reloaded)
+    {
+        reloaded.Root.Children.Should().NotBeNull();
+        var fields = reloaded.Root.Children![0].Children!.ToDictionary(x => x.Path, x => x.Value);
+        fields["/header/test_ascii"].Should().Be("HELLO");
+        fields["/header/test_float"].Should().BeOfType<float>();
+        ((float)fields["/header/test_float"]!).Should().BeApproximately(3.5f, 0.0001f);
+        fields["/header/test_double"].Should().BeOfType<double>();
+        ((double)fields["/header/test_double"]!).Should().BeApproximately(9.25d, 0.0000001d);
+    }
 
-        var tempFile = Path.Combine(Path.GetTempPath(), $"swfoc-codec-extended-{Guid.NewGuid():N}.sav");
-        var output = Path.Combine(Path.GetTempPath(), $"swfoc-codec-extended-out-{Guid.NewGuid():N}.sav");
-        try
+    private static void DeleteFileIfExists(string path)
+    {
+        if (File.Exists(path))
         {
-            await File.WriteAllBytesAsync(tempFile, new byte[128]);
-            var doc = await codec.LoadAsync(tempFile, schemaId);
-
-            await codec.EditAsync(doc, "/header/test_ascii", "HELLO");
-            await codec.EditAsync(doc, "/header/test_float", 3.5f);
-            await codec.EditAsync(doc, "/header/test_double", 9.25d);
-
-            await codec.WriteAsync(doc, output);
-
-            var reloaded = await codec.LoadAsync(output, schemaId);
-            reloaded.Root.Children.Should().NotBeNull();
-            var fields = reloaded.Root.Children![0].Children!.ToDictionary(x => x.Path, x => x.Value);
-
-            fields["/header/test_ascii"].Should().Be("HELLO");
-            fields["/header/test_float"].Should().BeOfType<float>();
-            ((float)fields["/header/test_float"]!).Should().BeApproximately(3.5f, 0.0001f);
-            fields["/header/test_double"].Should().BeOfType<double>();
-            ((double)fields["/header/test_double"]!).Should().BeApproximately(9.25d, 0.0000001d);
+            File.Delete(path);
         }
-        finally
+    }
+
+    private static void DeleteDirectoryIfExists(string path)
+    {
+        if (Directory.Exists(path))
         {
-            if (File.Exists(tempFile))
-            {
-                File.Delete(tempFile);
-            }
-
-            if (File.Exists(output))
-            {
-                File.Delete(output);
-            }
-
-            if (Directory.Exists(schemaRoot))
-            {
-                Directory.Delete(schemaRoot, recursive: true);
-            }
+            Directory.Delete(path, recursive: true);
         }
     }
 }

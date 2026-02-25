@@ -254,40 +254,12 @@ public sealed class BinarySaveCodec : ISaveCodec
             return;
         }
 
-        switch (valueType)
+        if (TryWriteTypedField(valueType, span, value, little))
         {
-            case "byte":
-            {
-                span[0] = Convert.ToByte(value, CultureInfo.InvariantCulture);
-                break;
-            }
-            case "float":
-            {
-                WriteFloatingPoint(span, BitConverter.GetBytes(Convert.ToSingle(value, CultureInfo.InvariantCulture)), little);
-                break;
-            }
-            case "double":
-            {
-                WriteFloatingPoint(span, BitConverter.GetBytes(Convert.ToDouble(value, CultureInfo.InvariantCulture)), little);
-                break;
-            }
-            case "bool":
-            {
-                span[0] = Convert.ToBoolean(value, CultureInfo.InvariantCulture) ? (byte)1 : (byte)0;
-                break;
-            }
-            case "ascii":
-            {
-                var text = Convert.ToString(value, CultureInfo.InvariantCulture) ?? string.Empty;
-                var bytes = Encoding.ASCII.GetBytes(text);
-                span.Clear();
-                var copyLength = Math.Min(bytes.Length, span.Length);
-                bytes.AsSpan(0, copyLength).CopyTo(span);
-                break;
-            }
-            default:
-                throw new NotSupportedException($"Unsupported field type for editing: {field.ValueType}");
+            return;
         }
+
+        throw new NotSupportedException($"Unsupported field type for editing: {field.ValueType}");
     }
 
     private static bool TryWriteIntegerField(string valueType, Span<byte> span, object? value, bool littleEndian)
@@ -306,6 +278,39 @@ public sealed class BinarySaveCodec : ISaveCodec
             default:
                 return false;
         }
+    }
+
+    private static bool TryWriteTypedField(string valueType, Span<byte> span, object? value, bool littleEndian)
+    {
+        switch (valueType)
+        {
+            case "byte":
+                span[0] = Convert.ToByte(value, CultureInfo.InvariantCulture);
+                return true;
+            case "float":
+                WriteFloatingPoint(span, BitConverter.GetBytes(Convert.ToSingle(value, CultureInfo.InvariantCulture)), littleEndian);
+                return true;
+            case "double":
+                WriteFloatingPoint(span, BitConverter.GetBytes(Convert.ToDouble(value, CultureInfo.InvariantCulture)), littleEndian);
+                return true;
+            case "bool":
+                span[0] = Convert.ToBoolean(value, CultureInfo.InvariantCulture) ? (byte)1 : (byte)0;
+                return true;
+            case "ascii":
+                WriteAscii(span, value);
+                return true;
+            default:
+                return false;
+        }
+    }
+
+    private static void WriteAscii(Span<byte> span, object? value)
+    {
+        var text = Convert.ToString(value, CultureInfo.InvariantCulture) ?? string.Empty;
+        var bytes = Encoding.ASCII.GetBytes(text);
+        span.Clear();
+        var copyLength = Math.Min(bytes.Length, span.Length);
+        bytes.AsSpan(0, copyLength).CopyTo(span);
     }
 
     private static void WriteInt32(Span<byte> span, int value, bool littleEndian)

@@ -73,9 +73,7 @@ public sealed class LivePromotedActionMatrixTests
         try
         {
             var locator = new ProcessLocator();
-            var supportedProcesses = (await locator.FindSupportedProcessesAsync())
-                .Where(x => x.ExeTarget == ExeTarget.Swfoc)
-                .ToArray();
+            var supportedProcesses = await FindSupportedSwfocProcessesAsync(locator);
 
             if (supportedProcesses.Length == 0)
             {
@@ -85,27 +83,21 @@ public sealed class LivePromotedActionMatrixTests
             var hasAotrContext = supportedProcesses.Any(x => ProcessContainsWorkshopId(x, AotrWorkshopId));
             var hasRoeContext = supportedProcesses.Any(x => ProcessContainsWorkshopId(x, RoeWorkshopId));
             _output.WriteLine($"live process contexts: swfoc={supportedProcesses.Length} aotr={hasAotrContext} roe={hasRoeContext}");
-
-            var repoRoot = TestPaths.FindRepoRoot();
-            var profileRepo = new FileSystemProfileRepository(new ProfileRepositoryOptions
-            {
-                ProfilesRootPath = Path.Combine(repoRoot, "profiles", "default")
-            });
-            var resolver = new SignatureResolver(NullLogger<SignatureResolver>.Instance);
-            var runtime = new RuntimeAdapter(locator, profileRepo, resolver, NullLogger<RuntimeAdapter>.Instance);
-
+            var dependencies = BuildRuntimeDependencies(locator);
             foreach (var profileId in TargetProfiles)
             {
-                await ExecuteProfileActionMatrixAsync(
+                await ExecuteProfileMatrixAsync(
+                    dependencies,
                     matrixEntries,
                     profileId,
-                    profileRepo,
-                    runtime,
                     hasAotrContext,
                     hasRoeContext);
             }
 
-            AssertAtLeastOneProfileExecuted(matrixEntries);
+            matrixEntries
+                .Where(x => !x.Outcome.Equals("Skipped", StringComparison.OrdinalIgnoreCase))
+                .Should()
+                .NotBeEmpty("at least one profile context must execute promoted action checks during live validation.");
         }
         finally
         {
@@ -113,77 +105,100 @@ public sealed class LivePromotedActionMatrixTests
         }
     }
 
-    private async Task ExecuteProfileActionMatrixAsync(
+    private static async Task<ProcessMetadata[]> FindSupportedSwfocProcessesAsync(ProcessLocator locator)
+    {
+        return (await locator.FindSupportedProcessesAsync())
+            .Where(x => x.ExeTarget == ExeTarget.Swfoc)
+            .ToArray();
+    }
+
+    private static RuntimeDependencies BuildRuntimeDependencies(ProcessLocator locator)
+    {
+        var repoRoot = TestPaths.FindRepoRoot();
+        var profileRepo = new FileSystemProfileRepository(new ProfileRepositoryOptions
+        {
+            ProfilesRootPath = Path.Combine(repoRoot, "profiles", "default")
+        });
+        var resolver = new SignatureResolver(NullLogger<SignatureResolver>.Instance);
+        var runtime = new RuntimeAdapter(locator, profileRepo, resolver, NullLogger<RuntimeAdapter>.Instance);
+        return new RuntimeDependencies(profileRepo, runtime);
+    }
+
+    private async Task ExecuteProfileMatrixAsync(
+        RuntimeDependencies dependencies,
         ICollection<ActionStatusEntry> matrixEntries,
         string profileId,
-        FileSystemProfileRepository profileRepo,
-        RuntimeAdapter runtime,
         bool hasAotrContext,
         bool hasRoeContext)
     {
-        if (!IsProfileContextAvailable(profileId, hasAotrContext, hasRoeContext))
+        if (TrySkipUnavailableProfileContext(matrixEntries, profileId, hasAotrContext, hasRoeContext))
         {
-            AddSkippedProfileEntries(
-                matrixEntries,
-                profileId,
-                skipReasonCode: "profile_context_not_detected",
-                message: $"Launch context for profile '{profileId}' was not detected in running processes.");
             return;
         }
 
-        AttachSession? session;
-        try
-        {
-            session = await runtime.AttachAsync(profileId);
-        }
-        catch (InvalidOperationException ex) when (ex.Message.Contains(RuntimeReasonCode.ATTACH_PROFILE_MISMATCH.ToString(), StringComparison.OrdinalIgnoreCase))
+        var attachResult = await TryAttachProfileAsync(dependencies.Runtime, profileId);
+        if (attachResult.Session is null)
         {
             AddSkippedProfileEntries(
                 matrixEntries,
                 profileId,
                 skipReasonCode: "attach_profile_mismatch",
-                message: ex.Message);
+                message: attachResult.FailureMessage ?? $"Attach profile mismatch for '{profileId}'.");
             return;
         }
 
         try
         {
+            var session = attachResult.Session;
             _output.WriteLine($"attached profile={profileId} pid={session.Process.ProcessId} mode={session.Process.Mode}");
-            var profile = await profileRepo.ResolveInheritedProfileAsync(profileId);
+            var profile = await dependencies.ProfileRepository.ResolveInheritedProfileAsync(profileId);
             foreach (var actionSpec in PromotedActions)
             {
-                await ExecuteAndAssertPromotedActionAsync(matrixEntries, profileId, profile, actionSpec, session, runtime);
+                await ExecuteAndAssertActionAsync(
+                    dependencies.Runtime,
+                    profile,
+                    matrixEntries,
+                    profileId,
+                    session.Process.Mode,
+                    actionSpec);
             }
         }
         finally
         {
-            if (runtime.IsAttached)
+            if (dependencies.Runtime.IsAttached)
             {
-                await runtime.DetachAsync();
+                await dependencies.Runtime.DetachAsync();
             }
         }
     }
 
-    private async Task ExecuteAndAssertPromotedActionAsync(
+    private static async Task<AttachAttempt> TryAttachProfileAsync(RuntimeAdapter runtime, string profileId)
+    {
+        try
+        {
+            return new AttachAttempt(await runtime.AttachAsync(profileId), null);
+        }
+        catch (InvalidOperationException ex) when (ex.Message.Contains(RuntimeReasonCode.ATTACH_PROFILE_MISMATCH.ToString(), StringComparison.OrdinalIgnoreCase))
+        {
+            return new AttachAttempt(null, ex.Message);
+        }
+    }
+
+    private async Task ExecuteAndAssertActionAsync(
+        RuntimeAdapter runtime,
+        TrainerProfile profile,
         ICollection<ActionStatusEntry> matrixEntries,
         string profileId,
-        TrainerProfile profile,
-        PromotedActionSpec actionSpec,
-        AttachSession session,
-        RuntimeAdapter runtime)
+        RuntimeMode mode,
+        PromotedActionSpec actionSpec)
     {
         profile.Actions.Should().ContainKey(
             actionSpec.ActionId,
             because: $"profile '{profileId}' must expose promoted action '{actionSpec.ActionId}'");
 
         var action = profile.Actions[actionSpec.ActionId];
-        var request = new ActionExecutionRequest(
-            action,
-            actionSpec.BuildPayload(),
-            profileId,
-            session.Process.Mode);
+        var request = new ActionExecutionRequest(action, actionSpec.BuildPayload(), profileId, mode);
         var result = await runtime.ExecuteAsync(request);
-
         var backendRoute = ReadDiagnosticString(result.Diagnostics, "backendRoute");
         var routeReasonCode = ReadDiagnosticString(result.Diagnostics, "routeReasonCode");
         var capabilityProbeReasonCode = ReadDiagnosticString(result.Diagnostics, "capabilityProbeReasonCode");
@@ -205,10 +220,10 @@ public sealed class LivePromotedActionMatrixTests
         _output.WriteLine(
             $"matrix profile={profileId} action={actionSpec.ActionId} success={result.Succeeded} backend={backendRoute} route={routeReasonCode} cap={capabilityProbeReasonCode} hybrid={hybridExecution} fallbackMarker={hasFallbackMarker} msg={result.Message}");
 
-        AssertPromotedActionRoutedViaExtender(
+        AssertPromotedActionExecution(
+            result,
             profileId,
             actionSpec.ActionId,
-            result,
             backendRoute,
             routeReasonCode,
             capabilityProbeReasonCode,
@@ -216,18 +231,29 @@ public sealed class LivePromotedActionMatrixTests
             hasFallbackMarker);
     }
 
-    private static void AssertAtLeastOneProfileExecuted(IReadOnlyCollection<ActionStatusEntry> matrixEntries)
+    private bool TrySkipUnavailableProfileContext(
+        ICollection<ActionStatusEntry> matrixEntries,
+        string profileId,
+        bool hasAotrContext,
+        bool hasRoeContext)
     {
-        matrixEntries
-            .Where(x => !x.Outcome.Equals("Skipped", StringComparison.OrdinalIgnoreCase))
-            .Should()
-            .NotBeEmpty("at least one profile context must execute promoted action checks during live validation.");
+        if (IsProfileContextAvailable(profileId, hasAotrContext, hasRoeContext))
+        {
+            return false;
+        }
+
+        AddSkippedProfileEntries(
+            matrixEntries,
+            profileId,
+            skipReasonCode: "profile_context_not_detected",
+            message: $"Launch context for profile '{profileId}' was not detected in running processes.");
+        return true;
     }
 
-    private static void AssertPromotedActionRoutedViaExtender(
+    private static void AssertPromotedActionExecution(
+        ActionExecutionResult result,
         string profileId,
         string actionId,
-        ActionExecutionResult result,
         string? backendRoute,
         string? routeReasonCode,
         string? capabilityProbeReasonCode,
@@ -407,6 +433,12 @@ public sealed class LivePromotedActionMatrixTests
     }
 
     private sealed record PromotedActionSpec(string ActionId, Func<JsonObject> BuildPayload);
+
+    private sealed record RuntimeDependencies(
+        FileSystemProfileRepository ProfileRepository,
+        RuntimeAdapter Runtime);
+
+    private sealed record AttachAttempt(AttachSession? Session, string? FailureMessage);
 
     private sealed record ActionStatusEntry(
         string ProfileId,

@@ -78,62 +78,20 @@ public sealed class GitHubProfileUpdateService : IProfileUpdateService
             return BuildInstallFailure(profileId, "Remote manifest URL is not configured.", "remote_manifest_not_configured");
         }
 
-        var remoteManifestOutcome = await TryLoadRemoteManifestAsync(profileId, cancellationToken);
-        if (remoteManifestOutcome.Failure is not null)
+        var manifestEntryOutcome = await TryResolveManifestEntryAsync(profileId, cancellationToken);
+        if (manifestEntryOutcome.Failure is not null)
         {
-            return remoteManifestOutcome.Failure;
+            return manifestEntryOutcome.Failure;
         }
 
-        var remoteManifest = remoteManifestOutcome.Manifest!;
-        var entry = remoteManifest.Profiles.FirstOrDefault(x => string.Equals(x.Id, profileId, StringComparison.OrdinalIgnoreCase));
-        if (entry is null)
+        var entry = manifestEntryOutcome.Entry!;
+        var preparedInstall = await TryPrepareProfileInstallAsync(profileId, entry, cancellationToken);
+        if (preparedInstall.Failure is not null)
         {
-            return BuildInstallFailure(
-                profileId,
-                $"Profile '{profileId}' is not present in remote manifest.",
-                "profile_missing_in_manifest");
+            return preparedInstall.Failure;
         }
 
-        var zipPath = Path.Combine(_options.DownloadCachePath, $"{profileId}-{entry.Version}.zip");
-        var downloadFailure = await TryDownloadPackageAsync(profileId, entry.DownloadUrl, zipPath, cancellationToken);
-        if (downloadFailure is not null)
-        {
-            return downloadFailure;
-        }
-
-        var sha = ComputeSha256(zipPath);
-        if (!string.Equals(sha, entry.Sha256, StringComparison.OrdinalIgnoreCase))
-        {
-            return BuildInstallFailure(
-                profileId,
-                $"SHA mismatch for {profileId}. Expected {entry.Sha256}, got {sha}",
-                "sha_mismatch");
-        }
-
-        var profilesDir = ResolveProfilesDirectory();
-        var extractDir = PrepareExtractDirectory(profileId, entry.Version);
-        var extractFailure = TryExtractPackage(profileId, zipPath, extractDir);
-        if (extractFailure is not null)
-        {
-            return extractFailure;
-        }
-
-        var targetProfileJson = Directory.GetFiles(extractDir, $"{profileId}.json", SearchOption.AllDirectories).FirstOrDefault();
-        if (targetProfileJson is null)
-        {
-            return BuildInstallFailure(
-                profileId,
-                $"Downloaded package does not contain '{profileId}.json'.",
-                "profile_json_missing");
-        }
-
-        var profileValidationFailure = await ValidateDownloadedProfileAsync(profileId, targetProfileJson, cancellationToken);
-        if (profileValidationFailure is not null)
-        {
-            return profileValidationFailure;
-        }
-
-        var (destination, backupPath) = InstallProfileFile(profileId, targetProfileJson, profilesDir);
+        var (destination, backupPath) = InstallProfileFile(profileId, preparedInstall.TargetProfileJson!, preparedInstall.ProfilesDirectory!);
         var receiptPath = await WriteInstallReceiptAsync(
             profileId,
             destination,
@@ -142,14 +100,7 @@ public sealed class GitHubProfileUpdateService : IProfileUpdateService
             entry.Sha256,
             cancellationToken);
 
-        return new ProfileInstallResult(
-            Succeeded: true,
-            ProfileId: profileId,
-            InstalledPath: destination,
-            BackupPath: backupPath,
-            ReceiptPath: receiptPath,
-            Message: $"Installed profile update '{profileId}' ({entry.Version}).",
-            ReasonCode: null);
+        return BuildInstallSuccess(profileId, destination, backupPath, receiptPath, entry.Version);
     }
 
     public async Task<ProfileRollbackResult> RollbackLastInstallAsync(string profileId, CancellationToken cancellationToken)
@@ -244,6 +195,77 @@ public sealed class GitHubProfileUpdateService : IProfileUpdateService
         return (remote, null);
     }
 
+    private async Task<(ProfileManifestEntry? Entry, ProfileInstallResult? Failure)> TryResolveManifestEntryAsync(
+        string profileId,
+        CancellationToken cancellationToken)
+    {
+        var remoteManifestOutcome = await TryLoadRemoteManifestAsync(profileId, cancellationToken);
+        if (remoteManifestOutcome.Failure is not null)
+        {
+            return (null, remoteManifestOutcome.Failure);
+        }
+
+        var entry = remoteManifestOutcome.Manifest!.Profiles
+            .FirstOrDefault(x => string.Equals(x.Id, profileId, StringComparison.OrdinalIgnoreCase));
+        if (entry is null)
+        {
+            return (
+                null,
+                BuildInstallFailure(
+                    profileId,
+                    $"Profile '{profileId}' is not present in remote manifest.",
+                    "profile_missing_in_manifest"));
+        }
+
+        return (entry, null);
+    }
+
+    private async Task<(string? ProfilesDirectory, string? TargetProfileJson, ProfileInstallResult? Failure)> TryPrepareProfileInstallAsync(
+        string profileId,
+        ProfileManifestEntry entry,
+        CancellationToken cancellationToken)
+    {
+        var zipPath = Path.Combine(_options.DownloadCachePath, $"{profileId}-{entry.Version}.zip");
+        var downloadFailure = await TryDownloadPackageAsync(profileId, entry.DownloadUrl, zipPath, cancellationToken);
+        if (downloadFailure is not null)
+        {
+            return (null, null, downloadFailure);
+        }
+
+        var integrityFailure = ValidateDownloadedPackageIntegrity(profileId, entry, zipPath);
+        if (integrityFailure is not null)
+        {
+            return (null, null, integrityFailure);
+        }
+
+        var extractDir = PrepareExtractDirectory(profileId, entry.Version);
+        var extractFailure = TryExtractPackage(profileId, zipPath, extractDir);
+        if (extractFailure is not null)
+        {
+            return (null, null, extractFailure);
+        }
+
+        var targetProfileJson = FindExtractedProfileJson(extractDir, profileId);
+        if (targetProfileJson is null)
+        {
+            return (
+                null,
+                null,
+                BuildInstallFailure(
+                    profileId,
+                    $"Downloaded package does not contain '{profileId}.json'.",
+                    "profile_json_missing"));
+        }
+
+        var profileValidationFailure = await ValidateDownloadedProfileAsync(profileId, targetProfileJson, cancellationToken);
+        if (profileValidationFailure is not null)
+        {
+            return (null, null, profileValidationFailure);
+        }
+
+        return (ResolveProfilesDirectory(), targetProfileJson, null);
+    }
+
     private async Task<ProfileInstallResult?> TryDownloadPackageAsync(
         string profileId,
         string downloadUrl,
@@ -264,6 +286,20 @@ public sealed class GitHubProfileUpdateService : IProfileUpdateService
         }
 
         return null;
+    }
+
+    private ProfileInstallResult? ValidateDownloadedPackageIntegrity(string profileId, ProfileManifestEntry entry, string zipPath)
+    {
+        var sha = ComputeSha256(zipPath);
+        if (string.Equals(sha, entry.Sha256, StringComparison.OrdinalIgnoreCase))
+        {
+            return null;
+        }
+
+        return BuildInstallFailure(
+            profileId,
+            $"SHA mismatch for {profileId}. Expected {entry.Sha256}, got {sha}",
+            "sha_mismatch");
     }
 
     private static ProfileInstallResult? TryExtractPackage(
@@ -427,6 +463,28 @@ public sealed class GitHubProfileUpdateService : IProfileUpdateService
             ReceiptPath: null,
             Message: message,
             ReasonCode: reasonCode);
+    }
+
+    private static string? FindExtractedProfileJson(string extractDir, string profileId)
+    {
+        return Directory.GetFiles(extractDir, $"{profileId}.json", SearchOption.AllDirectories).FirstOrDefault();
+    }
+
+    private static ProfileInstallResult BuildInstallSuccess(
+        string profileId,
+        string destination,
+        string? backupPath,
+        string receiptPath,
+        string version)
+    {
+        return new ProfileInstallResult(
+            Succeeded: true,
+            ProfileId: profileId,
+            InstalledPath: destination,
+            BackupPath: backupPath,
+            ReceiptPath: receiptPath,
+            Message: $"Installed profile update '{profileId}' ({version}).",
+            ReasonCode: null);
     }
 
     private static string ComputeSha256(string path)

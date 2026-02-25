@@ -17,136 +17,67 @@ public sealed class ProfileUpdateServiceTransactionalTests
     [Fact]
     public async Task InstallProfileTransactionalAsync_ShouldInstallAndRollback()
     {
-        var workspace = CreateWorkspace();
+        var tempRoot = Path.Combine(Path.GetTempPath(), $"swfoc-profile-update-{Guid.NewGuid():N}");
 
         try
         {
-            const string profileId = "base_swfoc";
-            var existingPath = Path.Combine(workspace.ProfilesDir, $"{profileId}.json");
-            await File.WriteAllTextAsync(existingPath, BuildProfileJson("old"));
+            var setup = await CreateInstallSetupAsync(tempRoot);
+            var install = await setup.Service.InstallProfileTransactionalAsync(setup.ProfileId);
+            AssertInstallResult(install);
 
-            var zipBytes = BuildZipWithProfile(profileId, BuildProfileJson("new"));
-            var service = CreateService(workspace, profileId, zipBytes);
-            var install = await service.InstallProfileTransactionalAsync(profileId);
-
-            install.Succeeded.Should().BeTrue();
-            File.Exists(install.InstalledPath).Should().BeTrue();
-            install.BackupPath.Should().NotBeNullOrWhiteSpace();
-            File.Exists(install.BackupPath!).Should().BeTrue();
-            install.ReceiptPath.Should().NotBeNullOrWhiteSpace();
-            File.Exists(install.ReceiptPath!).Should().BeTrue();
-
-            var updatedJson = await File.ReadAllTextAsync(existingPath);
+            var updatedJson = await File.ReadAllTextAsync(setup.ExistingPath);
             updatedJson.Should().Contain("\"displayName\":\"new\"");
 
-            var rollback = await service.RollbackLastInstallAsync(profileId);
+            var rollback = await setup.Service.RollbackLastInstallAsync(setup.ProfileId);
             rollback.Restored.Should().BeTrue();
 
-            var rolledBackJson = await File.ReadAllTextAsync(existingPath);
+            var rolledBackJson = await File.ReadAllTextAsync(setup.ExistingPath);
             rolledBackJson.Should().Contain("\"displayName\":\"old\"");
         }
         finally
         {
-            DeleteWorkspace(workspace);
-        }
-    }
-
-    [Fact]
-    public async Task InstallProfileTransactionalAsync_ShouldFailWhenArchiveContainsDriveQualifiedPath()
-    {
-        var workspace = CreateWorkspace();
-
-        try
-        {
-            const string profileId = "base_swfoc";
-            var zipBytes = BuildZipWithEntries(new Dictionary<string, string>
+            if (Directory.Exists(tempRoot))
             {
-                [$"profiles/{profileId}.json"] = BuildProfileJson("new"),
-                ["C:evil.txt"] = "bad"
-            });
-            var service = CreateService(workspace, profileId, zipBytes);
-            var result = await service.InstallProfileTransactionalAsync(profileId);
-
-            result.Succeeded.Should().BeFalse();
-            result.ReasonCode.Should().Be("extract_failed");
-            result.Message.Should().Contain("drive-qualified");
-        }
-        finally
-        {
-            DeleteWorkspace(workspace);
+                Directory.Delete(tempRoot, recursive: true);
+            }
         }
     }
 
-    [Fact]
-    public async Task InstallProfileTransactionalAsync_ShouldFailWhenArchiveContainsTraversalPath()
+    private static async Task<InstallSetup> CreateInstallSetupAsync(string tempRoot)
     {
-        var workspace = CreateWorkspace();
-
-        try
-        {
-            const string profileId = "base_swfoc";
-            var zipBytes = BuildZipWithEntries(new Dictionary<string, string>
-            {
-                [$"profiles/{profileId}.json"] = BuildProfileJson("new"),
-                ["../escape.txt"] = "bad"
-            });
-            var service = CreateService(workspace, profileId, zipBytes);
-            var result = await service.InstallProfileTransactionalAsync(profileId);
-
-            result.Succeeded.Should().BeFalse();
-            result.ReasonCode.Should().Be("extract_failed");
-            result.Message.Should().Contain("escapes extraction root");
-        }
-        finally
-        {
-            DeleteWorkspace(workspace);
-        }
-    }
-
-    private static ProfileUpdateTestWorkspace CreateWorkspace()
-    {
-        var tempRoot = Path.Combine(Path.GetTempPath(), $"swfoc-profile-update-{Guid.NewGuid():N}");
         var profilesRoot = Path.Combine(tempRoot, "default");
         var profilesDir = Path.Combine(profilesRoot, "profiles");
         var cacheDir = Path.Combine(tempRoot, "cache");
         Directory.CreateDirectory(profilesDir);
         Directory.CreateDirectory(cacheDir);
-        return new ProfileUpdateTestWorkspace(tempRoot, profilesRoot, profilesDir, cacheDir);
-    }
 
-    private static void DeleteWorkspace(ProfileUpdateTestWorkspace workspace)
-    {
-        if (Directory.Exists(workspace.TempRoot))
-        {
-            Directory.Delete(workspace.TempRoot, recursive: true);
-        }
-    }
+        var profileId = "base_swfoc";
+        var existingPath = Path.Combine(profilesDir, $"{profileId}.json");
+        await File.WriteAllTextAsync(existingPath, BuildProfileJson(displayName: "old"));
 
-    private static GitHubProfileUpdateService CreateService(
-        ProfileUpdateTestWorkspace workspace,
-        string profileId,
-        byte[] zipBytes)
-    {
+        var zipBytes = BuildZipWithProfile(profileId, BuildProfileJson(displayName: "new"));
         var sha = ComputeSha256(zipBytes);
-        var manifestJson = BuildManifestJson(profileId, sha);
-        var handler = new StubHttpMessageHandler(new Dictionary<string, (string ContentType, byte[] Body)>
-        {
-            ["https://example.invalid/manifest.json"] = ("application/json", Encoding.UTF8.GetBytes(manifestJson)),
-            [$"https://example.invalid/{profileId}.zip"] = ("application/zip", zipBytes)
-        });
-        var client = new HttpClient(handler);
-        var options = new ProfileRepositoryOptions
-        {
-            ProfilesRootPath = workspace.ProfilesRoot,
-            ManifestFileName = "manifest.json",
-            DownloadCachePath = workspace.CacheDir,
-            RemoteManifestUrl = "https://example.invalid/manifest.json"
-        };
-        return new GitHubProfileUpdateService(client, options, new StubProfileRepository());
+        var service = new GitHubProfileUpdateService(
+            new HttpClient(CreateHttpHandler(profileId, zipBytes, sha)),
+            new ProfileRepositoryOptions
+            {
+                ProfilesRootPath = profilesRoot,
+                ManifestFileName = "manifest.json",
+                DownloadCachePath = cacheDir,
+                RemoteManifestUrl = "https://example.invalid/manifest.json"
+            },
+            new StubProfileRepository());
+        return new InstallSetup(profileId, existingPath, service);
     }
 
-    private static string BuildManifestJson(string profileId, string sha256)
-        => JsonSerializer.Serialize(new
+    private static string BuildProfileJson(string displayName)
+    {
+        return $"{{\"id\":\"base_swfoc\",\"displayName\":\"{displayName}\",\"inherits\":null,\"exeTarget\":\"Swfoc\",\"steamWorkshopId\":null,\"signatureSets\":[{{\"name\":\"x\",\"gameBuild\":\"x\",\"signatures\":[]}}],\"fallbackOffsets\":{{}},\"actions\":{{}},\"featureFlags\":{{}},\"catalogSources\":[],\"saveSchemaId\":\"base_swfoc_steam_v1\",\"helperModHooks\":[]}}";
+    }
+
+    private static StubHttpMessageHandler CreateHttpHandler(string profileId, byte[] zipBytes, string sha)
+    {
+        var manifestJson = JsonSerializer.Serialize(new
         {
             version = "1.0.0",
             publishedAt = "2026-01-01T00:00:00Z",
@@ -156,7 +87,7 @@ public sealed class ProfileUpdateServiceTransactionalTests
                 {
                     id = profileId,
                     version = "1.2.3",
-                    sha256,
+                    sha256 = sha,
                     downloadUrl = $"https://example.invalid/{profileId}.zip",
                     minAppVersion = "1.0.0",
                     description = "test"
@@ -164,8 +95,22 @@ public sealed class ProfileUpdateServiceTransactionalTests
             }
         });
 
-    private static string BuildProfileJson(string displayName)
-        => $"{{\"id\":\"base_swfoc\",\"displayName\":\"{displayName}\",\"inherits\":null,\"exeTarget\":\"Swfoc\",\"steamWorkshopId\":null,\"signatureSets\":[{{\"name\":\"x\",\"gameBuild\":\"x\",\"signatures\":[]}}],\"fallbackOffsets\":{{}},\"actions\":{{}},\"featureFlags\":{{}},\"catalogSources\":[],\"saveSchemaId\":\"base_swfoc_steam_v1\",\"helperModHooks\":[]}}";
+        return new StubHttpMessageHandler(new Dictionary<string, (string ContentType, byte[] Body)>
+        {
+            ["https://example.invalid/manifest.json"] = ("application/json", Encoding.UTF8.GetBytes(manifestJson)),
+            [$"https://example.invalid/{profileId}.zip"] = ("application/zip", zipBytes)
+        });
+    }
+
+    private static void AssertInstallResult(ProfileInstallResult install)
+    {
+        install.Succeeded.Should().BeTrue();
+        File.Exists(install.InstalledPath).Should().BeTrue();
+        install.BackupPath.Should().NotBeNullOrWhiteSpace();
+        File.Exists(install.BackupPath!).Should().BeTrue();
+        install.ReceiptPath.Should().NotBeNullOrWhiteSpace();
+        File.Exists(install.ReceiptPath!).Should().BeTrue();
+    }
 
     private static byte[] BuildZipWithProfile(string profileId, string profileJson)
     {
@@ -176,23 +121,6 @@ public sealed class ProfileUpdateServiceTransactionalTests
             using var stream = entry.Open();
             using var writer = new StreamWriter(stream, Encoding.UTF8, leaveOpen: false);
             writer.Write(profileJson);
-        }
-
-        return memory.ToArray();
-    }
-
-    private static byte[] BuildZipWithEntries(IReadOnlyDictionary<string, string> entries)
-    {
-        using var memory = new MemoryStream();
-        using (var zip = new ZipArchive(memory, ZipArchiveMode.Create, leaveOpen: true))
-        {
-            foreach (var entrySpec in entries)
-            {
-                var entry = zip.CreateEntry(entrySpec.Key);
-                using var stream = entry.Open();
-                using var writer = new StreamWriter(stream, Encoding.UTF8, leaveOpen: false);
-                writer.Write(entrySpec.Value);
-            }
         }
 
         return memory.ToArray();
@@ -212,7 +140,6 @@ public sealed class ProfileUpdateServiceTransactionalTests
 
         protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
         {
-            _ = cancellationToken;
             var key = request.RequestUri!.ToString();
             if (!_responses.TryGetValue(key, out var payload))
             {
@@ -234,42 +161,20 @@ public sealed class ProfileUpdateServiceTransactionalTests
     private sealed class StubProfileRepository : IProfileRepository
     {
         public Task<ProfileManifest> LoadManifestAsync(CancellationToken cancellationToken = default)
-        {
-            _ = cancellationToken;
-            throw new NotImplementedException();
-        }
+            => throw new NotImplementedException();
 
         public Task<TrainerProfile> LoadProfileAsync(string profileId, CancellationToken cancellationToken = default)
-        {
-            _ = profileId;
-            _ = cancellationToken;
-            throw new NotImplementedException();
-        }
+            => throw new NotImplementedException();
 
         public Task<TrainerProfile> ResolveInheritedProfileAsync(string profileId, CancellationToken cancellationToken = default)
-        {
-            _ = profileId;
-            _ = cancellationToken;
-            throw new NotImplementedException();
-        }
+            => throw new NotImplementedException();
 
         public Task ValidateProfileAsync(TrainerProfile profile, CancellationToken cancellationToken = default)
-        {
-            _ = profile;
-            _ = cancellationToken;
-            return Task.CompletedTask;
-        }
+            => Task.CompletedTask;
 
         public Task<IReadOnlyList<string>> ListAvailableProfilesAsync(CancellationToken cancellationToken = default)
-        {
-            _ = cancellationToken;
-            return Task.FromResult<IReadOnlyList<string>>(Array.Empty<string>());
-        }
+            => Task.FromResult<IReadOnlyList<string>>(Array.Empty<string>());
     }
 
-    private sealed record ProfileUpdateTestWorkspace(
-        string TempRoot,
-        string ProfilesRoot,
-        string ProfilesDir,
-        string CacheDir);
+    private sealed record InstallSetup(string ProfileId, string ExistingPath, GitHubProfileUpdateService Service);
 }

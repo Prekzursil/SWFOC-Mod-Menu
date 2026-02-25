@@ -15,64 +15,21 @@ public sealed class LaunchContextRuntimeScriptParityTests
     [Fact]
     public async Task Resolver_And_Script_Should_Match_For_All_Fixture_Cases()
     {
-        var parityContext = await TryBuildParityContextAsync();
-        if (parityContext is null)
+        if (!TryResolveScriptInputs(out var scriptInputs))
         {
             return;
         }
 
-        foreach (var (caseName, caseObject) in parityContext.FixtureCasesByName)
-        {
-            AssertCaseParity(caseName, caseObject, parityContext.ScriptResultsByName, parityContext.Resolver, parityContext.Profiles);
-        }
-    }
+        var scriptByName = RunScriptAndCollectResults(scriptInputs!);
+        var fixtureCases = LoadFixtureCasesByName(scriptInputs!.FixturePath);
 
-    private static async Task<ParityContext?> TryBuildParityContextAsync()
-    {
-        var root = TestPaths.FindRepoRoot();
-        var scriptPath = Path.Combine(root, "tools", "detect-launch-context.py");
-        var fixturePath = Path.Combine(root, "tools", "fixtures", "launch_context_cases.json");
-        if (!File.Exists(scriptPath) || !File.Exists(fixturePath))
-        {
-            return null;
-        }
-
-        var python = ResolvePythonLauncher();
-        if (python is null)
-        {
-            return null;
-        }
-
-        var scriptResultsByName = RunScriptAndCollectResults(root, scriptPath, fixturePath, python.Value);
-        var fixtureCasesByName = LoadFixtureCasesByName(fixturePath);
         var profiles = await LoadProfilesAsync();
+        var resolver = new LaunchContextResolver();
 
-        return new ParityContext(
-            ScriptResultsByName: scriptResultsByName,
-            FixtureCasesByName: fixtureCasesByName,
-            Profiles: profiles,
-            Resolver: new LaunchContextResolver());
-    }
-
-    private static void AssertCaseParity(
-        string caseName,
-        JsonObject caseObject,
-        IReadOnlyDictionary<string, ScriptRecommendation> scriptByName,
-        LaunchContextResolver resolver,
-        IReadOnlyList<TrainerProfile> profiles)
-    {
-        scriptByName.Should().ContainKey(caseName);
-        var scriptResult = scriptByName[caseName];
-
-        var processName = caseObject["processName"]?.GetValue<string>() ?? string.Empty;
-        var processPath = caseObject["processPath"]?.GetValue<string>() ?? string.Empty;
-        var commandLine = caseObject["commandLine"]?.GetValue<string>();
-        var process = CreateProcessMetadata(processName, processPath, commandLine);
-        var runtimeContext = resolver.Resolve(process, profiles);
-
-        runtimeContext.Recommendation.ProfileId.Should().Be(scriptResult.ProfileId, $"case={caseName}");
-        runtimeContext.Recommendation.ReasonCode.Should().Be(scriptResult.ReasonCode, $"case={caseName}");
-        runtimeContext.LaunchKind.ToString().Should().Be(scriptResult.LaunchKind, $"case={caseName}");
+        foreach (var (caseName, caseObject) in fixtureCases)
+        {
+            AssertRuntimeContextMatchesScript(caseName, caseObject, resolver, profiles, scriptByName);
+        }
     }
 
     private static IReadOnlyDictionary<string, JsonObject> LoadFixtureCasesByName(string fixturePath)
@@ -89,36 +46,9 @@ public sealed class LaunchContextRuntimeScriptParityTests
                 StringComparer.OrdinalIgnoreCase);
     }
 
-    private static IReadOnlyDictionary<string, ScriptRecommendation> RunScriptAndCollectResults(
-        string root,
-        string scriptPath,
-        string fixturePath,
-        (string FileName, string PrefixArgs) python)
+    private static IReadOnlyDictionary<string, ScriptRecommendation> RunScriptAndCollectResults(ScriptInputs inputs)
     {
-        var pythonArgsPrefix = string.IsNullOrWhiteSpace(python.PrefixArgs)
-            ? string.Empty
-            : $"{python.PrefixArgs} ";
-        var psi = new ProcessStartInfo
-        {
-            FileName = python.FileName,
-            Arguments = $"{pythonArgsPrefix}\"{scriptPath}\" --from-process-json \"{fixturePath}\" --profile-root \"{Path.Combine(root, "profiles", "default")}\"",
-            RedirectStandardOutput = true,
-            RedirectStandardError = true,
-            UseShellExecute = false,
-            CreateNoWindow = true,
-            WorkingDirectory = root
-        };
-
-        Process? process;
-        try
-        {
-            process = Process.Start(psi);
-        }
-        catch
-        {
-            return new Dictionary<string, ScriptRecommendation>(StringComparer.OrdinalIgnoreCase);
-        }
-
+        using var process = TryStartScriptProcess(inputs);
         if (process is null)
         {
             return new Dictionary<string, ScriptRecommendation>(StringComparer.OrdinalIgnoreCase);
@@ -132,17 +62,51 @@ public sealed class LaunchContextRuntimeScriptParityTests
 
         var json = JsonNode.Parse(stdout)!.AsObject();
         var results = json["results"]!.AsArray();
+        return BuildScriptRecommendationsByName(results);
+    }
 
-        return results
-            .Select(node => node!.AsObject())
-            .Where(obj => obj["input"]?["name"] is not null)
-            .ToDictionary(
-                obj => obj["input"]!["name"]!.GetValue<string>(),
-                obj => new ScriptRecommendation(
-                    obj["profileRecommendation"]?["profileId"]?.GetValue<string>(),
-                    obj["profileRecommendation"]?["reasonCode"]?.GetValue<string>() ?? "unknown",
-                    obj["launchContext"]?["launchKind"]?.GetValue<string>() ?? "Unknown"),
-                StringComparer.OrdinalIgnoreCase);
+    private static Process? TryStartScriptProcess(ScriptInputs inputs)
+    {
+        var psi = CreateScriptProcessInfo(inputs);
+        try
+        {
+            return Process.Start(psi);
+        }
+        catch
+        {
+            return null;
+        }
+    }
+
+    private static IReadOnlyDictionary<string, ScriptRecommendation> BuildScriptRecommendationsByName(JsonArray results)
+    {
+        var byName = new Dictionary<string, ScriptRecommendation>(StringComparer.OrdinalIgnoreCase);
+        foreach (var node in results)
+        {
+            var obj = node!.AsObject();
+            var caseName = obj["input"]?["name"]?.GetValue<string>();
+            if (string.IsNullOrWhiteSpace(caseName))
+            {
+                continue;
+            }
+
+            byName[caseName] = BuildScriptRecommendation(obj);
+        }
+
+        return byName;
+    }
+
+    private static ScriptRecommendation BuildScriptRecommendation(JsonObject obj)
+    {
+        return new ScriptRecommendation(
+            ProfileId: ReadStringValue(obj, "profileRecommendation", "profileId"),
+            ReasonCode: ReadStringValue(obj, "profileRecommendation", "reasonCode") ?? "unknown",
+            LaunchKind: ReadStringValue(obj, "launchContext", "launchKind") ?? "Unknown");
+    }
+
+    private static string? ReadStringValue(JsonObject obj, string objectKey, string propertyKey)
+    {
+        return obj[objectKey]?[propertyKey]?.GetValue<string>();
     }
 
     private static ProcessMetadata CreateProcessMetadata(string processName, string processPath, string? commandLine)
@@ -219,6 +183,64 @@ public sealed class LaunchContextRuntimeScriptParityTests
         }
     }
 
+    private static bool TryResolveScriptInputs(out ScriptInputs? inputs)
+    {
+        var root = TestPaths.FindRepoRoot();
+        var scriptPath = Path.Combine(root, "tools", "detect-launch-context.py");
+        var fixturePath = Path.Combine(root, "tools", "fixtures", "launch_context_cases.json");
+        if (!File.Exists(scriptPath) || !File.Exists(fixturePath))
+        {
+            inputs = null;
+            return false;
+        }
+
+        var python = ResolvePythonLauncher();
+        if (python is null)
+        {
+            inputs = null;
+            return false;
+        }
+
+        inputs = new ScriptInputs(root, scriptPath, fixturePath, python.Value);
+        return true;
+    }
+
+    private static ProcessStartInfo CreateScriptProcessInfo(ScriptInputs inputs)
+    {
+        var pythonArgsPrefix = string.IsNullOrWhiteSpace(inputs.Python.PrefixArgs)
+            ? string.Empty
+            : $"{inputs.Python.PrefixArgs} ";
+        return new ProcessStartInfo
+        {
+            FileName = inputs.Python.FileName,
+            Arguments = $"{pythonArgsPrefix}\"{inputs.ScriptPath}\" --from-process-json \"{inputs.FixturePath}\" --profile-root \"{Path.Combine(inputs.Root, "profiles", "default")}\"",
+            RedirectStandardOutput = true,
+            RedirectStandardError = true,
+            UseShellExecute = false,
+            CreateNoWindow = true,
+            WorkingDirectory = inputs.Root
+        };
+    }
+
+    private static void AssertRuntimeContextMatchesScript(
+        string caseName,
+        JsonObject caseObject,
+        LaunchContextResolver resolver,
+        IReadOnlyList<TrainerProfile> profiles,
+        IReadOnlyDictionary<string, ScriptRecommendation> scriptByName)
+    {
+        scriptByName.Should().ContainKey(caseName);
+        var scriptResult = scriptByName[caseName];
+        var process = CreateProcessMetadata(
+            caseObject["processName"]?.GetValue<string>() ?? string.Empty,
+            caseObject["processPath"]?.GetValue<string>() ?? string.Empty,
+            caseObject["commandLine"]?.GetValue<string>());
+        var runtimeContext = resolver.Resolve(process, profiles);
+        runtimeContext.Recommendation.ProfileId.Should().Be(scriptResult.ProfileId, $"case={caseName}");
+        runtimeContext.Recommendation.ReasonCode.Should().Be(scriptResult.ReasonCode, $"case={caseName}");
+        runtimeContext.LaunchKind.ToString().Should().Be(scriptResult.LaunchKind, $"case={caseName}");
+    }
+
     private static async Task<IReadOnlyList<TrainerProfile>> LoadProfilesAsync()
     {
         var root = TestPaths.FindRepoRoot();
@@ -237,11 +259,11 @@ public sealed class LaunchContextRuntimeScriptParityTests
         return list;
     }
 
-    private sealed record ScriptRecommendation(string? ProfileId, string ReasonCode, string LaunchKind);
+    private sealed record ScriptInputs(
+        string Root,
+        string ScriptPath,
+        string FixturePath,
+        (string FileName, string PrefixArgs) Python);
 
-    private sealed record ParityContext(
-        IReadOnlyDictionary<string, ScriptRecommendation> ScriptResultsByName,
-        IReadOnlyDictionary<string, JsonObject> FixtureCasesByName,
-        IReadOnlyList<TrainerProfile> Profiles,
-        LaunchContextResolver Resolver);
+    private sealed record ScriptRecommendation(string? ProfileId, string ReasonCode, string LaunchKind);
 }

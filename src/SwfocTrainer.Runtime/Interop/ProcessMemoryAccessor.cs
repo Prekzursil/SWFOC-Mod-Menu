@@ -56,32 +56,15 @@ internal sealed class ProcessMemoryAccessor : IDisposable
             return;
         }
 
-        uint oldProtect = 0;
-        var protectChanged = false;
+        uint? oldProtect = null;
         try
         {
             if (executablePatch)
             {
-                if (!NativeMethods.VirtualProtectEx(
-                        _handle,
-                        address,
-                        (nuint)buffer.Length,
-                        NativeMethods.PageExecuteReadWrite,
-                        out oldProtect))
-                {
-                    throw new InvalidOperationException(
-                        $"VirtualProtectEx failed at 0x{address.ToInt64():X}. Win32={Marshal.GetLastWin32Error()}");
-                }
-
-                protectChanged = true;
+                oldProtect = EnableWriteExecuteProtection(address, buffer.Length);
             }
 
-            if (!NativeMethods.WriteProcessMemory(_handle, address, buffer, buffer.Length, out var written) ||
-                written.ToInt64() != buffer.Length)
-            {
-                throw new InvalidOperationException(
-                    $"WriteProcessMemory failed at 0x{address.ToInt64():X}. Win32={Marshal.GetLastWin32Error()}");
-            }
+            WriteProcessMemoryChecked(address, buffer);
 
             if (executablePatch)
             {
@@ -90,15 +73,46 @@ internal sealed class ProcessMemoryAccessor : IDisposable
         }
         finally
         {
-            if (protectChanged)
+            if (oldProtect.HasValue)
             {
-                NativeMethods.VirtualProtectEx(
-                    _handle,
-                    address,
-                    (nuint)buffer.Length,
-                    oldProtect,
-                    out _);
+                RestoreProtection(address, buffer.Length, oldProtect.Value);
             }
+        }
+    }
+
+    private uint EnableWriteExecuteProtection(nint address, int length)
+    {
+        if (NativeMethods.VirtualProtectEx(
+                _handle,
+                address,
+                (nuint)length,
+                NativeMethods.PageExecuteReadWrite,
+                out var oldProtect))
+        {
+            return oldProtect;
+        }
+
+        throw new InvalidOperationException(
+            $"VirtualProtectEx failed at 0x{address.ToInt64():X}. Win32={Marshal.GetLastWin32Error()}");
+    }
+
+    private void RestoreProtection(nint address, int length, uint oldProtect)
+    {
+        NativeMethods.VirtualProtectEx(
+            _handle,
+            address,
+            (nuint)length,
+            oldProtect,
+            out _);
+    }
+
+    private void WriteProcessMemoryChecked(nint address, byte[] buffer)
+    {
+        if (!NativeMethods.WriteProcessMemory(_handle, address, buffer, buffer.Length, out var written) ||
+            written.ToInt64() != buffer.Length)
+        {
+            throw new InvalidOperationException(
+                $"WriteProcessMemory failed at 0x{address.ToInt64():X}. Win32={Marshal.GetLastWin32Error()}");
         }
     }
 

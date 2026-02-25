@@ -81,20 +81,7 @@ public sealed class TrainerOrchestrator
             result = result with { Diagnostics = mergedDiagnostics };
         }
 
-        if (_runtime.CurrentSession is not null)
-        {
-            await _auditLogger.WriteAsync(
-                new ActionAuditRecord(
-                    DateTimeOffset.UtcNow,
-                    profileId,
-                    _runtime.CurrentSession.Process.ProcessId,
-                    actionId,
-                    result.AddressSource,
-                    result.Succeeded,
-                    result.Message,
-                    mergedDiagnostics),
-                cancellationToken);
-        }
+        await WriteAuditIfAttachedAsync(profileId, actionId, result, mergedDiagnostics, cancellationToken);
 
         _telemetry.RecordAction(actionId, result.AddressSource, result.Succeeded);
         return result;
@@ -285,5 +272,30 @@ public sealed class TrainerOrchestrator
         }
 
         return merged;
+    }
+
+    private Task WriteAuditIfAttachedAsync(
+        string profileId,
+        string actionId,
+        ActionExecutionResult result,
+        IReadOnlyDictionary<string, object?>? diagnostics,
+        CancellationToken cancellationToken)
+    {
+        if (_runtime.CurrentSession is null)
+        {
+            return Task.CompletedTask;
+        }
+
+        return _auditLogger.WriteAsync(
+            new ActionAuditRecord(
+                DateTimeOffset.UtcNow,
+                profileId,
+                _runtime.CurrentSession.Process.ProcessId,
+                actionId,
+                result.AddressSource,
+                result.Succeeded,
+                result.Message,
+                diagnostics),
+            cancellationToken);
     }
 }

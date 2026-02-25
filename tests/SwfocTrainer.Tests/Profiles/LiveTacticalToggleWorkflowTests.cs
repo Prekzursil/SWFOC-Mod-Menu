@@ -31,92 +31,30 @@ public sealed class LiveTacticalToggleWorkflowTests
             throw LiveSkip.For(_output, "no swfoc process detected.");
         }
 
-        var repoRoot = TestPaths.FindRepoRoot();
-        var profileRepo = new FileSystemProfileRepository(new ProfileRepositoryOptions
-        {
-            ProfilesRootPath = Path.Combine(repoRoot, "profiles", "default")
-        });
-        var resolver = new SignatureResolver(NullLogger<SignatureResolver>.Instance);
-        var runtime = new RuntimeAdapter(locator, profileRepo, resolver, NullLogger<RuntimeAdapter>.Instance);
-        var freezeService = new ValueFreezeService(runtime, NullLogger<ValueFreezeService>.Instance);
-        var orchestrator = new TrainerOrchestrator(profileRepo, runtime, freezeService, NullAuditLogger.Instance);
+        var services = CreateServices(locator);
+        var profileId = await ResolveAttachProfileAsync(services.ProfileRepository, running);
+        await EnsureAttachedTacticalSessionAsync(services.Runtime, profileId);
+        await EnsureTacticalToggleActionsAsync(services.ProfileRepository, profileId);
 
-        var profiles = await ResolveProfilesAsync(profileRepo);
-        var context = running.LaunchContext ?? new LaunchContextResolver().Resolve(running, profiles);
-        var profileId = context.Recommendation.ProfileId ?? "base_swfoc";
-        var session = await runtime.AttachAsync(profileId);
-        if (session.Process.Mode != RuntimeMode.Tactical)
-        {
-            throw LiveSkip.For(_output, $"runtime mode is {session.Process.Mode}, tactical checks require Tactical.");
-        }
-
-        var profile = await profileRepo.ResolveInheritedProfileAsync(profileId);
-        if (!profile.Actions.ContainsKey("toggle_tactical_god_mode") ||
-            !profile.Actions.ContainsKey("toggle_tactical_one_hit_mode"))
-        {
-            throw LiveSkip.For(_output, $"profile '{profileId}' does not expose tactical toggle actions.");
-        }
-
-        byte godCurrent;
-        byte oneHitCurrent;
-        try
-        {
-            godCurrent = await runtime.ReadAsync<byte>("tactical_god_mode");
-            oneHitCurrent = await runtime.ReadAsync<byte>("tactical_one_hit_mode");
-        }
-        catch (Exception ex)
-        {
-            throw LiveSkip.For(_output, $"tactical symbols not readable: {ex.Message}");
-        }
-
-        var godEnable = godCurrent == 0;
-        var oneHitEnable = oneHitCurrent == 0;
-
-        var godToggle = await orchestrator.ExecuteAsync(
-            profileId,
-            "toggle_tactical_god_mode",
-            new JsonObject
-            {
-                ["symbol"] = "tactical_god_mode",
-                ["boolValue"] = godEnable
-            },
-            RuntimeMode.Tactical);
-        var godRevert = await orchestrator.ExecuteAsync(
-            profileId,
-            "toggle_tactical_god_mode",
-            new JsonObject
-            {
-                ["symbol"] = "tactical_god_mode",
-                ["boolValue"] = !godEnable
-            },
-            RuntimeMode.Tactical);
-
-        var oneHitToggle = await orchestrator.ExecuteAsync(
-            profileId,
-            "toggle_tactical_one_hit_mode",
-            new JsonObject
-            {
-                ["symbol"] = "tactical_one_hit_mode",
-                ["boolValue"] = oneHitEnable
-            },
-            RuntimeMode.Tactical);
-        var oneHitRevert = await orchestrator.ExecuteAsync(
-            profileId,
-            "toggle_tactical_one_hit_mode",
-            new JsonObject
-            {
-                ["symbol"] = "tactical_one_hit_mode",
-                ["boolValue"] = !oneHitEnable
-            },
-            RuntimeMode.Tactical);
+        var godEnable = await ReadEnableToggleAsync(services.Runtime, "tactical_god_mode");
+        var oneHitEnable = await ReadEnableToggleAsync(services.Runtime, "tactical_one_hit_mode");
+        var godToggle = await ExecuteToggleAsync(services.Orchestrator, profileId, "toggle_tactical_god_mode", "tactical_god_mode", godEnable);
+        var godRevert = await ExecuteToggleAsync(services.Orchestrator, profileId, "toggle_tactical_god_mode", "tactical_god_mode", !godEnable);
+        var oneHitToggle = await ExecuteToggleAsync(services.Orchestrator, profileId, "toggle_tactical_one_hit_mode", "tactical_one_hit_mode", oneHitEnable);
+        var oneHitRevert = await ExecuteToggleAsync(services.Orchestrator, profileId, "toggle_tactical_one_hit_mode", "tactical_one_hit_mode", !oneHitEnable);
 
         _output.WriteLine($"god toggle={godToggle.Succeeded} revert={godRevert.Succeeded}");
         _output.WriteLine($"one_hit toggle={oneHitToggle.Succeeded} revert={oneHitRevert.Succeeded}");
 
-        godToggle.Succeeded.Should().BeTrue($"god toggle failed: {godToggle.Message}");
-        godRevert.Succeeded.Should().BeTrue($"god revert failed: {godRevert.Message}");
-        oneHitToggle.Succeeded.Should().BeTrue($"one-hit toggle failed: {oneHitToggle.Message}");
-        oneHitRevert.Succeeded.Should().BeTrue($"one-hit revert failed: {oneHitRevert.Message}");
+        AssertToggleResult(godToggle, "god toggle");
+        AssertToggleResult(godRevert, "god revert");
+        AssertToggleResult(oneHitToggle, "one-hit toggle");
+        AssertToggleResult(oneHitRevert, "one-hit revert");
+
+        if (services.Runtime.IsAttached)
+        {
+            await services.Runtime.DetachAsync();
+        }
     }
 
     private static async Task<IReadOnlyList<TrainerProfile>> ResolveProfilesAsync(FileSystemProfileRepository profileRepo)
@@ -131,6 +69,83 @@ public sealed class LiveTacticalToggleWorkflowTests
         return profiles;
     }
 
+    private ServiceDependencies CreateServices(ProcessLocator locator)
+    {
+        var repoRoot = TestPaths.FindRepoRoot();
+        var profileRepo = new FileSystemProfileRepository(new ProfileRepositoryOptions
+        {
+            ProfilesRootPath = Path.Combine(repoRoot, "profiles", "default")
+        });
+        var resolver = new SignatureResolver(NullLogger<SignatureResolver>.Instance);
+        var runtime = new RuntimeAdapter(locator, profileRepo, resolver, NullLogger<RuntimeAdapter>.Instance);
+        var freezeService = new ValueFreezeService(runtime, NullLogger<ValueFreezeService>.Instance);
+        var orchestrator = new TrainerOrchestrator(profileRepo, runtime, freezeService, NullAuditLogger.Instance);
+        return new ServiceDependencies(profileRepo, runtime, orchestrator);
+    }
+
+    private async Task<string> ResolveAttachProfileAsync(FileSystemProfileRepository profileRepo, ProcessMetadata running)
+    {
+        var profiles = await ResolveProfilesAsync(profileRepo);
+        var context = running.LaunchContext ?? new LaunchContextResolver().Resolve(running, profiles);
+        return context.Recommendation.ProfileId ?? "base_swfoc";
+    }
+
+    private async Task<AttachSession> EnsureAttachedTacticalSessionAsync(RuntimeAdapter runtime, string profileId)
+    {
+        var session = await runtime.AttachAsync(profileId);
+        if (session.Process.Mode != RuntimeMode.Tactical)
+        {
+            throw LiveSkip.For(_output, $"runtime mode is {session.Process.Mode}, tactical checks require Tactical.");
+        }
+
+        return session;
+    }
+
+    private async Task EnsureTacticalToggleActionsAsync(FileSystemProfileRepository profileRepo, string profileId)
+    {
+        var profile = await profileRepo.ResolveInheritedProfileAsync(profileId);
+        if (!profile.Actions.ContainsKey("toggle_tactical_god_mode") ||
+            !profile.Actions.ContainsKey("toggle_tactical_one_hit_mode"))
+        {
+            throw LiveSkip.For(_output, $"profile '{profileId}' does not expose tactical toggle actions.");
+        }
+    }
+
+    private async Task<bool> ReadEnableToggleAsync(RuntimeAdapter runtime, string symbol)
+    {
+        try
+        {
+            return await runtime.ReadAsync<byte>(symbol) == 0;
+        }
+        catch (Exception ex)
+        {
+            throw LiveSkip.For(_output, $"tactical symbols not readable: {ex.Message}");
+        }
+    }
+
+    private static Task<ActionExecutionResult> ExecuteToggleAsync(
+        TrainerOrchestrator orchestrator,
+        string profileId,
+        string actionId,
+        string symbol,
+        bool enabled)
+    {
+        return orchestrator.ExecuteAsync(
+            profileId,
+            actionId,
+            new JsonObject
+            {
+                ["symbol"] = symbol,
+                ["boolValue"] = enabled
+            },
+            RuntimeMode.Tactical);
+    }
+
+    private static void AssertToggleResult(ActionExecutionResult result, string label)
+    {
+        result.Succeeded.Should().BeTrue($"{label} failed: {result.Message}");
+    }
+
     private sealed class NullAuditLogger : SwfocTrainer.Core.Contracts.IAuditLogger
     {
         public static readonly NullAuditLogger Instance = new();
@@ -138,4 +153,9 @@ public sealed class LiveTacticalToggleWorkflowTests
         public Task WriteAsync(SwfocTrainer.Core.Logging.ActionAuditRecord record, CancellationToken cancellationToken = default)
             => Task.CompletedTask;
     }
+
+    private sealed record ServiceDependencies(
+        FileSystemProfileRepository ProfileRepository,
+        RuntimeAdapter Runtime,
+        TrainerOrchestrator Orchestrator);
 }

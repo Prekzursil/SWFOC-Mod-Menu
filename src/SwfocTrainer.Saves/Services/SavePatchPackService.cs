@@ -45,46 +45,8 @@ public sealed class SavePatchPackService : ISavePatchPackService
         }
 
         var schema = await _schemaRepository.LoadSchemaAsync(originalDoc.SchemaId, cancellationToken);
-        var checksumOutputRanges = BuildChecksumOutputRanges(schema);
-        var operations = new List<SavePatchOperation>();
-
-        foreach (var field in schema.FieldDefs.OrderBy(x => x.Offset).ThenBy(x => x.Id, StringComparer.OrdinalIgnoreCase))
-        {
-            if (FieldOverlapsChecksumOutput(field, checksumOutputRanges))
-            {
-                continue;
-            }
-
-            var oldValue = SavePatchFieldCodec.ReadFieldValue(originalDoc.Raw, field, schema.Endianness);
-            var newValue = SavePatchFieldCodec.ReadFieldValue(editedDoc.Raw, field, schema.Endianness);
-            if (SavePatchFieldCodec.ValuesEqual(oldValue, newValue))
-            {
-                continue;
-            }
-
-            operations.Add(new SavePatchOperation(
-                SavePatchOperationKind.SetValue,
-                field.Path ?? field.Id,
-                field.Id,
-                field.ValueType,
-                oldValue,
-                newValue,
-                field.Offset));
-        }
-
-        var metadata = new SavePatchMetadata(
-            SchemaVersion: "1.0",
-            ProfileId: profileId,
-            SchemaId: schema.SchemaId,
-            SourceHash: SavePatchFieldCodec.ComputeSha256Hex(originalDoc.Raw),
-            CreatedAtUtc: DateTimeOffset.UtcNow);
-
-        var compatibility = new SavePatchCompatibility(
-            AllowedProfileIds: [profileId],
-            RequiredSchemaId: schema.SchemaId,
-            SaveBuildHint: schema.GameBuild);
-
-        return new SavePatchPack(metadata, compatibility, operations);
+        var operations = BuildExportOperations(schema, originalDoc.Raw, editedDoc.Raw);
+        return BuildExportPack(profileId, schema, originalDoc.Raw, operations);
     }
 
     public async Task<SavePatchPack> LoadPackAsync(string path, CancellationToken cancellationToken)
@@ -185,43 +147,8 @@ public sealed class SavePatchPackService : ISavePatchPackService
         var errors = compatibility.Errors.ToList();
         var warnings = compatibility.Warnings.ToList();
 
-        var fieldByPath = schema.FieldDefs
-            .Where(x => !string.IsNullOrWhiteSpace(x.Path))
-            .ToDictionary(x => x.Path!, x => x, StringComparer.OrdinalIgnoreCase);
-        var fieldById = schema.FieldDefs
-            .ToDictionary(x => x.Id, x => x, StringComparer.OrdinalIgnoreCase);
-
-        var operations = new List<SavePatchOperation>(pack.Operations.Count);
-        foreach (var operation in pack.Operations)
-        {
-            if (operation.Kind != SavePatchOperationKind.SetValue)
-            {
-                errors.Add($"Unsupported operation kind '{operation.Kind}' for '{operation.FieldId}'.");
-                continue;
-            }
-
-            if (operation.NewValue is null)
-            {
-                errors.Add($"Operation '{operation.FieldId}' is missing required newValue.");
-                continue;
-            }
-
-            var field = ResolveField(fieldByPath, fieldById, operation, warnings);
-            if (field is null)
-            {
-                errors.Add($"Field not found for operation id='{operation.FieldId}' path='{operation.FieldPath}'.");
-                continue;
-            }
-
-            var normalizedValue = SavePatchFieldCodec.NormalizePatchValue(operation.NewValue, operation.ValueType);
-            var currentValue = SavePatchFieldCodec.ReadFieldValue(targetDoc.Raw, field, schema.Endianness);
-            if (SavePatchFieldCodec.ValuesEqual(currentValue, normalizedValue))
-            {
-                continue;
-            }
-
-            operations.Add(operation with { NewValue = normalizedValue });
-        }
+        var fieldLookup = BuildFieldLookup(schema);
+        var operations = BuildPreviewOperations(pack, targetDoc, schema, fieldLookup, errors, warnings);
 
         return new SavePatchPreview(
             IsCompatible: errors.Count == 0,
@@ -318,8 +245,8 @@ public sealed class SavePatchPackService : ISavePatchPackService
             return errors;
         }
 
-        ValidateMetadata(pack.Metadata, errors);
-        ValidateCompatibility(pack.Compatibility, errors);
+        ValidateMetadataContract(pack.Metadata, errors);
+        ValidateCompatibilityContract(pack.Compatibility, errors);
 
         if (pack.Operations is null)
         {
@@ -327,7 +254,7 @@ public sealed class SavePatchPackService : ISavePatchPackService
             return errors;
         }
 
-        ValidateOperations(pack.Operations, errors);
+        ValidateOperationContracts(pack.Operations, errors);
 
         return errors;
     }
@@ -357,35 +284,137 @@ public sealed class SavePatchPackService : ISavePatchPackService
             return errors;
         }
 
-        foreach (var (operation, index) in operations.EnumerateArray().Select((operation, index) => (operation, index)))
+        var index = 0;
+        foreach (var operation in operations.EnumerateArray())
         {
-            ValidateRawOperation(operation, index, errors);
+            if (operation.ValueKind != JsonValueKind.Object)
+            {
+                errors.Add($"operations[{index}] must be an object");
+                index++;
+                continue;
+            }
+
+            ValidateRawOperationContract(operation, index, errors);
+
+            index++;
         }
 
         return errors;
     }
 
-    private static bool TryGetPropertyIgnoreCase(JsonElement element, string propertyName, out JsonElement value)
+    private static List<SavePatchOperation> BuildExportOperations(SaveSchema schema, byte[] originalRaw, byte[] editedRaw)
     {
-        if (element.ValueKind != JsonValueKind.Object)
+        var checksumOutputRanges = BuildChecksumOutputRanges(schema);
+        var operations = new List<SavePatchOperation>();
+
+        foreach (var field in schema.FieldDefs.OrderBy(x => x.Offset).ThenBy(x => x.Id, StringComparer.OrdinalIgnoreCase))
         {
-            value = default;
-            return false;
+            if (FieldOverlapsChecksumOutput(field, checksumOutputRanges))
+            {
+                continue;
+            }
+
+            var oldValue = SavePatchFieldCodec.ReadFieldValue(originalRaw, field, schema.Endianness);
+            var newValue = SavePatchFieldCodec.ReadFieldValue(editedRaw, field, schema.Endianness);
+            if (SavePatchFieldCodec.ValuesEqual(oldValue, newValue))
+            {
+                continue;
+            }
+
+            operations.Add(new SavePatchOperation(
+                SavePatchOperationKind.SetValue,
+                field.Path ?? field.Id,
+                field.Id,
+                field.ValueType,
+                oldValue,
+                newValue,
+                field.Offset));
         }
 
-        var property = element.EnumerateObject()
-            .FirstOrDefault(candidate => string.Equals(candidate.Name, propertyName, StringComparison.OrdinalIgnoreCase));
-        if (property.Equals(default(JsonProperty)))
-        {
-            value = default;
-            return false;
-        }
-
-        value = property.Value;
-        return true;
+        return operations;
     }
 
-    private static void ValidateMetadata(SavePatchMetadata metadata, ICollection<string> errors)
+    private static SavePatchPack BuildExportPack(
+        string profileId,
+        SaveSchema schema,
+        byte[] originalRaw,
+        IReadOnlyList<SavePatchOperation> operations)
+    {
+        var metadata = new SavePatchMetadata(
+            SchemaVersion: "1.0",
+            ProfileId: profileId,
+            SchemaId: schema.SchemaId,
+            SourceHash: SavePatchFieldCodec.ComputeSha256Hex(originalRaw),
+            CreatedAtUtc: DateTimeOffset.UtcNow);
+
+        var compatibility = new SavePatchCompatibility(
+            AllowedProfileIds: [profileId],
+            RequiredSchemaId: schema.SchemaId,
+            SaveBuildHint: schema.GameBuild);
+
+        return new SavePatchPack(metadata, compatibility, operations);
+    }
+
+    private static FieldLookup BuildFieldLookup(SaveSchema schema)
+    {
+        var byPath = schema.FieldDefs
+            .Where(x => !string.IsNullOrWhiteSpace(x.Path))
+            .ToDictionary(x => x.Path!, x => x, StringComparer.OrdinalIgnoreCase);
+        var byId = schema.FieldDefs.ToDictionary(x => x.Id, x => x, StringComparer.OrdinalIgnoreCase);
+        return new FieldLookup(byPath, byId);
+    }
+
+    private static List<SavePatchOperation> BuildPreviewOperations(
+        SavePatchPack pack,
+        SaveDocument targetDoc,
+        SaveSchema schema,
+        FieldLookup fieldLookup,
+        List<string> errors,
+        List<string> warnings)
+    {
+        var operations = new List<SavePatchOperation>(pack.Operations.Count);
+        foreach (var operation in pack.Operations)
+        {
+            var operationError = ValidatePreviewOperation(operation);
+            if (!string.IsNullOrWhiteSpace(operationError))
+            {
+                errors.Add(operationError);
+                continue;
+            }
+
+            var field = ResolveField(fieldLookup.ByPath, fieldLookup.ById, operation, warnings);
+            if (field is null)
+            {
+                errors.Add($"Field not found for operation id='{operation.FieldId}' path='{operation.FieldPath}'.");
+                continue;
+            }
+
+            var normalizedValue = SavePatchFieldCodec.NormalizePatchValue(operation.NewValue, operation.ValueType);
+            var currentValue = SavePatchFieldCodec.ReadFieldValue(targetDoc.Raw, field, schema.Endianness);
+            if (SavePatchFieldCodec.ValuesEqual(currentValue, normalizedValue))
+            {
+                continue;
+            }
+
+            operations.Add(operation with { NewValue = normalizedValue });
+        }
+
+        return operations;
+    }
+
+    private static string? ValidatePreviewOperation(SavePatchOperation operation)
+    {
+        if (operation.Kind != SavePatchOperationKind.SetValue)
+        {
+            return $"Unsupported operation kind '{operation.Kind}' for '{operation.FieldId}'.";
+        }
+
+        return operation.NewValue is null
+            ? $"Operation '{operation.FieldId}' is missing required newValue."
+            : null;
+    }
+
+    private static void ValidateMetadataContract(SavePatchMetadata metadata, ICollection<string> errors)
     {
         if (string.IsNullOrWhiteSpace(metadata.SchemaVersion))
         {
@@ -417,7 +446,7 @@ public sealed class SavePatchPackService : ISavePatchPackService
         }
     }
 
-    private static void ValidateCompatibility(SavePatchCompatibility? compatibility, ICollection<string> errors)
+    private static void ValidateCompatibilityContract(SavePatchCompatibility? compatibility, ICollection<string> errors)
     {
         if (compatibility is null)
         {
@@ -436,7 +465,7 @@ public sealed class SavePatchPackService : ISavePatchPackService
         }
     }
 
-    private static void ValidateOperations(IReadOnlyList<SavePatchOperation> operations, ICollection<string> errors)
+    private static void ValidateOperationContracts(IReadOnlyList<SavePatchOperation> operations, ICollection<string> errors)
     {
         for (var i = 0; i < operations.Count; i++)
         {
@@ -473,14 +502,8 @@ public sealed class SavePatchPackService : ISavePatchPackService
         }
     }
 
-    private static void ValidateRawOperation(JsonElement operation, int index, ICollection<string> errors)
+    private static void ValidateRawOperationContract(JsonElement operation, int index, ICollection<string> errors)
     {
-        if (operation.ValueKind != JsonValueKind.Object)
-        {
-            errors.Add($"operations[{index}] must be an object");
-            return;
-        }
-
         foreach (var field in new[] { "kind", "fieldPath", "fieldId", "valueType", "newValue", "offset" })
         {
             if (!TryGetPropertyIgnoreCase(operation, field, out _))
@@ -495,4 +518,26 @@ public sealed class SavePatchPackService : ISavePatchPackService
             errors.Add($"operations[{index}].newValue cannot be null");
         }
     }
+
+    private static bool TryGetPropertyIgnoreCase(JsonElement element, string propertyName, out JsonElement value)
+    {
+        if (element.ValueKind == JsonValueKind.Object)
+        {
+            foreach (var property in element.EnumerateObject())
+            {
+                if (string.Equals(property.Name, propertyName, StringComparison.OrdinalIgnoreCase))
+                {
+                    value = property.Value;
+                    return true;
+                }
+            }
+        }
+
+        value = default;
+        return false;
+    }
+
+    private sealed record FieldLookup(
+        IReadOnlyDictionary<string, SaveFieldDefinition> ByPath,
+        IReadOnlyDictionary<string, SaveFieldDefinition> ById);
 }

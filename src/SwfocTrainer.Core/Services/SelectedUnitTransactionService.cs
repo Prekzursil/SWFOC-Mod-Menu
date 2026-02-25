@@ -57,16 +57,10 @@ public sealed class SelectedUnitTransactionService : ISelectedUnitTransactionSer
         RuntimeMode runtimeMode,
         CancellationToken cancellationToken)
     {
-        if (runtimeMode == RuntimeMode.Unknown)
+        var runtimeModeFailure = ValidateRuntimeMode(runtimeMode, "transaction");
+        if (runtimeModeFailure is not null)
         {
-            return Failed("Selected-unit transaction is blocked: runtime mode is unknown.", "mode_unknown_strict_gate");
-        }
-
-        if (runtimeMode != RuntimeMode.Tactical)
-        {
-            return Failed(
-                $"Selected-unit transaction requires tactical mode, current mode is {runtimeMode}.",
-                "mode_mismatch");
+            return runtimeModeFailure;
         }
 
         if (draft.IsEmpty)
@@ -85,52 +79,26 @@ public sealed class SelectedUnitTransactionService : ISelectedUnitTransactionSer
             return Failed("Selected-unit transaction has no effective changes.", "no_effective_change");
         }
 
-        var steps = new List<ActionExecutionResult>(plannedChanges.Count);
-        var applied = new List<SelectedUnitChange>(plannedChanges.Count);
-
-        foreach (var change in plannedChanges)
+        var execution = await ExecuteChangesWithRollbackAsync(
+            profileId,
+            runtimeMode,
+            plannedChanges,
+            transactionId,
+            "apply",
+            cancellationToken);
+        if (!execution.Succeeded)
         {
-            var context = BuildContext(
-                transactionId,
-                "apply",
-                change.ActionId,
-                BundlePassResult);
-            var result = await ExecuteChangeAsync(profileId, runtimeMode, change, context, cancellationToken);
-            steps.Add(result);
-            if (!result.Succeeded)
-            {
-                var rollbackSteps = await RollbackAsync(profileId, runtimeMode, applied, transactionId, cancellationToken);
-                var rollbackSucceeded = rollbackSteps.All(x => x.Succeeded);
-                var message = rollbackSucceeded
-                    ? $"Apply failed at '{change.ActionId}' and rollback succeeded. {result.Message}"
-                    : $"Apply failed at '{change.ActionId}' and rollback was partial. {result.Message}";
-                return new SelectedUnitTransactionResult(
-                    false,
-                    message,
-                    transactionId,
-                    steps,
-                    RolledBack: true,
-                    RollbackSteps: rollbackSteps);
-            }
-
-            applied.Add(change);
+            return BuildApplyFailureResult(transactionId, execution);
         }
 
-        var after = await ReadSnapshotAsync(cancellationToken);
-        _history.Add(new SelectedUnitTransactionRecord(
+        return await BuildSuccessResultAsync(
             transactionId,
-            DateTimeOffset.UtcNow,
             before,
-            after,
-            IsRollback: false,
-            "apply",
-            plannedChanges.Select(x => x.ActionId).ToArray()));
-
-        return new SelectedUnitTransactionResult(
-            true,
-            $"Applied {plannedChanges.Count} selected-unit field update(s).",
-            transactionId,
-            steps);
+            plannedChanges,
+            execution.Steps,
+            operation: "apply",
+            successMessage: $"Applied {plannedChanges.Count} selected-unit field update(s).",
+            cancellationToken);
     }
 
     public async Task<SelectedUnitTransactionResult> RevertLastAsync(
@@ -209,65 +177,135 @@ public sealed class SelectedUnitTransactionService : ISelectedUnitTransactionSer
         string operation,
         CancellationToken cancellationToken)
     {
+        var runtimeModeFailure = ValidateRuntimeMode(runtimeMode, "operation");
+        if (runtimeModeFailure is not null)
+        {
+            return runtimeModeFailure;
+        }
+
+        EnsureAttached();
+        var draft = BuildDraftFromSnapshot(snapshot);
+        var before = await ReadSnapshotAsync(cancellationToken);
+        var changes = BuildChanges(before, draft);
+        if (changes.Count == 0)
+        {
+            return BuildNoPendingChangesResult(transactionId, operation);
+        }
+
+        var execution = await ExecuteChangesWithRollbackAsync(
+            profileId,
+            runtimeMode,
+            changes,
+            transactionId,
+            operation,
+            cancellationToken);
+        if (!execution.Succeeded)
+        {
+            return BuildSnapshotFailureResult(transactionId, operation, execution);
+        }
+
+        return await BuildSuccessResultAsync(
+            transactionId,
+            before,
+            changes,
+            execution.Steps,
+            operation,
+            $"Selected-unit {operation} succeeded ({changes.Count} writes).",
+            cancellationToken);
+    }
+
+    private static SelectedUnitTransactionResult? ValidateRuntimeMode(RuntimeMode runtimeMode, string operationLabel)
+    {
         if (runtimeMode == RuntimeMode.Unknown)
         {
-            return Failed("Selected-unit operation is blocked: runtime mode is unknown.", "mode_unknown_strict_gate");
+            return Failed($"Selected-unit {operationLabel} is blocked: runtime mode is unknown.", "mode_unknown_strict_gate");
         }
 
         if (runtimeMode != RuntimeMode.Tactical)
         {
             return Failed(
-                $"Selected-unit operation requires tactical mode, current mode is {runtimeMode}.",
+                $"Selected-unit {operationLabel} requires tactical mode, current mode is {runtimeMode}.",
                 "mode_mismatch");
         }
 
-        EnsureAttached();
-        var draft = new SelectedUnitDraft(
-            Hp: snapshot.Hp,
-            Shield: snapshot.Shield,
-            Speed: snapshot.Speed,
-            DamageMultiplier: snapshot.DamageMultiplier,
-            CooldownMultiplier: snapshot.CooldownMultiplier,
-            Veterancy: snapshot.Veterancy,
-            OwnerFaction: snapshot.OwnerFaction);
+        return null;
+    }
 
-        var before = await ReadSnapshotAsync(cancellationToken);
-        var changes = BuildChanges(before, draft);
-        if (changes.Count == 0)
-        {
-            return new SelectedUnitTransactionResult(
-                true,
-                $"Selected-unit {operation} has no pending changes.",
-                transactionId,
-                Array.Empty<ActionExecutionResult>());
-        }
-
+    private async Task<ChangeExecutionOutcome> ExecuteChangesWithRollbackAsync(
+        string profileId,
+        RuntimeMode runtimeMode,
+        IReadOnlyList<SelectedUnitChange> changes,
+        string transactionId,
+        string operation,
+        CancellationToken cancellationToken)
+    {
         var steps = new List<ActionExecutionResult>(changes.Count);
         var applied = new List<SelectedUnitChange>(changes.Count);
         foreach (var change in changes)
         {
-            var context = BuildContext(
-                transactionId,
-                operation,
-                change.ActionId,
-                BundlePassResult);
+            var context = BuildContext(transactionId, operation, change.ActionId, BundlePassResult);
             var result = await ExecuteChangeAsync(profileId, runtimeMode, change, context, cancellationToken);
             steps.Add(result);
-            if (!result.Succeeded)
+            if (result.Succeeded)
             {
-                var rollbackSteps = await RollbackAsync(profileId, runtimeMode, applied, transactionId, cancellationToken);
-                return new SelectedUnitTransactionResult(
-                    false,
-                    $"Selected-unit {operation} failed at '{change.ActionId}'. {result.Message}",
-                    transactionId,
-                    steps,
-                    RolledBack: rollbackSteps.All(x => x.Succeeded),
-                    RollbackSteps: rollbackSteps);
+                applied.Add(change);
+                continue;
             }
 
-            applied.Add(change);
+            var rollbackSteps = await RollbackAsync(profileId, runtimeMode, applied, transactionId, cancellationToken);
+            return ChangeExecutionOutcome.CreateFailure(change, result, steps, rollbackSteps);
         }
 
+        return ChangeExecutionOutcome.CreateSuccess(steps);
+    }
+
+    private static SelectedUnitTransactionResult BuildApplyFailureResult(string transactionId, ChangeExecutionOutcome execution)
+    {
+        var rollbackSucceeded = execution.RollbackSteps.All(x => x.Succeeded);
+        var message = rollbackSucceeded
+            ? $"Apply failed at '{execution.FailedChange!.ActionId}' and rollback succeeded. {execution.FailureResult!.Message}"
+            : $"Apply failed at '{execution.FailedChange!.ActionId}' and rollback was partial. {execution.FailureResult!.Message}";
+        return new SelectedUnitTransactionResult(
+            false,
+            message,
+            transactionId,
+            execution.Steps,
+            RolledBack: true,
+            RollbackSteps: execution.RollbackSteps);
+    }
+
+    private static SelectedUnitTransactionResult BuildSnapshotFailureResult(
+        string transactionId,
+        string operation,
+        ChangeExecutionOutcome execution)
+    {
+        return new SelectedUnitTransactionResult(
+            false,
+            $"Selected-unit {operation} failed at '{execution.FailedChange!.ActionId}'. {execution.FailureResult!.Message}",
+            transactionId,
+            execution.Steps,
+            RolledBack: execution.RollbackSteps.All(x => x.Succeeded),
+            RollbackSteps: execution.RollbackSteps);
+    }
+
+    private static SelectedUnitTransactionResult BuildNoPendingChangesResult(string transactionId, string operation)
+    {
+        return new SelectedUnitTransactionResult(
+            true,
+            $"Selected-unit {operation} has no pending changes.",
+            transactionId,
+            Array.Empty<ActionExecutionResult>());
+    }
+
+    private async Task<SelectedUnitTransactionResult> BuildSuccessResultAsync(
+        string transactionId,
+        SelectedUnitSnapshot before,
+        IReadOnlyList<SelectedUnitChange> changes,
+        IReadOnlyList<ActionExecutionResult> steps,
+        string operation,
+        string successMessage,
+        CancellationToken cancellationToken)
+    {
         var after = await ReadSnapshotAsync(cancellationToken);
         _history.Add(new SelectedUnitTransactionRecord(
             transactionId,
@@ -278,11 +316,19 @@ public sealed class SelectedUnitTransactionService : ISelectedUnitTransactionSer
             operation,
             changes.Select(x => x.ActionId).ToArray()));
 
-        return new SelectedUnitTransactionResult(
-            true,
-            $"Selected-unit {operation} succeeded ({changes.Count} writes).",
-            transactionId,
-            steps);
+        return new SelectedUnitTransactionResult(true, successMessage, transactionId, steps);
+    }
+
+    private static SelectedUnitDraft BuildDraftFromSnapshot(SelectedUnitSnapshot snapshot)
+    {
+        return new SelectedUnitDraft(
+            Hp: snapshot.Hp,
+            Shield: snapshot.Shield,
+            Speed: snapshot.Speed,
+            DamageMultiplier: snapshot.DamageMultiplier,
+            CooldownMultiplier: snapshot.CooldownMultiplier,
+            Veterancy: snapshot.Veterancy,
+            OwnerFaction: snapshot.OwnerFaction);
     }
 
     private async Task<IReadOnlyList<ActionExecutionResult>> RollbackAsync(
@@ -465,4 +511,32 @@ public sealed class SelectedUnitTransactionService : ISelectedUnitTransactionSer
         object OldValue,
         object NewValue,
         bool IsFloat);
+
+    private sealed record ChangeExecutionOutcome(
+        bool Succeeded,
+        IReadOnlyList<ActionExecutionResult> Steps,
+        IReadOnlyList<ActionExecutionResult> RollbackSteps,
+        SelectedUnitChange? FailedChange,
+        ActionExecutionResult? FailureResult)
+    {
+        public static ChangeExecutionOutcome CreateSuccess(IReadOnlyList<ActionExecutionResult> steps)
+            => new(
+                Succeeded: true,
+                Steps: steps,
+                RollbackSteps: Array.Empty<ActionExecutionResult>(),
+                FailedChange: null,
+                FailureResult: null);
+
+        public static ChangeExecutionOutcome CreateFailure(
+            SelectedUnitChange failedChange,
+            ActionExecutionResult failureResult,
+            IReadOnlyList<ActionExecutionResult> steps,
+            IReadOnlyList<ActionExecutionResult> rollbackSteps)
+            => new(
+                Succeeded: false,
+                Steps: steps,
+                RollbackSteps: rollbackSteps,
+                FailedChange: failedChange,
+                FailureResult: failureResult);
+    }
 }

@@ -11,20 +11,11 @@ public sealed class CapabilityMapResolverTests
     [Fact]
     public async Task ResolveAsync_ShouldReturnAvailable_WhenRequiredAnchorsPresent()
     {
-        var mapsRoot = Path.Combine(Path.GetTempPath(), $"swfoc-cap-map-{Guid.NewGuid():N}");
-        Directory.CreateDirectory(mapsRoot);
+        var mapsRoot = CreateMapsRoot();
 
         try
         {
-            var fingerprint = new BinaryFingerprint(
-                FingerprintId: "fp-test",
-                FileSha256: "abc123",
-                ModuleName: "swfoc.exe",
-                ProductVersion: "1.0",
-                FileVersion: "1.0.0.0",
-                TimestampUtc: DateTimeOffset.UtcNow,
-                ModuleList: Array.Empty<string>(),
-                SourcePath: "C:/games/swfoc.exe");
+            var fingerprint = CreateFingerprint("fp-test", "swfoc.exe", "C:/games/swfoc.exe");
 
             var mapJson = """
             {
@@ -41,7 +32,7 @@ public sealed class CapabilityMapResolverTests
             }
             """;
 
-            await File.WriteAllTextAsync(Path.Combine(mapsRoot, "fp-test.json"), mapJson);
+            await WriteMapAsync(mapsRoot, "fp-test", mapJson);
 
             var resolver = new CapabilityMapResolver(mapsRoot, NullLogger<CapabilityMapResolver>.Instance);
 
@@ -99,20 +90,11 @@ public sealed class CapabilityMapResolverTests
     [Fact]
     public async Task ResolveAsync_ShouldReturnDegraded_WhenRequiredAnchorsMissing()
     {
-        var mapsRoot = Path.Combine(Path.GetTempPath(), $"swfoc-cap-map-{Guid.NewGuid():N}");
-        Directory.CreateDirectory(mapsRoot);
+        var mapsRoot = CreateMapsRoot();
 
         try
         {
-            var fingerprint = new BinaryFingerprint(
-                FingerprintId: "fp-test",
-                FileSha256: "abc123",
-                ModuleName: "swfoc.exe",
-                ProductVersion: "1.0",
-                FileVersion: "1.0.0.0",
-                TimestampUtc: DateTimeOffset.UtcNow,
-                ModuleList: Array.Empty<string>(),
-                SourcePath: "C:/games/swfoc.exe");
+            var fingerprint = CreateFingerprint("fp-test", "swfoc.exe", "C:/games/swfoc.exe");
 
             var mapJson = """
             {
@@ -128,7 +110,7 @@ public sealed class CapabilityMapResolverTests
               }
             }
             """;
-            await File.WriteAllTextAsync(Path.Combine(mapsRoot, "fp-test.json"), mapJson);
+            await WriteMapAsync(mapsRoot, "fp-test", mapJson);
 
             var resolver = new CapabilityMapResolver(mapsRoot, NullLogger<CapabilityMapResolver>.Instance);
             var result = await resolver.ResolveAsync(
@@ -150,20 +132,11 @@ public sealed class CapabilityMapResolverTests
     [Fact]
     public async Task ResolveAsync_ShouldSupportCapabilitiesArrayShape_WhenOperationsMissing()
     {
-        var mapsRoot = Path.Combine(Path.GetTempPath(), $"swfoc-cap-map-{Guid.NewGuid():N}");
-        Directory.CreateDirectory(mapsRoot);
+        var mapsRoot = CreateMapsRoot();
 
         try
         {
-            var fingerprint = new BinaryFingerprint(
-                FingerprintId: "fp-ghidra",
-                FileSha256: "abc123",
-                ModuleName: "StarWarsG.exe",
-                ProductVersion: "1.0",
-                FileVersion: "1.0.0.0",
-                TimestampUtc: DateTimeOffset.UtcNow,
-                ModuleList: Array.Empty<string>(),
-                SourcePath: "C:/games/StarWarsG.exe");
+            var fingerprint = CreateFingerprint("fp-ghidra", "StarWarsG.exe", "C:/games/StarWarsG.exe");
 
             var mapJson = """
             {
@@ -182,7 +155,7 @@ public sealed class CapabilityMapResolverTests
               ]
             }
             """;
-            await File.WriteAllTextAsync(Path.Combine(mapsRoot, "fp-ghidra.json"), mapJson);
+            await WriteMapAsync(mapsRoot, "fp-ghidra", mapJson);
 
             var resolver = new CapabilityMapResolver(mapsRoot, NullLogger<CapabilityMapResolver>.Instance);
             var result = await resolver.ResolveAsync(
@@ -411,5 +384,30 @@ public sealed class CapabilityMapResolverTests
         {
             Directory.Delete(mapsRoot, recursive: true);
         }
+    }
+
+    private static string CreateMapsRoot()
+    {
+        var mapsRoot = Path.Combine(Path.GetTempPath(), $"swfoc-cap-map-{Guid.NewGuid():N}");
+        Directory.CreateDirectory(mapsRoot);
+        return mapsRoot;
+    }
+
+    private static BinaryFingerprint CreateFingerprint(string fingerprintId, string moduleName, string sourcePath)
+    {
+        return new BinaryFingerprint(
+            FingerprintId: fingerprintId,
+            FileSha256: "abc123",
+            ModuleName: moduleName,
+            ProductVersion: "1.0",
+            FileVersion: "1.0.0.0",
+            TimestampUtc: DateTimeOffset.UtcNow,
+            ModuleList: Array.Empty<string>(),
+            SourcePath: sourcePath);
+    }
+
+    private static Task WriteMapAsync(string mapsRoot, string fingerprintId, string mapJson)
+    {
+        return File.WriteAllTextAsync(Path.Combine(mapsRoot, $"{fingerprintId}.json"), mapJson);
     }
 }

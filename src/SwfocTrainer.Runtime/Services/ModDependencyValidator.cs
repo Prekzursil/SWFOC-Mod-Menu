@@ -292,54 +292,68 @@ public sealed class ModDependencyValidator : IModDependencyValidator
     private static IReadOnlyList<string> ResolveLocalDependencyRoots(TrainerProfile profile, ProcessMetadata process)
     {
         var roots = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
-        var launchContext = process.LaunchContext;
-        var modPathRaw = launchContext?.ModPathRaw;
-        if (string.IsNullOrWhiteSpace(modPathRaw))
-        {
-            modPathRaw = ExtractModPath(process.CommandLine);
-        }
+        var modPathRaw = ResolveModPathRaw(process);
 
         if (string.IsNullOrWhiteSpace(modPathRaw))
         {
             return roots.ToArray();
         }
 
-        foreach (var candidate in BuildPossibleModRoots(modPathRaw, process.ProcessPath))
+        AddExistingRoots(roots, BuildPossibleModRoots(modPathRaw, process.ProcessPath));
+        AddParentHintedRoots(profile, roots);
+
+        return roots.OrderBy(x => x, StringComparer.OrdinalIgnoreCase).ToArray();
+    }
+
+    private static string? ResolveModPathRaw(ProcessMetadata process)
+    {
+        var launchContextPath = process.LaunchContext?.ModPathRaw;
+        return string.IsNullOrWhiteSpace(launchContextPath)
+            ? ExtractModPath(process.CommandLine)
+            : launchContextPath;
+    }
+
+    private static void AddExistingRoots(ISet<string> roots, IEnumerable<string> candidates)
+    {
+        foreach (var candidate in candidates)
         {
             if (Directory.Exists(candidate))
             {
                 roots.Add(candidate);
             }
         }
+    }
 
+    private static void AddParentHintedRoots(TrainerProfile profile, ISet<string> roots)
+    {
         var parentHints = ParseCsvMetadata(profile, "localParentPathHints");
-        if (parentHints.Count > 0 && roots.Count > 0)
+        if (parentHints.Count == 0 || roots.Count == 0)
         {
-            foreach (var root in roots.ToArray())
+            return;
+        }
+
+        foreach (var root in roots.ToArray())
+        {
+            var parent = Directory.GetParent(root)?.FullName;
+            if (string.IsNullOrWhiteSpace(parent))
             {
-                var parent = Directory.GetParent(root)?.FullName;
-                if (string.IsNullOrWhiteSpace(parent))
+                continue;
+            }
+
+            foreach (var hint in parentHints)
+            {
+                if (hint.Contains(PathTraversalToken, StringComparison.Ordinal))
                 {
                     continue;
                 }
 
-                foreach (var hint in parentHints)
+                var hintedPath = Path.Combine(parent, hint);
+                if (Directory.Exists(hintedPath))
                 {
-                    if (hint.Contains(PathTraversalToken, StringComparison.Ordinal))
-                    {
-                        continue;
-                    }
-
-                    var hintedPath = Path.Combine(parent, hint);
-                    if (Directory.Exists(hintedPath))
-                    {
-                        roots.Add(hintedPath);
-                    }
+                    roots.Add(hintedPath);
                 }
             }
         }
-
-        return roots.OrderBy(x => x, StringComparer.OrdinalIgnoreCase).ToArray();
     }
 
     private static IReadOnlyList<string> BuildPossibleModRoots(string modPathRaw, string processPath)

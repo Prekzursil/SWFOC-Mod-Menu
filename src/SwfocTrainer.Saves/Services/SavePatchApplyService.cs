@@ -53,20 +53,14 @@ public sealed class SavePatchApplyService : ISavePatchApplyService
         bool strict,
         CancellationToken cancellationToken)
     {
-        var normalizedTargetPath = NormalizeTargetPath(targetSavePath);
-        var runId = DateTimeOffset.UtcNow.ToString(RunIdFormat);
-        var backupPath = $"{normalizedTargetPath}.bak.{runId}.sav";
-        var receiptPath = $"{normalizedTargetPath}.apply-receipt.{runId}.json";
-        var tempOutputPath = $"{normalizedTargetPath}.tmp.{runId}.sav";
-
-        var targetLoad = await TryLoadTargetDocumentAsync(normalizedTargetPath, pack.Metadata.SchemaId, cancellationToken);
+        var paths = BuildApplyFilePaths(targetSavePath);
+        var targetLoad = await TryLoadTargetDocumentAsync(paths.TargetPath, pack.Metadata.SchemaId, cancellationToken);
         if (targetLoad.Failure is not null)
         {
             return targetLoad.Failure;
         }
 
         var targetDoc = targetLoad.Document!;
-
         var compatibility = await _patchPackService.ValidateCompatibilityAsync(pack, targetDoc, targetProfileId, cancellationToken);
         var compatibilityFailure = ValidateCompatibility(targetProfileId, strict, compatibility);
         if (compatibilityFailure is not null)
@@ -92,11 +86,7 @@ public sealed class SavePatchApplyService : ISavePatchApplyService
             pack,
             compatibility,
             targetProfileId,
-            normalizedTargetPath,
-            backupPath,
-            receiptPath,
-            tempOutputPath,
-            runId,
+            paths,
             preApplyBytes,
             cancellationToken);
     }
@@ -255,37 +245,13 @@ public sealed class SavePatchApplyService : ISavePatchApplyService
                 operation.FieldPath);
         }
 
-        object? value;
-        try
+        var normalization = TryNormalizePatchValue(operation);
+        if (normalization.Failure is not null)
         {
-            value = SavePatchFieldCodec.NormalizePatchValue(operation.NewValue, operation.ValueType);
-        }
-        catch (Exception ex)
-        {
-            _logger.LogWarning(ex, "Patch value normalization failed for field {FieldId}", operation.FieldId);
-            return BuildFailure(
-                SavePatchApplyClassification.ValidationFailed,
-                ReasonValueNormalizationFailed,
-                "Patch operation value could not be normalized.",
-                operation.FieldId,
-                operation.FieldPath);
+            return normalization.Failure;
         }
 
-        try
-        {
-            await ApplyFieldWithFallbackSelectorAsync(targetDoc, operation, value, cancellationToken);
-            return null;
-        }
-        catch (Exception ex)
-        {
-            _logger.LogWarning(ex, "Patch field apply failed for {FieldId}", operation.FieldId);
-            return BuildFailure(
-                SavePatchApplyClassification.ValidationFailed,
-                ReasonFieldApplyFailed,
-                "Patch operation could not be applied to target field.",
-                operation.FieldId,
-                operation.FieldPath);
-        }
+        return await TryApplyOperationValueAsync(targetDoc, operation, normalization.Value, cancellationToken);
     }
 
     private async Task<SavePatchApplyResult?> ValidatePatchedDocumentAsync(
@@ -314,28 +280,24 @@ public sealed class SavePatchApplyService : ISavePatchApplyService
         SavePatchPack pack,
         SavePatchCompatibilityResult compatibility,
         string targetProfileId,
-        string normalizedTargetPath,
-        string backupPath,
-        string receiptPath,
-        string tempOutputPath,
-        string runId,
+        ApplyFilePaths paths,
         byte[] preApplyBytes,
         CancellationToken cancellationToken)
     {
         try
         {
-            await File.WriteAllBytesAsync(backupPath, preApplyBytes, cancellationToken);
+            await File.WriteAllBytesAsync(paths.BackupPath, preApplyBytes, cancellationToken);
 
-            await _saveCodec.WriteAsync(targetDoc, tempOutputPath, cancellationToken);
-            File.Move(tempOutputPath, normalizedTargetPath, overwrite: true);
+            await _saveCodec.WriteAsync(targetDoc, paths.TempOutputPath, cancellationToken);
+            File.Move(paths.TempOutputPath, paths.TargetPath, overwrite: true);
 
-            var appliedHash = SavePatchFieldCodec.ComputeSha256Hex(await File.ReadAllBytesAsync(normalizedTargetPath, cancellationToken));
-            await WriteReceiptAsync(receiptPath, new SavePatchApplyReceipt(
-                RunId: runId,
+            var appliedHash = SavePatchFieldCodec.ComputeSha256Hex(await File.ReadAllBytesAsync(paths.TargetPath, cancellationToken));
+            await WriteReceiptAsync(paths.ReceiptPath, new SavePatchApplyReceipt(
+                RunId: paths.RunId,
                 AppliedAtUtc: DateTimeOffset.UtcNow,
-                TargetPath: normalizedTargetPath,
-                BackupPath: backupPath,
-                ReceiptPath: receiptPath,
+                TargetPath: paths.TargetPath,
+                BackupPath: paths.BackupPath,
+                ReceiptPath: paths.ReceiptPath,
                 ProfileId: targetProfileId,
                 SchemaId: pack.Metadata.SchemaId,
                 Classification: SavePatchApplyClassification.Applied.ToString(),
@@ -348,15 +310,15 @@ public sealed class SavePatchApplyService : ISavePatchApplyService
                 SavePatchApplyClassification.Applied,
                 Applied: true,
                 Message: $"Applied {pack.Operations.Count} operation(s).",
-                OutputPath: normalizedTargetPath,
-                BackupPath: backupPath,
-                ReceiptPath: receiptPath);
+                OutputPath: paths.TargetPath,
+                BackupPath: paths.BackupPath,
+                ReceiptPath: paths.ReceiptPath);
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Patch apply write path failed for {TargetSavePath}", normalizedTargetPath);
-            TryDeleteTempOutput(tempOutputPath);
-            return await RestoreAfterWriteFailureAsync(normalizedTargetPath, preApplyBytes, backupPath, receiptPath, cancellationToken);
+            _logger.LogError(ex, "Patch apply write path failed for {TargetSavePath}", paths.TargetPath);
+            TryDeleteTempOutput(paths.TempOutputPath);
+            return await RestoreAfterWriteFailureAsync(paths.TargetPath, preApplyBytes, paths.BackupPath, paths.ReceiptPath, cancellationToken);
         }
     }
 
@@ -419,55 +381,137 @@ public sealed class SavePatchApplyService : ISavePatchApplyService
 
     private async Task<string?> ResolveLatestBackupPathAsync(string targetPath, CancellationToken cancellationToken)
     {
-        var directory = Path.GetDirectoryName(targetPath);
-        var fileName = Path.GetFileName(targetPath);
-        if (string.IsNullOrWhiteSpace(directory) || string.IsNullOrWhiteSpace(fileName))
+        if (!TryGetTargetLocation(targetPath, out var directory, out var fileName))
         {
             return null;
         }
 
+        var backupFromReceipt = await TryResolveBackupFromReceiptsAsync(directory, fileName, cancellationToken);
+        if (!string.IsNullOrWhiteSpace(backupFromReceipt))
+        {
+            return backupFromReceipt;
+        }
+
+        return ResolveBackupFromCandidates(directory, fileName);
+    }
+
+    private async Task ApplyFieldWithFallbackSelectorAsync(
+        SaveDocument targetDoc,
+        SavePatchOperation operation,
+        object? value,
+        CancellationToken cancellationToken)
+    {
+        var fieldIdAttempt = await TryApplySelectorAsync(
+            targetDoc,
+            operation.FieldId,
+            value,
+            operation.FieldId,
+            "FieldId selector failed for {FieldId}. Attempting fieldPath fallback.",
+            cancellationToken);
+        if (fieldIdAttempt.WasApplied)
+        {
+            return;
+        }
+
+        var fieldPathAttempt = await TryApplySelectorAsync(
+            targetDoc,
+            operation.FieldPath,
+            value,
+            operation.FieldId,
+            "FieldPath fallback selector failed for {FieldId}.",
+            cancellationToken);
+        if (fieldPathAttempt.WasApplied)
+        {
+            return;
+        }
+
+        if (fieldIdAttempt.MismatchError is not null || fieldPathAttempt.MismatchError is not null)
+        {
+            throw new InvalidOperationException(
+                $"All selectors failed for field '{operation.FieldId}'.",
+                fieldPathAttempt.MismatchError ?? fieldIdAttempt.MismatchError);
+        }
+
+        throw new InvalidOperationException($"No valid selector was provided for field '{operation.FieldId}'.");
+    }
+
+    private static ApplyFilePaths BuildApplyFilePaths(string targetSavePath)
+    {
+        var targetPath = NormalizeTargetPath(targetSavePath);
+        var runId = DateTimeOffset.UtcNow.ToString(RunIdFormat);
+        return new ApplyFilePaths(
+            TargetPath: targetPath,
+            BackupPath: $"{targetPath}.bak.{runId}.sav",
+            ReceiptPath: $"{targetPath}.apply-receipt.{runId}.json",
+            TempOutputPath: $"{targetPath}.tmp.{runId}.sav",
+            RunId: runId);
+    }
+
+    private static bool TryGetTargetLocation(string targetPath, out string directory, out string fileName)
+    {
+        directory = Path.GetDirectoryName(targetPath) ?? string.Empty;
+        fileName = Path.GetFileName(targetPath);
+        return !string.IsNullOrWhiteSpace(directory) && !string.IsNullOrWhiteSpace(fileName);
+    }
+
+    private async Task<string?> TryResolveBackupFromReceiptsAsync(string directory, string fileName, CancellationToken cancellationToken)
+    {
         var receiptPattern = $"{fileName}.apply-receipt.*.json";
         var receiptPaths = Directory.EnumerateFiles(directory, receiptPattern)
             .Select(path => new FileInfo(path))
             .OrderByDescending(info => info.LastWriteTimeUtc)
-            .Select(info => info.FullName)
-            .ToArray();
+            .Select(info => info.FullName);
 
         foreach (var receiptPath in receiptPaths)
         {
-            try
+            var backupPath = await TryResolveReceiptBackupPathAsync(receiptPath, cancellationToken);
+            if (!string.IsNullOrWhiteSpace(backupPath))
             {
-                var json = await File.ReadAllTextAsync(receiptPath, cancellationToken);
-                var receipt = JsonSerializer.Deserialize<SavePatchApplyReceipt>(json, ReceiptJsonOptions);
-                if (receipt is null)
-                {
-                    _logger.LogWarning("Receipt {ReceiptPath} could not be parsed into expected contract. Continuing backup lookup.", receiptPath);
-                    continue;
-                }
-
-                if (TryNormalizeBackupCandidatePath(receipt.BackupPath, out var candidateBackupPath, out var invalidReason))
-                {
-                    return candidateBackupPath;
-                }
-
-                _logger.LogWarning(
-                    "Receipt {ReceiptPath} had invalid backup path '{BackupPath}': {Reason}. Continuing backup lookup.",
-                    receiptPath,
-                    receipt.BackupPath,
-                    invalidReason);
-            }
-            catch (Exception ex)
-            {
-                _logger.LogWarning(ex, "Receipt parse failed for {ReceiptPath}. Continuing backup lookup.", receiptPath);
+                return backupPath;
             }
         }
 
+        return null;
+    }
+
+    private async Task<string?> TryResolveReceiptBackupPathAsync(string receiptPath, CancellationToken cancellationToken)
+    {
+        try
+        {
+            var json = await File.ReadAllTextAsync(receiptPath, cancellationToken);
+            var receipt = JsonSerializer.Deserialize<SavePatchApplyReceipt>(json, ReceiptJsonOptions);
+            if (receipt is null)
+            {
+                _logger.LogWarning("Receipt {ReceiptPath} could not be parsed into expected contract. Continuing backup lookup.", receiptPath);
+                return null;
+            }
+
+            if (TryNormalizeBackupCandidatePath(receipt.BackupPath, out var candidateBackupPath, out var invalidReason))
+            {
+                return candidateBackupPath;
+            }
+
+            _logger.LogWarning(
+                "Receipt {ReceiptPath} had invalid backup path '{BackupPath}': {Reason}. Continuing backup lookup.",
+                receiptPath,
+                receipt.BackupPath,
+                invalidReason);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogWarning(ex, "Receipt parse failed for {ReceiptPath}. Continuing backup lookup.", receiptPath);
+        }
+
+        return null;
+    }
+
+    private static string? ResolveBackupFromCandidates(string directory, string fileName)
+    {
         var backupPattern = $"{fileName}.bak.*.sav";
         var backupCandidates = Directory.EnumerateFiles(directory, backupPattern)
             .Select(path => new FileInfo(path))
             .OrderByDescending(info => info.LastWriteTimeUtc)
-            .Select(info => info.FullName)
-            .ToArray();
+            .Select(info => info.FullName);
 
         foreach (var candidate in backupCandidates)
         {
@@ -480,51 +524,72 @@ public sealed class SavePatchApplyService : ISavePatchApplyService
         return null;
     }
 
-    private async Task ApplyFieldWithFallbackSelectorAsync(
+    private (object? Value, SavePatchApplyResult? Failure) TryNormalizePatchValue(SavePatchOperation operation)
+    {
+        try
+        {
+            return (SavePatchFieldCodec.NormalizePatchValue(operation.NewValue, operation.ValueType), null);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogWarning(ex, "Patch value normalization failed for field {FieldId}", operation.FieldId);
+            return (
+                null,
+                BuildFailure(
+                    SavePatchApplyClassification.ValidationFailed,
+                    ReasonValueNormalizationFailed,
+                    "Patch operation value could not be normalized.",
+                    operation.FieldId,
+                    operation.FieldPath));
+        }
+    }
+
+    private async Task<SavePatchApplyResult?> TryApplyOperationValueAsync(
         SaveDocument targetDoc,
         SavePatchOperation operation,
         object? value,
         CancellationToken cancellationToken)
     {
-        Exception? fieldIdError = null;
-        Exception? fieldPathError = null;
-
-        if (!string.IsNullOrWhiteSpace(operation.FieldId))
+        try
         {
-            try
-            {
-                await _saveCodec.EditAsync(targetDoc, operation.FieldId, value, cancellationToken);
-                return;
-            }
-            catch (Exception ex) when (IsSelectorMismatchError(ex))
-            {
-                fieldIdError = ex;
-                _logger.LogDebug(ex, "FieldId selector failed for {FieldId}. Attempting fieldPath fallback.", operation.FieldId);
-            }
+            await ApplyFieldWithFallbackSelectorAsync(targetDoc, operation, value, cancellationToken);
+            return null;
+        }
+        catch (Exception ex)
+        {
+            _logger.LogWarning(ex, "Patch field apply failed for {FieldId}", operation.FieldId);
+            return BuildFailure(
+                SavePatchApplyClassification.ValidationFailed,
+                ReasonFieldApplyFailed,
+                "Patch operation could not be applied to target field.",
+                operation.FieldId,
+                operation.FieldPath);
+        }
+    }
+
+    private async Task<SelectorApplyAttempt> TryApplySelectorAsync(
+        SaveDocument targetDoc,
+        string? selector,
+        object? value,
+        string fieldIdForLogging,
+        string failureMessage,
+        CancellationToken cancellationToken)
+    {
+        if (string.IsNullOrWhiteSpace(selector))
+        {
+            return SelectorApplyAttempt.NotAttempted;
         }
 
-        if (!string.IsNullOrWhiteSpace(operation.FieldPath))
+        try
         {
-            try
-            {
-                await _saveCodec.EditAsync(targetDoc, operation.FieldPath, value, cancellationToken);
-                return;
-            }
-            catch (Exception ex) when (IsSelectorMismatchError(ex))
-            {
-                fieldPathError = ex;
-                _logger.LogDebug(ex, "FieldPath fallback selector failed for {FieldId}.", operation.FieldId);
-            }
+            await _saveCodec.EditAsync(targetDoc, selector, value, cancellationToken);
+            return SelectorApplyAttempt.AppliedAttempt;
         }
-
-        if (fieldIdError is not null || fieldPathError is not null)
+        catch (Exception ex) when (IsSelectorMismatchError(ex))
         {
-            throw new InvalidOperationException(
-                $"All selectors failed for field '{operation.FieldId}'.",
-                fieldPathError ?? fieldIdError);
+            _logger.LogDebug(ex, failureMessage, fieldIdForLogging);
+            return SelectorApplyAttempt.Mismatch(ex);
         }
-
-        throw new InvalidOperationException($"No valid selector was provided for field '{operation.FieldId}'.");
     }
 
     private static bool IsSelectorMismatchError(Exception exception)
@@ -608,6 +673,20 @@ public sealed class SavePatchApplyService : ISavePatchApplyService
             BackupPath: backupPath,
             ReceiptPath: receiptPath,
             Failure: new SavePatchApplyFailure(reasonCode, message, fieldId, fieldPath));
+    }
+
+    private sealed record ApplyFilePaths(
+        string TargetPath,
+        string BackupPath,
+        string ReceiptPath,
+        string TempOutputPath,
+        string RunId);
+
+    private sealed record SelectorApplyAttempt(bool WasApplied, Exception? MismatchError)
+    {
+        public static SelectorApplyAttempt NotAttempted { get; } = new(WasApplied: false, MismatchError: null);
+        public static SelectorApplyAttempt AppliedAttempt { get; } = new(WasApplied: true, MismatchError: null);
+        public static SelectorApplyAttempt Mismatch(Exception error) => new(WasApplied: false, MismatchError: error);
     }
 
     private sealed record SavePatchApplyReceipt(

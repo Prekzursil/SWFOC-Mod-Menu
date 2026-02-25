@@ -270,19 +270,44 @@ public sealed class ProcessLocator : IProcessLocator
 
     private static ProcessDetection? TryDetectStarWarsG(string processName, string? processPath, string? commandLine)
     {
-        // Steam x64 "Gold Pack" typically launches StarWarsG.exe instead of sweaw/swfoc exes.
-        // Infer family from folder/launch args. Prefer FoC-safe defaults because most trainer use
-        // in this project targets FoC/modded FoC and command line is sometimes unavailable.
-        // - corruption folder or mod args => FoC runtime
-        // - ambiguous/no args => FoC-safe fallback
-        if (!IsProcessName(processName, "starwarsg") &&
-            !ContainsToken(processPath, "starwarsg.exe") &&
-            !ContainsToken(commandLine, "starwarsg.exe"))
+        if (!IsStarWarsGProcess(processName, processPath, commandLine))
         {
             return null;
         }
 
-        if (ContainsToken(commandLine, "sweaw.exe") && !ContainsToken(commandLine, "steammod=") && !ContainsToken(commandLine, "modpath="))
+        var commandLineDetection = TryDetectStarWarsGFromCommandLine(commandLine);
+        if (commandLineDetection is not null)
+        {
+            return commandLineDetection;
+        }
+
+        if (ContainsToken(processPath, "\\corruption\\") || ContainsToken(processPath, "/corruption/"))
+        {
+            return new ProcessDetection(ExeTarget.Swfoc, IsStarWarsG: true, DetectedVia: "starwarsg_path_corruption");
+        }
+
+        if (ContainsToken(processPath, "\\gamedata\\") || ContainsToken(processPath, "/gamedata/"))
+        {
+            // Ambiguous for StarWarsG; keep FoC-safe fallback to avoid false negatives for
+            // FoC+mod sessions where args are inaccessible.
+            return new ProcessDetection(ExeTarget.Swfoc, IsStarWarsG: true, DetectedVia: "starwarsg_path_gamedata_foc_safe");
+        }
+
+        return new ProcessDetection(ExeTarget.Swfoc, IsStarWarsG: true, DetectedVia: "starwarsg_default_foc_safe");
+    }
+
+    private static bool IsStarWarsGProcess(string processName, string? processPath, string? commandLine)
+    {
+        return IsProcessName(processName, "starwarsg")
+               || ContainsToken(processPath, "starwarsg.exe")
+               || ContainsToken(commandLine, "starwarsg.exe");
+    }
+
+    private static ProcessDetection? TryDetectStarWarsGFromCommandLine(string? commandLine)
+    {
+        if (ContainsToken(commandLine, "sweaw.exe") &&
+            !ContainsToken(commandLine, "steammod=") &&
+            !ContainsToken(commandLine, "modpath="))
         {
             return new ProcessDetection(ExeTarget.Sweaw, IsStarWarsG: true, DetectedVia: "starwarsg_cmdline_sweaw_hint");
         }
@@ -295,19 +320,7 @@ public sealed class ProcessLocator : IProcessLocator
             return new ProcessDetection(ExeTarget.Swfoc, IsStarWarsG: true, DetectedVia: "starwarsg_cmdline_foc_hint");
         }
 
-        if (ContainsToken(processPath, @"\corruption\") || ContainsToken(processPath, "/corruption/"))
-        {
-            return new ProcessDetection(ExeTarget.Swfoc, IsStarWarsG: true, DetectedVia: "starwarsg_path_corruption");
-        }
-
-        if (ContainsToken(processPath, @"\gamedata\") || ContainsToken(processPath, "/gamedata/"))
-        {
-            // Ambiguous for StarWarsG; keep FoC-safe fallback to avoid false negatives for
-            // FoC+mod sessions where args are inaccessible.
-            return new ProcessDetection(ExeTarget.Swfoc, IsStarWarsG: true, DetectedVia: "starwarsg_path_gamedata_foc_safe");
-        }
-
-        return new ProcessDetection(ExeTarget.Swfoc, IsStarWarsG: true, DetectedVia: "starwarsg_default_foc_safe");
+        return null;
     }
 
     private static RuntimeMode InferMode(string? commandLine)

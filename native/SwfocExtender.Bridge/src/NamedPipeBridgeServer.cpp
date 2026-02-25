@@ -306,6 +306,22 @@ std::string ToJsonLine(const BridgeResult& result) {
     return out.str();
 }
 
+BridgeResult BuildBridgeFailureResult(
+    std::string commandId,
+    std::string hookState,
+    std::string message,
+    std::string diagnosticsJson) {
+    BridgeResult result {};
+    result.commandId = std::move(commandId);
+    result.succeeded = false;
+    result.reasonCode = "CAPABILITY_BACKEND_UNAVAILABLE";
+    result.backend = "extender";
+    result.hookState = std::move(hookState);
+    result.message = std::move(message);
+    result.diagnosticsJson = std::move(diagnosticsJson);
+    return result;
+}
+
 #if defined(_WIN32)
 HANDLE CreateBridgePipe(const std::string& fullPipeName) {
     return CreateNamedPipeA(
@@ -458,27 +474,19 @@ BridgeResult NamedPipeBridgeServer::handleRawCommand(const std::string& jsonLine
     }
 
     if (command.commandId.empty()) {
-        BridgeResult result {};
-        result.commandId = {};
-        result.succeeded = false;
-        result.reasonCode = "CAPABILITY_BACKEND_UNAVAILABLE";
-        result.backend = "extender";
-        result.hookState = "invalid_command";
-        result.message = "Command payload missing commandId.";
-        result.diagnosticsJson = "{\"parseError\":\"missing_commandId\"}";
-        return result;
+        return BuildBridgeFailureResult(
+            {},
+            "invalid_command",
+            "Command payload missing commandId.",
+            "{\"parseError\":\"missing_commandId\"}");
     }
 
     if (!handler_) {
-        BridgeResult result {};
-        result.commandId = command.commandId;
-        result.succeeded = false;
-        result.reasonCode = "CAPABILITY_BACKEND_UNAVAILABLE";
-        result.backend = "extender";
-        result.hookState = "handler_missing";
-        result.message = "Bridge handler is not configured.";
-        result.diagnosticsJson = "{\"handler\":\"missing\"}";
-        return result;
+        return BuildBridgeFailureResult(
+            command.commandId,
+            "handler_missing",
+            "Bridge handler is not configured.",
+            "{\"handler\":\"missing\"}");
     }
 
     auto result = handler_(command);

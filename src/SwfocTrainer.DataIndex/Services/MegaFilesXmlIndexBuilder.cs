@@ -15,14 +15,9 @@ public sealed class MegaFilesXmlIndexBuilder
         }
 
         var diagnostics = new List<string>();
-        XDocument document;
-        try
+        var document = TryParseDocument(megaFilesXmlContent, diagnostics);
+        if (document is null)
         {
-            document = XDocument.Parse(megaFilesXmlContent, LoadOptions.None);
-        }
-        catch (Exception ex)
-        {
-            diagnostics.Add($"Invalid MegaFiles XML: {ex.Message}");
             return new MegaFilesIndex(Array.Empty<MegaFileEntry>(), diagnostics);
         }
 
@@ -35,30 +30,54 @@ public sealed class MegaFilesXmlIndexBuilder
                 continue;
             }
 
-            var fileName = ReadFirstNonEmptyAttribute(node, _nameAttributeCandidates);
-            if (string.IsNullOrWhiteSpace(fileName))
+            var entry = TryBuildEntry(node, loadOrder, diagnostics);
+            if (entry is null)
             {
-                diagnostics.Add($"Skipped MegaFile entry at line with no filename attribute (order={loadOrder}).");
                 continue;
             }
 
-            var attributes = node
-                .Attributes()
-                .ToDictionary(
-                    attribute => attribute.Name.LocalName,
-                    attribute => attribute.Value,
-                    StringComparer.OrdinalIgnoreCase);
-
-            var enabled = !string.Equals(
-                ReadFirstNonEmptyAttribute(node, "Enabled", "IsEnabled"),
-                "false",
-                StringComparison.OrdinalIgnoreCase);
-
-            files.Add(new MegaFileEntry(fileName!, loadOrder, enabled, attributes));
+            files.Add(entry);
             loadOrder++;
         }
 
         return new MegaFilesIndex(files, diagnostics);
+    }
+
+    private static XDocument? TryParseDocument(string content, ICollection<string> diagnostics)
+    {
+        try
+        {
+            return XDocument.Parse(content, LoadOptions.None);
+        }
+        catch (Exception ex)
+        {
+            diagnostics.Add($"Invalid MegaFiles XML: {ex.Message}");
+            return null;
+        }
+    }
+
+    private MegaFileEntry? TryBuildEntry(XElement node, int loadOrder, ICollection<string> diagnostics)
+    {
+        var fileName = ReadFirstNonEmptyAttribute(node, _nameAttributeCandidates);
+        if (string.IsNullOrWhiteSpace(fileName))
+        {
+            diagnostics.Add($"Skipped MegaFile entry at line with no filename attribute (order={loadOrder}).");
+            return null;
+        }
+
+        var attributes = node
+            .Attributes()
+            .ToDictionary(
+                attribute => attribute.Name.LocalName,
+                attribute => attribute.Value,
+                StringComparer.OrdinalIgnoreCase);
+
+        var enabled = !string.Equals(
+            ReadFirstNonEmptyAttribute(node, "Enabled", "IsEnabled"),
+            "false",
+            StringComparison.OrdinalIgnoreCase);
+
+        return new MegaFileEntry(fileName, loadOrder, enabled, attributes);
     }
 
     private static bool IsMegaFileElement(XElement element)

@@ -48,70 +48,11 @@ public sealed class NamedPipeExtenderBackendTests
         requestDoc.RootElement.GetProperty("processId").GetInt32().Should().Be(4242);
         requestDoc.RootElement.GetProperty("processName").GetString().Should().Be("StarWarsG.exe");
         var commandId = requestDoc.RootElement.GetProperty("commandId").GetString() ?? string.Empty;
-        var response = JsonSerializer.Serialize(new
-        {
-            commandId,
-            succeeded = true,
-            reasonCode = "CAPABILITY_PROBE_PASS",
-            backend = "extender",
-            hookState = "HOOK_READY",
-            message = "Probe completed.",
-            diagnostics = new
-            {
-                capabilities = new
-                {
-                    freeze_timer = new
-                    {
-                        available = true,
-                        state = "Verified",
-                        reasonCode = "CAPABILITY_PROBE_PASS"
-                    },
-                    toggle_fog_reveal = new
-                    {
-                        available = true,
-                        state = "Verified",
-                        reasonCode = "CAPABILITY_PROBE_PASS"
-                    },
-                    toggle_ai = new
-                    {
-                        available = false,
-                        state = "Unknown",
-                        reasonCode = "CAPABILITY_REQUIRED_MISSING"
-                    },
-                    set_unit_cap = new
-                    {
-                        available = true,
-                        state = "Experimental",
-                        reasonCode = "CAPABILITY_FEATURE_EXPERIMENTAL"
-                    },
-                    toggle_instant_build_patch = new
-                    {
-                        available = false,
-                        state = "Unknown",
-                        reasonCode = "CAPABILITY_REQUIRED_MISSING"
-                    },
-                    set_credits = new
-                    {
-                        available = true,
-                        state = "Verified",
-                        reasonCode = "CAPABILITY_PROBE_PASS"
-                    }
-                }
-            }
-        });
+        var response = BuildProbeResponse(commandId);
         await writer.WriteLineAsync(response.AsMemory(), cts.Token);
         var report = await reportTask;
 
-        report.Capabilities.Should().ContainKey("freeze_timer");
-        report.Capabilities.Should().ContainKey("toggle_fog_reveal");
-        report.Capabilities.Should().ContainKey("toggle_ai");
-        report.Capabilities.Should().ContainKey("set_unit_cap");
-        report.Capabilities.Should().ContainKey("toggle_instant_build_patch");
-        report.Capabilities.Should().ContainKey("set_credits");
-        report.IsFeatureAvailable("set_credits").Should().BeTrue(
-            $"probeReason={report.ProbeReasonCode} diagnostics={System.Text.Json.JsonSerializer.Serialize(report.Diagnostics)}");
-        report.Capabilities["set_unit_cap"].Confidence.Should().Be(CapabilityConfidenceState.Experimental);
-        report.Capabilities["set_credits"].Confidence.Should().Be(CapabilityConfidenceState.Verified);
+        AssertProbeReport(report);
     }
 
     [Fact]
@@ -278,6 +219,45 @@ public sealed class NamedPipeExtenderBackendTests
                 forcePatchHook = forcePatchHook.ToString().ToLowerInvariant()
             }
         });
+    }
+
+    private static string BuildProbeResponse(string commandId)
+    {
+        return JsonSerializer.Serialize(new
+        {
+            commandId,
+            succeeded = true,
+            reasonCode = "CAPABILITY_PROBE_PASS",
+            backend = "extender",
+            hookState = "HOOK_READY",
+            message = "Probe completed.",
+            diagnostics = new
+            {
+                capabilities = new
+                {
+                    freeze_timer = new { available = true, state = "Verified", reasonCode = "CAPABILITY_PROBE_PASS" },
+                    toggle_fog_reveal = new { available = true, state = "Verified", reasonCode = "CAPABILITY_PROBE_PASS" },
+                    toggle_ai = new { available = false, state = "Unknown", reasonCode = "CAPABILITY_REQUIRED_MISSING" },
+                    set_unit_cap = new { available = true, state = "Experimental", reasonCode = "CAPABILITY_FEATURE_EXPERIMENTAL" },
+                    toggle_instant_build_patch = new { available = false, state = "Unknown", reasonCode = "CAPABILITY_REQUIRED_MISSING" },
+                    set_credits = new { available = true, state = "Verified", reasonCode = "CAPABILITY_PROBE_PASS" }
+                }
+            }
+        });
+    }
+
+    private static void AssertProbeReport(CapabilityReport report)
+    {
+        report.Capabilities.Should().ContainKey("freeze_timer");
+        report.Capabilities.Should().ContainKey("toggle_fog_reveal");
+        report.Capabilities.Should().ContainKey("toggle_ai");
+        report.Capabilities.Should().ContainKey("set_unit_cap");
+        report.Capabilities.Should().ContainKey("toggle_instant_build_patch");
+        report.Capabilities.Should().ContainKey("set_credits");
+        report.IsFeatureAvailable("set_credits").Should().BeTrue(
+            $"probeReason={report.ProbeReasonCode} diagnostics={System.Text.Json.JsonSerializer.Serialize(report.Diagnostics)}");
+        report.Capabilities["set_unit_cap"].Confidence.Should().Be(CapabilityConfidenceState.Experimental);
+        report.Capabilities["set_credits"].Confidence.Should().Be(CapabilityConfidenceState.Verified);
     }
 
     private static void AssertHookLockResult(ActionExecutionResult result)
