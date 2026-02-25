@@ -277,22 +277,50 @@ public sealed class MainViewModel : INotifyPropertyChanged
     {
         return (
             new AsyncCommand(BrowseSaveAsync),
-            new AsyncCommand(LoadSaveAsync, () => !string.IsNullOrWhiteSpace(SavePath) && !string.IsNullOrWhiteSpace(SelectedProfileId)),
-            new AsyncCommand(EditSaveAsync, () => _loadedSave is not null && !string.IsNullOrWhiteSpace(SaveNodePath)),
-            new AsyncCommand(ValidateSaveAsync, () => _loadedSave is not null),
-            new AsyncCommand(RefreshDiffAsync, () => _loadedSave is not null && _loadedSaveOriginal is not null),
-            new AsyncCommand(WriteSaveAsync, () => _loadedSave is not null),
+            new AsyncCommand(LoadSaveAsync, CanLoadSave),
+            new AsyncCommand(EditSaveAsync, CanEditSave),
+            new AsyncCommand(ValidateSaveAsync, CanValidateSave),
+            new AsyncCommand(RefreshDiffAsync, CanRefreshDiff),
+            new AsyncCommand(WriteSaveAsync, CanWriteSave),
             new AsyncCommand(BrowsePatchPackAsync),
-            new AsyncCommand(ExportPatchPackAsync, () => _loadedSave is not null && _loadedSaveOriginal is not null && !string.IsNullOrWhiteSpace(SelectedProfileId)),
-            new AsyncCommand(LoadPatchPackAsync, () => !string.IsNullOrWhiteSpace(SavePatchPackPath)),
-            new AsyncCommand(PreviewPatchPackAsync, () => _loadedSave is not null && _loadedPatchPack is not null && !string.IsNullOrWhiteSpace(SelectedProfileId)),
-            new AsyncCommand(ApplyPatchPackAsync, () => _loadedPatchPack is not null && !string.IsNullOrWhiteSpace(SavePath) && !string.IsNullOrWhiteSpace(SelectedProfileId)),
-            new AsyncCommand(RestoreBackupAsync, () => !string.IsNullOrWhiteSpace(SavePath)),
+            new AsyncCommand(ExportPatchPackAsync, CanExportPatchPack),
+            new AsyncCommand(LoadPatchPackAsync, CanLoadPatchPack),
+            new AsyncCommand(PreviewPatchPackAsync, CanPreviewPatchPack),
+            new AsyncCommand(ApplyPatchPackAsync, CanApplyPatchPack),
+            new AsyncCommand(RestoreBackupAsync, CanRestoreBackup),
             new AsyncCommand(LoadHotkeysAsync),
             new AsyncCommand(SaveHotkeysAsync),
             new AsyncCommand(AddHotkeyAsync),
-            new AsyncCommand(RemoveHotkeyAsync, () => SelectedHotkey is not null));
+            new AsyncCommand(RemoveHotkeyAsync, CanRemoveHotkey));
     }
+
+    private bool HasSelectedProfile() => !string.IsNullOrWhiteSpace(SelectedProfileId);
+
+    private bool HasLoadedSave() => _loadedSave is not null;
+
+    private bool HasLoadedSaveForDiff() => _loadedSave is not null && _loadedSaveOriginal is not null;
+
+    private bool CanLoadSave() => !string.IsNullOrWhiteSpace(SavePath) && HasSelectedProfile();
+
+    private bool CanEditSave() => HasLoadedSave() && !string.IsNullOrWhiteSpace(SaveNodePath);
+
+    private bool CanValidateSave() => HasLoadedSave();
+
+    private bool CanRefreshDiff() => HasLoadedSaveForDiff();
+
+    private bool CanWriteSave() => HasLoadedSave();
+
+    private bool CanExportPatchPack() => HasLoadedSaveForDiff() && HasSelectedProfile();
+
+    private bool CanLoadPatchPack() => !string.IsNullOrWhiteSpace(SavePatchPackPath);
+
+    private bool CanPreviewPatchPack() => HasLoadedSave() && _loadedPatchPack is not null && HasSelectedProfile();
+
+    private bool CanApplyPatchPack() => _loadedPatchPack is not null && !string.IsNullOrWhiteSpace(SavePath) && HasSelectedProfile();
+
+    private bool CanRestoreBackup() => !string.IsNullOrWhiteSpace(SavePath);
+
+    private bool CanRemoveHotkey() => SelectedHotkey is not null;
 
     private (
         ICommand RefreshActionReliability,
@@ -871,31 +899,7 @@ public sealed class MainViewModel : INotifyPropertyChanged
                 return "Detected game processes: none. Ensure the game is running and try launching trainer as Administrator.";
             }
 
-            var summary = string.Join(", ", all
-                .Take(3)
-                .Select(x =>
-                {
-                    var cmd = x.Metadata is not null &&
-                              x.Metadata.TryGetValue("commandLineAvailable", out var cmdValue)
-                        ? cmdValue
-                        : "False";
-                    var mods = x.Metadata is not null &&
-                               x.Metadata.TryGetValue("steamModIdsDetected", out var ids)
-                        ? ids
-                        : string.Empty;
-                    var via = x.Metadata is not null &&
-                              x.Metadata.TryGetValue("detectedVia", out var detectedVia)
-                        ? detectedVia
-                        : "unknown";
-                    var ctx = x.LaunchContext;
-                    var launch = ctx is null ? "n/a" : ctx.LaunchKind.ToString();
-                    var recommended = ctx?.Recommendation.ProfileId ?? string.Empty;
-                    var reason = ctx?.Recommendation.ReasonCode ?? "unknown";
-                    var confidence = ctx is null ? "0.00" : ctx.Recommendation.Confidence.ToString("0.00");
-                    return $"{x.ProcessName}:{x.ProcessId}:{x.ExeTarget}:cmd={cmd}:mods={mods}:launch={launch}:rec={recommended}:{reason}:{confidence}:via={via}";
-                }));
-            var more = all.Count > 3 ? $", +{all.Count - 3} more" : string.Empty;
-            return $"Detected game processes: {summary}{more}";
+            return BuildAttachProcessHintSummary(all);
         }
         catch
         {
@@ -903,34 +907,63 @@ public sealed class MainViewModel : INotifyPropertyChanged
         }
     }
 
+    private static string BuildAttachProcessHintSummary(IReadOnlyList<ProcessMetadata> processes)
+    {
+        var summary = string.Join(", ", processes
+            .Take(3)
+            .Select(BuildAttachProcessHintSegment));
+        var more = processes.Count > 3 ? $", +{processes.Count - 3} more" : string.Empty;
+        return $"Detected game processes: {summary}{more}";
+    }
+
+    private static string BuildAttachProcessHintSegment(ProcessMetadata process)
+    {
+        var launchContext = process.LaunchContext;
+        var cmd = ReadProcessMetadata(process, "commandLineAvailable", "False");
+        var mods = ReadProcessMetadata(process, "steamModIdsDetected", string.Empty);
+        var via = ReadProcessMetadata(process, "detectedVia", "unknown");
+        var launch = launchContext?.LaunchKind.ToString() ?? "n/a";
+        var recommended = launchContext?.Recommendation.ProfileId ?? string.Empty;
+        var reason = launchContext?.Recommendation.ReasonCode ?? "unknown";
+        var confidence = launchContext is null
+            ? "0.00"
+            : launchContext.Recommendation.Confidence.ToString("0.00");
+        return $"{process.ProcessName}:{process.ProcessId}:{process.ExeTarget}:cmd={cmd}:mods={mods}:launch={launch}:rec={recommended}:{reason}:{confidence}:via={via}";
+    }
+
     private static bool HasSteamModId(IEnumerable<ProcessMetadata> processes, string workshopId)
     {
-        foreach (var process in processes)
+        return processes.Any(process => ProcessHasSteamModId(process, workshopId));
+    }
+
+    private static bool ProcessHasSteamModId(ProcessMetadata process, string workshopId)
+    {
+        return HasLaunchContextModId(process, workshopId) ||
+               HasCommandLineModId(process, workshopId) ||
+               HasMetadataModId(process, workshopId);
+    }
+
+    private static bool HasLaunchContextModId(ProcessMetadata process, string workshopId)
+    {
+        return process.LaunchContext is not null &&
+               process.LaunchContext.SteamModIds.Any(id => id.Equals(workshopId, StringComparison.OrdinalIgnoreCase));
+    }
+
+    private static bool HasCommandLineModId(ProcessMetadata process, string workshopId)
+    {
+        return process.CommandLine?.Contains(workshopId, StringComparison.OrdinalIgnoreCase) == true;
+    }
+
+    private static bool HasMetadataModId(ProcessMetadata process, string workshopId)
+    {
+        var ids = ReadProcessMetadata(process, "steamModIdsDetected", string.Empty);
+        if (string.IsNullOrWhiteSpace(ids))
         {
-            if (process.LaunchContext is not null &&
-                process.LaunchContext.SteamModIds.Any(id => id.Equals(workshopId, StringComparison.OrdinalIgnoreCase)))
-            {
-                return true;
-            }
-
-            if (process.CommandLine?.Contains(workshopId, StringComparison.OrdinalIgnoreCase) == true)
-            {
-                return true;
-            }
-
-            if (process.Metadata is not null &&
-                process.Metadata.TryGetValue("steamModIdsDetected", out var ids) &&
-                !string.IsNullOrWhiteSpace(ids))
-            {
-                var split = ids.Split(',', StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries);
-                if (split.Any(x => x.Equals(workshopId, StringComparison.OrdinalIgnoreCase)))
-                {
-                    return true;
-                }
-            }
+            return false;
         }
 
-        return false;
+        var split = ids.Split(',', StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries);
+        return split.Any(id => id.Equals(workshopId, StringComparison.OrdinalIgnoreCase));
     }
 
     private static bool IsStarWarsGProcess(ProcessMetadata process)
@@ -953,30 +986,61 @@ public sealed class MainViewModel : INotifyPropertyChanged
 
     private static string BuildProcessDiagnosticSummary(ProcessMetadata process)
     {
-        var cmdAvailable = ReadProcessMetadata(process, "commandLineAvailable", "False");
-        var mods = ReadProcessMods(process);
-        var via = ReadProcessMetadata(process, "detectedVia", "unknown");
-        var dependencyState = ReadProcessMetadata(process, "dependencyValidation", "Pass");
-        var dependencyMessage = ReadProcessMetadata(process, "dependencyValidationMessage", string.Empty);
-        var dependencySegment = BuildProcessDependencySegment(dependencyState, dependencyMessage);
-        var fallbackRate = ReadProcessMetadata(process, "fallbackHitRate", "n/a");
-        var unresolvedRate = ReadProcessMetadata(process, "unresolvedSymbolRate", "n/a");
-        var resolvedVariant = ReadProcessMetadata(process, "resolvedVariant", "n/a");
-        var resolvedVariantReason = ReadProcessMetadata(process, "resolvedVariantReasonCode", "n/a");
-        var resolvedVariantConfidence = ReadProcessMetadata(process, "resolvedVariantConfidence", "0.00");
-        var launchKind = process.LaunchContext?.LaunchKind.ToString() ?? "Unknown";
+        var dependencySegment = BuildProcessDependencySegment(
+            ReadProcessMetadata(process, "dependencyValidation", "Pass"),
+            ReadProcessMetadata(process, "dependencyValidationMessage", string.Empty));
+
+        return $"target={process.ExeTarget} | launch={BuildLaunchKindSegment(process)} | hostRole={BuildHostRoleSegment(process)} | score={BuildSelectionScoreSegment(process)} | module={BuildModuleSizeSegment(process)} | workshopMatches={BuildWorkshopMatchesSegment(process)} | cmdLine={ReadProcessMetadata(process, "commandLineAvailable", "False")} | mods={ReadProcessMods(process)} | {BuildModPathSegment(process)} | {BuildRecommendationSegment(process)} | {BuildResolvedVariantSegment(process)} | via={ReadProcessMetadata(process, "detectedVia", "unknown")} | {dependencySegment} | fallbackRate={ReadProcessMetadata(process, "fallbackHitRate", "n/a")} | unresolvedRate={ReadProcessMetadata(process, "unresolvedSymbolRate", "n/a")}";
+    }
+
+    private static string BuildLaunchKindSegment(ProcessMetadata process)
+    {
+        return process.LaunchContext?.LaunchKind.ToString() ?? "Unknown";
+    }
+
+    private static string BuildHostRoleSegment(ProcessMetadata process)
+    {
+        return process.HostRole.ToString().ToLowerInvariant();
+    }
+
+    private static string BuildSelectionScoreSegment(ProcessMetadata process)
+    {
+        return process.SelectionScore.ToString("0.00", CultureInfo.InvariantCulture);
+    }
+
+    private static string BuildModuleSizeSegment(ProcessMetadata process)
+    {
+        return process.MainModuleSize > 0
+            ? process.MainModuleSize.ToString(CultureInfo.InvariantCulture)
+            : "n/a";
+    }
+
+    private static string BuildWorkshopMatchesSegment(ProcessMetadata process)
+    {
+        return process.WorkshopMatchCount.ToString(CultureInfo.InvariantCulture);
+    }
+
+    private static string BuildModPathSegment(ProcessMetadata process)
+    {
         var modPath = process.LaunchContext?.ModPathNormalized;
-        var recProfile = process.LaunchContext?.Recommendation.ProfileId ?? "none";
-        var recReason = process.LaunchContext?.Recommendation.ReasonCode ?? "unknown";
-        var recConfidence = process.LaunchContext is null
-            ? "0.00"
-            : process.LaunchContext.Recommendation.Confidence.ToString("0.00");
-        var hostRole = process.HostRole.ToString().ToLowerInvariant();
-        var moduleSize = process.MainModuleSize > 0 ? process.MainModuleSize.ToString(CultureInfo.InvariantCulture) : "n/a";
-        var workshopMatchCount = process.WorkshopMatchCount.ToString(CultureInfo.InvariantCulture);
-        var selectionScore = process.SelectionScore.ToString("0.00", CultureInfo.InvariantCulture);
-        var modPathSegment = string.IsNullOrWhiteSpace(modPath) ? "modPath=none" : $"modPath={modPath}";
-        return $"target={process.ExeTarget} | launch={launchKind} | hostRole={hostRole} | score={selectionScore} | module={moduleSize} | workshopMatches={workshopMatchCount} | cmdLine={cmdAvailable} | mods={mods} | {modPathSegment} | rec={recProfile}:{recReason}:{recConfidence} | variant={resolvedVariant}:{resolvedVariantReason}:{resolvedVariantConfidence} | via={via} | {dependencySegment} | fallbackRate={fallbackRate} | unresolvedRate={unresolvedRate}";
+        return string.IsNullOrWhiteSpace(modPath) ? "modPath=none" : $"modPath={modPath}";
+    }
+
+    private static string BuildRecommendationSegment(ProcessMetadata process)
+    {
+        var recommendation = process.LaunchContext?.Recommendation;
+        var profile = recommendation?.ProfileId ?? "none";
+        var reason = recommendation?.ReasonCode ?? "unknown";
+        var confidence = recommendation is null ? "0.00" : recommendation.Confidence.ToString("0.00");
+        return $"rec={profile}:{reason}:{confidence}";
+    }
+
+    private static string BuildResolvedVariantSegment(ProcessMetadata process)
+    {
+        var resolvedVariant = ReadProcessMetadata(process, "resolvedVariant", "n/a");
+        var reason = ReadProcessMetadata(process, "resolvedVariantReasonCode", "n/a");
+        var confidence = ReadProcessMetadata(process, "resolvedVariantConfidence", "0.00");
+        return $"variant={resolvedVariant}:{reason}:{confidence}";
     }
 
     private async Task<string?> TryResolveLaunchContextRecommendationAsync(IReadOnlyList<ProcessMetadata> processes)
@@ -2097,12 +2161,23 @@ public sealed class MainViewModel : INotifyPropertyChanged
         }
 
         var metadata = session.Process.Metadata;
+        AddLiveOpsModeDiagnostics(session, metadata);
+        AddLiveOpsLaunchDiagnostics(session, metadata);
+        AddLiveOpsDependencyDiagnostics(metadata);
+        AddLiveOpsSymbolDiagnostics(session);
+    }
+
+    private void AddLiveOpsModeDiagnostics(AttachSession session, IReadOnlyDictionary<string, string>? metadata)
+    {
         LiveOpsDiagnostics.Add($"mode: {session.Process.Mode}");
         if (metadata is not null && metadata.TryGetValue("runtimeModeReasonCode", out var modeReason))
         {
             LiveOpsDiagnostics.Add($"mode_reason: {modeReason}");
         }
+    }
 
+    private void AddLiveOpsLaunchDiagnostics(AttachSession session, IReadOnlyDictionary<string, string>? metadata)
+    {
         LiveOpsDiagnostics.Add($"launch: {session.Process.LaunchContext?.LaunchKind ?? LaunchKind.Unknown}");
         LiveOpsDiagnostics.Add($"recommendation: {session.Process.LaunchContext?.Recommendation.ProfileId ?? "none"}");
         if (metadata is not null && metadata.TryGetValue("resolvedVariant", out var resolvedVariant))
@@ -2111,13 +2186,21 @@ public sealed class MainViewModel : INotifyPropertyChanged
             var confidence = GetMetadataValueOrDefault(metadata, "resolvedVariantConfidence", "0.00");
             LiveOpsDiagnostics.Add($"variant: {resolvedVariant} ({reason}, conf={confidence})");
         }
+    }
 
-        if (metadata is not null && metadata.TryGetValue("dependencyValidation", out var dependency))
+    private void AddLiveOpsDependencyDiagnostics(IReadOnlyDictionary<string, string>? metadata)
+    {
+        if (metadata is null || !metadata.TryGetValue("dependencyValidation", out var dependency))
         {
-            var dependencyMessage = GetMetadataValueOrDefault(metadata, "dependencyValidationMessage", string.Empty);
-            LiveOpsDiagnostics.Add(BuildDependencyDiagnostic(dependency, dependencyMessage));
+            return;
         }
 
+        var dependencyMessage = GetMetadataValueOrDefault(metadata, "dependencyValidationMessage", string.Empty);
+        LiveOpsDiagnostics.Add(BuildDependencyDiagnostic(dependency, dependencyMessage));
+    }
+
+    private void AddLiveOpsSymbolDiagnostics(AttachSession session)
+    {
         var healthy = session.Symbols.Symbols.Values.Count(x => x.HealthStatus == SymbolHealthStatus.Healthy);
         var degraded = session.Symbols.Symbols.Values.Count(x => x.HealthStatus == SymbolHealthStatus.Degraded);
         var unresolved = session.Symbols.Symbols.Values.Count(x => x.HealthStatus == SymbolHealthStatus.Unresolved || x.Address == nint.Zero);
@@ -2255,32 +2338,21 @@ public sealed class MainViewModel : INotifyPropertyChanged
 
     private async Task RunSpawnBatchAsync()
     {
-        if (SelectedProfileId is null || SelectedSpawnPreset is null)
+        if (!TryResolveSpawnBatchSelection(out var profileId, out var selectedPreset))
         {
             return;
         }
 
-        if (RuntimeMode == RuntimeMode.Unknown)
+        if (!TryValidateSpawnRuntimeMode() ||
+            !TryParseSpawnQuantity(out var quantity) ||
+            !TryParseSpawnDelayMs(out var delayMs))
         {
-            Status = "✗ Spawn batch blocked: runtime mode is unknown.";
             return;
         }
 
-        if (!int.TryParse(SpawnQuantity, out var quantity) || quantity <= 0)
-        {
-            Status = "✗ Invalid spawn quantity.";
-            return;
-        }
-
-        if (!int.TryParse(SpawnDelayMs, out var delayMs) || delayMs < 0)
-        {
-            Status = "✗ Invalid spawn delay (ms).";
-            return;
-        }
-
-        var preset = SelectedSpawnPreset.ToCorePreset();
+        var preset = selectedPreset.ToCorePreset();
         var plan = _spawnPresets.BuildBatchPlan(
-            SelectedProfileId,
+            profileId,
             preset,
             quantity,
             delayMs,
@@ -2288,10 +2360,52 @@ public sealed class MainViewModel : INotifyPropertyChanged
             SelectedEntryMarker,
             SpawnStopOnFailure);
 
-        var result = await _spawnPresets.ExecuteBatchAsync(SelectedProfileId, plan, RuntimeMode);
+        var result = await _spawnPresets.ExecuteBatchAsync(profileId, plan, RuntimeMode);
         Status = result.Succeeded
             ? $"✓ {result.Message}"
             : $"✗ {result.Message}";
+    }
+
+    private bool TryResolveSpawnBatchSelection(out string profileId, out SpawnPresetViewItem selectedPreset)
+    {
+        profileId = SelectedProfileId ?? string.Empty;
+        selectedPreset = SelectedSpawnPreset!;
+        return SelectedProfileId is not null && SelectedSpawnPreset is not null;
+    }
+
+    private bool TryValidateSpawnRuntimeMode()
+    {
+        if (RuntimeMode != RuntimeMode.Unknown)
+        {
+            return true;
+        }
+
+        Status = "✗ Spawn batch blocked: runtime mode is unknown.";
+        return false;
+    }
+
+    private bool TryParseSpawnQuantity(out int quantity)
+    {
+        if (int.TryParse(SpawnQuantity, out quantity) && quantity > 0)
+        {
+            return true;
+        }
+
+        Status = "✗ Invalid spawn quantity.";
+        quantity = 0;
+        return false;
+    }
+
+    private bool TryParseSpawnDelayMs(out int delayMs)
+    {
+        if (int.TryParse(SpawnDelayMs, out delayMs) && delayMs >= 0)
+        {
+            return true;
+        }
+
+        Status = "✗ Invalid spawn delay (ms).";
+        delayMs = 0;
+        return false;
     }
 
     private void ApplyDraftFromSnapshot(SelectedUnitSnapshot snapshot)
@@ -2539,7 +2653,7 @@ public sealed class MainViewModel : INotifyPropertyChanged
 
     private async Task QuickRunActionAsync(string actionId, JsonObject payload, string? toggleKey = null)
     {
-        if (!_runtime.IsAttached || string.IsNullOrWhiteSpace(SelectedProfileId))
+        if (!CanRunQuickAction())
         {
             return;
         }
@@ -2551,27 +2665,50 @@ public sealed class MainViewModel : INotifyPropertyChanged
 
         try
         {
-            var result = await _orchestrator.ExecuteAsync(
-                SelectedProfileId,
-                actionId,
-                payload,
-                RuntimeMode,
-                BuildActionContext(actionId));
-            if (toggleKey is not null && result.Succeeded)
-            {
-                if (_activeToggles.Contains(toggleKey))
-                    _activeToggles.Remove(toggleKey);
-                else
-                    _activeToggles.Add(toggleKey);
-            }
-            Status = result.Succeeded
-                ? $"✓ {actionId}: {result.Message}{BuildDiagnosticsStatusSuffix(result)}"
-                : $"✗ {actionId}: {result.Message}{BuildDiagnosticsStatusSuffix(result)}";
+            var result = await ExecuteQuickActionAsync(actionId, payload);
+            ToggleQuickActionState(toggleKey, result.Succeeded);
+            Status = BuildQuickActionStatus(actionId, result);
         }
         catch (Exception ex)
         {
             Status = $"✗ {actionId}: {ex.Message}";
         }
+    }
+
+    private bool CanRunQuickAction() => _runtime.IsAttached && !string.IsNullOrWhiteSpace(SelectedProfileId);
+
+    private async Task<ActionExecutionResult> ExecuteQuickActionAsync(string actionId, JsonObject payload)
+    {
+        return await _orchestrator.ExecuteAsync(
+            SelectedProfileId!,
+            actionId,
+            payload,
+            RuntimeMode,
+            BuildActionContext(actionId));
+    }
+
+    private void ToggleQuickActionState(string? toggleKey, bool succeeded)
+    {
+        if (!succeeded || toggleKey is null)
+        {
+            return;
+        }
+
+        if (_activeToggles.Contains(toggleKey))
+        {
+            _activeToggles.Remove(toggleKey);
+            return;
+        }
+
+        _activeToggles.Add(toggleKey);
+    }
+
+    private string BuildQuickActionStatus(string actionId, ActionExecutionResult result)
+    {
+        var diagnosticsSuffix = BuildDiagnosticsStatusSuffix(result);
+        return result.Succeeded
+            ? $"✓ {actionId}: {result.Message}{diagnosticsSuffix}"
+            : $"✗ {actionId}: {result.Message}{diagnosticsSuffix}";
     }
 
     private async Task QuickSetCreditsAsync()
@@ -2870,13 +3007,13 @@ public sealed class MainViewModel : INotifyPropertyChanged
 
     public async Task<bool> ExecuteHotkeyAsync(string gesture)
     {
-        if (!_runtime.IsAttached || string.IsNullOrWhiteSpace(SelectedProfileId))
+        if (!CanExecuteHotkey())
         {
             return false;
         }
 
-        var binding = Hotkeys.FirstOrDefault(x => string.Equals(x.Gesture, gesture, StringComparison.OrdinalIgnoreCase));
-        if (binding is null || string.IsNullOrWhiteSpace(binding.ActionId))
+        var binding = ResolveHotkeyBinding(gesture);
+        if (binding is null)
         {
             return false;
         }
@@ -2886,28 +3023,45 @@ public sealed class MainViewModel : INotifyPropertyChanged
             return true;
         }
 
-        JsonObject payloadNode;
-        try
-        {
-            payloadNode = JsonNode.Parse(binding.PayloadJson ?? "{}") as JsonObject
-                ?? BuildDefaultHotkeyPayload(binding.ActionId);
-        }
-        catch
-        {
-            payloadNode = BuildDefaultHotkeyPayload(binding.ActionId);
-        }
-
+        var payloadNode = ParseHotkeyPayload(binding);
         var result = await _orchestrator.ExecuteAsync(
-            SelectedProfileId,
+            SelectedProfileId!,
             binding.ActionId,
             payloadNode,
             RuntimeMode,
             BuildActionContext(binding.ActionId));
-        Status = result.Succeeded
-            ? $"Hotkey {gesture}: {binding.ActionId} succeeded{BuildDiagnosticsStatusSuffix(result)}"
-            : $"Hotkey {gesture}: {binding.ActionId} failed ({result.Message}){BuildDiagnosticsStatusSuffix(result)}";
+        Status = BuildHotkeyStatus(gesture, binding.ActionId, result);
 
         return true;
+    }
+
+    private bool CanExecuteHotkey() => _runtime.IsAttached && !string.IsNullOrWhiteSpace(SelectedProfileId);
+
+    private HotkeyBindingItem? ResolveHotkeyBinding(string gesture)
+    {
+        var binding = Hotkeys.FirstOrDefault(x => string.Equals(x.Gesture, gesture, StringComparison.OrdinalIgnoreCase));
+        return binding is not null && !string.IsNullOrWhiteSpace(binding.ActionId) ? binding : null;
+    }
+
+    private static JsonObject ParseHotkeyPayload(HotkeyBindingItem binding)
+    {
+        try
+        {
+            return JsonNode.Parse(binding.PayloadJson ?? "{}") as JsonObject
+                ?? BuildDefaultHotkeyPayload(binding.ActionId);
+        }
+        catch
+        {
+            return BuildDefaultHotkeyPayload(binding.ActionId);
+        }
+    }
+
+    private string BuildHotkeyStatus(string gesture, string actionId, ActionExecutionResult result)
+    {
+        var diagnosticsSuffix = BuildDiagnosticsStatusSuffix(result);
+        return result.Succeeded
+            ? $"Hotkey {gesture}: {actionId} succeeded{diagnosticsSuffix}"
+            : $"Hotkey {gesture}: {actionId} failed ({result.Message}){diagnosticsSuffix}";
     }
 
     private static JsonObject BuildDefaultHotkeyPayload(string actionId)
