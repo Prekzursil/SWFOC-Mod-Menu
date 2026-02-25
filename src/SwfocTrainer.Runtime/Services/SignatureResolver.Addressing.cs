@@ -3,9 +3,9 @@ using SwfocTrainer.Runtime.Scanning;
 
 namespace SwfocTrainer.Runtime.Services;
 
-public sealed partial class SignatureResolver
+internal static class SignatureResolverAddressing
 {
-    private static bool TryResolveAddress(
+    internal static bool TryResolveAddress(
         SignatureSpec signature,
         nint hitAddress,
         nint baseAddress,

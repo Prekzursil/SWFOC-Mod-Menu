@@ -7,16 +7,13 @@ using SwfocTrainer.Runtime.Scanning;
 
 namespace SwfocTrainer.Runtime.Services;
 
-public sealed partial class SignatureResolver : ISignatureResolver
+public sealed class SignatureResolver : ISignatureResolver
 {
-    private const string ArtifactIndexFileName = "artifact-index.json";
-    private const string GhidraSymbolPackRootOverrideEnv = "SWFOC_GHIDRA_SYMBOL_PACK_ROOT";
-
     private readonly ILogger<SignatureResolver> _logger;
     private readonly string _ghidraSymbolPackRoot;
 
     public SignatureResolver(ILogger<SignatureResolver> logger)
-        : this(logger, ResolveDefaultGhidraSymbolPackRoot())
+        : this(logger, SignatureResolverSymbolHydration.ResolveDefaultGhidraSymbolPackRoot())
     {
     }
 
@@ -64,7 +61,12 @@ public sealed partial class SignatureResolver : ISignatureResolver
         var moduleBytes = accessor.ReadBytes(baseAddress, moduleSize);
 
         var symbols = new Dictionary<string, SymbolInfo>(StringComparer.OrdinalIgnoreCase);
-        TryHydrateSymbolsFromGhidraPack(module, signatureSets, symbols);
+        SignatureResolverSymbolHydration.TryHydrateSymbolsFromGhidraPack(
+            _ghidraSymbolPackRoot,
+            _logger,
+            module,
+            signatureSets,
+            symbols);
         ResolveSignatures(
             signatureSets,
             fallbackOffsets,
@@ -73,7 +75,7 @@ public sealed partial class SignatureResolver : ISignatureResolver
             moduleBytes,
             accessor,
             symbols);
-        ApplyStandaloneFallbacks(fallbackOffsets, accessor, baseAddress, symbols);
+        SignatureResolverFallbacks.ApplyStandaloneFallbacks(_logger, fallbackOffsets, accessor, baseAddress, symbols);
 
         return new SymbolMap(symbols);
     }
@@ -100,6 +102,11 @@ public sealed partial class SignatureResolver : ISignatureResolver
         }
 
         return Process.GetProcessesByName(name).FirstOrDefault();
+    }
+
+    internal static string? SelectBestGhidraPackPath(string symbolPackRoot, string fingerprintId)
+    {
+        return SignatureResolverSymbolHydration.SelectBestGhidraPackPath(symbolPackRoot, fingerprintId);
     }
 
     private void ResolveSignatures(
@@ -148,10 +155,25 @@ public sealed partial class SignatureResolver : ISignatureResolver
         var hit = AobScanner.FindPattern(moduleBytes, baseAddress, pattern);
         if (hit == nint.Zero)
         {
-            HandleSignatureMiss(signature, fallbackOffsets, accessor, baseAddress, symbols);
+            SignatureResolverFallbacks.HandleSignatureMiss(
+                _logger,
+                signature,
+                fallbackOffsets,
+                accessor,
+                baseAddress,
+                symbols);
             return;
         }
 
-        HandleSignatureHit(signatureSet, signature, hit, fallbackOffsets, accessor, baseAddress, moduleBytes, symbols);
+        SignatureResolverFallbacks.HandleSignatureHit(
+            _logger,
+            signatureSet,
+            signature,
+            hit,
+            fallbackOffsets,
+            accessor,
+            baseAddress,
+            moduleBytes,
+            symbols);
     }
 }

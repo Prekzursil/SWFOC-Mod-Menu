@@ -9,8 +9,8 @@ anchor/capability outputs remain identical.
 from __future__ import annotations
 
 import argparse
+import importlib.util
 import json
-import os
 import sys
 from pathlib import Path
 
@@ -57,10 +57,32 @@ def _validate_emitter_command(command: tuple[str, ...]) -> None:
         raise ValueError("invalid-emitter-command-flags")
 
 
-def _run_checked_command(command: tuple[str, ...]) -> None:
+def _load_emitter_main(emitter_path: Path):
+    spec = importlib.util.spec_from_file_location("ghidra_emit_symbol_pack", emitter_path)
+    if spec is None or spec.loader is None:
+        raise RuntimeError(f"failed to load emitter module from {emitter_path}")
+
+    module = importlib.util.module_from_spec(spec)
+    sys.modules[spec.name] = module
+    spec.loader.exec_module(module)
+    main_fn = getattr(module, "main", None)
+    if main_fn is None:
+        raise RuntimeError(f"emitter module missing main() function: {emitter_path}")
+
+    return main_fn
+
+
+def _run_emitter_main(command: tuple[str, ...]) -> None:
     _validate_emitter_command(command)
-    exit_code = os.spawnv(os.P_WAIT, command[0], command)
-    if exit_code != 0:
+    main_fn = _load_emitter_main(Path(command[1]))
+    previous_argv = list(sys.argv)
+    try:
+        sys.argv = [command[1], *command[2:]]
+        exit_code = main_fn()
+    finally:
+        sys.argv = previous_argv
+
+    if exit_code not in (None, 0):
         raise RuntimeError(f"emitter execution failed with exit code {exit_code}")
 
 
@@ -86,7 +108,7 @@ def _run_emitter(
         "--output-summary",
         _validated_path_text(output_summary, "output_summary", must_exist=False),
     )
-    _run_checked_command(command)
+    _run_emitter_main(command)
 
 
 def _load_json(path: Path) -> dict:

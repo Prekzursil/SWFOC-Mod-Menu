@@ -4,14 +4,15 @@ using SwfocTrainer.Runtime.Interop;
 
 namespace SwfocTrainer.Runtime.Services;
 
-public sealed partial class SignatureResolver
+internal static class SignatureResolverFallbacks
 {
     /// <summary>
     /// Validates a fallback offset by attempting a test read at <c>baseAddress + offset</c>.
     /// Profile fallback offsets are author-curated, so rather than guessing module bounds we
     /// simply ask the OS whether the address is readable. If it is, the symbol is registered.
     /// </summary>
-    private bool TryApplyFallback(
+    private static bool TryApplyFallback(
+        ILogger<SignatureResolver> logger,
         ProcessMemoryAccessor accessor,
         nint baseAddress,
         string symbolName,
@@ -43,7 +44,7 @@ public sealed partial class SignatureResolver
         }
         catch
         {
-            _logger.LogDebug(
+            logger.LogDebug(
                 "Fallback test-read failed for {Symbol} at 0x{Address:X} (offset 0x{Offset:X})",
                 symbolName,
                 address.ToInt64(),
@@ -52,7 +53,8 @@ public sealed partial class SignatureResolver
         }
     }
 
-    private void HandleSignatureHit(
+    internal static void HandleSignatureHit(
+        ILogger<SignatureResolver> logger,
         SignatureSet signatureSet,
         SignatureSpec signature,
         nint hit,
@@ -62,7 +64,7 @@ public sealed partial class SignatureResolver
         byte[] moduleBytes,
         IDictionary<string, SymbolInfo> symbols)
     {
-        if (TryResolveAddress(signature, hit, baseAddress, moduleBytes, out var address, out var diagnostics))
+        if (SignatureResolverAddressing.TryResolveAddress(signature, hit, baseAddress, moduleBytes, out var address, out var diagnostics))
         {
             symbols[signature.Name] = CreateSignatureSymbol(signatureSet, signature, address);
             return;
@@ -70,7 +72,7 @@ public sealed partial class SignatureResolver
 
         if (!fallbackOffsets.TryGetValue(signature.Name, out var fallback))
         {
-            _logger.LogWarning(
+            logger.LogWarning(
                 "Signature address resolution failed for {Symbol} and no fallback offset available. Details: {Diagnostics}",
                 signature.Name,
                 diagnostics ?? "<none>");
@@ -78,6 +80,7 @@ public sealed partial class SignatureResolver
         }
 
         if (TryApplyFallback(
+                logger,
                 accessor,
                 baseAddress,
                 signature.Name,
@@ -86,7 +89,7 @@ public sealed partial class SignatureResolver
                 symbols,
                 diagnostics ?? "Fallback after address resolution failure"))
         {
-            _logger.LogWarning(
+            logger.LogWarning(
                 "Signature address resolution failed for {Symbol}; fallback offset applied (0x{Offset:X}). Details: {Diagnostics}",
                 signature.Name,
                 fallback,
@@ -94,14 +97,15 @@ public sealed partial class SignatureResolver
             return;
         }
 
-        _logger.LogWarning(
+        logger.LogWarning(
             "Signature address resolution failed for {Symbol} and fallback offset 0x{Offset:X} is not readable. Details: {Diagnostics}",
             signature.Name,
             fallback,
             diagnostics ?? "<none>");
     }
 
-    private void HandleSignatureMiss(
+    internal static void HandleSignatureMiss(
+        ILogger<SignatureResolver> logger,
         SignatureSpec signature,
         IReadOnlyDictionary<string, long> fallbackOffsets,
         ProcessMemoryAccessor accessor,
@@ -110,20 +114,20 @@ public sealed partial class SignatureResolver
     {
         if (fallbackOffsets.TryGetValue(signature.Name, out var fallback) && !symbols.ContainsKey(signature.Name))
         {
-            if (TryApplyFallback(accessor, baseAddress, signature.Name, signature.ValueType, fallback, symbols, "Fallback offset"))
+            if (TryApplyFallback(logger, accessor, baseAddress, signature.Name, signature.ValueType, fallback, symbols, "Fallback offset"))
             {
-                _logger.LogWarning("Signature miss for {Symbol}; fallback offset applied (0x{Offset:X})", signature.Name, fallback);
+                logger.LogWarning("Signature miss for {Symbol}; fallback offset applied (0x{Offset:X})", signature.Name, fallback);
                 return;
             }
 
-            _logger.LogWarning(
+            logger.LogWarning(
                 "Signature miss for {Symbol}; fallback offset 0x{Offset:X} is not readable",
                 signature.Name,
                 fallback);
             return;
         }
 
-        _logger.LogWarning("Signature miss for {Symbol} and no fallback offset available", signature.Name);
+        logger.LogWarning("Signature miss for {Symbol} and no fallback offset available", signature.Name);
     }
 
     private static SymbolInfo CreateSignatureSymbol(SignatureSet signatureSet, SignatureSpec signature, nint address)
@@ -140,7 +144,8 @@ public sealed partial class SignatureResolver
             LastValidatedAt: DateTimeOffset.UtcNow);
     }
 
-    private void ApplyStandaloneFallbacks(
+    internal static void ApplyStandaloneFallbacks(
+        ILogger<SignatureResolver> logger,
         IReadOnlyDictionary<string, long> fallbackOffsets,
         ProcessMemoryAccessor accessor,
         nint baseAddress,
@@ -154,6 +159,7 @@ public sealed partial class SignatureResolver
             }
 
             if (TryApplyFallback(
+                    logger,
                     accessor,
                     baseAddress,
                     fallback.Key,
@@ -165,7 +171,7 @@ public sealed partial class SignatureResolver
                 continue;
             }
 
-            _logger.LogWarning(
+            logger.LogWarning(
                 "Standalone fallback for {Symbol} skipped: offset 0x{Offset:X} is not readable",
                 fallback.Key,
                 fallback.Value);

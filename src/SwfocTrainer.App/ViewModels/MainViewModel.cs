@@ -3102,5 +3102,13 @@ public sealed class MainViewModel : INotifyPropertyChanged
     }
 
     private void OnPropertyChanged([CallerMemberName] string? memberName = null)
-        => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(memberName));
+    {
+        var handler = PropertyChanged;
+        if (handler is null)
+        {
+            return;
+        }
+
+        handler(this, new PropertyChangedEventArgs(memberName));
+    }
 }
