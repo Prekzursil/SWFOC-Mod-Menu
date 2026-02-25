@@ -11,10 +11,11 @@ public sealed class ModOnboardingServiceTests
     [Fact]
     public async Task ScaffoldDraftProfileAsync_ShouldGenerateDraftProfileWithHints()
     {
-        var (service, tempRoot) = await CreateServiceAsync();
-
+        var tempRoot = Path.Combine(Path.GetTempPath(), $"swfoc-onboarding-{Guid.NewGuid():N}");
         try
         {
+            var (service, _) = await CreateServiceAsync(tempRoot);
+
             var request = new ModOnboardingRequest(
                 DraftProfileId: "My Total Conversion",
                 DisplayName: "My Total Conversion",
@@ -47,187 +48,127 @@ public sealed class ModOnboardingServiceTests
         }
         finally
         {
-            DeleteDirectoryIfExists(tempRoot);
+            if (Directory.Exists(tempRoot))
+            {
+                Directory.Delete(tempRoot, recursive: true);
+            }
         }
     }
 
     [Fact]
-    public async Task ScaffoldDraftProfilesFromSeedsAsync_ShouldWriteTwoDrafts()
+    public async Task ScaffoldDraftProfilesFromSeedsAsync_ShouldGenerateDraftsAndAutoDiscoveryMetadata()
     {
-        var (service, tempRoot) = await CreateServiceAsync();
-
+        var tempRoot = Path.Combine(Path.GetTempPath(), $"swfoc-onboarding-batch-{Guid.NewGuid():N}");
         try
         {
-            var result = await service.ScaffoldDraftProfilesFromSeedsAsync(CreateTwoSeedBatch());
-            AssertTwoSeedBatchResult(result);
-        }
-        finally
-        {
-            DeleteDirectoryIfExists(tempRoot);
-        }
-    }
+            var (service, options) = await CreateServiceAsync(tempRoot);
+            var request = new ModOnboardingSeedBatchRequest(
+                Seeds:
+                [
+                    BuildSeed(
+                        workshopId: "1397421866",
+                        title: "Awakening of the Rebellion",
+                        candidateBaseProfile: "base_swfoc",
+                        sourceRunId: "run-seed-001",
+                        confidence: 0.93,
+                        riskLevel: "medium",
+                        modPathHints: ["aotr", "awakening_of_the_rebellion"]),
+                    BuildSeed(
+                        workshopId: "3664004146",
+                        title: "Enhancement Pack",
+                        candidateBaseProfile: "base_swfoc",
+                        sourceRunId: "run-seed-001",
+                        confidence: 0.62,
+                        riskLevel: "low",
+                        modPathHints: ["enhancement_pack"])
+                ],
+                NamespaceRoot: "custom",
+                FallbackBaseProfileId: "base_swfoc");
 
-    [Fact]
-    public async Task ScaffoldDraftProfilesFromSeedsAsync_ShouldContinueWhenOneSeedInvalid()
-    {
-        var (service, tempRoot) = await CreateServiceAsync();
-
-        try
-        {
-            var result = await service.ScaffoldDraftProfilesFromSeedsAsync(CreatePartialFailureBatch());
-            AssertPartialFailureResult(result);
-        }
-        finally
-        {
-            DeleteDirectoryIfExists(tempRoot);
-        }
-    }
-
-    [Fact]
-    public async Task ScaffoldDraftProfilesFromSeedsAsync_ShouldIncludeRequiredGeneratedMetadata()
-    {
-        var (service, tempRoot) = await CreateServiceAsync();
-
-        try
-        {
-            var result = await service.ScaffoldDraftProfilesFromSeedsAsync(CreateMetadataSeedBatch());
+            var result = await service.ScaffoldDraftProfilesFromSeedsAsync(request, CancellationToken.None);
 
             result.Succeeded.Should().BeTrue();
-            result.SucceededCount.Should().Be(1);
-            var item = result.Results.Single();
-            item.Succeeded.Should().BeTrue();
+            result.Total.Should().Be(2);
+            result.Generated.Should().Be(2);
+            result.Failed.Should().Be(0);
+            result.Items.Should().OnlyContain(item => item.Succeeded);
 
-            var writtenJson = await File.ReadAllTextAsync(item.OutputPath!);
-            var draft = JsonProfileSerializer.Deserialize<TrainerProfile>(writtenJson);
-            AssertMetadataSeedDraft(draft);
+            var firstProfilePath = Path.Combine(
+                Directory.GetParent(options.ProfilesRootPath)!.FullName,
+                "custom",
+                "profiles",
+                "custom_awakening_of_the_rebellion_1397421866_swfoc.json");
+            File.Exists(firstProfilePath).Should().BeTrue();
+            var firstProfileJson = await File.ReadAllTextAsync(firstProfilePath);
+            var firstProfile = JsonProfileSerializer.Deserialize<TrainerProfile>(firstProfileJson);
+            firstProfile.Should().NotBeNull();
+            firstProfile!.RequiredCapabilities.Should().Contain("set_credits");
+            firstProfile.RequiredCapabilities.Should().Contain("toggle_instant_build_patch");
+            firstProfile.Metadata.Should().NotBeNull();
+            firstProfile.Metadata!["origin"].Should().Be("auto_discovery");
+            firstProfile.Metadata["sourceRunId"].Should().Be("run-seed-001");
+            firstProfile.Metadata["parentProfile"].Should().Be("base_swfoc");
         }
         finally
         {
-            DeleteDirectoryIfExists(tempRoot);
+            if (Directory.Exists(tempRoot))
+            {
+                Directory.Delete(tempRoot, recursive: true);
+            }
         }
     }
 
-    private static ModOnboardingSeedBatchRequest CreateTwoSeedBatch()
+    [Fact]
+    public async Task ScaffoldDraftProfilesFromSeedsAsync_ShouldReturnPartialFailure_WhenOneSeedIsInvalid()
     {
-        return new ModOnboardingSeedBatchRequest(
-            TargetNamespaceRoot: "generated.mods",
-            Seeds: new[]
-            {
-                CreateSeed("First Mod", "First Mod", "run-20260225-01", 0.92d, "StarWarsG.exe STEAMMOD=111000111 MODPATH=Mods\\FirstMod"),
-                CreateSeed("Second Mod", "Second Mod", "run-20260225-01", 0.88d, "StarWarsG.exe STEAMMOD=222000222 MODPATH=Mods\\SecondMod")
-            });
-    }
-
-    private static ModOnboardingSeedBatchRequest CreatePartialFailureBatch()
-    {
-        return new ModOnboardingSeedBatchRequest(
-            TargetNamespaceRoot: "generated.mods",
-            Seeds: new[]
-            {
-                CreateSeed("   ", "Broken Seed", "run-20260225-02", 0.50d, "StarWarsG.exe"),
-                CreateSeed("Valid Seed", "Valid Seed", "run-20260225-02", 0.75d, "StarWarsG.exe STEAMMOD=333000333 MODPATH=Mods\\ValidSeed")
-            });
-    }
-
-    private static ModOnboardingSeedBatchRequest CreateMetadataSeedBatch()
-    {
-        return new ModOnboardingSeedBatchRequest(
-            TargetNamespaceRoot: "generated.mods",
-            Seeds: new[]
-            {
-                new GeneratedProfileSeed(
-                    DraftProfileId: "Metadata Seed",
-                    DisplayName: "Metadata Seed",
-                    BaseProfileId: "base_swfoc",
-                    LaunchSamples: new[]
-                    {
-                        new ModLaunchSample(
-                            ProcessName: "StarWarsG.exe",
-                            ProcessPath: @"C:\Games\EmpireAtWar\corruption\StarWarsG.exe",
-                            CommandLine: "StarWarsG.exe STEAMMOD=777888999 MODPATH=Mods\\MetaMod")
-                    },
-                    SourceRunId: "run-20260225-meta",
-                    Confidence: 0.87d,
-                    ParentProfile: "base_swfoc",
-                    RequiredWorkshopIds: new[] { "777888999", "123123123" },
-                    ProfileAliases: new[] { "meta-seed", "metadata_seed" })
-            });
-    }
-
-    private static GeneratedProfileSeed CreateSeed(
-        string draftProfileId,
-        string displayName,
-        string sourceRunId,
-        double confidence,
-        string commandLine)
-    {
-        return new GeneratedProfileSeed(
-            DraftProfileId: draftProfileId,
-            DisplayName: displayName,
-            BaseProfileId: "base_swfoc",
-            LaunchSamples: new[]
-            {
-                new ModLaunchSample(
-                    ProcessName: "StarWarsG.exe",
-                    ProcessPath: @"C:\Games\EmpireAtWar\corruption\StarWarsG.exe",
-                    CommandLine: commandLine)
-            },
-            SourceRunId: sourceRunId,
-            Confidence: confidence,
-            ParentProfile: "base_swfoc");
-    }
-
-    private static void AssertTwoSeedBatchResult(ModOnboardingBatchResult result)
-    {
-        result.Succeeded.Should().BeTrue();
-        result.Attempted.Should().Be(2);
-        result.SucceededCount.Should().Be(2);
-        result.FailedCount.Should().Be(0);
-        result.Results.Should().HaveCount(2);
-        result.Results.Should().OnlyContain(x => x.Succeeded);
-        result.Results.Select(x => x.ProfileId).Should().Contain(new[] { "custom_first_mod", "custom_second_mod" });
-        result.Results.Select(x => x.OutputPath).Should().OnlyContain(path => !string.IsNullOrWhiteSpace(path) && File.Exists(path));
-    }
-
-    private static void AssertPartialFailureResult(ModOnboardingBatchResult result)
-    {
-        result.Succeeded.Should().BeFalse();
-        result.Attempted.Should().Be(2);
-        result.SucceededCount.Should().Be(1);
-        result.FailedCount.Should().Be(1);
-
-        var failed = result.Results.Single(x => !x.Succeeded);
-        failed.Errors.Should().Contain(error => error.Contains("DraftProfileId", StringComparison.OrdinalIgnoreCase));
-        var succeeded = result.Results.Single(x => x.Succeeded);
-        succeeded.ProfileId.Should().Be("custom_valid_seed");
-        succeeded.OutputPath.Should().NotBeNullOrWhiteSpace();
-        File.Exists(succeeded.OutputPath!).Should().BeTrue();
-    }
-
-    private static void AssertMetadataSeedDraft(TrainerProfile? draft)
-    {
-        draft.Should().NotBeNull();
-        draft!.Metadata.Should().NotBeNull();
-        draft.Metadata!["origin"].Should().Be("auto_discovery");
-        draft.Metadata!["sourceRunId"].Should().Be("run-20260225-meta");
-        draft.Metadata!["confidence"].Should().Be("0.87");
-        draft.Metadata!["parentProfile"].Should().Be("base_swfoc");
-        draft.Metadata!["requiredWorkshopIds"].Should().Contain("777888999");
-        draft.Metadata!["profileAliases"].Should().Contain("custom_metadata_seed");
-        draft.Metadata!["localPathHints"].Should().Contain("metamod");
-    }
-
-    private static void DeleteDirectoryIfExists(string path)
-    {
-        if (Directory.Exists(path))
+        var tempRoot = Path.Combine(Path.GetTempPath(), $"swfoc-onboarding-batch-invalid-{Guid.NewGuid():N}");
+        try
         {
-            Directory.Delete(path, recursive: true);
+            var (service, _) = await CreateServiceAsync(tempRoot);
+            var request = new ModOnboardingSeedBatchRequest(
+                Seeds:
+                [
+                    BuildSeed(
+                        workshopId: "1397421866",
+                        title: "Awakening of the Rebellion",
+                        candidateBaseProfile: "base_swfoc",
+                        sourceRunId: "run-seed-002",
+                        confidence: 0.92,
+                        riskLevel: "medium",
+                        modPathHints: ["aotr"]),
+                    BuildSeed(
+                        workshopId: "3009221569",
+                        title: "   ",
+                        candidateBaseProfile: "base_swfoc",
+                        sourceRunId: "run-seed-002",
+                        confidence: 0.50,
+                        riskLevel: "high",
+                        modPathHints: ["broken_seed"])
+                ],
+                NamespaceRoot: "custom",
+                FallbackBaseProfileId: "base_swfoc");
+
+            var result = await service.ScaffoldDraftProfilesFromSeedsAsync(request, CancellationToken.None);
+
+            result.Succeeded.Should().BeFalse();
+            result.Total.Should().Be(2);
+            result.Generated.Should().Be(1);
+            result.Failed.Should().Be(1);
+            result.Items.Should().ContainSingle(item => !item.Succeeded);
+            result.Items.Single(item => !item.Succeeded).Error.Should().NotBeNullOrWhiteSpace();
+            result.Items.Single(item => item.Succeeded).ProfileId.Should().Contain("custom_awakening_of_the_rebellion");
+        }
+        finally
+        {
+            if (Directory.Exists(tempRoot))
+            {
+                Directory.Delete(tempRoot, recursive: true);
+            }
         }
     }
 
-    private static async Task<(ModOnboardingService Service, string TempRoot)> CreateServiceAsync()
+    private static async Task<(ModOnboardingService Service, ProfileRepositoryOptions Options)> CreateServiceAsync(string tempRoot)
     {
-        var tempRoot = Path.Combine(Path.GetTempPath(), $"swfoc-onboarding-{Guid.NewGuid():N}");
         var defaultRoot = Path.Combine(tempRoot, "default");
         var profilesDir = Path.Combine(defaultRoot, "profiles");
         Directory.CreateDirectory(profilesDir);
@@ -255,10 +196,10 @@ public sealed class ModOnboardingServiceTests
             Inherits: null,
             ExeTarget: ExeTarget.Swfoc,
             SteamWorkshopId: null,
-            SignatureSets: new[]
-            {
+            SignatureSets:
+            [
                 new SignatureSet("base", "test", Array.Empty<SignatureSpec>())
-            },
+            ],
             FallbackOffsets: new Dictionary<string, long>(StringComparer.OrdinalIgnoreCase),
             Actions: new Dictionary<string, ActionSpec>(StringComparer.OrdinalIgnoreCase),
             FeatureFlags: new Dictionary<string, bool>(StringComparer.OrdinalIgnoreCase),
@@ -280,6 +221,37 @@ public sealed class ModOnboardingServiceTests
 
         var repository = new FileSystemProfileRepository(options);
         var service = new ModOnboardingService(repository, options);
-        return (service, tempRoot);
+        return (service, options);
+    }
+
+    private static GeneratedProfileSeed BuildSeed(
+        string workshopId,
+        string title,
+        string candidateBaseProfile,
+        string sourceRunId,
+        double confidence,
+        string riskLevel,
+        IReadOnlyList<string> modPathHints)
+    {
+        return new GeneratedProfileSeed(
+            WorkshopId: workshopId,
+            Title: title,
+            CandidateBaseProfile: candidateBaseProfile,
+            LaunchHints: new GeneratedLaunchHints(
+                SteamModIds: [workshopId],
+                ModPathHints: modPathHints),
+            ParentDependencies: Array.Empty<string>(),
+            RequiredCapabilities:
+            [
+                "set_credits",
+                "freeze_timer",
+                "toggle_fog_reveal",
+                "toggle_ai",
+                "set_unit_cap",
+                "toggle_instant_build_patch"
+            ],
+            SourceRunId: sourceRunId,
+            Confidence: confidence,
+            RiskLevel: riskLevel);
     }
 }

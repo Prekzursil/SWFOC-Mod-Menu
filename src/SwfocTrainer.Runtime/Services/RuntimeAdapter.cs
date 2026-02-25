@@ -1197,12 +1197,13 @@ public sealed class RuntimeAdapter : IRuntimeAdapter
     {
         var baseDiagnostics = MergeDiagnostics(routeDecision.Diagnostics, result.Diagnostics);
         var overrideState = ResolveExpertMutationOverrideState();
+        var configuredOverrideEnabled = IsEnabledEnvironmentFlag(ExpertOverrideEnvVarName);
         var hybridExecution = ResolveHybridExecutionFlag(baseDiagnostics);
         var backend = ResolveBackendDiagnosticValue(baseDiagnostics, routeDecision.Backend);
         var hookState = ResolveHookStateDiagnosticValue(baseDiagnostics, capabilityReport.Diagnostics);
-        var expertOverrideEnabled = ResolveExpertOverrideEnabledDiagnosticValue(baseDiagnostics, overrideState.Enabled);
+        var expertOverrideEnabled = ResolveExpertOverrideEnabledDiagnosticValue(baseDiagnostics, configuredOverrideEnabled);
         var panicDisableState = ResolvePanicDisableStateDiagnosticValue(baseDiagnostics, overrideState.PanicDisableState);
-        var overrideReason = ResolveOverrideReasonDiagnosticValue(baseDiagnostics, overrideState.DefaultReason);
+        var overrideReason = ResolveOverrideReasonDiagnosticValue(baseDiagnostics, "none");
         var diagnostics = MergeDiagnostics(
             baseDiagnostics,
             new Dictionary<string, object?>
