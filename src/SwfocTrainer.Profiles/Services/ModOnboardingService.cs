@@ -8,8 +8,15 @@ namespace SwfocTrainer.Profiles.Services;
 
 public sealed class ModOnboardingService : IModOnboardingService
 {
-    private static readonly Regex SteamModRegex = new(@"STEAMMOD=(?<id>\d+)", RegexOptions.IgnoreCase | RegexOptions.Compiled);
-    private static readonly Regex ModPathRegex = new("MODPATH=(?<path>\"[^\"]+\"|\\S+)", RegexOptions.IgnoreCase | RegexOptions.Compiled);
+    private static readonly TimeSpan RegexTimeout = TimeSpan.FromMilliseconds(250);
+    private static readonly Regex SteamModRegex = new(
+        @"STEAMMOD=(?<id>\d+)",
+        RegexOptions.IgnoreCase | RegexOptions.Compiled,
+        RegexTimeout);
+    private static readonly Regex ModPathRegex = new(
+        "MODPATH=(?<path>\"[^\"]+\"|\\S+)",
+        RegexOptions.IgnoreCase | RegexOptions.Compiled,
+        RegexTimeout);
 
     private readonly IProfileRepository _profiles;
     private readonly ProfileRepositoryOptions _options;

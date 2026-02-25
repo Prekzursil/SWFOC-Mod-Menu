@@ -168,7 +168,7 @@ public sealed class GitHubProfileUpdateService : IProfileUpdateService
 
         try
         {
-            ZipFile.ExtractToDirectory(zipPath, extractDir);
+            ExtractToDirectorySafely(zipPath, extractDir);
         }
         catch (Exception ex)
         {
@@ -264,6 +264,50 @@ public sealed class GitHubProfileUpdateService : IProfileUpdateService
             ReceiptPath: receiptPath,
             Message: $"Installed profile update '{profileId}' ({entry.Version}).",
             ReasonCode: null);
+    }
+
+    private static void ExtractToDirectorySafely(string zipPath, string extractDir)
+    {
+        var extractionRoot = Path.GetFullPath(extractDir);
+        Directory.CreateDirectory(extractionRoot);
+        var extractionRootPrefix = extractionRoot.EndsWith(Path.DirectorySeparatorChar)
+            ? extractionRoot
+            : extractionRoot + Path.DirectorySeparatorChar;
+        using var archive = ZipFile.OpenRead(zipPath);
+
+        foreach (var entry in archive.Entries)
+        {
+            if (string.IsNullOrWhiteSpace(entry.FullName))
+            {
+                continue;
+            }
+
+            if (Path.IsPathRooted(entry.FullName))
+            {
+                throw new InvalidDataException($"Archive entry uses rooted path: {entry.FullName}");
+            }
+
+            var destinationPath = Path.GetFullPath(Path.Combine(extractionRoot, entry.FullName));
+            if (!destinationPath.StartsWith(extractionRootPrefix, StringComparison.OrdinalIgnoreCase))
+            {
+                throw new InvalidDataException($"Archive entry escapes extraction root: {entry.FullName}");
+            }
+
+            if (entry.FullName.EndsWith("/", StringComparison.Ordinal) ||
+                entry.FullName.EndsWith("\\", StringComparison.Ordinal))
+            {
+                Directory.CreateDirectory(destinationPath);
+                continue;
+            }
+
+            var destinationDir = Path.GetDirectoryName(destinationPath);
+            if (!string.IsNullOrWhiteSpace(destinationDir))
+            {
+                Directory.CreateDirectory(destinationDir);
+            }
+
+            entry.ExtractToFile(destinationPath, overwrite: true);
+        }
     }
 
     public async Task<ProfileRollbackResult> RollbackLastInstallAsync(string profileId, CancellationToken cancellationToken)

@@ -12,7 +12,7 @@ import os
 from dataclasses import dataclass
 from datetime import datetime, timezone
 from pathlib import Path
-from typing import Dict, List
+from typing import Dict, List, Tuple
 
 
 SCHEMA_VERSION = "1.0"
@@ -66,18 +66,48 @@ def _normalize_anchor_id(symbol_name: str) -> str:
     return "_".join(part for part in normalized.split("_") if part)
 
 
+def _parse_address(address: str) -> int | None:
+    cleaned = address.strip().lower()
+    if cleaned.startswith("0x"):
+        cleaned = cleaned[2:]
+    if not cleaned:
+        return None
+    try:
+        return int(cleaned, 16)
+    except ValueError:
+        return None
+
+
+def _normalized_address(address: str) -> str:
+    parsed = _parse_address(address)
+    return f"0x{parsed:x}" if parsed is not None else address.strip().lower()
+
+
+def _symbol_choice_rank(symbol: RawSymbol) -> Tuple[int, int, str]:
+    parsed = _parse_address(symbol.address)
+    if parsed is None:
+        return (1, 0, symbol.name.lower())
+    return (0, parsed, symbol.name.lower())
+
+
 def _build_anchors(module_name: str, symbols: List[RawSymbol]) -> List[dict]:
-    anchors = []
-    seen = set()
+    canonical_by_anchor_id: Dict[str, RawSymbol] = {}
     for symbol in symbols:
         anchor_id = _normalize_anchor_id(symbol.name)
-        if anchor_id in seen:
+        if not anchor_id:
             continue
-        seen.add(anchor_id)
+
+        current = canonical_by_anchor_id.get(anchor_id)
+        if current is None or _symbol_choice_rank(symbol) < _symbol_choice_rank(current):
+            canonical_by_anchor_id[anchor_id] = symbol
+
+    anchors = []
+    for anchor_id in sorted(canonical_by_anchor_id.keys()):
+        symbol = canonical_by_anchor_id[anchor_id]
         anchors.append(
             {
                 "id": anchor_id,
-                "address": symbol.address.lower(),
+                "address": _normalized_address(symbol.address),
                 "module": module_name,
                 "confidence": 0.95,
                 "source": f"ghidra:{symbol.kind}",

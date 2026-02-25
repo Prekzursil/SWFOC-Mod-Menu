@@ -41,6 +41,13 @@ jobs:
             --analysis-run-id ghidra-smoke-${{ github.run_id }} \
             --output-pack TestResults/ghidra-smoke/symbol-pack.json \
             --output-summary TestResults/ghidra-smoke/analysis-summary.json
+      - name: Determinism smoke (symbol order invariance)
+        run: |
+          python3 tools/ghidra/check-determinism.py \
+            --raw-symbols tools/fixtures/ghidra_raw_symbols_sample.json \
+            --binary-path README.md \
+            --analysis-run-id-base ghidra-determinism-${{ github.run_id }} \
+            --output-dir TestResults/ghidra-smoke/determinism
       - name: Validate generated outputs against schemas
         run: |
           python3 -m pip install --quiet jsonschema
