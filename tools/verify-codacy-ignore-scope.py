@@ -57,18 +57,29 @@ def unquote(value: str) -> str:
     return value
 
 
+def update_quote_state(char: str, in_single_quote: bool, in_double_quote: bool) -> tuple[bool, bool]:
+    if char == "'" and not in_double_quote:
+        return (not in_single_quote, in_double_quote)
+    if char == '"' and not in_single_quote:
+        return (in_single_quote, not in_double_quote)
+    return (in_single_quote, in_double_quote)
+
+
+def is_comment_delimiter(char: str, in_single_quote: bool, in_double_quote: bool) -> bool:
+    return char == "#" and not in_single_quote and not in_double_quote
+
+
 def strip_inline_comment(value: str) -> str:
     in_single_quote = False
     in_double_quote = False
     for index, char in enumerate(value):
-        if char == "'" and not in_double_quote:
-            in_single_quote = not in_single_quote
-            continue
-        if char == '"' and not in_single_quote:
-            in_double_quote = not in_double_quote
-            continue
-        if char == "#" and not in_single_quote and not in_double_quote:
+        if is_comment_delimiter(char, in_single_quote, in_double_quote):
             return value[:index].rstrip()
+        in_single_quote, in_double_quote = update_quote_state(
+            char,
+            in_single_quote,
+            in_double_quote,
+        )
     return value.strip()
 
 
