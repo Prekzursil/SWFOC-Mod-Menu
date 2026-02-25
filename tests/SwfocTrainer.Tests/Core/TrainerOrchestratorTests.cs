@@ -23,19 +23,37 @@ public sealed class TrainerOrchestratorTests
         public StubProfileRepository(TrainerProfile profile) => _profile = profile;
 
         public Task<ProfileManifest> LoadManifestAsync(CancellationToken ct = default)
-            => throw new NotImplementedException();
+        {
+            _ = ct;
+            throw new NotImplementedException();
+        }
 
         public Task<TrainerProfile> LoadProfileAsync(string profileId, CancellationToken ct = default)
-            => Task.FromResult(_profile);
+        {
+            _ = profileId;
+            _ = ct;
+            return Task.FromResult(_profile);
+        }
 
         public Task<TrainerProfile> ResolveInheritedProfileAsync(string profileId, CancellationToken ct = default)
-            => Task.FromResult(_profile);
+        {
+            _ = profileId;
+            _ = ct;
+            return Task.FromResult(_profile);
+        }
 
         public Task ValidateProfileAsync(TrainerProfile profile, CancellationToken ct = default)
-            => Task.CompletedTask;
+        {
+            _ = profile;
+            _ = ct;
+            return Task.CompletedTask;
+        }
 
         public Task<IReadOnlyList<string>> ListAvailableProfilesAsync(CancellationToken ct = default)
-            => Task.FromResult<IReadOnlyList<string>>(new[] { _profile.Id });
+        {
+            _ = ct;
+            return Task.FromResult<IReadOnlyList<string>>(new[] { _profile.Id });
+        }
     }
 
     private sealed class StubRuntimeAdapter : IRuntimeAdapter
@@ -46,21 +64,39 @@ public sealed class TrainerOrchestratorTests
         public List<ActionExecutionRequest> ReceivedRequests { get; } = new();
 
         public Task<AttachSession> AttachAsync(string profileId, CancellationToken ct = default)
-            => throw new NotImplementedException();
+        {
+            _ = profileId;
+            _ = ct;
+            throw new NotImplementedException();
+        }
 
         public Task<T> ReadAsync<T>(string symbol, CancellationToken ct = default) where T : unmanaged
-            => throw new NotImplementedException();
+        {
+            _ = symbol;
+            _ = ct;
+            throw new NotImplementedException();
+        }
 
         public Task WriteAsync<T>(string symbol, T value, CancellationToken ct = default) where T : unmanaged
-            => Task.CompletedTask;
+        {
+            _ = symbol;
+            _ = value;
+            _ = ct;
+            return Task.CompletedTask;
+        }
 
         public Task<ActionExecutionResult> ExecuteAsync(ActionExecutionRequest request, CancellationToken ct = default)
         {
+            _ = ct;
             ReceivedRequests.Add(request);
             return Task.FromResult(new ActionExecutionResult(true, "stub OK", AddressSource.None));
         }
 
-        public Task DetachAsync(CancellationToken ct = default) => Task.CompletedTask;
+        public Task DetachAsync(CancellationToken ct = default)
+        {
+            _ = ct;
+            return Task.CompletedTask;
+        }
     }
 
     /// <summary>Records all freeze/unfreeze calls for assertion.</summary>
@@ -84,7 +120,7 @@ public sealed class TrainerOrchestratorTests
 
         public void UnfreezeAll() => UnfreezeAllCalled = true;
         public bool IsFrozen(string symbol) => FrozenCalls.Any(c => c.Symbol == symbol);
-        public void Dispose() { }
+        public void Dispose() { /* no-op stub */ }
     }
 
     private sealed class StubAuditLogger : IAuditLogger
@@ -93,6 +129,7 @@ public sealed class TrainerOrchestratorTests
 
         public Task WriteAsync(ActionAuditRecord record, CancellationToken ct = default)
         {
+            _ = ct;
             Records.Add(record);
             return Task.CompletedTask;
         }

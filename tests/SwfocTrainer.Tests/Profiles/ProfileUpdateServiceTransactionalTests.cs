@@ -212,6 +212,7 @@ public sealed class ProfileUpdateServiceTransactionalTests
 
         protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
         {
+            _ = cancellationToken;
             var key = request.RequestUri!.ToString();
             if (!_responses.TryGetValue(key, out var payload))
             {
@@ -233,19 +234,37 @@ public sealed class ProfileUpdateServiceTransactionalTests
     private sealed class StubProfileRepository : IProfileRepository
     {
         public Task<ProfileManifest> LoadManifestAsync(CancellationToken cancellationToken = default)
-            => throw new NotImplementedException();
+        {
+            _ = cancellationToken;
+            throw new NotImplementedException();
+        }
 
         public Task<TrainerProfile> LoadProfileAsync(string profileId, CancellationToken cancellationToken = default)
-            => throw new NotImplementedException();
+        {
+            _ = profileId;
+            _ = cancellationToken;
+            throw new NotImplementedException();
+        }
 
         public Task<TrainerProfile> ResolveInheritedProfileAsync(string profileId, CancellationToken cancellationToken = default)
-            => throw new NotImplementedException();
+        {
+            _ = profileId;
+            _ = cancellationToken;
+            throw new NotImplementedException();
+        }
 
         public Task ValidateProfileAsync(TrainerProfile profile, CancellationToken cancellationToken = default)
-            => Task.CompletedTask;
+        {
+            _ = profile;
+            _ = cancellationToken;
+            return Task.CompletedTask;
+        }
 
         public Task<IReadOnlyList<string>> ListAvailableProfilesAsync(CancellationToken cancellationToken = default)
-            => Task.FromResult<IReadOnlyList<string>>(Array.Empty<string>());
+        {
+            _ = cancellationToken;
+            return Task.FromResult<IReadOnlyList<string>>(Array.Empty<string>());
+        }
     }
 
     private sealed record ProfileUpdateTestWorkspace(

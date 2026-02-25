@@ -115,6 +115,8 @@ public sealed class SdkOperationRouterTests
 
         public Task<SdkOperationResult> ExecuteAsync(SdkOperationRequest request, CancellationToken cancellationToken)
         {
+            _ = request;
+            _ = cancellationToken;
             return Task.FromResult(new SdkOperationResult(true, "ok", CapabilityReasonCode.AllRequiredAnchorsPresent, SdkCapabilityStatus.Available));
         }
     }
@@ -128,6 +130,8 @@ public sealed class SdkOperationRouterTests
 
         public Task<ProfileVariantResolution> ResolveAsync(string requestedProfileId, IReadOnlyList<ProcessMetadata>? processes, CancellationToken cancellationToken)
         {
+            _ = processes;
+            _ = cancellationToken;
             return Task.FromResult(new ProfileVariantResolution(requestedProfileId, "base_swfoc", "test", 1.0d));
         }
     }
@@ -151,6 +155,8 @@ public sealed class SdkOperationRouterTests
 
         public Task<BinaryFingerprint> CaptureFromPathAsync(string modulePath, int processId, CancellationToken cancellationToken)
         {
+            _ = processId;
+            _ = cancellationToken;
             return Task.FromResult(new BinaryFingerprint(
                 "fp",
                 "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef",
@@ -172,6 +178,8 @@ public sealed class SdkOperationRouterTests
 
         public Task<CapabilityResolutionResult> ResolveAsync(BinaryFingerprint fingerprint, string requestedProfileId, string operationId, IReadOnlySet<string> resolvedAnchors, CancellationToken cancellationToken)
         {
+            _ = resolvedAnchors;
+            _ = cancellationToken;
             return Task.FromResult(new CapabilityResolutionResult(
                 requestedProfileId,
                 operationId,
@@ -191,6 +199,7 @@ public sealed class SdkOperationRouterTests
 
         public Task<string?> ResolveDefaultProfileIdAsync(BinaryFingerprint fingerprint, CancellationToken cancellationToken)
         {
+            _ = cancellationToken;
             return Task.FromResult<string?>("base_swfoc");
         }
     }
@@ -199,6 +208,7 @@ public sealed class SdkOperationRouterTests
     {
         public SdkExecutionDecision CanExecute(CapabilityResolutionResult resolution, bool isMutation)
         {
+            _ = isMutation;
             return new SdkExecutionDecision(true, resolution.ReasonCode, "ok");
         }
     }

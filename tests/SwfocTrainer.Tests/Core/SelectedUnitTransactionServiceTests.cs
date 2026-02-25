@@ -159,10 +159,15 @@ public sealed class SelectedUnitTransactionServiceTests
         public AttachSession? CurrentSession => null;
 
         public Task<AttachSession> AttachAsync(string profileId, CancellationToken cancellationToken = default)
-            => throw new NotImplementedException();
+        {
+            _ = profileId;
+            _ = cancellationToken;
+            throw new NotImplementedException();
+        }
 
         public Task<T> ReadAsync<T>(string symbol, CancellationToken cancellationToken = default) where T : unmanaged
         {
+            _ = cancellationToken;
             var raw = _values[symbol];
             var cast = (T)Convert.ChangeType(raw, typeof(T));
             return Task.FromResult(cast);
@@ -170,12 +175,14 @@ public sealed class SelectedUnitTransactionServiceTests
 
         public Task WriteAsync<T>(string symbol, T value, CancellationToken cancellationToken = default) where T : unmanaged
         {
+            _ = cancellationToken;
             _values[symbol] = value!;
             return Task.CompletedTask;
         }
 
         public Task<ActionExecutionResult> ExecuteAsync(ActionExecutionRequest request, CancellationToken cancellationToken = default)
         {
+            _ = cancellationToken;
             if (!_failureConsumed && !string.IsNullOrWhiteSpace(FailActionId) &&
                 request.Action.Id.Equals(FailActionId, StringComparison.OrdinalIgnoreCase))
             {
@@ -196,7 +203,11 @@ public sealed class SelectedUnitTransactionServiceTests
             return Task.FromResult(new ActionExecutionResult(true, "ok", AddressSource.Signature));
         }
 
-        public Task DetachAsync(CancellationToken cancellationToken = default) => Task.CompletedTask;
+        public Task DetachAsync(CancellationToken cancellationToken = default)
+        {
+            _ = cancellationToken;
+            return Task.CompletedTask;
+        }
 
         public float ReadFloat(string symbol) => Convert.ToSingle(_values[symbol]);
 
@@ -210,37 +221,59 @@ public sealed class SelectedUnitTransactionServiceTests
         public ProfileRepositoryStub(TrainerProfile profile) => _profile = profile;
 
         public Task<ProfileManifest> LoadManifestAsync(CancellationToken cancellationToken = default)
-            => throw new NotImplementedException();
+        {
+            _ = cancellationToken;
+            throw new NotImplementedException();
+        }
 
         public Task<TrainerProfile> LoadProfileAsync(string profileId, CancellationToken cancellationToken = default)
-            => Task.FromResult(_profile);
+        {
+            _ = profileId;
+            _ = cancellationToken;
+            return Task.FromResult(_profile);
+        }
 
         public Task<TrainerProfile> ResolveInheritedProfileAsync(string profileId, CancellationToken cancellationToken = default)
-            => Task.FromResult(_profile);
+        {
+            _ = profileId;
+            _ = cancellationToken;
+            return Task.FromResult(_profile);
+        }
 
         public Task ValidateProfileAsync(TrainerProfile profile, CancellationToken cancellationToken = default)
-            => Task.CompletedTask;
+        {
+            _ = profile;
+            _ = cancellationToken;
+            return Task.CompletedTask;
+        }
 
         public Task<IReadOnlyList<string>> ListAvailableProfilesAsync(CancellationToken cancellationToken = default)
-            => Task.FromResult<IReadOnlyList<string>>(new[] { _profile.Id });
+        {
+            _ = cancellationToken;
+            return Task.FromResult<IReadOnlyList<string>>(new[] { _profile.Id });
+        }
     }
 
     private sealed class FreezeStub : IValueFreezeService
     {
         public IReadOnlyCollection<string> GetFrozenSymbols() => Array.Empty<string>();
-        public void FreezeInt(string symbol, int value) { }
-        public void FreezeIntAggressive(string symbol, int value) { }
-        public void FreezeFloat(string symbol, float value) { }
-        public void FreezeBool(string symbol, bool value) { }
+        public void FreezeInt(string symbol, int value) { _ = symbol; _ = value; /* no-op stub */ }
+        public void FreezeIntAggressive(string symbol, int value) { _ = symbol; _ = value; /* no-op stub */ }
+        public void FreezeFloat(string symbol, float value) { _ = symbol; _ = value; /* no-op stub */ }
+        public void FreezeBool(string symbol, bool value) { _ = symbol; _ = value; /* no-op stub */ }
         public bool Unfreeze(string symbol) => true;
-        public void UnfreezeAll() { }
+        public void UnfreezeAll() { /* no-op stub */ }
         public bool IsFrozen(string symbol) => false;
-        public void Dispose() { }
+        public void Dispose() { /* no-op stub */ }
     }
 
     private sealed class AuditStub : IAuditLogger
     {
         public Task WriteAsync(ActionAuditRecord record, CancellationToken cancellationToken = default)
-            => Task.CompletedTask;
+        {
+            _ = record;
+            _ = cancellationToken;
+            return Task.CompletedTask;
+        }
     }
 }

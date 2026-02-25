@@ -183,16 +183,30 @@ public sealed class SpawnPresetServiceTests
         public AttachSession? CurrentSession => null;
 
         public Task<AttachSession> AttachAsync(string profileId, CancellationToken cancellationToken = default)
-            => throw new NotImplementedException();
+        {
+            _ = profileId;
+            _ = cancellationToken;
+            throw new NotImplementedException();
+        }
 
         public Task<T> ReadAsync<T>(string symbol, CancellationToken cancellationToken = default) where T : unmanaged
-            => throw new NotImplementedException();
+        {
+            _ = symbol;
+            _ = cancellationToken;
+            throw new NotImplementedException();
+        }
 
         public Task WriteAsync<T>(string symbol, T value, CancellationToken cancellationToken = default) where T : unmanaged
-            => Task.CompletedTask;
+        {
+            _ = symbol;
+            _ = value;
+            _ = cancellationToken;
+            return Task.CompletedTask;
+        }
 
         public Task<ActionExecutionResult> ExecuteAsync(ActionExecutionRequest request, CancellationToken cancellationToken = default)
         {
+            _ = cancellationToken;
             _counter++;
             if (FailOnSequence > 0 && _counter == FailOnSequence)
             {
@@ -202,13 +216,19 @@ public sealed class SpawnPresetServiceTests
             return Task.FromResult(new ActionExecutionResult(true, "ok", AddressSource.Signature));
         }
 
-        public Task DetachAsync(CancellationToken cancellationToken = default) => Task.CompletedTask;
+        public Task DetachAsync(CancellationToken cancellationToken = default)
+        {
+            _ = cancellationToken;
+            return Task.CompletedTask;
+        }
     }
 
     private sealed class CatalogStub : ICatalogService
     {
         public Task<IReadOnlyDictionary<string, IReadOnlyList<string>>> LoadCatalogAsync(string profileId, CancellationToken cancellationToken = default)
         {
+            _ = profileId;
+            _ = cancellationToken;
             IReadOnlyDictionary<string, IReadOnlyList<string>> data = new Dictionary<string, IReadOnlyList<string>>
             {
                 ["unit_catalog"] = new[] { "STORMTROOPER", "AT_ST" },
@@ -226,38 +246,60 @@ public sealed class SpawnPresetServiceTests
         public ProfileRepositoryStub(TrainerProfile profile) => _profile = profile;
 
         public Task<ProfileManifest> LoadManifestAsync(CancellationToken cancellationToken = default)
-            => throw new NotImplementedException();
+        {
+            _ = cancellationToken;
+            throw new NotImplementedException();
+        }
 
         public Task<TrainerProfile> LoadProfileAsync(string profileId, CancellationToken cancellationToken = default)
-            => Task.FromResult(_profile);
+        {
+            _ = profileId;
+            _ = cancellationToken;
+            return Task.FromResult(_profile);
+        }
 
         public Task<TrainerProfile> ResolveInheritedProfileAsync(string profileId, CancellationToken cancellationToken = default)
-            => Task.FromResult(_profile);
+        {
+            _ = profileId;
+            _ = cancellationToken;
+            return Task.FromResult(_profile);
+        }
 
         public Task ValidateProfileAsync(TrainerProfile profile, CancellationToken cancellationToken = default)
-            => Task.CompletedTask;
+        {
+            _ = profile;
+            _ = cancellationToken;
+            return Task.CompletedTask;
+        }
 
         public Task<IReadOnlyList<string>> ListAvailableProfilesAsync(CancellationToken cancellationToken = default)
-            => Task.FromResult<IReadOnlyList<string>>(new[] { _profile.Id });
+        {
+            _ = cancellationToken;
+            return Task.FromResult<IReadOnlyList<string>>(new[] { _profile.Id });
+        }
     }
 
     private sealed class FreezeStub : IValueFreezeService
     {
         public IReadOnlyCollection<string> GetFrozenSymbols() => Array.Empty<string>();
-        public void FreezeInt(string symbol, int value) { }
-        public void FreezeIntAggressive(string symbol, int value) { }
-        public void FreezeFloat(string symbol, float value) { }
-        public void FreezeBool(string symbol, bool value) { }
+        public void FreezeInt(string symbol, int value) { _ = symbol; _ = value; /* no-op stub */ }
+        public void FreezeIntAggressive(string symbol, int value) { _ = symbol; _ = value; /* no-op stub */ }
+        public void FreezeFloat(string symbol, float value) { _ = symbol; _ = value; /* no-op stub */ }
+        public void FreezeBool(string symbol, bool value) { _ = symbol; _ = value; /* no-op stub */ }
         public bool Unfreeze(string symbol) => true;
-        public void UnfreezeAll() { }
+        public void UnfreezeAll() { /* no-op stub */ }
         public bool IsFrozen(string symbol) => false;
-        public void Dispose() { }
+        public void Dispose() { /* no-op stub */ }
     }
 
     private sealed class AuditStub : IAuditLogger
     {
         public Task WriteAsync(ActionAuditRecord record, CancellationToken cancellationToken = default)
-            => Task.CompletedTask;
+        {
+            _ = record;
+            _ = cancellationToken;
+            return Task.CompletedTask;
+        }
     }
 
     private sealed class TempDirectory : IDisposable

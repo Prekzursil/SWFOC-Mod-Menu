@@ -148,7 +148,7 @@ public sealed class LiveCreditsTests
 
                 // Check if a subsequent instruction stores to our credits int address via RIP-relative
                 // Look for mov [rip+disp32], reg patterns (89 XX) within 20 bytes after the cvttss2si
-                var storeInfo = FindNearbyRipRelativeStore(moduleBytes, hitOffset, 20, creditsRva, baseAddr.ToInt64());
+                var storeInfo = FindNearbyRipRelativeStore(moduleBytes, hitOffset, 20, creditsRva);
 
                 _output.WriteLine($"    hit RVA=0x{hitOffset:X}  addr=0x{hitAddr.ToInt64():X}  bytes={contextHex}  storeToCredits={storeInfo}");
 
@@ -273,7 +273,7 @@ public sealed class LiveCreditsTests
 
         // ── 6. ALSO SCAN: instructions that store to credits int via RIP-relative ──
         _output.WriteLine($"\n=== Scanning for ALL stores to credits int address (RVA 0x{creditsRva:X}) ===");
-        var storeHits = FindAllRipRelativeStoresToTarget(moduleBytes, creditsRva, baseAddr.ToInt64());
+        var storeHits = FindAllRipRelativeStoresToTarget(moduleBytes, creditsRva);
         _output.WriteLine($"Found {storeHits.Count} store instruction(s) targeting credits int:");
         foreach (var (rva, instrLen, hex) in storeHits)
         {
@@ -322,7 +322,7 @@ public sealed class LiveCreditsTests
     /// Starting from hitOffset, look within nextN bytes for a RIP-relative store
     /// (89 ModRM with ModRM &amp; 0xC7 == 0x05 or 0x0D) whose target RVA matches creditsRva.
     /// </summary>
-    private static string FindNearbyRipRelativeStore(byte[] module, int hitOffset, int nextN, long creditsRva, long moduleBase)
+    private static string FindNearbyRipRelativeStore(byte[] module, int hitOffset, int nextN, long creditsRva)
     {
         for (var i = hitOffset; i < hitOffset + nextN && i + 6 < module.Length; i++)
         {
@@ -367,7 +367,7 @@ public sealed class LiveCreditsTests
     /// Scan the entire module for RIP-relative store instructions (89 XX) that write to the given target RVA.
     /// </summary>
     private static List<(int Rva, int InstrLen, string Hex)> FindAllRipRelativeStoresToTarget(
-        byte[] module, long targetRva, long moduleBase)
+        byte[] module, long targetRva)
     {
         var results = new List<(int, int, string)>();
 
