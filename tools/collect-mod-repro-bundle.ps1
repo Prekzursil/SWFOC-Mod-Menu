@@ -4,7 +4,8 @@ param(
     [Parameter(Mandatory = $true)][string]$SummaryPath,
     [Parameter(Mandatory = $true)][ValidateSet("AOTR", "ROE", "TACTICAL", "FULL")][string]$Scope,
     [string]$ProfileRoot = "profiles/default",
-    [string]$StartedAtUtc = ""
+    [string]$StartedAtUtc = "",
+    [string]$TopModsPath = ""
 )
 
 Set-StrictMode -Version Latest
@@ -333,6 +334,134 @@ function Get-ActionStatusDiagnostics {
     }
 }
 
+function Resolve-TopModsPath {
+    param(
+        [string]$ExplicitPath,
+        [string]$RunDirectoryPath
+    )
+
+    if (-not [string]::IsNullOrWhiteSpace($ExplicitPath)) {
+        return $ExplicitPath
+    }
+
+    $defaultPath = Join-Path $RunDirectoryPath "top-mods.json"
+    if (Test-Path -Path $defaultPath) {
+        return $defaultPath
+    }
+
+    return ""
+}
+
+function Get-TopModActionStatusEntries {
+    param(
+        [string]$TopModsJsonPath,
+        [object[]]$ProcessSnapshot,
+        [int]$MaxMods = 10
+    )
+
+    if ([string]::IsNullOrWhiteSpace($TopModsJsonPath) -or -not (Test-Path -Path $TopModsJsonPath)) {
+        return @()
+    }
+
+    try {
+        $topModsPayload = Get-Content -Raw -Path $TopModsJsonPath | ConvertFrom-Json
+    }
+    catch {
+        return @()
+    }
+
+    $topMods = @($topModsPayload.topMods | Select-Object -First $MaxMods)
+    if ($topMods.Count -eq 0) {
+        return @()
+    }
+
+    $promotedActions = @(
+        "freeze_timer",
+        "toggle_fog_reveal",
+        "toggle_ai",
+        "set_unit_cap",
+        "toggle_instant_build_patch"
+    )
+
+    $entries = New-Object System.Collections.Generic.List[object]
+    foreach ($mod in $topMods) {
+        $workshopId = [string]$mod.workshopId
+        if ([string]::IsNullOrWhiteSpace($workshopId)) {
+            continue
+        }
+
+        $contextDetected = @($ProcessSnapshot | Where-Object {
+                @($_.steamModIds) -contains $workshopId -or ([string]$_.commandLine).Contains($workshopId)
+            }).Count -gt 0
+
+        $skipReasonCode = if ($contextDetected) {
+            "top_mod_context_detected_not_executed"
+        }
+        else {
+            "top_mod_context_not_detected"
+        }
+
+        $message = if ($contextDetected) {
+            "Top-mod context detected but promoted action matrix currently executes only default shipped profile set."
+        }
+        else {
+            "Top-mod launch context not detected in running processes for this run."
+        }
+
+        $profileId = "workshop_{0}_auto" -f $workshopId
+        foreach ($actionId in $promotedActions) {
+            $entries.Add([ordered]@{
+                    profileId = $profileId
+                    actionId = $actionId
+                    outcome = "Skipped"
+                    backendRoute = $null
+                    routeReasonCode = $null
+                    capabilityProbeReasonCode = $null
+                    hybridExecution = $null
+                    hasFallbackMarker = $false
+                    message = $message
+                    skipReasonCode = $skipReasonCode
+                })
+        }
+    }
+
+    return @($entries)
+}
+
+function Merge-ActionStatusDiagnostics {
+    param(
+        [hashtable]$BaseDiagnostics,
+        [object[]]$AdditionalEntries
+    )
+
+    if ($AdditionalEntries.Count -eq 0) {
+        return $BaseDiagnostics
+    }
+
+    $entries = New-Object System.Collections.Generic.List[object]
+    foreach ($entry in @($BaseDiagnostics.entries)) {
+        $entries.Add($entry)
+    }
+
+    foreach ($entry in $AdditionalEntries) {
+        $entries.Add($entry)
+    }
+
+    $summary = [ordered]@{
+        total = @($entries).Count
+        passed = @($entries | Where-Object { $_.outcome -eq "Passed" }).Count
+        failed = @($entries | Where-Object { $_.outcome -eq "Failed" }).Count
+        skipped = @($entries | Where-Object { $_.outcome -eq "Skipped" }).Count
+    }
+
+    return [ordered]@{
+        status = "captured"
+        source = [string]$BaseDiagnostics.source
+        summary = $summary
+        entries = @($entries)
+    }
+}
+
 function ConvertTo-LiveTestSummary {
     param([object[]]$SummaryEntries)
 
@@ -514,6 +643,9 @@ $classification = Get-Classification -Relevant $relevantLiveTests -ProcessSnapsh
 $requiredCapabilities = Get-ProfileRequiredCapabilities -ProfileRootPath $ProfileRoot -ProfileId ([string]$launchContext.profileId)
 $runtimeEvidence = Get-RuntimeEvidence -RunDirectoryPath $RunDirectory
 $actionStatusDiagnostics = Get-ActionStatusDiagnostics -RunDirectoryPath $RunDirectory
+$resolvedTopModsPath = Resolve-TopModsPath -ExplicitPath $TopModsPath -RunDirectoryPath $RunDirectory
+$topModEntries = Get-TopModActionStatusEntries -TopModsJsonPath $resolvedTopModsPath -ProcessSnapshot $processSnapshot
+$actionStatusDiagnostics = Merge-ActionStatusDiagnostics -BaseDiagnostics $actionStatusDiagnostics -AdditionalEntries $topModEntries
 
 $nextAction = switch ($classification) {
     "passed" { "Attach bundle to issue and continue with fix or closure workflow." }

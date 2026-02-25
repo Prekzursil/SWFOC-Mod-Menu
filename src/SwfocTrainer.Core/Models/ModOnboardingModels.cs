@@ -18,7 +18,9 @@ public sealed record ModOnboardingRequest(
     IReadOnlyList<ModLaunchSample> LaunchSamples,
     IReadOnlyList<string>? ProfileAliases = null,
     string? NamespaceRoot = null,
-    string? Notes = null);
+    string? Notes = null,
+    IReadOnlyList<string>? RequiredCapabilities = null,
+    IReadOnlyDictionary<string, string>? AdditionalMetadata = null);
 
 /// <summary>
 /// Scaffold result for custom-mod onboarding.
@@ -31,6 +33,57 @@ public sealed record ModOnboardingResult(
     IReadOnlyList<string> InferredPathHints,
     IReadOnlyList<string> InferredAliases,
     IReadOnlyList<string> Warnings);
+
+/// <summary>
+/// Discovery-derived launch hints for generated profile seeds.
+/// </summary>
+public sealed record GeneratedLaunchHints(
+    IReadOnlyList<string> SteamModIds,
+    IReadOnlyList<string> ModPathHints);
+
+/// <summary>
+/// One generated onboarding seed from workshop discovery artifacts.
+/// </summary>
+public sealed record GeneratedProfileSeed(
+    string WorkshopId,
+    string Title,
+    string CandidateBaseProfile,
+    GeneratedLaunchHints LaunchHints,
+    IReadOnlyList<string> ParentDependencies,
+    IReadOnlyList<string> RequiredCapabilities,
+    string SourceRunId,
+    double Confidence,
+    string RiskLevel,
+    IReadOnlyDictionary<string, IReadOnlyList<string>>? AnchorHints = null);
+
+/// <summary>
+/// Batch request contract for generating onboarding drafts from discovery seeds.
+/// </summary>
+public sealed record ModOnboardingSeedBatchRequest(
+    IReadOnlyList<GeneratedProfileSeed> Seeds,
+    string NamespaceRoot = "custom",
+    string FallbackBaseProfileId = "base_swfoc");
+
+/// <summary>
+/// Per-seed output result from batch onboarding generation.
+/// </summary>
+public sealed record ModOnboardingBatchItemResult(
+    string WorkshopId,
+    string ProfileId,
+    string OutputPath,
+    bool Succeeded,
+    IReadOnlyList<string> Warnings,
+    string? Error = null);
+
+/// <summary>
+/// Aggregate result for onboarding batch generation.
+/// </summary>
+public sealed record ModOnboardingBatchResult(
+    bool Succeeded,
+    int Total,
+    int Generated,
+    int Failed,
+    IReadOnlyList<ModOnboardingBatchItemResult> Items);
 
 /// <summary>
 /// Input contract for writing calibration artifacts.

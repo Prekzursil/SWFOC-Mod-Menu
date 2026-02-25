@@ -119,6 +119,52 @@ public sealed class LaunchContextResolverTests
         context.Recommendation.Confidence.Should().BeLessThan(0.70);
     }
 
+    [Fact]
+    public async Task Resolve_Should_Prefer_AutoDiscovery_Profile_When_Exact_Workshop_Id_Is_Present()
+    {
+        var resolver = new LaunchContextResolver();
+        var profiles = (await LoadProfilesAsync()).ToList();
+        profiles.Add(BuildAutoDiscoveryProfile(
+            id: "custom_enhanced_conflict_aotr_3664004146_swfoc",
+            workshopId: "3664004146",
+            localPathHints: "enhanced_conflict_aotr",
+            requiredWorkshopIds: "3664004146,1397421866"));
+
+        var process = CreateProcess(
+            "StarWarsG",
+            @"D:\SteamLibrary\steamapps\common\Star Wars Empire at War\corruption\StarWarsG.exe",
+            "StarWarsG.exe STEAMMOD=3664004146 STEAMMOD=1397421866");
+
+        var context = resolver.Resolve(process, profiles);
+
+        context.Recommendation.ProfileId.Should().Be("custom_enhanced_conflict_aotr_3664004146_swfoc");
+        context.Recommendation.ReasonCode.Should().Be("steammod_profile_exact");
+        context.Recommendation.Confidence.Should().BeGreaterThan(0.95d);
+    }
+
+    [Fact]
+    public async Task Resolve_Should_Match_AutoDiscovery_Profile_From_ModPath_Hints()
+    {
+        var resolver = new LaunchContextResolver();
+        var profiles = (await LoadProfilesAsync()).ToList();
+        profiles.Add(BuildAutoDiscoveryProfile(
+            id: "custom_enhanced_conflict_aotr_3664004146_swfoc",
+            workshopId: "3664004146",
+            localPathHints: "enhanced_conflict_aotr,aotr_submods",
+            requiredWorkshopIds: "3664004146,1397421866"));
+
+        var process = CreateProcess(
+            "StarWarsG",
+            @"D:\SteamLibrary\steamapps\common\Star Wars Empire at War\corruption\StarWarsG.exe",
+            "StarWarsG.exe MODPATH=Mods\\Enhanced_Conflict_AOTR");
+
+        var context = resolver.Resolve(process, profiles);
+
+        context.Recommendation.ProfileId.Should().Be("custom_enhanced_conflict_aotr_3664004146_swfoc");
+        context.Recommendation.ReasonCode.Should().Be("modpath_profile_auto_discovery_hint");
+        context.Recommendation.Confidence.Should().Be(0.90d);
+    }
+
     private static ProcessMetadata CreateProcess(string name, string path, string? commandLine)
     {
         return new ProcessMetadata(
@@ -151,5 +197,43 @@ public sealed class LaunchContextResolverTests
         }
 
         return list;
+    }
+
+    private static TrainerProfile BuildAutoDiscoveryProfile(
+        string id,
+        string workshopId,
+        string localPathHints,
+        string requiredWorkshopIds)
+    {
+        return new TrainerProfile(
+            Id: id,
+            DisplayName: "Auto discovery profile",
+            Inherits: "base_swfoc",
+            ExeTarget: ExeTarget.Swfoc,
+            SteamWorkshopId: workshopId,
+            SignatureSets: Array.Empty<SignatureSet>(),
+            FallbackOffsets: new Dictionary<string, long>(StringComparer.OrdinalIgnoreCase),
+            Actions: new Dictionary<string, ActionSpec>(StringComparer.OrdinalIgnoreCase),
+            FeatureFlags: new Dictionary<string, bool>(StringComparer.OrdinalIgnoreCase),
+            CatalogSources: Array.Empty<CatalogSource>(),
+            SaveSchemaId: "swfoc.save.v1",
+            HelperModHooks: Array.Empty<HelperHookSpec>(),
+            Metadata: new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
+            {
+                ["origin"] = "auto_discovery",
+                ["confidence"] = "0.93",
+                ["localPathHints"] = localPathHints,
+                ["profileAliases"] = "enhanced_conflict_aotr",
+                ["requiredWorkshopIds"] = requiredWorkshopIds
+            },
+            RequiredCapabilities: new[]
+            {
+                "set_credits",
+                "freeze_timer",
+                "toggle_fog_reveal",
+                "toggle_ai",
+                "set_unit_cap",
+                "toggle_instant_build_patch"
+            });
     }
 }

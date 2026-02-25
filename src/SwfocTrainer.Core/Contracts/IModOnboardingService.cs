@@ -8,9 +8,15 @@ namespace SwfocTrainer.Core.Contracts;
 public interface IModOnboardingService
 {
     Task<ModOnboardingResult> ScaffoldDraftProfileAsync(ModOnboardingRequest request, CancellationToken cancellationToken);
+    Task<ModOnboardingBatchResult> ScaffoldDraftProfilesFromSeedsAsync(ModOnboardingSeedBatchRequest request, CancellationToken cancellationToken);
 
     Task<ModOnboardingResult> ScaffoldDraftProfileAsync(ModOnboardingRequest request)
     {
         return ScaffoldDraftProfileAsync(request, CancellationToken.None);
+    }
+
+    Task<ModOnboardingBatchResult> ScaffoldDraftProfilesFromSeedsAsync(ModOnboardingSeedBatchRequest request)
+    {
+        return ScaffoldDraftProfilesFromSeedsAsync(request, CancellationToken.None);
     }
 }

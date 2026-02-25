@@ -61,6 +61,50 @@ public sealed class RuntimeAdapterRouteDiagnosticsTests
         applied.Diagnostics.Should().ContainKey("capabilityMapReasonCode");
         applied.Diagnostics.Should().ContainKey("capabilityMapState");
         applied.Diagnostics.Should().ContainKey("capabilityDeclaredAvailable");
+        applied.Diagnostics.Should().ContainKey("expertOverrideEnabled");
+        applied.Diagnostics.Should().ContainKey("overrideReason");
+        applied.Diagnostics.Should().ContainKey("panicDisableState");
+    }
+
+    [Fact]
+    public void ApplyBackendRouteDiagnostics_ShouldReadExpertOverrideEnvFlags_WhenDiagnosticsDoNotProvideValues()
+    {
+        const string overrideEnv = "SWFOC_EXPERT_MUTATION_OVERRIDES";
+        const string panicEnv = "SWFOC_EXPERT_MUTATION_OVERRIDES_PANIC";
+        var previousOverride = Environment.GetEnvironmentVariable(overrideEnv);
+        var previousPanic = Environment.GetEnvironmentVariable(panicEnv);
+
+        try
+        {
+            Environment.SetEnvironmentVariable(overrideEnv, "true");
+            Environment.SetEnvironmentVariable(panicEnv, "1");
+
+            var result = new ActionExecutionResult(
+                Succeeded: false,
+                Message: "blocked",
+                AddressSource: AddressSource.None,
+                Diagnostics: new Dictionary<string, object?>());
+
+            var routeDecision = new BackendRouteDecision(
+                Allowed: false,
+                Backend: ExecutionBackendKind.Extender,
+                ReasonCode: RuntimeReasonCode.SAFETY_FAIL_CLOSED,
+                Message: "blocked",
+                Diagnostics: new Dictionary<string, object?>());
+
+            var capabilityReport = CapabilityReport.Unknown("roe_3447786229_swfoc");
+            var applied = InvokeApplyBackendRouteDiagnostics(result, routeDecision, capabilityReport);
+
+            applied.Diagnostics.Should().NotBeNull();
+            applied.Diagnostics!["expertOverrideEnabled"].Should().Be(true);
+            applied.Diagnostics["panicDisableState"].Should().Be("active");
+            applied.Diagnostics["overrideReason"].Should().Be("none");
+        }
+        finally
+        {
+            Environment.SetEnvironmentVariable(overrideEnv, previousOverride);
+            Environment.SetEnvironmentVariable(panicEnv, previousPanic);
+        }
     }
 
     private static ActionExecutionResult InvokeApplyBackendRouteDiagnostics(

@@ -1,0 +1,64 @@
+{
+  "schemaVersion": "1.0",
+  "appId": 32470,
+  "sourceRunId": "sample-run-20260225",
+  "generatedAtUtc": "2026-02-25T00:00:00Z",
+  "retrievalTimestampUtc": "2026-02-25T00:00:00Z",
+  "rankingBasis": "steam_workshop_browse:trend",
+  "sources": [
+    "https://steamcommunity.com/workshop/browse/?appid=32470&browsesort=trend&section=readytouseitems&p=1"
+  ],
+  "topMods": [
+    {
+      "workshopId": "1397421866",
+      "title": "Awakening of the Rebellion",
+      "url": "https://steamcommunity.com/sharedfiles/filedetails/?id=1397421866",
+      "subscriptions": 169000,
+      "lifetimeSubscriptions": 328000,
+      "timeUpdated": "2024-08-25T00:00:00Z",
+      "parentDependencies": [],
+      "launchHints": {
+        "steamModIds": ["1397421866"],
+        "modPathHints": ["awakening_of_the_rebellion", "aotr"]
+      },
+      "candidateBaseProfile": "aotr_1397421866_swfoc",
+      "confidence": 0.97,
+      "riskLevel": "medium",
+      "normalizedTags": ["foc", "singleplayer", "multiplayer"]
+    },
+    {
+      "workshopId": "3447786229",
+      "title": "Rise of the Empire",
+      "url": "https://steamcommunity.com/sharedfiles/filedetails/?id=3447786229",
+      "subscriptions": 23000,
+      "lifetimeSubscriptions": 47000,
+      "timeUpdated": "2026-01-10T00:00:00Z",
+      "parentDependencies": ["1397421866"],
+      "launchHints": {
+        "steamModIds": ["3447786229", "1397421866"],
+        "modPathHints": ["rise_of_the_empire", "roe"]
+      },
+      "candidateBaseProfile": "roe_3447786229_swfoc",
+      "confidence": 0.93,
+      "riskLevel": "high",
+      "normalizedTags": ["foc", "singleplayer"]
+    },
+    {
+      "workshopId": "3664004146",
+      "title": "Large Scale Enhancement Pack",
+      "url": "https://steamcommunity.com/sharedfiles/filedetails/?id=3664004146",
+      "subscriptions": 3400,
+      "lifetimeSubscriptions": 5100,
+      "timeUpdated": "2026-02-15T00:00:00Z",
+      "parentDependencies": [],
+      "launchHints": {
+        "steamModIds": ["3664004146"],
+        "modPathHints": ["enhancement_pack", "foc_overhaul"]
+      },
+      "candidateBaseProfile": "base_swfoc",
+      "confidence": 0.62,
+      "riskLevel": "low",
+      "normalizedTags": ["foc", "singleplayer"]
+    }
+  ]
+}

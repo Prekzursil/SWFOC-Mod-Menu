@@ -1,0 +1,122 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "SWFOC Generated Profile Seeds",
+  "type": "object",
+  "required": [
+    "schemaVersion",
+    "sourceRunId",
+    "generatedAtUtc",
+    "seedCount",
+    "seeds"
+  ],
+  "properties": {
+    "schemaVersion": {
+      "type": "string",
+      "enum": ["1.0"]
+    },
+    "sourceRunId": {
+      "type": "string",
+      "minLength": 1
+    },
+    "generatedAtUtc": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "seedCount": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "seeds": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "workshopId",
+          "title",
+          "parentDependencies",
+          "launchHints",
+          "candidateBaseProfile",
+          "requiredCapabilities",
+          "anchorHints",
+          "riskLevel",
+          "confidence",
+          "sourceRunId"
+        ],
+        "properties": {
+          "workshopId": {
+            "type": "string",
+            "pattern": "^[0-9]{4,}$"
+          },
+          "title": {
+            "type": "string",
+            "minLength": 1
+          },
+          "parentDependencies": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "pattern": "^[0-9]{4,}$"
+            }
+          },
+          "launchHints": {
+            "type": "object",
+            "required": ["steamModIds", "modPathHints"],
+            "properties": {
+              "steamModIds": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "pattern": "^[0-9]{4,}$"
+                }
+              },
+              "modPathHints": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              }
+            },
+            "additionalProperties": true
+          },
+          "candidateBaseProfile": {
+            "type": "string",
+            "minLength": 1
+          },
+          "requiredCapabilities": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "anchorHints": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1
+              }
+            }
+          },
+          "riskLevel": {
+            "type": "string",
+            "enum": ["low", "medium", "high"]
+          },
+          "confidence": {
+            "type": "number",
+            "minimum": 0.0,
+            "maximum": 1.0
+          },
+          "sourceRunId": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "additionalProperties": true
+      }
+    }
+  },
+  "additionalProperties": true
+}

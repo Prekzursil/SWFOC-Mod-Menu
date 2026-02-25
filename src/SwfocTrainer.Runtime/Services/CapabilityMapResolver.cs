@@ -142,8 +142,36 @@ public sealed class CapabilityMapResolver : ICapabilityMapResolver
             return false;
         }
 
+        if (IsGeneratedCustomProfileCompatible(requestedProfileId, defaultProfileId))
+        {
+            return false;
+        }
+
         return !string.Equals(requestedProfileId, defaultProfileId, StringComparison.OrdinalIgnoreCase) &&
                !string.Equals(requestedProfileId, "universal_auto", StringComparison.OrdinalIgnoreCase);
+    }
+
+    private static bool IsGeneratedCustomProfileCompatible(string requestedProfileId, string defaultProfileId)
+    {
+        if (string.IsNullOrWhiteSpace(requestedProfileId) ||
+            !requestedProfileId.StartsWith("custom_", StringComparison.OrdinalIgnoreCase))
+        {
+            return false;
+        }
+
+        if (requestedProfileId.EndsWith("_swfoc", StringComparison.OrdinalIgnoreCase) &&
+            defaultProfileId.EndsWith("_swfoc", StringComparison.OrdinalIgnoreCase))
+        {
+            return true;
+        }
+
+        if (requestedProfileId.EndsWith("_sweaw", StringComparison.OrdinalIgnoreCase) &&
+            defaultProfileId.EndsWith("_sweaw", StringComparison.OrdinalIgnoreCase))
+        {
+            return true;
+        }
+
+        return false;
     }
 
     private static CapabilityResolutionResult ResolveOperationAnchors(
