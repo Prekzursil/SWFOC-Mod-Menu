@@ -6,11 +6,6 @@ import sys
 
 from ghidra.program.model.symbol import SymbolType
 
-try:
-    currentProgram
-except NameError:
-    currentProgram = None
-
 
 def _hex_address(addr):
     return "0x{0:x}".format(int(addr.getOffset()))
@@ -48,25 +43,30 @@ def _collect_label_symbols(program):
     return symbols
 
 
+def _resolve_current_program():
+    return globals().get("currentProgram")
+
+
 def run():
     if len(sys.argv) < 1:
         raise RuntimeError("expected output path argument")
 
-    if currentProgram is None:
+    current_program = _resolve_current_program()
+    if current_program is None:
         raise RuntimeError(
             "currentProgram is only available in a Ghidra script runtime"
         )
 
     out_path = sys.argv[0]
     symbols = []
-    symbols.extend(_collect_function_symbols(currentProgram))
-    symbols.extend(_collect_label_symbols(currentProgram))
+    symbols.extend(_collect_function_symbols(current_program))
+    symbols.extend(_collect_label_symbols(current_program))
     symbols.sort(key=lambda item: (item["name"], item["address"]))
 
     payload = {
         "schemaVersion": "1.0",
-        "programName": currentProgram.getName(),
-        "generatedAtUtc": str(currentProgram.getCreationDate()),
+        "programName": current_program.getName(),
+        "generatedAtUtc": str(current_program.getCreationDate()),
         "symbols": symbols,
     }
 

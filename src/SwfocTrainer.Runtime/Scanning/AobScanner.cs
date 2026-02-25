@@ -6,6 +6,11 @@ internal static class AobScanner
 {
     public static nint FindPattern(Process process, byte[] memory, nint baseAddress, AobPattern pattern)
     {
+        return FindPattern(memory, baseAddress, pattern);
+    }
+
+    public static nint FindPattern(byte[] memory, nint baseAddress, AobPattern pattern)
+    {
         var sig = pattern.Bytes;
         if (sig.Length == 0)
         {

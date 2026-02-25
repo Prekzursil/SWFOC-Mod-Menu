@@ -10,7 +10,8 @@ target_link_libraries(SwfocExtender.Bridge
         SwfocExtender.Core)
 
 add_executable(SwfocExtender.Host
-    src/BridgeHostMain.cpp)
+    src/BridgeHostMain.cpp
+    src/BridgeHostJson.cpp)
 
 target_include_directories(SwfocExtender.Host
     PRIVATE

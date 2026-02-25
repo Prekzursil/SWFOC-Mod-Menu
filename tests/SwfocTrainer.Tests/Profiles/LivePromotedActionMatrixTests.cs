@@ -410,7 +410,7 @@ public sealed class LivePromotedActionMatrixTests
                     failed = entries.Count(x => x.Outcome.Equals("Failed", StringComparison.OrdinalIgnoreCase)),
                     skipped = entries.Count(x => x.Outcome.Equals("Skipped", StringComparison.OrdinalIgnoreCase))
                 },
-                entries = entries
+                entries
             }
         };
 

@@ -16,7 +16,7 @@ if (-not (Test-Path -Path $SeedPath)) {
     throw "Seed file not found: $SeedPath"
 }
 
-function Normalize-Token {
+function ConvertTo-NormalizedToken {
     param([string]$Value)
 
     if ([string]::IsNullOrWhiteSpace($Value)) {
@@ -58,7 +58,7 @@ foreach ($seed in $seeds) {
     }
 
     $title = [string]$seed.title
-    $titleToken = Normalize-Token -Value $title
+    $titleToken = ConvertTo-NormalizedToken -Value $title
     if ([string]::IsNullOrWhiteSpace($titleToken)) {
         $titleToken = "mod"
     }
