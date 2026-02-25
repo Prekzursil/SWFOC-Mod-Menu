@@ -40,6 +40,26 @@ PROTECTED_PREFIXES = [
 ]
 
 
+def unquote(value: str) -> str:
+    if (value.startswith('"') and value.endswith('"')) or (value.startswith("'") and value.endswith("'")):
+        return value[1:-1]
+    return value
+
+
+def is_top_level_key(line: str, stripped: str) -> bool:
+    if not line.startswith((" ", "\t")) and stripped:
+        return not stripped.startswith("- ")
+    return False
+
+
+def parse_exclude_item(stripped: str) -> str | None:
+    if not stripped or stripped.startswith("#"):
+        return None
+    if not stripped.startswith("- "):
+        return None
+    return unquote(stripped[2:].strip())
+
+
 def parse_exclude_paths(codacy_path: Path) -> list[str]:
     paths: list[str] = []
     lines = codacy_path.read_text(encoding="utf-8").splitlines()
@@ -47,23 +67,15 @@ def parse_exclude_paths(codacy_path: Path) -> list[str]:
     for line in lines:
         stripped = line.strip()
         if not in_block:
-            if stripped == "exclude_paths:":
-                in_block = True
+            in_block = stripped == "exclude_paths:"
             continue
 
-        if not stripped or stripped.startswith("#"):
-            continue
-
-        if stripped.startswith("- "):
-            raw = stripped[2:].strip()
-            if (raw.startswith('"') and raw.endswith('"')) or (raw.startswith("'") and raw.endswith("'")):
-                raw = raw[1:-1]
-            paths.append(raw)
-            continue
-
-        # End list when next top-level key starts.
-        if not line.startswith((" ", "\t")):
+        if is_top_level_key(line, stripped):
             break
+
+        parsed_item = parse_exclude_item(stripped)
+        if parsed_item is not None:
+            paths.append(parsed_item)
 
     return paths
 
@@ -167,7 +179,6 @@ def main() -> int:
     patterns = parse_exclude_paths(codacy_file)
     report = build_report(repo_root, codacy_file.relative_to(repo_root), patterns)
 
-    ignored_files = report["ignoredSample"]
     violations: list[str] = []
     if args.strict:
         # Recompute full ignored list for strict checks to avoid sample-only validation.
