@@ -48,7 +48,7 @@ The native bridge/extender tree is under `native/` and supports both WSL and Win
 bash tools/native/bootstrap-wsl-toolchain.sh
 ```
 
-2. Build:
+1. Build:
 
 ```bash
 bash tools/native/build-native.sh
@@ -77,13 +77,13 @@ Prerequisites:
 pwsh ./tools/native/resolve-cmake.ps1
 ```
 
-2. Build (Auto mode prefers Windows, then falls back to WSL):
+1. Build (Auto mode prefers Windows, then falls back to WSL):
 
 ```powershell
 pwsh ./tools/native/build-native.ps1 -Mode Auto -Configuration Release
 ```
 
-3. Force Windows-only path:
+1. Force Windows-only path:
 
 ```powershell
 pwsh ./tools/native/build-native.ps1 -Mode Windows -Configuration Release

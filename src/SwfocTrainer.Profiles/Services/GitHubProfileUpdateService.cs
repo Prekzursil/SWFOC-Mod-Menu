@@ -273,7 +273,7 @@ public sealed class GitHubProfileUpdateService : IProfileUpdateService
     {
         try
         {
-            ZipFile.ExtractToDirectory(zipPath, extractDir);
+            ExtractToDirectorySafely(zipPath, extractDir);
         }
         catch (Exception ex)
         {
@@ -281,6 +281,65 @@ public sealed class GitHubProfileUpdateService : IProfileUpdateService
         }
 
         return null;
+    }
+
+    private static void ExtractToDirectorySafely(string zipPath, string extractDir)
+    {
+        var extractionRoot = Path.GetFullPath(extractDir);
+        Directory.CreateDirectory(extractionRoot);
+        var extractionRootPrefix = extractionRoot.EndsWith(Path.DirectorySeparatorChar)
+            ? extractionRoot
+            : extractionRoot + Path.DirectorySeparatorChar;
+        using var archive = ZipFile.OpenRead(zipPath);
+
+        foreach (var entry in archive.Entries)
+        {
+            var normalizedEntryPath = entry.FullName.Replace('\\', '/');
+            if (string.IsNullOrWhiteSpace(normalizedEntryPath))
+            {
+                continue;
+            }
+
+            if (IsDriveQualifiedPath(normalizedEntryPath))
+            {
+                throw new InvalidDataException($"Archive entry uses drive-qualified path: {entry.FullName}");
+            }
+
+            if (Path.IsPathRooted(normalizedEntryPath) || normalizedEntryPath.StartsWith("/", StringComparison.Ordinal))
+            {
+                throw new InvalidDataException($"Archive entry uses rooted path: {entry.FullName}");
+            }
+
+            var relativePath = normalizedEntryPath.Replace('/', Path.DirectorySeparatorChar);
+            var destinationPath = Path.GetFullPath(Path.Combine(extractionRoot, relativePath));
+            if (!destinationPath.StartsWith(extractionRootPrefix, StringComparison.OrdinalIgnoreCase))
+            {
+                throw new InvalidDataException($"Archive entry escapes extraction root: {entry.FullName}");
+            }
+
+            if (normalizedEntryPath.EndsWith("/", StringComparison.Ordinal))
+            {
+                Directory.CreateDirectory(destinationPath);
+                continue;
+            }
+
+            var destinationDir = Path.GetDirectoryName(destinationPath);
+            if (!string.IsNullOrWhiteSpace(destinationDir))
+            {
+                Directory.CreateDirectory(destinationDir);
+            }
+
+            using var entryStream = entry.Open();
+            using var outputStream = new FileStream(destinationPath, FileMode.Create, FileAccess.Write, FileShare.None);
+            entryStream.CopyTo(outputStream);
+        }
+    }
+
+    private static bool IsDriveQualifiedPath(string path)
+    {
+        return path.Length >= 2 &&
+               char.IsLetter(path[0]) &&
+               path[1] == ':';
     }
 
     private async Task<ProfileInstallResult?> ValidateDownloadedProfileAsync(

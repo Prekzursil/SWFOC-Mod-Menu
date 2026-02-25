@@ -6,24 +6,24 @@ Last reviewed: 2026-02-18 UTC
 
 1. Petroglyph mod support/tooling page
 
-- URL: https://www.petroglyphgames.com/eawmodtool/
+- URL: <https://www.petroglyphgames.com/eawmodtool/>
 - Notes: Official mod support location, debug executable references, tooling updates.
 
 ## Platform Build Signals
 
 1. SteamDB patch history for app 32470
 
-- URL: https://steamdb.info/app/32470/patchnotes/
+- URL: <https://steamdb.info/app/32470/patchnotes/>
 - Notes: Build-drift signal for version-gating and fingerprint management.
 
 ## Community Validation Sources
 
 1. Steam Community discussions (mod launch/command patterns)
 
-- URL: https://steamcommunity.com/app/32470/discussions/
+- URL: <https://steamcommunity.com/app/32470/discussions/>
 - Notes: Useful for practical launch edge cases; treat as version-sensitive.
 
-2. Revora/ModDB guides
+1. Revora/ModDB guides
 
 - Notes: Useful for workflow context only; not authoritative for runtime safety decisions.
 

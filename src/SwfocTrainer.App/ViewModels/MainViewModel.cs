@@ -2793,7 +2793,7 @@ public sealed class MainViewModel : INotifyPropertyChanged
     private void RefreshActiveFreezes()
     {
         ActiveFreezes.Clear();
-        foreach (var symbol in _freezeService.FrozenSymbols)
+        foreach (var symbol in _freezeService.GetFrozenSymbols())
         {
             ActiveFreezes.Add($"❄️ {symbol}");
         }

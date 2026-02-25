@@ -56,7 +56,7 @@ Each PR should include:
 - deterministic test output and/or
 - live/manual notes with exact profile + build context.
 
-4. Any metadata/profile schema changes called out explicitly.
+1. Any metadata/profile schema changes called out explicitly.
 
 ## Runtime Reliability Changes
 
