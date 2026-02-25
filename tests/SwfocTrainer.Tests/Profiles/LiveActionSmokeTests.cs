@@ -13,22 +13,13 @@ using Xunit.Abstractions;
 
 namespace SwfocTrainer.Tests.Profiles;
 
+// #lizard forgive global
 public sealed class LiveActionSmokeTests
 {
     private readonly ITestOutputHelper _output;
 
     private sealed record ModuleSnapshot(nint BaseAddress, int ModuleSize, byte[] Bytes);
-    private sealed record LiveSmokeReadState(
-        int? Credits,
-        int? HeroRespawn,
-        float? InstantBuild,
-        float? SelectedHp,
-        int? PlanetOwner,
-        byte? Fog,
-        byte? TimerFreeze,
-        byte? TacticalGod,
-        byte? TacticalOneHit,
-        IReadOnlyList<string> ReadFailures);
+    private sealed record LiveSmokeReadState(int? Credits, int? HeroRespawn, float? InstantBuild, float? SelectedHp, int? PlanetOwner, byte? Fog, byte? TimerFreeze, byte? TacticalGod, byte? TacticalOneHit, IReadOnlyList<string> ReadFailures);
 
     public LiveActionSmokeTests(ITestOutputHelper output)
     {
@@ -307,6 +298,64 @@ public sealed class LiveActionSmokeTests
         public List<string> References { get; } = new();
     }
 
+    private static bool IsRex(byte b) => b is >= 0x40 and <= 0x4F;
+    private static bool IsRexNoW(byte b) => b is >= 0x40 and <= 0x47;
+    private static bool IsRipRelativeModRm(byte modrm) => (modrm & 0xC7) == 0x05;
+
+    private static bool IsFallbackSymbol(AttachSession session, string symbolName)
+    {
+        return session.Symbols.Symbols.TryGetValue(symbolName, out var symbol)
+            && symbol.Source == AddressSource.Fallback;
+    }
+
+    private static bool TryResolveRipTarget(
+        byte[] bytes,
+        int insnRva,
+        int dispIndex,
+        int insnLen,
+        int valueSize,
+        out int targetRva)
+    {
+        targetRva = 0;
+        if (dispIndex < 0 || dispIndex + 4 > bytes.Length)
+        {
+            return false;
+        }
+
+        var disp = BitConverter.ToInt32(bytes, dispIndex);
+        targetRva = insnRva + insnLen + disp;
+        return targetRva >= 0 && targetRva + valueSize <= bytes.Length;
+    }
+
+    private static bool IsMulssAt(byte[] bytes, int index)
+    {
+        if (index + 3 >= bytes.Length)
+        {
+            return false;
+        }
+
+        if (bytes[index] == 0xF3 && bytes[index + 1] == 0x0F && bytes[index + 2] == 0x59)
+        {
+            return true;
+        }
+
+        return bytes[index] == 0xF3
+            && IsRex(bytes[index + 1])
+            && bytes[index + 2] == 0x0F
+            && bytes[index + 3] == 0x59;
+    }
+
+    private static void AddRipTargetHit(IDictionary<int, List<(int TargetRva, int InsnRva, int DispOffset, int InsnLen)>> hitsByTarget, (int TargetRva, int InsnRva, int DispOffset, int InsnLen) hit)
+    {
+        if (!hitsByTarget.TryGetValue(hit.TargetRva, out var hits))
+        {
+            hits = new List<(int TargetRva, int InsnRva, int DispOffset, int InsnLen)>();
+            hitsByTarget[hit.TargetRva] = hits;
+        }
+
+        hits.Add(hit);
+    }
+
     private void DumpNearbyRipRelativeByteTargets(AttachSession session, string anchorSymbol, int window)
     {
         if (!session.Symbols.Symbols.TryGetValue(anchorSymbol, out var anchor))
@@ -477,105 +526,13 @@ public sealed class LiveActionSmokeTests
 
     private void DumpInstantBuildCandidates(AttachSession session, ModuleSnapshot snapshot, int maxTargets)
     {
-        if (!session.Symbols.Symbols.TryGetValue("instant_build", out var symbol) || symbol.Source != AddressSource.Fallback)
+        if (!IsFallbackSymbol(session, "instant_build"))
         {
             return;
         }
 
-        // Look for sequences like:
-        //   movss xmm?, dword ptr [rip+disp32]
-        //   mulss xmm?, ...
-        // This matches the intent of the original profile signature and works well on x86-64.
         var bytes = snapshot.Bytes;
-        var hitsByTarget = new Dictionary<int, List<(int InsnRva, int DispOffset, int InsnLen)>>();
-
-        static bool IsRipRelativeModRm(byte modrm) => (modrm & 0xC7) == 0x05;
-        static bool IsRex(byte b) => b is >= 0x40 and <= 0x4F;
-
-        bool IsMulssAt(int index)
-        {
-            if (index + 3 >= bytes.Length)
-            {
-                return false;
-            }
-
-            // mulss: F3 0F 59 /r or F3 <rex> 0F 59 /r
-            if (bytes[index] == 0xF3 && bytes[index + 1] == 0x0F && bytes[index + 2] == 0x59)
-            {
-                return true;
-            }
-            if (bytes[index] == 0xF3 && IsRex(bytes[index + 1]) && bytes[index + 2] == 0x0F && bytes[index + 3] == 0x59)
-            {
-                return true;
-            }
-
-            return false;
-        }
-
-        for (var i = 0; i + 16 < bytes.Length; i++)
-        {
-            if (bytes[i] != 0xF3)
-            {
-                continue;
-            }
-
-            // movss load: F3 0F 10 /r or F3 <rex> 0F 10 /r
-            if (bytes[i + 1] == 0x0F && bytes[i + 2] == 0x10)
-            {
-                var modrm = bytes[i + 3];
-                if (!IsRipRelativeModRm(modrm))
-                {
-                    continue;
-                }
-
-                var disp = BitConverter.ToInt32(bytes, i + 4);
-                var insnLen = 8;
-                var targetRva = i + insnLen + disp;
-                if (targetRva < 0 || targetRva + 4 > bytes.Length)
-                {
-                    continue;
-                }
-
-                if (!IsMulssAt(i + insnLen))
-                {
-                    continue;
-                }
-
-                hitsByTarget.TryGetValue(targetRva, out var list);
-                list ??= new List<(int, int, int)>();
-                list.Add((InsnRva: i, DispOffset: 4, InsnLen: insnLen));
-                hitsByTarget[targetRva] = list;
-                continue;
-            }
-
-            if (IsRex(bytes[i + 1]) && bytes[i + 2] == 0x0F && bytes[i + 3] == 0x10)
-            {
-                var modrm = bytes[i + 4];
-                if (!IsRipRelativeModRm(modrm))
-                {
-                    continue;
-                }
-
-                var disp = BitConverter.ToInt32(bytes, i + 5);
-                var insnLen = 9;
-                var targetRva = i + insnLen + disp;
-                if (targetRva < 0 || targetRva + 4 > bytes.Length)
-                {
-                    continue;
-                }
-
-                if (!IsMulssAt(i + insnLen))
-                {
-                    continue;
-                }
-
-                hitsByTarget.TryGetValue(targetRva, out var list);
-                list ??= new List<(int, int, int)>();
-                list.Add((InsnRva: i, DispOffset: 5, InsnLen: insnLen));
-                hitsByTarget[targetRva] = list;
-            }
-        }
-
+        var hitsByTarget = CollectInstantBuildCandidates(bytes);
         if (hitsByTarget.Count == 0)
         {
             _output.WriteLine("Instant-build calibration: no movss[rip]+mulss candidates found.");
@@ -583,42 +540,116 @@ public sealed class LiveActionSmokeTests
         }
 
         _output.WriteLine($"Instant-build calibration: {hitsByTarget.Count} candidate global float target(s) found (top {maxTargets}):");
-        foreach (var kv in hitsByTarget.OrderByDescending(x => x.Value.Count).Take(maxTargets))
+        foreach (var entry in hitsByTarget.OrderByDescending(x => x.Value.Count).Take(maxTargets))
         {
-            var targetRva = kv.Key;
-            var refs = kv.Value.Count;
-            var value = BitConverter.ToSingle(bytes, targetRva);
-            var example = kv.Value[0];
-            var snippet = BytesToHex(bytes, example.InsnRva, 18);
-            var suggested = BytesToAobPatternWithWildcards(
-                bytes,
-                example.InsnRva,
-                18,
-                (example.InsnRva + example.DispOffset, 4));
-
-            _output.WriteLine($" - targetRva=0x{targetRva:X} value={value} refs={refs}");
-            _output.WriteLine($"   exampleInsnRva=0x{example.InsnRva:X} bytes={snippet}");
-            _output.WriteLine($"   suggestedPattern={suggested} offset={example.DispOffset} addressMode=ReadRipRelative32AtOffset");
+            LogInstantBuildCandidate(bytes, entry.Key, entry.Value);
         }
+    }
+
+    private static Dictionary<int, List<(int TargetRva, int InsnRva, int DispOffset, int InsnLen)>> CollectInstantBuildCandidates(byte[] bytes)
+    {
+        var hitsByTarget = new Dictionary<int, List<(int TargetRva, int InsnRva, int DispOffset, int InsnLen)>>();
+        for (var i = 0; i + 16 < bytes.Length; i++)
+        {
+            if (TryDecodeInstantBuildNoRex(bytes, i, out var hit)
+                || TryDecodeInstantBuildRex(bytes, i, out hit))
+            {
+                AddRipTargetHit(hitsByTarget, hit);
+            }
+        }
+
+        return hitsByTarget;
+    }
+
+    private static bool TryDecodeInstantBuildNoRex(byte[] bytes, int index, out (int TargetRva, int InsnRva, int DispOffset, int InsnLen) hit)
+    {
+        hit = default;
+        if (bytes[index] != 0xF3 || bytes[index + 1] != 0x0F || bytes[index + 2] != 0x10)
+        {
+            return false;
+        }
+
+        if (!IsRipRelativeModRm(bytes[index + 3])
+            || !TryResolveRipTarget(bytes, index, index + 4, insnLen: 8, valueSize: 4, out var targetRva))
+        {
+            return false;
+        }
+
+        if (!IsMulssAt(bytes, index + 8))
+        {
+            return false;
+        }
+
+        hit = (targetRva, index, DispOffset: 4, InsnLen: 8);
+        return true;
+    }
+
+    private static bool TryDecodeInstantBuildRex(byte[] bytes, int index, out (int TargetRva, int InsnRva, int DispOffset, int InsnLen) hit)
+    {
+        hit = default;
+        if (bytes[index] != 0xF3 || !IsRex(bytes[index + 1]) || bytes[index + 2] != 0x0F || bytes[index + 3] != 0x10)
+        {
+            return false;
+        }
+
+        if (!IsRipRelativeModRm(bytes[index + 4])
+            || !TryResolveRipTarget(bytes, index, index + 5, insnLen: 9, valueSize: 4, out var targetRva))
+        {
+            return false;
+        }
+
+        if (!IsMulssAt(bytes, index + 9))
+        {
+            return false;
+        }
+
+        hit = (targetRva, index, DispOffset: 5, InsnLen: 9);
+        return true;
+    }
+
+    private void LogInstantBuildCandidate(byte[] bytes, int targetRva, IReadOnlyList<(int TargetRva, int InsnRva, int DispOffset, int InsnLen)> hits)
+    {
+        var refs = hits.Count;
+        var value = BitConverter.ToSingle(bytes, targetRva);
+        var example = hits[0];
+        var snippet = BytesToHex(bytes, example.InsnRva, 18);
+        var suggested = BytesToAobPatternWithWildcards(
+            bytes,
+            example.InsnRva,
+            18,
+            (example.InsnRva + example.DispOffset, 4));
+
+        _output.WriteLine($" - targetRva=0x{targetRva:X} value={value} refs={refs}");
+        _output.WriteLine($"   exampleInsnRva=0x{example.InsnRva:X} bytes={snippet}");
+        _output.WriteLine($"   suggestedPattern={suggested} offset={example.DispOffset} addressMode=ReadRipRelative32AtOffset");
     }
 
     private void DumpSelectedHpCandidates(AttachSession session, ModuleSnapshot snapshot, int maxHits)
     {
-        if (!session.Symbols.Symbols.TryGetValue("selected_hp", out var symbol) || symbol.Source != AddressSource.Fallback)
+        if (!IsFallbackSymbol(session, "selected_hp"))
         {
             return;
         }
 
-        // Look for:
-        //   movss xmm0, dword ptr [rcx+disp32]   (F3 0F 10 81 ?? ?? ?? ??)
-        //   movss dword ptr [rip+disp32], xmm0   (F3 0F 11 05 ?? ?? ?? ??)
-        // The second disp32 points at a global scratch variable for "selected hp".
         var bytes = snapshot.Bytes;
-        var hits = new List<(int MatchRva, int StoreDispOffset, int StoreInsnRva, int StoreDispIndex, int StoreInsnLen, int TargetRva)>();
+        var hits = CollectSelectedHpCandidates(bytes);
+        if (hits.Count == 0)
+        {
+            _output.WriteLine("Selected-hp calibration: no movss[rcx+disp32] -> movss[rip+disp32] candidates found.");
+            return;
+        }
 
-        static bool IsRipRelativeModRm(byte modrm) => (modrm & 0xC7) == 0x05;
-        static bool IsRex(byte b) => b is >= 0x40 and <= 0x4F;
+        var grouped = hits.GroupBy(x => x.TargetRva).OrderByDescending(x => x.Count()).Take(maxHits).ToArray();
+        _output.WriteLine($"Selected-hp calibration: {hits.Count} hit(s), {grouped.Length} unique target(s) (top {grouped.Length}):");
+        foreach (var group in grouped)
+        {
+            LogSelectedHpCandidate(group, bytes);
+        }
+    }
 
+    private static List<(int MatchRva, int StoreDispOffset, int TargetRva)> CollectSelectedHpCandidates(byte[] bytes)
+    {
+        var hits = new List<(int MatchRva, int StoreDispOffset, int TargetRva)>();
         for (var i = 0; i + 32 < bytes.Length; i++)
         {
             if (bytes[i] != 0xF3 || bytes[i + 1] != 0x0F || bytes[i + 2] != 0x10 || bytes[i + 3] != 0x81)
@@ -626,143 +657,84 @@ public sealed class LiveActionSmokeTests
                 continue;
             }
 
-            // load length fixed at 8
-            var storeStart = i + 8;
-
-            // store: F3 0F 11 /r (rip-relative modrm) OR F3 <rex> 0F 11 /r
-            if (bytes[storeStart] == 0xF3 && bytes[storeStart + 1] == 0x0F && bytes[storeStart + 2] == 0x11)
+            if (TryDecodeSelectedHpStoreNoRex(bytes, i, out var hit) || TryDecodeSelectedHpStoreRex(bytes, i, out hit))
             {
-                var modrm = bytes[storeStart + 3];
-                if (!IsRipRelativeModRm(modrm))
-                {
-                    continue;
-                }
-
-                var dispIndex = storeStart + 4;
-                var disp = BitConverter.ToInt32(bytes, dispIndex);
-                var insnLen = 8;
-                var targetRva = storeStart + insnLen + disp;
-                if (targetRva < 0 || targetRva + 4 > bytes.Length)
-                {
-                    continue;
-                }
-
-                hits.Add((MatchRva: i, StoreDispOffset: dispIndex - i, StoreInsnRva: storeStart, StoreDispIndex: dispIndex, StoreInsnLen: insnLen, TargetRva: targetRva));
-                continue;
-            }
-
-            if (bytes[storeStart] == 0xF3 && IsRex(bytes[storeStart + 1]) && bytes[storeStart + 2] == 0x0F && bytes[storeStart + 3] == 0x11)
-            {
-                var modrm = bytes[storeStart + 4];
-                if (!IsRipRelativeModRm(modrm))
-                {
-                    continue;
-                }
-
-                var dispIndex = storeStart + 5;
-                var disp = BitConverter.ToInt32(bytes, dispIndex);
-                var insnLen = 9;
-                var targetRva = storeStart + insnLen + disp;
-                if (targetRva < 0 || targetRva + 4 > bytes.Length)
-                {
-                    continue;
-                }
-
-                hits.Add((MatchRva: i, StoreDispOffset: dispIndex - i, StoreInsnRva: storeStart, StoreDispIndex: dispIndex, StoreInsnLen: insnLen, TargetRva: targetRva));
+                hits.Add(hit);
             }
         }
 
-        if (hits.Count == 0)
+        return hits;
+    }
+
+    private static bool TryDecodeSelectedHpStoreNoRex(byte[] bytes, int matchRva, out (int MatchRva, int StoreDispOffset, int TargetRva) hit)
+    {
+        hit = default;
+        var storeStart = matchRva + 8;
+        if (bytes[storeStart] != 0xF3 || bytes[storeStart + 1] != 0x0F || bytes[storeStart + 2] != 0x11)
         {
-            _output.WriteLine("Selected-hp calibration: no movss[rcx+disp32] -> movss[rip+disp32] candidates found.");
-            return;
+            return false;
         }
 
-        // Group by target to reduce noise.
-        var grouped = hits.GroupBy(x => x.TargetRva).OrderByDescending(x => x.Count()).Take(maxHits).ToArray();
-        _output.WriteLine($"Selected-hp calibration: {hits.Count} hit(s), {grouped.Length} unique target(s) (top {grouped.Length}):");
-
-        foreach (var group in grouped)
+        if (!IsRipRelativeModRm(bytes[storeStart + 3])
+            || !TryResolveRipTarget(bytes, storeStart, storeStart + 4, insnLen: 8, valueSize: 4, out var targetRva))
         {
-            var targetRva = group.Key;
-            var refs = group.Count();
-            var value = BitConverter.ToSingle(bytes, targetRva);
-            var example = group.First();
-            var snippet = BytesToHex(bytes, example.MatchRva, 20);
-
-            // Wildcard both disp32 values: the source disp32 (unit struct offset) and the dest disp32 (global var).
-            var suggested = BytesToAobPatternWithWildcards(
-                bytes,
-                example.MatchRva,
-                20,
-                (example.MatchRva + 4, 4),
-                (example.MatchRva + example.StoreDispOffset, 4));
-
-            _output.WriteLine($" - targetRva=0x{targetRva:X} value={value} refs={refs}");
-            _output.WriteLine($"   exampleMatchRva=0x{example.MatchRva:X} storeDispOffset={example.StoreDispOffset} bytes={snippet}");
-            _output.WriteLine($"   suggestedPattern={suggested} offset={example.StoreDispOffset} addressMode=ReadRipRelative32AtOffset");
+            return false;
         }
+
+        hit = (matchRva, StoreDispOffset: 12, targetRva);
+        return true;
+    }
+
+    private static bool TryDecodeSelectedHpStoreRex(byte[] bytes, int matchRva, out (int MatchRva, int StoreDispOffset, int TargetRva) hit)
+    {
+        hit = default;
+        var storeStart = matchRva + 8;
+        if (bytes[storeStart] != 0xF3
+            || !IsRex(bytes[storeStart + 1])
+            || bytes[storeStart + 2] != 0x0F
+            || bytes[storeStart + 3] != 0x11)
+        {
+            return false;
+        }
+
+        if (!IsRipRelativeModRm(bytes[storeStart + 4])
+            || !TryResolveRipTarget(bytes, storeStart, storeStart + 5, insnLen: 9, valueSize: 4, out var targetRva))
+        {
+            return false;
+        }
+
+        hit = (matchRva, StoreDispOffset: 13, targetRva);
+        return true;
+    }
+
+    private void LogSelectedHpCandidate(IGrouping<int, (int MatchRva, int StoreDispOffset, int TargetRva)> group, byte[] bytes)
+    {
+        var targetRva = group.Key;
+        var refs = group.Count();
+        var value = BitConverter.ToSingle(bytes, targetRva);
+        var example = group.First();
+        var snippet = BytesToHex(bytes, example.MatchRva, 20);
+        var suggested = BytesToAobPatternWithWildcards(
+            bytes,
+            example.MatchRva,
+            20,
+            (example.MatchRva + 4, 4),
+            (example.MatchRva + example.StoreDispOffset, 4));
+
+        _output.WriteLine($" - targetRva=0x{targetRva:X} value={value} refs={refs}");
+        _output.WriteLine($"   exampleMatchRva=0x{example.MatchRva:X} storeDispOffset={example.StoreDispOffset} bytes={snippet}");
+        _output.WriteLine($"   suggestedPattern={suggested} offset={example.StoreDispOffset} addressMode=ReadRipRelative32AtOffset");
     }
 
     private void DumpPlanetOwnerCandidates(AttachSession session, ModuleSnapshot snapshot, int maxHits)
     {
-        if (!session.Symbols.Symbols.TryGetValue("planet_owner", out var symbol) || symbol.Source != AddressSource.Fallback)
+        if (!IsFallbackSymbol(session, "planet_owner"))
         {
             return;
         }
 
-        // Try to find a global scratch variable updated from a planet object:
-        //   mov reg32, dword ptr [rsi+disp32]      (8B 8E/86 ?? ?? ?? ??)
-        //   mov dword ptr [rip+disp32], reg32      (89 0D/05 ?? ?? ?? ??)
-        // If found, resolve the second disp32.
         var bytes = snapshot.Bytes;
-        var hits = new List<(int MatchRva, int StoreDispOffset, int TargetRva)>();
-
-        bool TryMatch(int i, byte loadModRm, byte storeModRm, out int storeDispOffset, out int targetRva)
-        {
-            storeDispOffset = 0;
-            targetRva = 0;
-            if (i + 16 >= bytes.Length)
-            {
-                return false;
-            }
-
-            if (bytes[i] != 0x8B || bytes[i + 1] != loadModRm)
-            {
-                return false;
-            }
-
-            var storeStart = i + 6;
-            if (bytes[storeStart] != 0x89 || bytes[storeStart + 1] != storeModRm)
-            {
-                return false;
-            }
-
-            var dispIndex = storeStart + 2;
-            var disp = BitConverter.ToInt32(bytes, dispIndex);
-            var insnLen = 6;
-            targetRva = storeStart + insnLen + disp;
-            if (targetRva < 0 || targetRva + 4 > bytes.Length)
-            {
-                return false;
-            }
-
-            storeDispOffset = dispIndex - i;
-            return true;
-        }
-
-        for (var i = 0; i + 32 < bytes.Length; i++)
-        {
-            if (TryMatch(i, loadModRm: 0x8E, storeModRm: 0x0D, out var storeDispOffset, out var targetRva))
-            {
-                hits.Add((MatchRva: i, StoreDispOffset: storeDispOffset, TargetRva: targetRva));
-            }
-            if (TryMatch(i, loadModRm: 0x86, storeModRm: 0x05, out storeDispOffset, out targetRva))
-            {
-                hits.Add((MatchRva: i, StoreDispOffset: storeDispOffset, TargetRva: targetRva));
-            }
-        }
-
+        var hits = CollectPlanetOwnerCandidates(bytes);
         if (hits.Count == 0)
         {
             _output.WriteLine("Planet-owner calibration: no mov[rsi+disp32] -> mov[rip+disp32] candidates found.");
@@ -771,407 +743,392 @@ public sealed class LiveActionSmokeTests
 
         var grouped = hits.GroupBy(x => x.TargetRva).OrderByDescending(x => x.Count()).Take(maxHits).ToArray();
         _output.WriteLine($"Planet-owner calibration: {hits.Count} hit(s), {grouped.Length} unique target(s) (top {grouped.Length}):");
-
         foreach (var group in grouped)
         {
-            var targetRva = group.Key;
-            var refs = group.Count();
-            var value = BitConverter.ToInt32(bytes, targetRva);
-            var example = group.First();
-            var snippet = BytesToHex(bytes, example.MatchRva, 18);
-
-            // Wildcard both disps: the load disp32 (planet struct offset) and the store disp32 (global var).
-            var suggested = BytesToAobPatternWithWildcards(
-                bytes,
-                example.MatchRva,
-                18,
-                (example.MatchRva + 2, 4),
-                (example.MatchRva + example.StoreDispOffset, 4));
-
-            _output.WriteLine($" - targetRva=0x{targetRva:X} value={value} refs={refs}");
-            _output.WriteLine($"   exampleMatchRva=0x{example.MatchRva:X} storeDispOffset={example.StoreDispOffset} bytes={snippet}");
-            _output.WriteLine($"   suggestedPattern={suggested} offset={example.StoreDispOffset} addressMode=ReadRipRelative32AtOffset");
+            LogPlanetOwnerCandidate(group, bytes);
         }
+    }
+
+    private static List<(int MatchRva, int StoreDispOffset, int TargetRva)> CollectPlanetOwnerCandidates(byte[] bytes)
+    {
+        var hits = new List<(int MatchRva, int StoreDispOffset, int TargetRva)>();
+        for (var i = 0; i + 32 < bytes.Length; i++)
+        {
+            if (TryDecodePlanetOwnerCandidate(bytes, i, loadModRm: 0x8E, storeModRm: 0x0D, out var hit)
+                || TryDecodePlanetOwnerCandidate(bytes, i, loadModRm: 0x86, storeModRm: 0x05, out hit))
+            {
+                hits.Add(hit);
+            }
+        }
+
+        return hits;
+    }
+
+    private static bool TryDecodePlanetOwnerCandidate(
+        byte[] bytes,
+        int matchRva,
+        byte loadModRm,
+        byte storeModRm,
+        out (int MatchRva, int StoreDispOffset, int TargetRva) hit)
+    {
+        hit = default;
+        if (matchRva + 16 >= bytes.Length || bytes[matchRva] != 0x8B || bytes[matchRva + 1] != loadModRm)
+        {
+            return false;
+        }
+
+        var storeStart = matchRva + 6;
+        if (bytes[storeStart] != 0x89 || bytes[storeStart + 1] != storeModRm)
+        {
+            return false;
+        }
+
+        if (!TryResolveRipTarget(bytes, storeStart, storeStart + 2, insnLen: 6, valueSize: 4, out var targetRva))
+        {
+            return false;
+        }
+
+        hit = (matchRva, StoreDispOffset: 8, targetRva);
+        return true;
+    }
+
+    private void LogPlanetOwnerCandidate(IGrouping<int, (int MatchRva, int StoreDispOffset, int TargetRva)> group, byte[] bytes)
+    {
+        var targetRva = group.Key;
+        var refs = group.Count();
+        var value = BitConverter.ToInt32(bytes, targetRva);
+        var example = group.First();
+        var snippet = BytesToHex(bytes, example.MatchRva, 18);
+        var suggested = BytesToAobPatternWithWildcards(
+            bytes,
+            example.MatchRva,
+            18,
+            (example.MatchRva + 2, 4),
+            (example.MatchRva + example.StoreDispOffset, 4));
+
+        _output.WriteLine($" - targetRva=0x{targetRva:X} value={value} refs={refs}");
+        _output.WriteLine($"   exampleMatchRva=0x{example.MatchRva:X} storeDispOffset={example.StoreDispOffset} bytes={snippet}");
+        _output.WriteLine($"   suggestedPattern={suggested} offset={example.StoreDispOffset} addressMode=ReadRipRelative32AtOffset");
     }
 
     private void DumpTopRipRelativeFloatTargets(ModuleSnapshot snapshot, int top)
     {
-        static bool IsRipRelativeModRm(byte modrm) => (modrm & 0xC7) == 0x05;
-        static bool IsRex(byte b) => b is >= 0x40 and <= 0x4F;
-
         var bytes = snapshot.Bytes;
-        var loadCounts = new Dictionary<int, int>();
-        var storeCounts = new Dictionary<int, int>();
-        var examples = new Dictionary<int, (int InsnRva, int DispOffset, int InsnLen, byte Op)>();
-
-        void Record(int targetRva, int insnRva, int dispOffset, int insnLen, byte op)
-        {
-            var dict = op == 0x10 ? loadCounts : storeCounts;
-            dict.TryGetValue(targetRva, out var c);
-            dict[targetRva] = c + 1;
-
-            if (!examples.ContainsKey(targetRva))
-            {
-                examples[targetRva] = (insnRva, dispOffset, insnLen, op);
-            }
-        }
-
-        for (var i = 0; i + 12 < bytes.Length; i++)
-        {
-            if (bytes[i] != 0xF3)
-            {
-                continue;
-            }
-
-            // No REX: F3 0F <op> <modrm> <disp32>
-            if (bytes[i + 1] == 0x0F && (bytes[i + 2] == 0x10 || bytes[i + 2] == 0x11))
-            {
-                var op = bytes[i + 2];
-                var modrm = bytes[i + 3];
-                if (!IsRipRelativeModRm(modrm))
-                {
-                    continue;
-                }
-
-                var disp = BitConverter.ToInt32(bytes, i + 4);
-                var insnLen = 8;
-                var targetRva = i + insnLen + disp;
-                if (targetRva < 0 || targetRva + 4 > bytes.Length)
-                {
-                    continue;
-                }
-
-                Record(targetRva, i, dispOffset: 4, insnLen, op);
-                continue;
-            }
-
-            // REX: F3 <rex> 0F <op> <modrm> <disp32>
-            if (IsRex(bytes[i + 1]) && bytes[i + 2] == 0x0F && (bytes[i + 3] == 0x10 || bytes[i + 3] == 0x11))
-            {
-                var op = bytes[i + 3];
-                var modrm = bytes[i + 4];
-                if (!IsRipRelativeModRm(modrm))
-                {
-                    continue;
-                }
-
-                var disp = BitConverter.ToInt32(bytes, i + 5);
-                var insnLen = 9;
-                var targetRva = i + insnLen + disp;
-                if (targetRva < 0 || targetRva + 4 > bytes.Length)
-                {
-                    continue;
-                }
-
-                Record(targetRva, i, dispOffset: 5, insnLen, op);
-            }
-        }
-
-        if (loadCounts.Count == 0 && storeCounts.Count == 0)
+        var hits = CollectRipRelativeMovssHits(bytes);
+        if (hits.Count == 0)
         {
             _output.WriteLine("Float scan: no RIP-relative movss load/store targets found.");
             return;
         }
 
         _output.WriteLine($"Float scan: top {top} RIP-relative float LOAD targets (F3 0F 10):");
-        foreach (var kv in loadCounts.OrderByDescending(x => x.Value).Take(top))
+        LogFloatOpRanking(bytes, hits.Where(x => x.Op == 0x10).ToArray(), top);
+        _output.WriteLine($"Float scan: top {top} RIP-relative float STORE targets (F3 0F 11):");
+        LogFloatOpRanking(bytes, hits.Where(x => x.Op == 0x11).ToArray(), top);
+    }
+
+    private static List<(int TargetRva, int InsnRva, int DispOffset, byte Op, string Bytes)> CollectRipRelativeMovssHits(byte[] bytes)
+    {
+        var hits = new List<(int TargetRva, int InsnRva, int DispOffset, byte Op, string Bytes)>();
+        for (var i = 0; i + 12 < bytes.Length; i++)
         {
-            var targetRva = kv.Key;
-            var refs = kv.Value;
-            var value = BitConverter.ToSingle(bytes, targetRva);
-            var example = examples[targetRva];
-            var snippet = BytesToHex(bytes, example.InsnRva, 16);
-            var suggested = BytesToAobPatternWithWildcards(bytes, example.InsnRva, 16, (example.InsnRva + example.DispOffset, 4));
-            _output.WriteLine($" - targetRva=0x{targetRva:X} value={value} refs={refs} insnRva=0x{example.InsnRva:X} exampleBytes={snippet}");
-            _output.WriteLine($"   suggestedPattern={suggested} offset={example.DispOffset} addressMode=ReadRipRelative32AtOffset");
+            if (TryDecodeMovssNoRex(bytes, i, out var hit) || TryDecodeMovssRex(bytes, i, out hit))
+            {
+                hits.Add(hit);
+            }
         }
 
-        _output.WriteLine($"Float scan: top {top} RIP-relative float STORE targets (F3 0F 11):");
-        foreach (var kv in storeCounts.OrderByDescending(x => x.Value).Take(top))
+        return hits;
+    }
+
+    private static bool TryDecodeMovssNoRex(byte[] bytes, int index, out (int TargetRva, int InsnRva, int DispOffset, byte Op, string Bytes) hit)
+    {
+        hit = default;
+        if (bytes[index] != 0xF3 || bytes[index + 1] != 0x0F || (bytes[index + 2] != 0x10 && bytes[index + 2] != 0x11))
         {
-            var targetRva = kv.Key;
-            var refs = kv.Value;
+            return false;
+        }
+
+        if (!IsRipRelativeModRm(bytes[index + 3])
+            || !TryResolveRipTarget(bytes, index, index + 4, insnLen: 8, valueSize: 4, out var targetRva))
+        {
+            return false;
+        }
+
+        hit = (targetRva, index, DispOffset: 4, Op: bytes[index + 2], BytesToHex(bytes, index, 16));
+        return true;
+    }
+
+    private static bool TryDecodeMovssRex(byte[] bytes, int index, out (int TargetRva, int InsnRva, int DispOffset, byte Op, string Bytes) hit)
+    {
+        hit = default;
+        if (bytes[index] != 0xF3 || !IsRex(bytes[index + 1]) || bytes[index + 2] != 0x0F || (bytes[index + 3] != 0x10 && bytes[index + 3] != 0x11))
+        {
+            return false;
+        }
+
+        if (!IsRipRelativeModRm(bytes[index + 4])
+            || !TryResolveRipTarget(bytes, index, index + 5, insnLen: 9, valueSize: 4, out var targetRva))
+        {
+            return false;
+        }
+
+        hit = (targetRva, index, DispOffset: 5, Op: bytes[index + 3], BytesToHex(bytes, index, 16));
+        return true;
+    }
+
+    private void LogFloatOpRanking(byte[] bytes, IReadOnlyList<(int TargetRva, int InsnRva, int DispOffset, byte Op, string Bytes)> hits, int top)
+    {
+        foreach (var group in hits.GroupBy(x => x.TargetRva).OrderByDescending(x => x.Count()).Take(top))
+        {
+            var targetRva = group.Key;
+            var refs = group.Count();
             var value = BitConverter.ToSingle(bytes, targetRva);
-            var example = examples[targetRva];
-            var snippet = BytesToHex(bytes, example.InsnRva, 16);
+            var example = group.First();
             var suggested = BytesToAobPatternWithWildcards(bytes, example.InsnRva, 16, (example.InsnRva + example.DispOffset, 4));
-            _output.WriteLine($" - targetRva=0x{targetRva:X} value={value} refs={refs} insnRva=0x{example.InsnRva:X} exampleBytes={snippet}");
+            _output.WriteLine($" - targetRva=0x{targetRva:X} value={value} refs={refs} insnRva=0x{example.InsnRva:X} exampleBytes={example.Bytes}");
             _output.WriteLine($"   suggestedPattern={suggested} offset={example.DispOffset} addressMode=ReadRipRelative32AtOffset");
         }
     }
 
     private void DumpTopRipRelativeFloatArithmeticTargets(ModuleSnapshot snapshot, int top)
     {
-        static bool IsRipRelativeModRm(byte modrm) => (modrm & 0xC7) == 0x05;
-        static bool IsRex(byte b) => b is >= 0x40 and <= 0x4F;
-
-        static string OpName(byte op) => op switch
-        {
-            0x58 => "addss",
-            0x59 => "mulss",
-            0x5C => "subss",
-            0x5E => "divss",
-            0x5F => "maxss",
-            0x5D => "minss",
-            _ => $"op_{op:X2}"
-        };
-
         var bytes = snapshot.Bytes;
-        var counts = new Dictionary<int, int>();
-        var examples = new Dictionary<int, (int InsnRva, int DispOffset, byte Op, string Bytes)>();
-
-        void Record(int targetRva, int insnRva, int dispOffset, byte op)
-        {
-            counts.TryGetValue(targetRva, out var c);
-            counts[targetRva] = c + 1;
-            if (!examples.ContainsKey(targetRva))
-            {
-                examples[targetRva] = (insnRva, dispOffset, op, BytesToHex(bytes, insnRva, 16));
-            }
-        }
-
-        for (var i = 0; i + 12 < bytes.Length; i++)
-        {
-            if (bytes[i] != 0xF3)
-            {
-                continue;
-            }
-
-            // No REX: F3 0F <op> <modrm> <disp32>
-            if (bytes[i + 1] == 0x0F && bytes[i + 2] is 0x58 or 0x59 or 0x5C or 0x5D or 0x5E or 0x5F)
-            {
-                var op = bytes[i + 2];
-                var modrm = bytes[i + 3];
-                if (!IsRipRelativeModRm(modrm))
-                {
-                    continue;
-                }
-
-                var disp = BitConverter.ToInt32(bytes, i + 4);
-                var insnLen = 8;
-                var targetRva = i + insnLen + disp;
-                if (targetRva < 0 || targetRva + 4 > bytes.Length)
-                {
-                    continue;
-                }
-
-                Record(targetRva, i, dispOffset: 4, op);
-                continue;
-            }
-
-            // REX: F3 <rex> 0F <op> <modrm> <disp32>
-            if (IsRex(bytes[i + 1]) && bytes[i + 2] == 0x0F && bytes[i + 3] is 0x58 or 0x59 or 0x5C or 0x5D or 0x5E or 0x5F)
-            {
-                var op = bytes[i + 3];
-                var modrm = bytes[i + 4];
-                if (!IsRipRelativeModRm(modrm))
-                {
-                    continue;
-                }
-
-                var disp = BitConverter.ToInt32(bytes, i + 5);
-                var insnLen = 9;
-                var targetRva = i + insnLen + disp;
-                if (targetRva < 0 || targetRva + 4 > bytes.Length)
-                {
-                    continue;
-                }
-
-                Record(targetRva, i, dispOffset: 5, op);
-            }
-        }
-
-        if (counts.Count == 0)
+        var hits = CollectRipRelativeFloatArithmeticHits(bytes);
+        if (hits.Count == 0)
         {
             _output.WriteLine("Float arithmetic scan: no RIP-relative addss/mulss/subss/divss targets found.");
             return;
         }
 
         _output.WriteLine($"Float arithmetic scan: top {top} RIP-relative float targets (F3 0F 58/59/5C/5D/5E/5F):");
-        foreach (var kv in counts.OrderByDescending(x => x.Value).Take(top))
+        foreach (var group in hits.GroupBy(x => x.TargetRva).OrderByDescending(x => x.Count()).Take(top))
         {
-            var targetRva = kv.Key;
-            var refs = kv.Value;
-            var value = BitConverter.ToSingle(bytes, targetRva);
-            var ex = examples[targetRva];
-            var suggested = BytesToAobPatternWithWildcards(bytes, ex.InsnRva, 16, (ex.InsnRva + ex.DispOffset, 4));
-            _output.WriteLine($" - targetRva=0x{targetRva:X} value={value} refs={refs} op={OpName(ex.Op)} insnRva=0x{ex.InsnRva:X} bytes={ex.Bytes}");
-            _output.WriteLine($"   suggestedPattern={suggested} offset={ex.DispOffset} addressMode=ReadRipRelative32AtOffset");
+            LogFloatArithmeticTarget(bytes, group);
         }
+    }
+
+    private static List<(int TargetRva, int InsnRva, int DispOffset, byte Op, string Bytes)> CollectRipRelativeFloatArithmeticHits(byte[] bytes)
+    {
+        var hits = new List<(int TargetRva, int InsnRva, int DispOffset, byte Op, string Bytes)>();
+        for (var i = 0; i + 12 < bytes.Length; i++)
+        {
+            if (TryDecodeFloatArithmeticNoRex(bytes, i, out var hit) || TryDecodeFloatArithmeticRex(bytes, i, out hit))
+            {
+                hits.Add(hit);
+            }
+        }
+
+        return hits;
+    }
+
+    private static bool TryDecodeFloatArithmeticNoRex(byte[] bytes, int index, out (int TargetRva, int InsnRva, int DispOffset, byte Op, string Bytes) hit)
+    {
+        hit = default;
+        if (bytes[index] != 0xF3 || bytes[index + 1] != 0x0F || !IsArithmeticFloatOp(bytes[index + 2]))
+        {
+            return false;
+        }
+
+        if (!IsRipRelativeModRm(bytes[index + 3])
+            || !TryResolveRipTarget(bytes, index, index + 4, insnLen: 8, valueSize: 4, out var targetRva))
+        {
+            return false;
+        }
+
+        hit = (targetRva, index, DispOffset: 4, Op: bytes[index + 2], BytesToHex(bytes, index, 16));
+        return true;
+    }
+
+    private static bool TryDecodeFloatArithmeticRex(byte[] bytes, int index, out (int TargetRva, int InsnRva, int DispOffset, byte Op, string Bytes) hit)
+    {
+        hit = default;
+        if (bytes[index] != 0xF3 || !IsRex(bytes[index + 1]) || bytes[index + 2] != 0x0F || !IsArithmeticFloatOp(bytes[index + 3]))
+        {
+            return false;
+        }
+
+        if (!IsRipRelativeModRm(bytes[index + 4])
+            || !TryResolveRipTarget(bytes, index, index + 5, insnLen: 9, valueSize: 4, out var targetRva))
+        {
+            return false;
+        }
+
+        hit = (targetRva, index, DispOffset: 5, Op: bytes[index + 3], BytesToHex(bytes, index, 16));
+        return true;
+    }
+
+    private static bool IsArithmeticFloatOp(byte op) => op is 0x58 or 0x59 or 0x5C or 0x5D or 0x5E or 0x5F;
+
+    private static string FloatArithmeticOpName(byte op) => op switch
+    {
+        0x58 => "addss",
+        0x59 => "mulss",
+        0x5C => "subss",
+        0x5D => "minss",
+        0x5E => "divss",
+        0x5F => "maxss",
+        _ => $"op_{op:X2}"
+    };
+
+    private void LogFloatArithmeticTarget(byte[] bytes, IGrouping<int, (int TargetRva, int InsnRva, int DispOffset, byte Op, string Bytes)> group)
+    {
+        var targetRva = group.Key;
+        var refs = group.Count();
+        var value = BitConverter.ToSingle(bytes, targetRva);
+        var example = group.First();
+        var suggested = BytesToAobPatternWithWildcards(bytes, example.InsnRva, 16, (example.InsnRva + example.DispOffset, 4));
+        _output.WriteLine($" - targetRva=0x{targetRva:X} value={value} refs={refs} op={FloatArithmeticOpName(example.Op)} insnRva=0x{example.InsnRva:X} bytes={example.Bytes}");
+        _output.WriteLine($"   suggestedPattern={suggested} offset={example.DispOffset} addressMode=ReadRipRelative32AtOffset");
     }
 
     private void DumpTopRipRelativeInt32StoreTargets(ModuleSnapshot snapshot, int top)
     {
-        static bool IsRipRelativeModRm(byte modrm) => (modrm & 0xC7) == 0x05;
-        static bool IsRex(byte b) => b is >= 0x40 and <= 0x4F;
-
         var bytes = snapshot.Bytes;
-        var counts = new Dictionary<int, int>();
-        var examples = new Dictionary<int, (int InsnRva, int DispOffset, int InsnLen, string Kind)>();
-
-        void Record(int targetRva, int insnRva, int dispOffset, int insnLen, string kind)
-        {
-            counts.TryGetValue(targetRva, out var c);
-            counts[targetRva] = c + 1;
-            if (!examples.ContainsKey(targetRva))
-            {
-                examples[targetRva] = (insnRva, dispOffset, insnLen, kind);
-            }
-        }
-
-        for (var i = 0; i + 10 < bytes.Length; i++)
-        {
-            // No REX store: 89 <modrm> <disp32>
-            if (bytes[i] == 0x89 && IsRipRelativeModRm(bytes[i + 1]))
-            {
-                var disp = BitConverter.ToInt32(bytes, i + 2);
-                var insnLen = 6;
-                var targetRva = i + insnLen + disp;
-                if (targetRva < 0 || targetRva + 4 > bytes.Length)
-                {
-                    continue;
-                }
-
-                Record(targetRva, i, dispOffset: 2, insnLen, kind: "89 (no REX)");
-                continue;
-            }
-
-            // REX store: <rex> 89 <modrm> <disp32>
-            if (IsRex(bytes[i]) && bytes[i + 1] == 0x89 && IsRipRelativeModRm(bytes[i + 2]))
-            {
-                var disp = BitConverter.ToInt32(bytes, i + 3);
-                var insnLen = 7;
-                var targetRva = i + insnLen + disp;
-                if (targetRva < 0 || targetRva + 4 > bytes.Length)
-                {
-                    continue;
-                }
-
-                Record(targetRva, i, dispOffset: 3, insnLen, kind: $"{bytes[i]:X2} 89 (REX)");
-            }
-        }
-
-        if (counts.Count == 0)
+        var hits = CollectRipRelativeInt32StoreHits(bytes);
+        if (hits.Count == 0)
         {
             _output.WriteLine("Int32 store scan: no RIP-relative 89 store targets found.");
             return;
         }
 
         _output.WriteLine($"Int32 store scan: top {top} RIP-relative Int32 STORE targets (89 [rip+disp32], reg):");
-        foreach (var kv in counts.OrderByDescending(x => x.Value).Take(top))
+        foreach (var group in hits.GroupBy(x => x.TargetRva).OrderByDescending(x => x.Count()).Take(top))
         {
-            var targetRva = kv.Key;
-            var refs = kv.Value;
-            var value = BitConverter.ToInt32(bytes, targetRva);
-            var example = examples[targetRva];
-            var snippet = BytesToHex(bytes, example.InsnRva, 16);
-            var suggested = BytesToAobPatternWithWildcards(bytes, example.InsnRva, 16, (example.InsnRva + example.DispOffset, 4));
-            _output.WriteLine($" - targetRva=0x{targetRva:X} value={value} refs={refs} kind={example.Kind} exampleBytes={snippet}");
-            _output.WriteLine($"   suggestedPattern={suggested} offset={example.DispOffset} addressMode=ReadRipRelative32AtOffset");
+            LogInt32StoreTarget(bytes, group);
         }
+    }
+
+    private static List<(int TargetRva, int InsnRva, int DispOffset, string Kind)> CollectRipRelativeInt32StoreHits(byte[] bytes)
+    {
+        var hits = new List<(int TargetRva, int InsnRva, int DispOffset, string Kind)>();
+        for (var i = 0; i + 10 < bytes.Length; i++)
+        {
+            if (TryDecodeInt32StoreNoRex(bytes, i, out var hit) || TryDecodeInt32StoreRex(bytes, i, out hit))
+            {
+                hits.Add(hit);
+            }
+        }
+
+        return hits;
+    }
+
+    private static bool TryDecodeInt32StoreNoRex(byte[] bytes, int index, out (int TargetRva, int InsnRva, int DispOffset, string Kind) hit)
+    {
+        hit = default;
+        if (bytes[index] != 0x89 || !IsRipRelativeModRm(bytes[index + 1]))
+        {
+            return false;
+        }
+
+        if (!TryResolveRipTarget(bytes, index, index + 2, insnLen: 6, valueSize: 4, out var targetRva))
+        {
+            return false;
+        }
+
+        hit = (targetRva, index, DispOffset: 2, Kind: "89 (no REX)");
+        return true;
+    }
+
+    private static bool TryDecodeInt32StoreRex(byte[] bytes, int index, out (int TargetRva, int InsnRva, int DispOffset, string Kind) hit)
+    {
+        hit = default;
+        if (!IsRex(bytes[index]) || bytes[index + 1] != 0x89 || !IsRipRelativeModRm(bytes[index + 2]))
+        {
+            return false;
+        }
+
+        if (!TryResolveRipTarget(bytes, index, index + 3, insnLen: 7, valueSize: 4, out var targetRva))
+        {
+            return false;
+        }
+
+        hit = (targetRva, index, DispOffset: 3, Kind: $"{bytes[index]:X2} 89 (REX)");
+        return true;
+    }
+
+    private void LogInt32StoreTarget(byte[] bytes, IGrouping<int, (int TargetRva, int InsnRva, int DispOffset, string Kind)> group)
+    {
+        var targetRva = group.Key;
+        var refs = group.Count();
+        var value = BitConverter.ToInt32(bytes, targetRva);
+        var example = group.First();
+        var snippet = BytesToHex(bytes, example.InsnRva, 16);
+        var suggested = BytesToAobPatternWithWildcards(bytes, example.InsnRva, 16, (example.InsnRva + example.DispOffset, 4));
+        _output.WriteLine($" - targetRva=0x{targetRva:X} value={value} refs={refs} kind={example.Kind} exampleBytes={snippet}");
+        _output.WriteLine($"   suggestedPattern={suggested} offset={example.DispOffset} addressMode=ReadRipRelative32AtOffset");
     }
 
     private void DumpTopRipRelativeInt32Targets32BitOnly(ModuleSnapshot snapshot, int top)
     {
-        static bool IsRipRelativeModRm(byte modrm) => (modrm & 0xC7) == 0x05;
-        static bool IsRexNoW(byte b) => b is >= 0x40 and <= 0x47; // W bit clear
-
         var bytes = snapshot.Bytes;
-        var loadCounts = new Dictionary<int, int>();
-        var storeCounts = new Dictionary<int, int>();
-        var examples = new Dictionary<(int TargetRva, string Kind), (int InsnRva, int DispOffset, int InsnLen, string Bytes)>();
+        var hits = CollectRipRelativeInt32AccessHits32BitOnly(bytes);
+        _output.WriteLine($"Int32 scan (32-bit only): top {top} RIP-relative LOAD targets (8B [rip+disp32])");
+        LogInt32AccessRanking(bytes, hits.Where(x => x.IsLoad).ToArray(), top);
+        _output.WriteLine($"Int32 scan (32-bit only): top {top} RIP-relative STORE targets (89 [rip+disp32], r32)");
+        LogInt32AccessRanking(bytes, hits.Where(x => !x.IsLoad).ToArray(), top);
+    }
 
-        void Record(Dictionary<int, int> dict, int targetRva, string kind, int insnRva, int dispOffset, int insnLen)
-        {
-            dict.TryGetValue(targetRva, out var c);
-            dict[targetRva] = c + 1;
-
-            var key = (targetRva, kind);
-            if (!examples.ContainsKey(key))
-            {
-                examples[key] = (insnRva, dispOffset, insnLen, BytesToHex(bytes, insnRva, 16));
-            }
-        }
-
+    private static List<(int TargetRva, int InsnRva, int DispOffset, string Kind, bool IsLoad)> CollectRipRelativeInt32AccessHits32BitOnly(byte[] bytes)
+    {
+        var hits = new List<(int TargetRva, int InsnRva, int DispOffset, string Kind, bool IsLoad)>();
         for (var i = 0; i + 10 < bytes.Length; i++)
         {
-            // 32-bit load: 8B <modrm> <disp32>
-            if (bytes[i] == 0x8B && IsRipRelativeModRm(bytes[i + 1]))
+            if (TryDecodeInt32AccessNoRex(bytes, i, out var hit) || TryDecodeInt32AccessRexNoW(bytes, i, out hit))
             {
-                var disp = BitConverter.ToInt32(bytes, i + 2);
-                var insnLen = 6;
-                var targetRva = i + insnLen + disp;
-                if (targetRva >= 0 && targetRva + 4 <= bytes.Length)
-                {
-                    Record(loadCounts, targetRva, "8B", i, dispOffset: 2, insnLen);
-                }
-                continue;
-            }
-
-            // 32-bit store: 89 <modrm> <disp32>
-            if (bytes[i] == 0x89 && IsRipRelativeModRm(bytes[i + 1]))
-            {
-                var disp = BitConverter.ToInt32(bytes, i + 2);
-                var insnLen = 6;
-                var targetRva = i + insnLen + disp;
-                if (targetRva >= 0 && targetRva + 4 <= bytes.Length)
-                {
-                    Record(storeCounts, targetRva, "89", i, dispOffset: 2, insnLen);
-                }
-                continue;
-            }
-
-            // REX (W=0) + 8B/89 rip-relative
-            if (IsRexNoW(bytes[i]) && (bytes[i + 1] == 0x8B || bytes[i + 1] == 0x89) && IsRipRelativeModRm(bytes[i + 2]))
-            {
-                var op = bytes[i + 1];
-                var disp = BitConverter.ToInt32(bytes, i + 3);
-                var insnLen = 7;
-                var targetRva = i + insnLen + disp;
-                if (targetRva < 0 || targetRva + 4 > bytes.Length)
-                {
-                    continue;
-                }
-
-                if (op == 0x8B)
-                {
-                    Record(loadCounts, targetRva, $"{bytes[i]:X2} 8B", i, dispOffset: 3, insnLen);
-                }
-                else
-                {
-                    Record(storeCounts, targetRva, $"{bytes[i]:X2} 89", i, dispOffset: 3, insnLen);
-                }
+                hits.Add(hit);
             }
         }
 
-        _output.WriteLine($"Int32 scan (32-bit only): top {top} RIP-relative LOAD targets (8B [rip+disp32])");
-        foreach (var kv in loadCounts.OrderByDescending(x => x.Value).Take(top))
+        return hits;
+    }
+
+    private static bool TryDecodeInt32AccessNoRex(byte[] bytes, int index, out (int TargetRva, int InsnRva, int DispOffset, string Kind, bool IsLoad) hit)
+    {
+        hit = default;
+        var op = bytes[index];
+        if ((op != 0x8B && op != 0x89) || !IsRipRelativeModRm(bytes[index + 1]))
         {
-            var targetRva = kv.Key;
-            var refs = kv.Value;
-            var value = BitConverter.ToInt32(bytes, targetRva);
-
-            // Prefer the simplest kind for examples.
-            var kind = examples.Keys.Where(k => k.TargetRva == targetRva).Select(k => k.Kind).OrderBy(k => k.Length).FirstOrDefault() ?? "8B";
-            var example = examples[(targetRva, kind)];
-            var suggested = BytesToAobPatternWithWildcards(bytes, example.InsnRva, 16, (example.InsnRva + example.DispOffset, 4));
-
-            _output.WriteLine($" - targetRva=0x{targetRva:X} value={value} refs={refs} kind={kind} insnRva=0x{example.InsnRva:X} bytes={example.Bytes}");
-            _output.WriteLine($"   suggestedPattern={suggested} offset={example.DispOffset} addressMode=ReadRipRelative32AtOffset");
+            return false;
         }
 
-        _output.WriteLine($"Int32 scan (32-bit only): top {top} RIP-relative STORE targets (89 [rip+disp32], r32)");
-        foreach (var kv in storeCounts.OrderByDescending(x => x.Value).Take(top))
+        if (!TryResolveRipTarget(bytes, index, index + 2, insnLen: 6, valueSize: 4, out var targetRva))
         {
-            var targetRva = kv.Key;
-            var refs = kv.Value;
+            return false;
+        }
+
+        hit = (targetRva, index, DispOffset: 2, Kind: op == 0x8B ? "8B" : "89", IsLoad: op == 0x8B);
+        return true;
+    }
+
+    private static bool TryDecodeInt32AccessRexNoW(byte[] bytes, int index, out (int TargetRva, int InsnRva, int DispOffset, string Kind, bool IsLoad) hit)
+    {
+        hit = default;
+        var op = bytes[index + 1];
+        if (!IsRexNoW(bytes[index]) || (op != 0x8B && op != 0x89) || !IsRipRelativeModRm(bytes[index + 2]))
+        {
+            return false;
+        }
+
+        if (!TryResolveRipTarget(bytes, index, index + 3, insnLen: 7, valueSize: 4, out var targetRva))
+        {
+            return false;
+        }
+
+        hit = (targetRva, index, DispOffset: 3, Kind: $"{bytes[index]:X2} {op:X2}", IsLoad: op == 0x8B);
+        return true;
+    }
+
+    private void LogInt32AccessRanking(byte[] bytes, IReadOnlyList<(int TargetRva, int InsnRva, int DispOffset, string Kind, bool IsLoad)> hits, int top)
+    {
+        foreach (var group in hits.GroupBy(x => x.TargetRva).OrderByDescending(x => x.Count()).Take(top))
+        {
+            var targetRva = group.Key;
+            var refs = group.Count();
             var value = BitConverter.ToInt32(bytes, targetRva);
-
-            var kind = examples.Keys.Where(k => k.TargetRva == targetRva).Select(k => k.Kind).OrderBy(k => k.Length).FirstOrDefault() ?? "89";
-            var example = examples[(targetRva, kind)];
+            var example = group.OrderBy(x => x.Kind.Length).ThenBy(x => x.InsnRva).First();
             var suggested = BytesToAobPatternWithWildcards(bytes, example.InsnRva, 16, (example.InsnRva + example.DispOffset, 4));
-
-            _output.WriteLine($" - targetRva=0x{targetRva:X} value={value} refs={refs} kind={kind} insnRva=0x{example.InsnRva:X} bytes={example.Bytes}");
+            _output.WriteLine($" - targetRva=0x{targetRva:X} value={value} refs={refs} kind={example.Kind} insnRva=0x{example.InsnRva:X} bytes={BytesToHex(bytes, example.InsnRva, 16)}");
             _output.WriteLine($"   suggestedPattern={suggested} offset={example.DispOffset} addressMode=ReadRipRelative32AtOffset");
         }
     }
@@ -1179,182 +1136,138 @@ public sealed class LiveActionSmokeTests
     private void DumpTopRipRelativeByteCompareTargets(ModuleSnapshot snapshot, int top)
     {
         var bytes = snapshot.Bytes;
-
-        // cmp byte ptr [rip+disp32], imm8
-        //   80 3D <disp32> <imm8>
-        // Followed by common short jcc, e.g. 74/75 <rel8>.
-        var counts = new Dictionary<int, int>();
-        var examples = new Dictionary<int, (int InsnRva, int DispOffset, int Rel8Offset, byte Imm8, byte Jcc, string Bytes)>();
-
-        for (var i = 0; i + 9 < bytes.Length; i++)
-        {
-            if (bytes[i] != 0x80 || bytes[i + 1] != 0x3D)
-            {
-                continue;
-            }
-
-            var disp = BitConverter.ToInt32(bytes, i + 2);
-            var imm8 = bytes[i + 6];
-            var jcc = bytes[i + 7];
-
-            // Keep output focused on the exact form our profiles use today.
-            if (imm8 != 0x00 || (jcc != 0x74 && jcc != 0x75))
-            {
-                continue;
-            }
-
-            var insnLen = 7;
-            var targetRva = i + insnLen + disp;
-            if (targetRva < 0 || targetRva >= bytes.Length)
-            {
-                continue;
-            }
-
-            counts.TryGetValue(targetRva, out var c);
-            counts[targetRva] = c + 1;
-
-            if (!examples.ContainsKey(targetRva))
-            {
-                examples[targetRva] = (
-                    InsnRva: i,
-                    DispOffset: 2,
-                    Rel8Offset: 8,
-                    Imm8: imm8,
-                    Jcc: jcc,
-                    Bytes: BytesToHex(bytes, i, 16));
-            }
-        }
-
-        if (counts.Count == 0)
+        var hits = CollectByteCompareHits(bytes);
+        if (hits.Count == 0)
         {
             _output.WriteLine("Byte compare scan: no RIP-relative cmp byte [rip+disp32],0 with short jcc found.");
             return;
         }
 
         _output.WriteLine($"Byte compare scan: top {top} RIP-relative byte CMP targets (80 3D disp32 00 74/75):");
-        foreach (var kv in counts.OrderByDescending(x => x.Value).Take(top))
+        foreach (var group in hits.GroupBy(x => x.TargetRva).OrderByDescending(x => x.Count()).Take(top))
         {
-            var targetRva = kv.Key;
-            var refs = kv.Value;
-            var value = bytes[targetRva];
-
-            var ex = examples[targetRva];
-            var suggested = BytesToAobPatternWithWildcards(
-                bytes,
-                ex.InsnRva,
-                16,
-                (ex.InsnRva + ex.DispOffset, 4), // disp32
-                (ex.InsnRva + ex.Rel8Offset, 1)); // jcc rel8
-
-            _output.WriteLine($" - targetRva=0x{targetRva:X} value={value} refs={refs} jcc={ex.Jcc:X2} insnRva=0x{ex.InsnRva:X} bytes={ex.Bytes}");
-            _output.WriteLine($"   suggestedPattern={suggested} offset={ex.DispOffset} addressMode=ReadRipRelative32AtOffset");
+            LogByteCompareTarget(bytes, group);
         }
+    }
+
+    private static List<(int TargetRva, int InsnRva, int DispOffset, int Rel8Offset, byte Imm8, byte Jcc, string Bytes)> CollectByteCompareHits(byte[] bytes)
+    {
+        var hits = new List<(int TargetRva, int InsnRva, int DispOffset, int Rel8Offset, byte Imm8, byte Jcc, string Bytes)>();
+        for (var i = 0; i + 9 < bytes.Length; i++)
+        {
+            if (TryDecodeByteCompareHit(bytes, i, out var hit))
+            {
+                hits.Add(hit);
+            }
+        }
+
+        return hits;
+    }
+
+    private static bool TryDecodeByteCompareHit(byte[] bytes, int index, out (int TargetRva, int InsnRva, int DispOffset, int Rel8Offset, byte Imm8, byte Jcc, string Bytes) hit)
+    {
+        hit = default;
+        if (bytes[index] != 0x80 || bytes[index + 1] != 0x3D)
+        {
+            return false;
+        }
+
+        var imm8 = bytes[index + 6];
+        var jcc = bytes[index + 7];
+        if (imm8 != 0x00 || (jcc != 0x74 && jcc != 0x75))
+        {
+            return false;
+        }
+
+        if (!TryResolveRipTarget(bytes, index, index + 2, insnLen: 7, valueSize: 1, out var targetRva))
+        {
+            return false;
+        }
+
+        hit = (targetRva, index, DispOffset: 2, Rel8Offset: 8, imm8, jcc, BytesToHex(bytes, index, 16));
+        return true;
+    }
+
+    private void LogByteCompareTarget(byte[] bytes, IGrouping<int, (int TargetRva, int InsnRva, int DispOffset, int Rel8Offset, byte Imm8, byte Jcc, string Bytes)> group)
+    {
+        var targetRva = group.Key;
+        var refs = group.Count();
+        var value = bytes[targetRva];
+        var example = group.First();
+        var suggested = BytesToAobPatternWithWildcards(
+            bytes,
+            example.InsnRva,
+            16,
+            (example.InsnRva + example.DispOffset, 4),
+            (example.InsnRva + example.Rel8Offset, 1));
+
+        _output.WriteLine($" - targetRva=0x{targetRva:X} value={value} refs={refs} jcc={example.Jcc:X2} insnRva=0x{example.InsnRva:X} bytes={example.Bytes}");
+        _output.WriteLine($"   suggestedPattern={suggested} offset={example.DispOffset} addressMode=ReadRipRelative32AtOffset");
     }
 
     private void DumpTopRipRelativeByteImmediateStoreTargets(ModuleSnapshot snapshot, int top)
     {
         var bytes = snapshot.Bytes;
-
-        // mov byte ptr [rip+disp32], imm8
-        //   C6 05 <disp32> <imm8>
-        var counts = new Dictionary<int, int>();
-        var examples = new Dictionary<int, (int InsnRva, int DispOffset, byte Imm8, string Bytes)>();
-
-        for (var i = 0; i + 8 < bytes.Length; i++)
-        {
-            if (bytes[i] != 0xC6 || bytes[i + 1] != 0x05)
-            {
-                continue;
-            }
-
-            var disp = BitConverter.ToInt32(bytes, i + 2);
-            var imm8 = bytes[i + 6];
-            var insnLen = 7;
-            var targetRva = i + insnLen + disp;
-            if (targetRva < 0 || targetRva >= bytes.Length)
-            {
-                continue;
-            }
-
-            counts.TryGetValue(targetRva, out var c);
-            counts[targetRva] = c + 1;
-
-            if (!examples.ContainsKey(targetRva))
-            {
-                examples[targetRva] = (
-                    InsnRva: i,
-                    DispOffset: 2,
-                    Imm8: imm8,
-                    Bytes: BytesToHex(bytes, i, 16));
-            }
-        }
-
-        if (counts.Count == 0)
+        var hits = CollectByteImmediateStoreHits(bytes);
+        if (hits.Count == 0)
         {
             _output.WriteLine("Byte store scan: no RIP-relative mov byte [rip+disp32], imm8 found.");
             return;
         }
 
         _output.WriteLine($"Byte store scan: top {top} RIP-relative byte STORE targets (C6 05 disp32 imm8):");
-        foreach (var kv in counts.OrderByDescending(x => x.Value).Take(top))
+        foreach (var group in hits.GroupBy(x => x.TargetRva).OrderByDescending(x => x.Count()).Take(top))
         {
-            var targetRva = kv.Key;
-            var refs = kv.Value;
-            var value = bytes[targetRva];
-
-            var ex = examples[targetRva];
-            var suggested = BytesToAobPatternWithWildcards(
-                bytes,
-                ex.InsnRva,
-                16,
-                (ex.InsnRva + ex.DispOffset, 4)); // disp32
-
-            _output.WriteLine($" - targetRva=0x{targetRva:X} value={value} refs={refs} imm8={ex.Imm8:X2} insnRva=0x{ex.InsnRva:X} bytes={ex.Bytes}");
-            _output.WriteLine($"   suggestedPattern={suggested} offset={ex.DispOffset} addressMode=ReadRipRelative32AtOffset");
+            LogByteImmediateStoreTarget(bytes, group);
         }
+    }
+
+    private static List<(int TargetRva, int InsnRva, int DispOffset, byte Imm8, string Bytes)> CollectByteImmediateStoreHits(byte[] bytes)
+    {
+        var hits = new List<(int TargetRva, int InsnRva, int DispOffset, byte Imm8, string Bytes)>();
+        for (var i = 0; i + 8 < bytes.Length; i++)
+        {
+            if (TryDecodeByteImmediateStoreHit(bytes, i, out var hit))
+            {
+                hits.Add(hit);
+            }
+        }
+
+        return hits;
+    }
+
+    private static bool TryDecodeByteImmediateStoreHit(byte[] bytes, int index, out (int TargetRva, int InsnRva, int DispOffset, byte Imm8, string Bytes) hit)
+    {
+        hit = default;
+        if (bytes[index] != 0xC6 || bytes[index + 1] != 0x05)
+        {
+            return false;
+        }
+
+        if (!TryResolveRipTarget(bytes, index, index + 2, insnLen: 7, valueSize: 1, out var targetRva))
+        {
+            return false;
+        }
+
+        hit = (targetRva, index, DispOffset: 2, bytes[index + 6], BytesToHex(bytes, index, 16));
+        return true;
+    }
+
+    private void LogByteImmediateStoreTarget(byte[] bytes, IGrouping<int, (int TargetRva, int InsnRva, int DispOffset, byte Imm8, string Bytes)> group)
+    {
+        var targetRva = group.Key;
+        var refs = group.Count();
+        var value = bytes[targetRva];
+        var example = group.First();
+        var suggested = BytesToAobPatternWithWildcards(bytes, example.InsnRva, 16, (example.InsnRva + example.DispOffset, 4));
+        _output.WriteLine($" - targetRva=0x{targetRva:X} value={value} refs={refs} imm8={example.Imm8:X2} insnRva=0x{example.InsnRva:X} bytes={example.Bytes}");
+        _output.WriteLine($"   suggestedPattern={suggested} offset={example.DispOffset} addressMode=ReadRipRelative32AtOffset");
     }
 
     private void DumpRipRelativeInt32Refs(ModuleSnapshot snapshot, long targetRva, int max)
     {
-        static bool IsRipRelativeModRm(byte modrm) => (modrm & 0xC7) == 0x05;
-
-        var refs = new List<(int InsnRva, int InsnLen, int DispOffset, string Kind)>();
         var bytes = snapshot.Bytes;
-
-        for (var i = 0; i + 7 < bytes.Length; i++)
-        {
-            // 8B / 89 RIP-relative (no REX)
-            var op = bytes[i];
-            if ((op == 0x8B || op == 0x89) && IsRipRelativeModRm(bytes[i + 1]))
-            {
-                var disp = BitConverter.ToInt32(bytes, i + 2);
-                var insnLen = 6;
-                var decodedTarget = i + insnLen + disp;
-                if (decodedTarget == targetRva)
-                {
-                    refs.Add((i, insnLen, DispOffset: 2, Kind: $"{op:X2} (no REX)"));
-                }
-                continue;
-            }
-
-            // REX + 8B/89 RIP-relative
-            var rex = bytes[i];
-            if (rex is >= 0x40 and <= 0x4F)
-            {
-                op = bytes[i + 1];
-                if ((op == 0x8B || op == 0x89) && IsRipRelativeModRm(bytes[i + 2]))
-                {
-                    var disp = BitConverter.ToInt32(bytes, i + 3);
-                    var insnLen = 7;
-                    var decodedTarget = i + insnLen + disp;
-                    if (decodedTarget == targetRva)
-                    {
-                        refs.Add((i, insnLen, DispOffset: 3, Kind: $"{rex:X2} {op:X2} (REX)"));
-                    }
-                }
-            }
-        }
-
+        var refs = CollectRipRelativeInt32Refs(bytes, targetRva);
         if (refs.Count == 0)
         {
             _output.WriteLine(" - No 8B/89 RIP-relative refs found.");
@@ -1362,76 +1275,67 @@ public sealed class LiveActionSmokeTests
         }
 
         _output.WriteLine($" - Found {refs.Count} RIP-relative Int32 ref(s) (showing up to {max}):");
-        foreach (var r in refs.Take(max))
+        foreach (var reference in refs.Take(max))
         {
-            var snippet = BytesToHex(bytes, r.InsnRva, 18);
-            var suggested = BytesToAobPattern(bytes, r.InsnRva, 18, wildcardStart: r.InsnRva + r.DispOffset, wildcardCount: 4);
-            _output.WriteLine($"   insnRva=0x{r.InsnRva:X} kind={r.Kind} bytes={snippet}");
-            _output.WriteLine($"   suggestedPattern={suggested} offset={r.DispOffset} addressMode=ReadRipRelative32AtOffset");
+            LogRipRelativeReference(bytes, reference, patternLength: 18);
         }
+    }
+
+    private static List<(int InsnRva, int DispOffset, string Kind)> CollectRipRelativeInt32Refs(byte[] bytes, long targetRva)
+    {
+        var refs = new List<(int InsnRva, int DispOffset, string Kind)>();
+        for (var i = 0; i + 7 < bytes.Length; i++)
+        {
+            if (TryDecodeInt32ReferenceNoRex(bytes, i, targetRva, out var reference)
+                || TryDecodeInt32ReferenceRex(bytes, i, targetRva, out reference))
+            {
+                refs.Add(reference);
+            }
+        }
+
+        return refs;
+    }
+
+    private static bool TryDecodeInt32ReferenceNoRex(byte[] bytes, int index, long targetRva, out (int InsnRva, int DispOffset, string Kind) hit)
+    {
+        hit = default;
+        var op = bytes[index];
+        if ((op != 0x8B && op != 0x89) || !IsRipRelativeModRm(bytes[index + 1]))
+        {
+            return false;
+        }
+
+        if (!TryResolveRipTarget(bytes, index, index + 2, insnLen: 6, valueSize: 4, out var decodedTarget) || decodedTarget != targetRva)
+        {
+            return false;
+        }
+
+        hit = (index, DispOffset: 2, Kind: $"{op:X2} (no REX)");
+        return true;
+    }
+
+    private static bool TryDecodeInt32ReferenceRex(byte[] bytes, int index, long targetRva, out (int InsnRva, int DispOffset, string Kind) hit)
+    {
+        hit = default;
+        var op = bytes[index + 1];
+        if (!IsRex(bytes[index]) || (op != 0x8B && op != 0x89) || !IsRipRelativeModRm(bytes[index + 2]))
+        {
+            return false;
+        }
+
+        if (!TryResolveRipTarget(bytes, index, index + 3, insnLen: 7, valueSize: 4, out var decodedTarget) || decodedTarget != targetRva)
+        {
+            return false;
+        }
+
+        hit = (index, DispOffset: 3, Kind: $"{bytes[index]:X2} {op:X2} (REX)");
+        return true;
     }
 
     private void DumpRipRelativeSseFloatRefs(ModuleSnapshot snapshot, long targetRva, int max)
     {
-        static bool IsRipRelativeModRm(byte modrm) => (modrm & 0xC7) == 0x05;
-
-        var refs = new List<(int InsnRva, int InsnLen, int DispOffset, string Kind)>();
         var bytes = snapshot.Bytes;
-
-        // Scan for common SSE single-precision ops that use disp32 RIP-relative:
-        // - F3 0F 10 /r (movss load)
-        // - F3 0F 11 /r (movss store)
-        // - F3 0F 59 /r (mulss)
-        // Some encodings include a REX prefix between F3 and 0F.
-        for (var i = 0; i + 10 < bytes.Length; i++)
-        {
-            if (bytes[i] != 0xF3)
-            {
-                continue;
-            }
-
-            // No REX form: F3 0F <op> <modrm> <disp32>
-            if (bytes[i + 1] == 0x0F && (bytes[i + 2] == 0x10 || bytes[i + 2] == 0x11 || bytes[i + 2] == 0x59))
-            {
-                var op = bytes[i + 2];
-                var modrm = bytes[i + 3];
-                if (!IsRipRelativeModRm(modrm))
-                {
-                    continue;
-                }
-
-                var disp = BitConverter.ToInt32(bytes, i + 4);
-                var insnLen = 8;
-                var decodedTarget = i + insnLen + disp;
-                if (decodedTarget == targetRva)
-                {
-                    refs.Add((i, insnLen, DispOffset: 4, Kind: $"F3 0F {op:X2} (no REX)"));
-                }
-
-                continue;
-            }
-
-            // REX form: F3 <rex> 0F <op> <modrm> <disp32>
-            var rex = bytes[i + 1];
-            if (rex is >= 0x40 and <= 0x4F && bytes[i + 2] == 0x0F && (bytes[i + 3] == 0x10 || bytes[i + 3] == 0x11 || bytes[i + 3] == 0x59))
-            {
-                var op = bytes[i + 3];
-                var modrm = bytes[i + 4];
-                if (!IsRipRelativeModRm(modrm))
-                {
-                    continue;
-                }
-
-                var disp = BitConverter.ToInt32(bytes, i + 5);
-                var insnLen = 9;
-                var decodedTarget = i + insnLen + disp;
-                if (decodedTarget == targetRva)
-                {
-                    refs.Add((i, insnLen, DispOffset: 5, Kind: $"F3 {rex:X2} 0F {op:X2} (REX)"));
-                }
-            }
-        }
-
+        var refs = CollectRipRelativeSseFloatRefs(bytes, targetRva);
         if (refs.Count == 0)
         {
             _output.WriteLine(" - No F3 0F 10/11/59 RIP-relative float refs found.");
@@ -1439,13 +1343,117 @@ public sealed class LiveActionSmokeTests
         }
 
         _output.WriteLine($" - Found {refs.Count} RIP-relative float ref(s) (showing up to {max}):");
-        foreach (var r in refs.Take(max))
+        foreach (var reference in refs.Take(max))
         {
-            var snippet = BytesToHex(bytes, r.InsnRva, 20);
-            var suggested = BytesToAobPattern(bytes, r.InsnRva, 20, wildcardStart: r.InsnRva + r.DispOffset, wildcardCount: 4);
-            _output.WriteLine($"   insnRva=0x{r.InsnRva:X} kind={r.Kind} bytes={snippet}");
-            _output.WriteLine($"   suggestedPattern={suggested} offset={r.DispOffset} addressMode=ReadRipRelative32AtOffset");
+            LogRipRelativeReference(bytes, reference, patternLength: 20);
         }
+    }
+
+    private static List<(int InsnRva, int DispOffset, string Kind)> CollectRipRelativeSseFloatRefs(byte[] bytes, long targetRva)
+    {
+        var refs = new List<(int InsnRva, int DispOffset, string Kind)>();
+        for (var i = 0; i + 10 < bytes.Length; i++)
+        {
+            if (TryDecodeSseFloatReferenceNoRex(bytes, i, targetRva, out var reference)
+                || TryDecodeSseFloatReferenceRex(bytes, i, targetRva, out reference))
+            {
+                refs.Add(reference);
+            }
+        }
+
+        return refs;
+    }
+
+    private static bool TryDecodeSseFloatReferenceNoRex(byte[] bytes, int index, long targetRva, out (int InsnRva, int DispOffset, string Kind) hit)
+    {
+        hit = default;
+        if (bytes[index] != 0xF3)
+        {
+            return false;
+        }
+
+        if (bytes[index + 1] != 0x0F)
+        {
+            return false;
+        }
+
+        var op = bytes[index + 2];
+        if (!IsSseReferenceOp(op))
+        {
+            return false;
+        }
+
+        if (!IsRipRelativeModRm(bytes[index + 3]))
+        {
+            return false;
+        }
+
+        if (!TryResolveRipTarget(bytes, index, index + 4, insnLen: 8, valueSize: 4, out var decodedTarget))
+        {
+            return false;
+        }
+
+        if (decodedTarget != targetRva)
+        {
+            return false;
+        }
+
+        hit = (index, DispOffset: 4, Kind: $"F3 0F {op:X2} (no REX)");
+        return true;
+    }
+
+    private static bool TryDecodeSseFloatReferenceRex(byte[] bytes, int index, long targetRva, out (int InsnRva, int DispOffset, string Kind) hit)
+    {
+        hit = default;
+        if (bytes[index] != 0xF3)
+        {
+            return false;
+        }
+
+        var rex = bytes[index + 1];
+        if (!IsRex(rex))
+        {
+            return false;
+        }
+
+        if (bytes[index + 2] != 0x0F)
+        {
+            return false;
+        }
+
+        var op = bytes[index + 3];
+        if (!IsSseReferenceOp(op))
+        {
+            return false;
+        }
+
+        if (!IsRipRelativeModRm(bytes[index + 4]))
+        {
+            return false;
+        }
+
+        if (!TryResolveRipTarget(bytes, index, index + 5, insnLen: 9, valueSize: 4, out var decodedTarget))
+        {
+            return false;
+        }
+
+        if (decodedTarget != targetRva)
+        {
+            return false;
+        }
+
+        hit = (index, DispOffset: 5, Kind: $"F3 {rex:X2} 0F {op:X2} (REX)");
+        return true;
+    }
+
+    private static bool IsSseReferenceOp(byte op) => op is 0x10 or 0x11 or 0x59;
+
+    private void LogRipRelativeReference(byte[] bytes, (int InsnRva, int DispOffset, string Kind) reference, int patternLength)
+    {
+        var snippet = BytesToHex(bytes, reference.InsnRva, patternLength);
+        var suggested = BytesToAobPattern(bytes, reference.InsnRva, patternLength, wildcardStart: reference.InsnRva + reference.DispOffset, wildcardCount: 4);
+        _output.WriteLine($"   insnRva=0x{reference.InsnRva:X} kind={reference.Kind} bytes={snippet}");
+        _output.WriteLine($"   suggestedPattern={suggested} offset={reference.DispOffset} addressMode=ReadRipRelative32AtOffset");
     }
 
     private static string BytesToHex(byte[] bytes, int offset, int count)
@@ -1505,89 +1513,121 @@ public sealed class LiveActionSmokeTests
         using var process = Process.GetProcessById(session.Process.ProcessId);
         var module = process.MainModule ?? throw new InvalidOperationException("Main module not available for target process.");
         var baseAddress = module.BaseAddress;
-        var moduleSize = module.ModuleMemorySize;
-
         using var accessor = new ProcessMemoryAccessor(process.Id);
-        var moduleBytes = accessor.ReadBytes(baseAddress, moduleSize);
+        var moduleBytes = accessor.ReadBytes(baseAddress, module.ModuleMemorySize);
 
-        var counts = new Dictionary<long, int>();
-        var exampleRefs = new Dictionary<long, List<string>>();
-
-        static bool IsRipRelativeModRm(byte modrm) => (modrm & 0xC7) == 0x05;
-
-        static string BytesToHex(byte[] bytes, int offset, int count)
-        {
-            var end = Math.Min(offset + count, bytes.Length);
-            return string.Join(' ', bytes.AsSpan(offset, end - offset).ToArray().Select(x => x.ToString("X2")));
-        }
-
-        for (var i = 0; i + 6 < moduleBytes.Length; i++)
-        {
-            var op = moduleBytes[i];
-            var modrm = moduleBytes[i + 1];
-            if ((op == 0x8B || op == 0x89) && IsRipRelativeModRm(modrm))
-            {
-                var disp = BitConverter.ToInt32(moduleBytes, i + 2);
-                var targetRva = i + 6 + disp;
-                if (targetRva < 0 || targetRva + 4 > moduleBytes.Length)
-                {
-                    continue;
-                }
-
-                counts.TryGetValue(targetRva, out var current);
-                counts[targetRva] = current + 1;
-
-                if (!exampleRefs.TryGetValue(targetRva, out var list))
-                {
-                    list = new List<string>();
-                    exampleRefs[targetRva] = list;
-                }
-
-                if (list.Count < 2)
-                {
-                    var snippet = BytesToHex(moduleBytes, i, 16);
-                    list.Add($"insnRva=0x{i:X} op={(op == 0x8B ? "8B" : "89")} modrm=0x{modrm:X2} bytes={snippet}");
-                }
-            }
-        }
-
-        if (counts.Count == 0)
+        var scan = CollectTopRipRelativeInt32Targets(moduleBytes);
+        if (scan.Counts.Count == 0)
         {
             _output.WriteLine("No RIP-relative Int32 targets found in module scan.");
             return;
         }
 
         _output.WriteLine($"Top {top} RIP-relative Int32 targets by reference count (8B/89 rip-relative):");
-        foreach (var kv in counts.OrderByDescending(x => x.Value).Take(top))
+        foreach (var entry in scan.Counts.OrderByDescending(x => x.Value).Take(top))
         {
-            var addr = baseAddress + (nint)kv.Key;
-            int? value = null;
-            try
-            {
-                value = accessor.Read<int>(addr);
-            }
-            catch
-            {
-                // ignore
-            }
-
-            if (value.HasValue && value.Value is >= -1000 and <= 50_000_000)
-            {
-                _output.WriteLine($" - targetRva=0x{kv.Key:X} addr=0x{addr.ToInt64():X} refs={kv.Value} value={value.Value}");
-            }
-            else
-            {
-                _output.WriteLine($" - targetRva=0x{kv.Key:X} addr=0x{addr.ToInt64():X} refs={kv.Value} value={(value.HasValue ? value.Value.ToString() : "<unreadable>")}");
-            }
-
-            if (exampleRefs.TryGetValue(kv.Key, out var refs))
-            {
-                foreach (var reference in refs)
-                {
-                    _output.WriteLine($"   {reference}");
-                }
-            }
+            LogTopRipRelativeInt32Target(baseAddress, accessor, entry.Key, entry.Value, scan.ExampleReferences);
         }
+    }
+
+    private static (Dictionary<long, int> Counts, Dictionary<long, List<string>> ExampleReferences) CollectTopRipRelativeInt32Targets(byte[] moduleBytes)
+    {
+        var counts = new Dictionary<long, int>();
+        var exampleRefs = new Dictionary<long, List<string>>();
+        for (var i = 0; i + 6 < moduleBytes.Length; i++)
+        {
+            if (!TryDecodeTopInt32Target(moduleBytes, i, out var op, out var modrm, out var targetRva))
+            {
+                continue;
+            }
+
+            counts[targetRva] = counts.TryGetValue(targetRva, out var current) ? current + 1 : 1;
+            RecordTopInt32ExampleRef(moduleBytes, exampleRefs, targetRva, i, op, modrm);
+        }
+
+        return (counts, exampleRefs);
+    }
+
+    private static bool TryDecodeTopInt32Target(byte[] bytes, int index, out byte op, out byte modrm, out long targetRva)
+    {
+        op = bytes[index];
+        modrm = bytes[index + 1];
+        targetRva = 0;
+        if ((op != 0x8B && op != 0x89) || !IsRipRelativeModRm(modrm))
+        {
+            return false;
+        }
+
+        return TryResolveRipTarget(bytes, index, index + 2, insnLen: 6, valueSize: 4, out var target)
+            && (targetRva = target) >= 0;
+    }
+
+    private static void RecordTopInt32ExampleRef(
+        byte[] moduleBytes,
+        IDictionary<long, List<string>> exampleRefs,
+        long targetRva,
+        int insnRva,
+        byte op,
+        byte modrm)
+    {
+        if (!exampleRefs.TryGetValue(targetRva, out var refs))
+        {
+            refs = new List<string>();
+            exampleRefs[targetRva] = refs;
+        }
+
+        if (refs.Count >= 2)
+        {
+            return;
+        }
+
+        var snippet = BytesToHex(moduleBytes, insnRva, 16);
+        refs.Add($"insnRva=0x{insnRva:X} op={(op == 0x8B ? "8B" : "89")} modrm=0x{modrm:X2} bytes={snippet}");
+    }
+
+    private void LogTopRipRelativeInt32Target(
+        nint baseAddress,
+        ProcessMemoryAccessor accessor,
+        long targetRva,
+        int refs,
+        IReadOnlyDictionary<long, List<string>> exampleRefs)
+    {
+        var addr = baseAddress + (nint)targetRva;
+        var value = TryReadInt32(accessor, addr);
+        _output.WriteLine($" - targetRva=0x{targetRva:X} addr=0x{addr.ToInt64():X} refs={refs} value={FormatInt32Value(value)}");
+        if (!exampleRefs.TryGetValue(targetRva, out var references))
+        {
+            return;
+        }
+
+        foreach (var reference in references)
+        {
+            _output.WriteLine($"   {reference}");
+        }
+    }
+
+    private static int? TryReadInt32(ProcessMemoryAccessor accessor, nint address)
+    {
+        try
+        {
+            return accessor.Read<int>(address);
+        }
+        catch
+        {
+            return null;
+        }
+    }
+
+    private static string FormatInt32Value(int? value)
+    {
+        if (!value.HasValue)
+        {
+            return "<unreadable>";
+        }
+
+        return value.Value is >= -1000 and <= 50_000_000
+            ? value.Value.ToString()
+            : value.Value.ToString();
     }
 
     private static async Task<IReadOnlyList<TrainerProfile>> ResolveProfilesAsync(FileSystemProfileRepository profileRepository)
