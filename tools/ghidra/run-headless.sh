@@ -34,6 +34,7 @@ PROJECT_NAME="swfoc-${ANALYSIS_RUN_ID}"
 RAW_SYMBOLS_PATH="$OUTPUT_DIR/raw-symbols.json"
 SYMBOL_PACK_PATH="$OUTPUT_DIR/symbol-pack.json"
 SUMMARY_PATH="$OUTPUT_DIR/analysis-summary.json"
+DETERMINISM_DIR="$OUTPUT_DIR/determinism"
 
 "$ANALYZE_HEADLESS" "$PROJECT_DIR" "$PROJECT_NAME" \
   -import "$BINARY_PATH" \
@@ -48,7 +49,14 @@ python3 "$REPO_ROOT/tools/ghidra/emit-symbol-pack.py" \
   --output-pack "$SYMBOL_PACK_PATH" \
   --output-summary "$SUMMARY_PATH"
 
+python3 "$REPO_ROOT/tools/ghidra/check-determinism.py" \
+  --raw-symbols "$RAW_SYMBOLS_PATH" \
+  --binary-path "$BINARY_PATH" \
+  --analysis-run-id-base "$ANALYSIS_RUN_ID" \
+  --output-dir "$DETERMINISM_DIR"
+
 echo "ghidra headless analysis complete"
 echo " - raw symbols: $RAW_SYMBOLS_PATH"
 echo " - symbol pack: $SYMBOL_PACK_PATH"
 echo " - summary: $SUMMARY_PATH"
+echo " - determinism report: $DETERMINISM_DIR/determinism-report.json"

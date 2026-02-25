@@ -68,6 +68,16 @@ public sealed record CapabilityOperationMap(
     IReadOnlyList<string> OptionalAnchors);
 
 /// <summary>
+/// Optional capability-probe metadata loaded from generated symbol packs/maps.
+/// </summary>
+public sealed record CapabilityAvailabilityHint(
+    string FeatureId,
+    bool Available,
+    string State,
+    string ReasonCode,
+    IReadOnlyList<string> RequiredAnchors);
+
+/// <summary>
 /// Persisted map keyed by binary fingerprint.
 /// </summary>
 public sealed record CapabilityMap(
@@ -75,7 +85,8 @@ public sealed record CapabilityMap(
     string FingerprintId,
     string? DefaultProfileId,
     DateTimeOffset GeneratedAtUtc,
-    IReadOnlyDictionary<string, CapabilityOperationMap> Operations);
+    IReadOnlyDictionary<string, CapabilityOperationMap> Operations,
+    IReadOnlyDictionary<string, CapabilityAvailabilityHint> CapabilityHints);
 
 /// <summary>
 /// Result of resolving an operation for a profile/fingerprint pair.

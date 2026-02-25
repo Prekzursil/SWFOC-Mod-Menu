@@ -67,6 +67,16 @@ public sealed class CapabilityMapResolver : ICapabilityMapResolver
                 CapabilityReasonCode.OperationNotMapped);
         }
 
+        if (TryResolveDeclaredUnavailable(
+                map,
+                requestedProfileId,
+                operationId,
+                fingerprint.FingerprintId,
+                out var declaredUnavailable))
+        {
+            return declaredUnavailable;
+        }
+
         return ResolveOperationAnchors(fingerprint, requestedProfileId, operationId, op, resolvedAnchors);
     }
 
@@ -238,12 +248,15 @@ public sealed class CapabilityMapResolver : ICapabilityMapResolver
             operations = BuildOperationsFromCapabilities(dto.Capabilities);
         }
 
+        var capabilityHints = BuildCapabilityHints(dto.Capabilities);
+
         return new CapabilityMap(
             SchemaVersion: dto.SchemaVersion ?? "1.0",
             FingerprintId: dto.FingerprintId ?? fingerprint.FingerprintId,
             DefaultProfileId: dto.DefaultProfileId,
             GeneratedAtUtc: dto.GeneratedAtUtc == default ? DateTimeOffset.UtcNow : dto.GeneratedAtUtc,
-            Operations: operations);
+            Operations: operations,
+            CapabilityHints: capabilityHints);
     }
 
     private static Dictionary<string, CapabilityOperationMap> BuildOperations(
@@ -280,6 +293,27 @@ public sealed class CapabilityMapResolver : ICapabilityMapResolver
                 StringComparer.OrdinalIgnoreCase);
     }
 
+    private static Dictionary<string, CapabilityAvailabilityHint> BuildCapabilityHints(
+        IReadOnlyList<CapabilityEntryDto>? capabilities)
+    {
+        if (capabilities is null || capabilities.Count == 0)
+        {
+            return new Dictionary<string, CapabilityAvailabilityHint>(StringComparer.OrdinalIgnoreCase);
+        }
+
+        return capabilities
+            .Where(x => !string.IsNullOrWhiteSpace(x.FeatureId))
+            .ToDictionary(
+                x => x.FeatureId!,
+                x => new CapabilityAvailabilityHint(
+                    FeatureId: x.FeatureId!,
+                    Available: x.Available,
+                    State: x.State ?? string.Empty,
+                    ReasonCode: x.ReasonCode ?? string.Empty,
+                    RequiredAnchors: x.RequiredAnchors ?? Array.Empty<string>()),
+                StringComparer.OrdinalIgnoreCase);
+    }
+
     private static double BuildConfidence(int matchedRequired, int totalRequired)
     {
         if (totalRequired <= 0)
@@ -293,6 +327,50 @@ public sealed class CapabilityMapResolver : ICapabilityMapResolver
     private static bool ContainsAnchor(IReadOnlySet<string> anchors, string value, StringComparer comparer)
     {
         return anchors.Any(anchor => comparer.Equals(anchor, value));
+    }
+
+    private static bool TryResolveDeclaredUnavailable(
+        CapabilityMap map,
+        string requestedProfileId,
+        string operationId,
+        string fingerprintId,
+        out CapabilityResolutionResult result)
+    {
+        result = default!;
+        if (!map.CapabilityHints.TryGetValue(operationId, out var hint) || hint.Available)
+        {
+            return false;
+        }
+
+        var resolvedReason = MapExternalReasonCode(hint.ReasonCode);
+        var requiredAnchors = hint.RequiredAnchors;
+        result = new CapabilityResolutionResult(
+            requestedProfileId,
+            operationId,
+            SdkCapabilityStatus.Unavailable,
+            resolvedReason,
+            0.0d,
+            fingerprintId,
+            Array.Empty<string>(),
+            requiredAnchors);
+        return true;
+    }
+
+    private static CapabilityReasonCode MapExternalReasonCode(string? reasonCode)
+    {
+        if (string.IsNullOrWhiteSpace(reasonCode))
+        {
+            return CapabilityReasonCode.Unknown;
+        }
+
+        return reasonCode.ToUpperInvariant() switch
+        {
+            "CAPABILITY_REQUIRED_MISSING" => CapabilityReasonCode.RequiredAnchorsMissing,
+            "CAPABILITY_PROBE_PASS" => CapabilityReasonCode.AllRequiredAnchorsPresent,
+            "CAPABILITY_BACKEND_UNAVAILABLE" => CapabilityReasonCode.RuntimeNotAttached,
+            "SAFETY_FAIL_CLOSED" => CapabilityReasonCode.MutationBlockedByCapabilityState,
+            _ => CapabilityReasonCode.Unknown
+        };
     }
 
     private sealed class CapabilityMapDto
@@ -320,6 +398,12 @@ public sealed class CapabilityMapResolver : ICapabilityMapResolver
     private sealed class CapabilityEntryDto
     {
         public string? FeatureId { get; set; } = string.Empty;
+
+        public bool Available { get; set; } = true;
+
+        public string? State { get; set; } = string.Empty;
+
+        public string? ReasonCode { get; set; } = string.Empty;
 
         public string[]? RequiredAnchors { get; set; } = Array.Empty<string>();
     }
