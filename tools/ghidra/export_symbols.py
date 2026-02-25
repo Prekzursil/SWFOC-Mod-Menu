@@ -1,10 +1,15 @@
-#@category SWFOC
+# @category SWFOC
 # Exports discovered symbols from currentProgram to a JSON file.
 
 import json
 import sys
 
 from ghidra.program.model.symbol import SymbolType
+
+try:
+    currentProgram
+except NameError:
+    currentProgram = None
 
 
 def _hex_address(addr):
@@ -46,6 +51,11 @@ def _collect_label_symbols(program):
 def run():
     if len(sys.argv) < 1:
         raise RuntimeError("expected output path argument")
+
+    if currentProgram is None:
+        raise RuntimeError(
+            "currentProgram is only available in a Ghidra script runtime"
+        )
 
     out_path = sys.argv[0]
     symbols = []

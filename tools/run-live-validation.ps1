@@ -2,7 +2,7 @@ param(
     [string]$Configuration = "Release",
     [string]$ResultsDirectory = "TestResults",
     [string]$ProfileRoot = "profiles/default",
-    [switch]$NoBuild = $true,
+    [switch]$NoBuild,
     [string]$RunId = "",
     [ValidateSet("AOTR", "ROE", "TACTICAL", "FULL")][string]$Scope = "FULL",
     [string]$TopModsPath = "",
@@ -15,6 +15,10 @@ param(
 
 Set-StrictMode -Version Latest
 $ErrorActionPreference = "Stop"
+
+if (-not $PSBoundParameters.ContainsKey("NoBuild")) {
+    $NoBuild = $true
+}
 
 $repoRoot = Resolve-Path (Join-Path $PSScriptRoot "..")
 Set-Location $repoRoot
