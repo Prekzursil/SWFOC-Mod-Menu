@@ -209,6 +209,14 @@ def dedupe_intel(records: list[ScriptIntel]) -> list[ScriptIntel]:
 
 def render_markdown(records: list[ScriptIntel], source_path: Path) -> str:
     lines: list[str] = []
+    append_intro(lines, source_path)
+    append_summary_table(lines, records)
+    append_actionable_notes(lines)
+    append_detailed_entries(lines, records)
+    return "\n".join(lines).rstrip() + "\n"
+
+
+def append_intro(lines: list[str], source_path: Path) -> None:
     lines.append("# Cheat Table Intelligence")
     lines.append("")
     lines.append(f"Source: `{source_path.name}`")
@@ -216,6 +224,9 @@ def render_markdown(records: list[ScriptIntel], source_path: Path) -> str:
     lines.append("This is an extracted intelligence summary, not a direct CE table import.")
     lines.append("It keeps AOB/patch techniques that are useful for trainer calibration and ignores unrelated table noise.")
     lines.append("")
+
+
+def append_summary_table(lines: list[str], records: list[ScriptIntel]) -> None:
     lines.append("## Extracted Scripts")
     lines.append("")
     lines.append("| Group | Entry | Technique | Trainer Mapping | Primary AOB |")
@@ -225,8 +236,10 @@ def render_markdown(records: list[ScriptIntel], source_path: Path) -> str:
         lines.append(
             f"| {item.group or '-'} | {item.description} | {item.technique} | {item.trainer_mapping} | `{primary}` |"
         )
-
     lines.append("")
+
+
+def append_actionable_notes(lines: list[str]) -> None:
     lines.append("## Actionable Notes")
     lines.append("")
     lines.append("1. `Infinite Credits` scripts confirm a dual-path flow (`float -> int convert`), matching the trainer's mirror-sync model.")
@@ -234,35 +247,71 @@ def render_markdown(records: list[ScriptIntel], source_path: Path) -> str:
     lines.append("3. `1 Sec/1 Cred Build` scripts are code-cave overrides with hardcoded values; useful as behavior anchors, not as final trainer behavior.")
     lines.append("4. `Max Unit Cap` suggests a future patch-mode feature (`set_unit_cap`) if desired.")
     lines.append("")
+
+
+def append_detailed_entries(lines: list[str], records: list[ScriptIntel]) -> None:
     lines.append("## Detailed Entries")
     lines.append("")
     for item in records:
-        lines.append(f"### {item.group} / {item.description}")
-        lines.append(f"- Technique: `{item.technique}`")
-        lines.append(f"- Trainer mapping: `{item.trainer_mapping}`")
-        if item.injection_points:
-            points = ", ".join(f"`{p}`" for p in item.injection_points)
-            lines.append(f"- Injection points: {points}")
-        if item.aob_scans:
-            lines.append("- AOB scans:")
-            for scan in item.aob_scans:
-                lines.append(
-                    f"  - `{scan.symbol}` on `{scan.module}` with pattern `{scan.pattern}`"
-                )
-        if item.constant_writes:
-            lines.append("- Constant writes:")
-            for write in item.constant_writes:
-                lines.append(f"  - `[{write.target}] <- ({write.value_type}){write.value}`")
-        if item.disable_restore_bytes:
-            lines.append("- Disable restore bytes:")
-            for blob in item.disable_restore_bytes:
-                lines.append(f"  - `db {blob}`")
-        if item.notes:
-            lines.append("- Notes:")
-            for note in item.notes:
-                lines.append(f"  - {note}")
-        lines.append("")
-    return "\n".join(lines).rstrip() + "\n"
+        append_detailed_entry(lines, item)
+
+
+def append_detailed_entry(lines: list[str], item: ScriptIntel) -> None:
+    lines.append(f"### {item.group} / {item.description}")
+    lines.append(f"- Technique: `{item.technique}`")
+    lines.append(f"- Trainer mapping: `{item.trainer_mapping}`")
+    append_injection_points(lines, item.injection_points)
+    append_aob_scans(lines, item.aob_scans)
+    append_constant_writes(lines, item.constant_writes)
+    append_restore_bytes(lines, item.disable_restore_bytes)
+    append_notes(lines, item.notes)
+    lines.append("")
+
+
+def append_injection_points(lines: list[str], injection_points: list[str]) -> None:
+    if not injection_points:
+        return
+
+    points = ", ".join(f"`{point}`" for point in injection_points)
+    lines.append(f"- Injection points: {points}")
+
+
+def append_aob_scans(lines: list[str], aob_scans: list[AobScan]) -> None:
+    if not aob_scans:
+        return
+
+    lines.append("- AOB scans:")
+    for scan in aob_scans:
+        lines.append(
+            f"  - `{scan.symbol}` on `{scan.module}` with pattern `{scan.pattern}`"
+        )
+
+
+def append_constant_writes(lines: list[str], constant_writes: list[ConstantWrite]) -> None:
+    if not constant_writes:
+        return
+
+    lines.append("- Constant writes:")
+    for write in constant_writes:
+        lines.append(f"  - `[{write.target}] <- ({write.value_type}){write.value}`")
+
+
+def append_restore_bytes(lines: list[str], restore_bytes: list[str]) -> None:
+    if not restore_bytes:
+        return
+
+    lines.append("- Disable restore bytes:")
+    for blob in restore_bytes:
+        lines.append(f"  - `db {blob}`")
+
+
+def append_notes(lines: list[str], notes: list[str]) -> None:
+    if not notes:
+        return
+
+    lines.append("- Notes:")
+    for note in notes:
+        lines.append(f"  - {note}")
 
 
 def main() -> int:

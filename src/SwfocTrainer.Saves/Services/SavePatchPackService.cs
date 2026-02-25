@@ -318,51 +318,8 @@ public sealed class SavePatchPackService : ISavePatchPackService
             return errors;
         }
 
-        if (string.IsNullOrWhiteSpace(pack.Metadata.SchemaVersion))
-        {
-            errors.Add("metadata.schemaVersion is required");
-        }
-        else if (!string.Equals(pack.Metadata.SchemaVersion, "1.0", StringComparison.Ordinal))
-        {
-            errors.Add("metadata.schemaVersion must be '1.0'");
-        }
-
-        if (string.IsNullOrWhiteSpace(pack.Metadata.ProfileId))
-        {
-            errors.Add("metadata.profileId is required");
-        }
-
-        if (string.IsNullOrWhiteSpace(pack.Metadata.SchemaId))
-        {
-            errors.Add("metadata.schemaId is required");
-        }
-
-        if (string.IsNullOrWhiteSpace(pack.Metadata.SourceHash))
-        {
-            errors.Add("metadata.sourceHash is required");
-        }
-
-        if (pack.Metadata.CreatedAtUtc == default)
-        {
-            errors.Add("metadata.createdAtUtc is required");
-        }
-
-        if (pack.Compatibility is null)
-        {
-            errors.Add("compatibility is required");
-        }
-        else
-        {
-            if (string.IsNullOrWhiteSpace(pack.Compatibility.RequiredSchemaId))
-            {
-                errors.Add("compatibility.requiredSchemaId is required");
-            }
-
-            if (pack.Compatibility.AllowedProfileIds is null || pack.Compatibility.AllowedProfileIds.Count == 0)
-            {
-                errors.Add("compatibility.allowedProfileIds must contain at least one value");
-            }
-        }
+        ValidateMetadata(pack.Metadata, errors);
+        ValidateCompatibility(pack.Compatibility, errors);
 
         if (pack.Operations is null)
         {
@@ -370,9 +327,120 @@ public sealed class SavePatchPackService : ISavePatchPackService
             return errors;
         }
 
-        for (var i = 0; i < pack.Operations.Count; i++)
+        ValidateOperations(pack.Operations, errors);
+
+        return errors;
+    }
+
+    private static IReadOnlyList<string> ValidateRawPackContract(JsonElement root)
+    {
+        var errors = new List<string>();
+        if (!TryGetPropertyIgnoreCase(root, "metadata", out var metadata) || metadata.ValueKind != JsonValueKind.Object)
         {
-            var operation = pack.Operations[i];
+            errors.Add("metadata is required");
+            return errors;
+        }
+
+        if (!TryGetPropertyIgnoreCase(metadata, "schemaVersion", out _))
+        {
+            errors.Add("metadata.schemaVersion is required");
+        }
+
+        if (!TryGetPropertyIgnoreCase(metadata, "createdAtUtc", out _))
+        {
+            errors.Add("metadata.createdAtUtc is required");
+        }
+
+        if (!TryGetPropertyIgnoreCase(root, "operations", out var operations) || operations.ValueKind != JsonValueKind.Array)
+        {
+            errors.Add("operations is required");
+            return errors;
+        }
+
+        foreach (var (operation, index) in operations.EnumerateArray().Select((operation, index) => (operation, index)))
+        {
+            ValidateRawOperation(operation, index, errors);
+        }
+
+        return errors;
+    }
+
+    private static bool TryGetPropertyIgnoreCase(JsonElement element, string propertyName, out JsonElement value)
+    {
+        if (element.ValueKind != JsonValueKind.Object)
+        {
+            value = default;
+            return false;
+        }
+
+        var property = element.EnumerateObject()
+            .FirstOrDefault(candidate => string.Equals(candidate.Name, propertyName, StringComparison.OrdinalIgnoreCase));
+        if (property.Equals(default(JsonProperty)))
+        {
+            value = default;
+            return false;
+        }
+
+        value = property.Value;
+        return true;
+    }
+
+    private static void ValidateMetadata(SavePatchMetadata metadata, ICollection<string> errors)
+    {
+        if (string.IsNullOrWhiteSpace(metadata.SchemaVersion))
+        {
+            errors.Add("metadata.schemaVersion is required");
+        }
+        else if (!string.Equals(metadata.SchemaVersion, "1.0", StringComparison.Ordinal))
+        {
+            errors.Add("metadata.schemaVersion must be '1.0'");
+        }
+
+        if (string.IsNullOrWhiteSpace(metadata.ProfileId))
+        {
+            errors.Add("metadata.profileId is required");
+        }
+
+        if (string.IsNullOrWhiteSpace(metadata.SchemaId))
+        {
+            errors.Add("metadata.schemaId is required");
+        }
+
+        if (string.IsNullOrWhiteSpace(metadata.SourceHash))
+        {
+            errors.Add("metadata.sourceHash is required");
+        }
+
+        if (metadata.CreatedAtUtc == default)
+        {
+            errors.Add("metadata.createdAtUtc is required");
+        }
+    }
+
+    private static void ValidateCompatibility(SavePatchCompatibility? compatibility, ICollection<string> errors)
+    {
+        if (compatibility is null)
+        {
+            errors.Add("compatibility is required");
+            return;
+        }
+
+        if (string.IsNullOrWhiteSpace(compatibility.RequiredSchemaId))
+        {
+            errors.Add("compatibility.requiredSchemaId is required");
+        }
+
+        if (compatibility.AllowedProfileIds is null || compatibility.AllowedProfileIds.Count == 0)
+        {
+            errors.Add("compatibility.allowedProfileIds must contain at least one value");
+        }
+    }
+
+    private static void ValidateOperations(IReadOnlyList<SavePatchOperation> operations, ICollection<string> errors)
+    {
+        for (var i = 0; i < operations.Count; i++)
+        {
+            var operation = operations[i];
             if (string.IsNullOrWhiteSpace(operation.FieldPath))
             {
                 errors.Add($"operations[{i}].fieldPath is required");
@@ -403,80 +471,28 @@ public sealed class SavePatchPackService : ISavePatchPackService
                 errors.Add($"operations[{i}].newValue is required");
             }
         }
-
-        return errors;
     }
 
-    private static IReadOnlyList<string> ValidateRawPackContract(JsonElement root)
+    private static void ValidateRawOperation(JsonElement operation, int index, ICollection<string> errors)
     {
-        var errors = new List<string>();
-        if (!TryGetPropertyIgnoreCase(root, "metadata", out var metadata) || metadata.ValueKind != JsonValueKind.Object)
+        if (operation.ValueKind != JsonValueKind.Object)
         {
-            errors.Add("metadata is required");
-            return errors;
+            errors.Add($"operations[{index}] must be an object");
+            return;
         }
 
-        if (!TryGetPropertyIgnoreCase(metadata, "schemaVersion", out _))
+        foreach (var field in new[] { "kind", "fieldPath", "fieldId", "valueType", "newValue", "offset" })
         {
-            errors.Add("metadata.schemaVersion is required");
-        }
-
-        if (!TryGetPropertyIgnoreCase(metadata, "createdAtUtc", out _))
-        {
-            errors.Add("metadata.createdAtUtc is required");
-        }
-
-        if (!TryGetPropertyIgnoreCase(root, "operations", out var operations) || operations.ValueKind != JsonValueKind.Array)
-        {
-            errors.Add("operations is required");
-            return errors;
-        }
-
-        var index = 0;
-        foreach (var operation in operations.EnumerateArray())
-        {
-            if (operation.ValueKind != JsonValueKind.Object)
+            if (!TryGetPropertyIgnoreCase(operation, field, out _))
             {
-                errors.Add($"operations[{index}] must be an object");
-                index++;
-                continue;
-            }
-
-            foreach (var field in new[] { "kind", "fieldPath", "fieldId", "valueType", "newValue", "offset" })
-            {
-                if (!TryGetPropertyIgnoreCase(operation, field, out _))
-                {
-                    errors.Add($"operations[{index}].{field} is required");
-                }
-            }
-
-            if (TryGetPropertyIgnoreCase(operation, "newValue", out var newValue) &&
-                newValue.ValueKind == JsonValueKind.Null)
-            {
-                errors.Add($"operations[{index}].newValue cannot be null");
-            }
-
-            index++;
-        }
-
-        return errors;
-    }
-
-    private static bool TryGetPropertyIgnoreCase(JsonElement element, string propertyName, out JsonElement value)
-    {
-        if (element.ValueKind == JsonValueKind.Object)
-        {
-            foreach (var property in element.EnumerateObject())
-            {
-                if (string.Equals(property.Name, propertyName, StringComparison.OrdinalIgnoreCase))
-                {
-                    value = property.Value;
-                    return true;
-                }
+                errors.Add($"operations[{index}].{field} is required");
             }
         }
 
-        value = default;
-        return false;
+        if (TryGetPropertyIgnoreCase(operation, "newValue", out var newValue) &&
+            newValue.ValueKind == JsonValueKind.Null)
+        {
+            errors.Add($"operations[{index}].newValue cannot be null");
+        }
     }
 }

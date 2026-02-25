@@ -5,6 +5,8 @@ namespace SwfocTrainer.Runtime.Scanning;
 
 internal static class ProcessMemoryScanner
 {
+    private readonly record struct FloatScanCriteria(float Value, float Tolerance);
+
     public static IReadOnlyList<nint> ScanInt32(
         int processId,
         int value,
@@ -17,67 +19,13 @@ internal static class ProcessMemoryScanner
             return Array.Empty<nint>();
         }
 
-        var handle = OpenReadHandle(processId);
-
-        if (handle == nint.Zero)
-        {
-            throw new InvalidOperationException($"Failed to open process {processId} for scan. Win32={Marshal.GetLastWin32Error()}");
-        }
-
-        try
-        {
-            var results = new List<nint>(capacity: Math.Min(maxResults, 256));
-            var mbiSize = (nuint)Marshal.SizeOf<NativeMethods.MemoryBasicInformation>();
-
-            var address = nint.Zero;
-            var lastAddress = nint.MinValue;
-
-            while (results.Count < maxResults)
-            {
-                cancellationToken.ThrowIfCancellationRequested();
-
-                if (address == lastAddress)
-                {
-                    // Avoid infinite loops if something goes wrong with address advancement.
-                    break;
-                }
-                lastAddress = address;
-
-                var queried = NativeMethods.VirtualQueryEx(handle, address, out var mbi, mbiSize);
-                if (queried == 0)
-                {
-                    break;
-                }
-
-                var regionSize = (long)mbi.RegionSize;
-                if (regionSize <= 0)
-                {
-                    // Ensure we always make forward progress.
-                    address += 0x1000;
-                    continue;
-                }
-
-                if (mbi.State == NativeMethods.MemCommit && IsReadable(mbi.Protect) && (!writableOnly || IsWritable(mbi.Protect)))
-                {
-                    ScanRegion(handle, mbi.BaseAddress, regionSize, value, results, maxResults, cancellationToken);
-                }
-
-                try
-                {
-                    address = mbi.BaseAddress + (nint)regionSize;
-                }
-                catch
-                {
-                    break;
-                }
-            }
-
-            return results;
-        }
-        finally
-        {
-            NativeMethods.CloseHandle(handle);
-        }
+        return ScanReadableRegions(
+            processId,
+            writableOnly,
+            maxResults,
+            cancellationToken,
+            (handle, regionBase, regionSize, results, max, token) =>
+                ScanRegion(handle, regionBase, regionSize, value, results, max, token));
     }
 
     public static IReadOnlyList<nint> ScanFloatApprox(
@@ -98,31 +46,161 @@ internal static class ProcessMemoryScanner
             tolerance = 0;
         }
 
-        var handle = OpenReadHandle(processId);
+        var criteria = new FloatScanCriteria(value, tolerance);
+        return ScanReadableRegions(
+            processId,
+            writableOnly,
+            maxResults,
+            cancellationToken,
+            (handle, regionBase, regionSize, results, max, token) =>
+                ScanRegionFloatApprox(handle, regionBase, regionSize, criteria, results, max, token));
+    }
 
+    private static void ScanRegion(
+        nint handle,
+        nint regionBase,
+        long regionSize,
+        int value,
+        List<nint> results,
+        int maxResults,
+        CancellationToken cancellationToken)
+    {
+        ScanRegionChunks(
+            handle,
+            regionBase,
+            regionSize,
+            results,
+            maxResults,
+            cancellationToken,
+            (buffer, read, chunkBase) =>
+            {
+                for (var i = 0; i <= read - 4 && results.Count < maxResults; i++)
+                {
+                    if (BitConverter.ToInt32(buffer, i) == value)
+                    {
+                        results.Add(chunkBase + i);
+                    }
+                }
+            });
+    }
+
+    private static void ScanRegionFloatApprox(
+        nint handle,
+        nint regionBase,
+        long regionSize,
+        FloatScanCriteria criteria,
+        List<nint> results,
+        int maxResults,
+        CancellationToken cancellationToken)
+    {
+        ScanRegionChunks(
+            handle,
+            regionBase,
+            regionSize,
+            results,
+            maxResults,
+            cancellationToken,
+            (buffer, read, chunkBase) =>
+            {
+                for (var i = 0; i <= read - 4 && results.Count < maxResults; i += 4)
+                {
+                    var candidate = BitConverter.ToSingle(buffer, i);
+                    if (!float.IsFinite(candidate))
+                    {
+                        continue;
+                    }
+
+                    if (MathF.Abs(candidate - criteria.Value) <= criteria.Tolerance)
+                    {
+                        results.Add(chunkBase + i);
+                    }
+                }
+            });
+    }
+
+    private static void ScanRegionChunks(
+        nint handle,
+        nint regionBase,
+        long regionSize,
+        List<nint> results,
+        int maxResults,
+        CancellationToken cancellationToken,
+        Action<byte[], int, nint> chunkScanner)
+    {
+        const int chunkSize = 64 * 1024;
+        var buffer = new byte[chunkSize];
+
+        for (long offset = 0; offset < regionSize && results.Count < maxResults; offset += chunkSize)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            var toRead = (int)Math.Min(chunkSize, regionSize - offset);
+            if (toRead <= 0)
+            {
+                break;
+            }
+
+            buffer = EnsureBufferSize(buffer, toRead);
+            if (!TryReadChunk(handle, regionBase, offset, buffer, toRead, out var read))
+            {
+                continue;
+            }
+
+            chunkScanner(buffer, read, regionBase + (nint)offset);
+        }
+    }
+
+    private static byte[] EnsureBufferSize(byte[] buffer, int requiredLength)
+    {
+        return buffer.Length == requiredLength ? buffer : new byte[requiredLength];
+    }
+
+    private static bool TryReadChunk(
+        nint handle,
+        nint regionBase,
+        long offset,
+        byte[] buffer,
+        int toRead,
+        out int read)
+    {
+        read = 0;
+        if (!NativeMethods.ReadProcessMemory(handle, regionBase + (nint)offset, buffer, toRead, out var readRaw))
+        {
+            return false;
+        }
+
+        read = (int)readRaw;
+        return read >= 4;
+    }
+
+    private static IReadOnlyList<nint> ScanReadableRegions(
+        int processId,
+        bool writableOnly,
+        int maxResults,
+        CancellationToken cancellationToken,
+        Action<nint, nint, long, List<nint>, int, CancellationToken> regionScanner)
+    {
+        var handle = OpenReadHandle(processId);
         if (handle == nint.Zero)
         {
-            throw new InvalidOperationException($"Failed to open process {processId} for float scan. Win32={Marshal.GetLastWin32Error()}");
+            throw new InvalidOperationException($"Failed to open process {processId} for scan. Win32={Marshal.GetLastWin32Error()}");
         }
 
         try
         {
             var results = new List<nint>(capacity: Math.Min(maxResults, 256));
             var mbiSize = (nuint)Marshal.SizeOf<NativeMethods.MemoryBasicInformation>();
-
             var address = nint.Zero;
             var lastAddress = nint.MinValue;
 
             while (results.Count < maxResults)
             {
                 cancellationToken.ThrowIfCancellationRequested();
-
                 if (address == lastAddress)
                 {
                     break;
                 }
-                lastAddress = address;
 
+                lastAddress = address;
                 var queried = NativeMethods.VirtualQueryEx(handle, address, out var mbi, mbiSize);
                 if (queried == 0)
                 {
@@ -136,9 +214,11 @@ internal static class ProcessMemoryScanner
                     continue;
                 }
 
-                if (mbi.State == NativeMethods.MemCommit && IsReadable(mbi.Protect) && (!writableOnly || IsWritable(mbi.Protect)))
+                if (mbi.State == NativeMethods.MemCommit &&
+                    IsReadable(mbi.Protect) &&
+                    (!writableOnly || IsWritable(mbi.Protect)))
                 {
-                    ScanRegionFloatApprox(handle, mbi.BaseAddress, regionSize, value, tolerance, results, maxResults, cancellationToken);
+                    regionScanner(handle, mbi.BaseAddress, regionSize, results, maxResults, cancellationToken);
                 }
 
                 try
@@ -156,115 +236,6 @@ internal static class ProcessMemoryScanner
         finally
         {
             NativeMethods.CloseHandle(handle);
-        }
-    }
-
-    private static void ScanRegion(
-        nint handle,
-        nint regionBase,
-        long regionSize,
-        int value,
-        List<nint> results,
-        int maxResults,
-        CancellationToken cancellationToken)
-    {
-        const int chunkSize = 64 * 1024;
-        var buffer = new byte[chunkSize];
-
-        for (long offset = 0; offset < regionSize && results.Count < maxResults; offset += chunkSize)
-        {
-            cancellationToken.ThrowIfCancellationRequested();
-
-            var toReadLong = Math.Min(chunkSize, regionSize - offset);
-            if (toReadLong <= 0)
-            {
-                break;
-            }
-
-            var toRead = (int)toReadLong;
-
-            // Ensure buffer is large enough for last partial read.
-            if (buffer.Length != toRead)
-            {
-                buffer = new byte[toRead];
-            }
-
-            if (!NativeMethods.ReadProcessMemory(handle, regionBase + (nint)offset, buffer, toRead, out var readRaw))
-            {
-                continue;
-            }
-
-            var read = (int)readRaw;
-            if (read < 4)
-            {
-                continue;
-            }
-
-            // Scan unaligned; it's slower but more reliable.
-            for (var i = 0; i <= read - 4 && results.Count < maxResults; i++)
-            {
-                if (BitConverter.ToInt32(buffer, i) == value)
-                {
-                    results.Add(regionBase + (nint)offset + i);
-                }
-            }
-        }
-    }
-
-    private static void ScanRegionFloatApprox(
-        nint handle,
-        nint regionBase,
-        long regionSize,
-        float value,
-        float tolerance,
-        List<nint> results,
-        int maxResults,
-        CancellationToken cancellationToken)
-    {
-        const int chunkSize = 64 * 1024;
-        var buffer = new byte[chunkSize];
-
-        for (long offset = 0; offset < regionSize && results.Count < maxResults; offset += chunkSize)
-        {
-            cancellationToken.ThrowIfCancellationRequested();
-
-            var toReadLong = Math.Min(chunkSize, regionSize - offset);
-            if (toReadLong <= 0)
-            {
-                break;
-            }
-
-            var toRead = (int)toReadLong;
-            if (buffer.Length != toRead)
-            {
-                buffer = new byte[toRead];
-            }
-
-            if (!NativeMethods.ReadProcessMemory(handle, regionBase + (nint)offset, buffer, toRead, out var readRaw))
-            {
-                continue;
-            }
-
-            var read = (int)readRaw;
-            if (read < 4)
-            {
-                continue;
-            }
-
-            // Step by 4 bytes for float scanning. Fast and sufficient for typical game float fields.
-            for (var i = 0; i <= read - 4 && results.Count < maxResults; i += 4)
-            {
-                var candidate = BitConverter.ToSingle(buffer, i);
-                if (!float.IsFinite(candidate))
-                {
-                    continue;
-                }
-
-                if (MathF.Abs(candidate - value) <= tolerance)
-                {
-                    results.Add(regionBase + (nint)offset + i);
-                }
-            }
         }
     }
 

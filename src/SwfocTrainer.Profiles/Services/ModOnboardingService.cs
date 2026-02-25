@@ -152,25 +152,14 @@ public sealed class ModOnboardingService : IModOnboardingService
 
     private static IReadOnlyList<string> InferWorkshopIds(IReadOnlyList<ModLaunchSample> samples)
     {
-        var ids = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
-        foreach (var sample in samples)
-        {
-            if (string.IsNullOrWhiteSpace(sample.CommandLine))
-            {
-                continue;
-            }
-
-            foreach (Match match in SteamModRegex.Matches(sample.CommandLine))
-            {
-                var id = match.Groups["id"].Value;
-                if (!string.IsNullOrWhiteSpace(id))
-                {
-                    ids.Add(id);
-                }
-            }
-        }
-
-        return ids.OrderBy(x => x, StringComparer.OrdinalIgnoreCase).ToArray();
+        return samples
+            .Where(sample => !string.IsNullOrWhiteSpace(sample.CommandLine))
+            .SelectMany(sample => SteamModRegex.Matches(sample.CommandLine!)
+                .Select(match => match.Groups["id"].Value))
+            .Where(id => !string.IsNullOrWhiteSpace(id))
+            .Distinct(StringComparer.OrdinalIgnoreCase)
+            .OrderBy(id => id, StringComparer.OrdinalIgnoreCase)
+            .ToArray();
     }
 
     private static IReadOnlyList<string> InferPathHints(IReadOnlyList<ModLaunchSample> samples)
@@ -179,32 +168,7 @@ public sealed class ModOnboardingService : IModOnboardingService
 
         foreach (var sample in samples)
         {
-            var inputs = new List<string>();
-            if (!string.IsNullOrWhiteSpace(sample.ProcessPath))
-            {
-                inputs.Add(sample.ProcessPath);
-            }
-
-            if (!string.IsNullOrWhiteSpace(sample.CommandLine))
-            {
-                inputs.Add(sample.CommandLine);
-
-                foreach (Match match in ModPathRegex.Matches(sample.CommandLine))
-                {
-                    var raw = match.Groups["path"].Value.Trim();
-                    if (raw.StartsWith('"') && raw.EndsWith('"') && raw.Length > 1)
-                    {
-                        raw = raw[1..^1];
-                    }
-
-                    if (!string.IsNullOrWhiteSpace(raw))
-                    {
-                        inputs.Add(raw);
-                    }
-                }
-            }
-
-            foreach (var input in inputs)
+            foreach (var input in CollectSampleHintInputs(sample))
             {
                 foreach (var token in TokenizeHintInput(input))
                 {
@@ -213,7 +177,7 @@ public sealed class ModOnboardingService : IModOnboardingService
                         continue;
                     }
 
-                    if (token is "steamapps" or "workshop" or "content" or "corruption" or "swfoc" or "starwarsg" or "language" or "english")
+                    if (IsNoiseHintToken(token))
                     {
                         continue;
                     }
@@ -260,42 +224,84 @@ public sealed class ModOnboardingService : IModOnboardingService
             profileId
         };
 
-        var displayAlias = new string(displayName
-            .Trim()
-            .ToLowerInvariant()
-            .Select(ch => char.IsLetterOrDigit(ch) ? ch : '_')
-            .ToArray())
-            .Trim('_');
-
-        if (!string.IsNullOrWhiteSpace(displayAlias))
+        var displayAlias = NormalizeAlias(displayName);
+        if (displayAlias is not null)
         {
             aliases.Add(displayAlias);
         }
 
         if (userAliases is not null)
         {
-            foreach (var alias in userAliases)
+            foreach (var normalized in userAliases
+                         .Select(NormalizeAlias)
+                         .Where(static value => !string.IsNullOrWhiteSpace(value))
+                         .Select(static value => value!))
             {
-                if (string.IsNullOrWhiteSpace(alias))
-                {
-                    continue;
-                }
-
-                var normalized = new string(alias
-                    .Trim()
-                    .ToLowerInvariant()
-                    .Select(ch => char.IsLetterOrDigit(ch) ? ch : '_')
-                    .ToArray())
-                    .Trim('_');
-
-                if (!string.IsNullOrWhiteSpace(normalized))
-                {
-                    aliases.Add(normalized);
-                }
+                aliases.Add(normalized);
             }
         }
 
         return aliases.OrderBy(x => x, StringComparer.OrdinalIgnoreCase).ToArray();
+    }
+
+    private static IEnumerable<string> CollectSampleHintInputs(ModLaunchSample sample)
+    {
+        if (!string.IsNullOrWhiteSpace(sample.ProcessPath))
+        {
+            yield return sample.ProcessPath;
+        }
+
+        if (string.IsNullOrWhiteSpace(sample.CommandLine))
+        {
+            yield break;
+        }
+
+        yield return sample.CommandLine;
+        foreach (var path in ExtractModPathValues(sample.CommandLine))
+        {
+            yield return path;
+        }
+    }
+
+    private static IEnumerable<string> ExtractModPathValues(string commandLine)
+    {
+        foreach (var match in ModPathRegex.Matches(commandLine).Select(match => match.Groups["path"].Value.Trim()))
+        {
+            if (string.IsNullOrWhiteSpace(match))
+            {
+                continue;
+            }
+
+            if (match.StartsWith('"') && match.EndsWith('"') && match.Length > 1)
+            {
+                yield return match[1..^1];
+                continue;
+            }
+
+            yield return match;
+        }
+    }
+
+    private static bool IsNoiseHintToken(string token)
+    {
+        return token is "steamapps" or "workshop" or "content" or "corruption" or "swfoc" or "starwarsg" or "language" or "english";
+    }
+
+    private static string? NormalizeAlias(string value)
+    {
+        if (string.IsNullOrWhiteSpace(value))
+        {
+            return null;
+        }
+
+        var normalized = new string(value
+            .Trim()
+            .ToLowerInvariant()
+            .Select(ch => char.IsLetterOrDigit(ch) ? ch : '_')
+            .ToArray())
+            .Trim('_');
+
+        return string.IsNullOrWhiteSpace(normalized) ? null : normalized;
     }
 
     public Task<ModOnboardingResult> ScaffoldDraftProfileAsync(ModOnboardingRequest request)

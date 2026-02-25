@@ -120,15 +120,8 @@ public sealed class LaunchContextResolver : ILaunchContextResolver
             return false;
         }
 
-        foreach (var hint in BuildHints(profile))
-        {
-            if (modPathNormalized.Contains(hint, StringComparison.OrdinalIgnoreCase))
-            {
-                return true;
-            }
-        }
-
-        return false;
+        return BuildHints(profile)
+            .Any(hint => modPathNormalized.Contains(hint, StringComparison.OrdinalIgnoreCase));
     }
 
     private static IEnumerable<string> BuildHints(TrainerProfile profile)
