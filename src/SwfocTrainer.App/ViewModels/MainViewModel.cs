@@ -23,30 +23,6 @@ namespace SwfocTrainer.App.ViewModels;
 public sealed class MainViewModel : INotifyPropertyChanged
 {
     private const string UniversalProfileId = "universal_auto";
-    private const string DefaultBaseSwfocProfileId = "base_swfoc";
-    private const string UnknownReason = "unknown";
-    private const string CompactFloatFormat = "0.###";
-    private const string ActionIdReadSymbol = "read_symbol";
-    private const string ActionIdSetCredits = "set_credits";
-    private const string ActionIdFreezeTimer = "freeze_timer";
-    private const string ActionIdToggleFogReveal = "toggle_fog_reveal";
-    private const string ActionIdToggleAi = "toggle_ai";
-    private const string ActionIdSetInstantBuildMultiplier = "set_instant_build_multiplier";
-    private const string ActionIdSetUnitCap = "set_unit_cap";
-    private const string ActionIdFreezeSymbol = "freeze_symbol";
-    private const string ActionIdUnfreezeSymbol = "unfreeze_symbol";
-    private const string ActionIdToggleTacticalGodMode = "toggle_tactical_god_mode";
-    private const string ActionIdToggleTacticalOneHitMode = "toggle_tactical_one_hit_mode";
-    private const string SymbolCredits = "credits";
-    private const string SymbolGameTimerFreeze = "game_timer_freeze";
-    private const string SymbolFogReveal = "fog_reveal";
-    private const string SymbolAiEnabled = "ai_enabled";
-    private const string SymbolTacticalGodMode = "tactical_god_mode";
-    private const string SymbolTacticalOneHitMode = "tactical_one_hit_mode";
-    private const string PayloadKeySymbol = "symbol";
-    private const string PayloadKeyIntValue = "intValue";
-    private const string PayloadKeyBoolValue = "boolValue";
-    private const string PayloadKeyEnable = "enable";
 
     private readonly IProfileRepository _profiles;
     private readonly IProcessLocator _processLocator;
@@ -99,7 +75,7 @@ public sealed class MainViewModel : INotifyPropertyChanged
     private string _spawnDelayMs = "125";
     private bool _spawnStopOnFailure = true;
     private bool _isStrictPatchApply = true;
-    private string _onboardingBaseProfileId = DefaultBaseSwfocProfileId;
+    private string _onboardingBaseProfileId = "base_swfoc";
     private string _onboardingDraftProfileId = "custom_my_mod";
     private string _onboardingDisplayName = "Custom Mod Draft";
     private string _onboardingNamespaceRoot = "custom";
@@ -136,12 +112,12 @@ public sealed class MainViewModel : INotifyPropertyChanged
     private static readonly IReadOnlyDictionary<string, string> DefaultSymbolByActionId =
         new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
         {
-            [ActionIdReadSymbol] = SymbolCredits,
-            [ActionIdSetCredits] = SymbolCredits,
-            [ActionIdFreezeTimer] = SymbolGameTimerFreeze,
-            [ActionIdToggleFogReveal] = SymbolFogReveal,
-            [ActionIdToggleAi] = SymbolAiEnabled,
-            [ActionIdSetInstantBuildMultiplier] = "instant_build",
+            ["read_symbol"] = "credits",
+            ["set_credits"] = "credits",
+            ["freeze_timer"] = "game_timer_freeze",
+            ["toggle_fog_reveal"] = "fog_reveal",
+            ["toggle_ai"] = "ai_enabled",
+            ["set_instant_build_multiplier"] = "instant_build",
 
             ["set_selected_hp"] = "selected_hp",
             ["set_selected_shield"] = "selected_shield",
@@ -154,11 +130,11 @@ public sealed class MainViewModel : INotifyPropertyChanged
             ["set_planet_owner"] = "planet_owner",
             ["set_hero_respawn_timer"] = "hero_respawn_timer",
 
-            [ActionIdToggleTacticalGodMode] = SymbolTacticalGodMode,
-            [ActionIdToggleTacticalOneHitMode] = SymbolTacticalOneHitMode,
+            ["toggle_tactical_god_mode"] = "tactical_god_mode",
+            ["toggle_tactical_one_hit_mode"] = "tactical_one_hit_mode",
             ["set_game_speed"] = "game_speed",
-            [ActionIdFreezeSymbol] = SymbolCredits,
-            [ActionIdUnfreezeSymbol] = SymbolCredits,
+            ["freeze_symbol"] = "credits",
+            ["unfreeze_symbol"] = "credits",
         };
 
     private static readonly IReadOnlyDictionary<string, string> DefaultHelperHookByActionId =
@@ -169,102 +145,214 @@ public sealed class MainViewModel : INotifyPropertyChanged
             ["toggle_roe_respawn_helper"] = "roe_respawn_bridge",
         };
 
-    public MainViewModel(MainViewModelDependencies dependencies)
+    public MainViewModel(
+        IProfileRepository profiles,
+        IProcessLocator processLocator,
+        ILaunchContextResolver launchContextResolver,
+        IProfileVariantResolver profileVariantResolver,
+        IRuntimeAdapter runtime,
+        TrainerOrchestrator orchestrator,
+        ICatalogService catalog,
+        ISaveCodec saveCodec,
+        ISavePatchPackService savePatchPackService,
+        ISavePatchApplyService savePatchApplyService,
+        IHelperModService helper,
+        IProfileUpdateService updates,
+        IModOnboardingService modOnboarding,
+        IModCalibrationService modCalibration,
+        ISupportBundleService supportBundles,
+        ITelemetrySnapshotService telemetry,
+        IValueFreezeService freezeService,
+        IActionReliabilityService actionReliability,
+        ISelectedUnitTransactionService selectedUnitTransactions,
+        ISpawnPresetService spawnPresets)
     {
-        _profiles = dependencies.Profiles;
-        _processLocator = dependencies.ProcessLocator;
-        _launchContextResolver = dependencies.LaunchContextResolver;
-        _profileVariantResolver = dependencies.ProfileVariantResolver;
-        _runtime = dependencies.Runtime;
-        _orchestrator = dependencies.Orchestrator;
-        _catalog = dependencies.Catalog;
-        _saveCodec = dependencies.SaveCodec;
-        _savePatchPackService = dependencies.SavePatchPackService;
-        _savePatchApplyService = dependencies.SavePatchApplyService;
-        _helper = dependencies.Helper;
-        _updates = dependencies.Updates;
-        _modOnboarding = dependencies.ModOnboarding;
-        _modCalibration = dependencies.ModCalibration;
-        _supportBundles = dependencies.SupportBundles;
-        _telemetry = dependencies.Telemetry;
-        _freezeService = dependencies.FreezeService;
-        _actionReliability = dependencies.ActionReliability;
-        _selectedUnitTransactions = dependencies.SelectedUnitTransactions;
-        _spawnPresets = dependencies.SpawnPresets;
+        (_profiles, _processLocator, _launchContextResolver, _profileVariantResolver, _runtime, _orchestrator, _catalog, _saveCodec,
+            _savePatchPackService, _savePatchApplyService, _helper, _updates, _modOnboarding, _modCalibration, _supportBundles, _telemetry,
+            _freezeService, _actionReliability, _selectedUnitTransactions, _spawnPresets) =
+            (profiles, processLocator, launchContextResolver, profileVariantResolver, runtime, orchestrator, catalog, saveCodec,
+                savePatchPackService, savePatchApplyService, helper, updates, modOnboarding, modCalibration, supportBundles, telemetry,
+                freezeService, actionReliability, selectedUnitTransactions, spawnPresets);
 
-        Profiles = new ObservableCollection<string>();
-        Actions = new ObservableCollection<string>();
-        CatalogSummary = new ObservableCollection<string>();
-        Updates = new ObservableCollection<string>();
-        SaveDiffPreview = new ObservableCollection<string>();
-        Hotkeys = new ObservableCollection<HotkeyBindingItem>();
-        SaveFields = new ObservableCollection<SaveFieldViewItem>();
-        FilteredSaveFields = new ObservableCollection<SaveFieldViewItem>();
-        SavePatchOperations = new ObservableCollection<SavePatchOperationViewItem>();
-        SavePatchCompatibility = new ObservableCollection<SavePatchCompatibilityViewItem>();
-        ActionReliability = new ObservableCollection<ActionReliabilityViewItem>();
-        SelectedUnitTransactions = new ObservableCollection<SelectedUnitTransactionViewItem>();
-        SpawnPresets = new ObservableCollection<SpawnPresetViewItem>();
-        LiveOpsDiagnostics = new ObservableCollection<string>();
-        ModCompatibilityRows = new ObservableCollection<string>();
+        (Profiles, Actions, CatalogSummary, Updates, SaveDiffPreview, Hotkeys, SaveFields, FilteredSaveFields,
+            SavePatchOperations, SavePatchCompatibility, ActionReliability, SelectedUnitTransactions, SpawnPresets, LiveOpsDiagnostics,
+            ModCompatibilityRows, ActiveFreezes) = CreateCollections();
 
-        LoadProfilesCommand = new AsyncCommand(LoadProfilesAsync);
-        AttachCommand = new AsyncCommand(AttachAsync, () => !string.IsNullOrWhiteSpace(SelectedProfileId));
-        DetachCommand = new AsyncCommand(DetachAsync, () => _runtime.IsAttached);
-        LoadActionsCommand = new AsyncCommand(LoadActionsAsync, () => !string.IsNullOrWhiteSpace(SelectedProfileId));
-        ExecuteActionCommand = new AsyncCommand(ExecuteActionAsync, () => _runtime.IsAttached && !string.IsNullOrWhiteSpace(SelectedActionId));
-        LoadCatalogCommand = new AsyncCommand(LoadCatalogAsync, () => !string.IsNullOrWhiteSpace(SelectedProfileId));
-        DeployHelperCommand = new AsyncCommand(DeployHelperAsync, () => !string.IsNullOrWhiteSpace(SelectedProfileId));
-        VerifyHelperCommand = new AsyncCommand(VerifyHelperAsync, () => !string.IsNullOrWhiteSpace(SelectedProfileId));
-        CheckUpdatesCommand = new AsyncCommand(CheckUpdatesAsync);
-        InstallUpdateCommand = new AsyncCommand(InstallUpdateAsync, () => !string.IsNullOrWhiteSpace(SelectedProfileId));
-        RollbackProfileUpdateCommand = new AsyncCommand(RollbackProfileUpdateAsync, () => !string.IsNullOrWhiteSpace(SelectedProfileId));
-        BrowseSaveCommand = new AsyncCommand(BrowseSaveAsync);
-        LoadSaveCommand = new AsyncCommand(LoadSaveAsync, () => !string.IsNullOrWhiteSpace(SavePath) && !string.IsNullOrWhiteSpace(SelectedProfileId));
-        EditSaveCommand = new AsyncCommand(EditSaveAsync, () => _loadedSave is not null && !string.IsNullOrWhiteSpace(SaveNodePath));
-        ValidateSaveCommand = new AsyncCommand(ValidateSaveAsync, () => _loadedSave is not null);
-        RefreshDiffCommand = new AsyncCommand(RefreshDiffAsync, () => _loadedSave is not null && _loadedSaveOriginal is not null);
-        WriteSaveCommand = new AsyncCommand(WriteSaveAsync, () => _loadedSave is not null);
-        BrowsePatchPackCommand = new AsyncCommand(BrowsePatchPackAsync);
-        ExportPatchPackCommand = new AsyncCommand(ExportPatchPackAsync, () => _loadedSave is not null && _loadedSaveOriginal is not null && !string.IsNullOrWhiteSpace(SelectedProfileId));
-        LoadPatchPackCommand = new AsyncCommand(LoadPatchPackAsync, () => !string.IsNullOrWhiteSpace(SavePatchPackPath));
-        PreviewPatchPackCommand = new AsyncCommand(PreviewPatchPackAsync, () => _loadedSave is not null && _loadedPatchPack is not null && !string.IsNullOrWhiteSpace(SelectedProfileId));
-        ApplyPatchPackCommand = new AsyncCommand(ApplyPatchPackAsync, () => _loadedPatchPack is not null && !string.IsNullOrWhiteSpace(SavePath) && !string.IsNullOrWhiteSpace(SelectedProfileId));
-        RestoreBackupCommand = new AsyncCommand(RestoreBackupAsync, () => !string.IsNullOrWhiteSpace(SavePath));
-        LoadHotkeysCommand = new AsyncCommand(LoadHotkeysAsync);
-        SaveHotkeysCommand = new AsyncCommand(SaveHotkeysAsync);
-        AddHotkeyCommand = new AsyncCommand(AddHotkeyAsync);
-        RemoveHotkeyCommand = new AsyncCommand(RemoveHotkeyAsync, () => SelectedHotkey is not null);
-        RefreshActionReliabilityCommand = new AsyncCommand(RefreshActionReliabilityAsync, () => _runtime.IsAttached && !string.IsNullOrWhiteSpace(SelectedProfileId));
-        CaptureSelectedUnitBaselineCommand = new AsyncCommand(CaptureSelectedUnitBaselineAsync, () => _runtime.IsAttached);
-        ApplySelectedUnitDraftCommand = new AsyncCommand(ApplySelectedUnitDraftAsync, () => _runtime.IsAttached);
-        RevertSelectedUnitTransactionCommand = new AsyncCommand(RevertSelectedUnitTransactionAsync, () => _runtime.IsAttached);
-        RestoreSelectedUnitBaselineCommand = new AsyncCommand(RestoreSelectedUnitBaselineAsync, () => _runtime.IsAttached);
-        LoadSpawnPresetsCommand = new AsyncCommand(LoadSpawnPresetsAsync, () => !string.IsNullOrWhiteSpace(SelectedProfileId));
-        RunSpawnBatchCommand = new AsyncCommand(RunSpawnBatchAsync, () => _runtime.IsAttached && SelectedSpawnPreset is not null && !string.IsNullOrWhiteSpace(SelectedProfileId));
-        ScaffoldModProfileCommand = new AsyncCommand(ScaffoldModProfileAsync, () => !string.IsNullOrWhiteSpace(OnboardingDraftProfileId) && !string.IsNullOrWhiteSpace(OnboardingDisplayName));
-        ExportCalibrationArtifactCommand = new AsyncCommand(ExportCalibrationArtifactAsync, () => !string.IsNullOrWhiteSpace(SelectedProfileId));
-        BuildCompatibilityReportCommand = new AsyncCommand(BuildCompatibilityReportAsync, () => !string.IsNullOrWhiteSpace(SelectedProfileId));
-        ExportSupportBundleCommand = new AsyncCommand(ExportSupportBundleAsync, () => !string.IsNullOrWhiteSpace(SupportBundleOutputDirectory));
-        ExportTelemetrySnapshotCommand = new AsyncCommand(ExportTelemetrySnapshotAsync, () => !string.IsNullOrWhiteSpace(SupportBundleOutputDirectory));
+        (LoadProfilesCommand, AttachCommand, DetachCommand, LoadActionsCommand, ExecuteActionCommand, LoadCatalogCommand,
+            DeployHelperCommand, VerifyHelperCommand, CheckUpdatesCommand, InstallUpdateCommand, RollbackProfileUpdateCommand) = CreateCoreCommands();
+        (BrowseSaveCommand, LoadSaveCommand, EditSaveCommand, ValidateSaveCommand, RefreshDiffCommand, WriteSaveCommand,
+            BrowsePatchPackCommand, ExportPatchPackCommand, LoadPatchPackCommand, PreviewPatchPackCommand, ApplyPatchPackCommand,
+            RestoreBackupCommand, LoadHotkeysCommand, SaveHotkeysCommand, AddHotkeyCommand, RemoveHotkeyCommand) = CreateSaveCommands();
+        (RefreshActionReliabilityCommand, CaptureSelectedUnitBaselineCommand, ApplySelectedUnitDraftCommand, RevertSelectedUnitTransactionCommand,
+            RestoreSelectedUnitBaselineCommand, LoadSpawnPresetsCommand, RunSpawnBatchCommand, ScaffoldModProfileCommand,
+            ExportCalibrationArtifactCommand, BuildCompatibilityReportCommand, ExportSupportBundleCommand,
+            ExportTelemetrySnapshotCommand) = CreateLiveOpsCommands();
+        (QuickSetCreditsCommand, QuickFreezeTimerCommand, QuickToggleFogCommand, QuickToggleAiCommand,
+            QuickInstantBuildCommand, QuickUnitCapCommand, QuickGodModeCommand, QuickOneHitCommand, QuickUnfreezeAllCommand) = CreateQuickCommands();
 
-        // Quick-action commands (one-click trainer buttons)
-        QuickSetCreditsCommand = new AsyncCommand(QuickSetCreditsAsync, () => _runtime.IsAttached);
-        QuickFreezeTimerCommand = new AsyncCommand(QuickFreezeTimerAsync, () => _runtime.IsAttached);
-        QuickToggleFogCommand = new AsyncCommand(QuickToggleFogAsync, () => _runtime.IsAttached);
-        QuickToggleAiCommand = new AsyncCommand(QuickToggleAiAsync, () => _runtime.IsAttached);
-        QuickInstantBuildCommand = new AsyncCommand(QuickInstantBuildAsync, () => _runtime.IsAttached);
-        QuickUnitCapCommand = new AsyncCommand(QuickUnitCapAsync, () => _runtime.IsAttached);
-        QuickGodModeCommand = new AsyncCommand(QuickGodModeAsync, () => _runtime.IsAttached);
-        QuickOneHitCommand = new AsyncCommand(QuickOneHitAsync, () => _runtime.IsAttached);
-        QuickUnfreezeAllCommand = new AsyncCommand(QuickUnfreezeAllAsync, () => _runtime.IsAttached);
+        _freezeUiTimer = CreateFreezeUiTimer();
+    }
 
-        ActiveFreezes = new ObservableCollection<string>();
+    private static (
+        ObservableCollection<string> Profiles,
+        ObservableCollection<string> Actions,
+        ObservableCollection<string> CatalogSummary,
+        ObservableCollection<string> Updates,
+        ObservableCollection<string> SaveDiffPreview,
+        ObservableCollection<HotkeyBindingItem> Hotkeys,
+        ObservableCollection<SaveFieldViewItem> SaveFields,
+        ObservableCollection<SaveFieldViewItem> FilteredSaveFields,
+        ObservableCollection<SavePatchOperationViewItem> SavePatchOperations,
+        ObservableCollection<SavePatchCompatibilityViewItem> SavePatchCompatibility,
+        ObservableCollection<ActionReliabilityViewItem> ActionReliability,
+        ObservableCollection<SelectedUnitTransactionViewItem> SelectedUnitTransactions,
+        ObservableCollection<SpawnPresetViewItem> SpawnPresets,
+        ObservableCollection<string> LiveOpsDiagnostics,
+        ObservableCollection<string> ModCompatibilityRows,
+        ObservableCollection<string> ActiveFreezes) CreateCollections()
+    {
+        return (
+            new ObservableCollection<string>(),
+            new ObservableCollection<string>(),
+            new ObservableCollection<string>(),
+            new ObservableCollection<string>(),
+            new ObservableCollection<string>(),
+            new ObservableCollection<HotkeyBindingItem>(),
+            new ObservableCollection<SaveFieldViewItem>(),
+            new ObservableCollection<SaveFieldViewItem>(),
+            new ObservableCollection<SavePatchOperationViewItem>(),
+            new ObservableCollection<SavePatchCompatibilityViewItem>(),
+            new ObservableCollection<ActionReliabilityViewItem>(),
+            new ObservableCollection<SelectedUnitTransactionViewItem>(),
+            new ObservableCollection<SpawnPresetViewItem>(),
+            new ObservableCollection<string>(),
+            new ObservableCollection<string>(),
+            new ObservableCollection<string>());
+    }
 
+    private (
+        ICommand LoadProfiles,
+        ICommand Attach,
+        ICommand Detach,
+        ICommand LoadActions,
+        ICommand ExecuteAction,
+        ICommand LoadCatalog,
+        ICommand DeployHelper,
+        ICommand VerifyHelper,
+        ICommand CheckUpdates,
+        ICommand InstallUpdate,
+        ICommand RollbackProfileUpdate) CreateCoreCommands()
+    {
+        return (
+            new AsyncCommand(LoadProfilesAsync),
+            new AsyncCommand(AttachAsync, () => !string.IsNullOrWhiteSpace(SelectedProfileId)),
+            new AsyncCommand(DetachAsync, () => _runtime.IsAttached),
+            new AsyncCommand(LoadActionsAsync, () => !string.IsNullOrWhiteSpace(SelectedProfileId)),
+            new AsyncCommand(ExecuteActionAsync, () => _runtime.IsAttached && !string.IsNullOrWhiteSpace(SelectedActionId)),
+            new AsyncCommand(LoadCatalogAsync, () => !string.IsNullOrWhiteSpace(SelectedProfileId)),
+            new AsyncCommand(DeployHelperAsync, () => !string.IsNullOrWhiteSpace(SelectedProfileId)),
+            new AsyncCommand(VerifyHelperAsync, () => !string.IsNullOrWhiteSpace(SelectedProfileId)),
+            new AsyncCommand(CheckUpdatesAsync),
+            new AsyncCommand(InstallUpdateAsync, () => !string.IsNullOrWhiteSpace(SelectedProfileId)),
+            new AsyncCommand(RollbackProfileUpdateAsync, () => !string.IsNullOrWhiteSpace(SelectedProfileId)));
+    }
+
+    private (
+        ICommand BrowseSave,
+        ICommand LoadSave,
+        ICommand EditSave,
+        ICommand ValidateSave,
+        ICommand RefreshDiff,
+        ICommand WriteSave,
+        ICommand BrowsePatchPack,
+        ICommand ExportPatchPack,
+        ICommand LoadPatchPack,
+        ICommand PreviewPatchPack,
+        ICommand ApplyPatchPack,
+        ICommand RestoreBackup,
+        ICommand LoadHotkeys,
+        ICommand SaveHotkeys,
+        ICommand AddHotkey,
+        ICommand RemoveHotkey) CreateSaveCommands()
+    {
+        return (
+            new AsyncCommand(BrowseSaveAsync),
+            new AsyncCommand(LoadSaveAsync, () => !string.IsNullOrWhiteSpace(SavePath) && !string.IsNullOrWhiteSpace(SelectedProfileId)),
+            new AsyncCommand(EditSaveAsync, () => _loadedSave is not null && !string.IsNullOrWhiteSpace(SaveNodePath)),
+            new AsyncCommand(ValidateSaveAsync, () => _loadedSave is not null),
+            new AsyncCommand(RefreshDiffAsync, () => _loadedSave is not null && _loadedSaveOriginal is not null),
+            new AsyncCommand(WriteSaveAsync, () => _loadedSave is not null),
+            new AsyncCommand(BrowsePatchPackAsync),
+            new AsyncCommand(ExportPatchPackAsync, () => _loadedSave is not null && _loadedSaveOriginal is not null && !string.IsNullOrWhiteSpace(SelectedProfileId)),
+            new AsyncCommand(LoadPatchPackAsync, () => !string.IsNullOrWhiteSpace(SavePatchPackPath)),
+            new AsyncCommand(PreviewPatchPackAsync, () => _loadedSave is not null && _loadedPatchPack is not null && !string.IsNullOrWhiteSpace(SelectedProfileId)),
+            new AsyncCommand(ApplyPatchPackAsync, () => _loadedPatchPack is not null && !string.IsNullOrWhiteSpace(SavePath) && !string.IsNullOrWhiteSpace(SelectedProfileId)),
+            new AsyncCommand(RestoreBackupAsync, () => !string.IsNullOrWhiteSpace(SavePath)),
+            new AsyncCommand(LoadHotkeysAsync),
+            new AsyncCommand(SaveHotkeysAsync),
+            new AsyncCommand(AddHotkeyAsync),
+            new AsyncCommand(RemoveHotkeyAsync, () => SelectedHotkey is not null));
+    }
+
+    private (
+        ICommand RefreshActionReliability,
+        ICommand CaptureSelectedUnitBaseline,
+        ICommand ApplySelectedUnitDraft,
+        ICommand RevertSelectedUnitTransaction,
+        ICommand RestoreSelectedUnitBaseline,
+        ICommand LoadSpawnPresets,
+        ICommand RunSpawnBatch,
+        ICommand ScaffoldModProfile,
+        ICommand ExportCalibrationArtifact,
+        ICommand BuildCompatibilityReport,
+        ICommand ExportSupportBundle,
+        ICommand ExportTelemetrySnapshot) CreateLiveOpsCommands()
+    {
+        return (
+            new AsyncCommand(RefreshActionReliabilityAsync, () => _runtime.IsAttached && !string.IsNullOrWhiteSpace(SelectedProfileId)),
+            new AsyncCommand(CaptureSelectedUnitBaselineAsync, () => _runtime.IsAttached),
+            new AsyncCommand(ApplySelectedUnitDraftAsync, () => _runtime.IsAttached),
+            new AsyncCommand(RevertSelectedUnitTransactionAsync, () => _runtime.IsAttached),
+            new AsyncCommand(RestoreSelectedUnitBaselineAsync, () => _runtime.IsAttached),
+            new AsyncCommand(LoadSpawnPresetsAsync, () => !string.IsNullOrWhiteSpace(SelectedProfileId)),
+            new AsyncCommand(RunSpawnBatchAsync, () => _runtime.IsAttached && SelectedSpawnPreset is not null && !string.IsNullOrWhiteSpace(SelectedProfileId)),
+            new AsyncCommand(ScaffoldModProfileAsync, () => !string.IsNullOrWhiteSpace(OnboardingDraftProfileId) && !string.IsNullOrWhiteSpace(OnboardingDisplayName)),
+            new AsyncCommand(ExportCalibrationArtifactAsync, () => !string.IsNullOrWhiteSpace(SelectedProfileId)),
+            new AsyncCommand(BuildCompatibilityReportAsync, () => !string.IsNullOrWhiteSpace(SelectedProfileId)),
+            new AsyncCommand(ExportSupportBundleAsync, () => !string.IsNullOrWhiteSpace(SupportBundleOutputDirectory)),
+            new AsyncCommand(ExportTelemetrySnapshotAsync, () => !string.IsNullOrWhiteSpace(SupportBundleOutputDirectory)));
+    }
+
+    private (
+        ICommand QuickSetCredits,
+        ICommand QuickFreezeTimer,
+        ICommand QuickToggleFog,
+        ICommand QuickToggleAi,
+        ICommand QuickInstantBuild,
+        ICommand QuickUnitCap,
+        ICommand QuickGodMode,
+        ICommand QuickOneHit,
+        ICommand QuickUnfreezeAll) CreateQuickCommands()
+    {
+        return (
+            new AsyncCommand(QuickSetCreditsAsync, () => _runtime.IsAttached),
+            new AsyncCommand(QuickFreezeTimerAsync, () => _runtime.IsAttached),
+            new AsyncCommand(QuickToggleFogAsync, () => _runtime.IsAttached),
+            new AsyncCommand(QuickToggleAiAsync, () => _runtime.IsAttached),
+            new AsyncCommand(QuickInstantBuildAsync, () => _runtime.IsAttached),
+            new AsyncCommand(QuickUnitCapAsync, () => _runtime.IsAttached),
+            new AsyncCommand(QuickGodModeAsync, () => _runtime.IsAttached),
+            new AsyncCommand(QuickOneHitAsync, () => _runtime.IsAttached),
+            new AsyncCommand(QuickUnfreezeAllAsync, () => _runtime.IsAttached));
+    }
+
+    private DispatcherTimer CreateFreezeUiTimer()
+    {
         // Periodically refresh the active-freezes list so the UI stays current.
-        _freezeUiTimer = new DispatcherTimer { Interval = TimeSpan.FromSeconds(1) };
-        _freezeUiTimer.Tick += (_, _) => RefreshActiveFreezes();
-        _freezeUiTimer.Start();
+        var timer = new DispatcherTimer { Interval = TimeSpan.FromSeconds(1) };
+        timer.Tick += (_, _) => RefreshActiveFreezes();
+        timer.Start();
+        return timer;
     }
 
     public ObservableCollection<string> Profiles { get; }
@@ -710,55 +798,13 @@ public sealed class MainViewModel : INotifyPropertyChanged
                 return null;
             }
 
-            var resolvedProfiles = await LoadResolvedProfilesForLaunchContextAsync();
-            var contexts = processes
-                .Select(process =>
-                {
-                    var context = process.LaunchContext ?? _launchContextResolver.Resolve(process, resolvedProfiles);
-                    return new { Process = process, Context = context };
-                })
-                .ToArray();
-
-            var bestRecommendation = contexts
-                .Where(x => !string.IsNullOrWhiteSpace(x.Context.Recommendation.ProfileId))
-                .OrderByDescending(x => x.Context.Recommendation.Confidence)
-                .ThenByDescending(x => x.Context.LaunchKind == LaunchKind.Workshop || x.Context.LaunchKind == LaunchKind.Mixed)
-                .Select(x => x.Context.Recommendation.ProfileId)
-                .FirstOrDefault();
+            var bestRecommendation = await TryResolveLaunchContextRecommendationAsync(processes);
             if (!string.IsNullOrWhiteSpace(bestRecommendation))
             {
                 return bestRecommendation;
             }
 
-            // First priority: explicit mod IDs in command line or parsed metadata.
-            if (HasSteamModId(processes, "3447786229"))
-            {
-                return "roe_3447786229_swfoc";
-            }
-
-            if (HasSteamModId(processes, "1397421866"))
-            {
-                return "aotr_1397421866_swfoc";
-            }
-
-            var swfoc = processes.FirstOrDefault(x => x.ExeTarget == ExeTarget.Swfoc);
-            if (swfoc is not null)
-            {
-                return DefaultBaseSwfocProfileId;
-            }
-
-            var starWarsG = processes.FirstOrDefault(IsStarWarsGProcess);
-            if (starWarsG is not null)
-            {
-                // FoC-safe default when StarWarsG is running but command-line hints are unavailable.
-                return DefaultBaseSwfocProfileId;
-            }
-
-            var sweaw = processes.FirstOrDefault(x => x.ExeTarget == ExeTarget.Sweaw);
-            if (sweaw is not null)
-            {
-                return "base_sweaw";
-            }
+            return ResolveFallbackProfileRecommendation(processes);
         }
         catch
         {
@@ -790,34 +836,16 @@ public sealed class MainViewModel : INotifyPropertyChanged
         try
         {
             var requestedProfileId = SelectedProfileId;
-            var effectiveProfileId = requestedProfileId;
-            ProfileVariantResolution? variant = null;
+            var resolution = await ResolveAttachProfileAsync(requestedProfileId);
 
-            if (string.Equals(requestedProfileId, UniversalProfileId, StringComparison.OrdinalIgnoreCase))
+            Status = BuildAttachStartStatus(resolution.EffectiveProfileId, resolution.Variant);
+            var session = await _runtime.AttachAsync(resolution.EffectiveProfileId);
+            if (resolution.Variant is not null)
             {
-                var processes = await _processLocator.FindSupportedProcessesAsync();
-                variant = await _profileVariantResolver.ResolveAsync(requestedProfileId, processes, CancellationToken.None);
-                effectiveProfileId = variant.ResolvedProfileId;
+                SelectedProfileId = resolution.EffectiveProfileId;
             }
 
-            Status = variant is null
-                ? $"Attaching using profile '{effectiveProfileId}'..."
-                : $"Attaching using universal profile -> '{effectiveProfileId}' ({variant.ReasonCode}, conf={variant.Confidence:0.00})...";
-
-            var session = await _runtime.AttachAsync(effectiveProfileId);
-            if (variant is not null)
-            {
-                SelectedProfileId = effectiveProfileId;
-            }
-            RuntimeMode = session.Process.Mode;
-            ResolvedSymbolsCount = session.Symbols.Symbols.Count;
-            var signatureCount = session.Symbols.Symbols.Values.Count(x => x.Source == AddressSource.Signature);
-            var fallbackCount = session.Symbols.Symbols.Values.Count(x => x.Source == AddressSource.Fallback);
-            var healthyCount = session.Symbols.Symbols.Values.Count(x => x.HealthStatus == SymbolHealthStatus.Healthy);
-            var degradedCount = session.Symbols.Symbols.Values.Count(x => x.HealthStatus == SymbolHealthStatus.Degraded);
-            var unresolvedCount = session.Symbols.Symbols.Values.Count(x => x.HealthStatus == SymbolHealthStatus.Unresolved || x.Address == nint.Zero);
-            Status = $"Attached to PID {session.Process.ProcessId} ({session.Process.ProcessName}) | " +
-                     $"{BuildProcessDiagnosticSummary(session.Process)} | symbols: sig={signatureCount}, fallback={fallbackCount}, healthy={healthyCount}, degraded={degradedCount}, unresolved={unresolvedCount}";
+            ApplyAttachSessionStatus(session);
 
             // Most people expect the Action dropdown to be usable immediately after attach.
             // Loading actions is profile-driven and doesn't require a process attach, but
@@ -829,10 +857,7 @@ public sealed class MainViewModel : INotifyPropertyChanged
         }
         catch (Exception ex)
         {
-            RuntimeMode = RuntimeMode.Unknown;
-            ResolvedSymbolsCount = 0;
-            var processHint = await BuildAttachProcessHintAsync();
-            Status = $"Attach failed: {ex.Message}. {processHint}";
+            await HandleAttachFailureAsync(ex);
         }
     }
 
@@ -846,7 +871,29 @@ public sealed class MainViewModel : INotifyPropertyChanged
                 return "Detected game processes: none. Ensure the game is running and try launching trainer as Administrator.";
             }
 
-            var summary = string.Join(", ", all.Take(3).Select(BuildAttachHintSegment));
+            var summary = string.Join(", ", all
+                .Take(3)
+                .Select(x =>
+                {
+                    var cmd = x.Metadata is not null &&
+                              x.Metadata.TryGetValue("commandLineAvailable", out var cmdValue)
+                        ? cmdValue
+                        : "False";
+                    var mods = x.Metadata is not null &&
+                               x.Metadata.TryGetValue("steamModIdsDetected", out var ids)
+                        ? ids
+                        : string.Empty;
+                    var via = x.Metadata is not null &&
+                              x.Metadata.TryGetValue("detectedVia", out var detectedVia)
+                        ? detectedVia
+                        : "unknown";
+                    var ctx = x.LaunchContext;
+                    var launch = ctx is null ? "n/a" : ctx.LaunchKind.ToString();
+                    var recommended = ctx?.Recommendation.ProfileId ?? string.Empty;
+                    var reason = ctx?.Recommendation.ReasonCode ?? "unknown";
+                    var confidence = ctx is null ? "0.00" : ctx.Recommendation.Confidence.ToString("0.00");
+                    return $"{x.ProcessName}:{x.ProcessId}:{x.ExeTarget}:cmd={cmd}:mods={mods}:launch={launch}:rec={recommended}:{reason}:{confidence}:via={via}";
+                }));
             var more = all.Count > 3 ? $", +{all.Count - 3} more" : string.Empty;
             return $"Detected game processes: {summary}{more}";
         }
@@ -854,18 +901,6 @@ public sealed class MainViewModel : INotifyPropertyChanged
         {
             return "Could not enumerate process diagnostics.";
         }
-    }
-
-    private static string BuildAttachHintSegment(ProcessMetadata process)
-    {
-        var cmd = ReadProcessMetadataValue(process, "commandLineAvailable", "False");
-        var mods = ReadProcessMetadataValue(process, "steamModIdsDetected", string.Empty);
-        var via = ReadProcessMetadataValue(process, "detectedVia", UnknownReason);
-        var launch = process.LaunchContext?.LaunchKind.ToString() ?? "n/a";
-        var recommended = process.LaunchContext?.Recommendation.ProfileId ?? string.Empty;
-        var reason = process.LaunchContext?.Recommendation.ReasonCode ?? UnknownReason;
-        var confidence = process.LaunchContext?.Recommendation.Confidence.ToString("0.00") ?? "0.00";
-        return $"{process.ProcessName}:{process.ProcessId}:{process.ExeTarget}:cmd={cmd}:mods={mods}:launch={launch}:rec={recommended}:{reason}:{confidence}:via={via}";
     }
 
     private static bool HasSteamModId(IEnumerable<ProcessMetadata> processes, string workshopId)
@@ -918,21 +953,21 @@ public sealed class MainViewModel : INotifyPropertyChanged
 
     private static string BuildProcessDiagnosticSummary(ProcessMetadata process)
     {
-        var cmdAvailable = ReadProcessMetadataValue(process, "commandLineAvailable", "False");
-        var mods = ReadProcessMetadataValue(process, "steamModIdsDetected", "none");
-        var via = ReadProcessMetadataValue(process, "detectedVia", UnknownReason);
-        var dependencyState = ReadProcessMetadataValue(process, "dependencyValidation", "Pass");
-        var dependencyMessage = ReadProcessMetadataValue(process, "dependencyValidationMessage", string.Empty);
-        var dependencySegment = BuildDependencySegment(dependencyState, dependencyMessage);
-        var fallbackRate = ReadProcessMetadataValue(process, "fallbackHitRate", "n/a");
-        var unresolvedRate = ReadProcessMetadataValue(process, "unresolvedSymbolRate", "n/a");
-        var resolvedVariant = ReadProcessMetadataValue(process, "resolvedVariant", "n/a");
-        var resolvedVariantReason = ReadProcessMetadataValue(process, "resolvedVariantReasonCode", "n/a");
-        var resolvedVariantConfidence = ReadProcessMetadataValue(process, "resolvedVariantConfidence", "0.00");
+        var cmdAvailable = ReadProcessMetadata(process, "commandLineAvailable", "False");
+        var mods = ReadProcessMods(process);
+        var via = ReadProcessMetadata(process, "detectedVia", "unknown");
+        var dependencyState = ReadProcessMetadata(process, "dependencyValidation", "Pass");
+        var dependencyMessage = ReadProcessMetadata(process, "dependencyValidationMessage", string.Empty);
+        var dependencySegment = BuildProcessDependencySegment(dependencyState, dependencyMessage);
+        var fallbackRate = ReadProcessMetadata(process, "fallbackHitRate", "n/a");
+        var unresolvedRate = ReadProcessMetadata(process, "unresolvedSymbolRate", "n/a");
+        var resolvedVariant = ReadProcessMetadata(process, "resolvedVariant", "n/a");
+        var resolvedVariantReason = ReadProcessMetadata(process, "resolvedVariantReasonCode", "n/a");
+        var resolvedVariantConfidence = ReadProcessMetadata(process, "resolvedVariantConfidence", "0.00");
         var launchKind = process.LaunchContext?.LaunchKind.ToString() ?? "Unknown";
         var modPath = process.LaunchContext?.ModPathNormalized;
         var recProfile = process.LaunchContext?.Recommendation.ProfileId ?? "none";
-        var recReason = process.LaunchContext?.Recommendation.ReasonCode ?? UnknownReason;
+        var recReason = process.LaunchContext?.Recommendation.ReasonCode ?? "unknown";
         var recConfidence = process.LaunchContext is null
             ? "0.00"
             : process.LaunchContext.Recommendation.Confidence.ToString("0.00");
@@ -944,9 +979,88 @@ public sealed class MainViewModel : INotifyPropertyChanged
         return $"target={process.ExeTarget} | launch={launchKind} | hostRole={hostRole} | score={selectionScore} | module={moduleSize} | workshopMatches={workshopMatchCount} | cmdLine={cmdAvailable} | mods={mods} | {modPathSegment} | rec={recProfile}:{recReason}:{recConfidence} | variant={resolvedVariant}:{resolvedVariantReason}:{resolvedVariantConfidence} | via={via} | {dependencySegment} | fallbackRate={fallbackRate} | unresolvedRate={unresolvedRate}";
     }
 
-    private static string ReadProcessMetadataValue(ProcessMetadata process, string key, string fallback)
+    private async Task<string?> TryResolveLaunchContextRecommendationAsync(IReadOnlyList<ProcessMetadata> processes)
     {
-        if (process.Metadata is null || !process.Metadata.TryGetValue(key, out var value) || string.IsNullOrWhiteSpace(value))
+        var resolvedProfiles = await LoadResolvedProfilesForLaunchContextAsync();
+        var contexts = processes
+            .Select(process => process.LaunchContext ?? _launchContextResolver.Resolve(process, resolvedProfiles))
+            .ToArray();
+
+        return contexts
+            .Where(context => !string.IsNullOrWhiteSpace(context.Recommendation.ProfileId))
+            .OrderByDescending(context => context.Recommendation.Confidence)
+            .ThenByDescending(context => context.LaunchKind == LaunchKind.Workshop || context.LaunchKind == LaunchKind.Mixed)
+            .Select(context => context.Recommendation.ProfileId)
+            .FirstOrDefault();
+    }
+
+    private static string? ResolveFallbackProfileRecommendation(IReadOnlyList<ProcessMetadata> processes)
+    {
+        // First priority: explicit mod IDs in command line or parsed metadata.
+        if (HasSteamModId(processes, "3447786229"))
+        {
+            return "roe_3447786229_swfoc";
+        }
+
+        if (HasSteamModId(processes, "1397421866"))
+        {
+            return "aotr_1397421866_swfoc";
+        }
+
+        if (processes.Any(x => x.ExeTarget == ExeTarget.Swfoc) || processes.Any(IsStarWarsGProcess))
+        {
+            // FoC-safe default when StarWarsG is running but command-line hints are unavailable.
+            return "base_swfoc";
+        }
+
+        return processes.Any(x => x.ExeTarget == ExeTarget.Sweaw)
+            ? "base_sweaw"
+            : null;
+    }
+
+    private async Task<(string EffectiveProfileId, ProfileVariantResolution? Variant)> ResolveAttachProfileAsync(string requestedProfileId)
+    {
+        if (!string.Equals(requestedProfileId, UniversalProfileId, StringComparison.OrdinalIgnoreCase))
+        {
+            return (requestedProfileId, null);
+        }
+
+        var processes = await _processLocator.FindSupportedProcessesAsync();
+        var variant = await _profileVariantResolver.ResolveAsync(requestedProfileId, processes, CancellationToken.None);
+        return (variant.ResolvedProfileId, variant);
+    }
+
+    private static string BuildAttachStartStatus(string effectiveProfileId, ProfileVariantResolution? variant)
+    {
+        return variant is null
+            ? $"Attaching using profile '{effectiveProfileId}'..."
+            : $"Attaching using universal profile -> '{effectiveProfileId}' ({variant.ReasonCode}, conf={variant.Confidence:0.00})...";
+    }
+
+    private void ApplyAttachSessionStatus(AttachSession session)
+    {
+        RuntimeMode = session.Process.Mode;
+        ResolvedSymbolsCount = session.Symbols.Symbols.Count;
+        var signatureCount = session.Symbols.Symbols.Values.Count(x => x.Source == AddressSource.Signature);
+        var fallbackCount = session.Symbols.Symbols.Values.Count(x => x.Source == AddressSource.Fallback);
+        var healthyCount = session.Symbols.Symbols.Values.Count(x => x.HealthStatus == SymbolHealthStatus.Healthy);
+        var degradedCount = session.Symbols.Symbols.Values.Count(x => x.HealthStatus == SymbolHealthStatus.Degraded);
+        var unresolvedCount = session.Symbols.Symbols.Values.Count(x => x.HealthStatus == SymbolHealthStatus.Unresolved || x.Address == nint.Zero);
+        Status = $"Attached to PID {session.Process.ProcessId} ({session.Process.ProcessName}) | " +
+                 $"{BuildProcessDiagnosticSummary(session.Process)} | symbols: sig={signatureCount}, fallback={fallbackCount}, healthy={healthyCount}, degraded={degradedCount}, unresolved={unresolvedCount}";
+    }
+
+    private async Task HandleAttachFailureAsync(Exception ex)
+    {
+        RuntimeMode = RuntimeMode.Unknown;
+        ResolvedSymbolsCount = 0;
+        var processHint = await BuildAttachProcessHintAsync();
+        Status = $"Attach failed: {ex.Message}. {processHint}";
+    }
+
+    private static string ReadProcessMetadata(ProcessMetadata process, string key, string fallback)
+    {
+        if (process.Metadata is null || !process.Metadata.TryGetValue(key, out var value))
         {
             return fallback;
         }
@@ -954,15 +1068,18 @@ public sealed class MainViewModel : INotifyPropertyChanged
         return value;
     }
 
-    private static string BuildDependencySegment(string dependencyState, string dependencyMessage)
+    private static string ReadProcessMods(ProcessMetadata process)
     {
-        if (dependencyState.Equals("Pass", StringComparison.OrdinalIgnoreCase) ||
-            string.IsNullOrWhiteSpace(dependencyMessage))
-        {
-            return $"dependency={dependencyState}";
-        }
+        var mods = ReadProcessMetadata(process, "steamModIdsDetected", string.Empty);
+        return string.IsNullOrWhiteSpace(mods) ? "none" : mods;
+    }
 
-        return $"dependency={dependencyState} ({dependencyMessage})";
+    private static string BuildProcessDependencySegment(string dependencyState, string dependencyMessage)
+    {
+        return dependencyState.Equals("Pass", StringComparison.OrdinalIgnoreCase) ||
+               string.IsNullOrWhiteSpace(dependencyMessage)
+            ? $"dependency={dependencyState}"
+            : $"dependency={dependencyState} ({dependencyMessage})";
     }
 
     private static bool IsActionAvailableForCurrentSession(string actionId, ActionSpec spec, AttachSession session)
@@ -1032,7 +1149,7 @@ public sealed class MainViewModel : INotifyPropertyChanged
             return null;
         }
 
-        var requiresSymbol = required.Any(x => string.Equals(x?.GetValue<string>(), PayloadKeySymbol, StringComparison.OrdinalIgnoreCase));
+        var requiresSymbol = required.Any(x => string.Equals(x?.GetValue<string>(), "symbol", StringComparison.OrdinalIgnoreCase));
         if (!requiresSymbol)
         {
             return null;
@@ -1175,18 +1292,15 @@ public sealed class MainViewModel : INotifyPropertyChanged
 
     private void ApplyPayloadTemplateForSelectedAction()
     {
-        if (!TryResolveTemplateAction(out var action))
+        if (!TryGetRequiredPayloadKeysForSelectedAction(out var required))
         {
             return;
         }
 
-        if (!TryGetRequiredPayloadKeys(action, out var required))
-        {
-            return;
-        }
+        var payload = BuildRequiredPayloadTemplate(SelectedActionId, required);
+        ApplyActionSpecificPayloadDefaults(SelectedActionId, payload);
 
-        var payload = BuildPayloadTemplate(required);
-        AddActionSpecificPayloadDefaults(payload);
+        // Only apply a template when it would actually help. Don't clobber the user's JSON with "{}".
         if (payload.Count == 0)
         {
             return;
@@ -1195,89 +1309,85 @@ public sealed class MainViewModel : INotifyPropertyChanged
         PayloadJson = payload.ToJsonString(PrettyJson);
     }
 
-    private bool TryResolveTemplateAction(out ActionSpec action)
+    private bool TryGetRequiredPayloadKeysForSelectedAction(out JsonArray required)
     {
-        if (!string.IsNullOrWhiteSpace(SelectedActionId) &&
-            _loadedActionSpecs.TryGetValue(SelectedActionId, out var resolved))
+        required = new JsonArray();
+        if (string.IsNullOrWhiteSpace(SelectedActionId))
         {
-            action = resolved;
-            return true;
-        }
-
-        action = null!;
-        return false;
-    }
-
-    private static bool TryGetRequiredPayloadKeys(ActionSpec action, out JsonArray required)
-    {
-        if (!action.PayloadSchema.TryGetPropertyValue("required", out var requiredNode) || requiredNode is not JsonArray array)
-        {
-            required = default!;
             return false;
         }
 
-        required = array;
+        if (!_loadedActionSpecs.TryGetValue(SelectedActionId, out var action))
+        {
+            return false;
+        }
+
+        if (!action.PayloadSchema.TryGetPropertyValue("required", out var requiredNode) || requiredNode is not JsonArray requiredKeys)
+        {
+            return false;
+        }
+
+        required = requiredKeys;
         return true;
     }
 
-    private JsonObject BuildPayloadTemplate(JsonArray required)
+    private static JsonObject BuildRequiredPayloadTemplate(string actionId, JsonArray required)
     {
         var payload = new JsonObject();
-        foreach (var key in required
-                     .Select(node => node?.GetValue<string>())
-                     .Where(static key => !string.IsNullOrWhiteSpace(key))
-                     .Select(static key => key!))
+
+        foreach (var node in required)
         {
-            payload[key] = JsonValue.Create(BuildDefaultPayloadValue(key));
+            var key = node?.GetValue<string>();
+            if (string.IsNullOrWhiteSpace(key))
+            {
+                continue;
+            }
+
+            payload[key] = BuildRequiredPayloadValue(actionId, key);
         }
 
         return payload;
     }
 
-    private object BuildDefaultPayloadValue(string key)
+    private static JsonNode? BuildRequiredPayloadValue(string actionId, string key)
     {
         return key switch
         {
-            PayloadKeySymbol => DefaultSymbolByActionId.TryGetValue(SelectedActionId, out var symbol) ? symbol : string.Empty,
-            PayloadKeyIntValue => GetDefaultIntPayloadValue(),
-            "floatValue" => 1.0f,
-            PayloadKeyBoolValue => true,
-            PayloadKeyEnable => true,
-            "freeze" => !SelectedActionId.Equals(ActionIdUnfreezeSymbol, StringComparison.OrdinalIgnoreCase),
-            "patchBytes" => "90 90 90 90 90",
-            "originalBytes" => "48 8B 74 24 68",
-            "helperHookId" => DefaultHelperHookByActionId.TryGetValue(SelectedActionId, out var hook) ? hook : SelectedActionId,
-            "unitId" => string.Empty,
-            "entryMarker" => string.Empty,
-            "faction" => string.Empty,
-            "globalKey" => string.Empty,
-            "nodePath" => string.Empty,
-            "value" => string.Empty,
-            _ => string.Empty
+            "symbol" => JsonValue.Create(DefaultSymbolByActionId.TryGetValue(actionId, out var sym) ? sym : string.Empty),
+            "intValue" => JsonValue.Create(actionId switch
+            {
+                "set_credits" => 1000000,
+                "set_unit_cap" => 99999,
+                _ => 0
+            }),
+            "floatValue" => JsonValue.Create(1.0f),
+            "boolValue" => JsonValue.Create(true),
+            "enable" => JsonValue.Create(true),
+            "freeze" => JsonValue.Create(!actionId.Equals("unfreeze_symbol", StringComparison.OrdinalIgnoreCase)),
+            "patchBytes" => JsonValue.Create("90 90 90 90 90"),
+            "originalBytes" => JsonValue.Create("48 8B 74 24 68"),
+            "helperHookId" => JsonValue.Create(DefaultHelperHookByActionId.TryGetValue(actionId, out var hook) ? hook : actionId),
+            "unitId" => JsonValue.Create(string.Empty),
+            "entryMarker" => JsonValue.Create(string.Empty),
+            "faction" => JsonValue.Create(string.Empty),
+            "globalKey" => JsonValue.Create(string.Empty),
+            "nodePath" => JsonValue.Create(string.Empty),
+            "value" => JsonValue.Create(string.Empty),
+            _ => JsonValue.Create(string.Empty)
         };
     }
 
-    private int GetDefaultIntPayloadValue()
+    private static void ApplyActionSpecificPayloadDefaults(string actionId, JsonObject payload)
     {
-        return SelectedActionId switch
-        {
-            ActionIdSetCredits => 1000000,
-            ActionIdSetUnitCap => 99999,
-            _ => 0
-        };
-    }
-
-    private void AddActionSpecificPayloadDefaults(JsonObject payload)
-    {
-        if (SelectedActionId.Equals(ActionIdSetCredits, StringComparison.OrdinalIgnoreCase))
+        if (actionId.Equals("set_credits", StringComparison.OrdinalIgnoreCase))
         {
             payload["lockCredits"] = false;
         }
 
-        if (SelectedActionId.Equals(ActionIdFreezeSymbol, StringComparison.OrdinalIgnoreCase) &&
-            !payload.ContainsKey(PayloadKeyIntValue))
+        // For freeze_symbol, include a default intValue so the user has a working template.
+        if (actionId.Equals("freeze_symbol", StringComparison.OrdinalIgnoreCase) && !payload.ContainsKey("intValue"))
         {
-            payload[PayloadKeyIntValue] = 1000000;
+            payload["intValue"] = 1000000;
         }
     }
 
@@ -1343,7 +1453,7 @@ public sealed class MainViewModel : INotifyPropertyChanged
         if (!result.Succeeded)
         {
             Status = $"Profile update failed: {result.Message}";
-            OpsArtifactSummary = $"install failed ({result.ReasonCode ?? UnknownReason})";
+            OpsArtifactSummary = $"install failed ({result.ReasonCode ?? "unknown"})";
             return;
         }
 
@@ -1364,7 +1474,7 @@ public sealed class MainViewModel : INotifyPropertyChanged
         if (!rollback.Restored)
         {
             Status = $"Rollback failed: {rollback.Message}";
-            OpsArtifactSummary = $"rollback failed ({rollback.ReasonCode ?? UnknownReason})";
+            OpsArtifactSummary = $"rollback failed ({rollback.ReasonCode ?? "unknown"})";
             return;
         }
 
@@ -1384,7 +1494,7 @@ public sealed class MainViewModel : INotifyPropertyChanged
         var request = new ModOnboardingRequest(
             DraftProfileId: OnboardingDraftProfileId,
             DisplayName: OnboardingDisplayName,
-            BaseProfileId: string.IsNullOrWhiteSpace(OnboardingBaseProfileId) ? DefaultBaseSwfocProfileId : OnboardingBaseProfileId,
+            BaseProfileId: string.IsNullOrWhiteSpace(OnboardingBaseProfileId) ? "base_swfoc" : OnboardingBaseProfileId,
             LaunchSamples: launchSamples,
             ProfileAliases: new[] { OnboardingDraftProfileId, OnboardingDisplayName },
             NamespaceRoot: OnboardingNamespaceRoot,
@@ -1466,7 +1576,7 @@ public sealed class MainViewModel : INotifyPropertyChanged
             Multiselect = false
         };
 
-        if (dialog.ShowDialog().GetValueOrDefault())
+        if (dialog.ShowDialog() == true)
         {
             SavePath = dialog.FileName;
             Status = $"Selected save: {SavePath}";
@@ -1550,7 +1660,7 @@ public sealed class MainViewModel : INotifyPropertyChanged
             Multiselect = false
         };
 
-        if (dialog.ShowDialog().GetValueOrDefault())
+        if (dialog.ShowDialog() == true)
         {
             SavePatchPackPath = dialog.FileName;
             Status = $"Selected patch pack: {SavePatchPackPath}";
@@ -1577,7 +1687,7 @@ public sealed class MainViewModel : INotifyPropertyChanged
             DefaultExt = ".json"
         };
 
-        if (!dialog.ShowDialog().GetValueOrDefault())
+        if (dialog.ShowDialog() != true)
         {
             Status = "Patch-pack export canceled.";
             return;
@@ -1615,12 +1725,8 @@ public sealed class MainViewModel : INotifyPropertyChanged
             return;
         }
 
-        if (!ValidateSaveRuntimeVariant(SelectedProfileId, out var variantMessage))
+        if (!PreparePatchPreview(SelectedProfileId))
         {
-            SavePatchCompatibility.Clear();
-            SavePatchCompatibility.Add(new SavePatchCompatibilityViewItem("error", "save_variant_mismatch", variantMessage));
-            SavePatchApplySummary = variantMessage;
-            Status = variantMessage;
             return;
         }
 
@@ -1628,6 +1734,31 @@ public sealed class MainViewModel : INotifyPropertyChanged
         var preview = await _savePatchPackService.PreviewApplyAsync(_loadedPatchPack, _loadedSave, SelectedProfileId);
         _loadedPatchPreview = preview;
 
+        PopulatePatchPreviewOperations(preview);
+        PopulatePatchCompatibilityRows(compatibility, preview);
+        SavePatchMetadataSummary = BuildPatchMetadataSummary(_loadedPatchPack);
+        SavePatchApplySummary = string.Empty;
+        Status = preview.IsCompatible && compatibility.IsCompatible
+            ? $"Patch preview ready: {SavePatchOperations.Count} operation(s) would be applied."
+            : "Patch preview blocked by compatibility/validation errors.";
+    }
+
+    private bool PreparePatchPreview(string selectedProfileId)
+    {
+        if (ValidateSaveRuntimeVariant(selectedProfileId, out var variantMessage))
+        {
+            return true;
+        }
+
+        SavePatchCompatibility.Clear();
+        SavePatchCompatibility.Add(new SavePatchCompatibilityViewItem("error", "save_variant_mismatch", variantMessage));
+        SavePatchApplySummary = variantMessage;
+        Status = variantMessage;
+        return false;
+    }
+
+    private void PopulatePatchPreviewOperations(SavePatchPreview preview)
+    {
         SavePatchOperations.Clear();
         foreach (var operation in preview.OperationsToApply)
         {
@@ -1639,7 +1770,10 @@ public sealed class MainViewModel : INotifyPropertyChanged
                 FormatPatchValue(operation.OldValue),
                 FormatPatchValue(operation.NewValue)));
         }
+    }
 
+    private void PopulatePatchCompatibilityRows(SavePatchCompatibilityResult compatibility, SavePatchPreview preview)
+    {
         SavePatchCompatibility.Clear();
         SavePatchCompatibility.Add(new SavePatchCompatibilityViewItem(
             "info",
@@ -1651,32 +1785,23 @@ public sealed class MainViewModel : INotifyPropertyChanged
             IsStrictPatchApply
                 ? "Strict apply is ON: source hash mismatch blocks apply."
                 : "Strict apply is OFF: source hash mismatch warning will not block apply."));
-        foreach (var warning in compatibility.Warnings)
-        {
-            SavePatchCompatibility.Add(new SavePatchCompatibilityViewItem("warning", "compatibility_warning", warning));
-        }
+        AppendPatchCompatibilityRows("warning", "compatibility_warning", compatibility.Warnings);
+        AppendPatchCompatibilityRows("warning", "preview_warning", preview.Warnings);
+        AppendPatchCompatibilityRows("error", "compatibility_error", compatibility.Errors);
+        AppendPatchCompatibilityRows("error", "preview_error", preview.Errors);
+    }
 
-        foreach (var warning in preview.Warnings)
+    private void AppendPatchCompatibilityRows(string severity, string reasonCode, IEnumerable<string> messages)
+    {
+        foreach (var message in messages)
         {
-            SavePatchCompatibility.Add(new SavePatchCompatibilityViewItem("warning", "preview_warning", warning));
+            SavePatchCompatibility.Add(new SavePatchCompatibilityViewItem(severity, reasonCode, message));
         }
+    }
 
-        foreach (var error in compatibility.Errors)
-        {
-            SavePatchCompatibility.Add(new SavePatchCompatibilityViewItem("error", "compatibility_error", error));
-        }
-
-        foreach (var error in preview.Errors)
-        {
-            SavePatchCompatibility.Add(new SavePatchCompatibilityViewItem("error", "preview_error", error));
-        }
-
-        SavePatchMetadataSummary =
-            $"Patch {(_loadedPatchPack.Metadata.SchemaVersion)} | profile={_loadedPatchPack.Metadata.ProfileId} | schema={_loadedPatchPack.Metadata.SchemaId} | ops={_loadedPatchPack.Operations.Count}";
-        SavePatchApplySummary = string.Empty;
-        Status = preview.IsCompatible && compatibility.IsCompatible
-            ? $"Patch preview ready: {SavePatchOperations.Count} operation(s) would be applied."
-            : "Patch preview blocked by compatibility/validation errors.";
+    private static string BuildPatchMetadataSummary(SavePatchPack pack)
+    {
+        return $"Patch {(pack.Metadata.SchemaVersion)} | profile={pack.Metadata.ProfileId} | schema={pack.Metadata.SchemaId} | ops={pack.Operations.Count}";
     }
 
     private async Task ApplyPatchPackAsync()
@@ -1982,7 +2107,7 @@ public sealed class MainViewModel : INotifyPropertyChanged
         LiveOpsDiagnostics.Add($"recommendation: {session.Process.LaunchContext?.Recommendation.ProfileId ?? "none"}");
         if (metadata is not null && metadata.TryGetValue("resolvedVariant", out var resolvedVariant))
         {
-            var reason = GetMetadataValueOrDefault(metadata, "resolvedVariantReasonCode", UnknownReason);
+            var reason = GetMetadataValueOrDefault(metadata, "resolvedVariantReasonCode", "unknown");
             var confidence = GetMetadataValueOrDefault(metadata, "resolvedVariantConfidence", "0.00");
             LiveOpsDiagnostics.Add($"variant: {resolvedVariant} ({reason}, conf={confidence})");
         }
@@ -2171,11 +2296,11 @@ public sealed class MainViewModel : INotifyPropertyChanged
 
     private void ApplyDraftFromSnapshot(SelectedUnitSnapshot snapshot)
     {
-        SelectedUnitHp = snapshot.Hp.ToString(CompactFloatFormat);
-        SelectedUnitShield = snapshot.Shield.ToString(CompactFloatFormat);
-        SelectedUnitSpeed = snapshot.Speed.ToString(CompactFloatFormat);
-        SelectedUnitDamageMultiplier = snapshot.DamageMultiplier.ToString(CompactFloatFormat);
-        SelectedUnitCooldownMultiplier = snapshot.CooldownMultiplier.ToString(CompactFloatFormat);
+        SelectedUnitHp = snapshot.Hp.ToString("0.###");
+        SelectedUnitShield = snapshot.Shield.ToString("0.###");
+        SelectedUnitSpeed = snapshot.Speed.ToString("0.###");
+        SelectedUnitDamageMultiplier = snapshot.DamageMultiplier.ToString("0.###");
+        SelectedUnitCooldownMultiplier = snapshot.CooldownMultiplier.ToString("0.###");
         SelectedUnitVeterancy = snapshot.Veterancy.ToString();
         SelectedUnitOwnerFaction = snapshot.OwnerFaction.ToString();
     }
@@ -2196,39 +2321,17 @@ public sealed class MainViewModel : INotifyPropertyChanged
 
     private DraftBuildResult BuildSelectedUnitDraft()
     {
-        if (!TryParseOptionalFloat(SelectedUnitHp, out var hp))
+        if (!TryParseSelectedUnitDraftValues(
+                out var hp,
+                out var shield,
+                out var speed,
+                out var damage,
+                out var cooldown,
+                out var veterancy,
+                out var ownerFaction,
+                out var error))
         {
-            return DraftBuildResult.Failed("HP must be a number.");
-        }
-
-        if (!TryParseOptionalFloat(SelectedUnitShield, out var shield))
-        {
-            return DraftBuildResult.Failed("Shield must be a number.");
-        }
-
-        if (!TryParseOptionalFloat(SelectedUnitSpeed, out var speed))
-        {
-            return DraftBuildResult.Failed("Speed must be a number.");
-        }
-
-        if (!TryParseOptionalFloat(SelectedUnitDamageMultiplier, out var damage))
-        {
-            return DraftBuildResult.Failed("Damage multiplier must be a number.");
-        }
-
-        if (!TryParseOptionalFloat(SelectedUnitCooldownMultiplier, out var cooldown))
-        {
-            return DraftBuildResult.Failed("Cooldown multiplier must be a number.");
-        }
-
-        if (!TryParseOptionalInt(SelectedUnitVeterancy, out var veterancy))
-        {
-            return DraftBuildResult.Failed("Veterancy must be an integer.");
-        }
-
-        if (!TryParseOptionalInt(SelectedUnitOwnerFaction, out var ownerFaction))
-        {
-            return DraftBuildResult.Failed("Owner faction must be an integer.");
+            return DraftBuildResult.Failed(error);
         }
 
         var draft = new SelectedUnitDraft(
@@ -2243,6 +2346,99 @@ public sealed class MainViewModel : INotifyPropertyChanged
         return draft.IsEmpty
             ? DraftBuildResult.Failed("No selected-unit values entered.")
             : DraftBuildResult.FromDraft(draft);
+    }
+
+    private bool TryParseSelectedUnitDraftValues(
+        out float? hp,
+        out float? shield,
+        out float? speed,
+        out float? damage,
+        out float? cooldown,
+        out int? veterancy,
+        out int? ownerFaction,
+        out string error)
+    {
+        if (!TryParseSelectedUnitFloatValues(out hp, out shield, out speed, out damage, out cooldown, out error))
+        {
+            veterancy = null;
+            ownerFaction = null;
+            return false;
+        }
+
+        return TryParseSelectedUnitIntValues(out veterancy, out ownerFaction, out error);
+    }
+
+    private bool TryParseSelectedUnitFloatValues(
+        out float? hp,
+        out float? shield,
+        out float? speed,
+        out float? damage,
+        out float? cooldown,
+        out string error)
+    {
+        hp = null;
+        shield = null;
+        speed = null;
+        damage = null;
+        cooldown = null;
+
+        if (!TryParseSelectedUnitFloat(SelectedUnitHp, "HP must be a number.", out hp, out error))
+        {
+            return false;
+        }
+
+        if (!TryParseSelectedUnitFloat(SelectedUnitShield, "Shield must be a number.", out shield, out error))
+        {
+            return false;
+        }
+
+        if (!TryParseSelectedUnitFloat(SelectedUnitSpeed, "Speed must be a number.", out speed, out error))
+        {
+            return false;
+        }
+
+        if (!TryParseSelectedUnitFloat(SelectedUnitDamageMultiplier, "Damage multiplier must be a number.", out damage, out error))
+        {
+            return false;
+        }
+
+        return TryParseSelectedUnitFloat(SelectedUnitCooldownMultiplier, "Cooldown multiplier must be a number.", out cooldown, out error);
+    }
+
+    private bool TryParseSelectedUnitIntValues(out int? veterancy, out int? ownerFaction, out string error)
+    {
+        veterancy = null;
+        ownerFaction = null;
+        if (!TryParseSelectedUnitInt(SelectedUnitVeterancy, "Veterancy must be an integer.", out veterancy, out error))
+        {
+            return false;
+        }
+
+        return TryParseSelectedUnitInt(SelectedUnitOwnerFaction, "Owner faction must be an integer.", out ownerFaction, out error);
+    }
+
+    private static bool TryParseSelectedUnitFloat(string input, string errorMessage, out float? value, out string error)
+    {
+        if (TryParseOptionalFloat(input, out value))
+        {
+            error = string.Empty;
+            return true;
+        }
+
+        error = errorMessage;
+        return false;
+    }
+
+    private static bool TryParseSelectedUnitInt(string input, string errorMessage, out int? value, out string error)
+    {
+        if (TryParseOptionalInt(input, out value))
+        {
+            error = string.Empty;
+            return true;
+        }
+
+        error = errorMessage;
+        return false;
     }
 
     private static bool TryParseOptionalFloat(string input, out float? value)
@@ -2286,20 +2482,10 @@ public sealed class MainViewModel : INotifyPropertyChanged
         var reliability = ActionReliability.FirstOrDefault(x => x.ActionId.Equals(actionId, StringComparison.OrdinalIgnoreCase));
         return new Dictionary<string, object?>
         {
-            ["reliabilityState"] = reliability?.State ?? UnknownReason,
-            ["reliabilityReasonCode"] = reliability?.ReasonCode ?? UnknownReason,
-            ["bundleGateResult"] = ResolveBundleGateResult(reliability)
+            ["reliabilityState"] = reliability?.State ?? "unknown",
+            ["reliabilityReasonCode"] = reliability?.ReasonCode ?? "unknown",
+            ["bundleGateResult"] = reliability is null ? "unknown" : reliability.State == "unavailable" ? "blocked" : "bundle_pass"
         };
-    }
-
-    private static string ResolveBundleGateResult(ActionReliabilityViewItem? reliability)
-    {
-        if (reliability is null)
-        {
-            return UnknownReason;
-        }
-
-        return reliability.State == "unavailable" ? "blocked" : "bundle_pass";
     }
 
     private static string BuildDiagnosticsStatusSuffix(ActionExecutionResult result)
@@ -2390,34 +2576,37 @@ public sealed class MainViewModel : INotifyPropertyChanged
 
     private async Task QuickSetCreditsAsync()
     {
-        if (!TryParseCreditsValue(out var value))
+        if (!TryGetCreditsValue(out var value))
         {
             return;
         }
 
-        if (!_runtime.IsAttached || string.IsNullOrWhiteSpace(SelectedProfileId))
-        {
-            Status = "✗ Not attached to game.";
-            return;
-        }
-
-        if (!await EnsureActionAvailableForCurrentSessionAsync(ActionIdSetCredits, "Credits"))
+        if (!await EnsureCreditsActionReadyAsync())
         {
             return;
         }
 
-        ResetCreditsFreezeState();
-        var payload = BuildCreditsPayload(value);
+        // Clear any existing freeze / hook lock first.
+        ResetCreditsFreeze();
+
+        // Route through the full action pipeline which installs a trampoline hook
+        // on the game's cvttss2si instruction to force the FLOAT source value.
+        // This is the only reliable way — writing the int alone is useless because
+        // the game overwrites it from the float every frame.
+        var payload = BuildCreditsPayload(value, CreditsFreeze);
 
         try
         {
-            var result = await _orchestrator.ExecuteAsync(
-                SelectedProfileId,
-                ActionIdSetCredits,
-                payload,
-                RuntimeMode,
-                BuildActionContext(ActionIdSetCredits));
-            Status = BuildCreditsStatusMessage(value, result);
+            var result = await ExecuteSetCreditsAsync(payload);
+            var diagnosticsSuffix = BuildDiagnosticsStatusSuffix(result);
+
+            if (!result.Succeeded)
+            {
+                Status = $"✗ Credits: {result.Message}{diagnosticsSuffix}";
+                return;
+            }
+
+            ApplyCreditsSuccessStatus(value, ResolveCreditsStateTag(result), diagnosticsSuffix);
         }
         catch (Exception ex)
         {
@@ -2425,55 +2614,60 @@ public sealed class MainViewModel : INotifyPropertyChanged
         }
     }
 
-    private bool TryParseCreditsValue(out int value)
+    private bool TryGetCreditsValue(out int value)
     {
-        if (!int.TryParse(CreditsValue, out value) || value < 0)
+        if (int.TryParse(CreditsValue, out value) && value >= 0)
         {
-            Status = "✗ Invalid credits value. Enter a positive whole number.";
+            return true;
+        }
+
+        Status = "✗ Invalid credits value. Enter a positive whole number.";
+        value = 0;
+        return false;
+    }
+
+    private async Task<bool> EnsureCreditsActionReadyAsync()
+    {
+        if (!_runtime.IsAttached || string.IsNullOrWhiteSpace(SelectedProfileId))
+        {
+            Status = "✗ Not attached to game.";
             return false;
         }
 
-        return true;
+        return await EnsureActionAvailableForCurrentSessionAsync("set_credits", "Credits");
     }
 
-    private void ResetCreditsFreezeState()
+    private void ResetCreditsFreeze()
     {
-        if (_freezeService.IsFrozen(SymbolCredits))
+        if (_freezeService.IsFrozen("credits"))
         {
-            _freezeService.Unfreeze(SymbolCredits);
+            _freezeService.Unfreeze("credits");
         }
     }
 
-    private JsonObject BuildCreditsPayload(int value)
+    private static JsonObject BuildCreditsPayload(int value, bool lockCredits)
     {
         return new JsonObject
         {
-            [PayloadKeySymbol] = SymbolCredits,
-            [PayloadKeyIntValue] = value,
-            ["lockCredits"] = CreditsFreeze
+            ["symbol"] = "credits",
+            ["intValue"] = value,
+            ["lockCredits"] = lockCredits
         };
     }
 
-    private string BuildCreditsStatusMessage(int value, ActionExecutionResult result)
+    private async Task<ActionExecutionResult> ExecuteSetCreditsAsync(JsonObject payload)
     {
-        var diagnosticsSuffix = BuildDiagnosticsStatusSuffix(result);
-        if (!result.Succeeded)
-        {
-            return $"✗ Credits: {result.Message}{diagnosticsSuffix}";
-        }
-
-        var stateTag = ResolveCreditsStateTag(result.Diagnostics);
-        if (CreditsFreeze)
-        {
-            return BuildFreezeCreditsStatus(value, stateTag, diagnosticsSuffix);
-        }
-
-        return BuildOneShotCreditsStatus(value, stateTag, diagnosticsSuffix);
+        return await _orchestrator.ExecuteAsync(
+            SelectedProfileId!,
+            "set_credits",
+            payload,
+            RuntimeMode,
+            BuildActionContext("set_credits"));
     }
 
-    private string ResolveCreditsStateTag(IReadOnlyDictionary<string, object?>? diagnostics)
+    private string ResolveCreditsStateTag(ActionExecutionResult result)
     {
-        var stateTag = ReadDiagnosticString(diagnostics, "creditsStateTag");
+        var stateTag = ReadDiagnosticString(result.Diagnostics, "creditsStateTag");
         if (!string.IsNullOrWhiteSpace(stateTag))
         {
             return stateTag;
@@ -2482,23 +2676,41 @@ public sealed class MainViewModel : INotifyPropertyChanged
         return CreditsFreeze ? "HOOK_LOCK" : "HOOK_ONESHOT";
     }
 
-    private string BuildFreezeCreditsStatus(int value, string stateTag, string diagnosticsSuffix)
+    private void ApplyCreditsSuccessStatus(int value, string stateTag, string diagnosticsSuffix)
+    {
+        if (CreditsFreeze)
+        {
+            ApplyCreditsLockStatus(value, stateTag, diagnosticsSuffix);
+            return;
+        }
+
+        ApplyCreditsOneShotStatus(value, stateTag, diagnosticsSuffix);
+    }
+
+    private void ApplyCreditsLockStatus(int value, string stateTag, string diagnosticsSuffix)
     {
         if (!stateTag.Equals("HOOK_LOCK", StringComparison.OrdinalIgnoreCase))
         {
-            return $"✗ Credits: unexpected state '{stateTag}' for lock mode.{diagnosticsSuffix}";
+            Status = $"✗ Credits: unexpected state '{stateTag}' for lock mode.{diagnosticsSuffix}";
+            return;
         }
 
-        _freezeService.FreezeInt(SymbolCredits, value);
+        // Hook lock is active — the cave code forces the float every frame.
+        // Register with freeze service only for UI/diagnostics visibility.
+        _freezeService.FreezeInt("credits", value);
         RefreshActiveFreezes();
-        return $"✓ [HOOK_LOCK] Credits locked to {value:N0} (float+int hook active){diagnosticsSuffix}";
+        Status = $"✓ [HOOK_LOCK] Credits locked to {value:N0} (float+int hook active){diagnosticsSuffix}";
     }
 
-    private static string BuildOneShotCreditsStatus(int value, string stateTag, string diagnosticsSuffix)
+    private void ApplyCreditsOneShotStatus(int value, string stateTag, string diagnosticsSuffix)
     {
-        return stateTag.Equals("HOOK_ONESHOT", StringComparison.OrdinalIgnoreCase)
-            ? $"✓ [HOOK_ONESHOT] Credits set to {value:N0} (float+int sync){diagnosticsSuffix}"
-            : $"✗ Credits: unexpected state '{stateTag}' for one-shot mode.{diagnosticsSuffix}";
+        if (!stateTag.Equals("HOOK_ONESHOT", StringComparison.OrdinalIgnoreCase))
+        {
+            Status = $"✗ Credits: unexpected state '{stateTag}' for one-shot mode.{diagnosticsSuffix}";
+            return;
+        }
+
+        Status = $"✓ [HOOK_ONESHOT] Credits set to {value:N0} (float+int sync){diagnosticsSuffix}";
     }
 
     private static string ReadDiagnosticString(IReadOnlyDictionary<string, object?>? diagnostics, string key)
@@ -2518,55 +2730,55 @@ public sealed class MainViewModel : INotifyPropertyChanged
 
     private Task QuickFreezeTimerAsync()
     {
-        var currentValue = !_activeToggles.Contains(SymbolGameTimerFreeze);
-        return QuickRunActionAsync(ActionIdFreezeTimer,
-            new JsonObject { [PayloadKeySymbol] = SymbolGameTimerFreeze, [PayloadKeyBoolValue] = currentValue },
-            SymbolGameTimerFreeze);
+        var currentValue = !_activeToggles.Contains("game_timer_freeze");
+        return QuickRunActionAsync("freeze_timer",
+            new JsonObject { ["symbol"] = "game_timer_freeze", ["boolValue"] = currentValue },
+            "game_timer_freeze");
     }
 
     private Task QuickToggleFogAsync()
     {
-        var currentValue = !_activeToggles.Contains(SymbolFogReveal);
-        return QuickRunActionAsync(ActionIdToggleFogReveal,
-            new JsonObject { [PayloadKeySymbol] = SymbolFogReveal, [PayloadKeyBoolValue] = currentValue },
-            SymbolFogReveal);
+        var currentValue = !_activeToggles.Contains("fog_reveal");
+        return QuickRunActionAsync("toggle_fog_reveal",
+            new JsonObject { ["symbol"] = "fog_reveal", ["boolValue"] = currentValue },
+            "fog_reveal");
     }
 
     private Task QuickToggleAiAsync()
     {
         // ai_enabled: toggling to false disables AI, true re-enables
-        var currentValue = _activeToggles.Contains(SymbolAiEnabled); // flip: if active (=disabled), re-enable
-        return QuickRunActionAsync(ActionIdToggleAi,
-            new JsonObject { [PayloadKeySymbol] = SymbolAiEnabled, [PayloadKeyBoolValue] = currentValue },
-            SymbolAiEnabled);
+        var currentValue = _activeToggles.Contains("ai_enabled"); // flip: if active (=disabled), re-enable
+        return QuickRunActionAsync("toggle_ai",
+            new JsonObject { ["symbol"] = "ai_enabled", ["boolValue"] = currentValue },
+            "ai_enabled");
     }
 
     private Task QuickInstantBuildAsync()
     {
         var enable = !_activeToggles.Contains("instant_build_nop");
         return QuickRunActionAsync("toggle_instant_build_patch",
-            new JsonObject { [PayloadKeyEnable] = enable },
+            new JsonObject { ["enable"] = enable },
             "instant_build_nop");
     }
 
     private Task QuickUnitCapAsync()
-        => QuickRunActionAsync(ActionIdSetUnitCap,
-            new JsonObject { [PayloadKeySymbol] = "unit_cap", [PayloadKeyIntValue] = 99999, [PayloadKeyEnable] = true });
+        => QuickRunActionAsync("set_unit_cap",
+            new JsonObject { ["symbol"] = "unit_cap", ["intValue"] = 99999, ["enable"] = true });
 
     private Task QuickGodModeAsync()
     {
-        var currentValue = !_activeToggles.Contains(SymbolTacticalGodMode);
-        return QuickRunActionAsync(ActionIdToggleTacticalGodMode,
-            new JsonObject { [PayloadKeySymbol] = SymbolTacticalGodMode, [PayloadKeyBoolValue] = currentValue },
-            SymbolTacticalGodMode);
+        var currentValue = !_activeToggles.Contains("tactical_god_mode");
+        return QuickRunActionAsync("toggle_tactical_god_mode",
+            new JsonObject { ["symbol"] = "tactical_god_mode", ["boolValue"] = currentValue },
+            "tactical_god_mode");
     }
 
     private Task QuickOneHitAsync()
     {
-        var currentValue = !_activeToggles.Contains(SymbolTacticalOneHitMode);
-        return QuickRunActionAsync(ActionIdToggleTacticalOneHitMode,
-            new JsonObject { [PayloadKeySymbol] = SymbolTacticalOneHitMode, [PayloadKeyBoolValue] = currentValue },
-            SymbolTacticalOneHitMode);
+        var currentValue = !_activeToggles.Contains("tactical_one_hit_mode");
+        return QuickRunActionAsync("toggle_tactical_one_hit_mode",
+            new JsonObject { ["symbol"] = "tactical_one_hit_mode", ["boolValue"] = currentValue },
+            "tactical_one_hit_mode");
     }
 
     private Task QuickUnfreezeAllAsync()
@@ -2580,13 +2792,8 @@ public sealed class MainViewModel : INotifyPropertyChanged
 
     private void RefreshActiveFreezes()
     {
-        if (!_freezeUiTimer.IsEnabled)
-        {
-            _freezeUiTimer.Start();
-        }
-
         ActiveFreezes.Clear();
-        foreach (var symbol in _freezeService.GetFrozenSymbols())
+        foreach (var symbol in _freezeService.FrozenSymbols)
         {
             ActiveFreezes.Add($"❄️ {symbol}");
         }
@@ -2600,7 +2807,7 @@ public sealed class MainViewModel : INotifyPropertyChanged
         }
     }
 
-    private static string HotkeyFilePath => TrustedPathPolicy.CombineUnderRoot(
+    private string HotkeyFilePath => TrustedPathPolicy.CombineUnderRoot(
         TrustedPathPolicy.GetOrCreateAppDataRoot(),
         "hotkeys.json");
 
@@ -2611,11 +2818,11 @@ public sealed class MainViewModel : INotifyPropertyChanged
         TrustedPathPolicy.EnsureSubPath(TrustedPathPolicy.GetOrCreateAppDataRoot(), path);
         if (!File.Exists(path))
         {
-            Hotkeys.Add(new HotkeyBindingItem { Gesture = "Ctrl+Shift+1", ActionId = ActionIdSetCredits, PayloadJson = "{\"symbol\":\"credits\",\"intValue\":1000000,\"lockCredits\":false}" });
-            Hotkeys.Add(new HotkeyBindingItem { Gesture = "Ctrl+Shift+2", ActionId = ActionIdFreezeTimer, PayloadJson = "{\"symbol\":\"game_timer_freeze\",\"boolValue\":true}" });
-            Hotkeys.Add(new HotkeyBindingItem { Gesture = "Ctrl+Shift+3", ActionId = ActionIdToggleFogReveal, PayloadJson = "{\"symbol\":\"fog_reveal\",\"boolValue\":true}" });
+            Hotkeys.Add(new HotkeyBindingItem { Gesture = "Ctrl+Shift+1", ActionId = "set_credits", PayloadJson = "{\"symbol\":\"credits\",\"intValue\":1000000,\"lockCredits\":false}" });
+            Hotkeys.Add(new HotkeyBindingItem { Gesture = "Ctrl+Shift+2", ActionId = "freeze_timer", PayloadJson = "{\"symbol\":\"game_timer_freeze\",\"boolValue\":true}" });
+            Hotkeys.Add(new HotkeyBindingItem { Gesture = "Ctrl+Shift+3", ActionId = "toggle_fog_reveal", PayloadJson = "{\"symbol\":\"fog_reveal\",\"boolValue\":true}" });
             Hotkeys.Add(new HotkeyBindingItem { Gesture = "Ctrl+Shift+4", ActionId = "toggle_instant_build_patch", PayloadJson = "{\"enable\":true}" });
-            Hotkeys.Add(new HotkeyBindingItem { Gesture = "Ctrl+Shift+5", ActionId = ActionIdFreezeSymbol, PayloadJson = "{\"symbol\":\"credits\",\"freeze\":true,\"intValue\":1000000}" });
+            Hotkeys.Add(new HotkeyBindingItem { Gesture = "Ctrl+Shift+5", ActionId = "freeze_symbol", PayloadJson = "{\"symbol\":\"credits\",\"freeze\":true,\"intValue\":1000000}" });
             Status = "Created default hotkey bindings in memory";
             return;
         }
@@ -2707,14 +2914,14 @@ public sealed class MainViewModel : INotifyPropertyChanged
     {
         return actionId switch
         {
-            ActionIdSetCredits => new JsonObject { [PayloadKeySymbol] = SymbolCredits, [PayloadKeyIntValue] = 1000000, ["lockCredits"] = false },
-            ActionIdFreezeTimer => new JsonObject { [PayloadKeySymbol] = SymbolGameTimerFreeze, [PayloadKeyBoolValue] = true },
-            ActionIdToggleFogReveal => new JsonObject { [PayloadKeySymbol] = SymbolFogReveal, [PayloadKeyBoolValue] = true },
-            ActionIdSetUnitCap => new JsonObject { [PayloadKeySymbol] = "unit_cap", [PayloadKeyIntValue] = 99999, [PayloadKeyEnable] = true },
-            "toggle_instant_build_patch" => new JsonObject { [PayloadKeyEnable] = true },
-            "set_game_speed" => new JsonObject { [PayloadKeySymbol] = "game_speed", ["floatValue"] = (float)2.0 },
-            ActionIdFreezeSymbol => new JsonObject { [PayloadKeySymbol] = SymbolCredits, ["freeze"] = true, [PayloadKeyIntValue] = 1000000 },
-            ActionIdUnfreezeSymbol => new JsonObject { [PayloadKeySymbol] = SymbolCredits, ["freeze"] = false },
+            "set_credits" => new JsonObject { ["symbol"] = "credits", ["intValue"] = 1000000, ["lockCredits"] = false },
+            "freeze_timer" => new JsonObject { ["symbol"] = "game_timer_freeze", ["boolValue"] = true },
+            "toggle_fog_reveal" => new JsonObject { ["symbol"] = "fog_reveal", ["boolValue"] = true },
+            "set_unit_cap" => new JsonObject { ["symbol"] = "unit_cap", ["intValue"] = 99999, ["enable"] = true },
+            "toggle_instant_build_patch" => new JsonObject { ["enable"] = true },
+            "set_game_speed" => new JsonObject { ["symbol"] = "game_speed", ["floatValue"] = (float)2.0 },
+            "freeze_symbol" => new JsonObject { ["symbol"] = "credits", ["freeze"] = true, ["intValue"] = 1000000 },
+            "unfreeze_symbol" => new JsonObject { ["symbol"] = "credits", ["freeze"] = false },
             _ => new JsonObject()
         };
     }

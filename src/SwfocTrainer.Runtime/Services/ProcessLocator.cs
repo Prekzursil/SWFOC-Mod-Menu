@@ -13,8 +13,6 @@ namespace SwfocTrainer.Runtime.Services;
 
 public sealed class ProcessLocator : IProcessLocator
 {
-    private static readonly TimeSpan RegexMatchTimeout = TimeSpan.FromMilliseconds(250);
-
     private readonly ILaunchContextResolver _launchContextResolver;
     private readonly IProfileRepository? _profileRepository;
 
@@ -53,95 +51,13 @@ public sealed class ProcessLocator : IProcessLocator
 
         foreach (var process in Process.GetProcesses())
         {
-            string path;
-            var mainModuleSize = 0;
-            try
-            {
-                var mainModule = process.MainModule;
-                path = mainModule?.FileName ?? string.Empty;
-                mainModuleSize = mainModule?.ModuleMemorySize ?? 0;
-            }
-            catch
-            {
-                path = string.Empty;
-            }
-
-            string? commandLine = null;
-            if (wmiByPid.TryGetValue(process.Id, out var wmi))
-            {
-                commandLine = wmi.CommandLine;
-                if (string.IsNullOrWhiteSpace(path))
-                {
-                    path = wmi.ExecutablePath ?? string.Empty;
-                }
-            }
-
-            // Last-resort per-process WMI query only when bulk query didn't provide data.
-            commandLine ??= TryGetCommandLine(process.Id);
-
-            var detection = GetProcessDetection(process.ProcessName, path, commandLine);
-            if (detection.ExeTarget == ExeTarget.Unknown)
+            var metadata = TryBuildProcessMetadata(process, wmiByPid, profiles);
+            if (metadata is null)
             {
                 continue;
             }
 
-            var mode = InferMode(commandLine);
-            var steamModIds = ExtractSteamModIds(commandLine);
-            var modPathRaw = ExtractModPath(commandLine);
-            var hostRole = DetermineHostRole(detection);
-            var metadata = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
-            {
-                ["targetHint"] = detection.ExeTarget.ToString(),
-                ["hasModPath"] = (!string.IsNullOrWhiteSpace(modPathRaw)).ToString(),
-                ["hasSteamMod"] = (steamModIds.Length > 0).ToString(),
-                ["detectedVia"] = detection.DetectedVia,
-                ["commandLineAvailable"] = (!string.IsNullOrWhiteSpace(commandLine)).ToString(),
-                ["isStarWarsG"] = detection.IsStarWarsG.ToString(),
-                ["steamModIdsDetected"] = steamModIds.Length == 0 ? string.Empty : string.Join(",", steamModIds),
-                ["hostRole"] = hostRole.ToString().ToLowerInvariant(),
-                ["mainModuleSize"] = mainModuleSize.ToString(),
-                ["workshopMatchCount"] = steamModIds.Length.ToString(),
-                ["selectionScore"] = "0.00"
-            };
-
-            var provisional = new ProcessMetadata(
-                process.Id,
-                process.ProcessName,
-                path,
-                commandLine,
-                detection.ExeTarget,
-                mode,
-                metadata,
-                HostRole: hostRole,
-                MainModuleSize: mainModuleSize,
-                WorkshopMatchCount: steamModIds.Length,
-                SelectionScore: 0d);
-            var launchContext = _launchContextResolver.Resolve(provisional, profiles);
-            metadata["launchKind"] = launchContext.LaunchKind.ToString();
-            metadata["modPathRaw"] = launchContext.ModPathRaw ?? string.Empty;
-            metadata["modPathNormalized"] = launchContext.ModPathNormalized ?? string.Empty;
-            metadata["profileRecommendation"] = launchContext.Recommendation.ProfileId ?? string.Empty;
-            metadata["recommendationReason"] = launchContext.Recommendation.ReasonCode;
-            metadata["recommendationConfidence"] = launchContext.Recommendation.Confidence.ToString("0.00");
-            metadata["hasModPath"] = (!string.IsNullOrWhiteSpace(launchContext.ModPathNormalized)).ToString();
-            metadata["hasSteamMod"] = (launchContext.SteamModIds.Count > 0).ToString();
-            metadata["steamModIdsDetected"] = launchContext.SteamModIds.Count == 0
-                ? string.Empty
-                : string.Join(",", launchContext.SteamModIds);
-
-            list.Add(new ProcessMetadata(
-                process.Id,
-                process.ProcessName,
-                path,
-                commandLine,
-                detection.ExeTarget,
-                mode,
-                metadata,
-                launchContext,
-                hostRole,
-                mainModuleSize,
-                steamModIds.Length,
-                0d));
+            list.Add(metadata);
         }
 
         return list;
@@ -181,24 +97,15 @@ public sealed class ProcessLocator : IProcessLocator
 
     private static ProcessDetection GetProcessDetection(string processName, string? processPath, string? commandLine)
     {
-        if (IsSweawProcess(processName, processPath, commandLine))
+        if (TryDetectDirectTarget(processName, processPath, commandLine, out var directDetection))
         {
-            return new ProcessDetection(ExeTarget.Sweaw, IsStarWarsG: false, DetectedVia: "name_or_path_sweaw");
+            return directDetection;
         }
 
-        if (IsSwfocProcess(processName, processPath, commandLine))
+        var starWarsGDetection = TryDetectStarWarsG(processName, processPath, commandLine);
+        if (starWarsGDetection is not null)
         {
-            return new ProcessDetection(ExeTarget.Swfoc, IsStarWarsG: false, DetectedVia: "name_or_path_swfoc");
-        }
-
-        // Steam x64 "Gold Pack" typically launches StarWarsG.exe instead of sweaw/swfoc exes.
-        // Infer family from folder/launch args. Prefer FoC-safe defaults because most trainer use
-        // in this project targets FoC/modded FoC and command line is sometimes unavailable.
-        // - corruption folder or mod args => FoC runtime
-        // - ambiguous/no args => FoC-safe fallback
-        if (IsStarWarsGProcess(processName, processPath, commandLine))
-        {
-            return DetectStarWarsGProcess(processPath, commandLine);
+            return starWarsGDetection;
         }
 
         // Heuristic for modded FoC launches where the process name/path can be atypical
@@ -211,29 +118,170 @@ public sealed class ProcessLocator : IProcessLocator
         return new ProcessDetection(ExeTarget.Unknown, IsStarWarsG: false, DetectedVia: "unknown");
     }
 
-    private static bool IsSweawProcess(string processName, string? processPath, string? commandLine)
+    private ProcessMetadata? TryBuildProcessMetadata(
+        Process process,
+        IReadOnlyDictionary<int, WmiProcessInfo> wmiByPid,
+        IReadOnlyList<TrainerProfile> profiles)
     {
-        return IsProcessName(processName, "sweaw") ||
-               ContainsToken(processPath, "sweaw.exe") ||
-               ContainsToken(commandLine, "sweaw.exe");
+        var probe = CaptureProcessProbe(process, wmiByPid);
+        var detection = GetProcessDetection(process.ProcessName, probe.Path, probe.CommandLine);
+        if (detection.ExeTarget == ExeTarget.Unknown)
+        {
+            return null;
+        }
+
+        var mode = InferMode(probe.CommandLine);
+        var steamModIds = ExtractSteamModIds(probe.CommandLine);
+        var hostRole = DetermineHostRole(detection);
+        var metadata = BuildBaseMetadata(detection, probe.CommandLine, probe.MainModuleSize, hostRole, steamModIds, ExtractModPath(probe.CommandLine));
+        var provisional = BuildProcessMetadata(process, probe, detection, mode, metadata, null, hostRole, steamModIds.Length);
+        var launchContext = _launchContextResolver.Resolve(provisional, profiles);
+        ApplyLaunchContextMetadata(metadata, launchContext);
+
+        return BuildProcessMetadata(process, probe, detection, mode, metadata, launchContext, hostRole, steamModIds.Length);
     }
 
-    private static bool IsSwfocProcess(string processName, string? processPath, string? commandLine)
+    private static ProcessProbe CaptureProcessProbe(Process process, IReadOnlyDictionary<int, WmiProcessInfo> wmiByPid)
     {
-        return IsProcessName(processName, "swfoc") ||
-               ContainsToken(processPath, "swfoc.exe") ||
-               ContainsToken(commandLine, "swfoc.exe");
+        var path = string.Empty;
+        var mainModuleSize = 0;
+        try
+        {
+            var mainModule = process.MainModule;
+            path = mainModule?.FileName ?? string.Empty;
+            mainModuleSize = mainModule?.ModuleMemorySize ?? 0;
+        }
+        catch
+        {
+            path = string.Empty;
+        }
+
+        var commandLine = TryReadCommandLine(process.Id, wmiByPid, ref path);
+        return new ProcessProbe(path, commandLine, mainModuleSize);
     }
 
-    private static bool IsStarWarsGProcess(string processName, string? processPath, string? commandLine)
+    private static string? TryReadCommandLine(
+        int processId,
+        IReadOnlyDictionary<int, WmiProcessInfo> wmiByPid,
+        ref string path)
     {
-        return IsProcessName(processName, "starwarsg") ||
-               ContainsToken(processPath, "starwarsg.exe") ||
-               ContainsToken(commandLine, "starwarsg.exe");
+        if (wmiByPid.TryGetValue(processId, out var wmi))
+        {
+            if (string.IsNullOrWhiteSpace(path))
+            {
+                path = wmi.ExecutablePath ?? string.Empty;
+            }
+
+            if (!string.IsNullOrWhiteSpace(wmi.CommandLine))
+            {
+                return wmi.CommandLine;
+            }
+        }
+
+        // Last-resort per-process WMI query only when bulk query didn't provide data.
+        return TryGetCommandLine(processId);
     }
 
-    private static ProcessDetection DetectStarWarsGProcess(string? processPath, string? commandLine)
+    private static Dictionary<string, string> BuildBaseMetadata(
+        ProcessDetection detection,
+        string? commandLine,
+        int mainModuleSize,
+        ProcessHostRole hostRole,
+        IReadOnlyCollection<string> steamModIds,
+        string? modPathRaw)
     {
+        return new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
+        {
+            ["targetHint"] = detection.ExeTarget.ToString(),
+            ["hasModPath"] = (!string.IsNullOrWhiteSpace(modPathRaw)).ToString(),
+            ["hasSteamMod"] = (steamModIds.Count > 0).ToString(),
+            ["detectedVia"] = detection.DetectedVia,
+            ["commandLineAvailable"] = (!string.IsNullOrWhiteSpace(commandLine)).ToString(),
+            ["isStarWarsG"] = detection.IsStarWarsG.ToString(),
+            ["steamModIdsDetected"] = steamModIds.Count == 0 ? string.Empty : string.Join(",", steamModIds),
+            ["hostRole"] = hostRole.ToString().ToLowerInvariant(),
+            ["mainModuleSize"] = mainModuleSize.ToString(),
+            ["workshopMatchCount"] = steamModIds.Count.ToString(),
+            ["selectionScore"] = "0.00"
+        };
+    }
+
+    private static ProcessMetadata BuildProcessMetadata(
+        Process process,
+        ProcessProbe probe,
+        ProcessDetection detection,
+        RuntimeMode mode,
+        IReadOnlyDictionary<string, string> metadata,
+        LaunchContext? launchContext,
+        ProcessHostRole hostRole,
+        int workshopMatchCount)
+    {
+        return new ProcessMetadata(
+            process.Id,
+            process.ProcessName,
+            probe.Path,
+            probe.CommandLine,
+            detection.ExeTarget,
+            mode,
+            metadata,
+            launchContext,
+            hostRole,
+            probe.MainModuleSize,
+            workshopMatchCount,
+            0d);
+    }
+
+    private static void ApplyLaunchContextMetadata(IDictionary<string, string> metadata, LaunchContext launchContext)
+    {
+        metadata["launchKind"] = launchContext.LaunchKind.ToString();
+        metadata["modPathRaw"] = launchContext.ModPathRaw ?? string.Empty;
+        metadata["modPathNormalized"] = launchContext.ModPathNormalized ?? string.Empty;
+        metadata["profileRecommendation"] = launchContext.Recommendation.ProfileId ?? string.Empty;
+        metadata["recommendationReason"] = launchContext.Recommendation.ReasonCode;
+        metadata["recommendationConfidence"] = launchContext.Recommendation.Confidence.ToString("0.00");
+        metadata["hasModPath"] = (!string.IsNullOrWhiteSpace(launchContext.ModPathNormalized)).ToString();
+        metadata["hasSteamMod"] = (launchContext.SteamModIds.Count > 0).ToString();
+        metadata["steamModIdsDetected"] = launchContext.SteamModIds.Count == 0
+            ? string.Empty
+            : string.Join(",", launchContext.SteamModIds);
+    }
+
+    private static bool TryDetectDirectTarget(
+        string processName,
+        string? processPath,
+        string? commandLine,
+        out ProcessDetection detection)
+    {
+        if (IsProcessName(processName, "sweaw") || ContainsToken(processPath, "sweaw.exe") || ContainsToken(commandLine, "sweaw.exe"))
+        {
+            detection = new ProcessDetection(ExeTarget.Sweaw, IsStarWarsG: false, DetectedVia: "name_or_path_sweaw");
+            return true;
+        }
+
+        if (IsProcessName(processName, "swfoc") || ContainsToken(processPath, "swfoc.exe") || ContainsToken(commandLine, "swfoc.exe"))
+        {
+            detection = new ProcessDetection(ExeTarget.Swfoc, IsStarWarsG: false, DetectedVia: "name_or_path_swfoc");
+            return true;
+        }
+
+        detection = new ProcessDetection(ExeTarget.Unknown, IsStarWarsG: false, DetectedVia: "unknown");
+        return false;
+    }
+
+    private static ProcessDetection? TryDetectStarWarsG(string processName, string? processPath, string? commandLine)
+    {
+        // Steam x64 "Gold Pack" typically launches StarWarsG.exe instead of sweaw/swfoc exes.
+        // Infer family from folder/launch args. Prefer FoC-safe defaults because most trainer use
+        // in this project targets FoC/modded FoC and command line is sometimes unavailable.
+        // - corruption folder or mod args => FoC runtime
+        // - ambiguous/no args => FoC-safe fallback
+        if (!IsProcessName(processName, "starwarsg") &&
+            !ContainsToken(processPath, "starwarsg.exe") &&
+            !ContainsToken(commandLine, "starwarsg.exe"))
+        {
+            return null;
+        }
+
         if (ContainsToken(commandLine, "sweaw.exe") && !ContainsToken(commandLine, "steammod=") && !ContainsToken(commandLine, "modpath="))
         {
             return new ProcessDetection(ExeTarget.Sweaw, IsStarWarsG: true, DetectedVia: "starwarsg_cmdline_sweaw_hint");
@@ -299,8 +347,6 @@ public sealed class ProcessLocator : IProcessLocator
         {
             // ignored, command line can be unavailable if permissions are insufficient.
         }
-#else
-        _ = processId;
 #endif
         return null;
     }
@@ -331,25 +377,21 @@ public sealed class ProcessLocator : IProcessLocator
         }
 
         var ids = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
-        var steamModGroups = Regex
-            .Matches(commandLine, @"steammod\s*=\s*(\d+)", RegexOptions.IgnoreCase, RegexMatchTimeout)
-            .Select(match => match.Groups)
-            .Where(groups => groups.Count > 1 && !string.IsNullOrWhiteSpace(groups[1].Value))
-            .Select(groups => groups[1].Value);
-        foreach (var id in steamModGroups)
+        foreach (Match match in Regex.Matches(commandLine, @"steammod\s*=\s*(\d+)", RegexOptions.IgnoreCase))
         {
-            ids.Add(id);
+            if (match.Groups.Count > 1 && !string.IsNullOrWhiteSpace(match.Groups[1].Value))
+            {
+                ids.Add(match.Groups[1].Value);
+            }
         }
 
         // Also infer IDs from mod paths containing workshop content folder segments.
-        var workshopPathGroups = Regex
-            .Matches(commandLine, @"[\\/]+32470[\\/]+(\d+)", RegexOptions.IgnoreCase, RegexMatchTimeout)
-            .Select(match => match.Groups)
-            .Where(groups => groups.Count > 1 && !string.IsNullOrWhiteSpace(groups[1].Value))
-            .Select(groups => groups[1].Value);
-        foreach (var id in workshopPathGroups)
+        foreach (Match match in Regex.Matches(commandLine, @"[\\/]+32470[\\/]+(\d+)", RegexOptions.IgnoreCase))
         {
-            ids.Add(id);
+            if (match.Groups.Count > 1 && !string.IsNullOrWhiteSpace(match.Groups[1].Value))
+            {
+                ids.Add(match.Groups[1].Value);
+            }
         }
 
         return ids.OrderBy(x => x, StringComparer.Ordinal).ToArray();
@@ -377,8 +419,7 @@ public sealed class ProcessLocator : IProcessLocator
         var match = Regex.Match(
             commandLine,
             @"modpath\s*=\s*(?:""(?<quoted>[^""]+)""|(?<unquoted>[^\s]+))",
-            RegexOptions.IgnoreCase,
-            RegexMatchTimeout);
+            RegexOptions.IgnoreCase);
         if (!match.Success)
         {
             return null;
@@ -476,5 +517,6 @@ public sealed class ProcessLocator : IProcessLocator
 #endif
 
     private sealed record WmiProcessInfo(string? CommandLine, string? ExecutablePath);
+    private sealed record ProcessProbe(string Path, string? CommandLine, int MainModuleSize);
     private sealed record ProcessDetection(ExeTarget ExeTarget, bool IsStarWarsG, string DetectedVia);
 }
