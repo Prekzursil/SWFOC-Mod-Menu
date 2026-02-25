@@ -32,6 +32,13 @@ class ProfileInfo:
     metadata: dict[str, str]
 
 
+EXE_HINT_MATCHERS: tuple[tuple[str, tuple[str, ...]], ...] = (
+    ("sweaw", ("sweaw", "sweaw.exe")),
+    ("swfoc", ("swfoc", "swfoc.exe")),
+    ("starwarsg", ("starwarsg", "starwarsg.exe")),
+)
+
+
 def normalize_token(value: str | None) -> str | None:
     if not value:
         return None
@@ -102,16 +109,27 @@ def infer_launch_kind(steam_ids: list[str], modpath_norm: str | None, exe_hint: 
     return "Unknown"
 
 
+def _text_or_empty(value: str | None) -> str:
+    return (value or "").lower()
+
+
+def _contains_any_token(haystack: str, needles: tuple[str, ...]) -> bool:
+    return any(needle in haystack for needle in needles)
+
+
+def _matches_exe_hint(fields: tuple[str, str, str], needles: tuple[str, ...]) -> bool:
+    return any(_contains_any_token(field, needles) for field in fields)
+
+
 def detect_exe_hint(process_name: str | None, process_path: str | None, command_line: str | None) -> str:
-    name = (process_name or "").lower()
-    path = (process_path or "").lower()
-    cmd = (command_line or "").lower()
-    if "sweaw" in name or "sweaw.exe" in path or "sweaw.exe" in cmd:
-        return "sweaw"
-    if "swfoc" in name or "swfoc.exe" in path or "swfoc.exe" in cmd:
-        return "swfoc"
-    if "starwarsg" in name or "starwarsg.exe" in path or "starwarsg.exe" in cmd:
-        return "starwarsg"
+    fields = (
+        _text_or_empty(process_name),
+        _text_or_empty(process_path),
+        _text_or_empty(command_line),
+    )
+    for exe_hint, needles in EXE_HINT_MATCHERS:
+        if _matches_exe_hint(fields, needles):
+            return exe_hint
     return "unknown"
 
 
@@ -302,7 +320,7 @@ def detect_one(process_input: dict[str, Any], profiles: dict[str, ProfileInfo]) 
     }
 
 
-def main() -> int:
+def _parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="Detect SWFOC launch context and profile recommendation")
     parser.add_argument("--command-line", dest="command_line", default=None)
     parser.add_argument("--process-name", dest="process_name", default=None)
@@ -310,51 +328,78 @@ def main() -> int:
     parser.add_argument("--profile-root", default="profiles/default")
     parser.add_argument("--from-process-json", dest="from_process_json", default=None)
     parser.add_argument("--pretty", action="store_true")
-    args = parser.parse_args()
+    return parser.parse_args()
 
+
+def _load_profiles_or_none(profile_root: str) -> dict[str, ProfileInfo] | None:
     try:
-        profiles = load_profiles(Path(args.profile_root))
+        return load_profiles(Path(profile_root))
     except Exception as exc:
         print(f"profile-load-error: {exc}", file=sys.stderr)
+        return None
+
+
+def _load_cases_payload(input_path: str) -> dict[str, Any] | None:
+    try:
+        with open(input_path, "r", encoding="utf-8") as f:
+            payload = json.load(f)
+    except Exception as exc:
+        print(f"input-read-error: {exc}", file=sys.stderr)
+        return None
+
+    cases = payload.get("cases") if isinstance(payload, dict) else None
+    if not isinstance(cases, list):
+        print("invalid-input: expected JSON object with 'cases' array", file=sys.stderr)
+        return None
+    return payload
+
+
+def _build_multi_case_output(payload: dict[str, Any], profiles: dict[str, ProfileInfo]) -> dict[str, Any]:
+    cases = payload.get("cases", [])
+    results = [detect_one(case if isinstance(case, dict) else {}, profiles) for case in cases]
+    return {
+        "schemaVersion": SCHEMA_VERSION,
+        "generatedAtUtc": dt.datetime.now(dt.timezone.utc).isoformat(),
+        "results": results,
+    }
+
+
+def _single_process_input(args: argparse.Namespace) -> dict[str, str | None]:
+    return {
+        "processName": args.process_name,
+        "processPath": args.process_path,
+        "commandLine": args.command_line,
+    }
+
+
+def _emit_json(output: Any, pretty: bool) -> None:
+    if pretty:
+        print(json.dumps(output, indent=2, ensure_ascii=True))
+    else:
+        print(json.dumps(output, separators=(",", ":"), ensure_ascii=True))
+
+
+def main() -> int:
+    args = _parse_args()
+    profiles = _load_profiles_or_none(args.profile_root)
+    if profiles is None:
         return 3
 
     if args.from_process_json:
-        try:
-            with open(args.from_process_json, "r", encoding="utf-8") as f:
-                payload = json.load(f)
-        except Exception as exc:
-            print(f"input-read-error: {exc}", file=sys.stderr)
+        payload = _load_cases_payload(args.from_process_json)
+        if payload is None:
             return 2
 
-        cases = payload.get("cases") if isinstance(payload, dict) else None
-        if not isinstance(cases, list):
-            print("invalid-input: expected JSON object with 'cases' array", file=sys.stderr)
-            return 2
-
-        results = [detect_one(case if isinstance(case, dict) else {}, profiles) for case in cases]
-        output: Any = {
-            "schemaVersion": SCHEMA_VERSION,
-            "generatedAtUtc": dt.datetime.now(dt.timezone.utc).isoformat(),
-            "results": results,
-        }
+        output: Any = _build_multi_case_output(payload, profiles)
     else:
-        process_input = {
-            "processName": args.process_name,
-            "processPath": args.process_path,
-            "commandLine": args.command_line,
-        }
-
+        process_input = _single_process_input(args)
         if not any(process_input.values()):
             print("invalid-input: provide --from-process-json or process fields", file=sys.stderr)
             return 2
 
         output = detect_one(process_input, profiles)
 
-    if args.pretty:
-        print(json.dumps(output, indent=2, ensure_ascii=True))
-    else:
-        print(json.dumps(output, separators=(",", ":"), ensure_ascii=True))
-
+    _emit_json(output, args.pretty)
     return 0
 
 

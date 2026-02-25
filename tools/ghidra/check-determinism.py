@@ -10,11 +10,58 @@ from __future__ import annotations
 
 import argparse
 import json
-import subprocess
+import os
+import sys
 from pathlib import Path
 
 REASON_CODE_DETERMINISM_MISMATCH = "GHIDRA_DETERMINISM_MISMATCH"
 REASON_CODE_OK = "GHIDRA_DETERMINISM_PASS"
+EXPECTED_EMITTER_NAME = "emit-symbol-pack.py"
+EXPECTED_EMITTER_FLAGS = (
+    "--raw-symbols",
+    "--binary-path",
+    "--analysis-run-id",
+    "--output-pack",
+    "--output-summary",
+)
+
+
+def _validate_arg_text(value: str, label: str) -> str:
+    if not value or "\x00" in value:
+        raise ValueError(f"invalid-command-arg: {label}")
+    return value
+
+
+def _validated_path_text(path: Path, label: str, *, must_exist: bool) -> str:
+    resolved = path.resolve()
+    if must_exist and not resolved.exists():
+        raise FileNotFoundError(f"missing-path: {label}: {resolved}")
+    return _validate_arg_text(str(resolved), label)
+
+
+def _trusted_python_executable() -> str:
+    return _validated_path_text(Path(sys.executable), "python_executable", must_exist=True)
+
+
+def _trusted_emitter_path(emitter_path: Path) -> str:
+    resolved = emitter_path.resolve()
+    if resolved.name != EXPECTED_EMITTER_NAME:
+        raise ValueError(f"unexpected-emitter-script: {resolved}")
+    return _validated_path_text(resolved, "emitter_path", must_exist=True)
+
+
+def _validate_emitter_command(command: tuple[str, ...]) -> None:
+    if len(command) != 12:
+        raise ValueError("invalid-emitter-command-length")
+    if command[2::2] != EXPECTED_EMITTER_FLAGS:
+        raise ValueError("invalid-emitter-command-flags")
+
+
+def _run_checked_command(command: tuple[str, ...]) -> None:
+    _validate_emitter_command(command)
+    exit_code = os.spawnv(os.P_WAIT, command[0], command)
+    if exit_code != 0:
+        raise RuntimeError(f"emitter execution failed with exit code {exit_code}")
 
 
 def _run_emitter(
@@ -25,23 +72,21 @@ def _run_emitter(
     output_pack: Path,
     output_summary: Path,
 ) -> None:
-    subprocess.run(
-        [
-            "python3",
-            str(emitter_path),
-            "--raw-symbols",
-            str(raw_symbols),
-            "--binary-path",
-            str(binary_path),
-            "--analysis-run-id",
-            analysis_run_id,
-            "--output-pack",
-            str(output_pack),
-            "--output-summary",
-            str(output_summary),
-        ],
-        check=True,
+    command = (
+        _trusted_python_executable(),
+        _trusted_emitter_path(emitter_path),
+        "--raw-symbols",
+        _validated_path_text(raw_symbols, "raw_symbols", must_exist=True),
+        "--binary-path",
+        _validated_path_text(binary_path, "binary_path", must_exist=True),
+        "--analysis-run-id",
+        _validate_arg_text(analysis_run_id, "analysis_run_id"),
+        "--output-pack",
+        _validated_path_text(output_pack, "output_pack", must_exist=False),
+        "--output-summary",
+        _validated_path_text(output_summary, "output_summary", must_exist=False),
     )
+    _run_checked_command(command)
 
 
 def _load_json(path: Path) -> dict:
@@ -73,7 +118,7 @@ def _parse_args() -> argparse.Namespace:
 
 def _prepare_paths(args: argparse.Namespace) -> tuple[Path, Path, Path, Path]:
     script_dir = Path(__file__).resolve().parent
-    emitter_path = script_dir / "emit-symbol-pack.py"
+    emitter_path = script_dir / EXPECTED_EMITTER_NAME
     raw_symbols_path = Path(args.raw_symbols).resolve()
     binary_path = Path(args.binary_path).resolve()
     output_dir = Path(args.output_dir).resolve()
