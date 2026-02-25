@@ -277,24 +277,30 @@ public sealed class GitHubProfileUpdateService : IProfileUpdateService
 
         foreach (var entry in archive.Entries)
         {
-            if (string.IsNullOrWhiteSpace(entry.FullName))
+            var normalizedEntryPath = entry.FullName.Replace('\\', '/');
+            if (string.IsNullOrWhiteSpace(normalizedEntryPath))
             {
                 continue;
             }
 
-            if (Path.IsPathRooted(entry.FullName))
+            if (IsDriveQualifiedPath(normalizedEntryPath))
+            {
+                throw new InvalidDataException($"Archive entry uses drive-qualified path: {entry.FullName}");
+            }
+
+            if (Path.IsPathRooted(normalizedEntryPath) || normalizedEntryPath.StartsWith("/", StringComparison.Ordinal))
             {
                 throw new InvalidDataException($"Archive entry uses rooted path: {entry.FullName}");
             }
 
-            var destinationPath = Path.GetFullPath(Path.Combine(extractionRoot, entry.FullName));
+            var relativePath = normalizedEntryPath.Replace('/', Path.DirectorySeparatorChar);
+            var destinationPath = Path.GetFullPath(Path.Combine(extractionRoot, relativePath));
             if (!destinationPath.StartsWith(extractionRootPrefix, StringComparison.OrdinalIgnoreCase))
             {
                 throw new InvalidDataException($"Archive entry escapes extraction root: {entry.FullName}");
             }
 
-            if (entry.FullName.EndsWith("/", StringComparison.Ordinal) ||
-                entry.FullName.EndsWith("\\", StringComparison.Ordinal))
+            if (normalizedEntryPath.EndsWith("/", StringComparison.Ordinal))
             {
                 Directory.CreateDirectory(destinationPath);
                 continue;
@@ -306,9 +312,16 @@ public sealed class GitHubProfileUpdateService : IProfileUpdateService
                 Directory.CreateDirectory(destinationDir);
             }
 
-            entry.ExtractToFile(destinationPath, overwrite: true);
+            using var entryStream = entry.Open();
+            using var outputStream = new FileStream(destinationPath, FileMode.Create, FileAccess.Write, FileShare.None);
+            entryStream.CopyTo(outputStream);
         }
     }
+
+    private static bool IsDriveQualifiedPath(string path)
+        => path.Length >= 2 &&
+           char.IsLetter(path[0]) &&
+           path[1] == ':';
 
     public async Task<ProfileRollbackResult> RollbackLastInstallAsync(string profileId, CancellationToken cancellationToken)
     {
