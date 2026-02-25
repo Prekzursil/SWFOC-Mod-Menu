@@ -57,8 +57,25 @@ def unquote(value: str) -> str:
     return value
 
 
+def strip_inline_comment(value: str) -> str:
+    in_single_quote = False
+    in_double_quote = False
+    for index, char in enumerate(value):
+        if char == "'" and not in_double_quote:
+            in_single_quote = not in_single_quote
+            continue
+        if char == '"' and not in_single_quote:
+            in_double_quote = not in_double_quote
+            continue
+        if char == "#" and not in_single_quote and not in_double_quote:
+            return value[:index].rstrip()
+    return value.strip()
+
+
 def is_top_level_key(line: str, stripped: str) -> bool:
-    if not line.startswith((" ", "\t")) and stripped:
+    if not stripped or stripped.startswith("#"):
+        return False
+    if not line.startswith((" ", "\t")):
         return not stripped.startswith("- ")
     return False
 
@@ -68,7 +85,10 @@ def parse_exclude_item(stripped: str) -> str | None:
         return None
     if not stripped.startswith("- "):
         return None
-    return unquote(stripped[2:].strip())
+    normalized_value = strip_inline_comment(stripped[2:].strip())
+    if not normalized_value:
+        return None
+    return unquote(normalized_value)
 
 
 def parse_exclude_paths(codacy_path: Path) -> list[str]:
