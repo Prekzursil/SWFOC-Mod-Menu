@@ -330,45 +330,80 @@ public sealed class GitHubProfileUpdateService : IProfileUpdateService
 
         foreach (var entry in archive.Entries)
         {
-            var normalizedEntryPath = entry.FullName.Replace('\\', '/');
-            if (string.IsNullOrWhiteSpace(normalizedEntryPath))
+            var normalizedEntryPath = NormalizeEntryPath(entry);
+            if (normalizedEntryPath is null)
             {
                 continue;
             }
 
-            if (IsDriveQualifiedPath(normalizedEntryPath))
-            {
-                throw new InvalidDataException($"Archive entry uses drive-qualified path: {entry.FullName}");
-            }
+            var destinationPath = ResolveDestinationPath(
+                extractionRoot,
+                extractionRootPrefix,
+                normalizedEntryPath,
+                entry.FullName);
 
-            if (Path.IsPathRooted(normalizedEntryPath) || normalizedEntryPath.StartsWith("/", StringComparison.Ordinal))
-            {
-                throw new InvalidDataException($"Archive entry uses rooted path: {entry.FullName}");
-            }
-
-            var relativePath = normalizedEntryPath.Replace('/', Path.DirectorySeparatorChar);
-            var destinationPath = Path.GetFullPath(Path.Combine(extractionRoot, relativePath));
-            if (!destinationPath.StartsWith(extractionRootPrefix, StringComparison.OrdinalIgnoreCase))
-            {
-                throw new InvalidDataException($"Archive entry escapes extraction root: {entry.FullName}");
-            }
-
-            if (normalizedEntryPath.EndsWith("/", StringComparison.Ordinal))
+            if (IsDirectoryEntry(normalizedEntryPath))
             {
                 Directory.CreateDirectory(destinationPath);
                 continue;
             }
 
-            var destinationDir = Path.GetDirectoryName(destinationPath);
-            if (!string.IsNullOrWhiteSpace(destinationDir))
-            {
-                Directory.CreateDirectory(destinationDir);
-            }
-
-            using var entryStream = entry.Open();
-            using var outputStream = new FileStream(destinationPath, FileMode.Create, FileAccess.Write, FileShare.None);
-            entryStream.CopyTo(outputStream);
+            EnsureDestinationDirectory(destinationPath);
+            ExtractEntryToFile(entry, destinationPath);
         }
+    }
+
+    private static string? NormalizeEntryPath(ZipArchiveEntry entry)
+    {
+        var normalized = entry.FullName.Replace('\\', '/');
+        return string.IsNullOrWhiteSpace(normalized) ? null : normalized;
+    }
+
+    private static string ResolveDestinationPath(
+        string extractionRoot,
+        string extractionRootPrefix,
+        string normalizedEntryPath,
+        string originalEntryPath)
+    {
+        if (IsDriveQualifiedPath(normalizedEntryPath))
+        {
+            throw new InvalidDataException($"Archive entry uses drive-qualified path: {originalEntryPath}");
+        }
+
+        if (Path.IsPathRooted(normalizedEntryPath) || normalizedEntryPath.StartsWith("/", StringComparison.Ordinal))
+        {
+            throw new InvalidDataException($"Archive entry uses rooted path: {originalEntryPath}");
+        }
+
+        var relativePath = normalizedEntryPath.Replace('/', Path.DirectorySeparatorChar);
+        var destinationPath = Path.GetFullPath(Path.Combine(extractionRoot, relativePath));
+        if (!destinationPath.StartsWith(extractionRootPrefix, StringComparison.OrdinalIgnoreCase))
+        {
+            throw new InvalidDataException($"Archive entry escapes extraction root: {originalEntryPath}");
+        }
+
+        return destinationPath;
+    }
+
+    private static bool IsDirectoryEntry(string normalizedEntryPath)
+    {
+        return normalizedEntryPath.EndsWith("/", StringComparison.Ordinal);
+    }
+
+    private static void EnsureDestinationDirectory(string destinationPath)
+    {
+        var destinationDir = Path.GetDirectoryName(destinationPath);
+        if (!string.IsNullOrWhiteSpace(destinationDir))
+        {
+            Directory.CreateDirectory(destinationDir);
+        }
+    }
+
+    private static void ExtractEntryToFile(ZipArchiveEntry entry, string destinationPath)
+    {
+        using var entryStream = entry.Open();
+        using var outputStream = new FileStream(destinationPath, FileMode.Create, FileAccess.Write, FileShare.None);
+        entryStream.CopyTo(outputStream);
     }
 
     private static bool IsDriveQualifiedPath(string path)

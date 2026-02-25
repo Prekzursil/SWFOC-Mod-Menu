@@ -754,41 +754,66 @@ public sealed class SignatureResolver : ISignatureResolver
     private static string? ResolvePackPathFromArtifactIndex(string symbolPackRoot, string fingerprintId)
     {
         var indexPath = Path.Combine(symbolPackRoot, ArtifactIndexFileName);
-        if (!File.Exists(indexPath))
+        if (!TryReadArtifactIndex(indexPath, out var index))
         {
             return null;
+        }
+
+        if (!HasMatchingArtifactFingerprint(index, fingerprintId))
+        {
+            return null;
+        }
+
+        return ResolveIndexedPackPath(symbolPackRoot, index.ArtifactPointers?.SymbolPackPath);
+    }
+
+    private static bool TryReadArtifactIndex(string indexPath, out GhidraArtifactIndexDto index)
+    {
+        index = null!;
+        if (!File.Exists(indexPath))
+        {
+            return false;
         }
 
         try
         {
-            var index = JsonSerializer.Deserialize<GhidraArtifactIndexDto>(File.ReadAllText(indexPath), new JsonSerializerOptions
+            var candidate = JsonSerializer.Deserialize<GhidraArtifactIndexDto>(File.ReadAllText(indexPath), new JsonSerializerOptions
             {
                 PropertyNameCaseInsensitive = true
             });
-
-            if (index?.BinaryFingerprint is null ||
-                !string.Equals(index.BinaryFingerprint.FingerprintId, fingerprintId, StringComparison.OrdinalIgnoreCase))
+            if (candidate is null)
             {
-                return null;
+                return false;
             }
 
-            var configuredPath = index.ArtifactPointers?.SymbolPackPath;
-            if (string.IsNullOrWhiteSpace(configuredPath))
-            {
-                return null;
-            }
-
-            if (Path.IsPathRooted(configuredPath))
-            {
-                return configuredPath;
-            }
-
-            return Path.GetFullPath(Path.Combine(symbolPackRoot, configuredPath));
+            index = candidate;
+            return true;
         }
         catch
         {
+            return false;
+        }
+    }
+
+    private static bool HasMatchingArtifactFingerprint(GhidraArtifactIndexDto index, string fingerprintId)
+    {
+        return index.BinaryFingerprint is not null &&
+               IsMatchingFingerprint(index.BinaryFingerprint.FingerprintId, fingerprintId);
+    }
+
+    private static string? ResolveIndexedPackPath(string symbolPackRoot, string? configuredPath)
+    {
+        if (string.IsNullOrWhiteSpace(configuredPath))
+        {
             return null;
         }
+
+        if (Path.IsPathRooted(configuredPath))
+        {
+            return configuredPath;
+        }
+
+        return Path.GetFullPath(Path.Combine(symbolPackRoot, configuredPath));
     }
 
     private bool TryDeserializeGhidraSymbolPack(string packPath, out GhidraSymbolPackDto pack)

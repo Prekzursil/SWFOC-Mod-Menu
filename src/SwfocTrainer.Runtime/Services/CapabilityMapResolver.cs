@@ -49,22 +49,15 @@ public sealed class CapabilityMapResolver : ICapabilityMapResolver
                 CapabilityReasonCode.FingerprintMapMissing);
         }
 
-        if (IsRequestedProfileMismatch(requestedProfileId, map.DefaultProfileId))
+        var preconditionFailure = TryResolveOperationPreconditions(
+            fingerprint,
+            requestedProfileId,
+            operationId,
+            map,
+            out var operation);
+        if (preconditionFailure is not null)
         {
-            return BuildUnavailableResult(
-                fingerprint,
-                requestedProfileId,
-                operationId,
-                CapabilityReasonCode.RequestedProfileMismatch);
-        }
-
-        if (!map.Operations.TryGetValue(operationId, out var op))
-        {
-            return BuildUnavailableResult(
-                fingerprint,
-                requestedProfileId,
-                operationId,
-                CapabilityReasonCode.OperationNotMapped);
+            return preconditionFailure;
         }
 
         if (TryResolveDeclaredUnavailable(
@@ -81,7 +74,7 @@ public sealed class CapabilityMapResolver : ICapabilityMapResolver
             fingerprint,
             requestedProfileId,
             operationId,
-            op,
+            operation,
             resolvedAnchors,
             ResolveCapabilityHint(map, operationId));
     }
@@ -133,6 +126,36 @@ public sealed class CapabilityMapResolver : ICapabilityMapResolver
             Array.Empty<string>(),
             Array.Empty<string>(),
             CapabilityResolutionMetadata.Empty);
+    }
+
+    private static CapabilityResolutionResult? TryResolveOperationPreconditions(
+        BinaryFingerprint fingerprint,
+        string requestedProfileId,
+        string operationId,
+        CapabilityMap map,
+        out CapabilityOperationMap operation)
+    {
+        operation = default!;
+        if (IsRequestedProfileMismatch(requestedProfileId, map.DefaultProfileId))
+        {
+            return BuildUnavailableResult(
+                fingerprint,
+                requestedProfileId,
+                operationId,
+                CapabilityReasonCode.RequestedProfileMismatch);
+        }
+
+        if (!map.Operations.TryGetValue(operationId, out var resolvedOperation) || resolvedOperation is null)
+        {
+            return BuildUnavailableResult(
+                fingerprint,
+                requestedProfileId,
+                operationId,
+                CapabilityReasonCode.OperationNotMapped);
+        }
+
+        operation = resolvedOperation;
+        return null;
     }
 
     private static bool IsRequestedProfileMismatch(string requestedProfileId, string? defaultProfileId)

@@ -179,46 +179,11 @@ public sealed class CapabilityMapResolverTests
     [Fact]
     public async Task ResolveAsync_ShouldPreserveUnavailableHintMetadata_WhenCapabilityIsDeclaredUnavailable()
     {
-        var mapsRoot = Path.Combine(Path.GetTempPath(), $"swfoc-cap-map-{Guid.NewGuid():N}");
-        Directory.CreateDirectory(mapsRoot);
+        var mapsRoot = CreateMapsRoot();
 
         try
         {
-            var fingerprint = new BinaryFingerprint(
-                FingerprintId: "fp-ghidra",
-                FileSha256: "abc123",
-                ModuleName: "StarWarsG.exe",
-                ProductVersion: "1.0",
-                FileVersion: "1.0.0.0",
-                TimestampUtc: DateTimeOffset.UtcNow,
-                ModuleList: Array.Empty<string>(),
-                SourcePath: "C:/games/StarWarsG.exe");
-
-            var mapJson = """
-            {
-              "schemaVersion": "1.0",
-              "fingerprintId": "fp-ghidra",
-              "defaultProfileId": "base_swfoc",
-              "generatedAtUtc": "2026-02-24T00:00:00Z",
-              "capabilities": [
-                {
-                  "featureId": "freeze_timer",
-                  "available": false,
-                  "state": "Unavailable",
-                  "reasonCode": "CAPABILITY_REQUIRED_MISSING",
-                  "requiredAnchors": ["freeze_timer_patch"]
-                }
-              ]
-            }
-            """;
-            await File.WriteAllTextAsync(Path.Combine(mapsRoot, "fp-ghidra.json"), mapJson);
-
-            var resolver = new CapabilityMapResolver(mapsRoot, NullLogger<CapabilityMapResolver>.Instance);
-            var result = await resolver.ResolveAsync(
-                fingerprint,
-                requestedProfileId: "base_swfoc",
-                operationId: "freeze_timer",
-                resolvedAnchors: new HashSet<string>(StringComparer.OrdinalIgnoreCase) { "freeze_timer_patch" });
+            var result = await ResolveUnavailableFreezeTimerCapabilityAsync(mapsRoot, "fp-ghidra");
 
             result.State.Should().Be(SdkCapabilityStatus.Unavailable);
             result.ReasonCode.Should().Be(CapabilityReasonCode.RequiredAnchorsMissing);
@@ -235,46 +200,11 @@ public sealed class CapabilityMapResolverTests
     [Fact]
     public async Task ResolveAsync_ShouldFailClosed_WhenCapabilityHintDeclaresUnavailable()
     {
-        var mapsRoot = Path.Combine(Path.GetTempPath(), $"swfoc-cap-map-{Guid.NewGuid():N}");
-        Directory.CreateDirectory(mapsRoot);
+        var mapsRoot = CreateMapsRoot();
 
         try
         {
-            var fingerprint = new BinaryFingerprint(
-                FingerprintId: "fp-ghidra-unavailable",
-                FileSha256: "abc123",
-                ModuleName: "StarWarsG.exe",
-                ProductVersion: "1.0",
-                FileVersion: "1.0.0.0",
-                TimestampUtc: DateTimeOffset.UtcNow,
-                ModuleList: Array.Empty<string>(),
-                SourcePath: "C:/games/StarWarsG.exe");
-
-            var mapJson = """
-            {
-              "schemaVersion": "1.0",
-              "fingerprintId": "fp-ghidra-unavailable",
-              "defaultProfileId": "base_swfoc",
-              "generatedAtUtc": "2026-02-24T00:00:00Z",
-              "capabilities": [
-                {
-                  "featureId": "freeze_timer",
-                  "available": false,
-                  "state": "Unavailable",
-                  "reasonCode": "CAPABILITY_REQUIRED_MISSING",
-                  "requiredAnchors": ["freeze_timer_patch"]
-                }
-              ]
-            }
-            """;
-            await File.WriteAllTextAsync(Path.Combine(mapsRoot, "fp-ghidra-unavailable.json"), mapJson);
-
-            var resolver = new CapabilityMapResolver(mapsRoot, NullLogger<CapabilityMapResolver>.Instance);
-            var result = await resolver.ResolveAsync(
-                fingerprint,
-                requestedProfileId: "base_swfoc",
-                operationId: "freeze_timer",
-                resolvedAnchors: new HashSet<string>(StringComparer.OrdinalIgnoreCase) { "freeze_timer_patch" });
+            var result = await ResolveUnavailableFreezeTimerCapabilityAsync(mapsRoot, "fp-ghidra-unavailable");
 
             result.State.Should().Be(SdkCapabilityStatus.Unavailable);
             result.ReasonCode.Should().Be(CapabilityReasonCode.RequiredAnchorsMissing);
@@ -409,5 +339,41 @@ public sealed class CapabilityMapResolverTests
     private static Task WriteMapAsync(string mapsRoot, string fingerprintId, string mapJson)
     {
         return File.WriteAllTextAsync(Path.Combine(mapsRoot, $"{fingerprintId}.json"), mapJson);
+    }
+
+    private static async Task<CapabilityResolutionResult> ResolveUnavailableFreezeTimerCapabilityAsync(
+        string mapsRoot,
+        string fingerprintId)
+    {
+        var fingerprint = CreateFingerprint(fingerprintId, "StarWarsG.exe", "C:/games/StarWarsG.exe");
+        await WriteMapAsync(mapsRoot, fingerprintId, BuildUnavailableFreezeTimerMapJson(fingerprintId));
+
+        var resolver = new CapabilityMapResolver(mapsRoot, NullLogger<CapabilityMapResolver>.Instance);
+        return await resolver.ResolveAsync(
+            fingerprint,
+            requestedProfileId: "base_swfoc",
+            operationId: "freeze_timer",
+            resolvedAnchors: new HashSet<string>(StringComparer.OrdinalIgnoreCase) { "freeze_timer_patch" });
+    }
+
+    private static string BuildUnavailableFreezeTimerMapJson(string fingerprintId)
+    {
+        return $$"""
+        {
+          "schemaVersion": "1.0",
+          "fingerprintId": "{{fingerprintId}}",
+          "defaultProfileId": "base_swfoc",
+          "generatedAtUtc": "2026-02-24T00:00:00Z",
+          "capabilities": [
+            {
+              "featureId": "freeze_timer",
+              "available": false,
+              "state": "Unavailable",
+              "reasonCode": "CAPABILITY_REQUIRED_MISSING",
+              "requiredAnchors": ["freeze_timer_patch"]
+            }
+          ]
+        }
+        """;
     }
 }

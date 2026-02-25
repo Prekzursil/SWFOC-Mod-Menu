@@ -11,59 +11,12 @@ public sealed class RuntimeAdapterRouteDiagnosticsTests
     [Fact]
     public void ApplyBackendRouteDiagnostics_ShouldEmitBackendRouteAndHybridKeys()
     {
-        var result = new ActionExecutionResult(
-            Succeeded: true,
-            Message: "ok",
-            AddressSource: AddressSource.Signature,
-            Diagnostics: new Dictionary<string, object?>
-            {
-                ["state"] = "installed"
-            });
+        var applied = InvokeApplyBackendRouteDiagnostics(
+            CreateExecutionResult(),
+            CreateRouteDecision(),
+            CreateCapabilityReport());
 
-        var routeDecision = new BackendRouteDecision(
-            Allowed: true,
-            Backend: ExecutionBackendKind.Extender,
-            ReasonCode: RuntimeReasonCode.CAPABILITY_PROBE_PASS,
-            Message: "routed",
-            Diagnostics: new Dictionary<string, object?>
-            {
-                ["hybridExecution"] = true,
-                ["capabilityMapReasonCode"] = "CAPABILITY_PROBE_PASS",
-                ["capabilityMapState"] = "Verified",
-                ["capabilityDeclaredAvailable"] = true
-            });
-
-        var capabilityReport = new CapabilityReport(
-            ProfileId: "roe_3447786229_swfoc",
-            ProbedAtUtc: DateTimeOffset.UtcNow,
-            Capabilities: new Dictionary<string, BackendCapability>(StringComparer.OrdinalIgnoreCase)
-            {
-                ["set_unit_cap"] = new BackendCapability(
-                    "set_unit_cap",
-                    Available: true,
-                    CapabilityConfidenceState.Verified,
-                    RuntimeReasonCode.CAPABILITY_PROBE_PASS)
-            },
-            ProbeReasonCode: RuntimeReasonCode.CAPABILITY_PROBE_PASS,
-            Diagnostics: new Dictionary<string, object?>
-            {
-                ["hookState"] = "HOOK_READY"
-            });
-
-        var applied = InvokeApplyBackendRouteDiagnostics(result, routeDecision, capabilityReport);
-
-        applied.Diagnostics.Should().NotBeNull();
-        applied.Diagnostics.Should().ContainKey("backend");
-        applied.Diagnostics.Should().ContainKey("routeReasonCode");
-        applied.Diagnostics.Should().ContainKey("capabilityProbeReasonCode");
-        applied.Diagnostics.Should().ContainKey("hookState");
-        applied.Diagnostics.Should().ContainKey("hybridExecution");
-        applied.Diagnostics.Should().ContainKey("capabilityMapReasonCode");
-        applied.Diagnostics.Should().ContainKey("capabilityMapState");
-        applied.Diagnostics.Should().ContainKey("capabilityDeclaredAvailable");
-        applied.Diagnostics.Should().ContainKey("expertOverrideEnabled");
-        applied.Diagnostics.Should().ContainKey("overrideReason");
-        applied.Diagnostics.Should().ContainKey("panicDisableState");
+        AssertExpectedDiagnosticKeys(applied);
     }
 
     [Fact]
@@ -120,5 +73,69 @@ public sealed class RuntimeAdapterRouteDiagnosticsTests
         var invoked = method!.Invoke(null, new object?[] { result, routeDecision, capabilityReport });
         invoked.Should().BeOfType<ActionExecutionResult>();
         return (ActionExecutionResult)invoked!;
+    }
+
+    private static ActionExecutionResult CreateExecutionResult()
+    {
+        return new ActionExecutionResult(
+            Succeeded: true,
+            Message: "ok",
+            AddressSource: AddressSource.Signature,
+            Diagnostics: new Dictionary<string, object?>
+            {
+                ["state"] = "installed"
+            });
+    }
+
+    private static BackendRouteDecision CreateRouteDecision()
+    {
+        return new BackendRouteDecision(
+            Allowed: true,
+            Backend: ExecutionBackendKind.Extender,
+            ReasonCode: RuntimeReasonCode.CAPABILITY_PROBE_PASS,
+            Message: "routed",
+            Diagnostics: new Dictionary<string, object?>
+            {
+                ["hybridExecution"] = true,
+                ["capabilityMapReasonCode"] = "CAPABILITY_PROBE_PASS",
+                ["capabilityMapState"] = "Verified",
+                ["capabilityDeclaredAvailable"] = true
+            });
+    }
+
+    private static CapabilityReport CreateCapabilityReport()
+    {
+        return new CapabilityReport(
+            ProfileId: "roe_3447786229_swfoc",
+            ProbedAtUtc: DateTimeOffset.UtcNow,
+            Capabilities: new Dictionary<string, BackendCapability>(StringComparer.OrdinalIgnoreCase)
+            {
+                ["set_unit_cap"] = new BackendCapability(
+                    "set_unit_cap",
+                    Available: true,
+                    CapabilityConfidenceState.Verified,
+                    RuntimeReasonCode.CAPABILITY_PROBE_PASS)
+            },
+            ProbeReasonCode: RuntimeReasonCode.CAPABILITY_PROBE_PASS,
+            Diagnostics: new Dictionary<string, object?>
+            {
+                ["hookState"] = "HOOK_READY"
+            });
+    }
+
+    private static void AssertExpectedDiagnosticKeys(ActionExecutionResult applied)
+    {
+        applied.Diagnostics.Should().NotBeNull();
+        applied.Diagnostics.Should().ContainKey("backend");
+        applied.Diagnostics.Should().ContainKey("routeReasonCode");
+        applied.Diagnostics.Should().ContainKey("capabilityProbeReasonCode");
+        applied.Diagnostics.Should().ContainKey("hookState");
+        applied.Diagnostics.Should().ContainKey("hybridExecution");
+        applied.Diagnostics.Should().ContainKey("capabilityMapReasonCode");
+        applied.Diagnostics.Should().ContainKey("capabilityMapState");
+        applied.Diagnostics.Should().ContainKey("capabilityDeclaredAvailable");
+        applied.Diagnostics.Should().ContainKey("expertOverrideEnabled");
+        applied.Diagnostics.Should().ContainKey("overrideReason");
+        applied.Diagnostics.Should().ContainKey("panicDisableState");
     }
 }

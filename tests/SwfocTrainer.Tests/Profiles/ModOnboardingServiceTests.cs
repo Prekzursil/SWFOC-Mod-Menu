@@ -62,52 +62,12 @@ public sealed class ModOnboardingServiceTests
         try
         {
             var (service, options) = await CreateServiceAsync(tempRoot);
-            var request = new ModOnboardingSeedBatchRequest(
-                Seeds:
-                [
-                    BuildSeed(
-                        workshopId: "1397421866",
-                        title: "Awakening of the Rebellion",
-                        candidateBaseProfile: "base_swfoc",
-                        sourceRunId: "run-seed-001",
-                        confidence: 0.93,
-                        riskLevel: "medium",
-                        modPathHints: ["aotr", "awakening_of_the_rebellion"]),
-                    BuildSeed(
-                        workshopId: "3664004146",
-                        title: "Enhancement Pack",
-                        candidateBaseProfile: "base_swfoc",
-                        sourceRunId: "run-seed-001",
-                        confidence: 0.62,
-                        riskLevel: "low",
-                        modPathHints: ["enhancement_pack"])
-                ],
-                NamespaceRoot: "custom",
-                FallbackBaseProfileId: "base_swfoc");
-
+            const string sourceRunId = "run-seed-001";
+            var request = BuildValidSeedBatchRequest(sourceRunId);
             var result = await service.ScaffoldDraftProfilesFromSeedsAsync(request, CancellationToken.None);
 
-            result.Succeeded.Should().BeTrue();
-            result.Total.Should().Be(2);
-            result.Generated.Should().Be(2);
-            result.Failed.Should().Be(0);
-            result.Items.Should().OnlyContain(item => item.Succeeded);
-
-            var firstProfilePath = Path.Combine(
-                Directory.GetParent(options.ProfilesRootPath)!.FullName,
-                "custom",
-                "profiles",
-                "custom_awakening_of_the_rebellion_1397421866_swfoc.json");
-            File.Exists(firstProfilePath).Should().BeTrue();
-            var firstProfileJson = await File.ReadAllTextAsync(firstProfilePath);
-            var firstProfile = JsonProfileSerializer.Deserialize<TrainerProfile>(firstProfileJson);
-            firstProfile.Should().NotBeNull();
-            firstProfile!.RequiredCapabilities.Should().Contain("set_credits");
-            firstProfile.RequiredCapabilities.Should().Contain("toggle_instant_build_patch");
-            firstProfile.Metadata.Should().NotBeNull();
-            firstProfile.Metadata!["origin"].Should().Be("auto_discovery");
-            firstProfile.Metadata["sourceRunId"].Should().Be("run-seed-001");
-            firstProfile.Metadata["parentProfile"].Should().Be("base_swfoc");
+            AssertSuccessfulSeedBatch(result);
+            await AssertGeneratedSeedProfileAsync(options, sourceRunId);
         }
         finally
         {
@@ -222,6 +182,61 @@ public sealed class ModOnboardingServiceTests
         var repository = new FileSystemProfileRepository(options);
         var service = new ModOnboardingService(repository, options);
         return (service, options);
+    }
+
+    private static ModOnboardingSeedBatchRequest BuildValidSeedBatchRequest(string sourceRunId)
+    {
+        return new ModOnboardingSeedBatchRequest(
+            Seeds:
+            [
+                BuildSeed(
+                    workshopId: "1397421866",
+                    title: "Awakening of the Rebellion",
+                    candidateBaseProfile: "base_swfoc",
+                    sourceRunId: sourceRunId,
+                    confidence: 0.93,
+                    riskLevel: "medium",
+                    modPathHints: ["aotr", "awakening_of_the_rebellion"]),
+                BuildSeed(
+                    workshopId: "3664004146",
+                    title: "Enhancement Pack",
+                    candidateBaseProfile: "base_swfoc",
+                    sourceRunId: sourceRunId,
+                    confidence: 0.62,
+                    riskLevel: "low",
+                    modPathHints: ["enhancement_pack"])
+            ],
+            NamespaceRoot: "custom",
+            FallbackBaseProfileId: "base_swfoc");
+    }
+
+    private static void AssertSuccessfulSeedBatch(ModOnboardingBatchResult result)
+    {
+        result.Succeeded.Should().BeTrue();
+        result.Total.Should().Be(2);
+        result.Generated.Should().Be(2);
+        result.Failed.Should().Be(0);
+        result.Items.Should().OnlyContain(item => item.Succeeded);
+    }
+
+    private static async Task AssertGeneratedSeedProfileAsync(ProfileRepositoryOptions options, string sourceRunId)
+    {
+        var firstProfilePath = Path.Combine(
+            Directory.GetParent(options.ProfilesRootPath)!.FullName,
+            "custom",
+            "profiles",
+            "custom_awakening_of_the_rebellion_1397421866_swfoc.json");
+
+        File.Exists(firstProfilePath).Should().BeTrue();
+        var firstProfileJson = await File.ReadAllTextAsync(firstProfilePath);
+        var firstProfile = JsonProfileSerializer.Deserialize<TrainerProfile>(firstProfileJson);
+        firstProfile.Should().NotBeNull();
+        firstProfile!.RequiredCapabilities.Should().Contain("set_credits");
+        firstProfile.RequiredCapabilities.Should().Contain("toggle_instant_build_patch");
+        firstProfile.Metadata.Should().NotBeNull();
+        firstProfile.Metadata!["origin"].Should().Be("auto_discovery");
+        firstProfile.Metadata["sourceRunId"].Should().Be(sourceRunId);
+        firstProfile.Metadata["parentProfile"].Should().Be("base_swfoc");
     }
 
     private static GeneratedProfileSeed BuildSeed(
