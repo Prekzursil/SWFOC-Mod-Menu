@@ -12,6 +12,7 @@ import argparse
 import importlib.util
 import json
 import sys
+from collections.abc import Callable
 from pathlib import Path
 
 REASON_CODE_DETERMINISM_MISMATCH = "GHIDRA_DETERMINISM_MISMATCH"
@@ -57,7 +58,7 @@ def _validate_emitter_command(command: tuple[str, ...]) -> None:
         raise ValueError("invalid-emitter-command-flags")
 
 
-def _load_emitter_main(emitter_path: Path):
+def _load_emitter_main(emitter_path: Path) -> Callable[[], int | None]:
     spec = importlib.util.spec_from_file_location("ghidra_emit_symbol_pack", emitter_path)
     if spec is None or spec.loader is None:
         raise RuntimeError(f"failed to load emitter module from {emitter_path}")
@@ -66,7 +67,7 @@ def _load_emitter_main(emitter_path: Path):
     sys.modules[spec.name] = module
     spec.loader.exec_module(module)
     main_fn = getattr(module, "main", None)
-    if main_fn is None:
+    if main_fn is None or not callable(main_fn):
         raise RuntimeError(f"emitter module missing main() function: {emitter_path}")
 
     return main_fn

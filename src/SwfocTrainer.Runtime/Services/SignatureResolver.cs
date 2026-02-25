@@ -170,10 +170,11 @@ public sealed class SignatureResolver : ISignatureResolver
             signatureSet,
             signature,
             hit,
-            fallbackOffsets,
-            accessor,
-            baseAddress,
-            moduleBytes,
-            symbols);
+            new SignatureResolverFallbacks.SignatureHitContext(
+                fallbackOffsets,
+                accessor,
+                baseAddress,
+                moduleBytes,
+                symbols));
     }
 }

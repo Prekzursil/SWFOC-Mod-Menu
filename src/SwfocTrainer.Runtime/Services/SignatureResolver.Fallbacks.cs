@@ -6,6 +6,13 @@ namespace SwfocTrainer.Runtime.Services;
 
 internal static class SignatureResolverFallbacks
 {
+    internal readonly record struct SignatureHitContext(
+        IReadOnlyDictionary<string, long> FallbackOffsets,
+        ProcessMemoryAccessor Accessor,
+        nint BaseAddress,
+        byte[] ModuleBytes,
+        IDictionary<string, SymbolInfo> Symbols);
+
     /// <summary>
     /// Validates a fallback offset by attempting a test read at <c>baseAddress + offset</c>.
     /// Profile fallback offsets are author-curated, so rather than guessing module bounds we
@@ -58,19 +65,21 @@ internal static class SignatureResolverFallbacks
         SignatureSet signatureSet,
         SignatureSpec signature,
         nint hit,
-        IReadOnlyDictionary<string, long> fallbackOffsets,
-        ProcessMemoryAccessor accessor,
-        nint baseAddress,
-        byte[] moduleBytes,
-        IDictionary<string, SymbolInfo> symbols)
+        in SignatureHitContext context)
     {
-        if (SignatureResolverAddressing.TryResolveAddress(signature, hit, baseAddress, moduleBytes, out var address, out var diagnostics))
+        if (SignatureResolverAddressing.TryResolveAddress(
+                signature,
+                hit,
+                context.BaseAddress,
+                context.ModuleBytes,
+                out var address,
+                out var diagnostics))
         {
-            symbols[signature.Name] = CreateSignatureSymbol(signatureSet, signature, address);
+            context.Symbols[signature.Name] = CreateSignatureSymbol(signatureSet, signature, address);
             return;
         }
 
-        if (!fallbackOffsets.TryGetValue(signature.Name, out var fallback))
+        if (!context.FallbackOffsets.TryGetValue(signature.Name, out var fallback))
         {
             logger.LogWarning(
                 "Signature address resolution failed for {Symbol} and no fallback offset available. Details: {Diagnostics}",
@@ -81,12 +90,12 @@ internal static class SignatureResolverFallbacks
 
         if (TryApplyFallback(
                 logger,
-                accessor,
-                baseAddress,
+                context.Accessor,
+                context.BaseAddress,
                 signature.Name,
                 signature.ValueType,
                 fallback,
-                symbols,
+                context.Symbols,
                 diagnostics ?? "Fallback after address resolution failure"))
         {
             logger.LogWarning(

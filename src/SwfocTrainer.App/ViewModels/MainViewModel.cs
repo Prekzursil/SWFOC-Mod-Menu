@@ -110,268 +110,132 @@ public sealed class MainViewModel : INotifyPropertyChanged
     };
 
     private static readonly IReadOnlyDictionary<string, string> DefaultSymbolByActionId =
-        new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
-        {
-            ["read_symbol"] = "credits",
-            ["set_credits"] = "credits",
-            ["freeze_timer"] = "game_timer_freeze",
-            ["toggle_fog_reveal"] = "fog_reveal",
-            ["toggle_ai"] = "ai_enabled",
-            ["set_instant_build_multiplier"] = "instant_build",
-
-            ["set_selected_hp"] = "selected_hp",
-            ["set_selected_shield"] = "selected_shield",
-            ["set_selected_speed"] = "selected_speed",
-            ["set_selected_damage_multiplier"] = "selected_damage_multiplier",
-            ["set_selected_cooldown_multiplier"] = "selected_cooldown_multiplier",
-            ["set_selected_veterancy"] = "selected_veterancy",
-            ["set_selected_owner_faction"] = "selected_owner_faction",
-
-            ["set_planet_owner"] = "planet_owner",
-            ["set_hero_respawn_timer"] = "hero_respawn_timer",
-
-            ["toggle_tactical_god_mode"] = "tactical_god_mode",
-            ["toggle_tactical_one_hit_mode"] = "tactical_one_hit_mode",
-            ["set_game_speed"] = "game_speed",
-            ["freeze_symbol"] = "credits",
-            ["unfreeze_symbol"] = "credits",
-        };
+        MainViewModelDefaults.DefaultSymbolByActionId;
 
     private static readonly IReadOnlyDictionary<string, string> DefaultHelperHookByActionId =
-        new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
-        {
-            ["spawn_unit_helper"] = "spawn_bridge",
-            ["set_hero_state_helper"] = "aotr_hero_state_bridge",
-            ["toggle_roe_respawn_helper"] = "roe_respawn_bridge",
-        };
+        MainViewModelDefaults.DefaultHelperHookByActionId;
 
-    public MainViewModel(
-        IProfileRepository profiles,
-        IProcessLocator processLocator,
-        ILaunchContextResolver launchContextResolver,
-        IProfileVariantResolver profileVariantResolver,
-        IRuntimeAdapter runtime,
-        TrainerOrchestrator orchestrator,
-        ICatalogService catalog,
-        ISaveCodec saveCodec,
-        ISavePatchPackService savePatchPackService,
-        ISavePatchApplyService savePatchApplyService,
-        IHelperModService helper,
-        IProfileUpdateService updates,
-        IModOnboardingService modOnboarding,
-        IModCalibrationService modCalibration,
-        ISupportBundleService supportBundles,
-        ITelemetrySnapshotService telemetry,
-        IValueFreezeService freezeService,
-        IActionReliabilityService actionReliability,
-        ISelectedUnitTransactionService selectedUnitTransactions,
-        ISpawnPresetService spawnPresets)
+    public MainViewModel(MainViewModelDependencies dependencies)
     {
         (_profiles, _processLocator, _launchContextResolver, _profileVariantResolver, _runtime, _orchestrator, _catalog, _saveCodec,
             _savePatchPackService, _savePatchApplyService, _helper, _updates, _modOnboarding, _modCalibration, _supportBundles, _telemetry,
             _freezeService, _actionReliability, _selectedUnitTransactions, _spawnPresets) =
-            (profiles, processLocator, launchContextResolver, profileVariantResolver, runtime, orchestrator, catalog, saveCodec,
-                savePatchPackService, savePatchApplyService, helper, updates, modOnboarding, modCalibration, supportBundles, telemetry,
-                freezeService, actionReliability, selectedUnitTransactions, spawnPresets);
+            (dependencies.Profiles, dependencies.ProcessLocator, dependencies.LaunchContextResolver, dependencies.ProfileVariantResolver,
+                dependencies.Runtime, dependencies.Orchestrator, dependencies.Catalog, dependencies.SaveCodec,
+                dependencies.SavePatchPackService, dependencies.SavePatchApplyService, dependencies.Helper, dependencies.Updates,
+                dependencies.ModOnboarding, dependencies.ModCalibration, dependencies.SupportBundles, dependencies.Telemetry,
+                dependencies.FreezeService, dependencies.ActionReliability, dependencies.SelectedUnitTransactions, dependencies.SpawnPresets);
 
         (Profiles, Actions, CatalogSummary, Updates, SaveDiffPreview, Hotkeys, SaveFields, FilteredSaveFields,
             SavePatchOperations, SavePatchCompatibility, ActionReliability, SelectedUnitTransactions, SpawnPresets, LiveOpsDiagnostics,
-            ModCompatibilityRows, ActiveFreezes) = CreateCollections();
+            ModCompatibilityRows, ActiveFreezes) = MainViewModelFactories.CreateCollections();
 
         (LoadProfilesCommand, AttachCommand, DetachCommand, LoadActionsCommand, ExecuteActionCommand, LoadCatalogCommand,
-            DeployHelperCommand, VerifyHelperCommand, CheckUpdatesCommand, InstallUpdateCommand, RollbackProfileUpdateCommand) = CreateCoreCommands();
+            DeployHelperCommand, VerifyHelperCommand, CheckUpdatesCommand, InstallUpdateCommand, RollbackProfileUpdateCommand) =
+            MainViewModelFactories.CreateCoreCommands(new MainViewModelCoreCommandContext
+            {
+                LoadProfilesAsync = LoadProfilesAsync,
+                AttachAsync = AttachAsync,
+                DetachAsync = DetachAsync,
+                LoadActionsAsync = LoadActionsAsync,
+                ExecuteActionAsync = ExecuteActionAsync,
+                LoadCatalogAsync = LoadCatalogAsync,
+                DeployHelperAsync = DeployHelperAsync,
+                VerifyHelperAsync = VerifyHelperAsync,
+                CheckUpdatesAsync = CheckUpdatesAsync,
+                InstallUpdateAsync = InstallUpdateAsync,
+                RollbackProfileUpdateAsync = RollbackProfileUpdateAsync,
+                CanUseSelectedProfile = () => !string.IsNullOrWhiteSpace(SelectedProfileId),
+                CanExecuteSelectedAction = () => _runtime.IsAttached && !string.IsNullOrWhiteSpace(SelectedActionId),
+                IsAttached = () => _runtime.IsAttached
+            });
         (BrowseSaveCommand, LoadSaveCommand, EditSaveCommand, ValidateSaveCommand, RefreshDiffCommand, WriteSaveCommand,
             BrowsePatchPackCommand, ExportPatchPackCommand, LoadPatchPackCommand, PreviewPatchPackCommand, ApplyPatchPackCommand,
-            RestoreBackupCommand, LoadHotkeysCommand, SaveHotkeysCommand, AddHotkeyCommand, RemoveHotkeyCommand) = CreateSaveCommands();
+            RestoreBackupCommand, LoadHotkeysCommand, SaveHotkeysCommand, AddHotkeyCommand, RemoveHotkeyCommand) =
+            MainViewModelFactories.CreateSaveCommands(new MainViewModelSaveCommandContext
+            {
+                BrowseSaveAsync = BrowseSaveAsync,
+                LoadSaveAsync = LoadSaveAsync,
+                EditSaveFieldAsync = EditSaveAsync,
+                ValidateSaveAsync = ValidateSaveAsync,
+                RefreshSaveDiffPreviewAsync = RefreshDiffAsync,
+                WriteSaveAsync = WriteSaveAsync,
+                BrowsePatchPackAsync = BrowsePatchPackAsync,
+                ExportPatchPackAsync = ExportPatchPackAsync,
+                LoadPatchPackAsync = LoadPatchPackAsync,
+                PreviewPatchPackAsync = PreviewPatchPackAsync,
+                ApplyPatchPackAsync = ApplyPatchPackAsync,
+                RestoreSaveBackupAsync = RestoreBackupAsync,
+                LoadHotkeysAsync = LoadHotkeysAsync,
+                SaveHotkeysAsync = SaveHotkeysAsync,
+                AddHotkeyAsync = AddHotkeyAsync,
+                RemoveHotkeyAsync = RemoveHotkeyAsync,
+                CanLoadSave = () => !string.IsNullOrWhiteSpace(SavePath) && !string.IsNullOrWhiteSpace(SelectedProfileId),
+                CanEditSave = () => _loadedSave is not null && !string.IsNullOrWhiteSpace(SaveNodePath),
+                CanValidateSave = () => _loadedSave is not null,
+                CanRefreshDiff = () => _loadedSave is not null && _loadedSaveOriginal is not null,
+                CanWriteSave = () => _loadedSave is not null,
+                CanExportPatchPack = () =>
+                    _loadedSave is not null &&
+                    _loadedSaveOriginal is not null &&
+                    !string.IsNullOrWhiteSpace(SelectedProfileId),
+                CanLoadPatchPack = () => !string.IsNullOrWhiteSpace(SavePatchPackPath),
+                CanPreviewPatchPack = () =>
+                    _loadedSave is not null &&
+                    _loadedPatchPack is not null &&
+                    !string.IsNullOrWhiteSpace(SelectedProfileId),
+                CanApplyPatchPack = () =>
+                    _loadedPatchPack is not null &&
+                    !string.IsNullOrWhiteSpace(SavePath) &&
+                    !string.IsNullOrWhiteSpace(SelectedProfileId),
+                CanRestoreBackup = () => !string.IsNullOrWhiteSpace(SavePath),
+                CanRemoveHotkey = () => SelectedHotkey is not null
+            });
         (RefreshActionReliabilityCommand, CaptureSelectedUnitBaselineCommand, ApplySelectedUnitDraftCommand, RevertSelectedUnitTransactionCommand,
             RestoreSelectedUnitBaselineCommand, LoadSpawnPresetsCommand, RunSpawnBatchCommand, ScaffoldModProfileCommand,
             ExportCalibrationArtifactCommand, BuildCompatibilityReportCommand, ExportSupportBundleCommand,
-            ExportTelemetrySnapshotCommand) = CreateLiveOpsCommands();
+            ExportTelemetrySnapshotCommand) = MainViewModelFactories.CreateLiveOpsCommands(new MainViewModelLiveOpsCommandContext
+            {
+                RefreshActionReliabilityAsync = RefreshActionReliabilityAsync,
+                CaptureSelectedUnitBaselineAsync = CaptureSelectedUnitBaselineAsync,
+                ApplySelectedUnitDraftAsync = ApplySelectedUnitDraftAsync,
+                RevertSelectedUnitTransactionAsync = RevertSelectedUnitTransactionAsync,
+                RestoreSelectedUnitBaselineAsync = RestoreSelectedUnitBaselineAsync,
+                LoadSpawnPresetsAsync = LoadSpawnPresetsAsync,
+                RunSpawnBatchAsync = RunSpawnBatchAsync,
+                ScaffoldModProfileAsync = ScaffoldModProfileAsync,
+                ExportCalibrationArtifactAsync = ExportCalibrationArtifactAsync,
+                BuildModCompatibilityReportAsync = BuildCompatibilityReportAsync,
+                ExportSupportBundleAsync = ExportSupportBundleAsync,
+                ExportTelemetrySnapshotAsync = ExportTelemetrySnapshotAsync,
+                CanRunSpawnBatch = () =>
+                    _runtime.IsAttached &&
+                    SelectedSpawnPreset is not null &&
+                    !string.IsNullOrWhiteSpace(SelectedProfileId),
+                CanScaffoldModProfile = () =>
+                    !string.IsNullOrWhiteSpace(OnboardingDraftProfileId) &&
+                    !string.IsNullOrWhiteSpace(OnboardingDisplayName),
+                CanUseSupportBundleOutputDirectory = () => !string.IsNullOrWhiteSpace(SupportBundleOutputDirectory),
+                IsAttached = () => _runtime.IsAttached,
+                CanUseSelectedProfile = () => !string.IsNullOrWhiteSpace(SelectedProfileId)
+            });
         (QuickSetCreditsCommand, QuickFreezeTimerCommand, QuickToggleFogCommand, QuickToggleAiCommand,
-            QuickInstantBuildCommand, QuickUnitCapCommand, QuickGodModeCommand, QuickOneHitCommand, QuickUnfreezeAllCommand) = CreateQuickCommands();
+            QuickInstantBuildCommand, QuickUnitCapCommand, QuickGodModeCommand, QuickOneHitCommand, QuickUnfreezeAllCommand) =
+            MainViewModelFactories.CreateQuickCommands(new MainViewModelQuickCommandContext
+            {
+                QuickSetCreditsAsync = QuickSetCreditsAsync,
+                QuickFreezeTimerAsync = QuickFreezeTimerAsync,
+                QuickToggleFogAsync = QuickToggleFogAsync,
+                QuickToggleAiAsync = QuickToggleAiAsync,
+                QuickInstantBuildAsync = QuickInstantBuildAsync,
+                QuickUnitCapAsync = QuickUnitCapAsync,
+                QuickGodModeAsync = QuickGodModeAsync,
+                QuickOneHitAsync = QuickOneHitAsync,
+                QuickUnfreezeAllAsync = QuickUnfreezeAllAsync,
+                IsAttached = () => _runtime.IsAttached
+            });
 
         _freezeUiTimer = CreateFreezeUiTimer();
-    }
-
-    private static (
-        ObservableCollection<string> Profiles,
-        ObservableCollection<string> Actions,
-        ObservableCollection<string> CatalogSummary,
-        ObservableCollection<string> Updates,
-        ObservableCollection<string> SaveDiffPreview,
-        ObservableCollection<HotkeyBindingItem> Hotkeys,
-        ObservableCollection<SaveFieldViewItem> SaveFields,
-        ObservableCollection<SaveFieldViewItem> FilteredSaveFields,
-        ObservableCollection<SavePatchOperationViewItem> SavePatchOperations,
-        ObservableCollection<SavePatchCompatibilityViewItem> SavePatchCompatibility,
-        ObservableCollection<ActionReliabilityViewItem> ActionReliability,
-        ObservableCollection<SelectedUnitTransactionViewItem> SelectedUnitTransactions,
-        ObservableCollection<SpawnPresetViewItem> SpawnPresets,
-        ObservableCollection<string> LiveOpsDiagnostics,
-        ObservableCollection<string> ModCompatibilityRows,
-        ObservableCollection<string> ActiveFreezes) CreateCollections()
-    {
-        return (
-            new ObservableCollection<string>(),
-            new ObservableCollection<string>(),
-            new ObservableCollection<string>(),
-            new ObservableCollection<string>(),
-            new ObservableCollection<string>(),
-            new ObservableCollection<HotkeyBindingItem>(),
-            new ObservableCollection<SaveFieldViewItem>(),
-            new ObservableCollection<SaveFieldViewItem>(),
-            new ObservableCollection<SavePatchOperationViewItem>(),
-            new ObservableCollection<SavePatchCompatibilityViewItem>(),
-            new ObservableCollection<ActionReliabilityViewItem>(),
-            new ObservableCollection<SelectedUnitTransactionViewItem>(),
-            new ObservableCollection<SpawnPresetViewItem>(),
-            new ObservableCollection<string>(),
-            new ObservableCollection<string>(),
-            new ObservableCollection<string>());
-    }
-
-    private (
-        ICommand LoadProfiles,
-        ICommand Attach,
-        ICommand Detach,
-        ICommand LoadActions,
-        ICommand ExecuteAction,
-        ICommand LoadCatalog,
-        ICommand DeployHelper,
-        ICommand VerifyHelper,
-        ICommand CheckUpdates,
-        ICommand InstallUpdate,
-        ICommand RollbackProfileUpdate) CreateCoreCommands()
-    {
-        return (
-            new AsyncCommand(LoadProfilesAsync),
-            new AsyncCommand(AttachAsync, () => !string.IsNullOrWhiteSpace(SelectedProfileId)),
-            new AsyncCommand(DetachAsync, () => _runtime.IsAttached),
-            new AsyncCommand(LoadActionsAsync, () => !string.IsNullOrWhiteSpace(SelectedProfileId)),
-            new AsyncCommand(ExecuteActionAsync, () => _runtime.IsAttached && !string.IsNullOrWhiteSpace(SelectedActionId)),
-            new AsyncCommand(LoadCatalogAsync, () => !string.IsNullOrWhiteSpace(SelectedProfileId)),
-            new AsyncCommand(DeployHelperAsync, () => !string.IsNullOrWhiteSpace(SelectedProfileId)),
-            new AsyncCommand(VerifyHelperAsync, () => !string.IsNullOrWhiteSpace(SelectedProfileId)),
-            new AsyncCommand(CheckUpdatesAsync),
-            new AsyncCommand(InstallUpdateAsync, () => !string.IsNullOrWhiteSpace(SelectedProfileId)),
-            new AsyncCommand(RollbackProfileUpdateAsync, () => !string.IsNullOrWhiteSpace(SelectedProfileId)));
-    }
-
-    private (
-        ICommand BrowseSave,
-        ICommand LoadSave,
-        ICommand EditSave,
-        ICommand ValidateSave,
-        ICommand RefreshDiff,
-        ICommand WriteSave,
-        ICommand BrowsePatchPack,
-        ICommand ExportPatchPack,
-        ICommand LoadPatchPack,
-        ICommand PreviewPatchPack,
-        ICommand ApplyPatchPack,
-        ICommand RestoreBackup,
-        ICommand LoadHotkeys,
-        ICommand SaveHotkeys,
-        ICommand AddHotkey,
-        ICommand RemoveHotkey) CreateSaveCommands()
-    {
-        return (
-            new AsyncCommand(BrowseSaveAsync),
-            new AsyncCommand(LoadSaveAsync, CanLoadSave),
-            new AsyncCommand(EditSaveAsync, CanEditSave),
-            new AsyncCommand(ValidateSaveAsync, CanValidateSave),
-            new AsyncCommand(RefreshDiffAsync, CanRefreshDiff),
-            new AsyncCommand(WriteSaveAsync, CanWriteSave),
-            new AsyncCommand(BrowsePatchPackAsync),
-            new AsyncCommand(ExportPatchPackAsync, CanExportPatchPack),
-            new AsyncCommand(LoadPatchPackAsync, CanLoadPatchPack),
-            new AsyncCommand(PreviewPatchPackAsync, CanPreviewPatchPack),
-            new AsyncCommand(ApplyPatchPackAsync, CanApplyPatchPack),
-            new AsyncCommand(RestoreBackupAsync, CanRestoreBackup),
-            new AsyncCommand(LoadHotkeysAsync),
-            new AsyncCommand(SaveHotkeysAsync),
-            new AsyncCommand(AddHotkeyAsync),
-            new AsyncCommand(RemoveHotkeyAsync, CanRemoveHotkey));
-    }
-
-    private bool HasSelectedProfile() => !string.IsNullOrWhiteSpace(SelectedProfileId);
-
-    private bool HasLoadedSave() => _loadedSave is not null;
-
-    private bool HasLoadedSaveForDiff() => _loadedSave is not null && _loadedSaveOriginal is not null;
-
-    private bool CanLoadSave() => !string.IsNullOrWhiteSpace(SavePath) && HasSelectedProfile();
-
-    private bool CanEditSave() => HasLoadedSave() && !string.IsNullOrWhiteSpace(SaveNodePath);
-
-    private bool CanValidateSave() => HasLoadedSave();
-
-    private bool CanRefreshDiff() => HasLoadedSaveForDiff();
-
-    private bool CanWriteSave() => HasLoadedSave();
-
-    private bool CanExportPatchPack() => HasLoadedSaveForDiff() && HasSelectedProfile();
-
-    private bool CanLoadPatchPack() => !string.IsNullOrWhiteSpace(SavePatchPackPath);
-
-    private bool CanPreviewPatchPack() => HasLoadedSave() && _loadedPatchPack is not null && HasSelectedProfile();
-
-    private bool CanApplyPatchPack() => _loadedPatchPack is not null && !string.IsNullOrWhiteSpace(SavePath) && HasSelectedProfile();
-
-    private bool CanRestoreBackup() => !string.IsNullOrWhiteSpace(SavePath);
-
-    private bool CanRemoveHotkey() => SelectedHotkey is not null;
-
-    private (
-        ICommand RefreshActionReliability,
-        ICommand CaptureSelectedUnitBaseline,
-        ICommand ApplySelectedUnitDraft,
-        ICommand RevertSelectedUnitTransaction,
-        ICommand RestoreSelectedUnitBaseline,
-        ICommand LoadSpawnPresets,
-        ICommand RunSpawnBatch,
-        ICommand ScaffoldModProfile,
-        ICommand ExportCalibrationArtifact,
-        ICommand BuildCompatibilityReport,
-        ICommand ExportSupportBundle,
-        ICommand ExportTelemetrySnapshot) CreateLiveOpsCommands()
-    {
-        return (
-            new AsyncCommand(RefreshActionReliabilityAsync, () => _runtime.IsAttached && !string.IsNullOrWhiteSpace(SelectedProfileId)),
-            new AsyncCommand(CaptureSelectedUnitBaselineAsync, () => _runtime.IsAttached),
-            new AsyncCommand(ApplySelectedUnitDraftAsync, () => _runtime.IsAttached),
-            new AsyncCommand(RevertSelectedUnitTransactionAsync, () => _runtime.IsAttached),
-            new AsyncCommand(RestoreSelectedUnitBaselineAsync, () => _runtime.IsAttached),
-            new AsyncCommand(LoadSpawnPresetsAsync, () => !string.IsNullOrWhiteSpace(SelectedProfileId)),
-            new AsyncCommand(RunSpawnBatchAsync, () => _runtime.IsAttached && SelectedSpawnPreset is not null && !string.IsNullOrWhiteSpace(SelectedProfileId)),
-            new AsyncCommand(ScaffoldModProfileAsync, () => !string.IsNullOrWhiteSpace(OnboardingDraftProfileId) && !string.IsNullOrWhiteSpace(OnboardingDisplayName)),
-            new AsyncCommand(ExportCalibrationArtifactAsync, () => !string.IsNullOrWhiteSpace(SelectedProfileId)),
-            new AsyncCommand(BuildCompatibilityReportAsync, () => !string.IsNullOrWhiteSpace(SelectedProfileId)),
-            new AsyncCommand(ExportSupportBundleAsync, () => !string.IsNullOrWhiteSpace(SupportBundleOutputDirectory)),
-            new AsyncCommand(ExportTelemetrySnapshotAsync, () => !string.IsNullOrWhiteSpace(SupportBundleOutputDirectory)));
-    }
-
-    private (
-        ICommand QuickSetCredits,
-        ICommand QuickFreezeTimer,
-        ICommand QuickToggleFog,
-        ICommand QuickToggleAi,
-        ICommand QuickInstantBuild,
-        ICommand QuickUnitCap,
-        ICommand QuickGodMode,
-        ICommand QuickOneHit,
-        ICommand QuickUnfreezeAll) CreateQuickCommands()
-    {
-        return (
-            new AsyncCommand(QuickSetCreditsAsync, () => _runtime.IsAttached),
-            new AsyncCommand(QuickFreezeTimerAsync, () => _runtime.IsAttached),
-            new AsyncCommand(QuickToggleFogAsync, () => _runtime.IsAttached),
-            new AsyncCommand(QuickToggleAiAsync, () => _runtime.IsAttached),
-            new AsyncCommand(QuickInstantBuildAsync, () => _runtime.IsAttached),
-            new AsyncCommand(QuickUnitCapAsync, () => _runtime.IsAttached),
-            new AsyncCommand(QuickGodModeAsync, () => _runtime.IsAttached),
-            new AsyncCommand(QuickOneHitAsync, () => _runtime.IsAttached),
-            new AsyncCommand(QuickUnfreezeAllAsync, () => _runtime.IsAttached));
     }
 
     private DispatcherTimer CreateFreezeUiTimer()

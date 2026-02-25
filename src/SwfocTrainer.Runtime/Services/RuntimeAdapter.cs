@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text.Json.Nodes;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using System.Collections.Generic;
 using Microsoft.Extensions.Logging;
 using SwfocTrainer.Core.Contracts;
 using SwfocTrainer.Core.Models;
@@ -13,7 +14,7 @@ using SwfocTrainer.Runtime.Scanning;
 
 namespace SwfocTrainer.Runtime.Services;
 
-public sealed partial class RuntimeAdapter : IRuntimeAdapter
+public sealed class RuntimeAdapter : IRuntimeAdapter
 {
     private const string CreditsHookPatternText = "F3 0F 2C 50 70 89 57";
 
@@ -45,6 +46,91 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
     private const int InstantBuildHookInstructionLength = 6;
     private const int InstantBuildHookJumpLength = 5;
     private const int InstantBuildHookCaveSize = 31;
+
+    private const string DiagnosticKeyHookState = "hookState";
+    private const string DiagnosticKeyCreditsStateTag = "creditsStateTag";
+    private const string DiagnosticKeyState = "state";
+    private const string DiagnosticKeyExpertOverrideEnabled = "expertOverrideEnabled";
+    private const string DiagnosticKeyOverrideReason = "overrideReason";
+    private const string DiagnosticKeyPanicDisableState = "panicDisableState";
+    private const string PanicDisableStateActive = "active";
+    private const string PanicDisableStateInactive = "inactive";
+    private const string ExpertOverrideEnvVarName = "SWFOC_EXPERT_MUTATION_OVERRIDES";
+    private const string ExpertOverridePanicEnvVarName = "SWFOC_EXPERT_MUTATION_OVERRIDES_PANIC";
+    private const string ActionIdSetUnitCap = "set_unit_cap";
+    private const string ActionIdToggleInstantBuildPatch = "toggle_instant_build_patch";
+    private const string ActionIdSetCredits = "set_credits";
+    private const string SymbolCredits = "credits";
+
+    private static readonly string[] ResultHookStateKeys =
+    [
+        DiagnosticKeyHookState,
+        DiagnosticKeyCreditsStateTag,
+        DiagnosticKeyState
+    ];
+
+    private static readonly HashSet<string> PromotedExtenderActionIds = new(StringComparer.OrdinalIgnoreCase)
+    {
+        "freeze_timer",
+        "toggle_fog_reveal",
+        "toggle_ai",
+        ActionIdSetUnitCap,
+        ActionIdToggleInstantBuildPatch
+    };
+
+    private readonly IProcessLocator _processLocator;
+    private readonly IProfileRepository _profileRepository;
+    private readonly ISignatureResolver _signatureResolver;
+    private readonly IModDependencyValidator _modDependencyValidator;
+    private readonly ISymbolHealthService _symbolHealthService;
+    private readonly IProfileVariantResolver? _profileVariantResolver;
+    private readonly ISdkOperationRouter? _sdkOperationRouter;
+    private readonly IBackendRouter _backendRouter;
+    private readonly IExecutionBackend? _extenderBackend;
+    private readonly ILogger<RuntimeAdapter> _logger;
+    private readonly string _calibrationArtifactRoot;
+
+    private static readonly JsonSerializerOptions SymbolValidationJsonOptions = new()
+    {
+        PropertyNameCaseInsensitive = true,
+        Converters = { new JsonStringEnumConverter() }
+    };
+
+    private ProcessMemoryAccessor? _memory;
+    private nint _creditsHookInjectionAddress;
+    private byte[]? _creditsHookOriginalBytesBackup;
+    private nint _creditsHookCodeCaveAddress;
+    private nint _creditsHookLastContextAddress;
+    private nint _creditsHookHitCountAddress;
+    private nint _creditsHookLockEnabledAddress;
+    private nint _creditsHookForcedFloatBitsAddress;
+    private byte _creditsHookContextOffset = CreditsContextOffsetByte;
+
+    private nint _unitCapHookInjectionAddress;
+    private byte[]? _unitCapHookOriginalBytesBackup;
+    private nint _unitCapHookCodeCaveAddress;
+    private nint _unitCapHookValueAddress;
+
+    private nint _instantBuildHookInjectionAddress;
+    private byte[]? _instantBuildHookOriginalBytesBackup;
+    private nint _instantBuildHookCodeCaveAddress;
+
+    /// <summary>
+    /// Tracks active code patches keyed by symbol name.
+    /// Value = original bytes that were saved before the patch was applied.
+    /// </summary>
+    private readonly Dictionary<string, (nint Address, byte[] OriginalBytes)> _activeCodePatches = new();
+    private HashSet<string> _dependencySoftDisabledActions = new(StringComparer.OrdinalIgnoreCase);
+    private DependencyValidationStatus _dependencyValidationStatus = DependencyValidationStatus.Pass;
+    private string? _dependencyValidationMessage;
+    private TrainerProfile? _attachedProfile;
+    private Dictionary<string, List<SymbolValidationRule>> _symbolValidationRules = new(StringComparer.OrdinalIgnoreCase);
+    private HashSet<string> _criticalSymbols = new(StringComparer.OrdinalIgnoreCase);
+    private readonly object _telemetryLock = new();
+    private readonly Dictionary<string, int> _actionSuccessCounters = new(StringComparer.OrdinalIgnoreCase);
+    private readonly Dictionary<string, int> _actionFailureCounters = new(StringComparer.OrdinalIgnoreCase);
+    private readonly Dictionary<string, int> _symbolSourceCounters = new(StringComparer.OrdinalIgnoreCase);
+
     public RuntimeAdapter(
         IProcessLocator processLocator,
         IProfileRepository profileRepository,
