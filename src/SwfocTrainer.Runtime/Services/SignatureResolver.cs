@@ -302,10 +302,14 @@ public sealed class SignatureResolver : ISignatureResolver
                 LastValidatedAt: DateTimeOffset.UtcNow);
             return true;
         }
-        catch
+        catch (Exception ex)
         {
-            _logger.LogDebug("Fallback test-read failed for {Symbol} at 0x{Address:X} (offset 0x{Offset:X})",
-                symbolName, address.ToInt64(), offset);
+            _logger.LogDebug(
+                ex,
+                "Fallback test-read failed for {Symbol} at 0x{Address:X} (offset 0x{Offset:X})",
+                symbolName,
+                address.ToInt64(),
+                offset);
             return false;
         }
     }
@@ -339,7 +343,7 @@ public sealed class SignatureResolver : ISignatureResolver
 
         if (signature.AddressMode == SignatureAddressMode.ReadAbsolute32AtOffset)
         {
-            if (index + sizeof(uint) > moduleBytes.Length)
+            if (index > moduleBytes.Length - sizeof(uint))
             {
                 diagnostics = $"Not enough bytes to decode absolute 32-bit address at index {index} for {signature.Name}";
                 return false;
@@ -358,7 +362,7 @@ public sealed class SignatureResolver : ISignatureResolver
 
         if (signature.AddressMode == SignatureAddressMode.ReadRipRelative32AtOffset)
         {
-            if (index + sizeof(int) > moduleBytes.Length)
+            if (index > moduleBytes.Length - sizeof(int))
             {
                 diagnostics = $"Not enough bytes to decode RIP-relative disp32 at index {index} for {signature.Name}";
                 return false;

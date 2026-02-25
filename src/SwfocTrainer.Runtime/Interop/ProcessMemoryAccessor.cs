@@ -9,11 +9,12 @@ internal sealed class ProcessMemoryAccessor : IDisposable
     public ProcessMemoryAccessor(int processId)
     {
         _handle = NativeMethods.OpenProcess(
-            NativeMethods.ProcessAccessFlags.QueryInformation |
-            NativeMethods.ProcessAccessFlags.QueryLimitedInformation |
-            NativeMethods.ProcessAccessFlags.VmRead |
-            NativeMethods.ProcessAccessFlags.VmWrite |
-            NativeMethods.ProcessAccessFlags.VmOperation,
+            (NativeMethods.ProcessAccess)(
+                (uint)NativeMethods.ProcessAccess.QueryInformation |
+                (uint)NativeMethods.ProcessAccess.QueryLimitedInformation |
+                (uint)NativeMethods.ProcessAccess.VmRead |
+                (uint)NativeMethods.ProcessAccess.VmWrite |
+                (uint)NativeMethods.ProcessAccess.VmOperation),
             false,
             processId);
 

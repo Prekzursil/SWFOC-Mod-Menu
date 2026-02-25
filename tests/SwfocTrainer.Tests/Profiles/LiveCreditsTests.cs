@@ -33,6 +33,7 @@ public sealed class LiveCreditsTests
         {
             throw LiveSkip.For(_output, "no swfoc process found.");
         }
+        running.Should().NotBeNull();
 
         var repoRoot = TestPaths.FindRepoRoot();
         var profileRepo = new FileSystemProfileRepository(new ProfileRepositoryOptions

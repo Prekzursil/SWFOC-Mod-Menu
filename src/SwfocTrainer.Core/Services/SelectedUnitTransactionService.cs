@@ -349,56 +349,66 @@ public sealed class SelectedUnitTransactionService : ISelectedUnitTransactionSer
     private static List<SelectedUnitChange> BuildChanges(SelectedUnitSnapshot before, SelectedUnitDraft draft)
     {
         var changes = new List<SelectedUnitChange>(Bindings.Count);
-        foreach (var binding in Bindings)
+        AddFloatChangeIfDifferent(changes, before.Hp, draft.Hp, "selected_hp");
+        AddFloatChangeIfDifferent(changes, before.Shield, draft.Shield, "selected_shield");
+        AddFloatChangeIfDifferent(changes, before.Speed, draft.Speed, "selected_speed");
+        AddFloatChangeIfDifferent(changes, before.DamageMultiplier, draft.DamageMultiplier, "selected_damage_multiplier");
+        AddFloatChangeIfDifferent(changes, before.CooldownMultiplier, draft.CooldownMultiplier, "selected_cooldown_multiplier");
+        AddIntChangeIfDifferent(changes, before.Veterancy, draft.Veterancy, "selected_veterancy");
+        AddIntChangeIfDifferent(changes, before.OwnerFaction, draft.OwnerFaction, "selected_owner_faction");
+        return changes;
+    }
+
+    private static void AddFloatChangeIfDifferent(
+        ICollection<SelectedUnitChange> changes,
+        float beforeValue,
+        float? draftValue,
+        string symbol)
+    {
+        if (draftValue is null || ApproximatelyEqual(beforeValue, draftValue.Value))
         {
-            switch (binding.Symbol)
-            {
-                case "selected_hp" when draft.Hp is not null:
-                    if (!ApproximatelyEqual(before.Hp, draft.Hp.Value))
-                    {
-                        changes.Add(new SelectedUnitChange(binding.Symbol, binding.ActionId, before.Hp, draft.Hp.Value, IsFloat: true));
-                    }
-                    break;
-                case "selected_shield" when draft.Shield is not null:
-                    if (!ApproximatelyEqual(before.Shield, draft.Shield.Value))
-                    {
-                        changes.Add(new SelectedUnitChange(binding.Symbol, binding.ActionId, before.Shield, draft.Shield.Value, IsFloat: true));
-                    }
-                    break;
-                case "selected_speed" when draft.Speed is not null:
-                    if (!ApproximatelyEqual(before.Speed, draft.Speed.Value))
-                    {
-                        changes.Add(new SelectedUnitChange(binding.Symbol, binding.ActionId, before.Speed, draft.Speed.Value, IsFloat: true));
-                    }
-                    break;
-                case "selected_damage_multiplier" when draft.DamageMultiplier is not null:
-                    if (!ApproximatelyEqual(before.DamageMultiplier, draft.DamageMultiplier.Value))
-                    {
-                        changes.Add(new SelectedUnitChange(binding.Symbol, binding.ActionId, before.DamageMultiplier, draft.DamageMultiplier.Value, IsFloat: true));
-                    }
-                    break;
-                case "selected_cooldown_multiplier" when draft.CooldownMultiplier is not null:
-                    if (!ApproximatelyEqual(before.CooldownMultiplier, draft.CooldownMultiplier.Value))
-                    {
-                        changes.Add(new SelectedUnitChange(binding.Symbol, binding.ActionId, before.CooldownMultiplier, draft.CooldownMultiplier.Value, IsFloat: true));
-                    }
-                    break;
-                case "selected_veterancy" when draft.Veterancy is not null:
-                    if (before.Veterancy != draft.Veterancy.Value)
-                    {
-                        changes.Add(new SelectedUnitChange(binding.Symbol, binding.ActionId, before.Veterancy, draft.Veterancy.Value, IsFloat: false));
-                    }
-                    break;
-                case "selected_owner_faction" when draft.OwnerFaction is not null:
-                    if (before.OwnerFaction != draft.OwnerFaction.Value)
-                    {
-                        changes.Add(new SelectedUnitChange(binding.Symbol, binding.ActionId, before.OwnerFaction, draft.OwnerFaction.Value, IsFloat: false));
-                    }
-                    break;
-            }
+            return;
         }
 
-        return changes;
+        if (!TryGetBinding(symbol, out var binding))
+        {
+            return;
+        }
+
+        changes.Add(new SelectedUnitChange(binding.Symbol, binding.ActionId, beforeValue, draftValue.Value, IsFloat: true));
+    }
+
+    private static void AddIntChangeIfDifferent(
+        ICollection<SelectedUnitChange> changes,
+        int beforeValue,
+        int? draftValue,
+        string symbol)
+    {
+        if (draftValue is null || beforeValue == draftValue.Value)
+        {
+            return;
+        }
+
+        if (!TryGetBinding(symbol, out var binding))
+        {
+            return;
+        }
+
+        changes.Add(new SelectedUnitChange(binding.Symbol, binding.ActionId, beforeValue, draftValue.Value, IsFloat: false));
+    }
+
+    private static bool TryGetBinding(string symbol, out FieldBinding binding)
+    {
+        var resolved = Bindings.FirstOrDefault(candidate =>
+            candidate.Symbol.Equals(symbol, StringComparison.OrdinalIgnoreCase));
+        if (resolved is null)
+        {
+            binding = null!;
+            return false;
+        }
+
+        binding = resolved;
+        return true;
     }
 
     private void EnsureAttached()

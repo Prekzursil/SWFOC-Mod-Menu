@@ -67,14 +67,22 @@ jobs:
         shell: pwsh
         env:
           GH_TOKEN: ${{ github.token }}
+          MANUAL_TAG_NAME: ${{ inputs.tag_name }}
+          MANUAL_PRERELEASE: ${{ inputs.prerelease }}
+          GITHUB_REF_TYPE: ${{ github.ref_type }}
+          GITHUB_REF_NAME: ${{ github.ref_name }}
         run: |
-          $tag = "${{ github.ref_name }}"
-          if ("${{ github.ref_type }}" -ne "tag") {
-            $tag = "${{ inputs.tag_name }}"
+          $tag = $env:GITHUB_REF_NAME
+          if ($env:GITHUB_REF_TYPE -ne "tag") {
+            $tag = $env:MANUAL_TAG_NAME
           }
 
           if ([string]::IsNullOrWhiteSpace($tag)) {
             throw "tag_name input is required when publish_release=true on workflow_dispatch."
+          }
+
+          if ($tag -notmatch '^v[0-9A-Za-z._-]+$') {
+            throw "tag_name contains unsupported characters. Allowed pattern: ^v[0-9A-Za-z._-]+$"
           }
 
           $zipPath = (Resolve-Path "artifacts/SwfocTrainer-portable.zip").Path
@@ -100,8 +108,8 @@ jobs:
             "--verify-tag"
           )
 
-          $manualPrerelease = "${{ inputs.prerelease }}" -eq "true"
-          if ($manualPrerelease -and "${{ github.ref_type }}" -ne "tag") {
+          $manualPrerelease = $env:MANUAL_PRERELEASE -eq "true"
+          if ($manualPrerelease -and $env:GITHUB_REF_TYPE -ne "tag") {
             $args += "--prerelease"
           }
 

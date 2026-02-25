@@ -3,6 +3,7 @@ using Microsoft.Extensions.Logging;
 using SwfocTrainer.Catalog.Config;
 using SwfocTrainer.Catalog.Parsing;
 using SwfocTrainer.Core.Contracts;
+using SwfocTrainer.Core.Models;
 
 namespace SwfocTrainer.Catalog.Services;
 
@@ -43,44 +44,9 @@ public sealed class CatalogService : ICatalogService
         var parsed = 0;
         foreach (var source in profile.CatalogSources)
         {
-            if (!source.Type.Equals("xml", StringComparison.OrdinalIgnoreCase))
+            if (!TryParseCatalogSource(source, unitList, planetList, heroList, factionList))
             {
                 continue;
-            }
-
-            if (!File.Exists(source.Path))
-            {
-                if (source.Required)
-                {
-                    _logger.LogWarning("Required catalog source not found: {Path}", source.Path);
-                }
-
-                continue;
-            }
-
-            var names = XmlObjectExtractor.ExtractObjectNames(source.Path);
-            foreach (var name in names)
-            {
-                unitList.Add(name);
-                if (name.Contains("PLANET", StringComparison.OrdinalIgnoreCase))
-                {
-                    planetList.Add(name);
-                }
-
-                if (name.Contains("HERO", StringComparison.OrdinalIgnoreCase) ||
-                    name.Contains("VADER", StringComparison.OrdinalIgnoreCase) ||
-                    name.Contains("PALPATINE", StringComparison.OrdinalIgnoreCase))
-                {
-                    heroList.Add(name);
-                }
-
-                if (name.Contains("EMPIRE", StringComparison.OrdinalIgnoreCase) ||
-                    name.Contains("REBEL", StringComparison.OrdinalIgnoreCase) ||
-                    name.Contains("UNDERWORLD", StringComparison.OrdinalIgnoreCase) ||
-                    name.Contains("CIS", StringComparison.OrdinalIgnoreCase))
-                {
-                    factionList.Add(name);
-                }
             }
 
             parsed++;
@@ -102,6 +68,76 @@ public sealed class CatalogService : ICatalogService
     public Task<IReadOnlyDictionary<string, IReadOnlyList<string>>> LoadCatalogAsync(string profileId)
     {
         return LoadCatalogAsync(profileId, CancellationToken.None);
+    }
+
+    private bool TryParseCatalogSource(
+        CatalogSource source,
+        ISet<string> unitList,
+        ISet<string> planetList,
+        ISet<string> heroList,
+        ISet<string> factionList)
+    {
+        if (!source.Type.Equals("xml", StringComparison.OrdinalIgnoreCase))
+        {
+            return false;
+        }
+
+        if (!File.Exists(source.Path))
+        {
+            if (source.Required)
+            {
+                _logger.LogWarning("Required catalog source not found: {Path}", source.Path);
+            }
+
+            return false;
+        }
+
+        foreach (var name in XmlObjectExtractor.ExtractObjectNames(source.Path))
+        {
+            AddCatalogName(name, unitList, planetList, heroList, factionList);
+        }
+
+        return true;
+    }
+
+    private static void AddCatalogName(
+        string name,
+        ISet<string> unitList,
+        ISet<string> planetList,
+        ISet<string> heroList,
+        ISet<string> factionList)
+    {
+        unitList.Add(name);
+
+        if (name.Contains("PLANET", StringComparison.OrdinalIgnoreCase))
+        {
+            planetList.Add(name);
+        }
+
+        if (IsHeroName(name))
+        {
+            heroList.Add(name);
+        }
+
+        if (IsFactionName(name))
+        {
+            factionList.Add(name);
+        }
+    }
+
+    private static bool IsHeroName(string name)
+    {
+        return name.Contains("HERO", StringComparison.OrdinalIgnoreCase) ||
+               name.Contains("VADER", StringComparison.OrdinalIgnoreCase) ||
+               name.Contains("PALPATINE", StringComparison.OrdinalIgnoreCase);
+    }
+
+    private static bool IsFactionName(string name)
+    {
+        return name.Contains("EMPIRE", StringComparison.OrdinalIgnoreCase) ||
+               name.Contains("REBEL", StringComparison.OrdinalIgnoreCase) ||
+               name.Contains("UNDERWORLD", StringComparison.OrdinalIgnoreCase) ||
+               name.Contains("CIS", StringComparison.OrdinalIgnoreCase);
     }
 
     private async Task<Dictionary<string, IReadOnlyList<string>>> LoadPrebuiltCatalogAsync(string profileId, CancellationToken cancellationToken)
