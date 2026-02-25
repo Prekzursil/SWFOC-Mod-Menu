@@ -33,6 +33,7 @@ $projectName = "swfoc-$AnalysisRunId"
 $rawSymbolsPath = Join-Path $OutputDir "raw-symbols.json"
 $symbolPackPath = Join-Path $OutputDir "symbol-pack.json"
 $summaryPath = Join-Path $OutputDir "analysis-summary.json"
+$determinismDir = Join-Path $OutputDir "determinism"
 
 & $analyzeHeadless `
     $projectDir `
@@ -50,7 +51,15 @@ python $emitScript `
     --output-pack $symbolPackPath `
     --output-summary $summaryPath
 
+$determinismScript = Join-Path $repoRoot "tools/ghidra/check-determinism.py"
+python $determinismScript `
+    --raw-symbols $rawSymbolsPath `
+    --binary-path $binaryFullPath `
+    --analysis-run-id-base $AnalysisRunId `
+    --output-dir $determinismDir
+
 Write-Output "ghidra headless analysis complete"
 Write-Output " - raw symbols: $rawSymbolsPath"
 Write-Output " - symbol pack: $symbolPackPath"
 Write-Output " - summary: $summaryPath"
+Write-Output " - determinism report: $(Join-Path $determinismDir 'determinism-report.json')"

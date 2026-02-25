@@ -14,6 +14,7 @@ This directory contains an automation-first reverse-engineering pipeline for SWF
 - `run-headless.ps1` (Windows)
 - `run-headless.sh` (Linux/WSL)
 - `emit-symbol-pack.py` (normalizes raw symbols into schema-backed outputs)
+- `check-determinism.py` (verifies anchor/capability determinism and emits classification-coded report)
 - `export_symbols.py` (Ghidra post-script executed by `analyzeHeadless`)
 - `check-determinism.py` (verifies deterministic symbol-pack output across reordered input symbols)
 
@@ -21,3 +22,4 @@ This directory contains an automation-first reverse-engineering pipeline for SWF
 
 - Set `GHIDRA_HOME` so scripts can find `support/analyzeHeadless`.
 - Optional: set `SWFOC_GHIDRA_SYMBOL_PACK_ROOT` at runtime to override symbol-pack lookup root.
+- `run-headless` now emits `determinism/determinism-report.json` and fails with classification code `GHIDRA_DETERMINISM_MISMATCH` when output diverges.

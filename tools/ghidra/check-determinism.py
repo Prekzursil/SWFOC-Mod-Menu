@@ -13,6 +13,9 @@ import json
 import subprocess
 from pathlib import Path
 
+REASON_CODE_DETERMINISM_MISMATCH = "GHIDRA_DETERMINISM_MISMATCH"
+REASON_CODE_OK = "GHIDRA_DETERMINISM_PASS"
+
 
 def _run_emitter(
     emitter_path: Path,
@@ -109,13 +112,17 @@ def main() -> int:
 
     report = {
         "deterministic": matches,
+        "reasonCode": REASON_CODE_OK if matches else REASON_CODE_DETERMINISM_MISMATCH,
         "firstPackPath": str(first_pack).replace("\\", "/"),
         "secondPackPath": str(second_pack).replace("\\", "/"),
     }
     _write_report(output_dir / "determinism-report.json", report)
 
     if not matches:
-        raise SystemExit("ghidra symbol-pack determinism check failed")
+        raise SystemExit(
+            "ghidra symbol-pack determinism check failed "
+            f"(classification_code={REASON_CODE_DETERMINISM_MISMATCH})"
+        )
 
     print("ghidra symbol-pack determinism check passed")
     return 0
