@@ -19,7 +19,15 @@ public sealed class BackendRouterTests
         ExecutionKind executionKind)
     {
         var router = new BackendRouter();
-        var request = BuildRequest(actionId, executionKind);
+        var request = BuildRequest(
+            actionId,
+            executionKind,
+            context: new Dictionary<string, object?>
+            {
+                ["capabilityMapReasonCode"] = "CAPABILITY_PROBE_PASS",
+                ["capabilityMapState"] = "Verified",
+                ["capabilityDeclaredAvailable"] = true
+            });
         var profile = BuildProfile(backendPreference: "auto");
         var process = BuildProcess();
         var report = new CapabilityReport(
@@ -44,6 +52,12 @@ public sealed class BackendRouterTests
         decision.Diagnostics!["hybridExecution"].Should().Be(false);
         decision.Diagnostics.Should().ContainKey("promotedExtenderAction");
         decision.Diagnostics!["promotedExtenderAction"].Should().Be(true);
+        decision.Diagnostics.Should().ContainKey("capabilityMapReasonCode");
+        decision.Diagnostics!["capabilityMapReasonCode"].Should().Be("CAPABILITY_PROBE_PASS");
+        decision.Diagnostics.Should().ContainKey("capabilityMapState");
+        decision.Diagnostics!["capabilityMapState"].Should().Be("Verified");
+        decision.Diagnostics.Should().ContainKey("capabilityDeclaredAvailable");
+        decision.Diagnostics!["capabilityDeclaredAvailable"].Should().Be(true);
     }
 
     [Theory]
@@ -273,7 +287,8 @@ public sealed class BackendRouterTests
     private static ActionExecutionRequest BuildRequest(
         string actionId,
         ExecutionKind executionKind,
-        string profileId = "roe_3447786229_swfoc")
+        string profileId = "roe_3447786229_swfoc",
+        IReadOnlyDictionary<string, object?>? context = null)
     {
         var action = new ActionSpec(
             Id: actionId,
@@ -284,7 +299,7 @@ public sealed class BackendRouterTests
             VerifyReadback: false,
             CooldownMs: 0,
             Description: "test");
-        return new ActionExecutionRequest(action, new JsonObject(), profileId, RuntimeMode.Galactic);
+        return new ActionExecutionRequest(action, new JsonObject(), profileId, RuntimeMode.Galactic, context);
     }
 
     private static TrainerProfile BuildProfile(

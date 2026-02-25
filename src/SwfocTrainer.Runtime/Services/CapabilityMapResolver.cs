@@ -77,7 +77,13 @@ public sealed class CapabilityMapResolver : ICapabilityMapResolver
             return declaredUnavailable;
         }
 
-        return ResolveOperationAnchors(fingerprint, requestedProfileId, operationId, op, resolvedAnchors);
+        return ResolveOperationAnchors(
+            fingerprint,
+            requestedProfileId,
+            operationId,
+            op,
+            resolvedAnchors,
+            ResolveCapabilityHint(map, operationId));
     }
 
     public Task<string?> ResolveDefaultProfileIdAsync(BinaryFingerprint fingerprint)
@@ -125,7 +131,8 @@ public sealed class CapabilityMapResolver : ICapabilityMapResolver
             0.0d,
             fingerprint.FingerprintId,
             Array.Empty<string>(),
-            Array.Empty<string>());
+            Array.Empty<string>(),
+            CapabilityResolutionMetadata.Empty);
     }
 
     private static bool IsRequestedProfileMismatch(string requestedProfileId, string? defaultProfileId)
@@ -144,7 +151,8 @@ public sealed class CapabilityMapResolver : ICapabilityMapResolver
         string requestedProfileId,
         string operationId,
         CapabilityOperationMap operation,
-        IReadOnlySet<string> resolvedAnchors)
+        IReadOnlySet<string> resolvedAnchors,
+        CapabilityAvailabilityHint? capabilityHint)
     {
         var comparer = StringComparer.OrdinalIgnoreCase;
         var matched = operation.RequiredAnchors
@@ -161,7 +169,8 @@ public sealed class CapabilityMapResolver : ICapabilityMapResolver
                 operation,
                 fingerprint,
                 matched,
-                missingRequired);
+                missingRequired,
+                capabilityHint);
         }
 
         var missingOptional = operation.OptionalAnchors
@@ -174,10 +183,16 @@ public sealed class CapabilityMapResolver : ICapabilityMapResolver
                 operationId,
                 fingerprint.FingerprintId,
                 matched,
-                missingOptional);
+                missingOptional,
+                capabilityHint);
         }
 
-        return BuildAllRequiredAnchorsPresentResult(requestedProfileId, operationId, fingerprint.FingerprintId, matched);
+        return BuildAllRequiredAnchorsPresentResult(
+            requestedProfileId,
+            operationId,
+            fingerprint.FingerprintId,
+            matched,
+            capabilityHint);
     }
 
     private static CapabilityResolutionResult BuildRequiredAnchorsMissingResult(
@@ -186,7 +201,8 @@ public sealed class CapabilityMapResolver : ICapabilityMapResolver
         CapabilityOperationMap operation,
         BinaryFingerprint fingerprint,
         IReadOnlyList<string> matchedAnchors,
-        IReadOnlyList<string> missingAnchors)
+        IReadOnlyList<string> missingAnchors,
+        CapabilityAvailabilityHint? capabilityHint)
     {
         return new CapabilityResolutionResult(
             requestedProfileId,
@@ -196,7 +212,8 @@ public sealed class CapabilityMapResolver : ICapabilityMapResolver
             BuildConfidence(matchedAnchors.Count, operation.RequiredAnchors.Count),
             fingerprint.FingerprintId,
             matchedAnchors,
-            missingAnchors);
+            missingAnchors,
+            ResolveCapabilityMetadata(capabilityHint));
     }
 
     private static CapabilityResolutionResult BuildOptionalAnchorsMissingResult(
@@ -204,7 +221,8 @@ public sealed class CapabilityMapResolver : ICapabilityMapResolver
         string operationId,
         string fingerprintId,
         IReadOnlyList<string> matchedAnchors,
-        IReadOnlyList<string> missingAnchors)
+        IReadOnlyList<string> missingAnchors,
+        CapabilityAvailabilityHint? capabilityHint)
     {
         return new CapabilityResolutionResult(
             requestedProfileId,
@@ -214,14 +232,16 @@ public sealed class CapabilityMapResolver : ICapabilityMapResolver
             0.85d,
             fingerprintId,
             matchedAnchors,
-            missingAnchors);
+            missingAnchors,
+            ResolveCapabilityMetadata(capabilityHint));
     }
 
     private static CapabilityResolutionResult BuildAllRequiredAnchorsPresentResult(
         string requestedProfileId,
         string operationId,
         string fingerprintId,
-        IReadOnlyList<string> matchedAnchors)
+        IReadOnlyList<string> matchedAnchors,
+        CapabilityAvailabilityHint? capabilityHint)
     {
         return new CapabilityResolutionResult(
             requestedProfileId,
@@ -231,7 +251,8 @@ public sealed class CapabilityMapResolver : ICapabilityMapResolver
             1.0d,
             fingerprintId,
             matchedAnchors,
-            Array.Empty<string>());
+            Array.Empty<string>(),
+            ResolveCapabilityMetadata(capabilityHint));
     }
 
     private static CapabilityMap? DeserializeCapabilityMap(string json, BinaryFingerprint fingerprint)
@@ -352,8 +373,27 @@ public sealed class CapabilityMapResolver : ICapabilityMapResolver
             0.0d,
             fingerprintId,
             Array.Empty<string>(),
-            requiredAnchors);
+            requiredAnchors,
+            ResolveCapabilityMetadata(hint));
         return true;
+    }
+
+    private static CapabilityAvailabilityHint? ResolveCapabilityHint(CapabilityMap map, string operationId)
+    {
+        return map.CapabilityHints.TryGetValue(operationId, out var hint) ? hint : null;
+    }
+
+    private static CapabilityResolutionMetadata ResolveCapabilityMetadata(CapabilityAvailabilityHint? hint)
+    {
+        if (hint is null)
+        {
+            return CapabilityResolutionMetadata.Empty;
+        }
+
+        return new CapabilityResolutionMetadata(
+            SourceReasonCode: hint.ReasonCode,
+            SourceState: hint.State,
+            DeclaredAvailable: hint.Available);
     }
 
     private static CapabilityReasonCode MapExternalReasonCode(string? reasonCode)

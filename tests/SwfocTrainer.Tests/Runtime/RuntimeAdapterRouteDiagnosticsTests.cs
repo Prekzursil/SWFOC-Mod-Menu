@@ -27,7 +27,10 @@ public sealed class RuntimeAdapterRouteDiagnosticsTests
             Message: "routed",
             Diagnostics: new Dictionary<string, object?>
             {
-                ["hybridExecution"] = true
+                ["hybridExecution"] = true,
+                ["capabilityMapReasonCode"] = "CAPABILITY_PROBE_PASS",
+                ["capabilityMapState"] = "Verified",
+                ["capabilityDeclaredAvailable"] = true
             });
 
         var capabilityReport = new CapabilityReport(
@@ -55,6 +58,9 @@ public sealed class RuntimeAdapterRouteDiagnosticsTests
         applied.Diagnostics.Should().ContainKey("capabilityProbeReasonCode");
         applied.Diagnostics.Should().ContainKey("hookState");
         applied.Diagnostics.Should().ContainKey("hybridExecution");
+        applied.Diagnostics.Should().ContainKey("capabilityMapReasonCode");
+        applied.Diagnostics.Should().ContainKey("capabilityMapState");
+        applied.Diagnostics.Should().ContainKey("capabilityDeclaredAvailable");
     }
 
     private static ActionExecutionResult InvokeApplyBackendRouteDiagnostics(

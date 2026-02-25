@@ -180,7 +180,8 @@ public sealed class SdkOperationRouterTests
                 1.0d,
                 fingerprint.FingerprintId,
                 Array.Empty<string>(),
-                Array.Empty<string>()));
+                Array.Empty<string>(),
+                CapabilityResolutionMetadata.Empty));
         }
 
         public Task<string?> ResolveDefaultProfileIdAsync(BinaryFingerprint fingerprint)

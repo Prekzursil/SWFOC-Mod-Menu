@@ -92,6 +92,9 @@ public sealed class BackendRouter : IBackendRouter
 
     private static Dictionary<string, object?> BuildDiagnostics(BackendDiagnosticsContext context)
     {
+        var capabilityMapReasonCode = ReadContextString(context.Request.Context, "capabilityMapReasonCode");
+        var capabilityMapState = ReadContextString(context.Request.Context, "capabilityMapState");
+        var capabilityDeclaredAvailable = ReadContextBool(context.Request.Context, "capabilityDeclaredAvailable");
         return new Dictionary<string, object?>(StringComparer.OrdinalIgnoreCase)
         {
             ["requestedExecutionKind"] = context.Request.Action.ExecutionKind.ToString(),
@@ -104,8 +107,36 @@ public sealed class BackendRouter : IBackendRouter
             ["requiredCapabilities"] = context.RequiredCapabilities,
             ["missingRequiredCapabilities"] = context.MissingRequired,
             ["hybridExecution"] = false,
-            ["promotedExtenderAction"] = context.PromotedExtenderAction
+            ["promotedExtenderAction"] = context.PromotedExtenderAction,
+            ["capabilityMapReasonCode"] = capabilityMapReasonCode ?? string.Empty,
+            ["capabilityMapState"] = capabilityMapState ?? string.Empty,
+            ["capabilityDeclaredAvailable"] = capabilityDeclaredAvailable
         };
+    }
+
+    private static string? ReadContextString(IReadOnlyDictionary<string, object?>? context, string key)
+    {
+        if (context is null || !context.TryGetValue(key, out var raw) || raw is null)
+        {
+            return null;
+        }
+
+        return raw as string ?? raw.ToString();
+    }
+
+    private static bool? ReadContextBool(IReadOnlyDictionary<string, object?>? context, string key)
+    {
+        if (context is null || !context.TryGetValue(key, out var raw) || raw is null)
+        {
+            return null;
+        }
+
+        if (raw is bool boolValue)
+        {
+            return boolValue;
+        }
+
+        return bool.TryParse(raw.ToString(), out var parsed) ? parsed : null;
     }
 
     private static BackendRouteDecision? TryResolveRequiredCapabilityContract(
