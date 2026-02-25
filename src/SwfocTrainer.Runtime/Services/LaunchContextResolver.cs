@@ -6,6 +6,8 @@ namespace SwfocTrainer.Runtime.Services;
 
 public sealed class LaunchContextResolver : ILaunchContextResolver
 {
+    private const string RoeProfileId = "roe_3447786229_swfoc";
+    private const string AotrProfileId = "aotr_1397421866_swfoc";
     private const string RoeWorkshopId = "3447786229";
     private const string AotrWorkshopId = "1397421866";
     private static readonly TimeSpan RegexTimeout = TimeSpan.FromMilliseconds(250);
@@ -85,12 +87,12 @@ public sealed class LaunchContextResolver : ILaunchContextResolver
 
         if (steamModIds.Any(id => id.Equals(RoeWorkshopId, StringComparison.OrdinalIgnoreCase)))
         {
-            return new ProfileRecommendation("roe_3447786229_swfoc", "steammod_exact_roe", 1.0d);
+            return new ProfileRecommendation(RoeProfileId, "steammod_exact_roe", 1.0d);
         }
 
         if (steamModIds.Any(id => id.Equals(AotrWorkshopId, StringComparison.OrdinalIgnoreCase)))
         {
-            return new ProfileRecommendation("aotr_1397421866_swfoc", "steammod_exact_aotr", 1.0d);
+            return new ProfileRecommendation(AotrProfileId, "steammod_exact_aotr", 1.0d);
         }
 
         if (!string.IsNullOrWhiteSpace(modPathNormalized))
@@ -104,13 +106,13 @@ public sealed class LaunchContextResolver : ILaunchContextResolver
             if (MatchesProfileHints("roe_3447786229_swfoc", modPathNormalized, profiles) ||
                 LooksLikeRoePath(modPathNormalized))
             {
-                return new ProfileRecommendation("roe_3447786229_swfoc", "modpath_hint_roe", 0.95d);
+                return new ProfileRecommendation(RoeProfileId, "modpath_hint_roe", 0.95d);
             }
 
             if (MatchesProfileHints("aotr_1397421866_swfoc", modPathNormalized, profiles) ||
                 LooksLikeAotrPath(modPathNormalized))
             {
-                return new ProfileRecommendation("aotr_1397421866_swfoc", "modpath_hint_aotr", 0.95d);
+                return new ProfileRecommendation(AotrProfileId, "modpath_hint_aotr", 0.95d);
             }
         }
 
@@ -138,6 +140,7 @@ public sealed class LaunchContextResolver : ILaunchContextResolver
 
         var modIds = new HashSet<string>(steamModIds, StringComparer.OrdinalIgnoreCase);
         var candidates = profiles
+            .Where(profile => !IsLegacyBaseProfile(profile.Id))
             .Select(profile => BuildWorkshopMatch(profile, modIds))
             .Where(match => match.Score > 0)
             .OrderByDescending(match => match.Score)
@@ -151,6 +154,7 @@ public sealed class LaunchContextResolver : ILaunchContextResolver
         }
 
         var selected = candidates[0];
+
         return new ProfileRecommendation(
             selected.Profile.Id,
             selected.IsExactMatch ? "steammod_profile_exact" : "steammod_profile_dependency_match",
@@ -201,6 +205,7 @@ public sealed class LaunchContextResolver : ILaunchContextResolver
         }
 
         var candidates = profiles
+            .Where(profile => !IsLegacyBaseProfile(profile.Id))
             .Select(profile =>
             {
                 var matchedHints = BuildHints(profile)
@@ -233,6 +238,12 @@ public sealed class LaunchContextResolver : ILaunchContextResolver
             selected.Profile.Id,
             selected.IsAutoDiscovery ? "modpath_profile_auto_discovery_hint" : "modpath_profile_hint",
             confidence);
+    }
+
+    private static bool IsLegacyBaseProfile(string profileId)
+    {
+        return profileId.Equals(RoeProfileId, StringComparison.OrdinalIgnoreCase) ||
+               profileId.Equals(AotrProfileId, StringComparison.OrdinalIgnoreCase);
     }
 
     private static bool MatchesProfileHints(string profileId, string modPathNormalized, IReadOnlyList<TrainerProfile> profiles)
