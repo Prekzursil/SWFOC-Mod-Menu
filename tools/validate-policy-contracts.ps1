@@ -64,8 +64,13 @@ $requiredFiles = @(
     "tools/ghidra/emit-symbol-pack.py",
     "tools/ghidra/emit-artifact-index.py",
     "tools/ghidra/check-determinism.py",
+    "tools/workshop/discover-top-mods.py",
+    "tools/workshop/enrich-mod-metadata.py",
+    "tools/workshop/generate-profiles-from-seeds.ps1",
     "tools/validate-ghidra-symbol-pack.ps1",
     "tools/validate-ghidra-artifact-index.ps1",
+    "tools/validate-workshop-topmods.ps1",
+    "tools/validate-generated-profile-seed.ps1",
     "tools/validate-binary-fingerprint.ps1",
     "tools/validate-signature-pack.ps1",
     "tools/schemas/calibration-artifact.schema.json",
@@ -74,12 +79,17 @@ $requiredFiles = @(
     "tools/schemas/ghidra-symbol-pack.schema.json",
     "tools/schemas/ghidra-analysis-summary.schema.json",
     "tools/schemas/ghidra-artifact-index.schema.json",
+    "tools/schemas/workshop-topmods.schema.json",
+    "tools/schemas/generated-profile-seed.schema.json",
     "tools/schemas/support-bundle-manifest.schema.json",
     "tools/fixtures/binary_fingerprint_sample.json",
     "tools/fixtures/signature_pack_sample.json",
     "tools/fixtures/ghidra_symbol_pack_sample.json",
     "tools/fixtures/ghidra_analysis_summary_sample.json",
-    "tools/fixtures/ghidra_artifact_index_sample.json"
+    "tools/fixtures/ghidra_artifact_index_sample.json",
+    "tools/fixtures/workshop_topmods_sample.json",
+    "tools/fixtures/generated_profile_seeds_sample.json",
+    "profiles/custom/README.md"
 )
 
 foreach ($path in $requiredFiles) {

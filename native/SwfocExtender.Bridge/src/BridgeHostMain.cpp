@@ -432,23 +432,53 @@ void EnsureCapabilityEntries(CapabilitySnapshot& snapshot) {
     }
 }
 
-CapabilitySnapshot MergeCapabilitySnapshots(
-    const CapabilitySnapshot& economySnapshot,
-    const CapabilitySnapshot& globalSnapshot,
-    const CapabilitySnapshot& patchSnapshot) {
-    CapabilitySnapshot merged {};
-
-    auto mergeInto = [&merged](const CapabilitySnapshot& source) {
-        for (const auto& [featureId, state] : source.features) {
-            merged.features[featureId] = state;
+bool HasNonEmptyAnchor(
+    const std::map<std::string, std::string>& anchors,
+    std::initializer_list<const char*> candidates) {
+    for (const auto* candidate : candidates) {
+        const auto it = anchors.find(candidate);
+        if (it != anchors.end() && !it->second.empty()) {
+            return true;
         }
-    };
+    }
 
-    mergeInto(economySnapshot);
-    mergeInto(globalSnapshot);
-    mergeInto(patchSnapshot);
-    EnsureCapabilityEntries(merged);
-    return merged;
+    return false;
+}
+
+CapabilityState BuildProbeState(bool available) {
+    CapabilityState state {};
+    state.available = available;
+    state.state = available ? "Verified" : "Unavailable";
+    state.reasonCode = available ? "CAPABILITY_PROBE_PASS" : "CAPABILITY_REQUIRED_MISSING";
+    return state;
+}
+
+CapabilitySnapshot BuildCapabilityProbeSnapshot(const PluginRequest& probeContext) {
+    CapabilitySnapshot snapshot {};
+
+    const auto hasProcessContext = probeContext.processId > 0;
+    snapshot.features.emplace(
+        "set_credits",
+        BuildProbeState(hasProcessContext && HasNonEmptyAnchor(probeContext.anchors, {"credits", "set_credits"})));
+    snapshot.features.emplace(
+        "freeze_timer",
+        BuildProbeState(hasProcessContext && HasNonEmptyAnchor(probeContext.anchors, {"game_timer_freeze", "freeze_timer"})));
+    snapshot.features.emplace(
+        "toggle_fog_reveal",
+        BuildProbeState(hasProcessContext && HasNonEmptyAnchor(probeContext.anchors, {"fog_reveal", "toggle_fog_reveal"})));
+    snapshot.features.emplace(
+        "toggle_ai",
+        BuildProbeState(hasProcessContext && HasNonEmptyAnchor(probeContext.anchors, {"ai_enabled", "toggle_ai"})));
+    snapshot.features.emplace(
+        "set_unit_cap",
+        BuildProbeState(hasProcessContext && HasNonEmptyAnchor(probeContext.anchors, {"unit_cap", "set_unit_cap"})));
+    snapshot.features.emplace(
+        "toggle_instant_build_patch",
+        BuildProbeState(hasProcessContext &&
+                        HasNonEmptyAnchor(probeContext.anchors, {"instant_build_patch", "toggle_instant_build_patch"})));
+
+    EnsureCapabilityEntries(snapshot);
+    return snapshot;
 }
 
 std::string CapabilitySnapshotToJson(const CapabilitySnapshot& snapshot) {
@@ -495,18 +525,18 @@ BridgeResult BuildHealthResult(const BridgeCommand& command) {
 
 BridgeResult BuildCapabilityProbeResult(
     const BridgeCommand& command,
-    const EconomyPlugin& economyPlugin,
-    const GlobalTogglePlugin& globalTogglePlugin,
-    const BuildPatchPlugin& buildPatchPlugin) {
-    const auto merged = MergeCapabilitySnapshots(
-        economyPlugin.capabilitySnapshot(),
-        globalTogglePlugin.capabilitySnapshot(),
-        buildPatchPlugin.capabilitySnapshot());
+    const EconomyPlugin&,
+    const GlobalTogglePlugin&,
+    const BuildPatchPlugin&) {
+    const auto probeContext = BuildPluginRequest(command);
+    const auto merged = BuildCapabilityProbeSnapshot(probeContext);
 
     std::ostringstream diagnostics;
     diagnostics
         << "{"
         << "\"bridge\":\"active\"," 
+        << "\"processId\":" << probeContext.processId << ','
+        << "\"anchorCount\":" << probeContext.anchors.size() << ','
         << "\"capabilities\":" << CapabilitySnapshotToJson(merged)
         << "}";
 

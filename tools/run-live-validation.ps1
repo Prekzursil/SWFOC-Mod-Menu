@@ -5,6 +5,7 @@ param(
     [switch]$NoBuild = $true,
     [string]$RunId = "",
     [ValidateSet("AOTR", "ROE", "TACTICAL", "FULL")][string]$Scope = "FULL",
+    [string]$TopModsPath = "",
     [bool]$EmitReproBundle = $true,
     [bool]$PreflightNativeHost = $true,
     [switch]$FailOnMissingArtifacts,
@@ -500,7 +501,8 @@ if ($EmitReproBundle) {
             -SummaryPath $summaryPath `
             -Scope $Scope `
             -ProfileRoot $ProfileRoot `
-            -StartedAtUtc $runStartedUtc
+            -StartedAtUtc $runStartedUtc `
+            -TopModsPath $TopModsPath
 
         $collectExitCode = if (Get-Variable -Name LASTEXITCODE -Scope Global -ErrorAction SilentlyContinue) { [int]$global:LASTEXITCODE } else { 0 }
         if ($collectExitCode -ne 0) {

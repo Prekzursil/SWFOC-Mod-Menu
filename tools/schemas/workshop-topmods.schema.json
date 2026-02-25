@@ -1,0 +1,143 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "SWFOC Workshop Top Mods Discovery",
+  "type": "object",
+  "required": [
+    "schemaVersion",
+    "appId",
+    "generatedAtUtc",
+    "retrievalTimestampUtc",
+    "rankingBasis",
+    "sources",
+    "topMods"
+  ],
+  "properties": {
+    "schemaVersion": {
+      "type": "string",
+      "enum": ["1.0"]
+    },
+    "appId": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "sourceRunId": {
+      "type": "string"
+    },
+    "generatedAtUtc": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "retrievalTimestampUtc": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "rankingBasis": {
+      "type": "string",
+      "minLength": 1
+    },
+    "sources": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "topMods": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "workshopId",
+          "title",
+          "url",
+          "subscriptions",
+          "lifetimeSubscriptions",
+          "timeUpdated",
+          "parentDependencies",
+          "launchHints",
+          "candidateBaseProfile",
+          "confidence",
+          "riskLevel",
+          "normalizedTags"
+        ],
+        "properties": {
+          "workshopId": {
+            "type": "string",
+            "pattern": "^[0-9]{4,}$"
+          },
+          "title": {
+            "type": "string",
+            "minLength": 1
+          },
+          "url": {
+            "type": "string",
+            "pattern": "^https://"
+          },
+          "subscriptions": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "lifetimeSubscriptions": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "timeUpdated": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "parentDependencies": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "pattern": "^[0-9]{4,}$"
+            }
+          },
+          "launchHints": {
+            "type": "object",
+            "required": ["steamModIds", "modPathHints"],
+            "properties": {
+              "steamModIds": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "pattern": "^[0-9]{4,}$"
+                }
+              },
+              "modPathHints": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              }
+            },
+            "additionalProperties": true
+          },
+          "candidateBaseProfile": {
+            "type": "string",
+            "minLength": 1
+          },
+          "confidence": {
+            "type": "number",
+            "minimum": 0.0,
+            "maximum": 1.0
+          },
+          "riskLevel": {
+            "type": "string",
+            "enum": ["low", "medium", "high"]
+          },
+          "normalizedTags": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            }
+          }
+        },
+        "additionalProperties": true
+      }
+    }
+  },
+  "additionalProperties": true
+}

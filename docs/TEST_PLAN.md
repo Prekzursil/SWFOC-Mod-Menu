@@ -180,6 +180,9 @@ Verification checklist:
 5. Verify fail-closed behavior remains explicit when environment is unhealthy:
    - promoted actions must not silently route to fallback backend
    - blocked runs surface explicit reason codes and must not be used for issue `#7` closure
+6. Verify top-mod evidence extension:
+   - when `top-mods.json` is present, `actionStatusDiagnostics.entries` must include explicit rows for discovered workshop ids (up to 10 mods x 5 promoted actions)
+   - top-mod rows may be `Skipped` during deterministic/live runs that only execute shipped profile matrix, but each skipped row must include `skipReasonCode`
 
 ## Live Ops checklist (M1)
 
@@ -208,6 +211,12 @@ Use the scripted run pack when preparing issue evidence:
 
 ```powershell
 pwsh ./tools/run-live-validation.ps1 -Configuration Release -NoBuild -Scope FULL -EmitReproBundle $true
+```
+
+Optional top-mod context extension:
+
+```powershell
+pwsh ./tools/run-live-validation.ps1 -Configuration Release -NoBuild -Scope FULL -EmitReproBundle $true -TopModsPath TestResults/mod-discovery/<runId>/top-mods.json
 ```
 
 This writes TRX + launch context outputs + repro bundle + prefilled issue templates to `TestResults/runs/<runId>/`.

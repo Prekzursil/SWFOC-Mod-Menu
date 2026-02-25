@@ -44,6 +44,7 @@ Optional scope-specific runs:
 pwsh ./tools/run-live-validation.ps1 -NoBuild -Scope AOTR -EmitReproBundle $true
 pwsh ./tools/run-live-validation.ps1 -NoBuild -Scope ROE -EmitReproBundle $true
 pwsh ./tools/run-live-validation.ps1 -NoBuild -Scope TACTICAL -EmitReproBundle $true
+pwsh ./tools/run-live-validation.ps1 -NoBuild -Scope ROE -EmitReproBundle $true -TopModsPath TestResults/mod-discovery/<runId>/top-mods.json
 ```
 
 ## 3. Artifacts Contract
@@ -147,6 +148,7 @@ Close issues only when all required evidence is present:
 - Extender credits path evidence includes `backendRoute=Extender` and hook state tag (`HOOK_LOCK` / `HOOK_ONESHOT`) in runtime diagnostics.
 - Captured action status diagnostics include `backendRoute`, `routeReasonCode`, `capabilityProbeReasonCode`, `capabilityMapReasonCode`, `capabilityMapState`, `capabilityDeclaredAvailable`, and for promoted matrix entries `hybridExecution` + `hasFallbackMarker`.
 - Valid `repro-bundle.json` linked in issue evidence.
+- If `top-mods.json` is present in the run directory (or passed via `-TopModsPath`), bundle assembly appends deterministic top-mod rows to `actionStatusDiagnostics` with explicit skip reason codes when live context is absent or not executed.
 
 Issue `#7` evidence decision gate:
 
@@ -154,6 +156,7 @@ Issue `#7` evidence decision gate:
 - `actionStatusDiagnostics.summary.total=15`, `passed=15`, `failed=0`, `skipped=0`.
 - every matrix entry for the five promoted actions across `base_swfoc`, `aotr_1397421866_swfoc`, and `roe_3447786229_swfoc` is present.
 - no matrix entry includes fallback markers or blocked diagnostics (`hasFallbackMarker=true`, `backendRoute` not `Extender`, or non-pass route/probe reason codes).
+- top-mod rows (when present) must never be silent omissions; each row must be explicit `Passed`, `Failed`, or `Skipped` with `skipReasonCode` when skipped.
 
 Then run:
 

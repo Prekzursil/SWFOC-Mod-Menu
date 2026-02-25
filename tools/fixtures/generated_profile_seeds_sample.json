@@ -1,0 +1,62 @@
+{
+  "schemaVersion": "1.0",
+  "sourceRunId": "sample-run-20260225",
+  "generatedAtUtc": "2026-02-25T00:05:00Z",
+  "seedCount": 2,
+  "seeds": [
+    {
+      "workshopId": "1397421866",
+      "title": "Awakening of the Rebellion",
+      "parentDependencies": [],
+      "launchHints": {
+        "steamModIds": ["1397421866"],
+        "modPathHints": ["awakening_of_the_rebellion", "aotr"]
+      },
+      "candidateBaseProfile": "aotr_1397421866_swfoc",
+      "requiredCapabilities": [
+        "set_credits",
+        "freeze_timer",
+        "toggle_fog_reveal",
+        "toggle_ai",
+        "set_unit_cap",
+        "toggle_instant_build_patch"
+      ],
+      "anchorHints": {
+        "set_credits": ["credits"],
+        "freeze_timer": ["game_timer_freeze"],
+        "toggle_fog_reveal": ["fog_reveal"],
+        "toggle_ai": ["ai_enabled"],
+        "set_unit_cap": ["unit_cap"],
+        "toggle_instant_build_patch": ["instant_build_patch"]
+      },
+      "riskLevel": "medium",
+      "confidence": 0.97,
+      "sourceRunId": "sample-run-20260225"
+    },
+    {
+      "workshopId": "3664004146",
+      "title": "Large Scale Enhancement Pack",
+      "parentDependencies": [],
+      "launchHints": {
+        "steamModIds": ["3664004146"],
+        "modPathHints": ["enhancement_pack", "foc_overhaul"]
+      },
+      "candidateBaseProfile": "base_swfoc",
+      "requiredCapabilities": [
+        "set_credits",
+        "freeze_timer",
+        "toggle_fog_reveal",
+        "toggle_ai",
+        "set_unit_cap",
+        "toggle_instant_build_patch"
+      ],
+      "anchorHints": {
+        "set_credits": ["credits"],
+        "freeze_timer": ["game_timer_freeze"]
+      },
+      "riskLevel": "low",
+      "confidence": 0.62,
+      "sourceRunId": "sample-run-20260225"
+    }
+  ]
+}

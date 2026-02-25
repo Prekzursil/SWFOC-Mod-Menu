@@ -54,6 +54,9 @@ public sealed class RuntimeAdapter : IRuntimeAdapter
     private const string DiagnosticKeySymbolConfidence = "symbolConfidence";
     private const string DiagnosticKeyHookAddress = "hookAddress";
     private const string DiagnosticKeyHookCaveAddress = "hookCaveAddress";
+    private const string DiagnosticKeyExpertOverrideEnabled = "expertOverrideEnabled";
+    private const string DiagnosticKeyOverrideReason = "overrideReason";
+    private const string DiagnosticKeyPanicDisableState = "panicDisableState";
     private const string ActionIdSetUnitCap = "set_unit_cap";
     private const string ActionIdToggleInstantBuildPatch = "toggle_instant_build_patch";
     private const string ActionIdSetCredits = "set_credits";
@@ -67,6 +70,8 @@ public sealed class RuntimeAdapter : IRuntimeAdapter
         DiagnosticKeyCreditsStateTag,
         DiagnosticKeyState
     ];
+    private const string ExpertOverridesEnvVar = "SWFOC_EXPERT_MUTATION_OVERRIDES";
+    private const string ExpertOverridesPanicEnvVar = "SWFOC_EXPERT_MUTATION_OVERRIDES_PANIC";
 
     private static readonly HashSet<string> PromotedExtenderActionIds = new(StringComparer.OrdinalIgnoreCase)
     {
@@ -978,8 +983,32 @@ public sealed class RuntimeAdapter : IRuntimeAdapter
             ?? await _profileRepository.ResolveInheritedProfileAsync(request.ProfileId, cancellationToken);
         var capabilityReport = await ProbeCapabilitiesAsync(attachedProfile, cancellationToken);
         var routeDecision = _backendRouter.Resolve(request, attachedProfile, CurrentSession!.Process, capabilityReport);
+        var expertOverrideEnabled = IsExpertOverrideEnabled();
+        var panicDisabled = IsExpertOverridePanicDisabled();
+        routeDecision = routeDecision with
+        {
+            Diagnostics = MergeDiagnostics(
+                routeDecision.Diagnostics,
+                BuildExpertOverrideDiagnostics(
+                    expertOverrideEnabled,
+                    routeDecision.Allowed
+                        ? "none"
+                        : ResolveBlockedOverrideReason(routeDecision, expertOverrideEnabled, panicDisabled),
+                    panicDisabled))
+        };
         if (!routeDecision.Allowed)
         {
+            if (TryCanApplyExpertOverride(request, routeDecision, expertOverrideEnabled, panicDisabled))
+            {
+                var overrideResult = await ExecuteExpertOverrideAsync(
+                    request,
+                    routeDecision,
+                    capabilityReport,
+                    cancellationToken);
+                RecordActionTelemetry(request, overrideResult);
+                return overrideResult;
+            }
+
             var blocked = CreateBlockedRouteResult(routeDecision, capabilityReport);
             RecordActionTelemetry(request, blocked);
             return blocked;
@@ -1040,6 +1069,130 @@ public sealed class RuntimeAdapter : IRuntimeAdapter
                     ["reasonCode"] = routeDecision.ReasonCode.ToString()
                 }));
         return ApplyBackendRouteDiagnostics(blocked, routeDecision, capabilityReport);
+    }
+
+    private static bool IsExpertOverrideEnabled()
+    {
+        return IsEnvFlagEnabled(ExpertOverridesEnvVar);
+    }
+
+    private static bool IsExpertOverridePanicDisabled()
+    {
+        return IsEnvFlagEnabled(ExpertOverridesPanicEnvVar);
+    }
+
+    private static bool IsEnvFlagEnabled(string variableName)
+    {
+        var value = Environment.GetEnvironmentVariable(variableName);
+        if (string.IsNullOrWhiteSpace(value))
+        {
+            return false;
+        }
+
+        return string.Equals(value, "1", StringComparison.OrdinalIgnoreCase) ||
+               string.Equals(value, "true", StringComparison.OrdinalIgnoreCase) ||
+               string.Equals(value, "yes", StringComparison.OrdinalIgnoreCase);
+    }
+
+    private static Dictionary<string, object?> BuildExpertOverrideDiagnostics(
+        bool expertOverrideEnabled,
+        string overrideReason,
+        bool panicDisabled)
+    {
+        return new Dictionary<string, object?>
+        {
+            [DiagnosticKeyExpertOverrideEnabled] = expertOverrideEnabled,
+            [DiagnosticKeyOverrideReason] = overrideReason,
+            [DiagnosticKeyPanicDisableState] = panicDisabled ? "active" : "inactive"
+        };
+    }
+
+    private static string ResolveBlockedOverrideReason(
+        BackendRouteDecision routeDecision,
+        bool expertOverrideEnabled,
+        bool panicDisabled)
+    {
+        if (panicDisabled)
+        {
+            return "panic_disable_active";
+        }
+
+        if (!expertOverrideEnabled)
+        {
+            return "expert_override_disabled";
+        }
+
+        return routeDecision.ReasonCode switch
+        {
+            RuntimeReasonCode.SAFETY_FAIL_CLOSED => "blocked_fail_closed",
+            RuntimeReasonCode.CAPABILITY_REQUIRED_MISSING => "blocked_missing_capability",
+            RuntimeReasonCode.SAFETY_MUTATION_BLOCKED => "blocked_mutation_safety",
+            _ => "blocked_no_override_path"
+        };
+    }
+
+    private static bool TryCanApplyExpertOverride(
+        ActionExecutionRequest request,
+        BackendRouteDecision routeDecision,
+        bool expertOverrideEnabled,
+        bool panicDisabled)
+    {
+        if (!expertOverrideEnabled || panicDisabled)
+        {
+            return false;
+        }
+
+        if (!PromotedExtenderActionIds.Contains(request.Action.Id) || !IsMutating(request.Action.Id))
+        {
+            return false;
+        }
+
+        if (routeDecision.Backend != ExecutionBackendKind.Extender)
+        {
+            return false;
+        }
+
+        return routeDecision.ReasonCode is RuntimeReasonCode.SAFETY_FAIL_CLOSED
+            or RuntimeReasonCode.CAPABILITY_REQUIRED_MISSING
+            or RuntimeReasonCode.SAFETY_MUTATION_BLOCKED;
+    }
+
+    private static bool IsMutating(string actionId)
+    {
+        if (string.IsNullOrWhiteSpace(actionId))
+        {
+            return true;
+        }
+
+        return !(actionId.StartsWith("read_", StringComparison.OrdinalIgnoreCase) ||
+                 actionId.StartsWith("list_", StringComparison.OrdinalIgnoreCase) ||
+                 actionId.StartsWith("get_", StringComparison.OrdinalIgnoreCase));
+    }
+
+    private async Task<ActionExecutionResult> ExecuteExpertOverrideAsync(
+        ActionExecutionRequest request,
+        BackendRouteDecision blockedRouteDecision,
+        CapabilityReport capabilityReport,
+        CancellationToken cancellationToken)
+    {
+        var overrideRouteDecision = new BackendRouteDecision(
+            Allowed: true,
+            Backend: ExecutionBackendKind.Memory,
+            ReasonCode: RuntimeReasonCode.CAPABILITY_FEATURE_EXPERIMENTAL,
+            Message: "Expert override engaged. Executing risky fallback path.",
+            Diagnostics: MergeDiagnostics(
+                blockedRouteDecision.Diagnostics,
+                BuildExpertOverrideDiagnostics(
+                    expertOverrideEnabled: true,
+                    overrideReason: "expert_override_memory_fallback",
+                    panicDisabled: false)));
+
+        var overrideResult = await ExecuteLegacyBackendActionAsync(request, cancellationToken);
+        overrideResult = overrideResult with
+        {
+            Message = $"Expert override executed: {overrideResult.Message}"
+        };
+        return ApplyBackendRouteDiagnostics(overrideResult, overrideRouteDecision, capabilityReport);
     }
 
     private async Task<ActionExecutionResult> ExecuteByRouteAsync(
@@ -1159,6 +1312,9 @@ public sealed class RuntimeAdapter : IRuntimeAdapter
         var capabilityMapReasonCode = ResolveCapabilityMapReasonCode(baseDiagnostics);
         var capabilityMapState = ResolveCapabilityMapState(baseDiagnostics);
         var capabilityDeclaredAvailable = ResolveCapabilityDeclaredAvailable(baseDiagnostics);
+        var expertOverrideEnabled = ResolveExpertOverrideEnabled(baseDiagnostics);
+        var overrideReason = ResolveOverrideReason(baseDiagnostics);
+        var panicDisableState = ResolvePanicDisableState(baseDiagnostics);
         var diagnostics = MergeDiagnostics(
             baseDiagnostics,
             new Dictionary<string, object?>
@@ -1172,9 +1328,46 @@ public sealed class RuntimeAdapter : IRuntimeAdapter
                 ["capabilityCount"] = capabilityReport.Capabilities.Count,
                 ["capabilityMapReasonCode"] = capabilityMapReasonCode,
                 ["capabilityMapState"] = capabilityMapState,
-                ["capabilityDeclaredAvailable"] = capabilityDeclaredAvailable
+                ["capabilityDeclaredAvailable"] = capabilityDeclaredAvailable,
+                [DiagnosticKeyExpertOverrideEnabled] = expertOverrideEnabled,
+                [DiagnosticKeyOverrideReason] = overrideReason,
+                [DiagnosticKeyPanicDisableState] = panicDisableState
             });
         return result with { Diagnostics = diagnostics };
+    }
+
+    private static bool ResolveExpertOverrideEnabled(IReadOnlyDictionary<string, object?>? diagnostics)
+    {
+        if (TryReadDiagnosticString(diagnostics, DiagnosticKeyExpertOverrideEnabled, out var raw) &&
+            !string.IsNullOrWhiteSpace(raw) &&
+            bool.TryParse(raw, out var parsed))
+        {
+            return parsed;
+        }
+
+        return IsExpertOverrideEnabled();
+    }
+
+    private static string ResolveOverrideReason(IReadOnlyDictionary<string, object?>? diagnostics)
+    {
+        if (TryReadDiagnosticString(diagnostics, DiagnosticKeyOverrideReason, out var value) &&
+            !string.IsNullOrWhiteSpace(value))
+        {
+            return value!;
+        }
+
+        return "none";
+    }
+
+    private static string ResolvePanicDisableState(IReadOnlyDictionary<string, object?>? diagnostics)
+    {
+        if (TryReadDiagnosticString(diagnostics, DiagnosticKeyPanicDisableState, out var value) &&
+            !string.IsNullOrWhiteSpace(value))
+        {
+            return value!;
+        }
+
+        return IsExpertOverridePanicDisabled() ? "active" : "inactive";
     }
 
     private static string ResolveCapabilityMapReasonCode(IReadOnlyDictionary<string, object?>? diagnostics)

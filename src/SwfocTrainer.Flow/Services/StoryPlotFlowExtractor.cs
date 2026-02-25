@@ -81,7 +81,7 @@ public sealed class StoryPlotFlowExtractor
         return new FlowIndexReport(plots, diagnostics);
     }
 
-    public FlowCapabilityLinkReport BuildCapabilityLinkReport(
+    public static FlowCapabilityLinkReport BuildCapabilityLinkReport(
         FlowIndexReport flowReport,
         MegaFilesIndex megaFilesIndex,
         string symbolPackJson)
@@ -263,16 +263,11 @@ public sealed class StoryPlotFlowExtractor
         public List<SymbolPackCapabilityDto>? Capabilities { get; set; } = new();
     }
 
-    private sealed class SymbolPackCapabilityDto
-    {
-        public string? FeatureId { get; set; } = string.Empty;
-
-        public bool Available { get; set; }
-
-        public string? State { get; set; } = string.Empty;
-
-        public string? ReasonCode { get; set; } = string.Empty;
-    }
+    private sealed record SymbolPackCapabilityDto(
+        string? FeatureId,
+        bool Available,
+        string? State,
+        string? ReasonCode);
 
     private sealed record CapabilitySnapshot(
         bool Available,
