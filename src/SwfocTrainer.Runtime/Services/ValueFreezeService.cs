@@ -109,7 +109,7 @@ public sealed class ValueFreezeService : IValueFreezeService
 
     // ── Regular 50 ms pulse (for non-critical symbols) ──────────────────
 
-    private async void PulseCallback(object? _)
+    private async void PulseCallback(object? state)
     {
         _ = state;
         if (_disposed || !_runtime.IsAttached || _entries.IsEmpty)
