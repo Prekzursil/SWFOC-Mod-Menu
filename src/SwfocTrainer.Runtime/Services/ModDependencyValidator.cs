@@ -6,6 +6,8 @@ namespace SwfocTrainer.Runtime.Services;
 
 public sealed class ModDependencyValidator : IModDependencyValidator
 {
+    private static readonly TimeSpan RegexTimeout = TimeSpan.FromMilliseconds(250);
+
     public DependencyValidationResult Validate(TrainerProfile profile, ProcessMetadata process)
     {
         var marker = ReadMetadata(profile, "requiredMarkerFile");
@@ -152,7 +154,7 @@ public sealed class ModDependencyValidator : IModDependencyValidator
             return;
         }
 
-        foreach (var pathValue in Regex.Matches(content, @"""path""\s*""([^""]+)""", RegexOptions.IgnoreCase)
+        foreach (var pathValue in Regex.Matches(content, @"""path""\s*""([^""]+)""", RegexOptions.IgnoreCase, RegexTimeout)
                      .Select(static match => match.Groups.Count < 2 ? string.Empty : match.Groups[1].Value)
                      .Select(static raw => raw.Replace(@"\\", @"\", StringComparison.Ordinal).Trim())
                      .Where(static raw => !string.IsNullOrWhiteSpace(raw)))
@@ -277,7 +279,11 @@ public sealed class ModDependencyValidator : IModDependencyValidator
             return null;
         }
 
-        var match = Regex.Match(commandLine, @"modpath\s*=\s*(?:""(?<quoted>[^""]+)""|(?<unquoted>[^\s]+))", RegexOptions.IgnoreCase);
+        var match = Regex.Match(
+            commandLine,
+            @"modpath\s*=\s*(?:""(?<quoted>[^""]+)""|(?<unquoted>[^\s]+))",
+            RegexOptions.IgnoreCase,
+            RegexTimeout);
         if (!match.Success)
         {
             return null;
