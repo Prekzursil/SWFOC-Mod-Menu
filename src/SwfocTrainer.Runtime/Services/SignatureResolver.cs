@@ -17,6 +17,7 @@ namespace SwfocTrainer.Runtime.Services;
 public sealed class SignatureResolver : ISignatureResolver
 {
     private const string GhidraSymbolPackRootOverrideEnv = "SWFOC_GHIDRA_SYMBOL_PACK_ROOT";
+    private const string ArtifactIndexFileName = "artifact-index.json";
 
     private readonly ILogger<SignatureResolver> _logger;
     private readonly string _ghidraSymbolPackRoot;
@@ -176,8 +177,8 @@ public sealed class SignatureResolver : ISignatureResolver
             return;
         }
 
-        var packPath = Path.Combine(_ghidraSymbolPackRoot, $"{fingerprintId}.json");
-        if (!File.Exists(packPath))
+        var packPath = SelectBestGhidraPackPath(_ghidraSymbolPackRoot, fingerprintId);
+        if (string.IsNullOrWhiteSpace(packPath))
         {
             return;
         }
@@ -243,6 +244,154 @@ public sealed class SignatureResolver : ISignatureResolver
         catch (Exception ex)
         {
             _logger.LogWarning(ex, "Failed to consume ghidra symbol pack at {Path}", packPath);
+        }
+    }
+
+    internal static string? SelectBestGhidraPackPath(string symbolPackRoot, string fingerprintId)
+    {
+        if (string.IsNullOrWhiteSpace(symbolPackRoot) ||
+            string.IsNullOrWhiteSpace(fingerprintId) ||
+            !Directory.Exists(symbolPackRoot))
+        {
+            return null;
+        }
+
+        var candidates = new List<PackSelectionCandidate>();
+        var exactPath = Path.Combine(symbolPackRoot, $"{fingerprintId}.json");
+        TryAddPackCandidate(candidates, exactPath, precedence: 0, fingerprintId);
+
+        var indexedPath = ResolvePackPathFromArtifactIndex(symbolPackRoot, fingerprintId);
+        if (!string.IsNullOrWhiteSpace(indexedPath))
+        {
+            TryAddPackCandidate(candidates, indexedPath!, precedence: 1, fingerprintId);
+        }
+
+        foreach (var path in EnumeratePackCandidates(symbolPackRoot))
+        {
+            if (string.Equals(path, exactPath, StringComparison.OrdinalIgnoreCase))
+            {
+                continue;
+            }
+
+            if (!string.IsNullOrWhiteSpace(indexedPath) &&
+                string.Equals(path, indexedPath, StringComparison.OrdinalIgnoreCase))
+            {
+                continue;
+            }
+
+            TryAddPackCandidate(candidates, path, precedence: 2, fingerprintId);
+        }
+
+        return candidates
+            .OrderBy(candidate => candidate.Precedence)
+            .ThenByDescending(candidate => candidate.GeneratedAtUtc)
+            .ThenBy(candidate => candidate.NormalizedPath, StringComparer.Ordinal)
+            .Select(candidate => candidate.PackPath)
+            .FirstOrDefault();
+    }
+
+    private static IEnumerable<string> EnumeratePackCandidates(string symbolPackRoot)
+    {
+        try
+        {
+            return Directory.EnumerateFiles(symbolPackRoot, "*.json", SearchOption.AllDirectories)
+                .Where(path => !Path.GetFileName(path).Equals(ArtifactIndexFileName, StringComparison.OrdinalIgnoreCase))
+                .ToArray();
+        }
+        catch
+        {
+            return Array.Empty<string>();
+        }
+    }
+
+    private static void TryAddPackCandidate(
+        ICollection<PackSelectionCandidate> candidates,
+        string path,
+        int precedence,
+        string expectedFingerprintId)
+    {
+        if (!File.Exists(path))
+        {
+            return;
+        }
+
+        if (!TryReadPackMetadata(path, out var fingerprintId, out var generatedAtUtc))
+        {
+            return;
+        }
+
+        if (!string.Equals(fingerprintId, expectedFingerprintId, StringComparison.OrdinalIgnoreCase))
+        {
+            return;
+        }
+
+        var normalizedPath = path.Replace('\\', '/').ToLowerInvariant();
+        candidates.Add(new PackSelectionCandidate(path, precedence, generatedAtUtc, normalizedPath));
+    }
+
+    private static bool TryReadPackMetadata(string packPath, out string fingerprintId, out DateTimeOffset generatedAtUtc)
+    {
+        fingerprintId = string.Empty;
+        generatedAtUtc = DateTimeOffset.MinValue;
+        try
+        {
+            var pack = JsonSerializer.Deserialize<GhidraSymbolPackDto>(File.ReadAllText(packPath), new JsonSerializerOptions
+            {
+                PropertyNameCaseInsensitive = true
+            });
+            if (pack?.BinaryFingerprint is null ||
+                string.IsNullOrWhiteSpace(pack.BinaryFingerprint.FingerprintId))
+            {
+                return false;
+            }
+
+            fingerprintId = pack.BinaryFingerprint.FingerprintId!;
+            generatedAtUtc = pack.BuildMetadata?.GeneratedAtUtc ?? DateTimeOffset.MinValue;
+            return true;
+        }
+        catch
+        {
+            return false;
+        }
+    }
+
+    private static string? ResolvePackPathFromArtifactIndex(string symbolPackRoot, string fingerprintId)
+    {
+        var indexPath = Path.Combine(symbolPackRoot, ArtifactIndexFileName);
+        if (!File.Exists(indexPath))
+        {
+            return null;
+        }
+
+        try
+        {
+            var index = JsonSerializer.Deserialize<GhidraArtifactIndexDto>(File.ReadAllText(indexPath), new JsonSerializerOptions
+            {
+                PropertyNameCaseInsensitive = true
+            });
+
+            if (index?.BinaryFingerprint is null ||
+                !string.Equals(index.BinaryFingerprint.FingerprintId, fingerprintId, StringComparison.OrdinalIgnoreCase))
+            {
+                return null;
+            }
+
+            var configuredPath = index.ArtifactPointers?.SymbolPackPath;
+            if (string.IsNullOrWhiteSpace(configuredPath))
+            {
+                return null;
+            }
+
+            if (Path.IsPathRooted(configuredPath))
+            {
+                return configuredPath;
+            }
+
+            return Path.GetFullPath(Path.Combine(symbolPackRoot, configuredPath));
+        }
+        catch
+        {
+            return null;
         }
     }
 
@@ -510,6 +659,8 @@ public sealed class SignatureResolver : ISignatureResolver
 
         public GhidraFingerprintDto? BinaryFingerprint { get; set; }
 
+        public GhidraBuildMetadataDto? BuildMetadata { get; set; }
+
         public List<GhidraAnchorDto>? Anchors { get; set; }
     }
 
@@ -517,6 +668,29 @@ public sealed class SignatureResolver : ISignatureResolver
     {
         public string? FingerprintId { get; set; }
     }
+
+    private sealed class GhidraBuildMetadataDto
+    {
+        public DateTimeOffset GeneratedAtUtc { get; set; }
+    }
+
+    private sealed class GhidraArtifactIndexDto
+    {
+        public GhidraFingerprintDto? BinaryFingerprint { get; set; }
+
+        public GhidraArtifactPointersDto? ArtifactPointers { get; set; }
+    }
+
+    private sealed class GhidraArtifactPointersDto
+    {
+        public string? SymbolPackPath { get; set; }
+    }
+
+    private sealed record PackSelectionCandidate(
+        string PackPath,
+        int Precedence,
+        DateTimeOffset GeneratedAtUtc,
+        string NormalizedPath);
 
     private sealed class GhidraAnchorDto
     {
