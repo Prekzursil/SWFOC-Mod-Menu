@@ -243,7 +243,8 @@ public sealed class LaunchContextResolver : ILaunchContextResolver
     private static bool IsLegacyBaseProfile(string profileId)
     {
         return profileId.Equals(RoeProfileId, StringComparison.OrdinalIgnoreCase) ||
-               profileId.Equals(AotrProfileId, StringComparison.OrdinalIgnoreCase);
+               profileId.Equals(AotrProfileId, StringComparison.OrdinalIgnoreCase) ||
+               profileId.Equals("universal_auto", StringComparison.OrdinalIgnoreCase);
     }
 
     private static bool MatchesProfileHints(string profileId, string modPathNormalized, IReadOnlyList<TrainerProfile> profiles)
