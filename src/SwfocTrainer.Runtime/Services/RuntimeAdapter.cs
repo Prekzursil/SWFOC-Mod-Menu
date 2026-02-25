@@ -2140,6 +2140,14 @@ public sealed class RuntimeAdapter : IRuntimeAdapter
         public required Func<T, string> FormatValue { get; init; }
     }
 
+    private sealed record WriteAttemptResult<T>(
+        bool Success,
+        string ReasonCode,
+        string Message,
+        bool HasObservedValue,
+        T ObservedValue)
+        where T : struct;
+
     private async Task<ActionExecutionResult> WriteWithOptionalRetryAsync<T>(
         WriteOperation<T> operation,
         CancellationToken cancellationToken)
@@ -2147,68 +2155,8 @@ public sealed class RuntimeAdapter : IRuntimeAdapter
     {
         var diagnostics = CreateSymbolDiagnostics(operation.SymbolInfo, operation.ValidationRule, operation.IsCriticalSymbol);
         diagnostics["requestedValue"] = operation.FormatValue(operation.RequestedValue);
-
-        (bool Success, string ReasonCode, string Message, bool HasObservedValue, T ObservedValue) AttemptWrite(SymbolInfo activeSymbol, string attemptPrefix)
-        {
-            try
-            {
-                operation.WriteValue(activeSymbol.Address, operation.RequestedValue);
-            }
-            catch (Exception ex)
-            {
-                return (
-                    false,
-                    $"{attemptPrefix}_write_exception",
-                    $"Write failed for symbol '{operation.Symbol}' at {ToHex(activeSymbol.Address)}: {ex.Message}",
-                    false,
-                    default);
-            }
-
-            if (!operation.VerifyReadback)
-            {
-                return (true, "ok", string.Empty, false, default);
-            }
-
-            T observed;
-            try
-            {
-                observed = operation.ReadValue(activeSymbol.Address);
-            }
-            catch (Exception ex)
-            {
-                return (
-                    false,
-                    $"{attemptPrefix}_readback_exception",
-                    $"Readback failed for symbol '{operation.Symbol}' at {ToHex(activeSymbol.Address)}: {ex.Message}",
-                    false,
-                    default);
-            }
-
-            var matches = operation.CompareValues(operation.RequestedValue, observed);
-            var observedValidation = operation.ValidateObservedValue(observed);
-            if (matches && observedValidation.IsValid)
-            {
-                return (true, "ok", string.Empty, true, observed);
-            }
-
-            if (!matches)
-            {
-                return (
-                    false,
-                    $"{attemptPrefix}_readback_mismatch",
-                    $"Readback mismatch for {operation.Symbol}: expected {operation.FormatValue(operation.RequestedValue)}, got {operation.FormatValue(observed)}",
-                    true,
-                    observed);
-            }
-
-            return (false, observedValidation.ReasonCode, observedValidation.Message, true, observed);
-        }
-
-        var initial = AttemptWrite(operation.SymbolInfo, "initial");
-        if (initial.HasObservedValue)
-        {
-            diagnostics["readbackValue"] = operation.FormatValue(initial.ObservedValue);
-        }
+        var initial = AttemptWrite(operation, operation.SymbolInfo, "initial");
+        AddObservedDiagnostic(operation, diagnostics, "readbackValue", initial);
 
         if (initial.Success)
         {
@@ -2241,11 +2189,8 @@ public sealed class RuntimeAdapter : IRuntimeAdapter
         diagnostics["retrySymbolHealthStatus"] = refreshedSymbol.HealthStatus.ToString();
         diagnostics["retrySymbolConfidence"] = refreshedSymbol.Confidence;
 
-        var retryAttempt = AttemptWrite(refreshedSymbol, "retry");
-        if (retryAttempt.HasObservedValue)
-        {
-            diagnostics["retryReadbackValue"] = operation.FormatValue(retryAttempt.ObservedValue);
-        }
+        var retryAttempt = AttemptWrite(operation, refreshedSymbol, "retry");
+        AddObservedDiagnostic(operation, diagnostics, "retryReadbackValue", retryAttempt);
 
         if (retryAttempt.Success)
         {
@@ -2263,6 +2208,76 @@ public sealed class RuntimeAdapter : IRuntimeAdapter
             retryAttempt.Message,
             refreshedSymbol.Source,
             diagnostics);
+    }
+
+    private static void AddObservedDiagnostic<T>(
+        WriteOperation<T> operation,
+        IDictionary<string, object?> diagnostics,
+        string key,
+        WriteAttemptResult<T> attempt)
+        where T : struct
+    {
+        if (attempt.HasObservedValue)
+        {
+            diagnostics[key] = operation.FormatValue(attempt.ObservedValue);
+        }
+    }
+
+    private static WriteAttemptResult<T> AttemptWrite<T>(
+        WriteOperation<T> operation,
+        SymbolInfo activeSymbol,
+        string attemptPrefix)
+        where T : struct
+    {
+        try
+        {
+            operation.WriteValue(activeSymbol.Address, operation.RequestedValue);
+        }
+        catch (Exception ex)
+        {
+            return new WriteAttemptResult<T>(
+                false,
+                $"{attemptPrefix}_write_exception",
+                $"Write failed for symbol '{operation.Symbol}' at {ToHex(activeSymbol.Address)}: {ex.Message}",
+                false,
+                default);
+        }
+
+        if (!operation.VerifyReadback)
+        {
+            return new WriteAttemptResult<T>(true, "ok", string.Empty, false, default);
+        }
+
+        T observed;
+        try
+        {
+            observed = operation.ReadValue(activeSymbol.Address);
+        }
+        catch (Exception ex)
+        {
+            return new WriteAttemptResult<T>(
+                false,
+                $"{attemptPrefix}_readback_exception",
+                $"Readback failed for symbol '{operation.Symbol}' at {ToHex(activeSymbol.Address)}: {ex.Message}",
+                false,
+                default);
+        }
+
+        var matches = operation.CompareValues(operation.RequestedValue, observed);
+        var observedValidation = operation.ValidateObservedValue(observed);
+        if (matches && observedValidation.IsValid)
+        {
+            return new WriteAttemptResult<T>(true, "ok", string.Empty, true, observed);
+        }
+
+        return matches
+            ? new WriteAttemptResult<T>(false, observedValidation.ReasonCode, observedValidation.Message, true, observed)
+            : new WriteAttemptResult<T>(
+                false,
+                $"{attemptPrefix}_readback_mismatch",
+                $"Readback mismatch for {operation.Symbol}: expected {operation.FormatValue(operation.RequestedValue)}, got {operation.FormatValue(observed)}",
+                true,
+                observed);
     }
 
     private async Task<(bool Succeeded, SymbolInfo? Symbol, string ReasonCode, string Message)> TryReResolveSymbolAsync(
@@ -2562,31 +2577,107 @@ public sealed class RuntimeAdapter : IRuntimeAdapter
         }
 
         var diagnostics = new Dictionary<string, object?>();
+        var symbolResolution = TryResolveCreditsSymbol(diagnostics);
+        if (!symbolResolution.Succeeded || symbolResolution.Symbol is null)
+        {
+            return symbolResolution.FailureResult ?? new ActionExecutionResult(false, "Credits symbol is unavailable.", AddressSource.None, diagnostics);
+        }
 
-        // Resolve integer symbol for readback validation and immediate UI consistency write.
-        SymbolInfo creditsSymbol;
-        try
-        {
-            creditsSymbol = ResolveSymbol(SymbolCredits);
-            diagnostics["creditsAddress"] = ToHex(creditsSymbol.Address);
-        }
-        catch (KeyNotFoundException)
-        {
-            return new ActionExecutionResult(false,
-                "Credits symbol 'credits' was not resolved. Attach to the game and ensure the profile has the credits signature or fallback offset.",
-                AddressSource.None, diagnostics);
-        }
+        var creditsSymbol = symbolResolution.Symbol;
 
         // Credits updates must flow through the float source conversion path.
         // Do not degrade to direct-int fallback, because that is frequently overwritten.
+        var patchFailure = TryEnsureCreditsHookInstalled(value, creditsSymbol, diagnostics);
+        if (patchFailure is not null)
+        {
+            return patchFailure;
+        }
+
+        nint creditsFloatAddress = nint.Zero;
+
+        var forcedFloatBits = BitConverter.SingleToInt32Bits((float)value);
+        _memory.Write(_creditsHookForcedFloatBitsAddress, forcedFloatBits);
+
+        var baselineHitCount = _memory.Read<int>(_creditsHookHitCountAddress);
+        _memory.Write(_creditsHookLockEnabledAddress, 1);
+
+        var hookPulse = await WaitForCreditsHookTickAsync(
+            baselineHitCount,
+            CreditsHookPulseTimeoutMs,
+            cancellationToken);
+
+        RecordCreditsHookPulseDiagnostics(diagnostics, forcedFloatBits, value, baselineHitCount, hookPulse);
+
+        var contextBase = (nint)_memory.Read<long>(_creditsHookLastContextAddress);
+        diagnostics["creditsContextBase"] = contextBase == nint.Zero ? null : ToHex(contextBase);
+
+        if (contextBase != nint.Zero)
+        {
+            creditsFloatAddress = contextBase + _creditsHookContextOffset;
+            diagnostics["creditsFloatAddress"] = ToHex(creditsFloatAddress);
+        }
+
+        if (!hookPulse.Observed)
+        {
+            return HandleCreditsHookTickFailure(value, lockCredits, creditsSymbol, diagnostics);
+        }
+
+        ReleaseCreditsHookLockIfNeeded(lockCredits);
+
+        // Keep int mirror consistent with the now-authoritative forced float state.
+        _memory.Write(creditsSymbol.Address, value);
+        diagnostics["lockCredits"] = lockCredits;
+
+        var verifyFailure = await VerifyCreditsReadbackAsync(
+            value,
+            lockCredits,
+            verifyReadback,
+            creditsFloatAddress,
+            creditsSymbol,
+            diagnostics,
+            cancellationToken);
+        if (verifyFailure is not null)
+        {
+            return verifyFailure;
+        }
+
+        return CreateCreditsSuccessResult(value, lockCredits, creditsSymbol, diagnostics);
+    }
+
+    private (bool Succeeded, SymbolInfo? Symbol, ActionExecutionResult? FailureResult) TryResolveCreditsSymbol(
+        Dictionary<string, object?> diagnostics)
+    {
+        try
+        {
+            var creditsSymbol = ResolveSymbol(SymbolCredits);
+            diagnostics["creditsAddress"] = ToHex(creditsSymbol.Address);
+            return (true, creditsSymbol, null);
+        }
+        catch (KeyNotFoundException)
+        {
+            return (
+                false,
+                null,
+                new ActionExecutionResult(
+                    false,
+                    "Credits symbol 'credits' was not resolved. Attach to the game and ensure the profile has the credits signature or fallback offset.",
+                    AddressSource.None,
+                    diagnostics));
+        }
+    }
+
+    private ActionExecutionResult? TryEnsureCreditsHookInstalled(
+        int requestedValue,
+        SymbolInfo creditsSymbol,
+        Dictionary<string, object?> diagnostics)
+    {
         var patchResult = EnsureCreditsRuntimeHookInstalled();
-        var hookAvailable = patchResult.Succeeded;
-        diagnostics["hookInstalled"] = hookAvailable;
-        if (!hookAvailable)
+        diagnostics["hookInstalled"] = patchResult.Succeeded;
+        if (!patchResult.Succeeded)
         {
             diagnostics["hookError"] = patchResult.Message;
             diagnostics[DiagnosticKeyCreditsStateTag] = "HOOK_REQUIRED";
-            diagnostics["creditsRequestedValue"] = value;
+            diagnostics["creditsRequestedValue"] = requestedValue;
             return new ActionExecutionResult(
                 false,
                 $"Credits write aborted: hook install failed ({patchResult.Message}).",
@@ -2602,108 +2693,106 @@ public sealed class RuntimeAdapter : IRuntimeAdapter
             }
         }
 
-        bool hookTickObserved = false;
-        nint creditsFloatAddress = nint.Zero;
+        return null;
+    }
 
-        var forcedFloatBits = BitConverter.SingleToInt32Bits((float)value);
-        _memory.Write(_creditsHookForcedFloatBitsAddress, forcedFloatBits);
-
-        var baselineHitCount = _memory.Read<int>(_creditsHookHitCountAddress);
-        _memory.Write(_creditsHookLockEnabledAddress, 1);
-
-        var hookPulse = await WaitForCreditsHookTickAsync(
-            baselineHitCount,
-            CreditsHookPulseTimeoutMs,
-            cancellationToken);
-
-        hookTickObserved = hookPulse.Observed;
-
+    private static void RecordCreditsHookPulseDiagnostics(
+        Dictionary<string, object?> diagnostics,
+        int forcedFloatBits,
+        int requestedValue,
+        int baselineHitCount,
+        CreditsHookTickObservation hookPulse)
+    {
         diagnostics["forcedFloatBits"] = $"0x{forcedFloatBits:X8}";
-        diagnostics["forcedFloatValue"] = (float)value;
+        diagnostics["forcedFloatValue"] = (float)requestedValue;
         diagnostics["hookHitCountStart"] = baselineHitCount;
         diagnostics["hookHitCountEnd"] = hookPulse.HitCount;
         diagnostics["hookTickObserved"] = hookPulse.Observed;
+    }
 
-        var contextBase = (nint)_memory.Read<long>(_creditsHookLastContextAddress);
-        diagnostics["creditsContextBase"] = contextBase == nint.Zero ? null : ToHex(contextBase);
+    private ActionExecutionResult HandleCreditsHookTickFailure(
+        int requestedValue,
+        bool lockCredits,
+        SymbolInfo creditsSymbol,
+        Dictionary<string, object?> diagnostics)
+    {
+        ReleaseCreditsHookLockIfNeeded(lockCredits);
+        diagnostics[DiagnosticKeyCreditsStateTag] = "HOOK_REQUIRED";
+        diagnostics["creditsRequestedValue"] = requestedValue;
+        return new ActionExecutionResult(
+            false,
+            $"Credits write aborted: hook did not observe a sync tick within {CreditsHookPulseTimeoutMs}ms. Enter galactic/campaign view and retry.",
+            creditsSymbol.Source,
+            diagnostics);
+    }
 
-        if (contextBase != nint.Zero)
+    private void ReleaseCreditsHookLockIfNeeded(bool lockCredits)
+    {
+        if (!lockCredits)
         {
-            creditsFloatAddress = contextBase + _creditsHookContextOffset;
-            diagnostics["creditsFloatAddress"] = ToHex(creditsFloatAddress);
+            _memory!.Write(_creditsHookLockEnabledAddress, 0);
+        }
+    }
+
+    private async Task<ActionExecutionResult?> VerifyCreditsReadbackAsync(
+        int requestedValue,
+        bool lockCredits,
+        bool verifyReadback,
+        nint creditsFloatAddress,
+        SymbolInfo creditsSymbol,
+        Dictionary<string, object?> diagnostics,
+        CancellationToken cancellationToken)
+    {
+        if (!verifyReadback)
+        {
+            return null;
         }
 
-        if (!hookTickObserved)
-        {
-            if (!lockCredits)
-            {
-                _memory.Write(_creditsHookLockEnabledAddress, 0);
-            }
+        await Task.Delay(lockCredits ? 180 : 120, cancellationToken);
 
-            diagnostics[DiagnosticKeyCreditsStateTag] = "HOOK_REQUIRED";
-            diagnostics["creditsRequestedValue"] = value;
+        var settledInt = _memory!.Read<int>(creditsSymbol.Address);
+        diagnostics["intReadbackSettled"] = settledInt;
+        if (settledInt != requestedValue)
+        {
             return new ActionExecutionResult(
                 false,
-                $"Credits write aborted: hook did not observe a sync tick within {CreditsHookPulseTimeoutMs}ms. Enter galactic/campaign view and retry.",
+                $"Credits hook sync failed int readback (expected={requestedValue}, got={settledInt}).",
                 creditsSymbol.Source,
                 diagnostics);
         }
 
-        if (!lockCredits)
+        if (creditsFloatAddress == nint.Zero)
         {
-            _memory.Write(_creditsHookLockEnabledAddress, 0);
+            return null;
         }
 
-        // Keep int mirror consistent with the now-authoritative forced float state.
-        _memory.Write(creditsSymbol.Address, value);
-        diagnostics["lockCredits"] = lockCredits;
-
-        if (verifyReadback)
+        var settledFloat = _memory.Read<float>(creditsFloatAddress);
+        diagnostics["floatReadbackSettled"] = settledFloat;
+        if (lockCredits && Math.Abs(settledFloat - requestedValue) > CreditsFloatTolerance)
         {
-            await Task.Delay(lockCredits ? 180 : 120, cancellationToken);
-
-            var settledInt = _memory.Read<int>(creditsSymbol.Address);
-            diagnostics["intReadbackSettled"] = settledInt;
-
-            if (settledInt != value)
-            {
-                return new ActionExecutionResult(
-                    false,
-                    $"Credits hook sync failed int readback (expected={value}, got={settledInt}).",
-                    creditsSymbol.Source,
-                    diagnostics);
-            }
-
-            if (creditsFloatAddress != nint.Zero)
-            {
-                var settledFloat = _memory.Read<float>(creditsFloatAddress);
-                diagnostics["floatReadbackSettled"] = settledFloat;
-                if (lockCredits && Math.Abs(settledFloat - value) > CreditsFloatTolerance)
-                {
-                    return new ActionExecutionResult(
-                        false,
-                        $"Credits lock did not persist real float value (expected~={value}, got={settledFloat}).",
-                        creditsSymbol.Source,
-                        diagnostics);
-                }
-            }
+            return new ActionExecutionResult(
+                false,
+                $"Credits lock did not persist real float value (expected~={requestedValue}, got={settledFloat}).",
+                creditsSymbol.Source,
+                diagnostics);
         }
 
-        // Build user-facing result message based on what actually happened.
-        string message;
-        string stateTag;
-        stateTag = lockCredits ? "HOOK_LOCK" : "HOOK_ONESHOT";
-        message = lockCredits
+        return null;
+    }
+
+    private static ActionExecutionResult CreateCreditsSuccessResult(
+        int requestedValue,
+        bool lockCredits,
+        SymbolInfo creditsSymbol,
+        Dictionary<string, object?> diagnostics)
+    {
+        var stateTag = lockCredits ? "HOOK_LOCK" : "HOOK_ONESHOT";
+        var message = lockCredits
             ? "[HOOK_LOCK] Set credits and enabled persistent lock (float+int sync)."
             : "[HOOK_ONESHOT] Set credits with one-shot float+int sync.";
         diagnostics[DiagnosticKeyCreditsStateTag] = stateTag;
-        diagnostics["creditsRequestedValue"] = value;
-
-        return new ActionExecutionResult(
-            true,
-            message,
-            creditsSymbol.Source,
-            diagnostics);
+        diagnostics["creditsRequestedValue"] = requestedValue;
+        return new ActionExecutionResult(true, message, creditsSymbol.Source, diagnostics);
     }
 
     private async Task<CreditsHookTickObservation> WaitForCreditsHookTickAsync(
@@ -3481,183 +3570,238 @@ public sealed class RuntimeAdapter : IRuntimeAdapter
 
             var baseAddress = module.BaseAddress;
             var moduleBytes = _memory.ReadBytes(baseAddress, module.ModuleMemorySize);
-
-            // Resolve credits int RVA for correlation-based matching.
-            long creditsRva = -1;
-            try
-            {
-                var creditsSymbol = ResolveSymbol(SymbolCredits);
-                creditsRva = creditsSymbol.Address.ToInt64() - baseAddress.ToInt64();
-            }
-            catch { /* credits symbol unavailable — correlation disabled */ }
-
-            List<(int Offset, CreditsCvttss2SiInstruction Instruction)> ParseCandidates(IEnumerable<int> offsets)
-            {
-                return offsets
-                    .Select(hit =>
-                    {
-                        var parsed = TryParseCreditsCvttss2SiInstruction(moduleBytes, hit, out var instruction);
-                        return (hit, parsed, instruction);
-                    })
-                    .Where(x => x.parsed)
-                    .Select(x => (x.hit, x.instruction))
-                    .ToList();
-            }
-
-            CreditsHookResolution? ResolveSingleCandidate(
-                List<(int Offset, CreditsCvttss2SiInstruction Instruction)> candidates,
-                string logTemplate)
-            {
-                if (candidates.Count != 1)
-                {
-                    return null;
-                }
-
-                var candidate = candidates[0];
-                _logger.LogInformation(
-                    logTemplate,
-                    candidate.Offset,
-                    candidate.Instruction.ContextOffset,
-                    candidate.Instruction.DestinationReg);
-                return CreditsHookResolution.Ok(
-                    baseAddress + candidate.Offset,
-                    candidate.Instruction.ContextOffset,
-                    candidate.Instruction.DestinationReg,
-                    candidate.Instruction.OriginalBytes);
-            }
-
-            // Strategy 1: Try the original exact 7-byte pattern (fastest, most specific), but
-            // parse the conversion instruction generically so we don't require EDX specifically.
-            var exactPattern = AobPattern.Parse(CreditsHookPatternText);
-            var exactHits = FindPatternOffsets(moduleBytes, exactPattern, maxHits: 3);
-            var exactCandidates = ParseCandidates(exactHits);
-            var exactResolution = ResolveSingleCandidate(
-                exactCandidates,
-                "Credits hook: exact-pattern candidate at RVA 0x{Rva:X}, offset=0x{Off:X2}, reg={Reg}");
-            if (exactResolution is not null)
-            {
-                return exactResolution;
-            }
-
-            // Gather all compatible conversion instructions in one pass:
-            //   F3 0F 2C /r disp8, where /r uses [rax+disp8] and any destination reg32.
-            var broadConvertPattern = AobPattern.Parse("F3 0F 2C ?? ??");
-            var broadConvertHits = FindPatternOffsets(moduleBytes, broadConvertPattern, maxHits: 8000);
-            var allCandidates = ParseCandidates(broadConvertHits);
-
-            // Strategy 1b: prefer candidates where the immediate next instruction stores the same
-            // converted register to memory (classic credits write path shape).
-            var immediateStoreCandidates = allCandidates
-                .Where(c => LooksLikeImmediateStoreFromConvertedRegister(moduleBytes, c.Offset + CreditsHookJumpLength, c.Instruction.DestinationReg))
-                .ToList();
-            var immediateResolution = ResolveSingleCandidate(
-                immediateStoreCandidates,
-                "Credits hook: selected immediate-store candidate at RVA 0x{Rva:X}, offset=0x{Off:X2}, reg={Reg}");
-            if (immediateResolution is not null)
-            {
-                return immediateResolution;
-            }
-
-            if (immediateStoreCandidates.Count > 1)
-            {
-                // Prefer the classic 0x70 offset when unique among candidates.
-                var preferredClassic = immediateStoreCandidates
-                    .Where(c => c.Instruction.ContextOffset == CreditsContextOffsetByte)
-                    .ToList();
-                if (preferredClassic.Count == 1)
-                {
-                    _logger.LogInformation(
-                        "Credits hook: selected classic-offset immediate-store candidate at RVA 0x{Rva:X}, reg={Reg}",
-                        preferredClassic[0].Offset,
-                        preferredClassic[0].Instruction.DestinationReg);
-                    return CreditsHookResolution.Ok(
-                        baseAddress + preferredClassic[0].Offset,
-                        preferredClassic[0].Instruction.ContextOffset,
-                        preferredClassic[0].Instruction.DestinationReg,
-                        preferredClassic[0].Instruction.OriginalBytes);
-                }
-            }
-
-            // Strategy 2: correlate candidates with a nearby RIP-relative store to the known credits int RVA.
-            if (creditsRva > 0)
-            {
-                var correlatedCandidates = allCandidates
-                    .Where(c => HasNearbyStoreToCreditsRva(
-                        moduleBytes,
-                        c.Offset + CreditsHookJumpLength,
-                        CreditsStoreCorrelationWindowBytes,
-                        creditsRva))
-                    .ToList();
-
-                var correlatedResolution = ResolveSingleCandidate(
-                    correlatedCandidates,
-                    "Credits hook: selected correlated candidate at RVA 0x{Rva:X}, offset=0x{Off:X2}, reg={Reg}");
-                if (correlatedResolution is not null)
-                {
-                    return correlatedResolution;
-                }
-
-                if (correlatedCandidates.Count > 1)
-                {
-                    var preferredClassicCorrelated = correlatedCandidates
-                        .Where(c => c.Instruction.ContextOffset == CreditsContextOffsetByte)
-                        .ToList();
-                    if (preferredClassicCorrelated.Count == 1)
-                    {
-                        var candidate = preferredClassicCorrelated[0];
-                        _logger.LogInformation(
-                            "Credits hook: selected classic-offset correlated candidate at RVA 0x{Rva:X}, reg={Reg}",
-                            candidate.Offset,
-                            candidate.Instruction.DestinationReg);
-                        return CreditsHookResolution.Ok(
-                            baseAddress + candidate.Offset,
-                            candidate.Instruction.ContextOffset,
-                            candidate.Instruction.DestinationReg,
-                            candidate.Instruction.OriginalBytes);
-                    }
-                }
-            }
-
-            // Strategy 3: if only one classic-offset candidate exists, prefer it.
-            var classicOffsetCandidates = allCandidates
-                .Where(c => c.Instruction.ContextOffset == CreditsContextOffsetByte)
-                .ToList();
-            var classicResolution = ResolveSingleCandidate(
-                classicOffsetCandidates,
-                "Credits hook: selected unique classic-offset candidate at RVA 0x{Rva:X}, offset=0x{Off:X2}, reg={Reg}");
-            if (classicResolution is not null)
-            {
-                return classicResolution;
-            }
-
-            // Strategy 4: final fallback — only if there is exactly one compatible candidate in module.
-            var singleFallbackResolution = ResolveSingleCandidate(
-                allCandidates,
-                "Credits hook: selected unique fallback candidate at RVA 0x{Rva:X}, offset=0x{Off:X2}, reg={Reg}");
-            if (singleFallbackResolution is not null)
-            {
-                return singleFallbackResolution;
-            }
-
-            _logger.LogWarning(
-                "Credits hook: candidates total={Total}, immediateStore={Immediate}, classicOffset={Classic}, creditsRva={Rva}",
-                allCandidates.Count,
-                immediateStoreCandidates.Count,
-                classicOffsetCandidates.Count,
-                creditsRva > 0 ? $"0x{creditsRva:X}" : "unavailable");
-
-            return CreditsHookResolution.Fail(
-                $"Credits hook pattern not found. Tried exact ({CreditsHookPatternText}), " +
-                $"register-agnostic immediate-store heuristics, and credits-RVA correlation scan. " +
-                $"Candidates: total={allCandidates.Count}, immediateStore={immediateStoreCandidates.Count}, classicOffset={classicOffsetCandidates.Count}. " +
-                (creditsRva > 0
-                    ? $"Credits int RVA=0x{creditsRva:X} was used for correlation."
-                    : "Credits RVA unavailable for correlation."));
+            var creditsRva = TryResolveCreditsRva(baseAddress);
+            return ResolveCreditsHookInjectionAddress(moduleBytes, baseAddress, creditsRva);
         }
         catch (Exception ex)
         {
             return CreditsHookResolution.Fail($"Credits hook pattern resolution failed: {ex.Message}");
         }
+    }
+
+    private CreditsHookResolution ResolveCreditsHookInjectionAddress(
+        byte[] moduleBytes,
+        nint baseAddress,
+        long creditsRva)
+    {
+        var exactResolution = TryResolveExactCreditsHookCandidate(moduleBytes, baseAddress);
+        if (exactResolution is not null)
+        {
+            return exactResolution;
+        }
+
+        var allCandidates = ParseCreditsHookCandidates(
+            moduleBytes,
+            FindPatternOffsets(moduleBytes, AobPattern.Parse("F3 0F 2C ?? ??"), maxHits: 8000));
+        var immediateStoreCandidates = FindImmediateStoreCandidates(moduleBytes, allCandidates);
+
+        var immediateResolution = TryResolveImmediateStoreCandidate(
+            immediateStoreCandidates,
+            baseAddress);
+        if (immediateResolution is not null)
+        {
+            return immediateResolution;
+        }
+
+        if (creditsRva > 0)
+        {
+            var correlatedResolution = TryResolveCorrelatedCandidate(
+                moduleBytes,
+                allCandidates,
+                baseAddress,
+                creditsRva);
+            if (correlatedResolution is not null)
+            {
+                return correlatedResolution;
+            }
+        }
+
+        var classicOffsetCandidates = FilterClassicOffsetCandidates(allCandidates);
+        var classicResolution = ResolveSingleCreditsHookCandidate(
+            classicOffsetCandidates,
+            baseAddress,
+            "Credits hook: selected unique classic-offset candidate at RVA 0x{Rva:X}, offset=0x{Off:X2}, reg={Reg}");
+        if (classicResolution is not null)
+        {
+            return classicResolution;
+        }
+
+        var fallbackResolution = ResolveSingleCreditsHookCandidate(
+            allCandidates,
+            baseAddress,
+            "Credits hook: selected unique fallback candidate at RVA 0x{Rva:X}, offset=0x{Off:X2}, reg={Reg}");
+        return fallbackResolution ?? BuildCreditsHookResolutionFailure(allCandidates, immediateStoreCandidates, classicOffsetCandidates, creditsRva);
+    }
+
+    private long TryResolveCreditsRva(nint baseAddress)
+    {
+        try
+        {
+            var creditsSymbol = ResolveSymbol(SymbolCredits);
+            return creditsSymbol.Address.ToInt64() - baseAddress.ToInt64();
+        }
+        catch (KeyNotFoundException)
+        {
+            return -1;
+        }
+    }
+
+    private CreditsHookResolution? TryResolveExactCreditsHookCandidate(byte[] moduleBytes, nint baseAddress)
+    {
+        var exactHits = FindPatternOffsets(moduleBytes, AobPattern.Parse(CreditsHookPatternText), maxHits: 3);
+        var exactCandidates = ParseCreditsHookCandidates(moduleBytes, exactHits);
+        return ResolveSingleCreditsHookCandidate(
+            exactCandidates,
+            baseAddress,
+            "Credits hook: exact-pattern candidate at RVA 0x{Rva:X}, offset=0x{Off:X2}, reg={Reg}");
+    }
+
+    private List<CreditsHookCandidate> ParseCreditsHookCandidates(byte[] moduleBytes, IEnumerable<int> offsets)
+    {
+        return offsets
+            .Select(hit =>
+            {
+                var parsed = TryParseCreditsCvttss2SiInstruction(moduleBytes, hit, out var instruction);
+                return (hit, parsed, instruction);
+            })
+            .Where(x => x.parsed)
+            .Select(x => new CreditsHookCandidate(x.hit, x.instruction))
+            .ToList();
+    }
+
+    private static List<CreditsHookCandidate> FindImmediateStoreCandidates(
+        byte[] moduleBytes,
+        IEnumerable<CreditsHookCandidate> candidates)
+    {
+        return candidates
+            .Where(c => LooksLikeImmediateStoreFromConvertedRegister(
+                moduleBytes,
+                c.Offset + CreditsHookJumpLength,
+                c.Instruction.DestinationReg))
+            .ToList();
+    }
+
+    private CreditsHookResolution? TryResolveImmediateStoreCandidate(
+        List<CreditsHookCandidate> immediateStoreCandidates,
+        nint baseAddress)
+    {
+        var immediateResolution = ResolveSingleCreditsHookCandidate(
+            immediateStoreCandidates,
+            baseAddress,
+            "Credits hook: selected immediate-store candidate at RVA 0x{Rva:X}, offset=0x{Off:X2}, reg={Reg}");
+        if (immediateResolution is not null)
+        {
+            return immediateResolution;
+        }
+
+        return TryResolveClassicOffsetVariant(
+            immediateStoreCandidates,
+            baseAddress,
+            "Credits hook: selected classic-offset immediate-store candidate at RVA 0x{Rva:X}, reg={Reg}");
+    }
+
+    private CreditsHookResolution? TryResolveCorrelatedCandidate(
+        byte[] moduleBytes,
+        List<CreditsHookCandidate> allCandidates,
+        nint baseAddress,
+        long creditsRva)
+    {
+        var correlatedCandidates = allCandidates
+            .Where(c => HasNearbyStoreToCreditsRva(
+                moduleBytes,
+                c.Offset + CreditsHookJumpLength,
+                CreditsStoreCorrelationWindowBytes,
+                creditsRva))
+            .ToList();
+
+        var correlatedResolution = ResolveSingleCreditsHookCandidate(
+            correlatedCandidates,
+            baseAddress,
+            "Credits hook: selected correlated candidate at RVA 0x{Rva:X}, offset=0x{Off:X2}, reg={Reg}");
+        if (correlatedResolution is not null)
+        {
+            return correlatedResolution;
+        }
+
+        return TryResolveClassicOffsetVariant(
+            correlatedCandidates,
+            baseAddress,
+            "Credits hook: selected classic-offset correlated candidate at RVA 0x{Rva:X}, reg={Reg}");
+    }
+
+    private CreditsHookResolution? ResolveSingleCreditsHookCandidate(
+        List<CreditsHookCandidate> candidates,
+        nint baseAddress,
+        string logTemplate)
+    {
+        if (candidates.Count != 1)
+        {
+            return null;
+        }
+
+        return CreateCreditsHookResolution(candidates[0], baseAddress, logTemplate);
+    }
+
+    private CreditsHookResolution? TryResolveClassicOffsetVariant(
+        List<CreditsHookCandidate> candidates,
+        nint baseAddress,
+        string logTemplate)
+    {
+        if (candidates.Count <= 1)
+        {
+            return null;
+        }
+
+        var preferredClassic = FilterClassicOffsetCandidates(candidates);
+        return preferredClassic.Count == 1
+            ? CreateCreditsHookResolution(preferredClassic[0], baseAddress, logTemplate)
+            : null;
+    }
+
+    private static List<CreditsHookCandidate> FilterClassicOffsetCandidates(IEnumerable<CreditsHookCandidate> candidates)
+    {
+        return candidates
+            .Where(c => c.Instruction.ContextOffset == CreditsContextOffsetByte)
+            .ToList();
+    }
+
+    private CreditsHookResolution CreateCreditsHookResolution(
+        CreditsHookCandidate candidate,
+        nint baseAddress,
+        string logTemplate)
+    {
+        _logger.LogInformation(
+            logTemplate,
+            candidate.Offset,
+            candidate.Instruction.ContextOffset,
+            candidate.Instruction.DestinationReg);
+        return CreditsHookResolution.Ok(
+            baseAddress + candidate.Offset,
+            candidate.Instruction.ContextOffset,
+            candidate.Instruction.DestinationReg,
+            candidate.Instruction.OriginalBytes);
+    }
+
+    private CreditsHookResolution BuildCreditsHookResolutionFailure(
+        IReadOnlyCollection<CreditsHookCandidate> allCandidates,
+        IReadOnlyCollection<CreditsHookCandidate> immediateStoreCandidates,
+        IReadOnlyCollection<CreditsHookCandidate> classicOffsetCandidates,
+        long creditsRva)
+    {
+        _logger.LogWarning(
+            "Credits hook: candidates total={Total}, immediateStore={Immediate}, classicOffset={Classic}, creditsRva={Rva}",
+            allCandidates.Count,
+            immediateStoreCandidates.Count,
+            classicOffsetCandidates.Count,
+            creditsRva > 0 ? $"0x{creditsRva:X}" : "unavailable");
+
+        return CreditsHookResolution.Fail(
+            $"Credits hook pattern not found. Tried exact ({CreditsHookPatternText}), " +
+            $"register-agnostic immediate-store heuristics, and credits-RVA correlation scan. " +
+            $"Candidates: total={allCandidates.Count}, immediateStore={immediateStoreCandidates.Count}, classicOffset={classicOffsetCandidates.Count}. " +
+            (creditsRva > 0
+                ? $"Credits int RVA=0x{creditsRva:X} was used for correlation."
+                : "Credits RVA unavailable for correlation."));
     }
 
     private static bool TryParseCreditsCvttss2SiInstruction(
@@ -4064,6 +4208,8 @@ public sealed class RuntimeAdapter : IRuntimeAdapter
         byte ContextOffset,
         byte DestinationReg,
         byte[] OriginalBytes);
+
+    private sealed record CreditsHookCandidate(int Offset, CreditsCvttss2SiInstruction Instruction);
 
     private sealed record CreditsHookPatchResult(
         bool Succeeded,
