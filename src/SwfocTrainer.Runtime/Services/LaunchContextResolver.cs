@@ -79,43 +79,60 @@ public sealed class LaunchContextResolver : ILaunchContextResolver
         string? modPathNormalized,
         IReadOnlyList<TrainerProfile> profiles)
     {
-        var workshopRecommendation = TryRecommendProfileFromWorkshopIds(steamModIds, profiles);
+        var workshopRecommendation = TryRecommendProfileFromWorkshopIds(steamModIds, profiles) ??
+                                     TryRecommendLegacyWorkshopProfile(steamModIds);
         if (workshopRecommendation is not null)
         {
             return workshopRecommendation;
         }
 
+        var modPathRecommendation = string.IsNullOrWhiteSpace(modPathNormalized)
+            ? null
+            : TryRecommendProfileFromModPathHints(modPathNormalized, profiles) ??
+              TryRecommendLegacyModPathProfile(modPathNormalized, profiles);
+        if (modPathRecommendation is not null)
+        {
+            return modPathRecommendation;
+        }
+
+        return RecommendFallbackBaseProfile(process);
+    }
+
+    private static ProfileRecommendation? TryRecommendLegacyWorkshopProfile(IReadOnlyList<string> steamModIds)
+    {
         if (steamModIds.Any(id => id.Equals(RoeWorkshopId, StringComparison.OrdinalIgnoreCase)))
         {
             return new ProfileRecommendation(RoeProfileId, "steammod_exact_roe", 1.0d);
         }
 
-        if (steamModIds.Any(id => id.Equals(AotrWorkshopId, StringComparison.OrdinalIgnoreCase)))
+        return steamModIds.Any(id => id.Equals(AotrWorkshopId, StringComparison.OrdinalIgnoreCase))
+            ? new ProfileRecommendation(AotrProfileId, "steammod_exact_aotr", 1.0d)
+            : null;
+    }
+
+    private static ProfileRecommendation? TryRecommendLegacyModPathProfile(
+        string? modPathNormalized,
+        IReadOnlyList<TrainerProfile> profiles)
+    {
+        if (string.IsNullOrWhiteSpace(modPathNormalized))
         {
-            return new ProfileRecommendation(AotrProfileId, "steammod_exact_aotr", 1.0d);
+            return null;
         }
 
-        if (!string.IsNullOrWhiteSpace(modPathNormalized))
+        if (MatchesProfileHints(RoeProfileId, modPathNormalized, profiles) ||
+            LooksLikeRoePath(modPathNormalized))
         {
-            var modPathRecommendation = TryRecommendProfileFromModPathHints(modPathNormalized, profiles);
-            if (modPathRecommendation is not null)
-            {
-                return modPathRecommendation;
-            }
-
-            if (MatchesProfileHints("roe_3447786229_swfoc", modPathNormalized, profiles) ||
-                LooksLikeRoePath(modPathNormalized))
-            {
-                return new ProfileRecommendation(RoeProfileId, "modpath_hint_roe", 0.95d);
-            }
-
-            if (MatchesProfileHints("aotr_1397421866_swfoc", modPathNormalized, profiles) ||
-                LooksLikeAotrPath(modPathNormalized))
-            {
-                return new ProfileRecommendation(AotrProfileId, "modpath_hint_aotr", 0.95d);
-            }
+            return new ProfileRecommendation(RoeProfileId, "modpath_hint_roe", 0.95d);
         }
 
+        return MatchesProfileHints(AotrProfileId, modPathNormalized, profiles) ||
+               LooksLikeAotrPath(modPathNormalized)
+            ? new ProfileRecommendation(AotrProfileId, "modpath_hint_aotr", 0.95d)
+            : null;
+    }
+
+    private static ProfileRecommendation RecommendFallbackBaseProfile(ProcessMetadata process)
+    {
         if (process.ExeTarget == ExeTarget.Sweaw)
         {
             return new ProfileRecommendation("base_sweaw", "exe_target_sweaw", 0.80d);
@@ -123,7 +140,8 @@ public sealed class LaunchContextResolver : ILaunchContextResolver
 
         if (process.ExeTarget == ExeTarget.Swfoc || IsStarWarsGProcess(process))
         {
-            return new ProfileRecommendation("base_swfoc", "foc_safe_starwarsg_fallback", IsStarWarsGProcess(process) ? 0.55d : 0.65d);
+            var confidence = IsStarWarsGProcess(process) ? 0.55d : 0.65d;
+            return new ProfileRecommendation("base_swfoc", "foc_safe_starwarsg_fallback", confidence);
         }
 
         return new ProfileRecommendation(null, "unknown", 0.20d);

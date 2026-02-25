@@ -1,4 +1,3 @@
-#pragma warning disable S4136
 using System.Text.RegularExpressions;
 using SwfocTrainer.Core.Contracts;
 using SwfocTrainer.Core.Models;
@@ -29,79 +28,25 @@ public sealed class ModOnboardingService : IModOnboardingService
 
     public async Task<ModOnboardingResult> ScaffoldDraftProfileAsync(ModOnboardingRequest request, CancellationToken cancellationToken)
     {
-        if (string.IsNullOrWhiteSpace(request.DraftProfileId))
-        {
-            throw new InvalidDataException("DraftProfileId is required.");
-        }
-
-        if (string.IsNullOrWhiteSpace(request.DisplayName))
-        {
-            throw new InvalidDataException("DisplayName is required.");
-        }
-
-        if (request.LaunchSamples is null || request.LaunchSamples.Count == 0)
-        {
-            throw new InvalidDataException("At least one launch sample is required.");
-        }
+        ValidateDraftProfileRequest(request);
 
         var baseProfile = await _profiles.ResolveInheritedProfileAsync(request.BaseProfileId, cancellationToken);
         var profileId = NormalizeProfileId(request.DraftProfileId);
-        var workshopIds = InferWorkshopIds(request.LaunchSamples);
-        var pathHints = InferPathHints(request.LaunchSamples);
-        var aliases = InferAliases(profileId, request.DisplayName, request.ProfileAliases);
-        var warnings = new List<string>();
-
-        if (workshopIds.Count == 0)
-        {
-            warnings.Add("No STEAMMOD markers were inferred from launch samples.");
-        }
-
-        if (pathHints.Count == 0)
-        {
-            warnings.Add("No local path hints were inferred from launch samples.");
-        }
-
-        var metadata = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
-        {
-            ["profileAliases"] = string.Join(',', aliases),
-            ["localPathHints"] = string.Join(',', pathHints)
-        };
-
-        if (workshopIds.Count > 0)
-        {
-            metadata["requiredWorkshopIds"] = string.Join(',', workshopIds);
-        }
-
-        if (!string.IsNullOrWhiteSpace(request.Notes))
-        {
-            metadata["onboardingNotes"] = request.Notes.Trim();
-        }
-
-        if (request.AdditionalMetadata is not null)
-        {
-            foreach (var kv in request.AdditionalMetadata)
-            {
-                if (string.IsNullOrWhiteSpace(kv.Key) || string.IsNullOrWhiteSpace(kv.Value))
-                {
-                    continue;
-                }
-
-                metadata[kv.Key.Trim()] = kv.Value.Trim();
-            }
-        }
-
-        var requiredCapabilities = request.RequiredCapabilities?
-            .Where(capability => !string.IsNullOrWhiteSpace(capability))
-            .Select(capability => capability.Trim())
-            .Distinct(StringComparer.OrdinalIgnoreCase)
-            .ToArray();
+        var draftSignals = BuildDraftSignals(request, profileId);
+        var metadata = BuildDraftMetadata(
+            draftSignals.WorkshopIds,
+            draftSignals.PathHints,
+            draftSignals.Aliases,
+            request.Notes,
+            request.AdditionalMetadata);
+        var requiredCapabilities = NormalizeRequiredCapabilities(request.RequiredCapabilities);
 
         var draftProfile = new TrainerProfile(
             Id: profileId,
             DisplayName: request.DisplayName.Trim(),
             Inherits: baseProfile.Id,
             ExeTarget: baseProfile.ExeTarget,
-            SteamWorkshopId: workshopIds.Count > 0 ? workshopIds[0] : baseProfile.SteamWorkshopId,
+            SteamWorkshopId: draftSignals.WorkshopIds.Count > 0 ? draftSignals.WorkshopIds[0] : baseProfile.SteamWorkshopId,
             SignatureSets: Array.Empty<SignatureSet>(),
             FallbackOffsets: new Dictionary<string, long>(StringComparer.OrdinalIgnoreCase),
             Actions: new Dictionary<string, ActionSpec>(StringComparer.OrdinalIgnoreCase),
@@ -124,10 +69,15 @@ public sealed class ModOnboardingService : IModOnboardingService
             Succeeded: true,
             ProfileId: profileId,
             OutputPath: outputPath,
-            InferredWorkshopIds: workshopIds,
-            InferredPathHints: pathHints,
-            InferredAliases: aliases,
-            Warnings: warnings);
+            InferredWorkshopIds: draftSignals.WorkshopIds,
+            InferredPathHints: draftSignals.PathHints,
+            InferredAliases: draftSignals.Aliases,
+            Warnings: draftSignals.Warnings);
+    }
+
+    public Task<ModOnboardingResult> ScaffoldDraftProfileAsync(ModOnboardingRequest request)
+    {
+        return ScaffoldDraftProfileAsync(request, CancellationToken.None);
     }
 
     public async Task<ModOnboardingBatchResult> ScaffoldDraftProfilesFromSeedsAsync(
@@ -519,8 +469,96 @@ public sealed class ModOnboardingService : IModOnboardingService
         return string.IsNullOrWhiteSpace(normalized) ? null : normalized;
     }
 
-    public Task<ModOnboardingResult> ScaffoldDraftProfileAsync(ModOnboardingRequest request)
+    private static void ValidateDraftProfileRequest(ModOnboardingRequest request)
     {
-        return ScaffoldDraftProfileAsync(request, CancellationToken.None);
+        if (string.IsNullOrWhiteSpace(request.DraftProfileId))
+        {
+            throw new InvalidDataException("DraftProfileId is required.");
+        }
+
+        if (string.IsNullOrWhiteSpace(request.DisplayName))
+        {
+            throw new InvalidDataException("DisplayName is required.");
+        }
+
+        if (request.LaunchSamples is null || request.LaunchSamples.Count == 0)
+        {
+            throw new InvalidDataException("At least one launch sample is required.");
+        }
     }
+
+    private static DraftSignals BuildDraftSignals(ModOnboardingRequest request, string profileId)
+    {
+        var workshopIds = InferWorkshopIds(request.LaunchSamples);
+        var pathHints = InferPathHints(request.LaunchSamples);
+        var aliases = InferAliases(profileId, request.DisplayName, request.ProfileAliases);
+        var warnings = new List<string>();
+        if (workshopIds.Count == 0)
+        {
+            warnings.Add("No STEAMMOD markers were inferred from launch samples.");
+        }
+
+        if (pathHints.Count == 0)
+        {
+            warnings.Add("No local path hints were inferred from launch samples.");
+        }
+
+        return new DraftSignals(workshopIds, pathHints, aliases, warnings);
+    }
+
+    private static Dictionary<string, string> BuildDraftMetadata(
+        IReadOnlyList<string> workshopIds,
+        IReadOnlyList<string> pathHints,
+        IReadOnlyList<string> aliases,
+        string? notes,
+        IReadOnlyDictionary<string, string>? additionalMetadata)
+    {
+        var metadata = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
+        {
+            ["profileAliases"] = string.Join(',', aliases),
+            ["localPathHints"] = string.Join(',', pathHints)
+        };
+
+        if (workshopIds.Count > 0)
+        {
+            metadata["requiredWorkshopIds"] = string.Join(',', workshopIds);
+        }
+
+        if (!string.IsNullOrWhiteSpace(notes))
+        {
+            metadata["onboardingNotes"] = notes.Trim();
+        }
+
+        if (additionalMetadata is null)
+        {
+            return metadata;
+        }
+
+        foreach (var kv in additionalMetadata)
+        {
+            if (string.IsNullOrWhiteSpace(kv.Key) || string.IsNullOrWhiteSpace(kv.Value))
+            {
+                continue;
+            }
+
+            metadata[kv.Key.Trim()] = kv.Value.Trim();
+        }
+
+        return metadata;
+    }
+
+    private static string[]? NormalizeRequiredCapabilities(IReadOnlyList<string>? requiredCapabilities)
+    {
+        return requiredCapabilities?
+            .Where(capability => !string.IsNullOrWhiteSpace(capability))
+            .Select(capability => capability.Trim())
+            .Distinct(StringComparer.OrdinalIgnoreCase)
+            .ToArray();
+    }
+
+    private sealed record DraftSignals(
+        IReadOnlyList<string> WorkshopIds,
+        IReadOnlyList<string> PathHints,
+        IReadOnlyList<string> Aliases,
+        IReadOnlyList<string> Warnings);
 }

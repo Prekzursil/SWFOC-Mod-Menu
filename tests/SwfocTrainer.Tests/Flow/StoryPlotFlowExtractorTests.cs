@@ -97,7 +97,7 @@ public sealed class StoryPlotFlowExtractorTests
             },
             Diagnostics: Array.Empty<string>());
 
-        var linkage = extractor.BuildCapabilityLinkReport(report, megaFiles, symbolPack);
+        var linkage = StoryPlotFlowExtractor.BuildCapabilityLinkReport(report, megaFiles, symbolPack);
 
         linkage.Diagnostics.Should().BeEmpty();
         linkage.Links.Should().NotBeEmpty();

@@ -198,27 +198,35 @@ def to_iso_utc(epoch_seconds: int | str | None) -> str:
     return dt.datetime.fromtimestamp(value, tz=dt.timezone.utc).replace(microsecond=0).isoformat().replace("+00:00", "Z")
 
 
-def normalize_top_mod_record(source: dict[str, Any], fallback_workshop_id: str | None = None) -> dict[str, Any]:
-    workshop_id = str(source.get("workshopId") or source.get("publishedfileid") or fallback_workshop_id or "").strip()
-    title = str(source.get("title") or "unknown_mod").strip()
-    description = str(source.get("description") or "")
+def normalize_tags(raw_tags: Any) -> list[str]:
+    if not isinstance(raw_tags, list):
+        return []
 
-    raw_tags = source.get("normalizedTags") or source.get("tags") or []
     normalized_tags: list[str] = []
-    if isinstance(raw_tags, list):
-        for tag in raw_tags:
-            value = tag.get("tag") if isinstance(tag, dict) else tag
-            normalized = normalize_tag(str(value or ""))
-            if normalized:
-                normalized_tags.append(normalized)
+    for tag in raw_tags:
+        value = tag.get("tag") if isinstance(tag, dict) else tag
+        normalized = normalize_tag(str(value or ""))
+        if normalized:
+            normalized_tags.append(normalized)
 
+    return sorted(set(normalized_tags))
+
+
+def resolve_dependencies(source: dict[str, Any], description: str, workshop_id: str) -> list[str]:
     dependencies = source.get("parentDependencies")
     if not isinstance(dependencies, list):
         dependencies = parse_dependency_ids(description, workshop_id)
-    dependencies = [str(dep) for dep in dependencies if str(dep).isdigit() and str(dep) != workshop_id]
 
-    base_profile, profile_confidence = resolve_base_profile(workshop_id, title, description, dependencies)
+    return [str(dep) for dep in dependencies if str(dep).isdigit() and str(dep) != workshop_id]
 
+
+def resolve_launch_hints(
+    source: dict[str, Any],
+    workshop_id: str,
+    dependencies: list[str],
+    title: str,
+    description: str,
+) -> dict[str, list[str]]:
     launch_hints = source.get("launchHints") if isinstance(source.get("launchHints"), dict) else None
     if launch_hints is None:
         launch_hints = {
@@ -234,23 +242,47 @@ def normalize_top_mod_record(source: dict[str, Any], fallback_workshop_id: str |
     if workshop_id and workshop_id not in launch_hints["steamModIds"]:
         launch_hints["steamModIds"].insert(0, workshop_id)
 
+    return launch_hints
+
+
+def resolve_record_risk_level(source: dict[str, Any], dependencies: list[str]) -> str:
     file_size = int(source.get("file_size") or source.get("fileSize") or 0)
     risk_level = str(source.get("riskLevel") or resolve_risk_level(file_size, dependencies)).lower()
     if risk_level not in {"low", "medium", "high"}:
-        risk_level = resolve_risk_level(file_size, dependencies)
+        return resolve_risk_level(file_size, dependencies)
 
-    subscriptions = int(source.get("subscriptions") or 0)
-    lifetime_subscriptions = int(source.get("lifetimeSubscriptions") or source.get("lifetime_subscriptions") or 0)
+    return risk_level
+
+
+def resolve_time_updated_iso(source: dict[str, Any]) -> str:
     time_updated = source.get("timeUpdated")
     if isinstance(time_updated, str) and "T" in time_updated:
-        time_updated_iso = time_updated
-    else:
-        time_updated_iso = to_iso_utc(source.get("time_updated") or source.get("timeUpdated") or source.get("timeUpdatedEpoch"))
+        return time_updated
 
+    return to_iso_utc(source.get("time_updated") or source.get("timeUpdated") or source.get("timeUpdatedEpoch"))
+
+
+def resolve_record_confidence(source: dict[str, Any], profile_confidence: float) -> float:
     confidence = source.get("confidence")
     if confidence is None:
         confidence = profile_confidence
-    confidence = max(0.0, min(1.0, float(confidence)))
+
+    return max(0.0, min(1.0, float(confidence)))
+
+
+def normalize_top_mod_record(source: dict[str, Any], fallback_workshop_id: str | None = None) -> dict[str, Any]:
+    workshop_id = str(source.get("workshopId") or source.get("publishedfileid") or fallback_workshop_id or "").strip()
+    title = str(source.get("title") or "unknown_mod").strip()
+    description = str(source.get("description") or "")
+    normalized_tags = normalize_tags(source.get("normalizedTags") or source.get("tags") or [])
+    dependencies = resolve_dependencies(source, description, workshop_id)
+    base_profile, profile_confidence = resolve_base_profile(workshop_id, title, description, dependencies)
+    launch_hints = resolve_launch_hints(source, workshop_id, dependencies, title, description)
+    risk_level = resolve_record_risk_level(source, dependencies)
+    subscriptions = int(source.get("subscriptions") or 0)
+    lifetime_subscriptions = int(source.get("lifetimeSubscriptions") or source.get("lifetime_subscriptions") or 0)
+    time_updated_iso = resolve_time_updated_iso(source)
+    confidence = resolve_record_confidence(source, profile_confidence)
 
     return {
         "workshopId": workshop_id,
@@ -264,7 +296,7 @@ def normalize_top_mod_record(source: dict[str, Any], fallback_workshop_id: str |
         "candidateBaseProfile": str(source.get("candidateBaseProfile") or base_profile),
         "confidence": confidence,
         "riskLevel": risk_level,
-        "normalizedTags": sorted(set(normalized_tags)),
+        "normalizedTags": normalized_tags,
         "requiredCapabilities": PROMOTED_REQUIRED_CAPABILITIES,
     }
 
