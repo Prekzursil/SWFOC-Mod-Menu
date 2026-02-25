@@ -377,7 +377,8 @@ public sealed class ProcessLocator : IProcessLocator
         var match = Regex.Match(
             commandLine,
             @"modpath\s*=\s*(?:""(?<quoted>[^""]+)""|(?<unquoted>[^\s]+))",
-            RegexOptions.IgnoreCase);
+            RegexOptions.IgnoreCase,
+            RegexMatchTimeout);
         if (!match.Success)
         {
             return null;

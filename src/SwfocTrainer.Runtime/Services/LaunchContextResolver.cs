@@ -8,14 +8,17 @@ public sealed class LaunchContextResolver : ILaunchContextResolver
 {
     private const string RoeWorkshopId = "3447786229";
     private const string AotrWorkshopId = "1397421866";
+    private static readonly TimeSpan RegexTimeout = TimeSpan.FromMilliseconds(250);
 
     private static readonly Regex SteamModRegex = new(
         @"steammod\s*=\s*(\d+)",
-        RegexOptions.IgnoreCase | RegexOptions.Compiled);
+        RegexOptions.IgnoreCase | RegexOptions.Compiled,
+        RegexTimeout);
 
     private static readonly Regex ModPathRegex = new(
         @"modpath\s*=\s*(?:""(?<quoted>[^""]+)""|(?<unquoted>[^\s]+))",
-        RegexOptions.IgnoreCase | RegexOptions.Compiled);
+        RegexOptions.IgnoreCase | RegexOptions.Compiled,
+        RegexTimeout);
 
     public LaunchContext Resolve(ProcessMetadata process, IReadOnlyList<TrainerProfile> profiles)
     {

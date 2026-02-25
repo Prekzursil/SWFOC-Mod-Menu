@@ -15,56 +15,53 @@ jobs:
   sonarcloud:
     runs-on: ubuntu-latest
     steps:
-      - name: Detect Sonar token
-        id: sonar-token
-        shell: bash
-        run: |
-          if [ -n "${{ secrets.SONAR_TOKEN }}" ]; then
-            echo "enabled=true" >> "$GITHUB_OUTPUT"
-          else
-            echo "enabled=false" >> "$GITHUB_OUTPUT"
-            echo "SONAR_TOKEN is not configured; skipping SonarCloud scan."
-          fi
+      - name: Sonar token not configured
+        if: ${{ secrets.SONAR_TOKEN == '' }}
+        run: echo "SONAR_TOKEN is not configured; skipping SonarCloud scan."
 
       - name: Checkout
-        if: ${{ steps.sonar-token.outputs.enabled == 'true' }}
+        if: ${{ secrets.SONAR_TOKEN != '' }}
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
       - name: Setup .NET
-        if: ${{ steps.sonar-token.outputs.enabled == 'true' }}
+        if: ${{ secrets.SONAR_TOKEN != '' }}
         uses: actions/setup-dotnet@v4
         with:
           dotnet-version: "8.0.x"
 
       - name: Install SonarScanner
-        if: ${{ steps.sonar-token.outputs.enabled == 'true' }}
+        if: ${{ secrets.SONAR_TOKEN != '' }}
         shell: bash
         run: |
           dotnet tool install --global dotnet-sonarscanner
           echo "$HOME/.dotnet/tools" >> "$GITHUB_PATH"
 
       - name: Restore
-        if: ${{ steps.sonar-token.outputs.enabled == 'true' }}
+        if: ${{ secrets.SONAR_TOKEN != '' }}
         run: dotnet restore SwfocTrainer.sln
 
       - name: Sonar Begin
-        if: ${{ steps.sonar-token.outputs.enabled == 'true' }}
+        if: ${{ secrets.SONAR_TOKEN != '' }}
         shell: bash
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         run: |
           dotnet-sonarscanner begin \
             /k:"Prekzursil_SWFOC-Mod-Menu" \
             /o:"prekzursil" \
-            /d:sonar.token="${{ secrets.SONAR_TOKEN }}" \
+            /d:sonar.token="$SONAR_TOKEN" \
             /d:sonar.host.url="https://sonarcloud.io"
 
       - name: Build
-        if: ${{ steps.sonar-token.outputs.enabled == 'true' }}
+        if: ${{ secrets.SONAR_TOKEN != '' }}
         run: dotnet build SwfocTrainer.sln -c Release --no-restore
 
       - name: Sonar End
-        if: ${{ steps.sonar-token.outputs.enabled == 'true' }}
+        if: ${{ secrets.SONAR_TOKEN != '' }}
         shell: bash
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         run: |
-          dotnet-sonarscanner end /d:sonar.token="${{ secrets.SONAR_TOKEN }}"
+          dotnet-sonarscanner end /d:sonar.token="$SONAR_TOKEN"

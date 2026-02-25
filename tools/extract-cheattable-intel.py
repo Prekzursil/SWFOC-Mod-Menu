@@ -20,7 +20,7 @@ from defusedxml import ElementTree as element_tree
 
 
 AOB_SCAN_RE = re.compile(
-    r"aobscanmodule\(\s*([^,\s]+)\s*,\s*([^,\s]+)\s*,\s*([^)]+?)\s*\)",
+    r"aobscanmodule\(\s*([^,\s]+)\s*,\s*([^,\s]+)\s*,\s*([0-9A-Fa-f? ]{1,512})\s*\)",
     re.IGNORECASE,
 )
 INJECTION_RE = re.compile(r"INJECTION POINT:\s*([^\s]+)", re.IGNORECASE)
@@ -28,7 +28,7 @@ WRITE_RE = re.compile(
     r"\bmov\s+\[([^\]]+)\]\s*,\s*\((float|int)\)\s*([-+]?\d+(?:\.\d+)?)",
     re.IGNORECASE,
 )
-DB_RE = re.compile(r"^\s*db\s+([0-9A-Fa-f? ]+)\s*$")
+DB_RE = re.compile(r"^\s*db\s+([0-9A-Fa-f? ]{1,512})\s*$")
 
 
 @dataclass
