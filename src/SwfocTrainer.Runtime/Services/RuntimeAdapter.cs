@@ -13,7 +13,7 @@ using SwfocTrainer.Runtime.Scanning;
 
 namespace SwfocTrainer.Runtime.Services;
 
-public sealed class RuntimeAdapter : IRuntimeAdapter
+public sealed partial class RuntimeAdapter : IRuntimeAdapter
 {
     private const string CreditsHookPatternText = "F3 0F 2C 50 70 89 57";
 
@@ -45,88 +45,6 @@ public sealed class RuntimeAdapter : IRuntimeAdapter
     private const int InstantBuildHookInstructionLength = 6;
     private const int InstantBuildHookJumpLength = 5;
     private const int InstantBuildHookCaveSize = 31;
-    private const string DiagnosticKeyHookState = "hookState";
-    private const string DiagnosticKeyCreditsStateTag = "creditsStateTag";
-    private const string DiagnosticKeyState = "state";
-    private const string DiagnosticKeyExpertOverrideEnabled = "expertOverrideEnabled";
-    private const string DiagnosticKeyOverrideReason = "overrideReason";
-    private const string DiagnosticKeyPanicDisableState = "panicDisableState";
-    private const string PanicDisableStateActive = "active";
-    private const string PanicDisableStateInactive = "inactive";
-    private const string ExpertOverrideEnvVarName = "SWFOC_EXPERT_MUTATION_OVERRIDES";
-    private const string ExpertOverridePanicEnvVarName = "SWFOC_EXPERT_MUTATION_OVERRIDES_PANIC";
-    private const string ActionIdSetUnitCap = "set_unit_cap";
-    private const string ActionIdToggleInstantBuildPatch = "toggle_instant_build_patch";
-    private const string ActionIdSetCredits = "set_credits";
-    private const string SymbolCredits = "credits";
-    private static readonly string[] ResultHookStateKeys =
-    [
-        DiagnosticKeyHookState,
-        DiagnosticKeyCreditsStateTag,
-        DiagnosticKeyState
-    ];
-
-    private static readonly HashSet<string> PromotedExtenderActionIds = new(StringComparer.OrdinalIgnoreCase)
-    {
-        "freeze_timer",
-        "toggle_fog_reveal",
-        "toggle_ai",
-        ActionIdSetUnitCap,
-        ActionIdToggleInstantBuildPatch
-    };
-
-    private readonly IProcessLocator _processLocator;
-    private readonly IProfileRepository _profileRepository;
-    private readonly ISignatureResolver _signatureResolver;
-    private readonly IModDependencyValidator _modDependencyValidator;
-    private readonly ISymbolHealthService _symbolHealthService;
-    private readonly IProfileVariantResolver? _profileVariantResolver;
-    private readonly ISdkOperationRouter? _sdkOperationRouter;
-    private readonly IBackendRouter _backendRouter;
-    private readonly IExecutionBackend? _extenderBackend;
-    private readonly ILogger<RuntimeAdapter> _logger;
-    private readonly string _calibrationArtifactRoot;
-    private static readonly JsonSerializerOptions SymbolValidationJsonOptions = new()
-    {
-        PropertyNameCaseInsensitive = true,
-        Converters = { new JsonStringEnumConverter() }
-    };
-
-    private ProcessMemoryAccessor? _memory;
-    private nint _creditsHookInjectionAddress;
-    private byte[]? _creditsHookOriginalBytesBackup;
-    private nint _creditsHookCodeCaveAddress;
-    private nint _creditsHookLastContextAddress;
-    private nint _creditsHookHitCountAddress;
-    private nint _creditsHookLockEnabledAddress;
-    private nint _creditsHookForcedFloatBitsAddress;
-    private byte _creditsHookContextOffset = CreditsContextOffsetByte;
-
-    private nint _unitCapHookInjectionAddress;
-    private byte[]? _unitCapHookOriginalBytesBackup;
-    private nint _unitCapHookCodeCaveAddress;
-    private nint _unitCapHookValueAddress;
-
-    private nint _instantBuildHookInjectionAddress;
-    private byte[]? _instantBuildHookOriginalBytesBackup;
-    private nint _instantBuildHookCodeCaveAddress;
-
-    /// <summary>
-    /// Tracks active code patches keyed by symbol name.
-    /// Value = original bytes that were saved before the patch was applied.
-    /// </summary>
-    private readonly Dictionary<string, (nint Address, byte[] OriginalBytes)> _activeCodePatches = new();
-    private HashSet<string> _dependencySoftDisabledActions = new(StringComparer.OrdinalIgnoreCase);
-    private DependencyValidationStatus _dependencyValidationStatus = DependencyValidationStatus.Pass;
-    private string? _dependencyValidationMessage;
-    private TrainerProfile? _attachedProfile;
-    private Dictionary<string, List<SymbolValidationRule>> _symbolValidationRules = new(StringComparer.OrdinalIgnoreCase);
-    private HashSet<string> _criticalSymbols = new(StringComparer.OrdinalIgnoreCase);
-    private readonly object _telemetryLock = new();
-    private readonly Dictionary<string, int> _actionSuccessCounters = new(StringComparer.OrdinalIgnoreCase);
-    private readonly Dictionary<string, int> _actionFailureCounters = new(StringComparer.OrdinalIgnoreCase);
-    private readonly Dictionary<string, int> _symbolSourceCounters = new(StringComparer.OrdinalIgnoreCase);
-
     public RuntimeAdapter(
         IProcessLocator processLocator,
         IProfileRepository profileRepository,
@@ -1877,145 +1795,267 @@ public sealed class RuntimeAdapter : IRuntimeAdapter
 
     private async Task<ActionExecutionResult> ExecuteMemoryActionAsync(ActionExecutionRequest request, CancellationToken cancellationToken)
     {
-        var payload = request.Payload;
+        var symbol = ResolveMemoryActionSymbol(request.Payload);
+        if (TryExecuteCreditsMemoryWrite(request, symbol, cancellationToken) is { } creditsWrite)
+        {
+            return await creditsWrite;
+        }
+
+        var context = BuildMemoryActionContext(symbol, request.RuntimeMode);
+        var writeResult = await TryExecuteMemoryWriteAsync(request, symbol, context, cancellationToken);
+        if (writeResult is not null)
+        {
+            return writeResult;
+        }
+
+        return ExecuteMemoryReadAction(symbol, context.SymbolInfo, context.ValidationRule, context.IsCriticalSymbol);
+    }
+
+    private static string ResolveMemoryActionSymbol(JsonObject payload)
+    {
         var symbol = payload["symbol"]?.GetValue<string>();
         if (string.IsNullOrWhiteSpace(symbol))
         {
             throw new InvalidOperationException("Memory action payload requires 'symbol'.");
         }
 
-        // Route credits writes to the specialised handler BEFORE generic symbol resolution.
-        // SetCreditsAsync performs its own resolution with late-fallback logic, so it must
-        // not be blocked by a missing entry in the attach-time SymbolMap.
-        if (payload["intValue"] is not null && IsCreditsWrite(request, symbol))
+        return symbol;
+    }
+
+    private Task<ActionExecutionResult>? TryExecuteCreditsMemoryWrite(
+        ActionExecutionRequest request,
+        string symbol,
+        CancellationToken cancellationToken)
+    {
+        var payload = request.Payload;
+        if (payload["intValue"] is null || !IsCreditsWrite(request, symbol))
         {
-            var value = payload["intValue"]!.GetValue<int>();
-            var lockCredits =
-                TryReadBooleanPayload(payload, "lockCredits", out var lockFromPayload) ? lockFromPayload :
-                TryReadBooleanPayload(payload, "forcePatchHook", out var legacyForcePatchHook) && legacyForcePatchHook;
-            return await SetCreditsAsync(
-                value,
-                lockCredits,
-                verifyReadback: request.Action.VerifyReadback,
-                cancellationToken);
+            return null;
         }
 
+        var value = payload["intValue"]!.GetValue<int>();
+        var lockCredits =
+            TryReadBooleanPayload(payload, "lockCredits", out var lockFromPayload) ? lockFromPayload :
+            TryReadBooleanPayload(payload, "forcePatchHook", out var legacyForcePatchHook) && legacyForcePatchHook;
+        return SetCreditsAsync(value, lockCredits, request.Action.VerifyReadback, cancellationToken);
+    }
+
+    private MemoryActionContext BuildMemoryActionContext(string symbol, RuntimeMode runtimeMode)
+    {
         var symbolInfo = ResolveSymbol(symbol);
-        var validationRule = ResolveSymbolValidationRule(symbol, request.RuntimeMode);
+        var validationRule = ResolveSymbolValidationRule(symbol, runtimeMode);
         var isCriticalSymbol = IsCriticalSymbol(symbol, validationRule);
+        return new MemoryActionContext(symbolInfo, validationRule, isCriticalSymbol);
+    }
 
-        if (payload["intValue"] is not null)
+    private async Task<ActionExecutionResult?> TryExecuteMemoryWriteAsync(
+        ActionExecutionRequest request,
+        string symbol,
+        MemoryActionContext context,
+        CancellationToken cancellationToken)
+    {
+        if (TryReadIntPayload(request.Payload, out var intValue))
         {
-            var value = payload["intValue"]!.GetValue<int>();
-            var requestedValidation = ValidateRequestedIntValue(symbol, value, validationRule);
-            if (!requestedValidation.IsValid)
-            {
-                return new ActionExecutionResult(
-                    false,
-                    requestedValidation.Message,
-                    symbolInfo.Source,
-                    new Dictionary<string, object?>
-                    {
-                        ["address"] = $"0x{symbolInfo.Address.ToInt64():X}",
-                        ["failureReasonCode"] = requestedValidation.ReasonCode,
-                        ["symbolHealthStatus"] = symbolInfo.HealthStatus.ToString(),
-                        ["symbolConfidence"] = symbolInfo.Confidence
-                    });
-            }
-
-            return await WriteWithOptionalRetryAsync(
-                symbol,
-                symbolInfo,
-                value,
-                request.Action.VerifyReadback,
-                isCriticalSymbol,
-                request.RuntimeMode,
-                validationRule,
-                readValue: address => _memory!.Read<int>(address),
-                writeValue: (address, requestedValue) => _memory!.Write(address, requestedValue),
-                compareValues: (expected, actual) => actual == expected,
-                validateObservedValue: observed => ValidateObservedIntValue(symbol, observed, validationRule),
-                formatValue: observed => observed.ToString(),
-                cancellationToken: cancellationToken);
+            return await ExecuteIntMemoryWriteAsync(request, symbol, context, intValue, cancellationToken);
         }
 
-        if (payload["floatValue"] is not null)
+        if (TryReadFloatPayload(request.Payload, out var floatValue))
         {
-            float value;
-            try { value = payload["floatValue"]!.GetValue<float>(); }
-            catch (InvalidOperationException) { value = (float)payload["floatValue"]!.GetValue<double>(); }
-            var requestedValidation = ValidateRequestedFloatValue(symbol, value, validationRule);
-            if (!requestedValidation.IsValid)
-            {
-                return new ActionExecutionResult(
-                    false,
-                    requestedValidation.Message,
-                    symbolInfo.Source,
-                    new Dictionary<string, object?>
-                    {
-                        ["address"] = $"0x{symbolInfo.Address.ToInt64():X}",
-                        ["failureReasonCode"] = requestedValidation.ReasonCode,
-                        ["symbolHealthStatus"] = symbolInfo.HealthStatus.ToString(),
-                        ["symbolConfidence"] = symbolInfo.Confidence
-                    });
-            }
-
-            return await WriteWithOptionalRetryAsync(
-                symbol,
-                symbolInfo,
-                value,
-                request.Action.VerifyReadback,
-                isCriticalSymbol,
-                request.RuntimeMode,
-                validationRule,
-                readValue: address => _memory!.Read<float>(address),
-                writeValue: (address, requestedValue) => _memory!.Write(address, requestedValue),
-                compareValues: (expected, actual) => Math.Abs(actual - expected) <= 0.0001f,
-                validateObservedValue: observed => ValidateObservedFloatValue(symbol, observed, validationRule),
-                formatValue: observed => observed.ToString("0.####"),
-                cancellationToken: cancellationToken);
+            return await ExecuteFloatMemoryWriteAsync(request, symbol, context, floatValue, cancellationToken);
         }
 
-        if (payload["boolValue"] is not null)
+        if (TryReadBoolPayload(request.Payload, out var boolValue))
         {
-            var value = payload["boolValue"]!.GetValue<bool>() ? (byte)1 : (byte)0;
-            var requestedValidation = ValidateRequestedIntValue(symbol, value, validationRule);
-            if (!requestedValidation.IsValid)
-            {
-                return new ActionExecutionResult(
-                    false,
-                    requestedValidation.Message,
-                    symbolInfo.Source,
-                    new Dictionary<string, object?>
-                    {
-                        ["address"] = $"0x{symbolInfo.Address.ToInt64():X}",
-                        ["failureReasonCode"] = requestedValidation.ReasonCode,
-                        ["symbolHealthStatus"] = symbolInfo.HealthStatus.ToString(),
-                        ["symbolConfidence"] = symbolInfo.Confidence
-                    });
-            }
-
-            return await WriteWithOptionalRetryAsync(
-                symbol,
-                symbolInfo,
-                value,
-                request.Action.VerifyReadback,
-                isCriticalSymbol,
-                request.RuntimeMode,
-                validationRule,
-                readValue: address => _memory!.Read<byte>(address),
-                writeValue: (address, requestedValue) => _memory!.Write(address, requestedValue),
-                compareValues: (expected, actual) => actual == expected,
-                validateObservedValue: observed => ValidateObservedIntValue(symbol, observed, validationRule),
-                formatValue: observed => (observed != 0).ToString(),
-                cancellationToken: cancellationToken);
+            return await ExecuteBoolMemoryWriteAsync(request, symbol, context, boolValue, cancellationToken);
         }
 
-        // Debug convenience: if no value is supplied, treat this as a read.
-        // This is handy for calibration (e.g., verifying that a resolved symbol actually matches in-game values).
-        var read = symbolInfo.ValueType switch
+        return null;
+    }
+
+    private static bool TryReadIntPayload(JsonObject payload, out int value)
+    {
+        if (payload["intValue"] is null)
         {
-            SymbolValueType.Int32 => (object)_memory!.Read<int>(symbolInfo.Address),
+            value = default;
+            return false;
+        }
+
+        value = payload["intValue"]!.GetValue<int>();
+        return true;
+    }
+
+    private static bool TryReadFloatPayload(JsonObject payload, out float value)
+    {
+        if (payload["floatValue"] is null)
+        {
+            value = default;
+            return false;
+        }
+
+        try
+        {
+            value = payload["floatValue"]!.GetValue<float>();
+        }
+        catch (InvalidOperationException)
+        {
+            value = (float)payload["floatValue"]!.GetValue<double>();
+        }
+
+        return true;
+    }
+
+    private static bool TryReadBoolPayload(JsonObject payload, out bool value)
+    {
+        if (payload["boolValue"] is null)
+        {
+            value = default;
+            return false;
+        }
+
+        value = payload["boolValue"]!.GetValue<bool>();
+        return true;
+    }
+
+    private async Task<ActionExecutionResult> ExecuteIntMemoryWriteAsync(
+        ActionExecutionRequest request,
+        string symbol,
+        MemoryActionContext context,
+        int value,
+        CancellationToken cancellationToken)
+    {
+        var requestedValidation = ValidateRequestedIntValue(symbol, value, context.ValidationRule);
+        if (!requestedValidation.IsValid)
+        {
+            return BuildRequestedValidationFailureResult(context.SymbolInfo, requestedValidation);
+        }
+
+        return await WriteWithOptionalRetryAsync(
+            symbol,
+            context.SymbolInfo,
+            value,
+            request.Action.VerifyReadback,
+            context.IsCriticalSymbol,
+            request.RuntimeMode,
+            context.ValidationRule,
+            readValue: address => _memory!.Read<int>(address),
+            writeValue: (address, requestedValue) => _memory!.Write(address, requestedValue),
+            compareValues: static (expected, actual) => actual == expected,
+            validateObservedValue: observed => ValidateObservedIntValue(symbol, observed, context.ValidationRule),
+            formatValue: observed => observed.ToString(),
+            cancellationToken: cancellationToken);
+    }
+
+    private async Task<ActionExecutionResult> ExecuteFloatMemoryWriteAsync(
+        ActionExecutionRequest request,
+        string symbol,
+        MemoryActionContext context,
+        float value,
+        CancellationToken cancellationToken)
+    {
+        var requestedValidation = ValidateRequestedFloatValue(symbol, value, context.ValidationRule);
+        if (!requestedValidation.IsValid)
+        {
+            return BuildRequestedValidationFailureResult(context.SymbolInfo, requestedValidation);
+        }
+
+        return await WriteWithOptionalRetryAsync(
+            symbol,
+            context.SymbolInfo,
+            value,
+            request.Action.VerifyReadback,
+            context.IsCriticalSymbol,
+            request.RuntimeMode,
+            context.ValidationRule,
+            readValue: address => _memory!.Read<float>(address),
+            writeValue: (address, requestedValue) => _memory!.Write(address, requestedValue),
+            compareValues: static (expected, actual) => Math.Abs(actual - expected) <= 0.0001f,
+            validateObservedValue: observed => ValidateObservedFloatValue(symbol, observed, context.ValidationRule),
+            formatValue: observed => observed.ToString("0.####"),
+            cancellationToken: cancellationToken);
+    }
+
+    private async Task<ActionExecutionResult> ExecuteBoolMemoryWriteAsync(
+        ActionExecutionRequest request,
+        string symbol,
+        MemoryActionContext context,
+        bool value,
+        CancellationToken cancellationToken)
+    {
+        var byteValue = value ? (byte)1 : (byte)0;
+        var requestedValidation = ValidateRequestedIntValue(symbol, byteValue, context.ValidationRule);
+        if (!requestedValidation.IsValid)
+        {
+            return BuildRequestedValidationFailureResult(context.SymbolInfo, requestedValidation);
+        }
+
+        return await WriteWithOptionalRetryAsync(
+            symbol,
+            context.SymbolInfo,
+            byteValue,
+            request.Action.VerifyReadback,
+            context.IsCriticalSymbol,
+            request.RuntimeMode,
+            context.ValidationRule,
+            readValue: address => _memory!.Read<byte>(address),
+            writeValue: (address, requestedValue) => _memory!.Write(address, requestedValue),
+            compareValues: static (expected, actual) => actual == expected,
+            validateObservedValue: observed => ValidateObservedIntValue(symbol, observed, context.ValidationRule),
+            formatValue: observed => (observed != 0).ToString(),
+            cancellationToken: cancellationToken);
+    }
+
+    private static ActionExecutionResult BuildRequestedValidationFailureResult(
+        SymbolInfo symbolInfo,
+        ValidationOutcome requestedValidation)
+    {
+        return new ActionExecutionResult(
+            false,
+            requestedValidation.Message,
+            symbolInfo.Source,
+            new Dictionary<string, object?>
+            {
+                ["address"] = $"0x{symbolInfo.Address.ToInt64():X}",
+                ["failureReasonCode"] = requestedValidation.ReasonCode,
+                ["symbolHealthStatus"] = symbolInfo.HealthStatus.ToString(),
+                ["symbolConfidence"] = symbolInfo.Confidence
+            });
+    }
+
+    private ActionExecutionResult ExecuteMemoryReadAction(
+        string symbol,
+        SymbolInfo symbolInfo,
+        SymbolValidationRule? validationRule,
+        bool isCriticalSymbol)
+    {
+        if (!TryReadMemorySymbolValue(symbolInfo, out var readValue))
+        {
+            throw new InvalidOperationException(
+                $"Memory action payload must include one of: intValue, floatValue, boolValue. Read is unsupported for symbol value type {symbolInfo.ValueType}.");
+        }
+
+        var readDiagnostics = CreateSymbolDiagnostics(symbolInfo, validationRule, isCriticalSymbol);
+        readDiagnostics["value"] = readValue;
+        var observedValidation = ValidateObservedReadValue(symbol, readValue!, symbolInfo.ValueType, validationRule);
+        readDiagnostics["validationStatus"] = observedValidation.IsValid ? "pass" : "degraded";
+        readDiagnostics["validationReasonCode"] = observedValidation.ReasonCode;
+
+        if (!observedValidation.IsValid)
+        {
+            return new ActionExecutionResult(false, observedValidation.Message, symbolInfo.Source, readDiagnostics);
+        }
+
+        return new ActionExecutionResult(
+            true,
+            $"Read {symbolInfo.ValueType} value {readValue} from symbol {symbol}",
+            symbolInfo.Source,
+            readDiagnostics);
+    }
+
+    private bool TryReadMemorySymbolValue(SymbolInfo symbolInfo, out object? readValue)
+    {
+        readValue = symbolInfo.ValueType switch
+        {
+            SymbolValueType.Int32 => _memory!.Read<int>(symbolInfo.Address),
             SymbolValueType.Int64 => _memory!.Read<long>(symbolInfo.Address),
             SymbolValueType.Float => _memory!.Read<float>(symbolInfo.Address),
             SymbolValueType.Double => _memory!.Read<double>(symbolInfo.Address),
@@ -2024,34 +2064,13 @@ public sealed class RuntimeAdapter : IRuntimeAdapter
             SymbolValueType.Pointer => $"0x{_memory!.Read<long>(symbolInfo.Address):X}",
             _ => null
         };
-
-        if (read is null)
-        {
-            throw new InvalidOperationException(
-                $"Memory action payload must include one of: intValue, floatValue, boolValue. Read is unsupported for symbol value type {symbolInfo.ValueType}.");
-        }
-
-        var readDiagnostics = CreateSymbolDiagnostics(symbolInfo, validationRule, isCriticalSymbol);
-        readDiagnostics["value"] = read;
-        var observedValidation = ValidateObservedReadValue(symbol, read, symbolInfo.ValueType, validationRule);
-        readDiagnostics["validationStatus"] = observedValidation.IsValid ? "pass" : "degraded";
-        readDiagnostics["validationReasonCode"] = observedValidation.ReasonCode;
-
-        if (!observedValidation.IsValid)
-        {
-            return new ActionExecutionResult(
-                false,
-                observedValidation.Message,
-                symbolInfo.Source,
-                readDiagnostics);
-        }
-
-        return new ActionExecutionResult(
-            true,
-            $"Read {symbolInfo.ValueType} value {read} from symbol {symbol}",
-            symbolInfo.Source,
-            readDiagnostics);
+        return readValue is not null;
     }
+
+    private readonly record struct MemoryActionContext(
+        SymbolInfo SymbolInfo,
+        SymbolValidationRule? ValidationRule,
+        bool IsCriticalSymbol);
 
     private sealed record ValidationOutcome(bool IsValid, string ReasonCode, string Message)
     {
@@ -2458,61 +2477,97 @@ public sealed class RuntimeAdapter : IRuntimeAdapter
         RuntimeMode runtimeMode,
         CancellationToken cancellationToken)
     {
-        if (CurrentSession is null || _attachedProfile is null)
+        if (!TryGetReResolveContext(out var context))
         {
-            return (false, null, "reresolve_unavailable", "Re-resolve is unavailable without an active attach session.");
+            return BuildReResolveUnavailableResult();
         }
 
         try
         {
             var refreshedMap = await _signatureResolver.ResolveAsync(
-                CurrentSession.Build,
-                _attachedProfile.SignatureSets,
-                _attachedProfile.FallbackOffsets,
+                context.Session.Build,
+                context.Profile.SignatureSets,
+                context.Profile.FallbackOffsets,
                 cancellationToken);
-
             if (!refreshedMap.TryGetValue(symbol, out var refreshedSymbol) ||
                 refreshedSymbol is null ||
                 refreshedSymbol.Address == nint.Zero)
             {
-                return (
-                    false,
-                    null,
-                    "reresolve_symbol_unresolved",
-                    $"Re-resolve could not find a usable address for symbol '{symbol}'.");
+                return BuildReResolveUnresolvedResult(symbol);
             }
 
-            var evaluation = _symbolHealthService.Evaluate(refreshedSymbol, _attachedProfile, runtimeMode);
-            var normalized = refreshedSymbol with
-            {
-                Confidence = ClampConfidence(Math.Max(refreshedSymbol.Confidence, evaluation.Confidence)),
-                HealthStatus = evaluation.Status,
-                HealthReason = string.IsNullOrWhiteSpace(refreshedSymbol.HealthReason)
-                    ? evaluation.Reason
-                    : $"{refreshedSymbol.HealthReason}+{evaluation.Reason}",
-                LastValidatedAt = DateTimeOffset.UtcNow
-            };
-
+            var normalized = NormalizeReResolvedSymbol(refreshedSymbol, context.Profile, runtimeMode);
             UpdateSessionSymbol(normalized);
-            _logger.LogInformation(
-                "Re-resolved symbol {Symbol} to {Address} (source={Source}, health={Health}, confidence={Confidence:0.00})",
-                symbol,
-                ToHex(normalized.Address),
-                normalized.Source,
-                normalized.HealthStatus,
-                normalized.Confidence);
-
-            return (true, normalized, "reresolve_success", "Re-resolve succeeded.");
+            LogReResolvedSymbol(symbol, normalized);
+            return BuildReResolveSuccessResult(normalized);
         }
         catch (Exception ex)
         {
             _logger.LogWarning(ex, "Failed to re-resolve symbol {Symbol}.", symbol);
-            return (
-                false,
-                null,
-                "reresolve_exception",
-                $"Re-resolve failed for symbol '{symbol}': {ex.Message}");
+            return BuildReResolveExceptionResult(symbol, ex);
         }
+    }
+
+    private bool TryGetReResolveContext(out ReResolveContext context)
+    {
+        if (CurrentSession is null || _attachedProfile is null)
+        {
+            context = default;
+            return false;
+        }
+
+        context = new ReResolveContext(CurrentSession, _attachedProfile);
+        return true;
+    }
+
+    private static (bool Succeeded, SymbolInfo? Symbol, string ReasonCode, string Message) BuildReResolveUnavailableResult()
+    {
+        return (false, null, "reresolve_unavailable", "Re-resolve is unavailable without an active attach session.");
+    }
+
+    private static (bool Succeeded, SymbolInfo? Symbol, string ReasonCode, string Message) BuildReResolveUnresolvedResult(string symbol)
+    {
+        return (false, null, "reresolve_symbol_unresolved", $"Re-resolve could not find a usable address for symbol '{symbol}'.");
+    }
+
+    private SymbolInfo NormalizeReResolvedSymbol(
+        SymbolInfo refreshedSymbol,
+        TrainerProfile attachedProfile,
+        RuntimeMode runtimeMode)
+    {
+        var evaluation = _symbolHealthService.Evaluate(refreshedSymbol, attachedProfile, runtimeMode);
+        return refreshedSymbol with
+        {
+            Confidence = ClampConfidence(Math.Max(refreshedSymbol.Confidence, evaluation.Confidence)),
+            HealthStatus = evaluation.Status,
+            HealthReason = string.IsNullOrWhiteSpace(refreshedSymbol.HealthReason)
+                ? evaluation.Reason
+                : $"{refreshedSymbol.HealthReason}+{evaluation.Reason}",
+            LastValidatedAt = DateTimeOffset.UtcNow
+        };
+    }
+
+    private void LogReResolvedSymbol(string symbol, SymbolInfo normalized)
+    {
+        _logger.LogInformation(
+            "Re-resolved symbol {Symbol} to {Address} (source={Source}, health={Health}, confidence={Confidence:0.00})",
+            symbol,
+            ToHex(normalized.Address),
+            normalized.Source,
+            normalized.HealthStatus,
+            normalized.Confidence);
+    }
+
+    private static (bool Succeeded, SymbolInfo? Symbol, string ReasonCode, string Message) BuildReResolveSuccessResult(SymbolInfo normalized)
+    {
+        return (true, normalized, "reresolve_success", "Re-resolve succeeded.");
+    }
+
+    private static (bool Succeeded, SymbolInfo? Symbol, string ReasonCode, string Message) BuildReResolveExceptionResult(
+        string symbol,
+        Exception ex)
+    {
+        return (false, null, "reresolve_exception", $"Re-resolve failed for symbol '{symbol}': {ex.Message}");
     }
 
     private void UpdateSessionSymbol(SymbolInfo symbolInfo)
@@ -2753,45 +2808,64 @@ public sealed class RuntimeAdapter : IRuntimeAdapter
     private Task<ActionExecutionResult> ExecuteUnitCapHookAsync(ActionExecutionRequest request)
     {
         var payload = request.Payload;
-        var enable = payload["enable"]?.GetValue<bool>() ?? true;
+        if (!(payload["enable"]?.GetValue<bool>() ?? true))
+        {
+            return Task.FromResult(DisableUnitCapHook());
+        }
+
+        if (EnsureInstantBuildHookDisabledForUnitCap() is { } instantBuildFailure)
+        {
+            return Task.FromResult(instantBuildFailure);
+        }
+
+        if (DisableLegacyUnitCapPatch() is { } legacyPatchFailure)
+        {
+            return Task.FromResult(legacyPatchFailure);
+        }
+
         var capValue = payload["intValue"]?.GetValue<int>() ?? 99999;
+        return Task.FromResult(EnsureUnitCapHookInstalled(capValue));
+    }
 
-        if (!enable)
+    private ActionExecutionResult? EnsureInstantBuildHookDisabledForUnitCap()
+    {
+        if (_instantBuildHookOriginalBytesBackup is null || _instantBuildHookInjectionAddress == nint.Zero)
         {
-            var disabled = DisableUnitCapHook();
-            return Task.FromResult(disabled);
+            return null;
         }
 
-        if (_instantBuildHookOriginalBytesBackup is not null && _instantBuildHookInjectionAddress != nint.Zero)
+        var disabledInstantBuild = DisableInstantBuildHook();
+        if (disabledInstantBuild.Succeeded)
         {
-            var disabledInstantBuild = DisableInstantBuildHook();
-            if (!disabledInstantBuild.Succeeded)
-            {
-                return Task.FromResult(new ActionExecutionResult(
-                    false,
-                    $"Cannot enable unit cap while instant-build hook is active: {disabledInstantBuild.Message}",
-                    AddressSource.None));
-            }
+            return null;
         }
 
-        if (_activeCodePatches.TryGetValue("unit_cap", out var activePatch))
+        return new ActionExecutionResult(
+            false,
+            $"Cannot enable unit cap while instant-build hook is active: {disabledInstantBuild.Message}",
+            AddressSource.None);
+    }
+
+    private ActionExecutionResult? DisableLegacyUnitCapPatch()
+    {
+        if (!_activeCodePatches.TryGetValue("unit_cap", out var activePatch))
         {
-            try
-            {
-                _memory!.WriteBytes(activePatch.Address, activePatch.OriginalBytes, executablePatch: true);
-                _activeCodePatches.Remove("unit_cap");
-            }
-            catch (Exception ex)
-            {
-                return Task.FromResult(new ActionExecutionResult(
-                    false,
-                    $"Failed to disable instant-build patch before unit cap hook install: {ex.Message}",
-                    AddressSource.None));
-            }
+            return null;
         }
 
-        var result = EnsureUnitCapHookInstalled(capValue);
-        return Task.FromResult(result);
+        try
+        {
+            _memory!.WriteBytes(activePatch.Address, activePatch.OriginalBytes, executablePatch: true);
+            _activeCodePatches.Remove("unit_cap");
+            return null;
+        }
+        catch (Exception ex)
+        {
+            return new ActionExecutionResult(
+                false,
+                $"Failed to disable instant-build patch before unit cap hook install: {ex.Message}",
+                AddressSource.None);
+        }
     }
 
     private Task<ActionExecutionResult> ExecuteInstantBuildHookAsync(ActionExecutionRequest request)
@@ -3794,6 +3868,17 @@ public sealed class RuntimeAdapter : IRuntimeAdapter
         byte contextOffset,
         byte destinationReg)
     {
+        ValidateCreditsHookCaveInputs(originalInstruction, destinationReg);
+        var bytes = new byte[CreditsHookCaveSize];
+        WriteCreditsHookContextCapture(bytes, caveAddress);
+        WriteCreditsHookLockGate(bytes, caveAddress);
+        WriteCreditsHookForcedWrite(bytes, caveAddress, contextOffset, destinationReg);
+        WriteCreditsHookReturn(bytes, caveAddress, injectionAddress, originalInstruction);
+        return bytes;
+    }
+
+    private static void ValidateCreditsHookCaveInputs(byte[] originalInstruction, byte destinationReg)
+    {
         if (originalInstruction.Length != CreditsHookJumpLength)
         {
             throw new InvalidOperationException("Credits hook expected a 5-byte cvttss2si instruction.");
@@ -3803,73 +3888,48 @@ public sealed class RuntimeAdapter : IRuntimeAdapter
         {
             throw new InvalidOperationException($"Credits hook destination register out of range: {destinationReg}");
         }
+    }
 
-        var bytes = new byte[CreditsHookCaveSize];
-
-        // mov [rip+disp32], rax
+    private static void WriteCreditsHookContextCapture(byte[] bytes, nint caveAddress)
+    {
         bytes[0] = 0x48;
         bytes[1] = 0x89;
         bytes[2] = 0x05;
-        WriteInt32(
-            bytes,
-            3,
-            ComputeRelativeDisplacement(
-                caveAddress + 7,
-                caveAddress + CreditsHookDataLastContextOffset));
+        WriteInt32(bytes, 3, ComputeRelativeDisplacement(caveAddress + 7, caveAddress + CreditsHookDataLastContextOffset));
 
-        // inc dword ptr [rip+disp32]
         bytes[7] = 0xFF;
         bytes[8] = 0x05;
-        WriteInt32(
-            bytes,
-            9,
-            ComputeRelativeDisplacement(
-                caveAddress + 13,
-                caveAddress + CreditsHookDataHitCountOffset));
+        WriteInt32(bytes, 9, ComputeRelativeDisplacement(caveAddress + 13, caveAddress + CreditsHookDataHitCountOffset));
+    }
 
-        // cmp dword ptr [rip+disp32], 0
+    private static void WriteCreditsHookLockGate(byte[] bytes, nint caveAddress)
+    {
         bytes[13] = 0x83;
         bytes[14] = 0x3D;
-        WriteInt32(
-            bytes,
-            15,
-            ComputeRelativeDisplacement(
-                caveAddress + 20,
-                caveAddress + CreditsHookDataLockEnabledOffset));
+        WriteInt32(bytes, 15, ComputeRelativeDisplacement(caveAddress + 20, caveAddress + CreditsHookDataLockEnabledOffset));
         bytes[19] = 0x00;
-
-        // je +9 (skip forced write block)
         bytes[20] = 0x74;
         bytes[21] = 0x09;
+    }
 
-        // mov r32, [rip+disp32] — use the same destination register as the original conversion instruction.
+    private static void WriteCreditsHookForcedWrite(byte[] bytes, nint caveAddress, byte contextOffset, byte destinationReg)
+    {
         bytes[22] = 0x8B;
         bytes[23] = (byte)(0x05 | (destinationReg << 3));
-        WriteInt32(
-            bytes,
-            24,
-            ComputeRelativeDisplacement(
-                caveAddress + 28,
-                caveAddress + CreditsHookDataForcedFloatBitsOffset));
-
-        // mov [rax+offset], r32 — force our float bits into the game object
+        WriteInt32(bytes, 24, ComputeRelativeDisplacement(caveAddress + 28, caveAddress + CreditsHookDataForcedFloatBitsOffset));
         bytes[28] = 0x89;
         bytes[29] = (byte)(0x40 | (destinationReg << 3));
         bytes[30] = contextOffset;
+    }
 
-        // original bytes: cvttss2si r32,[rax+offset] (preserve exact encoding)
+    private static void WriteCreditsHookReturn(byte[] bytes, nint caveAddress, nint injectionAddress, byte[] originalInstruction)
+    {
         Array.Copy(originalInstruction, 0, bytes, 31, originalInstruction.Length);
-
-        // jmp back to injection + 5
         bytes[36] = 0xE9;
         WriteInt32(
             bytes,
             37,
-            ComputeRelativeDisplacement(
-                caveAddress + CreditsHookCodeSize,
-                injectionAddress + CreditsHookJumpLength));
-
-        return bytes;
+            ComputeRelativeDisplacement(caveAddress + CreditsHookCodeSize, injectionAddress + CreditsHookJumpLength));
     }
 
     private static byte[] BuildRelativeJumpBytes(nint instructionAddress, nint targetAddress)
@@ -3914,192 +3974,258 @@ public sealed class RuntimeAdapter : IRuntimeAdapter
 
         try
         {
-            using var process = Process.GetProcessById(CurrentSession.Process.ProcessId);
-            var module = process.MainModule;
-            if (module is null)
+            if (!TryLoadCreditsHookModuleData(CurrentSession.Process.ProcessId, out var baseAddress, out var moduleBytes, out var moduleFailure))
             {
-                return CreditsHookResolution.Fail("Main module is unavailable for credits hook resolution.");
+                return CreditsHookResolution.Fail(moduleFailure!);
             }
 
-            var baseAddress = module.BaseAddress;
-            var moduleBytes = _memory.ReadBytes(baseAddress, module.ModuleMemorySize);
-
-            // Resolve credits int RVA for correlation-based matching.
-            long creditsRva = -1;
-            try
-            {
-                var creditsSymbol = ResolveSymbol(SymbolCredits);
-                creditsRva = creditsSymbol.Address.ToInt64() - baseAddress.ToInt64();
-            }
-            catch { /* credits symbol unavailable — correlation disabled */ }
-
-            List<(int Offset, CreditsCvttss2siInstruction Instruction)> ParseCandidates(IEnumerable<int> offsets)
-            {
-                return offsets
-                    .Select(hit =>
-                    {
-                        var parsed = TryParseCreditsCvttss2siInstruction(moduleBytes, hit, out var instruction);
-                        return (hit, parsed, instruction);
-                    })
-                    .Where(x => x.parsed)
-                    .Select(x => (x.hit, x.instruction))
-                    .ToList();
-            }
-
-            CreditsHookResolution? ResolveSingleCandidate(
-                List<(int Offset, CreditsCvttss2siInstruction Instruction)> candidates,
-                string logTemplate)
-            {
-                if (candidates.Count != 1)
-                {
-                    return null;
-                }
-
-                var candidate = candidates[0];
-                _logger.LogInformation(
-                    logTemplate,
-                    candidate.Offset,
-                    candidate.Instruction.ContextOffset,
-                    candidate.Instruction.DestinationReg);
-                return CreditsHookResolution.Ok(
-                    baseAddress + candidate.Offset,
-                    candidate.Instruction.ContextOffset,
-                    candidate.Instruction.DestinationReg,
-                    candidate.Instruction.OriginalBytes);
-            }
-
-            // Strategy 1: Try the original exact 7-byte pattern (fastest, most specific), but
-            // parse the conversion instruction generically so we don't require EDX specifically.
-            var exactPattern = AobPattern.Parse(CreditsHookPatternText);
-            var exactHits = FindPatternOffsets(moduleBytes, exactPattern, maxHits: 3);
-            var exactCandidates = ParseCandidates(exactHits);
-            var exactResolution = ResolveSingleCandidate(
-                exactCandidates,
-                "Credits hook: exact-pattern candidate at RVA 0x{Rva:X}, offset=0x{Off:X2}, reg={Reg}");
-            if (exactResolution is not null)
+            var creditsRva = TryResolveCreditsRva(baseAddress);
+            if (TryResolveCreditsHookExactPattern(baseAddress, moduleBytes) is { } exactResolution)
             {
                 return exactResolution;
             }
 
-            // Gather all compatible conversion instructions in one pass:
-            //   F3 0F 2C /r disp8, where /r uses [rax+disp8] and any destination reg32.
-            var broadConvertPattern = AobPattern.Parse("F3 0F 2C ?? ??");
-            var broadConvertHits = FindPatternOffsets(moduleBytes, broadConvertPattern, maxHits: 8000);
-            var allCandidates = ParseCandidates(broadConvertHits);
-
-            // Strategy 1b: prefer candidates where the immediate next instruction stores the same
-            // converted register to memory (classic credits write path shape).
-            var immediateStoreCandidates = allCandidates
-                .Where(c => LooksLikeImmediateStoreFromConvertedRegister(moduleBytes, c.Offset + CreditsHookJumpLength, c.Instruction.DestinationReg))
-                .ToList();
-            var immediateResolution = ResolveSingleCandidate(
-                immediateStoreCandidates,
-                "Credits hook: selected immediate-store candidate at RVA 0x{Rva:X}, offset=0x{Off:X2}, reg={Reg}");
-            if (immediateResolution is not null)
-            {
-                return immediateResolution;
-            }
-
-            if (immediateStoreCandidates.Count > 1)
-            {
-                // Prefer the classic 0x70 offset when unique among candidates.
-                var preferredClassic = immediateStoreCandidates
-                    .Where(c => c.Instruction.ContextOffset == CreditsContextOffsetByte)
-                    .ToList();
-                if (preferredClassic.Count == 1)
-                {
-                    _logger.LogInformation(
-                        "Credits hook: selected classic-offset immediate-store candidate at RVA 0x{Rva:X}, reg={Reg}",
-                        preferredClassic[0].Offset,
-                        preferredClassic[0].Instruction.DestinationReg);
-                    return CreditsHookResolution.Ok(
-                        baseAddress + preferredClassic[0].Offset,
-                        preferredClassic[0].Instruction.ContextOffset,
-                        preferredClassic[0].Instruction.DestinationReg,
-                        preferredClassic[0].Instruction.OriginalBytes);
-                }
-            }
-
-            // Strategy 2: correlate candidates with a nearby RIP-relative store to the known credits int RVA.
-            if (creditsRva > 0)
-            {
-                var correlatedCandidates = allCandidates
-                    .Where(c => HasNearbyStoreToCreditsRva(
-                        moduleBytes,
-                        c.Offset + CreditsHookJumpLength,
-                        CreditsStoreCorrelationWindowBytes,
-                        creditsRva))
-                    .ToList();
-
-                var correlatedResolution = ResolveSingleCandidate(
-                    correlatedCandidates,
-                    "Credits hook: selected correlated candidate at RVA 0x{Rva:X}, offset=0x{Off:X2}, reg={Reg}");
-                if (correlatedResolution is not null)
-                {
-                    return correlatedResolution;
-                }
-
-                if (correlatedCandidates.Count > 1)
-                {
-                    var preferredClassicCorrelated = correlatedCandidates
-                        .Where(c => c.Instruction.ContextOffset == CreditsContextOffsetByte)
-                        .ToList();
-                    if (preferredClassicCorrelated.Count == 1)
-                    {
-                        var candidate = preferredClassicCorrelated[0];
-                        _logger.LogInformation(
-                            "Credits hook: selected classic-offset correlated candidate at RVA 0x{Rva:X}, reg={Reg}",
-                            candidate.Offset,
-                            candidate.Instruction.DestinationReg);
-                        return CreditsHookResolution.Ok(
-                            baseAddress + candidate.Offset,
-                            candidate.Instruction.ContextOffset,
-                            candidate.Instruction.DestinationReg,
-                            candidate.Instruction.OriginalBytes);
-                    }
-                }
-            }
-
-            // Strategy 3: if only one classic-offset candidate exists, prefer it.
-            var classicOffsetCandidates = allCandidates
-                .Where(c => c.Instruction.ContextOffset == CreditsContextOffsetByte)
-                .ToList();
-            var classicResolution = ResolveSingleCandidate(
-                classicOffsetCandidates,
-                "Credits hook: selected unique classic-offset candidate at RVA 0x{Rva:X}, offset=0x{Off:X2}, reg={Reg}");
-            if (classicResolution is not null)
-            {
-                return classicResolution;
-            }
-
-            // Strategy 4: final fallback — only if there is exactly one compatible candidate in module.
-            var singleFallbackResolution = ResolveSingleCandidate(
-                allCandidates,
-                "Credits hook: selected unique fallback candidate at RVA 0x{Rva:X}, offset=0x{Off:X2}, reg={Reg}");
-            if (singleFallbackResolution is not null)
-            {
-                return singleFallbackResolution;
-            }
-
-            _logger.LogWarning(
-                "Credits hook: candidates total={Total}, immediateStore={Immediate}, classicOffset={Classic}, creditsRva={Rva}",
-                allCandidates.Count,
-                immediateStoreCandidates.Count,
-                classicOffsetCandidates.Count,
-                creditsRva > 0 ? $"0x{creditsRva:X}" : "unavailable");
-
-            return CreditsHookResolution.Fail(
-                $"Credits hook pattern not found. Tried exact ({CreditsHookPatternText}), " +
-                $"register-agnostic immediate-store heuristics, and credits-RVA correlation scan. " +
-                $"Candidates: total={allCandidates.Count}, immediateStore={immediateStoreCandidates.Count}, classicOffset={classicOffsetCandidates.Count}. " +
-                (creditsRva > 0
-                    ? $"Credits int RVA=0x{creditsRva:X} was used for correlation."
-                    : "Credits RVA unavailable for correlation."));
+            var allCandidates = FindAllCreditsHookCandidates(moduleBytes);
+            return ResolveCreditsHookFromCandidateSet(baseAddress, moduleBytes, allCandidates, creditsRva);
         }
         catch (Exception ex)
         {
             return CreditsHookResolution.Fail($"Credits hook pattern resolution failed: {ex.Message}");
         }
+    }
+
+    private bool TryLoadCreditsHookModuleData(
+        int processId,
+        out nint baseAddress,
+        out byte[] moduleBytes,
+        out string? failureMessage)
+    {
+        baseAddress = nint.Zero;
+        moduleBytes = Array.Empty<byte>();
+        failureMessage = null;
+        using var process = Process.GetProcessById(processId);
+        var module = process.MainModule;
+        if (module is null)
+        {
+            failureMessage = "Main module is unavailable for credits hook resolution.";
+            return false;
+        }
+
+        baseAddress = module.BaseAddress;
+        moduleBytes = _memory!.ReadBytes(baseAddress, module.ModuleMemorySize);
+        return true;
+    }
+
+    private long TryResolveCreditsRva(nint baseAddress)
+    {
+        try
+        {
+            var creditsSymbol = ResolveSymbol(SymbolCredits);
+            return creditsSymbol.Address.ToInt64() - baseAddress.ToInt64();
+        }
+        catch
+        {
+            return -1;
+        }
+    }
+
+    private CreditsHookResolution? TryResolveCreditsHookExactPattern(nint baseAddress, byte[] moduleBytes)
+    {
+        var exactPattern = AobPattern.Parse(CreditsHookPatternText);
+        var exactHits = FindPatternOffsets(moduleBytes, exactPattern, maxHits: 3);
+        var exactCandidates = ParseCreditsHookCandidates(moduleBytes, exactHits);
+        return TryResolveSingleCreditsHookCandidate(
+            baseAddress,
+            exactCandidates,
+            "Credits hook: exact-pattern candidate at RVA 0x{Rva:X}, offset=0x{Off:X2}, reg={Reg}");
+    }
+
+    private static List<CreditsHookCandidate> FindAllCreditsHookCandidates(byte[] moduleBytes)
+    {
+        var broadConvertPattern = AobPattern.Parse("F3 0F 2C ?? ??");
+        var broadConvertHits = FindPatternOffsets(moduleBytes, broadConvertPattern, maxHits: 8000);
+        return ParseCreditsHookCandidates(moduleBytes, broadConvertHits);
+    }
+
+    private CreditsHookResolution ResolveCreditsHookFromCandidateSet(
+        nint baseAddress,
+        byte[] moduleBytes,
+        List<CreditsHookCandidate> allCandidates,
+        long creditsRva)
+    {
+        var immediateStoreCandidates = SelectImmediateStoreCandidates(moduleBytes, allCandidates);
+        if (TryResolveSingleCreditsHookCandidate(
+                baseAddress,
+                immediateStoreCandidates,
+                "Credits hook: selected immediate-store candidate at RVA 0x{Rva:X}, offset=0x{Off:X2}, reg={Reg}") is { } immediateResolution)
+        {
+            return immediateResolution;
+        }
+
+        if (TryResolveClassicOffsetPreference(
+                baseAddress,
+                immediateStoreCandidates,
+                "Credits hook: selected classic-offset immediate-store candidate at RVA 0x{Rva:X}, reg={Reg}") is { } classicImmediateResolution)
+        {
+            return classicImmediateResolution;
+        }
+
+        if (TryResolveCreditsHookCorrelatedCandidate(baseAddress, moduleBytes, allCandidates, creditsRva) is { } correlatedResolution)
+        {
+            return correlatedResolution;
+        }
+
+        var classicOffsetCandidates = SelectClassicOffsetCandidates(allCandidates);
+        if (TryResolveSingleCreditsHookCandidate(
+                baseAddress,
+                classicOffsetCandidates,
+                "Credits hook: selected unique classic-offset candidate at RVA 0x{Rva:X}, offset=0x{Off:X2}, reg={Reg}") is { } classicResolution)
+        {
+            return classicResolution;
+        }
+
+        if (TryResolveSingleCreditsHookCandidate(
+                baseAddress,
+                allCandidates,
+                "Credits hook: selected unique fallback candidate at RVA 0x{Rva:X}, offset=0x{Off:X2}, reg={Reg}") is { } fallbackResolution)
+        {
+            return fallbackResolution;
+        }
+
+        LogCreditsHookCandidateSummary(allCandidates.Count, immediateStoreCandidates.Count, classicOffsetCandidates.Count, creditsRva);
+        return BuildCreditsHookPatternNotFoundResult(allCandidates.Count, immediateStoreCandidates.Count, classicOffsetCandidates.Count, creditsRva);
+    }
+
+    private static List<CreditsHookCandidate> ParseCreditsHookCandidates(byte[] moduleBytes, IEnumerable<int> offsets)
+    {
+        var candidates = new List<CreditsHookCandidate>();
+        foreach (var offset in offsets)
+        {
+            if (TryParseCreditsCvttss2siInstruction(moduleBytes, offset, out var instruction))
+            {
+                candidates.Add(new CreditsHookCandidate(offset, instruction));
+            }
+        }
+
+        return candidates;
+    }
+
+    private static List<CreditsHookCandidate> SelectImmediateStoreCandidates(
+        byte[] moduleBytes,
+        IEnumerable<CreditsHookCandidate> allCandidates)
+    {
+        return allCandidates
+            .Where(c => LooksLikeImmediateStoreFromConvertedRegister(
+                moduleBytes,
+                c.Offset + CreditsHookJumpLength,
+                c.Instruction.DestinationReg))
+            .ToList();
+    }
+
+    private static List<CreditsHookCandidate> SelectClassicOffsetCandidates(IEnumerable<CreditsHookCandidate> candidates)
+    {
+        return candidates.Where(c => c.Instruction.ContextOffset == CreditsContextOffsetByte).ToList();
+    }
+
+    private CreditsHookResolution? TryResolveCreditsHookCorrelatedCandidate(
+        nint baseAddress,
+        byte[] moduleBytes,
+        List<CreditsHookCandidate> allCandidates,
+        long creditsRva)
+    {
+        if (creditsRva <= 0)
+        {
+            return null;
+        }
+
+        var correlatedCandidates = allCandidates
+            .Where(c => HasNearbyStoreToCreditsRva(
+                moduleBytes,
+                c.Offset + CreditsHookJumpLength,
+                CreditsStoreCorrelationWindowBytes,
+                creditsRva))
+            .ToList();
+        if (TryResolveSingleCreditsHookCandidate(
+                baseAddress,
+                correlatedCandidates,
+                "Credits hook: selected correlated candidate at RVA 0x{Rva:X}, offset=0x{Off:X2}, reg={Reg}") is { } correlatedResolution)
+        {
+            return correlatedResolution;
+        }
+
+        return TryResolveClassicOffsetPreference(
+            baseAddress,
+            correlatedCandidates,
+            "Credits hook: selected classic-offset correlated candidate at RVA 0x{Rva:X}, reg={Reg}");
+    }
+
+    private CreditsHookResolution? TryResolveSingleCreditsHookCandidate(
+        nint baseAddress,
+        List<CreditsHookCandidate> candidates,
+        string logTemplate)
+    {
+        if (candidates.Count != 1)
+        {
+            return null;
+        }
+
+        var candidate = candidates[0];
+        _logger.LogInformation(
+            logTemplate,
+            candidate.Offset,
+            candidate.Instruction.ContextOffset,
+            candidate.Instruction.DestinationReg);
+        return BuildCreditsHookResolution(baseAddress, candidate);
+    }
+
+    private CreditsHookResolution? TryResolveClassicOffsetPreference(
+        nint baseAddress,
+        List<CreditsHookCandidate> candidates,
+        string logTemplate)
+    {
+        var preferredClassic = SelectClassicOffsetCandidates(candidates);
+        if (preferredClassic.Count != 1)
+        {
+            return null;
+        }
+
+        var candidate = preferredClassic[0];
+        _logger.LogInformation(logTemplate, candidate.Offset, candidate.Instruction.DestinationReg);
+        return BuildCreditsHookResolution(baseAddress, candidate);
+    }
+
+    private static CreditsHookResolution BuildCreditsHookResolution(nint baseAddress, CreditsHookCandidate candidate)
+    {
+        return CreditsHookResolution.Ok(
+            baseAddress + candidate.Offset,
+            candidate.Instruction.ContextOffset,
+            candidate.Instruction.DestinationReg,
+            candidate.Instruction.OriginalBytes);
+    }
+
+    private void LogCreditsHookCandidateSummary(int total, int immediateStore, int classicOffset, long creditsRva)
+    {
+        _logger.LogWarning(
+            "Credits hook: candidates total={Total}, immediateStore={Immediate}, classicOffset={Classic}, creditsRva={Rva}",
+            total,
+            immediateStore,
+            classicOffset,
+            creditsRva > 0 ? $"0x{creditsRva:X}" : "unavailable");
+    }
+
+    private static CreditsHookResolution BuildCreditsHookPatternNotFoundResult(
+        int totalCandidates,
+        int immediateStoreCandidates,
+        int classicOffsetCandidates,
+        long creditsRva)
+    {
+        return CreditsHookResolution.Fail(
+            $"Credits hook pattern not found. Tried exact ({CreditsHookPatternText}), " +
+            $"register-agnostic immediate-store heuristics, and credits-RVA correlation scan. " +
+            $"Candidates: total={totalCandidates}, immediateStore={immediateStoreCandidates}, classicOffset={classicOffsetCandidates}. " +
+            (creditsRva > 0
+                ? $"Credits int RVA=0x{creditsRva:X} was used for correlation."
+                : "Credits RVA unavailable for correlation."));
     }
 
     private static bool TryParseCreditsCvttss2siInstruction(
@@ -4472,6 +4598,8 @@ public sealed class RuntimeAdapter : IRuntimeAdapter
         SymbolInfo SymbolInfo,
         nint Address);
 
+    private readonly record struct ReResolveContext(AttachSession Session, TrainerProfile Profile);
+
     private readonly record struct WriteAttemptResult<T>(
         bool Success,
         string ReasonCode,
@@ -4539,6 +4667,8 @@ public sealed class RuntimeAdapter : IRuntimeAdapter
         byte ContextOffset,
         byte DestinationReg,
         byte[] OriginalBytes);
+
+    private sealed record CreditsHookCandidate(int Offset, CreditsCvttss2siInstruction Instruction);
 
     private sealed record CreditsHookPatchResult(
         bool Succeeded,
