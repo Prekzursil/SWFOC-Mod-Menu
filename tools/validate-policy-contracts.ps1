@@ -62,13 +62,13 @@ function Invoke-CodacyIgnoreScopeValidation {
         return
     }
 
-    $args = @()
+    $commandArgs = @()
     if ($pythonCommand -eq "py") {
-        $args += "-3"
+        $commandArgs += "-3"
     }
-    $args += @($ScriptPath, "--strict")
+    $commandArgs += @($ScriptPath, "--strict")
 
-    $commandOutput = & $pythonCommand @args 2>&1
+    $commandOutput = & $pythonCommand @commandArgs 2>&1
     if ((Test-Path variable:LASTEXITCODE) -and ($LASTEXITCODE -ne 0)) {
         Add-Error "Codacy ignore scope validation failed: $commandOutput"
     }

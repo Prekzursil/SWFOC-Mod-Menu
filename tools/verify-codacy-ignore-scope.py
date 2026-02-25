@@ -6,7 +6,6 @@ from __future__ import annotations
 import argparse
 import fnmatch
 import json
-import subprocess
 import sys
 from collections import Counter
 from pathlib import Path
@@ -38,6 +37,18 @@ PROTECTED_PREFIXES = [
     "docs/",
     "native/",
 ]
+
+SCANNER_EXCLUDED_ROOT_PREFIXES = {
+    ".git",
+    "scratch",
+}
+
+SCANNER_EXCLUDED_DIR_NAMES = {
+    "bin",
+    "obj",
+    "__pycache__",
+    ".pytest_cache",
+}
 
 
 def unquote(value: str) -> str:
@@ -80,15 +91,23 @@ def parse_exclude_paths(codacy_path: Path) -> list[str]:
     return paths
 
 
-def list_tracked_files(repo_root: Path) -> list[str]:
-    result = subprocess.run(
-        ["git", "ls-files"],
-        cwd=repo_root,
-        check=True,
-        capture_output=True,
-        text=True,
-    )
-    return [line.strip().replace("\\", "/") for line in result.stdout.splitlines() if line.strip()]
+def should_skip_scanned_path(relative_path: str) -> bool:
+    parts = relative_path.split("/")
+    if parts[0] in SCANNER_EXCLUDED_ROOT_PREFIXES:
+        return True
+    return any(part in SCANNER_EXCLUDED_DIR_NAMES for part in parts)
+
+
+def list_repository_files(repo_root: Path) -> list[str]:
+    files: list[str] = []
+    for path in repo_root.rglob("*"):
+        if not path.is_file():
+            continue
+        relative = path.relative_to(repo_root).as_posix()
+        if should_skip_scanned_path(relative):
+            continue
+        files.append(relative)
+    return sorted(files)
 
 
 def match_ignored_files(files: list[str], patterns: list[str]) -> tuple[list[str], dict[str, int]]:
@@ -107,11 +126,11 @@ def match_ignored_files(files: list[str], patterns: list[str]) -> tuple[list[str
 
 
 def build_report(repo_root: Path, codacy_file: Path, patterns: list[str]) -> dict[str, object]:
-    tracked_files = list_tracked_files(repo_root)
-    ignored_files, pattern_counts = match_ignored_files(tracked_files, patterns)
+    repository_files = list_repository_files(repo_root)
+    ignored_files, pattern_counts = match_ignored_files(repository_files, patterns)
     return {
         "codacyFile": codacy_file.as_posix(),
-        "trackedFilesTotal": len(tracked_files),
+        "trackedFilesTotal": len(repository_files),
         "excludePatterns": patterns,
         "ignoredTrackedFilesTotal": len(ignored_files),
         "ignoredPatternMatchCounts": pattern_counts,
@@ -182,7 +201,7 @@ def main() -> int:
     violations: list[str] = []
     if args.strict:
         # Recompute full ignored list for strict checks to avoid sample-only validation.
-        full_ignored, _ = match_ignored_files(list_tracked_files(repo_root), patterns)
+        full_ignored, _ = match_ignored_files(list_repository_files(repo_root), patterns)
         violations = strict_violations(patterns, full_ignored)
         report["strictViolations"] = violations
 
