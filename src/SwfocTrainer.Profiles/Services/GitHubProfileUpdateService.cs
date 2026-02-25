@@ -270,6 +270,9 @@ public sealed class GitHubProfileUpdateService : IProfileUpdateService
     {
         var extractionRoot = Path.GetFullPath(extractDir);
         Directory.CreateDirectory(extractionRoot);
+        var extractionRootPrefix = extractionRoot.EndsWith(Path.DirectorySeparatorChar)
+            ? extractionRoot
+            : extractionRoot + Path.DirectorySeparatorChar;
         using var archive = ZipFile.OpenRead(zipPath);
 
         foreach (var entry in archive.Entries)
@@ -279,8 +282,13 @@ public sealed class GitHubProfileUpdateService : IProfileUpdateService
                 continue;
             }
 
+            if (Path.IsPathRooted(entry.FullName))
+            {
+                throw new InvalidDataException($"Archive entry uses rooted path: {entry.FullName}");
+            }
+
             var destinationPath = Path.GetFullPath(Path.Combine(extractionRoot, entry.FullName));
-            if (!IsPathWithinRoot(destinationPath, extractionRoot))
+            if (!destinationPath.StartsWith(extractionRootPrefix, StringComparison.OrdinalIgnoreCase))
             {
                 throw new InvalidDataException($"Archive entry escapes extraction root: {entry.FullName}");
             }
@@ -300,20 +308,6 @@ public sealed class GitHubProfileUpdateService : IProfileUpdateService
 
             entry.ExtractToFile(destinationPath, overwrite: true);
         }
-    }
-
-    private static bool IsPathWithinRoot(string candidatePath, string rootPath)
-    {
-        if (candidatePath.Equals(rootPath, StringComparison.OrdinalIgnoreCase))
-        {
-            return true;
-        }
-
-        var normalizedRoot = rootPath.EndsWith(Path.DirectorySeparatorChar)
-            ? rootPath
-            : rootPath + Path.DirectorySeparatorChar;
-
-        return candidatePath.StartsWith(normalizedRoot, StringComparison.OrdinalIgnoreCase);
     }
 
     public async Task<ProfileRollbackResult> RollbackLastInstallAsync(string profileId, CancellationToken cancellationToken)
