@@ -47,4 +47,21 @@ public sealed class MegaFilesXmlIndexBuilderTests
         index.Files.Should().ContainSingle(x => x.FileName == "Config.meg");
         index.Diagnostics.Should().ContainSingle(x => x.Contains("no filename", StringComparison.OrdinalIgnoreCase));
     }
+
+    [Fact]
+    public void GetEnabledFilesInLoadOrder_ShouldReturnOnlyEnabledRowsSortedByLoadOrder()
+    {
+        var index = new SwfocTrainer.DataIndex.Models.MegaFilesIndex(
+            Files: new[]
+            {
+                new SwfocTrainer.DataIndex.Models.MegaFileEntry("B.meg", 2, true, new Dictionary<string, string>()),
+                new SwfocTrainer.DataIndex.Models.MegaFileEntry("A.meg", 1, true, new Dictionary<string, string>()),
+                new SwfocTrainer.DataIndex.Models.MegaFileEntry("Disabled.meg", 0, false, new Dictionary<string, string>())
+            },
+            Diagnostics: Array.Empty<string>());
+
+        var enabled = index.GetEnabledFilesInLoadOrder();
+
+        enabled.Select(x => x.FileName).Should().ContainInOrder("A.meg", "B.meg");
+    }
 }

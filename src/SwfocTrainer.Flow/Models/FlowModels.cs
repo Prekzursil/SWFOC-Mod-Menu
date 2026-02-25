@@ -34,3 +34,22 @@ public sealed record FlowIndexReport(
         new ReadOnlyCollection<FlowEventRecord>(
             Plots.SelectMany(plot => plot.Events).ToArray());
 }
+
+public sealed record FlowCapabilityLinkRecord(
+    string MegaFileSource,
+    string PlotId,
+    string EventName,
+    FlowModeHint ModeHint,
+    string FeatureId,
+    bool Available,
+    string State,
+    string ReasonCode);
+
+public sealed record FlowCapabilityLinkReport(
+    IReadOnlyList<FlowCapabilityLinkRecord> Links,
+    IReadOnlyList<string> Diagnostics)
+{
+    public static readonly FlowCapabilityLinkReport Empty = new(
+        Array.Empty<FlowCapabilityLinkRecord>(),
+        Array.Empty<string>());
+}

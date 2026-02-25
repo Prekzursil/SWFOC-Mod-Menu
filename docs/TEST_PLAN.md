@@ -49,6 +49,13 @@
   - verifies deterministic fingerprint capture and stable hash/id derivation
 - `CapabilityMapResolverTests`
   - verifies fail-closed behavior for missing/partial capability anchors
+  - verifies capability-hint source metadata (`reasonCode`/`state`/`available`) propagation into resolution output
+- `SignatureResolverPackSelectionTests`
+  - verifies deterministic symbol-pack selection precedence:
+    - exact `<fingerprintId>.json`
+    - artifact index mapping
+    - fallback scan (`generatedAtUtc` desc, normalized path asc)
+  - verifies embedded fingerprint mismatch rejection
 - `ProfileVariantResolverTests`
   - verifies universal profile resolution for ROE workshop, sweaw fallback, and no-process fallback
 - `RuntimeModeProbeResolverTests`
@@ -110,6 +117,12 @@ pwsh ./tools/validate-binary-fingerprint.ps1 -FingerprintPath tools/fixtures/bin
 pwsh ./tools/validate-signature-pack.ps1 -SignaturePackPath tools/fixtures/signature_pack_sample.json -SchemaPath tools/schemas/signature-pack.schema.json -Strict
 ```
 
+- Ghidra artifact index schema validation:
+
+```powershell
+pwsh ./tools/validate-ghidra-artifact-index.ps1 -Path tools/fixtures/ghidra_artifact_index_sample.json -SchemaPath tools/schemas/ghidra-artifact-index.schema.json -Strict
+```
+
 ## Manual runtime checks
 
 For each profile (`base_sweaw`, `base_swfoc`, `aotr_1397421866_swfoc`, `roe_3447786229_swfoc`):
@@ -122,7 +135,7 @@ For each profile (`base_sweaw`, `base_swfoc`, `aotr_1397421866_swfoc`, `roe_3447
    - fog reveal toggle
    - selected unit HP/shield/speed edit (tactical)
    - helper spawn action
-   - capture status diagnostics showing `backendRoute`, `routeReasonCode`, `capabilityProbeReasonCode`, plus `hookState`/`hybridExecution` when present
+  - capture status diagnostics showing `backendRoute`, `routeReasonCode`, `capabilityProbeReasonCode`, `capabilityMapReasonCode`, `capabilityMapState`, `capabilityDeclaredAvailable`, plus `hookState`/`hybridExecution` when present
 4. Verify attach diagnostics include host ranking fields:
    - `hostRole`
    - `mainModuleSize`

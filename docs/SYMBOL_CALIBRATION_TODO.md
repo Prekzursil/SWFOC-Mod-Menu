@@ -95,8 +95,10 @@ When posting closure evidence for `#7`/`#19`/`#34`, include:
 - helper workflow outcome (`pass|skip|fail` + reason)
 - promoted action matrix summary (`actionStatusDiagnostics.status`, `actionStatusDiagnostics.source`, `summary.total`, `summary.passed`, `summary.failed`, `summary.skipped`)
 - promoted action matrix entry diagnostics (`profileId`, `actionId`, `outcome`, `backendRoute`, `routeReasonCode`, `capabilityProbeReasonCode`, `hybridExecution`, `hasFallbackMarker`, `skipReasonCode`)
+- map-source diagnostics (`capabilityMapReasonCode`, `capabilityMapState`, `capabilityDeclaredAvailable`)
 - issue `#7` gate snapshot (`base_swfoc`/`aotr_1397421866_swfoc`/`roe_3447786229_swfoc` x five promoted actions with no fallback markers)
 - artifact paths:
   - `TestResults/runs/<runId>/repro-bundle.json`
   - `TestResults/runs/<runId>/repro-bundle.md`
+  - `TestResults/ghidra-headless/artifact-index.json` (for headless RE metadata runs)
   - TRX files used for the run

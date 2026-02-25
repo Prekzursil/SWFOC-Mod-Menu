@@ -1,10 +1,27 @@
 using System.Xml.Linq;
+using System.Text.Json;
+using SwfocTrainer.DataIndex.Models;
 using SwfocTrainer.Flow.Models;
 
 namespace SwfocTrainer.Flow.Services;
 
 public sealed class StoryPlotFlowExtractor
 {
+    private static readonly string[] TacticalFeatureIds =
+    [
+        "freeze_timer",
+        "toggle_fog_reveal",
+        "toggle_ai",
+        "set_unit_cap",
+        "toggle_instant_build_patch"
+    ];
+
+    private static readonly string[] GalacticFeatureIds =
+    [
+        "set_credits",
+        "toggle_ai"
+    ];
+
     private readonly string[] _scriptAttributeCandidates =
     [
         "Script",
@@ -62,6 +79,48 @@ public sealed class StoryPlotFlowExtractor
         }
 
         return new FlowIndexReport(plots, diagnostics);
+    }
+
+    public FlowCapabilityLinkReport BuildCapabilityLinkReport(
+        FlowIndexReport flowReport,
+        MegaFilesIndex megaFilesIndex,
+        string symbolPackJson)
+    {
+        if (flowReport.Plots.Count == 0)
+        {
+            return FlowCapabilityLinkReport.Empty;
+        }
+
+        if (!TryParseCapabilities(symbolPackJson, out var capabilities, out var diagnostics))
+        {
+            return new FlowCapabilityLinkReport(Array.Empty<FlowCapabilityLinkRecord>(), diagnostics);
+        }
+
+        var links = new List<FlowCapabilityLinkRecord>();
+        var fallbackSource = megaFilesIndex.GetEnabledFilesInLoadOrder().FirstOrDefault()?.FileName ?? "unknown";
+        foreach (var plot in flowReport.Plots.OrderBy(x => x.SourceFile, StringComparer.OrdinalIgnoreCase)
+                     .ThenBy(x => x.PlotId, StringComparer.OrdinalIgnoreCase))
+        {
+            foreach (var flowEvent in plot.Events.OrderBy(x => x.EventName, StringComparer.OrdinalIgnoreCase))
+            {
+                var featureIds = ResolveFeatureIds(flowEvent.ModeHint);
+                foreach (var featureId in featureIds)
+                {
+                    var capability = ResolveCapability(capabilities, featureId);
+                    links.Add(new FlowCapabilityLinkRecord(
+                        MegaFileSource: fallbackSource,
+                        PlotId: plot.PlotId,
+                        EventName: flowEvent.EventName,
+                        ModeHint: flowEvent.ModeHint,
+                        FeatureId: featureId,
+                        Available: capability.Available,
+                        State: capability.State,
+                        ReasonCode: capability.ReasonCode));
+                }
+            }
+        }
+
+        return new FlowCapabilityLinkReport(links, diagnostics);
     }
 
     private IReadOnlyList<FlowEventRecord> ExtractEvents(XElement? root, string sourceFile)
@@ -130,4 +189,93 @@ public sealed class StoryPlotFlowExtractor
 
         return FlowModeHint.Unknown;
     }
+
+    private static IReadOnlyList<string> ResolveFeatureIds(FlowModeHint modeHint)
+    {
+        return modeHint switch
+        {
+            FlowModeHint.TacticalLand => TacticalFeatureIds,
+            FlowModeHint.TacticalSpace => TacticalFeatureIds,
+            FlowModeHint.Galactic => GalacticFeatureIds,
+            _ => Array.Empty<string>()
+        };
+    }
+
+    private static CapabilitySnapshot ResolveCapability(
+        IReadOnlyDictionary<string, CapabilitySnapshot> capabilities,
+        string featureId)
+    {
+        if (capabilities.TryGetValue(featureId, out var capability))
+        {
+            return capability;
+        }
+
+        return new CapabilitySnapshot(
+            Available: false,
+            State: "Unavailable",
+            ReasonCode: "CAPABILITY_REQUIRED_MISSING");
+    }
+
+    private static bool TryParseCapabilities(
+        string symbolPackJson,
+        out Dictionary<string, CapabilitySnapshot> capabilities,
+        out List<string> diagnostics)
+    {
+        diagnostics = new List<string>();
+        capabilities = new Dictionary<string, CapabilitySnapshot>(StringComparer.OrdinalIgnoreCase);
+        if (string.IsNullOrWhiteSpace(symbolPackJson))
+        {
+            diagnostics.Add("symbol-pack payload is empty");
+            return false;
+        }
+
+        try
+        {
+            var payload = JsonSerializer.Deserialize<SymbolPackDto>(symbolPackJson, new JsonSerializerOptions
+            {
+                PropertyNameCaseInsensitive = true
+            });
+            if (payload?.Capabilities is null || payload.Capabilities.Count == 0)
+            {
+                diagnostics.Add("symbol-pack capabilities are missing");
+                return false;
+            }
+
+            foreach (var capability in payload.Capabilities.Where(capability => !string.IsNullOrWhiteSpace(capability.FeatureId)))
+            {
+                capabilities[capability.FeatureId!] = new CapabilitySnapshot(
+                    Available: capability.Available,
+                    State: capability.State ?? "Unknown",
+                    ReasonCode: capability.ReasonCode ?? "CAPABILITY_UNKNOWN");
+            }
+
+            return true;
+        }
+        catch (Exception ex)
+        {
+            diagnostics.Add($"symbol-pack parse failed: {ex.Message}");
+            return false;
+        }
+    }
+
+    private sealed class SymbolPackDto
+    {
+        public List<SymbolPackCapabilityDto>? Capabilities { get; set; } = new();
+    }
+
+    private sealed class SymbolPackCapabilityDto
+    {
+        public string? FeatureId { get; set; } = string.Empty;
+
+        public bool Available { get; set; }
+
+        public string? State { get; set; } = string.Empty;
+
+        public string? ReasonCode { get; set; } = string.Empty;
+    }
+
+    private sealed record CapabilitySnapshot(
+        bool Available,
+        string State,
+        string ReasonCode);
 }

@@ -13,4 +13,12 @@ public sealed record MegaFilesIndex(
     public static readonly MegaFilesIndex Empty = new(
         Array.Empty<MegaFileEntry>(),
         Array.Empty<string>());
+
+    public IReadOnlyList<MegaFileEntry> GetEnabledFilesInLoadOrder()
+    {
+        return Files
+            .Where(file => file.Enabled)
+            .OrderBy(file => file.LoadOrder)
+            .ToArray();
+    }
 }
