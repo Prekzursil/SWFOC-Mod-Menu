@@ -241,7 +241,10 @@ public sealed class SdkOperationRouter : ISdkOperationRouter
             {
                 ["resolvedVariant"] = variant.ResolvedProfileId,
                 ["fingerprintId"] = capability.FingerprintId,
-                ["capabilityReasonCode"] = capability.ReasonCode.ToString()
+                ["capabilityReasonCode"] = capability.ReasonCode.ToString(),
+                ["capabilityMapReasonCode"] = capability.Metadata.SourceReasonCode,
+                ["capabilityMapState"] = capability.Metadata.SourceState,
+                ["capabilityDeclaredAvailable"] = capability.Metadata.DeclaredAvailable
             });
     }
 
@@ -290,6 +293,9 @@ public sealed class SdkOperationRouter : ISdkOperationRouter
         merged["fingerprintId"] = capability.FingerprintId;
         merged["capabilityState"] = capability.State.ToString();
         merged["capabilityReasonCode"] = capability.ReasonCode.ToString();
+        merged["capabilityMapReasonCode"] = capability.Metadata.SourceReasonCode;
+        merged["capabilityMapState"] = capability.Metadata.SourceState;
+        merged["capabilityDeclaredAvailable"] = capability.Metadata.DeclaredAvailable;
 
         return merged;
     }

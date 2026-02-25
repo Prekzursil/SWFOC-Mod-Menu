@@ -1,0 +1,56 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "SWFOC Ghidra Artifact Index",
+  "type": "object",
+  "required": [
+    "schemaVersion",
+    "analysisRunId",
+    "generatedAtUtc",
+    "classificationCode",
+    "binaryFingerprint",
+    "artifactPointers",
+    "fileHashes"
+  ],
+  "properties": {
+    "schemaVersion": {
+      "type": "string",
+      "enum": ["1.0"]
+    },
+    "analysisRunId": { "type": "string", "minLength": 1 },
+    "generatedAtUtc": { "type": "string", "format": "date-time" },
+    "classificationCode": { "type": "string", "minLength": 1 },
+    "binaryFingerprint": {
+      "type": "object",
+      "required": ["fingerprintId", "moduleName", "fileSha256"],
+      "properties": {
+        "fingerprintId": { "type": "string", "minLength": 1 },
+        "moduleName": { "type": "string", "minLength": 1 },
+        "fileSha256": { "type": "string", "pattern": "^[a-fA-F0-9]{64}$" }
+      },
+      "additionalProperties": true
+    },
+    "artifactPointers": {
+      "type": "object",
+      "required": ["rawSymbolsPath", "symbolPackPath", "analysisSummaryPath", "decompileArchivePath"],
+      "properties": {
+        "rawSymbolsPath": { "type": "string", "minLength": 1 },
+        "symbolPackPath": { "type": "string", "minLength": 1 },
+        "analysisSummaryPath": { "type": "string", "minLength": 1 },
+        "decompileArchivePath": { "type": ["string", "null"] }
+      },
+      "additionalProperties": true
+    },
+    "fileHashes": {
+      "type": "object",
+      "required": ["rawSymbolsSha256", "symbolPackSha256", "analysisSummarySha256", "decompileArchiveSha256"],
+      "properties": {
+        "rawSymbolsSha256": { "type": ["string", "null"], "pattern": "^[a-fA-F0-9]{64}$" },
+        "symbolPackSha256": { "type": ["string", "null"], "pattern": "^[a-fA-F0-9]{64}$" },
+        "analysisSummarySha256": { "type": ["string", "null"], "pattern": "^[a-fA-F0-9]{64}$" },
+        "decompileArchiveSha256": { "type": ["string", "null"], "pattern": "^[a-fA-F0-9]{64}$" }
+      },
+      "additionalProperties": true
+    }
+  },
+  "additionalProperties": true
+}

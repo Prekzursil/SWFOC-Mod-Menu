@@ -25,7 +25,7 @@ $pack = Get-Content -Raw -Path $Path | ConvertFrom-Json
 $schema = Get-Content -Raw -Path $SchemaPath | ConvertFrom-Json
 
 foreach ($required in $schema.required) {
-    Require-ValidationField -Object $pack -Field $required -Errors $errors
+    Confirm-ValidationField -Object $pack -Field $required -Errors $errors
 }
 
 if ($Strict) {
@@ -35,19 +35,19 @@ if ($Strict) {
 
     $fingerprint = $pack.binaryFingerprint
     foreach ($requiredFingerprintField in @("fingerprintId", "moduleName", "fileSha256")) {
-        Require-ValidationField -Object $fingerprint -Field $requiredFingerprintField -Errors $errors -Prefix "binaryFingerprint"
+        Confirm-ValidationField -Object $fingerprint -Field $requiredFingerprintField -Errors $errors -Prefix "binaryFingerprint"
     }
 
     $metadata = $pack.buildMetadata
     foreach ($requiredMetadataField in @("analysisRunId", "generatedAtUtc", "toolchain")) {
-        Require-ValidationField -Object $metadata -Field $requiredMetadataField -Errors $errors -Prefix "buildMetadata"
+        Confirm-ValidationField -Object $metadata -Field $requiredMetadataField -Errors $errors -Prefix "buildMetadata"
     }
 
     $anchors = @($pack.anchors)
     for ($i = 0; $i -lt $anchors.Count; $i++) {
         $anchor = $anchors[$i]
         foreach ($requiredAnchorField in @("id", "address", "module", "confidence", "source")) {
-            Require-ValidationField -Object $anchor -Field $requiredAnchorField -Errors $errors -Prefix "anchors[$i]"
+            Confirm-ValidationField -Object $anchor -Field $requiredAnchorField -Errors $errors -Prefix "anchors[$i]"
         }
     }
 
@@ -55,7 +55,7 @@ if ($Strict) {
     for ($i = 0; $i -lt $capabilities.Count; $i++) {
         $cap = $capabilities[$i]
         foreach ($requiredCapabilityField in @("featureId", "available", "state", "reasonCode", "requiredAnchors")) {
-            Require-ValidationField -Object $cap -Field $requiredCapabilityField -Errors $errors -Prefix "capabilities[$i]"
+            Confirm-ValidationField -Object $cap -Field $requiredCapabilityField -Errors $errors -Prefix "capabilities[$i]"
         }
     }
 }

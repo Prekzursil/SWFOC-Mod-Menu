@@ -62,6 +62,7 @@ Expected outputs:
 - `live-validation-summary.json`
 - `live-roe-runtime-evidence.json` (when ROE runtime health test executes set_credits path)
 - `live-promoted-action-matrix.json`
+- `artifact-index.json` (headless ghidra metadata index when emitted in CI/tooling runs)
 - `repro-bundle.json`
 - `repro-bundle.md`
 - `issue-34-evidence-template.md`
@@ -101,6 +102,10 @@ Promoted matrix evidence must cover 3 profiles x 5 actions (15 total checks):
 - top-level: `status`, `source`, `summary`, `entries`
 - summary: `total`, `passed`, `failed`, `skipped`
 - entry keys: `profileId`, `actionId`, `outcome`, `backendRoute`, `routeReasonCode`, `capabilityProbeReasonCode`, `hybridExecution`, `hasFallbackMarker`, `message`, `skipReasonCode`
+- route diagnostics should also preserve map-source metadata when available:
+  - `capabilityMapReasonCode`
+  - `capabilityMapState`
+  - `capabilityDeclaredAvailable`
 
 Expected evidence behavior for promoted actions:
 
@@ -140,7 +145,7 @@ Close issues only when all required evidence is present:
 - Selected host process includes deterministic host ranking diagnostics (`hostRole`, `selectionScore`).
 - Backend route and capability probe sections are present with explicit reason codes.
 - Extender credits path evidence includes `backendRoute=Extender` and hook state tag (`HOOK_LOCK` / `HOOK_ONESHOT`) in runtime diagnostics.
-- Captured action status diagnostics include `backendRoute`, `routeReasonCode`, `capabilityProbeReasonCode`, and for promoted matrix entries `hybridExecution` + `hasFallbackMarker`.
+- Captured action status diagnostics include `backendRoute`, `routeReasonCode`, `capabilityProbeReasonCode`, `capabilityMapReasonCode`, `capabilityMapState`, `capabilityDeclaredAvailable`, and for promoted matrix entries `hybridExecution` + `hasFallbackMarker`.
 - Valid `repro-bundle.json` linked in issue evidence.
 
 Issue `#7` evidence decision gate:

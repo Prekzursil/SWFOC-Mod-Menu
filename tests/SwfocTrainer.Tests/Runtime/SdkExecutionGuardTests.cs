@@ -19,7 +19,8 @@ public sealed class SdkExecutionGuardTests
             Confidence: 0.75d,
             FingerprintId: "fp-a",
             MatchedAnchors: new[] { "a" },
-            MissingAnchors: new[] { "b" });
+            MissingAnchors: new[] { "b" },
+            Metadata: CapabilityResolutionMetadata.Empty);
 
         var decision = guard.CanExecute(resolution, isMutation: false);
 
@@ -39,7 +40,8 @@ public sealed class SdkExecutionGuardTests
             Confidence: 0.40d,
             FingerprintId: "fp-a",
             MatchedAnchors: Array.Empty<string>(),
-            MissingAnchors: new[] { "selected_hp_write" });
+            MissingAnchors: new[] { "selected_hp_write" },
+            Metadata: CapabilityResolutionMetadata.Empty);
 
         var decision = guard.CanExecute(resolution, isMutation: true);
 

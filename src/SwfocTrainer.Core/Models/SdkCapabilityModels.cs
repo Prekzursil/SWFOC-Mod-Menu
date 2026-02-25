@@ -89,6 +89,20 @@ public sealed record CapabilityMap(
     IReadOnlyDictionary<string, CapabilityAvailabilityHint> CapabilityHints);
 
 /// <summary>
+/// Preserves original capability metadata emitted by generated symbol packs.
+/// </summary>
+public sealed record CapabilityResolutionMetadata(
+    string SourceReasonCode,
+    string SourceState,
+    bool? DeclaredAvailable)
+{
+    public static readonly CapabilityResolutionMetadata Empty = new(
+        SourceReasonCode: string.Empty,
+        SourceState: string.Empty,
+        DeclaredAvailable: null);
+}
+
+/// <summary>
 /// Result of resolving an operation for a profile/fingerprint pair.
 /// </summary>
 public sealed record CapabilityResolutionResult(
@@ -99,7 +113,8 @@ public sealed record CapabilityResolutionResult(
     double Confidence,
     string FingerprintId,
     IReadOnlyList<string> MatchedAnchors,
-    IReadOnlyList<string> MissingAnchors);
+    IReadOnlyList<string> MissingAnchors,
+    CapabilityResolutionMetadata Metadata);
 
 /// <summary>
 /// Guard decision for whether an operation may execute.

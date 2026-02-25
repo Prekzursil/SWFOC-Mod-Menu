@@ -1,0 +1,23 @@
+{
+  "schemaVersion": "1.0",
+  "analysisRunId": "ghidra-sample-20260225-0001",
+  "generatedAtUtc": "2026-02-25T00:00:00Z",
+  "classificationCode": "GHIDRA_ARTIFACT_INDEX_READY",
+  "binaryFingerprint": {
+    "fingerprintId": "starwarsg_0123456789abcdef",
+    "moduleName": "StarWarsG.exe",
+    "fileSha256": "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"
+  },
+  "artifactPointers": {
+    "rawSymbolsPath": "TestResults/ghidra-headless/raw-symbols.json",
+    "symbolPackPath": "TestResults/ghidra-headless/symbol-pack.json",
+    "analysisSummaryPath": "TestResults/ghidra-headless/analysis-summary.json",
+    "decompileArchivePath": "TestResults/ghidra-headless/raw-decomp-bundle-metadata.zip"
+  },
+  "fileHashes": {
+    "rawSymbolsSha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "symbolPackSha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+    "analysisSummarySha256": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+    "decompileArchiveSha256": "dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd"
+  }
+}

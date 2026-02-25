@@ -1156,6 +1156,9 @@ public sealed class RuntimeAdapter : IRuntimeAdapter
         var hybridExecution = ResolveHybridExecutionFlag(baseDiagnostics);
         var backend = ResolveBackendDiagnosticValue(baseDiagnostics, routeDecision.Backend);
         var hookState = ResolveHookStateDiagnosticValue(baseDiagnostics, capabilityReport.Diagnostics);
+        var capabilityMapReasonCode = ResolveCapabilityMapReasonCode(baseDiagnostics);
+        var capabilityMapState = ResolveCapabilityMapState(baseDiagnostics);
+        var capabilityDeclaredAvailable = ResolveCapabilityDeclaredAvailable(baseDiagnostics);
         var diagnostics = MergeDiagnostics(
             baseDiagnostics,
             new Dictionary<string, object?>
@@ -1166,9 +1169,45 @@ public sealed class RuntimeAdapter : IRuntimeAdapter
                 ["capabilityProbeReasonCode"] = capabilityReport.ProbeReasonCode.ToString(),
                 [DiagnosticKeyHookState] = hookState,
                 ["hybridExecution"] = hybridExecution,
-                ["capabilityCount"] = capabilityReport.Capabilities.Count
+                ["capabilityCount"] = capabilityReport.Capabilities.Count,
+                ["capabilityMapReasonCode"] = capabilityMapReasonCode,
+                ["capabilityMapState"] = capabilityMapState,
+                ["capabilityDeclaredAvailable"] = capabilityDeclaredAvailable
             });
         return result with { Diagnostics = diagnostics };
+    }
+
+    private static string ResolveCapabilityMapReasonCode(IReadOnlyDictionary<string, object?>? diagnostics)
+    {
+        if (TryReadDiagnosticString(diagnostics, "capabilityMapReasonCode", out var value) &&
+            !string.IsNullOrWhiteSpace(value))
+        {
+            return value!;
+        }
+
+        return "UNKNOWN";
+    }
+
+    private static string ResolveCapabilityMapState(IReadOnlyDictionary<string, object?>? diagnostics)
+    {
+        if (TryReadDiagnosticString(diagnostics, "capabilityMapState", out var value) &&
+            !string.IsNullOrWhiteSpace(value))
+        {
+            return value!;
+        }
+
+        return "Unknown";
+    }
+
+    private static bool? ResolveCapabilityDeclaredAvailable(IReadOnlyDictionary<string, object?>? diagnostics)
+    {
+        if (!TryReadDiagnosticString(diagnostics, "capabilityDeclaredAvailable", out var raw) ||
+            string.IsNullOrWhiteSpace(raw))
+        {
+            return null;
+        }
+
+        return bool.TryParse(raw, out var parsed) ? parsed : null;
     }
 
     private static bool ResolveHybridExecutionFlag(IReadOnlyDictionary<string, object?>? diagnostics)
