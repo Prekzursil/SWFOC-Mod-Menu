@@ -6,4 +6,8 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="../SwfocTrainer.DataIndex/SwfocTrainer.DataIndex.csproj" />
+  </ItemGroup>
+
 </Project>
