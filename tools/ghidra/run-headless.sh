@@ -35,6 +35,8 @@ RAW_SYMBOLS_PATH="$OUTPUT_DIR/raw-symbols.json"
 SYMBOL_PACK_PATH="$OUTPUT_DIR/symbol-pack.json"
 SUMMARY_PATH="$OUTPUT_DIR/analysis-summary.json"
 DETERMINISM_DIR="$OUTPUT_DIR/determinism"
+ARTIFACT_INDEX_PATH="$OUTPUT_DIR/artifact-index.json"
+DECOMP_ARCHIVE_PATH="${SWFOC_GHIDRA_DECOMP_ARCHIVE_PATH:-}"
 
 "$ANALYZE_HEADLESS" "$PROJECT_DIR" "$PROJECT_NAME" \
   -import "$BINARY_PATH" \
@@ -42,12 +44,17 @@ DETERMINISM_DIR="$OUTPUT_DIR/determinism"
   -postScript export_symbols.py "$RAW_SYMBOLS_PATH" \
   -deleteProject
 
-python3 "$REPO_ROOT/tools/ghidra/emit-symbol-pack.py" \
-  --raw-symbols "$RAW_SYMBOLS_PATH" \
-  --binary-path "$BINARY_PATH" \
-  --analysis-run-id "$ANALYSIS_RUN_ID" \
-  --output-pack "$SYMBOL_PACK_PATH" \
+EMIT_ARGS=(
+  --raw-symbols "$RAW_SYMBOLS_PATH"
+  --binary-path "$BINARY_PATH"
+  --analysis-run-id "$ANALYSIS_RUN_ID"
+  --output-pack "$SYMBOL_PACK_PATH"
   --output-summary "$SUMMARY_PATH"
+)
+if [[ -n "$DECOMP_ARCHIVE_PATH" ]]; then
+  EMIT_ARGS+=(--decompile-archive-path "$DECOMP_ARCHIVE_PATH")
+fi
+python3 "$REPO_ROOT/tools/ghidra/emit-symbol-pack.py" "${EMIT_ARGS[@]}"
 
 python3 "$REPO_ROOT/tools/ghidra/check-determinism.py" \
   --raw-symbols "$RAW_SYMBOLS_PATH" \
@@ -55,8 +62,22 @@ python3 "$REPO_ROOT/tools/ghidra/check-determinism.py" \
   --analysis-run-id-base "$ANALYSIS_RUN_ID" \
   --output-dir "$DETERMINISM_DIR"
 
+INDEX_ARGS=(
+  --analysis-run-id "$ANALYSIS_RUN_ID"
+  --binary-path "$BINARY_PATH"
+  --raw-symbols "$RAW_SYMBOLS_PATH"
+  --symbol-pack "$SYMBOL_PACK_PATH"
+  --summary "$SUMMARY_PATH"
+  --output "$ARTIFACT_INDEX_PATH"
+)
+if [[ -n "$DECOMP_ARCHIVE_PATH" ]]; then
+  INDEX_ARGS+=(--decompile-archive "$DECOMP_ARCHIVE_PATH")
+fi
+python3 "$REPO_ROOT/tools/ghidra/emit-artifact-index.py" "${INDEX_ARGS[@]}"
+
 echo "ghidra headless analysis complete"
 echo " - raw symbols: $RAW_SYMBOLS_PATH"
 echo " - symbol pack: $SYMBOL_PACK_PATH"
 echo " - summary: $SUMMARY_PATH"
 echo " - determinism report: $DETERMINISM_DIR/determinism-report.json"
+echo " - artifact index: $ARTIFACT_INDEX_PATH"

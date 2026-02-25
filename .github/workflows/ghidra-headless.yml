@@ -6,6 +6,7 @@ on:
       - "tools/ghidra/**"
       - "tools/schemas/ghidra-*.json"
       - "tools/validate-ghidra-symbol-pack.ps1"
+      - "tools/validate-ghidra-artifact-index.ps1"
       - ".github/workflows/ghidra-headless.yml"
   push:
     branches:
@@ -14,6 +15,7 @@ on:
       - "tools/ghidra/**"
       - "tools/schemas/ghidra-*.json"
       - "tools/validate-ghidra-symbol-pack.ps1"
+      - "tools/validate-ghidra-artifact-index.ps1"
       - ".github/workflows/ghidra-headless.yml"
   workflow_dispatch:
     inputs:
@@ -35,12 +37,26 @@ jobs:
       - name: Emit symbol pack from fixture
         run: |
           mkdir -p TestResults/ghidra-smoke
+          python3 - <<'PY'
+          import zipfile
+          with zipfile.ZipFile("TestResults/ghidra-smoke/raw-decomp-bundle-metadata.zip", "w", compression=zipfile.ZIP_DEFLATED):
+              pass
+          PY
           python3 tools/ghidra/emit-symbol-pack.py \
             --raw-symbols tools/fixtures/ghidra_raw_symbols_sample.json \
             --binary-path README.md \
             --analysis-run-id ghidra-smoke-${{ github.run_id }} \
             --output-pack TestResults/ghidra-smoke/symbol-pack.json \
-            --output-summary TestResults/ghidra-smoke/analysis-summary.json
+            --output-summary TestResults/ghidra-smoke/analysis-summary.json \
+            --decompile-archive-path TestResults/ghidra-smoke/raw-decomp-bundle-metadata.zip
+          python3 tools/ghidra/emit-artifact-index.py \
+            --analysis-run-id ghidra-smoke-${{ github.run_id }} \
+            --binary-path README.md \
+            --raw-symbols tools/fixtures/ghidra_raw_symbols_sample.json \
+            --symbol-pack TestResults/ghidra-smoke/symbol-pack.json \
+            --summary TestResults/ghidra-smoke/analysis-summary.json \
+            --decompile-archive TestResults/ghidra-smoke/raw-decomp-bundle-metadata.zip \
+            --output TestResults/ghidra-smoke/artifact-index.json
       - name: Determinism smoke (symbol order invariance)
         run: |
           python3 tools/ghidra/check-determinism.py \
@@ -59,13 +75,18 @@ jobs:
               pack_schema = json.load(f)
           with open("tools/schemas/ghidra-analysis-summary.schema.json", "r", encoding="utf-8") as f:
               summary_schema = json.load(f)
+          with open("tools/schemas/ghidra-artifact-index.schema.json", "r", encoding="utf-8") as f:
+              artifact_index_schema = json.load(f)
           with open("TestResults/ghidra-smoke/symbol-pack.json", "r", encoding="utf-8") as f:
               symbol_pack = json.load(f)
           with open("TestResults/ghidra-smoke/analysis-summary.json", "r", encoding="utf-8") as f:
               summary = json.load(f)
+          with open("TestResults/ghidra-smoke/artifact-index.json", "r", encoding="utf-8") as f:
+              artifact_index = json.load(f)
 
           Draft202012Validator(pack_schema).validate(symbol_pack)
           Draft202012Validator(summary_schema).validate(summary)
+          Draft202012Validator(artifact_index_schema).validate(artifact_index)
           print("ghidra smoke schema validation passed")
           PY
       - name: Upload smoke artifacts
@@ -100,7 +121,31 @@ jobs:
       - name: Run headless analysis
         run: |
           chmod +x tools/ghidra/run-headless.sh
-          tools/ghidra/run-headless.sh "${{ inputs.binary_path || '/bin/ls' }}" "TestResults/ghidra-headless"
+          tools/ghidra/run-headless.sh "${{ inputs.binary_path || '/bin/ls' }}" "TestResults/ghidra-headless" "ghidra-headless-${{ github.run_id }}"
+      - name: Create raw decomp metadata bundle
+        run: |
+          python3 - <<'PY'
+          import zipfile
+          from pathlib import Path
+
+          root = Path("TestResults/ghidra-headless")
+          bundle = root / "raw-decomp-bundle-metadata.zip"
+          with zipfile.ZipFile(bundle, "w", compression=zipfile.ZIP_DEFLATED) as archive:
+              for rel in ("raw-symbols.json", "analysis-summary.json", "determinism/determinism-report.json"):
+                  path = root / rel
+                  if path.exists():
+                      archive.write(path, arcname=rel)
+          PY
+      - name: Refresh artifact index with bundle metadata
+        run: |
+          python3 tools/ghidra/emit-artifact-index.py \
+            --analysis-run-id ghidra-headless-${{ github.run_id }} \
+            --binary-path "${{ inputs.binary_path || '/bin/ls' }}" \
+            --raw-symbols TestResults/ghidra-headless/raw-symbols.json \
+            --symbol-pack TestResults/ghidra-headless/symbol-pack.json \
+            --summary TestResults/ghidra-headless/analysis-summary.json \
+            --decompile-archive TestResults/ghidra-headless/raw-decomp-bundle-metadata.zip \
+            --output TestResults/ghidra-headless/artifact-index.json
       - name: Validate symbol pack
         run: |
           python3 -m pip install --quiet jsonschema
@@ -108,11 +153,16 @@ jobs:
           import json
           from jsonschema import Draft202012Validator
           with open("tools/schemas/ghidra-symbol-pack.schema.json", "r", encoding="utf-8") as f:
-              schema = json.load(f)
+              symbol_pack_schema = json.load(f)
+          with open("tools/schemas/ghidra-artifact-index.schema.json", "r", encoding="utf-8") as f:
+              artifact_index_schema = json.load(f)
           with open("TestResults/ghidra-headless/symbol-pack.json", "r", encoding="utf-8") as f:
               pack = json.load(f)
-          Draft202012Validator(schema).validate(pack)
-          print("headless symbol pack schema validation passed")
+          with open("TestResults/ghidra-headless/artifact-index.json", "r", encoding="utf-8") as f:
+              artifact_index = json.load(f)
+          Draft202012Validator(symbol_pack_schema).validate(pack)
+          Draft202012Validator(artifact_index_schema).validate(artifact_index)
+          print("headless symbol pack and artifact index schema validation passed")
           PY
       - name: Upload headless artifacts
         uses: actions/upload-artifact@v4

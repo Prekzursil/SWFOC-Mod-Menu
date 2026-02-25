@@ -145,6 +145,7 @@ def main() -> int:
     parser.add_argument("--analysis-run-id", required=True)
     parser.add_argument("--output-pack", required=True)
     parser.add_argument("--output-summary", required=True)
+    parser.add_argument("--decompile-archive-path", default="")
     args = parser.parse_args()
 
     raw_symbols_path = Path(args.raw_symbols).resolve()
@@ -205,7 +206,9 @@ def main() -> int:
         "artifactPointers": {
             "rawSymbolsPath": str(raw_symbols_path).replace("\\", "/"),
             "symbolPackPath": str(output_pack).replace("\\", "/"),
-            "decompileArchivePath": "",
+            "decompileArchivePath": str(Path(args.decompile_archive_path).resolve()).replace("\\", "/")
+            if args.decompile_archive_path
+            else "",
         },
     }
     output_summary.write_text(json.dumps(summary, indent=2, sort_keys=True), encoding="utf-8")
