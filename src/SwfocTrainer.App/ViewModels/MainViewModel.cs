@@ -946,9 +946,9 @@ public sealed class MainViewModel : INotifyPropertyChanged
     private static string BuildAttachProcessHintSegment(ProcessMetadata process)
     {
         var launchContext = process.LaunchContext;
-        var cmd = ReadProcessMetadata(process, "commandLineAvailable", "False");
-        var mods = ReadProcessMetadata(process, "steamModIdsDetected", string.Empty);
-        var via = ReadProcessMetadata(process, "detectedVia", UnknownValue);
+        var cmd = MainViewModelDiagnostics.ReadProcessMetadata(process, "commandLineAvailable", "False");
+        var mods = MainViewModelDiagnostics.ReadProcessMetadata(process, "steamModIdsDetected", string.Empty);
+        var via = MainViewModelDiagnostics.ReadProcessMetadata(process, "detectedVia", UnknownValue);
         var launch = launchContext?.LaunchKind.ToString() ?? "n/a";
         var recommended = launchContext?.Recommendation.ProfileId ?? string.Empty;
         var reason = launchContext?.Recommendation.ReasonCode ?? UnknownValue;
@@ -983,7 +983,7 @@ public sealed class MainViewModel : INotifyPropertyChanged
 
     private static bool HasMetadataModId(ProcessMetadata process, string workshopId)
     {
-        var ids = ReadProcessMetadata(process, "steamModIdsDetected", string.Empty);
+        var ids = MainViewModelDiagnostics.ReadProcessMetadata(process, "steamModIdsDetected", string.Empty);
         if (string.IsNullOrWhiteSpace(ids))
         {
             return false;
@@ -1009,65 +1009,6 @@ public sealed class MainViewModel : INotifyPropertyChanged
         }
 
         return process.ProcessPath.Contains("StarWarsG.exe", StringComparison.OrdinalIgnoreCase);
-    }
-
-    private static string BuildProcessDiagnosticSummary(ProcessMetadata process)
-    {
-        var dependencySegment = BuildProcessDependencySegment(
-            ReadProcessMetadata(process, "dependencyValidation", "Pass"),
-            ReadProcessMetadata(process, "dependencyValidationMessage", string.Empty));
-
-        return $"target={process.ExeTarget} | launch={BuildLaunchKindSegment(process)} | hostRole={BuildHostRoleSegment(process)} | score={BuildSelectionScoreSegment(process)} | module={BuildModuleSizeSegment(process)} | workshopMatches={BuildWorkshopMatchesSegment(process)} | cmdLine={ReadProcessMetadata(process, "commandLineAvailable", "False")} | mods={ReadProcessMods(process)} | {BuildModPathSegment(process)} | {BuildRecommendationSegment(process)} | {BuildResolvedVariantSegment(process)} | via={ReadProcessMetadata(process, "detectedVia", UnknownValue)} | {dependencySegment} | fallbackRate={ReadProcessMetadata(process, "fallbackHitRate", "n/a")} | unresolvedRate={ReadProcessMetadata(process, "unresolvedSymbolRate", "n/a")}";
-    }
-
-    private static string BuildLaunchKindSegment(ProcessMetadata process)
-    {
-        return process.LaunchContext?.LaunchKind.ToString() ?? "Unknown";
-    }
-
-    private static string BuildHostRoleSegment(ProcessMetadata process)
-    {
-        return process.HostRole.ToString().ToLowerInvariant();
-    }
-
-    private static string BuildSelectionScoreSegment(ProcessMetadata process)
-    {
-        return process.SelectionScore.ToString("0.00", CultureInfo.InvariantCulture);
-    }
-
-    private static string BuildModuleSizeSegment(ProcessMetadata process)
-    {
-        return process.MainModuleSize > 0
-            ? process.MainModuleSize.ToString(CultureInfo.InvariantCulture)
-            : "n/a";
-    }
-
-    private static string BuildWorkshopMatchesSegment(ProcessMetadata process)
-    {
-        return process.WorkshopMatchCount.ToString(CultureInfo.InvariantCulture);
-    }
-
-    private static string BuildModPathSegment(ProcessMetadata process)
-    {
-        var modPath = process.LaunchContext?.ModPathNormalized;
-        return string.IsNullOrWhiteSpace(modPath) ? "modPath=none" : $"modPath={modPath}";
-    }
-
-    private static string BuildRecommendationSegment(ProcessMetadata process)
-    {
-        var recommendation = process.LaunchContext?.Recommendation;
-        var profile = recommendation?.ProfileId ?? "none";
-        var reason = recommendation?.ReasonCode ?? UnknownValue;
-        var confidence = recommendation is null ? "0.00" : recommendation.Confidence.ToString("0.00");
-        return $"rec={profile}:{reason}:{confidence}";
-    }
-
-    private static string BuildResolvedVariantSegment(ProcessMetadata process)
-    {
-        var resolvedVariant = ReadProcessMetadata(process, "resolvedVariant", "n/a");
-        var reason = ReadProcessMetadata(process, "resolvedVariantReasonCode", "n/a");
-        var confidence = ReadProcessMetadata(process, "resolvedVariantConfidence", "0.00");
-        return $"variant={resolvedVariant}:{reason}:{confidence}";
     }
 
     private async Task<string?> TryResolveLaunchContextRecommendationAsync(IReadOnlyList<ProcessMetadata> processes)
@@ -1138,7 +1079,7 @@ public sealed class MainViewModel : INotifyPropertyChanged
         var degradedCount = session.Symbols.Symbols.Values.Count(x => x.HealthStatus == SymbolHealthStatus.Degraded);
         var unresolvedCount = session.Symbols.Symbols.Values.Count(x => x.HealthStatus == SymbolHealthStatus.Unresolved || x.Address == nint.Zero);
         Status = $"Attached to PID {session.Process.ProcessId} ({session.Process.ProcessName}) | " +
-                 $"{BuildProcessDiagnosticSummary(session.Process)} | symbols: sig={signatureCount}, fallback={fallbackCount}, healthy={healthyCount}, degraded={degradedCount}, unresolved={unresolvedCount}";
+                 $"{MainViewModelDiagnostics.BuildProcessDiagnosticSummary(session.Process, UnknownValue)} | symbols: sig={signatureCount}, fallback={fallbackCount}, healthy={healthyCount}, degraded={degradedCount}, unresolved={unresolvedCount}";
     }
 
     private async Task HandleAttachFailureAsync(Exception ex)
@@ -1147,30 +1088,6 @@ public sealed class MainViewModel : INotifyPropertyChanged
         ResolvedSymbolsCount = 0;
         var processHint = await BuildAttachProcessHintAsync();
         Status = $"Attach failed: {ex.Message}. {processHint}";
-    }
-
-    private static string ReadProcessMetadata(ProcessMetadata process, string key, string fallback)
-    {
-        if (process.Metadata is null || !process.Metadata.TryGetValue(key, out var value))
-        {
-            return fallback;
-        }
-
-        return value;
-    }
-
-    private static string ReadProcessMods(ProcessMetadata process)
-    {
-        var mods = ReadProcessMetadata(process, "steamModIdsDetected", string.Empty);
-        return string.IsNullOrWhiteSpace(mods) ? "none" : mods;
-    }
-
-    private static string BuildProcessDependencySegment(string dependencyState, string dependencyMessage)
-    {
-        return dependencyState.Equals("Pass", StringComparison.OrdinalIgnoreCase) ||
-               string.IsNullOrWhiteSpace(dependencyMessage)
-            ? $"dependency={dependencyState}"
-            : $"dependency={dependencyState} ({dependencyMessage})";
     }
 
     private static bool IsActionAvailableForCurrentSession(string actionId, ActionSpec spec, AttachSession session)
@@ -1708,7 +1625,7 @@ public sealed class MainViewModel : INotifyPropertyChanged
             return;
         }
 
-        object? value = ParsePrimitive(SaveEditValue);
+        object? value = MainViewModelDiagnostics.ParsePrimitive(SaveEditValue);
         await _saveCodec.EditAsync(_loadedSave, SaveNodePath, value);
         RebuildSaveFieldRows();
         await RefreshDiffAsync();
@@ -1827,7 +1744,7 @@ public sealed class MainViewModel : INotifyPropertyChanged
 
         PopulatePatchPreviewOperations(preview);
         PopulatePatchCompatibilityRows(compatibility, preview);
-        SavePatchMetadataSummary = BuildPatchMetadataSummary(_loadedPatchPack);
+        SavePatchMetadataSummary = MainViewModelDiagnostics.BuildPatchMetadataSummary(_loadedPatchPack);
         SavePatchApplySummary = string.Empty;
         Status = preview.IsCompatible && compatibility.IsCompatible
             ? $"Patch preview ready: {SavePatchOperations.Count} operation(s) would be applied."
@@ -1858,8 +1775,8 @@ public sealed class MainViewModel : INotifyPropertyChanged
                 operation.FieldPath,
                 operation.FieldId,
                 operation.ValueType,
-                FormatPatchValue(operation.OldValue),
-                FormatPatchValue(operation.NewValue)));
+                MainViewModelDiagnostics.FormatPatchValue(operation.OldValue),
+                MainViewModelDiagnostics.FormatPatchValue(operation.NewValue)));
         }
     }
 
@@ -1888,11 +1805,6 @@ public sealed class MainViewModel : INotifyPropertyChanged
         {
             SavePatchCompatibility.Add(new SavePatchCompatibilityViewItem(severity, reasonCode, message));
         }
-    }
-
-    private static string BuildPatchMetadataSummary(SavePatchPack pack)
-    {
-        return $"Patch {(pack.Metadata.SchemaVersion)} | profile={pack.Metadata.ProfileId} | schema={pack.Metadata.SchemaId} | ops={pack.Operations.Count}";
     }
 
     private async Task ApplyPatchPackAsync()
@@ -2093,58 +2005,6 @@ public sealed class MainViewModel : INotifyPropertyChanged
         }
     }
 
-    private static string FormatPatchValue(object? value)
-    {
-        if (value is null)
-        {
-            return "null";
-        }
-
-        if (value is JsonElement element)
-        {
-            return element.ValueKind switch
-            {
-                JsonValueKind.String => element.GetString() ?? string.Empty,
-                JsonValueKind.Null => "null",
-                _ => element.ToString()
-            };
-        }
-
-        return value.ToString() ?? string.Empty;
-    }
-
-    private static object ParsePrimitive(string input)
-    {
-        if (int.TryParse(input, NumberStyles.Integer, CultureInfo.InvariantCulture, out var intValue))
-        {
-            return intValue;
-        }
-
-        if (long.TryParse(input, NumberStyles.Integer, CultureInfo.InvariantCulture, out var longValue))
-        {
-            return longValue;
-        }
-
-        if (bool.TryParse(input, out var boolValue))
-        {
-            return boolValue;
-        }
-
-        var trimmed = input.Trim();
-        if (trimmed.EndsWith("f", StringComparison.OrdinalIgnoreCase) &&
-            float.TryParse(trimmed[..^1], NumberStyles.Float | NumberStyles.AllowThousands, CultureInfo.InvariantCulture, out var floatValue))
-        {
-            return floatValue;
-        }
-
-        if (double.TryParse(trimmed, NumberStyles.Float | NumberStyles.AllowThousands, CultureInfo.InvariantCulture, out var doubleValue))
-        {
-            return doubleValue;
-        }
-
-        return input;
-    }
-
     private async Task RefreshActionReliabilityAsync()
     {
         ActionReliability.Clear();
@@ -2223,7 +2083,7 @@ public sealed class MainViewModel : INotifyPropertyChanged
         }
 
         var dependencyMessage = GetMetadataValueOrDefault(metadata, "dependencyValidationMessage", string.Empty);
-        LiveOpsDiagnostics.Add(BuildDependencyDiagnostic(dependency, dependencyMessage));
+        LiveOpsDiagnostics.Add(MainViewModelDiagnostics.BuildDependencyDiagnostic(dependency, dependencyMessage));
     }
 
     private void AddLiveOpsSymbolDiagnostics(AttachSession session)
@@ -2240,13 +2100,6 @@ public sealed class MainViewModel : INotifyPropertyChanged
         string fallback)
     {
         return metadata.TryGetValue(key, out var value) ? value : fallback;
-    }
-
-    private static string BuildDependencyDiagnostic(string dependency, string dependencyMessage)
-    {
-        return string.IsNullOrWhiteSpace(dependencyMessage)
-            ? $"dependency: {dependency}"
-            : $"dependency: {dependency} ({dependencyMessage})";
     }
 
     private async Task CaptureSelectedUnitBaselineAsync()
