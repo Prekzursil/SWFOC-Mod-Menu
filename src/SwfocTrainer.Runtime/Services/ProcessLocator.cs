@@ -1,4 +1,3 @@
-#pragma warning disable S4136
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -345,10 +344,9 @@ public sealed class ProcessLocator : IProcessLocator
         return RuntimeMode.Unknown;
     }
 
+#if WINDOWS
     private static string? TryGetCommandLine(int processId)
     {
-        _ = processId;
-#if WINDOWS
         try
         {
             using var searcher = new ManagementObjectSearcher($"SELECT CommandLine FROM Win32_Process WHERE ProcessId = {processId}");
@@ -361,9 +359,15 @@ public sealed class ProcessLocator : IProcessLocator
         {
             // ignored, command line can be unavailable if permissions are insufficient.
         }
-#endif
+
         return null;
     }
+#else
+    private static string? TryGetCommandLine(int _)
+    {
+        return null;
+    }
+#endif
 
     private static bool ContainsToken(string? value, string token)
     {
@@ -391,24 +395,21 @@ public sealed class ProcessLocator : IProcessLocator
         }
 
         var ids = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
-        foreach (Match match in Regex.Matches(commandLine, @"steammod\s*=\s*(\d+)", RegexOptions.IgnoreCase))
-        {
-            if (match.Groups.Count > 1 && !string.IsNullOrWhiteSpace(match.Groups[1].Value))
-            {
-                ids.Add(match.Groups[1].Value);
-            }
-        }
+        AddCapturedGroupValues(ids, Regex.Matches(commandLine, @"steammod\s*=\s*(\d+)", RegexOptions.IgnoreCase), groupIndex: 1);
 
         // Also infer IDs from mod paths containing workshop content folder segments.
-        foreach (Match match in Regex.Matches(commandLine, @"[\\/]+32470[\\/]+(\d+)", RegexOptions.IgnoreCase))
-        {
-            if (match.Groups.Count > 1 && !string.IsNullOrWhiteSpace(match.Groups[1].Value))
-            {
-                ids.Add(match.Groups[1].Value);
-            }
-        }
+        AddCapturedGroupValues(ids, Regex.Matches(commandLine, @"[\\/]+32470[\\/]+(\d+)", RegexOptions.IgnoreCase), groupIndex: 1);
 
         return ids.OrderBy(x => x, StringComparer.Ordinal).ToArray();
+    }
+
+    private static void AddCapturedGroupValues(ISet<string> target, MatchCollection matches, int groupIndex)
+    {
+        target.UnionWith(matches
+            .Cast<Match>()
+            .Select(match => match.Groups)
+            .Where(groups => groups.Count > groupIndex && !string.IsNullOrWhiteSpace(groups[groupIndex].Value))
+            .Select(groups => groups[groupIndex].Value));
     }
 
     private static ProcessHostRole DetermineHostRole(ProcessDetection detection)

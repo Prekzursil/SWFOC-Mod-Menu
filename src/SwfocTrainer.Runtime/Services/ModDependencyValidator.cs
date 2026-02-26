@@ -173,14 +173,9 @@ public sealed class ModDependencyValidator : IModDependencyValidator
     {
         var disabled = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
         AddCsvMetadataValues(profile, disabled, "dependencySensitiveActions");
-
-        foreach (var action in profile.Actions.Values)
-        {
-            if (action.ExecutionKind == ExecutionKind.Helper)
-            {
-                disabled.Add(action.Id);
-            }
-        }
+        disabled.UnionWith(profile.Actions.Values
+            .Where(action => action.ExecutionKind == ExecutionKind.Helper)
+            .Select(action => action.Id));
 
         return disabled;
     }
@@ -189,13 +184,8 @@ public sealed class ModDependencyValidator : IModDependencyValidator
     {
         var roots = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
 
-        foreach (var drive in DriveInfo.GetDrives())
+        foreach (var drive in DriveInfo.GetDrives().Where(drive => drive.IsReady))
         {
-            if (!drive.IsReady)
-            {
-                continue;
-            }
-
             var root = drive.RootDirectory.FullName;
             var steamCandidates = new[]
             {
@@ -245,14 +235,15 @@ public sealed class ModDependencyValidator : IModDependencyValidator
             return;
         }
 
-        foreach (Match match in Regex.Matches(content, LibraryFolderPathPattern, RegexOptions.IgnoreCase))
-        {
-            if (match.Groups.Count < 2)
-            {
-                continue;
-            }
+        var groupsSequence = Regex
+            .Matches(content, LibraryFolderPathPattern, RegexOptions.IgnoreCase)
+            .Cast<Match>()
+            .Select(match => match.Groups)
+            .Where(groups => groups.Count >= 2);
 
-            var pathValue = match.Groups[1].Value
+        foreach (var groups in groupsSequence)
+        {
+            var pathValue = groups[1].Value
                 .Replace("\\\\", "\\", StringComparison.Ordinal)
                 .Trim();
             if (string.IsNullOrWhiteSpace(pathValue))
@@ -417,10 +408,7 @@ public sealed class ModDependencyValidator : IModDependencyValidator
             return;
         }
 
-        foreach (var value in raw.Split(',', StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries))
-        {
-            target.Add(value);
-        }
+        target.UnionWith(raw.Split(',', StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries));
     }
 
     private static IReadOnlyList<string> ParseCsvMetadata(TrainerProfile profile, string key)

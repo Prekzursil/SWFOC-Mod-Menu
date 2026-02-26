@@ -1,13 +1,14 @@
+using System;
 using System.IO;
 using System.Net.Http;
 using System.Windows;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using SwfocTrainer.Core.IO;
 using SwfocTrainer.App.ViewModels;
 using SwfocTrainer.Catalog.Config;
 using SwfocTrainer.Catalog.Services;
 using SwfocTrainer.Core.Contracts;
+using SwfocTrainer.Core.IO;
 using SwfocTrainer.Core.Logging;
 using SwfocTrainer.Core.Models;
 using SwfocTrainer.Core.Services;
@@ -21,30 +22,18 @@ using SwfocTrainer.Saves.Services;
 
 namespace SwfocTrainer.App;
 
-public partial class App : Application
+internal static class Program
 {
-    private ServiceProvider? _serviceProvider;
-
-    protected override void OnStartup(StartupEventArgs e)
+    [STAThread]
+    private static void Main()
     {
-        base.OnStartup(e);
-
         var services = new ServiceCollection();
         ConfigureServices(services);
-        _serviceProvider = services.BuildServiceProvider();
 
-        var mainWindow = _serviceProvider.GetRequiredService<MainWindow>();
-        mainWindow.Show();
-    }
-
-    protected override void OnExit(ExitEventArgs e)
-    {
-        if (_serviceProvider is not null)
-        {
-            _serviceProvider.Dispose();
-        }
-
-        base.OnExit(e);
+        using var serviceProvider = services.BuildServiceProvider();
+        var mainWindow = serviceProvider.GetRequiredService<MainWindow>();
+        var app = new Application();
+        app.Run(mainWindow);
     }
 
     private static void ConfigureServices(IServiceCollection services)
@@ -147,4 +136,39 @@ public partial class App : Application
         services.AddSingleton<ISavePatchApplyService, SavePatchApplyService>();
     }
 
+    private static void RegisterProfileUpdateServices(IServiceCollection services)
+    {
+        services.AddSingleton<HttpClient>();
+        services.AddSingleton<IProfileUpdateService, GitHubProfileUpdateService>();
+    }
+
+    private static void RegisterUiServices(IServiceCollection services)
+    {
+        services.AddSingleton<TrainerOrchestrator>();
+        services.AddSingleton(provider => new MainViewModelDependencies
+        {
+            Profiles = provider.GetRequiredService<IProfileRepository>(),
+            ProcessLocator = provider.GetRequiredService<IProcessLocator>(),
+            LaunchContextResolver = provider.GetRequiredService<ILaunchContextResolver>(),
+            ProfileVariantResolver = provider.GetRequiredService<IProfileVariantResolver>(),
+            Runtime = provider.GetRequiredService<IRuntimeAdapter>(),
+            Orchestrator = provider.GetRequiredService<TrainerOrchestrator>(),
+            Catalog = provider.GetRequiredService<ICatalogService>(),
+            SaveCodec = provider.GetRequiredService<ISaveCodec>(),
+            SavePatchPackService = provider.GetRequiredService<ISavePatchPackService>(),
+            SavePatchApplyService = provider.GetRequiredService<ISavePatchApplyService>(),
+            Helper = provider.GetRequiredService<IHelperModService>(),
+            Updates = provider.GetRequiredService<IProfileUpdateService>(),
+            ModOnboarding = provider.GetRequiredService<IModOnboardingService>(),
+            ModCalibration = provider.GetRequiredService<IModCalibrationService>(),
+            SupportBundles = provider.GetRequiredService<ISupportBundleService>(),
+            Telemetry = provider.GetRequiredService<ITelemetrySnapshotService>(),
+            FreezeService = provider.GetRequiredService<IValueFreezeService>(),
+            ActionReliability = provider.GetRequiredService<IActionReliabilityService>(),
+            SelectedUnitTransactions = provider.GetRequiredService<ISelectedUnitTransactionService>(),
+            SpawnPresets = provider.GetRequiredService<ISpawnPresetService>()
+        });
+        services.AddSingleton<MainViewModel>();
+        services.AddSingleton<MainWindow>();
+    }
 }

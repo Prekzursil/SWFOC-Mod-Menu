@@ -551,8 +551,13 @@ public sealed class LiveActionSmokeTests
         var hitsByTarget = new Dictionary<int, List<(int TargetRva, int InsnRva, int DispOffset, int InsnLen)>>();
         for (var i = 0; i + 16 < bytes.Length; i++)
         {
-            if (TryDecodeInstantBuildNoRex(bytes, i, out var hit)
-                || TryDecodeInstantBuildRex(bytes, i, out hit))
+            if (TryDecodeInstantBuildNoRex(bytes, i, out var hit))
+            {
+                AddRipTargetHit(hitsByTarget, hit);
+                continue;
+            }
+
+            if (TryDecodeInstantBuildRex(bytes, i, out hit))
             {
                 AddRipTargetHit(hitsByTarget, hit);
             }
@@ -657,7 +662,13 @@ public sealed class LiveActionSmokeTests
                 continue;
             }
 
-            if (TryDecodeSelectedHpStoreNoRex(bytes, i, out var hit) || TryDecodeSelectedHpStoreRex(bytes, i, out hit))
+            if (TryDecodeSelectedHpStoreNoRex(bytes, i, out var hit))
+            {
+                hits.Add(hit);
+                continue;
+            }
+
+            if (TryDecodeSelectedHpStoreRex(bytes, i, out hit))
             {
                 hits.Add(hit);
             }
@@ -754,8 +765,13 @@ public sealed class LiveActionSmokeTests
         var hits = new List<(int MatchRva, int StoreDispOffset, int TargetRva)>();
         for (var i = 0; i + 32 < bytes.Length; i++)
         {
-            if (TryDecodePlanetOwnerCandidate(bytes, i, loadModRm: 0x8E, storeModRm: 0x0D, out var hit)
-                || TryDecodePlanetOwnerCandidate(bytes, i, loadModRm: 0x86, storeModRm: 0x05, out hit))
+            if (TryDecodePlanetOwnerCandidate(bytes, i, loadModRm: 0x8E, storeModRm: 0x0D, out var hit))
+            {
+                hits.Add(hit);
+                continue;
+            }
+
+            if (TryDecodePlanetOwnerCandidate(bytes, i, loadModRm: 0x86, storeModRm: 0x05, out hit))
             {
                 hits.Add(hit);
             }
@@ -832,7 +848,13 @@ public sealed class LiveActionSmokeTests
         var hits = new List<(int TargetRva, int InsnRva, int DispOffset, byte Op, string Bytes)>();
         for (var i = 0; i + 12 < bytes.Length; i++)
         {
-            if (TryDecodeMovssNoRex(bytes, i, out var hit) || TryDecodeMovssRex(bytes, i, out hit))
+            if (TryDecodeMovssNoRex(bytes, i, out var hit))
+            {
+                hits.Add(hit);
+                continue;
+            }
+
+            if (TryDecodeMovssRex(bytes, i, out hit))
             {
                 hits.Add(hit);
             }
@@ -913,7 +935,13 @@ public sealed class LiveActionSmokeTests
         var hits = new List<(int TargetRva, int InsnRva, int DispOffset, byte Op, string Bytes)>();
         for (var i = 0; i + 12 < bytes.Length; i++)
         {
-            if (TryDecodeFloatArithmeticNoRex(bytes, i, out var hit) || TryDecodeFloatArithmeticRex(bytes, i, out hit))
+            if (TryDecodeFloatArithmeticNoRex(bytes, i, out var hit))
+            {
+                hits.Add(hit);
+                continue;
+            }
+
+            if (TryDecodeFloatArithmeticRex(bytes, i, out hit))
             {
                 hits.Add(hit);
             }
@@ -1004,7 +1032,13 @@ public sealed class LiveActionSmokeTests
         var hits = new List<(int TargetRva, int InsnRva, int DispOffset, string Kind)>();
         for (var i = 0; i + 10 < bytes.Length; i++)
         {
-            if (TryDecodeInt32StoreNoRex(bytes, i, out var hit) || TryDecodeInt32StoreRex(bytes, i, out hit))
+            if (TryDecodeInt32StoreNoRex(bytes, i, out var hit))
+            {
+                hits.Add(hit);
+                continue;
+            }
+
+            if (TryDecodeInt32StoreRex(bytes, i, out hit))
             {
                 hits.Add(hit);
             }
@@ -1074,7 +1108,13 @@ public sealed class LiveActionSmokeTests
         var hits = new List<(int TargetRva, int InsnRva, int DispOffset, string Kind, bool IsLoad)>();
         for (var i = 0; i + 10 < bytes.Length; i++)
         {
-            if (TryDecodeInt32AccessNoRex(bytes, i, out var hit) || TryDecodeInt32AccessRexNoW(bytes, i, out hit))
+            if (TryDecodeInt32AccessNoRex(bytes, i, out var hit))
+            {
+                hits.Add(hit);
+                continue;
+            }
+
+            if (TryDecodeInt32AccessRexNoW(bytes, i, out hit))
             {
                 hits.Add(hit);
             }
@@ -1286,8 +1326,13 @@ public sealed class LiveActionSmokeTests
         var refs = new List<(int InsnRva, int DispOffset, string Kind)>();
         for (var i = 0; i + 7 < bytes.Length; i++)
         {
-            if (TryDecodeInt32ReferenceNoRex(bytes, i, targetRva, out var reference)
-                || TryDecodeInt32ReferenceRex(bytes, i, targetRva, out reference))
+            if (TryDecodeInt32ReferenceNoRex(bytes, i, targetRva, out var reference))
+            {
+                refs.Add(reference);
+                continue;
+            }
+
+            if (TryDecodeInt32ReferenceRex(bytes, i, targetRva, out reference))
             {
                 refs.Add(reference);
             }
@@ -1305,7 +1350,12 @@ public sealed class LiveActionSmokeTests
             return false;
         }
 
-        if (!TryResolveRipTarget(bytes, index, index + 2, insnLen: 6, valueSize: 4, out var decodedTarget) || decodedTarget != targetRva)
+        if (!TryResolveRipTarget(bytes, index, index + 2, insnLen: 6, valueSize: 4, out var decodedTarget))
+        {
+            return false;
+        }
+
+        if (decodedTarget != targetRva)
         {
             return false;
         }
@@ -1323,7 +1373,12 @@ public sealed class LiveActionSmokeTests
             return false;
         }
 
-        if (!TryResolveRipTarget(bytes, index, index + 3, insnLen: 7, valueSize: 4, out var decodedTarget) || decodedTarget != targetRva)
+        if (!TryResolveRipTarget(bytes, index, index + 3, insnLen: 7, valueSize: 4, out var decodedTarget))
+        {
+            return false;
+        }
+
+        if (decodedTarget != targetRva)
         {
             return false;
         }
@@ -1354,8 +1409,13 @@ public sealed class LiveActionSmokeTests
         var refs = new List<(int InsnRva, int DispOffset, string Kind)>();
         for (var i = 0; i + 10 < bytes.Length; i++)
         {
-            if (TryDecodeSseFloatReferenceNoRex(bytes, i, targetRva, out var reference)
-                || TryDecodeSseFloatReferenceRex(bytes, i, targetRva, out reference))
+            if (TryDecodeSseFloatReferenceNoRex(bytes, i, targetRva, out var reference))
+            {
+                refs.Add(reference);
+                continue;
+            }
+
+            if (TryDecodeSseFloatReferenceRex(bytes, i, targetRva, out reference))
             {
                 refs.Add(reference);
             }
@@ -1558,8 +1618,13 @@ public sealed class LiveActionSmokeTests
             return false;
         }
 
-        return TryResolveRipTarget(bytes, index, index + 2, insnLen: 6, valueSize: 4, out var target)
-            && (targetRva = target) >= 0;
+        if (!TryResolveRipTarget(bytes, index, index + 2, insnLen: 6, valueSize: 4, out var target))
+        {
+            return false;
+        }
+
+        targetRva = target;
+        return targetRva >= 0;
     }
 
     private static void RecordTopInt32ExampleRef(

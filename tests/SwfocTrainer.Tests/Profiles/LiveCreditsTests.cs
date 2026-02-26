@@ -65,11 +65,12 @@ public sealed class LiveCreditsTests
         _output.WriteLine(
             $"Profile: {profileId} (reason={context.Recommendation.ReasonCode}, confidence={context.Recommendation.Confidence:0.00}) PID: {running.ProcessId}");
         var session = await runtime.AttachAsync(profileId);
+        runtime.IsAttached.Should().BeTrue("runtime should report attached after a successful attach");
         var completed = await ExecuteCreditsDiagnosticsAsync(runtime, session);
         await runtime.DetachAsync();
         if (!completed)
         {
-            return;
+            throw LiveSkip.For(_output, "credits diagnostics did not complete; live prerequisites were not satisfied.");
         }
 
         _output.WriteLine("\nDone. Detached.");

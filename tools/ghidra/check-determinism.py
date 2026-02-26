@@ -10,10 +10,12 @@ from __future__ import annotations
 
 import argparse
 import importlib.util
+import inspect
 import json
 import sys
 from collections.abc import Callable
 from pathlib import Path
+from typing import cast
 
 REASON_CODE_DETERMINISM_MISMATCH = "GHIDRA_DETERMINISM_MISMATCH"
 REASON_CODE_OK = "GHIDRA_DETERMINISM_PASS"
@@ -58,6 +60,27 @@ def _validate_emitter_command(command: tuple[str, ...]) -> None:
         raise ValueError("invalid-emitter-command-flags")
 
 
+def _supports_zero_arg_call(main_fn: Callable[..., object]) -> bool:
+    try:
+        signature = inspect.signature(main_fn)
+    except (TypeError, ValueError):
+        return False
+
+    for parameter in signature.parameters.values():
+        if (
+            parameter.kind
+            in (
+                inspect.Parameter.POSITIONAL_ONLY,
+                inspect.Parameter.POSITIONAL_OR_KEYWORD,
+                inspect.Parameter.KEYWORD_ONLY,
+            )
+            and parameter.default is inspect.Signature.empty
+        ):
+            return False
+
+    return True
+
+
 def _load_emitter_main(emitter_path: Path) -> Callable[[], int | None]:
     spec = importlib.util.spec_from_file_location("ghidra_emit_symbol_pack", emitter_path)
     if spec is None or spec.loader is None:
@@ -70,7 +93,11 @@ def _load_emitter_main(emitter_path: Path) -> Callable[[], int | None]:
     if main_fn is None or not callable(main_fn):
         raise RuntimeError(f"emitter module missing main() function: {emitter_path}")
 
-    return main_fn
+    validated_main_fn = cast(Callable[..., object], main_fn)
+    if not _supports_zero_arg_call(validated_main_fn):
+        raise RuntimeError(f"emitter module main() must accept zero arguments: {emitter_path}")
+
+    return cast(Callable[[], int | None], validated_main_fn)
 
 
 def _run_emitter_main(command: tuple[str, ...]) -> None:

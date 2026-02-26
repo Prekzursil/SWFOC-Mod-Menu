@@ -1,4 +1,3 @@
-#pragma warning disable S4136
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using SwfocTrainer.Core.Contracts;
@@ -373,15 +372,22 @@ public sealed class SavePatchPackService : ISavePatchPackService
         List<string> warnings)
     {
         var operations = new List<SavePatchOperation>(pack.Operations.Count);
-        foreach (var operation in pack.Operations)
-        {
-            var operationError = ValidatePreviewOperation(operation);
-            if (!string.IsNullOrWhiteSpace(operationError))
+        var validOperations = pack.Operations
+            .Select(operation => (Operation: operation, ValidationError: ValidatePreviewOperation(operation)))
+            .Where(entry =>
             {
-                errors.Add(operationError);
-                continue;
-            }
+                if (string.IsNullOrWhiteSpace(entry.ValidationError))
+                {
+                    return true;
+                }
 
+                errors.Add(entry.ValidationError!);
+                return false;
+            })
+            .Select(entry => entry.Operation);
+
+        foreach (var operation in validOperations)
+        {
             var field = ResolveField(fieldLookup.ByPath, fieldLookup.ById, operation, warnings);
             if (field is null)
             {
@@ -391,12 +397,10 @@ public sealed class SavePatchPackService : ISavePatchPackService
 
             var normalizedValue = SavePatchFieldCodec.NormalizePatchValue(operation.NewValue, operation.ValueType);
             var currentValue = SavePatchFieldCodec.ReadFieldValue(targetDoc.Raw, field, schema.Endianness);
-            if (SavePatchFieldCodec.ValuesEqual(currentValue, normalizedValue))
+            if (!SavePatchFieldCodec.ValuesEqual(currentValue, normalizedValue))
             {
-                continue;
+                operations.Add(operation with { NewValue = normalizedValue });
             }
-
-            operations.Add(operation with { NewValue = normalizedValue });
         }
 
         return operations;

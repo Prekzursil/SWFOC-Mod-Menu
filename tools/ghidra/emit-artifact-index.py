@@ -47,7 +47,7 @@ def _load_symbol_pack_fingerprint(symbol_pack_path: Path) -> dict[str, str] | No
 
     try:
         symbol_pack = _read_json(symbol_pack_path)
-    except (OSError, ValueError, TypeError, json.JSONDecodeError):
+    except (OSError, TypeError, ValueError):
         return None
 
     raw = symbol_pack.get("binaryFingerprint", {})
