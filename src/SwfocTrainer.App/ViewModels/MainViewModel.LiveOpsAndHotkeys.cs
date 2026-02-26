@@ -221,33 +221,30 @@ public sealed partial class MainViewModel
 
     private async Task RunSpawnBatchAsync()
     {
-        if (!MainViewModelSpawnHelpers.TryBuildBatchInputs(
+        var batchInputs = MainViewModelSpawnHelpers.TryBuildBatchInputs(
+            new MainViewModelSpawnHelpers.SpawnBatchInputRequest(
                 SelectedProfileId,
                 SelectedSpawnPreset,
                 RuntimeMode,
                 SpawnQuantity,
-                SpawnDelayMs,
-                out var profileId,
-                out var selectedPreset,
-                out var quantity,
-                out var delayMs,
-                out var failureStatus))
+                SpawnDelayMs));
+        if (!batchInputs.Succeeded)
         {
-            Status = failureStatus;
+            Status = batchInputs.FailureStatus;
             return;
         }
 
-        var preset = selectedPreset.ToCorePreset();
+        var preset = batchInputs.SelectedPreset!.ToCorePreset();
         var plan = _spawnPresets.BuildBatchPlan(
-            profileId,
+            batchInputs.ProfileId,
             preset,
-            quantity,
-            delayMs,
+            batchInputs.Quantity,
+            batchInputs.DelayMs,
             SelectedFaction,
             SelectedEntryMarker,
             SpawnStopOnFailure);
 
-        var result = await _spawnPresets.ExecuteBatchAsync(profileId, plan, RuntimeMode);
+        var result = await _spawnPresets.ExecuteBatchAsync(batchInputs.ProfileId, plan, RuntimeMode);
         Status = result.Succeeded
             ? $"✓ {result.Message}"
             : $"✗ {result.Message}";
@@ -280,17 +277,16 @@ public sealed partial class MainViewModel
 
     private DraftBuildResult BuildSelectedUnitDraft()
     {
+        var floatInputs = new MainViewModelSelectedUnitDraftHelpers.SelectedUnitFloatInputs(
+            SelectedUnitHp,
+            SelectedUnitShield,
+            SelectedUnitSpeed,
+            SelectedUnitDamageMultiplier,
+            SelectedUnitCooldownMultiplier);
+
         if (!MainViewModelSelectedUnitDraftHelpers.TryParseSelectedUnitFloatValues(
-                SelectedUnitHp,
-                SelectedUnitShield,
-                SelectedUnitSpeed,
-                SelectedUnitDamageMultiplier,
-                SelectedUnitCooldownMultiplier,
-                out var hp,
-                out var shield,
-                out var speed,
-                out var damage,
-                out var cooldown,
+                floatInputs,
+                out var floatValues,
                 out var error))
         {
             return DraftBuildResult.Failed(error);
@@ -307,11 +303,11 @@ public sealed partial class MainViewModel
         }
 
         var draft = new SelectedUnitDraft(
-            Hp: hp,
-            Shield: shield,
-            Speed: speed,
-            DamageMultiplier: damage,
-            CooldownMultiplier: cooldown,
+            Hp: floatValues.Hp,
+            Shield: floatValues.Shield,
+            Speed: floatValues.Speed,
+            DamageMultiplier: floatValues.Damage,
+            CooldownMultiplier: floatValues.Cooldown,
             Veterancy: veterancy,
             OwnerFaction: ownerFaction);
 

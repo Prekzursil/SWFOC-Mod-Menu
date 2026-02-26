@@ -5,48 +5,73 @@ namespace SwfocTrainer.App.ViewModels;
 
 internal static class MainViewModelSpawnHelpers
 {
-    internal static bool TryBuildBatchInputs(
-        string? selectedProfileId,
-        SpawnPresetViewItem? selectedSpawnPreset,
-        RuntimeMode runtimeMode,
-        string spawnQuantity,
-        string spawnDelayMs,
-        out string profileId,
-        out SpawnPresetViewItem selectedPreset,
-        out int quantity,
-        out int delayMs,
-        out string failureStatus)
+    internal sealed record SpawnBatchInputRequest(
+        string? SelectedProfileId,
+        SpawnPresetViewItem? SelectedSpawnPreset,
+        RuntimeMode RuntimeMode,
+        string SpawnQuantity,
+        string SpawnDelayMs);
+
+    internal sealed record SpawnBatchInputResult(
+        bool Succeeded,
+        string ProfileId,
+        SpawnPresetViewItem? SelectedPreset,
+        int Quantity,
+        int DelayMs,
+        string FailureStatus);
+
+    internal static SpawnBatchInputResult TryBuildBatchInputs(SpawnBatchInputRequest request)
     {
-        profileId = selectedProfileId ?? string.Empty;
-        selectedPreset = selectedSpawnPreset!;
-        quantity = 0;
-        delayMs = 0;
-        failureStatus = string.Empty;
-
-        if (selectedProfileId is null || selectedSpawnPreset is null)
+        if (request.SelectedProfileId is null || request.SelectedSpawnPreset is null)
         {
-            failureStatus = "✗ Spawn batch blocked: select profile and preset.";
-            return false;
+            return new SpawnBatchInputResult(
+                Succeeded: false,
+                ProfileId: string.Empty,
+                SelectedPreset: null,
+                Quantity: 0,
+                DelayMs: 0,
+                FailureStatus: "✗ Spawn batch blocked: select profile and preset.");
         }
 
-        if (runtimeMode == RuntimeMode.Unknown)
+        if (request.RuntimeMode == RuntimeMode.Unknown)
         {
-            failureStatus = "✗ Spawn batch blocked: runtime mode is unknown.";
-            return false;
+            return new SpawnBatchInputResult(
+                Succeeded: false,
+                ProfileId: string.Empty,
+                SelectedPreset: null,
+                Quantity: 0,
+                DelayMs: 0,
+                FailureStatus: "✗ Spawn batch blocked: runtime mode is unknown.");
         }
 
-        if (!int.TryParse(spawnQuantity, out quantity) || quantity <= 0)
+        if (!int.TryParse(request.SpawnQuantity, out var quantity) || quantity <= 0)
         {
-            failureStatus = "✗ Invalid spawn quantity.";
-            return false;
+            return new SpawnBatchInputResult(
+                Succeeded: false,
+                ProfileId: string.Empty,
+                SelectedPreset: null,
+                Quantity: 0,
+                DelayMs: 0,
+                FailureStatus: "✗ Invalid spawn quantity.");
         }
 
-        if (!int.TryParse(spawnDelayMs, out delayMs) || delayMs < 0)
+        if (!int.TryParse(request.SpawnDelayMs, out var delayMs) || delayMs < 0)
         {
-            failureStatus = "✗ Invalid spawn delay (ms).";
-            return false;
+            return new SpawnBatchInputResult(
+                Succeeded: false,
+                ProfileId: string.Empty,
+                SelectedPreset: null,
+                Quantity: 0,
+                DelayMs: 0,
+                FailureStatus: "✗ Invalid spawn delay (ms).");
         }
 
-        return true;
+        return new SpawnBatchInputResult(
+            Succeeded: true,
+            ProfileId: request.SelectedProfileId,
+            SelectedPreset: request.SelectedSpawnPreset,
+            Quantity: quantity,
+            DelayMs: delayMs,
+            FailureStatus: string.Empty);
     }
 }
