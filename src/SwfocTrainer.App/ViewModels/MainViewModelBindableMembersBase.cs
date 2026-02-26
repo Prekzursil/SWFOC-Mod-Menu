@@ -6,40 +6,29 @@ using SwfocTrainer.Core.Models;
 
 namespace SwfocTrainer.App.ViewModels;
 
-public sealed partial class MainViewModel : INotifyPropertyChanged
+public abstract class MainViewModelBindableMembersBase : MainViewModelCoreStateBase
 {
-    public ObservableCollection<string> Profiles { get; }
+    protected MainViewModelBindableMembersBase(MainViewModelDependencies dependencies)
+        : base(dependencies)
+    {
+    }
 
-    public ObservableCollection<string> Actions { get; }
-
-    public ObservableCollection<string> CatalogSummary { get; }
-
-    public ObservableCollection<string> Updates { get; }
-
-    public ObservableCollection<string> SaveDiffPreview { get; }
-
-    public ObservableCollection<HotkeyBindingItem> Hotkeys { get; }
-
-    public ObservableCollection<string> ActiveFreezes { get; }
-
-    public ObservableCollection<SaveFieldViewItem> SaveFields { get; }
-
-    public ObservableCollection<SaveFieldViewItem> FilteredSaveFields { get; }
-
-    public ObservableCollection<SavePatchOperationViewItem> SavePatchOperations { get; }
-
-    public ObservableCollection<SavePatchCompatibilityViewItem> SavePatchCompatibility { get; }
-
-    public ObservableCollection<ActionReliabilityViewItem> ActionReliability { get; }
-
-    public ObservableCollection<SelectedUnitTransactionViewItem> SelectedUnitTransactions { get; }
-
-    public ObservableCollection<SpawnPresetViewItem> SpawnPresets { get; }
-
-    public ObservableCollection<string> LiveOpsDiagnostics { get; }
-
-    public ObservableCollection<string> ModCompatibilityRows { get; }
-
+    public ObservableCollection<string> Profiles { get; protected set; } = null!;
+    public ObservableCollection<string> Actions { get; protected set; } = null!;
+    public ObservableCollection<string> CatalogSummary { get; protected set; } = null!;
+    public ObservableCollection<string> Updates { get; protected set; } = null!;
+    public ObservableCollection<string> SaveDiffPreview { get; protected set; } = null!;
+    public ObservableCollection<HotkeyBindingItem> Hotkeys { get; protected set; } = null!;
+    public ObservableCollection<string> ActiveFreezes { get; protected set; } = null!;
+    public ObservableCollection<SaveFieldViewItem> SaveFields { get; protected set; } = null!;
+    public ObservableCollection<SaveFieldViewItem> FilteredSaveFields { get; protected set; } = null!;
+    public ObservableCollection<SavePatchOperationViewItem> SavePatchOperations { get; protected set; } = null!;
+    public ObservableCollection<SavePatchCompatibilityViewItem> SavePatchCompatibility { get; protected set; } = null!;
+    public ObservableCollection<ActionReliabilityViewItem> ActionReliability { get; protected set; } = null!;
+    public ObservableCollection<SelectedUnitTransactionViewItem> SelectedUnitTransactions { get; protected set; } = null!;
+    public ObservableCollection<SpawnPresetViewItem> SpawnPresets { get; protected set; } = null!;
+    public ObservableCollection<string> LiveOpsDiagnostics { get; protected set; } = null!;
+    public ObservableCollection<string> ModCompatibilityRows { get; protected set; } = null!;
     public string? SelectedProfileId
     {
         get => _selectedProfileId;
@@ -300,84 +289,45 @@ public sealed partial class MainViewModel : INotifyPropertyChanged
         set => SetField(ref _supportBundleOutputDirectory, value);
     }
 
-    public ICommand LoadProfilesCommand { get; }
-
-    public ICommand AttachCommand { get; }
-
-    public ICommand DetachCommand { get; }
-
-    public ICommand LoadActionsCommand { get; }
-
-    public ICommand ExecuteActionCommand { get; }
-
-    public ICommand LoadCatalogCommand { get; }
-
-    public ICommand DeployHelperCommand { get; }
-
-    public ICommand VerifyHelperCommand { get; }
-
-    public ICommand CheckUpdatesCommand { get; }
-
-    public ICommand InstallUpdateCommand { get; }
-
-    public ICommand RollbackProfileUpdateCommand { get; }
-
-    public ICommand BrowseSaveCommand { get; }
-
-    public ICommand LoadSaveCommand { get; }
-
-    public ICommand EditSaveCommand { get; }
-
-    public ICommand ValidateSaveCommand { get; }
-
-    public ICommand RefreshDiffCommand { get; }
-
-    public ICommand WriteSaveCommand { get; }
-
-    public ICommand BrowsePatchPackCommand { get; }
-
-    public ICommand ExportPatchPackCommand { get; }
-
-    public ICommand LoadPatchPackCommand { get; }
-
-    public ICommand PreviewPatchPackCommand { get; }
-
-    public ICommand ApplyPatchPackCommand { get; }
-
-    public ICommand RestoreBackupCommand { get; }
-
-    public ICommand LoadHotkeysCommand { get; }
-
-    public ICommand SaveHotkeysCommand { get; }
-
-    public ICommand AddHotkeyCommand { get; }
-
-    public ICommand RemoveHotkeyCommand { get; }
-
-    public ICommand RefreshActionReliabilityCommand { get; }
-
-    public ICommand CaptureSelectedUnitBaselineCommand { get; }
-
-    public ICommand ApplySelectedUnitDraftCommand { get; }
-
-    public ICommand RevertSelectedUnitTransactionCommand { get; }
-
-    public ICommand RestoreSelectedUnitBaselineCommand { get; }
-
-    public ICommand LoadSpawnPresetsCommand { get; }
-
-    public ICommand RunSpawnBatchCommand { get; }
-
-    public ICommand ScaffoldModProfileCommand { get; }
-
-    public ICommand ExportCalibrationArtifactCommand { get; }
-
-    public ICommand BuildCompatibilityReportCommand { get; }
-
-    public ICommand ExportSupportBundleCommand { get; }
-
-    public ICommand ExportTelemetrySnapshotCommand { get; }
-
+    public ICommand LoadProfilesCommand { get; protected set; } = null!;
+    public ICommand AttachCommand { get; protected set; } = null!;
+    public ICommand DetachCommand { get; protected set; } = null!;
+    public ICommand LoadActionsCommand { get; protected set; } = null!;
+    public ICommand ExecuteActionCommand { get; protected set; } = null!;
+    public ICommand LoadCatalogCommand { get; protected set; } = null!;
+    public ICommand DeployHelperCommand { get; protected set; } = null!;
+    public ICommand VerifyHelperCommand { get; protected set; } = null!;
+    public ICommand CheckUpdatesCommand { get; protected set; } = null!;
+    public ICommand InstallUpdateCommand { get; protected set; } = null!;
+    public ICommand RollbackProfileUpdateCommand { get; protected set; } = null!;
+    public ICommand BrowseSaveCommand { get; protected set; } = null!;
+    public ICommand LoadSaveCommand { get; protected set; } = null!;
+    public ICommand EditSaveCommand { get; protected set; } = null!;
+    public ICommand ValidateSaveCommand { get; protected set; } = null!;
+    public ICommand RefreshDiffCommand { get; protected set; } = null!;
+    public ICommand WriteSaveCommand { get; protected set; } = null!;
+    public ICommand BrowsePatchPackCommand { get; protected set; } = null!;
+    public ICommand ExportPatchPackCommand { get; protected set; } = null!;
+    public ICommand LoadPatchPackCommand { get; protected set; } = null!;
+    public ICommand PreviewPatchPackCommand { get; protected set; } = null!;
+    public ICommand ApplyPatchPackCommand { get; protected set; } = null!;
+    public ICommand RestoreBackupCommand { get; protected set; } = null!;
+    public ICommand LoadHotkeysCommand { get; protected set; } = null!;
+    public ICommand SaveHotkeysCommand { get; protected set; } = null!;
+    public ICommand AddHotkeyCommand { get; protected set; } = null!;
+    public ICommand RemoveHotkeyCommand { get; protected set; } = null!;
+    public ICommand RefreshActionReliabilityCommand { get; protected set; } = null!;
+    public ICommand CaptureSelectedUnitBaselineCommand { get; protected set; } = null!;
+    public ICommand ApplySelectedUnitDraftCommand { get; protected set; } = null!;
+    public ICommand RevertSelectedUnitTransactionCommand { get; protected set; } = null!;
+    public ICommand RestoreSelectedUnitBaselineCommand { get; protected set; } = null!;
+    public ICommand LoadSpawnPresetsCommand { get; protected set; } = null!;
+    public ICommand RunSpawnBatchCommand { get; protected set; } = null!;
+    public ICommand ScaffoldModProfileCommand { get; protected set; } = null!;
+    public ICommand ExportCalibrationArtifactCommand { get; protected set; } = null!;
+    public ICommand BuildCompatibilityReportCommand { get; protected set; } = null!;
+    public ICommand ExportSupportBundleCommand { get; protected set; } = null!;
+    public ICommand ExportTelemetrySnapshotCommand { get; protected set; } = null!;
     public string CreditsValue
     {
         get => _creditsValue;
@@ -391,16 +341,17 @@ public sealed partial class MainViewModel : INotifyPropertyChanged
     }
 
     // Quick-action commands
-    public ICommand QuickSetCreditsCommand { get; }
-    public ICommand QuickFreezeTimerCommand { get; }
-    public ICommand QuickToggleFogCommand { get; }
-    public ICommand QuickToggleAiCommand { get; }
-    public ICommand QuickInstantBuildCommand { get; }
-    public ICommand QuickUnitCapCommand { get; }
-    public ICommand QuickGodModeCommand { get; }
-    public ICommand QuickOneHitCommand { get; }
-    public ICommand QuickUnfreezeAllCommand { get; }
+    public ICommand QuickSetCreditsCommand { get; protected set; } = null!;
+    public ICommand QuickFreezeTimerCommand { get; protected set; } = null!;
+    public ICommand QuickToggleFogCommand { get; protected set; } = null!;
+    public ICommand QuickToggleAiCommand { get; protected set; } = null!;
+    public ICommand QuickInstantBuildCommand { get; protected set; } = null!;
+    public ICommand QuickUnitCapCommand { get; protected set; } = null!;
+    public ICommand QuickGodModeCommand { get; protected set; } = null!;
+    public ICommand QuickOneHitCommand { get; protected set; } = null!;
+    public ICommand QuickUnfreezeAllCommand { get; protected set; } = null!;
 
+    protected abstract void ApplyPayloadTemplateForSelectedAction();
 
-    public event PropertyChangedEventHandler? PropertyChanged;
+    protected abstract void ApplySaveSearch();
 }
