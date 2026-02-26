@@ -22,7 +22,7 @@ public sealed partial class MainViewModel
             Multiselect = false
         };
 
-        if (dialog.ShowDialog() is true)
+        if (dialog.ShowDialog().GetValueOrDefault())
         {
             SavePath = dialog.FileName;
             Status = $"Selected save: {SavePath}";
@@ -106,7 +106,7 @@ public sealed partial class MainViewModel
             Multiselect = false
         };
 
-        if (dialog.ShowDialog() is true)
+        if (dialog.ShowDialog().GetValueOrDefault())
         {
             SavePatchPackPath = dialog.FileName;
             Status = $"Selected patch pack: {SavePatchPackPath}";
@@ -133,7 +133,7 @@ public sealed partial class MainViewModel
             DefaultExt = ".json"
         };
 
-        if (dialog.ShowDialog() is not true)
+        if (!dialog.ShowDialog().GetValueOrDefault())
         {
             Status = "Patch-pack export canceled.";
             return;
