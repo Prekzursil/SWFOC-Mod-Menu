@@ -196,14 +196,18 @@ public abstract class MainViewModelCoreStateBase : INotifyPropertyChanged
 
     public event PropertyChangedEventHandler? PropertyChanged;
 
-    protected bool SetField<T>(ref T field, T value, [CallerMemberName] string? memberName = null)
+    protected bool SetField<T>(
+        T currentValue,
+        T value,
+        Action<T> assign,
+        [CallerMemberName] string? memberName = null)
     {
-        if (EqualityComparer<T>.Default.Equals(field, value))
+        if (EqualityComparer<T>.Default.Equals(currentValue, value))
         {
             return false;
         }
 
-        field = value;
+        assign(value);
         OnPropertyChanged(memberName);
         return true;
     }

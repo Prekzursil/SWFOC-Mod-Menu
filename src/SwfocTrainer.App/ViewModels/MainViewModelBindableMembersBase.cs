@@ -34,7 +34,7 @@ public abstract class MainViewModelBindableMembersBase : MainViewModelCoreStateB
         get => _selectedProfileId;
         set
         {
-            if (SetField(ref _selectedProfileId, value))
+            if (SetField(_selectedProfileId, value, newValue => _selectedProfileId = newValue))
             {
                 OnPropertyChanged(nameof(CanWorkWithProfile));
             }
@@ -46,7 +46,7 @@ public abstract class MainViewModelBindableMembersBase : MainViewModelCoreStateB
         get => _selectedActionId;
         set
         {
-            if (SetField(ref _selectedActionId, value))
+            if (SetField(_selectedActionId, value, newValue => _selectedActionId = newValue))
             {
                 ApplyPayloadTemplateForSelectedAction();
             }
@@ -56,37 +56,37 @@ public abstract class MainViewModelBindableMembersBase : MainViewModelCoreStateB
     public string PayloadJson
     {
         get => _payloadJson;
-        set => SetField(ref _payloadJson, value);
+        set => SetField(_payloadJson, value, newValue => _payloadJson = newValue);
     }
 
     public string Status
     {
         get => _status;
-        set => SetField(ref _status, value);
+        set => SetField(_status, value, newValue => _status = newValue);
     }
 
     public RuntimeMode RuntimeMode
     {
         get => _runtimeMode;
-        set => SetField(ref _runtimeMode, value);
+        set => SetField(_runtimeMode, value, newValue => _runtimeMode = newValue);
     }
 
     public string SavePath
     {
         get => _savePath;
-        set => SetField(ref _savePath, value);
+        set => SetField(_savePath, value, newValue => _savePath = newValue);
     }
 
     public string SaveNodePath
     {
         get => _saveNodePath;
-        set => SetField(ref _saveNodePath, value);
+        set => SetField(_saveNodePath, value, newValue => _saveNodePath = newValue);
     }
 
     public string SaveEditValue
     {
         get => _saveEditValue;
-        set => SetField(ref _saveEditValue, value);
+        set => SetField(_saveEditValue, value, newValue => _saveEditValue = newValue);
     }
 
     public string SaveSearchQuery
@@ -94,7 +94,7 @@ public abstract class MainViewModelBindableMembersBase : MainViewModelCoreStateB
         get => _saveSearchQuery;
         set
         {
-            if (SetField(ref _saveSearchQuery, value))
+            if (SetField(_saveSearchQuery, value, newValue => _saveSearchQuery = newValue))
             {
                 ApplySaveSearch();
             }
@@ -106,7 +106,7 @@ public abstract class MainViewModelBindableMembersBase : MainViewModelCoreStateB
         get => _savePatchPackPath;
         set
         {
-            if (SetField(ref _savePatchPackPath, value))
+            if (SetField(_savePatchPackPath, value, newValue => _savePatchPackPath = newValue))
             {
                 CommandManager.InvalidateRequerySuggested();
             }
@@ -116,19 +116,19 @@ public abstract class MainViewModelBindableMembersBase : MainViewModelCoreStateB
     public string SavePatchMetadataSummary
     {
         get => _savePatchMetadataSummary;
-        set => SetField(ref _savePatchMetadataSummary, value);
+        set => SetField(_savePatchMetadataSummary, value, newValue => _savePatchMetadataSummary = newValue);
     }
 
     public string SavePatchApplySummary
     {
         get => _savePatchApplySummary;
-        set => SetField(ref _savePatchApplySummary, value);
+        set => SetField(_savePatchApplySummary, value, newValue => _savePatchApplySummary = newValue);
     }
 
     public int ResolvedSymbolsCount
     {
         get => _resolvedSymbolsCount;
-        set => SetField(ref _resolvedSymbolsCount, value);
+        set => SetField(_resolvedSymbolsCount, value, newValue => _resolvedSymbolsCount = newValue);
     }
 
     public bool CanWorkWithProfile => !string.IsNullOrWhiteSpace(SelectedProfileId);
@@ -136,7 +136,7 @@ public abstract class MainViewModelBindableMembersBase : MainViewModelCoreStateB
     public HotkeyBindingItem? SelectedHotkey
     {
         get => _selectedHotkey;
-        set => SetField(ref _selectedHotkey, value);
+        set => SetField(_selectedHotkey, value, newValue => _selectedHotkey = newValue);
     }
 
     public SpawnPresetViewItem? SelectedSpawnPreset
@@ -144,7 +144,7 @@ public abstract class MainViewModelBindableMembersBase : MainViewModelCoreStateB
         get => _selectedSpawnPreset;
         set
         {
-            if (SetField(ref _selectedSpawnPreset, value))
+            if (SetField(_selectedSpawnPreset, value, newValue => _selectedSpawnPreset = newValue))
             {
                 CommandManager.InvalidateRequerySuggested();
             }
@@ -154,139 +154,139 @@ public abstract class MainViewModelBindableMembersBase : MainViewModelCoreStateB
     public string SelectedUnitHp
     {
         get => _selectedUnitHp;
-        set => SetField(ref _selectedUnitHp, value);
+        set => SetField(_selectedUnitHp, value, newValue => _selectedUnitHp = newValue);
     }
 
     public string SelectedUnitShield
     {
         get => _selectedUnitShield;
-        set => SetField(ref _selectedUnitShield, value);
+        set => SetField(_selectedUnitShield, value, newValue => _selectedUnitShield = newValue);
     }
 
     public string SelectedUnitSpeed
     {
         get => _selectedUnitSpeed;
-        set => SetField(ref _selectedUnitSpeed, value);
+        set => SetField(_selectedUnitSpeed, value, newValue => _selectedUnitSpeed = newValue);
     }
 
     public string SelectedUnitDamageMultiplier
     {
         get => _selectedUnitDamageMultiplier;
-        set => SetField(ref _selectedUnitDamageMultiplier, value);
+        set => SetField(_selectedUnitDamageMultiplier, value, newValue => _selectedUnitDamageMultiplier = newValue);
     }
 
     public string SelectedUnitCooldownMultiplier
     {
         get => _selectedUnitCooldownMultiplier;
-        set => SetField(ref _selectedUnitCooldownMultiplier, value);
+        set => SetField(_selectedUnitCooldownMultiplier, value, newValue => _selectedUnitCooldownMultiplier = newValue);
     }
 
     public string SelectedUnitVeterancy
     {
         get => _selectedUnitVeterancy;
-        set => SetField(ref _selectedUnitVeterancy, value);
+        set => SetField(_selectedUnitVeterancy, value, newValue => _selectedUnitVeterancy = newValue);
     }
 
     public string SelectedUnitOwnerFaction
     {
         get => _selectedUnitOwnerFaction;
-        set => SetField(ref _selectedUnitOwnerFaction, value);
+        set => SetField(_selectedUnitOwnerFaction, value, newValue => _selectedUnitOwnerFaction = newValue);
     }
 
     public string SpawnQuantity
     {
         get => _spawnQuantity;
-        set => SetField(ref _spawnQuantity, value);
+        set => SetField(_spawnQuantity, value, newValue => _spawnQuantity = newValue);
     }
 
     public string SpawnDelayMs
     {
         get => _spawnDelayMs;
-        set => SetField(ref _spawnDelayMs, value);
+        set => SetField(_spawnDelayMs, value, newValue => _spawnDelayMs = newValue);
     }
 
     public string SelectedFaction
     {
         get => _selectedFaction;
-        set => SetField(ref _selectedFaction, value);
+        set => SetField(_selectedFaction, value, newValue => _selectedFaction = newValue);
     }
 
     public string SelectedEntryMarker
     {
         get => _selectedEntryMarker;
-        set => SetField(ref _selectedEntryMarker, value);
+        set => SetField(_selectedEntryMarker, value, newValue => _selectedEntryMarker = newValue);
     }
 
     public bool SpawnStopOnFailure
     {
         get => _spawnStopOnFailure;
-        set => SetField(ref _spawnStopOnFailure, value);
+        set => SetField(_spawnStopOnFailure, value, newValue => _spawnStopOnFailure = newValue);
     }
 
     public bool IsStrictPatchApply
     {
         get => _isStrictPatchApply;
-        set => SetField(ref _isStrictPatchApply, value);
+        set => SetField(_isStrictPatchApply, value, newValue => _isStrictPatchApply = newValue);
     }
 
     public string OnboardingBaseProfileId
     {
         get => _onboardingBaseProfileId;
-        set => SetField(ref _onboardingBaseProfileId, value);
+        set => SetField(_onboardingBaseProfileId, value, newValue => _onboardingBaseProfileId = newValue);
     }
 
     public string OnboardingDraftProfileId
     {
         get => _onboardingDraftProfileId;
-        set => SetField(ref _onboardingDraftProfileId, value);
+        set => SetField(_onboardingDraftProfileId, value, newValue => _onboardingDraftProfileId = newValue);
     }
 
     public string OnboardingDisplayName
     {
         get => _onboardingDisplayName;
-        set => SetField(ref _onboardingDisplayName, value);
+        set => SetField(_onboardingDisplayName, value, newValue => _onboardingDisplayName = newValue);
     }
 
     public string OnboardingNamespaceRoot
     {
         get => _onboardingNamespaceRoot;
-        set => SetField(ref _onboardingNamespaceRoot, value);
+        set => SetField(_onboardingNamespaceRoot, value, newValue => _onboardingNamespaceRoot = newValue);
     }
 
     public string OnboardingLaunchSample
     {
         get => _onboardingLaunchSample;
-        set => SetField(ref _onboardingLaunchSample, value);
+        set => SetField(_onboardingLaunchSample, value, newValue => _onboardingLaunchSample = newValue);
     }
 
     public string OnboardingSummary
     {
         get => _onboardingSummary;
-        set => SetField(ref _onboardingSummary, value);
+        set => SetField(_onboardingSummary, value, newValue => _onboardingSummary = newValue);
     }
 
     public string CalibrationNotes
     {
         get => _calibrationNotes;
-        set => SetField(ref _calibrationNotes, value);
+        set => SetField(_calibrationNotes, value, newValue => _calibrationNotes = newValue);
     }
 
     public string ModCompatibilitySummary
     {
         get => _modCompatibilitySummary;
-        set => SetField(ref _modCompatibilitySummary, value);
+        set => SetField(_modCompatibilitySummary, value, newValue => _modCompatibilitySummary = newValue);
     }
 
     public string OpsArtifactSummary
     {
         get => _opsArtifactSummary;
-        set => SetField(ref _opsArtifactSummary, value);
+        set => SetField(_opsArtifactSummary, value, newValue => _opsArtifactSummary = newValue);
     }
 
     public string SupportBundleOutputDirectory
     {
         get => _supportBundleOutputDirectory;
-        set => SetField(ref _supportBundleOutputDirectory, value);
+        set => SetField(_supportBundleOutputDirectory, value, newValue => _supportBundleOutputDirectory = newValue);
     }
 
     public ICommand LoadProfilesCommand { get; protected set; } = null!;
@@ -331,13 +331,13 @@ public abstract class MainViewModelBindableMembersBase : MainViewModelCoreStateB
     public string CreditsValue
     {
         get => _creditsValue;
-        set => SetField(ref _creditsValue, value);
+        set => SetField(_creditsValue, value, newValue => _creditsValue = newValue);
     }
 
     public bool CreditsFreeze
     {
         get => _creditsFreeze;
-        set => SetField(ref _creditsFreeze, value);
+        set => SetField(_creditsFreeze, value, newValue => _creditsFreeze = newValue);
     }
 
     // Quick-action commands

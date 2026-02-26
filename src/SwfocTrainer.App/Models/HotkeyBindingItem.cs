@@ -1,8 +1,6 @@
-using System.ComponentModel;
-
 namespace SwfocTrainer.App.Models;
 
-public sealed class HotkeyBindingItem : INotifyPropertyChanged
+public sealed class HotkeyBindingItem
 {
     private string _gesture = "Ctrl+Shift+1";
     private string _actionId = "set_credits";
@@ -19,7 +17,6 @@ public sealed class HotkeyBindingItem : INotifyPropertyChanged
             }
 
             _gesture = value;
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Gesture)));
         }
     }
 
@@ -34,7 +31,6 @@ public sealed class HotkeyBindingItem : INotifyPropertyChanged
             }
 
             _actionId = value;
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(ActionId)));
         }
     }
 
@@ -49,9 +45,6 @@ public sealed class HotkeyBindingItem : INotifyPropertyChanged
             }
 
             _payloadJson = value;
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(PayloadJson)));
         }
     }
-
-    public event PropertyChangedEventHandler? PropertyChanged;
 }

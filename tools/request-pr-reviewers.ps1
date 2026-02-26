@@ -87,6 +87,7 @@ function Invoke-GitHubApi {
 
 function Set-LabelPresence {
     [CmdletBinding(SupportsShouldProcess = $true, ConfirmImpact = "Low")]
+    [OutputType([string])]
     param(
         [Parameter(Mandatory = $true)][string]$Owner,
         [Parameter(Mandatory = $true)][string]$Repo,
