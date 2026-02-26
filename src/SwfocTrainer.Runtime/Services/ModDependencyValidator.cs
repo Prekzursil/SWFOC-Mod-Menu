@@ -6,6 +6,7 @@ namespace SwfocTrainer.Runtime.Services;
 
 public sealed class ModDependencyValidator : IModDependencyValidator
 {
+    private static readonly TimeSpan RegexMatchTimeout = TimeSpan.FromMilliseconds(250);
     private const string WorkshopAppId = "32470";
     private const string PathTraversalToken = "..";
     private const string DependencyMetadataMarkerKey = "requiredMarkerFile";
@@ -233,7 +234,7 @@ public sealed class ModDependencyValidator : IModDependencyValidator
         }
 
         var groupsSequence = Regex
-            .Matches(content, LibraryFolderPathPattern, RegexOptions.IgnoreCase)
+            .Matches(content, LibraryFolderPathPattern, RegexOptions.IgnoreCase, RegexMatchTimeout)
             .Cast<Match>()
             .Select(match => match.Groups)
             .Where(groups => groups.Count >= 2);
@@ -381,7 +382,7 @@ public sealed class ModDependencyValidator : IModDependencyValidator
             return null;
         }
 
-        var match = Regex.Match(commandLine, ModPathPattern, RegexOptions.IgnoreCase);
+        var match = Regex.Match(commandLine, ModPathPattern, RegexOptions.IgnoreCase, RegexMatchTimeout);
         if (!match.Success)
         {
             return null;

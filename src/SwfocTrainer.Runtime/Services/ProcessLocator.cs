@@ -12,6 +12,7 @@ namespace SwfocTrainer.Runtime.Services;
 
 public sealed class ProcessLocator : IProcessLocator
 {
+    private static readonly TimeSpan RegexMatchTimeout = TimeSpan.FromMilliseconds(250);
     private readonly ILaunchContextResolver _launchContextResolver;
     private readonly IProfileRepository? _profileRepository;
 
@@ -395,10 +396,16 @@ public sealed class ProcessLocator : IProcessLocator
         }
 
         var ids = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
-        AddCapturedGroupValues(ids, Regex.Matches(commandLine, @"steammod\s*=\s*(\d+)", RegexOptions.IgnoreCase), groupIndex: 1);
+        AddCapturedGroupValues(
+            ids,
+            Regex.Matches(commandLine, @"steammod\s*=\s*(\d+)", RegexOptions.IgnoreCase, RegexMatchTimeout),
+            groupIndex: 1);
 
         // Also infer IDs from mod paths containing workshop content folder segments.
-        AddCapturedGroupValues(ids, Regex.Matches(commandLine, @"[\\/]+32470[\\/]+(\d+)", RegexOptions.IgnoreCase), groupIndex: 1);
+        AddCapturedGroupValues(
+            ids,
+            Regex.Matches(commandLine, @"[\\/]+32470[\\/]+(\d+)", RegexOptions.IgnoreCase, RegexMatchTimeout),
+            groupIndex: 1);
 
         return ids.OrderBy(x => x, StringComparer.Ordinal).ToArray();
     }
@@ -434,7 +441,8 @@ public sealed class ProcessLocator : IProcessLocator
         var match = Regex.Match(
             commandLine,
             @"modpath\s*=\s*(?:""(?<quoted>[^""]+)""|(?<unquoted>[^\s]+))",
-            RegexOptions.IgnoreCase);
+            RegexOptions.IgnoreCase,
+            RegexMatchTimeout);
         if (!match.Success)
         {
             return null;
