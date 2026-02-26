@@ -9,7 +9,7 @@ using SwfocTrainer.Core.Services;
 
 namespace SwfocTrainer.App.ViewModels;
 
-public sealed partial class MainViewModel
+public partial class MainViewModel
 {
     private async Task LoadProfilesAsync()
     {

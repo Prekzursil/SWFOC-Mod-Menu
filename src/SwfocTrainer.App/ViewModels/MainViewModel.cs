@@ -276,28 +276,58 @@ public sealed partial class MainViewModel : INotifyPropertyChanged
             SaveHotkeysAsync = SaveHotkeysAsync,
             AddHotkeyAsync = AddHotkeyAsync,
             RemoveHotkeyAsync = RemoveHotkeyAsync,
-            CanLoadSave = () => !string.IsNullOrWhiteSpace(SavePath) && !string.IsNullOrWhiteSpace(SelectedProfileId),
-            CanEditSave = () => _loadedSave is not null && !string.IsNullOrWhiteSpace(SaveNodePath),
-            CanValidateSave = () => _loadedSave is not null,
-            CanRefreshDiff = () => _loadedSave is not null && _loadedSaveOriginal is not null,
-            CanWriteSave = () => _loadedSave is not null,
-            CanExportPatchPack = () =>
-                _loadedSave is not null &&
-                _loadedSaveOriginal is not null &&
-                !string.IsNullOrWhiteSpace(SelectedProfileId),
-            CanLoadPatchPack = () => !string.IsNullOrWhiteSpace(SavePatchPackPath),
-            CanPreviewPatchPack = () =>
-                _loadedSave is not null &&
-                _loadedPatchPack is not null &&
-                !string.IsNullOrWhiteSpace(SelectedProfileId),
-            CanApplyPatchPack = () =>
-                _loadedPatchPack is not null &&
-                !string.IsNullOrWhiteSpace(SavePath) &&
-                !string.IsNullOrWhiteSpace(SelectedProfileId),
-            CanRestoreBackup = () => !string.IsNullOrWhiteSpace(SavePath),
-            CanRemoveHotkey = () => SelectedHotkey is not null
+            CanLoadSave = CanLoadSaveContext,
+            CanEditSave = CanEditSaveContext,
+            CanValidateSave = CanValidateSaveContext,
+            CanRefreshDiff = CanRefreshDiffContext,
+            CanWriteSave = CanWriteSaveContext,
+            CanExportPatchPack = CanExportPatchPackContext,
+            CanLoadPatchPack = CanLoadPatchPackContext,
+            CanPreviewPatchPack = CanPreviewPatchPackContext,
+            CanApplyPatchPack = CanApplyPatchPackContext,
+            CanRestoreBackup = CanRestoreBackupContext,
+            CanRemoveHotkey = CanRemoveHotkeyContext
         };
     }
+
+    private bool CanLoadSaveContext()
+        => !string.IsNullOrWhiteSpace(SavePath) && !string.IsNullOrWhiteSpace(SelectedProfileId);
+
+    private bool CanEditSaveContext()
+        => _loadedSave is not null && !string.IsNullOrWhiteSpace(SaveNodePath);
+
+    private bool CanValidateSaveContext()
+        => _loadedSave is not null;
+
+    private bool CanRefreshDiffContext()
+        => _loadedSave is not null && _loadedSaveOriginal is not null;
+
+    private bool CanWriteSaveContext()
+        => _loadedSave is not null;
+
+    private bool CanExportPatchPackContext()
+        => _loadedSave is not null &&
+           _loadedSaveOriginal is not null &&
+           !string.IsNullOrWhiteSpace(SelectedProfileId);
+
+    private bool CanLoadPatchPackContext()
+        => !string.IsNullOrWhiteSpace(SavePatchPackPath);
+
+    private bool CanPreviewPatchPackContext()
+        => _loadedSave is not null &&
+           _loadedPatchPack is not null &&
+           !string.IsNullOrWhiteSpace(SelectedProfileId);
+
+    private bool CanApplyPatchPackContext()
+        => _loadedPatchPack is not null &&
+           !string.IsNullOrWhiteSpace(SavePath) &&
+           !string.IsNullOrWhiteSpace(SelectedProfileId);
+
+    private bool CanRestoreBackupContext()
+        => !string.IsNullOrWhiteSpace(SavePath);
+
+    private bool CanRemoveHotkeyContext()
+        => SelectedHotkey is not null;
 
     private MainViewModelLiveOpsCommandContext CreateLiveOpsCommandContext()
     {

@@ -9,7 +9,7 @@ using SwfocTrainer.Core.IO;
 
 namespace SwfocTrainer.App.ViewModels;
 
-public sealed partial class MainViewModel
+public partial class MainViewModel
 {
     private static string HotkeyFilePath => TrustedPathPolicy.CombineUnderRoot(
         TrustedPathPolicy.GetOrCreateAppDataRoot(),

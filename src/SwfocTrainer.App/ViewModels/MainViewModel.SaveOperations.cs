@@ -12,7 +12,7 @@ using SwfocTrainer.Saves.Services;
 
 namespace SwfocTrainer.App.ViewModels;
 
-public sealed partial class MainViewModel
+public partial class MainViewModel
 {
     private Task BrowseSaveAsync()
     {

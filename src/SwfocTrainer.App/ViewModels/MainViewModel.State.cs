@@ -7,7 +7,7 @@ using SwfocTrainer.Core.Models;
 
 namespace SwfocTrainer.App.ViewModels;
 
-public sealed partial class MainViewModel
+public partial class MainViewModel
 {
     public ObservableCollection<string> Profiles { get; }
 
