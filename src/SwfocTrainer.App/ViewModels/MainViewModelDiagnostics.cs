@@ -1,5 +1,7 @@
+using System.Collections.Generic;
 using System.Globalization;
 using System.Text.Json;
+using SwfocTrainer.App.Models;
 using SwfocTrainer.Core.Models;
 
 namespace SwfocTrainer.App.ViewModels;
@@ -101,6 +103,83 @@ internal static class MainViewModelDiagnostics
         }
 
         return input;
+    }
+
+    internal static string ResolveBundleGateResult(ActionReliabilityViewItem? reliability, string unknownValue)
+    {
+        if (reliability is null)
+        {
+            return unknownValue;
+        }
+
+        return reliability.State == "unavailable" ? "blocked" : "bundle_pass";
+    }
+
+    internal static string BuildDiagnosticsStatusSuffix(ActionExecutionResult result)
+    {
+        if (result.Diagnostics is null)
+        {
+            return string.Empty;
+        }
+
+        var segments = new List<string>(capacity: 5);
+        AppendDiagnosticSegment(segments, result.Diagnostics, "backend", "backend", "backendRoute");
+        AppendDiagnosticSegment(segments, result.Diagnostics, "routeReasonCode", "routeReasonCode", "reasonCode");
+        AppendDiagnosticSegment(segments, result.Diagnostics, "capabilityProbeReasonCode", "capabilityProbeReasonCode", "probeReasonCode");
+        AppendDiagnosticSegment(segments, result.Diagnostics, "hookState", "hookState");
+        AppendDiagnosticSegment(segments, result.Diagnostics, "hybridExecution", "hybridExecution");
+
+        return segments.Count == 0 ? string.Empty : $" [{string.Join(", ", segments)}]";
+    }
+
+    internal static string BuildQuickActionStatus(string actionId, ActionExecutionResult result)
+    {
+        var diagnosticsSuffix = BuildDiagnosticsStatusSuffix(result);
+        return result.Succeeded
+            ? $"✓ {actionId}: {result.Message}{diagnosticsSuffix}"
+            : $"✗ {actionId}: {result.Message}{diagnosticsSuffix}";
+    }
+
+    internal static string ReadDiagnosticString(IReadOnlyDictionary<string, object?>? diagnostics, string key)
+    {
+        if (diagnostics is null || !diagnostics.TryGetValue(key, out var raw) || raw is null)
+        {
+            return string.Empty;
+        }
+
+        if (raw is string s)
+        {
+            return s;
+        }
+
+        return raw.ToString() ?? string.Empty;
+    }
+
+    private static void AppendDiagnosticSegment(
+        ICollection<string> segments,
+        IReadOnlyDictionary<string, object?> diagnostics,
+        string segmentKey,
+        params string[] candidateKeys)
+    {
+        foreach (var key in candidateKeys)
+        {
+            var value = TryGetDiagnosticString(diagnostics, key);
+            if (!string.IsNullOrWhiteSpace(value))
+            {
+                segments.Add($"{segmentKey}={value}");
+                return;
+            }
+        }
+    }
+
+    private static string? TryGetDiagnosticString(IReadOnlyDictionary<string, object?> diagnostics, string key)
+    {
+        if (!diagnostics.TryGetValue(key, out var value) || value is null)
+        {
+            return null;
+        }
+
+        return value as string ?? value.ToString();
     }
 
     private static string BuildLaunchKindSegment(ProcessMetadata process)
