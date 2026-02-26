@@ -48,6 +48,14 @@ public sealed class SavePatchPackService : ISavePatchPackService
         return BuildExportPack(profileId, schema, originalDoc.Raw, operations);
     }
 
+    public Task<SavePatchPack> ExportAsync(
+        SaveDocument originalDoc,
+        SaveDocument editedDoc,
+        string profileId)
+    {
+        return ExportAsync(originalDoc, editedDoc, profileId, CancellationToken.None);
+    }
+
     public async Task<SavePatchPack> LoadPackAsync(string path, CancellationToken cancellationToken)
     {
         var normalizedPath = TrustedPathPolicy.NormalizeAbsolute(path);
@@ -89,6 +97,11 @@ public sealed class SavePatchPackService : ISavePatchPackService
         }
 
         return normalizedPack;
+    }
+
+    public Task<SavePatchPack> LoadPackAsync(string path)
+    {
+        return LoadPackAsync(path, CancellationToken.None);
     }
 
     public Task<SavePatchCompatibilityResult> ValidateCompatibilityAsync(
@@ -135,6 +148,14 @@ public sealed class SavePatchPackService : ISavePatchPackService
             Warnings: warnings));
     }
 
+    public Task<SavePatchCompatibilityResult> ValidateCompatibilityAsync(
+        SavePatchPack pack,
+        SaveDocument targetDoc,
+        string targetProfileId)
+    {
+        return ValidateCompatibilityAsync(pack, targetDoc, targetProfileId, CancellationToken.None);
+    }
+
     public async Task<SavePatchPreview> PreviewApplyAsync(
         SavePatchPack pack,
         SaveDocument targetDoc,
@@ -154,27 +175,6 @@ public sealed class SavePatchPackService : ISavePatchPackService
             Errors: errors,
             Warnings: warnings,
             OperationsToApply: operations);
-    }
-
-    public Task<SavePatchPack> ExportAsync(
-        SaveDocument originalDoc,
-        SaveDocument editedDoc,
-        string profileId)
-    {
-        return ExportAsync(originalDoc, editedDoc, profileId, CancellationToken.None);
-    }
-
-    public Task<SavePatchPack> LoadPackAsync(string path)
-    {
-        return LoadPackAsync(path, CancellationToken.None);
-    }
-
-    public Task<SavePatchCompatibilityResult> ValidateCompatibilityAsync(
-        SavePatchPack pack,
-        SaveDocument targetDoc,
-        string targetProfileId)
-    {
-        return ValidateCompatibilityAsync(pack, targetDoc, targetProfileId, CancellationToken.None);
     }
 
     public Task<SavePatchPreview> PreviewApplyAsync(
@@ -527,13 +527,11 @@ public sealed class SavePatchPackService : ISavePatchPackService
     {
         if (element.ValueKind == JsonValueKind.Object)
         {
-            foreach (var property in element.EnumerateObject())
+            foreach (var property in element.EnumerateObject()
+                .Where(property => string.Equals(property.Name, propertyName, StringComparison.OrdinalIgnoreCase)))
             {
-                if (string.Equals(property.Name, propertyName, StringComparison.OrdinalIgnoreCase))
-                {
-                    value = property.Value;
-                    return true;
-                }
+                value = property.Value;
+                return true;
             }
         }
 

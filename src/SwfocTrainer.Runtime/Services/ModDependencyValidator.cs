@@ -207,12 +207,9 @@ public sealed class ModDependencyValidator : IModDependencyValidator
             }
         }
 
-        foreach (var linuxCandidate in LinuxWorkshopCandidates)
+        foreach (var linuxCandidate in LinuxWorkshopCandidates.Where(Directory.Exists))
         {
-            if (Directory.Exists(linuxCandidate))
-            {
-                roots.Add(linuxCandidate);
-            }
+            roots.Add(linuxCandidate);
         }
 
         return roots.OrderBy(x => x, StringComparer.OrdinalIgnoreCase).ToArray();
@@ -306,12 +303,9 @@ public sealed class ModDependencyValidator : IModDependencyValidator
 
     private static void AddExistingRoots(ISet<string> roots, IEnumerable<string> candidates)
     {
-        foreach (var candidate in candidates)
+        foreach (var candidate in candidates.Where(Directory.Exists))
         {
-            if (Directory.Exists(candidate))
-            {
-                roots.Add(candidate);
-            }
+            roots.Add(candidate);
         }
     }
 

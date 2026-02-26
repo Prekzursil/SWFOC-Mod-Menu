@@ -1168,7 +1168,7 @@ public sealed class RuntimeAdapter : IRuntimeAdapter
             ExecutionKind.Memory => await ExecuteMemoryActionAsync(request, cancellationToken),
             ExecutionKind.Helper => await ExecuteHelperActionAsync(request),
             ExecutionKind.Save => await ExecuteSaveActionAsync(),
-            ExecutionKind.CodePatch => await ExecuteCodePatchActionAsync(request, cancellationToken),
+            ExecutionKind.CodePatch => await ExecuteCodePatchActionAsync(request),
             ExecutionKind.Freeze => new ActionExecutionResult(false, "Freeze actions must be handled by the orchestrator, not the runtime adapter.", AddressSource.None),
             ExecutionKind.Sdk => await ExecuteSdkActionAsync(request, cancellationToken),
             _ => new ActionExecutionResult(false, "Unsupported execution kind", AddressSource.None)
@@ -1635,7 +1635,7 @@ public sealed class RuntimeAdapter : IRuntimeAdapter
         return anchors;
     }
 
-    private void MergeAnchorsFromRequestContext(ActionExecutionRequest request, IDictionary<string, string> anchors)
+    private static void MergeAnchorsFromRequestContext(ActionExecutionRequest request, IDictionary<string, string> anchors)
     {
         if (TryReadContextValue(request.Context, "resolvedAnchors", out var existingResolved))
         {
@@ -1889,9 +1889,10 @@ public sealed class RuntimeAdapter : IRuntimeAdapter
     private async Task<ActionExecutionResult> ExecuteMemoryActionAsync(ActionExecutionRequest request, CancellationToken cancellationToken)
     {
         var symbol = ResolveMemoryActionSymbol(request.Payload);
-        if (TryExecuteCreditsMemoryWrite(request, symbol, cancellationToken) is { } creditsWrite)
+        var creditsWrite = await TryExecuteCreditsMemoryWrite(request, symbol, cancellationToken);
+        if (creditsWrite is not null)
         {
-            return await creditsWrite;
+            return creditsWrite;
         }
 
         var context = BuildMemoryActionContext(symbol, request.RuntimeMode);
@@ -1915,7 +1916,7 @@ public sealed class RuntimeAdapter : IRuntimeAdapter
         return symbol;
     }
 
-    private Task<ActionExecutionResult>? TryExecuteCreditsMemoryWrite(
+    private async Task<ActionExecutionResult?> TryExecuteCreditsMemoryWrite(
         ActionExecutionRequest request,
         string symbol,
         CancellationToken cancellationToken)
@@ -1930,7 +1931,7 @@ public sealed class RuntimeAdapter : IRuntimeAdapter
         var lockCredits =
             TryReadBooleanPayload(payload, "lockCredits", out var lockFromPayload) ? lockFromPayload :
             TryReadBooleanPayload(payload, "forcePatchHook", out var legacyForcePatchHook) && legacyForcePatchHook;
-        return SetCreditsAsync(value, lockCredits, request.Action.VerifyReadback, cancellationToken);
+        return await SetCreditsAsync(value, lockCredits, request.Action.VerifyReadback, cancellationToken);
     }
 
     private MemoryActionContext BuildMemoryActionContext(string symbol, RuntimeMode runtimeMode)
@@ -2500,7 +2501,7 @@ public sealed class RuntimeAdapter : IRuntimeAdapter
             operation);
     }
 
-    private WriteAttemptResult<T> BuildWriteAttemptReadbackResult<T>(
+    private static WriteAttemptResult<T> BuildWriteAttemptReadbackResult<T>(
         string symbol,
         SymbolInfo activeSymbol,
         T requestedValue,
@@ -2690,7 +2691,7 @@ public sealed class RuntimeAdapter : IRuntimeAdapter
     ///   - "patchBytes"   : hex string of bytes to write when enabling (e.g. "90 90 90 90 90")
     ///   - "originalBytes" : hex string of expected original bytes for validation (e.g. "48 8B 74 24 68")
     /// </summary>
-    private Task<ActionExecutionResult> ExecuteCodePatchActionAsync(ActionExecutionRequest request, CancellationToken cancellationToken)
+    private Task<ActionExecutionResult> ExecuteCodePatchActionAsync(ActionExecutionRequest request)
     {
         if (TryDispatchSpecializedCodePatchAction(request, out var specializedResult))
         {

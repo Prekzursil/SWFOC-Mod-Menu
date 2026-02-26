@@ -366,12 +366,9 @@ internal static class SignatureResolverSymbolHydration
         var index = new Dictionary<string, SymbolValueType>(StringComparer.OrdinalIgnoreCase);
         foreach (var set in signatureSets)
         {
-            foreach (var signature in set.Signatures)
+            foreach (var signature in set.Signatures.Where(signature => !index.ContainsKey(signature.Name)))
             {
-                if (!index.ContainsKey(signature.Name))
-                {
-                    index[signature.Name] = signature.ValueType;
-                }
+                index[signature.Name] = signature.ValueType;
             }
         }
 

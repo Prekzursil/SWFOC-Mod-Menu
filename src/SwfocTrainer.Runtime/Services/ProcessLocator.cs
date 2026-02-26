@@ -62,6 +62,11 @@ public sealed class ProcessLocator : IProcessLocator
         return list;
     }
 
+    public Task<IReadOnlyList<ProcessMetadata>> FindSupportedProcessesAsync()
+    {
+        return FindSupportedProcessesAsync(CancellationToken.None);
+    }
+
     public async Task<ProcessMetadata?> FindBestMatchAsync(ExeTarget target, CancellationToken cancellationToken)
     {
         var all = await FindSupportedProcessesAsync(cancellationToken);
@@ -82,11 +87,6 @@ public sealed class ProcessLocator : IProcessLocator
         }
 
         return null;
-    }
-
-    public Task<IReadOnlyList<ProcessMetadata>> FindSupportedProcessesAsync()
-    {
-        return FindSupportedProcessesAsync(CancellationToken.None);
     }
 
     public Task<ProcessMetadata?> FindBestMatchAsync(ExeTarget target)
@@ -133,11 +133,20 @@ public sealed class ProcessLocator : IProcessLocator
         var steamModIds = ExtractSteamModIds(probe.CommandLine);
         var hostRole = DetermineHostRole(detection);
         var metadata = BuildBaseMetadata(detection, probe.CommandLine, probe.MainModuleSize, hostRole, steamModIds, ExtractModPath(probe.CommandLine));
-        var provisional = BuildProcessMetadata(process, probe, detection, mode, metadata, null, hostRole, steamModIds.Length);
+        var metadataContext = new ProcessMetadataContext(
+            Process: process,
+            Probe: probe,
+            Detection: detection,
+            Mode: mode,
+            Metadata: metadata,
+            LaunchContext: null,
+            HostRole: hostRole,
+            WorkshopMatchCount: steamModIds.Length);
+        var provisional = BuildProcessMetadata(metadataContext);
         var launchContext = _launchContextResolver.Resolve(provisional, profiles);
         ApplyLaunchContextMetadata(metadata, launchContext);
 
-        return BuildProcessMetadata(process, probe, detection, mode, metadata, launchContext, hostRole, steamModIds.Length);
+        return BuildProcessMetadata(metadataContext with { LaunchContext = launchContext });
     }
 
     private static ProcessProbe CaptureProcessProbe(Process process, IReadOnlyDictionary<int, WmiProcessInfo> wmiByPid)
@@ -178,7 +187,11 @@ public sealed class ProcessLocator : IProcessLocator
         }
 
         // Last-resort per-process WMI query only when bulk query didn't provide data.
+#if WINDOWS
         return TryGetCommandLine(processId);
+#else
+        return null;
+#endif
     }
 
     private static Dictionary<string, string> BuildBaseMetadata(
@@ -205,28 +218,20 @@ public sealed class ProcessLocator : IProcessLocator
         };
     }
 
-    private static ProcessMetadata BuildProcessMetadata(
-        Process process,
-        ProcessProbe probe,
-        ProcessDetection detection,
-        RuntimeMode mode,
-        IReadOnlyDictionary<string, string> metadata,
-        LaunchContext? launchContext,
-        ProcessHostRole hostRole,
-        int workshopMatchCount)
+    private static ProcessMetadata BuildProcessMetadata(ProcessMetadataContext context)
     {
         return new ProcessMetadata(
-            process.Id,
-            process.ProcessName,
-            probe.Path,
-            probe.CommandLine,
-            detection.ExeTarget,
-            mode,
-            metadata,
-            launchContext,
-            hostRole,
-            probe.MainModuleSize,
-            workshopMatchCount,
+            context.Process.Id,
+            context.Process.ProcessName,
+            context.Probe.Path,
+            context.Probe.CommandLine,
+            context.Detection.ExeTarget,
+            context.Mode,
+            context.Metadata,
+            context.LaunchContext,
+            context.HostRole,
+            context.Probe.MainModuleSize,
+            context.WorkshopMatchCount,
             0d);
     }
 
@@ -360,11 +365,6 @@ public sealed class ProcessLocator : IProcessLocator
             // ignored, command line can be unavailable if permissions are insufficient.
         }
 
-        return null;
-    }
-#else
-    private static string? TryGetCommandLine(int _)
-    {
         return null;
     }
 #endif
@@ -534,4 +534,13 @@ public sealed class ProcessLocator : IProcessLocator
     private sealed record WmiProcessInfo(string? CommandLine, string? ExecutablePath);
     private sealed record ProcessProbe(string Path, string? CommandLine, int MainModuleSize);
     private sealed record ProcessDetection(ExeTarget ExeTarget, bool IsStarWarsG, string DetectedVia);
+    private sealed record ProcessMetadataContext(
+        Process Process,
+        ProcessProbe Probe,
+        ProcessDetection Detection,
+        RuntimeMode Mode,
+        IReadOnlyDictionary<string, string> Metadata,
+        LaunchContext? LaunchContext,
+        ProcessHostRole HostRole,
+        int WorkshopMatchCount);
 }

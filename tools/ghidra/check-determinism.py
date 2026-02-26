@@ -13,9 +13,8 @@ import importlib.util
 import inspect
 import json
 import sys
-from collections.abc import Callable
 from pathlib import Path
-from typing import cast
+from typing import Callable, cast
 
 REASON_CODE_DETERMINISM_MISMATCH = "GHIDRA_DETERMINISM_MISMATCH"
 REASON_CODE_OK = "GHIDRA_DETERMINISM_PASS"
@@ -106,12 +105,16 @@ def _run_emitter_main(command: tuple[str, ...]) -> None:
     previous_argv = list(sys.argv)
     try:
         sys.argv = [command[1], *command[2:]]
-        exit_code = main_fn()
+        exit_code = _invoke_main(main_fn)
     finally:
         sys.argv = previous_argv
 
     if exit_code not in (None, 0):
         raise RuntimeError(f"emitter execution failed with exit code {exit_code}")
+
+
+def _invoke_main(main_fn: Callable[[], int | None]) -> int | None:
+    return main_fn()
 
 
 def _run_emitter(

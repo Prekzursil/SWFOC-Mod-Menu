@@ -312,7 +312,7 @@ public sealed class GitHubProfileUpdateService : IProfileUpdateService
         }
         catch (Exception ex)
         {
-            return BuildStaticInstallFailure(profileId, $"Failed to extract package: {ex.Message}", "extract_failed");
+            return BuildInstallFailure(profileId, $"Failed to extract package: {ex.Message}", "extract_failed");
         }
 
         return null;
@@ -388,12 +388,7 @@ public sealed class GitHubProfileUpdateService : IProfileUpdateService
         return extractDir;
     }
 
-    private ProfileInstallResult BuildInstallFailure(string profileId, string message, string reasonCode)
-    {
-        return BuildStaticInstallFailure(profileId, message, reasonCode);
-    }
-
-    private static ProfileInstallResult BuildStaticInstallFailure(string profileId, string message, string reasonCode)
+    private static ProfileInstallResult BuildInstallFailure(string profileId, string message, string reasonCode)
     {
         return new ProfileInstallResult(
             Succeeded: false,
