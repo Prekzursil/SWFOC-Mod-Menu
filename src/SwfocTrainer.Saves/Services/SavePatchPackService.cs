@@ -527,11 +527,13 @@ public sealed class SavePatchPackService : ISavePatchPackService
     {
         if (element.ValueKind == JsonValueKind.Object)
         {
-            foreach (var property in element.EnumerateObject()
-                .Where(property => string.Equals(property.Name, propertyName, StringComparison.OrdinalIgnoreCase)))
+            foreach (var property in element.EnumerateObject())
             {
-                value = property.Value;
-                return true;
+                if (string.Equals(property.Name, propertyName, StringComparison.OrdinalIgnoreCase))
+                {
+                    value = property.Value;
+                    return true;
+                }
             }
         }
 

@@ -287,7 +287,7 @@ public sealed class GitHubProfileUpdateService : IProfileUpdateService
         return null;
     }
 
-    private ProfileInstallResult? ValidateDownloadedPackageIntegrity(string profileId, ProfileManifestEntry entry, string zipPath)
+    private static ProfileInstallResult? ValidateDownloadedPackageIntegrity(string profileId, ProfileManifestEntry entry, string zipPath)
     {
         var sha = ComputeSha256(zipPath);
         if (string.Equals(sha, entry.Sha256, StringComparison.OrdinalIgnoreCase))
@@ -318,7 +318,7 @@ public sealed class GitHubProfileUpdateService : IProfileUpdateService
         return null;
     }
 
-    private async Task<ProfileInstallResult?> ValidateDownloadedProfileAsync(
+    private static async Task<ProfileInstallResult?> ValidateDownloadedProfileAsync(
         string profileId,
         string targetProfileJson,
         CancellationToken cancellationToken)

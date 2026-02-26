@@ -118,19 +118,18 @@ public sealed class SignatureResolver : ISignatureResolver
         ProcessMemoryAccessor accessor,
         IDictionary<string, SymbolInfo> symbols)
     {
+        var context = new SignatureResolutionContext(
+            fallbackOffsets,
+            cancellationToken,
+            baseAddress,
+            moduleBytes,
+            accessor,
+            symbols);
         foreach (var signatureSet in signatureSets)
         {
             foreach (var signature in signatureSet.Signatures)
             {
-                ResolveSignature(
-                    signatureSet,
-                    signature,
-                    fallbackOffsets,
-                    cancellationToken,
-                    baseAddress,
-                    moduleBytes,
-                    accessor,
-                    symbols);
+                ResolveSignature(signatureSet, signature, context);
             }
         }
     }
@@ -138,30 +137,25 @@ public sealed class SignatureResolver : ISignatureResolver
     private void ResolveSignature(
         SignatureSet signatureSet,
         SignatureSpec signature,
-        IReadOnlyDictionary<string, long> fallbackOffsets,
-        CancellationToken cancellationToken,
-        nint baseAddress,
-        byte[] moduleBytes,
-        ProcessMemoryAccessor accessor,
-        IDictionary<string, SymbolInfo> symbols)
+        SignatureResolutionContext context)
     {
-        if (symbols.ContainsKey(signature.Name))
+        if (context.Symbols.ContainsKey(signature.Name))
         {
             return;
         }
 
-        cancellationToken.ThrowIfCancellationRequested();
+        context.CancellationToken.ThrowIfCancellationRequested();
         var pattern = AobPattern.Parse(signature.Pattern);
-        var hit = AobScanner.FindPattern(moduleBytes, baseAddress, pattern);
+        var hit = AobScanner.FindPattern(context.ModuleBytes, context.BaseAddress, pattern);
         if (hit == nint.Zero)
         {
             SignatureResolverFallbacks.HandleSignatureMiss(
                 _logger,
                 signature,
-                fallbackOffsets,
-                accessor,
-                baseAddress,
-                symbols);
+                context.FallbackOffsets,
+                context.Accessor,
+                context.BaseAddress,
+                context.Symbols);
             return;
         }
 
@@ -171,10 +165,18 @@ public sealed class SignatureResolver : ISignatureResolver
             signature,
             hit,
             new SignatureResolverFallbacks.SignatureHitContext(
-                fallbackOffsets,
-                accessor,
-                baseAddress,
-                moduleBytes,
-                symbols));
+                context.FallbackOffsets,
+                context.Accessor,
+                context.BaseAddress,
+                context.ModuleBytes,
+                context.Symbols));
     }
+
+    private readonly record struct SignatureResolutionContext(
+        IReadOnlyDictionary<string, long> FallbackOffsets,
+        CancellationToken CancellationToken,
+        nint BaseAddress,
+        byte[] ModuleBytes,
+        ProcessMemoryAccessor Accessor,
+        IDictionary<string, SymbolInfo> Symbols);
 }

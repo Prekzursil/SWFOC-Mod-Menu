@@ -2465,7 +2465,7 @@ public sealed class RuntimeAdapter : IRuntimeAdapter
         return new ActionExecutionResult(false, message, source, diagnostics);
     }
 
-    private WriteAttemptResult<T> ExecuteWriteAttempt<T>(
+    private static WriteAttemptResult<T> ExecuteWriteAttempt<T>(
         string symbol,
         SymbolInfo activeSymbol,
         T requestedValue,
