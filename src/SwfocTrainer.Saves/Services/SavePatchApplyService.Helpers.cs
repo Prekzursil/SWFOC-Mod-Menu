@@ -10,13 +10,13 @@ namespace SwfocTrainer.Saves.Services;
 internal sealed class SavePatchApplyServiceHelper
 {
     private readonly ISaveCodec _saveCodec;
-    private readonly ILogger<SavePatchApplyService> _logger;
+    private readonly ILogger _logger;
     private readonly string _selectorNotFoundInSchemaText;
     private readonly string _selectorUnknownFieldText;
 
     public SavePatchApplyServiceHelper(
         ISaveCodec saveCodec,
-        ILogger<SavePatchApplyService> logger,
+        ILogger logger,
         string selectorNotFoundInSchemaText,
         string selectorUnknownFieldText)
     {

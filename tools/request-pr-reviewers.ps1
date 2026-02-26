@@ -86,6 +86,7 @@ function Invoke-GitHubApi {
 }
 
 function Set-LabelPresence {
+    [CmdletBinding(SupportsShouldProcess = $true, ConfirmImpact = "Low")]
     param(
         [Parameter(Mandatory = $true)][string]$Owner,
         [Parameter(Mandatory = $true)][string]$Repo,
@@ -104,6 +105,10 @@ function Set-LabelPresence {
         }
 
         if ($NoMutation) {
+            return "would-create"
+        }
+
+        if (-not $PSCmdlet.ShouldProcess("$Owner/$Repo", "Create label '$LabelName'")) {
             return "would-create"
         }
 

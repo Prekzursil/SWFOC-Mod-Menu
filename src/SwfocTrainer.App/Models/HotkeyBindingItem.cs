@@ -1,5 +1,4 @@
 using System.ComponentModel;
-using System.Runtime.CompilerServices;
 
 namespace SwfocTrainer.App.Models;
 
@@ -20,7 +19,7 @@ public sealed class HotkeyBindingItem : INotifyPropertyChanged
             }
 
             _gesture = value;
-            OnPropertyChanged();
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Gesture)));
         }
     }
 
@@ -35,7 +34,7 @@ public sealed class HotkeyBindingItem : INotifyPropertyChanged
             }
 
             _actionId = value;
-            OnPropertyChanged();
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(ActionId)));
         }
     }
 
@@ -50,12 +49,9 @@ public sealed class HotkeyBindingItem : INotifyPropertyChanged
             }
 
             _payloadJson = value;
-            OnPropertyChanged();
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(PayloadJson)));
         }
     }
 
     public event PropertyChangedEventHandler? PropertyChanged;
-
-    private void OnPropertyChanged([CallerMemberName] string? memberName = null)
-        => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(memberName));
 }
