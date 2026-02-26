@@ -185,7 +185,8 @@ public abstract class MainViewModelSaveOpsBase : MainViewModelQuickActionsBase
     }
     protected bool PreparePatchPreview(string selectedProfileId)
     {
-        if (ValidateSaveRuntimeVariant(selectedProfileId, out var variantMessage))
+        var variantMessage = ValidateSaveRuntimeVariant(selectedProfileId);
+        if (variantMessage is null)
         {
             return true;
         }
@@ -242,7 +243,8 @@ public abstract class MainViewModelSaveOpsBase : MainViewModelQuickActionsBase
             return;
         }
 
-        if (!ValidateSaveRuntimeVariant(SelectedProfileId, out var variantMessage))
+        var variantMessage = ValidateSaveRuntimeVariant(SelectedProfileId);
+        if (variantMessage is not null)
         {
             SavePatchApplySummary = variantMessage;
             Status = variantMessage;
@@ -286,33 +288,31 @@ public abstract class MainViewModelSaveOpsBase : MainViewModelQuickActionsBase
             ? $"Backup restored: {result.BackupPath}"
             : $"Backup restore skipped: {result.Message}";
     }
-    protected bool ValidateSaveRuntimeVariant(string requestedProfileId, out string message)
+    protected string? ValidateSaveRuntimeVariant(string requestedProfileId)
     {
-        message = string.Empty;
         var session = _runtime.CurrentSession;
         if (session?.Process.Metadata is null)
         {
-            return true;
+            return null;
         }
 
         if (!session.Process.Metadata.TryGetValue("resolvedVariant", out var runtimeVariant) ||
             string.IsNullOrWhiteSpace(runtimeVariant))
         {
-            return true;
+            return null;
         }
 
         if (requestedProfileId.Equals(UniversalProfileId, StringComparison.OrdinalIgnoreCase))
         {
-            return true;
+            return null;
         }
 
         if (runtimeVariant.Equals(requestedProfileId, StringComparison.OrdinalIgnoreCase))
         {
-            return true;
+            return null;
         }
 
-        message = $"Blocked by runtime/save variant mismatch (reasonCode=save_variant_mismatch): runtime={runtimeVariant}, selected={requestedProfileId}.";
-        return false;
+        return $"Blocked by runtime/save variant mismatch (reasonCode=save_variant_mismatch): runtime={runtimeVariant}, selected={requestedProfileId}.";
     }
     protected Task RefreshDiffAsync()
     {
@@ -426,23 +426,39 @@ public abstract class MainViewModelSaveOpsBase : MainViewModelQuickActionsBase
 
     protected async Task LoadCatalogAsync()
     {
-        if (SelectedProfileId is null) return;
+        if (SelectedProfileId is null)
+        {
+            return;
+        }
+
         CatalogSummary.Clear();
         var catalog = await _catalog.LoadCatalogAsync(SelectedProfileId);
-        foreach (var kv in catalog) CatalogSummary.Add($"{kv.Key}: {kv.Value.Count}");
+        foreach (var kv in catalog)
+        {
+            CatalogSummary.Add($"{kv.Key}: {kv.Value.Count}");
+        }
+
         Status = $"Catalog loaded for {SelectedProfileId}";
     }
 
     protected async Task DeployHelperAsync()
     {
-        if (SelectedProfileId is null) return;
+        if (SelectedProfileId is null)
+        {
+            return;
+        }
+
         var path = await _helper.DeployAsync(SelectedProfileId);
         Status = $"Helper deployed to: {path}";
     }
 
     protected async Task VerifyHelperAsync()
     {
-        if (SelectedProfileId is null) return;
+        if (SelectedProfileId is null)
+        {
+            return;
+        }
+
         var ok = await _helper.VerifyAsync(SelectedProfileId);
         Status = ok ? "Helper verification passed" : "Helper verification failed";
     }
@@ -451,7 +467,11 @@ public abstract class MainViewModelSaveOpsBase : MainViewModelQuickActionsBase
     {
         Updates.Clear();
         var updates = await _updates.CheckForUpdatesAsync();
-        foreach (var profile in updates) Updates.Add(profile);
+        foreach (var profile in updates)
+        {
+            Updates.Add(profile);
+        }
+
         Status = updates.Count > 0 ? $"Updates available for {updates.Count} profile(s)" : "No profile updates";
     }
 
@@ -535,7 +555,11 @@ public abstract class MainViewModelSaveOpsBase : MainViewModelQuickActionsBase
         var report = await _modCalibration.BuildCompatibilityReportAsync(profile, _runtime.CurrentSession);
 
         ModCompatibilityRows.Clear();
-        foreach (var action in report.Actions) ModCompatibilityRows.Add($"{action.ActionId} | {action.State} | {action.ReasonCode} | {action.Confidence:0.00}");
+        foreach (var action in report.Actions)
+        {
+            ModCompatibilityRows.Add($"{action.ActionId} | {action.State} | {action.ReasonCode} | {action.Confidence:0.00}");
+        }
+
         ModCompatibilitySummary = $"promotionReady={report.PromotionReady} dependency={report.DependencyStatus} unresolvedCritical={report.UnresolvedCriticalSymbols}";
         Status = $"Compatibility report generated for {profileId}";
     }

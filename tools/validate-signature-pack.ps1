@@ -41,7 +41,7 @@ if ($Strict) {
         }
     }
 
-    if ($pack.operations -eq $null) {
+    if ($null -eq $pack.operations) {
         Add-ValidationError -Errors $errors -Message "operations must be an object"
     }
     else {

@@ -66,7 +66,7 @@ function Invoke-GitHubApi {
             return Invoke-RestMethod -Method Get -Uri $uri -Headers $headers
         }
 
-        $json = if ($Body -ne $null) { $Body | ConvertTo-Json -Depth 10 } else { $null }
+        $json = if ($null -ne $Body) { $Body | ConvertTo-Json -Depth 10 } else { $null }
         if ($null -eq $json) {
             return Invoke-RestMethod -Method Post -Uri $uri -Headers $headers
         }

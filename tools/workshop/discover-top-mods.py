@@ -17,6 +17,7 @@ from typing import Any
 STEAM_BROWSE_URL = "https://steamcommunity.com/workshop/browse/"
 STEAM_DETAILS_URL = "https://api.steampowered.com/ISteamRemoteStorage/GetPublishedFileDetails/v1/"
 WORKSHOP_URL_TEMPLATE = "https://steamcommunity.com/sharedfiles/filedetails/?id={workshop_id}"
+ALLOWED_FETCH_SCHEMES = {"https"}
 
 PROMOTED_REQUIRED_CAPABILITIES = [
     "set_credits",
@@ -42,7 +43,14 @@ def utc_now_iso() -> str:
     return dt.datetime.now(dt.timezone.utc).replace(microsecond=0).isoformat().replace("+00:00", "Z")
 
 
+def ensure_allowed_fetch_url(url: str) -> None:
+    parsed = urllib.parse.urlparse(url)
+    if parsed.scheme.lower() not in ALLOWED_FETCH_SCHEMES or not parsed.netloc:
+        raise ValueError(f"unsupported fetch url scheme: {url}")
+
+
 def fetch_text(url: str, data: bytes | None = None) -> str:
+    ensure_allowed_fetch_url(url)
     request = urllib.request.Request(
         url,
         data=data,
@@ -52,7 +60,8 @@ def fetch_text(url: str, data: bytes | None = None) -> str:
         },
         method="POST" if data is not None else "GET",
     )
-    with urllib.request.urlopen(request, timeout=30) as response:
+    opener = urllib.request.build_opener(urllib.request.HTTPSHandler())
+    with opener.open(request, timeout=30) as response:
         return response.read().decode("utf-8", errors="replace")
 
 
@@ -166,18 +175,32 @@ def build_mod_path_hints(title: str, description: str) -> list[str]:
     return hints[:8]
 
 
+def resolve_dependency_profile(workshop_id: str, dependencies: list[str]) -> tuple[str, float] | None:
+    profile_by_dependency = {
+        "1397421866": ("aotr_1397421866_swfoc", 0.98),
+        "3447786229": ("roe_3447786229_swfoc", 0.98),
+    }
+    for dependency, profile in profile_by_dependency.items():
+        if workshop_id == dependency or dependency in dependencies:
+            return profile
+
+    return None
+
+
+def has_any_keyword(content: str, keywords: tuple[str, ...]) -> bool:
+    return any(keyword in content for keyword in keywords)
+
+
 def resolve_base_profile(workshop_id: str, title: str, description: str, dependencies: list[str]) -> tuple[str, float]:
+    dependency_profile = resolve_dependency_profile(workshop_id, dependencies)
+    if dependency_profile is not None:
+        return dependency_profile
+
     content = f"{title} {description}".lower()
-    if workshop_id == "1397421866" or "1397421866" in dependencies:
-        return "aotr_1397421866_swfoc", 0.98
-
-    if workshop_id == "3447786229" or "3447786229" in dependencies:
-        return "roe_3447786229_swfoc", 0.98
-
-    if "awakening of the rebellion" in content or "aotr" in content:
+    if has_any_keyword(content, ("awakening of the rebellion", "aotr")):
         return "aotr_1397421866_swfoc", 0.90
 
-    if "roe" in content or "rise of the empire" in content:
+    if has_any_keyword(content, ("roe", "rise of the empire")):
         return "roe_3447786229_swfoc", 0.85
 
     return "base_swfoc", 0.62
@@ -220,6 +243,31 @@ def resolve_dependencies(source: dict[str, Any], description: str, workshop_id: 
     return [str(dep) for dep in dependencies if str(dep).isdigit() and str(dep) != workshop_id]
 
 
+def build_default_launch_hints(
+    workshop_id: str,
+    dependencies: list[str],
+    title: str,
+    description: str,
+) -> dict[str, list[str]]:
+    return {
+        "steamModIds": [workshop_id] + dependencies,
+        "modPathHints": build_mod_path_hints(title, description),
+    }
+
+
+def normalize_launch_hints(raw_hints: dict[str, Any]) -> dict[str, list[str]]:
+    return {
+        "steamModIds": [str(item) for item in raw_hints.get("steamModIds", []) if str(item).isdigit()],
+        "modPathHints": [str(item).strip() for item in raw_hints.get("modPathHints", []) if str(item).strip()],
+    }
+
+
+def ensure_workshop_hint(launch_hints: dict[str, list[str]], workshop_id: str) -> dict[str, list[str]]:
+    if workshop_id and workshop_id not in launch_hints["steamModIds"]:
+        launch_hints["steamModIds"].insert(0, workshop_id)
+    return launch_hints
+
+
 def resolve_launch_hints(
     source: dict[str, Any],
     workshop_id: str,
@@ -229,20 +277,11 @@ def resolve_launch_hints(
 ) -> dict[str, list[str]]:
     launch_hints = source.get("launchHints") if isinstance(source.get("launchHints"), dict) else None
     if launch_hints is None:
-        launch_hints = {
-            "steamModIds": [workshop_id] + dependencies,
-            "modPathHints": build_mod_path_hints(title, description),
-        }
+        normalized = build_default_launch_hints(workshop_id, dependencies, title, description)
     else:
-        launch_hints = {
-            "steamModIds": [str(item) for item in launch_hints.get("steamModIds", []) if str(item).isdigit()],
-            "modPathHints": [str(item).strip() for item in launch_hints.get("modPathHints", []) if str(item).strip()],
-        }
+        normalized = normalize_launch_hints(launch_hints)
 
-    if workshop_id and workshop_id not in launch_hints["steamModIds"]:
-        launch_hints["steamModIds"].insert(0, workshop_id)
-
-    return launch_hints
+    return ensure_workshop_hint(normalized, workshop_id)
 
 
 def resolve_record_risk_level(source: dict[str, Any], dependencies: list[str]) -> str:
@@ -270,9 +309,38 @@ def resolve_record_confidence(source: dict[str, Any], profile_confidence: float)
     return max(0.0, min(1.0, float(confidence)))
 
 
+def first_non_empty_string(*candidates: Any) -> str:
+    for candidate in candidates:
+        value = str(candidate or "").strip()
+        if value:
+            return value
+
+    return ""
+
+
+def resolve_workshop_id(source: dict[str, Any], fallback_workshop_id: str | None) -> str:
+    return first_non_empty_string(
+        source.get("workshopId"),
+        source.get("publishedfileid"),
+        fallback_workshop_id,
+    )
+
+
+def resolve_title(source: dict[str, Any]) -> str:
+    return first_non_empty_string(source.get("title"), "unknown_mod")
+
+
+def resolve_lifetime_subscriptions(source: dict[str, Any], subscriptions: int) -> int:
+    lifetime_value = source.get("lifetimeSubscriptions")
+    if lifetime_value is None:
+        lifetime_value = source.get("lifetime_subscriptions")
+    lifetime_subscriptions = int(lifetime_value or 0)
+    return max(lifetime_subscriptions, subscriptions)
+
+
 def normalize_top_mod_record(source: dict[str, Any], fallback_workshop_id: str | None = None) -> dict[str, Any]:
-    workshop_id = str(source.get("workshopId") or source.get("publishedfileid") or fallback_workshop_id or "").strip()
-    title = str(source.get("title") or "unknown_mod").strip()
+    workshop_id = resolve_workshop_id(source, fallback_workshop_id)
+    title = resolve_title(source)
     description = str(source.get("description") or "")
     normalized_tags = normalize_tags(source.get("normalizedTags") or source.get("tags") or [])
     dependencies = resolve_dependencies(source, description, workshop_id)
@@ -280,7 +348,7 @@ def normalize_top_mod_record(source: dict[str, Any], fallback_workshop_id: str |
     launch_hints = resolve_launch_hints(source, workshop_id, dependencies, title, description)
     risk_level = resolve_record_risk_level(source, dependencies)
     subscriptions = int(source.get("subscriptions") or 0)
-    lifetime_subscriptions = int(source.get("lifetimeSubscriptions") or source.get("lifetime_subscriptions") or 0)
+    lifetime_subscriptions = resolve_lifetime_subscriptions(source, subscriptions)
     time_updated_iso = resolve_time_updated_iso(source)
     confidence = resolve_record_confidence(source, profile_confidence)
 
@@ -321,18 +389,23 @@ def collect_live_top_mods(app_id: int, limit: int, pages: int, browse_sort: str,
     return records, sources
 
 
-def collect_fixture_top_mods(source_file: Path, limit: int) -> tuple[list[dict[str, Any]], list[DiscoverySource], int]:
-    payload = json.loads(source_file.read_text(encoding="utf-8"))
-
+def parse_fixture_payload(payload: Any) -> tuple[int, list[Any]]:
     app_id = 32470
-    entries: list[Any]
     if isinstance(payload, dict):
         app_id = int(payload.get("appId") or app_id)
-        entries = payload.get("topMods") if isinstance(payload.get("topMods"), list) else []
-    elif isinstance(payload, list):
-        entries = payload
-    else:
-        raise ValueError("Unsupported source-file shape. Expected JSON object or array.")
+        top_mods = payload.get("topMods")
+        entries = top_mods if isinstance(top_mods, list) else []
+        return app_id, entries
+
+    if isinstance(payload, list):
+        return app_id, payload
+
+    raise ValueError("Unsupported source-file shape. Expected JSON object or array.")
+
+
+def collect_fixture_top_mods(source_file: Path, limit: int) -> tuple[list[dict[str, Any]], list[DiscoverySource], int]:
+    payload = json.loads(source_file.read_text(encoding="utf-8"))
+    app_id, entries = parse_fixture_payload(payload)
 
     normalized = [normalize_top_mod_record(item if isinstance(item, dict) else {}) for item in entries]
     normalized = [item for item in normalized if item.get("workshopId")]

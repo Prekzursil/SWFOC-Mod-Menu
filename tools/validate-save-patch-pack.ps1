@@ -58,7 +58,7 @@ foreach ($required in $schema.required) {
     Confirm-Field -Object $pack -Field ([string]$required)
 }
 
-if ($pack.metadata -eq $null) {
+if ($null -eq $pack.metadata) {
     Add-Error "metadata is required"
 }
 else {
@@ -75,7 +75,7 @@ else {
     }
 }
 
-if ($pack.compatibility -eq $null) {
+if ($null -eq $pack.compatibility) {
     Add-Error "compatibility is required"
 }
 else {

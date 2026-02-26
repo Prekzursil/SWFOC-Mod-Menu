@@ -314,6 +314,33 @@ def append_notes(lines: list[str], notes: list[str]) -> None:
         lines.append(f"  - {note}")
 
 
+def should_skip_entry(description: str, variable_type: str) -> bool:
+    if not description:
+        return True
+
+    lowered_description = description.lower()
+    if "donate" in lowered_description or "paypal" in lowered_description:
+        return True
+
+    return variable_type.lower() != "auto assembler script"
+
+
+def collect_script_intel(root: element_tree.Element) -> list[ScriptIntel]:
+    records: list[ScriptIntel] = []
+    for group, entry in iter_cheat_entries(root):
+        description = normalize_description(entry.findtext("Description"))
+        variable_type = (entry.findtext("VariableType") or "").strip()
+        script = entry.findtext("AssemblerScript") or ""
+
+        if should_skip_entry(description, variable_type):
+            continue
+
+        intel = extract_intel_from_script(group=group, description=description, script=script)
+        records.append(intel)
+
+    return dedupe_intel(records)
+
+
 def main() -> int:
     args = parse_args()
     ct_path = Path(args.ct)
@@ -323,25 +350,7 @@ def main() -> int:
     tree = element_tree.parse(ct_path)
     root = tree.getroot()
 
-    records: list[ScriptIntel] = []
-    for group, entry in iter_cheat_entries(root):
-        description = normalize_description(entry.findtext("Description"))
-        variable_type = (entry.findtext("VariableType") or "").strip()
-        script = entry.findtext("AssemblerScript") or ""
-
-        if not description:
-            continue
-
-        if "donate" in description.lower() or "paypal" in description.lower():
-            continue
-
-        if variable_type.lower() != "auto assembler script":
-            continue
-
-        intel = extract_intel_from_script(group=group, description=description, script=script)
-        records.append(intel)
-
-    records = dedupe_intel(records)
+    records = collect_script_intel(root)
 
     payload = {
         "source": str(ct_path),

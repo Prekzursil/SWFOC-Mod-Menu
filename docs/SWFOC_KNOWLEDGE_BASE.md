@@ -8,9 +8,9 @@ This document captures source-backed facts that directly affect `SWFOC editor` p
 
 Sources:
 
-- https://modtools.petrolution.net/articles/Creating_A_Mod
-- https://steamcommunity.com/discussions/forum/1/4841930637303525852/
-- https://www.moddb.com/mods/republic-at-war/downloads/republic-at-war-v18
+- <https://modtools.petrolution.net/articles/Creating_A_Mod>
+- <https://steamcommunity.com/discussions/forum/1/4841930637303525852/>
+- <https://www.moddb.com/mods/republic-at-war/downloads/republic-at-war-v18>
 
 Key forms:
 
@@ -31,9 +31,9 @@ Project impact:
 
 Sources:
 
-- https://www.petroglyphgames.com/eawmodtool/
-- https://steamcommunity.com/games/32470/announcements/detail/5455609499987684897
-- https://steamcommunity.com/games/32470/announcements/detail/4551542220607036511
+- <https://www.petroglyphgames.com/eawmodtool/>
+- <https://steamcommunity.com/games/32470/announcements/detail/5455609499987684897>
+- <https://steamcommunity.com/games/32470/announcements/detail/4551542220607036511>
 
 Key facts:
 
@@ -50,7 +50,7 @@ Project impact:
 
 Source:
 
-- https://www.petroglyphgames.com/eawmodtool/EAW_FOC_Debug_Kit_64.zip
+- <https://www.petroglyphgames.com/eawmodtool/EAW_FOC_Debug_Kit_64.zip>
 
 Observed metadata on 2026-02-15:
 
@@ -66,7 +66,7 @@ Project impact:
 
 Practical source:
 
-- https://steamcommunity.com/sharedfiles/filedetails/?id=2726462029
+- <https://steamcommunity.com/sharedfiles/filedetails/?id=2726462029>
 
 Common logs used by community troubleshooting:
 
@@ -81,13 +81,13 @@ Project impact:
 
 Sources:
 
-- https://modtools.petrolution.net/docs/Formats
-- https://modtools.petrolution.net/docs/MegFileFormat
-- https://modtools.petrolution.net/docs/AloFileFormat
-- https://modtools.petrolution.net/docs/AlaFileFormat
-- https://modtools.petrolution.net/docs/MtdFileFormat
-- https://modtools.petrolution.net/docs/DatFileFormat
-- https://modtools.petrolution.net/docs/LuaFileFormat
+- <https://modtools.petrolution.net/docs/Formats>
+- <https://modtools.petrolution.net/docs/MegFileFormat>
+- <https://modtools.petrolution.net/docs/AloFileFormat>
+- <https://modtools.petrolution.net/docs/AlaFileFormat>
+- <https://modtools.petrolution.net/docs/MtdFileFormat>
+- <https://modtools.petrolution.net/docs/DatFileFormat>
+- <https://modtools.petrolution.net/docs/LuaFileFormat>
 
 Project impact:
 
