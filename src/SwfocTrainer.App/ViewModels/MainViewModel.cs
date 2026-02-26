@@ -1037,6 +1037,18 @@ public sealed class MainViewModel : INotifyPropertyChanged
         return false;
     }
 
+    // Kept as a compatibility shim for reflection-based tests that assert gating semantics.
+    private static string? ResolveActionUnavailableReason(string actionId, ActionSpec spec, AttachSession session)
+    {
+        MainViewModelAttachHelpers.IsActionAvailableForCurrentSession(
+            actionId,
+            spec,
+            session,
+            DefaultSymbolByActionId,
+            out var unavailableReason);
+        return unavailableReason;
+    }
+
     private async Task DetachAsync()
     {
         _orchestrator.UnfreezeAll();
