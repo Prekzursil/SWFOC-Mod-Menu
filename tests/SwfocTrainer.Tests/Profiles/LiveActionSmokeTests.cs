@@ -1,11 +1,9 @@
-using System.Diagnostics;
 using FluentAssertions;
 using Microsoft.Extensions.Logging.Abstractions;
 using SwfocTrainer.Core.Models;
 using SwfocTrainer.Profiles.Config;
 using SwfocTrainer.Profiles.Services;
 using SwfocTrainer.Runtime.Interop;
-using SwfocTrainer.Runtime.Scanning;
 using SwfocTrainer.Runtime.Services;
 using SwfocTrainer.Tests.Common;
 using Xunit;
@@ -14,12 +12,21 @@ using Xunit.Abstractions;
 namespace SwfocTrainer.Tests.Profiles;
 
 // #lizard forgive global
-public sealed partial class LiveActionSmokeTests
+public sealed class LiveActionSmokeTests
 {
     private readonly ITestOutputHelper _output;
 
-    private sealed record ModuleSnapshot(nint BaseAddress, int ModuleSize, byte[] Bytes);
-    private sealed record LiveSmokeReadState(int? Credits, int? HeroRespawn, float? InstantBuild, float? SelectedHp, int? PlanetOwner, byte? Fog, byte? TimerFreeze, byte? TacticalGod, byte? TacticalOneHit, IReadOnlyList<string> ReadFailures);
+    private sealed record LiveSmokeReadState(
+        int? Credits,
+        int? HeroRespawn,
+        float? InstantBuild,
+        float? SelectedHp,
+        int? PlanetOwner,
+        byte? Fog,
+        byte? TimerFreeze,
+        byte? TacticalGod,
+        byte? TacticalOneHit,
+        IReadOnlyList<string> ReadFailures);
 
     public LiveActionSmokeTests(ITestOutputHelper output)
     {
@@ -128,87 +135,18 @@ public sealed partial class LiveActionSmokeTests
 
     private void DumpConditionalDebugScans(AttachSession session, LiveSmokeReadState readState)
     {
-        if (readState.Fog.HasValue && readState.TimerFreeze is null)
+        if (readState.ReadFailures.Count == 0)
         {
-            try
-            {
-                DumpNearbyRipRelativeByteTargets(session, "fog_reveal", window: 0x40);
-                DumpNearbyRipRelativeByteTargets(session, "ai_enabled", window: 0x80);
-            }
-            catch (Exception ex)
-            {
-                _output.WriteLine($"Debug scan failed: {ex.Message}");
-            }
+            return;
         }
 
-        if (readState.Credits is null)
-        {
-            try
-            {
-                DumpTopRipRelativeInt32Targets(session, top: 20);
-            }
-            catch (Exception ex)
-            {
-                _output.WriteLine($"Credits debug scan failed: {ex.Message}");
-            }
-        }
-
-        DumpCalibrationDebugScan(session);
-    }
-
-    private void DumpCalibrationDebugScan(AttachSession session)
-    {
-        // Calibration helpers: if these are fallback-only, dump RIP-relative references to their current RVA
-        // so we can craft stable AOB patterns for signatures.
-        try
-        {
-            var snapshot = ReadMainModuleSnapshot(session);
-            _output.WriteLine($"Main module snapshot: base=0x{snapshot.BaseAddress.ToInt64():X} size=0x{snapshot.ModuleSize:X}");
-            DumpRipRelativeReferencesForFallbackOnly(session, snapshot, new[]
-            {
-                ("instant_build", SymbolValueType.Float),
-                ("selected_hp", SymbolValueType.Float),
-                ("planet_owner", SymbolValueType.Int32),
-            });
-
-            // If fallback offsets are stale (common on x64), dump candidate signatures based on code patterns instead.
-            DumpInstantBuildCandidates(session, snapshot, maxTargets: 12);
-            DumpSelectedHpCandidates(session, snapshot, maxHits: 12);
-            DumpPlanetOwnerCandidates(session, snapshot, maxHits: 12);
-
-            // If specific pattern scans come up empty, fall back to "top RIP-relative targets" to locate globals.
-            DumpTopRipRelativeFloatTargets(snapshot, top: 20);
-            DumpTopRipRelativeFloatArithmeticTargets(snapshot, top: 30);
-            DumpTopRipRelativeInt32StoreTargets(snapshot, top: 20);
-            DumpTopRipRelativeInt32Targets32BitOnly(snapshot, top: 40);
-            DumpTopRipRelativeByteCompareTargets(snapshot, top: 40);
-            DumpTopRipRelativeByteImmediateStoreTargets(snapshot, top: 40);
-
-            DumpPlanetOwnerExpectedAobSanityCheck(session, snapshot);
-        }
-        catch (Exception ex)
-        {
-            _output.WriteLine($"Symbol calibration debug scan failed: {ex.Message}");
-        }
-    }
-
-    private void DumpPlanetOwnerExpectedAobSanityCheck(AttachSession session, ModuleSnapshot snapshot)
-    {
-        // Quick sanity check: ensure our expected planet_owner AOB actually exists in module bytes.
-        try
-        {
-            using var process = Process.GetProcessById(session.Process.ProcessId);
-            var expected = AobPattern.Parse("89 35 ?? ?? ?? ?? 48 C7 05 ?? ?? ?? ?? ?? ?? ?? ??");
-            var hit = AobScanner.FindPattern(process, snapshot.Bytes, snapshot.BaseAddress, expected);
-            var hitRva = hit == nint.Zero ? -1 : hit.ToInt64() - snapshot.BaseAddress.ToInt64();
-            _output.WriteLine(hit == nint.Zero
-                ? "Planet-owner expected AOB did NOT match anywhere in module."
-                : $"Planet-owner expected AOB matched at RVA 0x{hitRva:X} (addr=0x{hit.ToInt64():X}).");
-        }
-        catch (Exception ex)
-        {
-            _output.WriteLine($"Planet-owner AOB sanity check failed: {ex.Message}");
-        }
+        _output.WriteLine("Debug scan hint: live read failures detected.");
+        _output.WriteLine($" - processId={session.Process.ProcessId}");
+        _output.WriteLine($" - creditsReadable={readState.Credits.HasValue}");
+        _output.WriteLine($" - fogReadable={readState.Fog.HasValue}");
+        _output.WriteLine($" - timerReadable={readState.TimerFreeze.HasValue}");
+        _output.WriteLine($" - selectedHpReadable={readState.SelectedHp.HasValue}");
+        _output.WriteLine($" - planetOwnerReadable={readState.PlanetOwner.HasValue}");
     }
 
     private void LogReadFailures(IReadOnlyList<string> readFailures)
@@ -291,4 +229,15 @@ public sealed partial class LiveActionSmokeTests
         }
     }
 
+    private static async Task<IReadOnlyList<TrainerProfile>> ResolveProfilesAsync(FileSystemProfileRepository profileRepository)
+    {
+        var ids = await profileRepository.ListAvailableProfilesAsync();
+        var profiles = new List<TrainerProfile>(ids.Count);
+        foreach (var id in ids)
+        {
+            profiles.Add(await profileRepository.ResolveInheritedProfileAsync(id));
+        }
+
+        return profiles;
+    }
 }

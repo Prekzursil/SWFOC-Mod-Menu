@@ -1,14 +1,32 @@
 using Microsoft.Extensions.Logging;
 using System.Text.Json;
+using SwfocTrainer.Core.Contracts;
 using SwfocTrainer.Core.IO;
 using SwfocTrainer.Core.Models;
 using SwfocTrainer.Saves.Internal;
 
 namespace SwfocTrainer.Saves.Services;
 
-public sealed partial class SavePatchApplyService
+internal sealed class SavePatchApplyServiceHelper
 {
-    private async Task<string?> ResolveLatestBackupPathAsync(string targetPath, CancellationToken cancellationToken)
+    private readonly ISaveCodec _saveCodec;
+    private readonly ILogger<SavePatchApplyService> _logger;
+    private readonly string _selectorNotFoundInSchemaText;
+    private readonly string _selectorUnknownFieldText;
+
+    public SavePatchApplyServiceHelper(
+        ISaveCodec saveCodec,
+        ILogger<SavePatchApplyService> logger,
+        string selectorNotFoundInSchemaText,
+        string selectorUnknownFieldText)
+    {
+        _saveCodec = saveCodec;
+        _logger = logger;
+        _selectorNotFoundInSchemaText = selectorNotFoundInSchemaText;
+        _selectorUnknownFieldText = selectorUnknownFieldText;
+    }
+
+    public async Task<string?> ResolveLatestBackupPathAsync(string targetPath, CancellationToken cancellationToken)
     {
         if (!TryGetTargetLocation(targetPath, out var directory, out var fileName))
         {
@@ -22,6 +40,67 @@ public sealed partial class SavePatchApplyService
         }
 
         return ResolveBackupFromCandidates(directory, fileName);
+    }
+
+    public (object? Value, SavePatchApplyResult? Failure) TryNormalizePatchValue(SavePatchOperation operation, string reasonValueNormalizationFailed)
+    {
+        try
+        {
+            return (SavePatchFieldCodec.NormalizePatchValue(operation.NewValue, operation.ValueType), null);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogWarning(ex, "Patch value normalization failed for field {FieldId}", operation.FieldId);
+            return (
+                null,
+                BuildFailure(
+                    SavePatchApplyClassification.ValidationFailed,
+                    reasonValueNormalizationFailed,
+                    "Patch operation value could not be normalized.",
+                    operation.FieldId,
+                    operation.FieldPath));
+        }
+    }
+
+    public async Task<SavePatchApplyResult?> TryApplyOperationValueAsync(
+        SaveDocument targetDoc,
+        SavePatchOperation operation,
+        object? value,
+        string reasonFieldApplyFailed,
+        CancellationToken cancellationToken)
+    {
+        try
+        {
+            await ApplyFieldWithFallbackSelectorAsync(targetDoc, operation, value, cancellationToken);
+            return null;
+        }
+        catch (Exception ex)
+        {
+            _logger.LogWarning(ex, "Patch field apply failed for {FieldId}", operation.FieldId);
+            return BuildFailure(
+                SavePatchApplyClassification.ValidationFailed,
+                reasonFieldApplyFailed,
+                "Patch operation could not be applied to target field.",
+                operation.FieldId,
+                operation.FieldPath);
+        }
+    }
+
+    public void TryDeleteTempOutput(string tempOutputPath)
+    {
+        if (!File.Exists(tempOutputPath))
+        {
+            return;
+        }
+
+        try
+        {
+            File.Delete(tempOutputPath);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogWarning(ex, "Temporary patch output cleanup failed for {TempOutputPath}", tempOutputPath);
+        }
     }
 
     private async Task ApplyFieldWithFallbackSelectorAsync(
@@ -64,18 +143,6 @@ public sealed partial class SavePatchApplyService
         throw new InvalidOperationException($"No valid selector was provided for field '{operation.FieldId}'.");
     }
 
-    private static ApplyFilePaths BuildApplyFilePaths(string targetSavePath)
-    {
-        var targetPath = NormalizeTargetPath(targetSavePath);
-        var runId = DateTimeOffset.UtcNow.ToString(RunIdFormat);
-        return new ApplyFilePaths(
-            TargetPath: targetPath,
-            BackupPath: $"{targetPath}.bak.{runId}.sav",
-            ReceiptPath: $"{targetPath}.apply-receipt.{runId}.json",
-            TempOutputPath: $"{targetPath}.tmp.{runId}.sav",
-            RunId: runId);
-    }
-
     private static bool TryGetTargetLocation(string targetPath, out string directory, out string fileName)
     {
         directory = Path.GetDirectoryName(targetPath) ?? string.Empty;
@@ -108,7 +175,7 @@ public sealed partial class SavePatchApplyService
         try
         {
             var json = await File.ReadAllTextAsync(receiptPath, cancellationToken);
-            var receipt = JsonSerializer.Deserialize<SavePatchApplyReceipt>(json, ReceiptJsonOptions);
+            var receipt = JsonSerializer.Deserialize<SavePatchApplyReceipt>(json, SavePatchApplyService.ReceiptJsonOptions);
             if (receipt is null)
             {
                 _logger.LogWarning("Receipt {ReceiptPath} could not be parsed into expected contract. Continuing backup lookup.", receiptPath);
@@ -153,49 +220,6 @@ public sealed partial class SavePatchApplyService
         return null;
     }
 
-    private (object? Value, SavePatchApplyResult? Failure) TryNormalizePatchValue(SavePatchOperation operation)
-    {
-        try
-        {
-            return (SavePatchFieldCodec.NormalizePatchValue(operation.NewValue, operation.ValueType), null);
-        }
-        catch (Exception ex)
-        {
-            _logger.LogWarning(ex, "Patch value normalization failed for field {FieldId}", operation.FieldId);
-            return (
-                null,
-                BuildFailure(
-                    SavePatchApplyClassification.ValidationFailed,
-                    ReasonValueNormalizationFailed,
-                    "Patch operation value could not be normalized.",
-                    operation.FieldId,
-                    operation.FieldPath));
-        }
-    }
-
-    private async Task<SavePatchApplyResult?> TryApplyOperationValueAsync(
-        SaveDocument targetDoc,
-        SavePatchOperation operation,
-        object? value,
-        CancellationToken cancellationToken)
-    {
-        try
-        {
-            await ApplyFieldWithFallbackSelectorAsync(targetDoc, operation, value, cancellationToken);
-            return null;
-        }
-        catch (Exception ex)
-        {
-            _logger.LogWarning(ex, "Patch field apply failed for {FieldId}", operation.FieldId);
-            return BuildFailure(
-                SavePatchApplyClassification.ValidationFailed,
-                ReasonFieldApplyFailed,
-                "Patch operation could not be applied to target field.",
-                operation.FieldId,
-                operation.FieldPath);
-        }
-    }
-
     private async Task<SelectorApplyAttempt> TryApplySelectorAsync(
         SaveDocument targetDoc,
         string? selector,
@@ -221,15 +245,15 @@ public sealed partial class SavePatchApplyService
         }
     }
 
-    private static bool IsSelectorMismatchError(Exception exception)
+    private bool IsSelectorMismatchError(Exception exception)
     {
         if (exception is not InvalidOperationException)
         {
             return false;
         }
 
-        return exception.Message.Contains(SelectorNotFoundInSchemaText, StringComparison.OrdinalIgnoreCase)
-               || exception.Message.Contains(SelectorUnknownFieldText, StringComparison.OrdinalIgnoreCase);
+        return exception.Message.Contains(_selectorNotFoundInSchemaText, StringComparison.OrdinalIgnoreCase)
+               || exception.Message.Contains(_selectorUnknownFieldText, StringComparison.OrdinalIgnoreCase);
     }
 
     private static bool TryNormalizeBackupCandidatePath(string? path, out string? normalized, out string invalidReason)
@@ -269,23 +293,6 @@ public sealed partial class SavePatchApplyService
         return true;
     }
 
-    private void TryDeleteTempOutput(string tempOutputPath)
-    {
-        if (!File.Exists(tempOutputPath))
-        {
-            return;
-        }
-
-        try
-        {
-            File.Delete(tempOutputPath);
-        }
-        catch (Exception ex)
-        {
-            _logger.LogWarning(ex, "Temporary patch output cleanup failed for {TempOutputPath}", tempOutputPath);
-        }
-    }
-
     private static SavePatchApplyResult BuildFailure(
         SavePatchApplyClassification classification,
         string reasonCode,
@@ -304,31 +311,24 @@ public sealed partial class SavePatchApplyService
             Failure: new SavePatchApplyFailure(reasonCode, message, fieldId, fieldPath));
     }
 
-    private sealed record ApplyFilePaths(
-        string TargetPath,
-        string BackupPath,
-        string ReceiptPath,
-        string TempOutputPath,
-        string RunId);
-
     private sealed record SelectorApplyAttempt(bool WasApplied, Exception? MismatchError)
     {
         public static SelectorApplyAttempt NotAttempted { get; } = new(WasApplied: false, MismatchError: null);
         public static SelectorApplyAttempt AppliedAttempt { get; } = new(WasApplied: true, MismatchError: null);
         public static SelectorApplyAttempt Mismatch(Exception error) => new(WasApplied: false, MismatchError: error);
     }
-
-    private sealed record SavePatchApplyReceipt(
-        string RunId,
-        DateTimeOffset AppliedAtUtc,
-        string TargetPath,
-        string BackupPath,
-        string ReceiptPath,
-        string ProfileId,
-        string SchemaId,
-        string Classification,
-        string SourceHash,
-        string TargetHash,
-        string AppliedHash,
-        int OperationsApplied);
 }
+
+internal sealed record SavePatchApplyReceipt(
+    string RunId,
+    DateTimeOffset AppliedAtUtc,
+    string TargetPath,
+    string BackupPath,
+    string ReceiptPath,
+    string ProfileId,
+    string SchemaId,
+    string Classification,
+    string SourceHash,
+    string TargetHash,
+    string AppliedHash,
+    int OperationsApplied);

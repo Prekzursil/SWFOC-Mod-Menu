@@ -10,9 +10,9 @@ namespace SwfocTrainer.Saves.Services;
 /// <summary>
 /// Atomic apply + backup/receipt + restore pipeline for save patch packs.
 /// </summary>
-public sealed partial class SavePatchApplyService : ISavePatchApplyService
+public sealed class SavePatchApplyService : ISavePatchApplyService
 {
-    private static readonly JsonSerializerOptions ReceiptJsonOptions = new()
+    internal static readonly JsonSerializerOptions ReceiptJsonOptions = new()
     {
         WriteIndented = true
     };
@@ -35,6 +35,7 @@ public sealed partial class SavePatchApplyService : ISavePatchApplyService
     private readonly ISaveCodec _saveCodec;
     private readonly ISavePatchPackService _patchPackService;
     private readonly ILogger<SavePatchApplyService> _logger;
+    private readonly SavePatchApplyServiceHelper _helper;
 
     public SavePatchApplyService(
         ISaveCodec saveCodec,
@@ -44,6 +45,11 @@ public sealed partial class SavePatchApplyService : ISavePatchApplyService
         _saveCodec = saveCodec;
         _patchPackService = patchPackService;
         _logger = logger;
+        _helper = new SavePatchApplyServiceHelper(
+            saveCodec,
+            logger,
+            SelectorNotFoundInSchemaText,
+            SelectorUnknownFieldText);
     }
 
     public async Task<SavePatchApplyResult> ApplyAsync(
@@ -111,7 +117,7 @@ public sealed partial class SavePatchApplyService : ISavePatchApplyService
     public async Task<SaveRollbackResult> RestoreLastBackupAsync(string targetSavePath, CancellationToken cancellationToken)
     {
         var normalizedTargetPath = NormalizeTargetPath(targetSavePath);
-        var backupPath = await ResolveLatestBackupPathAsync(normalizedTargetPath, cancellationToken);
+        var backupPath = await _helper.ResolveLatestBackupPathAsync(normalizedTargetPath, cancellationToken);
         if (string.IsNullOrWhiteSpace(backupPath) || !File.Exists(backupPath))
         {
             return new SaveRollbackResult(
@@ -245,13 +251,18 @@ public sealed partial class SavePatchApplyService : ISavePatchApplyService
                 operation.FieldPath);
         }
 
-        var normalization = TryNormalizePatchValue(operation);
+        var normalization = _helper.TryNormalizePatchValue(operation, ReasonValueNormalizationFailed);
         if (normalization.Failure is not null)
         {
             return normalization.Failure;
         }
 
-        return await TryApplyOperationValueAsync(targetDoc, operation, normalization.Value, cancellationToken);
+        return await _helper.TryApplyOperationValueAsync(
+            targetDoc,
+            operation,
+            normalization.Value,
+            ReasonFieldApplyFailed,
+            cancellationToken);
     }
 
     private async Task<SavePatchApplyResult?> ValidatePatchedDocumentAsync(
@@ -317,7 +328,7 @@ public sealed partial class SavePatchApplyService : ISavePatchApplyService
         catch (Exception ex)
         {
             _logger.LogError(ex, "Patch apply write path failed for {TargetSavePath}", paths.TargetPath);
-            TryDeleteTempOutput(paths.TempOutputPath);
+            _helper.TryDeleteTempOutput(paths.TempOutputPath);
             return await RestoreAfterWriteFailureAsync(paths.TargetPath, preApplyBytes, paths.BackupPath, paths.ReceiptPath, cancellationToken);
         }
     }
@@ -378,4 +389,41 @@ public sealed partial class SavePatchApplyService : ISavePatchApplyService
         var json = JsonSerializer.Serialize(receipt, ReceiptJsonOptions);
         await File.WriteAllTextAsync(receiptPath, json, cancellationToken);
     }
+
+    private static ApplyFilePaths BuildApplyFilePaths(string targetSavePath)
+    {
+        var targetPath = NormalizeTargetPath(targetSavePath);
+        var runId = DateTimeOffset.UtcNow.ToString(RunIdFormat);
+        return new ApplyFilePaths(
+            TargetPath: targetPath,
+            BackupPath: $"{targetPath}.bak.{runId}.sav",
+            ReceiptPath: $"{targetPath}.apply-receipt.{runId}.json",
+            TempOutputPath: $"{targetPath}.tmp.{runId}.sav",
+            RunId: runId);
+    }
+
+    private static SavePatchApplyResult BuildFailure(
+        SavePatchApplyClassification classification,
+        string reasonCode,
+        string message,
+        string? fieldId = null,
+        string? fieldPath = null,
+        string? backupPath = null,
+        string? receiptPath = null)
+    {
+        return new SavePatchApplyResult(
+            classification,
+            Applied: false,
+            Message: message,
+            BackupPath: backupPath,
+            ReceiptPath: receiptPath,
+            Failure: new SavePatchApplyFailure(reasonCode, message, fieldId, fieldPath));
+    }
+
+    private sealed record ApplyFilePaths(
+        string TargetPath,
+        string BackupPath,
+        string ReceiptPath,
+        string TempOutputPath,
+        string RunId);
 }

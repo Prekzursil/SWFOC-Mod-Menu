@@ -85,7 +85,7 @@ function Invoke-GitHubApi {
     }
 }
 
-function Ensure-LabelExists {
+function Set-LabelPresence {
     param(
         [Parameter(Mandatory = $true)][string]$Owner,
         [Parameter(Mandatory = $true)][string]$Repo,
@@ -206,7 +206,7 @@ if (-not $requested) {
     $fallbackApplied = $true
     $reason = if ([string]::IsNullOrWhiteSpace($reason)) { "no_eligible_reviewer" } else { "$reason;fallback" }
 
-    $labelStatus = Ensure-LabelExists -Owner $RepoOwner -Repo $RepoName -LabelName $roster.fallbackLabel -NoMutation:$DryRun
+    $labelStatus = Set-LabelPresence -Owner $RepoOwner -Repo $RepoName -LabelName $roster.fallbackLabel -NoMutation:$DryRun
 
     if (-not $DryRun) {
         [void](Invoke-GitHubApi -Method "POST" -Endpoint "repos/$RepoOwner/$RepoName/issues/$PullNumber/labels" -Body @{

@@ -6,7 +6,7 @@ namespace SwfocTrainer.Runtime.Services;
 
 public sealed class ProfileVariantResolver : IProfileVariantResolver
 {
-    public const string UniversalProfileId = "universal_auto";
+    public static string UniversalProfileId { get; } = "universal_auto";
 
     private readonly ILaunchContextResolver _launchContextResolver;
     private readonly IProfileRepository? _profileRepository;

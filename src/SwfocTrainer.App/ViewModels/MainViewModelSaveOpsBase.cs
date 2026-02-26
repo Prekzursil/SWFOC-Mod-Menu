@@ -231,10 +231,7 @@ public abstract class MainViewModelSaveOpsBase : MainViewModelQuickActionsBase
     }
     protected void AppendPatchCompatibilityRows(string severity, string reasonCode, IEnumerable<string> messages)
     {
-        foreach (var message in messages)
-        {
-            SavePatchCompatibility.Add(new SavePatchCompatibilityViewItem(severity, reasonCode, message));
-        }
+        foreach (var message in messages) { SavePatchCompatibility.Add(new SavePatchCompatibilityViewItem(severity, reasonCode, message)); }
     }
     protected async Task ApplyPatchPackAsync()
     {
@@ -339,15 +336,9 @@ public abstract class MainViewModelSaveOpsBase : MainViewModelQuickActionsBase
     protected void RebuildSaveFieldRows()
     {
         SaveFields.Clear();
-        if (_loadedSave is null)
-        {
-            return;
-        }
+        if (_loadedSave is null) { return; }
 
-        foreach (var row in FlattenNodes(_loadedSave.Root))
-        {
-            SaveFields.Add(row);
-        }
+        foreach (var row in FlattenNodes(_loadedSave.Root)) { SaveFields.Add(row); }
 
         ApplySaveSearch();
     }
@@ -426,27 +417,18 @@ public abstract class MainViewModelSaveOpsBase : MainViewModelQuickActionsBase
 
     protected async Task LoadCatalogAsync()
     {
-        if (SelectedProfileId is null)
-        {
-            return;
-        }
+        if (SelectedProfileId is null) { return; }
 
         CatalogSummary.Clear();
         var catalog = await _catalog.LoadCatalogAsync(SelectedProfileId);
-        foreach (var kv in catalog)
-        {
-            CatalogSummary.Add($"{kv.Key}: {kv.Value.Count}");
-        }
+        foreach (var kv in catalog) { CatalogSummary.Add($"{kv.Key}: {kv.Value.Count}"); }
 
         Status = $"Catalog loaded for {SelectedProfileId}";
     }
 
     protected async Task DeployHelperAsync()
     {
-        if (SelectedProfileId is null)
-        {
-            return;
-        }
+        if (SelectedProfileId is null) { return; }
 
         var path = await _helper.DeployAsync(SelectedProfileId);
         Status = $"Helper deployed to: {path}";
@@ -454,10 +436,7 @@ public abstract class MainViewModelSaveOpsBase : MainViewModelQuickActionsBase
 
     protected async Task VerifyHelperAsync()
     {
-        if (SelectedProfileId is null)
-        {
-            return;
-        }
+        if (SelectedProfileId is null) { return; }
 
         var ok = await _helper.VerifyAsync(SelectedProfileId);
         Status = ok ? "Helper verification passed" : "Helper verification failed";
@@ -467,17 +446,14 @@ public abstract class MainViewModelSaveOpsBase : MainViewModelQuickActionsBase
     {
         Updates.Clear();
         var updates = await _updates.CheckForUpdatesAsync();
-        foreach (var profile in updates)
-        {
-            Updates.Add(profile);
-        }
+        foreach (var profile in updates) { Updates.Add(profile); }
 
         Status = updates.Count > 0 ? $"Updates available for {updates.Count} profile(s)" : "No profile updates";
     }
 
     protected async Task InstallUpdateAsync()
     {
-        if (SelectedProfileId is null) return;
+        if (SelectedProfileId is null) { return; }
         var result = await _updates.InstallProfileTransactionalAsync(SelectedProfileId);
         if (!result.Succeeded)
         {
@@ -494,7 +470,7 @@ public abstract class MainViewModelSaveOpsBase : MainViewModelQuickActionsBase
 
     protected async Task RollbackProfileUpdateAsync()
     {
-        if (SelectedProfileId is null) return;
+        if (SelectedProfileId is null) { return; }
         var rollback = await _updates.RollbackLastInstallAsync(SelectedProfileId);
         if (!rollback.Restored)
         {
@@ -555,10 +531,7 @@ public abstract class MainViewModelSaveOpsBase : MainViewModelQuickActionsBase
         var report = await _modCalibration.BuildCompatibilityReportAsync(profile, _runtime.CurrentSession);
 
         ModCompatibilityRows.Clear();
-        foreach (var action in report.Actions)
-        {
-            ModCompatibilityRows.Add($"{action.ActionId} | {action.State} | {action.ReasonCode} | {action.Confidence:0.00}");
-        }
+        foreach (var action in report.Actions) { ModCompatibilityRows.Add($"{action.ActionId} | {action.State} | {action.ReasonCode} | {action.Confidence:0.00}"); }
 
         ModCompatibilitySummary = $"promotionReady={report.PromotionReady} dependency={report.DependencyStatus} unresolvedCritical={report.UnresolvedCriticalSymbols}";
         Status = $"Compatibility report generated for {profileId}";
