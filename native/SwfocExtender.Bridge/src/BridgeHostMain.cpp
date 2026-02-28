@@ -170,8 +170,8 @@ bool HasNonEmptyAnchor(
 CapabilityState BuildProbeState(bool available) {
     CapabilityState state {};
     state.available = available;
-    state.state = available ? "Verified" : "Unavailable";
-    state.reasonCode = available ? "CAPABILITY_PROBE_PASS" : "CAPABILITY_REQUIRED_MISSING";
+    state.state = available ? "Experimental" : "Unavailable";
+    state.reasonCode = available ? "CAPABILITY_FEATURE_EXPERIMENTAL" : "CAPABILITY_REQUIRED_MISSING";
     return state;
 }
 
