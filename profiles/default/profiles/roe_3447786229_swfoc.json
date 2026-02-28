@@ -6,12 +6,6 @@
   "steamWorkshopId": "3447786229",
   "backendPreference": "auto",
   "requiredCapabilities": [
-    "set_credits",
-    "freeze_timer",
-    "toggle_fog_reveal",
-    "toggle_ai",
-    "set_unit_cap",
-    "toggle_instant_build_patch",
     "set_hero_state_helper",
     "toggle_roe_respawn_helper"
   ],
@@ -83,6 +77,7 @@
     "dependencySensitiveActions": "spawn_unit_helper,set_hero_state_helper,toggle_roe_respawn_helper",
     "localPathHints": "roe,order 66,order-66,3447786229",
     "localParentPathHints": "1397421866,aotr,awakening of the rebellion,awakening-of-the-rebellion",
-    "profileAliases": "roe_3447786229_swfoc,roe,order66,order 66 submod"
+    "profileAliases": "roe_3447786229_swfoc,roe,order66,order 66 submod",
+    "quickActionBackendCompatibility": "inherits base_swfoc managed quick-action routing (Memory/CodePatch)"
   }
 }

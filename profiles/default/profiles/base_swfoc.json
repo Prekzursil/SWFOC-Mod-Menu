@@ -5,14 +5,7 @@
   "exeTarget": "Swfoc",
   "steamWorkshopId": null,
   "backendPreference": "auto",
-  "requiredCapabilities": [
-    "set_credits",
-    "freeze_timer",
-    "toggle_fog_reveal",
-    "toggle_ai",
-    "set_unit_cap",
-    "toggle_instant_build_patch"
-  ],
+  "requiredCapabilities": [],
   "hostPreference": "starwarsg_preferred",
   "experimentalFeatures": [
     "game_speed",
@@ -83,7 +76,7 @@
       "id": "set_credits",
       "category": "Economy",
       "mode": "Unknown",
-      "executionKind": "Sdk",
+      "executionKind": "Memory",
       "payloadSchema": {
         "required": ["symbol", "intValue"]
       },
@@ -95,7 +88,7 @@
       "id": "freeze_timer",
       "category": "Global",
       "mode": "Unknown",
-      "executionKind": "Sdk",
+      "executionKind": "Memory",
       "payloadSchema": {
         "required": ["symbol", "boolValue"]
       },
@@ -107,7 +100,7 @@
       "id": "toggle_fog_reveal",
       "category": "Global",
       "mode": "Unknown",
-      "executionKind": "Sdk",
+      "executionKind": "Memory",
       "payloadSchema": {
         "required": ["symbol", "boolValue"]
       },
@@ -119,7 +112,7 @@
       "id": "toggle_ai",
       "category": "Global",
       "mode": "Unknown",
-      "executionKind": "Sdk",
+      "executionKind": "Memory",
       "payloadSchema": {
         "required": ["symbol", "boolValue"]
       },
@@ -287,7 +280,7 @@
       "id": "set_unit_cap",
       "category": "Global",
       "mode": "Unknown",
-      "executionKind": "Sdk",
+      "executionKind": "CodePatch",
       "payloadSchema": {
         "required": ["intValue"]
       },
@@ -299,7 +292,7 @@
       "id": "toggle_instant_build_patch",
       "category": "Global",
       "mode": "Unknown",
-      "executionKind": "Sdk",
+      "executionKind": "CodePatch",
       "payloadSchema": {
         "required": ["enable"]
       },
@@ -391,6 +384,7 @@
     "profileAliases": "base_swfoc,swfoc,forces of corruption,foc",
     "localPathHints": "swfoc,corruption,forces of corruption",
     "criticalSymbols": "credits,planet_owner,hero_respawn_timer,game_speed,unit_cap",
-    "symbolValidationRules": "[{\"Symbol\":\"credits\",\"IntMin\":0,\"IntMax\":2000000000,\"Critical\":true},{\"Symbol\":\"planet_owner\",\"IntMin\":0,\"IntMax\":16,\"Critical\":true},{\"Symbol\":\"hero_respawn_timer\",\"IntMin\":0,\"IntMax\":86400,\"Critical\":true},{\"Symbol\":\"game_speed\",\"FloatMin\":0.05,\"FloatMax\":8.0,\"Critical\":true},{\"Symbol\":\"selected_hp\",\"Mode\":\"Tactical\",\"FloatMin\":0.0,\"FloatMax\":5000000.0},{\"Symbol\":\"selected_shield\",\"Mode\":\"Tactical\",\"FloatMin\":0.0,\"FloatMax\":5000000.0}]"
+    "symbolValidationRules": "[{\"Symbol\":\"credits\",\"IntMin\":0,\"IntMax\":2000000000,\"Critical\":true},{\"Symbol\":\"planet_owner\",\"IntMin\":0,\"IntMax\":16,\"Critical\":true},{\"Symbol\":\"hero_respawn_timer\",\"IntMin\":0,\"IntMax\":86400,\"Critical\":true},{\"Symbol\":\"game_speed\",\"FloatMin\":0.05,\"FloatMax\":8.0,\"Critical\":true},{\"Symbol\":\"selected_hp\",\"Mode\":\"Tactical\",\"FloatMin\":0.0,\"FloatMax\":5000000.0},{\"Symbol\":\"selected_shield\",\"Mode\":\"Tactical\",\"FloatMin\":0.0,\"FloatMax\":5000000.0}]",
+    "quickActionBackendCompatibility": "base/aotr/roe quick actions route through managed Memory or CodePatch paths until native mutation is complete"
   }
 }

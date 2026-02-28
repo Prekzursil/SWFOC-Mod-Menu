@@ -6,12 +6,6 @@
   "steamWorkshopId": "1397421866",
   "backendPreference": "auto",
   "requiredCapabilities": [
-    "set_credits",
-    "freeze_timer",
-    "toggle_fog_reveal",
-    "toggle_ai",
-    "set_unit_cap",
-    "toggle_instant_build_patch",
     "set_hero_state_helper"
   ],
   "hostPreference": "starwarsg_preferred",
@@ -82,6 +76,7 @@
     "requiredMarkerFile": "Data/XML/Gameobjectfiles.xml",
     "dependencySensitiveActions": "spawn_unit_helper,set_hero_state_helper",
     "localPathHints": "aotr,awakening of the rebellion,awakening-of-the-rebellion,1397421866",
-    "profileAliases": "aotr_1397421866_swfoc,aotr,awakening"
+    "profileAliases": "aotr_1397421866_swfoc,aotr,awakening",
+    "quickActionBackendCompatibility": "inherits base_swfoc managed quick-action routing (Memory/CodePatch)"
   }
 }
