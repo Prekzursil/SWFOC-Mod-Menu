@@ -193,11 +193,11 @@ function Get-LaunchContext {
         }
     }
 
-    $args = @()
+    $commandArgs = @()
     if ($pythonCmd.Count -gt 1) {
-        $args += $pythonCmd[1..($pythonCmd.Count - 1)]
+        $commandArgs += $pythonCmd[1..($pythonCmd.Count - 1)]
     }
-    $args += @(
+    $commandArgs += @(
         "tools/detect-launch-context.py",
         "--command-line", $Process.commandLine,
         "--process-name", $Process.name,
@@ -207,17 +207,17 @@ function Get-LaunchContext {
 
     $forcedWorkshopIdsCsv = if ($normalizedForcedWorkshopIds.Count -eq 0) { "" } else { $normalizedForcedWorkshopIds -join "," }
     if (-not [string]::IsNullOrWhiteSpace($forcedWorkshopIdsCsv)) {
-        $args += @("--force-workshop-ids", $forcedWorkshopIdsCsv)
+        $commandArgs += @("--force-workshop-ids", $forcedWorkshopIdsCsv)
     }
 
     if (-not [string]::IsNullOrWhiteSpace($ForcedProfileId)) {
-        $args += @("--force-profile-id", $normalizedForcedProfileId)
+        $commandArgs += @("--force-profile-id", $normalizedForcedProfileId)
     }
 
-    $args += "--pretty"
+    $commandArgs += "--pretty"
 
     try {
-        $output = & $pythonCmd[0] @args 2>&1
+        $output = & $pythonCmd[0] @commandArgs 2>&1
         if ($LASTEXITCODE -ne 0) {
             throw "detect-launch-context.py exited with $LASTEXITCODE"
         }
