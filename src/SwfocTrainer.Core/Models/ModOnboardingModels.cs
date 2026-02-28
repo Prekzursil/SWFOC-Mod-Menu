@@ -18,9 +18,7 @@ public sealed record ModOnboardingRequest(
     IReadOnlyList<ModLaunchSample> LaunchSamples,
     IReadOnlyList<string>? ProfileAliases = null,
     string? NamespaceRoot = null,
-    string? Notes = null,
-    IReadOnlyList<string>? RequiredCapabilities = null,
-    IReadOnlyDictionary<string, string>? AdditionalMetadata = null);
+    string? Notes = null);
 
 /// <summary>
 /// Scaffold result for custom-mod onboarding.
@@ -35,55 +33,60 @@ public sealed record ModOnboardingResult(
     IReadOnlyList<string> Warnings);
 
 /// <summary>
-/// Discovery-derived launch hints for generated profile seeds.
-/// </summary>
-public sealed record GeneratedLaunchHints(
-    IReadOnlyList<string> SteamModIds,
-    IReadOnlyList<string> ModPathHints);
-
-/// <summary>
-/// One generated onboarding seed from workshop discovery artifacts.
+/// One generated seed from discovery or telemetry used to scaffold a profile draft.
 /// </summary>
 public sealed record GeneratedProfileSeed(
-    string WorkshopId,
-    string Title,
-    string CandidateBaseProfile,
-    GeneratedLaunchHints LaunchHints,
-    IReadOnlyList<string> ParentDependencies,
-    IReadOnlyList<string> RequiredCapabilities,
+    string DraftProfileId,
+    string DisplayName,
+    string BaseProfileId,
+    IReadOnlyList<ModLaunchSample> LaunchSamples,
     string SourceRunId,
     double Confidence,
-    string RiskLevel,
-    IReadOnlyDictionary<string, IReadOnlyList<string>>? AnchorHints = null);
+    string ParentProfile,
+    IReadOnlyList<string>? RequiredWorkshopIds = null,
+    IReadOnlyList<string>? ProfileAliases = null,
+    IReadOnlyList<string>? LocalPathHints = null,
+    string? Notes = null,
+    string? WorkshopId = null,
+    IReadOnlyList<string>? RequiredCapabilities = null,
+    IReadOnlyList<string>? AnchorHints = null,
+    string? RiskLevel = null,
+    IReadOnlyList<string>? ParentDependencies = null,
+    IReadOnlyList<string>? LaunchHints = null,
+    string? Title = null,
+    string? CandidateBaseProfile = null);
 
 /// <summary>
-/// Batch request contract for generating onboarding drafts from discovery seeds.
+/// Batch onboarding request for generated profile seeds.
 /// </summary>
 public sealed record ModOnboardingSeedBatchRequest(
-    IReadOnlyList<GeneratedProfileSeed> Seeds,
-    string NamespaceRoot = "custom",
-    string FallbackBaseProfileId = "base_swfoc");
+    string? TargetNamespaceRoot,
+    IReadOnlyList<GeneratedProfileSeed> Seeds);
 
 /// <summary>
-/// Per-seed output result from batch onboarding generation.
+/// Per-seed onboarding result for fail-soft batch ingestion.
 /// </summary>
 public sealed record ModOnboardingBatchItemResult(
-    string WorkshopId,
-    string ProfileId,
-    string OutputPath,
+    int Index,
+    string SeedProfileId,
     bool Succeeded,
+    string? ProfileId,
+    string? OutputPath,
+    IReadOnlyList<string> InferredWorkshopIds,
+    IReadOnlyList<string> InferredPathHints,
+    IReadOnlyList<string> InferredAliases,
     IReadOnlyList<string> Warnings,
-    string? Error = null);
+    IReadOnlyList<string> Errors);
 
 /// <summary>
-/// Aggregate result for onboarding batch generation.
+/// Aggregate onboarding summary for generated seed batches.
 /// </summary>
 public sealed record ModOnboardingBatchResult(
     bool Succeeded,
-    int Total,
-    int Generated,
-    int Failed,
-    IReadOnlyList<ModOnboardingBatchItemResult> Items);
+    int Attempted,
+    int SucceededCount,
+    int FailedCount,
+    IReadOnlyList<ModOnboardingBatchItemResult> Results);
 
 /// <summary>
 /// Input contract for writing calibration artifacts.

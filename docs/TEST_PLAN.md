@@ -37,6 +37,7 @@
 - `ModOnboardingServiceTests`
   - scaffolds deterministic custom profile draft from launch sample hints
   - validates workshop/path hint inference and profile output contract
+  - validates enriched generated-seed metadata ingestion and safe fallback feature defaults
 - `ModCalibrationServiceTests`
   - validates calibration artifact generation and compatibility gate behavior
 - `ProfileUpdateServiceTransactionalTests`
@@ -58,6 +59,8 @@
   - verifies embedded fingerprint mismatch rejection
 - `ProfileVariantResolverTests`
   - verifies universal profile resolution for ROE workshop, sweaw fallback, and no-process fallback
+- `LaunchContextResolverTests`
+  - verifies metadata-driven workshop/modpath precedence and generic profile reason-code routing
 - `RuntimeModeProbeResolverTests`
   - verifies runtime-effective tactical/galactic inference from symbol-health probes
 - `SdkExecutionGuardTests`
@@ -68,6 +71,9 @@
   - verifies fail-closed mutating behavior for hard-extender profiles
   - verifies extender route promotion only when capability proof is present
   - verifies capability contract blocking and legacy memory fallback behavior
+  - verifies fallback patch actions stay off promoted extender matrix and preserve managed-memory routing
+- `MainViewModelSessionGatingTests`
+  - verifies unresolved-symbol action gating and fallback feature-flag gating reasons
 - `NamedPipeExtenderBackendTests`
   - verifies deterministic unhealthy state when extender bridge is unavailable
 - `ProfileValidatorTests`

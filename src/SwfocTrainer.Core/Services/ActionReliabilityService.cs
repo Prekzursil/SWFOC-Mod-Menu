@@ -6,6 +6,13 @@ namespace SwfocTrainer.Core.Services;
 
 public sealed class ActionReliabilityService : IActionReliabilityService
 {
+    private static readonly IReadOnlyDictionary<string, string> FallbackFeatureFlags =
+        new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
+        {
+            ["toggle_fog_reveal_patch_fallback"] = "allow_fog_patch_fallback",
+            ["set_unit_cap_patch_fallback"] = "allow_unit_cap_patch_fallback"
+        };
+
     private static readonly IReadOnlySet<string> StrictBundleActions = new HashSet<string>(StringComparer.OrdinalIgnoreCase)
     {
         "spawn_unit_helper",
@@ -32,6 +39,7 @@ public sealed class ActionReliabilityService : IActionReliabilityService
         foreach (var (actionId, action) in profile.Actions.OrderBy(x => x.Key, StringComparer.OrdinalIgnoreCase))
         {
             results.Add(EvaluateAction(
+                profile,
                 actionId,
                 action,
                 session,
@@ -51,6 +59,7 @@ public sealed class ActionReliabilityService : IActionReliabilityService
     }
 
     private static ActionReliabilityInfo EvaluateAction(
+        TrainerProfile profile,
         string actionId,
         ActionSpec action,
         AttachSession session,
@@ -58,94 +67,39 @@ public sealed class ActionReliabilityService : IActionReliabilityService
         IReadOnlySet<string> criticalSymbols,
         IReadOnlyDictionary<string, IReadOnlyList<string>>? catalog)
     {
-        var gateResult = ResolveActionGate(actionId, action, session.Process.Mode, disabledActions, catalog);
-        if (gateResult is not null)
+        if (FallbackFeatureFlags.TryGetValue(actionId, out var featureFlag) &&
+            (!profile.FeatureFlags.TryGetValue(featureFlag, out var enabled) || !enabled))
         {
-            return gateResult;
+            return new ActionReliabilityInfo(
+                actionId,
+                ActionReliabilityState.Unavailable,
+                "fallback_disabled",
+                1.00d,
+                $"Fallback action is disabled by feature flag '{featureFlag}'.");
         }
 
-        if (!RequiresSymbol(action))
+        if (FallbackFeatureFlags.ContainsKey(actionId))
         {
-            return new ActionReliabilityInfo(actionId, ActionReliabilityState.Stable, "non_symbol_action", 0.85d);
+            return new ActionReliabilityInfo(
+                actionId,
+                ActionReliabilityState.Experimental,
+                "fallback_experimental",
+                0.45d,
+                "Fallback action is enabled but remains experimental pending live validation.");
         }
 
-        if (!TryGetResolvedSymbol(actionId, session.Symbols, out var symbol, out var symbolInfo, out var resolution))
+        if (disabledActions.Contains(actionId))
         {
-            return resolution;
+            return new ActionReliabilityInfo(
+                actionId,
+                ActionReliabilityState.Unavailable,
+                "dependency_soft_blocked",
+                0.99d,
+                "Action disabled by dependency validator.");
         }
 
-        return EvaluateResolvedSymbol(actionId, symbol, symbolInfo, criticalSymbols);
-    }
-
-    private static ActionReliabilityInfo? ResolveActionGate(
-        string actionId,
-        ActionSpec action,
-        RuntimeMode runtimeMode,
-        IReadOnlySet<string> disabledActions,
-        IReadOnlyDictionary<string, IReadOnlyList<string>>? catalog)
-    {
-        var dependencyGate = EvaluateDependencyGate(actionId, disabledActions);
-        if (dependencyGate is not null)
-        {
-            return dependencyGate;
-        }
-
-        var modeGate = EvaluateModeGate(actionId, action, runtimeMode);
-        if (modeGate is not null)
-        {
-            return modeGate;
-        }
-
-        return action.ExecutionKind == ExecutionKind.Helper
-            ? EvaluateHelperAction(actionId, catalog)
-            : null;
-    }
-
-    private static bool TryGetResolvedSymbol(
-        string actionId,
-        SymbolMap symbols,
-        out string symbol,
-        out SymbolInfo symbolInfo,
-        out ActionReliabilityInfo resolution)
-    {
-        if (!ActionSymbolRegistry.TryGetSymbol(actionId, out symbol))
-        {
-            symbolInfo = null!;
-            resolution = BuildMissingSymbolHintResult(actionId);
-            return false;
-        }
-
-        var symbolResolution = TryResolveSymbolState(actionId, symbol, symbols, out var resolvedInfo);
-        if (symbolResolution is not null || resolvedInfo is null)
-        {
-            symbolInfo = null!;
-            resolution = symbolResolution ?? BuildMissingSymbolHintResult(actionId);
-            return false;
-        }
-
-        symbolInfo = resolvedInfo;
-        resolution = null!;
-        return true;
-    }
-
-    private static ActionReliabilityInfo? EvaluateDependencyGate(string actionId, IReadOnlySet<string> disabledActions)
-    {
-        if (!disabledActions.Contains(actionId))
-        {
-            return null;
-        }
-
-        return new ActionReliabilityInfo(
-            actionId,
-            ActionReliabilityState.Unavailable,
-            "dependency_soft_blocked",
-            0.99d,
-            "Action disabled by dependency validator.");
-    }
-
-    private static ActionReliabilityInfo? EvaluateModeGate(string actionId, ActionSpec action, RuntimeMode currentMode)
-    {
-        if (currentMode == RuntimeMode.Unknown && StrictBundleActions.Contains(actionId))
+        if (session.Process.Mode == RuntimeMode.Unknown &&
+            StrictBundleActions.Contains(actionId))
         {
             return new ActionReliabilityInfo(
                 actionId,
@@ -155,89 +109,72 @@ public sealed class ActionReliabilityService : IActionReliabilityService
                 "Action belongs to a strict bundle and requires concrete runtime mode detection.");
         }
 
-        if (action.Mode == RuntimeMode.Unknown)
+        if (action.Mode != RuntimeMode.Unknown)
         {
-            return null;
+            if (session.Process.Mode == RuntimeMode.Unknown)
+            {
+                return new ActionReliabilityInfo(
+                    actionId,
+                    ActionReliabilityState.Unavailable,
+                    "mode_unknown_strict_gate",
+                    0.90d,
+                    $"Action requires runtime mode {action.Mode}.");
+            }
+
+            if (session.Process.Mode != action.Mode)
+            {
+                return new ActionReliabilityInfo(
+                    actionId,
+                    ActionReliabilityState.Unavailable,
+                    "mode_mismatch",
+                    1.00d,
+                    $"Action requires mode {action.Mode}, current mode is {session.Process.Mode}.");
+            }
         }
 
-        if (currentMode == RuntimeMode.Unknown)
+        if (action.ExecutionKind == ExecutionKind.Helper)
         {
-            return new ActionReliabilityInfo(
-                actionId,
-                ActionReliabilityState.Unavailable,
-                "mode_unknown_strict_gate",
-                0.90d,
-                $"Action requires runtime mode {action.Mode}.");
+            if (catalog is null || !catalog.TryGetValue("unit_catalog", out var units) || units.Count == 0)
+            {
+                return new ActionReliabilityInfo(
+                    actionId,
+                    ActionReliabilityState.Experimental,
+                    "catalog_unavailable",
+                    0.60d,
+                    "Catalog data is unavailable for helper-guided workflows.");
+            }
+
+            return new ActionReliabilityInfo(actionId, ActionReliabilityState.Stable, "helper_ready", 0.85d);
         }
 
-        if (currentMode != action.Mode)
+        if (!RequiresSymbol(action))
         {
-            return new ActionReliabilityInfo(
-                actionId,
-                ActionReliabilityState.Unavailable,
-                "mode_mismatch",
-                1.00d,
-                $"Action requires mode {action.Mode}, current mode is {currentMode}.");
+            return new ActionReliabilityInfo(actionId, ActionReliabilityState.Stable, "non_symbol_action", 0.85d);
         }
 
-        return null;
-    }
-
-    private static ActionReliabilityInfo EvaluateHelperAction(
-        string actionId,
-        IReadOnlyDictionary<string, IReadOnlyList<string>>? catalog)
-    {
-        if (catalog is null || !catalog.TryGetValue("unit_catalog", out var units) || units.Count == 0)
+        if (!ActionSymbolRegistry.TryGetSymbol(actionId, out var symbol))
         {
             return new ActionReliabilityInfo(
                 actionId,
                 ActionReliabilityState.Experimental,
-                "catalog_unavailable",
-                0.60d,
-                "Catalog data is unavailable for helper-guided workflows.");
+                "symbol_hint_missing",
+                0.45d,
+                "Action has a symbol payload but no symbol hint mapping.");
         }
 
-        return new ActionReliabilityInfo(actionId, ActionReliabilityState.Stable, "helper_ready", 0.85d);
-    }
-
-    private static ActionReliabilityInfo BuildMissingSymbolHintResult(string actionId)
-    {
-        return new ActionReliabilityInfo(
-            actionId,
-            ActionReliabilityState.Experimental,
-            "symbol_hint_missing",
-            0.45d,
-            "Action has a symbol payload but no symbol hint mapping.");
-    }
-
-    private static ActionReliabilityInfo? TryResolveSymbolState(
-        string actionId,
-        string symbol,
-        SymbolMap symbols,
-        out SymbolInfo? symbolInfo)
-    {
-        if (symbols.TryGetValue(symbol, out symbolInfo) &&
-            symbolInfo is not null &&
-            symbolInfo.Address != nint.Zero &&
-            symbolInfo.HealthStatus != SymbolHealthStatus.Unresolved)
+        if (!session.Symbols.TryGetValue(symbol, out var symbolInfo) ||
+            symbolInfo is null ||
+            symbolInfo.Address == nint.Zero ||
+            symbolInfo.HealthStatus == SymbolHealthStatus.Unresolved)
         {
-            return null;
+            return new ActionReliabilityInfo(
+                actionId,
+                ActionReliabilityState.Unavailable,
+                "symbol_unresolved",
+                0.95d,
+                $"Required symbol '{symbol}' is unresolved.");
         }
 
-        return new ActionReliabilityInfo(
-            actionId,
-            ActionReliabilityState.Unavailable,
-            "symbol_unresolved",
-            0.95d,
-            $"Required symbol '{symbol}' is unresolved.");
-    }
-
-    private static ActionReliabilityInfo EvaluateResolvedSymbol(
-        string actionId,
-        string symbol,
-        SymbolInfo symbolInfo,
-        IReadOnlySet<string> criticalSymbols)
-    {
         var isCritical = criticalSymbols.Contains(symbol);
         if (isCritical && symbolInfo.HealthStatus != SymbolHealthStatus.Healthy)
         {

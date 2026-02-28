@@ -80,6 +80,14 @@ Reliability rule for runtime/mod tasks:
   evidence: issue `https://github.com/Prekzursil/SWFOC-Mod-Menu/pull/46`
 - [x] Queue M2/S6 hardening as draft PR stub from `feature/m2-save-lab-next-slice`.
   evidence: issue `https://github.com/Prekzursil/SWFOC-Mod-Menu/pull/47`
+- [x] Universal compatibility wave: metadata-driven launch recommendation for known/generated profiles, onboarding seed enrichment, Live Ops calibration scan panel, and fail-safe fallback patch actions (`toggle_fog_reveal_patch_fallback`, `set_unit_cap_patch_fallback`).
+  evidence: test `tests/SwfocTrainer.Tests/Runtime/LaunchContextResolverTests.cs`
+  evidence: test `tests/SwfocTrainer.Tests/Profiles/ModOnboardingServiceTests.cs`
+  evidence: test `tests/SwfocTrainer.Tests/Core/ActionReliabilityServiceTests.cs`
+  evidence: test `tests/SwfocTrainer.Tests/App/MainViewModelSessionGatingTests.cs`
+  evidence: test `tests/SwfocTrainer.Tests/Runtime/BackendRouterTests.cs`
+  evidence: tool `tools/validate-workshop-topmods.ps1`
+  evidence: tool `tools/validate-generated-profile-seed.ps1`
 
 ## Later (M2 + M3 + M4)
 

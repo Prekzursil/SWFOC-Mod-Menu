@@ -1,9 +1,8 @@
 param(
-    [Parameter(Mandatory = $true)][string]$SeedPath,
-    [string]$OutputRoot = "profiles/custom",
-    [string]$NamespaceRoot = "custom",
-    [string]$FallbackBaseProfileId = "base_swfoc",
-    [switch]$Force
+    [Parameter(Mandatory = $true)][string]$SeedsPath,
+    [string]$ProfilesRootPath = "profiles/custom",
+    [string]$Namespace = "profiles",
+    [string]$BaseProfilesPath = "profiles/default/profiles"
 )
 
 Set-StrictMode -Version Latest
@@ -12,45 +11,49 @@ $ErrorActionPreference = "Stop"
 $repoRoot = Resolve-Path (Join-Path $PSScriptRoot "../..")
 Set-Location $repoRoot
 
-if (-not (Test-Path -Path $SeedPath)) {
-    throw "Seed file not found: $SeedPath"
-}
-
-function ConvertTo-NormalizedToken {
+function Convert-ToProfileSlug {
     param([string]$Value)
 
-    if ([string]::IsNullOrWhiteSpace($Value)) {
-        return ""
+    $raw = [string]$Value
+    $slug = $raw.ToLowerInvariant() -replace "[^a-z0-9]+", "-"
+    $slug = $slug.Trim("-")
+    if ([string]::IsNullOrWhiteSpace($slug)) {
+        return "workshop-mod"
     }
 
-    $normalized = $Value.Trim().ToLowerInvariant() -replace '[^a-z0-9]+', '_'
-    while ($normalized.Contains("__")) {
-        $normalized = $normalized.Replace("__", "_")
-    }
-
-    return $normalized.Trim('_')
+    return $slug
 }
 
-function Resolve-SaveSchemaId {
-    param([string]$BaseProfileId)
+function Get-StringList {
+    param([object]$Value)
 
-    if ($BaseProfileId -like "*sweaw*") {
-        return "base_sweaw_steam_v1"
+    $out = New-Object System.Collections.Generic.List[string]
+    foreach ($item in @($Value)) {
+        $text = [string]$item
+        if (-not [string]::IsNullOrWhiteSpace($text)) {
+            $out.Add($text)
+        }
     }
 
-    return "base_swfoc_steam_v1"
+    return @($out)
 }
 
-$seedPayload = Get-Content -Raw -Path $SeedPath | ConvertFrom-Json
-$seeds = @($seedPayload.seeds)
+if (-not (Test-Path -Path $SeedsPath)) {
+    throw "Generated seed file not found: $SeedsPath"
+}
+
+$payload = Get-Content -Raw -Path $SeedsPath | ConvertFrom-Json
+$seeds = @($payload.seeds)
 if ($seeds.Count -eq 0) {
-    throw "No seed entries found in '$SeedPath'."
+    throw "Generated seed payload has no seeds: $SeedsPath"
 }
 
-$profilesRoot = Join-Path $OutputRoot "profiles"
-New-Item -ItemType Directory -Path $profilesRoot -Force | Out-Null
+$targetRoot = Join-Path $ProfilesRootPath $Namespace
+New-Item -ItemType Directory -Path $targetRoot -Force | Out-Null
 
-$results = New-Object System.Collections.Generic.List[object]
+$baseRoot = Resolve-Path $BaseProfilesPath
+$written = New-Object System.Collections.Generic.List[string]
+
 foreach ($seed in $seeds) {
     $workshopId = [string]$seed.workshopId
     if ([string]::IsNullOrWhiteSpace($workshopId)) {
@@ -58,83 +61,78 @@ foreach ($seed in $seeds) {
     }
 
     $title = [string]$seed.title
-    $titleToken = ConvertTo-NormalizedToken -Value $title
-    if ([string]::IsNullOrWhiteSpace($titleToken)) {
-        $titleToken = "mod"
+    $slug = Convert-ToProfileSlug -Value $title
+    $profileId = "${slug}_${workshopId}_auto"
+    $displayName = "$title ($workshopId)"
+
+    $parentProfile = [string]$seed.candidateBaseProfile
+    if ([string]::IsNullOrWhiteSpace($parentProfile)) {
+        $parentProfile = "base_swfoc"
     }
 
-    $profileId = "custom_{0}_{1}_swfoc" -f $titleToken, $workshopId
-    if ($profileId.Length -gt 96) {
-        $profileId = $profileId.Substring(0, 96).TrimEnd('_')
+    $baseProfilePath = Join-Path $baseRoot "$parentProfile.json"
+    $baseProfile = $null
+    if (Test-Path -Path $baseProfilePath) {
+        $baseProfile = Get-Content -Raw -Path $baseProfilePath | ConvertFrom-Json
     }
 
-    $baseProfile = [string]$seed.candidateBaseProfile
-    if ([string]::IsNullOrWhiteSpace($baseProfile)) {
-        $baseProfile = $FallbackBaseProfileId
+    $requiredCapabilities = New-Object System.Collections.Generic.List[string]
+    foreach ($cap in @(Get-StringList -Value $baseProfile.requiredCapabilities)) {
+        if (-not $requiredCapabilities.Contains($cap)) {
+            $requiredCapabilities.Add($cap)
+        }
+    }
+    foreach ($cap in @(Get-StringList -Value $seed.requiredCapabilities)) {
+        if (-not $requiredCapabilities.Contains($cap)) {
+            $requiredCapabilities.Add($cap)
+        }
     }
 
-    $outputPath = Join-Path $profilesRoot "$profileId.json"
-    if ((Test-Path -Path $outputPath) -and -not $Force) {
-        $results.Add([PSCustomObject]@{
-            profileId = $profileId
-            outputPath = $outputPath
-            status = "skipped_existing"
-        })
-        continue
-    }
-
-    $aliases = New-Object System.Collections.Generic.List[string]
-    $aliases.Add($profileId)
-    if (-not [string]::IsNullOrWhiteSpace($titleToken)) {
-        $aliases.Add($titleToken)
-    }
-
-    $modPathHints = @($seed.launchHints.modPathHints | ForEach-Object { [string]$_ } | Where-Object { -not [string]::IsNullOrWhiteSpace($_) })
-    $steamModIds = @($seed.launchHints.steamModIds | ForEach-Object { [string]$_ } | Where-Object { $_ -match '^[0-9]{4,}$' })
-    if ($steamModIds -notcontains $workshopId) {
-        $steamModIds = @($workshopId) + $steamModIds
-    }
-
-    $metadata = [ordered]@{
-        origin = "auto_discovery"
-        sourceRunId = [string]$seed.sourceRunId
-        confidence = [string]$seed.confidence
-        parentProfile = $baseProfile
-        profileAliases = ($aliases | Select-Object -Unique) -join ","
-        localPathHints = ($modPathHints | Select-Object -Unique) -join ","
-        requiredWorkshopIds = ($steamModIds | Select-Object -Unique) -join ","
-    }
-
-    $profilePayload = [ordered]@{
+    $profile = [ordered]@{
         id = $profileId
-        displayName = $title
-        inherits = $baseProfile
-        exeTarget = "Swfoc"
+        displayName = $displayName
+        inherits = $parentProfile
+        exeTarget = if ($null -ne $baseProfile) { [string]$baseProfile.exeTarget } else { "Swfoc" }
         steamWorkshopId = $workshopId
-        backendPreference = "auto"
-        requiredCapabilities = @($seed.requiredCapabilities)
-        hostPreference = "starwarsg_preferred"
+        backendPreference = if ($null -ne $baseProfile) { [string]$baseProfile.backendPreference } else { "auto" }
+        requiredCapabilities = @($requiredCapabilities)
+        hostPreference = if ($null -ne $baseProfile) { [string]$baseProfile.hostPreference } else { "starwarsg_preferred" }
         experimentalFeatures = @()
         signatureSets = @()
-        fallbackOffsets = [ordered]@{}
-        actions = [ordered]@{}
+        fallbackOffsets = @{}
+        actions = @{}
         featureFlags = [ordered]@{
-            customModDraft = $true
+            auto_discovery = $true
+            allow_fog_patch_fallback = $false
+            allow_unit_cap_patch_fallback = $false
+            requires_calibration_before_mutation = $true
         }
         catalogSources = @()
-        saveSchemaId = Resolve-SaveSchemaId -BaseProfileId $baseProfile
         helperModHooks = @()
-        metadata = $metadata
+        metadata = [ordered]@{
+            origin = "auto_discovery"
+            sourceRunId = [string]$seed.sourceRunId
+            confidence = [double]$seed.confidence
+            parentProfile = $parentProfile
+            profileLineage = "$parentProfile -> $profileId"
+            riskLevel = [string]$seed.riskLevel
+            parentDependencies = ([string[]](Get-StringList -Value $seed.parentDependencies)) -join ","
+            launchHints = ([string[]](Get-StringList -Value $seed.launchHints)) -join ","
+            anchorHints = ([string[]](Get-StringList -Value $seed.anchorHints)) -join ","
+        }
     }
 
-    $profilePayload | ConvertTo-Json -Depth 12 | Set-Content -Path $outputPath
+    if ($null -ne $baseProfile -and -not [string]::IsNullOrWhiteSpace([string]$baseProfile.saveSchemaId)) {
+        $profile["saveSchemaId"] = [string]$baseProfile.saveSchemaId
+    }
 
-    $results.Add([PSCustomObject]@{
-        profileId = $profileId
-        outputPath = $outputPath
-        status = "generated"
-    })
+    $outputPath = Join-Path $targetRoot "$profileId.json"
+    $json = $profile | ConvertTo-Json -Depth 50
+    Set-Content -Path $outputPath -Value $json -Encoding utf8
+    $written.Add($outputPath)
 }
 
-Write-Output "generated profiles: $(@($results | Where-Object { $_.status -eq 'generated' }).Count)"
-Write-Output "profiles root: $(Resolve-Path $profilesRoot)"
+Write-Output "generated profile drafts: $($written.Count)"
+foreach ($path in $written) {
+    Write-Output " - $path"
+}

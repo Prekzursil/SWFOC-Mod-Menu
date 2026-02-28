@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Discover top Steam workshop mods for SWFOC and emit normalized top-mod artifacts."""
+"""Discover top SWFOC workshop mods with live and fixture-backed modes."""
 
 from __future__ import annotations
 
@@ -8,465 +8,403 @@ import datetime as dt
 import json
 import re
 import sys
-import urllib.parse
-import urllib.request
-from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
-
-STEAM_BROWSE_URL = "https://steamcommunity.com/workshop/browse/"
-STEAM_DETAILS_URL = "https://api.steampowered.com/ISteamRemoteStorage/GetPublishedFileDetails/v1/"
-WORKSHOP_URL_TEMPLATE = "https://steamcommunity.com/sharedfiles/filedetails/?id={workshop_id}"
-ALLOWED_FETCH_SCHEMES = {"https"}
-
-PROMOTED_REQUIRED_CAPABILITIES = [
-    "set_credits",
-    "freeze_timer",
-    "toggle_fog_reveal",
-    "toggle_ai",
-    "set_unit_cap",
-    "toggle_instant_build_patch",
-]
-
-ID_PATTERN = re.compile(r"/sharedfiles/filedetails/\?id=(\d+)", re.IGNORECASE)
-DEPENDENCY_PATTERN = re.compile(r"(?:STEAMMOD\s*=\s*|\?id=)(\d{4,})", re.IGNORECASE)
-TOKEN_PATTERN = re.compile(r"[^a-z0-9]+")
+from urllib import parse, request
 
 
-@dataclass(frozen=True)
-class DiscoverySource:
-    url: str
-    source_type: str
+SCHEMA_VERSION = "1.0"
+DEFAULT_APP_ID = 32470
+DETAILS_API_URL = "https://api.steampowered.com/ISteamRemoteStorage/GetPublishedFileDetails/v1/"
 
 
 def utc_now_iso() -> str:
     return dt.datetime.now(dt.timezone.utc).replace(microsecond=0).isoformat().replace("+00:00", "Z")
 
 
-def ensure_allowed_fetch_url(url: str) -> None:
-    parsed = urllib.parse.urlparse(url)
-    if parsed.scheme.lower() not in ALLOWED_FETCH_SCHEMES or not parsed.netloc:
-        raise ValueError(f"unsupported fetch url scheme: {url}")
+def as_int(value: Any, default: int = 0) -> int:
+    try:
+        return int(value)
+    except (TypeError, ValueError):
+        return default
 
 
-def fetch_text(url: str, data: bytes | None = None) -> str:
-    ensure_allowed_fetch_url(url)
-    request = urllib.request.Request(
-        url,
-        data=data,
-        headers={
-            "User-Agent": "SWFOC-Mod-Discovery/1.0 (+https://github.com/Prekzursil/SWFOC-Mod-Menu)",
-            "Accept": "application/json, text/html;q=0.9, */*;q=0.1",
-        },
-        method="POST" if data is not None else "GET",
-    )
-    opener = urllib.request.build_opener(urllib.request.HTTPSHandler())
-    with opener.open(request, timeout=30) as response:
-        return response.read().decode("utf-8", errors="replace")
+def clamp_confidence(value: float) -> float:
+    if value < 0.0:
+        return 0.0
+    if value > 1.0:
+        return 1.0
+    return round(value, 2)
 
 
-def extract_ids_from_browse_html(html_text: str) -> list[str]:
-    ids: list[str] = []
+def normalize_tag(raw: str) -> str:
+    value = raw.strip().lower()
+    value = re.sub(r"[^a-z0-9]+", "_", value)
+    value = re.sub(r"_+", "_", value).strip("_")
+    return value
+
+
+def unique_ordered(values: list[str]) -> list[str]:
     seen: set[str] = set()
-    for match in ID_PATTERN.finditer(html_text):
-        workshop_id = match.group(1)
-        if workshop_id in seen:
+    out: list[str] = []
+    for value in values:
+        if value in seen:
             continue
-        seen.add(workshop_id)
-        ids.append(workshop_id)
-    return ids
+        seen.add(value)
+        out.append(value)
+    return out
 
 
-def fetch_browse_ids(app_id: int, pages: int, browse_sort: str, section: str) -> tuple[list[str], list[DiscoverySource]]:
-    collected: list[str] = []
-    seen: set[str] = set()
-    sources: list[DiscoverySource] = []
+def parse_timestamp_to_iso(value: Any) -> str:
+    if isinstance(value, str):
+        stripped = value.strip()
+        if re.match(r"^\d{4}-\d{2}-\d{2}T", stripped):
+            return stripped
+        if stripped.isdigit():
+            value = int(stripped)
 
-    for page in range(1, pages + 1):
-        query = urllib.parse.urlencode(
-            {
-                "appid": str(app_id),
-                "browsesort": browse_sort,
-                "section": section,
-                "p": str(page),
-            }
+    if isinstance(value, (int, float)):
+        if int(value) <= 0:
+            return utc_now_iso()
+        return dt.datetime.fromtimestamp(int(value), tz=dt.timezone.utc).replace(microsecond=0).isoformat().replace(
+            "+00:00", "Z"
         )
-        url = f"{STEAM_BROWSE_URL}?{query}"
-        html = fetch_text(url)
-        sources.append(DiscoverySource(url=url, source_type="steam_workshop_browse"))
 
-        for workshop_id in extract_ids_from_browse_html(html):
-            if workshop_id in seen:
+    return utc_now_iso()
+
+
+def parse_dependency_ids(raw_items: Any) -> list[str]:
+    deps: list[str] = []
+    if isinstance(raw_items, list):
+        for item in raw_items:
+            if isinstance(item, dict):
+                raw_id = item.get("publishedfileid") or item.get("id") or item.get("workshopId")
+            else:
+                raw_id = item
+            dep = str(raw_id or "").strip()
+            if dep.isdigit():
+                deps.append(dep)
+    return unique_ordered(deps)
+
+
+def parse_normalized_tags(raw_tags: Any) -> list[str]:
+    tags: list[str] = []
+    if isinstance(raw_tags, list):
+        for item in raw_tags:
+            raw_tag = item.get("tag") if isinstance(item, dict) else item
+            if raw_tag is None:
                 continue
-            seen.add(workshop_id)
-            collected.append(workshop_id)
-
-    return collected, sources
-
-
-def chunked(values: list[str], chunk_size: int) -> list[list[str]]:
-    return [values[index : index + chunk_size] for index in range(0, len(values), chunk_size)]
+            normalized = normalize_tag(str(raw_tag))
+            if normalized:
+                tags.append(normalized)
+    return unique_ordered(tags)
 
 
-def fetch_published_file_details(workshop_ids: list[str]) -> dict[str, dict[str, Any]]:
-    details_by_id: dict[str, dict[str, Any]] = {}
-    for group in chunked(workshop_ids, 80):
-        payload: dict[str, str] = {"itemcount": str(len(group))}
-        for index, workshop_id in enumerate(group):
-            payload[f"publishedfileids[{index}]"] = workshop_id
+def infer_candidate_base_profile(title: str, tags: list[str], parent_dependencies: list[str]) -> str:
+    title_lc = title.lower()
+    tag_set = set(tags)
+    dep_set = set(parent_dependencies)
 
-        encoded = urllib.parse.urlencode(payload).encode("utf-8")
-        raw = fetch_text(STEAM_DETAILS_URL, data=encoded)
-        parsed = json.loads(raw)
-        details = parsed.get("response", {}).get("publishedfiledetails", [])
-        for entry in details:
-            if str(entry.get("result", 0)) != "1":
-                continue
-            details_by_id[str(entry.get("publishedfileid", ""))] = entry
+    if "3447786229" in dep_set:
+        return "roe_3447786229_swfoc"
 
-    return details_by_id
+    if "1397421866" in dep_set:
+        return "aotr_1397421866_swfoc"
 
+    if "order 66" in title_lc or "roe" in title_lc:
+        return "roe_3447786229_swfoc"
 
-def parse_dependency_ids(description: str, workshop_id: str) -> list[str]:
-    dependencies: list[str] = []
-    seen: set[str] = set()
+    if "awakening" in title_lc or "aotr" in title_lc:
+        return "aotr_1397421866_swfoc"
 
-    for match in DEPENDENCY_PATTERN.finditer(description or ""):
-        candidate = match.group(1)
-        if candidate == workshop_id:
-            continue
-        if candidate in seen:
-            continue
-        seen.add(candidate)
-        dependencies.append(candidate)
+    if "eaw" in tag_set and "foc" not in tag_set:
+        return "base_sweaw"
 
-    return dependencies
+    return "base_swfoc"
 
 
-def normalize_tag(value: str) -> str:
-    normalized = TOKEN_PATTERN.sub("_", (value or "").strip().lower()).strip("_")
-    return normalized
+def infer_launch_hints(base_profile: str, parent_dependencies: list[str], tags: list[str]) -> list[str]:
+    hints = ["workshop"]
+    hints.append("launch_sweaw" if base_profile == "base_sweaw" else "launch_swfoc")
+
+    tag_set = set(tags)
+    if parent_dependencies:
+        hints.append("requires_parent_mod")
+    if "campaign" in tag_set:
+        hints.append("galactic_campaign")
+    if "tactical" in tag_set:
+        hints.append("tactical_profile")
+    if "multiplayer" in tag_set:
+        hints.append("manual_smoke_required")
+
+    return unique_ordered(hints)
 
 
-def build_mod_path_hints(title: str, description: str) -> list[str]:
-    hints: list[str] = []
-    seen: set[str] = set()
-
-    title_hint = normalize_tag(title)
-    if title_hint:
-        seen.add(title_hint)
-        hints.append(title_hint)
-
-    alias_tokens = [
-        "aotr",
-        "roe",
-        "remake",
-        "republic_at_war",
-        "thrawns_revenge",
-        "fall_of_the_republic",
-    ]
-    content = f"{title} {description}".lower()
-    for alias in alias_tokens:
-        if alias.replace("_", " ") in content or alias in content:
-            if alias not in seen:
-                seen.add(alias)
-                hints.append(alias)
-
-    return hints[:8]
-
-
-def resolve_dependency_profile(workshop_id: str, dependencies: list[str]) -> tuple[str, float] | None:
-    profile_by_dependency = {
-        "1397421866": ("aotr_1397421866_swfoc", 0.98),
-        "3447786229": ("roe_3447786229_swfoc", 0.98),
-    }
-    for dependency, profile in profile_by_dependency.items():
-        if workshop_id == dependency or dependency in dependencies:
-            return profile
-
-    return None
-
-
-def has_any_keyword(content: str, keywords: tuple[str, ...]) -> bool:
-    return any(keyword in content for keyword in keywords)
-
-
-def resolve_base_profile(workshop_id: str, title: str, description: str, dependencies: list[str]) -> tuple[str, float]:
-    dependency_profile = resolve_dependency_profile(workshop_id, dependencies)
-    if dependency_profile is not None:
-        return dependency_profile
-
-    content = f"{title} {description}".lower()
-    if has_any_keyword(content, ("awakening of the rebellion", "aotr")):
-        return "aotr_1397421866_swfoc", 0.90
-
-    if has_any_keyword(content, ("roe", "rise of the empire")):
-        return "roe_3447786229_swfoc", 0.85
-
-    return "base_swfoc", 0.62
-
-
-def resolve_risk_level(file_size: int, dependencies: list[str]) -> str:
-    if file_size >= 5_000_000_000 or len(dependencies) >= 3:
+def infer_risk_level(tags: list[str], parent_dependencies: list[str], subscriptions: int) -> str:
+    tag_set = set(tags)
+    if tag_set.intersection({"beta", "experimental", "unstable"}):
         return "high"
-    if file_size >= 1_000_000_000 or len(dependencies) >= 1:
+    if parent_dependencies:
+        return "medium"
+    if subscriptions < 5000 and "multiplayer" in tag_set:
         return "medium"
     return "low"
 
 
-def to_iso_utc(epoch_seconds: int | str | None) -> str:
-    value = int(epoch_seconds or 0)
-    if value <= 0:
-        return "1970-01-01T00:00:00Z"
-    return dt.datetime.fromtimestamp(value, tz=dt.timezone.utc).replace(microsecond=0).isoformat().replace("+00:00", "Z")
-
-
-def normalize_tags(raw_tags: Any) -> list[str]:
-    if not isinstance(raw_tags, list):
-        return []
-
-    normalized_tags: list[str] = []
-    for tag in raw_tags:
-        value = tag.get("tag") if isinstance(tag, dict) else tag
-        normalized = normalize_tag(str(value or ""))
-        if normalized:
-            normalized_tags.append(normalized)
-
-    return sorted(set(normalized_tags))
-
-
-def resolve_dependencies(source: dict[str, Any], description: str, workshop_id: str) -> list[str]:
-    dependencies = source.get("parentDependencies")
-    if not isinstance(dependencies, list):
-        dependencies = parse_dependency_ids(description, workshop_id)
-
-    return [str(dep) for dep in dependencies if str(dep).isdigit() and str(dep) != workshop_id]
-
-
-def build_default_launch_hints(
-    workshop_id: str,
-    dependencies: list[str],
+def infer_confidence(
     title: str,
-    description: str,
-) -> dict[str, list[str]]:
-    return {
-        "steamModIds": [workshop_id] + dependencies,
-        "modPathHints": build_mod_path_hints(title, description),
-    }
+    tags: list[str],
+    parent_dependencies: list[str],
+    base_profile: str,
+    subscriptions: int,
+) -> float:
+    score = 0.55
+    if tags:
+        score += 0.1
+    if parent_dependencies:
+        score += 0.1
+    if subscriptions >= 10000:
+        score += 0.1
+    if base_profile != "base_swfoc":
+        score += 0.08
+
+    title_lc = title.lower()
+    if any(keyword in title_lc for keyword in ("aotr", "awakening", "roe", "order 66")):
+        score += 0.12
+
+    return clamp_confidence(score)
 
 
-def normalize_launch_hints(raw_hints: dict[str, Any]) -> dict[str, list[str]]:
-    return {
-        "steamModIds": [str(item) for item in raw_hints.get("steamModIds", []) if str(item).isdigit()],
-        "modPathHints": [str(item).strip() for item in raw_hints.get("modPathHints", []) if str(item).strip()],
-    }
+def canonical_mod_url(workshop_id: str) -> str:
+    return f"https://steamcommunity.com/sharedfiles/filedetails/?id={workshop_id}"
 
 
-def ensure_workshop_hint(launch_hints: dict[str, list[str]], workshop_id: str) -> dict[str, list[str]]:
-    if workshop_id and workshop_id not in launch_hints["steamModIds"]:
-        launch_hints["steamModIds"].insert(0, workshop_id)
-    return launch_hints
+def normalize_mod_from_detail(detail: dict[str, Any]) -> dict[str, Any] | None:
+    workshop_id = str(detail.get("publishedfileid") or detail.get("workshopId") or detail.get("id") or "").strip()
+    if not workshop_id.isdigit():
+        return None
 
+    title = str(detail.get("title") or f"Workshop Mod {workshop_id}").strip()
+    subscriptions = as_int(detail.get("subscriptions"))
+    lifetime_subscriptions = max(subscriptions, as_int(detail.get("lifetime_subscriptions")))
+    parent_dependencies = parse_dependency_ids(detail.get("children") or detail.get("parentDependencies"))
+    normalized_tags = parse_normalized_tags(detail.get("tags") or detail.get("normalizedTags"))
+    candidate_base_profile = infer_candidate_base_profile(title, normalized_tags, parent_dependencies)
 
-def resolve_launch_hints(
-    source: dict[str, Any],
-    workshop_id: str,
-    dependencies: list[str],
-    title: str,
-    description: str,
-) -> dict[str, list[str]]:
-    launch_hints = source.get("launchHints") if isinstance(source.get("launchHints"), dict) else None
-    if launch_hints is None:
-        normalized = build_default_launch_hints(workshop_id, dependencies, title, description)
+    launch_hints_raw = detail.get("launchHints")
+    if isinstance(launch_hints_raw, list) and launch_hints_raw:
+        launch_hints = unique_ordered([str(item).strip() for item in launch_hints_raw if str(item).strip()])
     else:
-        normalized = normalize_launch_hints(launch_hints)
+        launch_hints = infer_launch_hints(candidate_base_profile, parent_dependencies, normalized_tags)
 
-    return ensure_workshop_hint(normalized, workshop_id)
-
-
-def resolve_record_risk_level(source: dict[str, Any], dependencies: list[str]) -> str:
-    file_size = int(source.get("file_size") or source.get("fileSize") or 0)
-    risk_level = str(source.get("riskLevel") or resolve_risk_level(file_size, dependencies)).lower()
+    risk_level = str(detail.get("riskLevel") or "").strip().lower()
     if risk_level not in {"low", "medium", "high"}:
-        return resolve_risk_level(file_size, dependencies)
+        risk_level = infer_risk_level(normalized_tags, parent_dependencies, subscriptions)
 
-    return risk_level
-
-
-def resolve_time_updated_iso(source: dict[str, Any]) -> str:
-    time_updated = source.get("timeUpdated")
-    if isinstance(time_updated, str) and "T" in time_updated:
-        return time_updated
-
-    return to_iso_utc(source.get("time_updated") or source.get("timeUpdated") or source.get("timeUpdatedEpoch"))
-
-
-def resolve_record_confidence(source: dict[str, Any], profile_confidence: float) -> float:
-    confidence = source.get("confidence")
-    if confidence is None:
-        confidence = profile_confidence
-
-    return max(0.0, min(1.0, float(confidence)))
-
-
-def first_non_empty_string(*candidates: Any) -> str:
-    for candidate in candidates:
-        value = str(candidate or "").strip()
-        if value:
-            return value
-
-    return ""
-
-
-def resolve_workshop_id(source: dict[str, Any], fallback_workshop_id: str | None) -> str:
-    return first_non_empty_string(
-        source.get("workshopId"),
-        source.get("publishedfileid"),
-        fallback_workshop_id,
-    )
-
-
-def resolve_title(source: dict[str, Any]) -> str:
-    return first_non_empty_string(source.get("title"), "unknown_mod")
-
-
-def resolve_lifetime_subscriptions(source: dict[str, Any], subscriptions: int) -> int:
-    lifetime_value = source.get("lifetimeSubscriptions")
-    if lifetime_value is None:
-        lifetime_value = source.get("lifetime_subscriptions")
-    lifetime_subscriptions = int(lifetime_value or 0)
-    return max(lifetime_subscriptions, subscriptions)
-
-
-def normalize_top_mod_record(source: dict[str, Any], fallback_workshop_id: str | None = None) -> dict[str, Any]:
-    workshop_id = resolve_workshop_id(source, fallback_workshop_id)
-    title = resolve_title(source)
-    description = str(source.get("description") or "")
-    normalized_tags = normalize_tags(source.get("normalizedTags") or source.get("tags") or [])
-    dependencies = resolve_dependencies(source, description, workshop_id)
-    base_profile, profile_confidence = resolve_base_profile(workshop_id, title, description, dependencies)
-    launch_hints = resolve_launch_hints(source, workshop_id, dependencies, title, description)
-    risk_level = resolve_record_risk_level(source, dependencies)
-    subscriptions = int(source.get("subscriptions") or 0)
-    lifetime_subscriptions = resolve_lifetime_subscriptions(source, subscriptions)
-    time_updated_iso = resolve_time_updated_iso(source)
-    confidence = resolve_record_confidence(source, profile_confidence)
+    raw_confidence = detail.get("confidence")
+    if raw_confidence is None:
+        confidence = infer_confidence(title, normalized_tags, parent_dependencies, candidate_base_profile, subscriptions)
+    else:
+        try:
+            confidence = clamp_confidence(float(raw_confidence))
+        except (TypeError, ValueError):
+            confidence = infer_confidence(title, normalized_tags, parent_dependencies, candidate_base_profile, subscriptions)
 
     return {
         "workshopId": workshop_id,
         "title": title,
-        "url": str(source.get("url") or WORKSHOP_URL_TEMPLATE.format(workshop_id=workshop_id)),
+        "url": str(detail.get("url") or canonical_mod_url(workshop_id)),
         "subscriptions": subscriptions,
-        "lifetimeSubscriptions": max(lifetime_subscriptions, subscriptions),
-        "timeUpdated": time_updated_iso,
-        "parentDependencies": dependencies,
+        "lifetimeSubscriptions": lifetime_subscriptions,
+        "timeUpdated": parse_timestamp_to_iso(detail.get("time_updated") or detail.get("timeUpdated")),
+        "parentDependencies": parent_dependencies,
         "launchHints": launch_hints,
-        "candidateBaseProfile": str(source.get("candidateBaseProfile") or base_profile),
+        "candidateBaseProfile": candidate_base_profile,
         "confidence": confidence,
         "riskLevel": risk_level,
         "normalizedTags": normalized_tags,
-        "requiredCapabilities": PROMOTED_REQUIRED_CAPABILITIES,
     }
 
 
-def collect_live_top_mods(app_id: int, limit: int, pages: int, browse_sort: str, section: str) -> tuple[list[dict[str, Any]], list[DiscoverySource]]:
-    workshop_ids, sources = fetch_browse_ids(app_id, pages, browse_sort, section)
-    if not workshop_ids:
-        return [], sources
+def scrape_workshop_ids(app_id: int, pages: int, timeout_sec: float) -> tuple[list[str], list[dict[str, str]]]:
+    pattern = re.compile(r"sharedfiles/filedetails/\?id=(\d+)")
+    workshop_ids: list[str] = []
+    sources: list[dict[str, str]] = []
 
-    details_by_id = fetch_published_file_details(workshop_ids)
-    records: list[dict[str, Any]] = []
-    for workshop_id in workshop_ids:
-        details = details_by_id.get(workshop_id)
-        if details is None:
-            continue
-        normalized = normalize_top_mod_record(details, fallback_workshop_id=workshop_id)
-        records.append(normalized)
-        if len(records) >= limit:
-            break
+    for page in range(1, pages + 1):
+        browse_url = (
+            "https://steamcommunity.com/workshop/browse/"
+            f"?appid={app_id}&browsesort=trend&section=readytouseitems&actualsort=trend&p={page}"
+        )
+        sources.append({"type": "workshop_browse", "uri": browse_url})
+        req = request.Request(browse_url, headers={"User-Agent": "swfoc-discovery/1.0"})
+        try:
+            with request.urlopen(req, timeout=timeout_sec) as response:
+                html = response.read().decode("utf-8", errors="ignore")
+            for match in pattern.findall(html):
+                if match not in workshop_ids:
+                    workshop_ids.append(match)
+        except Exception as exc:  # noqa: BLE001
+            print(f"warning: failed to scrape {browse_url}: {exc}", file=sys.stderr)
 
-    sources.append(DiscoverySource(url=STEAM_DETAILS_URL, source_type="steam_remote_storage_api"))
-    return records, sources
+    return workshop_ids, sources
 
 
-def parse_fixture_payload(payload: Any) -> tuple[int, list[Any]]:
-    app_id = 32470
-    if isinstance(payload, dict):
-        app_id = int(payload.get("appId") or app_id)
-        top_mods = payload.get("topMods")
-        entries = top_mods if isinstance(top_mods, list) else []
-        return app_id, entries
+def fetch_published_file_details(workshop_ids: list[str], timeout_sec: float) -> list[dict[str, Any]]:
+    all_details: list[dict[str, Any]] = []
+
+    for start in range(0, len(workshop_ids), 100):
+        batch = workshop_ids[start : start + 100]
+        payload: dict[str, str] = {"itemcount": str(len(batch))}
+        for index, workshop_id in enumerate(batch):
+            payload[f"publishedfileids[{index}]"] = workshop_id
+
+        body = parse.urlencode(payload).encode("utf-8")
+        req = request.Request(
+            DETAILS_API_URL,
+            data=body,
+            headers={"Content-Type": "application/x-www-form-urlencoded", "User-Agent": "swfoc-discovery/1.0"},
+            method="POST",
+        )
+
+        try:
+            with request.urlopen(req, timeout=timeout_sec) as response:
+                raw_payload = json.loads(response.read().decode("utf-8"))
+            details = raw_payload.get("response", {}).get("publishedfiledetails", [])
+            if isinstance(details, list):
+                all_details.extend([item for item in details if isinstance(item, dict)])
+        except Exception as exc:  # noqa: BLE001
+            print(f"warning: failed to fetch file details for batch starting at {start}: {exc}", file=sys.stderr)
+
+    return all_details
+
+
+def sort_mods(top_mods: list[dict[str, Any]], ranking_basis: str) -> list[dict[str, Any]]:
+    if ranking_basis == "lifetime_subscriptions_desc":
+        return sorted(
+            top_mods,
+            key=lambda mod: (mod["lifetimeSubscriptions"], mod["subscriptions"], mod["timeUpdated"]),
+            reverse=True,
+        )
+
+    return sorted(
+        top_mods,
+        key=lambda mod: (mod["subscriptions"], mod["lifetimeSubscriptions"], mod["timeUpdated"]),
+        reverse=True,
+    )
+
+
+def build_output(
+    app_id: int,
+    ranking_basis: str,
+    sources: list[dict[str, str]],
+    top_mods: list[dict[str, Any]],
+    generated_at_utc: str,
+    retrieval_timestamp_utc: str,
+) -> dict[str, Any]:
+    return {
+        "schemaVersion": SCHEMA_VERSION,
+        "generatedAtUtc": generated_at_utc,
+        "retrievalTimestampUtc": retrieval_timestamp_utc,
+        "rankingBasis": ranking_basis,
+        "sources": sources,
+        "appId": app_id,
+        "topMods": top_mods,
+    }
+
+
+def load_source_payload(path: Path) -> tuple[list[dict[str, Any]], dict[str, Any]]:
+    with path.open("r", encoding="utf-8") as handle:
+        payload = json.load(handle)
+
+    if isinstance(payload, dict) and isinstance(payload.get("topMods"), list):
+        mods = [normalize_mod_from_detail(item) for item in payload["topMods"] if isinstance(item, dict)]
+        return [item for item in mods if item is not None], payload
+
+    if isinstance(payload, dict) and isinstance(payload.get("response", {}).get("publishedfiledetails"), list):
+        details = payload["response"]["publishedfiledetails"]
+        mods = [normalize_mod_from_detail(item) for item in details if isinstance(item, dict)]
+        return [item for item in mods if item is not None], payload
 
     if isinstance(payload, list):
-        return app_id, payload
+        mods = [normalize_mod_from_detail(item) for item in payload if isinstance(item, dict)]
+        return [item for item in mods if item is not None], {}
 
-    raise ValueError("Unsupported source-file shape. Expected JSON object or array.")
-
-
-def collect_fixture_top_mods(source_file: Path, limit: int) -> tuple[list[dict[str, Any]], list[DiscoverySource], int]:
-    payload = json.loads(source_file.read_text(encoding="utf-8"))
-    app_id, entries = parse_fixture_payload(payload)
-
-    normalized = [normalize_top_mod_record(item if isinstance(item, dict) else {}) for item in entries]
-    normalized = [item for item in normalized if item.get("workshopId")]
-    return normalized[:limit], [DiscoverySource(url=str(source_file), source_type="fixture_file")], app_id
+    raise ValueError(f"Unsupported source payload shape in {path}")
 
 
 def parse_args() -> argparse.Namespace:
-    parser = argparse.ArgumentParser(description="Discover and normalize top SWFOC workshop mods.")
+    parser = argparse.ArgumentParser(description="Discover top SWFOC workshop mods")
+    parser.add_argument("--app-id", type=int, default=DEFAULT_APP_ID, help="Steam app id (default: 32470)")
+    parser.add_argument("--limit", type=int, default=25, help="Maximum number of mods in output")
     parser.add_argument("--output", required=True, help="Output JSON path")
-    parser.add_argument("--limit", type=int, default=10, help="Max number of mods to emit")
-    parser.add_argument("--appid", type=int, default=32470, help="Steam app id")
-    parser.add_argument("--pages", type=int, default=2, help="Browse pages to scan in live mode")
-    parser.add_argument("--browsesort", default="trend", help="Workshop browse sort key")
-    parser.add_argument("--section", default="readytouseitems", help="Workshop browse section")
-    parser.add_argument("--run-id", default="", help="Optional deterministic source run id")
-    parser.add_argument("--source-file", default="", help="Optional fixture JSON path (no network)")
+    parser.add_argument(
+        "--ranking-basis",
+        default="subscriptions_desc",
+        choices=("subscriptions_desc", "lifetime_subscriptions_desc"),
+        help="Ranking strategy for ordering topMods",
+    )
+    parser.add_argument("--source-file", help="Optional fixture JSON path for deterministic mode")
+    parser.add_argument("--pages", type=int, default=2, help="Browse pages to scrape in live mode")
+    parser.add_argument("--timeout", type=float, default=20.0, help="Network timeout in seconds")
     return parser.parse_args()
 
 
 def main() -> int:
     args = parse_args()
     output_path = Path(args.output)
-    output_path.parent.mkdir(parents=True, exist_ok=True)
 
-    run_id = args.run_id.strip() or f"mod-discovery-{dt.datetime.now(dt.timezone.utc).strftime('%Y%m%d-%H%M%S')}"
+    if args.limit <= 0:
+        raise ValueError("--limit must be greater than zero")
 
     if args.source_file:
         source_path = Path(args.source_file)
-        if not source_path.exists():
-            raise FileNotFoundError(f"source-file not found: {source_path}")
-        top_mods, sources, app_id = collect_fixture_top_mods(source_path, max(args.limit, 0))
-    else:
-        top_mods, sources = collect_live_top_mods(
-            app_id=args.appid,
-            limit=max(args.limit, 0),
-            pages=max(args.pages, 1),
-            browse_sort=args.browsesort,
-            section=args.section,
+        top_mods, original_payload = load_source_payload(source_path)
+        top_mods = sort_mods(top_mods, args.ranking_basis)[: args.limit]
+
+        generated_at_utc = str(original_payload.get("generatedAtUtc") or utc_now_iso())
+        retrieval_timestamp_utc = str(original_payload.get("retrievalTimestampUtc") or generated_at_utc)
+
+        sources = list(original_payload.get("sources", [])) if isinstance(original_payload, dict) else []
+        sources.append({"type": "fixture", "uri": str(source_path)})
+
+        output = build_output(
+            app_id=as_int(original_payload.get("appId"), args.app_id),
+            ranking_basis=str(original_payload.get("rankingBasis") or args.ranking_basis),
+            sources=sources,
+            top_mods=top_mods,
+            generated_at_utc=generated_at_utc,
+            retrieval_timestamp_utc=retrieval_timestamp_utc,
         )
-        app_id = args.appid
+    else:
+        workshop_ids, browse_sources = scrape_workshop_ids(args.app_id, args.pages, args.timeout)
+        if not workshop_ids:
+            raise RuntimeError("No workshop IDs discovered from browse pages")
 
-    payload = {
-        "schemaVersion": "1.0",
-        "appId": int(app_id),
-        "sourceRunId": run_id,
-        "generatedAtUtc": utc_now_iso(),
-        "retrievalTimestampUtc": utc_now_iso(),
-        "rankingBasis": f"steam_workshop_browse:{args.browsesort}",
-        "sources": [source.url for source in sources] or ["unknown"],
-        "topMods": top_mods[: max(args.limit, 0)],
-    }
+        details = fetch_published_file_details(workshop_ids, args.timeout)
+        top_mods = [normalize_mod_from_detail(detail) for detail in details]
+        normalized_mods = [item for item in top_mods if item is not None]
+        ranked_mods = sort_mods(normalized_mods, args.ranking_basis)[: args.limit]
 
-    output_path.write_text(json.dumps(payload, indent=2), encoding="utf-8")
-    print(f"workshop top-mods json: {output_path}")
-    print(f"discovered entries: {len(payload['topMods'])}")
+        timestamp = utc_now_iso()
+        sources = browse_sources + [{"type": "get_published_file_details", "uri": DETAILS_API_URL}]
+        output = build_output(
+            app_id=args.app_id,
+            ranking_basis=args.ranking_basis,
+            sources=sources,
+            top_mods=ranked_mods,
+            generated_at_utc=timestamp,
+            retrieval_timestamp_utc=timestamp,
+        )
+
+    output_path.parent.mkdir(parents=True, exist_ok=True)
+    with output_path.open("w", encoding="utf-8") as handle:
+        json.dump(output, handle, indent=2)
+        handle.write("\n")
+
+    print(f"wrote {len(output['topMods'])} top mod entries to {output_path}")
     return 0
 
 
 if __name__ == "__main__":
-    try:
-        sys.exit(main())
-    except Exception as exc:  # pragma: no cover - command-line error path
-        print(f"error: {exc}", file=sys.stderr)
-        sys.exit(1)
+    raise SystemExit(main())

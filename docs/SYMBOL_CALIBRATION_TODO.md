@@ -61,9 +61,12 @@ Notes:
 - [x] Add fallback-offset range validation in `SignatureResolver` so offsets outside module bounds are ignored.
 - [x] In UI/action layer: hide/disable actions when required symbols are missing or unresolved.
   - Promoted in Phase 2 UI: quick actions/hotkeys now honor the same session gate for `Memory`/`CodePatch`/`Freeze` actions while keeping `Sdk` actions executable when symbol gating is not required.
-- [ ] Add a "Calibrate symbol" debug panel that prints candidate RIP-relative patterns (based on the existing smoke-test scanners).
-- [ ] Add optional patch-mode fallback action for fog/maphack using CT-derived branch-bypass AOBs when symbol toggles regress.
-- [ ] Evaluate a patch-mode unit-cap feature (`future:set_unit_cap`) from CT patterns, while keeping profile-driven memory actions as primary path.
+- [x] Add a "Calibrate symbol" debug panel that prints candidate RIP-relative patterns (based on the existing smoke-test scanners).
+  - Acceptance: Live Ops now exposes a calibration scan command gated on active attach and records deterministic candidates (`pattern`, `offset`, `addressMode`, `valueType`) with persisted scan artifact output.
+- [x] Add optional patch-mode fallback action for fog/maphack using CT-derived branch-bypass AOBs when symbol toggles regress.
+  - Acceptance: `toggle_fog_reveal_patch_fallback` is profile-gated (`allow_fog_patch_fallback`), requires unique pattern match + original-byte validation, and emits explicit reason codes (`pattern_missing`, `pattern_not_unique`, `fallback_disabled`, `fallback_applied`, `fallback_restored`).
+- [x] Evaluate a patch-mode unit-cap feature (`future:set_unit_cap`) from CT patterns, while keeping profile-driven memory actions as primary path.
+  - Acceptance: `set_unit_cap_patch_fallback` is available as an optional fail-safe path (`allow_unit_cap_patch_fallback`), `set_unit_cap` remains unchanged as primary path, and diagnostics include fallback path markers for evidence separation.
 
 ## Live Checklist Template (Issue #19)
 

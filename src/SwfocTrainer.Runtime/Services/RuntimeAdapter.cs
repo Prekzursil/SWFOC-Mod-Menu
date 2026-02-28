@@ -44,6 +44,8 @@ public sealed class RuntimeAdapter : IRuntimeAdapter
     private static readonly byte[] UnitCapHookOriginalBytes = [0x48, 0x8B, 0x74, 0x24, 0x68];
     private const int UnitCapHookJumpLength = 5;
     private const int UnitCapHookCaveSize = 15;
+    private const string FogFallbackPatternSwfoc = "66 83 3C 70 00 74 1A";
+    private const string FogFallbackPatternSweaw = "80 3C 06 00 74 1A";
 
     private static readonly byte[][] InstantBuildHookPatterns =
     [
@@ -204,6 +206,7 @@ public sealed class RuntimeAdapter : IRuntimeAdapter
         ClearCreditsHookState();
         ClearUnitCapHookState();
         ClearInstantBuildHookState();
+        ClearFogPatchFallbackState();
         CurrentSession = new AttachSession(
             profile.Id,
             attachPreparation.Process,
@@ -712,6 +715,146 @@ public sealed class RuntimeAdapter : IRuntimeAdapter
         return Path.Combine(_calibrationArtifactRoot, $"attach_{safeProfile}_{safeTimestamp}.json");
     }
 
+    private IReadOnlyList<RuntimeCalibrationCandidate> BuildCalibrationCandidates(
+        IReadOnlyList<(string SetName, SignatureSpec Signature)> signatures,
+        byte[] moduleBytes,
+        int maxCandidates)
+    {
+        var candidates = new List<RuntimeCalibrationCandidate>(Math.Min(maxCandidates, signatures.Count));
+        var dedupe = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+
+        foreach (var entry in signatures)
+        {
+            if (candidates.Count >= maxCandidates)
+            {
+                break;
+            }
+
+            var normalizedPattern = NormalizePatternText(entry.Signature.Pattern);
+            if (string.IsNullOrWhiteSpace(normalizedPattern))
+            {
+                continue;
+            }
+
+            var key = $"{normalizedPattern}|{entry.Signature.Offset}|{entry.Signature.AddressMode}|{entry.Signature.ValueType}";
+            if (!dedupe.Add(key))
+            {
+                continue;
+            }
+
+            var rva = "n/a";
+            var snippet = string.Empty;
+            var hitCount = 0;
+
+            try
+            {
+                var pattern = AobPattern.Parse(normalizedPattern);
+                var hits = FindPatternOffsets(moduleBytes, pattern, maxHits: 64);
+                hitCount = hits.Count;
+                if (hits.Count > 0)
+                {
+                    rva = $"0x{hits[0]:X}";
+                    snippet = BuildPatternSnippet(moduleBytes, hits[0], pattern.Bytes.Length);
+                }
+            }
+            catch (Exception ex)
+            {
+                snippet = $"pattern_parse_error: {ex.Message}";
+            }
+
+            candidates.Add(new RuntimeCalibrationCandidate(
+                SuggestedPattern: normalizedPattern,
+                Offset: entry.Signature.Offset,
+                AddressMode: entry.Signature.AddressMode,
+                ValueType: entry.Signature.ValueType,
+                InstructionRva: rva,
+                Snippet: snippet,
+                ReferenceCount: hitCount));
+        }
+
+        return candidates;
+    }
+
+    private string? TryWriteCalibrationScanArtifact(
+        string profileId,
+        string targetSymbol,
+        IReadOnlyList<RuntimeCalibrationCandidate> candidates)
+    {
+        try
+        {
+            var generatedAt = DateTimeOffset.UtcNow;
+            var scanRoot = Path.Combine(_calibrationArtifactRoot, "scans");
+            Directory.CreateDirectory(scanRoot);
+
+            var safeProfile = SanitizeArtifactToken(profileId);
+            var safeSymbol = SanitizeArtifactToken(targetSymbol);
+            var timestamp = generatedAt.ToString("yyyyMMdd_HHmmss");
+            var outputPath = Path.Combine(scanRoot, $"scan_{safeProfile}_{safeSymbol}_{timestamp}.json");
+            var latestPath = Path.Combine(scanRoot, "scan_latest.json");
+
+            var payload = new
+            {
+                schemaVersion = "1.0",
+                generatedAtUtc = generatedAt,
+                profileId,
+                targetSymbol,
+                candidateCount = candidates.Count,
+                candidates
+            };
+
+            var json = JsonSerializer.Serialize(payload, new JsonSerializerOptions { WriteIndented = true });
+            File.WriteAllText(outputPath, json);
+            File.WriteAllText(latestPath, json);
+            return outputPath;
+        }
+        catch (Exception ex)
+        {
+            _logger.LogWarning(ex, "Failed to persist calibration scan artifact for symbol {Symbol}.", targetSymbol);
+            return null;
+        }
+    }
+
+    private static string NormalizePatternText(string pattern)
+    {
+        if (string.IsNullOrWhiteSpace(pattern))
+        {
+            return string.Empty;
+        }
+
+        var tokens = pattern
+            .Split(' ', StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries)
+            .Select(token => token == "?" || token == "??" ? "??" : token.ToUpperInvariant());
+        return string.Join(' ', tokens);
+    }
+
+    private static string BuildPatternSnippet(byte[] moduleBytes, int hitOffset, int patternLength)
+    {
+        if (moduleBytes.Length == 0)
+        {
+            return string.Empty;
+        }
+
+        var windowStart = Math.Max(0, hitOffset - 8);
+        var windowLength = Math.Min(moduleBytes.Length - windowStart, Math.Max(patternLength + 16, 16));
+        var snippet = moduleBytes.AsSpan(windowStart, windowLength).ToArray();
+        return BitConverter.ToString(snippet).Replace("-", " ");
+    }
+
+    private static string SanitizeArtifactToken(string value)
+    {
+        if (string.IsNullOrWhiteSpace(value))
+        {
+            return "unknown";
+        }
+
+        var sanitized = new string(value
+            .Trim()
+            .Select(ch => char.IsLetterOrDigit(ch) ? ch : '_')
+            .ToArray())
+            .Trim('_');
+        return string.IsNullOrWhiteSpace(sanitized) ? "unknown" : sanitized;
+    }
+
     private object BuildCalibrationSnapshotPayload(
         TrainerProfile profile,
         ProcessMetadata process,
@@ -1002,6 +1145,91 @@ public sealed class RuntimeAdapter : IRuntimeAdapter
         var sym = ResolveSymbol(symbol);
         _memory!.Write(sym.Address, value);
         return Task.CompletedTask;
+    }
+
+    public async Task<RuntimeCalibrationScanResult> ScanCalibrationCandidatesAsync(
+        RuntimeCalibrationScanRequest request,
+        CancellationToken cancellationToken)
+    {
+        if (request is null || string.IsNullOrWhiteSpace(request.TargetSymbol))
+        {
+            return new RuntimeCalibrationScanResult(
+                Succeeded: false,
+                ReasonCode: "invalid_request",
+                Message: "Calibration scan request requires a non-empty target symbol.",
+                Candidates: Array.Empty<RuntimeCalibrationCandidate>());
+        }
+
+        if (!IsAttached || _memory is null || CurrentSession is null)
+        {
+            return new RuntimeCalibrationScanResult(
+                Succeeded: false,
+                ReasonCode: "not_attached",
+                Message: "Calibration scan is only available while attached to a runtime session.",
+                Candidates: Array.Empty<RuntimeCalibrationCandidate>());
+        }
+
+        try
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            var profile = _attachedProfile
+                ?? await _profileRepository.ResolveInheritedProfileAsync(CurrentSession.ProfileId, cancellationToken);
+            var targetSymbol = request.TargetSymbol.Trim();
+            var signatures = profile.SignatureSets
+                .SelectMany(set => set.Signatures.Select(signature => (SetName: set.Name, Signature: signature)))
+                .Where(x => x.Signature.Name.Equals(targetSymbol, StringComparison.OrdinalIgnoreCase))
+                .OrderBy(x => x.SetName, StringComparer.OrdinalIgnoreCase)
+                .ThenBy(x => x.Signature.Pattern, StringComparer.OrdinalIgnoreCase)
+                .ToList();
+
+            if (signatures.Count == 0)
+            {
+                return new RuntimeCalibrationScanResult(
+                    Succeeded: false,
+                    ReasonCode: "symbol_not_in_profile",
+                    Message: $"No signature entries found for symbol '{targetSymbol}' in profile '{profile.Id}'.",
+                    Candidates: Array.Empty<RuntimeCalibrationCandidate>());
+            }
+
+            if (!TryLoadCreditsHookModuleData(
+                    CurrentSession.Process.ProcessId,
+                    out _,
+                    out var moduleBytes,
+                    out var failureMessage))
+            {
+                return new RuntimeCalibrationScanResult(
+                    Succeeded: false,
+                    ReasonCode: "module_unavailable",
+                    Message: failureMessage ?? "Unable to read process module for calibration scan.",
+                    Candidates: Array.Empty<RuntimeCalibrationCandidate>());
+            }
+
+            var maxCandidates = Math.Clamp(request.MaxCandidates <= 0 ? 12 : request.MaxCandidates, 1, 64);
+            var candidates = BuildCalibrationCandidates(signatures, moduleBytes, maxCandidates);
+            var artifactPath = TryWriteCalibrationScanArtifact(profile.Id, targetSymbol, candidates);
+            var resultReasonCode = candidates.Count == 0 ? "no_candidates" : "ok";
+            var resultMessage = candidates.Count == 0
+                ? $"No calibration candidates produced for symbol '{targetSymbol}'."
+                : $"Produced {candidates.Count} calibration candidate(s) for symbol '{targetSymbol}'.";
+            return new RuntimeCalibrationScanResult(
+                Succeeded: candidates.Count > 0,
+                ReasonCode: resultReasonCode,
+                Message: resultMessage,
+                Candidates: candidates,
+                ArtifactPath: artifactPath);
+        }
+        catch (OperationCanceledException)
+        {
+            throw;
+        }
+        catch (Exception ex)
+        {
+            return new RuntimeCalibrationScanResult(
+                Succeeded: false,
+                ReasonCode: "scan_failed",
+                Message: $"Calibration scan failed: {ex.Message}",
+                Candidates: Array.Empty<RuntimeCalibrationCandidate>());
+        }
     }
 
     public Task<ActionExecutionResult> ExecuteAsync(ActionExecutionRequest request)
@@ -1432,11 +1660,13 @@ public sealed class RuntimeAdapter : IRuntimeAdapter
         TryRestoreCreditsHookOnDetach();
         TryRestoreUnitCapHookOnDetach();
         TryRestoreInstantBuildHookOnDetach();
+        TryRestoreFogPatchFallbackOnDetach();
         _memory?.Dispose();
         _memory = null;
         ClearCreditsHookState();
         ClearUnitCapHookState();
         ClearInstantBuildHookState();
+        ClearFogPatchFallbackState();
         _dependencySoftDisabledActions.Clear();
         _dependencyValidationStatus = DependencyValidationStatus.Pass;
         _dependencyValidationMessage = null;
@@ -1694,8 +1924,10 @@ public sealed class RuntimeAdapter : IRuntimeAdapter
         {
             "freeze_timer" => ["game_timer_freeze", "freeze_timer"],
             "toggle_fog_reveal" => ["fog_reveal", "toggle_fog_reveal"],
+            ActionIdToggleFogRevealPatchFallback => ["fog_reveal", ActionIdToggleFogRevealPatchFallback],
             "toggle_ai" => ["ai_enabled", "toggle_ai"],
             ActionIdSetUnitCap => ["unit_cap", ActionIdSetUnitCap],
+            ActionIdSetUnitCapPatchFallback => ["unit_cap", ActionIdSetUnitCapPatchFallback],
             ActionIdToggleInstantBuildPatch => ["instant_build_patch", ActionIdToggleInstantBuildPatch],
             ActionIdSetCredits => [SymbolCredits, ActionIdSetCredits],
             _ => Array.Empty<string>()
@@ -2718,9 +2950,21 @@ public sealed class RuntimeAdapter : IRuntimeAdapter
             return true;
         }
 
+        if (request.Action.Id.Equals(ActionIdSetUnitCapPatchFallback, StringComparison.OrdinalIgnoreCase))
+        {
+            result = ExecuteUnitCapPatchFallbackAsync(request);
+            return true;
+        }
+
         if (request.Action.Id.Equals(ActionIdToggleInstantBuildPatch, StringComparison.OrdinalIgnoreCase))
         {
             result = ExecuteInstantBuildHookAsync(request);
+            return true;
+        }
+
+        if (request.Action.Id.Equals(ActionIdToggleFogRevealPatchFallback, StringComparison.OrdinalIgnoreCase))
+        {
+            result = ExecuteFogPatchFallbackAsync(request);
             return true;
         }
 
@@ -2880,6 +3124,334 @@ public sealed class RuntimeAdapter : IRuntimeAdapter
             bytes[i] = Convert.ToByte(parts[i], 16);
         }
         return bytes;
+    }
+
+    private async Task<ActionExecutionResult> ExecuteUnitCapPatchFallbackAsync(ActionExecutionRequest request)
+    {
+        if (!IsProfileFeatureEnabled("allow_unit_cap_patch_fallback"))
+        {
+            return CreateFallbackDisabledResult(ActionIdSetUnitCapPatchFallback, "allow_unit_cap_patch_fallback");
+        }
+
+        var result = await ExecuteUnitCapHookAsync(request);
+        var enable = request.Payload["enable"]?.GetValue<bool>() ?? true;
+        var reasonCode = result.Succeeded
+            ? (enable ? RuntimeReasonCode.FALLBACK_APPLIED : RuntimeReasonCode.FALLBACK_RESTORED)
+            : InferPatchFailureReasonCode(result.Message);
+        var diagnostics = MergeDiagnostics(
+            result.Diagnostics,
+            new Dictionary<string, object?>
+            {
+                ["fallbackAction"] = ActionIdSetUnitCapPatchFallback,
+                ["fallbackPath"] = "unit_cap_patch_fallback",
+                ["fallbackEnabled"] = true,
+                ["reasonCode"] = ToReasonCode(reasonCode)
+            });
+        return result with { Diagnostics = diagnostics };
+    }
+
+    private Task<ActionExecutionResult> ExecuteFogPatchFallbackAsync(ActionExecutionRequest request)
+    {
+        if (!IsProfileFeatureEnabled("allow_fog_patch_fallback"))
+        {
+            return Task.FromResult(CreateFallbackDisabledResult(ActionIdToggleFogRevealPatchFallback, "allow_fog_patch_fallback"));
+        }
+
+        var enable = request.Payload["enable"]?.GetValue<bool>() ?? true;
+        var resolution = ResolveFogPatchFallbackAddress();
+        if (!resolution.Succeeded)
+        {
+            return Task.FromResult(new ActionExecutionResult(
+                false,
+                resolution.Message,
+                AddressSource.None,
+                new Dictionary<string, object?>
+                {
+                    ["fallbackAction"] = ActionIdToggleFogRevealPatchFallback,
+                    ["fallbackPath"] = "fog_patch_fallback",
+                    ["reasonCode"] = ToReasonCode(resolution.ReasonCode)
+                }));
+        }
+
+        if (enable)
+        {
+            var result = EnableFogPatchFallback(resolution);
+            return Task.FromResult(result);
+        }
+
+        return Task.FromResult(DisableFogPatchFallback(resolution));
+    }
+
+    private ActionExecutionResult EnableFogPatchFallback(FogPatchFallbackResolution resolution)
+    {
+        if (_memory is null)
+        {
+            return new ActionExecutionResult(
+                false,
+                "Fog fallback patch failed: memory accessor unavailable.",
+                AddressSource.None,
+                new Dictionary<string, object?>
+                {
+                    ["fallbackAction"] = ActionIdToggleFogRevealPatchFallback,
+                    ["reasonCode"] = ToReasonCode(RuntimeReasonCode.SAFETY_FAIL_CLOSED)
+                });
+        }
+
+        var current = _memory.Read<byte>(resolution.BranchAddress);
+        if (current == resolution.PatchedByte)
+        {
+            _fogPatchFallbackAddress = resolution.BranchAddress;
+            _fogPatchFallbackOriginalByte = resolution.OriginalByte;
+            _fogPatchFallbackPatchedByte = resolution.PatchedByte;
+            return new ActionExecutionResult(
+                true,
+                "Fog fallback patch already active.",
+                AddressSource.Signature,
+                new Dictionary<string, object?>
+                {
+                    ["fallbackAction"] = ActionIdToggleFogRevealPatchFallback,
+                    ["fallbackPath"] = "fog_patch_fallback",
+                    ["address"] = ToHex(resolution.BranchAddress),
+                    ["state"] = "already_patched",
+                    ["reasonCode"] = ToReasonCode(RuntimeReasonCode.FALLBACK_APPLIED)
+                });
+        }
+
+        if (current != resolution.OriginalByte)
+        {
+            return new ActionExecutionResult(
+                false,
+                $"Fog fallback patch refused: unexpected branch byte at {ToHex(resolution.BranchAddress)}. Expected 0x{resolution.OriginalByte:X2}, got 0x{current:X2}.",
+                AddressSource.None,
+                new Dictionary<string, object?>
+                {
+                    ["fallbackAction"] = ActionIdToggleFogRevealPatchFallback,
+                    ["fallbackPath"] = "fog_patch_fallback",
+                    ["address"] = ToHex(resolution.BranchAddress),
+                    ["reasonCode"] = ToReasonCode(RuntimeReasonCode.SAFETY_FAIL_CLOSED)
+                });
+        }
+
+        _memory.Write(resolution.BranchAddress, resolution.PatchedByte);
+        _fogPatchFallbackAddress = resolution.BranchAddress;
+        _fogPatchFallbackOriginalByte = resolution.OriginalByte;
+        _fogPatchFallbackPatchedByte = resolution.PatchedByte;
+        return new ActionExecutionResult(
+            true,
+            $"Fog fallback patch applied at {ToHex(resolution.BranchAddress)}.",
+            AddressSource.Signature,
+            new Dictionary<string, object?>
+            {
+                ["fallbackAction"] = ActionIdToggleFogRevealPatchFallback,
+                ["fallbackPath"] = "fog_patch_fallback",
+                ["pattern"] = resolution.PatternText,
+                ["address"] = ToHex(resolution.BranchAddress),
+                ["state"] = "patched",
+                ["reasonCode"] = ToReasonCode(RuntimeReasonCode.FALLBACK_APPLIED)
+            });
+    }
+
+    private ActionExecutionResult DisableFogPatchFallback(FogPatchFallbackResolution resolution)
+    {
+        if (_memory is null)
+        {
+            return new ActionExecutionResult(
+                false,
+                "Fog fallback patch restore failed: memory accessor unavailable.",
+                AddressSource.None,
+                new Dictionary<string, object?>
+                {
+                    ["fallbackAction"] = ActionIdToggleFogRevealPatchFallback,
+                    ["reasonCode"] = ToReasonCode(RuntimeReasonCode.SAFETY_FAIL_CLOSED)
+                });
+        }
+
+        var address = _fogPatchFallbackAddress != nint.Zero ? _fogPatchFallbackAddress : resolution.BranchAddress;
+        var original = _fogPatchFallbackAddress != nint.Zero ? _fogPatchFallbackOriginalByte : resolution.OriginalByte;
+        var patched = _fogPatchFallbackAddress != nint.Zero ? _fogPatchFallbackPatchedByte : resolution.PatchedByte;
+
+        var current = _memory.Read<byte>(address);
+        if (current == original)
+        {
+            ClearFogPatchFallbackState();
+            return new ActionExecutionResult(
+                true,
+                "Fog fallback patch already restored.",
+                AddressSource.Signature,
+                new Dictionary<string, object?>
+                {
+                    ["fallbackAction"] = ActionIdToggleFogRevealPatchFallback,
+                    ["fallbackPath"] = "fog_patch_fallback",
+                    ["address"] = ToHex(address),
+                    ["state"] = "already_restored",
+                    ["reasonCode"] = ToReasonCode(RuntimeReasonCode.FALLBACK_RESTORED)
+                });
+        }
+
+        if (current != patched)
+        {
+            return new ActionExecutionResult(
+                false,
+                $"Fog fallback restore refused: unexpected branch byte at {ToHex(address)}. Expected 0x{patched:X2}, got 0x{current:X2}.",
+                AddressSource.None,
+                new Dictionary<string, object?>
+                {
+                    ["fallbackAction"] = ActionIdToggleFogRevealPatchFallback,
+                    ["fallbackPath"] = "fog_patch_fallback",
+                    ["address"] = ToHex(address),
+                    ["reasonCode"] = ToReasonCode(RuntimeReasonCode.SAFETY_FAIL_CLOSED)
+                });
+        }
+
+        _memory.Write(address, original);
+        ClearFogPatchFallbackState();
+        return new ActionExecutionResult(
+            true,
+            "Fog fallback patch restored to original bytes.",
+            AddressSource.Signature,
+            new Dictionary<string, object?>
+            {
+                ["fallbackAction"] = ActionIdToggleFogRevealPatchFallback,
+                ["fallbackPath"] = "fog_patch_fallback",
+                ["address"] = ToHex(address),
+                ["state"] = "restored",
+                ["reasonCode"] = ToReasonCode(RuntimeReasonCode.FALLBACK_RESTORED)
+            });
+    }
+
+    private FogPatchFallbackResolution ResolveFogPatchFallbackAddress()
+    {
+        EnsureAttached();
+        if (_memory is null || CurrentSession is null)
+        {
+            return FogPatchFallbackResolution.Fail(
+                RuntimeReasonCode.SAFETY_FAIL_CLOSED,
+                "Fog fallback patch resolution failed: no active attached process.");
+        }
+
+        try
+        {
+            using var process = Process.GetProcessById(CurrentSession.Process.ProcessId);
+            var module = process.MainModule;
+            if (module is null)
+            {
+                return FogPatchFallbackResolution.Fail(
+                    RuntimeReasonCode.SAFETY_FAIL_CLOSED,
+                    "Fog fallback patch resolution failed: main module unavailable.");
+            }
+
+            var baseAddress = module.BaseAddress;
+            var moduleBytes = _memory.ReadBytes(baseAddress, module.ModuleMemorySize);
+            var orderedPatterns = CurrentSession.Process.ExeTarget == ExeTarget.Sweaw
+                ? new[]
+                {
+                    (Pattern: FogFallbackPatternSweaw, BranchOffset: 4),
+                    (Pattern: FogFallbackPatternSwfoc, BranchOffset: 5)
+                }
+                : new[]
+                {
+                    (Pattern: FogFallbackPatternSwfoc, BranchOffset: 5),
+                    (Pattern: FogFallbackPatternSweaw, BranchOffset: 4)
+                };
+
+            var ambiguousPatterns = new List<string>();
+            foreach (var candidate in orderedPatterns)
+            {
+                var pattern = AobPattern.Parse(candidate.Pattern);
+                var hits = FindPatternOffsets(moduleBytes, pattern, maxHits: 4);
+                if (hits.Count == 0)
+                {
+                    continue;
+                }
+
+                if (hits.Count > 1)
+                {
+                    ambiguousPatterns.Add($"{candidate.Pattern} (hits={hits.Count})");
+                    continue;
+                }
+
+                var hitOffset = hits[0];
+                var branchOffset = hitOffset + candidate.BranchOffset;
+                if (branchOffset < 0 || branchOffset >= moduleBytes.Length)
+                {
+                    continue;
+                }
+
+                var currentByte = moduleBytes[branchOffset];
+                var originalByte = (byte)0x74;
+                var patchedByte = (byte)0xEB;
+                if (currentByte is not (0x74 or 0xEB))
+                {
+                    return FogPatchFallbackResolution.Fail(
+                        RuntimeReasonCode.SAFETY_FAIL_CLOSED,
+                        $"Fog fallback branch byte is unexpected at RVA 0x{branchOffset:X} (got 0x{currentByte:X2}).");
+                }
+
+                return FogPatchFallbackResolution.Ok(
+                    branchAddress: baseAddress + branchOffset,
+                    originalByte: originalByte,
+                    patchedByte: patchedByte,
+                    patternText: candidate.Pattern);
+            }
+
+            if (ambiguousPatterns.Count > 0)
+            {
+                return FogPatchFallbackResolution.Fail(
+                    RuntimeReasonCode.PATTERN_NOT_UNIQUE,
+                    $"Fog fallback patch pattern not unique: {string.Join("; ", ambiguousPatterns)}.");
+            }
+
+            return FogPatchFallbackResolution.Fail(
+                RuntimeReasonCode.PATTERN_MISSING,
+                "Fog fallback patch pattern missing in current module.");
+        }
+        catch (Exception ex)
+        {
+            return FogPatchFallbackResolution.Fail(
+                RuntimeReasonCode.SAFETY_FAIL_CLOSED,
+                $"Fog fallback patch resolution failed: {ex.Message}");
+        }
+    }
+
+    private bool IsProfileFeatureEnabled(string featureFlagKey)
+    {
+        return _attachedProfile is not null &&
+               _attachedProfile.FeatureFlags.TryGetValue(featureFlagKey, out var enabled) &&
+               enabled;
+    }
+
+    private static RuntimeReasonCode InferPatchFailureReasonCode(string message)
+    {
+        if (message.Contains("not unique", StringComparison.OrdinalIgnoreCase))
+        {
+            return RuntimeReasonCode.PATTERN_NOT_UNIQUE;
+        }
+
+        if (message.Contains("not found", StringComparison.OrdinalIgnoreCase))
+        {
+            return RuntimeReasonCode.PATTERN_MISSING;
+        }
+
+        return RuntimeReasonCode.SAFETY_FAIL_CLOSED;
+    }
+
+    private static string ToReasonCode(RuntimeReasonCode reasonCode)
+    {
+        return reasonCode.ToString().ToLowerInvariant();
+    }
+
+    private static ActionExecutionResult CreateFallbackDisabledResult(string actionId, string featureFlagKey)
+    {
+        return new ActionExecutionResult(
+            false,
+            $"Fallback action '{actionId}' is disabled by profile feature flag '{featureFlagKey}'.",
+            AddressSource.None,
+            new Dictionary<string, object?>
+            {
+                ["fallbackAction"] = actionId,
+                ["featureFlag"] = featureFlagKey,
+                ["reasonCode"] = ToReasonCode(RuntimeReasonCode.FALLBACK_DISABLED)
+            });
     }
 
     private Task<ActionExecutionResult> ExecuteUnitCapHookAsync(ActionExecutionRequest request)
@@ -4578,6 +5150,37 @@ public sealed class RuntimeAdapter : IRuntimeAdapter
         _instantBuildHookCodeCaveAddress = nint.Zero;
     }
 
+    private void TryRestoreFogPatchFallbackOnDetach()
+    {
+        if (_memory is null || _fogPatchFallbackAddress == nint.Zero)
+        {
+            return;
+        }
+
+        try
+        {
+            var current = _memory.Read<byte>(_fogPatchFallbackAddress);
+            if (current == _fogPatchFallbackPatchedByte)
+            {
+                _memory.Write(_fogPatchFallbackAddress, _fogPatchFallbackOriginalByte);
+                _logger.LogInformation(
+                    "Restored fog fallback patch byte at {Address} on detach.",
+                    ToHex(_fogPatchFallbackAddress));
+            }
+        }
+        catch (Exception ex)
+        {
+            _logger.LogWarning(ex, "Failed to restore fog fallback patch byte at detach.");
+        }
+    }
+
+    private void ClearFogPatchFallbackState()
+    {
+        _fogPatchFallbackAddress = nint.Zero;
+        _fogPatchFallbackOriginalByte = 0;
+        _fogPatchFallbackPatchedByte = 0;
+    }
+
     private static bool IsCreditsWrite(ActionExecutionRequest request, string symbol)
     {
         return request.Action.Id.Equals(ActionIdSetCredits, StringComparison.OrdinalIgnoreCase) ||
@@ -4715,6 +5318,37 @@ public sealed class RuntimeAdapter : IRuntimeAdapter
         public static InstantBuildHookResolution Ok(nint address, byte[] originalBytes) => new(address, originalBytes, string.Empty);
 
         public static InstantBuildHookResolution Fail(string message) => new(nint.Zero, Array.Empty<byte>(), message);
+    }
+
+    private sealed record FogPatchFallbackResolution(
+        nint BranchAddress,
+        byte OriginalByte,
+        byte PatchedByte,
+        string PatternText,
+        RuntimeReasonCode ReasonCode,
+        string Message)
+    {
+        public bool Succeeded => BranchAddress != nint.Zero;
+
+        public static FogPatchFallbackResolution Ok(
+            nint branchAddress,
+            byte originalByte,
+            byte patchedByte,
+            string patternText) => new(
+            branchAddress,
+            originalByte,
+            patchedByte,
+            patternText,
+            RuntimeReasonCode.FALLBACK_APPLIED,
+            string.Empty);
+
+        public static FogPatchFallbackResolution Fail(RuntimeReasonCode reasonCode, string message) => new(
+            nint.Zero,
+            0,
+            0,
+            string.Empty,
+            reasonCode,
+            message);
     }
 
     private sealed record CreditsHookResolution(

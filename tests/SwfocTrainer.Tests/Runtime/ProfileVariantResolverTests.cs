@@ -1,7 +1,10 @@
 using FluentAssertions;
 using Microsoft.Extensions.Logging.Abstractions;
 using SwfocTrainer.Core.Models;
+using SwfocTrainer.Profiles.Config;
+using SwfocTrainer.Profiles.Services;
 using SwfocTrainer.Runtime.Services;
+using SwfocTrainer.Tests.Common;
 using Xunit;
 
 namespace SwfocTrainer.Tests.Runtime;
@@ -25,7 +28,7 @@ public sealed class ProfileVariantResolverTests
     [Fact]
     public async Task ResolveAsync_ShouldPickRoe_WhenWorkshopMarkerPresent()
     {
-        var resolver = new ProfileVariantResolver(new LaunchContextResolver(), NullLogger<ProfileVariantResolver>.Instance);
+        var resolver = CreateResolverWithDefaultProfiles();
 
         var process = new ProcessMetadata(
             ProcessId: 123,
@@ -86,5 +89,22 @@ public sealed class ProfileVariantResolverTests
         result.ResolvedProfileId.Should().Be("base_swfoc");
         result.ReasonCode.Should().Be("no_process_detected");
         result.Confidence.Should().BeLessThan(0.5d);
+    }
+
+    private static ProfileVariantResolver CreateResolverWithDefaultProfiles()
+    {
+        var root = TestPaths.FindRepoRoot();
+        var repository = new FileSystemProfileRepository(new ProfileRepositoryOptions
+        {
+            ProfilesRootPath = Path.Combine(root, "profiles", "default")
+        });
+
+        return new ProfileVariantResolver(
+            launchContextResolver: new LaunchContextResolver(),
+            logger: NullLogger<ProfileVariantResolver>.Instance,
+            profileRepository: repository,
+            processLocator: null,
+            fingerprintService: null,
+            capabilityMapResolver: null);
     }
 }

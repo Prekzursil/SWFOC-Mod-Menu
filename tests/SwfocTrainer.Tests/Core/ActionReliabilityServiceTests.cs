@@ -109,6 +109,40 @@ public sealed class ActionReliabilityServiceTests
         entry.ReasonCode.Should().Be("fallback_or_degraded");
     }
 
+    [Fact]
+    public void Evaluate_FallbackActionDisabledByFeatureFlag_ShouldBeUnavailable()
+    {
+        var service = new ActionReliabilityService();
+        var profile = BuildProfile(
+            new Dictionary<string, bool>(StringComparer.OrdinalIgnoreCase)
+            {
+                ["allow_fog_patch_fallback"] = false
+            },
+            Action("toggle_fog_reveal_patch_fallback", RuntimeMode.Unknown, ExecutionKind.CodePatch, "enable"));
+        var session = BuildSession(RuntimeMode.Galactic, symbol: null);
+
+        var entry = service.Evaluate(profile, session).Single(x => x.ActionId == "toggle_fog_reveal_patch_fallback");
+        entry.State.Should().Be(ActionReliabilityState.Unavailable);
+        entry.ReasonCode.Should().Be("fallback_disabled");
+    }
+
+    [Fact]
+    public void Evaluate_FallbackActionEnabled_ShouldBeExperimental()
+    {
+        var service = new ActionReliabilityService();
+        var profile = BuildProfile(
+            new Dictionary<string, bool>(StringComparer.OrdinalIgnoreCase)
+            {
+                ["allow_unit_cap_patch_fallback"] = true
+            },
+            Action("set_unit_cap_patch_fallback", RuntimeMode.Unknown, ExecutionKind.CodePatch, "intValue"));
+        var session = BuildSession(RuntimeMode.Galactic, symbol: null);
+
+        var entry = service.Evaluate(profile, session).Single(x => x.ActionId == "set_unit_cap_patch_fallback");
+        entry.State.Should().Be(ActionReliabilityState.Experimental);
+        entry.ReasonCode.Should().Be("fallback_experimental");
+    }
+
     private static ActionSpec Action(string id, RuntimeMode mode, ExecutionKind kind, params string[] required)
     {
         var requiredArray = new JsonArray(required.Select(x => (JsonNode)JsonValue.Create(x)!).ToArray());
@@ -124,6 +158,15 @@ public sealed class ActionReliabilityServiceTests
 
     private static TrainerProfile BuildProfile(params ActionSpec[] actions)
     {
+        return BuildProfile(
+            new Dictionary<string, bool>(StringComparer.OrdinalIgnoreCase),
+            actions);
+    }
+
+    private static TrainerProfile BuildProfile(
+        IReadOnlyDictionary<string, bool> featureFlags,
+        params ActionSpec[] actions)
+    {
         return new TrainerProfile(
             "test",
             "test",
@@ -133,7 +176,7 @@ public sealed class ActionReliabilityServiceTests
             Array.Empty<SignatureSet>(),
             new Dictionary<string, long>(),
             actions.ToDictionary(x => x.Id, x => x, StringComparer.OrdinalIgnoreCase),
-            new Dictionary<string, bool>(),
+            featureFlags,
             Array.Empty<CatalogSource>(),
             "test",
             Array.Empty<HelperHookSpec>(),

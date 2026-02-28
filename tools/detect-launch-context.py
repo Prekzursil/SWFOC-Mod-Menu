@@ -79,12 +79,30 @@ def load_profiles(profile_root: Path) -> dict[str, ProfileInfo]:
     if not profiles_dir.exists():
         raise FileNotFoundError(f"Missing profiles directory: {profiles_dir}")
 
+    manifest_profile_ids: set[str] | None = None
+    manifest_path = profile_root / "manifest.json"
+    if manifest_path.exists():
+        with open(manifest_path, "r", encoding="utf-8") as f:
+            manifest_payload = json.load(f)
+        manifest_profiles = manifest_payload.get("profiles") if isinstance(manifest_payload, dict) else None
+        if isinstance(manifest_profiles, list):
+            ids: set[str] = set()
+            for item in manifest_profiles:
+                if not isinstance(item, dict):
+                    continue
+                profile_id = str(item.get("id") or "").strip()
+                if profile_id:
+                    ids.add(profile_id)
+            manifest_profile_ids = ids
+
     out: dict[str, ProfileInfo] = {}
     for json_file in sorted(glob.glob(str(profiles_dir / "*.json"))):
         with open(json_file, "r", encoding="utf-8") as f:
             data = json.load(f)
         profile_id = str(data.get("id", "")).strip()
         if not profile_id:
+            continue
+        if manifest_profile_ids is not None and profile_id not in manifest_profile_ids:
             continue
         metadata_raw = data.get("metadata")
         metadata = metadata_raw if isinstance(metadata_raw, dict) else {}
@@ -164,16 +182,68 @@ def reason_code_for_profile(profile_id: str, source: str) -> str:
 
 
 def profile_priority_key(profile: ProfileInfo) -> tuple[bool, bool, str]:
-    profile_id = profile.profile_id.lower()
-    return ("roe_" not in profile_id, "aotr_" not in profile_id, profile.profile_id)
+    return (profile_sort_priority(profile.profile_id), profile.profile_id)
 
 
-def steam_profile_matches(profiles: dict[str, ProfileInfo], steam_ids: list[str]) -> list[ProfileInfo]:
-    return [
-        profile
-        for profile in profiles.values()
-        if profile.steam_workshop_id and profile.steam_workshop_id in steam_ids
-    ]
+def profile_sort_priority(profile_id: str) -> int:
+    pid = profile_id.lower()
+    if "roe_" in pid:
+        return 0
+    if "aotr_" in pid:
+        return 1
+    return 2
+
+
+def required_workshop_ids(profile: ProfileInfo) -> list[str]:
+    ids: list[str] = []
+    if profile.steam_workshop_id:
+        ids.append(profile.steam_workshop_id)
+    ids.extend(parse_csv(profile.metadata, "requiredWorkshopIds"))
+    ids.extend(parse_csv(profile.metadata, "requiredWorkshopId"))
+    return sorted(set(ids))
+
+
+def score_workshop_match(profile: ProfileInfo, steam_ids: set[str]) -> int:
+    score = 0
+    if profile.steam_workshop_id and profile.steam_workshop_id in steam_ids:
+        score = max(score, 1000)
+
+    required_ids = required_workshop_ids(profile)
+    if not required_ids:
+        return score
+
+    overlap = sum(1 for required_id in required_ids if required_id in steam_ids)
+    if overlap == len(required_ids):
+        return max(score, 900 + len(required_ids))
+    if overlap > 0:
+        return max(score, 700 + overlap)
+    return score
+
+
+def steam_profile_match(profiles: dict[str, ProfileInfo], steam_ids: list[str]) -> ProfileInfo | None:
+    if not steam_ids:
+        return None
+
+    steam_set = set(steam_ids)
+    best_profile: ProfileInfo | None = None
+    best_score = 0
+    best_required_count = -1
+    for profile in profiles.values():
+        score = score_workshop_match(profile, steam_set)
+        if score <= 0:
+            continue
+        required_count = len(required_workshop_ids(profile))
+        if (
+            best_profile is None
+            or score > best_score
+            or (score == best_score and required_count > best_required_count)
+            or (score == best_score and required_count == best_required_count and profile_priority_key(profile) < profile_priority_key(best_profile))
+        ):
+            best_profile = profile
+            best_score = score
+            best_required_count = required_count
+
+    return best_profile
 
 
 def best_modpath_match(profiles: dict[str, ProfileInfo], modpath_norm: str) -> ProfileInfo | None:
@@ -219,14 +289,13 @@ def recommend_profile(
     exe_hint: str,
 ) -> dict[str, Any]:
     # 1) Exact workshop-id match.
-    steam_matches = steam_profile_matches(profiles, steam_ids)
-    if steam_matches:
-        steam_matches.sort(key=profile_priority_key)
-        best = steam_matches[0]
+    best_steam_match = steam_profile_match(profiles, steam_ids)
+    if best_steam_match:
+        confidence = 1.0 if best_steam_match.steam_workshop_id and best_steam_match.steam_workshop_id in set(steam_ids) else 0.97
         return {
-            "profileId": best.profile_id,
-            "reasonCode": reason_code_for_profile(best.profile_id, "steam"),
-            "confidence": 1.0,
+            "profileId": best_steam_match.profile_id,
+            "reasonCode": reason_code_for_profile(best_steam_match.profile_id, "steam"),
+            "confidence": confidence,
         }
 
     # 2) MODPATH hint match from profile metadata.

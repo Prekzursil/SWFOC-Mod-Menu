@@ -234,6 +234,7 @@
                     <Grid Grid.Column="1" Grid.Row="1">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
                             <RowDefinition Height="*"/>
                             <RowDefinition Height="*"/>
                         </Grid.RowDefinitions>
@@ -242,7 +243,50 @@
                             <ListBox ItemsSource="{Binding LiveOpsDiagnostics}" Height="110"/>
                         </GroupBox>
 
-                        <GroupBox Grid.Row="1" Header="Action Reliability" Margin="0,10,0,0">
+                        <GroupBox Grid.Row="1" Header="Calibrate Symbol" Margin="0,10,0,0">
+                            <Grid Margin="8">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="180"/>
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+
+                                <TextBlock Text="Symbol" VerticalAlignment="Center" Margin="0,0,8,6"/>
+                                <TextBox Grid.Column="1" Text="{Binding CalibrationTargetSymbol}" Margin="0,0,8,6"/>
+                                <Button Grid.Column="2"
+                                        Content="Scan"
+                                        Command="{Binding ScanCalibrationCandidatesCommand}"
+                                        Margin="0,0,0,6"/>
+
+                                <TextBlock Grid.Row="1"
+                                           Grid.ColumnSpan="3"
+                                           Text="{Binding CalibrationScanSummary}"
+                                           TextWrapping="Wrap"
+                                           Margin="0,0,0,8"/>
+
+                                <DataGrid Grid.Row="2"
+                                          Grid.ColumnSpan="3"
+                                          ItemsSource="{Binding CalibrationCandidates}"
+                                          AutoGenerateColumns="False"
+                                          IsReadOnly="True">
+                                    <DataGrid.Columns>
+                                        <DataGridTextColumn Header="Pattern" Binding="{Binding SuggestedPattern}" Width="2*"/>
+                                        <DataGridTextColumn Header="Offset" Binding="{Binding Offset}" Width="*"/>
+                                        <DataGridTextColumn Header="Address Mode" Binding="{Binding AddressMode}" Width="*"/>
+                                        <DataGridTextColumn Header="Type" Binding="{Binding ValueType}" Width="*"/>
+                                        <DataGridTextColumn Header="RVA" Binding="{Binding InstructionRva}" Width="*"/>
+                                        <DataGridTextColumn Header="Hits" Binding="{Binding ReferenceCount}" Width="*"/>
+                                    </DataGrid.Columns>
+                                </DataGrid>
+                            </Grid>
+                        </GroupBox>
+
+                        <GroupBox Grid.Row="2" Header="Action Reliability" Margin="0,10,0,0">
                             <DataGrid ItemsSource="{Binding ActionReliability}" AutoGenerateColumns="False" IsReadOnly="True">
                                 <DataGrid.Columns>
                                     <DataGridTextColumn Header="Action" Binding="{Binding ActionId}" Width="2*"/>
@@ -253,7 +297,7 @@
                             </DataGrid>
                         </GroupBox>
 
-                        <GroupBox Grid.Row="2" Header="Selected Unit Transaction History" Margin="0,10,0,0">
+                        <GroupBox Grid.Row="3" Header="Selected Unit Transaction History" Margin="0,10,0,0">
                             <DataGrid ItemsSource="{Binding SelectedUnitTransactions}" AutoGenerateColumns="False" IsReadOnly="True">
                                 <DataGrid.Columns>
                                     <DataGridTextColumn Header="Txn" Binding="{Binding TransactionId}" Width="*"/>
