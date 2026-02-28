@@ -28,38 +28,58 @@ public sealed class LivePromotedActionMatrixTests
     [
         new(
             "freeze_timer",
-            () => new JsonObject
-            {
-                ["symbol"] = "game_timer_freeze",
-                ["boolValue"] = false
-            }),
+            () =>
+            [
+                new JsonObject
+                {
+                    ["symbol"] = "game_timer_freeze",
+                    ["boolValue"] = false
+                }
+            ]),
         new(
             "toggle_fog_reveal",
-            () => new JsonObject
-            {
-                ["symbol"] = "fog_reveal",
-                ["boolValue"] = false
-            }),
+            () =>
+            [
+                new JsonObject
+                {
+                    ["symbol"] = "fog_reveal",
+                    ["boolValue"] = false
+                }
+            ]),
         new(
             "toggle_ai",
-            () => new JsonObject
-            {
-                ["symbol"] = "ai_enabled",
-                ["boolValue"] = true
-            }),
+            () =>
+            [
+                new JsonObject
+                {
+                    ["symbol"] = "ai_enabled",
+                    ["boolValue"] = true
+                }
+            ]),
         new(
             "set_unit_cap",
-            () => new JsonObject
-            {
-                ["intValue"] = 300,
-                ["enable"] = false
-            }),
+            () =>
+            [
+                new JsonObject
+                {
+                    ["intValue"] = 300,
+                    ["enable"] = true
+                },
+                new JsonObject
+                {
+                    ["intValue"] = 300,
+                    ["enable"] = false
+                }
+            ]),
         new(
             "toggle_instant_build_patch",
-            () => new JsonObject
-            {
-                ["enable"] = false
-            })
+            () =>
+            [
+                new JsonObject
+                {
+                    ["enable"] = false
+                }
+            ])
     ];
 
     private readonly ITestOutputHelper _output;
@@ -197,38 +217,49 @@ public sealed class LivePromotedActionMatrixTests
             because: $"profile '{profileId}' must expose promoted action '{actionSpec.ActionId}'");
 
         var action = profile.Actions[actionSpec.ActionId];
-        var request = new ActionExecutionRequest(action, actionSpec.BuildPayload(), profileId, mode);
-        var result = await runtime.ExecuteAsync(request);
-        var backendRoute = ReadDiagnosticString(result.Diagnostics, "backendRoute");
-        var routeReasonCode = ReadDiagnosticString(result.Diagnostics, "routeReasonCode");
-        var capabilityProbeReasonCode = ReadDiagnosticString(result.Diagnostics, "capabilityProbeReasonCode");
-        var hybridExecution = ReadDiagnosticBool(result.Diagnostics, "hybridExecution");
-        var hasFallbackMarker = HasHybridFallbackMarker(result, backendRoute, routeReasonCode, result.Diagnostics);
+        var payloads = actionSpec.BuildPayloads();
+        payloads.Should().NotBeEmpty(
+            because: $"promoted action '{actionSpec.ActionId}' should include at least one payload step for profile '{profileId}'.");
 
-        matrixEntries.Add(new ActionStatusEntry(
-            ProfileId: profileId,
-            ActionId: actionSpec.ActionId,
-            Outcome: result.Succeeded ? "Passed" : "Failed",
-            Message: result.Message,
-            BackendRoute: backendRoute,
-            RouteReasonCode: routeReasonCode,
-            CapabilityProbeReasonCode: capabilityProbeReasonCode,
-            HybridExecution: hybridExecution,
-            HasFallbackMarker: hasFallbackMarker,
-            SkipReasonCode: null));
+        for (var index = 0; index < payloads.Count; index++)
+        {
+            var payload = payloads[index];
+            var actionIdWithStep = payloads.Count > 1
+                ? $"{actionSpec.ActionId}[{index + 1}/{payloads.Count}]"
+                : actionSpec.ActionId;
+            var request = new ActionExecutionRequest(action, payload, profileId, mode);
+            var result = await runtime.ExecuteAsync(request);
+            var backendRoute = ReadDiagnosticString(result.Diagnostics, "backendRoute");
+            var routeReasonCode = ReadDiagnosticString(result.Diagnostics, "routeReasonCode");
+            var capabilityProbeReasonCode = ReadDiagnosticString(result.Diagnostics, "capabilityProbeReasonCode");
+            var hybridExecution = ReadDiagnosticBool(result.Diagnostics, "hybridExecution");
+            var hasFallbackMarker = HasHybridFallbackMarker(result, backendRoute, routeReasonCode, result.Diagnostics);
 
-        _output.WriteLine(
-            $"matrix profile={profileId} action={actionSpec.ActionId} success={result.Succeeded} backend={backendRoute} route={routeReasonCode} cap={capabilityProbeReasonCode} hybrid={hybridExecution} fallbackMarker={hasFallbackMarker} msg={result.Message}");
+            matrixEntries.Add(new ActionStatusEntry(
+                ProfileId: profileId,
+                ActionId: actionIdWithStep,
+                Outcome: result.Succeeded ? "Passed" : "Failed",
+                Message: result.Message,
+                BackendRoute: backendRoute,
+                RouteReasonCode: routeReasonCode,
+                CapabilityProbeReasonCode: capabilityProbeReasonCode,
+                HybridExecution: hybridExecution,
+                HasFallbackMarker: hasFallbackMarker,
+                SkipReasonCode: null));
 
-        AssertPromotedActionExecution(
-            result,
-            profileId,
-            actionSpec.ActionId,
-            backendRoute,
-            routeReasonCode,
-            capabilityProbeReasonCode,
-            hybridExecution,
-            hasFallbackMarker);
+            _output.WriteLine(
+                $"matrix profile={profileId} action={actionIdWithStep} success={result.Succeeded} backend={backendRoute} route={routeReasonCode} cap={capabilityProbeReasonCode} hybrid={hybridExecution} fallbackMarker={hasFallbackMarker} msg={result.Message}");
+
+            AssertPromotedActionExecution(
+                result,
+                profileId,
+                actionIdWithStep,
+                backendRoute,
+                routeReasonCode,
+                capabilityProbeReasonCode,
+                hybridExecution,
+                hasFallbackMarker);
+        }
     }
 
     private bool TrySkipUnavailableProfileContext(
@@ -432,7 +463,7 @@ public sealed class LivePromotedActionMatrixTests
         return true;
     }
 
-    private sealed record PromotedActionSpec(string ActionId, Func<JsonObject> BuildPayload);
+    private sealed record PromotedActionSpec(string ActionId, Func<IReadOnlyList<JsonObject>> BuildPayloads);
 
     private sealed record RuntimeDependencies(
         FileSystemProfileRepository ProfileRepository,

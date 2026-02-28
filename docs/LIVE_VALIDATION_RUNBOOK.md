@@ -5,8 +5,10 @@ Use this runbook to gather real-machine evidence for runtime/mod issues and mile
 ## 1. Preconditions
 
 - Launch the target game session first (`swfoc.exe` / `StarWarsG.exe`).
-- Ensure extender bridge host is running for extender-routed credits checks:
-  - `SwfocExtender.Host` on pipe `SwfocExtenderBridge`.
+- `tools/run-live-validation.ps1` preflights native host build and wires:
+  - `native/runtime/SwfocExtender.Host.exe`
+  - `SWFOC_EXTENDER_HOST_PATH` for every `dotnet test` subprocess.
+- If running a live test command manually (outside run-live script), set `SWFOC_EXTENDER_HOST_PATH` explicitly to avoid nondeterministic host resolution.
 - Promoted actions are extender-authoritative and fail-closed:
   - no managed/memory fallback is accepted for promoted matrix evidence.
   - missing or unverified promoted capability must surface fail-closed diagnostics.
@@ -166,6 +168,13 @@ Expected evidence behavior for promoted actions:
 - `hasFallbackMarker=false`
 - fail-closed outcomes use explicit route diagnostics (`SAFETY_FAIL_CLOSED`) and block issue `#7` closure.
 
+`set_unit_cap` promoted matrix contract:
+
+- run as a deterministic two-step sequence per profile:
+  1. enable (`enable=true`, snapshot/capture)
+  2. disable (`enable=false`, restore)
+- disable-first behavior is intentionally fail-closed and must not be asserted as pass in matrix evidence.
+
 ## 5. Bundle Validation
 
 ```powershell
@@ -202,8 +211,8 @@ Close issues only when all required evidence is present:
 Issue `#7` evidence decision gate:
 
 - `actionStatusDiagnostics.status` is `captured`.
-- `actionStatusDiagnostics.summary.total=15`, `passed=15`, `failed=0`, `skipped=0`.
-- every matrix entry for the five promoted actions across `base_swfoc`, `aotr_1397421866_swfoc`, and `roe_3447786229_swfoc` is present.
+- `actionStatusDiagnostics.summary.total=18`, `passed=18`, `failed=0`, `skipped=0` for full-context closure runs.
+- every matrix entry for the promoted actions across `base_swfoc`, `aotr_1397421866_swfoc`, and `roe_3447786229_swfoc` is present, including `set_unit_cap[1/2]` and `set_unit_cap[2/2]` per profile.
 - no matrix entry includes fallback markers or blocked diagnostics (`hasFallbackMarker=true`, `backendRoute` not `Extender`, or non-pass route/probe reason codes).
 - top-mod rows (when present) must never be silent omissions; each row must be explicit `Passed`, `Failed`, or `Skipped` with `skipReasonCode` when skipped.
 

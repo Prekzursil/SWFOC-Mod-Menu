@@ -82,6 +82,88 @@ function Get-LastExitCodeOrZero {
     return 0
 }
 
+function Invoke-CapturedCommand {
+    param(
+        [string[]]$Command,
+        [string[]]$Arguments = @()
+    )
+
+    if ($Command.Count -eq 0 -or [string]::IsNullOrWhiteSpace($Command[0])) {
+        return [PSCustomObject]@{
+            ExitCode = 1
+            Output = ""
+        }
+    }
+
+    $invocationArgs = @()
+    if ($Command.Count -gt 1) {
+        $invocationArgs += $Command[1..($Command.Count - 1)]
+    }
+    $invocationArgs += $Arguments
+
+    if (Test-IsWslPythonCommand -Command $Command) {
+        $processArgs = @()
+        foreach ($arg in $invocationArgs) {
+            $argText = [string]$arg
+            if ($argText.Contains('"')) {
+                $argText = $argText.Replace('"', '\"')
+            }
+
+            if ($argText.Contains(" ") -or $argText.Contains("`t")) {
+                $argText = '"' + $argText + '"'
+            }
+
+            $processArgs += $argText
+        }
+
+        $stdoutPath = [System.IO.Path]::GetTempFileName()
+        $stderrPath = [System.IO.Path]::GetTempFileName()
+        try {
+            $proc = Start-Process `
+                -FilePath $Command[0] `
+                -ArgumentList $processArgs `
+                -Wait `
+                -NoNewWindow `
+                -PassThru `
+                -RedirectStandardOutput $stdoutPath `
+                -RedirectStandardError $stderrPath
+
+            $stdout = if (Test-Path -Path $stdoutPath) { Get-Content -Raw -Path $stdoutPath } else { "" }
+            $stderr = if (Test-Path -Path $stderrPath) { Get-Content -Raw -Path $stderrPath } else { "" }
+            $combined = $stdout
+            if (-not [string]::IsNullOrWhiteSpace($stderr)) {
+                if (-not [string]::IsNullOrWhiteSpace($combined)) {
+                    $combined += [Environment]::NewLine
+                }
+                $combined += $stderr
+            }
+
+            return [PSCustomObject]@{
+                ExitCode = [int]$proc.ExitCode
+                Output = $combined
+            }
+        }
+        finally {
+            Remove-Item -Path $stdoutPath -Force -ErrorAction SilentlyContinue
+            Remove-Item -Path $stderrPath -Force -ErrorAction SilentlyContinue
+        }
+    }
+
+    try {
+        $output = & $Command[0] @invocationArgs 2>&1
+        return [PSCustomObject]@{
+            ExitCode = Get-LastExitCodeOrZero
+            Output = ($output | Out-String)
+        }
+    }
+    catch {
+        return [PSCustomObject]@{
+            ExitCode = 1
+            Output = $_.Exception.Message
+        }
+    }
+}
+
 function Test-PythonInterpreter {
     param([string[]]$Command)
 
@@ -89,26 +171,15 @@ function Test-PythonInterpreter {
         return $false
     }
 
-    $probeArgs = @()
-    if ($Command.Count -gt 1) {
-        $probeArgs += $Command[1..($Command.Count - 1)]
-    }
-
-    $probeArgs += @("-c", "print('ok')")
-
-    try {
-        $output = & $Command[0] @probeArgs 2>&1
-        $exitCode = Get-LastExitCodeOrZero
-        if ($exitCode -ne 0) {
-            return $false
-        }
-
-        $text = ($output | Out-String).Trim()
-        return -not [string]::IsNullOrWhiteSpace($text) -and $text -match "(^|\r?\n)ok(\r?\n|$)"
-    }
-    catch {
+    $probeArgs = @("-c", "print('ok')")
+    $captured = Invoke-CapturedCommand -Command $Command -Arguments $probeArgs
+    if ([int]$captured.ExitCode -ne 0) {
         return $false
     }
+
+    $text = [string]$captured.Output
+    $text = $text.Trim()
+    return -not [string]::IsNullOrWhiteSpace($text) -and $text -match "(^|\r?\n)ok(\r?\n|$)"
 }
 
 function Resolve-PythonCommand {
@@ -127,6 +198,14 @@ function Resolve-PythonCommand {
     $py = Get-Command py -ErrorAction SilentlyContinue
     if ($null -ne $py) {
         $candidates.Add(@($py.Source, "-3"))
+    }
+
+    $wsl = Get-Command wsl.exe -ErrorAction SilentlyContinue
+    if ($null -eq $wsl) {
+        $wsl = Get-Command wsl -ErrorAction SilentlyContinue
+    }
+    if ($null -ne $wsl) {
+        $candidates.Add(@($wsl.Source, "-e", "python3"))
     }
 
     $pathCandidates = @(
@@ -163,7 +242,68 @@ function Resolve-PythonCommand {
         }
     }
 
+    if ($null -ne $wsl) {
+        return @($wsl.Source, "-e", "python3")
+    }
+
     return @()
+}
+
+function Test-IsWslPythonCommand {
+    param([string[]]$Command)
+
+    if ($Command.Count -eq 0 -or [string]::IsNullOrWhiteSpace($Command[0])) {
+        return $false
+    }
+
+    $name = [System.IO.Path]::GetFileName($Command[0])
+    return $name.Equals("wsl.exe", [System.StringComparison]::OrdinalIgnoreCase) `
+        -or $name.Equals("wsl", [System.StringComparison]::OrdinalIgnoreCase)
+}
+
+function Convert-ToWslPath {
+    param([Parameter(Mandatory = $true)][string]$Path)
+
+    if ([string]::IsNullOrWhiteSpace($Path)) {
+        return $Path
+    }
+
+    if ($Path.StartsWith("/", [System.StringComparison]::Ordinal)) {
+        return $Path
+    }
+
+    $windowsPathMatch = [Regex]::Match($Path, '^(?<drive>[A-Za-z]):\\(?<rest>.*)$')
+    if ($windowsPathMatch.Success) {
+        $drive = $windowsPathMatch.Groups["drive"].Value.ToLowerInvariant()
+        $rest = ($windowsPathMatch.Groups["rest"].Value -replace "\\", "/")
+        if ([string]::IsNullOrWhiteSpace($rest)) {
+            return "/mnt/$drive"
+        }
+
+        return "/mnt/$drive/$rest"
+    }
+
+    $wsl = Get-Command wsl.exe -ErrorAction SilentlyContinue
+    if ($null -eq $wsl) {
+        $wsl = Get-Command wsl -ErrorAction SilentlyContinue
+    }
+
+    if ($null -eq $wsl) {
+        throw "WSL command was requested for python fallback but wsl executable is not available."
+    }
+
+    $converted = & $wsl.Source -e wslpath -a $Path 2>$null
+    $exitCode = Get-LastExitCodeOrZero
+    if ($exitCode -ne 0) {
+        throw "Failed to convert '$Path' into a WSL path using wslpath."
+    }
+
+    $text = ($converted | Out-String).Trim()
+    if ([string]::IsNullOrWhiteSpace($text)) {
+        throw "WSL path conversion produced no output for '$Path'."
+    }
+
+    return $text
 }
 
 function Test-NativeHostPreflight {
@@ -173,7 +313,7 @@ function Test-NativeHostPreflight {
     )
 
     if (-not $Enabled) {
-        return
+        return ""
     }
 
     $buildScript = Join-Path $PSScriptRoot "native/build-native.ps1"
@@ -185,16 +325,23 @@ function Test-NativeHostPreflight {
     # collisions when build-native.ps1 refreshes native/runtime/SwfocExtender.Host.exe.
     Get-Process -Name "SwfocExtender.Host" -ErrorAction SilentlyContinue | Stop-Process -Force
 
-    & $buildScript -Mode Windows -Configuration $Config
+    $buildOutput = & $buildScript -Mode Windows -Configuration $Config
     $buildExitCode = Get-LastExitCodeOrZero
     if ($buildExitCode -ne 0) {
         throw "ATTACH_NATIVE_HOST_PRECHECK_FAILED: native host build exited with code $buildExitCode."
+    }
+    foreach ($line in @($buildOutput)) {
+        if (-not [string]::IsNullOrWhiteSpace([string]$line)) {
+            Write-Information ([string]$line) -InformationAction Continue
+        }
     }
 
     $runtimeHostPath = Join-Path $repoRoot "native/runtime/SwfocExtender.Host.exe"
     if (-not (Test-Path -Path $runtimeHostPath)) {
         throw "ATTACH_NATIVE_HOST_MISSING: expected host artifact not found at '$runtimeHostPath'."
     }
+
+    return (Resolve-ArtifactPath -Path $runtimeHostPath)
 }
 
 function Test-RunSelection {
@@ -225,7 +372,8 @@ function Invoke-LiveTest {
     param(
         [Parameter(Mandatory = $true)][string]$Name,
         [Parameter(Mandatory = $true)][string]$Filter,
-        [Parameter(Mandatory = $true)][string]$TrxName
+        [Parameter(Mandatory = $true)][string]$TrxName,
+        [string]$NativeHostPath = ""
     )
 
     Write-Information "=== Running $Name ===" -InformationAction Continue
@@ -247,6 +395,7 @@ function Invoke-LiveTest {
     $previousTestName = $env:SWFOC_LIVE_TEST_NAME
     $previousForcedWorkshopIds = $env:SWFOC_FORCE_WORKSHOP_IDS
     $previousForcedProfileId = $env:SWFOC_FORCE_PROFILE_ID
+    $previousNativeHostPath = $env:SWFOC_EXTENDER_HOST_PATH
     $env:SWFOC_LIVE_OUTPUT_DIR = $runResultsDirectory
     $env:SWFOC_LIVE_TEST_NAME = $Name
     if ([string]::IsNullOrWhiteSpace($forceWorkshopIdsCsv)) {
@@ -261,6 +410,13 @@ function Invoke-LiveTest {
     }
     else {
         $env:SWFOC_FORCE_PROFILE_ID = $forceProfileIdNormalized
+    }
+
+    if ([string]::IsNullOrWhiteSpace($NativeHostPath)) {
+        Remove-Item Env:SWFOC_EXTENDER_HOST_PATH -ErrorAction SilentlyContinue
+    }
+    else {
+        $env:SWFOC_EXTENDER_HOST_PATH = $NativeHostPath
     }
 
     try {
@@ -293,6 +449,13 @@ function Invoke-LiveTest {
         }
         else {
             $env:SWFOC_FORCE_PROFILE_ID = $previousForcedProfileId
+        }
+
+        if ($null -eq $previousNativeHostPath) {
+            Remove-Item Env:SWFOC_EXTENDER_HOST_PATH -ErrorAction SilentlyContinue
+        }
+        else {
+            $env:SWFOC_EXTENDER_HOST_PATH = $previousNativeHostPath
         }
     }
 
@@ -388,7 +551,7 @@ $forceProfileIdNormalized = if ([string]::IsNullOrWhiteSpace($ForceProfileId)) {
 
 $dotnetExe = Resolve-DotnetCommand
 $pythonCmd = @(Resolve-PythonCommand)
-Test-NativeHostPreflight -Config $Configuration -Enabled $PreflightNativeHost
+$runtimeHostPath = Test-NativeHostPreflight -Config $Configuration -Enabled $PreflightNativeHost
 $runTimestamp = Get-Date
 $iso = $runTimestamp.ToString("yyyy-MM-dd HH:mm:ss zzz")
 $runStartedUtc = $runTimestamp.ToUniversalTime().ToString("o")
@@ -468,7 +631,11 @@ foreach ($test in $testDefinitions) {
     }
 
     try {
-        $executedTrx = Invoke-LiveTest -Name $test.Name -Filter $test.Filter -TrxName ("{0}-{1}" -f $RunId, $test.TrxBase)
+        $executedTrx = Invoke-LiveTest `
+            -Name $test.Name `
+            -Filter $test.Filter `
+            -TrxName ("{0}-{1}" -f $RunId, $test.TrxBase) `
+            -NativeHostPath $runtimeHostPath
         $summary = Read-TrxSummary -TrxPath $executedTrx
         $summaries.Add([PSCustomObject]@{
             Name = $test.TestName
@@ -500,12 +667,9 @@ $summaryPath = Join-Path $runResultsDirectory "live-validation-summary.json"
 $summaries | ConvertTo-Json -Depth 6 | Set-Content -Path $summaryPath
 
 $launchContextJson = Join-Path $runResultsDirectory "launch-context-fixture.json"
-$pythonArgs = @(
-    "tools/detect-launch-context.py",
-    "--from-process-json", "tools/fixtures/launch_context_cases.json",
-    "--profile-root", $ProfileRoot,
-    "--pretty"
-)
+$launchContextScriptPath = Resolve-ArtifactPath -Path "tools/detect-launch-context.py"
+$launchContextFixturePath = Resolve-ArtifactPath -Path "tools/fixtures/launch_context_cases.json"
+$launchContextProfileRoot = Resolve-ArtifactPath -Path $ProfileRoot
 
 if ($pythonCmd.Count -eq 0 -or $null -eq $pythonCmd[0]) {
     Write-Warning "Python was not found in this shell; skipping launch-context fixture generation."
@@ -517,15 +681,28 @@ if ($pythonCmd.Count -eq 0 -or $null -eq $pythonCmd[0]) {
 }
 else {
     try {
-        $pythonInvocationArgs = @()
-        if ($pythonCmd.Count -gt 1) {
-            $pythonInvocationArgs += $pythonCmd[1..($pythonCmd.Count - 1)]
+        $pythonArgs = @()
+        if (Test-IsWslPythonCommand -Command $pythonCmd) {
+            $pythonArgs += @(
+                (Convert-ToWslPath -Path $launchContextScriptPath),
+                "--from-process-json", (Convert-ToWslPath -Path $launchContextFixturePath),
+                "--profile-root", (Convert-ToWslPath -Path $launchContextProfileRoot),
+                "--pretty"
+            )
+        }
+        else {
+            $pythonArgs += @(
+                $launchContextScriptPath,
+                "--from-process-json", $launchContextFixturePath,
+                "--profile-root", $launchContextProfileRoot,
+                "--pretty"
+            )
         }
 
-        $pythonInvocationArgs += $pythonArgs
-        $launchContextOutput = & $pythonCmd[0] @pythonInvocationArgs 2>&1
-        $exitCode = if (Get-Variable -Name LASTEXITCODE -Scope Global -ErrorAction SilentlyContinue) { [int]$global:LASTEXITCODE } else { 0 }
-        $outputText = ($launchContextOutput | Out-String).Trim()
+        $launchContextResult = Invoke-CapturedCommand -Command $pythonCmd -Arguments $pythonArgs
+        $exitCode = [int]$launchContextResult.ExitCode
+        $outputText = [string]$launchContextResult.Output
+        $outputText = $outputText.Trim()
 
         if ($exitCode -ne 0) {
             throw ("python exited with code {0}. output: {1}" -f $exitCode, $outputText)
@@ -535,7 +712,7 @@ else {
             throw ("python produced no output. executable: {0}" -f $pythonCmd[0])
         }
 
-        $launchContextOutput | Set-Content -Path $launchContextJson
+        $outputText | Set-Content -Path $launchContextJson
     }
     catch {
         Write-Warning ("Launch-context fixture generation failed: {0}" -f $_.Exception.Message)
@@ -606,6 +783,9 @@ Write-Output ""
 Write-Output "=== Live Validation Summary ($iso) ==="
 Write-Output "run id: $RunId"
 Write-Output "scope: $Scope"
+if (-not [string]::IsNullOrWhiteSpace($runtimeHostPath)) {
+    Write-Output "native host path: $runtimeHostPath"
+}
 foreach ($entry in $summaries) {
     $s = $entry.Summary
     Write-Output ("{0}: outcome={1} passed={2} failed={3} skipped={4} message='{5}'" -f $entry.Name, $s.Outcome, $s.Passed, $s.Failed, $s.Skipped, $s.Message)
