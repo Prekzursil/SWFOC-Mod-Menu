@@ -13,6 +13,8 @@ namespace swfoc::extender::plugins {
 
 namespace {
 
+constexpr const char* kReasonExtenderNotImplemented = "EXTENDER_NOT_IMPLEMENTED";
+
 using AnchorMatch = std::pair<std::string, std::string>;
 
 constexpr std::array<std::string_view, 2> kUnitCapAnchors {"unit_cap", "set_unit_cap"};
@@ -97,6 +99,25 @@ bool IsUnitCapOutOfBounds(const PluginRequest& request, bool enablePatch) {
     return enablePatch && (request.intValue < kMinUnitCap || request.intValue > kMaxUnitCap);
 }
 
+
+bool HasProcessMutationImplementation() {
+    return false;
+}
+
+PluginResult BuildMutationNotImplementedResult(const PluginRequest& request, bool anchorsPresent) {
+    PluginResult result {};
+    result.succeeded = false;
+    result.reasonCode = kReasonExtenderNotImplemented;
+    result.hookState = "NOOP";
+    result.message = "Build patch mutation rejected because process mutation implementation is not installed.";
+    result.diagnostics = {
+        {"featureId", request.featureId},
+        {"processId", std::to_string(request.processId)},
+        {"anchorsPresent", anchorsPresent ? "true" : "false"},
+        {"anchorCount", std::to_string(request.anchors.size())}};
+    return result;
+}
+
 PluginResult BuildAcceptedMutationResult(
     const PluginRequest& request,
     bool enablePatch,
@@ -143,6 +164,10 @@ PluginResult BuildPatchPlugin::execute(const PluginRequest& request) {
     }
 
     const auto resolvedAnchor = FindAnchor(request, request.featureId);
+
+    if (!HasProcessMutationImplementation()) {
+        return BuildMutationNotImplementedResult(request, resolvedAnchor.has_value());
+    }
 
     const bool enablePatch = request.enable || request.boolValue;
     if (request.featureId == "set_unit_cap") {

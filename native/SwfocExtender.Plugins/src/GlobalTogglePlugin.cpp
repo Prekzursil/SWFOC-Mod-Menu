@@ -13,6 +13,8 @@ namespace swfoc::extender::plugins {
 
 namespace {
 
+constexpr const char* kReasonExtenderNotImplemented = "EXTENDER_NOT_IMPLEMENTED";
+
 using AnchorMatch = std::pair<std::string, std::string>;
 
 constexpr std::array<std::string_view, 2> kFreezeTimerAnchors {"game_timer_freeze", "freeze_timer"};
@@ -83,6 +85,25 @@ PluginResult BuildMissingAnchorResult(const PluginRequest& request) {
     return result;
 }
 
+
+bool HasProcessMutationImplementation() {
+    return false;
+}
+
+PluginResult BuildMutationNotImplementedResult(const PluginRequest& request, bool anchorsPresent) {
+    PluginResult result {};
+    result.succeeded = false;
+    result.reasonCode = kReasonExtenderNotImplemented;
+    result.hookState = "NOOP";
+    result.message = "Global toggle mutation rejected because process mutation implementation is not installed.";
+    result.diagnostics = {
+        {"featureId", request.featureId},
+        {"processId", std::to_string(request.processId)},
+        {"anchorsPresent", anchorsPresent ? "true" : "false"},
+        {"anchorCount", std::to_string(request.anchors.size())}};
+    return result;
+}
+
 CapabilityState BuildCapabilityState() {
     CapabilityState state {};
     state.available = true;
@@ -109,6 +130,10 @@ PluginResult GlobalTogglePlugin::execute(const PluginRequest& request) {
     const auto resolvedAnchor = FindAnchor(request, request.featureId);
     if (!resolvedAnchor.has_value()) {
         return BuildMissingAnchorResult(request);
+    }
+
+    if (!HasProcessMutationImplementation()) {
+        return BuildMutationNotImplementedResult(request, true);
     }
 
     const bool nextValue = request.boolValue;

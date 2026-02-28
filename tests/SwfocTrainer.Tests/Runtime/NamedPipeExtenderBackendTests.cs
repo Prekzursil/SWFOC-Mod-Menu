@@ -83,6 +83,60 @@ public sealed class NamedPipeExtenderBackendTests
         AssertHookLockResult(result);
     }
 
+
+    [Fact]
+    public async Task ExecuteAsync_ShouldSurfaceExtenderNotImplementedFailureAndNoopHookState()
+    {
+        using var cts = new CancellationTokenSource(TimeSpan.FromSeconds(3));
+        await using var server = new NamedPipeServerStream(
+            "SwfocExtenderBridge",
+            PipeDirection.InOut,
+            1,
+            PipeTransmissionMode.Byte,
+            PipeOptions.Asynchronous);
+        var backend = new NamedPipeExtenderBackend();
+        var request = BuildFreezeTimerRequestWithContext();
+        var capabilityReport = BuildCapabilityReport(request.ProfileId, request.Action.Id);
+
+        var waitTask = server.WaitForConnectionAsync(cts.Token);
+        var executeTask = backend.ExecuteAsync(request, capabilityReport, cts.Token);
+        await waitTask;
+
+        using var reader = new StreamReader(server);
+        await using var writer = new StreamWriter(server) { AutoFlush = true };
+        var requestJson = await reader.ReadLineAsync(cts.Token) ?? string.Empty;
+        using var requestDoc = JsonDocument.Parse(requestJson);
+        var commandId = requestDoc.RootElement.GetProperty("commandId").GetString() ?? string.Empty;
+
+        var response = JsonSerializer.Serialize(new
+        {
+            commandId,
+            succeeded = false,
+            reasonCode = "EXTENDER_NOT_IMPLEMENTED",
+            backend = "extender",
+            hookState = "NOOP",
+            message = "Mutation not implemented.",
+            diagnostics = new
+            {
+                featureId = "freeze_timer",
+                processId = "4242",
+                anchorsPresent = "true"
+            }
+        });
+
+        await writer.WriteLineAsync(response.AsMemory(), cts.Token);
+        var result = await executeTask;
+
+        result.Succeeded.Should().BeFalse();
+        result.Message.Should().Be("Mutation not implemented.");
+        result.Diagnostics.Should().ContainKey("reasonCode");
+        result.Diagnostics!["reasonCode"]!.ToString().Should().Be("EXTENDER_NOT_IMPLEMENTED");
+        result.Diagnostics.Should().ContainKey("hookState");
+        result.Diagnostics!["hookState"]!.ToString().Should().Be("NOOP");
+        result.Diagnostics.Should().ContainKey("anchorsPresent");
+        result.Diagnostics!["anchorsPresent"]!.ToString().Should().Be("true");
+    }
+
     [Fact]
     public async Task ExecuteAsync_ShouldSendProcessContextAndResolvedAnchors_FromRequestContext()
     {
