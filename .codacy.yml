@@ -15,3 +15,9 @@ exclude_paths:
   - "src/SwfocTrainer.Profiles/Services/ModOnboardingService.cs"
   - "tools/detect-launch-context.py"
   - "tools/workshop/discover-top-mods.py"
+  # Deterministic matrix/fixture tests intentionally duplicate assertion scaffolding.
+  - "tests/SwfocTrainer.Tests/App/MainViewModelSessionGatingTests.cs"
+  - "tests/SwfocTrainer.Tests/Profiles/ProfileActionCatalogTests.cs"
+  - "tests/SwfocTrainer.Tests/Runtime/LaunchContextResolverTests.cs"
+  - "tests/SwfocTrainer.Tests/Runtime/BackendRouterTests.cs"
+  - "tests/SwfocTrainer.Tests/Runtime/NamedPipeExtenderBackendTests.cs"
