@@ -175,15 +175,43 @@ CapabilityState BuildProbeState(bool available) {
     return state;
 }
 
+bool IsMutationImplementationReady(const std::string& featureId) {
+    // Build-patch features are currently addressable but do not provide
+    // mature runtime mutation/readback verification in the extender plugin path.
+    return featureId != "set_unit_cap" && featureId != "toggle_instant_build_patch";
+}
+
 void AddProbeFeature(
     CapabilitySnapshot& snapshot,
     const PluginRequest& probeContext,
     const char* featureId,
     std::initializer_list<const char*> anchorCandidates) {
-    const auto available =
-        (probeContext.processId > 0) &&
-        HasNonEmptyAnchor(probeContext.anchors, anchorCandidates);
-    snapshot.features.emplace(featureId, BuildProbeState(available));
+    const auto processAddressable = probeContext.processId > 0;
+    if (!processAddressable) {
+        CapabilityState state {};
+        state.available = false;
+        state.state = "Unavailable";
+        state.reasonCode = "CAPABILITY_BACKEND_UNAVAILABLE";
+        snapshot.features.emplace(featureId, state);
+        return;
+    }
+
+    const auto anchorAddressable = HasNonEmptyAnchor(probeContext.anchors, anchorCandidates);
+    if (!anchorAddressable) {
+        snapshot.features.emplace(featureId, BuildProbeState(false));
+        return;
+    }
+
+    if (!IsMutationImplementationReady(featureId)) {
+        CapabilityState state {};
+        state.available = true;
+        state.state = "Experimental";
+        state.reasonCode = "CAPABILITY_FEATURE_EXPERIMENTAL";
+        snapshot.features.emplace(featureId, state);
+        return;
+    }
+
+    snapshot.features.emplace(featureId, BuildProbeState(true));
 }
 
 CapabilitySnapshot BuildCapabilityProbeSnapshot(const PluginRequest& probeContext) {

@@ -124,6 +124,10 @@ public sealed class BackendRouterTests
         decision.Diagnostics!["hybridExecution"].Should().Be(false);
         decision.Diagnostics.Should().ContainKey("promotedExtenderAction");
         decision.Diagnostics!["promotedExtenderAction"].Should().Be(true);
+        decision.Diagnostics.Should().ContainKey("promotedCapabilityGate");
+        decision.Diagnostics!["promotedCapabilityGate"].Should().Be("unverified");
+        decision.Diagnostics.Should().ContainKey("promotedCapabilityReasonCode");
+        decision.Diagnostics!["promotedCapabilityReasonCode"].Should().Be(nameof(RuntimeReasonCode.CAPABILITY_FEATURE_EXPERIMENTAL));
         decision.Diagnostics.Should().NotContainKey("fallbackBackend");
     }
 

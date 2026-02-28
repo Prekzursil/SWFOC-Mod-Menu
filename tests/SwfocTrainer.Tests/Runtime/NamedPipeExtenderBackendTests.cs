@@ -239,7 +239,7 @@ public sealed class NamedPipeExtenderBackendTests
                     toggle_fog_reveal = new { available = true, state = "Verified", reasonCode = "CAPABILITY_PROBE_PASS" },
                     toggle_ai = new { available = false, state = "Unknown", reasonCode = "CAPABILITY_REQUIRED_MISSING" },
                     set_unit_cap = new { available = true, state = "Experimental", reasonCode = "CAPABILITY_FEATURE_EXPERIMENTAL" },
-                    toggle_instant_build_patch = new { available = false, state = "Unknown", reasonCode = "CAPABILITY_REQUIRED_MISSING" },
+                    toggle_instant_build_patch = new { available = true, state = "Experimental", reasonCode = "CAPABILITY_FEATURE_EXPERIMENTAL" },
                     set_credits = new { available = true, state = "Verified", reasonCode = "CAPABILITY_PROBE_PASS" }
                 }
             }
@@ -257,6 +257,9 @@ public sealed class NamedPipeExtenderBackendTests
         report.IsFeatureAvailable("set_credits").Should().BeTrue(
             $"probeReason={report.ProbeReasonCode} diagnostics={System.Text.Json.JsonSerializer.Serialize(report.Diagnostics)}");
         report.Capabilities["set_unit_cap"].Confidence.Should().Be(CapabilityConfidenceState.Experimental);
+        report.Capabilities["set_unit_cap"].ReasonCode.Should().Be(RuntimeReasonCode.CAPABILITY_FEATURE_EXPERIMENTAL);
+        report.Capabilities["toggle_instant_build_patch"].Confidence.Should().Be(CapabilityConfidenceState.Experimental);
+        report.Capabilities["toggle_instant_build_patch"].ReasonCode.Should().Be(RuntimeReasonCode.CAPABILITY_FEATURE_EXPERIMENTAL);
         report.Capabilities["set_credits"].Confidence.Should().Be(CapabilityConfidenceState.Verified);
     }
 
