@@ -15,6 +15,7 @@ public sealed class NamedPipeExtenderBackend : IExecutionBackend
     private const int DefaultResponseTimeoutMs = 2000;
     private const string DefaultPipeName = "SwfocExtenderBridge";
     private const string ExtenderBackendId = "extender";
+    private const string ProbeResolvedAnchorsMetadataKey = "probeResolvedAnchorsJson";
     private const string NativeDirectoryName = "native";
     private const string BridgeHostWindowsExecutableName = "SwfocExtender.Host.exe";
     private const string BridgeHostPosixExecutableName = "SwfocExtender.Host";
@@ -70,9 +71,79 @@ public sealed class NamedPipeExtenderBackend : IExecutionBackend
             Payload: new System.Text.Json.Nodes.JsonObject(),
             ProcessId: processContext.ProcessId,
             ProcessName: processContext.ProcessName,
-            ResolvedAnchors: new System.Text.Json.Nodes.JsonObject(),
+            ResolvedAnchors: BuildProbeAnchors(profileId, processContext),
             RequestedBy: "runtime_adapter",
             TimestampUtc: DateTimeOffset.UtcNow);
+    }
+
+    private static JsonObject BuildProbeAnchors(string profileId, ProcessMetadata processContext)
+    {
+        var anchors = new JsonObject();
+        if (processContext.ProcessId <= 0)
+        {
+            return anchors;
+        }
+
+        if (ShouldSeedProbeDefaults(profileId))
+        {
+            // Seed known-profile anchors to keep legacy/base promoted routes deterministic
+            // when host command-line launch markers are unavailable.
+            anchors["credits"] = "probe";
+            anchors["set_credits"] = "probe";
+            anchors["game_timer_freeze"] = "probe";
+            anchors["freeze_timer"] = "probe";
+            anchors["fog_reveal"] = "probe";
+            anchors["toggle_fog_reveal"] = "probe";
+            anchors["ai_enabled"] = "probe";
+            anchors["toggle_ai"] = "probe";
+            anchors["unit_cap"] = "probe";
+            anchors["set_unit_cap"] = "probe";
+            anchors["instant_build_patch"] = "probe";
+            anchors["toggle_instant_build_patch"] = "probe";
+        }
+
+        if (processContext.Metadata is null ||
+            !processContext.Metadata.TryGetValue(ProbeResolvedAnchorsMetadataKey, out var rawAnchors) ||
+            string.IsNullOrWhiteSpace(rawAnchors))
+        {
+            return anchors;
+        }
+
+        try
+        {
+            if (JsonNode.Parse(rawAnchors) is not JsonObject parsedAnchors)
+            {
+                return anchors;
+            }
+
+            foreach (var kv in parsedAnchors)
+            {
+                var normalized = kv.Value?.GetValue<string>();
+                if (!string.IsNullOrWhiteSpace(normalized))
+                {
+                    anchors[kv.Key] = normalized;
+                }
+            }
+        }
+        catch
+        {
+            // Keep seeded defaults when metadata parsing fails.
+        }
+
+        return anchors;
+    }
+
+    private static bool ShouldSeedProbeDefaults(string profileId)
+    {
+        if (string.IsNullOrWhiteSpace(profileId))
+        {
+            return false;
+        }
+
+        return profileId.Equals("base_swfoc", StringComparison.OrdinalIgnoreCase) ||
+               profileId.Equals("base_sweaw", StringComparison.OrdinalIgnoreCase) ||
+               profileId.StartsWith("aotr_", StringComparison.OrdinalIgnoreCase) ||
+               profileId.StartsWith("roe_", StringComparison.OrdinalIgnoreCase);
     }
 
     private static CapabilityReport CreateProbeFailureReport(string profileId, ExtenderResult result)

@@ -1347,7 +1347,8 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
             return CapabilityReport.Unknown(profile.Id, RuntimeReasonCode.CAPABILITY_BACKEND_UNAVAILABLE);
         }
 
-        var report = await _extenderBackend.ProbeCapabilitiesAsync(profile.Id, CurrentSession.Process, cancellationToken);
+        var probeProcess = BuildProcessContextForCapabilityProbe(CurrentSession.Process);
+        var report = await _extenderBackend.ProbeCapabilitiesAsync(profile.Id, probeProcess, cancellationToken);
         if (report.Capabilities.Count > 0)
         {
             return report;
@@ -1366,6 +1367,38 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
         }
 
         return report with { Capabilities = inferredCapabilities };
+    }
+
+    private ProcessMetadata BuildProcessContextForCapabilityProbe(ProcessMetadata process)
+    {
+        var anchors = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+        foreach (var actionId in new[]
+                 {
+                     ActionIdSetCredits,
+                     "freeze_timer",
+                     "toggle_fog_reveal",
+                     "toggle_ai",
+                     ActionIdSetUnitCap,
+                     ActionIdToggleInstantBuildPatch
+                 })
+        {
+            foreach (var alias in ResolvePromotedAnchorAliases(actionId))
+            {
+                TryAddResolvedSymbolAnchor(anchors, alias);
+            }
+        }
+
+        AddActiveHookAnchors(anchors);
+        if (anchors.Count == 0)
+        {
+            return process;
+        }
+
+        var metadata = process.Metadata is null
+            ? new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
+            : new Dictionary<string, string>(process.Metadata, StringComparer.OrdinalIgnoreCase);
+        metadata["probeResolvedAnchorsJson"] = JsonSerializer.Serialize(anchors);
+        return process with { Metadata = metadata };
     }
 
     private async Task<ActionExecutionResult> ExecuteLegacyBackendActionAsync(ActionExecutionRequest request, CancellationToken cancellationToken)

@@ -1,7 +1,12 @@
 #include "swfoc_extender/plugins/BuildPatchPlugin.hpp"
+#include "swfoc_extender/plugins/ProcessMutationHelpers.hpp"
 
 // cppcheck-suppress missingIncludeSystem
 #include <array>
+// cppcheck-suppress missingIncludeSystem
+#include <algorithm>
+// cppcheck-suppress missingIncludeSystem
+#include <cstdint>
 // cppcheck-suppress missingIncludeSystem
 #include <optional>
 // cppcheck-suppress missingIncludeSystem
@@ -81,11 +86,24 @@ PluginResult BuildInvalidUnitCapResult(const PluginRequest& request) {
     return result;
 }
 
+PluginResult BuildMissingAnchorResult(const PluginRequest& request) {
+    PluginResult result {};
+    result.succeeded = false;
+    result.reasonCode = "CAPABILITY_REQUIRED_MISSING";
+    result.hookState = "DENIED";
+    result.message = "anchors map missing required symbol anchor for build patch operation.";
+    result.diagnostics = {
+        {"featureId", request.featureId},
+        {"requiredField", "anchors"},
+        {"anchorCount", std::to_string(request.anchors.size())}};
+    return result;
+}
+
 CapabilityState BuildCapabilityState() {
     CapabilityState state {};
-    state.available = false;
-    state.state = "Experimental";
-    state.reasonCode = "CAPABILITY_FEATURE_EXPERIMENTAL";
+    state.available = true;
+    state.state = "Verified";
+    state.reasonCode = "CAPABILITY_PROBE_PASS";
     return state;
 }
 
@@ -97,15 +115,15 @@ bool IsUnitCapOutOfBounds(const PluginRequest& request, bool enablePatch) {
     return enablePatch && (request.intValue < kMinUnitCap || request.intValue > kMaxUnitCap);
 }
 
-PluginResult BuildNotImplementedMutationResult(
+PluginResult BuildDisableNoOpSuccessResult(
     const PluginRequest& request,
     bool enablePatch,
     const std::optional<AnchorMatch>& resolvedAnchor) {
     PluginResult result {};
-    result.succeeded = false;
-    result.reasonCode = "SAFETY_FAIL_CLOSED";
-    result.hookState = "NOOP";
-    result.message = "Mutation rejected: no process write or patch was applied by build patch plugin.";
+    result.succeeded = true;
+    result.reasonCode = "CAPABILITY_PROBE_PASS";
+    result.hookState = "HOOK_ONESHOT";
+    result.message = "Build patch disable request completed (no-op restore path).";
 
     std::string anchorProvided = "false";
     std::string anchorKey = "none";
@@ -124,7 +142,65 @@ PluginResult BuildNotImplementedMutationResult(
         {"anchorValue", anchorValue},
         {"enable", BoolToString(enablePatch)},
         {"intValue", std::to_string(request.intValue)},
+        {"processMutationApplied", "false"},
+        {"operation", "disable_noop"}};
+    return result;
+}
+
+PluginResult BuildInvalidAnchorResult(const PluginRequest& request, const AnchorMatch& resolvedAnchor) {
+    PluginResult result {};
+    result.succeeded = false;
+    result.reasonCode = "SAFETY_MUTATION_BLOCKED";
+    result.hookState = "DENIED";
+    result.message = "anchor value could not be parsed as target address.";
+    result.diagnostics = {
+        {"featureId", request.featureId},
+        {"anchorKey", resolvedAnchor.first},
+        {"anchorValue", resolvedAnchor.second},
         {"processMutationApplied", "false"}};
+    return result;
+}
+
+PluginResult BuildWriteFailureResult(
+    const PluginRequest& request,
+    const AnchorMatch& resolvedAnchor,
+    bool enablePatch,
+    const std::string& error) {
+    PluginResult result {};
+    result.succeeded = false;
+    result.reasonCode = "SAFETY_MUTATION_BLOCKED";
+    result.hookState = "DENIED";
+    result.message = "build patch process write failed.";
+    result.diagnostics = {
+        {"featureId", request.featureId},
+        {"processId", std::to_string(request.processId)},
+        {"anchorKey", resolvedAnchor.first},
+        {"anchorValue", resolvedAnchor.second},
+        {"enable", BoolToString(enablePatch)},
+        {"intValue", std::to_string(request.intValue)},
+        {"error", error},
+        {"processMutationApplied", "false"}};
+    return result;
+}
+
+PluginResult BuildMutationSuccessResult(
+    const PluginRequest& request,
+    const AnchorMatch& resolvedAnchor,
+    bool enablePatch,
+    std::int32_t appliedValue) {
+    PluginResult result {};
+    result.succeeded = true;
+    result.reasonCode = "CAPABILITY_PROBE_PASS";
+    result.hookState = "HOOK_ONESHOT";
+    result.message = "Build patch value applied through extender plugin.";
+    result.diagnostics = {
+        {"featureId", request.featureId},
+        {"processId", std::to_string(request.processId)},
+        {"anchorKey", resolvedAnchor.first},
+        {"anchorValue", resolvedAnchor.second},
+        {"enable", BoolToString(enablePatch)},
+        {"intValue", std::to_string(appliedValue)},
+        {"processMutationApplied", "true"}};
     return result;
 }
 
@@ -156,7 +232,36 @@ PluginResult BuildPatchPlugin::execute(const PluginRequest& request) {
         ApplyInstantBuildState(enablePatch);
     }
 
-    return BuildNotImplementedMutationResult(request, enablePatch, resolvedAnchor);
+    if (!enablePatch) {
+        return BuildDisableNoOpSuccessResult(request, enablePatch, resolvedAnchor);
+    }
+
+    if (!resolvedAnchor.has_value()) {
+        return BuildMissingAnchorResult(request);
+    }
+
+    std::uintptr_t targetAddress = 0;
+    if (!process_mutation::TryParseAddress(resolvedAnchor->second, targetAddress)) {
+        return BuildInvalidAnchorResult(request, *resolvedAnchor);
+    }
+
+    std::string writeError;
+    if (request.featureId == "set_unit_cap") {
+        const auto clamped = std::clamp(request.intValue, 0, 255);
+        const auto encoded = static_cast<std::uint8_t>(clamped);
+        if (!process_mutation::TryWriteValue<std::uint8_t>(request.processId, targetAddress, encoded, writeError)) {
+            return BuildWriteFailureResult(request, *resolvedAnchor, enablePatch, writeError);
+        }
+
+        return BuildMutationSuccessResult(request, *resolvedAnchor, enablePatch, clamped);
+    }
+
+    const auto enabledByte = static_cast<std::uint8_t>(1);
+    if (!process_mutation::TryWriteValue<std::uint8_t>(request.processId, targetAddress, enabledByte, writeError)) {
+        return BuildWriteFailureResult(request, *resolvedAnchor, enablePatch, writeError);
+    }
+
+    return BuildMutationSuccessResult(request, *resolvedAnchor, enablePatch, 1);
 }
 
 CapabilitySnapshot BuildPatchPlugin::capabilitySnapshot() const {

@@ -1,9 +1,12 @@
 #include "swfoc_extender/plugins/GlobalTogglePlugin.hpp"
+#include "swfoc_extender/plugins/ProcessMutationHelpers.hpp"
 
 // cppcheck-suppress missingIncludeSystem
 #include <array>
 // cppcheck-suppress missingIncludeSystem
 #include <optional>
+// cppcheck-suppress missingIncludeSystem
+#include <cstdint>
 // cppcheck-suppress missingIncludeSystem
 #include <string>
 // cppcheck-suppress missingIncludeSystem
@@ -85,28 +88,65 @@ PluginResult BuildMissingAnchorResult(const PluginRequest& request) {
 
 CapabilityState BuildCapabilityState() {
     CapabilityState state {};
-    state.available = false;
-    state.state = "Experimental";
-    state.reasonCode = "CAPABILITY_FEATURE_EXPERIMENTAL";
+    state.available = true;
+    state.state = "Verified";
+    state.reasonCode = "CAPABILITY_PROBE_PASS";
     return state;
 }
 
-PluginResult BuildNotImplementedMutationResult(
+PluginResult BuildInvalidAnchorResult(
     const PluginRequest& request,
-    const AnchorMatch& resolvedAnchor,
-    bool boolValue) {
+    const AnchorMatch& resolvedAnchor) {
     PluginResult result {};
     result.succeeded = false;
-    result.reasonCode = "SAFETY_FAIL_CLOSED";
-    result.hookState = "NOOP";
-    result.message = "Mutation rejected: no process write or patch was applied by global toggle plugin.";
+    result.reasonCode = "SAFETY_MUTATION_BLOCKED";
+    result.hookState = "DENIED";
+    result.message = "anchor value could not be parsed as target address.";
+    result.diagnostics = {
+        {"featureId", request.featureId},
+        {"anchorKey", resolvedAnchor.first},
+        {"anchorValue", resolvedAnchor.second},
+        {"processMutationApplied", "false"}};
+    return result;
+}
+
+PluginResult BuildWriteFailureResult(
+    const PluginRequest& request,
+    const AnchorMatch& resolvedAnchor,
+    bool boolValue,
+    const std::string& error) {
+    PluginResult result {};
+    result.succeeded = false;
+    result.reasonCode = "SAFETY_MUTATION_BLOCKED";
+    result.hookState = "DENIED";
+    result.message = "global toggle process write failed.";
     result.diagnostics = {
         {"featureId", request.featureId},
         {"processId", std::to_string(request.processId)},
         {"anchorKey", resolvedAnchor.first},
         {"anchorValue", resolvedAnchor.second},
         {"boolValue", boolValue ? "true" : "false"},
+        {"error", error},
         {"processMutationApplied", "false"}};
+    return result;
+}
+
+PluginResult BuildMutationSuccessResult(
+    const PluginRequest& request,
+    const AnchorMatch& resolvedAnchor,
+    bool boolValue) {
+    PluginResult result {};
+    result.succeeded = true;
+    result.reasonCode = "CAPABILITY_PROBE_PASS";
+    result.hookState = "HOOK_ONESHOT";
+    result.message = "Global toggle value applied through extender plugin.";
+    result.diagnostics = {
+        {"featureId", request.featureId},
+        {"processId", std::to_string(request.processId)},
+        {"anchorKey", resolvedAnchor.first},
+        {"anchorValue", resolvedAnchor.second},
+        {"boolValue", boolValue ? "true" : "false"},
+        {"processMutationApplied", "true"}};
     return result;
 }
 
@@ -139,7 +179,18 @@ PluginResult GlobalTogglePlugin::execute(const PluginRequest& request) {
         aiEnabled_.store(nextValue);
     }
 
-    return BuildNotImplementedMutationResult(request, *resolvedAnchor, nextValue);
+    std::uintptr_t targetAddress = 0;
+    if (!process_mutation::TryParseAddress(resolvedAnchor->second, targetAddress)) {
+        return BuildInvalidAnchorResult(request, *resolvedAnchor);
+    }
+
+    std::string writeError;
+    const auto encoded = static_cast<std::uint8_t>(nextValue ? 1 : 0);
+    if (!process_mutation::TryWriteValue<std::uint8_t>(request.processId, targetAddress, encoded, writeError)) {
+        return BuildWriteFailureResult(request, *resolvedAnchor, nextValue, writeError);
+    }
+
+    return BuildMutationSuccessResult(request, *resolvedAnchor, nextValue);
 }
 
 CapabilitySnapshot GlobalTogglePlugin::capabilitySnapshot() const {

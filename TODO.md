@@ -88,6 +88,10 @@ Reliability rule for runtime/mod tasks:
   evidence: test `tests/SwfocTrainer.Tests/Runtime/BackendRouterTests.cs`
   evidence: tool `tools/validate-workshop-topmods.ps1`
   evidence: tool `tools/validate-generated-profile-seed.ps1`
+- [x] M1 closure live matrix (non-skipped) with forced-context diagnostics + promoted-action matrix pass gate.
+  evidence: bundle `TestResults/runs/20260228-064134/repro-bundle.json`
+  evidence: bundle `TestResults/runs/20260228-063938/repro-bundle.json`
+  evidence: manual `2026-02-28` `dotnet test tests/SwfocTrainer.Tests/SwfocTrainer.Tests.csproj -c Release --no-build --filter "FullyQualifiedName!~SwfocTrainer.Tests.Profiles.Live&FullyQualifiedName!~RuntimeAttachSmokeTests"` => `Passed: 189`
 
 ## Later (M2 + M3 + M4)
 

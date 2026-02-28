@@ -47,6 +47,10 @@ public sealed class NamedPipeExtenderBackendTests
         using var requestDoc = JsonDocument.Parse(requestJson);
         requestDoc.RootElement.GetProperty("processId").GetInt32().Should().Be(4242);
         requestDoc.RootElement.GetProperty("processName").GetString().Should().Be("StarWarsG.exe");
+        var probeAnchors = requestDoc.RootElement.GetProperty("resolvedAnchors");
+        probeAnchors.GetProperty("credits").GetString().Should().NotBeNullOrWhiteSpace();
+        probeAnchors.GetProperty("freeze_timer").GetString().Should().NotBeNullOrWhiteSpace();
+        probeAnchors.GetProperty("toggle_instant_build_patch").GetString().Should().NotBeNullOrWhiteSpace();
         var commandId = requestDoc.RootElement.GetProperty("commandId").GetString() ?? string.Empty;
         var response = BuildProbeResponse(commandId);
         await writer.WriteLineAsync(response.AsMemory(), cts.Token);
