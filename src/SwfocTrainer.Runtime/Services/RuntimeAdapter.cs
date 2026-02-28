@@ -1347,6 +1347,13 @@ public sealed class RuntimeAdapter : IRuntimeAdapter
         return !string.IsNullOrWhiteSpace(value);
     }
 
+    private static bool IsPromotedExtenderAction(string actionId, ExecutionKind executionKind)
+    {
+        return executionKind == ExecutionKind.Sdk &&
+               !string.IsNullOrWhiteSpace(actionId) &&
+               PromotedExtenderActionIds.Contains(actionId);
+    }
+
     private static bool IsPromotedExtenderAction(string actionId)
     {
         return !string.IsNullOrWhiteSpace(actionId) &&
@@ -1541,7 +1548,7 @@ public sealed class RuntimeAdapter : IRuntimeAdapter
     {
         return !routeDecision.Allowed &&
                routeDecision.Backend == ExecutionBackendKind.Extender &&
-               IsPromotedExtenderAction(request.Action.Id) &&
+               IsPromotedExtenderAction(request.Action.Id, request.Action.ExecutionKind) &&
                IsMutatingActionId(request.Action.Id);
     }
 

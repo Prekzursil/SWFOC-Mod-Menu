@@ -14,7 +14,7 @@ public sealed class BackendRouterTests
     [InlineData("toggle_ai", ExecutionKind.Memory)]
     [InlineData("set_unit_cap", ExecutionKind.CodePatch)]
     [InlineData("toggle_instant_build_patch", ExecutionKind.CodePatch)]
-    public void Resolve_ShouldPromoteHybridActions_ToExtender_WhenCapabilityIsAvailable(
+    public void Resolve_ShouldKeepManagedRoute_ForFormerPromotedActions(
         string actionId,
         ExecutionKind executionKind)
     {
@@ -46,12 +46,12 @@ public sealed class BackendRouterTests
         var decision = router.Resolve(request, profile, process, report);
 
         decision.Allowed.Should().BeTrue();
-        decision.Backend.Should().Be(ExecutionBackendKind.Extender);
+        decision.Backend.Should().Be(ExecutionBackendKind.Memory);
         decision.ReasonCode.Should().Be(RuntimeReasonCode.CAPABILITY_PROBE_PASS);
         decision.Diagnostics.Should().ContainKey("hybridExecution");
         decision.Diagnostics!["hybridExecution"].Should().Be(false);
         decision.Diagnostics.Should().ContainKey("promotedExtenderAction");
-        decision.Diagnostics!["promotedExtenderAction"].Should().Be(true);
+        decision.Diagnostics!["promotedExtenderAction"].Should().Be(false);
         decision.Diagnostics.Should().ContainKey("capabilityMapReasonCode");
         decision.Diagnostics!["capabilityMapReasonCode"].Should().Be("CAPABILITY_PROBE_PASS");
         decision.Diagnostics.Should().ContainKey("capabilityMapState");
@@ -66,7 +66,7 @@ public sealed class BackendRouterTests
     [InlineData("toggle_ai", ExecutionKind.Memory)]
     [InlineData("set_unit_cap", ExecutionKind.CodePatch)]
     [InlineData("toggle_instant_build_patch", ExecutionKind.CodePatch)]
-    public void Resolve_ShouldBlockHybridActions_WhenCapabilityIsMissing(
+    public void Resolve_ShouldNotRequireExtenderCapability_ForFormerPromotedActions(
         string actionId,
         ExecutionKind executionKind)
     {
@@ -78,13 +78,13 @@ public sealed class BackendRouterTests
 
         var decision = router.Resolve(request, profile, process, report);
 
-        decision.Allowed.Should().BeFalse();
-        decision.Backend.Should().Be(ExecutionBackendKind.Extender);
-        decision.ReasonCode.Should().Be(RuntimeReasonCode.CAPABILITY_REQUIRED_MISSING);
+        decision.Allowed.Should().BeTrue();
+        decision.Backend.Should().Be(ExecutionBackendKind.Memory);
+        decision.ReasonCode.Should().Be(RuntimeReasonCode.CAPABILITY_PROBE_PASS);
         decision.Diagnostics.Should().ContainKey("hybridExecution");
         decision.Diagnostics!["hybridExecution"].Should().Be(false);
         decision.Diagnostics.Should().ContainKey("promotedExtenderAction");
-        decision.Diagnostics!["promotedExtenderAction"].Should().Be(true);
+        decision.Diagnostics!["promotedExtenderAction"].Should().Be(false);
         decision.Diagnostics.Should().NotContainKey("fallbackBackend");
     }
 
@@ -94,7 +94,7 @@ public sealed class BackendRouterTests
     [InlineData("toggle_ai", ExecutionKind.Memory)]
     [InlineData("set_unit_cap", ExecutionKind.CodePatch)]
     [InlineData("toggle_instant_build_patch", ExecutionKind.CodePatch)]
-    public void Resolve_ShouldFailClosedForPromotedActions_WhenCapabilityIsUnverified(
+    public void Resolve_ShouldIgnoreUnverifiedExtenderCapability_ForFormerPromotedActions(
         string actionId,
         ExecutionKind executionKind)
     {
@@ -117,13 +117,13 @@ public sealed class BackendRouterTests
 
         var decision = router.Resolve(request, profile, process, report);
 
-        decision.Allowed.Should().BeFalse();
-        decision.Backend.Should().Be(ExecutionBackendKind.Extender);
-        decision.ReasonCode.Should().Be(RuntimeReasonCode.SAFETY_FAIL_CLOSED);
+        decision.Allowed.Should().BeTrue();
+        decision.Backend.Should().Be(ExecutionBackendKind.Memory);
+        decision.ReasonCode.Should().Be(RuntimeReasonCode.CAPABILITY_PROBE_PASS);
         decision.Diagnostics.Should().ContainKey("hybridExecution");
         decision.Diagnostics!["hybridExecution"].Should().Be(false);
         decision.Diagnostics.Should().ContainKey("promotedExtenderAction");
-        decision.Diagnostics!["promotedExtenderAction"].Should().Be(true);
+        decision.Diagnostics!["promotedExtenderAction"].Should().Be(false);
         decision.Diagnostics.Should().NotContainKey("fallbackBackend");
     }
 

@@ -67,7 +67,7 @@ public sealed class LivePromotedActionMatrixTests
     public LivePromotedActionMatrixTests(ITestOutputHelper output) => _output = output;
 
     [SkippableFact]
-    public async Task Promoted_Actions_Should_Route_Via_Extender_Without_Hybrid_Fallback()
+    public async Task Promoted_Actions_Should_Route_Via_Managed_Backends_Without_Hybrid_Fallback()
     {
         var matrixEntries = new List<ActionStatusEntry>(TargetProfiles.Length * PromotedActions.Length);
         try
@@ -262,19 +262,17 @@ public sealed class LivePromotedActionMatrixTests
     {
         result.Succeeded.Should().BeTrue(
             $"promoted action '{actionId}' should execute successfully for profile '{profileId}'. message={result.Message}");
-        backendRoute.Should().Be(
-            ExecutionBackendKind.Extender.ToString(),
-            because: $"promoted action '{actionId}' should route via extender backend for profile '{profileId}'.");
+        backendRoute.Should().BeOneOf(
+            ExecutionBackendKind.Memory.ToString(),
+            ExecutionBackendKind.Helper.ToString(),
+            because: $"promoted action '{actionId}' should route via managed backend for profile '{profileId}'.");
         routeReasonCode.Should().Be(
             RuntimeReasonCode.CAPABILITY_PROBE_PASS.ToString(),
             because: $"promoted action '{actionId}' should pass route capability gate for profile '{profileId}'.");
-        capabilityProbeReasonCode.Should().Be(
-            RuntimeReasonCode.CAPABILITY_PROBE_PASS.ToString(),
-            because: $"promoted action '{actionId}' should report capability probe pass for profile '{profileId}'.");
         hybridExecution.HasValue.Should().BeTrue(
             because: $"promoted action '{actionId}' should emit hybrid execution diagnostics for profile '{profileId}'.");
         hybridExecution.Should().BeFalse(
-            because: $"promoted action '{actionId}' should execute as native-authoritative extender flow for profile '{profileId}'.");
+            because: $"promoted action '{actionId}' should execute through managed runtime flow for profile '{profileId}'.");
         hasFallbackMarker.Should().BeFalse(
             because: $"promoted action '{actionId}' should not include fallback markers for profile '{profileId}'.");
     }
