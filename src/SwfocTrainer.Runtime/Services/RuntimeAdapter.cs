@@ -5,7 +5,6 @@ using System.Linq;
 using System.Text.Json.Nodes;
 using System.Text.Json;
 using System.Text.Json.Serialization;
-using System.Collections.Generic;
 using Microsoft.Extensions.Logging;
 using SwfocTrainer.Core.Contracts;
 using SwfocTrainer.Core.Models;
@@ -14,7 +13,7 @@ using SwfocTrainer.Runtime.Scanning;
 
 namespace SwfocTrainer.Runtime.Services;
 
-public sealed class RuntimeAdapter : IRuntimeAdapter
+public sealed partial class RuntimeAdapter : IRuntimeAdapter
 {
     private const string CreditsHookPatternText = "F3 0F 2C 50 70 89 57";
 
@@ -32,13 +31,6 @@ public sealed class RuntimeAdapter : IRuntimeAdapter
     private const int CreditsHookPollingDelayMs = 25;
     private const float CreditsFloatTolerance = 0.9f;
     private const int CreditsStoreCorrelationWindowBytes = 96;
-    private const string DiagnosticKeyAddress = "address";
-    private const string DiagnosticKeyFailureReasonCode = "failureReasonCode";
-    private const string DiagnosticKeySymbolHealthStatus = "symbolHealthStatus";
-    private const string DiagnosticKeySymbolConfidence = "symbolConfidence";
-    private const string DiagnosticKeyHookAddress = "hookAddress";
-    private const string DiagnosticKeyHookCaveAddress = "hookCaveAddress";
-    private const string PayloadKeyIntValue = "intValue";
 
     private const string UnitCapHookPatternText = "48 8B 74 24 68 8B C7";
     private static readonly byte[] UnitCapHookOriginalBytes = [0x48, 0x8B, 0x74, 0x24, 0x68];
@@ -55,91 +47,6 @@ public sealed class RuntimeAdapter : IRuntimeAdapter
     private const int InstantBuildHookInstructionLength = 6;
     private const int InstantBuildHookJumpLength = 5;
     private const int InstantBuildHookCaveSize = 31;
-
-    private const string DiagnosticKeyHookState = "hookState";
-    private const string DiagnosticKeyCreditsStateTag = "creditsStateTag";
-    private const string DiagnosticKeyState = "state";
-    private const string DiagnosticKeyExpertOverrideEnabled = "expertOverrideEnabled";
-    private const string DiagnosticKeyOverrideReason = "overrideReason";
-    private const string DiagnosticKeyPanicDisableState = "panicDisableState";
-    private const string PanicDisableStateActive = "active";
-    private const string PanicDisableStateInactive = "inactive";
-    private const string ExpertOverrideEnvVarName = "SWFOC_EXPERT_MUTATION_OVERRIDES";
-    private const string ExpertOverridePanicEnvVarName = "SWFOC_EXPERT_MUTATION_OVERRIDES_PANIC";
-    private const string ActionIdSetUnitCap = "set_unit_cap";
-    private const string ActionIdToggleInstantBuildPatch = "toggle_instant_build_patch";
-    private const string ActionIdSetCredits = "set_credits";
-    private const string SymbolCredits = "credits";
-
-    private static readonly string[] ResultHookStateKeys =
-    [
-        DiagnosticKeyHookState,
-        DiagnosticKeyCreditsStateTag,
-        DiagnosticKeyState
-    ];
-
-    private static readonly HashSet<string> PromotedExtenderActionIds = new(StringComparer.OrdinalIgnoreCase)
-    {
-        "freeze_timer",
-        "toggle_fog_reveal",
-        "toggle_ai",
-        ActionIdSetUnitCap,
-        ActionIdToggleInstantBuildPatch
-    };
-
-    private readonly IProcessLocator _processLocator;
-    private readonly IProfileRepository _profileRepository;
-    private readonly ISignatureResolver _signatureResolver;
-    private readonly IModDependencyValidator _modDependencyValidator;
-    private readonly ISymbolHealthService _symbolHealthService;
-    private readonly IProfileVariantResolver? _profileVariantResolver;
-    private readonly ISdkOperationRouter? _sdkOperationRouter;
-    private readonly IBackendRouter _backendRouter;
-    private readonly IExecutionBackend? _extenderBackend;
-    private readonly ILogger<RuntimeAdapter> _logger;
-    private readonly string _calibrationArtifactRoot;
-
-    private static readonly JsonSerializerOptions SymbolValidationJsonOptions = new()
-    {
-        PropertyNameCaseInsensitive = true,
-        Converters = { new JsonStringEnumConverter() }
-    };
-
-    private ProcessMemoryAccessor? _memory;
-    private nint _creditsHookInjectionAddress;
-    private byte[]? _creditsHookOriginalBytesBackup;
-    private nint _creditsHookCodeCaveAddress;
-    private nint _creditsHookLastContextAddress;
-    private nint _creditsHookHitCountAddress;
-    private nint _creditsHookLockEnabledAddress;
-    private nint _creditsHookForcedFloatBitsAddress;
-    private byte _creditsHookContextOffset = CreditsContextOffsetByte;
-
-    private nint _unitCapHookInjectionAddress;
-    private byte[]? _unitCapHookOriginalBytesBackup;
-    private nint _unitCapHookCodeCaveAddress;
-    private nint _unitCapHookValueAddress;
-
-    private nint _instantBuildHookInjectionAddress;
-    private byte[]? _instantBuildHookOriginalBytesBackup;
-    private nint _instantBuildHookCodeCaveAddress;
-
-    /// <summary>
-    /// Tracks active code patches keyed by symbol name.
-    /// Value = original bytes that were saved before the patch was applied.
-    /// </summary>
-    private readonly Dictionary<string, (nint Address, byte[] OriginalBytes)> _activeCodePatches = new();
-    private HashSet<string> _dependencySoftDisabledActions = new(StringComparer.OrdinalIgnoreCase);
-    private DependencyValidationStatus _dependencyValidationStatus = DependencyValidationStatus.Pass;
-    private string? _dependencyValidationMessage;
-    private TrainerProfile? _attachedProfile;
-    private Dictionary<string, List<SymbolValidationRule>> _symbolValidationRules = new(StringComparer.OrdinalIgnoreCase);
-    private HashSet<string> _criticalSymbols = new(StringComparer.OrdinalIgnoreCase);
-    private readonly object _telemetryLock = new();
-    private readonly Dictionary<string, int> _actionSuccessCounters = new(StringComparer.OrdinalIgnoreCase);
-    private readonly Dictionary<string, int> _actionFailureCounters = new(StringComparer.OrdinalIgnoreCase);
-    private readonly Dictionary<string, int> _symbolSourceCounters = new(StringComparer.OrdinalIgnoreCase);
-
     public RuntimeAdapter(
         IProcessLocator processLocator,
         IProfileRepository profileRepository,
@@ -1405,8 +1312,8 @@ public sealed class RuntimeAdapter : IRuntimeAdapter
         return routeDecision.Backend switch
         {
             ExecutionBackendKind.Extender => await ExecuteExtenderBackendActionAsync(request, capabilityReport, cancellationToken),
-            ExecutionBackendKind.Helper => await ExecuteHelperActionAsync(request),
-            ExecutionBackendKind.Save => await ExecuteSaveActionAsync(),
+            ExecutionBackendKind.Helper => await ExecuteHelperActionAsync(request, cancellationToken),
+            ExecutionBackendKind.Save => await ExecuteSaveActionAsync(request, cancellationToken),
             ExecutionBackendKind.Memory => await ExecuteLegacyBackendActionAsync(request, cancellationToken),
             _ => new ActionExecutionResult(false, "Unsupported execution backend.", AddressSource.None)
         };
@@ -1427,7 +1334,7 @@ public sealed class RuntimeAdapter : IRuntimeAdapter
                 routeDecision.Diagnostics,
                 new Dictionary<string, object?>
                 {
-                    [DiagnosticKeyFailureReasonCode] = "action_exception",
+                    ["failureReasonCode"] = "action_exception",
                     ["exceptionType"] = ex.GetType().Name
                 }));
         return ApplyBackendRouteDiagnostics(failed, routeDecision, capabilityReport);
@@ -1466,9 +1373,9 @@ public sealed class RuntimeAdapter : IRuntimeAdapter
         return request.Action.ExecutionKind switch
         {
             ExecutionKind.Memory => await ExecuteMemoryActionAsync(request, cancellationToken),
-            ExecutionKind.Helper => await ExecuteHelperActionAsync(request),
-            ExecutionKind.Save => await ExecuteSaveActionAsync(),
-            ExecutionKind.CodePatch => await ExecuteCodePatchActionAsync(request),
+            ExecutionKind.Helper => await ExecuteHelperActionAsync(request, cancellationToken),
+            ExecutionKind.Save => await ExecuteSaveActionAsync(request, cancellationToken),
+            ExecutionKind.CodePatch => await ExecuteCodePatchActionAsync(request, cancellationToken),
             ExecutionKind.Freeze => new ActionExecutionResult(false, "Freeze actions must be handled by the orchestrator, not the runtime adapter.", AddressSource.None),
             ExecutionKind.Sdk => await ExecuteSdkActionAsync(request, cancellationToken),
             _ => new ActionExecutionResult(false, "Unsupported execution kind", AddressSource.None)
@@ -1508,13 +1415,12 @@ public sealed class RuntimeAdapter : IRuntimeAdapter
     {
         var baseDiagnostics = MergeDiagnostics(routeDecision.Diagnostics, result.Diagnostics);
         var overrideState = ResolveExpertMutationOverrideState();
-        var configuredOverrideEnabled = IsEnabledEnvironmentFlag(ExpertOverrideEnvVarName);
         var hybridExecution = ResolveHybridExecutionFlag(baseDiagnostics);
         var backend = ResolveBackendDiagnosticValue(baseDiagnostics, routeDecision.Backend);
         var hookState = ResolveHookStateDiagnosticValue(baseDiagnostics, capabilityReport.Diagnostics);
-        var expertOverrideEnabled = ResolveExpertOverrideEnabledDiagnosticValue(baseDiagnostics, configuredOverrideEnabled);
+        var expertOverrideEnabled = ResolveExpertOverrideEnabledDiagnosticValue(baseDiagnostics, overrideState.Enabled);
         var panicDisableState = ResolvePanicDisableStateDiagnosticValue(baseDiagnostics, overrideState.PanicDisableState);
-        var overrideReason = ResolveOverrideReasonDiagnosticValue(baseDiagnostics, "none");
+        var overrideReason = ResolveOverrideReasonDiagnosticValue(baseDiagnostics, overrideState.DefaultReason);
         var diagnostics = MergeDiagnostics(
             baseDiagnostics,
             new Dictionary<string, object?>
@@ -1759,7 +1665,7 @@ public sealed class RuntimeAdapter : IRuntimeAdapter
                 AddressSource.None,
                 new Dictionary<string, object?>
                 {
-                    [DiagnosticKeyFailureReasonCode] = "sdk_router_missing"
+                    ["failureReasonCode"] = "sdk_router_missing"
                 });
         }
 
@@ -1937,7 +1843,7 @@ public sealed class RuntimeAdapter : IRuntimeAdapter
         return anchors;
     }
 
-    private static void MergeAnchorsFromRequestContext(ActionExecutionRequest request, IDictionary<string, string> anchors)
+    private void MergeAnchorsFromRequestContext(ActionExecutionRequest request, IDictionary<string, string> anchors)
     {
         if (TryReadContextValue(request.Context, "resolvedAnchors", out var existingResolved))
         {
@@ -2193,10 +2099,9 @@ public sealed class RuntimeAdapter : IRuntimeAdapter
     private async Task<ActionExecutionResult> ExecuteMemoryActionAsync(ActionExecutionRequest request, CancellationToken cancellationToken)
     {
         var symbol = ResolveMemoryActionSymbol(request.Payload);
-        var creditsWrite = await TryExecuteCreditsMemoryWrite(request, symbol, cancellationToken);
-        if (creditsWrite is not null)
+        if (TryExecuteCreditsMemoryWrite(request, symbol, cancellationToken) is { } creditsWrite)
         {
-            return creditsWrite;
+            return await creditsWrite;
         }
 
         var context = BuildMemoryActionContext(symbol, request.RuntimeMode);
@@ -2220,22 +2125,22 @@ public sealed class RuntimeAdapter : IRuntimeAdapter
         return symbol;
     }
 
-    private async Task<ActionExecutionResult?> TryExecuteCreditsMemoryWrite(
+    private Task<ActionExecutionResult>? TryExecuteCreditsMemoryWrite(
         ActionExecutionRequest request,
         string symbol,
         CancellationToken cancellationToken)
     {
         var payload = request.Payload;
-        if (payload[PayloadKeyIntValue] is null || !IsCreditsWrite(request, symbol))
+        if (payload["intValue"] is null || !IsCreditsWrite(request, symbol))
         {
             return null;
         }
 
-        var value = payload[PayloadKeyIntValue]!.GetValue<int>();
+        var value = payload["intValue"]!.GetValue<int>();
         var lockCredits =
             TryReadBooleanPayload(payload, "lockCredits", out var lockFromPayload) ? lockFromPayload :
             TryReadBooleanPayload(payload, "forcePatchHook", out var legacyForcePatchHook) && legacyForcePatchHook;
-        return await SetCreditsAsync(value, lockCredits, request.Action.VerifyReadback, cancellationToken);
+        return SetCreditsAsync(value, lockCredits, request.Action.VerifyReadback, cancellationToken);
     }
 
     private MemoryActionContext BuildMemoryActionContext(string symbol, RuntimeMode runtimeMode)
@@ -2272,13 +2177,13 @@ public sealed class RuntimeAdapter : IRuntimeAdapter
 
     private static bool TryReadIntPayload(JsonObject payload, out int value)
     {
-        if (payload[PayloadKeyIntValue] is null)
+        if (payload["intValue"] is null)
         {
             value = default;
             return false;
         }
 
-        value = payload[PayloadKeyIntValue]!.GetValue<int>();
+        value = payload["intValue"]!.GetValue<int>();
         return true;
     }
 
@@ -2329,16 +2234,17 @@ public sealed class RuntimeAdapter : IRuntimeAdapter
 
         return await WriteWithOptionalRetryAsync(
             symbol,
-            context,
-            request.RuntimeMode,
+            context.SymbolInfo,
             value,
             request.Action.VerifyReadback,
-            new WriteOperation<int>(
-                ReadValue: address => _memory!.Read<int>(address),
-                WriteValue: (address, requestedValue) => _memory!.Write(address, requestedValue),
-                CompareValues: static (expected, actual) => actual == expected,
-                ValidateObservedValue: observed => ValidateObservedIntValue(symbol, observed, context.ValidationRule),
-                FormatValue: observed => observed.ToString()),
+            context.IsCriticalSymbol,
+            request.RuntimeMode,
+            context.ValidationRule,
+            readValue: address => _memory!.Read<int>(address),
+            writeValue: (address, requestedValue) => _memory!.Write(address, requestedValue),
+            compareValues: static (expected, actual) => actual == expected,
+            validateObservedValue: observed => ValidateObservedIntValue(symbol, observed, context.ValidationRule),
+            formatValue: observed => observed.ToString(),
             cancellationToken: cancellationToken);
     }
 
@@ -2357,16 +2263,17 @@ public sealed class RuntimeAdapter : IRuntimeAdapter
 
         return await WriteWithOptionalRetryAsync(
             symbol,
-            context,
-            request.RuntimeMode,
+            context.SymbolInfo,
             value,
             request.Action.VerifyReadback,
-            new WriteOperation<float>(
-                ReadValue: address => _memory!.Read<float>(address),
-                WriteValue: (address, requestedValue) => _memory!.Write(address, requestedValue),
-                CompareValues: static (expected, actual) => Math.Abs(actual - expected) <= 0.0001f,
-                ValidateObservedValue: observed => ValidateObservedFloatValue(symbol, observed, context.ValidationRule),
-                FormatValue: observed => observed.ToString("0.####")),
+            context.IsCriticalSymbol,
+            request.RuntimeMode,
+            context.ValidationRule,
+            readValue: address => _memory!.Read<float>(address),
+            writeValue: (address, requestedValue) => _memory!.Write(address, requestedValue),
+            compareValues: static (expected, actual) => Math.Abs(actual - expected) <= 0.0001f,
+            validateObservedValue: observed => ValidateObservedFloatValue(symbol, observed, context.ValidationRule),
+            formatValue: observed => observed.ToString("0.####"),
             cancellationToken: cancellationToken);
     }
 
@@ -2386,16 +2293,17 @@ public sealed class RuntimeAdapter : IRuntimeAdapter
 
         return await WriteWithOptionalRetryAsync(
             symbol,
-            context,
-            request.RuntimeMode,
+            context.SymbolInfo,
             byteValue,
             request.Action.VerifyReadback,
-            new WriteOperation<byte>(
-                ReadValue: address => _memory!.Read<byte>(address),
-                WriteValue: (address, requestedValue) => _memory!.Write(address, requestedValue),
-                CompareValues: static (expected, actual) => actual == expected,
-                ValidateObservedValue: observed => ValidateObservedIntValue(symbol, observed, context.ValidationRule),
-                FormatValue: observed => (observed != 0).ToString()),
+            context.IsCriticalSymbol,
+            request.RuntimeMode,
+            context.ValidationRule,
+            readValue: address => _memory!.Read<byte>(address),
+            writeValue: (address, requestedValue) => _memory!.Write(address, requestedValue),
+            compareValues: static (expected, actual) => actual == expected,
+            validateObservedValue: observed => ValidateObservedIntValue(symbol, observed, context.ValidationRule),
+            formatValue: observed => (observed != 0).ToString(),
             cancellationToken: cancellationToken);
     }
 
@@ -2409,10 +2317,10 @@ public sealed class RuntimeAdapter : IRuntimeAdapter
             symbolInfo.Source,
             new Dictionary<string, object?>
             {
-                [DiagnosticKeyAddress] = $"0x{symbolInfo.Address.ToInt64():X}",
-                [DiagnosticKeyFailureReasonCode] = requestedValidation.ReasonCode,
-                [DiagnosticKeySymbolHealthStatus] = symbolInfo.HealthStatus.ToString(),
-                [DiagnosticKeySymbolConfidence] = symbolInfo.Confidence
+                ["address"] = $"0x{symbolInfo.Address.ToInt64():X}",
+                ["failureReasonCode"] = requestedValidation.ReasonCode,
+                ["symbolHealthStatus"] = symbolInfo.HealthStatus.ToString(),
+                ["symbolConfidence"] = symbolInfo.Confidence
             });
     }
 
@@ -2466,14 +2374,6 @@ public sealed class RuntimeAdapter : IRuntimeAdapter
         SymbolInfo SymbolInfo,
         SymbolValidationRule? ValidationRule,
         bool IsCriticalSymbol);
-
-    private readonly record struct WriteOperation<T>(
-        Func<nint, T> ReadValue,
-        Action<nint, T> WriteValue,
-        Func<T, T, bool> CompareValues,
-        Func<T, ValidationOutcome> ValidateObservedValue,
-        Func<T, string> FormatValue)
-        where T : struct;
 
     private sealed record ValidationOutcome(bool IsValid, string ReasonCode, string Message)
     {
@@ -2650,11 +2550,11 @@ public sealed class RuntimeAdapter : IRuntimeAdapter
     {
         var diagnostics = new Dictionary<string, object?>
         {
-            [DiagnosticKeyAddress] = $"0x{symbolInfo.Address.ToInt64():X}",
+            ["address"] = $"0x{symbolInfo.Address.ToInt64():X}",
             ["symbolSource"] = symbolInfo.Source.ToString(),
-            [DiagnosticKeySymbolHealthStatus] = symbolInfo.HealthStatus.ToString(),
+            ["symbolHealthStatus"] = symbolInfo.HealthStatus.ToString(),
             ["symbolHealthReason"] = symbolInfo.HealthReason,
-            [DiagnosticKeySymbolConfidence] = symbolInfo.Confidence,
+            ["symbolConfidence"] = symbolInfo.Confidence,
             ["criticalSymbol"] = isCriticalSymbol
         };
 
@@ -2685,40 +2585,51 @@ public sealed class RuntimeAdapter : IRuntimeAdapter
 
     private async Task<ActionExecutionResult> WriteWithOptionalRetryAsync<T>(
         string symbol,
-        MemoryActionContext context,
-        RuntimeMode runtimeMode,
+        SymbolInfo symbolInfo,
         T requestedValue,
         bool verifyReadback,
-        WriteOperation<T> operation,
+        bool isCriticalSymbol,
+        RuntimeMode runtimeMode,
+        SymbolValidationRule? validationRule,
+        Func<nint, T> readValue,
+        Action<nint, T> writeValue,
+        Func<T, T, bool> compareValues,
+        Func<T, ValidationOutcome> validateObservedValue,
+        Func<T, string> formatValue,
         CancellationToken cancellationToken)
         where T : struct
     {
-        var diagnostics = CreateSymbolDiagnostics(context.SymbolInfo, context.ValidationRule, context.IsCriticalSymbol);
-        diagnostics["requestedValue"] = operation.FormatValue(requestedValue);
+        var diagnostics = CreateSymbolDiagnostics(symbolInfo, validationRule, isCriticalSymbol);
+        diagnostics["requestedValue"] = formatValue(requestedValue);
         var initial = ExecuteWriteAttempt(
             symbol,
-            context.SymbolInfo,
+            symbolInfo,
             requestedValue,
             verifyReadback,
             "initial",
-            operation);
+            readValue,
+            writeValue,
+            compareValues,
+            validateObservedValue,
+            formatValue);
         if (initial.HasObservedValue)
         {
-            diagnostics["readbackValue"] = operation.FormatValue(initial.ObservedValue);
+            diagnostics["readbackValue"] = formatValue(initial.ObservedValue);
         }
 
         if (initial.Success)
         {
             return new ActionExecutionResult(
                 true,
-                $"Wrote value {operation.FormatValue(requestedValue)} to symbol {symbol}",
-                context.SymbolInfo.Source,
+                $"Wrote value {formatValue(requestedValue)} to symbol {symbol}",
+                symbolInfo.Source,
                 diagnostics);
         }
 
-        if (!context.IsCriticalSymbol)
+        diagnostics["failureReasonCode"] = initial.ReasonCode;
+        if (!isCriticalSymbol)
         {
-            return BuildWriteFailureResult(initial.ReasonCode, initial.Message, context.SymbolInfo.Source, diagnostics);
+            return new ActionExecutionResult(false, initial.Message, symbolInfo.Source, diagnostics);
         }
 
         diagnostics["retryAttempted"] = true;
@@ -2726,7 +2637,8 @@ public sealed class RuntimeAdapter : IRuntimeAdapter
         diagnostics["retryReasonCode"] = reresolve.ReasonCode;
         if (!reresolve.Succeeded || reresolve.Symbol is null)
         {
-            return BuildWriteFailureResult(reresolve.ReasonCode, reresolve.Message, context.SymbolInfo.Source, diagnostics);
+            diagnostics["failureReasonCode"] = reresolve.ReasonCode;
+            return new ActionExecutionResult(false, reresolve.Message, symbolInfo.Source, diagnostics);
         }
 
         var refreshedSymbol = reresolve.Symbol;
@@ -2741,46 +2653,50 @@ public sealed class RuntimeAdapter : IRuntimeAdapter
             requestedValue,
             verifyReadback,
             "retry",
-            operation);
+            readValue,
+            writeValue,
+            compareValues,
+            validateObservedValue,
+            formatValue);
         if (retryAttempt.HasObservedValue)
         {
-            diagnostics["retryReadbackValue"] = operation.FormatValue(retryAttempt.ObservedValue);
+            diagnostics["retryReadbackValue"] = formatValue(retryAttempt.ObservedValue);
         }
 
         if (retryAttempt.Success)
         {
+            diagnostics.Remove("failureReasonCode");
             return new ActionExecutionResult(
                 true,
-                $"Wrote value {operation.FormatValue(requestedValue)} to symbol {symbol} after re-resolve retry.",
+                $"Wrote value {formatValue(requestedValue)} to symbol {symbol} after re-resolve retry.",
                 refreshedSymbol.Source,
                 diagnostics);
         }
 
-        return BuildWriteFailureResult(retryAttempt.ReasonCode, retryAttempt.Message, refreshedSymbol.Source, diagnostics);
+        diagnostics["failureReasonCode"] = retryAttempt.ReasonCode;
+        return new ActionExecutionResult(
+            false,
+            retryAttempt.Message,
+            refreshedSymbol.Source,
+            diagnostics);
     }
 
-    private static ActionExecutionResult BuildWriteFailureResult(
-        string reasonCode,
-        string message,
-        AddressSource source,
-        Dictionary<string, object?> diagnostics)
-    {
-        diagnostics[DiagnosticKeyFailureReasonCode] = reasonCode;
-        return new ActionExecutionResult(false, message, source, diagnostics);
-    }
-
-    private static WriteAttemptResult<T> ExecuteWriteAttempt<T>(
+    private WriteAttemptResult<T> ExecuteWriteAttempt<T>(
         string symbol,
         SymbolInfo activeSymbol,
         T requestedValue,
         bool verifyReadback,
         string attemptPrefix,
-        WriteOperation<T> operation)
+        Func<nint, T> readValue,
+        Action<nint, T> writeValue,
+        Func<T, T, bool> compareValues,
+        Func<T, ValidationOutcome> validateObservedValue,
+        Func<T, string> formatValue)
         where T : struct
     {
         try
         {
-            operation.WriteValue(activeSymbol.Address, requestedValue);
+            writeValue(activeSymbol.Address, requestedValue);
         }
         catch (Exception ex)
         {
@@ -2802,21 +2718,27 @@ public sealed class RuntimeAdapter : IRuntimeAdapter
             activeSymbol,
             requestedValue,
             attemptPrefix,
-            operation);
+            readValue,
+            compareValues,
+            validateObservedValue,
+            formatValue);
     }
 
-    private static WriteAttemptResult<T> BuildWriteAttemptReadbackResult<T>(
+    private WriteAttemptResult<T> BuildWriteAttemptReadbackResult<T>(
         string symbol,
         SymbolInfo activeSymbol,
         T requestedValue,
         string attemptPrefix,
-        WriteOperation<T> operation)
+        Func<nint, T> readValue,
+        Func<T, T, bool> compareValues,
+        Func<T, ValidationOutcome> validateObservedValue,
+        Func<T, string> formatValue)
         where T : struct
     {
         T observed;
         try
         {
-            observed = operation.ReadValue(activeSymbol.Address);
+            observed = readValue(activeSymbol.Address);
         }
         catch (Exception ex)
         {
@@ -2828,8 +2750,8 @@ public sealed class RuntimeAdapter : IRuntimeAdapter
                 default);
         }
 
-        var matches = operation.CompareValues(requestedValue, observed);
-        var observedValidation = operation.ValidateObservedValue(observed);
+        var matches = compareValues(requestedValue, observed);
+        var observedValidation = validateObservedValue(observed);
         if (matches && observedValidation.IsValid)
         {
             return WriteAttemptResult<T>.SuccessWithObservation(observed);
@@ -2840,7 +2762,7 @@ public sealed class RuntimeAdapter : IRuntimeAdapter
             return new WriteAttemptResult<T>(
                 false,
                 $"{attemptPrefix}_readback_mismatch",
-                $"Readback mismatch for {symbol}: expected {operation.FormatValue(requestedValue)}, got {operation.FormatValue(observed)}",
+                $"Readback mismatch for {symbol}: expected {formatValue(requestedValue)}, got {formatValue(observed)}",
                 true,
                 observed);
         }
@@ -2969,7 +2891,7 @@ public sealed class RuntimeAdapter : IRuntimeAdapter
         };
     }
 
-    private static Task<ActionExecutionResult> ExecuteHelperActionAsync(ActionExecutionRequest request)
+    private Task<ActionExecutionResult> ExecuteHelperActionAsync(ActionExecutionRequest request, CancellationToken cancellationToken)
     {
         // Runtime adapter only records helper action dispatch. Actual helper scripts are handled in SwfocTrainer.Helper.
         var helperId = request.Payload["helperHookId"]?.GetValue<string>() ?? request.Action.Id;
@@ -2980,7 +2902,7 @@ public sealed class RuntimeAdapter : IRuntimeAdapter
             new Dictionary<string, object?> { ["dispatched"] = true }));
     }
 
-    private static Task<ActionExecutionResult> ExecuteSaveActionAsync()
+    private Task<ActionExecutionResult> ExecuteSaveActionAsync(ActionExecutionRequest request, CancellationToken cancellationToken)
     {
         return Task.FromResult(new ActionExecutionResult(
             true,
@@ -2995,7 +2917,7 @@ public sealed class RuntimeAdapter : IRuntimeAdapter
     ///   - "patchBytes"   : hex string of bytes to write when enabling (e.g. "90 90 90 90 90")
     ///   - "originalBytes" : hex string of expected original bytes for validation (e.g. "48 8B 74 24 68")
     /// </summary>
-    private Task<ActionExecutionResult> ExecuteCodePatchActionAsync(ActionExecutionRequest request)
+    private Task<ActionExecutionResult> ExecuteCodePatchActionAsync(ActionExecutionRequest request, CancellationToken cancellationToken)
     {
         if (TryDispatchSpecializedCodePatchAction(request, out var specializedResult))
         {
@@ -3134,7 +3056,7 @@ public sealed class RuntimeAdapter : IRuntimeAdapter
                 true,
                 $"Code patch '{context.Symbol}' is already active.",
                 context.SymbolInfo.Source,
-                new Dictionary<string, object?> { [DiagnosticKeyAddress] = ToHex(context.Address), [DiagnosticKeyState] = "already_patched" });
+                new Dictionary<string, object?> { ["address"] = ToHex(context.Address), [DiagnosticKeyState] = "already_patched" });
         }
 
         if (!isOriginal)
@@ -3154,7 +3076,7 @@ public sealed class RuntimeAdapter : IRuntimeAdapter
             context.SymbolInfo.Source,
             new Dictionary<string, object?>
             {
-                [DiagnosticKeyAddress] = ToHex(context.Address),
+                ["address"] = ToHex(context.Address),
                 [DiagnosticKeyState] = "patched",
                 ["bytesWritten"] = BitConverter.ToString(context.PatchBytes)
             });
@@ -3173,7 +3095,7 @@ public sealed class RuntimeAdapter : IRuntimeAdapter
                 context.SymbolInfo.Source,
                 new Dictionary<string, object?>
                 {
-                    [DiagnosticKeyAddress] = ToHex(saved.Address),
+                    ["address"] = ToHex(saved.Address),
                     [DiagnosticKeyState] = "restored",
                     ["bytesWritten"] = BitConverter.ToString(saved.OriginalBytes)
                 });
@@ -3184,7 +3106,7 @@ public sealed class RuntimeAdapter : IRuntimeAdapter
             true,
             $"Code patch '{context.Symbol}' was not active, wrote original bytes as safety restore.",
             context.SymbolInfo.Source,
-            new Dictionary<string, object?> { [DiagnosticKeyAddress] = ToHex(context.Address), [DiagnosticKeyState] = "force_restored" });
+            new Dictionary<string, object?> { ["address"] = ToHex(context.Address), [DiagnosticKeyState] = "force_restored" });
     }
 
     private static byte[] ParseHexBytes(string hex)
@@ -3544,7 +3466,7 @@ public sealed class RuntimeAdapter : IRuntimeAdapter
             return Task.FromResult(legacyPatchFailure);
         }
 
-        var capValue = payload[PayloadKeyIntValue]?.GetValue<int>() ?? 99999;
+        var capValue = payload["intValue"]?.GetValue<int>() ?? 99999;
         return Task.FromResult(EnsureUnitCapHookInstalled(capValue));
     }
 
@@ -3900,8 +3822,8 @@ public sealed class RuntimeAdapter : IRuntimeAdapter
             "Credits hook already installed.",
             new Dictionary<string, object?>
             {
-                [DiagnosticKeyHookAddress] = ToHex(_creditsHookInjectionAddress),
-                [DiagnosticKeyHookCaveAddress] = ToHex(_creditsHookCodeCaveAddress),
+                ["hookAddress"] = ToHex(_creditsHookInjectionAddress),
+                ["hookCaveAddress"] = ToHex(_creditsHookCodeCaveAddress),
                 [DiagnosticKeyHookState] = "already_installed"
             });
     }
@@ -3999,8 +3921,8 @@ public sealed class RuntimeAdapter : IRuntimeAdapter
     {
         return new Dictionary<string, object?>
         {
-            [DiagnosticKeyHookAddress] = ToHex(context.InjectionAddress),
-            [DiagnosticKeyHookCaveAddress] = ToHex(context.CaveAddress),
+            ["hookAddress"] = ToHex(context.InjectionAddress),
+            ["hookCaveAddress"] = ToHex(context.CaveAddress),
             ["hookPatchBytes"] = BitConverter.ToString(jumpPatch),
             ["hookMode"] = "trampoline_real_float",
             ["hookContextOffset"] = $"0x{resolution.DetectedOffset:X2}",
@@ -4192,8 +4114,8 @@ public sealed class RuntimeAdapter : IRuntimeAdapter
             AddressSource.Signature,
             new Dictionary<string, object?>
             {
-                [DiagnosticKeyHookAddress] = ToHex(_unitCapHookInjectionAddress),
-                [DiagnosticKeyHookCaveAddress] = ToHex(_unitCapHookCodeCaveAddress),
+                ["hookAddress"] = ToHex(_unitCapHookInjectionAddress),
+                ["hookCaveAddress"] = ToHex(_unitCapHookCodeCaveAddress),
                 ["unitCapValue"] = capValue,
                 [DiagnosticKeyState] = "updated"
             });
@@ -4234,8 +4156,8 @@ public sealed class RuntimeAdapter : IRuntimeAdapter
                 AddressSource.Signature,
                 new Dictionary<string, object?>
                 {
-                    [DiagnosticKeyHookAddress] = ToHex(injectionAddress),
-                    [DiagnosticKeyHookCaveAddress] = ToHex(caveAddress),
+                    ["hookAddress"] = ToHex(injectionAddress),
+                    ["hookCaveAddress"] = ToHex(caveAddress),
                     ["unitCapValue"] = capValue,
                     [DiagnosticKeyState] = "installed"
                 });
@@ -4271,7 +4193,7 @@ public sealed class RuntimeAdapter : IRuntimeAdapter
         var address = _unitCapHookInjectionAddress;
         ClearUnitCapHookState();
         return new ActionExecutionResult(true, "Unit cap hook disabled and original bytes restored.", AddressSource.Signature,
-            new Dictionary<string, object?> { [DiagnosticKeyHookAddress] = ToHex(address), [DiagnosticKeyState] = "restored" });
+            new Dictionary<string, object?> { ["hookAddress"] = ToHex(address), [DiagnosticKeyState] = "restored" });
     }
 
     private ActionExecutionResult EnsureInstantBuildHookInstalled()
@@ -4331,8 +4253,8 @@ public sealed class RuntimeAdapter : IRuntimeAdapter
             AddressSource.Signature,
             new Dictionary<string, object?>
             {
-                [DiagnosticKeyHookAddress] = ToHex(_instantBuildHookInjectionAddress),
-                [DiagnosticKeyHookCaveAddress] = ToHex(_instantBuildHookCodeCaveAddress),
+                ["hookAddress"] = ToHex(_instantBuildHookInjectionAddress),
+                ["hookCaveAddress"] = ToHex(_instantBuildHookCodeCaveAddress),
                 [DiagnosticKeyState] = "already_installed"
             });
     }
@@ -4375,8 +4297,8 @@ public sealed class RuntimeAdapter : IRuntimeAdapter
                 AddressSource.Signature,
                 new Dictionary<string, object?>
                 {
-                    [DiagnosticKeyHookAddress] = ToHex(injectionAddress),
-                    [DiagnosticKeyHookCaveAddress] = ToHex(caveAddress),
+                    ["hookAddress"] = ToHex(injectionAddress),
+                    ["hookCaveAddress"] = ToHex(caveAddress),
                     [DiagnosticKeyState] = "installed"
                 });
         }
@@ -4423,7 +4345,7 @@ public sealed class RuntimeAdapter : IRuntimeAdapter
         var address = _instantBuildHookInjectionAddress;
         ClearInstantBuildHookState();
         return new ActionExecutionResult(true, "Instant build hook disabled and original bytes restored.", AddressSource.Signature,
-            new Dictionary<string, object?> { [DiagnosticKeyHookAddress] = ToHex(address), [DiagnosticKeyState] = "restored" });
+            new Dictionary<string, object?> { ["hookAddress"] = ToHex(address), [DiagnosticKeyState] = "restored" });
     }
 
     private UnitCapHookResolution ResolveUnitCapHookInjectionAddress()
@@ -4822,7 +4744,7 @@ public sealed class RuntimeAdapter : IRuntimeAdapter
         var candidates = new List<CreditsHookCandidate>();
         foreach (var offset in offsets)
         {
-            if (TryParseCreditsCvttss2SiInstruction(moduleBytes, offset, out var instruction))
+            if (TryParseCreditsCvttss2siInstruction(moduleBytes, offset, out var instruction))
             {
                 candidates.Add(new CreditsHookCandidate(offset, instruction));
             }
@@ -4949,12 +4871,12 @@ public sealed class RuntimeAdapter : IRuntimeAdapter
                 : "Credits RVA unavailable for correlation."));
     }
 
-    private static bool TryParseCreditsCvttss2SiInstruction(
+    private static bool TryParseCreditsCvttss2siInstruction(
         byte[] module,
         int offset,
-        out CreditsCvttss2SiInstruction instruction)
+        out CreditsCvttss2siInstruction instruction)
     {
-        instruction = new CreditsCvttss2SiInstruction(0, 0, Array.Empty<byte>());
+        instruction = new CreditsCvttss2siInstruction(0, 0, Array.Empty<byte>());
         if (offset < 0 || offset + CreditsHookJumpLength > module.Length)
         {
             return false;
@@ -4975,7 +4897,7 @@ public sealed class RuntimeAdapter : IRuntimeAdapter
 
         var destinationReg = (byte)((modrm >> 3) & 0x7);
         var contextOffset = module[offset + 4];
-        instruction = new CreditsCvttss2SiInstruction(
+        instruction = new CreditsCvttss2siInstruction(
             contextOffset,
             destinationReg,
             module.AsSpan(offset, CreditsHookJumpLength).ToArray());
@@ -5446,12 +5368,12 @@ public sealed class RuntimeAdapter : IRuntimeAdapter
         public static CreditsHookResolution Fail(string message) => new(nint.Zero, message);
     }
 
-    private sealed record CreditsCvttss2SiInstruction(
+    private sealed record CreditsCvttss2siInstruction(
         byte ContextOffset,
         byte DestinationReg,
         byte[] OriginalBytes);
 
-    private sealed record CreditsHookCandidate(int Offset, CreditsCvttss2SiInstruction Instruction);
+    private sealed record CreditsHookCandidate(int Offset, CreditsCvttss2siInstruction Instruction);
 
     private sealed record CreditsHookPatchResult(
         bool Succeeded,
