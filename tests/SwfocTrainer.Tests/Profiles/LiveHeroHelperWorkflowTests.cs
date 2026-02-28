@@ -13,6 +13,12 @@ namespace SwfocTrainer.Tests.Profiles;
 
 public sealed class LiveHeroHelperWorkflowTests
 {
+    private static readonly HashSet<string> ForcedHelperProfileIds = new(StringComparer.OrdinalIgnoreCase)
+    {
+        "aotr_1397421866_swfoc",
+        "roe_3447786229_swfoc"
+    };
+
     private readonly ITestOutputHelper _output;
 
     public LiveHeroHelperWorkflowTests(ITestOutputHelper output)
@@ -40,6 +46,7 @@ public sealed class LiveHeroHelperWorkflowTests
 
         var profiles = await ResolveProfilesAsync(profileRepo);
         var target = SelectHelperTargetContext(supported, profiles);
+        WriteHelperContextDiagnostics(supported, target);
 
         if (target is null)
         {
@@ -114,12 +121,86 @@ public sealed class LiveHeroHelperWorkflowTests
                 x.LaunchContext ?? new LaunchContextResolver().Resolve(x, profiles)))
             .ToList();
 
-        return contexts
+        var selected = contexts
             .OrderByDescending(x => x.Context.Recommendation.ProfileId == "roe_3447786229_swfoc")
             .ThenByDescending(x => x.Context.Recommendation.ProfileId == "aotr_1397421866_swfoc")
             .FirstOrDefault(x =>
                 x.Context.Recommendation.ProfileId == "roe_3447786229_swfoc" ||
                 x.Context.Recommendation.ProfileId == "aotr_1397421866_swfoc");
+        if (selected is not null)
+        {
+            return selected;
+        }
+
+        var forcedProfileId = NormalizeProfileId(Environment.GetEnvironmentVariable("SWFOC_FORCE_PROFILE_ID"));
+        if (!IsSupportedForcedHelperProfile(forcedProfileId))
+        {
+            return null;
+        }
+
+        var forcedTarget = contexts
+            .OrderByDescending(x => x.Context.Source.Equals("forced", StringComparison.OrdinalIgnoreCase))
+            .ThenByDescending(x => x.Process.ProcessName.Equals("StarWarsG", StringComparison.OrdinalIgnoreCase))
+            .FirstOrDefault();
+        if (forcedTarget is null)
+        {
+            return null;
+        }
+
+        var forcedContext = forcedTarget.Context with
+        {
+            Recommendation = new ProfileRecommendation(
+                forcedProfileId,
+                ReasonCode: "forced_profile_env_fallback",
+                Confidence: 1.0),
+            Source = "forced"
+        };
+        return forcedTarget with { Context = forcedContext };
+    }
+
+    private void WriteHelperContextDiagnostics(
+        IReadOnlyList<ProcessMetadata> supported,
+        SupportedProcessContext? selected)
+    {
+        var forcedProfileId = NormalizeProfileId(Environment.GetEnvironmentVariable("SWFOC_FORCE_PROFILE_ID"));
+        var forcedWorkshopIds = Environment.GetEnvironmentVariable("SWFOC_FORCE_WORKSHOP_IDS") ?? string.Empty;
+        _output.WriteLine($"helper forced profile env={forcedProfileId ?? "<empty>"}");
+        _output.WriteLine($"helper forced workshop env={forcedWorkshopIds}");
+
+        foreach (var process in supported.Where(x => x.ExeTarget == ExeTarget.Swfoc))
+        {
+            var launchContext = process.LaunchContext;
+            var recommendation = launchContext?.Recommendation;
+            var steamIds = launchContext is null
+                ? "<none>"
+                : string.Join(",", launchContext.SteamModIds);
+            _output.WriteLine(
+                $"helper candidate pid={process.ProcessId} name={process.ProcessName} path={process.ProcessPath} source={launchContext?.Source ?? "<none>"} profile={recommendation?.ProfileId ?? "<none>"} reason={recommendation?.ReasonCode ?? "<none>"} steammods={steamIds}");
+        }
+
+        if (selected is null)
+        {
+            _output.WriteLine("helper selection: <none>");
+            return;
+        }
+
+        _output.WriteLine(
+            $"helper selected pid={selected.Process.ProcessId} profile={selected.Context.Recommendation.ProfileId} reason={selected.Context.Recommendation.ReasonCode} source={selected.Context.Source}");
+    }
+
+    private static bool IsSupportedForcedHelperProfile(string? profileId)
+    {
+        if (string.IsNullOrWhiteSpace(profileId))
+        {
+            return false;
+        }
+
+        return ForcedHelperProfileIds.Contains(profileId);
+    }
+
+    private static string? NormalizeProfileId(string? profileId)
+    {
+        return string.IsNullOrWhiteSpace(profileId) ? null : profileId.Trim();
     }
 
     private static async Task<IReadOnlyList<TrainerProfile>> ResolveProfilesAsync(FileSystemProfileRepository profileRepo)

@@ -16,22 +16,209 @@ $repoRoot = Resolve-Path (Join-Path $PSScriptRoot "..")
 Set-Location $repoRoot
 
 function Resolve-PythonCommand {
+    $candidates = New-Object System.Collections.Generic.List[string[]]
+
     $python = Get-Command python -ErrorAction SilentlyContinue
     if ($null -ne $python) {
-        return @($python.Source)
+        $candidates.Add(@($python.Source))
     }
 
     $python3 = Get-Command python3 -ErrorAction SilentlyContinue
     if ($null -ne $python3) {
-        return @($python3.Source)
+        $candidates.Add(@($python3.Source))
     }
 
     $py = Get-Command py -ErrorAction SilentlyContinue
     if ($null -ne $py) {
-        return @($py.Source, "-3")
+        $candidates.Add(@($py.Source, "-3"))
+    }
+
+    $pathCandidates = @(
+        (Join-Path $env:SystemRoot "py.exe"),
+        (Join-Path $env:LocalAppData "Programs\\Python\\Python312\\python.exe"),
+        (Join-Path $env:LocalAppData "Programs\\Python\\Python311\\python.exe"),
+        (Join-Path $env:LocalAppData "Programs\\Python\\Python310\\python.exe"),
+        (Join-Path $env:ProgramFiles "Python312\\python.exe"),
+        (Join-Path $env:ProgramFiles "Python311\\python.exe"),
+        (Join-Path $env:ProgramFiles "Python310\\python.exe"),
+        (Join-Path ${env:ProgramFiles(x86)} "Python312\\python.exe"),
+        (Join-Path ${env:ProgramFiles(x86)} "Python311\\python.exe"),
+        (Join-Path ${env:ProgramFiles(x86)} "Python310\\python.exe"),
+        (Join-Path $env:LocalAppData "Microsoft\\WindowsApps\\python.exe"),
+        (Join-Path $env:LocalAppData "Microsoft\\WindowsApps\\python3.exe")
+    )
+
+    foreach ($candidate in $pathCandidates) {
+        if ([string]::IsNullOrWhiteSpace($candidate)) {
+            continue
+        }
+
+        if (Test-Path -Path $candidate) {
+            if ($candidate.ToLowerInvariant().EndsWith("py.exe")) {
+                $candidates.Add(@($candidate, "-3"))
+                continue
+            }
+
+            $candidates.Add(@($candidate))
+        }
+    }
+
+    $wsl = Get-Command wsl.exe -ErrorAction SilentlyContinue
+    if ($null -eq $wsl) {
+        $wsl = Get-Command wsl -ErrorAction SilentlyContinue
+    }
+    if ($null -ne $wsl) {
+        $candidates.Add(@($wsl.Source, "-e", "python3"))
+    }
+
+    foreach ($candidate in $candidates) {
+        if (Test-PythonInterpreter -Command $candidate) {
+            return $candidate
+        }
+    }
+
+    if ($null -ne $wsl) {
+        return @($wsl.Source, "-e", "python3")
     }
 
     return @()
+}
+
+function Test-PythonInterpreter {
+    param([string[]]$Command)
+
+    if ($Command.Count -eq 0 -or [string]::IsNullOrWhiteSpace($Command[0])) {
+        return $false
+    }
+
+    $probeArgs = @("-c", "print('ok')")
+    $captured = Invoke-CapturedCommand -Command $Command -Arguments $probeArgs
+    if ([int]$captured.ExitCode -ne 0) {
+        return $false
+    }
+
+    $text = [string]$captured.Output
+    $text = $text.Trim()
+    return -not [string]::IsNullOrWhiteSpace($text) -and $text -match "(^|\r?\n)ok(\r?\n|$)"
+}
+
+function Test-IsWslPythonCommand {
+    param([string[]]$Command)
+
+    if ($Command.Count -eq 0 -or [string]::IsNullOrWhiteSpace($Command[0])) {
+        return $false
+    }
+
+    $name = [System.IO.Path]::GetFileName($Command[0])
+    return $name.Equals("wsl.exe", [System.StringComparison]::OrdinalIgnoreCase) `
+        -or $name.Equals("wsl", [System.StringComparison]::OrdinalIgnoreCase)
+}
+
+function Convert-ToWslPath {
+    param([Parameter(Mandatory = $true)][string]$Path)
+
+    if ([string]::IsNullOrWhiteSpace($Path)) {
+        return $Path
+    }
+
+    if ($Path.StartsWith("/", [System.StringComparison]::Ordinal)) {
+        return $Path
+    }
+
+    $windowsPathMatch = [Regex]::Match($Path, '^(?<drive>[A-Za-z]):\\(?<rest>.*)$')
+    if ($windowsPathMatch.Success) {
+        $drive = $windowsPathMatch.Groups["drive"].Value.ToLowerInvariant()
+        $rest = ($windowsPathMatch.Groups["rest"].Value -replace "\\", "/")
+        if ([string]::IsNullOrWhiteSpace($rest)) {
+            return "/mnt/$drive"
+        }
+
+        return "/mnt/$drive/$rest"
+    }
+
+    return $Path
+}
+
+function Invoke-CapturedCommand {
+    param(
+        [string[]]$Command,
+        [string[]]$Arguments = @()
+    )
+
+    if ($Command.Count -eq 0 -or [string]::IsNullOrWhiteSpace($Command[0])) {
+        return [PSCustomObject]@{
+            ExitCode = 1
+            Output = ""
+        }
+    }
+
+    $invocationArgs = @()
+    if ($Command.Count -gt 1) {
+        $invocationArgs += $Command[1..($Command.Count - 1)]
+    }
+    $invocationArgs += $Arguments
+
+    if (Test-IsWslPythonCommand -Command $Command) {
+        $processArgs = @()
+        foreach ($arg in $invocationArgs) {
+            $argText = [string]$arg
+            if ($argText.Contains('"')) {
+                $argText = $argText.Replace('"', '\"')
+            }
+
+            if ($argText.Contains(" ") -or $argText.Contains("`t")) {
+                $argText = '"' + $argText + '"'
+            }
+
+            $processArgs += $argText
+        }
+
+        $stdoutPath = [System.IO.Path]::GetTempFileName()
+        $stderrPath = [System.IO.Path]::GetTempFileName()
+        try {
+            $proc = Start-Process `
+                -FilePath $Command[0] `
+                -ArgumentList $processArgs `
+                -Wait `
+                -NoNewWindow `
+                -PassThru `
+                -RedirectStandardOutput $stdoutPath `
+                -RedirectStandardError $stderrPath
+
+            $stdout = if (Test-Path -Path $stdoutPath) { Get-Content -Raw -Path $stdoutPath } else { "" }
+            $stderr = if (Test-Path -Path $stderrPath) { Get-Content -Raw -Path $stderrPath } else { "" }
+            $combined = $stdout
+            if (-not [string]::IsNullOrWhiteSpace($stderr)) {
+                if (-not [string]::IsNullOrWhiteSpace($combined)) {
+                    $combined += [Environment]::NewLine
+                }
+                $combined += $stderr
+            }
+
+            return [PSCustomObject]@{
+                ExitCode = [int]$proc.ExitCode
+                Output = $combined
+            }
+        }
+        finally {
+            Remove-Item -Path $stdoutPath -Force -ErrorAction SilentlyContinue
+            Remove-Item -Path $stderrPath -Force -ErrorAction SilentlyContinue
+        }
+    }
+
+    try {
+        $output = & $Command[0] @invocationArgs 2>&1
+        return [PSCustomObject]@{
+            ExitCode = if (Get-Variable -Name LASTEXITCODE -Scope Global -ErrorAction SilentlyContinue) { [int]$global:LASTEXITCODE } else { 0 }
+            Output = ($output | Out-String)
+        }
+    }
+    catch {
+        return [PSCustomObject]@{
+            ExitCode = 1
+            Output = $_.Exception.Message
+        }
+    }
 }
 
 function ConvertTo-ForcedWorkshopIds {
@@ -197,12 +384,26 @@ function Get-LaunchContext {
     if ($pythonCmd.Count -gt 1) {
         $commandArgs += $pythonCmd[1..($pythonCmd.Count - 1)]
     }
+
+    $detectScriptPath = Join-Path $repoRoot "tools/detect-launch-context.py"
+    $profileRootArg = if ([System.IO.Path]::IsPathRooted($ProfileRootPath)) {
+        $ProfileRootPath
+    }
+    else {
+        Join-Path $repoRoot $ProfileRootPath
+    }
+
+    if (Test-IsWslPythonCommand -Command $pythonCmd) {
+        $detectScriptPath = Convert-ToWslPath -Path $detectScriptPath
+        $profileRootArg = Convert-ToWslPath -Path $profileRootArg
+    }
+
     $commandArgs += @(
-        "tools/detect-launch-context.py",
-        "--command-line", $Process.commandLine,
-        "--process-name", $Process.name,
-        "--process-path", $Process.path,
-        "--profile-root", $ProfileRootPath
+        $detectScriptPath,
+        "--command-line", ([string]$Process.commandLine),
+        "--process-name", ([string]$Process.name),
+        "--process-path", ([string]$Process.path),
+        "--profile-root", $profileRootArg
     )
 
     $forcedWorkshopIdsCsv = if ($normalizedForcedWorkshopIds.Count -eq 0) { "" } else { $normalizedForcedWorkshopIds -join "," }
@@ -217,12 +418,12 @@ function Get-LaunchContext {
     $commandArgs += "--pretty"
 
     try {
-        $output = & $pythonCmd[0] @commandArgs 2>&1
-        if ($LASTEXITCODE -ne 0) {
-            throw "detect-launch-context.py exited with $LASTEXITCODE"
+        $commandResult = Invoke-CapturedCommand -Command $pythonCmd -Arguments $commandArgs
+        if ([int]$commandResult.ExitCode -ne 0) {
+            throw "detect-launch-context.py exited with $($commandResult.ExitCode)"
         }
 
-        $raw = ($output | Out-String)
+        $raw = [string]$commandResult.Output
         if ([string]::IsNullOrWhiteSpace($raw)) {
             throw "detect-launch-context.py returned empty output"
         }

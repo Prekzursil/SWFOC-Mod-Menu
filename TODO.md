@@ -106,6 +106,18 @@ Reliability rule for runtime/mod tasks:
   evidence: manual `2026-02-28` `pwsh ./tools/lua-harness/run-lua-harness.ps1 -Strict`
   evidence: bundle `TestResults/runs/20260228-171028/repro-bundle.json` (`classification=blocked_environment`)
   evidence: bundle `TestResults/runs/20260228-171159/repro-bundle.json` (`classification=blocked_environment`)
+- [x] Functional closure wave: deterministic native host bootstrap, promoted `set_unit_cap` enable->disable matrix semantics, helper forced-profile fallback diagnostics, and Codex-launched live process matrix (EAW + SWFOC tactical + AOTR + ROE) with strict bundle validation.
+  evidence: test `tests/SwfocTrainer.Tests/Runtime/ProcessLocatorForcedContextTests.cs`
+  evidence: test `tests/SwfocTrainer.Tests/Profiles/LivePromotedActionMatrixTests.cs`
+  evidence: test `tests/SwfocTrainer.Tests/Profiles/LiveHeroHelperWorkflowTests.cs`
+  evidence: manual `2026-02-28` `dotnet build SwfocTrainer.sln -c Release --no-restore` => `Build succeeded`
+  evidence: manual `2026-02-28` `dotnet test tests/SwfocTrainer.Tests/SwfocTrainer.Tests.csproj -c Release --no-build --filter "FullyQualifiedName!~SwfocTrainer.Tests.Profiles.Live&FullyQualifiedName!~RuntimeAttachSmokeTests"` => `Passed: 192`
+  evidence: manual `2026-02-28` `powershell.exe -File tools/validate-workshop-topmods.ps1 -Path tools/fixtures/workshop_topmods_sample.json -Strict` => `validation passed`
+  evidence: manual `2026-02-28` `powershell.exe -File tools/validate-generated-profile-seed.ps1 -Path tools/fixtures/generated_profile_seeds_sample.json -Strict` => `validation passed`
+  evidence: manual `2026-02-28` Session A EAW snapshot `TestResults/runs/LIVE-EAW-20260228-204540/eaw-process-snapshot.json`
+  evidence: bundle `TestResults/runs/LIVE-TACTICAL-20260228-211256/repro-bundle.json`
+  evidence: bundle `TestResults/runs/LIVE-AOTR-20260228-211521/repro-bundle.json`
+  evidence: bundle `TestResults/runs/LIVE-ROE-20260228-211757/repro-bundle.json`
 
 ## Later (M2 + M3 + M4)
 
