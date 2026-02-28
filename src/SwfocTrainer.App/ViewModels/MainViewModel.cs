@@ -51,6 +51,7 @@ public sealed class MainViewModel : INotifyPropertyChanged
     private string _selectedActionId = string.Empty;
     private string _payloadJson = "{\n  \"symbol\": \"credits\",\n  \"intValue\": 1000000,\n  \"lockCredits\": false\n}";
     private RuntimeMode _runtimeMode = RuntimeMode.Unknown;
+    private string _runtimeModeOverride = MainViewModelRuntimeModeOverrideHelpers.ModeOverrideAuto;
     private string _savePath = string.Empty;
     private string _saveNodePath = string.Empty;
     private string _saveEditValue = string.Empty;
@@ -186,6 +187,7 @@ public sealed class MainViewModel : INotifyPropertyChanged
         (Profiles, Actions, CatalogSummary, Updates, SaveDiffPreview, Hotkeys, SaveFields, FilteredSaveFields,
             SavePatchOperations, SavePatchCompatibility, ActionReliability, SelectedUnitTransactions, SpawnPresets, LiveOpsDiagnostics,
             CalibrationCandidates, ModCompatibilityRows, ActiveFreezes) = CreateCollections();
+        RuntimeModeOverride = MainViewModelRuntimeModeOverrideHelpers.Load();
 
         (LoadProfilesCommand, AttachCommand, DetachCommand, LoadActionsCommand, ExecuteActionCommand, LoadCatalogCommand,
             DeployHelperCommand, VerifyHelperCommand, CheckUpdatesCommand, InstallUpdateCommand, RollbackProfileUpdateCommand) = CreateCoreCommands();
@@ -469,8 +471,33 @@ public sealed class MainViewModel : INotifyPropertyChanged
     public RuntimeMode RuntimeMode
     {
         get => _runtimeMode;
-        set => SetField(ref _runtimeMode, value);
+        set
+        {
+            if (SetField(ref _runtimeMode, value))
+            {
+                OnPropertyChanged(nameof(EffectiveRuntimeMode));
+            }
+        }
     }
+
+    public string RuntimeModeOverride
+    {
+        get => _runtimeModeOverride;
+        set
+        {
+            var normalized = MainViewModelRuntimeModeOverrideHelpers.Normalize(value);
+            if (!SetField(ref _runtimeModeOverride, normalized))
+            {
+                return;
+            }
+
+            MainViewModelRuntimeModeOverrideHelpers.Save(normalized);
+            OnPropertyChanged(nameof(EffectiveRuntimeMode));
+        }
+    }
+
+    public RuntimeMode EffectiveRuntimeMode =>
+        MainViewModelRuntimeModeOverrideHelpers.ResolveEffectiveRuntimeMode(RuntimeMode, RuntimeModeOverride);
 
     public string SavePath
     {
@@ -533,6 +560,8 @@ public sealed class MainViewModel : INotifyPropertyChanged
     }
 
     public bool CanWorkWithProfile => !string.IsNullOrWhiteSpace(SelectedProfileId);
+
+    public IReadOnlyList<string> RuntimeModeOverrideOptions => MainViewModelRuntimeModeOverrideHelpers.ModeOverrideOptions;
 
     public HotkeyBindingItem? SelectedHotkey
     {
@@ -1419,7 +1448,7 @@ public sealed class MainViewModel : INotifyPropertyChanged
                 SelectedProfileId,
                 SelectedActionId,
                 payloadNode,
-                RuntimeMode,
+                EffectiveRuntimeMode,
                 BuildActionContext(SelectedActionId));
             Status = result.Succeeded
                 ? $"Action succeeded: {result.Message}{BuildDiagnosticsStatusSuffix(result)}"
@@ -2390,7 +2419,7 @@ public sealed class MainViewModel : INotifyPropertyChanged
             return;
         }
 
-        var result = await _selectedUnitTransactions.ApplyAsync(SelectedProfileId, draftResult.Draft!, RuntimeMode);
+        var result = await _selectedUnitTransactions.ApplyAsync(SelectedProfileId, draftResult.Draft!, EffectiveRuntimeMode);
         RefreshSelectedUnitTransactions();
         if (result.Succeeded)
         {
@@ -2410,7 +2439,7 @@ public sealed class MainViewModel : INotifyPropertyChanged
             return;
         }
 
-        var result = await _selectedUnitTransactions.RevertLastAsync(SelectedProfileId, RuntimeMode);
+        var result = await _selectedUnitTransactions.RevertLastAsync(SelectedProfileId, EffectiveRuntimeMode);
         RefreshSelectedUnitTransactions();
         if (result.Succeeded)
         {
@@ -2430,7 +2459,7 @@ public sealed class MainViewModel : INotifyPropertyChanged
             return;
         }
 
-        var result = await _selectedUnitTransactions.RestoreBaselineAsync(SelectedProfileId, RuntimeMode);
+        var result = await _selectedUnitTransactions.RestoreBaselineAsync(SelectedProfileId, EffectiveRuntimeMode);
         RefreshSelectedUnitTransactions();
         if (result.Succeeded)
         {
@@ -2493,7 +2522,7 @@ public sealed class MainViewModel : INotifyPropertyChanged
             SelectedEntryMarker,
             SpawnStopOnFailure);
 
-        var result = await _spawnPresets.ExecuteBatchAsync(profileId, plan, RuntimeMode);
+        var result = await _spawnPresets.ExecuteBatchAsync(profileId, plan, EffectiveRuntimeMode);
         Status = result.Succeeded
             ? $"✓ {result.Message}"
             : $"✗ {result.Message}";
@@ -2508,7 +2537,7 @@ public sealed class MainViewModel : INotifyPropertyChanged
 
     private bool TryValidateSpawnRuntimeMode()
     {
-        if (RuntimeMode != RuntimeMode.Unknown)
+        if (EffectiveRuntimeMode != RuntimeMode.Unknown)
         {
             return true;
         }
@@ -2731,7 +2760,9 @@ public sealed class MainViewModel : INotifyPropertyChanged
         {
             ["reliabilityState"] = reliability?.State ?? "unknown",
             ["reliabilityReasonCode"] = reliability?.ReasonCode ?? "unknown",
-            ["bundleGateResult"] = reliability is null ? "unknown" : reliability.State == "unavailable" ? "blocked" : "bundle_pass"
+            ["bundleGateResult"] = reliability is null ? "unknown" : reliability.State == "unavailable" ? "blocked" : "bundle_pass",
+            ["runtimeModeHint"] = RuntimeMode.ToString(),
+            ["runtimeModeOverride"] = RuntimeModeOverride
         };
     }
 
@@ -2816,7 +2847,7 @@ public sealed class MainViewModel : INotifyPropertyChanged
             SelectedProfileId!,
             actionId,
             payload,
-            RuntimeMode,
+            EffectiveRuntimeMode,
             BuildActionContext(actionId));
     }
 
@@ -2931,7 +2962,7 @@ public sealed class MainViewModel : INotifyPropertyChanged
             SelectedProfileId!,
             "set_credits",
             payload,
-            RuntimeMode,
+            EffectiveRuntimeMode,
             BuildActionContext("set_credits"));
     }
 
@@ -3161,7 +3192,7 @@ public sealed class MainViewModel : INotifyPropertyChanged
             SelectedProfileId!,
             binding.ActionId,
             payloadNode,
-            RuntimeMode,
+            EffectiveRuntimeMode,
             BuildActionContext(binding.ActionId));
         Status = BuildHotkeyStatus(gesture, binding.ActionId, result);
 

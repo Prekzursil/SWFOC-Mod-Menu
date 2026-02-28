@@ -24,6 +24,12 @@
             <Button Content="Detach" Command="{Binding DetachCommand}" Margin="8,0,0,0"/>
             <TextBlock Text="  Mode:" VerticalAlignment="Center" Margin="12,0,4,0"/>
             <TextBlock Text="{Binding RuntimeMode}" VerticalAlignment="Center"/>
+            <TextBlock Text="  Override:" VerticalAlignment="Center" Margin="12,0,4,0"/>
+            <ComboBox Width="120"
+                      ItemsSource="{Binding RuntimeModeOverrideOptions}"
+                      SelectedItem="{Binding RuntimeModeOverride, UpdateSourceTrigger=PropertyChanged}"/>
+            <TextBlock Text="  Effective:" VerticalAlignment="Center" Margin="8,0,4,0"/>
+            <TextBlock Text="{Binding EffectiveRuntimeMode}" VerticalAlignment="Center"/>
             <TextBlock Text="  Symbols:" VerticalAlignment="Center" Margin="12,0,4,0"/>
             <TextBlock Text="{Binding ResolvedSymbolsCount}" VerticalAlignment="Center"/>
         </StackPanel>

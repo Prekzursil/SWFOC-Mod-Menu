@@ -10,6 +10,12 @@ public sealed partial class RuntimeAdapter
     private const string DiagnosticKeyState = "state";
     private const string DiagnosticKeyExpertOverrideEnabled = "expertOverrideEnabled";
     private const string DiagnosticKeyOverrideReason = "overrideReason";
+    private const string DiagnosticKeyRuntimeModeHint = "runtimeModeHint";
+    private const string DiagnosticKeyRuntimeModeProbe = "runtimeModeProbe";
+    private const string DiagnosticKeyRuntimeModeEffective = "runtimeModeEffective";
+    private const string DiagnosticKeyRuntimeModeEffectiveSource = "runtimeModeEffectiveSource";
+    private const string RuntimeModeSourceAuto = "auto";
+    private const string RuntimeModeSourceManualOverride = "manual_override";
     private const string DiagnosticKeyPanicDisableState = "panicDisableState";
     private const string PanicDisableStateActive = "active";
     private const string PanicDisableStateInactive = "inactive";
