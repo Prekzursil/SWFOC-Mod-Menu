@@ -13,6 +13,12 @@ public sealed class ActionReliabilityService : IActionReliabilityService
             ["set_unit_cap_patch_fallback"] = "allow_unit_cap_patch_fallback"
         };
 
+    private static readonly IReadOnlyDictionary<string, string> ExperimentalFeatureFlags =
+        new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
+        {
+            ["set_credits_extender_experimental"] = "allow_extender_credits"
+        };
+
     private static readonly IReadOnlySet<string> StrictBundleActions = new HashSet<string>(StringComparer.OrdinalIgnoreCase)
     {
         "spawn_unit_helper",
@@ -86,6 +92,27 @@ public sealed class ActionReliabilityService : IActionReliabilityService
                 "fallback_experimental",
                 0.45d,
                 "Fallback action is enabled but remains experimental pending live validation.");
+        }
+
+        if (ExperimentalFeatureFlags.TryGetValue(actionId, out var experimentalFlag) &&
+            (!profile.FeatureFlags.TryGetValue(experimentalFlag, out var experimentalEnabled) || !experimentalEnabled))
+        {
+            return new ActionReliabilityInfo(
+                actionId,
+                ActionReliabilityState.Unavailable,
+                "experimental_disabled",
+                1.00d,
+                $"Experimental action is disabled by feature flag '{experimentalFlag}'.");
+        }
+
+        if (ExperimentalFeatureFlags.ContainsKey(actionId))
+        {
+            return new ActionReliabilityInfo(
+                actionId,
+                ActionReliabilityState.Experimental,
+                "experimental_enabled",
+                0.40d,
+                "Experimental action is enabled and remains non-authoritative pending live validation.");
         }
 
         if (disabledActions.Contains(actionId))

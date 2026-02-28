@@ -143,6 +143,40 @@ public sealed class ActionReliabilityServiceTests
         entry.ReasonCode.Should().Be("fallback_experimental");
     }
 
+    [Fact]
+    public void Evaluate_ExtenderCreditsExperimentalDisabled_ShouldBeUnavailable()
+    {
+        var service = new ActionReliabilityService();
+        var profile = BuildProfile(
+            new Dictionary<string, bool>(StringComparer.OrdinalIgnoreCase)
+            {
+                ["allow_extender_credits"] = false
+            },
+            Action("set_credits_extender_experimental", RuntimeMode.Unknown, ExecutionKind.Sdk, "symbol", "intValue"));
+        var session = BuildSession(RuntimeMode.Galactic, symbol: null);
+
+        var entry = service.Evaluate(profile, session).Single(x => x.ActionId == "set_credits_extender_experimental");
+        entry.State.Should().Be(ActionReliabilityState.Unavailable);
+        entry.ReasonCode.Should().Be("experimental_disabled");
+    }
+
+    [Fact]
+    public void Evaluate_ExtenderCreditsExperimentalEnabled_ShouldBeExperimental()
+    {
+        var service = new ActionReliabilityService();
+        var profile = BuildProfile(
+            new Dictionary<string, bool>(StringComparer.OrdinalIgnoreCase)
+            {
+                ["allow_extender_credits"] = true
+            },
+            Action("set_credits_extender_experimental", RuntimeMode.Unknown, ExecutionKind.Sdk, "symbol", "intValue"));
+        var session = BuildSession(RuntimeMode.Galactic, symbol: null);
+
+        var entry = service.Evaluate(profile, session).Single(x => x.ActionId == "set_credits_extender_experimental");
+        entry.State.Should().Be(ActionReliabilityState.Experimental);
+        entry.ReasonCode.Should().Be("experimental_enabled");
+    }
+
     private static ActionSpec Action(string id, RuntimeMode mode, ExecutionKind kind, params string[] required)
     {
         var requiredArray = new JsonArray(required.Select(x => (JsonNode)JsonValue.Create(x)!).ToArray());

@@ -50,6 +50,7 @@ public sealed class NamedPipeExtenderBackendTests
         var probeAnchors = requestDoc.RootElement.GetProperty("resolvedAnchors");
         probeAnchors.GetProperty("credits").GetString().Should().NotBeNullOrWhiteSpace();
         probeAnchors.GetProperty("freeze_timer").GetString().Should().NotBeNullOrWhiteSpace();
+        probeAnchors.GetProperty("instant_build_patch_injection").GetString().Should().NotBeNullOrWhiteSpace();
         probeAnchors.GetProperty("toggle_instant_build_patch").GetString().Should().NotBeNullOrWhiteSpace();
         var commandId = requestDoc.RootElement.GetProperty("commandId").GetString() ?? string.Empty;
         var response = BuildProbeResponse(commandId);
@@ -57,6 +58,42 @@ public sealed class NamedPipeExtenderBackendTests
         var report = await reportTask;
 
         AssertProbeReport(report);
+    }
+
+    [Theory]
+    [InlineData("CAPABILITY_ANCHOR_INVALID", RuntimeReasonCode.CAPABILITY_ANCHOR_INVALID)]
+    [InlineData("CAPABILITY_ANCHOR_UNREADABLE", RuntimeReasonCode.CAPABILITY_ANCHOR_UNREADABLE)]
+    public async Task ProbeCapabilitiesAsync_ShouldPreserveAnchorProbeReasonCodes(
+        string nativeReasonCode,
+        RuntimeReasonCode expectedReasonCode)
+    {
+        using var cts = new CancellationTokenSource(TimeSpan.FromSeconds(3));
+        await using var server = new NamedPipeServerStream(
+            "SwfocExtenderBridge",
+            PipeDirection.InOut,
+            1,
+            PipeTransmissionMode.Byte,
+            PipeOptions.Asynchronous);
+        var backend = new NamedPipeExtenderBackend();
+        var waitTask = server.WaitForConnectionAsync(cts.Token);
+        var reportTask = backend.ProbeCapabilitiesAsync(
+            "base_swfoc",
+            BuildProcess(),
+            cts.Token);
+        await waitTask;
+
+        using var reader = new StreamReader(server);
+        await using var writer = new StreamWriter(server) { AutoFlush = true };
+        var requestJson = await reader.ReadLineAsync(cts.Token) ?? string.Empty;
+        using var requestDoc = JsonDocument.Parse(requestJson);
+        var commandId = requestDoc.RootElement.GetProperty("commandId").GetString() ?? string.Empty;
+        var response = BuildProbeResponseWithAnchorFailure(commandId, nativeReasonCode);
+        await writer.WriteLineAsync(response.AsMemory(), cts.Token);
+
+        var report = await reportTask;
+        report.Capabilities["set_credits"].Available.Should().BeFalse();
+        report.Capabilities["set_credits"].ReasonCode.Should().Be(expectedReasonCode);
+        report.Capabilities["set_credits"].Confidence.Should().Be(CapabilityConfidenceState.Unknown);
     }
 
     [Fact]
@@ -297,6 +334,31 @@ public sealed class NamedPipeExtenderBackendTests
                     set_unit_cap = new { available = true, state = "Experimental", reasonCode = "CAPABILITY_FEATURE_EXPERIMENTAL" },
                     toggle_instant_build_patch = new { available = false, state = "Unknown", reasonCode = "CAPABILITY_REQUIRED_MISSING" },
                     set_credits = new { available = true, state = "Verified", reasonCode = "CAPABILITY_PROBE_PASS" }
+                }
+            }
+        });
+    }
+
+    private static string BuildProbeResponseWithAnchorFailure(string commandId, string reasonCode)
+    {
+        return JsonSerializer.Serialize(new
+        {
+            commandId,
+            succeeded = true,
+            reasonCode = "CAPABILITY_PROBE_PASS",
+            backend = "extender",
+            hookState = "HOOK_READY",
+            message = "Probe completed.",
+            diagnostics = new
+            {
+                capabilities = new
+                {
+                    freeze_timer = new { available = true, state = "Verified", reasonCode = "CAPABILITY_PROBE_PASS" },
+                    toggle_fog_reveal = new { available = true, state = "Verified", reasonCode = "CAPABILITY_PROBE_PASS" },
+                    toggle_ai = new { available = true, state = "Verified", reasonCode = "CAPABILITY_PROBE_PASS" },
+                    set_unit_cap = new { available = true, state = "Verified", reasonCode = "CAPABILITY_PROBE_PASS" },
+                    toggle_instant_build_patch = new { available = true, state = "Verified", reasonCode = "CAPABILITY_PROBE_PASS" },
+                    set_credits = new { available = false, state = "Unavailable", reasonCode }
                 }
             }
         });

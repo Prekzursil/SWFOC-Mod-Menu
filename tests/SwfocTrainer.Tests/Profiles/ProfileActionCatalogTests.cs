@@ -71,6 +71,10 @@ public sealed class ProfileActionCatalogTests
         profile.Actions.Should().ContainKey("toggle_fog_reveal_patch_fallback");
         profile.Actions["set_unit_cap_patch_fallback"].ExecutionKind.Should().Be(ExecutionKind.CodePatch);
         profile.Actions["toggle_fog_reveal_patch_fallback"].ExecutionKind.Should().Be(ExecutionKind.CodePatch);
+        profile.Actions.Should().ContainKey("set_credits_extender_experimental");
+        profile.Actions["set_credits_extender_experimental"].ExecutionKind.Should().Be(ExecutionKind.Sdk);
+        profile.FeatureFlags.Should().ContainKey("allow_extender_credits");
+        profile.FeatureFlags["allow_extender_credits"].Should().BeFalse();
         profile.FeatureFlags.Should().ContainKey("allow_fog_patch_fallback");
         profile.FeatureFlags["allow_fog_patch_fallback"].Should().BeFalse();
         profile.FeatureFlags.Should().ContainKey("allow_unit_cap_patch_fallback");
@@ -149,7 +153,7 @@ public sealed class ProfileActionCatalogTests
     }
 
     [Fact]
-    public async Task SwfocProfiles_Should_Route_SetCredits_Via_Sdk()
+    public async Task SwfocProfiles_Should_Route_SetCredits_ViaMemory_ByDefault()
     {
         var root = TestPaths.FindRepoRoot();
         var options = new ProfileRepositoryOptions
@@ -163,8 +167,8 @@ public sealed class ProfileActionCatalogTests
         foreach (var pid in swfocProfiles)
         {
             var profile = await repo.ResolveInheritedProfileAsync(pid);
-            profile.Actions["set_credits"].ExecutionKind.Should().Be(ExecutionKind.Sdk,
-                because: $"profile '{pid}' should enforce extender-routed credits writes");
+            profile.Actions["set_credits"].ExecutionKind.Should().Be(ExecutionKind.Memory,
+                because: $"profile '{pid}' should keep managed memory as authoritative credits route");
         }
     }
 

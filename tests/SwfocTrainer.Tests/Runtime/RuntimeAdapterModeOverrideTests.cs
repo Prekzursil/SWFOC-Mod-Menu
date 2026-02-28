@@ -54,6 +54,49 @@ public sealed class RuntimeAdapterModeOverrideTests
         resolved.Diagnostics["runtimeModeEffectiveSource"].Should().Be("auto");
     }
 
+    [Fact]
+    public void ResolveEffectiveMode_ShouldPreferTelemetryMode_WhenTelemetryContextIsFresh()
+    {
+        var adapter = CreateAdapter();
+        var request = new ActionExecutionRequest(
+            BuildAction(),
+            new JsonObject(),
+            "test_profile",
+            RuntimeMode.Galactic,
+            new Dictionary<string, object?>
+            {
+                ["telemetryRuntimeMode"] = "Tactical"
+            });
+
+        var resolved = InvokeResolveEffectiveMode(adapter, request);
+
+        resolved.Request.RuntimeMode.Should().Be(RuntimeMode.Tactical);
+        resolved.Diagnostics["runtimeModeEffectiveSource"].Should().Be("telemetry");
+        resolved.Diagnostics["runtimeModeTelemetry"].Should().Be("Tactical");
+        resolved.Diagnostics["runtimeModeTelemetryReasonCode"].Should().Be("telemetry_context_override");
+    }
+
+    [Fact]
+    public void ResolveEffectiveMode_ShouldKeepManualOverridePriority_OverTelemetryMode()
+    {
+        var adapter = CreateAdapter();
+        var request = new ActionExecutionRequest(
+            BuildAction(),
+            new JsonObject(),
+            "test_profile",
+            RuntimeMode.Unknown,
+            new Dictionary<string, object?>
+            {
+                ["runtimeModeOverride"] = "Galactic",
+                ["telemetryRuntimeMode"] = "Tactical"
+            });
+
+        var resolved = InvokeResolveEffectiveMode(adapter, request);
+
+        resolved.Request.RuntimeMode.Should().Be(RuntimeMode.Galactic);
+        resolved.Diagnostics["runtimeModeEffectiveSource"].Should().Be("manual_override");
+    }
+
     private static (ActionExecutionRequest Request, IReadOnlyDictionary<string, object?> Diagnostics) InvokeResolveEffectiveMode(RuntimeAdapter adapter, ActionExecutionRequest request)
     {
         var method = typeof(RuntimeAdapter).GetMethod("ResolveEffectiveMode", BindingFlags.NonPublic | BindingFlags.Instance);

@@ -110,6 +110,7 @@ public sealed class NamedPipeExtenderBackend : IExecutionBackend
         anchors["toggle_ai"] = ProbePlaceholderAnchorValue;
         anchors["unit_cap"] = ProbePlaceholderAnchorValue;
         anchors["set_unit_cap"] = ProbePlaceholderAnchorValue;
+        anchors["instant_build_patch_injection"] = ProbePlaceholderAnchorValue;
         anchors["instant_build_patch"] = ProbePlaceholderAnchorValue;
         anchors["toggle_instant_build_patch"] = ProbePlaceholderAnchorValue;
     }

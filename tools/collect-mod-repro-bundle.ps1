@@ -321,6 +321,62 @@ function Get-JsonMemberValue {
     return $null
 }
 
+function ConvertTo-NullableBoolean {
+    param([Parameter(Mandatory = $false)][object]$Value)
+
+    if ($null -eq $Value) {
+        return $null
+    }
+
+    if ($Value -is [bool]) {
+        return [bool]$Value
+    }
+
+    if ($Value -is [string]) {
+        $normalized = $Value.Trim()
+        if ([string]::IsNullOrWhiteSpace($normalized)) {
+            return $null
+        }
+
+        switch -Regex ($normalized.ToLowerInvariant()) {
+            "^(true|1|yes|y|on)$" { return $true }
+            "^(false|0|no|n|off)$" { return $false }
+            default { return $null }
+        }
+    }
+
+    if ($Value -is [sbyte] -or
+        $Value -is [byte] -or
+        $Value -is [int16] -or
+        $Value -is [uint16] -or
+        $Value -is [int32] -or
+        $Value -is [uint32] -or
+        $Value -is [int64] -or
+        $Value -is [uint64]) {
+        return ([long]$Value) -ne 0
+    }
+
+    if ($Value -is [single] -or $Value -is [double] -or $Value -is [decimal]) {
+        return ([double]$Value) -ne 0
+    }
+
+    return $null
+}
+
+function ConvertTo-BooleanOrDefault {
+    param(
+        [Parameter(Mandatory = $false)][object]$Value,
+        [Parameter(Mandatory = $false)][bool]$Default = $false
+    )
+
+    $parsed = ConvertTo-NullableBoolean -Value $Value
+    if ($null -eq $parsed) {
+        return $Default
+    }
+
+    return [bool]$parsed
+}
+
 function Get-ActionStatusDiagnostics {
     param([string]$RunDirectoryPath)
 
@@ -368,8 +424,8 @@ function Get-ActionStatusDiagnostics {
                 backendRoute = if ([string]::IsNullOrWhiteSpace([string]$backendRouteRaw)) { $null } else { [string]$backendRouteRaw }
                 routeReasonCode = if ([string]::IsNullOrWhiteSpace([string]$routeReasonCodeRaw)) { $null } else { [string]$routeReasonCodeRaw }
                 capabilityProbeReasonCode = if ([string]::IsNullOrWhiteSpace([string]$capabilityProbeReasonCodeRaw)) { $null } else { [string]$capabilityProbeReasonCodeRaw }
-                hybridExecution = if ($null -eq $hybridExecutionRaw) { $null } else { [bool]$hybridExecutionRaw }
-                hasFallbackMarker = if ($null -eq $hasFallbackMarkerRaw) { $false } else { [bool]$hasFallbackMarkerRaw }
+                hybridExecution = ConvertTo-NullableBoolean -Value $hybridExecutionRaw
+                hasFallbackMarker = ConvertTo-BooleanOrDefault -Value $hasFallbackMarkerRaw -Default $false
                 message = [string]$messageRaw
                 skipReasonCode = if ([string]::IsNullOrWhiteSpace([string]$skipReasonCodeRaw)) { $null } else { [string]$skipReasonCodeRaw }
             })
@@ -631,9 +687,10 @@ $selectedHostProcess = if ($null -eq $preferredProcess) {
 }
 
 $backendRouteDecision = if ($null -ne $runtimeEvidence) {
+    $runtimeSucceeded = ConvertTo-BooleanOrDefault -Value $runtimeEvidence.result.succeeded -Default $false
     [ordered]@{
         backend = if ([string]::IsNullOrWhiteSpace([string]$runtimeEvidence.result.backendRoute)) { "unknown" } else { [string]$runtimeEvidence.result.backendRoute }
-        allowed = [bool]$runtimeEvidence.result.succeeded
+        allowed = $runtimeSucceeded
         reasonCode = if ([string]::IsNullOrWhiteSpace([string]$runtimeEvidence.result.routeReasonCode)) { "UNKNOWN" } else { [string]$runtimeEvidence.result.routeReasonCode }
         message = [string]$runtimeEvidence.result.message
         source = "live-roe-runtime-evidence.json"
@@ -669,9 +726,10 @@ else {
 }
 
 $hookInstallReport = if ($null -ne $runtimeEvidence) {
+    $runtimeSucceeded = ConvertTo-BooleanOrDefault -Value $runtimeEvidence.result.succeeded -Default $false
     [ordered]@{
         state = if ([string]::IsNullOrWhiteSpace([string]$runtimeEvidence.result.hookState)) { "unknown" } else { [string]$runtimeEvidence.result.hookState }
-        reasonCode = if ([bool]$runtimeEvidence.result.succeeded) { "CAPABILITY_PROBE_PASS" } else { "HOOK_INSTALL_FAILED" }
+        reasonCode = if ($runtimeSucceeded) { "CAPABILITY_PROBE_PASS" } else { "HOOK_INSTALL_FAILED" }
         details = "Derived from runtime action diagnostics."
         source = "live-roe-runtime-evidence.json"
     }

@@ -458,6 +458,8 @@ public sealed class CapabilityMapResolver : ICapabilityMapResolver
         {
             "CAPABILITY_REQUIRED_MISSING" => CapabilityReasonCode.RequiredAnchorsMissing,
             "CAPABILITY_PROBE_PASS" => CapabilityReasonCode.AllRequiredAnchorsPresent,
+            "CAPABILITY_ANCHOR_INVALID" => CapabilityReasonCode.RequiredAnchorsMissing,
+            "CAPABILITY_ANCHOR_UNREADABLE" => CapabilityReasonCode.RequiredAnchorsMissing,
             "CAPABILITY_BACKEND_UNAVAILABLE" => CapabilityReasonCode.RuntimeNotAttached,
             "SAFETY_FAIL_CLOSED" => CapabilityReasonCode.MutationBlockedByCapabilityState,
             _ => CapabilityReasonCode.Unknown

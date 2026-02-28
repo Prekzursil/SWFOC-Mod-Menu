@@ -63,6 +63,7 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
         _sdkOperationRouter = ResolveOptionalService<ISdkOperationRouter>(serviceProvider);
         _backendRouter = ResolveOptionalService<IBackendRouter>(serviceProvider) ?? new BackendRouter();
         _extenderBackend = ResolveOptionalService<IExecutionBackend>(serviceProvider) ?? new NamedPipeExtenderBackend();
+        _telemetryLogTailService = ResolveOptionalService<ITelemetryLogTailService>(serviceProvider) ?? new TelemetryLogTailService();
         _logger = logger;
         _calibrationArtifactRoot = Path.Combine(
             Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
@@ -1198,18 +1199,33 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
         var hintMode = request.RuntimeMode;
         var probeMode = CurrentSession?.Process.Mode ?? RuntimeMode.Unknown;
         var overrideMode = ResolveManualOverrideMode(request.Context);
-        var effectiveMode = overrideMode ?? hintMode;
-        if (effectiveMode == RuntimeMode.Unknown)
+        var telemetryResolution = ResolveTelemetryMode(request.Context);
+        var effectiveMode = hintMode;
+        var source = RuntimeModeSourceAuto;
+
+        if (overrideMode.HasValue)
+        {
+            effectiveMode = overrideMode.Value;
+            source = RuntimeModeSourceManualOverride;
+        }
+        else if (telemetryResolution.Available)
+        {
+            effectiveMode = telemetryResolution.Mode;
+            source = RuntimeModeSourceTelemetry;
+        }
+        else if (effectiveMode == RuntimeMode.Unknown)
         {
             effectiveMode = probeMode;
         }
 
-        var source = overrideMode.HasValue ? RuntimeModeSourceManualOverride : RuntimeModeSourceAuto;
         var context = request.Context is null
             ? new Dictionary<string, object?>(StringComparer.OrdinalIgnoreCase)
             : new Dictionary<string, object?>(request.Context, StringComparer.OrdinalIgnoreCase);
         context[DiagnosticKeyRuntimeModeHint] = hintMode.ToString();
         context[DiagnosticKeyRuntimeModeProbe] = probeMode.ToString();
+        context[DiagnosticKeyRuntimeModeTelemetry] = telemetryResolution.Available ? telemetryResolution.Mode.ToString() : RuntimeMode.Unknown.ToString();
+        context[DiagnosticKeyRuntimeModeTelemetryReasonCode] = telemetryResolution.ReasonCode;
+        context[DiagnosticKeyRuntimeModeTelemetrySource] = telemetryResolution.SourcePath;
         context[DiagnosticKeyRuntimeModeEffective] = effectiveMode.ToString();
         context[DiagnosticKeyRuntimeModeEffectiveSource] = source;
 
@@ -1218,11 +1234,71 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
         {
             [DiagnosticKeyRuntimeModeHint] = hintMode.ToString(),
             [DiagnosticKeyRuntimeModeProbe] = probeMode.ToString(),
+            [DiagnosticKeyRuntimeModeTelemetry] = telemetryResolution.Available ? telemetryResolution.Mode.ToString() : RuntimeMode.Unknown.ToString(),
+            [DiagnosticKeyRuntimeModeTelemetryReasonCode] = telemetryResolution.ReasonCode,
+            [DiagnosticKeyRuntimeModeTelemetrySource] = telemetryResolution.SourcePath,
             [DiagnosticKeyRuntimeModeEffective] = effectiveMode.ToString(),
             [DiagnosticKeyRuntimeModeEffectiveSource] = source
         };
 
         return (effectiveRequest, diagnostics);
+    }
+
+    private TelemetryModeResolution ResolveTelemetryMode(IReadOnlyDictionary<string, object?>? context)
+    {
+        if (TryResolveTelemetryModeFromContext(context, out var contextMode))
+        {
+            return new TelemetryModeResolution(
+                Available: true,
+                Mode: contextMode,
+                ReasonCode: "telemetry_context_override",
+                SourcePath: "context:telemetryRuntimeMode",
+                TimestampUtc: DateTimeOffset.UtcNow,
+                RawLine: null);
+        }
+
+        if (CurrentSession is null)
+        {
+            return TelemetryModeResolution.Unavailable("telemetry_session_missing");
+        }
+
+        return _telemetryLogTailService.ResolveLatestMode(
+            CurrentSession.Process.ProcessPath,
+            DateTimeOffset.UtcNow,
+            TimeSpan.FromMinutes(5));
+    }
+
+    private static bool TryResolveTelemetryModeFromContext(
+        IReadOnlyDictionary<string, object?>? context,
+        out RuntimeMode mode)
+    {
+        mode = RuntimeMode.Unknown;
+        if (context is null || !context.TryGetValue("telemetryRuntimeMode", out var raw) || raw is null)
+        {
+            return false;
+        }
+
+        var value = raw as string ?? raw.ToString();
+        if (string.IsNullOrWhiteSpace(value))
+        {
+            return false;
+        }
+
+        if (value.Equals("Galactic", StringComparison.OrdinalIgnoreCase))
+        {
+            mode = RuntimeMode.Galactic;
+            return true;
+        }
+
+        if (value.Equals("Tactical", StringComparison.OrdinalIgnoreCase) ||
+            value.Equals("TacticalLand", StringComparison.OrdinalIgnoreCase) ||
+            value.Equals("TacticalSpace", StringComparison.OrdinalIgnoreCase))
+        {
+            mode = RuntimeMode.Tactical;
+            return true;
+        }
+
+        return false;
     }
 
     private static RuntimeMode? ResolveManualOverrideMode(IReadOnlyDictionary<string, object?>? context)
@@ -1939,7 +2015,7 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
             "toggle_ai" => ["ai_enabled", "toggle_ai"],
             ActionIdSetUnitCap => ["unit_cap", ActionIdSetUnitCap],  // NOSONAR
             ActionIdSetUnitCapPatchFallback => ["unit_cap", ActionIdSetUnitCapPatchFallback],
-            ActionIdToggleInstantBuildPatch => ["instant_build_patch", ActionIdToggleInstantBuildPatch],
+            ActionIdToggleInstantBuildPatch => ["instant_build_patch_injection", "instant_build_patch", ActionIdToggleInstantBuildPatch],
             ActionIdSetCredits => [SymbolCredits, ActionIdSetCredits],
             _ => Array.Empty<string>()
         };

@@ -1,0 +1,7 @@
+<Story>
+  <Plot Name="ROE_Campaign">
+    <Event Name="STORY_GALACTIC_TURN" LuaScript="Story/Galactic.lua" />
+    <Event Name="STORY_LAND_TACTICAL" Script="Story/LandBattle.lua" />
+    <Event Name="STORY_SPACE_TACTICAL" Script="Story/SpaceBattle.lua" />
+  </Plot>
+</Story>
