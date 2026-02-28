@@ -55,6 +55,17 @@ def parse_steammod_ids(command_line: str | None) -> list[str]:
     return sorted(ids)
 
 
+def parse_forced_workshop_ids(raw: str | None) -> list[str]:
+    if not raw:
+        return []
+    ids: set[str] = set()
+    for token in raw.split(","):
+        value = token.strip()
+        if value:
+            ids.add(value)
+    return sorted(ids)
+
+
 def parse_modpath(command_line: str | None) -> str | None:
     if not command_line:
         return None
@@ -350,7 +361,12 @@ def dependency_hints(profiles: dict[str, ProfileInfo], profile_id: str | None) -
     }
 
 
-def detect_one(process_input: dict[str, Any], profiles: dict[str, ProfileInfo]) -> dict[str, Any]:
+def detect_one(
+    process_input: dict[str, Any],
+    profiles: dict[str, ProfileInfo],
+    forced_workshop_ids: list[str] | None = None,
+    forced_profile_id: str | None = None,
+) -> dict[str, Any]:
     case_name = process_input.get("name")
     case_name = str(case_name) if case_name is not None else None
     process_name = str(process_input.get("processName", "") or "")
@@ -359,11 +375,26 @@ def detect_one(process_input: dict[str, Any], profiles: dict[str, ProfileInfo]) 
     command_line = str(command_line) if command_line is not None else None
 
     steam_ids = parse_steammod_ids(command_line)
+    forced_ids = sorted(set(forced_workshop_ids or []))
+    forced_profile = forced_profile_id.strip() if forced_profile_id and forced_profile_id.strip() else None
     modpath_raw = parse_modpath(command_line)
     modpath_norm = normalize_token(modpath_raw)
     exe_hint = detect_exe_hint(process_name, process_path, command_line)
+    source = "detected"
+    if not steam_ids and not modpath_norm and (forced_ids or forced_profile):
+        source = "forced"
+        if forced_ids:
+            steam_ids = forced_ids
+
     launch_kind = infer_launch_kind(steam_ids, modpath_norm, exe_hint)
-    recommendation = recommend_profile(profiles, steam_ids, modpath_norm, exe_hint)
+    if source == "forced" and forced_profile:
+        recommendation = {
+            "profileId": forced_profile,
+            "reasonCode": "forced_profile_id",
+            "confidence": 1.0,
+        }
+    else:
+        recommendation = recommend_profile(profiles, steam_ids, modpath_norm, exe_hint)
 
     launch_context = {
         "launchKind": launch_kind,
@@ -372,6 +403,9 @@ def detect_one(process_input: dict[str, Any], profiles: dict[str, ProfileInfo]) 
         "modPathRaw": modpath_raw,
         "modPathNormalized": modpath_norm,
         "detectedVia": "script_input",
+        "source": source,
+        "forcedWorkshopIds": forced_ids,
+        "forcedProfileId": forced_profile,
     }
 
     return {
@@ -396,6 +430,8 @@ def _parse_args() -> argparse.Namespace:
     parser.add_argument("--process-path", dest="process_path", default=None)
     parser.add_argument("--profile-root", default="profiles/default")
     parser.add_argument("--from-process-json", dest="from_process_json", default=None)
+    parser.add_argument("--force-workshop-ids", dest="force_workshop_ids", default=None)
+    parser.add_argument("--force-profile-id", dest="force_profile_id", default=None)
     parser.add_argument("--pretty", action="store_true")
     return parser.parse_args()
 
@@ -423,9 +459,22 @@ def _load_cases_payload(input_path: str) -> dict[str, Any] | None:
     return payload
 
 
-def _build_multi_case_output(payload: dict[str, Any], profiles: dict[str, ProfileInfo]) -> dict[str, Any]:
+def _build_multi_case_output(
+    payload: dict[str, Any],
+    profiles: dict[str, ProfileInfo],
+    forced_workshop_ids: list[str],
+    forced_profile_id: str | None,
+) -> dict[str, Any]:
     cases = payload.get("cases", [])
-    results = [detect_one(case if isinstance(case, dict) else {}, profiles) for case in cases]
+    results = [
+        detect_one(
+            case if isinstance(case, dict) else {},
+            profiles,
+            forced_workshop_ids=forced_workshop_ids,
+            forced_profile_id=forced_profile_id,
+        )
+        for case in cases
+    ]
     return {
         "schemaVersion": SCHEMA_VERSION,
         "generatedAtUtc": dt.datetime.now(dt.timezone.utc).isoformat(),
@@ -454,19 +503,27 @@ def main() -> int:
     if profiles is None:
         return 3
 
+    forced_workshop_ids = parse_forced_workshop_ids(args.force_workshop_ids)
+    forced_profile_id = args.force_profile_id.strip() if args.force_profile_id and args.force_profile_id.strip() else None
+
     if args.from_process_json:
         payload = _load_cases_payload(args.from_process_json)
         if payload is None:
             return 2
 
-        output: Any = _build_multi_case_output(payload, profiles)
+        output: Any = _build_multi_case_output(payload, profiles, forced_workshop_ids, forced_profile_id)
     else:
         process_input = _single_process_input(args)
         if not any(process_input.values()):
             print("invalid-input: provide --from-process-json or process fields", file=sys.stderr)
             return 2
 
-        output = detect_one(process_input, profiles)
+        output = detect_one(
+            process_input,
+            profiles,
+            forced_workshop_ids=forced_workshop_ids,
+            forced_profile_id=forced_profile_id,
+        )
 
     _emit_json(output, args.pretty)
     return 0

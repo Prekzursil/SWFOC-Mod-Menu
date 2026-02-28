@@ -21,6 +21,7 @@ public sealed class LaunchContextResolver : ILaunchContextResolver
         var modPathRaw = ExtractModPath(process.CommandLine);
         var modPathNormalized = NormalizeToken(modPathRaw);
         var detectedVia = ReadMetadata(process, "detectedVia") ?? "unknown";
+        var source = ResolveLaunchContextSource(process);
 
         var launchKind = DetermineLaunchKind(process, steamModIds, modPathNormalized);
         var recommendation = RecommendProfile(process, steamModIds, modPathNormalized, profiles);
@@ -32,7 +33,8 @@ public sealed class LaunchContextResolver : ILaunchContextResolver
             modPathRaw,
             modPathNormalized,
             detectedVia,
-            recommendation);
+            recommendation,
+            source);
     }
 
     private static LaunchKind DetermineLaunchKind(
@@ -71,6 +73,13 @@ public sealed class LaunchContextResolver : ILaunchContextResolver
         string? modPathNormalized,
         IReadOnlyList<TrainerProfile> profiles)
     {
+        var forcedProfileId = ReadMetadata(process, "forcedProfileId");
+        if (ResolveLaunchContextSource(process).Equals("forced", StringComparison.OrdinalIgnoreCase) &&
+            !string.IsNullOrWhiteSpace(forcedProfileId))
+        {
+            return new ProfileRecommendation(forcedProfileId, "forced_profile_id", 1.0d);
+        }
+
         var byWorkshop = RecommendByWorkshop(steamModIds, profiles);
         if (byWorkshop is not null)
         {
@@ -94,6 +103,14 @@ public sealed class LaunchContextResolver : ILaunchContextResolver
         }
 
         return new ProfileRecommendation(null, "unknown", 0.20d);
+    }
+
+    private static string ResolveLaunchContextSource(ProcessMetadata process)
+    {
+        var raw = ReadMetadata(process, "launchContextSource");
+        return string.Equals(raw, "forced", StringComparison.OrdinalIgnoreCase)
+            ? "forced"
+            : "detected";
     }
 
     private static ProfileRecommendation? RecommendByWorkshop(

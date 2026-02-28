@@ -24,8 +24,8 @@ foreach ($required in $schema.required) {
     Confirm-ValidationField -Object $bundle -Field ([string]$required) -Errors $errors
 }
 
-if ($bundle.schemaVersion -ne "1.1") {
-    Add-ValidationError -Errors $errors -Message "schemaVersion must be 1.1"
+if ($bundle.schemaVersion -ne "1.2") {
+    Add-ValidationError -Errors $errors -Message "schemaVersion must be 1.2"
 }
 
 $allowedScopes = @("AOTR", "ROE", "TACTICAL", "FULL")
@@ -66,8 +66,13 @@ foreach ($process in $processSnapshot) {
     Confirm-ValidationField -Object $process -Field "commandLine" -Errors $errors -AllowNull
 }
 
-foreach ($required in @("profileId", "reasonCode", "confidence", "launchKind")) {
+foreach ($required in @("profileId", "reasonCode", "confidence", "launchKind", "source")) {
     Confirm-ValidationField -Object $bundle.launchContext -Field $required -Errors $errors -AllowNull
+}
+
+$allowedLaunchSources = @("detected", "forced")
+if ($allowedLaunchSources -notcontains [string]$bundle.launchContext.source) {
+    Add-ValidationError -Errors $errors -Message "launchContext.source must be one of: $($allowedLaunchSources -join ', ')"
 }
 
 foreach ($required in @("hint", "effective", "reasonCode")) {

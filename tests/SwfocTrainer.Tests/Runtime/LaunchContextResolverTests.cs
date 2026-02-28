@@ -140,6 +140,63 @@ public sealed class LaunchContextResolverTests
         context.Recommendation.ProfileId.Should().Be("base_swfoc");
         context.Recommendation.ReasonCode.Should().Be("foc_safe_starwarsg_fallback");
         context.Recommendation.Confidence.Should().BeLessThan(0.70);
+        context.Source.Should().Be("detected");
+    }
+
+    [Fact]
+    public async Task Resolve_Should_Honor_Forced_Profile_Metadata_When_Context_Source_Is_Forced()
+    {
+        var resolver = new LaunchContextResolver();
+        var profiles = await LoadProfilesAsync();
+        var process = new ProcessMetadata(
+            9100,
+            "StarWarsG",
+            @"D:\SteamLibrary\steamapps\common\Star Wars Empire at War\corruption\StarWarsG.exe",
+            null,
+            ExeTarget.Swfoc,
+            RuntimeMode.Unknown,
+            new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
+            {
+                ["detectedVia"] = "unit_test",
+                ["isStarWarsG"] = "true",
+                ["launchContextSource"] = "forced",
+                ["forcedProfileId"] = "roe_3447786229_swfoc"
+            });
+
+        var context = resolver.Resolve(process, profiles);
+
+        context.Source.Should().Be("forced");
+        context.Recommendation.ProfileId.Should().Be("roe_3447786229_swfoc");
+        context.Recommendation.ReasonCode.Should().Be("forced_profile_id");
+        context.Recommendation.Confidence.Should().Be(1.0d);
+    }
+
+    [Fact]
+    public async Task Resolve_Should_Use_Forced_Workshop_Metadata_When_CommandLine_Mod_Markers_Missing()
+    {
+        var resolver = new LaunchContextResolver();
+        var profiles = await LoadProfilesAsync();
+        var process = new ProcessMetadata(
+            9101,
+            "StarWarsG",
+            @"D:\SteamLibrary\steamapps\common\Star Wars Empire at War\corruption\StarWarsG.exe",
+            "StarWarsG.exe NOARTPROCESS IGNOREASSERTS",
+            ExeTarget.Swfoc,
+            RuntimeMode.Unknown,
+            new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
+            {
+                ["detectedVia"] = "unit_test",
+                ["isStarWarsG"] = "true",
+                ["launchContextSource"] = "forced",
+                ["steamModIdsDetected"] = "3447786229",
+                ["forcedWorkshopIds"] = "3447786229"
+            });
+
+        var context = resolver.Resolve(process, profiles);
+
+        context.Source.Should().Be("forced");
+        context.Recommendation.ProfileId.Should().Be("roe_3447786229_swfoc");
+        context.Recommendation.ReasonCode.Should().Be("steammod_exact_roe");
     }
 
     private static ProcessMetadata CreateProcess(string name, string path, string? commandLine)

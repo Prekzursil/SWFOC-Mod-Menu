@@ -1,3 +1,4 @@
+#pragma warning disable S4136
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -12,7 +13,9 @@ namespace SwfocTrainer.Runtime.Services;
 
 public sealed class ProcessLocator : IProcessLocator
 {
-    private static readonly TimeSpan RegexMatchTimeout = TimeSpan.FromMilliseconds(250);
+    internal const string ForceWorkshopIdsEnvVar = "SWFOC_FORCE_WORKSHOP_IDS";
+    internal const string ForceProfileIdEnvVar = "SWFOC_FORCE_PROFILE_ID";
+
     private readonly ILaunchContextResolver _launchContextResolver;
     private readonly IProfileRepository? _profileRepository;
 
@@ -43,15 +46,23 @@ public sealed class ProcessLocator : IProcessLocator
     {
     }
 
-    public async Task<IReadOnlyList<ProcessMetadata>> FindSupportedProcessesAsync(CancellationToken cancellationToken)
+    public Task<IReadOnlyList<ProcessMetadata>> FindSupportedProcessesAsync(CancellationToken cancellationToken)
     {
+        return FindSupportedProcessesAsync(ResolveOptionsFromEnvironment(), cancellationToken);
+    }
+
+    public async Task<IReadOnlyList<ProcessMetadata>> FindSupportedProcessesAsync(
+        ProcessLocatorOptions options,
+        CancellationToken cancellationToken)
+    {
+        options ??= ProcessLocatorOptions.None;
         var list = new List<ProcessMetadata>();
         var wmiByPid = GetWmiProcessInfoByPid();
         var profiles = await LoadProfilesForLaunchContextAsync(cancellationToken);
 
         foreach (var process in Process.GetProcesses())
         {
-            var metadata = TryBuildProcessMetadata(process, wmiByPid, profiles);
+            var metadata = TryBuildProcessMetadata(process, wmiByPid, profiles, options);
             if (metadata is null)
             {
                 continue;
@@ -63,14 +74,18 @@ public sealed class ProcessLocator : IProcessLocator
         return list;
     }
 
-    public Task<IReadOnlyList<ProcessMetadata>> FindSupportedProcessesAsync()
+    public Task<ProcessMetadata?> FindBestMatchAsync(ExeTarget target, CancellationToken cancellationToken)
     {
-        return FindSupportedProcessesAsync(CancellationToken.None);
+        return FindBestMatchAsync(target, ResolveOptionsFromEnvironment(), cancellationToken);
     }
 
-    public async Task<ProcessMetadata?> FindBestMatchAsync(ExeTarget target, CancellationToken cancellationToken)
+    public async Task<ProcessMetadata?> FindBestMatchAsync(
+        ExeTarget target,
+        ProcessLocatorOptions options,
+        CancellationToken cancellationToken)
     {
-        var all = await FindSupportedProcessesAsync(cancellationToken);
+        options ??= ProcessLocatorOptions.None;
+        var all = await FindSupportedProcessesAsync(options, cancellationToken);
         var direct = all.FirstOrDefault(x => x.ExeTarget == target);
         if (direct is not null)
         {
@@ -88,6 +103,11 @@ public sealed class ProcessLocator : IProcessLocator
         }
 
         return null;
+    }
+
+    public Task<IReadOnlyList<ProcessMetadata>> FindSupportedProcessesAsync()
+    {
+        return FindSupportedProcessesAsync(CancellationToken.None);
     }
 
     public Task<ProcessMetadata?> FindBestMatchAsync(ExeTarget target)
@@ -121,7 +141,8 @@ public sealed class ProcessLocator : IProcessLocator
     private ProcessMetadata? TryBuildProcessMetadata(
         Process process,
         IReadOnlyDictionary<int, WmiProcessInfo> wmiByPid,
-        IReadOnlyList<TrainerProfile> profiles)
+        IReadOnlyList<TrainerProfile> profiles,
+        ProcessLocatorOptions options)
     {
         var probe = CaptureProcessProbe(process, wmiByPid);
         var detection = GetProcessDetection(process.ProcessName, probe.Path, probe.CommandLine);
@@ -131,23 +152,25 @@ public sealed class ProcessLocator : IProcessLocator
         }
 
         var mode = InferMode(probe.CommandLine);
+        var modPathRaw = ExtractModPath(probe.CommandLine);
         var steamModIds = ExtractSteamModIds(probe.CommandLine);
+        var forcedContext = ResolveForcedContext(probe.CommandLine, modPathRaw, steamModIds, options);
+        var effectiveSteamModIds = forcedContext.EffectiveSteamModIds;
         var hostRole = DetermineHostRole(detection);
-        var metadata = BuildBaseMetadata(detection, probe.CommandLine, probe.MainModuleSize, hostRole, steamModIds, ExtractModPath(probe.CommandLine));
-        var metadataContext = new ProcessMetadataContext(
-            Process: process,
-            Probe: probe,
-            Detection: detection,
-            Mode: mode,
-            Metadata: metadata,
-            LaunchContext: null,
-            HostRole: hostRole,
-            WorkshopMatchCount: steamModIds.Length);
-        var provisional = BuildProcessMetadata(metadataContext);
+        var metadata = BuildBaseMetadata(detection, probe.CommandLine, probe.MainModuleSize, hostRole, effectiveSteamModIds, modPathRaw);
+        metadata["launchContextSource"] = forcedContext.Source;
+        if (forcedContext.IsForced)
+        {
+            metadata["forcedWorkshopIds"] = forcedContext.ForcedWorkshopIdsCsv;
+            metadata["forcedProfileId"] = forcedContext.ForcedProfileId ?? string.Empty;
+            metadata["forcedContextReason"] = "missing_cmdline_mod_markers";
+        }
+
+        var provisional = BuildProcessMetadata(process, probe, detection, mode, metadata, null, hostRole, effectiveSteamModIds.Count);
         var launchContext = _launchContextResolver.Resolve(provisional, profiles);
         ApplyLaunchContextMetadata(metadata, launchContext);
 
-        return BuildProcessMetadata(metadataContext with { LaunchContext = launchContext });
+        return BuildProcessMetadata(process, probe, detection, mode, metadata, launchContext, hostRole, effectiveSteamModIds.Count);
     }
 
     private static ProcessProbe CaptureProcessProbe(Process process, IReadOnlyDictionary<int, WmiProcessInfo> wmiByPid)
@@ -188,11 +211,7 @@ public sealed class ProcessLocator : IProcessLocator
         }
 
         // Last-resort per-process WMI query only when bulk query didn't provide data.
-#if WINDOWS
         return TryGetCommandLine(processId);
-#else
-        return null;
-#endif
     }
 
     private static Dictionary<string, string> BuildBaseMetadata(
@@ -219,20 +238,28 @@ public sealed class ProcessLocator : IProcessLocator
         };
     }
 
-    private static ProcessMetadata BuildProcessMetadata(ProcessMetadataContext context)
+    private static ProcessMetadata BuildProcessMetadata(
+        Process process,
+        ProcessProbe probe,
+        ProcessDetection detection,
+        RuntimeMode mode,
+        IReadOnlyDictionary<string, string> metadata,
+        LaunchContext? launchContext,
+        ProcessHostRole hostRole,
+        int workshopMatchCount)
     {
         return new ProcessMetadata(
-            context.Process.Id,
-            context.Process.ProcessName,
-            context.Probe.Path,
-            context.Probe.CommandLine,
-            context.Detection.ExeTarget,
-            context.Mode,
-            context.Metadata,
-            context.LaunchContext,
-            context.HostRole,
-            context.Probe.MainModuleSize,
-            context.WorkshopMatchCount,
+            process.Id,
+            process.ProcessName,
+            probe.Path,
+            probe.CommandLine,
+            detection.ExeTarget,
+            mode,
+            metadata,
+            launchContext,
+            hostRole,
+            probe.MainModuleSize,
+            workshopMatchCount,
             0d);
     }
 
@@ -241,6 +268,7 @@ public sealed class ProcessLocator : IProcessLocator
         metadata["launchKind"] = launchContext.LaunchKind.ToString();
         metadata["modPathRaw"] = launchContext.ModPathRaw ?? string.Empty;
         metadata["modPathNormalized"] = launchContext.ModPathNormalized ?? string.Empty;
+        metadata["launchContextSource"] = launchContext.Source;
         metadata["profileRecommendation"] = launchContext.Recommendation.ProfileId ?? string.Empty;
         metadata["recommendationReason"] = launchContext.Recommendation.ReasonCode;
         metadata["recommendationConfidence"] = launchContext.Recommendation.Confidence.ToString("0.00");
@@ -249,6 +277,83 @@ public sealed class ProcessLocator : IProcessLocator
         metadata["steamModIdsDetected"] = launchContext.SteamModIds.Count == 0
             ? string.Empty
             : string.Join(",", launchContext.SteamModIds);
+    }
+
+    private static ForcedContextResolution ResolveForcedContext(
+        string? commandLine,
+        string? modPathRaw,
+        IReadOnlyList<string> detectedSteamModIds,
+        ProcessLocatorOptions options)
+    {
+        var hasModMarkers = detectedSteamModIds.Count > 0 || !string.IsNullOrWhiteSpace(modPathRaw);
+        var forcedWorkshopIds = NormalizeWorkshopIds(options.ForcedWorkshopIds);
+        var forcedProfileId = NormalizeForcedProfileId(options.ForcedProfileId);
+        var hasForcedHints = forcedWorkshopIds.Count > 0 || !string.IsNullOrWhiteSpace(forcedProfileId);
+        if (hasModMarkers || !hasForcedHints)
+        {
+            return new ForcedContextResolution(
+                Source: "detected",
+                EffectiveSteamModIds: detectedSteamModIds.ToArray(),
+                ForcedWorkshopIdsCsv: string.Empty,
+                ForcedProfileId: null);
+        }
+
+        var effectiveIds = forcedWorkshopIds.Count > 0 ? forcedWorkshopIds : detectedSteamModIds.ToArray();
+        return new ForcedContextResolution(
+            Source: "forced",
+            EffectiveSteamModIds: effectiveIds,
+            ForcedWorkshopIdsCsv: forcedWorkshopIds.Count == 0 ? string.Empty : string.Join(",", forcedWorkshopIds),
+            ForcedProfileId: forcedProfileId);
+    }
+
+    private static string? NormalizeForcedProfileId(string? forcedProfileId)
+    {
+        return string.IsNullOrWhiteSpace(forcedProfileId)
+            ? null
+            : forcedProfileId.Trim();
+    }
+
+    private static IReadOnlyList<string> NormalizeWorkshopIds(IReadOnlyList<string>? workshopIds)
+    {
+        if (workshopIds is null || workshopIds.Count == 0)
+        {
+            return Array.Empty<string>();
+        }
+
+        var ids = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+        foreach (var raw in workshopIds)
+        {
+            if (string.IsNullOrWhiteSpace(raw))
+            {
+                continue;
+            }
+
+            foreach (var token in raw.Split(',', StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries))
+            {
+                if (!string.IsNullOrWhiteSpace(token))
+                {
+                    ids.Add(token);
+                }
+            }
+        }
+
+        return ids
+            .OrderBy(x => x, StringComparer.Ordinal)
+            .ToArray();
+    }
+
+    private static ProcessLocatorOptions ResolveOptionsFromEnvironment()
+    {
+        var forcedWorkshopIds = NormalizeWorkshopIds([
+            Environment.GetEnvironmentVariable(ForceWorkshopIdsEnvVar) ?? string.Empty
+        ]);
+        var forcedProfileId = NormalizeForcedProfileId(Environment.GetEnvironmentVariable(ForceProfileIdEnvVar));
+        if (forcedWorkshopIds.Count == 0 && string.IsNullOrWhiteSpace(forcedProfileId))
+        {
+            return ProcessLocatorOptions.None;
+        }
+
+        return new ProcessLocatorOptions(forcedWorkshopIds, forcedProfileId);
     }
 
     private static bool TryDetectDirectTarget(
@@ -350,9 +455,10 @@ public sealed class ProcessLocator : IProcessLocator
         return RuntimeMode.Unknown;
     }
 
-#if WINDOWS
     private static string? TryGetCommandLine(int processId)
     {
+        _ = processId;
+#if WINDOWS
         try
         {
             using var searcher = new ManagementObjectSearcher($"SELECT CommandLine FROM Win32_Process WHERE ProcessId = {processId}");
@@ -365,10 +471,9 @@ public sealed class ProcessLocator : IProcessLocator
         {
             // ignored, command line can be unavailable if permissions are insufficient.
         }
-
+#endif
         return null;
     }
-#endif
 
     private static bool ContainsToken(string? value, string token)
     {
@@ -396,27 +501,24 @@ public sealed class ProcessLocator : IProcessLocator
         }
 
         var ids = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
-        AddCapturedGroupValues(
-            ids,
-            Regex.Matches(commandLine, @"steammod\s*=\s*(\d+)", RegexOptions.IgnoreCase, RegexMatchTimeout),
-            groupIndex: 1);
+        foreach (Match match in Regex.Matches(commandLine, @"steammod\s*=\s*(\d+)", RegexOptions.IgnoreCase))
+        {
+            if (match.Groups.Count > 1 && !string.IsNullOrWhiteSpace(match.Groups[1].Value))
+            {
+                ids.Add(match.Groups[1].Value);
+            }
+        }
 
         // Also infer IDs from mod paths containing workshop content folder segments.
-        AddCapturedGroupValues(
-            ids,
-            Regex.Matches(commandLine, @"[\\/]+32470[\\/]+(\d+)", RegexOptions.IgnoreCase, RegexMatchTimeout),
-            groupIndex: 1);
+        foreach (Match match in Regex.Matches(commandLine, @"[\\/]+32470[\\/]+(\d+)", RegexOptions.IgnoreCase))
+        {
+            if (match.Groups.Count > 1 && !string.IsNullOrWhiteSpace(match.Groups[1].Value))
+            {
+                ids.Add(match.Groups[1].Value);
+            }
+        }
 
         return ids.OrderBy(x => x, StringComparer.Ordinal).ToArray();
-    }
-
-    private static void AddCapturedGroupValues(ISet<string> target, MatchCollection matches, int groupIndex)
-    {
-        target.UnionWith(matches
-            .Cast<Match>()
-            .Select(match => match.Groups)
-            .Where(groups => groups.Count > groupIndex && !string.IsNullOrWhiteSpace(groups[groupIndex].Value))
-            .Select(groups => groups[groupIndex].Value));
     }
 
     private static ProcessHostRole DetermineHostRole(ProcessDetection detection)
@@ -441,8 +543,7 @@ public sealed class ProcessLocator : IProcessLocator
         var match = Regex.Match(
             commandLine,
             @"modpath\s*=\s*(?:""(?<quoted>[^""]+)""|(?<unquoted>[^\s]+))",
-            RegexOptions.IgnoreCase,
-            RegexMatchTimeout);
+            RegexOptions.IgnoreCase);
         if (!match.Success)
         {
             return null;
@@ -542,13 +643,12 @@ public sealed class ProcessLocator : IProcessLocator
     private sealed record WmiProcessInfo(string? CommandLine, string? ExecutablePath);
     private sealed record ProcessProbe(string Path, string? CommandLine, int MainModuleSize);
     private sealed record ProcessDetection(ExeTarget ExeTarget, bool IsStarWarsG, string DetectedVia);
-    private sealed record ProcessMetadataContext(
-        Process Process,
-        ProcessProbe Probe,
-        ProcessDetection Detection,
-        RuntimeMode Mode,
-        IReadOnlyDictionary<string, string> Metadata,
-        LaunchContext? LaunchContext,
-        ProcessHostRole HostRole,
-        int WorkshopMatchCount);
+    private sealed record ForcedContextResolution(
+        string Source,
+        IReadOnlyList<string> EffectiveSteamModIds,
+        string ForcedWorkshopIdsCsv,
+        string? ForcedProfileId)
+    {
+        public bool IsForced => Source.Equals("forced", StringComparison.OrdinalIgnoreCase);
+    }
 }
