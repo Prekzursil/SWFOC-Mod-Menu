@@ -47,6 +47,26 @@ pwsh ./tools/run-live-validation.ps1 -NoBuild -Scope TACTICAL -EmitReproBundle $
 pwsh ./tools/run-live-validation.ps1 -NoBuild -Scope ROE -EmitReproBundle $true -TopModsPath TestResults/mod-discovery/<runId>/top-mods.json
 ```
 
+Forced-context closure run (for hosts that expose only `StarWarsG.exe NOARTPROCESS IGNOREASSERTS`):
+
+```powershell
+pwsh ./tools/run-live-validation.ps1 `
+  -Configuration Release `
+  -NoBuild `
+  -Scope ROE `
+  -EmitReproBundle $true `
+  -FailOnMissingArtifacts `
+  -Strict `
+  -ForceWorkshopIds 1397421866,3447786229 `
+  -ForceProfileId roe_3447786229_swfoc
+```
+
+Expected in bundle diagnostics for forced-context runs:
+
+- `launchContext.source=forced`
+- `launchContext.forcedWorkshopIds` contains supplied IDs
+- `launchContext.forcedProfileId` reflects explicit profile override (when provided)
+
 ## 3. Artifacts Contract
 
 Per run, artifacts are emitted under:

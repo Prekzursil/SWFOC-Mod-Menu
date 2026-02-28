@@ -15,6 +15,8 @@ public sealed class NamedPipeExtenderBackend : IExecutionBackend
     private const int DefaultResponseTimeoutMs = 2000;
     private const string DefaultPipeName = "SwfocExtenderBridge";
     private const string ExtenderBackendId = "extender";
+    private const string ProbePlaceholderAnchorValue = "probe";
+    private const string ProbeResolvedAnchorsMetadataKey = "probeResolvedAnchorsJson";
     private const string NativeDirectoryName = "native";
     private const string BridgeHostWindowsExecutableName = "SwfocExtender.Host.exe";
     private const string BridgeHostPosixExecutableName = "SwfocExtender.Host";
@@ -70,9 +72,105 @@ public sealed class NamedPipeExtenderBackend : IExecutionBackend
             Payload: new System.Text.Json.Nodes.JsonObject(),
             ProcessId: processContext.ProcessId,
             ProcessName: processContext.ProcessName,
-            ResolvedAnchors: new System.Text.Json.Nodes.JsonObject(),
+            ResolvedAnchors: BuildProbeAnchors(profileId, processContext),
             RequestedBy: "runtime_adapter",
             TimestampUtc: DateTimeOffset.UtcNow);
+    }
+
+    private static JsonObject BuildProbeAnchors(string profileId, ProcessMetadata processContext)
+    {
+        var anchors = new JsonObject();
+        if (processContext.ProcessId <= 0)
+        {
+            return anchors;
+        }
+
+        SeedDefaultProbeAnchors(profileId, anchors);
+        MergeProbeAnchorsFromMetadata(processContext, anchors);
+
+        return anchors;
+    }
+
+    private static void SeedDefaultProbeAnchors(string profileId, JsonObject anchors)
+    {
+        if (!ShouldSeedProbeDefaults(profileId))
+        {
+            return;
+        }
+
+        // Seed known-profile anchors to keep legacy/base promoted routes deterministic
+        // when host command-line launch markers are unavailable.
+        anchors["credits"] = ProbePlaceholderAnchorValue;
+        anchors["set_credits"] = ProbePlaceholderAnchorValue;
+        anchors["game_timer_freeze"] = ProbePlaceholderAnchorValue;
+        anchors["freeze_timer"] = ProbePlaceholderAnchorValue;
+        anchors["fog_reveal"] = ProbePlaceholderAnchorValue;
+        anchors["toggle_fog_reveal"] = ProbePlaceholderAnchorValue;
+        anchors["ai_enabled"] = ProbePlaceholderAnchorValue;
+        anchors["toggle_ai"] = ProbePlaceholderAnchorValue;
+        anchors["unit_cap"] = ProbePlaceholderAnchorValue;
+        anchors["set_unit_cap"] = ProbePlaceholderAnchorValue;
+        anchors["instant_build_patch"] = ProbePlaceholderAnchorValue;
+        anchors["toggle_instant_build_patch"] = ProbePlaceholderAnchorValue;
+    }
+
+    private static void MergeProbeAnchorsFromMetadata(ProcessMetadata processContext, JsonObject anchors)
+    {
+        if (!TryGetProbeAnchorsJson(processContext, out var rawAnchors))
+        {
+            return;
+        }
+
+        try
+        {
+            if (JsonNode.Parse(rawAnchors) is JsonObject parsedAnchors)
+            {
+                AppendNonEmptyAnchorValues(parsedAnchors, anchors);
+            }
+        }
+        catch
+        {
+            // Keep seeded defaults when metadata parsing fails.
+        }
+    }
+
+    private static bool TryGetProbeAnchorsJson(ProcessMetadata processContext, out string rawAnchors)
+    {
+        rawAnchors = string.Empty;
+        if (processContext.Metadata is null ||
+            !processContext.Metadata.TryGetValue(ProbeResolvedAnchorsMetadataKey, out var candidate) ||
+            string.IsNullOrWhiteSpace(candidate))
+        {
+            return false;
+        }
+
+        rawAnchors = candidate;
+        return true;
+    }
+
+    private static void AppendNonEmptyAnchorValues(JsonObject sourceAnchors, JsonObject destinationAnchors)
+    {
+        foreach (var kv in sourceAnchors)
+        {
+            var normalized = kv.Value?.GetValue<string>();
+            if (!string.IsNullOrWhiteSpace(normalized))
+            {
+                destinationAnchors[kv.Key] = normalized;
+            }
+        }
+    }
+
+    private static bool ShouldSeedProbeDefaults(string profileId)
+    {
+        if (string.IsNullOrWhiteSpace(profileId))
+        {
+            return false;
+        }
+
+        return profileId.Equals("base_swfoc", StringComparison.OrdinalIgnoreCase) ||
+               profileId.Equals("base_sweaw", StringComparison.OrdinalIgnoreCase) ||
+               profileId.StartsWith("aotr_", StringComparison.OrdinalIgnoreCase) ||
+               profileId.StartsWith("roe_", StringComparison.OrdinalIgnoreCase);
     }
 
     private static CapabilityReport CreateProbeFailureReport(string profileId, ExtenderResult result)

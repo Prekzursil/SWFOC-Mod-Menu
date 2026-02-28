@@ -302,6 +302,25 @@ function Get-RuntimeEvidence {
     }
 }
 
+function Get-JsonMemberValue {
+    param(
+        [Parameter(Mandatory = $false)][object]$Object,
+        [Parameter(Mandatory = $true)][string[]]$Names
+    )
+
+    if ($null -eq $Object) {
+        return $null
+    }
+
+    foreach ($name in $Names) {
+        if ($null -ne $Object.PSObject.Properties[$name]) {
+            return $Object.$name
+        }
+    }
+
+    return $null
+}
+
 function Get-ActionStatusDiagnostics {
     param([string]$RunDirectoryPath)
 
@@ -331,25 +350,37 @@ function Get-ActionStatusDiagnostics {
 
         $entries = New-Object System.Collections.Generic.List[object]
         foreach ($entry in @($rawDiagnostics.entries)) {
-            $entries.Add([ordered]@{
-                profileId = [string]$entry.profileId
-                actionId = [string]$entry.actionId
-                outcome = [string]$entry.outcome
-                backendRoute = if ([string]::IsNullOrWhiteSpace([string]$entry.backendRoute)) { $null } else { [string]$entry.backendRoute }
-                routeReasonCode = if ([string]::IsNullOrWhiteSpace([string]$entry.routeReasonCode)) { $null } else { [string]$entry.routeReasonCode }
-                capabilityProbeReasonCode = if ([string]::IsNullOrWhiteSpace([string]$entry.capabilityProbeReasonCode)) { $null } else { [string]$entry.capabilityProbeReasonCode }
-                hybridExecution = if ($null -eq $entry.hybridExecution) { $null } else { [bool]$entry.hybridExecution }
-                hasFallbackMarker = [bool]$entry.hasFallbackMarker
-                message = [string]$entry.message
-                skipReasonCode = if ([string]::IsNullOrWhiteSpace([string]$entry.skipReasonCode)) { $null } else { [string]$entry.skipReasonCode }
+            $profileId = Get-JsonMemberValue -Object $entry -Names @("profileId", "ProfileId")
+            $actionId = Get-JsonMemberValue -Object $entry -Names @("actionId", "ActionId")
+            $outcome = Get-JsonMemberValue -Object $entry -Names @("outcome", "Outcome")
+            $backendRouteRaw = Get-JsonMemberValue -Object $entry -Names @("backendRoute", "BackendRoute")
+            $routeReasonCodeRaw = Get-JsonMemberValue -Object $entry -Names @("routeReasonCode", "RouteReasonCode")
+            $capabilityProbeReasonCodeRaw = Get-JsonMemberValue -Object $entry -Names @("capabilityProbeReasonCode", "CapabilityProbeReasonCode")
+            $hybridExecutionRaw = Get-JsonMemberValue -Object $entry -Names @("hybridExecution", "HybridExecution")
+            $hasFallbackMarkerRaw = Get-JsonMemberValue -Object $entry -Names @("hasFallbackMarker", "HasFallbackMarker")
+            $messageRaw = Get-JsonMemberValue -Object $entry -Names @("message", "Message")
+            $skipReasonCodeRaw = Get-JsonMemberValue -Object $entry -Names @("skipReasonCode", "SkipReasonCode")
+
+            $entries.Add([PSCustomObject]@{
+                profileId = [string]$profileId
+                actionId = [string]$actionId
+                outcome = [string]$outcome
+                backendRoute = if ([string]::IsNullOrWhiteSpace([string]$backendRouteRaw)) { $null } else { [string]$backendRouteRaw }
+                routeReasonCode = if ([string]::IsNullOrWhiteSpace([string]$routeReasonCodeRaw)) { $null } else { [string]$routeReasonCodeRaw }
+                capabilityProbeReasonCode = if ([string]::IsNullOrWhiteSpace([string]$capabilityProbeReasonCodeRaw)) { $null } else { [string]$capabilityProbeReasonCodeRaw }
+                hybridExecution = if ($null -eq $hybridExecutionRaw) { $null } else { [bool]$hybridExecutionRaw }
+                hasFallbackMarker = if ($null -eq $hasFallbackMarkerRaw) { $false } else { [bool]$hasFallbackMarkerRaw }
+                message = [string]$messageRaw
+                skipReasonCode = if ([string]::IsNullOrWhiteSpace([string]$skipReasonCodeRaw)) { $null } else { [string]$skipReasonCodeRaw }
             })
         }
 
+        $entryArray = @($entries.ToArray())
         $derivedSummary = [ordered]@{
-            total = @($entries).Count
-            passed = @($entries | Where-Object { $_.outcome -eq "Passed" }).Count
-            failed = @($entries | Where-Object { $_.outcome -eq "Failed" }).Count
-            skipped = @($entries | Where-Object { $_.outcome -eq "Skipped" }).Count
+            total = @($entryArray).Count
+            passed = @($entryArray | Where-Object { $_.outcome -eq "Passed" }).Count
+            failed = @($entryArray | Where-Object { $_.outcome -eq "Failed" }).Count
+            skipped = @($entryArray | Where-Object { $_.outcome -eq "Skipped" }).Count
         }
 
         $rawSummary = $rawDiagnostics.summary
@@ -364,7 +395,7 @@ function Get-ActionStatusDiagnostics {
             status = if ([string]::IsNullOrWhiteSpace([string]$rawDiagnostics.status)) { "captured" } else { [string]$rawDiagnostics.status }
             source = if ([string]::IsNullOrWhiteSpace([string]$rawDiagnostics.source)) { "live-promoted-action-matrix.json" } else { [string]$rawDiagnostics.source }
             summary = $summary
-            entries = @($entries)
+            entries = $entryArray
         }
     }
     catch {
@@ -693,14 +724,19 @@ $liveRows = $liveTests | ForEach-Object {
     "| {0} | {1} | {2}/{3}/{4} | {5} | {6} |" -f $_.name, $_.outcome, $_.passed, $_.failed, $_.skipped, $_.trxPath, ([string]$_.message).Replace("|", "/")
 }
 $actionStatusRows = @($actionStatusDiagnostics.entries | ForEach-Object {
+    $backendRoute = if ($null -eq $_.backendRoute) { "n/a" } else { [string]$_.backendRoute }
+    $routeReasonCode = if ($null -eq $_.routeReasonCode) { "n/a" } else { [string]$_.routeReasonCode }
+    $capabilityProbeReasonCode = if ($null -eq $_.capabilityProbeReasonCode) { "n/a" } else { [string]$_.capabilityProbeReasonCode }
+    $hybridExecution = if ($null -eq $_.hybridExecution) { "n/a" } else { [string]$_.hybridExecution }
+
     "| {0} | {1} | {2} | {3} | {4} | {5} | {6} | {7} | {8} |" -f `
         ([string]$_.profileId), `
         ([string]$_.actionId), `
         ([string]$_.outcome), `
-        ([string](if ($null -eq $_.backendRoute) { "n/a" } else { $_.backendRoute })), `
-        ([string](if ($null -eq $_.routeReasonCode) { "n/a" } else { $_.routeReasonCode })), `
-        ([string](if ($null -eq $_.capabilityProbeReasonCode) { "n/a" } else { $_.capabilityProbeReasonCode })), `
-        ([string](if ($null -eq $_.hybridExecution) { "n/a" } else { $_.hybridExecution })), `
+        $backendRoute, `
+        $routeReasonCode, `
+        $capabilityProbeReasonCode, `
+        $hybridExecution, `
         ([string]$_.hasFallbackMarker), `
         (([string]$_.message).Replace("|", "/"))
 })
