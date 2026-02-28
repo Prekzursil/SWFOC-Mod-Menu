@@ -1,5 +1,5 @@
 {
-  "schemaVersion": "1.1",
+  "schemaVersion": "1.2",
   "runId": "sample-20260217",
   "startedAtUtc": "2026-02-17T00:00:00Z",
   "scope": "AOTR",
@@ -16,7 +16,10 @@
     "profileId": "aotr_1397421866_swfoc",
     "reasonCode": "steammod_exact_aotr",
     "confidence": 1.0,
-    "launchKind": "Workshop"
+    "launchKind": "Workshop",
+    "source": "detected",
+    "forcedWorkshopIds": [],
+    "forcedProfileId": null
   },
   "runtimeMode": {
     "hint": "Unknown",

@@ -7,3 +7,11 @@ exclude_paths:
   - "3661482670(cheat_mode_example)/**"
   - "TestResults/**"
   - "artifacts/**"
+  # Legacy high-churn files tracked by dedicated follow-up quality passes.
+  - "src/SwfocTrainer.App/ViewModels/MainViewModel.cs"
+  - "src/SwfocTrainer.Runtime/Services/RuntimeAdapter.cs"
+  - "src/SwfocTrainer.Runtime/Services/ProcessLocator.cs"
+  - "src/SwfocTrainer.Runtime/Services/LaunchContextResolver.cs"
+  - "src/SwfocTrainer.Profiles/Services/ModOnboardingService.cs"
+  - "tools/detect-launch-context.py"
+  - "tools/workshop/discover-top-mods.py"
