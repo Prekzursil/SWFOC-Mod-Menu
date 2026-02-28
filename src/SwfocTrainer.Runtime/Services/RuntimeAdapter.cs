@@ -1347,8 +1347,13 @@ public sealed class RuntimeAdapter : IRuntimeAdapter
         return !string.IsNullOrWhiteSpace(value);
     }
 
-    private static bool IsPromotedExtenderAction(string actionId)
+    private static bool IsPromotedExtenderAction(string actionId, ExecutionKind executionKind)
     {
+        if (executionKind != ExecutionKind.Sdk)
+        {
+            return false;
+        }
+
         return !string.IsNullOrWhiteSpace(actionId) &&
                PromotedExtenderActionIds.Contains(actionId);
     }
@@ -1541,7 +1546,7 @@ public sealed class RuntimeAdapter : IRuntimeAdapter
     {
         return !routeDecision.Allowed &&
                routeDecision.Backend == ExecutionBackendKind.Extender &&
-               IsPromotedExtenderAction(request.Action.Id) &&
+               IsPromotedExtenderAction(request.Action.Id, request.Action.ExecutionKind) &&
                IsMutatingActionId(request.Action.Id);
     }
 
@@ -1630,7 +1635,7 @@ public sealed class RuntimeAdapter : IRuntimeAdapter
         var anchors = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
         MergeAnchorsFromRequestContext(request, anchors);
         TryAddPayloadSymbolAnchor(request.Payload, anchors);
-        AddPromotedActionAnchors(request.Action.Id, anchors);
+        AddPromotedActionAnchors(request.Action.Id, request.Action.ExecutionKind, anchors);
         AddActiveHookAnchors(anchors);
         return anchors;
     }
@@ -1657,9 +1662,9 @@ public sealed class RuntimeAdapter : IRuntimeAdapter
         }
     }
 
-    private void AddPromotedActionAnchors(string actionId, IDictionary<string, string> anchors)
+    private void AddPromotedActionAnchors(string actionId, ExecutionKind executionKind, IDictionary<string, string> anchors)
     {
-        if (!IsPromotedExtenderAction(actionId))
+        if (!IsPromotedExtenderAction(actionId, executionKind))
         {
             return;
         }

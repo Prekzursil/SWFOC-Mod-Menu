@@ -9,11 +9,11 @@ namespace SwfocTrainer.Tests.Runtime;
 public sealed class BackendRouterTests
 {
     [Theory]
-    [InlineData("freeze_timer", ExecutionKind.Memory)]
-    [InlineData("toggle_fog_reveal", ExecutionKind.Memory)]
-    [InlineData("toggle_ai", ExecutionKind.Memory)]
-    [InlineData("set_unit_cap", ExecutionKind.CodePatch)]
-    [InlineData("toggle_instant_build_patch", ExecutionKind.CodePatch)]
+    [InlineData("freeze_timer", ExecutionKind.Sdk)]
+    [InlineData("toggle_fog_reveal", ExecutionKind.Sdk)]
+    [InlineData("toggle_ai", ExecutionKind.Sdk)]
+    [InlineData("set_unit_cap", ExecutionKind.Sdk)]
+    [InlineData("toggle_instant_build_patch", ExecutionKind.Sdk)]
     public void Resolve_ShouldPromoteHybridActions_ToExtender_WhenCapabilityIsAvailable(
         string actionId,
         ExecutionKind executionKind)
@@ -61,11 +61,11 @@ public sealed class BackendRouterTests
     }
 
     [Theory]
-    [InlineData("freeze_timer", ExecutionKind.Memory)]
-    [InlineData("toggle_fog_reveal", ExecutionKind.Memory)]
-    [InlineData("toggle_ai", ExecutionKind.Memory)]
-    [InlineData("set_unit_cap", ExecutionKind.CodePatch)]
-    [InlineData("toggle_instant_build_patch", ExecutionKind.CodePatch)]
+    [InlineData("freeze_timer", ExecutionKind.Sdk)]
+    [InlineData("toggle_fog_reveal", ExecutionKind.Sdk)]
+    [InlineData("toggle_ai", ExecutionKind.Sdk)]
+    [InlineData("set_unit_cap", ExecutionKind.Sdk)]
+    [InlineData("toggle_instant_build_patch", ExecutionKind.Sdk)]
     public void Resolve_ShouldBlockHybridActions_WhenCapabilityIsMissing(
         string actionId,
         ExecutionKind executionKind)
@@ -89,11 +89,11 @@ public sealed class BackendRouterTests
     }
 
     [Theory]
-    [InlineData("freeze_timer", ExecutionKind.Memory)]
-    [InlineData("toggle_fog_reveal", ExecutionKind.Memory)]
-    [InlineData("toggle_ai", ExecutionKind.Memory)]
-    [InlineData("set_unit_cap", ExecutionKind.CodePatch)]
-    [InlineData("toggle_instant_build_patch", ExecutionKind.CodePatch)]
+    [InlineData("freeze_timer", ExecutionKind.Sdk)]
+    [InlineData("toggle_fog_reveal", ExecutionKind.Sdk)]
+    [InlineData("toggle_ai", ExecutionKind.Sdk)]
+    [InlineData("set_unit_cap", ExecutionKind.Sdk)]
+    [InlineData("toggle_instant_build_patch", ExecutionKind.Sdk)]
     public void Resolve_ShouldFailClosedForPromotedActions_WhenCapabilityIsUnverified(
         string actionId,
         ExecutionKind executionKind)
@@ -237,6 +237,23 @@ public sealed class BackendRouterTests
 
         decision.Allowed.Should().BeTrue();
         decision.Backend.Should().Be(ExecutionBackendKind.Memory);
+    }
+
+    [Fact]
+    public void Resolve_ShouldPreserveFoCMemoryIntent_ForPromotedActionIdWhenExecutionIsNotSdk()
+    {
+        var router = new BackendRouter();
+        var request = BuildRequest("freeze_timer", ExecutionKind.Memory);
+        var profile = BuildProfile(backendPreference: "auto");
+        var process = BuildProcess();
+        var report = CapabilityReport.Unknown(profile.Id, RuntimeReasonCode.CAPABILITY_UNKNOWN);
+
+        var decision = router.Resolve(request, profile, process, report);
+
+        decision.Allowed.Should().BeTrue();
+        decision.Backend.Should().Be(ExecutionBackendKind.Memory);
+        decision.Diagnostics.Should().ContainKey("promotedExtenderAction");
+        decision.Diagnostics!["promotedExtenderAction"].Should().Be(false);
     }
 
     [Fact]

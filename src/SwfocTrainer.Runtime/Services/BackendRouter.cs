@@ -59,7 +59,7 @@ public sealed class BackendRouter : IBackendRouter
         ProcessMetadata process,
         CapabilityReport capabilityReport)
     {
-        var isPromotedExtenderAction = IsPromotedExtenderAction(request.Action.Id, profile, process);
+        var isPromotedExtenderAction = IsPromotedExtenderAction(request.Action.Id, request.Action.ExecutionKind, profile, process);
         var defaultBackend = MapDefaultBackend(request.Action.ExecutionKind, isPromotedExtenderAction);
         var preferredBackend = ResolvePreferredBackend(profile.BackendPreference, defaultBackend, isPromotedExtenderAction);
         var isMutating = IsMutating(request.Action.Id);
@@ -395,9 +395,15 @@ public sealed class BackendRouter : IBackendRouter
 
     private static bool IsPromotedExtenderAction(
         string actionId,
+        ExecutionKind executionKind,
         TrainerProfile profile,
         ProcessMetadata process)
     {
+        if (executionKind != ExecutionKind.Sdk)
+        {
+            return false;
+        }
+
         return IsFoCContext(profile, process) &&
                !string.IsNullOrWhiteSpace(actionId) &&
                PromotedExtenderActionIds.Contains(actionId);
