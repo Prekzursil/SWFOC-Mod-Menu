@@ -78,6 +78,7 @@ public abstract class MainViewModelCoreStateBase : INotifyPropertyChanged
     protected string _selectedActionId = string.Empty;
     protected string _payloadJson = MainViewModelDefaults.DefaultPayloadJsonTemplate;
     protected RuntimeMode _runtimeMode = RuntimeMode.Unknown;
+    protected string _runtimeModeOverride = MainViewModelRuntimeModeOverrideHelpers.ModeOverrideAuto;
     protected string _savePath = string.Empty;
     protected string _saveNodePath = string.Empty;
     protected string _saveEditValue = string.Empty;

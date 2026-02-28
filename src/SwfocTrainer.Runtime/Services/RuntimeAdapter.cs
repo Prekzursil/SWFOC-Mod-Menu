@@ -59,6 +59,12 @@ public sealed class RuntimeAdapter : IRuntimeAdapter
     private const string DiagnosticKeyState = "state";
     private const string DiagnosticKeyExpertOverrideEnabled = "expertOverrideEnabled";
     private const string DiagnosticKeyOverrideReason = "overrideReason";
+    private const string DiagnosticKeyRuntimeModeHint = "runtimeModeHint";
+    private const string DiagnosticKeyRuntimeModeProbe = "runtimeModeProbe";
+    private const string DiagnosticKeyRuntimeModeEffective = "runtimeModeEffective";
+    private const string DiagnosticKeyRuntimeModeEffectiveSource = "runtimeModeEffectiveSource";
+    private const string RuntimeModeSourceAuto = "auto";
+    private const string RuntimeModeSourceManualOverride = "manual_override";
     private const string DiagnosticKeyPanicDisableState = "panicDisableState";
     private const string PanicDisableStateActive = "active";
     private const string PanicDisableStateInactive = "inactive";
@@ -1012,46 +1018,118 @@ public sealed class RuntimeAdapter : IRuntimeAdapter
     public async Task<ActionExecutionResult> ExecuteAsync(ActionExecutionRequest request, CancellationToken cancellationToken)
     {
         EnsureAttached();
-        if (TryCreateDependencyDisabledResult(request, out var dependencyDisabled))
+        var modeResolution = ResolveEffectiveMode(request);
+        var effectiveRequest = modeResolution.Request;
+        if (TryCreateDependencyDisabledResult(effectiveRequest, out var dependencyDisabled))
         {
-            return dependencyDisabled;
+            return ApplyRuntimeModeDiagnostics(dependencyDisabled, modeResolution.Diagnostics);
         }
 
         var attachedProfile = _attachedProfile
-            ?? await _profileRepository.ResolveInheritedProfileAsync(request.ProfileId, cancellationToken);
+            ?? await _profileRepository.ResolveInheritedProfileAsync(effectiveRequest.ProfileId, cancellationToken);
         var capabilityReport = await ProbeCapabilitiesAsync(attachedProfile, cancellationToken);
-        var routeDecision = _backendRouter.Resolve(request, attachedProfile, CurrentSession!.Process, capabilityReport);
+        var routeDecision = _backendRouter.Resolve(effectiveRequest, attachedProfile, CurrentSession!.Process, capabilityReport);
         if (!routeDecision.Allowed)
         {
             var overrideResult = await TryExecuteExpertMutationOverrideAsync(
-                request,
+                effectiveRequest,
                 routeDecision,
                 capabilityReport,
                 cancellationToken);
             if (overrideResult is not null)
             {
-                RecordActionTelemetry(request, overrideResult);
-                return overrideResult;
+                var overrideWithModeDiagnostics = ApplyRuntimeModeDiagnostics(overrideResult, modeResolution.Diagnostics);
+                RecordActionTelemetry(effectiveRequest, overrideWithModeDiagnostics);
+                return overrideWithModeDiagnostics;
             }
 
-            var blocked = CreateBlockedRouteResult(routeDecision, capabilityReport);
-            RecordActionTelemetry(request, blocked);
+            var blocked = ApplyRuntimeModeDiagnostics(CreateBlockedRouteResult(routeDecision, capabilityReport), modeResolution.Diagnostics);
+            RecordActionTelemetry(effectiveRequest, blocked);
             return blocked;
         }
 
         try
         {
-            var result = await ExecuteByRouteAsync(routeDecision, request, capabilityReport, cancellationToken);
+            var result = await ExecuteByRouteAsync(routeDecision, effectiveRequest, capabilityReport, cancellationToken);
             result = ApplyBackendRouteDiagnostics(result, routeDecision, capabilityReport);
-            RecordActionTelemetry(request, result);
+            result = ApplyRuntimeModeDiagnostics(result, modeResolution.Diagnostics);
+            RecordActionTelemetry(effectiveRequest, result);
             return result;
         }
         catch (Exception ex)
         {
-            var failed = CreateExecutionExceptionResult(request, routeDecision, capabilityReport, ex);
-            RecordActionTelemetry(request, failed);
+            var failed = ApplyRuntimeModeDiagnostics(CreateExecutionExceptionResult(effectiveRequest, routeDecision, capabilityReport, ex), modeResolution.Diagnostics);
+            RecordActionTelemetry(effectiveRequest, failed);
             return failed;
         }
+    }
+
+    private (ActionExecutionRequest Request, IReadOnlyDictionary<string, object?> Diagnostics) ResolveEffectiveMode(ActionExecutionRequest request)
+    {
+        var hintMode = request.RuntimeMode;
+        var probeMode = CurrentSession?.Process.Mode ?? RuntimeMode.Unknown;
+        var overrideMode = ResolveManualOverrideMode(request.Context);
+        var effectiveMode = overrideMode ?? hintMode;
+        if (effectiveMode == RuntimeMode.Unknown)
+        {
+            effectiveMode = probeMode;
+        }
+
+        var source = overrideMode.HasValue ? RuntimeModeSourceManualOverride : RuntimeModeSourceAuto;
+        var context = request.Context is null
+            ? new Dictionary<string, object?>(StringComparer.OrdinalIgnoreCase)
+            : new Dictionary<string, object?>(request.Context, StringComparer.OrdinalIgnoreCase);
+        context[DiagnosticKeyRuntimeModeHint] = hintMode.ToString();
+        context[DiagnosticKeyRuntimeModeProbe] = probeMode.ToString();
+        context[DiagnosticKeyRuntimeModeEffective] = effectiveMode.ToString();
+        context[DiagnosticKeyRuntimeModeEffectiveSource] = source;
+
+        var effectiveRequest = request with { RuntimeMode = effectiveMode, Context = context };
+        var diagnostics = new Dictionary<string, object?>(StringComparer.OrdinalIgnoreCase)
+        {
+            [DiagnosticKeyRuntimeModeHint] = hintMode.ToString(),
+            [DiagnosticKeyRuntimeModeProbe] = probeMode.ToString(),
+            [DiagnosticKeyRuntimeModeEffective] = effectiveMode.ToString(),
+            [DiagnosticKeyRuntimeModeEffectiveSource] = source
+        };
+
+        return (effectiveRequest, diagnostics);
+    }
+
+    private static RuntimeMode? ResolveManualOverrideMode(IReadOnlyDictionary<string, object?>? context)
+    {
+        if (context is null || !context.TryGetValue("runtimeModeOverride", out var raw) || raw is null)
+        {
+            return null;
+        }
+
+        var value = raw as string ?? raw.ToString();
+        if (string.IsNullOrWhiteSpace(value) || value.Equals("Auto", StringComparison.OrdinalIgnoreCase))
+        {
+            return null;
+        }
+
+        if (value.Equals("Galactic", StringComparison.OrdinalIgnoreCase))
+        {
+            return RuntimeMode.Galactic;
+        }
+
+        if (value.Equals("Tactical", StringComparison.OrdinalIgnoreCase))
+        {
+            return RuntimeMode.Tactical;
+        }
+
+        return null;
+    }
+
+    private static ActionExecutionResult ApplyRuntimeModeDiagnostics(
+        ActionExecutionResult result,
+        IReadOnlyDictionary<string, object?> modeDiagnostics)
+    {
+        return result with
+        {
+            Diagnostics = MergeDiagnostics(result.Diagnostics, modeDiagnostics)
+        };
     }
 
     private bool TryCreateDependencyDisabledResult(

@@ -15,6 +15,7 @@ public sealed class MainViewModel : MainViewModelSaveOpsBase
         : base(dependencies)
     {
         (Profiles, Actions, CatalogSummary, Updates, SaveDiffPreview, Hotkeys, SaveFields, FilteredSaveFields, SavePatchOperations, SavePatchCompatibility, ActionReliability, SelectedUnitTransactions, SpawnPresets, LiveOpsDiagnostics, ModCompatibilityRows, ActiveFreezes) = MainViewModelFactories.CreateCollections();
+        RuntimeModeOverride = MainViewModelRuntimeModeOverrideHelpers.Load();
 
         var commandContexts = CreateCommandContexts();
         (LoadProfilesCommand, AttachCommand, DetachCommand, LoadActionsCommand, ExecuteActionCommand, LoadCatalogCommand, DeployHelperCommand, VerifyHelperCommand, CheckUpdatesCommand, InstallUpdateCommand, RollbackProfileUpdateCommand) = MainViewModelFactories.CreateCoreCommands(commandContexts.Core);
@@ -468,7 +469,7 @@ public sealed class MainViewModel : MainViewModelSaveOpsBase
                 SelectedProfileId,
                 SelectedActionId,
                 payloadNode,
-                RuntimeMode,
+                EffectiveRuntimeMode,
                 BuildActionContext(SelectedActionId));
             Status = result.Succeeded
                 ? $"Action succeeded: {result.Message}{MainViewModelDiagnostics.BuildDiagnosticsStatusSuffix(result)}"

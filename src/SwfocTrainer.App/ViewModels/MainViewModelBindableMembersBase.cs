@@ -68,8 +68,32 @@ public abstract class MainViewModelBindableMembersBase : MainViewModelCoreStateB
     public RuntimeMode RuntimeMode
     {
         get => _runtimeMode;
-        set => SetField(_runtimeMode, value, newValue => _runtimeMode = newValue);
+        set
+        {
+            if (SetField(_runtimeMode, value, newValue => _runtimeMode = newValue))
+            {
+                OnPropertyChanged(nameof(EffectiveRuntimeMode));
+            }
+        }
     }
+
+    public string RuntimeModeOverride
+    {
+        get => _runtimeModeOverride;
+        set
+        {
+            var normalized = MainViewModelRuntimeModeOverrideHelpers.Normalize(value);
+            if (!SetField(_runtimeModeOverride, normalized, newValue => _runtimeModeOverride = newValue))
+            {
+                return;
+            }
+
+            MainViewModelRuntimeModeOverrideHelpers.Save(normalized);
+            OnPropertyChanged(nameof(EffectiveRuntimeMode));
+        }
+    }
+
+    public RuntimeMode EffectiveRuntimeMode => MainViewModelRuntimeModeOverrideHelpers.ResolveEffectiveRuntimeMode(RuntimeMode, RuntimeModeOverride);
 
     public string SavePath
     {
@@ -132,6 +156,9 @@ public abstract class MainViewModelBindableMembersBase : MainViewModelCoreStateB
     }
 
     public bool CanWorkWithProfile => !string.IsNullOrWhiteSpace(SelectedProfileId);
+
+    public IReadOnlyList<string> RuntimeModeOverrideOptions => MainViewModelRuntimeModeOverrideHelpers.ModeOverrideOptions;
+
 
     public HotkeyBindingItem? SelectedHotkey
     {
