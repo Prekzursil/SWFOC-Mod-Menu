@@ -32,7 +32,8 @@ public sealed record LaunchContext(
     string? ModPathRaw,
     string? ModPathNormalized,
     string DetectedVia,
-    ProfileRecommendation Recommendation);
+    ProfileRecommendation Recommendation,
+    string Source = "detected");
 
 public sealed record DependencyValidationResult(
     DependencyValidationStatus Status,

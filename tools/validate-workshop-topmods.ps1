@@ -12,20 +12,20 @@ $ErrorActionPreference = "Stop"
 $errors = New-ValidationErrorList
 
 if (-not (Test-Path -Path $Path)) {
-    Add-ValidationError -Errors $errors -Message "workshop top-mods file not found: $Path"
-    Write-ValidationResult -Errors $errors -Label "workshop top-mods" -Path $Path
+    Add-ValidationError -Errors $errors -Message "workshop topmods file not found: $Path"
+    Write-ValidationResult -Errors $errors -Label "workshop topmods" -Path $Path
 }
 
 if (-not (Test-Path -Path $SchemaPath)) {
     Add-ValidationError -Errors $errors -Message "schema file not found: $SchemaPath"
-    Write-ValidationResult -Errors $errors -Label "workshop top-mods" -Path $Path
+    Write-ValidationResult -Errors $errors -Label "workshop topmods" -Path $Path
 }
 
 $payload = Get-Content -Raw -Path $Path | ConvertFrom-Json
 $schema = Get-Content -Raw -Path $SchemaPath | ConvertFrom-Json
 
 foreach ($required in $schema.required) {
-    Confirm-ValidationField -Object $payload -Field $required -Errors $errors
+    Confirm-ValidationField -Object $payload -Field ([string]$required) -Errors $errors
 }
 
 if ($Strict) {
@@ -33,61 +33,71 @@ if ($Strict) {
         Add-ValidationError -Errors $errors -Message "schemaVersion must be 1.0"
     }
 
-    if ([int]$payload.appId -ne 32470) {
-        Add-ValidationError -Errors $errors -Message "appId must be 32470 for SWFOC discovery payload"
+    $appId = [string]$payload.appId
+    if ($appId -notmatch "^[0-9]+$") {
+        Add-ValidationError -Errors $errors -Message "appId must be numeric"
     }
 
-    if (@($payload.sources).Count -lt 1) {
-        Add-ValidationError -Errors $errors -Message "sources must include at least one retrieval URL"
+    $sources = @($payload.sources)
+    if ($sources.Count -eq 0) {
+        Add-ValidationError -Errors $errors -Message "sources must include at least one source"
     }
 
     $mods = @($payload.topMods)
+    if ($mods.Count -eq 0) {
+        Add-ValidationError -Errors $errors -Message "topMods must contain at least one mod"
+    }
+
+    $requiredModFields = @($schema.properties.topMods.items.required)
+    $allowedRiskLevels = @("low", "medium", "high")
+    $allowedBaseProfiles = @("base_sweaw", "base_swfoc", "aotr_1397421866_swfoc", "roe_3447786229_swfoc")
+
     for ($i = 0; $i -lt $mods.Count; $i++) {
         $mod = $mods[$i]
-        foreach ($requiredField in @(
-            "workshopId",
-            "title",
-            "url",
-            "subscriptions",
-            "lifetimeSubscriptions",
-            "timeUpdated",
-            "parentDependencies",
-            "launchHints",
-            "candidateBaseProfile",
-            "confidence",
-            "riskLevel",
-            "normalizedTags")) {
-            Confirm-ValidationField -Object $mod -Field $requiredField -Errors $errors -Prefix "topMods[$i]"
+        foreach ($requiredField in $requiredModFields) {
+            Confirm-ValidationField -Object $mod -Field ([string]$requiredField) -Errors $errors -Prefix "topMods[$i]"
         }
 
-        if ([string]$mod.workshopId -notmatch "^[0-9]{4,}$") {
+        if ([string]$mod.workshopId -notmatch "^[0-9]+$") {
             Add-ValidationError -Errors $errors -Message "topMods[$i].workshopId must be numeric"
         }
 
         if ([string]$mod.url -notmatch "^https://steamcommunity\.com/sharedfiles/filedetails/\?id=[0-9]+$") {
-            Add-ValidationError -Errors $errors -Message "topMods[$i].url must be a Steam workshop details URL"
+            Add-ValidationError -Errors $errors -Message "topMods[$i].url must be a sharedfiles details URL"
+        }
+
+        if ([int]$mod.subscriptions -lt 0 -or [int]$mod.lifetimeSubscriptions -lt 0) {
+            Add-ValidationError -Errors $errors -Message "topMods[$i] subscriptions values must be non-negative"
+        }
+
+        if ([int]$mod.lifetimeSubscriptions -lt [int]$mod.subscriptions) {
+            Add-ValidationError -Errors $errors -Message "topMods[$i].lifetimeSubscriptions must be >= subscriptions"
+        }
+
+        if ($allowedRiskLevels -notcontains [string]$mod.riskLevel) {
+            Add-ValidationError -Errors $errors -Message "topMods[$i].riskLevel must be one of: $($allowedRiskLevels -join ', ')"
         }
 
         if ([double]$mod.confidence -lt 0.0 -or [double]$mod.confidence -gt 1.0) {
-            Add-ValidationError -Errors $errors -Message "topMods[$i].confidence must be within [0,1]"
+            Add-ValidationError -Errors $errors -Message "topMods[$i].confidence must be between 0 and 1"
         }
 
-        $launchHints = $mod.launchHints
-        Confirm-ValidationField -Object $launchHints -Field "steamModIds" -Errors $errors -Prefix "topMods[$i].launchHints"
-        Confirm-ValidationField -Object $launchHints -Field "modPathHints" -Errors $errors -Prefix "topMods[$i].launchHints"
+        if ($allowedBaseProfiles -notcontains [string]$mod.candidateBaseProfile) {
+            Add-ValidationError -Errors $errors -Message "topMods[$i].candidateBaseProfile must be one of: $($allowedBaseProfiles -join ', ')"
+        }
 
-        foreach ($steamModId in @($launchHints.steamModIds)) {
-            if ([string]$steamModId -notmatch "^[0-9]{4,}$") {
-                Add-ValidationError -Errors $errors -Message "topMods[$i].launchHints.steamModIds must be numeric"
+        foreach ($dep in @($mod.parentDependencies)) {
+            if ([string]$dep -notmatch "^[0-9]+$") {
+                Add-ValidationError -Errors $errors -Message "topMods[$i].parentDependencies contains non-numeric id: $dep"
             }
         }
 
-        foreach ($dependencyId in @($mod.parentDependencies)) {
-            if ([string]$dependencyId -notmatch "^[0-9]{4,}$") {
-                Add-ValidationError -Errors $errors -Message "topMods[$i].parentDependencies must be numeric"
+        foreach ($tag in @($mod.normalizedTags)) {
+            if ([string]$tag -notmatch "^[a-z0-9][a-z0-9_-]*$") {
+                Add-ValidationError -Errors $errors -Message "topMods[$i].normalizedTags contains invalid token: $tag"
             }
         }
     }
 }
 
-Write-ValidationResult -Errors $errors -Label "workshop top-mods" -Path $Path
+Write-ValidationResult -Errors $errors -Label "workshop topmods" -Path $Path

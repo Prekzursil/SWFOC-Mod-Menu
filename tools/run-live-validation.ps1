@@ -2,10 +2,11 @@ param(
     [string]$Configuration = "Release",
     [string]$ResultsDirectory = "TestResults",
     [string]$ProfileRoot = "profiles/default",
+    [string[]]$ForceWorkshopIds = @(),
+    [string]$ForceProfileId = "",
     [switch]$NoBuild,
     [string]$RunId = "",
     [ValidateSet("AOTR", "ROE", "TACTICAL", "FULL")][string]$Scope = "FULL",
-    [string]$TopModsPath = "",
     [bool]$EmitReproBundle = $true,
     [bool]$PreflightNativeHost = $true,
     [switch]$FailOnMissingArtifacts,
@@ -32,6 +33,26 @@ if (-not (Test-Path -Path $runResultsDirectory)) {
     New-Item -ItemType Directory -Path $runResultsDirectory -Force | Out-Null
 }
 $runResultsDirectory = (Resolve-Path -Path $runResultsDirectory).Path
+
+function ConvertTo-ForcedWorkshopIds {
+    param([string[]]$RawIds)
+
+    $ids = New-Object System.Collections.Generic.HashSet[string]([StringComparer]::OrdinalIgnoreCase)
+    foreach ($raw in $RawIds) {
+        if ([string]::IsNullOrWhiteSpace($raw)) {
+            continue
+        }
+
+        foreach ($token in ([string]$raw -split ",")) {
+            $value = [string]$token
+            if (-not [string]::IsNullOrWhiteSpace($value)) {
+                [void]$ids.Add($value.Trim())
+            }
+        }
+    }
+
+    return @($ids | Sort-Object)
+}
 
 function Resolve-DotnetCommand {
     $dotnet = Get-Command dotnet -ErrorAction SilentlyContinue
@@ -224,8 +245,23 @@ function Invoke-LiveTest {
 
     $previousOutputDir = $env:SWFOC_LIVE_OUTPUT_DIR
     $previousTestName = $env:SWFOC_LIVE_TEST_NAME
+    $previousForcedWorkshopIds = $env:SWFOC_FORCE_WORKSHOP_IDS
+    $previousForcedProfileId = $env:SWFOC_FORCE_PROFILE_ID
     $env:SWFOC_LIVE_OUTPUT_DIR = $runResultsDirectory
     $env:SWFOC_LIVE_TEST_NAME = $Name
+    if ([string]::IsNullOrWhiteSpace($forceWorkshopIdsCsv)) {
+        Remove-Item Env:SWFOC_FORCE_WORKSHOP_IDS -ErrorAction SilentlyContinue
+    }
+    else {
+        $env:SWFOC_FORCE_WORKSHOP_IDS = $forceWorkshopIdsCsv
+    }
+
+    if ([string]::IsNullOrWhiteSpace($forceProfileIdNormalized)) {
+        Remove-Item Env:SWFOC_FORCE_PROFILE_ID -ErrorAction SilentlyContinue
+    }
+    else {
+        $env:SWFOC_FORCE_PROFILE_ID = $forceProfileIdNormalized
+    }
 
     try {
         & $dotnetExe @dotnetArgs
@@ -243,6 +279,20 @@ function Invoke-LiveTest {
         }
         else {
             $env:SWFOC_LIVE_TEST_NAME = $previousTestName
+        }
+
+        if ($null -eq $previousForcedWorkshopIds) {
+            Remove-Item Env:SWFOC_FORCE_WORKSHOP_IDS -ErrorAction SilentlyContinue
+        }
+        else {
+            $env:SWFOC_FORCE_WORKSHOP_IDS = $previousForcedWorkshopIds
+        }
+
+        if ($null -eq $previousForcedProfileId) {
+            Remove-Item Env:SWFOC_FORCE_PROFILE_ID -ErrorAction SilentlyContinue
+        }
+        else {
+            $env:SWFOC_FORCE_PROFILE_ID = $previousForcedProfileId
         }
     }
 
@@ -331,6 +381,10 @@ function Read-TrxSummary {
         Message = if ($null -ne $messageNode) { $messageNode.InnerText } else { "" }
     }
 }
+
+$forceWorkshopIdsNormalized = @(ConvertTo-ForcedWorkshopIds -RawIds $ForceWorkshopIds)
+$forceWorkshopIdsCsv = if ($forceWorkshopIdsNormalized.Count -eq 0) { "" } else { ($forceWorkshopIdsNormalized -join ",") }
+$forceProfileIdNormalized = if ([string]::IsNullOrWhiteSpace($ForceProfileId)) { "" } else { $ForceProfileId.Trim() }
 
 $dotnetExe = Resolve-DotnetCommand
 $pythonCmd = @(Resolve-PythonCommand)
@@ -505,8 +559,9 @@ if ($EmitReproBundle) {
             -SummaryPath $summaryPath `
             -Scope $Scope `
             -ProfileRoot $ProfileRoot `
-            -StartedAtUtc $runStartedUtc `
-            -TopModsPath $TopModsPath
+            -ForceWorkshopIds $forceWorkshopIdsNormalized `
+            -ForceProfileId $forceProfileIdNormalized `
+            -StartedAtUtc $runStartedUtc
 
         $collectExitCode = if (Get-Variable -Name LASTEXITCODE -Scope Global -ErrorAction SilentlyContinue) { [int]$global:LASTEXITCODE } else { 0 }
         if ($collectExitCode -ne 0) {

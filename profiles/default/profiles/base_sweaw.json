@@ -255,6 +255,30 @@
       "cooldownMs": 200,
       "description": "Set unit cap via runtime hook (intValue = desired cap; optional enable=false restores)."
     },
+    "set_unit_cap_patch_fallback": {
+      "id": "set_unit_cap_patch_fallback",
+      "category": "Global",
+      "mode": "Unknown",
+      "executionKind": "CodePatch",
+      "payloadSchema": {
+        "required": ["intValue"]
+      },
+      "verifyReadback": false,
+      "cooldownMs": 200,
+      "description": "Fallback unit-cap patch path (profile-gated, fail-closed, optional enable=false restores)."
+    },
+    "toggle_fog_reveal_patch_fallback": {
+      "id": "toggle_fog_reveal_patch_fallback",
+      "category": "Global",
+      "mode": "Unknown",
+      "executionKind": "CodePatch",
+      "payloadSchema": {
+        "required": ["enable"]
+      },
+      "verifyReadback": false,
+      "cooldownMs": 120,
+      "description": "Fallback fog reveal patch path (profile-gated branch patch with strict byte validation)."
+    },
     "toggle_instant_build_patch": {
       "id": "toggle_instant_build_patch",
       "category": "Global",
@@ -322,7 +346,9 @@
     "helper_mod": true,
     "planet_owner_edit": true,
     "hero_respawn_control": true,
-    "multiplayer_guard": false
+    "multiplayer_guard": false,
+    "allow_fog_patch_fallback": false,
+    "allow_unit_cap_patch_fallback": false
   },
   "catalogSources": [
     {

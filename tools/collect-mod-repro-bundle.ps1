@@ -4,8 +4,9 @@ param(
     [Parameter(Mandatory = $true)][string]$SummaryPath,
     [Parameter(Mandatory = $true)][ValidateSet("AOTR", "ROE", "TACTICAL", "FULL")][string]$Scope,
     [string]$ProfileRoot = "profiles/default",
-    [string]$StartedAtUtc = "",
-    [string]$TopModsPath = ""
+    [string[]]$ForceWorkshopIds = @(),
+    [string]$ForceProfileId = "",
+    [string]$StartedAtUtc = ""
 )
 
 Set-StrictMode -Version Latest
@@ -31,6 +32,26 @@ function Resolve-PythonCommand {
     }
 
     return @()
+}
+
+function ConvertTo-ForcedWorkshopIds {
+    param([string[]]$RawIds)
+
+    $ids = New-Object System.Collections.Generic.HashSet[string]([StringComparer]::OrdinalIgnoreCase)
+    foreach ($raw in $RawIds) {
+        if ([string]::IsNullOrWhiteSpace($raw)) {
+            continue
+        }
+
+        foreach ($token in ([string]$raw -split ",")) {
+            $value = [string]$token
+            if (-not [string]::IsNullOrWhiteSpace($value)) {
+                [void]$ids.Add($value.Trim())
+            }
+        }
+    }
+
+    return @($ids | Sort-Object)
 }
 
 function Get-SteamModIdsFromCommandLine {
@@ -138,8 +159,14 @@ function Get-PreferredProcess {
 function Get-LaunchContext {
     param(
         [object]$Process,
-        [string]$ProfileRootPath
+        [string]$ProfileRootPath,
+        [string[]]$ForcedWorkshopIds,
+        [string]$ForcedProfileId
     )
+
+    $normalizedForcedWorkshopIds = @(ConvertTo-ForcedWorkshopIds -RawIds $ForcedWorkshopIds)
+    $normalizedForcedProfileId = if ([string]::IsNullOrWhiteSpace($ForcedProfileId)) { $null } else { $ForcedProfileId.Trim() }
+    $forcedSource = if ($normalizedForcedWorkshopIds.Count -gt 0 -or -not [string]::IsNullOrWhiteSpace($normalizedForcedProfileId)) { "forced" } else { "detected" }
 
     if ($null -eq $Process) {
         return [PSCustomObject]@{
@@ -147,6 +174,9 @@ function Get-LaunchContext {
             reasonCode = "no_process"
             confidence = 0.0
             launchKind = "Unknown"
+            source = $forcedSource
+            forcedWorkshopIds = $normalizedForcedWorkshopIds
+            forcedProfileId = $normalizedForcedProfileId
         }
     }
 
@@ -157,24 +187,37 @@ function Get-LaunchContext {
             reasonCode = "python_not_found"
             confidence = 0.0
             launchKind = "Unknown"
+            source = $forcedSource
+            forcedWorkshopIds = $normalizedForcedWorkshopIds
+            forcedProfileId = $normalizedForcedProfileId
         }
     }
 
-    $pythonArgs = @()
+    $commandArgs = @()
     if ($pythonCmd.Count -gt 1) {
-        $pythonArgs += $pythonCmd[1..($pythonCmd.Count - 1)]
+        $commandArgs += $pythonCmd[1..($pythonCmd.Count - 1)]
     }
-    $pythonArgs += @(
+    $commandArgs += @(
         "tools/detect-launch-context.py",
         "--command-line", $Process.commandLine,
         "--process-name", $Process.name,
         "--process-path", $Process.path,
-        "--profile-root", $ProfileRootPath,
-        "--pretty"
+        "--profile-root", $ProfileRootPath
     )
 
+    $forcedWorkshopIdsCsv = if ($normalizedForcedWorkshopIds.Count -eq 0) { "" } else { $normalizedForcedWorkshopIds -join "," }
+    if (-not [string]::IsNullOrWhiteSpace($forcedWorkshopIdsCsv)) {
+        $commandArgs += @("--force-workshop-ids", $forcedWorkshopIdsCsv)
+    }
+
+    if (-not [string]::IsNullOrWhiteSpace($ForcedProfileId)) {
+        $commandArgs += @("--force-profile-id", $normalizedForcedProfileId)
+    }
+
+    $commandArgs += "--pretty"
+
     try {
-        $output = & $pythonCmd[0] @pythonArgs 2>&1
+        $output = & $pythonCmd[0] @commandArgs 2>&1
         if ($LASTEXITCODE -ne 0) {
             throw "detect-launch-context.py exited with $LASTEXITCODE"
         }
@@ -190,6 +233,9 @@ function Get-LaunchContext {
             reasonCode = [string]$parsed.profileRecommendation.reasonCode
             confidence = [double]$parsed.profileRecommendation.confidence
             launchKind = [string]$parsed.launchContext.launchKind
+            source = if ([string]::IsNullOrWhiteSpace([string]$parsed.launchContext.source)) { "detected" } else { [string]$parsed.launchContext.source }
+            forcedWorkshopIds = @($parsed.launchContext.forcedWorkshopIds)
+            forcedProfileId = if ([string]::IsNullOrWhiteSpace([string]$parsed.launchContext.forcedProfileId)) { $null } else { [string]$parsed.launchContext.forcedProfileId }
         }
     }
     catch {
@@ -198,6 +244,9 @@ function Get-LaunchContext {
             reasonCode = "launch_context_detection_failed"
             confidence = 0.0
             launchKind = "Unknown"
+            source = $forcedSource
+            forcedWorkshopIds = $normalizedForcedWorkshopIds
+            forcedProfileId = $normalizedForcedProfileId
         }
     }
 }
@@ -331,134 +380,6 @@ function Get-ActionStatusDiagnostics {
             entries = @()
             error = $_.Exception.Message
         }
-    }
-}
-
-function Resolve-TopModsPath {
-    param(
-        [string]$ExplicitPath,
-        [string]$RunDirectoryPath
-    )
-
-    if (-not [string]::IsNullOrWhiteSpace($ExplicitPath)) {
-        return $ExplicitPath
-    }
-
-    $defaultPath = Join-Path $RunDirectoryPath "top-mods.json"
-    if (Test-Path -Path $defaultPath) {
-        return $defaultPath
-    }
-
-    return ""
-}
-
-function Get-TopModActionStatusEntries {
-    param(
-        [string]$TopModsJsonPath,
-        [object[]]$ProcessSnapshot,
-        [int]$MaxMods = 10
-    )
-
-    if ([string]::IsNullOrWhiteSpace($TopModsJsonPath) -or -not (Test-Path -Path $TopModsJsonPath)) {
-        return @()
-    }
-
-    try {
-        $topModsPayload = Get-Content -Raw -Path $TopModsJsonPath | ConvertFrom-Json
-    }
-    catch {
-        return @()
-    }
-
-    $topMods = @($topModsPayload.topMods | Select-Object -First $MaxMods)
-    if ($topMods.Count -eq 0) {
-        return @()
-    }
-
-    $promotedActions = @(
-        "freeze_timer",
-        "toggle_fog_reveal",
-        "toggle_ai",
-        "set_unit_cap",
-        "toggle_instant_build_patch"
-    )
-
-    $entries = New-Object System.Collections.Generic.List[object]
-    foreach ($mod in $topMods) {
-        $workshopId = [string]$mod.workshopId
-        if ([string]::IsNullOrWhiteSpace($workshopId)) {
-            continue
-        }
-
-        $contextDetected = @($ProcessSnapshot | Where-Object {
-                @($_.steamModIds) -contains $workshopId -or ([string]$_.commandLine).Contains($workshopId)
-            }).Count -gt 0
-
-        $skipReasonCode = if ($contextDetected) {
-            "top_mod_context_detected_not_executed"
-        }
-        else {
-            "top_mod_context_not_detected"
-        }
-
-        $message = if ($contextDetected) {
-            "Top-mod context detected but promoted action matrix currently executes only default shipped profile set."
-        }
-        else {
-            "Top-mod launch context not detected in running processes for this run."
-        }
-
-        $profileId = "workshop_{0}_auto" -f $workshopId
-        foreach ($actionId in $promotedActions) {
-            $entries.Add([ordered]@{
-                    profileId = $profileId
-                    actionId = $actionId
-                    outcome = "Skipped"
-                    backendRoute = $null
-                    routeReasonCode = $null
-                    capabilityProbeReasonCode = $null
-                    hybridExecution = $null
-                    hasFallbackMarker = $false
-                    message = $message
-                    skipReasonCode = $skipReasonCode
-                })
-        }
-    }
-
-    return @($entries)
-}
-
-function Merge-ActionStatusDiagnostics {
-    param(
-        [hashtable]$BaseDiagnostics,
-        [object[]]$AdditionalEntries
-    )
-
-    if ($AdditionalEntries.Count -eq 0) {
-        return $BaseDiagnostics
-    }
-
-    $entries = New-Object System.Collections.Generic.List[object]
-    foreach ($entry in @($BaseDiagnostics.entries)) {
-        $entries.Add($entry)
-    }
-
-    foreach ($entry in $AdditionalEntries) {
-        $entries.Add($entry)
-    }
-
-    $summary = [ordered]@{
-        total = @($entries).Count
-        passed = @($entries | Where-Object { $_.outcome -eq "Passed" }).Count
-        failed = @($entries | Where-Object { $_.outcome -eq "Failed" }).Count
-        skipped = @($entries | Where-Object { $_.outcome -eq "Skipped" }).Count
-    }
-
-    return [ordered]@{
-        status = "captured"
-        source = [string]$BaseDiagnostics.source
-        summary = $summary
-        entries = @($entries)
     }
 }
 
@@ -625,6 +546,8 @@ if (-not (Test-Path -Path $RunDirectory)) {
 }
 
 $summaryRaw = Get-Content -Raw -Path $SummaryPath | ConvertFrom-Json
+$forceWorkshopIdsNormalized = @(ConvertTo-ForcedWorkshopIds -RawIds $ForceWorkshopIds)
+$forceProfileIdNormalized = if ([string]::IsNullOrWhiteSpace($ForceProfileId)) { "" } else { $ForceProfileId.Trim() }
 $summaryEntries = @($summaryRaw)
 $liveTests = @()
 foreach ($test in (ConvertTo-LiveTestSummary -SummaryEntries $summaryEntries)) {
@@ -637,15 +560,16 @@ foreach ($process in (Get-ProcessSnapshot)) {
     $processSnapshot += $process
 }
 $preferredProcess = Get-PreferredProcess -Snapshot $processSnapshot
-$launchContext = Get-LaunchContext -Process $preferredProcess -ProfileRootPath $ProfileRoot
+$launchContext = Get-LaunchContext `
+    -Process $preferredProcess `
+    -ProfileRootPath $ProfileRoot `
+    -ForcedWorkshopIds $forceWorkshopIdsNormalized `
+    -ForcedProfileId $forceProfileIdNormalized
 $runtimeMode = Get-RuntimeMode -LiveTests $relevantLiveTests
 $classification = Get-Classification -Relevant $relevantLiveTests -ProcessSnapshot $processSnapshot -SelectedScope $Scope
 $requiredCapabilities = Get-ProfileRequiredCapabilities -ProfileRootPath $ProfileRoot -ProfileId ([string]$launchContext.profileId)
 $runtimeEvidence = Get-RuntimeEvidence -RunDirectoryPath $RunDirectory
 $actionStatusDiagnostics = Get-ActionStatusDiagnostics -RunDirectoryPath $RunDirectory
-$resolvedTopModsPath = Resolve-TopModsPath -ExplicitPath $TopModsPath -RunDirectoryPath $RunDirectory
-$topModEntries = Get-TopModActionStatusEntries -TopModsJsonPath $resolvedTopModsPath -ProcessSnapshot $processSnapshot
-$actionStatusDiagnostics = Merge-ActionStatusDiagnostics -BaseDiagnostics $actionStatusDiagnostics -AdditionalEntries $topModEntries
 
 $nextAction = switch ($classification) {
     "passed" { "Attach bundle to issue and continue with fix or closure workflow." }
@@ -738,7 +662,7 @@ $overlayState = [ordered]@{
 }
 
 $bundle = [ordered]@{
-    schemaVersion = "1.1"
+    schemaVersion = "1.2"
     runId = $RunId
     startedAtUtc = if ([string]::IsNullOrWhiteSpace($StartedAtUtc)) { (Get-Date).ToUniversalTime().ToString("o") } else { $StartedAtUtc }
     scope = $Scope
@@ -795,6 +719,9 @@ if (@($actionStatusRows).Count -eq 0) {
 - launch reason: $($launchContext.reasonCode)
 - confidence: $($launchContext.confidence)
 - launch kind: $($launchContext.launchKind)
+- launch context source: $($launchContext.source)
+- forced workshop ids: $((@($launchContext.forcedWorkshopIds) -join ','))
+- forced profile id: $($launchContext.forcedProfileId)
 - runtime mode effective: $($runtimeMode.effective)
 - runtime mode reason: $($runtimeMode.reasonCode)
 - selected host: $($selectedHostProcess.name) (pid=$($selectedHostProcess.pid), role=$($selectedHostProcess.hostRole), score=$($selectedHostProcess.selectionScore))

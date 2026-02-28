@@ -86,6 +86,23 @@ vNext bundle sections (required for runtime-affecting changes):
 - `overlayState`
 - `actionStatusDiagnostics` (promoted action matrix diagnostics from `live-promoted-action-matrix.json`)
 
+## 3a. Universal Compatibility Boundary
+
+- Universal recommendation is metadata/discovery-driven across known defaults and generated custom profiles.
+- Runtime mutation remains fail-closed by default for unknown/ambiguous patch states.
+- New fallback actions are intentionally **not** part of the promoted extender matrix closure for issue `#7`.
+
+## 3b. Patch Fallback Rollback Notes (`risk:high`)
+
+- Risk label for PRs that change fallback patch behavior: `risk:high`.
+- Rollback actions:
+  - Execute `toggle_fog_reveal_patch_fallback` with `enable=false` when enabled profiles were patched.
+  - Execute `set_unit_cap_patch_fallback` with `enable=false` when enabled profiles were patched.
+  - Detach runtime session to force restore of tracked fallback bytes/hook state.
+- Required evidence:
+  - include reason-code diagnostics for apply/restore paths in `repro-bundle.json`
+  - include affected profile IDs and fallback feature-flag state in PR notes
+
 ## 4. Promoted Action Matrix Evidence (Issue #7)
 
 Promoted matrix evidence must cover 3 profiles x 5 actions (15 total checks):

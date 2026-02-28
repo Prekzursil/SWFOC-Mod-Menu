@@ -80,6 +80,29 @@ public sealed class LaunchContextResolverTests
     }
 
     [Fact]
+    public async Task Resolve_Should_Map_UnknownWorkshop_To_MetadataProfile_WhenPresent()
+    {
+        var resolver = new LaunchContextResolver();
+        var profiles = (await LoadProfilesAsync()).ToList();
+        profiles.Add(CreateGeneratedProfile(
+            profileId: "custom_quality_life_3661482670",
+            workshopId: "3661482670",
+            localPathHints: "quality of life,3661482670",
+            profileAliases: "qol,quality_life"));
+
+        var process = CreateProcess(
+            "StarWarsG",
+            @"D:\SteamLibrary\steamapps\common\Star Wars Empire at War\corruption\StarWarsG.exe",
+            "StarWarsG.exe STEAMMOD=3661482670");
+
+        var context = resolver.Resolve(process, profiles);
+
+        context.Recommendation.ProfileId.Should().Be("custom_quality_life_3661482670");
+        context.Recommendation.ReasonCode.Should().Be("steammod_exact_profile");
+        context.LaunchKind.Should().Be(LaunchKind.Workshop);
+    }
+
+    [Fact]
     public async Task Resolve_Should_Map_Sweaw_To_BaseSweaw()
     {
         var resolver = new LaunchContextResolver();
@@ -117,52 +140,63 @@ public sealed class LaunchContextResolverTests
         context.Recommendation.ProfileId.Should().Be("base_swfoc");
         context.Recommendation.ReasonCode.Should().Be("foc_safe_starwarsg_fallback");
         context.Recommendation.Confidence.Should().BeLessThan(0.70);
+        context.Source.Should().Be("detected");
     }
 
     [Fact]
-    public async Task Resolve_Should_Prefer_AutoDiscovery_Profile_When_Exact_Workshop_Id_Is_Present()
+    public async Task Resolve_Should_Honor_Forced_Profile_Metadata_When_Context_Source_Is_Forced()
     {
         var resolver = new LaunchContextResolver();
-        var profiles = (await LoadProfilesAsync()).ToList();
-        profiles.Add(BuildAutoDiscoveryProfile(
-            id: "custom_enhanced_conflict_aotr_3664004146_swfoc",
-            workshopId: "3664004146",
-            localPathHints: "enhanced_conflict_aotr",
-            requiredWorkshopIds: "3664004146,1397421866"));
-
-        var process = CreateProcess(
+        var profiles = await LoadProfilesAsync();
+        var process = new ProcessMetadata(
+            9100,
             "StarWarsG",
             @"D:\SteamLibrary\steamapps\common\Star Wars Empire at War\corruption\StarWarsG.exe",
-            "StarWarsG.exe STEAMMOD=3664004146 STEAMMOD=1397421866");
+            null,
+            ExeTarget.Swfoc,
+            RuntimeMode.Unknown,
+            new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
+            {
+                ["detectedVia"] = "unit_test",
+                ["isStarWarsG"] = "true",
+                ["launchContextSource"] = "forced",
+                ["forcedProfileId"] = "roe_3447786229_swfoc"
+            });
 
         var context = resolver.Resolve(process, profiles);
 
-        context.Recommendation.ProfileId.Should().Be("custom_enhanced_conflict_aotr_3664004146_swfoc");
-        context.Recommendation.ReasonCode.Should().Be("steammod_profile_exact");
-        context.Recommendation.Confidence.Should().BeGreaterThan(0.95d);
+        context.Source.Should().Be("forced");
+        context.Recommendation.ProfileId.Should().Be("roe_3447786229_swfoc");
+        context.Recommendation.ReasonCode.Should().Be("forced_profile_id");
+        context.Recommendation.Confidence.Should().Be(1.0d);
     }
 
     [Fact]
-    public async Task Resolve_Should_Match_AutoDiscovery_Profile_From_ModPath_Hints()
+    public async Task Resolve_Should_Use_Forced_Workshop_Metadata_When_CommandLine_Mod_Markers_Missing()
     {
         var resolver = new LaunchContextResolver();
-        var profiles = (await LoadProfilesAsync()).ToList();
-        profiles.Add(BuildAutoDiscoveryProfile(
-            id: "custom_enhanced_conflict_aotr_3664004146_swfoc",
-            workshopId: "3664004146",
-            localPathHints: "enhanced_conflict_aotr,aotr_submods",
-            requiredWorkshopIds: "3664004146,1397421866"));
-
-        var process = CreateProcess(
+        var profiles = await LoadProfilesAsync();
+        var process = new ProcessMetadata(
+            9101,
             "StarWarsG",
             @"D:\SteamLibrary\steamapps\common\Star Wars Empire at War\corruption\StarWarsG.exe",
-            "StarWarsG.exe MODPATH=Mods\\Enhanced_Conflict_AOTR");
+            "StarWarsG.exe NOARTPROCESS IGNOREASSERTS",
+            ExeTarget.Swfoc,
+            RuntimeMode.Unknown,
+            new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
+            {
+                ["detectedVia"] = "unit_test",
+                ["isStarWarsG"] = "true",
+                ["launchContextSource"] = "forced",
+                ["steamModIdsDetected"] = "3447786229",
+                ["forcedWorkshopIds"] = "3447786229"
+            });
 
         var context = resolver.Resolve(process, profiles);
 
-        context.Recommendation.ProfileId.Should().Be("custom_enhanced_conflict_aotr_3664004146_swfoc");
-        context.Recommendation.ReasonCode.Should().Be("modpath_profile_auto_discovery_hint");
-        context.Recommendation.Confidence.Should().Be(0.90d);
+        context.Source.Should().Be("forced");
+        context.Recommendation.ProfileId.Should().Be("roe_3447786229_swfoc");
+        context.Recommendation.ReasonCode.Should().Be("steammod_exact_roe");
     }
 
     private static ProcessMetadata CreateProcess(string name, string path, string? commandLine)
@@ -199,15 +233,15 @@ public sealed class LaunchContextResolverTests
         return list;
     }
 
-    private static TrainerProfile BuildAutoDiscoveryProfile(
-        string id,
+    private static TrainerProfile CreateGeneratedProfile(
+        string profileId,
         string workshopId,
         string localPathHints,
-        string requiredWorkshopIds)
+        string profileAliases)
     {
         return new TrainerProfile(
-            Id: id,
-            DisplayName: "Auto discovery profile",
+            Id: profileId,
+            DisplayName: profileId,
             Inherits: "base_swfoc",
             ExeTarget: ExeTarget.Swfoc,
             SteamWorkshopId: workshopId,
@@ -216,24 +250,13 @@ public sealed class LaunchContextResolverTests
             Actions: new Dictionary<string, ActionSpec>(StringComparer.OrdinalIgnoreCase),
             FeatureFlags: new Dictionary<string, bool>(StringComparer.OrdinalIgnoreCase),
             CatalogSources: Array.Empty<CatalogSource>(),
-            SaveSchemaId: "swfoc.save.v1",
+            SaveSchemaId: "base_swfoc_steam_v1",
             HelperModHooks: Array.Empty<HelperHookSpec>(),
             Metadata: new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
             {
-                ["origin"] = "auto_discovery",
-                ["confidence"] = "0.93",
+                ["requiredWorkshopIds"] = workshopId,
                 ["localPathHints"] = localPathHints,
-                ["profileAliases"] = "enhanced_conflict_aotr",
-                ["requiredWorkshopIds"] = requiredWorkshopIds
-            },
-            RequiredCapabilities: new[]
-            {
-                "set_credits",
-                "freeze_timer",
-                "toggle_fog_reveal",
-                "toggle_ai",
-                "set_unit_cap",
-                "toggle_instant_build_patch"
+                ["profileAliases"] = profileAliases
             });
     }
 }

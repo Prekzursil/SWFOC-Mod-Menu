@@ -83,9 +83,9 @@ PluginResult BuildInvalidUnitCapResult(const PluginRequest& request) {
 
 CapabilityState BuildCapabilityState() {
     CapabilityState state {};
-    state.available = true;
-    state.state = "Verified";
-    state.reasonCode = "CAPABILITY_PROBE_PASS";
+    state.available = false;
+    state.state = "Experimental";
+    state.reasonCode = "CAPABILITY_FEATURE_EXPERIMENTAL";
     return state;
 }
 
@@ -97,15 +97,15 @@ bool IsUnitCapOutOfBounds(const PluginRequest& request, bool enablePatch) {
     return enablePatch && (request.intValue < kMinUnitCap || request.intValue > kMaxUnitCap);
 }
 
-PluginResult BuildAcceptedMutationResult(
+PluginResult BuildNotImplementedMutationResult(
     const PluginRequest& request,
     bool enablePatch,
     const std::optional<AnchorMatch>& resolvedAnchor) {
     PluginResult result {};
-    result.succeeded = true;
-    result.reasonCode = "CAPABILITY_PROBE_PASS";
-    result.hookState = enablePatch ? "HOOK_PATCH_ENABLED" : "HOOK_PATCH_DISABLED";
-    result.message = "Build patch mutation accepted by extender plugin.";
+    result.succeeded = false;
+    result.reasonCode = "SAFETY_FAIL_CLOSED";
+    result.hookState = "NOOP";
+    result.message = "Mutation rejected: no process write or patch was applied by build patch plugin.";
 
     std::string anchorProvided = "false";
     std::string anchorKey = "none";
@@ -123,7 +123,8 @@ PluginResult BuildAcceptedMutationResult(
         {"anchorKey", anchorKey},
         {"anchorValue", anchorValue},
         {"enable", BoolToString(enablePatch)},
-        {"intValue", std::to_string(request.intValue)}};
+        {"intValue", std::to_string(request.intValue)},
+        {"processMutationApplied", "false"}};
     return result;
 }
 
@@ -155,7 +156,7 @@ PluginResult BuildPatchPlugin::execute(const PluginRequest& request) {
         ApplyInstantBuildState(enablePatch);
     }
 
-    return BuildAcceptedMutationResult(request, enablePatch, resolvedAnchor);
+    return BuildNotImplementedMutationResult(request, enablePatch, resolvedAnchor);
 }
 
 CapabilitySnapshot BuildPatchPlugin::capabilitySnapshot() const {
@@ -168,7 +169,6 @@ CapabilitySnapshot BuildPatchPlugin::capabilitySnapshot() const {
 }
 
 void BuildPatchPlugin::ApplyUnitCapState(bool enablePatch, std::int32_t unitCapValue) {
-    unitCapPatchInstalled_.store(true);
     unitCapPatchEnabled_.store(enablePatch);
     if (!enablePatch) {
         return;
@@ -178,7 +178,6 @@ void BuildPatchPlugin::ApplyUnitCapState(bool enablePatch, std::int32_t unitCapV
 }
 
 void BuildPatchPlugin::ApplyInstantBuildState(bool enablePatch) {
-    instantBuildPatchInstalled_.store(true);
     instantBuildPatchEnabled_.store(enablePatch);
 }
 

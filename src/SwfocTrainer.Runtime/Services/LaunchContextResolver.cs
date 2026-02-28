@@ -6,12 +6,7 @@ namespace SwfocTrainer.Runtime.Services;
 
 public sealed class LaunchContextResolver : ILaunchContextResolver
 {
-    private const string RoeProfileId = "roe_3447786229_swfoc";
-    private const string AotrProfileId = "aotr_1397421866_swfoc";
-    private const string RoeWorkshopId = "3447786229";
-    private const string AotrWorkshopId = "1397421866";
     private static readonly TimeSpan RegexTimeout = TimeSpan.FromMilliseconds(250);
-
     private static readonly Regex SteamModRegex = new(
         @"steammod\s*=\s*(\d+)",
         RegexOptions.IgnoreCase | RegexOptions.Compiled,
@@ -29,6 +24,7 @@ public sealed class LaunchContextResolver : ILaunchContextResolver
         var modPathRaw = ExtractModPath(process.CommandLine);
         var modPathNormalized = NormalizeToken(modPathRaw);
         var detectedVia = ReadMetadata(process, "detectedVia") ?? "unknown";
+        var source = ResolveLaunchContextSource(process);
 
         var launchKind = DetermineLaunchKind(process, steamModIds, modPathNormalized);
         var recommendation = RecommendProfile(process, steamModIds, modPathNormalized, profiles);
@@ -40,7 +36,8 @@ public sealed class LaunchContextResolver : ILaunchContextResolver
             modPathRaw,
             modPathNormalized,
             detectedVia,
-            recommendation);
+            recommendation,
+            source);
     }
 
     private static LaunchKind DetermineLaunchKind(
@@ -79,60 +76,25 @@ public sealed class LaunchContextResolver : ILaunchContextResolver
         string? modPathNormalized,
         IReadOnlyList<TrainerProfile> profiles)
     {
-        var workshopRecommendation = TryRecommendProfileFromWorkshopIds(steamModIds, profiles) ??
-                                     TryRecommendLegacyWorkshopProfile(steamModIds);
-        if (workshopRecommendation is not null)
+        var forcedProfileId = ReadMetadata(process, "forcedProfileId");
+        if (ResolveLaunchContextSource(process).Equals("forced", StringComparison.OrdinalIgnoreCase) &&
+            !string.IsNullOrWhiteSpace(forcedProfileId))
         {
-            return workshopRecommendation;
+            return new ProfileRecommendation(forcedProfileId, "forced_profile_id", 1.0d);
         }
 
-        var modPathRecommendation = string.IsNullOrWhiteSpace(modPathNormalized)
-            ? null
-            : TryRecommendProfileFromModPathHints(modPathNormalized, profiles) ??
-              TryRecommendLegacyModPathProfile(modPathNormalized, profiles);
-        if (modPathRecommendation is not null)
+        var byWorkshop = RecommendByWorkshop(steamModIds, profiles);
+        if (byWorkshop is not null)
         {
-            return modPathRecommendation;
+            return byWorkshop;
         }
 
-        return RecommendFallbackBaseProfile(process);
-    }
-
-    private static ProfileRecommendation? TryRecommendLegacyWorkshopProfile(IReadOnlyList<string> steamModIds)
-    {
-        if (steamModIds.Any(id => id.Equals(RoeWorkshopId, StringComparison.OrdinalIgnoreCase)))
+        var byModPath = RecommendByModPath(modPathNormalized, profiles);
+        if (byModPath is not null)
         {
-            return new ProfileRecommendation(RoeProfileId, "steammod_exact_roe", 1.0d);
+            return byModPath;
         }
 
-        return steamModIds.Any(id => id.Equals(AotrWorkshopId, StringComparison.OrdinalIgnoreCase))
-            ? new ProfileRecommendation(AotrProfileId, "steammod_exact_aotr", 1.0d)
-            : null;
-    }
-
-    private static ProfileRecommendation? TryRecommendLegacyModPathProfile(
-        string? modPathNormalized,
-        IReadOnlyList<TrainerProfile> profiles)
-    {
-        if (string.IsNullOrWhiteSpace(modPathNormalized))
-        {
-            return null;
-        }
-
-        if (MatchesProfileHints(RoeProfileId, modPathNormalized, profiles) ||
-            LooksLikeRoePath(modPathNormalized))
-        {
-            return new ProfileRecommendation(RoeProfileId, "modpath_hint_roe", 0.95d);
-        }
-
-        return MatchesProfileHints(AotrProfileId, modPathNormalized, profiles) ||
-               LooksLikeAotrPath(modPathNormalized)
-            ? new ProfileRecommendation(AotrProfileId, "modpath_hint_aotr", 0.95d)
-            : null;
-    }
-
-    private static ProfileRecommendation RecommendFallbackBaseProfile(ProcessMetadata process)
-    {
         if (process.ExeTarget == ExeTarget.Sweaw)
         {
             return new ProfileRecommendation("base_sweaw", "exe_target_sweaw", 0.80d);
@@ -140,14 +102,21 @@ public sealed class LaunchContextResolver : ILaunchContextResolver
 
         if (process.ExeTarget == ExeTarget.Swfoc || IsStarWarsGProcess(process))
         {
-            var confidence = IsStarWarsGProcess(process) ? 0.55d : 0.65d;
-            return new ProfileRecommendation("base_swfoc", "foc_safe_starwarsg_fallback", confidence);
+            return new ProfileRecommendation("base_swfoc", "foc_safe_starwarsg_fallback", IsStarWarsGProcess(process) ? 0.55d : 0.65d);
         }
 
         return new ProfileRecommendation(null, "unknown", 0.20d);
     }
 
-    private static ProfileRecommendation? TryRecommendProfileFromWorkshopIds(
+    private static string ResolveLaunchContextSource(ProcessMetadata process)
+    {
+        var raw = ReadMetadata(process, "launchContextSource");
+        return string.Equals(raw, "forced", StringComparison.OrdinalIgnoreCase)
+            ? "forced"
+            : "detected";
+    }
+
+    private static ProfileRecommendation? RecommendByWorkshop(
         IReadOnlyList<string> steamModIds,
         IReadOnlyList<TrainerProfile> profiles)
     {
@@ -156,125 +125,209 @@ public sealed class LaunchContextResolver : ILaunchContextResolver
             return null;
         }
 
-        var modIds = new HashSet<string>(steamModIds, StringComparer.OrdinalIgnoreCase);
-        var candidates = profiles
-            .Where(profile => !IsLegacyBaseProfile(profile.Id))
-            .Select(profile => BuildWorkshopMatch(profile, modIds))
-            .Where(match => match.Score > 0)
-            .OrderByDescending(match => match.Score)
-            .ThenByDescending(match => match.MetadataConfidence)
-            .ThenBy(match => match.Profile.Id, StringComparer.OrdinalIgnoreCase)
-            .ToArray();
+        var ids = steamModIds.ToHashSet(StringComparer.OrdinalIgnoreCase);
+        TrainerProfile? bestProfile = null;
+        var bestScore = 0;
+        var bestRequiredCount = 0;
 
-        if (candidates.Length == 0)
+        foreach (var profile in profiles)
+        {
+            var score = ScoreWorkshopMatch(profile, ids);
+            if (score <= 0)
+            {
+                continue;
+            }
+
+            var requiredCount = BuildRequiredWorkshopIds(profile).Count;
+            if (bestProfile is null ||
+                score > bestScore ||
+                score == bestScore && requiredCount > bestRequiredCount ||
+                score == bestScore && requiredCount == bestRequiredCount && IsPreferredProfile(profile, bestProfile))
+            {
+                bestProfile = profile;
+                bestScore = score;
+                bestRequiredCount = requiredCount;
+            }
+        }
+
+        if (bestProfile is null)
         {
             return null;
         }
 
-        var selected = candidates[0];
-
-        return new ProfileRecommendation(
-            selected.Profile.Id,
-            selected.IsExactMatch ? "steammod_profile_exact" : "steammod_profile_dependency_match",
-            selected.IsExactMatch ? 0.98d : Math.Min(0.94d, 0.80d + (selected.MatchedWorkshopIds * 0.03d)));
+        var confidence = bestScore >= 1000 ? 1.0d : 0.97d;
+        return new ProfileRecommendation(bestProfile.Id, BuildReasonCode(bestProfile.Id, "steam"), confidence);
     }
 
-    private static WorkshopProfileMatch BuildWorkshopMatch(TrainerProfile profile, IReadOnlySet<string> modIds)
+    private static int ScoreWorkshopMatch(TrainerProfile profile, IReadOnlySet<string> steamModIds)
     {
-        var hasExact = !string.IsNullOrWhiteSpace(profile.SteamWorkshopId) &&
-                       modIds.Contains(profile.SteamWorkshopId);
-        var requiredWorkshopIds = ReadMetadataCsv(profile.Metadata, "requiredWorkshopIds")
-            .Where(id => !string.IsNullOrWhiteSpace(id))
-            .ToArray();
-        var requiredSubsetMatched = requiredWorkshopIds.Length > 0 && requiredWorkshopIds.All(modIds.Contains);
-        var matchedWorkshopIds = requiredWorkshopIds.Count(modIds.Contains);
-
         var score = 0;
-        if (hasExact)
+
+        if (!string.IsNullOrWhiteSpace(profile.SteamWorkshopId))
         {
-            score += 300;
+            if (steamModIds.Contains(profile.SteamWorkshopId))  // NOSONAR
+            {
+                score = Math.Max(score, 1000);
+            }
         }
 
-        if (requiredSubsetMatched)
+        var requiredIds = BuildRequiredWorkshopIds(profile);
+        if (requiredIds.Count == 0)
         {
-            score += 200 + matchedWorkshopIds;
+            return score;
         }
 
-        if (IsAutoDiscoveryProfile(profile))
+        var overlapCount = requiredIds.Count(steamModIds.Contains);
+        if (overlapCount == requiredIds.Count)
         {
-            score += 10;
+            score = Math.Max(score, 900 + requiredIds.Count);
+            return score;
         }
 
-        return new WorkshopProfileMatch(
-            profile,
-            score,
-            hasExact,
-            matchedWorkshopIds,
-            ReadMetadataConfidence(profile.Metadata));
+        if (overlapCount > 0)
+        {
+            score = Math.Max(score, 700 + overlapCount);
+        }
+
+        return score;
     }
 
-    private static ProfileRecommendation? TryRecommendProfileFromModPathHints(
-        string modPathNormalized,
+    private static ProfileRecommendation? RecommendByModPath(
+        string? modPathNormalized,
         IReadOnlyList<TrainerProfile> profiles)
     {
-        if (profiles.Count == 0)
+        if (string.IsNullOrWhiteSpace(modPathNormalized) || profiles.Count == 0)
         {
             return null;
         }
 
-        var candidates = profiles
-            .Where(profile => !IsLegacyBaseProfile(profile.Id))
-            .Select(profile =>
+        TrainerProfile? bestProfile = null;
+        var bestScore = 0;
+        foreach (var profile in profiles)
+        {
+            var score = 0;
+            foreach (var hint in BuildHints(profile))  // NOSONAR
             {
-                var matchedHints = BuildHints(profile)
-                    .Where(hint => modPathNormalized.Contains(hint, StringComparison.OrdinalIgnoreCase))
-                    .ToArray();
-                return (Profile: profile, MatchedHints: matchedHints);
-            })
-            .Where(candidate => candidate.MatchedHints.Length > 0)
-            .Select(candidate => new ModPathProfileMatch(
-                candidate.Profile,
-                candidate.MatchedHints.Max(hint => hint.Length),
-                candidate.MatchedHints.Length,
-                ReadMetadataConfidence(candidate.Profile.Metadata),
-                IsAutoDiscoveryProfile(candidate.Profile)))
-            .OrderByDescending(candidate => candidate.LongestHintLength)
-            .ThenByDescending(candidate => candidate.HintCount)
-            .ThenByDescending(candidate => candidate.IsAutoDiscovery)
-            .ThenByDescending(candidate => candidate.MetadataConfidence)
-            .ThenBy(candidate => candidate.Profile.Id, StringComparer.OrdinalIgnoreCase)
-            .ToArray();
+                if (modPathNormalized.Contains(hint, StringComparison.OrdinalIgnoreCase))
+                {
+                    score = Math.Max(score, hint.Length);
+                }
+            }
 
-        if (candidates.Length == 0)
+            if (score == 0)
+            {
+                continue;
+            }
+
+            if (bestProfile is null || score > bestScore || score == bestScore && IsPreferredProfile(profile, bestProfile))
+            {
+                bestProfile = profile;
+                bestScore = score;
+            }
+        }
+
+        if (bestProfile is null)
         {
             return null;
         }
 
-        var selected = candidates[0];
-        var confidence = selected.IsAutoDiscovery ? 0.90d : 0.88d;
-        return new ProfileRecommendation(
-            selected.Profile.Id,
-            selected.IsAutoDiscovery ? "modpath_profile_auto_discovery_hint" : "modpath_profile_hint",
-            confidence);
+        return new ProfileRecommendation(bestProfile.Id, BuildReasonCode(bestProfile.Id, "modpath"), 0.95d);
     }
 
-    private static bool IsLegacyBaseProfile(string profileId)
+    private static bool IsPreferredProfile(TrainerProfile candidate, TrainerProfile current)
     {
-        return profileId.Equals(RoeProfileId, StringComparison.OrdinalIgnoreCase) ||
-               profileId.Equals(AotrProfileId, StringComparison.OrdinalIgnoreCase) ||
-               profileId.Equals("universal_auto", StringComparison.OrdinalIgnoreCase);
-    }
-
-    private static bool MatchesProfileHints(string profileId, string modPathNormalized, IReadOnlyList<TrainerProfile> profiles)
-    {
-        var profile = profiles.FirstOrDefault(x => x.Id.Equals(profileId, StringComparison.OrdinalIgnoreCase));
-        if (profile is null)
+        var candidatePriority = ResolveProfilePriority(candidate.Id);
+        var currentPriority = ResolveProfilePriority(current.Id);
+        if (candidatePriority != currentPriority)
         {
-            return false;
+            return candidatePriority < currentPriority;
         }
 
-        return BuildHints(profile)
-            .Any(hint => modPathNormalized.Contains(hint, StringComparison.OrdinalIgnoreCase));
+        return string.Compare(candidate.Id, current.Id, StringComparison.OrdinalIgnoreCase) < 0;
+    }
+
+    private static int ResolveProfilePriority(string profileId)
+    {
+        var normalized = profileId.ToLowerInvariant();
+        if (normalized.Contains("roe_", StringComparison.Ordinal))
+        {
+            return 0;
+        }
+
+        if (normalized.Contains("aotr_", StringComparison.Ordinal))
+        {
+            return 1;
+        }
+
+        return 2;
+    }
+
+    private static string BuildReasonCode(string profileId, string source)
+    {
+        var normalizedId = profileId.ToLowerInvariant();
+        if (string.Equals(source, "steam", StringComparison.OrdinalIgnoreCase))
+        {
+            if (normalizedId.Contains("roe_", StringComparison.Ordinal))
+            {
+                return "steammod_exact_roe";
+            }
+
+            if (normalizedId.Contains("aotr_", StringComparison.Ordinal))
+            {
+                return "steammod_exact_aotr";
+            }
+
+            return "steammod_exact_profile";
+        }
+
+        if (string.Equals(source, "modpath", StringComparison.OrdinalIgnoreCase))
+        {
+            if (normalizedId.Contains("roe_", StringComparison.Ordinal))
+            {
+                return "modpath_hint_roe";
+            }
+
+            if (normalizedId.Contains("aotr_", StringComparison.Ordinal))
+            {
+                return "modpath_hint_aotr";
+            }
+
+            return "modpath_hint_profile";
+        }
+
+        return "unknown";
+    }
+
+    private static IReadOnlyList<string> BuildRequiredWorkshopIds(TrainerProfile profile)
+    {
+        var required = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+        if (!string.IsNullOrWhiteSpace(profile.SteamWorkshopId))
+        {
+            required.Add(profile.SteamWorkshopId);
+        }
+
+        if (profile.Metadata is null)
+        {
+            return required.ToArray();
+        }
+
+        foreach (var key in new[] { "requiredWorkshopIds", "requiredWorkshopId" })
+        {
+            if (!profile.Metadata.TryGetValue(key, out var raw) || string.IsNullOrWhiteSpace(raw))
+            {
+                continue;
+            }
+
+            foreach (var id in raw.Split(',', StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries))  // NOSONAR
+            {
+                if (!string.IsNullOrWhiteSpace(id))
+                {
+                    required.Add(id);
+                }
+            }
+        }
+
+        return required.ToArray();
     }
 
     private static IEnumerable<string> BuildHints(TrainerProfile profile)
@@ -299,66 +352,17 @@ public sealed class LaunchContextResolver : ILaunchContextResolver
                 continue;
             }
 
-            foreach (var normalized in raw
-                         .Split(',', StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries)
-                         .Select(NormalizeToken)
-                         .Where(static value => !string.IsNullOrWhiteSpace(value))
-                         .Select(static value => value!))
+            foreach (var part in raw.Split(',', StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries))
             {
-                hints.Add(normalized);
+                var normalized = NormalizeToken(part);
+                if (!string.IsNullOrWhiteSpace(normalized))
+                {
+                    hints.Add(normalized);
+                }
             }
         }
 
         return hints.Where(x => !string.IsNullOrWhiteSpace(x));
-    }
-
-    private static bool IsAutoDiscoveryProfile(TrainerProfile profile)
-    {
-        return profile.Metadata is not null &&
-               profile.Metadata.TryGetValue("origin", out var origin) &&
-               string.Equals(origin, "auto_discovery", StringComparison.OrdinalIgnoreCase);
-    }
-
-    private static double ReadMetadataConfidence(IReadOnlyDictionary<string, string>? metadata)
-    {
-        if (metadata is null ||
-            !metadata.TryGetValue("confidence", out var raw) ||
-            string.IsNullOrWhiteSpace(raw) ||
-            !double.TryParse(raw, System.Globalization.NumberStyles.Float, System.Globalization.CultureInfo.InvariantCulture, out var confidence))
-        {
-            return 0.0d;
-        }
-
-        return confidence;
-    }
-
-    private static IReadOnlyList<string> ReadMetadataCsv(IReadOnlyDictionary<string, string>? metadata, string key)
-    {
-        if (metadata is null || !metadata.TryGetValue(key, out var raw) || string.IsNullOrWhiteSpace(raw))
-        {
-            return Array.Empty<string>();
-        }
-
-        return raw
-            .Split(',', StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries)
-            .Distinct(StringComparer.OrdinalIgnoreCase)
-            .ToArray();
-    }
-
-    private static bool LooksLikeRoePath(string normalizedPath)
-    {
-        return normalizedPath.Contains("3447786229", StringComparison.OrdinalIgnoreCase) ||
-               normalizedPath.Contains("roe", StringComparison.OrdinalIgnoreCase) ||
-               normalizedPath.Contains("order-66", StringComparison.OrdinalIgnoreCase) ||
-               normalizedPath.Contains("order 66", StringComparison.OrdinalIgnoreCase);
-    }
-
-    private static bool LooksLikeAotrPath(string normalizedPath)
-    {
-        return normalizedPath.Contains("1397421866", StringComparison.OrdinalIgnoreCase) ||
-               normalizedPath.Contains("aotr", StringComparison.OrdinalIgnoreCase) ||
-               normalizedPath.Contains("awakening-of-the-rebellion", StringComparison.OrdinalIgnoreCase) ||
-               normalizedPath.Contains("awakening of the rebellion", StringComparison.OrdinalIgnoreCase);
     }
 
     private static string? ExtractModPath(string? commandLine)
@@ -390,11 +394,11 @@ public sealed class LaunchContextResolver : ILaunchContextResolver
         var ids = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
         if (!string.IsNullOrWhiteSpace(process.CommandLine))
         {
-            foreach (var groups in SteamModRegex.Matches(process.CommandLine).Select(match => match.Groups))
+            foreach (Match match in SteamModRegex.Matches(process.CommandLine))  // NOSONAR
             {
-                if (groups.Count > 1 && !string.IsNullOrWhiteSpace(groups[1].Value))
+                if (match.Groups.Count > 1 && !string.IsNullOrWhiteSpace(match.Groups[1].Value))
                 {
-                    ids.Add(groups[1].Value);
+                    ids.Add(match.Groups[1].Value);
                 }
             }
         }
@@ -454,18 +458,4 @@ public sealed class LaunchContextResolver : ILaunchContextResolver
 
         return value.ToLowerInvariant();
     }
-
-    private sealed record WorkshopProfileMatch(
-        TrainerProfile Profile,
-        int Score,
-        bool IsExactMatch,
-        int MatchedWorkshopIds,
-        double MetadataConfidence);
-
-    private sealed record ModPathProfileMatch(
-        TrainerProfile Profile,
-        int LongestHintLength,
-        int HintCount,
-        double MetadataConfidence,
-        bool IsAutoDiscovery);
 }

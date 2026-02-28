@@ -172,6 +172,24 @@ public sealed class BackendRouterTests
     }
 
     [Fact]
+    public void Resolve_ShouldKeepFallbackPatchActions_OnMemoryRoute_ForFoCProfiles()
+    {
+        var router = new BackendRouter();
+        var request = BuildRequest("set_unit_cap_patch_fallback", ExecutionKind.CodePatch);
+        var profile = BuildProfile(backendPreference: "auto");
+        var process = BuildProcess();
+        var report = CapabilityReport.Unknown(profile.Id, RuntimeReasonCode.CAPABILITY_UNKNOWN);
+
+        var decision = router.Resolve(request, profile, process, report);
+
+        decision.Allowed.Should().BeTrue();
+        decision.Backend.Should().Be(ExecutionBackendKind.Memory);
+        decision.ReasonCode.Should().Be(RuntimeReasonCode.CAPABILITY_PROBE_PASS);
+        decision.Diagnostics.Should().ContainKey("promotedExtenderAction");
+        decision.Diagnostics!["promotedExtenderAction"].Should().Be(false);
+    }
+
+    [Fact]
     public void Resolve_ShouldRouteToExtender_WhenCapabilityIsAvailable()
     {
         var router = new BackendRouter();

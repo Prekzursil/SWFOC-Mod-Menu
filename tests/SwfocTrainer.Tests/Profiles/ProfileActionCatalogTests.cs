@@ -66,6 +66,15 @@ public sealed class ProfileActionCatalogTests
         instantBuild.ExecutionKind.Should().Be(ExecutionKind.Sdk);
         var instantRequired = instantBuild.PayloadSchema["required"]!.AsArray().Select(x => x!.GetValue<string>()).ToList();
         instantRequired.Should().Contain("enable");
+
+        profile.Actions.Should().ContainKey("set_unit_cap_patch_fallback");
+        profile.Actions.Should().ContainKey("toggle_fog_reveal_patch_fallback");
+        profile.Actions["set_unit_cap_patch_fallback"].ExecutionKind.Should().Be(ExecutionKind.CodePatch);
+        profile.Actions["toggle_fog_reveal_patch_fallback"].ExecutionKind.Should().Be(ExecutionKind.CodePatch);
+        profile.FeatureFlags.Should().ContainKey("allow_fog_patch_fallback");
+        profile.FeatureFlags["allow_fog_patch_fallback"].Should().BeFalse();
+        profile.FeatureFlags.Should().ContainKey("allow_unit_cap_patch_fallback");
+        profile.FeatureFlags["allow_unit_cap_patch_fallback"].Should().BeFalse();
     }
 
     [Fact]
@@ -85,6 +94,12 @@ public sealed class ProfileActionCatalogTests
 
         profile.Actions["freeze_symbol"].ExecutionKind.Should().Be(ExecutionKind.Freeze);
         profile.Actions["unfreeze_symbol"].ExecutionKind.Should().Be(ExecutionKind.Freeze);
+        profile.Actions.Should().ContainKey("set_unit_cap_patch_fallback");
+        profile.Actions.Should().ContainKey("toggle_fog_reveal_patch_fallback");
+        profile.Actions["set_unit_cap_patch_fallback"].ExecutionKind.Should().Be(ExecutionKind.CodePatch);
+        profile.Actions["toggle_fog_reveal_patch_fallback"].ExecutionKind.Should().Be(ExecutionKind.CodePatch);
+        profile.FeatureFlags["allow_fog_patch_fallback"].Should().BeFalse();
+        profile.FeatureFlags["allow_unit_cap_patch_fallback"].Should().BeFalse();
     }
 
     [Fact]

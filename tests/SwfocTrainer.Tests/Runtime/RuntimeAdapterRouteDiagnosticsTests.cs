@@ -9,75 +9,49 @@ namespace SwfocTrainer.Tests.Runtime;
 public sealed class RuntimeAdapterRouteDiagnosticsTests
 {
     [Fact]
-    public void ApplyBackendRouteDiagnostics_ShouldEmitBackendRouteAndHybridKeys()
+    public void ApplyBackendRouteDiagnostics_ShouldEmitBackendRouteAndOverrideDiagnosticsKeys()
     {
-        var applied = InvokeApplyBackendRouteDiagnostics(
-            CreateExecutionResult(),
-            CreateRouteDecision(),
-            CreateCapabilityReport());
+        var applied = InvokeApplyBackendRouteDiagnostics();
 
-        AssertExpectedDiagnosticKeys(applied);
+        applied.Diagnostics.Should().NotBeNull();
+        applied.Diagnostics.Should().ContainKey("backend");
+        applied.Diagnostics.Should().ContainKey("routeReasonCode");
+        applied.Diagnostics.Should().ContainKey("capabilityProbeReasonCode");
+        applied.Diagnostics.Should().ContainKey("hookState");
+        applied.Diagnostics.Should().ContainKey("hybridExecution");
+        applied.Diagnostics.Should().ContainKey("expertOverrideEnabled");
+        applied.Diagnostics.Should().ContainKey("overrideReason");
+        applied.Diagnostics.Should().ContainKey("panicDisableState");
     }
 
     [Fact]
-    public void ApplyBackendRouteDiagnostics_ShouldReadExpertOverrideEnvFlags_WhenDiagnosticsDoNotProvideValues()
+    public void ApplyBackendRouteDiagnostics_ShouldEnableExpertOverride_WhenOverrideEnvVarTrue()
     {
-        const string overrideEnv = "SWFOC_EXPERT_MUTATION_OVERRIDES";
-        const string panicEnv = "SWFOC_EXPERT_MUTATION_OVERRIDES_PANIC";
-        var previousOverride = Environment.GetEnvironmentVariable(overrideEnv);
-        var previousPanic = Environment.GetEnvironmentVariable(panicEnv);
+        var applied = WithExpertOverrideEnv("1", null, () => InvokeApplyBackendRouteDiagnostics());
 
-        try
-        {
-            Environment.SetEnvironmentVariable(overrideEnv, "true");
-            Environment.SetEnvironmentVariable(panicEnv, "1");
+        applied.Diagnostics.Should().NotBeNull();
+        applied.Diagnostics!["expertOverrideEnabled"].Should().Be(true);
+        applied.Diagnostics!["panicDisableState"]!.ToString().Should().Be("inactive");
+        applied.Diagnostics!["overrideReason"]!.ToString().Should().Contain("enabled");
+    }
 
-            var result = new ActionExecutionResult(
-                Succeeded: false,
-                Message: "blocked",
-                AddressSource: AddressSource.None,
-                Diagnostics: new Dictionary<string, object?>());
+    [Fact]
+    public void ApplyBackendRouteDiagnostics_ShouldPanicDisableOverride_WhenPanicEnvVarTrue()
+    {
+        var applied = WithExpertOverrideEnv("true", "1", () => InvokeApplyBackendRouteDiagnostics());
 
-            var routeDecision = new BackendRouteDecision(
-                Allowed: false,
-                Backend: ExecutionBackendKind.Extender,
-                ReasonCode: RuntimeReasonCode.SAFETY_FAIL_CLOSED,
-                Message: "blocked",
-                Diagnostics: new Dictionary<string, object?>());
-
-            var capabilityReport = CapabilityReport.Unknown("roe_3447786229_swfoc");
-            var applied = InvokeApplyBackendRouteDiagnostics(result, routeDecision, capabilityReport);
-
-            applied.Diagnostics.Should().NotBeNull();
-            applied.Diagnostics!["expertOverrideEnabled"].Should().Be(true);
-            applied.Diagnostics["panicDisableState"].Should().Be("active");
-            applied.Diagnostics["overrideReason"].Should().Be("none");
-        }
-        finally
-        {
-            Environment.SetEnvironmentVariable(overrideEnv, previousOverride);
-            Environment.SetEnvironmentVariable(panicEnv, previousPanic);
-        }
+        applied.Diagnostics.Should().NotBeNull();
+        applied.Diagnostics!["expertOverrideEnabled"].Should().Be(false);
+        applied.Diagnostics!["panicDisableState"]!.ToString().Should().Be("active");
+        applied.Diagnostics!["overrideReason"]!.ToString().Should().Contain("panic");
     }
 
     private static ActionExecutionResult InvokeApplyBackendRouteDiagnostics(
-        ActionExecutionResult result,
-        BackendRouteDecision routeDecision,
-        CapabilityReport capabilityReport)
+        ActionExecutionResult? result = null,
+        BackendRouteDecision? routeDecision = null,
+        CapabilityReport? capabilityReport = null)
     {
-        var method = typeof(RuntimeAdapter).GetMethod(
-            "ApplyBackendRouteDiagnostics",
-            BindingFlags.NonPublic | BindingFlags.Static);
-
-        method.Should().NotBeNull("RuntimeAdapter should normalize backend routing diagnostics.");
-        var invoked = method!.Invoke(null, new object?[] { result, routeDecision, capabilityReport });
-        invoked.Should().BeOfType<ActionExecutionResult>();
-        return (ActionExecutionResult)invoked!;
-    }
-
-    private static ActionExecutionResult CreateExecutionResult()
-    {
-        return new ActionExecutionResult(
+        var resolvedResult = result ?? new ActionExecutionResult(
             Succeeded: true,
             Message: "ok",
             AddressSource: AddressSource.Signature,
@@ -85,27 +59,16 @@ public sealed class RuntimeAdapterRouteDiagnosticsTests
             {
                 ["state"] = "installed"
             });
-    }
-
-    private static BackendRouteDecision CreateRouteDecision()
-    {
-        return new BackendRouteDecision(
+        var resolvedRouteDecision = routeDecision ?? new BackendRouteDecision(
             Allowed: true,
             Backend: ExecutionBackendKind.Extender,
             ReasonCode: RuntimeReasonCode.CAPABILITY_PROBE_PASS,
             Message: "routed",
             Diagnostics: new Dictionary<string, object?>
             {
-                ["hybridExecution"] = true,
-                ["capabilityMapReasonCode"] = "CAPABILITY_PROBE_PASS",
-                ["capabilityMapState"] = "Verified",
-                ["capabilityDeclaredAvailable"] = true
+                ["hybridExecution"] = true
             });
-    }
-
-    private static CapabilityReport CreateCapabilityReport()
-    {
-        return new CapabilityReport(
+        var resolvedCapabilityReport = capabilityReport ?? new CapabilityReport(
             ProfileId: "roe_3447786229_swfoc",
             ProbedAtUtc: DateTimeOffset.UtcNow,
             Capabilities: new Dictionary<string, BackendCapability>(StringComparer.OrdinalIgnoreCase)
@@ -121,21 +84,34 @@ public sealed class RuntimeAdapterRouteDiagnosticsTests
             {
                 ["hookState"] = "HOOK_READY"
             });
+
+        var method = typeof(RuntimeAdapter).GetMethod(
+            "ApplyBackendRouteDiagnostics",
+            BindingFlags.NonPublic | BindingFlags.Static);
+
+        method.Should().NotBeNull("RuntimeAdapter should normalize backend routing diagnostics.");
+        var invoked = method!.Invoke(null, new object?[] { resolvedResult, resolvedRouteDecision, resolvedCapabilityReport });
+        invoked.Should().BeOfType<ActionExecutionResult>();
+        return (ActionExecutionResult)invoked!;
     }
 
-    private static void AssertExpectedDiagnosticKeys(ActionExecutionResult applied)
+    private static ActionExecutionResult WithExpertOverrideEnv(
+        string? overrideValue,
+        string? panicValue,
+        Func<ActionExecutionResult> action)
     {
-        applied.Diagnostics.Should().NotBeNull();
-        applied.Diagnostics.Should().ContainKey("backend");
-        applied.Diagnostics.Should().ContainKey("routeReasonCode");
-        applied.Diagnostics.Should().ContainKey("capabilityProbeReasonCode");
-        applied.Diagnostics.Should().ContainKey("hookState");
-        applied.Diagnostics.Should().ContainKey("hybridExecution");
-        applied.Diagnostics.Should().ContainKey("capabilityMapReasonCode");
-        applied.Diagnostics.Should().ContainKey("capabilityMapState");
-        applied.Diagnostics.Should().ContainKey("capabilityDeclaredAvailable");
-        applied.Diagnostics.Should().ContainKey("expertOverrideEnabled");
-        applied.Diagnostics.Should().ContainKey("overrideReason");
-        applied.Diagnostics.Should().ContainKey("panicDisableState");
+        var priorOverride = Environment.GetEnvironmentVariable("SWFOC_EXPERT_MUTATION_OVERRIDES");
+        var priorPanic = Environment.GetEnvironmentVariable("SWFOC_EXPERT_MUTATION_OVERRIDES_PANIC");
+        try
+        {
+            Environment.SetEnvironmentVariable("SWFOC_EXPERT_MUTATION_OVERRIDES", overrideValue);
+            Environment.SetEnvironmentVariable("SWFOC_EXPERT_MUTATION_OVERRIDES_PANIC", panicValue);
+            return action();
+        }
+        finally
+        {
+            Environment.SetEnvironmentVariable("SWFOC_EXPERT_MUTATION_OVERRIDES", priorOverride);
+            Environment.SetEnvironmentVariable("SWFOC_EXPERT_MUTATION_OVERRIDES_PANIC", priorPanic);
+        }
     }
 }

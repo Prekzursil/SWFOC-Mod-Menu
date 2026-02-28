@@ -1,48 +1,28 @@
-# Custom Profiles (Auto-Discovery)
+# Custom Auto-Discovery Profiles
 
-This folder stores generated draft profiles for workshop mods that are outside the base shipped set.
+This folder is the output target for draft profiles generated from workshop discovery seeds.
 
-## Generation Workflow
+## Runbook
 
-1. Discover and normalize workshop mods:
+1. Discover top workshop mods (live or deterministic fixture mode):
+   - `python3 tools/workshop/discover-top-mods.py --source-file tools/fixtures/workshop_topmods_sample.json --output TestResults/tmp-topmods.json --limit 3`
+2. Enrich discovered mods into profile seeds:
+   - `python3 tools/workshop/enrich-mod-metadata.py --input TestResults/tmp-topmods.json --output TestResults/tmp-seeds.json --source-run-id <runId>`
+3. Validate contracts in strict mode:
+   - `pwsh tools/validate-workshop-topmods.ps1 -Path TestResults/tmp-topmods.json -Strict`
+   - `pwsh tools/validate-generated-profile-seed.ps1 -Path TestResults/tmp-seeds.json -Strict`
+4. Generate draft profile files:
+   - `pwsh tools/workshop/generate-profiles-from-seeds.ps1 -SeedsPath TestResults/tmp-seeds.json`
 
-```powershell
-python3 tools/workshop/discover-top-mods.py --output TestResults/mod-discovery/<runId>/top-mods.json --limit 10
-```
+## Output Path Defaults
 
-1. Enrich top-mod records into onboarding seeds:
+- `ProfilesRootPath`: `profiles/custom`
+- `Namespace`: `profiles`
+- Effective draft profile path: `profiles/custom/profiles/*.json`
 
-```powershell
-python3 tools/workshop/enrich-mod-metadata.py --input TestResults/mod-discovery/<runId>/top-mods.json --output TestResults/mod-discovery/<runId>/generated-profile-seeds.json --source-run-id <runId>
-```
-
-1. Validate artifact contracts:
-
-```powershell
-pwsh tools/validate-workshop-topmods.ps1 -Path TestResults/mod-discovery/<runId>/top-mods.json -Strict
-pwsh tools/validate-generated-profile-seed.ps1 -Path TestResults/mod-discovery/<runId>/generated-profile-seeds.json -Strict
-```
-
-1. Generate draft profiles:
-
-```powershell
-pwsh tools/workshop/generate-profiles-from-seeds.ps1 -SeedPath TestResults/mod-discovery/<runId>/generated-profile-seeds.json -OutputRoot profiles/custom -NamespaceRoot custom -Force
-```
-
-## Metadata Contract
-
-Generated drafts include metadata keys used by onboarding and diagnostics:
+Each generated draft includes metadata markers:
 
 - `origin=auto_discovery`
-- `sourceRunId=<discovery run id>`
+- `sourceRunId=<run id>`
 - `confidence=<0..1>`
-- `parentProfile=<candidate base profile id>`
-- `requiredWorkshopIds=<comma-delimited list>`
-- `profileAliases=<comma-delimited aliases>`
-- `localPathHints=<comma-delimited launch path hints>`
-
-## Safety Notes
-
-- Generated profiles are drafts. Runtime mutation remains fail-closed unless capability proof is verified.
-- Review every generated draft before promotion to a default profile pack.
-- Keep discovery artifacts under `TestResults/mod-discovery/<runId>/` for reproducibility.
+- `parentProfile=<candidate base profile>`

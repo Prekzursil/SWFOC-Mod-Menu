@@ -464,6 +464,13 @@ public sealed class MainViewModel : MainViewModelSaveOpsBase
                 return;
             }
 
+            var selectedProfile = await _profiles.ResolveInheritedProfileAsync(SelectedProfileId, CancellationToken.None);
+            if (ResolveProfileFeatureGateReason(SelectedActionId, selectedProfile) is { } featureGateReason)
+            {
+                Status = $"Action blocked: {featureGateReason}";
+                return;
+            }
+
             var result = await _orchestrator.ExecuteAsync(
                 SelectedProfileId,
                 SelectedActionId,
@@ -479,6 +486,29 @@ public sealed class MainViewModel : MainViewModelSaveOpsBase
             Status = $"Action failed: {ex.Message}";
         }
     }
+
+    private static string? ResolveProfileFeatureGateReason(string actionId, TrainerProfile profile)
+    {
+        var featureFlag = actionId switch
+        {
+            "toggle_fog_reveal_patch_fallback" => "allow_fog_patch_fallback",
+            "set_unit_cap_patch_fallback" => "allow_unit_cap_patch_fallback",
+            _ => null
+        };
+
+        if (featureFlag is null)
+        {
+            return null;
+        }
+
+        if (profile.FeatureFlags.TryGetValue(featureFlag, out var enabled) && enabled)
+        {
+            return null;
+        }
+
+        return $"fallback action '{actionId}' is disabled by feature flag '{featureFlag}'.";
+    }
+
     protected override void ApplyPayloadTemplateForSelectedAction()
     {
         if (!TryGetRequiredPayloadKeysForSelectedAction(out var required))

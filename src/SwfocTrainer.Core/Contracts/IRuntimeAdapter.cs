@@ -31,4 +31,20 @@ public interface IRuntimeAdapter
     bool IsAttached { get; }
 
     AttachSession? CurrentSession { get; }
+
+    Task<RuntimeCalibrationScanResult> ScanCalibrationCandidatesAsync(
+        RuntimeCalibrationScanRequest request,
+        CancellationToken cancellationToken)
+    {
+        return Task.FromResult(new RuntimeCalibrationScanResult(
+            Succeeded: false,
+            ReasonCode: "not_supported",
+            Message: "Calibration scan is not supported by this runtime adapter implementation.",
+            Candidates: Array.Empty<RuntimeCalibrationCandidate>()));
+    }
+
+    Task<RuntimeCalibrationScanResult> ScanCalibrationCandidatesAsync(RuntimeCalibrationScanRequest request)
+    {
+        return ScanCalibrationCandidatesAsync(request, CancellationToken.None);
+    }
 }

@@ -23,7 +23,7 @@
     "nextAction"
   ],
   "properties": {
-    "schemaVersion": { "type": "string", "const": "1.1" },
+    "schemaVersion": { "type": "string", "const": "1.2" },
     "runId": { "type": "string", "minLength": 1 },
     "startedAtUtc": { "type": "string", "format": "date-time" },
     "scope": {
@@ -49,12 +49,18 @@
     },
     "launchContext": {
       "type": "object",
-      "required": ["profileId", "reasonCode", "confidence", "launchKind"],
+      "required": ["profileId", "reasonCode", "confidence", "launchKind", "source"],
       "properties": {
         "profileId": { "type": ["string", "null"] },
         "reasonCode": { "type": ["string", "null"] },
         "confidence": { "type": ["number", "null"] },
-        "launchKind": { "type": ["string", "null"] }
+        "launchKind": { "type": ["string", "null"] },
+        "source": { "type": "string", "enum": ["detected", "forced"] },
+        "forcedWorkshopIds": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "forcedProfileId": { "type": ["string", "null"] }
       }
     },
     "runtimeMode": {
