@@ -228,7 +228,8 @@ public sealed class LivePromotedActionMatrixTests
             routeReasonCode,
             capabilityProbeReasonCode,
             hybridExecution,
-            hasFallbackMarker);
+            hasFallbackMarker,
+            action.ExecutionKind);
     }
 
     private bool TrySkipUnavailableProfileContext(
@@ -258,13 +259,17 @@ public sealed class LivePromotedActionMatrixTests
         string? routeReasonCode,
         string? capabilityProbeReasonCode,
         bool? hybridExecution,
-        bool hasFallbackMarker)
+        bool hasFallbackMarker,
+        ExecutionKind executionKind)
     {
         result.Succeeded.Should().BeTrue(
             $"promoted action '{actionId}' should execute successfully for profile '{profileId}'. message={result.Message}");
+        var expectedBackend = executionKind == ExecutionKind.Sdk
+            ? ExecutionBackendKind.Extender
+            : ExecutionBackendKind.Memory;
         backendRoute.Should().Be(
-            ExecutionBackendKind.Extender.ToString(),
-            because: $"promoted action '{actionId}' should route via extender backend for profile '{profileId}'.");
+            expectedBackend.ToString(),
+            because: $"promoted action '{actionId}' should respect execution kind '{executionKind}' for profile '{profileId}'.");
         routeReasonCode.Should().Be(
             RuntimeReasonCode.CAPABILITY_PROBE_PASS.ToString(),
             because: $"promoted action '{actionId}' should pass route capability gate for profile '{profileId}'.");

@@ -59,7 +59,7 @@ public sealed class BackendRouter : IBackendRouter
         ProcessMetadata process,
         CapabilityReport capabilityReport)
     {
-        var isPromotedExtenderAction = IsPromotedExtenderAction(request.Action.Id, profile, process);
+        var isPromotedExtenderAction = IsPromotedExtenderAction(request.Action, profile, process);
         var defaultBackend = MapDefaultBackend(request.Action.ExecutionKind, isPromotedExtenderAction);
         var preferredBackend = ResolvePreferredBackend(profile.BackendPreference, defaultBackend, isPromotedExtenderAction);
         var isMutating = IsMutating(request.Action.Id);
@@ -394,13 +394,53 @@ public sealed class BackendRouter : IBackendRouter
     }
 
     private static bool IsPromotedExtenderAction(
-        string actionId,
+        ActionSpec action,
         TrainerProfile profile,
         ProcessMetadata process)
     {
-        return IsFoCContext(profile, process) &&
-               !string.IsNullOrWhiteSpace(actionId) &&
-               PromotedExtenderActionIds.Contains(actionId);
+        if (!IsFoCContext(profile, process) ||
+            string.IsNullOrWhiteSpace(action.Id) ||
+            !PromotedExtenderActionIds.Contains(action.Id))
+        {
+            return false;
+        }
+
+        if (action.ExecutionKind == ExecutionKind.Sdk)
+        {
+            return true;
+        }
+
+        return IsExplicitlyPromotedFromProfileMetadata(profile.Metadata, action.Id);
+    }
+
+    private static bool IsExplicitlyPromotedFromProfileMetadata(
+        IReadOnlyDictionary<string, string>? metadata,
+        string actionId)
+    {
+        if (metadata is null)
+        {
+            return false;
+        }
+
+        var perActionKeys = new[]
+        {
+            $"promotedExtenderAction.{actionId}",
+            $"promotedExtenderAction:{actionId}"
+        };
+
+        foreach (var key in perActionKeys)
+        {
+            if (metadata.TryGetValue(key, out var raw) &&
+                bool.TryParse(raw, out var explicitlyPromoted) &&
+                explicitlyPromoted)
+            {
+                return true;
+            }
+        }
+
+        return metadata.TryGetValue("promotedExtenderActions", out var csv) &&
+               csv.Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries)
+                  .Any(id => id.Equals(actionId, StringComparison.OrdinalIgnoreCase));
     }
 
     private static bool IsFoCContext(TrainerProfile profile, ProcessMetadata process)

@@ -1541,8 +1541,25 @@ public sealed class RuntimeAdapter : IRuntimeAdapter
     {
         return !routeDecision.Allowed &&
                routeDecision.Backend == ExecutionBackendKind.Extender &&
-               IsPromotedExtenderAction(request.Action.Id) &&
+               IsRouterPromotedExtenderAction(routeDecision.Diagnostics) &&
                IsMutatingActionId(request.Action.Id);
+    }
+
+    private static bool IsRouterPromotedExtenderAction(IReadOnlyDictionary<string, object?>? diagnostics)
+    {
+        if (diagnostics is null ||
+            !diagnostics.TryGetValue("promotedExtenderAction", out var raw) ||
+            raw is null)
+        {
+            return false;
+        }
+
+        if (raw is bool promoted)
+        {
+            return promoted;
+        }
+
+        return bool.TryParse(raw.ToString(), out var parsed) && parsed;
     }
 
     private static ExecutionBackendKind ResolveLegacyOverrideBackend(ExecutionKind executionKind)

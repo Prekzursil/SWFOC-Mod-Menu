@@ -9,12 +9,12 @@ namespace SwfocTrainer.Tests.Runtime;
 public sealed class BackendRouterTests
 {
     [Theory]
-    [InlineData("freeze_timer", ExecutionKind.Memory)]
-    [InlineData("toggle_fog_reveal", ExecutionKind.Memory)]
-    [InlineData("toggle_ai", ExecutionKind.Memory)]
-    [InlineData("set_unit_cap", ExecutionKind.CodePatch)]
-    [InlineData("toggle_instant_build_patch", ExecutionKind.CodePatch)]
-    public void Resolve_ShouldPromoteHybridActions_ToExtender_WhenCapabilityIsAvailable(
+    [InlineData("freeze_timer", ExecutionKind.Sdk)]
+    [InlineData("toggle_fog_reveal", ExecutionKind.Sdk)]
+    [InlineData("toggle_ai", ExecutionKind.Sdk)]
+    [InlineData("set_unit_cap", ExecutionKind.Sdk)]
+    [InlineData("toggle_instant_build_patch", ExecutionKind.Sdk)]
+    public void Resolve_ShouldPromoteSdkActions_ToExtender_WhenCapabilityIsAvailable(
         string actionId,
         ExecutionKind executionKind)
     {
@@ -61,12 +61,12 @@ public sealed class BackendRouterTests
     }
 
     [Theory]
-    [InlineData("freeze_timer", ExecutionKind.Memory)]
-    [InlineData("toggle_fog_reveal", ExecutionKind.Memory)]
-    [InlineData("toggle_ai", ExecutionKind.Memory)]
-    [InlineData("set_unit_cap", ExecutionKind.CodePatch)]
-    [InlineData("toggle_instant_build_patch", ExecutionKind.CodePatch)]
-    public void Resolve_ShouldBlockHybridActions_WhenCapabilityIsMissing(
+    [InlineData("freeze_timer", ExecutionKind.Sdk)]
+    [InlineData("toggle_fog_reveal", ExecutionKind.Sdk)]
+    [InlineData("toggle_ai", ExecutionKind.Sdk)]
+    [InlineData("set_unit_cap", ExecutionKind.Sdk)]
+    [InlineData("toggle_instant_build_patch", ExecutionKind.Sdk)]
+    public void Resolve_ShouldBlockPromotedSdkActions_WhenCapabilityIsMissing(
         string actionId,
         ExecutionKind executionKind)
     {
@@ -89,12 +89,12 @@ public sealed class BackendRouterTests
     }
 
     [Theory]
-    [InlineData("freeze_timer", ExecutionKind.Memory)]
-    [InlineData("toggle_fog_reveal", ExecutionKind.Memory)]
-    [InlineData("toggle_ai", ExecutionKind.Memory)]
-    [InlineData("set_unit_cap", ExecutionKind.CodePatch)]
-    [InlineData("toggle_instant_build_patch", ExecutionKind.CodePatch)]
-    public void Resolve_ShouldFailClosedForPromotedActions_WhenCapabilityIsUnverified(
+    [InlineData("freeze_timer", ExecutionKind.Sdk)]
+    [InlineData("toggle_fog_reveal", ExecutionKind.Sdk)]
+    [InlineData("toggle_ai", ExecutionKind.Sdk)]
+    [InlineData("set_unit_cap", ExecutionKind.Sdk)]
+    [InlineData("toggle_instant_build_patch", ExecutionKind.Sdk)]
+    public void Resolve_ShouldFailClosedForPromotedSdkActions_WhenCapabilityIsUnverified(
         string actionId,
         ExecutionKind executionKind)
     {
@@ -127,6 +127,65 @@ public sealed class BackendRouterTests
         decision.Diagnostics.Should().NotContainKey("fallbackBackend");
     }
 
+
+    [Theory]
+    [InlineData("freeze_timer", ExecutionKind.Memory)]
+    [InlineData("toggle_fog_reveal", ExecutionKind.Memory)]
+    [InlineData("toggle_ai", ExecutionKind.Memory)]
+    [InlineData("set_unit_cap", ExecutionKind.CodePatch)]
+    [InlineData("toggle_instant_build_patch", ExecutionKind.CodePatch)]
+    public void Resolve_ShouldNotForcePromotedActionIdsToExtender_WhenExecutionKindIsNotSdk(
+        string actionId,
+        ExecutionKind executionKind)
+    {
+        var router = new BackendRouter();
+        var request = BuildRequest(actionId, executionKind);
+        var profile = BuildProfile(backendPreference: "auto");
+        var process = BuildProcess();
+        var report = CapabilityReport.Unknown(profile.Id, RuntimeReasonCode.CAPABILITY_UNKNOWN);
+
+        var decision = router.Resolve(request, profile, process, report);
+
+        decision.Allowed.Should().BeTrue();
+        decision.Backend.Should().Be(ExecutionBackendKind.Memory);
+        decision.ReasonCode.Should().Be(RuntimeReasonCode.CAPABILITY_PROBE_PASS);
+        decision.Diagnostics.Should().ContainKey("promotedExtenderAction");
+        decision.Diagnostics!["promotedExtenderAction"].Should().Be(false);
+    }
+
+    [Fact]
+    public void Resolve_ShouldPromoteNonSdkAction_WhenProfileMetadataExplicitlyEnablesPromotion()
+    {
+        var router = new BackendRouter();
+        var request = BuildRequest("freeze_timer", ExecutionKind.Memory);
+        var profile = BuildProfile(
+            backendPreference: "auto",
+            metadata: new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
+            {
+                ["promotedExtenderAction.freeze_timer"] = "true"
+            });
+        var process = BuildProcess();
+        var report = new CapabilityReport(
+            profile.Id,
+            DateTimeOffset.UtcNow,
+            new Dictionary<string, BackendCapability>(StringComparer.OrdinalIgnoreCase)
+            {
+                ["freeze_timer"] = new BackendCapability(
+                    "freeze_timer",
+                    Available: true,
+                    CapabilityConfidenceState.Verified,
+                    RuntimeReasonCode.CAPABILITY_PROBE_PASS)
+            },
+            RuntimeReasonCode.CAPABILITY_PROBE_PASS);
+
+        var decision = router.Resolve(request, profile, process, report);
+
+        decision.Allowed.Should().BeTrue();
+        decision.Backend.Should().Be(ExecutionBackendKind.Extender);
+        decision.ReasonCode.Should().Be(RuntimeReasonCode.CAPABILITY_PROBE_PASS);
+        decision.Diagnostics.Should().ContainKey("promotedExtenderAction");
+        decision.Diagnostics!["promotedExtenderAction"].Should().Be(true);
+    }
     [Fact]
     public void Resolve_ShouldFailClosed_WhenExtenderIsRequiredButCapabilityUnknownForMutation()
     {
@@ -305,6 +364,7 @@ public sealed class BackendRouterTests
     private static TrainerProfile BuildProfile(
         string backendPreference,
         IReadOnlyList<string>? requiredCapabilities = null,
+        IReadOnlyDictionary<string, string>? metadata = null,
         string id = "roe_3447786229_swfoc",
         string displayName = "ROE",
         ExeTarget exeTarget = ExeTarget.Swfoc)
@@ -322,7 +382,7 @@ public sealed class BackendRouterTests
             CatalogSources: Array.Empty<CatalogSource>(),
             SaveSchemaId: "test",
             HelperModHooks: Array.Empty<HelperHookSpec>(),
-            Metadata: new Dictionary<string, string>(),
+            Metadata: metadata ?? new Dictionary<string, string>(),
             BackendPreference: backendPreference,
             RequiredCapabilities: requiredCapabilities,
             HostPreference: "starwarsg_preferred",
