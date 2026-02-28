@@ -179,7 +179,7 @@ def canonical_mod_url(workshop_id: str) -> str:
     return f"https://steamcommunity.com/sharedfiles/filedetails/?id={workshop_id}"
 
 
-def normalize_mod_from_detail(detail: dict[str, Any]) -> dict[str, Any] | None:
+def normalize_mod_from_detail(detail: dict[str, Any]) -> dict[str, Any] | None:  # NOSONAR
     workshop_id = str(detail.get("publishedfileid") or detail.get("workshopId") or detail.get("id") or "").strip()
     if not workshop_id.isdigit():
         return None

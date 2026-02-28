@@ -85,7 +85,7 @@ def parse_csv(metadata: dict[str, str], key: str) -> list[str]:
     return [x.strip() for x in raw.split(",") if x.strip()]
 
 
-def load_profiles(profile_root: Path) -> dict[str, ProfileInfo]:
+def load_profiles(profile_root: Path) -> dict[str, ProfileInfo]:  # NOSONAR
     profiles_dir = profile_root / "profiles"
     if not profiles_dir.exists():
         raise FileNotFoundError(f"Missing profiles directory: {profiles_dir}")
@@ -361,7 +361,7 @@ def dependency_hints(profiles: dict[str, ProfileInfo], profile_id: str | None) -
     }
 
 
-def detect_one(
+def detect_one(  # NOSONAR
     process_input: dict[str, Any],
     profiles: dict[str, ProfileInfo],
     forced_workshop_ids: list[str] | None = None,

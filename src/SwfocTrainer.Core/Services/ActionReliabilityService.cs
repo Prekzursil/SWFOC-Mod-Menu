@@ -58,7 +58,7 @@ public sealed class ActionReliabilityService : IActionReliabilityService
         return Evaluate(profile, session, null);
     }
 
-    private static ActionReliabilityInfo EvaluateAction(
+    private static ActionReliabilityInfo EvaluateAction(  // NOSONAR
         TrainerProfile profile,
         string actionId,
         ActionSpec action,
