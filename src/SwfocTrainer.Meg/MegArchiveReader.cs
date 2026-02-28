@@ -49,53 +49,69 @@ public sealed class MegArchiveReader : IMegArchiveReader
         var bytes = payload.ToArray();
         try
         {
-            var header = ParseHeader(bytes, diagnostics, out var headerCursor);
-            if (!header.IsValid)
-            {
-                return MegOpenResult.Fail("invalid_header", header.ErrorMessage ?? "MEG header validation failed.", diagnostics);
-            }
-
-            if (header.IsEncrypted)
-            {
-                return MegOpenResult.Fail("encrypted_archive_unsupported", "Encrypted MEG archives are not supported by this reader.", diagnostics);
-            }
-
-            var names = ParseNames(bytes, header, ref headerCursor, diagnostics);
-            if (names is null &&
-                header.Format == "format3" &&
-                TryParseFormat2Fallback(bytes, diagnostics, out header, out headerCursor, out names))
-            {
-                diagnostics.Add("format3 parse fallback succeeded as format2.");
-            }
-
-            if (names is null)
-            {
-                return MegOpenResult.Fail("invalid_name_table", "Failed parsing MEG filename table.", diagnostics);
-            }
-
-            var entries = ParseEntries(bytes, header, names, ref headerCursor, diagnostics);
-            if (entries is null)
-            {
-                return MegOpenResult.Fail("invalid_file_table", "Failed parsing MEG file table.", diagnostics);
-            }
-
-            var ordered = entries
-                .OrderBy(x => x.Index)
-                .ThenBy(x => x.Path, StringComparer.OrdinalIgnoreCase)
-                .ToArray();
-            var archive = new MegArchive(
-                source: sourceName,
-                format: header.Format,
-                entries: ordered,
-                payload: bytes,
-                diagnostics: diagnostics);
-            return MegOpenResult.Success(archive, diagnostics);
+            return TryOpen(bytes, sourceName, diagnostics);
         }
         catch (Exception ex)
         {
             diagnostics.Add($"Unhandled parse exception: {ex.Message}");
             return MegOpenResult.Fail("parse_exception", $"MEG parse failed: {ex.Message}", diagnostics);
         }
+    }
+
+    private static MegOpenResult TryOpen(byte[] bytes, string sourceName, List<string> diagnostics)
+    {
+        var header = ParseHeader(bytes, diagnostics, out var headerCursor);
+        if (!header.IsValid)
+        {
+            return MegOpenResult.Fail("invalid_header", header.ErrorMessage ?? "MEG header validation failed.", diagnostics);
+        }
+
+        if (header.IsEncrypted)
+        {
+            return MegOpenResult.Fail("encrypted_archive_unsupported", "Encrypted MEG archives are not supported by this reader.", diagnostics);
+        }
+
+        if (!TryResolveNames(bytes, diagnostics, ref header, ref headerCursor, out var names))
+        {
+            return MegOpenResult.Fail("invalid_name_table", "Failed parsing MEG filename table.", diagnostics);
+        }
+
+        var entries = ParseEntries(bytes, header, names, ref headerCursor, diagnostics);
+        if (entries is null)
+        {
+            return MegOpenResult.Fail("invalid_file_table", "Failed parsing MEG file table.", diagnostics);
+        }
+
+        var ordered = entries
+            .OrderBy(x => x.Index)
+            .ThenBy(x => x.Path, StringComparer.OrdinalIgnoreCase)
+            .ToArray();
+        var archive = new MegArchive(
+            source: sourceName,
+            format: header.Format,
+            entries: ordered,
+            payload: bytes,
+            diagnostics: diagnostics);
+        return MegOpenResult.Success(archive, diagnostics);
+    }
+
+    private static bool TryResolveNames(
+        byte[] bytes,
+        ICollection<string> diagnostics,
+        ref ParsedHeader header,
+        ref int headerCursor,
+        out IReadOnlyList<string> names)
+    {
+        var parsedNames = ParseNames(bytes, header, ref headerCursor, diagnostics);
+        if (parsedNames is null &&
+            header.Format == "format3" &&
+            TryParseFormat2Fallback(bytes, diagnostics, out header, out headerCursor, out parsedNames))
+        {
+            diagnostics.Add("format3 parse fallback succeeded as format2.");
+        }
+
+        names = parsedNames ?? Array.Empty<string>();
+        return parsedNames is not null;
     }
 
     private static bool TryParseFormat2Fallback(
@@ -123,40 +139,18 @@ public sealed class MegArchiveReader : IMegArchiveReader
         var firstWord = ReadUInt32(bytes, 0);
         var secondWord = ReadUInt32(bytes, 4);
 
-        if (firstWord == Format3EncryptedMagicA && secondWord == Format2Or3MagicB)
+        if (TryParseFormat3Variant(bytes, firstWord, secondWord, diagnostics, out var format3))
         {
-            if (bytes.Length < 24)
-            {
-                return ParsedHeader.Fail("format3 header is truncated.");
-            }
-
-            var format3 = TryParseFormat3Header(bytes, firstWord, diagnostics);
-            if (!format3.IsValid)
-            {
-                return ParsedHeader.Fail(format3.ErrorMessage ?? "unable to parse format3 header.");
-            }
-
             cursor = 24;
             diagnostics.Add($"Detected {format3.Format} header with {format3.NameCount} names and {format3.FileCount} files.");
             return format3;
         }
 
-        if (firstWord == Format2Or3MagicA && secondWord == Format2Or3MagicB)
+        if (TryParseFormat2Variant(bytes, firstWord, secondWord, diagnostics, out var format2))
         {
-            if (bytes.Length < 20)
-            {
-                return ParsedHeader.Fail("format2 header is truncated.");
-            }
-
-            var format2 = ParseFormat2Header(bytes, diagnostics);
-            if (format2.IsValid)
-            {
-                cursor = 20;
-                diagnostics.Add($"Detected {format2.Format} header with {format2.NameCount} names and {format2.FileCount} files.");
-                return format2;
-            }
-
-            return ParsedHeader.Fail(format2.ErrorMessage ?? "unable to parse format2 header.");
+            cursor = 20;
+            diagnostics.Add($"Detected {format2.Format} header with {format2.NameCount} names and {format2.FileCount} files.");
+            return format2;
         }
 
         var format1 = ParseFormat1Header(bytes, diagnostics);
@@ -168,6 +162,62 @@ public sealed class MegArchiveReader : IMegArchiveReader
         }
 
         return ParsedHeader.Fail("unable to identify supported MEG header variant.");
+    }
+
+    private static bool TryParseFormat3Variant(
+        byte[] bytes,
+        uint firstWord,
+        uint secondWord,
+        ICollection<string> diagnostics,
+        out ParsedHeader header)
+    {
+        if (firstWord != Format3EncryptedMagicA || secondWord != Format2Or3MagicB)
+        {
+            header = ParsedHeader.Fail("format3 signature did not match.");
+            return false;
+        }
+
+        if (bytes.Length < 24)
+        {
+            header = ParsedHeader.Fail("format3 header is truncated.");
+            return true;
+        }
+
+        header = TryParseFormat3Header(bytes, firstWord, diagnostics);
+        if (!header.IsValid)
+        {
+            header = ParsedHeader.Fail(header.ErrorMessage ?? "unable to parse format3 header.");
+        }
+
+        return true;
+    }
+
+    private static bool TryParseFormat2Variant(
+        byte[] bytes,
+        uint firstWord,
+        uint secondWord,
+        ICollection<string> diagnostics,
+        out ParsedHeader header)
+    {
+        if (firstWord != Format2Or3MagicA || secondWord != Format2Or3MagicB)
+        {
+            header = ParsedHeader.Fail("format2 signature did not match.");
+            return false;
+        }
+
+        if (bytes.Length < 20)
+        {
+            header = ParsedHeader.Fail("format2 header is truncated.");
+            return true;
+        }
+
+        header = ParseFormat2Header(bytes, diagnostics);
+        if (!header.IsValid)
+        {
+            header = ParsedHeader.Fail(header.ErrorMessage ?? "unable to parse format2 header.");
+        }
+
+        return true;
     }
 
     private static ParsedHeader ParseFormat1Header(byte[] bytes, ICollection<string> diagnostics)

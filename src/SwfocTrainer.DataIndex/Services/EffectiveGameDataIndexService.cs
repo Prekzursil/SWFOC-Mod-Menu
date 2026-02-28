@@ -102,34 +102,52 @@ public sealed class EffectiveGameDataIndexService
                      .GetEnabledFilesInLoadOrder()
                      .Select(static megaFile => megaFile.FileName))
         {
-            var megaPath = ResolveMegaPath(request.GameRootPath, megaFileName);
-            if (megaPath is null)
+            AddMegFileEntries(
+                request,
+                megaFileName,
+                diagnostics,
+                records,
+                activeIndexByPath,
+                ref rank);
+        }
+    }
+
+    private void AddMegFileEntries(
+        EffectiveGameDataIndexRequest request,
+        string megaFileName,
+        ICollection<string> diagnostics,
+        IList<MutableEffectiveEntry> records,
+        IDictionary<string, int> activeIndexByPath,
+        ref int rank)
+    {
+        var megaPath = ResolveMegaPath(request.GameRootPath, megaFileName);
+        if (megaPath is null)
+        {
+            diagnostics.Add($"MEG file '{megaFileName}' was not found under game root '{request.GameRootPath}'.");
+            return;
+        }
+
+        var openResult = _megArchiveReader.Open(megaPath);
+        if (!openResult.Succeeded || openResult.Archive is null)
+        {
+            diagnostics.Add($"MEG parse failed '{megaPath}' reason={openResult.ReasonCode} message={openResult.Message}");
+            foreach (var detail in openResult.Diagnostics)
             {
-                diagnostics.Add($"MEG file '{megaFileName}' was not found under game root '{request.GameRootPath}'.");
-                continue;
+                diagnostics.Add($"MEG parse detail '{megaPath}': {detail}");
             }
 
-            var openResult = _megArchiveReader.Open(megaPath);
-            if (!openResult.Succeeded || openResult.Archive is null)
-            {
-                diagnostics.Add($"MEG parse failed '{megaPath}' reason={openResult.ReasonCode} message={openResult.Message}");
-                foreach (var detail in openResult.Diagnostics)
-                {
-                    diagnostics.Add($"MEG parse detail '{megaPath}': {detail}");
-                }
-                continue;
-            }
+            return;
+        }
 
-            foreach (var entryPath in openResult.Archive.Entries.Select(static entry => entry.Path))
-            {
-                AddEntry(
-                    relativePath: NormalizePath(entryPath),
-                    sourceType: "meg_entry",
-                    sourcePath: $"{megaPath}:{entryPath}",
-                    records,
-                    activeIndexByPath,
-                    ref rank);
-            }
+        foreach (var entryPath in openResult.Archive.Entries.Select(static entry => entry.Path))
+        {
+            AddEntry(
+                relativePath: NormalizePath(entryPath),
+                sourceType: "meg_entry",
+                sourcePath: $"{megaPath}:{entryPath}",
+                records,
+                activeIndexByPath,
+                ref rank);
         }
     }
 

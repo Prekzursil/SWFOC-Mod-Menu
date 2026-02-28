@@ -38,50 +38,7 @@ public sealed class StoryFlowGraphExporter
                      .OrderBy(x => x.SourceFile, StringComparer.OrdinalIgnoreCase)
                      .ThenBy(x => x.PlotId, StringComparer.OrdinalIgnoreCase))
         {
-            var rootId = $"plot:{plot.PlotId}";
-            nodes.Add(new StoryFlowGraphNode(
-                NodeId: rootId,
-                PlotId: plot.PlotId,
-                EventName: "__plot__",
-                ModeHint: FlowModeHint.Unknown,
-                SourceFile: plot.SourceFile,
-                ScriptReference: null,
-                ExpectedFeatureIds: Array.Empty<string>()));
-
-            var orderedEvents = plot.Events
-                .OrderBy(x => x.EventName, StringComparer.OrdinalIgnoreCase)
-                .ThenBy(x => x.ScriptReference, StringComparer.OrdinalIgnoreCase)
-                .ToArray();
-            StoryFlowGraphNode? previous = null;
-            for (var i = 0; i < orderedEvents.Length; i++)
-            {
-                var flowEvent = orderedEvents[i];
-                var node = new StoryFlowGraphNode(
-                    NodeId: $"{plot.PlotId}:{flowEvent.EventName}:{i:000}",
-                    PlotId: plot.PlotId,
-                    EventName: flowEvent.EventName,
-                    ModeHint: flowEvent.ModeHint,
-                    SourceFile: flowEvent.SourceFile,
-                    ScriptReference: flowEvent.ScriptReference,
-                    ExpectedFeatureIds: ResolveExpectedFeatures(flowEvent.ModeHint));
-                nodes.Add(node);
-                edges.Add(new StoryFlowGraphEdge(
-                    FromNodeId: rootId,
-                    ToNodeId: node.NodeId,
-                    EdgeType: "plot_contains_event",
-                    Reason: flowEvent.EventName));
-
-                if (previous is not null)
-                {
-                    edges.Add(new StoryFlowGraphEdge(
-                        FromNodeId: previous.NodeId,
-                        ToNodeId: node.NodeId,
-                        EdgeType: "inferred_sequence",
-                        Reason: "ordered-by-event-name"));
-                }
-
-                previous = node;
-            }
+            AddPlotGraph(plot, nodes, edges);
         }
 
         return new StoryFlowGraphReport(nodes, edges, diagnostics);
@@ -117,6 +74,57 @@ public sealed class StoryFlowGraphExporter
         }
 
         return builder.ToString();
+    }
+
+    private static void AddPlotGraph(
+        FlowPlotRecord plot,
+        ICollection<StoryFlowGraphNode> nodes,
+        ICollection<StoryFlowGraphEdge> edges)
+    {
+        var rootId = $"plot:{plot.PlotId}";
+        nodes.Add(new StoryFlowGraphNode(
+            NodeId: rootId,
+            PlotId: plot.PlotId,
+            EventName: "__plot__",
+            ModeHint: FlowModeHint.Unknown,
+            SourceFile: plot.SourceFile,
+            ScriptReference: null,
+            ExpectedFeatureIds: Array.Empty<string>()));
+
+        var orderedEvents = plot.Events
+            .OrderBy(x => x.EventName, StringComparer.OrdinalIgnoreCase)
+            .ThenBy(x => x.ScriptReference, StringComparer.OrdinalIgnoreCase)
+            .ToArray();
+        StoryFlowGraphNode? previous = null;
+        for (var i = 0; i < orderedEvents.Length; i++)
+        {
+            var flowEvent = orderedEvents[i];
+            var node = new StoryFlowGraphNode(
+                NodeId: $"{plot.PlotId}:{flowEvent.EventName}:{i:000}",
+                PlotId: plot.PlotId,
+                EventName: flowEvent.EventName,
+                ModeHint: flowEvent.ModeHint,
+                SourceFile: flowEvent.SourceFile,
+                ScriptReference: flowEvent.ScriptReference,
+                ExpectedFeatureIds: ResolveExpectedFeatures(flowEvent.ModeHint));
+            nodes.Add(node);
+            edges.Add(new StoryFlowGraphEdge(
+                FromNodeId: rootId,
+                ToNodeId: node.NodeId,
+                EdgeType: "plot_contains_event",
+                Reason: flowEvent.EventName));
+
+            if (previous is not null)
+            {
+                edges.Add(new StoryFlowGraphEdge(
+                    FromNodeId: previous.NodeId,
+                    ToNodeId: node.NodeId,
+                    EdgeType: "inferred_sequence",
+                    Reason: "ordered-by-event-name"));
+            }
+
+            previous = node;
+        }
     }
 
     private static IReadOnlyList<string> ResolveExpectedFeatures(FlowModeHint modeHint)

@@ -75,8 +75,6 @@ public sealed class StoryFlowGraphExporterTests
             },
             Edges: Array.Empty<StoryFlowGraphEdge>(),
             Diagnostics: Array.Empty<string>());
-        var exporter = new StoryFlowGraphExporter();
-
         var markdown = StoryFlowGraphExporter.BuildMarkdownSummary("roe_3447786229_swfoc", graph);
 
         markdown.Should().Contain("STORY_LAND_TACTICAL");
