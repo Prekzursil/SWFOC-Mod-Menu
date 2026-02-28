@@ -68,6 +68,8 @@ public sealed class RuntimeAdapter : IRuntimeAdapter
     private const string ActionIdToggleInstantBuildPatch = "toggle_instant_build_patch";
     private const string ActionIdSetCredits = "set_credits";
     private const string SymbolCredits = "credits";
+    private const string ContextKeyRuntimeModeOverride = "runtimeModeOverride";
+    private const string ContextKeyRuntimeModeRequested = "runtimeModeRequested";
 
     private static readonly string[] ResultHookStateKeys =
     [
@@ -1012,6 +1014,7 @@ public sealed class RuntimeAdapter : IRuntimeAdapter
     public async Task<ActionExecutionResult> ExecuteAsync(ActionExecutionRequest request, CancellationToken cancellationToken)
     {
         EnsureAttached();
+        request = ApplyRuntimeModeOverride(request, CurrentSession?.Process.Metadata);
         if (TryCreateDependencyDisabledResult(request, out var dependencyDisabled))
         {
             return dependencyDisabled;
@@ -1052,6 +1055,62 @@ public sealed class RuntimeAdapter : IRuntimeAdapter
             RecordActionTelemetry(request, failed);
             return failed;
         }
+    }
+
+    private static ActionExecutionRequest ApplyRuntimeModeOverride(
+        ActionExecutionRequest request,
+        IReadOnlyDictionary<string, string>? sessionMetadata)
+    {
+        var modeHint = sessionMetadata is not null && sessionMetadata.TryGetValue("runtimeModeHint", out var hint)
+            ? hint
+            : request.RuntimeMode.ToString();
+        var inferredReasonCode = sessionMetadata is not null && sessionMetadata.TryGetValue("runtimeModeReasonCode", out var reasonCode)
+            ? reasonCode
+            : "mode_request";
+        var overrideMode = TryReadRuntimeModeOverride(request.Context);
+        var effectiveMode = overrideMode is RuntimeMode.Unknown or null
+            ? request.RuntimeMode
+            : overrideMode.Value;
+        var effectiveReasonCode = overrideMode is RuntimeMode.Unknown or null
+            ? inferredReasonCode
+            : "mode_override_operator";
+
+        var diagnosticsContext = new Dictionary<string, object?>(StringComparer.OrdinalIgnoreCase);
+        if (request.Context is not null)
+        {
+            foreach (var kv in request.Context)
+            {
+                diagnosticsContext[kv.Key] = kv.Value;
+            }
+        }
+
+        diagnosticsContext[ContextKeyRuntimeModeRequested] = request.RuntimeMode.ToString();
+        diagnosticsContext["runtimeModeHint"] = modeHint;
+        diagnosticsContext["runtimeModeEffective"] = effectiveMode.ToString();
+        diagnosticsContext["runtimeModeReasonCode"] = effectiveReasonCode;
+
+        return request with
+        {
+            RuntimeMode = effectiveMode,
+            Context = diagnosticsContext
+        };
+    }
+
+    private static RuntimeMode? TryReadRuntimeModeOverride(IReadOnlyDictionary<string, object?>? context)
+    {
+        if (!TryReadContextValue(context, ContextKeyRuntimeModeOverride, out var value) || value is null)
+        {
+            return null;
+        }
+
+        if (value is RuntimeMode mode)
+        {
+            return mode;
+        }
+
+        return Enum.TryParse<RuntimeMode>(Convert.ToString(value, CultureInfo.InvariantCulture), ignoreCase: true, out var parsed)
+            ? parsed
+            : null;
     }
 
     private bool TryCreateDependencyDisabledResult(

@@ -146,7 +146,7 @@ public abstract class MainViewModelLiveOpsBase : MainViewModelBindableMembersBas
             return;
         }
 
-        var result = await _selectedUnitTransactions.ApplyAsync(SelectedProfileId, draftResult.Draft!, RuntimeMode);
+        var result = await _selectedUnitTransactions.ApplyAsync(SelectedProfileId, draftResult.Draft!, ResolveRuntimeModeForExecution());
         RefreshSelectedUnitTransactions();
         if (result.Succeeded)
         {
@@ -166,7 +166,7 @@ public abstract class MainViewModelLiveOpsBase : MainViewModelBindableMembersBas
             return;
         }
 
-        var result = await _selectedUnitTransactions.RevertLastAsync(SelectedProfileId, RuntimeMode);
+        var result = await _selectedUnitTransactions.RevertLastAsync(SelectedProfileId, ResolveRuntimeModeForExecution());
         RefreshSelectedUnitTransactions();
         if (result.Succeeded)
         {
@@ -186,7 +186,7 @@ public abstract class MainViewModelLiveOpsBase : MainViewModelBindableMembersBas
             return;
         }
 
-        var result = await _selectedUnitTransactions.RestoreBaselineAsync(SelectedProfileId, RuntimeMode);
+        var result = await _selectedUnitTransactions.RestoreBaselineAsync(SelectedProfileId, ResolveRuntimeModeForExecution());
         RefreshSelectedUnitTransactions();
         if (result.Succeeded)
         {
@@ -231,7 +231,7 @@ public abstract class MainViewModelLiveOpsBase : MainViewModelBindableMembersBas
             new MainViewModelSpawnHelpers.SpawnBatchInputRequest(
                 SelectedProfileId,
                 SelectedSpawnPreset,
-                RuntimeMode,
+                ResolveRuntimeModeForExecution(),
                 SpawnQuantity,
                 SpawnDelayMs));
         if (!batchInputs.Succeeded)
@@ -250,7 +250,7 @@ public abstract class MainViewModelLiveOpsBase : MainViewModelBindableMembersBas
             SelectedEntryMarker,
             SpawnStopOnFailure);
 
-        var result = await _spawnPresets.ExecuteBatchAsync(batchInputs.ProfileId, plan, RuntimeMode);
+        var result = await _spawnPresets.ExecuteBatchAsync(batchInputs.ProfileId, plan, ResolveRuntimeModeForExecution());
         Status = result.Succeeded
             ? $"✓ {result.Message}"
             : $"✗ {result.Message}";
@@ -322,6 +322,13 @@ public abstract class MainViewModelLiveOpsBase : MainViewModelBindableMembersBas
             : DraftBuildResult.FromDraft(draft);
     }
 
+    protected RuntimeMode ResolveRuntimeModeForExecution()
+    {
+        return RuntimeModeOverride == RuntimeMode.Unknown
+            ? RuntimeMode
+            : RuntimeModeOverride;
+    }
+
     protected IReadOnlyDictionary<string, object?> BuildActionContext(string actionId)
     {
         var reliability = ActionReliability.FirstOrDefault(x => x.ActionId.Equals(actionId, StringComparison.OrdinalIgnoreCase));
@@ -329,7 +336,9 @@ public abstract class MainViewModelLiveOpsBase : MainViewModelBindableMembersBas
         {
             ["reliabilityState"] = reliability?.State ?? UnknownValue,
             ["reliabilityReasonCode"] = reliability?.ReasonCode ?? UnknownValue,
-            ["bundleGateResult"] = MainViewModelDiagnostics.ResolveBundleGateResult(reliability, UnknownValue)
+            ["bundleGateResult"] = MainViewModelDiagnostics.ResolveBundleGateResult(reliability, UnknownValue),
+            ["runtimeModeOverride"] = RuntimeModeOverride.ToString(),
+            ["runtimeModeRequested"] = ResolveRuntimeModeForExecution().ToString()
         };
     }
 }

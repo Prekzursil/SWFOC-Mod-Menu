@@ -3,6 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:SwfocTrainer.Core.Models;assembly=SwfocTrainer.Core"
         mc:Ignorable="d"
         Title="SWFOC Trainer Editor" Height="900" Width="1400"
         MinWidth="1024" MinHeight="700"
@@ -24,6 +25,12 @@
             <Button Content="Detach" Command="{Binding DetachCommand}" Margin="8,0,0,0"/>
             <TextBlock Text="  Mode:" VerticalAlignment="Center" Margin="12,0,4,0"/>
             <TextBlock Text="{Binding RuntimeMode}" VerticalAlignment="Center"/>
+            <TextBlock Text="  Override:" VerticalAlignment="Center" Margin="12,0,4,0"/>
+            <ComboBox Width="110" SelectedValuePath="Tag" SelectedValue="{Binding RuntimeModeOverride}">
+                <ComboBoxItem Content="Unknown" Tag="{x:Static local:RuntimeMode.Unknown}"/>
+                <ComboBoxItem Content="Galactic" Tag="{x:Static local:RuntimeMode.Galactic}"/>
+                <ComboBoxItem Content="Tactical" Tag="{x:Static local:RuntimeMode.Tactical}"/>
+            </ComboBox>
             <TextBlock Text="  Symbols:" VerticalAlignment="Center" Margin="12,0,4,0"/>
             <TextBlock Text="{Binding ResolvedSymbolsCount}" VerticalAlignment="Center"/>
         </StackPanel>

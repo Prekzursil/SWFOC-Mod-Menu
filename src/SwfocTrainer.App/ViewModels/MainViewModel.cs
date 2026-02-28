@@ -468,7 +468,7 @@ public sealed class MainViewModel : MainViewModelSaveOpsBase
                 SelectedProfileId,
                 SelectedActionId,
                 payloadNode,
-                RuntimeMode,
+                ResolveRuntimeModeForExecution(),
                 BuildActionContext(SelectedActionId));
             Status = result.Succeeded
                 ? $"Action succeeded: {result.Message}{MainViewModelDiagnostics.BuildDiagnosticsStatusSuffix(result)}"

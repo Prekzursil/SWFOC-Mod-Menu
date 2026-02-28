@@ -71,6 +71,12 @@ public abstract class MainViewModelBindableMembersBase : MainViewModelCoreStateB
         set => SetField(_runtimeMode, value, newValue => _runtimeMode = newValue);
     }
 
+    public RuntimeMode RuntimeModeOverride
+    {
+        get => _runtimeModeOverride;
+        set => SetField(_runtimeModeOverride, value, newValue => _runtimeModeOverride = newValue);
+    }
+
     public string SavePath
     {
         get => _savePath;

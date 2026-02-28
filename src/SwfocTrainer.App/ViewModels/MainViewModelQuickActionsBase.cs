@@ -48,7 +48,7 @@ public abstract class MainViewModelQuickActionsBase : MainViewModelLiveOpsBase
             SelectedProfileId!,
             actionId,
             payload,
-            RuntimeMode,
+            ResolveRuntimeModeForExecution(),
             BuildActionContext(actionId));
     }
 
@@ -151,7 +151,7 @@ public abstract class MainViewModelQuickActionsBase : MainViewModelLiveOpsBase
         SelectedProfileId!,
         ActionSetCredits,
         payload,
-        RuntimeMode,
+        ResolveRuntimeModeForExecution(),
         BuildActionContext(ActionSetCredits));
 
     protected Task QuickFreezeTimerAsync() => QuickRunActionAsync(
@@ -288,7 +288,7 @@ public abstract class MainViewModelQuickActionsBase : MainViewModelLiveOpsBase
             SelectedProfileId!,
             binding.ActionId,
             payloadNode,
-            RuntimeMode,
+            ResolveRuntimeModeForExecution(),
             BuildActionContext(binding.ActionId));
         Status = MainViewModelHotkeyHelpers.BuildHotkeyStatus(gesture, binding.ActionId, result);
 
