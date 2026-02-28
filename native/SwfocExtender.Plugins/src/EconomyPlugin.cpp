@@ -2,6 +2,30 @@
 
 namespace swfoc::extender::plugins {
 
+namespace {
+
+constexpr const char* kReasonExtenderNotImplemented = "EXTENDER_NOT_IMPLEMENTED";
+
+bool HasProcessMutationImplementation() {
+    return false;
+}
+
+PluginResult BuildMutationNotImplementedResult(const PluginRequest& request) {
+    PluginResult result {};
+    result.succeeded = false;
+    result.reasonCode = kReasonExtenderNotImplemented;
+    result.hookState = "NOOP";
+    result.message = "Economy mutation rejected because process mutation implementation is not installed.";
+    result.diagnostics = {
+        {"featureId", request.featureId},
+        {"processId", std::to_string(request.processId)},
+        {"anchorsPresent", request.anchors.empty() ? "false" : "true"},
+        {"anchorCount", std::to_string(request.anchors.size())}};
+    return result;
+}
+
+} // namespace
+
 const char* EconomyPlugin::id() const noexcept {
     return "economy";
 }
@@ -25,6 +49,10 @@ PluginResult EconomyPlugin::execute(const PluginRequest& request) {
         result.message = "intValue must be non-negative for set_credits.";
         result.diagnostics = {{"intValue", std::to_string(request.intValue)}};
         return result;
+    }
+
+    if (!HasProcessMutationImplementation()) {
+        return BuildMutationNotImplementedResult(request);
     }
 
     hookInstalled_.store(true);
