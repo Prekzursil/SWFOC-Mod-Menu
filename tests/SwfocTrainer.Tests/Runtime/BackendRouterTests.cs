@@ -14,7 +14,7 @@ public sealed class BackendRouterTests
     [InlineData("toggle_ai", ExecutionKind.Memory)]
     [InlineData("set_unit_cap", ExecutionKind.CodePatch)]
     [InlineData("toggle_instant_build_patch", ExecutionKind.CodePatch)]
-    public void Resolve_ShouldPromoteHybridActions_ToExtender_WhenCapabilityIsAvailable(
+    public void Resolve_ShouldRoute_ManagedQuickActions_WithoutExtenderPromotion(
         string actionId,
         ExecutionKind executionKind)
     {
@@ -30,62 +30,17 @@ public sealed class BackendRouterTests
             });
         var profile = BuildProfile(backendPreference: "auto");
         var process = BuildProcess();
-        var report = new CapabilityReport(
-            profile.Id,
-            DateTimeOffset.UtcNow,
-            new Dictionary<string, BackendCapability>(StringComparer.OrdinalIgnoreCase)
-            {
-                [actionId] = new BackendCapability(
-                    actionId,
-                    Available: true,
-                    CapabilityConfidenceState.Verified,
-                    RuntimeReasonCode.CAPABILITY_PROBE_PASS)
-            },
-            RuntimeReasonCode.CAPABILITY_PROBE_PASS);
-
-        var decision = router.Resolve(request, profile, process, report);
-
-        decision.Allowed.Should().BeTrue();
-        decision.Backend.Should().Be(ExecutionBackendKind.Extender);
-        decision.ReasonCode.Should().Be(RuntimeReasonCode.CAPABILITY_PROBE_PASS);
-        decision.Diagnostics.Should().ContainKey("hybridExecution");
-        decision.Diagnostics!["hybridExecution"].Should().Be(false);
-        decision.Diagnostics.Should().ContainKey("promotedExtenderAction");
-        decision.Diagnostics!["promotedExtenderAction"].Should().Be(true);
-        decision.Diagnostics.Should().ContainKey("capabilityMapReasonCode");
-        decision.Diagnostics!["capabilityMapReasonCode"].Should().Be("CAPABILITY_PROBE_PASS");
-        decision.Diagnostics.Should().ContainKey("capabilityMapState");
-        decision.Diagnostics!["capabilityMapState"].Should().Be("Verified");
-        decision.Diagnostics.Should().ContainKey("capabilityDeclaredAvailable");
-        decision.Diagnostics!["capabilityDeclaredAvailable"].Should().Be(true);
-    }
-
-    [Theory]
-    [InlineData("freeze_timer", ExecutionKind.Memory)]
-    [InlineData("toggle_fog_reveal", ExecutionKind.Memory)]
-    [InlineData("toggle_ai", ExecutionKind.Memory)]
-    [InlineData("set_unit_cap", ExecutionKind.CodePatch)]
-    [InlineData("toggle_instant_build_patch", ExecutionKind.CodePatch)]
-    public void Resolve_ShouldBlockHybridActions_WhenCapabilityIsMissing(
-        string actionId,
-        ExecutionKind executionKind)
-    {
-        var router = new BackendRouter();
-        var request = BuildRequest(actionId, executionKind);
-        var profile = BuildProfile(backendPreference: "auto");
-        var process = BuildProcess();
         var report = CapabilityReport.Unknown(profile.Id, RuntimeReasonCode.CAPABILITY_UNKNOWN);
 
         var decision = router.Resolve(request, profile, process, report);
 
-        decision.Allowed.Should().BeFalse();
-        decision.Backend.Should().Be(ExecutionBackendKind.Extender);
-        decision.ReasonCode.Should().Be(RuntimeReasonCode.CAPABILITY_REQUIRED_MISSING);
+        decision.Allowed.Should().BeTrue();
+        decision.Backend.Should().Be(ExecutionBackendKind.Memory);
+        decision.ReasonCode.Should().Be(RuntimeReasonCode.CAPABILITY_UNKNOWN);
         decision.Diagnostics.Should().ContainKey("hybridExecution");
         decision.Diagnostics!["hybridExecution"].Should().Be(false);
         decision.Diagnostics.Should().ContainKey("promotedExtenderAction");
-        decision.Diagnostics!["promotedExtenderAction"].Should().Be(true);
-        decision.Diagnostics.Should().NotContainKey("fallbackBackend");
+        decision.Diagnostics!["promotedExtenderAction"].Should().Be(false);
     }
 
     [Theory]
@@ -94,7 +49,7 @@ public sealed class BackendRouterTests
     [InlineData("toggle_ai", ExecutionKind.Memory)]
     [InlineData("set_unit_cap", ExecutionKind.CodePatch)]
     [InlineData("toggle_instant_build_patch", ExecutionKind.CodePatch)]
-    public void Resolve_ShouldFailClosedForPromotedActions_WhenCapabilityIsUnverified(
+    public void Resolve_ShouldIgnorePromotedCapabilityContract_ForManagedQuickActions(
         string actionId,
         ExecutionKind executionKind)
     {
@@ -117,14 +72,12 @@ public sealed class BackendRouterTests
 
         var decision = router.Resolve(request, profile, process, report);
 
-        decision.Allowed.Should().BeFalse();
-        decision.Backend.Should().Be(ExecutionBackendKind.Extender);
-        decision.ReasonCode.Should().Be(RuntimeReasonCode.SAFETY_FAIL_CLOSED);
-        decision.Diagnostics.Should().ContainKey("hybridExecution");
-        decision.Diagnostics!["hybridExecution"].Should().Be(false);
+        decision.Allowed.Should().BeTrue();
+        decision.Backend.Should().Be(ExecutionBackendKind.Memory);
+        decision.ReasonCode.Should().Be(RuntimeReasonCode.CAPABILITY_PROBE_PASS);
         decision.Diagnostics.Should().ContainKey("promotedExtenderAction");
-        decision.Diagnostics!["promotedExtenderAction"].Should().Be(true);
-        decision.Diagnostics.Should().NotContainKey("fallbackBackend");
+        decision.Diagnostics!["promotedExtenderAction"].Should().Be(false);
+        decision.Diagnostics.Should().NotContainKey("promotedCapabilityGate");
     }
 
     [Fact]
