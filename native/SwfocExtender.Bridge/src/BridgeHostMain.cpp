@@ -3,17 +3,20 @@
 #include "swfoc_extender/plugins/BuildPatchPlugin.hpp"
 #include "swfoc_extender/plugins/EconomyPlugin.hpp"
 #include "swfoc_extender/plugins/GlobalTogglePlugin.hpp"
+#include "swfoc_extender/plugins/ProcessMutationHelpers.hpp"
 
 #include <array>
 #include <atomic>
 #include <chrono>
 #include <cctype>
+#include <cstdint>
 #include <cstdlib>
 #include <iostream>
 #include <map>
 #include <sstream>
 #include <string>
 #include <thread>
+#include <vector>
 
 #if defined(_WIN32)
 #define NOMINMAX
@@ -41,6 +44,7 @@ using swfoc::extender::plugins::EconomyPlugin;
 using swfoc::extender::plugins::GlobalTogglePlugin;
 using swfoc::extender::plugins::PluginRequest;
 using swfoc::extender::plugins::PluginResult;
+namespace process_mutation = swfoc::extender::plugins::process_mutation;
 using swfoc::extender::bridge::host_json::EscapeJson;
 using swfoc::extender::bridge::host_json::ExtractStringMap;
 using swfoc::extender::bridge::host_json::ExtractStringValue;
@@ -125,6 +129,8 @@ PluginRequest BuildPluginRequest(const BridgeCommand& command) {
     bool enable = false;
     if (TryReadBool(command.payloadJson, "enable", enable)) {
         request.enable = enable;
+    } else if (command.featureId == "set_unit_cap" || command.featureId == "toggle_instant_build_patch") {
+        request.enable = true;
     }
 
     return request;
@@ -154,24 +160,86 @@ void EnsureCapabilityEntries(CapabilitySnapshot& snapshot) {
     }
 }
 
-bool HasNonEmptyAnchor(
-    const std::map<std::string, std::string>& anchors,
-    std::initializer_list<const char*> candidates) {
-    for (const auto* candidate : candidates) {
-        const auto it = anchors.find(candidate);
-        if (it != anchors.end() && !it->second.empty()) {
-            return true;
-        }
-    }
-
-    return false;
+const char* BoolToString(bool value) {
+    return value ? "true" : "false";
 }
 
-CapabilityState BuildProbeState(bool available) {
+struct AnchorProbeResult {
+    bool available {false};
+    bool parseOk {false};
+    bool readOk {false};
+    std::string anchorKey {};
+    std::string anchorValue {};
+    std::string readError {};
+    std::string reasonCode {"CAPABILITY_REQUIRED_MISSING"};
+    std::string probeSource {"candidate_missing"};
+};
+
+std::string ResolveProbeSource(const std::string& anchorValue) {
+    if (anchorValue.empty()) {
+        return "candidate_missing";
+    }
+
+    return anchorValue == "probe" ? "seed_placeholder" : "resolved_anchor";
+}
+
+AnchorProbeResult ProbeReadableAnchor(
+    const PluginRequest& probeContext,
+    std::initializer_list<const char*> candidates) {
+    AnchorProbeResult result {};
+    if (probeContext.processId <= 0) {
+        result.reasonCode = "CAPABILITY_REQUIRED_MISSING";
+        result.probeSource = "process_missing";
+        return result;
+    }
+
+    for (const auto* candidate : candidates) {
+        const auto it = probeContext.anchors.find(candidate);
+        if (it == probeContext.anchors.end() || it->second.empty()) {
+            continue;
+        }
+
+        result.anchorKey = it->first;
+        result.anchorValue = it->second;
+        result.probeSource = ResolveProbeSource(it->second);
+
+        std::uintptr_t address = 0;
+        result.parseOk = process_mutation::TryParseAddress(it->second, address);
+        if (!result.parseOk) {
+            result.reasonCode = "CAPABILITY_ANCHOR_INVALID";
+            return result;
+        }
+
+        std::vector<std::uint8_t> bytes;
+        std::string readError;
+        result.readOk = process_mutation::TryReadBytes(probeContext.processId, address, 1, bytes, readError);
+        if (!result.readOk) {
+            result.readError = readError;
+            result.reasonCode = "CAPABILITY_ANCHOR_UNREADABLE";
+            return result;
+        }
+
+        result.available = true;
+        result.reasonCode = "CAPABILITY_PROBE_PASS";
+        return result;
+    }
+
+    result.reasonCode = "CAPABILITY_REQUIRED_MISSING";
+    return result;
+}
+
+CapabilityState BuildProbeState(const AnchorProbeResult& probe) {
     CapabilityState state {};
-    state.available = available;
-    state.state = available ? "Verified" : "Unavailable";
-    state.reasonCode = available ? "CAPABILITY_PROBE_PASS" : "CAPABILITY_REQUIRED_MISSING";
+    state.available = probe.available;
+    state.state = probe.available ? "Verified" : "Unavailable";
+    state.reasonCode = probe.reasonCode;
+    state.diagnostics = {
+        {"anchorKey", probe.anchorKey},
+        {"anchorValue", probe.anchorValue},
+        {"parseOk", BoolToString(probe.parseOk)},
+        {"readOk", BoolToString(probe.readOk)},
+        {"readError", probe.readError},
+        {"probeSource", probe.probeSource}};
     return state;
 }
 
@@ -180,10 +248,8 @@ void AddProbeFeature(
     const PluginRequest& probeContext,
     const char* featureId,
     std::initializer_list<const char*> anchorCandidates) {
-    const auto available =
-        (probeContext.processId > 0) &&
-        HasNonEmptyAnchor(probeContext.anchors, anchorCandidates);
-    snapshot.features.emplace(featureId, BuildProbeState(available));
+    const auto probe = ProbeReadableAnchor(probeContext, anchorCandidates);
+    snapshot.features.emplace(featureId, BuildProbeState(probe));
 }
 
 CapabilitySnapshot BuildCapabilityProbeSnapshot(const PluginRequest& probeContext) {
@@ -198,7 +264,7 @@ CapabilitySnapshot BuildCapabilityProbeSnapshot(const PluginRequest& probeContex
         snapshot,
         probeContext,
         "toggle_instant_build_patch",
-        {"instant_build_patch", "toggle_instant_build_patch"});
+        {"instant_build_patch_injection", "instant_build_patch", "toggle_instant_build_patch"});
 
     EnsureCapabilityEntries(snapshot);
     return snapshot;
@@ -217,8 +283,21 @@ std::string CapabilitySnapshotToJson(const CapabilitySnapshot& snapshot) {
             << '"' << EscapeJson(featureId) << "\":{"
             << "\"available\":" << (state.available ? "true" : "false") << ','
             << "\"state\":\"" << EscapeJson(state.state) << "\"," 
-            << "\"reasonCode\":\"" << EscapeJson(state.reasonCode) << "\""
-            << '}';
+            << "\"reasonCode\":\"" << EscapeJson(state.reasonCode) << "\"";
+        if (!state.diagnostics.empty()) {
+            out << ",\"diagnostics\":{";
+            auto firstDiagnostic = true;
+            for (const auto& [key, value] : state.diagnostics) {
+                if (!firstDiagnostic) {
+                    out << ',';
+                }
+                firstDiagnostic = false;
+                out << '"' << EscapeJson(key) << "\":\"" << EscapeJson(value) << '"';
+            }
+            out << '}';
+        }
+
+        out << '}';
     }
     out << '}';
     return out.str();

@@ -493,6 +493,7 @@ public sealed class MainViewModel : MainViewModelSaveOpsBase
         {
             "toggle_fog_reveal_patch_fallback" => "allow_fog_patch_fallback",
             "set_unit_cap_patch_fallback" => "allow_unit_cap_patch_fallback",
+            "set_credits_extender_experimental" => "allow_extender_credits",
             _ => null
         };
 
@@ -506,7 +507,10 @@ public sealed class MainViewModel : MainViewModelSaveOpsBase
             return null;
         }
 
-        return $"fallback action '{actionId}' is disabled by feature flag '{featureFlag}'.";
+        var actionKind = actionId.EndsWith("_patch_fallback", StringComparison.OrdinalIgnoreCase)
+            ? "fallback action"
+            : "action";
+        return $"{actionKind} '{actionId}' is disabled by feature flag '{featureFlag}'.";
     }
 
     protected override void ApplyPayloadTemplateForSelectedAction()

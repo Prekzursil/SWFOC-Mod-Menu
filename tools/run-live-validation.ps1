@@ -21,7 +21,7 @@ if (-not $PSBoundParameters.ContainsKey("NoBuild")) {
     $NoBuild = $true
 }
 
-$repoRoot = Resolve-Path (Join-Path $PSScriptRoot "..")
+$repoRoot = (Resolve-Path (Join-Path $PSScriptRoot "..")).ProviderPath
 Set-Location $repoRoot
 
 if ([string]::IsNullOrWhiteSpace($RunId)) {
@@ -32,7 +32,7 @@ $runResultsDirectory = Join-Path $ResultsDirectory (Join-Path "runs" $RunId)
 if (-not (Test-Path -Path $runResultsDirectory)) {
     New-Item -ItemType Directory -Path $runResultsDirectory -Force | Out-Null
 }
-$runResultsDirectory = (Resolve-Path -Path $runResultsDirectory).Path
+$runResultsDirectory = (Resolve-Path -Path $runResultsDirectory).ProviderPath
 
 function ConvertTo-ForcedWorkshopIds {
     param([string[]]$RawIds)

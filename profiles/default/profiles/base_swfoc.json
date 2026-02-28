@@ -83,13 +83,25 @@
       "id": "set_credits",
       "category": "Economy",
       "mode": "Unknown",
+      "executionKind": "Memory",
+      "payloadSchema": {
+        "required": ["symbol", "intValue"]
+      },
+      "verifyReadback": true,
+      "cooldownMs": 250,
+      "description": "Set player credits through managed memory lane (authoritative default path)."
+    },
+    "set_credits_extender_experimental": {
+      "id": "set_credits_extender_experimental",
+      "category": "Economy",
+      "mode": "Unknown",
       "executionKind": "Sdk",
       "payloadSchema": {
         "required": ["symbol", "intValue"]
       },
       "verifyReadback": true,
       "cooldownMs": 250,
-      "description": "Set player credits via extender path (one-shot by default; optional lockCredits/forcePatchHook alias)"
+      "description": "Experimental extender credits action (one-shot only; profile-gated by allow_extender_credits)."
     },
     "freeze_timer": {
       "id": "freeze_timer",
@@ -387,6 +399,7 @@
     "planet_owner_edit": true,
     "hero_respawn_control": true,
     "multiplayer_guard": false,
+    "allow_extender_credits": false,
     "allow_fog_patch_fallback": false,
     "allow_unit_cap_patch_fallback": false
   },

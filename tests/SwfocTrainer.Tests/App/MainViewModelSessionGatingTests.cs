@@ -64,6 +64,32 @@ public sealed class MainViewModelSessionGatingTests
         reason.Should().BeNull();
     }
 
+    [Fact]
+    public void ResolveProfileFeatureGateReason_ExtenderCreditsDisabled_ShouldReturnReason()
+    {
+        var profile = BuildProfile(new Dictionary<string, bool>(StringComparer.OrdinalIgnoreCase)
+        {
+            ["allow_extender_credits"] = false
+        });
+
+        var reason = InvokeResolveProfileFeatureGateReason("set_credits_extender_experimental", profile);
+
+        reason.Should().Contain("allow_extender_credits");
+    }
+
+    [Fact]
+    public void ResolveProfileFeatureGateReason_ExtenderCreditsEnabled_ShouldReturnNull()
+    {
+        var profile = BuildProfile(new Dictionary<string, bool>(StringComparer.OrdinalIgnoreCase)
+        {
+            ["allow_extender_credits"] = true
+        });
+
+        var reason = InvokeResolveProfileFeatureGateReason("set_credits_extender_experimental", profile);
+
+        reason.Should().BeNull();
+    }
+
     private static string? InvokeResolveActionUnavailableReason(
         string actionId,
         ActionSpec action,

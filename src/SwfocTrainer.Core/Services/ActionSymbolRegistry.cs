@@ -9,6 +9,7 @@ internal static class ActionSymbolRegistry
         {
             ["read_symbol"] = SymbolCredits,
             ["set_credits"] = SymbolCredits,
+            ["set_credits_extender_experimental"] = SymbolCredits,
             ["freeze_timer"] = "game_timer_freeze",
             ["toggle_fog_reveal"] = "fog_reveal",
             ["toggle_ai"] = "ai_enabled",

@@ -53,3 +53,29 @@ public sealed record FlowCapabilityLinkReport(
         Array.Empty<FlowCapabilityLinkRecord>(),
         Array.Empty<string>());
 }
+
+public sealed record StoryFlowGraphNode(
+    string NodeId,
+    string PlotId,
+    string EventName,
+    FlowModeHint ModeHint,
+    string SourceFile,
+    string? ScriptReference,
+    IReadOnlyList<string> ExpectedFeatureIds);
+
+public sealed record StoryFlowGraphEdge(
+    string FromNodeId,
+    string ToNodeId,
+    string EdgeType,
+    string Reason);
+
+public sealed record StoryFlowGraphReport(
+    IReadOnlyList<StoryFlowGraphNode> Nodes,
+    IReadOnlyList<StoryFlowGraphEdge> Edges,
+    IReadOnlyList<string> Diagnostics)
+{
+    public static readonly StoryFlowGraphReport Empty = new(
+        Array.Empty<StoryFlowGraphNode>(),
+        Array.Empty<StoryFlowGraphEdge>(),
+        Array.Empty<string>());
+}

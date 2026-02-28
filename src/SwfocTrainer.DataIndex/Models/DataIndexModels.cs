@@ -22,3 +22,32 @@ public sealed record MegaFilesIndex(
             .ToArray();
     }
 }
+
+public sealed record EffectiveGameDataIndexRequest(
+    string ProfileId,
+    string GameRootPath,
+    string? ModPath = null,
+    string MegaFilesXmlRelativePath = @"Data\MegaFiles.xml");
+
+public sealed record EffectiveFileMapEntry(
+    string RelativePath,
+    string SourceType,
+    string SourcePath,
+    int OverrideRank,
+    bool Active,
+    string? ShadowedBy);
+
+public sealed record EffectiveFileMapReport(
+    string ProfileId,
+    string GameRootPath,
+    string? ModPath,
+    IReadOnlyList<EffectiveFileMapEntry> Files,
+    IReadOnlyList<string> Diagnostics)
+{
+    public static readonly EffectiveFileMapReport Empty = new(
+        ProfileId: string.Empty,
+        GameRootPath: string.Empty,
+        ModPath: null,
+        Files: Array.Empty<EffectiveFileMapEntry>(),
+        Diagnostics: Array.Empty<string>());
+}

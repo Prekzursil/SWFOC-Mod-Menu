@@ -29,6 +29,7 @@ struct CapabilityState {
     [[maybe_unused]] bool available {false};
     [[maybe_unused]] std::string state {"Unknown"};
     [[maybe_unused]] std::string reasonCode {"CAPABILITY_BACKEND_UNAVAILABLE"};
+    [[maybe_unused]] std::map<std::string, std::string> diagnostics {};
 };
 
 struct CapabilitySnapshot {

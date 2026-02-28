@@ -133,6 +133,21 @@ jobs:
         run: |
           pwsh ./tools/validate-signature-pack.ps1 -SignaturePackPath tools/fixtures/signature_pack_sample.json -SchemaPath tools/schemas/signature-pack.schema.json -Strict
 
+      - name: Effective data index export smoke
+        shell: pwsh
+        run: |
+          pwsh ./tools/research/export-effective-data-index.ps1 -ProfileId base_swfoc -OutPath TestResults/index/base_swfoc_effective_index.json -Strict
+
+      - name: Story flow graph export smoke
+        shell: pwsh
+        run: |
+          pwsh ./tools/research/export-story-flow-graph.ps1 -ProfileId roe_3447786229_swfoc -OutPath TestResults/flow/roe_flow_graph.json -Strict
+
+      - name: Offline lua harness smoke
+        shell: pwsh
+        run: |
+          pwsh ./tools/lua-harness/run-lua-harness.ps1 -Strict
+
       - name: Upload Test Results
         if: always()
         uses: actions/upload-artifact@v4

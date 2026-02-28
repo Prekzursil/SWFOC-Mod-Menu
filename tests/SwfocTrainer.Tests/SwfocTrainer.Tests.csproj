@@ -22,5 +22,6 @@
     <ProjectReference Include="../../src/SwfocTrainer.Profiles/SwfocTrainer.Profiles.csproj" />
     <ProjectReference Include="../../src/SwfocTrainer.Saves/SwfocTrainer.Saves.csproj" />
     <ProjectReference Include="../../src/SwfocTrainer.Runtime/SwfocTrainer.Runtime.csproj" />
+    <ProjectReference Include="..\..\src\SwfocTrainer.Meg\SwfocTrainer.Meg.csproj" />
   </ItemGroup>
 </Project>

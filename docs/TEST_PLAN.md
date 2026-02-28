@@ -76,8 +76,23 @@
   - verifies unresolved-symbol action gating and fallback feature-flag gating reasons
 - `NamedPipeExtenderBackendTests`
   - verifies deterministic unhealthy state when extender bridge is unavailable
+  - verifies probe-seed anchor parity and explicit anchor-invalid/anchor-unreadable reason-code handling
 - `ProfileValidatorTests`
   - verifies `backendPreference` and `hostPreference` contract enforcement
+- `MegArchiveReaderTests`
+  - verifies deterministic MEG entry listing/open behavior for fixture archives
+  - verifies corrupt-header fail-closed diagnostics
+- `EffectiveGameDataIndexServiceTests`
+  - verifies precedence ordering (`MODPATH` > game loose > enabled MEGs)
+  - verifies provenance and shadow metadata (`sourceType`, `sourcePath`, `overrideRank`, `shadowedBy`)
+- `TelemetryLogTailServiceTests`
+  - verifies telemetry marker parsing, freshness gating, and stale-ignore behavior
+- `RuntimeAdapterModeOverrideTests`
+  - verifies mode precedence with telemetry feed (manual override still highest priority)
+- `StoryFlowGraphExporterTests`
+  - verifies deterministic node/edge graph output and tactical/galactic event linkage
+- `LuaHarnessRunnerTests`
+  - verifies offline telemetry script execution contract with pinned vendor metadata
 
 ## Tooling contract tests
 
@@ -121,6 +136,24 @@ pwsh ./tools/validate-binary-fingerprint.ps1 -FingerprintPath tools/fixtures/bin
 
 ```powershell
 pwsh ./tools/validate-signature-pack.ps1 -SignaturePackPath tools/fixtures/signature_pack_sample.json -SchemaPath tools/schemas/signature-pack.schema.json -Strict
+```
+
+- Effective data index export smoke:
+
+```powershell
+pwsh ./tools/research/export-effective-data-index.ps1 -ProfileId base_swfoc -OutPath TestResults/index/base_swfoc_effective_index.json -Strict
+```
+
+- Story flow graph export smoke:
+
+```powershell
+pwsh ./tools/research/export-story-flow-graph.ps1 -ProfileId roe_3447786229_swfoc -OutPath TestResults/flow/roe_flow_graph.json -Strict
+```
+
+- Offline Lua harness smoke:
+
+```powershell
+pwsh ./tools/lua-harness/run-lua-harness.ps1 -Strict
 ```
 
 - Ghidra artifact index schema validation:

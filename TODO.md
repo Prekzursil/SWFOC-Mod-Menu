@@ -92,6 +92,20 @@ Reliability rule for runtime/mod tasks:
   evidence: bundle `TestResults/runs/20260228-064134/repro-bundle.json`
   evidence: bundle `TestResults/runs/20260228-063938/repro-bundle.json`
   evidence: manual `2026-02-28` `dotnet test tests/SwfocTrainer.Tests/SwfocTrainer.Tests.csproj -c Release --no-build --filter "FullyQualifiedName!~SwfocTrainer.Tests.Profiles.Live&FullyQualifiedName!~RuntimeAttachSmokeTests"` => `Passed: 189`
+- [x] M2 truthiness + flow-intelligence closure: probe hardening, patch-safe writes, managed FoC credits authority, MEG/effective-index/telemetry/story-flow/lua-harness stack, and strict tooling exports.
+  evidence: doc `docs/plans/2026-02-28-m2-truthiness-flow-intelligence.md`
+  evidence: test `tests/SwfocTrainer.Tests/Runtime/NamedPipeExtenderBackendTests.cs`
+  evidence: test `tests/SwfocTrainer.Tests/Runtime/RuntimeAdapterPromotedAliasTests.cs`
+  evidence: test `tests/SwfocTrainer.Tests/Meg/MegArchiveReaderTests.cs`
+  evidence: test `tests/SwfocTrainer.Tests/DataIndex/EffectiveGameDataIndexServiceTests.cs`
+  evidence: test `tests/SwfocTrainer.Tests/Flow/StoryFlowGraphExporterTests.cs`
+  evidence: test `tests/SwfocTrainer.Tests/Flow/LuaHarnessRunnerTests.cs`
+  evidence: manual `2026-02-28` `dotnet test tests/SwfocTrainer.Tests/SwfocTrainer.Tests.csproj -c Release --no-build --filter "FullyQualifiedName!~SwfocTrainer.Tests.Profiles.Live&FullyQualifiedName!~RuntimeAttachSmokeTests"` => `Passed: 213`
+  evidence: manual `2026-02-28` `pwsh ./tools/research/export-effective-data-index.ps1 -ProfileId base_swfoc -OutPath TestResults/index/base_swfoc_effective_index.json -Strict`
+  evidence: manual `2026-02-28` `pwsh ./tools/research/export-story-flow-graph.ps1 -ProfileId roe_3447786229_swfoc -OutPath TestResults/flow/roe_flow_graph.json -Strict`
+  evidence: manual `2026-02-28` `pwsh ./tools/lua-harness/run-lua-harness.ps1 -Strict`
+  evidence: bundle `TestResults/runs/20260228-171028/repro-bundle.json` (`classification=blocked_environment`)
+  evidence: bundle `TestResults/runs/20260228-171159/repro-bundle.json` (`classification=blocked_environment`)
 
 ## Later (M2 + M3 + M4)
 

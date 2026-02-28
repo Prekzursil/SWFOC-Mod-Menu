@@ -216,6 +216,53 @@ public sealed class CapabilityMapResolverTests
         }
     }
 
+    [Theory]
+    [InlineData("CAPABILITY_ANCHOR_INVALID")]
+    [InlineData("CAPABILITY_ANCHOR_UNREADABLE")]
+    public async Task ResolveAsync_ShouldMapAnchorProbeFailCodes_ToRequiredAnchorsMissing(string reasonCode)
+    {
+        var mapsRoot = CreateMapsRoot();
+
+        try
+        {
+            var fingerprint = CreateFingerprint("fp-anchor-probe", "StarWarsG.exe", "C:/games/StarWarsG.exe");
+
+            var mapJson = $$"""
+            {
+              "schemaVersion": "1.0",
+              "fingerprintId": "fp-anchor-probe",
+              "defaultProfileId": "base_swfoc",
+              "generatedAtUtc": "2026-02-28T00:00:00Z",
+              "capabilities": [
+                {
+                  "featureId": "freeze_timer",
+                  "available": false,
+                  "state": "Unavailable",
+                  "reasonCode": "{{reasonCode}}",
+                  "requiredAnchors": ["freeze_timer_patch"]
+                }
+              ]
+            }
+            """;
+            await WriteMapAsync(mapsRoot, "fp-anchor-probe", mapJson);
+
+            var resolver = new CapabilityMapResolver(mapsRoot, NullLogger<CapabilityMapResolver>.Instance);
+            var result = await resolver.ResolveAsync(
+                fingerprint,
+                requestedProfileId: "base_swfoc",
+                operationId: "freeze_timer",
+                resolvedAnchors: new HashSet<string>(StringComparer.OrdinalIgnoreCase) { "freeze_timer_patch" });
+
+            result.State.Should().Be(SdkCapabilityStatus.Unavailable);
+            result.ReasonCode.Should().Be(CapabilityReasonCode.RequiredAnchorsMissing);
+            result.Metadata.SourceReasonCode.Should().Be(reasonCode);
+        }
+        finally
+        {
+            Directory.Delete(mapsRoot, recursive: true);
+        }
+    }
+
     [Fact]
     public async Task ResolveAsync_ShouldAllow_CustomSwfoc_Profile_When_DefaultProfile_Is_BaseSwfoc()
     {
