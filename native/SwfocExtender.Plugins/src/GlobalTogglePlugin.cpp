@@ -85,10 +85,29 @@ PluginResult BuildMissingAnchorResult(const PluginRequest& request) {
 
 CapabilityState BuildCapabilityState() {
     CapabilityState state {};
-    state.available = true;
-    state.state = "Verified";
-    state.reasonCode = "CAPABILITY_PROBE_PASS";
+    state.available = false;
+    state.state = "Experimental";
+    state.reasonCode = "CAPABILITY_FEATURE_EXPERIMENTAL";
     return state;
+}
+
+PluginResult BuildNotImplementedMutationResult(
+    const PluginRequest& request,
+    const AnchorMatch& resolvedAnchor,
+    bool boolValue) {
+    PluginResult result {};
+    result.succeeded = false;
+    result.reasonCode = "SAFETY_FAIL_CLOSED";
+    result.hookState = "NOOP";
+    result.message = "Mutation rejected: no process write or patch was applied by global toggle plugin.";
+    result.diagnostics = {
+        {"featureId", request.featureId},
+        {"processId", std::to_string(request.processId)},
+        {"anchorKey", resolvedAnchor.first},
+        {"anchorValue", resolvedAnchor.second},
+        {"boolValue", boolValue ? "true" : "false"},
+        {"processMutationApplied", "false"}};
+    return result;
 }
 
 } // namespace
@@ -113,28 +132,14 @@ PluginResult GlobalTogglePlugin::execute(const PluginRequest& request) {
 
     const bool nextValue = request.boolValue;
     if (request.featureId == "freeze_timer") {
-        freezeTimerInstalled_.store(true);
         freezeTimerEnabled_.store(nextValue);
     } else if (request.featureId == "toggle_fog_reveal") {
-        fogRevealInstalled_.store(true);
         fogRevealEnabled_.store(nextValue);
     } else {
-        aiToggleInstalled_.store(true);
         aiEnabled_.store(nextValue);
     }
 
-    PluginResult result {};
-    result.succeeded = true;
-    result.reasonCode = "CAPABILITY_PROBE_PASS";
-    result.hookState = nextValue ? "HOOK_ENABLED" : "HOOK_DISABLED";
-    result.message = "Global toggle mutation accepted by extender plugin.";
-    result.diagnostics = {
-        {"featureId", request.featureId},
-        {"processId", std::to_string(request.processId)},
-        {"anchorKey", resolvedAnchor->first},
-        {"anchorValue", resolvedAnchor->second},
-        {"boolValue", nextValue ? "true" : "false"}};
-    return result;
+    return BuildNotImplementedMutationResult(request, *resolvedAnchor, nextValue);
 }
 
 CapabilitySnapshot GlobalTogglePlugin::capabilitySnapshot() const {

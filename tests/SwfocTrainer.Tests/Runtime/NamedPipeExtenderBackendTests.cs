@@ -83,6 +83,40 @@ public sealed class NamedPipeExtenderBackendTests
         AssertHookLockResult(result);
     }
 
+
+    [Fact]
+    public async Task ExecuteAsync_ShouldPreserveFailureReasonCodeAndHookState_FromExtenderResponse()
+    {
+        using var cts = new CancellationTokenSource(TimeSpan.FromSeconds(3));
+        await using var server = new NamedPipeServerStream(
+            "SwfocExtenderBridge",
+            PipeDirection.InOut,
+            1,
+            PipeTransmissionMode.Byte,
+            PipeOptions.Asynchronous);
+        var backend = new NamedPipeExtenderBackend();
+        var request = BuildSetCreditsRequest();
+        var capabilityReport = BuildCapabilityReport(request.ProfileId, request.Action.Id);
+
+        var waitTask = server.WaitForConnectionAsync(cts.Token);
+        var executeTask = backend.ExecuteAsync(request, capabilityReport, cts.Token);
+        await waitTask;
+
+        using var reader = new StreamReader(server);
+        await using var writer = new StreamWriter(server) { AutoFlush = true };
+        var (commandId, _) = await ReadCommandEnvelopeAsync(reader, cts.Token);
+        var response = BuildFailedExecuteResponse(commandId);
+        await writer.WriteLineAsync(response.AsMemory(), cts.Token);
+        var result = await executeTask;
+
+        result.Succeeded.Should().BeFalse();
+        result.Message.Should().Contain("no process write or patch was applied");
+        result.Diagnostics.Should().ContainKey("reasonCode");
+        result.Diagnostics!["reasonCode"]!.ToString().Should().Be("SAFETY_FAIL_CLOSED");
+        result.Diagnostics.Should().ContainKey("hookState");
+        result.Diagnostics!["hookState"]!.ToString().Should().Be("NOOP");
+    }
+
     [Fact]
     public async Task ExecuteAsync_ShouldSendProcessContextAndResolvedAnchors_FromRequestContext()
     {
@@ -217,6 +251,24 @@ public sealed class NamedPipeExtenderBackendTests
             diagnostics = new
             {
                 forcePatchHook = forcePatchHook.ToString().ToLowerInvariant()
+            }
+        });
+    }
+
+
+    private static string BuildFailedExecuteResponse(string commandId)
+    {
+        return JsonSerializer.Serialize(new
+        {
+            commandId,
+            succeeded = false,
+            reasonCode = "SAFETY_FAIL_CLOSED",
+            backend = "extender",
+            hookState = "NOOP",
+            message = "Mutation rejected: no process write or patch was applied by extender plugin.",
+            diagnostics = new
+            {
+                processMutationApplied = "false"
             }
         });
     }
