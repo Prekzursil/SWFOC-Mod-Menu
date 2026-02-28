@@ -22,6 +22,7 @@ public sealed class ProcessLocator : IProcessLocator
     private IReadOnlyList<TrainerProfile>? _cachedProfiles;
     private DateTimeOffset _cachedProfilesLoadedAtUtc = DateTimeOffset.MinValue;
     private static readonly TimeSpan ProfileCacheTtl = TimeSpan.FromSeconds(5);
+    private static readonly TimeSpan RegexTimeout = TimeSpan.FromMilliseconds(250);
 
     public ProcessLocator(
         ILaunchContextResolver? launchContextResolver,
@@ -543,7 +544,8 @@ public sealed class ProcessLocator : IProcessLocator
         var match = Regex.Match(
             commandLine,
             @"modpath\s*=\s*(?:""(?<quoted>[^""]+)""|(?<unquoted>[^\s]+))",
-            RegexOptions.IgnoreCase);
+            RegexOptions.IgnoreCase,
+            RegexTimeout);
         if (!match.Success)
         {
             return null;
