@@ -85,53 +85,79 @@ public sealed class NamedPipeExtenderBackend : IExecutionBackend
             return anchors;
         }
 
-        if (ShouldSeedProbeDefaults(profileId))
+        SeedDefaultProbeAnchors(profileId, anchors);
+        MergeProbeAnchorsFromMetadata(processContext, anchors);
+
+        return anchors;
+    }
+
+    private static void SeedDefaultProbeAnchors(string profileId, JsonObject anchors)
+    {
+        if (!ShouldSeedProbeDefaults(profileId))
         {
-            // Seed known-profile anchors to keep legacy/base promoted routes deterministic
-            // when host command-line launch markers are unavailable.
-            anchors["credits"] = ProbePlaceholderAnchorValue;
-            anchors["set_credits"] = ProbePlaceholderAnchorValue;
-            anchors["game_timer_freeze"] = ProbePlaceholderAnchorValue;
-            anchors["freeze_timer"] = ProbePlaceholderAnchorValue;
-            anchors["fog_reveal"] = ProbePlaceholderAnchorValue;
-            anchors["toggle_fog_reveal"] = ProbePlaceholderAnchorValue;
-            anchors["ai_enabled"] = ProbePlaceholderAnchorValue;
-            anchors["toggle_ai"] = ProbePlaceholderAnchorValue;
-            anchors["unit_cap"] = ProbePlaceholderAnchorValue;
-            anchors["set_unit_cap"] = ProbePlaceholderAnchorValue;
-            anchors["instant_build_patch"] = ProbePlaceholderAnchorValue;
-            anchors["toggle_instant_build_patch"] = ProbePlaceholderAnchorValue;
+            return;
         }
 
-        if (processContext.Metadata is null ||
-            !processContext.Metadata.TryGetValue(ProbeResolvedAnchorsMetadataKey, out var rawAnchors) ||
-            string.IsNullOrWhiteSpace(rawAnchors))
+        // Seed known-profile anchors to keep legacy/base promoted routes deterministic
+        // when host command-line launch markers are unavailable.
+        anchors["credits"] = ProbePlaceholderAnchorValue;
+        anchors["set_credits"] = ProbePlaceholderAnchorValue;
+        anchors["game_timer_freeze"] = ProbePlaceholderAnchorValue;
+        anchors["freeze_timer"] = ProbePlaceholderAnchorValue;
+        anchors["fog_reveal"] = ProbePlaceholderAnchorValue;
+        anchors["toggle_fog_reveal"] = ProbePlaceholderAnchorValue;
+        anchors["ai_enabled"] = ProbePlaceholderAnchorValue;
+        anchors["toggle_ai"] = ProbePlaceholderAnchorValue;
+        anchors["unit_cap"] = ProbePlaceholderAnchorValue;
+        anchors["set_unit_cap"] = ProbePlaceholderAnchorValue;
+        anchors["instant_build_patch"] = ProbePlaceholderAnchorValue;
+        anchors["toggle_instant_build_patch"] = ProbePlaceholderAnchorValue;
+    }
+
+    private static void MergeProbeAnchorsFromMetadata(ProcessMetadata processContext, JsonObject anchors)
+    {
+        if (!TryGetProbeAnchorsJson(processContext, out var rawAnchors))
         {
-            return anchors;
+            return;
         }
 
         try
         {
-            if (JsonNode.Parse(rawAnchors) is not JsonObject parsedAnchors)
+            if (JsonNode.Parse(rawAnchors) is JsonObject parsedAnchors)
             {
-                return anchors;
-            }
-
-            foreach (var kv in parsedAnchors)
-            {
-                var normalized = kv.Value?.GetValue<string>();
-                if (!string.IsNullOrWhiteSpace(normalized))
-                {
-                    anchors[kv.Key] = normalized;
-                }
+                AppendNonEmptyAnchorValues(parsedAnchors, anchors);
             }
         }
         catch
         {
             // Keep seeded defaults when metadata parsing fails.
         }
+    }
 
-        return anchors;
+    private static bool TryGetProbeAnchorsJson(ProcessMetadata processContext, out string rawAnchors)
+    {
+        rawAnchors = string.Empty;
+        if (processContext.Metadata is null ||
+            !processContext.Metadata.TryGetValue(ProbeResolvedAnchorsMetadataKey, out var candidate) ||
+            string.IsNullOrWhiteSpace(candidate))
+        {
+            return false;
+        }
+
+        rawAnchors = candidate;
+        return true;
+    }
+
+    private static void AppendNonEmptyAnchorValues(JsonObject sourceAnchors, JsonObject destinationAnchors)
+    {
+        foreach (var kv in sourceAnchors)
+        {
+            var normalized = kv.Value?.GetValue<string>();
+            if (!string.IsNullOrWhiteSpace(normalized))
+            {
+                destinationAnchors[kv.Key] = normalized;
+            }
+        }
     }
 
     private static bool ShouldSeedProbeDefaults(string profileId)

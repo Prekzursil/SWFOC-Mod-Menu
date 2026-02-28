@@ -1,3 +1,4 @@
+// cppcheck-suppress-file missingIncludeSystem
 #include "swfoc_extender/plugins/EconomyPlugin.hpp"
 #include "swfoc_extender/plugins/ProcessMutationHelpers.hpp"
 
