@@ -8,7 +8,7 @@ param(
 Set-StrictMode -Version Latest
 $ErrorActionPreference = "Stop"
 
-$repoRoot = (Resolve-Path (Join-Path $PSScriptRoot ".." "..")).ProviderPath
+$repoRoot = (Resolve-Path (Join-Path -Path (Join-Path -Path $PSScriptRoot -ChildPath "..") -ChildPath "..")).ProviderPath
 Set-Location $repoRoot
 
 $resolvedScriptPath = if ([System.IO.Path]::IsPathRooted($ScriptPath)) { $ScriptPath } else { Join-Path $repoRoot $ScriptPath }
@@ -51,5 +51,5 @@ $result = [ordered]@{
 }
 
 $result | ConvertTo-Json -Depth 8 | Set-Content -Path $OutPath
-Write-Host "lua-harness output written: $OutPath"
-Write-Host "emitted: $emittedLine"
+Write-Output "lua-harness output written: $OutPath"
+Write-Output "emitted: $emittedLine"

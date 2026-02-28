@@ -77,7 +77,7 @@ public sealed class StoryFlowGraphExporterTests
             Diagnostics: Array.Empty<string>());
         var exporter = new StoryFlowGraphExporter();
 
-        var markdown = exporter.BuildMarkdownSummary("roe_3447786229_swfoc", graph);
+        var markdown = StoryFlowGraphExporter.BuildMarkdownSummary("roe_3447786229_swfoc", graph);
 
         markdown.Should().Contain("STORY_LAND_TACTICAL");
         markdown.Should().Contain("freeze_timer");

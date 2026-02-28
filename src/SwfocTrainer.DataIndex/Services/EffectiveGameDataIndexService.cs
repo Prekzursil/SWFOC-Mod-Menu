@@ -98,12 +98,14 @@ public sealed class EffectiveGameDataIndexService
             diagnostics.Add($"MegaFiles.xml: {diagnostic}");
         }
 
-        foreach (var megaFile in megaIndex.GetEnabledFilesInLoadOrder())
+        foreach (var megaFileName in megaIndex
+                     .GetEnabledFilesInLoadOrder()
+                     .Select(static megaFile => megaFile.FileName))
         {
-            var megaPath = ResolveMegaPath(request.GameRootPath, megaFile.FileName);
+            var megaPath = ResolveMegaPath(request.GameRootPath, megaFileName);
             if (megaPath is null)
             {
-                diagnostics.Add($"MEG file '{megaFile.FileName}' was not found under game root '{request.GameRootPath}'.");
+                diagnostics.Add($"MEG file '{megaFileName}' was not found under game root '{request.GameRootPath}'.");
                 continue;
             }
 
@@ -118,12 +120,12 @@ public sealed class EffectiveGameDataIndexService
                 continue;
             }
 
-            foreach (var entry in openResult.Archive.Entries)
+            foreach (var entryPath in openResult.Archive.Entries.Select(static entry => entry.Path))
             {
                 AddEntry(
-                    relativePath: NormalizePath(entry.Path),
+                    relativePath: NormalizePath(entryPath),
                     sourceType: "meg_entry",
-                    sourcePath: $"{megaPath}:{entry.Path}",
+                    sourcePath: $"{megaPath}:{entryPath}",
                     records,
                     activeIndexByPath,
                     ref rank);

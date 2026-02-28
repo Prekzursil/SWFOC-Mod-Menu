@@ -34,6 +34,7 @@ private:
     std::atomic<bool> instantBuildPatchEnabled_ {false};
     std::atomic<std::int32_t> unitCapValue_ {0};
     std::mutex restoreBytesMutex_;
+    // cppcheck-suppress unusedStructMember
     std::unordered_map<std::string, std::vector<std::uint8_t>> restoreBytesByKey_;
 };
 

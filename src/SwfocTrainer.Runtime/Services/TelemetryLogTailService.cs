@@ -1,3 +1,4 @@
+using System.Globalization;
 using System.Text.RegularExpressions;
 using SwfocTrainer.Core.Contracts;
 using SwfocTrainer.Core.Models;
@@ -8,7 +9,8 @@ public sealed class TelemetryLogTailService : ITelemetryLogTailService
 {
     private static readonly Regex TelemetryLineRegex = new(
         @"SWFOC_TRAINER_TELEMETRY\s+timestamp=(?<timestamp>\S+)\s+mode=(?<mode>[A-Za-z0-9_]+)",
-        RegexOptions.Compiled | RegexOptions.CultureInvariant | RegexOptions.IgnoreCase);
+        RegexOptions.Compiled | RegexOptions.CultureInvariant | RegexOptions.IgnoreCase,
+        TimeSpan.FromMilliseconds(250));
 
     private readonly object _sync = new();
     private readonly Dictionary<string, long> _cursorByPath = new(StringComparer.OrdinalIgnoreCase);
@@ -42,25 +44,7 @@ public sealed class TelemetryLogTailService : ITelemetryLogTailService
             return TelemetryModeResolution.Unavailable("telemetry_line_missing");
         }
 
-        if (!TryParseRuntimeMode(parsed.Mode, out var mode))
-        {
-            return TelemetryModeResolution.Unavailable("telemetry_mode_unknown");
-        }
-
-        var timestamp = parsed.TimestampUtc ?? File.GetLastWriteTimeUtc(logPath);
-        var timestampUtc = new DateTimeOffset(timestamp, TimeSpan.Zero);
-        if (nowUtc - timestampUtc > freshnessWindow)
-        {
-            return TelemetryModeResolution.Unavailable("telemetry_stale");
-        }
-
-        return new TelemetryModeResolution(
-            Available: true,
-            Mode: mode,
-            ReasonCode: "telemetry_mode_fresh",
-            SourcePath: logPath,
-            TimestampUtc: timestampUtc,
-            RawLine: parsed.RawLine);
+        return ResolveTelemetry(parsed, logPath, nowUtc, freshnessWindow);
     }
 
     private static string? ResolveLogPath(string processPath)
@@ -140,9 +124,13 @@ public sealed class TelemetryLogTailService : ITelemetryLogTailService
 
             DateTime? timestamp = null;
             var timestampValue = match.Groups["timestamp"].Value;
-            if (DateTime.TryParse(timestampValue, out var parsedTimestamp))
+            if (DateTime.TryParse(
+                    timestampValue,
+                    CultureInfo.InvariantCulture,
+                    DateTimeStyles.AssumeUniversal | DateTimeStyles.AdjustToUniversal,
+                    out var parsedTimestamp))
             {
-                timestamp = parsedTimestamp.ToUniversalTime();
+                timestamp = parsedTimestamp;
             }
 
             return new ParsedTelemetryLine(
@@ -174,6 +162,33 @@ public sealed class TelemetryLogTailService : ITelemetryLogTailService
 
         mode = RuntimeMode.Unknown;
         return false;
+    }
+
+    private static TelemetryModeResolution ResolveTelemetry(
+        ParsedTelemetryLine parsed,
+        string logPath,
+        DateTimeOffset nowUtc,
+        TimeSpan freshnessWindow)
+    {
+        if (!TryParseRuntimeMode(parsed.Mode, out var mode))
+        {
+            return TelemetryModeResolution.Unavailable("telemetry_mode_unknown");
+        }
+
+        var timestamp = parsed.TimestampUtc ?? File.GetLastWriteTimeUtc(logPath);
+        var timestampUtc = new DateTimeOffset(timestamp, TimeSpan.Zero);
+        if (nowUtc - timestampUtc > freshnessWindow)
+        {
+            return TelemetryModeResolution.Unavailable("telemetry_stale");
+        }
+
+        return new TelemetryModeResolution(
+            Available: true,
+            Mode: mode,
+            ReasonCode: "telemetry_mode_fresh",
+            SourcePath: logPath,
+            TimestampUtc: timestampUtc,
+            RawLine: parsed.RawLine);
     }
 
     private sealed record ParsedTelemetryLine(string RawLine, string Mode, DateTime? TimestampUtc);

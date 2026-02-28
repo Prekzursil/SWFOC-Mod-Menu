@@ -15,11 +15,19 @@ public sealed record MegOpenResult(
             Message: "MEG archive parsed successfully.",
             Diagnostics: diagnostics);
 
-    public static MegOpenResult Fail(string reasonCode, string message, IReadOnlyList<string>? diagnostics = null) =>
+    public static MegOpenResult Fail(string reasonCode, string message) =>
         new(
             Succeeded: false,
             Archive: null,
             ReasonCode: reasonCode,
             Message: message,
-            Diagnostics: diagnostics ?? Array.Empty<string>());
+            Diagnostics: Array.Empty<string>());
+
+    public static MegOpenResult Fail(string reasonCode, string message, IReadOnlyList<string> diagnostics) =>
+        new(
+            Succeeded: false,
+            Archive: null,
+            ReasonCode: reasonCode,
+            Message: message,
+            Diagnostics: diagnostics);
 }

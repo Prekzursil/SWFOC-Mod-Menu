@@ -9,7 +9,7 @@ param(
 Set-StrictMode -Version Latest
 $ErrorActionPreference = "Stop"
 
-$repoRoot = (Resolve-Path (Join-Path $PSScriptRoot ".." "..")).ProviderPath
+$repoRoot = (Resolve-Path (Join-Path -Path (Join-Path -Path $PSScriptRoot -ChildPath "..") -ChildPath "..")).ProviderPath
 Set-Location $repoRoot
 
 if ([string]::IsNullOrWhiteSpace($GameRootPath)) {
@@ -55,4 +55,4 @@ if (-not [string]::IsNullOrWhiteSpace($outDirectory) -and -not (Test-Path -Path 
 }
 
 $report | ConvertTo-Json -Depth 8 | Set-Content -Path $OutPath
-Write-Host "effective-data-index exported to $OutPath"
+Write-Output "effective-data-index exported to $OutPath"

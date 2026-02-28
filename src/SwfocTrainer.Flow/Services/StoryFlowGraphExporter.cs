@@ -87,7 +87,7 @@ public sealed class StoryFlowGraphExporter
         return new StoryFlowGraphReport(nodes, edges, diagnostics);
     }
 
-    public string BuildMarkdownSummary(string profileId, StoryFlowGraphReport graph)
+    public static string BuildMarkdownSummary(string profileId, StoryFlowGraphReport graph)
     {
         var builder = new StringBuilder();
         builder.AppendLine($"# Story Flow Graph ({profileId})");

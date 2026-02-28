@@ -7,12 +7,22 @@ public sealed class LuaHarnessRunner : ILuaHarnessRunner
 {
     private readonly string _harnessScriptPath;
 
-    public LuaHarnessRunner(string? harnessScriptPath = null)
+    public LuaHarnessRunner()
+        : this(ResolveDefaultHarnessScriptPath())
     {
-        _harnessScriptPath = harnessScriptPath ?? ResolveDefaultHarnessScriptPath();
     }
 
-    public async Task<LuaHarnessRunResult> RunAsync(LuaHarnessRunRequest request, CancellationToken cancellationToken = default)
+    public LuaHarnessRunner(string harnessScriptPath)
+    {
+        _harnessScriptPath = harnessScriptPath;
+    }
+
+    public Task<LuaHarnessRunResult> RunAsync(LuaHarnessRunRequest request)
+    {
+        return RunAsync(request, CancellationToken.None);
+    }
+
+    public async Task<LuaHarnessRunResult> RunAsync(LuaHarnessRunRequest request, CancellationToken cancellationToken)
     {
         if (string.IsNullOrWhiteSpace(request.ScriptPath) || !File.Exists(request.ScriptPath))
         {

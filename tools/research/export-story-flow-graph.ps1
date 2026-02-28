@@ -8,7 +8,7 @@ param(
 Set-StrictMode -Version Latest
 $ErrorActionPreference = "Stop"
 
-$repoRoot = (Resolve-Path (Join-Path $PSScriptRoot ".." "..")).ProviderPath
+$repoRoot = (Resolve-Path (Join-Path -Path (Join-Path -Path $PSScriptRoot -ChildPath "..") -ChildPath "..")).ProviderPath
 Set-Location $repoRoot
 
 if ([string]::IsNullOrWhiteSpace($StoryRoot)) {
@@ -70,8 +70,8 @@ $payload = [ordered]@{
 $payload | ConvertTo-Json -Depth 10 | Set-Content -Path $OutPath
 
 $markdownPath = [System.IO.Path]::ChangeExtension($OutPath, ".md")
-$markdown = $exporter.BuildMarkdownSummary($ProfileId, $graph)
+$markdown = [SwfocTrainer.Flow.Services.StoryFlowGraphExporter]::BuildMarkdownSummary($ProfileId, $graph)
 Set-Content -Path $markdownPath -Value $markdown
 
-Write-Host "story-flow-graph exported to $OutPath"
-Write-Host "story-flow markdown summary exported to $markdownPath"
+Write-Output "story-flow-graph exported to $OutPath"
+Write-Output "story-flow markdown summary exported to $markdownPath"

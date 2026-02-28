@@ -33,7 +33,12 @@ public sealed class MegArchiveReader : IMegArchiveReader
         }
     }
 
-    public MegOpenResult Open(ReadOnlyMemory<byte> payload, string sourceName = "<memory>")
+    public MegOpenResult Open(ReadOnlyMemory<byte> payload)
+    {
+        return Open(payload, "<memory>");
+    }
+
+    public MegOpenResult Open(ReadOnlyMemory<byte> payload, string sourceName)
     {
         if (payload.Length < 8)
         {
@@ -56,12 +61,11 @@ public sealed class MegArchiveReader : IMegArchiveReader
             }
 
             var names = ParseNames(bytes, header, ref headerCursor, diagnostics);
-            if (names is null && header.Format == "format3")
+            if (names is null &&
+                header.Format == "format3" &&
+                TryParseFormat2Fallback(bytes, diagnostics, out header, out headerCursor, out names))
             {
-                if (TryParseFormat2Fallback(bytes, diagnostics, out header, out headerCursor, out names))
-                {
-                    diagnostics.Add("format3 parse fallback succeeded as format2.");
-                }
+                diagnostics.Add("format3 parse fallback succeeded as format2.");
             }
 
             if (names is null)
@@ -321,71 +325,101 @@ public sealed class MegArchiveReader : IMegArchiveReader
         var entries = new List<MegEntry>((int)header.FileCount);
         for (var i = 0; i < header.FileCount; i++)
         {
-            if (!TryEnsureRange(bytes.Length, cursor, 20, out var rangeError))
+            if (!TryParseEntryRecord(bytes, header, ref cursor, diagnostics, i, out var parsedEntry))
             {
-                diagnostics.Add($"File[{i}] record truncated: {rangeError}");
                 return null;
             }
 
-            ushort entryFlags = 0;
-            uint crc;
-            uint index;
-            uint size;
-            uint start;
-            uint nameIndex;
-            if (header.SupportsEntryFlags)
+            if (parsedEntry.NameIndex >= names.Count)
             {
-                entryFlags = ReadUInt16(bytes, cursor);
-                if (entryFlags != 0)
-                {
-                    diagnostics.Add($"File[{i}] has unsupported encrypted/compressed flags={entryFlags}.");
-                    return null;
-                }
-
-                crc = ReadUInt32(bytes, cursor + 2);
-                index = ReadUInt32(bytes, cursor + 6);
-                size = ReadUInt32(bytes, cursor + 10);
-                start = ReadUInt32(bytes, cursor + 14);
-                nameIndex = ReadUInt16(bytes, cursor + 18);
-            }
-            else
-            {
-                crc = ReadUInt32(bytes, cursor);
-                index = ReadUInt32(bytes, cursor + 4);
-                size = ReadUInt32(bytes, cursor + 8);
-                start = ReadUInt32(bytes, cursor + 12);
-                nameIndex = ReadUInt32(bytes, cursor + 16);
-            }
-
-            cursor += 20;
-            if (nameIndex >= names.Count)
-            {
-                diagnostics.Add($"File[{i}] points to missing nameIndex={nameIndex} while names={names.Count}.");
+                diagnostics.Add($"File[{i}] points to missing nameIndex={parsedEntry.NameIndex} while names={names.Count}.");
                 return null;
             }
 
-            if (start > bytes.Length || start + size > bytes.Length)
+            if (!IsEntryRangeValid(parsedEntry, bytes.Length, header.DataStartOffset, diagnostics, i))
             {
-                diagnostics.Add($"File[{i}] has invalid content span start={start} size={size} length={bytes.Length}.");
-                return null;
-            }
-
-            if (header.DataStartOffset > 0 && start < header.DataStartOffset)
-            {
-                diagnostics.Add($"File[{i}] starts before header dataStart offset ({start} < {header.DataStartOffset}).");
                 return null;
             }
 
             entries.Add(new MegEntry(
-                Path: names[(int)nameIndex],
-                Crc32: crc,
-                Index: checked((int)index),
-                SizeBytes: checked((int)size),
-                StartOffset: checked((int)start),
-                Flags: entryFlags));
+                Path: names[(int)parsedEntry.NameIndex],
+                Crc32: parsedEntry.Crc,
+                Index: checked((int)parsedEntry.Index),
+                SizeBytes: checked((int)parsedEntry.Size),
+                StartOffset: checked((int)parsedEntry.Start),
+                Flags: parsedEntry.EntryFlags));
         }
 
         return entries;
+    }
+
+    private static bool TryParseEntryRecord(
+        byte[] bytes,
+        ParsedHeader header,
+        ref int cursor,
+        ICollection<string> diagnostics,
+        int entryIndex,
+        out ParsedEntry entry)
+    {
+        entry = default;
+        if (!TryEnsureRange(bytes.Length, cursor, 20, out var rangeError))
+        {
+            diagnostics.Add($"File[{entryIndex}] record truncated: {rangeError}");
+            return false;
+        }
+
+        if (header.SupportsEntryFlags)
+        {
+            var entryFlags = ReadUInt16(bytes, cursor);
+            if (entryFlags != 0)
+            {
+                diagnostics.Add($"File[{entryIndex}] has unsupported encrypted/compressed flags={entryFlags}.");
+                return false;
+            }
+
+            entry = new ParsedEntry(
+                EntryFlags: entryFlags,
+                Crc: ReadUInt32(bytes, cursor + 2),
+                Index: ReadUInt32(bytes, cursor + 6),
+                Size: ReadUInt32(bytes, cursor + 10),
+                Start: ReadUInt32(bytes, cursor + 14),
+                NameIndex: ReadUInt16(bytes, cursor + 18));
+        }
+        else
+        {
+            entry = new ParsedEntry(
+                EntryFlags: 0,
+                Crc: ReadUInt32(bytes, cursor),
+                Index: ReadUInt32(bytes, cursor + 4),
+                Size: ReadUInt32(bytes, cursor + 8),
+                Start: ReadUInt32(bytes, cursor + 12),
+                NameIndex: ReadUInt32(bytes, cursor + 16));
+        }
+
+        cursor += 20;
+        return true;
+    }
+
+    private static bool IsEntryRangeValid(
+        ParsedEntry entry,
+        int payloadLength,
+        uint dataStartOffset,
+        ICollection<string> diagnostics,
+        int entryIndex)
+    {
+        if (entry.Start > payloadLength || entry.Start + entry.Size > payloadLength)
+        {
+            diagnostics.Add($"File[{entryIndex}] has invalid content span start={entry.Start} size={entry.Size} length={payloadLength}.");
+            return false;
+        }
+
+        if (dataStartOffset > 0 && entry.Start < dataStartOffset)
+        {
+            diagnostics.Add($"File[{entryIndex}] starts before header dataStart offset ({entry.Start} < {dataStartOffset}).");
+            return false;
+        }
+
+        return true;
     }
 
     private static uint ReadUInt32(byte[] bytes, int offset)
@@ -438,6 +472,14 @@ public sealed class MegArchiveReader : IMegArchiveReader
                 DataStartOffset: 0,
                 NameTableSize: null,
                 IsEncrypted: false,
-                SupportsEntryFlags: false);
+            SupportsEntryFlags: false);
     }
+
+    private readonly record struct ParsedEntry(
+        ushort EntryFlags,
+        uint Crc,
+        uint Index,
+        uint Size,
+        uint Start,
+        uint NameIndex);
 }
