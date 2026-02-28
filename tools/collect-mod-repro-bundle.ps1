@@ -34,7 +34,7 @@ function Resolve-PythonCommand {
     return @()
 }
 
-function Normalize-ForcedWorkshopIds {
+function ConvertTo-ForcedWorkshopIds {
     param([string[]]$RawIds)
 
     $ids = New-Object System.Collections.Generic.HashSet[string]([StringComparer]::OrdinalIgnoreCase)
@@ -164,7 +164,7 @@ function Get-LaunchContext {
         [string]$ForcedProfileId
     )
 
-    $normalizedForcedWorkshopIds = @(Normalize-ForcedWorkshopIds -RawIds $ForcedWorkshopIds)
+    $normalizedForcedWorkshopIds = @(ConvertTo-ForcedWorkshopIds -RawIds $ForcedWorkshopIds)
     $normalizedForcedProfileId = if ([string]::IsNullOrWhiteSpace($ForcedProfileId)) { $null } else { $ForcedProfileId.Trim() }
     $forcedSource = if ($normalizedForcedWorkshopIds.Count -gt 0 -or -not [string]::IsNullOrWhiteSpace($normalizedForcedProfileId)) { "forced" } else { "detected" }
 
@@ -546,7 +546,7 @@ if (-not (Test-Path -Path $RunDirectory)) {
 }
 
 $summaryRaw = Get-Content -Raw -Path $SummaryPath | ConvertFrom-Json
-$forceWorkshopIdsNormalized = @(Normalize-ForcedWorkshopIds -RawIds $ForceWorkshopIds)
+$forceWorkshopIdsNormalized = @(ConvertTo-ForcedWorkshopIds -RawIds $ForceWorkshopIds)
 $forceProfileIdNormalized = if ([string]::IsNullOrWhiteSpace($ForceProfileId)) { "" } else { $ForceProfileId.Trim() }
 $summaryEntries = @($summaryRaw)
 $liveTests = @()

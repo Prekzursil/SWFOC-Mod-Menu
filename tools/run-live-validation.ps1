@@ -34,7 +34,7 @@ if (-not (Test-Path -Path $runResultsDirectory)) {
 }
 $runResultsDirectory = (Resolve-Path -Path $runResultsDirectory).Path
 
-function Normalize-ForcedWorkshopIds {
+function ConvertTo-ForcedWorkshopIds {
     param([string[]]$RawIds)
 
     $ids = New-Object System.Collections.Generic.HashSet[string]([StringComparer]::OrdinalIgnoreCase)
@@ -382,7 +382,7 @@ function Read-TrxSummary {
     }
 }
 
-$forceWorkshopIdsNormalized = @(Normalize-ForcedWorkshopIds -RawIds $ForceWorkshopIds)
+$forceWorkshopIdsNormalized = @(ConvertTo-ForcedWorkshopIds -RawIds $ForceWorkshopIds)
 $forceWorkshopIdsCsv = if ($forceWorkshopIdsNormalized.Count -eq 0) { "" } else { ($forceWorkshopIdsNormalized -join ",") }
 $forceProfileIdNormalized = if ([string]::IsNullOrWhiteSpace($ForceProfileId)) { "" } else { $ForceProfileId.Trim() }
 

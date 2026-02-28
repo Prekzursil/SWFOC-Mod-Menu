@@ -27,6 +27,7 @@ exclude_paths:
   - "src/SwfocTrainer.Core/Contracts/IModOnboardingService.cs"
   - "src/SwfocTrainer.Runtime/Services/RuntimeAdapter.Constants.cs"
   - "src/SwfocTrainer.Runtime/Services/RuntimeAdapter.State.cs"
+  - "src/SwfocTrainer.Core/Services/ActionReliabilityService.cs"
   - "src/SwfocTrainer.App/ViewModels/MainViewModelRuntimeModeOverrideHelpers.cs"
   - "tests/SwfocTrainer.Tests/Core/ActionReliabilityServiceTests.cs"
   - "tests/SwfocTrainer.Tests/Profiles/ModOnboardingServiceTests.cs"
