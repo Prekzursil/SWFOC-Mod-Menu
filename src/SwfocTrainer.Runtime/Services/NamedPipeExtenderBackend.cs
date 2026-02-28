@@ -15,6 +15,7 @@ public sealed class NamedPipeExtenderBackend : IExecutionBackend
     private const int DefaultResponseTimeoutMs = 2000;
     private const string DefaultPipeName = "SwfocExtenderBridge";
     private const string ExtenderBackendId = "extender";
+    private const string ProbePlaceholderAnchorValue = "probe";
     private const string ProbeResolvedAnchorsMetadataKey = "probeResolvedAnchorsJson";
     private const string NativeDirectoryName = "native";
     private const string BridgeHostWindowsExecutableName = "SwfocExtender.Host.exe";
@@ -88,18 +89,18 @@ public sealed class NamedPipeExtenderBackend : IExecutionBackend
         {
             // Seed known-profile anchors to keep legacy/base promoted routes deterministic
             // when host command-line launch markers are unavailable.
-            anchors["credits"] = "probe";
-            anchors["set_credits"] = "probe";
-            anchors["game_timer_freeze"] = "probe";
-            anchors["freeze_timer"] = "probe";
-            anchors["fog_reveal"] = "probe";
-            anchors["toggle_fog_reveal"] = "probe";
-            anchors["ai_enabled"] = "probe";
-            anchors["toggle_ai"] = "probe";
-            anchors["unit_cap"] = "probe";
-            anchors["set_unit_cap"] = "probe";
-            anchors["instant_build_patch"] = "probe";
-            anchors["toggle_instant_build_patch"] = "probe";
+            anchors["credits"] = ProbePlaceholderAnchorValue;
+            anchors["set_credits"] = ProbePlaceholderAnchorValue;
+            anchors["game_timer_freeze"] = ProbePlaceholderAnchorValue;
+            anchors["freeze_timer"] = ProbePlaceholderAnchorValue;
+            anchors["fog_reveal"] = ProbePlaceholderAnchorValue;
+            anchors["toggle_fog_reveal"] = ProbePlaceholderAnchorValue;
+            anchors["ai_enabled"] = ProbePlaceholderAnchorValue;
+            anchors["toggle_ai"] = ProbePlaceholderAnchorValue;
+            anchors["unit_cap"] = ProbePlaceholderAnchorValue;
+            anchors["set_unit_cap"] = ProbePlaceholderAnchorValue;
+            anchors["instant_build_patch"] = ProbePlaceholderAnchorValue;
+            anchors["toggle_instant_build_patch"] = ProbePlaceholderAnchorValue;
         }
 
         if (processContext.Metadata is null ||
