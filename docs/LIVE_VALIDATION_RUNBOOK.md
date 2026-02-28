@@ -13,6 +13,9 @@ Use this runbook to gather real-machine evidence for runtime/mod issues and mile
 - For AOTR: ensure launch context resolves to `aotr_1397421866_swfoc`.
 - For ROE: ensure launch context resolves to `roe_3447786229_swfoc`.
 - From repo root, run on Windows PowerShell.
+- For telemetry-first runtime mode detection, install/drop the telemetry mod template:
+  - `mods/SwfocTrainerTelemetry/Data/Scripts/TelemetryModeEmitter.lua`
+  - expected log marker: `SWFOC_TRAINER_TELEMETRY timestamp=<utc> mode=<mode>`
 
 ## 2. Run Pack Command
 
@@ -123,6 +126,15 @@ vNext bundle sections (required for runtime-affecting changes):
   - include reason-code diagnostics for apply/restore paths in `repro-bundle.json`
   - include affected profile IDs and fallback feature-flag state in PR notes
 
+## 3c. Telemetry Runtime Mode Source
+
+- Runtime mode precedence: manual override > telemetry log feed > forced context > process/symbol detection.
+- When telemetry is active and fresh, expect diagnostics fields:
+  - `runtimeModeTelemetry`
+  - `runtimeModeTelemetryReasonCode`
+  - `runtimeModeTelemetrySource=telemetry`
+- When telemetry is stale or unavailable, expect explicit diagnostics reason codes (for example `telemetry_stale`).
+
 ## 4. Promoted Action Matrix Evidence (Issue #7)
 
 Promoted matrix evidence must cover 3 profiles x 5 actions (15 total checks):
@@ -201,4 +213,22 @@ Then run:
 gh issue close 34 --comment "Live validation evidence posted; acceptance criteria met."
 gh issue close 19 --comment "AOTR/ROE live calibration checklist complete with evidence."
 gh issue close 7 --comment "All M1 acceptance criteria completed and evidenced across slices and live validation."
+```
+
+## 8. Flow/Data Companion Exports
+
+Run these alongside live gates when updating compatibility/flow intelligence:
+
+```powershell
+pwsh ./tools/research/export-effective-data-index.ps1 `
+  -ProfileId base_swfoc `
+  -OutPath TestResults/index/base_swfoc_effective_index.json `
+  -Strict
+
+pwsh ./tools/research/export-story-flow-graph.ps1 `
+  -ProfileId roe_3447786229_swfoc `
+  -OutPath TestResults/flow/roe_flow_graph.json `
+  -Strict
+
+pwsh ./tools/lua-harness/run-lua-harness.ps1 -Strict
 ```
