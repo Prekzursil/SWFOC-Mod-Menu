@@ -462,7 +462,7 @@ public sealed class TrainerOrchestratorTests
             ["intValue"] = 500
         };
 
-        var result = await orchestrator.ExecuteAsync("test_profile", "galactic_only", payload, RuntimeMode.Tactical);
+        var result = await orchestrator.ExecuteAsync("test_profile", "galactic_only", payload, RuntimeMode.AnyTactical);
 
         result.Succeeded.Should().BeFalse();
         result.Message.Should().Contain("not allowed");

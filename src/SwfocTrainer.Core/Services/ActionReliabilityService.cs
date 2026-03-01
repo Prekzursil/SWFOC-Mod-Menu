@@ -161,6 +161,17 @@ public sealed class ActionReliabilityService : IActionReliabilityService
 
         if (action.ExecutionKind == ExecutionKind.Helper)
         {
+            var helperBridgeState = ReadMetadataValue(session.Process.Metadata, "helperBridgeState");
+            if (!string.Equals(helperBridgeState, "ready", StringComparison.OrdinalIgnoreCase))
+            {
+                return new ActionReliabilityInfo(
+                    actionId,
+                    ActionReliabilityState.Unavailable,
+                    "helper_bridge_unavailable",
+                    0.98d,
+                    "Helper bridge is unavailable for this attachment.");
+            }
+
             if (catalog is null || !catalog.TryGetValue("unit_catalog", out var units) || units.Count == 0)
             {
                 return new ActionReliabilityInfo(
@@ -228,6 +239,18 @@ public sealed class ActionReliabilityService : IActionReliabilityService
             ActionReliabilityState.Stable,
             symbolInfo.Source == AddressSource.Signature ? "healthy_signature" : "healthy_non_signature",
             ClampConfidence(symbolInfo.Confidence));
+    }
+
+    private static string? ReadMetadataValue(
+        IReadOnlyDictionary<string, string>? metadata,
+        string key)
+    {
+        if (metadata is null || !metadata.TryGetValue(key, out var value) || string.IsNullOrWhiteSpace(value))
+        {
+            return null;
+        }
+
+        return value.Trim();
     }
 
     private static bool RequiresSymbol(ActionSpec action)

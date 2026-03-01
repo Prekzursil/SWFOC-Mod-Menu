@@ -23,6 +23,13 @@ struct PluginRequest {
     [[maybe_unused]] bool lockValue {false};
     [[maybe_unused]] std::int32_t processId {0};
     [[maybe_unused]] std::map<std::string, std::string> anchors {};
+    [[maybe_unused]] std::string helperHookId {};
+    [[maybe_unused]] std::string helperEntryPoint {};
+    [[maybe_unused]] std::string helperScript {};
+    [[maybe_unused]] std::string unitId {};
+    [[maybe_unused]] std::string entryMarker {};
+    [[maybe_unused]] std::string faction {};
+    [[maybe_unused]] std::string globalKey {};
 };
 
 struct CapabilityState {

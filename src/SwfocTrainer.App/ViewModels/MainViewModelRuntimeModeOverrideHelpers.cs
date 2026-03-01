@@ -9,7 +9,9 @@ internal static class MainViewModelRuntimeModeOverrideHelpers
 {
     internal const string ModeOverrideAuto = "Auto";
     internal const string ModeOverrideGalactic = "Galactic";
-    internal const string ModeOverrideTactical = "Tactical";
+    internal const string ModeOverrideAnyTactical = "AnyTactical";
+    internal const string ModeOverrideTacticalLand = "TacticalLand";
+    internal const string ModeOverrideTacticalSpace = "TacticalSpace";
 
     private const string SettingsFileName = "runtime-mode-settings.json";
     private const string SettingsKeyModeOverride = "modeOverride";
@@ -18,7 +20,9 @@ internal static class MainViewModelRuntimeModeOverrideHelpers
     [
         ModeOverrideAuto,
         ModeOverrideGalactic,
-        ModeOverrideTactical
+        ModeOverrideAnyTactical,
+        ModeOverrideTacticalLand,
+        ModeOverrideTacticalSpace
     ];
 
     internal static string Normalize(string? raw)
@@ -28,9 +32,19 @@ internal static class MainViewModelRuntimeModeOverrideHelpers
             return ModeOverrideGalactic;
         }
 
-        if (string.Equals(raw, ModeOverrideTactical, StringComparison.OrdinalIgnoreCase))
+        if (string.Equals(raw, ModeOverrideAnyTactical, StringComparison.OrdinalIgnoreCase))
         {
-            return ModeOverrideTactical;
+            return ModeOverrideAnyTactical;
+        }
+
+        if (string.Equals(raw, ModeOverrideTacticalLand, StringComparison.OrdinalIgnoreCase))
+        {
+            return ModeOverrideTacticalLand;
+        }
+
+        if (string.Equals(raw, ModeOverrideTacticalSpace, StringComparison.OrdinalIgnoreCase))
+        {
+            return ModeOverrideTacticalSpace;
         }
 
         return ModeOverrideAuto;
@@ -41,7 +55,9 @@ internal static class MainViewModelRuntimeModeOverrideHelpers
         return Normalize(modeOverride) switch
         {
             ModeOverrideGalactic => RuntimeMode.Galactic,
-            ModeOverrideTactical => RuntimeMode.Tactical,
+            ModeOverrideAnyTactical => RuntimeMode.AnyTactical,
+            ModeOverrideTacticalLand => RuntimeMode.TacticalLand,
+            ModeOverrideTacticalSpace => RuntimeMode.TacticalSpace,
             _ => runtimeMode
         };
     }

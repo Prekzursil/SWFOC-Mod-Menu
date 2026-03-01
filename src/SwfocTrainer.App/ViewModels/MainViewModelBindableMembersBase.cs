@@ -289,10 +289,41 @@ public abstract class MainViewModelBindableMembersBase : MainViewModelCoreStateB
         set => SetField(_supportBundleOutputDirectory, value, newValue => _supportBundleOutputDirectory = newValue);
     }
 
+    public string LaunchTarget
+    {
+        get => _launchTarget;
+        set => SetField(_launchTarget, value, newValue => _launchTarget = newValue);
+    }
+
+    public string LaunchMode
+    {
+        get => _launchMode;
+        set => SetField(_launchMode, value, newValue => _launchMode = newValue);
+    }
+
+    public string LaunchWorkshopId
+    {
+        get => _launchWorkshopId;
+        set => SetField(_launchWorkshopId, value, newValue => _launchWorkshopId = newValue);
+    }
+
+    public string LaunchModPath
+    {
+        get => _launchModPath;
+        set => SetField(_launchModPath, value, newValue => _launchModPath = newValue);
+    }
+
+    public bool TerminateExistingBeforeLaunch
+    {
+        get => _terminateExistingBeforeLaunch;
+        set => SetField(_terminateExistingBeforeLaunch, value, newValue => _terminateExistingBeforeLaunch = newValue);
+    }
+
     public ICommand LoadProfilesCommand { get; protected set; } = null!;
     public ICommand AttachCommand { get; protected set; } = null!;
     public ICommand DetachCommand { get; protected set; } = null!;
     public ICommand LoadActionsCommand { get; protected set; } = null!;
+    public ICommand LaunchAndAttachCommand { get; protected set; } = null!;
     public ICommand ExecuteActionCommand { get; protected set; } = null!;
     public ICommand LoadCatalogCommand { get; protected set; } = null!;
     public ICommand DeployHelperCommand { get; protected set; } = null!;

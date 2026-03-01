@@ -18,6 +18,6 @@ public sealed class RuntimeAdapterPromotedAliasTests
         var aliases = (string[]?)method!.Invoke(null, new object?[] { "toggle_instant_build_patch" });
 
         aliases.Should().NotBeNull();
-        aliases.Should().Equal("instant_build_patch_injection", "instant_build_patch", "toggle_instant_build_patch");
+        aliases.Should().Equal("instant_build_patch_injection", "instant_build_patch", "instant_build", "toggle_instant_build_patch");
     }
 }

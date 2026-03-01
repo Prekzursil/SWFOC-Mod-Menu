@@ -742,12 +742,36 @@ function Get-RuntimeMode {
     if ($tactical.outcome -eq "Passed") {
         return [PSCustomObject]@{
             hint = "Unknown"
-            effective = "Tactical"
+            effective = "AnyTactical"
             reasonCode = "tactical_test_passed"
         }
     }
 
     $message = ([string]$tactical.message).ToLowerInvariant()
+    if ($message.Contains("runtime mode is tacticalland")) {
+        return [PSCustomObject]@{
+            hint = "TacticalLand"
+            effective = "TacticalLand"
+            reasonCode = "tactical_skip_mode_land"
+        }
+    }
+
+    if ($message.Contains("runtime mode is tacticalspace")) {
+        return [PSCustomObject]@{
+            hint = "TacticalSpace"
+            effective = "TacticalSpace"
+            reasonCode = "tactical_skip_mode_space"
+        }
+    }
+
+    if ($message.Contains("runtime mode is anytactical")) {
+        return [PSCustomObject]@{
+            hint = "AnyTactical"
+            effective = "AnyTactical"
+            reasonCode = "tactical_skip_mode_any_tactical"
+        }
+    }
+
     if ($message.Contains("runtime mode is galactic")) {
         return [PSCustomObject]@{
             hint = "Galactic"
@@ -857,6 +881,7 @@ $runtimeMode = Get-RuntimeMode -LiveTests $relevantLiveTests
 $classification = Get-Classification -Relevant $relevantLiveTests -ProcessSnapshot $processSnapshot -SelectedScope $Scope
 $requiredCapabilities = Get-ProfileRequiredCapabilities -ProfileRootPath $ProfileRoot -ProfileId ([string]$launchContext.profileId)
 $runtimeEvidence = Get-RuntimeEvidence -RunDirectoryPath $RunDirectory
+$runtimeResult = Get-JsonMemberValue -Object $runtimeEvidence -Names @("result", "Result")
 $actionStatusDiagnostics = Get-ActionStatusDiagnostics -RunDirectoryPath $RunDirectory
 
 $nextAction = switch ($classification) {
@@ -888,12 +913,15 @@ $selectedHostProcess = if ($null -eq $preferredProcess) {
 }
 
 $backendRouteDecision = if ($null -ne $runtimeEvidence) {
-    $runtimeSucceeded = ConvertTo-BooleanOrDefault -Value $runtimeEvidence.result.succeeded -Default $false
+    $runtimeSucceeded = ConvertTo-BooleanOrDefault -Value (Get-JsonMemberValue -Object $runtimeResult -Names @("succeeded", "Succeeded")) -Default $false
+    $runtimeBackendRoute = [string](Get-JsonMemberValue -Object $runtimeResult -Names @("backendRoute", "BackendRoute"))
+    $runtimeRouteReasonCode = [string](Get-JsonMemberValue -Object $runtimeResult -Names @("routeReasonCode", "RouteReasonCode"))
+    $runtimeMessage = [string](Get-JsonMemberValue -Object $runtimeResult -Names @("message", "Message"))
     [ordered]@{
-        backend = if ([string]::IsNullOrWhiteSpace([string]$runtimeEvidence.result.backendRoute)) { "unknown" } else { [string]$runtimeEvidence.result.backendRoute }
+        backend = if ([string]::IsNullOrWhiteSpace($runtimeBackendRoute)) { "unknown" } else { $runtimeBackendRoute }
         allowed = $runtimeSucceeded
-        reasonCode = if ([string]::IsNullOrWhiteSpace([string]$runtimeEvidence.result.routeReasonCode)) { "UNKNOWN" } else { [string]$runtimeEvidence.result.routeReasonCode }
-        message = [string]$runtimeEvidence.result.message
+        reasonCode = if ([string]::IsNullOrWhiteSpace($runtimeRouteReasonCode)) { "UNKNOWN" } else { $runtimeRouteReasonCode }
+        message = $runtimeMessage
         source = "live-roe-runtime-evidence.json"
     }
 }
@@ -908,9 +936,10 @@ else {
 }
 
 $capabilityProbeSnapshot = if ($null -ne $runtimeEvidence) {
+    $runtimeProbeReasonCode = [string](Get-JsonMemberValue -Object $runtimeResult -Names @("capabilityProbeReasonCode", "CapabilityProbeReasonCode"))
     [ordered]@{
         backend = "extender"
-        probeReasonCode = if ([string]::IsNullOrWhiteSpace([string]$runtimeEvidence.result.capabilityProbeReasonCode)) { "CAPABILITY_UNKNOWN" } else { [string]$runtimeEvidence.result.capabilityProbeReasonCode }
+        probeReasonCode = if ([string]::IsNullOrWhiteSpace($runtimeProbeReasonCode)) { "CAPABILITY_UNKNOWN" } else { $runtimeProbeReasonCode }
         capabilityCount = 1
         requiredCapabilities = @($requiredCapabilities)
         source = "live-roe-runtime-evidence.json"
@@ -927,9 +956,10 @@ else {
 }
 
 $hookInstallReport = if ($null -ne $runtimeEvidence) {
-    $runtimeSucceeded = ConvertTo-BooleanOrDefault -Value $runtimeEvidence.result.succeeded -Default $false
+    $runtimeSucceeded = ConvertTo-BooleanOrDefault -Value (Get-JsonMemberValue -Object $runtimeResult -Names @("succeeded", "Succeeded")) -Default $false
+    $runtimeHookState = [string](Get-JsonMemberValue -Object $runtimeResult -Names @("hookState", "HookState"))
     [ordered]@{
-        state = if ([string]::IsNullOrWhiteSpace([string]$runtimeEvidence.result.hookState)) { "unknown" } else { [string]$runtimeEvidence.result.hookState }
+        state = if ([string]::IsNullOrWhiteSpace($runtimeHookState)) { "unknown" } else { $runtimeHookState }
         reasonCode = if ($runtimeSucceeded) { "CAPABILITY_PROBE_PASS" } else { "HOOK_INSTALL_FAILED" }
         details = "Derived from runtime action diagnostics."
         source = "live-roe-runtime-evidence.json"
@@ -951,6 +981,26 @@ $overlayState = [ordered]@{
     source = if ($null -ne $runtimeEvidence) { "runtime_reported_unavailable" } else { "fallback_default" }
 }
 
+$helperBridgeState = [string](Get-JsonMemberValue -Object $runtimeResult -Names @("helperBridgeState", "HelperBridgeState"))
+if ([string]::IsNullOrWhiteSpace($helperBridgeState)) {
+    $helperBridgeState = "unknown"
+}
+
+$helperEntryPoint = [string](Get-JsonMemberValue -Object $runtimeResult -Names @("helperEntryPoint", "HelperEntryPoint"))
+if ([string]::IsNullOrWhiteSpace($helperEntryPoint)) {
+    $helperEntryPoint = ""
+}
+
+$helperInvocationSource = [string](Get-JsonMemberValue -Object $runtimeResult -Names @("helperInvocationSource", "HelperInvocationSource"))
+if ([string]::IsNullOrWhiteSpace($helperInvocationSource)) {
+    $helperInvocationSource = "unknown"
+}
+
+$helperVerifyState = [string](Get-JsonMemberValue -Object $runtimeResult -Names @("helperVerifyState", "HelperVerifyState"))
+if ([string]::IsNullOrWhiteSpace($helperVerifyState)) {
+    $helperVerifyState = "unknown"
+}
+
 $bundle = [ordered]@{
     schemaVersion = "1.2"
     runId = $RunId
@@ -968,7 +1018,11 @@ $bundle = [ordered]@{
     liveTests = @($liveTests)
     diagnostics = [ordered]@{
         dependencyState = "unknown"
-        helperReadiness = "unknown"
+        helperReadiness = $helperBridgeState
+        helperBridgeState = $helperBridgeState
+        helperEntryPoint = $helperEntryPoint
+        helperInvocationSource = $helperInvocationSource
+        helperVerifyState = $helperVerifyState
         symbolHealthSummary = "not-captured"
     }
     classification = $classification
@@ -1023,6 +1077,7 @@ if (@($actionStatusRows).Count -eq 0) {
 - backend route: $($backendRouteDecision.backend) ($($backendRouteDecision.reasonCode))
 - capability probe: $($capabilityProbeSnapshot.backend) ($($capabilityProbeSnapshot.probeReasonCode), required=$((@($capabilityProbeSnapshot.requiredCapabilities) -join ', ')))
 - overlay: available=$($overlayState.available) visible=$($overlayState.visible) ($($overlayState.reasonCode))
+- helper ingress: state=$helperBridgeState entryPoint=$helperEntryPoint source=$helperInvocationSource verify=$helperVerifyState
 - promoted action diagnostics: status=$($actionStatusDiagnostics.status) checks=$($actionStatusDiagnostics.summary.total) passed=$($actionStatusDiagnostics.summary.passed) failed=$($actionStatusDiagnostics.summary.failed) skipped=$($actionStatusDiagnostics.summary.skipped)
 
 ## Process Snapshot

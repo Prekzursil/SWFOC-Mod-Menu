@@ -17,7 +17,7 @@ public sealed class MainViewModel : MainViewModelSaveOpsBase
         (Profiles, Actions, CatalogSummary, Updates, SaveDiffPreview, Hotkeys, SaveFields, FilteredSaveFields, SavePatchOperations, SavePatchCompatibility, ActionReliability, SelectedUnitTransactions, SpawnPresets, LiveOpsDiagnostics, ModCompatibilityRows, ActiveFreezes) = MainViewModelFactories.CreateCollections();
 
         var commandContexts = CreateCommandContexts();
-        (LoadProfilesCommand, AttachCommand, DetachCommand, LoadActionsCommand, ExecuteActionCommand, LoadCatalogCommand, DeployHelperCommand, VerifyHelperCommand, CheckUpdatesCommand, InstallUpdateCommand, RollbackProfileUpdateCommand) = MainViewModelFactories.CreateCoreCommands(commandContexts.Core);
+        (LoadProfilesCommand, LaunchAndAttachCommand, AttachCommand, DetachCommand, LoadActionsCommand, ExecuteActionCommand, LoadCatalogCommand, DeployHelperCommand, VerifyHelperCommand, CheckUpdatesCommand, InstallUpdateCommand, RollbackProfileUpdateCommand) = MainViewModelFactories.CreateCoreCommands(commandContexts.Core);
         (BrowseSaveCommand, LoadSaveCommand, EditSaveCommand, ValidateSaveCommand, RefreshDiffCommand, WriteSaveCommand, BrowsePatchPackCommand, ExportPatchPackCommand, LoadPatchPackCommand, PreviewPatchPackCommand, ApplyPatchPackCommand, RestoreBackupCommand, LoadHotkeysCommand, SaveHotkeysCommand, AddHotkeyCommand, RemoveHotkeyCommand) = MainViewModelFactories.CreateSaveCommands(commandContexts.Save);
         (RefreshActionReliabilityCommand, CaptureSelectedUnitBaselineCommand, ApplySelectedUnitDraftCommand, RevertSelectedUnitTransactionCommand, RestoreSelectedUnitBaselineCommand, LoadSpawnPresetsCommand, RunSpawnBatchCommand, ScaffoldModProfileCommand, ExportCalibrationArtifactCommand, BuildCompatibilityReportCommand, ExportSupportBundleCommand, ExportTelemetrySnapshotCommand) = MainViewModelFactories.CreateLiveOpsCommands(commandContexts.LiveOps);
         (QuickSetCreditsCommand, QuickFreezeTimerCommand, QuickToggleFogCommand, QuickToggleAiCommand, QuickInstantBuildCommand, QuickUnitCapCommand, QuickGodModeCommand, QuickOneHitCommand, QuickUnfreezeAllCommand) = MainViewModelFactories.CreateQuickCommands(commandContexts.Quick);
@@ -37,6 +37,7 @@ public sealed class MainViewModel : MainViewModelSaveOpsBase
         return new MainViewModelCoreCommandContext
         {
             LoadProfilesAsync = LoadProfilesAsync,
+            LaunchAndAttachAsync = LaunchAndAttachAsync,
             AttachAsync = AttachAsync,
             DetachAsync = DetachAsync,
             LoadActionsAsync = LoadActionsAsync,
@@ -322,6 +323,42 @@ public sealed class MainViewModel : MainViewModelSaveOpsBase
         var processes = await _processLocator.FindSupportedProcessesAsync();
         var variant = await _profileVariantResolver.ResolveAsync(requestedProfileId, processes, CancellationToken.None);
         return (variant.ResolvedProfileId, variant);
+    }
+
+    private async Task LaunchAndAttachAsync()
+    {
+        var launchRequest = BuildLaunchRequest();
+        Status = $"Launching {launchRequest.Target} ({launchRequest.Mode})...";
+        var launchResult = await _gameLauncher.LaunchAsync(launchRequest);
+        if (!launchResult.Succeeded)
+        {
+            Status = $"Launch failed: {launchResult.Message}";
+            return;
+        }
+
+        Status = $"Launch started (pid={launchResult.ProcessId}). Attaching...";
+        await Task.Delay(TimeSpan.FromSeconds(2));
+        await AttachAsync();
+    }
+
+    private GameLaunchRequest BuildLaunchRequest()
+    {
+        var target = LaunchTarget.Equals("Sweaw", StringComparison.OrdinalIgnoreCase)
+            ? GameLaunchTarget.Sweaw
+            : GameLaunchTarget.Swfoc;
+        var mode = LaunchMode.Equals("SteamMod", StringComparison.OrdinalIgnoreCase)
+            ? GameLaunchMode.SteamMod
+            : LaunchMode.Equals("ModPath", StringComparison.OrdinalIgnoreCase)
+                ? GameLaunchMode.ModPath
+                : GameLaunchMode.Vanilla;
+
+        return new GameLaunchRequest(
+            Target: target,
+            Mode: mode,
+            WorkshopId: string.IsNullOrWhiteSpace(LaunchWorkshopId) ? null : LaunchWorkshopId.Trim(),
+            ModPath: string.IsNullOrWhiteSpace(LaunchModPath) ? null : LaunchModPath.Trim(),
+            ProfileIdHint: SelectedProfileId,
+            TerminateExistingTargets: TerminateExistingBeforeLaunch);
     }
     private void ApplyAttachSessionStatus(AttachSession session)
     {

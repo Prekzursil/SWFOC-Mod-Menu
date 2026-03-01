@@ -117,10 +117,13 @@ internal static class Program
         services.AddSingleton<ISdkOperationRouter, SdkOperationRouter>();
         services.AddSingleton<IBackendRouter, BackendRouter>();
         services.AddSingleton<IExecutionBackend, NamedPipeExtenderBackend>();
+        services.AddSingleton<IHelperBridgeBackend>(provider =>
+            new NamedPipeHelperBridgeBackend(provider.GetRequiredService<IExecutionBackend>()));
         services.AddSingleton<IActionReliabilityService, ActionReliabilityService>();
         services.AddSingleton<IModCalibrationService, ModCalibrationService>();
         services.AddSingleton<ISymbolHealthService, SymbolHealthService>();
         services.AddSingleton<ITelemetrySnapshotService, TelemetrySnapshotService>();
+        services.AddSingleton<IGameLaunchService, GameLaunchService>();
         services.AddSingleton<IProcessLocator, ProcessLocator>();
         services.AddSingleton<ISignatureResolver, SignatureResolver>();
         services.AddSingleton<IRuntimeAdapter, RuntimeAdapter>();
@@ -151,6 +154,7 @@ internal static class Program
             ProcessLocator = provider.GetRequiredService<IProcessLocator>(),
             LaunchContextResolver = provider.GetRequiredService<ILaunchContextResolver>(),
             ProfileVariantResolver = provider.GetRequiredService<IProfileVariantResolver>(),
+            GameLauncher = provider.GetRequiredService<IGameLaunchService>(),
             Runtime = provider.GetRequiredService<IRuntimeAdapter>(),
             Orchestrator = provider.GetRequiredService<TrainerOrchestrator>(),
             Catalog = provider.GetRequiredService<ICatalogService>(),

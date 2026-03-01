@@ -4,6 +4,9 @@ param(
     [string]$ProfileRoot = "profiles/default",
     [string[]]$ForceWorkshopIds = @(),
     [string]$ForceProfileId = "",
+    [switch]$AutoLaunch,
+    [string]$GameRoot = "",
+    [int]$LaunchWaitSeconds = 45,
     [switch]$NoBuild,
     [string]$RunId = "",
     [ValidateSet("AOTR", "ROE", "TACTICAL", "FULL")][string]$Scope = "FULL",
@@ -33,6 +36,13 @@ if (-not (Test-Path -Path $runResultsDirectory)) {
     New-Item -ItemType Directory -Path $runResultsDirectory -Force | Out-Null
 }
 $runResultsDirectory = (Resolve-Path -Path $runResultsDirectory).ProviderPath
+
+$defaultAotrWorkshopId = "1397421866"
+$defaultRoeWorkshopId = "3447786229"
+$gameRootCandidates = @(
+    "D:\\SteamLibrary\\steamapps\\common\\Star Wars Empire at War",
+    "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Star Wars Empire at War"
+)
 
 function ConvertTo-ForcedWorkshopIds {
     param([string[]]$RawIds)
@@ -72,6 +82,171 @@ function Resolve-DotnetCommand {
     }
 
     throw "Could not resolve dotnet executable. Install .NET SDK or add dotnet to PATH."
+}
+
+function Resolve-GameRootPath {
+    param([string]$OverrideRoot)
+
+    if (-not [string]::IsNullOrWhiteSpace($OverrideRoot) -and (Test-Path -Path $OverrideRoot)) {
+        return (Resolve-Path -Path $OverrideRoot).ProviderPath
+    }
+
+    $envRoot = $env:SWFOC_GAME_ROOT
+    if (-not [string]::IsNullOrWhiteSpace($envRoot) -and (Test-Path -Path $envRoot)) {
+        return (Resolve-Path -Path $envRoot).ProviderPath
+    }
+
+    foreach ($candidate in $gameRootCandidates) {
+        if (Test-Path -Path $candidate) {
+            return (Resolve-Path -Path $candidate).ProviderPath
+        }
+    }
+
+    return ""
+}
+
+function Stop-LiveGameProcesses {
+    foreach ($name in @("sweaw", "swfoc", "StarWarsG")) {
+        foreach ($proc in @(Get-Process -Name $name -ErrorAction SilentlyContinue)) {
+            try {
+                Stop-Process -Id $proc.Id -Force -ErrorAction Stop
+            }
+            catch {
+                Write-Warning ("Failed stopping process {0} ({1}): {2}" -f $proc.ProcessName, $proc.Id, $_.Exception.Message)
+            }
+        }
+    }
+}
+
+function Wait-ForAnyProcess {
+    param(
+        [string[]]$Names,
+        [int]$TimeoutSeconds = 45
+    )
+
+    $deadline = (Get-Date).AddSeconds([Math]::Max(5, $TimeoutSeconds))
+    while ((Get-Date) -lt $deadline) {
+        foreach ($name in $Names) {
+            $match = Get-Process -Name $name -ErrorAction SilentlyContinue | Select-Object -First 1
+            if ($null -ne $match) {
+                return $match
+            }
+        }
+
+        Start-Sleep -Milliseconds 750
+    }
+
+    return $null
+}
+
+function Resolve-ScopeLaunchPlan {
+    param(
+        [string]$SelectedScope,
+        [string[]]$ForcedWorkshopIds,
+        [string]$ForcedProfileId
+    )
+
+    $scopeUpper = $SelectedScope.ToUpperInvariant()
+    $forcedIds = @($ForcedWorkshopIds | Where-Object { -not [string]::IsNullOrWhiteSpace($_) })
+    $forceProfile = if ([string]::IsNullOrWhiteSpace($ForcedProfileId)) { "" } else { $ForcedProfileId.Trim().ToLowerInvariant() }
+
+    $workshopIds = @()
+    if ($scopeUpper -eq "AOTR") {
+        $workshopIds = if ($forcedIds.Count -gt 0) { @($forcedIds[0]) } else { @($defaultAotrWorkshopId) }
+    }
+    elseif ($scopeUpper -eq "ROE") {
+        $workshopIds = if ($forcedIds.Count -gt 0) { @($forcedIds) } else { @($defaultRoeWorkshopId) }
+    }
+    elseif ($scopeUpper -eq "FULL") {
+        if ($forceProfile.Contains("roe")) {
+            $workshopIds = if ($forcedIds.Count -gt 0) { @($forcedIds) } else { @($defaultRoeWorkshopId) }
+        }
+        elseif ($forceProfile.Contains("aotr")) {
+            $workshopIds = if ($forcedIds.Count -gt 0) { @($forcedIds[0]) } else { @($defaultAotrWorkshopId) }
+        }
+        else {
+            $workshopIds = @()
+        }
+    }
+
+    $requiredHostName = ""
+    if ($scopeUpper -eq "ROE") {
+        $requiredHostName = "StarWarsG"
+    }
+    elseif ($scopeUpper -eq "AOTR" -and $workshopIds.Count -gt 0) {
+        $requiredHostName = "StarWarsG"
+    }
+    elseif ($scopeUpper -eq "FULL" -and $workshopIds.Count -gt 0) {
+        $requiredHostName = "StarWarsG"
+    }
+
+    return [PSCustomObject]@{
+        TargetExe = "swfoc.exe"
+        HostNames = @("swfoc", "StarWarsG")
+        WorkshopIds = @($workshopIds)
+        RequiredHostName = $requiredHostName
+    }
+}
+
+function Ensure-AutoLaunchSession {
+    param(
+        [string]$SelectedScope,
+        [string[]]$ForcedWorkshopIds,
+        [string]$ForcedProfileId,
+        [string]$OverrideGameRoot,
+        [int]$TimeoutSeconds = 45
+    )
+
+    $root = Resolve-GameRootPath -OverrideRoot $OverrideGameRoot
+    if ([string]::IsNullOrWhiteSpace($root)) {
+        throw "Auto-launch requested but no game root was found. Provide -GameRoot or set SWFOC_GAME_ROOT."
+    }
+
+    $plan = Resolve-ScopeLaunchPlan -SelectedScope $SelectedScope -ForcedWorkshopIds $ForcedWorkshopIds -ForcedProfileId $ForcedProfileId
+    $exePath = Join-Path $root ("corruption\" + $plan.TargetExe)
+    if (-not (Test-Path -Path $exePath)) {
+        throw ("Auto-launch executable missing: {0}" -f $exePath)
+    }
+
+    Stop-LiveGameProcesses
+
+    $args = ""
+    if ($null -ne $plan.WorkshopIds) {
+        $normalizedWorkshopIds = @($plan.WorkshopIds | ForEach-Object { [string]$_ } | Where-Object { -not [string]::IsNullOrWhiteSpace($_) })
+        if ($normalizedWorkshopIds.Count -gt 0) {
+            $args = ($normalizedWorkshopIds | ForEach-Object { "STEAMMOD=$_" }) -join " "
+        }
+    }
+    Write-Output ("Auto-launch: exe='{0}' args='{1}' root='{2}' scope={3}" -f $exePath, $args, $root, $SelectedScope)
+    $startParams = @{
+        FilePath = $exePath
+        WorkingDirectory = (Split-Path -Path $exePath -Parent)
+        PassThru = $true
+    }
+    if (-not [string]::IsNullOrWhiteSpace($args)) {
+        $startParams.ArgumentList = $args
+    }
+
+    $started = Start-Process @startParams
+    if ($null -eq $started) {
+        throw "Auto-launch failed: Start-Process returned null."
+    }
+
+    $visible = Wait-ForAnyProcess -Names $plan.HostNames -TimeoutSeconds $TimeoutSeconds
+    if ($null -eq $visible) {
+        throw ("Auto-launch timeout: no target process visible after {0}s (started pid={1})." -f $TimeoutSeconds, $started.Id)
+    }
+
+    Write-Output ("Auto-launch process visible: {0} (pid={1})" -f $visible.ProcessName, $visible.Id)
+
+    if (-not [string]::IsNullOrWhiteSpace([string]$plan.RequiredHostName)) {
+        $requiredVisible = Wait-ForAnyProcess -Names @($plan.RequiredHostName) -TimeoutSeconds $TimeoutSeconds
+        if ($null -eq $requiredVisible) {
+            throw ("Auto-launch timeout: required host '{0}' not visible after {1}s (started pid={2})." -f $plan.RequiredHostName, $TimeoutSeconds, $started.Id)
+        }
+
+        Write-Output ("Auto-launch required host visible: {0} (pid={1})" -f $requiredVisible.ProcessName, $requiredVisible.Id)
+    }
 }
 
 function Get-LastExitCodeOrZero {
@@ -552,6 +727,16 @@ $forceProfileIdNormalized = if ([string]::IsNullOrWhiteSpace($ForceProfileId)) {
 $dotnetExe = Resolve-DotnetCommand
 $pythonCmd = @(Resolve-PythonCommand)
 $runtimeHostPath = Test-NativeHostPreflight -Config $Configuration -Enabled $PreflightNativeHost
+
+if ($AutoLaunch) {
+    Ensure-AutoLaunchSession `
+        -SelectedScope $Scope `
+        -ForcedWorkshopIds $forceWorkshopIdsNormalized `
+        -ForcedProfileId $forceProfileIdNormalized `
+        -OverrideGameRoot $GameRoot `
+        -TimeoutSeconds $LaunchWaitSeconds
+}
+
 $runTimestamp = Get-Date
 $iso = $runTimestamp.ToString("yyyy-MM-dd HH:mm:ss zzz")
 $runStartedUtc = $runTimestamp.ToUniversalTime().ToString("o")
@@ -783,6 +968,7 @@ Write-Output ""
 Write-Output "=== Live Validation Summary ($iso) ==="
 Write-Output "run id: $RunId"
 Write-Output "scope: $Scope"
+Write-Output "auto launch: $AutoLaunch"
 if (-not [string]::IsNullOrWhiteSpace($runtimeHostPath)) {
     Write-Output "native host path: $runtimeHostPath"
 }

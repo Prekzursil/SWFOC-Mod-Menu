@@ -22,6 +22,8 @@ public sealed record HelperHookSpec(
     string Script,
     string Version,
     string? EntryPoint = null,
+    IReadOnlyDictionary<string, string>? ArgContract = null,
+    IReadOnlyDictionary<string, string>? VerifyContract = null,
     IReadOnlyDictionary<string, string>? Metadata = null);
 
 public sealed record CatalogSource(

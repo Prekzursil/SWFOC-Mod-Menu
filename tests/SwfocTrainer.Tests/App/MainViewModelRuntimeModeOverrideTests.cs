@@ -16,11 +16,11 @@ public sealed class MainViewModelRuntimeModeOverrideTests
     }
 
     [Fact]
-    public void ResolveEffectiveRuntimeMode_ShouldUseTacticalOverride_WhenHintUnknown()
+    public void ResolveEffectiveRuntimeMode_ShouldUseAnyTacticalOverride_WhenHintUnknown()
     {
-        var effectiveMode = MainViewModelRuntimeModeOverrideHelpers.ResolveEffectiveRuntimeMode(RuntimeMode.Unknown, "Tactical");
+        var effectiveMode = MainViewModelRuntimeModeOverrideHelpers.ResolveEffectiveRuntimeMode(RuntimeMode.Unknown, "AnyTactical");
 
-        effectiveMode.Should().Be(RuntimeMode.Tactical);
+        effectiveMode.Should().Be(RuntimeMode.AnyTactical);
     }
 
     [Fact]

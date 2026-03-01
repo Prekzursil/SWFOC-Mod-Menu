@@ -39,6 +39,8 @@ internal static class MainViewModelDefaults
     internal const int DefaultCreditsValue = 1000000;
     internal const int DefaultUnitCapValue = 99999;
     internal const float DefaultGameSpeedValue = 2.0f;
+    internal const string DefaultLaunchTarget = "Swfoc";
+    internal const string DefaultLaunchMode = "Vanilla";
     internal const string DefaultCreditsValueText = "1000000";
     internal const string DefaultPayloadJsonTemplate = "{\n  \"symbol\": \"credits\",\n  \"intValue\": 1000000,\n  \"lockCredits\": false\n}";
 

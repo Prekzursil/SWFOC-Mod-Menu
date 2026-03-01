@@ -150,13 +150,23 @@ public sealed class TelemetryLogTailService : ITelemetryLogTailService
             return true;
         }
 
-        if (rawMode.Equals("Tactical", StringComparison.OrdinalIgnoreCase) ||
-            rawMode.Equals("TacticalLand", StringComparison.OrdinalIgnoreCase) ||
-            rawMode.Equals("TacticalSpace", StringComparison.OrdinalIgnoreCase) ||
-            rawMode.Equals("Land", StringComparison.OrdinalIgnoreCase) ||
+        if (rawMode.Equals("TacticalLand", StringComparison.OrdinalIgnoreCase) ||
+            rawMode.Equals("Land", StringComparison.OrdinalIgnoreCase))
+        {
+            mode = RuntimeMode.TacticalLand;
+            return true;
+        }
+
+        if (rawMode.Equals("TacticalSpace", StringComparison.OrdinalIgnoreCase) ||
             rawMode.Equals("Space", StringComparison.OrdinalIgnoreCase))
         {
-            mode = RuntimeMode.Tactical;
+            mode = RuntimeMode.TacticalSpace;
+            return true;
+        }
+
+        if (rawMode.Equals("AnyTactical", StringComparison.OrdinalIgnoreCase))
+        {
+            mode = RuntimeMode.AnyTactical;
             return true;
         }
 

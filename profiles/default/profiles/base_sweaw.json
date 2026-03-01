@@ -138,7 +138,7 @@
     "set_selected_hp": {
       "id": "set_selected_hp",
       "category": "Unit",
-      "mode": "Tactical",
+      "mode": "AnyTactical",
       "executionKind": "Memory",
       "payloadSchema": {
         "required": ["symbol", "floatValue"]
@@ -150,7 +150,7 @@
     "set_selected_shield": {
       "id": "set_selected_shield",
       "category": "Unit",
-      "mode": "Tactical",
+      "mode": "AnyTactical",
       "executionKind": "Memory",
       "payloadSchema": {
         "required": ["symbol", "floatValue"]
@@ -162,7 +162,7 @@
     "set_selected_speed": {
       "id": "set_selected_speed",
       "category": "Unit",
-      "mode": "Tactical",
+      "mode": "AnyTactical",
       "executionKind": "Memory",
       "payloadSchema": {
         "required": ["symbol", "floatValue"]
@@ -174,7 +174,7 @@
     "set_selected_damage_multiplier": {
       "id": "set_selected_damage_multiplier",
       "category": "Unit",
-      "mode": "Tactical",
+      "mode": "AnyTactical",
       "executionKind": "Memory",
       "payloadSchema": {
         "required": ["symbol", "floatValue"]
@@ -186,7 +186,7 @@
     "set_selected_cooldown_multiplier": {
       "id": "set_selected_cooldown_multiplier",
       "category": "Unit",
-      "mode": "Tactical",
+      "mode": "AnyTactical",
       "executionKind": "Memory",
       "payloadSchema": {
         "required": ["symbol", "floatValue"]
@@ -198,7 +198,7 @@
     "set_selected_veterancy": {
       "id": "set_selected_veterancy",
       "category": "Unit",
-      "mode": "Tactical",
+      "mode": "AnyTactical",
       "executionKind": "Memory",
       "payloadSchema": {
         "required": ["symbol", "intValue"]
@@ -210,7 +210,7 @@
     "set_selected_owner_faction": {
       "id": "set_selected_owner_faction",
       "category": "Unit",
-      "mode": "Tactical",
+      "mode": "AnyTactical",
       "executionKind": "Memory",
       "payloadSchema": {
         "required": ["symbol", "intValue"]
@@ -365,6 +365,14 @@
       "script": "scripts/common/spawn_bridge.lua",
       "version": "1.0.0",
       "entryPoint": "SWFOC_Trainer_Spawn",
+      "argContract": {
+        "unitId": "required:string",
+        "entryMarker": "required:string",
+        "faction": "required:string"
+      },
+      "verifyContract": {
+        "helperVerifyState": "applied"
+      },
       "metadata": {
         "sha256": "d249abd37ba84f7ec485ca1916d9d7c77d6c4dc6cf152ff30258a0e35f663514"
       }
@@ -376,6 +384,6 @@
     "profileAliases": "base_sweaw,sweaw,empire at war,eaw",
     "localPathHints": "sweaw,empire at war",
     "criticalSymbols": "credits,planet_owner,hero_respawn_timer,game_speed,unit_cap",
-    "symbolValidationRules": "[{\"Symbol\":\"credits\",\"IntMin\":0,\"IntMax\":2000000000,\"Critical\":true},{\"Symbol\":\"planet_owner\",\"IntMin\":0,\"IntMax\":16,\"Critical\":true},{\"Symbol\":\"hero_respawn_timer\",\"IntMin\":0,\"IntMax\":86400,\"Critical\":true},{\"Symbol\":\"game_speed\",\"FloatMin\":0.05,\"FloatMax\":8.0,\"Critical\":true},{\"Symbol\":\"selected_hp\",\"Mode\":\"Tactical\",\"FloatMin\":0.0,\"FloatMax\":5000000.0},{\"Symbol\":\"selected_shield\",\"Mode\":\"Tactical\",\"FloatMin\":0.0,\"FloatMax\":5000000.0}]"
+    "symbolValidationRules": "[{\"Symbol\":\"credits\",\"IntMin\":0,\"IntMax\":2000000000,\"Critical\":true},{\"Symbol\":\"planet_owner\",\"IntMin\":0,\"IntMax\":16,\"Critical\":true},{\"Symbol\":\"hero_respawn_timer\",\"IntMin\":0,\"IntMax\":86400,\"Critical\":true},{\"Symbol\":\"game_speed\",\"FloatMin\":0.05,\"FloatMax\":8.0,\"Critical\":true},{\"Symbol\":\"selected_hp\",\"Mode\":\"AnyTactical\",\"FloatMin\":0.0,\"FloatMax\":5000000.0},{\"Symbol\":\"selected_shield\",\"Mode\":\"AnyTactical\",\"FloatMin\":0.0,\"FloatMax\":5000000.0}]"
   }
 }

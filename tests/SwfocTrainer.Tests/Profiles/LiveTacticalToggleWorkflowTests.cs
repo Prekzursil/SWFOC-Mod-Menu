@@ -93,9 +93,9 @@ public sealed class LiveTacticalToggleWorkflowTests
     private async Task<AttachSession> EnsureAttachedTacticalSessionAsync(RuntimeAdapter runtime, string profileId)
     {
         var session = await runtime.AttachAsync(profileId);
-        if (session.Process.Mode != RuntimeMode.Tactical)
+        if (session.Process.Mode is not (RuntimeMode.AnyTactical or RuntimeMode.TacticalLand or RuntimeMode.TacticalSpace))
         {
-            throw LiveSkip.For(_output, $"runtime mode is {session.Process.Mode}, tactical checks require Tactical.");
+            throw LiveSkip.For(_output, $"runtime mode is {session.Process.Mode}, tactical checks require AnyTactical/TacticalLand/TacticalSpace.");
         }
 
         return session;
@@ -138,7 +138,7 @@ public sealed class LiveTacticalToggleWorkflowTests
                 ["symbol"] = symbol,
                 ["boolValue"] = enabled
             },
-            RuntimeMode.Tactical);
+            RuntimeMode.AnyTactical);
     }
 
     private static void AssertToggleResult(ActionExecutionResult result, string label)

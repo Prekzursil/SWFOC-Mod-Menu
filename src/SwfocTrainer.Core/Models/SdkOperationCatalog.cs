@@ -10,14 +10,14 @@ public static class SdkOperationCatalog
         {
             ["list_selected"] = SdkOperationDefinition.ReadOnly("list_selected"),
             ["list_nearby"] = SdkOperationDefinition.ReadOnly("list_nearby"),
-            ["spawn"] = SdkOperationDefinition.Mutation("spawn", RuntimeMode.Tactical, RuntimeMode.Galactic),
-            ["kill"] = SdkOperationDefinition.Mutation("kill", RuntimeMode.Tactical),
-            ["set_owner"] = SdkOperationDefinition.Mutation("set_owner", RuntimeMode.Tactical, RuntimeMode.Galactic),
-            ["teleport"] = SdkOperationDefinition.Mutation("teleport", RuntimeMode.Tactical),
+            ["spawn"] = SdkOperationDefinition.Mutation("spawn", RuntimeMode.AnyTactical, RuntimeMode.Galactic),
+            ["kill"] = SdkOperationDefinition.Mutation("kill", RuntimeMode.AnyTactical),
+            ["set_owner"] = SdkOperationDefinition.Mutation("set_owner", RuntimeMode.AnyTactical, RuntimeMode.Galactic),
+            ["teleport"] = SdkOperationDefinition.Mutation("teleport", RuntimeMode.AnyTactical),
             ["set_planet_owner"] = SdkOperationDefinition.Mutation("set_planet_owner", RuntimeMode.Galactic),
-            ["set_hp"] = SdkOperationDefinition.Mutation("set_hp", RuntimeMode.Tactical),
-            ["set_shield"] = SdkOperationDefinition.Mutation("set_shield", RuntimeMode.Tactical),
-            ["set_cooldown"] = SdkOperationDefinition.Mutation("set_cooldown", RuntimeMode.Tactical)
+            ["set_hp"] = SdkOperationDefinition.Mutation("set_hp", RuntimeMode.AnyTactical),
+            ["set_shield"] = SdkOperationDefinition.Mutation("set_shield", RuntimeMode.AnyTactical),
+            ["set_cooldown"] = SdkOperationDefinition.Mutation("set_cooldown", RuntimeMode.AnyTactical)
         };
 
     public static bool TryGet(string operationId, out SdkOperationDefinition definition)
@@ -49,7 +49,17 @@ public sealed record SdkOperationDefinition(
             return true;
         }
 
-        return AllowedModes.Contains(mode);
+        if (AllowedModes.Contains(mode))
+        {
+            return true;
+        }
+
+        if (mode is RuntimeMode.TacticalLand or RuntimeMode.TacticalSpace)
+        {
+            return AllowedModes.Contains(RuntimeMode.AnyTactical);
+        }
+
+        return false;
     }
 
     public static SdkOperationDefinition ReadOnly(string operationId)

@@ -55,6 +55,7 @@ public abstract class MainViewModelCoreStateBase : INotifyPropertyChanged
     protected readonly IProcessLocator _processLocator;
     protected readonly ILaunchContextResolver _launchContextResolver;
     protected readonly IProfileVariantResolver _profileVariantResolver;
+    protected readonly IGameLaunchService _gameLauncher;
     protected readonly IRuntimeAdapter _runtime;
     protected readonly TrainerOrchestrator _orchestrator;
     protected readonly ICatalogService _catalog;
@@ -111,6 +112,11 @@ public abstract class MainViewModelCoreStateBase : INotifyPropertyChanged
     protected string _calibrationNotes = string.Empty;
     protected string _modCompatibilitySummary = string.Empty;
     protected string _opsArtifactSummary = string.Empty;
+    protected string _launchTarget = MainViewModelDefaults.DefaultLaunchTarget;
+    protected string _launchMode = MainViewModelDefaults.DefaultLaunchMode;
+    protected string _launchWorkshopId = string.Empty;
+    protected string _launchModPath = string.Empty;
+    protected bool _terminateExistingBeforeLaunch;
     protected string _supportBundleOutputDirectory = Path.Combine(
         Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
         "SwfocTrainer",
@@ -144,7 +150,7 @@ public abstract class MainViewModelCoreStateBase : INotifyPropertyChanged
 
     protected MainViewModelCoreStateBase(MainViewModelDependencies dependencies)
     {
-        (_profiles, _processLocator, _launchContextResolver, _profileVariantResolver, _runtime, _orchestrator, _catalog, _saveCodec,
+        (_profiles, _processLocator, _launchContextResolver, _profileVariantResolver, _gameLauncher, _runtime, _orchestrator, _catalog, _saveCodec,
             _savePatchPackService, _savePatchApplyService, _helper, _updates, _modOnboarding, _modCalibration, _supportBundles, _telemetry,
             _freezeService, _actionReliability, _selectedUnitTransactions, _spawnPresets) = CreateDependencyTuple(dependencies);
     }
@@ -154,6 +160,7 @@ public abstract class MainViewModelCoreStateBase : INotifyPropertyChanged
         IProcessLocator ProcessLocator,
         ILaunchContextResolver LaunchContextResolver,
         IProfileVariantResolver ProfileVariantResolver,
+        IGameLaunchService GameLauncher,
         IRuntimeAdapter Runtime,
         TrainerOrchestrator Orchestrator,
         ICatalogService Catalog,
@@ -176,6 +183,7 @@ public abstract class MainViewModelCoreStateBase : INotifyPropertyChanged
             dependencies.ProcessLocator,
             dependencies.LaunchContextResolver,
             dependencies.ProfileVariantResolver,
+            dependencies.GameLauncher,
             dependencies.Runtime,
             dependencies.Orchestrator,
             dependencies.Catalog,

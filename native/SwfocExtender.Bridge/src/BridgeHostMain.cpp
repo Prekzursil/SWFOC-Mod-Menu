@@ -3,6 +3,7 @@
 #include "swfoc_extender/plugins/BuildPatchPlugin.hpp"
 #include "swfoc_extender/plugins/EconomyPlugin.hpp"
 #include "swfoc_extender/plugins/GlobalTogglePlugin.hpp"
+#include "swfoc_extender/plugins/HelperLuaPlugin.hpp"
 #include "swfoc_extender/plugins/ProcessMutationHelpers.hpp"
 
 #include <array>
@@ -42,6 +43,7 @@ using swfoc::extender::plugins::CapabilitySnapshot;
 using swfoc::extender::plugins::CapabilityState;
 using swfoc::extender::plugins::EconomyPlugin;
 using swfoc::extender::plugins::GlobalTogglePlugin;
+using swfoc::extender::plugins::HelperLuaPlugin;
 using swfoc::extender::plugins::PluginRequest;
 using swfoc::extender::plugins::PluginResult;
 namespace process_mutation = swfoc::extender::plugins::process_mutation;
@@ -55,13 +57,16 @@ using swfoc::extender::bridge::host_json::TryReadInt;
 constexpr const char* kBackendName = "extender";
 constexpr const char* kDefaultPipeName = "SwfocExtenderBridge";
 
-constexpr std::array<const char*, 6> kSupportedFeatures {
+constexpr std::array<const char*, 9> kSupportedFeatures {
     "freeze_timer",
     "toggle_fog_reveal",
     "toggle_ai",
     "set_unit_cap",
     "toggle_instant_build_patch",
-    "set_credits"};
+    "set_credits",
+    "spawn_unit_helper",
+    "set_hero_state_helper",
+    "toggle_roe_respawn_helper"};
 
 /*
 Cppcheck note (targeted): if cppcheck runs without STL/Windows SDK include paths,
@@ -115,6 +120,13 @@ PluginRequest BuildPluginRequest(const BridgeCommand& command) {
     request.processId = ResolveProcessId(command);
     request.anchors = ResolveAnchors(command);
     request.lockValue = ResolveLockCredits(command.payloadJson);
+    request.helperHookId = ExtractStringValue(command.payloadJson, "helperHookId");
+    request.helperEntryPoint = ExtractStringValue(command.payloadJson, "helperEntryPoint");
+    request.helperScript = ExtractStringValue(command.payloadJson, "helperScript");
+    request.unitId = ExtractStringValue(command.payloadJson, "unitId");
+    request.entryMarker = ExtractStringValue(command.payloadJson, "entryMarker");
+    request.faction = ExtractStringValue(command.payloadJson, "faction");
+    request.globalKey = ExtractStringValue(command.payloadJson, "globalKey");
 
     int intValue = 0;
     if (TryReadInt(command.payloadJson, "intValue", intValue)) {
@@ -252,6 +264,21 @@ void AddProbeFeature(
     snapshot.features.emplace(featureId, BuildProbeState(probe));
 }
 
+void AddHelperProbeFeature(
+    CapabilitySnapshot& snapshot,
+    const PluginRequest& probeContext,
+    const char* featureId) {
+    CapabilityState state {};
+    state.available = probeContext.processId > 0;
+    state.state = state.available ? "Verified" : "Unavailable";
+    state.reasonCode = state.available ? "CAPABILITY_PROBE_PASS" : "HELPER_BRIDGE_UNAVAILABLE";
+    state.diagnostics = {
+        {"probeSource", "native_helper_bridge"},
+        {"processId", std::to_string(probeContext.processId)},
+        {"helperBridgeState", state.available ? "ready" : "unavailable"}};
+    snapshot.features.emplace(featureId, state);
+}
+
 CapabilitySnapshot BuildCapabilityProbeSnapshot(const PluginRequest& probeContext) {
     CapabilitySnapshot snapshot {};
 
@@ -264,7 +291,10 @@ CapabilitySnapshot BuildCapabilityProbeSnapshot(const PluginRequest& probeContex
         snapshot,
         probeContext,
         "toggle_instant_build_patch",
-        {"instant_build_patch_injection", "instant_build_patch", "toggle_instant_build_patch"});
+        {"instant_build_patch_injection", "instant_build_patch", "instant_build", "toggle_instant_build_patch"});
+    AddHelperProbeFeature(snapshot, probeContext, "spawn_unit_helper");
+    AddHelperProbeFeature(snapshot, probeContext, "set_hero_state_helper");
+    AddHelperProbeFeature(snapshot, probeContext, "toggle_roe_respawn_helper");
 
     EnsureCapabilityEntries(snapshot);
     return snapshot;
@@ -402,6 +432,11 @@ BridgeResult BuildPatchResult(const BridgeCommand& command, BuildPatchPlugin& bu
     return BuildBridgeResultFromPlugin(command, pluginRequest, buildPatchPlugin.execute(pluginRequest));
 }
 
+BridgeResult BuildHelperResult(const BridgeCommand& command, HelperLuaPlugin& helperLuaPlugin) {
+    auto pluginRequest = BuildPluginRequest(command);
+    return BuildBridgeResultFromPlugin(command, pluginRequest, helperLuaPlugin.execute(pluginRequest));
+}
+
 BridgeResult BuildUnsupportedFeatureResult(const BridgeCommand& command) {
     return BuildBridgeResult(
         command, false, "CAPABILITY_REQUIRED_MISSING", "DENIED", "Feature not supported by current extender host.", "{\"featureId\":\"" + EscapeJson(command.featureId) + "\"}");
@@ -411,7 +446,8 @@ BridgeResult HandleBridgeCommand(
     const BridgeCommand& command,
     EconomyPlugin& economyPlugin,
     GlobalTogglePlugin& globalTogglePlugin,
-    BuildPatchPlugin& buildPatchPlugin) {
+    BuildPatchPlugin& buildPatchPlugin,
+    HelperLuaPlugin& helperLuaPlugin) {
     if (command.featureId == "health") {
         return BuildHealthResult(command);
     }
@@ -432,6 +468,12 @@ BridgeResult HandleBridgeCommand(
         command.featureId == "toggle_fog_reveal" ||
         command.featureId == "toggle_ai") {
         return BuildGlobalToggleResult(command, globalTogglePlugin);
+    }
+
+    if (command.featureId == "spawn_unit_helper" ||
+        command.featureId == "set_hero_state_helper" ||
+        command.featureId == "toggle_roe_respawn_helper") {
+        return BuildHelperResult(command, helperLuaPlugin);
     }
 
     return BuildPatchResult(command, buildPatchPlugin);
@@ -477,9 +519,10 @@ void ConfigureBridgeHandler(
     NamedPipeBridgeServer& server,
     EconomyPlugin& economyPlugin,
     GlobalTogglePlugin& globalTogglePlugin,
-    BuildPatchPlugin& buildPatchPlugin) {
-    server.setHandler([&economyPlugin, &globalTogglePlugin, &buildPatchPlugin](const BridgeCommand& command) {
-        return HandleBridgeCommand(command, economyPlugin, globalTogglePlugin, buildPatchPlugin);
+    BuildPatchPlugin& buildPatchPlugin,
+    HelperLuaPlugin& helperLuaPlugin) {
+    server.setHandler([&economyPlugin, &globalTogglePlugin, &buildPatchPlugin, &helperLuaPlugin](const BridgeCommand& command) {
+        return HandleBridgeCommand(command, economyPlugin, globalTogglePlugin, buildPatchPlugin, helperLuaPlugin);
     });
 }
 
@@ -487,9 +530,10 @@ int RunBridgeHost(
     const std::string& pipeName,
     EconomyPlugin& economyPlugin,
     GlobalTogglePlugin& globalTogglePlugin,
-    BuildPatchPlugin& buildPatchPlugin) {
+    BuildPatchPlugin& buildPatchPlugin,
+    HelperLuaPlugin& helperLuaPlugin) {
     NamedPipeBridgeServer server(pipeName);
-    ConfigureBridgeHandler(server, economyPlugin, globalTogglePlugin, buildPatchPlugin);
+    ConfigureBridgeHandler(server, economyPlugin, globalTogglePlugin, buildPatchPlugin, helperLuaPlugin);
 
     if (!server.start()) {
         std::cerr << "Failed to start extender bridge host." << std::endl;
@@ -512,5 +556,6 @@ int main() {
     EconomyPlugin economyPlugin;
     GlobalTogglePlugin globalTogglePlugin;
     BuildPatchPlugin buildPatchPlugin;
-    return RunBridgeHost(pipeName, economyPlugin, globalTogglePlugin, buildPatchPlugin);
+    HelperLuaPlugin helperLuaPlugin;
+    return RunBridgeHost(pipeName, economyPlugin, globalTogglePlugin, buildPatchPlugin, helperLuaPlugin);
 }

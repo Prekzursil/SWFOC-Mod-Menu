@@ -20,8 +20,15 @@
             <ComboBox Width="320" ItemsSource="{Binding Profiles}" SelectedItem="{Binding SelectedProfileId}"/>
             <Button Content="Load Profiles" Command="{Binding LoadProfilesCommand}" Margin="8,0,0,0"/>
             <Button Content="Load Actions" Command="{Binding LoadActionsCommand}" Margin="8,0,0,0"/>
+            <Button Content="Launch + Attach" Command="{Binding LaunchAndAttachCommand}" Margin="8,0,0,0"/>
             <Button Content="Attach" Command="{Binding AttachCommand}" Margin="8,0,0,0"/>
             <Button Content="Detach" Command="{Binding DetachCommand}" Margin="8,0,0,0"/>
+            <TextBlock Text="  Launch:" VerticalAlignment="Center" Margin="12,0,4,0"/>
+            <TextBox Width="80" Text="{Binding LaunchTarget, UpdateSourceTrigger=PropertyChanged}" ToolTip="Swfoc or Sweaw"/>
+            <TextBox Width="90" Margin="6,0,0,0" Text="{Binding LaunchMode, UpdateSourceTrigger=PropertyChanged}" ToolTip="Vanilla, SteamMod, or ModPath"/>
+            <TextBox Width="120" Margin="6,0,0,0" ToolTip="Workshop ID" Text="{Binding LaunchWorkshopId, UpdateSourceTrigger=PropertyChanged}"/>
+            <TextBox Width="170" Margin="6,0,0,0" ToolTip="MODPATH" Text="{Binding LaunchModPath, UpdateSourceTrigger=PropertyChanged}"/>
+            <CheckBox Content="Clean Start" Margin="6,0,0,0" IsChecked="{Binding TerminateExistingBeforeLaunch}" VerticalAlignment="Center"/>
             <TextBlock Text="  Mode:" VerticalAlignment="Center" Margin="12,0,4,0"/>
             <TextBlock Text="{Binding RuntimeMode}" VerticalAlignment="Center"/>
             <TextBlock Text="  Override:" VerticalAlignment="Center" Margin="12,0,4,0"/>

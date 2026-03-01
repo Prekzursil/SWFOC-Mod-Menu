@@ -19,7 +19,7 @@ public sealed class SelectedUnitTransactionServiceTests
         var result = await service.ApplyAsync(
             "test_profile",
             new SelectedUnitDraft(Hp: 240f, Shield: 80f),
-            RuntimeMode.Tactical);
+            RuntimeMode.AnyTactical);
 
         result.Succeeded.Should().BeTrue();
         service.History.Should().HaveCount(1);
@@ -40,7 +40,7 @@ public sealed class SelectedUnitTransactionServiceTests
         var result = await service.ApplyAsync(
             "test_profile",
             new SelectedUnitDraft(Hp: 333f, Shield: 99f),
-            RuntimeMode.Tactical);
+            RuntimeMode.AnyTactical);
 
         result.Succeeded.Should().BeFalse();
         result.RolledBack.Should().BeTrue();
@@ -58,9 +58,9 @@ public sealed class SelectedUnitTransactionServiceTests
         await service.ApplyAsync(
             "test_profile",
             new SelectedUnitDraft(Hp: baseline.Hp + 100f, Veterancy: baseline.Veterancy + 2),
-            RuntimeMode.Tactical);
+            RuntimeMode.AnyTactical);
 
-        var revert = await service.RevertLastAsync("test_profile", RuntimeMode.Tactical);
+        var revert = await service.RevertLastAsync("test_profile", RuntimeMode.AnyTactical);
 
         revert.Succeeded.Should().BeTrue();
         harness.Runtime.ReadFloat("selected_hp").Should().BeApproximately(baseline.Hp, 0.001f);
@@ -74,10 +74,10 @@ public sealed class SelectedUnitTransactionServiceTests
         var service = harness.Service;
 
         var baseline = await service.CaptureAsync();
-        await service.ApplyAsync("test_profile", new SelectedUnitDraft(Hp: baseline.Hp + 25f), RuntimeMode.Tactical);
-        await service.ApplyAsync("test_profile", new SelectedUnitDraft(Veterancy: baseline.Veterancy + 3), RuntimeMode.Tactical);
+        await service.ApplyAsync("test_profile", new SelectedUnitDraft(Hp: baseline.Hp + 25f), RuntimeMode.AnyTactical);
+        await service.ApplyAsync("test_profile", new SelectedUnitDraft(Veterancy: baseline.Veterancy + 3), RuntimeMode.AnyTactical);
 
-        var restored = await service.RestoreBaselineAsync("test_profile", RuntimeMode.Tactical);
+        var restored = await service.RestoreBaselineAsync("test_profile", RuntimeMode.AnyTactical);
 
         restored.Succeeded.Should().BeTrue();
         harness.Runtime.ReadFloat("selected_hp").Should().BeApproximately(baseline.Hp, 0.001f);
@@ -130,7 +130,7 @@ public sealed class SelectedUnitTransactionServiceTests
         return new ActionSpec(
             id,
             ActionCategory.Unit,
-            RuntimeMode.Tactical,
+            RuntimeMode.AnyTactical,
             ExecutionKind.Memory,
             new JsonObject { ["required"] = requiredArray },
             VerifyReadback: true,

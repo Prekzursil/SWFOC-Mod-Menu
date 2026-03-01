@@ -20,6 +20,7 @@ public sealed partial class RuntimeAdapter
     private readonly ISdkOperationRouter? _sdkOperationRouter;
     private readonly IBackendRouter _backendRouter;
     private readonly IExecutionBackend? _extenderBackend;
+    private readonly IHelperBridgeBackend _helperBridgeBackend;
     private readonly ITelemetryLogTailService _telemetryLogTailService;
     private readonly ILogger<RuntimeAdapter> _logger;
     private readonly string _calibrationArtifactRoot;

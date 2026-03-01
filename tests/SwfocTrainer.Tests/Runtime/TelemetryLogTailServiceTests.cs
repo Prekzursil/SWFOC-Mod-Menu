@@ -8,7 +8,7 @@ namespace SwfocTrainer.Tests.Runtime;
 public sealed class TelemetryLogTailServiceTests
 {
     [Fact]
-    public void ResolveLatestMode_ShouldReturnTactical_WhenFreshTelemetryLineExists()
+    public void ResolveLatestMode_ShouldReturnLand_WhenFreshTelemetryLineExists()
     {
         var tempRoot = Path.Combine(Path.GetTempPath(), $"swfoc-telemetry-{Guid.NewGuid():N}");
         Directory.CreateDirectory(tempRoot);
@@ -24,7 +24,7 @@ public sealed class TelemetryLogTailServiceTests
             var result = service.ResolveLatestMode(processPath, now, TimeSpan.FromMinutes(5));
 
             result.Available.Should().BeTrue();
-            result.Mode.Should().Be(RuntimeMode.Tactical);
+            result.Mode.Should().Be(RuntimeMode.TacticalLand);
             result.ReasonCode.Should().Be("telemetry_mode_fresh");
             result.SourcePath.Should().Be(logPath);
         }

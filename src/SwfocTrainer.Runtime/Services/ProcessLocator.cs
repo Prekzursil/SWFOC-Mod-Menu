@@ -441,10 +441,20 @@ public sealed class ProcessLocator : IProcessLocator
             return RuntimeMode.Unknown;
         }
 
+        if (commandLine.Contains("land", StringComparison.OrdinalIgnoreCase))
+        {
+            return RuntimeMode.TacticalLand;
+        }
+
+        if (commandLine.Contains("space", StringComparison.OrdinalIgnoreCase))
+        {
+            return RuntimeMode.TacticalSpace;
+        }
+
         if (commandLine.Contains("skirmish", StringComparison.OrdinalIgnoreCase) ||
             commandLine.Contains("tactical", StringComparison.OrdinalIgnoreCase))
         {
-            return RuntimeMode.Tactical;
+            return RuntimeMode.AnyTactical;
         }
 
         if (commandLine.Contains("campaign", StringComparison.OrdinalIgnoreCase) ||

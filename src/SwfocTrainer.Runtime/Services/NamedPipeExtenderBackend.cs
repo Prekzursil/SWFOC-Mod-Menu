@@ -14,6 +14,7 @@ public sealed class NamedPipeExtenderBackend : IExecutionBackend
     private const int DefaultConnectTimeoutMs = 2000;
     private const int DefaultResponseTimeoutMs = 2000;
     private const string DefaultPipeName = "SwfocExtenderBridge";
+    private const string PipeNameEnvironmentVariable = "SWFOC_EXTENDER_PIPE_NAME";
     private const string ExtenderBackendId = "extender";
     private const string ProbePlaceholderAnchorValue = "probe";
     private const string ProbeResolvedAnchorsMetadataKey = "probeResolvedAnchorsJson";
@@ -32,12 +33,22 @@ public sealed class NamedPipeExtenderBackend : IExecutionBackend
 
     private static readonly object HostSync = new();
     private static Process? _bridgeHostProcess;
+    private readonly string _pipeName;
+    private readonly bool _autoStartBridgeHost;
 
     private static readonly JsonSerializerOptions JsonOptions = new()
     {
         PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
         Converters = { new JsonStringEnumConverter() }
     };
+
+    public NamedPipeExtenderBackend(string? pipeName = null, bool autoStartBridgeHost = true)
+    {
+        _pipeName = string.IsNullOrWhiteSpace(pipeName)
+            ? ResolvePipeNameFromEnvironment()
+            : pipeName.Trim();
+        _autoStartBridgeHost = autoStartBridgeHost;
+    }
 
     public ExecutionBackendKind BackendKind => ExecutionBackendKind.Extender;
 
@@ -174,21 +185,21 @@ public sealed class NamedPipeExtenderBackend : IExecutionBackend
                profileId.StartsWith("roe_", StringComparison.OrdinalIgnoreCase);
     }
 
-    private static CapabilityReport CreateProbeFailureReport(string profileId, ExtenderResult result)
+    private CapabilityReport CreateProbeFailureReport(string profileId, ExtenderResult result)
     {
         return CapabilityReport.Unknown(profileId, result.ReasonCode) with
         {
             Diagnostics = new Dictionary<string, object?>
             {
                 ["backend"] = ExtenderBackendId,
-                ["pipe"] = DefaultPipeName,
+                ["pipe"] = _pipeName,
                 ["reasonCode"] = result.ReasonCode.ToString(),
                 ["message"] = result.Message
             }
         };
     }
 
-    private static CapabilityReport CreateProbeSuccessReport(string profileId, ExtenderResult result)
+    private CapabilityReport CreateProbeSuccessReport(string profileId, ExtenderResult result)
     {
         var capabilities = NamedPipeExtenderBackendContextHelpers.ParseCapabilities(result.Diagnostics, NativeAuthoritativeFeatureIds);
         capabilities["probe_capabilities"] = new BackendCapability(
@@ -206,7 +217,7 @@ public sealed class NamedPipeExtenderBackend : IExecutionBackend
             new Dictionary<string, object?>
             {
                 ["backend"] = ExtenderBackendId,
-                ["pipe"] = DefaultPipeName,
+                ["pipe"] = _pipeName,
                 ["hookState"] = result.HookState
             });
     }
@@ -289,12 +300,12 @@ public sealed class NamedPipeExtenderBackend : IExecutionBackend
             Message: probe.Message,
             Diagnostics: new Dictionary<string, object?>
             {
-                ["pipe"] = DefaultPipeName,
+                ["pipe"] = _pipeName,
                 ["hookState"] = probe.HookState
             });
     }
 
-    private static async Task<ExtenderResult> SendAsync(ExtenderCommand command, CancellationToken cancellationToken)
+    private async Task<ExtenderResult> SendAsync(ExtenderCommand command, CancellationToken cancellationToken)
     {
         var firstAttempt = await SendCoreAsync(command, cancellationToken);
         if (firstAttempt.Succeeded || firstAttempt.HookState != "unreachable")
@@ -302,7 +313,7 @@ public sealed class NamedPipeExtenderBackend : IExecutionBackend
             return firstAttempt;
         }
 
-        if (!TryStartBridgeHostProcess())
+        if (!_autoStartBridgeHost || !TryStartBridgeHostProcess())
         {
             return firstAttempt;
         }
@@ -310,12 +321,12 @@ public sealed class NamedPipeExtenderBackend : IExecutionBackend
         return await SendCoreAsync(command, cancellationToken);
     }
 
-    private static async Task<ExtenderResult> SendCoreAsync(ExtenderCommand command, CancellationToken cancellationToken)
+    private async Task<ExtenderResult> SendCoreAsync(ExtenderCommand command, CancellationToken cancellationToken)
     {
         try
         {
             using var timeoutCts = CreateRequestTimeoutTokenSource(cancellationToken);
-            using var client = CreatePipeClient();
+            using var client = CreatePipeClient(_pipeName);
 
             await client.ConnectAsync(DefaultConnectTimeoutMs, timeoutCts.Token);
 
@@ -343,13 +354,21 @@ public sealed class NamedPipeExtenderBackend : IExecutionBackend
         return timeoutCts;
     }
 
-    private static NamedPipeClientStream CreatePipeClient()
+    private static NamedPipeClientStream CreatePipeClient(string pipeName)
     {
         return new NamedPipeClientStream(
             serverName: ".",
-            pipeName: DefaultPipeName,
+            pipeName: pipeName,
             direction: PipeDirection.InOut,
             options: PipeOptions.Asynchronous);
+    }
+
+    private static string ResolvePipeNameFromEnvironment()
+    {
+        var candidate = Environment.GetEnvironmentVariable(PipeNameEnvironmentVariable);
+        return string.IsNullOrWhiteSpace(candidate)
+            ? DefaultPipeName
+            : candidate.Trim();
     }
 
     private static StreamWriter CreatePipeWriter(NamedPipeClientStream client)

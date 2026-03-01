@@ -33,7 +33,7 @@ public sealed class SymbolHealthServiceTests
         {
             ["criticalSymbols"] = "credits",
             ["symbolValidationRules"] =
-                "[{\"Symbol\":\"credits\",\"Mode\":\"Tactical\",\"IntMin\":0,\"IntMax\":2000000000,\"Critical\":true}]"
+                "[{\"Symbol\":\"credits\",\"Mode\":\"AnyTactical\",\"IntMin\":0,\"IntMax\":2000000000,\"Critical\":true}]"
         };
         var profile = CreateProfile(metadata);
         var service = new SymbolHealthService();

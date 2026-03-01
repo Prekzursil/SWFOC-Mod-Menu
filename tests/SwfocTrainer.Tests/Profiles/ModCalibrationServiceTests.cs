@@ -39,7 +39,7 @@ public sealed class ModCalibrationServiceTests
 
             var session = new AttachSession(
                 ProfileId: "custom_test",
-                Process: new ProcessMetadata(2222, "StarWarsG.exe", @"C:\Games\StarWarsG.exe", "STEAMMOD=555000111", ExeTarget.Swfoc, RuntimeMode.Tactical),
+                Process: new ProcessMetadata(2222, "StarWarsG.exe", @"C:\Games\StarWarsG.exe", "STEAMMOD=555000111", ExeTarget.Swfoc, RuntimeMode.AnyTactical),
                 Build: new ProfileBuild("custom_test", "test", @"C:\Games\StarWarsG.exe", ExeTarget.Swfoc, "STEAMMOD=555000111", 2222),
                 Symbols: symbols,
                 AttachedAt: DateTimeOffset.UtcNow);

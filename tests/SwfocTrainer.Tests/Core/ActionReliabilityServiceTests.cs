@@ -13,9 +13,9 @@ public sealed class ActionReliabilityServiceTests
     {
         var service = new ActionReliabilityService();
         var profile = BuildProfile(
-            Action("set_selected_hp", RuntimeMode.Tactical, ExecutionKind.Memory, "symbol", "floatValue"));
+            Action("set_selected_hp", RuntimeMode.AnyTactical, ExecutionKind.Memory, "symbol", "floatValue"));
         var session = BuildSession(
-            RuntimeMode.Tactical,
+            RuntimeMode.AnyTactical,
             new SymbolInfo(
                 "selected_hp",
                 (nint)0x1234,
@@ -36,7 +36,7 @@ public sealed class ActionReliabilityServiceTests
     {
         var service = new ActionReliabilityService();
         var profile = BuildProfile(
-            Action("set_selected_hp", RuntimeMode.Tactical, ExecutionKind.Memory, "symbol", "floatValue"));
+            Action("set_selected_hp", RuntimeMode.AnyTactical, ExecutionKind.Memory, "symbol", "floatValue"));
         var session = BuildSession(
             RuntimeMode.Unknown,
             new SymbolInfo(

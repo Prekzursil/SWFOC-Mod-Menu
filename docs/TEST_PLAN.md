@@ -62,7 +62,7 @@
 - `LaunchContextResolverTests`
   - verifies metadata-driven workshop/modpath precedence and generic profile reason-code routing
 - `RuntimeModeProbeResolverTests`
-  - verifies runtime-effective tactical/galactic inference from symbol-health probes
+  - verifies runtime-effective strict mode inference (`TacticalLand` / `TacticalSpace` / `AnyTactical` / `Galactic`) from symbol-health probes
 - `SdkExecutionGuardTests`
   - verifies degraded-read allowance and mutating fail-closed behavior
 - `SdkOperationRouterTests`
@@ -87,9 +87,11 @@
   - verifies precedence ordering (`MODPATH` > game loose > enabled MEGs)
   - verifies provenance and shadow metadata (`sourceType`, `sourcePath`, `overrideRank`, `shadowedBy`)
 - `TelemetryLogTailServiceTests`
-  - verifies telemetry marker parsing, freshness gating, and stale-ignore behavior
+  - verifies telemetry marker parsing with strict LAND/SPACE mapping, freshness gating, and stale-ignore behavior
 - `RuntimeAdapterModeOverrideTests`
-  - verifies mode precedence with telemetry feed (manual override still highest priority)
+  - verifies mode precedence with telemetry feed (manual override still highest priority) across strict tactical mode values
+- `NamedPipeHelperBridgeBackendTests`
+  - verifies helper bridge fail-closed behavior and verification-contract enforcement before helper success is reported
 - `StoryFlowGraphExporterTests`
   - verifies deterministic node/edge graph output and tactical/galactic event linkage
 - `LuaHarnessRunnerTests`
@@ -167,14 +169,14 @@ pwsh ./tools/validate-ghidra-artifact-index.ps1 -Path tools/fixtures/ghidra_arti
 
 For each profile (`base_sweaw`, `base_swfoc`, `aotr_1397421866_swfoc`, `roe_3447786229_swfoc`):
 
-1. Launch game + target mode.
+1. Launch target session (prefer app `Launch + Attach` or `tools/run-live-validation.ps1 -AutoLaunch`) + target mode.
 2. Load profile and attach.
 3. Execute:
 
    - credits change
    - timer freeze toggle
    - fog reveal toggle
-   - selected unit HP/shield/speed edit (tactical)
+   - selected unit HP/shield/speed edit (`AnyTactical` / `TacticalLand` / `TacticalSpace`)
    - helper spawn action
    - capture status diagnostics showing `backendRoute`, `routeReasonCode`, `capabilityProbeReasonCode`, `capabilityMapReasonCode`, `capabilityMapState`, `capabilityDeclaredAvailable`, plus `hookState`/`hybridExecution` when present
 
@@ -220,12 +222,12 @@ Verification checklist:
    - summary: `total`, `passed`, `failed`, `skipped`
    - each entry: `profileId`, `actionId`, `outcome`, `backendRoute`, `routeReasonCode`, `capabilityProbeReasonCode`, `hybridExecution`, `hasFallbackMarker`, `message`, `skipReasonCode`
 4. Verify promoted matrix entry outcomes for issue `#7` closure gate:
-   - `summary.total=15`, `summary.passed=15`, `summary.failed=0`, `summary.skipped=0`
+   - `summary.failed=0`
    - all entries report `backendRoute=Extender`
-   - all entries report `routeReasonCode=CAPABILITY_PROBE_PASS`
-   - all entries report `capabilityProbeReasonCode=CAPABILITY_PROBE_PASS`
    - all entries report `hybridExecution=false`
    - all entries report `hasFallbackMarker=false`
+   - normal pass entries report `routeReasonCode=CAPABILITY_PROBE_PASS` and `capabilityProbeReasonCode=CAPABILITY_PROBE_PASS`
+   - capability-gated entries use explicit skip semantics (`skipReasonCode=promoted_capability_unavailable`) instead of synthetic success.
 5. Verify fail-closed behavior remains explicit when environment is unhealthy:
    - promoted actions must not silently route to fallback backend
    - blocked runs surface explicit reason codes and must not be used for issue `#7` closure

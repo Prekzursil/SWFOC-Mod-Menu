@@ -63,6 +63,7 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
         _sdkOperationRouter = ResolveOptionalService<ISdkOperationRouter>(serviceProvider);
         _backendRouter = ResolveOptionalService<IBackendRouter>(serviceProvider) ?? new BackendRouter();
         _extenderBackend = ResolveOptionalService<IExecutionBackend>(serviceProvider) ?? new NamedPipeExtenderBackend();
+        _helperBridgeBackend = ResolveOptionalService<IHelperBridgeBackend>(serviceProvider) ?? new NamedPipeHelperBridgeBackend(_extenderBackend);
         _telemetryLogTailService = ResolveOptionalService<ITelemetryLogTailService>(serviceProvider) ?? new TelemetryLogTailService();
         _logger = logger;
         _calibrationArtifactRoot = Path.Combine(
@@ -121,8 +122,39 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
             attachPreparation.Build,
             attachPreparation.Symbols,
             DateTimeOffset.UtcNow);
+        CurrentSession = await ApplyHelperBridgeProbeMetadataAsync(CurrentSession, profile, cancellationToken);
         _logger.LogInformation("Attached to process {Pid} for profile {Profile}", attachPreparation.Process.ProcessId, profile.Id);
         return CurrentSession;
+    }
+
+    private async Task<AttachSession> ApplyHelperBridgeProbeMetadataAsync(
+        AttachSession session,
+        TrainerProfile profile,
+        CancellationToken cancellationToken)
+    {
+        var probe = await _helperBridgeBackend.ProbeAsync(
+            new HelperBridgeProbeRequest(profile.Id, session.Process, profile.HelperModHooks),
+            cancellationToken);
+        var metadata = session.Process.Metadata is null
+            ? new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
+            : new Dictionary<string, string>(session.Process.Metadata, StringComparer.OrdinalIgnoreCase);
+
+        metadata["helperBridgeState"] = probe.Available ? "ready" : "unavailable";
+        metadata["helperBridgeReasonCode"] = probe.ReasonCode.ToString();
+        if (probe.Diagnostics is not null &&
+            probe.Diagnostics.TryGetValue("availableFeatures", out var features) &&
+            features is not null)
+        {
+            metadata["helperBridgeFeatures"] = features.ToString() ?? string.Empty;
+        }
+
+        return session with
+        {
+            Process = session.Process with
+            {
+                Metadata = metadata
+            }
+        };
     }
 
     private async Task<AttachProfileContext> ResolveAttachProfileContextAsync(
@@ -1290,11 +1322,23 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
             return true;
         }
 
-        if (value.Equals("Tactical", StringComparison.OrdinalIgnoreCase) ||
-            value.Equals("TacticalLand", StringComparison.OrdinalIgnoreCase) ||
-            value.Equals("TacticalSpace", StringComparison.OrdinalIgnoreCase))
+        if (value.Equals("TacticalLand", StringComparison.OrdinalIgnoreCase) ||
+            value.Equals("Land", StringComparison.OrdinalIgnoreCase))
         {
-            mode = RuntimeMode.Tactical;
+            mode = RuntimeMode.TacticalLand;
+            return true;
+        }
+
+        if (value.Equals("TacticalSpace", StringComparison.OrdinalIgnoreCase) ||
+            value.Equals("Space", StringComparison.OrdinalIgnoreCase))
+        {
+            mode = RuntimeMode.TacticalSpace;
+            return true;
+        }
+
+        if (value.Equals("AnyTactical", StringComparison.OrdinalIgnoreCase))
+        {
+            mode = RuntimeMode.AnyTactical;
             return true;
         }
 
@@ -1319,9 +1363,19 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
             return RuntimeMode.Galactic;
         }
 
-        if (value.Equals("Tactical", StringComparison.OrdinalIgnoreCase))
+        if (value.Equals("AnyTactical", StringComparison.OrdinalIgnoreCase))
         {
-            return RuntimeMode.Tactical;
+            return RuntimeMode.AnyTactical;
+        }
+
+        if (value.Equals("TacticalLand", StringComparison.OrdinalIgnoreCase))
+        {
+            return RuntimeMode.TacticalLand;
+        }
+
+        if (value.Equals("TacticalSpace", StringComparison.OrdinalIgnoreCase))
+        {
+            return RuntimeMode.TacticalSpace;
         }
 
         return null;
@@ -2015,7 +2069,7 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
             "toggle_ai" => ["ai_enabled", "toggle_ai"],
             ActionIdSetUnitCap => ["unit_cap", ActionIdSetUnitCap],  // NOSONAR
             ActionIdSetUnitCapPatchFallback => ["unit_cap", ActionIdSetUnitCapPatchFallback],
-            ActionIdToggleInstantBuildPatch => ["instant_build_patch_injection", "instant_build_patch", ActionIdToggleInstantBuildPatch],
+            ActionIdToggleInstantBuildPatch => ["instant_build_patch_injection", "instant_build_patch", "instant_build", ActionIdToggleInstantBuildPatch],
             ActionIdSetCredits => [SymbolCredits, ActionIdSetCredits],
             _ => Array.Empty<string>()
         };
@@ -3000,15 +3054,79 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
         };
     }
 
-    private Task<ActionExecutionResult> ExecuteHelperActionAsync(ActionExecutionRequest request, CancellationToken cancellationToken)  // NOSONAR
+    private async Task<ActionExecutionResult> ExecuteHelperActionAsync(ActionExecutionRequest request, CancellationToken cancellationToken)  // NOSONAR
     {
-        // Runtime adapter only records helper action dispatch. Actual helper scripts are handled in SwfocTrainer.Helper.
-        var helperId = request.Payload["helperHookId"]?.GetValue<string>() ?? request.Action.Id;
-        return Task.FromResult(new ActionExecutionResult(
-            true,
-            $"Helper action '{helperId}' dispatched.",
+        if (CurrentSession is null)
+        {
+            return new ActionExecutionResult(
+                false,
+                "Helper bridge execution requires an attached runtime session.",
+                AddressSource.None,
+                new Dictionary<string, object?>
+                {
+                    ["reasonCode"] = RuntimeReasonCode.HELPER_BRIDGE_UNAVAILABLE.ToString(),
+                    ["helperBridgeState"] = "unavailable"
+                });
+        }
+
+        var hookId = request.Payload["helperHookId"]?.GetValue<string>() ?? request.Action.Id;
+        var hook = _attachedProfile?.HelperModHooks
+            .FirstOrDefault(candidate => candidate.Id.Equals(hookId, StringComparison.OrdinalIgnoreCase));
+        if (hook is null)
+        {
+            return new ActionExecutionResult(
+                false,
+                $"Helper hook '{hookId}' is not defined in profile '{request.ProfileId}'.",
+                AddressSource.None,
+                new Dictionary<string, object?>
+                {
+                    ["reasonCode"] = RuntimeReasonCode.HELPER_ENTRYPOINT_NOT_FOUND.ToString(),
+                    ["helperHookId"] = hookId,
+                    ["helperBridgeState"] = "denied"
+                });
+        }
+
+        var probe = await _helperBridgeBackend.ProbeAsync(
+            new HelperBridgeProbeRequest(
+                request.ProfileId,
+                CurrentSession.Process,
+                [hook]),
+            cancellationToken);
+        if (!probe.Available)
+        {
+            return new ActionExecutionResult(
+                false,
+                probe.Message,
+                AddressSource.None,
+                MergeDiagnostics(
+                    probe.Diagnostics,
+                    new Dictionary<string, object?>
+                    {
+                        ["reasonCode"] = probe.ReasonCode.ToString(),
+                        ["helperHookId"] = hook.Id
+                    }));
+        }
+
+        var bridgeResult = await _helperBridgeBackend.ExecuteAsync(
+            new HelperBridgeRequest(
+                request,
+                CurrentSession.Process,
+                hook,
+                request.Context),
+            cancellationToken);
+
+        return new ActionExecutionResult(
+            bridgeResult.Succeeded,
+            bridgeResult.Message,
             AddressSource.None,
-            new Dictionary<string, object?> { ["dispatched"] = true }));
+            MergeDiagnostics(
+                bridgeResult.Diagnostics,
+                new Dictionary<string, object?>
+                {
+                    ["reasonCode"] = bridgeResult.ReasonCode.ToString(),
+                    ["helperHookId"] = hook.Id,
+                    ["helperEntryPoint"] = hook.EntryPoint ?? string.Empty
+                }));
     }
 
     private Task<ActionExecutionResult> ExecuteSaveActionAsync(ActionExecutionRequest request, CancellationToken cancellationToken)  // NOSONAR

@@ -14,7 +14,8 @@ public sealed class NamedPipeExtenderBackendTests
     [Fact]
     public async Task GetHealthAsync_ShouldReturnUnavailable_WhenBridgeIsNotRunning()
     {
-        var backend = new NamedPipeExtenderBackend();
+        var pipeName = CreateTestPipeName();
+        var backend = new NamedPipeExtenderBackend(pipeName, autoStartBridgeHost: false);
 
         var health = await backend.GetHealthAsync();
 
@@ -26,14 +27,15 @@ public sealed class NamedPipeExtenderBackendTests
     [Fact]
     public async Task ProbeCapabilitiesAsync_ShouldParseAllPromotedAndCreditsCapabilities_WhenBridgeReportsMultiFeatureProbe()
     {
+        var pipeName = CreateTestPipeName();
         using var cts = new CancellationTokenSource(TimeSpan.FromSeconds(3));
         await using var server = new NamedPipeServerStream(
-            "SwfocExtenderBridge",
+            pipeName,
             PipeDirection.InOut,
             1,
             PipeTransmissionMode.Byte,
             PipeOptions.Asynchronous);
-        var backend = new NamedPipeExtenderBackend();
+        var backend = new NamedPipeExtenderBackend(pipeName, autoStartBridgeHost: false);
         var waitTask = server.WaitForConnectionAsync(cts.Token);
         var reportTask = backend.ProbeCapabilitiesAsync(
             "roe_3447786229_swfoc",
@@ -67,14 +69,15 @@ public sealed class NamedPipeExtenderBackendTests
         string nativeReasonCode,
         RuntimeReasonCode expectedReasonCode)
     {
+        var pipeName = CreateTestPipeName();
         using var cts = new CancellationTokenSource(TimeSpan.FromSeconds(3));
         await using var server = new NamedPipeServerStream(
-            "SwfocExtenderBridge",
+            pipeName,
             PipeDirection.InOut,
             1,
             PipeTransmissionMode.Byte,
             PipeOptions.Asynchronous);
-        var backend = new NamedPipeExtenderBackend();
+        var backend = new NamedPipeExtenderBackend(pipeName, autoStartBridgeHost: false);
         var waitTask = server.WaitForConnectionAsync(cts.Token);
         var reportTask = backend.ProbeCapabilitiesAsync(
             "base_swfoc",
@@ -99,14 +102,15 @@ public sealed class NamedPipeExtenderBackendTests
     [Fact]
     public async Task ExecuteAsync_ShouldPassLegacyForcePatchHookPayload_ToExtenderServer()
     {
+        var pipeName = CreateTestPipeName();
         using var cts = new CancellationTokenSource(TimeSpan.FromSeconds(3));
         await using var server = new NamedPipeServerStream(
-            "SwfocExtenderBridge",
+            pipeName,
             PipeDirection.InOut,
             1,
             PipeTransmissionMode.Byte,
             PipeOptions.Asynchronous);
-        var backend = new NamedPipeExtenderBackend();
+        var backend = new NamedPipeExtenderBackend(pipeName, autoStartBridgeHost: false);
         var request = BuildSetCreditsRequest();
         var capabilityReport = BuildCapabilityReport(request.ProfileId, request.Action.Id);
 
@@ -128,14 +132,15 @@ public sealed class NamedPipeExtenderBackendTests
     [Fact]
     public async Task ExecuteAsync_ShouldPreserveFailureReasonCodeAndHookState_FromExtenderResponse()
     {
+        var pipeName = CreateTestPipeName();
         using var cts = new CancellationTokenSource(TimeSpan.FromSeconds(3));
         await using var server = new NamedPipeServerStream(
-            "SwfocExtenderBridge",
+            pipeName,
             PipeDirection.InOut,
             1,
             PipeTransmissionMode.Byte,
             PipeOptions.Asynchronous);
-        var backend = new NamedPipeExtenderBackend();
+        var backend = new NamedPipeExtenderBackend(pipeName, autoStartBridgeHost: false);
         var request = BuildSetCreditsRequest();
         var capabilityReport = BuildCapabilityReport(request.ProfileId, request.Action.Id);
 
@@ -161,14 +166,15 @@ public sealed class NamedPipeExtenderBackendTests
     [Fact]
     public async Task ExecuteAsync_ShouldSendProcessContextAndResolvedAnchors_FromRequestContext()
     {
+        var pipeName = CreateTestPipeName();
         using var cts = new CancellationTokenSource(TimeSpan.FromSeconds(3));
         await using var server = new NamedPipeServerStream(
-            "SwfocExtenderBridge",
+            pipeName,
             PipeDirection.InOut,
             1,
             PipeTransmissionMode.Byte,
             PipeOptions.Asynchronous);
-        var backend = new NamedPipeExtenderBackend();
+        var backend = new NamedPipeExtenderBackend(pipeName, autoStartBridgeHost: false);
         var request = BuildFreezeTimerRequestWithContext();
         var capabilityReport = BuildCapabilityReport(request.ProfileId, request.Action.Id);
 
@@ -217,6 +223,11 @@ public sealed class NamedPipeExtenderBackendTests
             },
             ProfileId: "roe_3447786229_swfoc",
             RuntimeMode: RuntimeMode.Galactic);
+    }
+
+    private static string CreateTestPipeName()
+    {
+        return $"SwfocExtenderBridgeTest_{Guid.NewGuid():N}";
     }
 
     private static ActionExecutionRequest BuildFreezeTimerRequestWithContext()

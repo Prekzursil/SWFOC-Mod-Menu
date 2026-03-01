@@ -17,7 +17,7 @@ public sealed class RuntimeModeProbeResolverTests
 
         var result = RuntimeModeProbeResolver.Resolve(RuntimeMode.Unknown, symbols);
 
-        result.EffectiveMode.Should().Be(RuntimeMode.Tactical);
+        result.EffectiveMode.Should().Be(RuntimeMode.AnyTactical);
         result.ReasonCode.Should().Be("mode_probe_tactical_signals");
         result.TacticalSignalCount.Should().BeGreaterThan(0);
         result.GalacticSignalCount.Should().Be(0);
@@ -59,9 +59,9 @@ public sealed class RuntimeModeProbeResolverTests
     {
         var symbols = BuildSymbolMap(new Dictionary<string, SymbolInfo>(StringComparer.OrdinalIgnoreCase));
 
-        var result = RuntimeModeProbeResolver.Resolve(RuntimeMode.Tactical, symbols);
+        var result = RuntimeModeProbeResolver.Resolve(RuntimeMode.AnyTactical, symbols);
 
-        result.EffectiveMode.Should().Be(RuntimeMode.Tactical);
+        result.EffectiveMode.Should().Be(RuntimeMode.AnyTactical);
         result.ReasonCode.Should().Be("mode_probe_no_signals_use_hint");
     }
 

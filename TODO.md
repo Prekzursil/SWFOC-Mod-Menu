@@ -125,6 +125,18 @@ Reliability rule for runtime/mod tasks:
   evidence: manual `2026-03-01` `dotnet restore SwfocTrainer.sln` + `dotnet build SwfocTrainer.sln -c Release --no-restore` + `dotnet test tests/SwfocTrainer.Tests/SwfocTrainer.Tests.csproj -c Release --no-build --filter "FullyQualifiedName!~SwfocTrainer.Tests.Profiles.Live&FullyQualifiedName!~RuntimeAttachSmokeTests"` => `Passed: 233`
   evidence: bundle `TestResults/runs/20260301-004145/repro-bundle.json` (`classification=blocked_environment`, tactical default routing run; no swfoc process detected)
   evidence: bundle `TestResults/runs/20260301-004232/repro-bundle.json` (`classification=blocked_environment`, tactical forced-override run; no swfoc process detected)
+- [x] M3 closure wave: helper bridge fail-closed runtime path, `Launch + Attach` automation, strict tactical mode split (`TacticalLand`/`TacticalSpace`/`AnyTactical`), and codex-owned live process matrix rerun with schema-validated bundles.
+  evidence: test `tests/SwfocTrainer.Tests/Runtime/NamedPipeHelperBridgeBackendTests.cs`
+  evidence: test `tests/SwfocTrainer.Tests/Runtime/NamedPipeExtenderBackendTests.cs`
+  evidence: test `tests/SwfocTrainer.Tests/Profiles/LivePromotedActionMatrixTests.cs`
+  evidence: test `tests/SwfocTrainer.Tests/Profiles/LiveRoeRuntimeHealthTests.cs`
+  evidence: manual `2026-03-01` `dotnet restore SwfocTrainer.sln` + `dotnet build SwfocTrainer.sln -c Release --no-restore` + `dotnet test tests/SwfocTrainer.Tests/SwfocTrainer.Tests.csproj -c Release --no-build --filter "FullyQualifiedName!~SwfocTrainer.Tests.Profiles.Live&FullyQualifiedName!~RuntimeAttachSmokeTests"` => `Passed: 237`
+  evidence: manual `2026-03-01` `powershell.exe -File tools/validate-workshop-topmods.ps1 -Path tools/fixtures/workshop_topmods_sample.json -Strict` => `validation passed`
+  evidence: manual `2026-03-01` `powershell.exe -File tools/validate-generated-profile-seed.ps1 -Path tools/fixtures/generated_profile_seeds_sample.json -Strict` => `validation passed`
+  evidence: manual `2026-03-01` Session A EAW snapshot `TestResults/runs/LIVE-EAW-20260301-191639/eaw-process-snapshot.json`
+  evidence: bundle `TestResults/runs/20260301-164213/repro-bundle.json` (`classification=passed`, scope `TACTICAL`)
+  evidence: bundle `TestResults/runs/20260301-165502/repro-bundle.json` (`classification=passed`, scope `AOTR`)
+  evidence: bundle `TestResults/runs/20260301-171325/repro-bundle.json` (`classification=skipped`, scope `ROE`, reason `set_credits precondition unmet: hook sync tick not observed`)
 
 ## Later (M2 + M3 + M4)
 
