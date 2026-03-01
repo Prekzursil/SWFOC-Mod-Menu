@@ -426,7 +426,6 @@
   "metadata": {
     "profileLineage": "base",
     "targetExecutable": "swfoc.exe",
-    "saveRootDefault": "C:\\Users\\Prekzursil\\Saved Games\\Petroglyph",
     "profileAliases": "base_swfoc,swfoc,forces of corruption,foc",
     "localPathHints": "swfoc,corruption,forces of corruption",
     "criticalSymbols": "credits,planet_owner,hero_respawn_timer,game_speed,unit_cap",

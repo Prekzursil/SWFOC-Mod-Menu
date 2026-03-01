@@ -373,7 +373,6 @@
   "metadata": {
     "profileLineage": "base",
     "targetExecutable": "sweaw.exe",
-    "saveRootDefault": "C:\\Users\\Prekzursil\\Saved Games\\Petroglyph",
     "profileAliases": "base_sweaw,sweaw,empire at war,eaw",
     "localPathHints": "sweaw,empire at war",
     "criticalSymbols": "credits,planet_owner,hero_respawn_timer,game_speed,unit_cap",

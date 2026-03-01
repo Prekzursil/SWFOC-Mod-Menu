@@ -9,9 +9,11 @@ Use this runbook to gather real-machine evidence for runtime/mod issues and mile
   - `native/runtime/SwfocExtender.Host.exe`
   - `SWFOC_EXTENDER_HOST_PATH` for every `dotnet test` subprocess.
 - If running a live test command manually (outside run-live script), set `SWFOC_EXTENDER_HOST_PATH` explicitly to avoid nondeterministic host resolution.
-- Promoted actions are extender-authoritative and fail-closed:
-  - no managed/memory fallback is accepted for promoted matrix evidence.
-  - missing or unverified promoted capability must surface fail-closed diagnostics.
+- Save-root defaults are runtime-resolved from current user environment (`SaveOptions.DefaultSaveRootPath`); no profile should hardcode per-user save paths.
+- Promoted FoC actions default to non-forced routing:
+  - `SWFOC_FORCE_PROMOTED_EXTENDER` unset/false keeps normal execution-kind routing.
+  - set `SWFOC_FORCE_PROMOTED_EXTENDER=1` when running extender-authoritative promoted matrix evidence.
+  - missing or unverified promoted capability under forced mode must surface fail-closed diagnostics.
 - For AOTR: ensure launch context resolves to `aotr_1397421866_swfoc`.
 - For ROE: ensure launch context resolves to `roe_3447786229_swfoc`.
 - From repo root, run on Windows PowerShell.
@@ -139,6 +141,12 @@ vNext bundle sections (required for runtime-affecting changes):
 
 ## 4. Promoted Action Matrix Evidence (Issue #7)
 
+Set extender-forced routing before promoted matrix closure runs:
+
+```powershell
+$env:SWFOC_FORCE_PROMOTED_EXTENDER = "1"
+```
+
 Promoted matrix evidence must cover 3 profiles x 5 actions (15 total checks):
 
 | Action ID | `base_swfoc` | `aotr_1397421866_swfoc` | `roe_3447786229_swfoc` |
@@ -167,6 +175,12 @@ Expected evidence behavior for promoted actions:
 - `hybridExecution=false`
 - `hasFallbackMarker=false`
 - fail-closed outcomes use explicit route diagnostics (`SAFETY_FAIL_CLOSED`) and block issue `#7` closure.
+
+Reset the override after matrix runs:
+
+```powershell
+Remove-Item Env:SWFOC_FORCE_PROMOTED_EXTENDER -ErrorAction SilentlyContinue
+```
 
 `set_unit_cap` promoted matrix contract:
 

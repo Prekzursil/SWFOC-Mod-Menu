@@ -69,7 +69,8 @@
   - verifies feature-flag gate, missing runtime context gate, and mode mismatch blocking
 - `BackendRouterTests`
   - verifies fail-closed mutating behavior for hard-extender profiles
-  - verifies extender route promotion only when capability proof is present
+  - verifies promoted extender routing is opt-in via `SWFOC_FORCE_PROMOTED_EXTENDER`
+  - verifies extender route promotion only when capability proof is present under override mode
   - verifies capability contract blocking and legacy memory fallback behavior
   - verifies fallback patch actions stay off promoted extender matrix and preserve managed-memory routing
 - `MainViewModelSessionGatingTests`
@@ -193,7 +194,13 @@ For each profile (`base_sweaw`, `base_swfoc`, `aotr_1397421866_swfoc`, `roe_3447
 
 ## Phase 2 promoted action and hotkey checks
 
-Promoted actions are extender-authoritative and fail-closed for FoC profiles.
+Promoted FoC actions are not forced to extender by default.
+For extender-authoritative promoted matrix evidence, explicitly enable:
+
+```powershell
+$env:SWFOC_FORCE_PROMOTED_EXTENDER = "1"
+```
+
 Evidence must come from `actionStatusDiagnostics` in `repro-bundle.json` (source `live-promoted-action-matrix.json`).
 
 Required profile/action matrix:
@@ -225,6 +232,12 @@ Verification checklist:
 6. Verify top-mod evidence extension:
    - when `top-mods.json` is present, `actionStatusDiagnostics.entries` must include explicit rows for discovered workshop ids (up to 10 mods x 5 promoted actions)
    - top-mod rows may be `Skipped` during deterministic/live runs that only execute shipped profile matrix, but each skipped row must include `skipReasonCode`
+
+After matrix runs:
+
+```powershell
+Remove-Item Env:SWFOC_FORCE_PROMOTED_EXTENDER -ErrorAction SilentlyContinue
+```
 
 ## Live Ops checklist (M1)
 

@@ -50,4 +50,22 @@ public sealed class ProfileInheritanceTests
             "universal_auto"
         ]);
     }
+
+    [Fact]
+    public async Task UniversalAutoProfile_Should_Default_To_AutoBackendPreference()
+    {
+        var root = TestPaths.FindRepoRoot();
+        var options = new ProfileRepositoryOptions
+        {
+            ProfilesRootPath = Path.Combine(root, "profiles", "default")
+        };
+
+        var repository = new FileSystemProfileRepository(options);
+        var profile = await repository.ResolveInheritedProfileAsync("universal_auto");
+
+        profile.BackendPreference.Should().Be("auto");
+        profile.Actions.Should().ContainKey("set_credits");
+        profile.Actions.Should().ContainKey("freeze_timer");
+        profile.Actions.Should().ContainKey("set_unit_cap");
+    }
 }
