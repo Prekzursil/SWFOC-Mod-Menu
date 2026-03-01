@@ -118,6 +118,13 @@ Reliability rule for runtime/mod tasks:
   evidence: bundle `TestResults/runs/LIVE-TACTICAL-20260228-211256/repro-bundle.json`
   evidence: bundle `TestResults/runs/LIVE-AOTR-20260228-211521/repro-bundle.json`
   evidence: bundle `TestResults/runs/LIVE-ROE-20260228-211757/repro-bundle.json`
+- [x] Delta closure wave: default non-forced promoted FoC routing + env override (`SWFOC_FORCE_PROMOTED_EXTENDER`), `universal_auto` backend de-trap (`auto`), and profile metadata save-root portability cleanup.
+  evidence: test `tests/SwfocTrainer.Tests/Runtime/BackendRouterTests.cs`
+  evidence: test `tests/SwfocTrainer.Tests/Profiles/ProfileInheritanceTests.cs`
+  evidence: test `tests/SwfocTrainer.Tests/Profiles/ProfileMetadataPortabilityTests.cs`
+  evidence: manual `2026-03-01` `dotnet restore SwfocTrainer.sln` + `dotnet build SwfocTrainer.sln -c Release --no-restore` + `dotnet test tests/SwfocTrainer.Tests/SwfocTrainer.Tests.csproj -c Release --no-build --filter "FullyQualifiedName!~SwfocTrainer.Tests.Profiles.Live&FullyQualifiedName!~RuntimeAttachSmokeTests"` => `Passed: 233`
+  evidence: bundle `TestResults/runs/20260301-004145/repro-bundle.json` (`classification=blocked_environment`, tactical default routing run; no swfoc process detected)
+  evidence: bundle `TestResults/runs/20260301-004232/repro-bundle.json` (`classification=blocked_environment`, tactical forced-override run; no swfoc process detected)
 
 ## Later (M2 + M3 + M4)
 

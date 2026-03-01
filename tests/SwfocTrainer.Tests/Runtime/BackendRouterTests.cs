@@ -14,10 +14,11 @@ public sealed class BackendRouterTests
     [InlineData("toggle_ai", ExecutionKind.Memory)]
     [InlineData("set_unit_cap", ExecutionKind.CodePatch)]
     [InlineData("toggle_instant_build_patch", ExecutionKind.CodePatch)]
-    public void Resolve_ShouldPromoteHybridActions_ToExtender_WhenCapabilityIsAvailable(
+    public void Resolve_ShouldKeepLegacyBackend_ForPromotedActions_WhenOverrideDisabled(
         string actionId,
         ExecutionKind executionKind)
     {
+        using var _ = PromotedExtenderOverrideScope.Disable();
         var router = new BackendRouter();
         var request = BuildRequest(
             actionId,
@@ -46,12 +47,18 @@ public sealed class BackendRouterTests
         var decision = router.Resolve(request, profile, process, report);
 
         decision.Allowed.Should().BeTrue();
-        decision.Backend.Should().Be(ExecutionBackendKind.Extender);
+        decision.Backend.Should().Be(ExecutionBackendKind.Memory);
         decision.ReasonCode.Should().Be(RuntimeReasonCode.CAPABILITY_PROBE_PASS);
         decision.Diagnostics.Should().ContainKey("hybridExecution");
         decision.Diagnostics!["hybridExecution"].Should().Be(false);
         decision.Diagnostics.Should().ContainKey("promotedExtenderAction");
-        decision.Diagnostics!["promotedExtenderAction"].Should().Be(true);
+        decision.Diagnostics!["promotedExtenderAction"].Should().Be(false);
+        decision.Diagnostics.Should().ContainKey("promotedExtenderOverrideEnabled");
+        decision.Diagnostics!["promotedExtenderOverrideEnabled"].Should().Be(false);
+        decision.Diagnostics.Should().ContainKey("promotedExtenderOverrideSource");
+        decision.Diagnostics!["promotedExtenderOverrideSource"].Should().Be("default");
+        decision.Diagnostics.Should().ContainKey("promotedExtenderApplied");
+        decision.Diagnostics!["promotedExtenderApplied"].Should().Be(false);
         decision.Diagnostics.Should().ContainKey("capabilityMapReasonCode");
         decision.Diagnostics!["capabilityMapReasonCode"].Should().Be("CAPABILITY_PROBE_PASS");
         decision.Diagnostics.Should().ContainKey("capabilityMapState");
@@ -66,10 +73,135 @@ public sealed class BackendRouterTests
     [InlineData("toggle_ai", ExecutionKind.Memory)]
     [InlineData("set_unit_cap", ExecutionKind.CodePatch)]
     [InlineData("toggle_instant_build_patch", ExecutionKind.CodePatch)]
-    public void Resolve_ShouldBlockHybridActions_WhenCapabilityIsMissing(
+    public void Resolve_ShouldKeepLegacyBackend_ForPromotedActions_WhenCapabilityIsMissing_AndOverrideDisabled(
         string actionId,
         ExecutionKind executionKind)
     {
+        using var _ = PromotedExtenderOverrideScope.Disable();
+        var router = new BackendRouter();
+        var request = BuildRequest(actionId, executionKind);
+        var profile = BuildProfile(backendPreference: "auto");
+        var process = BuildProcess();
+        var report = CapabilityReport.Unknown(profile.Id, RuntimeReasonCode.CAPABILITY_UNKNOWN);
+
+        var decision = router.Resolve(request, profile, process, report);
+
+        decision.Allowed.Should().BeTrue();
+        decision.Backend.Should().Be(ExecutionBackendKind.Memory);
+        decision.ReasonCode.Should().Be(RuntimeReasonCode.CAPABILITY_PROBE_PASS);
+        decision.Diagnostics.Should().ContainKey("hybridExecution");
+        decision.Diagnostics!["hybridExecution"].Should().Be(false);
+        decision.Diagnostics.Should().ContainKey("promotedExtenderAction");
+        decision.Diagnostics!["promotedExtenderAction"].Should().Be(false);
+        decision.Diagnostics.Should().ContainKey("promotedExtenderOverrideEnabled");
+        decision.Diagnostics!["promotedExtenderOverrideEnabled"].Should().Be(false);
+        decision.Diagnostics.Should().ContainKey("promotedExtenderOverrideSource");
+        decision.Diagnostics!["promotedExtenderOverrideSource"].Should().Be("default");
+        decision.Diagnostics.Should().ContainKey("promotedExtenderApplied");
+        decision.Diagnostics!["promotedExtenderApplied"].Should().Be(false);
+        decision.Diagnostics.Should().NotContainKey("fallbackBackend");
+    }
+
+    [Theory]
+    [InlineData("freeze_timer", ExecutionKind.Memory)]
+    [InlineData("toggle_fog_reveal", ExecutionKind.Memory)]
+    [InlineData("toggle_ai", ExecutionKind.Memory)]
+    [InlineData("set_unit_cap", ExecutionKind.CodePatch)]
+    [InlineData("toggle_instant_build_patch", ExecutionKind.CodePatch)]
+    public void Resolve_ShouldKeepLegacyBackend_ForPromotedActions_WhenCapabilityIsUnverified_AndOverrideDisabled(
+        string actionId,
+        ExecutionKind executionKind)
+    {
+        using var _ = PromotedExtenderOverrideScope.Disable();
+        var router = new BackendRouter();
+        var request = BuildRequest(actionId, executionKind);
+        var profile = BuildProfile(backendPreference: "auto");
+        var process = BuildProcess();
+        var report = new CapabilityReport(
+            profile.Id,
+            DateTimeOffset.UtcNow,
+            new Dictionary<string, BackendCapability>(StringComparer.OrdinalIgnoreCase)
+            {
+                [actionId] = new BackendCapability(
+                    actionId,
+                    Available: true,
+                    Confidence: CapabilityConfidenceState.Experimental,
+                    ReasonCode: RuntimeReasonCode.CAPABILITY_FEATURE_EXPERIMENTAL)
+            },
+            RuntimeReasonCode.CAPABILITY_PROBE_PASS);
+
+        var decision = router.Resolve(request, profile, process, report);
+
+        decision.Allowed.Should().BeTrue();
+        decision.Backend.Should().Be(ExecutionBackendKind.Memory);
+        decision.ReasonCode.Should().Be(RuntimeReasonCode.CAPABILITY_PROBE_PASS);
+        decision.Diagnostics.Should().ContainKey("hybridExecution");
+        decision.Diagnostics!["hybridExecution"].Should().Be(false);
+        decision.Diagnostics.Should().ContainKey("promotedExtenderAction");
+        decision.Diagnostics!["promotedExtenderAction"].Should().Be(false);
+        decision.Diagnostics.Should().ContainKey("promotedExtenderOverrideEnabled");
+        decision.Diagnostics!["promotedExtenderOverrideEnabled"].Should().Be(false);
+        decision.Diagnostics.Should().ContainKey("promotedExtenderOverrideSource");
+        decision.Diagnostics!["promotedExtenderOverrideSource"].Should().Be("default");
+        decision.Diagnostics.Should().ContainKey("promotedExtenderApplied");
+        decision.Diagnostics!["promotedExtenderApplied"].Should().Be(false);
+        decision.Diagnostics.Should().NotContainKey("fallbackBackend");
+    }
+
+    [Theory]
+    [InlineData("freeze_timer", ExecutionKind.Memory)]
+    [InlineData("toggle_fog_reveal", ExecutionKind.Memory)]
+    [InlineData("toggle_ai", ExecutionKind.Memory)]
+    [InlineData("set_unit_cap", ExecutionKind.CodePatch)]
+    [InlineData("toggle_instant_build_patch", ExecutionKind.CodePatch)]
+    public void Resolve_ShouldPromoteActions_ToExtender_WhenOverrideEnabled_AndCapabilityIsVerified(
+        string actionId,
+        ExecutionKind executionKind)
+    {
+        using var _ = PromotedExtenderOverrideScope.Enable();
+        var router = new BackendRouter();
+        var request = BuildRequest(actionId, executionKind);
+        var profile = BuildProfile(backendPreference: "auto");
+        var process = BuildProcess();
+        var report = new CapabilityReport(
+            profile.Id,
+            DateTimeOffset.UtcNow,
+            new Dictionary<string, BackendCapability>(StringComparer.OrdinalIgnoreCase)
+            {
+                [actionId] = new BackendCapability(
+                    actionId,
+                    Available: true,
+                    CapabilityConfidenceState.Verified,
+                    RuntimeReasonCode.CAPABILITY_PROBE_PASS)
+            },
+            RuntimeReasonCode.CAPABILITY_PROBE_PASS);
+
+        var decision = router.Resolve(request, profile, process, report);
+
+        decision.Allowed.Should().BeTrue();
+        decision.Backend.Should().Be(ExecutionBackendKind.Extender);
+        decision.ReasonCode.Should().Be(RuntimeReasonCode.CAPABILITY_PROBE_PASS);
+        decision.Diagnostics.Should().ContainKey("promotedExtenderAction");
+        decision.Diagnostics!["promotedExtenderAction"].Should().Be(true);
+        decision.Diagnostics.Should().ContainKey("promotedExtenderOverrideEnabled");
+        decision.Diagnostics!["promotedExtenderOverrideEnabled"].Should().Be(true);
+        decision.Diagnostics.Should().ContainKey("promotedExtenderOverrideSource");
+        decision.Diagnostics!["promotedExtenderOverrideSource"].Should().Be("env");
+        decision.Diagnostics.Should().ContainKey("promotedExtenderApplied");
+        decision.Diagnostics!["promotedExtenderApplied"].Should().Be(true);
+    }
+
+    [Theory]
+    [InlineData("freeze_timer", ExecutionKind.Memory)]
+    [InlineData("toggle_fog_reveal", ExecutionKind.Memory)]
+    [InlineData("toggle_ai", ExecutionKind.Memory)]
+    [InlineData("set_unit_cap", ExecutionKind.CodePatch)]
+    [InlineData("toggle_instant_build_patch", ExecutionKind.CodePatch)]
+    public void Resolve_ShouldBlockPromotedActions_WhenOverrideEnabled_AndCapabilityIsMissing(
+        string actionId,
+        ExecutionKind executionKind)
+    {
+        using var _ = PromotedExtenderOverrideScope.Enable();
         var router = new BackendRouter();
         var request = BuildRequest(actionId, executionKind);
         var profile = BuildProfile(backendPreference: "auto");
@@ -81,11 +213,10 @@ public sealed class BackendRouterTests
         decision.Allowed.Should().BeFalse();
         decision.Backend.Should().Be(ExecutionBackendKind.Extender);
         decision.ReasonCode.Should().Be(RuntimeReasonCode.CAPABILITY_REQUIRED_MISSING);
-        decision.Diagnostics.Should().ContainKey("hybridExecution");
-        decision.Diagnostics!["hybridExecution"].Should().Be(false);
         decision.Diagnostics.Should().ContainKey("promotedExtenderAction");
         decision.Diagnostics!["promotedExtenderAction"].Should().Be(true);
-        decision.Diagnostics.Should().NotContainKey("fallbackBackend");
+        decision.Diagnostics.Should().ContainKey("promotedExtenderApplied");
+        decision.Diagnostics!["promotedExtenderApplied"].Should().Be(true);
     }
 
     [Theory]
@@ -94,10 +225,11 @@ public sealed class BackendRouterTests
     [InlineData("toggle_ai", ExecutionKind.Memory)]
     [InlineData("set_unit_cap", ExecutionKind.CodePatch)]
     [InlineData("toggle_instant_build_patch", ExecutionKind.CodePatch)]
-    public void Resolve_ShouldFailClosedForPromotedActions_WhenCapabilityIsUnverified(
+    public void Resolve_ShouldFailClosedForPromotedActions_WhenOverrideEnabled_AndCapabilityIsUnverified(
         string actionId,
         ExecutionKind executionKind)
     {
+        using var _ = PromotedExtenderOverrideScope.Enable();
         var router = new BackendRouter();
         var request = BuildRequest(actionId, executionKind);
         var profile = BuildProfile(backendPreference: "auto");
@@ -120,11 +252,8 @@ public sealed class BackendRouterTests
         decision.Allowed.Should().BeFalse();
         decision.Backend.Should().Be(ExecutionBackendKind.Extender);
         decision.ReasonCode.Should().Be(RuntimeReasonCode.SAFETY_FAIL_CLOSED);
-        decision.Diagnostics.Should().ContainKey("hybridExecution");
-        decision.Diagnostics!["hybridExecution"].Should().Be(false);
-        decision.Diagnostics.Should().ContainKey("promotedExtenderAction");
-        decision.Diagnostics!["promotedExtenderAction"].Should().Be(true);
-        decision.Diagnostics.Should().NotContainKey("fallbackBackend");
+        decision.Diagnostics.Should().ContainKey("promotedExtenderApplied");
+        decision.Diagnostics!["promotedExtenderApplied"].Should().Be(true);
     }
 
     [Fact]
@@ -366,5 +495,32 @@ public sealed class BackendRouterTests
             MainModuleSize: 321_000_000,
             WorkshopMatchCount: 1,
             SelectionScore: 1311.0d);
+    }
+
+    private sealed class PromotedExtenderOverrideScope : IDisposable
+    {
+        private const string VariableName = "SWFOC_FORCE_PROMOTED_EXTENDER";
+        private readonly string? _previousValue;
+
+        private PromotedExtenderOverrideScope(string? value)
+        {
+            _previousValue = Environment.GetEnvironmentVariable(VariableName);
+            Environment.SetEnvironmentVariable(VariableName, value);
+        }
+
+        public static PromotedExtenderOverrideScope Disable()
+        {
+            return new PromotedExtenderOverrideScope(value: null);
+        }
+
+        public static PromotedExtenderOverrideScope Enable()
+        {
+            return new PromotedExtenderOverrideScope(value: "1");
+        }
+
+        public void Dispose()
+        {
+            Environment.SetEnvironmentVariable(VariableName, _previousValue);
+        }
     }
 }

@@ -4,14 +4,8 @@
   "inherits": "base_swfoc",
   "exeTarget": "Swfoc",
   "steamWorkshopId": null,
-  "backendPreference": "extender",
-  "requiredCapabilities": [
-    "set_credits",
-    "freeze_timer",
-    "toggle_fog_reveal",
-    "set_unit_cap",
-    "toggle_instant_build_patch"
-  ],
+  "backendPreference": "auto",
+  "requiredCapabilities": [],
   "hostPreference": "starwarsg_preferred",
   "experimentalFeatures": [
     "overlay_ui"

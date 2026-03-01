@@ -5,6 +5,8 @@ namespace SwfocTrainer.Runtime.Services;
 
 public sealed class BackendRouter : IBackendRouter
 {
+    private const string PromotedExtenderOverrideEnvironmentVariable = "SWFOC_FORCE_PROMOTED_EXTENDER";
+
     private static readonly HashSet<string> PromotedExtenderActionIds = new(StringComparer.OrdinalIgnoreCase)
     {
         "freeze_timer",
@@ -59,7 +61,9 @@ public sealed class BackendRouter : IBackendRouter
         ProcessMetadata process,
         CapabilityReport capabilityReport)
     {
-        var isPromotedExtenderAction = IsPromotedExtenderAction(request.Action.Id, profile, process);
+        var promotedExtenderOverride = ResolvePromotedExtenderOverrideState();
+        var isPromotedActionCandidate = IsPromotedExtenderActionCandidate(request.Action.Id, profile, process);
+        var isPromotedExtenderAction = promotedExtenderOverride.Enabled && isPromotedActionCandidate;
         var defaultBackend = MapDefaultBackend(request.Action.ExecutionKind, isPromotedExtenderAction);
         var preferredBackend = ResolvePreferredBackend(profile.BackendPreference, defaultBackend, isPromotedExtenderAction);
         var isMutating = IsMutating(request.Action.Id);
@@ -81,7 +85,9 @@ public sealed class BackendRouter : IBackendRouter
             profileRequiredCapabilities,
             requiredCapabilities,
             missingRequired,
-            isPromotedExtenderAction));
+            isPromotedExtenderAction,
+            promotedExtenderOverride.Enabled,
+            promotedExtenderOverride.Source));
         return new RouteResolutionState(
             PreferredBackend: preferredBackend,
             MutatingAction: isMutating,
@@ -108,6 +114,9 @@ public sealed class BackendRouter : IBackendRouter
             ["missingRequiredCapabilities"] = context.MissingRequired,
             ["hybridExecution"] = false,
             ["promotedExtenderAction"] = context.PromotedExtenderAction,
+            ["promotedExtenderOverrideEnabled"] = context.PromotedExtenderOverrideEnabled,
+            ["promotedExtenderOverrideSource"] = context.PromotedExtenderOverrideSource,
+            ["promotedExtenderApplied"] = context.PromotedExtenderAction,
             ["capabilityMapReasonCode"] = capabilityMapReasonCode ?? string.Empty,
             ["capabilityMapState"] = capabilityMapState ?? string.Empty,
             ["capabilityDeclaredAvailable"] = capabilityDeclaredAvailable
@@ -393,7 +402,7 @@ public sealed class BackendRouter : IBackendRouter
         return required.ToArray();
     }
 
-    private static bool IsPromotedExtenderAction(
+    private static bool IsPromotedExtenderActionCandidate(
         string actionId,
         TrainerProfile profile,
         ProcessMetadata process)
@@ -401,6 +410,30 @@ public sealed class BackendRouter : IBackendRouter
         return IsFoCContext(profile, process) &&
                !string.IsNullOrWhiteSpace(actionId) &&
                PromotedExtenderActionIds.Contains(actionId);
+    }
+
+    private static PromotedExtenderOverrideState ResolvePromotedExtenderOverrideState()
+    {
+        var raw = Environment.GetEnvironmentVariable(PromotedExtenderOverrideEnvironmentVariable);
+        if (string.IsNullOrWhiteSpace(raw))
+        {
+            return new PromotedExtenderOverrideState(Enabled: false, Source: "default");
+        }
+
+        if (bool.TryParse(raw, out var parsedBool))
+        {
+            return new PromotedExtenderOverrideState(Enabled: parsedBool, Source: "env");
+        }
+
+        if (int.TryParse(raw, out var parsedInt))
+        {
+            return new PromotedExtenderOverrideState(Enabled: parsedInt != 0, Source: "env");
+        }
+
+        var normalized = raw.Trim();
+        var enabled = normalized.Equals("on", StringComparison.OrdinalIgnoreCase) ||
+                      normalized.Equals("yes", StringComparison.OrdinalIgnoreCase);
+        return new PromotedExtenderOverrideState(Enabled: enabled, Source: "env");
     }
 
     private static bool IsFoCContext(TrainerProfile profile, ProcessMetadata process)
@@ -419,7 +452,9 @@ public sealed class BackendRouter : IBackendRouter
         IReadOnlyList<string> ProfileRequiredCapabilities,
         IReadOnlyList<string> RequiredCapabilities,
         IReadOnlyList<string> MissingRequired,
-        bool PromotedExtenderAction);
+        bool PromotedExtenderAction,
+        bool PromotedExtenderOverrideEnabled,
+        string PromotedExtenderOverrideSource);
 
     private readonly record struct RouteResolutionState(
         ExecutionBackendKind PreferredBackend,
@@ -427,4 +462,8 @@ public sealed class BackendRouter : IBackendRouter
         IReadOnlyList<string> MissingRequired,
         Dictionary<string, object?> Diagnostics,
         bool PromotedExtenderAction);
+
+    private readonly record struct PromotedExtenderOverrideState(
+        bool Enabled,
+        string Source);
 }
