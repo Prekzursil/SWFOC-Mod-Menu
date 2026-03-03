@@ -14,7 +14,13 @@ if (Test-Path -Path $resultsRootResolved) {
 }
 New-Item -ItemType Directory -Path $resultsRootResolved | Out-Null
 
-$rawResults = Join-Path $resultsRootResolved "raw"
+$stagingRoot = Join-Path $env:TEMP "swfoctrainer-coverage"
+if (Test-Path -Path $stagingRoot) {
+    Remove-Item -Path $stagingRoot -Recurse -Force
+}
+New-Item -ItemType Directory -Path $stagingRoot | Out-Null
+
+$rawResults = Join-Path $stagingRoot "raw"
 New-Item -ItemType Directory -Path $rawResults | Out-Null
 
 $filter = if ($DeterministicOnly) {
@@ -28,8 +34,7 @@ $arguments = @(
     "test",
     $projectPath,
     "-c", $Configuration,
-    "--no-build",
-    "--collect:XPlat Code Coverage",
+    "--collect", "XPlat Code Coverage",
     "--results-directory", $rawResults,
     "--logger", "trx;LogFileName=coverage.trx"
 )
@@ -66,9 +71,16 @@ function Resolve-DotnetCommand {
 
 $dotnetExe = Resolve-DotnetCommand
 Write-Output "$dotnetExe $($arguments -join ' ')"
-$process = Start-Process -FilePath $dotnetExe -ArgumentList $arguments -NoNewWindow -Wait -PassThru
-if ($process.ExitCode -ne 0) {
-    throw "Coverage collection failed with exit code $($process.ExitCode)."
+& $dotnetExe @arguments
+$exitCode = if (Get-Variable -Name LASTEXITCODE -Scope Global -ErrorAction SilentlyContinue) {
+    [int]$global:LASTEXITCODE
+}
+else {
+    0
+}
+
+if ($exitCode -ne 0) {
+    throw "Coverage collection failed with exit code $exitCode."
 }
 
 $coverageFiles = Get-ChildItem -Path $rawResults -Filter "coverage.cobertura.xml" -Recurse -File

@@ -24,6 +24,10 @@ $ErrorActionPreference = "Stop"
 if (-not $PSBoundParameters.ContainsKey("NoBuild")) {
     $NoBuild = $true
 }
+elseif ($NoBuild -and $RunAllInstalledChainsDeep) {
+    Write-Warning "RunAllInstalledChainsDeep requires reliable test artifacts; overriding -NoBuild to false."
+    $NoBuild = $false
+}
 
 $repoRoot = (Resolve-Path (Join-Path $PSScriptRoot "..")).ProviderPath
 Set-Location $repoRoot
