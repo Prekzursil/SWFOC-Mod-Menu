@@ -103,7 +103,7 @@ public sealed class NamedPipeHelperBridgeBackend : IHelperBridgeBackend
                 diagnostics: diagnostics);
         }
 
-        if (!TryValidateOperationToken(executionResult.Diagnostics, operation.OperationToken, diagnostics, out var tokenFailureMessage))
+        if (!TryValidateOperationToken(executionResult.Diagnostics, operation.OperationToken, out var tokenFailureMessage))
         {
             return CreateVerificationFailureResult(tokenFailureMessage, diagnostics, "failed_operation_token");
         }
@@ -296,7 +296,6 @@ public sealed class NamedPipeHelperBridgeBackend : IHelperBridgeBackend
     private static bool TryValidateOperationToken(
         IReadOnlyDictionary<string, object?>? backendDiagnostics,
         string expectedOperationToken,
-        IDictionary<string, object?> diagnostics,
         out string failureMessage)
     {
         failureMessage = string.Empty;

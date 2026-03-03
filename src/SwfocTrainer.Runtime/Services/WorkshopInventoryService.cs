@@ -11,8 +11,8 @@ namespace SwfocTrainer.Runtime.Services;
 public sealed class WorkshopInventoryService : IWorkshopInventoryService
 {
     private const string DefaultAppId = "32470";
+    private const string SteamApiHost = "api.steampowered.com";
     private const string PublishedFileDetailsApiPath = "ISteamRemoteStorage/GetPublishedFileDetails/v1/";
-    private const string SteamApiBaseUrl = "https://api.steampowered.com/";
 
     private static readonly TimeSpan RegexTimeout = TimeSpan.FromMilliseconds(250);
     private static readonly Regex InstalledIdRegex = new(@"""(?<id>\d{4,})""\s*\{", RegexOptions.Compiled, RegexTimeout);
@@ -94,15 +94,7 @@ public sealed class WorkshopInventoryService : IWorkshopInventoryService
 
     private static string? ResolveExistingPath(IEnumerable<string> candidates)
     {
-        foreach (var candidate in candidates)
-        {
-            if (File.Exists(candidate))
-            {
-                return candidate;
-            }
-        }
-
-        return null;
+        return candidates.FirstOrDefault(File.Exists);
     }
 
     private static void AddManifestIds(string? manifestPath, ISet<string> ids, ICollection<string> diagnostics)
@@ -218,10 +210,7 @@ public sealed class WorkshopInventoryService : IWorkshopInventoryService
             Add(Path.Combine(drive.RootDirectory.FullName, "SteamLibrary"));
         }
 
-        foreach (var path in seen)
-        {
-            yield return path;
-        }
+        return seen;
     }
 
     private async Task EnrichWithPublishedFileDetailsAsync(
@@ -293,7 +282,11 @@ public sealed class WorkshopInventoryService : IWorkshopInventoryService
 
     private static HttpRequestMessage CreateDetailsRequest(IReadOnlyList<string> workshopIds)
     {
-        var request = new HttpRequestMessage(HttpMethod.Post, new Uri(new Uri(SteamApiBaseUrl), PublishedFileDetailsApiPath))
+        var endpointUri = new UriBuilder(Uri.UriSchemeHttps, SteamApiHost)
+        {
+            Path = PublishedFileDetailsApiPath
+        }.Uri;
+        var request = new HttpRequestMessage(HttpMethod.Post, endpointUri)
         {
             Content = new FormUrlEncodedContent(BuildPostForm(workshopIds))
         };
