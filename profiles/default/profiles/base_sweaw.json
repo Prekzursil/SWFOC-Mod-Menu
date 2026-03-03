@@ -135,10 +135,58 @@
       "cooldownMs": 250,
       "description": "Spawn unit via helper bridge"
     },
+    "spawn_context_entity": {
+      "id": "spawn_context_entity",
+      "category": "Unit",
+      "mode": "Unknown",
+      "executionKind": "Helper",
+      "payloadSchema": {
+        "required": ["entityId", "faction"]
+      },
+      "verifyReadback": false,
+      "cooldownMs": 250,
+      "description": "Spawn entity by runtime context (tactical routes to battle spawn, galactic routes to persistent spawn)."
+    },
+    "spawn_tactical_entity": {
+      "id": "spawn_tactical_entity",
+      "category": "Tactical",
+      "mode": "AnyTactical",
+      "executionKind": "Helper",
+      "payloadSchema": {
+        "required": ["entityId", "faction"]
+      },
+      "verifyReadback": false,
+      "cooldownMs": 250,
+      "description": "Spawn tactical battle-only entities (default 0 population policy)."
+    },
+    "spawn_galactic_entity": {
+      "id": "spawn_galactic_entity",
+      "category": "Campaign",
+      "mode": "Galactic",
+      "executionKind": "Helper",
+      "payloadSchema": {
+        "required": ["entityId", "faction"]
+      },
+      "verifyReadback": false,
+      "cooldownMs": 250,
+      "description": "Spawn persistent galactic entities for the selected context."
+    },
+    "place_planet_building": {
+      "id": "place_planet_building",
+      "category": "Campaign",
+      "mode": "Galactic",
+      "executionKind": "Helper",
+      "payloadSchema": {
+        "required": ["entityId", "targetFaction"]
+      },
+      "verifyReadback": false,
+      "cooldownMs": 250,
+      "description": "Place a building from the building roster on the selected planet."
+    },
     "set_selected_hp": {
       "id": "set_selected_hp",
       "category": "Unit",
-      "mode": "Tactical",
+      "mode": "AnyTactical",
       "executionKind": "Memory",
       "payloadSchema": {
         "required": ["symbol", "floatValue"]
@@ -150,7 +198,7 @@
     "set_selected_shield": {
       "id": "set_selected_shield",
       "category": "Unit",
-      "mode": "Tactical",
+      "mode": "AnyTactical",
       "executionKind": "Memory",
       "payloadSchema": {
         "required": ["symbol", "floatValue"]
@@ -162,7 +210,7 @@
     "set_selected_speed": {
       "id": "set_selected_speed",
       "category": "Unit",
-      "mode": "Tactical",
+      "mode": "AnyTactical",
       "executionKind": "Memory",
       "payloadSchema": {
         "required": ["symbol", "floatValue"]
@@ -174,7 +222,7 @@
     "set_selected_damage_multiplier": {
       "id": "set_selected_damage_multiplier",
       "category": "Unit",
-      "mode": "Tactical",
+      "mode": "AnyTactical",
       "executionKind": "Memory",
       "payloadSchema": {
         "required": ["symbol", "floatValue"]
@@ -186,7 +234,7 @@
     "set_selected_cooldown_multiplier": {
       "id": "set_selected_cooldown_multiplier",
       "category": "Unit",
-      "mode": "Tactical",
+      "mode": "AnyTactical",
       "executionKind": "Memory",
       "payloadSchema": {
         "required": ["symbol", "floatValue"]
@@ -198,7 +246,7 @@
     "set_selected_veterancy": {
       "id": "set_selected_veterancy",
       "category": "Unit",
-      "mode": "Tactical",
+      "mode": "AnyTactical",
       "executionKind": "Memory",
       "payloadSchema": {
         "required": ["symbol", "intValue"]
@@ -210,7 +258,7 @@
     "set_selected_owner_faction": {
       "id": "set_selected_owner_faction",
       "category": "Unit",
-      "mode": "Tactical",
+      "mode": "AnyTactical",
       "executionKind": "Memory",
       "payloadSchema": {
         "required": ["symbol", "intValue"]
@@ -230,6 +278,30 @@
       "verifyReadback": true,
       "cooldownMs": 200,
       "description": "Set selected planet owner faction id"
+    },
+    "set_context_faction": {
+      "id": "set_context_faction",
+      "category": "Global",
+      "mode": "Unknown",
+      "executionKind": "Memory",
+      "payloadSchema": {
+        "required": ["intValue"]
+      },
+      "verifyReadback": true,
+      "cooldownMs": 120,
+      "description": "Set faction by runtime context (AnyTactical routes selected-unit owner, Galactic routes planet owner)."
+    },
+    "set_context_allegiance": {
+      "id": "set_context_allegiance",
+      "category": "Global",
+      "mode": "Unknown",
+      "executionKind": "Memory",
+      "payloadSchema": {
+        "required": ["intValue"]
+      },
+      "verifyReadback": true,
+      "cooldownMs": 120,
+      "description": "Alias of set_context_faction for universal allegiance routing."
     },
     "set_hero_respawn_timer": {
       "id": "set_hero_respawn_timer",
@@ -365,6 +437,20 @@
       "script": "scripts/common/spawn_bridge.lua",
       "version": "1.0.0",
       "entryPoint": "SWFOC_Trainer_Spawn",
+      "argContract": {
+        "unitId": "required:string",
+        "entityId": "optional:string",
+        "entryMarker": "required:string",
+        "faction": "required:string",
+        "targetFaction": "optional:string",
+        "populationPolicy": "optional:string",
+        "persistencePolicy": "optional:string",
+        "worldPosition": "optional:string",
+        "forceOverride": "optional:bool"
+      },
+      "verifyContract": {
+        "helperVerifyState": "applied"
+      },
       "metadata": {
         "sha256": "d249abd37ba84f7ec485ca1916d9d7c77d6c4dc6cf152ff30258a0e35f663514"
       }
@@ -376,6 +462,6 @@
     "profileAliases": "base_sweaw,sweaw,empire at war,eaw",
     "localPathHints": "sweaw,empire at war",
     "criticalSymbols": "credits,planet_owner,hero_respawn_timer,game_speed,unit_cap",
-    "symbolValidationRules": "[{\"Symbol\":\"credits\",\"IntMin\":0,\"IntMax\":2000000000,\"Critical\":true},{\"Symbol\":\"planet_owner\",\"IntMin\":0,\"IntMax\":16,\"Critical\":true},{\"Symbol\":\"hero_respawn_timer\",\"IntMin\":0,\"IntMax\":86400,\"Critical\":true},{\"Symbol\":\"game_speed\",\"FloatMin\":0.05,\"FloatMax\":8.0,\"Critical\":true},{\"Symbol\":\"selected_hp\",\"Mode\":\"Tactical\",\"FloatMin\":0.0,\"FloatMax\":5000000.0},{\"Symbol\":\"selected_shield\",\"Mode\":\"Tactical\",\"FloatMin\":0.0,\"FloatMax\":5000000.0}]"
+    "symbolValidationRules": "[{\"Symbol\":\"credits\",\"IntMin\":0,\"IntMax\":2000000000,\"Critical\":true},{\"Symbol\":\"planet_owner\",\"IntMin\":0,\"IntMax\":16,\"Critical\":true},{\"Symbol\":\"hero_respawn_timer\",\"IntMin\":0,\"IntMax\":86400,\"Critical\":true},{\"Symbol\":\"game_speed\",\"FloatMin\":0.05,\"FloatMax\":8.0,\"Critical\":true},{\"Symbol\":\"selected_hp\",\"Mode\":\"AnyTactical\",\"FloatMin\":0.0,\"FloatMax\":5000000.0},{\"Symbol\":\"selected_shield\",\"Mode\":\"AnyTactical\",\"FloatMin\":0.0,\"FloatMax\":5000000.0}]"
   }
 }

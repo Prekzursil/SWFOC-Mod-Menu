@@ -1,6 +1,6 @@
 namespace SwfocTrainer.Core.Services;
 
-internal static class ActionSymbolRegistry
+public static class ActionSymbolRegistry
 {
     private const string SymbolCredits = "credits";
 
@@ -22,6 +22,8 @@ internal static class ActionSymbolRegistry
             ["set_selected_veterancy"] = "selected_veterancy",
             ["set_selected_owner_faction"] = "selected_owner_faction",
             ["set_planet_owner"] = "planet_owner",
+            ["set_context_faction"] = "selected_owner_faction",
+            ["set_context_allegiance"] = "selected_owner_faction",
             ["set_hero_respawn_timer"] = "hero_respawn_timer",
             ["toggle_tactical_god_mode"] = "tactical_god_mode",
             ["toggle_tactical_one_hit_mode"] = "tactical_one_hit_mode",

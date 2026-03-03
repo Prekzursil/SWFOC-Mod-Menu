@@ -58,7 +58,9 @@ public enum RuntimeMode
 {
     Unknown = 0,
     Galactic,
-    Tactical,
+    TacticalLand,
+    TacticalSpace,
+    AnyTactical,
     Menu,
     SaveEditor
 }

@@ -23,7 +23,7 @@ namespace {
 using AnchorMatch = std::pair<std::string, std::string>;
 
 constexpr std::array<std::string_view, 2> kUnitCapAnchors {"unit_cap", "set_unit_cap"};
-constexpr std::array<std::string_view, 3> kInstantBuildAnchors {"instant_build_patch_injection", "instant_build_patch", "toggle_instant_build_patch"};
+constexpr std::array<std::string_view, 4> kInstantBuildAnchors {"instant_build_patch_injection", "instant_build_patch", "instant_build", "toggle_instant_build_patch"};
 constexpr std::int32_t kMinUnitCap = 1;
 constexpr std::int32_t kMaxUnitCap = 100000;
 

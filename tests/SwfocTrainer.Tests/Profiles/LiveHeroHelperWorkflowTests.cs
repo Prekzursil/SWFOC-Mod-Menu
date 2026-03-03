@@ -100,14 +100,11 @@ public sealed class LiveHeroHelperWorkflowTests
 
     private static void AssertHelperActionResult(ActionExecutionResult result)
     {
-        if (!result.Succeeded)
-        {
-            result.Message.Should().NotBeNullOrWhiteSpace();
-            result.Message.ToLowerInvariant().Should().MatchRegex("helper|dependency|disabled|unsupported");
-            return;
-        }
-
         result.Succeeded.Should().BeTrue();
+        result.Diagnostics.Should().NotBeNull();
+        result.Diagnostics!["reasonCode"]?.ToString().Should().Be(RuntimeReasonCode.HELPER_EXECUTION_APPLIED.ToString());
+        result.Diagnostics["helperInvocationSource"]?.ToString().Should().Be("native_bridge");
+        result.Diagnostics["helperVerifyState"]?.ToString().Should().Be("applied");
     }
 
     private static SupportedProcessContext? SelectHelperTargetContext(

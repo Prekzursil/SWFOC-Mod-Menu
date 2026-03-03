@@ -23,6 +23,25 @@ struct PluginRequest {
     [[maybe_unused]] bool lockValue {false};
     [[maybe_unused]] std::int32_t processId {0};
     [[maybe_unused]] std::map<std::string, std::string> anchors {};
+    [[maybe_unused]] std::string helperHookId {};
+    [[maybe_unused]] std::string helperEntryPoint {};
+    [[maybe_unused]] std::string helperScript {};
+    [[maybe_unused]] std::string operationKind {};
+    [[maybe_unused]] std::string operationToken {};
+    [[maybe_unused]] std::string invocationContractVersion {};
+    [[maybe_unused]] std::string unitId {};
+    [[maybe_unused]] std::string entityId {};
+    [[maybe_unused]] std::string entryMarker {};
+    [[maybe_unused]] std::string faction {};
+    [[maybe_unused]] std::string targetFaction {};
+    [[maybe_unused]] std::string sourceFaction {};
+    [[maybe_unused]] std::string globalKey {};
+    [[maybe_unused]] std::string populationPolicy {};
+    [[maybe_unused]] std::string persistencePolicy {};
+    [[maybe_unused]] std::string placementMode {};
+    [[maybe_unused]] std::string worldPosition {};
+    [[maybe_unused]] bool allowCrossFaction {false};
+    [[maybe_unused]] bool forceOverride {false};
 };
 
 struct CapabilityState {

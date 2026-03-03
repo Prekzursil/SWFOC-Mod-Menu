@@ -114,10 +114,15 @@ def main() -> int:
 
     projects = [p for p in args.project if p]
     if not projects:
+        single_project = str(os.environ.get("SENTRY_PROJECT", "")).strip()
+        if single_project:
+            projects.append(single_project)
         for env_name in ("SENTRY_PROJECT_BACKEND", "SENTRY_PROJECT_WEB"):
             value = str(os.environ.get(env_name, "")).strip()
             if value:
                 projects.append(value)
+    projects = [p.strip().lower() for p in projects if p and p.strip()]
+    projects = list(dict.fromkeys(projects))
 
     findings: list[str] = []
     project_results: list[dict[str, Any]] = []

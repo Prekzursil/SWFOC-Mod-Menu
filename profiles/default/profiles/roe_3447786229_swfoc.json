@@ -71,6 +71,12 @@
       "script": "scripts/roe/respawn_bridge.lua",
       "version": "1.0.0",
       "entryPoint": "SWFOC_Trainer_Toggle_Respawn",
+      "argContract": {
+        "boolValue": "required:boolean"
+      },
+      "verifyContract": {
+        "helperVerifyState": "applied"
+      },
       "metadata": {
         "sha256": "e3eefa9702c3c648049eb83bca60874c7ae00926c9f96f951f23144e7ae3a88b"
       }

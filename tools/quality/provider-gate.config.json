@@ -1,0 +1,99 @@
+{
+  "strictMissingConfig": true,
+  "providers": {
+    "sonar": {
+      "method": "GET",
+      "url": "https://sonarcloud.io/api/issues/search",
+      "query": {
+        "componentKeys": "${SONAR_PROJECT_KEY}",
+        "resolved": "false",
+        "ps": "1"
+      },
+      "authScheme": "basicToken",
+      "tokenEnv": "SONAR_TOKEN",
+      "requiredEnv": [
+        "SONAR_TOKEN",
+        "SONAR_PROJECT_KEY"
+      ],
+      "countJsonPath": "total"
+    },
+    "codacy": {
+      "method": "GET",
+      "url": "https://api.codacy.com/api/v3/analysis/organizations/${CODACY_ORG}/repositories/${CODACY_PROVIDER}/${CODACY_REPO}/issues",
+      "query": {
+        "issueStatus": "Open",
+        "page": "1",
+        "limit": "1"
+      },
+      "authScheme": "apiTokenHeader",
+      "tokenEnv": "CODACY_API_TOKEN",
+      "tokenHeaderName": "api-token",
+      "requiredEnv": [
+        "CODACY_API_TOKEN",
+        "CODACY_ORG",
+        "CODACY_PROVIDER",
+        "CODACY_REPO"
+      ],
+      "countJsonPath": "total"
+    },
+    "deepscan": {
+      "method": "GET",
+      "url": "${DEEPSCAN_ZERO_BACKLOG_URL}",
+      "authScheme": "",
+      "tokenEnv": "",
+      "requiredEnv": [
+        "DEEPSCAN_ZERO_BACKLOG_URL"
+      ],
+      "countJsonPath": "data.lastUnresolvedIssueCount"
+    },
+    "snyk": {
+      "method": "GET",
+      "url": "https://api.snyk.io/rest/orgs/${SNYK_ORG_ID}/issues",
+      "query": {
+        "version": "2024-10-15",
+        "status": "open",
+        "limit": "1"
+      },
+      "authScheme": "bearer",
+      "tokenEnv": "SNYK_TOKEN",
+      "requiredEnv": [
+        "SNYK_TOKEN",
+        "SNYK_ORG_ID"
+      ],
+      "countJsonPath": "meta.total"
+    },
+    "applitools": {
+      "method": "GET",
+      "url": "https://eyesapi.applitools.com/api/sessions/batches",
+      "query": {
+        "status": "Unresolved",
+        "limit": "1",
+        "apiKey": "${APPLITOOLS_API_KEY}"
+      },
+      "authScheme": "",
+      "tokenEnv": "",
+      "requiredEnv": [
+        "APPLITOOLS_API_KEY"
+      ],
+      "countJsonPath": "openCount"
+    },
+    "sentry": {
+      "method": "GET",
+      "url": "${SENTRY_URL}/api/0/projects/${SENTRY_ORG}/${SENTRY_PROJECT}/issues/",
+      "query": {
+        "query": "is:unresolved",
+        "limit": "1"
+      },
+      "authScheme": "bearer",
+      "tokenEnv": "SENTRY_AUTH_TOKEN",
+      "requiredEnv": [
+        "SENTRY_AUTH_TOKEN",
+        "SENTRY_ORG",
+        "SENTRY_PROJECT",
+        "SENTRY_URL"
+      ],
+      "countHeader": "X-Hits",
+      "countJsonPath": "total"
+    }
+  }
+}

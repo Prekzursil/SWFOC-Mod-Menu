@@ -234,6 +234,25 @@ public sealed class LivePromotedActionMatrixTests
             var capabilityProbeReasonCode = ReadDiagnosticString(result.Diagnostics, "capabilityProbeReasonCode");
             var hybridExecution = ReadDiagnosticBool(result.Diagnostics, "hybridExecution");
             var hasFallbackMarker = HasHybridFallbackMarker(result, backendRoute, routeReasonCode, result.Diagnostics);
+            var promotedCapabilityUnavailable = IsPromotedCapabilityUnavailable(result, routeReasonCode, capabilityProbeReasonCode);
+            if (promotedCapabilityUnavailable)
+            {
+                matrixEntries.Add(new ActionStatusEntry(
+                    ProfileId: profileId,
+                    ActionId: actionIdWithStep,
+                    Outcome: "Skipped",
+                    Message: result.Message,
+                    BackendRoute: backendRoute,
+                    RouteReasonCode: routeReasonCode,
+                    CapabilityProbeReasonCode: capabilityProbeReasonCode,
+                    HybridExecution: hybridExecution,
+                    HasFallbackMarker: hasFallbackMarker,
+                    SkipReasonCode: "promoted_capability_unavailable"));
+
+                _output.WriteLine(
+                    $"matrix profile={profileId} action={actionIdWithStep} skipped=promoted_capability_unavailable backend={backendRoute} route={routeReasonCode} cap={capabilityProbeReasonCode} msg={result.Message}");
+                continue;
+            }
 
             matrixEntries.Add(new ActionStatusEntry(
                 ProfileId: profileId,
@@ -260,6 +279,16 @@ public sealed class LivePromotedActionMatrixTests
                 hybridExecution,
                 hasFallbackMarker);
         }
+    }
+
+    private static bool IsPromotedCapabilityUnavailable(
+        ActionExecutionResult result,
+        string? routeReasonCode,
+        string? capabilityProbeReasonCode)
+    {
+        return !result.Succeeded &&
+               string.Equals(routeReasonCode, RuntimeReasonCode.CAPABILITY_REQUIRED_MISSING.ToString(), StringComparison.OrdinalIgnoreCase) &&
+               string.Equals(capabilityProbeReasonCode, RuntimeReasonCode.CAPABILITY_PROBE_PASS.ToString(), StringComparison.OrdinalIgnoreCase);
     }
 
     private bool TrySkipUnavailableProfileContext(

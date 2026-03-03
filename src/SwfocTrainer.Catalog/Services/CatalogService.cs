@@ -9,6 +9,26 @@ namespace SwfocTrainer.Catalog.Services;
 
 public sealed class CatalogService : ICatalogService
 {
+    private static readonly string[] BuildingNameMarkers =
+    [
+        "BARRACK",
+        "FACTORY",
+        "BASE",
+        "SHIPYARD",
+        "YARD",
+        "STATION",
+        "STAR_BASE",
+        "STARBASE",
+        "PLATFORM",
+        "MINE",
+        "TURRET",
+        "DEFENSE",
+        "ACADEMY",
+        "OUTPOST",
+        "REFINERY",
+        "PALACE"
+    ];
+
     private readonly CatalogOptions _options;
     private readonly IProfileRepository _profiles;
     private readonly ILogger<CatalogService> _logger;
@@ -23,6 +43,7 @@ public sealed class CatalogService : ICatalogService
     public async Task<IReadOnlyDictionary<string, IReadOnlyList<string>>> LoadCatalogAsync(string profileId, CancellationToken cancellationToken)
     {
         var result = new Dictionary<string, IReadOnlyList<string>>(StringComparer.OrdinalIgnoreCase);
+        var profile = await _profiles.ResolveInheritedProfileAsync(profileId, cancellationToken);
 
         var prebuilt = await LoadPrebuiltCatalogAsync(profileId, cancellationToken);
         if (prebuilt.Count > 0)
@@ -32,10 +53,10 @@ public sealed class CatalogService : ICatalogService
                 result[kv.Key] = kv.Value;
             }
 
+            EnsureDerivedCatalogs(result, profile);
             return result;
         }
 
-        var profile = await _profiles.ResolveInheritedProfileAsync(profileId, cancellationToken);
         var unitList = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
         var planetList = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
         var heroList = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
@@ -60,7 +81,7 @@ public sealed class CatalogService : ICatalogService
         result["planet_catalog"] = planetList.OrderBy(x => x).Take(2000).ToArray();
         result["hero_catalog"] = heroList.OrderBy(x => x).Take(2000).ToArray();
         result["faction_catalog"] = factionList.OrderBy(x => x).Take(300).ToArray();
-        result["action_constraints"] = profile.Actions.Keys.OrderBy(x => x).ToArray();
+        EnsureDerivedCatalogs(result, profile);
 
         return result;
     }
@@ -153,5 +174,65 @@ public sealed class CatalogService : ICatalogService
             ?? new Dictionary<string, string[]>();
 
         return catalog.ToDictionary(x => x.Key, x => (IReadOnlyList<string>)x.Value, StringComparer.OrdinalIgnoreCase);
+    }
+
+    private static void EnsureDerivedCatalogs(
+        IDictionary<string, IReadOnlyList<string>> catalog,
+        TrainerProfile profile)
+    {
+        var units = GetCatalogSet(catalog, "unit_catalog");
+        var planets = GetCatalogSet(catalog, "planet_catalog");
+        var heroes = GetCatalogSet(catalog, "hero_catalog");
+        var buildings = GetCatalogSet(catalog, "building_catalog");
+
+        foreach (var buildingName in units.Where(IsBuildingName))
+        {
+            buildings.Add(buildingName);
+        }
+
+        var entities = GetCatalogSet(catalog, "entity_catalog");
+        foreach (var unit in units)
+        {
+            entities.Add($"Unit|{unit}");
+        }
+
+        foreach (var building in buildings)
+        {
+            entities.Add($"Building|{building}");
+        }
+
+        foreach (var planet in planets)
+        {
+            entities.Add($"Planet|{planet}");
+        }
+
+        foreach (var hero in heroes)
+        {
+            entities.Add($"Hero|{hero}");
+        }
+
+        catalog["building_catalog"] = buildings.OrderBy(x => x).Take(4000).ToArray();
+        catalog["entity_catalog"] = entities.OrderBy(x => x).Take(20000).ToArray();
+        catalog["action_constraints"] = profile.Actions.Keys.OrderBy(x => x).ToArray();
+    }
+
+    private static HashSet<string> GetCatalogSet(
+        IDictionary<string, IReadOnlyList<string>> catalog,
+        string key)
+    {
+        if (!catalog.TryGetValue(key, out var values) || values is null)
+        {
+            return new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+        }
+
+        return values
+            .Where(static value => !string.IsNullOrWhiteSpace(value))
+            .Select(static value => value.Trim())
+            .ToHashSet(StringComparer.OrdinalIgnoreCase);
+    }
+
+    private static bool IsBuildingName(string name)
+    {
+        return BuildingNameMarkers.Any(marker => name.Contains(marker, StringComparison.OrdinalIgnoreCase));
     }
 }

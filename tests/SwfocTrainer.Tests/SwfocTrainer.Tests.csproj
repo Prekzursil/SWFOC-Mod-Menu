@@ -6,6 +6,14 @@
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.14.1" />
+    <PackageReference Include="coverlet.collector" Version="6.0.2">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="coverlet.msbuild" Version="6.0.2">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
     <PackageReference Include="xunit" Version="2.9.3" />
     <PackageReference Include="xunit.runner.visualstudio" Version="2.8.2">
       <PrivateAssets>all</PrivateAssets>
@@ -23,5 +31,6 @@
     <ProjectReference Include="../../src/SwfocTrainer.Saves/SwfocTrainer.Saves.csproj" />
     <ProjectReference Include="../../src/SwfocTrainer.Runtime/SwfocTrainer.Runtime.csproj" />
     <ProjectReference Include="..\..\src\SwfocTrainer.Meg\SwfocTrainer.Meg.csproj" />
+    <ProjectReference Include="../../src/SwfocTrainer.Transplant/SwfocTrainer.Transplant.csproj" />
   </ItemGroup>
 </Project>

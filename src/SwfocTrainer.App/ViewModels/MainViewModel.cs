@@ -17,7 +17,7 @@ public sealed class MainViewModel : MainViewModelSaveOpsBase
         (Profiles, Actions, CatalogSummary, Updates, SaveDiffPreview, Hotkeys, SaveFields, FilteredSaveFields, SavePatchOperations, SavePatchCompatibility, ActionReliability, SelectedUnitTransactions, SpawnPresets, LiveOpsDiagnostics, ModCompatibilityRows, ActiveFreezes) = MainViewModelFactories.CreateCollections();
 
         var commandContexts = CreateCommandContexts();
-        (LoadProfilesCommand, AttachCommand, DetachCommand, LoadActionsCommand, ExecuteActionCommand, LoadCatalogCommand, DeployHelperCommand, VerifyHelperCommand, CheckUpdatesCommand, InstallUpdateCommand, RollbackProfileUpdateCommand) = MainViewModelFactories.CreateCoreCommands(commandContexts.Core);
+        (LoadProfilesCommand, LaunchAndAttachCommand, AttachCommand, DetachCommand, LoadActionsCommand, ExecuteActionCommand, LoadCatalogCommand, DeployHelperCommand, VerifyHelperCommand, CheckUpdatesCommand, InstallUpdateCommand, RollbackProfileUpdateCommand) = MainViewModelFactories.CreateCoreCommands(commandContexts.Core);
         (BrowseSaveCommand, LoadSaveCommand, EditSaveCommand, ValidateSaveCommand, RefreshDiffCommand, WriteSaveCommand, BrowsePatchPackCommand, ExportPatchPackCommand, LoadPatchPackCommand, PreviewPatchPackCommand, ApplyPatchPackCommand, RestoreBackupCommand, LoadHotkeysCommand, SaveHotkeysCommand, AddHotkeyCommand, RemoveHotkeyCommand) = MainViewModelFactories.CreateSaveCommands(commandContexts.Save);
         (RefreshActionReliabilityCommand, CaptureSelectedUnitBaselineCommand, ApplySelectedUnitDraftCommand, RevertSelectedUnitTransactionCommand, RestoreSelectedUnitBaselineCommand, LoadSpawnPresetsCommand, RunSpawnBatchCommand, ScaffoldModProfileCommand, ExportCalibrationArtifactCommand, BuildCompatibilityReportCommand, ExportSupportBundleCommand, ExportTelemetrySnapshotCommand) = MainViewModelFactories.CreateLiveOpsCommands(commandContexts.LiveOps);
         (QuickSetCreditsCommand, QuickFreezeTimerCommand, QuickToggleFogCommand, QuickToggleAiCommand, QuickInstantBuildCommand, QuickUnitCapCommand, QuickGodModeCommand, QuickOneHitCommand, QuickUnfreezeAllCommand) = MainViewModelFactories.CreateQuickCommands(commandContexts.Quick);
@@ -37,6 +37,7 @@ public sealed class MainViewModel : MainViewModelSaveOpsBase
         return new MainViewModelCoreCommandContext
         {
             LoadProfilesAsync = LoadProfilesAsync,
+            LaunchAndAttachAsync = LaunchAndAttachAsync,
             AttachAsync = AttachAsync,
             DetachAsync = DetachAsync,
             LoadActionsAsync = LoadActionsAsync,
@@ -322,6 +323,133 @@ public sealed class MainViewModel : MainViewModelSaveOpsBase
         var processes = await _processLocator.FindSupportedProcessesAsync();
         var variant = await _profileVariantResolver.ResolveAsync(requestedProfileId, processes, CancellationToken.None);
         return (variant.ResolvedProfileId, variant);
+    }
+
+    private async Task LaunchAndAttachAsync()
+    {
+        var launchRequest = await BuildLaunchRequestAsync();
+        Status = $"Launching {launchRequest.Target} ({launchRequest.Mode})...";
+        var launchResult = await _gameLauncher.LaunchAsync(launchRequest);
+        if (!launchResult.Succeeded)
+        {
+            Status = $"Launch failed: {launchResult.Message}";
+            return;
+        }
+
+        Status = $"Launch started (pid={launchResult.ProcessId}). Attaching...";
+        await Task.Delay(TimeSpan.FromSeconds(2));
+        await AttachAsync();
+    }
+
+    private async Task<GameLaunchRequest> BuildLaunchRequestAsync()
+    {
+        var target = LaunchTarget.Equals("Sweaw", StringComparison.OrdinalIgnoreCase)
+            ? GameLaunchTarget.Sweaw
+            : GameLaunchTarget.Swfoc;
+        var mode = ResolveLaunchMode(LaunchMode);
+        var workshopIds = BuildLaunchWorkshopIds();
+
+        if (mode == GameLaunchMode.SteamMod && workshopIds.Count == 0 && !string.IsNullOrWhiteSpace(SelectedProfileId))
+        {
+            try
+            {
+                var profile = await _profiles.ResolveInheritedProfileAsync(SelectedProfileId);
+                workshopIds = ResolveProfileWorkshopChain(profile);
+                if (workshopIds.Count > 0)
+                {
+                    LaunchWorkshopId = string.Join(",", workshopIds);
+                }
+            }
+            catch
+            {
+                // Keep manual launcher input path as-is when profile lookup fails.
+            }
+        }
+
+        return new GameLaunchRequest(
+            Target: target,
+            Mode: mode,
+            WorkshopIds: workshopIds,
+            ModPath: string.IsNullOrWhiteSpace(LaunchModPath) ? null : LaunchModPath.Trim(),
+            ProfileIdHint: SelectedProfileId,
+            TerminateExistingTargets: TerminateExistingBeforeLaunch);
+    }
+
+    private static IReadOnlyList<string> ResolveProfileWorkshopChain(TrainerProfile profile)
+    {
+        var ordered = new List<string>();
+        var seen = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+
+        if (!string.IsNullOrWhiteSpace(profile.SteamWorkshopId) && seen.Add(profile.SteamWorkshopId))
+        {
+            ordered.Add(profile.SteamWorkshopId);
+        }
+
+        if (profile.Metadata is not null &&
+            profile.Metadata.TryGetValue("requiredWorkshopIds", out var requiredIds) &&
+            !string.IsNullOrWhiteSpace(requiredIds))
+        {
+            foreach (var token in requiredIds
+                         .Split(',', StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries)
+                         .Where(seen.Add))
+            {
+                ordered.Add(token);
+            }
+        }
+
+        if (profile.Metadata is not null &&
+            profile.Metadata.TryGetValue("parentDependencies", out var parentDependencies) &&
+            !string.IsNullOrWhiteSpace(parentDependencies))
+        {
+            var parents = parentDependencies
+                .Split(',', StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries)
+                .Where(seen.Add)
+                .ToArray();
+            if (parents.Length > 0)
+            {
+                ordered = parents.Concat(ordered).ToList();
+            }
+        }
+
+        return ordered;
+    }
+
+    private static GameLaunchMode ResolveLaunchMode(string launchMode)
+    {
+        if (launchMode.Equals("SteamMod", StringComparison.OrdinalIgnoreCase))
+        {
+            return GameLaunchMode.SteamMod;
+        }
+
+        if (launchMode.Equals("ModPath", StringComparison.OrdinalIgnoreCase))
+        {
+            return GameLaunchMode.ModPath;
+        }
+
+        return GameLaunchMode.Vanilla;
+    }
+
+    private IReadOnlyList<string> BuildLaunchWorkshopIds()
+    {
+        if (string.IsNullOrWhiteSpace(LaunchWorkshopId))
+        {
+            return Array.Empty<string>();
+        }
+
+        var ordered = new List<string>();
+        var seen = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+        foreach (var token in LaunchWorkshopId.Split(',', StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries))
+        {
+            var value = token.Trim();
+            if (value.Length == 0 || !seen.Add(value))
+            {
+                continue;
+            }
+
+            ordered.Add(value);
+        }
+
+        return ordered;
     }
     private void ApplyAttachSessionStatus(AttachSession session)
     {

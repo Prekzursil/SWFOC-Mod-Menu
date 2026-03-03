@@ -35,3 +35,6 @@ exclude_paths:
   - "tests/SwfocTrainer.Tests/Runtime/RuntimeAdapterModeOverrideTests.cs"
   - "tests/SwfocTrainer.Tests/App/MainViewModelRuntimeModeOverrideTests.cs"
   - "tools/workshop/enrich-mod-metadata.py"
+  - "tests/SwfocTrainer.Tests/Runtime/NamedPipeHelperBridgeBackendTests.cs"
+  - "tests/SwfocTrainer.Tests/Runtime/RuntimeAdapterExecuteCoverageTests.cs"
+  - "tests/SwfocTrainer.Tests/Runtime/WorkshopInventoryServiceTests.cs"

@@ -14,6 +14,8 @@ public sealed class MainViewModelDependencies
 
     public required IProfileVariantResolver ProfileVariantResolver { get; init; }
 
+    public required IGameLaunchService GameLauncher { get; init; }
+
     public required IRuntimeAdapter Runtime { get; init; }
 
     public required TrainerOrchestrator Orchestrator { get; init; }

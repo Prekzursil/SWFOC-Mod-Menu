@@ -462,10 +462,46 @@ public sealed class TrainerOrchestratorTests
             ["intValue"] = 500
         };
 
-        var result = await orchestrator.ExecuteAsync("test_profile", "galactic_only", payload, RuntimeMode.Tactical);
+        var result = await orchestrator.ExecuteAsync("test_profile", "galactic_only", payload, RuntimeMode.AnyTactical);
 
         result.Succeeded.Should().BeFalse();
         result.Message.Should().Contain("not allowed");
+    }
+
+    [Fact]
+    public async Task Action_Should_Emit_StrictTacticalReason_When_RuntimeIsAnyTactical_ButActionIsSpecificTactical()
+    {
+        var profile = BuildProfile(MakeMemoryAction("land_only", RuntimeMode.TacticalLand, "symbol", "intValue"));
+        var (orchestrator, _, _, _) = CreateOrchestrator(profile);
+
+        var payload = new JsonObject
+        {
+            ["symbol"] = "credits",
+            ["intValue"] = 500
+        };
+
+        var result = await orchestrator.ExecuteAsync("test_profile", "land_only", payload, RuntimeMode.AnyTactical);
+
+        result.Succeeded.Should().BeFalse();
+        result.Diagnostics.Should().ContainKey("reasonCode");
+        result.Diagnostics!["reasonCode"]!.ToString().Should().Be(RuntimeReasonCode.MODE_STRICT_TACTICAL_UNSPECIFIED.ToString());
+    }
+
+    [Fact]
+    public async Task Action_Should_Succeed_When_RuntimeIsSpecificTactical_And_ActionIsAnyTactical()
+    {
+        var profile = BuildProfile(MakeMemoryAction("tactical_any", RuntimeMode.AnyTactical, "symbol", "intValue"));
+        var (orchestrator, _, _, _) = CreateOrchestrator(profile);
+
+        var payload = new JsonObject
+        {
+            ["symbol"] = "credits",
+            ["intValue"] = 500
+        };
+
+        var result = await orchestrator.ExecuteAsync("test_profile", "tactical_any", payload, RuntimeMode.TacticalLand);
+
+        result.Succeeded.Should().BeTrue();
     }
 
     [Fact]

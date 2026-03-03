@@ -221,7 +221,7 @@ public sealed class SelectedUnitTransactionService : ISelectedUnitTransactionSer
             return Failed($"Selected-unit {operationLabel} is blocked: runtime mode is unknown.", "mode_unknown_strict_gate");
         }
 
-        if (runtimeMode != RuntimeMode.Tactical)
+        if (runtimeMode is not (RuntimeMode.AnyTactical or RuntimeMode.TacticalLand or RuntimeMode.TacticalSpace))
         {
             return Failed(
                 $"Selected-unit {operationLabel} requires tactical mode, current mode is {runtimeMode}.",

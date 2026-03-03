@@ -63,6 +63,13 @@ public sealed class LiveRoeRuntimeHealthTests
             profileId,
             result);
 
+        if (!result.Succeeded &&
+            !string.IsNullOrWhiteSpace(result.Message) &&
+            result.Message.Contains("hook did not observe a sync tick", StringComparison.OrdinalIgnoreCase))
+        {
+            throw LiveSkip.For(_output, "set_credits precondition unmet: hook sync tick not observed. Enter galactic/campaign context and retry.");
+        }
+
         result.Succeeded.Should().BeTrue($"set_credits should succeed on live ROE process. Message: {result.Message}");
         await runtime.DetachAsync();
     }

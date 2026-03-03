@@ -71,6 +71,14 @@
       "script": "scripts/aotr/hero_state_bridge.lua",
       "version": "1.0.0",
       "entryPoint": "SWFOC_Trainer_Set_Hero_Respawn",
+      "argContract": {
+        "globalKey": "required:string",
+        "intValue": "required:int32"
+      },
+      "verifyContract": {
+        "helperVerifyState": "applied",
+        "globalKey": "required:echo"
+      },
       "metadata": {
         "sha256": "08e66b00bb7fc6c58cb91ac070cfcdf9c272b54db8f053592cec1b49df9c07dc"
       }

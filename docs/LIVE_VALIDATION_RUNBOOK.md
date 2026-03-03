@@ -4,7 +4,8 @@ Use this runbook to gather real-machine evidence for runtime/mod issues and mile
 
 ## 1. Preconditions
 
-- Launch the target game session first (`swfoc.exe` / `StarWarsG.exe`).
+- Preferred: let Codex/tooling launch target sessions (`-AutoLaunch`) so run artifacts include deterministic launch wiring.
+- Manual prelaunch remains supported when `-AutoLaunch` is not used.
 - `tools/run-live-validation.ps1` preflights native host build and wires:
   - `native/runtime/SwfocExtender.Host.exe`
   - `SWFOC_EXTENDER_HOST_PATH` for every `dotnet test` subprocess.
@@ -20,6 +21,11 @@ Use this runbook to gather real-machine evidence for runtime/mod issues and mile
 - For telemetry-first runtime mode detection, install/drop the telemetry mod template:
   - `mods/SwfocTrainerTelemetry/Data/Scripts/TelemetryModeEmitter.lua`
   - expected log marker: `SWFOC_TRAINER_TELEMETRY timestamp=<utc> mode=<mode>`
+- Runtime mode contract is strict:
+  - `TacticalLand`
+  - `TacticalSpace`
+  - `AnyTactical`
+  - legacy `Tactical` should not be used in profile/runtime contracts.
 
 ## 2. Run Pack Command
 
@@ -28,6 +34,7 @@ pwsh ./tools/run-live-validation.ps1 `
   -Configuration Release `
   -NoBuild `
   -Scope FULL `
+  -AutoLaunch `
   -EmitReproBundle $true `
   -FailOnMissingArtifacts `
   -Strict
@@ -40,6 +47,7 @@ pwsh ./tools/run-live-validation.ps1 `
   -Configuration Release `
   -NoBuild `
   -Scope ROE `
+  -AutoLaunch `
   -EmitReproBundle $true `
   -Strict `
   -RequireNonBlockedClassification
@@ -51,8 +59,27 @@ Optional scope-specific runs:
 pwsh ./tools/run-live-validation.ps1 -NoBuild -Scope AOTR -EmitReproBundle $true
 pwsh ./tools/run-live-validation.ps1 -NoBuild -Scope ROE -EmitReproBundle $true
 pwsh ./tools/run-live-validation.ps1 -NoBuild -Scope TACTICAL -EmitReproBundle $true
+pwsh ./tools/run-live-validation.ps1 -NoBuild -Scope AOTR -AutoLaunch -EmitReproBundle $true
+pwsh ./tools/run-live-validation.ps1 -NoBuild -Scope ROE -AutoLaunch -EmitReproBundle $true -ForceWorkshopIds 1397421866,3447786229 -ForceProfileId roe_3447786229_swfoc
+pwsh ./tools/run-live-validation.ps1 -NoBuild -Scope TACTICAL -AutoLaunch -EmitReproBundle $true -ForceWorkshopIds 1397421866,2531671014
 pwsh ./tools/run-live-validation.ps1 -NoBuild -Scope ROE -EmitReproBundle $true -TopModsPath TestResults/mod-discovery/<runId>/top-mods.json
 ```
+
+Notes for ROE auto-launch:
+
+- When `-ForceWorkshopIds` includes multiple IDs (for example `1397421866,3447786229`), the launcher emits chained args (`STEAMMOD=1397421866 STEAMMOD=3447786229`) to preserve mod dependency ordering.
+- Runtime-health `set_credits` may be skipped with explicit precondition reason when no galactic/campaign sync tick is observed.
+
+Installed submod smoke matrix (parent-first launch chain):
+
+- `1397421866,2531671014`
+- `1397421866,3447786229`
+- `1397421866,3287776766`
+- `1125571106,2361851963`
+- `1125571106,2083545253`
+- `1976399102,2083545253`
+- `1770851727,2794270450`
+- `1125571106,3661482670`
 
 Forced-context closure run (for hosts that expose only `StarWarsG.exe NOARTPROCESS IGNOREASSERTS`):
 
@@ -79,6 +106,7 @@ Expected in bundle diagnostics for forced-context runs:
 Per run, artifacts are emitted under:
 
 - `TestResults/runs/<runId>/`
+- `TestResults/mod-discovery/<runId>/` (installed workshop graph)
 
 Expected outputs:
 
@@ -95,6 +123,7 @@ Expected outputs:
 - `repro-bundle.md`
 - `issue-34-evidence-template.md`
 - `issue-19-evidence-template.md`
+- `installed-mod-graph.json` (under `TestResults/mod-discovery/<runId>/`)
 
 `repro-bundle.json` classification values:
 
@@ -112,6 +141,14 @@ vNext bundle sections (required for runtime-affecting changes):
 - `hookInstallReport`
 - `overlayState`
 - `actionStatusDiagnostics` (promoted action matrix diagnostics from `live-promoted-action-matrix.json`)
+- `installedModContext`
+- `resolvedSubmodChain`
+- `mechanicGatingSummary`
+- helper ingress diagnostics in `repro-bundle.json` diagnostics:
+  - `helperBridgeState`
+  - `helperEntryPoint`
+  - `helperInvocationSource`
+  - `helperVerifyState`
 
 ## 3a. Universal Compatibility Boundary
 
@@ -138,6 +175,10 @@ vNext bundle sections (required for runtime-affecting changes):
   - `runtimeModeTelemetryReasonCode`
   - `runtimeModeTelemetrySource=telemetry`
 - When telemetry is stale or unavailable, expect explicit diagnostics reason codes (for example `telemetry_stale`).
+- Mode mapping expectations:
+  - `LAND` -> `TacticalLand`
+  - `SPACE` -> `TacticalSpace`
+  - ambiguous tactical probes should resolve to `AnyTactical`, not legacy `Tactical`.
 
 ## 4. Promoted Action Matrix Evidence (Issue #7)
 
@@ -175,6 +216,13 @@ Expected evidence behavior for promoted actions:
 - `hybridExecution=false`
 - `hasFallbackMarker=false`
 - fail-closed outcomes use explicit route diagnostics (`SAFETY_FAIL_CLOSED`) and block issue `#7` closure.
+- capability-gated unavailability is recorded as explicit skip (`skipReasonCode=promoted_capability_unavailable`) instead of synthetic pass/fail.
+
+Reset the override after matrix runs:
+
+```powershell
+Remove-Item Env:SWFOC_FORCE_PROMOTED_EXTENDER -ErrorAction SilentlyContinue
+```
 
 Reset the override after matrix runs:
 

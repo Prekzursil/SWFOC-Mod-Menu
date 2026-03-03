@@ -1,0 +1,47 @@
+{
+  "schemaVersion": "1.0",
+  "generatedAtUtc": "2026-03-02T00:00:00Z",
+  "targetProfileId": "aotr_1397421866_swfoc",
+  "activeWorkshopIds": [
+    "1397421866"
+  ],
+  "totalEntities": 2,
+  "blockingEntityCount": 1,
+  "allResolved": false,
+  "entities": [
+    {
+      "entityId": "AOTR_AT_AT",
+      "sourceProfileId": "aotr_1397421866_swfoc",
+      "sourceWorkshopId": "1397421866",
+      "requiresTransplant": false,
+      "resolved": true,
+      "reasonCode": "CAPABILITY_PROBE_PASS",
+      "message": "Entity belongs to active workshop chain.",
+      "visualRef": "Data/Art/Models/aotr_atat.alo",
+      "missingDependencies": []
+    },
+    {
+      "entityId": "RAW_MACE_WINDU",
+      "sourceProfileId": "raw_1125571106_swfoc",
+      "sourceWorkshopId": "1125571106",
+      "requiresTransplant": true,
+      "resolved": false,
+      "reasonCode": "ROSTER_VISUAL_MISSING",
+      "message": "Cross-mod transplant is blocked because visual reference is missing.",
+      "visualRef": null,
+      "missingDependencies": [
+        "Data/Art/Models/raw_mace_windu.alo"
+      ]
+    }
+  ],
+  "diagnostics": {
+    "activeWorkshopIds": [
+      "1397421866"
+    ],
+    "requiresTransplantCount": 1,
+    "resolvedCount": 1,
+    "blockingEntityIds": [
+      "RAW_MACE_WINDU"
+    ]
+  }
+}

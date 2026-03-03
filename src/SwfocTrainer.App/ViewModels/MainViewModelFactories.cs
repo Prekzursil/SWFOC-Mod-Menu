@@ -10,6 +10,7 @@ namespace SwfocTrainer.App.ViewModels;
 internal sealed class MainViewModelCoreCommandContext
 {
     public required Func<Task> LoadProfilesAsync { get; init; }
+    public required Func<Task> LaunchAndAttachAsync { get; init; }
     public required Func<Task> AttachAsync { get; init; }
     public required Func<Task> DetachAsync { get; init; }
     public required Func<Task> LoadActionsAsync { get; init; }
@@ -132,6 +133,7 @@ internal static class MainViewModelFactories
 
     internal static (
         ICommand LoadProfiles,
+        ICommand LaunchAndAttach,
         ICommand Attach,
         ICommand Detach,
         ICommand LoadActions,
@@ -145,6 +147,7 @@ internal static class MainViewModelFactories
     {
         return (
             new AsyncCommand(context.LoadProfilesAsync),
+            new AsyncCommand(context.LaunchAndAttachAsync, context.CanUseSelectedProfile),
             new AsyncCommand(context.AttachAsync, context.CanUseSelectedProfile),
             new AsyncCommand(context.DetachAsync, context.IsAttached),
             new AsyncCommand(context.LoadActionsAsync, context.CanUseSelectedProfile),

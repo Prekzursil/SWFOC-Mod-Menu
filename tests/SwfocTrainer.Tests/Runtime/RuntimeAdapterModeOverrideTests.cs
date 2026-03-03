@@ -22,15 +22,15 @@ public sealed class RuntimeAdapterModeOverrideTests
             RuntimeMode.Galactic,
             new Dictionary<string, object?>
             {
-                ["runtimeModeOverride"] = "Tactical"
+                ["runtimeModeOverride"] = "AnyTactical"
             });
 
         var resolved = InvokeResolveEffectiveMode(adapter, request);
 
-        resolved.Request.RuntimeMode.Should().Be(RuntimeMode.Tactical);
+        resolved.Request.RuntimeMode.Should().Be(RuntimeMode.AnyTactical);
         resolved.Diagnostics["runtimeModeHint"].Should().Be("Galactic");
         resolved.Diagnostics["runtimeModeProbe"].Should().Be("Unknown");
-        resolved.Diagnostics["runtimeModeEffective"].Should().Be("Tactical");
+        resolved.Diagnostics["runtimeModeEffective"].Should().Be("AnyTactical");
         resolved.Diagnostics["runtimeModeEffectiveSource"].Should().Be("manual_override");
     }
 
@@ -65,14 +65,14 @@ public sealed class RuntimeAdapterModeOverrideTests
             RuntimeMode.Galactic,
             new Dictionary<string, object?>
             {
-                ["telemetryRuntimeMode"] = "Tactical"
+                ["telemetryRuntimeMode"] = "AnyTactical"
             });
 
         var resolved = InvokeResolveEffectiveMode(adapter, request);
 
-        resolved.Request.RuntimeMode.Should().Be(RuntimeMode.Tactical);
+        resolved.Request.RuntimeMode.Should().Be(RuntimeMode.AnyTactical);
         resolved.Diagnostics["runtimeModeEffectiveSource"].Should().Be("telemetry");
-        resolved.Diagnostics["runtimeModeTelemetry"].Should().Be("Tactical");
+        resolved.Diagnostics["runtimeModeTelemetry"].Should().Be("AnyTactical");
         resolved.Diagnostics["runtimeModeTelemetryReasonCode"].Should().Be("telemetry_context_override");
     }
 
@@ -88,7 +88,7 @@ public sealed class RuntimeAdapterModeOverrideTests
             new Dictionary<string, object?>
             {
                 ["runtimeModeOverride"] = "Galactic",
-                ["telemetryRuntimeMode"] = "Tactical"
+                ["telemetryRuntimeMode"] = "AnyTactical"
             });
 
         var resolved = InvokeResolveEffectiveMode(adapter, request);

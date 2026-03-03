@@ -76,7 +76,7 @@ public static class RuntimeModeProbeResolver
         {
             result = new RuntimeModeProbeResult(
                 modeHint,
-                RuntimeMode.Tactical,
+                RuntimeMode.AnyTactical,
                 "mode_probe_tactical_signals",
                 tacticalSignalCount,
                 galacticSignalCount);
@@ -103,7 +103,7 @@ public static class RuntimeModeProbeResolver
         int tacticalSignalCount,
         int galacticSignalCount)
     {
-        if (modeHint is RuntimeMode.Tactical or RuntimeMode.Galactic)
+        if (modeHint is RuntimeMode.AnyTactical or RuntimeMode.TacticalLand or RuntimeMode.TacticalSpace or RuntimeMode.Galactic)
         {
             return new RuntimeModeProbeResult(
                 modeHint,
@@ -116,7 +116,7 @@ public static class RuntimeModeProbeResolver
         var tacticalWins = tacticalSignalCount >= galacticSignalCount;
         return new RuntimeModeProbeResult(
             modeHint,
-            tacticalWins ? RuntimeMode.Tactical : RuntimeMode.Galactic,
+            tacticalWins ? RuntimeMode.AnyTactical : RuntimeMode.Galactic,
             tacticalWins ? "mode_probe_ambiguous_bias_tactical" : "mode_probe_ambiguous_bias_galactic",
             tacticalSignalCount,
             galacticSignalCount);
@@ -127,7 +127,7 @@ public static class RuntimeModeProbeResolver
         int tacticalSignalCount,
         int galacticSignalCount)
     {
-        var hasHint = modeHint is RuntimeMode.Tactical or RuntimeMode.Galactic;
+        var hasHint = modeHint is RuntimeMode.AnyTactical or RuntimeMode.TacticalLand or RuntimeMode.TacticalSpace or RuntimeMode.Galactic;
         return new RuntimeModeProbeResult(
             modeHint,
             hasHint ? modeHint : RuntimeMode.Unknown,

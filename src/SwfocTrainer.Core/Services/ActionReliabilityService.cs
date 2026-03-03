@@ -6,6 +6,18 @@ namespace SwfocTrainer.Core.Services;
 
 public sealed class ActionReliabilityService : IActionReliabilityService
 {
+    private readonly IModMechanicDetectionService? _modMechanicDetectionService;
+
+    public ActionReliabilityService()
+        : this(null)
+    {
+    }
+
+    public ActionReliabilityService(IModMechanicDetectionService? modMechanicDetectionService)
+    {
+        _modMechanicDetectionService = modMechanicDetectionService;
+    }
+
     private static readonly IReadOnlyDictionary<string, string> FallbackFeatureFlags =
         new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
         {
@@ -22,6 +34,10 @@ public sealed class ActionReliabilityService : IActionReliabilityService
     private static readonly IReadOnlySet<string> StrictBundleActions = new HashSet<string>(StringComparer.OrdinalIgnoreCase)
     {
         "spawn_unit_helper",
+        "spawn_context_entity",
+        "spawn_tactical_entity",
+        "spawn_galactic_entity",
+        "place_planet_building",
         "set_selected_hp",
         "set_selected_shield",
         "set_selected_speed",
@@ -40,6 +56,7 @@ public sealed class ActionReliabilityService : IActionReliabilityService
     {
         var disabledActions = ParseCsvSet(session.Process.Metadata, "dependencyDisabledActions");
         var criticalSymbols = ParseCsvSet(profile.Metadata, "criticalSymbols");
+        var mechanicSupport = ResolveMechanicSupportMap(profile, session, catalog);
         var results = new List<ActionReliabilityInfo>(profile.Actions.Count);
 
         foreach (var (actionId, action) in profile.Actions.OrderBy(x => x.Key, StringComparer.OrdinalIgnoreCase))
@@ -51,7 +68,8 @@ public sealed class ActionReliabilityService : IActionReliabilityService
                 session,
                 disabledActions,
                 criticalSymbols,
-                catalog));
+                catalog,
+                mechanicSupport));
         }
 
         return results;
@@ -71,8 +89,21 @@ public sealed class ActionReliabilityService : IActionReliabilityService
         AttachSession session,
         IReadOnlySet<string> disabledActions,
         IReadOnlySet<string> criticalSymbols,
-        IReadOnlyDictionary<string, IReadOnlyList<string>>? catalog)
+        IReadOnlyDictionary<string, IReadOnlyList<string>>? catalog,
+        IReadOnlyDictionary<string, ModMechanicSupport>? mechanicSupport)
     {
+        if (mechanicSupport is not null &&
+            mechanicSupport.TryGetValue(actionId, out var support) &&
+            !support.Supported)
+        {
+            return new ActionReliabilityInfo(
+                actionId,
+                ActionReliabilityState.Unavailable,
+                support.ReasonCode.ToString(),
+                ClampConfidence(support.Confidence),
+                support.Message);
+        }
+
         if (FallbackFeatureFlags.TryGetValue(actionId, out var featureFlag) &&
             (!profile.FeatureFlags.TryGetValue(featureFlag, out var enabled) || !enabled))
         {
@@ -148,7 +179,7 @@ public sealed class ActionReliabilityService : IActionReliabilityService
                     $"Action requires runtime mode {action.Mode}.");
             }
 
-            if (session.Process.Mode != action.Mode)
+            if (!IsModeCompatible(action.Mode, session.Process.Mode))
             {
                 return new ActionReliabilityInfo(
                     actionId,
@@ -161,14 +192,45 @@ public sealed class ActionReliabilityService : IActionReliabilityService
 
         if (action.ExecutionKind == ExecutionKind.Helper)
         {
-            if (catalog is null || !catalog.TryGetValue("unit_catalog", out var units) || units.Count == 0)
+            var helperBridgeState = ReadMetadataValue(session.Process.Metadata, "helperBridgeState");
+            if (!string.Equals(helperBridgeState, "ready", StringComparison.OrdinalIgnoreCase))
             {
                 return new ActionReliabilityInfo(
                     actionId,
-                    ActionReliabilityState.Experimental,
+                    ActionReliabilityState.Unavailable,
+                    "helper_bridge_unavailable",
+                    0.98d,
+                    "Helper bridge is unavailable for this attachment.");
+            }
+
+            if (RequiresSpawnCatalog(actionId) &&
+                (catalog is null ||
+                 !catalog.TryGetValue("unit_catalog", out var units) ||
+                 units.Count == 0 ||
+                 !catalog.TryGetValue("faction_catalog", out var factions) ||
+                 factions.Count == 0))
+            {
+                return new ActionReliabilityInfo(
+                    actionId,
+                    ActionReliabilityState.Unavailable,
                     "catalog_unavailable",
-                    0.60d,
-                    "Catalog data is unavailable for helper-guided workflows.");
+                    0.95d,
+                    "Unit/faction roster catalog is unavailable for helper-guided spawn workflows.");
+            }
+
+            if (RequiresBuildingCatalog(actionId) &&
+                (catalog is null ||
+                 !catalog.TryGetValue("building_catalog", out var buildings) ||
+                 buildings.Count == 0 ||
+                 !catalog.TryGetValue("faction_catalog", out var buildingFactions) ||
+                 buildingFactions.Count == 0))
+            {
+                return new ActionReliabilityInfo(
+                    actionId,
+                    ActionReliabilityState.Unavailable,
+                    "building_catalog_unavailable",
+                    0.95d,
+                    "Building/faction catalog is unavailable for planet building workflows.");
             }
 
             return new ActionReliabilityInfo(actionId, ActionReliabilityState.Stable, "helper_ready", 0.85d);
@@ -228,6 +290,71 @@ public sealed class ActionReliabilityService : IActionReliabilityService
             ActionReliabilityState.Stable,
             symbolInfo.Source == AddressSource.Signature ? "healthy_signature" : "healthy_non_signature",
             ClampConfidence(symbolInfo.Confidence));
+    }
+
+    private static bool IsModeCompatible(RuntimeMode actionMode, RuntimeMode runtimeMode)
+    {
+        if (actionMode == RuntimeMode.AnyTactical)
+        {
+            return runtimeMode is RuntimeMode.AnyTactical or RuntimeMode.TacticalLand or RuntimeMode.TacticalSpace;
+        }
+
+        return actionMode == runtimeMode;
+    }
+
+    private static bool RequiresSpawnCatalog(string actionId)
+    {
+        return actionId.Equals("spawn_unit_helper", StringComparison.OrdinalIgnoreCase) ||
+               actionId.Equals("spawn_context_entity", StringComparison.OrdinalIgnoreCase) ||
+               actionId.Equals("spawn_tactical_entity", StringComparison.OrdinalIgnoreCase) ||
+               actionId.Equals("spawn_galactic_entity", StringComparison.OrdinalIgnoreCase);
+    }
+
+    private static bool RequiresBuildingCatalog(string actionId)
+    {
+        return actionId.Equals("place_planet_building", StringComparison.OrdinalIgnoreCase);
+    }
+
+    private IReadOnlyDictionary<string, ModMechanicSupport>? ResolveMechanicSupportMap(
+        TrainerProfile profile,
+        AttachSession session,
+        IReadOnlyDictionary<string, IReadOnlyList<string>>? catalog)
+    {
+        if (_modMechanicDetectionService is null)
+        {
+            return null;
+        }
+
+        try
+        {
+            var report = _modMechanicDetectionService
+                .DetectAsync(profile, session, catalog)
+                .GetAwaiter()
+                .GetResult();
+            return report.ActionSupport
+                .GroupBy(x => x.ActionId, StringComparer.OrdinalIgnoreCase)
+                .ToDictionary(
+                    x => x.Key,
+                    x => x.Last(),
+                    StringComparer.OrdinalIgnoreCase);
+        }
+        catch
+        {
+            // Reliability computation must remain fail-safe and non-throwing in UI refresh paths.
+            return null;
+        }
+    }
+
+    private static string? ReadMetadataValue(
+        IReadOnlyDictionary<string, string>? metadata,
+        string key)
+    {
+        if (metadata is null || !metadata.TryGetValue(key, out var value) || string.IsNullOrWhiteSpace(value))
+        {
+            return null;
+        }
+
+        return value.Trim();
     }
 
     private static bool RequiresSymbol(ActionSpec action)

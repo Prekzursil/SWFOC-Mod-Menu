@@ -8,6 +8,7 @@ using System.Text.Json.Serialization;
 using Microsoft.Extensions.Logging;
 using SwfocTrainer.Core.Contracts;
 using SwfocTrainer.Core.Models;
+using SwfocTrainer.Core.Services;
 using SwfocTrainer.Runtime.Interop;
 using SwfocTrainer.Runtime.Scanning;
 
@@ -47,6 +48,21 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
     private const int InstantBuildHookInstructionLength = 6;
     private const int InstantBuildHookJumpLength = 5;
     private const int InstantBuildHookCaveSize = 31;
+    private const string DiagnosticReasonCodeKey = "reasonCode";
+    private const string PayloadHelperHookIdKey = "helperHookId";
+    private const string PayloadHelperEntryPointKey = "helperEntryPoint";
+    private const string PayloadPopulationPolicyKey = "populationPolicy";
+    private const string PayloadPersistencePolicyKey = "persistencePolicy";
+    private const string PayloadAllowCrossFactionKey = "allowCrossFaction";
+    private const string PayloadSymbolKey = "symbol";
+    private const string ContextSpawnDefaultHookId = "spawn_bridge";
+    private const string ContextSpawnEntryPoint = "SWFOC_Trainer_Spawn_Context";
+    private const string ContextSpawnLegacyEntryPoint = "SWFOC_Trainer_Spawn";
+    private const string PopulationPolicyForceZeroTactical = "ForceZeroTactical";
+    private const string PopulationPolicyNormal = "Normal";
+    private const string PersistencePolicyEphemeralBattleOnly = "EphemeralBattleOnly";
+    private const string PersistencePolicyPersistentGalactic = "PersistentGalactic";
+
     public RuntimeAdapter(
         IProcessLocator processLocator,
         IProfileRepository profileRepository,
@@ -59,10 +75,12 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
         _signatureResolver = signatureResolver;
         _modDependencyValidator = ResolveOptionalService<IModDependencyValidator>(serviceProvider) ?? new ModDependencyValidator();
         _symbolHealthService = ResolveOptionalService<ISymbolHealthService>(serviceProvider) ?? new SymbolHealthService();
+        _modMechanicDetectionService = ResolveOptionalService<IModMechanicDetectionService>(serviceProvider);
         _profileVariantResolver = ResolveOptionalService<IProfileVariantResolver>(serviceProvider);
         _sdkOperationRouter = ResolveOptionalService<ISdkOperationRouter>(serviceProvider);
         _backendRouter = ResolveOptionalService<IBackendRouter>(serviceProvider) ?? new BackendRouter();
         _extenderBackend = ResolveOptionalService<IExecutionBackend>(serviceProvider) ?? new NamedPipeExtenderBackend();
+        _helperBridgeBackend = ResolveOptionalService<IHelperBridgeBackend>(serviceProvider) ?? new NamedPipeHelperBridgeBackend(_extenderBackend);
         _telemetryLogTailService = ResolveOptionalService<ITelemetryLogTailService>(serviceProvider) ?? new TelemetryLogTailService();
         _logger = logger;
         _calibrationArtifactRoot = Path.Combine(
@@ -121,8 +139,39 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
             attachPreparation.Build,
             attachPreparation.Symbols,
             DateTimeOffset.UtcNow);
+        CurrentSession = await ApplyHelperBridgeProbeMetadataAsync(CurrentSession, profile, cancellationToken);
         _logger.LogInformation("Attached to process {Pid} for profile {Profile}", attachPreparation.Process.ProcessId, profile.Id);
         return CurrentSession;
+    }
+
+    private async Task<AttachSession> ApplyHelperBridgeProbeMetadataAsync(
+        AttachSession session,
+        TrainerProfile profile,
+        CancellationToken cancellationToken)
+    {
+        var probe = await _helperBridgeBackend.ProbeAsync(
+            new HelperBridgeProbeRequest(profile.Id, session.Process, profile.HelperModHooks),
+            cancellationToken);
+        var metadata = session.Process.Metadata is null
+            ? new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
+            : new Dictionary<string, string>(session.Process.Metadata, StringComparer.OrdinalIgnoreCase);
+
+        metadata["helperBridgeState"] = probe.Available ? "ready" : "unavailable";
+        metadata["helperBridgeReasonCode"] = probe.ReasonCode.ToString();
+        if (probe.Diagnostics is not null &&
+            probe.Diagnostics.TryGetValue("availableFeatures", out var features) &&
+            features is not null)
+        {
+            metadata["helperBridgeFeatures"] = features.ToString() ?? string.Empty;
+        }
+
+        return session with
+        {
+            Process = session.Process with
+            {
+                Metadata = metadata
+            }
+        };
     }
 
     private async Task<AttachProfileContext> ResolveAttachProfileContextAsync(
@@ -461,6 +510,17 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
         int MainModuleSize,
         bool HasCommandLine,
         double SelectionScore);
+
+    private readonly record struct ContextFactionResolution(
+        ActionExecutionRequest? RedirectedRequest,
+        ActionExecutionResult? BlockedResult)
+    {
+        public static ContextFactionResolution None => new(null, null);
+
+        public static ContextFactionResolution Redirected(ActionExecutionRequest request) => new(request, null);
+
+        public static ContextFactionResolution Blocked(ActionExecutionResult result) => new(null, result);
+    }
 
     private static T? ResolveOptionalService<T>(IServiceProvider? serviceProvider)
         where T : class
@@ -1150,13 +1210,42 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
         EnsureAttached();
         var modeResolution = ResolveEffectiveMode(request);
         var effectiveRequest = modeResolution.Request;
+        string? contextActionRoute = null;
+
+        var contextFactionResolution = TryResolveContextFactionRequest(effectiveRequest);
+        if (contextFactionResolution.BlockedResult is not null)
+        {
+            var blockedContext = ApplyRuntimeModeDiagnostics(contextFactionResolution.BlockedResult, modeResolution.Diagnostics);
+            blockedContext = ApplyContextActionDiagnostics(blockedContext, request.Action.Id, null);
+            RecordActionTelemetry(request, blockedContext);
+            return blockedContext;
+        }
+
+        if (contextFactionResolution.RedirectedRequest is not null)
+        {
+            contextActionRoute = contextFactionResolution.RedirectedRequest.Action.Id;
+            effectiveRequest = contextFactionResolution.RedirectedRequest;
+        }
+
         if (TryCreateDependencyDisabledResult(effectiveRequest, out var dependencyDisabled))
         {
-            return ApplyRuntimeModeDiagnostics(dependencyDisabled, modeResolution.Diagnostics);
+            var blockedByDependency = ApplyRuntimeModeDiagnostics(dependencyDisabled, modeResolution.Diagnostics);
+            blockedByDependency = ApplyContextActionDiagnostics(blockedByDependency, request.Action.Id, contextActionRoute);
+            RecordActionTelemetry(request, blockedByDependency);
+            return blockedByDependency;
         }
 
         var attachedProfile = _attachedProfile
             ?? await _profileRepository.ResolveInheritedProfileAsync(effectiveRequest.ProfileId, cancellationToken);
+        var mechanicBlocked = await TryCreateMechanicBlockedResultAsync(effectiveRequest, attachedProfile, cancellationToken);
+        if (mechanicBlocked is not null)
+        {
+            var blockedByMechanics = ApplyRuntimeModeDiagnostics(mechanicBlocked, modeResolution.Diagnostics);
+            blockedByMechanics = ApplyContextActionDiagnostics(blockedByMechanics, request.Action.Id, contextActionRoute);
+            RecordActionTelemetry(request, blockedByMechanics);
+            return blockedByMechanics;
+        }
+
         var capabilityReport = await ProbeCapabilitiesAsync(attachedProfile, cancellationToken);
         var routeDecision = _backendRouter.Resolve(effectiveRequest, attachedProfile, CurrentSession!.Process, capabilityReport);
         if (!routeDecision.Allowed)
@@ -1169,12 +1258,14 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
             if (overrideResult is not null)
             {
                 var overrideWithModeDiagnostics = ApplyRuntimeModeDiagnostics(overrideResult, modeResolution.Diagnostics);
-                RecordActionTelemetry(effectiveRequest, overrideWithModeDiagnostics);
+                overrideWithModeDiagnostics = ApplyContextActionDiagnostics(overrideWithModeDiagnostics, request.Action.Id, contextActionRoute);
+                RecordActionTelemetry(request, overrideWithModeDiagnostics);
                 return overrideWithModeDiagnostics;
             }
 
             var blocked = ApplyRuntimeModeDiagnostics(CreateBlockedRouteResult(routeDecision, capabilityReport), modeResolution.Diagnostics);
-            RecordActionTelemetry(effectiveRequest, blocked);
+            blocked = ApplyContextActionDiagnostics(blocked, request.Action.Id, contextActionRoute);
+            RecordActionTelemetry(request, blocked);
             return blocked;
         }
 
@@ -1183,15 +1274,181 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
             var result = await ExecuteByRouteAsync(routeDecision, effectiveRequest, capabilityReport, cancellationToken);
             result = ApplyBackendRouteDiagnostics(result, routeDecision, capabilityReport);
             result = ApplyRuntimeModeDiagnostics(result, modeResolution.Diagnostics);
-            RecordActionTelemetry(effectiveRequest, result);
+            result = ApplyContextActionDiagnostics(result, request.Action.Id, contextActionRoute);
+            RecordActionTelemetry(request, result);
             return result;
         }
         catch (Exception ex)
         {
             var failed = ApplyRuntimeModeDiagnostics(CreateExecutionExceptionResult(effectiveRequest, routeDecision, capabilityReport, ex), modeResolution.Diagnostics);
-            RecordActionTelemetry(effectiveRequest, failed);
+            failed = ApplyContextActionDiagnostics(failed, request.Action.Id, contextActionRoute);
+            RecordActionTelemetry(request, failed);
             return failed;
         }
+    }
+
+    private ContextFactionResolution TryResolveContextFactionRequest(ActionExecutionRequest request)
+    {
+        var routeType = ResolveContextRouteType(request.Action.Id);
+        if (routeType == ContextRouteType.None)
+        {
+            return ContextFactionResolution.None;
+        }
+
+        var targetActionId = routeType == ContextRouteType.Spawn
+            ? ResolveContextSpawnTargetAction(request.RuntimeMode)
+            : ResolveContextFactionTargetAction(request.RuntimeMode);
+        if (targetActionId is null)
+        {
+            return ContextFactionResolution.Blocked(CreateContextModeBlockedResult(routeType, request.RuntimeMode));
+        }
+
+        if (_attachedProfile is null || !_attachedProfile.Actions.TryGetValue(targetActionId, out var targetAction))
+        {
+            return ContextFactionResolution.Blocked(CreateContextMissingActionResult(request.ProfileId, targetActionId));
+        }
+
+        var payload = ClonePayload(request.Payload);
+        if (routeType == ContextRouteType.Spawn)
+        {
+            ApplyContextSpawnPayloadDefaults(payload, targetActionId);
+        }
+
+        ApplyContextSymbolHint(payload, targetActionId);
+
+        return ContextFactionResolution.Redirected(request with
+        {
+            Action = targetAction,
+            Payload = payload
+        });
+    }
+
+    private static ContextRouteType ResolveContextRouteType(string actionId)
+    {
+        if (actionId.Equals(ActionIdSpawnContextEntity, StringComparison.OrdinalIgnoreCase))
+        {
+            return ContextRouteType.Spawn;
+        }
+
+        if (actionId.Equals(ActionIdSetContextFaction, StringComparison.OrdinalIgnoreCase) ||
+            actionId.Equals(ActionIdSetContextAllegiance, StringComparison.OrdinalIgnoreCase))
+        {
+            return ContextRouteType.Faction;
+        }
+
+        return ContextRouteType.None;
+    }
+
+    private static ActionExecutionResult CreateContextModeBlockedResult(ContextRouteType routeType, RuntimeMode mode)
+    {
+        var message = routeType == ContextRouteType.Spawn
+            ? "Context entity spawning requires either tactical (land/space) or galactic runtime mode."
+            : "Context faction routing requires either tactical (land/space) or galactic runtime mode.";
+        return new ActionExecutionResult(
+            false,
+            message,
+            AddressSource.None,
+            new Dictionary<string, object?>
+            {
+                [DiagnosticReasonCodeKey] = RuntimeReasonCode.MODE_STRICT_TACTICAL_UNSPECIFIED.ToString(),
+                ["runtimeMode"] = mode.ToString()
+            });
+    }
+
+    private static ActionExecutionResult CreateContextMissingActionResult(string profileId, string targetActionId)
+    {
+        return new ActionExecutionResult(
+            false,
+            $"Profile '{profileId}' does not expose required routed action '{targetActionId}'.",
+            AddressSource.None,
+            new Dictionary<string, object?>
+            {
+                [DiagnosticReasonCodeKey] = RuntimeReasonCode.CAPABILITY_REQUIRED_MISSING.ToString(),
+                ["routedActionId"] = targetActionId
+            });
+    }
+
+    private static JsonObject ClonePayload(JsonObject payload)
+    {
+        var cloned = new JsonObject();
+        foreach (var property in payload)
+        {
+            cloned[property.Key] = property.Value?.DeepClone();
+        }
+
+        return cloned;
+    }
+
+    private static void ApplyContextSpawnPayloadDefaults(JsonObject payload, string targetActionId)
+    {
+        if (!payload.ContainsKey(PayloadHelperHookIdKey))
+        {
+            payload[PayloadHelperHookIdKey] = ContextSpawnDefaultHookId;
+        }
+
+        if (!payload.ContainsKey(PayloadHelperEntryPointKey))
+        {
+            payload[PayloadHelperEntryPointKey] = targetActionId.Equals(ActionIdSpawnGalacticEntity, StringComparison.OrdinalIgnoreCase) ||
+                                                  targetActionId.Equals(ActionIdSpawnTacticalEntity, StringComparison.OrdinalIgnoreCase)
+                ? ContextSpawnEntryPoint
+                : ContextSpawnLegacyEntryPoint;
+        }
+
+        if (!payload.ContainsKey(PayloadPopulationPolicyKey))
+        {
+            payload[PayloadPopulationPolicyKey] = targetActionId.Equals(ActionIdSpawnTacticalEntity, StringComparison.OrdinalIgnoreCase)
+                ? PopulationPolicyForceZeroTactical
+                : PopulationPolicyNormal;
+        }
+
+        if (!payload.ContainsKey(PayloadPersistencePolicyKey))
+        {
+            payload[PayloadPersistencePolicyKey] = targetActionId.Equals(ActionIdSpawnTacticalEntity, StringComparison.OrdinalIgnoreCase)
+                ? PersistencePolicyEphemeralBattleOnly
+                : PersistencePolicyPersistentGalactic;
+        }
+
+        if (!payload.ContainsKey(PayloadAllowCrossFactionKey))
+        {
+            payload[PayloadAllowCrossFactionKey] = true;
+        }
+    }
+
+    private static void ApplyContextSymbolHint(JsonObject payload, string targetActionId)
+    {
+        if (!payload.ContainsKey(PayloadSymbolKey) &&
+            ActionSymbolRegistry.TryGetSymbol(targetActionId, out var symbolHint) &&
+            !string.IsNullOrWhiteSpace(symbolHint))
+        {
+            payload[PayloadSymbolKey] = symbolHint;
+        }
+    }
+
+    private enum ContextRouteType
+    {
+        None,
+        Faction,
+        Spawn
+    }
+
+    private static string? ResolveContextFactionTargetAction(RuntimeMode mode)
+    {
+        return mode switch
+        {
+            RuntimeMode.Galactic => ActionIdSetPlanetOwner,
+            RuntimeMode.AnyTactical or RuntimeMode.TacticalLand or RuntimeMode.TacticalSpace => ActionIdSetSelectedOwnerFaction,
+            _ => null
+        };
+    }
+
+    private static string? ResolveContextSpawnTargetAction(RuntimeMode mode)
+    {
+        return mode switch
+        {
+            RuntimeMode.Galactic => ActionIdSpawnGalacticEntity,
+            RuntimeMode.AnyTactical or RuntimeMode.TacticalLand or RuntimeMode.TacticalSpace => ActionIdSpawnTacticalEntity,
+            _ => null
+        };
     }
 
     private (ActionExecutionRequest Request, IReadOnlyDictionary<string, object?> Diagnostics) ResolveEffectiveMode(ActionExecutionRequest request)
@@ -1290,11 +1547,23 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
             return true;
         }
 
-        if (value.Equals("Tactical", StringComparison.OrdinalIgnoreCase) ||
-            value.Equals("TacticalLand", StringComparison.OrdinalIgnoreCase) ||
-            value.Equals("TacticalSpace", StringComparison.OrdinalIgnoreCase))
+        if (value.Equals("TacticalLand", StringComparison.OrdinalIgnoreCase) ||
+            value.Equals("Land", StringComparison.OrdinalIgnoreCase))
         {
-            mode = RuntimeMode.Tactical;
+            mode = RuntimeMode.TacticalLand;
+            return true;
+        }
+
+        if (value.Equals("TacticalSpace", StringComparison.OrdinalIgnoreCase) ||
+            value.Equals("Space", StringComparison.OrdinalIgnoreCase))
+        {
+            mode = RuntimeMode.TacticalSpace;
+            return true;
+        }
+
+        if (value.Equals("AnyTactical", StringComparison.OrdinalIgnoreCase))
+        {
+            mode = RuntimeMode.AnyTactical;
             return true;
         }
 
@@ -1319,9 +1588,19 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
             return RuntimeMode.Galactic;
         }
 
-        if (value.Equals("Tactical", StringComparison.OrdinalIgnoreCase))
+        if (value.Equals("AnyTactical", StringComparison.OrdinalIgnoreCase))
         {
-            return RuntimeMode.Tactical;
+            return RuntimeMode.AnyTactical;
+        }
+
+        if (value.Equals("TacticalLand", StringComparison.OrdinalIgnoreCase))
+        {
+            return RuntimeMode.TacticalLand;
+        }
+
+        if (value.Equals("TacticalSpace", StringComparison.OrdinalIgnoreCase))
+        {
+            return RuntimeMode.TacticalSpace;
         }
 
         return null;
@@ -1334,6 +1613,30 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
         return result with
         {
             Diagnostics = MergeDiagnostics(result.Diagnostics, modeDiagnostics)
+        };
+    }
+
+    private static ActionExecutionResult ApplyContextActionDiagnostics(
+        ActionExecutionResult result,
+        string requestedActionId,
+        string? routedActionId)
+    {
+        if (!requestedActionId.Equals(ActionIdSetContextFaction, StringComparison.OrdinalIgnoreCase) &&
+            !requestedActionId.Equals(ActionIdSetContextAllegiance, StringComparison.OrdinalIgnoreCase) &&
+            !requestedActionId.Equals(ActionIdSpawnContextEntity, StringComparison.OrdinalIgnoreCase))
+        {
+            return result;
+        }
+
+        return result with
+        {
+            Diagnostics = MergeDiagnostics(
+                result.Diagnostics,
+                new Dictionary<string, object?>
+                {
+                    ["contextActionId"] = requestedActionId,
+                    ["contextRoutedAction"] = routedActionId ?? string.Empty
+                })
         };
     }
 
@@ -1362,6 +1665,46 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
         return true;
     }
 
+    private async Task<ActionExecutionResult?> TryCreateMechanicBlockedResultAsync(
+        ActionExecutionRequest request,
+        TrainerProfile profile,
+        CancellationToken cancellationToken)
+    {
+        if (_modMechanicDetectionService is null || CurrentSession is null)
+        {
+            return null;
+        }
+
+        ModMechanicReport report;
+        try
+        {
+            report = await _modMechanicDetectionService.DetectAsync(profile, CurrentSession, catalog: null, cancellationToken);
+        }
+        catch
+        {
+            return null;
+        }
+
+        var support = report.ActionSupport.FirstOrDefault(x => x.ActionId.Equals(request.Action.Id, StringComparison.OrdinalIgnoreCase));
+        if (support is null || support.Supported)
+        {
+            return null;
+        }
+
+        return new ActionExecutionResult(
+            false,
+            support.Message,
+            AddressSource.None,
+            MergeDiagnostics(
+                report.Diagnostics,
+                new Dictionary<string, object?>
+                {
+                    [DiagnosticReasonCodeKey] = support.ReasonCode.ToString(),
+                    ["mechanicGating"] = "blocked",
+                    ["mechanicActionId"] = support.ActionId
+                }));
+    }
+
     private static ActionExecutionResult CreateBlockedRouteResult(
         BackendRouteDecision routeDecision,
         CapabilityReport capabilityReport)
@@ -1374,7 +1717,7 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
                 routeDecision.Diagnostics,
                 new Dictionary<string, object?>
                 {
-                    ["reasonCode"] = routeDecision.ReasonCode.ToString()  // NOSONAR
+                    [DiagnosticReasonCodeKey] = routeDecision.ReasonCode.ToString()  // NOSONAR
                 }));
         return ApplyBackendRouteDiagnostics(blocked, routeDecision, capabilityReport);
     }
@@ -1504,7 +1847,7 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
                 AddressSource.None,
                 new Dictionary<string, object?>
                 {
-                    ["reasonCode"] = RuntimeReasonCode.CAPABILITY_BACKEND_UNAVAILABLE.ToString(),
+                    [DiagnosticReasonCodeKey] = RuntimeReasonCode.CAPABILITY_BACKEND_UNAVAILABLE.ToString(),
                     ["backendRoute"] = ExecutionBackendKind.Extender.ToString()
                 });
         }
@@ -1968,7 +2311,7 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
 
     private void TryAddPayloadSymbolAnchor(JsonObject payload, IDictionary<string, string> anchors)
     {
-        if (TryReadPayloadString(payload, "symbol", out var payloadSymbol))
+        if (TryReadPayloadString(payload, PayloadSymbolKey, out var payloadSymbol))
         {
             TryAddResolvedSymbolAnchor(anchors, payloadSymbol!);
         }
@@ -2015,7 +2358,7 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
             "toggle_ai" => ["ai_enabled", "toggle_ai"],
             ActionIdSetUnitCap => ["unit_cap", ActionIdSetUnitCap],  // NOSONAR
             ActionIdSetUnitCapPatchFallback => ["unit_cap", ActionIdSetUnitCapPatchFallback],
-            ActionIdToggleInstantBuildPatch => ["instant_build_patch_injection", "instant_build_patch", ActionIdToggleInstantBuildPatch],
+            ActionIdToggleInstantBuildPatch => ["instant_build_patch_injection", "instant_build_patch", "instant_build", ActionIdToggleInstantBuildPatch],
             ActionIdSetCredits => [SymbolCredits, ActionIdSetCredits],
             _ => Array.Empty<string>()
         };
@@ -2225,7 +2568,7 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
 
     private static string ResolveMemoryActionSymbol(JsonObject payload)
     {
-        var symbol = payload["symbol"]?.GetValue<string>();
+        var symbol = payload[PayloadSymbolKey]?.GetValue<string>();
         if (string.IsNullOrWhiteSpace(symbol))
         {
             throw new InvalidOperationException("Memory action payload requires 'symbol'.");
@@ -3000,15 +3343,147 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
         };
     }
 
-    private Task<ActionExecutionResult> ExecuteHelperActionAsync(ActionExecutionRequest request, CancellationToken cancellationToken)  // NOSONAR
+    private async Task<ActionExecutionResult> ExecuteHelperActionAsync(ActionExecutionRequest request, CancellationToken cancellationToken)  // NOSONAR
     {
-        // Runtime adapter only records helper action dispatch. Actual helper scripts are handled in SwfocTrainer.Helper.
-        var helperId = request.Payload["helperHookId"]?.GetValue<string>() ?? request.Action.Id;
-        return Task.FromResult(new ActionExecutionResult(
-            true,
-            $"Helper action '{helperId}' dispatched.",
+        if (CurrentSession is null)
+        {
+            return new ActionExecutionResult(
+                false,
+                "Helper bridge execution requires an attached runtime session.",
+                AddressSource.None,
+                new Dictionary<string, object?>
+                {
+                    [DiagnosticReasonCodeKey] = RuntimeReasonCode.HELPER_BRIDGE_UNAVAILABLE.ToString(),
+                    ["helperBridgeState"] = "unavailable"
+                });
+        }
+
+        var hookId = ResolveHelperHookId(request);
+        var hook = _attachedProfile?.HelperModHooks
+            .FirstOrDefault(candidate => candidate.Id.Equals(hookId, StringComparison.OrdinalIgnoreCase));
+        if (hook is null)
+        {
+            return new ActionExecutionResult(
+                false,
+                $"Helper hook '{hookId}' is not defined in profile '{request.ProfileId}'.",
+                AddressSource.None,
+                new Dictionary<string, object?>
+                {
+                    [DiagnosticReasonCodeKey] = RuntimeReasonCode.HELPER_ENTRYPOINT_NOT_FOUND.ToString(),
+                    [PayloadHelperHookIdKey] = hookId,
+                    ["helperBridgeState"] = "denied"
+                });
+        }
+
+        var probe = await _helperBridgeBackend.ProbeAsync(
+            new HelperBridgeProbeRequest(
+                request.ProfileId,
+                CurrentSession.Process,
+                [hook]),
+            cancellationToken);
+        if (!probe.Available)
+        {
+            return new ActionExecutionResult(
+                false,
+                probe.Message,
+                AddressSource.None,
+                MergeDiagnostics(
+                    probe.Diagnostics,
+                    new Dictionary<string, object?>
+                    {
+                        [DiagnosticReasonCodeKey] = probe.ReasonCode.ToString(),
+                        [PayloadHelperHookIdKey] = hook.Id
+                    }));
+        }
+
+        var bridgeResult = await _helperBridgeBackend.ExecuteAsync(
+            new HelperBridgeRequest(
+                ActionRequest: request,
+                Process: CurrentSession.Process,
+                Hook: hook,
+                OperationKind: ResolveHelperOperationKind(request.Action.Id),
+                VerificationContract: hook.VerifyContract,
+                Context: request.Context),
+            cancellationToken);
+
+        return new ActionExecutionResult(
+            bridgeResult.Succeeded,
+            bridgeResult.Message,
             AddressSource.None,
-            new Dictionary<string, object?> { ["dispatched"] = true }));
+            MergeDiagnostics(
+                bridgeResult.Diagnostics,
+                new Dictionary<string, object?>
+                {
+                    [DiagnosticReasonCodeKey] = bridgeResult.ReasonCode.ToString(),
+                    [PayloadHelperHookIdKey] = hook.Id,
+                    ["helperEntryPoint"] = hook.EntryPoint ?? string.Empty
+                }));
+    }
+
+    private static string ResolveHelperHookId(ActionExecutionRequest request)
+    {
+        if (request.Payload[PayloadHelperHookIdKey] is JsonValue jsonValue &&
+            jsonValue.TryGetValue<string>(out var explicitHookId) &&
+            !string.IsNullOrWhiteSpace(explicitHookId))
+        {
+            return explicitHookId;
+        }
+
+        if (request.Action.Id.Equals(ActionIdSpawnContextEntity, StringComparison.OrdinalIgnoreCase) ||
+            request.Action.Id.Equals(ActionIdSpawnTacticalEntity, StringComparison.OrdinalIgnoreCase) ||
+            request.Action.Id.Equals(ActionIdSpawnGalacticEntity, StringComparison.OrdinalIgnoreCase) ||
+            request.Action.Id.Equals(ActionIdPlacePlanetBuilding, StringComparison.OrdinalIgnoreCase))
+        {
+            return "spawn_bridge";
+        }
+
+        return request.Action.Id;
+    }
+
+    private static HelperBridgeOperationKind ResolveHelperOperationKind(string actionId)
+    {
+        if (actionId.Equals(ActionIdSpawnUnitHelper, StringComparison.OrdinalIgnoreCase))
+        {
+            return HelperBridgeOperationKind.SpawnUnitHelper;
+        }
+
+        if (actionId.Equals(ActionIdSpawnContextEntity, StringComparison.OrdinalIgnoreCase))
+        {
+            return HelperBridgeOperationKind.SpawnContextEntity;
+        }
+
+        if (actionId.Equals(ActionIdSpawnTacticalEntity, StringComparison.OrdinalIgnoreCase))
+        {
+            return HelperBridgeOperationKind.SpawnTacticalEntity;
+        }
+
+        if (actionId.Equals(ActionIdSpawnGalacticEntity, StringComparison.OrdinalIgnoreCase))
+        {
+            return HelperBridgeOperationKind.SpawnGalacticEntity;
+        }
+
+        if (actionId.Equals(ActionIdPlacePlanetBuilding, StringComparison.OrdinalIgnoreCase))
+        {
+            return HelperBridgeOperationKind.PlacePlanetBuilding;
+        }
+
+        if (actionId.Equals(ActionIdSetContextAllegiance, StringComparison.OrdinalIgnoreCase) ||
+            actionId.Equals(ActionIdSetContextFaction, StringComparison.OrdinalIgnoreCase))
+        {
+            return HelperBridgeOperationKind.SetContextAllegiance;
+        }
+
+        if (actionId.Equals(ActionIdSetHeroStateHelper, StringComparison.OrdinalIgnoreCase))
+        {
+            return HelperBridgeOperationKind.SetHeroStateHelper;
+        }
+
+        if (actionId.Equals(ActionIdToggleRoeRespawnHelper, StringComparison.OrdinalIgnoreCase))
+        {
+            return HelperBridgeOperationKind.ToggleRoeRespawnHelper;
+        }
+
+        return HelperBridgeOperationKind.Unknown;
     }
 
     private Task<ActionExecutionResult> ExecuteSaveActionAsync(ActionExecutionRequest request, CancellationToken cancellationToken)  // NOSONAR
@@ -3109,7 +3584,7 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
         out string? symbol,
         out ActionExecutionResult? failure)
     {
-        symbol = payload["symbol"]?.GetValue<string>();
+        symbol = payload[PayloadSymbolKey]?.GetValue<string>();
         failure = null;
         if (!string.IsNullOrWhiteSpace(symbol))
         {
@@ -3248,7 +3723,7 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
                 ["fallbackAction"] = ActionIdSetUnitCapPatchFallback,  // NOSONAR
                 ["fallbackPath"] = "unit_cap_patch_fallback",  // NOSONAR
                 ["fallbackEnabled"] = true,
-                ["reasonCode"] = ToReasonCode(reasonCode)
+                [DiagnosticReasonCodeKey] = ToReasonCode(reasonCode)
             });
         return result with { Diagnostics = diagnostics };
     }
@@ -3272,7 +3747,7 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
                 {
                     ["fallbackAction"] = ActionIdToggleFogRevealPatchFallback,
                     ["fallbackPath"] = "fog_patch_fallback",  // NOSONAR
-                    ["reasonCode"] = ToReasonCode(resolution.ReasonCode)
+                    [DiagnosticReasonCodeKey] = ToReasonCode(resolution.ReasonCode)
                 }));
         }
 
@@ -3296,7 +3771,7 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
                 new Dictionary<string, object?>
                 {
                     ["fallbackAction"] = ActionIdToggleFogRevealPatchFallback,
-                    ["reasonCode"] = ToReasonCode(RuntimeReasonCode.SAFETY_FAIL_CLOSED)
+                    [DiagnosticReasonCodeKey] = ToReasonCode(RuntimeReasonCode.SAFETY_FAIL_CLOSED)
                 });
         }
 
@@ -3316,7 +3791,7 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
                     ["fallbackPath"] = "fog_patch_fallback",
                     ["address"] = ToHex(resolution.BranchAddress),
                     ["state"] = "already_patched",  // NOSONAR
-                    ["reasonCode"] = ToReasonCode(RuntimeReasonCode.FALLBACK_APPLIED)
+                    [DiagnosticReasonCodeKey] = ToReasonCode(RuntimeReasonCode.FALLBACK_APPLIED)
                 });
         }
 
@@ -3331,7 +3806,7 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
                     ["fallbackAction"] = ActionIdToggleFogRevealPatchFallback,
                     ["fallbackPath"] = "fog_patch_fallback",
                     ["address"] = ToHex(resolution.BranchAddress),
-                    ["reasonCode"] = ToReasonCode(RuntimeReasonCode.SAFETY_FAIL_CLOSED)
+                    [DiagnosticReasonCodeKey] = ToReasonCode(RuntimeReasonCode.SAFETY_FAIL_CLOSED)
                 });
         }
 
@@ -3350,7 +3825,7 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
                 ["pattern"] = resolution.PatternText,
                 ["address"] = ToHex(resolution.BranchAddress),
                 ["state"] = "patched",
-                ["reasonCode"] = ToReasonCode(RuntimeReasonCode.FALLBACK_APPLIED)
+                [DiagnosticReasonCodeKey] = ToReasonCode(RuntimeReasonCode.FALLBACK_APPLIED)
             });
     }
 
@@ -3365,7 +3840,7 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
                 new Dictionary<string, object?>
                 {
                     ["fallbackAction"] = ActionIdToggleFogRevealPatchFallback,
-                    ["reasonCode"] = ToReasonCode(RuntimeReasonCode.SAFETY_FAIL_CLOSED)
+                    [DiagnosticReasonCodeKey] = ToReasonCode(RuntimeReasonCode.SAFETY_FAIL_CLOSED)
                 });
         }
 
@@ -3387,7 +3862,7 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
                     ["fallbackPath"] = "fog_patch_fallback",
                     ["address"] = ToHex(address),
                     ["state"] = "already_restored",
-                    ["reasonCode"] = ToReasonCode(RuntimeReasonCode.FALLBACK_RESTORED)
+                    [DiagnosticReasonCodeKey] = ToReasonCode(RuntimeReasonCode.FALLBACK_RESTORED)
                 });
         }
 
@@ -3402,7 +3877,7 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
                     ["fallbackAction"] = ActionIdToggleFogRevealPatchFallback,
                     ["fallbackPath"] = "fog_patch_fallback",
                     ["address"] = ToHex(address),
-                    ["reasonCode"] = ToReasonCode(RuntimeReasonCode.SAFETY_FAIL_CLOSED)
+                    [DiagnosticReasonCodeKey] = ToReasonCode(RuntimeReasonCode.SAFETY_FAIL_CLOSED)
                 });
         }
 
@@ -3418,7 +3893,7 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
                 ["fallbackPath"] = "fog_patch_fallback",
                 ["address"] = ToHex(address),
                 ["state"] = "restored",
-                ["reasonCode"] = ToReasonCode(RuntimeReasonCode.FALLBACK_RESTORED)
+                [DiagnosticReasonCodeKey] = ToReasonCode(RuntimeReasonCode.FALLBACK_RESTORED)
             });
     }
 
@@ -3553,7 +4028,7 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
             {
                 ["fallbackAction"] = actionId,
                 ["featureFlag"] = featureFlagKey,
-                ["reasonCode"] = ToReasonCode(RuntimeReasonCode.FALLBACK_DISABLED)
+                [DiagnosticReasonCodeKey] = ToReasonCode(RuntimeReasonCode.FALLBACK_DISABLED)
             });
     }
 

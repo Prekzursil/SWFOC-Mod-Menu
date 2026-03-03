@@ -24,8 +24,8 @@ foreach ($required in $schema.required) {
     Confirm-ValidationField -Object $bundle -Field ([string]$required) -Errors $errors
 }
 
-if ($bundle.schemaVersion -ne "1.2") {
-    Add-ValidationError -Errors $errors -Message "schemaVersion must be 1.2"
+if ($bundle.schemaVersion -ne "1.3") {
+    Add-ValidationError -Errors $errors -Message "schemaVersion must be 1.3"
 }
 
 $allowedScopes = @("AOTR", "ROE", "TACTICAL", "FULL")
@@ -33,7 +33,7 @@ if ($allowedScopes -notcontains [string]$bundle.scope) {
     Add-ValidationError -Errors $errors -Message "scope must be one of: $($allowedScopes -join ', ')"
 }
 
-$allowedClassifications = @("passed", "skipped", "failed", "blocked_environment", "blocked_profile_mismatch")
+$allowedClassifications = @("passed", "skipped", "failed", "blocked_environment", "blocked_profile_mismatch", "blocked_dependency_missing_parent")
 if ($allowedClassifications -notcontains [string]$bundle.classification) {
     Add-ValidationError -Errors $errors -Message "classification must be one of: $($allowedClassifications -join ', ')"
 }
@@ -102,6 +102,22 @@ foreach ($required in @("available", "visible", "reasonCode")) {
 
 foreach ($required in @("dependencyState", "helperReadiness", "symbolHealthSummary")) {
     Confirm-ValidationField -Object $bundle.diagnostics -Field $required -Errors $errors
+}
+
+foreach ($required in @("totalActions", "passedActions", "failedActions", "skippedActions", "operations")) {
+    Confirm-ValidationField -Object $bundle.entityOperationSummary -Field $required -Errors $errors
+}
+
+foreach ($required in @("enabled", "allResolved", "blockingEntityCount", "blockingEntityIds", "reasonCodes")) {
+    Confirm-ValidationField -Object $bundle.transplantSummary -Field $required -Errors $errors
+}
+
+foreach ($required in @("totalEntities", "visualResolvedCount", "visualMissingCount", "missingEntityIds")) {
+    Confirm-ValidationField -Object $bundle.rosterVisualCoverage -Field $required -Errors $errors
+}
+
+foreach ($required in @("totalActions", "routedActions", "blockedActions", "reasonCodes")) {
+    Confirm-ValidationField -Object $bundle.allegianceRoutingSummary -Field $required -Errors $errors
 }
 
 if ($Strict) {

@@ -110,12 +110,48 @@ public sealed class TrainerOrchestrator
     {
         // Mode detection is best-effort (often Unknown). Only enforce the mode gate when
         // the runtime adapter could actually infer a specific mode.
-        if (runtimeMode == RuntimeMode.Unknown || actionMode == RuntimeMode.Unknown || actionMode == runtimeMode)
+        if (runtimeMode == RuntimeMode.Unknown || actionMode == RuntimeMode.Unknown)
         {
             return null;
         }
 
-        return new ActionExecutionResult(false, $"Action '{actionId}' not allowed for runtime mode {runtimeMode}", AddressSource.None);
+        if (IsModeCompatible(runtimeMode, actionMode))
+        {
+            return null;
+        }
+
+        var diagnostics = new Dictionary<string, object?>
+        {
+            ["runtimeMode"] = runtimeMode.ToString(),
+            ["actionMode"] = actionMode.ToString()
+        };
+
+        if (runtimeMode == RuntimeMode.AnyTactical &&
+            actionMode is RuntimeMode.TacticalLand or RuntimeMode.TacticalSpace)
+        {
+            diagnostics["reasonCode"] = RuntimeReasonCode.MODE_STRICT_TACTICAL_UNSPECIFIED.ToString();
+        }
+
+        return new ActionExecutionResult(
+            false,
+            $"Action '{actionId}' not allowed for runtime mode {runtimeMode}",
+            AddressSource.None,
+            diagnostics);
+    }
+
+    private static bool IsModeCompatible(RuntimeMode runtimeMode, RuntimeMode actionMode)
+    {
+        if (runtimeMode == actionMode)
+        {
+            return true;
+        }
+
+        if (actionMode == RuntimeMode.AnyTactical)
+        {
+            return runtimeMode is RuntimeMode.AnyTactical or RuntimeMode.TacticalLand or RuntimeMode.TacticalSpace;
+        }
+
+        return false;
     }
 
     private static ActionExecutionResult? ValidatePayload(ActionSpec action, System.Text.Json.Nodes.JsonObject payload)
