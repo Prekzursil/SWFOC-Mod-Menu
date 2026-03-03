@@ -1028,6 +1028,8 @@ function Read-TrxSummary {
     param([Parameter(Mandatory = $true)][string]$TrxPath)
 
     $resolvedTrxPath = Resolve-ArtifactPath -Path $TrxPath
+    $trxDirectory = Split-Path -Path $resolvedTrxPath -Parent
+    $trxLeafName = Split-Path -Path $resolvedTrxPath -Leaf
     $deadline = [DateTime]::UtcNow.AddSeconds(120)
     $lastReadError = ""
     $doc = $null
@@ -1043,6 +1045,21 @@ function Read-TrxSummary {
         }
 
         Start-Sleep -Milliseconds 250
+    }
+
+    if ($null -eq $doc -and (Test-Path -Path $trxDirectory)) {
+        $fallbackCandidate = Get-ChildItem -Path $trxDirectory -Filter ("*-" + $trxLeafName) -File -ErrorAction SilentlyContinue |
+            Sort-Object LastWriteTime -Descending |
+            Select-Object -First 1
+        if ($null -ne $fallbackCandidate) {
+            try {
+                $resolvedTrxPath = $fallbackCandidate.FullName
+                [xml]$doc = Get-Content -Raw -Path $resolvedTrxPath
+            }
+            catch {
+                $lastReadError = $_.Exception.Message
+            }
+        }
     }
 
     if ($null -eq $doc) {
