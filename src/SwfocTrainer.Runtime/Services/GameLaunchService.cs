@@ -7,6 +7,13 @@ namespace SwfocTrainer.Runtime.Services;
 public sealed class GameLaunchService : IGameLaunchService
 {
     private const string GameRootOverrideEnvVar = "SWFOC_GAME_ROOT";
+    private const string DiagnosticLaunchState = "launchState";
+    private const string DiagnosticResolvedRoot = "resolvedRoot";
+    private const string DiagnosticTarget = "target";
+    private const string LaunchStateRootMissing = "root_missing";
+    private const string LaunchStateExeMissing = "exe_missing";
+    private const string LaunchStateStartFailed = "start_failed";
+    private const string LaunchStateStarted = "started";
 
     private static readonly string[] DefaultRoots =
     [
@@ -16,83 +23,37 @@ public sealed class GameLaunchService : IGameLaunchService
 
     public Task<GameLaunchResult> LaunchAsync(GameLaunchRequest request, CancellationToken cancellationToken)
     {
+        cancellationToken.ThrowIfCancellationRequested();
         if (request.TerminateExistingTargets)
         {
             TerminateKnownTargets();
         }
 
-        var root = ResolveRoot();
-        if (string.IsNullOrWhiteSpace(root))
+        var rootResolution = TryResolveLaunchRoot();
+        if (rootResolution.Failure is not null)
         {
-            return Task.FromResult(new GameLaunchResult(
-                Succeeded: false,
-                Message: "Unable to resolve game root path. Set SWFOC_GAME_ROOT to override.",
-                ProcessId: 0,
-                ExecutablePath: string.Empty,
-                Arguments: string.Empty,
-                Diagnostics: new Dictionary<string, object?>
-                {
-                    ["launchState"] = "root_missing",
-                    ["rootOverrideEnv"] = Environment.GetEnvironmentVariable(GameRootOverrideEnvVar) ?? string.Empty
-                }));
+            return Task.FromResult(rootResolution.Failure);
         }
 
-        var executablePath = ResolveExecutablePath(root, request.Target);
-        if (!File.Exists(executablePath))
+        var executableResolution = TryResolveExecutable(rootResolution.Root, request.Target);
+        if (executableResolution.Failure is not null)
         {
-            return Task.FromResult(new GameLaunchResult(
-                Succeeded: false,
-                Message: $"Executable not found: {executablePath}",
-                ProcessId: 0,
-                ExecutablePath: executablePath,
-                Arguments: string.Empty,
-                Diagnostics: new Dictionary<string, object?>
-                {
-                    ["launchState"] = "exe_missing",
-                    ["resolvedRoot"] = root,
-                    ["target"] = request.Target.ToString()
-                }));
+            return Task.FromResult(executableResolution.Failure);
         }
 
         var arguments = BuildArguments(request);
-        var startInfo = new ProcessStartInfo
-        {
-            FileName = executablePath,
-            Arguments = arguments,
-            WorkingDirectory = Path.GetDirectoryName(executablePath) ?? root,
-            UseShellExecute = false
-        };
-
-        var process = Process.Start(startInfo);
+        var process = StartProcess(executableResolution.ExecutablePath, rootResolution.Root, arguments);
         if (process is null)
         {
-            return Task.FromResult(new GameLaunchResult(
-                Succeeded: false,
-                Message: "Process start returned null.",
-                ProcessId: 0,
-                ExecutablePath: executablePath,
-                Arguments: arguments,
-                Diagnostics: new Dictionary<string, object?>
-                {
-                    ["launchState"] = "start_failed"
-                }));
+            return Task.FromResult(CreateFailureResult(
+                message: "Process start returned null.",
+                state: LaunchStateStartFailed,
+                executablePath: executableResolution.ExecutablePath,
+                arguments: arguments,
+                diagnostics: null));
         }
 
-        return Task.FromResult(new GameLaunchResult(
-            Succeeded: true,
-            Message: "Launch command dispatched.",
-            ProcessId: process.Id,
-            ExecutablePath: executablePath,
-            Arguments: arguments,
-            Diagnostics: new Dictionary<string, object?>
-            {
-                ["launchState"] = "started",
-                ["target"] = request.Target.ToString(),
-                ["mode"] = request.Mode.ToString(),
-                ["profileIdHint"] = request.ProfileIdHint ?? string.Empty,
-                ["resolvedRoot"] = root,
-                ["workshopIds"] = NormalizeWorkshopIds(request.WorkshopIds)
-            }));
+        return Task.FromResult(CreateStartedResult(request, process.Id, executableResolution.ExecutablePath, rootResolution.Root, arguments));
     }
 
     private static void TerminateKnownTargets()
@@ -134,6 +95,71 @@ public sealed class GameLaunchService : IGameLaunchService
         };
     }
 
+    private static (string Root, GameLaunchResult? Failure) TryResolveLaunchRoot()
+    {
+        var root = ResolveRoot();
+        if (!string.IsNullOrWhiteSpace(root))
+        {
+            return (root, null);
+        }
+
+        var failure = CreateFailureResult(
+            message: "Unable to resolve game root path. Set SWFOC_GAME_ROOT to override.",
+            state: LaunchStateRootMissing,
+            executablePath: string.Empty,
+            arguments: string.Empty,
+            diagnostics: new Dictionary<string, object?>
+            {
+                ["rootOverrideEnv"] = Environment.GetEnvironmentVariable(GameRootOverrideEnvVar) ?? string.Empty
+            });
+        return (string.Empty, failure);
+    }
+
+    private static (string ExecutablePath, GameLaunchResult? Failure) TryResolveExecutable(string root, GameLaunchTarget target)
+    {
+        var executablePath = ResolveExecutablePath(root, target);
+        if (File.Exists(executablePath))
+        {
+            return (executablePath, null);
+        }
+
+        var failure = CreateFailureResult(
+            message: $"Executable not found: {executablePath}",
+            state: LaunchStateExeMissing,
+            executablePath: executablePath,
+            arguments: string.Empty,
+            diagnostics: new Dictionary<string, object?>
+            {
+                [DiagnosticResolvedRoot] = root,
+                [DiagnosticTarget] = target.ToString()
+            });
+        return (string.Empty, failure);
+    }
+
+    private static GameLaunchResult CreateStartedResult(
+        GameLaunchRequest request,
+        int processId,
+        string executablePath,
+        string root,
+        string arguments)
+    {
+        return new GameLaunchResult(
+            Succeeded: true,
+            Message: "Launch command dispatched.",
+            ProcessId: processId,
+            ExecutablePath: executablePath,
+            Arguments: arguments,
+            Diagnostics: new Dictionary<string, object?>
+            {
+                [DiagnosticLaunchState] = LaunchStateStarted,
+                [DiagnosticTarget] = request.Target.ToString(),
+                ["mode"] = request.Mode.ToString(),
+                ["profileIdHint"] = request.ProfileIdHint ?? string.Empty,
+                [DiagnosticResolvedRoot] = root,
+                ["workshopIds"] = NormalizeWorkshopIds(request.WorkshopIds)
+            });
+    }
+
     private static string BuildArguments(GameLaunchRequest request)
     {
         return request.Mode switch
@@ -144,6 +170,46 @@ public sealed class GameLaunchService : IGameLaunchService
                 : $"MODPATH=\"{request.ModPath}\"",
             _ => string.Empty
         };
+    }
+
+    private static Process? StartProcess(string executablePath, string root, string arguments)
+    {
+        var startInfo = new ProcessStartInfo
+        {
+            FileName = executablePath,
+            Arguments = arguments,
+            WorkingDirectory = Path.GetDirectoryName(executablePath) ?? root,
+            UseShellExecute = false
+        };
+        return Process.Start(startInfo);
+    }
+
+    private static GameLaunchResult CreateFailureResult(
+        string message,
+        string state,
+        string executablePath,
+        string arguments,
+        IReadOnlyDictionary<string, object?>? diagnostics)
+    {
+        var fullDiagnostics = new Dictionary<string, object?>(StringComparer.OrdinalIgnoreCase)
+        {
+            [DiagnosticLaunchState] = state
+        };
+        if (diagnostics is not null)
+        {
+            foreach (var entry in diagnostics)
+            {
+                fullDiagnostics[entry.Key] = entry.Value;
+            }
+        }
+
+        return new GameLaunchResult(
+            Succeeded: false,
+            Message: message,
+            ProcessId: 0,
+            ExecutablePath: executablePath,
+            Arguments: arguments,
+            Diagnostics: fullDiagnostics);
     }
 
     private static string BuildSteamModArguments(IReadOnlyList<string>? workshopIds)

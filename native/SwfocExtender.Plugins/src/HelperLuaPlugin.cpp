@@ -38,6 +38,8 @@ PluginResult BuildFailure(
     return result;
 }
 
+void AddOptionalDiagnostic(std::map<std::string, std::string>& diagnostics, const char* key, const std::string& value);
+
 PluginResult BuildSuccess(const PluginRequest& request) {
     PluginResult result {};
     result.succeeded = true;
@@ -56,49 +58,17 @@ PluginResult BuildSuccess(const PluginRequest& request) {
         {"operationToken", request.operationToken},
         {"helperInvocationContractVersion", request.invocationContractVersion}};
 
-    if (!request.unitId.empty()) {
-        result.diagnostics["unitId"] = request.unitId;
-    }
-
-    if (!request.entityId.empty()) {
-        result.diagnostics["entityId"] = request.entityId;
-    }
-
-    if (!request.entryMarker.empty()) {
-        result.diagnostics["entryMarker"] = request.entryMarker;
-    }
-
-    if (!request.worldPosition.empty()) {
-        result.diagnostics["worldPosition"] = request.worldPosition;
-    }
-
-    if (!request.faction.empty()) {
-        result.diagnostics["faction"] = request.faction;
-    }
-
-    if (!request.targetFaction.empty()) {
-        result.diagnostics["targetFaction"] = request.targetFaction;
-    }
-
-    if (!request.sourceFaction.empty()) {
-        result.diagnostics["sourceFaction"] = request.sourceFaction;
-    }
-
-    if (!request.populationPolicy.empty()) {
-        result.diagnostics["populationPolicy"] = request.populationPolicy;
-    }
-
-    if (!request.persistencePolicy.empty()) {
-        result.diagnostics["persistencePolicy"] = request.persistencePolicy;
-    }
-
-    if (!request.placementMode.empty()) {
-        result.diagnostics["placementMode"] = request.placementMode;
-    }
-
-    if (!request.globalKey.empty()) {
-        result.diagnostics["globalKey"] = request.globalKey;
-    }
+    AddOptionalDiagnostic(result.diagnostics, "unitId", request.unitId);
+    AddOptionalDiagnostic(result.diagnostics, "entityId", request.entityId);
+    AddOptionalDiagnostic(result.diagnostics, "entryMarker", request.entryMarker);
+    AddOptionalDiagnostic(result.diagnostics, "worldPosition", request.worldPosition);
+    AddOptionalDiagnostic(result.diagnostics, "faction", request.faction);
+    AddOptionalDiagnostic(result.diagnostics, "targetFaction", request.targetFaction);
+    AddOptionalDiagnostic(result.diagnostics, "sourceFaction", request.sourceFaction);
+    AddOptionalDiagnostic(result.diagnostics, "populationPolicy", request.populationPolicy);
+    AddOptionalDiagnostic(result.diagnostics, "persistencePolicy", request.persistencePolicy);
+    AddOptionalDiagnostic(result.diagnostics, "placementMode", request.placementMode);
+    AddOptionalDiagnostic(result.diagnostics, "globalKey", request.globalKey);
 
     result.diagnostics["intValue"] = std::to_string(request.intValue);
     result.diagnostics["boolValue"] = request.boolValue ? "true" : "false";
@@ -118,7 +88,13 @@ bool IsSpawnFeature(const std::string& featureId) {
            featureId == "spawn_galactic_entity";
 }
 
-bool ValidateRequest(const PluginRequest& request, PluginResult& failure) {
+void AddOptionalDiagnostic(std::map<std::string, std::string>& diagnostics, const char* key, const std::string& value) {
+    if (!value.empty()) {
+        diagnostics[key] = value;
+    }
+}
+
+bool ValidateCommonRequest(const PluginRequest& request, PluginResult& failure) {
     if (!IsSupportedHelperFeature(request.featureId)) {
         failure = BuildFailure(
             request,
@@ -152,83 +128,116 @@ bool ValidateRequest(const PluginRequest& request, PluginResult& failure) {
         return false;
     }
 
-    if (request.featureId == "spawn_unit_helper") {
-        if (!HasValue(request.unitId) || !HasValue(request.entryMarker) || !HasValue(request.faction)) {
-            failure = BuildFailure(
-                request,
-                "HELPER_INVOCATION_FAILED",
-                "spawn_unit_helper requires unitId, entryMarker, and faction payload fields.");
-            return false;
-        }
-    }
-
-    if (IsSpawnFeature(request.featureId)) {
-        if (!HasValue(request.entityId) && !HasValue(request.unitId)) {
-            failure = BuildFailure(
-                request,
-                "HELPER_INVOCATION_FAILED",
-                "Context/tactical/galactic spawn requires entityId or unitId.");
-            return false;
-        }
-
-        if (!HasValue(request.faction) && !HasValue(request.targetFaction)) {
-            failure = BuildFailure(
-                request,
-                "HELPER_INVOCATION_FAILED",
-                "Context/tactical/galactic spawn requires faction or targetFaction.");
-            return false;
-        }
-
-        if (request.featureId != "spawn_galactic_entity" &&
-            !HasValue(request.entryMarker) &&
-            !HasValue(request.worldPosition)) {
-            failure = BuildFailure(
-                request,
-                "HELPER_INVOCATION_FAILED",
-                "Tactical/context spawn requires entryMarker or worldPosition.");
-            return false;
-        }
-    }
-
-    if (request.featureId == "place_planet_building") {
-        if (!HasValue(request.entityId)) {
-            failure = BuildFailure(
-                request,
-                "HELPER_INVOCATION_FAILED",
-                "place_planet_building requires entityId.");
-            return false;
-        }
-
-        if (!HasValue(request.targetFaction) && !HasValue(request.faction)) {
-            failure = BuildFailure(
-                request,
-                "HELPER_INVOCATION_FAILED",
-                "place_planet_building requires faction or targetFaction.");
-            return false;
-        }
-    }
-
-    if (request.featureId == "set_context_allegiance") {
-        if (!HasValue(request.targetFaction) && !HasValue(request.faction)) {
-            failure = BuildFailure(
-                request,
-                "HELPER_INVOCATION_FAILED",
-                "set_context_allegiance requires faction or targetFaction.");
-            return false;
-        }
-    }
-
-    if (request.featureId == "set_hero_state_helper") {
-        if (!HasValue(request.globalKey)) {
-            failure = BuildFailure(
-                request,
-                "HELPER_INVOCATION_FAILED",
-                "set_hero_state_helper requires globalKey payload field.");
-            return false;
-        }
-    }
-
     return true;
+}
+
+bool ValidateSpawnUnitRequest(const PluginRequest& request, PluginResult& failure) {
+    if (request.featureId != "spawn_unit_helper") {
+        return true;
+    }
+
+    if (HasValue(request.unitId) && HasValue(request.entryMarker) && HasValue(request.faction)) {
+        return true;
+    }
+
+    failure = BuildFailure(
+        request,
+        "HELPER_INVOCATION_FAILED",
+        "spawn_unit_helper requires unitId, entryMarker, and faction payload fields.");
+    return false;
+}
+
+bool ValidateSpawnRequest(const PluginRequest& request, PluginResult& failure) {
+    if (!IsSpawnFeature(request.featureId)) {
+        return true;
+    }
+
+    if (!HasValue(request.entityId) && !HasValue(request.unitId)) {
+        failure = BuildFailure(
+            request,
+            "HELPER_INVOCATION_FAILED",
+            "Context/tactical/galactic spawn requires entityId or unitId.");
+        return false;
+    }
+
+    if (!HasValue(request.faction) && !HasValue(request.targetFaction)) {
+        failure = BuildFailure(
+            request,
+            "HELPER_INVOCATION_FAILED",
+            "Context/tactical/galactic spawn requires faction or targetFaction.");
+        return false;
+    }
+
+    if (request.featureId == "spawn_galactic_entity" || HasValue(request.entryMarker) || HasValue(request.worldPosition)) {
+        return true;
+    }
+
+    failure = BuildFailure(
+        request,
+        "HELPER_INVOCATION_FAILED",
+        "Tactical/context spawn requires entryMarker or worldPosition.");
+    return false;
+}
+
+bool ValidateBuildingRequest(const PluginRequest& request, PluginResult& failure) {
+    if (request.featureId != "place_planet_building") {
+        return true;
+    }
+
+    if (!HasValue(request.entityId)) {
+        failure = BuildFailure(
+            request,
+            "HELPER_INVOCATION_FAILED",
+            "place_planet_building requires entityId.");
+        return false;
+    }
+
+    if (HasValue(request.targetFaction) || HasValue(request.faction)) {
+        return true;
+    }
+
+    failure = BuildFailure(
+        request,
+        "HELPER_INVOCATION_FAILED",
+        "place_planet_building requires faction or targetFaction.");
+    return false;
+}
+
+bool ValidateAllegianceRequest(const PluginRequest& request, PluginResult& failure) {
+    if (request.featureId != "set_context_allegiance") {
+        return true;
+    }
+
+    if (HasValue(request.targetFaction) || HasValue(request.faction)) {
+        return true;
+    }
+
+    failure = BuildFailure(
+        request,
+        "HELPER_INVOCATION_FAILED",
+        "set_context_allegiance requires faction or targetFaction.");
+    return false;
+}
+
+bool ValidateHeroStateRequest(const PluginRequest& request, PluginResult& failure) {
+    if (request.featureId != "set_hero_state_helper" || HasValue(request.globalKey)) {
+        return true;
+    }
+
+    failure = BuildFailure(
+        request,
+        "HELPER_INVOCATION_FAILED",
+        "set_hero_state_helper requires globalKey payload field.");
+    return false;
+}
+
+bool ValidateRequest(const PluginRequest& request, PluginResult& failure) {
+    return ValidateCommonRequest(request, failure) &&
+           ValidateSpawnUnitRequest(request, failure) &&
+           ValidateSpawnRequest(request, failure) &&
+           ValidateBuildingRequest(request, failure) &&
+           ValidateAllegianceRequest(request, failure) &&
+           ValidateHeroStateRequest(request, failure);
 }
 
 CapabilityState BuildAvailableCapability() {

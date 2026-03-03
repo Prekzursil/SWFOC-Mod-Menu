@@ -38,7 +38,9 @@ public sealed record WorkshopInventoryGraph(
     IReadOnlyList<string> Diagnostics,
     IReadOnlyList<WorkshopInventoryChain>? Chains = null)
 {
-    public static WorkshopInventoryGraph Empty(string appId = "32470") =>
+    public static WorkshopInventoryGraph Empty() => Empty("32470");
+
+    public static WorkshopInventoryGraph Empty(string appId) =>
         new(
             AppId: appId,
             GeneratedAtUtc: DateTimeOffset.UtcNow,

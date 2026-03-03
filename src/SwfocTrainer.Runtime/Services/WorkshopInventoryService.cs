@@ -10,22 +10,13 @@ namespace SwfocTrainer.Runtime.Services;
 
 public sealed class WorkshopInventoryService : IWorkshopInventoryService
 {
-    private const string DetailsApiUrl = "https://api.steampowered.com/ISteamRemoteStorage/GetPublishedFileDetails/v1/";
+    private const string DefaultAppId = "32470";
+    private const string PublishedFileDetailsApiPath = "ISteamRemoteStorage/GetPublishedFileDetails/v1/";
+    private const string SteamApiBaseUrl = "https://api.steampowered.com/";
+
     private static readonly TimeSpan RegexTimeout = TimeSpan.FromMilliseconds(250);
     private static readonly Regex InstalledIdRegex = new(@"""(?<id>\d{4,})""\s*\{", RegexOptions.Compiled, RegexTimeout);
     private static readonly Regex SteamModRegex = new(@"STEAMMOD\s*=\s*(?<id>\d{4,})", RegexOptions.IgnoreCase | RegexOptions.Compiled, RegexTimeout);
-
-    private static readonly string[] DefaultManifestPaths =
-    [
-        @"D:\SteamLibrary\steamapps\workshop\appworkshop_32470.acf",
-        @"C:\Program Files (x86)\Steam\steamapps\workshop\appworkshop_32470.acf"
-    ];
-
-    private static readonly string[] DefaultWorkshopRoots =
-    [
-        @"D:\SteamLibrary\steamapps\workshop\content\32470",
-        @"C:\Program Files (x86)\Steam\steamapps\workshop\content\32470"
-    ];
 
     private readonly ILogger<WorkshopInventoryService> _logger;
     private readonly HttpClient _httpClient;
@@ -45,7 +36,7 @@ public sealed class WorkshopInventoryService : IWorkshopInventoryService
         WorkshopInventoryRequest request,
         CancellationToken cancellationToken)
     {
-        var appId = string.IsNullOrWhiteSpace(request.AppId) ? "32470" : request.AppId.Trim();
+        var appId = string.IsNullOrWhiteSpace(request.AppId) ? DefaultAppId : request.AppId.Trim();
         var diagnostics = new List<string>();
         var installedIds = ReadInstalledWorkshopIds(request, appId, diagnostics);
 
@@ -55,15 +46,7 @@ public sealed class WorkshopInventoryService : IWorkshopInventoryService
             return WorkshopInventoryGraph.Empty(appId) with { Diagnostics = diagnostics };
         }
 
-        var items = installedIds
-            .Select(id => new WorkshopInventoryItem(
-                WorkshopId: id,
-                Title: $"Workshop Item {id}",
-                ItemType: WorkshopItemType.Unknown,
-                ParentWorkshopIds: Array.Empty<string>(),
-                Tags: Array.Empty<string>(),
-                ClassificationReason: "metadata_missing"))
-            .ToDictionary(x => x.WorkshopId, StringComparer.OrdinalIgnoreCase);
+        var items = BuildSkeletonItems(installedIds);
 
         if (request.FetchRemoteMetadata)
         {
@@ -84,47 +67,67 @@ public sealed class WorkshopInventoryService : IWorkshopInventoryService
             Chains: chains);
     }
 
+    private static Dictionary<string, WorkshopInventoryItem> BuildSkeletonItems(IEnumerable<string> installedIds)
+    {
+        return installedIds
+            .Select(id => new WorkshopInventoryItem(
+                WorkshopId: id,
+                Title: $"Workshop Item {id}",
+                ItemType: WorkshopItemType.Unknown,
+                ParentWorkshopIds: Array.Empty<string>(),
+                Tags: Array.Empty<string>(),
+                ClassificationReason: "metadata_missing"))
+            .ToDictionary(x => x.WorkshopId, StringComparer.OrdinalIgnoreCase);
+    }
+
     private static HashSet<string> ReadInstalledWorkshopIds(
         WorkshopInventoryRequest request,
         string appId,
         ICollection<string> diagnostics)
     {
         var ids = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
-        var manifestCandidates = BuildManifestCandidates(request, appId);
-        string? resolvedManifestPath = null;
+        var manifestPath = ResolveExistingPath(BuildManifestCandidates(request, appId));
+        AddManifestIds(manifestPath, ids, diagnostics);
+        AddWorkshopRootIds(request, appId, ids);
+        return ids;
+    }
 
-        foreach (var candidate in manifestCandidates)
+    private static string? ResolveExistingPath(IEnumerable<string> candidates)
+    {
+        foreach (var candidate in candidates)
         {
-            if (!File.Exists(candidate))
+            if (File.Exists(candidate))
             {
-                continue;
+                return candidate;
             }
-
-            resolvedManifestPath = candidate;
-            var text = File.ReadAllText(candidate);
-            foreach (Match match in InstalledIdRegex.Matches(text))
-            {
-                var id = match.Groups["id"].Value;
-                if (!string.IsNullOrWhiteSpace(id))
-                {
-                    ids.Add(id);
-                }
-            }
-
-            break;
         }
 
-        if (resolvedManifestPath is not null)
-        {
-            diagnostics.Add($"manifest={resolvedManifestPath}");
-        }
-        else
+        return null;
+    }
+
+    private static void AddManifestIds(string? manifestPath, ISet<string> ids, ICollection<string> diagnostics)
+    {
+        if (string.IsNullOrWhiteSpace(manifestPath))
         {
             diagnostics.Add("manifest_missing");
+            return;
         }
 
-        // Fall back to scanning workshop content roots when manifest is unavailable/incomplete.
-        foreach (var root in BuildWorkshopContentCandidates(request))
+        diagnostics.Add($"manifest={manifestPath}");
+        var text = File.ReadAllText(manifestPath);
+        foreach (Match match in InstalledIdRegex.Matches(text))
+        {
+            var id = match.Groups["id"].Value;
+            if (!string.IsNullOrWhiteSpace(id))
+            {
+                ids.Add(id);
+            }
+        }
+    }
+
+    private static void AddWorkshopRootIds(WorkshopInventoryRequest request, string appId, ISet<string> ids)
+    {
+        foreach (var root in BuildWorkshopContentCandidates(request, appId))
         {
             if (!Directory.Exists(root))
             {
@@ -140,8 +143,6 @@ public sealed class WorkshopInventoryService : IWorkshopInventoryService
                 }
             }
         }
-
-        return ids;
     }
 
     private static IEnumerable<string> BuildManifestCandidates(WorkshopInventoryRequest request, string appId)
@@ -159,20 +160,13 @@ public sealed class WorkshopInventoryService : IWorkshopInventoryService
             yield break;
         }
 
-        foreach (var defaultPath in DefaultManifestPaths)
+        foreach (var steamRoot in EnumerateDefaultSteamRoots())
         {
-            if (defaultPath.Contains("32470", StringComparison.Ordinal))
-            {
-                yield return defaultPath.Replace("32470", appId, StringComparison.Ordinal);
-            }
-            else
-            {
-                yield return defaultPath;
-            }
+            yield return Path.Combine(steamRoot, "steamapps", "workshop", $"appworkshop_{appId}.acf");
         }
     }
 
-    private static IEnumerable<string> BuildWorkshopContentCandidates(WorkshopInventoryRequest request)
+    private static IEnumerable<string> BuildWorkshopContentCandidates(WorkshopInventoryRequest request, string appId)
     {
         if (!string.IsNullOrWhiteSpace(request.WorkshopContentRootPath))
         {
@@ -187,9 +181,46 @@ public sealed class WorkshopInventoryService : IWorkshopInventoryService
             yield break;
         }
 
-        foreach (var root in DefaultWorkshopRoots)
+        foreach (var steamRoot in EnumerateDefaultSteamRoots())
         {
-            yield return root;
+            yield return Path.Combine(steamRoot, "steamapps", "workshop", "content", appId);
+        }
+    }
+
+    private static IEnumerable<string> EnumerateDefaultSteamRoots()
+    {
+        var seen = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+
+        void Add(string? path)
+        {
+            if (!string.IsNullOrWhiteSpace(path))
+            {
+                seen.Add(path.Trim());
+            }
+        }
+
+        Add(Environment.GetEnvironmentVariable("STEAM_INSTALL_PATH"));
+
+        var programFilesX86 = Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86);
+        if (!string.IsNullOrWhiteSpace(programFilesX86))
+        {
+            Add(Path.Combine(programFilesX86, "Steam"));
+        }
+
+        var programFiles = Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles);
+        if (!string.IsNullOrWhiteSpace(programFiles))
+        {
+            Add(Path.Combine(programFiles, "Steam"));
+        }
+
+        foreach (var drive in DriveInfo.GetDrives().Where(d => d.DriveType is DriveType.Fixed && d.IsReady))
+        {
+            Add(Path.Combine(drive.RootDirectory.FullName, "SteamLibrary"));
+        }
+
+        foreach (var path in seen)
+        {
+            yield return path;
         }
     }
 
@@ -205,70 +236,108 @@ public sealed class WorkshopInventoryService : IWorkshopInventoryService
         for (var offset = 0; offset < allIds.Length; offset += batchSize)
         {
             cancellationToken.ThrowIfCancellationRequested();
-            var slice = allIds.Skip(offset).Take(batchSize).ToArray();
-            if (slice.Length == 0)
+            var batch = allIds.Skip(offset).Take(batchSize).ToArray();
+            if (batch.Length == 0)
             {
                 continue;
             }
 
-            using var body = new FormUrlEncodedContent(BuildPostForm(slice));
-            using var message = new HttpRequestMessage(HttpMethod.Post, DetailsApiUrl)
+            var mappedItems = await FetchDetailsBatchAsync(batch, offset, diagnostics, cancellationToken);
+            foreach (var mapped in mappedItems)
             {
-                Content = body
-            };
-            message.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-
-            HttpResponseMessage response;
-            try
-            {
-                response = await _httpClient.SendAsync(message, cancellationToken);
+                items[mapped.WorkshopId] = mapped;
             }
-            catch (Exception ex)
-            {
-                diagnostics.Add($"details_fetch_failed batch_start={offset} message={ex.Message}");
-                _logger.LogWarning(ex, "Workshop details fetch failed for batch starting {Offset}", offset);
-                continue;
-            }
+        }
+    }
 
+    private async Task<IReadOnlyList<WorkshopInventoryItem>> FetchDetailsBatchAsync(
+        IReadOnlyList<string> workshopIds,
+        int offset,
+        ICollection<string> diagnostics,
+        CancellationToken cancellationToken)
+    {
+        using var message = CreateDetailsRequest(workshopIds);
+        HttpResponseMessage response;
+        try
+        {
+            response = await _httpClient.SendAsync(message, cancellationToken);
+        }
+        catch (Exception ex)
+        {
+            diagnostics.Add($"details_fetch_failed batch_start={offset} message={ex.Message}");
+            _logger.LogWarning(ex, "Workshop details fetch failed for batch starting {Offset}", offset);
+            return Array.Empty<WorkshopInventoryItem>();
+        }
+
+        using (response)
+        {
             if (!response.IsSuccessStatusCode)
             {
                 diagnostics.Add($"details_fetch_http_{(int)response.StatusCode} batch_start={offset}");
-                continue;
+                return Array.Empty<WorkshopInventoryItem>();
             }
 
             await using var stream = await response.Content.ReadAsStreamAsync(cancellationToken);
-            JsonDocument payload;
             try
             {
-                payload = await JsonDocument.ParseAsync(stream, cancellationToken: cancellationToken);
+                using var payload = await JsonDocument.ParseAsync(stream, cancellationToken: cancellationToken);
+                return ExtractMappedItems(payload, offset, diagnostics);
             }
             catch (Exception ex)
             {
                 diagnostics.Add($"details_parse_failed batch_start={offset} message={ex.Message}");
-                continue;
-            }
-
-            using (payload)
-            {
-                if (!payload.RootElement.TryGetProperty("response", out var responseNode) ||
-                    !responseNode.TryGetProperty("publishedfiledetails", out var detailsNode) ||
-                    detailsNode.ValueKind != JsonValueKind.Array)
-                {
-                    diagnostics.Add($"details_missing_payload batch_start={offset}");
-                    continue;
-                }
-
-                foreach (var detail in detailsNode.EnumerateArray())
-                {
-                    if (!TryMapItem(detail, out var mapped))
-                    {
-                        continue;
-                    }
-
-                    items[mapped.WorkshopId] = mapped;
-                }
+                return Array.Empty<WorkshopInventoryItem>();
             }
         }
+    }
+
+    private static HttpRequestMessage CreateDetailsRequest(IReadOnlyList<string> workshopIds)
+    {
+        var request = new HttpRequestMessage(HttpMethod.Post, new Uri(new Uri(SteamApiBaseUrl), PublishedFileDetailsApiPath))
+        {
+            Content = new FormUrlEncodedContent(BuildPostForm(workshopIds))
+        };
+        request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+        return request;
+    }
+
+    private static IReadOnlyList<WorkshopInventoryItem> ExtractMappedItems(
+        JsonDocument payload,
+        int offset,
+        ICollection<string> diagnostics)
+    {
+        if (!TryGetDetailsArray(payload, out var detailsNode))
+        {
+            diagnostics.Add($"details_missing_payload batch_start={offset}");
+            return Array.Empty<WorkshopInventoryItem>();
+        }
+
+        var mappedItems = new List<WorkshopInventoryItem>();
+        foreach (var detail in detailsNode.EnumerateArray())
+        {
+            if (TryMapItem(detail, out var mapped))
+            {
+                mappedItems.Add(mapped);
+            }
+        }
+
+        return mappedItems;
+    }
+
+    private static bool TryGetDetailsArray(JsonDocument payload, out JsonElement detailsNode)
+    {
+        detailsNode = default;
+        if (!payload.RootElement.TryGetProperty("response", out var responseNode))
+        {
+            return false;
+        }
+
+        if (!responseNode.TryGetProperty("publishedfiledetails", out detailsNode))
+        {
+            return false;
+        }
+
+        return detailsNode.ValueKind == JsonValueKind.Array;
     }
 
     private static Dictionary<string, string> BuildPostForm(IReadOnlyList<string> workshopIds)
@@ -289,39 +358,16 @@ public sealed class WorkshopInventoryService : IWorkshopInventoryService
     private static bool TryMapItem(JsonElement detail, out WorkshopInventoryItem item)
     {
         item = default!;
-        if (!detail.TryGetProperty("publishedfileid", out var idNode))
+        if (!TryGetWorkshopId(detail, out var workshopId))
         {
             return false;
         }
 
-        var workshopId = idNode.GetString();
-        if (string.IsNullOrWhiteSpace(workshopId))
-        {
-            return false;
-        }
-
-        var title = detail.TryGetProperty("title", out var titleNode)
-            ? titleNode.GetString() ?? $"Workshop Item {workshopId}"
-            : $"Workshop Item {workshopId}";
-        var description = detail.TryGetProperty("file_description", out var descNode)
-            ? descNode.GetString()
-            : detail.TryGetProperty("description", out var descriptionNode)
-                ? descriptionNode.GetString()
-                : string.Empty;
-
+        var title = ResolveTitle(detail, workshopId);
+        var description = ResolveDescription(detail);
         var tags = ParseTags(detail);
         var parentIds = ParseParentDependencies(detail, description, workshopId);
         var (itemType, reason) = ClassifyWorkshopItem(title, description, tags, parentIds);
-
-        var metadata = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
-        {
-            ["timeUpdated"] = detail.TryGetProperty("time_updated", out var updatedNode)
-                ? updatedNode.ToString()
-                : string.Empty,
-            ["subscriptions"] = detail.TryGetProperty("subscriptions", out var subscriptionsNode)
-                ? subscriptionsNode.ToString()
-                : string.Empty
-        };
 
         item = new WorkshopInventoryItem(
             WorkshopId: workshopId,
@@ -331,8 +377,61 @@ public sealed class WorkshopInventoryService : IWorkshopInventoryService
             Tags: tags,
             Description: description,
             ClassificationReason: reason,
-            Metadata: metadata);
+            Metadata: BuildItemMetadata(detail));
         return true;
+    }
+
+    private static bool TryGetWorkshopId(JsonElement detail, out string workshopId)
+    {
+        workshopId = string.Empty;
+        if (!detail.TryGetProperty("publishedfileid", out var idNode))
+        {
+            return false;
+        }
+
+        var value = idNode.GetString();
+        if (string.IsNullOrWhiteSpace(value))
+        {
+            return false;
+        }
+
+        workshopId = value;
+        return true;
+    }
+
+    private static string ResolveTitle(JsonElement detail, string workshopId)
+    {
+        return detail.TryGetProperty("title", out var titleNode)
+            ? titleNode.GetString() ?? $"Workshop Item {workshopId}"
+            : $"Workshop Item {workshopId}";
+    }
+
+    private static string ResolveDescription(JsonElement detail)
+    {
+        if (detail.TryGetProperty("file_description", out var descNode))
+        {
+            return descNode.GetString() ?? string.Empty;
+        }
+
+        if (detail.TryGetProperty("description", out var descriptionNode))
+        {
+            return descriptionNode.GetString() ?? string.Empty;
+        }
+
+        return string.Empty;
+    }
+
+    private static Dictionary<string, string> BuildItemMetadata(JsonElement detail)
+    {
+        return new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
+        {
+            ["timeUpdated"] = detail.TryGetProperty("time_updated", out var updatedNode)
+                ? updatedNode.ToString()
+                : string.Empty,
+            ["subscriptions"] = detail.TryGetProperty("subscriptions", out var subscriptionsNode)
+                ? subscriptionsNode.ToString()
+                : string.Empty
+        };
     }
 
     private static IReadOnlyList<string> ParseTags(JsonElement detail)
@@ -360,35 +459,48 @@ public sealed class WorkshopInventoryService : IWorkshopInventoryService
     private static IReadOnlyList<string> ParseParentDependencies(JsonElement detail, string? description, string selfId)
     {
         var parents = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
-
-        if (detail.TryGetProperty("children", out var childrenNode) && childrenNode.ValueKind == JsonValueKind.Array)
-        {
-            foreach (var entry in childrenNode.EnumerateArray())
-            {
-                if (entry.TryGetProperty("publishedfileid", out var childIdNode))
-                {
-                    var childId = childIdNode.GetString();
-                    if (!string.IsNullOrWhiteSpace(childId) && !string.Equals(childId, selfId, StringComparison.OrdinalIgnoreCase))
-                    {
-                        parents.Add(childId);
-                    }
-                }
-            }
-        }
-
-        if (!string.IsNullOrWhiteSpace(description))
-        {
-            foreach (Match match in SteamModRegex.Matches(description))
-            {
-                var id = match.Groups["id"].Value;
-                if (!string.IsNullOrWhiteSpace(id) && !string.Equals(id, selfId, StringComparison.OrdinalIgnoreCase))
-                {
-                    parents.Add(id);
-                }
-            }
-        }
-
+        AddParentsFromChildren(detail, selfId, parents);
+        AddParentsFromDescription(description, selfId, parents);
         return parents.OrderBy(x => x, StringComparer.OrdinalIgnoreCase).ToArray();
+    }
+
+    private static void AddParentsFromChildren(JsonElement detail, string selfId, ISet<string> parents)
+    {
+        if (!detail.TryGetProperty("children", out var childrenNode) || childrenNode.ValueKind != JsonValueKind.Array)
+        {
+            return;
+        }
+
+        foreach (var entry in childrenNode.EnumerateArray())
+        {
+            if (!entry.TryGetProperty("publishedfileid", out var childIdNode))
+            {
+                continue;
+            }
+
+            var childId = childIdNode.GetString();
+            if (!string.IsNullOrWhiteSpace(childId) && !string.Equals(childId, selfId, StringComparison.OrdinalIgnoreCase))
+            {
+                parents.Add(childId);
+            }
+        }
+    }
+
+    private static void AddParentsFromDescription(string? description, string selfId, ISet<string> parents)
+    {
+        if (string.IsNullOrWhiteSpace(description))
+        {
+            return;
+        }
+
+        foreach (Match match in SteamModRegex.Matches(description))
+        {
+            var id = match.Groups["id"].Value;
+            if (!string.IsNullOrWhiteSpace(id) && !string.Equals(id, selfId, StringComparison.OrdinalIgnoreCase))
+            {
+                parents.Add(id);
+            }
+        }
     }
 
     private static (WorkshopItemType ItemType, string Reason) ClassifyWorkshopItem(
@@ -437,71 +549,88 @@ public sealed class WorkshopInventoryService : IWorkshopInventoryService
 
         foreach (var item in items.OrderBy(x => x.WorkshopId, StringComparer.OrdinalIgnoreCase))
         {
-            if (item.ParentWorkshopIds.Count == 0)
+            foreach (var candidate in BuildChainCandidates(item, map))
             {
-                AddChain(
-                    orderedIds: new[] { item.WorkshopId },
-                    reason: item.ClassificationReason ?? "independent_mod",
-                    missingParentIds: Array.Empty<string>());
-                continue;
-            }
-
-            var missingParentIds = item.ParentWorkshopIds
-                .Where(id => !string.IsNullOrWhiteSpace(id) && !map.ContainsKey(id))
-                .Distinct(StringComparer.OrdinalIgnoreCase)
-                .OrderBy(id => id, StringComparer.OrdinalIgnoreCase)
-                .ToArray();
-            var resolvedParentIds = item.ParentWorkshopIds
-                .Where(id => !string.IsNullOrWhiteSpace(id) && map.ContainsKey(id))
-                .Distinct(StringComparer.OrdinalIgnoreCase)
-                .OrderBy(id => id, StringComparer.OrdinalIgnoreCase)
-                .ToArray();
-
-            if (resolvedParentIds.Length == 0)
-            {
-                AddChain(
-                    orderedIds: new[] { item.WorkshopId },
-                    reason: missingParentIds.Length > 0
-                        ? "parent_dependency_missing"
-                        : item.ClassificationReason ?? "parent_dependency",
-                    missingParentIds: missingParentIds);
-                continue;
-            }
-
-            foreach (var parentId in resolvedParentIds)
-            {
-                var ordered = BuildParentFirstChain(parentId, item.WorkshopId, map);
-                AddChain(
-                    orderedIds: ordered,
-                    reason: missingParentIds.Length > 0
-                        ? "parent_dependency_partial_missing"
-                        : item.ClassificationReason ?? "parent_dependency",
-                    missingParentIds: missingParentIds);
+                AddChainIfUnique(candidate.OrderedIds, candidate.Reason, candidate.MissingParentIds, chains, seen);
             }
         }
 
         return chains;
+    }
 
-        void AddChain(IReadOnlyList<string> orderedIds, string reason, IReadOnlyList<string> missingParentIds)
+    private static IEnumerable<ChainCandidate> BuildChainCandidates(
+        WorkshopInventoryItem item,
+        IReadOnlyDictionary<string, WorkshopInventoryItem> map)
+    {
+        if (item.ParentWorkshopIds.Count == 0)
         {
-            if (orderedIds.Count == 0)
-            {
-                return;
-            }
-
-            var chainId = string.Join(">", orderedIds);
-            if (!seen.Add(chainId))
-            {
-                return;
-            }
-
-            chains.Add(new WorkshopInventoryChain(
-                ChainId: chainId,
-                OrderedWorkshopIds: orderedIds,
-                ClassificationReason: reason,
-                ParentFirst: true,
-                MissingParentIds: missingParentIds));
+            yield return new ChainCandidate(
+                OrderedIds: new[] { item.WorkshopId },
+                Reason: item.ClassificationReason ?? "independent_mod",
+                MissingParentIds: Array.Empty<string>());
+            yield break;
         }
+
+        var missingParentIds = item.ParentWorkshopIds
+            .Where(id => !string.IsNullOrWhiteSpace(id) && !map.ContainsKey(id))
+            .Distinct(StringComparer.OrdinalIgnoreCase)
+            .OrderBy(id => id, StringComparer.OrdinalIgnoreCase)
+            .ToArray();
+
+        var resolvedParentIds = item.ParentWorkshopIds
+            .Where(id => !string.IsNullOrWhiteSpace(id) && map.ContainsKey(id))
+            .Distinct(StringComparer.OrdinalIgnoreCase)
+            .OrderBy(id => id, StringComparer.OrdinalIgnoreCase)
+            .ToArray();
+
+        if (resolvedParentIds.Length == 0)
+        {
+            yield return new ChainCandidate(
+                OrderedIds: new[] { item.WorkshopId },
+                Reason: missingParentIds.Length > 0
+                    ? "parent_dependency_missing"
+                    : item.ClassificationReason ?? "parent_dependency",
+                MissingParentIds: missingParentIds);
+            yield break;
+        }
+
+        var reason = missingParentIds.Length > 0
+            ? "parent_dependency_partial_missing"
+            : item.ClassificationReason ?? "parent_dependency";
+
+        foreach (var parentId in resolvedParentIds)
+        {
+            yield return new ChainCandidate(
+                OrderedIds: BuildParentFirstChain(parentId, item.WorkshopId, map),
+                Reason: reason,
+                MissingParentIds: missingParentIds);
+        }
+    }
+
+    private static void AddChainIfUnique(
+        IReadOnlyList<string> orderedIds,
+        string reason,
+        IReadOnlyList<string> missingParentIds,
+        ICollection<WorkshopInventoryChain> chains,
+        ISet<string> seen)
+    {
+        if (orderedIds.Count == 0)
+        {
+            return;
+        }
+
+        var chainId = string.Join(">", orderedIds);
+        if (!seen.Add(chainId))
+        {
+            return;
+        }
+
+        chains.Add(new WorkshopInventoryChain(
+            ChainId: chainId,
+            OrderedWorkshopIds: orderedIds,
+            ClassificationReason: reason,
+            ParentFirst: true,
+            MissingParentIds: missingParentIds));
     }
 
     private static IReadOnlyList<string> BuildParentFirstChain(
@@ -526,25 +655,22 @@ public sealed class WorkshopInventoryService : IWorkshopInventoryService
         ISet<string> visited,
         ICollection<string> ordered)
     {
-        if (string.IsNullOrWhiteSpace(currentId) || !map.ContainsKey(currentId))
-        {
-            return;
-        }
-
-        if (!visited.Add(currentId))
+        if (string.IsNullOrWhiteSpace(currentId) || !map.ContainsKey(currentId) || !visited.Add(currentId))
         {
             return;
         }
 
         var parent = map[currentId];
-        if (parent.ParentWorkshopIds.Count > 0)
+        foreach (var ancestor in parent.ParentWorkshopIds)
         {
-            foreach (var ancestor in parent.ParentWorkshopIds)
-            {
-                BuildParentStack(ancestor, map, visited, ordered);
-            }
+            BuildParentStack(ancestor, map, visited, ordered);
         }
 
         ordered.Add(currentId);
     }
+
+    private readonly record struct ChainCandidate(
+        IReadOnlyList<string> OrderedIds,
+        string Reason,
+        IReadOnlyList<string> MissingParentIds);
 }

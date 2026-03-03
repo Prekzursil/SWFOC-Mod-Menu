@@ -253,6 +253,10 @@ public sealed class ModMechanicDetectionServiceTests
             IReadOnlyList<RosterEntityRecord> entities,
             CancellationToken cancellationToken)
         {
+            _ = targetProfileId;
+            _ = activeWorkshopIds;
+            _ = entities;
+            _ = cancellationToken;
             return Task.FromResult(_report);
         }
     }

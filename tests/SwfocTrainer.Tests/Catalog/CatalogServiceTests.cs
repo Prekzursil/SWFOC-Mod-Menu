@@ -100,6 +100,7 @@ public sealed class CatalogServiceTests
 
         public Task<ProfileManifest> LoadManifestAsync(CancellationToken cancellationToken)
         {
+            _ = cancellationToken;
             return Task.FromResult(new ProfileManifest(
                 Version: "1.0",
                 PublishedAt: DateTimeOffset.UtcNow,
@@ -111,21 +112,28 @@ public sealed class CatalogServiceTests
 
         public Task<TrainerProfile> LoadProfileAsync(string profileId, CancellationToken cancellationToken)
         {
+            _ = profileId;
+            _ = cancellationToken;
             return Task.FromResult(_profile);
         }
 
         public Task<TrainerProfile> ResolveInheritedProfileAsync(string profileId, CancellationToken cancellationToken)
         {
+            _ = profileId;
+            _ = cancellationToken;
             return Task.FromResult(_profile);
         }
 
         public Task ValidateProfileAsync(TrainerProfile profile, CancellationToken cancellationToken)
         {
+            _ = profile;
+            _ = cancellationToken;
             return Task.CompletedTask;
         }
 
         public Task<IReadOnlyList<string>> ListAvailableProfilesAsync(CancellationToken cancellationToken)
         {
+            _ = cancellationToken;
             return Task.FromResult((IReadOnlyList<string>)new[] { _profile.Id });
         }
     }

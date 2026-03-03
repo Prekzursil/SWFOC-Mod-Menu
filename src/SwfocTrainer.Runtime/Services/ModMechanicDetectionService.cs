@@ -6,6 +6,18 @@ namespace SwfocTrainer.Runtime.Services;
 
 public sealed class ModMechanicDetectionService : IModMechanicDetectionService
 {
+    private const string UnitCatalogKey = "unit_catalog";
+    private const string FactionCatalogKey = "faction_catalog";
+    private const string BuildingCatalogKey = "building_catalog";
+    private const string EntityCatalogKey = "entity_catalog";
+    private const string ActionSpawnUnitHelper = "spawn_unit_helper";
+    private const string ActionSpawnContextEntity = "spawn_context_entity";
+    private const string ActionSpawnTacticalEntity = "spawn_tactical_entity";
+    private const string ActionSpawnGalacticEntity = "spawn_galactic_entity";
+    private const string ActionPlacePlanetBuilding = "place_planet_building";
+    private const string ActionSetContextFaction = "set_context_faction";
+    private const string ActionSetContextAllegiance = "set_context_allegiance";
+
     private readonly ITransplantCompatibilityService? _transplantCompatibilityService;
 
     public ModMechanicDetectionService()
@@ -31,41 +43,82 @@ public sealed class ModMechanicDetectionService : IModMechanicDetectionService
             ReadMetadataValue(session.Process.Metadata, "helperBridgeState"),
             "ready",
             StringComparison.OrdinalIgnoreCase);
-        var dependenciesSatisfied = disabledActions.Count == 0;
         var activeWorkshopIds = ParseActiveWorkshopIds(session.Process);
         var rosterEntities = BuildRosterEntities(profile, catalog);
+        var transplantReport = await TryResolveTransplantReportAsync(profile, activeWorkshopIds, rosterEntities, cancellationToken);
 
-        TransplantValidationReport? transplantReport = null;
-        if (_transplantCompatibilityService is not null)
+        var diagnostics = BuildDiagnostics(
+            session,
+            catalog,
+            disabledActions,
+            activeWorkshopIds,
+            transplantReport);
+        var supports = BuildActionSupport(
+            profile,
+            session,
+            catalog,
+            disabledActions,
+            helperReady,
+            transplantReport);
+
+        var report = new ModMechanicReport(
+            ProfileId: profile.Id,
+            GeneratedAtUtc: DateTimeOffset.UtcNow,
+            DependenciesSatisfied: disabledActions.Count == 0,
+            HelperBridgeReady: helperReady,
+            ActionSupport: supports,
+            Diagnostics: diagnostics);
+
+        return report;
+    }
+
+    private async Task<TransplantValidationReport?> TryResolveTransplantReportAsync(
+        TrainerProfile profile,
+        IReadOnlyList<string> activeWorkshopIds,
+        IReadOnlyList<RosterEntityRecord> rosterEntities,
+        CancellationToken cancellationToken)
+    {
+        if (_transplantCompatibilityService is null)
         {
-            try
-            {
-                transplantReport = await _transplantCompatibilityService
-                    .ValidateAsync(profile.Id, activeWorkshopIds, rosterEntities, cancellationToken);
-            }
-            catch (OperationCanceledException)
-            {
-                throw;
-            }
-            catch
-            {
-                transplantReport = null;
-            }
+            return null;
         }
 
+        try
+        {
+            return await _transplantCompatibilityService
+                .ValidateAsync(profile.Id, activeWorkshopIds, rosterEntities, cancellationToken);
+        }
+        catch (OperationCanceledException)
+        {
+            throw;
+        }
+        catch
+        {
+            return null;
+        }
+    }
+
+    private Dictionary<string, object?> BuildDiagnostics(
+        AttachSession session,
+        IReadOnlyDictionary<string, IReadOnlyList<string>>? catalog,
+        IReadOnlySet<string> disabledActions,
+        IReadOnlyList<string> activeWorkshopIds,
+        TransplantValidationReport? transplantReport)
+    {
         var diagnostics = new Dictionary<string, object?>(StringComparer.OrdinalIgnoreCase)
         {
             ["dependencyValidation"] = ReadMetadataValue(session.Process.Metadata, "dependencyValidation") ?? string.Empty,
             ["dependencyDisabledActions"] = disabledActions.OrderBy(x => x, StringComparer.OrdinalIgnoreCase).ToArray(),
             ["helperBridgeState"] = ReadMetadataValue(session.Process.Metadata, "helperBridgeState") ?? "unknown",
-            ["unitCatalogCount"] = catalog is not null && catalog.TryGetValue("unit_catalog", out var units) ? units.Count : 0,
-            ["factionCatalogCount"] = catalog is not null && catalog.TryGetValue("faction_catalog", out var factions) ? factions.Count : 0,
-            ["buildingCatalogCount"] = catalog is not null && catalog.TryGetValue("building_catalog", out var buildings) ? buildings.Count : 0,
+            ["unitCatalogCount"] = catalog is not null && catalog.TryGetValue(UnitCatalogKey, out var units) ? units.Count : 0,
+            ["factionCatalogCount"] = catalog is not null && catalog.TryGetValue(FactionCatalogKey, out var factions) ? factions.Count : 0,
+            ["buildingCatalogCount"] = catalog is not null && catalog.TryGetValue(BuildingCatalogKey, out var buildings) ? buildings.Count : 0,
             ["activeWorkshopIds"] = activeWorkshopIds,
             ["transplantAllResolved"] = transplantReport?.AllResolved ?? true,
             ["transplantBlockingEntityCount"] = transplantReport?.BlockingEntityCount ?? 0,
             ["transplantEnabled"] = _transplantCompatibilityService is not null
         };
+
         if (transplantReport is not null)
         {
             diagnostics["transplantBlockingEntityIds"] = transplantReport.Entities
@@ -76,34 +129,10 @@ public sealed class ModMechanicDetectionService : IModMechanicDetectionService
                 .ToArray();
         }
 
-        var supports = new List<ModMechanicSupport>(profile.Actions.Count);
-        foreach (var (actionId, action) in profile.Actions.OrderBy(x => x.Key, StringComparer.OrdinalIgnoreCase))
-        {
-            supports.Add(EvaluateAction(
-                actionId,
-                action,
-                profile,
-                session,
-                catalog,
-                disabledActions,
-                helperReady,
-                transplantReport));
-        }
-
-        var report = new ModMechanicReport(
-            ProfileId: profile.Id,
-            GeneratedAtUtc: DateTimeOffset.UtcNow,
-            DependenciesSatisfied: dependenciesSatisfied,
-            HelperBridgeReady: helperReady,
-            ActionSupport: supports,
-            Diagnostics: diagnostics);
-
-        return report;
+        return diagnostics;
     }
 
-    private static ModMechanicSupport EvaluateAction(
-        string actionId,
-        ActionSpec action,
+    private static IReadOnlyList<ModMechanicSupport> BuildActionSupport(
         TrainerProfile profile,
         AttachSession session,
         IReadOnlyDictionary<string, IReadOnlyList<string>>? catalog,
@@ -111,155 +140,212 @@ public sealed class ModMechanicDetectionService : IModMechanicDetectionService
         bool helperReady,
         TransplantValidationReport? transplantReport)
     {
-        if (disabledActions.Contains(actionId))
+        var supports = new List<ModMechanicSupport>(profile.Actions.Count);
+        foreach (var (actionId, action) in profile.Actions.OrderBy(x => x.Key, StringComparer.OrdinalIgnoreCase))
         {
-            return new ModMechanicSupport(
+            supports.Add(EvaluateAction(new ActionEvaluationContext(
                 ActionId: actionId,
-                Supported: false,
-                ReasonCode: RuntimeReasonCode.CAPABILITY_REQUIRED_MISSING,
-                Message: "Action is dependency-gated for the current workshop chain.",
-                Confidence: 0.98d);
+                Action: action,
+                Profile: profile,
+                Session: session,
+                Catalog: catalog,
+                DisabledActions: disabledActions,
+                HelperReady: helperReady,
+                TransplantReport: transplantReport)));
         }
 
-        if (IsEntityOperationAction(actionId) &&
-            transplantReport is not null &&
-            !transplantReport.AllResolved)
+        return supports;
+    }
+
+    private static ModMechanicSupport EvaluateAction(ActionEvaluationContext context)
+    {
+        if (TryEvaluateDependencyGate(context, out var support) ||
+            TryEvaluateHelperGate(context, out support) ||
+            TryEvaluateRosterGate(context, out support) ||
+            TryEvaluateContextFactionGate(context, out support) ||
+            TryEvaluateSymbolGate(context, out support))
         {
-            var blocking = transplantReport.Entities
-                .FirstOrDefault(static entity => !entity.Resolved);
-            var blockingEntityId = blocking?.EntityId ?? "unknown_entity";
-            var blockingReason = blocking?.ReasonCode.ToString() ?? RuntimeReasonCode.TRANSPLANT_VALIDATION_FAILED.ToString();
-            return new ModMechanicSupport(
-                ActionId: actionId,
-                Supported: false,
-                ReasonCode: RuntimeReasonCode.CROSS_MOD_TRANSPLANT_REQUIRED,
-                Message: $"Cross-mod transplant validation failed for entity '{blockingEntityId}' (reason={blockingReason}).",
-                Confidence: 0.99d);
-        }
-
-        if (action.ExecutionKind == ExecutionKind.Helper)
-        {
-            if (!helperReady)
-            {
-                return new ModMechanicSupport(
-                    ActionId: actionId,
-                    Supported: false,
-                    ReasonCode: RuntimeReasonCode.HELPER_BRIDGE_UNAVAILABLE,
-                    Message: "Helper bridge is unavailable for this session.",
-                    Confidence: 0.98d);
-            }
-
-            if (profile.HelperModHooks.Count == 0)
-            {
-                return new ModMechanicSupport(
-                    ActionId: actionId,
-                    Supported: false,
-                    ReasonCode: RuntimeReasonCode.HELPER_ENTRYPOINT_NOT_FOUND,
-                    Message: "Profile has helper actions but no helper hook metadata.",
-                    Confidence: 0.98d);
-            }
-
-            return new ModMechanicSupport(
-                ActionId: actionId,
-                Supported: true,
-                ReasonCode: RuntimeReasonCode.HELPER_EXECUTION_APPLIED,
-                Message: "Helper bridge and hook metadata are available.",
-                Confidence: 0.85d);
-        }
-
-        if (RequiresSpawnRoster(actionId))
-        {
-            var unitCount = catalog is not null && catalog.TryGetValue("unit_catalog", out var units)
-                ? units.Count
-                : 0;
-            var factionCount = catalog is not null && catalog.TryGetValue("faction_catalog", out var factions)
-                ? factions.Count
-                : 0;
-            if (unitCount == 0 || factionCount == 0)
-            {
-                return new ModMechanicSupport(
-                    ActionId: actionId,
-                    Supported: false,
-                    ReasonCode: RuntimeReasonCode.CAPABILITY_REQUIRED_MISSING,
-                    Message: "Spawn roster catalog is unavailable for this profile/chain.",
-                    Confidence: 0.95d);
-            }
-        }
-
-        if (RequiresBuildingRoster(actionId))
-        {
-            var buildingCount = catalog is not null && catalog.TryGetValue("building_catalog", out var buildings)
-                ? buildings.Count
-                : 0;
-            var factionCount = catalog is not null && catalog.TryGetValue("faction_catalog", out var factions)
-                ? factions.Count
-                : 0;
-            if (buildingCount == 0 || factionCount == 0)
-            {
-                return new ModMechanicSupport(
-                    ActionId: actionId,
-                    Supported: false,
-                    ReasonCode: RuntimeReasonCode.CAPABILITY_REQUIRED_MISSING,
-                    Message: "Building roster catalog is unavailable for this profile/chain.",
-                    Confidence: 0.95d);
-            }
-        }
-
-        if (IsContextFactionAction(actionId))
-        {
-            var hasTacticalOwner = TryGetHealthySymbol(session, "selected_owner_faction");
-            var hasPlanetOwner = TryGetHealthySymbol(session, "planet_owner");
-            if (!hasTacticalOwner && !hasPlanetOwner)
-            {
-                return new ModMechanicSupport(
-                    ActionId: actionId,
-                    Supported: false,
-                    ReasonCode: RuntimeReasonCode.CAPABILITY_REQUIRED_MISSING,
-                    Message: "Neither selected-unit owner nor planet owner symbols are available.",
-                    Confidence: 0.95d);
-            }
-
-            return new ModMechanicSupport(
-                ActionId: actionId,
-                Supported: true,
-                ReasonCode: RuntimeReasonCode.CAPABILITY_PROBE_PASS,
-                Message: "Context faction/allegiance routing symbols are available.",
-                Confidence: 0.85d);
-        }
-
-        if (ActionSymbolRegistry.TryGetSymbol(actionId, out var symbol))
-        {
-            if (!session.Symbols.TryGetValue(symbol, out var symbolInfo) ||
-                symbolInfo is null ||
-                symbolInfo.Address == nint.Zero ||
-                symbolInfo.HealthStatus == SymbolHealthStatus.Unresolved)
-            {
-                return new ModMechanicSupport(
-                    ActionId: actionId,
-                    Supported: false,
-                    ReasonCode: RuntimeReasonCode.CAPABILITY_REQUIRED_MISSING,
-                    Message: $"Symbol '{symbol}' is unresolved for this profile variant.",
-                    Confidence: 0.95d);
-            }
+            return support;
         }
 
         return new ModMechanicSupport(
-            ActionId: actionId,
+            ActionId: context.ActionId,
             Supported: true,
             ReasonCode: RuntimeReasonCode.CAPABILITY_PROBE_PASS,
             Message: "Mechanic prerequisites are available.",
             Confidence: 0.80d);
     }
 
+    private static bool TryEvaluateDependencyGate(ActionEvaluationContext context, out ModMechanicSupport support)
+    {
+        if (context.DisabledActions.Contains(context.ActionId))
+        {
+            support = new ModMechanicSupport(
+                ActionId: context.ActionId,
+                Supported: false,
+                ReasonCode: RuntimeReasonCode.CAPABILITY_REQUIRED_MISSING,
+                Message: "Action is dependency-gated for the current workshop chain.",
+                Confidence: 0.98d);
+            return true;
+        }
+
+        if (IsEntityOperationAction(context.ActionId) &&
+            context.TransplantReport is not null &&
+            !context.TransplantReport.AllResolved)
+        {
+            var blocking = context.TransplantReport.Entities.FirstOrDefault(static entity => !entity.Resolved);
+            var blockingEntityId = blocking?.EntityId ?? "unknown_entity";
+            var blockingReason = blocking?.ReasonCode.ToString() ?? RuntimeReasonCode.TRANSPLANT_VALIDATION_FAILED.ToString();
+            support = new ModMechanicSupport(
+                ActionId: context.ActionId,
+                Supported: false,
+                ReasonCode: RuntimeReasonCode.CROSS_MOD_TRANSPLANT_REQUIRED,
+                Message: $"Cross-mod transplant validation failed for entity '{blockingEntityId}' (reason={blockingReason}).",
+                Confidence: 0.99d);
+            return true;
+        }
+
+        support = default!;
+        return false;
+    }
+
+    private static bool TryEvaluateHelperGate(ActionEvaluationContext context, out ModMechanicSupport support)
+    {
+        if (context.Action.ExecutionKind != ExecutionKind.Helper)
+        {
+            support = default!;
+            return false;
+        }
+
+        if (!context.HelperReady)
+        {
+            support = new ModMechanicSupport(
+                ActionId: context.ActionId,
+                Supported: false,
+                ReasonCode: RuntimeReasonCode.HELPER_BRIDGE_UNAVAILABLE,
+                Message: "Helper bridge is unavailable for this session.",
+                Confidence: 0.98d);
+            return true;
+        }
+
+        if (context.Profile.HelperModHooks.Count == 0)
+        {
+            support = new ModMechanicSupport(
+                ActionId: context.ActionId,
+                Supported: false,
+                ReasonCode: RuntimeReasonCode.HELPER_ENTRYPOINT_NOT_FOUND,
+                Message: "Profile has helper actions but no helper hook metadata.",
+                Confidence: 0.98d);
+            return true;
+        }
+
+        support = new ModMechanicSupport(
+            ActionId: context.ActionId,
+            Supported: true,
+            ReasonCode: RuntimeReasonCode.HELPER_EXECUTION_APPLIED,
+            Message: "Helper bridge and hook metadata are available.",
+            Confidence: 0.85d);
+        return true;
+    }
+
+    private static bool TryEvaluateRosterGate(ActionEvaluationContext context, out ModMechanicSupport support)
+    {
+        if (RequiresSpawnRoster(context.ActionId) &&
+            (!HasCatalogEntries(context.Catalog, UnitCatalogKey) || !HasCatalogEntries(context.Catalog, FactionCatalogKey)))
+        {
+            support = new ModMechanicSupport(
+                ActionId: context.ActionId,
+                Supported: false,
+                ReasonCode: RuntimeReasonCode.CAPABILITY_REQUIRED_MISSING,
+                Message: "Spawn roster catalog is unavailable for this profile/chain.",
+                Confidence: 0.95d);
+            return true;
+        }
+
+        if (RequiresBuildingRoster(context.ActionId) &&
+            (!HasCatalogEntries(context.Catalog, BuildingCatalogKey) || !HasCatalogEntries(context.Catalog, FactionCatalogKey)))
+        {
+            support = new ModMechanicSupport(
+                ActionId: context.ActionId,
+                Supported: false,
+                ReasonCode: RuntimeReasonCode.CAPABILITY_REQUIRED_MISSING,
+                Message: "Building roster catalog is unavailable for this profile/chain.",
+                Confidence: 0.95d);
+            return true;
+        }
+
+        support = default!;
+        return false;
+    }
+
+    private static bool TryEvaluateContextFactionGate(ActionEvaluationContext context, out ModMechanicSupport support)
+    {
+        if (!IsContextFactionAction(context.ActionId))
+        {
+            support = default!;
+            return false;
+        }
+
+        var hasTacticalOwner = TryGetHealthySymbol(context.Session, "selected_owner_faction");
+        var hasPlanetOwner = TryGetHealthySymbol(context.Session, "planet_owner");
+        if (!hasTacticalOwner && !hasPlanetOwner)
+        {
+            support = new ModMechanicSupport(
+                ActionId: context.ActionId,
+                Supported: false,
+                ReasonCode: RuntimeReasonCode.CAPABILITY_REQUIRED_MISSING,
+                Message: "Neither selected-unit owner nor planet owner symbols are available.",
+                Confidence: 0.95d);
+            return true;
+        }
+
+        support = new ModMechanicSupport(
+            ActionId: context.ActionId,
+            Supported: true,
+            ReasonCode: RuntimeReasonCode.CAPABILITY_PROBE_PASS,
+            Message: "Context faction/allegiance routing symbols are available.",
+            Confidence: 0.85d);
+        return true;
+    }
+
+    private static bool TryEvaluateSymbolGate(ActionEvaluationContext context, out ModMechanicSupport support)
+    {
+        if (!ActionSymbolRegistry.TryGetSymbol(context.ActionId, out var symbol))
+        {
+            support = default!;
+            return false;
+        }
+
+        if (context.Session.Symbols.TryGetValue(symbol, out var symbolInfo) &&
+            symbolInfo is not null &&
+            symbolInfo.Address != nint.Zero &&
+            symbolInfo.HealthStatus != SymbolHealthStatus.Unresolved)
+        {
+            support = default!;
+            return false;
+        }
+
+        support = new ModMechanicSupport(
+            ActionId: context.ActionId,
+            Supported: false,
+            ReasonCode: RuntimeReasonCode.CAPABILITY_REQUIRED_MISSING,
+            Message: $"Symbol '{symbol}' is unresolved for this profile variant.",
+            Confidence: 0.95d);
+        return true;
+    }
+
+    private static bool HasCatalogEntries(IReadOnlyDictionary<string, IReadOnlyList<string>>? catalog, string key)
+    {
+        return catalog is not null && catalog.TryGetValue(key, out var values) && values.Count > 0;
+    }
+
     private static IReadOnlyList<string> ParseActiveWorkshopIds(ProcessMetadata process)
     {
         var values = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
-        foreach (var id in process.LaunchContext?.SteamModIds ?? Array.Empty<string>())
+        foreach (var id in (process.LaunchContext?.SteamModIds ?? Array.Empty<string>())
+                     .Where(static id => !string.IsNullOrWhiteSpace(id)))
         {
-            if (!string.IsNullOrWhiteSpace(id))
-            {
-                values.Add(id.Trim());
-            }
+            values.Add(id.Trim());
         }
 
         AddCsvValues(values, ReadMetadataValue(process.Metadata, "forcedWorkshopIds"));
@@ -275,12 +361,11 @@ public sealed class ModMechanicDetectionService : IModMechanicDetectionService
             return;
         }
 
-        foreach (var raw in csv.Split(',', StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries))
+        foreach (var value in csv
+                     .Split(',', StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries)
+                     .Where(static raw => !string.IsNullOrWhiteSpace(raw)))
         {
-            if (!string.IsNullOrWhiteSpace(raw))
-            {
-                sink.Add(raw.Trim());
-            }
+            sink.Add(value.Trim());
         }
     }
 
@@ -288,62 +373,82 @@ public sealed class ModMechanicDetectionService : IModMechanicDetectionService
         TrainerProfile profile,
         IReadOnlyDictionary<string, IReadOnlyList<string>>? catalog)
     {
-        if (catalog is null || !catalog.TryGetValue("entity_catalog", out var entries) || entries.Count == 0)
+        if (catalog is null || !catalog.TryGetValue(EntityCatalogKey, out var entries) || entries.Count == 0)
         {
             return Array.Empty<RosterEntityRecord>();
         }
 
-        var defaultFaction = catalog.TryGetValue("faction_catalog", out var factions) && factions.Count > 0
+        var defaultFaction = catalog.TryGetValue(FactionCatalogKey, out var factions) && factions.Count > 0
             ? factions[0]
             : "Empire";
         var records = new List<RosterEntityRecord>(entries.Count);
         foreach (var raw in entries)
         {
-            if (string.IsNullOrWhiteSpace(raw))
+            if (!TryParseEntityCatalogEntry(raw, profile, defaultFaction, out var record))
             {
                 continue;
             }
 
-            var segments = raw.Split('|', StringSplitOptions.TrimEntries);
-            if (segments.Length < 2 || string.IsNullOrWhiteSpace(segments[1]))
-            {
-                continue;
-            }
-
-            var kind = ParseEntityKind(segments[0]);
-            var entityId = segments[1];
-            var sourceProfileId = segments.Length >= 3 && !string.IsNullOrWhiteSpace(segments[2])
-                ? segments[2]
-                : profile.Id;
-            var sourceWorkshopId = segments.Length >= 4 && !string.IsNullOrWhiteSpace(segments[3])
-                ? segments[3]
-                : profile.SteamWorkshopId;
-            var visualRef = segments.Length >= 5 && !string.IsNullOrWhiteSpace(segments[4])
-                ? segments[4]
-                : null;
-            var dependencies = segments.Length >= 6 && !string.IsNullOrWhiteSpace(segments[5])
-                ? segments[5]
-                    .Split(';', StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries)
-                    .Distinct(StringComparer.OrdinalIgnoreCase)
-                    .ToArray()
-                : Array.Empty<string>();
-            var allowedModes = kind is RosterEntityKind.Building or RosterEntityKind.SpaceStructure
-                ? new[] { RuntimeMode.Galactic }
-                : new[] { RuntimeMode.AnyTactical, RuntimeMode.Galactic };
-
-            records.Add(new RosterEntityRecord(
-                EntityId: entityId,
-                DisplayName: entityId,
-                SourceProfileId: sourceProfileId,
-                SourceWorkshopId: sourceWorkshopId,
-                EntityKind: kind,
-                DefaultFaction: defaultFaction,
-                AllowedModes: allowedModes,
-                VisualRef: visualRef,
-                DependencyRefs: dependencies));
+            records.Add(record);
         }
 
         return records;
+    }
+
+    private static bool TryParseEntityCatalogEntry(
+        string raw,
+        TrainerProfile profile,
+        string defaultFaction,
+        out RosterEntityRecord record)
+    {
+        record = default!;
+        if (string.IsNullOrWhiteSpace(raw))
+        {
+            return false;
+        }
+
+        var segments = raw.Split('|', StringSplitOptions.TrimEntries);
+        if (segments.Length < 2 || string.IsNullOrWhiteSpace(segments[1]))
+        {
+            return false;
+        }
+
+        var kind = ParseEntityKind(segments[0]);
+        var entityId = segments[1];
+        var sourceProfileId = segments.Length >= 3 && !string.IsNullOrWhiteSpace(segments[2])
+            ? segments[2]
+            : profile.Id;
+        var sourceWorkshopId = segments.Length >= 4 && !string.IsNullOrWhiteSpace(segments[3])
+            ? segments[3]
+            : profile.SteamWorkshopId;
+        var visualRef = segments.Length >= 5 && !string.IsNullOrWhiteSpace(segments[4])
+            ? segments[4]
+            : null;
+        var dependencies = segments.Length >= 6 && !string.IsNullOrWhiteSpace(segments[5])
+            ? segments[5]
+                .Split(';', StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries)
+                .Distinct(StringComparer.OrdinalIgnoreCase)
+                .ToArray()
+            : Array.Empty<string>();
+
+        record = new RosterEntityRecord(
+            EntityId: entityId,
+            DisplayName: entityId,
+            SourceProfileId: sourceProfileId,
+            SourceWorkshopId: sourceWorkshopId,
+            EntityKind: kind,
+            DefaultFaction: defaultFaction,
+            AllowedModes: ResolveAllowedModes(kind),
+            VisualRef: visualRef,
+            DependencyRefs: dependencies);
+        return true;
+    }
+
+    private static IReadOnlyList<RuntimeMode> ResolveAllowedModes(RosterEntityKind kind)
+    {
+        return kind is RosterEntityKind.Building or RosterEntityKind.SpaceStructure
+            ? new[] { RuntimeMode.Galactic }
+            : new[] { RuntimeMode.AnyTactical, RuntimeMode.Galactic };
     }
 
     private static RosterEntityKind ParseEntityKind(string value)
@@ -394,21 +499,21 @@ public sealed class ModMechanicDetectionService : IModMechanicDetectionService
 
     private static bool RequiresSpawnRoster(string actionId)
     {
-        return actionId.Equals("spawn_unit_helper", StringComparison.OrdinalIgnoreCase) ||
-               actionId.Equals("spawn_context_entity", StringComparison.OrdinalIgnoreCase) ||
-               actionId.Equals("spawn_tactical_entity", StringComparison.OrdinalIgnoreCase) ||
-               actionId.Equals("spawn_galactic_entity", StringComparison.OrdinalIgnoreCase);
+        return actionId.Equals(ActionSpawnUnitHelper, StringComparison.OrdinalIgnoreCase) ||
+               actionId.Equals(ActionSpawnContextEntity, StringComparison.OrdinalIgnoreCase) ||
+               actionId.Equals(ActionSpawnTacticalEntity, StringComparison.OrdinalIgnoreCase) ||
+               actionId.Equals(ActionSpawnGalacticEntity, StringComparison.OrdinalIgnoreCase);
     }
 
     private static bool RequiresBuildingRoster(string actionId)
     {
-        return actionId.Equals("place_planet_building", StringComparison.OrdinalIgnoreCase);
+        return actionId.Equals(ActionPlacePlanetBuilding, StringComparison.OrdinalIgnoreCase);
     }
 
     private static bool IsContextFactionAction(string actionId)
     {
-        return actionId.Equals("set_context_faction", StringComparison.OrdinalIgnoreCase) ||
-               actionId.Equals("set_context_allegiance", StringComparison.OrdinalIgnoreCase);
+        return actionId.Equals(ActionSetContextFaction, StringComparison.OrdinalIgnoreCase) ||
+               actionId.Equals(ActionSetContextAllegiance, StringComparison.OrdinalIgnoreCase);
     }
 
     private static bool IsEntityOperationAction(string actionId)
@@ -425,4 +530,14 @@ public sealed class ModMechanicDetectionService : IModMechanicDetectionService
                symbolInfo.Address != nint.Zero &&
                symbolInfo.HealthStatus != SymbolHealthStatus.Unresolved;
     }
+
+    private sealed record ActionEvaluationContext(
+        string ActionId,
+        ActionSpec Action,
+        TrainerProfile Profile,
+        AttachSession Session,
+        IReadOnlyDictionary<string, IReadOnlyList<string>>? Catalog,
+        IReadOnlySet<string> DisabledActions,
+        bool HelperReady,
+        TransplantValidationReport? TransplantReport);
 }

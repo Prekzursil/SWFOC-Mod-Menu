@@ -212,16 +212,32 @@ public sealed class NamedPipeHelperBridgeBackendTests
         public Func<ActionExecutionRequest, ActionExecutionResult>? ExecuteFactory { get; init; }
 
         public Task<CapabilityReport> ProbeCapabilitiesAsync(string profileId, ProcessMetadata processContext)
-            => Task.FromResult(ProbeReport);
+        {
+            _ = profileId;
+            _ = processContext;
+            return Task.FromResult(ProbeReport);
+        }
 
         public Task<CapabilityReport> ProbeCapabilitiesAsync(string profileId, ProcessMetadata processContext, CancellationToken cancellationToken)
-            => Task.FromResult(ProbeReport);
+        {
+            _ = profileId;
+            _ = processContext;
+            _ = cancellationToken;
+            return Task.FromResult(ProbeReport);
+        }
 
         public Task<ActionExecutionResult> ExecuteAsync(ActionExecutionRequest command, CapabilityReport capabilityReport)
-            => Task.FromResult(ExecuteFactory?.Invoke(command) ?? ExecuteResult);
+        {
+            _ = capabilityReport;
+            return Task.FromResult(ExecuteFactory?.Invoke(command) ?? ExecuteResult);
+        }
 
         public Task<ActionExecutionResult> ExecuteAsync(ActionExecutionRequest command, CapabilityReport capabilityReport, CancellationToken cancellationToken)
-            => Task.FromResult(ExecuteFactory?.Invoke(command) ?? ExecuteResult);
+        {
+            _ = capabilityReport;
+            _ = cancellationToken;
+            return Task.FromResult(ExecuteFactory?.Invoke(command) ?? ExecuteResult);
+        }
 
         public Task<BackendHealth> GetHealthAsync()
             => Task.FromResult(new BackendHealth(

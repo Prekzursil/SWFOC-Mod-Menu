@@ -48,6 +48,21 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
     private const int InstantBuildHookInstructionLength = 6;
     private const int InstantBuildHookJumpLength = 5;
     private const int InstantBuildHookCaveSize = 31;
+    private const string DiagnosticReasonCodeKey = "reasonCode";
+    private const string PayloadHelperHookIdKey = "helperHookId";
+    private const string PayloadHelperEntryPointKey = "helperEntryPoint";
+    private const string PayloadPopulationPolicyKey = "populationPolicy";
+    private const string PayloadPersistencePolicyKey = "persistencePolicy";
+    private const string PayloadAllowCrossFactionKey = "allowCrossFaction";
+    private const string PayloadSymbolKey = "symbol";
+    private const string ContextSpawnDefaultHookId = "spawn_bridge";
+    private const string ContextSpawnEntryPoint = "SWFOC_Trainer_Spawn_Context";
+    private const string ContextSpawnLegacyEntryPoint = "SWFOC_Trainer_Spawn";
+    private const string PopulationPolicyForceZeroTactical = "ForceZeroTactical";
+    private const string PopulationPolicyNormal = "Normal";
+    private const string PersistencePolicyEphemeralBattleOnly = "EphemeralBattleOnly";
+    private const string PersistencePolicyPersistentGalactic = "PersistentGalactic";
+
     public RuntimeAdapter(
         IProcessLocator processLocator,
         IProfileRepository profileRepository,
@@ -1274,99 +1289,149 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
 
     private ContextFactionResolution TryResolveContextFactionRequest(ActionExecutionRequest request)
     {
-        var requestedActionId = request.Action.Id;
-        var isContextFaction = requestedActionId.Equals(ActionIdSetContextFaction, StringComparison.OrdinalIgnoreCase) ||
-                               requestedActionId.Equals(ActionIdSetContextAllegiance, StringComparison.OrdinalIgnoreCase);
-        var isContextSpawn = requestedActionId.Equals(ActionIdSpawnContextEntity, StringComparison.OrdinalIgnoreCase);
-        if (!isContextFaction && !isContextSpawn)
+        var routeType = ResolveContextRouteType(request.Action.Id);
+        if (routeType == ContextRouteType.None)
         {
             return ContextFactionResolution.None;
         }
 
-        var targetActionId = isContextSpawn
-            ? ResolveContextSpawnTargetAction(request.RuntimeMode)
-            : ResolveContextFactionTargetAction(request.RuntimeMode);
+        var targetActionId = routeType switch
+        {
+            ContextRouteType.Spawn => ResolveContextSpawnTargetAction(request.RuntimeMode),
+            ContextRouteType.Faction => ResolveContextFactionTargetAction(request.RuntimeMode),
+            _ => null
+        };
         if (targetActionId is null)
         {
-            return ContextFactionResolution.Blocked(new ActionExecutionResult(
-                false,
-                isContextSpawn
-                    ? "Context entity spawning requires either tactical (land/space) or galactic runtime mode."
-                    : "Context faction routing requires either tactical (land/space) or galactic runtime mode.",
-                AddressSource.None,
-                new Dictionary<string, object?>
-                {
-                    ["reasonCode"] = RuntimeReasonCode.MODE_STRICT_TACTICAL_UNSPECIFIED.ToString(),
-                    ["runtimeMode"] = request.RuntimeMode.ToString()
-                }));
+            return ContextFactionResolution.Blocked(CreateContextModeBlockedResult(routeType, request.RuntimeMode));
         }
 
         if (_attachedProfile is null || !_attachedProfile.Actions.TryGetValue(targetActionId, out var targetAction))
         {
-            return ContextFactionResolution.Blocked(new ActionExecutionResult(
-                false,
-                $"Profile '{request.ProfileId}' does not expose required routed action '{targetActionId}'.",
-                AddressSource.None,
-                new Dictionary<string, object?>
-                {
-                    ["reasonCode"] = RuntimeReasonCode.CAPABILITY_REQUIRED_MISSING.ToString(),
-                    ["routedActionId"] = targetActionId
-                }));
+            return ContextFactionResolution.Blocked(CreateContextMissingActionResult(request.ProfileId, targetActionId));
         }
 
-        var payload = new JsonObject();
-        foreach (var property in request.Payload)
+        var payload = ClonePayload(request.Payload);
+        if (routeType == ContextRouteType.Spawn)
         {
-            payload[property.Key] = property.Value?.DeepClone();
+            ApplyContextSpawnPayloadDefaults(payload, targetActionId);
         }
 
-        if (isContextSpawn)
-        {
-            if (!payload.ContainsKey("helperHookId"))
-            {
-                payload["helperHookId"] = "spawn_bridge";
-            }
-
-            if (!payload.ContainsKey("helperEntryPoint"))
-            {
-                payload["helperEntryPoint"] = targetActionId.Equals(ActionIdSpawnGalacticEntity, StringComparison.OrdinalIgnoreCase) ||
-                                               targetActionId.Equals(ActionIdSpawnTacticalEntity, StringComparison.OrdinalIgnoreCase)
-                    ? "SWFOC_Trainer_Spawn_Context"
-                    : "SWFOC_Trainer_Spawn";
-            }
-
-            if (!payload.ContainsKey("populationPolicy"))
-            {
-                payload["populationPolicy"] = targetActionId.Equals(ActionIdSpawnTacticalEntity, StringComparison.OrdinalIgnoreCase)
-                    ? "ForceZeroTactical"
-                    : "Normal";
-            }
-
-            if (!payload.ContainsKey("persistencePolicy"))
-            {
-                payload["persistencePolicy"] = targetActionId.Equals(ActionIdSpawnTacticalEntity, StringComparison.OrdinalIgnoreCase)
-                    ? "EphemeralBattleOnly"
-                    : "PersistentGalactic";
-            }
-
-            if (!payload.ContainsKey("allowCrossFaction"))
-            {
-                payload["allowCrossFaction"] = true;
-            }
-        }
-
-        if (!payload.ContainsKey("symbol") &&
-            ActionSymbolRegistry.TryGetSymbol(targetActionId, out var symbolHint) &&
-            !string.IsNullOrWhiteSpace(symbolHint))
-        {
-            payload["symbol"] = symbolHint;
-        }
+        ApplyContextSymbolHint(payload, targetActionId);
 
         return ContextFactionResolution.Redirected(request with
         {
             Action = targetAction,
             Payload = payload
         });
+    }
+
+    private static ContextRouteType ResolveContextRouteType(string actionId)
+    {
+        if (actionId.Equals(ActionIdSpawnContextEntity, StringComparison.OrdinalIgnoreCase))
+        {
+            return ContextRouteType.Spawn;
+        }
+
+        if (actionId.Equals(ActionIdSetContextFaction, StringComparison.OrdinalIgnoreCase) ||
+            actionId.Equals(ActionIdSetContextAllegiance, StringComparison.OrdinalIgnoreCase))
+        {
+            return ContextRouteType.Faction;
+        }
+
+        return ContextRouteType.None;
+    }
+
+    private static ActionExecutionResult CreateContextModeBlockedResult(ContextRouteType routeType, RuntimeMode mode)
+    {
+        var message = routeType == ContextRouteType.Spawn
+            ? "Context entity spawning requires either tactical (land/space) or galactic runtime mode."
+            : "Context faction routing requires either tactical (land/space) or galactic runtime mode.";
+        return new ActionExecutionResult(
+            false,
+            message,
+            AddressSource.None,
+            new Dictionary<string, object?>
+            {
+                [DiagnosticReasonCodeKey] = RuntimeReasonCode.MODE_STRICT_TACTICAL_UNSPECIFIED.ToString(),
+                ["runtimeMode"] = mode.ToString()
+            });
+    }
+
+    private static ActionExecutionResult CreateContextMissingActionResult(string profileId, string targetActionId)
+    {
+        return new ActionExecutionResult(
+            false,
+            $"Profile '{profileId}' does not expose required routed action '{targetActionId}'.",
+            AddressSource.None,
+            new Dictionary<string, object?>
+            {
+                [DiagnosticReasonCodeKey] = RuntimeReasonCode.CAPABILITY_REQUIRED_MISSING.ToString(),
+                ["routedActionId"] = targetActionId
+            });
+    }
+
+    private static JsonObject ClonePayload(JsonObject payload)
+    {
+        var cloned = new JsonObject();
+        foreach (var property in payload)
+        {
+            cloned[property.Key] = property.Value?.DeepClone();
+        }
+
+        return cloned;
+    }
+
+    private static void ApplyContextSpawnPayloadDefaults(JsonObject payload, string targetActionId)
+    {
+        if (!payload.ContainsKey(PayloadHelperHookIdKey))
+        {
+            payload[PayloadHelperHookIdKey] = ContextSpawnDefaultHookId;
+        }
+
+        if (!payload.ContainsKey(PayloadHelperEntryPointKey))
+        {
+            payload[PayloadHelperEntryPointKey] = targetActionId.Equals(ActionIdSpawnGalacticEntity, StringComparison.OrdinalIgnoreCase) ||
+                                                  targetActionId.Equals(ActionIdSpawnTacticalEntity, StringComparison.OrdinalIgnoreCase)
+                ? ContextSpawnEntryPoint
+                : ContextSpawnLegacyEntryPoint;
+        }
+
+        if (!payload.ContainsKey(PayloadPopulationPolicyKey))
+        {
+            payload[PayloadPopulationPolicyKey] = targetActionId.Equals(ActionIdSpawnTacticalEntity, StringComparison.OrdinalIgnoreCase)
+                ? PopulationPolicyForceZeroTactical
+                : PopulationPolicyNormal;
+        }
+
+        if (!payload.ContainsKey(PayloadPersistencePolicyKey))
+        {
+            payload[PayloadPersistencePolicyKey] = targetActionId.Equals(ActionIdSpawnTacticalEntity, StringComparison.OrdinalIgnoreCase)
+                ? PersistencePolicyEphemeralBattleOnly
+                : PersistencePolicyPersistentGalactic;
+        }
+
+        if (!payload.ContainsKey(PayloadAllowCrossFactionKey))
+        {
+            payload[PayloadAllowCrossFactionKey] = true;
+        }
+    }
+
+    private static void ApplyContextSymbolHint(JsonObject payload, string targetActionId)
+    {
+        if (!payload.ContainsKey(PayloadSymbolKey) &&
+            ActionSymbolRegistry.TryGetSymbol(targetActionId, out var symbolHint) &&
+            !string.IsNullOrWhiteSpace(symbolHint))
+        {
+            payload[PayloadSymbolKey] = symbolHint;
+        }
+    }
+
+    private enum ContextRouteType
+    {
+        None,
+        Faction,
+        Spawn
     }
 
     private static string? ResolveContextFactionTargetAction(RuntimeMode mode)
@@ -1637,7 +1702,7 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
                 report.Diagnostics,
                 new Dictionary<string, object?>
                 {
-                    ["reasonCode"] = support.ReasonCode.ToString(),
+                    [DiagnosticReasonCodeKey] = support.ReasonCode.ToString(),
                     ["mechanicGating"] = "blocked",
                     ["mechanicActionId"] = support.ActionId
                 }));
@@ -1655,7 +1720,7 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
                 routeDecision.Diagnostics,
                 new Dictionary<string, object?>
                 {
-                    ["reasonCode"] = routeDecision.ReasonCode.ToString()  // NOSONAR
+                    [DiagnosticReasonCodeKey] = routeDecision.ReasonCode.ToString()  // NOSONAR
                 }));
         return ApplyBackendRouteDiagnostics(blocked, routeDecision, capabilityReport);
     }
@@ -1785,7 +1850,7 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
                 AddressSource.None,
                 new Dictionary<string, object?>
                 {
-                    ["reasonCode"] = RuntimeReasonCode.CAPABILITY_BACKEND_UNAVAILABLE.ToString(),
+                    [DiagnosticReasonCodeKey] = RuntimeReasonCode.CAPABILITY_BACKEND_UNAVAILABLE.ToString(),
                     ["backendRoute"] = ExecutionBackendKind.Extender.ToString()
                 });
         }
@@ -2249,7 +2314,7 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
 
     private void TryAddPayloadSymbolAnchor(JsonObject payload, IDictionary<string, string> anchors)
     {
-        if (TryReadPayloadString(payload, "symbol", out var payloadSymbol))
+        if (TryReadPayloadString(payload, PayloadSymbolKey, out var payloadSymbol))
         {
             TryAddResolvedSymbolAnchor(anchors, payloadSymbol!);
         }
@@ -2506,7 +2571,7 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
 
     private static string ResolveMemoryActionSymbol(JsonObject payload)
     {
-        var symbol = payload["symbol"]?.GetValue<string>();
+        var symbol = payload[PayloadSymbolKey]?.GetValue<string>();
         if (string.IsNullOrWhiteSpace(symbol))
         {
             throw new InvalidOperationException("Memory action payload requires 'symbol'.");
@@ -3291,7 +3356,7 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
                 AddressSource.None,
                 new Dictionary<string, object?>
                 {
-                    ["reasonCode"] = RuntimeReasonCode.HELPER_BRIDGE_UNAVAILABLE.ToString(),
+                    [DiagnosticReasonCodeKey] = RuntimeReasonCode.HELPER_BRIDGE_UNAVAILABLE.ToString(),
                     ["helperBridgeState"] = "unavailable"
                 });
         }
@@ -3307,8 +3372,8 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
                 AddressSource.None,
                 new Dictionary<string, object?>
                 {
-                    ["reasonCode"] = RuntimeReasonCode.HELPER_ENTRYPOINT_NOT_FOUND.ToString(),
-                    ["helperHookId"] = hookId,
+                    [DiagnosticReasonCodeKey] = RuntimeReasonCode.HELPER_ENTRYPOINT_NOT_FOUND.ToString(),
+                    [PayloadHelperHookIdKey] = hookId,
                     ["helperBridgeState"] = "denied"
                 });
         }
@@ -3329,8 +3394,8 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
                     probe.Diagnostics,
                     new Dictionary<string, object?>
                     {
-                        ["reasonCode"] = probe.ReasonCode.ToString(),
-                        ["helperHookId"] = hook.Id
+                        [DiagnosticReasonCodeKey] = probe.ReasonCode.ToString(),
+                        [PayloadHelperHookIdKey] = hook.Id
                     }));
         }
 
@@ -3352,15 +3417,15 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
                 bridgeResult.Diagnostics,
                 new Dictionary<string, object?>
                 {
-                    ["reasonCode"] = bridgeResult.ReasonCode.ToString(),
-                    ["helperHookId"] = hook.Id,
+                    [DiagnosticReasonCodeKey] = bridgeResult.ReasonCode.ToString(),
+                    [PayloadHelperHookIdKey] = hook.Id,
                     ["helperEntryPoint"] = hook.EntryPoint ?? string.Empty
                 }));
     }
 
     private static string ResolveHelperHookId(ActionExecutionRequest request)
     {
-        if (request.Payload["helperHookId"] is JsonValue jsonValue &&
+        if (request.Payload[PayloadHelperHookIdKey] is JsonValue jsonValue &&
             jsonValue.TryGetValue<string>(out var explicitHookId) &&
             !string.IsNullOrWhiteSpace(explicitHookId))
         {
@@ -3522,7 +3587,7 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
         out string? symbol,
         out ActionExecutionResult? failure)
     {
-        symbol = payload["symbol"]?.GetValue<string>();
+        symbol = payload[PayloadSymbolKey]?.GetValue<string>();
         failure = null;
         if (!string.IsNullOrWhiteSpace(symbol))
         {
@@ -3661,7 +3726,7 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
                 ["fallbackAction"] = ActionIdSetUnitCapPatchFallback,  // NOSONAR
                 ["fallbackPath"] = "unit_cap_patch_fallback",  // NOSONAR
                 ["fallbackEnabled"] = true,
-                ["reasonCode"] = ToReasonCode(reasonCode)
+                [DiagnosticReasonCodeKey] = ToReasonCode(reasonCode)
             });
         return result with { Diagnostics = diagnostics };
     }
@@ -3685,7 +3750,7 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
                 {
                     ["fallbackAction"] = ActionIdToggleFogRevealPatchFallback,
                     ["fallbackPath"] = "fog_patch_fallback",  // NOSONAR
-                    ["reasonCode"] = ToReasonCode(resolution.ReasonCode)
+                    [DiagnosticReasonCodeKey] = ToReasonCode(resolution.ReasonCode)
                 }));
         }
 
@@ -3709,7 +3774,7 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
                 new Dictionary<string, object?>
                 {
                     ["fallbackAction"] = ActionIdToggleFogRevealPatchFallback,
-                    ["reasonCode"] = ToReasonCode(RuntimeReasonCode.SAFETY_FAIL_CLOSED)
+                    [DiagnosticReasonCodeKey] = ToReasonCode(RuntimeReasonCode.SAFETY_FAIL_CLOSED)
                 });
         }
 
@@ -3729,7 +3794,7 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
                     ["fallbackPath"] = "fog_patch_fallback",
                     ["address"] = ToHex(resolution.BranchAddress),
                     ["state"] = "already_patched",  // NOSONAR
-                    ["reasonCode"] = ToReasonCode(RuntimeReasonCode.FALLBACK_APPLIED)
+                    [DiagnosticReasonCodeKey] = ToReasonCode(RuntimeReasonCode.FALLBACK_APPLIED)
                 });
         }
 
@@ -3744,7 +3809,7 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
                     ["fallbackAction"] = ActionIdToggleFogRevealPatchFallback,
                     ["fallbackPath"] = "fog_patch_fallback",
                     ["address"] = ToHex(resolution.BranchAddress),
-                    ["reasonCode"] = ToReasonCode(RuntimeReasonCode.SAFETY_FAIL_CLOSED)
+                    [DiagnosticReasonCodeKey] = ToReasonCode(RuntimeReasonCode.SAFETY_FAIL_CLOSED)
                 });
         }
 
@@ -3763,7 +3828,7 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
                 ["pattern"] = resolution.PatternText,
                 ["address"] = ToHex(resolution.BranchAddress),
                 ["state"] = "patched",
-                ["reasonCode"] = ToReasonCode(RuntimeReasonCode.FALLBACK_APPLIED)
+                [DiagnosticReasonCodeKey] = ToReasonCode(RuntimeReasonCode.FALLBACK_APPLIED)
             });
     }
 
@@ -3778,7 +3843,7 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
                 new Dictionary<string, object?>
                 {
                     ["fallbackAction"] = ActionIdToggleFogRevealPatchFallback,
-                    ["reasonCode"] = ToReasonCode(RuntimeReasonCode.SAFETY_FAIL_CLOSED)
+                    [DiagnosticReasonCodeKey] = ToReasonCode(RuntimeReasonCode.SAFETY_FAIL_CLOSED)
                 });
         }
 
@@ -3800,7 +3865,7 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
                     ["fallbackPath"] = "fog_patch_fallback",
                     ["address"] = ToHex(address),
                     ["state"] = "already_restored",
-                    ["reasonCode"] = ToReasonCode(RuntimeReasonCode.FALLBACK_RESTORED)
+                    [DiagnosticReasonCodeKey] = ToReasonCode(RuntimeReasonCode.FALLBACK_RESTORED)
                 });
         }
 
@@ -3815,7 +3880,7 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
                     ["fallbackAction"] = ActionIdToggleFogRevealPatchFallback,
                     ["fallbackPath"] = "fog_patch_fallback",
                     ["address"] = ToHex(address),
-                    ["reasonCode"] = ToReasonCode(RuntimeReasonCode.SAFETY_FAIL_CLOSED)
+                    [DiagnosticReasonCodeKey] = ToReasonCode(RuntimeReasonCode.SAFETY_FAIL_CLOSED)
                 });
         }
 
@@ -3831,7 +3896,7 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
                 ["fallbackPath"] = "fog_patch_fallback",
                 ["address"] = ToHex(address),
                 ["state"] = "restored",
-                ["reasonCode"] = ToReasonCode(RuntimeReasonCode.FALLBACK_RESTORED)
+                [DiagnosticReasonCodeKey] = ToReasonCode(RuntimeReasonCode.FALLBACK_RESTORED)
             });
     }
 
@@ -3966,7 +4031,7 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
             {
                 ["fallbackAction"] = actionId,
                 ["featureFlag"] = featureFlagKey,
-                ["reasonCode"] = ToReasonCode(RuntimeReasonCode.FALLBACK_DISABLED)
+                [DiagnosticReasonCodeKey] = ToReasonCode(RuntimeReasonCode.FALLBACK_DISABLED)
             });
     }
 

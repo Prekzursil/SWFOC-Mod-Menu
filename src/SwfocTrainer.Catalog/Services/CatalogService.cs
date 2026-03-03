@@ -9,6 +9,26 @@ namespace SwfocTrainer.Catalog.Services;
 
 public sealed class CatalogService : ICatalogService
 {
+    private static readonly string[] BuildingNameMarkers =
+    [
+        "BARRACK",
+        "FACTORY",
+        "BASE",
+        "SHIPYARD",
+        "YARD",
+        "STATION",
+        "STAR_BASE",
+        "STARBASE",
+        "PLATFORM",
+        "MINE",
+        "TURRET",
+        "DEFENSE",
+        "ACADEMY",
+        "OUTPOST",
+        "REFINERY",
+        "PALACE"
+    ];
+
     private readonly CatalogOptions _options;
     private readonly IProfileRepository _profiles;
     private readonly ILogger<CatalogService> _logger;
@@ -165,12 +185,9 @@ public sealed class CatalogService : ICatalogService
         var heroes = GetCatalogSet(catalog, "hero_catalog");
         var buildings = GetCatalogSet(catalog, "building_catalog");
 
-        foreach (var unit in units)
+        foreach (var buildingName in units.Where(IsBuildingName))
         {
-            if (IsBuildingName(unit))
-            {
-                buildings.Add(unit);
-            }
+            buildings.Add(buildingName);
         }
 
         var entities = GetCatalogSet(catalog, "entity_catalog");
@@ -216,21 +233,6 @@ public sealed class CatalogService : ICatalogService
 
     private static bool IsBuildingName(string name)
     {
-        return name.Contains("BARRACK", StringComparison.OrdinalIgnoreCase) ||
-               name.Contains("FACTORY", StringComparison.OrdinalIgnoreCase) ||
-               name.Contains("BASE", StringComparison.OrdinalIgnoreCase) ||
-               name.Contains("SHIPYARD", StringComparison.OrdinalIgnoreCase) ||
-               name.Contains("YARD", StringComparison.OrdinalIgnoreCase) ||
-               name.Contains("STATION", StringComparison.OrdinalIgnoreCase) ||
-               name.Contains("STAR_BASE", StringComparison.OrdinalIgnoreCase) ||
-               name.Contains("STARBASE", StringComparison.OrdinalIgnoreCase) ||
-               name.Contains("PLATFORM", StringComparison.OrdinalIgnoreCase) ||
-               name.Contains("MINE", StringComparison.OrdinalIgnoreCase) ||
-               name.Contains("TURRET", StringComparison.OrdinalIgnoreCase) ||
-               name.Contains("DEFENSE", StringComparison.OrdinalIgnoreCase) ||
-               name.Contains("ACADEMY", StringComparison.OrdinalIgnoreCase) ||
-               name.Contains("OUTPOST", StringComparison.OrdinalIgnoreCase) ||
-               name.Contains("REFINERY", StringComparison.OrdinalIgnoreCase) ||
-               name.Contains("PALACE", StringComparison.OrdinalIgnoreCase);
+        return BuildingNameMarkers.Any(marker => name.Contains(marker, StringComparison.OrdinalIgnoreCase));
     }
 }

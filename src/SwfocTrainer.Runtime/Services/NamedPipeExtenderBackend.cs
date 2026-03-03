@@ -50,7 +50,17 @@ public sealed class NamedPipeExtenderBackend : IExecutionBackend
         Converters = { new JsonStringEnumConverter() }
     };
 
-    public NamedPipeExtenderBackend(string? pipeName = null, bool autoStartBridgeHost = true)
+    public NamedPipeExtenderBackend()
+        : this(null, true)
+    {
+    }
+
+    public NamedPipeExtenderBackend(string? pipeName)
+        : this(pipeName, true)
+    {
+    }
+
+    public NamedPipeExtenderBackend(string? pipeName, bool autoStartBridgeHost)
     {
         _pipeName = string.IsNullOrWhiteSpace(pipeName)
             ? ResolvePipeNameFromEnvironment()

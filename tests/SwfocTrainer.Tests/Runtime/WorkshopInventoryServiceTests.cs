@@ -136,6 +136,8 @@ public sealed class WorkshopInventoryServiceTests
     {
         protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
         {
+            _ = request;
+            _ = cancellationToken;
             var response = new HttpResponseMessage(HttpStatusCode.OK)
             {
                 Content = new StringContent(payload, Encoding.UTF8, "application/json")

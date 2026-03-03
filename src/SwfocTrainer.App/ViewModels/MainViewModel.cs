@@ -346,11 +346,7 @@ public sealed class MainViewModel : MainViewModelSaveOpsBase
         var target = LaunchTarget.Equals("Sweaw", StringComparison.OrdinalIgnoreCase)
             ? GameLaunchTarget.Sweaw
             : GameLaunchTarget.Swfoc;
-        var mode = LaunchMode.Equals("SteamMod", StringComparison.OrdinalIgnoreCase)
-            ? GameLaunchMode.SteamMod
-            : LaunchMode.Equals("ModPath", StringComparison.OrdinalIgnoreCase)
-                ? GameLaunchMode.ModPath
-                : GameLaunchMode.Vanilla;
+        var mode = ResolveLaunchMode(LaunchMode);
         var workshopIds = BuildLaunchWorkshopIds();
 
         if (mode == GameLaunchMode.SteamMod && workshopIds.Count == 0 && !string.IsNullOrWhiteSpace(SelectedProfileId))
@@ -393,12 +389,11 @@ public sealed class MainViewModel : MainViewModelSaveOpsBase
             profile.Metadata.TryGetValue("requiredWorkshopIds", out var requiredIds) &&
             !string.IsNullOrWhiteSpace(requiredIds))
         {
-            foreach (var token in requiredIds.Split(',', StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries))
+            foreach (var token in requiredIds
+                         .Split(',', StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries)
+                         .Where(seen.Add))
             {
-                if (seen.Add(token))
-                {
-                    ordered.Add(token);
-                }
+                ordered.Add(token);
             }
         }
 
@@ -417,6 +412,21 @@ public sealed class MainViewModel : MainViewModelSaveOpsBase
         }
 
         return ordered;
+    }
+
+    private static GameLaunchMode ResolveLaunchMode(string launchMode)
+    {
+        if (launchMode.Equals("SteamMod", StringComparison.OrdinalIgnoreCase))
+        {
+            return GameLaunchMode.SteamMod;
+        }
+
+        if (launchMode.Equals("ModPath", StringComparison.OrdinalIgnoreCase))
+        {
+            return GameLaunchMode.ModPath;
+        }
+
+        return GameLaunchMode.Vanilla;
     }
 
     private IReadOnlyList<string> BuildLaunchWorkshopIds()
