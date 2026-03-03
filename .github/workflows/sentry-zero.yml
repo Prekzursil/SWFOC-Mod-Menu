@@ -23,7 +23,7 @@ jobs:
       - name: Assert Sentry unresolved issues are zero
         run: |
           python3 scripts/quality/check_sentry_zero.py \
-            --project "${SENTRY_PROJECT}" \
+            --project "${SENTRY_PROJECT,,}" \
             --out-json "sentry-zero/sentry.json" \
             --out-md "sentry-zero/sentry.md"
       - name: Upload Sentry artifacts

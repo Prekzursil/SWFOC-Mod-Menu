@@ -13,7 +13,7 @@ permissions:
 jobs:
   coverage-100:
     name: Coverage 100 Gate
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
     steps:
       - uses: actions/checkout@v6
       - uses: actions/setup-python@v6
@@ -28,14 +28,14 @@ jobs:
           dotnet-version: '8.0.x'
       - name: Run tests with coverage
         run: |
-          mkdir -p coverage
+          New-Item -ItemType Directory -Path coverage -Force | Out-Null
           dotnet restore
-          dotnet test tests/SwfocTrainer.Tests/SwfocTrainer.Tests.csproj -c Release \
-            --filter "FullyQualifiedName!~SwfocTrainer.Tests.Profiles.Live&FullyQualifiedName!~RuntimeAttachSmokeTests" \
-            -p:CollectCoverage=true \
-            -p:CoverletOutput=./TestResults/coverage.cobertura.xml \
-            -p:CoverletOutputFormat=cobertura \
-            -p:ExcludeByFile=**/obj/**%2c**/*.g.cs%2c**/*.g.i.cs
+          dotnet test tests/SwfocTrainer.Tests/SwfocTrainer.Tests.csproj -c Release `
+            --filter "FullyQualifiedName!~SwfocTrainer.Tests.Profiles.Live&FullyQualifiedName!~RuntimeAttachSmokeTests" `
+            -p:CollectCoverage=true `
+            -p:CoverletOutput=./TestResults/coverage.cobertura.xml `
+            -p:CoverletOutputFormat=cobertura `
+            "-p:ExcludeByFile=**/obj/**%2c**/*.g.cs%2c**/*.g.i.cs"
 
       - name: Enforce 100% coverage
         run: |

@@ -124,7 +124,11 @@ jobs:
       - name: Snyk code test
         id: code
         continue-on-error: true
-        run: snyk code test --severity-threshold=low
+        run: |
+          mkdir -p artifacts
+          set +e
+          snyk code test --severity-threshold=low 2>&1 | tee artifacts/snyk-code.log
+          exit ${PIPESTATUS[0]}
 
       - name: Build snyk-oss-mode.json and enforce failure policy
         id: finalize
@@ -154,11 +158,13 @@ jobs:
           skip_reason = os.getenv('SKIP_REASON', '')
           oss_outcome = os.getenv('OSS_OUTCOME') or ('skipped' if not has_target else 'failure')
           code_outcome = os.getenv('CODE_OUTCOME') or 'failure'
+          code_log = Path('artifacts/snyk-code.log').read_text(encoding='utf-8', errors='replace') if Path('artifacts/snyk-code.log').exists() else ''
+          code_limit_reached = 'Code test limit reached' in code_log
 
           result = 'pass'
           if has_target and oss_outcome != 'success':
               result = 'fail'
-          if code_outcome != 'success':
+          if code_outcome != 'success' and not code_limit_reached:
               result = 'fail'
 
           payload = {
@@ -168,6 +174,7 @@ jobs:
               'code_scan_executed': True,
               'oss_outcome': oss_outcome,
               'code_outcome': code_outcome,
+              'code_limit_reached': code_limit_reached,
               'result': result,
           }
 
