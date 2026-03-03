@@ -5,7 +5,6 @@ import argparse
 import json
 import re
 import sys
-from xml.etree import ElementTree
 from dataclasses import dataclass
 from datetime import datetime, timezone
 from pathlib import Path
@@ -38,6 +37,9 @@ _XML_LINES_VALID_RE = re.compile(r'lines-valid="([0-9]+(?:\\.[0-9]+)?)"')
 _XML_LINES_COVERED_RE = re.compile(r'lines-covered="([0-9]+(?:\\.[0-9]+)?)"')
 _XML_LINE_HITS_RE = re.compile(r"<line\\b[^>]*\\bhits=\"([0-9]+(?:\\.[0-9]+)?)\"")
 _CONDITION_COVERAGE_RE = re.compile(r"\((?P<covered>\d+)/(?P<total>\d+)\)")
+_XML_CLASS_RE = re.compile(r"<class\b(?P<attrs>[^>]*)>(?P<body>.*?)</class>", re.IGNORECASE | re.DOTALL)
+_XML_LINE_RE = re.compile(r"<line\b(?P<attrs>[^>]*)/?>", re.IGNORECASE)
+_XML_ATTR_RE = re.compile(r"([A-Za-z0-9_-]+)\s*=\s*\"([^\"]*)\"")
 _LCOV_BRANCH_FOUND_RE = re.compile(r"^BRF:(\d+)$")
 _LCOV_BRANCH_HIT_RE = re.compile(r"^BRH:(\d+)$")
 _GENERATED_FILE_PATTERNS = [
@@ -79,39 +81,42 @@ def _count_hit(hits_raw: str) -> int:
         return 0
 
 
-def _parse_class_lines(class_node: ElementTree.Element) -> tuple[int, int, int, int]:
+def _parse_xml_attrs(raw: str) -> dict[str, str]:
+    return {match.group(1): match.group(2) for match in _XML_ATTR_RE.finditer(raw)}
+
+
+def _parse_class_lines(class_body: str) -> tuple[int, int, int, int]:
     line_total = 0
     line_covered = 0
     branch_total = 0
     branch_covered = 0
-    lines_node = class_node.find("lines")
-    if lines_node is None:
-        return line_total, line_covered, branch_total, branch_covered
 
-    for line_node in lines_node.findall("line"):
+    for match in _XML_LINE_RE.finditer(class_body):
+        attrs = _parse_xml_attrs(match.group("attrs"))
         line_total += 1
-        line_covered += _count_hit(line_node.attrib.get("hits", "0"))
-        condition_coverage = line_node.attrib.get("condition-coverage", "")
-        match = _CONDITION_COVERAGE_RE.search(condition_coverage)
-        if match:
-            branch_covered += int(match.group("covered"))
-            branch_total += int(match.group("total"))
+        line_covered += _count_hit(attrs.get("hits", "0"))
+        condition_coverage = attrs.get("condition-coverage", "")
+        coverage_match = _CONDITION_COVERAGE_RE.search(condition_coverage)
+        if coverage_match:
+            branch_covered += int(coverage_match.group("covered"))
+            branch_total += int(coverage_match.group("total"))
 
     return line_total, line_covered, branch_total, branch_covered
 
 
-def _parse_xml_classes(tree: ElementTree.Element, include_generated: bool) -> tuple[int, int, int, int]:
+def _parse_xml_classes(text: str, include_generated: bool) -> tuple[int, int, int, int]:
     line_total = 0
     line_covered = 0
     branch_total = 0
     branch_covered = 0
 
-    for class_node in tree.findall(".//class"):
-        filename = class_node.attrib.get("filename", "")
+    for class_match in _XML_CLASS_RE.finditer(text):
+        class_attrs = _parse_xml_attrs(class_match.group("attrs"))
+        filename = class_attrs.get("filename", "")
         if not include_generated and _is_generated(filename):
             continue
 
-        class_lines = _parse_class_lines(class_node)
+        class_lines = _parse_class_lines(class_match.group("body"))
         line_total += class_lines[0]
         line_covered += class_lines[1]
         branch_total += class_lines[2]
@@ -136,9 +141,7 @@ def _parse_fallback_line_totals(text: str) -> tuple[int, int]:
 
 def parse_coverage_xml(name: str, path: Path, include_generated: bool) -> CoverageStats:
     text = path.read_text(encoding="utf-8")
-    tree = ElementTree.fromstring(text)
-
-    line_total, line_covered, branch_total, branch_covered = _parse_xml_classes(tree, include_generated)
+    line_total, line_covered, branch_total, branch_covered = _parse_xml_classes(text, include_generated)
 
     # Fallback for malformed XML without class/line data.
     if line_total == 0:
