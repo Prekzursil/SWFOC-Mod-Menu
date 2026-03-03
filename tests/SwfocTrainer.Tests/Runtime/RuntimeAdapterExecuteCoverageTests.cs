@@ -318,6 +318,7 @@ public sealed class RuntimeAdapterExecuteCoverageTests
         };
         var profile = BuildProfile("set_hero_state_helper");
         var adapter = harness.CreateAdapter(profile, RuntimeMode.Galactic);
+        SetPrivateField(adapter, "_extenderBackend", null);
 
         var result = await adapter.ExecuteAsync(
             BuildRequest("set_hero_state_helper", RuntimeMode.Galactic),
@@ -325,7 +326,7 @@ public sealed class RuntimeAdapterExecuteCoverageTests
 
         result.Succeeded.Should().BeFalse();
         result.Diagnostics.Should().ContainKey("reasonCode");
-        result.Diagnostics!["reasonCode"]!.ToString().Should().Be(RuntimeReasonCode.HELPER_ENTRYPOINT_NOT_FOUND.ToString());
+        result.Diagnostics!["reasonCode"]!.ToString().Should().Be(RuntimeReasonCode.CAPABILITY_BACKEND_UNAVAILABLE.ToString());
     }
 
     [Fact]

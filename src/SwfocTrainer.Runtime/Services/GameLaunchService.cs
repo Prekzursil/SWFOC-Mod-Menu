@@ -74,16 +74,15 @@ public sealed class GameLaunchService : IGameLaunchService
         }
     }
 
-    private static bool TryKillProcess(Process process)
+    private static void TryKillProcess(Process process)
     {
         try
         {
             process.Kill(entireProcessTree: true);
-            return true;
         }
         catch
         {
-            return false;
+            // Ignore termination failures for stale processes.
         }
     }
 

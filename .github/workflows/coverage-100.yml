@@ -22,28 +22,45 @@ jobs:
       - uses: actions/setup-node@v6
         with:
           node-version: '20'
-
       - uses: actions/setup-dotnet@v4
         with:
           dotnet-version: '8.0.x'
+
       - name: Run tests with coverage
+        shell: pwsh
         run: |
-          New-Item -ItemType Directory -Path coverage -Force | Out-Null
+          New-Item -ItemType Directory -Path tests/SwfocTrainer.Tests/TestResults -Force | Out-Null
           dotnet restore
           dotnet test tests/SwfocTrainer.Tests/SwfocTrainer.Tests.csproj -c Release `
             --filter "FullyQualifiedName!~SwfocTrainer.Tests.Profiles.Live&FullyQualifiedName!~RuntimeAttachSmokeTests" `
             -p:CollectCoverage=true `
-            -p:CoverletOutput=./TestResults/coverage.cobertura.xml `
+            -p:CoverletOutput=tests/SwfocTrainer.Tests/TestResults/coverage `
             -p:CoverletOutputFormat=cobertura `
             "-p:ExcludeByFile=**/obj/**%2c**/*.g.cs%2c**/*.g.i.cs"
+
+      - name: Resolve coverage report path
+        shell: pwsh
+        run: |
+          $candidates = @(
+            (Join-Path (Get-Location) 'tests/SwfocTrainer.Tests/TestResults/coverage.cobertura.xml'),
+            (Join-Path (Get-Location) 'TestResults/coverage.cobertura.xml')
+          )
+          $resolved = $candidates | Where-Object { Test-Path -Path $_ } | Select-Object -First 1
+          if (-not $resolved) {
+            throw "Coverage report not found. Checked: $($candidates -join '; ')"
+          }
+
+          Write-Host "Using coverage report: $resolved"
+          "COVERAGE_REPORT_FILE=$resolved" | Out-File -FilePath $env:GITHUB_ENV -Append -Encoding utf8
 
       - name: Enforce 100% coverage
         if: ${{ github.event_name != 'pull_request' }}
         run: |
           python3 scripts/quality/assert_coverage_100.py \
-            --xml "dotnet=tests/SwfocTrainer.Tests/TestResults/coverage.cobertura.xml" \
+            --xml "dotnet=${{ env.COVERAGE_REPORT_FILE }}" \
             --out-json "coverage-100/coverage.json" \
             --out-md "coverage-100/coverage.md"
+
       - name: Mark PR mode (coverage evidence only)
         if: ${{ github.event_name == 'pull_request' }}
         run: |
@@ -62,6 +79,7 @@ jobs:
           - Mode: `pull_request_evidence_only`
           - Note: `100/100` hard gate is enforced on protected branch pushes.
           '@ | Out-File -FilePath coverage-100/coverage.md -Encoding utf8
+
       - name: Upload coverage artifacts
         if: always()
         uses: actions/upload-artifact@v4

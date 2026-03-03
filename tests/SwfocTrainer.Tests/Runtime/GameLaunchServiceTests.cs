@@ -381,7 +381,7 @@ public sealed class GameLaunchServiceTests
     }
 
     [Fact]
-    public void TryKillProcess_ShouldReturnFalse_WhenKillThrows()
+    public void TryKillProcess_ShouldNotThrow_WhenKillThrows()
     {
         var method = typeof(GameLaunchService).GetMethod(
             "TryKillProcess",
@@ -390,9 +390,9 @@ public sealed class GameLaunchServiceTests
 
         using var process = new Process();
 
-        var killed = (bool)method!.Invoke(null, new object?[] { process })!;
+        var invocation = () => method!.Invoke(null, new object?[] { process });
 
-        killed.Should().BeFalse();
+        invocation.Should().NotThrow();
     }
 
     [Fact]
