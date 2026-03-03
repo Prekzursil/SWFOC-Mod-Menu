@@ -42,15 +42,22 @@ public sealed class GameLaunchService : IGameLaunchService
         }
 
         var arguments = BuildArguments(request);
-        var process = StartProcess(executableResolution.ExecutablePath, rootResolution.Root, arguments);
-        if (process is null)
+        Process process;
+        try
+        {
+            process = StartProcess(executableResolution.ExecutablePath, rootResolution.Root, arguments);
+        }
+        catch (Exception ex)
         {
             return Task.FromResult(CreateFailureResult(
-                message: "Process start returned null.",
+                message: $"Process start failed: {ex.Message}",
                 state: LaunchStateStartFailed,
                 executablePath: executableResolution.ExecutablePath,
                 arguments: arguments,
-                diagnostics: null));
+                diagnostics: new Dictionary<string, object?>
+                {
+                    ["exceptionType"] = ex.GetType().Name
+                }));
         }
 
         return Task.FromResult(CreateStartedResult(request, process.Id, executableResolution.ExecutablePath, rootResolution.Root, arguments));
@@ -62,15 +69,21 @@ public sealed class GameLaunchService : IGameLaunchService
         {
             foreach (var process in Process.GetProcessesByName(processName))
             {
-                try
-                {
-                    process.Kill(entireProcessTree: true);
-                }
-                catch
-                {
-                    // Best-effort cleanup only.
-                }
+                TryKillProcess(process);
             }
+        }
+    }
+
+    private static bool TryKillProcess(Process process)
+    {
+        try
+        {
+            process.Kill(entireProcessTree: true);
+            return true;
+        }
+        catch
+        {
+            return false;
         }
     }
 
@@ -172,7 +185,7 @@ public sealed class GameLaunchService : IGameLaunchService
         };
     }
 
-    private static Process? StartProcess(string executablePath, string root, string arguments)
+    private static Process StartProcess(string executablePath, string root, string arguments)
     {
         var startInfo = new ProcessStartInfo
         {
@@ -181,7 +194,8 @@ public sealed class GameLaunchService : IGameLaunchService
             WorkingDirectory = Path.GetDirectoryName(executablePath) ?? root,
             UseShellExecute = false
         };
-        return Process.Start(startInfo);
+
+        return Process.Start(startInfo) ?? throw new InvalidOperationException("Process start returned null.");
     }
 
     private static GameLaunchResult CreateFailureResult(

@@ -14,13 +14,10 @@ if (Test-Path -Path $resultsRootResolved) {
 }
 New-Item -ItemType Directory -Path $resultsRootResolved | Out-Null
 
-$stagingRoot = Join-Path $env:TEMP "swfoctrainer-coverage"
-if (Test-Path -Path $stagingRoot) {
-    Remove-Item -Path $stagingRoot -Recurse -Force
+$rawResults = Join-Path $env:TEMP "swfoctrainer-coverage-raw"
+if (Test-Path -Path $rawResults) {
+    Remove-Item -Path $rawResults -Recurse -Force
 }
-New-Item -ItemType Directory -Path $stagingRoot | Out-Null
-
-$rawResults = Join-Path $stagingRoot "raw"
 New-Item -ItemType Directory -Path $rawResults | Out-Null
 
 $filter = if ($DeterministicOnly) {
@@ -37,7 +34,7 @@ $arguments = @(
     "--logger", "trx;LogFileName=coverage.trx",
     "-p:CollectCoverage=true",
     "-p:CoverletOutputFormat=cobertura",
-    "-p:CoverletOutput=$(Join-Path $rawResults 'coverage.cobertura.xml')",
+    "-p:CoverletOutput=`"$(Join-Path $rawResults 'coverage')`"",
     "-p:ExcludeByFile=**/obj/**%2c**/*.g.cs%2c**/*.g.i.cs"
 )
 
@@ -79,13 +76,18 @@ if ($exitCode -ne 0) {
     throw "Coverage collection failed with exit code $exitCode."
 }
 
-$coverageFiles = Get-ChildItem -Path $rawResults -Filter "coverage.cobertura.xml" -Recurse -File
-if (@($coverageFiles).Count -eq 0) {
-    throw "No coverage.cobertura.xml file was generated under $rawResults"
+$expectedRawCoverage = Join-Path $rawResults "coverage.cobertura.xml"
+for ($attempt = 0; $attempt -lt 400 -and -not (Test-Path -Path $expectedRawCoverage); $attempt++) {
+    Start-Sleep -Milliseconds 250
 }
 
-$primaryCoverage = $coverageFiles | Select-Object -First 1
-$targetCoverage = Join-Path $resultsRootResolved "cobertura.xml"
-Copy-Item -Path $primaryCoverage.FullName -Destination $targetCoverage -Force
+if (-not (Test-Path -Path $expectedRawCoverage)) {
+    throw "No coverage.cobertura.xml file was generated under $rawResults."
+}
 
+$primaryCoveragePath = $expectedRawCoverage
+$targetCoverage = Join-Path $resultsRootResolved "cobertura.xml"
+Copy-Item -Path $primaryCoveragePath -Destination $targetCoverage -Force
+
+Write-Output "coverage_source=$primaryCoveragePath"
 Write-Output "coverage_path=$targetCoverage"

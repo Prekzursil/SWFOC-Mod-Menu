@@ -1,6 +1,8 @@
 using System.Net;
 using System.Net.Http;
+using System.Reflection;
 using System.Text;
+using System.Text.Json;
 using FluentAssertions;
 using Microsoft.Extensions.Logging.Abstractions;
 using SwfocTrainer.Core.Models;
@@ -244,6 +246,405 @@ public sealed class WorkshopInventoryServiceTests
         }
     }
 
+    [Fact]
+    public async Task DiscoverInstalledAsync_ShouldUseEnvironmentManifestAndWorkshopRoot_WhenRequestPathsAreOmitted()
+    {
+        var tempRoot = Path.Combine(Path.GetTempPath(), $"swfoc-workshop-inventory-{Guid.NewGuid():N}");
+        Directory.CreateDirectory(tempRoot);
+        var previousManifest = Environment.GetEnvironmentVariable("SWFOC_WORKSHOP_MANIFEST_PATH");
+        var previousWorkshopRoot = Environment.GetEnvironmentVariable("SWFOC_WORKSHOP_CONTENT_ROOT");
+        try
+        {
+            var manifestPath = await WriteSingleItemManifestAsync(tempRoot, "7777777777");
+            var workshopRoot = CreateWorkshopRoot(tempRoot, "8888888888");
+            Environment.SetEnvironmentVariable("SWFOC_WORKSHOP_MANIFEST_PATH", manifestPath);
+            Environment.SetEnvironmentVariable("SWFOC_WORKSHOP_CONTENT_ROOT", workshopRoot);
+
+            var service = new WorkshopInventoryService(NullLogger<WorkshopInventoryService>.Instance);
+            var result = await service.DiscoverInstalledAsync(
+                new WorkshopInventoryRequest(
+                    AppId: " ",
+                    ManifestPath: null,
+                    WorkshopContentRootPath: null,
+                    FetchRemoteMetadata: false),
+                CancellationToken.None);
+
+            result.AppId.Should().Be("32470");
+            result.Items.Select(x => x.WorkshopId)
+                .Should()
+                .BeEquivalentTo(new[] { "7777777777", "8888888888" });
+            result.Diagnostics.Should().Contain($"manifest={manifestPath}");
+        }
+        finally
+        {
+            Environment.SetEnvironmentVariable("SWFOC_WORKSHOP_MANIFEST_PATH", previousManifest);
+            Environment.SetEnvironmentVariable("SWFOC_WORKSHOP_CONTENT_ROOT", previousWorkshopRoot);
+            if (Directory.Exists(tempRoot))
+            {
+                Directory.Delete(tempRoot, recursive: true);
+            }
+        }
+    }
+
+    [Fact]
+    public async Task DiscoverInstalledAsync_ShouldRecordHttpFailure_WhenMetadataFetchReturnsNonSuccessStatus()
+    {
+        var tempRoot = Path.Combine(Path.GetTempPath(), $"swfoc-workshop-inventory-{Guid.NewGuid():N}");
+        Directory.CreateDirectory(tempRoot);
+        try
+        {
+            var manifestPath = await WriteSingleItemManifestAsync(tempRoot, "1234123412");
+            var workshopRoot = CreateWorkshopRoot(tempRoot, "1234123412");
+            using var httpClient = CreateStaticJsonClient("{}", HttpStatusCode.ServiceUnavailable);
+            var service = new WorkshopInventoryService(NullLogger<WorkshopInventoryService>.Instance, httpClient);
+
+            var result = await service.DiscoverInstalledAsync(
+                new WorkshopInventoryRequest(
+                    AppId: "32470",
+                    ManifestPath: manifestPath,
+                    WorkshopContentRootPath: workshopRoot,
+                    FetchRemoteMetadata: true),
+                CancellationToken.None);
+
+            result.Diagnostics.Should().Contain("details_fetch_http_503 batch_start=0");
+        }
+        finally
+        {
+            if (Directory.Exists(tempRoot))
+            {
+                Directory.Delete(tempRoot, recursive: true);
+            }
+        }
+    }
+
+    [Fact]
+    public async Task DiscoverInstalledAsync_ShouldRecordFetchFailure_WhenMetadataFetchThrows()
+    {
+        var tempRoot = Path.Combine(Path.GetTempPath(), $"swfoc-workshop-inventory-{Guid.NewGuid():N}");
+        Directory.CreateDirectory(tempRoot);
+        try
+        {
+            var manifestPath = await WriteSingleItemManifestAsync(tempRoot, "1234000000");
+            var workshopRoot = CreateWorkshopRoot(tempRoot, "1234000000");
+            using var httpClient = CreateThrowingJsonClient(new HttpRequestException("network down"));
+            var service = new WorkshopInventoryService(NullLogger<WorkshopInventoryService>.Instance, httpClient);
+
+            var result = await service.DiscoverInstalledAsync(
+                new WorkshopInventoryRequest(
+                    AppId: "32470",
+                    ManifestPath: manifestPath,
+                    WorkshopContentRootPath: workshopRoot,
+                    FetchRemoteMetadata: true),
+                CancellationToken.None);
+
+            result.Diagnostics.Should().Contain(x => x.StartsWith("details_fetch_failed batch_start=0 message=network down", StringComparison.Ordinal));
+        }
+        finally
+        {
+            if (Directory.Exists(tempRoot))
+            {
+                Directory.Delete(tempRoot, recursive: true);
+            }
+        }
+    }
+
+    [Fact]
+    public async Task DiscoverInstalledAsync_ShouldRecordParseFailure_WhenMetadataPayloadIsInvalidJson()
+    {
+        var tempRoot = Path.Combine(Path.GetTempPath(), $"swfoc-workshop-inventory-{Guid.NewGuid():N}");
+        Directory.CreateDirectory(tempRoot);
+        try
+        {
+            var manifestPath = await WriteSingleItemManifestAsync(tempRoot, "1000000001");
+            var workshopRoot = CreateWorkshopRoot(tempRoot, "1000000001");
+            using var httpClient = CreateStaticJsonClient("{\"response\":");
+            var service = new WorkshopInventoryService(NullLogger<WorkshopInventoryService>.Instance, httpClient);
+
+            var result = await service.DiscoverInstalledAsync(
+                new WorkshopInventoryRequest(
+                    AppId: "32470",
+                    ManifestPath: manifestPath,
+                    WorkshopContentRootPath: workshopRoot,
+                    FetchRemoteMetadata: true),
+                CancellationToken.None);
+
+            result.Diagnostics.Should().Contain(x => x.StartsWith("details_parse_failed batch_start=0", StringComparison.Ordinal));
+        }
+        finally
+        {
+            if (Directory.Exists(tempRoot))
+            {
+                Directory.Delete(tempRoot, recursive: true);
+            }
+        }
+    }
+
+    [Fact]
+    public async Task DiscoverInstalledAsync_ShouldRecordMissingPayload_WhenDetailsArrayIsAbsent()
+    {
+        var tempRoot = Path.Combine(Path.GetTempPath(), $"swfoc-workshop-inventory-{Guid.NewGuid():N}");
+        Directory.CreateDirectory(tempRoot);
+        try
+        {
+            var manifestPath = await WriteSingleItemManifestAsync(tempRoot, "1000000002");
+            var workshopRoot = CreateWorkshopRoot(tempRoot, "1000000002");
+            using var httpClient = CreateStaticJsonClient("{\"response\":{}}");
+            var service = new WorkshopInventoryService(NullLogger<WorkshopInventoryService>.Instance, httpClient);
+
+            var result = await service.DiscoverInstalledAsync(
+                new WorkshopInventoryRequest(
+                    AppId: "32470",
+                    ManifestPath: manifestPath,
+                    WorkshopContentRootPath: workshopRoot,
+                    FetchRemoteMetadata: true),
+                CancellationToken.None);
+
+            result.Diagnostics.Should().Contain("details_missing_payload batch_start=0");
+        }
+        finally
+        {
+            if (Directory.Exists(tempRoot))
+            {
+                Directory.Delete(tempRoot, recursive: true);
+            }
+        }
+    }
+
+    [Fact]
+    public async Task DiscoverInstalledAsync_ShouldClassifySubmod_WhenSubmodKeywordIsPresent()
+    {
+        var tempRoot = Path.Combine(Path.GetTempPath(), $"swfoc-workshop-inventory-{Guid.NewGuid():N}");
+        Directory.CreateDirectory(tempRoot);
+        try
+        {
+            var manifestPath = await WriteSingleItemManifestAsync(tempRoot, "6666666666");
+            var workshopRoot = CreateWorkshopRoot(tempRoot, "6666666666");
+            using var httpClient = CreateStaticJsonClient("""
+{
+  "response": {
+    "publishedfiledetails": [
+      {
+        "publishedfileid": "6666666666",
+        "title": "Submod package",
+        "file_description": "",
+        "tags": []
+      }
+    ]
+  }
+}
+""");
+            var service = new WorkshopInventoryService(NullLogger<WorkshopInventoryService>.Instance, httpClient);
+
+            var result = await service.DiscoverInstalledAsync(
+                new WorkshopInventoryRequest(
+                    AppId: "32470",
+                    ManifestPath: manifestPath,
+                    WorkshopContentRootPath: workshopRoot,
+                    FetchRemoteMetadata: true),
+                CancellationToken.None);
+
+            var item = result.Items.Should().ContainSingle().Subject;
+            item.ItemType.Should().Be(WorkshopItemType.Submod);
+            item.ClassificationReason.Should().Be("keyword_submod_unknown_parent");
+        }
+        finally
+        {
+            if (Directory.Exists(tempRoot))
+            {
+                Directory.Delete(tempRoot, recursive: true);
+            }
+        }
+    }
+
+    [Fact]
+    public void BuildManifestCandidates_ShouldPreferEnvironmentOverride_WhenRequestPathMissing()
+    {
+        var previous = Environment.GetEnvironmentVariable("SWFOC_WORKSHOP_MANIFEST_PATH");
+        try
+        {
+            Environment.SetEnvironmentVariable("SWFOC_WORKSHOP_MANIFEST_PATH", @"C:\tmp\manifest.acf");
+            var request = new WorkshopInventoryRequest(AppId: "32470", ManifestPath: null, WorkshopContentRootPath: null);
+
+            var candidates = InvokePrivateStatic<IEnumerable<string>>("BuildManifestCandidates", request, "32470").ToArray();
+
+            candidates.Should().ContainSingle().Which.Should().Be(@"C:\tmp\manifest.acf");
+        }
+        finally
+        {
+            Environment.SetEnvironmentVariable("SWFOC_WORKSHOP_MANIFEST_PATH", previous);
+        }
+    }
+
+    [Fact]
+    public void BuildWorkshopContentCandidates_ShouldPreferEnvironmentOverride_WhenRequestRootMissing()
+    {
+        var previous = Environment.GetEnvironmentVariable("SWFOC_WORKSHOP_CONTENT_ROOT");
+        try
+        {
+            Environment.SetEnvironmentVariable("SWFOC_WORKSHOP_CONTENT_ROOT", @"C:\tmp\workshop\content\32470");
+            var request = new WorkshopInventoryRequest(AppId: "32470", ManifestPath: null, WorkshopContentRootPath: null);
+
+            var candidates = InvokePrivateStatic<IEnumerable<string>>("BuildWorkshopContentCandidates", request, "32470").ToArray();
+
+            candidates.Should().ContainSingle().Which.Should().Be(@"C:\tmp\workshop\content\32470");
+        }
+        finally
+        {
+            Environment.SetEnvironmentVariable("SWFOC_WORKSHOP_CONTENT_ROOT", previous);
+        }
+    }
+
+    [Fact]
+    public void BuildManifestCandidates_ShouldUseDefaultSteamRootFallback_WhenNoOverridesProvided()
+    {
+        var previousManifest = Environment.GetEnvironmentVariable("SWFOC_WORKSHOP_MANIFEST_PATH");
+        var previousSteamRoot = Environment.GetEnvironmentVariable("STEAM_INSTALL_PATH");
+        try
+        {
+            Environment.SetEnvironmentVariable("SWFOC_WORKSHOP_MANIFEST_PATH", null);
+            Environment.SetEnvironmentVariable("STEAM_INSTALL_PATH", @"D:\SteamLibrary");
+            var request = new WorkshopInventoryRequest(AppId: "32470", ManifestPath: null, WorkshopContentRootPath: null);
+
+            var candidates = InvokePrivateStatic<IEnumerable<string>>("BuildManifestCandidates", request, "32470").ToArray();
+
+            candidates.Should().Contain(path =>
+                path.StartsWith(@"D:\SteamLibrary", StringComparison.OrdinalIgnoreCase) &&
+                path.EndsWith(@"steamapps\workshop\appworkshop_32470.acf", StringComparison.OrdinalIgnoreCase));
+        }
+        finally
+        {
+            Environment.SetEnvironmentVariable("SWFOC_WORKSHOP_MANIFEST_PATH", previousManifest);
+            Environment.SetEnvironmentVariable("STEAM_INSTALL_PATH", previousSteamRoot);
+        }
+    }
+
+    [Fact]
+    public void BuildWorkshopContentCandidates_ShouldUseDefaultSteamRootFallback_WhenNoOverridesProvided()
+    {
+        var previousContent = Environment.GetEnvironmentVariable("SWFOC_WORKSHOP_CONTENT_ROOT");
+        var previousSteamRoot = Environment.GetEnvironmentVariable("STEAM_INSTALL_PATH");
+        try
+        {
+            Environment.SetEnvironmentVariable("SWFOC_WORKSHOP_CONTENT_ROOT", null);
+            Environment.SetEnvironmentVariable("STEAM_INSTALL_PATH", @"E:\SteamRoot");
+            var request = new WorkshopInventoryRequest(AppId: "32470", ManifestPath: null, WorkshopContentRootPath: null);
+
+            var candidates = InvokePrivateStatic<IEnumerable<string>>("BuildWorkshopContentCandidates", request, "32470").ToArray();
+
+            candidates.Should().Contain(path =>
+                path.StartsWith(@"E:\SteamRoot", StringComparison.OrdinalIgnoreCase) &&
+                path.EndsWith(@"steamapps\workshop\content\32470", StringComparison.OrdinalIgnoreCase));
+        }
+        finally
+        {
+            Environment.SetEnvironmentVariable("SWFOC_WORKSHOP_CONTENT_ROOT", previousContent);
+            Environment.SetEnvironmentVariable("STEAM_INSTALL_PATH", previousSteamRoot);
+        }
+    }
+
+    [Fact]
+    public void EnumerateDefaultSteamRoots_ShouldIncludeEnvironmentVariablePath()
+    {
+        var previousSteamRoot = Environment.GetEnvironmentVariable("STEAM_INSTALL_PATH");
+        try
+        {
+            Environment.SetEnvironmentVariable("STEAM_INSTALL_PATH", @"  F:\SteamRoot  ");
+
+            var roots = InvokePrivateStatic<IEnumerable<string>>("EnumerateDefaultSteamRoots").ToArray();
+
+            roots.Should().Contain(@"F:\SteamRoot");
+            roots.Should().OnlyHaveUniqueItems();
+        }
+        finally
+        {
+            Environment.SetEnvironmentVariable("STEAM_INSTALL_PATH", previousSteamRoot);
+        }
+    }
+
+    [Fact]
+    public void ResolveDescription_And_ParseTags_ShouldReturnEmptyValues_WhenFieldsAreMissing()
+    {
+        using var detailDoc = JsonDocument.Parse("""{"publishedfileid":"777"}""");
+        var detail = detailDoc.RootElement;
+
+        var description = InvokePrivateStatic<string>("ResolveDescription", detail);
+        var tags = InvokePrivateStatic<IReadOnlyList<string>>("ParseTags", detail);
+
+        description.Should().BeEmpty();
+        tags.Should().BeEmpty();
+    }
+
+    [Fact]
+    public void TryGetDetailsArray_ShouldReturnFalse_WhenResponsePayloadMissing()
+    {
+        using var payload = JsonDocument.Parse("""{"root":{}}""");
+        var method = typeof(WorkshopInventoryService).GetMethod("TryGetDetailsArray", BindingFlags.NonPublic | BindingFlags.Static);
+        method.Should().NotBeNull();
+
+        var args = new object?[] { payload, null };
+        var parsed = (bool)method!.Invoke(null, args)!;
+
+        parsed.Should().BeFalse();
+    }
+
+    [Fact]
+    public void TryMapItem_ShouldReturnFalse_WhenPublishedFileIdIsMissingOrWhitespace()
+    {
+        var method = typeof(WorkshopInventoryService).GetMethod("TryMapItem", BindingFlags.NonPublic | BindingFlags.Static);
+        method.Should().NotBeNull();
+
+        using var missingIdDoc = JsonDocument.Parse("""{"title":"mod"}""");
+        var argsMissing = new object?[] { missingIdDoc.RootElement, null };
+        var missingResult = (bool)method!.Invoke(null, argsMissing)!;
+
+        using var whitespaceIdDoc = JsonDocument.Parse("""{"publishedfileid":"   ","title":"mod"}""");
+        var argsWhitespace = new object?[] { whitespaceIdDoc.RootElement, null };
+        var whitespaceResult = (bool)method.Invoke(null, argsWhitespace)!;
+
+        missingResult.Should().BeFalse();
+        whitespaceResult.Should().BeFalse();
+    }
+
+    [Fact]
+    public void ResolveChains_ShouldReturnEmpty_ForEmptyItemCollection()
+    {
+        var resolverType = typeof(WorkshopInventoryService).Assembly.GetType("SwfocTrainer.Runtime.Services.WorkshopInventoryChainResolver");
+        resolverType.Should().NotBeNull();
+        var resolveMethod = resolverType!.GetMethod("ResolveChains", BindingFlags.NonPublic | BindingFlags.Static | BindingFlags.Public);
+        resolveMethod.Should().NotBeNull();
+
+        var chains = (IReadOnlyList<WorkshopInventoryChain>)resolveMethod!.Invoke(null, new object?[] { Array.Empty<WorkshopInventoryItem>() })!;
+
+        chains.Should().BeEmpty();
+    }
+
+    [Fact]
+    public void AddChainIfUnique_ShouldSkipEmptyAndDuplicateChains()
+    {
+        var resolverType = typeof(WorkshopInventoryService).Assembly.GetType("SwfocTrainer.Runtime.Services.WorkshopInventoryChainResolver");
+        resolverType.Should().NotBeNull();
+        var addMethod = resolverType!.GetMethod("AddChainIfUnique", BindingFlags.NonPublic | BindingFlags.Static);
+        addMethod.Should().NotBeNull();
+
+        var chains = new List<WorkshopInventoryChain>();
+        var seen = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+        var missingParents = Array.Empty<string>();
+
+        addMethod!.Invoke(null, new object?[] { Array.Empty<string>(), "none", missingParents, chains, seen });
+        addMethod.Invoke(null, new object?[] { new[] { "1397421866" }, "independent_mod", missingParents, chains, seen });
+        addMethod.Invoke(null, new object?[] { new[] { "1397421866" }, "independent_mod", missingParents, chains, seen });
+
+        chains.Should().ContainSingle();
+        chains[0].ChainId.Should().Be("1397421866");
+    }
+
+    private static T InvokePrivateStatic<T>(string methodName, params object?[] arguments)
+    {
+        var method = typeof(WorkshopInventoryService).GetMethod(methodName, BindingFlags.NonPublic | BindingFlags.Static);
+        method.Should().NotBeNull($"private static method '{methodName}' should exist.");
+        return (T)method!.Invoke(null, arguments)!;
+    }
+
     private static async Task<string> WriteSingleItemManifestAsync(string tempRoot, string workshopId)
     {
         var manifestPath = Path.Combine(tempRoot, "appworkshop_32470.acf");
@@ -273,9 +674,17 @@ public sealed class WorkshopInventoryServiceTests
         return workshopRoot;
     }
 
-    private static HttpClient CreateStaticJsonClient(string payload)
+    private static HttpClient CreateStaticJsonClient(string payload, HttpStatusCode statusCode = HttpStatusCode.OK)
     {
-        return new HttpClient(new StaticJsonHttpHandler(payload))
+        return new HttpClient(new StaticJsonHttpHandler(payload, statusCode))
+        {
+            Timeout = TimeSpan.FromSeconds(5)
+        };
+    }
+
+    private static HttpClient CreateThrowingJsonClient(Exception exception)
+    {
+        return new HttpClient(new ThrowingHttpHandler(exception))
         {
             Timeout = TimeSpan.FromSeconds(5)
         };
@@ -389,17 +798,27 @@ public sealed class WorkshopInventoryServiceTests
 }
 """;
 
-    private sealed class StaticJsonHttpHandler(string payload) : HttpMessageHandler
+    private sealed class StaticJsonHttpHandler(string payload, HttpStatusCode statusCode) : HttpMessageHandler
     {
         protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
         {
             _ = request;
             _ = cancellationToken;
-            var response = new HttpResponseMessage(HttpStatusCode.OK)
+            var response = new HttpResponseMessage(statusCode)
             {
                 Content = new StringContent(payload, Encoding.UTF8, "application/json")
             };
             return Task.FromResult(response);
+        }
+    }
+
+    private sealed class ThrowingHttpHandler(Exception exception) : HttpMessageHandler
+    {
+        protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
+        {
+            _ = request;
+            _ = cancellationToken;
+            throw exception;
         }
     }
 }

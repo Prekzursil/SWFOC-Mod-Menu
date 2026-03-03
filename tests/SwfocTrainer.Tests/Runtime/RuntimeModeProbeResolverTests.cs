@@ -65,6 +65,38 @@ public sealed class RuntimeModeProbeResolverTests
         result.ReasonCode.Should().Be("mode_probe_no_signals_use_hint");
     }
 
+    [Fact]
+    public void Resolve_ShouldBiasGalactic_WhenAmbiguousWithoutSupportedHint_AndGalacticSignalsDominate()
+    {
+        var symbols = BuildSymbolMap(new Dictionary<string, SymbolInfo>(StringComparer.OrdinalIgnoreCase)
+        {
+            ["selected_hp"] = Symbol("selected_hp", 0x1000),
+            ["planet_owner"] = Symbol("planet_owner", 0x2000),
+            ["credits"] = Symbol("credits", 0x3000)
+        });
+
+        var result = RuntimeModeProbeResolver.Resolve(RuntimeMode.Unknown, symbols);
+
+        result.EffectiveMode.Should().Be(RuntimeMode.Galactic);
+        result.ReasonCode.Should().Be("mode_probe_ambiguous_bias_galactic");
+    }
+
+    [Fact]
+    public void Resolve_ShouldBiasGalactic_WhenAmbiguousAndGalacticSignalsDominate()
+    {
+        var symbols = BuildSymbolMap(new Dictionary<string, SymbolInfo>(StringComparer.OrdinalIgnoreCase)
+        {
+            ["selected_hp"] = Symbol("selected_hp", 0x1000),
+            ["planet_owner"] = Symbol("planet_owner", 0x2000),
+            ["credits"] = Symbol("credits", 0x3000)
+        });
+
+        var result = RuntimeModeProbeResolver.Resolve(RuntimeMode.Unknown, symbols);
+
+        result.EffectiveMode.Should().Be(RuntimeMode.Galactic);
+        result.ReasonCode.Should().Be("mode_probe_ambiguous_bias_galactic");
+    }
+
     private static SymbolMap BuildSymbolMap(IReadOnlyDictionary<string, SymbolInfo> symbols)
     {
         return new SymbolMap(symbols);

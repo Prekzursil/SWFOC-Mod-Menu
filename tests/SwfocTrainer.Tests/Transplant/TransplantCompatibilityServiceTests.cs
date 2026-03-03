@@ -98,4 +98,82 @@ public sealed class TransplantCompatibilityServiceTests
         report.BlockingEntityCount.Should().Be(1);
         report.Entities[0].ReasonCode.Should().Be(RuntimeReasonCode.TRANSPLANT_DEPENDENCY_MISSING);
     }
+
+    [Fact]
+    public async Task ValidateAsync_ShouldMarkCrossModEntityResolved_WhenVisualAndDependenciesArePresent()
+    {
+        var service = new TransplantCompatibilityService();
+        var entities = new[]
+        {
+            new RosterEntityRecord(
+                EntityId: "RAW_ACCLAMATOR",
+                DisplayName: "Acclamator",
+                SourceProfileId: "raw_1125571106_swfoc",
+                SourceWorkshopId: "1125571106",
+                EntityKind: RosterEntityKind.SpaceStructure,
+                DefaultFaction: "Republic",
+                AllowedModes: new[] { RuntimeMode.TacticalSpace },
+                VisualRef: " Data/Art/Models/raw_acclamator.alo ",
+                DependencyRefs: new[] { " Data/XML/Units/RAW_ACCLAMATOR.xml ", "Data/XML/Units/RAW_ACCLAMATOR.xml" })
+        };
+
+        var report = await service.ValidateAsync(
+            targetProfileId: "aotr_1397421866_swfoc",
+            activeWorkshopIds: new[] { "1397421866" },
+            entities: entities,
+            cancellationToken: CancellationToken.None);
+
+        report.AllResolved.Should().BeTrue();
+        report.BlockingEntityCount.Should().Be(0);
+        report.Entities.Should().ContainSingle();
+        report.Entities[0].RequiresTransplant.Should().BeTrue();
+        report.Entities[0].Resolved.Should().BeTrue();
+        report.Entities[0].ReasonCode.Should().Be(RuntimeReasonCode.TRANSPLANT_APPLIED);
+        report.Entities[0].VisualRef.Should().Be("Data/Art/Models/raw_acclamator.alo");
+    }
+
+    [Fact]
+    public async Task ValidateAsync_ShouldTreatTrimmedSourceWorkshopIdAsActiveChainMember()
+    {
+        var service = new TransplantCompatibilityService();
+        var entities = new[]
+        {
+            new RosterEntityRecord(
+                EntityId: "AOTR_FRIGATE",
+                DisplayName: "Frigate",
+                SourceProfileId: "aotr_1397421866_swfoc",
+                SourceWorkshopId: " 1397421866 ",
+                EntityKind: RosterEntityKind.Unit,
+                DefaultFaction: "Empire",
+                AllowedModes: new[] { RuntimeMode.TacticalSpace },
+                VisualRef: "frigate.alo",
+                DependencyRefs: new[] { "frigate.xml" })
+        };
+
+        var report = await service.ValidateAsync(
+            targetProfileId: "aotr_1397421866_swfoc",
+            activeWorkshopIds: new[] { "1397421866" },
+            entities: entities,
+            cancellationToken: CancellationToken.None);
+
+        report.AllResolved.Should().BeTrue();
+        report.Entities.Should().ContainSingle();
+        report.Entities[0].RequiresTransplant.Should().BeFalse();
+        report.Entities[0].ReasonCode.Should().Be(RuntimeReasonCode.CAPABILITY_PROBE_PASS);
+    }
+
+    [Fact]
+    public async Task ValidateAsync_ShouldHonorCancellationToken()
+    {
+        var service = new TransplantCompatibilityService();
+        using var cts = new CancellationTokenSource();
+        cts.Cancel();
+
+        await Assert.ThrowsAsync<OperationCanceledException>(() =>
+            service.ValidateAsync(
+                targetProfileId: "profile",
+                activeWorkshopIds: Array.Empty<string>(),
+                entities: Array.Empty<RosterEntityRecord>(),
+                cancellationToken: cts.Token));
+    }
 }

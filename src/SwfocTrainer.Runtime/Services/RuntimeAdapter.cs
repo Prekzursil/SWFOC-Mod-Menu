@@ -1295,12 +1295,9 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
             return ContextFactionResolution.None;
         }
 
-        var targetActionId = routeType switch
-        {
-            ContextRouteType.Spawn => ResolveContextSpawnTargetAction(request.RuntimeMode),
-            ContextRouteType.Faction => ResolveContextFactionTargetAction(request.RuntimeMode),
-            _ => null
-        };
+        var targetActionId = routeType == ContextRouteType.Spawn
+            ? ResolveContextSpawnTargetAction(request.RuntimeMode)
+            : ResolveContextFactionTargetAction(request.RuntimeMode);
         if (targetActionId is null)
         {
             return ContextFactionResolution.Blocked(CreateContextModeBlockedResult(routeType, request.RuntimeMode));

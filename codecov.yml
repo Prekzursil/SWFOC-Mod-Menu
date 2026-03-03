@@ -1,6 +1,19 @@
 codecov:
   require_ci_to_pass: true
 
+fixes:
+  - "SwfocTrainer.App\\\\::src/SwfocTrainer.App/"
+  - "SwfocTrainer.Catalog\\\\::src/SwfocTrainer.Catalog/"
+  - "SwfocTrainer.Core\\\\::src/SwfocTrainer.Core/"
+  - "SwfocTrainer.DataIndex\\\\::src/SwfocTrainer.DataIndex/"
+  - "SwfocTrainer.Flow\\\\::src/SwfocTrainer.Flow/"
+  - "SwfocTrainer.Helper\\\\::src/SwfocTrainer.Helper/"
+  - "SwfocTrainer.Meg\\\\::src/SwfocTrainer.Meg/"
+  - "SwfocTrainer.Profiles\\\\::src/SwfocTrainer.Profiles/"
+  - "SwfocTrainer.Runtime\\\\::src/SwfocTrainer.Runtime/"
+  - "SwfocTrainer.Saves\\\\::src/SwfocTrainer.Saves/"
+  - "SwfocTrainer.Transplant\\\\::src/SwfocTrainer.Transplant/"
+
 coverage:
   precision: 2
   round: down

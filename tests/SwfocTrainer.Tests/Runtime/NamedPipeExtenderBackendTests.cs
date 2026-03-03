@@ -12,6 +12,13 @@ namespace SwfocTrainer.Tests.Runtime;
 public sealed class NamedPipeExtenderBackendTests
 {
     [Fact]
+    public void Constructor_WithOptionalPipeName_ShouldUseEnvironmentOrDefaultPipe()
+    {
+        var backend = new NamedPipeExtenderBackend((string?)null);
+        backend.Should().NotBeNull();
+    }
+
+    [Fact]
     public async Task GetHealthAsync_ShouldReturnUnavailable_WhenBridgeIsNotRunning()
     {
         var pipeName = CreateTestPipeName();
@@ -22,6 +29,18 @@ public sealed class NamedPipeExtenderBackendTests
         health.Backend.Should().Be(ExecutionBackendKind.Extender);
         health.IsHealthy.Should().BeFalse();
         health.ReasonCode.Should().Be(RuntimeReasonCode.CAPABILITY_BACKEND_UNAVAILABLE);
+    }
+
+    [Fact]
+    public async Task ProbeCapabilitiesAsync_ShouldIncludePipeDiagnostic_WhenProbeFails()
+    {
+        var pipeName = CreateTestPipeName();
+        var backend = new NamedPipeExtenderBackend(pipeName, autoStartBridgeHost: false);
+
+        var report = await backend.ProbeCapabilitiesAsync("base_swfoc", BuildProcess(), CancellationToken.None);
+
+        report.Diagnostics.Should().ContainKey("pipe");
+        report.Diagnostics!["pipe"]!.ToString().Should().Be(pipeName);
     }
 
     [Fact]
