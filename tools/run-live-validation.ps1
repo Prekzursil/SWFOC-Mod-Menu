@@ -8,6 +8,8 @@ param(
     [switch]$RunAllInstalledChainsDeep,
     [string]$GameRoot = "",
     [int]$LaunchWaitSeconds = 45,
+    [int]$LaunchStabilizationSeconds = 8,
+    [int]$LiveTestTimeoutSeconds = 600,
     [switch]$NoBuild,
     [string]$RunId = "",
     [ValidateSet("AOTR", "ROE", "TACTICAL", "FULL")][string]$Scope = "FULL",
@@ -570,7 +572,8 @@ function Start-AutoLaunchSession {
         [string[]]$ForcedWorkshopIds,
         [string]$ForcedProfileId,
         [string]$OverrideGameRoot,
-        [int]$TimeoutSeconds = 45
+        [int]$TimeoutSeconds = 45,
+        [int]$StabilizationSeconds = 8
     )
 
     $root = Resolve-GameRootPath -OverrideRoot $OverrideGameRoot
@@ -629,6 +632,18 @@ function Start-AutoLaunchSession {
 
         Write-Output ("Auto-launch required host visible: {0} (pid={1})" -f $requiredVisible.ProcessName, $requiredVisible.Id)
     }
+
+    if ($StabilizationSeconds -gt 0) {
+        Write-Output ("Auto-launch stabilization wait: {0}s" -f $StabilizationSeconds)
+        Start-Sleep -Seconds $StabilizationSeconds
+    }
+
+    $postLaunchVisible = Wait-ForAnyProcess -Names $plan.HostNames -TimeoutSeconds 3
+    if ($null -eq $postLaunchVisible) {
+        throw "Auto-launch failed: target process exited during stabilization window."
+    }
+
+    Write-Output ("Auto-launch post-stabilization host: {0} (pid={1})" -f $postLaunchVisible.ProcessName, $postLaunchVisible.Id)
 }
 
 function Get-LastExitCodeOrZero {
@@ -980,7 +995,34 @@ function Invoke-LiveTest {
     }
 
     try {
-        & $dotnetExe @dotnetArgs
+        $startInfo = [System.Diagnostics.ProcessStartInfo]::new()
+        $startInfo.FileName = $dotnetExe
+        $startInfo.UseShellExecute = $false
+        $startInfo.CreateNoWindow = $true
+        foreach ($arg in $dotnetArgs) {
+            [void]$startInfo.ArgumentList.Add([string]$arg)
+        }
+
+        $dotnetProcess = [System.Diagnostics.Process]::Start($startInfo)
+
+        if ($null -eq $dotnetProcess) {
+            throw "dotnet test failed for '$Name': process did not start."
+        }
+
+        $waitMilliseconds = [Math]::Max(1000, $LiveTestTimeoutSeconds * 1000)
+        $completed = $dotnetProcess.WaitForExit($waitMilliseconds)
+        if (-not $completed) {
+            try {
+                Stop-Process -Id $dotnetProcess.Id -Force -ErrorAction SilentlyContinue
+            }
+            catch {
+                Write-Warning ("Failed terminating timed out dotnet test process {0}: {1}" -f $dotnetProcess.Id, $_.Exception.Message)
+            }
+
+            throw ("dotnet test timed out for '{0}' after {1}s" -f $Name, $LiveTestTimeoutSeconds)
+        }
+
+        $global:LASTEXITCODE = [int]$dotnetProcess.ExitCode
     }
     finally {
         if ($null -eq $previousOutputDir) {
@@ -1261,6 +1303,7 @@ $($matrixRowsSnapshot -join "`n")
             RunId = $chainRunId
             Scope = "FULL"
             LaunchWaitSeconds = $LaunchWaitSeconds
+            LiveTestTimeoutSeconds = $LiveTestTimeoutSeconds
         }
         if ($FailOnMissingArtifacts) {
             $invokeParams["FailOnMissingArtifacts"] = $true
@@ -1376,7 +1419,8 @@ if ($AutoLaunch) {
             -ForcedWorkshopIds $forceWorkshopIdsNormalized `
             -ForcedProfileId $forceProfileIdNormalized `
             -OverrideGameRoot $GameRoot `
-            -TimeoutSeconds $LaunchWaitSeconds
+            -TimeoutSeconds $LaunchWaitSeconds `
+            -StabilizationSeconds $LaunchStabilizationSeconds
     }
 }
 
