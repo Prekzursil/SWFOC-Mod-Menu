@@ -2,11 +2,10 @@
 from __future__ import annotations
 
 import argparse
+import http.client
 import json
 import os
 import sys
-import urllib.parse
-import urllib.request
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
@@ -34,30 +33,35 @@ def parse_args() -> argparse.Namespace:
     return parser.parse_args()
 
 
-def build_api_url(repo: str, path: str) -> str:
+def build_api_path(repo: str, path: str) -> str:
     repo_clean = repo.strip().strip("/")
     path_clean = path.strip().lstrip("/")
-    url = f"https://{ALLOWED_GITHUB_HOST}/repos/{repo_clean}/{path_clean}"
-    parsed = urllib.parse.urlparse(url)
-    if parsed.scheme != "https" or parsed.netloc != ALLOWED_GITHUB_HOST:
-        raise ValueError(f"Refusing to call unexpected API host/scheme: {url}")
-    return url
+    if not repo_clean or not path_clean:
+        raise ValueError("Repository and API path must be non-empty.")
+    return f"/repos/{repo_clean}/{path_clean}"
 
 
 def api_get(repo: str, path: str, token: str) -> dict[str, Any]:
-    url = build_api_url(repo, path)
-    request = urllib.request.Request(
-        url,
-        headers={
-            "Accept": "application/vnd.github+json",
-            "Authorization": f"Bearer {token}",
-            "X-GitHub-Api-Version": "2022-11-28",
-            "User-Agent": "swfoc-legacy-snyk-policy",
-        },
-        method="GET",
-    )
-    with urllib.request.urlopen(request, timeout=30) as response:
-        return json.loads(response.read().decode("utf-8"))
+    api_path = build_api_path(repo, path)
+    headers = {
+        "Accept": "application/vnd.github+json",
+        "Authorization": f"Bearer {token}",
+        "X-GitHub-Api-Version": "2022-11-28",
+        "User-Agent": "swfoc-legacy-snyk-policy",
+    }
+
+    connection = http.client.HTTPSConnection(ALLOWED_GITHUB_HOST, timeout=30)
+    try:
+        connection.request("GET", api_path, headers=headers)
+        response = connection.getresponse()
+        body = response.read().decode("utf-8")
+    finally:
+        connection.close()
+
+    if response.status >= 400:
+        raise RuntimeError(f"GitHub API request failed: status={response.status}, path={api_path}")
+
+    return json.loads(body)
 
 
 def resolve_token() -> str:
@@ -80,28 +84,23 @@ def safe_output_path(raw: str, fallback: str, base: Path | None = None) -> Path:
     return resolved
 
 
-def evaluate_legacy_snyk_context(statuses: list[dict[str, Any]], context_prefix: str) -> dict[str, Any]:
-    findings: list[str] = []
-    prefix = (context_prefix or DEFAULT_CONTEXT_PREFIX).strip().lower()
-    matching = [
-        status
-        for status in statuses
-        if str(status.get("context", "")).strip().lower().startswith(prefix)
-    ]
+def normalize_context_prefix(context_prefix: str) -> str:
+    return (context_prefix or DEFAULT_CONTEXT_PREFIX).strip().lower()
 
-    if not matching:
-        findings.append(f"No status contexts matched prefix '{context_prefix}'.")
-        return {
-            "status": "fail",
-            "policy_outcome": "missing_context",
-            "selected_context": "",
-            "selected_state": "",
-            "selected_description": "",
-            "selected_target_url": "",
-            "findings": findings,
-        }
 
-    selected = matching[0]
+def build_missing_context_result(context_prefix: str) -> dict[str, Any]:
+    return {
+        "status": "fail",
+        "policy_outcome": "missing_context",
+        "selected_context": "",
+        "selected_state": "",
+        "selected_description": "",
+        "selected_target_url": "",
+        "findings": [f"No status contexts matched prefix '{context_prefix}'."],
+    }
+
+
+def evaluate_selected_context(selected: dict[str, Any]) -> dict[str, Any]:
     selected_context = str(selected.get("context") or "")
     selected_state = str(selected.get("state") or "")
     selected_description = str(selected.get("description") or "")
@@ -111,30 +110,57 @@ def evaluate_legacy_snyk_context(statuses: list[dict[str, Any]], context_prefix:
     description_normalized = selected_description.strip().lower()
 
     if state_normalized == "success":
-        policy_outcome = "validated"
-        status = "pass"
-    elif "code test limit reached" in description_normalized:
-        policy_outcome = "skipped_quota"
-        status = "pass"
-        findings.append(
-            "Legacy code/snyk returned quota limit message; treated as skipped_quota."
-        )
-    else:
-        policy_outcome = "invalid"
-        status = "fail"
-        findings.append(
-            f"Legacy code/snyk context was non-success (state={selected_state}, description={selected_description})."
-        )
+        return {
+            "status": "pass",
+            "policy_outcome": "validated",
+            "selected_context": selected_context,
+            "selected_state": selected_state,
+            "selected_description": selected_description,
+            "selected_target_url": selected_target_url,
+            "findings": [],
+        }
+
+    if "code test limit reached" in description_normalized:
+        return {
+            "status": "pass",
+            "policy_outcome": "skipped_quota",
+            "selected_context": selected_context,
+            "selected_state": selected_state,
+            "selected_description": selected_description,
+            "selected_target_url": selected_target_url,
+            "findings": [
+                "Legacy code/snyk returned quota limit message; treated as skipped_quota."
+            ],
+        }
 
     return {
-        "status": status,
-        "policy_outcome": policy_outcome,
+        "status": "fail",
+        "policy_outcome": "invalid",
         "selected_context": selected_context,
         "selected_state": selected_state,
         "selected_description": selected_description,
         "selected_target_url": selected_target_url,
-        "findings": findings,
+        "findings": [
+            f"Legacy code/snyk context was non-success (state={selected_state}, description={selected_description})."
+        ],
     }
+
+
+def evaluate_legacy_snyk_context(statuses: list[dict[str, Any]], context_prefix: str) -> dict[str, Any]:
+    prefix = normalize_context_prefix(context_prefix)
+    selected = next(
+        (
+            status
+            for status in statuses
+            if str(status.get("context", "")).strip().lower().startswith(prefix)
+        ),
+        None,
+    )
+
+    if selected is None:
+        return build_missing_context_result(context_prefix)
+
+    return evaluate_selected_context(selected)
 
 
 def render_md(payload: dict[str, Any]) -> str:
