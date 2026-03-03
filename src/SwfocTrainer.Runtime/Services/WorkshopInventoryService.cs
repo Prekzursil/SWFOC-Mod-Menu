@@ -8,7 +8,7 @@ using SwfocTrainer.Core.Models;
 
 namespace SwfocTrainer.Runtime.Services;
 
-public sealed partial class WorkshopInventoryService : IWorkshopInventoryService
+public sealed class WorkshopInventoryService : IWorkshopInventoryService
 {
     private const string DefaultAppId = "32470";
     private const string SteamApiHost = "api.steampowered.com";
@@ -56,7 +56,7 @@ public sealed partial class WorkshopInventoryService : IWorkshopInventoryService
         var finalizedItems = items.Values
             .OrderBy(x => x.WorkshopId, StringComparer.OrdinalIgnoreCase)
             .ToArray();
-        var chains = ResolveChains(finalizedItems);
+        var chains = WorkshopInventoryChainResolver.ResolveChains(finalizedItems);
         diagnostics.Add($"resolved_chains={chains.Count}");
 
         return new WorkshopInventoryGraph(

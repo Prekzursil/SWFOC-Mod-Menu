@@ -2,9 +2,9 @@ using SwfocTrainer.Core.Models;
 
 namespace SwfocTrainer.Runtime.Services;
 
-public sealed partial class WorkshopInventoryService
+internal static class WorkshopInventoryChainResolver
 {
-    private static IReadOnlyList<WorkshopInventoryChain> ResolveChains(IReadOnlyList<WorkshopInventoryItem> items)
+    internal static IReadOnlyList<WorkshopInventoryChain> ResolveChains(IReadOnlyList<WorkshopInventoryItem> items)
     {
         if (items.Count == 0)
         {
