@@ -132,7 +132,7 @@ if ([string]::IsNullOrWhiteSpace($url)) {
 }
 
 $queryPairs = @{}
-if ($null -ne $provider.query) {
+if ($null -ne $provider.PSObject.Properties["query"] -and $null -ne $provider.query) {
     foreach ($property in $provider.query.PSObject.Properties) {
         $queryPairs[$property.Name] = Resolve-TemplateValue -Value ([string]$property.Value)
     }
@@ -142,8 +142,8 @@ $queryString = Build-QueryString -Pairs $queryPairs
 $uri = if ([string]::IsNullOrWhiteSpace($queryString)) { $url } else { "$url?$queryString" }
 
 $headers = @{}
-$authScheme = [string]$provider.authScheme
-$tokenEnv = [string]$provider.tokenEnv
+$authScheme = if ($null -ne $provider.PSObject.Properties["authScheme"]) { [string]$provider.authScheme } else { "" }
+$tokenEnv = if ($null -ne $provider.PSObject.Properties["tokenEnv"]) { [string]$provider.tokenEnv } else { "" }
 $token = if ([string]::IsNullOrWhiteSpace($tokenEnv)) { "" } else { [Environment]::GetEnvironmentVariable($tokenEnv) }
 if (-not [string]::IsNullOrWhiteSpace($token)) {
     switch ($authScheme) {
@@ -155,7 +155,7 @@ if (-not [string]::IsNullOrWhiteSpace($token)) {
             $headers["Authorization"] = "Bearer $token"
         }
         "apiTokenHeader" {
-            $headerName = [string]$provider.tokenHeaderName
+            $headerName = if ($null -ne $provider.PSObject.Properties["tokenHeaderName"]) { [string]$provider.tokenHeaderName } else { "" }
             if ([string]::IsNullOrWhiteSpace($headerName)) {
                 throw "Provider '$ProviderKey' authScheme apiTokenHeader requires tokenHeaderName in config."
             }
@@ -167,7 +167,7 @@ if (-not [string]::IsNullOrWhiteSpace($token)) {
     }
 }
 
-$method = [string]$provider.method
+$method = if ($null -ne $provider.PSObject.Properties["method"]) { [string]$provider.method } else { "" }
 if ([string]::IsNullOrWhiteSpace($method)) {
     $method = "GET"
 }
@@ -184,13 +184,13 @@ if (-not [string]::IsNullOrWhiteSpace($response.Content)) {
 }
 
 $count = $null
-$countHeader = [string]$provider.countHeader
+$countHeader = if ($null -ne $provider.PSObject.Properties["countHeader"]) { [string]$provider.countHeader } else { "" }
 if (-not [string]::IsNullOrWhiteSpace($countHeader) -and $response.Headers[$countHeader]) {
     $count = [int]$response.Headers[$countHeader]
 }
 
 if ($null -eq $count) {
-    $countPath = [string]$provider.countJsonPath
+    $countPath = if ($null -ne $provider.PSObject.Properties["countJsonPath"]) { [string]$provider.countJsonPath } else { "" }
     if (-not [string]::IsNullOrWhiteSpace($countPath) -and $null -ne $json) {
         $rawCount = Get-JsonValueByPath -Object $json -Path $countPath
         if ($null -ne $rawCount -and "$rawCount" -match '^\d+$') {

@@ -39,13 +39,12 @@
     "deepscan": {
       "method": "GET",
       "url": "${DEEPSCAN_ZERO_BACKLOG_URL}",
-      "authScheme": "bearer",
-      "tokenEnv": "DEEPSCAN_API_TOKEN",
+      "authScheme": "",
+      "tokenEnv": "",
       "requiredEnv": [
-        "DEEPSCAN_API_TOKEN",
         "DEEPSCAN_ZERO_BACKLOG_URL"
       ],
-      "countJsonPath": "openCount"
+      "countJsonPath": "data.lastUnresolvedIssueCount"
     },
     "snyk": {
       "method": "GET",
