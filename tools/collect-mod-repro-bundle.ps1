@@ -225,6 +225,7 @@ function ConvertTo-ForcedWorkshopIds {
     param([string[]]$RawIds)
 
     $ids = New-Object System.Collections.Generic.HashSet[string]([StringComparer]::OrdinalIgnoreCase)
+    $ordered = New-Object System.Collections.Generic.List[string]
     foreach ($raw in $RawIds) {
         if ([string]::IsNullOrWhiteSpace($raw)) {
             continue
@@ -233,12 +234,15 @@ function ConvertTo-ForcedWorkshopIds {
         foreach ($token in ([string]$raw -split ",")) {
             $value = [string]$token
             if (-not [string]::IsNullOrWhiteSpace($value)) {
-                [void]$ids.Add($value.Trim())
+                $trimmed = $value.Trim()
+                if ($ids.Add($trimmed)) {
+                    [void]$ordered.Add($trimmed)
+                }
             }
         }
     }
 
-    return @($ids | Sort-Object)
+    return @($ordered)
 }
 
 function Get-SteamModIdsFromCommandLine {
@@ -849,6 +853,315 @@ function Get-Classification {
     return "skipped"
 }
 
+function Get-ResolvedSubmodChain {
+    param(
+        [object]$LaunchContext,
+        [object]$PreferredProcess
+    )
+
+    $forcedIds = @($LaunchContext.forcedWorkshopIds)
+    if ($forcedIds.Count -gt 0) {
+        return @($forcedIds | ForEach-Object { [string]$_ } | Where-Object { -not [string]::IsNullOrWhiteSpace($_) })
+    }
+
+    if ($null -ne $PreferredProcess) {
+        $steamIds = @($PreferredProcess.steamModIds)
+        if ($steamIds.Count -gt 0) {
+            return @($steamIds | ForEach-Object { [string]$_ } | Where-Object { -not [string]::IsNullOrWhiteSpace($_) })
+        }
+    }
+
+    return @()
+}
+
+function Get-InstalledModContext {
+    param(
+        [object[]]$ProcessSnapshot,
+        [object]$LaunchContext,
+        [string]$RunDirectoryPath
+    )
+
+    $installed = New-Object System.Collections.Generic.HashSet[string]([StringComparer]::OrdinalIgnoreCase)
+    foreach ($proc in $ProcessSnapshot) {
+        foreach ($id in @($proc.steamModIds)) {
+            if (-not [string]::IsNullOrWhiteSpace([string]$id)) {
+                [void]$installed.Add(([string]$id))
+            }
+        }
+    }
+
+    foreach ($id in @($LaunchContext.forcedWorkshopIds)) {
+        if (-not [string]::IsNullOrWhiteSpace([string]$id)) {
+            [void]$installed.Add(([string]$id))
+        }
+    }
+
+    $source = "process_snapshot"
+    $testResultsRoot = Split-Path -Parent (Split-Path -Parent $RunDirectoryPath)
+    $runName = Split-Path -Leaf $RunDirectoryPath
+    $graphPath = Join-Path $testResultsRoot (Join-Path "mod-discovery" (Join-Path $runName "installed-mod-graph.json"))
+    if (Test-Path -Path $graphPath) {
+        try {
+            $graph = Get-Content -Raw -Path $graphPath | ConvertFrom-Json
+            foreach ($item in @($graph.items)) {
+                $id = [string](Get-JsonMemberValue -Object $item -Names @("workshopId", "WorkshopId"))
+                if (-not [string]::IsNullOrWhiteSpace($id)) {
+                    [void]$installed.Add($id)
+                }
+            }
+            $source = "installed_mod_graph"
+        }
+        catch {
+            $source = "process_snapshot"
+        }
+    }
+
+    return [ordered]@{
+        source = $source
+        installedWorkshopIds = @($installed | Sort-Object)
+        installedCount = [int]$installed.Count
+        launchProfileId = [string]$LaunchContext.profileId
+    }
+}
+
+function Get-MechanicGatingSummary {
+    param(
+        [object]$ActionStatusDiagnostics,
+        [string]$HelperBridgeState
+    )
+
+    $entries = @($ActionStatusDiagnostics.entries)
+    $blocked = @(
+        $entries | Where-Object {
+            $routeReason = [string]$_.routeReasonCode
+            $skipReason = [string]$_.skipReasonCode
+            ($_.outcome -eq "Failed") -or
+            ($routeReason -like "CAPABILITY_*") -or
+            ($routeReason -like "HELPER_*") -or
+            (-not [string]::IsNullOrWhiteSpace($skipReason))
+        }
+    )
+    $blockedIds = @($blocked | ForEach-Object { [string]$_.actionId } | Where-Object { -not [string]::IsNullOrWhiteSpace($_) } | Sort-Object -Unique)
+
+    return [ordered]@{
+        helperBridgeState = $HelperBridgeState
+        blockedActionCount = [int]$blockedIds.Count
+        blockedActions = $blockedIds
+        summary = [string]$ActionStatusDiagnostics.status
+        totalActions = [int]$ActionStatusDiagnostics.summary.total
+        passedActions = [int]$ActionStatusDiagnostics.summary.passed
+        failedActions = [int]$ActionStatusDiagnostics.summary.failed
+        skippedActions = [int]$ActionStatusDiagnostics.summary.skipped
+    }
+}
+
+function ConvertTo-StringArray {
+    param([object]$Value)
+
+    if ($null -eq $Value) {
+        return [string[]]@()
+    }
+
+    if ($Value -is [string]) {
+        if ([string]::IsNullOrWhiteSpace($Value)) {
+            return [string[]]@()
+        }
+
+        $parts = @($Value -split "," | ForEach-Object { [string]$_ } | Where-Object { -not [string]::IsNullOrWhiteSpace($_) } | ForEach-Object { $_.Trim() })
+        return [string[]]$parts
+    }
+
+    $output = New-Object System.Collections.Generic.List[string]
+    foreach ($item in @($Value)) {
+        $text = [string]$item
+        if (-not [string]::IsNullOrWhiteSpace($text)) {
+            [void]$output.Add($text.Trim())
+        }
+    }
+
+    return [string[]]$output.ToArray()
+}
+
+function Get-EntityOperationSummary {
+    param([object]$ActionStatusDiagnostics)
+
+    $entityActionIds = @(
+        "spawn_context_entity",
+        "spawn_tactical_entity",
+        "spawn_galactic_entity",
+        "place_planet_building",
+        "set_context_allegiance",
+        "set_context_faction"
+    )
+
+    $entries = @($ActionStatusDiagnostics.entries | Where-Object { $entityActionIds -contains [string]$_.actionId })
+    $operations = @()
+    foreach ($entry in $entries) {
+        $actionId = [string]$entry.actionId
+        $persistencePolicy = "unknown"
+        $populationPolicy = "unknown"
+        $allowCrossFaction = "unknown"
+        $forceOverride = "unknown"
+
+        switch -Regex ($actionId) {
+            "^spawn_(context|tactical)_entity$" {
+                $persistencePolicy = "EphemeralBattleOnly"
+                $populationPolicy = "ForceZeroTactical"
+                $allowCrossFaction = "true"
+                $forceOverride = "false"
+            }
+            "^spawn_galactic_entity$" {
+                $persistencePolicy = "PersistentGalactic"
+                $populationPolicy = "Normal"
+                $allowCrossFaction = "true"
+                $forceOverride = "false"
+            }
+            "^place_planet_building$" {
+                $persistencePolicy = "PersistentGalactic"
+                $populationPolicy = "Normal"
+                $allowCrossFaction = "true"
+                $forceOverride = "false"
+            }
+            "^set_context_(allegiance|faction)$" {
+                $persistencePolicy = "context_routed"
+                $populationPolicy = "n/a"
+                $allowCrossFaction = "true"
+                $forceOverride = "false"
+            }
+        }
+
+        $operations += [ordered]@{
+            actionId = $actionId
+            outcome = [string]$entry.outcome
+            persistencePolicy = $persistencePolicy
+            populationPolicy = $populationPolicy
+            allowCrossFaction = $allowCrossFaction
+            forceOverride = $forceOverride
+        }
+    }
+
+    return [ordered]@{
+        totalActions = [int]$operations.Count
+        passedActions = [int](@($operations | Where-Object { $_.outcome -eq "Passed" }).Count)
+        failedActions = [int](@($operations | Where-Object { $_.outcome -eq "Failed" -or $_.outcome -eq "Missing" }).Count)
+        skippedActions = [int](@($operations | Where-Object { $_.outcome -eq "Skipped" }).Count)
+        operations = @($operations)
+    }
+}
+
+function Get-TransplantSummary {
+    param(
+        [object]$ActionStatusDiagnostics,
+        [object]$RuntimeResult
+    )
+
+    $reasonCodes = New-Object System.Collections.Generic.HashSet[string]([StringComparer]::OrdinalIgnoreCase)
+    foreach ($entry in @($ActionStatusDiagnostics.entries)) {
+        foreach ($candidate in @([string]$entry.routeReasonCode, [string]$entry.skipReasonCode, [string]$entry.capabilityProbeReasonCode)) {
+            if ([string]::IsNullOrWhiteSpace($candidate)) {
+                continue
+            }
+
+            if ($candidate -like "TRANSPLANT_*" -or $candidate -eq "CROSS_MOD_TRANSPLANT_REQUIRED" -or $candidate -eq "ROSTER_VISUAL_MISSING") {
+                [void]$reasonCodes.Add($candidate)
+            }
+        }
+    }
+
+    $blockingEntityIds = @(ConvertTo-StringArray -Value (Get-JsonMemberValue -Object $RuntimeResult -Names @("transplantBlockingEntityIds", "TransplantBlockingEntityIds")))
+    if ($blockingEntityIds.Count -eq 0) {
+        $blockingEntityIds = @(
+            $ActionStatusDiagnostics.entries |
+                Where-Object { ([string]$_.routeReasonCode) -eq "CROSS_MOD_TRANSPLANT_REQUIRED" -or ([string]$_.routeReasonCode) -like "TRANSPLANT_*" } |
+                ForEach-Object { [string]$_.actionId } |
+                Sort-Object -Unique
+        )
+    }
+
+    $enabled = ConvertTo-BooleanOrDefault -Value (Get-JsonMemberValue -Object $RuntimeResult -Names @("transplantEnabled", "TransplantEnabled")) -Default $true
+    $allResolvedRaw = ConvertTo-NullableBoolean -Value (Get-JsonMemberValue -Object $RuntimeResult -Names @("transplantAllResolved", "TransplantAllResolved"))
+    $allResolved = if ($null -eq $allResolvedRaw) { $reasonCodes.Count -eq 0 } else { [bool]$allResolvedRaw }
+    $blockingCountRaw = Get-JsonMemberValue -Object $RuntimeResult -Names @("transplantBlockingEntityCount", "TransplantBlockingEntityCount")
+    $blockingCount = if ($null -eq $blockingCountRaw -or [string]::IsNullOrWhiteSpace([string]$blockingCountRaw)) {
+        [int]$blockingEntityIds.Count
+    }
+    else {
+        [int]$blockingCountRaw
+    }
+
+    return [ordered]@{
+        enabled = $enabled
+        allResolved = $allResolved
+        blockingEntityCount = $blockingCount
+        blockingEntityIds = @($blockingEntityIds)
+        reasonCodes = @($reasonCodes | Sort-Object)
+    }
+}
+
+function Get-RosterVisualCoverage {
+    param(
+        [object]$ActionStatusDiagnostics,
+        [object]$RuntimeResult,
+        [object]$TransplantSummary
+    )
+
+    $missingEntityIds = @(ConvertTo-StringArray -Value (Get-JsonMemberValue -Object $RuntimeResult -Names @("rosterVisualMissingEntityIds", "RosterVisualMissingEntityIds")))
+    if ($missingEntityIds.Count -eq 0) {
+        $missingEntityIds = @(
+            $ActionStatusDiagnostics.entries |
+                Where-Object { ([string]$_.routeReasonCode) -eq "ROSTER_VISUAL_MISSING" } |
+                ForEach-Object { [string]$_.actionId } |
+                Sort-Object -Unique
+        )
+    }
+
+    $totalEntitiesRaw = Get-JsonMemberValue -Object $RuntimeResult -Names @("rosterEntityCount", "RosterEntityCount")
+    $totalEntities = if ($null -eq $totalEntitiesRaw -or [string]::IsNullOrWhiteSpace([string]$totalEntitiesRaw)) {
+        [int]([Math]::Max($TransplantSummary.blockingEntityCount, $missingEntityIds.Count))
+    }
+    else {
+        [int]$totalEntitiesRaw
+    }
+
+    if ($totalEntities -lt $missingEntityIds.Count) {
+        $totalEntities = $missingEntityIds.Count
+    }
+
+    $visualMissingCount = [int]$missingEntityIds.Count
+    $visualResolvedCount = [int]([Math]::Max(0, $totalEntities - $visualMissingCount))
+
+    return [ordered]@{
+        totalEntities = $totalEntities
+        visualResolvedCount = $visualResolvedCount
+        visualMissingCount = $visualMissingCount
+        missingEntityIds = @($missingEntityIds)
+    }
+}
+
+function Get-AllegianceRoutingSummary {
+    param([object]$ActionStatusDiagnostics)
+
+    $entries = @(
+        $ActionStatusDiagnostics.entries |
+            Where-Object { ([string]$_.actionId) -eq "set_context_allegiance" -or ([string]$_.actionId) -eq "set_context_faction" }
+    )
+    $reasons = New-Object System.Collections.Generic.HashSet[string]([StringComparer]::OrdinalIgnoreCase)
+    foreach ($entry in $entries) {
+        foreach ($candidate in @([string]$entry.routeReasonCode, [string]$entry.skipReasonCode)) {
+            if (-not [string]::IsNullOrWhiteSpace($candidate)) {
+                [void]$reasons.Add($candidate)
+            }
+        }
+    }
+
+    return [ordered]@{
+        totalActions = [int]$entries.Count
+        routedActions = [int](@($entries | Where-Object { -not [string]::IsNullOrWhiteSpace([string]$_.backendRoute) }).Count)
+        blockedActions = [int](@($entries | Where-Object { ([string]$_.outcome) -eq "Failed" -or ([string]$_.outcome) -eq "Skipped" -or ([string]$_.outcome) -eq "Missing" }).Count)
+        reasonCodes = @($reasons | Sort-Object)
+    }
+}
+
 if (-not (Test-Path -Path $SummaryPath)) {
     throw "Summary path not found: $SummaryPath"
 }
@@ -877,6 +1190,11 @@ $launchContext = Get-LaunchContext `
     -ProfileRootPath $ProfileRoot `
     -ForcedWorkshopIds $forceWorkshopIdsNormalized `
     -ForcedProfileId $forceProfileIdNormalized
+$resolvedSubmodChain = @(Get-ResolvedSubmodChain -LaunchContext $launchContext -PreferredProcess $preferredProcess)
+$installedModContext = Get-InstalledModContext `
+    -ProcessSnapshot $processSnapshot `
+    -LaunchContext $launchContext `
+    -RunDirectoryPath $RunDirectory
 $runtimeMode = Get-RuntimeMode -LiveTests $relevantLiveTests
 $classification = Get-Classification -Relevant $relevantLiveTests -ProcessSnapshot $processSnapshot -SelectedScope $Scope
 $requiredCapabilities = Get-ProfileRequiredCapabilities -ProfileRootPath $ProfileRoot -ProfileId ([string]$launchContext.profileId)
@@ -1000,14 +1318,31 @@ $helperVerifyState = [string](Get-JsonMemberValue -Object $runtimeResult -Names 
 if ([string]::IsNullOrWhiteSpace($helperVerifyState)) {
     $helperVerifyState = "unknown"
 }
+$mechanicGatingSummary = Get-MechanicGatingSummary `
+    -ActionStatusDiagnostics $actionStatusDiagnostics `
+    -HelperBridgeState $helperBridgeState
+$entityOperationSummary = Get-EntityOperationSummary -ActionStatusDiagnostics $actionStatusDiagnostics
+$transplantSummary = Get-TransplantSummary -ActionStatusDiagnostics $actionStatusDiagnostics -RuntimeResult $runtimeResult
+$rosterVisualCoverage = Get-RosterVisualCoverage `
+    -ActionStatusDiagnostics $actionStatusDiagnostics `
+    -RuntimeResult $runtimeResult `
+    -TransplantSummary $transplantSummary
+$allegianceRoutingSummary = Get-AllegianceRoutingSummary -ActionStatusDiagnostics $actionStatusDiagnostics
 
 $bundle = [ordered]@{
-    schemaVersion = "1.2"
+    schemaVersion = "1.3"
     runId = $RunId
     startedAtUtc = if ([string]::IsNullOrWhiteSpace($StartedAtUtc)) { (Get-Date).ToUniversalTime().ToString("o") } else { $StartedAtUtc }
     scope = $Scope
     processSnapshot = @($processSnapshot)
     launchContext = $launchContext
+    installedModContext = $installedModContext
+    resolvedSubmodChain = @($resolvedSubmodChain)
+    mechanicGatingSummary = $mechanicGatingSummary
+    entityOperationSummary = $entityOperationSummary
+    transplantSummary = $transplantSummary
+    rosterVisualCoverage = $rosterVisualCoverage
+    allegianceRoutingSummary = $allegianceRoutingSummary
     runtimeMode = $runtimeMode
     selectedHostProcess = $selectedHostProcess
     backendRouteDecision = $backendRouteDecision
@@ -1071,6 +1406,8 @@ if (@($actionStatusRows).Count -eq 0) {
 - launch context source: $($launchContext.source)
 - forced workshop ids: $((@($launchContext.forcedWorkshopIds) -join ','))
 - forced profile id: $($launchContext.forcedProfileId)
+- installed mod context: source=$($installedModContext.source) count=$($installedModContext.installedCount)
+- resolved submod chain: $((@($resolvedSubmodChain) -join ','))
 - runtime mode effective: $($runtimeMode.effective)
 - runtime mode reason: $($runtimeMode.reasonCode)
 - selected host: $($selectedHostProcess.name) (pid=$($selectedHostProcess.pid), role=$($selectedHostProcess.hostRole), score=$($selectedHostProcess.selectionScore))
@@ -1078,6 +1415,11 @@ if (@($actionStatusRows).Count -eq 0) {
 - capability probe: $($capabilityProbeSnapshot.backend) ($($capabilityProbeSnapshot.probeReasonCode), required=$((@($capabilityProbeSnapshot.requiredCapabilities) -join ', ')))
 - overlay: available=$($overlayState.available) visible=$($overlayState.visible) ($($overlayState.reasonCode))
 - helper ingress: state=$helperBridgeState entryPoint=$helperEntryPoint source=$helperInvocationSource verify=$helperVerifyState
+- mechanic gating summary: blocked=$($mechanicGatingSummary.blockedActionCount) helperState=$($mechanicGatingSummary.helperBridgeState) blockedActions=$((@($mechanicGatingSummary.blockedActions) -join ','))
+- entity operations: total=$($entityOperationSummary.totalActions) passed=$($entityOperationSummary.passedActions) failed=$($entityOperationSummary.failedActions) skipped=$($entityOperationSummary.skippedActions)
+- transplant summary: enabled=$($transplantSummary.enabled) allResolved=$($transplantSummary.allResolved) blocking=$($transplantSummary.blockingEntityCount) reasons=$((@($transplantSummary.reasonCodes) -join ','))
+- roster visual coverage: total=$($rosterVisualCoverage.totalEntities) resolved=$($rosterVisualCoverage.visualResolvedCount) missing=$($rosterVisualCoverage.visualMissingCount)
+- allegiance routing summary: total=$($allegianceRoutingSummary.totalActions) routed=$($allegianceRoutingSummary.routedActions) blocked=$($allegianceRoutingSummary.blockedActions) reasons=$((@($allegianceRoutingSummary.reasonCodes) -join ','))
 - promoted action diagnostics: status=$($actionStatusDiagnostics.status) checks=$($actionStatusDiagnostics.summary.total) passed=$($actionStatusDiagnostics.summary.passed) failed=$($actionStatusDiagnostics.summary.failed) skipped=$($actionStatusDiagnostics.summary.skipped)
 
 ## Process Snapshot

@@ -28,7 +28,15 @@ public sealed class NamedPipeExtenderBackend : IExecutionBackend
         "toggle_ai",
         "set_unit_cap",
         "toggle_instant_build_patch",
-        "set_credits"
+        "set_credits",
+        "spawn_unit_helper",
+        "spawn_context_entity",
+        "spawn_tactical_entity",
+        "spawn_galactic_entity",
+        "place_planet_building",
+        "set_hero_state_helper",
+        "toggle_roe_respawn_helper",
+        "set_context_allegiance"
     ];
 
     private static readonly object HostSync = new();

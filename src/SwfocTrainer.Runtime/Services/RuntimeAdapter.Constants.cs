@@ -30,6 +30,17 @@ public sealed partial class RuntimeAdapter
     private const string ActionIdToggleInstantBuildPatch = "toggle_instant_build_patch";
     private const string ActionIdToggleFogRevealPatchFallback = "toggle_fog_reveal_patch_fallback";
     private const string ActionIdSetCredits = "set_credits";
+    private const string ActionIdSetContextFaction = "set_context_faction";
+    private const string ActionIdSetContextAllegiance = "set_context_allegiance";
+    private const string ActionIdSpawnContextEntity = "spawn_context_entity";
+    private const string ActionIdSpawnTacticalEntity = "spawn_tactical_entity";
+    private const string ActionIdSpawnGalacticEntity = "spawn_galactic_entity";
+    private const string ActionIdPlacePlanetBuilding = "place_planet_building";
+    private const string ActionIdSpawnUnitHelper = "spawn_unit_helper";
+    private const string ActionIdSetHeroStateHelper = "set_hero_state_helper";
+    private const string ActionIdToggleRoeRespawnHelper = "toggle_roe_respawn_helper";
+    private const string ActionIdSetSelectedOwnerFaction = "set_selected_owner_faction";
+    private const string ActionIdSetPlanetOwner = "set_planet_owner";
     private const string SymbolCredits = "credits";
 
     private static readonly string[] ResultHookStateKeys =

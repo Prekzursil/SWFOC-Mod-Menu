@@ -73,8 +73,21 @@
   - verifies extender route promotion only when capability proof is present under override mode
   - verifies capability contract blocking and legacy memory fallback behavior
   - verifies fallback patch actions stay off promoted extender matrix and preserve managed-memory routing
+- `GameLaunchServiceTests`
+  - verifies deterministic chained `STEAMMOD=` argument emission (`parent -> child`)
+  - verifies workshop ID dedupe/normalization for launch requests
 - `MainViewModelSessionGatingTests`
   - verifies unresolved-symbol action gating and fallback feature-flag gating reasons
+- `WorkshopInventoryServiceTests`
+  - verifies installed workshop ID discovery from ACF + workshop content roots
+  - verifies fail-closed behavior when manifest/content roots are missing
+- `ModMechanicDetectionServiceTests`
+  - verifies per-action mechanic support mapping from dependency/helper/symbol/catalog evidence
+  - verifies blocked actions return explicit mechanic reason codes
+- `RuntimeAdapterContextFactionRoutingTests`
+  - verifies `set_context_faction` routes to selected-unit ownership in tactical modes
+  - verifies `set_context_faction` routes to planet ownership in galactic mode
+  - verifies unknown mode blocks fail-closed (`MODE_STRICT_TACTICAL_UNSPECIFIED`)
 - `NamedPipeExtenderBackendTests`
   - verifies deterministic unhealthy state when extender bridge is unavailable
   - verifies probe-seed anchor parity and explicit anchor-invalid/anchor-unreadable reason-code handling

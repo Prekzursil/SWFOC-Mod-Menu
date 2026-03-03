@@ -16,7 +16,7 @@ public enum GameLaunchMode
 public sealed record GameLaunchRequest(
     GameLaunchTarget Target,
     GameLaunchMode Mode,
-    string? WorkshopId = null,
+    IReadOnlyList<string>? WorkshopIds = null,
     string? ModPath = null,
     string? ProfileIdHint = null,
     bool TerminateExistingTargets = false);

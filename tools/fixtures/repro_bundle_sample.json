@@ -1,5 +1,5 @@
 {
-  "schemaVersion": "1.2",
+  "schemaVersion": "1.3",
   "runId": "sample-20260217",
   "startedAtUtc": "2026-02-17T00:00:00Z",
   "scope": "AOTR",
@@ -21,9 +21,76 @@
     "forcedWorkshopIds": [],
     "forcedProfileId": null
   },
+  "installedModContext": {
+    "source": "installed_mod_graph",
+    "installedWorkshopIds": [
+      "1397421866",
+      "3447786229"
+    ],
+    "installedCount": 2,
+    "launchProfileId": "aotr_1397421866_swfoc"
+  },
+  "resolvedSubmodChain": [
+    "1397421866"
+  ],
+  "mechanicGatingSummary": {
+    "helperBridgeState": "ready",
+    "blockedActionCount": 0,
+    "blockedActions": [],
+    "summary": "captured",
+    "totalActions": 15,
+    "passedActions": 15,
+    "failedActions": 0,
+    "skippedActions": 0
+  },
+  "entityOperationSummary": {
+    "totalActions": 2,
+    "passedActions": 2,
+    "failedActions": 0,
+    "skippedActions": 0,
+    "operations": [
+      {
+        "actionId": "spawn_tactical_entity",
+        "outcome": "Passed",
+        "persistencePolicy": "EphemeralBattleOnly",
+        "populationPolicy": "ForceZeroTactical",
+        "allowCrossFaction": "true",
+        "forceOverride": "false"
+      },
+      {
+        "actionId": "set_context_allegiance",
+        "outcome": "Passed",
+        "persistencePolicy": "context_routed",
+        "populationPolicy": "n/a",
+        "allowCrossFaction": "true",
+        "forceOverride": "false"
+      }
+    ]
+  },
+  "transplantSummary": {
+    "enabled": true,
+    "allResolved": true,
+    "blockingEntityCount": 0,
+    "blockingEntityIds": [],
+    "reasonCodes": []
+  },
+  "rosterVisualCoverage": {
+    "totalEntities": 10,
+    "visualResolvedCount": 10,
+    "visualMissingCount": 0,
+    "missingEntityIds": []
+  },
+  "allegianceRoutingSummary": {
+    "totalActions": 1,
+    "routedActions": 1,
+    "blockedActions": 0,
+    "reasonCodes": [
+      "CAPABILITY_PROBE_PASS"
+    ]
+  },
   "runtimeMode": {
     "hint": "Unknown",
-    "effective": "Tactical",
+    "effective": "TacticalLand",
     "reasonCode": "tactical_test_passed"
   },
   "selectedHostProcess": {

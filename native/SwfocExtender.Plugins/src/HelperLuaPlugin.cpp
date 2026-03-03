@@ -10,6 +10,11 @@ namespace {
 
 bool IsSupportedHelperFeature(const std::string& featureId) {
     return featureId == "spawn_unit_helper" ||
+           featureId == "spawn_context_entity" ||
+           featureId == "spawn_tactical_entity" ||
+           featureId == "spawn_galactic_entity" ||
+           featureId == "place_planet_building" ||
+           featureId == "set_context_allegiance" ||
            featureId == "set_hero_state_helper" ||
            featureId == "toggle_roe_respawn_helper";
 }
@@ -28,6 +33,8 @@ PluginResult BuildFailure(
     result.diagnostics.emplace("featureId", request.featureId);
     result.diagnostics.emplace("helperHookId", request.helperHookId);
     result.diagnostics.emplace("helperEntryPoint", request.helperEntryPoint);
+    result.diagnostics.emplace("operationKind", request.operationKind);
+    result.diagnostics.emplace("operationToken", request.operationToken);
     return result;
 }
 
@@ -44,18 +51,49 @@ PluginResult BuildSuccess(const PluginRequest& request) {
         {"helperScript", request.helperScript},
         {"helperInvocationSource", "native_bridge"},
         {"helperVerifyState", "applied"},
-        {"processId", std::to_string(request.processId)}};
+        {"processId", std::to_string(request.processId)},
+        {"operationKind", request.operationKind},
+        {"operationToken", request.operationToken},
+        {"helperInvocationContractVersion", request.invocationContractVersion}};
 
     if (!request.unitId.empty()) {
         result.diagnostics["unitId"] = request.unitId;
+    }
+
+    if (!request.entityId.empty()) {
+        result.diagnostics["entityId"] = request.entityId;
     }
 
     if (!request.entryMarker.empty()) {
         result.diagnostics["entryMarker"] = request.entryMarker;
     }
 
+    if (!request.worldPosition.empty()) {
+        result.diagnostics["worldPosition"] = request.worldPosition;
+    }
+
     if (!request.faction.empty()) {
         result.diagnostics["faction"] = request.faction;
+    }
+
+    if (!request.targetFaction.empty()) {
+        result.diagnostics["targetFaction"] = request.targetFaction;
+    }
+
+    if (!request.sourceFaction.empty()) {
+        result.diagnostics["sourceFaction"] = request.sourceFaction;
+    }
+
+    if (!request.populationPolicy.empty()) {
+        result.diagnostics["populationPolicy"] = request.populationPolicy;
+    }
+
+    if (!request.persistencePolicy.empty()) {
+        result.diagnostics["persistencePolicy"] = request.persistencePolicy;
+    }
+
+    if (!request.placementMode.empty()) {
+        result.diagnostics["placementMode"] = request.placementMode;
     }
 
     if (!request.globalKey.empty()) {
@@ -64,11 +102,20 @@ PluginResult BuildSuccess(const PluginRequest& request) {
 
     result.diagnostics["intValue"] = std::to_string(request.intValue);
     result.diagnostics["boolValue"] = request.boolValue ? "true" : "false";
+    result.diagnostics["allowCrossFaction"] = request.allowCrossFaction ? "true" : "false";
+    result.diagnostics["forceOverride"] = request.forceOverride ? "true" : "false";
+    result.diagnostics["appliedEntityId"] = !request.entityId.empty() ? request.entityId : request.unitId;
     return result;
 }
 
 bool HasValue(const std::string& value) {
     return !value.empty();
+}
+
+bool IsSpawnFeature(const std::string& featureId) {
+    return featureId == "spawn_context_entity" ||
+           featureId == "spawn_tactical_entity" ||
+           featureId == "spawn_galactic_entity";
 }
 
 bool ValidateRequest(const PluginRequest& request, PluginResult& failure) {
@@ -97,12 +144,76 @@ bool ValidateRequest(const PluginRequest& request, PluginResult& failure) {
         return false;
     }
 
+    if (!HasValue(request.operationToken)) {
+        failure = BuildFailure(
+            request,
+            "HELPER_VERIFICATION_FAILED",
+            "Helper bridge execution requires a non-empty operation token for verification.");
+        return false;
+    }
+
     if (request.featureId == "spawn_unit_helper") {
         if (!HasValue(request.unitId) || !HasValue(request.entryMarker) || !HasValue(request.faction)) {
             failure = BuildFailure(
                 request,
                 "HELPER_INVOCATION_FAILED",
                 "spawn_unit_helper requires unitId, entryMarker, and faction payload fields.");
+            return false;
+        }
+    }
+
+    if (IsSpawnFeature(request.featureId)) {
+        if (!HasValue(request.entityId) && !HasValue(request.unitId)) {
+            failure = BuildFailure(
+                request,
+                "HELPER_INVOCATION_FAILED",
+                "Context/tactical/galactic spawn requires entityId or unitId.");
+            return false;
+        }
+
+        if (!HasValue(request.faction) && !HasValue(request.targetFaction)) {
+            failure = BuildFailure(
+                request,
+                "HELPER_INVOCATION_FAILED",
+                "Context/tactical/galactic spawn requires faction or targetFaction.");
+            return false;
+        }
+
+        if (request.featureId != "spawn_galactic_entity" &&
+            !HasValue(request.entryMarker) &&
+            !HasValue(request.worldPosition)) {
+            failure = BuildFailure(
+                request,
+                "HELPER_INVOCATION_FAILED",
+                "Tactical/context spawn requires entryMarker or worldPosition.");
+            return false;
+        }
+    }
+
+    if (request.featureId == "place_planet_building") {
+        if (!HasValue(request.entityId)) {
+            failure = BuildFailure(
+                request,
+                "HELPER_INVOCATION_FAILED",
+                "place_planet_building requires entityId.");
+            return false;
+        }
+
+        if (!HasValue(request.targetFaction) && !HasValue(request.faction)) {
+            failure = BuildFailure(
+                request,
+                "HELPER_INVOCATION_FAILED",
+                "place_planet_building requires faction or targetFaction.");
+            return false;
+        }
+    }
+
+    if (request.featureId == "set_context_allegiance") {
+        if (!HasValue(request.targetFaction) && !HasValue(request.faction)) {
+            failure = BuildFailure(
+                request,
+                "HELPER_INVOCATION_FAILED",
+                "set_context_allegiance requires faction or targetFaction.");
             return false;
         }
     }
@@ -146,6 +257,11 @@ PluginResult HelperLuaPlugin::execute(const PluginRequest& request) {
 CapabilitySnapshot HelperLuaPlugin::capabilitySnapshot() const {
     CapabilitySnapshot snapshot {};
     snapshot.features.emplace("spawn_unit_helper", BuildAvailableCapability());
+    snapshot.features.emplace("spawn_context_entity", BuildAvailableCapability());
+    snapshot.features.emplace("spawn_tactical_entity", BuildAvailableCapability());
+    snapshot.features.emplace("spawn_galactic_entity", BuildAvailableCapability());
+    snapshot.features.emplace("place_planet_building", BuildAvailableCapability());
+    snapshot.features.emplace("set_context_allegiance", BuildAvailableCapability());
     snapshot.features.emplace("set_hero_state_helper", BuildAvailableCapability());
     snapshot.features.emplace("toggle_roe_respawn_helper", BuildAvailableCapability());
     return snapshot;

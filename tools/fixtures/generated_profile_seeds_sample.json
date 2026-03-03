@@ -64,6 +64,64 @@
       "riskLevel": "medium",
       "confidence": 0.95,
       "sourceRunId": "sample-run-20260225"
+    },
+    {
+      "workshopId": "1780988753",
+      "title": "Rise of the Mandalorians: Definitive Edition",
+      "parentDependencies": [],
+      "launchHints": [
+        "workshop",
+        "launch_swfoc",
+        "campaign"
+      ],
+      "candidateBaseProfile": "base_swfoc",
+      "requiredCapabilities": [
+        "set_credits",
+        "freeze_timer",
+        "toggle_fog_reveal",
+        "toggle_ai",
+        "set_unit_cap",
+        "toggle_instant_build_patch"
+      ],
+      "anchorHints": [
+        "title:rise",
+        "title:mandalorians",
+        "tag:foc",
+        "tag:singleplayer",
+        "workshop:1780988753"
+      ],
+      "riskLevel": "medium",
+      "confidence": 0.91,
+      "sourceRunId": "sample-run-20260225"
+    },
+    {
+      "workshopId": "2361944372",
+      "title": "Rise of the Crime Lords",
+      "parentDependencies": [],
+      "launchHints": [
+        "workshop",
+        "launch_swfoc",
+        "campaign"
+      ],
+      "candidateBaseProfile": "base_swfoc",
+      "requiredCapabilities": [
+        "set_credits",
+        "freeze_timer",
+        "toggle_fog_reveal",
+        "toggle_ai",
+        "set_unit_cap",
+        "toggle_instant_build_patch"
+      ],
+      "anchorHints": [
+        "title:rise",
+        "title:crime",
+        "title:lords",
+        "tag:foc",
+        "workshop:2361944372"
+      ],
+      "riskLevel": "medium",
+      "confidence": 0.9,
+      "sourceRunId": "sample-run-20260225"
     }
   ]
 }

@@ -5,6 +5,7 @@ param(
     [string[]]$ForceWorkshopIds = @(),
     [string]$ForceProfileId = "",
     [switch]$AutoLaunch,
+    [switch]$RunAllInstalledChainsDeep,
     [string]$GameRoot = "",
     [int]$LaunchWaitSeconds = 45,
     [switch]$NoBuild,
@@ -36,9 +37,14 @@ if (-not (Test-Path -Path $runResultsDirectory)) {
     New-Item -ItemType Directory -Path $runResultsDirectory -Force | Out-Null
 }
 $runResultsDirectory = (Resolve-Path -Path $runResultsDirectory).ProviderPath
+$modDiscoveryDirectory = Join-Path $ResultsDirectory (Join-Path "mod-discovery" $RunId)
+if (-not (Test-Path -Path $modDiscoveryDirectory)) {
+    New-Item -ItemType Directory -Path $modDiscoveryDirectory -Force | Out-Null
+}
+$modDiscoveryDirectory = (Resolve-Path -Path $modDiscoveryDirectory).ProviderPath
 
-$defaultAotrWorkshopId = "1397421866"
-$defaultRoeWorkshopId = "3447786229"
+$defaultAotrWorkshopChain = @("1397421866")
+$defaultRoeWorkshopChain = @("1397421866", "3447786229")
 $gameRootCandidates = @(
     "D:\\SteamLibrary\\steamapps\\common\\Star Wars Empire at War",
     "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Star Wars Empire at War"
@@ -48,6 +54,7 @@ function ConvertTo-ForcedWorkshopIds {
     param([string[]]$RawIds)
 
     $ids = New-Object System.Collections.Generic.HashSet[string]([StringComparer]::OrdinalIgnoreCase)
+    $ordered = New-Object System.Collections.Generic.List[string]
     foreach ($raw in $RawIds) {
         if ([string]::IsNullOrWhiteSpace($raw)) {
             continue
@@ -56,12 +63,15 @@ function ConvertTo-ForcedWorkshopIds {
         foreach ($token in ([string]$raw -split ",")) {
             $value = [string]$token
             if (-not [string]::IsNullOrWhiteSpace($value)) {
-                [void]$ids.Add($value.Trim())
+                $trimmed = $value.Trim()
+                if ($ids.Add($trimmed)) {
+                    [void]$ordered.Add($trimmed)
+                }
             }
         }
     }
 
-    return @($ids | Sort-Object)
+    return @($ordered)
 }
 
 function Resolve-DotnetCommand {
@@ -103,6 +113,317 @@ function Resolve-GameRootPath {
     }
 
     return ""
+}
+
+function Export-InstalledModGraph {
+    param(
+        [Parameter(Mandatory = $true)][string]$OutputPath,
+        [string]$AppId = "32470"
+    )
+
+    $manifestCandidates = @()
+    if (-not [string]::IsNullOrWhiteSpace($env:SWFOC_WORKSHOP_MANIFEST_PATH)) {
+        $manifestCandidates += $env:SWFOC_WORKSHOP_MANIFEST_PATH
+    }
+    $manifestCandidates += @(
+        "D:\\SteamLibrary\\steamapps\\workshop\\appworkshop_$AppId.acf",
+        "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\appworkshop_$AppId.acf"
+    )
+
+    $workshopRootCandidates = @()
+    if (-not [string]::IsNullOrWhiteSpace($env:SWFOC_WORKSHOP_CONTENT_ROOT)) {
+        $workshopRootCandidates += $env:SWFOC_WORKSHOP_CONTENT_ROOT
+    }
+    $workshopRootCandidates += @(
+        "D:\\SteamLibrary\\steamapps\\workshop\\content\\$AppId",
+        "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\$AppId"
+    )
+
+    $installed = New-Object System.Collections.Generic.HashSet[string]([StringComparer]::OrdinalIgnoreCase)
+    $manifestUsed = ""
+    foreach ($candidate in $manifestCandidates) {
+        if (-not (Test-Path -Path $candidate)) {
+            continue
+        }
+
+        $manifestUsed = (Resolve-Path -Path $candidate).ProviderPath
+        $content = Get-Content -Raw -Path $candidate
+        $matches = [regex]::Matches($content, '"(?<id>\d{4,})"\s*\{')
+        foreach ($match in $matches) {
+            $id = [string]$match.Groups["id"].Value
+            if (-not [string]::IsNullOrWhiteSpace($id)) {
+                [void]$installed.Add($id)
+            }
+        }
+        break
+    }
+
+    foreach ($rootCandidate in $workshopRootCandidates) {
+        if (-not (Test-Path -Path $rootCandidate)) {
+            continue
+        }
+
+        foreach ($dir in (Get-ChildItem -Directory -Path $rootCandidate -ErrorAction SilentlyContinue)) {
+            if ($dir.Name -match "^[0-9]{4,}$") {
+                [void]$installed.Add($dir.Name)
+            }
+        }
+    }
+
+    $ids = @($installed | Sort-Object)
+    $items = @()
+    $diagnostics = @()
+    if (-not [string]::IsNullOrWhiteSpace($manifestUsed)) {
+        $diagnostics += "manifest=$manifestUsed"
+    }
+    $diagnostics += "installedCount=$($ids.Count)"
+
+    if ($ids.Count -gt 0) {
+        for ($index = 0; $index -lt $ids.Count; $index += 100) {
+            $batch = @($ids[$index..([Math]::Min($index + 99, $ids.Count - 1))])
+            $body = @{ itemcount = [string]$batch.Count }
+            for ($i = 0; $i -lt $batch.Count; $i++) {
+                $body["publishedfileids[$i]"] = $batch[$i]
+            }
+
+            try {
+                $response = Invoke-RestMethod -Method Post -Uri "https://api.steampowered.com/ISteamRemoteStorage/GetPublishedFileDetails/v1/" -Body $body -ContentType "application/x-www-form-urlencoded" -TimeoutSec 20
+                $details = @($response.response.publishedfiledetails)
+                foreach ($detail in $details) {
+                    if ($null -eq $detail) {
+                        continue
+                    }
+
+                    $id = [string]$detail.publishedfileid
+                    if ([string]::IsNullOrWhiteSpace($id)) {
+                        continue
+                    }
+
+                    $title = if ([string]::IsNullOrWhiteSpace([string]$detail.title)) { "Workshop Item $id" } else { [string]$detail.title }
+                    $description = ""
+                    if ($null -ne $detail.PSObject.Properties["file_description"]) {
+                        $description = [string]$detail.file_description
+                    }
+                    elseif ($null -ne $detail.PSObject.Properties["description"]) {
+                        $description = [string]$detail.description
+                    }
+                    $parents = New-Object System.Collections.Generic.HashSet[string]([StringComparer]::OrdinalIgnoreCase)
+                    foreach ($match in [regex]::Matches($description, "STEAMMOD\s*=\s*(?<id>\d{4,})", [System.Text.RegularExpressions.RegexOptions]::IgnoreCase)) {
+                        $parentId = [string]$match.Groups["id"].Value
+                        if (-not [string]::IsNullOrWhiteSpace($parentId) -and $parentId -ne $id) {
+                            [void]$parents.Add($parentId)
+                        }
+                    }
+
+                    $tags = @()
+                    foreach ($tag in @($detail.tags)) {
+                        $tagValue = if ($null -ne $tag.tag) { [string]$tag.tag } else { [string]$tag }
+                        if (-not [string]::IsNullOrWhiteSpace($tagValue)) {
+                            $tags += $tagValue
+                        }
+                    }
+
+                    $kind = "mod"
+                    $reason = "independent_mod"
+                    if ($parents.Count -gt 0) {
+                        $kind = "submod"
+                        $reason = "parent_dependency"
+                    }
+                    elseif ($title.ToLowerInvariant().Contains("submod") -or $description.ToLowerInvariant().Contains("submod")) {
+                        $kind = "submod"
+                        $reason = "keyword_submod_unknown_parent"
+                    }
+
+                    $items += [ordered]@{
+                        workshopId = $id
+                        title = $title
+                        kind = $kind
+                        parentWorkshopIds = @($parents | Sort-Object)
+                        tags = @($tags | Sort-Object -Unique)
+                        classificationReason = $reason
+                    }
+                }
+            }
+            catch {
+                $diagnostics += "details_fetch_failed_batch=$index message=$($_.Exception.Message)"
+            }
+        }
+    }
+
+    $knownIds = New-Object System.Collections.Generic.HashSet[string]([StringComparer]::OrdinalIgnoreCase)
+    foreach ($item in $items) {
+        [void]$knownIds.Add([string]$item.workshopId)
+    }
+    foreach ($id in $ids) {
+        if (-not $knownIds.Contains($id)) {
+            $items += [ordered]@{
+                workshopId = $id
+                title = "Workshop Item $id"
+                kind = "unknown"
+                parentWorkshopIds = @()
+                tags = @()
+                classificationReason = "metadata_missing"
+            }
+        }
+    }
+
+    $chains = Resolve-LaunchChainsFromItems -Items @($items)
+
+    $output = [ordered]@{
+        schemaVersion = "1.0"
+        appId = $AppId
+        generatedAtUtc = (Get-Date).ToUniversalTime().ToString("o")
+        items = @($items | Sort-Object workshopId)
+        chains = @($chains)
+        diagnostics = $diagnostics
+    }
+
+    $output | ConvertTo-Json -Depth 8 | Set-Content -Path $OutputPath -Encoding UTF8
+    return (Resolve-ArtifactPath -Path $OutputPath)
+}
+
+function Resolve-LaunchChainsFromItems {
+    param([object[]]$Items)
+
+    $orderedItems = @($Items | Sort-Object { [string]$_.workshopId })
+    if ($orderedItems.Count -eq 0) {
+        return @()
+    }
+
+    $itemById = @{}
+    foreach ($item in $orderedItems) {
+        $id = [string]$item.workshopId
+        if (-not [string]::IsNullOrWhiteSpace($id)) {
+            $itemById[$id] = $item
+        }
+    }
+
+    $chains = New-Object System.Collections.Generic.List[object]
+    $seen = New-Object System.Collections.Generic.HashSet[string]([StringComparer]::OrdinalIgnoreCase)
+
+    foreach ($item in $orderedItems) {
+        $id = [string]$item.workshopId
+        if ([string]::IsNullOrWhiteSpace($id)) {
+            continue
+        }
+
+        $parents = @($item.parentWorkshopIds | Where-Object { -not [string]::IsNullOrWhiteSpace([string]$_) } | ForEach-Object { [string]$_ })
+        if ($parents.Count -eq 0) {
+            $ordered = @($id)
+            $chainId = ($ordered -join ">")
+            if ($seen.Add($chainId)) {
+                $chains.Add([ordered]@{
+                    chainId = $chainId
+                    orderedWorkshopIds = $ordered
+                    classificationReason = [string]$item.classificationReason
+                    parentFirst = $true
+                    missingParentIds = @()
+                })
+            }
+            continue
+        }
+
+        $resolvedParents = @($parents | Where-Object { $itemById.ContainsKey([string]$_) })
+        $missingParents = @($parents | Where-Object { -not $itemById.ContainsKey([string]$_) })
+
+        if ($resolvedParents.Count -eq 0) {
+            $ordered = @($id)
+            $chainId = ($ordered -join ">")
+            if ($seen.Add($chainId)) {
+                $chains.Add([ordered]@{
+                    chainId = $chainId
+                    orderedWorkshopIds = $ordered
+                    classificationReason = if ($missingParents.Count -gt 0) { "parent_dependency_missing" } else { [string]$item.classificationReason }
+                    parentFirst = $true
+                    missingParentIds = @($missingParents | Sort-Object -Unique)
+                })
+            }
+            continue
+        }
+
+        foreach ($parentId in $resolvedParents) {
+            $visited = New-Object System.Collections.Generic.HashSet[string]([StringComparer]::OrdinalIgnoreCase)
+            $ordered = New-Object System.Collections.Generic.List[string]
+
+            function Add-Ancestors {
+                param(
+                    [string]$CurrentId,
+                    [hashtable]$Map,
+                    [System.Collections.Generic.HashSet[string]]$Visited,
+                    [System.Collections.Generic.List[string]]$Ordered
+                )
+
+                if ([string]::IsNullOrWhiteSpace($CurrentId) -or -not $Map.ContainsKey($CurrentId)) {
+                    return
+                }
+
+                if (-not $Visited.Add($CurrentId)) {
+                    return
+                }
+
+                $current = $Map[$CurrentId]
+                foreach ($ancestorId in @($current.parentWorkshopIds | Where-Object { -not [string]::IsNullOrWhiteSpace([string]$_) } | ForEach-Object { [string]$_ })) {
+                    Add-Ancestors -CurrentId $ancestorId -Map $Map -Visited $Visited -Ordered $Ordered
+                }
+
+                $Ordered.Add($CurrentId)
+            }
+
+            Add-Ancestors -CurrentId $parentId -Map $itemById -Visited $visited -Ordered $ordered
+            if ($visited.Add($id)) {
+                $ordered.Add($id)
+            }
+
+            $orderedArray = @($ordered)
+            if ($orderedArray.Count -eq 0) {
+                continue
+            }
+
+            $chainId = ($orderedArray -join ">")
+            if ($seen.Add($chainId)) {
+                $chains.Add([ordered]@{
+                    chainId = $chainId
+                    orderedWorkshopIds = $orderedArray
+                    classificationReason = if ($missingParents.Count -gt 0) { "parent_dependency_partial_missing" } else { [string]$item.classificationReason }
+                    parentFirst = $true
+                    missingParentIds = @($missingParents | Sort-Object -Unique)
+                })
+            }
+        }
+    }
+
+    return @($chains.ToArray())
+}
+
+function Export-ResolvedLaunchChains {
+    param(
+        [Parameter(Mandatory = $true)][string]$InstalledGraphPath,
+        [Parameter(Mandatory = $true)][string]$OutputPath
+    )
+
+    if (-not (Test-Path -Path $InstalledGraphPath)) {
+        throw "Installed mod graph path not found: $InstalledGraphPath"
+    }
+
+    $graph = Get-Content -Raw -Path $InstalledGraphPath | ConvertFrom-Json
+    $items = @($graph.items)
+    $chains = @()
+    if ($null -ne $graph.chains -and @($graph.chains).Count -gt 0) {
+        $chains = @($graph.chains)
+    }
+    else {
+        $chains = Resolve-LaunchChainsFromItems -Items $items
+    }
+
+    $output = [ordered]@{
+        schemaVersion = "1.0"
+        generatedAtUtc = (Get-Date).ToUniversalTime().ToString("o")
+        sourceGraphPath = (Resolve-ArtifactPath -Path $InstalledGraphPath)
+        chains = @($chains)
+    }
+
+    $output | ConvertTo-Json -Depth 8 | Set-Content -Path $OutputPath -Encoding UTF8
+    return (Resolve-ArtifactPath -Path $OutputPath)
 }
 
 function Stop-LiveGameProcesses {
@@ -152,31 +473,39 @@ function Resolve-ScopeLaunchPlan {
 
     $workshopIds = @()
     if ($scopeUpper -eq "AOTR") {
-        $workshopIds = if ($forcedIds.Count -gt 0) { @($forcedIds[0]) } else { @($defaultAotrWorkshopId) }
+        $workshopIds = if ($forcedIds.Count -gt 0) { @($forcedIds) } else { @($defaultAotrWorkshopChain) }
     }
     elseif ($scopeUpper -eq "ROE") {
-        $workshopIds = if ($forcedIds.Count -gt 0) { @($forcedIds) } else { @($defaultRoeWorkshopId) }
+        $workshopIds = if ($forcedIds.Count -gt 0) { @($forcedIds) } else { @($defaultRoeWorkshopChain) }
     }
     elseif ($scopeUpper -eq "FULL") {
         if ($forceProfile.Contains("roe")) {
-            $workshopIds = if ($forcedIds.Count -gt 0) { @($forcedIds) } else { @($defaultRoeWorkshopId) }
+            $workshopIds = if ($forcedIds.Count -gt 0) { @($forcedIds) } else { @($defaultRoeWorkshopChain) }
         }
         elseif ($forceProfile.Contains("aotr")) {
-            $workshopIds = if ($forcedIds.Count -gt 0) { @($forcedIds[0]) } else { @($defaultAotrWorkshopId) }
+            $workshopIds = if ($forcedIds.Count -gt 0) { @($forcedIds) } else { @($defaultAotrWorkshopChain) }
         }
         else {
             $workshopIds = @()
         }
     }
 
+    if (($scopeUpper -eq "TACTICAL" -or $scopeUpper -eq "FULL") -and $workshopIds.Count -eq 0 -and $forcedIds.Count -gt 0) {
+        $workshopIds = @($forcedIds)
+    }
+
+    $workshopIds = @($workshopIds)
     $requiredHostName = ""
     if ($scopeUpper -eq "ROE") {
         $requiredHostName = "StarWarsG"
     }
-    elseif ($scopeUpper -eq "AOTR" -and $workshopIds.Count -gt 0) {
+    elseif ($scopeUpper -eq "AOTR" -and @($workshopIds).Count -gt 0) {
         $requiredHostName = "StarWarsG"
     }
-    elseif ($scopeUpper -eq "FULL" -and $workshopIds.Count -gt 0) {
+    elseif ($scopeUpper -eq "TACTICAL" -and @($workshopIds).Count -gt 0) {
+        $requiredHostName = "StarWarsG"
+    }
+    elseif ($scopeUpper -eq "FULL" -and @($workshopIds).Count -gt 0) {
         $requiredHostName = "StarWarsG"
     }
 
@@ -727,6 +1056,182 @@ $forceProfileIdNormalized = if ([string]::IsNullOrWhiteSpace($ForceProfileId)) {
 $dotnetExe = Resolve-DotnetCommand
 $pythonCmd = @(Resolve-PythonCommand)
 $runtimeHostPath = Test-NativeHostPreflight -Config $Configuration -Enabled $PreflightNativeHost
+$installedModGraphPath = Join-Path $modDiscoveryDirectory "installed-mod-graph.json"
+$resolvedLaunchChainsPath = Join-Path $modDiscoveryDirectory "resolved-launch-chains.json"
+$resolvedLaunchChains = @()
+try {
+    $resolvedInstalledModGraphPath = Export-InstalledModGraph -OutputPath $installedModGraphPath
+    Write-Output ("Installed workshop graph: {0}" -f $resolvedInstalledModGraphPath)
+    $resolvedLaunchChainsPath = Export-ResolvedLaunchChains `
+        -InstalledGraphPath $resolvedInstalledModGraphPath `
+        -OutputPath $resolvedLaunchChainsPath
+    Write-Output ("Resolved launch chains: {0}" -f $resolvedLaunchChainsPath)
+    $chainDoc = Get-Content -Raw -Path $resolvedLaunchChainsPath | ConvertFrom-Json
+    $resolvedLaunchChains = @($chainDoc.chains)
+}
+catch {
+    Write-Warning ("Installed workshop graph export failed: {0}" -f $_.Exception.Message)
+}
+
+if ($RunAllInstalledChainsDeep) {
+    if ($resolvedLaunchChains.Count -eq 0) {
+        throw "RunAllInstalledChainsDeep requested but no resolved launch chains were available."
+    }
+
+    $matrixResults = New-Object System.Collections.Generic.List[object]
+    $matrixJsonPath = Join-Path $runResultsDirectory "chain-matrix-summary.json"
+    $matrixMdPath = Join-Path $runResultsDirectory "chain-matrix-summary.md"
+    $scriptPath = $PSCommandPath
+    $chainIndex = 0
+    foreach ($chain in $resolvedLaunchChains) {
+        $chainIndex++
+        $chainWorkshopIds = @($chain.orderedWorkshopIds | ForEach-Object { [string]$_ } | Where-Object { -not [string]::IsNullOrWhiteSpace($_) })
+        $chainMissingParentIds = @()
+        if ($null -ne $chain.PSObject.Properties["missingParentIds"]) {
+            $chainMissingParentIds = @($chain.missingParentIds | ForEach-Object { [string]$_ } | Where-Object { -not [string]::IsNullOrWhiteSpace($_) } | Sort-Object -Unique)
+        }
+        $chainRunId = "{0}-chain{1:D2}" -f $RunId, $chainIndex
+        Write-Output ("Running deep live chain matrix entry {0}/{1}: runId={2} chain={3}" -f $chainIndex, $resolvedLaunchChains.Count, $chainRunId, ($chainWorkshopIds -join ","))
+
+        if ($chainMissingParentIds.Count -gt 0) {
+            Write-Warning ("Skipping chain '{0}' due missing parent dependencies: {1}" -f $chainRunId, ($chainMissingParentIds -join ","))
+            $matrixResults.Add([ordered]@{
+                chainId = [string]$chain.chainId
+                runId = $chainRunId
+                orderedWorkshopIds = @($chainWorkshopIds)
+                classification = "blocked_dependency_missing_parent"
+                exitCode = 1
+                reproBundlePath = ""
+                missingParentIds = @($chainMissingParentIds)
+            })
+
+            $matrixSnapshot = @($matrixResults.ToArray())
+            $matrixSnapshot | ConvertTo-Json -Depth 8 | Set-Content -Path $matrixJsonPath
+            $matrixRowsSnapshot = @($matrixSnapshot | ForEach-Object {
+                "| $([string]$_.chainId) | $([string]$_.runId) | $((@($_.orderedWorkshopIds) -join ',')) | $([string]$_.classification) | $([int]$_.exitCode) | $([string]$_.reproBundlePath) |"
+            })
+            if ($matrixRowsSnapshot.Count -eq 0) {
+                $matrixRowsSnapshot = @("| _none_ | _none_ | _none_ | _none_ | _none_ | _none_ |")
+            }
+@"
+# Chain Matrix Summary
+
+| ChainId | RunId | WorkshopIds | Classification | ExitCode | Bundle |
+|---|---|---|---|---:|---|
+$($matrixRowsSnapshot -join "`n")
+"@ | Set-Content -Path $matrixMdPath
+            continue
+        }
+
+        $invokeParams = [ordered]@{
+            Configuration = $Configuration
+            ResultsDirectory = $ResultsDirectory
+            ProfileRoot = $ProfileRoot
+            RunId = $chainRunId
+            Scope = "FULL"
+            LaunchWaitSeconds = $LaunchWaitSeconds
+        }
+        if ($FailOnMissingArtifacts) {
+            $invokeParams["FailOnMissingArtifacts"] = $true
+        }
+        if ($Strict) {
+            $invokeParams["Strict"] = $true
+        }
+        if ($RequireNonBlockedClassification) {
+            $invokeParams["RequireNonBlockedClassification"] = $true
+        }
+        if ($NoBuild) {
+            $invokeParams["NoBuild"] = $true
+        }
+        if ($AutoLaunch) {
+            $invokeParams["AutoLaunch"] = $true
+        }
+        if (-not [string]::IsNullOrWhiteSpace($GameRoot)) {
+            $invokeParams["GameRoot"] = $GameRoot
+        }
+        if ($chainWorkshopIds.Count -gt 0) {
+            $invokeParams["ForceWorkshopIds"] = @($chainWorkshopIds)
+        }
+
+        $chainExitCode = 0
+        try {
+            & $scriptPath @invokeParams
+        }
+        catch {
+            $chainExitCode = 1
+            Write-Warning ("Chain run '{0}' failed: {1}" -f $chainRunId, $_.Exception.Message)
+        }
+        $chainBundlePath = Join-Path $ResultsDirectory (Join-Path "runs" (Join-Path $chainRunId "repro-bundle.json"))
+        $chainClassification = ""
+        if (Test-Path -Path $chainBundlePath) {
+            try {
+                $chainBundle = Get-Content -Raw -Path $chainBundlePath | ConvertFrom-Json
+                $chainClassification = [string]$chainBundle.classification
+            }
+            catch {
+                $chainClassification = "unknown"
+            }
+        }
+        elseif ($chainExitCode -eq 0) {
+            $chainClassification = "missing_bundle"
+        }
+
+        $matrixResults.Add([ordered]@{
+            chainId = [string]$chain.chainId
+            runId = $chainRunId
+            orderedWorkshopIds = @($chainWorkshopIds)
+            classification = $chainClassification
+            exitCode = $chainExitCode
+            reproBundlePath = $chainBundlePath
+            missingParentIds = @($chainMissingParentIds)
+        })
+
+        # Persist progress after each chain so interruption still yields usable matrix evidence.
+        $matrixSnapshot = @($matrixResults.ToArray())
+        $matrixSnapshot | ConvertTo-Json -Depth 8 | Set-Content -Path $matrixJsonPath
+        $matrixRowsSnapshot = @($matrixSnapshot | ForEach-Object {
+            "| $([string]$_.chainId) | $([string]$_.runId) | $((@($_.orderedWorkshopIds) -join ',')) | $([string]$_.classification) | $([int]$_.exitCode) | $([string]$_.reproBundlePath) |"
+        })
+        if ($matrixRowsSnapshot.Count -eq 0) {
+            $matrixRowsSnapshot = @("| _none_ | _none_ | _none_ | _none_ | _none_ | _none_ |")
+        }
+@"
+# Chain Matrix Summary
+
+| ChainId | RunId | WorkshopIds | Classification | ExitCode | Bundle |
+|---|---|---|---|---:|---|
+$($matrixRowsSnapshot -join "`n")
+"@ | Set-Content -Path $matrixMdPath
+    }
+
+    $matrixArray = @($matrixResults.ToArray())
+    $matrixArray | ConvertTo-Json -Depth 8 | Set-Content -Path $matrixJsonPath
+
+    $matrixRows = @($matrixArray | ForEach-Object {
+        "| $([string]$_.chainId) | $([string]$_.runId) | $((@($_.orderedWorkshopIds) -join ',')) | $([string]$_.classification) | $([int]$_.exitCode) | $([string]$_.reproBundlePath) |"
+    })
+    if ($matrixRows.Count -eq 0) {
+        $matrixRows = @("| _none_ | _none_ | _none_ | _none_ | _none_ | _none_ |")
+    }
+
+    @"
+# Chain Matrix Summary
+
+| ChainId | RunId | WorkshopIds | Classification | ExitCode | Bundle |
+|---|---|---|---|---:|---|
+$($matrixRows -join "`n")
+"@ | Set-Content -Path $matrixMdPath
+
+    Write-Output ("chain matrix summary json: {0}" -f $matrixJsonPath)
+    Write-Output ("chain matrix summary markdown: {0}" -f $matrixMdPath)
+
+    $matrixFailures = @($matrixArray | Where-Object { $_.exitCode -ne 0 -or $_.classification -in @("failed", "blocked_environment", "blocked_profile_mismatch", "unknown", "") })
+    if ($matrixFailures.Count -gt 0) {
+        throw ("Chain matrix deep run detected failures in {0} chain entries." -f $matrixFailures.Count)
+    }
+
+    return
+}
 
 if ($AutoLaunch) {
     Ensure-AutoLaunchSession `

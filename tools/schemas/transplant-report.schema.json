@@ -1,0 +1,59 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://swfoc-mod-menu.local/schemas/transplant-report.schema.json",
+  "title": "SWFOC Transplant Report",
+  "type": "object",
+  "required": [
+    "schemaVersion",
+    "generatedAtUtc",
+    "targetProfileId",
+    "activeWorkshopIds",
+    "totalEntities",
+    "blockingEntityCount",
+    "allResolved",
+    "entities",
+    "diagnostics"
+  ],
+  "properties": {
+    "schemaVersion": { "type": "string", "const": "1.0" },
+    "generatedAtUtc": { "type": "string", "format": "date-time" },
+    "targetProfileId": { "type": "string", "minLength": 1 },
+    "activeWorkshopIds": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "totalEntities": { "type": "integer", "minimum": 0 },
+    "blockingEntityCount": { "type": "integer", "minimum": 0 },
+    "allResolved": { "type": "boolean" },
+    "entities": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "entityId",
+          "sourceProfileId",
+          "requiresTransplant",
+          "resolved",
+          "reasonCode",
+          "message",
+          "missingDependencies"
+        ],
+        "properties": {
+          "entityId": { "type": "string", "minLength": 1 },
+          "sourceProfileId": { "type": "string", "minLength": 1 },
+          "sourceWorkshopId": { "type": ["string", "null"] },
+          "requiresTransplant": { "type": "boolean" },
+          "resolved": { "type": "boolean" },
+          "reasonCode": { "type": "string" },
+          "message": { "type": "string" },
+          "visualRef": { "type": ["string", "null"] },
+          "missingDependencies": {
+            "type": "array",
+            "items": { "type": "string" }
+          }
+        }
+      }
+    },
+    "diagnostics": { "type": "object" }
+  }
+}

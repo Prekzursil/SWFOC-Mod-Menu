@@ -19,6 +19,7 @@ using SwfocTrainer.Profiles.Services;
 using SwfocTrainer.Runtime.Services;
 using SwfocTrainer.Saves.Config;
 using SwfocTrainer.Saves.Services;
+using SwfocTrainer.Transplant.Services;
 
 namespace SwfocTrainer.App;
 
@@ -120,7 +121,11 @@ internal static class Program
         services.AddSingleton<IHelperBridgeBackend>(provider =>
             new NamedPipeHelperBridgeBackend(provider.GetRequiredService<IExecutionBackend>()));
         services.AddSingleton<IActionReliabilityService, ActionReliabilityService>();
+        services.AddSingleton<ITransplantCompatibilityService, TransplantCompatibilityService>();
+        services.AddSingleton<IContentTransplantService, ContentTransplantService>();
+        services.AddSingleton<IModMechanicDetectionService, ModMechanicDetectionService>();
         services.AddSingleton<IModCalibrationService, ModCalibrationService>();
+        services.AddSingleton<IWorkshopInventoryService, WorkshopInventoryService>();
         services.AddSingleton<ISymbolHealthService, SymbolHealthService>();
         services.AddSingleton<ITelemetrySnapshotService, TelemetrySnapshotService>();
         services.AddSingleton<IGameLaunchService, GameLaunchService>();

@@ -10,8 +10,13 @@ public sealed class NamedPipeHelperBridgeBackend : IHelperBridgeBackend
     private static readonly string[] HelperFeatureIds =
     [
         "spawn_unit_helper",
+        "spawn_context_entity",
+        "spawn_tactical_entity",
+        "spawn_galactic_entity",
+        "place_planet_building",
         "set_hero_state_helper",
-        "toggle_roe_respawn_helper"
+        "toggle_roe_respawn_helper",
+        "set_context_allegiance"
     ];
 
     private readonly IExecutionBackend _backend;
@@ -83,13 +88,25 @@ public sealed class NamedPipeHelperBridgeBackend : IHelperBridgeBackend
                 Diagnostics: probe.Diagnostics);
         }
 
+        var operationKind = request.OperationKind == HelperBridgeOperationKind.Unknown
+            ? ResolveOperationKind(request.ActionRequest.Action.Id)
+            : request.OperationKind;
+        var operationToken = string.IsNullOrWhiteSpace(request.OperationToken)
+            ? Guid.NewGuid().ToString("N")
+            : request.OperationToken.Trim();
+
         var payload = request.ActionRequest.Payload.DeepClone() as JsonObject ?? new JsonObject();
+        payload["operationKind"] ??= operationKind.ToString();
+        payload["operationToken"] ??= operationToken;
+        payload["helperInvocationContractVersion"] ??= request.InvocationContractVersion;
+        ApplyActionSpecificDefaults(request.ActionRequest.Action.Id, payload);
         if (request.Hook is not null)
         {
             payload["helperHookId"] ??= request.Hook.Id;
-            if (!string.IsNullOrWhiteSpace(request.Hook.EntryPoint))
+            var defaultEntryPoint = ResolveDefaultHelperEntryPoint(request.ActionRequest.Action.Id, request.Hook.EntryPoint);
+            if (!string.IsNullOrWhiteSpace(defaultEntryPoint))
             {
-                payload["helperEntryPoint"] ??= request.Hook.EntryPoint;
+                payload["helperEntryPoint"] ??= defaultEntryPoint;
             }
 
             payload["helperScript"] ??= request.Hook.Script;
@@ -98,9 +115,12 @@ public sealed class NamedPipeHelperBridgeBackend : IHelperBridgeBackend
                 payload["helperArgContract"] ??= JsonSerializer.SerializeToNode(request.Hook.ArgContract);
             }
 
-            if (request.Hook.VerifyContract is not null && request.Hook.VerifyContract.Count > 0)
+            var verifyContract = request.VerificationContract
+                ?? request.Hook.VerifyContract
+                ?? new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+            if (verifyContract.Count > 0)
             {
-                payload["helperVerifyContract"] ??= JsonSerializer.SerializeToNode(request.Hook.VerifyContract);
+                payload["helperVerifyContract"] ??= JsonSerializer.SerializeToNode(verifyContract);
             }
         }
 
@@ -117,6 +137,8 @@ public sealed class NamedPipeHelperBridgeBackend : IHelperBridgeBackend
         context["processName"] = request.Process.ProcessName;
         context["processPath"] = request.Process.ProcessPath;
         context["helperInvocationSource"] = "native_bridge";
+        context["operationKind"] = operationKind.ToString();
+        context["operationToken"] = operationToken;
 
         var actionRequest = request.ActionRequest with
         {
@@ -126,6 +148,7 @@ public sealed class NamedPipeHelperBridgeBackend : IHelperBridgeBackend
 
         var capabilityReport = await _backend.ProbeCapabilitiesAsync(actionRequest.ProfileId, request.Process, cancellationToken);
         var executionResult = await _backend.ExecuteAsync(actionRequest, capabilityReport, cancellationToken);
+        var backendReportedOperationToken = TryGetStringDiagnostic(executionResult.Diagnostics, "operationToken", out var backendOperationToken);
 
         var diagnostics = new Dictionary<string, object?>(StringComparer.OrdinalIgnoreCase)
         {
@@ -133,7 +156,9 @@ public sealed class NamedPipeHelperBridgeBackend : IHelperBridgeBackend
             ["helperInvocationSource"] = "native_bridge",
             ["helperEntryPoint"] = request.Hook?.EntryPoint ?? string.Empty,
             ["helperHookId"] = request.Hook?.Id ?? string.Empty,
-            ["helperVerifyState"] = executionResult.Succeeded ? "applied" : "failed"
+            ["helperVerifyState"] = executionResult.Succeeded ? "applied" : "failed",
+            ["operationKind"] = operationKind.ToString(),
+            ["operationToken"] = operationToken
         };
 
         if (executionResult.Diagnostics is not null)
@@ -142,6 +167,28 @@ public sealed class NamedPipeHelperBridgeBackend : IHelperBridgeBackend
             {
                 diagnostics[kv.Key] = kv.Value;
             }
+        }
+
+        if (executionResult.Succeeded &&
+            !backendReportedOperationToken)
+        {
+            diagnostics["helperVerifyState"] = "failed_operation_token";
+            return new HelperBridgeExecutionResult(
+                Succeeded: false,
+                ReasonCode: RuntimeReasonCode.HELPER_VERIFICATION_FAILED,
+                Message: "Helper verification failed: operation token was not returned by backend diagnostics.",
+                Diagnostics: diagnostics);
+        }
+
+        if (executionResult.Succeeded &&
+            !string.Equals(backendOperationToken, operationToken, StringComparison.OrdinalIgnoreCase))
+        {
+            diagnostics["helperVerifyState"] = "failed_operation_token";
+            return new HelperBridgeExecutionResult(
+                Succeeded: false,
+                ReasonCode: RuntimeReasonCode.HELPER_VERIFICATION_FAILED,
+                Message: $"Helper verification failed: operation token mismatch. expected='{operationToken}', actual='{backendOperationToken ?? string.Empty}'.",
+                Diagnostics: diagnostics);
         }
 
         if (executionResult.Succeeded &&
@@ -162,6 +209,94 @@ public sealed class NamedPipeHelperBridgeBackend : IHelperBridgeBackend
                 : RuntimeReasonCode.HELPER_INVOCATION_FAILED,
             Message: executionResult.Message,
             Diagnostics: diagnostics);
+    }
+
+    private static bool TryGetStringDiagnostic(
+        IReadOnlyDictionary<string, object?>? diagnostics,
+        string key,
+        out string? value)
+    {
+        value = null;
+        if (diagnostics is null ||
+            !diagnostics.TryGetValue(key, out var rawValue) ||
+            rawValue is null)
+        {
+            return false;
+        }
+
+        value = rawValue.ToString();
+        return true;
+    }
+
+    private static HelperBridgeOperationKind ResolveOperationKind(string actionId)
+    {
+        if (actionId.Equals("spawn_unit_helper", StringComparison.OrdinalIgnoreCase))
+        {
+            return HelperBridgeOperationKind.SpawnUnitHelper;
+        }
+
+        if (actionId.Equals("spawn_context_entity", StringComparison.OrdinalIgnoreCase))
+        {
+            return HelperBridgeOperationKind.SpawnContextEntity;
+        }
+
+        if (actionId.Equals("spawn_tactical_entity", StringComparison.OrdinalIgnoreCase))
+        {
+            return HelperBridgeOperationKind.SpawnTacticalEntity;
+        }
+
+        if (actionId.Equals("spawn_galactic_entity", StringComparison.OrdinalIgnoreCase))
+        {
+            return HelperBridgeOperationKind.SpawnGalacticEntity;
+        }
+
+        if (actionId.Equals("place_planet_building", StringComparison.OrdinalIgnoreCase))
+        {
+            return HelperBridgeOperationKind.PlacePlanetBuilding;
+        }
+
+        if (actionId.Equals("set_context_allegiance", StringComparison.OrdinalIgnoreCase) ||
+            actionId.Equals("set_context_faction", StringComparison.OrdinalIgnoreCase))
+        {
+            return HelperBridgeOperationKind.SetContextAllegiance;
+        }
+
+        if (actionId.Equals("set_hero_state_helper", StringComparison.OrdinalIgnoreCase))
+        {
+            return HelperBridgeOperationKind.SetHeroStateHelper;
+        }
+
+        if (actionId.Equals("toggle_roe_respawn_helper", StringComparison.OrdinalIgnoreCase))
+        {
+            return HelperBridgeOperationKind.ToggleRoeRespawnHelper;
+        }
+
+        return HelperBridgeOperationKind.Unknown;
+    }
+
+    private static void ApplyActionSpecificDefaults(string actionId, JsonObject payload)
+    {
+        if (actionId.Equals("spawn_context_entity", StringComparison.OrdinalIgnoreCase) ||
+            actionId.Equals("spawn_tactical_entity", StringComparison.OrdinalIgnoreCase))
+        {
+            payload["populationPolicy"] ??= "ForceZeroTactical";
+            payload["persistencePolicy"] ??= "EphemeralBattleOnly";
+            payload["allowCrossFaction"] ??= true;
+        }
+
+        if (actionId.Equals("spawn_galactic_entity", StringComparison.OrdinalIgnoreCase))
+        {
+            payload["populationPolicy"] ??= "Normal";
+            payload["persistencePolicy"] ??= "PersistentGalactic";
+            payload["allowCrossFaction"] ??= true;
+        }
+
+        if (actionId.Equals("place_planet_building", StringComparison.OrdinalIgnoreCase))
+        {
+            payload["placementMode"] ??= "safe_rules";
+            payload["forceOverride"] ??= false;
+            payload["allowCrossFaction"] ??= true;
+        }
     }
 
     private static bool ValidateVerificationContract(
@@ -204,5 +339,27 @@ public sealed class NamedPipeHelperBridgeBackend : IHelperBridgeBackend
 
         failureMessage = string.Empty;
         return true;
+    }
+
+    private static string ResolveDefaultHelperEntryPoint(string actionId, string? hookEntryPoint)
+    {
+        if (actionId.Equals("spawn_context_entity", StringComparison.OrdinalIgnoreCase) ||
+            actionId.Equals("spawn_tactical_entity", StringComparison.OrdinalIgnoreCase) ||
+            actionId.Equals("spawn_galactic_entity", StringComparison.OrdinalIgnoreCase))
+        {
+            return "SWFOC_Trainer_Spawn_Context";
+        }
+
+        if (actionId.Equals("place_planet_building", StringComparison.OrdinalIgnoreCase))
+        {
+            return "SWFOC_Trainer_Place_Building";
+        }
+
+        if (!string.IsNullOrWhiteSpace(hookEntryPoint))
+        {
+            return hookEntryPoint;
+        }
+
+        return string.Empty;
     }
 }

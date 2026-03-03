@@ -1,5 +1,6 @@
 using System.Text.Json.Nodes;
 using FluentAssertions;
+using SwfocTrainer.Core.Contracts;
 using SwfocTrainer.Core.Models;
 using SwfocTrainer.Core.Services;
 using Xunit;
@@ -26,6 +27,28 @@ public sealed class ActionReliabilityServiceTests
 
         var results = service.Evaluate(profile, session);
         var entry = results.Single(x => x.ActionId == "set_selected_hp");
+
+        entry.State.Should().Be(ActionReliabilityState.Stable);
+        entry.ReasonCode.Should().Be("healthy_signature");
+    }
+
+    [Fact]
+    public void Evaluate_AnyTacticalAction_ShouldBeCompatibleWithLandMode()
+    {
+        var service = new ActionReliabilityService();
+        var profile = BuildProfile(
+            Action("set_selected_hp", RuntimeMode.AnyTactical, ExecutionKind.Memory, "symbol", "floatValue"));
+        var session = BuildSession(
+            RuntimeMode.TacticalLand,
+            new SymbolInfo(
+                "selected_hp",
+                (nint)0x1234,
+                SymbolValueType.Float,
+                AddressSource.Signature,
+                Confidence: 0.93d,
+                HealthStatus: SymbolHealthStatus.Healthy));
+
+        var entry = service.Evaluate(profile, session).Single(x => x.ActionId == "set_selected_hp");
 
         entry.State.Should().Be(ActionReliabilityState.Stable);
         entry.ReasonCode.Should().Be("healthy_signature");
@@ -177,6 +200,44 @@ public sealed class ActionReliabilityServiceTests
         entry.ReasonCode.Should().Be("experimental_enabled");
     }
 
+    [Fact]
+    public void Evaluate_MechanicDetectionUnsupported_ShouldBeUnavailable()
+    {
+        var service = new ActionReliabilityService(
+            new StubModMechanicDetectionService(
+                new ModMechanicReport(
+                    ProfileId: "test",
+                    GeneratedAtUtc: DateTimeOffset.UtcNow,
+                    DependenciesSatisfied: false,
+                    HelperBridgeReady: false,
+                    ActionSupport: new[]
+                    {
+                        new ModMechanicSupport(
+                            ActionId: "set_selected_hp",
+                            Supported: false,
+                            ReasonCode: RuntimeReasonCode.CAPABILITY_REQUIRED_MISSING,
+                            Message: "Mechanic unavailable for this mod chain.",
+                            Confidence: 0.91d)
+                    },
+                    Diagnostics: new Dictionary<string, object?>())));
+
+        var profile = BuildProfile(
+            Action("set_selected_hp", RuntimeMode.AnyTactical, ExecutionKind.Memory, "symbol", "floatValue"));
+        var session = BuildSession(
+            RuntimeMode.AnyTactical,
+            new SymbolInfo(
+                "selected_hp",
+                (nint)0x1234,
+                SymbolValueType.Float,
+                AddressSource.Signature,
+                Confidence: 0.93d,
+                HealthStatus: SymbolHealthStatus.Healthy));
+
+        var entry = service.Evaluate(profile, session).Single(x => x.ActionId == "set_selected_hp");
+        entry.State.Should().Be(ActionReliabilityState.Unavailable);
+        entry.ReasonCode.Should().Be(RuntimeReasonCode.CAPABILITY_REQUIRED_MISSING.ToString());
+    }
+
     private static ActionSpec Action(string id, RuntimeMode mode, ExecutionKind kind, params string[] required)
     {
         var requiredArray = new JsonArray(required.Select(x => (JsonNode)JsonValue.Create(x)!).ToArray());
@@ -239,5 +300,24 @@ public sealed class ActionReliabilityServiceTests
             new ProfileBuild("test", "test", @"C:\Games\swfoc.exe", ExeTarget.Swfoc),
             new SymbolMap(symbols),
             DateTimeOffset.UtcNow);
+    }
+
+    private sealed class StubModMechanicDetectionService : IModMechanicDetectionService
+    {
+        private readonly ModMechanicReport _report;
+
+        public StubModMechanicDetectionService(ModMechanicReport report)
+        {
+            _report = report;
+        }
+
+        public Task<ModMechanicReport> DetectAsync(
+            TrainerProfile profile,
+            AttachSession session,
+            IReadOnlyDictionary<string, IReadOnlyList<string>>? catalog,
+            CancellationToken cancellationToken)
+        {
+            return Task.FromResult(_report with { ProfileId = profile.Id });
+        }
     }
 }

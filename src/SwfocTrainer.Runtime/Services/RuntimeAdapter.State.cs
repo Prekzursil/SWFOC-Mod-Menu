@@ -16,6 +16,7 @@ public sealed partial class RuntimeAdapter
     private readonly ISignatureResolver _signatureResolver;
     private readonly IModDependencyValidator _modDependencyValidator;
     private readonly ISymbolHealthService _symbolHealthService;
+    private readonly IModMechanicDetectionService? _modMechanicDetectionService;
     private readonly IProfileVariantResolver? _profileVariantResolver;
     private readonly ISdkOperationRouter? _sdkOperationRouter;
     private readonly IBackendRouter _backendRouter;

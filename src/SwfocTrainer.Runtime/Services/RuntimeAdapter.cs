@@ -8,6 +8,7 @@ using System.Text.Json.Serialization;
 using Microsoft.Extensions.Logging;
 using SwfocTrainer.Core.Contracts;
 using SwfocTrainer.Core.Models;
+using SwfocTrainer.Core.Services;
 using SwfocTrainer.Runtime.Interop;
 using SwfocTrainer.Runtime.Scanning;
 
@@ -59,6 +60,7 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
         _signatureResolver = signatureResolver;
         _modDependencyValidator = ResolveOptionalService<IModDependencyValidator>(serviceProvider) ?? new ModDependencyValidator();
         _symbolHealthService = ResolveOptionalService<ISymbolHealthService>(serviceProvider) ?? new SymbolHealthService();
+        _modMechanicDetectionService = ResolveOptionalService<IModMechanicDetectionService>(serviceProvider);
         _profileVariantResolver = ResolveOptionalService<IProfileVariantResolver>(serviceProvider);
         _sdkOperationRouter = ResolveOptionalService<ISdkOperationRouter>(serviceProvider);
         _backendRouter = ResolveOptionalService<IBackendRouter>(serviceProvider) ?? new BackendRouter();
@@ -493,6 +495,17 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
         int MainModuleSize,
         bool HasCommandLine,
         double SelectionScore);
+
+    private readonly record struct ContextFactionResolution(
+        ActionExecutionRequest? RedirectedRequest,
+        ActionExecutionResult? BlockedResult)
+    {
+        public static ContextFactionResolution None => new(null, null);
+
+        public static ContextFactionResolution Redirected(ActionExecutionRequest request) => new(request, null);
+
+        public static ContextFactionResolution Blocked(ActionExecutionResult result) => new(null, result);
+    }
 
     private static T? ResolveOptionalService<T>(IServiceProvider? serviceProvider)
         where T : class
@@ -1182,13 +1195,42 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
         EnsureAttached();
         var modeResolution = ResolveEffectiveMode(request);
         var effectiveRequest = modeResolution.Request;
+        string? contextActionRoute = null;
+
+        var contextFactionResolution = TryResolveContextFactionRequest(effectiveRequest);
+        if (contextFactionResolution.BlockedResult is not null)
+        {
+            var blockedContext = ApplyRuntimeModeDiagnostics(contextFactionResolution.BlockedResult, modeResolution.Diagnostics);
+            blockedContext = ApplyContextActionDiagnostics(blockedContext, request.Action.Id, null);
+            RecordActionTelemetry(request, blockedContext);
+            return blockedContext;
+        }
+
+        if (contextFactionResolution.RedirectedRequest is not null)
+        {
+            contextActionRoute = contextFactionResolution.RedirectedRequest.Action.Id;
+            effectiveRequest = contextFactionResolution.RedirectedRequest;
+        }
+
         if (TryCreateDependencyDisabledResult(effectiveRequest, out var dependencyDisabled))
         {
-            return ApplyRuntimeModeDiagnostics(dependencyDisabled, modeResolution.Diagnostics);
+            var blockedByDependency = ApplyRuntimeModeDiagnostics(dependencyDisabled, modeResolution.Diagnostics);
+            blockedByDependency = ApplyContextActionDiagnostics(blockedByDependency, request.Action.Id, contextActionRoute);
+            RecordActionTelemetry(request, blockedByDependency);
+            return blockedByDependency;
         }
 
         var attachedProfile = _attachedProfile
             ?? await _profileRepository.ResolveInheritedProfileAsync(effectiveRequest.ProfileId, cancellationToken);
+        var mechanicBlocked = await TryCreateMechanicBlockedResultAsync(effectiveRequest, attachedProfile, cancellationToken);
+        if (mechanicBlocked is not null)
+        {
+            var blockedByMechanics = ApplyRuntimeModeDiagnostics(mechanicBlocked, modeResolution.Diagnostics);
+            blockedByMechanics = ApplyContextActionDiagnostics(blockedByMechanics, request.Action.Id, contextActionRoute);
+            RecordActionTelemetry(request, blockedByMechanics);
+            return blockedByMechanics;
+        }
+
         var capabilityReport = await ProbeCapabilitiesAsync(attachedProfile, cancellationToken);
         var routeDecision = _backendRouter.Resolve(effectiveRequest, attachedProfile, CurrentSession!.Process, capabilityReport);
         if (!routeDecision.Allowed)
@@ -1201,12 +1243,14 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
             if (overrideResult is not null)
             {
                 var overrideWithModeDiagnostics = ApplyRuntimeModeDiagnostics(overrideResult, modeResolution.Diagnostics);
-                RecordActionTelemetry(effectiveRequest, overrideWithModeDiagnostics);
+                overrideWithModeDiagnostics = ApplyContextActionDiagnostics(overrideWithModeDiagnostics, request.Action.Id, contextActionRoute);
+                RecordActionTelemetry(request, overrideWithModeDiagnostics);
                 return overrideWithModeDiagnostics;
             }
 
             var blocked = ApplyRuntimeModeDiagnostics(CreateBlockedRouteResult(routeDecision, capabilityReport), modeResolution.Diagnostics);
-            RecordActionTelemetry(effectiveRequest, blocked);
+            blocked = ApplyContextActionDiagnostics(blocked, request.Action.Id, contextActionRoute);
+            RecordActionTelemetry(request, blocked);
             return blocked;
         }
 
@@ -1215,15 +1259,134 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
             var result = await ExecuteByRouteAsync(routeDecision, effectiveRequest, capabilityReport, cancellationToken);
             result = ApplyBackendRouteDiagnostics(result, routeDecision, capabilityReport);
             result = ApplyRuntimeModeDiagnostics(result, modeResolution.Diagnostics);
-            RecordActionTelemetry(effectiveRequest, result);
+            result = ApplyContextActionDiagnostics(result, request.Action.Id, contextActionRoute);
+            RecordActionTelemetry(request, result);
             return result;
         }
         catch (Exception ex)
         {
             var failed = ApplyRuntimeModeDiagnostics(CreateExecutionExceptionResult(effectiveRequest, routeDecision, capabilityReport, ex), modeResolution.Diagnostics);
-            RecordActionTelemetry(effectiveRequest, failed);
+            failed = ApplyContextActionDiagnostics(failed, request.Action.Id, contextActionRoute);
+            RecordActionTelemetry(request, failed);
             return failed;
         }
+    }
+
+    private ContextFactionResolution TryResolveContextFactionRequest(ActionExecutionRequest request)
+    {
+        var requestedActionId = request.Action.Id;
+        var isContextFaction = requestedActionId.Equals(ActionIdSetContextFaction, StringComparison.OrdinalIgnoreCase) ||
+                               requestedActionId.Equals(ActionIdSetContextAllegiance, StringComparison.OrdinalIgnoreCase);
+        var isContextSpawn = requestedActionId.Equals(ActionIdSpawnContextEntity, StringComparison.OrdinalIgnoreCase);
+        if (!isContextFaction && !isContextSpawn)
+        {
+            return ContextFactionResolution.None;
+        }
+
+        var targetActionId = isContextSpawn
+            ? ResolveContextSpawnTargetAction(request.RuntimeMode)
+            : ResolveContextFactionTargetAction(request.RuntimeMode);
+        if (targetActionId is null)
+        {
+            return ContextFactionResolution.Blocked(new ActionExecutionResult(
+                false,
+                isContextSpawn
+                    ? "Context entity spawning requires either tactical (land/space) or galactic runtime mode."
+                    : "Context faction routing requires either tactical (land/space) or galactic runtime mode.",
+                AddressSource.None,
+                new Dictionary<string, object?>
+                {
+                    ["reasonCode"] = RuntimeReasonCode.MODE_STRICT_TACTICAL_UNSPECIFIED.ToString(),
+                    ["runtimeMode"] = request.RuntimeMode.ToString()
+                }));
+        }
+
+        if (_attachedProfile is null || !_attachedProfile.Actions.TryGetValue(targetActionId, out var targetAction))
+        {
+            return ContextFactionResolution.Blocked(new ActionExecutionResult(
+                false,
+                $"Profile '{request.ProfileId}' does not expose required routed action '{targetActionId}'.",
+                AddressSource.None,
+                new Dictionary<string, object?>
+                {
+                    ["reasonCode"] = RuntimeReasonCode.CAPABILITY_REQUIRED_MISSING.ToString(),
+                    ["routedActionId"] = targetActionId
+                }));
+        }
+
+        var payload = new JsonObject();
+        foreach (var property in request.Payload)
+        {
+            payload[property.Key] = property.Value?.DeepClone();
+        }
+
+        if (isContextSpawn)
+        {
+            if (!payload.ContainsKey("helperHookId"))
+            {
+                payload["helperHookId"] = "spawn_bridge";
+            }
+
+            if (!payload.ContainsKey("helperEntryPoint"))
+            {
+                payload["helperEntryPoint"] = targetActionId.Equals(ActionIdSpawnGalacticEntity, StringComparison.OrdinalIgnoreCase) ||
+                                               targetActionId.Equals(ActionIdSpawnTacticalEntity, StringComparison.OrdinalIgnoreCase)
+                    ? "SWFOC_Trainer_Spawn_Context"
+                    : "SWFOC_Trainer_Spawn";
+            }
+
+            if (!payload.ContainsKey("populationPolicy"))
+            {
+                payload["populationPolicy"] = targetActionId.Equals(ActionIdSpawnTacticalEntity, StringComparison.OrdinalIgnoreCase)
+                    ? "ForceZeroTactical"
+                    : "Normal";
+            }
+
+            if (!payload.ContainsKey("persistencePolicy"))
+            {
+                payload["persistencePolicy"] = targetActionId.Equals(ActionIdSpawnTacticalEntity, StringComparison.OrdinalIgnoreCase)
+                    ? "EphemeralBattleOnly"
+                    : "PersistentGalactic";
+            }
+
+            if (!payload.ContainsKey("allowCrossFaction"))
+            {
+                payload["allowCrossFaction"] = true;
+            }
+        }
+
+        if (!payload.ContainsKey("symbol") &&
+            ActionSymbolRegistry.TryGetSymbol(targetActionId, out var symbolHint) &&
+            !string.IsNullOrWhiteSpace(symbolHint))
+        {
+            payload["symbol"] = symbolHint;
+        }
+
+        return ContextFactionResolution.Redirected(request with
+        {
+            Action = targetAction,
+            Payload = payload
+        });
+    }
+
+    private static string? ResolveContextFactionTargetAction(RuntimeMode mode)
+    {
+        return mode switch
+        {
+            RuntimeMode.Galactic => ActionIdSetPlanetOwner,
+            RuntimeMode.AnyTactical or RuntimeMode.TacticalLand or RuntimeMode.TacticalSpace => ActionIdSetSelectedOwnerFaction,
+            _ => null
+        };
+    }
+
+    private static string? ResolveContextSpawnTargetAction(RuntimeMode mode)
+    {
+        return mode switch
+        {
+            RuntimeMode.Galactic => ActionIdSpawnGalacticEntity,
+            RuntimeMode.AnyTactical or RuntimeMode.TacticalLand or RuntimeMode.TacticalSpace => ActionIdSpawnTacticalEntity,
+            _ => null
+        };
     }
 
     private (ActionExecutionRequest Request, IReadOnlyDictionary<string, object?> Diagnostics) ResolveEffectiveMode(ActionExecutionRequest request)
@@ -1391,6 +1554,30 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
         };
     }
 
+    private static ActionExecutionResult ApplyContextActionDiagnostics(
+        ActionExecutionResult result,
+        string requestedActionId,
+        string? routedActionId)
+    {
+        if (!requestedActionId.Equals(ActionIdSetContextFaction, StringComparison.OrdinalIgnoreCase) &&
+            !requestedActionId.Equals(ActionIdSetContextAllegiance, StringComparison.OrdinalIgnoreCase) &&
+            !requestedActionId.Equals(ActionIdSpawnContextEntity, StringComparison.OrdinalIgnoreCase))
+        {
+            return result;
+        }
+
+        return result with
+        {
+            Diagnostics = MergeDiagnostics(
+                result.Diagnostics,
+                new Dictionary<string, object?>
+                {
+                    ["contextActionId"] = requestedActionId,
+                    ["contextRoutedAction"] = routedActionId ?? string.Empty
+                })
+        };
+    }
+
     private bool TryCreateDependencyDisabledResult(
         ActionExecutionRequest request,
         out ActionExecutionResult result)
@@ -1414,6 +1601,46 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
                 ["disabledActionId"] = request.Action.Id
             });
         return true;
+    }
+
+    private async Task<ActionExecutionResult?> TryCreateMechanicBlockedResultAsync(
+        ActionExecutionRequest request,
+        TrainerProfile profile,
+        CancellationToken cancellationToken)
+    {
+        if (_modMechanicDetectionService is null || CurrentSession is null)
+        {
+            return null;
+        }
+
+        ModMechanicReport report;
+        try
+        {
+            report = await _modMechanicDetectionService.DetectAsync(profile, CurrentSession, catalog: null, cancellationToken);
+        }
+        catch
+        {
+            return null;
+        }
+
+        var support = report.ActionSupport.FirstOrDefault(x => x.ActionId.Equals(request.Action.Id, StringComparison.OrdinalIgnoreCase));
+        if (support is null || support.Supported)
+        {
+            return null;
+        }
+
+        return new ActionExecutionResult(
+            false,
+            support.Message,
+            AddressSource.None,
+            MergeDiagnostics(
+                report.Diagnostics,
+                new Dictionary<string, object?>
+                {
+                    ["reasonCode"] = support.ReasonCode.ToString(),
+                    ["mechanicGating"] = "blocked",
+                    ["mechanicActionId"] = support.ActionId
+                }));
     }
 
     private static ActionExecutionResult CreateBlockedRouteResult(
@@ -3069,7 +3296,7 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
                 });
         }
 
-        var hookId = request.Payload["helperHookId"]?.GetValue<string>() ?? request.Action.Id;
+        var hookId = ResolveHelperHookId(request);
         var hook = _attachedProfile?.HelperModHooks
             .FirstOrDefault(candidate => candidate.Id.Equals(hookId, StringComparison.OrdinalIgnoreCase));
         if (hook is null)
@@ -3109,10 +3336,12 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
 
         var bridgeResult = await _helperBridgeBackend.ExecuteAsync(
             new HelperBridgeRequest(
-                request,
-                CurrentSession.Process,
-                hook,
-                request.Context),
+                ActionRequest: request,
+                Process: CurrentSession.Process,
+                Hook: hook,
+                OperationKind: ResolveHelperOperationKind(request.Action.Id),
+                VerificationContract: hook.VerifyContract,
+                Context: request.Context),
             cancellationToken);
 
         return new ActionExecutionResult(
@@ -3127,6 +3356,72 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
                     ["helperHookId"] = hook.Id,
                     ["helperEntryPoint"] = hook.EntryPoint ?? string.Empty
                 }));
+    }
+
+    private static string ResolveHelperHookId(ActionExecutionRequest request)
+    {
+        if (request.Payload["helperHookId"] is JsonValue jsonValue &&
+            jsonValue.TryGetValue<string>(out var explicitHookId) &&
+            !string.IsNullOrWhiteSpace(explicitHookId))
+        {
+            return explicitHookId;
+        }
+
+        if (request.Action.Id.Equals(ActionIdSpawnContextEntity, StringComparison.OrdinalIgnoreCase) ||
+            request.Action.Id.Equals(ActionIdSpawnTacticalEntity, StringComparison.OrdinalIgnoreCase) ||
+            request.Action.Id.Equals(ActionIdSpawnGalacticEntity, StringComparison.OrdinalIgnoreCase) ||
+            request.Action.Id.Equals(ActionIdPlacePlanetBuilding, StringComparison.OrdinalIgnoreCase))
+        {
+            return "spawn_bridge";
+        }
+
+        return request.Action.Id;
+    }
+
+    private static HelperBridgeOperationKind ResolveHelperOperationKind(string actionId)
+    {
+        if (actionId.Equals(ActionIdSpawnUnitHelper, StringComparison.OrdinalIgnoreCase))
+        {
+            return HelperBridgeOperationKind.SpawnUnitHelper;
+        }
+
+        if (actionId.Equals(ActionIdSpawnContextEntity, StringComparison.OrdinalIgnoreCase))
+        {
+            return HelperBridgeOperationKind.SpawnContextEntity;
+        }
+
+        if (actionId.Equals(ActionIdSpawnTacticalEntity, StringComparison.OrdinalIgnoreCase))
+        {
+            return HelperBridgeOperationKind.SpawnTacticalEntity;
+        }
+
+        if (actionId.Equals(ActionIdSpawnGalacticEntity, StringComparison.OrdinalIgnoreCase))
+        {
+            return HelperBridgeOperationKind.SpawnGalacticEntity;
+        }
+
+        if (actionId.Equals(ActionIdPlacePlanetBuilding, StringComparison.OrdinalIgnoreCase))
+        {
+            return HelperBridgeOperationKind.PlacePlanetBuilding;
+        }
+
+        if (actionId.Equals(ActionIdSetContextAllegiance, StringComparison.OrdinalIgnoreCase) ||
+            actionId.Equals(ActionIdSetContextFaction, StringComparison.OrdinalIgnoreCase))
+        {
+            return HelperBridgeOperationKind.SetContextAllegiance;
+        }
+
+        if (actionId.Equals(ActionIdSetHeroStateHelper, StringComparison.OrdinalIgnoreCase))
+        {
+            return HelperBridgeOperationKind.SetHeroStateHelper;
+        }
+
+        if (actionId.Equals(ActionIdToggleRoeRespawnHelper, StringComparison.OrdinalIgnoreCase))
+        {
+            return HelperBridgeOperationKind.ToggleRoeRespawnHelper;
+        }
+
+        return HelperBridgeOperationKind.Unknown;
     }
 
     private Task<ActionExecutionResult> ExecuteSaveActionAsync(ActionExecutionRequest request, CancellationToken cancellationToken)  // NOSONAR

@@ -29,11 +29,18 @@ public sealed class NamedPipeHelperBridgeBackendTests
         var stubBackend = new StubExecutionBackend
         {
             ProbeReport = BuildHelperProbeReport(),
-            ExecuteResult = new ActionExecutionResult(
-                Succeeded: true,
-                Message: "helper command accepted",
-                AddressSource: AddressSource.None,
-                Diagnostics: new Dictionary<string, object?>())
+            ExecuteFactory = command =>
+            {
+                var operationToken = command.Payload["operationToken"]?.GetValue<string>() ?? string.Empty;
+                return new ActionExecutionResult(
+                    Succeeded: true,
+                    Message: "helper command accepted",
+                    AddressSource: AddressSource.None,
+                    Diagnostics: new Dictionary<string, object?>
+                    {
+                        ["operationToken"] = operationToken
+                    });
+            }
         };
         var backend = new NamedPipeHelperBridgeBackend(stubBackend);
         var request = BuildHelperRequest(
@@ -64,6 +71,51 @@ public sealed class NamedPipeHelperBridgeBackendTests
         var stubBackend = new StubExecutionBackend
         {
             ProbeReport = BuildHelperProbeReport(),
+            ExecuteFactory = command =>
+            {
+                var operationToken = command.Payload["operationToken"]?.GetValue<string>() ?? string.Empty;
+                return new ActionExecutionResult(
+                    Succeeded: true,
+                    Message: "helper command applied",
+                    AddressSource: AddressSource.None,
+                    Diagnostics: new Dictionary<string, object?>
+                    {
+                        ["globalKey"] = "AOTR_HERO_KEY",
+                        ["helperVerifyState"] = "applied",
+                        ["operationToken"] = operationToken
+                    });
+            }
+        };
+        var backend = new NamedPipeHelperBridgeBackend(stubBackend);
+        var request = BuildHelperRequest(
+            payload: new JsonObject { ["globalKey"] = "AOTR_HERO_KEY", ["intValue"] = 1 },
+            hook: new HelperHookSpec(
+                Id: "aotr_hero_state_bridge",
+                Script: "scripts/aotr/hero_state_bridge.lua",
+                Version: "1.0.0",
+                EntryPoint: "SWFOC_Trainer_Set_Hero_Respawn",
+                VerifyContract: new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
+                {
+                    ["helperVerifyState"] = "applied",
+                    ["globalKey"] = "required:echo"
+                }));
+
+        var result = await backend.ExecuteAsync(request, CancellationToken.None);
+
+        result.Succeeded.Should().BeTrue();
+        result.ReasonCode.Should().Be(RuntimeReasonCode.HELPER_EXECUTION_APPLIED);
+        result.Diagnostics.Should().NotBeNull();
+        var diagnostics = result.Diagnostics!;
+        diagnostics["helperVerifyState"]?.ToString().Should().Be("applied");
+        diagnostics["operationToken"]?.ToString().Should().NotBeNullOrWhiteSpace();
+    }
+
+    [Fact]
+    public async Task ExecuteAsync_ShouldFailVerification_WhenOperationTokenRoundTripIsMissing()
+    {
+        var stubBackend = new StubExecutionBackend
+        {
+            ProbeReport = BuildHelperProbeReport(),
             ExecuteResult = new ActionExecutionResult(
                 Succeeded: true,
                 Message: "helper command applied",
@@ -90,11 +142,9 @@ public sealed class NamedPipeHelperBridgeBackendTests
 
         var result = await backend.ExecuteAsync(request, CancellationToken.None);
 
-        result.Succeeded.Should().BeTrue();
-        result.ReasonCode.Should().Be(RuntimeReasonCode.HELPER_EXECUTION_APPLIED);
-        result.Diagnostics.Should().NotBeNull();
-        var diagnostics = result.Diagnostics!;
-        diagnostics["helperVerifyState"]?.ToString().Should().Be("applied");
+        result.Succeeded.Should().BeFalse();
+        result.ReasonCode.Should().Be(RuntimeReasonCode.HELPER_VERIFICATION_FAILED);
+        result.Message.Should().Contain("operation token");
     }
 
     private static CapabilityReport BuildHelperProbeReport()
@@ -159,6 +209,8 @@ public sealed class NamedPipeHelperBridgeBackendTests
             Message: "stub",
             AddressSource: AddressSource.None);
 
+        public Func<ActionExecutionRequest, ActionExecutionResult>? ExecuteFactory { get; init; }
+
         public Task<CapabilityReport> ProbeCapabilitiesAsync(string profileId, ProcessMetadata processContext)
             => Task.FromResult(ProbeReport);
 
@@ -166,10 +218,10 @@ public sealed class NamedPipeHelperBridgeBackendTests
             => Task.FromResult(ProbeReport);
 
         public Task<ActionExecutionResult> ExecuteAsync(ActionExecutionRequest command, CapabilityReport capabilityReport)
-            => Task.FromResult(ExecuteResult);
+            => Task.FromResult(ExecuteFactory?.Invoke(command) ?? ExecuteResult);
 
         public Task<ActionExecutionResult> ExecuteAsync(ActionExecutionRequest command, CapabilityReport capabilityReport, CancellationToken cancellationToken)
-            => Task.FromResult(ExecuteResult);
+            => Task.FromResult(ExecuteFactory?.Invoke(command) ?? ExecuteResult);
 
         public Task<BackendHealth> GetHealthAsync()
             => Task.FromResult(new BackendHealth(

@@ -327,7 +327,7 @@ public sealed class MainViewModel : MainViewModelSaveOpsBase
 
     private async Task LaunchAndAttachAsync()
     {
-        var launchRequest = BuildLaunchRequest();
+        var launchRequest = await BuildLaunchRequestAsync();
         Status = $"Launching {launchRequest.Target} ({launchRequest.Mode})...";
         var launchResult = await _gameLauncher.LaunchAsync(launchRequest);
         if (!launchResult.Succeeded)
@@ -341,7 +341,7 @@ public sealed class MainViewModel : MainViewModelSaveOpsBase
         await AttachAsync();
     }
 
-    private GameLaunchRequest BuildLaunchRequest()
+    private async Task<GameLaunchRequest> BuildLaunchRequestAsync()
     {
         var target = LaunchTarget.Equals("Sweaw", StringComparison.OrdinalIgnoreCase)
             ? GameLaunchTarget.Sweaw
@@ -351,14 +351,95 @@ public sealed class MainViewModel : MainViewModelSaveOpsBase
             : LaunchMode.Equals("ModPath", StringComparison.OrdinalIgnoreCase)
                 ? GameLaunchMode.ModPath
                 : GameLaunchMode.Vanilla;
+        var workshopIds = BuildLaunchWorkshopIds();
+
+        if (mode == GameLaunchMode.SteamMod && workshopIds.Count == 0 && !string.IsNullOrWhiteSpace(SelectedProfileId))
+        {
+            try
+            {
+                var profile = await _profiles.ResolveInheritedProfileAsync(SelectedProfileId);
+                workshopIds = ResolveProfileWorkshopChain(profile);
+                if (workshopIds.Count > 0)
+                {
+                    LaunchWorkshopId = string.Join(",", workshopIds);
+                }
+            }
+            catch
+            {
+                // Keep manual launcher input path as-is when profile lookup fails.
+            }
+        }
 
         return new GameLaunchRequest(
             Target: target,
             Mode: mode,
-            WorkshopId: string.IsNullOrWhiteSpace(LaunchWorkshopId) ? null : LaunchWorkshopId.Trim(),
+            WorkshopIds: workshopIds,
             ModPath: string.IsNullOrWhiteSpace(LaunchModPath) ? null : LaunchModPath.Trim(),
             ProfileIdHint: SelectedProfileId,
             TerminateExistingTargets: TerminateExistingBeforeLaunch);
+    }
+
+    private static IReadOnlyList<string> ResolveProfileWorkshopChain(TrainerProfile profile)
+    {
+        var ordered = new List<string>();
+        var seen = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+
+        if (!string.IsNullOrWhiteSpace(profile.SteamWorkshopId) && seen.Add(profile.SteamWorkshopId))
+        {
+            ordered.Add(profile.SteamWorkshopId);
+        }
+
+        if (profile.Metadata is not null &&
+            profile.Metadata.TryGetValue("requiredWorkshopIds", out var requiredIds) &&
+            !string.IsNullOrWhiteSpace(requiredIds))
+        {
+            foreach (var token in requiredIds.Split(',', StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries))
+            {
+                if (seen.Add(token))
+                {
+                    ordered.Add(token);
+                }
+            }
+        }
+
+        if (profile.Metadata is not null &&
+            profile.Metadata.TryGetValue("parentDependencies", out var parentDependencies) &&
+            !string.IsNullOrWhiteSpace(parentDependencies))
+        {
+            var parents = parentDependencies
+                .Split(',', StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries)
+                .Where(seen.Add)
+                .ToArray();
+            if (parents.Length > 0)
+            {
+                ordered = parents.Concat(ordered).ToList();
+            }
+        }
+
+        return ordered;
+    }
+
+    private IReadOnlyList<string> BuildLaunchWorkshopIds()
+    {
+        if (string.IsNullOrWhiteSpace(LaunchWorkshopId))
+        {
+            return Array.Empty<string>();
+        }
+
+        var ordered = new List<string>();
+        var seen = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+        foreach (var token in LaunchWorkshopId.Split(',', StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries))
+        {
+            var value = token.Trim();
+            if (value.Length == 0 || !seen.Add(value))
+            {
+                continue;
+            }
+
+            ordered.Add(value);
+        }
+
+        return ordered;
     }
     private void ApplyAttachSessionStatus(AttachSession session)
     {

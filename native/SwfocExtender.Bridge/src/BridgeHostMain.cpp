@@ -57,7 +57,7 @@ using swfoc::extender::bridge::host_json::TryReadInt;
 constexpr const char* kBackendName = "extender";
 constexpr const char* kDefaultPipeName = "SwfocExtenderBridge";
 
-constexpr std::array<const char*, 9> kSupportedFeatures {
+constexpr std::array<const char*, 14> kSupportedFeatures {
     "freeze_timer",
     "toggle_fog_reveal",
     "toggle_ai",
@@ -65,6 +65,11 @@ constexpr std::array<const char*, 9> kSupportedFeatures {
     "toggle_instant_build_patch",
     "set_credits",
     "spawn_unit_helper",
+    "spawn_context_entity",
+    "spawn_tactical_entity",
+    "spawn_galactic_entity",
+    "place_planet_building",
+    "set_context_allegiance",
     "set_hero_state_helper",
     "toggle_roe_respawn_helper"};
 
@@ -123,10 +128,20 @@ PluginRequest BuildPluginRequest(const BridgeCommand& command) {
     request.helperHookId = ExtractStringValue(command.payloadJson, "helperHookId");
     request.helperEntryPoint = ExtractStringValue(command.payloadJson, "helperEntryPoint");
     request.helperScript = ExtractStringValue(command.payloadJson, "helperScript");
+    request.operationKind = ExtractStringValue(command.payloadJson, "operationKind");
+    request.operationToken = ExtractStringValue(command.payloadJson, "operationToken");
+    request.invocationContractVersion = ExtractStringValue(command.payloadJson, "helperInvocationContractVersion");
     request.unitId = ExtractStringValue(command.payloadJson, "unitId");
+    request.entityId = ExtractStringValue(command.payloadJson, "entityId");
     request.entryMarker = ExtractStringValue(command.payloadJson, "entryMarker");
     request.faction = ExtractStringValue(command.payloadJson, "faction");
+    request.targetFaction = ExtractStringValue(command.payloadJson, "targetFaction");
+    request.sourceFaction = ExtractStringValue(command.payloadJson, "sourceFaction");
     request.globalKey = ExtractStringValue(command.payloadJson, "globalKey");
+    request.populationPolicy = ExtractStringValue(command.payloadJson, "populationPolicy");
+    request.persistencePolicy = ExtractStringValue(command.payloadJson, "persistencePolicy");
+    request.placementMode = ExtractStringValue(command.payloadJson, "placementMode");
+    request.worldPosition = ExtractStringValue(command.payloadJson, "worldPosition");
 
     int intValue = 0;
     if (TryReadInt(command.payloadJson, "intValue", intValue)) {
@@ -143,6 +158,16 @@ PluginRequest BuildPluginRequest(const BridgeCommand& command) {
         request.enable = enable;
     } else if (command.featureId == "set_unit_cap" || command.featureId == "toggle_instant_build_patch") {
         request.enable = true;
+    }
+
+    bool allowCrossFaction = false;
+    if (TryReadBool(command.payloadJson, "allowCrossFaction", allowCrossFaction)) {
+        request.allowCrossFaction = allowCrossFaction;
+    }
+
+    bool forceOverride = false;
+    if (TryReadBool(command.payloadJson, "forceOverride", forceOverride)) {
+        request.forceOverride = forceOverride;
     }
 
     return request;
@@ -293,6 +318,11 @@ CapabilitySnapshot BuildCapabilityProbeSnapshot(const PluginRequest& probeContex
         "toggle_instant_build_patch",
         {"instant_build_patch_injection", "instant_build_patch", "instant_build", "toggle_instant_build_patch"});
     AddHelperProbeFeature(snapshot, probeContext, "spawn_unit_helper");
+    AddHelperProbeFeature(snapshot, probeContext, "spawn_context_entity");
+    AddHelperProbeFeature(snapshot, probeContext, "spawn_tactical_entity");
+    AddHelperProbeFeature(snapshot, probeContext, "spawn_galactic_entity");
+    AddHelperProbeFeature(snapshot, probeContext, "place_planet_building");
+    AddHelperProbeFeature(snapshot, probeContext, "set_context_allegiance");
     AddHelperProbeFeature(snapshot, probeContext, "set_hero_state_helper");
     AddHelperProbeFeature(snapshot, probeContext, "toggle_roe_respawn_helper");
 
@@ -471,6 +501,11 @@ BridgeResult HandleBridgeCommand(
     }
 
     if (command.featureId == "spawn_unit_helper" ||
+        command.featureId == "spawn_context_entity" ||
+        command.featureId == "spawn_tactical_entity" ||
+        command.featureId == "spawn_galactic_entity" ||
+        command.featureId == "place_planet_building" ||
+        command.featureId == "set_context_allegiance" ||
         command.featureId == "set_hero_state_helper" ||
         command.featureId == "toggle_roe_respawn_helper") {
         return BuildHelperResult(command, helperLuaPlugin);

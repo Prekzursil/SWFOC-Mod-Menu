@@ -137,6 +137,35 @@ Reliability rule for runtime/mod tasks:
   evidence: bundle `TestResults/runs/20260301-164213/repro-bundle.json` (`classification=passed`, scope `TACTICAL`)
   evidence: bundle `TestResults/runs/20260301-165502/repro-bundle.json` (`classification=passed`, scope `AOTR`)
   evidence: bundle `TestResults/runs/20260301-171325/repro-bundle.json` (`classification=skipped`, scope `ROE`, reason `set_credits precondition unmet: hook sync tick not observed`)
+- [x] M4 execution wave: installed workshop/submod intelligence, chain-aware auto-launch, per-action mechanic gating, universal context faction routing, and expanded live evidence matrix (baseline + installed submod smokes).
+  evidence: test `tests/SwfocTrainer.Tests/Runtime/GameLaunchServiceTests.cs`
+  evidence: test `tests/SwfocTrainer.Tests/Runtime/WorkshopInventoryServiceTests.cs`
+  evidence: test `tests/SwfocTrainer.Tests/Runtime/ModMechanicDetectionServiceTests.cs`
+  evidence: test `tests/SwfocTrainer.Tests/Runtime/RuntimeAdapterContextFactionRoutingTests.cs`
+  evidence: test `tests/SwfocTrainer.Tests/Core/ActionReliabilityServiceTests.cs`
+  evidence: manual `2026-03-02` `dotnet restore SwfocTrainer.sln` + `dotnet build SwfocTrainer.sln -c Release --no-restore` + `dotnet test tests/SwfocTrainer.Tests/SwfocTrainer.Tests.csproj -c Release --no-build --filter "FullyQualifiedName!~SwfocTrainer.Tests.Profiles.Live&FullyQualifiedName!~RuntimeAttachSmokeTests"` => `Passed: 254`
+  evidence: manual `2026-03-02` `powershell.exe -File tools/validate-workshop-topmods.ps1 -Path tools/fixtures/workshop_topmods_sample.json -Strict` => `validation passed`
+  evidence: manual `2026-03-02` `powershell.exe -File tools/validate-generated-profile-seed.ps1 -Path tools/fixtures/generated_profile_seeds_sample.json -Strict` => `validation passed`
+  evidence: manual `2026-03-02` installed graph `TestResults/mod-discovery/20260302-170047/installed-mod-graph.json` (`installedCount=23`, submod parent chains inferred)
+  evidence: bundle `TestResults/runs/20260302-164220/repro-bundle.json` (`classification=passed`, scope `TACTICAL`)
+  evidence: bundle `TestResults/runs/20260302-164500/repro-bundle.json` (`classification=passed`, scope `AOTR`, `launchContext.source=forced`)
+  evidence: bundle `TestResults/runs/20260302-164838/repro-bundle.json` (`classification=skipped`, scope `ROE`, reason `set_credits precondition unmet: hook sync tick not observed`)
+  evidence: bundle `TestResults/runs/M4-SUBMOD-3447786229-20260302-190617/repro-bundle.json` (`classification=passed`, chain `1397421866,3447786229`)
+  evidence: bundle `TestResults/runs/M4-SUBMOD-3287776766-20260302-190708/repro-bundle.json` (`classification=blocked_environment`, transient no-process attach)
+  evidence: bundle `TestResults/runs/M4-SUBMOD-3287776766-RERUN-20260302-191443/repro-bundle.json` (`classification=passed`, rerun confirmation chain `1397421866,3287776766`)
+  evidence: bundle `TestResults/runs/M4-SUBMOD-2361851963-20260302-190742/repro-bundle.json` (`classification=passed`, chain `1125571106,2361851963`)
+  evidence: bundle `TestResults/runs/M4-SUBMOD-2083545253-20260302-190826/repro-bundle.json` (`classification=passed`, chain `1125571106,2083545253`)
+  evidence: bundle `TestResults/runs/M4-SUBMOD-2083545253-20260302-190934/repro-bundle.json` (`classification=passed`, chain `1976399102,2083545253`)
+  evidence: bundle `TestResults/runs/M4-SUBMOD-2794270450-20260302-191050/repro-bundle.json` (`classification=passed`, chain `1770851727,2794270450`)
+  evidence: bundle `TestResults/runs/M4-SUBMOD-3661482670-20260302-191139/repro-bundle.json` (`classification=passed`, chain `1125571106,3661482670`)
+  evidence: manual `2026-03-03` installed graph delta `TestResults/mod-discovery/LIVE-NEWMOD-2361944372-20260303/installed-mod-graph.json` (`installedCount=25`, added `1780988753`, `2361944372`)
+  evidence: bundle `TestResults/runs/LIVE-NEWMOD-1780988753-20260303/repro-bundle.json` (`classification=skipped`, chain `1780988753`)
+  evidence: bundle `TestResults/runs/LIVE-NEWMOD-2361944372-20260303/repro-bundle.json` (`classification=skipped`, chain `2361944372`)
+  evidence: manual `2026-03-03` full deep-chain matrix `TestResults/runs/LIVE-M4-DEEP-20260302/chain-matrix-summary.json` (`entries=28`, `skipped=26`, `blocked_environment=2`, failed chains `2313576303` and `1976399102>3661482670`)
+  evidence: bundle `TestResults/runs/LIVE-M4-DEEP-20260302-chain16/repro-bundle.json` (`classification=blocked_environment`, reason `ATTACH_NO_PROCESS` / process drop)
+  evidence: bundle `TestResults/runs/LIVE-M4-DEEP-20260302-chain27/repro-bundle.json` (`classification=blocked_environment`, process dropped during promoted matrix attach)
+  evidence: bundle `TestResults/runs/LIVE-M4-RERUN-CHAIN16-20260303/repro-bundle.json` (`classification=blocked_environment`, persistent chain16 blocker)
+  evidence: bundle `TestResults/runs/LIVE-M4-RERUN-CHAIN27-20260303/repro-bundle.json` (`classification=skipped`, transient chain27 blocker cleared on rerun)
 
 ## Later (M2 + M3 + M4)
 

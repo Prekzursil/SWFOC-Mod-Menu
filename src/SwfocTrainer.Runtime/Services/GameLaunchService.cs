@@ -90,7 +90,8 @@ public sealed class GameLaunchService : IGameLaunchService
                 ["target"] = request.Target.ToString(),
                 ["mode"] = request.Mode.ToString(),
                 ["profileIdHint"] = request.ProfileIdHint ?? string.Empty,
-                ["resolvedRoot"] = root
+                ["resolvedRoot"] = root,
+                ["workshopIds"] = NormalizeWorkshopIds(request.WorkshopIds)
             }));
     }
 
@@ -137,13 +138,53 @@ public sealed class GameLaunchService : IGameLaunchService
     {
         return request.Mode switch
         {
-            GameLaunchMode.SteamMod => string.IsNullOrWhiteSpace(request.WorkshopId)
-                ? string.Empty
-                : $"STEAMMOD={request.WorkshopId}",
+            GameLaunchMode.SteamMod => BuildSteamModArguments(request.WorkshopIds),
             GameLaunchMode.ModPath => string.IsNullOrWhiteSpace(request.ModPath)
                 ? string.Empty
                 : $"MODPATH=\"{request.ModPath}\"",
             _ => string.Empty
         };
+    }
+
+    private static string BuildSteamModArguments(IReadOnlyList<string>? workshopIds)
+    {
+        var normalized = NormalizeWorkshopIds(workshopIds);
+        if (normalized.Count == 0)
+        {
+            return string.Empty;
+        }
+
+        return string.Join(" ", normalized.Select(static id => $"STEAMMOD={id}"));
+    }
+
+    private static IReadOnlyList<string> NormalizeWorkshopIds(IReadOnlyList<string>? workshopIds)
+    {
+        if (workshopIds is null || workshopIds.Count == 0)
+        {
+            return Array.Empty<string>();
+        }
+
+        var values = new List<string>();
+        var seen = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+        foreach (var raw in workshopIds)
+        {
+            if (string.IsNullOrWhiteSpace(raw))
+            {
+                continue;
+            }
+
+            foreach (var token in raw.Split(',', StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries))
+            {
+                var id = token.Trim();
+                if (id.Length == 0 || !seen.Add(id))
+                {
+                    continue;
+                }
+
+                values.Add(id);
+            }
+        }
+
+        return values;
     }
 }

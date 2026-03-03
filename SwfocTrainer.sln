@@ -26,6 +26,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SwfocTrainer.DataIndex", "s
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SwfocTrainer.Meg", "src\SwfocTrainer.Meg\SwfocTrainer.Meg.csproj", "{770853A3-EF6C-45B9-AC59-059E5AABA6EF}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SwfocTrainer.Transplant", "src\SwfocTrainer.Transplant\SwfocTrainer.Transplant.csproj", "{77A1A535-D5BA-4962-96D5-C3F37B6FB035}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -76,6 +78,10 @@ Global
 		{770853A3-EF6C-45B9-AC59-059E5AABA6EF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{770853A3-EF6C-45B9-AC59-059E5AABA6EF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{770853A3-EF6C-45B9-AC59-059E5AABA6EF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{77A1A535-D5BA-4962-96D5-C3F37B6FB035}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{77A1A535-D5BA-4962-96D5-C3F37B6FB035}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{77A1A535-D5BA-4962-96D5-C3F37B6FB035}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{77A1A535-D5BA-4962-96D5-C3F37B6FB035}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -84,5 +90,6 @@ Global
 		{78844A28-7F80-42CC-81A4-071689DD1FE1} = {A0EC6126-B74A-4E20-A25C-06EB590EA0A9}
 		{C0B64C4D-4095-417F-A2D0-AE5E42D28262} = {A0EC6126-B74A-4E20-A25C-06EB590EA0A9}
 		{770853A3-EF6C-45B9-AC59-059E5AABA6EF} = {A0EC6126-B74A-4E20-A25C-06EB590EA0A9}
+		{77A1A535-D5BA-4962-96D5-C3F37B6FB035} = {A0EC6126-B74A-4E20-A25C-06EB590EA0A9}
 	EndGlobalSection
 EndGlobal

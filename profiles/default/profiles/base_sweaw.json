@@ -135,6 +135,54 @@
       "cooldownMs": 250,
       "description": "Spawn unit via helper bridge"
     },
+    "spawn_context_entity": {
+      "id": "spawn_context_entity",
+      "category": "Unit",
+      "mode": "Unknown",
+      "executionKind": "Helper",
+      "payloadSchema": {
+        "required": ["entityId", "faction"]
+      },
+      "verifyReadback": false,
+      "cooldownMs": 250,
+      "description": "Spawn entity by runtime context (tactical routes to battle spawn, galactic routes to persistent spawn)."
+    },
+    "spawn_tactical_entity": {
+      "id": "spawn_tactical_entity",
+      "category": "Tactical",
+      "mode": "AnyTactical",
+      "executionKind": "Helper",
+      "payloadSchema": {
+        "required": ["entityId", "faction"]
+      },
+      "verifyReadback": false,
+      "cooldownMs": 250,
+      "description": "Spawn tactical battle-only entities (default 0 population policy)."
+    },
+    "spawn_galactic_entity": {
+      "id": "spawn_galactic_entity",
+      "category": "Campaign",
+      "mode": "Galactic",
+      "executionKind": "Helper",
+      "payloadSchema": {
+        "required": ["entityId", "faction"]
+      },
+      "verifyReadback": false,
+      "cooldownMs": 250,
+      "description": "Spawn persistent galactic entities for the selected context."
+    },
+    "place_planet_building": {
+      "id": "place_planet_building",
+      "category": "Campaign",
+      "mode": "Galactic",
+      "executionKind": "Helper",
+      "payloadSchema": {
+        "required": ["entityId", "targetFaction"]
+      },
+      "verifyReadback": false,
+      "cooldownMs": 250,
+      "description": "Place a building from the building roster on the selected planet."
+    },
     "set_selected_hp": {
       "id": "set_selected_hp",
       "category": "Unit",
@@ -230,6 +278,30 @@
       "verifyReadback": true,
       "cooldownMs": 200,
       "description": "Set selected planet owner faction id"
+    },
+    "set_context_faction": {
+      "id": "set_context_faction",
+      "category": "Global",
+      "mode": "Unknown",
+      "executionKind": "Memory",
+      "payloadSchema": {
+        "required": ["intValue"]
+      },
+      "verifyReadback": true,
+      "cooldownMs": 120,
+      "description": "Set faction by runtime context (AnyTactical routes selected-unit owner, Galactic routes planet owner)."
+    },
+    "set_context_allegiance": {
+      "id": "set_context_allegiance",
+      "category": "Global",
+      "mode": "Unknown",
+      "executionKind": "Memory",
+      "payloadSchema": {
+        "required": ["intValue"]
+      },
+      "verifyReadback": true,
+      "cooldownMs": 120,
+      "description": "Alias of set_context_faction for universal allegiance routing."
     },
     "set_hero_respawn_timer": {
       "id": "set_hero_respawn_timer",
@@ -367,8 +439,14 @@
       "entryPoint": "SWFOC_Trainer_Spawn",
       "argContract": {
         "unitId": "required:string",
+        "entityId": "optional:string",
         "entryMarker": "required:string",
-        "faction": "required:string"
+        "faction": "required:string",
+        "targetFaction": "optional:string",
+        "populationPolicy": "optional:string",
+        "persistencePolicy": "optional:string",
+        "worldPosition": "optional:string",
+        "forceOverride": "optional:bool"
       },
       "verifyContract": {
         "helperVerifyState": "applied"
