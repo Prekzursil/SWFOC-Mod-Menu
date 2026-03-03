@@ -248,6 +248,9 @@ public sealed class NamedPipeHelperBridgeBackendTests
                 Message: "ok"));
 
         public Task<BackendHealth> GetHealthAsync(CancellationToken cancellationToken)
-            => GetHealthAsync();
+        {
+            _ = cancellationToken;
+            return GetHealthAsync();
+        }
     }
 }
