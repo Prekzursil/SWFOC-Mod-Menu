@@ -137,6 +137,63 @@ public sealed class ModMechanicDetectionServiceTests
         support.ReasonCode.Should().Be(RuntimeReasonCode.CAPABILITY_REQUIRED_MISSING);
     }
 
+    [Fact]
+    public async Task DetectAsync_ShouldBlockSpawnContextEntity_WhenUnitRosterCatalogMissing()
+    {
+        var profile = BuildProfile(
+            actions: new[] { Action("spawn_context_entity", ExecutionKind.Memory, "entityId", "faction") });
+        var session = BuildSession(RuntimeMode.TacticalLand);
+        var catalog = new Dictionary<string, IReadOnlyList<string>>(StringComparer.OrdinalIgnoreCase)
+        {
+            ["faction_catalog"] = new[] { "Empire" }
+        };
+
+        var report = await new ModMechanicDetectionService().DetectAsync(profile, session, catalog, CancellationToken.None);
+
+        var support = report.ActionSupport.Single(x => x.ActionId == "spawn_context_entity");
+        support.Supported.Should().BeFalse();
+        support.ReasonCode.Should().Be(RuntimeReasonCode.CAPABILITY_REQUIRED_MISSING);
+        support.Message.Should().Contain("Spawn roster catalog is unavailable");
+    }
+
+    [Fact]
+    public async Task DetectAsync_ShouldBlockPlacePlanetBuilding_WhenBuildingRosterCatalogMissing()
+    {
+        var profile = BuildProfile(
+            actions: new[] { Action("place_planet_building", ExecutionKind.Memory, "entityId", "faction") });
+        var session = BuildSession(RuntimeMode.Galactic);
+        var catalog = new Dictionary<string, IReadOnlyList<string>>(StringComparer.OrdinalIgnoreCase)
+        {
+            ["faction_catalog"] = new[] { "Empire" }
+        };
+
+        var report = await new ModMechanicDetectionService().DetectAsync(profile, session, catalog, CancellationToken.None);
+
+        var support = report.ActionSupport.Single(x => x.ActionId == "place_planet_building");
+        support.Supported.Should().BeFalse();
+        support.ReasonCode.Should().Be(RuntimeReasonCode.CAPABILITY_REQUIRED_MISSING);
+        support.Message.Should().Contain("Building roster catalog is unavailable");
+    }
+
+    [Fact]
+    public async Task DetectAsync_ShouldAllowSetContextFaction_WhenPlanetOwnerSymbolHealthy()
+    {
+        var profile = BuildProfile(
+            actions: new[] { Action("set_context_faction", ExecutionKind.Memory, "faction") });
+        var session = BuildSession(
+            RuntimeMode.Galactic,
+            symbols: new[]
+            {
+                new SymbolInfo("planet_owner", (nint)0x2000, SymbolValueType.Int32, AddressSource.Signature)
+            });
+
+        var report = await new ModMechanicDetectionService().DetectAsync(profile, session, catalog: null, CancellationToken.None);
+
+        var support = report.ActionSupport.Single(x => x.ActionId == "set_context_faction");
+        support.Supported.Should().BeTrue();
+        support.ReasonCode.Should().Be(RuntimeReasonCode.CAPABILITY_PROBE_PASS);
+    }
+
     private static IReadOnlyDictionary<string, IReadOnlyList<string>> CreateCatalog(string entityEntry)
     {
         return new Dictionary<string, IReadOnlyList<string>>(StringComparer.OrdinalIgnoreCase)

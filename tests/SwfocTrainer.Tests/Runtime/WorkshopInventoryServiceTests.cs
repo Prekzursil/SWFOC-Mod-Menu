@@ -55,6 +55,148 @@ public sealed class WorkshopInventoryServiceTests
     }
 
     [Fact]
+    public async Task DiscoverInstalledAsync_ShouldClassifySubmod_WhenChildrenDeclareParentDependency()
+    {
+        var tempRoot = Path.Combine(Path.GetTempPath(), $"swfoc-workshop-inventory-{Guid.NewGuid():N}");
+        Directory.CreateDirectory(tempRoot);
+        try
+        {
+            var manifestPath = await WriteSingleItemManifestAsync(tempRoot, "3447786229");
+            var workshopRoot = CreateWorkshopRoot(tempRoot, "3447786229");
+            using var httpClient = CreateStaticJsonClient(DetailsPayloadWithParentInChildren);
+            var service = new WorkshopInventoryService(NullLogger<WorkshopInventoryService>.Instance, httpClient);
+
+            var result = await service.DiscoverInstalledAsync(
+                new WorkshopInventoryRequest(
+                    AppId: "32470",
+                    ManifestPath: manifestPath,
+                    WorkshopContentRootPath: workshopRoot,
+                    FetchRemoteMetadata: true),
+                CancellationToken.None);
+
+            var item = result.Items.Should().ContainSingle().Subject;
+            item.ItemType.Should().Be(WorkshopItemType.Submod);
+            item.ClassificationReason.Should().Be("parent_dependency");
+            item.ParentWorkshopIds.Should().ContainSingle().Which.Should().Be("1397421866");
+        }
+        finally
+        {
+            if (Directory.Exists(tempRoot))
+            {
+                Directory.Delete(tempRoot, recursive: true);
+            }
+        }
+    }
+
+    [Fact]
+    public async Task DiscoverInstalledAsync_ShouldUseDescriptionFallback_AndTagSubmodClassification()
+    {
+        var tempRoot = Path.Combine(Path.GetTempPath(), $"swfoc-workshop-inventory-{Guid.NewGuid():N}");
+        Directory.CreateDirectory(tempRoot);
+        try
+        {
+            var manifestPath = await WriteSingleItemManifestAsync(tempRoot, "5555555555");
+            var workshopRoot = CreateWorkshopRoot(tempRoot, "5555555555");
+            using var httpClient = CreateStaticJsonClient(DetailsPayloadWithDescriptionFallbackAndTags);
+            var service = new WorkshopInventoryService(NullLogger<WorkshopInventoryService>.Instance, httpClient);
+
+            var result = await service.DiscoverInstalledAsync(
+                new WorkshopInventoryRequest(
+                    AppId: "32470",
+                    ManifestPath: manifestPath,
+                    WorkshopContentRootPath: workshopRoot,
+                    FetchRemoteMetadata: true),
+                CancellationToken.None);
+
+            var item = result.Items.Should().ContainSingle().Subject;
+            item.Description.Should().Be("Uses description fallback");
+            item.Tags.Should().Contain("Submod");
+            item.ItemType.Should().Be(WorkshopItemType.Submod);
+            item.ClassificationReason.Should().Be("tag_submod_unknown_parent");
+            item.ParentWorkshopIds.Should().BeEmpty();
+        }
+        finally
+        {
+            if (Directory.Exists(tempRoot))
+            {
+                Directory.Delete(tempRoot, recursive: true);
+            }
+        }
+    }
+
+    [Fact]
+    public async Task DiscoverInstalledAsync_ShouldResolveParentFirstChain_WhenParentAndChildInstalled()
+    {
+        var tempRoot = Path.Combine(Path.GetTempPath(), $"swfoc-workshop-inventory-{Guid.NewGuid():N}");
+        Directory.CreateDirectory(tempRoot);
+        try
+        {
+            var manifestPath = Path.Combine(tempRoot, "appworkshop_32470.acf");
+            await File.WriteAllTextAsync(
+                manifestPath,
+                "\"AppWorkshop\"\n{\n  \"WorkshopItemsInstalled\"\n  {\n    \"1397421866\" { }\n    \"3447786229\" { }\n  }\n}\n");
+            var workshopRoot = CreateWorkshopRoot(tempRoot, "1397421866", "3447786229");
+            using var httpClient = CreateStaticJsonClient(DetailsPayloadWithParentAndChildInstalled);
+            var service = new WorkshopInventoryService(NullLogger<WorkshopInventoryService>.Instance, httpClient);
+
+            var result = await service.DiscoverInstalledAsync(
+                new WorkshopInventoryRequest(
+                    AppId: "32470",
+                    ManifestPath: manifestPath,
+                    WorkshopContentRootPath: workshopRoot,
+                    FetchRemoteMetadata: true),
+                CancellationToken.None);
+
+            result.Chains.Should().Contain(x => x.OrderedWorkshopIds.SequenceEqual(new[] { "1397421866", "3447786229" }));
+        }
+        finally
+        {
+            if (Directory.Exists(tempRoot))
+            {
+                Directory.Delete(tempRoot, recursive: true);
+            }
+        }
+    }
+
+    [Fact]
+    public async Task DiscoverInstalledAsync_ShouldMarkPartialMissingReason_WhenOnlySomeParentsResolve()
+    {
+        var tempRoot = Path.Combine(Path.GetTempPath(), $"swfoc-workshop-inventory-{Guid.NewGuid():N}");
+        Directory.CreateDirectory(tempRoot);
+        try
+        {
+            var manifestPath = Path.Combine(tempRoot, "appworkshop_32470.acf");
+            await File.WriteAllTextAsync(
+                manifestPath,
+                "\"AppWorkshop\"\n{\n  \"WorkshopItemsInstalled\"\n  {\n    \"1397421866\" { }\n    \"3661482670\" { }\n  }\n}\n");
+            var workshopRoot = CreateWorkshopRoot(tempRoot, "1397421866", "3661482670");
+            using var httpClient = CreateStaticJsonClient(DetailsPayloadWithPartialMissingParents);
+            var service = new WorkshopInventoryService(NullLogger<WorkshopInventoryService>.Instance, httpClient);
+
+            var result = await service.DiscoverInstalledAsync(
+                new WorkshopInventoryRequest(
+                    AppId: "32470",
+                    ManifestPath: manifestPath,
+                    WorkshopContentRootPath: workshopRoot,
+                    FetchRemoteMetadata: true),
+                CancellationToken.None);
+
+            var chain = result.Chains.Should()
+                .ContainSingle(x => x.OrderedWorkshopIds.SequenceEqual(new[] { "1397421866", "3661482670" }))
+                .Subject;
+            chain.ClassificationReason.Should().Be("parent_dependency_partial_missing");
+            chain.MissingParentIds.Should().Contain("9999999999");
+        }
+        finally
+        {
+            if (Directory.Exists(tempRoot))
+            {
+                Directory.Delete(tempRoot, recursive: true);
+            }
+        }
+    }
+
+    [Fact]
     public async Task DiscoverInstalledAsync_ShouldReturnEmpty_WhenNoManifestOrWorkshopContentFound()
     {
         var service = new WorkshopInventoryService(NullLogger<WorkshopInventoryService>.Instance);
@@ -119,6 +261,18 @@ public sealed class WorkshopInventoryServiceTests
         return workshopRoot;
     }
 
+    private static string CreateWorkshopRoot(string tempRoot, params string[] workshopIds)
+    {
+        var workshopRoot = Path.Combine(tempRoot, "content", "32470");
+        Directory.CreateDirectory(workshopRoot);
+        foreach (var workshopId in workshopIds)
+        {
+            Directory.CreateDirectory(Path.Combine(workshopRoot, workshopId));
+        }
+
+        return workshopRoot;
+    }
+
     private static HttpClient CreateStaticJsonClient(string payload)
     {
         return new HttpClient(new StaticJsonHttpHandler(payload))
@@ -145,6 +299,89 @@ public sealed class WorkshopInventoryServiceTests
         "publishedfileid": "2313576303",
         "title": "Submod Child",
         "file_description": "Requires parent STEAMMOD=2486018498",
+        "tags": []
+      }
+    ]
+  }
+}
+""";
+
+    private const string DetailsPayloadWithParentInChildren = """
+{
+  "response": {
+    "publishedfiledetails": [
+      {
+        "publishedfileid": "3447786229",
+        "title": "ROE submod",
+        "file_description": "",
+        "children": [
+          { "publishedfileid": "1397421866" }
+        ],
+        "tags": []
+      }
+    ]
+  }
+}
+""";
+
+    private const string DetailsPayloadWithDescriptionFallbackAndTags = """
+{
+  "response": {
+    "publishedfiledetails": [
+      {
+        "publishedfileid": "5555555555",
+        "title": "Tag-only submod",
+        "description": "Uses description fallback",
+        "tags": [
+          { "tag": "Submod" }
+        ]
+      }
+    ]
+  }
+}
+""";
+
+    private const string DetailsPayloadWithParentAndChildInstalled = """
+{
+  "response": {
+    "publishedfiledetails": [
+      {
+        "publishedfileid": "1397421866",
+        "title": "AOTR",
+        "file_description": "",
+        "tags": []
+      },
+      {
+        "publishedfileid": "3447786229",
+        "title": "ROE submod",
+        "file_description": "",
+        "children": [
+          { "publishedfileid": "1397421866" }
+        ],
+        "tags": []
+      }
+    ]
+  }
+}
+""";
+
+    private const string DetailsPayloadWithPartialMissingParents = """
+{
+  "response": {
+    "publishedfiledetails": [
+      {
+        "publishedfileid": "1397421866",
+        "title": "AOTR",
+        "file_description": "",
+        "tags": []
+      },
+      {
+        "publishedfileid": "3661482670",
+        "title": "Complex submod",
+        "file_description": "Requires STEAMMOD=9999999999",
+        "children": [
+          { "publishedfileid": "1397421866" }
+        ],
         "tags": []
       }
     ]
