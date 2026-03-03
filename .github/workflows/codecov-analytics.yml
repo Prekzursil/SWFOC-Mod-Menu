@@ -1,0 +1,63 @@
+name: Codecov Analytics
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+permissions:
+  contents: read
+
+jobs:
+  codecov-analytics:
+    runs-on: windows-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: "8.0.x"
+
+      - name: Restore
+        run: dotnet restore SwfocTrainer.sln
+
+      - name: Build
+        run: dotnet build SwfocTrainer.sln -c Release --no-restore
+
+      - name: Collect coverage
+        shell: pwsh
+        run: |
+          pwsh ./tools/quality/collect-dotnet-coverage.ps1 -Configuration Release -DeterministicOnly
+
+      - name: Assert 100/100 coverage
+        shell: pwsh
+        run: |
+          pwsh ./tools/quality/assert-dotnet-coverage.ps1 -CoveragePath TestResults/coverage/cobertura.xml -MinLine 100 -MinBranch 100 -Scope src
+
+      - name: Ensure CODECOV_TOKEN configured
+        shell: bash
+        run: |
+          if [ -z "${{ secrets.CODECOV_TOKEN }}" ]; then
+            echo "CODECOV_TOKEN is required by strict policy." >&2
+            exit 1
+          fi
+
+      - name: Upload to Codecov
+        uses: codecov/codecov-action@v4
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          files: TestResults/coverage/cobertura.xml
+          fail_ci_if_error: true
+          verbose: true
+
+      - name: Upload coverage artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-results
+          path: TestResults/coverage
