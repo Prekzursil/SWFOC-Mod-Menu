@@ -34,20 +34,16 @@ $arguments = @(
     "test",
     $projectPath,
     "-c", $Configuration,
-    "--collect", "XPlat Code Coverage",
-    "--results-directory", $rawResults,
-    "--logger", "trx;LogFileName=coverage.trx"
+    "--logger", "trx;LogFileName=coverage.trx",
+    "-p:CollectCoverage=true",
+    "-p:CoverletOutputFormat=cobertura",
+    "-p:CoverletOutput=$(Join-Path $rawResults 'coverage.cobertura.xml')",
+    "-p:ExcludeByFile=**/obj/**%2c**/*.g.cs%2c**/*.g.i.cs"
 )
 
 if (-not [string]::IsNullOrWhiteSpace($filter)) {
     $arguments += @("--filter", $filter)
 }
-
-$arguments += @(
-    "--",
-    "DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.Format=cobertura",
-    "DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.Include=[SwfocTrainer.*]*"
-)
 
 function Resolve-DotnetCommand {
     $dotnet = Get-Command dotnet -ErrorAction SilentlyContinue

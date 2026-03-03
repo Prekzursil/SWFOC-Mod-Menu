@@ -29,11 +29,23 @@ jobs:
         with:
           dotnet-version: '8.0.x'
       - name: Run tests with coverage
-        continue-on-error: true
         run: |
           mkdir -p coverage
           dotnet restore
-          dotnet test tests/SwfocTrainer.Tests/SwfocTrainer.Tests.csproj -c Release             /p:CollectCoverage=true             /p:CoverletOutput=./TestResults/coverage.cobertura.xml             /p:CoverletOutputFormat=cobertura
+          dotnet test tests/SwfocTrainer.Tests/SwfocTrainer.Tests.csproj -c Release \
+            --filter "FullyQualifiedName!~SwfocTrainer.Tests.Profiles.Live&FullyQualifiedName!~RuntimeAttachSmokeTests" \
+            -p:CollectCoverage=true \
+            -p:CoverletOutput=./TestResults/coverage.cobertura.xml \
+            -p:CoverletOutputFormat=cobertura \
+            -p:ExcludeByFile=**/obj/**%2c**/*.g.cs%2c**/*.g.i.cs
+
+      - name: Enforce 100% line+branch coverage
+        run: |
+          python3 scripts/quality/assert_coverage_100.py \
+            --xml "dotnet=tests/SwfocTrainer.Tests/TestResults/coverage.cobertura.xml" \
+            --out-json "codecov-analytics/coverage.json" \
+            --out-md "codecov-analytics/coverage.md"
+
       - name: Upload coverage to Codecov
         if: ${{ always() }}
         uses: codecov/codecov-action@v5

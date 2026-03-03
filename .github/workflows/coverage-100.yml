@@ -30,7 +30,12 @@ jobs:
         run: |
           mkdir -p coverage
           dotnet restore
-          dotnet test tests/SwfocTrainer.Tests/SwfocTrainer.Tests.csproj -c Release             /p:CollectCoverage=true             /p:CoverletOutput=./TestResults/coverage.cobertura.xml             /p:CoverletOutputFormat=cobertura
+          dotnet test tests/SwfocTrainer.Tests/SwfocTrainer.Tests.csproj -c Release \
+            --filter "FullyQualifiedName!~SwfocTrainer.Tests.Profiles.Live&FullyQualifiedName!~RuntimeAttachSmokeTests" \
+            -p:CollectCoverage=true \
+            -p:CoverletOutput=./TestResults/coverage.cobertura.xml \
+            -p:CoverletOutputFormat=cobertura \
+            -p:ExcludeByFile=**/obj/**%2c**/*.g.cs%2c**/*.g.i.cs
 
       - name: Enforce 100% coverage
         run: |
