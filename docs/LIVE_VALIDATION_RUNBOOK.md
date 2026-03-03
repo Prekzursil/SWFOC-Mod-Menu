@@ -224,6 +224,12 @@ Reset the override after matrix runs:
 Remove-Item Env:SWFOC_FORCE_PROMOTED_EXTENDER -ErrorAction SilentlyContinue
 ```
 
+Reset the override after matrix runs:
+
+```powershell
+Remove-Item Env:SWFOC_FORCE_PROMOTED_EXTENDER -ErrorAction SilentlyContinue
+```
+
 `set_unit_cap` promoted matrix contract:
 
 - run as a deterministic two-step sequence per profile:
