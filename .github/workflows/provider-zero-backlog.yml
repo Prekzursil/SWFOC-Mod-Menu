@@ -3,7 +3,7 @@ name: Provider Zero Backlog
 on:
   push:
     branches:
-      - main
+      - "**"
   pull_request:
     branches:
       - main
