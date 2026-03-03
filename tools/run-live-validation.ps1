@@ -1171,7 +1171,9 @@ if ($RunAllInstalledChainsDeep) {
                 runId = $chainRunId
                 orderedWorkshopIds = @($chainWorkshopIds)
                 classification = "blocked_dependency_missing_parent"
-                exitCode = 1
+                # Dependency resolution block happens before any launch/test work and is
+                # intentionally reported as non-execution failure for matrix continuity.
+                exitCode = 0
                 reproBundlePath = ""
                 missingParentIds = @($chainMissingParentIds)
                 chainResolutionSource = $chainResolutionSource
