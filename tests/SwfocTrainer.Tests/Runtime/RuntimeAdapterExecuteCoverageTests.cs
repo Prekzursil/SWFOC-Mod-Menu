@@ -11,7 +11,7 @@ using Xunit;
 
 namespace SwfocTrainer.Tests.Runtime;
 
-public sealed partial class RuntimeAdapterExecuteCoverageTests
+public sealed class RuntimeAdapterExecuteCoverageTests
 {
     [Fact]
     public async Task ExecuteAsync_ShouldReturnBlockedResult_WhenContextSpawnModeIsUnknown()
@@ -964,7 +964,7 @@ public sealed partial class RuntimeAdapterExecuteCoverageTests
             Metadata: new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase));
     }
 
-    private static AttachSession BuildSession(RuntimeMode runtimeMode)
+    internal static AttachSession BuildSession(RuntimeMode runtimeMode)
     {
         return new AttachSession(
             "profile",
@@ -981,7 +981,7 @@ public sealed partial class RuntimeAdapterExecuteCoverageTests
             DateTimeOffset.UtcNow);
     }
 
-    private static object CreateUninitializedMemoryAccessor()
+    internal static object CreateUninitializedMemoryAccessor()
     {
         var memoryType = typeof(RuntimeAdapter).Assembly.GetType("SwfocTrainer.Runtime.Interop.ProcessMemoryAccessor");
         memoryType.Should().NotBeNull();
@@ -1014,71 +1014,11 @@ public sealed partial class RuntimeAdapterExecuteCoverageTests
         return method!.Invoke(instance, arguments);
     }
 
-    private static void SetPrivateField(object instance, string fieldName, object? value)
+    internal static void SetPrivateField(object instance, string fieldName, object? value)
     {
         var field = instance.GetType().GetField(fieldName, BindingFlags.Instance | BindingFlags.NonPublic);
         field.Should().NotBeNull($"field {fieldName} should exist.");
         field!.SetValue(instance, value);
     }
-
-    private sealed class AdapterHarness
-    {
-        public IProcessLocator ProcessLocator { get; set; } = new StubProcessLocator();
-        public bool IncludeExecutionBackend { get; set; } = true;
-
-        public IBackendRouter Router { get; set; } = new StubBackendRouter(
-            new BackendRouteDecision(
-                Allowed: true,
-                Backend: ExecutionBackendKind.Helper,
-                ReasonCode: RuntimeReasonCode.CAPABILITY_PROBE_PASS,
-                Message: "ok"));
-
-        public IExecutionBackend ExecutionBackend { get; set; } = new StubExecutionBackend();
-
-        public IHelperBridgeBackend HelperBridgeBackend { get; set; } = new StubHelperBridgeBackend();
-
-        public IModDependencyValidator DependencyValidator { get; set; } = new StubDependencyValidator(
-            new DependencyValidationResult(
-                DependencyValidationStatus.Pass,
-                string.Empty,
-                new HashSet<string>(StringComparer.OrdinalIgnoreCase)));
-
-        public IModMechanicDetectionService? MechanicDetectionService { get; set; }
-
-        public RuntimeAdapter CreateAdapter(TrainerProfile profile, RuntimeMode mode)
-        {
-            var services = new Dictionary<Type, object>
-            {
-                [typeof(IBackendRouter)] = Router,
-                [typeof(IHelperBridgeBackend)] = HelperBridgeBackend,
-                [typeof(IModDependencyValidator)] = DependencyValidator,
-                [typeof(ITelemetryLogTailService)] = new StubTelemetryLogTailService()
-            };
-            if (IncludeExecutionBackend)
-            {
-                services[typeof(IExecutionBackend)] = ExecutionBackend;
-            }
-            if (MechanicDetectionService is not null)
-            {
-                services[typeof(IModMechanicDetectionService)] = MechanicDetectionService;
-            }
-
-            var adapter = new RuntimeAdapter(
-                ProcessLocator,
-                new StubProfileRepository(profile),
-                new StubSignatureResolver(),
-                NullLogger<RuntimeAdapter>.Instance,
-                new MapServiceProvider(services));
-
-            var session = BuildSession(mode);
-            typeof(RuntimeAdapter)
-                .GetProperty("CurrentSession", BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic)!
-                .SetValue(adapter, session);
-            SetPrivateField(adapter, "_attachedProfile", profile);
-            SetPrivateField(adapter, "_memory", CreateUninitializedMemoryAccessor());
-            return adapter;
-        }
-    }
-
 }
 
