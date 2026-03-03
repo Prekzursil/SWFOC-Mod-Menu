@@ -1,0 +1,26 @@
+name: Snyk Zero
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+permissions:
+  contents: read
+
+jobs:
+  snyk-zero:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Snyk zero backlog
+        shell: pwsh
+        run: pwsh ./tools/quality/assert-snyk-zero-backlog.ps1 -Strict
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+          SNYK_ORG_ID: ${{ vars.SNYK_ORG_ID }}
