@@ -64,13 +64,16 @@
     },
     "applitools": {
       "method": "GET",
-      "url": "${APPLITOOLS_ZERO_BACKLOG_URL}",
-      "authScheme": "apiTokenHeader",
-      "tokenEnv": "APPLITOOLS_API_KEY",
-      "tokenHeaderName": "X-Api-Key",
+      "url": "https://eyesapi.applitools.com/api/sessions/batches",
+      "query": {
+        "status": "Unresolved",
+        "limit": "1",
+        "apiKey": "${APPLITOOLS_API_KEY}"
+      },
+      "authScheme": "",
+      "tokenEnv": "",
       "requiredEnv": [
-        "APPLITOOLS_API_KEY",
-        "APPLITOOLS_ZERO_BACKLOG_URL"
+        "APPLITOOLS_API_KEY"
       ],
       "countJsonPath": "openCount"
     },
