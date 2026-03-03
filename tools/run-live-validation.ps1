@@ -148,8 +148,8 @@ function Export-InstalledModGraph {
 
         $manifestUsed = (Resolve-Path -Path $candidate).ProviderPath
         $content = Get-Content -Raw -Path $candidate
-        $matches = [regex]::Matches($content, '"(?<id>\d{4,})"\s*\{')
-        foreach ($match in $matches) {
+        $matchCollection = [regex]::Matches($content, '"(?<id>\d{4,})"\s*\{')
+        foreach ($match in $matchCollection) {
             $id = [string]$match.Groups["id"].Value
             if (-not [string]::IsNullOrWhiteSpace($id)) {
                 [void]$installed.Add($id)
@@ -407,13 +407,50 @@ function Export-ResolvedLaunchChains {
 
     $graph = Get-Content -Raw -Path $InstalledGraphPath | ConvertFrom-Json
     $items = @($graph.items)
-    $chains = @()
-    if ($null -ne $graph.chains -and @($graph.chains).Count -gt 0) {
-        $chains = @($graph.chains)
+    $graphHasChains = ($null -ne $graph.chains -and @($graph.chains).Count -gt 0)
+    $chainResolutionSource = if ($graphHasChains) { "items_recomputed_graph_validated" } else { "items_recomputed" }
+    $existingMissingParentByChainId = @{}
+    if ($graphHasChains) {
+        foreach ($chain in @($graph.chains)) {
+            $chainId = [string]$chain.chainId
+            if ([string]::IsNullOrWhiteSpace($chainId)) {
+                continue
+            }
+
+            $missing = @()
+            if ($null -ne $chain.PSObject.Properties["missingParentIds"]) {
+                $missing = @($chain.missingParentIds | ForEach-Object { [string]$_ } | Where-Object { -not [string]::IsNullOrWhiteSpace($_) } | Sort-Object -Unique)
+            }
+
+            $existingMissingParentByChainId[$chainId] = @($missing)
+        }
     }
-    else {
-        $chains = Resolve-LaunchChainsFromItems -Items $items
-    }
+
+    $resolvedChains = @(Resolve-LaunchChainsFromItems -Items $items)
+    $chains = @($resolvedChains | ForEach-Object {
+        $chainId = [string]$_.chainId
+        $missingParentIds = @()
+        if ($null -ne $_.PSObject.Properties["missingParentIds"]) {
+            $missingParentIds = @($_.missingParentIds | ForEach-Object { [string]$_ } | Where-Object { -not [string]::IsNullOrWhiteSpace($_) } | Sort-Object -Unique)
+        }
+        if ($graphHasChains -and $existingMissingParentByChainId.ContainsKey($chainId)) {
+            $missingParentIds = @($missingParentIds + @($existingMissingParentByChainId[$chainId]) | Where-Object { -not [string]::IsNullOrWhiteSpace($_) } | Sort-Object -Unique)
+        }
+
+        $classificationReason = [string]$_.classificationReason
+        if ($missingParentIds.Count -gt 0 -and $classificationReason -notlike "parent_dependency*") {
+            $classificationReason = "parent_dependency_missing"
+        }
+
+        [ordered]@{
+            chainId = $chainId
+            orderedWorkshopIds = @($_.orderedWorkshopIds | ForEach-Object { [string]$_ } | Where-Object { -not [string]::IsNullOrWhiteSpace($_) })
+            classificationReason = $classificationReason
+            parentFirst = $true
+            missingParentIds = @($missingParentIds)
+            chainResolutionSource = $chainResolutionSource
+        }
+    })
 
     $output = [ordered]@{
         schemaVersion = "1.0"
@@ -427,10 +464,15 @@ function Export-ResolvedLaunchChains {
 }
 
 function Stop-LiveGameProcesses {
+    [CmdletBinding(SupportsShouldProcess = $true)]
+    param()
+
     foreach ($name in @("sweaw", "swfoc", "StarWarsG")) {
         foreach ($proc in @(Get-Process -Name $name -ErrorAction SilentlyContinue)) {
             try {
-                Stop-Process -Id $proc.Id -Force -ErrorAction Stop
+                if ($PSCmdlet.ShouldProcess("$($proc.ProcessName)#$($proc.Id)", "Stop-Process")) {
+                    Stop-Process -Id $proc.Id -Force -ErrorAction Stop
+                }
             }
             catch {
                 Write-Warning ("Failed stopping process {0} ({1}): {2}" -f $proc.ProcessName, $proc.Id, $_.Exception.Message)
@@ -517,7 +559,7 @@ function Resolve-ScopeLaunchPlan {
     }
 }
 
-function Ensure-AutoLaunchSession {
+function Start-AutoLaunchSession {
     param(
         [string]$SelectedScope,
         [string[]]$ForcedWorkshopIds,
@@ -537,23 +579,23 @@ function Ensure-AutoLaunchSession {
         throw ("Auto-launch executable missing: {0}" -f $exePath)
     }
 
-    Stop-LiveGameProcesses
+    Stop-LiveGameProcesses -Confirm:$false
 
-    $args = ""
+    $launchArgs = ""
     if ($null -ne $plan.WorkshopIds) {
         $normalizedWorkshopIds = @($plan.WorkshopIds | ForEach-Object { [string]$_ } | Where-Object { -not [string]::IsNullOrWhiteSpace($_) })
         if ($normalizedWorkshopIds.Count -gt 0) {
-            $args = ($normalizedWorkshopIds | ForEach-Object { "STEAMMOD=$_" }) -join " "
+            $launchArgs = ($normalizedWorkshopIds | ForEach-Object { "STEAMMOD=$_" }) -join " "
         }
     }
-    Write-Output ("Auto-launch: exe='{0}' args='{1}' root='{2}' scope={3}" -f $exePath, $args, $root, $SelectedScope)
+    Write-Output ("Auto-launch: exe='{0}' args='{1}' root='{2}' scope={3}" -f $exePath, $launchArgs, $root, $SelectedScope)
     $startParams = @{
         FilePath = $exePath
         WorkingDirectory = (Split-Path -Path $exePath -Parent)
         PassThru = $true
     }
-    if (-not [string]::IsNullOrWhiteSpace($args)) {
-        $startParams.ArgumentList = $args
+    if (-not [string]::IsNullOrWhiteSpace($launchArgs)) {
+        $startParams.ArgumentList = $launchArgs
     }
 
     $started = Start-Process @startParams
@@ -1087,6 +1129,7 @@ if ($RunAllInstalledChainsDeep) {
         $chainIndex++
         $chainWorkshopIds = @($chain.orderedWorkshopIds | ForEach-Object { [string]$_ } | Where-Object { -not [string]::IsNullOrWhiteSpace($_) })
         $chainMissingParentIds = @()
+        $chainResolutionSource = if ($null -ne $chain.PSObject.Properties["chainResolutionSource"]) { [string]$chain.chainResolutionSource } else { "unknown" }
         if ($null -ne $chain.PSObject.Properties["missingParentIds"]) {
             $chainMissingParentIds = @($chain.missingParentIds | ForEach-Object { [string]$_ } | Where-Object { -not [string]::IsNullOrWhiteSpace($_) } | Sort-Object -Unique)
         }
@@ -1103,21 +1146,23 @@ if ($RunAllInstalledChainsDeep) {
                 exitCode = 1
                 reproBundlePath = ""
                 missingParentIds = @($chainMissingParentIds)
+                chainResolutionSource = $chainResolutionSource
+                launchAttempted = $false
             })
 
             $matrixSnapshot = @($matrixResults.ToArray())
             $matrixSnapshot | ConvertTo-Json -Depth 8 | Set-Content -Path $matrixJsonPath
             $matrixRowsSnapshot = @($matrixSnapshot | ForEach-Object {
-                "| $([string]$_.chainId) | $([string]$_.runId) | $((@($_.orderedWorkshopIds) -join ',')) | $([string]$_.classification) | $([int]$_.exitCode) | $([string]$_.reproBundlePath) |"
+                "| $([string]$_.chainId) | $([string]$_.runId) | $((@($_.orderedWorkshopIds) -join ',')) | $([string]$_.classification) | $([int]$_.exitCode) | $([string]$_.chainResolutionSource) | $([string]$_.launchAttempted) | $([string]$_.reproBundlePath) |"
             })
             if ($matrixRowsSnapshot.Count -eq 0) {
-                $matrixRowsSnapshot = @("| _none_ | _none_ | _none_ | _none_ | _none_ | _none_ |")
+                $matrixRowsSnapshot = @("| _none_ | _none_ | _none_ | _none_ | _none_ | _none_ | _none_ | _none_ |")
             }
 @"
 # Chain Matrix Summary
 
-| ChainId | RunId | WorkshopIds | Classification | ExitCode | Bundle |
-|---|---|---|---|---:|---|
+| ChainId | RunId | WorkshopIds | Classification | ExitCode | ResolutionSource | LaunchAttempted | Bundle |
+|---|---|---|---|---:|---|---|---|
 $($matrixRowsSnapshot -join "`n")
 "@ | Set-Content -Path $matrixMdPath
             continue
@@ -1184,22 +1229,24 @@ $($matrixRowsSnapshot -join "`n")
             exitCode = $chainExitCode
             reproBundlePath = $chainBundlePath
             missingParentIds = @($chainMissingParentIds)
+            chainResolutionSource = $chainResolutionSource
+            launchAttempted = $true
         })
 
         # Persist progress after each chain so interruption still yields usable matrix evidence.
         $matrixSnapshot = @($matrixResults.ToArray())
         $matrixSnapshot | ConvertTo-Json -Depth 8 | Set-Content -Path $matrixJsonPath
         $matrixRowsSnapshot = @($matrixSnapshot | ForEach-Object {
-            "| $([string]$_.chainId) | $([string]$_.runId) | $((@($_.orderedWorkshopIds) -join ',')) | $([string]$_.classification) | $([int]$_.exitCode) | $([string]$_.reproBundlePath) |"
+            "| $([string]$_.chainId) | $([string]$_.runId) | $((@($_.orderedWorkshopIds) -join ',')) | $([string]$_.classification) | $([int]$_.exitCode) | $([string]$_.chainResolutionSource) | $([string]$_.launchAttempted) | $([string]$_.reproBundlePath) |"
         })
         if ($matrixRowsSnapshot.Count -eq 0) {
-            $matrixRowsSnapshot = @("| _none_ | _none_ | _none_ | _none_ | _none_ | _none_ |")
+            $matrixRowsSnapshot = @("| _none_ | _none_ | _none_ | _none_ | _none_ | _none_ | _none_ | _none_ |")
         }
 @"
 # Chain Matrix Summary
 
-| ChainId | RunId | WorkshopIds | Classification | ExitCode | Bundle |
-|---|---|---|---|---:|---|
+| ChainId | RunId | WorkshopIds | Classification | ExitCode | ResolutionSource | LaunchAttempted | Bundle |
+|---|---|---|---|---:|---|---|---|
 $($matrixRowsSnapshot -join "`n")
 "@ | Set-Content -Path $matrixMdPath
     }
@@ -1208,17 +1255,17 @@ $($matrixRowsSnapshot -join "`n")
     $matrixArray | ConvertTo-Json -Depth 8 | Set-Content -Path $matrixJsonPath
 
     $matrixRows = @($matrixArray | ForEach-Object {
-        "| $([string]$_.chainId) | $([string]$_.runId) | $((@($_.orderedWorkshopIds) -join ',')) | $([string]$_.classification) | $([int]$_.exitCode) | $([string]$_.reproBundlePath) |"
+        "| $([string]$_.chainId) | $([string]$_.runId) | $((@($_.orderedWorkshopIds) -join ',')) | $([string]$_.classification) | $([int]$_.exitCode) | $([string]$_.chainResolutionSource) | $([string]$_.launchAttempted) | $([string]$_.reproBundlePath) |"
     })
     if ($matrixRows.Count -eq 0) {
-        $matrixRows = @("| _none_ | _none_ | _none_ | _none_ | _none_ | _none_ |")
+        $matrixRows = @("| _none_ | _none_ | _none_ | _none_ | _none_ | _none_ | _none_ | _none_ |")
     }
 
     @"
 # Chain Matrix Summary
 
-| ChainId | RunId | WorkshopIds | Classification | ExitCode | Bundle |
-|---|---|---|---|---:|---|
+| ChainId | RunId | WorkshopIds | Classification | ExitCode | ResolutionSource | LaunchAttempted | Bundle |
+|---|---|---|---|---:|---|---|---|
 $($matrixRows -join "`n")
 "@ | Set-Content -Path $matrixMdPath
 
@@ -1234,7 +1281,7 @@ $($matrixRows -join "`n")
 }
 
 if ($AutoLaunch) {
-    Ensure-AutoLaunchSession `
+    Start-AutoLaunchSession `
         -SelectedScope $Scope `
         -ForcedWorkshopIds $forceWorkshopIdsNormalized `
         -ForcedProfileId $forceProfileIdNormalized `
