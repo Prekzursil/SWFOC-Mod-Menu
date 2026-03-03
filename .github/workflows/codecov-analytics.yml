@@ -41,14 +41,16 @@ jobs:
 
       - name: Ensure CODECOV_TOKEN configured
         shell: bash
+        env:
+          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
         run: |
-          if [ -z "${{ secrets.CODECOV_TOKEN }}" ]; then
+          if [ -z "$CODECOV_TOKEN" ]; then
             echo "CODECOV_TOKEN is required by strict policy." >&2
             exit 1
           fi
 
       - name: Upload to Codecov
-        uses: codecov/codecov-action@v4
+        uses: codecov/codecov-action@b9fd7d16f6d7d1b5d2bec1a2887e65ceed900238
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
           files: TestResults/coverage/cobertura.xml

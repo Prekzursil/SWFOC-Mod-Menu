@@ -22,43 +22,15 @@ public sealed class ModMechanicDetectionServiceTests
             {
                 new HelperHookSpec("spawn_bridge", "spawn_bridge.lua", "1.0", EntryPoint: "SWFOC_Trainer_Spawn_Context")
             });
-        var session = BuildSession(
-            RuntimeMode.TacticalLand,
-            metadata: new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
-            {
-                ["helperBridgeState"] = "ready",
-                ["steamModIdsDetected"] = "1397421866"
-            },
+        var session = BuildSessionWithHelperReady(
+            mode: RuntimeMode.TacticalLand,
+            steamModIds: "1397421866",
             symbols: new[]
             {
                 new SymbolInfo("credits", (nint)0x1000, SymbolValueType.Int32, AddressSource.Signature)
             });
-        var catalog = new Dictionary<string, IReadOnlyList<string>>(StringComparer.OrdinalIgnoreCase)
-        {
-            ["unit_catalog"] = new[] { "AOTR_AT_AT" },
-            ["faction_catalog"] = new[] { "Empire" },
-            ["entity_catalog"] = new[] { "Unit|RAW_MACE_WINDU|raw_1125571106_swfoc|1125571106" }
-        };
-        var transplantService = new StubTransplantCompatibilityService(new TransplantValidationReport(
-            TargetProfileId: profile.Id,
-            GeneratedAtUtc: DateTimeOffset.UtcNow,
-            AllResolved: false,
-            TotalEntities: 1,
-            BlockingEntityCount: 1,
-            Entities: new[]
-            {
-                new TransplantEntityValidation(
-                    EntityId: "RAW_MACE_WINDU",
-                    SourceProfileId: "raw_1125571106_swfoc",
-                    SourceWorkshopId: "1125571106",
-                    RequiresTransplant: true,
-                    Resolved: false,
-                    ReasonCode: RuntimeReasonCode.ROSTER_VISUAL_MISSING,
-                    Message: "Missing visual reference for transplanted hero.",
-                    VisualRef: null,
-                    MissingDependencies: new[] { "Data/Art/Models/raw_mace_windu.alo" })
-            },
-            Diagnostics: new Dictionary<string, object?>()));
+        var catalog = CreateCatalog("Unit|RAW_MACE_WINDU|raw_1125571106_swfoc|1125571106");
+        var transplantService = new StubTransplantCompatibilityService(CreateBlockingTransplantReport(profile.Id));
         var service = new ModMechanicDetectionService(transplantService);
 
         var report = await service.DetectAsync(profile, session, catalog, CancellationToken.None);
@@ -78,19 +50,8 @@ public sealed class ModMechanicDetectionServiceTests
         var profile = BuildProfile(
             actions: new[] { Action("spawn_tactical_entity", ExecutionKind.Helper, "helperHookId", "entityId", "faction") },
             helperHooks: new[] { new HelperHookSpec("spawn_bridge", "spawn_bridge.lua", "1.0", EntryPoint: "SWFOC_Trainer_Spawn_Context") });
-        var session = BuildSession(
-            RuntimeMode.TacticalLand,
-            metadata: new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
-            {
-                ["helperBridgeState"] = "ready",
-                ["steamModIdsDetected"] = "1397421866"
-            });
-        var catalog = new Dictionary<string, IReadOnlyList<string>>(StringComparer.OrdinalIgnoreCase)
-        {
-            ["unit_catalog"] = new[] { "AOTR_AT_AT" },
-            ["faction_catalog"] = new[] { "Empire" },
-            ["entity_catalog"] = new[] { "Unit|AOTR_AT_AT|aotr_1397421866_swfoc|1397421866" }
-        };
+        var session = BuildSessionWithHelperReady(RuntimeMode.TacticalLand, "1397421866");
+        var catalog = CreateCatalog("Unit|AOTR_AT_AT|aotr_1397421866_swfoc|1397421866");
         var transplantService = new StubTransplantCompatibilityService(new TransplantValidationReport(
             TargetProfileId: profile.Id,
             GeneratedAtUtc: DateTimeOffset.UtcNow,
@@ -174,6 +135,55 @@ public sealed class ModMechanicDetectionServiceTests
         var support = report.ActionSupport.Single(x => x.ActionId == "set_credits");
         support.Supported.Should().BeFalse();
         support.ReasonCode.Should().Be(RuntimeReasonCode.CAPABILITY_REQUIRED_MISSING);
+    }
+
+    private static IReadOnlyDictionary<string, IReadOnlyList<string>> CreateCatalog(string entityEntry)
+    {
+        return new Dictionary<string, IReadOnlyList<string>>(StringComparer.OrdinalIgnoreCase)
+        {
+            ["unit_catalog"] = new[] { "AOTR_AT_AT" },
+            ["faction_catalog"] = new[] { "Empire" },
+            ["entity_catalog"] = new[] { entityEntry }
+        };
+    }
+
+    private static AttachSession BuildSessionWithHelperReady(
+        RuntimeMode mode,
+        string steamModIds,
+        IReadOnlyList<SymbolInfo>? symbols = null)
+    {
+        return BuildSession(
+            mode,
+            metadata: new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
+            {
+                ["helperBridgeState"] = "ready",
+                ["steamModIdsDetected"] = steamModIds
+            },
+            symbols: symbols);
+    }
+
+    private static TransplantValidationReport CreateBlockingTransplantReport(string profileId)
+    {
+        return new TransplantValidationReport(
+            TargetProfileId: profileId,
+            GeneratedAtUtc: DateTimeOffset.UtcNow,
+            AllResolved: false,
+            TotalEntities: 1,
+            BlockingEntityCount: 1,
+            Entities: new[]
+            {
+                new TransplantEntityValidation(
+                    EntityId: "RAW_MACE_WINDU",
+                    SourceProfileId: "raw_1125571106_swfoc",
+                    SourceWorkshopId: "1125571106",
+                    RequiresTransplant: true,
+                    Resolved: false,
+                    ReasonCode: RuntimeReasonCode.ROSTER_VISUAL_MISSING,
+                    Message: "Missing visual reference for transplanted hero.",
+                    VisualRef: null,
+                    MissingDependencies: new[] { "Data/Art/Models/raw_mace_windu.alo" })
+            },
+            Diagnostics: new Dictionary<string, object?>());
     }
 
     private static ActionSpec Action(string id, ExecutionKind kind, params string[] required)

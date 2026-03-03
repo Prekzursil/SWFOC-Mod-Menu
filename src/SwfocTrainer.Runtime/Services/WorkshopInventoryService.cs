@@ -557,24 +557,12 @@ public sealed class WorkshopInventoryService : IWorkshopInventoryService
     {
         if (item.ParentWorkshopIds.Count == 0)
         {
-            yield return new ChainCandidate(
-                OrderedIds: new[] { item.WorkshopId },
-                Reason: item.ClassificationReason ?? "independent_mod",
-                MissingParentIds: Array.Empty<string>());
+            yield return CreateSingleItemChain(item.WorkshopId, item.ClassificationReason ?? "independent_mod");
             yield break;
         }
 
-        var missingParentIds = item.ParentWorkshopIds
-            .Where(id => !string.IsNullOrWhiteSpace(id) && !map.ContainsKey(id))
-            .Distinct(StringComparer.OrdinalIgnoreCase)
-            .OrderBy(id => id, StringComparer.OrdinalIgnoreCase)
-            .ToArray();
-
-        var resolvedParentIds = item.ParentWorkshopIds
-            .Where(id => !string.IsNullOrWhiteSpace(id) && map.ContainsKey(id))
-            .Distinct(StringComparer.OrdinalIgnoreCase)
-            .OrderBy(id => id, StringComparer.OrdinalIgnoreCase)
-            .ToArray();
+        var missingParentIds = GetMissingParentIds(item.ParentWorkshopIds, map);
+        var resolvedParentIds = GetResolvedParentIds(item.ParentWorkshopIds, map);
 
         if (resolvedParentIds.Length == 0)
         {
@@ -587,17 +575,53 @@ public sealed class WorkshopInventoryService : IWorkshopInventoryService
             yield break;
         }
 
-        var reason = missingParentIds.Length > 0
-            ? "parent_dependency_partial_missing"
-            : item.ClassificationReason ?? "parent_dependency";
-
         foreach (var parentId in resolvedParentIds)
         {
             yield return new ChainCandidate(
                 OrderedIds: BuildParentFirstChain(parentId, item.WorkshopId, map),
-                Reason: reason,
+                Reason: ResolveParentDependencyReason(item.ClassificationReason, missingParentIds),
                 MissingParentIds: missingParentIds);
         }
+    }
+
+    private static ChainCandidate CreateSingleItemChain(string workshopId, string reason)
+    {
+        return new ChainCandidate(
+            OrderedIds: new[] { workshopId },
+            Reason: reason,
+            MissingParentIds: Array.Empty<string>());
+    }
+
+    private static string[] GetMissingParentIds(
+        IEnumerable<string> parentIds,
+        IReadOnlyDictionary<string, WorkshopInventoryItem> map)
+    {
+        return parentIds
+            .Where(id => !string.IsNullOrWhiteSpace(id) && !map.ContainsKey(id))
+            .Distinct(StringComparer.OrdinalIgnoreCase)
+            .OrderBy(id => id, StringComparer.OrdinalIgnoreCase)
+            .ToArray();
+    }
+
+    private static string[] GetResolvedParentIds(
+        IEnumerable<string> parentIds,
+        IReadOnlyDictionary<string, WorkshopInventoryItem> map)
+    {
+        return parentIds
+            .Where(id => !string.IsNullOrWhiteSpace(id) && map.ContainsKey(id))
+            .Distinct(StringComparer.OrdinalIgnoreCase)
+            .OrderBy(id => id, StringComparer.OrdinalIgnoreCase)
+            .ToArray();
+    }
+
+    private static string ResolveParentDependencyReason(string? classificationReason, IReadOnlyCollection<string> missingParentIds)
+    {
+        if (missingParentIds.Count > 0)
+        {
+            return "parent_dependency_partial_missing";
+        }
+
+        return classificationReason ?? "parent_dependency";
     }
 
     private static void AddChainIfUnique(

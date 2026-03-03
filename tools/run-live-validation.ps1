@@ -560,6 +560,7 @@ function Resolve-ScopeLaunchPlan {
 }
 
 function Start-AutoLaunchSession {
+    [CmdletBinding(SupportsShouldProcess = $true)]
     param(
         [string]$SelectedScope,
         [string[]]$ForcedWorkshopIds,
@@ -579,7 +580,9 @@ function Start-AutoLaunchSession {
         throw ("Auto-launch executable missing: {0}" -f $exePath)
     }
 
-    Stop-LiveGameProcesses -Confirm:$false
+    if ($PSCmdlet.ShouldProcess("live game processes", "Stop existing processes before auto-launch")) {
+        Stop-LiveGameProcesses -Confirm:$false
+    }
 
     $launchArgs = ""
     if ($null -ne $plan.WorkshopIds) {
@@ -596,6 +599,10 @@ function Start-AutoLaunchSession {
     }
     if (-not [string]::IsNullOrWhiteSpace($launchArgs)) {
         $startParams.ArgumentList = $launchArgs
+    }
+
+    if (-not $PSCmdlet.ShouldProcess($exePath, ("Start process with args '{0}'" -f $launchArgs))) {
+        throw "Auto-launch aborted by ShouldProcess."
     }
 
     $started = Start-Process @startParams

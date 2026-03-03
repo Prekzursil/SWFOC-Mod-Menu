@@ -79,16 +79,65 @@ public sealed class WorkshopInventoryServiceTests
         Directory.CreateDirectory(tempRoot);
         try
         {
-            var manifestPath = Path.Combine(tempRoot, "appworkshop_32470.acf");
-            await File.WriteAllTextAsync(
-                manifestPath,
-                "\"AppWorkshop\"\n{\n  \"WorkshopItemsInstalled\"\n  {\n    \"2313576303\" { }\n  }\n}\n");
+            var manifestPath = await WriteSingleItemManifestAsync(tempRoot, "2313576303");
+            var workshopRoot = CreateWorkshopRoot(tempRoot, "2313576303");
+            using var httpClient = CreateStaticJsonClient(DetailsPayloadWithMissingParent);
+            var service = new WorkshopInventoryService(NullLogger<WorkshopInventoryService>.Instance, httpClient);
+            var result = await service.DiscoverInstalledAsync(
+                new WorkshopInventoryRequest(
+                    AppId: "32470",
+                    ManifestPath: manifestPath,
+                    WorkshopContentRootPath: workshopRoot,
+                    FetchRemoteMetadata: true),
+                CancellationToken.None);
 
-            var workshopRoot = Path.Combine(tempRoot, "content", "32470");
-            Directory.CreateDirectory(workshopRoot);
-            Directory.CreateDirectory(Path.Combine(workshopRoot, "2313576303"));
+            AssertMissingParentChain(result);
+        }
+        finally
+        {
+            if (Directory.Exists(tempRoot))
+            {
+                Directory.Delete(tempRoot, recursive: true);
+            }
+        }
+    }
 
-            const string detailsPayload = """
+    private static async Task<string> WriteSingleItemManifestAsync(string tempRoot, string workshopId)
+    {
+        var manifestPath = Path.Combine(tempRoot, "appworkshop_32470.acf");
+        await File.WriteAllTextAsync(
+            manifestPath,
+            "\"AppWorkshop\"\n{\n  \"WorkshopItemsInstalled\"\n  {\n    \"" + workshopId + "\" { }\n  }\n}\n");
+        return manifestPath;
+    }
+
+    private static string CreateWorkshopRoot(string tempRoot, string workshopId)
+    {
+        var workshopRoot = Path.Combine(tempRoot, "content", "32470");
+        Directory.CreateDirectory(workshopRoot);
+        Directory.CreateDirectory(Path.Combine(workshopRoot, workshopId));
+        return workshopRoot;
+    }
+
+    private static HttpClient CreateStaticJsonClient(string payload)
+    {
+        return new HttpClient(new StaticJsonHttpHandler(payload))
+        {
+            Timeout = TimeSpan.FromSeconds(5)
+        };
+    }
+
+    private static void AssertMissingParentChain(WorkshopInventoryGraph result)
+    {
+        var chain = result.Chains.Should()
+            .ContainSingle(x => x.OrderedWorkshopIds.SequenceEqual(new[] { "2313576303" }))
+            .Subject;
+        result.Chains.Should().NotContain(x => x.OrderedWorkshopIds.Contains("2486018498"));
+        chain.ClassificationReason.Should().Be("parent_dependency_missing");
+        chain.MissingParentIds.Should().BeEquivalentTo(new[] { "2486018498" });
+    }
+
+    private const string DetailsPayloadWithMissingParent = """
 {
   "response": {
     "publishedfiledetails": [
@@ -102,35 +151,6 @@ public sealed class WorkshopInventoryServiceTests
   }
 }
 """;
-
-            using var httpClient = new HttpClient(new StaticJsonHttpHandler(detailsPayload))
-            {
-                Timeout = TimeSpan.FromSeconds(5)
-            };
-            var service = new WorkshopInventoryService(NullLogger<WorkshopInventoryService>.Instance, httpClient);
-            var result = await service.DiscoverInstalledAsync(
-                new WorkshopInventoryRequest(
-                    AppId: "32470",
-                    ManifestPath: manifestPath,
-                    WorkshopContentRootPath: workshopRoot,
-                    FetchRemoteMetadata: true),
-                CancellationToken.None);
-
-            var chain = result.Chains.Should()
-                .ContainSingle(x => x.OrderedWorkshopIds.SequenceEqual(new[] { "2313576303" }))
-                .Subject;
-            result.Chains.Should().NotContain(x => x.OrderedWorkshopIds.Contains("2486018498"));
-            chain.ClassificationReason.Should().Be("parent_dependency_missing");
-            chain.MissingParentIds.Should().BeEquivalentTo(new[] { "2486018498" });
-        }
-        finally
-        {
-            if (Directory.Exists(tempRoot))
-            {
-                Directory.Delete(tempRoot, recursive: true);
-            }
-        }
-    }
 
     private sealed class StaticJsonHttpHandler(string payload) : HttpMessageHandler
     {

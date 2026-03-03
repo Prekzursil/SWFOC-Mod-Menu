@@ -22,28 +22,7 @@ public sealed class CatalogServiceTests
             var profileCatalogDir = Path.Combine(root, profileId);
             Directory.CreateDirectory(profileCatalogDir);
 
-            var catalogPath = Path.Combine(profileCatalogDir, "catalog.json");
-            await File.WriteAllTextAsync(
-                catalogPath,
-                """
-                {
-                  "unit_catalog": [
-                    "EMPIRE_STORMTROOPER_SQUAD",
-                    "EMPIRE_BARRACKS",
-                    "REBEL_LIGHT_FACTORY"
-                  ],
-                  "planet_catalog": [
-                    "PLANET_CORUSCANT"
-                  ],
-                  "hero_catalog": [
-                    "HERO_VADER"
-                  ],
-                  "faction_catalog": [
-                    "EMPIRE",
-                    "REBEL"
-                  ]
-                }
-                """);
+            await WriteCatalogFixtureAsync(profileCatalogDir);
 
             var service = new CatalogService(
                 new CatalogOptions { CatalogRootPath = root },
@@ -51,16 +30,7 @@ public sealed class CatalogServiceTests
                 NullLogger<CatalogService>.Instance);
 
             var catalog = await service.LoadCatalogAsync(profileId, CancellationToken.None);
-
-            catalog.Should().ContainKey("building_catalog");
-            catalog["building_catalog"].Should().Contain("EMPIRE_BARRACKS");
-            catalog["building_catalog"].Should().Contain("REBEL_LIGHT_FACTORY");
-
-            catalog.Should().ContainKey("entity_catalog");
-            catalog["entity_catalog"].Should().Contain("Unit|EMPIRE_STORMTROOPER_SQUAD");
-            catalog["entity_catalog"].Should().Contain("Building|EMPIRE_BARRACKS");
-            catalog["entity_catalog"].Should().Contain("Planet|PLANET_CORUSCANT");
-            catalog["entity_catalog"].Should().Contain("Hero|HERO_VADER");
+            AssertCatalogContainsDerivedEntries(catalog);
         }
         finally
         {
@@ -69,6 +39,45 @@ public sealed class CatalogServiceTests
                 Directory.Delete(root, recursive: true);
             }
         }
+    }
+
+    private static async Task WriteCatalogFixtureAsync(string profileCatalogDir)
+    {
+        var catalogPath = Path.Combine(profileCatalogDir, "catalog.json");
+        await File.WriteAllTextAsync(
+            catalogPath,
+            """
+            {
+              "unit_catalog": [
+                "EMPIRE_STORMTROOPER_SQUAD",
+                "EMPIRE_BARRACKS",
+                "REBEL_LIGHT_FACTORY"
+              ],
+              "planet_catalog": [
+                "PLANET_CORUSCANT"
+              ],
+              "hero_catalog": [
+                "HERO_VADER"
+              ],
+              "faction_catalog": [
+                "EMPIRE",
+                "REBEL"
+              ]
+            }
+            """);
+    }
+
+    private static void AssertCatalogContainsDerivedEntries(IReadOnlyDictionary<string, IReadOnlyList<string>> catalog)
+    {
+        catalog.Should().ContainKey("building_catalog");
+        catalog["building_catalog"].Should().Contain("EMPIRE_BARRACKS");
+        catalog["building_catalog"].Should().Contain("REBEL_LIGHT_FACTORY");
+
+        catalog.Should().ContainKey("entity_catalog");
+        catalog["entity_catalog"].Should().Contain("Unit|EMPIRE_STORMTROOPER_SQUAD");
+        catalog["entity_catalog"].Should().Contain("Building|EMPIRE_BARRACKS");
+        catalog["entity_catalog"].Should().Contain("Planet|PLANET_CORUSCANT");
+        catalog["entity_catalog"].Should().Contain("Hero|HERO_VADER");
     }
 
     private static TrainerProfile CreateProfile(string profileId)

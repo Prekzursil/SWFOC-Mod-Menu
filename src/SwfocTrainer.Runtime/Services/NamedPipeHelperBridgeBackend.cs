@@ -212,28 +212,11 @@ public sealed class NamedPipeHelperBridgeBackend : IHelperBridgeBackend
             return;
         }
 
-        payload[PayloadHelperHookId] ??= hook.Id;
-
-        var defaultEntryPoint = ResolveDefaultHelperEntryPoint(request.ActionRequest.Action.Id, hook.EntryPoint);
-        if (!string.IsNullOrWhiteSpace(defaultEntryPoint))
-        {
-            payload[PayloadHelperEntryPoint] ??= defaultEntryPoint;
-        }
-
-        payload[PayloadHelperScript] ??= hook.Script;
-
-        if (hook.ArgContract is { Count: > 0 })
-        {
-            payload[PayloadHelperArgContract] ??= JsonSerializer.SerializeToNode(hook.ArgContract);
-        }
-
-        var verifyContract = request.VerificationContract
-            ?? hook.VerifyContract
-            ?? new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
-        if (verifyContract.Count > 0)
-        {
-            payload[PayloadHelperVerifyContract] ??= JsonSerializer.SerializeToNode(verifyContract);
-        }
+        ApplyHookIdentity(payload, hook);
+        ApplyHookEntryPoint(payload, request.ActionRequest.Action.Id, hook.EntryPoint);
+        ApplyHookScript(payload, hook.Script);
+        ApplyHookArgContract(payload, hook.ArgContract);
+        ApplyHookVerifyContract(payload, request.VerificationContract, hook.VerifyContract);
     }
 
     private static ActionExecutionRequest BuildActionRequest(
@@ -269,28 +252,90 @@ public sealed class NamedPipeHelperBridgeBackend : IHelperBridgeBackend
         ActionExecutionResult executionResult,
         HelperOperationContext operation)
     {
-        var diagnostics = new Dictionary<string, object?>(StringComparer.OrdinalIgnoreCase)
+        var diagnostics = CreateBaseExecutionDiagnostics(request, executionResult, operation);
+        MergeDiagnostics(diagnostics, executionResult.Diagnostics);
+        return diagnostics;
+    }
+
+    private static void ApplyHookIdentity(JsonObject payload, HelperHookSpec hook)
+    {
+        payload[PayloadHelperHookId] ??= hook.Id;
+    }
+
+    private static void ApplyHookEntryPoint(JsonObject payload, string actionId, string? configuredEntryPoint)
+    {
+        var defaultEntryPoint = ResolveDefaultHelperEntryPoint(actionId, configuredEntryPoint);
+        if (string.IsNullOrWhiteSpace(defaultEntryPoint))
         {
-            [DiagnosticHelperBridgeState] = executionResult.Succeeded ? "applied" : "failed",
+            return;
+        }
+
+        payload[PayloadHelperEntryPoint] ??= defaultEntryPoint;
+    }
+
+    private static void ApplyHookScript(JsonObject payload, string? script)
+    {
+        payload[PayloadHelperScript] ??= script;
+    }
+
+    private static void ApplyHookArgContract(JsonObject payload, IReadOnlyDictionary<string, string>? argContract)
+    {
+        if (argContract is null || argContract.Count == 0)
+        {
+            return;
+        }
+
+        payload[PayloadHelperArgContract] ??= JsonSerializer.SerializeToNode(argContract);
+    }
+
+    private static void ApplyHookVerifyContract(
+        JsonObject payload,
+        IReadOnlyDictionary<string, string>? requestVerifyContract,
+        IReadOnlyDictionary<string, string>? hookVerifyContract)
+    {
+        var verifyContract = requestVerifyContract
+            ?? hookVerifyContract
+            ?? new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+
+        if (verifyContract.Count == 0)
+        {
+            return;
+        }
+
+        payload[PayloadHelperVerifyContract] ??= JsonSerializer.SerializeToNode(verifyContract);
+    }
+
+    private static Dictionary<string, object?> CreateBaseExecutionDiagnostics(
+        HelperBridgeRequest request,
+        ActionExecutionResult executionResult,
+        HelperOperationContext operation)
+    {
+        var helperState = executionResult.Succeeded ? "applied" : "failed";
+        return new Dictionary<string, object?>(StringComparer.OrdinalIgnoreCase)
+        {
+            [DiagnosticHelperBridgeState] = helperState,
             [DiagnosticHelperInvocationSource] = InvocationSourceNativeBridge,
             [DiagnosticHelperEntryPoint] = request.Hook?.EntryPoint ?? string.Empty,
             [DiagnosticHelperHookId] = request.Hook?.Id ?? string.Empty,
-            [DiagnosticHelperVerifyState] = executionResult.Succeeded ? "applied" : "failed",
+            [DiagnosticHelperVerifyState] = helperState,
             [DiagnosticOperationKind] = operation.OperationKind.ToString(),
             [DiagnosticOperationToken] = operation.OperationToken
         };
+    }
 
-        if (executionResult.Diagnostics is null)
+    private static void MergeDiagnostics(
+        IDictionary<string, object?> target,
+        IReadOnlyDictionary<string, object?>? source)
+    {
+        if (source is null)
         {
-            return diagnostics;
+            return;
         }
 
-        foreach (var kv in executionResult.Diagnostics)
+        foreach (var kv in source)
         {
-            diagnostics[kv.Key] = kv.Value;
+            target[kv.Key] = kv.Value;
         }
-
-        return diagnostics;
     }
 
     private static bool TryValidateOperationToken(

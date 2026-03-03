@@ -88,6 +88,22 @@ bool IsSpawnFeature(const std::string& featureId) {
            featureId == "spawn_galactic_entity";
 }
 
+bool HasSpawnEntityIdentity(const PluginRequest& request) {
+    return HasValue(request.entityId) || HasValue(request.unitId);
+}
+
+bool HasSpawnFaction(const PluginRequest& request) {
+    return HasValue(request.faction) || HasValue(request.targetFaction);
+}
+
+bool RequiresSpawnPlacement(const PluginRequest& request) {
+    return request.featureId != "spawn_galactic_entity";
+}
+
+bool HasSpawnPlacement(const PluginRequest& request) {
+    return HasValue(request.entryMarker) || HasValue(request.worldPosition);
+}
+
 void AddOptionalDiagnostic(std::map<std::string, std::string>& diagnostics, const char* key, const std::string& value) {
     if (!value.empty()) {
         diagnostics[key] = value;
@@ -152,7 +168,7 @@ bool ValidateSpawnRequest(const PluginRequest& request, PluginResult& failure) {
         return true;
     }
 
-    if (!HasValue(request.entityId) && !HasValue(request.unitId)) {
+    if (!HasSpawnEntityIdentity(request)) {
         failure = BuildFailure(
             request,
             "HELPER_INVOCATION_FAILED",
@@ -160,7 +176,7 @@ bool ValidateSpawnRequest(const PluginRequest& request, PluginResult& failure) {
         return false;
     }
 
-    if (!HasValue(request.faction) && !HasValue(request.targetFaction)) {
+    if (!HasSpawnFaction(request)) {
         failure = BuildFailure(
             request,
             "HELPER_INVOCATION_FAILED",
@@ -168,7 +184,7 @@ bool ValidateSpawnRequest(const PluginRequest& request, PluginResult& failure) {
         return false;
     }
 
-    if (request.featureId == "spawn_galactic_entity" || HasValue(request.entryMarker) || HasValue(request.worldPosition)) {
+    if (!RequiresSpawnPlacement(request) || HasSpawnPlacement(request)) {
         return true;
     }
 
