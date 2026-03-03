@@ -1,0 +1,49 @@
+name: Coverage 100
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+    branches: [main, master]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  coverage-100:
+    name: Coverage 100 Gate
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-node@v6
+        with:
+          node-version: '20'
+
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      - name: Run tests with coverage
+        run: |
+          mkdir -p coverage
+          dotnet restore
+          dotnet test tests/SwfocTrainer.Tests/SwfocTrainer.Tests.csproj -c Release             /p:CollectCoverage=true             /p:CoverletOutput=./TestResults/coverage.cobertura.xml             /p:CoverletOutputFormat=cobertura
+
+      - name: Enforce 100% coverage
+        run: |
+          python3 scripts/quality/assert_coverage_100.py \
+            --xml "dotnet=tests/SwfocTrainer.Tests/TestResults/coverage.cobertura.xml" \
+            --out-json "coverage-100/coverage.json" \
+            --out-md "coverage-100/coverage.md"
+      - name: Upload coverage artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-100
+          path: |
+            coverage
+            **/coverage
+            **/TestResults
