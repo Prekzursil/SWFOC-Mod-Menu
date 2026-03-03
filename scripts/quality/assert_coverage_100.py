@@ -5,7 +5,7 @@ import argparse
 import json
 import re
 import sys
-import xml.etree.ElementTree as ET
+from xml.etree import ElementTree
 from dataclasses import dataclass
 from datetime import datetime, timezone
 from pathlib import Path
@@ -72,10 +72,35 @@ def _is_generated(filename: str) -> bool:
     return any(pattern.search(filename) for pattern in _GENERATED_FILE_PATTERNS)
 
 
-def parse_coverage_xml(name: str, path: Path, include_generated: bool) -> CoverageStats:
-    text = path.read_text(encoding="utf-8")
-    tree = ET.fromstring(text)
+def _count_hit(hits_raw: str) -> int:
+    try:
+        return 1 if int(float(hits_raw)) > 0 else 0
+    except ValueError:
+        return 0
 
+
+def _parse_class_lines(class_node: ElementTree.Element) -> tuple[int, int, int, int]:
+    line_total = 0
+    line_covered = 0
+    branch_total = 0
+    branch_covered = 0
+    lines_node = class_node.find("lines")
+    if lines_node is None:
+        return line_total, line_covered, branch_total, branch_covered
+
+    for line_node in lines_node.findall("line"):
+        line_total += 1
+        line_covered += _count_hit(line_node.attrib.get("hits", "0"))
+        condition_coverage = line_node.attrib.get("condition-coverage", "")
+        match = _CONDITION_COVERAGE_RE.search(condition_coverage)
+        if match:
+            branch_covered += int(match.group("covered"))
+            branch_total += int(match.group("total"))
+
+    return line_total, line_covered, branch_total, branch_covered
+
+
+def _parse_xml_classes(tree: ElementTree.Element, include_generated: bool) -> tuple[int, int, int, int]:
     line_total = 0
     line_covered = 0
     branch_total = 0
@@ -86,39 +111,38 @@ def parse_coverage_xml(name: str, path: Path, include_generated: bool) -> Covera
         if not include_generated and _is_generated(filename):
             continue
 
-        lines_node = class_node.find("lines")
-        if lines_node is None:
-            continue
-        for line_node in lines_node.findall("line"):
-            line_total += 1
-            hits_raw = line_node.attrib.get("hits", "0")
-            try:
-                if int(float(hits_raw)) > 0:
-                    line_covered += 1
-            except ValueError:
-                pass
+        class_lines = _parse_class_lines(class_node)
+        line_total += class_lines[0]
+        line_covered += class_lines[1]
+        branch_total += class_lines[2]
+        branch_covered += class_lines[3]
 
-            condition_coverage = line_node.attrib.get("condition-coverage", "")
-            match = _CONDITION_COVERAGE_RE.search(condition_coverage)
-            if match:
-                branch_covered += int(match.group("covered"))
-                branch_total += int(match.group("total"))
+    return line_total, line_covered, branch_total, branch_covered
+
+
+def _parse_fallback_line_totals(text: str) -> tuple[int, int]:
+    lines_valid_match = _XML_LINES_VALID_RE.search(text)
+    lines_covered_match = _XML_LINES_COVERED_RE.search(text)
+    if lines_valid_match and lines_covered_match:
+        return int(float(lines_covered_match.group(1))), int(float(lines_valid_match.group(1)))
+
+    line_total = 0
+    line_covered = 0
+    for hits_raw in _XML_LINE_HITS_RE.findall(text):
+        line_total += 1
+        line_covered += _count_hit(hits_raw)
+    return line_covered, line_total
+
+
+def parse_coverage_xml(name: str, path: Path, include_generated: bool) -> CoverageStats:
+    text = path.read_text(encoding="utf-8")
+    tree = ElementTree.fromstring(text)
+
+    line_total, line_covered, branch_total, branch_covered = _parse_xml_classes(tree, include_generated)
 
     # Fallback for malformed XML without class/line data.
     if line_total == 0:
-        lines_valid_match = _XML_LINES_VALID_RE.search(text)
-        lines_covered_match = _XML_LINES_COVERED_RE.search(text)
-        if lines_valid_match and lines_covered_match:
-            line_total = int(float(lines_valid_match.group(1)))
-            line_covered = int(float(lines_covered_match.group(1)))
-        else:
-            for hits_raw in _XML_LINE_HITS_RE.findall(text):
-                line_total += 1
-                try:
-                    if int(float(hits_raw)) > 0:
-                        line_covered += 1
-                except ValueError:
-                    continue
+        line_covered, line_total = _parse_fallback_line_totals(text)
 
     return CoverageStats(
         name=name,
