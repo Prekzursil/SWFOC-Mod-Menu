@@ -44,8 +44,29 @@ $arguments += @(
     "DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.Include=[SwfocTrainer.*]*"
 )
 
-Write-Output "dotnet $($arguments -join ' ')"
-$process = Start-Process -FilePath "dotnet" -ArgumentList $arguments -NoNewWindow -Wait -PassThru
+function Resolve-DotnetCommand {
+    $dotnet = Get-Command dotnet -ErrorAction SilentlyContinue
+    if ($null -ne $dotnet) {
+        return $dotnet.Source
+    }
+
+    $candidates = @(
+        (Join-Path $env:USERPROFILE ".dotnet\\dotnet.exe"),
+        (Join-Path $env:ProgramFiles "dotnet\\dotnet.exe")
+    )
+
+    foreach ($candidate in $candidates) {
+        if (Test-Path -Path $candidate) {
+            return $candidate
+        }
+    }
+
+    throw "Could not resolve dotnet executable. Install .NET SDK or add dotnet to PATH."
+}
+
+$dotnetExe = Resolve-DotnetCommand
+Write-Output "$dotnetExe $($arguments -join ' ')"
+$process = Start-Process -FilePath $dotnetExe -ArgumentList $arguments -NoNewWindow -Wait -PassThru
 if ($process.ExitCode -ne 0) {
     throw "Coverage collection failed with exit code $($process.ExitCode)."
 }
