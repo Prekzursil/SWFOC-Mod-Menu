@@ -935,6 +935,9 @@ function Invoke-LiveTest {
 
     Write-Information "=== Running $Name ===" -InformationAction Continue
 
+    $existingTrxPaths = @(Get-ChildItem -Path $runResultsDirectory -Filter "*.trx" -File -ErrorAction SilentlyContinue |
+        ForEach-Object { $_.FullName })
+
     $dotnetArgs = @(
         "test",
         "tests/SwfocTrainer.Tests/SwfocTrainer.Tests.csproj",
@@ -1021,7 +1024,19 @@ function Invoke-LiveTest {
         throw "dotnet test failed for '$Name' with exit code $exitCode"
     }
 
-    return Resolve-ArtifactPath -Path (Join-Path $runResultsDirectory $TrxName)
+    $expectedTrxPath = Resolve-ArtifactPath -Path (Join-Path $runResultsDirectory $TrxName)
+    if (Test-Path -Path $expectedTrxPath) {
+        return $expectedTrxPath
+    }
+
+    $newTrxCandidates = @(Get-ChildItem -Path $runResultsDirectory -Filter "*.trx" -File -ErrorAction SilentlyContinue |
+        Where-Object { $existingTrxPaths -notcontains $_.FullName } |
+        Sort-Object LastWriteTime -Descending)
+    if ($newTrxCandidates.Count -gt 0) {
+        return $newTrxCandidates[0].FullName
+    }
+
+    return $expectedTrxPath
 }
 
 function Read-TrxSummary {
