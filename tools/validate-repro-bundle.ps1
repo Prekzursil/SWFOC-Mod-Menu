@@ -33,7 +33,7 @@ if ($allowedScopes -notcontains [string]$bundle.scope) {
     Add-ValidationError -Errors $errors -Message "scope must be one of: $($allowedScopes -join ', ')"
 }
 
-$allowedClassifications = @("passed", "skipped", "failed", "blocked_environment", "blocked_profile_mismatch")
+$allowedClassifications = @("passed", "skipped", "failed", "blocked_environment", "blocked_profile_mismatch", "blocked_dependency_missing_parent")
 if ($allowedClassifications -notcontains [string]$bundle.classification) {
     Add-ValidationError -Errors $errors -Message "classification must be one of: $($allowedClassifications -join ', ')"
 }

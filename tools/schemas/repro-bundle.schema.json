@@ -366,7 +366,8 @@
         "skipped",
         "failed",
         "blocked_environment",
-        "blocked_profile_mismatch"
+        "blocked_profile_mismatch",
+        "blocked_dependency_missing_parent"
       ]
     },
     "nextAction": { "type": "string", "minLength": 1 }

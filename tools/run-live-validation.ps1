@@ -1158,6 +1158,47 @@ catch {
     Write-Warning ("Installed workshop graph export failed: {0}" -f $_.Exception.Message)
 }
 
+$forcedChainMissingParentIds = @()
+$forcedChainResolutionSource = "forced_workshop_ids"
+if ($forceWorkshopIdsNormalized.Count -gt 0 -and $resolvedLaunchChains.Count -gt 0) {
+    $forceChainKey = $forceWorkshopIdsNormalized -join ","
+    $forcedChainCandidate = @(
+        $resolvedLaunchChains |
+            Where-Object {
+                $chainIds = @($_.orderedWorkshopIds | ForEach-Object { [string]$_ } | Where-Object { -not [string]::IsNullOrWhiteSpace($_) })
+                (($chainIds -join ",") -eq $forceChainKey)
+            } |
+            Select-Object -First 1
+    )
+
+    if ($forcedChainCandidate.Count -eq 0) {
+        $forcedChainCandidate = @(
+            $resolvedLaunchChains |
+                Where-Object {
+                    $chainIds = @($_.orderedWorkshopIds | ForEach-Object { [string]$_ } | Where-Object { -not [string]::IsNullOrWhiteSpace($_) })
+                    $matched = @($forceWorkshopIdsNormalized | Where-Object { $chainIds -contains $_ })
+                    $matched.Count -eq $forceWorkshopIdsNormalized.Count
+                } |
+                Sort-Object {
+                    @($_.orderedWorkshopIds | ForEach-Object { [string]$_ } | Where-Object { -not [string]::IsNullOrWhiteSpace($_) }).Count
+                } |
+                Select-Object -First 1
+        )
+    }
+
+    if ($forcedChainCandidate.Count -gt 0 -and $null -ne $forcedChainCandidate[0].PSObject.Properties["missingParentIds"]) {
+        $forcedChainMissingParentIds = @(
+            $forcedChainCandidate[0].missingParentIds |
+                ForEach-Object { [string]$_ } |
+                Where-Object { -not [string]::IsNullOrWhiteSpace($_) } |
+                Sort-Object -Unique
+        )
+    }
+    if ($forcedChainCandidate.Count -gt 0 -and $null -ne $forcedChainCandidate[0].PSObject.Properties["chainResolutionSource"]) {
+        $forcedChainResolutionSource = [string]$forcedChainCandidate[0].chainResolutionSource
+    }
+}
+
 if ($RunAllInstalledChainsDeep) {
     if ($resolvedLaunchChains.Count -eq 0) {
         throw "RunAllInstalledChainsDeep requested but no resolved launch chains were available."
@@ -1326,12 +1367,17 @@ $($matrixRows -join "`n")
 }
 
 if ($AutoLaunch) {
-    Start-AutoLaunchSession `
-        -SelectedScope $Scope `
-        -ForcedWorkshopIds $forceWorkshopIdsNormalized `
-        -ForcedProfileId $forceProfileIdNormalized `
-        -OverrideGameRoot $GameRoot `
-        -TimeoutSeconds $LaunchWaitSeconds
+    if ($forcedChainMissingParentIds.Count -gt 0) {
+        Write-Warning ("Skipping auto-launch due missing parent dependencies for forced chain: {0}" -f ($forcedChainMissingParentIds -join ","))
+    }
+    else {
+        Start-AutoLaunchSession `
+            -SelectedScope $Scope `
+            -ForcedWorkshopIds $forceWorkshopIdsNormalized `
+            -ForcedProfileId $forceProfileIdNormalized `
+            -OverrideGameRoot $GameRoot `
+            -TimeoutSeconds $LaunchWaitSeconds
+    }
 }
 
 $runTimestamp = Get-Date
@@ -1378,9 +1424,28 @@ $testDefinitions = @(
 
 $summaries = New-Object System.Collections.Generic.List[object]
 $fatalError = $null
+$forcedMissingParentMessage = ""
+if ($forcedChainMissingParentIds.Count -gt 0) {
+    $forcedMissingParentMessage = "parent_dependency_missing: missing parent dependency IDs = " + ($forcedChainMissingParentIds -join ",") + "; chainResolutionSource=" + $forcedChainResolutionSource
+}
 
 foreach ($test in $testDefinitions) {
     $trxPath = Join-Path $runResultsDirectory ("{0}-{1}" -f $RunId, $test.TrxBase)
+
+    if (-not [string]::IsNullOrWhiteSpace($forcedMissingParentMessage)) {
+        $summaries.Add([PSCustomObject]@{
+            Name = $test.TestName
+            Summary = [PSCustomObject]@{
+                Trx = $trxPath
+                Outcome = "Skipped"
+                Passed = 0
+                Failed = 0
+                Skipped = 1
+                Message = $forcedMissingParentMessage
+            }
+        })
+        continue
+    }
 
     if (-not (Test-RunSelection -Scopes $test.Scopes -SelectedScope $Scope)) {
         $summaries.Add([PSCustomObject]@{

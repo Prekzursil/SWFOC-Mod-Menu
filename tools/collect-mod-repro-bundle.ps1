@@ -820,12 +820,20 @@ function Get-Classification {
         }
     }
 
-    if ($processItems.Count -eq 0) {
-        return "blocked_environment"
-    }
-
     if ($relevantItems.Count -eq 0) {
         return "failed"
+    }
+
+    $allSkipped = (@($relevantItems | Where-Object { $_.outcome -eq "Skipped" })).Count -eq $relevantItems.Count
+    if ($allSkipped) {
+        $messages = ($relevantItems | ForEach-Object { ([string]$_.message).ToLowerInvariant() }) -join " "
+        if ($messages.Contains("parent_dependency_missing")) {
+            return "blocked_dependency_missing_parent"
+        }
+    }
+
+    if ($processItems.Count -eq 0) {
+        return "blocked_environment"
     }
 
     if (@($relevantItems | Where-Object { $_.outcome -eq "Failed" -or $_.outcome -eq "Missing" }).Count -gt 0) {
@@ -837,9 +845,7 @@ function Get-Classification {
         return "passed"
     }
 
-    $allSkipped = (@($relevantItems | Where-Object { $_.outcome -eq "Skipped" })).Count -eq $relevantItems.Count
     if ($allSkipped) {
-        $messages = ($relevantItems | ForEach-Object { ([string]$_.message).ToLowerInvariant() }) -join " "
         if (
             ($SelectedScope -eq "ROE" -and $messages.Contains("3447786229")) -or
             ($messages.Contains("no aotr/roe launch context"))
@@ -1205,6 +1211,7 @@ $actionStatusDiagnostics = Get-ActionStatusDiagnostics -RunDirectoryPath $RunDir
 $nextAction = switch ($classification) {
     "passed" { "Attach bundle to issue and continue with fix or closure workflow." }
     "blocked_environment" { "Launch target SWFOC process and rerun validation." }
+    "blocked_dependency_missing_parent" { "Install required parent workshop dependency chain (or remove forced orphan submod) and rerun validation." }
     "blocked_profile_mismatch" { "Relaunch with required STEAMMOD/MODPATH markers for selected scope and rerun." }
     "failed" { "Inspect failed/missing test artifacts and runtime diagnostics before retry." }
     default { "Review skipped reasons and gather additional live context for this scope." }
