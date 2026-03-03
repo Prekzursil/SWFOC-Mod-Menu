@@ -190,6 +190,7 @@ public sealed class MainViewModelLaunchCoverageTests
 
         public Task<GameLaunchResult> LaunchAsync(GameLaunchRequest request, CancellationToken cancellationToken)
         {
+            _ = request;
             cancellationToken.ThrowIfCancellationRequested();
             return Task.FromResult(_result);
         }
@@ -205,36 +206,74 @@ public sealed class MainViewModelLaunchCoverageTests
         }
 
         public Task<ProfileManifest> LoadManifestAsync(CancellationToken cancellationToken)
-            => throw new NotImplementedException();
+            {
+                _ = cancellationToken;
+                throw new NotImplementedException();
+            }
 
         public Task<TrainerProfile> LoadProfileAsync(string profileId, CancellationToken cancellationToken)
-            => Task.FromResult(_profile);
+            {
+                _ = profileId;
+                _ = cancellationToken;
+                return Task.FromResult(_profile);
+            }
 
         public Task<TrainerProfile> ResolveInheritedProfileAsync(string profileId, CancellationToken cancellationToken)
-            => Task.FromResult(_profile);
+            {
+                _ = profileId;
+                _ = cancellationToken;
+                return Task.FromResult(_profile);
+            }
 
         public Task ValidateProfileAsync(TrainerProfile profile, CancellationToken cancellationToken)
-            => Task.CompletedTask;
+            {
+                _ = profile;
+                _ = cancellationToken;
+                return Task.CompletedTask;
+            }
 
         public Task<IReadOnlyList<string>> ListAvailableProfilesAsync(CancellationToken cancellationToken)
-            => Task.FromResult<IReadOnlyList<string>>(new[] { _profile.Id });
+            {
+                _ = cancellationToken;
+                return Task.FromResult<IReadOnlyList<string>>(new[] { _profile.Id });
+            }
     }
 
     private sealed class ThrowingProfileRepository : IProfileRepository
     {
         public Task<ProfileManifest> LoadManifestAsync(CancellationToken cancellationToken)
-            => throw new NotImplementedException();
+            {
+                _ = cancellationToken;
+                throw new NotImplementedException();
+            }
 
         public Task<TrainerProfile> LoadProfileAsync(string profileId, CancellationToken cancellationToken)
-            => throw new InvalidOperationException("profile missing");
+            {
+                _ = profileId;
+                _ = cancellationToken;
+                throw new InvalidOperationException("profile missing");
+            }
 
         public Task<TrainerProfile> ResolveInheritedProfileAsync(string profileId, CancellationToken cancellationToken)
-            => throw new InvalidOperationException("profile missing");
+            {
+                _ = profileId;
+                _ = cancellationToken;
+                throw new InvalidOperationException("profile missing");
+            }
 
         public Task ValidateProfileAsync(TrainerProfile profile, CancellationToken cancellationToken)
-            => Task.CompletedTask;
+            {
+                _ = profile;
+                _ = cancellationToken;
+                return Task.CompletedTask;
+            }
 
         public Task<IReadOnlyList<string>> ListAvailableProfilesAsync(CancellationToken cancellationToken)
-            => Task.FromResult<IReadOnlyList<string>>(Array.Empty<string>());
+            {
+                _ = cancellationToken;
+                return Task.FromResult<IReadOnlyList<string>>(Array.Empty<string>());
+            }
     }
 }
+
+

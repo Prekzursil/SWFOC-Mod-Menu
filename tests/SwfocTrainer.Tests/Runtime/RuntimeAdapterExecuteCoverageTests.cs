@@ -1252,11 +1252,18 @@ public sealed class RuntimeAdapterExecuteCoverageTests
         }
 
         public Task<IReadOnlyList<ProcessMetadata>> FindSupportedProcessesAsync(CancellationToken cancellationToken)
-            => Task.FromResult<IReadOnlyList<ProcessMetadata>>(
+        {
+            _ = cancellationToken;
+            return Task.FromResult<IReadOnlyList<ProcessMetadata>>(
                 _bestMatch is null ? Array.Empty<ProcessMetadata>() : [_bestMatch]);
+        }
 
         public Task<ProcessMetadata?> FindBestMatchAsync(ExeTarget target, CancellationToken cancellationToken)
-            => Task.FromResult(_bestMatch);
+        {
+            _ = target;
+            _ = cancellationToken;
+            return Task.FromResult(_bestMatch);
+        }
     }
 
     private sealed class ThrowingMechanicDetectionService : IModMechanicDetectionService
@@ -1278,19 +1285,37 @@ public sealed class RuntimeAdapterExecuteCoverageTests
     private sealed class StubProfileRepository(TrainerProfile profile) : IProfileRepository
     {
         public Task<ProfileManifest> LoadManifestAsync(CancellationToken cancellationToken)
-            => throw new NotImplementedException();
+        {
+            _ = cancellationToken;
+            throw new NotImplementedException();
+        }
 
         public Task<TrainerProfile> LoadProfileAsync(string profileId, CancellationToken cancellationToken)
-            => Task.FromResult(profile);
+        {
+            _ = profileId;
+            _ = cancellationToken;
+            return Task.FromResult(profile);
+        }
 
         public Task<TrainerProfile> ResolveInheritedProfileAsync(string profileId, CancellationToken cancellationToken)
-            => Task.FromResult(profile);
+        {
+            _ = profileId;
+            _ = cancellationToken;
+            return Task.FromResult(profile);
+        }
 
         public Task ValidateProfileAsync(TrainerProfile profile, CancellationToken cancellationToken)
-            => Task.CompletedTask;
+        {
+            _ = profile;
+            _ = cancellationToken;
+            return Task.CompletedTask;
+        }
 
         public Task<IReadOnlyList<string>> ListAvailableProfilesAsync(CancellationToken cancellationToken)
-            => Task.FromResult<IReadOnlyList<string>>(Array.Empty<string>());
+        {
+            _ = cancellationToken;
+            return Task.FromResult<IReadOnlyList<string>>(Array.Empty<string>());
+        }
     }
 
     private sealed class StubSignatureResolver : ISignatureResolver
@@ -1300,7 +1325,13 @@ public sealed class RuntimeAdapterExecuteCoverageTests
             IReadOnlyList<SignatureSet> signatureSets,
             IReadOnlyDictionary<string, long> fallbackOffsets,
             CancellationToken cancellationToken)
-            => Task.FromResult(new SymbolMap(new Dictionary<string, SymbolInfo>(StringComparer.OrdinalIgnoreCase)));
+        {
+            _ = build;
+            _ = signatureSets;
+            _ = fallbackOffsets;
+            _ = cancellationToken;
+            return Task.FromResult(new SymbolMap(new Dictionary<string, SymbolInfo>(StringComparer.OrdinalIgnoreCase)));
+        }
     }
 
     private sealed class MapServiceProvider(IReadOnlyDictionary<Type, object> services) : IServiceProvider
@@ -1309,3 +1340,5 @@ public sealed class RuntimeAdapterExecuteCoverageTests
             => services.TryGetValue(serviceType, out var service) ? service : null;
     }
 }
+
+

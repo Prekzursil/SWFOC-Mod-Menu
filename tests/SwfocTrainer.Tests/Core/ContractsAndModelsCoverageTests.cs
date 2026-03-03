@@ -113,7 +113,7 @@ public sealed class ContractsAndModelsCoverageTests
             ReasonCode: RuntimeReasonCode.TRANSPLANT_VALIDATION_FAILED,
             Message: "blocked",
             Report: TransplantValidationReport.Empty("profile"),
-            ArtifactPath: "artifact.json",
+            ArtifactPath: @"C:\tmp\report.json",
             Diagnostics: new Dictionary<string, object?> { ["reason"] = "missing_dep" });
         var actionSupport = new ModMechanicSupport(
             ActionId: "set_context_allegiance",
@@ -127,7 +127,7 @@ public sealed class ContractsAndModelsCoverageTests
         chain.ChainId.Should().Be("999>1000");
         chain.MissingParentIds.Should().Contain("123");
         transplantResult.Succeeded.Should().BeFalse();
-        transplantResult.ArtifactPath.Should().Be("artifact.json");
+        transplantResult.ArtifactPath.Should().Be(@"C:\tmp\report.json");
         actionSupport.ActionId.Should().Be("set_context_allegiance");
         actionSupport.Supported.Should().BeFalse();
     }
@@ -147,63 +147,19 @@ public sealed class ContractsAndModelsCoverageTests
         listSelected.IsModeAllowed(RuntimeMode.Unknown).Should().BeTrue();
         listSelected.IsModeAllowed(RuntimeMode.Galactic).Should().BeTrue();
     }
-
     [Fact]
     public void ModelRecords_ShouldRetainOptionalFieldsAndDefaults()
     {
-        var item = new WorkshopInventoryItem(
-            WorkshopId: "3447786229",
-            Title: "ROE Submod",
-            ItemType: WorkshopItemType.Submod,
-            ParentWorkshopIds: new[] { "1397421866" },
-            Tags: new[] { "Submod" },
-            Description: "desc",
-            ClassificationReason: "parent_dependency");
-        var chain = new WorkshopInventoryChain(
-            ChainId: "1397421866>3447786229",
-            OrderedWorkshopIds: new[] { "1397421866", "3447786229" },
-            ClassificationReason: "parent_dependency_partial_missing",
-            MissingParentIds: new[] { "9999999999" });
-        var graph = new WorkshopInventoryGraph(
-            AppId: "32470",
-            GeneratedAtUtc: DateTimeOffset.UtcNow,
-            Items: new[] { item },
-            Diagnostics: new[] { "manifest=path" },
-            Chains: new[] { chain });
-        var transplant = new TransplantResult(
-            Succeeded: false,
-            ReasonCode: RuntimeReasonCode.TRANSPLANT_VALIDATION_FAILED,
-            Message: "blocked",
-            Report: TransplantValidationReport.Empty("profile"),
-            ArtifactPath: @"C:\tmp\report.json",
-            Diagnostics: new Dictionary<string, object?> { ["source"] = "tests" });
-        var mechanicReport = new ModMechanicReport(
-            ProfileId: "profile",
-            GeneratedAtUtc: DateTimeOffset.UtcNow,
-            DependenciesSatisfied: true,
-            HelperBridgeReady: true,
-            ActionSupport:
-            [
-                new ModMechanicSupport("set_context_allegiance", true, RuntimeReasonCode.CAPABILITY_PROBE_PASS, "ok", 0.95d)
-            ],
-            Diagnostics: new Dictionary<string, object?>());
-        var roster = new RosterEntityRecord(
-            EntityId: "BARRACKS",
-            DisplayName: "Barracks",
-            SourceProfileId: "base_swfoc",
-            SourceWorkshopId: null,
-            EntityKind: RosterEntityKind.Building,
-            DefaultFaction: "Empire",
-            AllowedModes: new[] { RuntimeMode.Galactic });
+        var models = BuildOptionalFieldModels();
 
-        item.Title.Should().Be("ROE Submod");
-        chain.MissingParentIds.Should().ContainSingle().Which.Should().Be("9999999999");
-        graph.Items.Should().ContainSingle();
-        graph.Chains.Should().ContainSingle();
-        transplant.ArtifactPath.Should().EndWith("report.json");
-        transplant.Diagnostics.Should().ContainKey("source");
-        mechanicReport.ActionSupport.Should().ContainSingle();
-        roster.DisplayName.Should().Be("Barracks");
+        models.Item.Title.Should().Be("ROE Submod");
+        models.Chain.MissingParentIds.Should().ContainSingle().Which.Should().Be("9999999999");
+        models.Graph.Items.Should().ContainSingle();
+        models.Graph.Chains.Should().ContainSingle();
+        models.Transplant.ArtifactPath.Should().EndWith("report.json");
+        models.Transplant.Diagnostics.Should().ContainKey("source");
+        models.MechanicReport.ActionSupport.Should().ContainSingle();
+        models.Roster.DisplayName.Should().Be("Barracks");
     }
 
     [Fact]
@@ -275,6 +231,67 @@ public sealed class ContractsAndModelsCoverageTests
         readOnly.IsModeAllowed(RuntimeMode.Unknown).Should().BeTrue();
     }
 
+    private static (
+        WorkshopInventoryItem Item,
+        WorkshopInventoryChain Chain,
+        WorkshopInventoryGraph Graph,
+        TransplantResult Transplant,
+        ModMechanicReport MechanicReport,
+        RosterEntityRecord Roster) BuildOptionalFieldModels()
+    {
+        var item = new WorkshopInventoryItem(
+            WorkshopId: "3447786229",
+            Title: "ROE Submod",
+            ItemType: WorkshopItemType.Submod,
+            ParentWorkshopIds: new[] { "1397421866" },
+            Tags: new[] { "Submod" },
+            Description: "desc",
+            ClassificationReason: "parent_dependency");
+
+        var chain = new WorkshopInventoryChain(
+            ChainId: "1397421866>3447786229",
+            OrderedWorkshopIds: new[] { "1397421866", "3447786229" },
+            ClassificationReason: "parent_dependency_partial_missing",
+            MissingParentIds: new[] { "9999999999" });
+
+        var graph = new WorkshopInventoryGraph(
+            AppId: "32470",
+            GeneratedAtUtc: DateTimeOffset.UtcNow,
+            Items: new[] { item },
+            Diagnostics: new[] { "manifest=path" },
+            Chains: new[] { chain });
+
+        var transplant = new TransplantResult(
+            Succeeded: false,
+            ReasonCode: RuntimeReasonCode.TRANSPLANT_VALIDATION_FAILED,
+            Message: "blocked",
+            Report: TransplantValidationReport.Empty("profile"),
+            ArtifactPath: @"C:\tmp\report.json",
+            Diagnostics: new Dictionary<string, object?> { ["source"] = "tests" });
+
+        var mechanicReport = new ModMechanicReport(
+            ProfileId: "profile",
+            GeneratedAtUtc: DateTimeOffset.UtcNow,
+            DependenciesSatisfied: true,
+            HelperBridgeReady: true,
+            ActionSupport:
+            [
+                new ModMechanicSupport("set_context_allegiance", true, RuntimeReasonCode.CAPABILITY_PROBE_PASS, "ok", 0.95d)
+            ],
+            Diagnostics: new Dictionary<string, object?>());
+
+        var roster = new RosterEntityRecord(
+            EntityId: "BARRACKS",
+            DisplayName: "Barracks",
+            SourceProfileId: "base_swfoc",
+            SourceWorkshopId: null,
+            EntityKind: RosterEntityKind.Building,
+            DefaultFaction: "Empire",
+            AllowedModes: new[] { RuntimeMode.Galactic });
+
+        return (item, chain, graph, transplant, mechanicReport, roster);
+    }
+
     private sealed class StubHelperBridgeBackend : IHelperBridgeBackend
     {
         public CancellationToken ProbeCancellation { get; private set; }
@@ -282,6 +299,7 @@ public sealed class ContractsAndModelsCoverageTests
 
         public Task<HelperBridgeProbeResult> ProbeAsync(HelperBridgeProbeRequest request, CancellationToken cancellationToken)
         {
+            _ = request;
             ProbeCancellation = cancellationToken;
             return Task.FromResult(new HelperBridgeProbeResult(
                 Available: true,
@@ -292,6 +310,7 @@ public sealed class ContractsAndModelsCoverageTests
 
         public Task<HelperBridgeExecutionResult> ExecuteAsync(HelperBridgeRequest request, CancellationToken cancellationToken)
         {
+            _ = request;
             ExecuteCancellation = cancellationToken;
             return Task.FromResult(new HelperBridgeExecutionResult(
                 Succeeded: true,
@@ -307,6 +326,7 @@ public sealed class ContractsAndModelsCoverageTests
 
         public Task<GameLaunchResult> LaunchAsync(GameLaunchRequest request, CancellationToken cancellationToken)
         {
+            _ = request;
             Cancellation = cancellationToken;
             return Task.FromResult(new GameLaunchResult(true, "ok", 1, "swfoc.exe", string.Empty, null));
         }
@@ -318,6 +338,7 @@ public sealed class ContractsAndModelsCoverageTests
 
         public Task<TransplantResult> ExecuteAsync(TransplantPlan plan, CancellationToken cancellationToken)
         {
+            _ = plan;
             Cancellation = cancellationToken;
             var report = TransplantValidationReport.Empty(plan.TargetProfileId);
             return Task.FromResult(new TransplantResult(
@@ -338,6 +359,8 @@ public sealed class ContractsAndModelsCoverageTests
             IReadOnlyList<RosterEntityRecord> entities,
             CancellationToken cancellationToken)
         {
+            _ = activeWorkshopIds;
+            _ = entities;
             Cancellation = cancellationToken;
             return Task.FromResult(TransplantValidationReport.Empty(targetProfileId));
         }
@@ -349,6 +372,7 @@ public sealed class ContractsAndModelsCoverageTests
 
         public Task<WorkshopInventoryGraph> DiscoverInstalledAsync(WorkshopInventoryRequest request, CancellationToken cancellationToken)
         {
+            _ = request;
             Cancellation = cancellationToken;
             return Task.FromResult(WorkshopInventoryGraph.Empty(request.AppId));
         }
@@ -391,3 +415,5 @@ public sealed class ContractsAndModelsCoverageTests
             Context: null);
     }
 }
+
+

@@ -225,29 +225,39 @@ public sealed class HelperModServiceTests
             _profile = profile;
         }
 
-        public Task<ProfileManifest> LoadManifestAsync(CancellationToken _cancellationToken)
+        public Task<ProfileManifest> LoadManifestAsync(CancellationToken cancellationToken)
         {
+            _ = cancellationToken;
             throw new NotSupportedException();
         }
 
-        public Task<TrainerProfile> LoadProfileAsync(string _profileId, CancellationToken _cancellationToken)
+        public Task<TrainerProfile> LoadProfileAsync(string profileId, CancellationToken cancellationToken)
         {
+            _ = profileId;
+            _ = cancellationToken;
             throw new NotSupportedException();
         }
 
-        public Task<TrainerProfile> ResolveInheritedProfileAsync(string _profileId, CancellationToken _cancellationToken)
+        public Task<TrainerProfile> ResolveInheritedProfileAsync(string profileId, CancellationToken cancellationToken)
         {
+            _ = profileId;
+            _ = cancellationToken;
             return Task.FromResult(_profile);
         }
 
-        public Task ValidateProfileAsync(TrainerProfile _profile, CancellationToken _cancellationToken)
+        public Task ValidateProfileAsync(TrainerProfile profile, CancellationToken cancellationToken)
         {
+            _ = profile;
+            _ = cancellationToken;
             throw new NotSupportedException();
         }
 
-        public Task<IReadOnlyList<string>> ListAvailableProfilesAsync(CancellationToken _cancellationToken)
+        public Task<IReadOnlyList<string>> ListAvailableProfilesAsync(CancellationToken cancellationToken)
         {
+            _ = cancellationToken;
             throw new NotSupportedException();
         }
     }
 }
+
+

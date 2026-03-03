@@ -316,7 +316,7 @@ public sealed class GameLaunchServiceTests
     [Fact]
     public void TerminateKnownTargets_ShouldTerminateSwfocNamedProcess_WhenAvailable()
     {
-        if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows) && !RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
+        if (!IsTerminateKnownTargetsPlatform())
         {
             return;
         }
@@ -327,56 +327,19 @@ public sealed class GameLaunchServiceTests
 
         try
         {
-            Process process;
-            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+            using var process = StartTerminableSwfocProcess(executablePath);
+            if (process is null)
             {
-                var cmdExe = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.System), "cmd.exe");
-                File.Copy(cmdExe, executablePath, overwrite: true);
-                process = Process.Start(new ProcessStartInfo(executablePath, "/c timeout /t 30 /nobreak >nul")
-                {
-                    UseShellExecute = false
-                })!;
-            }
-            else
-            {
-                var sleepBinary = "/bin/sleep";
-                if (!File.Exists(sleepBinary))
-                {
-                    return;
-                }
-
-                File.Copy(sleepBinary, executablePath, overwrite: true);
-                var chmod = Process.Start(new ProcessStartInfo("chmod", $"+x \"{executablePath}\"")
-                {
-                    UseShellExecute = false
-                });
-                chmod.Should().NotBeNull();
-                chmod!.WaitForExit(5000).Should().BeTrue();
-
-                process = Process.Start(new ProcessStartInfo(executablePath, "30")
-                {
-                    UseShellExecute = false
-                })!;
+                return;
             }
 
-            process.Should().NotBeNull();
             process.HasExited.Should().BeFalse();
-
-            var terminateMethod = typeof(GameLaunchService).GetMethod(
-                "TerminateKnownTargets",
-                BindingFlags.NonPublic | BindingFlags.Static);
-            terminateMethod.Should().NotBeNull();
-            terminateMethod!.Invoke(null, Array.Empty<object?>());
-
+            InvokeTerminateKnownTargets();
             process.WaitForExit(5000).Should().BeTrue();
-            process.Dispose();
         }
         finally
         {
-            if (Directory.Exists(tempRoot))
-            {
-                Directory.Delete(tempRoot, recursive: true);
-            }
+            CleanupDirectory(tempRoot);
         }
     }
 
@@ -486,6 +449,60 @@ public sealed class GameLaunchServiceTests
         args.Should().Be("STEAMMOD=1397421866 STEAMMOD=3447786229 STEAMMOD=3287776766");
     }
 
+    private static bool IsTerminateKnownTargetsPlatform()
+    {
+        return RuntimeInformation.IsOSPlatform(OSPlatform.Windows)
+            || RuntimeInformation.IsOSPlatform(OSPlatform.Linux);
+    }
+
+    private static Process? StartTerminableSwfocProcess(string executablePath)
+    {
+        if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+        {
+            var cmdExe = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.System), "cmd.exe");
+            File.Copy(cmdExe, executablePath, overwrite: true);
+            return Process.Start(new ProcessStartInfo(executablePath, "/c timeout /t 30 /nobreak >nul")
+            {
+                UseShellExecute = false
+            });
+        }
+
+        const string sleepBinary = "/bin/sleep";
+        if (!File.Exists(sleepBinary))
+        {
+            return null;
+        }
+
+        File.Copy(sleepBinary, executablePath, overwrite: true);
+        var chmod = Process.Start(new ProcessStartInfo("chmod", $"+x \"{executablePath}\"")
+        {
+            UseShellExecute = false
+        });
+        chmod.Should().NotBeNull();
+        chmod!.WaitForExit(5000).Should().BeTrue();
+
+        return Process.Start(new ProcessStartInfo(executablePath, "30")
+        {
+            UseShellExecute = false
+        });
+    }
+
+    private static void InvokeTerminateKnownTargets()
+    {
+        var terminateMethod = typeof(GameLaunchService).GetMethod(
+            "TerminateKnownTargets",
+            BindingFlags.NonPublic | BindingFlags.Static);
+        terminateMethod.Should().NotBeNull();
+        terminateMethod!.Invoke(null, Array.Empty<object?>());
+    }
+
+    private static void CleanupDirectory(string path)
+    {
+        if (Directory.Exists(path))
+        {
+            Directory.Delete(path, recursive: true);
+        }
+    }
     private static string[] GetMutableDefaultRoots()
     {
         var field = typeof(GameLaunchService).GetField("DefaultRoots", BindingFlags.NonPublic | BindingFlags.Static);
@@ -537,3 +554,6 @@ public sealed class GameLaunchServiceTests
         return (string)result!;
     }
 }
+
+
+
