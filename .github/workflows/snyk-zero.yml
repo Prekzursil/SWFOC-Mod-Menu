@@ -13,6 +13,7 @@ permissions:
 
 jobs:
   snyk-zero:
+    name: Snyk Zero
     runs-on: ubuntu-latest
     steps:
       - name: Checkout

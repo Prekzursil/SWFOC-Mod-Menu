@@ -13,6 +13,7 @@ permissions:
 
 jobs:
   sentry-zero:
+    name: Sentry Zero
     runs-on: ubuntu-latest
     steps:
       - name: Checkout

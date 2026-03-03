@@ -13,6 +13,7 @@ permissions:
 
 jobs:
   codecov-analytics:
+    name: Codecov Analytics
     runs-on: windows-latest
     steps:
       - name: Checkout

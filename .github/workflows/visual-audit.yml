@@ -26,6 +26,7 @@ on:
 
 jobs:
   applitools-visual-zero:
+    name: Applitools Visual Zero
     runs-on: ubuntu-latest
     permissions:
       contents: read
