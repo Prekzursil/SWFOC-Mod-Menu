@@ -1,3 +1,6 @@
+using System.Reflection;
+using System.Text.Json;
+using SwfocTrainer.Core.Models;
 using FluentAssertions;
 using SwfocTrainer.Runtime.Services;
 using Xunit;
@@ -110,6 +113,123 @@ public sealed class SignatureResolverPackSelectionTests
         }
     }
 
+    [Fact]
+    public void ResolveDefaultGhidraSymbolPackRoot_ShouldHonorEnvironmentOverride()
+    {
+        var previous = Environment.GetEnvironmentVariable("SWFOC_GHIDRA_SYMBOL_PACK_ROOT");
+        try
+        {
+            Environment.SetEnvironmentVariable("SWFOC_GHIDRA_SYMBOL_PACK_ROOT", @"D:\packs");
+
+            var root = SignatureResolverSymbolHydration.ResolveDefaultGhidraSymbolPackRoot();
+
+            root.Should().Be(@"D:\packs");
+        }
+        finally
+        {
+            Environment.SetEnvironmentVariable("SWFOC_GHIDRA_SYMBOL_PACK_ROOT", previous);
+        }
+    }
+
+    [Fact]
+    public void ResolveDefaultGhidraSymbolPackRoot_ShouldUseFallbackPath_WhenEnvUnset()
+    {
+        var previous = Environment.GetEnvironmentVariable("SWFOC_GHIDRA_SYMBOL_PACK_ROOT");
+        try
+        {
+            Environment.SetEnvironmentVariable("SWFOC_GHIDRA_SYMBOL_PACK_ROOT", null);
+
+            var root = SignatureResolverSymbolHydration.ResolveDefaultGhidraSymbolPackRoot();
+
+            root.Should().Contain(Path.Combine("profiles", "default", "sdk", "ghidra", "symbol-packs"));
+        }
+        finally
+        {
+            Environment.SetEnvironmentVariable("SWFOC_GHIDRA_SYMBOL_PACK_ROOT", previous);
+        }
+    }
+
+    [Fact]
+    public void TryParseAddress_ShouldHandleJsonNumericHexAndInvalidInputs()
+    {
+        using var jsonNumberDoc = JsonDocument.Parse("1234");
+        var jsonNumber = jsonNumberDoc.RootElement.Clone();
+        using var jsonHexDoc = JsonDocument.Parse("\"0x2A\"");
+        var jsonHex = jsonHexDoc.RootElement.Clone();
+
+        TryInvokeParseAddress(123L, out var fromLong).Should().BeTrue();
+        fromLong.Should().Be(123L);
+
+        TryInvokeParseAddress(42, out var fromInt).Should().BeTrue();
+        fromInt.Should().Be(42L);
+
+        TryInvokeParseAddress("0x40", out var fromHexString).Should().BeTrue();
+        fromHexString.Should().Be(64L);
+
+        TryInvokeParseAddress("55", out var fromString).Should().BeTrue();
+        fromString.Should().Be(55L);
+
+        TryInvokeParseAddress(jsonNumber, out var fromJsonNumber).Should().BeTrue();
+        fromJsonNumber.Should().Be(1234L);
+
+        TryInvokeParseAddress(jsonHex, out var fromJsonHex).Should().BeTrue();
+        fromJsonHex.Should().Be(42L);
+
+        TryInvokeParseAddress("not-an-address", out _).Should().BeFalse();
+        TryInvokeParseAddress(null, out _).Should().BeFalse();
+    }
+
+    [Fact]
+    public void TryBuildAnchorSymbol_ShouldValidateAddressAndDuplicateRules()
+    {
+        var valueTypes = new Dictionary<string, SymbolValueType>(StringComparer.OrdinalIgnoreCase)
+        {
+            ["credits"] = SymbolValueType.Float
+        };
+        var symbols = new Dictionary<string, SymbolInfo>(StringComparer.OrdinalIgnoreCase);
+
+        var validAnchor = CreateAnchor("credits", "0x1234", 0.75d);
+        var method = typeof(SignatureResolverSymbolHydration).GetMethod("TryBuildAnchorSymbol", BindingFlags.NonPublic | BindingFlags.Static);
+        method.Should().NotBeNull();
+
+        var args = new object?[] { validAnchor, valueTypes, "fingerprint", symbols, null };
+        var ok = (bool)method!.Invoke(null, args)!;
+
+        ok.Should().BeTrue();
+        args[4].Should().BeAssignableTo<SymbolInfo>();
+        var symbol = (SymbolInfo)args[4]!;
+        symbol.Name.Should().Be("credits");
+        symbol.ValueType.Should().Be(SymbolValueType.Float);
+
+        symbols["credits"] = symbol;
+        var duplicateArgs = new object?[] { CreateAnchor("credits", "0x2222", 0.95d), valueTypes, "fingerprint", symbols, null };
+        ((bool)method.Invoke(null, duplicateArgs)!).Should().BeFalse();
+
+        var invalidArgs = new object?[] { CreateAnchor("new_anchor", "bad-address", 0.95d), valueTypes, "fingerprint", new Dictionary<string, SymbolInfo>(), null };
+        ((bool)method.Invoke(null, invalidArgs)!).Should().BeFalse();
+    }
+
+    private static bool TryInvokeParseAddress(object? value, out long address)
+    {
+        var method = typeof(SignatureResolverSymbolHydration).GetMethod("TryParseAddress", BindingFlags.NonPublic | BindingFlags.Static);
+        method.Should().NotBeNull();
+
+        var args = new object?[] { value, 0L };
+        var ok = (bool)method!.Invoke(null, args)!;
+        address = (long)args[1]!;
+        return ok;
+    }
+
+    private static object CreateAnchor(string id, object address, double confidence)
+    {
+        var anchorType = typeof(SignatureResolverSymbolHydration).GetNestedType("GhidraAnchorDto", BindingFlags.NonPublic);
+        anchorType.Should().NotBeNull();
+
+        var ctor = anchorType!.GetConstructor(new[] { typeof(string), typeof(object), typeof(double) });
+        ctor.Should().NotBeNull();
+
+        return ctor!.Invoke(new[] { id, address, confidence });
+    }
     private static string CreateTempRoot()
     {
         var path = Path.Combine(Path.GetTempPath(), $"swfoc-ghidra-pack-{Guid.NewGuid():N}");
@@ -159,3 +279,5 @@ public sealed class SignatureResolverPackSelectionTests
         File.WriteAllText(indexPath, json);
     }
 }
+
+

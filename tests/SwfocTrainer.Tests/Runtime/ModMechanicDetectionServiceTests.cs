@@ -366,6 +366,67 @@ public sealed class ModMechanicDetectionServiceTests
         VerifyKind("AbilityCarrier|RAW_CARRIER", RosterEntityKind.AbilityCarrier);
     }
 
+    [Fact]
+    public void HelperParsers_ShouldHandleMetadataEdgeCases()
+    {
+        var metadata = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
+        {
+            ["flag_true"] = "true",
+            ["flag_one"] = "1",
+            ["flag_zero"] = "0",
+            ["list"] = " one , two ,, three ",
+            ["csv"] = "1397421866, 3447786229"
+        };
+
+        InvokePrivateStatic<bool>("ReadBoolMetadata", metadata, "flag_true").Should().BeTrue();
+        InvokePrivateStatic<bool>("ReadBoolMetadata", metadata, "flag_one").Should().BeTrue();
+        InvokePrivateStatic<bool>("ReadBoolMetadata", metadata, "flag_zero").Should().BeFalse();
+        InvokePrivateStatic<bool>("ReadBoolMetadata", metadata, "missing").Should().BeFalse();
+
+        InvokePrivateStatic<int?>("ParseOptionalInt", "42").Should().Be(42);
+        InvokePrivateStatic<int?>("ParseOptionalInt", " ").Should().BeNull();
+        InvokePrivateStatic<int?>("ParseOptionalInt", "not-int").Should().BeNull();
+
+        InvokePrivateStatic<IReadOnlyList<string>>("ParseListMetadata", metadata["list"]).Should().BeEquivalentTo("one", "two", "three");
+        InvokePrivateStatic<IReadOnlyList<string>>("ParseListMetadata", string.Empty).Should().BeEmpty();
+
+        InvokePrivateStatic<IReadOnlySet<string>>("ParseCsvSet", metadata, "csv").Should().BeEquivalentTo(new[] { "1397421866", "3447786229" });
+    }
+
+    [Fact]
+    public void DuplicatePolicyInference_ShouldCoverAllPriorityBranches()
+    {
+        InvokePrivateStatic<string>("InferDuplicateHeroPolicy", "aotr_profile", false, true)
+            .Should().Be("rescue_or_respawn");
+        InvokePrivateStatic<string>("InferDuplicateHeroPolicy", "roe_profile", true, false)
+            .Should().Be("mod_defined_permadeath");
+        InvokePrivateStatic<string>("InferDuplicateHeroPolicy", "base_swfoc", false, false)
+            .Should().Be("canonical_singleton");
+        InvokePrivateStatic<string>("InferDuplicateHeroPolicy", "custom_profile", false, false)
+            .Should().Be("mod_defined");
+    }
+
+    [Theory]
+    [InlineData("Unit", RosterEntityKind.Unit)]
+    [InlineData("Hero", RosterEntityKind.Hero)]
+    [InlineData("Building", RosterEntityKind.Building)]
+    [InlineData("SpaceStructure", RosterEntityKind.SpaceStructure)]
+    [InlineData("AbilityCarrier", RosterEntityKind.AbilityCarrier)]
+    [InlineData("Unknown", RosterEntityKind.Unit)]
+    public void ParseEntityKind_ShouldMapKnownValues_AndFallbackToUnit(string rawKind, RosterEntityKind expected)
+    {
+        InvokePrivateStatic<RosterEntityKind>("ParseEntityKind", rawKind).Should().Be(expected);
+    }
+
+    [Fact]
+    public void ResolveAllowedModes_ShouldMapByEntityKind()
+    {
+        InvokePrivateStatic<IReadOnlyList<RuntimeMode>>("ResolveAllowedModes", RosterEntityKind.Building)
+            .Should().Equal(RuntimeMode.Galactic);
+
+        InvokePrivateStatic<IReadOnlyList<RuntimeMode>>("ResolveAllowedModes", RosterEntityKind.SpaceStructure)
+            .Should().Equal(RuntimeMode.Galactic);
+    }
     private static IReadOnlyDictionary<string, IReadOnlyList<string>> CreateCatalog(string entityEntry)
     {
         return new Dictionary<string, IReadOnlyList<string>>(StringComparer.OrdinalIgnoreCase)
@@ -569,3 +630,9 @@ public sealed class ModMechanicDetectionServiceTests
         return method!;
     }
 }
+
+
+
+
+
+

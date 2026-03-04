@@ -1,6 +1,7 @@
 #pragma warning disable CA1014
 using System.Reflection;
 using FluentAssertions;
+using SwfocTrainer.Core.Contracts;
 using SwfocTrainer.Core.Models;
 using SwfocTrainer.Runtime.Services;
 using Xunit;
@@ -136,6 +137,75 @@ public sealed class ProcessLocatorAdditionalCoverageTests
         ReadStringSequenceProperty(resolution!, "EffectiveSteamModIds").Should().Equal("1397421866");
     }
 
+    [Fact]
+    public async Task FindSupportedProcessesAsync_ShouldEnumerateProcesses_WithForcedOptionsWithoutThrowing()
+    {
+        var repository = new CountingProfileRepository();
+        var locator = new ProcessLocator(new LaunchContextResolver(), repository);
+
+        var options = new ProcessLocatorOptions(
+            ForcedWorkshopIds: new[] { "3447786229", "1397421866" },
+            ForcedProfileId: "roe_3447786229_swfoc");
+
+        var processes = await locator.FindSupportedProcessesAsync(options, CancellationToken.None);
+
+        processes.Should().NotBeNull();
+        repository.ListCalls.Should().BeGreaterOrEqualTo(1);
+
+        if (processes.Count > 0)
+        {
+            processes[0].Metadata.Should().NotBeNull();
+            processes[0].Metadata!.Should().ContainKey("launchContextSource");
+        }
+    }
+
+    [Fact]
+    public async Task LoadProfilesForLaunchContextAsync_ShouldCacheProfilesWithinTtlWindow()
+    {
+        var repository = new CountingProfileRepository();
+        var locator = new ProcessLocator(new LaunchContextResolver(), repository);
+
+        var first = await InvokeLoadProfiles(locator);
+        var second = await InvokeLoadProfiles(locator);
+
+        first.Should().NotBeNull();
+        second.Should().NotBeNull();
+        repository.ListCalls.Should().Be(1);
+        repository.ResolveCalls.Should().Be(1);
+    }
+
+    [Fact]
+    public async Task LoadProfilesForLaunchContextAsync_ShouldReturnEmpty_WhenRepositoryThrows()
+    {
+        var locator = new ProcessLocator(new LaunchContextResolver(), new ThrowingProfileRepository());
+
+        var profiles = await InvokeLoadProfiles(locator);
+
+        profiles.Should().BeEmpty();
+    }
+
+    [Theory]
+    [InlineData(null, null)]
+    [InlineData("", null)]
+    [InlineData("   ", null)]
+    [InlineData(" base_swfoc ", "base_swfoc")]
+    public void NormalizeForcedProfileId_ShouldTrimOrReturnNull(string? raw, string? expected)
+    {
+        var normalized = (string?)InvokePrivateStatic("NormalizeForcedProfileId", raw);
+        normalized.Should().Be(expected);
+    }
+
+    private static async Task<IReadOnlyList<TrainerProfile>> InvokeLoadProfiles(ProcessLocator locator)
+    {
+        var method = typeof(ProcessLocator).GetMethod("LoadProfilesForLaunchContextAsync", BindingFlags.NonPublic | BindingFlags.Instance);
+        method.Should().NotBeNull();
+
+        var task = method!.Invoke(locator, new object?[] { CancellationToken.None });
+        task.Should().BeAssignableTo<Task<IReadOnlyList<TrainerProfile>>>();
+
+        return await (Task<IReadOnlyList<TrainerProfile>>)task!;
+    }
+
     private static object? InvokePrivateStatic(string methodName, params object?[] args)
     {
         var method = typeof(ProcessLocator).GetMethod(methodName, BindingFlags.NonPublic | BindingFlags.Static);
@@ -156,7 +226,112 @@ public sealed class ProcessLocatorAdditionalCoverageTests
         property.Should().NotBeNull();
         return ((IEnumerable<string>)property!.GetValue(instance)!).ToArray();
     }
+
+    private static TrainerProfile BuildProfile(string id)
+    {
+        return new TrainerProfile(
+            Id: id,
+            DisplayName: id,
+            Inherits: null,
+            ExeTarget: ExeTarget.Swfoc,
+            SteamWorkshopId: null,
+            SignatureSets:
+            [
+                new SignatureSet(
+                    Name: "default",
+                    GameBuild: "build",
+                    Signatures:
+                    [
+                        new SignatureSpec("credits", "AA BB", 0)
+                    ])
+            ],
+            FallbackOffsets: new Dictionary<string, long>(StringComparer.OrdinalIgnoreCase),
+            Actions: new Dictionary<string, ActionSpec>(StringComparer.OrdinalIgnoreCase),
+            FeatureFlags: new Dictionary<string, bool>(StringComparer.OrdinalIgnoreCase),
+            CatalogSources: Array.Empty<CatalogSource>(),
+            SaveSchemaId: "save",
+            HelperModHooks: Array.Empty<HelperHookSpec>(),
+            Metadata: new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase));
+    }
+
+    private sealed class CountingProfileRepository : IProfileRepository
+    {
+        private readonly TrainerProfile _profile = BuildProfile("base_swfoc");
+
+        public int ListCalls { get; private set; }
+        public int ResolveCalls { get; private set; }
+
+        public Task<ProfileManifest> LoadManifestAsync(CancellationToken cancellationToken)
+        {
+            _ = cancellationToken;
+            throw new NotImplementedException();
+        }
+
+        public Task<TrainerProfile> LoadProfileAsync(string profileId, CancellationToken cancellationToken)
+        {
+            _ = profileId;
+            _ = cancellationToken;
+            return Task.FromResult(_profile);
+        }
+
+        public Task<TrainerProfile> ResolveInheritedProfileAsync(string profileId, CancellationToken cancellationToken)
+        {
+            _ = profileId;
+            _ = cancellationToken;
+            ResolveCalls++;
+            return Task.FromResult(_profile);
+        }
+
+        public Task ValidateProfileAsync(TrainerProfile profile, CancellationToken cancellationToken)
+        {
+            _ = profile;
+            _ = cancellationToken;
+            return Task.CompletedTask;
+        }
+
+        public Task<IReadOnlyList<string>> ListAvailableProfilesAsync(CancellationToken cancellationToken)
+        {
+            _ = cancellationToken;
+            ListCalls++;
+            return Task.FromResult<IReadOnlyList<string>>(new[] { _profile.Id });
+        }
+    }
+
+    private sealed class ThrowingProfileRepository : IProfileRepository
+    {
+        public Task<ProfileManifest> LoadManifestAsync(CancellationToken cancellationToken)
+        {
+            _ = cancellationToken;
+            throw new InvalidOperationException("manifest unavailable");
+        }
+
+        public Task<TrainerProfile> LoadProfileAsync(string profileId, CancellationToken cancellationToken)
+        {
+            _ = profileId;
+            _ = cancellationToken;
+            throw new InvalidOperationException("profile unavailable");
+        }
+
+        public Task<TrainerProfile> ResolveInheritedProfileAsync(string profileId, CancellationToken cancellationToken)
+        {
+            _ = profileId;
+            _ = cancellationToken;
+            throw new InvalidOperationException("resolve unavailable");
+        }
+
+        public Task ValidateProfileAsync(TrainerProfile profile, CancellationToken cancellationToken)
+        {
+            _ = profile;
+            _ = cancellationToken;
+            return Task.CompletedTask;
+        }
+
+        public Task<IReadOnlyList<string>> ListAvailableProfilesAsync(CancellationToken cancellationToken)
+        {
+            _ = cancellationToken;
+            throw new InvalidOperationException("list unavailable");
+        }
+    }
 }
 
 #pragma warning restore CA1014
-
