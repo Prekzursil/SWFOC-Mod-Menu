@@ -8,17 +8,18 @@ Set-StrictMode -Version Latest
 $ErrorActionPreference = "Stop"
 
 $projectPath = "tests/SwfocTrainer.Tests/SwfocTrainer.Tests.csproj"
-$resultsRootResolved = Resolve-Path -LiteralPath "." | ForEach-Object { Join-Path $_.Path $ResultsRoot }
+$repoRoot = (Resolve-Path -LiteralPath ".").Path
+$resultsRootResolved = Join-Path $repoRoot $ResultsRoot
 if (Test-Path -Path $resultsRootResolved) {
     Remove-Item -Path $resultsRootResolved -Recurse -Force
 }
 New-Item -ItemType Directory -Path $resultsRootResolved | Out-Null
 
-$rawResults = Join-Path $env:TEMP "swfoctrainer-coverage-raw"
-if (Test-Path -Path $rawResults) {
-    Remove-Item -Path $rawResults -Recurse -Force
+$testResultsRoot = Join-Path $resultsRootResolved "dotnet-test-results"
+if (Test-Path -Path $testResultsRoot) {
+    Remove-Item -Path $testResultsRoot -Recurse -Force
 }
-New-Item -ItemType Directory -Path $rawResults | Out-Null
+New-Item -ItemType Directory -Path $testResultsRoot | Out-Null
 
 $filter = if ($DeterministicOnly) {
     'FullyQualifiedName!~SwfocTrainer.Tests.Profiles.Live&FullyQualifiedName!~RuntimeAttachSmokeTests'
@@ -27,19 +28,39 @@ else {
     ''
 }
 
+$excludeByFile = '**/obj/**;**/*.g.cs;**/*.g.i.cs'
+$runSettingsPath = Join-Path $resultsRootResolved 'coverage.runsettings'
+$runSettingsXml = @"
+<?xml version="1.0" encoding="utf-8"?>
+<RunSettings>
+  <DataCollectionRunSettings>
+    <DataCollectors>
+      <DataCollector friendlyName="XPlat code coverage">
+        <Configuration>
+          <Format>cobertura</Format>
+          <ExcludeByFile>$excludeByFile</ExcludeByFile>
+          <ExcludeByAttribute>Obsolete,GeneratedCodeAttribute,CompilerGeneratedAttribute,ExcludeFromCodeCoverageAttribute</ExcludeByAttribute>
+          <UseSourceLink>false</UseSourceLink>
+        </Configuration>
+      </DataCollector>
+    </DataCollectors>
+  </DataCollectionRunSettings>
+</RunSettings>
+"@
+Set-Content -Path $runSettingsPath -Value $runSettingsXml -Encoding UTF8
+
 $arguments = @(
-    "test",
+    'test',
     $projectPath,
-    "-c", $Configuration,
-    "--logger", "trx;LogFileName=coverage.trx",
-    "-p:CollectCoverage=true",
-    "-p:CoverletOutputFormat=cobertura",
-    "-p:CoverletOutput=`"$(Join-Path $rawResults 'coverage')`"",
-    "-p:ExcludeByFile=**/obj/**%2c**/*.g.cs%2c**/*.g.i.cs"
+    '-c', $Configuration,
+    '--logger', 'trx;LogFileName=coverage.trx',
+    '--results-directory', $testResultsRoot,
+    '--collect', 'XPlat Code Coverage',
+    '--settings', $runSettingsPath
 )
 
 if (-not [string]::IsNullOrWhiteSpace($filter)) {
-    $arguments += @("--filter", $filter)
+    $arguments += @('--filter', $filter)
 }
 
 function Resolve-DotnetCommand {
@@ -49,8 +70,8 @@ function Resolve-DotnetCommand {
     }
 
     $candidates = @(
-        (Join-Path $env:USERPROFILE ".dotnet\\dotnet.exe"),
-        (Join-Path $env:ProgramFiles "dotnet\\dotnet.exe")
+        (Join-Path $env:USERPROFILE '.dotnet\\dotnet.exe'),
+        (Join-Path $env:ProgramFiles 'dotnet\\dotnet.exe')
     )
 
     foreach ($candidate in $candidates) {
@@ -59,7 +80,7 @@ function Resolve-DotnetCommand {
         }
     }
 
-    throw "Could not resolve dotnet executable. Install .NET SDK or add dotnet to PATH."
+    throw 'Could not resolve dotnet executable. Install .NET SDK or add dotnet to PATH.'
 }
 
 $dotnetExe = Resolve-DotnetCommand
@@ -76,17 +97,19 @@ if ($exitCode -ne 0) {
     throw "Coverage collection failed with exit code $exitCode."
 }
 
-$expectedRawCoverage = Join-Path $rawResults "coverage.cobertura.xml"
-for ($attempt = 0; $attempt -lt 400 -and -not (Test-Path -Path $expectedRawCoverage); $attempt++) {
-    Start-Sleep -Milliseconds 250
+$coverageCandidates = Get-ChildItem -Path $testResultsRoot -Recurse -File -Filter 'coverage.cobertura.xml' -ErrorAction SilentlyContinue |
+    Sort-Object LastWriteTime -Descending
+if (-not $coverageCandidates) {
+    $coverageCandidates = Get-ChildItem -Path $testResultsRoot -Recurse -File -Filter 'coverage.xml' -ErrorAction SilentlyContinue |
+        Sort-Object LastWriteTime -Descending
 }
 
-if (-not (Test-Path -Path $expectedRawCoverage)) {
-    throw "No coverage.cobertura.xml file was generated under $rawResults."
+if (-not $coverageCandidates) {
+    throw "No coverage report was generated under $testResultsRoot."
 }
 
-$primaryCoveragePath = $expectedRawCoverage
-$targetCoverage = Join-Path $resultsRootResolved "cobertura.xml"
+$primaryCoveragePath = $coverageCandidates[0].FullName
+$targetCoverage = Join-Path $resultsRootResolved 'cobertura.xml'
 Copy-Item -Path $primaryCoveragePath -Destination $targetCoverage -Force
 
 Write-Output "coverage_source=$primaryCoveragePath"
