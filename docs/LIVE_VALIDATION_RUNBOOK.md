@@ -314,3 +314,8 @@ pwsh ./tools/lua-harness/run-lua-harness.ps1 -Strict
 - Chain matrix evidence:
   - `TestResults/runs/20260304-043659/chain-matrix-summary.json`
   - `TestResults/runs/20260304-043659/chain-matrix-summary.md`
+
+
+- Supplemental chain matrix evidence (rerun):
+  - `TestResults/runs/20260304-102055/chain-matrix-summary.json` (entries=28, blocked_dependency_missing_parent=2, blocked_environment=0)
+  - `TestResults/runs/20260304-102055/chain-matrix-summary.md`

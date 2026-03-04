@@ -171,7 +171,11 @@ function SWFOC_Trainer_Set_Context_Allegiance(entity_id, target_faction, source_
     return Try_Change_Owner(object, target_player)
 end
 
-function SWFOC_Trainer_Transfer_Fleet_Safe(fleet_entity_id, source_faction, target_faction, safe_planet_id, force_override)
+local function Is_Force_Override(value)
+    return value == true or value == "true"
+end
+
+local function Validate_Fleet_Transfer_Request(fleet_entity_id, source_faction, target_faction, safe_planet_id, force_override)
     if not Has_Value(fleet_entity_id) or not Has_Value(source_faction) or not Has_Value(target_faction) then
         return false
     end
@@ -180,16 +184,23 @@ function SWFOC_Trainer_Transfer_Fleet_Safe(fleet_entity_id, source_faction, targ
         return false
     end
 
-    local allow_unsafe = force_override == true or force_override == "true"
-    if not Has_Value(safe_planet_id) and not allow_unsafe then
+    if Has_Value(safe_planet_id) then
+        return true
+    end
+
+    return Is_Force_Override(force_override)
+end
+
+function SWFOC_Trainer_Transfer_Fleet_Safe(fleet_entity_id, source_faction, target_faction, safe_planet_id, force_override)
+    if not Validate_Fleet_Transfer_Request(fleet_entity_id, source_faction, target_faction, safe_planet_id, force_override) then
         return false
     end
 
     local target_player = Resolve_Player(target_faction)
     local fleet = Try_Find_Object(fleet_entity_id)
 
-    -- Prefer relocation-first to minimize auto-battle triggers.
     if Has_Value(safe_planet_id) then
+        -- Prefer relocation-first to minimize auto-battle triggers.
         Try_Story_Event("MOVE_FLEET", fleet_entity_id, safe_planet_id, target_faction)
     end
 
@@ -201,17 +212,35 @@ function SWFOC_Trainer_Transfer_Fleet_Safe(fleet_entity_id, source_faction, targ
     return Try_Story_Event("MOVE_FLEET", fleet_entity_id, safe_planet_id, target_faction)
 end
 
+local function Normalize_Flip_Mode(mode)
+    if not Has_Value(mode) then
+        return "convert_everything"
+    end
+
+    if mode == "empty_and_retreat" or mode == "convert_everything" then
+        return mode
+    end
+
+    return nil
+end
+
+local function Emit_Planet_Flip_Followups(planet_entity_id, target_faction, mode)
+    if mode == "empty_and_retreat" then
+        -- Best-effort semantic marker for mods that expose retreat cleanup rewards.
+        Try_Story_Event("PLANET_RETREAT_ALL", planet_entity_id, target_faction, "empty")
+        return
+    end
+
+    Try_Story_Event("PLANET_CONVERT_ALL", planet_entity_id, target_faction, "convert")
+end
+
 function SWFOC_Trainer_Flip_Planet_Owner(planet_entity_id, target_faction, flip_mode, force_override)
     if not Has_Value(planet_entity_id) or not Has_Value(target_faction) then
         return false
     end
 
-    local mode = flip_mode
-    if not Has_Value(mode) then
-        mode = "convert_everything"
-    end
-
-    if mode ~= "empty_and_retreat" and mode ~= "convert_everything" then
+    local mode = Normalize_Flip_Mode(flip_mode)
+    if not mode then
         return false
     end
 
@@ -227,13 +256,7 @@ function SWFOC_Trainer_Flip_Planet_Owner(planet_entity_id, target_faction, flip_
         return false
     end
 
-    if mode == "empty_and_retreat" then
-        -- Best-effort semantic marker for mods that expose retreat cleanup rewards.
-        Try_Story_Event("PLANET_RETREAT_ALL", planet_entity_id, target_faction, "empty")
-    else
-        Try_Story_Event("PLANET_CONVERT_ALL", planet_entity_id, target_faction, "convert")
-    end
-
+    Emit_Planet_Flip_Followups(planet_entity_id, target_faction, mode)
     return true
 end
 
@@ -266,6 +289,23 @@ end
 local function Try_Set_Hero_Respawn_Pending(hero_entity_id, hero_global_key)
     return Try_Story_Event("SET_HERO_RESPAWN", hero_entity_id, hero_global_key, "pending")
 end
+
+local function Is_Valid_Hero_State(state)
+    return state == "alive" or state == "dead" or state == "respawn_pending" or state == "permadead" or state == "remove"
+end
+
+local function Try_Handle_Hero_Alive_State(hero, hero_entity_id, hero_global_key, allow_duplicate)
+    if hero ~= nil then
+        return true
+    end
+
+    if Is_Force_Override(allow_duplicate) then
+        return Spawn_Object(hero_entity_id, hero_entity_id, nil, nil, "reinforcement_zone")
+    end
+
+    return Try_Apply_Hero_Story_State(hero_entity_id, "alive", hero_global_key)
+end
+
 function SWFOC_Trainer_Edit_Hero_State(hero_entity_id, hero_global_key, desired_state, allow_duplicate)
     if not Has_Value(hero_entity_id) and not Has_Value(hero_global_key) then
         return false
@@ -273,8 +313,7 @@ function SWFOC_Trainer_Edit_Hero_State(hero_entity_id, hero_global_key, desired_
 
     local hero = Try_Find_Object(hero_entity_id)
     local state = desired_state or "alive"
-
-    if state ~= "alive" and state ~= "dead" and state ~= "respawn_pending" and state ~= "permadead" and state ~= "remove" then
+    if not Is_Valid_Hero_State(state) then
         return false
     end
 
@@ -286,15 +325,7 @@ function SWFOC_Trainer_Edit_Hero_State(hero_entity_id, hero_global_key, desired_
         return Try_Set_Hero_Respawn_Pending(hero_entity_id, hero_global_key)
     end
 
-    if hero ~= nil then
-        return true
-    end
-
-    if allow_duplicate == true or allow_duplicate == "true" then
-        return Spawn_Object(hero_entity_id, hero_entity_id, nil, nil, "reinforcement_zone")
-    end
-
-    return Try_Apply_Hero_Story_State(hero_entity_id, "alive", hero_global_key)
+    return Try_Handle_Hero_Alive_State(hero, hero_entity_id, hero_global_key, allow_duplicate)
 end
 
 function SWFOC_Trainer_Create_Hero_Variant(source_hero_id, variant_hero_id, target_faction)
@@ -313,3 +344,5 @@ function SWFOC_Trainer_Create_Hero_Variant(source_hero_id, variant_hero_id, targ
 
     return Try_Story_Event("CREATE_HERO_VARIANT", source_hero_id, variant_hero_id, faction)
 end
+
+

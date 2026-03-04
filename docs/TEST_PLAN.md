@@ -297,9 +297,16 @@ Include captured status diagnostics for promoted matrix evidence in issue report
 
 - Deterministic non-live gate:
   - `dotnet test tests/SwfocTrainer.Tests/SwfocTrainer.Tests.csproj -c Release --no-build --filter "FullyQualifiedName!~SwfocTrainer.Tests.Profiles.Live&FullyQualifiedName!~RuntimeAttachSmokeTests"`
-  - expected current: pass (`537`).
-- Coverage hard gate (still open):
+  - expected current: pass (`666`).
+- All-language coverage aggregation gate (still open):
+  - `pwsh ./tools/quality/collect-coverage-all.ps1 -Configuration Release -DeterministicOnly`
+  - `python ./scripts/quality/assert_coverage_all.py --manifest TestResults/coverage/coverage-manifest.json --min-line 100 --min-branch 100`
+  - current measured: `dotnet` line `72.29`, branch `59.96`; static-contract components at `100/100`.
+- Coverage hard gate for handwritten `src/**` (still open):
   - `pwsh -ExecutionPolicy Bypass -File ./tools/quality/assert-dotnet-coverage.ps1 -CoveragePath TestResults/coverage/cobertura.xml -MinLine 100 -MinBranch 100 -Scope src`
-  - current measured: line `61.22`, branch `51.69`.
+  - current measured: line `72.28`, branch `59.95`.
+- Latest deep chain matrix evidence:
+  - `TestResults/runs/20260304-102055/chain-matrix-summary.json` (entries=28, blocked_dependency_missing_parent=2, blocked_environment=0)
+  - `TestResults/runs/20260304-102055/chain-matrix-summary.json` row `20260304-102055-chain16` -> chainId `2313576303`, `classification=blocked_dependency_missing_parent`, `launchAttempted=false`, `missingParentIds=[2486018498]`
 - Repro bundle schema validation for matrix runs:
   - `pwsh -ExecutionPolicy Bypass -File ./tools/validate-repro-bundle.ps1 -BundlePath TestResults/runs/<runId>/repro-bundle.json -SchemaPath tools/schemas/repro-bundle.schema.json -Strict`

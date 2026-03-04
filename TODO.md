@@ -182,15 +182,18 @@ Reliability rule for runtime/mod tasks:
   evidence: bundle `TestResults/runs/20260304-043659/chain-matrix-summary.json`
   evidence: bundle `TestResults/runs/20260304-043659/chain-matrix-summary.json` (row `chain16` => `classification=blocked_dependency_missing_parent`, `launchAttempted=false`, `missingParentIds=[2486018498]`)
   evidence: bundle `TestResults/runs/20260304-043659-chain28/repro-bundle.json`
-  evidence: manual `2026-03-04` `pwsh -ExecutionPolicy Bypass -File ./tools/run-live-validation.ps1 -Configuration Release -NoBuild -Scope FULL -AutoLaunch -RunAllInstalledChainsDeep -EmitReproBundle $true -FailOnMissingArtifacts -Strict` => `hard-fail: 1 chain entry blocked_environment`
+  evidence: bundle `TestResults/runs/20260304-102055/chain-matrix-summary.json` (entries=28, blocked_dependency_missing_parent=2, blocked_environment=0)
+  evidence: bundle `TestResults/runs/20260304-102055/chain-matrix-summary.json` (row `20260304-102055-chain16` / chainId `2313576303` => `classification=blocked_dependency_missing_parent`, `launchAttempted=false`, `missingParentIds=[2486018498]`)
+  evidence: bundle `TestResults/runs/20260304-102055-chain28/repro-bundle.json`
+  evidence: manual `2026-03-04` `pwsh -ExecutionPolicy Bypass -File ./tools/run-live-validation.ps1 -Configuration Release -NoBuild -Scope FULL -AutoLaunch -RunAllInstalledChainsDeep -EmitReproBundle $true -FailOnMissingArtifacts -Strict` => `completed: 28 chain entries, blocked_environment=0`
 - [x] Add app-side chain entity roster surface and hero mechanics status panel, plus payload defaults for M5 action families.
   evidence: code `src/SwfocTrainer.App/MainWindow.xaml`
   evidence: code `src/SwfocTrainer.App/ViewModels/MainViewModelLiveOpsBase.cs`
   evidence: test `tests/SwfocTrainer.Tests/App/MainViewModelM5CoverageTests.cs`
 - [x] Deterministic non-live gate remains green after M5 app/runtime updates.
-  evidence: manual `2026-03-04` `dotnet test tests/SwfocTrainer.Tests/SwfocTrainer.Tests.csproj -c Release --no-build --filter "FullyQualifiedName!~SwfocTrainer.Tests.Profiles.Live&FullyQualifiedName!~RuntimeAttachSmokeTests"` => `Passed: 537`
+  evidence: manual `2026-03-04` `dotnet test tests/SwfocTrainer.Tests/SwfocTrainer.Tests.csproj -c Release --no-build --filter "FullyQualifiedName!~SwfocTrainer.Tests.Profiles.Live&FullyQualifiedName!~RuntimeAttachSmokeTests"` => `Passed: 666`
 - [ ] M5 strict coverage closure to `100/100` for handwritten `src/**` scope remains open.
-  evidence: manual `2026-03-04` `pwsh -ExecutionPolicy Bypass -File ./tools/quality/assert-dotnet-coverage.ps1 -CoveragePath TestResults/coverage/cobertura.xml -MinLine 100 -MinBranch 100 -Scope src` => `failed (line=61.22, branch=51.69)`
+  evidence: manual `2026-03-04` `pwsh -ExecutionPolicy Bypass -File ./tools/quality/assert-dotnet-coverage.ps1 -CoveragePath TestResults/coverage/cobertura.xml -MinLine 100 -MinBranch 100 -Scope src` => `failed (line=72.28, branch=59.95)`
 - [ ] M5 helper ingress still lacks proven in-process game mutation verification path for spawn/build/allegiance operations and remains fail-closed target for completion.
   evidence: code `native/SwfocExtender.Plugins/src/HelperLuaPlugin.cpp`
 
@@ -232,3 +235,7 @@ Reliability rule for runtime/mod tasks:
   evidence: tool `tools/research/run-capability-intel.ps1`
   evidence: tool `tools/validate-binary-fingerprint.ps1`
   evidence: tool `tools/validate-signature-pack.ps1`
+
+
+
+
