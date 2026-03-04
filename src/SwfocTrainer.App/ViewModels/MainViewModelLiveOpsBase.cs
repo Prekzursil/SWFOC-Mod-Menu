@@ -264,6 +264,17 @@ public abstract class MainViewModelLiveOpsBase : MainViewModelBindableMembersBas
     private async Task RefreshRosterAndHeroSurfaceAsync(string profileId)
     {
         var profile = await _profiles.ResolveInheritedProfileAsync(profileId);
+        if (profile is null)
+        {
+            EntityRoster.Clear();
+            HeroSupportsRespawn = "false";
+            HeroSupportsPermadeath = "false";
+            HeroSupportsRescue = "false";
+            HeroDefaultRespawnTime = UnknownValue;
+            HeroDuplicatePolicy = UnknownValue;
+            return;
+        }
+
         IReadOnlyDictionary<string, IReadOnlyList<string>>? catalog = null;
         try
         {
@@ -282,8 +293,11 @@ public abstract class MainViewModelLiveOpsBase : MainViewModelBindableMembersBas
         TrainerProfile profile,
         IReadOnlyDictionary<string, IReadOnlyList<string>>? catalog)
     {
+        ArgumentNullException.ThrowIfNull(profile);
+
         EntityRoster.Clear();
-        var rows = MainViewModelRosterHelpers.BuildEntityRoster(catalog, profile.Id, profile.SteamWorkshopId);
+        var profileId = profile.Id ?? string.Empty;
+        var rows = MainViewModelRosterHelpers.BuildEntityRoster(catalog, profileId, profile.SteamWorkshopId);
         foreach (var row in rows)
         {
             EntityRoster.Add(row);
@@ -292,6 +306,8 @@ public abstract class MainViewModelLiveOpsBase : MainViewModelBindableMembersBas
 
     private void RefreshHeroMechanicsSurface(TrainerProfile profile)
     {
+        ArgumentNullException.ThrowIfNull(profile);
+
         var metadata = profile.Metadata;
         var supportsRespawn = SupportsHeroRespawn(profile);
         var supportsPermadeath = TryReadBoolMetadata(metadata, "supports_hero_permadeath");
@@ -308,8 +324,14 @@ public abstract class MainViewModelLiveOpsBase : MainViewModelBindableMembersBas
 
     private static bool SupportsHeroRespawn(TrainerProfile profile)
     {
-        return profile.Actions.ContainsKey("set_hero_respawn_timer") ||
-               profile.Actions.ContainsKey("edit_hero_state");
+        var actions = profile.Actions;
+        if (actions is null)
+        {
+            return false;
+        }
+
+        return actions.ContainsKey("set_hero_respawn_timer") ||
+               actions.ContainsKey("edit_hero_state");
     }
 
     private static string ResolveDefaultHeroRespawn(IReadOnlyDictionary<string, string>? metadata)
@@ -363,12 +385,13 @@ public abstract class MainViewModelLiveOpsBase : MainViewModelBindableMembersBas
         SelectedUnitTransactions.Clear();
         foreach (var item in _selectedUnitTransactions.History.OrderByDescending(x => x.Timestamp))
         {
+            var appliedActions = item.AppliedActions ?? Array.Empty<string>();
             SelectedUnitTransactions.Add(new SelectedUnitTransactionViewItem(
                 item.TransactionId,
                 item.Timestamp,
                 item.IsRollback,
                 item.Message,
-                string.Join(",", item.AppliedActions)));
+                string.Join(",", appliedActions)));
         }
     }
 

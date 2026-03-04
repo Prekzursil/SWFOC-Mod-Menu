@@ -8,6 +8,21 @@ internal static class MainViewModelPayloadHelpers
     private const string PayloadPlacementModeKey = "placementMode";
     private const string PayloadAllowCrossFactionKey = "allowCrossFaction";
     private const string PayloadForceOverrideKey = "forceOverride";
+    private const string PayloadPopulationPolicyKey = "populationPolicy";
+    private const string PayloadPersistencePolicyKey = "persistencePolicy";
+
+    private static readonly IReadOnlyDictionary<string, Action<JsonObject>> ActionPayloadDefaults =
+        new Dictionary<string, Action<JsonObject>>(StringComparer.OrdinalIgnoreCase)
+        {
+            ["spawn_tactical_entity"] = ApplySpawnTacticalDefaults,
+            ["spawn_galactic_entity"] = ApplySpawnGalacticDefaults,
+            ["place_planet_building"] = ApplyPlanetBuildingDefaults,
+            ["transfer_fleet_safe"] = ApplyTransferFleetDefaults,
+            ["flip_planet_owner"] = ApplyPlanetFlipDefaults,
+            ["switch_player_faction"] = ApplySwitchPlayerFactionDefaults,
+            ["edit_hero_state"] = ApplyEditHeroStateDefaults,
+            ["create_hero_variant"] = ApplyCreateHeroVariantDefaults
+        };
 
     internal static JsonObject BuildRequiredPayloadTemplate(
         string actionId,
@@ -15,6 +30,10 @@ internal static class MainViewModelPayloadHelpers
         IReadOnlyDictionary<string, string> defaultSymbolByActionId,
         IReadOnlyDictionary<string, string> defaultHelperHookByActionId)
     {
+        ArgumentNullException.ThrowIfNull(required);
+        ArgumentNullException.ThrowIfNull(defaultSymbolByActionId);
+        ArgumentNullException.ThrowIfNull(defaultHelperHookByActionId);
+
         var payload = new JsonObject();
 
         foreach (var node in required)
@@ -37,6 +56,8 @@ internal static class MainViewModelPayloadHelpers
 
     internal static void ApplyActionSpecificPayloadDefaults(string actionId, JsonObject payload)
     {
+        ArgumentNullException.ThrowIfNull(payload);
+
         if (actionId.Equals(MainViewModelDefaults.ActionSetCredits, StringComparison.OrdinalIgnoreCase))
         {
             payload[MainViewModelDefaults.PayloadKeyLockCredits] = false;
@@ -48,50 +69,9 @@ internal static class MainViewModelPayloadHelpers
             payload[MainViewModelDefaults.PayloadKeyIntValue] = MainViewModelDefaults.DefaultCreditsValue;
         }
 
-        if (actionId.Equals("spawn_tactical_entity", StringComparison.OrdinalIgnoreCase))
+        if (ActionPayloadDefaults.TryGetValue(actionId, out var applyDefaults))
         {
-            payload["populationPolicy"] ??= "ForceZeroTactical";
-            payload["persistencePolicy"] ??= "EphemeralBattleOnly";
-            payload[PayloadPlacementModeKey] ??= "reinforcement_zone";
-            payload[PayloadAllowCrossFactionKey] ??= true;
-        }
-        else if (actionId.Equals("spawn_galactic_entity", StringComparison.OrdinalIgnoreCase))
-        {
-            payload["populationPolicy"] ??= "Normal";
-            payload["persistencePolicy"] ??= "PersistentGalactic";
-            payload[PayloadAllowCrossFactionKey] ??= true;
-        }
-        else if (actionId.Equals("place_planet_building", StringComparison.OrdinalIgnoreCase))
-        {
-            payload[PayloadPlacementModeKey] ??= "safe_rules";
-            payload[PayloadAllowCrossFactionKey] ??= true;
-            payload[PayloadForceOverrideKey] ??= false;
-        }
-        else if (actionId.Equals("transfer_fleet_safe", StringComparison.OrdinalIgnoreCase))
-        {
-            payload[PayloadPlacementModeKey] ??= "safe_transfer";
-            payload[PayloadAllowCrossFactionKey] ??= true;
-            payload[PayloadForceOverrideKey] ??= false;
-        }
-        else if (actionId.Equals("flip_planet_owner", StringComparison.OrdinalIgnoreCase))
-        {
-            payload["planetFlipMode"] ??= "convert_everything";
-            payload[PayloadAllowCrossFactionKey] ??= true;
-            payload[PayloadForceOverrideKey] ??= false;
-        }
-        else if (actionId.Equals("switch_player_faction", StringComparison.OrdinalIgnoreCase))
-        {
-            payload[PayloadAllowCrossFactionKey] ??= true;
-        }
-        else if (actionId.Equals("edit_hero_state", StringComparison.OrdinalIgnoreCase))
-        {
-            payload["desiredState"] ??= "alive";
-            payload["allowDuplicate"] ??= false;
-        }
-        else if (actionId.Equals("create_hero_variant", StringComparison.OrdinalIgnoreCase))
-        {
-            payload["variantGenerationMode"] ??= "patch_mod_overlay";
-            payload[PayloadAllowCrossFactionKey] ??= true;
+            applyDefaults(payload);
         }
     }
 
@@ -144,5 +124,63 @@ internal static class MainViewModelPayloadHelpers
             "value" => JsonValue.Create(string.Empty),
             _ => JsonValue.Create(string.Empty)
         };
+    }
+
+    private static void ApplySpawnTacticalDefaults(JsonObject payload)
+    {
+        ApplySpawnDefaults(payload, "ForceZeroTactical", "EphemeralBattleOnly");
+        payload[PayloadPlacementModeKey] ??= "reinforcement_zone";
+    }
+
+    private static void ApplySpawnGalacticDefaults(JsonObject payload)
+    {
+        ApplySpawnDefaults(payload, "Normal", "PersistentGalactic");
+    }
+
+    private static void ApplyPlanetBuildingDefaults(JsonObject payload)
+    {
+        payload[PayloadPlacementModeKey] ??= "safe_rules";
+        payload[PayloadAllowCrossFactionKey] ??= true;
+        payload[PayloadForceOverrideKey] ??= false;
+    }
+
+    private static void ApplyTransferFleetDefaults(JsonObject payload)
+    {
+        payload[PayloadPlacementModeKey] ??= "safe_transfer";
+        payload[PayloadAllowCrossFactionKey] ??= true;
+        payload[PayloadForceOverrideKey] ??= false;
+    }
+
+    private static void ApplyPlanetFlipDefaults(JsonObject payload)
+    {
+        payload["planetFlipMode"] ??= "convert_everything";
+        payload[PayloadAllowCrossFactionKey] ??= true;
+        payload[PayloadForceOverrideKey] ??= false;
+    }
+
+    private static void ApplySwitchPlayerFactionDefaults(JsonObject payload)
+    {
+        payload[PayloadAllowCrossFactionKey] ??= true;
+    }
+
+    private static void ApplyEditHeroStateDefaults(JsonObject payload)
+    {
+        payload["desiredState"] ??= "alive";
+        payload["allowDuplicate"] ??= false;
+    }
+
+    private static void ApplyCreateHeroVariantDefaults(JsonObject payload)
+    {
+        payload["variantGenerationMode"] ??= "patch_mod_overlay";
+        payload[PayloadAllowCrossFactionKey] ??= true;
+    }
+
+    private static void ApplySpawnDefaults(JsonObject payload, string populationPolicy, string persistencePolicy)
+    {
+        ArgumentNullException.ThrowIfNull(payload);
+
+        payload[PayloadPopulationPolicyKey] ??= populationPolicy;
+        payload[PayloadPersistencePolicyKey] ??= persistencePolicy;
+        payload[PayloadAllowCrossFactionKey] ??= true;
     }
 }

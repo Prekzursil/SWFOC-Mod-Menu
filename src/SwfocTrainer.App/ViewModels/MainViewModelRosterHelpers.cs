@@ -16,9 +16,12 @@ internal static class MainViewModelRosterHelpers
         string selectedProfileId,
         string? selectedWorkshopId)
     {
-        if (catalog is null ||
-            !catalog.TryGetValue("entity_catalog", out var entries) ||
-            entries.Count == 0)
+        if (catalog is null)
+        {
+            return Array.Empty<RosterEntityViewItem>();
+        }
+
+        if (!catalog.TryGetValue("entity_catalog", out var entries) || entries is null || entries.Count == 0)
         {
             return Array.Empty<RosterEntityViewItem>();
         }
@@ -89,39 +92,61 @@ internal static class MainViewModelRosterHelpers
     private static bool TryResolveEntityId(IReadOnlyList<string> segments, out string entityId)
     {
         entityId = string.Empty;
-        if (segments.Count < 2 || string.IsNullOrWhiteSpace(segments[1]))
+        if (segments.Count < 2)
         {
             return false;
         }
 
-        entityId = segments[1].Trim();
+        var segment = segments[1];
+        if (string.IsNullOrWhiteSpace(segment))
+        {
+            return false;
+        }
+
+        entityId = segment.Trim();
         return true;
     }
 
     private static string ResolveSegmentOrDefault(IReadOnlyList<string> segments, int index, string fallback)
     {
-        if (index >= segments.Count || string.IsNullOrWhiteSpace(segments[index]))
+        if (index >= segments.Count)
         {
             return fallback;
         }
 
-        return segments[index].Trim();
+        var segment = segments[index];
+        if (string.IsNullOrWhiteSpace(segment))
+        {
+            return fallback;
+        }
+
+        return segment.Trim();
     }
 
     private static RosterEntityCompatibilityState ResolveCompatibilityState(string sourceWorkshopId, string? selectedWorkshopId)
     {
-        if (string.IsNullOrWhiteSpace(sourceWorkshopId) ||
-            string.IsNullOrWhiteSpace(selectedWorkshopId) ||
-            sourceWorkshopId.Equals(selectedWorkshopId, StringComparison.OrdinalIgnoreCase))
+        if (string.IsNullOrWhiteSpace(sourceWorkshopId))
         {
             return RosterEntityCompatibilityState.Native;
         }
 
-        return RosterEntityCompatibilityState.RequiresTransplant;
+        if (string.IsNullOrWhiteSpace(selectedWorkshopId))
+        {
+            return RosterEntityCompatibilityState.Native;
+        }
+
+        return sourceWorkshopId.Equals(selectedWorkshopId, StringComparison.OrdinalIgnoreCase)
+            ? RosterEntityCompatibilityState.Native
+            : RosterEntityCompatibilityState.RequiresTransplant;
     }
 
     private static string ResolveDefaultFaction(string kind)
     {
+        if (string.IsNullOrWhiteSpace(kind))
+        {
+            return DefaultFactionEmpire;
+        }
+
         if (kind.Equals("Hero", StringComparison.OrdinalIgnoreCase))
         {
             return DefaultFactionHeroOwner;

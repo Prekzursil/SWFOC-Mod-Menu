@@ -23,6 +23,30 @@ public sealed class ModMechanicDetectionService : IModMechanicDetectionService
     private const string ActionEditHeroState = "edit_hero_state";
     private const string ActionCreateHeroVariant = "create_hero_variant";
 
+    private static readonly IReadOnlySet<string> SpawnRosterActionIds = new HashSet<string>(StringComparer.OrdinalIgnoreCase)
+    {
+        ActionSpawnUnitHelper,
+        ActionSpawnContextEntity,
+        ActionSpawnTacticalEntity,
+        ActionSpawnGalacticEntity,
+        ActionTransferFleetSafe,
+        ActionEditHeroState,
+        ActionCreateHeroVariant
+    };
+
+    private static readonly IReadOnlySet<string> BuildingRosterActionIds = new HashSet<string>(StringComparer.OrdinalIgnoreCase)
+    {
+        ActionPlacePlanetBuilding,
+        ActionFlipPlanetOwner
+    };
+
+    private static readonly IReadOnlySet<string> ContextFactionActionIds = new HashSet<string>(StringComparer.OrdinalIgnoreCase)
+    {
+        ActionSetContextFaction,
+        ActionSetContextAllegiance,
+        ActionSwitchPlayerFaction
+    };
+
     private readonly ITransplantCompatibilityService? _transplantCompatibilityService;
 
     public ModMechanicDetectionService()
@@ -84,14 +108,15 @@ public sealed class ModMechanicDetectionService : IModMechanicDetectionService
         IReadOnlyList<RosterEntityRecord> rosterEntities,
         CancellationToken cancellationToken)
     {
-        if (_transplantCompatibilityService is null)
+        var transplantCompatibilityService = _transplantCompatibilityService;
+        if (transplantCompatibilityService is null)
         {
             return null;
         }
 
         try
         {
-            return await _transplantCompatibilityService
+            return await transplantCompatibilityService
                 .ValidateAsync(profile.Id, activeWorkshopIds, rosterEntities, cancellationToken);
         }
         catch (OperationCanceledException)
@@ -260,6 +285,17 @@ public sealed class ModMechanicDetectionService : IModMechanicDetectionService
 
     private static bool TryEvaluateRosterGate(ActionEvaluationContext context, out ModMechanicSupport support)
     {
+        if (string.IsNullOrWhiteSpace(context.ActionId))
+        {
+            support = new ModMechanicSupport(
+                ActionId: string.Empty,
+                Supported: false,
+                ReasonCode: RuntimeReasonCode.CAPABILITY_REQUIRED_MISSING,
+                Message: "Action id is missing for roster gate evaluation.",
+                Confidence: 0.99d);
+            return true;
+        }
+
         if (RequiresSpawnRoster(context.ActionId) &&
             (!HasCatalogEntries(context.Catalog, UnitCatalogKey) || !HasCatalogEntries(context.Catalog, FactionCatalogKey)))
         {
@@ -331,7 +367,8 @@ public sealed class ModMechanicDetectionService : IModMechanicDetectionService
 
     private static bool TryEvaluateSymbolGate(ActionEvaluationContext context, out ModMechanicSupport support)
     {
-        if (!ActionSymbolRegistry.TryGetSymbol(context.ActionId, out var symbol))
+        if (!ActionSymbolRegistry.TryGetSymbol(context.ActionId, out var symbol) ||
+            string.IsNullOrWhiteSpace(symbol))
         {
             support = default!;
             return false;
@@ -357,7 +394,7 @@ public sealed class ModMechanicDetectionService : IModMechanicDetectionService
 
     private static bool HasCatalogEntries(IReadOnlyDictionary<string, IReadOnlyList<string>>? catalog, string key)
     {
-        return catalog is not null && catalog.TryGetValue(key, out var values) && values.Count > 0;
+        return catalog is not null && catalog.TryGetValue(key, out var values) && values is not null && values.Count > 0;
     }
 
     private static HeroMechanicsProfile ResolveHeroMechanicsProfile(TrainerProfile profile, AttachSession session)
@@ -385,22 +422,30 @@ public sealed class ModMechanicDetectionService : IModMechanicDetectionService
 
     private static bool SupportsHeroRespawn(TrainerProfile profile)
     {
-        return profile.Actions.ContainsKey("set_hero_respawn_timer") ||
-               profile.Actions.ContainsKey("set_hero_state_helper") ||
-               profile.Actions.ContainsKey("toggle_roe_respawn_helper") ||
-               profile.Actions.ContainsKey("edit_hero_state");
+        var actions = profile.Actions;
+        if (actions is null)
+        {
+            return false;
+        }
+
+        return actions.ContainsKey("set_hero_respawn_timer") ||
+               actions.ContainsKey("set_hero_state_helper") ||
+               actions.ContainsKey("toggle_roe_respawn_helper") ||
+               actions.ContainsKey("edit_hero_state");
     }
 
     private static bool SupportsHeroRescue(TrainerProfile profile)
     {
+        var profileId = profile.Id ?? string.Empty;
         return ReadBoolMetadata(profile.Metadata, "supports_hero_rescue") ||
-               profile.Id.Contains("aotr", StringComparison.OrdinalIgnoreCase);
+               profileId.Contains("aotr", StringComparison.OrdinalIgnoreCase);
     }
 
     private static bool SupportsHeroPermadeath(TrainerProfile profile)
     {
+        var profileId = profile.Id ?? string.Empty;
         return ReadBoolMetadata(profile.Metadata, "supports_hero_permadeath") ||
-               profile.Id.Contains("roe", StringComparison.OrdinalIgnoreCase);
+               profileId.Contains("roe", StringComparison.OrdinalIgnoreCase);
     }
 
     private static int? ResolveDefaultRespawnTime(TrainerProfile profile, AttachSession session, bool supportsRespawn)
@@ -618,27 +663,14 @@ public sealed class ModMechanicDetectionService : IModMechanicDetectionService
 
     private static RosterEntityKind ParseEntityKind(string value)
     {
-        if (value.Equals("Hero", StringComparison.OrdinalIgnoreCase))
+        return value switch
         {
-            return RosterEntityKind.Hero;
-        }
-
-        if (value.Equals("Building", StringComparison.OrdinalIgnoreCase))
-        {
-            return RosterEntityKind.Building;
-        }
-
-        if (value.Equals("SpaceStructure", StringComparison.OrdinalIgnoreCase))
-        {
-            return RosterEntityKind.SpaceStructure;
-        }
-
-        if (value.Equals("AbilityCarrier", StringComparison.OrdinalIgnoreCase))
-        {
-            return RosterEntityKind.AbilityCarrier;
-        }
-
-        return RosterEntityKind.Unit;
+            var x when x.Equals("Hero", StringComparison.OrdinalIgnoreCase) => RosterEntityKind.Hero,
+            var x when x.Equals("Building", StringComparison.OrdinalIgnoreCase) => RosterEntityKind.Building,
+            var x when x.Equals("SpaceStructure", StringComparison.OrdinalIgnoreCase) => RosterEntityKind.SpaceStructure,
+            var x when x.Equals("AbilityCarrier", StringComparison.OrdinalIgnoreCase) => RosterEntityKind.AbilityCarrier,
+            _ => RosterEntityKind.Unit
+        };
     }
 
     private static IReadOnlySet<string> ParseCsvSet(IReadOnlyDictionary<string, string>? metadata, string key)
@@ -673,26 +705,17 @@ public sealed class ModMechanicDetectionService : IModMechanicDetectionService
 
     private static bool RequiresSpawnRoster(string actionId)
     {
-        return actionId.Equals(ActionSpawnUnitHelper, StringComparison.OrdinalIgnoreCase) ||
-               actionId.Equals(ActionSpawnContextEntity, StringComparison.OrdinalIgnoreCase) ||
-               actionId.Equals(ActionSpawnTacticalEntity, StringComparison.OrdinalIgnoreCase) ||
-               actionId.Equals(ActionSpawnGalacticEntity, StringComparison.OrdinalIgnoreCase) ||
-               actionId.Equals(ActionTransferFleetSafe, StringComparison.OrdinalIgnoreCase) ||
-               actionId.Equals(ActionEditHeroState, StringComparison.OrdinalIgnoreCase) ||
-               actionId.Equals(ActionCreateHeroVariant, StringComparison.OrdinalIgnoreCase);
+        return SpawnRosterActionIds.Contains(actionId);
     }
 
     private static bool RequiresBuildingRoster(string actionId)
     {
-        return actionId.Equals(ActionPlacePlanetBuilding, StringComparison.OrdinalIgnoreCase) ||
-               actionId.Equals(ActionFlipPlanetOwner, StringComparison.OrdinalIgnoreCase);
+        return BuildingRosterActionIds.Contains(actionId);
     }
 
     private static bool IsContextFactionAction(string actionId)
     {
-        return actionId.Equals(ActionSetContextFaction, StringComparison.OrdinalIgnoreCase) ||
-               actionId.Equals(ActionSetContextAllegiance, StringComparison.OrdinalIgnoreCase) ||
-               actionId.Equals(ActionSwitchPlayerFaction, StringComparison.OrdinalIgnoreCase);
+        return ContextFactionActionIds.Contains(actionId);
     }
 
     private static bool IsEntityOperationAction(string actionId)

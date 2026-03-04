@@ -71,6 +71,122 @@ public sealed class NamedPipeHelperBridgeBackend : IHelperBridgeBackend
         ActionCreateHeroVariant
     ];
 
+    private static readonly IReadOnlyDictionary<string, string> DefaultOperationPolicies =
+        new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
+        {
+            [ActionSpawnContextEntity] = "tactical_ephemeral_zero_pop",
+            [ActionSpawnTacticalEntity] = "tactical_ephemeral_zero_pop",
+            [ActionSpawnGalacticEntity] = "galactic_persistent_spawn",
+            [ActionPlacePlanetBuilding] = "galactic_building_safe_rules",
+            [ActionTransferFleetSafe] = "fleet_transfer_safe",
+            [ActionFlipPlanetOwner] = "planet_flip_transactional",
+            [ActionSwitchPlayerFaction] = "switch_player_faction",
+            [ActionEditHeroState] = "hero_state_adaptive",
+            [ActionCreateHeroVariant] = "hero_variant_patch_mod"
+        };
+
+    private static readonly IReadOnlyDictionary<string, string> DefaultMutationIntents =
+        new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
+        {
+            [ActionSpawnUnitHelper] = "spawn_entity",
+            [ActionSpawnContextEntity] = "spawn_entity",
+            [ActionSpawnTacticalEntity] = "spawn_entity",
+            [ActionSpawnGalacticEntity] = "spawn_entity",
+            [ActionPlacePlanetBuilding] = "place_building",
+            [ActionSetContextAllegiance] = "set_context_allegiance",
+            [ActionSetContextFaction] = "set_context_allegiance",
+            [ActionSetHeroStateHelper] = "edit_hero_state",
+            [ActionEditHeroState] = "edit_hero_state",
+            [ActionToggleRoeRespawnHelper] = "toggle_respawn_policy",
+            [ActionTransferFleetSafe] = "transfer_fleet_safe",
+            [ActionFlipPlanetOwner] = "flip_planet_owner",
+            [ActionSwitchPlayerFaction] = "switch_player_faction",
+            [ActionCreateHeroVariant] = "create_hero_variant"
+        };
+
+    private static readonly IReadOnlyDictionary<string, HelperBridgeOperationKind> DefaultOperationKinds =
+        new Dictionary<string, HelperBridgeOperationKind>(StringComparer.OrdinalIgnoreCase)
+        {
+            [ActionSpawnUnitHelper] = HelperBridgeOperationKind.SpawnUnitHelper,
+            [ActionSpawnContextEntity] = HelperBridgeOperationKind.SpawnContextEntity,
+            [ActionSpawnTacticalEntity] = HelperBridgeOperationKind.SpawnTacticalEntity,
+            [ActionSpawnGalacticEntity] = HelperBridgeOperationKind.SpawnGalacticEntity,
+            [ActionPlacePlanetBuilding] = HelperBridgeOperationKind.PlacePlanetBuilding,
+            [ActionSetContextAllegiance] = HelperBridgeOperationKind.SetContextAllegiance,
+            [ActionSetContextFaction] = HelperBridgeOperationKind.SetContextAllegiance,
+            [ActionTransferFleetSafe] = HelperBridgeOperationKind.TransferFleetSafe,
+            [ActionFlipPlanetOwner] = HelperBridgeOperationKind.FlipPlanetOwner,
+            [ActionSwitchPlayerFaction] = HelperBridgeOperationKind.SwitchPlayerFaction,
+            [ActionEditHeroState] = HelperBridgeOperationKind.EditHeroState,
+            [ActionCreateHeroVariant] = HelperBridgeOperationKind.CreateHeroVariant,
+            [ActionSetHeroStateHelper] = HelperBridgeOperationKind.SetHeroStateHelper,
+            [ActionToggleRoeRespawnHelper] = HelperBridgeOperationKind.ToggleRoeRespawnHelper
+        };
+
+    private static readonly IReadOnlyDictionary<string, string> DefaultHelperEntryPoints =
+        new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
+        {
+            [ActionSpawnContextEntity] = "SWFOC_Trainer_Spawn_Context",
+            [ActionSpawnTacticalEntity] = "SWFOC_Trainer_Spawn_Context",
+            [ActionSpawnGalacticEntity] = "SWFOC_Trainer_Spawn_Context",
+            [ActionPlacePlanetBuilding] = "SWFOC_Trainer_Place_Building",
+            [ActionSetContextAllegiance] = "SWFOC_Trainer_Set_Context_Allegiance",
+            [ActionSetContextFaction] = "SWFOC_Trainer_Set_Context_Allegiance",
+            [ActionTransferFleetSafe] = "SWFOC_Trainer_Transfer_Fleet_Safe",
+            [ActionFlipPlanetOwner] = "SWFOC_Trainer_Flip_Planet_Owner",
+            [ActionSwitchPlayerFaction] = "SWFOC_Trainer_Switch_Player_Faction",
+            [ActionEditHeroState] = "SWFOC_Trainer_Edit_Hero_State",
+            [ActionCreateHeroVariant] = "SWFOC_Trainer_Create_Hero_Variant"
+        };
+
+    private static readonly IReadOnlyDictionary<string, Action<JsonObject>> ActionSpecificPayloadDefaults =
+        new Dictionary<string, Action<JsonObject>>(StringComparer.OrdinalIgnoreCase)
+        {
+            [ActionSpawnContextEntity] = static payload =>
+            {
+                ApplySpawnDefaults(payload, populationPolicy: "ForceZeroTactical", persistencePolicy: "EphemeralBattleOnly");
+                payload[PayloadPlacementMode] ??= "reinforcement_zone";
+            },
+            [ActionSpawnTacticalEntity] = static payload =>
+            {
+                ApplySpawnDefaults(payload, populationPolicy: "ForceZeroTactical", persistencePolicy: "EphemeralBattleOnly");
+                payload[PayloadPlacementMode] ??= "reinforcement_zone";
+            },
+            [ActionSpawnGalacticEntity] = static payload =>
+            {
+                ApplySpawnDefaults(payload, populationPolicy: "Normal", persistencePolicy: "PersistentGalactic");
+            },
+            [ActionPlacePlanetBuilding] = static payload =>
+            {
+                payload[PayloadPlacementMode] ??= "safe_rules";
+                payload[PayloadForceOverride] ??= false;
+                payload[PayloadAllowCrossFaction] ??= true;
+            },
+            [ActionTransferFleetSafe] = static payload =>
+            {
+                payload[PayloadAllowCrossFaction] ??= true;
+                payload[PayloadPlacementMode] ??= "safe_transfer";
+                payload[PayloadForceOverride] ??= false;
+            },
+            [ActionFlipPlanetOwner] = static payload =>
+            {
+                payload[PayloadAllowCrossFaction] ??= true;
+                payload["planetFlipMode"] ??= "convert_everything";
+                payload[PayloadForceOverride] ??= false;
+            },
+            [ActionSwitchPlayerFaction] = static payload => payload[PayloadAllowCrossFaction] ??= true,
+            [ActionEditHeroState] = static payload =>
+            {
+                payload["heroStatePolicy"] ??= "mod_adaptive";
+                payload[PayloadAllowCrossFaction] ??= true;
+            },
+            [ActionCreateHeroVariant] = static payload =>
+            {
+                payload["variantGenerationMode"] ??= "patch_mod_overlay";
+                payload[PayloadAllowCrossFaction] ??= true;
+            }
+        };
+
     private readonly IExecutionBackend _backend;
 
     public NamedPipeHelperBridgeBackend(IExecutionBackend backend)
@@ -97,7 +213,10 @@ public sealed class NamedPipeHelperBridgeBackend : IHelperBridgeBackend
 
     public async Task<HelperBridgeExecutionResult> ExecuteAsync(HelperBridgeRequest request, CancellationToken cancellationToken)
     {
-        var probe = await ProbeForExecutionAsync(request, cancellationToken);
+        ArgumentNullException.ThrowIfNull(request);
+
+        var probe = await ProbeForExecutionAsync(request, cancellationToken) ??
+                    CreateProcessUnavailableProbeResult(request.Process.ProcessId);
         if (!probe.Available)
         {
             return CreateProbeFailureExecutionResult(probe);
@@ -152,6 +271,8 @@ public sealed class NamedPipeHelperBridgeBackend : IHelperBridgeBackend
 
     private static HelperBridgeProbeResult CreateCapabilityUnavailableProbeResult(CapabilityReport capabilityReport)
     {
+        ArgumentNullException.ThrowIfNull(capabilityReport);
+
         return new HelperBridgeProbeResult(
             Available: false,
             ReasonCode: RuntimeReasonCode.HELPER_BRIDGE_UNAVAILABLE,
@@ -167,6 +288,9 @@ public sealed class NamedPipeHelperBridgeBackend : IHelperBridgeBackend
 
     private static HelperBridgeProbeResult CreateReadyProbeResult(CapabilityReport capabilityReport, IReadOnlyCollection<string> availableFeatures)
     {
+        ArgumentNullException.ThrowIfNull(capabilityReport);
+        ArgumentNullException.ThrowIfNull(availableFeatures);
+
         return new HelperBridgeProbeResult(
             Available: true,
             ReasonCode: RuntimeReasonCode.CAPABILITY_PROBE_PASS,
@@ -184,11 +308,13 @@ public sealed class NamedPipeHelperBridgeBackend : IHelperBridgeBackend
     {
         var hooks = request.Hook is null ? Array.Empty<HelperHookSpec>() : new[] { request.Hook };
         var probeRequest = new HelperBridgeProbeRequest(request.ActionRequest.ProfileId, request.Process, hooks);
-        return await ProbeAsync(probeRequest, cancellationToken);
+        return await ProbeAsync(probeRequest, cancellationToken) ?? CreateProcessUnavailableProbeResult(request.Process.ProcessId);
     }
 
     private static HelperBridgeExecutionResult CreateProbeFailureExecutionResult(HelperBridgeProbeResult probe)
     {
+        ArgumentNullException.ThrowIfNull(probe);
+
         return new HelperBridgeExecutionResult(
             Succeeded: false,
             ReasonCode: probe.ReasonCode,
@@ -434,122 +560,30 @@ public sealed class NamedPipeHelperBridgeBackend : IHelperBridgeBackend
 
     private static string ResolveDefaultOperationPolicy(string actionId)
     {
-        return actionId switch
-        {
-            var value when value.Equals(ActionSpawnContextEntity, StringComparison.OrdinalIgnoreCase) ||
-                       value.Equals(ActionSpawnTacticalEntity, StringComparison.OrdinalIgnoreCase) => "tactical_ephemeral_zero_pop",
-            var value when value.Equals(ActionSpawnGalacticEntity, StringComparison.OrdinalIgnoreCase) => "galactic_persistent_spawn",
-            var value when value.Equals(ActionPlacePlanetBuilding, StringComparison.OrdinalIgnoreCase) => "galactic_building_safe_rules",
-            var value when value.Equals(ActionTransferFleetSafe, StringComparison.OrdinalIgnoreCase) => "fleet_transfer_safe",
-            var value when value.Equals(ActionFlipPlanetOwner, StringComparison.OrdinalIgnoreCase) => "planet_flip_transactional",
-            var value when value.Equals(ActionSwitchPlayerFaction, StringComparison.OrdinalIgnoreCase) => "switch_player_faction",
-            var value when value.Equals(ActionEditHeroState, StringComparison.OrdinalIgnoreCase) => "hero_state_adaptive",
-            var value when value.Equals(ActionCreateHeroVariant, StringComparison.OrdinalIgnoreCase) => "hero_variant_patch_mod",
-            _ => "helper_operation_default"
-        };
+        return DefaultOperationPolicies.TryGetValue(actionId, out var policy)
+            ? policy
+            : "helper_operation_default";
     }
 
     private static string ResolveDefaultMutationIntent(string actionId)
     {
-        return actionId switch
-        {
-            var value when value.Equals(ActionSpawnUnitHelper, StringComparison.OrdinalIgnoreCase) ||
-                       value.Equals(ActionSpawnContextEntity, StringComparison.OrdinalIgnoreCase) ||
-                       value.Equals(ActionSpawnTacticalEntity, StringComparison.OrdinalIgnoreCase) ||
-                       value.Equals(ActionSpawnGalacticEntity, StringComparison.OrdinalIgnoreCase) => "spawn_entity",
-            var value when value.Equals(ActionPlacePlanetBuilding, StringComparison.OrdinalIgnoreCase) => "place_building",
-            var value when value.Equals(ActionSetContextAllegiance, StringComparison.OrdinalIgnoreCase) ||
-                       value.Equals(ActionSetContextFaction, StringComparison.OrdinalIgnoreCase) => "set_context_allegiance",
-            var value when value.Equals(ActionSetHeroStateHelper, StringComparison.OrdinalIgnoreCase) ||
-                       value.Equals(ActionEditHeroState, StringComparison.OrdinalIgnoreCase) => "edit_hero_state",
-            var value when value.Equals(ActionToggleRoeRespawnHelper, StringComparison.OrdinalIgnoreCase) => "toggle_respawn_policy",
-            var value when value.Equals(ActionTransferFleetSafe, StringComparison.OrdinalIgnoreCase) => "transfer_fleet_safe",
-            var value when value.Equals(ActionFlipPlanetOwner, StringComparison.OrdinalIgnoreCase) => "flip_planet_owner",
-            var value when value.Equals(ActionSwitchPlayerFaction, StringComparison.OrdinalIgnoreCase) => "switch_player_faction",
-            var value when value.Equals(ActionCreateHeroVariant, StringComparison.OrdinalIgnoreCase) => "create_hero_variant",
-            _ => "unknown"
-        };
+        return DefaultMutationIntents.TryGetValue(actionId, out var intent)
+            ? intent
+            : "unknown";
     }
 
     private static HelperBridgeOperationKind ResolveOperationKind(string actionId)
     {
-        return actionId switch
-        {
-            var value when value.Equals(ActionSpawnUnitHelper, StringComparison.OrdinalIgnoreCase) => HelperBridgeOperationKind.SpawnUnitHelper,
-            var value when value.Equals(ActionSpawnContextEntity, StringComparison.OrdinalIgnoreCase) => HelperBridgeOperationKind.SpawnContextEntity,
-            var value when value.Equals(ActionSpawnTacticalEntity, StringComparison.OrdinalIgnoreCase) => HelperBridgeOperationKind.SpawnTacticalEntity,
-            var value when value.Equals(ActionSpawnGalacticEntity, StringComparison.OrdinalIgnoreCase) => HelperBridgeOperationKind.SpawnGalacticEntity,
-            var value when value.Equals(ActionPlacePlanetBuilding, StringComparison.OrdinalIgnoreCase) => HelperBridgeOperationKind.PlacePlanetBuilding,
-            var value when value.Equals(ActionSetContextAllegiance, StringComparison.OrdinalIgnoreCase) ||
-                       value.Equals(ActionSetContextFaction, StringComparison.OrdinalIgnoreCase) => HelperBridgeOperationKind.SetContextAllegiance,
-            var value when value.Equals(ActionTransferFleetSafe, StringComparison.OrdinalIgnoreCase) => HelperBridgeOperationKind.TransferFleetSafe,
-            var value when value.Equals(ActionFlipPlanetOwner, StringComparison.OrdinalIgnoreCase) => HelperBridgeOperationKind.FlipPlanetOwner,
-            var value when value.Equals(ActionSwitchPlayerFaction, StringComparison.OrdinalIgnoreCase) => HelperBridgeOperationKind.SwitchPlayerFaction,
-            var value when value.Equals(ActionEditHeroState, StringComparison.OrdinalIgnoreCase) => HelperBridgeOperationKind.EditHeroState,
-            var value when value.Equals(ActionCreateHeroVariant, StringComparison.OrdinalIgnoreCase) => HelperBridgeOperationKind.CreateHeroVariant,
-            var value when value.Equals(ActionSetHeroStateHelper, StringComparison.OrdinalIgnoreCase) => HelperBridgeOperationKind.SetHeroStateHelper,
-            var value when value.Equals(ActionToggleRoeRespawnHelper, StringComparison.OrdinalIgnoreCase) => HelperBridgeOperationKind.ToggleRoeRespawnHelper,
-            _ => HelperBridgeOperationKind.Unknown
-        };
+        return DefaultOperationKinds.TryGetValue(actionId, out var kind)
+            ? kind
+            : HelperBridgeOperationKind.Unknown;
     }
 
     private static void ApplyActionSpecificDefaults(string actionId, JsonObject payload)
     {
-        if (actionId.Equals(ActionSpawnContextEntity, StringComparison.OrdinalIgnoreCase) ||
-            actionId.Equals(ActionSpawnTacticalEntity, StringComparison.OrdinalIgnoreCase))
+        if (ActionSpecificPayloadDefaults.TryGetValue(actionId, out var applyDefaults))
         {
-            ApplySpawnDefaults(payload, populationPolicy: "ForceZeroTactical", persistencePolicy: "EphemeralBattleOnly");
-            payload[PayloadPlacementMode] ??= "reinforcement_zone";
-            return;
-        }
-
-        if (actionId.Equals(ActionSpawnGalacticEntity, StringComparison.OrdinalIgnoreCase))
-        {
-            ApplySpawnDefaults(payload, populationPolicy: "Normal", persistencePolicy: "PersistentGalactic");
-            return;
-        }
-
-        if (actionId.Equals(ActionPlacePlanetBuilding, StringComparison.OrdinalIgnoreCase))
-        {
-            payload[PayloadPlacementMode] ??= "safe_rules";
-            payload[PayloadForceOverride] ??= false;
-            payload[PayloadAllowCrossFaction] ??= true;
-            return;
-        }
-
-        if (actionId.Equals(ActionTransferFleetSafe, StringComparison.OrdinalIgnoreCase))
-        {
-            payload[PayloadAllowCrossFaction] ??= true;
-            payload[PayloadPlacementMode] ??= "safe_transfer";
-            payload[PayloadForceOverride] ??= false;
-            return;
-        }
-
-        if (actionId.Equals(ActionFlipPlanetOwner, StringComparison.OrdinalIgnoreCase))
-        {
-            payload[PayloadAllowCrossFaction] ??= true;
-            payload["planetFlipMode"] ??= "convert_everything";
-            payload[PayloadForceOverride] ??= false;
-            return;
-        }
-
-        if (actionId.Equals(ActionSwitchPlayerFaction, StringComparison.OrdinalIgnoreCase))
-        {
-            payload[PayloadAllowCrossFaction] ??= true;
-            return;
-        }
-
-        if (actionId.Equals(ActionEditHeroState, StringComparison.OrdinalIgnoreCase))
-        {
-            payload["heroStatePolicy"] ??= "mod_adaptive";
-            payload[PayloadAllowCrossFaction] ??= true;
-            return;
-        }
-
-        if (actionId.Equals(ActionCreateHeroVariant, StringComparison.OrdinalIgnoreCase))
-        {
-            payload["variantGenerationMode"] ??= "patch_mod_overlay";
-            payload[PayloadAllowCrossFaction] ??= true;
+            applyDefaults(payload);
         }
     }
 
@@ -622,47 +656,9 @@ public sealed class NamedPipeHelperBridgeBackend : IHelperBridgeBackend
 
     private static string ResolveDefaultHelperEntryPoint(string actionId, string? hookEntryPoint)
     {
-        if (actionId.Equals(ActionSpawnContextEntity, StringComparison.OrdinalIgnoreCase) ||
-            actionId.Equals(ActionSpawnTacticalEntity, StringComparison.OrdinalIgnoreCase) ||
-            actionId.Equals(ActionSpawnGalacticEntity, StringComparison.OrdinalIgnoreCase))
+        if (DefaultHelperEntryPoints.TryGetValue(actionId, out var entryPoint))
         {
-            return "SWFOC_Trainer_Spawn_Context";
-        }
-
-        if (actionId.Equals(ActionPlacePlanetBuilding, StringComparison.OrdinalIgnoreCase))
-        {
-            return "SWFOC_Trainer_Place_Building";
-        }
-
-        if (actionId.Equals(ActionSetContextAllegiance, StringComparison.OrdinalIgnoreCase) ||
-            actionId.Equals(ActionSetContextFaction, StringComparison.OrdinalIgnoreCase))
-        {
-            return "SWFOC_Trainer_Set_Context_Allegiance";
-        }
-
-        if (actionId.Equals(ActionTransferFleetSafe, StringComparison.OrdinalIgnoreCase))
-        {
-            return "SWFOC_Trainer_Transfer_Fleet_Safe";
-        }
-
-        if (actionId.Equals(ActionFlipPlanetOwner, StringComparison.OrdinalIgnoreCase))
-        {
-            return "SWFOC_Trainer_Flip_Planet_Owner";
-        }
-
-        if (actionId.Equals(ActionSwitchPlayerFaction, StringComparison.OrdinalIgnoreCase))
-        {
-            return "SWFOC_Trainer_Switch_Player_Faction";
-        }
-
-        if (actionId.Equals(ActionEditHeroState, StringComparison.OrdinalIgnoreCase))
-        {
-            return "SWFOC_Trainer_Edit_Hero_State";
-        }
-
-        if (actionId.Equals(ActionCreateHeroVariant, StringComparison.OrdinalIgnoreCase))
-        {
-            return "SWFOC_Trainer_Create_Hero_Variant";
+            return entryPoint;
         }
 
         return string.IsNullOrWhiteSpace(hookEntryPoint) ? string.Empty : hookEntryPoint;
