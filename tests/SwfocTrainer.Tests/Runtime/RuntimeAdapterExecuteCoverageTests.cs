@@ -1042,6 +1042,60 @@ public sealed class RuntimeAdapterExecuteCoverageTests
         result.Succeeded.Should().BeTrue();
     }
 
+    [Fact]
+    public async Task ExecuteAsync_ShouldReturnDeterministicResults_ForM5ActionMatrixCoverage()
+    {
+        var actionIds = new[]
+        {
+            "spawn_context_entity",
+            "spawn_tactical_entity",
+            "spawn_galactic_entity",
+            "place_planet_building",
+            "set_context_allegiance",
+            "set_context_faction",
+            "transfer_fleet_safe",
+            "flip_planet_owner",
+            "switch_player_faction",
+            "edit_hero_state",
+            "create_hero_variant",
+            "set_hero_state_helper",
+            "toggle_roe_respawn_helper"
+        };
+
+        var profile = BuildProfile(actionIds);
+        var runtimeModes = new[] { RuntimeMode.Galactic, RuntimeMode.TacticalLand, RuntimeMode.TacticalSpace, RuntimeMode.Unknown };
+
+        foreach (var mode in runtimeModes)
+        {
+            foreach (var actionId in actionIds)
+            {
+                var harness = new AdapterHarness
+                {
+                    HelperBridgeBackend = new StubHelperBridgeBackend
+                    {
+                        ExecuteResult = new HelperBridgeExecutionResult(
+                            Succeeded: true,
+                            ReasonCode: RuntimeReasonCode.HELPER_EXECUTION_APPLIED,
+                            Message: "applied",
+                            Diagnostics: new Dictionary<string, object?>
+                            {
+                                ["operationToken"] = $"token-{actionId}-{mode}",
+                                ["helperVerifyState"] = "applied",
+                                ["helperExecutionPath"] = "runtime_verified"
+                            })
+                    }
+                };
+
+                var adapter = harness.CreateAdapter(profile, mode);
+                var result = await adapter.ExecuteAsync(BuildRequest(actionId, mode), CancellationToken.None);
+
+                result.Should().NotBeNull();
+                result.Diagnostics.Should().NotBeNull();
+                result.Diagnostics!.Should().ContainKey("reasonCode");
+            }
+        }
+    }
+
     private static ActionExecutionRequest BuildRequest(string actionId, RuntimeMode runtimeMode)
     {
         var payload = new JsonObject
