@@ -276,7 +276,10 @@ public sealed class ProfileVariantResolverTests
             => throw new InvalidOperationException(modulePath);
 
         public Task<BinaryFingerprint> CaptureFromPathAsync(string modulePath, CancellationToken cancellationToken)
-            => throw new InvalidOperationException(modulePath);
+        {
+            _ = cancellationToken;
+            throw new InvalidOperationException(modulePath);
+        }
 
         public Task<BinaryFingerprint> CaptureFromPathAsync(string modulePath, int processId)
             => throw new InvalidOperationException($"{modulePath}:{processId}");
