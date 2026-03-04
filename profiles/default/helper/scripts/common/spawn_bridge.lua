@@ -105,6 +105,68 @@ local function Spawn_Object(entity_id, unit_id, entry_marker, player_name, place
     return ok
 end
 
+local function Try_Output_Debug(message)
+    if not Has_Value(message) then
+        return
+    end
+
+    if _OuputDebug then
+        pcall(function()
+            _OuputDebug(message)
+        end)
+        return
+    end
+
+    if _OutputDebug then
+        pcall(function()
+            _OutputDebug(message)
+        end)
+    end
+end
+
+local function Resolve_Operation_Token_From_Variadic(args)
+    if args == nil then
+        return nil
+    end
+
+    for _, value in ipairs(args) do
+        if type(value) == "string" then
+            if string.match(value, "^[0-9a-fA-F]+$") and string.len(value) >= 16 then
+                return value
+            end
+
+            if string.sub(value, 1, 6) == "token:" then
+                return string.sub(value, 7)
+            end
+        elseif type(value) == "table" then
+            local candidate = value["operationToken"]
+            if not Has_Value(candidate) then
+                candidate = value["operation_token"]
+            end
+
+            if Has_Value(candidate) then
+                return candidate
+            end
+        end
+    end
+
+    return nil
+end
+
+local function Complete_Helper_Operation(result, operation_token, applied_entity_id)
+    if Has_Value(operation_token) then
+        local status = result and "APPLIED" or "FAILED"
+        local entity_segment = ""
+        if Has_Value(applied_entity_id) then
+            entity_segment = " entity=" .. applied_entity_id
+        end
+
+        Try_Output_Debug("SWFOC_TRAINER_" .. status .. " " .. operation_token .. entity_segment)
+    end
+
+    return result
+end
+
 local function Try_Story_Event(event_name, a, b, c)
     if not Story_Event then
         return false
@@ -117,7 +179,7 @@ local function Try_Story_Event(event_name, a, b, c)
     return ok
 end
 
-function SWFOC_Trainer_Spawn(object_type, entry_marker, player_name)
+function SWFOC_Trainer_Spawn(object_type, entry_marker, player_name, operation_token)
     local player = Resolve_Player(player_name)
     if not player then
         return false
@@ -132,27 +194,35 @@ function SWFOC_Trainer_Spawn(object_type, entry_marker, player_name)
         Spawn_Unit(type_ref, Resolve_Entry_Marker(entry_marker), player)
     end)
 
-    return ok
+    return Complete_Helper_Operation(ok, operation_token, object_type)
 end
 
 function SWFOC_Trainer_Spawn_Context(entity_id, unit_id, entry_marker, faction, ...)
     -- Runtime policy flags are tracked in diagnostics; tactical defaults use reinforcement-zone behavior when available.
     local args = {...}
     local runtime_mode = args[1]
+    local operation_token = Resolve_Operation_Token_From_Variadic(args)
     local placement_mode = args[5]
     local effective_placement_mode = placement_mode
     if not Has_Value(effective_placement_mode) and runtime_mode ~= nil and runtime_mode ~= "Galactic" then
         effective_placement_mode = "reinforcement_zone"
     end
 
-    return Spawn_Object(entity_id, unit_id, entry_marker, faction, effective_placement_mode)
+    local spawned = Spawn_Object(entity_id, unit_id, entry_marker, faction, effective_placement_mode)
+    local applied_entity_id = entity_id
+    if not Has_Value(applied_entity_id) then
+        applied_entity_id = unit_id
+    end
+
+    return Complete_Helper_Operation(spawned, operation_token, applied_entity_id)
 end
 
-function SWFOC_Trainer_Place_Building(entity_id, entry_marker, target_faction, force_override)
-    return Spawn_Object(entity_id, nil, entry_marker, target_faction, "safe_rules")
+function SWFOC_Trainer_Place_Building(entity_id, entry_marker, target_faction, force_override, operation_token)
+    local placed = Spawn_Object(entity_id, nil, entry_marker, target_faction, "safe_rules")
+    return Complete_Helper_Operation(placed, operation_token, entity_id)
 end
 
-function SWFOC_Trainer_Set_Context_Allegiance(entity_id, target_faction, source_faction, runtime_mode, allow_cross_faction)
+function SWFOC_Trainer_Set_Context_Allegiance(entity_id, target_faction, source_faction, runtime_mode, allow_cross_faction, operation_token)
     if not Has_Value(target_faction) then
         return false
     end
@@ -164,11 +234,12 @@ function SWFOC_Trainer_Set_Context_Allegiance(entity_id, target_faction, source_
 
     if not Has_Value(entity_id) then
         -- No explicit object supplied; helper request is still considered valid for context-based handlers.
-        return true
+        return Complete_Helper_Operation(true, operation_token, target_faction)
     end
 
     local object = Try_Find_Object(entity_id)
-    return Try_Change_Owner(object, target_player)
+    local changed = Try_Change_Owner(object, target_player)
+    return Complete_Helper_Operation(changed, operation_token, entity_id)
 end
 
 local function Is_Force_Override(value)
@@ -191,7 +262,7 @@ local function Validate_Fleet_Transfer_Request(fleet_entity_id, source_faction, 
     return Is_Force_Override(force_override)
 end
 
-function SWFOC_Trainer_Transfer_Fleet_Safe(fleet_entity_id, source_faction, target_faction, safe_planet_id, force_override)
+function SWFOC_Trainer_Transfer_Fleet_Safe(fleet_entity_id, source_faction, target_faction, safe_planet_id, force_override, operation_token)
     if not Validate_Fleet_Transfer_Request(fleet_entity_id, source_faction, target_faction, safe_planet_id, force_override) then
         return false
     end
@@ -205,11 +276,12 @@ function SWFOC_Trainer_Transfer_Fleet_Safe(fleet_entity_id, source_faction, targ
     end
 
     if Try_Change_Owner(fleet, target_player) then
-        return true
+        return Complete_Helper_Operation(true, operation_token, fleet_entity_id)
     end
 
     -- Story-event fallback for mods that expose transactional fleet transfer hooks.
-    return Try_Story_Event("MOVE_FLEET", fleet_entity_id, safe_planet_id, target_faction)
+    local moved = Try_Story_Event("MOVE_FLEET", fleet_entity_id, safe_planet_id, target_faction)
+    return Complete_Helper_Operation(moved, operation_token, fleet_entity_id)
 end
 
 local function Normalize_Flip_Mode(mode)
@@ -234,7 +306,7 @@ local function Emit_Planet_Flip_Followups(planet_entity_id, target_faction, mode
     Try_Story_Event("PLANET_CONVERT_ALL", planet_entity_id, target_faction, "convert")
 end
 
-function SWFOC_Trainer_Flip_Planet_Owner(planet_entity_id, target_faction, flip_mode, force_override)
+function SWFOC_Trainer_Flip_Planet_Owner(planet_entity_id, target_faction, flip_mode, force_override, operation_token)
     if not Has_Value(planet_entity_id) or not Has_Value(target_faction) then
         return false
     end
@@ -257,15 +329,16 @@ function SWFOC_Trainer_Flip_Planet_Owner(planet_entity_id, target_faction, flip_
     end
 
     Emit_Planet_Flip_Followups(planet_entity_id, target_faction, mode)
-    return true
+    return Complete_Helper_Operation(true, operation_token, planet_entity_id)
 end
 
-function SWFOC_Trainer_Switch_Player_Faction(target_faction)
+function SWFOC_Trainer_Switch_Player_Faction(target_faction, operation_token)
     if not Has_Value(target_faction) then
         return false
     end
 
-    return Try_Story_Event("SWITCH_SIDES", target_faction, nil, nil)
+    local switched = Try_Story_Event("SWITCH_SIDES", target_faction, nil, nil)
+    return Complete_Helper_Operation(switched, operation_token, target_faction)
 end
 
 local function Is_Hero_Death_State(state)
@@ -306,7 +379,7 @@ local function Try_Handle_Hero_Alive_State(hero, hero_entity_id, hero_global_key
     return Try_Apply_Hero_Story_State(hero_entity_id, "alive", hero_global_key)
 end
 
-function SWFOC_Trainer_Edit_Hero_State(hero_entity_id, hero_global_key, desired_state, allow_duplicate)
+function SWFOC_Trainer_Edit_Hero_State(hero_entity_id, hero_global_key, desired_state, allow_duplicate, operation_token)
     if not Has_Value(hero_entity_id) and not Has_Value(hero_global_key) then
         return false
     end
@@ -318,17 +391,20 @@ function SWFOC_Trainer_Edit_Hero_State(hero_entity_id, hero_global_key, desired_
     end
 
     if Is_Hero_Death_State(state) then
-        return Try_Remove_Hero(hero) or Try_Apply_Hero_Story_State(hero_entity_id, state, hero_global_key)
+        local removed = Try_Remove_Hero(hero) or Try_Apply_Hero_Story_State(hero_entity_id, state, hero_global_key)
+        return Complete_Helper_Operation(removed, operation_token, hero_entity_id)
     end
 
     if state == "respawn_pending" then
-        return Try_Set_Hero_Respawn_Pending(hero_entity_id, hero_global_key)
+        local pending = Try_Set_Hero_Respawn_Pending(hero_entity_id, hero_global_key)
+        return Complete_Helper_Operation(pending, operation_token, hero_entity_id)
     end
 
-    return Try_Handle_Hero_Alive_State(hero, hero_entity_id, hero_global_key, allow_duplicate)
+    local alive = Try_Handle_Hero_Alive_State(hero, hero_entity_id, hero_global_key, allow_duplicate)
+    return Complete_Helper_Operation(alive, operation_token, hero_entity_id)
 end
 
-function SWFOC_Trainer_Create_Hero_Variant(source_hero_id, variant_hero_id, target_faction)
+function SWFOC_Trainer_Create_Hero_Variant(source_hero_id, variant_hero_id, target_faction, operation_token)
     if not Has_Value(source_hero_id) or not Has_Value(variant_hero_id) then
         return false
     end
@@ -339,10 +415,11 @@ function SWFOC_Trainer_Create_Hero_Variant(source_hero_id, variant_hero_id, targ
     end
 
     if Spawn_Object(variant_hero_id, variant_hero_id, nil, faction, "reinforcement_zone") then
-        return true
+        return Complete_Helper_Operation(true, operation_token, variant_hero_id)
     end
 
-    return Try_Story_Event("CREATE_HERO_VARIANT", source_hero_id, variant_hero_id, faction)
+    local created = Try_Story_Event("CREATE_HERO_VARIANT", source_hero_id, variant_hero_id, faction)
+    return Complete_Helper_Operation(created, operation_token, variant_hero_id)
 end
 
 

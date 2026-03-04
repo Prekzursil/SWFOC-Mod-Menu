@@ -700,7 +700,8 @@
         "mutationIntent": "required:string",
         "verificationContractVersion": "required:string",
         "globalKey": "optional:string",
-        "allowCrossFaction": "optional:bool"
+        "allowCrossFaction": "optional:bool",
+        "operationToken": "optional:string"
       },
       "verifyContract": {
         "helperVerifyState": "applied",
