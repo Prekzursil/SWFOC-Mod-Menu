@@ -5,6 +5,12 @@ namespace SwfocTrainer.App.ViewModels;
 
 internal static class MainViewModelRosterHelpers
 {
+    private const char RosterSeparator = '|';
+    private const string DefaultKind = "Unit";
+    private const string DefaultFactionEmpire = "Empire";
+    private const string DefaultFactionHeroOwner = "HeroOwner";
+    private const string DefaultFactionPlanetOwner = "PlanetOwner";
+
     internal static IReadOnlyList<RosterEntityViewItem> BuildEntityRoster(
         IReadOnlyDictionary<string, IReadOnlyList<string>>? catalog,
         string selectedProfileId,
@@ -20,12 +26,10 @@ internal static class MainViewModelRosterHelpers
         var rows = new List<RosterEntityViewItem>(entries.Count);
         foreach (var entry in entries)
         {
-            if (!TryParseEntityRow(entry, selectedProfileId, selectedWorkshopId, out var row))
+            if (TryParseEntityRow(entry, selectedProfileId, selectedWorkshopId, out var row))
             {
-                continue;
+                rows.Add(row);
             }
-
-            rows.Add(row);
         }
 
         return rows
@@ -46,26 +50,17 @@ internal static class MainViewModelRosterHelpers
             return false;
         }
 
-        var segments = raw.Split('|', StringSplitOptions.TrimEntries);
-        if (segments.Length < 2 || string.IsNullOrWhiteSpace(segments[1]))
+        var segments = raw.Split(RosterSeparator, StringSplitOptions.TrimEntries);
+        if (!TryResolveEntityId(segments, out var entityId))
         {
             return false;
         }
 
-        var kind = string.IsNullOrWhiteSpace(segments[0]) ? "Unit" : segments[0];
-        var entityId = segments[1].Trim();
-        var sourceProfileId = segments.Length >= 3 && !string.IsNullOrWhiteSpace(segments[2])
-            ? segments[2].Trim()
-            : selectedProfileId;
-        var sourceWorkshopId = segments.Length >= 4 && !string.IsNullOrWhiteSpace(segments[3])
-            ? segments[3].Trim()
-            : selectedWorkshopId ?? string.Empty;
-        var visualRef = segments.Length >= 5 && !string.IsNullOrWhiteSpace(segments[4])
-            ? segments[4].Trim()
-            : string.Empty;
-        var dependencySummary = segments.Length >= 6 && !string.IsNullOrWhiteSpace(segments[5])
-            ? segments[5].Trim()
-            : string.Empty;
+        var kind = ResolveSegmentOrDefault(segments, 0, DefaultKind);
+        var sourceProfileId = ResolveSegmentOrDefault(segments, 2, selectedProfileId);
+        var sourceWorkshopId = ResolveSegmentOrDefault(segments, 3, selectedWorkshopId ?? string.Empty);
+        var visualRef = ResolveSegmentOrDefault(segments, 4, string.Empty);
+        var dependencySummary = ResolveSegmentOrDefault(segments, 5, string.Empty);
 
         var visualState = string.IsNullOrWhiteSpace(visualRef)
             ? RosterEntityVisualState.Missing
@@ -91,6 +86,28 @@ internal static class MainViewModelRosterHelpers
         return true;
     }
 
+    private static bool TryResolveEntityId(IReadOnlyList<string> segments, out string entityId)
+    {
+        entityId = string.Empty;
+        if (segments.Count < 2 || string.IsNullOrWhiteSpace(segments[1]))
+        {
+            return false;
+        }
+
+        entityId = segments[1].Trim();
+        return true;
+    }
+
+    private static string ResolveSegmentOrDefault(IReadOnlyList<string> segments, int index, string fallback)
+    {
+        if (index >= segments.Count || string.IsNullOrWhiteSpace(segments[index]))
+        {
+            return fallback;
+        }
+
+        return segments[index].Trim();
+    }
+
     private static RosterEntityCompatibilityState ResolveCompatibilityState(string sourceWorkshopId, string? selectedWorkshopId)
     {
         if (string.IsNullOrWhiteSpace(sourceWorkshopId) ||
@@ -107,15 +124,15 @@ internal static class MainViewModelRosterHelpers
     {
         if (kind.Equals("Hero", StringComparison.OrdinalIgnoreCase))
         {
-            return "HeroOwner";
+            return DefaultFactionHeroOwner;
         }
 
         if (kind.Equals("Building", StringComparison.OrdinalIgnoreCase) ||
             kind.Equals("SpaceStructure", StringComparison.OrdinalIgnoreCase))
         {
-            return "PlanetOwner";
+            return DefaultFactionPlanetOwner;
         }
 
-        return "Empire";
+        return DefaultFactionEmpire;
     }
 }

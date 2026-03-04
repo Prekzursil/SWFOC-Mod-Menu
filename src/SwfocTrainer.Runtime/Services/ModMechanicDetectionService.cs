@@ -362,33 +362,12 @@ public sealed class ModMechanicDetectionService : IModMechanicDetectionService
 
     private static HeroMechanicsProfile ResolveHeroMechanicsProfile(TrainerProfile profile, AttachSession session)
     {
-        var supportsRespawn = profile.Actions.ContainsKey("set_hero_respawn_timer") ||
-                              profile.Actions.ContainsKey("set_hero_state_helper") ||
-                              profile.Actions.ContainsKey("toggle_roe_respawn_helper") ||
-                              profile.Actions.ContainsKey("edit_hero_state");
-
-        var supportsRescue = ReadBoolMetadata(profile.Metadata, "supports_hero_rescue") ||
-                             profile.Id.Contains("aotr", StringComparison.OrdinalIgnoreCase);
-
-        var supportsPermadeath = ReadBoolMetadata(profile.Metadata, "supports_hero_permadeath") ||
-                                 profile.Id.Contains("roe", StringComparison.OrdinalIgnoreCase);
-
-        var defaultRespawnTime = ParseOptionalInt(
-            ReadMetadataValue(profile.Metadata, "defaultHeroRespawnTime") ??
-            ReadMetadataValue(profile.Metadata, "default_hero_respawn_time"));
-
-        var respawnExceptionSources = ParseListMetadata(
-            ReadMetadataValue(profile.Metadata, "respawnExceptionSources") ??
-            ReadMetadataValue(profile.Metadata, "respawn_exception_sources"));
-
-        if (supportsRespawn && TryGetHealthySymbol(session, "hero_respawn_timer") && defaultRespawnTime is null)
-        {
-            defaultRespawnTime = 1;
-        }
-
-        var duplicateHeroPolicy = ReadMetadataValue(profile.Metadata, "duplicateHeroPolicy") ??
-                                  ReadMetadataValue(profile.Metadata, "duplicate_hero_policy") ??
-                                  InferDuplicateHeroPolicy(profile.Id, supportsPermadeath, supportsRescue);
+        var supportsRespawn = SupportsHeroRespawn(profile);
+        var supportsRescue = SupportsHeroRescue(profile);
+        var supportsPermadeath = SupportsHeroPermadeath(profile);
+        var defaultRespawnTime = ResolveDefaultRespawnTime(profile, session, supportsRespawn);
+        var respawnExceptionSources = ResolveRespawnExceptionSources(profile);
+        var duplicateHeroPolicy = ResolveDuplicateHeroPolicy(profile, supportsPermadeath, supportsRescue);
 
         return new HeroMechanicsProfile(
             SupportsRespawn: supportsRespawn,
@@ -404,6 +383,53 @@ public sealed class ModMechanicDetectionService : IModMechanicDetectionService
             });
     }
 
+    private static bool SupportsHeroRespawn(TrainerProfile profile)
+    {
+        return profile.Actions.ContainsKey("set_hero_respawn_timer") ||
+               profile.Actions.ContainsKey("set_hero_state_helper") ||
+               profile.Actions.ContainsKey("toggle_roe_respawn_helper") ||
+               profile.Actions.ContainsKey("edit_hero_state");
+    }
+
+    private static bool SupportsHeroRescue(TrainerProfile profile)
+    {
+        return ReadBoolMetadata(profile.Metadata, "supports_hero_rescue") ||
+               profile.Id.Contains("aotr", StringComparison.OrdinalIgnoreCase);
+    }
+
+    private static bool SupportsHeroPermadeath(TrainerProfile profile)
+    {
+        return ReadBoolMetadata(profile.Metadata, "supports_hero_permadeath") ||
+               profile.Id.Contains("roe", StringComparison.OrdinalIgnoreCase);
+    }
+
+    private static int? ResolveDefaultRespawnTime(TrainerProfile profile, AttachSession session, bool supportsRespawn)
+    {
+        var defaultRespawnTime = ParseOptionalInt(
+            ReadMetadataValue(profile.Metadata, "defaultHeroRespawnTime") ??
+            ReadMetadataValue(profile.Metadata, "default_hero_respawn_time"));
+
+        if (supportsRespawn && TryGetHealthySymbol(session, "hero_respawn_timer") && defaultRespawnTime is null)
+        {
+            return 1;
+        }
+
+        return defaultRespawnTime;
+    }
+
+    private static IReadOnlyList<string> ResolveRespawnExceptionSources(TrainerProfile profile)
+    {
+        return ParseListMetadata(
+            ReadMetadataValue(profile.Metadata, "respawnExceptionSources") ??
+            ReadMetadataValue(profile.Metadata, "respawn_exception_sources"));
+    }
+
+    private static string ResolveDuplicateHeroPolicy(TrainerProfile profile, bool supportsPermadeath, bool supportsRescue)
+    {
+        return ReadMetadataValue(profile.Metadata, "duplicateHeroPolicy") ??
+               ReadMetadataValue(profile.Metadata, "duplicate_hero_policy") ??
+               InferDuplicateHeroPolicy(profile.Id, supportsPermadeath, supportsRescue);
+    }
     private static IReadOnlyDictionary<string, object?> BuildHeroMechanicsSummary(HeroMechanicsProfile profile)
     {
         return new Dictionary<string, object?>(StringComparer.OrdinalIgnoreCase)

@@ -293,25 +293,39 @@ public abstract class MainViewModelLiveOpsBase : MainViewModelBindableMembersBas
     private void RefreshHeroMechanicsSurface(TrainerProfile profile)
     {
         var metadata = profile.Metadata;
-        var supportsRespawn = profile.Actions.ContainsKey("set_hero_respawn_timer") ||
-                              profile.Actions.ContainsKey("edit_hero_state");
-
+        var supportsRespawn = SupportsHeroRespawn(profile);
         var supportsPermadeath = TryReadBoolMetadata(metadata, "supports_hero_permadeath");
         var supportsRescue = TryReadBoolMetadata(metadata, "supports_hero_rescue");
-        var defaultRespawn = ReadMetadataValue(metadata, "defaultHeroRespawnTime") ??
-                             ReadMetadataValue(metadata, "default_hero_respawn_time") ??
-                             ReadMetadataValue(metadata, "hero_respawn_time");
-        var duplicatePolicy = ReadMetadataValue(metadata, "duplicateHeroPolicy") ??
-                              ReadMetadataValue(metadata, "duplicate_hero_policy") ??
-                              "unknown";
+        var defaultRespawn = ResolveDefaultHeroRespawn(metadata);
+        var duplicatePolicy = ResolveDuplicateHeroPolicy(metadata);
 
         HeroSupportsRespawn = supportsRespawn ? "true" : "false";
         HeroSupportsPermadeath = supportsPermadeath ? "true" : "false";
         HeroSupportsRescue = supportsRescue ? "true" : "false";
-        HeroDefaultRespawnTime = string.IsNullOrWhiteSpace(defaultRespawn) ? "unknown" : defaultRespawn;
+        HeroDefaultRespawnTime = defaultRespawn;
         HeroDuplicatePolicy = duplicatePolicy;
     }
 
+    private static bool SupportsHeroRespawn(TrainerProfile profile)
+    {
+        return profile.Actions.ContainsKey("set_hero_respawn_timer") ||
+               profile.Actions.ContainsKey("edit_hero_state");
+    }
+
+    private static string ResolveDefaultHeroRespawn(IReadOnlyDictionary<string, string>? metadata)
+    {
+        var value = ReadMetadataValue(metadata, "defaultHeroRespawnTime") ??
+                    ReadMetadataValue(metadata, "default_hero_respawn_time") ??
+                    ReadMetadataValue(metadata, "hero_respawn_time");
+        return string.IsNullOrWhiteSpace(value) ? UnknownValue : value;
+    }
+
+    private static string ResolveDuplicateHeroPolicy(IReadOnlyDictionary<string, string>? metadata)
+    {
+        return ReadMetadataValue(metadata, "duplicateHeroPolicy") ??
+               ReadMetadataValue(metadata, "duplicate_hero_policy") ??
+               UnknownValue;
+    }
     private static bool TryReadBoolMetadata(IReadOnlyDictionary<string, string>? metadata, string key)
     {
         if (metadata is null || !metadata.TryGetValue(key, out var raw) || string.IsNullOrWhiteSpace(raw))

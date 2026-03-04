@@ -5,6 +5,10 @@ namespace SwfocTrainer.App.ViewModels;
 
 internal static class MainViewModelPayloadHelpers
 {
+    private const string PayloadPlacementModeKey = "placementMode";
+    private const string PayloadAllowCrossFactionKey = "allowCrossFaction";
+    private const string PayloadForceOverrideKey = "forceOverride";
+
     internal static JsonObject BuildRequiredPayloadTemplate(
         string actionId,
         JsonArray required,
@@ -48,36 +52,36 @@ internal static class MainViewModelPayloadHelpers
         {
             payload["populationPolicy"] ??= "ForceZeroTactical";
             payload["persistencePolicy"] ??= "EphemeralBattleOnly";
-            payload["placementMode"] ??= "reinforcement_zone";
-            payload["allowCrossFaction"] ??= true;
+            payload[PayloadPlacementModeKey] ??= "reinforcement_zone";
+            payload[PayloadAllowCrossFactionKey] ??= true;
         }
         else if (actionId.Equals("spawn_galactic_entity", StringComparison.OrdinalIgnoreCase))
         {
             payload["populationPolicy"] ??= "Normal";
             payload["persistencePolicy"] ??= "PersistentGalactic";
-            payload["allowCrossFaction"] ??= true;
+            payload[PayloadAllowCrossFactionKey] ??= true;
         }
         else if (actionId.Equals("place_planet_building", StringComparison.OrdinalIgnoreCase))
         {
-            payload["placementMode"] ??= "safe_rules";
-            payload["allowCrossFaction"] ??= true;
-            payload["forceOverride"] ??= false;
+            payload[PayloadPlacementModeKey] ??= "safe_rules";
+            payload[PayloadAllowCrossFactionKey] ??= true;
+            payload[PayloadForceOverrideKey] ??= false;
         }
         else if (actionId.Equals("transfer_fleet_safe", StringComparison.OrdinalIgnoreCase))
         {
-            payload["placementMode"] ??= "safe_transfer";
-            payload["allowCrossFaction"] ??= true;
-            payload["forceOverride"] ??= false;
+            payload[PayloadPlacementModeKey] ??= "safe_transfer";
+            payload[PayloadAllowCrossFactionKey] ??= true;
+            payload[PayloadForceOverrideKey] ??= false;
         }
         else if (actionId.Equals("flip_planet_owner", StringComparison.OrdinalIgnoreCase))
         {
             payload["planetFlipMode"] ??= "convert_everything";
-            payload["allowCrossFaction"] ??= true;
-            payload["forceOverride"] ??= false;
+            payload[PayloadAllowCrossFactionKey] ??= true;
+            payload[PayloadForceOverrideKey] ??= false;
         }
         else if (actionId.Equals("switch_player_faction", StringComparison.OrdinalIgnoreCase))
         {
-            payload["allowCrossFaction"] ??= true;
+            payload[PayloadAllowCrossFactionKey] ??= true;
         }
         else if (actionId.Equals("edit_hero_state", StringComparison.OrdinalIgnoreCase))
         {
@@ -87,7 +91,7 @@ internal static class MainViewModelPayloadHelpers
         else if (actionId.Equals("create_hero_variant", StringComparison.OrdinalIgnoreCase))
         {
             payload["variantGenerationMode"] ??= "patch_mod_overlay";
-            payload["allowCrossFaction"] ??= true;
+            payload[PayloadAllowCrossFactionKey] ??= true;
         }
     }
 
@@ -130,10 +134,10 @@ internal static class MainViewModelPayloadHelpers
             "desiredState" => JsonValue.Create("alive"),
             "populationPolicy" => JsonValue.Create("Normal"),
             "persistencePolicy" => JsonValue.Create("PersistentGalactic"),
-            "placementMode" => JsonValue.Create(string.Empty),
-            "allowCrossFaction" => JsonValue.Create(true),
+            PayloadPlacementModeKey => JsonValue.Create(string.Empty),
+            PayloadAllowCrossFactionKey => JsonValue.Create(true),
             "allowDuplicate" => JsonValue.Create(false),
-            "forceOverride" => JsonValue.Create(false),
+            PayloadForceOverrideKey => JsonValue.Create(false),
             "planetFlipMode" => JsonValue.Create("convert_everything"),
             "variantGenerationMode" => JsonValue.Create("patch_mod_overlay"),
             "nodePath" => JsonValue.Create(string.Empty),

@@ -62,6 +62,7 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
     private const string PopulationPolicyNormal = "Normal";
     private const string PersistencePolicyEphemeralBattleOnly = "EphemeralBattleOnly";
     private const string PersistencePolicyPersistentGalactic = "PersistentGalactic";
+    private const string UnknownTokenText = "unknown";
 
     public RuntimeAdapter(
         IProcessLocator processLocator,
@@ -812,7 +813,7 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
     {
         if (string.IsNullOrWhiteSpace(value))
         {
-            return "unknown";
+            return UnknownTokenText;
         }
 
         var sanitized = new string(value
@@ -820,7 +821,7 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
             .Select(ch => char.IsLetterOrDigit(ch) ? ch : '_')
             .ToArray())
             .Trim('_');
-        return string.IsNullOrWhiteSpace(sanitized) ? "unknown" : sanitized;
+        return string.IsNullOrWhiteSpace(sanitized) ? UnknownTokenText : sanitized;
     }
 
     private object BuildCalibrationSnapshotPayload(
@@ -1929,7 +1930,7 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
             return probeHookState!;
         }
 
-        return "unknown";
+        return UnknownTokenText;
     }
 
     private static bool ResolveExpertOverrideEnabledDiagnosticValue(
@@ -3443,88 +3444,30 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
         var diagnostics = new Dictionary<string, object?>(StringComparer.OrdinalIgnoreCase);
         var policyReasonCodes = new List<string>();
 
+        HelperActionPolicyResolution? failure = null;
         if (request.Action.Id.Equals(ActionIdSpawnTacticalEntity, StringComparison.OrdinalIgnoreCase))
         {
-            EnforcePayloadValue(payload, PayloadPopulationPolicyKey, PopulationPolicyForceZeroTactical, policyReasonCodes, RuntimeReasonCode.SPAWN_POPULATION_POLICY_ENFORCED);
-            EnforcePayloadValue(payload, PayloadPersistencePolicyKey, PersistencePolicyEphemeralBattleOnly, policyReasonCodes, RuntimeReasonCode.SPAWN_EPHEMERAL_POLICY_ENFORCED);
-            payload[PayloadAllowCrossFactionKey] ??= true;
-            payload["placementMode"] ??= "reinforcement_zone";
-
-            if (!HasAnyPayloadValue(payload, "entryMarker", "worldPosition"))
-            {
-                return BuildPolicyFailure(
-                    request,
-                    RuntimeReasonCode.SPAWN_PLACEMENT_INVALID,
-                    "Tactical spawn requires entryMarker or worldPosition for safe placement.",
-                    policyReasonCodes,
-                    diagnostics);
-            }
+            failure = ApplySpawnTacticalPolicies(request, payload, policyReasonCodes, diagnostics);
         }
         else if (request.Action.Id.Equals(ActionIdSpawnGalacticEntity, StringComparison.OrdinalIgnoreCase))
         {
-            payload[PayloadPopulationPolicyKey] ??= PopulationPolicyNormal;
-            payload[PayloadPersistencePolicyKey] ??= PersistencePolicyPersistentGalactic;
-            payload[PayloadAllowCrossFactionKey] ??= true;
+            ApplySpawnGalacticPolicies(payload);
         }
         else if (request.Action.Id.Equals(ActionIdPlacePlanetBuilding, StringComparison.OrdinalIgnoreCase))
         {
-            var forceOverride = TryReadBooleanPayload(payload, "forceOverride", out var explicitForceOverride) && explicitForceOverride;
-            var explicitPlacementMode = TryReadStringPayload(payload, "placementMode", out var placementMode)
-                ? placementMode
-                : string.Empty;
-
-            payload[PayloadAllowCrossFactionKey] ??= true;
-            payload["placementMode"] ??= "safe_rules";
-            payload["forceOverride"] ??= false;
-
-            if (!HasAnyPayloadValue(payload, "entityId", "entityBlueprintId", "unitId"))
-            {
-                return BuildPolicyFailure(
-                    request,
-                    RuntimeReasonCode.BUILDING_PREREQ_MISSING,
-                    "Building placement requires entityId/entityBlueprintId (or unitId fallback).",
-                    policyReasonCodes,
-                    diagnostics);
-            }
-
-            if (!HasAnyPayloadValue(payload, "planetId", "planetEntityId", "entryMarker", "worldPosition"))
-            {
-                return BuildPolicyFailure(
-                    request,
-                    RuntimeReasonCode.BUILDING_SLOT_INVALID,
-                    "Building placement requires planetId/planetEntityId (or explicit placement marker).",
-                    policyReasonCodes,
-                    diagnostics);
-            }
-
-            if (!forceOverride && !string.IsNullOrWhiteSpace(explicitPlacementMode) &&
-                !string.Equals(explicitPlacementMode, "safe_rules", StringComparison.OrdinalIgnoreCase))
-            {
-                return BuildPolicyFailure(
-                    request,
-                    RuntimeReasonCode.BUILDING_SLOT_INVALID,
-                    "Building placement denied: placementMode requires safe_rules unless forceOverride=true.",
-                    policyReasonCodes,
-                    diagnostics);
-            }
-
-            if (forceOverride)
-            {
-                AppendPolicyReason(policyReasonCodes, RuntimeReasonCode.BUILDING_FORCE_OVERRIDE_APPLIED);
-            }
+            failure = ApplyPlanetBuildingPolicies(request, payload, policyReasonCodes, diagnostics);
         }
-        else if (request.Action.Id.Equals(ActionIdTransferFleetSafe, StringComparison.OrdinalIgnoreCase) ||
-                 request.Action.Id.Equals(ActionIdFlipPlanetOwner, StringComparison.OrdinalIgnoreCase) ||
-                 request.Action.Id.Equals(ActionIdSwitchPlayerFaction, StringComparison.OrdinalIgnoreCase) ||
-                 request.Action.Id.Equals(ActionIdSetContextFaction, StringComparison.OrdinalIgnoreCase) ||
-                 request.Action.Id.Equals(ActionIdSetContextAllegiance, StringComparison.OrdinalIgnoreCase) ||
-                 request.Action.Id.Equals(ActionIdEditHeroState, StringComparison.OrdinalIgnoreCase) ||
-                 request.Action.Id.Equals(ActionIdCreateHeroVariant, StringComparison.OrdinalIgnoreCase))
+        else if (ShouldDefaultCrossFaction(request.Action.Id))
         {
             payload[PayloadAllowCrossFactionKey] ??= true;
         }
 
-        if (policyReasonCodes.Count > 0)
+        if (failure is not null)
+        {
+            return failure;
+        }
+
+        if (policyReasonCodes.Any())
         {
             diagnostics["policyReasonCodes"] = policyReasonCodes.ToArray();
         }
@@ -3533,11 +3476,106 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
         return new HelperActionPolicyResolution(effectiveRequest, diagnostics, null);
     }
 
+    private static HelperActionPolicyResolution? ApplySpawnTacticalPolicies(
+        ActionExecutionRequest request,
+        JsonObject payload,
+        ICollection<string> policyReasonCodes,
+        IReadOnlyDictionary<string, object?> diagnostics)
+    {
+        EnforcePayloadValue(payload, PayloadPopulationPolicyKey, PopulationPolicyForceZeroTactical, policyReasonCodes, RuntimeReasonCode.SPAWN_POPULATION_POLICY_ENFORCED);
+        EnforcePayloadValue(payload, PayloadPersistencePolicyKey, PersistencePolicyEphemeralBattleOnly, policyReasonCodes, RuntimeReasonCode.SPAWN_EPHEMERAL_POLICY_ENFORCED);
+        payload[PayloadAllowCrossFactionKey] ??= true;
+        payload["placementMode"] ??= "reinforcement_zone";
+
+        if (HasAnyPayloadValue(payload, "entryMarker", "worldPosition"))
+        {
+            return null;
+        }
+
+        return BuildPolicyFailure(
+            request,
+            RuntimeReasonCode.SPAWN_PLACEMENT_INVALID,
+            "Tactical spawn requires entryMarker or worldPosition for safe placement.",
+            policyReasonCodes,
+            diagnostics);
+    }
+
+    private static void ApplySpawnGalacticPolicies(JsonObject payload)
+    {
+        payload[PayloadPopulationPolicyKey] ??= PopulationPolicyNormal;
+        payload[PayloadPersistencePolicyKey] ??= PersistencePolicyPersistentGalactic;
+        payload[PayloadAllowCrossFactionKey] ??= true;
+    }
+
+    private static HelperActionPolicyResolution? ApplyPlanetBuildingPolicies(
+        ActionExecutionRequest request,
+        JsonObject payload,
+        ICollection<string> policyReasonCodes,
+        IReadOnlyDictionary<string, object?> diagnostics)
+    {
+        var forceOverride = TryReadBooleanPayload(payload, "forceOverride", out var explicitForceOverride) && explicitForceOverride;
+        var explicitPlacementMode = TryReadStringPayload(payload, "placementMode", out var placementMode)
+            ? placementMode
+            : string.Empty;
+
+        payload[PayloadAllowCrossFactionKey] ??= true;
+        payload["placementMode"] ??= "safe_rules";
+        payload["forceOverride"] ??= false;
+
+        if (!HasAnyPayloadValue(payload, "entityId", "entityBlueprintId", "unitId"))
+        {
+            return BuildPolicyFailure(
+                request,
+                RuntimeReasonCode.BUILDING_PREREQ_MISSING,
+                "Building placement requires entityId/entityBlueprintId (or unitId fallback).",
+                policyReasonCodes,
+                diagnostics);
+        }
+
+        if (!HasAnyPayloadValue(payload, "planetId", "planetEntityId", "entryMarker", "worldPosition"))
+        {
+            return BuildPolicyFailure(
+                request,
+                RuntimeReasonCode.BUILDING_SLOT_INVALID,
+                "Building placement requires planetId/planetEntityId (or explicit placement marker).",
+                policyReasonCodes,
+                diagnostics);
+        }
+
+        if (!forceOverride && !string.IsNullOrWhiteSpace(explicitPlacementMode) &&
+            !string.Equals(explicitPlacementMode, "safe_rules", StringComparison.OrdinalIgnoreCase))
+        {
+            return BuildPolicyFailure(
+                request,
+                RuntimeReasonCode.BUILDING_SLOT_INVALID,
+                "Building placement denied: placementMode requires safe_rules unless forceOverride=true.",
+                policyReasonCodes,
+                diagnostics);
+        }
+
+        if (forceOverride)
+        {
+            AppendPolicyReason(policyReasonCodes, RuntimeReasonCode.BUILDING_FORCE_OVERRIDE_APPLIED);
+        }
+
+        return null;
+    }
+
+    private static bool ShouldDefaultCrossFaction(string actionId)
+    {
+        return actionId.Equals(ActionIdTransferFleetSafe, StringComparison.OrdinalIgnoreCase) ||
+               actionId.Equals(ActionIdFlipPlanetOwner, StringComparison.OrdinalIgnoreCase) ||
+               actionId.Equals(ActionIdSwitchPlayerFaction, StringComparison.OrdinalIgnoreCase) ||
+               actionId.Equals(ActionIdSetContextFaction, StringComparison.OrdinalIgnoreCase) ||
+               actionId.Equals(ActionIdSetContextAllegiance, StringComparison.OrdinalIgnoreCase) ||
+               actionId.Equals(ActionIdEditHeroState, StringComparison.OrdinalIgnoreCase) ||
+               actionId.Equals(ActionIdCreateHeroVariant, StringComparison.OrdinalIgnoreCase);
+    }
     private static HelperActionPolicyResolution BuildPolicyFailure(
         ActionExecutionRequest request,
         RuntimeReasonCode reasonCode,
         string message,
-        IReadOnlyCollection<string> policyReasonCodes,
+        IEnumerable<string> policyReasonCodes,
         IReadOnlyDictionary<string, object?> diagnostics)
     {
         var mergedDiagnostics = new Dictionary<string, object?>(diagnostics, StringComparer.OrdinalIgnoreCase)
@@ -3546,7 +3584,7 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
             ["helperPolicyState"] = "blocked"
         };
 
-        if (policyReasonCodes.Count > 0)
+        if (policyReasonCodes.Any())
         {
             mergedDiagnostics["policyReasonCodes"] = policyReasonCodes.ToArray();
         }
@@ -3774,7 +3812,7 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
                      id.Equals(ActionIdSetHeroStateHelper, StringComparison.OrdinalIgnoreCase) => "edit_hero_state",
             var id when id.Equals(ActionIdCreateHeroVariant, StringComparison.OrdinalIgnoreCase) => "create_hero_variant",
             var id when id.Equals(ActionIdToggleRoeRespawnHelper, StringComparison.OrdinalIgnoreCase) => "toggle_respawn_policy",
-            _ => "unknown"
+            _ => UnknownTokenText
         };
     }
 

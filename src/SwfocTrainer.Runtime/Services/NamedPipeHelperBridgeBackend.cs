@@ -48,7 +48,9 @@ public sealed class NamedPipeHelperBridgeBackend : IHelperBridgeBackend
     private const string PayloadTargetContext = "targetContext";
     private const string PayloadMutationIntent = "mutationIntent";
     private const string PayloadVerificationContractVersion = "verificationContractVersion";
-
+    private const string PayloadAllowCrossFaction = "allowCrossFaction";
+    private const string PayloadPlacementMode = "placementMode";
+    private const string PayloadForceOverride = "forceOverride";
     private const string InvocationSourceNativeBridge = "native_bridge";
 
     private static readonly string[] HelperFeatureIds =
@@ -497,7 +499,7 @@ public sealed class NamedPipeHelperBridgeBackend : IHelperBridgeBackend
             actionId.Equals(ActionSpawnTacticalEntity, StringComparison.OrdinalIgnoreCase))
         {
             ApplySpawnDefaults(payload, populationPolicy: "ForceZeroTactical", persistencePolicy: "EphemeralBattleOnly");
-            payload["placementMode"] ??= "reinforcement_zone";
+            payload[PayloadPlacementMode] ??= "reinforcement_zone";
             return;
         }
 
@@ -509,45 +511,45 @@ public sealed class NamedPipeHelperBridgeBackend : IHelperBridgeBackend
 
         if (actionId.Equals(ActionPlacePlanetBuilding, StringComparison.OrdinalIgnoreCase))
         {
-            payload["placementMode"] ??= "safe_rules";
-            payload["forceOverride"] ??= false;
-            payload["allowCrossFaction"] ??= true;
+            payload[PayloadPlacementMode] ??= "safe_rules";
+            payload[PayloadForceOverride] ??= false;
+            payload[PayloadAllowCrossFaction] ??= true;
             return;
         }
 
         if (actionId.Equals(ActionTransferFleetSafe, StringComparison.OrdinalIgnoreCase))
         {
-            payload["allowCrossFaction"] ??= true;
-            payload["placementMode"] ??= "safe_transfer";
-            payload["forceOverride"] ??= false;
+            payload[PayloadAllowCrossFaction] ??= true;
+            payload[PayloadPlacementMode] ??= "safe_transfer";
+            payload[PayloadForceOverride] ??= false;
             return;
         }
 
         if (actionId.Equals(ActionFlipPlanetOwner, StringComparison.OrdinalIgnoreCase))
         {
-            payload["allowCrossFaction"] ??= true;
+            payload[PayloadAllowCrossFaction] ??= true;
             payload["planetFlipMode"] ??= "convert_everything";
-            payload["forceOverride"] ??= false;
+            payload[PayloadForceOverride] ??= false;
             return;
         }
 
         if (actionId.Equals(ActionSwitchPlayerFaction, StringComparison.OrdinalIgnoreCase))
         {
-            payload["allowCrossFaction"] ??= true;
+            payload[PayloadAllowCrossFaction] ??= true;
             return;
         }
 
         if (actionId.Equals(ActionEditHeroState, StringComparison.OrdinalIgnoreCase))
         {
             payload["heroStatePolicy"] ??= "mod_adaptive";
-            payload["allowCrossFaction"] ??= true;
+            payload[PayloadAllowCrossFaction] ??= true;
             return;
         }
 
         if (actionId.Equals(ActionCreateHeroVariant, StringComparison.OrdinalIgnoreCase))
         {
             payload["variantGenerationMode"] ??= "patch_mod_overlay";
-            payload["allowCrossFaction"] ??= true;
+            payload[PayloadAllowCrossFaction] ??= true;
         }
     }
 
@@ -555,7 +557,7 @@ public sealed class NamedPipeHelperBridgeBackend : IHelperBridgeBackend
     {
         payload["populationPolicy"] ??= populationPolicy;
         payload["persistencePolicy"] ??= persistencePolicy;
-        payload["allowCrossFaction"] ??= true;
+        payload[PayloadAllowCrossFaction] ??= true;
     }
 
     private static bool ValidateVerificationContract(

@@ -135,8 +135,11 @@ function SWFOC_Trainer_Spawn(object_type, entry_marker, player_name)
     return ok
 end
 
-function SWFOC_Trainer_Spawn_Context(entity_id, unit_id, entry_marker, faction, runtime_mode, persistence_policy, population_policy, world_position, placement_mode)
+function SWFOC_Trainer_Spawn_Context(entity_id, unit_id, entry_marker, faction, ...)
     -- Runtime policy flags are tracked in diagnostics; tactical defaults use reinforcement-zone behavior when available.
+    local args = {...}
+    local runtime_mode = args[1]
+    local placement_mode = args[5]
     local effective_placement_mode = placement_mode
     if not Has_Value(effective_placement_mode) and runtime_mode ~= nil and runtime_mode ~= "Galactic" then
         effective_placement_mode = "reinforcement_zone"
@@ -228,6 +231,27 @@ function SWFOC_Trainer_Switch_Player_Faction(target_faction)
     return Try_Story_Event("SWITCH_SIDES", target_faction, nil, nil)
 end
 
+local function Is_Hero_Death_State(state)
+    return state == "dead" or state == "permadead" or state == "remove"
+end
+
+local function Try_Remove_Hero(hero)
+    if hero and hero.Despawn then
+        return pcall(function()
+            hero.Despawn()
+        end)
+    end
+
+    return false
+end
+
+local function Try_Apply_Hero_Story_State(hero_entity_id, state, hero_global_key)
+    return Try_Story_Event("SET_HERO_STATE", hero_entity_id, state, hero_global_key)
+end
+
+local function Try_Set_Hero_Respawn_Pending(hero_entity_id, hero_global_key)
+    return Try_Story_Event("SET_HERO_RESPAWN", hero_entity_id, hero_global_key, "pending")
+end
 function SWFOC_Trainer_Edit_Hero_State(hero_entity_id, hero_global_key, desired_state, allow_duplicate)
     if not Has_Value(hero_entity_id) and not Has_Value(hero_global_key) then
         return false
@@ -236,26 +260,19 @@ function SWFOC_Trainer_Edit_Hero_State(hero_entity_id, hero_global_key, desired_
     local hero = Try_Find_Object(hero_entity_id)
     local state = desired_state or "alive"
 
-    if state == "dead" or state == "permadead" or state == "remove" then
-        if hero and hero.Despawn then
-            return pcall(function()
-                hero.Despawn()
-            end)
-        end
-
-        return Try_Story_Event("SET_HERO_STATE", hero_entity_id, state, hero_global_key)
+    if Is_Hero_Death_State(state) then
+        return Try_Remove_Hero(hero) or Try_Apply_Hero_Story_State(hero_entity_id, state, hero_global_key)
     end
 
     if state == "respawn_pending" then
-        return Try_Story_Event("SET_HERO_RESPAWN", hero_entity_id, hero_global_key, "pending")
+        return Try_Set_Hero_Respawn_Pending(hero_entity_id, hero_global_key)
     end
 
-    -- alive/revive path
     if hero ~= nil then
         return true
     end
 
-    return Try_Story_Event("SET_HERO_STATE", hero_entity_id, "alive", hero_global_key)
+    return Try_Apply_Hero_Story_State(hero_entity_id, "alive", hero_global_key)
 end
 
 function SWFOC_Trainer_Create_Hero_Variant(source_hero_id, variant_hero_id, target_faction)

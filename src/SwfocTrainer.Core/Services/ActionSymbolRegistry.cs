@@ -3,7 +3,8 @@ namespace SwfocTrainer.Core.Services;
 public static class ActionSymbolRegistry
 {
     private const string SymbolCredits = "credits";
-
+    private const string SymbolSelectedOwnerFaction = "selected_owner_faction";
+    private const string SymbolPlanetOwner = "planet_owner";
     private static readonly IReadOnlyDictionary<string, string> ActionSymbols =
         new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
         {
@@ -20,17 +21,17 @@ public static class ActionSymbolRegistry
             ["set_selected_damage_multiplier"] = "selected_damage_multiplier",
             ["set_selected_cooldown_multiplier"] = "selected_cooldown_multiplier",
             ["set_selected_veterancy"] = "selected_veterancy",
-            ["set_selected_owner_faction"] = "selected_owner_faction",
-            ["set_planet_owner"] = "planet_owner",
-            ["set_context_faction"] = "selected_owner_faction",
-            ["set_context_allegiance"] = "selected_owner_faction",
-            ["spawn_context_entity"] = "selected_owner_faction",
-            ["spawn_tactical_entity"] = "selected_owner_faction",
-            ["spawn_galactic_entity"] = "planet_owner",
-            ["place_planet_building"] = "planet_owner",
-            ["transfer_fleet_safe"] = "planet_owner",
-            ["flip_planet_owner"] = "planet_owner",
-            ["switch_player_faction"] = "planet_owner",
+            ["set_selected_owner_faction"] = SymbolSelectedOwnerFaction,
+            ["set_planet_owner"] = SymbolPlanetOwner,
+            ["set_context_faction"] = SymbolSelectedOwnerFaction,
+            ["set_context_allegiance"] = SymbolSelectedOwnerFaction,
+            ["spawn_context_entity"] = SymbolSelectedOwnerFaction,
+            ["spawn_tactical_entity"] = SymbolSelectedOwnerFaction,
+            ["spawn_galactic_entity"] = SymbolPlanetOwner,
+            ["place_planet_building"] = SymbolPlanetOwner,
+            ["transfer_fleet_safe"] = SymbolPlanetOwner,
+            ["flip_planet_owner"] = SymbolPlanetOwner,
+            ["switch_player_faction"] = SymbolPlanetOwner,
             ["edit_hero_state"] = "hero_respawn_timer",
             ["create_hero_variant"] = "hero_respawn_timer",
             ["set_hero_respawn_timer"] = "hero_respawn_timer",
