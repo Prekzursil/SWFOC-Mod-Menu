@@ -283,5 +283,65 @@ public sealed class SignatureResolverCoverageTests
         await action.Should().ThrowAsync<InvalidOperationException>()
             .WithMessage("*Could not find running process*");
     }
-}
 
+
+    [Fact]
+    public void TryResolveAddress_ReadRipRelative32AtOffset_ShouldApplyMovImmediateHeuristic()
+    {
+        var signature = new SignatureSpec(
+            "mov_rip",
+            "C6 05 ?? ?? ?? ?? 01",
+            2,
+            SignatureAddressMode.ReadRipRelative32AtOffset);
+
+        var moduleBytes = new byte[64];
+        BitConverter.GetBytes(32).CopyTo(moduleBytes, 2);
+
+        var ok = SignatureResolverAddressing.TryResolveAddress(
+            signature,
+            hitAddress: (nint)0x1000,
+            baseAddress: (nint)0x1000,
+            moduleBytes,
+            out var resolved,
+            out var diagnostics);
+
+        ok.Should().BeTrue();
+        resolved.Should().Be((nint)0x1027);
+        diagnostics.Should().BeNull();
+    }
+
+    [Fact]
+    public void TryResolveAddress_ShouldFail_WhenComputedIndexIsNegative()
+    {
+        var signature = new SignatureSpec("neg_index", "90", -4, SignatureAddressMode.ReadAbsolute32AtOffset);
+
+        var ok = SignatureResolverAddressing.TryResolveAddress(
+            signature,
+            hitAddress: (nint)0x1000,
+            baseAddress: (nint)0x2000,
+            moduleBytes: new byte[32],
+            out _,
+            out var diagnostics);
+
+        ok.Should().BeFalse();
+        diagnostics.Should().Contain("Computed value offset out of range");
+    }
+
+    [Fact]
+    public void TryResolveAddress_ShouldFail_ForUnsupportedAddressMode()
+    {
+        var signature = new SignatureSpec("unsupported", "90", 0, (SignatureAddressMode)999);
+
+        var ok = SignatureResolverAddressing.TryResolveAddress(
+            signature,
+            hitAddress: (nint)0x1000,
+            baseAddress: (nint)0x1000,
+            moduleBytes: new byte[32],
+            out _,
+            out var diagnostics);
+
+        ok.Should().BeFalse();
+        diagnostics.Should().Contain("Unsupported signature address mode");
+    }
+
+}

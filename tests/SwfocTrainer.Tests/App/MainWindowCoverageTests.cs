@@ -4,6 +4,7 @@ using System.Windows;
 using System.Windows.Media;
 using FluentAssertions;
 using SwfocTrainer.App;
+using SwfocTrainer.App.Infrastructure;
 using Xunit;
 
 namespace SwfocTrainer.Tests.App;
@@ -47,6 +48,48 @@ public sealed class MainWindowCoverageTests
         });
     }
 
+
+
+    [Fact]
+    public void AsyncCommand_ShouldRespectCanExecutePredicate()
+    {
+        var executed = false;
+        var command = new AsyncCommand(() =>
+        {
+            executed = true;
+            return Task.CompletedTask;
+        }, () => false);
+
+        command.CanExecute(null).Should().BeFalse();
+        command.Execute(null);
+        Thread.Sleep(25);
+        executed.Should().BeFalse();
+    }
+
+    [Fact]
+    public void AsyncCommand_ShouldToggleCanExecute_WhileTaskRuns()
+    {
+        RunOnSta(() =>
+        {
+            var gate = new TaskCompletionSource<bool>(TaskCreationOptions.RunContinuationsAsynchronously);
+            var command = new AsyncCommand(async () =>
+            {
+                await gate.Task.ConfigureAwait(false);
+            });
+
+            command.CanExecute(null).Should().BeTrue();
+            command.Execute(null);
+            Thread.Sleep(25);
+            command.CanExecute(null).Should().BeFalse();
+
+            gate.SetResult(true);
+            Thread.Sleep(25);
+            command.CanExecute(null).Should().BeTrue();
+
+            AsyncCommand.RaiseCanExecuteChanged();
+            return true;
+        });
+    }
     private static T RunOnSta<T>(Func<T> func)
     {
         T? result = default;

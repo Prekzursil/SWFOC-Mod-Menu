@@ -1,4 +1,5 @@
-// cppcheck-suppress-file missingIncludeSystem`r`n// cppcheck-suppress-file misra-c2012-12.3
+// cppcheck-suppress-file missingIncludeSystem
+// cppcheck-suppress-file misra-c2012-12.3
 #include "swfoc_extender/bridge/NamedPipeBridgeServer.hpp"
 #include "swfoc_extender/plugins/BuildPatchPlugin.hpp"
 #include "swfoc_extender/plugins/EconomyPlugin.hpp"

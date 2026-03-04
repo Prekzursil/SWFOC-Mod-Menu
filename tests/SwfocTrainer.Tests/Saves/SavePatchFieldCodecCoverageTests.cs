@@ -3,7 +3,9 @@ using System.Reflection;
 using System.Text;
 using System.Text.Json;
 using FluentAssertions;
+using Microsoft.Extensions.Logging.Abstractions;
 using SwfocTrainer.Core.Models;
+using SwfocTrainer.Saves.Config;
 using SwfocTrainer.Saves.Services;
 using Xunit;
 
@@ -121,6 +123,94 @@ public sealed class SavePatchFieldCodecCoverageTests
         ((bool)InvokeStatic("ValuesEqual", "a", "b")!).Should().BeFalse();
     }
 
+
+    [Fact]
+    public void BinarySaveCodec_PrivateHelpers_ShouldCoverAdditionalBranches()
+    {
+        var root = CreateCodecSchemaRoot();
+        var codec = new BinarySaveCodec(new SaveOptions { SchemaRootPath = root }, NullLogger<BinarySaveCodec>.Instance);
+
+        try
+        {
+            var raw = new byte[32];
+            var intField = new SaveFieldDefinition("i32", "i32", "int32", 0, 4);
+            var boolField = new SaveFieldDefinition("flag", "flag", "bool", 4, 1);
+            var asciiField = new SaveFieldDefinition("text", "text", "ascii", 8, 4);
+
+            InvokeBinaryStatic("ApplyFieldEdit", raw, intField, 7, "little");
+            BitConverter.ToInt32(raw, 0).Should().Be(7);
+
+            InvokeBinaryStatic("ApplyFieldEdit", raw, boolField, true, "little");
+            raw[4].Should().Be(1);
+
+            InvokeBinaryStatic("ApplyFieldEdit", raw, asciiField, "AB", "little");
+            Encoding.ASCII.GetString(raw, 8, 2).Should().Be("AB");
+
+            var schema = new SaveSchema(
+                "schema",
+                "build",
+                "little",
+                new[] { new SaveBlockDefinition("root", "root", 0, 32, "struct", new[] { "i32" }) },
+                new[] { intField },
+                Array.Empty<SaveArrayDefinition>(),
+                new[]
+                {
+                    new ValidationRule("r1", "field_non_negative", "i32", "neg int"),
+                    new ValidationRule("r2", "field_non_negative", "missing", "missing field")
+                },
+                new[]
+                {
+                    new ChecksumRule("crc", "crc32", 0, 8, 12, 4),
+                    new ChecksumRule("skip", "crc32", 99, 120, 24, 4)
+                });
+
+            var ruleRaw = new byte[32];
+            BitConverter.GetBytes(-1).CopyTo(ruleRaw, 0);
+            var evalRule = InvokeBinaryStatic("EvaluateRule", schema.ValidationRules[0], schema, ruleRaw);
+            evalRule.Should().Be("neg int");
+            InvokeBinaryStatic("EvaluateRule", schema.ValidationRules[1], schema, raw).Should().BeNull();
+
+            var applyChecksums = typeof(BinarySaveCodec).GetMethod("ApplyChecksums", BindingFlags.Instance | BindingFlags.NonPublic);
+            applyChecksums.Should().NotBeNull();
+            applyChecksums!.Invoke(codec, new object?[] { schema, raw });
+
+            var checksum = BitConverter.ToUInt32(raw, 12);
+            checksum.Should().NotBe(0u);
+
+            var tempSav = Path.Combine(root, "input.sav");
+            File.WriteAllBytes(tempSav, new byte[16]);
+            InvokeBinaryStatic("NormalizeSaveFilePath", tempSav, true).Should().Be(tempSav);
+
+            var badExt = Path.Combine(root, "bad.txt");
+            var missingSav = Path.Combine(root, "missing.sav");
+            var badExtCall = () => InvokeBinaryStatic("NormalizeSaveFilePath", badExt, false);
+            badExtCall.Should().Throw<TargetInvocationException>();
+
+            var missingCall = () => InvokeBinaryStatic("NormalizeSaveFilePath", missingSav, true);
+            missingCall.Should().Throw<TargetInvocationException>();
+        }
+        finally
+        {
+            if (Directory.Exists(root))
+            {
+                Directory.Delete(root, recursive: true);
+            }
+        }
+    }
+
+    private static string CreateCodecSchemaRoot()
+    {
+        var root = Path.Combine(Path.GetTempPath(), $"swfoc-codec-branch-{Guid.NewGuid():N}");
+        Directory.CreateDirectory(root);
+        return root;
+    }
+
+    private static object? InvokeBinaryStatic(string methodName, params object?[] args)
+    {
+        var method = typeof(BinarySaveCodec).GetMethod(methodName, BindingFlags.NonPublic | BindingFlags.Static);
+        method.Should().NotBeNull($"Expected BinarySaveCodec private static method {methodName}");
+        return method!.Invoke(null, args);
+    }
     private static object? InvokeStatic(string methodName, params object?[] args)
     {
         var method = CodecType.GetMethod(methodName, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static);
