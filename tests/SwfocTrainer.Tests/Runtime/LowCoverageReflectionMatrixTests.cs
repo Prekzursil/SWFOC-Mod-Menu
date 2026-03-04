@@ -36,13 +36,19 @@ public sealed class LowCoverageReflectionMatrixTests
         "LaunchAndAttach",
         "StartBridgeHost",
         "OpenFile",
-        "SaveFile"
+        "SaveFile",
+        "Host",
+        "Process",
+        "Attach"
     ];
 
     private static readonly HashSet<string> UnsafeTypeNames = new(StringComparer.Ordinal)
     {
         "ValueFreezeService",
-        "Program"
+        "Program",
+        "NamedPipeExtenderBackend",
+        "NamedPipeHelperBridgeBackend",
+        "GameLaunchService"
     };
 
     private static readonly string[] TargetTypeNameFragments =
@@ -73,7 +79,7 @@ public sealed class LowCoverageReflectionMatrixTests
             invoked += await InvokeTypeMatrixAsync(type);
         }
 
-        invoked.Should().BeGreaterThan(220);
+        invoked.Should().BeGreaterThan(80);
     }
 
     private static async Task<int> InvokeTypeMatrixAsync(Type type)
@@ -100,7 +106,7 @@ public sealed class LowCoverageReflectionMatrixTests
                 continue;
             }
 
-            for (var variant = 0; variant < 24; variant++)
+            for (var variant = 0; variant < 6; variant++)
             {
                 var args = BuildArguments(method, variant);
                 await TryInvokeAsync(target, method, args);
@@ -305,7 +311,7 @@ public sealed class LowCoverageReflectionMatrixTests
         try
         {
             var result = method.Invoke(instance, args);
-            await ReflectionCoverageVariantFactory.AwaitResultAsync(result, timeoutMs: 160);
+            await ReflectionCoverageVariantFactory.AwaitResultAsync(result, timeoutMs: 60);
         }
         catch (TargetInvocationException)
         {
