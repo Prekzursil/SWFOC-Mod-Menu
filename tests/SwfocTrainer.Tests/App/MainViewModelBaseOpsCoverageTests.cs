@@ -1,0 +1,659 @@
+using System.Text.Json.Nodes;
+using FluentAssertions;
+using SwfocTrainer.App.Models;
+using SwfocTrainer.App.ViewModels;
+using SwfocTrainer.Core.Contracts;
+using SwfocTrainer.Core.Models;
+using Xunit;
+
+namespace SwfocTrainer.Tests.App;
+
+public sealed class MainViewModelBaseOpsCoverageTests
+{
+    [Fact]
+    public async Task RefreshActionReliability_AndSpawnPresetFlow_ShouldPopulateDiagnosticsAndRoster()
+    {
+        var runtime = new StubRuntimeAdapter
+        {
+            IsAttached = true,
+            CurrentSession = BuildSession(RuntimeMode.Galactic)
+        };
+
+        var profile = BuildProfile("base_swfoc");
+        var profileRepo = new StubProfileRepository(profile);
+        var catalog = new StubCatalogService(new Dictionary<string, IReadOnlyList<string>>(StringComparer.OrdinalIgnoreCase)
+        {
+            ["entity_catalog"] = ["Unit|STORMTROOPER|base_swfoc|1125571106|Textures/UI/storm.dds|dep_a"]
+        });
+        var reliabilityService = new StubActionReliabilityService(new[]
+        {
+            new ActionReliabilityInfo("set_credits", ActionReliabilityState.Stable, "CAPABILITY_PROBE_PASS", 1.0d, "ok")
+        });
+        var spawnService = new StubSpawnPresetService();
+
+        var vm = new SaveOpsHarness(CreateDependencies(
+            runtime,
+            profileRepo,
+            catalog,
+            reliabilityService,
+            new StubSelectedUnitTransactionService(),
+            spawnService,
+            new StubFreezeService()));
+
+        vm.SelectedProfileId = profile.Id;
+        vm.RuntimeMode = RuntimeMode.Galactic;
+
+        await vm.InvokeRefreshActionReliabilityAsync();
+        await vm.InvokeLoadSpawnPresetsAsync();
+        await vm.InvokeRunSpawnBatchAsync();
+
+        vm.ActionReliability.Should().ContainSingle();
+        vm.LiveOpsDiagnostics.Should().Contain(x => x.StartsWith("mode:"));
+        vm.LiveOpsDiagnostics.Should().Contain(x => x.Contains("dependency:"));
+        vm.EntityRoster.Should().ContainSingle(x => x.EntityId == "STORMTROOPER");
+        vm.SpawnPresets.Should().ContainSingle();
+        vm.Status.Should().Contain("batch ok");
+        spawnService.LastExecuteResult.Should().NotBeNull();
+    }
+
+    [Fact]
+    public async Task SelectedUnitTransactionMethods_ShouldUpdateDraftAndStatuses()
+    {
+        var runtime = new StubRuntimeAdapter
+        {
+            IsAttached = true,
+            CurrentSession = BuildSession(RuntimeMode.TacticalLand)
+        };
+        var transactions = new StubSelectedUnitTransactionService();
+        var vm = new SaveOpsHarness(CreateDependencies(
+            runtime,
+            new StubProfileRepository(BuildProfile("base_swfoc")),
+            new StubCatalogService(new Dictionary<string, IReadOnlyList<string>>(StringComparer.OrdinalIgnoreCase)),
+            new StubActionReliabilityService(Array.Empty<ActionReliabilityInfo>()),
+            transactions,
+            new StubSpawnPresetService(),
+            new StubFreezeService()));
+
+        vm.SelectedProfileId = "base_swfoc";
+        vm.RuntimeMode = RuntimeMode.TacticalLand;
+        vm.SelectedUnitHp = "100";
+        vm.SelectedUnitShield = "50";
+        vm.SelectedUnitSpeed = "1.5";
+        vm.SelectedUnitDamageMultiplier = "2.0";
+        vm.SelectedUnitCooldownMultiplier = "0.5";
+        vm.SelectedUnitVeterancy = "3";
+        vm.SelectedUnitOwnerFaction = "2";
+
+        await vm.InvokeCaptureSelectedUnitBaselineAsync();
+        await vm.InvokeApplySelectedUnitDraftAsync();
+        await vm.InvokeRevertSelectedUnitTransactionAsync();
+        await vm.InvokeRestoreSelectedUnitBaselineAsync();
+
+        vm.SelectedUnitTransactions.Should().NotBeEmpty();
+        vm.Status.Should().NotBeNullOrWhiteSpace();
+        vm.SelectedUnitHp.Should().Be("100");
+        vm.SelectedUnitOwnerFaction.Should().Be("2");
+    }
+
+    [Fact]
+    public void SaveOpsHelpers_ShouldHandleVariantMismatch_SearchAndPatchRows()
+    {
+        var runtime = new StubRuntimeAdapter
+        {
+            IsAttached = true,
+            CurrentSession = BuildSession(RuntimeMode.Galactic, "resolved_variant_profile")
+        };
+
+        var vm = new SaveOpsHarness(CreateDependencies(
+            runtime,
+            new StubProfileRepository(BuildProfile("base_swfoc")),
+            new StubCatalogService(new Dictionary<string, IReadOnlyList<string>>(StringComparer.OrdinalIgnoreCase)),
+            new StubActionReliabilityService(Array.Empty<ActionReliabilityInfo>()),
+            new StubSelectedUnitTransactionService(),
+            new StubSpawnPresetService(),
+            new StubFreezeService()));
+
+        var variantError = vm.InvokeValidateSaveRuntimeVariant("base_swfoc");
+        variantError.Should().Contain("save_variant_mismatch");
+
+        var canPreview = vm.InvokePreparePatchPreview("base_swfoc");
+        canPreview.Should().BeFalse();
+        vm.SavePatchCompatibility.Should().ContainSingle(x => x.Code == "save_variant_mismatch");
+
+        var compatibility = new SavePatchCompatibilityResult(
+            IsCompatible: false,
+            SourceHashMatches: false,
+            TargetHash: "abc",
+            Errors: ["schema mismatch"],
+            Warnings: ["hash differs"]);
+        var preview = new SavePatchPreview(
+            IsCompatible: false,
+            Errors: ["preview blocked"],
+            Warnings: ["preview warn"],
+            OperationsToApply:
+            [
+                new SavePatchOperation(
+                    SavePatchOperationKind.SetValue,
+                    "root.money",
+                    "money",
+                    "int",
+                    100,
+                    999,
+                    8)
+            ]);
+
+        vm.InvokePopulatePatchPreviewOperations(preview);
+        vm.InvokePopulatePatchCompatibilityRows(compatibility, preview);
+        vm.InvokeAppendPatchArtifactRows("C:/tmp/backup.sav", "C:/tmp/receipt.json");
+
+        vm.SavePatchOperations.Should().ContainSingle();
+        vm.SavePatchCompatibility.Should().Contain(x => x.Code == "backup_path");
+        vm.SavePatchCompatibility.Should().Contain(x => x.Code == "receipt_path");
+
+        var root = new SaveNode(
+            Path: "root",
+            Name: "root",
+            ValueType: "root",
+            Value: null,
+            Children:
+            [
+                new SaveNode("root.money", "money", "int", 100),
+                new SaveNode("root.player.name", "name", "string", "Thrawn")
+            ]);
+
+        vm.SetLoadedSaveForCoverage(new SaveDocument("save.sav", "schema", new byte[] { 1, 2, 3 }, root), new byte[] { 1, 2, 9 });
+        vm.InvokeRebuildSaveFieldRows();
+        vm.SaveFields.Should().HaveCount(2);
+
+        vm.SaveSearchQuery = "name";
+        vm.FilteredSaveFields.Should().ContainSingle(x => x.Name == "name");
+
+        vm.InvokeClearPatchPreviewState(clearLoadedPack: true);
+        vm.SavePatchOperations.Should().BeEmpty();
+        vm.SavePatchCompatibility.Should().BeEmpty();
+    }
+
+    [Fact]
+    public async Task QuickActionHelpers_ShouldHandleDetachedAndHotkeyCollectionPaths()
+    {
+        var runtime = new StubRuntimeAdapter
+        {
+            IsAttached = false,
+            CurrentSession = BuildSession(RuntimeMode.Unknown)
+        };
+
+        var vm = new SaveOpsHarness(CreateDependencies(
+            runtime,
+            new StubProfileRepository(BuildProfile("base_swfoc")),
+            new StubCatalogService(new Dictionary<string, IReadOnlyList<string>>(StringComparer.OrdinalIgnoreCase)),
+            new StubActionReliabilityService(Array.Empty<ActionReliabilityInfo>()),
+            new StubSelectedUnitTransactionService(),
+            new StubSpawnPresetService(),
+            new StubFreezeService()));
+
+        vm.SelectedProfileId = "base_swfoc";
+
+        await vm.InvokeAddHotkeyAsync();
+        vm.Hotkeys.Should().ContainSingle();
+        vm.SelectedHotkey = vm.Hotkeys[0];
+        await vm.InvokeRemoveHotkeyAsync();
+        vm.Hotkeys.Should().BeEmpty();
+
+        var handled = await vm.ExecuteHotkeyAsync("Ctrl+1");
+        handled.Should().BeFalse();
+
+        await vm.InvokeQuickRunActionAsync("set_credits", new JsonObject
+        {
+            ["symbol"] = "credits",
+            ["intValue"] = 1000
+        });
+
+        vm.Status.Should().Be("Ready");
+
+        await vm.InvokeQuickUnfreezeAllAsync();
+        vm.ActiveFreezes.Should().ContainSingle().Which.Should().Be("(none)");
+    }
+
+    private static MainViewModelDependencies CreateDependencies(
+        StubRuntimeAdapter runtime,
+        StubProfileRepository profiles,
+        StubCatalogService catalog,
+        StubActionReliabilityService reliability,
+        StubSelectedUnitTransactionService selectedTransactions,
+        StubSpawnPresetService spawnPresets,
+        StubFreezeService freezeService)
+    {
+        return new MainViewModelDependencies
+        {
+            Profiles = profiles,
+            ProcessLocator = null!,
+            LaunchContextResolver = null!,
+            ProfileVariantResolver = null!,
+            GameLauncher = null!,
+            Runtime = runtime,
+            Orchestrator = null!,
+            Catalog = catalog,
+            SaveCodec = null!,
+            SavePatchPackService = null!,
+            SavePatchApplyService = null!,
+            Helper = null!,
+            Updates = null!,
+            ModOnboarding = null!,
+            ModCalibration = null!,
+            SupportBundles = null!,
+            Telemetry = null!,
+            FreezeService = freezeService,
+            ActionReliability = reliability,
+            SelectedUnitTransactions = selectedTransactions,
+            SpawnPresets = spawnPresets
+        };
+    }
+
+    private static AttachSession BuildSession(RuntimeMode mode, string resolvedVariant = "base_swfoc")
+    {
+        var metadata = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
+        {
+            ["runtimeModeReasonCode"] = "mode_probe_ok",
+            ["resolvedVariant"] = resolvedVariant,
+            ["resolvedVariantReasonCode"] = "variant_match",
+            ["resolvedVariantConfidence"] = "0.99",
+            ["dependencyValidation"] = "Pass",
+            ["dependencyValidationMessage"] = "ok"
+        };
+
+        var process = new ProcessMetadata(
+            ProcessId: Environment.ProcessId,
+            ProcessName: "swfoc.exe",
+            ProcessPath: @"C:\Games\swfoc.exe",
+            CommandLine: "STEAMMOD=1397421866",
+            ExeTarget: ExeTarget.Swfoc,
+            Mode: mode,
+            Metadata: metadata,
+            LaunchContext: new LaunchContext(
+                LaunchKind.Workshop,
+                CommandLineAvailable: true,
+                SteamModIds: ["1397421866"],
+                ModPathRaw: null,
+                ModPathNormalized: null,
+                DetectedVia: "cmdline",
+                Recommendation: new ProfileRecommendation("base_swfoc", "workshop_match", 0.99),
+                Source: "detected"));
+
+        var symbols = new Dictionary<string, SymbolInfo>(StringComparer.OrdinalIgnoreCase)
+        {
+            ["credits"] = new SymbolInfo("credits", (nint)0x1000, SymbolValueType.Int32, AddressSource.Signature, HealthStatus: SymbolHealthStatus.Healthy),
+            ["fog_reveal"] = new SymbolInfo("fog_reveal", nint.Zero, SymbolValueType.Bool, AddressSource.None, HealthStatus: SymbolHealthStatus.Unresolved),
+            ["unit_cap"] = new SymbolInfo("unit_cap", (nint)0x2000, SymbolValueType.Int32, AddressSource.Fallback, HealthStatus: SymbolHealthStatus.Degraded)
+        };
+
+        return new AttachSession(
+            ProfileId: "base_swfoc",
+            Process: process,
+            Build: new ProfileBuild("base_swfoc", "build", @"C:\Games\swfoc.exe", ExeTarget.Swfoc, ProcessId: Environment.ProcessId),
+            Symbols: new SymbolMap(symbols),
+            AttachedAt: DateTimeOffset.UtcNow);
+    }
+
+    private static TrainerProfile BuildProfile(string id)
+    {
+        return new TrainerProfile(
+            Id: id,
+            DisplayName: "Base",
+            Inherits: null,
+            ExeTarget: ExeTarget.Swfoc,
+            SteamWorkshopId: "1125571106",
+            SignatureSets: Array.Empty<SignatureSet>(),
+            FallbackOffsets: new Dictionary<string, long>(),
+            Actions: new Dictionary<string, ActionSpec>(StringComparer.OrdinalIgnoreCase)
+            {
+                ["set_credits"] = new ActionSpec(
+                    Id: "set_credits",
+                    Category: ActionCategory.Global,
+                    Mode: RuntimeMode.Galactic,
+                    ExecutionKind: ExecutionKind.Sdk,
+                    PayloadSchema: new JsonObject { ["required"] = new JsonArray("symbol", "intValue") },
+                    VerifyReadback: true,
+                    CooldownMs: 0),
+                ["set_hero_respawn_timer"] = new ActionSpec(
+                    Id: "set_hero_respawn_timer",
+                    Category: ActionCategory.Hero,
+                    Mode: RuntimeMode.Galactic,
+                    ExecutionKind: ExecutionKind.Helper,
+                    PayloadSchema: new JsonObject(),
+                    VerifyReadback: false,
+                    CooldownMs: 0)
+            },
+            FeatureFlags: new Dictionary<string, bool>(),
+            CatalogSources: Array.Empty<CatalogSource>(),
+            SaveSchemaId: "schema",
+            HelperModHooks: Array.Empty<HelperHookSpec>(),
+            Metadata: new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
+            {
+                ["supports_hero_permadeath"] = "true",
+                ["supports_hero_rescue"] = "false",
+                ["defaultHeroRespawnTime"] = "420",
+                ["duplicateHeroPolicy"] = "warn"
+            });
+    }
+
+    private sealed class SaveOpsHarness : MainViewModelSaveOpsBase
+    {
+        public SaveOpsHarness(MainViewModelDependencies dependencies)
+            : base(dependencies)
+        {
+            var collections = MainViewModelFactories.CreateCollections();
+            Profiles = collections.Profiles;
+            Actions = collections.Actions;
+            CatalogSummary = collections.CatalogSummary;
+            Updates = collections.Updates;
+            SaveDiffPreview = collections.SaveDiffPreview;
+            Hotkeys = collections.Hotkeys;
+            SaveFields = collections.SaveFields;
+            FilteredSaveFields = collections.FilteredSaveFields;
+            SavePatchOperations = collections.SavePatchOperations;
+            SavePatchCompatibility = collections.SavePatchCompatibility;
+            ActionReliability = collections.ActionReliability;
+            SelectedUnitTransactions = collections.SelectedUnitTransactions;
+            SpawnPresets = collections.SpawnPresets;
+            EntityRoster = collections.EntityRoster;
+            LiveOpsDiagnostics = collections.LiveOpsDiagnostics;
+            ModCompatibilityRows = collections.ModCompatibilityRows;
+            ActiveFreezes = collections.ActiveFreezes;
+            _freezeUiTimer = new System.Windows.Threading.DispatcherTimer();
+            Status = "Ready";
+        }
+
+        protected override void ApplyPayloadTemplateForSelectedAction() { }
+
+        protected override Task<bool> EnsureActionAvailableForCurrentSessionAsync(string actionId, string statusPrefix)
+        {
+            _ = actionId;
+            _ = statusPrefix;
+            return Task.FromResult(true);
+        }
+
+        public Task InvokeRefreshActionReliabilityAsync() => RefreshActionReliabilityAsync();
+        public Task InvokeLoadSpawnPresetsAsync() => LoadSpawnPresetsAsync();
+        public Task InvokeRunSpawnBatchAsync() => RunSpawnBatchAsync();
+        public Task InvokeCaptureSelectedUnitBaselineAsync() => CaptureSelectedUnitBaselineAsync();
+        public Task InvokeApplySelectedUnitDraftAsync() => ApplySelectedUnitDraftAsync();
+        public Task InvokeRevertSelectedUnitTransactionAsync() => RevertSelectedUnitTransactionAsync();
+        public Task InvokeRestoreSelectedUnitBaselineAsync() => RestoreSelectedUnitBaselineAsync();
+        public string? InvokeValidateSaveRuntimeVariant(string id) => ValidateSaveRuntimeVariant(id);
+        public bool InvokePreparePatchPreview(string id) => PreparePatchPreview(id);
+        public void InvokePopulatePatchPreviewOperations(SavePatchPreview preview) => PopulatePatchPreviewOperations(preview);
+        public void InvokePopulatePatchCompatibilityRows(SavePatchCompatibilityResult compatibility, SavePatchPreview preview) => PopulatePatchCompatibilityRows(compatibility, preview);
+        public void InvokeAppendPatchArtifactRows(string? backupPath, string? receiptPath) => AppendPatchArtifactRows(backupPath, receiptPath);
+        public void SetLoadedSaveForCoverage(SaveDocument save, byte[] original)
+        {
+            _loadedSave = save;
+            _loadedSaveOriginal = original;
+        }
+
+        public void InvokeRebuildSaveFieldRows() => RebuildSaveFieldRows();
+        public void InvokeClearPatchPreviewState(bool clearLoadedPack) => ClearPatchPreviewState(clearLoadedPack);
+        public Task InvokeAddHotkeyAsync() => AddHotkeyAsync();
+        public Task InvokeRemoveHotkeyAsync() => RemoveHotkeyAsync();
+        public Task InvokeQuickRunActionAsync(string actionId, JsonObject payload) => QuickRunActionAsync(actionId, payload);
+        public Task InvokeQuickUnfreezeAllAsync() => QuickUnfreezeAllAsync();
+    }
+
+    private sealed class StubRuntimeAdapter : IRuntimeAdapter
+    {
+        public bool IsAttached { get; set; }
+        public AttachSession? CurrentSession { get; set; }
+
+        public Task<AttachSession> AttachAsync(string profileId, CancellationToken cancellationToken)
+        {
+            _ = profileId;
+            _ = cancellationToken;
+            return Task.FromResult(CurrentSession!);
+        }
+
+        public Task<T> ReadAsync<T>(string symbol, CancellationToken cancellationToken) where T : unmanaged
+        {
+            _ = symbol;
+            _ = cancellationToken;
+            return Task.FromResult(default(T));
+        }
+
+        public Task WriteAsync<T>(string symbol, T value, CancellationToken cancellationToken) where T : unmanaged
+        {
+            _ = symbol;
+            _ = value;
+            _ = cancellationToken;
+            return Task.CompletedTask;
+        }
+
+        public Task<ActionExecutionResult> ExecuteAsync(ActionExecutionRequest request, CancellationToken cancellationToken)
+        {
+            _ = request;
+            _ = cancellationToken;
+            return Task.FromResult(new ActionExecutionResult(true, "ok", AddressSource.Signature));
+        }
+
+        public Task DetachAsync(CancellationToken cancellationToken)
+        {
+            _ = cancellationToken;
+            IsAttached = false;
+            return Task.CompletedTask;
+        }
+    }
+
+    private sealed class StubFreezeService : IValueFreezeService
+    {
+        private readonly HashSet<string> _symbols = new(StringComparer.OrdinalIgnoreCase);
+
+        public void FreezeInt(string symbol, int value)
+        {
+            _ = value;
+            _symbols.Add(symbol);
+        }
+
+        public void FreezeIntAggressive(string symbol, int value)
+        {
+            _ = value;
+            _symbols.Add(symbol);
+        }
+
+        public void FreezeFloat(string symbol, float value)
+        {
+            _ = value;
+            _symbols.Add(symbol);
+        }
+
+        public void FreezeBool(string symbol, bool value)
+        {
+            _ = value;
+            _symbols.Add(symbol);
+        }
+
+        public bool Unfreeze(string symbol) => _symbols.Remove(symbol);
+        public void UnfreezeAll() => _symbols.Clear();
+        public bool IsFrozen(string symbol) => _symbols.Contains(symbol);
+        public IReadOnlyCollection<string> GetFrozenSymbols() => _symbols.ToArray();
+        public void Dispose() { }
+    }
+
+    private sealed class StubProfileRepository : IProfileRepository
+    {
+        private readonly TrainerProfile _profile;
+
+        public StubProfileRepository(TrainerProfile profile)
+        {
+            _profile = profile;
+        }
+
+        public Task<ProfileManifest> LoadManifestAsync(CancellationToken cancellationToken)
+        {
+            _ = cancellationToken;
+            throw new NotImplementedException();
+        }
+
+        public Task<TrainerProfile> LoadProfileAsync(string profileId, CancellationToken cancellationToken)
+        {
+            _ = profileId;
+            _ = cancellationToken;
+            return Task.FromResult(_profile);
+        }
+
+        public Task<TrainerProfile> ResolveInheritedProfileAsync(string profileId, CancellationToken cancellationToken)
+        {
+            _ = profileId;
+            _ = cancellationToken;
+            return Task.FromResult(_profile);
+        }
+
+        public Task ValidateProfileAsync(TrainerProfile profile, CancellationToken cancellationToken)
+        {
+            _ = profile;
+            _ = cancellationToken;
+            return Task.CompletedTask;
+        }
+
+        public Task<IReadOnlyList<string>> ListAvailableProfilesAsync(CancellationToken cancellationToken)
+        {
+            _ = cancellationToken;
+            return Task.FromResult<IReadOnlyList<string>>(new[] { _profile.Id });
+        }
+    }
+
+    private sealed class StubCatalogService : ICatalogService
+    {
+        private readonly IReadOnlyDictionary<string, IReadOnlyList<string>> _catalog;
+
+        public StubCatalogService(IReadOnlyDictionary<string, IReadOnlyList<string>> catalog)
+        {
+            _catalog = catalog;
+        }
+
+        public Task<IReadOnlyDictionary<string, IReadOnlyList<string>>> LoadCatalogAsync(string profileId, CancellationToken cancellationToken)
+        {
+            _ = profileId;
+            _ = cancellationToken;
+            return Task.FromResult(_catalog);
+        }
+    }
+
+    private sealed class StubActionReliabilityService : IActionReliabilityService
+    {
+        private readonly IReadOnlyList<ActionReliabilityInfo> _items;
+
+        public StubActionReliabilityService(IReadOnlyList<ActionReliabilityInfo> items)
+        {
+            _items = items;
+        }
+
+        public IReadOnlyList<ActionReliabilityInfo> Evaluate(
+            TrainerProfile profile,
+            AttachSession session,
+            IReadOnlyDictionary<string, IReadOnlyList<string>>? catalog)
+        {
+            _ = profile;
+            _ = session;
+            _ = catalog;
+            return _items;
+        }
+    }
+
+    private sealed class StubSelectedUnitTransactionService : ISelectedUnitTransactionService
+    {
+        private readonly List<SelectedUnitTransactionRecord> _history =
+        [
+            new SelectedUnitTransactionRecord(
+                TransactionId: "tx-1",
+                Timestamp: DateTimeOffset.UtcNow,
+                Before: new SelectedUnitSnapshot(100, 50, 1.5f, 1.0f, 1.0f, 1, 1, DateTimeOffset.UtcNow),
+                After: new SelectedUnitSnapshot(120, 60, 2.0f, 1.1f, 0.9f, 2, 2, DateTimeOffset.UtcNow),
+                IsRollback: false,
+                Message: "applied",
+                AppliedActions: ["set_selected_hp"])
+        ];
+
+        public SelectedUnitSnapshot? Baseline => new(100, 50, 1.5f, 1.0f, 1.0f, 1, 1, DateTimeOffset.UtcNow);
+
+        public IReadOnlyList<SelectedUnitTransactionRecord> History => _history;
+
+        public Task<SelectedUnitSnapshot> CaptureAsync(CancellationToken cancellationToken)
+        {
+            _ = cancellationToken;
+            return Task.FromResult(new SelectedUnitSnapshot(100, 50, 1.5f, 2.0f, 0.5f, 3, 2, DateTimeOffset.UtcNow));
+        }
+
+        public Task<SelectedUnitTransactionResult> ApplyAsync(string profileId, SelectedUnitDraft draft, RuntimeMode runtimeMode, CancellationToken cancellationToken)
+        {
+            _ = profileId;
+            _ = draft;
+            _ = runtimeMode;
+            _ = cancellationToken;
+            return Task.FromResult(new SelectedUnitTransactionResult(true, "applied", "tx-apply", Array.Empty<ActionExecutionResult>()));
+        }
+
+        public Task<SelectedUnitTransactionResult> RevertLastAsync(string profileId, RuntimeMode runtimeMode, CancellationToken cancellationToken)
+        {
+            _ = profileId;
+            _ = runtimeMode;
+            _ = cancellationToken;
+            return Task.FromResult(new SelectedUnitTransactionResult(true, "reverted", "tx-revert", Array.Empty<ActionExecutionResult>()));
+        }
+
+        public Task<SelectedUnitTransactionResult> RestoreBaselineAsync(string profileId, RuntimeMode runtimeMode, CancellationToken cancellationToken)
+        {
+            _ = profileId;
+            _ = runtimeMode;
+            _ = cancellationToken;
+            return Task.FromResult(new SelectedUnitTransactionResult(true, "restored", "tx-restore", Array.Empty<ActionExecutionResult>()));
+        }
+    }
+
+    private sealed class StubSpawnPresetService : ISpawnPresetService
+    {
+        public SpawnBatchExecutionResult? LastExecuteResult { get; private set; }
+
+        public Task<IReadOnlyList<SpawnPreset>> LoadPresetsAsync(string profileId, CancellationToken cancellationToken)
+        {
+            _ = profileId;
+            _ = cancellationToken;
+            return Task.FromResult<IReadOnlyList<SpawnPreset>>(
+            [
+                new SpawnPreset("preset_1", "Storm Squad", "STORMTROOPER", "EMPIRE", "AUTO", 1, 100, "desc")
+            ]);
+        }
+
+        public SpawnBatchPlan BuildBatchPlan(string profileId, SpawnPreset preset, int quantity, int delayMs, string? factionOverride, string? entryMarkerOverride, bool stopOnFailure)
+        {
+            var items = Enumerable.Range(1, quantity)
+                .Select(i => new SpawnBatchItem(
+                    Sequence: i,
+                    UnitId: preset.UnitId,
+                    Faction: factionOverride ?? preset.Faction,
+                    EntryMarker: entryMarkerOverride ?? preset.EntryMarker,
+                    DelayMs: delayMs))
+                .ToArray();
+
+            return new SpawnBatchPlan(profileId, preset.Id, stopOnFailure, items);
+        }
+
+        public Task<SpawnBatchExecutionResult> ExecuteBatchAsync(string profileId, SpawnBatchPlan plan, RuntimeMode runtimeMode, CancellationToken cancellationToken)
+        {
+            _ = profileId;
+            _ = runtimeMode;
+            _ = cancellationToken;
+
+            LastExecuteResult = new SpawnBatchExecutionResult(
+                Succeeded: true,
+                Message: "batch ok",
+                Attempted: plan.Items.Count,
+                SucceededCount: plan.Items.Count,
+                FailedCount: 0,
+                StoppedEarly: false,
+                Results: plan.Items.Select(i => new SpawnBatchItemResult(i.Sequence, i.UnitId, true, "ok")).ToArray());
+
+            return Task.FromResult(LastExecuteResult);
+        }
+    }
+}
+
+
+
+
