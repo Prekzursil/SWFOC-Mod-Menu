@@ -1,3 +1,4 @@
+#pragma warning disable CA1014
 using System.Reflection;
 using System.Text.Json.Nodes;
 using FluentAssertions;
@@ -185,4 +186,5 @@ public sealed class RuntimeAdapterPrivateStaticSweepTests
             Metadata: new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase));
     }
 }
+
 

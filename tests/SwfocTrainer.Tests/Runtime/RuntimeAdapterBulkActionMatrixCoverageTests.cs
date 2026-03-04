@@ -1,3 +1,5 @@
+#pragma warning disable CA1014
+using System.Reflection;
 using System.Text.Json.Nodes;
 using FluentAssertions;
 using SwfocTrainer.Core.Models;
@@ -8,6 +10,23 @@ namespace SwfocTrainer.Tests.Runtime;
 
 public sealed class RuntimeAdapterBulkActionMatrixCoverageTests
 {
+    private static readonly ExecutionBackendKind[] Backends =
+    [
+        ExecutionBackendKind.Memory,
+        ExecutionBackendKind.Helper,
+        ExecutionBackendKind.Extender,
+        ExecutionBackendKind.Save
+    ];
+
+    private static readonly RuntimeMode[] Modes =
+    [
+        RuntimeMode.Unknown,
+        RuntimeMode.Galactic,
+        RuntimeMode.TacticalLand,
+        RuntimeMode.TacticalSpace,
+        RuntimeMode.AnyTactical
+    ];
+
     private static readonly string[] KnownActionIds =
     [
         "read_symbol",
@@ -48,81 +67,100 @@ public sealed class RuntimeAdapterBulkActionMatrixCoverageTests
     [Fact]
     public async Task ExecuteAsync_ShouldTraverseKnownActionMatrix()
     {
-        var backends = new[]
-        {
-            ExecutionBackendKind.Memory,
-            ExecutionBackendKind.Helper,
-            ExecutionBackendKind.Extender,
-            ExecutionBackendKind.Save
-        };
-
-        var modes = new[]
-        {
-            RuntimeMode.Unknown,
-            RuntimeMode.Galactic,
-            RuntimeMode.TacticalLand,
-            RuntimeMode.TacticalSpace,
-            RuntimeMode.AnyTactical
-        };
-
         var executed = 0;
-        foreach (var backend in backends)
+        foreach (var backend in Backends)
         {
-            foreach (var mode in modes)
+            foreach (var mode in Modes)
             {
-                var profile = BuildProfile();
-                var harness = new AdapterHarness
-                {
-                    IncludeExecutionBackend = backend == ExecutionBackendKind.Extender,
-                    Router = new StubBackendRouter(new BackendRouteDecision(
-                        Allowed: true,
-                        Backend: backend,
-                        ReasonCode: RuntimeReasonCode.CAPABILITY_PROBE_PASS,
-                        Message: "ok")),
-                    HelperBridgeBackend = new StubHelperBridgeBackend()
-                };
-
-                var adapter = harness.CreateAdapter(profile, mode);
-
-                foreach (var actionId in KnownActionIds)
-                {
-                    if (!profile.Actions.TryGetValue(actionId, out var action))
-                    {
-                        continue;
-                    }
-
-                    foreach (var payload in BuildPayloadVariants(actionId))
-                    {
-                        var request = new ActionExecutionRequest(
-                            Action: action,
-                            Payload: payload,
-                            ProfileId: profile.Id,
-                            RuntimeMode: mode,
-                            Context: null);
-
-                        try
-                        {
-                            _ = await adapter.ExecuteAsync(request, CancellationToken.None);
-                        }
-                        catch
-                        {
-                            // Fail-closed and guard-path exceptions are acceptable in matrix sweep.
-                        }
-
-                        executed++;
-                    }
-                }
+                executed += await ExecuteBackendModeMatrixAsync(backend, mode);
             }
         }
 
         executed.Should().BeGreaterThan(900);
     }
 
+    private static async Task<int> ExecuteBackendModeMatrixAsync(ExecutionBackendKind backend, RuntimeMode mode)
+    {
+        var profile = BuildProfile();
+        var adapter = CreateAdapter(profile, backend, mode);
+        var executed = 0;
+
+        foreach (var actionId in KnownActionIds)
+        {
+            if (!profile.Actions.TryGetValue(actionId, out var action))
+            {
+                continue;
+            }
+
+            executed += await ExecuteActionVariantsAsync(adapter, profile, mode, action, actionId);
+        }
+
+        return executed;
+    }
+
+    private static RuntimeAdapter CreateAdapter(TrainerProfile profile, ExecutionBackendKind backend, RuntimeMode mode)
+    {
+        var harness = new AdapterHarness
+        {
+            IncludeExecutionBackend = backend == ExecutionBackendKind.Extender,
+            Router = new StubBackendRouter(new BackendRouteDecision(
+                Allowed: true,
+                Backend: backend,
+                ReasonCode: RuntimeReasonCode.CAPABILITY_PROBE_PASS,
+                Message: "ok")),
+            HelperBridgeBackend = new StubHelperBridgeBackend()
+        };
+
+        return harness.CreateAdapter(profile, mode);
+    }
+
+    private static async Task<int> ExecuteActionVariantsAsync(
+        RuntimeAdapter adapter,
+        TrainerProfile profile,
+        RuntimeMode mode,
+        ActionSpec action,
+        string actionId)
+    {
+        var executed = 0;
+        foreach (var payload in BuildPayloadVariants(actionId))
+        {
+            var request = new ActionExecutionRequest(action, payload, profile.Id, mode, Context: null);
+            await TryExecuteAsync(adapter, request);
+            executed++;
+        }
+
+        return executed;
+    }
+
+    private static async Task TryExecuteAsync(RuntimeAdapter adapter, ActionExecutionRequest request)
+    {
+        try
+        {
+            _ = await adapter.ExecuteAsync(request, CancellationToken.None);
+        }
+        catch (InvalidOperationException)
+        {
+        }
+        catch (ArgumentException)
+        {
+        }
+        catch (NotSupportedException)
+        {
+        }
+        catch (TargetInvocationException)
+        {
+        }
+    }
+
     private static IEnumerable<JsonObject> BuildPayloadVariants(string actionId)
     {
         yield return new JsonObject();
+        yield return BuildRichPayload(actionId);
+    }
 
-        var rich = new JsonObject
+    private static JsonObject BuildRichPayload(string actionId)
+    {
+        return new JsonObject
         {
             ["symbol"] = "credits",
             ["value"] = 100,
@@ -136,12 +174,7 @@ public sealed class RuntimeAdapterBulkActionMatrixCoverageTests
             ["persistencePolicy"] = "EphemeralBattleOnly",
             ["placementMode"] = "world_position",
             ["entryMarker"] = "spawn_01",
-            ["worldPosition"] = new JsonObject
-            {
-                ["x"] = 1,
-                ["y"] = 2,
-                ["z"] = 3
-            },
+            ["worldPosition"] = new JsonObject { ["x"] = 1, ["y"] = 2, ["z"] = 3 },
             ["helperHookId"] = "spawn_bridge",
             ["helperEntryPoint"] = actionId,
             ["operationKind"] = actionId,
@@ -154,70 +187,88 @@ public sealed class RuntimeAdapterBulkActionMatrixCoverageTests
             ["allowDuplicate"] = true,
             ["variantId"] = "CUSTOM_HERO_VARIANT"
         };
-
-        yield return rich;
     }
 
     private static TrainerProfile BuildProfile()
     {
-        var actions = new Dictionary<string, ActionSpec>(StringComparer.OrdinalIgnoreCase);
-        foreach (var id in KnownActionIds)
-        {
-            var executionKind = id.Contains("spawn", StringComparison.OrdinalIgnoreCase)
-                                || id.Contains("planet", StringComparison.OrdinalIgnoreCase)
-                                || id.Contains("faction", StringComparison.OrdinalIgnoreCase)
-                                || id.Contains("hero", StringComparison.OrdinalIgnoreCase)
-                                || id.Contains("fleet", StringComparison.OrdinalIgnoreCase)
-                                || id.Contains("variant", StringComparison.OrdinalIgnoreCase)
-                ? ExecutionKind.Helper
-                : ExecutionKind.Memory;
-
-            actions[id] = new ActionSpec(
-                id,
-                ActionCategory.Global,
-                RuntimeMode.Unknown,
-                executionKind,
-                new JsonObject(),
-                VerifyReadback: false,
-                CooldownMs: 0);
-        }
-
         return new TrainerProfile(
             Id: "profile",
             DisplayName: "profile",
             Inherits: null,
             ExeTarget: ExeTarget.Swfoc,
             SteamWorkshopId: null,
-            SignatureSets:
-            [
-                new SignatureSet(
-                    Name: "test",
-                    GameBuild: "build",
-                    Signatures:
-                    [
-                        new SignatureSpec("credits", "AA BB", 0)
-                    ])
-            ],
-            FallbackOffsets: new Dictionary<string, long>(StringComparer.OrdinalIgnoreCase)
-            {
-                ["credits_rva"] = 0x10
-            },
-            Actions: actions,
-            FeatureFlags: new Dictionary<string, bool>(StringComparer.OrdinalIgnoreCase)
-            {
-                ["allow.building.force_override"] = true,
-                ["allow.cross.faction.default"] = true
-            },
+            SignatureSets: BuildSignatureSets(),
+            FallbackOffsets: new Dictionary<string, long>(StringComparer.OrdinalIgnoreCase) { ["credits_rva"] = 0x10 },
+            Actions: BuildActions(),
+            FeatureFlags: BuildFeatureFlags(),
             CatalogSources: Array.Empty<CatalogSource>(),
             SaveSchemaId: "save",
-            HelperModHooks:
-            [
-                new HelperHookSpec(
-                    Id: "spawn_bridge",
-                    Script: "scripts/common/spawn_bridge.lua",
-                    Version: "1.1.0",
-                    EntryPoint: "SWFOC_Trainer_Spawn_Context")
-            ],
+            HelperModHooks: BuildHelperHooks(),
             Metadata: new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase));
     }
+
+    private static Dictionary<string, ActionSpec> BuildActions()
+    {
+        var actions = new Dictionary<string, ActionSpec>(StringComparer.OrdinalIgnoreCase);
+        foreach (var id in KnownActionIds)
+        {
+            actions[id] = new ActionSpec(
+                id,
+                ActionCategory.Global,
+                RuntimeMode.Unknown,
+                ResolveExecutionKind(id),
+                new JsonObject(),
+                VerifyReadback: false,
+                CooldownMs: 0);
+        }
+
+        return actions;
+    }
+
+    private static ExecutionKind ResolveExecutionKind(string id)
+    {
+        var helperAction = id.Contains("spawn", StringComparison.OrdinalIgnoreCase)
+                           || id.Contains("planet", StringComparison.OrdinalIgnoreCase)
+                           || id.Contains("faction", StringComparison.OrdinalIgnoreCase)
+                           || id.Contains("hero", StringComparison.OrdinalIgnoreCase)
+                           || id.Contains("fleet", StringComparison.OrdinalIgnoreCase)
+                           || id.Contains("variant", StringComparison.OrdinalIgnoreCase);
+        return helperAction ? ExecutionKind.Helper : ExecutionKind.Memory;
+    }
+
+    private static IReadOnlyList<SignatureSet> BuildSignatureSets()
+    {
+        return
+        [
+            new SignatureSet(
+                Name: "test",
+                GameBuild: "build",
+                Signatures:
+                [
+                    new SignatureSpec("credits", "AA BB", 0)
+                ])
+        ];
+    }
+
+    private static Dictionary<string, bool> BuildFeatureFlags()
+    {
+        return new Dictionary<string, bool>(StringComparer.OrdinalIgnoreCase)
+        {
+            ["allow.building.force_override"] = true,
+            ["allow.cross.faction.default"] = true
+        };
+    }
+
+    private static IReadOnlyList<HelperHookSpec> BuildHelperHooks()
+    {
+        return
+        [
+            new HelperHookSpec(
+                Id: "spawn_bridge",
+                Script: "scripts/common/spawn_bridge.lua",
+                Version: "1.1.0",
+                EntryPoint: "SWFOC_Trainer_Spawn_Context")
+        ];
+    }
 }
+

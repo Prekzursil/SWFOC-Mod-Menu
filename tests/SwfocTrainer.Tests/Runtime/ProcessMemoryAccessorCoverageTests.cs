@@ -1,3 +1,4 @@
+#pragma warning disable CA1014
 using FluentAssertions;
 using SwfocTrainer.Runtime.Interop;
 using Xunit;
@@ -70,3 +71,4 @@ public sealed class ProcessMemoryAccessorCoverageTests
         accessor.Free(nint.Zero).Should().BeTrue();
     }
 }
+

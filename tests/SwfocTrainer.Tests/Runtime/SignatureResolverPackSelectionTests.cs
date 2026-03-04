@@ -1,3 +1,4 @@
+#pragma warning disable CA1014
 using System.Reflection;
 using System.Text.Json;
 using SwfocTrainer.Core.Models;
@@ -279,5 +280,6 @@ public sealed class SignatureResolverPackSelectionTests
         File.WriteAllText(indexPath, json);
     }
 }
+
 
 
