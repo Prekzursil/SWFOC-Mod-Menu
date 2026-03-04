@@ -1,3 +1,4 @@
+#pragma warning disable CA1014
 using System.Reflection;
 using FluentAssertions;
 using SwfocTrainer.Core.Models;
@@ -102,5 +103,4 @@ public sealed class RuntimeAdapterPrivateInstanceVariantSweepTests
         }
     }
 }
-
-
+#pragma warning restore CA1014

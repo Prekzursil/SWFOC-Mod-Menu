@@ -1,3 +1,4 @@
+#pragma warning disable CA1014
 using System.Reflection;
 using FluentAssertions;
 using SwfocTrainer.App.ViewModels;
@@ -328,6 +329,4 @@ public sealed class LowCoverageReflectionMatrixTests
         }
     }
 }
-
-
-
+#pragma warning restore CA1014

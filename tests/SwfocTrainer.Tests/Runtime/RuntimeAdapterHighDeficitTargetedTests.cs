@@ -1,3 +1,4 @@
+#pragma warning disable CA1014
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Text.Json.Nodes;
@@ -193,3 +194,4 @@ public sealed class RuntimeAdapterHighDeficitTargetedTests
         return method!.Invoke(instance, args);
     }
 }
+#pragma warning restore CA1014

@@ -1,3 +1,4 @@
+#pragma warning disable CA1014
 using System.Reflection;
 using FluentAssertions;
 using SwfocTrainer.Runtime.Services;
@@ -147,3 +148,4 @@ public sealed class RuntimeAdapterHookPrimitiveCoverageTests
         return (int)field!.GetRawConstantValue()!;
     }
 }
+#pragma warning restore CA1014
