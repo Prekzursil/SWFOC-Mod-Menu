@@ -76,7 +76,7 @@ public sealed class RuntimeAdapterBulkActionMatrixCoverageTests
             }
         }
 
-        executed.Should().BeGreaterThan(900);
+        executed.Should().BeGreaterThan(2400);
     }
 
     private static async Task<int> ExecuteBackendModeMatrixAsync(ExecutionBackendKind backend, RuntimeMode mode)
@@ -124,9 +124,12 @@ public sealed class RuntimeAdapterBulkActionMatrixCoverageTests
         var executed = 0;
         foreach (var payload in BuildPayloadVariants(actionId))
         {
-            var request = new ActionExecutionRequest(action, payload, profile.Id, mode, Context: null);
-            await TryExecuteAsync(adapter, request);
-            executed++;
+            foreach (var context in BuildContextVariants())
+            {
+                var request = new ActionExecutionRequest(action, payload, profile.Id, mode, context);
+                await TryExecuteAsync(adapter, request);
+                executed++;
+            }
         }
 
         return executed;
@@ -156,6 +159,28 @@ public sealed class RuntimeAdapterBulkActionMatrixCoverageTests
     {
         yield return new JsonObject();
         yield return BuildRichPayload(actionId);
+        yield return BuildMalformedPayload(actionId);
+    }
+
+    private static IReadOnlyList<IReadOnlyDictionary<string, object?>?> BuildContextVariants()
+    {
+        return
+        [
+            null,
+            new Dictionary<string, object?>
+            {
+                ["runtimeModeOverride"] = "Galactic"
+            },
+            new Dictionary<string, object?>
+            {
+                ["runtimeModeOverride"] = "AnyTactical",
+                ["telemetryRuntimeMode"] = "Land"
+            },
+            new Dictionary<string, object?>
+            {
+                ["telemetryRuntimeMode"] = "Space"
+            }
+        ];
     }
 
     private static JsonObject BuildRichPayload(string actionId)
@@ -186,6 +211,24 @@ public sealed class RuntimeAdapterBulkActionMatrixCoverageTests
             ["respawnPolicyOverride"] = "default",
             ["allowDuplicate"] = true,
             ["variantId"] = "CUSTOM_HERO_VARIANT"
+        };
+    }
+
+    private static JsonObject BuildMalformedPayload(string actionId)
+    {
+        return new JsonObject
+        {
+            ["symbol"] = "",
+            ["value"] = "NaN",
+            ["entityId"] = actionId,
+            ["targetFaction"] = 999,
+            ["allowCrossFaction"] = "maybe",
+            ["forceOverride"] = "yes",
+            ["populationPolicy"] = "InvalidPolicy",
+            ["persistencePolicy"] = "InvalidPolicy",
+            ["placementMode"] = "unknown_mode",
+            ["worldPosition"] = new JsonArray(1, 2, 3),
+            ["helperEntryPoint"] = string.Empty
         };
     }
 
@@ -271,4 +314,3 @@ public sealed class RuntimeAdapterBulkActionMatrixCoverageTests
         ];
     }
 }
-
