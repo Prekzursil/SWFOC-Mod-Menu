@@ -285,8 +285,8 @@ public abstract class MainViewModelLiveOpsBase : MainViewModelBindableMembersBas
             return;
         }
 
-        var profile = await profiles.ResolveInheritedProfileAsync(profileId);
-        if (profile is null)
+        var resolvedProfile = await profiles.ResolveInheritedProfileAsync(profileId);
+        if (resolvedProfile is null)
         {
             EntityRoster.Clear();
             ResetHeroMechanicsSurface();
@@ -303,37 +303,31 @@ public abstract class MainViewModelLiveOpsBase : MainViewModelBindableMembersBas
             // Catalog availability is optional for roster surfacing.
         }
 
-        PopulateEntityRoster(profile, catalog);
-        RefreshHeroMechanicsSurface(profile);
+        PopulateEntityRoster(resolvedProfile, catalog);
+        RefreshHeroMechanicsSurface(resolvedProfile);
     }
 
     private void PopulateEntityRoster(
-        TrainerProfile profile,
+        TrainerProfile? profile,
         IReadOnlyDictionary<string, IReadOnlyList<string>>? catalog)
     {
-        if (profile is null)
-        {
-            throw new ArgumentNullException(nameof(profile));
-        }
+        var safeProfile = profile ?? throw new ArgumentNullException(nameof(profile));
 
         EntityRoster.Clear();
-        var profileId = profile.Id ?? string.Empty;
-        var rows = MainViewModelRosterHelpers.BuildEntityRoster(catalog, profileId, profile.SteamWorkshopId);
+        var profileId = safeProfile.Id ?? string.Empty;
+        var rows = MainViewModelRosterHelpers.BuildEntityRoster(catalog, profileId, safeProfile.SteamWorkshopId);
         foreach (var row in rows)
         {
             EntityRoster.Add(row);
         }
     }
 
-    private void RefreshHeroMechanicsSurface(TrainerProfile profile)
+    private void RefreshHeroMechanicsSurface(TrainerProfile? profile)
     {
-        if (profile is null)
-        {
-            throw new ArgumentNullException(nameof(profile));
-        }
+        var safeProfile = profile ?? throw new ArgumentNullException(nameof(profile));
 
-        var metadata = profile.Metadata ?? new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
-        var supportsRespawn = SupportsHeroRespawn(profile);
+        var metadata = safeProfile.Metadata ?? new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+        var supportsRespawn = SupportsHeroRespawn(safeProfile);
         var supportsPermadeath = TryReadBoolMetadata(metadata, "supports_hero_permadeath");
         var supportsRescue = TryReadBoolMetadata(metadata, "supports_hero_rescue");
         var defaultRespawn = ResolveDefaultHeroRespawn(metadata);
@@ -346,13 +340,10 @@ public abstract class MainViewModelLiveOpsBase : MainViewModelBindableMembersBas
         HeroDuplicatePolicy = duplicatePolicy;
     }
 
-    private static bool SupportsHeroRespawn(TrainerProfile profile)
+    private static bool SupportsHeroRespawn(TrainerProfile? profile)
     {
-        if (profile is null)
-        {
-            throw new ArgumentNullException(nameof(profile));
-        }
-        var actions = profile.Actions;
+        var safeProfile = profile ?? throw new ArgumentNullException(nameof(profile));
+        var actions = safeProfile.Actions;
         if (actions is null)
         {
             return false;
@@ -496,5 +487,3 @@ public abstract class MainViewModelLiveOpsBase : MainViewModelBindableMembersBas
         };
     }
 }
-
-

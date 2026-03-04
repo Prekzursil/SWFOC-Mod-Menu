@@ -22,12 +22,13 @@ internal static class MainViewModelRosterHelpers
             selectedProfileId = string.Empty;
         }
 
-        if (catalog is null)
+        var safeCatalog = catalog;
+        if (safeCatalog is null)
         {
             return Array.Empty<RosterEntityViewItem>();
         }
 
-        if (!catalog.TryGetValue("entity_catalog", out var entries) || entries is null || entries.Count == 0)
+        if (!safeCatalog.TryGetValue("entity_catalog", out var entries) || entries is null || entries.Count == 0)
         {
             return Array.Empty<RosterEntityViewItem>();
         }
@@ -54,12 +55,13 @@ internal static class MainViewModelRosterHelpers
         out RosterEntityViewItem row)
     {
         row = default!;
-        if (string.IsNullOrWhiteSpace(raw))
+        var rawEntry = raw;
+        if (string.IsNullOrWhiteSpace(rawEntry))
         {
             return false;
         }
 
-        var segments = raw.Split(RosterSeparator, StringSplitOptions.TrimEntries);
+        var segments = rawEntry.Split(RosterSeparator, StringSplitOptions.TrimEntries);
         if (!TryResolveEntityId(segments, out var entityId))
         {
             return false;
@@ -99,12 +101,13 @@ internal static class MainViewModelRosterHelpers
     private static bool TryResolveEntityId(IReadOnlyList<string> segments, out string entityId)
     {
         entityId = string.Empty;
-        if (segments.Count < 2)
+        var safeSegments = segments;
+        if (safeSegments is null || safeSegments.Count < 2)
         {
             return false;
         }
 
-        var segment = segments[1];
+        var segment = safeSegments[1];
         if (string.IsNullOrWhiteSpace(segment))
         {
             return false;
@@ -116,12 +119,13 @@ internal static class MainViewModelRosterHelpers
 
     private static string ResolveSegmentOrDefault(IReadOnlyList<string> segments, int index, string fallback)
     {
-        if (index >= segments.Count)
+        var safeSegments = segments;
+        if (safeSegments is null || index >= safeSegments.Count)
         {
             return fallback;
         }
 
-        var segment = segments[index];
+        var segment = safeSegments[index];
         if (string.IsNullOrWhiteSpace(segment))
         {
             return fallback;
@@ -143,7 +147,7 @@ internal static class MainViewModelRosterHelpers
             return RosterEntityCompatibilityState.Native;
         }
 
-        return sourceWorkshopId.Equals(selectedWorkshopId, StringComparison.OrdinalIgnoreCase)
+        return StringComparer.OrdinalIgnoreCase.Equals(sourceWorkshopId, selectedWorkshopId)
             ? RosterEntityCompatibilityState.Native
             : RosterEntityCompatibilityState.RequiresTransplant;
     }
@@ -155,13 +159,13 @@ internal static class MainViewModelRosterHelpers
             return DefaultFactionEmpire;
         }
 
-        if (kind.Equals("Hero", StringComparison.OrdinalIgnoreCase))
+        if (StringComparer.OrdinalIgnoreCase.Equals(kind, "Hero"))
         {
             return DefaultFactionHeroOwner;
         }
 
-        if (kind.Equals("Building", StringComparison.OrdinalIgnoreCase) ||
-            kind.Equals("SpaceStructure", StringComparison.OrdinalIgnoreCase))
+        if (StringComparer.OrdinalIgnoreCase.Equals(kind, "Building") ||
+            StringComparer.OrdinalIgnoreCase.Equals(kind, "SpaceStructure"))
         {
             return DefaultFactionPlanetOwner;
         }

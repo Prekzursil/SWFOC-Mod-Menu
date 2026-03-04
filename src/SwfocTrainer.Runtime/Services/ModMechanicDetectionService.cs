@@ -124,11 +124,15 @@ public sealed class ModMechanicDetectionService : IModMechanicDetectionService
             return null;
         }
 
+        var safeProfile = profile ?? throw new ArgumentNullException(nameof(profile));
+        var safeWorkshopIds = activeWorkshopIds ?? Array.Empty<string>();
+        var safeRosterEntities = rosterEntities ?? Array.Empty<RosterEntityRecord>();
+
         try
         {
-            var profileId = profile.Id ?? string.Empty;
+            var profileId = safeProfile.Id ?? string.Empty;
             return await transplantCompatibilityService
-                .ValidateAsync(profileId, activeWorkshopIds, rosterEntities, cancellationToken);
+                .ValidateAsync(profileId, safeWorkshopIds, safeRosterEntities, cancellationToken);
         }
         catch (OperationCanceledException)
         {
@@ -148,17 +152,11 @@ public sealed class ModMechanicDetectionService : IModMechanicDetectionService
         IReadOnlyList<string> activeWorkshopIds,
         TransplantValidationReport? transplantReport)
     {
-        if (profile is null)
-        {
-            throw new ArgumentNullException(nameof(profile));
-        }
-        if (session is null)
-        {
-            throw new ArgumentNullException(nameof(session));
-        }
+        var safeProfile = profile ?? throw new ArgumentNullException(nameof(profile));
+        var safeSession = session ?? throw new ArgumentNullException(nameof(session));
 
-        var heroMechanics = ResolveHeroMechanicsProfile(profile, session);
-        var processMetadata = session.Process.Metadata;
+        var heroMechanics = ResolveHeroMechanicsProfile(safeProfile, safeSession);
+        var processMetadata = safeSession.Process.Metadata;
 
         var diagnostics = new Dictionary<string, object?>(StringComparer.OrdinalIgnoreCase)
         {
@@ -196,22 +194,11 @@ public sealed class ModMechanicDetectionService : IModMechanicDetectionService
         bool helperReady,
         TransplantValidationReport? transplantReport)
     {
-        if (profile is null)
-        {
-            throw new ArgumentNullException(nameof(profile));
-        }
+        var safeProfile = profile ?? throw new ArgumentNullException(nameof(profile));
+        var safeSession = session ?? throw new ArgumentNullException(nameof(session));
+        var safeDisabledActions = disabledActions ?? throw new ArgumentNullException(nameof(disabledActions));
 
-        if (session is null)
-        {
-            throw new ArgumentNullException(nameof(session));
-        }
-
-        if (disabledActions is null)
-        {
-            throw new ArgumentNullException(nameof(disabledActions));
-        }
-
-        var actions = profile.Actions;
+        var actions = safeProfile.Actions;
         if (actions is null || actions.Count == 0)
         {
             return Array.Empty<ModMechanicSupport>();
@@ -227,10 +214,10 @@ public sealed class ModMechanicDetectionService : IModMechanicDetectionService
             supports.Add(EvaluateAction(new ActionEvaluationContext(
                 ActionId: actionId,
                 Action: action,
-                Profile: profile,
-                Session: session,
+                Profile: safeProfile,
+                Session: safeSession,
                 Catalog: catalog,
-                DisabledActions: disabledActions,
+                DisabledActions: safeDisabledActions,
                 HelperReady: helperReady,
                 TransplantReport: transplantReport)));
         }
@@ -340,7 +327,19 @@ public sealed class ModMechanicDetectionService : IModMechanicDetectionService
             return true;
         }
 
-        var helperHooks = context.Profile.HelperModHooks;
+        var profile = context.Profile;
+        if (profile is null)
+        {
+            support = new ModMechanicSupport(
+                ActionId: context.ActionId,
+                Supported: false,
+                ReasonCode: RuntimeReasonCode.CAPABILITY_REQUIRED_MISSING,
+                Message: "Profile metadata is unavailable for helper gate evaluation.",
+                Confidence: 0.99d);
+            return true;
+        }
+
+        var helperHooks = profile.HelperModHooks;
         if (helperHooks is null || helperHooks.Count == 0)
         {
             support = new ModMechanicSupport(
@@ -435,16 +434,17 @@ public sealed class ModMechanicDetectionService : IModMechanicDetectionService
             return true;
         }
 
-        if (!IsContextFactionAction(context.ActionId))
+        var actionId = context.ActionId ?? string.Empty;
+        if (!IsContextFactionAction(actionId))
         {
             support = default!;
             return false;
         }
 
-        if (context.ActionId.Equals(ActionSwitchPlayerFaction, StringComparison.OrdinalIgnoreCase))
+        if (StringComparer.OrdinalIgnoreCase.Equals(actionId, ActionSwitchPlayerFaction))
         {
             support = new ModMechanicSupport(
-                ActionId: context.ActionId,
+                ActionId: actionId,
                 Supported: true,
                 ReasonCode: RuntimeReasonCode.CAPABILITY_PROBE_PASS,
                 Message: "Switch-player-faction flow is helper-routed for this chain.",
@@ -452,12 +452,13 @@ public sealed class ModMechanicDetectionService : IModMechanicDetectionService
             return true;
         }
 
-        var hasTacticalOwner = TryGetHealthySymbol(context.Session, "selected_owner_faction");
-        var hasPlanetOwner = TryGetHealthySymbol(context.Session, "planet_owner");
+        var safeSession = context.Session;
+        var hasTacticalOwner = TryGetHealthySymbol(safeSession, "selected_owner_faction");
+        var hasPlanetOwner = TryGetHealthySymbol(safeSession, "planet_owner");
         if (!hasTacticalOwner && !hasPlanetOwner)
         {
             support = new ModMechanicSupport(
-                ActionId: context.ActionId,
+                ActionId: actionId,
                 Supported: false,
                 ReasonCode: RuntimeReasonCode.CAPABILITY_REQUIRED_MISSING,
                 Message: "Neither selected-unit owner nor planet owner symbols are available.",
@@ -466,7 +467,7 @@ public sealed class ModMechanicDetectionService : IModMechanicDetectionService
         }
 
         support = new ModMechanicSupport(
-            ActionId: context.ActionId,
+            ActionId: actionId,
             Supported: true,
             ReasonCode: RuntimeReasonCode.CAPABILITY_PROBE_PASS,
             Message: "Context faction/allegiance routing symbols are available.",
@@ -486,7 +487,9 @@ public sealed class ModMechanicDetectionService : IModMechanicDetectionService
                 Confidence: 0.99d);
             return true;
         }
-        if (context.Session is null || context.Session.Symbols is null)
+        var safeSession = context.Session;
+        var symbols = safeSession?.Symbols;
+        if (symbols is null)
         {
             support = new ModMechanicSupport(
                 ActionId: context.ActionId,
@@ -497,14 +500,15 @@ public sealed class ModMechanicDetectionService : IModMechanicDetectionService
             return true;
         }
 
-        if (!ActionSymbolRegistry.TryGetSymbol(context.ActionId, out var symbol) ||
+        var actionId = context.ActionId ?? string.Empty;
+        if (!ActionSymbolRegistry.TryGetSymbol(actionId, out var symbol) ||
             string.IsNullOrWhiteSpace(symbol))
         {
             support = default!;
             return false;
         }
 
-        if (context.Session.Symbols.TryGetValue(symbol, out var symbolInfo) &&
+        if (symbols.TryGetValue(symbol, out var symbolInfo) &&
             symbolInfo is not null &&
             symbolInfo.Address != nint.Zero &&
             symbolInfo.HealthStatus != SymbolHealthStatus.Unresolved)
@@ -514,7 +518,7 @@ public sealed class ModMechanicDetectionService : IModMechanicDetectionService
         }
 
         support = new ModMechanicSupport(
-            ActionId: context.ActionId,
+            ActionId: actionId,
             Supported: false,
             ReasonCode: RuntimeReasonCode.CAPABILITY_REQUIRED_MISSING,
             Message: $"Symbol '{symbol}' is unresolved for this profile variant.",
@@ -529,24 +533,18 @@ public sealed class ModMechanicDetectionService : IModMechanicDetectionService
 
     private static HeroMechanicsProfile ResolveHeroMechanicsProfile(TrainerProfile profile, AttachSession session)
     {
-        if (profile is null)
-        {
-            throw new ArgumentNullException(nameof(profile));
-        }
-        if (session is null)
-        {
-            throw new ArgumentNullException(nameof(session));
-        }
+        var safeProfile = profile ?? throw new ArgumentNullException(nameof(profile));
+        var safeSession = session ?? throw new ArgumentNullException(nameof(session));
 
-        var supportsRespawn = SupportsHeroRespawn(profile);
-        var supportsRescue = SupportsHeroRescue(profile);
-        var supportsPermadeath = SupportsHeroPermadeath(profile);
-        var defaultRespawnTime = ResolveDefaultRespawnTime(profile, session, supportsRespawn);
-        var respawnExceptionSources = ResolveRespawnExceptionSources(profile);
-        var duplicateHeroPolicy = ResolveDuplicateHeroPolicy(profile, supportsPermadeath, supportsRescue);
+        var supportsRespawn = SupportsHeroRespawn(safeProfile);
+        var supportsRescue = SupportsHeroRescue(safeProfile);
+        var supportsPermadeath = SupportsHeroPermadeath(safeProfile);
+        var defaultRespawnTime = ResolveDefaultRespawnTime(safeProfile, safeSession, supportsRespawn);
+        var respawnExceptionSources = ResolveRespawnExceptionSources(safeProfile);
+        var duplicateHeroPolicy = ResolveDuplicateHeroPolicy(safeProfile, supportsPermadeath, supportsRescue);
 
-        var profileId = profile.Id ?? string.Empty;
-        var runtimeMode = session.Process.Mode.ToString();
+        var profileId = safeProfile.Id ?? string.Empty;
+        var runtimeMode = safeSession.Process.Mode.ToString();
 
         return new HeroMechanicsProfile(
             SupportsRespawn: supportsRespawn,
@@ -564,7 +562,8 @@ public sealed class ModMechanicDetectionService : IModMechanicDetectionService
 
     private static bool SupportsHeroRespawn(TrainerProfile profile)
     {
-        var actions = profile.Actions;
+        var safeProfile = profile ?? throw new ArgumentNullException(nameof(profile));
+        var actions = safeProfile.Actions;
         if (actions is null)
         {
             return false;
@@ -578,25 +577,30 @@ public sealed class ModMechanicDetectionService : IModMechanicDetectionService
 
     private static bool SupportsHeroRescue(TrainerProfile profile)
     {
-        var profileId = profile.Id ?? string.Empty;
-        return ReadBoolMetadata(profile.Metadata, "supports_hero_rescue") ||
+        var safeProfile = profile ?? throw new ArgumentNullException(nameof(profile));
+        var profileId = safeProfile.Id ?? string.Empty;
+        return ReadBoolMetadata(safeProfile.Metadata, "supports_hero_rescue") ||
                profileId.Contains("aotr", StringComparison.OrdinalIgnoreCase);
     }
 
     private static bool SupportsHeroPermadeath(TrainerProfile profile)
     {
-        var profileId = profile.Id ?? string.Empty;
-        return ReadBoolMetadata(profile.Metadata, "supports_hero_permadeath") ||
+        var safeProfile = profile ?? throw new ArgumentNullException(nameof(profile));
+        var profileId = safeProfile.Id ?? string.Empty;
+        return ReadBoolMetadata(safeProfile.Metadata, "supports_hero_permadeath") ||
                profileId.Contains("roe", StringComparison.OrdinalIgnoreCase);
     }
 
     private static int? ResolveDefaultRespawnTime(TrainerProfile profile, AttachSession session, bool supportsRespawn)
     {
-        var defaultRespawnTime = ParseOptionalInt(
-            ReadMetadataValue(profile.Metadata, "defaultHeroRespawnTime") ??
-            ReadMetadataValue(profile.Metadata, "default_hero_respawn_time"));
+        var safeProfile = profile ?? throw new ArgumentNullException(nameof(profile));
+        var safeSession = session ?? throw new ArgumentNullException(nameof(session));
 
-        if (supportsRespawn && TryGetHealthySymbol(session, "hero_respawn_timer") && defaultRespawnTime is null)
+        var defaultRespawnTime = ParseOptionalInt(
+            ReadMetadataValue(safeProfile.Metadata, "defaultHeroRespawnTime") ??
+            ReadMetadataValue(safeProfile.Metadata, "default_hero_respawn_time"));
+
+        if (supportsRespawn && TryGetHealthySymbol(safeSession, "hero_respawn_timer") && defaultRespawnTime is null)
         {
             return 1;
         }
@@ -606,16 +610,18 @@ public sealed class ModMechanicDetectionService : IModMechanicDetectionService
 
     private static IReadOnlyList<string> ResolveRespawnExceptionSources(TrainerProfile profile)
     {
+        var safeProfile = profile ?? throw new ArgumentNullException(nameof(profile));
         return ParseListMetadata(
-            ReadMetadataValue(profile.Metadata, "respawnExceptionSources") ??
-            ReadMetadataValue(profile.Metadata, "respawn_exception_sources"));
+            ReadMetadataValue(safeProfile.Metadata, "respawnExceptionSources") ??
+            ReadMetadataValue(safeProfile.Metadata, "respawn_exception_sources"));
     }
 
     private static string ResolveDuplicateHeroPolicy(TrainerProfile profile, bool supportsPermadeath, bool supportsRescue)
     {
-        return ReadMetadataValue(profile.Metadata, "duplicateHeroPolicy") ??
-               ReadMetadataValue(profile.Metadata, "duplicate_hero_policy") ??
-               InferDuplicateHeroPolicy(profile.Id, supportsPermadeath, supportsRescue);
+        var safeProfile = profile ?? throw new ArgumentNullException(nameof(profile));
+        return ReadMetadataValue(safeProfile.Metadata, "duplicateHeroPolicy") ??
+               ReadMetadataValue(safeProfile.Metadata, "duplicate_hero_policy") ??
+               InferDuplicateHeroPolicy(safeProfile.Id, supportsPermadeath, supportsRescue);
     }
     private static IReadOnlyDictionary<string, object?> BuildHeroMechanicsSummary(HeroMechanicsProfile profile)
     {

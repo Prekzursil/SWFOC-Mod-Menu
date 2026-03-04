@@ -91,7 +91,7 @@ internal static class MainViewModelPayloadHelpers
 
         if (ActionPayloadDefaults.TryGetValue(actionId, out var applyDefaults))
         {
-            applyDefaults(payload);
+            applyDefaults?.Invoke(payload);
         }
     }
 
@@ -165,21 +165,15 @@ internal static class MainViewModelPayloadHelpers
 
     private static void ApplySpawnTacticalDefaults(JsonObject payload)
     {
-        if (payload is null)
-        {
-            throw new ArgumentNullException(nameof(payload));
-        }
-        ApplySpawnDefaults(payload, "ForceZeroTactical", "EphemeralBattleOnly");
-        payload[PayloadPlacementModeKey] ??= "reinforcement_zone";
+        var targetPayload = payload ?? throw new ArgumentNullException(nameof(payload));
+        ApplySpawnDefaults(targetPayload, "ForceZeroTactical", "EphemeralBattleOnly");
+        targetPayload[PayloadPlacementModeKey] ??= "reinforcement_zone";
     }
 
     private static void ApplySpawnGalacticDefaults(JsonObject payload)
     {
-        if (payload is null)
-        {
-            throw new ArgumentNullException(nameof(payload));
-        }
-        ApplySpawnDefaults(payload, "Normal", "PersistentGalactic");
+        var targetPayload = payload ?? throw new ArgumentNullException(nameof(payload));
+        ApplySpawnDefaults(targetPayload, "Normal", "PersistentGalactic");
     }
 
     private static void ApplyPlanetBuildingDefaults(JsonObject payload)

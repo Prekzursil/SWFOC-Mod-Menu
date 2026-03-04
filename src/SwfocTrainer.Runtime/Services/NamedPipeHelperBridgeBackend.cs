@@ -197,15 +197,15 @@ public sealed class NamedPipeHelperBridgeBackend : IHelperBridgeBackend
 
     public async Task<HelperBridgeProbeResult> ProbeAsync(HelperBridgeProbeRequest request, CancellationToken cancellationToken)
     {
-        ArgumentNullException.ThrowIfNull(request);
-        ArgumentNullException.ThrowIfNull(request.Process);
+        var safeRequest = request ?? throw new ArgumentNullException(nameof(request));
+        var process = safeRequest.Process ?? throw new ArgumentNullException(nameof(request.Process));
 
-        if (request.Process.ProcessId <= 0)
+        if (process.ProcessId <= 0)
         {
-            return CreateProcessUnavailableProbeResult(request.Process.ProcessId);
+            return CreateProcessUnavailableProbeResult(process.ProcessId);
         }
 
-        var capabilityReport = await _backend.ProbeCapabilitiesAsync(request.ProfileId, request.Process, cancellationToken);
+        var capabilityReport = await _backend.ProbeCapabilitiesAsync(safeRequest.ProfileId, process, cancellationToken);
         var availableFeatures = HelperFeatureIds
             .Where(featureId => capabilityReport.IsFeatureAvailable(featureId))
             .ToArray();
@@ -217,24 +217,24 @@ public sealed class NamedPipeHelperBridgeBackend : IHelperBridgeBackend
 
     public async Task<HelperBridgeExecutionResult> ExecuteAsync(HelperBridgeRequest request, CancellationToken cancellationToken)
     {
-        ArgumentNullException.ThrowIfNull(request);
-        ArgumentNullException.ThrowIfNull(request.Process);
-        ArgumentNullException.ThrowIfNull(request.ActionRequest);
+        var safeRequest = request ?? throw new ArgumentNullException(nameof(request));
+        var process = safeRequest.Process ?? throw new ArgumentNullException(nameof(request.Process));
+        _ = safeRequest.ActionRequest ?? throw new ArgumentNullException(nameof(request.ActionRequest));
 
-        var probe = await ProbeForExecutionAsync(request, cancellationToken) ??
-                    CreateProcessUnavailableProbeResult(request.Process.ProcessId);
+        var probe = await ProbeForExecutionAsync(safeRequest, cancellationToken) ??
+                    CreateProcessUnavailableProbeResult(process.ProcessId);
         if (!probe.Available)
         {
             return CreateProbeFailureExecutionResult(probe);
         }
 
-        var operation = ResolveOperationContext(request);
-        var payload = BuildPayload(request, operation);
-        var actionRequest = BuildActionRequest(request, payload, operation);
+        var operation = ResolveOperationContext(safeRequest);
+        var payload = BuildPayload(safeRequest, operation);
+        var actionRequest = BuildActionRequest(safeRequest, payload, operation);
 
-        var capabilityReport = await _backend.ProbeCapabilitiesAsync(actionRequest.ProfileId, request.Process, cancellationToken);
+        var capabilityReport = await _backend.ProbeCapabilitiesAsync(actionRequest.ProfileId, process, cancellationToken);
         var executionResult = await _backend.ExecuteAsync(actionRequest, capabilityReport, cancellationToken);
-        var diagnostics = BuildExecutionDiagnostics(request, executionResult, operation);
+        var diagnostics = BuildExecutionDiagnostics(safeRequest, executionResult, operation);
 
         if (!executionResult.Succeeded)
         {
@@ -250,7 +250,7 @@ public sealed class NamedPipeHelperBridgeBackend : IHelperBridgeBackend
             return CreateVerificationFailureResult(tokenFailureMessage, diagnostics, "failed_operation_token");
         }
 
-        if (!ValidateVerificationContract(request, diagnostics, out var verificationMessage))
+        if (!ValidateVerificationContract(safeRequest, diagnostics, out var verificationMessage))
         {
             return CreateVerificationFailureResult(verificationMessage, diagnostics, "failed_contract");
         }
@@ -312,9 +312,13 @@ public sealed class NamedPipeHelperBridgeBackend : IHelperBridgeBackend
 
     private async Task<HelperBridgeProbeResult> ProbeForExecutionAsync(HelperBridgeRequest request, CancellationToken cancellationToken)
     {
-        var hooks = request.Hook is null ? Array.Empty<HelperHookSpec>() : new[] { request.Hook };
-        var probeRequest = new HelperBridgeProbeRequest(request.ActionRequest.ProfileId, request.Process, hooks);
-        return await ProbeAsync(probeRequest, cancellationToken) ?? CreateProcessUnavailableProbeResult(request.Process.ProcessId);
+        var safeRequest = request ?? throw new ArgumentNullException(nameof(request));
+        var process = safeRequest.Process ?? throw new ArgumentNullException(nameof(request.Process));
+        var actionRequest = safeRequest.ActionRequest ?? throw new ArgumentNullException(nameof(request.ActionRequest));
+
+        var hooks = safeRequest.Hook is null ? Array.Empty<HelperHookSpec>() : new[] { safeRequest.Hook };
+        var probeRequest = new HelperBridgeProbeRequest(actionRequest.ProfileId, process, hooks);
+        return await ProbeAsync(probeRequest, cancellationToken) ?? CreateProcessUnavailableProbeResult(process.ProcessId);
     }
 
     private static HelperBridgeExecutionResult CreateProbeFailureExecutionResult(HelperBridgeProbeResult probe)
@@ -330,46 +334,55 @@ public sealed class NamedPipeHelperBridgeBackend : IHelperBridgeBackend
 
     private static HelperOperationContext ResolveOperationContext(HelperBridgeRequest request)
     {
-        var operationKind = request.OperationKind == HelperBridgeOperationKind.Unknown
-            ? ResolveOperationKind(request.ActionRequest.Action.Id)
-            : request.OperationKind;
+        var safeRequest = request ?? throw new ArgumentNullException(nameof(request));
+        var actionRequest = safeRequest.ActionRequest ?? throw new ArgumentNullException(nameof(request.ActionRequest));
 
-        var operationToken = string.IsNullOrWhiteSpace(request.OperationToken)
+        var operationKind = safeRequest.OperationKind == HelperBridgeOperationKind.Unknown
+            ? ResolveOperationKind(actionRequest.Action.Id)
+            : safeRequest.OperationKind;
+
+        var operationToken = string.IsNullOrWhiteSpace(safeRequest.OperationToken)
             ? Guid.NewGuid().ToString("N")
-            : request.OperationToken.Trim();
+            : safeRequest.OperationToken.Trim();
 
         return new HelperOperationContext(operationKind, operationToken);
     }
 
     private static JsonObject BuildPayload(HelperBridgeRequest request, HelperOperationContext operation)
     {
-        var payload = request.ActionRequest.Payload.DeepClone() as JsonObject ?? new JsonObject();
+        var safeRequest = request ?? throw new ArgumentNullException(nameof(request));
+        var actionRequest = safeRequest.ActionRequest ?? throw new ArgumentNullException(nameof(request.ActionRequest));
+
+        var payload = actionRequest.Payload.DeepClone() as JsonObject ?? new JsonObject();
         payload[PayloadOperationKind] ??= operation.OperationKind.ToString();
         payload[PayloadOperationToken] ??= operation.OperationToken;
-        payload[PayloadHelperInvocationContractVersion] ??= request.InvocationContractVersion;
-        payload[PayloadOperationPolicy] ??= request.OperationPolicy ?? ResolveDefaultOperationPolicy(request.ActionRequest.Action.Id);
-        payload[PayloadTargetContext] ??= request.TargetContext ?? request.ActionRequest.RuntimeMode.ToString();
-        payload[PayloadMutationIntent] ??= request.MutationIntent ?? ResolveDefaultMutationIntent(request.ActionRequest.Action.Id);
-        payload[PayloadVerificationContractVersion] ??= request.VerificationContractVersion;
+        payload[PayloadHelperInvocationContractVersion] ??= safeRequest.InvocationContractVersion;
+        payload[PayloadOperationPolicy] ??= safeRequest.OperationPolicy ?? ResolveDefaultOperationPolicy(actionRequest.Action.Id);
+        payload[PayloadTargetContext] ??= safeRequest.TargetContext ?? actionRequest.RuntimeMode.ToString();
+        payload[PayloadMutationIntent] ??= safeRequest.MutationIntent ?? ResolveDefaultMutationIntent(actionRequest.Action.Id);
+        payload[PayloadVerificationContractVersion] ??= safeRequest.VerificationContractVersion;
 
-        ApplyActionSpecificDefaults(request.ActionRequest.Action.Id, payload);
-        ApplyHookPayload(request, payload);
+        ApplyActionSpecificDefaults(actionRequest.Action.Id, payload);
+        ApplyHookPayload(safeRequest, payload);
         return payload;
     }
 
     private static void ApplyHookPayload(HelperBridgeRequest request, JsonObject payload)
     {
-        var hook = request.Hook;
+        var safeRequest = request ?? throw new ArgumentNullException(nameof(request));
+        var actionRequest = safeRequest.ActionRequest ?? throw new ArgumentNullException(nameof(request.ActionRequest));
+
+        var hook = safeRequest.Hook;
         if (hook is null)
         {
             return;
         }
 
         ApplyHookIdentity(payload, hook);
-        ApplyHookEntryPoint(payload, request.ActionRequest.Action.Id, hook.EntryPoint);
+        ApplyHookEntryPoint(payload, actionRequest.Action.Id, hook.EntryPoint);
         ApplyHookScript(payload, hook.Script);
         ApplyHookArgContract(payload, hook.ArgContract);
-        ApplyHookVerifyContract(payload, request.VerificationContract, hook.VerifyContract);
+        ApplyHookVerifyContract(payload, safeRequest.VerificationContract, hook.VerifyContract);
     }
 
     private static ActionExecutionRequest BuildActionRequest(
@@ -377,27 +390,31 @@ public sealed class NamedPipeHelperBridgeBackend : IHelperBridgeBackend
         JsonObject payload,
         HelperOperationContext operation)
     {
+        var safeRequest = request ?? throw new ArgumentNullException(nameof(request));
+        var process = safeRequest.Process ?? throw new ArgumentNullException(nameof(request.Process));
+        var actionRequest = safeRequest.ActionRequest ?? throw new ArgumentNullException(nameof(request.ActionRequest));
+
         var context = new Dictionary<string, object?>(StringComparer.OrdinalIgnoreCase);
-        if (request.ActionRequest.Context is not null)
+        if (actionRequest.Context is not null)
         {
-            foreach (var kv in request.ActionRequest.Context)
+            foreach (var kv in actionRequest.Context)
             {
                 context[kv.Key] = kv.Value;
             }
         }
 
-        context[DiagnosticProcessId] = request.Process.ProcessId;
-        context[DiagnosticProcessName] = request.Process.ProcessName;
-        context[DiagnosticProcessPath] = request.Process.ProcessPath;
+        context[DiagnosticProcessId] = process.ProcessId;
+        context[DiagnosticProcessName] = process.ProcessName;
+        context[DiagnosticProcessPath] = process.ProcessPath;
         context[DiagnosticHelperInvocationSource] = InvocationSourceNativeBridge;
         context[DiagnosticOperationKind] = operation.OperationKind.ToString();
         context[DiagnosticOperationToken] = operation.OperationToken;
-        context[PayloadOperationPolicy] = request.OperationPolicy ?? string.Empty;
-        context[PayloadTargetContext] = request.TargetContext ?? request.ActionRequest.RuntimeMode.ToString();
-        context[PayloadMutationIntent] = request.MutationIntent ?? string.Empty;
-        context[PayloadVerificationContractVersion] = request.VerificationContractVersion;
+        context[PayloadOperationPolicy] = safeRequest.OperationPolicy ?? string.Empty;
+        context[PayloadTargetContext] = safeRequest.TargetContext ?? actionRequest.RuntimeMode.ToString();
+        context[PayloadMutationIntent] = safeRequest.MutationIntent ?? string.Empty;
+        context[PayloadVerificationContractVersion] = safeRequest.VerificationContractVersion;
 
-        return request.ActionRequest with
+        return actionRequest with
         {
             Payload = payload,
             Context = context
