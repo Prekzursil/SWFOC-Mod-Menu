@@ -124,29 +124,56 @@ local function Try_Output_Debug(message)
     end
 end
 
+local function Extract_Operation_Token_From_String(value)
+    if not Has_Value(value) then
+        return nil
+    end
+
+    if string.match(value, "^[0-9a-fA-F]+$") and string.len(value) >= 16 then
+        return value
+    end
+
+    if string.sub(value, 1, 6) == "token:" then
+        return string.sub(value, 7)
+    end
+
+    return nil
+end
+
+local function Extract_Operation_Token_From_Table(value)
+    local candidate = value["operationToken"]
+    if not Has_Value(candidate) then
+        candidate = value["operation_token"]
+    end
+
+    if Has_Value(candidate) then
+        return candidate
+    end
+
+    return nil
+end
+
+local function Extract_Operation_Token(value)
+    if type(value) == "string" then
+        return Extract_Operation_Token_From_String(value)
+    end
+
+    if type(value) == "table" then
+        return Extract_Operation_Token_From_Table(value)
+    end
+
+    return nil
+end
+
 local function Resolve_Operation_Token_From_Variadic(args)
     if args == nil then
         return nil
     end
 
     for _, value in ipairs(args) do
-        if type(value) == "string" then
-            if string.match(value, "^[0-9a-fA-F]+$") and string.len(value) >= 16 then
-                return value
-            end
-
-            if string.sub(value, 1, 6) == "token:" then
-                return string.sub(value, 7)
-            end
-        elseif type(value) == "table" then
-            local candidate = value["operationToken"]
-            if not Has_Value(candidate) then
-                candidate = value["operation_token"]
-            end
-
-            if Has_Value(candidate) then
-                return candidate
-            end
+        local token = Extract_Operation_Token(value)
+        if Has_Value(token) then
+            return token
         end
     end
 
