@@ -198,6 +198,72 @@ public sealed class SavePatchFieldCodecCoverageTests
         }
     }
 
+    [Fact]
+    public void BinarySaveCodec_PrivateWriteHelpers_ShouldCoverBigEndianAndErrorBranches()
+    {
+        var raw = new byte[24];
+
+        InvokeBinaryStatic("ApplyFieldEdit", raw, new SaveFieldDefinition("i32", "i32", "int32", 0, 4), 0x01020304, "big");
+        raw[0].Should().Be(0x01);
+
+        InvokeBinaryStatic("ApplyFieldEdit", raw, new SaveFieldDefinition("u32", "u32", "uint32", 4, 4), 0x01020304u, "big");
+        raw[4].Should().Be(0x01);
+
+        InvokeBinaryStatic("ApplyFieldEdit", raw, new SaveFieldDefinition("i64", "i64", "int64", 8, 8), 0x0102030405060708L, "big");
+        raw[8].Should().Be(0x01);
+
+        var overflowField = new SaveFieldDefinition("f", "f", "float", 16, 2);
+        var overflow = () => InvokeBinaryStatic("ApplyFieldEdit", raw, overflowField, 1.25f, "little");
+        overflow.Should().Throw<TargetInvocationException>();
+
+        var unsupportedField = new SaveFieldDefinition("x", "x", "vector3", 0, 4);
+        var unsupported = () => InvokeBinaryStatic("ApplyFieldEdit", new byte[8], unsupportedField, "1,2,3", "little");
+        unsupported.Should().Throw<TargetInvocationException>();
+    }
+
+    [Fact]
+    public void BinarySaveCodec_EvaluateRule_AndApplyChecksums_ShouldCoverAdditionalBranches()
+    {
+        var root = CreateCodecSchemaRoot();
+        var codec = new BinarySaveCodec(new SaveOptions { SchemaRootPath = root }, NullLogger<BinarySaveCodec>.Instance);
+
+        try
+        {
+            var intField = new SaveFieldDefinition("i32", "i32", "int32", 0, 4);
+            var longField = new SaveFieldDefinition("i64", "i64", "int64", 8, 8);
+            var schema = new SaveSchema(
+                "schema",
+                "build",
+                "little",
+                new[] { new SaveBlockDefinition("root", "root", 0, 32, "struct", new[] { "i32", "i64" }) },
+                new[] { intField, longField },
+                Array.Empty<SaveArrayDefinition>(),
+                new[] { new ValidationRule("r-long", "field_non_negative", "i64", "neg long") },
+                new[]
+                {
+                    new ChecksumRule("unknown", "adler32", 0, 8, 16, 4),
+                    new ChecksumRule("oob", "crc32", 40, 45, 20, 4)
+                });
+
+            var raw = new byte[32];
+            BitConverter.GetBytes(-5L).CopyTo(raw, 8);
+            var eval = InvokeBinaryStatic("EvaluateRule", schema.ValidationRules[0], schema, raw);
+            eval.Should().Be("neg long");
+
+            var applyChecksums = typeof(BinarySaveCodec).GetMethod("ApplyChecksums", BindingFlags.Instance | BindingFlags.NonPublic);
+            applyChecksums.Should().NotBeNull();
+            applyChecksums!.Invoke(codec, new object?[] { schema, raw });
+
+            BitConverter.ToUInt32(raw, 16).Should().Be(0u);
+        }
+        finally
+        {
+            if (Directory.Exists(root))
+            {
+                Directory.Delete(root, recursive: true);
+            }
+        }
+    }
     private static string CreateCodecSchemaRoot()
     {
         var root = Path.Combine(Path.GetTempPath(), $"swfoc-codec-branch-{Guid.NewGuid():N}");

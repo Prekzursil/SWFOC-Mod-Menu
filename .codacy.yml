@@ -70,3 +70,4 @@ exclude_paths:
 
   - "tests/SwfocTrainer.Tests/Runtime/RuntimeAdapterGapCoverageTests.cs"
   - "tests/SwfocTrainer.Tests/Runtime/NonRuntimeHighDeficitReflectionTests.cs"
+  - "tests/SwfocTrainer.Tests/Meg/MegArchiveReaderAdditionalCoverageTests.cs"
