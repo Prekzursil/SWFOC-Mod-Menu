@@ -26,42 +26,25 @@ bool IsSupportedHelperFeature(const std::string& featureId) {
 
 
 const char* ResolveExpectedHelperEntryPoint(const std::string& featureId) {
-    if (featureId == "spawn_unit_helper") {
-        return "SWFOC_Trainer_Spawn";
-    }
+    static const std::pair<const char*, const char*> kEntryPointMap[] = {
+        {"spawn_unit_helper", "SWFOC_Trainer_Spawn"},
+        {"spawn_context_entity", "SWFOC_Trainer_Spawn_Context"},
+        {"spawn_tactical_entity", "SWFOC_Trainer_Spawn_Context"},
+        {"spawn_galactic_entity", "SWFOC_Trainer_Spawn_Context"},
+        {"place_planet_building", "SWFOC_Trainer_Place_Building"},
+        {"set_context_allegiance", "SWFOC_Trainer_Set_Context_Allegiance"},
+        {"set_context_faction", "SWFOC_Trainer_Set_Context_Allegiance"},
+        {"transfer_fleet_safe", "SWFOC_Trainer_Transfer_Fleet_Safe"},
+        {"flip_planet_owner", "SWFOC_Trainer_Flip_Planet_Owner"},
+        {"switch_player_faction", "SWFOC_Trainer_Switch_Player_Faction"},
+        {"edit_hero_state", "SWFOC_Trainer_Edit_Hero_State"},
+        {"create_hero_variant", "SWFOC_Trainer_Create_Hero_Variant"}
+    };
 
-    if (featureId == "spawn_context_entity" ||
-        featureId == "spawn_tactical_entity" ||
-        featureId == "spawn_galactic_entity") {
-        return "SWFOC_Trainer_Spawn_Context";
-    }
-
-    if (featureId == "place_planet_building") {
-        return "SWFOC_Trainer_Place_Building";
-    }
-
-    if (featureId == "set_context_allegiance" || featureId == "set_context_faction") {
-        return "SWFOC_Trainer_Set_Context_Allegiance";
-    }
-
-    if (featureId == "transfer_fleet_safe") {
-        return "SWFOC_Trainer_Transfer_Fleet_Safe";
-    }
-
-    if (featureId == "flip_planet_owner") {
-        return "SWFOC_Trainer_Flip_Planet_Owner";
-    }
-
-    if (featureId == "switch_player_faction") {
-        return "SWFOC_Trainer_Switch_Player_Faction";
-    }
-
-    if (featureId == "edit_hero_state") {
-        return "SWFOC_Trainer_Edit_Hero_State";
-    }
-
-    if (featureId == "create_hero_variant") {
-        return "SWFOC_Trainer_Create_Hero_Variant";
+    for (const auto& entry : kEntryPointMap) {
+        if (featureId == entry.first) {
+            return entry.second;
+        }
     }
 
     return nullptr;
@@ -467,3 +450,4 @@ CapabilitySnapshot HelperLuaPlugin::capabilitySnapshot() const {
 }
 
 } // namespace swfoc::extender::plugins
+

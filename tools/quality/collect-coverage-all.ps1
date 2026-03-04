@@ -9,21 +9,21 @@ param(
 Set-StrictMode -Version Latest
 $ErrorActionPreference = "Stop"
 
-$repoRoot = (Resolve-Path (Join-Path $PSScriptRoot ".." "..")).ProviderPath
+$repoRoot = (Resolve-Path (Join-Path -Path (Join-Path -Path $PSScriptRoot -ChildPath "..") -ChildPath "..")).ProviderPath
 Set-Location $repoRoot
 
-$resultsRootResolved = if ([System.IO.Path]::IsPathRooted($ResultsRoot)) { $ResultsRoot } else { Join-Path $repoRoot $ResultsRoot }
+$resultsRootResolved = if ([System.IO.Path]::IsPathRooted($ResultsRoot)) { $ResultsRoot } else { Join-Path -Path $repoRoot -ChildPath $ResultsRoot }
 if (-not (Test-Path -Path $resultsRootResolved)) {
     New-Item -ItemType Directory -Path $resultsRootResolved -Force | Out-Null
 }
 
-$manifestResolved = if ([System.IO.Path]::IsPathRooted($ManifestPath)) { $ManifestPath } else { Join-Path $repoRoot $ManifestPath }
+$manifestResolved = if ([System.IO.Path]::IsPathRooted($ManifestPath)) { $ManifestPath } else { Join-Path -Path $repoRoot -ChildPath $ManifestPath }
 $manifestDir = Split-Path -Parent $manifestResolved
 if (-not [string]::IsNullOrWhiteSpace($manifestDir) -and -not (Test-Path -Path $manifestDir)) {
     New-Item -ItemType Directory -Path $manifestDir -Force | Out-Null
 }
 
-function New-CoverageComponent {
+function Get-CoverageComponent {
     param(
         [string]$Name,
         [string]$Language,
@@ -72,7 +72,7 @@ function Get-StaticLanguageFiles {
         [string[]]$ExcludePathContains = @()
     )
 
-    $rootPath = Join-Path $repoRoot $RootRelative
+    $rootPath = Join-Path -Path $repoRoot -ChildPath $RootRelative
     if (-not (Test-Path -Path $rootPath)) {
         return @()
     }
@@ -111,7 +111,7 @@ function Add-StaticLanguageComponent {
 
     $paths = Get-StaticLanguageFiles -RootRelative $RootRelative -Extensions $Extensions -ExcludePathContains $ExcludePathContains
     $lineTotal = Get-NonEmptyLineCount -Paths $paths
-    $component = New-CoverageComponent -Name $Name -Language $Language -SourceType "static_contract" -LineCovered $lineTotal -LineTotal $lineTotal -BranchCovered 0 -BranchTotal 0 -ArtifactPath "" -InputPaths $paths
+    $component = Get-CoverageComponent -Name $Name -Language $Language -SourceType "static_contract" -LineCovered $lineTotal -LineTotal $lineTotal -BranchCovered 0 -BranchTotal 0 -ArtifactPath "" -InputPaths $paths
     $Components.Add($component)
 }
 
@@ -134,7 +134,7 @@ if (-not $SkipDotnet.IsPresent) {
         throw "dotnet coverage collection failed with exit code $LASTEXITCODE"
     }
 
-    $dotnetCoveragePath = Join-Path $resultsRootResolved "cobertura.xml"
+    $dotnetCoveragePath = Join-Path -Path $resultsRootResolved -ChildPath "cobertura.xml"
     if (-not (Test-Path -Path $dotnetCoveragePath)) {
         throw "Dotnet coverage file was not generated at $dotnetCoveragePath"
     }
@@ -145,7 +145,7 @@ if (-not $SkipDotnet.IsPresent) {
     $branchCovered = [int]$coverageXml.coverage.'branches-covered'
     $branchTotal = [int]$coverageXml.coverage.'branches-valid'
 
-    $components.Add((New-CoverageComponent -Name "dotnet" -Language "csharp" -SourceType "dynamic_cobertura" -LineCovered $lineCovered -LineTotal $lineTotal -BranchCovered $branchCovered -BranchTotal $branchTotal -ArtifactPath $dotnetCoveragePath -InputPaths @($dotnetCoveragePath)))
+    $components.Add((Get-CoverageComponent -Name "dotnet" -Language "csharp" -SourceType "dynamic_cobertura" -LineCovered $lineCovered -LineTotal $lineTotal -BranchCovered $branchCovered -BranchTotal $branchTotal -ArtifactPath $dotnetCoveragePath -InputPaths @($dotnetCoveragePath)))
 }
 
 Add-StaticLanguageComponent -Components $components -Name "native_cpp" -Language "cpp" -RootRelative "native" -Extensions @(".cpp", ".hpp", ".h") -ExcludePathContains @("\build-win-vs\", "\obj\")
@@ -162,3 +162,4 @@ $manifest = [ordered]@{
 
 $manifest | ConvertTo-Json -Depth 8 | Set-Content -Path $manifestResolved
 Write-Output "coverage_manifest=$manifestResolved"
+

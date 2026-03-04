@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
-from __future__ import annotations
+from __future__ import absolute_import
 
 import argparse
 import json
 from datetime import datetime, timezone
 from pathlib import Path
-from typing import Any
+from typing import Any, Dict, List, Set, Tuple
 
 
 def parse_args() -> argparse.Namespace:
@@ -29,7 +29,7 @@ def safe_percent(covered: int, total: int) -> float:
     return (covered / total) * 100.0
 
 
-def load_manifest(path: Path) -> dict[str, Any]:
+def load_manifest(path: Path) -> Dict[str, Any]:
     with path.open("r", encoding="utf-8") as handle:
         payload = json.load(handle)
     if not isinstance(payload, dict):
@@ -37,14 +37,69 @@ def load_manifest(path: Path) -> dict[str, Any]:
     return payload
 
 
-def evaluate_components(
-    components: list[dict[str, Any]],
+def parse_component(component: Dict[str, Any]) -> Dict[str, Any]:
+    name = str(component.get("name", "unknown"))
+    language = str(component.get("language", "unknown")).strip().lower()
+    source_type = str(component.get("sourceType", "unknown"))
+    line_covered = int(component.get("lineCovered", 0))
+    line_total = int(component.get("lineTotal", 0))
+    branch_covered = int(component.get("branchCovered", 0))
+    branch_total = int(component.get("branchTotal", 0))
+    artifact_path = str(component.get("artifactPath", ""))
+
+    line_percent = safe_percent(line_covered, line_total)
+    branch_percent = safe_percent(branch_covered, branch_total)
+
+    return {
+        "name": name,
+        "language": language,
+        "sourceType": source_type,
+        "lineCovered": line_covered,
+        "lineTotal": line_total,
+        "linePercent": line_percent,
+        "branchCovered": branch_covered,
+        "branchTotal": branch_total,
+        "branchPercent": branch_percent,
+        "artifactPath": artifact_path,
+    }
+
+
+def evaluate_component(
+    normalized_component: Dict[str, Any],
     min_line: float,
     min_branch: float,
-    required_languages: set[str],
-) -> tuple[str, list[str], list[dict[str, Any]]]:
-    findings: list[str] = []
-    normalized: list[dict[str, Any]] = []
+) -> List[str]:
+    findings: List[str] = []
+    name = normalized_component["name"]
+    language = normalized_component["language"]
+    line_percent = float(normalized_component["linePercent"])
+    line_covered = int(normalized_component["lineCovered"])
+    line_total = int(normalized_component["lineTotal"])
+    branch_percent = float(normalized_component["branchPercent"])
+    branch_covered = int(normalized_component["branchCovered"])
+    branch_total = int(normalized_component["branchTotal"])
+
+    if line_percent < min_line:
+        findings.append(
+            f"{name} ({language}) line coverage below {min_line:.2f}%: {line_percent:.2f}% ({line_covered}/{line_total})"
+        )
+
+    if branch_percent < min_branch:
+        findings.append(
+            f"{name} ({language}) branch coverage below {min_branch:.2f}%: {branch_percent:.2f}% ({branch_covered}/{branch_total})"
+        )
+
+    return findings
+
+
+def evaluate_components(
+    components: List[Dict[str, Any]],
+    min_line: float,
+    min_branch: float,
+    required_languages: Set[str],
+) -> Tuple[str, List[str], List[Dict[str, Any]]]:
+    findings: List[str] = []
+    normalized: List[Dict[str, Any]] = []
 
     seen_languages = {str(component.get("language", "")).strip().lower() for component in components}
     missing = sorted(language for language in required_languages if language not in seen_languages)
@@ -52,47 +107,15 @@ def evaluate_components(
         findings.append(f"missing required language components: {', '.join(missing)}")
 
     for component in components:
-        name = str(component.get("name", "unknown"))
-        language = str(component.get("language", "unknown")).strip().lower()
-        source_type = str(component.get("sourceType", "unknown"))
-        line_covered = int(component.get("lineCovered", 0))
-        line_total = int(component.get("lineTotal", 0))
-        branch_covered = int(component.get("branchCovered", 0))
-        branch_total = int(component.get("branchTotal", 0))
-        artifact_path = str(component.get("artifactPath", ""))
-
-        line_percent = safe_percent(line_covered, line_total)
-        branch_percent = safe_percent(branch_covered, branch_total)
-
-        if line_percent < min_line:
-            findings.append(
-                f"{name} ({language}) line coverage below {min_line:.2f}%: {line_percent:.2f}% ({line_covered}/{line_total})"
-            )
-        if branch_percent < min_branch:
-            findings.append(
-                f"{name} ({language}) branch coverage below {min_branch:.2f}%: {branch_percent:.2f}% ({branch_covered}/{branch_total})"
-            )
-
-        normalized.append(
-            {
-                "name": name,
-                "language": language,
-                "sourceType": source_type,
-                "lineCovered": line_covered,
-                "lineTotal": line_total,
-                "linePercent": line_percent,
-                "branchCovered": branch_covered,
-                "branchTotal": branch_total,
-                "branchPercent": branch_percent,
-                "artifactPath": artifact_path,
-            }
-        )
+        parsed_component = parse_component(component)
+        findings.extend(evaluate_component(parsed_component, min_line=min_line, min_branch=min_branch))
+        normalized.append(parsed_component)
 
     status = "pass" if not findings else "fail"
     return status, findings, normalized
 
 
-def render_markdown(payload: dict[str, Any]) -> str:
+def render_markdown(payload: Dict[str, Any]) -> str:
     lines = [
         "# Coverage All Gate",
         "",
@@ -133,6 +156,14 @@ def ensure_output(path: Path) -> Path:
     return resolved
 
 
+def parse_required_languages(raw_value: str) -> Set[str]:
+    return {
+        language.strip().lower()
+        for language in str(raw_value).split(",")
+        if language.strip()
+    }
+
+
 def main() -> int:
     args = parse_args()
     manifest_path = Path(args.manifest)
@@ -141,11 +172,7 @@ def main() -> int:
     if not isinstance(components, list):
         raise ValueError("Manifest components must be an array")
 
-    required_languages = {
-        language.strip().lower()
-        for language in str(args.required_languages).split(",")
-        if language.strip()
-    }
+    required_languages = parse_required_languages(args.required_languages)
 
     status, findings, normalized = evaluate_components(
         [component for component in components if isinstance(component, dict)],
