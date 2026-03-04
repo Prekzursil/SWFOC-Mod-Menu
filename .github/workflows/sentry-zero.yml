@@ -42,7 +42,7 @@ jobs:
         if: ${{ github.event_name != 'pull_request' }}
         run: |
           python3 scripts/quality/check_sentry_zero.py \
-            --project "${SENTRY_PROJECT,,}" \
+            --project "${SENTRY_PROJECT}" \
             --out-json "sentry-zero/sentry.json" \
             --out-md "sentry-zero/sentry.md"
       - name: Upload Sentry artifacts
@@ -51,3 +51,4 @@ jobs:
         with:
           name: sentry-zero
           path: sentry-zero
+

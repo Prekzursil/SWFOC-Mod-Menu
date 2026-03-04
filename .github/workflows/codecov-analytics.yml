@@ -51,11 +51,9 @@ jobs:
 
       - name: Enforce 100% line+branch coverage
         if: ${{ github.event_name != 'pull_request' }}
+        shell: pwsh
         run: |
-          python3 scripts/quality/assert_coverage_100.py \
-            --xml "dotnet=${{ env.CODECOV_COVERAGE_FILE }}" \
-            --out-json "codecov-analytics/coverage.json" \
-            --out-md "codecov-analytics/coverage.md"
+          python scripts/quality/assert_coverage_100.py --xml "dotnet=${{ env.CODECOV_COVERAGE_FILE }}" --out-json "codecov-analytics/coverage.json" --out-md "codecov-analytics/coverage.md"
 
       - name: Mark PR mode (coverage evidence only)
         if: ${{ github.event_name == 'pull_request' }}

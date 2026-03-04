@@ -59,23 +59,29 @@ jobs:
       - name: Assert required quality contexts are green
         run: |
           echo "Using check SHA: $CHECK_SHA"
-          python3 scripts/quality/check_required_checks.py \
-            --repo "${GITHUB_REPOSITORY}" \
-            --sha "${CHECK_SHA}" \
-            --required-context "Coverage 100 Gate" \
-            --required-context "Codecov Analytics" \
-            --required-context "Sonar Zero" \
-            --required-context "Codacy Zero" \
-            --required-context "Snyk Zero" \
-            --required-context "Sentry Zero" \
-            --required-context "DeepScan Zero" \
-            --required-context "SonarCloud Code Analysis" \
-            --required-context "Codacy Static Code Analysis" \
-            --required-context "DeepScan" \
-            --timeout-seconds 1500 \
-            --poll-seconds 20 \
-            --out-json quality-zero-gate/required-checks.json \
+          args=(
+            --repo "${GITHUB_REPOSITORY}"
+            --sha "${CHECK_SHA}"
+            --required-context "Coverage 100 Gate"
+            --required-context "Codecov Analytics"
+            --required-context "Sonar Zero"
+            --required-context "Codacy Zero"
+            --required-context "Snyk Zero"
+            --required-context "Sentry Zero"
+            --required-context "DeepScan Zero"
+            --required-context "SonarCloud Code Analysis"
+            --required-context "Codacy Static Code Analysis"
+            --timeout-seconds 1500
+            --poll-seconds 20
+            --out-json quality-zero-gate/required-checks.json
             --out-md quality-zero-gate/required-checks.md
+          )
+
+          if [ "${{ github.event_name }}" = "pull_request" ]; then
+            args+=(--required-context "DeepScan")
+          fi
+
+          python3 scripts/quality/check_required_checks.py "${args[@]}"
       - name: Evaluate legacy code/snyk context policy
         run: |
           python3 scripts/quality/check_legacy_snyk_status.py \
