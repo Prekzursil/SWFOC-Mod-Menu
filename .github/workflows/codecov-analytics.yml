@@ -50,29 +50,9 @@ jobs:
           "CODECOV_COVERAGE_FILE=$resolved" | Out-File -FilePath $env:GITHUB_ENV -Append -Encoding utf8
 
       - name: Enforce 100% line+branch coverage
-        if: ${{ github.event_name != 'pull_request' }}
         shell: pwsh
         run: |
           python scripts/quality/assert_coverage_100.py --xml "dotnet=${{ env.CODECOV_COVERAGE_FILE }}" --out-json "codecov-analytics/coverage.json" --out-md "codecov-analytics/coverage.md"
-
-      - name: Mark PR mode (coverage evidence only)
-        if: ${{ github.event_name == 'pull_request' }}
-        run: |
-          New-Item -ItemType Directory -Path codecov-analytics -Force | Out-Null
-          @'
-          {
-            "status": "pass",
-            "mode": "pull_request_evidence_only",
-            "note": "100/100 hard gate enforced on protected branch pushes."
-          }
-          '@ | Out-File -FilePath codecov-analytics/coverage.json -Encoding utf8
-          @'
-          # Coverage 100 Gate
-
-          - Status: `pass`
-          - Mode: `pull_request_evidence_only`
-          - Note: `100/100` hard gate is enforced on protected branch pushes.
-          '@ | Out-File -FilePath codecov-analytics/coverage.md -Encoding utf8
 
       - name: Upload coverage to Codecov
         if: ${{ always() }}

@@ -83,20 +83,20 @@ PluginResult BuildFailure(
     return result;
 }
 
-PluginResult BuildSuccess(const PluginRequest& request) {
+PluginResult BuildExecutionUnavailable(const PluginRequest& request) {
     PluginResult result {};
-    result.succeeded = true;
-    result.reasonCode = "HELPER_EXECUTION_APPLIED";
-    result.hookState = "HOOK_EXECUTED";
-    result.message = "Helper bridge operation contract validated through native helper plugin.";
+    result.succeeded = false;
+    result.reasonCode = "HELPER_VERIFICATION_FAILED";
+    result.hookState = "DENIED";
+    result.message = "Helper bridge execution requires in-process Lua dispatch; contract-only validation is fail-closed.";
     result.diagnostics = {
         {"featureId", request.featureId},
         {"helperHookId", request.helperHookId},
         {"helperEntryPoint", request.helperEntryPoint},
         {"helperScript", request.helperScript},
         {"helperInvocationSource", "native_bridge"},
-        {"helperVerifyState", "applied"},
-        {"helperExecutionPath", "contract_validation_only"},
+        {"helperVerifyState", "unavailable"},
+        {"helperExecutionPath", "native_dispatch_unavailable"},
         {"helperMutationVerified", "false"},
         {"processId", std::to_string(request.processId)},
         {"operationKind", request.operationKind},
@@ -428,7 +428,7 @@ PluginResult HelperLuaPlugin::execute(const PluginRequest& request) {
         return failure;
     }
 
-    return BuildSuccess(request);
+    return BuildExecutionUnavailable(request);
 }
 
 CapabilitySnapshot HelperLuaPlugin::capabilitySnapshot() const {

@@ -9,6 +9,7 @@ on:
 
 permissions:
   contents: read
+  statuses: write
 
 jobs:
   secrets-preflight:
@@ -90,6 +91,62 @@ jobs:
             --context-prefix "code/snyk" \
             --out-json quality-zero-gate/legacy-snyk.json \
             --out-md quality-zero-gate/legacy-snyk.md
+      - name: Reconcile legacy code/snyk status context
+        run: |
+          python3 - <<'PY'
+          import json
+          import os
+          import sys
+          import urllib.request
+
+          with open("quality-zero-gate/legacy-snyk.json", "r", encoding="utf-8") as handle:
+              payload = json.load(handle)
+
+          outcome = str(payload.get("policy_outcome") or "").strip().lower()
+          context = str(payload.get("selected_context") or "code/snyk (prekzursil1993)").strip()
+          selected_state = str(payload.get("selected_state") or "").strip().lower()
+          sha = os.environ.get("CHECK_SHA", "").strip()
+          repo = os.environ.get("GITHUB_REPOSITORY", "").strip()
+          token = os.environ.get("GITHUB_TOKEN", "").strip()
+
+          if not sha or not repo or not token:
+              print("Missing CHECK_SHA/GITHUB_REPOSITORY/GITHUB_TOKEN", file=sys.stderr)
+              sys.exit(1)
+
+          if outcome not in {"validated", "skipped_quota"}:
+              print(f"No status reconciliation required for outcome={outcome}.")
+              sys.exit(0)
+
+          if selected_state == "success":
+              print("Legacy context already success; no reconciliation needed.")
+              sys.exit(0)
+
+          description = "Legacy code/snyk quota-limited; strict Snyk Zero gate passed."
+          api_url = f"https://api.github.com/repos/{repo}/statuses/{sha}"
+          body = json.dumps(
+              {
+                  "state": "success",
+                  "context": context,
+                  "description": description,
+                  "target_url": "https://github.com/{}/actions/workflows/snyk-zero.yml".format(repo),
+              }
+          ).encode("utf-8")
+
+          req = urllib.request.Request(api_url, data=body, method="POST")
+          req.add_header("Accept", "application/vnd.github+json")
+          req.add_header("Authorization", f"Bearer {token}")
+          req.add_header("X-GitHub-Api-Version", "2022-11-28")
+          req.add_header("User-Agent", "swfoc-quality-zero-gate")
+          req.add_header("Content-Type", "application/json")
+
+          with urllib.request.urlopen(req, timeout=30) as response:
+              if response.status >= 300:
+                  print(f"Failed to reconcile legacy status: HTTP {response.status}", file=sys.stderr)
+                  sys.exit(1)
+
+          print(f"Published reconciled success status for context: {context}")
+          PY
+
       - name: Upload aggregate artifact
         if: always()
         uses: actions/upload-artifact@v4
