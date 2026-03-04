@@ -95,8 +95,8 @@ public sealed class ProcessLocatorDetectionCoverageTests
         var previousProfile = Environment.GetEnvironmentVariable(ProcessLocator.ForceProfileIdEnvVar);
         try
         {
-            Environment.SetEnvironmentVariable(ProcessLocator.ForceWorkshopIdsEnvVar, null);
-            Environment.SetEnvironmentVariable(ProcessLocator.ForceProfileIdEnvVar, null);
+            Environment.SetEnvironmentVariable(ProcessLocator.ForceWorkshopIdsEnvVar, string.Empty);
+            Environment.SetEnvironmentVariable(ProcessLocator.ForceProfileIdEnvVar, string.Empty);
 
             var options = (ProcessLocatorOptions)InvokePrivateStatic(methodName: "ResolveOptionsFromEnvironment");
 
@@ -160,5 +160,6 @@ public sealed class ProcessLocatorDetectionCoverageTests
             }
     }
 }
+
 
 
