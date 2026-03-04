@@ -273,6 +273,51 @@ public sealed class ModMechanicDetectionServiceTests
     }
 
     [Fact]
+    public async Task DetectAsync_ShouldEmitHeroMechanicsSummary_FromProfileMetadataAndActions()
+    {
+        var profile = BuildProfile(
+            actions: new[]
+            {
+                Action("set_hero_state_helper", ExecutionKind.Helper, "helperHookId", "globalKey", "intValue"),
+                Action("edit_hero_state", ExecutionKind.Helper, "helperHookId", "entityId", "desiredState")
+            },
+            helperHooks: new[]
+            {
+                new HelperHookSpec("hero_hook", "hero_bridge.lua", "1.0", EntryPoint: "SWFOC_Trainer_Edit_Hero_State")
+            },
+            metadata: new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
+            {
+                ["supports_hero_rescue"] = "true",
+                ["supports_hero_permadeath"] = "true",
+                ["defaultHeroRespawnTime"] = "14",
+                ["respawnExceptionSources"] = "GameConstants.xml, RespawnExceptions.lua",
+                ["duplicateHeroPolicy"] = "allow_with_warning"
+            });
+        var session = BuildSession(
+            RuntimeMode.Galactic,
+            symbols: new[]
+            {
+                new SymbolInfo("hero_respawn_timer", (nint)0x3000, SymbolValueType.Int32, AddressSource.Signature)
+            });
+
+        var report = await new ModMechanicDetectionService().DetectAsync(profile, session, catalog: null, CancellationToken.None);
+
+        report.Diagnostics.Should().ContainKey("heroMechanicsSummary");
+        var summary = report.Diagnostics!["heroMechanicsSummary"] as IReadOnlyDictionary<string, object?>;
+        summary.Should().NotBeNull();
+        summary!["supportsRespawn"].Should().Be(true);
+        summary["supportsPermadeath"].Should().Be(true);
+        summary["supportsRescue"].Should().Be(true);
+        summary["defaultRespawnTime"].Should().Be(14);
+        summary["duplicateHeroPolicy"]!.ToString().Should().Be("allow_with_warning");
+
+        var exceptionSources = summary["respawnExceptionSources"] as IReadOnlyList<string>;
+        exceptionSources.Should().NotBeNull();
+        exceptionSources!.Should().Contain("GameConstants.xml");
+        exceptionSources.Should().Contain("RespawnExceptions.lua");
+    }
+
+    [Fact]
     public void ParseActiveWorkshopIds_ShouldMergeLaunchContextAndMetadata()
     {
         var process = new ProcessMetadata(
@@ -387,7 +432,8 @@ public sealed class ModMechanicDetectionServiceTests
 
     private static TrainerProfile BuildProfile(
         IReadOnlyList<ActionSpec> actions,
-        IReadOnlyList<HelperHookSpec>? helperHooks = null)
+        IReadOnlyList<HelperHookSpec>? helperHooks = null,
+        IReadOnlyDictionary<string, string>? metadata = null)
     {
         return new TrainerProfile(
             Id: "test_profile",
@@ -402,7 +448,9 @@ public sealed class ModMechanicDetectionServiceTests
             CatalogSources: Array.Empty<CatalogSource>(),
             SaveSchemaId: "test",
             HelperModHooks: helperHooks ?? Array.Empty<HelperHookSpec>(),
-            Metadata: new Dictionary<string, string>());
+            Metadata: metadata is null
+                ? new Dictionary<string, string>()
+                : new Dictionary<string, string>(metadata, StringComparer.OrdinalIgnoreCase));
     }
 
     private static AttachSession BuildSession(

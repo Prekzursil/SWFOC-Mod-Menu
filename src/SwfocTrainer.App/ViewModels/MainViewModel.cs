@@ -14,7 +14,7 @@ public sealed class MainViewModel : MainViewModelSaveOpsBase
     public MainViewModel(MainViewModelDependencies dependencies)
         : base(dependencies)
     {
-        (Profiles, Actions, CatalogSummary, Updates, SaveDiffPreview, Hotkeys, SaveFields, FilteredSaveFields, SavePatchOperations, SavePatchCompatibility, ActionReliability, SelectedUnitTransactions, SpawnPresets, LiveOpsDiagnostics, ModCompatibilityRows, ActiveFreezes) = MainViewModelFactories.CreateCollections();
+        (Profiles, Actions, CatalogSummary, Updates, SaveDiffPreview, Hotkeys, SaveFields, FilteredSaveFields, SavePatchOperations, SavePatchCompatibility, ActionReliability, SelectedUnitTransactions, SpawnPresets, EntityRoster, LiveOpsDiagnostics, ModCompatibilityRows, ActiveFreezes) = MainViewModelFactories.CreateCollections();
 
         var commandContexts = CreateCommandContexts();
         (LoadProfilesCommand, LaunchAndAttachCommand, AttachCommand, DetachCommand, LoadActionsCommand, ExecuteActionCommand, LoadCatalogCommand, DeployHelperCommand, VerifyHelperCommand, CheckUpdatesCommand, InstallUpdateCommand, RollbackProfileUpdateCommand) = MainViewModelFactories.CreateCoreCommands(commandContexts.Core);
@@ -697,3 +697,4 @@ public sealed class MainViewModel : MainViewModelSaveOpsBase
         return unavailableReason;
     }
 }
+

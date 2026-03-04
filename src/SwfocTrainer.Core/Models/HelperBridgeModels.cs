@@ -10,7 +10,12 @@ public enum HelperBridgeOperationKind
     PlacePlanetBuilding,
     SetContextAllegiance,
     SetHeroStateHelper,
-    ToggleRoeRespawnHelper
+    ToggleRoeRespawnHelper,
+    TransferFleetSafe,
+    FlipPlanetOwner,
+    SwitchPlayerFaction,
+    EditHeroState,
+    CreateHeroVariant
 }
 
 public sealed record HelperBridgeProbeRequest(
@@ -32,6 +37,10 @@ public sealed record HelperBridgeRequest(
     string InvocationContractVersion = "1.0",
     IReadOnlyDictionary<string, string>? VerificationContract = null,
     string? OperationToken = null,
+    string? OperationPolicy = null,
+    string? TargetContext = null,
+    string? MutationIntent = null,
+    string VerificationContractVersion = "1.0",
     IReadOnlyDictionary<string, object?>? Context = null);
 
 public sealed record HelperBridgeExecutionResult(

@@ -27,6 +27,7 @@ public abstract class MainViewModelBindableMembersBase : MainViewModelCoreStateB
     public ObservableCollection<ActionReliabilityViewItem> ActionReliability { get; protected set; } = null!;
     public ObservableCollection<SelectedUnitTransactionViewItem> SelectedUnitTransactions { get; protected set; } = null!;
     public ObservableCollection<SpawnPresetViewItem> SpawnPresets { get; protected set; } = null!;
+    public ObservableCollection<RosterEntityViewItem> EntityRoster { get; protected set; } = null!;
     public ObservableCollection<string> LiveOpsDiagnostics { get; protected set; } = null!;
     public ObservableCollection<string> ModCompatibilityRows { get; protected set; } = null!;
     public string? SelectedProfileId
@@ -277,6 +278,36 @@ public abstract class MainViewModelBindableMembersBase : MainViewModelCoreStateB
         set => SetField(_modCompatibilitySummary, value, newValue => _modCompatibilitySummary = newValue);
     }
 
+    public string HeroSupportsRespawn
+    {
+        get => _heroSupportsRespawn;
+        set => SetField(_heroSupportsRespawn, value, newValue => _heroSupportsRespawn = newValue);
+    }
+
+    public string HeroSupportsPermadeath
+    {
+        get => _heroSupportsPermadeath;
+        set => SetField(_heroSupportsPermadeath, value, newValue => _heroSupportsPermadeath = newValue);
+    }
+
+    public string HeroSupportsRescue
+    {
+        get => _heroSupportsRescue;
+        set => SetField(_heroSupportsRescue, value, newValue => _heroSupportsRescue = newValue);
+    }
+
+    public string HeroDefaultRespawnTime
+    {
+        get => _heroDefaultRespawnTime;
+        set => SetField(_heroDefaultRespawnTime, value, newValue => _heroDefaultRespawnTime = newValue);
+    }
+
+    public string HeroDuplicatePolicy
+    {
+        get => _heroDuplicatePolicy;
+        set => SetField(_heroDuplicatePolicy, value, newValue => _heroDuplicatePolicy = newValue);
+    }
+
     public string OpsArtifactSummary
     {
         get => _opsArtifactSummary;
@@ -386,3 +417,4 @@ public abstract class MainViewModelBindableMembersBase : MainViewModelCoreStateB
 
     protected abstract void ApplySaveSearch();
 }
+

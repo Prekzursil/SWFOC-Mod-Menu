@@ -35,6 +35,9 @@ public abstract class MainViewModelLiveOpsBase : MainViewModelBindableMembersBas
             // Catalog is optional for reliability scoring.
         }
 
+        PopulateEntityRoster(profile, catalog);
+        RefreshHeroMechanicsSurface(profile);
+
         var reliability = _actionReliability.Evaluate(profile, _runtime.CurrentSession, catalog);
         foreach (var item in reliability)
         {
@@ -222,7 +225,8 @@ public abstract class MainViewModelLiveOpsBase : MainViewModelBindableMembersBas
         }
 
         SelectedSpawnPreset = SpawnPresets.FirstOrDefault();
-        Status = $"Loaded {SpawnPresets.Count} spawn preset(s).";
+        await RefreshRosterAndHeroSurfaceAsync(SelectedProfileId);
+        Status = $"Loaded {SpawnPresets.Count} spawn preset(s); roster={EntityRoster.Count}.";
     }
 
     protected async Task RunSpawnBatchAsync()
@@ -256,6 +260,79 @@ public abstract class MainViewModelLiveOpsBase : MainViewModelBindableMembersBas
             : $"✗ {result.Message}";
     }
 
+
+    private async Task RefreshRosterAndHeroSurfaceAsync(string profileId)
+    {
+        var profile = await _profiles.ResolveInheritedProfileAsync(profileId);
+        IReadOnlyDictionary<string, IReadOnlyList<string>>? catalog = null;
+        try
+        {
+            catalog = await _catalog.LoadCatalogAsync(profileId);
+        }
+        catch
+        {
+            // Catalog availability is optional for roster surfacing.
+        }
+
+        PopulateEntityRoster(profile, catalog);
+        RefreshHeroMechanicsSurface(profile);
+    }
+
+    private void PopulateEntityRoster(
+        TrainerProfile profile,
+        IReadOnlyDictionary<string, IReadOnlyList<string>>? catalog)
+    {
+        EntityRoster.Clear();
+        var rows = MainViewModelRosterHelpers.BuildEntityRoster(catalog, profile.Id, profile.SteamWorkshopId);
+        foreach (var row in rows)
+        {
+            EntityRoster.Add(row);
+        }
+    }
+
+    private void RefreshHeroMechanicsSurface(TrainerProfile profile)
+    {
+        var metadata = profile.Metadata;
+        var supportsRespawn = profile.Actions.ContainsKey("set_hero_respawn_timer") ||
+                              profile.Actions.ContainsKey("edit_hero_state");
+
+        var supportsPermadeath = TryReadBoolMetadata(metadata, "supports_hero_permadeath");
+        var supportsRescue = TryReadBoolMetadata(metadata, "supports_hero_rescue");
+        var defaultRespawn = ReadMetadataValue(metadata, "defaultHeroRespawnTime") ??
+                             ReadMetadataValue(metadata, "default_hero_respawn_time") ??
+                             ReadMetadataValue(metadata, "hero_respawn_time");
+        var duplicatePolicy = ReadMetadataValue(metadata, "duplicateHeroPolicy") ??
+                              ReadMetadataValue(metadata, "duplicate_hero_policy") ??
+                              "unknown";
+
+        HeroSupportsRespawn = supportsRespawn ? "true" : "false";
+        HeroSupportsPermadeath = supportsPermadeath ? "true" : "false";
+        HeroSupportsRescue = supportsRescue ? "true" : "false";
+        HeroDefaultRespawnTime = string.IsNullOrWhiteSpace(defaultRespawn) ? "unknown" : defaultRespawn;
+        HeroDuplicatePolicy = duplicatePolicy;
+    }
+
+    private static bool TryReadBoolMetadata(IReadOnlyDictionary<string, string>? metadata, string key)
+    {
+        if (metadata is null || !metadata.TryGetValue(key, out var raw) || string.IsNullOrWhiteSpace(raw))
+        {
+            return false;
+        }
+
+        return raw.Trim().Equals("true", StringComparison.OrdinalIgnoreCase) ||
+               raw.Trim().Equals("1", StringComparison.OrdinalIgnoreCase) ||
+               raw.Trim().Equals("yes", StringComparison.OrdinalIgnoreCase);
+    }
+
+    private static string? ReadMetadataValue(IReadOnlyDictionary<string, string>? metadata, string key)
+    {
+        if (metadata is null || !metadata.TryGetValue(key, out var raw) || string.IsNullOrWhiteSpace(raw))
+        {
+            return null;
+        }
+
+        return raw.Trim();
+    }
     protected void ApplyDraftFromSnapshot(SelectedUnitSnapshot snapshot)
     {
         SelectedUnitHp = snapshot.Hp.ToString(DecimalPrecision3);
@@ -333,3 +410,5 @@ public abstract class MainViewModelLiveOpsBase : MainViewModelBindableMembersBas
         };
     }
 }
+
+

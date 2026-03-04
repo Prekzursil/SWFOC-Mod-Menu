@@ -454,6 +454,11 @@ public sealed class NamedPipeHelperBridgeBackendTests
     [InlineData("set_context_faction", HelperBridgeOperationKind.SetContextAllegiance)]
     [InlineData("toggle_roe_respawn_helper", HelperBridgeOperationKind.ToggleRoeRespawnHelper)]
     [InlineData("spawn_galactic_entity", HelperBridgeOperationKind.SpawnGalacticEntity)]
+    [InlineData("transfer_fleet_safe", HelperBridgeOperationKind.TransferFleetSafe)]
+    [InlineData("flip_planet_owner", HelperBridgeOperationKind.FlipPlanetOwner)]
+    [InlineData("switch_player_faction", HelperBridgeOperationKind.SwitchPlayerFaction)]
+    [InlineData("edit_hero_state", HelperBridgeOperationKind.EditHeroState)]
+    [InlineData("create_hero_variant", HelperBridgeOperationKind.CreateHeroVariant)]
     [InlineData("unknown_helper_action", HelperBridgeOperationKind.Unknown)]
     public void ResolveOperationKind_ShouldMapKnownAliases(string actionId, HelperBridgeOperationKind expected)
     {

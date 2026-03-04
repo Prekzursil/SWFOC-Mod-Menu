@@ -23,6 +23,22 @@ public enum PopulationCostPolicy
     ForceZeroTactical
 }
 
+public enum RosterEntityVisualState
+{
+    Unknown = 0,
+    Resolved,
+    Missing
+}
+
+public enum RosterEntityCompatibilityState
+{
+    Unknown = 0,
+    Native,
+    Compatible,
+    RequiresTransplant,
+    Blocked
+}
+
 public sealed record RosterEntityRecord(
     string EntityId,
     string DisplayName,
@@ -33,4 +49,8 @@ public sealed record RosterEntityRecord(
     IReadOnlyList<RuntimeMode> AllowedModes,
     string? VisualRef = null,
     IReadOnlyList<string>? DependencyRefs = null,
-    string? TransplantState = null);
+    string? TransplantState = null,
+    RosterEntityVisualState VisualState = RosterEntityVisualState.Unknown,
+    RosterEntityCompatibilityState CompatibilityState = RosterEntityCompatibilityState.Unknown,
+    IReadOnlyDictionary<string, string>? MechanicFlags = null,
+    string? TransplantReportId = null);

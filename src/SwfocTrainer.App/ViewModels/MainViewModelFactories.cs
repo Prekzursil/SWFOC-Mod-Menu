@@ -108,6 +108,7 @@ internal static class MainViewModelFactories
         ObservableCollection<ActionReliabilityViewItem> ActionReliability,
         ObservableCollection<SelectedUnitTransactionViewItem> SelectedUnitTransactions,
         ObservableCollection<SpawnPresetViewItem> SpawnPresets,
+        ObservableCollection<RosterEntityViewItem> EntityRoster,
         ObservableCollection<string> LiveOpsDiagnostics,
         ObservableCollection<string> ModCompatibilityRows,
         ObservableCollection<string> ActiveFreezes) CreateCollections()
@@ -126,6 +127,7 @@ internal static class MainViewModelFactories
             new ObservableCollection<ActionReliabilityViewItem>(),
             new ObservableCollection<SelectedUnitTransactionViewItem>(),
             new ObservableCollection<SpawnPresetViewItem>(),
+            new ObservableCollection<RosterEntityViewItem>(),
             new ObservableCollection<string>(),
             new ObservableCollection<string>(),
             new ObservableCollection<string>());
@@ -249,3 +251,4 @@ internal static class MainViewModelFactories
             new AsyncCommand(context.QuickUnfreezeAllAsync, context.IsAttached));
     }
 }
+

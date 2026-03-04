@@ -16,6 +16,11 @@ public sealed class NamedPipeHelperBridgeBackend : IHelperBridgeBackend
     private const string ActionToggleRoeRespawnHelper = "toggle_roe_respawn_helper";
     private const string ActionSetContextAllegiance = "set_context_allegiance";
     private const string ActionSetContextFaction = "set_context_faction";
+    private const string ActionTransferFleetSafe = "transfer_fleet_safe";
+    private const string ActionFlipPlanetOwner = "flip_planet_owner";
+    private const string ActionSwitchPlayerFaction = "switch_player_faction";
+    private const string ActionEditHeroState = "edit_hero_state";
+    private const string ActionCreateHeroVariant = "create_hero_variant";
 
     private const string DiagnosticHelperBridgeState = "helperBridgeState";
     private const string DiagnosticProbeReasonCode = "probeReasonCode";
@@ -39,6 +44,10 @@ public sealed class NamedPipeHelperBridgeBackend : IHelperBridgeBackend
     private const string PayloadHelperScript = "helperScript";
     private const string PayloadHelperArgContract = "helperArgContract";
     private const string PayloadHelperVerifyContract = "helperVerifyContract";
+    private const string PayloadOperationPolicy = "operationPolicy";
+    private const string PayloadTargetContext = "targetContext";
+    private const string PayloadMutationIntent = "mutationIntent";
+    private const string PayloadVerificationContractVersion = "verificationContractVersion";
 
     private const string InvocationSourceNativeBridge = "native_bridge";
 
@@ -51,7 +60,13 @@ public sealed class NamedPipeHelperBridgeBackend : IHelperBridgeBackend
         ActionPlacePlanetBuilding,
         ActionSetHeroStateHelper,
         ActionToggleRoeRespawnHelper,
-        ActionSetContextAllegiance
+        ActionSetContextAllegiance,
+        ActionSetContextFaction,
+        ActionTransferFleetSafe,
+        ActionFlipPlanetOwner,
+        ActionSwitchPlayerFaction,
+        ActionEditHeroState,
+        ActionCreateHeroVariant
     ];
 
     private readonly IExecutionBackend _backend;
@@ -108,7 +123,7 @@ public sealed class NamedPipeHelperBridgeBackend : IHelperBridgeBackend
             return CreateVerificationFailureResult(tokenFailureMessage, diagnostics, "failed_operation_token");
         }
 
-        if (!ValidateVerificationContract(request.Hook, diagnostics, out var verificationMessage))
+        if (!ValidateVerificationContract(request, diagnostics, out var verificationMessage))
         {
             return CreateVerificationFailureResult(verificationMessage, diagnostics, "failed_contract");
         }
@@ -198,6 +213,10 @@ public sealed class NamedPipeHelperBridgeBackend : IHelperBridgeBackend
         payload[PayloadOperationKind] ??= operation.OperationKind.ToString();
         payload[PayloadOperationToken] ??= operation.OperationToken;
         payload[PayloadHelperInvocationContractVersion] ??= request.InvocationContractVersion;
+        payload[PayloadOperationPolicy] ??= request.OperationPolicy ?? ResolveDefaultOperationPolicy(request.ActionRequest.Action.Id);
+        payload[PayloadTargetContext] ??= request.TargetContext ?? request.ActionRequest.RuntimeMode.ToString();
+        payload[PayloadMutationIntent] ??= request.MutationIntent ?? ResolveDefaultMutationIntent(request.ActionRequest.Action.Id);
+        payload[PayloadVerificationContractVersion] ??= request.VerificationContractVersion;
 
         ApplyActionSpecificDefaults(request.ActionRequest.Action.Id, payload);
         ApplyHookPayload(request, payload);
@@ -239,6 +258,10 @@ public sealed class NamedPipeHelperBridgeBackend : IHelperBridgeBackend
         context[DiagnosticHelperInvocationSource] = InvocationSourceNativeBridge;
         context[DiagnosticOperationKind] = operation.OperationKind.ToString();
         context[DiagnosticOperationToken] = operation.OperationToken;
+        context[PayloadOperationPolicy] = request.OperationPolicy ?? string.Empty;
+        context[PayloadTargetContext] = request.TargetContext ?? request.ActionRequest.RuntimeMode.ToString();
+        context[PayloadMutationIntent] = request.MutationIntent ?? string.Empty;
+        context[PayloadVerificationContractVersion] = request.VerificationContractVersion;
 
         return request.ActionRequest with
         {
@@ -319,7 +342,11 @@ public sealed class NamedPipeHelperBridgeBackend : IHelperBridgeBackend
             [DiagnosticHelperHookId] = request.Hook?.Id ?? string.Empty,
             [DiagnosticHelperVerifyState] = helperState,
             [DiagnosticOperationKind] = operation.OperationKind.ToString(),
-            [DiagnosticOperationToken] = operation.OperationToken
+            [DiagnosticOperationToken] = operation.OperationToken,
+            [PayloadOperationPolicy] = request.OperationPolicy ?? string.Empty,
+            [PayloadTargetContext] = request.TargetContext ?? request.ActionRequest.RuntimeMode.ToString(),
+            [PayloadMutationIntent] = request.MutationIntent ?? string.Empty,
+            [PayloadVerificationContractVersion] = request.VerificationContractVersion
         };
     }
 
@@ -403,6 +430,45 @@ public sealed class NamedPipeHelperBridgeBackend : IHelperBridgeBackend
         return true;
     }
 
+    private static string ResolveDefaultOperationPolicy(string actionId)
+    {
+        return actionId switch
+        {
+            var value when value.Equals(ActionSpawnContextEntity, StringComparison.OrdinalIgnoreCase) ||
+                       value.Equals(ActionSpawnTacticalEntity, StringComparison.OrdinalIgnoreCase) => "tactical_ephemeral_zero_pop",
+            var value when value.Equals(ActionSpawnGalacticEntity, StringComparison.OrdinalIgnoreCase) => "galactic_persistent_spawn",
+            var value when value.Equals(ActionPlacePlanetBuilding, StringComparison.OrdinalIgnoreCase) => "galactic_building_safe_rules",
+            var value when value.Equals(ActionTransferFleetSafe, StringComparison.OrdinalIgnoreCase) => "fleet_transfer_safe",
+            var value when value.Equals(ActionFlipPlanetOwner, StringComparison.OrdinalIgnoreCase) => "planet_flip_transactional",
+            var value when value.Equals(ActionSwitchPlayerFaction, StringComparison.OrdinalIgnoreCase) => "switch_player_faction",
+            var value when value.Equals(ActionEditHeroState, StringComparison.OrdinalIgnoreCase) => "hero_state_adaptive",
+            var value when value.Equals(ActionCreateHeroVariant, StringComparison.OrdinalIgnoreCase) => "hero_variant_patch_mod",
+            _ => "helper_operation_default"
+        };
+    }
+
+    private static string ResolveDefaultMutationIntent(string actionId)
+    {
+        return actionId switch
+        {
+            var value when value.Equals(ActionSpawnUnitHelper, StringComparison.OrdinalIgnoreCase) ||
+                       value.Equals(ActionSpawnContextEntity, StringComparison.OrdinalIgnoreCase) ||
+                       value.Equals(ActionSpawnTacticalEntity, StringComparison.OrdinalIgnoreCase) ||
+                       value.Equals(ActionSpawnGalacticEntity, StringComparison.OrdinalIgnoreCase) => "spawn_entity",
+            var value when value.Equals(ActionPlacePlanetBuilding, StringComparison.OrdinalIgnoreCase) => "place_building",
+            var value when value.Equals(ActionSetContextAllegiance, StringComparison.OrdinalIgnoreCase) ||
+                       value.Equals(ActionSetContextFaction, StringComparison.OrdinalIgnoreCase) => "set_context_allegiance",
+            var value when value.Equals(ActionSetHeroStateHelper, StringComparison.OrdinalIgnoreCase) ||
+                       value.Equals(ActionEditHeroState, StringComparison.OrdinalIgnoreCase) => "edit_hero_state",
+            var value when value.Equals(ActionToggleRoeRespawnHelper, StringComparison.OrdinalIgnoreCase) => "toggle_respawn_policy",
+            var value when value.Equals(ActionTransferFleetSafe, StringComparison.OrdinalIgnoreCase) => "transfer_fleet_safe",
+            var value when value.Equals(ActionFlipPlanetOwner, StringComparison.OrdinalIgnoreCase) => "flip_planet_owner",
+            var value when value.Equals(ActionSwitchPlayerFaction, StringComparison.OrdinalIgnoreCase) => "switch_player_faction",
+            var value when value.Equals(ActionCreateHeroVariant, StringComparison.OrdinalIgnoreCase) => "create_hero_variant",
+            _ => "unknown"
+        };
+    }
+
     private static HelperBridgeOperationKind ResolveOperationKind(string actionId)
     {
         return actionId switch
@@ -414,6 +480,11 @@ public sealed class NamedPipeHelperBridgeBackend : IHelperBridgeBackend
             var value when value.Equals(ActionPlacePlanetBuilding, StringComparison.OrdinalIgnoreCase) => HelperBridgeOperationKind.PlacePlanetBuilding,
             var value when value.Equals(ActionSetContextAllegiance, StringComparison.OrdinalIgnoreCase) ||
                        value.Equals(ActionSetContextFaction, StringComparison.OrdinalIgnoreCase) => HelperBridgeOperationKind.SetContextAllegiance,
+            var value when value.Equals(ActionTransferFleetSafe, StringComparison.OrdinalIgnoreCase) => HelperBridgeOperationKind.TransferFleetSafe,
+            var value when value.Equals(ActionFlipPlanetOwner, StringComparison.OrdinalIgnoreCase) => HelperBridgeOperationKind.FlipPlanetOwner,
+            var value when value.Equals(ActionSwitchPlayerFaction, StringComparison.OrdinalIgnoreCase) => HelperBridgeOperationKind.SwitchPlayerFaction,
+            var value when value.Equals(ActionEditHeroState, StringComparison.OrdinalIgnoreCase) => HelperBridgeOperationKind.EditHeroState,
+            var value when value.Equals(ActionCreateHeroVariant, StringComparison.OrdinalIgnoreCase) => HelperBridgeOperationKind.CreateHeroVariant,
             var value when value.Equals(ActionSetHeroStateHelper, StringComparison.OrdinalIgnoreCase) => HelperBridgeOperationKind.SetHeroStateHelper,
             var value when value.Equals(ActionToggleRoeRespawnHelper, StringComparison.OrdinalIgnoreCase) => HelperBridgeOperationKind.ToggleRoeRespawnHelper,
             _ => HelperBridgeOperationKind.Unknown
@@ -426,6 +497,7 @@ public sealed class NamedPipeHelperBridgeBackend : IHelperBridgeBackend
             actionId.Equals(ActionSpawnTacticalEntity, StringComparison.OrdinalIgnoreCase))
         {
             ApplySpawnDefaults(payload, populationPolicy: "ForceZeroTactical", persistencePolicy: "EphemeralBattleOnly");
+            payload["placementMode"] ??= "reinforcement_zone";
             return;
         }
 
@@ -440,6 +512,42 @@ public sealed class NamedPipeHelperBridgeBackend : IHelperBridgeBackend
             payload["placementMode"] ??= "safe_rules";
             payload["forceOverride"] ??= false;
             payload["allowCrossFaction"] ??= true;
+            return;
+        }
+
+        if (actionId.Equals(ActionTransferFleetSafe, StringComparison.OrdinalIgnoreCase))
+        {
+            payload["allowCrossFaction"] ??= true;
+            payload["placementMode"] ??= "safe_transfer";
+            payload["forceOverride"] ??= false;
+            return;
+        }
+
+        if (actionId.Equals(ActionFlipPlanetOwner, StringComparison.OrdinalIgnoreCase))
+        {
+            payload["allowCrossFaction"] ??= true;
+            payload["planetFlipMode"] ??= "convert_everything";
+            payload["forceOverride"] ??= false;
+            return;
+        }
+
+        if (actionId.Equals(ActionSwitchPlayerFaction, StringComparison.OrdinalIgnoreCase))
+        {
+            payload["allowCrossFaction"] ??= true;
+            return;
+        }
+
+        if (actionId.Equals(ActionEditHeroState, StringComparison.OrdinalIgnoreCase))
+        {
+            payload["heroStatePolicy"] ??= "mod_adaptive";
+            payload["allowCrossFaction"] ??= true;
+            return;
+        }
+
+        if (actionId.Equals(ActionCreateHeroVariant, StringComparison.OrdinalIgnoreCase))
+        {
+            payload["variantGenerationMode"] ??= "patch_mod_overlay";
+            payload["allowCrossFaction"] ??= true;
         }
     }
 
@@ -451,11 +559,11 @@ public sealed class NamedPipeHelperBridgeBackend : IHelperBridgeBackend
     }
 
     private static bool ValidateVerificationContract(
-        HelperHookSpec? hook,
+        HelperBridgeRequest request,
         IReadOnlyDictionary<string, object?> diagnostics,
         out string failureMessage)
     {
-        var verifyContract = hook?.VerifyContract;
+        var verifyContract = request.VerificationContract ?? request.Hook?.VerifyContract;
         if (verifyContract is null || verifyContract.Count == 0)
         {
             failureMessage = string.Empty;
@@ -522,6 +630,37 @@ public sealed class NamedPipeHelperBridgeBackend : IHelperBridgeBackend
         if (actionId.Equals(ActionPlacePlanetBuilding, StringComparison.OrdinalIgnoreCase))
         {
             return "SWFOC_Trainer_Place_Building";
+        }
+
+        if (actionId.Equals(ActionSetContextAllegiance, StringComparison.OrdinalIgnoreCase) ||
+            actionId.Equals(ActionSetContextFaction, StringComparison.OrdinalIgnoreCase))
+        {
+            return "SWFOC_Trainer_Set_Context_Allegiance";
+        }
+
+        if (actionId.Equals(ActionTransferFleetSafe, StringComparison.OrdinalIgnoreCase))
+        {
+            return "SWFOC_Trainer_Transfer_Fleet_Safe";
+        }
+
+        if (actionId.Equals(ActionFlipPlanetOwner, StringComparison.OrdinalIgnoreCase))
+        {
+            return "SWFOC_Trainer_Flip_Planet_Owner";
+        }
+
+        if (actionId.Equals(ActionSwitchPlayerFaction, StringComparison.OrdinalIgnoreCase))
+        {
+            return "SWFOC_Trainer_Switch_Player_Faction";
+        }
+
+        if (actionId.Equals(ActionEditHeroState, StringComparison.OrdinalIgnoreCase))
+        {
+            return "SWFOC_Trainer_Edit_Hero_State";
+        }
+
+        if (actionId.Equals(ActionCreateHeroVariant, StringComparison.OrdinalIgnoreCase))
+        {
+            return "SWFOC_Trainer_Create_Hero_Variant";
         }
 
         return string.IsNullOrWhiteSpace(hookEntryPoint) ? string.Empty : hookEntryPoint;

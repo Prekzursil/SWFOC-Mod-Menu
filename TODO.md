@@ -167,6 +167,33 @@ Reliability rule for runtime/mod tasks:
   evidence: bundle `TestResults/runs/LIVE-M4-RERUN-CHAIN16-20260303/repro-bundle.json` (`classification=blocked_environment`, persistent chain16 blocker)
   evidence: bundle `TestResults/runs/LIVE-M4-RERUN-CHAIN27-20260303/repro-bundle.json` (`classification=skipped`, transient chain27 blocker cleared on rerun)
 
+
+## M5 (Mega PR In Progress)
+
+- [x] Extend runtime/helper evidence bundle contract with M5 sections (`heroMechanicsSummary`, `operationPolicySummary`, `fleetTransferSafetySummary`, `planetFlipSummary`, `entityTransplantBlockers`).
+  evidence: code `tools/schemas/repro-bundle.schema.json`
+  evidence: code `tools/collect-mod-repro-bundle.ps1`
+  evidence: code `tools/validate-repro-bundle.ps1`
+  evidence: manual `2026-03-04` `pwsh -ExecutionPolicy Bypass -File ./tools/validate-repro-bundle.ps1 -BundlePath TestResults/runs/20260304-043659-chain28/repro-bundle.json -SchemaPath tools/schemas/repro-bundle.schema.json -Strict` => `validation passed`
+- [x] Enforce tactical/galactic helper policy defaults and fail-closed placement/build guards in runtime adapter helper path.
+  evidence: test `tests/SwfocTrainer.Tests/Runtime/RuntimeAdapterExecuteCoverageTests.cs`
+- [x] Emit hero mechanics summary diagnostics from mod-mechanic detection.
+  evidence: test `tests/SwfocTrainer.Tests/Runtime/ModMechanicDetectionServiceTests.cs`
+- [x] Complete full installed-chain deep live matrix run with strict bundle validation and chain16 missing-parent dependency block semantics.
+  evidence: bundle `TestResults/runs/20260304-043659/chain-matrix-summary.json`
+  evidence: bundle `TestResults/runs/20260304-043659/chain-matrix-summary.json` (row `chain16` => `classification=blocked_dependency_missing_parent`, `launchAttempted=false`, `missingParentIds=[2486018498]`)
+  evidence: bundle `TestResults/runs/20260304-043659-chain28/repro-bundle.json`
+  evidence: manual `2026-03-04` `pwsh -ExecutionPolicy Bypass -File ./tools/run-live-validation.ps1 -Configuration Release -NoBuild -Scope FULL -AutoLaunch -RunAllInstalledChainsDeep -EmitReproBundle $true -FailOnMissingArtifacts -Strict` => `hard-fail: 1 chain entry blocked_environment`
+- [x] Add app-side chain entity roster surface and hero mechanics status panel, plus payload defaults for M5 action families.
+  evidence: code `src/SwfocTrainer.App/MainWindow.xaml`
+  evidence: code `src/SwfocTrainer.App/ViewModels/MainViewModelLiveOpsBase.cs`
+  evidence: test `tests/SwfocTrainer.Tests/App/MainViewModelM5CoverageTests.cs`
+- [x] Deterministic non-live gate remains green after M5 app/runtime updates.
+  evidence: manual `2026-03-04` `dotnet test tests/SwfocTrainer.Tests/SwfocTrainer.Tests.csproj -c Release --no-build --filter "FullyQualifiedName!~SwfocTrainer.Tests.Profiles.Live&FullyQualifiedName!~RuntimeAttachSmokeTests"` => `Passed: 537`
+- [ ] M5 strict coverage closure to `100/100` for handwritten `src/**` scope remains open.
+  evidence: manual `2026-03-04` `pwsh -ExecutionPolicy Bypass -File ./tools/quality/assert-dotnet-coverage.ps1 -CoveragePath TestResults/coverage/cobertura.xml -MinLine 100 -MinBranch 100 -Scope src` => `failed (line=61.22, branch=51.69)`
+- [ ] M5 helper ingress still lacks proven in-process game mutation verification path for spawn/build/allegiance operations and remains fail-closed target for completion.
+  evidence: code `native/SwfocExtender.Plugins/src/HelperLuaPlugin.cpp`
 ## Later (M2 + M3 + M4)
 
 - [x] Extend save schema validation coverage and corpus round-trip checks.
@@ -205,3 +232,5 @@ Reliability rule for runtime/mod tasks:
   evidence: tool `tools/research/run-capability-intel.ps1`
   evidence: tool `tools/validate-binary-fingerprint.ps1`
   evidence: tool `tools/validate-signature-pack.ps1`
+
+

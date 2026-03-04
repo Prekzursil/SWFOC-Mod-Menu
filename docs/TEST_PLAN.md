@@ -292,3 +292,14 @@ pwsh ./tools/run-live-validation.ps1 -Configuration Release -NoBuild -Scope FULL
 This writes TRX + launch context outputs + repro bundle + prefilled issue templates to `TestResults/runs/<runId>/`.
 If Python is unavailable in the running shell, the run pack still emits `launch-context-fixture.json` with a machine-readable failure status.
 Include captured status diagnostics for promoted matrix evidence in issue reports (`actionStatusDiagnostics` summary + representative entries).
+
+## M5 Coverage + Matrix Status (2026-03-04)
+
+- Deterministic non-live gate:
+  - `dotnet test tests/SwfocTrainer.Tests/SwfocTrainer.Tests.csproj -c Release --no-build --filter "FullyQualifiedName!~SwfocTrainer.Tests.Profiles.Live&FullyQualifiedName!~RuntimeAttachSmokeTests"`
+  - expected current: pass (`537`).
+- Coverage hard gate (still open):
+  - `pwsh -ExecutionPolicy Bypass -File ./tools/quality/assert-dotnet-coverage.ps1 -CoveragePath TestResults/coverage/cobertura.xml -MinLine 100 -MinBranch 100 -Scope src`
+  - current measured: line `61.22`, branch `51.69`.
+- Repro bundle schema validation for matrix runs:
+  - `pwsh -ExecutionPolicy Bypass -File ./tools/validate-repro-bundle.ps1 -BundlePath TestResults/runs/<runId>/repro-bundle.json -SchemaPath tools/schemas/repro-bundle.schema.json -Strict`

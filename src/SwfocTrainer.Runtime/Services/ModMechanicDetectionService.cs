@@ -17,6 +17,11 @@ public sealed class ModMechanicDetectionService : IModMechanicDetectionService
     private const string ActionPlacePlanetBuilding = "place_planet_building";
     private const string ActionSetContextFaction = "set_context_faction";
     private const string ActionSetContextAllegiance = "set_context_allegiance";
+    private const string ActionTransferFleetSafe = "transfer_fleet_safe";
+    private const string ActionFlipPlanetOwner = "flip_planet_owner";
+    private const string ActionSwitchPlayerFaction = "switch_player_faction";
+    private const string ActionEditHeroState = "edit_hero_state";
+    private const string ActionCreateHeroVariant = "create_hero_variant";
 
     private readonly ITransplantCompatibilityService? _transplantCompatibilityService;
 
@@ -48,6 +53,7 @@ public sealed class ModMechanicDetectionService : IModMechanicDetectionService
         var transplantReport = await TryResolveTransplantReportAsync(profile, activeWorkshopIds, rosterEntities, cancellationToken);
 
         var diagnostics = BuildDiagnostics(
+            profile,
             session,
             catalog,
             disabledActions,
@@ -99,12 +105,15 @@ public sealed class ModMechanicDetectionService : IModMechanicDetectionService
     }
 
     private Dictionary<string, object?> BuildDiagnostics(
+        TrainerProfile profile,
         AttachSession session,
         IReadOnlyDictionary<string, IReadOnlyList<string>>? catalog,
         IReadOnlySet<string> disabledActions,
         IReadOnlyList<string> activeWorkshopIds,
         TransplantValidationReport? transplantReport)
     {
+        var heroMechanics = ResolveHeroMechanicsProfile(profile, session);
+
         var diagnostics = new Dictionary<string, object?>(StringComparer.OrdinalIgnoreCase)
         {
             ["dependencyValidation"] = ReadMetadataValue(session.Process.Metadata, "dependencyValidation") ?? string.Empty,
@@ -116,7 +125,8 @@ public sealed class ModMechanicDetectionService : IModMechanicDetectionService
             ["activeWorkshopIds"] = activeWorkshopIds,
             ["transplantAllResolved"] = transplantReport?.AllResolved ?? true,
             ["transplantBlockingEntityCount"] = transplantReport?.BlockingEntityCount ?? 0,
-            ["transplantEnabled"] = _transplantCompatibilityService is not null
+            ["transplantEnabled"] = _transplantCompatibilityService is not null,
+            ["heroMechanicsSummary"] = BuildHeroMechanicsSummary(heroMechanics)
         };
 
         if (transplantReport is not null)
@@ -286,6 +296,17 @@ public sealed class ModMechanicDetectionService : IModMechanicDetectionService
             return false;
         }
 
+        if (context.ActionId.Equals(ActionSwitchPlayerFaction, StringComparison.OrdinalIgnoreCase))
+        {
+            support = new ModMechanicSupport(
+                ActionId: context.ActionId,
+                Supported: true,
+                ReasonCode: RuntimeReasonCode.CAPABILITY_PROBE_PASS,
+                Message: "Switch-player-faction flow is helper-routed for this chain.",
+                Confidence: 0.80d);
+            return true;
+        }
+
         var hasTacticalOwner = TryGetHealthySymbol(context.Session, "selected_owner_faction");
         var hasPlanetOwner = TryGetHealthySymbol(context.Session, "planet_owner");
         if (!hasTacticalOwner && !hasPlanetOwner)
@@ -337,6 +358,124 @@ public sealed class ModMechanicDetectionService : IModMechanicDetectionService
     private static bool HasCatalogEntries(IReadOnlyDictionary<string, IReadOnlyList<string>>? catalog, string key)
     {
         return catalog is not null && catalog.TryGetValue(key, out var values) && values.Count > 0;
+    }
+
+    private static HeroMechanicsProfile ResolveHeroMechanicsProfile(TrainerProfile profile, AttachSession session)
+    {
+        var supportsRespawn = profile.Actions.ContainsKey("set_hero_respawn_timer") ||
+                              profile.Actions.ContainsKey("set_hero_state_helper") ||
+                              profile.Actions.ContainsKey("toggle_roe_respawn_helper") ||
+                              profile.Actions.ContainsKey("edit_hero_state");
+
+        var supportsRescue = ReadBoolMetadata(profile.Metadata, "supports_hero_rescue") ||
+                             profile.Id.Contains("aotr", StringComparison.OrdinalIgnoreCase);
+
+        var supportsPermadeath = ReadBoolMetadata(profile.Metadata, "supports_hero_permadeath") ||
+                                 profile.Id.Contains("roe", StringComparison.OrdinalIgnoreCase);
+
+        var defaultRespawnTime = ParseOptionalInt(
+            ReadMetadataValue(profile.Metadata, "defaultHeroRespawnTime") ??
+            ReadMetadataValue(profile.Metadata, "default_hero_respawn_time"));
+
+        var respawnExceptionSources = ParseListMetadata(
+            ReadMetadataValue(profile.Metadata, "respawnExceptionSources") ??
+            ReadMetadataValue(profile.Metadata, "respawn_exception_sources"));
+
+        if (supportsRespawn && TryGetHealthySymbol(session, "hero_respawn_timer") && defaultRespawnTime is null)
+        {
+            defaultRespawnTime = 1;
+        }
+
+        var duplicateHeroPolicy = ReadMetadataValue(profile.Metadata, "duplicateHeroPolicy") ??
+                                  ReadMetadataValue(profile.Metadata, "duplicate_hero_policy") ??
+                                  InferDuplicateHeroPolicy(profile.Id, supportsPermadeath, supportsRescue);
+
+        return new HeroMechanicsProfile(
+            SupportsRespawn: supportsRespawn,
+            SupportsPermadeath: supportsPermadeath,
+            SupportsRescue: supportsRescue,
+            DefaultRespawnTime: defaultRespawnTime,
+            RespawnExceptionSources: respawnExceptionSources,
+            DuplicateHeroPolicy: duplicateHeroPolicy,
+            Diagnostics: new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
+            {
+                ["profileId"] = profile.Id,
+                ["runtimeMode"] = session.Process.Mode.ToString()
+            });
+    }
+
+    private static IReadOnlyDictionary<string, object?> BuildHeroMechanicsSummary(HeroMechanicsProfile profile)
+    {
+        return new Dictionary<string, object?>(StringComparer.OrdinalIgnoreCase)
+        {
+            ["supportsRespawn"] = profile.SupportsRespawn,
+            ["supportsPermadeath"] = profile.SupportsPermadeath,
+            ["supportsRescue"] = profile.SupportsRescue,
+            ["defaultRespawnTime"] = profile.DefaultRespawnTime,
+            ["respawnExceptionSources"] = profile.RespawnExceptionSources,
+            ["duplicateHeroPolicy"] = profile.DuplicateHeroPolicy
+        };
+    }
+
+    private static string InferDuplicateHeroPolicy(string profileId, bool supportsPermadeath, bool supportsRescue)
+    {
+        if (supportsRescue)
+        {
+            return "rescue_or_respawn";
+        }
+
+        if (supportsPermadeath)
+        {
+            return "mod_defined_permadeath";
+        }
+
+        if (profileId.Contains("base", StringComparison.OrdinalIgnoreCase))
+        {
+            return "canonical_singleton";
+        }
+
+        return "mod_defined";
+    }
+
+    private static bool ReadBoolMetadata(IReadOnlyDictionary<string, string>? metadata, string key)
+    {
+        if (!TryReadMetadataValue(metadata, key, out var value))
+        {
+            return false;
+        }
+
+        if (bool.TryParse(value, out var parsed))
+        {
+            return parsed;
+        }
+
+        return string.Equals(value, "1", StringComparison.OrdinalIgnoreCase) ||
+               string.Equals(value, "yes", StringComparison.OrdinalIgnoreCase);
+    }
+
+    private static int? ParseOptionalInt(string? value)
+    {
+        if (string.IsNullOrWhiteSpace(value))
+        {
+            return null;
+        }
+
+        return int.TryParse(value, out var parsed) ? parsed : null;
+    }
+
+    private static IReadOnlyList<string> ParseListMetadata(string? raw)
+    {
+        if (string.IsNullOrWhiteSpace(raw))
+        {
+            return Array.Empty<string>();
+        }
+
+        return raw
+            .Split(',', StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries)
+            .Where(static value => !string.IsNullOrWhiteSpace(value))
+            .Distinct(StringComparer.OrdinalIgnoreCase)
+            .OrderBy(static value => value, StringComparer.OrdinalIgnoreCase)
+            .ToArray();
     }
 
     private static IReadOnlyList<string> ParseActiveWorkshopIds(ProcessMetadata process)
@@ -489,12 +628,21 @@ public sealed class ModMechanicDetectionService : IModMechanicDetectionService
 
     private static string? ReadMetadataValue(IReadOnlyDictionary<string, string>? metadata, string key)
     {
-        if (metadata is null || !metadata.TryGetValue(key, out var value) || string.IsNullOrWhiteSpace(value))
+        return TryReadMetadataValue(metadata, key, out var value)
+            ? value
+            : null;
+    }
+
+    private static bool TryReadMetadataValue(IReadOnlyDictionary<string, string>? metadata, string key, out string value)
+    {
+        value = string.Empty;
+        if (metadata is null || !metadata.TryGetValue(key, out var raw) || string.IsNullOrWhiteSpace(raw))
         {
-            return null;
+            return false;
         }
 
-        return value.Trim();
+        value = raw.Trim();
+        return true;
     }
 
     private static bool RequiresSpawnRoster(string actionId)
@@ -502,18 +650,23 @@ public sealed class ModMechanicDetectionService : IModMechanicDetectionService
         return actionId.Equals(ActionSpawnUnitHelper, StringComparison.OrdinalIgnoreCase) ||
                actionId.Equals(ActionSpawnContextEntity, StringComparison.OrdinalIgnoreCase) ||
                actionId.Equals(ActionSpawnTacticalEntity, StringComparison.OrdinalIgnoreCase) ||
-               actionId.Equals(ActionSpawnGalacticEntity, StringComparison.OrdinalIgnoreCase);
+               actionId.Equals(ActionSpawnGalacticEntity, StringComparison.OrdinalIgnoreCase) ||
+               actionId.Equals(ActionTransferFleetSafe, StringComparison.OrdinalIgnoreCase) ||
+               actionId.Equals(ActionEditHeroState, StringComparison.OrdinalIgnoreCase) ||
+               actionId.Equals(ActionCreateHeroVariant, StringComparison.OrdinalIgnoreCase);
     }
 
     private static bool RequiresBuildingRoster(string actionId)
     {
-        return actionId.Equals(ActionPlacePlanetBuilding, StringComparison.OrdinalIgnoreCase);
+        return actionId.Equals(ActionPlacePlanetBuilding, StringComparison.OrdinalIgnoreCase) ||
+               actionId.Equals(ActionFlipPlanetOwner, StringComparison.OrdinalIgnoreCase);
     }
 
     private static bool IsContextFactionAction(string actionId)
     {
         return actionId.Equals(ActionSetContextFaction, StringComparison.OrdinalIgnoreCase) ||
-               actionId.Equals(ActionSetContextAllegiance, StringComparison.OrdinalIgnoreCase);
+               actionId.Equals(ActionSetContextAllegiance, StringComparison.OrdinalIgnoreCase) ||
+               actionId.Equals(ActionSwitchPlayerFaction, StringComparison.OrdinalIgnoreCase);
     }
 
     private static bool IsEntityOperationAction(string actionId)

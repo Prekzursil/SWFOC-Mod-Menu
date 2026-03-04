@@ -25,6 +25,7 @@ public sealed class MainViewModelFactoriesCoverageTests
         collections.ActionReliability.Should().BeEmpty();
         collections.SelectedUnitTransactions.Should().BeEmpty();
         collections.SpawnPresets.Should().BeEmpty();
+        collections.EntityRoster.Should().BeEmpty();
         collections.LiveOpsDiagnostics.Should().BeEmpty();
         collections.ModCompatibilityRows.Should().BeEmpty();
         collections.ActiveFreezes.Should().BeEmpty();
@@ -138,3 +139,4 @@ public sealed class MainViewModelFactoriesCoverageTests
         public string ExportedLaunchWorkshopId => _launchWorkshopId;
     }
 }
+

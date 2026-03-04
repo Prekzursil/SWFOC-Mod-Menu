@@ -57,7 +57,7 @@ using swfoc::extender::bridge::host_json::TryReadInt;
 constexpr const char* kBackendName = "extender";
 constexpr const char* kDefaultPipeName = "SwfocExtenderBridge";
 
-constexpr std::array<const char*, 14> kSupportedFeatures {
+constexpr std::array<const char*, 20> kSupportedFeatures {
     "freeze_timer",
     "toggle_fog_reveal",
     "toggle_ai",
@@ -70,8 +70,14 @@ constexpr std::array<const char*, 14> kSupportedFeatures {
     "spawn_galactic_entity",
     "place_planet_building",
     "set_context_allegiance",
+    "set_context_faction",
     "set_hero_state_helper",
-    "toggle_roe_respawn_helper"};
+    "toggle_roe_respawn_helper",
+    "transfer_fleet_safe",
+    "flip_planet_owner",
+    "switch_player_faction",
+    "edit_hero_state",
+    "create_hero_variant"};
 
 /*
 Cppcheck note (targeted): if cppcheck runs without STL/Windows SDK include paths,
@@ -131,6 +137,10 @@ PluginRequest BuildPluginRequest(const BridgeCommand& command) {
     request.operationKind = ExtractStringValue(command.payloadJson, "operationKind");
     request.operationToken = ExtractStringValue(command.payloadJson, "operationToken");
     request.invocationContractVersion = ExtractStringValue(command.payloadJson, "helperInvocationContractVersion");
+    request.verificationContractVersion = ExtractStringValue(command.payloadJson, "verificationContractVersion");
+    request.operationPolicy = ExtractStringValue(command.payloadJson, "operationPolicy");
+    request.targetContext = ExtractStringValue(command.payloadJson, "targetContext");
+    request.mutationIntent = ExtractStringValue(command.payloadJson, "mutationIntent");
     request.unitId = ExtractStringValue(command.payloadJson, "unitId");
     request.entityId = ExtractStringValue(command.payloadJson, "entityId");
     request.entryMarker = ExtractStringValue(command.payloadJson, "entryMarker");
@@ -323,8 +333,14 @@ CapabilitySnapshot BuildCapabilityProbeSnapshot(const PluginRequest& probeContex
     AddHelperProbeFeature(snapshot, probeContext, "spawn_galactic_entity");
     AddHelperProbeFeature(snapshot, probeContext, "place_planet_building");
     AddHelperProbeFeature(snapshot, probeContext, "set_context_allegiance");
+    AddHelperProbeFeature(snapshot, probeContext, "set_context_faction");
     AddHelperProbeFeature(snapshot, probeContext, "set_hero_state_helper");
     AddHelperProbeFeature(snapshot, probeContext, "toggle_roe_respawn_helper");
+    AddHelperProbeFeature(snapshot, probeContext, "transfer_fleet_safe");
+    AddHelperProbeFeature(snapshot, probeContext, "flip_planet_owner");
+    AddHelperProbeFeature(snapshot, probeContext, "switch_player_faction");
+    AddHelperProbeFeature(snapshot, probeContext, "edit_hero_state");
+    AddHelperProbeFeature(snapshot, probeContext, "create_hero_variant");
 
     EnsureCapabilityEntries(snapshot);
     return snapshot;
@@ -506,8 +522,14 @@ BridgeResult HandleBridgeCommand(
         command.featureId == "spawn_galactic_entity" ||
         command.featureId == "place_planet_building" ||
         command.featureId == "set_context_allegiance" ||
+        command.featureId == "set_context_faction" ||
         command.featureId == "set_hero_state_helper" ||
-        command.featureId == "toggle_roe_respawn_helper") {
+        command.featureId == "toggle_roe_respawn_helper" ||
+        command.featureId == "transfer_fleet_safe" ||
+        command.featureId == "flip_planet_owner" ||
+        command.featureId == "switch_player_faction" ||
+        command.featureId == "edit_hero_state" ||
+        command.featureId == "create_hero_variant") {
         return BuildHelperResult(command, helperLuaPlugin);
     }
 

@@ -73,6 +73,15 @@ internal static class MainViewModelDefaults
         new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
         {
             ["spawn_unit_helper"] = "spawn_bridge",
+            ["spawn_context_entity"] = "spawn_bridge",
+            ["spawn_tactical_entity"] = "spawn_bridge",
+            ["spawn_galactic_entity"] = "spawn_bridge",
+            ["place_planet_building"] = "spawn_bridge",
+            ["transfer_fleet_safe"] = "spawn_bridge",
+            ["flip_planet_owner"] = "spawn_bridge",
+            ["switch_player_faction"] = "spawn_bridge",
+            ["edit_hero_state"] = "spawn_bridge",
+            ["create_hero_variant"] = "spawn_bridge",
             ["set_hero_state_helper"] = "aotr_hero_state_bridge",
             ["toggle_roe_respawn_helper"] = "roe_respawn_bridge",
         };

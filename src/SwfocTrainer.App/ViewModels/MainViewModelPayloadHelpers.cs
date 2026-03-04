@@ -43,6 +43,52 @@ internal static class MainViewModelPayloadHelpers
         {
             payload[MainViewModelDefaults.PayloadKeyIntValue] = MainViewModelDefaults.DefaultCreditsValue;
         }
+
+        if (actionId.Equals("spawn_tactical_entity", StringComparison.OrdinalIgnoreCase))
+        {
+            payload["populationPolicy"] ??= "ForceZeroTactical";
+            payload["persistencePolicy"] ??= "EphemeralBattleOnly";
+            payload["placementMode"] ??= "reinforcement_zone";
+            payload["allowCrossFaction"] ??= true;
+        }
+        else if (actionId.Equals("spawn_galactic_entity", StringComparison.OrdinalIgnoreCase))
+        {
+            payload["populationPolicy"] ??= "Normal";
+            payload["persistencePolicy"] ??= "PersistentGalactic";
+            payload["allowCrossFaction"] ??= true;
+        }
+        else if (actionId.Equals("place_planet_building", StringComparison.OrdinalIgnoreCase))
+        {
+            payload["placementMode"] ??= "safe_rules";
+            payload["allowCrossFaction"] ??= true;
+            payload["forceOverride"] ??= false;
+        }
+        else if (actionId.Equals("transfer_fleet_safe", StringComparison.OrdinalIgnoreCase))
+        {
+            payload["placementMode"] ??= "safe_transfer";
+            payload["allowCrossFaction"] ??= true;
+            payload["forceOverride"] ??= false;
+        }
+        else if (actionId.Equals("flip_planet_owner", StringComparison.OrdinalIgnoreCase))
+        {
+            payload["planetFlipMode"] ??= "convert_everything";
+            payload["allowCrossFaction"] ??= true;
+            payload["forceOverride"] ??= false;
+        }
+        else if (actionId.Equals("switch_player_faction", StringComparison.OrdinalIgnoreCase))
+        {
+            payload["allowCrossFaction"] ??= true;
+        }
+        else if (actionId.Equals("edit_hero_state", StringComparison.OrdinalIgnoreCase))
+        {
+            payload["desiredState"] ??= "alive";
+            payload["allowDuplicate"] ??= false;
+        }
+        else if (actionId.Equals("create_hero_variant", StringComparison.OrdinalIgnoreCase))
+        {
+            payload["variantGenerationMode"] ??= "patch_mod_overlay";
+            payload["allowCrossFaction"] ??= true;
+        }
     }
 
     internal static JsonObject BuildCreditsPayload(int value, bool lockCredits)
@@ -81,6 +127,15 @@ internal static class MainViewModelPayloadHelpers
             "entryMarker" => JsonValue.Create(string.Empty),
             "faction" => JsonValue.Create(string.Empty),
             "globalKey" => JsonValue.Create(string.Empty),
+            "desiredState" => JsonValue.Create("alive"),
+            "populationPolicy" => JsonValue.Create("Normal"),
+            "persistencePolicy" => JsonValue.Create("PersistentGalactic"),
+            "placementMode" => JsonValue.Create(string.Empty),
+            "allowCrossFaction" => JsonValue.Create(true),
+            "allowDuplicate" => JsonValue.Create(false),
+            "forceOverride" => JsonValue.Create(false),
+            "planetFlipMode" => JsonValue.Create("convert_everything"),
+            "variantGenerationMode" => JsonValue.Create("patch_mod_overlay"),
             "nodePath" => JsonValue.Create(string.Empty),
             "value" => JsonValue.Create(string.Empty),
             _ => JsonValue.Create(string.Empty)

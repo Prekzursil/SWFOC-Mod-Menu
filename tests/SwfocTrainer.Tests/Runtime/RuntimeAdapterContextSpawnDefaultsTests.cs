@@ -147,6 +147,11 @@ public sealed class RuntimeAdapterContextSpawnDefaultsTests
     [InlineData("spawn_tactical_entity", "spawn_bridge")]
     [InlineData("spawn_galactic_entity", "spawn_bridge")]
     [InlineData("place_planet_building", "spawn_bridge")]
+    [InlineData("transfer_fleet_safe", "spawn_bridge")]
+    [InlineData("flip_planet_owner", "spawn_bridge")]
+    [InlineData("switch_player_faction", "spawn_bridge")]
+    [InlineData("edit_hero_state", "spawn_bridge")]
+    [InlineData("create_hero_variant", "spawn_bridge")]
     [InlineData("toggle_ai", "toggle_ai")]
     public void ResolveHelperHookId_ShouldUseExpectedDefaults(string actionId, string expectedHook)
     {
@@ -165,6 +170,11 @@ public sealed class RuntimeAdapterContextSpawnDefaultsTests
     [InlineData("place_planet_building", HelperBridgeOperationKind.PlacePlanetBuilding)]
     [InlineData("set_context_faction", HelperBridgeOperationKind.SetContextAllegiance)]
     [InlineData("set_context_allegiance", HelperBridgeOperationKind.SetContextAllegiance)]
+    [InlineData("transfer_fleet_safe", HelperBridgeOperationKind.TransferFleetSafe)]
+    [InlineData("flip_planet_owner", HelperBridgeOperationKind.FlipPlanetOwner)]
+    [InlineData("switch_player_faction", HelperBridgeOperationKind.SwitchPlayerFaction)]
+    [InlineData("edit_hero_state", HelperBridgeOperationKind.EditHeroState)]
+    [InlineData("create_hero_variant", HelperBridgeOperationKind.CreateHeroVariant)]
     [InlineData("set_hero_state_helper", HelperBridgeOperationKind.SetHeroStateHelper)]
     [InlineData("toggle_roe_respawn_helper", HelperBridgeOperationKind.ToggleRoeRespawnHelper)]
     [InlineData("unknown_action", HelperBridgeOperationKind.Unknown)]
