@@ -65,6 +65,9 @@ public sealed class ModMechanicDetectionService : IModMechanicDetectionService
         IReadOnlyDictionary<string, IReadOnlyList<string>>? catalog,
         CancellationToken cancellationToken)
     {
+        ArgumentNullException.ThrowIfNull(profile);
+        ArgumentNullException.ThrowIfNull(session);
+
         cancellationToken.ThrowIfCancellationRequested();
 
         var disabledActions = ParseCsvSet(session.Process.Metadata, "dependencyDisabledActions");
@@ -137,6 +140,9 @@ public sealed class ModMechanicDetectionService : IModMechanicDetectionService
         IReadOnlyList<string> activeWorkshopIds,
         TransplantValidationReport? transplantReport)
     {
+        ArgumentNullException.ThrowIfNull(profile);
+        ArgumentNullException.ThrowIfNull(session);
+
         var heroMechanics = ResolveHeroMechanicsProfile(profile, session);
 
         var diagnostics = new Dictionary<string, object?>(StringComparer.OrdinalIgnoreCase)
@@ -326,6 +332,17 @@ public sealed class ModMechanicDetectionService : IModMechanicDetectionService
 
     private static bool TryEvaluateContextFactionGate(ActionEvaluationContext context, out ModMechanicSupport support)
     {
+        if (context.Session is null)
+        {
+            support = new ModMechanicSupport(
+                ActionId: context.ActionId,
+                Supported: false,
+                ReasonCode: RuntimeReasonCode.CAPABILITY_REQUIRED_MISSING,
+                Message: "Attach session is unavailable for context faction routing.",
+                Confidence: 0.99d);
+            return true;
+        }
+
         if (!IsContextFactionAction(context.ActionId))
         {
             support = default!;
@@ -367,6 +384,17 @@ public sealed class ModMechanicDetectionService : IModMechanicDetectionService
 
     private static bool TryEvaluateSymbolGate(ActionEvaluationContext context, out ModMechanicSupport support)
     {
+        if (context.Session is null || context.Session.Symbols is null)
+        {
+            support = new ModMechanicSupport(
+                ActionId: context.ActionId,
+                Supported: false,
+                ReasonCode: RuntimeReasonCode.CAPABILITY_REQUIRED_MISSING,
+                Message: "Session symbols are unavailable for symbol gate evaluation.",
+                Confidence: 0.99d);
+            return true;
+        }
+
         if (!ActionSymbolRegistry.TryGetSymbol(context.ActionId, out var symbol) ||
             string.IsNullOrWhiteSpace(symbol))
         {
@@ -399,12 +427,18 @@ public sealed class ModMechanicDetectionService : IModMechanicDetectionService
 
     private static HeroMechanicsProfile ResolveHeroMechanicsProfile(TrainerProfile profile, AttachSession session)
     {
+        ArgumentNullException.ThrowIfNull(profile);
+        ArgumentNullException.ThrowIfNull(session);
+
         var supportsRespawn = SupportsHeroRespawn(profile);
         var supportsRescue = SupportsHeroRescue(profile);
         var supportsPermadeath = SupportsHeroPermadeath(profile);
         var defaultRespawnTime = ResolveDefaultRespawnTime(profile, session, supportsRespawn);
         var respawnExceptionSources = ResolveRespawnExceptionSources(profile);
         var duplicateHeroPolicy = ResolveDuplicateHeroPolicy(profile, supportsPermadeath, supportsRescue);
+
+        var profileId = profile.Id ?? string.Empty;
+        var runtimeMode = session.Process.Mode.ToString();
 
         return new HeroMechanicsProfile(
             SupportsRespawn: supportsRespawn,
@@ -415,8 +449,8 @@ public sealed class ModMechanicDetectionService : IModMechanicDetectionService
             DuplicateHeroPolicy: duplicateHeroPolicy,
             Diagnostics: new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
             {
-                ["profileId"] = profile.Id,
-                ["runtimeMode"] = session.Process.Mode.ToString()
+                ["profileId"] = profileId,
+                ["runtimeMode"] = runtimeMode
             });
     }
 

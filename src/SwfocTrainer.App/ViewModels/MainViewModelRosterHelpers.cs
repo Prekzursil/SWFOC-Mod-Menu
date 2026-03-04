@@ -16,6 +16,8 @@ internal static class MainViewModelRosterHelpers
         string selectedProfileId,
         string? selectedWorkshopId)
     {
+        ArgumentNullException.ThrowIfNull(selectedProfileId);
+
         if (catalog is null)
         {
             return Array.Empty<RosterEntityViewItem>();
@@ -60,7 +62,8 @@ internal static class MainViewModelRosterHelpers
         }
 
         var kind = ResolveSegmentOrDefault(segments, 0, DefaultKind);
-        var sourceProfileId = ResolveSegmentOrDefault(segments, 2, selectedProfileId);
+        var normalizedProfileId = selectedProfileId ?? string.Empty;
+        var sourceProfileId = ResolveSegmentOrDefault(segments, 2, normalizedProfileId);
         var sourceWorkshopId = ResolveSegmentOrDefault(segments, 3, selectedWorkshopId ?? string.Empty);
         var visualRef = ResolveSegmentOrDefault(segments, 4, string.Empty);
         var dependencySummary = ResolveSegmentOrDefault(segments, 5, string.Empty);
@@ -97,7 +100,7 @@ internal static class MainViewModelRosterHelpers
             return false;
         }
 
-        var segment = segments[1];
+        var segment = segments[1] ?? string.Empty;
         if (string.IsNullOrWhiteSpace(segment))
         {
             return false;
@@ -114,7 +117,7 @@ internal static class MainViewModelRosterHelpers
             return fallback;
         }
 
-        var segment = segments[index];
+        var segment = segments[index] ?? string.Empty;
         if (string.IsNullOrWhiteSpace(segment))
         {
             return fallback;
@@ -125,6 +128,7 @@ internal static class MainViewModelRosterHelpers
 
     private static RosterEntityCompatibilityState ResolveCompatibilityState(string sourceWorkshopId, string? selectedWorkshopId)
     {
+        sourceWorkshopId ??= string.Empty;
         if (string.IsNullOrWhiteSpace(sourceWorkshopId))
         {
             return RosterEntityCompatibilityState.Native;

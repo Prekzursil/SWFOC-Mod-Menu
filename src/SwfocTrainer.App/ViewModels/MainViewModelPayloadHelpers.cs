@@ -30,6 +30,7 @@ internal static class MainViewModelPayloadHelpers
         IReadOnlyDictionary<string, string> defaultSymbolByActionId,
         IReadOnlyDictionary<string, string> defaultHelperHookByActionId)
     {
+        ArgumentNullException.ThrowIfNull(actionId);
         ArgumentNullException.ThrowIfNull(required);
         ArgumentNullException.ThrowIfNull(defaultSymbolByActionId);
         ArgumentNullException.ThrowIfNull(defaultHelperHookByActionId);
@@ -56,6 +57,7 @@ internal static class MainViewModelPayloadHelpers
 
     internal static void ApplyActionSpecificPayloadDefaults(string actionId, JsonObject payload)
     {
+        ArgumentNullException.ThrowIfNull(actionId);
         ArgumentNullException.ThrowIfNull(payload);
 
         if (actionId.Equals(MainViewModelDefaults.ActionSetCredits, StringComparison.OrdinalIgnoreCase))
@@ -91,6 +93,11 @@ internal static class MainViewModelPayloadHelpers
         IReadOnlyDictionary<string, string> defaultSymbolByActionId,
         IReadOnlyDictionary<string, string> defaultHelperHookByActionId)
     {
+        ArgumentNullException.ThrowIfNull(actionId);
+        ArgumentNullException.ThrowIfNull(key);
+        ArgumentNullException.ThrowIfNull(defaultSymbolByActionId);
+        ArgumentNullException.ThrowIfNull(defaultHelperHookByActionId);
+
         return key switch
         {
             MainViewModelDefaults.PayloadKeySymbol => JsonValue.Create(defaultSymbolByActionId.TryGetValue(actionId, out var sym) ? sym : string.Empty),
@@ -128,17 +135,20 @@ internal static class MainViewModelPayloadHelpers
 
     private static void ApplySpawnTacticalDefaults(JsonObject payload)
     {
+        ArgumentNullException.ThrowIfNull(payload);
         ApplySpawnDefaults(payload, "ForceZeroTactical", "EphemeralBattleOnly");
         payload[PayloadPlacementModeKey] ??= "reinforcement_zone";
     }
 
     private static void ApplySpawnGalacticDefaults(JsonObject payload)
     {
+        ArgumentNullException.ThrowIfNull(payload);
         ApplySpawnDefaults(payload, "Normal", "PersistentGalactic");
     }
 
     private static void ApplyPlanetBuildingDefaults(JsonObject payload)
     {
+        ArgumentNullException.ThrowIfNull(payload);
         payload[PayloadPlacementModeKey] ??= "safe_rules";
         payload[PayloadAllowCrossFactionKey] ??= true;
         payload[PayloadForceOverrideKey] ??= false;
@@ -146,6 +156,7 @@ internal static class MainViewModelPayloadHelpers
 
     private static void ApplyTransferFleetDefaults(JsonObject payload)
     {
+        ArgumentNullException.ThrowIfNull(payload);
         payload[PayloadPlacementModeKey] ??= "safe_transfer";
         payload[PayloadAllowCrossFactionKey] ??= true;
         payload[PayloadForceOverrideKey] ??= false;
@@ -153,6 +164,7 @@ internal static class MainViewModelPayloadHelpers
 
     private static void ApplyPlanetFlipDefaults(JsonObject payload)
     {
+        ArgumentNullException.ThrowIfNull(payload);
         payload["planetFlipMode"] ??= "convert_everything";
         payload[PayloadAllowCrossFactionKey] ??= true;
         payload[PayloadForceOverrideKey] ??= false;
@@ -160,17 +172,20 @@ internal static class MainViewModelPayloadHelpers
 
     private static void ApplySwitchPlayerFactionDefaults(JsonObject payload)
     {
+        ArgumentNullException.ThrowIfNull(payload);
         payload[PayloadAllowCrossFactionKey] ??= true;
     }
 
     private static void ApplyEditHeroStateDefaults(JsonObject payload)
     {
+        ArgumentNullException.ThrowIfNull(payload);
         payload["desiredState"] ??= "alive";
         payload["allowDuplicate"] ??= false;
     }
 
     private static void ApplyCreateHeroVariantDefaults(JsonObject payload)
     {
+        ArgumentNullException.ThrowIfNull(payload);
         payload["variantGenerationMode"] ??= "patch_mod_overlay";
         payload[PayloadAllowCrossFactionKey] ??= true;
     }

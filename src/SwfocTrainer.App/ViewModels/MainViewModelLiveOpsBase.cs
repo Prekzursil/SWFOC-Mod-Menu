@@ -263,6 +263,17 @@ public abstract class MainViewModelLiveOpsBase : MainViewModelBindableMembersBas
 
     private async Task RefreshRosterAndHeroSurfaceAsync(string profileId)
     {
+        if (_profiles is null || _catalog is null)
+        {
+            EntityRoster.Clear();
+            HeroSupportsRespawn = "false";
+            HeroSupportsPermadeath = "false";
+            HeroSupportsRescue = "false";
+            HeroDefaultRespawnTime = UnknownValue;
+            HeroDuplicatePolicy = UnknownValue;
+            return;
+        }
+
         var profile = await _profiles.ResolveInheritedProfileAsync(profileId);
         if (profile is null)
         {
@@ -308,7 +319,7 @@ public abstract class MainViewModelLiveOpsBase : MainViewModelBindableMembersBas
     {
         ArgumentNullException.ThrowIfNull(profile);
 
-        var metadata = profile.Metadata;
+        var metadata = profile.Metadata ?? new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
         var supportsRespawn = SupportsHeroRespawn(profile);
         var supportsPermadeath = TryReadBoolMetadata(metadata, "supports_hero_permadeath");
         var supportsRescue = TryReadBoolMetadata(metadata, "supports_hero_rescue");
@@ -324,6 +335,7 @@ public abstract class MainViewModelLiveOpsBase : MainViewModelBindableMembersBas
 
     private static bool SupportsHeroRespawn(TrainerProfile profile)
     {
+        ArgumentNullException.ThrowIfNull(profile);
         var actions = profile.Actions;
         if (actions is null)
         {
@@ -350,24 +362,31 @@ public abstract class MainViewModelLiveOpsBase : MainViewModelBindableMembersBas
     }
     private static bool TryReadBoolMetadata(IReadOnlyDictionary<string, string>? metadata, string key)
     {
-        if (metadata is null || !metadata.TryGetValue(key, out var raw) || string.IsNullOrWhiteSpace(raw))
+        if (metadata is null || !metadata.TryGetValue(key, out var raw))
         {
             return false;
         }
 
-        return raw.Trim().Equals("true", StringComparison.OrdinalIgnoreCase) ||
-               raw.Trim().Equals("1", StringComparison.OrdinalIgnoreCase) ||
-               raw.Trim().Equals("yes", StringComparison.OrdinalIgnoreCase);
+        var normalized = raw?.Trim();
+        if (string.IsNullOrWhiteSpace(normalized))
+        {
+            return false;
+        }
+
+        return normalized.Equals("true", StringComparison.OrdinalIgnoreCase) ||
+               normalized.Equals("1", StringComparison.OrdinalIgnoreCase) ||
+               normalized.Equals("yes", StringComparison.OrdinalIgnoreCase);
     }
 
     private static string? ReadMetadataValue(IReadOnlyDictionary<string, string>? metadata, string key)
     {
-        if (metadata is null || !metadata.TryGetValue(key, out var raw) || string.IsNullOrWhiteSpace(raw))
+        if (metadata is null || !metadata.TryGetValue(key, out var raw))
         {
             return null;
         }
 
-        return raw.Trim();
+        var normalized = raw?.Trim();
+        return string.IsNullOrWhiteSpace(normalized) ? null : normalized;
     }
     protected void ApplyDraftFromSnapshot(SelectedUnitSnapshot snapshot)
     {
