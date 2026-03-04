@@ -99,7 +99,7 @@ public sealed class LowCoverageReflectionMatrixTests
                 continue;
             }
 
-            for (var variant = 0; variant < 8; variant++)
+            for (var variant = 0; variant < 12; variant++)
             {
                 var args = BuildArguments(method, variant);
                 await TryInvokeAsync(target, method, args);

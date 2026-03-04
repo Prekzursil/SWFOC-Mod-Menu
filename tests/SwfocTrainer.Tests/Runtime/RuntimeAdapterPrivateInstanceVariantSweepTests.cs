@@ -62,7 +62,7 @@ public sealed class RuntimeAdapterPrivateInstanceVariantSweepTests
 
     private static async Task InvokeMethodVariantsAsync(object instance, MethodInfo method)
     {
-        for (var variant = 0; variant < 8; variant++)
+        for (var variant = 0; variant < 12; variant++)
         {
             var args = method
                 .GetParameters()
