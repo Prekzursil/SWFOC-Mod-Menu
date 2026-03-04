@@ -32,6 +32,16 @@ public sealed record HeroEditRequest(
     IReadOnlyDictionary<string, object?>? Parameters = null);
 
 [System.CLSCompliant(false)]
+public sealed record HeroEditResult(
+    string TargetHeroId,
+    string PreviousState,
+    string CurrentState,
+    bool Applied,
+    RuntimeReasonCode ReasonCode,
+    string Message,
+    IReadOnlyDictionary<string, object?>? Diagnostics = null);
+
+[System.CLSCompliant(false)]
 public sealed record HeroVariantRequest(
     string SourceHeroId,
     string VariantHeroId,

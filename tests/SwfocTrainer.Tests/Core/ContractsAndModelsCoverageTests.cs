@@ -231,6 +231,50 @@ public sealed class ContractsAndModelsCoverageTests
         readOnly.IsModeAllowed(RuntimeMode.Unknown).Should().BeTrue();
     }
 
+    [Fact]
+    public void HeroMechanicModels_ShouldRetainConstructorValues()
+    {
+        var profile = new HeroMechanicsProfile(
+            SupportsRespawn: true,
+            SupportsPermadeath: false,
+            SupportsRescue: true,
+            DefaultRespawnTime: 7,
+            RespawnExceptionSources: new[] { "RespawnExceptions.lua" },
+            DuplicateHeroPolicy: "rescue_or_respawn",
+            Diagnostics: new Dictionary<string, string> { ["profileId"] = "aotr_1397421866_swfoc" });
+
+        var request = new HeroEditRequest(
+            TargetHeroId: "MACE_WINDU",
+            DesiredState: "respawn_pending",
+            RespawnPolicyOverride: "force_respawn",
+            AllowDuplicate: true,
+            TargetFaction: "REPUBLIC",
+            SourceFaction: "EMPIRE",
+            Parameters: new Dictionary<string, object?> { ["planetId"] = "coruscant" });
+
+        var result = new HeroEditResult(
+            TargetHeroId: "MACE_WINDU",
+            PreviousState: "dead",
+            CurrentState: "respawn_pending",
+            Applied: true,
+            ReasonCode: RuntimeReasonCode.HELPER_EXECUTION_APPLIED,
+            Message: "Hero state updated.",
+            Diagnostics: new Dictionary<string, object?> { ["helperExecutionPath"] = "plugin_dispatch" });
+
+        profile.SupportsRespawn.Should().BeTrue();
+        profile.DefaultRespawnTime.Should().Be(7);
+        profile.RespawnExceptionSources.Should().ContainSingle().Which.Should().Be("RespawnExceptions.lua");
+        profile.DuplicateHeroPolicy.Should().Be("rescue_or_respawn");
+
+        request.TargetHeroId.Should().Be("MACE_WINDU");
+        request.AllowDuplicate.Should().BeTrue();
+        request.TargetFaction.Should().Be("REPUBLIC");
+
+        result.Applied.Should().BeTrue();
+        result.ReasonCode.Should().Be(RuntimeReasonCode.HELPER_EXECUTION_APPLIED);
+        result.Diagnostics.Should().ContainKey("helperExecutionPath");
+    }
+
     private static (
         WorkshopInventoryItem Item,
         WorkshopInventoryChain Chain,

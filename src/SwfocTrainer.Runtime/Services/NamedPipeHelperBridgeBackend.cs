@@ -30,6 +30,7 @@ public sealed class NamedPipeHelperBridgeBackend : IHelperBridgeBackend
     private const string DiagnosticHelperEntryPoint = "helperEntryPoint";
     private const string DiagnosticHelperHookId = "helperHookId";
     private const string DiagnosticHelperVerifyState = "helperVerifyState";
+    private const string DiagnosticHelperExecutionPath = "helperExecutionPath";
     private const string DiagnosticOperationKind = "operationKind";
     private const string DiagnosticOperationToken = "operationToken";
     private const string DiagnosticProcessId = "processId";
@@ -491,7 +492,7 @@ public sealed class NamedPipeHelperBridgeBackend : IHelperBridgeBackend
             [DiagnosticHelperInvocationSource] = InvocationSourceNativeBridge,
             [DiagnosticHelperEntryPoint] = request.Hook?.EntryPoint ?? string.Empty,
             [DiagnosticHelperHookId] = request.Hook?.Id ?? string.Empty,
-            [DiagnosticHelperVerifyState] = helperState,
+            [DiagnosticHelperVerifyState] = "pending_backend_verification",
             [DiagnosticOperationKind] = operation.OperationKind.ToString(),
             [DiagnosticOperationToken] = operation.OperationToken,
             [PayloadOperationPolicy] = request.OperationPolicy ?? string.Empty,
@@ -622,8 +623,8 @@ public sealed class NamedPipeHelperBridgeBackend : IHelperBridgeBackend
         IReadOnlyDictionary<string, object?> diagnostics,
         out string failureMessage)
     {
-        var verifyContract = request.VerificationContract ?? request.Hook?.VerifyContract;
-        if (verifyContract is null || verifyContract.Count == 0)
+        var verifyContract = BuildEffectiveVerificationContract(request);
+        if (verifyContract.Count == 0)
         {
             failureMessage = string.Empty;
             return true;
@@ -643,6 +644,35 @@ public sealed class NamedPipeHelperBridgeBackend : IHelperBridgeBackend
         return true;
     }
 
+    private static IReadOnlyDictionary<string, string> BuildEffectiveVerificationContract(HelperBridgeRequest request)
+    {
+        var effective = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+
+        if (request.Hook is not null || request.VerificationContract is not null)
+        {
+            effective[DiagnosticHelperVerifyState] = "applied";
+            effective[DiagnosticHelperExecutionPath] = "required:echo";
+        }
+
+        MergeContractEntries(effective, request.Hook?.VerifyContract);
+        MergeContractEntries(effective, request.VerificationContract);
+        return effective;
+    }
+
+    private static void MergeContractEntries(
+        IDictionary<string, string> target,
+        IReadOnlyDictionary<string, string>? source)
+    {
+        if (source is null || source.Count == 0)
+        {
+            return;
+        }
+
+        foreach (var entry in source)
+        {
+            target[entry.Key] = entry.Value;
+        }
+    }
     private static bool ValidateVerificationEntry(
         string key,
         string? expected,

@@ -103,7 +103,9 @@ public sealed class NamedPipeHelperBridgeBackendTests
                     AddressSource: AddressSource.None,
                     Diagnostics: new Dictionary<string, object?>
                     {
-                        ["operationToken"] = operationToken
+                        ["operationToken"] = operationToken,
+                        ["helperVerifyState"] = "applied",
+                        ["helperExecutionPath"] = "plugin_dispatch"
                     });
             }
         };
@@ -145,7 +147,9 @@ public sealed class NamedPipeHelperBridgeBackendTests
                     AddressSource: AddressSource.None,
                     Diagnostics: new Dictionary<string, object?>
                     {
-                        ["operationToken"] = operationToken
+                        ["operationToken"] = operationToken,
+                        ["helperVerifyState"] = "applied",
+                        ["helperExecutionPath"] = "plugin_dispatch"
                     });
             }
         };
@@ -187,7 +191,9 @@ public sealed class NamedPipeHelperBridgeBackendTests
                     AddressSource: AddressSource.None,
                     Diagnostics: new Dictionary<string, object?>
                     {
-                        ["operationToken"] = operationToken
+                        ["operationToken"] = operationToken,
+                        ["helperVerifyState"] = "applied",
+                        ["helperExecutionPath"] = "plugin_dispatch"
                     });
             }
         };
@@ -234,7 +240,9 @@ public sealed class NamedPipeHelperBridgeBackendTests
                     AddressSource: AddressSource.None,
                     Diagnostics: new Dictionary<string, object?>
                     {
-                        ["operationToken"] = operationToken
+                        ["operationToken"] = operationToken,
+                        ["helperVerifyState"] = "applied",
+                        ["helperExecutionPath"] = "plugin_dispatch"
                     });
             }
         };
@@ -303,7 +311,8 @@ public sealed class NamedPipeHelperBridgeBackendTests
                 Diagnostics: new Dictionary<string, object?>
                 {
                     ["helperVerifyState"] = "unexpected",
-                    ["operationToken"] = "token-verify"
+                    ["operationToken"] = "token-verify",
+                    ["helperExecutionPath"] = "plugin_dispatch"
                 })
         };
         var backend = new NamedPipeHelperBridgeBackend(stubBackend);
@@ -341,7 +350,9 @@ public sealed class NamedPipeHelperBridgeBackendTests
                     AddressSource: AddressSource.None,
                     Diagnostics: new Dictionary<string, object?>
                     {
-                        ["operationToken"] = operationToken
+                        ["operationToken"] = operationToken,
+                        ["helperVerifyState"] = "applied",
+                        ["helperExecutionPath"] = "plugin_dispatch"
                     });
             }
         };
@@ -385,7 +396,8 @@ public sealed class NamedPipeHelperBridgeBackendTests
                     {
                         ["globalKey"] = "AOTR_HERO_KEY",
                         ["helperVerifyState"] = "applied",
-                        ["operationToken"] = operationToken
+                        ["operationToken"] = operationToken,
+                        ["helperExecutionPath"] = "plugin_dispatch"
                     });
             }
         };
@@ -448,6 +460,41 @@ public sealed class NamedPipeHelperBridgeBackendTests
         result.Succeeded.Should().BeFalse();
         result.ReasonCode.Should().Be(RuntimeReasonCode.HELPER_VERIFICATION_FAILED);
         result.Message.Should().Contain("operation token");
+    }
+
+    [Fact]
+    public async Task ExecuteAsync_ShouldFailVerification_WhenExecutionPathIsMissing()
+    {
+        var stubBackend = new StubExecutionBackend
+        {
+            ProbeReport = BuildHelperProbeReport(),
+            ExecuteResult = new ActionExecutionResult(
+                Succeeded: true,
+                Message: "helper command applied",
+                AddressSource: AddressSource.None,
+                Diagnostics: new Dictionary<string, object?>
+                {
+                    ["globalKey"] = "AOTR_HERO_KEY",
+                    ["helperVerifyState"] = "applied",
+                    ["operationToken"] = "token-verify-path"
+                })
+        };
+
+        var backend = new NamedPipeHelperBridgeBackend(stubBackend);
+        var request = BuildHelperRequest(
+            payload: new JsonObject { ["globalKey"] = "AOTR_HERO_KEY", ["intValue"] = 1 },
+            hook: new HelperHookSpec(
+                Id: "aotr_hero_state_bridge",
+                Script: "scripts/aotr/hero_state_bridge.lua",
+                Version: "1.0.0",
+                EntryPoint: "SWFOC_Trainer_Set_Hero_Respawn"),
+            operationToken: "token-verify-path");
+
+        var result = await backend.ExecuteAsync(request, CancellationToken.None);
+
+        result.Succeeded.Should().BeFalse();
+        result.ReasonCode.Should().Be(RuntimeReasonCode.HELPER_VERIFICATION_FAILED);
+        result.Message.Should().Contain("helperExecutionPath");
     }
 
     [Theory]
