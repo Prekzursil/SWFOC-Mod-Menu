@@ -787,7 +787,8 @@
       },
       "verifyContract": {
         "helperVerifyState": "applied",
-        "operationToken": "required:echo"
+        "operationToken": "required:echo",
+        "helperExecutionPath": "required:echo"
       },
       "metadata": {
         "sha256": "8b526b409f9fb3aa89563fa165913dbc30e46e0ab69a4e2e4626a05952558100"

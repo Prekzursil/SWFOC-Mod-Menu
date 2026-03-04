@@ -75,7 +75,8 @@
         "boolValue": "required:boolean"
       },
       "verifyContract": {
-        "helperVerifyState": "applied"
+        "helperVerifyState": "applied",
+        "helperExecutionPath": "required:echo"
       },
       "metadata": {
         "sha256": "e3eefa9702c3c648049eb83bca60874c7ae00926c9f96f951f23144e7ae3a88b"
