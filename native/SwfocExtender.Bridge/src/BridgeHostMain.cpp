@@ -318,13 +318,15 @@ void AddHelperProbeFeature(
     const PluginRequest& probeContext,
     const char* featureId) {
     CapabilityState state {};
-    state.available = probeContext.processId > 0;
-    state.state = state.available ? "Verified" : "Unavailable";
-    state.reasonCode = state.available ? "CAPABILITY_PROBE_PASS" : "HELPER_BRIDGE_UNAVAILABLE";
+    state.available = false;
+    state.state = "Unavailable";
+    state.reasonCode = probeContext.processId > 0 ? "HELPER_VERIFICATION_FAILED" : "HELPER_BRIDGE_UNAVAILABLE";
     state.diagnostics = {
         {"probeSource", "native_helper_bridge"},
         {"processId", std::to_string(probeContext.processId)},
-        {"helperBridgeState", state.available ? "ready" : "unavailable"}};
+        {"helperBridgeState", "unavailable"},
+        {"helperExecutionPath", "native_dispatch_unavailable"},
+        {"helperVerifyState", "failed"}};
     snapshot.features.emplace(featureId, state);
 }
 

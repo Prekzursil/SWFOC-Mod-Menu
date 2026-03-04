@@ -408,11 +408,17 @@ bool ValidateRequest(const PluginRequest& request, PluginResult& failure) {
            ValidateHeroVariantRequest(request, failure);
 }
 
-CapabilityState BuildAvailableCapability() {
+CapabilityState BuildUnavailableCapability() {
     CapabilityState state {};
-    state.available = true;
-    state.state = "Verified";
-    state.reasonCode = "CAPABILITY_PROBE_PASS";
+    state.available = false;
+    state.state = "Unavailable";
+    state.reasonCode = "HELPER_VERIFICATION_FAILED";
+    state.diagnostics = {
+        {"probeSource", "native_helper_bridge"},
+        {"helperBridgeState", "unavailable"},
+        {"helperExecutionPath", "native_dispatch_unavailable"},
+        {"helperVerifyState", "failed"}
+    };
     return state;
 }
 
@@ -433,20 +439,20 @@ PluginResult HelperLuaPlugin::execute(const PluginRequest& request) {
 
 CapabilitySnapshot HelperLuaPlugin::capabilitySnapshot() const {
     CapabilitySnapshot snapshot {};
-    snapshot.features.emplace("spawn_unit_helper", BuildAvailableCapability());
-    snapshot.features.emplace("spawn_context_entity", BuildAvailableCapability());
-    snapshot.features.emplace("spawn_tactical_entity", BuildAvailableCapability());
-    snapshot.features.emplace("spawn_galactic_entity", BuildAvailableCapability());
-    snapshot.features.emplace("place_planet_building", BuildAvailableCapability());
-    snapshot.features.emplace("set_context_allegiance", BuildAvailableCapability());
-    snapshot.features.emplace("set_context_faction", BuildAvailableCapability());
-    snapshot.features.emplace("set_hero_state_helper", BuildAvailableCapability());
-    snapshot.features.emplace("toggle_roe_respawn_helper", BuildAvailableCapability());
-    snapshot.features.emplace("transfer_fleet_safe", BuildAvailableCapability());
-    snapshot.features.emplace("flip_planet_owner", BuildAvailableCapability());
-    snapshot.features.emplace("switch_player_faction", BuildAvailableCapability());
-    snapshot.features.emplace("edit_hero_state", BuildAvailableCapability());
-    snapshot.features.emplace("create_hero_variant", BuildAvailableCapability());
+    snapshot.features.emplace("spawn_unit_helper", BuildUnavailableCapability());
+    snapshot.features.emplace("spawn_context_entity", BuildUnavailableCapability());
+    snapshot.features.emplace("spawn_tactical_entity", BuildUnavailableCapability());
+    snapshot.features.emplace("spawn_galactic_entity", BuildUnavailableCapability());
+    snapshot.features.emplace("place_planet_building", BuildUnavailableCapability());
+    snapshot.features.emplace("set_context_allegiance", BuildUnavailableCapability());
+    snapshot.features.emplace("set_context_faction", BuildUnavailableCapability());
+    snapshot.features.emplace("set_hero_state_helper", BuildUnavailableCapability());
+    snapshot.features.emplace("toggle_roe_respawn_helper", BuildUnavailableCapability());
+    snapshot.features.emplace("transfer_fleet_safe", BuildUnavailableCapability());
+    snapshot.features.emplace("flip_planet_owner", BuildUnavailableCapability());
+    snapshot.features.emplace("switch_player_faction", BuildUnavailableCapability());
+    snapshot.features.emplace("edit_hero_state", BuildUnavailableCapability());
+    snapshot.features.emplace("create_hero_variant", BuildUnavailableCapability());
     return snapshot;
 }
 
