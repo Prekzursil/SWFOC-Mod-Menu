@@ -67,3 +67,6 @@ exclude_paths:
   - "tests/SwfocTrainer.Tests/Saves/SavePatchApplyServiceHelperCoverageTests.cs"
   - "tests/SwfocTrainer.Tests/Catalog/CatalogServiceTests.cs"
   - "tests/SwfocTrainer.Tests/Runtime/ProfileVariantResolverTests.cs"
+
+  - "tests/SwfocTrainer.Tests/Runtime/RuntimeAdapterGapCoverageTests.cs"
+  - "tests/SwfocTrainer.Tests/Runtime/NonRuntimeHighDeficitReflectionTests.cs"
