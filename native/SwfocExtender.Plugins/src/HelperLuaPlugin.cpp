@@ -88,7 +88,7 @@ PluginResult BuildSuccess(const PluginRequest& request) {
     result.succeeded = true;
     result.reasonCode = "HELPER_EXECUTION_APPLIED";
     result.hookState = "HOOK_EXECUTED";
-    result.message = "Helper bridge operation applied through native helper plugin.";
+    result.message = "Helper bridge operation contract validated through native helper plugin.";
     result.diagnostics = {
         {"featureId", request.featureId},
         {"helperHookId", request.helperHookId},
@@ -96,7 +96,8 @@ PluginResult BuildSuccess(const PluginRequest& request) {
         {"helperScript", request.helperScript},
         {"helperInvocationSource", "native_bridge"},
         {"helperVerifyState", "applied"},
-        {"helperExecutionPath", "plugin_dispatch"},
+        {"helperExecutionPath", "contract_validation_only"},
+        {"helperMutationVerified", "false"},
         {"processId", std::to_string(request.processId)},
         {"operationKind", request.operationKind},
         {"operationToken", request.operationToken},

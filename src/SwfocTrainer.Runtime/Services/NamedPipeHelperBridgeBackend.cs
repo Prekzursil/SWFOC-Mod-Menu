@@ -54,6 +54,7 @@ public sealed class NamedPipeHelperBridgeBackend : IHelperBridgeBackend
     private const string PayloadForceOverride = "forceOverride";
     private const string InvocationSourceNativeBridge = "native_bridge";
     private const string MutationIntentSpawnEntity = "spawn_entity";
+    private const string ExecutionPathContractValidationOnly = "contract_validation_only";
 
     private static readonly string[] HelperFeatureIds =
     [
@@ -648,14 +649,15 @@ public sealed class NamedPipeHelperBridgeBackend : IHelperBridgeBackend
     {
         var effective = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
 
+        MergeContractEntries(effective, request.Hook?.VerifyContract);
+        MergeContractEntries(effective, request.VerificationContract);
+
         if (request.Hook is not null || request.VerificationContract is not null)
         {
             effective[DiagnosticHelperVerifyState] = "applied";
-            effective[DiagnosticHelperExecutionPath] = "required:echo";
+            effective[DiagnosticHelperExecutionPath] = $"required_not:{ExecutionPathContractValidationOnly}";
         }
 
-        MergeContractEntries(effective, request.Hook?.VerifyContract);
-        MergeContractEntries(effective, request.VerificationContract);
         return effective;
     }
 
@@ -693,6 +695,40 @@ public sealed class NamedPipeHelperBridgeBackend : IHelperBridgeBackend
             }
 
             failureMessage = $"Helper verification failed: required diagnostic '{key}' was not populated.";
+            return false;
+        }
+
+        if (normalizedExpected.StartsWith("required_not:", StringComparison.OrdinalIgnoreCase))
+        {
+            var forbiddenValue = normalizedExpected[13..].Trim();
+            if (string.IsNullOrWhiteSpace(actual))
+            {
+                failureMessage = $"Helper verification failed: required diagnostic '{key}' was not populated.";
+                return false;
+            }
+
+            if (!string.Equals(actual, forbiddenValue, StringComparison.OrdinalIgnoreCase))
+            {
+                failureMessage = string.Empty;
+                return true;
+            }
+
+            failureMessage =
+                $"Helper verification failed: diagnostic '{key}' must not equal '{forbiddenValue}' when execution is unverified.";
+            return false;
+        }
+
+        if (normalizedExpected.StartsWith("not:", StringComparison.OrdinalIgnoreCase))
+        {
+            var forbiddenValue = normalizedExpected[4..].Trim();
+            if (!string.Equals(actual, forbiddenValue, StringComparison.OrdinalIgnoreCase))
+            {
+                failureMessage = string.Empty;
+                return true;
+            }
+
+            failureMessage =
+                $"Helper verification failed: diagnostic '{key}' must not equal '{forbiddenValue}' when execution is unverified.";
             return false;
         }
 
