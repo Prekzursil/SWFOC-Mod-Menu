@@ -30,10 +30,22 @@ internal static class MainViewModelPayloadHelpers
         IReadOnlyDictionary<string, string> defaultSymbolByActionId,
         IReadOnlyDictionary<string, string> defaultHelperHookByActionId)
     {
-        ArgumentNullException.ThrowIfNull(actionId);
-        ArgumentNullException.ThrowIfNull(required);
-        ArgumentNullException.ThrowIfNull(defaultSymbolByActionId);
-        ArgumentNullException.ThrowIfNull(defaultHelperHookByActionId);
+        if (actionId is null)
+        {
+            throw new ArgumentNullException(nameof(actionId));
+        }
+        if (required is null)
+        {
+            throw new ArgumentNullException(nameof(required));
+        }
+        if (defaultSymbolByActionId is null)
+        {
+            throw new ArgumentNullException(nameof(defaultSymbolByActionId));
+        }
+        if (defaultHelperHookByActionId is null)
+        {
+            throw new ArgumentNullException(nameof(defaultHelperHookByActionId));
+        }
 
         var payload = new JsonObject();
 
@@ -57,8 +69,14 @@ internal static class MainViewModelPayloadHelpers
 
     internal static void ApplyActionSpecificPayloadDefaults(string actionId, JsonObject payload)
     {
-        ArgumentNullException.ThrowIfNull(actionId);
-        ArgumentNullException.ThrowIfNull(payload);
+        if (actionId is null)
+        {
+            throw new ArgumentNullException(nameof(actionId));
+        }
+        if (payload is null)
+        {
+            throw new ArgumentNullException(nameof(payload));
+        }
 
         if (actionId.Equals(MainViewModelDefaults.ActionSetCredits, StringComparison.OrdinalIgnoreCase))
         {
@@ -93,10 +111,22 @@ internal static class MainViewModelPayloadHelpers
         IReadOnlyDictionary<string, string> defaultSymbolByActionId,
         IReadOnlyDictionary<string, string> defaultHelperHookByActionId)
     {
-        ArgumentNullException.ThrowIfNull(actionId);
-        ArgumentNullException.ThrowIfNull(key);
-        ArgumentNullException.ThrowIfNull(defaultSymbolByActionId);
-        ArgumentNullException.ThrowIfNull(defaultHelperHookByActionId);
+        if (actionId is null)
+        {
+            throw new ArgumentNullException(nameof(actionId));
+        }
+        if (key is null)
+        {
+            throw new ArgumentNullException(nameof(key));
+        }
+        if (defaultSymbolByActionId is null)
+        {
+            throw new ArgumentNullException(nameof(defaultSymbolByActionId));
+        }
+        if (defaultHelperHookByActionId is null)
+        {
+            throw new ArgumentNullException(nameof(defaultHelperHookByActionId));
+        }
 
         return key switch
         {
@@ -135,20 +165,29 @@ internal static class MainViewModelPayloadHelpers
 
     private static void ApplySpawnTacticalDefaults(JsonObject payload)
     {
-        ArgumentNullException.ThrowIfNull(payload);
+        if (payload is null)
+        {
+            throw new ArgumentNullException(nameof(payload));
+        }
         ApplySpawnDefaults(payload, "ForceZeroTactical", "EphemeralBattleOnly");
         payload[PayloadPlacementModeKey] ??= "reinforcement_zone";
     }
 
     private static void ApplySpawnGalacticDefaults(JsonObject payload)
     {
-        ArgumentNullException.ThrowIfNull(payload);
+        if (payload is null)
+        {
+            throw new ArgumentNullException(nameof(payload));
+        }
         ApplySpawnDefaults(payload, "Normal", "PersistentGalactic");
     }
 
     private static void ApplyPlanetBuildingDefaults(JsonObject payload)
     {
-        ArgumentNullException.ThrowIfNull(payload);
+        if (payload is null)
+        {
+            throw new ArgumentNullException(nameof(payload));
+        }
         payload[PayloadPlacementModeKey] ??= "safe_rules";
         payload[PayloadAllowCrossFactionKey] ??= true;
         payload[PayloadForceOverrideKey] ??= false;
@@ -156,7 +195,10 @@ internal static class MainViewModelPayloadHelpers
 
     private static void ApplyTransferFleetDefaults(JsonObject payload)
     {
-        ArgumentNullException.ThrowIfNull(payload);
+        if (payload is null)
+        {
+            throw new ArgumentNullException(nameof(payload));
+        }
         payload[PayloadPlacementModeKey] ??= "safe_transfer";
         payload[PayloadAllowCrossFactionKey] ??= true;
         payload[PayloadForceOverrideKey] ??= false;
@@ -164,7 +206,10 @@ internal static class MainViewModelPayloadHelpers
 
     private static void ApplyPlanetFlipDefaults(JsonObject payload)
     {
-        ArgumentNullException.ThrowIfNull(payload);
+        if (payload is null)
+        {
+            throw new ArgumentNullException(nameof(payload));
+        }
         payload["planetFlipMode"] ??= "convert_everything";
         payload[PayloadAllowCrossFactionKey] ??= true;
         payload[PayloadForceOverrideKey] ??= false;
@@ -172,27 +217,39 @@ internal static class MainViewModelPayloadHelpers
 
     private static void ApplySwitchPlayerFactionDefaults(JsonObject payload)
     {
-        ArgumentNullException.ThrowIfNull(payload);
+        if (payload is null)
+        {
+            throw new ArgumentNullException(nameof(payload));
+        }
         payload[PayloadAllowCrossFactionKey] ??= true;
     }
 
     private static void ApplyEditHeroStateDefaults(JsonObject payload)
     {
-        ArgumentNullException.ThrowIfNull(payload);
+        if (payload is null)
+        {
+            throw new ArgumentNullException(nameof(payload));
+        }
         payload["desiredState"] ??= "alive";
         payload["allowDuplicate"] ??= false;
     }
 
     private static void ApplyCreateHeroVariantDefaults(JsonObject payload)
     {
-        ArgumentNullException.ThrowIfNull(payload);
+        if (payload is null)
+        {
+            throw new ArgumentNullException(nameof(payload));
+        }
         payload["variantGenerationMode"] ??= "patch_mod_overlay";
         payload[PayloadAllowCrossFactionKey] ??= true;
     }
 
     private static void ApplySpawnDefaults(JsonObject payload, string populationPolicy, string persistencePolicy)
     {
-        ArgumentNullException.ThrowIfNull(payload);
+        if (payload is null)
+        {
+            throw new ArgumentNullException(nameof(payload));
+        }
 
         payload[PayloadPopulationPolicyKey] ??= populationPolicy;
         payload[PayloadPersistencePolicyKey] ??= persistencePolicy;

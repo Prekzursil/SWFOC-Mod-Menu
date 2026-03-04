@@ -3,6 +3,7 @@ using SwfocTrainer.Core.Models;
 
 namespace SwfocTrainer.App.ViewModels;
 
+[System.CLSCompliant(false)]
 internal static class MainViewModelRosterHelpers
 {
     private const char RosterSeparator = '|';
@@ -16,7 +17,10 @@ internal static class MainViewModelRosterHelpers
         string selectedProfileId,
         string? selectedWorkshopId)
     {
-        ArgumentNullException.ThrowIfNull(selectedProfileId);
+        if (string.IsNullOrWhiteSpace(selectedProfileId))
+        {
+            selectedProfileId = string.Empty;
+        }
 
         if (catalog is null)
         {
@@ -31,7 +35,7 @@ internal static class MainViewModelRosterHelpers
         var rows = new List<RosterEntityViewItem>(entries.Count);
         foreach (var entry in entries)
         {
-            if (TryParseEntityRow(entry, selectedProfileId, selectedWorkshopId, out var row))
+            if (TryParseEntityRow(entry, selectedProfileId, selectedWorkshopId ?? string.Empty, out var row))
             {
                 rows.Add(row);
             }
@@ -46,7 +50,7 @@ internal static class MainViewModelRosterHelpers
     private static bool TryParseEntityRow(
         string raw,
         string selectedProfileId,
-        string? selectedWorkshopId,
+        string selectedWorkshopId,
         out RosterEntityViewItem row)
     {
         row = default!;
@@ -62,9 +66,9 @@ internal static class MainViewModelRosterHelpers
         }
 
         var kind = ResolveSegmentOrDefault(segments, 0, DefaultKind);
-        var normalizedProfileId = selectedProfileId ?? string.Empty;
+        var normalizedProfileId = selectedProfileId;
         var sourceProfileId = ResolveSegmentOrDefault(segments, 2, normalizedProfileId);
-        var sourceWorkshopId = ResolveSegmentOrDefault(segments, 3, selectedWorkshopId ?? string.Empty);
+        var sourceWorkshopId = ResolveSegmentOrDefault(segments, 3, selectedWorkshopId);
         var visualRef = ResolveSegmentOrDefault(segments, 4, string.Empty);
         var dependencySummary = ResolveSegmentOrDefault(segments, 5, string.Empty);
 
@@ -100,7 +104,7 @@ internal static class MainViewModelRosterHelpers
             return false;
         }
 
-        var segment = segments[1] ?? string.Empty;
+        var segment = segments[1];
         if (string.IsNullOrWhiteSpace(segment))
         {
             return false;
@@ -117,7 +121,7 @@ internal static class MainViewModelRosterHelpers
             return fallback;
         }
 
-        var segment = segments[index] ?? string.Empty;
+        var segment = segments[index];
         if (string.IsNullOrWhiteSpace(segment))
         {
             return fallback;
@@ -126,9 +130,9 @@ internal static class MainViewModelRosterHelpers
         return segment.Trim();
     }
 
-    private static RosterEntityCompatibilityState ResolveCompatibilityState(string sourceWorkshopId, string? selectedWorkshopId)
+    private static RosterEntityCompatibilityState ResolveCompatibilityState(string sourceWorkshopId, string selectedWorkshopId)
     {
-        sourceWorkshopId ??= string.Empty;
+        sourceWorkshopId = sourceWorkshopId ?? string.Empty;
         if (string.IsNullOrWhiteSpace(sourceWorkshopId))
         {
             return RosterEntityCompatibilityState.Native;

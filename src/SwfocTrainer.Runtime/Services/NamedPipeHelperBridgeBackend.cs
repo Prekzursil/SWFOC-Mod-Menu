@@ -52,6 +52,7 @@ public sealed class NamedPipeHelperBridgeBackend : IHelperBridgeBackend
     private const string PayloadPlacementMode = "placementMode";
     private const string PayloadForceOverride = "forceOverride";
     private const string InvocationSourceNativeBridge = "native_bridge";
+    private const string MutationIntentSpawnEntity = "spawn_entity";
 
     private static readonly string[] HelperFeatureIds =
     [
@@ -88,10 +89,10 @@ public sealed class NamedPipeHelperBridgeBackend : IHelperBridgeBackend
     private static readonly IReadOnlyDictionary<string, string> DefaultMutationIntents =
         new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
         {
-            [ActionSpawnUnitHelper] = "spawn_entity",
-            [ActionSpawnContextEntity] = "spawn_entity",
-            [ActionSpawnTacticalEntity] = "spawn_entity",
-            [ActionSpawnGalacticEntity] = "spawn_entity",
+            [ActionSpawnUnitHelper] = MutationIntentSpawnEntity,
+            [ActionSpawnContextEntity] = MutationIntentSpawnEntity,
+            [ActionSpawnTacticalEntity] = MutationIntentSpawnEntity,
+            [ActionSpawnGalacticEntity] = MutationIntentSpawnEntity,
             [ActionPlacePlanetBuilding] = "place_building",
             [ActionSetContextAllegiance] = "set_context_allegiance",
             [ActionSetContextFaction] = "set_context_allegiance",

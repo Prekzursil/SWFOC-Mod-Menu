@@ -7,6 +7,8 @@ namespace SwfocTrainer.App.ViewModels;
 
 public abstract class MainViewModelLiveOpsBase : MainViewModelBindableMembersBase
 {
+    private const string BoolFalseText = "false";
+    private const string BoolTrueText = "true";
     protected MainViewModelLiveOpsBase(MainViewModelDependencies dependencies)
         : base(dependencies)
     {
@@ -17,18 +19,29 @@ public abstract class MainViewModelLiveOpsBase : MainViewModelBindableMembersBas
     protected async Task RefreshActionReliabilityAsync()
     {
         ActionReliability.Clear();
-        if (SelectedProfileId is null || _runtime.CurrentSession is null)
+        var selectedProfileId = SelectedProfileId;
+        var session = _runtime.CurrentSession;
+        var profiles = _profiles;
+        var catalogService = _catalog;
+        if (selectedProfileId is null || session is null || profiles is null || catalogService is null)
         {
             return;
         }
 
         RefreshLiveOpsDiagnostics();
 
-        var profile = await _profiles.ResolveInheritedProfileAsync(SelectedProfileId);
+        var profile = await profiles.ResolveInheritedProfileAsync(selectedProfileId);
+        if (profile is null)
+        {
+            EntityRoster.Clear();
+            ResetHeroMechanicsSurface();
+            return;
+        }
+
         IReadOnlyDictionary<string, IReadOnlyList<string>>? catalog = null;
         try
         {
-            catalog = await _catalog.LoadCatalogAsync(SelectedProfileId);
+            catalog = await catalogService.LoadCatalogAsync(selectedProfileId);
         }
         catch
         {
@@ -38,7 +51,7 @@ public abstract class MainViewModelLiveOpsBase : MainViewModelBindableMembersBas
         PopulateEntityRoster(profile, catalog);
         RefreshHeroMechanicsSurface(profile);
 
-        var reliability = _actionReliability.Evaluate(profile, _runtime.CurrentSession, catalog);
+        var reliability = _actionReliability.Evaluate(profile, session, catalog);
         foreach (var item in reliability)
         {
             ActionReliability.Add(new ActionReliabilityViewItem(
@@ -263,33 +276,27 @@ public abstract class MainViewModelLiveOpsBase : MainViewModelBindableMembersBas
 
     private async Task RefreshRosterAndHeroSurfaceAsync(string profileId)
     {
-        if (_profiles is null || _catalog is null)
+        var profiles = _profiles;
+        var catalogService = _catalog;
+        if (profiles is null || catalogService is null)
         {
             EntityRoster.Clear();
-            HeroSupportsRespawn = "false";
-            HeroSupportsPermadeath = "false";
-            HeroSupportsRescue = "false";
-            HeroDefaultRespawnTime = UnknownValue;
-            HeroDuplicatePolicy = UnknownValue;
+            ResetHeroMechanicsSurface();
             return;
         }
 
-        var profile = await _profiles.ResolveInheritedProfileAsync(profileId);
+        var profile = await profiles.ResolveInheritedProfileAsync(profileId);
         if (profile is null)
         {
             EntityRoster.Clear();
-            HeroSupportsRespawn = "false";
-            HeroSupportsPermadeath = "false";
-            HeroSupportsRescue = "false";
-            HeroDefaultRespawnTime = UnknownValue;
-            HeroDuplicatePolicy = UnknownValue;
+            ResetHeroMechanicsSurface();
             return;
         }
 
         IReadOnlyDictionary<string, IReadOnlyList<string>>? catalog = null;
         try
         {
-            catalog = await _catalog.LoadCatalogAsync(profileId);
+            catalog = await catalogService.LoadCatalogAsync(profileId);
         }
         catch
         {
@@ -304,7 +311,10 @@ public abstract class MainViewModelLiveOpsBase : MainViewModelBindableMembersBas
         TrainerProfile profile,
         IReadOnlyDictionary<string, IReadOnlyList<string>>? catalog)
     {
-        ArgumentNullException.ThrowIfNull(profile);
+        if (profile is null)
+        {
+            throw new ArgumentNullException(nameof(profile));
+        }
 
         EntityRoster.Clear();
         var profileId = profile.Id ?? string.Empty;
@@ -317,7 +327,10 @@ public abstract class MainViewModelLiveOpsBase : MainViewModelBindableMembersBas
 
     private void RefreshHeroMechanicsSurface(TrainerProfile profile)
     {
-        ArgumentNullException.ThrowIfNull(profile);
+        if (profile is null)
+        {
+            throw new ArgumentNullException(nameof(profile));
+        }
 
         var metadata = profile.Metadata ?? new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
         var supportsRespawn = SupportsHeroRespawn(profile);
@@ -326,16 +339,19 @@ public abstract class MainViewModelLiveOpsBase : MainViewModelBindableMembersBas
         var defaultRespawn = ResolveDefaultHeroRespawn(metadata);
         var duplicatePolicy = ResolveDuplicateHeroPolicy(metadata);
 
-        HeroSupportsRespawn = supportsRespawn ? "true" : "false";
-        HeroSupportsPermadeath = supportsPermadeath ? "true" : "false";
-        HeroSupportsRescue = supportsRescue ? "true" : "false";
+        HeroSupportsRespawn = supportsRespawn ? BoolTrueText : BoolFalseText;
+        HeroSupportsPermadeath = supportsPermadeath ? BoolTrueText : BoolFalseText;
+        HeroSupportsRescue = supportsRescue ? BoolTrueText : BoolFalseText;
         HeroDefaultRespawnTime = defaultRespawn;
         HeroDuplicatePolicy = duplicatePolicy;
     }
 
     private static bool SupportsHeroRespawn(TrainerProfile profile)
     {
-        ArgumentNullException.ThrowIfNull(profile);
+        if (profile is null)
+        {
+            throw new ArgumentNullException(nameof(profile));
+        }
         var actions = profile.Actions;
         if (actions is null)
         {
@@ -367,12 +383,12 @@ public abstract class MainViewModelLiveOpsBase : MainViewModelBindableMembersBas
             return false;
         }
 
-        var normalized = raw?.Trim();
-        if (string.IsNullOrWhiteSpace(normalized))
+        if (string.IsNullOrWhiteSpace(raw))
         {
             return false;
         }
 
+        var normalized = raw.Trim();
         return normalized.Equals("true", StringComparison.OrdinalIgnoreCase) ||
                normalized.Equals("1", StringComparison.OrdinalIgnoreCase) ||
                normalized.Equals("yes", StringComparison.OrdinalIgnoreCase);
@@ -385,9 +401,23 @@ public abstract class MainViewModelLiveOpsBase : MainViewModelBindableMembersBas
             return null;
         }
 
-        var normalized = raw?.Trim();
+        if (string.IsNullOrWhiteSpace(raw))
+        {
+            return null;
+        }
+
+        var normalized = raw.Trim();
         return string.IsNullOrWhiteSpace(normalized) ? null : normalized;
     }
+    private void ResetHeroMechanicsSurface()
+    {
+        HeroSupportsRespawn = BoolFalseText;
+        HeroSupportsPermadeath = BoolFalseText;
+        HeroSupportsRescue = BoolFalseText;
+        HeroDefaultRespawnTime = UnknownValue;
+        HeroDuplicatePolicy = UnknownValue;
+    }
+
     protected void ApplyDraftFromSnapshot(SelectedUnitSnapshot snapshot)
     {
         SelectedUnitHp = snapshot.Hp.ToString(DecimalPrecision3);

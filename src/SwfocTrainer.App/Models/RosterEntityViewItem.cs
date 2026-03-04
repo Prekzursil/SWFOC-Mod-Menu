@@ -2,6 +2,7 @@ using SwfocTrainer.Core.Models;
 
 namespace SwfocTrainer.App.Models;
 
+[System.CLSCompliant(false)]
 public sealed record RosterEntityViewItem(
     string EntityId,
     string DisplayName,

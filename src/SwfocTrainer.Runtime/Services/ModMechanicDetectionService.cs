@@ -65,8 +65,14 @@ public sealed class ModMechanicDetectionService : IModMechanicDetectionService
         IReadOnlyDictionary<string, IReadOnlyList<string>>? catalog,
         CancellationToken cancellationToken)
     {
-        ArgumentNullException.ThrowIfNull(profile);
-        ArgumentNullException.ThrowIfNull(session);
+        if (profile is null)
+        {
+            throw new ArgumentNullException(nameof(profile));
+        }
+        if (session is null)
+        {
+            throw new ArgumentNullException(nameof(session));
+        }
 
         cancellationToken.ThrowIfCancellationRequested();
 
@@ -141,8 +147,14 @@ public sealed class ModMechanicDetectionService : IModMechanicDetectionService
         IReadOnlyList<string> activeWorkshopIds,
         TransplantValidationReport? transplantReport)
     {
-        ArgumentNullException.ThrowIfNull(profile);
-        ArgumentNullException.ThrowIfNull(session);
+        if (profile is null)
+        {
+            throw new ArgumentNullException(nameof(profile));
+        }
+        if (session is null)
+        {
+            throw new ArgumentNullException(nameof(session));
+        }
 
         var heroMechanics = ResolveHeroMechanicsProfile(profile, session);
         var processMetadata = session.Process.Metadata;
@@ -183,6 +195,21 @@ public sealed class ModMechanicDetectionService : IModMechanicDetectionService
         bool helperReady,
         TransplantValidationReport? transplantReport)
     {
+        if (profile is null)
+        {
+            throw new ArgumentNullException(nameof(profile));
+        }
+
+        if (session is null)
+        {
+            throw new ArgumentNullException(nameof(session));
+        }
+
+        if (disabledActions is null)
+        {
+            throw new ArgumentNullException(nameof(disabledActions));
+        }
+
         var actions = profile.Actions;
         if (actions is null || actions.Count == 0)
         {
@@ -231,6 +258,16 @@ public sealed class ModMechanicDetectionService : IModMechanicDetectionService
 
     private static bool TryEvaluateDependencyGate(ActionEvaluationContext context, out ModMechanicSupport support)
     {
+        if (context is null)
+        {
+            support = new ModMechanicSupport(
+                ActionId: string.Empty,
+                Supported: false,
+                ReasonCode: RuntimeReasonCode.CAPABILITY_REQUIRED_MISSING,
+                Message: "Action evaluation context is unavailable.",
+                Confidence: 0.99d);
+            return true;
+        }
         if (context.DisabledActions.Contains(context.ActionId))
         {
             support = new ModMechanicSupport(
@@ -264,6 +301,16 @@ public sealed class ModMechanicDetectionService : IModMechanicDetectionService
 
     private static bool TryEvaluateHelperGate(ActionEvaluationContext context, out ModMechanicSupport support)
     {
+        if (context is null)
+        {
+            support = new ModMechanicSupport(
+                ActionId: string.Empty,
+                Supported: false,
+                ReasonCode: RuntimeReasonCode.CAPABILITY_REQUIRED_MISSING,
+                Message: "Action evaluation context is unavailable.",
+                Confidence: 0.99d);
+            return true;
+        }
         if (context.Action is null)
         {
             support = new ModMechanicSupport(
@@ -315,6 +362,16 @@ public sealed class ModMechanicDetectionService : IModMechanicDetectionService
 
     private static bool TryEvaluateRosterGate(ActionEvaluationContext context, out ModMechanicSupport support)
     {
+        if (context is null)
+        {
+            support = new ModMechanicSupport(
+                ActionId: string.Empty,
+                Supported: false,
+                ReasonCode: RuntimeReasonCode.CAPABILITY_REQUIRED_MISSING,
+                Message: "Action evaluation context is unavailable.",
+                Confidence: 0.99d);
+            return true;
+        }
         if (string.IsNullOrWhiteSpace(context.ActionId))
         {
             support = new ModMechanicSupport(
@@ -356,6 +413,16 @@ public sealed class ModMechanicDetectionService : IModMechanicDetectionService
 
     private static bool TryEvaluateContextFactionGate(ActionEvaluationContext context, out ModMechanicSupport support)
     {
+        if (context is null)
+        {
+            support = new ModMechanicSupport(
+                ActionId: string.Empty,
+                Supported: false,
+                ReasonCode: RuntimeReasonCode.CAPABILITY_REQUIRED_MISSING,
+                Message: "Action evaluation context is unavailable.",
+                Confidence: 0.99d);
+            return true;
+        }
         if (context.Session is null)
         {
             support = new ModMechanicSupport(
@@ -408,6 +475,16 @@ public sealed class ModMechanicDetectionService : IModMechanicDetectionService
 
     private static bool TryEvaluateSymbolGate(ActionEvaluationContext context, out ModMechanicSupport support)
     {
+        if (context is null)
+        {
+            support = new ModMechanicSupport(
+                ActionId: string.Empty,
+                Supported: false,
+                ReasonCode: RuntimeReasonCode.CAPABILITY_REQUIRED_MISSING,
+                Message: "Action evaluation context is unavailable.",
+                Confidence: 0.99d);
+            return true;
+        }
         if (context.Session is null || context.Session.Symbols is null)
         {
             support = new ModMechanicSupport(
@@ -451,8 +528,14 @@ public sealed class ModMechanicDetectionService : IModMechanicDetectionService
 
     private static HeroMechanicsProfile ResolveHeroMechanicsProfile(TrainerProfile profile, AttachSession session)
     {
-        ArgumentNullException.ThrowIfNull(profile);
-        ArgumentNullException.ThrowIfNull(session);
+        if (profile is null)
+        {
+            throw new ArgumentNullException(nameof(profile));
+        }
+        if (session is null)
+        {
+            throw new ArgumentNullException(nameof(session));
+        }
 
         var supportsRespawn = SupportsHeroRespawn(profile);
         var supportsRescue = SupportsHeroRescue(profile);

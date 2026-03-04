@@ -8,7 +8,7 @@ import urllib.parse
 import urllib.request
 from datetime import datetime, timezone
 from pathlib import Path
-from typing import Any, Dict, List
+from typing import Any, Dict, List, Tuple
 
 _SCRIPT_DIR = Path(__file__).resolve().parent
 _HELPER_ROOT = _SCRIPT_DIR if (_SCRIPT_DIR / "security_helpers.py").exists() else _SCRIPT_DIR.parent
@@ -35,7 +35,7 @@ def _parse_args() -> argparse.Namespace:
     return parser.parse_args()
 
 
-def _request(url: str, token: str) -> tuple[List[Any], Dict[str, str]]:
+def _request(url: str, token: str) -> Tuple[List[Any], Dict[str, str]]:
     safe_url = normalize_https_url(url, allowed_host_suffixes={"sentry.io"})
     req = urllib.request.Request(
         safe_url,

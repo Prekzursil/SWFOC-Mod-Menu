@@ -1,5 +1,6 @@
 namespace SwfocTrainer.Core.Models;
 
+[System.CLSCompliant(false)]
 public sealed record HeroMechanicsProfile(
     bool SupportsRespawn,
     bool SupportsPermadeath,
@@ -20,6 +21,7 @@ public sealed record HeroMechanicsProfile(
             Diagnostics: new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase));
 }
 
+[System.CLSCompliant(false)]
 public sealed record HeroEditRequest(
     string TargetHeroId,
     string DesiredState,
@@ -29,6 +31,7 @@ public sealed record HeroEditRequest(
     string? SourceFaction = null,
     IReadOnlyDictionary<string, object?>? Parameters = null);
 
+[System.CLSCompliant(false)]
 public sealed record HeroVariantRequest(
     string SourceHeroId,
     string VariantHeroId,
