@@ -427,6 +427,136 @@ public sealed class ModMechanicDetectionServiceTests
         InvokePrivateStatic<IReadOnlyList<RuntimeMode>>("ResolveAllowedModes", RosterEntityKind.SpaceStructure)
             .Should().Equal(RuntimeMode.Galactic);
     }
+
+    [Fact]
+    public void PrivateGateEvaluators_ShouldFailClosed_WhenContextIsNull()
+    {
+        foreach (var methodName in new[]
+                 {
+                     "TryEvaluateDependencyGate",
+                     "TryEvaluateHelperGate",
+                     "TryEvaluateRosterGate",
+                     "TryEvaluateContextFactionGate",
+                     "TryEvaluateSymbolGate"
+                 })
+        {
+            var method = InvokePrivateStaticMethod(methodName);
+            var args = new object?[] { null, null };
+            var handled = (bool)method.Invoke(null, args)!;
+            handled.Should().BeTrue(methodName);
+
+            args[1].Should().NotBeNull(methodName + " should produce a support result");
+            var support = (ModMechanicSupport)args[1]!;
+            support.Supported.Should().BeFalse();
+            support.ReasonCode.Should().Be(RuntimeReasonCode.CAPABILITY_REQUIRED_MISSING);
+        }
+    }
+
+    [Fact]
+    public void EvaluateAction_ShouldReturnDefaultPass_WhenNoGateMatches()
+    {
+        var context = CreateActionEvaluationContext(
+            actionId: "unknown_action",
+            action: Action("unknown_action", ExecutionKind.Memory, "symbol"),
+            profile: BuildProfile(actions: new[] { Action("unknown_action", ExecutionKind.Memory, "symbol") }),
+            session: BuildSession(RuntimeMode.Galactic),
+            catalog: null,
+            disabledActions: new HashSet<string>(StringComparer.OrdinalIgnoreCase),
+            helperReady: true,
+            transplantReport: null);
+
+        var support = InvokePrivateStatic<ModMechanicSupport>("EvaluateAction", context);
+
+        support.Supported.Should().BeTrue();
+        support.ReasonCode.Should().Be(RuntimeReasonCode.CAPABILITY_PROBE_PASS);
+    }
+
+    [Fact]
+    public void BuildRosterEntities_ShouldReturnEmpty_WhenCatalogMissingOrInvalid()
+    {
+        var profile = BuildProfile(actions: Array.Empty<ActionSpec>());
+
+        InvokePrivateStatic<IReadOnlyList<RosterEntityRecord>>("BuildRosterEntities", profile, null).Should().BeEmpty();
+
+        var invalidCatalog = new Dictionary<string, IReadOnlyList<string>>(StringComparer.OrdinalIgnoreCase)
+        {
+            ["entity_catalog"] = new[] { "", "UnitOnly" }
+        };
+
+        InvokePrivateStatic<IReadOnlyList<RosterEntityRecord>>("BuildRosterEntities", profile, invalidCatalog).Should().BeEmpty();
+    }
+
+    [Fact]
+    public void ResolveHeroMechanicsProfile_ShouldApplyFallbackDefaults()
+    {
+        var profile = BuildProfile(actions: new[] { Action("set_hero_state_helper", ExecutionKind.Helper, "helperHookId", "globalKey") });
+        var session = BuildSession(RuntimeMode.Galactic, symbols: new[]
+        {
+            new SymbolInfo("hero_respawn_timer", (nint)0x10, SymbolValueType.Int32, AddressSource.Signature)
+        });
+
+        var mechanics = InvokePrivateStatic<HeroMechanicsProfile>("ResolveHeroMechanicsProfile", profile, session);
+
+        mechanics.SupportsRespawn.Should().BeTrue();
+        mechanics.DefaultRespawnTime.Should().Be(1);
+        mechanics.RespawnExceptionSources.Should().BeEmpty();
+    }
+
+    [Fact]
+    public void TryReadMetadataValue_ShouldTrimValues_AndRejectMissing()
+    {
+        var metadata = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
+        {
+            ["present"] = "  value  ",
+            ["blank"] = "   "
+        };
+
+        var presentArgs = new object?[] { metadata, "present", string.Empty };
+        ((bool)InvokePrivateStaticMethod("TryReadMetadataValue").Invoke(null, presentArgs)!).Should().BeTrue();
+        presentArgs[2].Should().Be("value");
+
+        var blankArgs = new object?[] { metadata, "blank", string.Empty };
+        ((bool)InvokePrivateStaticMethod("TryReadMetadataValue").Invoke(null, blankArgs)!).Should().BeFalse();
+
+        var missingArgs = new object?[] { metadata, "missing", string.Empty };
+        ((bool)InvokePrivateStaticMethod("TryReadMetadataValue").Invoke(null, missingArgs)!).Should().BeFalse();
+    }
+
+    [Fact]
+    public void AddCsvValues_ShouldIgnoreWhitespaceAndNormalizeEntries()
+    {
+        var sink = new HashSet<string>(StringComparer.OrdinalIgnoreCase) { "existing" };
+        InvokePrivateStaticMethod("AddCsvValues").Invoke(null, new object?[] { sink, "  one, two ,, one  " });
+
+        sink.Should().BeEquivalentTo(new[] { "existing", "one", "two" });
+    }
+
+    private static object CreateActionEvaluationContext(
+        string actionId,
+        ActionSpec action,
+        TrainerProfile profile,
+        AttachSession session,
+        IReadOnlyDictionary<string, IReadOnlyList<string>>? catalog,
+        IReadOnlySet<string> disabledActions,
+        bool helperReady,
+        TransplantValidationReport? transplantReport)
+    {
+        var contextType = typeof(ModMechanicDetectionService).GetNestedType("ActionEvaluationContext", System.Reflection.BindingFlags.NonPublic);
+        contextType.Should().NotBeNull();
+        var constructor = contextType!.GetConstructors(System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Public)
+            .Single(c => c.GetParameters().Length == 8);
+        return constructor.Invoke(new object?[]
+        {
+            actionId,
+            action,
+            profile,
+            session,
+            catalog,
+            disabledActions,
+            helperReady,
+            transplantReport
+        });
+    }
     private static IReadOnlyDictionary<string, IReadOnlyList<string>> CreateCatalog(string entityEntry)
     {
         return new Dictionary<string, IReadOnlyList<string>>(StringComparer.OrdinalIgnoreCase)
@@ -630,6 +760,8 @@ public sealed class ModMechanicDetectionServiceTests
         return method!;
     }
 }
+
+
 
 
 
