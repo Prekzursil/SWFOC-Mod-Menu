@@ -22,6 +22,7 @@ public sealed class ModMechanicDetectionService : IModMechanicDetectionService
     private const string ActionSwitchPlayerFaction = "switch_player_faction";
     private const string ActionEditHeroState = "edit_hero_state";
     private const string ActionCreateHeroVariant = "create_hero_variant";
+    private const string ActionEvaluationContextUnavailableMessage = "Action evaluation context is unavailable.";
 
     private static readonly IReadOnlySet<string> SpawnRosterActionIds = new HashSet<string>(StringComparer.OrdinalIgnoreCase)
     {
@@ -264,7 +265,7 @@ public sealed class ModMechanicDetectionService : IModMechanicDetectionService
                 ActionId: string.Empty,
                 Supported: false,
                 ReasonCode: RuntimeReasonCode.CAPABILITY_REQUIRED_MISSING,
-                Message: "Action evaluation context is unavailable.",
+                Message: ActionEvaluationContextUnavailableMessage,
                 Confidence: 0.99d);
             return true;
         }
@@ -307,7 +308,7 @@ public sealed class ModMechanicDetectionService : IModMechanicDetectionService
                 ActionId: string.Empty,
                 Supported: false,
                 ReasonCode: RuntimeReasonCode.CAPABILITY_REQUIRED_MISSING,
-                Message: "Action evaluation context is unavailable.",
+                Message: ActionEvaluationContextUnavailableMessage,
                 Confidence: 0.99d);
             return true;
         }
@@ -368,7 +369,7 @@ public sealed class ModMechanicDetectionService : IModMechanicDetectionService
                 ActionId: string.Empty,
                 Supported: false,
                 ReasonCode: RuntimeReasonCode.CAPABILITY_REQUIRED_MISSING,
-                Message: "Action evaluation context is unavailable.",
+                Message: ActionEvaluationContextUnavailableMessage,
                 Confidence: 0.99d);
             return true;
         }
@@ -419,7 +420,7 @@ public sealed class ModMechanicDetectionService : IModMechanicDetectionService
                 ActionId: string.Empty,
                 Supported: false,
                 ReasonCode: RuntimeReasonCode.CAPABILITY_REQUIRED_MISSING,
-                Message: "Action evaluation context is unavailable.",
+                Message: ActionEvaluationContextUnavailableMessage,
                 Confidence: 0.99d);
             return true;
         }
@@ -481,7 +482,7 @@ public sealed class ModMechanicDetectionService : IModMechanicDetectionService
                 ActionId: string.Empty,
                 Supported: false,
                 ReasonCode: RuntimeReasonCode.CAPABILITY_REQUIRED_MISSING,
-                Message: "Action evaluation context is unavailable.",
+                Message: ActionEvaluationContextUnavailableMessage,
                 Confidence: 0.99d);
             return true;
         }
