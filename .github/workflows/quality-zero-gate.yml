@@ -9,7 +9,6 @@ on:
 
 permissions:
   contents: read
-  statuses: write
 
 jobs:
   secrets-preflight:
@@ -46,6 +45,11 @@ jobs:
     runs-on: ubuntu-latest
     needs:
       - secrets-preflight
+    permissions:
+      contents: read
+      checks: read
+      pull-requests: read
+      statuses: write
     env:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       CHECK_SHA: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.sha || github.sha }}
@@ -84,6 +88,7 @@ jobs:
 
           python3 scripts/quality/check_required_checks.py "${args[@]}"
       - name: Evaluate legacy code/snyk context policy
+        if: always()
         run: |
           python3 scripts/quality/check_legacy_snyk_status.py \
             --repo "${GITHUB_REPOSITORY}" \
@@ -92,6 +97,7 @@ jobs:
             --out-json quality-zero-gate/legacy-snyk.json \
             --out-md quality-zero-gate/legacy-snyk.md
       - name: Reconcile legacy code/snyk status context
+        if: always()
         run: |
           python3 - <<'PY'
           import json
@@ -153,3 +159,4 @@ jobs:
         with:
           name: quality-zero-gate
           path: quality-zero-gate
+
