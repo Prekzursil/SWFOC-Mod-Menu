@@ -48,8 +48,6 @@ public sealed class MainWindowCoverageTests
         });
     }
 
-
-
     [Fact]
     public void AsyncCommand_ShouldRespectCanExecutePredicate()
     {
@@ -62,7 +60,6 @@ public sealed class MainWindowCoverageTests
 
         command.CanExecute(null).Should().BeFalse();
         command.Execute(null);
-        Thread.Sleep(25);
         executed.Should().BeFalse();
     }
 
@@ -79,17 +76,21 @@ public sealed class MainWindowCoverageTests
 
             command.CanExecute(null).Should().BeTrue();
             command.Execute(null);
-            Thread.Sleep(25);
-            command.CanExecute(null).Should().BeFalse();
+            WaitUntil(() => !command.CanExecute(null), TimeSpan.FromSeconds(1), "command should disable while an execution is in flight");
 
             gate.SetResult(true);
-            Thread.Sleep(25);
-            command.CanExecute(null).Should().BeTrue();
+            WaitUntil(() => command.CanExecute(null), TimeSpan.FromSeconds(1), "command should re-enable after task completion");
 
             AsyncCommand.RaiseCanExecuteChanged();
             return true;
         });
     }
+
+    private static void WaitUntil(Func<bool> predicate, TimeSpan timeout, string because)
+    {
+        SpinWait.SpinUntil(predicate, timeout).Should().BeTrue(because);
+    }
+
     private static T RunOnSta<T>(Func<T> func)
     {
         T? result = default;
