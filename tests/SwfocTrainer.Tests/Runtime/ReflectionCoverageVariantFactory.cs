@@ -5,7 +5,6 @@ using Microsoft.Extensions.Logging.Abstractions;
 using SwfocTrainer.App.ViewModels;
 using SwfocTrainer.Core.Logging;
 using SwfocTrainer.Core.Models;
-using SwfocTrainer.Core.Services;
 using SwfocTrainer.Runtime.Services;
 using SwfocTrainer.Saves.Config;
 
@@ -15,6 +14,41 @@ internal static class ReflectionCoverageVariantFactory
 {
     private const int MaxDepth = 3;
 
+    private static readonly IReadOnlyDictionary<Type, Func<int, object?>> PrimitiveBuilders =
+        new Dictionary<Type, Func<int, object?>>
+        {
+            [typeof(string)] = variant => variant switch { 0 => "coverage", 1 => string.Empty, _ => null },
+            [typeof(bool)] = variant => variant == 1,
+            [typeof(int)] = variant => variant switch { 0 => 1, 1 => -1, _ => 0 },
+            [typeof(uint)] = variant => variant == 1 ? 2u : 0u,
+            [typeof(long)] = variant => variant switch { 0 => 1L, 1 => -1L, _ => 0L },
+            [typeof(float)] = variant => variant switch { 0 => 1f, 1 => -1f, _ => 0f },
+            [typeof(double)] = variant => variant switch { 0 => 1d, 1 => -1d, _ => 0d },
+            [typeof(decimal)] = variant => variant switch { 0 => 1m, 1 => -1m, _ => 0m },
+            [typeof(Guid)] = variant => variant == 0 ? Guid.NewGuid() : Guid.Empty,
+            [typeof(DateTimeOffset)] = variant => variant == 1 ? DateTimeOffset.MinValue : DateTimeOffset.UtcNow,
+            [typeof(DateTime)] = variant => variant == 1 ? DateTime.MinValue : DateTime.UtcNow,
+            [typeof(TimeSpan)] = variant => variant == 1 ? TimeSpan.Zero : TimeSpan.FromMilliseconds(25),
+            [typeof(CancellationToken)] = _ => CancellationToken.None,
+            [typeof(byte[])] = variant => variant == 1 ? Array.Empty<byte>() : new byte[] { 1, 2, 3, 4 }
+        };
+
+    private static readonly IReadOnlyDictionary<Type, Func<int, object?>> DomainBuilders =
+        new Dictionary<Type, Func<int, object?>>
+        {
+            [typeof(ActionExecutionRequest)] = BuildActionExecutionRequest,
+            [typeof(ActionExecutionResult)] = variant => new ActionExecutionResult(variant != 1, variant == 1 ? "blocked" : "ok", AddressSource.None, new Dictionary<string, object?>()),
+            [typeof(TrainerProfile)] = _ => BuildProfile(),
+            [typeof(ProcessMetadata)] = _ => BuildSession(RuntimeMode.Galactic).Process,
+            [typeof(AttachSession)] = variant => BuildSession(variant == 1 ? RuntimeMode.TacticalLand : RuntimeMode.Galactic),
+            [typeof(SymbolMap)] = _ => new SymbolMap(new Dictionary<string, SymbolInfo>(StringComparer.OrdinalIgnoreCase)),
+            [typeof(SymbolInfo)] = _ => new SymbolInfo("credits", (nint)0x1000, SymbolValueType.Int32, AddressSource.Signature),
+            [typeof(SymbolValidationRule)] = _ => new SymbolValidationRule("credits", IntMin: 0, IntMax: 1_000_000),
+            [typeof(MainViewModelDependencies)] = _ => CreateNullDependencies(),
+            [typeof(SaveOptions)] = _ => new SaveOptions(),
+            [typeof(LaunchContext)] = _ => BuildLaunchContext()
+        };
+
     public static object? BuildArgument(Type parameterType, int variant, int depth = 0)
     {
         if (depth > MaxDepth)
@@ -22,57 +56,19 @@ internal static class ReflectionCoverageVariantFactory
             return parameterType.IsValueType ? Activator.CreateInstance(parameterType) : null;
         }
 
-        if (TryResolveNullable(parameterType, variant, out var normalizedType, out var nullableResult))
-        {
-            return nullableResult;
-        }
-
-        if (TryBuildPrimitive(normalizedType, variant, out var primitive))
-        {
-            return primitive;
-        }
-
-        if (TryBuildJson(normalizedType, variant, out var jsonValue))
-        {
-            return jsonValue;
-        }
-
-        if (TryBuildDomainModel(normalizedType, variant, out var modelValue))
-        {
-            return modelValue;
-        }
-
-        if (TryBuildCollection(normalizedType, variant, out var collectionValue))
-        {
-            return collectionValue;
-        }
-
-        if (TryBuildLogger(normalizedType, out var loggerValue))
-        {
-            return loggerValue;
-        }
-
-        if (normalizedType.IsEnum)
-        {
-            return BuildEnumValue(normalizedType, variant);
-        }
-
-        if (normalizedType.IsArray)
-        {
-            return Array.CreateInstance(normalizedType.GetElementType()!, variant == 1 ? 0 : 1);
-        }
-
-        if (normalizedType.IsInterface || normalizedType.IsAbstract)
+        var nullableResolution = ResolveNullableType(parameterType, variant);
+        if (nullableResolution.ShouldReturnNull)
         {
             return null;
         }
 
-        if (normalizedType.IsValueType)
+        var normalizedType = nullableResolution.Type;
+        if (TryBuildKnownValue(normalizedType, variant, out var knownValue))
         {
-            return Activator.CreateInstance(normalizedType);
+            return knownValue;
         }
 
-        return CreateInstance(normalizedType, alternate: variant == 1, depth + 1);
+        return BuildFallbackValue(normalizedType, variant, depth);
     }
 
     public static async Task AwaitResultAsync(object? result, int timeoutMs = 200)
@@ -88,16 +84,14 @@ internal static class ReflectionCoverageVariantFactory
             return;
         }
 
-        var valueTaskType = result.GetType();
-        if (valueTaskType.FullName is null || !valueTaskType.FullName.StartsWith("System.Threading.Tasks.ValueTask", StringComparison.Ordinal))
-        {
-            return;
-        }
+        var asTask = result
+            .GetType()
+            .GetMethod("AsTask", BindingFlags.Public | BindingFlags.Instance)?
+            .Invoke(result, null) as Task;
 
-        var asTask = valueTaskType.GetMethod("AsTask", BindingFlags.Public | BindingFlags.Instance);
-        if (asTask?.Invoke(result, null) is Task valueTask)
+        if (asTask is not null)
         {
-            await AwaitTaskWithTimeoutAsync(valueTask, timeoutMs);
+            await AwaitTaskWithTimeoutAsync(asTask, timeoutMs);
         }
     }
 
@@ -182,10 +176,9 @@ internal static class ReflectionCoverageVariantFactory
             return null;
         }
 
-        var direct = TryCreateWithDefaultConstructor(type);
-        if (direct.succeeded)
+        if (TryCreateWithDefaultConstructor(type, out var direct))
         {
-            return direct.instance;
+            return direct;
         }
 
         foreach (var ctor in GetConstructorsByArity(type))
@@ -194,29 +187,69 @@ internal static class ReflectionCoverageVariantFactory
                 .Select(parameter => BuildArgument(parameter.ParameterType, alternate ? 1 : 0, depth + 1))
                 .ToArray();
 
-            try
+            if (TryInvokeConstructor(ctor, args, out var instance))
             {
-                return ctor.Invoke(args);
-            }
-            catch (TargetInvocationException)
-            {
-                // Try next constructor.
-            }
-            catch (ArgumentException)
-            {
-                // Try next constructor.
-            }
-            catch (MemberAccessException)
-            {
-                // Try next constructor.
-            }
-            catch (NotSupportedException)
-            {
-                // Try next constructor.
+                return instance;
             }
         }
 
         return null;
+    }
+
+    private static bool TryBuildKnownValue(Type type, int variant, out object? value)
+    {
+        if (TryBuildPrimitive(type, variant, out value))
+        {
+            return true;
+        }
+
+        if (TryBuildJson(type, variant, out value))
+        {
+            return true;
+        }
+
+        if (TryBuildDomainModel(type, variant, out value))
+        {
+            return true;
+        }
+
+        if (TryBuildCollection(type, variant, out value))
+        {
+            return true;
+        }
+
+        if (TryBuildLogger(type, out value))
+        {
+            return true;
+        }
+
+        value = null;
+        return false;
+    }
+
+    private static object? BuildFallbackValue(Type type, int variant, int depth)
+    {
+        if (type.IsEnum)
+        {
+            return BuildEnumValue(type, variant);
+        }
+
+        if (type.IsArray)
+        {
+            return Array.CreateInstance(type.GetElementType()!, variant == 1 ? 0 : 1);
+        }
+
+        if (type.IsInterface || type.IsAbstract)
+        {
+            return null;
+        }
+
+        if (type.IsValueType)
+        {
+            return Activator.CreateInstance(type);
+        }
+
+        return CreateInstance(type, alternate: variant == 1, depth + 1);
     }
 
     private static async Task AwaitTaskWithTimeoutAsync(Task task, int timeoutMs)
@@ -231,65 +264,50 @@ internal static class ReflectionCoverageVariantFactory
         {
             await task;
         }
-        catch (OperationCanceledException)
+        catch (Exception ex) when (IsExpectedTaskException(ex))
         {
-            // Expected for cancellation branches.
-        }
-        catch (InvalidOperationException)
-        {
-            // Expected for fail-closed branches.
-        }
-        catch (TargetInvocationException)
-        {
-            // Expected for reflection-invoked methods.
-        }
-        catch (NullReferenceException)
-        {
-            // Expected for null-path guard coverage.
-        }
-        catch (IOException)
-        {
-            // File-system dependent runtime methods can fail in test sandboxes.
-        }
-        catch (UnauthorizedAccessException)
-        {
-            // Permission checks are expected on synthetic paths.
-        }
-        catch (InvalidDataException)
-        {
-            // Validation paths can intentionally reject synthetic payloads.
-        }
-        catch (FormatException)
-        {
-            // Variant payloads can trigger format guards.
-        }
-        catch (ArgumentOutOfRangeException)
-        {
-            // Range validation is expected for branch coverage variants.
+            // Reflective sweep intentionally exercises guarded failure branches.
         }
     }
 
-    private static (bool succeeded, object? instance) TryCreateWithDefaultConstructor(Type type)
+    private static bool IsExpectedTaskException(Exception ex)
     {
+        return ex is OperationCanceledException
+            or InvalidOperationException
+            or TargetInvocationException
+            or NullReferenceException
+            or IOException
+            or UnauthorizedAccessException
+            or InvalidDataException
+            or FormatException
+            or ArgumentOutOfRangeException;
+    }
+
+    private static bool TryCreateWithDefaultConstructor(Type type, out object? instance)
+    {
+        instance = null;
         try
         {
-            return (true, Activator.CreateInstance(type));
+            instance = Activator.CreateInstance(type);
+            return true;
         }
-        catch (MissingMethodException)
+        catch (Exception ex) when (ex is MissingMethodException or TargetInvocationException or MemberAccessException or NotSupportedException)
         {
-            return (false, null);
+            return false;
         }
-        catch (TargetInvocationException)
+    }
+
+    private static bool TryInvokeConstructor(ConstructorInfo ctor, object?[] args, out object? instance)
+    {
+        instance = null;
+        try
         {
-            return (false, null);
+            instance = ctor.Invoke(args);
+            return true;
         }
-        catch (MemberAccessException)
+        catch (Exception ex) when (ex is TargetInvocationException or ArgumentException or MemberAccessException or NotSupportedException)
         {
-            return (false, null);
-        }
-        catch (NotSupportedException)
-        {
-            return (false, null);
+            return false;
         }
     }
 
@@ -300,58 +318,31 @@ internal static class ReflectionCoverageVariantFactory
             .OrderBy(ctor => ctor.GetParameters().Length);
     }
 
-    private static bool TryResolveNullable(Type inputType, int variant, out Type normalizedType, out object? nullableResult)
+    private static (Type Type, bool ShouldReturnNull) ResolveNullableType(Type type, int variant)
     {
-        var underlying = Nullable.GetUnderlyingType(inputType);
+        var underlying = Nullable.GetUnderlyingType(type);
         if (underlying is null)
         {
-            normalizedType = inputType;
-            nullableResult = null;
-            return false;
+            return (type, false);
         }
 
-        if (variant == 2)
-        {
-            normalizedType = underlying;
-            nullableResult = null;
-            return true;
-        }
-
-        normalizedType = underlying;
-        nullableResult = null;
-        return false;
+        return (underlying, variant == 2);
     }
 
     private static bool TryBuildPrimitive(Type type, int variant, out object? value)
     {
-        value = null;
-
-        if (type == typeof(string))
+        if (PrimitiveBuilders.TryGetValue(type, out var builder))
         {
-            value = variant switch { 0 => "coverage", 1 => string.Empty, _ => null };
+            value = builder(variant);
             return true;
         }
 
-        if (type == typeof(bool)) { value = variant == 1; return true; }
-        if (type == typeof(int)) { value = variant switch { 0 => 1, 1 => -1, _ => 0 }; return true; }
-        if (type == typeof(uint)) { value = variant == 1 ? 2u : 0u; return true; }
-        if (type == typeof(long)) { value = variant switch { 0 => 1L, 1 => -1L, _ => 0L }; return true; }
-        if (type == typeof(float)) { value = variant switch { 0 => 1f, 1 => -1f, _ => 0f }; return true; }
-        if (type == typeof(double)) { value = variant switch { 0 => 1d, 1 => -1d, _ => 0d }; return true; }
-        if (type == typeof(decimal)) { value = variant switch { 0 => 1m, 1 => -1m, _ => 0m }; return true; }
-        if (type == typeof(Guid)) { value = variant == 0 ? Guid.NewGuid() : Guid.Empty; return true; }
-        if (type == typeof(DateTimeOffset)) { value = variant == 1 ? DateTimeOffset.MinValue : DateTimeOffset.UtcNow; return true; }
-        if (type == typeof(DateTime)) { value = variant == 1 ? DateTime.MinValue : DateTime.UtcNow; return true; }
-        if (type == typeof(TimeSpan)) { value = variant == 1 ? TimeSpan.Zero : TimeSpan.FromMilliseconds(25); return true; }
-        if (type == typeof(CancellationToken)) { value = CancellationToken.None; return true; }
-        if (type == typeof(byte[])) { value = variant == 1 ? Array.Empty<byte>() : new byte[] { 1, 2, 3, 4 }; return true; }
-
+        value = null;
         return false;
     }
 
     private static bool TryBuildJson(Type type, int variant, out object? value)
     {
-        value = null;
         if (type == typeof(JsonObject))
         {
             value = variant switch
@@ -369,42 +360,24 @@ internal static class ReflectionCoverageVariantFactory
             return true;
         }
 
+        value = null;
         return false;
     }
 
     private static bool TryBuildDomainModel(Type type, int variant, out object? value)
     {
+        if (DomainBuilders.TryGetValue(type, out var builder))
+        {
+            value = builder(variant);
+            return true;
+        }
+
         value = null;
-
-        if (type == typeof(ActionExecutionRequest))
-        {
-            value = BuildActionExecutionRequest(variant);
-            return true;
-        }
-
-        if (type == typeof(ActionExecutionResult))
-        {
-            value = new ActionExecutionResult(variant != 1, variant == 1 ? "blocked" : "ok", AddressSource.None, new Dictionary<string, object?>());
-            return true;
-        }
-
-        if (type == typeof(TrainerProfile)) { value = BuildProfile(); return true; }
-        if (type == typeof(ProcessMetadata)) { value = BuildSession(RuntimeMode.Galactic).Process; return true; }
-        if (type == typeof(AttachSession)) { value = BuildSession(variant == 1 ? RuntimeMode.TacticalLand : RuntimeMode.Galactic); return true; }
-        if (type == typeof(SymbolMap)) { value = new SymbolMap(new Dictionary<string, SymbolInfo>(StringComparer.OrdinalIgnoreCase)); return true; }
-        if (type == typeof(SymbolInfo)) { value = new SymbolInfo("credits", (nint)0x1000, SymbolValueType.Int32, AddressSource.Signature); return true; }
-        if (type == typeof(SymbolValidationRule)) { value = new SymbolValidationRule("credits", IntMin: 0, IntMax: 1_000_000); return true; }
-        if (type == typeof(MainViewModelDependencies)) { value = CreateNullDependencies(); return true; }
-        if (type == typeof(SaveOptions)) { value = new SaveOptions(); return true; }
-        if (type == typeof(LaunchContext)) { value = BuildLaunchContext(); return true; }
-
         return false;
     }
 
     private static bool TryBuildCollection(Type type, int variant, out object? value)
     {
-        value = null;
-
         if (typeof(IEnumerable<string>).IsAssignableFrom(type))
         {
             value = variant == 1 ? Array.Empty<string>() : new[] { "a", "b" };
@@ -427,13 +400,12 @@ internal static class ReflectionCoverageVariantFactory
             return true;
         }
 
+        value = null;
         return false;
     }
 
     private static bool TryBuildLogger(Type type, out object? value)
     {
-        value = null;
-
         if (type == typeof(ILogger))
         {
             value = NullLogger.Instance;
@@ -442,18 +414,14 @@ internal static class ReflectionCoverageVariantFactory
 
         if (!type.IsGenericType || type.GetGenericTypeDefinition() != typeof(ILogger<>))
         {
+            value = null;
             return false;
         }
 
         var loggerType = typeof(NullLogger<>).MakeGenericType(type.GetGenericArguments()[0]);
         var property = loggerType.GetProperty("Instance", BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static);
-        if (property is not null)
-        {
-            value = property.GetValue(null);
-            return true;
-        }
-
-        return false;
+        value = property?.GetValue(null);
+        return value is not null;
     }
 
     private static object BuildEnumValue(Type enumType, int variant)
@@ -522,6 +490,3 @@ internal static class ReflectionCoverageVariantFactory
             Source: "detected");
     }
 }
-
-
-

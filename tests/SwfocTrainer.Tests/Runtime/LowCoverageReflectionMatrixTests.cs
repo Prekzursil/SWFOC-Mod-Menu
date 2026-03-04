@@ -44,6 +44,25 @@ public sealed class LowCoverageReflectionMatrixTests
         "Program"
     };
 
+    private static readonly string[] TargetTypeNameFragments =
+    [
+        "Service",
+        "Resolver",
+        "Validator",
+        "ViewModel",
+        "Router",
+        "Reader",
+        "Codec",
+        "Archive",
+        "Extractor",
+        "Exporter",
+        "Locator",
+        "Builder",
+        "Probe",
+        "Onboarding",
+        "Calibration"
+    ];
+
     [Fact]
     public async Task HighDeficitTypes_ShouldExecuteMethodMatrixWithFallbackInputs()
     {
@@ -232,21 +251,7 @@ public sealed class LowCoverageReflectionMatrixTests
 
     private static bool HasTargetNameFragment(string typeName)
     {
-        return typeName.Contains("Service", StringComparison.Ordinal)
-            || typeName.Contains("Resolver", StringComparison.Ordinal)
-            || typeName.Contains("Validator", StringComparison.Ordinal)
-            || typeName.Contains("ViewModel", StringComparison.Ordinal)
-            || typeName.Contains("Router", StringComparison.Ordinal)
-            || typeName.Contains("Reader", StringComparison.Ordinal)
-            || typeName.Contains("Codec", StringComparison.Ordinal)
-            || typeName.Contains("Archive", StringComparison.Ordinal)
-            || typeName.Contains("Extractor", StringComparison.Ordinal)
-            || typeName.Contains("Exporter", StringComparison.Ordinal)
-            || typeName.Contains("Locator", StringComparison.Ordinal)
-            || typeName.Contains("Builder", StringComparison.Ordinal)
-            || typeName.Contains("Probe", StringComparison.Ordinal)
-            || typeName.Contains("Onboarding", StringComparison.Ordinal)
-            || typeName.Contains("Calibration", StringComparison.Ordinal);
+        return TargetTypeNameFragments.Any(fragment => typeName.Contains(fragment, StringComparison.Ordinal));
     }
 
     private static bool ShouldSweepMethod(MethodInfo method)
@@ -323,5 +328,6 @@ public sealed class LowCoverageReflectionMatrixTests
         }
     }
 }
+
 
 
