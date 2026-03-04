@@ -12,7 +12,7 @@ using SwfocTrainer.Saves.Config;
 
 namespace SwfocTrainer.Tests.Runtime;
 
-internal static partial class ReflectionCoverageVariantFactory
+internal static class ReflectionCoverageVariantFactory
 {
     private const int MaxDepth = 3;
 
@@ -38,7 +38,7 @@ internal static partial class ReflectionCoverageVariantFactory
     private static readonly IReadOnlyDictionary<Type, Func<int, object?>> DomainBuilders =
         new Dictionary<Type, Func<int, object?>>
         {
-            [typeof(ActionExecutionRequest)] = BuildActionExecutionRequest,
+            [typeof(ActionExecutionRequest)] = ReflectionCoverageActionFactory.BuildActionExecutionRequest,
             [typeof(ActionExecutionResult)] = variant => new ActionExecutionResult(variant != 1, variant == 1 ? "blocked" : "ok", AddressSource.None, new Dictionary<string, object?>()),
             [typeof(TrainerProfile)] = _ => BuildProfile(),
             [typeof(ProcessMetadata)] = variant => BuildSession((variant % 3) switch { 1 => RuntimeMode.TacticalLand, 2 => RuntimeMode.TacticalSpace, _ => RuntimeMode.Galactic }).Process,
@@ -48,7 +48,7 @@ internal static partial class ReflectionCoverageVariantFactory
             [typeof(SymbolValidationRule)] = _ => new SymbolValidationRule("credits", IntMin: 0, IntMax: 1_000_000),
             [typeof(MainViewModelDependencies)] = _ => CreateNullDependencies(),
             [typeof(SaveOptions)] = _ => new SaveOptions(),
-            [typeof(LaunchContext)] = _ => BuildLaunchContext(),
+            [typeof(LaunchContext)] = _ => ReflectionCoverageActionFactory.BuildLaunchContext(),
             [typeof(IProcessLocator)] = _ => new StubProcessLocator(BuildSession(RuntimeMode.Galactic).Process),
             [typeof(IProfileRepository)] = _ => new StubProfileRepository(BuildProfile()),
             [typeof(ISignatureResolver)] = _ => new StubSignatureResolver(),
@@ -69,7 +69,7 @@ internal static partial class ReflectionCoverageVariantFactory
                 reasonCode: RuntimeReasonCode.CAPABILITY_PROBE_PASS,
                 message: "ok"),
             [typeof(ITelemetryLogTailService)] = _ => new StubTelemetryLogTailService(),
-            [typeof(IServiceProvider)] = _ => BuildServiceProvider()
+            [typeof(IServiceProvider)] = _ => ReflectionCoverageRuntimeFactory.BuildServiceProvider()
         };
 
     public static object? BuildArgument(Type parameterType, int variant, int depth = 0)
@@ -128,8 +128,8 @@ internal static partial class ReflectionCoverageVariantFactory
             SteamWorkshopId: "1125571106",
             SignatureSets: Array.Empty<SignatureSet>(),
             FallbackOffsets: new Dictionary<string, long>(StringComparer.OrdinalIgnoreCase),
-            Actions: BuildActionMap(),
-            FeatureFlags: BuildFeatureFlags(),
+            Actions: ReflectionCoverageActionFactory.BuildActionMap(),
+            FeatureFlags: ReflectionCoverageActionFactory.BuildFeatureFlags(),
             CatalogSources: Array.Empty<CatalogSource>(),
             SaveSchemaId: "schema",
             HelperModHooks: Array.Empty<HelperHookSpec>(),
@@ -196,7 +196,7 @@ internal static partial class ReflectionCoverageVariantFactory
     {
         if (type == typeof(RuntimeAdapter))
         {
-            return CreateRuntimeAdapterInstance(alternate);
+            return ReflectionCoverageRuntimeFactory.CreateRuntimeAdapterInstance(alternate);
         }
 
         if (type == typeof(string) || type.IsInterface || type.IsAbstract)

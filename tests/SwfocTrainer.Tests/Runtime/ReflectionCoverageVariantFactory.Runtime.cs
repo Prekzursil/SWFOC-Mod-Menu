@@ -8,11 +8,11 @@ using SwfocTrainer.Runtime.Services;
 
 namespace SwfocTrainer.Tests.Runtime;
 
-internal static partial class ReflectionCoverageVariantFactory
+internal static class ReflectionCoverageRuntimeFactory
 {
-    private static RuntimeAdapter CreateRuntimeAdapterInstance(bool alternate)
+    public static RuntimeAdapter CreateRuntimeAdapterInstance(bool alternate)
     {
-        var profile = BuildProfile();
+        var profile = ReflectionCoverageVariantFactory.BuildProfile();
         var harness = new AdapterHarness();
         if (alternate)
         {
@@ -42,7 +42,7 @@ internal static partial class ReflectionCoverageVariantFactory
         return harness.CreateAdapter(profile, alternate ? RuntimeMode.TacticalLand : RuntimeMode.Galactic);
     }
 
-    private static IServiceProvider BuildServiceProvider()
+    public static IServiceProvider BuildServiceProvider()
     {
         var services = new Dictionary<Type, object>
         {

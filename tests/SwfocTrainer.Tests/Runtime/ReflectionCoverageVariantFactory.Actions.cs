@@ -6,7 +6,7 @@ using SwfocTrainer.Core.Models;
 
 namespace SwfocTrainer.Tests.Runtime;
 
-internal static partial class ReflectionCoverageVariantFactory
+internal static class ReflectionCoverageActionFactory
 {
     private static readonly string[] VariantActionIds =
     [
@@ -37,7 +37,7 @@ internal static partial class ReflectionCoverageVariantFactory
             ["create_hero_variant"] = BuildCreateHeroVariantPayload
         };
 
-    private static ActionExecutionRequest BuildActionExecutionRequest(int variant)
+    public static ActionExecutionRequest BuildActionExecutionRequest(int variant)
     {
         var actionId = ResolveVariantActionId(variant);
         var action = BuildActionMap()[actionId];
@@ -131,7 +131,7 @@ internal static partial class ReflectionCoverageVariantFactory
         };
     }
 
-    private static IReadOnlyDictionary<string, ActionSpec> BuildActionMap()
+    public static IReadOnlyDictionary<string, ActionSpec> BuildActionMap()
     {
         return new Dictionary<string, ActionSpec>(StringComparer.OrdinalIgnoreCase)
         {
@@ -155,7 +155,7 @@ internal static partial class ReflectionCoverageVariantFactory
         };
     }
 
-    private static IReadOnlyDictionary<string, bool> BuildFeatureFlags()
+    public static IReadOnlyDictionary<string, bool> BuildFeatureFlags()
     {
         return new Dictionary<string, bool>(StringComparer.OrdinalIgnoreCase)
         {
@@ -164,7 +164,7 @@ internal static partial class ReflectionCoverageVariantFactory
         };
     }
 
-    private static LaunchContext BuildLaunchContext()
+    public static LaunchContext BuildLaunchContext()
     {
         return new LaunchContext(
             LaunchKind.Workshop,
