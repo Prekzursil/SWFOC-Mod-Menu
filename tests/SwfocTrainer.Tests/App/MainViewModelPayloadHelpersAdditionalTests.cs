@@ -42,62 +42,13 @@ public sealed class MainViewModelPayloadHelpersAdditionalTests
     [Fact]
     public void BuildRequiredPayloadTemplate_ShouldCoverSwitchDefaults_ForExtendedKeys()
     {
-        var required = new JsonArray(
-            JsonValue.Create("uint32Key"),
-            JsonValue.Create(MainViewModelDefaults.PayloadKeyFloatValue),
-            JsonValue.Create(MainViewModelDefaults.PayloadKeyBoolValue),
-            JsonValue.Create(MainViewModelDefaults.PayloadKeyEnable),
-            JsonValue.Create("originalBytes"),
-            JsonValue.Create("unitId"),
-            JsonValue.Create("entryMarker"),
-            JsonValue.Create("faction"),
-            JsonValue.Create("globalKey"),
-            JsonValue.Create("desiredState"),
-            JsonValue.Create("populationPolicy"),
-            JsonValue.Create("persistencePolicy"),
-            JsonValue.Create("placementMode"),
-            JsonValue.Create("allowCrossFaction"),
-            JsonValue.Create("allowDuplicate"),
-            JsonValue.Create("forceOverride"),
-            JsonValue.Create("planetFlipMode"),
-            JsonValue.Create("flipMode"),
-            JsonValue.Create("variantGenerationMode"),
-            JsonValue.Create("nodePath"),
-            JsonValue.Create("value"),
-            JsonValue.Create("helperHookId"),
-            JsonValue.Create(MainViewModelDefaults.PayloadKeyFreeze),
-            JsonValue.Create(MainViewModelDefaults.PayloadKeyIntValue));
-
         var payload = MainViewModelPayloadHelpers.BuildRequiredPayloadTemplate(
             "unknown_action",
-            required,
+            BuildExtendedRequiredKeys(),
             MainViewModelDefaults.DefaultSymbolByActionId,
             MainViewModelDefaults.DefaultHelperHookByActionId);
 
-        payload["uint32Key"]!.ToString().Should().BeEmpty();
-        payload[MainViewModelDefaults.PayloadKeyFloatValue]!.GetValue<float>().Should().Be(1.0f);
-        payload[MainViewModelDefaults.PayloadKeyBoolValue]!.GetValue<bool>().Should().BeTrue();
-        payload[MainViewModelDefaults.PayloadKeyEnable]!.GetValue<bool>().Should().BeTrue();
-        payload["originalBytes"]!.ToString().Should().Be("48 8B 74 24 68");
-        payload["unitId"]!.ToString().Should().BeEmpty();
-        payload["entryMarker"]!.ToString().Should().BeEmpty();
-        payload["faction"]!.ToString().Should().BeEmpty();
-        payload["globalKey"]!.ToString().Should().BeEmpty();
-        payload["desiredState"]!.ToString().Should().Be("alive");
-        payload["populationPolicy"]!.ToString().Should().Be("Normal");
-        payload["persistencePolicy"]!.ToString().Should().Be("PersistentGalactic");
-        payload["placementMode"]!.ToString().Should().BeEmpty();
-        payload["allowCrossFaction"]!.GetValue<bool>().Should().BeTrue();
-        payload["allowDuplicate"]!.GetValue<bool>().Should().BeFalse();
-        payload["forceOverride"]!.GetValue<bool>().Should().BeFalse();
-        payload["planetFlipMode"]!.ToString().Should().Be("convert_everything");
-        payload["flipMode"]!.ToString().Should().Be("convert_everything");
-        payload["variantGenerationMode"]!.ToString().Should().Be("patch_mod_overlay");
-        payload["nodePath"]!.ToString().Should().BeEmpty();
-        payload["value"]!.ToString().Should().BeEmpty();
-        payload["helperHookId"]!.ToString().Should().Be("unknown_action");
-        payload[MainViewModelDefaults.PayloadKeyFreeze]!.GetValue<bool>().Should().BeTrue();
-        payload[MainViewModelDefaults.PayloadKeyIntValue]!.GetValue<int>().Should().Be(0);
+        AssertExtendedDefaults(payload);
     }
 
     [Fact]
@@ -180,5 +131,62 @@ public sealed class MainViewModelPayloadHelpersAdditionalTests
 
         payload["variantGenerationMode"]!.ToString().Should().Be("patch_mod_overlay");
         payload["allowCrossFaction"]!.GetValue<bool>().Should().BeTrue();
+    }
+
+    private static JsonArray BuildExtendedRequiredKeys()
+    {
+        return new JsonArray(
+            JsonValue.Create("uint32Key"),
+            JsonValue.Create(MainViewModelDefaults.PayloadKeyFloatValue),
+            JsonValue.Create(MainViewModelDefaults.PayloadKeyBoolValue),
+            JsonValue.Create(MainViewModelDefaults.PayloadKeyEnable),
+            JsonValue.Create("originalBytes"),
+            JsonValue.Create("unitId"),
+            JsonValue.Create("entryMarker"),
+            JsonValue.Create("faction"),
+            JsonValue.Create("globalKey"),
+            JsonValue.Create("desiredState"),
+            JsonValue.Create("populationPolicy"),
+            JsonValue.Create("persistencePolicy"),
+            JsonValue.Create("placementMode"),
+            JsonValue.Create("allowCrossFaction"),
+            JsonValue.Create("allowDuplicate"),
+            JsonValue.Create("forceOverride"),
+            JsonValue.Create("planetFlipMode"),
+            JsonValue.Create("flipMode"),
+            JsonValue.Create("variantGenerationMode"),
+            JsonValue.Create("nodePath"),
+            JsonValue.Create("value"),
+            JsonValue.Create("helperHookId"),
+            JsonValue.Create(MainViewModelDefaults.PayloadKeyFreeze),
+            JsonValue.Create(MainViewModelDefaults.PayloadKeyIntValue));
+    }
+
+    private static void AssertExtendedDefaults(JsonObject payload)
+    {
+        payload["uint32Key"]!.ToString().Should().BeEmpty();
+        payload[MainViewModelDefaults.PayloadKeyFloatValue]!.GetValue<float>().Should().Be(1.0f);
+        payload[MainViewModelDefaults.PayloadKeyBoolValue]!.GetValue<bool>().Should().BeTrue();
+        payload[MainViewModelDefaults.PayloadKeyEnable]!.GetValue<bool>().Should().BeTrue();
+        payload["originalBytes"]!.ToString().Should().Be("48 8B 74 24 68");
+        payload["unitId"]!.ToString().Should().BeEmpty();
+        payload["entryMarker"]!.ToString().Should().BeEmpty();
+        payload["faction"]!.ToString().Should().BeEmpty();
+        payload["globalKey"]!.ToString().Should().BeEmpty();
+        payload["desiredState"]!.ToString().Should().Be("alive");
+        payload["populationPolicy"]!.ToString().Should().Be("Normal");
+        payload["persistencePolicy"]!.ToString().Should().Be("PersistentGalactic");
+        payload["placementMode"]!.ToString().Should().BeEmpty();
+        payload["allowCrossFaction"]!.GetValue<bool>().Should().BeTrue();
+        payload["allowDuplicate"]!.GetValue<bool>().Should().BeFalse();
+        payload["forceOverride"]!.GetValue<bool>().Should().BeFalse();
+        payload["planetFlipMode"]!.ToString().Should().Be("convert_everything");
+        payload["flipMode"]!.ToString().Should().Be("convert_everything");
+        payload["variantGenerationMode"]!.ToString().Should().Be("patch_mod_overlay");
+        payload["nodePath"]!.ToString().Should().BeEmpty();
+        payload["value"]!.ToString().Should().BeEmpty();
+        payload["helperHookId"]!.ToString().Should().Be("unknown_action");
+        payload[MainViewModelDefaults.PayloadKeyFreeze]!.GetValue<bool>().Should().BeTrue();
+        payload[MainViewModelDefaults.PayloadKeyIntValue]!.GetValue<int>().Should().Be(0);
     }
 }
