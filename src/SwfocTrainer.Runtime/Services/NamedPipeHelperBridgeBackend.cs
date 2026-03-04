@@ -198,7 +198,7 @@ public sealed class NamedPipeHelperBridgeBackend : IHelperBridgeBackend
     public async Task<HelperBridgeProbeResult> ProbeAsync(HelperBridgeProbeRequest request, CancellationToken cancellationToken)
     {
         var safeRequest = request ?? throw new ArgumentNullException(nameof(request));
-        var process = safeRequest.Process ?? throw new ArgumentNullException(nameof(request.Process));
+        var process = safeRequest.Process ?? throw new ArgumentNullException(nameof(request));
 
         if (process.ProcessId <= 0)
         {
@@ -218,8 +218,8 @@ public sealed class NamedPipeHelperBridgeBackend : IHelperBridgeBackend
     public async Task<HelperBridgeExecutionResult> ExecuteAsync(HelperBridgeRequest request, CancellationToken cancellationToken)
     {
         var safeRequest = request ?? throw new ArgumentNullException(nameof(request));
-        var process = safeRequest.Process ?? throw new ArgumentNullException(nameof(request.Process));
-        _ = safeRequest.ActionRequest ?? throw new ArgumentNullException(nameof(request.ActionRequest));
+        var process = safeRequest.Process ?? throw new ArgumentNullException(nameof(request));
+        _ = safeRequest.ActionRequest ?? throw new ArgumentNullException(nameof(request));
 
         var probe = await ProbeForExecutionAsync(safeRequest, cancellationToken) ??
                     CreateProcessUnavailableProbeResult(process.ProcessId);
@@ -313,8 +313,8 @@ public sealed class NamedPipeHelperBridgeBackend : IHelperBridgeBackend
     private async Task<HelperBridgeProbeResult> ProbeForExecutionAsync(HelperBridgeRequest request, CancellationToken cancellationToken)
     {
         var safeRequest = request ?? throw new ArgumentNullException(nameof(request));
-        var process = safeRequest.Process ?? throw new ArgumentNullException(nameof(request.Process));
-        var actionRequest = safeRequest.ActionRequest ?? throw new ArgumentNullException(nameof(request.ActionRequest));
+        var process = safeRequest.Process ?? throw new ArgumentNullException(nameof(request));
+        var actionRequest = safeRequest.ActionRequest ?? throw new ArgumentNullException(nameof(request));
 
         var hooks = safeRequest.Hook is null ? Array.Empty<HelperHookSpec>() : new[] { safeRequest.Hook };
         var probeRequest = new HelperBridgeProbeRequest(actionRequest.ProfileId, process, hooks);
@@ -335,7 +335,7 @@ public sealed class NamedPipeHelperBridgeBackend : IHelperBridgeBackend
     private static HelperOperationContext ResolveOperationContext(HelperBridgeRequest request)
     {
         var safeRequest = request ?? throw new ArgumentNullException(nameof(request));
-        var actionRequest = safeRequest.ActionRequest ?? throw new ArgumentNullException(nameof(request.ActionRequest));
+        var actionRequest = safeRequest.ActionRequest ?? throw new ArgumentNullException(nameof(request));
 
         var operationKind = safeRequest.OperationKind == HelperBridgeOperationKind.Unknown
             ? ResolveOperationKind(actionRequest.Action.Id)
@@ -351,7 +351,7 @@ public sealed class NamedPipeHelperBridgeBackend : IHelperBridgeBackend
     private static JsonObject BuildPayload(HelperBridgeRequest request, HelperOperationContext operation)
     {
         var safeRequest = request ?? throw new ArgumentNullException(nameof(request));
-        var actionRequest = safeRequest.ActionRequest ?? throw new ArgumentNullException(nameof(request.ActionRequest));
+        var actionRequest = safeRequest.ActionRequest ?? throw new ArgumentNullException(nameof(request));
 
         var payload = actionRequest.Payload.DeepClone() as JsonObject ?? new JsonObject();
         payload[PayloadOperationKind] ??= operation.OperationKind.ToString();
@@ -370,7 +370,7 @@ public sealed class NamedPipeHelperBridgeBackend : IHelperBridgeBackend
     private static void ApplyHookPayload(HelperBridgeRequest request, JsonObject payload)
     {
         var safeRequest = request ?? throw new ArgumentNullException(nameof(request));
-        var actionRequest = safeRequest.ActionRequest ?? throw new ArgumentNullException(nameof(request.ActionRequest));
+        var actionRequest = safeRequest.ActionRequest ?? throw new ArgumentNullException(nameof(request));
 
         var hook = safeRequest.Hook;
         if (hook is null)
@@ -391,8 +391,8 @@ public sealed class NamedPipeHelperBridgeBackend : IHelperBridgeBackend
         HelperOperationContext operation)
     {
         var safeRequest = request ?? throw new ArgumentNullException(nameof(request));
-        var process = safeRequest.Process ?? throw new ArgumentNullException(nameof(request.Process));
-        var actionRequest = safeRequest.ActionRequest ?? throw new ArgumentNullException(nameof(request.ActionRequest));
+        var process = safeRequest.Process ?? throw new ArgumentNullException(nameof(request));
+        var actionRequest = safeRequest.ActionRequest ?? throw new ArgumentNullException(nameof(request));
 
         var context = new Dictionary<string, object?>(StringComparer.OrdinalIgnoreCase);
         if (actionRequest.Context is not null)
@@ -691,3 +691,4 @@ public sealed class NamedPipeHelperBridgeBackend : IHelperBridgeBackend
         HelperBridgeOperationKind OperationKind,
         string OperationToken);
 }
+
