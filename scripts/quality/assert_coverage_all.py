@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-from __future__ import absolute_import
+from __future__ import absolute_import, division
 
 import argparse
 import json
@@ -151,9 +151,8 @@ def render_markdown(payload: Dict[str, Any]) -> str:
 
 
 def ensure_output(path: Path) -> Path:
-    resolved = path.resolve(strict=False)
-    resolved.parent.mkdir(parents=True, exist_ok=True)
-    return resolved
+    path.parent.mkdir(parents=True, exist_ok=True)
+    return path
 
 
 def parse_required_languages(raw_value: str) -> Set[str]:
