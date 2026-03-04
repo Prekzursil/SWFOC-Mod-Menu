@@ -88,6 +88,43 @@
       "CAPABILITY_PROBE_PASS"
     ]
   },
+  "heroMechanicsSummary": {
+    "supportsRespawn": true,
+    "supportsPermadeath": false,
+    "supportsRescue": true,
+    "defaultRespawnTime": 900,
+    "duplicateHeroPolicy": "allow_with_warning",
+    "respawnExceptionSources": [
+      "profiles/default/helper/scripts/aotr/hero_state_bridge.lua"
+    ]
+  },
+  "operationPolicySummary": {
+    "tacticalEphemeralCount": 1,
+    "galacticPersistentCount": 1,
+    "crossFactionEnabledCount": 2,
+    "forceOverrideCount": 0
+  },
+  "fleetTransferSafetySummary": {
+    "totalActions": 1,
+    "safeTransfers": 1,
+    "blockedTransfers": 0,
+    "reasonCodes": [
+      "CAPABILITY_PROBE_PASS"
+    ]
+  },
+  "planetFlipSummary": {
+    "totalActions": 1,
+    "emptyRetreatCount": 0,
+    "convertEverythingCount": 1,
+    "blockedActions": 0,
+    "reasonCodes": []
+  },
+  "entityTransplantBlockers": {
+    "hasBlockers": false,
+    "blockingEntityCount": 0,
+    "blockingEntityIds": [],
+    "reasonCodes": []
+  },
   "runtimeMode": {
     "hint": "Unknown",
     "effective": "TacticalLand",
