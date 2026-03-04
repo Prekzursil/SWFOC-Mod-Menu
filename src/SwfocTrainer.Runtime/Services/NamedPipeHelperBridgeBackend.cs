@@ -196,6 +196,9 @@ public sealed class NamedPipeHelperBridgeBackend : IHelperBridgeBackend
 
     public async Task<HelperBridgeProbeResult> ProbeAsync(HelperBridgeProbeRequest request, CancellationToken cancellationToken)
     {
+        ArgumentNullException.ThrowIfNull(request);
+        ArgumentNullException.ThrowIfNull(request.Process);
+
         if (request.Process.ProcessId <= 0)
         {
             return CreateProcessUnavailableProbeResult(request.Process.ProcessId);
@@ -214,6 +217,8 @@ public sealed class NamedPipeHelperBridgeBackend : IHelperBridgeBackend
     public async Task<HelperBridgeExecutionResult> ExecuteAsync(HelperBridgeRequest request, CancellationToken cancellationToken)
     {
         ArgumentNullException.ThrowIfNull(request);
+        ArgumentNullException.ThrowIfNull(request.Process);
+        ArgumentNullException.ThrowIfNull(request.ActionRequest);
 
         var probe = await ProbeForExecutionAsync(request, cancellationToken) ??
                     CreateProcessUnavailableProbeResult(request.Process.ProcessId);

@@ -8,7 +8,7 @@ import urllib.parse
 import urllib.request
 from datetime import datetime, timezone
 from pathlib import Path
-from typing import Any
+from typing import Any, Dict, List
 
 _SCRIPT_DIR = Path(__file__).resolve().parent
 _HELPER_ROOT = _SCRIPT_DIR if (_SCRIPT_DIR / "security_helpers.py").exists() else _SCRIPT_DIR.parent
@@ -35,7 +35,7 @@ def _parse_args() -> argparse.Namespace:
     return parser.parse_args()
 
 
-def _request(url: str, token: str) -> tuple[list[Any], dict[str, str]]:
+def _request(url: str, token: str) -> tuple[List[Any], Dict[str, str]]:
     safe_url = normalize_https_url(url, allowed_host_suffixes={"sentry.io"})
     req = urllib.request.Request(
         safe_url,
@@ -54,7 +54,7 @@ def _request(url: str, token: str) -> tuple[list[Any], dict[str, str]]:
     return body, headers
 
 
-def _hits_from_headers(headers: dict[str, str]) -> int | None:
+def _hits_from_headers(headers: Dict[str, str]) -> int | None:
     raw = headers.get("x-hits")
     if not raw:
         return None
@@ -64,7 +64,7 @@ def _hits_from_headers(headers: dict[str, str]) -> int | None:
         return None
 
 
-def _render_md(payload: dict) -> str:
+def _render_md(payload: Dict[str, Any]) -> str:
     lines = [
         "# Sentry Zero Gate",
         "",
@@ -124,8 +124,8 @@ def main() -> int:
     projects = [p.strip() for p in projects if p and p.strip()]
     projects = list(dict.fromkeys(projects))
 
-    findings: list[str] = []
-    project_results: list[dict[str, Any]] = []
+    findings: List[str] = []
+    project_results: List[Dict[str, Any]] = []
 
     if not token:
         findings.append("SENTRY_AUTH_TOKEN is missing.")
@@ -146,8 +146,8 @@ def main() -> int:
                     project_candidates.append(lowered)
 
                 last_error: Exception | None = None
-                issues: list[Any] = []
-                headers: dict[str, str] = {}
+                issues: List[Any] = []
+                headers: Dict[str, str] = {}
                 resolved_project = project
                 for candidate in project_candidates:
                     project_slug = urllib.parse.quote(candidate, safe="")
@@ -206,3 +206,4 @@ def main() -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
+

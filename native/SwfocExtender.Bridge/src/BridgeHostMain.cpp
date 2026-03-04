@@ -7,7 +7,6 @@
 #include "swfoc_extender/plugins/ProcessMutationHelpers.hpp"
 
 #include <array>
-#include <algorithm>
 #include <atomic>
 #include <chrono>
 #include <cctype>
@@ -58,48 +57,21 @@ using swfoc::extender::bridge::host_json::TryReadInt;
 constexpr const char* kBackendName = "extender";
 constexpr const char* kDefaultPipeName = "SwfocExtenderBridge";
 
+// cppcheck-suppress misra-c2012-12.3
 constexpr std::array<const char*, 20> kSupportedFeatures {
-    "freeze_timer",
-    "toggle_fog_reveal",
-    "toggle_ai",
-    "set_unit_cap",
-    "toggle_instant_build_patch",
-    "set_credits",
-    "spawn_unit_helper",
-    "spawn_context_entity",
-    "spawn_tactical_entity",
-    "spawn_galactic_entity",
-    "place_planet_building",
-    "set_context_allegiance",
-    "set_context_faction",
-    "set_hero_state_helper",
-    "toggle_roe_respawn_helper",
-    "transfer_fleet_safe",
-    "flip_planet_owner",
-    "switch_player_faction",
-    "edit_hero_state",
-    "create_hero_variant"};
+    "freeze_timer", "toggle_fog_reveal", "toggle_ai", "set_unit_cap", "toggle_instant_build_patch", "set_credits",
+    "spawn_unit_helper", "spawn_context_entity", "spawn_tactical_entity", "spawn_galactic_entity", "place_planet_building",
+    "set_context_allegiance", "set_context_faction", "set_hero_state_helper", "toggle_roe_respawn_helper", "transfer_fleet_safe",
+    "flip_planet_owner", "switch_player_faction", "edit_hero_state", "create_hero_variant"};
 
-constexpr std::array<const char*, 3> kGlobalToggleFeatures {
-    "freeze_timer",
-    "toggle_fog_reveal",
-    "toggle_ai"};
+// cppcheck-suppress misra-c2012-12.3
+constexpr std::array<const char*, 3> kGlobalToggleFeatures {"freeze_timer", "toggle_fog_reveal", "toggle_ai"};
 
+// cppcheck-suppress misra-c2012-12.3
 constexpr std::array<const char*, 14> kHelperFeatures {
-    "spawn_unit_helper",
-    "spawn_context_entity",
-    "spawn_tactical_entity",
-    "spawn_galactic_entity",
-    "place_planet_building",
-    "set_context_allegiance",
-    "set_context_faction",
-    "set_hero_state_helper",
-    "toggle_roe_respawn_helper",
-    "transfer_fleet_safe",
-    "flip_planet_owner",
-    "switch_player_faction",
-    "edit_hero_state",
-    "create_hero_variant"};
+    "spawn_unit_helper", "spawn_context_entity", "spawn_tactical_entity", "spawn_galactic_entity", "place_planet_building",
+    "set_context_allegiance", "set_context_faction", "set_hero_state_helper", "toggle_roe_respawn_helper", "transfer_fleet_safe",
+    "flip_planet_owner", "switch_player_faction", "edit_hero_state", "create_hero_variant"};
 
 /*
 Cppcheck note (targeted): if cppcheck runs without STL/Windows SDK include paths,
@@ -207,7 +179,13 @@ PluginRequest BuildPluginRequest(const BridgeCommand& command) {
 
 template <std::size_t N>
 bool ContainsFeature(const std::string& featureId, const std::array<const char*, N>& candidates) {
-    return std::find(candidates.begin(), candidates.end(), featureId) != candidates.end();
+    for (const auto* candidate : candidates) {
+        if (featureId == candidate) {
+            return true;
+        }
+    }
+
+    return false;
 }
 
 bool IsGlobalToggleFeature(const std::string& featureId) {
@@ -362,20 +340,9 @@ CapabilitySnapshot BuildCapabilityProbeSnapshot(const PluginRequest& probeContex
         probeContext,
         "toggle_instant_build_patch",
         {"instant_build_patch_injection", "instant_build_patch", "instant_build", "toggle_instant_build_patch"});
-    AddHelperProbeFeature(snapshot, probeContext, "spawn_unit_helper");
-    AddHelperProbeFeature(snapshot, probeContext, "spawn_context_entity");
-    AddHelperProbeFeature(snapshot, probeContext, "spawn_tactical_entity");
-    AddHelperProbeFeature(snapshot, probeContext, "spawn_galactic_entity");
-    AddHelperProbeFeature(snapshot, probeContext, "place_planet_building");
-    AddHelperProbeFeature(snapshot, probeContext, "set_context_allegiance");
-    AddHelperProbeFeature(snapshot, probeContext, "set_context_faction");
-    AddHelperProbeFeature(snapshot, probeContext, "set_hero_state_helper");
-    AddHelperProbeFeature(snapshot, probeContext, "toggle_roe_respawn_helper");
-    AddHelperProbeFeature(snapshot, probeContext, "transfer_fleet_safe");
-    AddHelperProbeFeature(snapshot, probeContext, "flip_planet_owner");
-    AddHelperProbeFeature(snapshot, probeContext, "switch_player_faction");
-    AddHelperProbeFeature(snapshot, probeContext, "edit_hero_state");
-    AddHelperProbeFeature(snapshot, probeContext, "create_hero_variant");
+    for (const auto* featureId : kHelperFeatures) {
+        AddHelperProbeFeature(snapshot, probeContext, featureId);
+    }
 
     EnsureCapabilityEntries(snapshot);
     return snapshot;

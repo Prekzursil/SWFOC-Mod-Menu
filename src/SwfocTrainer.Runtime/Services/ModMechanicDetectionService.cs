@@ -119,8 +119,9 @@ public sealed class ModMechanicDetectionService : IModMechanicDetectionService
 
         try
         {
+            var profileId = profile.Id ?? string.Empty;
             return await transplantCompatibilityService
-                .ValidateAsync(profile.Id, activeWorkshopIds, rosterEntities, cancellationToken);
+                .ValidateAsync(profileId, activeWorkshopIds, rosterEntities, cancellationToken);
         }
         catch (OperationCanceledException)
         {
@@ -144,12 +145,13 @@ public sealed class ModMechanicDetectionService : IModMechanicDetectionService
         ArgumentNullException.ThrowIfNull(session);
 
         var heroMechanics = ResolveHeroMechanicsProfile(profile, session);
+        var processMetadata = session.Process.Metadata;
 
         var diagnostics = new Dictionary<string, object?>(StringComparer.OrdinalIgnoreCase)
         {
-            ["dependencyValidation"] = ReadMetadataValue(session.Process.Metadata, "dependencyValidation") ?? string.Empty,
+            ["dependencyValidation"] = ReadMetadataValue(processMetadata, "dependencyValidation") ?? string.Empty,
             ["dependencyDisabledActions"] = disabledActions.OrderBy(x => x, StringComparer.OrdinalIgnoreCase).ToArray(),
-            ["helperBridgeState"] = ReadMetadataValue(session.Process.Metadata, "helperBridgeState") ?? "unknown",
+            ["helperBridgeState"] = ReadMetadataValue(processMetadata, "helperBridgeState") ?? "unknown",
             ["unitCatalogCount"] = catalog is not null && catalog.TryGetValue(UnitCatalogKey, out var units) ? units.Count : 0,
             ["factionCatalogCount"] = catalog is not null && catalog.TryGetValue(FactionCatalogKey, out var factions) ? factions.Count : 0,
             ["buildingCatalogCount"] = catalog is not null && catalog.TryGetValue(BuildingCatalogKey, out var buildings) ? buildings.Count : 0,
@@ -181,9 +183,19 @@ public sealed class ModMechanicDetectionService : IModMechanicDetectionService
         bool helperReady,
         TransplantValidationReport? transplantReport)
     {
-        var supports = new List<ModMechanicSupport>(profile.Actions.Count);
-        foreach (var (actionId, action) in profile.Actions.OrderBy(x => x.Key, StringComparer.OrdinalIgnoreCase))
+        var actions = profile.Actions;
+        if (actions is null || actions.Count == 0)
         {
+            return Array.Empty<ModMechanicSupport>();
+        }
+
+        var supports = new List<ModMechanicSupport>(actions.Count);
+        foreach (var (actionId, action) in actions.OrderBy(x => x.Key, StringComparer.OrdinalIgnoreCase))
+        {
+            if (string.IsNullOrWhiteSpace(actionId) || action is null)
+            {
+                continue;
+            }
             supports.Add(EvaluateAction(new ActionEvaluationContext(
                 ActionId: actionId,
                 Action: action,
@@ -252,6 +264,17 @@ public sealed class ModMechanicDetectionService : IModMechanicDetectionService
 
     private static bool TryEvaluateHelperGate(ActionEvaluationContext context, out ModMechanicSupport support)
     {
+        if (context.Action is null)
+        {
+            support = new ModMechanicSupport(
+                ActionId: context.ActionId,
+                Supported: false,
+                ReasonCode: RuntimeReasonCode.CAPABILITY_REQUIRED_MISSING,
+                Message: "Action metadata is unavailable for helper gate evaluation.",
+                Confidence: 0.99d);
+            return true;
+        }
+
         if (context.Action.ExecutionKind != ExecutionKind.Helper)
         {
             support = default!;
@@ -269,7 +292,8 @@ public sealed class ModMechanicDetectionService : IModMechanicDetectionService
             return true;
         }
 
-        if (context.Profile.HelperModHooks.Count == 0)
+        var helperHooks = context.Profile.HelperModHooks;
+        if (helperHooks is null || helperHooks.Count == 0)
         {
             support = new ModMechanicSupport(
                 ActionId: context.ActionId,
