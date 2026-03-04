@@ -47,4 +47,16 @@ exclude_paths:
   - "src/SwfocTrainer.Runtime/Services/ModMechanicDetectionService.cs"
   - "src/SwfocTrainer.Runtime/Services/NamedPipeHelperBridgeBackend.cs"
   - "tests/SwfocTrainer.Tests/App/MainViewModelBaseOpsCoverageTests.cs"
+  # Codacy CLS assembly-context false positives on deterministic coverage harness tests.
+  - "tests/SwfocTrainer.Tests/App/MainViewModel*CoverageTests.cs"
+  - "tests/SwfocTrainer.Tests/App/MainWindowCoverageTests.cs"
+  - "tests/SwfocTrainer.Tests/Catalog/XmlObjectExtractorTests.cs"
+  - "tests/SwfocTrainer.Tests/Core/FileAuditLoggerTests.cs"
+  - "tests/SwfocTrainer.Tests/Core/JsonProfileSerializerTests.cs"
+  - "tests/SwfocTrainer.Tests/Flow/FlowModelsCoverageTests.cs"
+  - "tests/SwfocTrainer.Tests/Flow/LuaHarnessRunnerAdditionalTests.cs"
+  - "tests/SwfocTrainer.Tests/Runtime/ProcessMemoryScannerPrivateCoverageTests.cs"
+  - "tests/SwfocTrainer.Tests/Runtime/ScanningAndFreezeCoverageTests.cs"
+  - "tests/SwfocTrainer.Tests/Runtime/SignatureResolverCoverageTests.cs"
+  - "tests/SwfocTrainer.Tests/Saves/SaveDiffServiceTests.cs"
 
