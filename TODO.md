@@ -236,6 +236,3 @@ Reliability rule for runtime/mod tasks:
   evidence: tool `tools/validate-binary-fingerprint.ps1`
   evidence: tool `tools/validate-signature-pack.ps1`
 
-
-
-
