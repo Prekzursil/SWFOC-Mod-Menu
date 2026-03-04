@@ -1,3 +1,4 @@
+#pragma warning disable CA1014
 using System.Reflection;
 using FluentAssertions;
 using SwfocTrainer.Core.Models;
@@ -156,3 +157,6 @@ public sealed class ProcessLocatorAdditionalCoverageTests
         return ((IEnumerable<string>)property!.GetValue(instance)!).ToArray();
     }
 }
+
+#pragma warning restore CA1014
+

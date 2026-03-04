@@ -1,3 +1,4 @@
+#pragma warning disable CA1014
 using System.Reflection;
 using System.Text.Json;
 using System.Text.Json.Nodes;
@@ -239,3 +240,6 @@ public sealed class RuntimeAdapterAdditionalCoverageTests
         return (T)property!.GetValue(instance)!;
     }
 }
+
+#pragma warning restore CA1014
+

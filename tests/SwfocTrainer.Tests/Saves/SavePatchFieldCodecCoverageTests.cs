@@ -1,3 +1,4 @@
+#pragma warning disable CA1014
 using System.Reflection;
 using System.Text;
 using System.Text.Json;
@@ -128,4 +129,5 @@ public sealed class SavePatchFieldCodecCoverageTests
     }
 }
 
+#pragma warning restore CA1014
 

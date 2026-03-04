@@ -1,3 +1,4 @@
+#pragma warning disable CA1014
 using System.Text.Json;
 using System.Text.Json.Nodes;
 using FluentAssertions;
@@ -187,3 +188,6 @@ public sealed class NamedPipeExtenderBackendContextHelpersCoverageTests
         parsed["must_exist"].Available.Should().BeFalse();
     }
 }
+
+#pragma warning restore CA1014
+

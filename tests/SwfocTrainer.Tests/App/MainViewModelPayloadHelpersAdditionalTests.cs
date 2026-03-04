@@ -1,3 +1,4 @@
+#pragma warning disable CA1014
 using System.Text.Json.Nodes;
 using FluentAssertions;
 using SwfocTrainer.App.ViewModels;
@@ -190,3 +191,6 @@ public sealed class MainViewModelPayloadHelpersAdditionalTests
         payload[MainViewModelDefaults.PayloadKeyIntValue]!.GetValue<int>().Should().Be(0);
     }
 }
+
+#pragma warning restore CA1014
+
