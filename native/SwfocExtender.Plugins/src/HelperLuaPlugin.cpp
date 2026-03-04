@@ -24,6 +24,48 @@ bool IsSupportedHelperFeature(const std::string& featureId) {
            featureId == "create_hero_variant";
 }
 
+
+const char* ResolveExpectedHelperEntryPoint(const std::string& featureId) {
+    if (featureId == "spawn_unit_helper") {
+        return "SWFOC_Trainer_Spawn";
+    }
+
+    if (featureId == "spawn_context_entity" ||
+        featureId == "spawn_tactical_entity" ||
+        featureId == "spawn_galactic_entity") {
+        return "SWFOC_Trainer_Spawn_Context";
+    }
+
+    if (featureId == "place_planet_building") {
+        return "SWFOC_Trainer_Place_Building";
+    }
+
+    if (featureId == "set_context_allegiance" || featureId == "set_context_faction") {
+        return "SWFOC_Trainer_Set_Context_Allegiance";
+    }
+
+    if (featureId == "transfer_fleet_safe") {
+        return "SWFOC_Trainer_Transfer_Fleet_Safe";
+    }
+
+    if (featureId == "flip_planet_owner") {
+        return "SWFOC_Trainer_Flip_Planet_Owner";
+    }
+
+    if (featureId == "switch_player_faction") {
+        return "SWFOC_Trainer_Switch_Player_Faction";
+    }
+
+    if (featureId == "edit_hero_state") {
+        return "SWFOC_Trainer_Edit_Hero_State";
+    }
+
+    if (featureId == "create_hero_variant") {
+        return "SWFOC_Trainer_Create_Hero_Variant";
+    }
+
+    return nullptr;
+}
 bool HasValue(const std::string& value) {
     return !value.empty();
 }
@@ -147,6 +189,24 @@ bool ValidateCommonRequest(const PluginRequest& request, PluginResult& failure) 
             request,
             "HELPER_ENTRYPOINT_NOT_FOUND",
             "Helper hook metadata is incomplete for helper bridge execution.");
+        return false;
+    }
+
+    if (!HasValue(request.helperScript)) {
+        failure = BuildFailure(
+            request,
+            "HELPER_INVOCATION_FAILED",
+            "Helper bridge execution requires helperScript metadata.");
+        return false;
+    }
+
+    const auto* expectedEntryPoint = ResolveExpectedHelperEntryPoint(request.featureId);
+    if (expectedEntryPoint != nullptr && request.helperEntryPoint != expectedEntryPoint) {
+        failure = BuildFailure(
+            request,
+            "HELPER_ENTRYPOINT_NOT_FOUND",
+            "Helper entrypoint did not match expected operation entrypoint.",
+            {{"expectedHelperEntryPoint", expectedEntryPoint}});
         return false;
     }
 
