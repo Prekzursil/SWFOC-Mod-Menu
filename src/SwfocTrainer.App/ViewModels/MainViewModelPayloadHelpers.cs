@@ -10,6 +10,7 @@ internal static class MainViewModelPayloadHelpers
     private const string PayloadForceOverrideKey = "forceOverride";
     private const string PayloadPopulationPolicyKey = "populationPolicy";
     private const string PayloadPersistencePolicyKey = "persistencePolicy";
+    private const string DefaultFlipMode = "convert_everything";
 
     private static readonly IReadOnlyDictionary<string, Action<JsonObject>> ActionPayloadDefaults =
         new Dictionary<string, Action<JsonObject>>(StringComparer.OrdinalIgnoreCase)
@@ -155,8 +156,8 @@ internal static class MainViewModelPayloadHelpers
             PayloadAllowCrossFactionKey => JsonValue.Create(true),
             "allowDuplicate" => JsonValue.Create(false),
             PayloadForceOverrideKey => JsonValue.Create(false),
-            "planetFlipMode" => JsonValue.Create("convert_everything"),
-            "flipMode" => JsonValue.Create("convert_everything"),
+            "planetFlipMode" => JsonValue.Create(DefaultFlipMode),
+            "flipMode" => JsonValue.Create(DefaultFlipMode),
             "variantGenerationMode" => JsonValue.Create("patch_mod_overlay"),
             "nodePath" => JsonValue.Create(string.Empty),
             "value" => JsonValue.Create(string.Empty),
@@ -205,8 +206,8 @@ internal static class MainViewModelPayloadHelpers
         {
             throw new ArgumentNullException(nameof(payload));
         }
-        payload["flipMode"] ??= "convert_everything";
-        payload["planetFlipMode"] ??= payload["flipMode"]?.GetValue<string>() ?? "convert_everything";
+        payload["flipMode"] ??= DefaultFlipMode;
+        payload["planetFlipMode"] ??= payload["flipMode"]?.GetValue<string>() ?? DefaultFlipMode;
         payload[PayloadAllowCrossFactionKey] ??= true;
         payload[PayloadForceOverrideKey] ??= false;
     }
@@ -252,3 +253,5 @@ internal static class MainViewModelPayloadHelpers
         payload[PayloadAllowCrossFactionKey] ??= true;
     }
 }
+
+

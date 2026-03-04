@@ -55,6 +55,11 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
     private const string PayloadPersistencePolicyKey = "persistencePolicy";
     private const string PayloadAllowCrossFactionKey = "allowCrossFaction";
     private const string PayloadSymbolKey = "symbol";
+    private const string PayloadPlacementModeKey = "placementMode";
+    private const string PayloadForceOverrideKey = "forceOverride";
+    private const string PayloadEntityIdKey = "entityId";
+    private const string PayloadTargetFactionKey = "targetFaction";
+    private const string PayloadSourceFactionKey = "sourceFaction";
     private const string ContextSpawnDefaultHookId = "spawn_bridge";
     private const string ContextSpawnEntryPoint = "SWFOC_Trainer_Spawn_Context";
     private const string ContextSpawnLegacyEntryPoint = "SWFOC_Trainer_Spawn";
@@ -3505,7 +3510,7 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
         EnforcePayloadValue(payload, PayloadPopulationPolicyKey, PopulationPolicyForceZeroTactical, policyReasonCodes, RuntimeReasonCode.SPAWN_POPULATION_POLICY_ENFORCED);
         EnforcePayloadValue(payload, PayloadPersistencePolicyKey, PersistencePolicyEphemeralBattleOnly, policyReasonCodes, RuntimeReasonCode.SPAWN_EPHEMERAL_POLICY_ENFORCED);
         payload[PayloadAllowCrossFactionKey] ??= true;
-        payload["placementMode"] ??= "reinforcement_zone";
+        payload[PayloadPlacementModeKey] ??= "reinforcement_zone";
 
         if (HasAnyPayloadValue(payload, "entryMarker", "worldPosition"))
         {
@@ -3533,16 +3538,16 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
         ICollection<string> policyReasonCodes,
         IReadOnlyDictionary<string, object?> diagnostics)
     {
-        var forceOverride = TryReadBooleanPayload(payload, "forceOverride", out var explicitForceOverride) && explicitForceOverride;
-        var explicitPlacementMode = TryReadStringPayload(payload, "placementMode", out var placementMode)
+        var forceOverride = TryReadBooleanPayload(payload, PayloadForceOverrideKey, out var explicitForceOverride) && explicitForceOverride;
+        var explicitPlacementMode = TryReadStringPayload(payload, PayloadPlacementModeKey, out var placementMode)
             ? placementMode
             : string.Empty;
 
         payload[PayloadAllowCrossFactionKey] ??= true;
-        payload["placementMode"] ??= "safe_rules";
-        payload["forceOverride"] ??= false;
+        payload[PayloadPlacementModeKey] ??= "safe_rules";
+        payload[PayloadForceOverrideKey] ??= false;
 
-        if (!HasAnyPayloadValue(payload, "entityId", "entityBlueprintId", "unitId"))
+        if (!HasAnyPayloadValue(payload, PayloadEntityIdKey, "entityBlueprintId", "unitId"))
         {
             return BuildPolicyFailure(
                 request,
@@ -3588,10 +3593,10 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
         IReadOnlyDictionary<string, object?> diagnostics)
     {
         payload[PayloadAllowCrossFactionKey] ??= true;
-        payload["placementMode"] ??= "safe_transfer";
-        payload["forceOverride"] ??= false;
+        payload[PayloadPlacementModeKey] ??= "safe_transfer";
+        payload[PayloadForceOverrideKey] ??= false;
 
-        if (!HasAnyPayloadValue(payload, "entityId", "fleetEntityId"))
+        if (!HasAnyPayloadValue(payload, PayloadEntityIdKey, "fleetEntityId"))
         {
             return BuildPolicyFailure(
                 request,
@@ -3601,7 +3606,7 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
                 diagnostics);
         }
 
-        if (!HasAnyPayloadValue(payload, "sourceFaction") || !HasAnyPayloadValue(payload, "targetFaction"))
+        if (!HasAnyPayloadValue(payload, PayloadSourceFactionKey) || !HasAnyPayloadValue(payload, PayloadTargetFactionKey))
         {
             return BuildPolicyFailure(
                 request,
@@ -3611,8 +3616,8 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
                 diagnostics);
         }
 
-        if (TryReadStringPayload(payload, "sourceFaction", out var sourceFaction) &&
-            TryReadStringPayload(payload, "targetFaction", out var targetFaction) &&
+        if (TryReadStringPayload(payload, PayloadSourceFactionKey, out var sourceFaction) &&
+            TryReadStringPayload(payload, PayloadTargetFactionKey, out var targetFaction) &&
             sourceFaction.Equals(targetFaction, StringComparison.OrdinalIgnoreCase))
         {
             return BuildPolicyFailure(
@@ -3623,7 +3628,7 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
                 diagnostics);
         }
 
-        var forceOverride = TryReadBooleanPayload(payload, "forceOverride", out var explicitForceOverride) && explicitForceOverride;
+        var forceOverride = TryReadBooleanPayload(payload, PayloadForceOverrideKey, out var explicitForceOverride) && explicitForceOverride;
         if (!forceOverride && !HasAnyPayloadValue(payload, "safePlanetId", "safe_planet_id", "targetPlanetId"))
         {
             return BuildPolicyFailure(
@@ -3644,7 +3649,7 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
         IReadOnlyDictionary<string, object?> diagnostics)
     {
         payload[PayloadAllowCrossFactionKey] ??= true;
-        payload["forceOverride"] ??= false;
+        payload[PayloadForceOverrideKey] ??= false;
 
         if (!TryReadStringPayload(payload, "flipMode", out var flipMode))
         {
@@ -3656,7 +3661,7 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
 
         payload["planetFlipMode"] = flipMode;
 
-        if (!HasAnyPayloadValue(payload, "entityId", "planetEntityId", "planetId"))
+        if (!HasAnyPayloadValue(payload, PayloadEntityIdKey, "planetEntityId", "planetId"))
         {
             return BuildPolicyFailure(
                 request,
@@ -3666,7 +3671,7 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
                 diagnostics);
         }
 
-        if (!HasAnyPayloadValue(payload, "targetFaction"))
+        if (!HasAnyPayloadValue(payload, PayloadTargetFactionKey))
         {
             return BuildPolicyFailure(
                 request,
@@ -3698,7 +3703,7 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
     {
         payload[PayloadAllowCrossFactionKey] ??= true;
 
-        if (!HasAnyPayloadValue(payload, "targetFaction"))
+        if (!HasAnyPayloadValue(payload, PayloadTargetFactionKey))
         {
             return BuildPolicyFailure(
                 request,
@@ -3722,7 +3727,7 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
         payload["desiredState"] ??= "alive";
         payload["allowDuplicate"] ??= false;
 
-        if (!HasAnyPayloadValue(payload, "entityId", "heroEntityId", "heroGlobalKey", "globalKey"))
+        if (!HasAnyPayloadValue(payload, PayloadEntityIdKey, "heroEntityId", "heroGlobalKey", "globalKey"))
         {
             return BuildPolicyFailure(
                 request,
@@ -3763,7 +3768,7 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
         payload[PayloadAllowCrossFactionKey] ??= true;
         payload["variantGenerationMode"] ??= "patch_mod_overlay";
 
-        if (!HasAnyPayloadValue(payload, "entityId", "sourceHeroId"))
+        if (!HasAnyPayloadValue(payload, PayloadEntityIdKey, "sourceHeroId"))
         {
             return BuildPolicyFailure(
                 request,
@@ -6552,3 +6557,5 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
         return info;
     }
 }
+
+
