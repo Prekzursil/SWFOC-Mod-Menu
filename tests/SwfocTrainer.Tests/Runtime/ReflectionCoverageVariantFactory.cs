@@ -378,30 +378,63 @@ internal static class ReflectionCoverageVariantFactory
 
     private static bool TryBuildCollection(Type type, int variant, out object? value)
     {
-        if (typeof(IEnumerable<string>).IsAssignableFrom(type))
+        if (TryBuildStringEnumerable(type, variant, out value))
         {
-            value = variant == 1 ? Array.Empty<string>() : new[] { "a", "b" };
             return true;
         }
 
-        if (type == typeof(IReadOnlyDictionary<string, object?>) || type == typeof(IDictionary<string, object?>))
+        if (TryBuildObjectDictionary(type, variant, out value))
         {
-            value = variant == 1
-                ? new Dictionary<string, object?>(StringComparer.OrdinalIgnoreCase)
-                : new Dictionary<string, object?>(StringComparer.OrdinalIgnoreCase) { ["mode"] = "galactic" };
             return true;
         }
 
-        if (type == typeof(IReadOnlyDictionary<string, string>) || type == typeof(IDictionary<string, string>))
+        if (TryBuildStringDictionary(type, variant, out value))
         {
-            value = variant == 1
-                ? new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
-                : new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase) { ["mode"] = "galactic" };
             return true;
         }
 
         value = null;
         return false;
+    }
+
+    private static bool TryBuildStringEnumerable(Type type, int variant, out object? value)
+    {
+        if (!typeof(IEnumerable<string>).IsAssignableFrom(type))
+        {
+            value = null;
+            return false;
+        }
+
+        value = variant == 1 ? Array.Empty<string>() : new[] { "a", "b" };
+        return true;
+    }
+
+    private static bool TryBuildObjectDictionary(Type type, int variant, out object? value)
+    {
+        if (type != typeof(IReadOnlyDictionary<string, object?>) && type != typeof(IDictionary<string, object?>))
+        {
+            value = null;
+            return false;
+        }
+
+        value = variant == 1
+            ? new Dictionary<string, object?>(StringComparer.OrdinalIgnoreCase)
+            : new Dictionary<string, object?>(StringComparer.OrdinalIgnoreCase) { ["mode"] = "galactic" };
+        return true;
+    }
+
+    private static bool TryBuildStringDictionary(Type type, int variant, out object? value)
+    {
+        if (type != typeof(IReadOnlyDictionary<string, string>) && type != typeof(IDictionary<string, string>))
+        {
+            value = null;
+            return false;
+        }
+
+        value = variant == 1
+            ? new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
+            : new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase) { ["mode"] = "galactic" };
+        return true;
     }
 
     private static bool TryBuildLogger(Type type, out object? value)
