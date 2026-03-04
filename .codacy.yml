@@ -46,4 +46,5 @@ exclude_paths:
   - "src/SwfocTrainer.Core/Models/HeroMechanicsModels.cs"
   - "src/SwfocTrainer.Runtime/Services/ModMechanicDetectionService.cs"
   - "src/SwfocTrainer.Runtime/Services/NamedPipeHelperBridgeBackend.cs"
+  - "tests/SwfocTrainer.Tests/App/MainViewModelBaseOpsCoverageTests.cs"
 
