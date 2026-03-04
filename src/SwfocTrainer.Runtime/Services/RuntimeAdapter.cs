@@ -3457,6 +3457,26 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
         {
             failure = ApplyPlanetBuildingPolicies(request, payload, policyReasonCodes, diagnostics);
         }
+        else if (request.Action.Id.Equals(ActionIdTransferFleetSafe, StringComparison.OrdinalIgnoreCase))
+        {
+            failure = ApplyTransferFleetPolicies(request, payload, policyReasonCodes, diagnostics);
+        }
+        else if (request.Action.Id.Equals(ActionIdFlipPlanetOwner, StringComparison.OrdinalIgnoreCase))
+        {
+            failure = ApplyPlanetFlipPolicies(request, payload, policyReasonCodes, diagnostics);
+        }
+        else if (request.Action.Id.Equals(ActionIdSwitchPlayerFaction, StringComparison.OrdinalIgnoreCase))
+        {
+            failure = ApplySwitchPlayerFactionPolicies(request, payload, policyReasonCodes, diagnostics);
+        }
+        else if (request.Action.Id.Equals(ActionIdEditHeroState, StringComparison.OrdinalIgnoreCase))
+        {
+            failure = ApplyEditHeroStatePolicies(request, payload, policyReasonCodes, diagnostics);
+        }
+        else if (request.Action.Id.Equals(ActionIdCreateHeroVariant, StringComparison.OrdinalIgnoreCase))
+        {
+            failure = ApplyCreateHeroVariantPolicies(request, payload, policyReasonCodes, diagnostics);
+        }
         else if (ShouldDefaultCrossFaction(request.Action.Id))
         {
             payload[PayloadAllowCrossFactionKey] ??= true;
@@ -3556,6 +3576,211 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
         if (forceOverride)
         {
             AppendPolicyReason(policyReasonCodes, RuntimeReasonCode.BUILDING_FORCE_OVERRIDE_APPLIED);
+        }
+
+        return null;
+    }
+
+    private static HelperActionPolicyResolution? ApplyTransferFleetPolicies(
+        ActionExecutionRequest request,
+        JsonObject payload,
+        ICollection<string> policyReasonCodes,
+        IReadOnlyDictionary<string, object?> diagnostics)
+    {
+        payload[PayloadAllowCrossFactionKey] ??= true;
+        payload["placementMode"] ??= "safe_transfer";
+        payload["forceOverride"] ??= false;
+
+        if (!HasAnyPayloadValue(payload, "entityId", "fleetEntityId"))
+        {
+            return BuildPolicyFailure(
+                request,
+                RuntimeReasonCode.CAPABILITY_REQUIRED_MISSING,
+                "Fleet transfer requires entityId/fleetEntityId.",
+                policyReasonCodes,
+                diagnostics);
+        }
+
+        if (!HasAnyPayloadValue(payload, "sourceFaction") || !HasAnyPayloadValue(payload, "targetFaction"))
+        {
+            return BuildPolicyFailure(
+                request,
+                RuntimeReasonCode.CAPABILITY_REQUIRED_MISSING,
+                "Fleet transfer requires sourceFaction and targetFaction.",
+                policyReasonCodes,
+                diagnostics);
+        }
+
+        if (TryReadStringPayload(payload, "sourceFaction", out var sourceFaction) &&
+            TryReadStringPayload(payload, "targetFaction", out var targetFaction) &&
+            sourceFaction.Equals(targetFaction, StringComparison.OrdinalIgnoreCase))
+        {
+            return BuildPolicyFailure(
+                request,
+                RuntimeReasonCode.SAFETY_MUTATION_BLOCKED,
+                "Fleet transfer requires sourceFaction and targetFaction to differ.",
+                policyReasonCodes,
+                diagnostics);
+        }
+
+        var forceOverride = TryReadBooleanPayload(payload, "forceOverride", out var explicitForceOverride) && explicitForceOverride;
+        if (!forceOverride && !HasAnyPayloadValue(payload, "safePlanetId", "safe_planet_id", "targetPlanetId"))
+        {
+            return BuildPolicyFailure(
+                request,
+                RuntimeReasonCode.SAFETY_MUTATION_BLOCKED,
+                "Fleet transfer requires safePlanetId/targetPlanetId unless forceOverride=true.",
+                policyReasonCodes,
+                diagnostics);
+        }
+
+        return null;
+    }
+
+    private static HelperActionPolicyResolution? ApplyPlanetFlipPolicies(
+        ActionExecutionRequest request,
+        JsonObject payload,
+        ICollection<string> policyReasonCodes,
+        IReadOnlyDictionary<string, object?> diagnostics)
+    {
+        payload[PayloadAllowCrossFactionKey] ??= true;
+        payload["forceOverride"] ??= false;
+
+        if (!TryReadStringPayload(payload, "flipMode", out var flipMode))
+        {
+            flipMode = TryReadStringPayload(payload, "planetFlipMode", out var legacyFlipMode)
+                ? legacyFlipMode
+                : "convert_everything";
+            payload["flipMode"] = flipMode;
+        }
+
+        payload["planetFlipMode"] = flipMode;
+
+        if (!HasAnyPayloadValue(payload, "entityId", "planetEntityId", "planetId"))
+        {
+            return BuildPolicyFailure(
+                request,
+                RuntimeReasonCode.CAPABILITY_REQUIRED_MISSING,
+                "Planet flip requires entityId/planetEntityId/planetId.",
+                policyReasonCodes,
+                diagnostics);
+        }
+
+        if (!HasAnyPayloadValue(payload, "targetFaction"))
+        {
+            return BuildPolicyFailure(
+                request,
+                RuntimeReasonCode.CAPABILITY_REQUIRED_MISSING,
+                "Planet flip requires targetFaction.",
+                policyReasonCodes,
+                diagnostics);
+        }
+
+        if (!string.Equals(flipMode, "empty_and_retreat", StringComparison.OrdinalIgnoreCase) &&
+            !string.Equals(flipMode, "convert_everything", StringComparison.OrdinalIgnoreCase))
+        {
+            return BuildPolicyFailure(
+                request,
+                RuntimeReasonCode.SAFETY_MUTATION_BLOCKED,
+                "Planet flip mode must be empty_and_retreat or convert_everything.",
+                policyReasonCodes,
+                diagnostics);
+        }
+
+        return null;
+    }
+
+    private static HelperActionPolicyResolution? ApplySwitchPlayerFactionPolicies(
+        ActionExecutionRequest request,
+        JsonObject payload,
+        ICollection<string> policyReasonCodes,
+        IReadOnlyDictionary<string, object?> diagnostics)
+    {
+        payload[PayloadAllowCrossFactionKey] ??= true;
+
+        if (!HasAnyPayloadValue(payload, "targetFaction"))
+        {
+            return BuildPolicyFailure(
+                request,
+                RuntimeReasonCode.CAPABILITY_REQUIRED_MISSING,
+                "Switch player faction requires targetFaction.",
+                policyReasonCodes,
+                diagnostics);
+        }
+
+        return null;
+    }
+
+    private static HelperActionPolicyResolution? ApplyEditHeroStatePolicies(
+        ActionExecutionRequest request,
+        JsonObject payload,
+        ICollection<string> policyReasonCodes,
+        IReadOnlyDictionary<string, object?> diagnostics)
+    {
+        payload[PayloadAllowCrossFactionKey] ??= true;
+        payload["heroStatePolicy"] ??= "mod_adaptive";
+        payload["desiredState"] ??= "alive";
+        payload["allowDuplicate"] ??= false;
+
+        if (!HasAnyPayloadValue(payload, "entityId", "heroEntityId", "heroGlobalKey", "globalKey"))
+        {
+            return BuildPolicyFailure(
+                request,
+                RuntimeReasonCode.CAPABILITY_REQUIRED_MISSING,
+                "Hero state edit requires entityId/heroEntityId or heroGlobalKey/globalKey.",
+                policyReasonCodes,
+                diagnostics);
+        }
+
+        if (!TryReadStringPayload(payload, "desiredState", out var desiredState))
+        {
+            desiredState = "alive";
+        }
+
+        if (!string.Equals(desiredState, "alive", StringComparison.OrdinalIgnoreCase) &&
+            !string.Equals(desiredState, "dead", StringComparison.OrdinalIgnoreCase) &&
+            !string.Equals(desiredState, "respawn_pending", StringComparison.OrdinalIgnoreCase) &&
+            !string.Equals(desiredState, "permadead", StringComparison.OrdinalIgnoreCase) &&
+            !string.Equals(desiredState, "remove", StringComparison.OrdinalIgnoreCase))
+        {
+            return BuildPolicyFailure(
+                request,
+                RuntimeReasonCode.SAFETY_MUTATION_BLOCKED,
+                "desiredState must be one of alive, dead, respawn_pending, permadead, remove.",
+                policyReasonCodes,
+                diagnostics);
+        }
+
+        return null;
+    }
+
+    private static HelperActionPolicyResolution? ApplyCreateHeroVariantPolicies(
+        ActionExecutionRequest request,
+        JsonObject payload,
+        ICollection<string> policyReasonCodes,
+        IReadOnlyDictionary<string, object?> diagnostics)
+    {
+        payload[PayloadAllowCrossFactionKey] ??= true;
+        payload["variantGenerationMode"] ??= "patch_mod_overlay";
+
+        if (!HasAnyPayloadValue(payload, "entityId", "sourceHeroId"))
+        {
+            return BuildPolicyFailure(
+                request,
+                RuntimeReasonCode.CAPABILITY_REQUIRED_MISSING,
+                "Hero variant creation requires entityId/sourceHeroId.",
+                policyReasonCodes,
+                diagnostics);
+        }
+
+        if (!HasAnyPayloadValue(payload, "unitId", "variantHeroId"))
+        {
+            return BuildPolicyFailure(
+                request,
+                RuntimeReasonCode.CAPABILITY_REQUIRED_MISSING,
+                "Hero variant creation requires unitId/variantHeroId.",
+                policyReasonCodes,
+                diagnostics);
         }
 
         return null;

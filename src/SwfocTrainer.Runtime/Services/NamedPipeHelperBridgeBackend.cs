@@ -174,13 +174,16 @@ public sealed class NamedPipeHelperBridgeBackend : IHelperBridgeBackend
             [ActionFlipPlanetOwner] = static payload =>
             {
                 payload[PayloadAllowCrossFaction] ??= true;
-                payload["planetFlipMode"] ??= "convert_everything";
+                payload["flipMode"] ??= "convert_everything";
+                payload["planetFlipMode"] ??= payload["flipMode"]?.GetValue<string>() ?? "convert_everything";
                 payload[PayloadForceOverride] ??= false;
             },
             [ActionSwitchPlayerFaction] = static payload => payload[PayloadAllowCrossFaction] ??= true,
             [ActionEditHeroState] = static payload =>
             {
                 payload["heroStatePolicy"] ??= "mod_adaptive";
+                payload["desiredState"] ??= "alive";
+                payload["allowDuplicate"] ??= false;
                 payload[PayloadAllowCrossFaction] ??= true;
             },
             [ActionCreateHeroVariant] = static payload =>

@@ -43,6 +43,7 @@ public sealed class MainViewModelM5CoverageTests
         var flipPayload = new JsonObject();
         MainViewModelPayloadHelpers.ApplyActionSpecificPayloadDefaults("flip_planet_owner", flipPayload);
 
+        flipPayload["flipMode"]!.ToString().Should().Be("convert_everything");
         flipPayload["planetFlipMode"]!.ToString().Should().Be("convert_everything");
         flipPayload["allowCrossFaction"]!.GetValue<bool>().Should().BeTrue();
         flipPayload["forceOverride"]!.GetValue<bool>().Should().BeFalse();

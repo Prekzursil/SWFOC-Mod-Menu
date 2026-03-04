@@ -185,6 +185,40 @@ public sealed class RuntimeAdapterContextSpawnDefaultsTests
         operationKind.Should().Be(expected);
     }
 
+    [Theory]
+    [InlineData("spawn_tactical_entity", "tactical_ephemeral_zero_pop")]
+    [InlineData("spawn_galactic_entity", "galactic_persistent_spawn")]
+    [InlineData("place_planet_building", "galactic_building_safe_rules")]
+    [InlineData("transfer_fleet_safe", "fleet_transfer_safe")]
+    [InlineData("flip_planet_owner", "planet_flip_transactional")]
+    [InlineData("switch_player_faction", "switch_player_faction")]
+    [InlineData("edit_hero_state", "hero_state_adaptive")]
+    [InlineData("create_hero_variant", "hero_variant_patch_mod")]
+    [InlineData("toggle_ai", "helper_operation_default")]
+    public void ResolveHelperOperationPolicy_ShouldMapExpectedPolicy(string actionId, string expectedPolicy)
+    {
+        var request = BuildRequest(actionId, new JsonObject());
+
+        var policy = (string?)InvokePrivateStatic("ResolveHelperOperationPolicy", request);
+
+        policy.Should().Be(expectedPolicy);
+    }
+
+    [Theory]
+    [InlineData("transfer_fleet_safe", "transfer_fleet_safe")]
+    [InlineData("flip_planet_owner", "flip_planet_owner")]
+    [InlineData("switch_player_faction", "switch_player_faction")]
+    [InlineData("edit_hero_state", "edit_hero_state")]
+    [InlineData("set_hero_state_helper", "edit_hero_state")]
+    [InlineData("create_hero_variant", "create_hero_variant")]
+    public void ResolveMutationIntent_ShouldMapExpectedIntent(string actionId, string expectedIntent)
+    {
+        var intent = (string?)InvokePrivateStatic("ResolveMutationIntent", actionId);
+
+        intent.Should().Be(expectedIntent);
+    }
+
+
     [Fact]
     public void TryResolveContextFactionRequest_ShouldReturnNone_WhenActionIsNotContextRouted()
     {

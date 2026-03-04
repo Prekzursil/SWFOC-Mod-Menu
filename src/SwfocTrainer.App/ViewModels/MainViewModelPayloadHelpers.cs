@@ -156,6 +156,7 @@ internal static class MainViewModelPayloadHelpers
             "allowDuplicate" => JsonValue.Create(false),
             PayloadForceOverrideKey => JsonValue.Create(false),
             "planetFlipMode" => JsonValue.Create("convert_everything"),
+            "flipMode" => JsonValue.Create("convert_everything"),
             "variantGenerationMode" => JsonValue.Create("patch_mod_overlay"),
             "nodePath" => JsonValue.Create(string.Empty),
             "value" => JsonValue.Create(string.Empty),
@@ -204,7 +205,8 @@ internal static class MainViewModelPayloadHelpers
         {
             throw new ArgumentNullException(nameof(payload));
         }
-        payload["planetFlipMode"] ??= "convert_everything";
+        payload["flipMode"] ??= "convert_everything";
+        payload["planetFlipMode"] ??= payload["flipMode"]?.GetValue<string>() ?? "convert_everything";
         payload[PayloadAllowCrossFactionKey] ??= true;
         payload[PayloadForceOverrideKey] ??= false;
     }

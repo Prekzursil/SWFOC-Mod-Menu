@@ -776,6 +776,247 @@ public sealed class RuntimeAdapterExecuteCoverageTests
     }
 
     [Fact]
+    public async Task ExecuteHelperActionAsync_ShouldFailClosedForFleetTransfer_WhenSafePlanetMissingWithoutOverride()
+    {
+        var helper = new StubHelperBridgeBackend();
+        var harness = new AdapterHarness
+        {
+            HelperBridgeBackend = helper
+        };
+        var profile = BuildProfile("transfer_fleet_safe");
+        var adapter = harness.CreateAdapter(profile, RuntimeMode.Galactic);
+
+        var request = new ActionExecutionRequest(
+            Action: new ActionSpec(
+                "transfer_fleet_safe",
+                ActionCategory.Campaign,
+                RuntimeMode.Galactic,
+                ExecutionKind.Helper,
+                new JsonObject(),
+                VerifyReadback: false,
+                CooldownMs: 0),
+            Payload: new JsonObject
+            {
+                ["helperHookId"] = "spawn_bridge",
+                ["entityId"] = "FLEET_A",
+                ["sourceFaction"] = "Empire",
+                ["targetFaction"] = "Rebel"
+            },
+            ProfileId: "profile",
+            RuntimeMode: RuntimeMode.Galactic,
+            Context: null);
+
+        var result = await adapter.ExecuteAsync(request, CancellationToken.None);
+
+        result.Succeeded.Should().BeFalse();
+        result.Diagnostics.Should().ContainKey("reasonCode");
+        result.Diagnostics!["reasonCode"]!.ToString().Should().Be(RuntimeReasonCode.SAFETY_MUTATION_BLOCKED.ToString());
+        helper.ExecuteCallCount.Should().Be(0);
+    }
+
+    [Fact]
+    public async Task ExecuteHelperActionAsync_ShouldApplyFleetTransferDefaults_WhenValidPayloadProvided()
+    {
+        var helper = new StubHelperBridgeBackend
+        {
+            ExecuteResult = new HelperBridgeExecutionResult(
+                Succeeded: true,
+                ReasonCode: RuntimeReasonCode.HELPER_EXECUTION_APPLIED,
+                Message: "transfer applied",
+                Diagnostics: new Dictionary<string, object?>
+                {
+                    ["helperVerifyState"] = "applied"
+                })
+        };
+        var harness = new AdapterHarness
+        {
+            HelperBridgeBackend = helper
+        };
+        var profile = BuildProfile("transfer_fleet_safe");
+        var adapter = harness.CreateAdapter(profile, RuntimeMode.Galactic);
+
+        var request = new ActionExecutionRequest(
+            Action: new ActionSpec(
+                "transfer_fleet_safe",
+                ActionCategory.Campaign,
+                RuntimeMode.Galactic,
+                ExecutionKind.Helper,
+                new JsonObject(),
+                VerifyReadback: false,
+                CooldownMs: 0),
+            Payload: new JsonObject
+            {
+                ["helperHookId"] = "spawn_bridge",
+                ["entityId"] = "FLEET_A",
+                ["sourceFaction"] = "Empire",
+                ["targetFaction"] = "Rebel",
+                ["safePlanetId"] = "Coruscant"
+            },
+            ProfileId: "profile",
+            RuntimeMode: RuntimeMode.Galactic,
+            Context: null);
+
+        var result = await adapter.ExecuteAsync(request, CancellationToken.None);
+
+        result.Succeeded.Should().BeTrue();
+        helper.LastExecuteRequest.Should().NotBeNull();
+        var payload = helper.LastExecuteRequest!.ActionRequest.Payload;
+        payload["allowCrossFaction"]!.GetValue<bool>().Should().BeTrue();
+        payload["placementMode"]!.GetValue<string>().Should().Be("safe_transfer");
+    }
+
+    [Fact]
+    public async Task ExecuteHelperActionAsync_ShouldFailClosedForPlanetFlip_WhenModeInvalid()
+    {
+        var helper = new StubHelperBridgeBackend();
+        var harness = new AdapterHarness
+        {
+            HelperBridgeBackend = helper
+        };
+        var profile = BuildProfile("flip_planet_owner");
+        var adapter = harness.CreateAdapter(profile, RuntimeMode.Galactic);
+
+        var request = new ActionExecutionRequest(
+            Action: new ActionSpec(
+                "flip_planet_owner",
+                ActionCategory.Campaign,
+                RuntimeMode.Galactic,
+                ExecutionKind.Helper,
+                new JsonObject(),
+                VerifyReadback: false,
+                CooldownMs: 0),
+            Payload: new JsonObject
+            {
+                ["helperHookId"] = "spawn_bridge",
+                ["entityId"] = "Coruscant",
+                ["targetFaction"] = "Rebel",
+                ["flipMode"] = "unsafe_mode"
+            },
+            ProfileId: "profile",
+            RuntimeMode: RuntimeMode.Galactic,
+            Context: null);
+
+        var result = await adapter.ExecuteAsync(request, CancellationToken.None);
+
+        result.Succeeded.Should().BeFalse();
+        result.Diagnostics.Should().ContainKey("reasonCode");
+        result.Diagnostics!["reasonCode"]!.ToString().Should().Be(RuntimeReasonCode.SAFETY_MUTATION_BLOCKED.ToString());
+        helper.ExecuteCallCount.Should().Be(0);
+    }
+
+    [Fact]
+    public async Task ExecuteHelperActionAsync_ShouldFailClosedForSwitchPlayerFaction_WhenTargetMissing()
+    {
+        var helper = new StubHelperBridgeBackend();
+        var harness = new AdapterHarness
+        {
+            HelperBridgeBackend = helper
+        };
+        var profile = BuildProfile("switch_player_faction");
+        var adapter = harness.CreateAdapter(profile, RuntimeMode.Galactic);
+
+        var request = new ActionExecutionRequest(
+            Action: new ActionSpec(
+                "switch_player_faction",
+                ActionCategory.Global,
+                RuntimeMode.Galactic,
+                ExecutionKind.Helper,
+                new JsonObject(),
+                VerifyReadback: false,
+                CooldownMs: 0),
+            Payload: new JsonObject
+            {
+                ["helperHookId"] = "spawn_bridge"
+            },
+            ProfileId: "profile",
+            RuntimeMode: RuntimeMode.Galactic,
+            Context: null);
+
+        var result = await adapter.ExecuteAsync(request, CancellationToken.None);
+
+        result.Succeeded.Should().BeFalse();
+        result.Diagnostics.Should().ContainKey("reasonCode");
+        result.Diagnostics!["reasonCode"]!.ToString().Should().Be(RuntimeReasonCode.CAPABILITY_REQUIRED_MISSING.ToString());
+        helper.ExecuteCallCount.Should().Be(0);
+    }
+
+    [Fact]
+    public async Task ExecuteHelperActionAsync_ShouldFailClosedForEditHeroState_WhenDesiredStateInvalid()
+    {
+        var helper = new StubHelperBridgeBackend();
+        var harness = new AdapterHarness
+        {
+            HelperBridgeBackend = helper
+        };
+        var profile = BuildProfile("edit_hero_state");
+        var adapter = harness.CreateAdapter(profile, RuntimeMode.Galactic);
+
+        var request = new ActionExecutionRequest(
+            Action: new ActionSpec(
+                "edit_hero_state",
+                ActionCategory.Hero,
+                RuntimeMode.Galactic,
+                ExecutionKind.Helper,
+                new JsonObject(),
+                VerifyReadback: false,
+                CooldownMs: 0),
+            Payload: new JsonObject
+            {
+                ["helperHookId"] = "spawn_bridge",
+                ["entityId"] = "HERO_VADER",
+                ["desiredState"] = "zombie"
+            },
+            ProfileId: "profile",
+            RuntimeMode: RuntimeMode.Galactic,
+            Context: null);
+
+        var result = await adapter.ExecuteAsync(request, CancellationToken.None);
+
+        result.Succeeded.Should().BeFalse();
+        result.Diagnostics.Should().ContainKey("reasonCode");
+        result.Diagnostics!["reasonCode"]!.ToString().Should().Be(RuntimeReasonCode.SAFETY_MUTATION_BLOCKED.ToString());
+        helper.ExecuteCallCount.Should().Be(0);
+    }
+
+    [Fact]
+    public async Task ExecuteHelperActionAsync_ShouldFailClosedForCreateHeroVariant_WhenVariantMissing()
+    {
+        var helper = new StubHelperBridgeBackend();
+        var harness = new AdapterHarness
+        {
+            HelperBridgeBackend = helper
+        };
+        var profile = BuildProfile("create_hero_variant");
+        var adapter = harness.CreateAdapter(profile, RuntimeMode.Galactic);
+
+        var request = new ActionExecutionRequest(
+            Action: new ActionSpec(
+                "create_hero_variant",
+                ActionCategory.Hero,
+                RuntimeMode.Galactic,
+                ExecutionKind.Helper,
+                new JsonObject(),
+                VerifyReadback: false,
+                CooldownMs: 0),
+            Payload: new JsonObject
+            {
+                ["helperHookId"] = "spawn_bridge",
+                ["entityId"] = "HERO_VADER"
+            },
+            ProfileId: "profile",
+            RuntimeMode: RuntimeMode.Galactic,
+            Context: null);
+
+        var result = await adapter.ExecuteAsync(request, CancellationToken.None);
+
+        result.Succeeded.Should().BeFalse();
+        result.Diagnostics.Should().ContainKey("reasonCode");
+        result.Diagnostics!["reasonCode"]!.ToString().Should().Be(RuntimeReasonCode.CAPABILITY_REQUIRED_MISSING.ToString());
+        helper.ExecuteCallCount.Should().Be(0);
+    }
+
+
+    [Fact]
     public void ResolveMemoryActionSymbol_ShouldThrow_WhenPayloadSymbolMissing()
     {
         var method = typeof(RuntimeAdapter).GetMethod("ResolveMemoryActionSymbol", BindingFlags.Static | BindingFlags.NonPublic);

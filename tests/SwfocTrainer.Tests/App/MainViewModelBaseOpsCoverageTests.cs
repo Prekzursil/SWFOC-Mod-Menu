@@ -4,6 +4,8 @@ using SwfocTrainer.App.Models;
 using SwfocTrainer.App.ViewModels;
 using SwfocTrainer.Core.Contracts;
 using SwfocTrainer.Core.Models;
+using SwfocTrainer.Core.Logging;
+using SwfocTrainer.Core.Services;
 using Xunit;
 
 namespace SwfocTrainer.Tests.App;
@@ -214,6 +216,52 @@ public sealed class MainViewModelBaseOpsCoverageTests
         vm.ActiveFreezes.Should().ContainSingle().Which.Should().Be("(none)");
     }
 
+    [Fact]
+    public async Task QuickActionHelpers_ShouldExerciseQuickActionAndHotkeySuccessPaths_WhenAttached()
+    {
+        var runtime = new StubRuntimeAdapter
+        {
+            IsAttached = true,
+            CurrentSession = BuildSession(RuntimeMode.Galactic)
+        };
+
+        var vm = new SaveOpsHarness(CreateDependencies(
+            runtime,
+            new StubProfileRepository(BuildProfile("base_swfoc")),
+            new StubCatalogService(new Dictionary<string, IReadOnlyList<string>>(StringComparer.OrdinalIgnoreCase)),
+            new StubActionReliabilityService(Array.Empty<ActionReliabilityInfo>()),
+            new StubSelectedUnitTransactionService(),
+            new StubSpawnPresetService(),
+            new StubFreezeService()));
+
+        vm.SelectedProfileId = "base_swfoc";
+        vm.CreditsValue = "1500";
+        vm.CreditsFreeze = true;
+
+        await vm.InvokeQuickSetCreditsAsync();
+        vm.Status.Should().Contain("Credits");
+
+        await vm.InvokeQuickFreezeTimerAsync();
+        await vm.InvokeQuickToggleFogAsync();
+        await vm.InvokeQuickToggleAiAsync();
+        await vm.InvokeQuickInstantBuildAsync();
+        await vm.InvokeQuickUnitCapAsync();
+        await vm.InvokeQuickGodModeAsync();
+        await vm.InvokeQuickOneHitAsync();
+
+        vm.Hotkeys.Add(new HotkeyBindingItem
+        {
+            Gesture = "Ctrl+Shift+1",
+            ActionId = "set_credits",
+            PayloadJson = "{\"symbol\":\"credits\",\"intValue\":2500}"
+        });
+
+        var handled = await vm.ExecuteHotkeyAsync("Ctrl+Shift+1");
+        handled.Should().BeTrue();
+        vm.Status.Should().Contain("Hotkey");
+    }
+
+
     private static MainViewModelDependencies CreateDependencies(
         StubRuntimeAdapter runtime,
         StubProfileRepository profiles,
@@ -223,6 +271,14 @@ public sealed class MainViewModelBaseOpsCoverageTests
         StubSpawnPresetService spawnPresets,
         StubFreezeService freezeService)
     {
+        var telemetry = new TelemetrySnapshotService();
+        var orchestrator = new TrainerOrchestrator(
+            profiles,
+            runtime,
+            freezeService,
+            new StubAuditLogger(),
+            telemetry);
+
         return new MainViewModelDependencies
         {
             Profiles = profiles,
@@ -231,7 +287,7 @@ public sealed class MainViewModelBaseOpsCoverageTests
             ProfileVariantResolver = null!,
             GameLauncher = null!,
             Runtime = runtime,
-            Orchestrator = null!,
+            Orchestrator = orchestrator,
             Catalog = catalog,
             SaveCodec = null!,
             SavePatchPackService = null!,
@@ -241,7 +297,7 @@ public sealed class MainViewModelBaseOpsCoverageTests
             ModOnboarding = null!,
             ModCalibration = null!,
             SupportBundles = null!,
-            Telemetry = null!,
+            Telemetry = telemetry,
             FreezeService = freezeService,
             ActionReliability = reliability,
             SelectedUnitTransactions = selectedTransactions,
@@ -395,6 +451,14 @@ public sealed class MainViewModelBaseOpsCoverageTests
         public Task InvokeAddHotkeyAsync() => AddHotkeyAsync();
         public Task InvokeRemoveHotkeyAsync() => RemoveHotkeyAsync();
         public Task InvokeQuickRunActionAsync(string actionId, JsonObject payload) => QuickRunActionAsync(actionId, payload);
+        public Task InvokeQuickSetCreditsAsync() => QuickSetCreditsAsync();
+        public Task InvokeQuickFreezeTimerAsync() => QuickFreezeTimerAsync();
+        public Task InvokeQuickToggleFogAsync() => QuickToggleFogAsync();
+        public Task InvokeQuickToggleAiAsync() => QuickToggleAiAsync();
+        public Task InvokeQuickInstantBuildAsync() => QuickInstantBuildAsync();
+        public Task InvokeQuickUnitCapAsync() => QuickUnitCapAsync();
+        public Task InvokeQuickGodModeAsync() => QuickGodModeAsync();
+        public Task InvokeQuickOneHitAsync() => QuickOneHitAsync();
         public Task InvokeQuickUnfreezeAllAsync() => QuickUnfreezeAllAsync();
     }
 
@@ -474,6 +538,17 @@ public sealed class MainViewModelBaseOpsCoverageTests
         public IReadOnlyCollection<string> GetFrozenSymbols() => _symbols.ToArray();
         public void Dispose() { }
     }
+
+    private sealed class StubAuditLogger : IAuditLogger
+    {
+        public Task WriteAsync(ActionAuditRecord record, CancellationToken cancellationToken)
+        {
+            _ = record;
+            _ = cancellationToken;
+            return Task.CompletedTask;
+        }
+    }
+
 
     private sealed class StubProfileRepository : IProfileRepository
     {
@@ -653,6 +728,8 @@ public sealed class MainViewModelBaseOpsCoverageTests
         }
     }
 }
+
+
 
 
 

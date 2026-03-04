@@ -171,33 +171,47 @@ function SWFOC_Trainer_Set_Context_Allegiance(entity_id, target_faction, source_
     return Try_Change_Owner(object, target_player)
 end
 
-function SWFOC_Trainer_Transfer_Fleet_Safe(fleet_entity_id, source_faction, target_faction, safe_planet_id)
+function SWFOC_Trainer_Transfer_Fleet_Safe(fleet_entity_id, source_faction, target_faction, safe_planet_id, force_override)
     if not Has_Value(fleet_entity_id) or not Has_Value(source_faction) or not Has_Value(target_faction) then
         return false
     end
 
-    local fleet = Try_Find_Object(fleet_entity_id)
-    local target_player = Resolve_Player(target_faction)
-
-    if not Try_Change_Owner(fleet, target_player) then
-        -- Try a story-driven transfer path when direct owner mutation is not available.
-        if Try_Story_Event("MOVE_FLEET", fleet_entity_id, safe_planet_id, target_faction) then
-            return true
-        end
-
+    if source_faction == target_faction then
         return false
     end
 
+    local allow_unsafe = force_override == true or force_override == "true"
+    if not Has_Value(safe_planet_id) and not allow_unsafe then
+        return false
+    end
+
+    local target_player = Resolve_Player(target_faction)
+    local fleet = Try_Find_Object(fleet_entity_id)
+
+    -- Prefer relocation-first to minimize auto-battle triggers.
     if Has_Value(safe_planet_id) then
-        -- Best-effort relocation path to avoid immediate fleet combat triggers.
         Try_Story_Event("MOVE_FLEET", fleet_entity_id, safe_planet_id, target_faction)
     end
 
-    return true
+    if Try_Change_Owner(fleet, target_player) then
+        return true
+    end
+
+    -- Story-event fallback for mods that expose transactional fleet transfer hooks.
+    return Try_Story_Event("MOVE_FLEET", fleet_entity_id, safe_planet_id, target_faction)
 end
 
 function SWFOC_Trainer_Flip_Planet_Owner(planet_entity_id, target_faction, flip_mode, force_override)
     if not Has_Value(planet_entity_id) or not Has_Value(target_faction) then
+        return false
+    end
+
+    local mode = flip_mode
+    if not Has_Value(mode) then
+        mode = "convert_everything"
+    end
+
+    if mode ~= "empty_and_retreat" and mode ~= "convert_everything" then
         return false
     end
 
@@ -206,17 +220,17 @@ function SWFOC_Trainer_Flip_Planet_Owner(planet_entity_id, target_faction, flip_
     local changed = Try_Change_Owner(planet, target_player)
 
     if not changed then
-        changed = Try_Story_Event("PLANET_FACTION", planet_entity_id, target_faction, flip_mode)
+        changed = Try_Story_Event("PLANET_FACTION", planet_entity_id, target_faction, mode)
     end
 
     if not changed then
         return false
     end
 
-    if flip_mode == "empty_and_retreat" then
+    if mode == "empty_and_retreat" then
         -- Best-effort semantic marker for mods that expose retreat cleanup rewards.
         Try_Story_Event("PLANET_RETREAT_ALL", planet_entity_id, target_faction, "empty")
-    elseif flip_mode == "convert_everything" then
+    else
         Try_Story_Event("PLANET_CONVERT_ALL", planet_entity_id, target_faction, "convert")
     end
 
@@ -260,6 +274,10 @@ function SWFOC_Trainer_Edit_Hero_State(hero_entity_id, hero_global_key, desired_
     local hero = Try_Find_Object(hero_entity_id)
     local state = desired_state or "alive"
 
+    if state ~= "alive" and state ~= "dead" and state ~= "respawn_pending" and state ~= "permadead" and state ~= "remove" then
+        return false
+    end
+
     if Is_Hero_Death_State(state) then
         return Try_Remove_Hero(hero) or Try_Apply_Hero_Story_State(hero_entity_id, state, hero_global_key)
     end
@@ -272,6 +290,10 @@ function SWFOC_Trainer_Edit_Hero_State(hero_entity_id, hero_global_key, desired_
         return true
     end
 
+    if allow_duplicate == true or allow_duplicate == "true" then
+        return Spawn_Object(hero_entity_id, hero_entity_id, nil, nil, "reinforcement_zone")
+    end
+
     return Try_Apply_Hero_Story_State(hero_entity_id, "alive", hero_global_key)
 end
 
@@ -280,9 +302,14 @@ function SWFOC_Trainer_Create_Hero_Variant(source_hero_id, variant_hero_id, targ
         return false
     end
 
-    if Spawn_Object(variant_hero_id, variant_hero_id, nil, target_faction, "reinforcement_zone") then
+    local faction = target_faction
+    if not Has_Value(faction) then
+        faction = "Neutral"
+    end
+
+    if Spawn_Object(variant_hero_id, variant_hero_id, nil, faction, "reinforcement_zone") then
         return true
     end
 
-    return Try_Story_Event("CREATE_HERO_VARIANT", source_hero_id, variant_hero_id, target_faction)
+    return Try_Story_Event("CREATE_HERO_VARIANT", source_hero_id, variant_hero_id, faction)
 end
