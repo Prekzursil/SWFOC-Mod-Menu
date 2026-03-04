@@ -273,7 +273,70 @@ public sealed class MainViewModelHelperCoverageTests
         suffix.Should().Contain("hybridExecution=True");
     }
 
+    
     [Fact]
+    public void BuildProcessDiagnosticSummary_ShouldIncludeDerivedSegments()
+    {
+        var process = BuildProcess(
+            pid: 44,
+            name: "swfoc.exe",
+            target: ExeTarget.Swfoc,
+            metadata: new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
+            {
+                ["dependencyValidation"] = "SoftFail",
+                ["dependencyValidationMessage"] = "missing parent",
+                ["commandLineAvailable"] = "True",
+                ["steamModIdsDetected"] = "1397421866,3447786229",
+                ["detectedVia"] = "cmd",
+                ["resolvedVariant"] = "aotr",
+                ["resolvedVariantReasonCode"] = "profile_match",
+                ["resolvedVariantConfidence"] = "0.93",
+                ["fallbackHitRate"] = "0.2",
+                ["unresolvedSymbolRate"] = "0.1"
+            },
+            launchContext: new LaunchContext(
+                LaunchKind.Workshop,
+                CommandLineAvailable: true,
+                SteamModIds: new[] { "1397421866", "3447786229" },
+                ModPathRaw: null,
+                ModPathNormalized: null,
+                DetectedVia: "cmd",
+                Recommendation: new ProfileRecommendation("aotr_1397421866_swfoc", "workshop_match", 0.98)));
+
+        var summary = MainViewModelDiagnostics.BuildProcessDiagnosticSummary(process, "unknown");
+
+        summary.Should().Contain("target=Swfoc");
+        summary.Should().Contain("launch=Workshop");
+        summary.Should().Contain("hostRole=unknown");
+        summary.Should().Contain("mods=1397421866,3447786229");
+        summary.Should().Contain("dependency=SoftFail (missing parent)");
+        summary.Should().Contain("variant=aotr:profile_match:0.93");
+        summary.Should().Contain("fallbackRate=0.2");
+    }
+
+    [Fact]
+    public void BuildQuickActionStatusAndReadDiagnosticString_ShouldHandleMissingAndNonStringValues()
+    {
+        var result = new ActionExecutionResult(
+            Succeeded: true,
+            Message: "applied",
+            AddressSource: AddressSource.Signature,
+            Diagnostics: new Dictionary<string, object?>
+            {
+                ["backend"] = "helper",
+                ["routeReasonCode"] = 123,
+                ["hookState"] = null
+            });
+
+        var status = MainViewModelDiagnostics.BuildQuickActionStatus("spawn_tactical_entity", result);
+        var asString = MainViewModelDiagnostics.ReadDiagnosticString(result.Diagnostics, "routeReasonCode");
+        var missing = MainViewModelDiagnostics.ReadDiagnosticString(result.Diagnostics, "missing");
+
+        status.Should().Contain("✓ spawn_tactical_entity: applied");
+        status.Should().Contain("backend=helper");
+        asString.Should().Be("123");
+        missing.Should().BeEmpty();
+    }[Fact]
     public void BuildProcessDependencySegment_ShouldIncludeMessage_WhenNotPass()
     {
         MainViewModelDiagnostics.BuildProcessDependencySegment("Pass", "ignored")
@@ -486,3 +549,6 @@ public sealed class MainViewModelHelperCoverageTests
             Metadata: metadata);
     }
 }
+
+
+

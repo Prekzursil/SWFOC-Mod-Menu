@@ -31,6 +31,67 @@ public sealed class CatalogServiceTests
 
             var catalog = await service.LoadCatalogAsync(profileId, CancellationToken.None);
             AssertCatalogContainsDerivedEntries(catalog);
+            catalog.Should().ContainKey("action_constraints");
+            catalog["action_constraints"].Should().Contain("spawn_tactical_entity");
+        }
+        finally
+        {
+            if (Directory.Exists(root))
+            {
+                Directory.Delete(root, recursive: true);
+            }
+        }
+    }
+
+    [Fact]
+    public async Task LoadCatalogAsync_ShouldParseXmlSources_WhenPrebuiltMissing()
+    {
+        var root = Path.Combine(Path.GetTempPath(), $"swfoc-catalog-xml-{Guid.NewGuid():N}");
+        Directory.CreateDirectory(root);
+
+        try
+        {
+            var profileId = "xml_profile";
+            var dataRoot = Path.Combine(root, "data");
+            Directory.CreateDirectory(dataRoot);
+            var xmlPath = Path.Combine(dataRoot, "Objects.xml");
+            await File.WriteAllTextAsync(
+                xmlPath,
+                """
+                <Root>
+                  <LandUnit Name="EMPIRE_STORMTROOPER_SQUAD" />
+                  <Structure ID="EMPIRE_BARRACKS" />
+                  <Hero Object_Name="HERO_VADER" />
+                  <Planet Type="PLANET_CORUSCANT" />
+                  <Faction Name="EMPIRE" />
+                </Root>
+                """);
+
+            var profile = CreateProfile(
+                profileId,
+                catalogSources:
+                [
+                    new CatalogSource("file", xmlPath, Required: false),
+                    new CatalogSource("xml", xmlPath, Required: true)
+                ]);
+
+            var service = new CatalogService(
+                new CatalogOptions
+                {
+                    CatalogRootPath = root,
+                    MaxParsedXmlFiles = 10
+                },
+                new StubProfileRepository(profile),
+                NullLogger<CatalogService>.Instance);
+
+            var catalog = await service.LoadCatalogAsync(profileId, CancellationToken.None);
+
+            catalog["unit_catalog"].Should().Contain("EMPIRE_STORMTROOPER_SQUAD");
+            catalog["building_catalog"].Should().Contain("EMPIRE_BARRACKS");
+            catalog["hero_catalog"].Should().Contain("HERO_VADER");
+            catalog["planet_catalog"].Should().Contain("PLANET_CORUSCANT");
+            catalog["faction_catalog"].Should().Contain("EMPIRE");
+            catalog["entity_catalog"].Should().Contain("Building|EMPIRE_BARRACKS");
         }
         finally
         {
@@ -80,8 +141,22 @@ public sealed class CatalogServiceTests
         catalog["entity_catalog"].Should().Contain("Hero|HERO_VADER");
     }
 
-    private static TrainerProfile CreateProfile(string profileId)
+    private static TrainerProfile CreateProfile(
+        string profileId,
+        IReadOnlyList<CatalogSource>? catalogSources = null)
     {
+        var actions = new Dictionary<string, ActionSpec>(StringComparer.OrdinalIgnoreCase)
+        {
+            ["spawn_tactical_entity"] = new ActionSpec(
+                Id: "spawn_tactical_entity",
+                Category: ActionCategory.Global,
+                Mode: RuntimeMode.AnyTactical,
+                ExecutionKind: ExecutionKind.Helper,
+                PayloadSchema: new System.Text.Json.Nodes.JsonObject(),
+                VerifyReadback: false,
+                CooldownMs: 0)
+        };
+
         return new TrainerProfile(
             Id: profileId,
             DisplayName: "test profile",
@@ -90,9 +165,9 @@ public sealed class CatalogServiceTests
             SteamWorkshopId: null,
             SignatureSets: Array.Empty<SignatureSet>(),
             FallbackOffsets: new Dictionary<string, long>(),
-            Actions: new Dictionary<string, ActionSpec>(),
+            Actions: actions,
             FeatureFlags: new Dictionary<string, bool>(),
-            CatalogSources: Array.Empty<CatalogSource>(),
+            CatalogSources: catalogSources ?? Array.Empty<CatalogSource>(),
             SaveSchemaId: "test_schema",
             HelperModHooks: Array.Empty<HelperHookSpec>(),
             Metadata: new Dictionary<string, string>());
@@ -147,3 +222,4 @@ public sealed class CatalogServiceTests
         }
     }
 }
+

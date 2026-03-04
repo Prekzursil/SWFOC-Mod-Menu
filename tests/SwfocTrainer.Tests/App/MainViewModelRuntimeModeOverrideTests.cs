@@ -106,4 +106,87 @@ public sealed class MainViewModelRuntimeModeOverrideTests
     {
         MainViewModelRuntimeModeOverrideHelpers.Normalize("invalid_mode").Should().Be("Auto");
     }
+
+    [Fact]
+    public void Load_ShouldReturnAuto_WhenSettingsFileMissing()
+    {
+        var path = ResolveSettingsPath();
+        using var scope = new FileStateScope(path);
+        if (File.Exists(path))
+        {
+            File.Delete(path);
+        }
+
+        MainViewModelRuntimeModeOverrideHelpers.Load().Should().Be("Auto");
+    }
+
+    [Fact]
+    public void Load_ShouldReturnAuto_WhenSettingsJsonIsMalformed()
+    {
+        var path = ResolveSettingsPath();
+        using var scope = new FileStateScope(path);
+        Directory.CreateDirectory(Path.GetDirectoryName(path)!);
+        File.WriteAllText(path, "{ invalid json");
+
+        MainViewModelRuntimeModeOverrideHelpers.Load().Should().Be("Auto");
+    }
+
+    [Fact]
+    public void SaveAndLoad_ShouldRoundTripNormalizedModeOverride()
+    {
+        var path = ResolveSettingsPath();
+        using var scope = new FileStateScope(path);
+
+        MainViewModelRuntimeModeOverrideHelpers.Save("tacticalland");
+        MainViewModelRuntimeModeOverrideHelpers.Load().Should().Be("TacticalLand");
+    }
+
+    private static string ResolveSettingsPath()
+    {
+        var method = typeof(MainViewModelRuntimeModeOverrideHelpers)
+            .GetMethod("GetSettingsPath", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Static);
+
+        method.Should().NotBeNull();
+        return (string)method!.Invoke(null, null)!;
+    }
+
+    private sealed class FileStateScope : IDisposable
+    {
+        private readonly string _path;
+        private readonly string _backupPath;
+        private readonly bool _hadOriginal;
+
+        public FileStateScope(string path)
+        {
+            _path = path;
+            _backupPath = $"{path}.bak.{Guid.NewGuid():N}";
+            _hadOriginal = File.Exists(path);
+            if (_hadOriginal)
+            {
+                Directory.CreateDirectory(Path.GetDirectoryName(path)!);
+                File.Copy(path, _backupPath, overwrite: true);
+            }
+        }
+
+        public void Dispose()
+        {
+            if (_hadOriginal)
+            {
+                Directory.CreateDirectory(Path.GetDirectoryName(_path)!);
+                File.Copy(_backupPath, _path, overwrite: true);
+                File.Delete(_backupPath);
+                return;
+            }
+
+            if (File.Exists(_path))
+            {
+                File.Delete(_path);
+            }
+
+            if (File.Exists(_backupPath))
+            {
+                File.Delete(_backupPath);
+            }
+        }
+    }
 }

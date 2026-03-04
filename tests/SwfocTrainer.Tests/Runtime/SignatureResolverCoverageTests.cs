@@ -285,4 +285,3 @@ public sealed class SignatureResolverCoverageTests
     }
 }
 
-

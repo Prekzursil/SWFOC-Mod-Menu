@@ -1,6 +1,7 @@
 using System.Diagnostics;
 using System.Reflection;
 using System.Runtime.InteropServices;
+using System.Threading;
 using FluentAssertions;
 using SwfocTrainer.Core.Models;
 using SwfocTrainer.Runtime.Services;
@@ -103,7 +104,7 @@ public sealed class GameLaunchServiceTests
             Environment.SetEnvironmentVariable("SWFOC_GAME_ROOT", previous);
             if (Directory.Exists(root))
             {
-                Directory.Delete(root, recursive: true);
+                DeleteDirectoryWithRetry(root);
             }
         }
     }
@@ -225,7 +226,7 @@ public sealed class GameLaunchServiceTests
         {
             if (Directory.Exists(root))
             {
-                Directory.Delete(root, recursive: true);
+                DeleteDirectoryWithRetry(root);
             }
         }
     }
@@ -308,7 +309,7 @@ public sealed class GameLaunchServiceTests
             Environment.SetEnvironmentVariable("SWFOC_GAME_ROOT", previousOverride);
             if (Directory.Exists(root))
             {
-                Directory.Delete(root, recursive: true);
+                DeleteDirectoryWithRetry(root);
             }
         }
     }
@@ -431,7 +432,7 @@ public sealed class GameLaunchServiceTests
             Environment.SetEnvironmentVariable("SWFOC_GAME_ROOT", previousOverride);
             if (Directory.Exists(root))
             {
-                Directory.Delete(root, recursive: true);
+                DeleteDirectoryWithRetry(root);
             }
         }
     }
@@ -500,7 +501,31 @@ public sealed class GameLaunchServiceTests
     {
         if (Directory.Exists(path))
         {
-            Directory.Delete(path, recursive: true);
+            DeleteDirectoryWithRetry(path);
+        }
+    }
+    private static void DeleteDirectoryWithRetry(string path)
+    {
+        if (!Directory.Exists(path))
+        {
+            return;
+        }
+
+        for (var attempt = 0; attempt < 10; attempt++)
+        {
+            try
+            {
+                Directory.Delete(path, recursive: true);
+                return;
+            }
+            catch (IOException) when (attempt < 9)
+            {
+                Thread.Sleep(100);
+            }
+            catch (UnauthorizedAccessException) when (attempt < 9)
+            {
+                Thread.Sleep(100);
+            }
         }
     }
     private static string[] GetMutableDefaultRoots()
@@ -554,6 +579,9 @@ public sealed class GameLaunchServiceTests
         return (string)result!;
     }
 }
+
+
+
 
 
 

@@ -275,6 +275,84 @@ public sealed class ContractsAndModelsCoverageTests
         result.Diagnostics.Should().ContainKey("helperExecutionPath");
     }
 
+
+    [Fact]
+    public async Task RuntimeAdapterAndProfileRepository_DefaultMethods_ShouldForwardAndReturnExpectedDefaults()
+    {
+        IRuntimeAdapter runtimeAdapter = new MinimalRuntimeAdapter();
+        IProfileRepository profileRepository = new RecordingProfileRepository();
+
+        var calibration = await runtimeAdapter.ScanCalibrationCandidatesAsync(new RuntimeCalibrationScanRequest("credits"));
+        calibration.Succeeded.Should().BeFalse();
+        calibration.ReasonCode.Should().Be("not_supported");
+
+        await runtimeAdapter.AttachAsync("profile");
+        await runtimeAdapter.ReadAsync<int>("credits");
+        await runtimeAdapter.WriteAsync("credits", 99);
+        await runtimeAdapter.ExecuteAsync(BuildActionRequest());
+        await runtimeAdapter.DetachAsync();
+
+        var recorder = (RecordingProfileRepository)profileRepository;
+        await profileRepository.LoadManifestAsync();
+        await profileRepository.LoadProfileAsync("profile");
+        await profileRepository.ResolveInheritedProfileAsync("profile");
+        await profileRepository.ValidateProfileAsync(recorder.Profile);
+        await profileRepository.ListAvailableProfilesAsync();
+
+        recorder.LoadManifestCancellation.Should().Be(CancellationToken.None);
+        recorder.LoadProfileCancellation.Should().Be(CancellationToken.None);
+        recorder.ResolveInheritedCancellation.Should().Be(CancellationToken.None);
+        recorder.ValidateCancellation.Should().Be(CancellationToken.None);
+        recorder.ListCancellation.Should().Be(CancellationToken.None);
+    }
+
+    [Fact]
+    public void HeroMechanicsEmptyAndRuntimeCalibrationViewItem_ShouldReturnExpectedDefaults()
+    {
+        var empty = HeroMechanicsProfile.Empty();
+        var viewItem = new SwfocTrainer.App.Models.RuntimeCalibrationCandidateViewItem(
+            SuggestedPattern: "90 90 90",
+            Offset: 4,
+            AddressMode: "HitPlusOffset",
+            ValueType: "Int32",
+            InstructionRva: "0x1234",
+            ReferenceCount: 3,
+            Snippet: "mov eax, [credits]");
+        var variant = new HeroVariantRequest(
+            SourceHeroId: "MACE_WINDU",
+            VariantHeroId: "MACE_WINDU_ELITE",
+            DisplayName: "Mace Windu Elite",
+            StatOverrides: new Dictionary<string, object?> { ["hp"] = 4000 },
+            AbilityOverrides: new Dictionary<string, object?> { ["cooldown"] = 0.5d },
+            ReplaceExisting: true);
+        var calibrationCandidate = new RuntimeCalibrationCandidate(
+            SuggestedPattern: "48 8B 05 ?? ?? ?? ??",
+            Offset: 3,
+            AddressMode: SignatureAddressMode.ReadRipRelative32AtOffset,
+            ValueType: SymbolValueType.Int32,
+            InstructionRva: "0x1020",
+            Snippet: "mov eax, [rip+disp32]",
+            ReferenceCount: 2);
+        var capabilityAnchor = new CapabilityAnchor("credits_anchor", "pattern", "90 90", Required: false, Notes: "optional");
+
+        empty.SupportsRespawn.Should().BeFalse();
+        empty.SupportsPermadeath.Should().BeFalse();
+        empty.SupportsRescue.Should().BeFalse();
+        empty.DefaultRespawnTime.Should().BeNull();
+        empty.RespawnExceptionSources.Should().BeEmpty();
+        empty.DuplicateHeroPolicy.Should().Be("unknown");
+        empty.Diagnostics.Should().NotBeNull();
+
+        viewItem.SuggestedPattern.Should().Be("90 90 90");
+        viewItem.Offset.Should().Be(4);
+        viewItem.AddressMode.Should().Be("HitPlusOffset");
+        viewItem.ReferenceCount.Should().Be(3);
+        variant.VariantHeroId.Should().Be("MACE_WINDU_ELITE");
+        variant.ReplaceExisting.Should().BeTrue();
+        calibrationCandidate.ReferenceCount.Should().Be(2);
+        capabilityAnchor.Required.Should().BeFalse();
+        capabilityAnchor.Notes.Should().Be("optional");
+    }
     private static (
         WorkshopInventoryItem Item,
         WorkshopInventoryChain Chain,
@@ -458,6 +536,120 @@ public sealed class ContractsAndModelsCoverageTests
             RuntimeMode: RuntimeMode.AnyTactical,
             Context: null);
     }
+    private sealed class MinimalRuntimeAdapter : IRuntimeAdapter
+    {
+        public bool IsAttached { get; private set; }
+
+        public AttachSession? CurrentSession { get; private set; }
+
+        public Task<AttachSession> AttachAsync(string profileId, CancellationToken cancellationToken)
+        {
+            _ = cancellationToken;
+            IsAttached = true;
+            CurrentSession = new AttachSession(
+                profileId,
+                BuildProcessMetadata(),
+                new ProfileBuild(profileId, "build", @"C:\Games\swfoc.exe", ExeTarget.Swfoc),
+                new SymbolMap(new Dictionary<string, SymbolInfo>(StringComparer.OrdinalIgnoreCase)),
+                DateTimeOffset.UtcNow);
+            return Task.FromResult(CurrentSession);
+        }
+
+        public Task<T> ReadAsync<T>(string symbol, CancellationToken cancellationToken) where T : unmanaged
+        {
+            _ = symbol;
+            _ = cancellationToken;
+            return Task.FromResult(default(T));
+        }
+
+        public Task WriteAsync<T>(string symbol, T value, CancellationToken cancellationToken) where T : unmanaged
+        {
+            _ = symbol;
+            _ = value;
+            _ = cancellationToken;
+            return Task.CompletedTask;
+        }
+
+        public Task<ActionExecutionResult> ExecuteAsync(ActionExecutionRequest request, CancellationToken cancellationToken)
+        {
+            _ = request;
+            _ = cancellationToken;
+            return Task.FromResult(new ActionExecutionResult(true, "ok", AddressSource.Signature, null));
+        }
+
+        public Task DetachAsync(CancellationToken cancellationToken)
+        {
+            _ = cancellationToken;
+            IsAttached = false;
+            CurrentSession = null;
+            return Task.CompletedTask;
+        }
+    }
+
+    private sealed class RecordingProfileRepository : IProfileRepository
+    {
+        public CancellationToken LoadManifestCancellation { get; private set; }
+        public CancellationToken LoadProfileCancellation { get; private set; }
+        public CancellationToken ResolveInheritedCancellation { get; private set; }
+        public CancellationToken ValidateCancellation { get; private set; }
+        public CancellationToken ListCancellation { get; private set; }
+
+        public TrainerProfile Profile { get; } = new(
+            Id: "profile",
+            DisplayName: "Profile",
+            Inherits: null,
+            ExeTarget: ExeTarget.Swfoc,
+            SteamWorkshopId: null,
+            SignatureSets: Array.Empty<SignatureSet>(),
+            FallbackOffsets: new Dictionary<string, long>(),
+            Actions: new Dictionary<string, ActionSpec>(),
+            FeatureFlags: new Dictionary<string, bool>(),
+            CatalogSources: Array.Empty<CatalogSource>(),
+            SaveSchemaId: "schema",
+            HelperModHooks: Array.Empty<HelperHookSpec>(),
+            Metadata: new Dictionary<string, string>());
+
+        public Task<ProfileManifest> LoadManifestAsync(CancellationToken cancellationToken)
+        {
+            LoadManifestCancellation = cancellationToken;
+            return Task.FromResult(new ProfileManifest("1", DateTimeOffset.UtcNow, new[]
+            {
+                new ProfileManifestEntry("profile", "1", "hash", "url", "schema")
+            }));
+        }
+
+        public Task<TrainerProfile> LoadProfileAsync(string profileId, CancellationToken cancellationToken)
+        {
+            _ = profileId;
+            LoadProfileCancellation = cancellationToken;
+            return Task.FromResult(Profile);
+        }
+
+        public Task<TrainerProfile> ResolveInheritedProfileAsync(string profileId, CancellationToken cancellationToken)
+        {
+            _ = profileId;
+            ResolveInheritedCancellation = cancellationToken;
+            return Task.FromResult(Profile);
+        }
+
+        public Task ValidateProfileAsync(TrainerProfile profile, CancellationToken cancellationToken)
+        {
+            _ = profile;
+            ValidateCancellation = cancellationToken;
+            return Task.CompletedTask;
+        }
+
+        public Task<IReadOnlyList<string>> ListAvailableProfilesAsync(CancellationToken cancellationToken)
+        {
+            ListCancellation = cancellationToken;
+            return Task.FromResult((IReadOnlyList<string>)new[] { "profile" });
+        }
+    }
+
 }
+
+
+
+
 
 
