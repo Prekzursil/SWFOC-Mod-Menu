@@ -17,3 +17,20 @@ public sealed record TelemetryModeResolution(
             TimestampUtc: null,
             RawLine: null);
 }
+
+
+public sealed record HelperOperationVerification(
+    bool Verified,
+    string ReasonCode,
+    string SourcePath,
+    DateTimeOffset? TimestampUtc,
+    string? RawLine)
+{
+    public static HelperOperationVerification Unavailable(string reasonCode) =>
+        new(
+            Verified: false,
+            ReasonCode: reasonCode,
+            SourcePath: string.Empty,
+            TimestampUtc: null,
+            RawLine: null);
+}

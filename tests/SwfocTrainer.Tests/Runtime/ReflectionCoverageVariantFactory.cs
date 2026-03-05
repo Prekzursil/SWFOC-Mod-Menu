@@ -160,8 +160,19 @@ internal static class ReflectionCoverageVariantFactory
             ProfileId: "base_swfoc",
             Process: process,
             Build: new ProfileBuild("base_swfoc", "build", @"C:\Games\swfoc.exe", ExeTarget.Swfoc, ProcessId: Environment.ProcessId),
-            Symbols: new SymbolMap(new Dictionary<string, SymbolInfo>(StringComparer.OrdinalIgnoreCase)),
+            Symbols: BuildRuntimeSymbolMap(),
             AttachedAt: DateTimeOffset.UtcNow);
+    }
+
+    private static SymbolMap BuildRuntimeSymbolMap()
+    {
+        return new SymbolMap(new Dictionary<string, SymbolInfo>(StringComparer.OrdinalIgnoreCase)
+        {
+            ["credits"] = new("credits", (nint)0x1000, SymbolValueType.Int32, AddressSource.Signature),
+            ["unit_cap"] = new("unit_cap", (nint)0x1010, SymbolValueType.Int32, AddressSource.Signature),
+            ["instant_build_patch"] = new("instant_build_patch", (nint)0x1020, SymbolValueType.Byte, AddressSource.Signature),
+            ["fog_reveal"] = new("fog_reveal", (nint)0x1030, SymbolValueType.Byte, AddressSource.Signature)
+        });
     }
 
     public static MainViewModelDependencies CreateNullDependencies()
@@ -308,7 +319,8 @@ internal static class ReflectionCoverageVariantFactory
             or UnauthorizedAccessException
             or InvalidDataException
             or FormatException
-            or ArgumentOutOfRangeException;
+            or ArgumentOutOfRangeException
+            or KeyNotFoundException;
     }
 
     private static bool TryCreateWithDefaultConstructor(Type type, out object? instance)
@@ -507,3 +519,7 @@ internal static class ReflectionCoverageVariantFactory
 
 }
 #pragma warning restore CA1014
+
+
+
+

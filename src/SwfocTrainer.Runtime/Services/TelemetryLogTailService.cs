@@ -12,8 +12,14 @@ public sealed class TelemetryLogTailService : ITelemetryLogTailService
         RegexOptions.Compiled | RegexOptions.CultureInvariant | RegexOptions.IgnoreCase,
         TimeSpan.FromMilliseconds(250));
 
+    private static readonly Regex HelperOperationLineRegex = new(
+        @"SWFOC_TRAINER_(?<status>APPLIED|FAILED)\s+(?<token>[A-Za-z0-9]+)(?:\s+entity=(?<entity>\S+))?",
+        RegexOptions.Compiled | RegexOptions.CultureInvariant | RegexOptions.IgnoreCase,
+        TimeSpan.FromMilliseconds(250));
+
     private readonly object _sync = new();
     private readonly Dictionary<string, long> _cursorByPath = new(StringComparer.OrdinalIgnoreCase);
+    private readonly Dictionary<string, long> _operationCursorByPath = new(StringComparer.OrdinalIgnoreCase);
 
     public TelemetryModeResolution ResolveLatestMode(
         string? processPath,
@@ -45,6 +51,62 @@ public sealed class TelemetryLogTailService : ITelemetryLogTailService
         }
 
         return ResolveTelemetry(parsed, logPath, nowUtc, freshnessWindow);
+    }
+
+
+    public HelperOperationVerification VerifyOperationToken(
+        string? processPath,
+        string operationToken,
+        DateTimeOffset nowUtc,
+        TimeSpan freshnessWindow)
+    {
+        if (string.IsNullOrWhiteSpace(operationToken))
+        {
+            return HelperOperationVerification.Unavailable("helper_operation_token_missing");
+        }
+
+        if (string.IsNullOrWhiteSpace(processPath))
+        {
+            return HelperOperationVerification.Unavailable("telemetry_process_path_missing");
+        }
+
+        var logPath = ResolveLogPath(processPath);
+        if (logPath is null)
+        {
+            return HelperOperationVerification.Unavailable("telemetry_log_missing");
+        }
+
+        ParsedHelperOperationLine? parsed = null;
+        lock (_sync)
+        {
+            var cursor = _operationCursorByPath.TryGetValue(logPath, out var stored) ? stored : 0L;
+            parsed = ReadLatestHelperOperationLine(logPath, operationToken, ref cursor);
+            _operationCursorByPath[logPath] = cursor;
+        }
+
+        if (parsed is null)
+        {
+            return HelperOperationVerification.Unavailable("helper_operation_token_not_found");
+        }
+
+        var timestamp = parsed.TimestampUtc ?? File.GetLastWriteTimeUtc(logPath);
+        var timestampUtc = new DateTimeOffset(timestamp, TimeSpan.Zero);
+        if (nowUtc - timestampUtc > freshnessWindow)
+        {
+            return HelperOperationVerification.Unavailable("helper_operation_token_stale");
+        }
+
+        if (!parsed.Applied)
+        {
+            return HelperOperationVerification.Unavailable("helper_operation_reported_failed");
+        }
+
+        return new HelperOperationVerification(
+            Verified: true,
+            ReasonCode: "helper_operation_token_verified",
+            SourcePath: logPath,
+            TimestampUtc: timestampUtc,
+            RawLine: parsed.RawLine);
     }
 
     private static string? ResolveLogPath(string processPath)
@@ -110,6 +172,72 @@ public sealed class TelemetryLogTailService : ITelemetryLogTailService
         }
 
         return ParseLatestTelemetry(allLines.TakeLast(256));
+    }
+
+    private static ParsedHelperOperationLine? ReadLatestHelperOperationLine(string logPath, string operationToken, ref long cursor)
+    {
+        using var stream = new FileStream(logPath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite | FileShare.Delete);
+        if (cursor < 0 || cursor > stream.Length)
+        {
+            cursor = 0;
+        }
+
+        stream.Seek(cursor, SeekOrigin.Begin);
+        using var reader = new StreamReader(stream);
+        var lines = new List<string>();
+        while (!reader.EndOfStream)
+        {
+            var line = reader.ReadLine();
+            if (!string.IsNullOrWhiteSpace(line))
+            {
+                lines.Add(line);
+            }
+        }
+
+        cursor = stream.Position;
+        var fromNewLines = ParseLatestHelperOperation(lines, operationToken);
+        if (fromNewLines is not null)
+        {
+            return fromNewLines;
+        }
+
+        stream.Seek(0, SeekOrigin.Begin);
+        reader.DiscardBufferedData();
+        var allLines = new List<string>();
+        while (!reader.EndOfStream)
+        {
+            var line = reader.ReadLine();
+            if (!string.IsNullOrWhiteSpace(line))
+            {
+                allLines.Add(line);
+            }
+        }
+
+        return ParseLatestHelperOperation(allLines.TakeLast(512), operationToken);
+    }
+
+    private static ParsedHelperOperationLine? ParseLatestHelperOperation(IEnumerable<string> lines, string operationToken)
+    {
+        foreach (var line in lines.Reverse())
+        {
+            var match = HelperOperationLineRegex.Match(line);
+            if (!match.Success)
+            {
+                continue;
+            }
+
+            var token = match.Groups["token"].Value;
+            if (!token.Equals(operationToken, StringComparison.OrdinalIgnoreCase))
+            {
+                continue;
+            }
+
+            var status = match.Groups["status"].Value;
+            var applied = status.Equals("APPLIED", StringComparison.OrdinalIgnoreCase);
+            return new ParsedHelperOperationLine(line, applied, null);
+        }
+
+        return null;
     }
 
     private static ParsedTelemetryLine? ParseLatestTelemetry(IEnumerable<string> lines)
@@ -202,4 +330,6 @@ public sealed class TelemetryLogTailService : ITelemetryLogTailService
     }
 
     private sealed record ParsedTelemetryLine(string RawLine, string Mode, DateTime? TimestampUtc);
+
+    private sealed record ParsedHelperOperationLine(string RawLine, bool Applied, DateTime? TimestampUtc);
 }

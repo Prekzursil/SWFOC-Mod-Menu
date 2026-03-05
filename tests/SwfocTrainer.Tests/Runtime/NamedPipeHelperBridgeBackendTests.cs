@@ -425,6 +425,105 @@ public sealed class NamedPipeHelperBridgeBackendTests
         diagnostics["operationToken"]?.ToString().Should().NotBeNullOrWhiteSpace();
     }
 
+
+    [Fact]
+    public async Task ExecuteAsync_ShouldFailVerification_WhenTelemetryEvidenceIsMissing()
+    {
+        var stubBackend = new StubExecutionBackend
+        {
+            ProbeReport = BuildHelperProbeReport(),
+            ExecuteFactory = command =>
+            {
+                var operationToken = command.Payload["operationToken"]?.GetValue<string>() ?? string.Empty;
+                return new ActionExecutionResult(
+                    Succeeded: true,
+                    Message: "helper command applied",
+                    AddressSource: AddressSource.None,
+                    Diagnostics: new Dictionary<string, object?>
+                    {
+                        ["helperVerifyState"] = "applied",
+                        ["operationToken"] = operationToken,
+                        ["helperExecutionPath"] = "plugin_dispatch"
+                    });
+            }
+        };
+
+        var telemetry = new StubTelemetryLogTailService
+        {
+            VerificationResult = HelperOperationVerification.Unavailable("helper_operation_token_not_found")
+        };
+
+        var backend = new NamedPipeHelperBridgeBackend(stubBackend, telemetry);
+        var request = BuildHelperRequest(
+            payload: new JsonObject { ["globalKey"] = "AOTR_HERO_KEY", ["intValue"] = 1 },
+            hook: new HelperHookSpec(
+                Id: "aotr_hero_state_bridge",
+                Script: "scripts/aotr/hero_state_bridge.lua",
+                Version: "1.0.0",
+                EntryPoint: "SWFOC_Trainer_Set_Hero_Respawn"),
+            operationToken: "token-evidence-missing");
+
+        var result = await backend.ExecuteAsync(request, CancellationToken.None);
+
+        result.Succeeded.Should().BeFalse();
+        result.ReasonCode.Should().Be(RuntimeReasonCode.HELPER_VERIFICATION_FAILED);
+        result.Diagnostics.Should().NotBeNull();
+        result.Diagnostics!["helperEvidenceState"]?.ToString().Should().Be("missing");
+        result.Diagnostics["helperEvidenceReasonCode"]?.ToString().Should().Be("helper_operation_token_not_found");
+    }
+
+    [Fact]
+    public async Task ExecuteAsync_ShouldReturnApplied_WhenTelemetryEvidenceIsVerified()
+    {
+        var stubBackend = new StubExecutionBackend
+        {
+            ProbeReport = BuildHelperProbeReport(),
+            ExecuteFactory = command =>
+            {
+                var operationToken = command.Payload["operationToken"]?.GetValue<string>() ?? string.Empty;
+                return new ActionExecutionResult(
+                    Succeeded: true,
+                    Message: "helper command applied",
+                    AddressSource: AddressSource.None,
+                    Diagnostics: new Dictionary<string, object?>
+                    {
+                        ["helperVerifyState"] = "applied",
+                        ["operationToken"] = operationToken,
+                        ["helperExecutionPath"] = "plugin_dispatch"
+                    });
+            }
+        };
+
+        var telemetry = new StubTelemetryLogTailService
+        {
+            VerificationResult = new HelperOperationVerification(
+                Verified: true,
+                ReasonCode: "helper_operation_token_verified",
+                SourcePath: @"C:\Games\_LogFile.txt",
+                TimestampUtc: DateTimeOffset.UtcNow,
+                RawLine: "SWFOC_TRAINER_APPLIED token-evidence-ok entity=UNIT")
+        };
+
+        var backend = new NamedPipeHelperBridgeBackend(stubBackend, telemetry);
+        var request = BuildHelperRequest(
+            payload: new JsonObject { ["globalKey"] = "AOTR_HERO_KEY", ["intValue"] = 1 },
+            hook: new HelperHookSpec(
+                Id: "aotr_hero_state_bridge",
+                Script: "scripts/aotr/hero_state_bridge.lua",
+                Version: "1.0.0",
+                EntryPoint: "SWFOC_Trainer_Set_Hero_Respawn"),
+            operationToken: "token-evidence-ok");
+
+        var result = await backend.ExecuteAsync(request, CancellationToken.None);
+
+        result.Succeeded.Should().BeTrue();
+        result.ReasonCode.Should().Be(RuntimeReasonCode.HELPER_EXECUTION_APPLIED);
+        result.Diagnostics.Should().NotBeNull();
+        result.Diagnostics!["helperEvidenceState"]?.ToString().Should().Be("verified");
+        result.Diagnostics["helperEvidenceReasonCode"]?.ToString().Should().Be("helper_operation_token_verified");
+        result.Diagnostics["helperEvidenceSourcePath"]?.ToString().Should().Contain("_LogFile.txt");
+    }
+
     [Fact]
     public async Task ExecuteAsync_ShouldFailVerification_WhenOperationTokenRoundTripIsMissing()
     {
@@ -687,6 +786,29 @@ public sealed class NamedPipeHelperBridgeBackendTests
             CommandLine: "STEAMMOD=1397421866",
             ExeTarget: ExeTarget.Swfoc,
             Mode: RuntimeMode.Galactic);
+    }
+
+    private sealed class StubTelemetryLogTailService : ITelemetryLogTailService
+    {
+        public HelperOperationVerification VerificationResult { get; set; } =
+            HelperOperationVerification.Unavailable("helper_operation_token_not_found");
+
+        public TelemetryModeResolution ResolveLatestMode(string? processPath, DateTimeOffset nowUtc, TimeSpan freshnessWindow)
+        {
+            _ = processPath;
+            _ = nowUtc;
+            _ = freshnessWindow;
+            return TelemetryModeResolution.Unavailable("telemetry_line_missing");
+        }
+
+        public HelperOperationVerification VerifyOperationToken(string? processPath, string operationToken, DateTimeOffset nowUtc, TimeSpan freshnessWindow)
+        {
+            _ = processPath;
+            _ = operationToken;
+            _ = nowUtc;
+            _ = freshnessWindow;
+            return VerificationResult;
+        }
     }
 
     private sealed class StubExecutionBackend : IExecutionBackend

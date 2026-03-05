@@ -36,6 +36,9 @@ public sealed class NamedPipeHelperBridgeBackend : IHelperBridgeBackend
     private const string DiagnosticProcessId = "processId";
     private const string DiagnosticProcessName = "processName";
     private const string DiagnosticProcessPath = "processPath";
+    private const string DiagnosticHelperEvidenceState = "helperEvidenceState";
+    private const string DiagnosticHelperEvidenceReasonCode = "helperEvidenceReasonCode";
+    private const string DiagnosticHelperEvidenceSourcePath = "helperEvidenceSourcePath";
 
     private const string PayloadOperationKind = "operationKind";
     private const string PayloadOperationToken = "operationToken";
@@ -194,10 +197,12 @@ public sealed class NamedPipeHelperBridgeBackend : IHelperBridgeBackend
         };
 
     private readonly IExecutionBackend _backend;
+    private readonly ITelemetryLogTailService? _telemetryLogTailService;
 
-    public NamedPipeHelperBridgeBackend(IExecutionBackend backend)
+    public NamedPipeHelperBridgeBackend(IExecutionBackend backend, ITelemetryLogTailService? telemetryLogTailService = null)
     {
         _backend = backend;
+        _telemetryLogTailService = telemetryLogTailService;
     }
 
     public async Task<HelperBridgeProbeResult> ProbeAsync(HelperBridgeProbeRequest request, CancellationToken cancellationToken)
@@ -258,6 +263,11 @@ public sealed class NamedPipeHelperBridgeBackend : IHelperBridgeBackend
         if (!ValidateVerificationContract(safeRequest, diagnostics, out var verificationMessage))
         {
             return CreateVerificationFailureResult(verificationMessage, diagnostics, "failed_contract");
+        }
+
+        if (!ValidateOperationEvidence(safeRequest.Process, operation.OperationToken, diagnostics, out var evidenceMessage))
+        {
+            return CreateVerificationFailureResult(evidenceMessage, diagnostics, "failed_runtime_evidence");
         }
 
         return CreateExecutionResult(
@@ -497,6 +507,9 @@ public sealed class NamedPipeHelperBridgeBackend : IHelperBridgeBackend
             [DiagnosticHelperEntryPoint] = request.Hook?.EntryPoint ?? string.Empty,
             [DiagnosticHelperHookId] = request.Hook?.Id ?? string.Empty,
             [DiagnosticHelperVerifyState] = "pending_backend_verification",
+            [DiagnosticHelperEvidenceState] = "not_checked",
+            [DiagnosticHelperEvidenceReasonCode] = "helper_operation_verification_not_supported",
+            [DiagnosticHelperEvidenceSourcePath] = string.Empty,
             [DiagnosticOperationKind] = operation.OperationKind.ToString(),
             [DiagnosticOperationToken] = operation.OperationToken,
             [PayloadOperationPolicy] = request.OperationPolicy ?? string.Empty,
@@ -554,6 +567,46 @@ public sealed class NamedPipeHelperBridgeBackend : IHelperBridgeBackend
             reasonCode: RuntimeReasonCode.HELPER_VERIFICATION_FAILED,
             message: message,
             diagnostics: diagnostics);
+    }
+
+    private bool ValidateOperationEvidence(
+        ProcessMetadata process,
+        string operationToken,
+        IDictionary<string, object?> diagnostics,
+        out string failureMessage)
+    {
+        diagnostics[DiagnosticHelperEvidenceState] = "not_checked";
+        diagnostics[DiagnosticHelperEvidenceReasonCode] = "helper_operation_verification_not_supported";
+        diagnostics[DiagnosticHelperEvidenceSourcePath] = string.Empty;
+
+        if (_telemetryLogTailService is null)
+        {
+            failureMessage = string.Empty;
+            return true;
+        }
+
+        var verification = _telemetryLogTailService.VerifyOperationToken(
+            process.ProcessPath,
+            operationToken,
+            DateTimeOffset.UtcNow,
+            TimeSpan.FromMinutes(2));
+
+        diagnostics[DiagnosticHelperEvidenceState] = verification.Verified ? "verified" : "missing";
+        diagnostics[DiagnosticHelperEvidenceReasonCode] = verification.ReasonCode;
+        diagnostics[DiagnosticHelperEvidenceSourcePath] = verification.SourcePath;
+        if (!string.IsNullOrWhiteSpace(verification.RawLine))
+        {
+            diagnostics["helperEvidenceRawLine"] = verification.RawLine;
+        }
+
+        if (verification.Verified)
+        {
+            failureMessage = string.Empty;
+            return true;
+        }
+
+        failureMessage = $"Helper verification failed: operation token '{operationToken}' was not confirmed by telemetry evidence ({verification.ReasonCode}).";
+        return false;
     }
 
     private static HelperBridgeExecutionResult CreateExecutionResult(

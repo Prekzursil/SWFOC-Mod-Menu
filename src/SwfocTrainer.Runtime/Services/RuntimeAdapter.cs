@@ -86,8 +86,8 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
         _sdkOperationRouter = ResolveOptionalService<ISdkOperationRouter>(serviceProvider);
         _backendRouter = ResolveOptionalService<IBackendRouter>(serviceProvider) ?? new BackendRouter();
         _extenderBackend = ResolveOptionalService<IExecutionBackend>(serviceProvider) ?? new NamedPipeExtenderBackend();
-        _helperBridgeBackend = ResolveOptionalService<IHelperBridgeBackend>(serviceProvider) ?? new NamedPipeHelperBridgeBackend(_extenderBackend);
         _telemetryLogTailService = ResolveOptionalService<ITelemetryLogTailService>(serviceProvider) ?? new TelemetryLogTailService();
+        _helperBridgeBackend = ResolveOptionalService<IHelperBridgeBackend>(serviceProvider) ?? new NamedPipeHelperBridgeBackend(_extenderBackend, _telemetryLogTailService);
         _logger = logger;
         _calibrationArtifactRoot = Path.Combine(
             Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),

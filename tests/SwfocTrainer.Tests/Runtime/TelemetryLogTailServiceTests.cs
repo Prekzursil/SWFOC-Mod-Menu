@@ -217,4 +217,98 @@ public sealed class TelemetryLogTailServiceTests
             }
         }
     }
+
+
+    [Fact]
+    public void VerifyOperationToken_ShouldReturnVerified_WhenAppliedLineExists()
+    {
+        var tempRoot = Path.Combine(Path.GetTempPath(), $"swfoc-telemetry-{Guid.NewGuid():N}");
+        Directory.CreateDirectory(tempRoot);
+        var processPath = Path.Combine(tempRoot, "StarWarsG.exe");
+        File.WriteAllText(processPath, string.Empty);
+        var logPath = Path.Combine(tempRoot, "_LogFile.txt");
+        File.WriteAllText(logPath, "SWFOC_TRAINER_APPLIED token123 entity=EMP_STORMTROOPER");
+
+        try
+        {
+            var service = new TelemetryLogTailService();
+            var result = service.VerifyOperationToken(processPath, "token123", DateTimeOffset.UtcNow, TimeSpan.FromMinutes(5));
+
+            result.Verified.Should().BeTrue();
+            result.ReasonCode.Should().Be("helper_operation_token_verified");
+            result.SourcePath.Should().Be(logPath);
+            result.RawLine.Should().Contain("SWFOC_TRAINER_APPLIED");
+        }
+        finally
+        {
+            if (Directory.Exists(tempRoot))
+            {
+                Directory.Delete(tempRoot, recursive: true);
+            }
+        }
+    }
+
+    [Fact]
+    public void VerifyOperationToken_ShouldReturnUnavailable_WhenFailedLineExists()
+    {
+        var tempRoot = Path.Combine(Path.GetTempPath(), $"swfoc-telemetry-{Guid.NewGuid():N}");
+        Directory.CreateDirectory(tempRoot);
+        var processPath = Path.Combine(tempRoot, "StarWarsG.exe");
+        File.WriteAllText(processPath, string.Empty);
+        File.WriteAllText(Path.Combine(tempRoot, "_LogFile.txt"), "SWFOC_TRAINER_FAILED token123 entity=EMP_STORMTROOPER");
+
+        try
+        {
+            var service = new TelemetryLogTailService();
+            var result = service.VerifyOperationToken(processPath, "token123", DateTimeOffset.UtcNow, TimeSpan.FromMinutes(5));
+
+            result.Verified.Should().BeFalse();
+            result.ReasonCode.Should().Be("helper_operation_reported_failed");
+        }
+        finally
+        {
+            if (Directory.Exists(tempRoot))
+            {
+                Directory.Delete(tempRoot, recursive: true);
+            }
+        }
+    }
+
+    [Fact]
+    public void VerifyOperationToken_ShouldReturnUnavailable_WhenTokenIsMissing()
+    {
+        var tempRoot = Path.Combine(Path.GetTempPath(), $"swfoc-telemetry-{Guid.NewGuid():N}");
+        Directory.CreateDirectory(tempRoot);
+        var processPath = Path.Combine(tempRoot, "StarWarsG.exe");
+        File.WriteAllText(processPath, string.Empty);
+        File.WriteAllText(Path.Combine(tempRoot, "_LogFile.txt"), "SWFOC_TRAINER_APPLIED another-token entity=EMP_STORMTROOPER");
+
+        try
+        {
+            var service = new TelemetryLogTailService();
+            var result = service.VerifyOperationToken(processPath, "token123", DateTimeOffset.UtcNow, TimeSpan.FromMinutes(5));
+
+            result.Verified.Should().BeFalse();
+            result.ReasonCode.Should().Be("helper_operation_token_not_found");
+        }
+        finally
+        {
+            if (Directory.Exists(tempRoot))
+            {
+                Directory.Delete(tempRoot, recursive: true);
+            }
+        }
+    }
+
+    [Fact]
+    public void VerifyOperationToken_ShouldReturnUnavailable_WhenTokenArgumentIsMissing()
+    {
+        var service = new TelemetryLogTailService();
+
+        var result = service.VerifyOperationToken(@"C:\Games\StarWarsG.exe", string.Empty, DateTimeOffset.UtcNow, TimeSpan.FromMinutes(5));
+
+        result.Verified.Should().BeFalse();
+        result.ReasonCode.Should().Be("helper_operation_token_missing");
+    }
+
 }

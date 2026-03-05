@@ -118,8 +118,11 @@ internal static class Program
         services.AddSingleton<ISdkOperationRouter, SdkOperationRouter>();
         services.AddSingleton<IBackendRouter, BackendRouter>();
         services.AddSingleton<IExecutionBackend, NamedPipeExtenderBackend>();
+        services.AddSingleton<ITelemetryLogTailService, TelemetryLogTailService>();
         services.AddSingleton<IHelperBridgeBackend>(provider =>
-            new NamedPipeHelperBridgeBackend(provider.GetRequiredService<IExecutionBackend>()));
+            new NamedPipeHelperBridgeBackend(
+                provider.GetRequiredService<IExecutionBackend>(),
+                provider.GetRequiredService<ITelemetryLogTailService>()));
         services.AddSingleton<IActionReliabilityService, ActionReliabilityService>();
         services.AddSingleton<ITransplantCompatibilityService, TransplantCompatibilityService>();
         services.AddSingleton<IContentTransplantService, ContentTransplantService>();
