@@ -254,14 +254,14 @@ public sealed class TelemetryLogTailService : ITelemetryLogTailService
             return null;
         }
 
-        var safeLine = line ?? string.Empty;
+        var safeLine = line;
         var tokens = safeLine.Split(' ', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
         if (tokens.Length < 2)
         {
             return null;
         }
 
-        if (!TryResolveOperationStatus(tokens[0] ?? string.Empty, out var isApplied))
+        if (!TryResolveOperationStatus(tokens[0], out var isApplied))
         {
             return null;
         }
