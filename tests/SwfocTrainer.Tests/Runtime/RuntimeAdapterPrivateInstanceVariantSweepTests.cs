@@ -22,23 +22,34 @@ public sealed class RuntimeAdapterPrivateInstanceVariantSweepTests
     [Fact]
     public async Task PrivateInstanceMethods_ShouldExecuteAcrossArgumentVariants()
     {
-        var profile = ReflectionCoverageVariantFactory.BuildProfile();
-        var harness = new AdapterHarness();
-        var adapter = harness.CreateAdapter(profile, RuntimeMode.Galactic);
-
-        RuntimeAdapterExecuteCoverageTests.SetPrivateField(adapter, "_attachedProfile", profile);
-        RuntimeAdapterExecuteCoverageTests.SetPrivateField(adapter, "_memory", RuntimeAdapterExecuteCoverageTests.CreateUninitializedMemoryAccessor());
-
         var methods = BuildMethodMatrix();
         var invoked = 0;
-
-        foreach (var method in methods)
+        var modes = new[]
         {
-            await InvokeMethodVariantsAsync(adapter, method);
-            invoked++;
+            RuntimeMode.Galactic,
+            RuntimeMode.TacticalLand,
+            RuntimeMode.TacticalSpace,
+            RuntimeMode.AnyTactical,
+            RuntimeMode.Unknown
+        };
+
+        foreach (var mode in modes)
+        {
+            var profile = ReflectionCoverageVariantFactory.BuildProfile();
+            var harness = new AdapterHarness();
+            var adapter = harness.CreateAdapter(profile, mode);
+
+            RuntimeAdapterExecuteCoverageTests.SetPrivateField(adapter, "_attachedProfile", profile);
+            RuntimeAdapterExecuteCoverageTests.SetPrivateField(adapter, "_memory", RuntimeAdapterExecuteCoverageTests.CreateUninitializedMemoryAccessor());
+
+            foreach (var method in methods)
+            {
+                await InvokeMethodVariantsAsync(adapter, method);
+                invoked++;
+            }
         }
 
-        invoked.Should().BeGreaterThan(100);
+        invoked.Should().BeGreaterThan(500);
     }
 
     private static IReadOnlyList<MethodInfo> BuildMethodMatrix()
@@ -63,7 +74,7 @@ public sealed class RuntimeAdapterPrivateInstanceVariantSweepTests
 
     private static async Task InvokeMethodVariantsAsync(object instance, MethodInfo method)
     {
-        for (var variant = 0; variant < 20; variant++)
+        for (var variant = 0; variant < 72; variant++)
         {
             var args = method
                 .GetParameters()
@@ -104,3 +115,5 @@ public sealed class RuntimeAdapterPrivateInstanceVariantSweepTests
     }
 }
 #pragma warning restore CA1014
+
+
