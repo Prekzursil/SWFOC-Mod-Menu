@@ -250,18 +250,51 @@ public sealed class TelemetryLogTailService : ITelemetryLogTailService
                 continue;
             }
 
-            var token = match.Groups["token"].Value;
+            if (!TryReadNamedGroup(match, "token", out var token))
+            {
+                continue;
+            }
+
             if (!token.Equals(operationToken, StringComparison.OrdinalIgnoreCase))
             {
                 continue;
             }
 
-            var status = match.Groups["status"].Value;
+            if (!TryReadNamedGroup(match, "status", out var status))
+            {
+                continue;
+            }
+
             var applied = status.Equals("APPLIED", StringComparison.OrdinalIgnoreCase);
             return new ParsedHelperOperationLine(line, applied, null);
         }
 
         return null;
+    }
+
+
+    private static bool TryReadNamedGroup(Match match, string groupName, out string value)
+    {
+        value = string.Empty;
+        if (match is null || !match.Success)
+        {
+            return false;
+        }
+
+        var groups = match.Groups;
+        if (groups is null)
+        {
+            return false;
+        }
+
+        var group = groups[groupName];
+        if (group is null || !group.Success)
+        {
+            return false;
+        }
+
+        value = group.Value;
+        return !string.IsNullOrWhiteSpace(value);
     }
 
     private static ParsedTelemetryLine? ParseLatestTelemetry(IEnumerable<string> lines)

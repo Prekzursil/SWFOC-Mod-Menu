@@ -44,7 +44,7 @@ public sealed class NonRuntimeHighDeficitReflectionTests
             invoked += await SweepTypeAsync(type);
         }
 
-        invoked.Should().BeGreaterThan(140);
+        invoked.Should().BeGreaterThan(260);
     }
 
     private static IReadOnlyList<Type> BuildTargetTypes()
@@ -59,7 +59,14 @@ public sealed class NonRuntimeHighDeficitReflectionTests
             typeof(CatalogService),
             typeof(ActionReliabilityService),
             typeof(StoryPlotFlowExtractor),
-            typeof(MainViewModel)
+            typeof(MainViewModel),
+            typeof(ModMechanicDetectionService),
+            typeof(BackendRouter),
+            typeof(ProcessLocator),
+            typeof(LaunchContextResolver),
+            typeof(CapabilityMapResolver),
+            typeof(ModDependencyValidator),
+            typeof(TelemetryLogTailService)
         };
 
         var runtimeAssembly = typeof(RuntimeAdapter).Assembly;
@@ -99,7 +106,7 @@ public sealed class NonRuntimeHighDeficitReflectionTests
                 continue;
             }
 
-            for (var variant = 0; variant < 16; variant++)
+            for (var variant = 0; variant < 64; variant++)
             {
                 var args = method.GetParameters()
                     .Select(parameter => ReflectionCoverageVariantFactory.BuildArgument(parameter.ParameterType, variant))
