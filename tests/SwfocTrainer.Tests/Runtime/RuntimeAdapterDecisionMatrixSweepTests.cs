@@ -9,7 +9,6 @@ using Xunit;
 
 namespace SwfocTrainer.Tests.Runtime;
 
-[CLSCompliant(false)]
 public sealed class RuntimeAdapterDecisionMatrixSweepTests
 {
     private static readonly RuntimeMode[] Modes =

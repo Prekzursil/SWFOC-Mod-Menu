@@ -231,6 +231,8 @@ public sealed class TelemetryLogTailService : ITelemetryLogTailService
 
     private static ParsedHelperOperationLine? ParseLatestHelperOperation(IReadOnlyList<string> lines, string operationToken)
     {
+        ArgumentNullException.ThrowIfNull(lines);
+
         if (lines.Count == 0)
         {
             return null;
@@ -248,8 +250,10 @@ public sealed class TelemetryLogTailService : ITelemetryLogTailService
         return null;
     }
 
-    private static ParsedHelperOperationLine? ParseHelperOperationLine(string? line, string operationToken)
+    private static ParsedHelperOperationLine? ParseHelperOperationLine(string line, string operationToken)
     {
+        ArgumentNullException.ThrowIfNull(line);
+
         if (string.IsNullOrWhiteSpace(line))
         {
             return null;
