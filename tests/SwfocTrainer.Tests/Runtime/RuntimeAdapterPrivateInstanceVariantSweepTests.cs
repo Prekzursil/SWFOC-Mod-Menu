@@ -15,8 +15,17 @@ public sealed class RuntimeAdapterPrivateInstanceVariantSweepTests
         "PulseCallback"
     };
 
+    private static readonly (bool SetProfile, bool SetMemory, bool SetSession)[] StateVariants =
+    [
+        (true, true, true),
+        (true, false, true),
+        (false, true, true),
+        (true, true, false),
+        (false, false, false)
+    ];
+
     [Fact]
-    public async Task PrivateInstanceMethods_ShouldExecuteAcrossArgumentVariants()
+    public async Task PrivateInstanceMethods_ShouldExecuteAcrossArgumentAndStateVariants()
     {
         var methods = BuildMethodMatrix();
         var invoked = 0;
@@ -31,22 +40,46 @@ public sealed class RuntimeAdapterPrivateInstanceVariantSweepTests
 
         foreach (var mode in modes)
         {
-            var profile = ReflectionCoverageVariantFactory.BuildProfile();
-            var harness = new AdapterHarness();
-            var adapter = harness.CreateAdapter(profile, mode);
-
-            RuntimeAdapterExecuteCoverageTests.SetPrivateField(adapter, "_attachedProfile", profile);
-            RuntimeAdapterExecuteCoverageTests.SetPrivateField(adapter, "_memory", CreateProcessMemoryAccessor());
-            TrySetCurrentSession(adapter, ReflectionCoverageVariantFactory.BuildSession(mode));
-
-            foreach (var method in methods)
+            foreach (var state in StateVariants)
             {
-                await InvokeMethodVariantsAsync(adapter, method);
-                invoked++;
+                var profile = ReflectionCoverageVariantFactory.BuildProfile();
+                var harness = new AdapterHarness();
+                var adapter = harness.CreateAdapter(profile, mode);
+
+                IDisposable? memoryScope = null;
+                if (state.SetProfile)
+                {
+                    RuntimeAdapterExecuteCoverageTests.SetPrivateField(adapter, "_attachedProfile", profile);
+                }
+
+                if (state.SetMemory)
+                {
+                    var memoryAccessor = CreateProcessMemoryAccessor();
+                    RuntimeAdapterExecuteCoverageTests.SetPrivateField(adapter, "_memory", memoryAccessor);
+                    memoryScope = memoryAccessor as IDisposable;
+                }
+
+                if (state.SetSession)
+                {
+                    TrySetCurrentSession(adapter, ReflectionCoverageVariantFactory.BuildSession(mode));
+                }
+
+                try
+                {
+                    foreach (var method in methods)
+                    {
+                        await InvokeMethodVariantsAsync(adapter, method);
+                        invoked++;
+                    }
+                }
+                finally
+                {
+                    memoryScope?.Dispose();
+                }
             }
         }
 
-        invoked.Should().BeGreaterThan(500);
+        invoked.Should().BeGreaterThan(2000);
     }
 
     private static IReadOnlyList<MethodInfo> BuildMethodMatrix()
@@ -141,4 +174,3 @@ public sealed class RuntimeAdapterPrivateInstanceVariantSweepTests
     }
 }
 #pragma warning restore CA1014
-

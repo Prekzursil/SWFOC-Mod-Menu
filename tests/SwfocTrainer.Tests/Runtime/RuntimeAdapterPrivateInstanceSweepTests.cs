@@ -40,28 +40,31 @@ public sealed class RuntimeAdapterPrivateInstanceSweepTests
         var invoked = 0;
         foreach (var method in methods)
         {
-            var args = method.GetParameters().Select(BuildFallbackArgument).ToArray();
-            try
+            for (var variant = 0; variant < 24; variant++)
             {
-                var result = method.Invoke(adapter, args);
-                if (result is Task task)
+                var args = method.GetParameters().Select(parameter => BuildVariantArgument(parameter, variant)).ToArray();
+                try
                 {
-                    await AwaitIgnoringFailureAsync(task);
+                    var result = method.Invoke(adapter, args);
+                    if (result is Task task)
+                    {
+                        await AwaitIgnoringFailureAsync(task);
+                    }
                 }
-            }
-            catch (TargetInvocationException)
-            {
-                // Guard-path exceptions are expected for many private branches.
-            }
-            catch (ArgumentException)
-            {
-                // Some methods validate exact payload shapes.
-            }
+                catch (TargetInvocationException)
+                {
+                    // Guard-path exceptions are expected for many private branches.
+                }
+                catch (ArgumentException)
+                {
+                    // Some methods validate exact payload shapes.
+                }
 
-            invoked++;
+                invoked++;
+            }
         }
 
-        invoked.Should().BeGreaterThan(100);
+        invoked.Should().BeGreaterThan(2400);
         ((IDisposable)memoryAccessor).Dispose();
     }
 
@@ -101,6 +104,17 @@ public sealed class RuntimeAdapterPrivateInstanceSweepTests
         {
             // Ignore, fail-closed branches are acceptable for sweep coverage.
         }
+    }
+
+    private static object? BuildVariantArgument(ParameterInfo parameter, int variant)
+    {
+        var fromVariantFactory = ReflectionCoverageVariantFactory.BuildArgument(parameter.ParameterType, variant);
+        if (fromVariantFactory is not null)
+        {
+            return fromVariantFactory;
+        }
+
+        return BuildFallbackArgument(parameter);
     }
 
     private static object? BuildFallbackArgument(ParameterInfo parameter)

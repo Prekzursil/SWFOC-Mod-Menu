@@ -19,20 +19,28 @@ internal static class ReflectionCoverageVariantFactory
     private static readonly IReadOnlyDictionary<Type, Func<int, object?>> PrimitiveBuilders =
         new Dictionary<Type, Func<int, object?>>
         {
-            [typeof(string)] = variant => variant switch { 0 => "coverage", 1 => string.Empty, _ => null },
-            [typeof(bool)] = variant => variant == 1,
-            [typeof(int)] = variant => variant switch { 0 => 1, 1 => -1, _ => 0 },
-            [typeof(uint)] = variant => variant == 1 ? 2u : 0u,
-            [typeof(long)] = variant => variant switch { 0 => 1L, 1 => -1L, _ => 0L },
-            [typeof(float)] = variant => variant switch { 0 => 1f, 1 => -1f, _ => 0f },
-            [typeof(double)] = variant => variant switch { 0 => 1d, 1 => -1d, _ => 0d },
-            [typeof(decimal)] = variant => variant switch { 0 => 1m, 1 => -1m, _ => 0m },
+            [typeof(string)] = variant => (variant % 6) switch
+            {
+                0 => "coverage",
+                1 => string.Empty,
+                2 => null,
+                3 => "0",
+                4 => "-1",
+                _ => "   "
+            },
+            [typeof(bool)] = variant => (variant % 2) == 1,
+            [typeof(int)] = variant => (variant % 6) switch { 0 => 1, 1 => -1, 2 => 0, 3 => int.MaxValue, 4 => int.MinValue, _ => 42 },
+            [typeof(uint)] = variant => (variant % 4) switch { 0 => 0u, 1 => 1u, 2 => 2u, _ => uint.MaxValue },
+            [typeof(long)] = variant => (variant % 6) switch { 0 => 1L, 1 => -1L, 2 => 0L, 3 => long.MaxValue, 4 => long.MinValue, _ => 42L },
+            [typeof(float)] = variant => (variant % 6) switch { 0 => 1f, 1 => -1f, 2 => 0f, 3 => float.NaN, 4 => float.PositiveInfinity, _ => float.NegativeInfinity },
+            [typeof(double)] = variant => (variant % 6) switch { 0 => 1d, 1 => -1d, 2 => 0d, 3 => double.NaN, 4 => double.PositiveInfinity, _ => double.NegativeInfinity },
+            [typeof(decimal)] = variant => (variant % 6) switch { 0 => 1m, 1 => -1m, 2 => 0m, 3 => decimal.MaxValue, 4 => decimal.MinValue, _ => 42m },
             [typeof(Guid)] = BuildGuidPrimitive,
-            [typeof(DateTimeOffset)] = variant => variant == 1 ? DateTimeOffset.MinValue : DateTimeOffset.UtcNow,
-            [typeof(DateTime)] = variant => variant == 1 ? DateTime.MinValue : DateTime.UtcNow,
-            [typeof(TimeSpan)] = variant => variant == 1 ? TimeSpan.Zero : TimeSpan.FromMilliseconds(25),
+            [typeof(DateTimeOffset)] = variant => (variant % 4) switch { 0 => DateTimeOffset.UtcNow, 1 => DateTimeOffset.MinValue, 2 => DateTimeOffset.MaxValue, _ => DateTimeOffset.UnixEpoch },
+            [typeof(DateTime)] = variant => (variant % 4) switch { 0 => DateTime.UtcNow, 1 => DateTime.MinValue, 2 => DateTime.MaxValue, _ => DateTime.UnixEpoch },
+            [typeof(TimeSpan)] = variant => (variant % 4) switch { 0 => TimeSpan.FromMilliseconds(25), 1 => TimeSpan.Zero, 2 => TimeSpan.FromSeconds(-1), _ => TimeSpan.FromDays(1) },
             [typeof(CancellationToken)] = _ => CancellationToken.None,
-            [typeof(byte[])] = variant => variant == 1 ? Array.Empty<byte>() : new byte[] { 1, 2, 3, 4 }
+            [typeof(byte[])] = variant => (variant % 4) switch { 0 => new byte[] { 1, 2, 3, 4 }, 1 => Array.Empty<byte>(), 2 => new byte[] { 0xFF }, _ => new byte[] { 0 } }
         };
 
     private static readonly IReadOnlyDictionary<Type, Func<int, object?>> DomainBuilders =
@@ -331,7 +339,7 @@ internal static class ReflectionCoverageVariantFactory
             instance = Activator.CreateInstance(type);
             return true;
         }
-        catch (Exception ex) when (ex is MissingMethodException or TargetInvocationException or MemberAccessException or NotSupportedException)
+        catch (Exception ex) when (ex is MissingMethodException or TargetInvocationException or MemberAccessException or NotSupportedException or ArgumentException)
         {
             return false;
         }
@@ -366,7 +374,7 @@ internal static class ReflectionCoverageVariantFactory
             return (type, false);
         }
 
-        return (underlying, variant == 2);
+        return (underlying, variant % 5 == 2);
     }
 
     private static bool TryBuildPrimitive(Type type, int variant, out object? value)
@@ -383,7 +391,12 @@ internal static class ReflectionCoverageVariantFactory
 
     private static object BuildGuidPrimitive(int variant)
     {
-        return variant == 0 ? new Guid("11111111-1111-1111-1111-111111111111") : Guid.Empty;
+        return (variant % 3) switch
+        {
+            0 => new Guid("11111111-1111-1111-1111-111111111111"),
+            1 => Guid.Empty,
+            _ => Guid.NewGuid()
+        };
     }
 
     private static bool TryBuildJson(Type type, int variant, out object? value)
@@ -453,7 +466,13 @@ internal static class ReflectionCoverageVariantFactory
             return false;
         }
 
-        value = variant == 1 ? Array.Empty<string>() : new[] { "a", "b" };
+        value = (variant % 4) switch
+        {
+            0 => Array.Empty<string>(),
+            1 => new[] { "a", "b" },
+            2 => new[] { "A", "B", "C" },
+            _ => new[] { " ", string.Empty }
+        };
         return true;
     }
 
@@ -465,9 +484,13 @@ internal static class ReflectionCoverageVariantFactory
             return false;
         }
 
-        value = variant == 1
-            ? new Dictionary<string, object?>(StringComparer.OrdinalIgnoreCase)
-            : new Dictionary<string, object?>(StringComparer.OrdinalIgnoreCase) { ["mode"] = "galactic" };
+        value = (variant % 4) switch
+        {
+            0 => new Dictionary<string, object?>(StringComparer.OrdinalIgnoreCase),
+            1 => new Dictionary<string, object?>(StringComparer.OrdinalIgnoreCase) { ["mode"] = "galactic" },
+            2 => new Dictionary<string, object?>(StringComparer.OrdinalIgnoreCase) { ["runtimeMode"] = "TacticalLand", ["allowCrossFaction"] = true },
+            _ => new Dictionary<string, object?>(StringComparer.OrdinalIgnoreCase) { ["runtimeModeOverride"] = "Unknown", ["selectedPlanetId"] = "Kuat" }
+        };
         return true;
     }
 
@@ -479,9 +502,13 @@ internal static class ReflectionCoverageVariantFactory
             return false;
         }
 
-        value = variant == 1
-            ? new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
-            : new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase) { ["mode"] = "galactic" };
+        value = (variant % 4) switch
+        {
+            0 => new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase),
+            1 => new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase) { ["mode"] = "galactic" },
+            2 => new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase) { ["mode"] = "tactical", ["planetId"] = "Coruscant" },
+            _ => new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase) { ["mode"] = string.Empty }
+        };
         return true;
     }
 
@@ -513,7 +540,7 @@ internal static class ReflectionCoverageVariantFactory
             return Activator.CreateInstance(enumType)!;
         }
 
-        var index = Math.Min(variant, values.Length - 1);
+        var index = Math.Abs(variant) % values.Length;
         return values.GetValue(index)!;
     }
 
