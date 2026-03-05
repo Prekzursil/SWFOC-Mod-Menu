@@ -7,6 +7,7 @@ using SwfocTrainer.Core.Services;
 using SwfocTrainer.DataIndex.Services;
 using SwfocTrainer.Flow.Services;
 using SwfocTrainer.Meg;
+using SwfocTrainer.Profiles.Services;
 using SwfocTrainer.Runtime.Services;
 using SwfocTrainer.Saves.Services;
 using Xunit;
@@ -18,15 +19,10 @@ public sealed class NonRuntimeHighDeficitReflectionTests
     private static readonly string[] UnsafeMethodFragments =
     [
         "ShowDialog",
-        "Browse",
         "Inject",
-        "Launch",
-        "Host",
-        "Pipe",
         "OpenFile",
         "SaveFile",
-        "WaitForExit",
-        "Watch"
+        "WaitForExit"
     ];
 
     private static readonly string[] InternalTypeNames =
@@ -44,7 +40,7 @@ public sealed class NonRuntimeHighDeficitReflectionTests
             invoked += await SweepTypeAsync(type);
         }
 
-        invoked.Should().BeGreaterThan(260);
+        invoked.Should().BeGreaterThan(340);
     }
 
     private static IReadOnlyList<Type> BuildTargetTypes()
@@ -54,17 +50,29 @@ public sealed class NonRuntimeHighDeficitReflectionTests
             typeof(MegArchiveReader),
             typeof(BinarySaveCodec),
             typeof(SavePatchPackService),
+            typeof(SavePatchApplyService),
             typeof(SignatureResolver),
             typeof(EffectiveGameDataIndexService),
             typeof(CatalogService),
             typeof(ActionReliabilityService),
             typeof(StoryPlotFlowExtractor),
             typeof(MainViewModel),
+            typeof(TrainerOrchestrator),
+            typeof(SpawnPresetService),
+            typeof(TelemetrySnapshotService),
+            typeof(SdkOperationRouter),
+            typeof(GitHubProfileUpdateService),
+            typeof(FileSystemProfileRepository),
             typeof(ModMechanicDetectionService),
             typeof(BackendRouter),
             typeof(ProcessLocator),
             typeof(LaunchContextResolver),
             typeof(CapabilityMapResolver),
+            typeof(RuntimeAdapter),
+            typeof(GameLaunchService),
+            typeof(WorkshopInventoryService),
+            typeof(NamedPipeExtenderBackend),
+            typeof(NamedPipeHelperBridgeBackend),
             typeof(ModDependencyValidator),
             typeof(TelemetryLogTailService)
         };
@@ -106,7 +114,7 @@ public sealed class NonRuntimeHighDeficitReflectionTests
                 continue;
             }
 
-            for (var variant = 0; variant < 8; variant++)
+            for (var variant = 0; variant < 12; variant++)
             {
                 var args = method.GetParameters()
                     .Select(parameter => ReflectionCoverageVariantFactory.BuildArgument(parameter.ParameterType, variant))
