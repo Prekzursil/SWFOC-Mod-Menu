@@ -60,14 +60,10 @@ public sealed class TelemetryLogTailService : ITelemetryLogTailService
         DateTimeOffset nowUtc,
         TimeSpan freshnessWindow)
     {
-        if (string.IsNullOrWhiteSpace(operationToken))
+        var inputFailure = ValidateVerifyOperationInputs(processPath, operationToken);
+        if (inputFailure is not null)
         {
-            return HelperOperationVerification.Unavailable("helper_operation_token_missing");
-        }
-
-        if (string.IsNullOrWhiteSpace(processPath))
-        {
-            return HelperOperationVerification.Unavailable("telemetry_process_path_missing");
+            return inputFailure;
         }
 
         var logPath = ResolveLogPath(processPath);
@@ -107,6 +103,21 @@ public sealed class TelemetryLogTailService : ITelemetryLogTailService
             SourcePath: logPath,
             TimestampUtc: timestampUtc,
             RawLine: parsed.RawLine);
+    }
+
+    private static HelperOperationVerification? ValidateVerifyOperationInputs(string? processPath, string operationToken)
+    {
+        if (string.IsNullOrWhiteSpace(operationToken))
+        {
+            return HelperOperationVerification.Unavailable("helper_operation_token_missing");
+        }
+
+        if (string.IsNullOrWhiteSpace(processPath))
+        {
+            return HelperOperationVerification.Unavailable("telemetry_process_path_missing");
+        }
+
+        return null;
     }
 
     private static string? ResolveLogPath(string processPath)
@@ -218,6 +229,11 @@ public sealed class TelemetryLogTailService : ITelemetryLogTailService
 
     private static ParsedHelperOperationLine? ParseLatestHelperOperation(IEnumerable<string> lines, string operationToken)
     {
+        if (lines is null)
+        {
+            return null;
+        }
+
         foreach (var line in lines.Reverse())
         {
             if (string.IsNullOrWhiteSpace(line))
@@ -247,6 +263,11 @@ public sealed class TelemetryLogTailService : ITelemetryLogTailService
 
     private static ParsedTelemetryLine? ParseLatestTelemetry(IEnumerable<string> lines)
     {
+        if (lines is null)
+        {
+            return null;
+        }
+
         foreach (var line in lines.Reverse())
         {
             if (string.IsNullOrWhiteSpace(line))
