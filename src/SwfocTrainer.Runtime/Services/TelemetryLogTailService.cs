@@ -254,13 +254,14 @@ public sealed class TelemetryLogTailService : ITelemetryLogTailService
             return null;
         }
 
-        var tokens = line.Split(' ', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
+        var safeLine = line ?? string.Empty;
+        var tokens = safeLine.Split(' ', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
         if (tokens.Length < 2)
         {
             return null;
         }
 
-        if (!TryResolveOperationStatus(tokens[0], out var isApplied))
+        if (!TryResolveOperationStatus(tokens[0] ?? string.Empty, out var isApplied))
         {
             return null;
         }
@@ -270,13 +271,13 @@ public sealed class TelemetryLogTailService : ITelemetryLogTailService
             return null;
         }
 
-        return new ParsedHelperOperationLine(line, isApplied, null);
+        return new ParsedHelperOperationLine(safeLine, isApplied, null);
     }
 
     private static bool TryResolveOperationStatus(string statusToken, out bool isApplied)
     {
         isApplied = false;
-        if (!statusToken.StartsWith(HelperOperationPrefix, StringComparison.OrdinalIgnoreCase))
+        if (string.IsNullOrWhiteSpace(statusToken) || !statusToken.StartsWith(HelperOperationPrefix, StringComparison.OrdinalIgnoreCase))
         {
             return false;
         }
