@@ -575,12 +575,11 @@ public sealed class NamedPipeHelperBridgeBackend : IHelperBridgeBackend
         IDictionary<string, object?> diagnostics,
         out string failureMessage)
     {
-        diagnostics[DiagnosticHelperEvidenceState] = "not_checked";
-        diagnostics[DiagnosticHelperEvidenceReasonCode] = "helper_operation_verification_not_supported";
-        diagnostics[DiagnosticHelperEvidenceSourcePath] = string.Empty;
-
         if (_telemetryLogTailService is null)
         {
+            diagnostics[DiagnosticHelperEvidenceState] = "not_checked";
+            diagnostics[DiagnosticHelperEvidenceReasonCode] = "helper_operation_verification_not_supported";
+            diagnostics[DiagnosticHelperEvidenceSourcePath] = string.Empty;
             failureMessage = string.Empty;
             return true;
         }
