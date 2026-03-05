@@ -220,6 +220,11 @@ public sealed class TelemetryLogTailService : ITelemetryLogTailService
     {
         foreach (var line in lines.Reverse())
         {
+            if (string.IsNullOrWhiteSpace(line))
+            {
+                continue;
+            }
+
             var match = HelperOperationLineRegex.Match(line);
             if (!match.Success)
             {
@@ -244,6 +249,11 @@ public sealed class TelemetryLogTailService : ITelemetryLogTailService
     {
         foreach (var line in lines.Reverse())
         {
+            if (string.IsNullOrWhiteSpace(line))
+            {
+                continue;
+            }
+
             var match = TelemetryLineRegex.Match(line);
             if (!match.Success)
             {
@@ -333,3 +343,5 @@ public sealed class TelemetryLogTailService : ITelemetryLogTailService
 
     private sealed record ParsedHelperOperationLine(string RawLine, bool Applied, DateTime? TimestampUtc);
 }
+
+
