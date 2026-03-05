@@ -1166,7 +1166,7 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
             }
 
             if (!TryLoadCreditsHookModuleData(
-                    CurrentSession.Process.ProcessId,
+                    CurrentSession!.Process.ProcessId,
                     out _,
                     out var moduleBytes,
                     out var failureMessage))
@@ -1526,7 +1526,7 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
         }
 
         return _telemetryLogTailService.ResolveLatestMode(
-            CurrentSession.Process.ProcessPath,
+            CurrentSession!.Process.ProcessPath,
             DateTimeOffset.UtcNow,
             TimeSpan.FromMinutes(5));
     }
@@ -2257,8 +2257,8 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
 
         if (CurrentSession is not null)
         {
-            merged["processId"] = CurrentSession.Process.ProcessId;
-            merged["processPath"] = CurrentSession.Process.ProcessPath;
+            merged["processId"] = CurrentSession!.Process.ProcessId;
+            merged["processPath"] = CurrentSession!.Process.ProcessPath;
         }
 
         return merged;
@@ -2277,9 +2277,9 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
 
         if (CurrentSession is not null)
         {
-            merged["processId"] = CurrentSession.Process.ProcessId;
-            merged["processName"] = CurrentSession.Process.ProcessName;
-            merged["processPath"] = CurrentSession.Process.ProcessPath;
+            merged["processId"] = CurrentSession!.Process.ProcessId;
+            merged["processName"] = CurrentSession!.Process.ProcessName;
+            merged["processPath"] = CurrentSession!.Process.ProcessPath;
         }
 
         var resolvedAnchors = BuildResolvedAnchors(request);
@@ -4460,16 +4460,9 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
     private FogPatchFallbackResolution ResolveFogPatchFallbackAddress()  // NOSONAR
     {
         EnsureAttached();
-        if (_memory is null || CurrentSession is null)
-        {
-            return FogPatchFallbackResolution.Fail(
-                RuntimeReasonCode.SAFETY_FAIL_CLOSED,
-                "Fog fallback patch resolution failed: no active attached process.");
-        }
-
         try
         {
-            using var process = Process.GetProcessById(CurrentSession.Process.ProcessId);
+            using var process = Process.GetProcessById(CurrentSession!.Process.ProcessId);
             var module = process.MainModule;
             if (module is null)
             {
@@ -4479,8 +4472,8 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
             }
 
             var baseAddress = module.BaseAddress;
-            var moduleBytes = _memory.ReadBytes(baseAddress, module.ModuleMemorySize);
-            var orderedPatterns = CurrentSession.Process.ExeTarget == ExeTarget.Sweaw
+            var moduleBytes = _memory!.ReadBytes(baseAddress, module.ModuleMemorySize);
+            var orderedPatterns = CurrentSession!.Process.ExeTarget == ExeTarget.Sweaw
                 ? new[]
                 {
                     (Pattern: FogFallbackPatternSweaw, BranchOffset: 4),
@@ -5495,14 +5488,9 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
     private UnitCapHookResolution ResolveUnitCapHookInjectionAddress()
     {
         EnsureAttached();
-        if (_memory is null || CurrentSession is null)
-        {
-            return UnitCapHookResolution.Fail("No active process for unit cap hook resolution.");
-        }
-
         try
         {
-            using var process = Process.GetProcessById(CurrentSession.Process.ProcessId);
+            using var process = Process.GetProcessById(CurrentSession!.Process.ProcessId);
             var module = process.MainModule;
             if (module is null)
             {
@@ -5510,7 +5498,7 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
             }
 
             var baseAddress = module.BaseAddress;
-            var moduleBytes = _memory.ReadBytes(baseAddress, module.ModuleMemorySize);
+            var moduleBytes = _memory!.ReadBytes(baseAddress, module.ModuleMemorySize);
             var pattern = AobPattern.Parse(UnitCapHookPatternText);
             var hits = FindPatternOffsets(moduleBytes, pattern, maxHits: 3);
             if (hits.Count == 1)
@@ -5534,14 +5522,9 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
     private InstantBuildHookResolution ResolveInstantBuildHookInjectionAddress()
     {
         EnsureAttached();
-        if (_memory is null || CurrentSession is null)
-        {
-            return InstantBuildHookResolution.Fail("No active process for instant build hook resolution.");
-        }
-
         try
         {
-            using var process = Process.GetProcessById(CurrentSession.Process.ProcessId);
+            using var process = Process.GetProcessById(CurrentSession!.Process.ProcessId);
             var module = process.MainModule;
             if (module is null)
             {
@@ -5549,7 +5532,7 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
             }
 
             var baseAddress = module.BaseAddress;
-            var moduleBytes = _memory.ReadBytes(baseAddress, module.ModuleMemorySize);
+            var moduleBytes = _memory!.ReadBytes(baseAddress, module.ModuleMemorySize);
 
             foreach (var patternBytes in InstantBuildHookPatterns)
             {
@@ -5754,14 +5737,9 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
     private CreditsHookResolution ResolveCreditsHookInjectionAddress()
     {
         EnsureAttached();
-        if (_memory is null || CurrentSession is null)
-        {
-            return CreditsHookResolution.Fail("No active process for credits hook resolution.");
-        }
-
         try
         {
-            if (!TryLoadCreditsHookModuleData(CurrentSession.Process.ProcessId, out var baseAddress, out var moduleBytes, out var moduleFailure))
+            if (!TryLoadCreditsHookModuleData(CurrentSession!.Process.ProcessId, out var baseAddress, out var moduleBytes, out var moduleFailure))
             {
                 return CreditsHookResolution.Fail(moduleFailure!);
             }
