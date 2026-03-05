@@ -70,8 +70,11 @@ public sealed class TelemetryLogTailService : ITelemetryLogTailService
             return HelperOperationVerification.Unavailable("telemetry_process_path_missing");
         }
 
-        return VerifyOperationTokenCore(processPath, operationToken, nowUtc, freshnessWindow);
+        var resolvedProcessPath = processPath;
+        var resolvedOperationToken = operationToken;
+        return VerifyOperationTokenCore(resolvedProcessPath, resolvedOperationToken, nowUtc, freshnessWindow);
     }
+
 
     private HelperOperationVerification VerifyOperationTokenCore(
         string processPath,
@@ -226,8 +229,13 @@ public sealed class TelemetryLogTailService : ITelemetryLogTailService
         return ParseLatestHelperOperation(allLines.TakeLast(512).ToArray(), operationToken);
     }
 
-    private static ParsedHelperOperationLine? ParseLatestHelperOperation(IReadOnlyList<string> lines, string operationToken)
+    private static ParsedHelperOperationLine? ParseLatestHelperOperation(IReadOnlyList<string>? lines, string operationToken)
     {
+        if (lines is null || lines.Count == 0)
+        {
+            return null;
+        }
+
         for (var index = lines.Count - 1; index >= 0; index--)
         {
             var line = lines[index];

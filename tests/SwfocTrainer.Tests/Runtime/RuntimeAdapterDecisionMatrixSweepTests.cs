@@ -8,7 +8,6 @@ using Xunit;
 
 namespace SwfocTrainer.Tests.Runtime;
 
-[CLSCompliant(false)]
 public sealed class RuntimeAdapterDecisionMatrixSweepTests
 {
     private static readonly RuntimeMode[] Modes =
@@ -159,16 +158,36 @@ public sealed class RuntimeAdapterDecisionMatrixSweepTests
         var payload = (JsonObject?)ReflectionCoverageVariantFactory.BuildArgument(typeof(JsonObject), variant) ?? new JsonObject();
         var factionPair = ResolveFactionPair(variant);
 
-        payload["actionId"] = actionId;
-        payload["helperHookId"] = payload["helperHookId"] ?? "spawn_bridge";
-        payload["entityId"] = payload["entityId"] ?? "EMP_STORMTROOPER";
-        payload["targetFaction"] = payload["targetFaction"] ?? factionPair.target;
-        payload["sourceFaction"] = payload["sourceFaction"] ?? factionPair.source;
-        payload["placementMode"] = payload["placementMode"] ?? ResolvePlacementMode(variant);
-        payload["allowCrossFaction"] = payload["allowCrossFaction"] ?? (variant % 3 != 0);
-        payload["forceOverride"] = payload["forceOverride"] ?? (variant % 4 == 0);
-
+        ApplyPayloadDefaults(payload, actionId, factionPair, variant);
         return payload;
+    }
+
+    private static void ApplyPayloadDefaults(JsonObject payload, string actionId, (string target, string source) factionPair, int variant)
+    {
+        SetIfMissing(payload, "actionId", actionId);
+        SetIfMissing(payload, "helperHookId", "spawn_bridge");
+        SetIfMissing(payload, "entityId", "EMP_STORMTROOPER");
+        SetIfMissing(payload, "targetFaction", factionPair.target);
+        SetIfMissing(payload, "sourceFaction", factionPair.source);
+        SetIfMissing(payload, "placementMode", ResolvePlacementMode(variant));
+        SetIfMissing(payload, "allowCrossFaction", variant % 3 != 0);
+        SetIfMissing(payload, "forceOverride", variant % 4 == 0);
+    }
+
+    private static void SetIfMissing(JsonObject payload, string key, string value)
+    {
+        if (payload[key] is null)
+        {
+            payload[key] = value;
+        }
+    }
+
+    private static void SetIfMissing(JsonObject payload, string key, bool value)
+    {
+        if (payload[key] is null)
+        {
+            payload[key] = value;
+        }
     }
 
     private static (string target, string source) ResolveFactionPair(int variant)
@@ -195,5 +214,4 @@ public sealed class RuntimeAdapterDecisionMatrixSweepTests
         };
     }
 }
-
 

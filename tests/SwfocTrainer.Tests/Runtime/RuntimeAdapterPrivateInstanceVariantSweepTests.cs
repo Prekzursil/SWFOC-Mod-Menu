@@ -11,10 +11,6 @@ public sealed class RuntimeAdapterPrivateInstanceVariantSweepTests
 {
     private static readonly HashSet<string> UnsafeMethodNames = new(StringComparer.Ordinal)
     {
-        "AllocateExecutableCaveNear",
-        "TryAllocateInSymmetricRange",
-        "TryAllocateFallbackCave",
-        "TryAllocateNear",
         "AggressiveWriteLoop",
         "PulseCallback"
     };
@@ -40,7 +36,8 @@ public sealed class RuntimeAdapterPrivateInstanceVariantSweepTests
             var adapter = harness.CreateAdapter(profile, mode);
 
             RuntimeAdapterExecuteCoverageTests.SetPrivateField(adapter, "_attachedProfile", profile);
-            RuntimeAdapterExecuteCoverageTests.SetPrivateField(adapter, "_memory", RuntimeAdapterExecuteCoverageTests.CreateUninitializedMemoryAccessor());
+            RuntimeAdapterExecuteCoverageTests.SetPrivateField(adapter, "_memory", CreateProcessMemoryAccessor());
+            TrySetCurrentSession(adapter, ReflectionCoverageVariantFactory.BuildSession(mode));
 
             foreach (var method in methods)
             {
@@ -74,7 +71,7 @@ public sealed class RuntimeAdapterPrivateInstanceVariantSweepTests
 
     private static async Task InvokeMethodVariantsAsync(object instance, MethodInfo method)
     {
-        for (var variant = 0; variant < 72; variant++)
+        for (var variant = 0; variant < 160; variant++)
         {
             var args = method
                 .GetParameters()
@@ -82,6 +79,35 @@ public sealed class RuntimeAdapterPrivateInstanceVariantSweepTests
                 .ToArray();
 
             await TryInvokeAsync(instance, method, args);
+        }
+    }
+
+    private static object CreateProcessMemoryAccessor()
+    {
+        var memoryType = typeof(RuntimeAdapter).Assembly.GetType("SwfocTrainer.Runtime.Interop.ProcessMemoryAccessor");
+        memoryType.Should().NotBeNull();
+        var accessor = Activator.CreateInstance(memoryType!, Environment.ProcessId);
+        accessor.Should().NotBeNull();
+        return accessor!;
+    }
+
+    private static void TrySetCurrentSession(RuntimeAdapter adapter, AttachSession session)
+    {
+        var property = typeof(RuntimeAdapter).GetProperty("CurrentSession", BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
+        if (property is null)
+        {
+            return;
+        }
+
+        try
+        {
+            property.SetValue(adapter, session);
+        }
+        catch (TargetInvocationException)
+        {
+        }
+        catch (MethodAccessException)
+        {
         }
     }
 
@@ -115,5 +141,4 @@ public sealed class RuntimeAdapterPrivateInstanceVariantSweepTests
     }
 }
 #pragma warning restore CA1014
-
 
