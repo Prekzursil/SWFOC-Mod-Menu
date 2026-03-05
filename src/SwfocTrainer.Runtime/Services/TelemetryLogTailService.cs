@@ -31,7 +31,8 @@ public sealed class TelemetryLogTailService : ITelemetryLogTailService
             return TelemetryModeResolution.Unavailable("telemetry_process_path_missing");
         }
 
-        var logPath = ResolveLogPath(processPath);
+        var resolvedProcessPath = processPath!;
+        var logPath = ResolveLogPath(resolvedProcessPath);
         if (logPath is null)
         {
             return TelemetryModeResolution.Unavailable("telemetry_log_missing");
@@ -66,43 +67,21 @@ public sealed class TelemetryLogTailService : ITelemetryLogTailService
             return inputFailure;
         }
 
-        var logPath = ResolveLogPath(processPath);
+        var resolvedProcessPath = processPath!;
+        var resolvedOperationToken = operationToken;
+        var logPath = ResolveLogPath(resolvedProcessPath);
         if (logPath is null)
         {
             return HelperOperationVerification.Unavailable("telemetry_log_missing");
         }
 
-        ParsedHelperOperationLine? parsed = null;
+        ParsedHelperOperationLine? parsed;
         lock (_sync)
         {
-            var cursor = _operationCursorByPath.TryGetValue(logPath, out var stored) ? stored : 0L;
-            parsed = ReadLatestHelperOperationLine(logPath, operationToken, ref cursor);
-            _operationCursorByPath[logPath] = cursor;
+            parsed = ReadLatestHelperOperationWithCursor(logPath, resolvedOperationToken);
         }
 
-        if (parsed is null)
-        {
-            return HelperOperationVerification.Unavailable("helper_operation_token_not_found");
-        }
-
-        var timestamp = parsed.TimestampUtc ?? File.GetLastWriteTimeUtc(logPath);
-        var timestampUtc = new DateTimeOffset(timestamp, TimeSpan.Zero);
-        if (nowUtc - timestampUtc > freshnessWindow)
-        {
-            return HelperOperationVerification.Unavailable("helper_operation_token_stale");
-        }
-
-        if (!parsed.Applied)
-        {
-            return HelperOperationVerification.Unavailable("helper_operation_reported_failed");
-        }
-
-        return new HelperOperationVerification(
-            Verified: true,
-            ReasonCode: "helper_operation_token_verified",
-            SourcePath: logPath,
-            TimestampUtc: timestampUtc,
-            RawLine: parsed.RawLine);
+        return BuildOperationVerification(parsed, logPath, nowUtc, freshnessWindow);
     }
 
     private static HelperOperationVerification? ValidateVerifyOperationInputs(string? processPath, string operationToken)
@@ -118,6 +97,37 @@ public sealed class TelemetryLogTailService : ITelemetryLogTailService
         }
 
         return null;
+    }
+
+    private ParsedHelperOperationLine? ReadLatestHelperOperationWithCursor(string logPath, string operationToken)
+    {
+        var cursor = _operationCursorByPath.TryGetValue(logPath, out var stored) ? stored : 0L;
+        var parsed = ReadLatestHelperOperationLine(logPath, operationToken, ref cursor);
+        _operationCursorByPath[logPath] = cursor;
+        return parsed;
+    }
+
+    private static HelperOperationVerification BuildOperationVerification(
+        ParsedHelperOperationLine? parsed,
+        string logPath,
+        DateTimeOffset nowUtc,
+        TimeSpan freshnessWindow)
+    {
+        if (parsed is null)
+        {
+            return HelperOperationVerification.Unavailable("helper_operation_token_not_found");
+        }
+
+        var timestamp = parsed.TimestampUtc ?? File.GetLastWriteTimeUtc(logPath);
+        var timestampUtc = new DateTimeOffset(timestamp, TimeSpan.Zero);
+        if (nowUtc - timestampUtc > freshnessWindow)
+        {
+            return HelperOperationVerification.Unavailable("helper_operation_token_stale");
+        }
+
+        return parsed.Applied
+            ? new HelperOperationVerification(true, "helper_operation_token_verified", logPath, timestampUtc, parsed.RawLine)
+            : HelperOperationVerification.Unavailable("helper_operation_reported_failed");
     }
 
     private static string? ResolveLogPath(string processPath)
@@ -227,20 +237,22 @@ public sealed class TelemetryLogTailService : ITelemetryLogTailService
         return ParseLatestHelperOperation(allLines.TakeLast(512), operationToken);
     }
 
-    private static ParsedHelperOperationLine? ParseLatestHelperOperation(IEnumerable<string> lines, string operationToken)
+    private static ParsedHelperOperationLine? ParseLatestHelperOperation(IEnumerable<string?>? lines, string? operationToken)
     {
-        if (lines is null)
+        if (lines is null || string.IsNullOrWhiteSpace(operationToken))
         {
             return null;
         }
 
-        foreach (var line in lines.Reverse())
+        var reversedLines = lines.Reverse();
+        foreach (var candidate in reversedLines)
         {
-            if (string.IsNullOrWhiteSpace(line))
+            if (string.IsNullOrWhiteSpace(candidate))
             {
                 continue;
             }
 
+            var line = candidate;
             var match = HelperOperationLineRegex.Match(line);
             if (!match.Success)
             {
