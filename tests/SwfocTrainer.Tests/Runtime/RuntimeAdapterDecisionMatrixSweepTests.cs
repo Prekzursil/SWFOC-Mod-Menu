@@ -1,11 +1,14 @@
+using System;
 using System.Text.Json.Nodes;
 using FluentAssertions;
+using SwfocTrainer.Core.Contracts;
 using SwfocTrainer.Core.Models;
 using SwfocTrainer.Runtime.Services;
 using Xunit;
 
 namespace SwfocTrainer.Tests.Runtime;
 
+[CLSCompliant(false)]
 public sealed class RuntimeAdapterDecisionMatrixSweepTests
 {
     private static readonly RuntimeMode[] Modes =
@@ -75,44 +78,66 @@ public sealed class RuntimeAdapterDecisionMatrixSweepTests
 
     private static AdapterHarness BuildHarness(string actionId, ExecutionBackendKind backend, bool allowed, int variant)
     {
+        var harness = new AdapterHarness
+        {
+            Router = CreateRouter(actionId, backend, allowed, variant),
+            HelperBridgeBackend = CreateHelperBridgeBackend(variant),
+            MechanicDetectionService = CreateMechanicDetectionService(actionId, variant)
+        };
+
+        return ApplyExceptionalHarnessOverrides(harness, variant);
+    }
+
+    private static StubBackendRouter CreateRouter(string actionId, ExecutionBackendKind backend, bool allowed, int variant)
+    {
         var routeReasonCode = allowed
             ? RuntimeReasonCode.CAPABILITY_PROBE_PASS
             : RuntimeReasonCode.CAPABILITY_REQUIRED_MISSING;
 
-        var harness = new AdapterHarness
-        {
-            Router = new StubBackendRouter(
-                new BackendRouteDecision(
-                    Allowed: allowed,
-                    Backend: backend,
-                    ReasonCode: routeReasonCode,
-                    Message: allowed ? "allowed" : "blocked",
-                    Diagnostics: new Dictionary<string, object?>
-                    {
-                        ["matrixActionId"] = actionId,
-                        ["matrixVariant"] = variant,
-                        ["matrixBackend"] = backend.ToString(),
-                        ["matrixAllowed"] = allowed
-                    })),
-            HelperBridgeBackend = new StubHelperBridgeBackend
-            {
-                ExecuteResult = new HelperBridgeExecutionResult(
-                    Succeeded: variant % 5 != 0,
-                    ReasonCode: variant % 5 == 0 ? RuntimeReasonCode.HELPER_VERIFICATION_FAILED : RuntimeReasonCode.HELPER_EXECUTION_APPLIED,
-                    Message: variant % 5 == 0 ? "verify_failed" : "applied",
-                    Diagnostics: new Dictionary<string, object?>
-                    {
-                        ["helperVerifyState"] = variant % 5 == 0 ? "failed" : "applied",
-                        ["operationToken"] = $"token-{variant:0000}"
-                    })
-            },
-            MechanicDetectionService = new StubMechanicDetectionService(
-                supported: variant % 7 != 0,
-                actionId: actionId,
-                reasonCode: variant % 7 == 0 ? RuntimeReasonCode.MECHANIC_NOT_SUPPORTED_FOR_CHAIN : RuntimeReasonCode.CAPABILITY_PROBE_PASS,
-                message: variant % 7 == 0 ? "unsupported" : "supported")
-        };
+        return new StubBackendRouter(
+            new BackendRouteDecision(
+                Allowed: allowed,
+                Backend: backend,
+                ReasonCode: routeReasonCode,
+                Message: allowed ? "allowed" : "blocked",
+                Diagnostics: new Dictionary<string, object?>
+                {
+                    ["matrixActionId"] = actionId,
+                    ["matrixVariant"] = variant,
+                    ["matrixBackend"] = backend.ToString(),
+                    ["matrixAllowed"] = allowed
+                }));
+    }
 
+    private static StubHelperBridgeBackend CreateHelperBridgeBackend(int variant)
+    {
+        var failed = variant % 5 == 0;
+        return new StubHelperBridgeBackend
+        {
+            ExecuteResult = new HelperBridgeExecutionResult(
+                Succeeded: !failed,
+                ReasonCode: failed ? RuntimeReasonCode.HELPER_VERIFICATION_FAILED : RuntimeReasonCode.HELPER_EXECUTION_APPLIED,
+                Message: failed ? "verify_failed" : "applied",
+                Diagnostics: new Dictionary<string, object?>
+                {
+                    ["helperVerifyState"] = failed ? "failed" : "applied",
+                    ["operationToken"] = $"token-{variant:0000}"
+                })
+        };
+    }
+
+    private static IModMechanicDetectionService CreateMechanicDetectionService(string actionId, int variant)
+    {
+        var supported = variant % 7 != 0;
+        return new StubMechanicDetectionService(
+            supported,
+            actionId,
+            supported ? RuntimeReasonCode.CAPABILITY_PROBE_PASS : RuntimeReasonCode.MECHANIC_NOT_SUPPORTED_FOR_CHAIN,
+            supported ? "supported" : "unsupported");
+    }
+
+    private static AdapterHarness ApplyExceptionalHarnessOverrides(AdapterHarness harness, int variant)
+    {
         if (variant % 11 == 0)
         {
             harness.MechanicDetectionService = new ThrowingMechanicDetectionService();
@@ -132,15 +157,28 @@ public sealed class RuntimeAdapterDecisionMatrixSweepTests
     private static JsonObject BuildPayload(int variant, string actionId)
     {
         var payload = (JsonObject?)ReflectionCoverageVariantFactory.BuildArgument(typeof(JsonObject), variant) ?? new JsonObject();
+        var factionPair = ResolveFactionPair(variant);
+
         payload["actionId"] = actionId;
         payload["helperHookId"] = payload["helperHookId"] ?? "spawn_bridge";
         payload["entityId"] = payload["entityId"] ?? "EMP_STORMTROOPER";
-        payload["targetFaction"] = payload["targetFaction"] ?? (variant % 2 == 0 ? "Empire" : "Rebel");
-        payload["sourceFaction"] = payload["sourceFaction"] ?? (variant % 2 == 0 ? "Rebel" : "Empire");
-        payload["placementMode"] = payload["placementMode"] ?? (variant % 2 == 0 ? "safe_rules" : "anywhere");
+        payload["targetFaction"] = payload["targetFaction"] ?? factionPair.target;
+        payload["sourceFaction"] = payload["sourceFaction"] ?? factionPair.source;
+        payload["placementMode"] = payload["placementMode"] ?? ResolvePlacementMode(variant);
         payload["allowCrossFaction"] = payload["allowCrossFaction"] ?? (variant % 3 != 0);
         payload["forceOverride"] = payload["forceOverride"] ?? (variant % 4 == 0);
+
         return payload;
+    }
+
+    private static (string target, string source) ResolveFactionPair(int variant)
+    {
+        return variant % 2 == 0 ? ("Empire", "Rebel") : ("Rebel", "Empire");
+    }
+
+    private static string ResolvePlacementMode(int variant)
+    {
+        return variant % 2 == 0 ? "safe_rules" : "anywhere";
     }
 
     private static IReadOnlyDictionary<string, object?> BuildContext(RuntimeMode mode, int variant)
@@ -157,3 +195,5 @@ public sealed class RuntimeAdapterDecisionMatrixSweepTests
         };
     }
 }
+
+
