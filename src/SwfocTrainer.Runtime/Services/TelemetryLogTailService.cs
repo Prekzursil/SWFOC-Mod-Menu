@@ -236,12 +236,8 @@ public sealed class TelemetryLogTailService : ITelemetryLogTailService
 
     private static ParsedHelperOperationLine? ParseLatestHelperOperation(IEnumerable<string> lines, string operationToken)
     {
-        if (lines is null)
-        {
-            return null;
-        }
 
-        foreach (var line in (lines?.Reverse() ?? Enumerable.Empty<string>()))
+        foreach (var line in lines.Reverse())
         {
             if (string.IsNullOrWhiteSpace(line))
             {
