@@ -12,10 +12,7 @@ public sealed class TelemetryLogTailService : ITelemetryLogTailService
         RegexOptions.Compiled | RegexOptions.CultureInvariant | RegexOptions.IgnoreCase,
         TimeSpan.FromMilliseconds(250));
 
-    private static readonly Regex HelperOperationLineRegex = new(
-        @"SWFOC_TRAINER_(?<status>APPLIED|FAILED)\s+(?<token>[A-Za-z0-9]+)(?:\s+entity=(?<entity>\S+))?",
-        RegexOptions.Compiled | RegexOptions.CultureInvariant | RegexOptions.IgnoreCase,
-        TimeSpan.FromMilliseconds(250));
+    private const string HelperOperationPrefix = "SWFOC_TRAINER_";
 
     private readonly object _sync = new();
     private readonly Dictionary<string, long> _cursorByPath = new(StringComparer.OrdinalIgnoreCase);
@@ -257,41 +254,33 @@ public sealed class TelemetryLogTailService : ITelemetryLogTailService
             return null;
         }
 
-        if (!TryParseHelperOperationMatch(line, out var match))
+        var tokens = line.Split(' ', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
+        if (tokens.Length < 2)
         {
             return null;
         }
 
-        if (!TryGetNamedGroupValue(match, "token", out var token))
+        var statusToken = tokens[0];
+        if (!statusToken.StartsWith(HelperOperationPrefix, StringComparison.OrdinalIgnoreCase))
         {
             return null;
         }
 
+        var status = statusToken[HelperOperationPrefix.Length..];
+        var isApplied = status.Equals("APPLIED", StringComparison.OrdinalIgnoreCase);
+        var isFailed = status.Equals("FAILED", StringComparison.OrdinalIgnoreCase);
+        if (!isApplied && !isFailed)
+        {
+            return null;
+        }
+
+        var token = tokens[1];
         if (!token.Equals(operationToken, StringComparison.OrdinalIgnoreCase))
         {
             return null;
         }
 
-        if (!TryGetNamedGroupValue(match, "status", out var status))
-        {
-            return null;
-        }
-
-        var applied = status.Equals("APPLIED", StringComparison.OrdinalIgnoreCase);
-        return new ParsedHelperOperationLine(line, applied, null);
-    }
-
-    private static bool TryParseHelperOperationMatch(string line, out Match match)
-    {
-        match = HelperOperationLineRegex.Match(line);
-        return match.Success;
-    }
-
-    private static bool TryGetNamedGroupValue(Match match, string groupName, out string value)
-    {
-        var group = match.Groups[groupName];
-        value = group?.Value ?? string.Empty;
-        return !string.IsNullOrWhiteSpace(value);
+        return new ParsedHelperOperationLine(line, isApplied, null);
     }
 
     private static ParsedTelemetryLine? ParseLatestTelemetry(IEnumerable<string> lines)

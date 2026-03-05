@@ -7,6 +7,8 @@ using SwfocTrainer.Core.Models;
 using SwfocTrainer.Runtime.Services;
 using Xunit;
 
+[assembly: CLSCompliant(false)]
+
 
 namespace SwfocTrainer.Tests.Runtime;
 
