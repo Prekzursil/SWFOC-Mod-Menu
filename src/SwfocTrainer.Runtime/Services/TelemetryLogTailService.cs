@@ -250,45 +250,48 @@ public sealed class TelemetryLogTailService : ITelemetryLogTailService
         return null;
     }
 
-    private static ParsedHelperOperationLine? ParseHelperOperationLine(string? line, string operationToken)
+    private static ParsedHelperOperationLine? ParseHelperOperationLine(string line, string operationToken)
     {
-        if (line is null || string.IsNullOrWhiteSpace(line))
+        if (string.IsNullOrWhiteSpace(line))
         {
             return null;
         }
 
-        var match = HelperOperationLineRegex.Match(line);
-        if (match is null || !match.Success)
+        if (!TryParseHelperOperationMatch(line, out var match))
         {
             return null;
         }
 
-        var tokenGroup = match.Groups["token"];
-        if (tokenGroup is null)
+        if (!TryGetNamedGroupValue(match, "token", out var token))
         {
             return null;
         }
 
-        var token = tokenGroup.Value;
-        if (string.IsNullOrWhiteSpace(token) || !token.Equals(operationToken, StringComparison.OrdinalIgnoreCase))
+        if (!token.Equals(operationToken, StringComparison.OrdinalIgnoreCase))
         {
             return null;
         }
 
-        var statusGroup = match.Groups["status"];
-        if (statusGroup is null)
-        {
-            return null;
-        }
-
-        var status = statusGroup.Value;
-        if (string.IsNullOrWhiteSpace(status))
+        if (!TryGetNamedGroupValue(match, "status", out var status))
         {
             return null;
         }
 
         var applied = status.Equals("APPLIED", StringComparison.OrdinalIgnoreCase);
         return new ParsedHelperOperationLine(line, applied, null);
+    }
+
+    private static bool TryParseHelperOperationMatch(string line, out Match match)
+    {
+        match = HelperOperationLineRegex.Match(line);
+        return match.Success;
+    }
+
+    private static bool TryGetNamedGroupValue(Match match, string groupName, out string value)
+    {
+        var group = match.Groups[groupName];
+        value = group?.Value ?? string.Empty;
+        return !string.IsNullOrWhiteSpace(value);
     }
 
     private static ParsedTelemetryLine? ParseLatestTelemetry(IEnumerable<string> lines)
