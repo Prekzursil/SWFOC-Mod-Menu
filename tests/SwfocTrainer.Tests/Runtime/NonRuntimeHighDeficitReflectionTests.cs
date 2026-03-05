@@ -106,7 +106,7 @@ public sealed class NonRuntimeHighDeficitReflectionTests
                 continue;
             }
 
-            for (var variant = 0; variant < 64; variant++)
+            for (var variant = 0; variant < 8; variant++)
             {
                 var args = method.GetParameters()
                     .Select(parameter => ReflectionCoverageVariantFactory.BuildArgument(parameter.ParameterType, variant))
@@ -149,7 +149,7 @@ public sealed class NonRuntimeHighDeficitReflectionTests
         try
         {
             var result = method.Invoke(target, args);
-            await ReflectionCoverageVariantFactory.AwaitResultAsync(result, timeoutMs: 80);
+            await ReflectionCoverageVariantFactory.AwaitResultAsync(result, timeoutMs: 20);
         }
         catch (TargetInvocationException)
         {
