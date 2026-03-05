@@ -259,7 +259,8 @@ public sealed class TelemetryLogTailService : ITelemetryLogTailService
             return null;
         }
 
-        var tokens = line.Split(' ', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
+        var safeLine = line ?? string.Empty;
+        var tokens = safeLine.Split(' ', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
         if (tokens.Length < 2)
         {
             return null;
@@ -285,7 +286,7 @@ public sealed class TelemetryLogTailService : ITelemetryLogTailService
             return null;
         }
 
-        return new ParsedHelperOperationLine(line, isApplied, null);
+        return new ParsedHelperOperationLine(safeLine, isApplied, null);
     }
 
     private static ParsedTelemetryLine? ParseLatestTelemetry(IEnumerable<string> lines)
