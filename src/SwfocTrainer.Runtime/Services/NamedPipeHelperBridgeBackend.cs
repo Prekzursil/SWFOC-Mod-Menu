@@ -577,11 +577,11 @@ public sealed class NamedPipeHelperBridgeBackend : IHelperBridgeBackend
     {
         if (_telemetryLogTailService is null)
         {
-            diagnostics[DiagnosticHelperEvidenceState] = "not_checked";
+            diagnostics[DiagnosticHelperEvidenceState] = "missing";
             diagnostics[DiagnosticHelperEvidenceReasonCode] = "helper_operation_verification_not_supported";
             diagnostics[DiagnosticHelperEvidenceSourcePath] = string.Empty;
-            failureMessage = string.Empty;
-            return true;
+            failureMessage = "Helper verification failed: telemetry operation evidence service is unavailable.";
+            return false;
         }
 
         var verification = _telemetryLogTailService.VerifyOperationToken(
