@@ -249,6 +249,11 @@ public sealed class TelemetryLogTailService : ITelemetryLogTailService
 
     private static ParsedHelperOperationLine? ParseHelperOperationLine(string line, string operationToken)
     {
+        if (line is null)
+        {
+            return null;
+        }
+
         if (string.IsNullOrWhiteSpace(line))
         {
             return null;
@@ -292,7 +297,12 @@ public sealed class TelemetryLogTailService : ITelemetryLogTailService
 
         foreach (var line in lines.Reverse())
         {
-            if (string.IsNullOrWhiteSpace(line))
+            if (line is null)
+        {
+            return null;
+        }
+
+        if (string.IsNullOrWhiteSpace(line))
             {
                 continue;
             }
