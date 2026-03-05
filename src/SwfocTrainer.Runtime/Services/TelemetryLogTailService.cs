@@ -60,16 +60,10 @@ public sealed class TelemetryLogTailService : ITelemetryLogTailService
         DateTimeOffset nowUtc,
         TimeSpan freshnessWindow)
     {
-        var inputFailure = ValidateVerifyOperationInputs(processPath, operationToken);
-        if (inputFailure != null)
+        var inputFailure = TryResolveVerifyInputs(processPath, operationToken, out var resolvedProcessPath, out var resolvedOperationToken);
+        if (inputFailure is not null)
         {
             return inputFailure;
-        }
-
-        var resolvedProcessPath = processPath;
-        if (string.IsNullOrWhiteSpace(resolvedProcessPath))
-        {
-            return HelperOperationVerification.Unavailable("telemetry_process_path_missing");
         }
 
         var logPath = ResolveLogPath(resolvedProcessPath);
@@ -82,7 +76,7 @@ public sealed class TelemetryLogTailService : ITelemetryLogTailService
         lock (_sync)
         {
             var cursor = _operationCursorByPath.TryGetValue(logPath, out var stored) ? stored : 0L;
-            parsed = ReadLatestHelperOperationLine(logPath, operationToken, ref cursor);
+            parsed = ReadLatestHelperOperationLine(logPath, resolvedOperationToken, ref cursor);
             _operationCursorByPath[logPath] = cursor;
         }
 
@@ -112,8 +106,15 @@ public sealed class TelemetryLogTailService : ITelemetryLogTailService
             RawLine: resolvedParsed.RawLine);
     }
 
-    private static HelperOperationVerification? ValidateVerifyOperationInputs(string? processPath, string operationToken)
+    private static HelperOperationVerification? TryResolveVerifyInputs(
+        string? processPath,
+        string? operationToken,
+        out string resolvedProcessPath,
+        out string resolvedOperationToken)
     {
+        resolvedProcessPath = string.Empty;
+        resolvedOperationToken = string.Empty;
+
         if (string.IsNullOrWhiteSpace(operationToken))
         {
             return HelperOperationVerification.Unavailable("helper_operation_token_missing");
@@ -124,6 +125,8 @@ public sealed class TelemetryLogTailService : ITelemetryLogTailService
             return HelperOperationVerification.Unavailable("telemetry_process_path_missing");
         }
 
+        resolvedProcessPath = processPath;
+        resolvedOperationToken = operationToken;
         return null;
     }
 
@@ -236,6 +239,10 @@ public sealed class TelemetryLogTailService : ITelemetryLogTailService
 
     private static ParsedHelperOperationLine? ParseLatestHelperOperation(IEnumerable<string> lines, string operationToken)
     {
+        if (lines is null)
+        {
+            return null;
+        }
 
         foreach (var line in lines.Reverse())
         {
@@ -367,5 +374,4 @@ public sealed class TelemetryLogTailService : ITelemetryLogTailService
 
     private sealed record ParsedHelperOperationLine(string RawLine, bool Applied, DateTime? TimestampUtc);
 }
-
 
