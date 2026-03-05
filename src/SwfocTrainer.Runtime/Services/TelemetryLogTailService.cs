@@ -277,12 +277,13 @@ public sealed class TelemetryLogTailService : ITelemetryLogTailService
     private static bool TryResolveOperationStatus(string statusToken, out bool isApplied)
     {
         isApplied = false;
-        if (string.IsNullOrWhiteSpace(statusToken) || !statusToken.StartsWith(HelperOperationPrefix, StringComparison.OrdinalIgnoreCase))
+        var safeStatusToken = statusToken ?? string.Empty;
+        if (string.IsNullOrWhiteSpace(safeStatusToken) || !safeStatusToken.StartsWith(HelperOperationPrefix, StringComparison.OrdinalIgnoreCase))
         {
             return false;
         }
 
-        var status = statusToken[HelperOperationPrefix.Length..];
+        var status = safeStatusToken[HelperOperationPrefix.Length..];
         if (status.Equals("APPLIED", StringComparison.OrdinalIgnoreCase))
         {
             isApplied = true;
