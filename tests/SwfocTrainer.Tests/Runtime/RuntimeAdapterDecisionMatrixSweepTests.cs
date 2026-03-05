@@ -1,3 +1,4 @@
+#pragma warning disable CA1014
 using System;
 using System.Text.Json.Nodes;
 using FluentAssertions;
@@ -216,3 +217,4 @@ public sealed class RuntimeAdapterDecisionMatrixSweepTests
     }
 }
 
+#pragma warning restore CA1014

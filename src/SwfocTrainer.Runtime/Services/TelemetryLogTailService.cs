@@ -229,72 +229,52 @@ public sealed class TelemetryLogTailService : ITelemetryLogTailService
         return ParseLatestHelperOperation(allLines.TakeLast(512).ToArray(), operationToken);
     }
 
-    private static ParsedHelperOperationLine? ParseLatestHelperOperation(IReadOnlyList<string>? lines, string operationToken)
+    private static ParsedHelperOperationLine? ParseLatestHelperOperation(IReadOnlyList<string> lines, string operationToken)
     {
-        if (lines is null || lines.Count == 0)
+        if (lines.Count == 0)
         {
             return null;
         }
 
         for (var index = lines.Count - 1; index >= 0; index--)
         {
-            var line = lines[index];
-            if (string.IsNullOrWhiteSpace(line))
+            var parsed = ParseHelperOperationLine(lines[index], operationToken);
+            if (parsed is not null)
             {
-                continue;
+                return parsed;
             }
-
-            var match = HelperOperationLineRegex.Match(line);
-            if (!match.Success)
-            {
-                continue;
-            }
-
-            if (!TryReadNamedGroup(match, "token", out var token))
-            {
-                continue;
-            }
-
-            if (!token.Equals(operationToken, StringComparison.OrdinalIgnoreCase))
-            {
-                continue;
-            }
-
-            if (!TryReadNamedGroup(match, "status", out var status))
-            {
-                continue;
-            }
-
-            var applied = status.Equals("APPLIED", StringComparison.OrdinalIgnoreCase);
-            return new ParsedHelperOperationLine(line, applied, null);
         }
 
         return null;
     }
 
-
-    private static bool TryReadNamedGroup(Match match, string groupName, out string value)
+    private static ParsedHelperOperationLine? ParseHelperOperationLine(string? line, string operationToken)
     {
-        value = string.Empty;
-        if (match is null || !match.Success)
+        if (string.IsNullOrWhiteSpace(line))
         {
-            return false;
+            return null;
         }
 
-        var groups = match.Groups;
-        if (groups is null)
+        var match = HelperOperationLineRegex.Match(line);
+        if (!match.Success)
         {
-            return false;
+            return null;
         }
 
-        var group = groups[groupName];
-        if (group is null || !group.Success)
+        var token = match.Groups["token"]?.Value;
+        if (string.IsNullOrWhiteSpace(token) || !token.Equals(operationToken, StringComparison.OrdinalIgnoreCase))
         {
-            return false;
+            return null;
         }
 
-        value = group.Value;
-        return !string.IsNullOrWhiteSpace(value);
+        var status = match.Groups["status"]?.Value;
+        if (string.IsNullOrWhiteSpace(status))
+        {
+            return null;
+        }
+
+        var applied = status.Equals("APPLIED", StringComparison.OrdinalIgnoreCase);
+        return new ParsedHelperOperationLine(line, applied, null);
     }
 
     private static ParsedTelemetryLine? ParseLatestTelemetry(IEnumerable<string> lines)
