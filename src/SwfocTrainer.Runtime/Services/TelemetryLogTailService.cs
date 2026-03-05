@@ -249,46 +249,47 @@ public sealed class TelemetryLogTailService : ITelemetryLogTailService
 
     private static ParsedHelperOperationLine? ParseHelperOperationLine(string line, string operationToken)
     {
-        if (line is null)
+        if (line is null || string.IsNullOrWhiteSpace(line))
         {
             return null;
         }
 
-        if (string.IsNullOrWhiteSpace(line))
-        {
-            return null;
-        }
-
-        var safeLine = line ?? string.Empty;
-        var tokens = safeLine.Split(' ', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
+        var tokens = line.Split(' ', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
         if (tokens.Length < 2)
         {
             return null;
         }
 
-        var statusToken = tokens[0];
-        if (!statusToken.StartsWith(HelperOperationPrefix, StringComparison.OrdinalIgnoreCase))
+        if (!TryResolveOperationStatus(tokens[0], out var isApplied))
         {
             return null;
+        }
+
+        if (!tokens[1].Equals(operationToken, StringComparison.OrdinalIgnoreCase))
+        {
+            return null;
+        }
+
+        return new ParsedHelperOperationLine(line, isApplied, null);
+    }
+
+    private static bool TryResolveOperationStatus(string statusToken, out bool isApplied)
+    {
+        isApplied = false;
+        if (!statusToken.StartsWith(HelperOperationPrefix, StringComparison.OrdinalIgnoreCase))
+        {
+            return false;
         }
 
         var status = statusToken[HelperOperationPrefix.Length..];
-        var isApplied = status.Equals("APPLIED", StringComparison.OrdinalIgnoreCase);
-        var isFailed = status.Equals("FAILED", StringComparison.OrdinalIgnoreCase);
-        if (!isApplied && !isFailed)
+        if (status.Equals("APPLIED", StringComparison.OrdinalIgnoreCase))
         {
-            return null;
+            isApplied = true;
+            return true;
         }
 
-        var token = tokens[1];
-        if (!token.Equals(operationToken, StringComparison.OrdinalIgnoreCase))
-        {
-            return null;
-        }
-
-        return new ParsedHelperOperationLine(safeLine, isApplied, null);
+        return status.Equals("FAILED", StringComparison.OrdinalIgnoreCase);
     }
-
     private static ParsedTelemetryLine? ParseLatestTelemetry(IEnumerable<string> lines)
     {
         if (lines is null)
@@ -298,12 +299,7 @@ public sealed class TelemetryLogTailService : ITelemetryLogTailService
 
         foreach (var line in lines.Reverse())
         {
-            if (line is null)
-        {
-            return null;
-        }
-
-        if (string.IsNullOrWhiteSpace(line))
+            if (string.IsNullOrWhiteSpace(line))
             {
                 continue;
             }
@@ -330,7 +326,6 @@ public sealed class TelemetryLogTailService : ITelemetryLogTailService
                 Mode: match.Groups["mode"].Value,
                 TimestampUtc: timestamp);
         }
-
         return null;
     }
 

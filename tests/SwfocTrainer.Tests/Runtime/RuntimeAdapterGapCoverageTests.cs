@@ -242,7 +242,8 @@ public sealed class RuntimeAdapterGapCoverageTests
                 var already = (ActionExecutionResult)enable!.Invoke(adapter, new[] { context })!;
                 already.Succeeded.Should().BeTrue();
                 already.Diagnostics.Should().ContainKey("state");
-                already.Diagnostics["state"].Should().Be("already_patched");
+                already.Diagnostics!.TryGetValue("state", out var alreadyState).Should().BeTrue();
+                alreadyState?.ToString().Should().Be("already_patched");
 
                 Marshal.Copy(new byte[] { 0x12, 0x34 }, 0, address, 2);
                 var unexpected = (ActionExecutionResult)enable.Invoke(adapter, new[] { context })!;
@@ -253,7 +254,8 @@ public sealed class RuntimeAdapterGapCoverageTests
                 var forcedRestore = (ActionExecutionResult)disable!.Invoke(adapter, new[] { context })!;
                 forcedRestore.Succeeded.Should().BeTrue();
                 forcedRestore.Diagnostics.Should().ContainKey("state");
-                forcedRestore.Diagnostics["state"].Should().Be("force_restored");
+                forcedRestore.Diagnostics!.TryGetValue("state", out var forcedRestoreState).Should().BeTrue();
+                forcedRestoreState?.ToString().Should().Be("force_restored");
             }
             finally
             {
