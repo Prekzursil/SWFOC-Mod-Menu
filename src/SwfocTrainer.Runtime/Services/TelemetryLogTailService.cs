@@ -229,18 +229,18 @@ public sealed class TelemetryLogTailService : ITelemetryLogTailService
         return ParseLatestHelperOperation(allLines.TakeLast(512).ToArray(), operationToken);
     }
 
-    private static ParsedHelperOperationLine? ParseLatestHelperOperation(IReadOnlyList<string> lines, string operationToken)
+    private static ParsedHelperOperationLine? ParseLatestHelperOperation(IReadOnlyList<string>? lines, string operationToken)
     {
-        ArgumentNullException.ThrowIfNull(lines);
-
-        if (lines.Count == 0)
+        var safeLines = lines;
+        if (safeLines is null || safeLines.Count == 0)
         {
             return null;
         }
 
-        for (var index = lines.Count - 1; index >= 0; index--)
+        for (var index = safeLines.Count - 1; index >= 0; index--)
         {
-            var parsed = ParseHelperOperationLine(lines[index], operationToken);
+            var line = safeLines[index];
+            var parsed = ParseHelperOperationLine(line, operationToken);
             if (parsed is not null)
             {
                 return parsed;
@@ -250,28 +250,38 @@ public sealed class TelemetryLogTailService : ITelemetryLogTailService
         return null;
     }
 
-    private static ParsedHelperOperationLine? ParseHelperOperationLine(string line, string operationToken)
+    private static ParsedHelperOperationLine? ParseHelperOperationLine(string? line, string operationToken)
     {
-        ArgumentNullException.ThrowIfNull(line);
-
-        if (string.IsNullOrWhiteSpace(line))
+        if (line is null || string.IsNullOrWhiteSpace(line))
         {
             return null;
         }
 
         var match = HelperOperationLineRegex.Match(line);
-        if (!match.Success)
+        if (match is null || !match.Success)
         {
             return null;
         }
 
-        var token = match.Groups["token"]?.Value;
+        var tokenGroup = match.Groups["token"];
+        if (tokenGroup is null)
+        {
+            return null;
+        }
+
+        var token = tokenGroup.Value;
         if (string.IsNullOrWhiteSpace(token) || !token.Equals(operationToken, StringComparison.OrdinalIgnoreCase))
         {
             return null;
         }
 
-        var status = match.Groups["status"]?.Value;
+        var statusGroup = match.Groups["status"];
+        if (statusGroup is null)
+        {
+            return null;
+        }
+
+        var status = statusGroup.Value;
         if (string.IsNullOrWhiteSpace(status))
         {
             return null;

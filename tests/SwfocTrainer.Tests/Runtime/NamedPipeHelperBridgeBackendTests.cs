@@ -109,7 +109,7 @@ public sealed class NamedPipeHelperBridgeBackendTests
                     });
             }
         };
-        var backend = new NamedPipeHelperBridgeBackend(stubBackend);
+        var backend = CreateBackendWithVerifiedTelemetry(stubBackend);
         var request = BuildHelperRequest(
             payload: new JsonObject { ["entityBlueprintId"] = "unit_x" },
             hook: new HelperHookSpec(
@@ -153,7 +153,7 @@ public sealed class NamedPipeHelperBridgeBackendTests
                     });
             }
         };
-        var backend = new NamedPipeHelperBridgeBackend(stubBackend);
+        var backend = CreateBackendWithVerifiedTelemetry(stubBackend);
         var request = BuildHelperRequest(
             payload: new JsonObject { ["planetId"] = "coruscant" },
             hook: new HelperHookSpec(
@@ -197,7 +197,7 @@ public sealed class NamedPipeHelperBridgeBackendTests
                     });
             }
         };
-        var backend = new NamedPipeHelperBridgeBackend(stubBackend);
+        var backend = CreateBackendWithVerifiedTelemetry(stubBackend);
         var request = BuildHelperRequest(
             payload: new JsonObject { ["entityBlueprintId"] = "unit_y" },
             hook: new HelperHookSpec(
@@ -246,7 +246,7 @@ public sealed class NamedPipeHelperBridgeBackendTests
                     });
             }
         };
-        var backend = new NamedPipeHelperBridgeBackend(stubBackend);
+        var backend = CreateBackendWithVerifiedTelemetry(stubBackend);
         var request = BuildHelperRequest(
             payload: new JsonObject(),
             hook: new HelperHookSpec(
@@ -401,7 +401,7 @@ public sealed class NamedPipeHelperBridgeBackendTests
                     });
             }
         };
-        var backend = new NamedPipeHelperBridgeBackend(stubBackend);
+        var backend = CreateBackendWithVerifiedTelemetry(stubBackend);
         var request = BuildHelperRequest(
             payload: new JsonObject { ["globalKey"] = "AOTR_HERO_KEY", ["intValue"] = 1 },
             hook: new HelperHookSpec(
@@ -775,6 +775,22 @@ public sealed class NamedPipeHelperBridgeBackendTests
             OperationKind: operationKind,
             OperationToken: operationToken,
             Context: null);
+    }
+
+
+    private static NamedPipeHelperBridgeBackend CreateBackendWithVerifiedTelemetry(StubExecutionBackend stubBackend)
+    {
+        var telemetry = new StubTelemetryLogTailService
+        {
+            VerificationResult = new HelperOperationVerification(
+                Verified: true,
+                ReasonCode: "helper_operation_token_verified",
+                SourcePath: @"C:\Games\_LogFile.txt",
+                TimestampUtc: DateTimeOffset.UtcNow,
+                RawLine: "SWFOC_TRAINER_APPLIED token")
+        };
+
+        return new NamedPipeHelperBridgeBackend(stubBackend, telemetry);
     }
 
     private static ProcessMetadata BuildProcess(int processId)
