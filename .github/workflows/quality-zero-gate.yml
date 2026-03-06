@@ -18,7 +18,6 @@ jobs:
       SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
       CODACY_API_TOKEN: ${{ secrets.CODACY_API_TOKEN }}
       CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
-      SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
       SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
       SENTRY_ORG: ${{ vars.SENTRY_ORG }}
       SENTRY_PROJECT: ${{ vars.SENTRY_PROJECT }}
@@ -66,7 +65,7 @@ jobs:
             --required-context "Codecov Analytics" \
             --required-context "Sonar Zero" \
             --required-context "Codacy Zero" \
-            --required-context "Snyk Zero" \
+            --required-context "Semgrep Zero" \
             --required-context "Sentry Zero" \
             --required-context "DeepScan Zero" \
             --required-context "SonarCloud Code Analysis" \
@@ -76,14 +75,6 @@ jobs:
             --poll-seconds 20 \
             --out-json quality-zero-gate/required-checks.json \
             --out-md quality-zero-gate/required-checks.md
-      - name: Evaluate legacy code/snyk context policy
-        run: |
-          python3 scripts/quality/check_legacy_snyk_status.py \
-            --repo "${GITHUB_REPOSITORY}" \
-            --sha "${CHECK_SHA}" \
-            --context-prefix "code/snyk" \
-            --out-json quality-zero-gate/legacy-snyk.json \
-            --out-md quality-zero-gate/legacy-snyk.md
       - name: Upload aggregate artifact
         if: always()
         uses: actions/upload-artifact@v4

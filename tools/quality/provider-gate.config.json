@@ -46,22 +46,6 @@
       ],
       "countJsonPath": "data.lastUnresolvedIssueCount"
     },
-    "snyk": {
-      "method": "GET",
-      "url": "https://api.snyk.io/rest/orgs/${SNYK_ORG_ID}/issues",
-      "query": {
-        "version": "2024-10-15",
-        "status": "open",
-        "limit": "1"
-      },
-      "authScheme": "bearer",
-      "tokenEnv": "SNYK_TOKEN",
-      "requiredEnv": [
-        "SNYK_TOKEN",
-        "SNYK_ORG_ID"
-      ],
-      "countJsonPath": "meta.total"
-    },
     "applitools": {
       "method": "GET",
       "url": "https://eyesapi.applitools.com/api/sessions/batches",
