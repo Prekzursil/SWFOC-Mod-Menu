@@ -44,9 +44,8 @@ jobs:
           if find . -type f \( -name '*.js' -o -name '*.jsx' -o -name '*.ts' -o -name '*.tsx' -o -name 'package.json' \) -print -quit | grep -q .; then
             echo p/javascript >> .tmp/semgrep-configs.txt
           fi
-          if find . -type f \( -name '*.c' -o -name '*.cc' -o -name '*.cpp' -o -name '*.h' -o -name '*.hpp' \) -print -quit | grep -q .; then
-            echo p/cpp >> .tmp/semgrep-configs.txt
-          fi
+          # p/default already covers the currently available baseline rules for C and C++.
+          # A dedicated p/cpp pack is not available in the current Semgrep registry.
           if find . -type f \( -name '*.cs' -o -name '*.csproj' -o -name '*.sln' \) -print -quit | grep -q .; then
             echo p/csharp >> .tmp/semgrep-configs.txt
           fi
@@ -61,7 +60,16 @@ jobs:
             [ -n "$cfg" ] || continue
             args+=(--config "$cfg")
           done
-          semgrep scan \
+          env \
+            -u HTTP_PROXY \
+            -u HTTPS_PROXY \
+            -u ALL_PROXY \
+            -u NO_PROXY \
+            -u http_proxy \
+            -u https_proxy \
+            -u all_proxy \
+            -u no_proxy \
+            semgrep scan \
             --error \
             --metrics=off \
             --json \
@@ -90,7 +98,16 @@ jobs:
             [ -n "$cfg" ] || continue
             args+=(--config "$cfg")
           done
-          semgrep scan \
+          env \
+            -u HTTP_PROXY \
+            -u HTTPS_PROXY \
+            -u ALL_PROXY \
+            -u NO_PROXY \
+            -u http_proxy \
+            -u https_proxy \
+            -u all_proxy \
+            -u no_proxy \
+            semgrep scan \
             --metrics=off \
             --sarif \
             --output semgrep-zero/semgrep.sarif \

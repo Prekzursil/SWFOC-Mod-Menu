@@ -75,6 +75,14 @@ jobs:
             --poll-seconds 20 \
             --out-json quality-zero-gate/required-checks.json \
             --out-md quality-zero-gate/required-checks.md
+      - name: Evaluate legacy code/snyk context policy
+        run: |
+          python3 scripts/quality/check_legacy_snyk_status.py \
+            --repo "${GITHUB_REPOSITORY}" \
+            --sha "${CHECK_SHA}" \
+            --context-prefix "code/snyk" \
+            --out-json quality-zero-gate/legacy-snyk.json \
+            --out-md quality-zero-gate/legacy-snyk.md
       - name: Upload aggregate artifact
         if: always()
         uses: actions/upload-artifact@v4
