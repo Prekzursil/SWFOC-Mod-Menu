@@ -1,3 +1,5 @@
+from __future__ import absolute_import
+
 import argparse
 import importlib.util
 import sys
@@ -8,14 +10,26 @@ from types import ModuleType
 
 
 SCRIPT_PATH = Path(__file__).resolve().parents[1] / "check_required_checks.py"
-SPEC = importlib.util.spec_from_file_location("check_required_checks", SCRIPT_PATH)
-assert SPEC is not None
-assert isinstance(SPEC, ModuleSpec)
-MODULE = importlib.util.module_from_spec(SPEC)
-assert isinstance(MODULE, ModuleType)
-assert SPEC.loader is not None
-sys.modules[SPEC.name] = MODULE
-SPEC.loader.exec_module(MODULE)
+
+
+def _load_module() -> ModuleType:
+    spec = importlib.util.spec_from_file_location("check_required_checks", SCRIPT_PATH)
+    if spec is None or not isinstance(spec, ModuleSpec):
+        raise RuntimeError(f"Failed to create module spec for {SCRIPT_PATH}")
+
+    module = importlib.util.module_from_spec(spec)
+    if not isinstance(module, ModuleType):
+        raise RuntimeError(f"Failed to create module for {SCRIPT_PATH}")
+
+    if spec.loader is None:
+        raise RuntimeError(f"Module loader unavailable for {SCRIPT_PATH}")
+
+    sys.modules[spec.name] = module
+    spec.loader.exec_module(module)
+    return module
+
+
+MODULE = _load_module()
 
 
 class CheckRequiredChecksTests(unittest.TestCase):

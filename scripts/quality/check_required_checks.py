@@ -46,7 +46,15 @@ def _api_get(repo: str, path: str, token: str) -> Dict[str, Any]:
 
 def _collect_contexts(check_runs_payload: Dict[str, Any], status_payload: Dict[str, Any]) -> Dict[str, Dict[str, str]]:
     contexts: Dict[str, Dict[str, str]] = {}
+    _collect_check_run_contexts(check_runs_payload, contexts)
+    _collect_status_contexts(status_payload, contexts)
+    return contexts
 
+
+def _collect_check_run_contexts(
+    check_runs_payload: Dict[str, Any],
+    contexts: Dict[str, Dict[str, str]],
+) -> None:
     for run in check_runs_payload.get("check_runs", []) or []:
         name = str(run.get("name") or "").strip()
         if not name:
@@ -57,6 +65,11 @@ def _collect_contexts(check_runs_payload: Dict[str, Any], status_payload: Dict[s
             "source": "check_run",
         }
 
+
+def _collect_status_contexts(
+    status_payload: Dict[str, Any],
+    contexts: Dict[str, Dict[str, str]],
+) -> None:
     for status in status_payload.get("statuses", []) or []:
         name = str(status.get("context") or "").strip()
         if not name:
@@ -66,9 +79,6 @@ def _collect_contexts(check_runs_payload: Dict[str, Any], status_payload: Dict[s
             "conclusion": str(status.get("state") or ""),
             "source": "status",
         }
-
-    return contexts
-
 
 def _evaluate(
     required: List[str],
@@ -141,29 +151,22 @@ def _render_md(payload: Dict[str, Any]) -> str:
         "## Missing contexts",
     ]
 
-    missing = payload.get("missing") or []
-    if missing:
-        lines.extend(f"- `{name}`" for name in missing)
-    else:
-        lines.append(NONE_MARKER)
-
-    lines.extend(["", "## Failed contexts"])
-    failed = payload.get("failed") or []
-    if failed:
-        lines.extend(f"- {entry}" for entry in failed)
-    else:
-        lines.append(NONE_MARKER)
-
-    lines.extend(["", "## Pending contexts"])
-    pending = payload.get("pending") or []
-    if pending:
-        lines.extend(f"- {entry}" for entry in pending)
-    else:
-        lines.append(NONE_MARKER)
+    _append_context_section(lines, "## Missing contexts", payload.get("missing") or [], "`{}`")
+    _append_context_section(lines, "## Failed contexts", payload.get("failed") or [], "{}")
+    _append_context_section(lines, "## Pending contexts", payload.get("pending") or [], "{}")
 
     lines.extend(["", f"- Timed out: `{payload.get('timed_out', False)}`"])
 
     return "\n".join(lines) + "\n"
+
+
+def _append_context_section(lines: List[str], title: str, values: List[str], template: str) -> None:
+    lines.extend(["", title])
+    if values:
+        lines.extend(f"- {template.format(value)}" for value in values)
+        return
+
+    lines.append(NONE_MARKER)
 
 
 def _safe_output_path(raw: str, fallback: str, base: Optional[Path] = None) -> Path:

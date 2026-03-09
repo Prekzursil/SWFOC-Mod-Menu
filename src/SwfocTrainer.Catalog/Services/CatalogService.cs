@@ -237,14 +237,14 @@ public sealed class CatalogService : ICatalogService
         string sourcePath,
         IDictionary<string, EntityCatalogRecord> records)
     {
-        _ = NormalizeRequiredValue(profileId, nameof(profileId));
+        var normalizedProfileId = NormalizeRequiredValue(profileId, nameof(profileId));
         var sourcePathValue = NormalizeRequiredValue(sourcePath, nameof(sourcePath));
-        _ = records ?? throw new ArgumentNullException(nameof(records));
+        var recordsValue = records ?? throw new ArgumentNullException(nameof(records));
 
         var document = XDocument.Load(sourcePathValue, LoadOptions.None);
         foreach (var element in document.Descendants())
         {
-            if (!TryCreateRecord(profileId, sourcePath, element, out var parsedRecord))
+            if (!TryCreateRecord(normalizedProfileId, sourcePathValue, element, out var parsedRecord))
             {
                 continue;
             }
@@ -254,7 +254,7 @@ public sealed class CatalogService : ICatalogService
                 continue;
             }
 
-            AddOrMergeRecord(records, parsedRecord);
+            AddOrMergeRecord(recordsValue, parsedRecord);
         }
     }
 
@@ -445,11 +445,13 @@ public sealed class CatalogService : ICatalogService
         }
 
         var incomingRecord = incoming;
-        var incomingEntityId = NormalizeNonEmpty(incomingRecord.EntityId);
-        if (incomingEntityId is null)
+        var incomingEntityId = incomingRecord.EntityId;
+        if (string.IsNullOrWhiteSpace(incomingEntityId))
         {
             throw new InvalidOperationException("Incoming catalog record id is required.");
         }
+
+        incomingEntityId = incomingEntityId.Trim();
 
         if (!records.TryGetValue(incomingEntityId, out var existing))
         {
@@ -827,6 +829,11 @@ public sealed class CatalogService : ICatalogService
             throw new ArgumentNullException(nameof(predicate));
         }
 
+        if (limit <= 0)
+        {
+            return Array.Empty<string>();
+        }
+
         var sourceEntities = entities;
         var sourcePredicate = predicate;
 
@@ -853,12 +860,19 @@ public sealed class CatalogService : ICatalogService
         }
 
         selectedEntityIds.Sort(StringComparer.OrdinalIgnoreCase);
-        if (selectedEntityIds.Count <= limit)
+        var cappedCount = Math.Min(limit, selectedEntityIds.Count);
+        if (cappedCount == selectedEntityIds.Count)
         {
             return selectedEntityIds.ToArray();
         }
 
-        return selectedEntityIds.Take(limit).ToArray();
+        var limitedEntityIds = new string[cappedCount];
+        for (var index = 0; index < cappedCount; index++)
+        {
+            limitedEntityIds[index] = selectedEntityIds[index];
+        }
+
+        return limitedEntityIds;
     }
 
     private static CatalogEntityVisualState ResolveVisualState(string? rawVisualRef, string? resolvedVisualRef)
@@ -876,24 +890,24 @@ public sealed class CatalogService : ICatalogService
 
     private static string? NormalizeNonEmpty(string? value)
     {
-        if (string.IsNullOrEmpty(value))
+        var safeValue = value ?? string.Empty;
+        if (safeValue.Length == 0)
         {
             return null;
         }
 
-        var trimmed = value.Trim();
+        var trimmed = safeValue.Trim();
         return trimmed.Length == 0 ? null : trimmed;
     }
 
     private static string NormalizeRequiredValue(string? value, string paramName)
     {
-        var normalized = NormalizeNonEmpty(value);
-        if (normalized is null)
+        if (string.IsNullOrWhiteSpace(value))
         {
             throw new ArgumentException(NullOrWhitespaceMessage, paramName);
         }
 
-        return normalized;
+        return value.Trim();
     }
 
     private static IReadOnlyList<string> ParseListValue(string? raw)
@@ -903,7 +917,8 @@ public sealed class CatalogService : ICatalogService
             return Array.Empty<string>();
         }
 
-        return raw
+        var rawValue = raw ?? string.Empty;
+        return rawValue
             .Split(new[] { ',', ';', '|', '\r', '\n', '\t' }, StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries)
             .Distinct(StringComparer.OrdinalIgnoreCase)
             .ToArray();
