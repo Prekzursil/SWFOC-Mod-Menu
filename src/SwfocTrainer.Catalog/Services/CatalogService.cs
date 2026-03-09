@@ -912,13 +912,18 @@ public sealed class CatalogService : ICatalogService
 
     private static IReadOnlyList<string> ParseListValue(string? raw)
     {
-        if (string.IsNullOrWhiteSpace(raw))
+        if (raw is null)
         {
             return Array.Empty<string>();
         }
 
-        var rawValue = raw ?? string.Empty;
-        return rawValue
+        var trimmedRaw = raw.Trim();
+        if (trimmedRaw.Length == 0)
+        {
+            return Array.Empty<string>();
+        }
+
+        return trimmedRaw
             .Split(new[] { ',', ';', '|', '\r', '\n', '\t' }, StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries)
             .Distinct(StringComparer.OrdinalIgnoreCase)
             .ToArray();
