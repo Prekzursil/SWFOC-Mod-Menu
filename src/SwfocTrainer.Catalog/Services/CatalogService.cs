@@ -238,8 +238,21 @@ public sealed class CatalogService : ICatalogService
         IDictionary<string, EntityCatalogRecord> records)
     {
         var normalizedProfileId = NormalizeRequiredValue(profileId, nameof(profileId));
-        var sourcePathValue = NormalizeRequiredValue(sourcePath, nameof(sourcePath));
-        var recordsValue = records ?? throw new ArgumentNullException(nameof(records));
+        if (sourcePath is null)
+        {
+            throw new ArgumentNullException(nameof(sourcePath));
+        }
+
+        var sourcePathValue = sourcePath.Trim();
+        if (sourcePathValue.Length == 0)
+        {
+            throw new ArgumentException(NullOrWhitespaceMessage, nameof(sourcePath));
+        }
+
+        if (records is null)
+        {
+            throw new ArgumentNullException(nameof(records));
+        }
 
         var document = XDocument.Load(sourcePathValue, LoadOptions.None);
         foreach (var element in document.Descendants())
@@ -254,7 +267,7 @@ public sealed class CatalogService : ICatalogService
                 continue;
             }
 
-            AddOrMergeRecord(recordsValue, parsedRecord);
+            AddOrMergeRecord(records, parsedRecord);
         }
     }
 
@@ -445,13 +458,17 @@ public sealed class CatalogService : ICatalogService
         }
 
         var incomingRecord = incoming;
-        var incomingEntityId = incomingRecord.EntityId;
-        if (string.IsNullOrWhiteSpace(incomingEntityId))
+        var incomingEntityIdRaw = incomingRecord.EntityId;
+        if (incomingEntityIdRaw is null)
         {
             throw new InvalidOperationException("Incoming catalog record id is required.");
         }
 
-        incomingEntityId = incomingEntityId.Trim();
+        var incomingEntityId = incomingEntityIdRaw.Trim();
+        if (incomingEntityId.Length == 0)
+        {
+            throw new InvalidOperationException("Incoming catalog record id is required.");
+        }
 
         if (!records.TryGetValue(incomingEntityId, out var existing))
         {
@@ -902,22 +919,29 @@ public sealed class CatalogService : ICatalogService
 
     private static string NormalizeRequiredValue(string? value, string paramName)
     {
-        if (string.IsNullOrWhiteSpace(value))
+        if (value is null)
         {
             throw new ArgumentException(NullOrWhitespaceMessage, paramName);
         }
 
-        return value.Trim();
+        var trimmed = value.Trim();
+        if (trimmed.Length == 0)
+        {
+            throw new ArgumentException(NullOrWhitespaceMessage, paramName);
+        }
+
+        return trimmed;
     }
 
     private static IReadOnlyList<string> ParseListValue(string? raw)
     {
-        if (raw is null)
+        var rawValue = raw;
+        if (rawValue is null)
         {
             return Array.Empty<string>();
         }
 
-        var trimmedRaw = raw.Trim();
+        var trimmedRaw = rawValue.Trim();
         if (trimmedRaw.Length == 0)
         {
             return Array.Empty<string>();
