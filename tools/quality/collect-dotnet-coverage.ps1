@@ -22,7 +22,9 @@ function Use-NativeWindowsCoverageStaging {
     return $PathValue.StartsWith("\\wsl.localhost\", [System.StringComparison]::OrdinalIgnoreCase)
 }
 
-if (Use-NativeWindowsCoverageStaging -PathValue $repoRoot) {
+$useNativeWindowsCoverageStaging = Use-NativeWindowsCoverageStaging -PathValue $repoRoot
+
+if ($useNativeWindowsCoverageStaging) {
     $collectorRoot = Join-Path $env:TEMP ("swfoctrainer-coverage-" + [Guid]::NewGuid().ToString("N"))
 } else {
     $collectorRoot = $resultsRootResolved
@@ -116,26 +118,64 @@ function Get-LastExitCodeOrZero {
     return 0
 }
 
+function Stop-WindowsDotnetTestProcesses {
+    param([switch]$Enabled)
+
+    if (-not $Enabled) {
+        return
+    }
+
+    $processNames = @('dotnet', 'testhost', 'vstest.console')
+    for ($attempt = 0; $attempt -lt 5; $attempt++) {
+        $targets = Get-Process -Name $processNames -ErrorAction SilentlyContinue
+        if (-not $targets) {
+            return
+        }
+
+        foreach ($target in $targets) {
+            try {
+                Stop-Process -Id $target.Id -Force -ErrorAction Stop
+            }
+            catch {
+                Write-Warning "Failed to stop lingering process $($target.ProcessName) ($($target.Id)): $($_.Exception.Message)"
+            }
+        }
+
+        Start-Sleep -Milliseconds 500
+    }
+
+    $remaining = Get-Process -Name $processNames -ErrorAction SilentlyContinue
+    if ($remaining) {
+        $summary = ($remaining | Sort-Object ProcessName, Id | ForEach-Object { "$($_.ProcessName):$($_.Id)" }) -join ', '
+        throw "Unable to clear lingering Windows dotnet/testhost processes before coverage collection: $summary"
+    }
+}
+
 $dotnetExe = Resolve-DotnetCommand
-$previousClinkNoAutorun = [Environment]::GetEnvironmentVariable('CLINK_NOAUTORUN', 'Process')
-[Environment]::SetEnvironmentVariable('CLINK_NOAUTORUN', '1', 'Process')
-try {
-    Invoke-DotnetCommand -Executable $dotnetExe -InvocationArguments $arguments
-}
-finally {
-    [Environment]::SetEnvironmentVariable('CLINK_NOAUTORUN', $previousClinkNoAutorun, 'Process')
-}
-$exitCode = Get-LastExitCodeOrZero
+if (-not $useNativeWindowsCoverageStaging) {
+    $previousClinkNoAutorun = [Environment]::GetEnvironmentVariable('CLINK_NOAUTORUN', 'Process')
+    [Environment]::SetEnvironmentVariable('CLINK_NOAUTORUN', '1', 'Process')
+    try {
+        Invoke-DotnetCommand -Executable $dotnetExe -InvocationArguments $arguments
+    }
+    finally {
+        [Environment]::SetEnvironmentVariable('CLINK_NOAUTORUN', $previousClinkNoAutorun, 'Process')
+    }
 
-if ($exitCode -ne 0) {
-    throw "Coverage collection failed with exit code $exitCode."
+    $exitCode = Get-LastExitCodeOrZero
+    if ($exitCode -ne 0) {
+        throw "Coverage collection failed with exit code $exitCode."
+    }
 }
 
-$coverageCandidates = Get-ChildItem -Path $testResultsRoot -Recurse -File -Filter 'coverage.cobertura.xml' -ErrorAction SilentlyContinue |
-    Sort-Object LastWriteTime -Descending
-if (-not $coverageCandidates) {
-    $coverageCandidates = Get-ChildItem -Path $testResultsRoot -Recurse -File -Filter 'coverage.xml' -ErrorAction SilentlyContinue |
+$coverageCandidates = @()
+if (-not $useNativeWindowsCoverageStaging) {
+    $coverageCandidates = Get-ChildItem -Path $testResultsRoot -Recurse -File -Filter 'coverage.cobertura.xml' -ErrorAction SilentlyContinue |
         Sort-Object LastWriteTime -Descending
+    if (-not $coverageCandidates) {
+        $coverageCandidates = Get-ChildItem -Path $testResultsRoot -Recurse -File -Filter 'coverage.xml' -ErrorAction SilentlyContinue |
+            Sort-Object LastWriteTime -Descending
+    }
 }
 
 if (-not $coverageCandidates) {
@@ -157,6 +197,8 @@ if (-not $coverageCandidates) {
     if (-not [string]::IsNullOrWhiteSpace($filter)) {
         $msbuildArguments += @('--filter', $filter)
     }
+
+    Stop-WindowsDotnetTestProcesses -Enabled:$useNativeWindowsCoverageStaging
 
     $previousClinkNoAutorun = [Environment]::GetEnvironmentVariable('CLINK_NOAUTORUN', 'Process')
     [Environment]::SetEnvironmentVariable('CLINK_NOAUTORUN', '1', 'Process')

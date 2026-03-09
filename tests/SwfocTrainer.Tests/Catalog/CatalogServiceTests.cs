@@ -4,6 +4,7 @@ using SwfocTrainer.Catalog.Config;
 using SwfocTrainer.Catalog.Services;
 using SwfocTrainer.Core.Contracts;
 using SwfocTrainer.Core.Models;
+using System.Reflection;
 using System.Text.Json.Nodes;
 using Xunit;
 
@@ -11,6 +12,21 @@ namespace SwfocTrainer.Tests.Catalog;
 
 public sealed class CatalogServiceTests
 {
+    [Fact]
+    public void CatalogHelperMethods_ShouldNormalizeListValuesAndFallbackSelection()
+    {
+        InvokePrivateStatic<IReadOnlyList<string>>("ParseListValue", " Empire, Rebel ; Pirate  ")
+            .Should().Equal("Empire", "Rebel", "Pirate");
+        InvokePrivateStatic<int?>("ParseOptionalInt", " 42 ").Should().Be(42);
+        InvokePrivateStatic<int?>("ParseOptionalInt", "bad").Should().BeNull();
+        InvokePrivateStatic<string?>("ChooseValue", null, "incoming", "fallback").Should().Be("incoming");
+        InvokePrivateStatic<string?>("ChooseValue", "existing", null, "fallback").Should().Be("existing");
+        InvokePrivateStatic<CatalogEntityCompatibilityState>(
+            "SelectCompatibilityState",
+            CatalogEntityCompatibilityState.Unknown,
+            CatalogEntityCompatibilityState.Blocked).Should().Be(CatalogEntityCompatibilityState.Blocked);
+    }
+
     [Fact]
     public async Task LoadTypedCatalogAsync_ShouldProjectLegacyPrebuiltCatalogIntoTypedEntities()
     {
@@ -579,5 +595,12 @@ public sealed class CatalogServiceTests
             _ = cancellationToken;
             return Task.FromResult((IReadOnlyList<string>)new[] { _profile.Id });
         }
+    }
+
+    private static T InvokePrivateStatic<T>(string methodName, params object?[] args)
+    {
+        var method = typeof(CatalogService).GetMethod(methodName, BindingFlags.Static | BindingFlags.NonPublic);
+        method.Should().NotBeNull($"Expected helper '{methodName}'");
+        return (T)method!.Invoke(null, args)!;
     }
 }

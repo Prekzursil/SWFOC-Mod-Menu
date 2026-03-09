@@ -406,6 +406,88 @@ public sealed class MainViewModelBaseOpsCoverageTests
         vm.Status.Should().Contain("explode");
     }
 
+    [Fact]
+    public async Task ProfileScaffoldAndArtifactFlows_ShouldPopulateSummariesAndStatuses()
+    {
+        var outputDir = Path.Combine(Path.GetTempPath(), $"swfoc-app-coverage-{Guid.NewGuid():N}");
+        Directory.CreateDirectory(outputDir);
+
+        try
+        {
+            var runtime = new StubRuntimeAdapter
+            {
+                IsAttached = true,
+                CurrentSession = BuildSession(RuntimeMode.Galactic)
+            };
+            var profile = BuildProfile("base_swfoc");
+            var onboarding = new StubModOnboardingService();
+            var calibration = new StubModCalibrationService();
+            var supportBundles = new StubSupportBundleService();
+            var telemetry = new StubTelemetrySnapshotService();
+
+            var vm = new SaveOpsHarness(CreateDependencies(
+                runtime,
+                new StubProfileRepository(profile),
+                new StubCatalogService(new Dictionary<string, IReadOnlyList<string>>(StringComparer.OrdinalIgnoreCase)),
+                new StubActionReliabilityService(Array.Empty<ActionReliabilityInfo>()),
+                new StubSelectedUnitTransactionService(),
+                new StubSpawnPresetService(),
+                new StubFreezeService(),
+                modOnboarding: onboarding,
+                modCalibration: calibration,
+                supportBundles: supportBundles,
+                telemetry: telemetry));
+
+            vm.SelectedProfileId = profile.Id;
+            vm.OnboardingDraftProfileId = "Custom Draft";
+            vm.OnboardingDisplayName = "Custom Draft";
+            vm.OnboardingBaseProfileId = string.Empty;
+            vm.OnboardingNamespaceRoot = "generated.mods";
+            vm.OnboardingLaunchSample = "StarWarsG.exe STEAMMOD=555000111 MODPATH=Mods\\CustomDraft";
+            vm.SupportBundleOutputDirectory = outputDir;
+            vm.CalibrationNotes = "operator-note";
+
+            await vm.InvokeScaffoldModProfileAsync();
+            onboarding.LastRequest.Should().NotBeNull();
+            onboarding.LastRequest!.BaseProfileId.Should().Be("base_swfoc");
+            vm.OnboardingSummary.Should().Contain("draft=custom_generated");
+            vm.OnboardingSummary.Should().Contain("555000111");
+            vm.Status.Should().Be("Draft profile scaffolded: custom_generated");
+
+            await vm.InvokeExportCalibrationArtifactAsync();
+            calibration.LastArtifactRequest.Should().NotBeNull();
+            calibration.LastArtifactRequest!.OutputDirectory.Should().Be(Path.Combine(outputDir, "calibration"));
+            calibration.LastArtifactRequest.OperatorNotes.Should().Be("operator-note");
+            vm.OpsArtifactSummary.Should().Be(calibration.ArtifactPath);
+            vm.Status.Should().Be($"Calibration artifact exported: {calibration.ArtifactPath}");
+
+            await vm.InvokeBuildCompatibilityReportAsync();
+            vm.ModCompatibilityRows.Should().ContainSingle()
+                .Which.Should().Contain("set_credits | Stable | CAPABILITY_PROBE_PASS");
+            vm.ModCompatibilitySummary.Should().Be("promotionReady=True dependency=Pass unresolvedCritical=0");
+            vm.Status.Should().Be($"Compatibility report generated for {profile.Id}");
+
+            await vm.InvokeExportSupportBundleAsync();
+            supportBundles.LastRequest.Should().NotBeNull();
+            supportBundles.LastRequest!.OutputDirectory.Should().Be(outputDir);
+            supportBundles.LastRequest.ProfileId.Should().Be(profile.Id);
+            vm.OpsArtifactSummary.Should().Be(supportBundles.BundlePath);
+            vm.Status.Should().Be($"Support bundle exported: {supportBundles.BundlePath}");
+
+            await vm.InvokeExportTelemetrySnapshotAsync();
+            telemetry.LastOutputDirectory.Should().Be(Path.Combine(outputDir, "telemetry"));
+            vm.OpsArtifactSummary.Should().Be(telemetry.ExportedPath);
+            vm.Status.Should().Be($"Telemetry snapshot exported: {telemetry.ExportedPath}");
+        }
+        finally
+        {
+            if (Directory.Exists(outputDir))
+            {
+                Directory.Delete(outputDir, recursive: true);
+            }
+        }
+    }
+
 
     private static MainViewModelDependencies CreateDependencies(
         StubRuntimeAdapter runtime,
@@ -419,9 +501,13 @@ public sealed class MainViewModelBaseOpsCoverageTests
         StubSavePatchPackService? savePatchPackService = null,
         StubSavePatchApplyService? savePatchApplyService = null,
         StubHelperModService? helper = null,
-        StubProfileUpdateService? updates = null)
+        StubProfileUpdateService? updates = null,
+        StubModOnboardingService? modOnboarding = null,
+        StubModCalibrationService? modCalibration = null,
+        StubSupportBundleService? supportBundles = null,
+        ITelemetrySnapshotService? telemetry = null)
     {
-        var telemetry = new TelemetrySnapshotService();
+        telemetry ??= new TelemetrySnapshotService();
         var orchestrator = new TrainerOrchestrator(
             profiles,
             runtime,
@@ -444,9 +530,9 @@ public sealed class MainViewModelBaseOpsCoverageTests
             SavePatchApplyService = savePatchApplyService ?? new StubSavePatchApplyService(),
             Helper = helper ?? new StubHelperModService(),
             Updates = updates ?? new StubProfileUpdateService(),
-            ModOnboarding = null!,
-            ModCalibration = null!,
-            SupportBundles = null!,
+            ModOnboarding = modOnboarding ?? new StubModOnboardingService(),
+            ModCalibration = modCalibration ?? new StubModCalibrationService(),
+            SupportBundles = supportBundles ?? new StubSupportBundleService(),
             Telemetry = telemetry,
             FreezeService = freezeService,
             ActionReliability = reliability,
@@ -613,6 +699,11 @@ public sealed class MainViewModelBaseOpsCoverageTests
         public Task InvokeCheckUpdatesAsync() => CheckUpdatesAsync();
         public Task InvokeInstallUpdateAsync() => InstallUpdateAsync();
         public Task InvokeRollbackProfileUpdateAsync() => RollbackProfileUpdateAsync();
+        public Task InvokeScaffoldModProfileAsync() => ScaffoldModProfileAsync();
+        public Task InvokeExportCalibrationArtifactAsync() => ExportCalibrationArtifactAsync();
+        public Task InvokeBuildCompatibilityReportAsync() => BuildCompatibilityReportAsync();
+        public Task InvokeExportSupportBundleAsync() => ExportSupportBundleAsync();
+        public Task InvokeExportTelemetrySnapshotAsync() => ExportTelemetrySnapshotAsync();
         public void InvokeRebuildSaveFieldRows() => RebuildSaveFieldRows();
         public void InvokeClearPatchPreviewState(bool clearLoadedPack) => ClearPatchPreviewState(clearLoadedPack);
         public Task InvokeAddHotkeyAsync() => AddHotkeyAsync();
@@ -977,6 +1068,131 @@ public sealed class MainViewModelBaseOpsCoverageTests
         }
     }
 
+    private sealed class StubModOnboardingService : IModOnboardingService
+    {
+        public ModOnboardingRequest? LastRequest { get; private set; }
+
+        public Task<ModOnboardingResult> ScaffoldDraftProfileAsync(ModOnboardingRequest request, CancellationToken cancellationToken)
+        {
+            _ = cancellationToken;
+            LastRequest = request;
+            return Task.FromResult(new ModOnboardingResult(
+                Succeeded: true,
+                ProfileId: "custom_generated",
+                OutputPath: @"C:\Temp\custom_generated.json",
+                InferredWorkshopIds: ["555000111"],
+                InferredPathHints: ["customdraft"],
+                InferredAliases: ["custom_generated"],
+                Warnings: ["seed warning"]));
+        }
+
+        public Task<ModOnboardingBatchResult> ScaffoldDraftProfilesFromSeedsAsync(ModOnboardingSeedBatchRequest request, CancellationToken cancellationToken)
+        {
+            _ = request;
+            _ = cancellationToken;
+            return Task.FromResult(new ModOnboardingBatchResult(true, 0, 0, 0, Array.Empty<ModOnboardingBatchItemResult>()));
+        }
+    }
+
+    private sealed class StubModCalibrationService : IModCalibrationService
+    {
+        public ModCalibrationArtifactRequest? LastArtifactRequest { get; private set; }
+        public string ArtifactPath { get; } = @"C:\Temp\calibration.json";
+
+        public Task<ModCalibrationArtifactResult> ExportCalibrationArtifactAsync(ModCalibrationArtifactRequest request, CancellationToken cancellationToken)
+        {
+            _ = cancellationToken;
+            LastArtifactRequest = request;
+            return Task.FromResult(new ModCalibrationArtifactResult(
+                Succeeded: true,
+                ArtifactPath: ArtifactPath,
+                ModuleFingerprint: "fingerprint",
+                Candidates: Array.Empty<CalibrationCandidate>(),
+                Warnings: Array.Empty<string>()));
+        }
+
+        public Task<ModCompatibilityReport> BuildCompatibilityReportAsync(
+            TrainerProfile profile,
+            AttachSession? session,
+            DependencyValidationResult? dependencyValidation,
+            IReadOnlyDictionary<string, IReadOnlyList<string>>? catalog,
+            CancellationToken cancellationToken)
+        {
+            _ = profile;
+            _ = session;
+            _ = dependencyValidation;
+            _ = catalog;
+            _ = cancellationToken;
+            return Task.FromResult(new ModCompatibilityReport(
+                ProfileId: "base_swfoc",
+                GeneratedAtUtc: DateTimeOffset.UtcNow,
+                RuntimeMode: RuntimeMode.Galactic,
+                DependencyStatus: DependencyValidationStatus.Pass,
+                UnresolvedCriticalSymbols: 0,
+                PromotionReady: true,
+                Actions: [new ModActionCompatibility("set_credits", ActionReliabilityState.Stable, "CAPABILITY_PROBE_PASS", 1.0)],
+                Notes: Array.Empty<string>()));
+        }
+    }
+
+    private sealed class StubSupportBundleService : ISupportBundleService
+    {
+        public SupportBundleRequest? LastRequest { get; private set; }
+        public string BundlePath { get; } = @"C:\Temp\support-bundle.zip";
+
+        public Task<SupportBundleResult> ExportAsync(SupportBundleRequest request, CancellationToken cancellationToken)
+        {
+            _ = cancellationToken;
+            LastRequest = request;
+            return Task.FromResult(new SupportBundleResult(
+                Succeeded: true,
+                BundlePath: BundlePath,
+                ManifestPath: @"C:\Temp\support-bundle.manifest.json",
+                IncludedFiles: ["runtime-snapshot.json"],
+                Warnings: Array.Empty<string>()));
+        }
+    }
+
+    private sealed class StubTelemetrySnapshotService : ITelemetrySnapshotService
+    {
+        public string? LastOutputDirectory { get; private set; }
+        public string ExportedPath { get; private set; } = string.Empty;
+
+        public void RecordAction(string actionId, AddressSource source, bool succeeded)
+        {
+            _ = actionId;
+            _ = source;
+            _ = succeeded;
+        }
+
+        public TelemetrySnapshot CreateSnapshot()
+        {
+            return new TelemetrySnapshot(
+                DateTimeOffset.UtcNow,
+                new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase),
+                new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase),
+                new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase),
+                TotalActions: 0,
+                FailureRate: 0,
+                FallbackRate: 0,
+                UnresolvedRate: 0);
+        }
+
+        public Task<string> ExportSnapshotAsync(string outputDirectory, CancellationToken cancellationToken)
+        {
+            _ = cancellationToken;
+            Directory.CreateDirectory(outputDirectory);
+            LastOutputDirectory = outputDirectory;
+            ExportedPath = Path.Combine(outputDirectory, "telemetry.json");
+            File.WriteAllText(ExportedPath, "{}");
+            return Task.FromResult(ExportedPath);
+        }
+
+        public void Reset()
+        {
+        }
+    }
+
     private sealed class StubActionReliabilityService : IActionReliabilityService
     {
         private readonly IReadOnlyList<ActionReliabilityInfo> _items;
@@ -1095,4 +1311,3 @@ public sealed class MainViewModelBaseOpsCoverageTests
         }
     }
 }
-

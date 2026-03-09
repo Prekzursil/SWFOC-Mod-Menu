@@ -60,6 +60,28 @@ public sealed class RuntimeAdapterGapCoverageTests
     }
 
     [Fact]
+    public void ApplyFoCHostPreference_ShouldPreferGameHostUnlessProfileAllowsAnyHost()
+    {
+        var method = RuntimeAdapterType.GetMethod("ApplyFoCHostPreference", BindingFlags.NonPublic | BindingFlags.Static);
+        method.Should().NotBeNull();
+
+        var profile = ReflectionCoverageVariantFactory.BuildProfile() with { ExeTarget = ExeTarget.Swfoc };
+        var pool = new[]
+        {
+            BuildProcess(210, "swfoc", @"C:\\Games\\swfoc.exe", "STEAMMOD=1125571106", metadata: null),
+            BuildProcess(211, "StarWarsG", @"C:\\Games\\StarWarsG.exe", "STEAMMOD=1125571106", hostRole: ProcessHostRole.GameHost)
+        };
+
+        var preferred = (ProcessMetadata[])method!.Invoke(null, new object?[] { profile, pool })!;
+        preferred.Should().ContainSingle();
+        preferred[0].ProcessId.Should().Be(211);
+
+        var anyHostProfile = profile with { HostPreference = "any" };
+        var unfiltered = (ProcessMetadata[])method.Invoke(null, new object?[] { anyHostProfile, pool })!;
+        unfiltered.Should().HaveCount(2);
+    }
+
+    [Fact]
     public void ParseSymbolValidationRules_AndCriticalSymbols_ShouldParseMetadataPayloads()
     {
         var profile = ReflectionCoverageVariantFactory.BuildProfile() with
@@ -280,7 +302,8 @@ public sealed class RuntimeAdapterGapCoverageTests
         string path,
         string? commandLine = null,
         ExeTarget exeTarget = ExeTarget.Swfoc,
-        IReadOnlyDictionary<string, string>? metadata = null)
+        IReadOnlyDictionary<string, string>? metadata = null,
+        ProcessHostRole hostRole = ProcessHostRole.Unknown)
     {
         return new ProcessMetadata(
             ProcessId: processId,
@@ -289,7 +312,8 @@ public sealed class RuntimeAdapterGapCoverageTests
             CommandLine: commandLine,
             ExeTarget: exeTarget,
             Mode: RuntimeMode.Galactic,
-            Metadata: metadata);
+            Metadata: metadata,
+            HostRole: hostRole);
     }
 
     private static void SetCurrentSessionSymbol(object adapter, string symbol, nint address, SymbolValueType valueType)

@@ -3,6 +3,7 @@ using SwfocTrainer.Core.Models;
 using SwfocTrainer.Profiles.Config;
 using SwfocTrainer.Profiles.Services;
 using Xunit;
+using System.Reflection;
 
 namespace SwfocTrainer.Tests.Profiles;
 
@@ -105,6 +106,73 @@ public sealed class ModOnboardingServiceTests
         {
             DeleteDirectoryIfExists(tempRoot);
         }
+    }
+
+    [Fact]
+    public void SeedInferenceHelpers_ShouldNormalizeAndMergeLaunchInputs()
+    {
+        var seed = new GeneratedProfileSeed(
+            DraftProfileId: "",
+            DisplayName: "",
+            BaseProfileId: "",
+            LaunchSamples:
+            [
+                new ModLaunchSample(
+                    ProcessName: "StarWarsG.exe",
+                    ProcessPath: @"C:\Games\Empire At War\corruption\StarWarsG.exe",
+                    CommandLine: "StarWarsG.exe STEAMMOD=777888999 STEAMMOD=123123123 MODPATH=Mods\\Meta-Mod /launch")
+            ],
+            SourceRunId: "run-1",
+            Confidence: 0.80,
+            ParentProfile: "base_parent",
+            LocalPathHints: [" Mods/Meta-Mod ", "en"],
+            WorkshopId: "777888999",
+            RequiredWorkshopIds: ["123123123", "777888999"],
+            RequiredCapabilities: ["set_credits", "set_unit_cap"],
+            Title: "Meta Mod",
+            CandidateBaseProfile: "base_candidate");
+
+        InvokePrivateStatic<string?>("ResolveSeedDraftProfileId", seed).Should().Be("workshop_777888999");
+        InvokePrivateStatic<string?>("ResolveSeedDisplayName", seed).Should().Be("Meta Mod");
+        InvokePrivateStatic<string?>("ResolveBaseProfileId", seed).Should().Be("base_candidate");
+        InvokePrivateStatic<string>("NormalizeRiskLevel", "EXTREME").Should().Be("medium");
+        InvokePrivateStatic<bool>("IsPathHintCandidate", "en").Should().BeFalse();
+        InvokePrivateStatic<bool>("IsPathHintCandidate", "meta_mod").Should().BeTrue();
+
+        var workshopIds = InvokePrivateStatic<IReadOnlyList<string>>("InferWorkshopIds", seed.LaunchSamples);
+        workshopIds.Should().Equal("123123123", "777888999");
+
+        var pathHints = InvokePrivateStatic<IReadOnlyList<string>>("InferPathHints", seed.LaunchSamples);
+        pathHints.Should().Contain("meta");
+        pathHints.Should().Contain("war");
+
+        var mergedWorkshopIds = InvokePrivateStatic<IReadOnlyList<string>>(
+            "MergeWorkshopIds",
+            seed.WorkshopId,
+            seed.RequiredWorkshopIds,
+            workshopIds);
+        mergedWorkshopIds.Should().Equal("123123123", "777888999");
+
+        var mergedPathHints = InvokePrivateStatic<IReadOnlyList<string>>(
+            "MergePathHints",
+            seed.LocalPathHints,
+            pathHints);
+        mergedPathHints.Should().Contain("meta");
+        mergedPathHints.Should().Contain("modsmetamod");
+        mergedPathHints.Should().NotContain("en");
+
+        var mergedCapabilities = InvokePrivateStatic<IReadOnlyList<string>>(
+            "MergeRequiredCapabilities",
+            new[] { "set_credits", "toggle_fog" },
+            seed.RequiredCapabilities);
+        mergedCapabilities.Should().Equal("set_credits", "set_unit_cap", "toggle_fog");
+
+        var aliases = InvokePrivateStatic<IReadOnlyList<string>>(
+            "InferAliases",
+            "custom_meta_mod",
+            "Meta Mod",
+            new[] { "meta-mod", "Meta Mod" });
+        aliases.Should().Contain(new[] { "custom_meta_mod", "meta_mod" });
     }
 
     private static ModOnboardingSeedBatchRequest CreateTwoSeedBatch()
@@ -239,6 +307,13 @@ public sealed class ModOnboardingServiceTests
         {
             Directory.Delete(path, recursive: true);
         }
+    }
+
+    private static T InvokePrivateStatic<T>(string methodName, params object?[] args)
+    {
+        var method = typeof(ModOnboardingService).GetMethod(methodName, BindingFlags.Static | BindingFlags.NonPublic);
+        method.Should().NotBeNull($"Expected helper '{methodName}'");
+        return (T)method!.Invoke(null, args)!;
     }
 
     private static async Task<(ModOnboardingService Service, string TempRoot)> CreateServiceAsync()

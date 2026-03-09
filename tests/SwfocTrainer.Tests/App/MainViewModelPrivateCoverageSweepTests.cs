@@ -195,6 +195,26 @@ public sealed class MainViewModelPrivateCoverageSweepTests
         vm.HelperLastOperationSummary.Should().Be("SpawnTacticalEntity (applied)");
     }
 
+    [Fact]
+    public void HeroMetadataHelpers_ShouldNormalizeFallbacksAndBooleanVariants()
+    {
+        var metadata = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
+        {
+            ["default_hero_respawn_time"] = " 600 ",
+            ["duplicate_hero_policy"] = " allow_clone ",
+            ["supports_hero_permadeath"] = "YES",
+            ["supports_hero_rescue"] = "0"
+        };
+
+        InvokePrivateStatic<string>("ResolveDefaultHeroRespawn", metadata).Should().Be("600");
+        InvokePrivateStatic<string>("ResolveDuplicateHeroPolicy", metadata).Should().Be("allow_clone");
+        InvokePrivateStatic<bool>("TryReadBoolMetadata", metadata, "supports_hero_permadeath").Should().BeTrue();
+        InvokePrivateStatic<bool>("TryReadBoolMetadata", metadata, "supports_hero_rescue").Should().BeFalse();
+        InvokePrivateStatic<bool>("TryReadBoolMetadata", metadata, "missing").Should().BeFalse();
+        InvokePrivateStatic<string>("ResolveDefaultHeroRespawn", new Dictionary<string, string>()).Should().Be("unknown");
+        InvokePrivateStatic<string>("ResolveDuplicateHeroPolicy", (IReadOnlyDictionary<string, string>?)null).Should().Be("unknown");
+    }
+
     private static MainViewModelDependencies CreateNullDependencies()
     {
         return new MainViewModelDependencies
@@ -246,9 +266,19 @@ public sealed class MainViewModelPrivateCoverageSweepTests
 
     private static T InvokePrivateStatic<T>(string methodName, params object?[] args)
     {
-        var method = typeof(MainViewModel).GetMethod(methodName, BindingFlags.Static | BindingFlags.NonPublic);
-        method.Should().NotBeNull($"Expected private static method '{methodName}'");
-        return (T)method!.Invoke(null, args)!;
+        var current = typeof(MainViewModel);
+        while (current is not null)
+        {
+            var method = current.GetMethod(methodName, BindingFlags.Static | BindingFlags.NonPublic);
+            if (method is not null)
+            {
+                return (T)method.Invoke(null, args)!;
+            }
+
+            current = current.BaseType;
+        }
+
+        throw new InvalidOperationException($"Expected private static method '{methodName}'");
     }
 
     private static void InvokeInheritedProtected(object instance, string methodName, params object?[] args)
