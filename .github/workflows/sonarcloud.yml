@@ -17,6 +17,7 @@ permissions:
 
 jobs:
   sonarcloud:
+    if: ${{ github.event_name == 'pull_request' || github.ref == 'refs/heads/main' }}
     runs-on: ubuntu-latest
     steps:
       - name: Sonar token not configured
