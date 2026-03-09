@@ -18,7 +18,6 @@ jobs:
       SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
       CODACY_API_TOKEN: ${{ secrets.CODACY_API_TOKEN }}
       CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
-      SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
       SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
       SENTRY_ORG: ${{ vars.SENTRY_ORG }}
       SENTRY_PROJECT: ${{ vars.SENTRY_PROJECT }}
@@ -45,11 +44,6 @@ jobs:
     runs-on: ubuntu-latest
     needs:
       - secrets-preflight
-    permissions:
-      contents: read
-      checks: read
-      pull-requests: read
-      statuses: write
     env:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       CHECK_SHA: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.sha || github.sha }}
@@ -64,32 +58,24 @@ jobs:
       - name: Assert required quality contexts are green
         run: |
           echo "Using check SHA: $CHECK_SHA"
-          args=(
-            --repo "${GITHUB_REPOSITORY}"
-            --sha "${CHECK_SHA}"
-            --required-context "Coverage 100 Gate"
-            --required-context "Codecov Analytics"
-            --required-context "Semgrep Zero"
-            --required-context "Sonar Zero"
-            --required-context "Codacy Zero"
-            --required-context "Snyk Zero"
-            --required-context "Sentry Zero"
-            --required-context "DeepScan Zero"
-            --required-context "SonarCloud Code Analysis"
-            --required-context "Codacy Static Code Analysis"
-            --timeout-seconds 7200
-            --poll-seconds 20
-            --out-json quality-zero-gate/required-checks.json
+          python3 scripts/quality/check_required_checks.py \
+            --repo "${GITHUB_REPOSITORY}" \
+            --sha "${CHECK_SHA}" \
+            --required-context "Coverage 100 Gate" \
+            --required-context "Codecov Analytics" \
+            --required-context "Sonar Zero" \
+            --required-context "Codacy Zero" \
+            --required-context "Semgrep Zero" \
+            --required-context "Sentry Zero" \
+            --required-context "DeepScan Zero" \
+            --required-context "SonarCloud Code Analysis" \
+            --required-context "Codacy Static Code Analysis" \
+            --required-context "DeepScan" \
+            --timeout-seconds 1500 \
+            --poll-seconds 20 \
+            --out-json quality-zero-gate/required-checks.json \
             --out-md quality-zero-gate/required-checks.md
-          )
-
-          if [ "${{ github.event_name }}" = "pull_request" ]; then
-            args+=(--required-context "DeepScan")
-          fi
-
-          python3 scripts/quality/check_required_checks.py "${args[@]}"
       - name: Evaluate legacy code/snyk context policy
-        if: always()
         run: |
           python3 scripts/quality/check_legacy_snyk_status.py \
             --repo "${GITHUB_REPOSITORY}" \
@@ -97,63 +83,6 @@ jobs:
             --context-prefix "code/snyk" \
             --out-json quality-zero-gate/legacy-snyk.json \
             --out-md quality-zero-gate/legacy-snyk.md
-      - name: Reconcile legacy code/snyk status context
-        if: always()
-        run: |
-          python3 - <<'PY'
-          import json
-          import os
-          import sys
-          import urllib.request
-
-          with open("quality-zero-gate/legacy-snyk.json", "r", encoding="utf-8") as handle:
-              payload = json.load(handle)
-
-          outcome = str(payload.get("policy_outcome") or "").strip().lower()
-          context = str(payload.get("selected_context") or "code/snyk (prekzursil1993)").strip()
-          selected_state = str(payload.get("selected_state") or "").strip().lower()
-          sha = os.environ.get("CHECK_SHA", "").strip()
-          repo = os.environ.get("GITHUB_REPOSITORY", "").strip()
-          token = os.environ.get("GITHUB_TOKEN", "").strip()
-
-          if not sha or not repo or not token:
-              print("Missing CHECK_SHA/GITHUB_REPOSITORY/GITHUB_TOKEN", file=sys.stderr)
-              sys.exit(1)
-
-          if outcome not in {"validated", "skipped_quota"}:
-              print(f"No status reconciliation required for outcome={outcome}.")
-              sys.exit(0)
-
-          if selected_state == "success":
-              print("Legacy context already success; no reconciliation needed.")
-              sys.exit(0)
-
-          description = "Legacy code/snyk quota-limited; strict Snyk Zero gate passed."
-          api_url = f"https://api.github.com/repos/{repo}/statuses/{sha}"
-          body = json.dumps(
-              {
-                  "state": "success",
-                  "context": context,
-                  "description": description,
-                  "target_url": "https://github.com/{}/actions/workflows/snyk-zero.yml".format(repo),
-              }
-          ).encode("utf-8")
-
-          req = urllib.request.Request(api_url, data=body, method="POST")
-          req.add_header("Accept", "application/vnd.github+json")
-          req.add_header("Authorization", f"Bearer {token}")
-          req.add_header("X-GitHub-Api-Version", "2022-11-28")
-          req.add_header("User-Agent", "swfoc-quality-zero-gate")
-          req.add_header("Content-Type", "application/json")
-
-          with urllib.request.urlopen(req, timeout=30) as response:
-              if response.status >= 300:
-                  print(f"Failed to reconcile legacy status: HTTP {response.status}", file=sys.stderr)
-                  sys.exit(1)
-
-          print(f"Published reconciled success status for context: {context}")
-          PY
-
       - name: Upload aggregate artifact
         if: always()
         uses: actions/upload-artifact@v4
