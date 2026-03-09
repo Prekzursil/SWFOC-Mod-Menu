@@ -13,7 +13,7 @@ public interface ICatalogService
             throw new ArgumentNullException(nameof(profileId));
         }
 
-        var normalizedProfileId = profileId.Trim();
+        var normalizedProfileId = profileId!.Trim();
         if (normalizedProfileId.Length == 0)
         {
             throw new ArgumentException("Value cannot be null or whitespace.", nameof(profileId));
@@ -29,7 +29,7 @@ public interface ICatalogService
             throw new ArgumentNullException(nameof(profileId));
         }
 
-        var normalizedProfileId = profileId.Trim();
+        var normalizedProfileId = profileId!.Trim();
         if (normalizedProfileId.Length == 0)
         {
             throw new ArgumentException("Value cannot be null or whitespace.", nameof(profileId));
@@ -51,7 +51,7 @@ public interface ICatalogService
             throw new ArgumentNullException(nameof(profileId));
         }
 
-        var normalizedProfileId = profileId.Trim();
+        var normalizedProfileId = profileId!.Trim();
         if (normalizedProfileId.Length == 0)
         {
             throw new ArgumentException("Value cannot be null or whitespace.", nameof(profileId));

@@ -324,39 +324,74 @@ public static class CatalogEntityKindClassifier
 
     public static IReadOnlyList<string> InferAffiliations(string entityId)
     {
+        if (string.IsNullOrWhiteSpace(entityId))
+        {
+            return Array.Empty<string>();
+        }
+
+        var normalizedEntityId = entityId.Trim();
         return FactionMarkers
-            .Where(marker => entityId.Contains(marker, StringComparison.OrdinalIgnoreCase))
+            .Where(marker => normalizedEntityId.Contains(marker, StringComparison.OrdinalIgnoreCase))
             .Distinct(StringComparer.OrdinalIgnoreCase)
             .ToArray();
     }
 
     private static bool IsHeroName(string value)
     {
-        return value.Contains("HERO", StringComparison.OrdinalIgnoreCase) ||
-               value.Contains("VADER", StringComparison.OrdinalIgnoreCase) ||
-               value.Contains("PALPATINE", StringComparison.OrdinalIgnoreCase);
+        if (string.IsNullOrWhiteSpace(value))
+        {
+            return false;
+        }
+
+        var normalizedValue = value.Trim();
+        return normalizedValue.Contains("HERO", StringComparison.OrdinalIgnoreCase) ||
+               normalizedValue.Contains("VADER", StringComparison.OrdinalIgnoreCase) ||
+               normalizedValue.Contains("PALPATINE", StringComparison.OrdinalIgnoreCase);
     }
 
     private static bool IsFactionName(string value)
     {
-        return FactionMarkers.Any(marker => value.Equals(marker, StringComparison.OrdinalIgnoreCase)) ||
-               value.EndsWith("_FACTION", StringComparison.OrdinalIgnoreCase) ||
-               value.StartsWith("FACTION_", StringComparison.OrdinalIgnoreCase);
+        if (string.IsNullOrWhiteSpace(value))
+        {
+            return false;
+        }
+
+        var normalizedValue = value.Trim();
+        return FactionMarkers.Any(marker => normalizedValue.Equals(marker, StringComparison.OrdinalIgnoreCase)) ||
+               normalizedValue.EndsWith("_FACTION", StringComparison.OrdinalIgnoreCase) ||
+               normalizedValue.StartsWith("FACTION_", StringComparison.OrdinalIgnoreCase);
     }
 
     private static bool IsBuildingName(string value)
     {
-        return BuildingNameMarkers.Any(marker => value.Contains(marker, StringComparison.OrdinalIgnoreCase));
+        if (string.IsNullOrWhiteSpace(value))
+        {
+            return false;
+        }
+
+        var normalizedValue = value.Trim();
+        return BuildingNameMarkers.Any(marker => normalizedValue.Contains(marker, StringComparison.OrdinalIgnoreCase));
     }
 
     private static bool IsSpaceStructureName(string value)
     {
-        return SpaceStructureMarkers.Any(marker => value.Contains(marker, StringComparison.OrdinalIgnoreCase));
+        if (string.IsNullOrWhiteSpace(value))
+        {
+            return false;
+        }
+
+        var normalizedValue = value.Trim();
+        return SpaceStructureMarkers.Any(marker => normalizedValue.Contains(marker, StringComparison.OrdinalIgnoreCase));
     }
 
     private static bool ContainsToken(string value, string token)
     {
-        return value.Contains(token, StringComparison.OrdinalIgnoreCase);
+        if (string.IsNullOrWhiteSpace(value) || string.IsNullOrWhiteSpace(token))
+        {
+            return false;
+        }
+
+        return value.Trim().Contains(token.Trim(), StringComparison.OrdinalIgnoreCase);
     }
 
     private static int GetSpecificity(CatalogEntityKind kind)

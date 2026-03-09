@@ -118,7 +118,15 @@ public static class JsonProfileSerializer
         Converters = { new JsonStringEnumConverter() }
     };
 
-    public static T? Deserialize<T>(string json) => JsonSerializer.Deserialize<T>(NormalizeJson(json), Options);
+    public static T? Deserialize<T>(string json)
+    {
+        if (json is null)
+        {
+            throw new ArgumentNullException(nameof(json));
+        }
+
+        return JsonSerializer.Deserialize<T>(NormalizeJson(json), Options);
+    }
 
     public static string Serialize<T>(T value) => JsonSerializer.Serialize(value, Options);
 
@@ -130,7 +138,12 @@ public static class JsonProfileSerializer
 
     private static string NormalizeJson(string json)
     {
-        if (string.IsNullOrEmpty(json) || json[0] != Utf8Bom)
+        if (json is null)
+        {
+            throw new ArgumentNullException(nameof(json));
+        }
+
+        if (json.Length == 0 || json[0] != Utf8Bom)
         {
             return json;
         }
