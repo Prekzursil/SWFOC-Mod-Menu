@@ -75,7 +75,7 @@ public sealed class CatalogService : ICatalogService
             throw new ArgumentException(NullOrWhitespaceMessage, nameof(profileId));
         }
 
-        var normalizedProfileId = profileId.Trim();
+        var normalizedProfileId = profileId!.Trim();
         var profile = await _profiles.ResolveInheritedProfileAsync(normalizedProfileId, cancellationToken).ConfigureAwait(false);
         if (profile is null)
         {
@@ -98,7 +98,7 @@ public sealed class CatalogService : ICatalogService
             throw new ArgumentException(NullOrWhitespaceMessage, nameof(profileId));
         }
 
-        var normalizedProfileId = profileId.Trim();
+        var normalizedProfileId = profileId!.Trim();
         var profile = await _profiles.ResolveInheritedProfileAsync(normalizedProfileId, cancellationToken).ConfigureAwait(false);
         if (profile is null)
         {
@@ -120,7 +120,7 @@ public sealed class CatalogService : ICatalogService
             throw new ArgumentNullException(nameof(profile));
         }
 
-        var profileId = profile.Id?.Trim();
+        var profileId = profile.Id!.Trim();
         if (string.IsNullOrWhiteSpace(profileId))
         {
             throw new InvalidOperationException("Profile id is required for catalog loading.");
@@ -178,9 +178,9 @@ public sealed class CatalogService : ICatalogService
             throw new ArgumentNullException(nameof(records));
         }
 
-        var normalizedProfileId = profileId.Trim();
-        var sourcePath = source.Path?.Trim();
-        var sourceType = source.Type?.Trim();
+        var normalizedProfileId = profileId!.Trim();
+        var sourcePath = source.Path!.Trim();
+        var sourceType = source.Type!.Trim();
         if (string.IsNullOrWhiteSpace(sourcePath) || string.IsNullOrWhiteSpace(sourceType))
         {
             return false;
@@ -244,10 +244,10 @@ public sealed class CatalogService : ICatalogService
             throw new ArgumentNullException(nameof(element));
         }
 
-        var normalizedProfileId = profileId.Trim();
-        var normalizedSourcePath = sourcePath.Trim();
-        var sourceElement = element;
-        record = default;
+        var normalizedProfileId = profileId!.Trim();
+        var normalizedSourcePath = sourcePath!.Trim();
+        var sourceElement = element!;
+        record = default!;
         var entityId = GetEntityId(sourceElement);
         if (string.IsNullOrWhiteSpace(entityId))
         {
@@ -403,18 +403,25 @@ public sealed class CatalogService : ICatalogService
             throw new ArgumentNullException(nameof(records));
         }
 
-        if (!records.TryGetValue(incoming.EntityId, out var existing))
+        if (incoming is null)
         {
-            records[incoming.EntityId] = incoming;
+            throw new ArgumentNullException(nameof(incoming));
+        }
+
+        if (!records.TryGetValue(incoming.EntityId!, out var existing))
+        {
+            records[incoming.EntityId!] = incoming;
             return;
         }
 
-        var existingAffiliations = existing.Affiliations ?? Array.Empty<string>();
-        var incomingAffiliations = incoming.Affiliations ?? Array.Empty<string>();
-        var existingDependencies = existing.DependencyRefs ?? Array.Empty<string>();
-        var incomingDependencies = incoming.DependencyRefs ?? Array.Empty<string>();
-        var existingMetadata = existing.Metadata ?? new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
-        var incomingMetadata = incoming.Metadata ?? new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+        var existingRecord = existing!;
+        var incomingRecord = incoming;
+        var existingAffiliations = existingRecord.Affiliations ?? Array.Empty<string>();
+        var incomingAffiliations = incomingRecord.Affiliations ?? Array.Empty<string>();
+        var existingDependencies = existingRecord.DependencyRefs ?? Array.Empty<string>();
+        var incomingDependencies = incomingRecord.DependencyRefs ?? Array.Empty<string>();
+        var existingMetadata = existingRecord.Metadata ?? new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+        var incomingMetadata = incomingRecord.Metadata ?? new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
 
         var mergedAffiliations = existingAffiliations
             .Concat(incomingAffiliations)
@@ -436,20 +443,20 @@ public sealed class CatalogService : ICatalogService
                 static group => group.Last().Value,
                 StringComparer.OrdinalIgnoreCase);
 
-        records[incoming.EntityId] = existing with
+        records[incomingRecord.EntityId!] = existingRecord with
         {
-            Kind = CatalogEntityKindClassifier.SelectMoreSpecificKind(existing.Kind, incoming.Kind),
-            DisplayNameKey = ChooseValue(existing.DisplayNameKey, incoming.DisplayNameKey, existing.EntityId) ?? existing.EntityId,
-            DisplayName = ChooseValue(existing.DisplayName, incoming.DisplayName, existing.EntityId) ?? existing.EntityId,
-            EncyclopediaTextKey = ChooseValue(existing.EncyclopediaTextKey, incoming.EncyclopediaTextKey, null),
-            SourcePath = ChooseValue(existing.SourcePath, incoming.SourcePath, null),
-            Affiliations = mergedAffiliations.Length == 0 ? existing.Affiliations : mergedAffiliations,
-            VisualRef = ChooseValue(existing.VisualRef, incoming.VisualRef, null),
-            VisualState = SelectVisualState(existing.VisualState, incoming.VisualState),
-            CompatibilityState = SelectCompatibilityState(existing.CompatibilityState, incoming.CompatibilityState),
-            PopulationValue = existing.PopulationValue ?? incoming.PopulationValue,
-            BuildCostCredits = existing.BuildCostCredits ?? incoming.BuildCostCredits,
-            DependencyRefs = mergedDependencies.Length == 0 ? existing.DependencyRefs : mergedDependencies,
+            Kind = CatalogEntityKindClassifier.SelectMoreSpecificKind(existingRecord.Kind, incomingRecord.Kind),
+            DisplayNameKey = ChooseValue(existingRecord.DisplayNameKey, incomingRecord.DisplayNameKey, existingRecord.EntityId) ?? existingRecord.EntityId,
+            DisplayName = ChooseValue(existingRecord.DisplayName, incomingRecord.DisplayName, existingRecord.EntityId) ?? existingRecord.EntityId,
+            EncyclopediaTextKey = ChooseValue(existingRecord.EncyclopediaTextKey, incomingRecord.EncyclopediaTextKey, null),
+            SourcePath = ChooseValue(existingRecord.SourcePath, incomingRecord.SourcePath, null),
+            Affiliations = mergedAffiliations.Length == 0 ? existingRecord.Affiliations : mergedAffiliations,
+            VisualRef = ChooseValue(existingRecord.VisualRef, incomingRecord.VisualRef, null),
+            VisualState = SelectVisualState(existingRecord.VisualState, incomingRecord.VisualState),
+            CompatibilityState = SelectCompatibilityState(existingRecord.CompatibilityState, incomingRecord.CompatibilityState),
+            PopulationValue = existingRecord.PopulationValue ?? incomingRecord.PopulationValue,
+            BuildCostCredits = existingRecord.BuildCostCredits ?? incomingRecord.BuildCostCredits,
+            DependencyRefs = mergedDependencies.Length == 0 ? existingRecord.DependencyRefs : mergedDependencies,
             Metadata = mergedMetadata
         };
     }
@@ -461,9 +468,10 @@ public sealed class CatalogService : ICatalogService
             throw new ArgumentNullException(nameof(element));
         }
 
+        var sourceElement = element!;
         foreach (var attributeName in EntityIdentifierAttributes)
         {
-            var attributeValue = element.Attribute(attributeName)?.Value?.Trim();
+            var attributeValue = sourceElement.Attribute(attributeName)?.Value?.Trim();
             if (!string.IsNullOrWhiteSpace(attributeValue) && attributeValue.Length <= 128)
             {
                 return attributeValue;
@@ -487,7 +495,8 @@ public sealed class CatalogService : ICatalogService
 
         var normalizedName = name.Trim();
 
-        var directElement = element.Elements()
+        var sourceElement = element!;
+        var directElement = sourceElement.Elements()
             .FirstOrDefault(candidate => candidate.Name.LocalName.Equals(normalizedName, StringComparison.OrdinalIgnoreCase));
         if (directElement is not null)
         {
@@ -498,7 +507,7 @@ public sealed class CatalogService : ICatalogService
             }
         }
 
-        var attribute = element.Attribute(normalizedName);
+        var attribute = sourceElement.Attribute(normalizedName);
         var attributeValue = attribute?.Value?.Trim();
         return string.IsNullOrWhiteSpace(attributeValue) ? null : attributeValue;
     }
@@ -510,8 +519,9 @@ public sealed class CatalogService : ICatalogService
             throw new ArgumentNullException(nameof(element));
         }
 
+        var sourceElement = element!;
         var values = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
-        foreach (var child in element.Elements())
+        foreach (var child in sourceElement.Elements())
         {
             if (!ShouldTreatAsDependency(child.Name.LocalName))
             {
@@ -550,36 +560,44 @@ public sealed class CatalogService : ICatalogService
             throw new ArgumentNullException(nameof(element));
         }
 
+        if (context is null)
+        {
+            throw new ArgumentNullException(nameof(context));
+        }
+
+        var sourceElement = element!;
+        var metadataContext = context;
+
         var metadata = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
         {
-            ["elementName"] = element.Name.LocalName,
-            ["displayNameKey"] = context.DisplayNameKey
+            ["elementName"] = sourceElement.Name.LocalName,
+            ["displayNameKey"] = metadataContext.DisplayNameKey
         };
 
-        if (!string.IsNullOrWhiteSpace(context.EncyclopediaTextKey))
+        if (!string.IsNullOrWhiteSpace(metadataContext.EncyclopediaTextKey))
         {
-            metadata["encyclopediaTextKey"] = context.EncyclopediaTextKey;
+            metadata["encyclopediaTextKey"] = metadataContext.EncyclopediaTextKey;
         }
 
-        if (!string.IsNullOrWhiteSpace(context.RawVisualRef))
+        if (!string.IsNullOrWhiteSpace(metadataContext.RawVisualRef))
         {
-            metadata["visualRef"] = context.RawVisualRef;
-            metadata["visualState"] = context.VisualState.ToString();
+            metadata["visualRef"] = metadataContext.RawVisualRef;
+            metadata["visualState"] = metadataContext.VisualState.ToString();
         }
 
-        if (!string.IsNullOrWhiteSpace(context.ResolvedVisualRef))
+        if (!string.IsNullOrWhiteSpace(metadataContext.ResolvedVisualRef))
         {
-            metadata["resolvedVisualRef"] = context.ResolvedVisualRef;
+            metadata["resolvedVisualRef"] = metadataContext.ResolvedVisualRef;
         }
 
-        if (context.PopulationValue.HasValue)
+        if (metadataContext.PopulationValue.HasValue)
         {
-            metadata["populationValue"] = context.PopulationValue.Value.ToString(System.Globalization.CultureInfo.InvariantCulture);
+            metadata["populationValue"] = metadataContext.PopulationValue.Value.ToString(System.Globalization.CultureInfo.InvariantCulture);
         }
 
-        if (context.BuildCostCredits.HasValue)
+        if (metadataContext.BuildCostCredits.HasValue)
         {
-            metadata["buildCostCredits"] = context.BuildCostCredits.Value.ToString(System.Globalization.CultureInfo.InvariantCulture);
+            metadata["buildCostCredits"] = metadataContext.BuildCostCredits.Value.ToString(System.Globalization.CultureInfo.InvariantCulture);
         }
 
         return metadata;
@@ -597,12 +615,14 @@ public sealed class CatalogService : ICatalogService
             return null;
         }
 
-        if (Path.IsPathRooted(visualRef))
+        var normalizedVisualRef = visualRef!.Trim();
+
+        if (Path.IsPathRooted(normalizedVisualRef))
         {
-            return File.Exists(visualRef) ? visualRef : null;
+            return File.Exists(normalizedVisualRef) ? normalizedVisualRef : null;
         }
 
-        var sourceDirectory = Path.GetDirectoryName(sourcePath);
+        var sourceDirectory = Path.GetDirectoryName(sourcePath!);
         if (string.IsNullOrWhiteSpace(sourceDirectory))
         {
             return null;
@@ -610,7 +630,7 @@ public sealed class CatalogService : ICatalogService
 
         foreach (var root in BuildCandidateRoots(sourceDirectory))
         {
-            var resolved = ResolveVisualReferenceFromRoot(root, visualRef);
+            var resolved = ResolveVisualReferenceFromRoot(root, normalizedVisualRef);
             if (!string.IsNullOrWhiteSpace(resolved))
             {
                 return resolved;
