@@ -182,11 +182,11 @@ public sealed class CatalogService : ICatalogService
         IDictionary<string, EntityCatalogRecord> records)
     {
         var normalizedProfileId = NormalizeRequiredValue(profileId, nameof(profileId));
-        ArgumentNullException.ThrowIfNull(source);
-        ArgumentNullException.ThrowIfNull(records);
+        var sourceValue = source ?? throw new ArgumentNullException(nameof(source));
+        _ = records ?? throw new ArgumentNullException(nameof(records));
 
-        var sourcePath = NormalizeNonEmpty(source.Path);
-        var sourceType = NormalizeNonEmpty(source.Type);
+        var sourcePath = NormalizeNonEmpty(sourceValue.Path);
+        var sourceType = NormalizeNonEmpty(sourceValue.Type);
         if (sourcePath is null || sourceType is null)
         {
             return false;
@@ -200,7 +200,7 @@ public sealed class CatalogService : ICatalogService
             return false;
         }
 
-        if (!SourceExists(source, sourcePathValue))
+        if (!SourceExists(sourceValue, sourcePathValue))
         {
             return false;
         }
@@ -237,7 +237,11 @@ public sealed class CatalogService : ICatalogService
         string sourcePath,
         IDictionary<string, EntityCatalogRecord> records)
     {
-        var document = XDocument.Load(sourcePath, LoadOptions.None);
+        _ = NormalizeRequiredValue(profileId, nameof(profileId));
+        var sourcePathValue = NormalizeRequiredValue(sourcePath, nameof(sourcePath));
+        _ = records ?? throw new ArgumentNullException(nameof(records));
+
+        var document = XDocument.Load(sourcePathValue, LoadOptions.None);
         foreach (var element in document.Descendants())
         {
             if (!TryCreateRecord(profileId, sourcePath, element, out var parsedRecord))
@@ -440,7 +444,8 @@ public sealed class CatalogService : ICatalogService
             throw new ArgumentNullException(nameof(records));
         }
 
-        var incomingEntityId = NormalizeNonEmpty(incoming.EntityId);
+        var incomingRecord = incoming;
+        var incomingEntityId = NormalizeNonEmpty(incomingRecord.EntityId);
         if (incomingEntityId is null)
         {
             throw new InvalidOperationException("Incoming catalog record id is required.");
@@ -448,12 +453,11 @@ public sealed class CatalogService : ICatalogService
 
         if (!records.TryGetValue(incomingEntityId, out var existing))
         {
-            records[incomingEntityId] = incoming;
+            records[incomingEntityId] = incomingRecord;
             return;
         }
 
         var existingRecord = existing;
-        var incomingRecord = incoming;
         var existingAffiliations = existingRecord.Affiliations ?? Array.Empty<string>();
         var incomingAffiliations = incomingRecord.Affiliations ?? Array.Empty<string>();
         var existingDependencies = existingRecord.DependencyRefs ?? Array.Empty<string>();
@@ -826,6 +830,7 @@ public sealed class CatalogService : ICatalogService
         var sourceEntities = entities;
         var sourcePredicate = predicate;
 
+        var distinctEntityIds = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
         var selectedEntityIds = new List<string>();
         foreach (var entity in sourceEntities)
         {
@@ -841,14 +846,19 @@ public sealed class CatalogService : ICatalogService
                 continue;
             }
 
-            selectedEntityIds.Add(entityId);
+            if (distinctEntityIds.Add(entityId))
+            {
+                selectedEntityIds.Add(entityId);
+            }
         }
 
-        return selectedEntityIds
-            .Distinct(StringComparer.OrdinalIgnoreCase)
-            .OrderBy(static entityId => entityId, StringComparer.OrdinalIgnoreCase)
-            .Take(limit)
-            .ToArray();
+        selectedEntityIds.Sort(StringComparer.OrdinalIgnoreCase);
+        if (selectedEntityIds.Count <= limit)
+        {
+            return selectedEntityIds.ToArray();
+        }
+
+        return selectedEntityIds.Take(limit).ToArray();
     }
 
     private static CatalogEntityVisualState ResolveVisualState(string? rawVisualRef, string? resolvedVisualRef)
@@ -866,7 +876,7 @@ public sealed class CatalogService : ICatalogService
 
     private static string? NormalizeNonEmpty(string? value)
     {
-        if (value is null)
+        if (string.IsNullOrEmpty(value))
         {
             return null;
         }
@@ -875,10 +885,15 @@ public sealed class CatalogService : ICatalogService
         return trimmed.Length == 0 ? null : trimmed;
     }
 
-    private static string NormalizeRequiredValue(string value, string paramName)
+    private static string NormalizeRequiredValue(string? value, string paramName)
     {
-        return NormalizeNonEmpty(value)
-            ?? throw new ArgumentException(NullOrWhitespaceMessage, paramName);
+        var normalized = NormalizeNonEmpty(value);
+        if (normalized is null)
+        {
+            throw new ArgumentException(NullOrWhitespaceMessage, paramName);
+        }
+
+        return normalized;
     }
 
     private static IReadOnlyList<string> ParseListValue(string? raw)
@@ -888,7 +903,7 @@ public sealed class CatalogService : ICatalogService
             return Array.Empty<string>();
         }
 
-        return raw!
+        return raw
             .Split(new[] { ',', ';', '|', '\r', '\n', '\t' }, StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries)
             .Distinct(StringComparer.OrdinalIgnoreCase)
             .ToArray();
