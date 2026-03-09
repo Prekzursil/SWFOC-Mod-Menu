@@ -14,6 +14,7 @@ public sealed class CatalogService : ICatalogService
     private const string TexturesDirectory = "Textures";
     private const string UiDirectory = "UI";
     private const string GuiDirectory = "Gui";
+    private const string NullOrWhitespaceMessage = "Value cannot be null or whitespace.";
 
     private static readonly string[] EntityIdentifierAttributes = ["Name", "ID", "Id", "Object_Name", "Type"];
     private static readonly string[] VisualReferenceNames = ["Icon_Name", "IconName", "Portrait"];
@@ -71,7 +72,7 @@ public sealed class CatalogService : ICatalogService
     {
         if (string.IsNullOrWhiteSpace(profileId))
         {
-            throw new ArgumentException("Value cannot be null or whitespace.", nameof(profileId));
+            throw new ArgumentException(NullOrWhitespaceMessage, nameof(profileId));
         }
 
         var normalizedProfileId = profileId.Trim();
@@ -94,7 +95,7 @@ public sealed class CatalogService : ICatalogService
     {
         if (string.IsNullOrWhiteSpace(profileId))
         {
-            throw new ArgumentException("Value cannot be null or whitespace.", nameof(profileId));
+            throw new ArgumentException(NullOrWhitespaceMessage, nameof(profileId));
         }
 
         var normalizedProfileId = profileId.Trim();
@@ -164,7 +165,7 @@ public sealed class CatalogService : ICatalogService
     {
         if (string.IsNullOrWhiteSpace(profileId))
         {
-            throw new ArgumentException("Value cannot be null or whitespace.", nameof(profileId));
+            throw new ArgumentException(NullOrWhitespaceMessage, nameof(profileId));
         }
 
         if (source is null)
@@ -230,12 +231,12 @@ public sealed class CatalogService : ICatalogService
     {
         if (string.IsNullOrWhiteSpace(profileId))
         {
-            throw new ArgumentException("Value cannot be null or whitespace.", nameof(profileId));
+            throw new ArgumentException(NullOrWhitespaceMessage, nameof(profileId));
         }
 
         if (string.IsNullOrWhiteSpace(sourcePath))
         {
-            throw new ArgumentException("Value cannot be null or whitespace.", nameof(sourcePath));
+            throw new ArgumentException(NullOrWhitespaceMessage, nameof(sourcePath));
         }
 
         if (element is null)
@@ -246,7 +247,7 @@ public sealed class CatalogService : ICatalogService
         var normalizedProfileId = profileId.Trim();
         var normalizedSourcePath = sourcePath.Trim();
         var sourceElement = element;
-        record = default!;
+        record = default;
         var entityId = GetEntityId(sourceElement);
         if (string.IsNullOrWhiteSpace(entityId))
         {
@@ -361,11 +362,6 @@ public sealed class CatalogService : ICatalogService
 
     private static string BuildLegacyEntityEntry(EntityCatalogRecord record)
     {
-        if (record is null)
-        {
-            throw new ArgumentNullException(nameof(record));
-        }
-
         return $"{CatalogEntityKindClassifier.ToLegacyToken(record.Kind)}|{record.EntityId}";
     }
 
@@ -373,7 +369,7 @@ public sealed class CatalogService : ICatalogService
     {
         if (string.IsNullOrWhiteSpace(profileId))
         {
-            throw new ArgumentException("Value cannot be null or whitespace.", nameof(profileId));
+            throw new ArgumentException(NullOrWhitespaceMessage, nameof(profileId));
         }
 
         var catalogRootPath = _options.CatalogRootPath;
@@ -407,20 +403,10 @@ public sealed class CatalogService : ICatalogService
             throw new ArgumentNullException(nameof(records));
         }
 
-        if (incoming is null)
-        {
-            throw new ArgumentNullException(nameof(incoming));
-        }
-
         if (!records.TryGetValue(incoming.EntityId, out var existing))
         {
             records[incoming.EntityId] = incoming;
             return;
-        }
-
-        if (existing is null)
-        {
-            throw new InvalidOperationException($"Catalog record '{incoming.EntityId}' resolved to null.");
         }
 
         var existingAffiliations = existing.Affiliations ?? Array.Empty<string>();
@@ -496,7 +482,7 @@ public sealed class CatalogService : ICatalogService
 
         if (string.IsNullOrWhiteSpace(name))
         {
-            throw new ArgumentException("Value cannot be null or whitespace.", nameof(name));
+            throw new ArgumentException(NullOrWhitespaceMessage, nameof(name));
         }
 
         var normalizedName = name.Trim();
@@ -697,7 +683,7 @@ public sealed class CatalogService : ICatalogService
         }
         .Where(static value => !string.IsNullOrWhiteSpace(value))
         .Distinct(StringComparer.OrdinalIgnoreCase)
-        .Cast<string>()
+        .Select(static value => value!)
         .ToArray();
     }
 

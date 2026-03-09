@@ -28,7 +28,7 @@ public enum CatalogEntityCompatibilityState
     Blocked
 }
 
-public sealed record EntityCatalogRecord
+public readonly record struct EntityCatalogRecord
 {
     public string EntityId { get; init; } = string.Empty;
 
