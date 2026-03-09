@@ -135,7 +135,7 @@ public sealed class MainViewModelDiagnosticsCoverageTests
     [InlineData("\"alpha\"", "alpha")]
     [InlineData("null", "null")]
     [InlineData("123", "123")]
-    public void FormatPatchValue_ShouldHandleJsonElementBranches(string jsonLiteral, string expected)
+    public void FormatPatchValue_ShouldHandleJsonElementBranches(string? jsonLiteral, string expected)
     {
         object? value = jsonLiteral is null
             ? null
@@ -188,8 +188,8 @@ public sealed class MainViewModelDiagnosticsCoverageTests
         var suffix = MainViewModelDiagnostics.BuildDiagnosticsStatusSuffix(result);
         var status = MainViewModelDiagnostics.BuildQuickActionStatus("spawn_tactical_entity", result);
 
-        suffix.Should().Be(" [backend=helper, routeReasonCode=ROUTE_OK, probeReasonCode=PROBE_OK, hookState=active, helperVerify=Applied, operationKind=spawn_tactical_entity, hybridExecution=True]");
-        status.Should().Be("✓ spawn_tactical_entity: ok [backend=helper, routeReasonCode=ROUTE_OK, probeReasonCode=PROBE_OK, hookState=active, helperVerify=Applied, operationKind=spawn_tactical_entity, hybridExecution=True]");
+        suffix.Should().Be(" [backend=helper, routeReasonCode=ROUTE_OK, capabilityProbeReasonCode=PROBE_OK, hookState=active, helperVerify=Applied, operationKind=spawn_tactical_entity, hybridExecution=True]");
+        status.Should().Be("✓ spawn_tactical_entity: ok [backend=helper, routeReasonCode=ROUTE_OK, capabilityProbeReasonCode=PROBE_OK, hookState=active, helperVerify=Applied, operationKind=spawn_tactical_entity, hybridExecution=True]");
     }
 
     [Fact]
