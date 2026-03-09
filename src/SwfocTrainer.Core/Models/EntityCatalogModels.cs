@@ -323,9 +323,9 @@ public static class CatalogEntityKindClassifier
         CatalogEntityKind existing,
         CatalogEntityKind incoming)
     {
-        return GetSpecificity(incoming) > GetSpecificity(existing)
-            ? incoming
-            : existing;
+        var existingSpecificity = GetSpecificity(existing);
+        var incomingSpecificity = GetSpecificity(incoming);
+        return incomingSpecificity > existingSpecificity ? incoming : existing;
     }
 
     public static IReadOnlyList<string> InferAffiliations(string entityId)
@@ -335,7 +335,7 @@ public static class CatalogEntityKindClassifier
             return Array.Empty<string>();
         }
 
-        var normalizedEntityId = entityId!.Trim();
+        var normalizedEntityId = (entityId ?? string.Empty).Trim();
         return FactionMarkers
             .Where(marker => normalizedEntityId.Contains(marker, StringComparison.OrdinalIgnoreCase))
             .Distinct(StringComparer.OrdinalIgnoreCase)
@@ -349,7 +349,7 @@ public static class CatalogEntityKindClassifier
             return false;
         }
 
-        var normalizedValue = value!.Trim();
+        var normalizedValue = (value ?? string.Empty).Trim();
         return normalizedValue.Contains("HERO", StringComparison.OrdinalIgnoreCase) ||
                normalizedValue.Contains("VADER", StringComparison.OrdinalIgnoreCase) ||
                normalizedValue.Contains("PALPATINE", StringComparison.OrdinalIgnoreCase);
@@ -362,7 +362,7 @@ public static class CatalogEntityKindClassifier
             return false;
         }
 
-        var normalizedValue = value?.Trim() ?? string.Empty;
+        var normalizedValue = (value ?? string.Empty).Trim();
         return FactionMarkers.Any(marker => normalizedValue.Equals(marker, StringComparison.OrdinalIgnoreCase)) ||
                normalizedValue.EndsWith("_FACTION", StringComparison.OrdinalIgnoreCase) ||
                normalizedValue.StartsWith("FACTION_", StringComparison.OrdinalIgnoreCase);
@@ -375,7 +375,12 @@ public static class CatalogEntityKindClassifier
             return false;
         }
 
-        var normalizedValue = value.Trim();
+        var normalizedValue = (value ?? string.Empty).Trim();
+        if (normalizedValue.Length == 0)
+        {
+            return false;
+        }
+
         return BuildingNameMarkers.Any(marker => normalizedValue.Contains(marker, StringComparison.OrdinalIgnoreCase));
     }
 
@@ -386,7 +391,12 @@ public static class CatalogEntityKindClassifier
             return false;
         }
 
-        var normalizedValue = value.Trim();
+        var normalizedValue = (value ?? string.Empty).Trim();
+        if (normalizedValue.Length == 0)
+        {
+            return false;
+        }
+
         return SpaceStructureMarkers.Any(marker => normalizedValue.Contains(marker, StringComparison.OrdinalIgnoreCase));
     }
 
@@ -397,8 +407,13 @@ public static class CatalogEntityKindClassifier
             return false;
         }
 
-        var normalizedValue = value!.Trim();
-        var normalizedToken = token!.Trim();
+        var normalizedValue = (value ?? string.Empty).Trim();
+        var normalizedToken = (token ?? string.Empty).Trim();
+        if (normalizedValue.Length == 0 || normalizedToken.Length == 0)
+        {
+            return false;
+        }
+
         return normalizedValue.Contains(normalizedToken, StringComparison.OrdinalIgnoreCase);
     }
 
