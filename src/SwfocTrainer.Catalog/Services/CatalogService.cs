@@ -234,7 +234,7 @@ public sealed class CatalogService : ICatalogService
                     continue;
                 }
 
-                if (parsedRecord is null || string.IsNullOrWhiteSpace(parsedRecord.EntityId))
+                if (string.IsNullOrWhiteSpace(parsedRecord.EntityId))
                 {
                     continue;
                 }
@@ -435,11 +435,6 @@ public sealed class CatalogService : ICatalogService
         if (records is null)
         {
             throw new ArgumentNullException(nameof(records));
-        }
-
-        if (incoming is null)
-        {
-            throw new ArgumentNullException(nameof(incoming));
         }
 
         var incomingEntityId = NormalizeNonEmpty(incoming.EntityId);
