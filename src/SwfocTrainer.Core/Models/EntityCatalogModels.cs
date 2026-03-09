@@ -1,3 +1,5 @@
+#nullable enable
+
 namespace SwfocTrainer.Core.Models;
 
 public enum CatalogEntityKind
@@ -323,8 +325,28 @@ public static class CatalogEntityKindClassifier
         CatalogEntityKind existing,
         CatalogEntityKind incoming)
     {
-        var existingSpecificity = GetSpecificity(existing);
-        var incomingSpecificity = GetSpecificity(incoming);
+        var existingSpecificity = existing switch
+        {
+            CatalogEntityKind.Faction => 7,
+            CatalogEntityKind.Planet => 6,
+            CatalogEntityKind.AbilityCarrier => 5,
+            CatalogEntityKind.SpaceStructure => 4,
+            CatalogEntityKind.Building => 3,
+            CatalogEntityKind.Hero => 2,
+            CatalogEntityKind.Unit => 1,
+            _ => 0
+        };
+        var incomingSpecificity = incoming switch
+        {
+            CatalogEntityKind.Faction => 7,
+            CatalogEntityKind.Planet => 6,
+            CatalogEntityKind.AbilityCarrier => 5,
+            CatalogEntityKind.SpaceStructure => 4,
+            CatalogEntityKind.Building => 3,
+            CatalogEntityKind.Hero => 2,
+            CatalogEntityKind.Unit => 1,
+            _ => 0
+        };
         return incomingSpecificity > existingSpecificity ? incoming : existing;
     }
 

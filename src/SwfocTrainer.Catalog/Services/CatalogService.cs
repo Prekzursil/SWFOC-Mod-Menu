@@ -1,4 +1,4 @@
-#nullable disable
+#nullable enable
 
 using System.Text.Json;
 using System.Text.Json.Serialization;
@@ -77,7 +77,7 @@ public sealed class CatalogService : ICatalogService
             throw new ArgumentException(NullOrWhitespaceMessage, nameof(profileId));
         }
 
-        var normalizedProfileId = profileId!.Trim();
+        var normalizedProfileId = NormalizeRequiredValue(profileId, nameof(profileId));
         var profile = await _profiles.ResolveInheritedProfileAsync(normalizedProfileId, cancellationToken).ConfigureAwait(false);
         if (profile is null)
         {
@@ -725,7 +725,7 @@ public sealed class CatalogService : ICatalogService
             return Array.Empty<string>();
         }
 
-        var normalizedSourceDirectory = sourceDirectory!.Trim();
+        var normalizedSourceDirectory = sourceDirectory.Trim();
         var sourceParent = Directory.GetParent(normalizedSourceDirectory);
         var sourceGrandParent = sourceParent is null
             ? null
@@ -750,8 +750,8 @@ public sealed class CatalogService : ICatalogService
             return null;
         }
 
-        var normalizedRoot = root!.Trim();
-        var normalizedVisualRef = visualRef!.Trim();
+        var normalizedRoot = root.Trim();
+        var normalizedVisualRef = visualRef.Trim();
         foreach (var relativeDirectory in VisualSearchDirectories)
         {
             var candidate = string.IsNullOrWhiteSpace(relativeDirectory)
