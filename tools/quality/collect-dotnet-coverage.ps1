@@ -7,9 +7,9 @@ param(
 Set-StrictMode -Version Latest
 $ErrorActionPreference = "Stop"
 
-$projectPath = "tests/SwfocTrainer.Tests/SwfocTrainer.Tests.csproj"
 $resolvedRepoRoot = Resolve-Path -LiteralPath "."
 $repoRoot = $resolvedRepoRoot.ProviderPath
+$projectPath = "tests/SwfocTrainer.Tests/SwfocTrainer.Tests.csproj"
 $resultsRootResolved = Join-Path $repoRoot $ResultsRoot
 if (Test-Path -Path $resultsRootResolved) {
     Remove-Item -Path $resultsRootResolved -Recurse -Force
@@ -70,10 +70,15 @@ $arguments = @(
     'test',
     $projectPath,
     '-c', $Configuration,
+    '--no-build',
+    '--disable-build-servers',
+    '-m:1',
+    '/nr:false',
     '--logger', 'trx;LogFileName=coverage.trx',
     '--results-directory', $testResultsRoot,
     '--collect', 'XPlat Code Coverage',
-    '--settings', $runSettingsPath
+    '--settings', $runSettingsPath,
+    '/p:UseSharedCompilation=false'
 )
 
 if (-not [string]::IsNullOrWhiteSpace($filter)) {
@@ -105,7 +110,7 @@ function ConvertTo-MSBuildPropertyValue {
         [Parameter(Mandatory = $true)][string]$Value
     )
 
-    return $Value.Replace('%', '%25').Replace(';', '%3B')
+    return $Value.Replace('%', '%25').Replace(';', '%3B').Replace(',', '%2C')
 }
 
 function Invoke-DotnetCommand {
@@ -115,7 +120,42 @@ function Invoke-DotnetCommand {
     )
 
     Write-Output "$Executable $($InvocationArguments -join ' ')"
+    if ($Executable.EndsWith('.exe', [System.StringComparison]::OrdinalIgnoreCase)) {
+        $stdoutPath = Join-Path $collectorRoot ("dotnet-stdout-" + [Guid]::NewGuid().ToString("N") + ".log")
+        $stderrPath = Join-Path $collectorRoot ("dotnet-stderr-" + [Guid]::NewGuid().ToString("N") + ".log")
+
+        try {
+            $process = Start-Process -FilePath $Executable `
+                -ArgumentList $InvocationArguments `
+                -NoNewWindow `
+                -Wait `
+                -PassThru `
+                -RedirectStandardOutput $stdoutPath `
+                -RedirectStandardError $stderrPath
+
+            if (Test-Path -Path $stdoutPath) {
+                Get-Content -Path $stdoutPath
+            }
+
+            if (Test-Path -Path $stderrPath) {
+                Get-Content -Path $stderrPath | Write-Error
+            }
+
+            $global:LASTEXITCODE = $process.ExitCode
+            return
+        }
+        finally {
+            Remove-Item -Path $stdoutPath, $stderrPath -Force -ErrorAction SilentlyContinue
+        }
+    }
+
     & $Executable @InvocationArguments
+}
+
+function Use-WindowsDotnetExecutable {
+    param([string]$Executable)
+
+    return $Executable.EndsWith('.exe', [System.StringComparison]::OrdinalIgnoreCase)
 }
 
 function Get-LastExitCodeOrZero {
@@ -159,15 +199,55 @@ function Stop-WindowsDotnetTestProcesses {
     }
 }
 
-$dotnetExe = Resolve-DotnetCommand
-if (-not $useNativeWindowsCoverageStaging) {
+function Invoke-CoveragePreparationBuild {
+    param(
+        [Parameter(Mandatory = $true)][string]$Executable,
+        [Parameter(Mandatory = $true)][switch]$ClearWindowsProcesses
+    )
+
+    $buildArguments = @(
+        'build',
+        $projectPath,
+        '-c', $Configuration,
+        '--disable-build-servers',
+        '-m:1',
+        '/nr:false',
+        '/p:UseSharedCompilation=false'
+    )
+
+    Stop-WindowsDotnetTestProcesses -Enabled:$ClearWindowsProcesses
+
     $previousClinkNoAutorun = [Environment]::GetEnvironmentVariable('CLINK_NOAUTORUN', 'Process')
     [Environment]::SetEnvironmentVariable('CLINK_NOAUTORUN', '1', 'Process')
+    try {
+        Invoke-DotnetCommand -Executable $Executable -InvocationArguments $buildArguments
+    }
+    finally {
+        [Environment]::SetEnvironmentVariable('CLINK_NOAUTORUN', $previousClinkNoAutorun, 'Process')
+    }
+
+    $exitCode = Get-LastExitCodeOrZero
+    if ($exitCode -ne 0) {
+        throw "Coverage preparation build failed with exit code $exitCode."
+    }
+}
+
+$dotnetExe = Resolve-DotnetCommand
+$shouldClearWindowsTestProcesses = Use-WindowsDotnetExecutable -Executable $dotnetExe
+Invoke-CoveragePreparationBuild -Executable $dotnetExe -ClearWindowsProcesses:$shouldClearWindowsTestProcesses
+if (-not $useNativeWindowsCoverageStaging) {
+    Stop-WindowsDotnetTestProcesses -Enabled:$shouldClearWindowsTestProcesses
+
+    $previousClinkNoAutorun = [Environment]::GetEnvironmentVariable('CLINK_NOAUTORUN', 'Process')
+    $previousMsBuildDisableNodeReuse = [Environment]::GetEnvironmentVariable('MSBUILDDISABLENODEREUSE', 'Process')
+    [Environment]::SetEnvironmentVariable('CLINK_NOAUTORUN', '1', 'Process')
+    [Environment]::SetEnvironmentVariable('MSBUILDDISABLENODEREUSE', '1', 'Process')
     try {
         Invoke-DotnetCommand -Executable $dotnetExe -InvocationArguments $arguments
     }
     finally {
         [Environment]::SetEnvironmentVariable('CLINK_NOAUTORUN', $previousClinkNoAutorun, 'Process')
+        [Environment]::SetEnvironmentVariable('MSBUILDDISABLENODEREUSE', $previousMsBuildDisableNodeReuse, 'Process')
     }
 
     $exitCode = Get-LastExitCodeOrZero
@@ -189,33 +269,42 @@ if (-not $useNativeWindowsCoverageStaging) {
 if (-not $coverageCandidates) {
     $fallbackCoveragePath = Join-Path $collectorRoot 'coverage-msbuild.cobertura.xml'
     $excludeByFileForMsBuild = ConvertTo-MSBuildPropertyValue -Value $excludeByFile
+    $excludeByAttributeForMsBuild = ConvertTo-MSBuildPropertyValue -Value 'Obsolete,GeneratedCodeAttribute,CompilerGeneratedAttribute,ExcludeFromCodeCoverageAttribute'
     $msbuildArguments = @(
         'test',
         $projectPath,
         '-c', $Configuration,
+        '--no-build',
+        '--disable-build-servers',
+        '-m:1',
+        '/nr:false',
         '--logger', 'trx;LogFileName=coverage-msbuild.trx',
         '--results-directory', $testResultsRoot,
         '/p:CollectCoverage=true',
         '/p:CoverletOutputFormat=cobertura',
         "/p:CoverletOutput=$fallbackCoveragePath",
         "/p:ExcludeByFile=$excludeByFileForMsBuild",
-        '/p:ExcludeByAttribute=Obsolete,GeneratedCodeAttribute,CompilerGeneratedAttribute,ExcludeFromCodeCoverageAttribute',
-        '/p:UseSourceLink=false'
+        "/p:ExcludeByAttribute=$excludeByAttributeForMsBuild",
+        '/p:UseSourceLink=false',
+        '/p:UseSharedCompilation=false'
     )
 
     if (-not [string]::IsNullOrWhiteSpace($filter)) {
         $msbuildArguments += @('--filter', $filter)
     }
 
-    Stop-WindowsDotnetTestProcesses -Enabled:$useNativeWindowsCoverageStaging
+    Stop-WindowsDotnetTestProcesses -Enabled:$shouldClearWindowsTestProcesses
 
     $previousClinkNoAutorun = [Environment]::GetEnvironmentVariable('CLINK_NOAUTORUN', 'Process')
+    $previousMsBuildDisableNodeReuse = [Environment]::GetEnvironmentVariable('MSBUILDDISABLENODEREUSE', 'Process')
     [Environment]::SetEnvironmentVariable('CLINK_NOAUTORUN', '1', 'Process')
+    [Environment]::SetEnvironmentVariable('MSBUILDDISABLENODEREUSE', '1', 'Process')
     try {
         Invoke-DotnetCommand -Executable $dotnetExe -InvocationArguments $msbuildArguments
     }
     finally {
         [Environment]::SetEnvironmentVariable('CLINK_NOAUTORUN', $previousClinkNoAutorun, 'Process')
+        [Environment]::SetEnvironmentVariable('MSBUILDDISABLENODEREUSE', $previousMsBuildDisableNodeReuse, 'Process')
     }
 
     $exitCode = Get-LastExitCodeOrZero
@@ -229,6 +318,18 @@ if (-not $coverageCandidates) {
 }
 
 if (-not $coverageCandidates) {
+    $artifactPaths = Get-ChildItem -Path $collectorRoot -Recurse -File -ErrorAction SilentlyContinue |
+        Sort-Object FullName |
+        Select-Object -ExpandProperty FullName
+
+    if ($artifactPaths.Count -gt 0) {
+        Write-Output "collector_artifacts=$($artifactPaths -join ';')"
+    }
+
+    if ($useNativeWindowsCoverageStaging) {
+        Write-Warning "Coverage collection is running through Windows dotnet.exe against a WSL UNC repository path. Coverlet may fail to emit reports in this mode even when test execution succeeds."
+    }
+
     throw "No coverage report was generated under $testResultsRoot or fallback path $fallbackCoveragePath."
 }
 
