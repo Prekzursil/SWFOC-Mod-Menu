@@ -11,6 +11,11 @@ public abstract class MainViewModelBindableMembersBase : MainViewModelCoreStateB
     private string _helperBridgeState = UnknownValue;
     private string _helperBridgeReasonCode = UnknownValue;
     private string _helperBridgeFeatures = "none";
+    private string _helperLastOperationToken = UnknownValue;
+    private string _helperLastOperationKind = UnknownValue;
+    private string _helperLastVerifyState = UnknownValue;
+    private string _helperLastEntryPoint = UnknownValue;
+    private string _helperLastAppliedEntityId = UnknownValue;
 
     protected MainViewModelBindableMembersBase(MainViewModelDependencies dependencies)
         : base(dependencies)
@@ -166,10 +171,45 @@ public abstract class MainViewModelBindableMembersBase : MainViewModelCoreStateB
         set => SetField(_helperBridgeFeatures, value, newValue => _helperBridgeFeatures = newValue);
     }
 
+    public string HelperLastOperationToken
+    {
+        get => _helperLastOperationToken;
+        set => SetField(_helperLastOperationToken, value, newValue => _helperLastOperationToken = newValue);
+    }
+
+    public string HelperLastOperationKind
+    {
+        get => _helperLastOperationKind;
+        set => SetField(_helperLastOperationKind, value, newValue => _helperLastOperationKind = newValue);
+    }
+
+    public string HelperLastVerifyState
+    {
+        get => _helperLastVerifyState;
+        set => SetField(_helperLastVerifyState, value, newValue => _helperLastVerifyState = newValue);
+    }
+
+    public string HelperLastEntryPoint
+    {
+        get => _helperLastEntryPoint;
+        set => SetField(_helperLastEntryPoint, value, newValue => _helperLastEntryPoint = newValue);
+    }
+
+    public string HelperLastAppliedEntityId
+    {
+        get => _helperLastAppliedEntityId;
+        set => SetField(_helperLastAppliedEntityId, value, newValue => _helperLastAppliedEntityId = newValue);
+    }
+
     public string HelperBridgeSummary =>
         string.IsNullOrWhiteSpace(HelperBridgeReasonCode) || HelperBridgeReasonCode == UnknownValue
             ? HelperBridgeState
             : $"{HelperBridgeState} ({HelperBridgeReasonCode})";
+
+    public string HelperLastOperationSummary =>
+        HelperLastOperationKind == UnknownValue && HelperLastVerifyState == UnknownValue
+            ? UnknownValue
+            : $"{HelperLastOperationKind} ({HelperLastVerifyState})";
 
     public bool CanWorkWithProfile => !string.IsNullOrWhiteSpace(SelectedProfileId);
 

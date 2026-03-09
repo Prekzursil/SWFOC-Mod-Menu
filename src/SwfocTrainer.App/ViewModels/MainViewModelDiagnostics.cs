@@ -127,6 +127,8 @@ internal static class MainViewModelDiagnostics
         AppendDiagnosticSegment(segments, result.Diagnostics, "routeReasonCode", "routeReasonCode", "reasonCode");
         AppendDiagnosticSegment(segments, result.Diagnostics, "capabilityProbeReasonCode", "capabilityProbeReasonCode", "probeReasonCode");
         AppendDiagnosticSegment(segments, result.Diagnostics, "hookState", "hookState");
+        AppendDiagnosticSegment(segments, result.Diagnostics, "helperVerify", "helperVerifyState");
+        AppendDiagnosticSegment(segments, result.Diagnostics, "operationKind", "operationKind");
         AppendDiagnosticSegment(segments, result.Diagnostics, "hybridExecution", "hybridExecution");
 
         return segments.Count == 0 ? string.Empty : $" [{string.Join(", ", segments)}]";

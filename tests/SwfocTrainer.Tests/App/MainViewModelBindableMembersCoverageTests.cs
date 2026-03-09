@@ -36,6 +36,11 @@ public sealed class MainViewModelBindableMembersCoverageTests
         vm.HelperBridgeState = "ready";
         vm.HelperBridgeReasonCode = "CAPABILITY_PROBE_PASS";
         vm.HelperBridgeFeatures = "spawn_tactical_entity, set_context_allegiance";
+        vm.HelperLastOperationToken = "token-123";
+        vm.HelperLastOperationKind = "SpawnTacticalEntity";
+        vm.HelperLastVerifyState = "applied";
+        vm.HelperLastEntryPoint = "SWFOC_Trainer_Spawn_Context";
+        vm.HelperLastAppliedEntityId = "EMPIRE_STORMTROOPER_SQUAD";
 
         vm.SelectedHotkey = new HotkeyBindingItem { Gesture = "Ctrl+1", ActionId = "set_credits", PayloadJson = "{}" };
         vm.SelectedSpawnPreset = new SpawnPresetViewItem("id", "label", "u", "Empire", "AUTO", 1, 0, "desc");
@@ -87,6 +92,10 @@ public sealed class MainViewModelBindableMembersCoverageTests
         vm.SaveSearchQuery.Should().Be("credits");
         vm.SelectedSpawnPreset.Should().NotBeNull();
         vm.HelperBridgeSummary.Should().Be("ready (CAPABILITY_PROBE_PASS)");
+        vm.HelperLastOperationSummary.Should().Be("SpawnTacticalEntity (applied)");
+        vm.HelperLastOperationToken.Should().Be("token-123");
+        vm.HelperLastEntryPoint.Should().Be("SWFOC_Trainer_Spawn_Context");
+        vm.HelperLastAppliedEntityId.Should().Be("EMPIRE_STORMTROOPER_SQUAD");
         vm.SpawnStopOnFailure.Should().BeFalse();
         vm.IsStrictPatchApply.Should().BeFalse();
         vm.HeroDefaultRespawnTime.Should().Be("300");

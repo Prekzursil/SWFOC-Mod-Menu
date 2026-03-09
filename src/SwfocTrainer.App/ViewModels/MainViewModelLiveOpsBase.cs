@@ -145,6 +145,11 @@ public abstract class MainViewModelLiveOpsBase : MainViewModelBindableMembersBas
         HelperBridgeState = UnknownValue;
         HelperBridgeReasonCode = UnknownValue;
         HelperBridgeFeatures = "none";
+        HelperLastOperationToken = UnknownValue;
+        HelperLastOperationKind = UnknownValue;
+        HelperLastVerifyState = UnknownValue;
+        HelperLastEntryPoint = UnknownValue;
+        HelperLastAppliedEntityId = UnknownValue;
     }
 
     protected void ApplyHelperBridgeMetadata(IReadOnlyDictionary<string, string>? metadata)
@@ -158,6 +163,35 @@ public abstract class MainViewModelLiveOpsBase : MainViewModelBindableMembersBas
         HelperBridgeState = NormalizeMetadataListValue(GetMetadataValueOrDefault(metadata, "helperBridgeState", UnknownValue), UnknownValue);
         HelperBridgeReasonCode = NormalizeMetadataListValue(GetMetadataValueOrDefault(metadata, "helperBridgeReasonCode", UnknownValue), UnknownValue);
         HelperBridgeFeatures = NormalizeMetadataListValue(GetMetadataValueOrDefault(metadata, "helperBridgeFeatures", "none"), "none");
+        HelperLastOperationToken = NormalizeMetadataListValue(GetMetadataValueOrDefault(metadata, "helperLastOperationToken", UnknownValue), UnknownValue);
+        HelperLastOperationKind = NormalizeMetadataListValue(GetMetadataValueOrDefault(metadata, "helperLastOperationKind", UnknownValue), UnknownValue);
+        HelperLastVerifyState = NormalizeMetadataListValue(GetMetadataValueOrDefault(metadata, "helperLastVerifyState", UnknownValue), UnknownValue);
+        HelperLastEntryPoint = NormalizeMetadataListValue(GetMetadataValueOrDefault(metadata, "helperLastEntryPoint", UnknownValue), UnknownValue);
+        HelperLastAppliedEntityId = NormalizeMetadataListValue(GetMetadataValueOrDefault(metadata, "helperLastAppliedEntityId", UnknownValue), UnknownValue);
+    }
+
+    protected void ApplyHelperExecutionDiagnostics(IReadOnlyDictionary<string, object?>? diagnostics)
+    {
+        if (diagnostics is null)
+        {
+            return;
+        }
+
+        HelperLastOperationToken = NormalizeDiagnosticValue(
+            MainViewModelDiagnostics.ReadDiagnosticString(diagnostics, "operationToken"),
+            HelperLastOperationToken);
+        HelperLastOperationKind = NormalizeDiagnosticValue(
+            MainViewModelDiagnostics.ReadDiagnosticString(diagnostics, "operationKind"),
+            HelperLastOperationKind);
+        HelperLastVerifyState = NormalizeDiagnosticValue(
+            MainViewModelDiagnostics.ReadDiagnosticString(diagnostics, "helperVerifyState"),
+            HelperLastVerifyState);
+        HelperLastEntryPoint = NormalizeDiagnosticValue(
+            MainViewModelDiagnostics.ReadDiagnosticString(diagnostics, "helperEntryPoint"),
+            HelperLastEntryPoint);
+        HelperLastAppliedEntityId = NormalizeDiagnosticValue(
+            MainViewModelDiagnostics.ReadDiagnosticString(diagnostics, "appliedEntityId"),
+            HelperLastAppliedEntityId);
     }
 
     private static string NormalizeMetadataListValue(string raw, string fallback)
@@ -172,6 +206,11 @@ public abstract class MainViewModelLiveOpsBase : MainViewModelBindableMembersBas
             .Where(static value => value.Length > 0)
             .ToArray();
         return tokens.Length == 0 ? fallback : string.Join(", ", tokens);
+    }
+
+    private static string NormalizeDiagnosticValue(string raw, string fallback)
+    {
+        return string.IsNullOrWhiteSpace(raw) ? fallback : raw.Trim();
     }
 
     protected async Task CaptureSelectedUnitBaselineAsync()

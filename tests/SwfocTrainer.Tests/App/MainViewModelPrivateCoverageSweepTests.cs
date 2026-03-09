@@ -79,7 +79,12 @@ public sealed class MainViewModelPrivateCoverageSweepTests
                     ["resolvedVariantReasonCode"] = "variant_match",
                     ["helperBridgeState"] = "ready",
                     ["helperBridgeReasonCode"] = "CAPABILITY_PROBE_PASS",
-                    ["helperBridgeFeatures"] = "spawn_tactical_entity,place_planet_building"
+                    ["helperBridgeFeatures"] = "spawn_tactical_entity,place_planet_building",
+                    ["helperLastOperationToken"] = "token-attach-001",
+                    ["helperLastOperationKind"] = "SpawnTacticalEntity",
+                    ["helperLastVerifyState"] = "applied",
+                    ["helperLastEntryPoint"] = "SWFOC_Trainer_Spawn_Context",
+                    ["helperLastAppliedEntityId"] = "EMPIRE_STORMTROOPER_SQUAD"
                 }),
             Build: new ProfileBuild("base_swfoc", "build", @"C:\Games\swfoc.exe", ExeTarget.Swfoc, ProcessId: Environment.ProcessId),
             Symbols: new SymbolMap(symbols),
@@ -92,6 +97,11 @@ public sealed class MainViewModelPrivateCoverageSweepTests
         vm.HelperBridgeState.Should().Be("ready");
         vm.HelperBridgeReasonCode.Should().Be("CAPABILITY_PROBE_PASS");
         vm.HelperBridgeFeatures.Should().Contain("place_planet_building");
+        vm.HelperLastOperationToken.Should().Be("token-attach-001");
+        vm.HelperLastOperationKind.Should().Be("SpawnTacticalEntity");
+        vm.HelperLastVerifyState.Should().Be("applied");
+        vm.HelperLastEntryPoint.Should().Be("SWFOC_Trainer_Spawn_Context");
+        vm.HelperLastAppliedEntityId.Should().Be("EMPIRE_STORMTROOPER_SQUAD");
         vm.Status.Should().Contain("Attached to PID");
         vm.Status.Should().Contain("sig=1");
         vm.Status.Should().Contain("fallback=1");
@@ -162,6 +172,29 @@ public sealed class MainViewModelPrivateCoverageSweepTests
         vm.PayloadJson.Should().Be("{}");
     }
 
+    [Fact]
+    public void ApplyHelperExecutionDiagnostics_ShouldPopulateHelperHealthSurface()
+    {
+        var vm = new MainViewModel(CreateNullDependencies());
+        var diagnostics = new Dictionary<string, object?>
+        {
+            ["operationToken"] = "token-verify-001",
+            ["operationKind"] = "SpawnTacticalEntity",
+            ["helperVerifyState"] = "applied",
+            ["helperEntryPoint"] = "SWFOC_Trainer_Spawn_Context",
+            ["appliedEntityId"] = "EMPIRE_STORMTROOPER_SQUAD"
+        };
+
+        InvokeInheritedProtected(vm, "ApplyHelperExecutionDiagnostics", diagnostics);
+
+        vm.HelperLastOperationToken.Should().Be("token-verify-001");
+        vm.HelperLastOperationKind.Should().Be("SpawnTacticalEntity");
+        vm.HelperLastVerifyState.Should().Be("applied");
+        vm.HelperLastEntryPoint.Should().Be("SWFOC_Trainer_Spawn_Context");
+        vm.HelperLastAppliedEntityId.Should().Be("EMPIRE_STORMTROOPER_SQUAD");
+        vm.HelperLastOperationSummary.Should().Be("SpawnTacticalEntity (applied)");
+    }
+
     private static MainViewModelDependencies CreateNullDependencies()
     {
         return new MainViewModelDependencies
@@ -216,5 +249,23 @@ public sealed class MainViewModelPrivateCoverageSweepTests
         var method = typeof(MainViewModel).GetMethod(methodName, BindingFlags.Static | BindingFlags.NonPublic);
         method.Should().NotBeNull($"Expected private static method '{methodName}'");
         return (T)method!.Invoke(null, args)!;
+    }
+
+    private static void InvokeInheritedProtected(object instance, string methodName, params object?[] args)
+    {
+        var current = instance.GetType().BaseType;
+        while (current is not null)
+        {
+            var method = current.GetMethod(methodName, BindingFlags.Instance | BindingFlags.NonPublic);
+            if (method is not null)
+            {
+                _ = method.Invoke(instance, args);
+                return;
+            }
+
+            current = current.BaseType;
+        }
+
+        throw new InvalidOperationException($"Expected inherited protected method '{methodName}'");
     }
 }

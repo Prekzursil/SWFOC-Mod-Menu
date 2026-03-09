@@ -108,6 +108,67 @@ public sealed class MainViewModelM5CoverageTests
     }
 
     [Fact]
+    public void BuildEntityRoster_ShouldReturnEmpty_ForNullOrInvalidCatalogInputs()
+    {
+        MainViewModelRosterHelpers.BuildEntityRoster(null, "base_swfoc", "1125571106")
+            .Should()
+            .BeEmpty();
+
+        var catalog = new Dictionary<string, IReadOnlyList<string>>(StringComparer.OrdinalIgnoreCase)
+        {
+            ["entity_catalog"] = ["", "Unit|", "not-json"]
+        };
+
+        MainViewModelRosterHelpers.BuildEntityRoster(catalog, "base_swfoc", "1125571106")
+            .Should()
+            .BeEmpty();
+    }
+
+    [Fact]
+    public void BuildEntityRoster_ShouldRespectDeclaredStates_AndNormalizeScalarMetadata()
+    {
+        var catalog = new Dictionary<string, IReadOnlyList<string>>(StringComparer.OrdinalIgnoreCase)
+        {
+            ["entity_catalog_typed"] =
+            [
+                """
+                {
+                  "entityId": "EMPIRE_STORMTROOPER_SQUAD",
+                  "displayName": "Stormtrooper Squad",
+                  "kind": "Unit",
+                  "sourceProfileId": "base_swfoc",
+                  "sourceWorkshopId": "9999999999",
+                  "affiliations": "EMPIRE; PENTASTAR",
+                  "populationValue": 2.5,
+                  "buildCostCredits": true,
+                  "visualState": "Resolved",
+                  "compatibilityState": "Blocked",
+                  "visualRef": "",
+                  "dependencyRefs": "dep_a, dep_b",
+                  "sourceLabel": "typed override"
+                }
+                """
+            ]
+        };
+
+        var row = MainViewModelRosterHelpers.BuildEntityRoster(catalog, "base_swfoc", "1125571106")
+            .Should()
+            .ContainSingle()
+            .Subject;
+
+        row.SourceLabel.Should().Be("typed override");
+        row.AffiliationSummary.Should().Be("EMPIRE, PENTASTAR");
+        row.PopulationCostText.Should().Be("2.5");
+        row.BuildCostText.Should().Be("True");
+        row.VisualState.Should().Be(RosterEntityVisualState.Resolved);
+        row.VisualSummary.Should().Be("resolved");
+        row.CompatibilityState.Should().Be(RosterEntityCompatibilityState.Blocked);
+        row.CompatibilitySummary.Should().Be("Blocked (9999999999)");
+        row.DependencySummary.Should().Be("dep_a; dep_b");
+        row.TransplantReportId.Should().BeEmpty();
+    }
+
+    [Fact]
     public void BuildEntityRoster_ShouldPreferTypedProjection_WhenAvailable_AndFallbackToLegacyRows()
     {
         var catalog = new Dictionary<string, IReadOnlyList<string>>(StringComparer.OrdinalIgnoreCase)
@@ -159,5 +220,30 @@ public sealed class MainViewModelM5CoverageTests
         fallback.AffiliationSummary.Should().Be("HeroOwner");
         fallback.PopulationCostText.Should().Be("n/a");
         fallback.BuildCostText.Should().Be("n/a");
+    }
+
+    [Fact]
+    public void BuildEntityRoster_ShouldFallbackToLegacyParsing_WhenTypedJsonIsMalformed()
+    {
+        var catalog = new Dictionary<string, IReadOnlyList<string>>(StringComparer.OrdinalIgnoreCase)
+        {
+            ["entity_catalog"] =
+            [
+                "{\"entityId\":\"BROKEN_JSON\"",
+                "Hero|DARTH_VADER|base_swfoc|1125571106||dep_one,dep_two"
+            ]
+        };
+
+        var row = MainViewModelRosterHelpers.BuildEntityRoster(catalog, "base_swfoc", "1125571106")
+            .Should()
+            .ContainSingle()
+            .Subject;
+
+        row.EntityId.Should().Be("DARTH_VADER");
+        row.EntityKind.Should().Be("Hero");
+        row.DefaultFaction.Should().Be("HeroOwner");
+        row.DependencySummary.Should().Be("dep_one,dep_two");
+        row.VisualState.Should().Be(RosterEntityVisualState.Missing);
+        row.CompatibilityState.Should().Be(RosterEntityCompatibilityState.Native);
     }
 }

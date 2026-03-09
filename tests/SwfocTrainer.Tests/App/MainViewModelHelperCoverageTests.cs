@@ -261,6 +261,8 @@ public sealed class MainViewModelHelperCoverageTests
                 ["reasonCode"] = "CAPABILITY_REQUIRED_MISSING",
                 ["probeReasonCode"] = "CAPABILITY_PROBE_PASS",
                 ["hookState"] = "ready",
+                ["helperVerifyState"] = "failed_runtime_evidence",
+                ["operationKind"] = "SpawnTacticalEntity",
                 ["hybridExecution"] = true
             });
 
@@ -270,6 +272,8 @@ public sealed class MainViewModelHelperCoverageTests
         suffix.Should().Contain("routeReasonCode=CAPABILITY_REQUIRED_MISSING");
         suffix.Should().Contain("capabilityProbeReasonCode=CAPABILITY_PROBE_PASS");
         suffix.Should().Contain("hookState=ready");
+        suffix.Should().Contain("helperVerify=failed_runtime_evidence");
+        suffix.Should().Contain("operationKind=SpawnTacticalEntity");
         suffix.Should().Contain("hybridExecution=True");
     }
 
@@ -336,7 +340,9 @@ public sealed class MainViewModelHelperCoverageTests
         status.Should().Contain("backend=helper");
         asString.Should().Be("123");
         missing.Should().BeEmpty();
-    }[Fact]
+    }
+
+    [Fact]
     public void BuildProcessDependencySegment_ShouldIncludeMessage_WhenNotPass()
     {
         MainViewModelDiagnostics.BuildProcessDependencySegment("Pass", "ignored")
@@ -625,4 +631,3 @@ public sealed class MainViewModelHelperCoverageTests
             Metadata: metadata);
     }
 }
-

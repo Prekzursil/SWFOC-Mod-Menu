@@ -101,6 +101,26 @@ public sealed class ModMechanicDetectionServiceTests
     }
 
     [Fact]
+    public async Task DetectAsync_ShouldAllowHelperActions_WhenBridgeReadyAndHookMetadataExists()
+    {
+        var profile = BuildProfile(
+            actions: new[] { Action("spawn_unit_helper", ExecutionKind.Helper, "helperHookId", "unitId") },
+            helperHooks: new[] { new HelperHookSpec("spawn_bridge", "spawn_bridge.lua", "1.0", EntryPoint: "SpawnBridge_Invoke") });
+        var session = BuildSession(
+            RuntimeMode.TacticalLand,
+            metadata: new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
+            {
+                ["helperBridgeState"] = "ready"
+            });
+
+        var report = await new ModMechanicDetectionService().DetectAsync(profile, session, catalog: null, CancellationToken.None);
+
+        var support = report.ActionSupport.Single(x => x.ActionId == "spawn_unit_helper");
+        support.Supported.Should().BeTrue();
+        support.ReasonCode.Should().Be(RuntimeReasonCode.HELPER_EXECUTION_APPLIED);
+    }
+
+    [Fact]
     public async Task DetectAsync_ShouldBlockSymbolDrivenActions_WhenSymbolIsUnresolved()
     {
         var profile = BuildProfile(
@@ -176,6 +196,35 @@ public sealed class ModMechanicDetectionServiceTests
     }
 
     [Fact]
+    public async Task DetectAsync_ShouldAllowRosterActions_WhenRequiredCatalogsExist()
+    {
+        var profile = BuildProfile(
+            actions: new[]
+            {
+                Action("spawn_context_entity", ExecutionKind.Memory, "entityId", "faction"),
+                Action("place_planet_building", ExecutionKind.Memory, "entityId", "faction")
+            });
+        var session = BuildSession(
+            RuntimeMode.Galactic,
+            symbols: new[]
+            {
+                new SymbolInfo("selected_owner_faction", (nint)0x1000, SymbolValueType.Int32, AddressSource.Signature),
+                new SymbolInfo("planet_owner", (nint)0x2000, SymbolValueType.Int32, AddressSource.Signature)
+            });
+        var catalog = new Dictionary<string, IReadOnlyList<string>>(StringComparer.OrdinalIgnoreCase)
+        {
+            ["unit_catalog"] = new[] { "EMPIRE_STORMTROOPER_SQUAD" },
+            ["building_catalog"] = new[] { "EMPIRE_BARRACKS" },
+            ["faction_catalog"] = new[] { "Empire" }
+        };
+
+        var report = await new ModMechanicDetectionService().DetectAsync(profile, session, catalog, CancellationToken.None);
+
+        report.ActionSupport.Single(x => x.ActionId == "spawn_context_entity").Supported.Should().BeTrue();
+        report.ActionSupport.Single(x => x.ActionId == "place_planet_building").Supported.Should().BeTrue();
+    }
+
+    [Fact]
     public async Task DetectAsync_ShouldAllowSetContextFaction_WhenPlanetOwnerSymbolHealthy()
     {
         var profile = BuildProfile(
@@ -243,6 +292,26 @@ public sealed class ModMechanicDetectionServiceTests
         support.Supported.Should().BeFalse();
         support.ReasonCode.Should().Be(RuntimeReasonCode.CAPABILITY_REQUIRED_MISSING);
         support.Message.Should().Contain("Neither selected-unit owner nor planet owner");
+    }
+
+    [Fact]
+    public async Task DetectAsync_ShouldAllowSwitchPlayerFaction_WithoutOwnerSymbols()
+    {
+        var profile = BuildProfile(
+            actions: new[] { Action("switch_player_faction", ExecutionKind.Helper, "helperHookId", "faction") },
+            helperHooks: new[] { new HelperHookSpec("spawn_bridge", "spawn_bridge.lua", "1.0", EntryPoint: "SwitchFaction_Invoke") });
+        var session = BuildSession(
+            RuntimeMode.Galactic,
+            metadata: new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
+            {
+                ["helperBridgeState"] = "ready"
+            });
+
+        var report = await new ModMechanicDetectionService().DetectAsync(profile, session, catalog: null, CancellationToken.None);
+
+        var support = report.ActionSupport.Single(x => x.ActionId == "switch_player_faction");
+        support.Supported.Should().BeTrue();
+        support.ReasonCode.Should().Be(RuntimeReasonCode.HELPER_EXECUTION_APPLIED);
     }
 
     [Fact]
@@ -760,8 +829,6 @@ public sealed class ModMechanicDetectionServiceTests
         return method!;
     }
 }
-
-
 
 
 

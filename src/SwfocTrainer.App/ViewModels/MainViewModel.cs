@@ -608,6 +608,7 @@ public sealed class MainViewModel : MainViewModelSaveOpsBase
                 payloadNode,
                 RuntimeMode,
                 BuildActionContext(SelectedActionId));
+            ApplyHelperExecutionDiagnostics(result.Diagnostics);
             Status = result.Succeeded
                 ? $"Action succeeded: {result.Message}{MainViewModelDiagnostics.BuildDiagnosticsStatusSuffix(result)}"
                 : $"Action failed: {result.Message}{MainViewModelDiagnostics.BuildDiagnosticsStatusSuffix(result)}";

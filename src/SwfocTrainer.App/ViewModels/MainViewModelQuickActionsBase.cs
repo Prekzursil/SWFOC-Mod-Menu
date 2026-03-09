@@ -31,6 +31,7 @@ public abstract class MainViewModelQuickActionsBase : MainViewModelLiveOpsBase
         try
         {
             var result = await ExecuteQuickActionAsync(actionId, payload);
+            ApplyHelperExecutionDiagnostics(result.Diagnostics);
             ToggleQuickActionState(toggleKey, result.Succeeded);
             Status = MainViewModelDiagnostics.BuildQuickActionStatus(actionId, result);
         }
@@ -93,6 +94,7 @@ public abstract class MainViewModelQuickActionsBase : MainViewModelLiveOpsBase
         try
         {
             var result = await ExecuteSetCreditsAsync(payload);
+            ApplyHelperExecutionDiagnostics(result.Diagnostics);
             var diagnosticsSuffix = MainViewModelDiagnostics.BuildDiagnosticsStatusSuffix(result);
 
             if (!result.Succeeded)

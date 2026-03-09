@@ -218,6 +218,93 @@ public sealed class TelemetryLogTailServiceTests
         }
     }
 
+    [Fact]
+    public void ResolveLatestMode_ShouldFallbackToExistingTelemetry_WhenCursorAlreadyInitialized()
+    {
+        var tempRoot = Path.Combine(Path.GetTempPath(), $"swfoc-telemetry-{Guid.NewGuid():N}");
+        Directory.CreateDirectory(tempRoot);
+        var processPath = Path.Combine(tempRoot, "StarWarsG.exe");
+        File.WriteAllText(processPath, string.Empty);
+        var now = DateTimeOffset.UtcNow;
+        File.WriteAllText(
+            Path.Combine(tempRoot, "_LogFile.txt"),
+            $"SWFOC_TRAINER_TELEMETRY timestamp={now:O} mode=Galactic");
+
+        try
+        {
+            var service = new TelemetryLogTailService();
+            service.ResolveLatestMode(processPath, now, TimeSpan.FromMinutes(5)).Available.Should().BeTrue();
+
+            var fallbackResult = service.ResolveLatestMode(processPath, now, TimeSpan.FromMinutes(5));
+
+            fallbackResult.Available.Should().BeTrue();
+            fallbackResult.Mode.Should().Be(RuntimeMode.Galactic);
+            fallbackResult.ReasonCode.Should().Be("telemetry_mode_fresh");
+        }
+        finally
+        {
+            if (Directory.Exists(tempRoot))
+            {
+                Directory.Delete(tempRoot, recursive: true);
+            }
+        }
+    }
+
+    [Fact]
+    public void ResolveLatestMode_ShouldUseCorruptionLogFallback_WhenPrimaryLogMissing()
+    {
+        var tempRoot = Path.Combine(Path.GetTempPath(), $"swfoc-telemetry-{Guid.NewGuid():N}");
+        Directory.CreateDirectory(Path.Combine(tempRoot, "corruption"));
+        var processPath = Path.Combine(tempRoot, "swfoc.exe");
+        File.WriteAllText(processPath, string.Empty);
+        var now = DateTimeOffset.UtcNow;
+        var corruptionLogPath = Path.Combine(tempRoot, "corruption", "LogFile.txt");
+        File.WriteAllText(corruptionLogPath, $"SWFOC_TRAINER_TELEMETRY timestamp={now:O} mode=TacticalSpace");
+
+        try
+        {
+            var service = new TelemetryLogTailService();
+            var result = service.ResolveLatestMode(processPath, now, TimeSpan.FromMinutes(5));
+
+            result.Available.Should().BeTrue();
+            result.Mode.Should().Be(RuntimeMode.TacticalSpace);
+            result.SourcePath.Should().Be(corruptionLogPath);
+        }
+        finally
+        {
+            if (Directory.Exists(tempRoot))
+            {
+                Directory.Delete(tempRoot, recursive: true);
+            }
+        }
+    }
+
+    [Fact]
+    public void ResolveLatestMode_ShouldReturnUnavailable_WhenLogExistsButTelemetryLineIsMissing()
+    {
+        var tempRoot = Path.Combine(Path.GetTempPath(), $"swfoc-telemetry-{Guid.NewGuid():N}");
+        Directory.CreateDirectory(tempRoot);
+        var processPath = Path.Combine(tempRoot, "swfoc.exe");
+        File.WriteAllText(processPath, string.Empty);
+        File.WriteAllText(Path.Combine(tempRoot, "_LogFile.txt"), "non-telemetry line");
+
+        try
+        {
+            var service = new TelemetryLogTailService();
+            var result = service.ResolveLatestMode(processPath, DateTimeOffset.UtcNow, TimeSpan.FromMinutes(5));
+
+            result.Available.Should().BeFalse();
+            result.ReasonCode.Should().Be("telemetry_line_missing");
+        }
+        finally
+        {
+            if (Directory.Exists(tempRoot))
+            {
+                Directory.Delete(tempRoot, recursive: true);
+            }
+        }
+    }
+
 
     [Fact]
     public void VerifyOperationToken_ShouldReturnVerified_WhenAppliedLineExists()
@@ -309,6 +396,76 @@ public sealed class TelemetryLogTailServiceTests
 
         result.Verified.Should().BeFalse();
         result.ReasonCode.Should().Be("helper_operation_token_missing");
+    }
+
+    [Fact]
+    public void VerifyOperationToken_ShouldReturnUnavailable_WhenProcessPathIsMissing()
+    {
+        var service = new TelemetryLogTailService();
+
+        var result = service.VerifyOperationToken(null, "token123", DateTimeOffset.UtcNow, TimeSpan.FromMinutes(5));
+
+        result.Verified.Should().BeFalse();
+        result.ReasonCode.Should().Be("telemetry_process_path_missing");
+    }
+
+    [Fact]
+    public void VerifyOperationToken_ShouldReturnUnavailable_WhenTokenEvidenceIsStale()
+    {
+        var tempRoot = Path.Combine(Path.GetTempPath(), $"swfoc-telemetry-{Guid.NewGuid():N}");
+        Directory.CreateDirectory(tempRoot);
+        var processPath = Path.Combine(tempRoot, "swfoc.exe");
+        File.WriteAllText(processPath, string.Empty);
+        var logPath = Path.Combine(tempRoot, "_LogFile.txt");
+        File.WriteAllText(logPath, "SWFOC_TRAINER_APPLIED stale-token");
+        File.SetLastWriteTimeUtc(logPath, DateTime.UtcNow.AddMinutes(-30));
+
+        try
+        {
+            var service = new TelemetryLogTailService();
+            var result = service.VerifyOperationToken(processPath, "stale-token", DateTimeOffset.UtcNow, TimeSpan.FromMinutes(5));
+
+            result.Verified.Should().BeFalse();
+            result.ReasonCode.Should().Be("helper_operation_token_stale");
+        }
+        finally
+        {
+            if (Directory.Exists(tempRoot))
+            {
+                Directory.Delete(tempRoot, recursive: true);
+            }
+        }
+    }
+
+    [Fact]
+    public void VerifyOperationToken_ShouldFallbackToExistingOperation_WhenCursorAlreadyInitialized()
+    {
+        var tempRoot = Path.Combine(Path.GetTempPath(), $"swfoc-telemetry-{Guid.NewGuid():N}");
+        Directory.CreateDirectory(tempRoot);
+        var processPath = Path.Combine(tempRoot, "swfoc.exe");
+        File.WriteAllText(processPath, string.Empty);
+        var now = DateTimeOffset.UtcNow;
+        var logPath = Path.Combine(tempRoot, "_LogFile.txt");
+        File.WriteAllText(logPath, "SWFOC_TRAINER_APPLIED token-reuse entity=EMP_STORMTROOPER");
+        File.SetLastWriteTimeUtc(logPath, now.UtcDateTime);
+
+        try
+        {
+            var service = new TelemetryLogTailService();
+            service.VerifyOperationToken(processPath, "token-reuse", now, TimeSpan.FromMinutes(5)).Verified.Should().BeTrue();
+
+            var fallbackResult = service.VerifyOperationToken(processPath, "token-reuse", now, TimeSpan.FromMinutes(5));
+
+            fallbackResult.Verified.Should().BeTrue();
+            fallbackResult.ReasonCode.Should().Be("helper_operation_token_verified");
+        }
+        finally
+        {
+            if (Directory.Exists(tempRoot))
+            {
+                Directory.Delete(tempRoot, recursive: true);
+            }
+        }
     }
 
 }
