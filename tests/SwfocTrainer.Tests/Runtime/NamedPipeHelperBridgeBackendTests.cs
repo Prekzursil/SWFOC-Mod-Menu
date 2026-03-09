@@ -46,6 +46,43 @@ public sealed class NamedPipeHelperBridgeBackendTests
     }
 
     [Fact]
+    public async Task ProbeAsync_ShouldReturnReady_WhenAnyHelperFeatureIsAvailable()
+    {
+        var stubBackend = new StubExecutionBackend
+        {
+            ProbeReport = new CapabilityReport(
+                ProfileId: "test_profile",
+                ProbedAtUtc: DateTimeOffset.UtcNow,
+                Capabilities: new Dictionary<string, BackendCapability>(StringComparer.OrdinalIgnoreCase)
+                {
+                    ["spawn_context_entity"] = new BackendCapability(
+                        FeatureId: "spawn_context_entity",
+                        Available: true,
+                        Confidence: CapabilityConfidenceState.Verified,
+                        ReasonCode: RuntimeReasonCode.CAPABILITY_PROBE_PASS),
+                    ["switch_player_faction"] = new BackendCapability(
+                        FeatureId: "switch_player_faction",
+                        Available: false,
+                        Confidence: CapabilityConfidenceState.Unknown,
+                        ReasonCode: RuntimeReasonCode.CAPABILITY_UNKNOWN)
+                },
+                ProbeReasonCode: RuntimeReasonCode.CAPABILITY_PROBE_PASS)
+        };
+        var backend = new NamedPipeHelperBridgeBackend(stubBackend);
+
+        var result = await backend.ProbeAsync(
+            new HelperBridgeProbeRequest("test_profile", BuildProcess(processId: 4242), Array.Empty<HelperHookSpec>()),
+            CancellationToken.None);
+
+        result.Available.Should().BeTrue();
+        result.ReasonCode.Should().Be(RuntimeReasonCode.CAPABILITY_PROBE_PASS);
+        result.Diagnostics.Should().NotBeNull();
+        result.Diagnostics!["helperBridgeState"]?.ToString().Should().Be("ready");
+        result.Diagnostics["availableFeatures"]?.ToString().Should().Be("spawn_context_entity");
+        result.Diagnostics["capabilityCount"]?.ToString().Should().Be("2");
+    }
+
+    [Fact]
     public async Task ExecuteAsync_ShouldSurfaceProbeFailure_WhenHelperBridgeIsUnavailable()
     {
         var backend = new NamedPipeHelperBridgeBackend(new StubExecutionBackend());
@@ -425,6 +462,47 @@ public sealed class NamedPipeHelperBridgeBackendTests
         diagnostics["operationToken"]?.ToString().Should().NotBeNullOrWhiteSpace();
     }
 
+    [Fact]
+    public async Task ExecuteAsync_ShouldFailVerification_WhenTelemetryServiceIsUnavailable()
+    {
+        var stubBackend = new StubExecutionBackend
+        {
+            ProbeReport = BuildHelperProbeReport(),
+            ExecuteFactory = command =>
+            {
+                var operationToken = command.Payload["operationToken"]?.GetValue<string>() ?? string.Empty;
+                return new ActionExecutionResult(
+                    Succeeded: true,
+                    Message: "helper command applied",
+                    AddressSource: AddressSource.None,
+                    Diagnostics: new Dictionary<string, object?>
+                    {
+                        ["helperVerifyState"] = "applied",
+                        ["operationToken"] = operationToken,
+                        ["helperExecutionPath"] = "plugin_dispatch"
+                    });
+            }
+        };
+        var backend = new NamedPipeHelperBridgeBackend(stubBackend);
+        var request = BuildHelperRequest(
+            payload: new JsonObject { ["globalKey"] = "AOTR_HERO_KEY", ["intValue"] = 1 },
+            hook: new HelperHookSpec(
+                Id: "aotr_hero_state_bridge",
+                Script: "scripts/aotr/hero_state_bridge.lua",
+                Version: "1.0.0",
+                EntryPoint: "SWFOC_Trainer_Set_Hero_Respawn"),
+            operationToken: "token-runtime-evidence");
+
+        var result = await backend.ExecuteAsync(request, CancellationToken.None);
+
+        result.Succeeded.Should().BeFalse();
+        result.ReasonCode.Should().Be(RuntimeReasonCode.HELPER_VERIFICATION_FAILED);
+        result.Diagnostics.Should().NotBeNull();
+        result.Diagnostics!["helperVerifyState"]?.ToString().Should().Be("failed_runtime_evidence");
+        result.Diagnostics["helperEvidenceState"]?.ToString().Should().Be("missing");
+        result.Diagnostics["helperEvidenceReasonCode"]?.ToString().Should().Be("helper_operation_verification_not_supported");
+    }
+
 
     [Fact]
     public async Task ExecuteAsync_ShouldFailVerification_WhenTelemetryEvidenceIsMissing()
@@ -692,6 +770,67 @@ public sealed class NamedPipeHelperBridgeBackendTests
         var requiredNotMissingResult = (bool)method.Invoke(null, argsRequiredNotMissing)!;
         requiredNotMissingResult.Should().BeFalse();
         argsRequiredNotMissing[3]!.ToString().Should().Contain("required diagnostic 'helperExecutionPath'");
+    }
+
+    [Theory]
+    [InlineData("place_planet_building", "CustomEntryPoint", "SWFOC_Trainer_Place_Building")]
+    [InlineData("unknown_helper_action", "CustomEntryPoint", "CustomEntryPoint")]
+    [InlineData("unknown_helper_action", " ", "")]
+    public void ResolveDefaultHelperEntryPoint_ShouldPreferKnownDefaults(string actionId, string configuredEntryPoint, string expected)
+    {
+        var method = typeof(NamedPipeHelperBridgeBackend).GetMethod(
+            "ResolveDefaultHelperEntryPoint",
+            BindingFlags.NonPublic | BindingFlags.Static);
+        method.Should().NotBeNull();
+
+        var actual = (string)method!.Invoke(null, new object?[] { actionId, configuredEntryPoint })!;
+
+        actual.Should().Be(expected);
+    }
+
+    [Fact]
+    public void BuildEffectiveVerificationContract_ShouldMergeContracts_AndAddImplicitGuards()
+    {
+        var method = typeof(NamedPipeHelperBridgeBackend).GetMethod(
+            "BuildEffectiveVerificationContract",
+            BindingFlags.NonPublic | BindingFlags.Static);
+        method.Should().NotBeNull();
+
+        var request = new HelperBridgeRequest(
+            ActionRequest: new ActionExecutionRequest(
+                Action: new ActionSpec(
+                    "set_hero_state_helper",
+                    ActionCategory.Hero,
+                    RuntimeMode.Galactic,
+                    ExecutionKind.Helper,
+                    new JsonObject(),
+                    VerifyReadback: false,
+                    CooldownMs: 0),
+                Payload: new JsonObject(),
+                ProfileId: "test_profile",
+                RuntimeMode: RuntimeMode.Galactic,
+                Context: null),
+            Process: BuildProcess(processId: 4242),
+            Hook: new HelperHookSpec(
+                Id: "hero_hook",
+                Script: "scripts/hero.lua",
+                Version: "1.0.0",
+                VerifyContract: new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
+                {
+                    ["globalKey"] = "required:echo",
+                    ["customState"] = "hook-default"
+                }),
+            VerificationContract: new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
+            {
+                ["customState"] = "request-override"
+            });
+
+        var contract = (IReadOnlyDictionary<string, string>)method!.Invoke(null, new object?[] { request })!;
+
+        contract["globalKey"].Should().Be("required:echo");
+        contract["customState"].Should().Be("request-override");
+        contract["helperVerifyState"].Should().Be("applied");
+        contract["helperExecutionPath"].Should().Be("required_not:contract_validation_only");
     }
 
     private static CapabilityReport BuildHelperProbeReport()

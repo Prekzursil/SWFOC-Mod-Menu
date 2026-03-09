@@ -36,6 +36,19 @@ public sealed class RuntimeAdapterContextSpawnDefaultsTests
         payload["symbol"]!.GetValue<string>().Should().Be("planet_owner");
     }
 
+    [Fact]
+    public void ApplyContextSymbolHint_ShouldPreserveExistingSymbol()
+    {
+        var payload = new JsonObject
+        {
+            ["symbol"] = "custom_symbol"
+        };
+
+        InvokePrivateStatic("ApplyContextSymbolHint", payload, "set_planet_owner");
+
+        payload["symbol"]!.GetValue<string>().Should().Be("custom_symbol");
+    }
+
     [Theory]
     [InlineData("set_context_faction", "Faction")]
     [InlineData("set_context_allegiance", "Faction")]
@@ -48,6 +61,7 @@ public sealed class RuntimeAdapterContextSpawnDefaultsTests
     }
 
     [Theory]
+    [InlineData("runtimeModeOverride", "Galactic", RuntimeMode.Galactic)]
     [InlineData("runtimeModeOverride", "TacticalLand", RuntimeMode.TacticalLand)]
     [InlineData("runtimeModeOverride", "TacticalSpace", RuntimeMode.TacticalSpace)]
     [InlineData("runtimeModeOverride", "AnyTactical", RuntimeMode.AnyTactical)]
@@ -82,6 +96,24 @@ public sealed class RuntimeAdapterContextSpawnDefaultsTests
 
         parsed.Should().Be(expectedParsed);
         mode.Should().Be(expectedMode);
+    }
+
+    [Theory]
+    [InlineData("")]
+    [InlineData("   ")]
+    [InlineData("Skirmish")]
+    public void TryResolveTelemetryModeFromContext_ShouldRejectBlankOrUnsupportedValues(string telemetry)
+    {
+        var context = new Dictionary<string, object?>
+        {
+            ["telemetryRuntimeMode"] = telemetry
+        };
+
+        var args = new object?[] { context, RuntimeMode.Unknown };
+        var parsed = (bool)InvokePrivateStatic("TryResolveTelemetryModeFromContext", args)!;
+
+        parsed.Should().BeFalse();
+        ((RuntimeMode)args[1]!).Should().Be(RuntimeMode.Unknown);
     }
 
     [Fact]
@@ -127,6 +159,27 @@ public sealed class RuntimeAdapterContextSpawnDefaultsTests
 
         payload["nested"]!.AsObject()["count"] = 99;
         cloned["nested"]!.AsObject()["count"]!.GetValue<int>().Should().Be(3);
+    }
+
+    [Fact]
+    public void ApplyContextSpawnPayloadDefaults_ShouldPreserveExplicitPayloadValues()
+    {
+        var payload = new JsonObject
+        {
+            ["helperHookId"] = "custom_hook",
+            ["helperEntryPoint"] = "CustomEntry",
+            ["populationPolicy"] = "CustomPopulation",
+            ["persistencePolicy"] = "CustomPersistence",
+            ["allowCrossFaction"] = false
+        };
+
+        InvokePrivateStatic("ApplyContextSpawnPayloadDefaults", payload, "spawn_tactical_entity");
+
+        payload["helperHookId"]!.GetValue<string>().Should().Be("custom_hook");
+        payload["helperEntryPoint"]!.GetValue<string>().Should().Be("CustomEntry");
+        payload["populationPolicy"]!.GetValue<string>().Should().Be("CustomPopulation");
+        payload["persistencePolicy"]!.GetValue<string>().Should().Be("CustomPersistence");
+        payload["allowCrossFaction"]!.GetValue<bool>().Should().BeFalse();
     }
 
     [Fact]
@@ -262,6 +315,21 @@ public sealed class RuntimeAdapterContextSpawnDefaultsTests
         redirected.Payload["populationPolicy"]!.GetValue<string>().Should().Be("ForceZeroTactical");
         redirected.Payload["persistencePolicy"]!.GetValue<string>().Should().Be("EphemeralBattleOnly");
         redirected.Payload["allowCrossFaction"]!.GetValue<bool>().Should().BeTrue();
+    }
+
+    [Fact]
+    public void TryResolveContextFactionRequest_ShouldRedirectFactionAlias_WhenProfileHasPlanetOwnerAction()
+    {
+        var adapter = CreateAdapter();
+        SetAttachedProfile(adapter, BuildProfileWithActions("set_planet_owner"));
+
+        var request = BuildRequest("set_context_allegiance", new JsonObject(), runtimeMode: RuntimeMode.Galactic);
+        var resolution = InvokePrivateInstance(adapter, "TryResolveContextFactionRequest", request);
+        var redirected = ReadProperty<ActionExecutionRequest?>(resolution, "RedirectedRequest");
+
+        redirected.Should().NotBeNull();
+        redirected!.Action.Id.Should().Be("set_planet_owner");
+        redirected.Payload["symbol"]!.GetValue<string>().Should().Be("planet_owner");
     }
 
     private static Type GetPrivateNestedType(string typeName)
@@ -423,5 +491,4 @@ public sealed class RuntimeAdapterContextSpawnDefaultsTests
         }
     }
 }
-
 

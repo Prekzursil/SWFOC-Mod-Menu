@@ -264,6 +264,46 @@ public sealed class SavePatchFieldCodecCoverageTests
             }
         }
     }
+
+    [Fact]
+    public void BinarySaveCodec_BuildNodeTreeAndEditHelpers_ShouldCoverMissingFieldsAndPositiveRulePaths()
+    {
+        var schema = new SaveSchema(
+            "schema",
+            "build",
+            "little",
+            new[] { new SaveBlockDefinition("root", "root", 0, 16, "struct", new[] { "known", "missing" }) },
+            new[] { new SaveFieldDefinition("known", "Known", "int32", 0, 4, Path: "/known") },
+            Array.Empty<SaveArrayDefinition>(),
+            new[]
+            {
+                new ValidationRule("r-ok", "field_non_negative", "known", "should not fire"),
+                new ValidationRule("r-skip", "other_rule", "known", "ignored")
+            },
+            Array.Empty<ChecksumRule>());
+        var raw = new byte[16];
+        BitConverter.GetBytes(12).CopyTo(raw, 0);
+
+        var rootNode = (SaveNode)InvokeBinaryStatic("BuildNodeTree", schema, raw)!;
+        var blockChildren = rootNode.Children![0].Children;
+
+        rootNode.Children.Should().ContainSingle();
+        blockChildren.Should().ContainSingle();
+        blockChildren![0].Path.Should().Be("/known");
+        blockChildren[0].Value.Should().Be(12);
+
+        InvokeBinaryStatic("EvaluateRule", schema.ValidationRules[0], schema, raw).Should().BeNull();
+        InvokeBinaryStatic("EvaluateRule", schema.ValidationRules[1], schema, raw).Should().BeNull();
+
+        var outOfBounds = () => InvokeBinaryStatic(
+            "ApplyFieldEdit",
+            new byte[2],
+            new SaveFieldDefinition("oob", "oob", "int32", 0, 4),
+            1,
+            "little");
+        outOfBounds.Should().Throw<TargetInvocationException>();
+    }
+
     private static string CreateCodecSchemaRoot()
     {
         var root = Path.Combine(Path.GetTempPath(), $"swfoc-codec-branch-{Guid.NewGuid():N}");
@@ -286,4 +326,3 @@ public sealed class SavePatchFieldCodecCoverageTests
 }
 
 #pragma warning restore CA1014
-

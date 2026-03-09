@@ -96,6 +96,42 @@ public sealed class SavePatchApplyServiceHelperCoverageTests
     }
 
     [Fact]
+    public async Task TryApplyOperationValueAsync_ShouldFail_WhenNoSelectorsOrNonMismatchErrorsExist()
+    {
+        var mismatchHelper = CreateHelper(new StubCodec());
+        var mismatchOperation = new SavePatchOperation(
+            SavePatchOperationKind.SetValue,
+            FieldPath: " ",
+            FieldId: "",
+            ValueType: "int32",
+            OldValue: 0,
+            NewValue: 1,
+            Offset: 0);
+
+        var noSelectorFailure = await InvokeApplyAsync(mismatchHelper, CreateDocument(), mismatchOperation, 1, "no_selector");
+
+        noSelectorFailure.Should().NotBeNull();
+        noSelectorFailure!.Failure!.ReasonCode.Should().Be("no_selector");
+
+        var crashingCodec = new StubCodec
+        {
+            EditBehavior = static _ => new IOException("disk failure")
+        };
+        var crashingHelper = CreateHelper(crashingCodec);
+        var crashingOperation = mismatchOperation with
+        {
+            FieldId = "credits",
+            FieldPath = "/economy/credits"
+        };
+
+        var nonMismatchFailure = await InvokeApplyAsync(crashingHelper, CreateDocument(), crashingOperation, 1, "codec_failure");
+
+        nonMismatchFailure.Should().NotBeNull();
+        nonMismatchFailure!.Failure!.ReasonCode.Should().Be("codec_failure");
+        crashingCodec.EditCalls.Should().Be(1);
+    }
+
+    [Fact]
     public void TryDeleteTempOutput_ShouldHandleMissingPath_AndLockedFile()
     {
         var helper = CreateHelper(new StubCodec());
@@ -110,6 +146,32 @@ public sealed class SavePatchApplyServiceHelperCoverageTests
 
         File.Exists(tempFile).Should().BeTrue();
         File.Delete(tempFile);
+    }
+
+    [Fact]
+    public void TryNormalizeBackupCandidatePath_ShouldRejectEmptyWrongExtensionAndMissingFiles()
+    {
+        InvokeNormalizeBackupCandidatePath(string.Empty, out var emptyPath, out var emptyReason).Should().BeFalse();
+        emptyPath.Should().BeNull();
+        emptyReason.Should().Be("path is empty");
+
+        var wrongExtension = Path.Combine(Path.GetTempPath(), $"backup-{Guid.NewGuid():N}.txt");
+        File.WriteAllText(wrongExtension, "backup");
+        try
+        {
+            InvokeNormalizeBackupCandidatePath(wrongExtension, out var wrongExtPath, out var wrongExtReason).Should().BeFalse();
+            wrongExtPath.Should().BeNull();
+            wrongExtReason.Should().Be("path does not use .sav extension");
+        }
+        finally
+        {
+            File.Delete(wrongExtension);
+        }
+
+        var missingSav = Path.Combine(Path.GetTempPath(), $"missing-{Guid.NewGuid():N}.sav");
+        InvokeNormalizeBackupCandidatePath(missingSav, out var missingPath, out var missingReason).Should().BeFalse();
+        missingPath.Should().BeNull();
+        missingReason.Should().Be("backup file does not exist");
     }
 
     private static object CreateHelper(ISaveCodec codec)
@@ -160,6 +222,20 @@ public sealed class SavePatchApplyServiceHelperCoverageTests
         var method = helper.GetType().GetMethod("TryDeleteTempOutput", BindingFlags.Instance | BindingFlags.Public);
         method.Should().NotBeNull();
         method!.Invoke(helper, new object?[] { path });
+    }
+
+    private static bool InvokeNormalizeBackupCandidatePath(string path, out string? normalized, out string invalidReason)
+    {
+        var helperType = typeof(SavePatchApplyService).Assembly.GetType("SwfocTrainer.Saves.Services.SavePatchApplyServiceHelper");
+        helperType.Should().NotBeNull();
+        var method = helperType!.GetMethod("TryNormalizeBackupCandidatePath", BindingFlags.NonPublic | BindingFlags.Static);
+        method.Should().NotBeNull();
+
+        object?[] args = [path, null, string.Empty];
+        var result = (bool)method!.Invoke(null, args)!;
+        normalized = args[1] as string;
+        invalidReason = (string)args[2]!;
+        return result;
     }
 
     private static SaveDocument CreateDocument()
@@ -244,4 +320,3 @@ public sealed class SavePatchApplyServiceHelperCoverageTests
         }
     }
 }
-

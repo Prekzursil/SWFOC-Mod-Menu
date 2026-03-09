@@ -148,6 +148,89 @@ public sealed class RuntimeAdapterHelperPolicyCoverageTests
     }
 
     [Fact]
+    public void ApplyHelperActionPolicies_ShouldDefaultCrossFaction_ForContextFactionActions()
+    {
+        var request = BuildRequest("set_context_allegiance", new JsonObject());
+
+        var resolution = InvokeStatic("ApplyHelperActionPolicies", request)!;
+        var rewritten = ReadProperty<ActionExecutionRequest>(resolution, "Request");
+        var blocked = ReadProperty<ActionExecutionResult?>(resolution, "BlockedResult");
+
+        blocked.Should().BeNull();
+        rewritten.Payload["allowCrossFaction"]!.GetValue<bool>().Should().BeTrue();
+    }
+
+    [Fact]
+    public void ApplyHelperActionPolicies_ShouldAllowFleetTransfer_WhenForceOverrideSkipsSafePlanetRequirement()
+    {
+        var request = BuildRequest("transfer_fleet_safe", new JsonObject
+        {
+            ["entityId"] = "fleet_1",
+            ["sourceFaction"] = "Empire",
+            ["targetFaction"] = "Rebel",
+            ["forceOverride"] = true
+        });
+
+        var resolution = InvokeStatic("ApplyHelperActionPolicies", request)!;
+        var blocked = ReadProperty<ActionExecutionResult?>(resolution, "BlockedResult");
+        var rewritten = ReadProperty<ActionExecutionRequest>(resolution, "Request");
+
+        blocked.Should().BeNull();
+        rewritten.Payload["placementMode"]!.GetValue<string>().Should().Be("safe_transfer");
+        rewritten.Payload["allowCrossFaction"]!.GetValue<bool>().Should().BeTrue();
+    }
+
+    [Fact]
+    public void ApplyHelperActionPolicies_ShouldAllowEditHeroState_WithGlobalKeyAndDefaults()
+    {
+        var request = BuildRequest("edit_hero_state", new JsonObject
+        {
+            ["globalKey"] = "HERO_RESPAWN_TIMER"
+        });
+
+        var resolution = InvokeStatic("ApplyHelperActionPolicies", request)!;
+        var blocked = ReadProperty<ActionExecutionResult?>(resolution, "BlockedResult");
+        var rewritten = ReadProperty<ActionExecutionRequest>(resolution, "Request");
+
+        blocked.Should().BeNull();
+        rewritten.Payload["heroStatePolicy"]!.GetValue<string>().Should().Be("mod_adaptive");
+        rewritten.Payload["desiredState"]!.GetValue<string>().Should().Be("alive");
+        rewritten.Payload["allowDuplicate"]!.GetValue<bool>().Should().BeFalse();
+    }
+
+    [Fact]
+    public void ApplyHelperActionPolicies_ShouldBlockCreateHeroVariant_WhenVariantIdIsMissing()
+    {
+        var request = BuildRequest("create_hero_variant", new JsonObject
+        {
+            ["entityId"] = "HERO_VADER"
+        });
+
+        var resolution = InvokeStatic("ApplyHelperActionPolicies", request)!;
+        var blocked = ReadProperty<ActionExecutionResult?>(resolution, "BlockedResult");
+
+        blocked.Should().NotBeNull();
+        blocked!.Diagnostics!["reasonCode"]!.ToString().Should().Be(RuntimeReasonCode.CAPABILITY_REQUIRED_MISSING.ToString());
+        blocked.Message.Should().Contain("unitId/variantHeroId");
+    }
+
+    [Fact]
+    public void ApplyHelperActionPolicies_ShouldAllowSwitchPlayerFaction_WhenTargetFactionIsProvided()
+    {
+        var request = BuildRequest("switch_player_faction", new JsonObject
+        {
+            ["targetFaction"] = "Rebel"
+        });
+
+        var resolution = InvokeStatic("ApplyHelperActionPolicies", request)!;
+        var blocked = ReadProperty<ActionExecutionResult?>(resolution, "BlockedResult");
+        var rewritten = ReadProperty<ActionExecutionRequest>(resolution, "Request");
+
+        blocked.Should().BeNull();
+        rewritten.Payload["allowCrossFaction"]!.GetValue<bool>().Should().BeTrue();
+    }
+
+    [Fact]
     public void ResolveHelperOperationPolicy_ShouldPreferExplicitPayloadPolicy()
     {
         var request = BuildRequest("spawn_tactical_entity", new JsonObject
@@ -223,4 +306,3 @@ public sealed class RuntimeAdapterHelperPolicyCoverageTests
         return (T)property!.GetValue(instance)!;
     }
 }
-

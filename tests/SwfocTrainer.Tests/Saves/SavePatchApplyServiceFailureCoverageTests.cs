@@ -1,3 +1,4 @@
+using System.Reflection;
 using FluentAssertions;
 using Microsoft.Extensions.Logging.Abstractions;
 using SwfocTrainer.Core.Contracts;
@@ -27,6 +28,28 @@ public sealed class SavePatchApplyServiceFailureCoverageTests
 
         result.Restored.Should().BeFalse();
         result.Message.Should().Contain("No backup file was found");
+    }
+
+    [Fact]
+    public async Task RestoreLastBackupAsync_ShouldReturnFalse_WhenBackupCannotOverwriteTarget()
+    {
+        var tempDir = CreateTempDirectory();
+        var targetPath = Path.Combine(tempDir, "campaign.sav");
+        var backupPath = $"{targetPath}.bak.123.sav";
+        await File.WriteAllBytesAsync(targetPath, new byte[32]);
+        await File.WriteAllBytesAsync(backupPath, Enumerable.Repeat((byte)0xAA, 32).ToArray());
+
+        var service = new SavePatchApplyService(
+            new StubCodec(),
+            new StubPatchPackService(),
+            NullLogger<SavePatchApplyService>.Instance);
+
+        using var lockHandle = File.Open(targetPath, FileMode.Open, FileAccess.ReadWrite, FileShare.None);
+        var result = await service.RestoreLastBackupAsync(targetPath, CancellationToken.None);
+
+        result.Restored.Should().BeFalse();
+        result.Message.Should().Be("Backup restore failed.");
+        result.BackupPath.Should().Be(backupPath);
     }
 
     [Fact]
@@ -98,6 +121,19 @@ public sealed class SavePatchApplyServiceFailureCoverageTests
         result.Failure.Should().NotBeNull();
         result.Failure!.ReasonCode.Should().Be("write_failed");
         Directory.Exists(targetPath).Should().BeTrue();
+    }
+
+    [Fact]
+    public void PrivateHelpers_ShouldRejectSnapshotLengthMismatch()
+    {
+        var method = typeof(SavePatchApplyService).GetMethod("RestoreRawSnapshot", BindingFlags.NonPublic | BindingFlags.Static);
+        method.Should().NotBeNull();
+
+        var act = () => method!.Invoke(null, new object?[] { new byte[4], new byte[3] });
+
+        act.Should().Throw<TargetInvocationException>()
+            .WithInnerException<InvalidOperationException>()
+            .WithMessage("*Save buffer length changed unexpectedly*");
     }
 
     private static SavePatchPack CreatePack(params SavePatchOperation[] operations)

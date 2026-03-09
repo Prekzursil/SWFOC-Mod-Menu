@@ -280,6 +280,37 @@ public sealed class TelemetryLogTailServiceTests
     }
 
     [Fact]
+    public void ResolveLatestMode_ShouldUseParentCorruptionLogFallback_WhenProcessLivesInChildDirectory()
+    {
+        var tempRoot = Path.Combine(Path.GetTempPath(), $"swfoc-telemetry-{Guid.NewGuid():N}");
+        var processDirectory = Path.Combine(tempRoot, "bin");
+        Directory.CreateDirectory(Path.Combine(tempRoot, "corruption"));
+        Directory.CreateDirectory(processDirectory);
+        var processPath = Path.Combine(processDirectory, "swfoc.exe");
+        File.WriteAllText(processPath, string.Empty);
+        var now = DateTimeOffset.UtcNow;
+        var fallbackLogPath = Path.Combine(tempRoot, "corruption", "LogFile.txt");
+        File.WriteAllText(fallbackLogPath, $"SWFOC_TRAINER_TELEMETRY timestamp={now:O} mode=Land");
+
+        try
+        {
+            var service = new TelemetryLogTailService();
+            var result = service.ResolveLatestMode(processPath, now, TimeSpan.FromMinutes(5));
+
+            result.Available.Should().BeTrue();
+            result.Mode.Should().Be(RuntimeMode.TacticalLand);
+            result.SourcePath.Should().Be(fallbackLogPath);
+        }
+        finally
+        {
+            if (Directory.Exists(tempRoot))
+            {
+                Directory.Delete(tempRoot, recursive: true);
+            }
+        }
+    }
+
+    [Fact]
     public void ResolveLatestMode_ShouldReturnUnavailable_WhenLogExistsButTelemetryLineIsMissing()
     {
         var tempRoot = Path.Combine(Path.GetTempPath(), $"swfoc-telemetry-{Guid.NewGuid():N}");
@@ -295,6 +326,37 @@ public sealed class TelemetryLogTailServiceTests
 
             result.Available.Should().BeFalse();
             result.ReasonCode.Should().Be("telemetry_line_missing");
+        }
+        finally
+        {
+            if (Directory.Exists(tempRoot))
+            {
+                Directory.Delete(tempRoot, recursive: true);
+            }
+        }
+    }
+
+    [Fact]
+    public void ResolveLatestMode_ShouldReReadTelemetry_WhenLogIsTruncatedAfterCursorInitialization()
+    {
+        var tempRoot = Path.Combine(Path.GetTempPath(), $"swfoc-telemetry-{Guid.NewGuid():N}");
+        Directory.CreateDirectory(tempRoot);
+        var processPath = Path.Combine(tempRoot, "StarWarsG.exe");
+        File.WriteAllText(processPath, string.Empty);
+        var logPath = Path.Combine(tempRoot, "_LogFile.txt");
+        var now = DateTimeOffset.UtcNow;
+        File.WriteAllText(logPath, $"SWFOC_TRAINER_TELEMETRY timestamp={now:O} mode=Galactic");
+
+        try
+        {
+            var service = new TelemetryLogTailService();
+            service.ResolveLatestMode(processPath, now, TimeSpan.FromMinutes(5)).Mode.Should().Be(RuntimeMode.Galactic);
+
+            File.WriteAllText(logPath, $"SWFOC_TRAINER_TELEMETRY timestamp={now.AddSeconds(1):O} mode=Space");
+            var result = service.ResolveLatestMode(processPath, now.AddSeconds(1), TimeSpan.FromMinutes(5));
+
+            result.Available.Should().BeTrue();
+            result.Mode.Should().Be(RuntimeMode.TacticalSpace);
         }
         finally
         {
@@ -427,6 +489,62 @@ public sealed class TelemetryLogTailServiceTests
 
             result.Verified.Should().BeFalse();
             result.ReasonCode.Should().Be("helper_operation_token_stale");
+        }
+        finally
+        {
+            if (Directory.Exists(tempRoot))
+            {
+                Directory.Delete(tempRoot, recursive: true);
+            }
+        }
+    }
+
+    [Fact]
+    public void VerifyOperationToken_ShouldUseParentCorruptionLogFallback_WhenPrimaryLogMissing()
+    {
+        var tempRoot = Path.Combine(Path.GetTempPath(), $"swfoc-telemetry-{Guid.NewGuid():N}");
+        var processDirectory = Path.Combine(tempRoot, "bin");
+        Directory.CreateDirectory(Path.Combine(tempRoot, "corruption"));
+        Directory.CreateDirectory(processDirectory);
+        var processPath = Path.Combine(processDirectory, "swfoc.exe");
+        File.WriteAllText(processPath, string.Empty);
+        var logPath = Path.Combine(tempRoot, "corruption", "LogFile.txt");
+        File.WriteAllText(logPath, "SWFOC_TRAINER_APPLIED token-parent-fallback entity=EMP_STORMTROOPER");
+
+        try
+        {
+            var service = new TelemetryLogTailService();
+            var result = service.VerifyOperationToken(processPath, "token-parent-fallback", DateTimeOffset.UtcNow, TimeSpan.FromMinutes(5));
+
+            result.Verified.Should().BeTrue();
+            result.SourcePath.Should().Be(logPath);
+        }
+        finally
+        {
+            if (Directory.Exists(tempRoot))
+            {
+                Directory.Delete(tempRoot, recursive: true);
+            }
+        }
+    }
+
+    [Fact]
+    public void VerifyOperationToken_ShouldMatchTokens_IgnoringCase()
+    {
+        var tempRoot = Path.Combine(Path.GetTempPath(), $"swfoc-telemetry-{Guid.NewGuid():N}");
+        Directory.CreateDirectory(tempRoot);
+        var processPath = Path.Combine(tempRoot, "swfoc.exe");
+        File.WriteAllText(processPath, string.Empty);
+        var logPath = Path.Combine(tempRoot, "_LogFile.txt");
+        File.WriteAllText(logPath, "swfoc_trainer_applied TOKEN-CASE entity=EMP_STORMTROOPER");
+
+        try
+        {
+            var service = new TelemetryLogTailService();
+            var result = service.VerifyOperationToken(processPath, "token-case", DateTimeOffset.UtcNow, TimeSpan.FromMinutes(5));
+
+            result.Verified.Should().BeTrue();
+            result.SourcePath.Should().Be(logPath);
         }
         finally
         {

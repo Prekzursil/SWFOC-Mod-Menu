@@ -1,4 +1,5 @@
 using System.Buffers.Binary;
+using System.Reflection;
 using System.Text;
 using FluentAssertions;
 using SwfocTrainer.Meg;
@@ -64,6 +65,172 @@ public sealed class MegArchiveReaderAdditionalCoverageTests
         result.Diagnostics.Should().Contain(x => x.Contains("Unreasonable MEG counts", StringComparison.OrdinalIgnoreCase));
     }
 
+    [Fact]
+    public void Open_ShouldReturnParseException_WhenDistinctEntriesCollapseToSameNormalizedPath()
+    {
+        var payload = BuildFormat1Archive(
+        [
+            new FixtureEntry("Data/XML/Test.xml", "A"u8.ToArray()),
+            new FixtureEntry("Data\\XML\\Test.xml", "B"u8.ToArray())
+        ]);
+
+        var result = new MegArchiveReader().Open(payload, "duplicate-normalized-paths.meg");
+
+        result.Succeeded.Should().BeFalse();
+        result.ReasonCode.Should().Be("parse_exception");
+        result.Diagnostics.Should().Contain(x => x.Contains("same key", StringComparison.OrdinalIgnoreCase));
+    }
+
+    [Fact]
+    public void Open_ReadOnlyMemoryOverload_ShouldUseMemorySource()
+    {
+        var payload = BuildFormat1Archive(
+        [
+            new FixtureEntry("Data/XML/Test.xml", "<test />"u8.ToArray())
+        ]);
+
+        var result = new MegArchiveReader().Open((ReadOnlyMemory<byte>)payload);
+
+        result.Succeeded.Should().BeTrue(result.Message);
+        result.Archive.Should().NotBeNull();
+        result.Archive!.Source.Should().Be("<memory>");
+        result.Archive.Format.Should().Be("format1");
+    }
+
+    [Fact]
+    public void Open_ShouldFail_WhenEntryPointsToMissingNameIndex()
+    {
+        var payload = BuildFormat2ArchiveWithNameIndex(nameIndex: 2);
+
+        var result = new MegArchiveReader().Open(payload, "missing-name-index.meg");
+
+        result.Succeeded.Should().BeFalse();
+        result.ReasonCode.Should().Be("invalid_file_table");
+        result.Diagnostics.Should().Contain(x => x.Contains("missing nameIndex=2", StringComparison.OrdinalIgnoreCase));
+    }
+
+    [Fact]
+    public void Open_ShouldFail_WhenFormat3DataStartIsSmallerThanHeaderFootprint()
+    {
+        var payload = new byte[24];
+        BinaryPrimitives.WriteUInt32LittleEndian(payload.AsSpan(0, 4), 0x8FFFFFFF);
+        BinaryPrimitives.WriteUInt32LittleEndian(payload.AsSpan(4, 4), 0x3F7D70A4);
+        BinaryPrimitives.WriteUInt32LittleEndian(payload.AsSpan(8, 4), 24u);
+        BinaryPrimitives.WriteUInt32LittleEndian(payload.AsSpan(12, 4), 1u);
+        BinaryPrimitives.WriteUInt32LittleEndian(payload.AsSpan(16, 4), 1u);
+        BinaryPrimitives.WriteUInt32LittleEndian(payload.AsSpan(20, 4), 0u);
+
+        var result = new MegArchiveReader().Open(payload, "format3-small-datastart.meg");
+
+        result.Succeeded.Should().BeFalse();
+        result.ReasonCode.Should().Be("invalid_header");
+        result.Message.Should().ContainEquivalentOf("dataStart");
+    }
+
+    [Fact]
+    public void Open_ShouldFail_WhenFormat3NameTableSizeExceedsPayloadLength()
+    {
+        var payload = new byte[24];
+        BinaryPrimitives.WriteUInt32LittleEndian(payload.AsSpan(0, 4), 0x8FFFFFFF);
+        BinaryPrimitives.WriteUInt32LittleEndian(payload.AsSpan(4, 4), 0x3F7D70A4);
+        BinaryPrimitives.WriteUInt32LittleEndian(payload.AsSpan(8, 4), 24u);
+        BinaryPrimitives.WriteUInt32LittleEndian(payload.AsSpan(12, 4), 1u);
+        BinaryPrimitives.WriteUInt32LittleEndian(payload.AsSpan(16, 4), 1u);
+        BinaryPrimitives.WriteUInt32LittleEndian(payload.AsSpan(20, 4), 8u);
+
+        var result = new MegArchiveReader().Open(payload, "format3-oversized-nametable.meg");
+
+        result.Succeeded.Should().BeFalse();
+        result.ReasonCode.Should().Be("invalid_header");
+        result.Message.Should().ContainEquivalentOf("name table size");
+    }
+
+    [Fact]
+    public void TryEnsureRange_ShouldRejectNegativeOffset()
+    {
+        object?[] args = [8, -1, 4u, string.Empty];
+
+        var ok = (bool)InvokePrivateStatic("TryEnsureRange", args)!;
+
+        ok.Should().BeFalse();
+        args[3].Should().Be("offset -1 is outside length 8.");
+    }
+
+    private static byte[] BuildFormat1Archive(IReadOnlyList<FixtureEntry> entries)
+    {
+        var nameTable = BuildNameTable(entries);
+        var fileTableOffset = 8 + nameTable.Length;
+        var dataOffset = fileTableOffset + (entries.Count * 20);
+        var totalDataBytes = entries.Sum(x => x.Bytes.Length);
+
+        using var stream = new MemoryStream(capacity: dataOffset + totalDataBytes);
+        using var writer = new BinaryWriter(stream, Encoding.ASCII, leaveOpen: true);
+        writer.Write((uint)entries.Count);
+        writer.Write((uint)entries.Count);
+        writer.Write(nameTable);
+
+        var cursor = dataOffset;
+        for (var i = 0; i < entries.Count; i++)
+        {
+            writer.Write((uint)0);
+            writer.Write((uint)i);
+            writer.Write((uint)entries[i].Bytes.Length);
+            writer.Write((uint)cursor);
+            writer.Write((uint)i);
+            cursor += entries[i].Bytes.Length;
+        }
+
+        foreach (var entry in entries)
+        {
+            writer.Write(entry.Bytes);
+        }
+
+        return stream.ToArray();
+    }
+
+    private static byte[] BuildNameTable(IReadOnlyList<FixtureEntry> entries)
+    {
+        using var stream = new MemoryStream();
+        using var writer = new BinaryWriter(stream, Encoding.ASCII, leaveOpen: true);
+        foreach (var entry in entries)
+        {
+            var encoded = Encoding.ASCII.GetBytes(entry.Path);
+            writer.Write((ushort)encoded.Length);
+            writer.Write((ushort)0);
+            writer.Write(encoded);
+        }
+
+        return stream.ToArray();
+    }
+
+    private static byte[] BuildFormat2ArchiveWithNameIndex(uint nameIndex)
+    {
+        var name = Encoding.ASCII.GetBytes("Data/XML/Test.xml");
+        var content = "<test />"u8.ToArray();
+        var nameTableLength = 4 + name.Length;
+        var fileTableOffset = 20 + nameTableLength;
+        var dataOffset = fileTableOffset + 20;
+
+        using var stream = new MemoryStream(capacity: dataOffset + content.Length);
+        using var writer = new BinaryWriter(stream, Encoding.ASCII, leaveOpen: true);
+        writer.Write(0xFFFFFFFFu);
+        writer.Write(0x3F7D70A4u);
+        writer.Write((uint)dataOffset);
+        writer.Write(1u);
+        writer.Write(1u);
+        writer.Write((ushort)name.Length);
+        writer.Write((ushort)0);
+        writer.Write(name);
+        writer.Write(0u);
+        writer.Write(0u);
+        writer.Write((uint)content.Length);
+        writer.Write((uint)dataOffset);
+        writer.Write(nameIndex);
+        writer.Write(content);
+
+        return stream.ToArray();
+    }
+
     private static byte[] BuildFormat3Archive(
         ushort entryFlags,
         uint headerDataStart,
@@ -110,4 +277,13 @@ public sealed class MegArchiveReaderAdditionalCoverageTests
 
         return stream.ToArray();
     }
+
+    private static object? InvokePrivateStatic(string methodName, params object?[] args)
+    {
+        var method = typeof(MegArchiveReader).GetMethod(methodName, BindingFlags.NonPublic | BindingFlags.Static);
+        method.Should().NotBeNull($"Expected private static method {methodName}");
+        return method!.Invoke(null, args);
+    }
+
+    private sealed record FixtureEntry(string Path, byte[] Bytes);
 }

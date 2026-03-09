@@ -315,6 +315,76 @@ public sealed class ModMechanicDetectionServiceTests
     }
 
     [Fact]
+    public async Task DetectAsync_ShouldPopulateDiagnosticsCountsAndWorkshopIds()
+    {
+        var profile = BuildProfile(actions: Array.Empty<ActionSpec>());
+        var session = new AttachSession(
+            ProfileId: "test_profile",
+            Process: new ProcessMetadata(
+                ProcessId: 4242,
+                ProcessName: "StarWarsG.exe",
+                ProcessPath: @"C:\Games\StarWarsG.exe",
+                CommandLine: "STEAMMOD=1397421866",
+                ExeTarget: ExeTarget.Swfoc,
+                Mode: RuntimeMode.Galactic,
+                Metadata: new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
+                {
+                    ["helperBridgeState"] = "ready",
+                    ["forcedWorkshopIds"] = "2313576303",
+                    ["steamModIdsDetected"] = "1125571106"
+                },
+                LaunchContext: new LaunchContext(
+                    LaunchKind.Workshop,
+                    CommandLineAvailable: true,
+                    SteamModIds: new[] { "3447786229" },
+                    ModPathRaw: null,
+                    ModPathNormalized: null,
+                    DetectedVia: "tests",
+                    Recommendation: new ProfileRecommendation("test_profile", "test", 1.0))),
+            Build: new ProfileBuild("test_profile", "test", @"C:\Games\StarWarsG.exe", ExeTarget.Swfoc),
+            Symbols: new SymbolMap(new Dictionary<string, SymbolInfo>(StringComparer.OrdinalIgnoreCase)),
+            AttachedAt: DateTimeOffset.UtcNow);
+        var catalog = new Dictionary<string, IReadOnlyList<string>>(StringComparer.OrdinalIgnoreCase)
+        {
+            ["unit_catalog"] = new[] { "EMPIRE_STORMTROOPER_SQUAD" },
+            ["building_catalog"] = new[] { "EMPIRE_BARRACKS" },
+            ["faction_catalog"] = new[] { "Empire", "Rebel" }
+        };
+
+        var report = await new ModMechanicDetectionService().DetectAsync(profile, session, catalog, CancellationToken.None);
+
+        report.HelperBridgeReady.Should().BeTrue();
+        report.Diagnostics.Should().ContainKey("unitCatalogCount");
+        report.Diagnostics!["unitCatalogCount"].Should().Be(1);
+        report.Diagnostics["buildingCatalogCount"].Should().Be(1);
+        report.Diagnostics["factionCatalogCount"].Should().Be(2);
+        report.Diagnostics["transplantAllResolved"].Should().Be(true);
+        var activeWorkshopIds = report.Diagnostics["activeWorkshopIds"] as IReadOnlyList<string>;
+        activeWorkshopIds.Should().NotBeNull();
+        activeWorkshopIds!.Should().Equal("1125571106", "2313576303", "3447786229");
+    }
+
+    [Fact]
+    public async Task DetectAsync_ShouldEmitTransplantBlockingDiagnostics_WhenDependenciesAreUnresolved()
+    {
+        var profile = BuildProfile(
+            actions: new[] { Action("spawn_tactical_entity", ExecutionKind.Helper, "helperHookId", "entityId", "faction") },
+            helperHooks: new[] { new HelperHookSpec("spawn_bridge", "spawn_bridge.lua", "1.0", EntryPoint: "SWFOC_Trainer_Spawn_Context") });
+        var session = BuildSessionWithHelperReady(RuntimeMode.TacticalLand, "1397421866");
+        var catalog = CreateCatalog("Unit|RAW_MACE_WINDU|raw_1125571106_swfoc|1125571106");
+        var service = new ModMechanicDetectionService(new StubTransplantCompatibilityService(CreateBlockingTransplantReport(profile.Id)));
+
+        var report = await service.DetectAsync(profile, session, catalog, CancellationToken.None);
+
+        report.Diagnostics.Should().ContainKey("transplantAllResolved");
+        report.Diagnostics!["transplantAllResolved"].Should().Be(false);
+        report.Diagnostics["transplantBlockingEntityCount"].Should().Be(1);
+        var entityIds = report.Diagnostics["transplantBlockingEntityIds"] as IReadOnlyList<string>;
+        entityIds.Should().NotBeNull();
+        entityIds!.Should().ContainSingle().Which.Should().Be("RAW_MACE_WINDU");
+    }
+
+    [Fact]
     public async Task DetectAsync_ShouldRethrowOperationCanceled_WhenTransplantResolverCancels()
     {
         var profile = BuildProfile(
@@ -829,7 +899,6 @@ public sealed class ModMechanicDetectionServiceTests
         return method!;
     }
 }
-
 
 
 

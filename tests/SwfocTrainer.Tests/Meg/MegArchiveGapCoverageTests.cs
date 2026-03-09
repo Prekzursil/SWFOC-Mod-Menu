@@ -112,11 +112,41 @@ public sealed class MegArchiveGapCoverageTests
         diagnostics.Should().ContainSingle(x => x.Contains("trailing bytes", StringComparison.OrdinalIgnoreCase));
     }
 
+    [Fact]
+    public void TryResolveNames_ShouldFallbackToFormat2_WhenFormat3NameTableParsingFails()
+    {
+        var bytes = new byte[32];
+        BitConverter.GetBytes(24u).CopyTo(bytes, 8);
+        BitConverter.GetBytes(1u).CopyTo(bytes, 12);
+        BitConverter.GetBytes(0u).CopyTo(bytes, 16);
+        bytes[20] = 1;
+        bytes[24] = (byte)'A';
+
+        var diagnostics = new List<string>();
+        var header = CreateParsedHeader(
+            supportsEntryFlags: true,
+            dataStartOffset: 24,
+            nameCount: 1,
+            nameTableSize: 1,
+            format: "format3");
+        var cursor = 24;
+        var parameters = new object?[] { bytes, diagnostics, header, cursor, null };
+
+        var ok = (bool)InvokeReaderPrivateStatic("TryResolveNames", parameters)!;
+
+        ok.Should().BeTrue();
+        parameters[2].Should().NotBeNull();
+        parameters[3].Should().Be(25);
+        ((IReadOnlyList<string>)parameters[4]!).Should().ContainSingle().Which.Should().Be("A");
+        diagnostics.Should().Contain(x => x.Contains("format3 parse fallback succeeded as format2", StringComparison.OrdinalIgnoreCase));
+    }
+
     private static object CreateParsedHeader(
         bool supportsEntryFlags,
         uint dataStartOffset,
         uint nameCount = 1,
-        uint? nameTableSize = null)
+        uint? nameTableSize = null,
+        string format = "format-test")
     {
         var type = typeof(MegArchiveReader).GetNestedType("ParsedHeader", BindingFlags.NonPublic);
         type.Should().NotBeNull();
@@ -126,7 +156,7 @@ public sealed class MegArchiveGapCoverageTests
         [
             true,
             null,
-            "format-test",
+            format,
             nameCount,
             1u,
             dataStartOffset,
