@@ -100,6 +100,14 @@ function Resolve-DotnetCommand {
     throw 'Could not resolve dotnet executable. Install .NET SDK or add dotnet to PATH.'
 }
 
+function ConvertTo-MSBuildPropertyValue {
+    param(
+        [Parameter(Mandatory = $true)][string]$Value
+    )
+
+    return $Value.Replace('%', '%25').Replace(';', '%3B')
+}
+
 function Invoke-DotnetCommand {
     param(
         [Parameter(Mandatory = $true)][string]$Executable,
@@ -180,6 +188,7 @@ if (-not $useNativeWindowsCoverageStaging) {
 
 if (-not $coverageCandidates) {
     $fallbackCoveragePath = Join-Path $collectorRoot 'coverage-msbuild.cobertura.xml'
+    $excludeByFileForMsBuild = ConvertTo-MSBuildPropertyValue -Value $excludeByFile
     $msbuildArguments = @(
         'test',
         $projectPath,
@@ -189,7 +198,7 @@ if (-not $coverageCandidates) {
         '/p:CollectCoverage=true',
         '/p:CoverletOutputFormat=cobertura',
         "/p:CoverletOutput=$fallbackCoveragePath",
-        "/p:ExcludeByFile=$excludeByFile",
+        "/p:ExcludeByFile=$excludeByFileForMsBuild",
         '/p:ExcludeByAttribute=Obsolete,GeneratedCodeAttribute,CompilerGeneratedAttribute,ExcludeFromCodeCoverageAttribute',
         '/p:UseSourceLink=false'
     )
