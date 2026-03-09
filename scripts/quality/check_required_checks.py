@@ -173,6 +173,56 @@ def _safe_output_path(raw: str, fallback: str, base: Path | None = None) -> Path
     return resolved
 
 
+def _build_payload(
+    *,
+    status: str,
+    args: argparse.Namespace,
+    required: list[str],
+    missing: list[str],
+    failed: list[str],
+    pending: list[str],
+    contexts: dict[str, dict[str, Any]],
+    timed_out: bool,
+) -> dict[str, Any]:
+    return {
+        "status": status,
+        "repo": args.repo,
+        "sha": args.sha,
+        "required": required,
+        "missing": missing,
+        "failed": failed,
+        "pending": pending,
+        "contexts": contexts,
+        "timestamp_utc": datetime.now(timezone.utc).isoformat(),
+        "timed_out": timed_out,
+    }
+
+
+def _fetch_context_snapshot(args: argparse.Namespace, token: str) -> dict[str, dict[str, Any]]:
+    check_runs = _api_get(args.repo, f"commits/{args.sha}/check-runs?per_page=100", token)
+    statuses = _api_get(args.repo, f"commits/{args.sha}/status", token)
+    return _collect_contexts(check_runs, statuses)
+
+
+def _should_keep_waiting(
+    *,
+    status: str,
+    missing: list[str],
+    contexts: dict[str, dict[str, Any]],
+) -> bool:
+    if status == "pass":
+        return False
+
+    if missing:
+        return True
+
+    return any(
+        value.get("state") != "completed"
+        for value in contexts.values()
+        if value.get("source") == "check_run"
+    )
+
+
 def main() -> int:
     args = _parse_args()
     token = (os.environ.get("GITHUB_TOKEN", "") or os.environ.get("GH_TOKEN", "")).strip()
@@ -188,30 +238,21 @@ def main() -> int:
     final_payload: dict[str, Any] | None = None
     timed_out = False
     while time.time() <= deadline:
-        check_runs = _api_get(args.repo, f"commits/{args.sha}/check-runs?per_page=100", token)
-        statuses = _api_get(args.repo, f"commits/{args.sha}/status", token)
-        contexts = _collect_contexts(check_runs, statuses)
+        contexts = _fetch_context_snapshot(args, token)
         status, missing, failed, pending = _evaluate(required, contexts, timed_out=False)
 
-        final_payload = {
-            "status": status,
-            "repo": args.repo,
-            "sha": args.sha,
-            "required": required,
-            "missing": missing,
-            "failed": failed,
-            "pending": pending,
-            "contexts": contexts,
-            "timestamp_utc": datetime.now(timezone.utc).isoformat(),
-            "timed_out": False,
-        }
+        final_payload = _build_payload(
+            status=status,
+            args=args,
+            required=required,
+            missing=missing,
+            failed=failed,
+            pending=pending,
+            contexts=contexts,
+            timed_out=False,
+        )
 
-        if status == "pass":
-            break
-
-        # wait only while there are missing contexts or in-progress check-runs
-        in_progress = any(v.get("state") != "completed" for v in contexts.values() if v.get("source") == "check_run")
-        if not missing and not in_progress:
+        if not _should_keep_waiting(status=status, missing=missing, contexts=contexts):
             break
         time.sleep(max(args.poll_seconds, 1))
     else:
@@ -219,15 +260,15 @@ def main() -> int:
 
     if final_payload and timed_out and final_payload["status"] != "pass":
         status, missing, failed, pending = _evaluate(required, final_payload["contexts"], timed_out=True)
-        final_payload.update(
-            {
-                "status": status,
-                "missing": missing,
-                "failed": failed,
-                "pending": pending,
-                "timed_out": True,
-                "timestamp_utc": datetime.now(timezone.utc).isoformat(),
-            }
+        final_payload = _build_payload(
+            status=status,
+            args=args,
+            required=required,
+            missing=missing,
+            failed=failed,
+            pending=pending,
+            contexts=final_payload["contexts"],
+            timed_out=True,
         )
 
     if final_payload is None:

@@ -172,19 +172,35 @@ public sealed record EntityCatalogSnapshot
             return;
         }
 
-        var mergedAffiliations = existing.Affiliations
-            .Concat(incoming.Affiliations)
+        records[incoming.EntityId] = BuildMergedRecord(existing, incoming);
+    }
+
+    private static EntityCatalogRecord BuildMergedRecord(
+        EntityCatalogRecord existing,
+        EntityCatalogRecord incoming)
+    {
+        var mergedAffiliations = MergeAffiliations(existing.Affiliations, incoming.Affiliations);
+
+        return existing with
+        {
+            Kind = CatalogEntityKindClassifier.SelectMoreSpecificKind(existing.Kind, incoming.Kind),
+            Affiliations = mergedAffiliations,
+            DisplayNameKey = ChooseValue(existing.DisplayNameKey, incoming.DisplayNameKey, existing.EntityId),
+            DisplayName = ChooseValue(existing.DisplayName, incoming.DisplayName, existing.EntityId)
+        };
+    }
+
+    private static IReadOnlyList<string> MergeAffiliations(
+        IReadOnlyList<string> existingAffiliations,
+        IReadOnlyList<string> incomingAffiliations)
+    {
+        var mergedAffiliations = existingAffiliations
+            .Concat(incomingAffiliations)
             .Where(static value => !string.IsNullOrWhiteSpace(value))
             .Distinct(StringComparer.OrdinalIgnoreCase)
             .ToArray();
 
-        records[incoming.EntityId] = existing with
-        {
-            Kind = CatalogEntityKindClassifier.SelectMoreSpecificKind(existing.Kind, incoming.Kind),
-            Affiliations = mergedAffiliations.Length == 0 ? existing.Affiliations : mergedAffiliations,
-            DisplayNameKey = ChooseValue(existing.DisplayNameKey, incoming.DisplayNameKey, existing.EntityId),
-            DisplayName = ChooseValue(existing.DisplayName, incoming.DisplayName, existing.EntityId)
-        };
+        return mergedAffiliations.Length == 0 ? existingAffiliations : mergedAffiliations;
     }
 
     private static string ChooseValue(string existing, string incoming, string fallback)

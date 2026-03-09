@@ -16,7 +16,10 @@ from urllib import parse, request
 SCHEMA_VERSION = "1.0"
 DEFAULT_APP_ID = 32470
 DETAILS_API_URL = "https://api.steampowered.com/ISteamRemoteStorage/GetPublishedFileDetails/v1/"
-ALLOWED_STEAM_HOSTS = frozenset({"steamcommunity.com", "api.steampowered.com"})
+ALLOWED_STEAM_ENDPOINTS = {
+    "steamcommunity.com": frozenset({"/workshop/browse/"}),
+    "api.steampowered.com": frozenset({"/ISteamRemoteStorage/GetPublishedFileDetails/v1/"}),
+}
 
 
 def utc_now_iso() -> str:
@@ -57,21 +60,57 @@ def unique_ordered(values: list[str]) -> list[str]:
 
 
 def validate_remote_url(raw_url: str) -> str:
-    parsed = parse.urlparse(raw_url)
+    parsed = parse.urlsplit(raw_url)
     if parsed.scheme.lower() != "https":
         raise ValueError(f"Unsupported URL scheme for remote fetch: {raw_url}")
 
     host = (parsed.hostname or "").lower()
-    if host not in ALLOWED_STEAM_HOSTS:
+    if host not in ALLOWED_STEAM_ENDPOINTS:
         raise ValueError(f"Unsupported remote host for workshop discovery: {host or raw_url}")
 
-    return raw_url
+    if parsed.username or parsed.password:
+        raise ValueError(f"Unsupported credentials in remote fetch URL: {raw_url}")
+
+    if parsed.port not in (None, 443):
+        raise ValueError(f"Unsupported remote port for workshop discovery: {parsed.port}")
+
+    normalized_path = parse.unquote(parsed.path or "/")
+    allowed_paths = ALLOWED_STEAM_ENDPOINTS[host]
+    if normalized_path not in allowed_paths:
+        raise ValueError(f"Unsupported remote path for workshop discovery: {normalized_path}")
+
+    if parsed.fragment:
+        raise ValueError(f"Unsupported URL fragment for remote fetch: {raw_url}")
+
+    return parse.urlunsplit(("https", host, normalized_path, parsed.query, ""))
+
+
+class SteamAllowlistRedirectHandler(request.HTTPRedirectHandler):
+    def redirect_request(self, req, fp, code, msg, headers, newurl):
+        validated_url = validate_remote_url(newurl)
+        return super().redirect_request(req, fp, code, msg, headers, validated_url)
+
+
+STEAM_ONLY_OPENER = request.build_opener(SteamAllowlistRedirectHandler)
+
+
+def build_validated_request(req: request.Request) -> request.Request:
+    validated_url = validate_remote_url(req.full_url)
+    if validated_url == req.full_url:
+        return req
+
+    return request.Request(
+        validated_url,
+        data=req.data,
+        headers=dict(req.header_items()),
+        method=req.get_method(),
+    )
 
 
 def open_validated_request(req: request.Request, timeout_sec: float):
-    validate_remote_url(req.full_url)
-    # nosemgrep: python.lang.security.audit.dynamic-urllib-use-detected.dynamic-urllib-use-detected -- URL is validated to HTTPS and an explicit Steam allowlist before opening.
-    return request.urlopen(req, timeout=timeout_sec)
+    validated_request = build_validated_request(req)
+    # nosemgrep: python.lang.security.audit.dynamic-urllib-use-detected.dynamic-urllib-use-detected -- Request URL and redirect targets are constrained to HTTPS-only Steam allowlisted endpoints before opening.
+    return STEAM_ONLY_OPENER.open(validated_request, timeout=timeout_sec)
 
 
 def parse_timestamp_to_iso(value: Any) -> str:

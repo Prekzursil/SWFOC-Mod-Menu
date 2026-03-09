@@ -19,7 +19,7 @@ jobs:
       SENTRY_ORG: ${{ vars.SENTRY_ORG }}
       SENTRY_PROJECT: ${{ vars.SENTRY_PROJECT }}
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
       - name: Skip repository backlog gate on PR (Sentry backlog enforced on protected branch pushes)
         if: ${{ github.event_name == 'pull_request' }}
         run: |
@@ -47,8 +47,7 @@ jobs:
             --out-md "sentry-zero/sentry.md"
       - name: Upload Sentry artifacts
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:
           name: sentry-zero
           path: sentry-zero
-

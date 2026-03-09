@@ -1,4 +1,5 @@
 using FluentAssertions;
+using System.Reflection;
 using SwfocTrainer.Core.Contracts;
 using SwfocTrainer.Core.Models;
 using Xunit;
@@ -134,6 +135,79 @@ public sealed class EntityCatalogModelsTests
         CatalogEntityKindClassifier.ResolveKind("Structure", "REBEL_STAR_BASE")
             .Should()
             .Be(CatalogEntityKind.SpaceStructure);
+    }
+
+    [Fact]
+    public void AddOrMergeRecord_ShouldMergeAffiliations_AndPreferIncomingDisplayValuesWhenExistingUsesFallback()
+    {
+        var records = new Dictionary<string, EntityCatalogRecord>(StringComparer.OrdinalIgnoreCase)
+        {
+            ["EMPIRE_BARRACKS"] = new()
+            {
+                EntityId = "EMPIRE_BARRACKS",
+                DisplayNameKey = "EMPIRE_BARRACKS",
+                DisplayName = "EMPIRE_BARRACKS",
+                Kind = CatalogEntityKind.Unit,
+                Affiliations = ["EMPIRE", ""]
+            }
+        };
+
+        var incoming = new EntityCatalogRecord
+        {
+            EntityId = "EMPIRE_BARRACKS",
+            DisplayNameKey = "TEXT_BARRACKS",
+            DisplayName = "Imperial Barracks",
+            Kind = CatalogEntityKind.Building,
+            Affiliations = ["empire", "PIRATE", " "]
+        };
+
+        InvokeAddOrMergeRecord(records, incoming);
+
+        records["EMPIRE_BARRACKS"].Kind.Should().Be(CatalogEntityKind.Building);
+        records["EMPIRE_BARRACKS"].DisplayNameKey.Should().Be("TEXT_BARRACKS");
+        records["EMPIRE_BARRACKS"].DisplayName.Should().Be("Imperial Barracks");
+        records["EMPIRE_BARRACKS"].Affiliations.Should().Equal("EMPIRE", "PIRATE");
+    }
+
+    [Fact]
+    public void AddOrMergeRecord_ShouldKeepExistingAffiliations_WhenMergedValuesAreBlank()
+    {
+        var records = new Dictionary<string, EntityCatalogRecord>(StringComparer.OrdinalIgnoreCase)
+        {
+            ["HERO_VADER"] = new()
+            {
+                EntityId = "HERO_VADER",
+                DisplayNameKey = "TEXT_VADER",
+                DisplayName = "Darth Vader",
+                Kind = CatalogEntityKind.Hero,
+                Affiliations = ["EMPIRE"]
+            }
+        };
+
+        var incoming = new EntityCatalogRecord
+        {
+            EntityId = "HERO_VADER",
+            DisplayNameKey = string.Empty,
+            DisplayName = string.Empty,
+            Kind = CatalogEntityKind.Hero,
+            Affiliations = ["", " "]
+        };
+
+        InvokeAddOrMergeRecord(records, incoming);
+
+        records["HERO_VADER"].DisplayNameKey.Should().Be("TEXT_VADER");
+        records["HERO_VADER"].DisplayName.Should().Be("Darth Vader");
+        records["HERO_VADER"].Affiliations.Should().Equal("EMPIRE");
+    }
+
+    private static void InvokeAddOrMergeRecord(
+        IDictionary<string, EntityCatalogRecord> records,
+        EntityCatalogRecord incoming)
+    {
+        var method = typeof(EntityCatalogSnapshot).GetMethod("AddOrMergeRecord", BindingFlags.Static | BindingFlags.NonPublic);
+        method.Should().NotBeNull();
+
+        method!.Invoke(null, [records, incoming]);
     }
 
     private sealed class StubCatalogService : ICatalogService
