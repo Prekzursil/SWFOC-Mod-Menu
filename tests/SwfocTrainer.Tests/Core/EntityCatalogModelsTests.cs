@@ -8,6 +8,21 @@ namespace SwfocTrainer.Tests.Core;
 public sealed class EntityCatalogModelsTests
 {
     [Fact]
+    public void EntityCatalogRecord_DefaultConstructor_ShouldInitializeNonNullCollections()
+    {
+        var record = new EntityCatalogRecord();
+
+        record.EntityId.Should().BeEmpty();
+        record.DisplayNameKey.Should().BeEmpty();
+        record.DisplayName.Should().BeEmpty();
+        record.SourceProfileId.Should().BeEmpty();
+        record.Affiliations.Should().BeEmpty();
+        record.DependencyRefs.Should().BeEmpty();
+        record.Metadata.Should().BeEmpty();
+        record.DefaultAffiliation.Should().BeEmpty();
+    }
+
+    [Fact]
     public async Task CatalogServiceDefaultMethods_ShouldUseNoneCancellation_AndProjectLegacyTypedSnapshot()
     {
         var service = new StubCatalogService(new Dictionary<string, IReadOnlyList<string>>(StringComparer.OrdinalIgnoreCase)
@@ -75,6 +90,50 @@ public sealed class EntityCatalogModelsTests
         CatalogEntityKindClassifier.ResolveKind("LandUnit", "EMPIRE_STORMTROOPER_SQUAD")
             .Should()
             .Be(CatalogEntityKind.Unit);
+    }
+
+    [Theory]
+    [InlineData("Hero", CatalogEntityKind.Hero)]
+    [InlineData("Building", CatalogEntityKind.Building)]
+    [InlineData("SpaceStructure", CatalogEntityKind.SpaceStructure)]
+    [InlineData("AbilityCarrier", CatalogEntityKind.AbilityCarrier)]
+    [InlineData("Planet", CatalogEntityKind.Planet)]
+    [InlineData("Faction", CatalogEntityKind.Faction)]
+    [InlineData("unknown", CatalogEntityKind.Unit)]
+    public void CatalogEntityKindClassifier_ParseLegacyToken_ShouldRoundTripExpectedValues(string token, CatalogEntityKind expected)
+    {
+        var parsed = CatalogEntityKindClassifier.ParseLegacyToken(token);
+
+        parsed.Should().Be(expected);
+        CatalogEntityKindClassifier.ToLegacyToken(parsed).Should().NotBeNullOrWhiteSpace();
+    }
+
+    [Fact]
+    public void CatalogEntityKindClassifier_SelectMoreSpecificKind_ShouldPreferHigherSpecificity()
+    {
+        CatalogEntityKindClassifier.SelectMoreSpecificKind(CatalogEntityKind.Unit, CatalogEntityKind.Building)
+            .Should()
+            .Be(CatalogEntityKind.Building);
+
+        CatalogEntityKindClassifier.SelectMoreSpecificKind(CatalogEntityKind.Building, CatalogEntityKind.Unit)
+            .Should()
+            .Be(CatalogEntityKind.Building);
+
+        CatalogEntityKindClassifier.SelectMoreSpecificKind(CatalogEntityKind.Unknown, CatalogEntityKind.Faction)
+            .Should()
+            .Be(CatalogEntityKind.Faction);
+    }
+
+    [Fact]
+    public void CatalogEntityKindClassifier_ShouldHandleWhitespaceAndFactionMarkers()
+    {
+        CatalogEntityKindClassifier.InferAffiliations("  ").Should().BeEmpty();
+        CatalogEntityKindClassifier.ResolveKind("Faction", "FACTION_UNDERWORLD")
+            .Should()
+            .Be(CatalogEntityKind.Faction);
+        CatalogEntityKindClassifier.ResolveKind("Structure", "REBEL_STAR_BASE")
+            .Should()
+            .Be(CatalogEntityKind.SpaceStructure);
     }
 
     private sealed class StubCatalogService : ICatalogService

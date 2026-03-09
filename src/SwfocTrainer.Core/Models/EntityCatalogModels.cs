@@ -30,6 +30,10 @@ public enum CatalogEntityCompatibilityState
 
 public readonly record struct EntityCatalogRecord
 {
+    public EntityCatalogRecord()
+    {
+    }
+
     public string EntityId { get; init; } = string.Empty;
 
     public string DisplayNameKey { get; init; } = string.Empty;

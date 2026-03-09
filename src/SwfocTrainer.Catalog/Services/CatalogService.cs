@@ -378,11 +378,6 @@ public sealed class CatalogService : ICatalogService
 
     private static string BuildLegacyEntityEntry(EntityCatalogRecord record)
     {
-        if (record is null)
-        {
-            throw new ArgumentNullException(nameof(record));
-        }
-
         var sourceRecord = record;
         return $"{CatalogEntityKindClassifier.ToLegacyToken(sourceRecord.Kind)}|{sourceRecord.EntityId}";
     }
@@ -424,11 +419,6 @@ public sealed class CatalogService : ICatalogService
         if (records is null)
         {
             throw new ArgumentNullException(nameof(records));
-        }
-
-        if (incoming is null)
-        {
-            throw new ArgumentNullException(nameof(incoming));
         }
 
         var incomingEntityId = incoming.EntityId;
@@ -593,11 +583,6 @@ public sealed class CatalogService : ICatalogService
         if (element is null)
         {
             throw new ArgumentNullException(nameof(element));
-        }
-
-        if (context is null)
-        {
-            throw new ArgumentNullException(nameof(context));
         }
 
         var sourceElement = element!;
