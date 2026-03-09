@@ -35,6 +35,8 @@ jobs:
         with:
           python-version: "3.11"
       - name: Emit symbol pack from fixture
+        env:
+          GHIDRA_SMOKE_RUN_ID: ghidra-smoke-${{ github.run_id }}
         run: |
           mkdir -p TestResults/ghidra-smoke
           python3 - <<'PY'
@@ -45,12 +47,12 @@ jobs:
           python3 tools/ghidra/emit-symbol-pack.py \
             --raw-symbols tools/fixtures/ghidra_raw_symbols_sample.json \
             --binary-path README.md \
-            --analysis-run-id ghidra-smoke-${{ github.run_id }} \
+            --analysis-run-id "$GHIDRA_SMOKE_RUN_ID" \
             --output-pack TestResults/ghidra-smoke/symbol-pack.json \
             --output-summary TestResults/ghidra-smoke/analysis-summary.json \
             --decompile-archive-path TestResults/ghidra-smoke/raw-decomp-bundle-metadata.zip
           python3 tools/ghidra/emit-artifact-index.py \
-            --analysis-run-id ghidra-smoke-${{ github.run_id }} \
+            --analysis-run-id "$GHIDRA_SMOKE_RUN_ID" \
             --binary-path README.md \
             --raw-symbols tools/fixtures/ghidra_raw_symbols_sample.json \
             --symbol-pack TestResults/ghidra-smoke/symbol-pack.json \
@@ -58,11 +60,13 @@ jobs:
             --decompile-archive TestResults/ghidra-smoke/raw-decomp-bundle-metadata.zip \
             --output TestResults/ghidra-smoke/artifact-index.json
       - name: Determinism smoke (symbol order invariance)
+        env:
+          GHIDRA_DETERMINISM_RUN_ID_BASE: ghidra-determinism-${{ github.run_id }}
         run: |
           python3 tools/ghidra/check-determinism.py \
             --raw-symbols tools/fixtures/ghidra_raw_symbols_sample.json \
             --binary-path README.md \
-            --analysis-run-id-base ghidra-determinism-${{ github.run_id }} \
+            --analysis-run-id-base "$GHIDRA_DETERMINISM_RUN_ID_BASE" \
             --output-dir TestResults/ghidra-smoke/determinism
       - name: Validate generated outputs against schemas
         run: |
@@ -100,6 +104,9 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: read
+    env:
+      BINARY_PATH: ${{ inputs.binary_path || '/bin/ls' }}
+      HEADLESS_ANALYSIS_RUN_ID: ghidra-headless-${{ github.run_id }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -121,7 +128,7 @@ jobs:
       - name: Run headless analysis
         run: |
           chmod +x tools/ghidra/run-headless.sh
-          tools/ghidra/run-headless.sh "${{ inputs.binary_path || '/bin/ls' }}" "TestResults/ghidra-headless" "ghidra-headless-${{ github.run_id }}"
+          tools/ghidra/run-headless.sh "$BINARY_PATH" "TestResults/ghidra-headless" "$HEADLESS_ANALYSIS_RUN_ID"
       - name: Create raw decomp metadata bundle
         run: |
           python3 - <<'PY'
@@ -139,8 +146,8 @@ jobs:
       - name: Refresh artifact index with bundle metadata
         run: |
           python3 tools/ghidra/emit-artifact-index.py \
-            --analysis-run-id ghidra-headless-${{ github.run_id }} \
-            --binary-path "${{ inputs.binary_path || '/bin/ls' }}" \
+            --analysis-run-id "$HEADLESS_ANALYSIS_RUN_ID" \
+            --binary-path "$BINARY_PATH" \
             --raw-symbols TestResults/ghidra-headless/raw-symbols.json \
             --symbol-pack TestResults/ghidra-headless/symbol-pack.json \
             --summary TestResults/ghidra-headless/analysis-summary.json \

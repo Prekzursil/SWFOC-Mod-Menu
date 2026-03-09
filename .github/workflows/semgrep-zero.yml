@@ -1,0 +1,140 @@
+name: Semgrep Zero
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+    branches: [main, master]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  semgrep-zero:
+    name: Semgrep Zero
+    runs-on: ubuntu-latest
+    env:
+      SEMGREP_SEND_METRICS: "off"
+      SEMGREP_VERSION: "1.154.0"
+    steps:
+      - uses: actions/checkout@v6
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+
+      - name: Install Semgrep CLI
+        run: |
+          python3 -m pip install --disable-pip-version-check "semgrep==${SEMGREP_VERSION}"
+
+      - name: Run Semgrep zero scan
+        shell: bash
+        run: |
+          mkdir -p semgrep-zero
+
+          set +e
+          env -u HTTP_PROXY -u HTTPS_PROXY -u http_proxy -u https_proxy -u ALL_PROXY -u all_proxy \
+            semgrep scan \
+              --config auto \
+              --include src \
+              --include scripts \
+              --include .github/workflows \
+              --exclude tests \
+              --exclude tools \
+              --exclude docs \
+              --exclude profiles \
+              --exclude native \
+              --json \
+              --output semgrep-zero/semgrep.json \
+              .
+          semgrep_exit=$?
+          set -e
+
+          SEMGREP_EXIT="$semgrep_exit" python3 - <<'PY'
+          import json
+          import os
+          from pathlib import Path
+
+          output_dir = Path("semgrep-zero")
+          json_path = output_dir / "semgrep.json"
+          if not json_path.exists():
+              raise SystemExit("Semgrep output semgrep-zero/semgrep.json was not created.")
+
+          payload = json.loads(json_path.read_text(encoding="utf-8"))
+          results = payload.get("results") or []
+          errors = payload.get("errors") or []
+          blocking_errors = [item for item in errors if str(item.get("level") or "").lower() == "error"]
+          parse_warnings = [item for item in errors if str(item.get("level") or "").lower() != "error"]
+          semgrep_exit = int(os.environ.get("SEMGREP_EXIT", "0"))
+
+          status = "pass"
+          findings = []
+          if results:
+              status = "fail"
+              findings.append(f"Semgrep reported {len(results)} finding(s).")
+          if blocking_errors:
+              status = "fail"
+              findings.append(f"Semgrep reported {len(blocking_errors)} blocking scan error(s).")
+          if semgrep_exit not in (0, 1):
+              status = "fail"
+              findings.append(f"Semgrep exited with unexpected status {semgrep_exit}.")
+
+          summary = {
+              "status": status,
+              "finding_count": len(results),
+              "blocking_error_count": len(blocking_errors),
+              "parse_warning_count": len(parse_warnings),
+              "semgrep_exit": semgrep_exit,
+              "findings": findings,
+              "matches": [
+                  {
+                      "check_id": item.get("check_id"),
+                      "path": item.get("path"),
+                      "line": (item.get("start") or {}).get("line"),
+                  }
+                  for item in results
+              ],
+          }
+
+          md_lines = [
+              "# Semgrep Zero Gate",
+              "",
+              f"- Status: `{summary['status']}`",
+              f"- Findings: `{summary['finding_count']}`",
+              f"- Blocking scan errors: `{summary['blocking_error_count']}`",
+              f"- Parse warnings: `{summary['parse_warning_count']}`",
+              f"- Exit code: `{summary['semgrep_exit']}`",
+              "",
+              "## Findings",
+          ]
+          if summary["matches"]:
+              md_lines.extend(
+                  f"- `{item['path']}:{item['line']}` `{item['check_id']}`"
+                  for item in summary["matches"]
+              )
+          else:
+              md_lines.append("- None")
+
+          if summary["findings"]:
+              md_lines.extend(["", "## Gate notes"])
+              md_lines.extend(f"- {item}" for item in summary["findings"])
+
+          (output_dir / "semgrep-summary.json").write_text(
+              json.dumps(summary, indent=2, sort_keys=True) + "\n",
+              encoding="utf-8",
+          )
+          (output_dir / "semgrep.md").write_text("\n".join(md_lines) + "\n", encoding="utf-8")
+
+          print((output_dir / "semgrep.md").read_text(encoding="utf-8"), end="")
+
+          if status != "pass":
+              raise SystemExit(1)
+          PY
+
+      - name: Upload Semgrep artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: semgrep-zero
+          path: semgrep-zero

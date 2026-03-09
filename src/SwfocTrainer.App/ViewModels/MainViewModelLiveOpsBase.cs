@@ -69,12 +69,15 @@ public abstract class MainViewModelLiveOpsBase : MainViewModelBindableMembersBas
         var session = _runtime.CurrentSession;
         if (session is null)
         {
+            ResetHelperBridgeSurface();
             return;
         }
 
         var metadata = session.Process.Metadata;
+        ApplyHelperBridgeMetadata(metadata);
         AddLiveOpsModeDiagnostics(session, metadata);
         AddLiveOpsLaunchDiagnostics(session, metadata);
+        AddLiveOpsHelperDiagnostics();
         AddLiveOpsDependencyDiagnostics(metadata);
         AddLiveOpsSymbolDiagnostics(session);
     }
@@ -97,6 +100,16 @@ public abstract class MainViewModelLiveOpsBase : MainViewModelBindableMembersBas
             var reason = GetMetadataValueOrDefault(metadata, "resolvedVariantReasonCode", UnknownValue);
             var confidence = GetMetadataValueOrDefault(metadata, "resolvedVariantConfidence", "0.00");
             LiveOpsDiagnostics.Add($"variant: {resolvedVariant} ({reason}, conf={confidence})");
+        }
+    }
+
+    private void AddLiveOpsHelperDiagnostics()
+    {
+        LiveOpsDiagnostics.Add($"helper: {HelperBridgeSummary}");
+        if (!string.IsNullOrWhiteSpace(HelperBridgeFeatures) &&
+            !string.Equals(HelperBridgeFeatures, "none", StringComparison.OrdinalIgnoreCase))
+        {
+            LiveOpsDiagnostics.Add($"helper_features: {HelperBridgeFeatures}");
         }
     }
 
@@ -125,6 +138,40 @@ public abstract class MainViewModelLiveOpsBase : MainViewModelBindableMembersBas
         string fallback)
     {
         return metadata.TryGetValue(key, out var value) ? value : fallback;
+    }
+
+    protected void ResetHelperBridgeSurface()
+    {
+        HelperBridgeState = UnknownValue;
+        HelperBridgeReasonCode = UnknownValue;
+        HelperBridgeFeatures = "none";
+    }
+
+    protected void ApplyHelperBridgeMetadata(IReadOnlyDictionary<string, string>? metadata)
+    {
+        if (metadata is null)
+        {
+            ResetHelperBridgeSurface();
+            return;
+        }
+
+        HelperBridgeState = NormalizeMetadataListValue(GetMetadataValueOrDefault(metadata, "helperBridgeState", UnknownValue), UnknownValue);
+        HelperBridgeReasonCode = NormalizeMetadataListValue(GetMetadataValueOrDefault(metadata, "helperBridgeReasonCode", UnknownValue), UnknownValue);
+        HelperBridgeFeatures = NormalizeMetadataListValue(GetMetadataValueOrDefault(metadata, "helperBridgeFeatures", "none"), "none");
+    }
+
+    private static string NormalizeMetadataListValue(string raw, string fallback)
+    {
+        if (string.IsNullOrWhiteSpace(raw))
+        {
+            return fallback;
+        }
+
+        var tokens = raw
+            .Split(new[] { ',', ';' }, StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries)
+            .Where(static value => value.Length > 0)
+            .ToArray();
+        return tokens.Length == 0 ? fallback : string.Join(", ", tokens);
     }
 
     protected async Task CaptureSelectedUnitBaselineAsync()

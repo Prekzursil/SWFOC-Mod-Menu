@@ -8,6 +8,10 @@ namespace SwfocTrainer.App.ViewModels;
 
 public abstract class MainViewModelBindableMembersBase : MainViewModelCoreStateBase
 {
+    private string _helperBridgeState = UnknownValue;
+    private string _helperBridgeReasonCode = UnknownValue;
+    private string _helperBridgeFeatures = "none";
+
     protected MainViewModelBindableMembersBase(MainViewModelDependencies dependencies)
         : base(dependencies)
     {
@@ -131,6 +135,41 @@ public abstract class MainViewModelBindableMembersBase : MainViewModelCoreStateB
         get => _resolvedSymbolsCount;
         set => SetField(_resolvedSymbolsCount, value, newValue => _resolvedSymbolsCount = newValue);
     }
+
+    public string HelperBridgeState
+    {
+        get => _helperBridgeState;
+        set
+        {
+            if (SetField(_helperBridgeState, value, newValue => _helperBridgeState = newValue))
+            {
+                OnPropertyChanged(nameof(HelperBridgeSummary));
+            }
+        }
+    }
+
+    public string HelperBridgeReasonCode
+    {
+        get => _helperBridgeReasonCode;
+        set
+        {
+            if (SetField(_helperBridgeReasonCode, value, newValue => _helperBridgeReasonCode = newValue))
+            {
+                OnPropertyChanged(nameof(HelperBridgeSummary));
+            }
+        }
+    }
+
+    public string HelperBridgeFeatures
+    {
+        get => _helperBridgeFeatures;
+        set => SetField(_helperBridgeFeatures, value, newValue => _helperBridgeFeatures = newValue);
+    }
+
+    public string HelperBridgeSummary =>
+        string.IsNullOrWhiteSpace(HelperBridgeReasonCode) || HelperBridgeReasonCode == UnknownValue
+            ? HelperBridgeState
+            : $"{HelperBridgeState} ({HelperBridgeReasonCode})";
 
     public bool CanWorkWithProfile => !string.IsNullOrWhiteSpace(SelectedProfileId);
 
@@ -417,4 +456,3 @@ public abstract class MainViewModelBindableMembersBase : MainViewModelCoreStateB
 
     protected abstract void ApplySaveSearch();
 }
-

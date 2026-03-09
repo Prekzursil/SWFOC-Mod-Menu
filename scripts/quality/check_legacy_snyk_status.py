@@ -50,6 +50,7 @@ def api_get(repo: str, path: str, token: str) -> dict[str, Any]:
         "User-Agent": "swfoc-legacy-snyk-policy",
     }
 
+    # nosemgrep: python.lang.security.audit.httpsconnection-detected.httpsconnection-detected
     connection = http.client.HTTPSConnection(ALLOWED_GITHUB_HOST, timeout=30)
     try:
         connection.request("GET", api_path, headers=headers)

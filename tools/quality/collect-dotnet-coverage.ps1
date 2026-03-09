@@ -8,17 +8,32 @@ Set-StrictMode -Version Latest
 $ErrorActionPreference = "Stop"
 
 $projectPath = "tests/SwfocTrainer.Tests/SwfocTrainer.Tests.csproj"
-$repoRoot = (Resolve-Path -LiteralPath ".").Path
+$resolvedRepoRoot = Resolve-Path -LiteralPath "."
+$repoRoot = $resolvedRepoRoot.ProviderPath
 $resultsRootResolved = Join-Path $repoRoot $ResultsRoot
 if (Test-Path -Path $resultsRootResolved) {
     Remove-Item -Path $resultsRootResolved -Recurse -Force
 }
 New-Item -ItemType Directory -Path $resultsRootResolved | Out-Null
 
-$testResultsRoot = Join-Path $resultsRootResolved "dotnet-test-results"
-if (Test-Path -Path $testResultsRoot) {
-    Remove-Item -Path $testResultsRoot -Recurse -Force
+function Use-NativeWindowsCoverageStaging {
+    param([string]$PathValue)
+
+    return $PathValue.StartsWith("\\wsl.localhost\", [System.StringComparison]::OrdinalIgnoreCase)
 }
+
+if (Use-NativeWindowsCoverageStaging -PathValue $repoRoot) {
+    $collectorRoot = Join-Path $env:TEMP ("swfoctrainer-coverage-" + [Guid]::NewGuid().ToString("N"))
+} else {
+    $collectorRoot = $resultsRootResolved
+}
+
+if (Test-Path -Path $collectorRoot) {
+    Remove-Item -Path $collectorRoot -Recurse -Force
+}
+New-Item -ItemType Directory -Path $collectorRoot | Out-Null
+
+$testResultsRoot = Join-Path $collectorRoot "dotnet-test-results"
 New-Item -ItemType Directory -Path $testResultsRoot | Out-Null
 
 $filter = if ($DeterministicOnly) {
@@ -29,7 +44,7 @@ else {
 }
 
 $excludeByFile = '**/obj/**;**/*.g.cs;**/*.g.i.cs'
-$runSettingsPath = Join-Path $resultsRootResolved 'coverage.runsettings'
+$runSettingsPath = Join-Path $collectorRoot 'coverage.runsettings'
 $runSettingsXml = @"
 <?xml version="1.0" encoding="utf-8"?>
 <RunSettings>
@@ -83,15 +98,34 @@ function Resolve-DotnetCommand {
     throw 'Could not resolve dotnet executable. Install .NET SDK or add dotnet to PATH.'
 }
 
+function Invoke-DotnetCommand {
+    param(
+        [Parameter(Mandatory = $true)][string]$Executable,
+        [Parameter(Mandatory = $true)][string[]]$InvocationArguments
+    )
+
+    Write-Output "$Executable $($InvocationArguments -join ' ')"
+    & $Executable @InvocationArguments
+}
+
+function Get-LastExitCodeOrZero {
+    if (Get-Variable -Name LASTEXITCODE -Scope Global -ErrorAction SilentlyContinue) {
+        return [int]$global:LASTEXITCODE
+    }
+
+    return 0
+}
+
 $dotnetExe = Resolve-DotnetCommand
-Write-Output "$dotnetExe $($arguments -join ' ')"
-& $dotnetExe @arguments
-$exitCode = if (Get-Variable -Name LASTEXITCODE -Scope Global -ErrorAction SilentlyContinue) {
-    [int]$global:LASTEXITCODE
+$previousClinkNoAutorun = [Environment]::GetEnvironmentVariable('CLINK_NOAUTORUN', 'Process')
+[Environment]::SetEnvironmentVariable('CLINK_NOAUTORUN', '1', 'Process')
+try {
+    Invoke-DotnetCommand -Executable $dotnetExe -InvocationArguments $arguments
 }
-else {
-    0
+finally {
+    [Environment]::SetEnvironmentVariable('CLINK_NOAUTORUN', $previousClinkNoAutorun, 'Process')
 }
+$exitCode = Get-LastExitCodeOrZero
 
 if ($exitCode -ne 0) {
     throw "Coverage collection failed with exit code $exitCode."
@@ -105,12 +139,54 @@ if (-not $coverageCandidates) {
 }
 
 if (-not $coverageCandidates) {
-    throw "No coverage report was generated under $testResultsRoot."
+    $fallbackCoveragePath = Join-Path $collectorRoot 'coverage-msbuild.cobertura.xml'
+    $msbuildArguments = @(
+        'test',
+        $projectPath,
+        '-c', $Configuration,
+        '--logger', 'trx;LogFileName=coverage-msbuild.trx',
+        '--results-directory', $testResultsRoot,
+        '/p:CollectCoverage=true',
+        '/p:CoverletOutputFormat=cobertura',
+        "/p:CoverletOutput=$fallbackCoveragePath",
+        "/p:ExcludeByFile=$excludeByFile",
+        '/p:ExcludeByAttribute=Obsolete,GeneratedCodeAttribute,CompilerGeneratedAttribute,ExcludeFromCodeCoverageAttribute',
+        '/p:UseSourceLink=false'
+    )
+
+    if (-not [string]::IsNullOrWhiteSpace($filter)) {
+        $msbuildArguments += @('--filter', $filter)
+    }
+
+    $previousClinkNoAutorun = [Environment]::GetEnvironmentVariable('CLINK_NOAUTORUN', 'Process')
+    [Environment]::SetEnvironmentVariable('CLINK_NOAUTORUN', '1', 'Process')
+    try {
+        Invoke-DotnetCommand -Executable $dotnetExe -InvocationArguments $msbuildArguments
+    }
+    finally {
+        [Environment]::SetEnvironmentVariable('CLINK_NOAUTORUN', $previousClinkNoAutorun, 'Process')
+    }
+
+    $exitCode = Get-LastExitCodeOrZero
+    if ($exitCode -ne 0) {
+        throw "Coverage collection fallback failed with exit code $exitCode."
+    }
+
+    if (Test-Path -Path $fallbackCoveragePath) {
+        $coverageCandidates = @(Get-Item -LiteralPath $fallbackCoveragePath)
+    }
+}
+
+if (-not $coverageCandidates) {
+    throw "No coverage report was generated under $testResultsRoot or fallback path $fallbackCoveragePath."
 }
 
 $primaryCoveragePath = $coverageCandidates[0].FullName
 $targetCoverage = Join-Path $resultsRootResolved 'cobertura.xml'
 Copy-Item -Path $primaryCoveragePath -Destination $targetCoverage -Force
+
+$localRunSettingsPath = Join-Path $resultsRootResolved 'coverage.runsettings'
+Copy-Item -Path $runSettingsPath -Destination $localRunSettingsPath -Force
 
 Write-Output "coverage_source=$primaryCoveragePath"
 Write-Output "coverage_path=$targetCoverage"

@@ -52,6 +52,9 @@ public sealed class MainViewModelBaseOpsCoverageTests
         vm.ActionReliability.Should().ContainSingle();
         vm.LiveOpsDiagnostics.Should().Contain(x => x.StartsWith("mode:"));
         vm.LiveOpsDiagnostics.Should().Contain(x => x.Contains("dependency:"));
+        vm.HelperBridgeState.Should().Be("ready");
+        vm.HelperBridgeReasonCode.Should().Be("CAPABILITY_PROBE_PASS");
+        vm.HelperBridgeFeatures.Should().Contain("spawn_tactical_entity");
         vm.EntityRoster.Should().ContainSingle(x => x.EntityId == "STORMTROOPER");
         vm.SpawnPresets.Should().ContainSingle();
         vm.Status.Should().Contain("batch ok");
@@ -261,6 +264,148 @@ public sealed class MainViewModelBaseOpsCoverageTests
         vm.Status.Should().Contain("Hotkey");
     }
 
+    [Fact]
+    public async Task SaveOpsMethods_ShouldLoadEditValidateWriteAndApplyPatchFlow()
+    {
+        var runtime = new StubRuntimeAdapter
+        {
+            IsAttached = true,
+            CurrentSession = BuildSession(RuntimeMode.Galactic)
+        };
+        var saveCodec = new StubSaveCodec();
+        var patchPackService = new StubSavePatchPackService();
+        var patchApplyService = new StubSavePatchApplyService();
+        var vm = new SaveOpsHarness(CreateDependencies(
+            runtime,
+            new StubProfileRepository(BuildProfile("base_swfoc")),
+            new StubCatalogService(new Dictionary<string, IReadOnlyList<string>>(StringComparer.OrdinalIgnoreCase)),
+            new StubActionReliabilityService(Array.Empty<ActionReliabilityInfo>()),
+            new StubSelectedUnitTransactionService(),
+            new StubSpawnPresetService(),
+            new StubFreezeService(),
+            saveCodec: saveCodec,
+            savePatchPackService: patchPackService,
+            savePatchApplyService: patchApplyService));
+
+        var tempRoot = Path.Combine(Path.GetTempPath(), $"swfoc-saveops-{Guid.NewGuid():N}");
+        Directory.CreateDirectory(tempRoot);
+        try
+        {
+            vm.SelectedProfileId = "base_swfoc";
+            vm.SavePath = Path.Combine(tempRoot, "campaign.sav");
+            vm.SaveNodePath = "root.money";
+            vm.SaveEditValue = "999";
+            vm.SavePatchPackPath = Path.Combine(tempRoot, "patch.json");
+
+            await vm.InvokeLoadSaveAsync();
+            await vm.InvokeEditSaveAsync();
+            await vm.InvokeValidateSaveAsync();
+            await vm.InvokeWriteSaveAsync();
+            await vm.InvokeLoadPatchPackAsync();
+            await vm.InvokePreviewPatchPackAsync();
+            vm.SavePatchOperations.Should().ContainSingle(x => x.FieldPath == "root.money");
+            await vm.InvokeApplyPatchPackAsync();
+            await vm.InvokeRestoreBackupAsync();
+
+            saveCodec.LoadCalls.Should().BeGreaterThanOrEqualTo(3);
+            saveCodec.LastEditedNodePath.Should().Be("root.money");
+            saveCodec.LastEditedValue.Should().Be(999);
+            saveCodec.LastWritePath.Should().EndWith(".edited.sav");
+            vm.SaveFields.Should().NotBeEmpty();
+            vm.SavePatchCompatibility.Should().Contain(x => x.Code == "backup_path");
+            vm.SavePatchApplySummary.Should().Contain("backup restored");
+            vm.Status.Should().Contain("Backup restored");
+        }
+        finally
+        {
+            if (Directory.Exists(tempRoot))
+            {
+                Directory.Delete(tempRoot, recursive: true);
+            }
+        }
+    }
+
+    [Fact]
+    public async Task CatalogHelperAndUpdateMethods_ShouldPopulateStatusAndArtifacts()
+    {
+        var runtime = new StubRuntimeAdapter
+        {
+            IsAttached = true,
+            CurrentSession = BuildSession(RuntimeMode.Galactic)
+        };
+        var helper = new StubHelperModService();
+        var updates = new StubProfileUpdateService();
+        var vm = new SaveOpsHarness(CreateDependencies(
+            runtime,
+            new StubProfileRepository(BuildProfile("base_swfoc")),
+            new StubCatalogService(new Dictionary<string, IReadOnlyList<string>>(StringComparer.OrdinalIgnoreCase)
+            {
+                ["entity_catalog"] = ["Unit|STORMTROOPER"],
+                ["typed_entity_catalog"] = ["{\"entityId\":\"STORMTROOPER\",\"displayName\":\"Stormtrooper\",\"kind\":\"Unit\"}"]
+            }),
+            new StubActionReliabilityService(Array.Empty<ActionReliabilityInfo>()),
+            new StubSelectedUnitTransactionService(),
+            new StubSpawnPresetService(),
+            new StubFreezeService(),
+            helper: helper,
+            updates: updates));
+
+        vm.SelectedProfileId = "base_swfoc";
+
+        await vm.InvokeLoadCatalogAsync();
+        await vm.InvokeDeployHelperAsync();
+        await vm.InvokeVerifyHelperAsync();
+        await vm.InvokeCheckUpdatesAsync();
+        await vm.InvokeInstallUpdateAsync();
+        await vm.InvokeRollbackProfileUpdateAsync();
+
+        vm.CatalogSummary.Should().Contain(x => x.StartsWith("entity_catalog:"));
+        helper.DeployedProfileIds.Should().ContainSingle("base_swfoc");
+        helper.VerifiedProfileIds.Should().ContainSingle("base_swfoc");
+        vm.Updates.Should().Contain("base_swfoc");
+        vm.OpsArtifactSummary.Should().Contain("rollback source:");
+        vm.Status.Should().Be("rollback complete");
+    }
+
+    [Fact]
+    public async Task QuickActionHelpers_ShouldSurfaceValidationFailureAndExecutionErrors()
+    {
+        var runtime = new StubRuntimeAdapter
+        {
+            IsAttached = true,
+            CurrentSession = BuildSession(RuntimeMode.Galactic)
+        };
+        var vm = new SaveOpsHarness(CreateDependencies(
+            runtime,
+            new StubProfileRepository(BuildProfile("base_swfoc")),
+            new StubCatalogService(new Dictionary<string, IReadOnlyList<string>>(StringComparer.OrdinalIgnoreCase)),
+            new StubActionReliabilityService(Array.Empty<ActionReliabilityInfo>()),
+            new StubSelectedUnitTransactionService(),
+            new StubSpawnPresetService(),
+            new StubFreezeService()));
+
+        vm.SelectedProfileId = "base_swfoc";
+        vm.CreditsValue = "abc";
+        await vm.InvokeQuickSetCreditsAsync();
+        vm.Status.Should().Contain("Invalid credits value");
+
+        runtime.ExecuteResult = new ActionExecutionResult(false, "boom", AddressSource.Signature);
+        await vm.InvokeQuickRunActionAsync("set_credits", new JsonObject
+        {
+            ["symbol"] = "credits",
+            ["intValue"] = 5
+        });
+        vm.Status.Should().Contain("boom");
+
+        runtime.ExecuteException = new InvalidOperationException("explode");
+        await vm.InvokeQuickRunActionAsync("set_credits", new JsonObject
+        {
+            ["symbol"] = "credits",
+            ["intValue"] = 5
+        });
+        vm.Status.Should().Contain("explode");
+    }
+
 
     private static MainViewModelDependencies CreateDependencies(
         StubRuntimeAdapter runtime,
@@ -269,7 +414,12 @@ public sealed class MainViewModelBaseOpsCoverageTests
         StubActionReliabilityService reliability,
         StubSelectedUnitTransactionService selectedTransactions,
         StubSpawnPresetService spawnPresets,
-        StubFreezeService freezeService)
+        StubFreezeService freezeService,
+        StubSaveCodec? saveCodec = null,
+        StubSavePatchPackService? savePatchPackService = null,
+        StubSavePatchApplyService? savePatchApplyService = null,
+        StubHelperModService? helper = null,
+        StubProfileUpdateService? updates = null)
     {
         var telemetry = new TelemetrySnapshotService();
         var orchestrator = new TrainerOrchestrator(
@@ -289,11 +439,11 @@ public sealed class MainViewModelBaseOpsCoverageTests
             Runtime = runtime,
             Orchestrator = orchestrator,
             Catalog = catalog,
-            SaveCodec = null!,
-            SavePatchPackService = null!,
-            SavePatchApplyService = null!,
-            Helper = null!,
-            Updates = null!,
+            SaveCodec = saveCodec ?? new StubSaveCodec(),
+            SavePatchPackService = savePatchPackService ?? new StubSavePatchPackService(),
+            SavePatchApplyService = savePatchApplyService ?? new StubSavePatchApplyService(),
+            Helper = helper ?? new StubHelperModService(),
+            Updates = updates ?? new StubProfileUpdateService(),
             ModOnboarding = null!,
             ModCalibration = null!,
             SupportBundles = null!,
@@ -314,7 +464,10 @@ public sealed class MainViewModelBaseOpsCoverageTests
             ["resolvedVariantReasonCode"] = "variant_match",
             ["resolvedVariantConfidence"] = "0.99",
             ["dependencyValidation"] = "Pass",
-            ["dependencyValidationMessage"] = "ok"
+            ["dependencyValidationMessage"] = "ok",
+            ["helperBridgeState"] = "ready",
+            ["helperBridgeReasonCode"] = "CAPABILITY_PROBE_PASS",
+            ["helperBridgeFeatures"] = "spawn_tactical_entity,set_context_allegiance"
         };
 
         var process = new ProcessMetadata(
@@ -446,6 +599,20 @@ public sealed class MainViewModelBaseOpsCoverageTests
             _loadedSaveOriginal = original;
         }
 
+        public Task InvokeLoadSaveAsync() => LoadSaveAsync();
+        public Task InvokeEditSaveAsync() => EditSaveAsync();
+        public Task InvokeValidateSaveAsync() => ValidateSaveAsync();
+        public Task InvokeWriteSaveAsync() => WriteSaveAsync();
+        public Task InvokeLoadPatchPackAsync() => LoadPatchPackAsync();
+        public Task InvokePreviewPatchPackAsync() => PreviewPatchPackAsync();
+        public Task InvokeApplyPatchPackAsync() => ApplyPatchPackAsync();
+        public Task InvokeRestoreBackupAsync() => RestoreBackupAsync();
+        public Task InvokeLoadCatalogAsync() => LoadCatalogAsync();
+        public Task InvokeDeployHelperAsync() => DeployHelperAsync();
+        public Task InvokeVerifyHelperAsync() => VerifyHelperAsync();
+        public Task InvokeCheckUpdatesAsync() => CheckUpdatesAsync();
+        public Task InvokeInstallUpdateAsync() => InstallUpdateAsync();
+        public Task InvokeRollbackProfileUpdateAsync() => RollbackProfileUpdateAsync();
         public void InvokeRebuildSaveFieldRows() => RebuildSaveFieldRows();
         public void InvokeClearPatchPreviewState(bool clearLoadedPack) => ClearPatchPreviewState(clearLoadedPack);
         public Task InvokeAddHotkeyAsync() => AddHotkeyAsync();
@@ -466,6 +633,8 @@ public sealed class MainViewModelBaseOpsCoverageTests
     {
         public bool IsAttached { get; set; }
         public AttachSession? CurrentSession { get; set; }
+        public ActionExecutionResult ExecuteResult { get; set; } = new(true, "ok", AddressSource.Signature);
+        public Exception? ExecuteException { get; set; }
 
         public Task<AttachSession> AttachAsync(string profileId, CancellationToken cancellationToken)
         {
@@ -493,7 +662,12 @@ public sealed class MainViewModelBaseOpsCoverageTests
         {
             _ = request;
             _ = cancellationToken;
-            return Task.FromResult(new ActionExecutionResult(true, "ok", AddressSource.Signature));
+            if (ExecuteException is not null)
+            {
+                throw ExecuteException;
+            }
+
+            return Task.FromResult(ExecuteResult);
         }
 
         public Task DetachAsync(CancellationToken cancellationToken)
@@ -607,6 +781,199 @@ public sealed class MainViewModelBaseOpsCoverageTests
             _ = profileId;
             _ = cancellationToken;
             return Task.FromResult(_catalog);
+        }
+    }
+
+    private sealed class StubSaveCodec : ISaveCodec
+    {
+        private readonly SaveDocument _saveDocument = new(
+            "campaign.sav",
+            "schema",
+            new byte[] { 1, 2, 3, 4 },
+            new SaveNode(
+                "root",
+                "root",
+                "root",
+                null,
+                [
+                    new SaveNode("root.money", "money", "int", 100),
+                    new SaveNode("root.name", "name", "string", "Thrawn")
+                ]));
+
+        public int LoadCalls { get; private set; }
+        public string? LastEditedNodePath { get; private set; }
+        public object? LastEditedValue { get; private set; }
+        public string? LastWritePath { get; private set; }
+
+        public Task<SaveDocument> LoadAsync(string path, string schemaId, CancellationToken cancellationToken)
+        {
+            _ = cancellationToken;
+            LoadCalls++;
+            return Task.FromResult(_saveDocument with { Path = path, SchemaId = schemaId, Raw = _saveDocument.Raw.ToArray() });
+        }
+
+        public Task EditAsync(SaveDocument document, string nodePath, object? value, CancellationToken cancellationToken)
+        {
+            _ = cancellationToken;
+            LastEditedNodePath = nodePath;
+            LastEditedValue = value;
+            document.Raw[0] = 9;
+            return Task.CompletedTask;
+        }
+
+        public Task<SaveValidationResult> ValidateAsync(SaveDocument document, CancellationToken cancellationToken)
+        {
+            _ = document;
+            _ = cancellationToken;
+            return Task.FromResult(new SaveValidationResult(true, Array.Empty<string>(), ["warn"]));
+        }
+
+        public Task WriteAsync(SaveDocument document, string outputPath, CancellationToken cancellationToken)
+        {
+            _ = document;
+            _ = cancellationToken;
+            LastWritePath = outputPath;
+            return Task.CompletedTask;
+        }
+
+        public Task<bool> RoundTripCheckAsync(SaveDocument document, CancellationToken cancellationToken)
+        {
+            _ = document;
+            _ = cancellationToken;
+            return Task.FromResult(true);
+        }
+    }
+
+    private sealed class StubSavePatchPackService : ISavePatchPackService
+    {
+        private readonly SavePatchPack _pack = new(
+            new SavePatchMetadata("1.0", "base_swfoc", "schema", "hash", DateTimeOffset.UtcNow),
+            new SavePatchCompatibility(["base_swfoc"], "schema"),
+            [
+                new SavePatchOperation(SavePatchOperationKind.SetValue, "root.money", "money", "int", 100, 999, 8)
+            ]);
+
+        public Task<SavePatchPack> ExportAsync(SaveDocument originalDoc, SaveDocument editedDoc, string profileId, CancellationToken cancellationToken)
+        {
+            _ = originalDoc;
+            _ = editedDoc;
+            _ = profileId;
+            _ = cancellationToken;
+            return Task.FromResult(_pack);
+        }
+
+        public Task<SavePatchPack> LoadPackAsync(string path, CancellationToken cancellationToken)
+        {
+            _ = path;
+            _ = cancellationToken;
+            return Task.FromResult(_pack);
+        }
+
+        public Task<SavePatchCompatibilityResult> ValidateCompatibilityAsync(SavePatchPack pack, SaveDocument targetDoc, string targetProfileId, CancellationToken cancellationToken)
+        {
+            _ = pack;
+            _ = targetDoc;
+            _ = targetProfileId;
+            _ = cancellationToken;
+            return Task.FromResult(new SavePatchCompatibilityResult(true, true, "hash", Array.Empty<string>(), ["warn"]));
+        }
+
+        public Task<SavePatchPreview> PreviewApplyAsync(SavePatchPack pack, SaveDocument targetDoc, string targetProfileId, CancellationToken cancellationToken)
+        {
+            _ = pack;
+            _ = targetDoc;
+            _ = targetProfileId;
+            _ = cancellationToken;
+            return Task.FromResult(new SavePatchPreview(true, Array.Empty<string>(), ["preview warn"], _pack.Operations));
+        }
+    }
+
+    private sealed class StubSavePatchApplyService : ISavePatchApplyService
+    {
+        public Task<SavePatchApplyResult> ApplyAsync(string targetSavePath, SavePatchPack pack, string targetProfileId, bool strict, CancellationToken cancellationToken)
+        {
+            _ = targetSavePath;
+            _ = pack;
+            _ = targetProfileId;
+            _ = strict;
+            _ = cancellationToken;
+            return Task.FromResult(new SavePatchApplyResult(
+                SavePatchApplyClassification.Applied,
+                Applied: true,
+                Message: "applied",
+                OutputPath: "campaign.edited.sav",
+                BackupPath: "campaign.backup.sav",
+                ReceiptPath: "campaign.receipt.json"));
+        }
+
+        public Task<SaveRollbackResult> RestoreLastBackupAsync(string targetSavePath, CancellationToken cancellationToken)
+        {
+            _ = targetSavePath;
+            _ = cancellationToken;
+            return Task.FromResult(new SaveRollbackResult(
+                Restored: true,
+                Message: "backup restored",
+                TargetPath: targetSavePath,
+                BackupPath: "campaign.backup.sav"));
+        }
+    }
+
+    private sealed class StubHelperModService : IHelperModService
+    {
+        public List<string> DeployedProfileIds { get; } = [];
+        public List<string> VerifiedProfileIds { get; } = [];
+
+        public Task<string> DeployAsync(string profileId, CancellationToken cancellationToken)
+        {
+            _ = cancellationToken;
+            DeployedProfileIds.Add(profileId);
+            return Task.FromResult($@"C:\Helpers\{profileId}");
+        }
+
+        public Task<bool> VerifyAsync(string profileId, CancellationToken cancellationToken)
+        {
+            _ = cancellationToken;
+            VerifiedProfileIds.Add(profileId);
+            return Task.FromResult(true);
+        }
+    }
+
+    private sealed class StubProfileUpdateService : IProfileUpdateService
+    {
+        public Task<IReadOnlyList<string>> CheckForUpdatesAsync(CancellationToken cancellationToken)
+        {
+            _ = cancellationToken;
+            return Task.FromResult<IReadOnlyList<string>>(["base_swfoc"]);
+        }
+
+        public Task<string> InstallProfileAsync(string profileId, CancellationToken cancellationToken)
+        {
+            _ = profileId;
+            _ = cancellationToken;
+            return Task.FromResult(@"C:\Profiles\base_swfoc");
+        }
+
+        public Task<ProfileInstallResult> InstallProfileTransactionalAsync(string profileId, CancellationToken cancellationToken)
+        {
+            _ = cancellationToken;
+            return Task.FromResult(new ProfileInstallResult(
+                Succeeded: true,
+                ProfileId: profileId,
+                InstalledPath: $@"C:\Profiles\{profileId}",
+                BackupPath: $@"C:\Profiles\{profileId}.bak",
+                ReceiptPath: $@"C:\Profiles\{profileId}.receipt.json",
+                Message: "installed"));
+        }
+
+        public Task<ProfileRollbackResult> RollbackLastInstallAsync(string profileId, CancellationToken cancellationToken)
+        {
+            _ = cancellationToken;
+            return Task.FromResult(new ProfileRollbackResult(
+                Restored: true,
+                ProfileId: profileId,
+                RestoredPath: $@"C:\Profiles\{profileId}",
+                BackupPath: $@"C:\Profiles\{profileId}.bak",
+                Message: "rollback complete"));
         }
     }
 
@@ -728,9 +1095,4 @@ public sealed class MainViewModelBaseOpsCoverageTests
         }
     }
 }
-
-
-
-
-
 

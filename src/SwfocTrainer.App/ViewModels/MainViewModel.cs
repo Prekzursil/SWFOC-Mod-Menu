@@ -455,6 +455,7 @@ public sealed class MainViewModel : MainViewModelSaveOpsBase
     {
         RuntimeMode = session.Process.Mode;
         ResolvedSymbolsCount = session.Symbols.Symbols.Count;
+        ApplyHelperBridgeMetadata(session.Process.Metadata);
         var signatureCount = session.Symbols.Symbols.Values.Count(x => x.Source == AddressSource.Signature);
         var fallbackCount = session.Symbols.Symbols.Values.Count(x => x.Source == AddressSource.Fallback);
         var healthyCount = session.Symbols.Symbols.Values.Count(x => x.HealthStatus == SymbolHealthStatus.Healthy);
@@ -467,6 +468,7 @@ public sealed class MainViewModel : MainViewModelSaveOpsBase
     {
         RuntimeMode = RuntimeMode.Unknown;
         ResolvedSymbolsCount = 0;
+        ResetHelperBridgeSurface();
         var processHint = await BuildAttachProcessHintAsync();
         Status = $"Attach failed: {ex.Message}. {processHint}";
     }
@@ -532,6 +534,7 @@ public sealed class MainViewModel : MainViewModelSaveOpsBase
         ActionReliability.Clear();
         SelectedUnitTransactions.Clear();
         LiveOpsDiagnostics.Clear();
+        ResetHelperBridgeSurface();
         Status = "Detached";
     }
     private async Task LoadActionsAsync()
@@ -697,4 +700,3 @@ public sealed class MainViewModel : MainViewModelSaveOpsBase
         return unavailableReason;
     }
 }
-

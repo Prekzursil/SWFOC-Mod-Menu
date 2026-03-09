@@ -76,7 +76,10 @@ public sealed class MainViewModelPrivateCoverageSweepTests
                 Metadata: new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
                 {
                     ["resolvedVariant"] = "base_swfoc",
-                    ["resolvedVariantReasonCode"] = "variant_match"
+                    ["resolvedVariantReasonCode"] = "variant_match",
+                    ["helperBridgeState"] = "ready",
+                    ["helperBridgeReasonCode"] = "CAPABILITY_PROBE_PASS",
+                    ["helperBridgeFeatures"] = "spawn_tactical_entity,place_planet_building"
                 }),
             Build: new ProfileBuild("base_swfoc", "build", @"C:\Games\swfoc.exe", ExeTarget.Swfoc, ProcessId: Environment.ProcessId),
             Symbols: new SymbolMap(symbols),
@@ -86,6 +89,9 @@ public sealed class MainViewModelPrivateCoverageSweepTests
 
         vm.RuntimeMode.Should().Be(RuntimeMode.Galactic);
         vm.ResolvedSymbolsCount.Should().Be(3);
+        vm.HelperBridgeState.Should().Be("ready");
+        vm.HelperBridgeReasonCode.Should().Be("CAPABILITY_PROBE_PASS");
+        vm.HelperBridgeFeatures.Should().Contain("place_planet_building");
         vm.Status.Should().Contain("Attached to PID");
         vm.Status.Should().Contain("sig=1");
         vm.Status.Should().Contain("fallback=1");
@@ -212,4 +218,3 @@ public sealed class MainViewModelPrivateCoverageSweepTests
         return (T)method!.Invoke(null, args)!;
     }
 }
-

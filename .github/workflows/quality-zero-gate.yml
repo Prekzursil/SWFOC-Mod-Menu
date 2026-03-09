@@ -69,6 +69,7 @@ jobs:
             --sha "${CHECK_SHA}"
             --required-context "Coverage 100 Gate"
             --required-context "Codecov Analytics"
+            --required-context "Semgrep Zero"
             --required-context "Sonar Zero"
             --required-context "Codacy Zero"
             --required-context "Snyk Zero"
@@ -159,4 +160,3 @@ jobs:
         with:
           name: quality-zero-gate
           path: quality-zero-gate
-

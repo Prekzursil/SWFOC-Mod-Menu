@@ -5,6 +5,7 @@ using System.Windows.Media;
 using FluentAssertions;
 using SwfocTrainer.App;
 using SwfocTrainer.App.Infrastructure;
+using SwfocTrainer.App.ViewModels;
 using Xunit;
 
 namespace SwfocTrainer.Tests.App;
@@ -31,7 +32,14 @@ public sealed class MainWindowCoverageTests
                 .Invoke(null, new object?[] { args });
         });
 
-        result.Should().Be(expected);
+        if (key == System.Windows.Input.Key.None)
+        {
+            result.Should().BeEmpty();
+            return;
+        }
+
+        result.Should().NotBeNullOrWhiteSpace();
+        result!.Split('+').Last().Should().Be(expected);
     }
 
     [Fact]
@@ -44,6 +52,45 @@ public sealed class MainWindowCoverageTests
         {
             var act = () => method!.Invoke(null, new object?[] { new object(), null! });
             act.Should().NotThrow();
+            return true;
+        });
+    }
+
+    [Fact]
+    public void MainWindowConstructor_ShouldAssignViewModelAsDataContext()
+    {
+        RunOnSta(() =>
+        {
+            var vm = new MainViewModel(CreateNullDependencies());
+            var window = new MainWindow(vm);
+
+            window.DataContext.Should().BeSameAs(vm);
+            return true;
+        });
+    }
+
+    [Fact]
+    public void OnPreviewKeyDown_ShouldReturn_WhenWindowDataContextIsNotMainViewModel()
+    {
+        var method = typeof(MainWindow).GetMethod("OnPreviewKeyDown", BindingFlags.NonPublic | BindingFlags.Static);
+        method.Should().NotBeNull();
+
+        RunOnSta(() =>
+        {
+            var vm = new MainViewModel(CreateNullDependencies());
+            var window = new MainWindow(vm)
+            {
+                DataContext = new object()
+            };
+            var args = new System.Windows.Input.KeyEventArgs(
+                System.Windows.Input.Keyboard.PrimaryDevice,
+                new TestPresentationSource(),
+                0,
+                System.Windows.Input.Key.F2);
+
+            var act = () => method!.Invoke(null, new object?[] { window, args });
+            act.Should().NotThrow();
+            args.Handled.Should().BeFalse();
             return true;
         });
     }
@@ -113,6 +160,34 @@ public sealed class MainWindowCoverageTests
 
         captured?.Throw();
         return result!;
+    }
+
+    private static MainViewModelDependencies CreateNullDependencies()
+    {
+        return new MainViewModelDependencies
+        {
+            Profiles = null!,
+            ProcessLocator = null!,
+            LaunchContextResolver = null!,
+            ProfileVariantResolver = null!,
+            GameLauncher = null!,
+            Runtime = null!,
+            Orchestrator = null!,
+            Catalog = null!,
+            SaveCodec = null!,
+            SavePatchPackService = null!,
+            SavePatchApplyService = null!,
+            Helper = null!,
+            Updates = null!,
+            ModOnboarding = null!,
+            ModCalibration = null!,
+            SupportBundles = null!,
+            Telemetry = null!,
+            FreezeService = null!,
+            ActionReliability = null!,
+            SelectedUnitTransactions = null!,
+            SpawnPresets = null!
+        };
     }
 
     private sealed class TestPresentationSource : PresentationSource

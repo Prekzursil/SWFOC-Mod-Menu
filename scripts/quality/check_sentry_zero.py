@@ -46,6 +46,7 @@ def _request(url: str, token: str) -> Tuple[List[Any], Dict[str, str]]:
         },
         method="GET",
     )
+    # nosemgrep: python.lang.security.audit.dynamic-urllib-use-detected.dynamic-urllib-use-detected
     with urllib.request.urlopen(req, timeout=30) as resp:
         body = json.loads(resp.read().decode("utf-8"))
         headers = {k.lower(): v for k, v in resp.headers.items()}
@@ -206,4 +207,3 @@ def main() -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
-

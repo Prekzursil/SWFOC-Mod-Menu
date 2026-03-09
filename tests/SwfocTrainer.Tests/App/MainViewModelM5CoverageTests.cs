@@ -106,4 +106,58 @@ public sealed class MainViewModelM5CoverageTests
         rows[0].CompatibilityState.Should().Be(RosterEntityCompatibilityState.RequiresTransplant);
         rows[0].TransplantReportId.Should().Contain("9999999999");
     }
+
+    [Fact]
+    public void BuildEntityRoster_ShouldPreferTypedProjection_WhenAvailable_AndFallbackToLegacyRows()
+    {
+        var catalog = new Dictionary<string, IReadOnlyList<string>>(StringComparer.OrdinalIgnoreCase)
+        {
+            ["entity_catalog_typed"] =
+            [
+                """
+                {
+                  "entityId": "EMPIRE_STORMTROOPER_SQUAD",
+                  "displayName": "Stormtrooper Squad",
+                  "displayNameKey": "TEXT_STORMTROOPER",
+                  "kind": "Unit",
+                  "sourceProfileId": "base_swfoc",
+                  "sourceWorkshopId": "1125571106",
+                  "defaultFaction": "EMPIRE",
+                  "affiliations": ["EMPIRE", "PENTASTAR"],
+                  "populationValue": 2,
+                  "buildCostCredits": 200,
+                  "visualRef": "i_stormtrooper.tga",
+                  "visualState": "Resolved",
+                  "compatibilityState": "Native",
+                  "dependencyRefs": ["EMPIRE_BARRACKS", "STORMTROOPER_COMPANY"]
+                }
+                """
+            ],
+            ["entity_catalog"] =
+            [
+                "Unit|EMPIRE_STORMTROOPER_SQUAD|base_swfoc|1125571106|legacy.dds|legacy_dep",
+                "Hero|DARTH_VADER|base_swfoc|1125571106||"
+            ]
+        };
+
+        var rows = MainViewModelRosterHelpers.BuildEntityRoster(catalog, "base_swfoc", "1125571106");
+
+        rows.Should().HaveCount(2);
+
+        var typed = rows.Single(x => x.EntityId == "EMPIRE_STORMTROOPER_SQUAD");
+        typed.DisplayName.Should().Be("Stormtrooper Squad");
+        typed.DisplayNameKey.Should().Be("TEXT_STORMTROOPER");
+        typed.AffiliationSummary.Should().Be("EMPIRE, PENTASTAR");
+        typed.PopulationCostText.Should().Be("2");
+        typed.BuildCostText.Should().Be("200");
+        typed.DependencySummary.Should().Be("EMPIRE_BARRACKS; STORMTROOPER_COMPANY");
+        typed.SourceLabel.Should().Contain("base_swfoc");
+        typed.SourceLabel.Should().Contain("1125571106");
+
+        var fallback = rows.Single(x => x.EntityId == "DARTH_VADER");
+        fallback.DisplayName.Should().Be("DARTH_VADER");
+        fallback.AffiliationSummary.Should().Be("HeroOwner");
+        fallback.PopulationCostText.Should().Be("n/a");
+        fallback.BuildCostText.Should().Be("n/a");
+    }
 }

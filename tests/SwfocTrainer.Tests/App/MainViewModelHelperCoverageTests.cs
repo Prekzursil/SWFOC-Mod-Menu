@@ -449,6 +449,81 @@ public sealed class MainViewModelHelperCoverageTests
         chain.Should().Equal("parentRoot", "child", "parentA", "parentB");
     }
 
+    [Fact]
+    public void BuildAttachStartStatus_ShouldRenderVariantAndNonVariantForms()
+    {
+        var noVariant = MainViewModelAttachHelpers.BuildAttachStartStatus("base_swfoc", null);
+        var variant = MainViewModelAttachHelpers.BuildAttachStartStatus(
+            "aotr_1397421866_swfoc",
+            new ProfileVariantResolution(
+                "aotr_1397421866_swfoc",
+                "aotr_1397421866_swfoc",
+                "workshop_match",
+                0.91));
+
+        noVariant.Should().Be("Attaching using profile 'base_swfoc'...");
+        variant.Should().Contain("universal profile");
+        variant.Should().Contain("aotr_1397421866_swfoc");
+        variant.Should().Contain("workshop_match");
+        variant.Should().Contain("conf=0.91");
+    }
+
+    [Fact]
+    public void IsStarWarsGProcess_ShouldRecognizeProcessPathAndIgnoreFalseMetadata()
+    {
+        var viaPath = BuildProcess(
+            90,
+            "custom_launcher.exe",
+            ExeTarget.Unknown,
+            processPath: @"C:\Games\StarWarsG.exe");
+        var falseMetadata = BuildProcess(
+            91,
+            "custom_launcher.exe",
+            ExeTarget.Unknown,
+            processPath: @"C:\Games\other.exe",
+            metadata: new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
+            {
+                ["isStarWarsG"] = "false"
+            });
+
+        MainViewModelAttachHelpers.IsStarWarsGProcess(viaPath).Should().BeTrue();
+        MainViewModelAttachHelpers.IsStarWarsGProcess(falseMetadata).Should().BeFalse();
+    }
+
+    [Fact]
+    public void IsActionAvailableForCurrentSession_ShouldAllowHelperActionWithoutRequiredSymbol()
+    {
+        var action = BuildAction("spawn_tactical_entity", ExecutionKind.Helper);
+        var session = BuildSession(RuntimeMode.TacticalLand);
+
+        var available = MainViewModelAttachHelpers.IsActionAvailableForCurrentSession(
+            "spawn_tactical_entity",
+            action,
+            session,
+            MainViewModelDefaults.DefaultSymbolByActionId,
+            out var reason);
+
+        available.Should().BeTrue();
+        reason.Should().BeNull();
+    }
+
+    [Fact]
+    public void DraftBuildResult_FactoryMethods_ShouldReturnExpectedShapes()
+    {
+        var draft = new SelectedUnitDraft(Hp: 100, DamageMultiplier: 2.5f, OwnerFaction: 3);
+
+        var failed = DraftBuildResult.Failed("invalid draft");
+        var success = DraftBuildResult.FromDraft(draft);
+
+        failed.Succeeded.Should().BeFalse();
+        failed.Message.Should().Be("invalid draft");
+        failed.Draft.Should().BeNull();
+
+        success.Succeeded.Should().BeTrue();
+        success.Message.Should().Be("ok");
+        success.Draft.Should().BeEquivalentTo(draft);
+    }
+
     private static GameLaunchMode InvokeResolveLaunchMode(string mode)
     {
         var method = typeof(MainViewModel).GetMethod("ResolveLaunchMode", BindingFlags.NonPublic | BindingFlags.Static);
@@ -483,6 +558,7 @@ public sealed class MainViewModelHelperCoverageTests
         int pid,
         string name,
         ExeTarget target,
+        string? processPath = null,
         IReadOnlyDictionary<string, string>? metadata = null,
         LaunchContext? launchContext = null)
     {
@@ -496,7 +572,7 @@ public sealed class MainViewModelHelperCoverageTests
         return new ProcessMetadata(
             ProcessId: pid,
             ProcessName: name,
-            ProcessPath: $@"C:\Games\{name}",
+            ProcessPath: processPath ?? $@"C:\Games\{name}",
             CommandLine: "",
             ExeTarget: target,
             Mode: RuntimeMode.Unknown,
@@ -549,6 +625,4 @@ public sealed class MainViewModelHelperCoverageTests
             Metadata: metadata);
     }
 }
-
-
 

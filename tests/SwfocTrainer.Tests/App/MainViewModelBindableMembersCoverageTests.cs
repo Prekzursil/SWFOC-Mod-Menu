@@ -33,6 +33,9 @@ public sealed class MainViewModelBindableMembersCoverageTests
         vm.SavePatchMetadataSummary = "meta";
         vm.SavePatchApplySummary = "summary";
         vm.ResolvedSymbolsCount = 12;
+        vm.HelperBridgeState = "ready";
+        vm.HelperBridgeReasonCode = "CAPABILITY_PROBE_PASS";
+        vm.HelperBridgeFeatures = "spawn_tactical_entity, set_context_allegiance";
 
         vm.SelectedHotkey = new HotkeyBindingItem { Gesture = "Ctrl+1", ActionId = "set_credits", PayloadJson = "{}" };
         vm.SelectedSpawnPreset = new SpawnPresetViewItem("id", "label", "u", "Empire", "AUTO", 1, 0, "desc");
@@ -83,6 +86,7 @@ public sealed class MainViewModelBindableMembersCoverageTests
         vm.SelectedActionId.Should().Be("set_credits");
         vm.SaveSearchQuery.Should().Be("credits");
         vm.SelectedSpawnPreset.Should().NotBeNull();
+        vm.HelperBridgeSummary.Should().Be("ready (CAPABILITY_PROBE_PASS)");
         vm.SpawnStopOnFailure.Should().BeFalse();
         vm.IsStrictPatchApply.Should().BeFalse();
         vm.HeroDefaultRespawnTime.Should().Be("300");

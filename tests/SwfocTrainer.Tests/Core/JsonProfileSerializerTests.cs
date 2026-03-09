@@ -35,6 +35,18 @@ public sealed class JsonProfileSerializerTests
     }
 
     [Fact]
+    public void Deserialize_ShouldIgnoreLeadingUtf8Bom()
+    {
+        const string json = "\uFEFF{\"name\":\"delta\",\"mode\":\"TacticalSpace\"}";
+
+        var restored = JsonProfileSerializer.Deserialize<TestPayload>(json);
+
+        restored.Should().NotBeNull();
+        restored!.Name.Should().Be("delta");
+        restored.Mode.Should().Be(RuntimeMode.TacticalSpace);
+    }
+
+    [Fact]
     public void ToJsonObject_ShouldReturnEmptyObject_ForNonObjectNodes()
     {
         var result = JsonProfileSerializer.ToJsonObject(123);

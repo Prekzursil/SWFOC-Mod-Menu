@@ -39,6 +39,10 @@
             <TextBlock Text="{Binding EffectiveRuntimeMode}" VerticalAlignment="Center"/>
             <TextBlock Text="  Symbols:" VerticalAlignment="Center" Margin="12,0,4,0"/>
             <TextBlock Text="{Binding ResolvedSymbolsCount}" VerticalAlignment="Center"/>
+            <TextBlock Text="  Helper:" VerticalAlignment="Center" Margin="12,0,4,0"/>
+            <TextBlock Text="{Binding HelperBridgeSummary}"
+                       VerticalAlignment="Center"
+                       ToolTip="{Binding HelperBridgeFeatures}"/>
         </StackPanel>
 
         <TabControl Grid.Row="1" Background="#182132" BorderThickness="0">
@@ -106,6 +110,7 @@
                                         <RowDefinition Height="Auto"/>
                                         <RowDefinition Height="Auto"/>
                                         <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
                                         <RowDefinition Height="*"/>
                                     </Grid.RowDefinitions>
                                     <StackPanel Orientation="Horizontal">
@@ -113,14 +118,40 @@
                                         <Button Content="Deploy Helper" Command="{Binding DeployHelperCommand}" Margin="8,0,0,0"/>
                                         <Button Content="Verify Helper" Command="{Binding VerifyHelperCommand}" Margin="8,0,0,0"/>
                                     </StackPanel>
-                                    <ListBox Grid.Row="1" ItemsSource="{Binding CatalogSummary}" Margin="0,8,0,0" Height="100"/>
-                                    <StackPanel Grid.Row="2" Orientation="Horizontal" Margin="0,10,0,0">
+                                    <Border Grid.Row="1"
+                                            Margin="0,8,0,0"
+                                            Padding="8"
+                                            CornerRadius="4"
+                                            Background="#111822"
+                                            BorderBrush="#304056"
+                                            BorderThickness="1">
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="Auto"/>
+                                                <ColumnDefinition Width="*"/>
+                                            </Grid.ColumnDefinitions>
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="Auto"/>
+                                                <RowDefinition Height="Auto"/>
+                                                <RowDefinition Height="Auto"/>
+                                            </Grid.RowDefinitions>
+
+                                            <TextBlock Text="State" Margin="0,0,8,4"/>
+                                            <TextBlock Grid.Column="1" Text="{Binding HelperBridgeSummary}" Margin="0,0,0,4"/>
+                                            <TextBlock Grid.Row="1" Text="Features" Margin="0,0,8,4"/>
+                                            <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding HelperBridgeFeatures}" TextWrapping="Wrap" Margin="0,0,0,4"/>
+                                            <TextBlock Grid.Row="2" Text="Mode" Margin="0,0,8,0"/>
+                                            <TextBlock Grid.Row="2" Grid.Column="1" Text="{Binding EffectiveRuntimeMode}"/>
+                                        </Grid>
+                                    </Border>
+                                    <ListBox Grid.Row="2" ItemsSource="{Binding CatalogSummary}" Margin="0,8,0,0" Height="88"/>
+                                    <StackPanel Grid.Row="3" Orientation="Horizontal" Margin="0,10,0,0">
                                         <Button Content="Load Hotkeys" Command="{Binding LoadHotkeysCommand}"/>
                                         <Button Content="Save Hotkeys" Command="{Binding SaveHotkeysCommand}" Margin="8,0,0,0"/>
                                         <Button Content="Add" Command="{Binding AddHotkeyCommand}" Margin="8,0,0,0"/>
                                         <Button Content="Remove" Command="{Binding RemoveHotkeyCommand}" Margin="8,0,0,0"/>
                                     </StackPanel>
-                                    <DataGrid Grid.Row="3"
+                                    <DataGrid Grid.Row="4"
                                               ItemsSource="{Binding Hotkeys}"
                                               SelectedItem="{Binding SelectedHotkey}"
                                               AutoGenerateColumns="False"
@@ -248,11 +279,14 @@
                             <DataGrid ItemsSource="{Binding EntityRoster}" AutoGenerateColumns="False" IsReadOnly="True">
                                 <DataGrid.Columns>
                                     <DataGridTextColumn Header="Entity" Binding="{Binding DisplayName}" Width="2*"/>
+                                    <DataGridTextColumn Header="Key" Binding="{Binding DisplayNameKey}" Width="*"/>
                                     <DataGridTextColumn Header="Kind" Binding="{Binding EntityKind}" Width="*"/>
-                                    <DataGridTextColumn Header="Faction" Binding="{Binding DefaultFaction}" Width="*"/>
-                                    <DataGridTextColumn Header="Visual" Binding="{Binding VisualState}" Width="*"/>
-                                    <DataGridTextColumn Header="Compat" Binding="{Binding CompatibilityState}" Width="*"/>
-                                    <DataGridTextColumn Header="Source" Binding="{Binding SourceWorkshopId}" Width="*"/>
+                                    <DataGridTextColumn Header="Factions" Binding="{Binding AffiliationSummary}" Width="*"/>
+                                    <DataGridTextColumn Header="Pop" Binding="{Binding PopulationCostText}" Width="0.7*"/>
+                                    <DataGridTextColumn Header="Cost" Binding="{Binding BuildCostText}" Width="0.8*"/>
+                                    <DataGridTextColumn Header="Visual" Binding="{Binding VisualSummary}" Width="1.4*"/>
+                                    <DataGridTextColumn Header="Compat" Binding="{Binding CompatibilitySummary}" Width="1.2*"/>
+                                    <DataGridTextColumn Header="Source" Binding="{Binding SourceLabel}" Width="1.3*"/>
                                 </DataGrid.Columns>
                             </DataGrid>
                         </GroupBox>
@@ -606,4 +640,3 @@
         </Border>
     </Grid>
 </Window>
-
