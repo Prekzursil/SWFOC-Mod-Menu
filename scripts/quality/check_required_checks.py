@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-from __future__ import annotations
 
 import argparse
 import json
@@ -10,7 +9,7 @@ import urllib.parse
 import urllib.request
 from datetime import datetime, timezone
 from pathlib import Path
-from typing import Any
+from typing import Any, Dict, List, Optional, Tuple
 
 NONE_MARKER = "- None"
 PENDING_STATES = {"pending", "queued", "in_progress"}
@@ -28,7 +27,7 @@ def _parse_args() -> argparse.Namespace:
     return parser.parse_args()
 
 
-def _api_get(repo: str, path: str, token: str) -> dict[str, Any]:
+def _api_get(repo: str, path: str, token: str) -> Dict[str, Any]:
     url = f"https://api.github.com/repos/{repo}/{path.lstrip('/')}"
     req = urllib.request.Request(
         url,
@@ -45,8 +44,8 @@ def _api_get(repo: str, path: str, token: str) -> dict[str, Any]:
         return json.loads(resp.read().decode("utf-8"))
 
 
-def _collect_contexts(check_runs_payload: dict[str, Any], status_payload: dict[str, Any]) -> dict[str, dict[str, str]]:
-    contexts: dict[str, dict[str, str]] = {}
+def _collect_contexts(check_runs_payload: Dict[str, Any], status_payload: Dict[str, Any]) -> Dict[str, Dict[str, str]]:
+    contexts: Dict[str, Dict[str, str]] = {}
 
     for run in check_runs_payload.get("check_runs", []) or []:
         name = str(run.get("name") or "").strip()
@@ -72,14 +71,14 @@ def _collect_contexts(check_runs_payload: dict[str, Any], status_payload: dict[s
 
 
 def _evaluate(
-    required: list[str],
-    contexts: dict[str, dict[str, str]],
+    required: List[str],
+    contexts: Dict[str, Dict[str, str]],
     *,
     timed_out: bool = False,
-) -> tuple[str, list[str], list[str], list[str]]:
-    missing: list[str] = []
-    failed: list[str] = []
-    pending: list[str] = []
+) -> Tuple[str, List[str], List[str], List[str]]:
+    missing: List[str] = []
+    failed: List[str] = []
+    pending: List[str] = []
 
     for context in required:
         observed = contexts.get(context)
@@ -93,19 +92,26 @@ def _evaluate(
         elif pending_entry:
             pending.append(pending_entry)
 
-    if missing or failed:
-        status = "fail"
-    elif pending and timed_out:
-        status = "fail"
+    status = _resolve_status(missing, failed, pending, timed_out)
+    if status == "fail" and pending and timed_out:
         failed.extend(pending)
-    elif pending:
-        status = "pending"
-    else:
-        status = "pass"
     return status, missing, failed, pending
 
 
-def _evaluate_observed_context(context: str, observed: dict[str, str]) -> tuple[str | None, str | None]:
+def _resolve_status(
+    missing: List[str],
+    failed: List[str],
+    pending: List[str],
+    timed_out: bool,
+) -> str:
+    if missing or failed or (pending and timed_out):
+        return "fail"
+    if pending:
+        return "pending"
+    return "pass"
+
+
+def _evaluate_observed_context(context: str, observed: Dict[str, str]) -> Tuple[Optional[str], Optional[str]]:
     source = observed.get("source")
     if source == "check_run":
         state = observed.get("state")
@@ -124,7 +130,7 @@ def _evaluate_observed_context(context: str, observed: dict[str, str]) -> tuple[
     return None, None
 
 
-def _render_md(payload: dict) -> str:
+def _render_md(payload: Dict[str, Any]) -> str:
     lines = [
         "# Quality Zero Gate - Required Contexts",
         "",
@@ -160,7 +166,7 @@ def _render_md(payload: dict) -> str:
     return "\n".join(lines) + "\n"
 
 
-def _safe_output_path(raw: str, fallback: str, base: Path | None = None) -> Path:
+def _safe_output_path(raw: str, fallback: str, base: Optional[Path] = None) -> Path:
     root = (base or Path.cwd()).resolve()
     candidate = Path((raw or "").strip() or fallback).expanduser()
     if not candidate.is_absolute():
@@ -177,13 +183,13 @@ def _build_payload(
     *,
     status: str,
     args: argparse.Namespace,
-    required: list[str],
-    missing: list[str],
-    failed: list[str],
-    pending: list[str],
-    contexts: dict[str, dict[str, Any]],
+    required: List[str],
+    missing: List[str],
+    failed: List[str],
+    pending: List[str],
+    contexts: Dict[str, Dict[str, Any]],
     timed_out: bool,
-) -> dict[str, Any]:
+) -> Dict[str, Any]:
     return {
         "status": status,
         "repo": args.repo,
@@ -198,7 +204,7 @@ def _build_payload(
     }
 
 
-def _fetch_context_snapshot(args: argparse.Namespace, token: str) -> dict[str, dict[str, Any]]:
+def _fetch_context_snapshot(args: argparse.Namespace, token: str) -> Dict[str, Dict[str, Any]]:
     check_runs = _api_get(args.repo, f"commits/{args.sha}/check-runs?per_page=100", token)
     statuses = _api_get(args.repo, f"commits/{args.sha}/status", token)
     return _collect_contexts(check_runs, statuses)
@@ -207,8 +213,8 @@ def _fetch_context_snapshot(args: argparse.Namespace, token: str) -> dict[str, d
 def _should_keep_waiting(
     *,
     status: str,
-    missing: list[str],
-    contexts: dict[str, dict[str, Any]],
+    missing: List[str],
+    contexts: Dict[str, Dict[str, Any]],
 ) -> bool:
     if status == "pass":
         return False
@@ -235,7 +241,7 @@ def main() -> int:
 
     deadline = time.time() + max(args.timeout_seconds, 1)
 
-    final_payload: dict[str, Any] | None = None
+    final_payload: Optional[Dict[str, Any]] = None
     timed_out = False
     while time.time() <= deadline:
         contexts = _fetch_context_snapshot(args, token)

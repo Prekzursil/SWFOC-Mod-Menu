@@ -1,15 +1,18 @@
-from __future__ import annotations
-
 import argparse
 import importlib.util
 import sys
 import unittest
+from importlib.machinery import ModuleSpec
 from pathlib import Path
+from types import ModuleType
 
 
 SCRIPT_PATH = Path(__file__).resolve().parents[1] / "check_required_checks.py"
 SPEC = importlib.util.spec_from_file_location("check_required_checks", SCRIPT_PATH)
+assert SPEC is not None
+assert isinstance(SPEC, ModuleSpec)
 MODULE = importlib.util.module_from_spec(SPEC)
+assert isinstance(MODULE, ModuleType)
 assert SPEC.loader is not None
 sys.modules[SPEC.name] = MODULE
 SPEC.loader.exec_module(MODULE)

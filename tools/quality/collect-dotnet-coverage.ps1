@@ -9,7 +9,7 @@ $ErrorActionPreference = "Stop"
 
 $resolvedRepoRoot = Resolve-Path -LiteralPath "."
 $repoRoot = $resolvedRepoRoot.ProviderPath
-$projectPath = "tests/SwfocTrainer.Tests/SwfocTrainer.Tests.csproj"
+$projectPath = Join-Path $repoRoot "tests/SwfocTrainer.Tests/SwfocTrainer.Tests.csproj"
 $resultsRootResolved = Join-Path $repoRoot $ResultsRoot
 if (Test-Path -Path $resultsRootResolved) {
     Remove-Item -Path $resultsRootResolved -Recurse -Force
@@ -120,35 +120,6 @@ function Invoke-DotnetCommand {
     )
 
     Write-Output "$Executable $($InvocationArguments -join ' ')"
-    if ($Executable.EndsWith('.exe', [System.StringComparison]::OrdinalIgnoreCase)) {
-        $stdoutPath = Join-Path $collectorRoot ("dotnet-stdout-" + [Guid]::NewGuid().ToString("N") + ".log")
-        $stderrPath = Join-Path $collectorRoot ("dotnet-stderr-" + [Guid]::NewGuid().ToString("N") + ".log")
-
-        try {
-            $process = Start-Process -FilePath $Executable `
-                -ArgumentList $InvocationArguments `
-                -NoNewWindow `
-                -Wait `
-                -PassThru `
-                -RedirectStandardOutput $stdoutPath `
-                -RedirectStandardError $stderrPath
-
-            if (Test-Path -Path $stdoutPath) {
-                Get-Content -Path $stdoutPath
-            }
-
-            if (Test-Path -Path $stderrPath) {
-                Get-Content -Path $stderrPath | Write-Error
-            }
-
-            $global:LASTEXITCODE = $process.ExitCode
-            return
-        }
-        finally {
-            Remove-Item -Path $stdoutPath, $stderrPath -Force -ErrorAction SilentlyContinue
-        }
-    }
-
     & $Executable @InvocationArguments
 }
 
@@ -199,42 +170,8 @@ function Stop-WindowsDotnetTestProcesses {
     }
 }
 
-function Invoke-CoveragePreparationBuild {
-    param(
-        [Parameter(Mandatory = $true)][string]$Executable,
-        [Parameter(Mandatory = $true)][switch]$ClearWindowsProcesses
-    )
-
-    $buildArguments = @(
-        'build',
-        $projectPath,
-        '-c', $Configuration,
-        '--disable-build-servers',
-        '-m:1',
-        '/nr:false',
-        '/p:UseSharedCompilation=false'
-    )
-
-    Stop-WindowsDotnetTestProcesses -Enabled:$ClearWindowsProcesses
-
-    $previousClinkNoAutorun = [Environment]::GetEnvironmentVariable('CLINK_NOAUTORUN', 'Process')
-    [Environment]::SetEnvironmentVariable('CLINK_NOAUTORUN', '1', 'Process')
-    try {
-        Invoke-DotnetCommand -Executable $Executable -InvocationArguments $buildArguments
-    }
-    finally {
-        [Environment]::SetEnvironmentVariable('CLINK_NOAUTORUN', $previousClinkNoAutorun, 'Process')
-    }
-
-    $exitCode = Get-LastExitCodeOrZero
-    if ($exitCode -ne 0) {
-        throw "Coverage preparation build failed with exit code $exitCode."
-    }
-}
-
 $dotnetExe = Resolve-DotnetCommand
 $shouldClearWindowsTestProcesses = Use-WindowsDotnetExecutable -Executable $dotnetExe
-Invoke-CoveragePreparationBuild -Executable $dotnetExe -ClearWindowsProcesses:$shouldClearWindowsTestProcesses
 if (-not $useNativeWindowsCoverageStaging) {
     Stop-WindowsDotnetTestProcesses -Enabled:$shouldClearWindowsTestProcesses
 

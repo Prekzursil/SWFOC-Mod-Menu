@@ -1,16 +1,19 @@
-from __future__ import annotations
-
 import importlib.util
 import sys
 import tempfile
 import textwrap
 import unittest
+from importlib.machinery import ModuleSpec
 from pathlib import Path
+from types import ModuleType
 
 
 SCRIPT_PATH = Path(__file__).resolve().parents[1] / "assert_coverage_100.py"
 SPEC = importlib.util.spec_from_file_location("assert_coverage_100", SCRIPT_PATH)
+assert SPEC is not None
+assert isinstance(SPEC, ModuleSpec)
 MODULE = importlib.util.module_from_spec(SPEC)
+assert isinstance(MODULE, ModuleType)
 assert SPEC.loader is not None
 sys.modules[SPEC.name] = MODULE
 SPEC.loader.exec_module(MODULE)
@@ -20,7 +23,8 @@ class AssertCoverage100Tests(unittest.TestCase):
     def write_temp_xml(self, content: str) -> Path:
         temp_dir = Path(tempfile.mkdtemp(prefix="assert-coverage-100-"))
         path = temp_dir / "coverage.cobertura.xml"
-        path.write_text(textwrap.dedent(content).strip() + "\n", encoding="utf-8")
+        with path.open("w", encoding="utf-8") as handle:
+            handle.write(textwrap.dedent(content).strip() + "\n")
         return path
 
     def test_parse_coverage_xml_counts_line_hits_when_only_root_lines_exist(self) -> None:

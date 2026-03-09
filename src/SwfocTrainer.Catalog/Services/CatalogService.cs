@@ -189,18 +189,11 @@ public sealed class CatalogService : ICatalogService
 
         var normalizedProfileId = profileIdValue.Trim();
 
-        if (source is null)
-        {
-            throw new ArgumentNullException(nameof(source));
-        }
+        ArgumentNullException.ThrowIfNull(source);
+        ArgumentNullException.ThrowIfNull(records);
 
-        if (records is null)
-        {
-            throw new ArgumentNullException(nameof(records));
-        }
-
-        var sourcePathValue = source.Path;
-        var sourceTypeValue = source.Type;
+        var sourcePathValue = source.Path ?? string.Empty;
+        var sourceTypeValue = source.Type ?? string.Empty;
         if (string.IsNullOrWhiteSpace(sourcePathValue) || string.IsNullOrWhiteSpace(sourceTypeValue))
         {
             return false;
@@ -230,6 +223,11 @@ public sealed class CatalogService : ICatalogService
             foreach (var element in document.Descendants())
             {
                 if (!TryCreateRecord(normalizedProfileId, sourcePath, element, out var parsedRecord))
+                {
+                    continue;
+                }
+
+                if (string.IsNullOrWhiteSpace(parsedRecord.EntityId))
                 {
                     continue;
                 }
@@ -427,12 +425,9 @@ public sealed class CatalogService : ICatalogService
         IDictionary<string, EntityCatalogRecord> records,
         EntityCatalogRecord incoming)
     {
-        if (records is null)
-        {
-            throw new ArgumentNullException(nameof(records));
-        }
+        ArgumentNullException.ThrowIfNull(records);
 
-        var incomingEntityIdValue = incoming.EntityId;
+        var incomingEntityIdValue = incoming.EntityId ?? string.Empty;
         if (string.IsNullOrWhiteSpace(incomingEntityIdValue))
         {
             throw new InvalidOperationException("Incoming catalog record id is required.");
@@ -733,10 +728,9 @@ public sealed class CatalogService : ICatalogService
 
     private static IReadOnlyList<string> BuildTypedEntityCatalogEntries(IReadOnlyList<EntityCatalogRecord> entities)
     {
-        ArgumentNullException.ThrowIfNull(entities);
-
-        var typedEntries = new List<string>(entities.Count);
-        foreach (var entity in entities)
+        var sourceEntities = entities ?? throw new ArgumentNullException(nameof(entities));
+        var typedEntries = new List<string>(sourceEntities.Count);
+        foreach (var entity in sourceEntities)
         {
             typedEntries.Add(JsonSerializer.Serialize(entity, TypedCatalogJsonOptions));
         }
@@ -802,11 +796,11 @@ public sealed class CatalogService : ICatalogService
         Func<EntityCatalogRecord, bool> predicate,
         int limit)
     {
-        ArgumentNullException.ThrowIfNull(entities);
-        ArgumentNullException.ThrowIfNull(predicate);
+        var sourceEntities = entities ?? throw new ArgumentNullException(nameof(entities));
+        var sourcePredicate = predicate ?? throw new ArgumentNullException(nameof(predicate));
 
-        return entities
-            .Where(predicate)
+        return sourceEntities
+            .Where(sourcePredicate)
             .Select(static record => record.EntityId ?? string.Empty)
             .Where(static entityId => !string.IsNullOrWhiteSpace(entityId))
             .Distinct(StringComparer.OrdinalIgnoreCase)
