@@ -71,7 +71,7 @@ jobs:
             --required-context "SonarCloud Code Analysis" \
             --required-context "Codacy Static Code Analysis" \
             --required-context "DeepScan" \
-            --timeout-seconds 1500 \
+            --timeout-seconds 7200 \
             --poll-seconds 20 \
             --out-json quality-zero-gate/required-checks.json \
             --out-md quality-zero-gate/required-checks.md

@@ -68,9 +68,15 @@ def _collect_contexts(check_runs_payload: dict[str, Any], status_payload: dict[s
     return contexts
 
 
-def _evaluate(required: list[str], contexts: dict[str, dict[str, str]]) -> tuple[str, list[str], list[str]]:
+def _evaluate(
+    required: list[str],
+    contexts: dict[str, dict[str, str]],
+    *,
+    timed_out: bool = False,
+) -> tuple[str, list[str], list[str], list[str]]:
     missing: list[str] = []
     failed: list[str] = []
+    pending: list[str] = []
 
     for context in required:
         observed = contexts.get(context)
@@ -83,16 +89,26 @@ def _evaluate(required: list[str], contexts: dict[str, dict[str, str]]) -> tuple
             state = observed.get("state")
             conclusion = observed.get("conclusion")
             if state != "completed":
-                failed.append(f"{context}: status={state}")
+                pending.append(f"{context}: status={state}")
             elif conclusion != "success":
                 failed.append(f"{context}: conclusion={conclusion}")
         else:
             conclusion = observed.get("conclusion")
-            if conclusion != "success":
+            if conclusion in {"pending", "queued", "in_progress"}:
+                pending.append(f"{context}: state={conclusion}")
+            elif conclusion != "success":
                 failed.append(f"{context}: state={conclusion}")
 
-    status = "pass" if not missing and not failed else "fail"
-    return status, missing, failed
+    if missing or failed:
+        status = "fail"
+    elif pending and timed_out:
+        status = "fail"
+        failed.extend(pending)
+    elif pending:
+        status = "pending"
+    else:
+        status = "pass"
+    return status, missing, failed, pending
 
 
 def _render_md(payload: dict) -> str:
@@ -118,6 +134,15 @@ def _render_md(payload: dict) -> str:
         lines.extend(f"- {entry}" for entry in failed)
     else:
         lines.append("- None")
+
+    lines.extend(["", "## Pending contexts"])
+    pending = payload.get("pending") or []
+    if pending:
+        lines.extend(f"- {entry}" for entry in pending)
+    else:
+        lines.append("- None")
+
+    lines.extend(["", f"- Timed out: `{payload.get('timed_out', False)}`"])
 
     return "\n".join(lines) + "\n"
 
@@ -148,11 +173,12 @@ def main() -> int:
     deadline = time.time() + max(args.timeout_seconds, 1)
 
     final_payload: dict[str, Any] | None = None
+    timed_out = False
     while time.time() <= deadline:
         check_runs = _api_get(args.repo, f"commits/{args.sha}/check-runs?per_page=100", token)
         statuses = _api_get(args.repo, f"commits/{args.sha}/status", token)
         contexts = _collect_contexts(check_runs, statuses)
-        status, missing, failed = _evaluate(required, contexts)
+        status, missing, failed, pending = _evaluate(required, contexts, timed_out=False)
 
         final_payload = {
             "status": status,
@@ -161,8 +187,10 @@ def main() -> int:
             "required": required,
             "missing": missing,
             "failed": failed,
+            "pending": pending,
             "contexts": contexts,
             "timestamp_utc": datetime.now(timezone.utc).isoformat(),
+            "timed_out": False,
         }
 
         if status == "pass":
@@ -173,6 +201,21 @@ def main() -> int:
         if not missing and not in_progress:
             break
         time.sleep(max(args.poll_seconds, 1))
+    else:
+        timed_out = True
+
+    if final_payload and timed_out and final_payload["status"] != "pass":
+        status, missing, failed, pending = _evaluate(required, final_payload["contexts"], timed_out=True)
+        final_payload.update(
+            {
+                "status": status,
+                "missing": missing,
+                "failed": failed,
+                "pending": pending,
+                "timed_out": True,
+                "timestamp_utc": datetime.now(timezone.utc).isoformat(),
+            }
+        )
 
     if final_payload is None:
         raise SystemExit("No payload collected")
