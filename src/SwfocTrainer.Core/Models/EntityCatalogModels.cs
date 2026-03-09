@@ -319,7 +319,9 @@ public static class CatalogEntityKindClassifier
         CatalogEntityKind existing,
         CatalogEntityKind incoming)
     {
-        return GetSpecificity(incoming) > GetSpecificity(existing) ? incoming : existing;
+        var existingSpecificity = GetSpecificity(existing);
+        var incomingSpecificity = GetSpecificity(incoming);
+        return incomingSpecificity > existingSpecificity ? incoming : existing;
     }
 
     public static IReadOnlyList<string> InferAffiliations(string entityId)
@@ -329,7 +331,7 @@ public static class CatalogEntityKindClassifier
             return Array.Empty<string>();
         }
 
-        var normalizedEntityId = entityId.Trim();
+        var normalizedEntityId = entityId!.Trim();
         return FactionMarkers
             .Where(marker => normalizedEntityId.Contains(marker, StringComparison.OrdinalIgnoreCase))
             .Distinct(StringComparer.OrdinalIgnoreCase)
@@ -343,7 +345,7 @@ public static class CatalogEntityKindClassifier
             return false;
         }
 
-        var normalizedValue = value.Trim();
+        var normalizedValue = value!.Trim();
         return normalizedValue.Contains("HERO", StringComparison.OrdinalIgnoreCase) ||
                normalizedValue.Contains("VADER", StringComparison.OrdinalIgnoreCase) ||
                normalizedValue.Contains("PALPATINE", StringComparison.OrdinalIgnoreCase);
@@ -391,7 +393,9 @@ public static class CatalogEntityKindClassifier
             return false;
         }
 
-        return value.Trim().Contains(token.Trim(), StringComparison.OrdinalIgnoreCase);
+        var normalizedValue = value!.Trim();
+        var normalizedToken = token!.Trim();
+        return normalizedValue.Contains(normalizedToken, StringComparison.OrdinalIgnoreCase);
     }
 
     private static int GetSpecificity(CatalogEntityKind kind)

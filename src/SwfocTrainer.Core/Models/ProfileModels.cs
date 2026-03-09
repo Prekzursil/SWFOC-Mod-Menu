@@ -125,7 +125,7 @@ public static class JsonProfileSerializer
             throw new ArgumentNullException(nameof(json));
         }
 
-        return JsonSerializer.Deserialize<T>(NormalizeJson(json), Options);
+        return JsonSerializer.Deserialize<T>(NormalizeJson(json!), Options);
     }
 
     public static string Serialize<T>(T value) => JsonSerializer.Serialize(value, Options);
@@ -143,11 +143,12 @@ public static class JsonProfileSerializer
             throw new ArgumentNullException(nameof(json));
         }
 
-        if (json.Length == 0 || json[0] != Utf8Bom)
+        var sourceJson = json!;
+        if (sourceJson.Length == 0 || sourceJson[0] != Utf8Bom)
         {
-            return json;
+            return sourceJson;
         }
 
-        return json.TrimStart(Utf8Bom);
+        return sourceJson.TrimStart(Utf8Bom);
     }
 }

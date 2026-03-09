@@ -90,6 +90,11 @@ public sealed class CatalogService : ICatalogService
 
     public Task<IReadOnlyDictionary<string, IReadOnlyList<string>>> LoadCatalogAsync(string profileId)
     {
+        if (string.IsNullOrWhiteSpace(profileId))
+        {
+            throw new ArgumentException(NullOrWhitespaceMessage, nameof(profileId));
+        }
+
         return LoadCatalogAsync(profileId, CancellationToken.None);
     }
 
@@ -112,6 +117,11 @@ public sealed class CatalogService : ICatalogService
 
     public Task<EntityCatalogSnapshot> LoadTypedCatalogAsync(string profileId)
     {
+        if (string.IsNullOrWhiteSpace(profileId))
+        {
+            throw new ArgumentException(NullOrWhitespaceMessage, nameof(profileId));
+        }
+
         return LoadTypedCatalogAsync(profileId, CancellationToken.None);
     }
 
@@ -122,24 +132,26 @@ public sealed class CatalogService : ICatalogService
             throw new ArgumentNullException(nameof(profile));
         }
 
-        var profileId = profile.Id!.Trim();
+        var sourceProfile = profile;
+        var profileId = sourceProfile.Id;
         if (string.IsNullOrWhiteSpace(profileId))
         {
             throw new InvalidOperationException("Profile id is required for catalog loading.");
         }
 
-        var catalogSources = profile.CatalogSources ?? Array.Empty<CatalogSource>();
-        var prebuilt = await LoadPrebuiltCatalogAsync(profileId, cancellationToken).ConfigureAwait(false);
+        var normalizedProfileId = profileId!.Trim();
+        var catalogSources = sourceProfile.CatalogSources ?? Array.Empty<CatalogSource>();
+        var prebuilt = await LoadPrebuiltCatalogAsync(normalizedProfileId, cancellationToken).ConfigureAwait(false);
         if (prebuilt.Count > 0)
         {
-            return EntityCatalogSnapshot.FromLegacy(profileId, prebuilt);
+            return EntityCatalogSnapshot.FromLegacy(normalizedProfileId, prebuilt);
         }
 
         var records = new Dictionary<string, EntityCatalogRecord>(StringComparer.OrdinalIgnoreCase);
         var parsed = 0;
         foreach (var source in catalogSources)
         {
-            if (!TryParseCatalogSource(profileId, source, records))
+            if (!TryParseCatalogSource(normalizedProfileId, source, records))
             {
                 continue;
             }
@@ -153,7 +165,7 @@ public sealed class CatalogService : ICatalogService
 
         return new EntityCatalogSnapshot
         {
-            ProfileId = profileId,
+            ProfileId = normalizedProfileId,
             Entities = records.Values
                 .OrderBy(static record => record.EntityId, StringComparer.OrdinalIgnoreCase)
                 .ToArray()
@@ -371,7 +383,8 @@ public sealed class CatalogService : ICatalogService
             throw new ArgumentNullException(nameof(record));
         }
 
-        return $"{CatalogEntityKindClassifier.ToLegacyToken(record.Kind)}|{record.EntityId}";
+        var sourceRecord = record;
+        return $"{CatalogEntityKindClassifier.ToLegacyToken(sourceRecord.Kind)}|{sourceRecord.EntityId}";
     }
 
     private async Task<Dictionary<string, IReadOnlyList<string>>> LoadPrebuiltCatalogAsync(string profileId, CancellationToken cancellationToken)
@@ -387,7 +400,8 @@ public sealed class CatalogService : ICatalogService
             throw new InvalidOperationException("Catalog root path is required.");
         }
 
-        var path = Path.Combine(catalogRootPath, profileId, "catalog.json");
+        var normalizedProfileId = profileId.Trim();
+        var path = Path.Combine(catalogRootPath, normalizedProfileId, "catalog.json");
         if (!File.Exists(path))
         {
             return new Dictionary<string, IReadOnlyList<string>>(StringComparer.OrdinalIgnoreCase);
@@ -417,9 +431,15 @@ public sealed class CatalogService : ICatalogService
             throw new ArgumentNullException(nameof(incoming));
         }
 
-        if (!records.TryGetValue(incoming.EntityId!, out var existing))
+        var incomingEntityId = incoming.EntityId;
+        if (string.IsNullOrWhiteSpace(incomingEntityId))
         {
-            records[incoming.EntityId!] = incoming;
+            throw new InvalidOperationException("Incoming catalog record id is required.");
+        }
+
+        if (!records.TryGetValue(incomingEntityId, out var existing))
+        {
+            records[incomingEntityId] = incoming;
             return;
         }
 
@@ -452,7 +472,7 @@ public sealed class CatalogService : ICatalogService
                 static group => group.Last().Value,
                 StringComparer.OrdinalIgnoreCase);
 
-        records[incomingRecord.EntityId!] = existingRecord with
+        records[incomingEntityId] = existingRecord with
         {
             Kind = CatalogEntityKindClassifier.SelectMoreSpecificKind(existingRecord.Kind, incomingRecord.Kind),
             DisplayNameKey = ChooseValue(existingRecord.DisplayNameKey, incomingRecord.DisplayNameKey, existingRecord.EntityId) ?? existingRecord.EntityId,
@@ -560,7 +580,7 @@ public sealed class CatalogService : ICatalogService
             return false;
         }
 
-        var normalizedLocalName = localName.Trim();
+        var normalizedLocalName = localName!.Trim();
         return DependencyNames.Any(name => name.Equals(normalizedLocalName, StringComparison.OrdinalIgnoreCase)) ||
                normalizedLocalName.StartsWith("Required_", StringComparison.OrdinalIgnoreCase) ||
                normalizedLocalName.EndsWith("_Model", StringComparison.OrdinalIgnoreCase);
@@ -686,7 +706,8 @@ public sealed class CatalogService : ICatalogService
             return Array.Empty<string>();
         }
 
-        var affiliations = ParseListValue(GetElementValue(element, "Affiliation"));
+        var sourceElement = element;
+        var affiliations = ParseListValue(GetElementValue(sourceElement, "Affiliation"));
         if (affiliations.Count == 0 && kind == CatalogEntityKind.Faction)
         {
             return new[] { entityId };
@@ -702,7 +723,8 @@ public sealed class CatalogService : ICatalogService
             throw new ArgumentNullException(nameof(entities));
         }
 
-        return entities
+        var catalogEntities = entities;
+        return catalogEntities
             .Where(static record => record.Kind is not CatalogEntityKind.Faction)
             .Select(BuildLegacyEntityEntry)
             .Distinct(StringComparer.OrdinalIgnoreCase)
@@ -730,7 +752,7 @@ public sealed class CatalogService : ICatalogService
             return Array.Empty<string>();
         }
 
-        var normalizedSourceDirectory = sourceDirectory.Trim();
+        var normalizedSourceDirectory = sourceDirectory!.Trim();
         var sourceParent = Directory.GetParent(normalizedSourceDirectory);
         var sourceGrandParent = sourceParent is null
             ? null
@@ -755,8 +777,8 @@ public sealed class CatalogService : ICatalogService
             return null;
         }
 
-        var normalizedRoot = root.Trim();
-        var normalizedVisualRef = visualRef.Trim();
+        var normalizedRoot = root!.Trim();
+        var normalizedVisualRef = visualRef!.Trim();
         foreach (var relativeDirectory in VisualSearchDirectories)
         {
             var candidate = string.IsNullOrWhiteSpace(relativeDirectory)
@@ -802,9 +824,10 @@ public sealed class CatalogService : ICatalogService
             return CatalogEntityVisualState.Unknown;
         }
 
-        return string.IsNullOrWhiteSpace(resolvedVisualRef)
-            ? CatalogEntityVisualState.Missing
-            : CatalogEntityVisualState.Resolved;
+        var hasResolvedVisual = !string.IsNullOrWhiteSpace(resolvedVisualRef);
+        return hasResolvedVisual
+            ? CatalogEntityVisualState.Resolved
+            : CatalogEntityVisualState.Missing;
     }
 
     private static IReadOnlyList<string> ParseListValue(string? raw)
@@ -827,14 +850,15 @@ public sealed class CatalogService : ICatalogService
             return null;
         }
 
-        return int.TryParse(raw.Trim(), out var value) ? value : null;
+        var normalizedRaw = raw!.Trim();
+        return int.TryParse(normalizedRaw, out var value) ? value : null;
     }
 
     private static string? ChooseValue(string? existing, string? incoming, string? fallback)
     {
         if (string.IsNullOrWhiteSpace(existing) || (!string.IsNullOrWhiteSpace(fallback) && existing!.Equals(fallback, StringComparison.OrdinalIgnoreCase)))
         {
-            return string.IsNullOrWhiteSpace(incoming) ? fallback : incoming;
+            return string.IsNullOrWhiteSpace(incoming) ? fallback : incoming!;
         }
 
         return existing;
