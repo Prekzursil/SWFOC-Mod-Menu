@@ -199,16 +199,19 @@ public sealed class CatalogService : ICatalogService
             return false;
         }
 
-        if (!sourceType.Equals("xml", StringComparison.OrdinalIgnoreCase))
+        var sourcePathValue = sourcePath;
+        var sourceTypeValue = sourceType;
+
+        if (!sourceTypeValue.Equals("xml", StringComparison.OrdinalIgnoreCase))
         {
             return false;
         }
 
-        if (!File.Exists(sourcePath))
+        if (!File.Exists(sourcePathValue))
         {
             if (source.Required)
             {
-                _logger.LogWarning("Required catalog source not found: {Path}", sourcePath);
+                _logger.LogWarning("Required catalog source not found: {Path}", sourcePathValue);
             }
 
             return false;
@@ -216,27 +219,28 @@ public sealed class CatalogService : ICatalogService
 
         try
         {
-            var document = XDocument.Load(sourcePath, LoadOptions.None);
+            var document = XDocument.Load(sourcePathValue, LoadOptions.None);
             foreach (var element in document.Descendants())
             {
-                if (!TryCreateRecord(normalizedProfileId, sourcePath, element, out var parsedRecord))
+                if (!TryCreateRecord(normalizedProfileId, sourcePathValue, element, out var parsedRecord))
                 {
                     continue;
                 }
 
-                if (parsedRecord is null || string.IsNullOrWhiteSpace(parsedRecord.EntityId))
+                var parsedRecordValue = parsedRecord;
+                if (string.IsNullOrWhiteSpace(parsedRecordValue.EntityId))
                 {
                     continue;
                 }
 
-                AddOrMergeRecord(records, parsedRecord);
+                AddOrMergeRecord(records, parsedRecordValue);
             }
 
             return true;
         }
         catch (Exception ex)
         {
-            _logger.LogWarning(ex, "Failed to parse catalog source: {Path}", sourcePath);
+            _logger.LogWarning(ex, "Failed to parse catalog source: {Path}", sourcePathValue);
             return false;
         }
     }
@@ -430,7 +434,7 @@ public sealed class CatalogService : ICatalogService
             throw new InvalidOperationException("Incoming catalog record id is required.");
         }
 
-        if (!records.TryGetValue(incomingEntityId, out var existing) || existing is null)
+        if (!records.TryGetValue(incomingEntityId, out var existing))
         {
             records[incomingEntityId] = incoming;
             return;
@@ -727,12 +731,8 @@ public sealed class CatalogService : ICatalogService
         var typedEntries = new List<string>(sourceEntities.Count);
         foreach (var entity in sourceEntities)
         {
-            if (entity is null)
-            {
-                continue;
-            }
-
-            typedEntries.Add(JsonSerializer.Serialize(entity, TypedCatalogJsonOptions));
+            var entityValue = entity;
+            typedEntries.Add(JsonSerializer.Serialize(entityValue, TypedCatalogJsonOptions));
         }
 
         return typedEntries;
@@ -802,12 +802,13 @@ public sealed class CatalogService : ICatalogService
         var selectedEntityIds = new List<string>();
         foreach (var entity in sourceEntities)
         {
-            if (entity is null || !sourcePredicate(entity))
+            var entityValue = entity;
+            if (!sourcePredicate(entityValue))
             {
                 continue;
             }
 
-            var entityId = NormalizeNonEmpty(entity.EntityId);
+            var entityId = NormalizeNonEmpty(entityValue.EntityId);
             if (entityId is null)
             {
                 continue;
