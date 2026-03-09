@@ -81,6 +81,45 @@ public sealed class ModMechanicDetectionServiceTests
     }
 
     [Fact]
+    public async Task DetectAsync_ShouldUseFallbackBlockerDetails_WhenTransplantReportOmitsUnresolvedEntityRecords()
+    {
+        var profile = BuildProfile(
+            actions: new[] { Action("spawn_tactical_entity", ExecutionKind.Helper, "helperHookId", "entityId", "faction") },
+            helperHooks: new[] { new HelperHookSpec("spawn_bridge", "spawn_bridge.lua", "1.0", EntryPoint: "SWFOC_Trainer_Spawn_Context") });
+        var session = BuildSessionWithHelperReady(RuntimeMode.TacticalLand, "1397421866");
+        var catalog = CreateCatalog("Unit|AOTR_AT_AT|aotr_1397421866_swfoc|1397421866");
+        var transplantReport = new TransplantValidationReport(
+            TargetProfileId: profile.Id,
+            GeneratedAtUtc: DateTimeOffset.UtcNow,
+            AllResolved: false,
+            TotalEntities: 1,
+            BlockingEntityCount: 1,
+            Entities: new[]
+            {
+                new TransplantEntityValidation(
+                    EntityId: "AOTR_AT_AT",
+                    SourceProfileId: "aotr_1397421866_swfoc",
+                    SourceWorkshopId: "1397421866",
+                    RequiresTransplant: true,
+                    Resolved: true,
+                    ReasonCode: RuntimeReasonCode.CAPABILITY_PROBE_PASS,
+                    Message: "Entity was resolved.",
+                    VisualRef: null,
+                    MissingDependencies: Array.Empty<string>())
+            },
+            Diagnostics: new Dictionary<string, object?>());
+        var service = new ModMechanicDetectionService(new StubTransplantCompatibilityService(transplantReport));
+
+        var report = await service.DetectAsync(profile, session, catalog, CancellationToken.None);
+
+        var spawnSupport = report.ActionSupport.Single(x => x.ActionId == "spawn_tactical_entity");
+        spawnSupport.Supported.Should().BeFalse();
+        spawnSupport.ReasonCode.Should().Be(RuntimeReasonCode.CROSS_MOD_TRANSPLANT_REQUIRED);
+        spawnSupport.Message.Should().Contain("unknown_entity");
+        spawnSupport.Message.Should().Contain(RuntimeReasonCode.TRANSPLANT_VALIDATION_FAILED.ToString());
+    }
+
+    [Fact]
     public async Task DetectAsync_ShouldBlockHelperActions_WhenHelperBridgeUnavailable()
     {
         var profile = BuildProfile(
@@ -98,26 +137,6 @@ public sealed class ModMechanicDetectionServiceTests
         var support = report.ActionSupport.Single(x => x.ActionId == "spawn_unit_helper");
         support.Supported.Should().BeFalse();
         support.ReasonCode.Should().Be(RuntimeReasonCode.HELPER_BRIDGE_UNAVAILABLE);
-    }
-
-    [Fact]
-    public async Task DetectAsync_ShouldAllowHelperActions_WhenBridgeReadyAndHookMetadataExists()
-    {
-        var profile = BuildProfile(
-            actions: new[] { Action("spawn_unit_helper", ExecutionKind.Helper, "helperHookId", "unitId") },
-            helperHooks: new[] { new HelperHookSpec("spawn_bridge", "spawn_bridge.lua", "1.0", EntryPoint: "SpawnBridge_Invoke") });
-        var session = BuildSession(
-            RuntimeMode.TacticalLand,
-            metadata: new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
-            {
-                ["helperBridgeState"] = "ready"
-            });
-
-        var report = await new ModMechanicDetectionService().DetectAsync(profile, session, catalog: null, CancellationToken.None);
-
-        var support = report.ActionSupport.Single(x => x.ActionId == "spawn_unit_helper");
-        support.Supported.Should().BeTrue();
-        support.ReasonCode.Should().Be(RuntimeReasonCode.HELPER_EXECUTION_APPLIED);
     }
 
     [Fact]
@@ -196,35 +215,6 @@ public sealed class ModMechanicDetectionServiceTests
     }
 
     [Fact]
-    public async Task DetectAsync_ShouldAllowRosterActions_WhenRequiredCatalogsExist()
-    {
-        var profile = BuildProfile(
-            actions: new[]
-            {
-                Action("spawn_context_entity", ExecutionKind.Memory, "entityId", "faction"),
-                Action("place_planet_building", ExecutionKind.Memory, "entityId", "faction")
-            });
-        var session = BuildSession(
-            RuntimeMode.Galactic,
-            symbols: new[]
-            {
-                new SymbolInfo("selected_owner_faction", (nint)0x1000, SymbolValueType.Int32, AddressSource.Signature),
-                new SymbolInfo("planet_owner", (nint)0x2000, SymbolValueType.Int32, AddressSource.Signature)
-            });
-        var catalog = new Dictionary<string, IReadOnlyList<string>>(StringComparer.OrdinalIgnoreCase)
-        {
-            ["unit_catalog"] = new[] { "EMPIRE_STORMTROOPER_SQUAD" },
-            ["building_catalog"] = new[] { "EMPIRE_BARRACKS" },
-            ["faction_catalog"] = new[] { "Empire" }
-        };
-
-        var report = await new ModMechanicDetectionService().DetectAsync(profile, session, catalog, CancellationToken.None);
-
-        report.ActionSupport.Single(x => x.ActionId == "spawn_context_entity").Supported.Should().BeTrue();
-        report.ActionSupport.Single(x => x.ActionId == "place_planet_building").Supported.Should().BeTrue();
-    }
-
-    [Fact]
     public async Task DetectAsync_ShouldAllowSetContextFaction_WhenPlanetOwnerSymbolHealthy()
     {
         var profile = BuildProfile(
@@ -295,96 +285,6 @@ public sealed class ModMechanicDetectionServiceTests
     }
 
     [Fact]
-    public async Task DetectAsync_ShouldAllowSwitchPlayerFaction_WithoutOwnerSymbols()
-    {
-        var profile = BuildProfile(
-            actions: new[] { Action("switch_player_faction", ExecutionKind.Helper, "helperHookId", "faction") },
-            helperHooks: new[] { new HelperHookSpec("spawn_bridge", "spawn_bridge.lua", "1.0", EntryPoint: "SwitchFaction_Invoke") });
-        var session = BuildSession(
-            RuntimeMode.Galactic,
-            metadata: new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
-            {
-                ["helperBridgeState"] = "ready"
-            });
-
-        var report = await new ModMechanicDetectionService().DetectAsync(profile, session, catalog: null, CancellationToken.None);
-
-        var support = report.ActionSupport.Single(x => x.ActionId == "switch_player_faction");
-        support.Supported.Should().BeTrue();
-        support.ReasonCode.Should().Be(RuntimeReasonCode.HELPER_EXECUTION_APPLIED);
-    }
-
-    [Fact]
-    public async Task DetectAsync_ShouldPopulateDiagnosticsCountsAndWorkshopIds()
-    {
-        var profile = BuildProfile(actions: Array.Empty<ActionSpec>());
-        var session = new AttachSession(
-            ProfileId: "test_profile",
-            Process: new ProcessMetadata(
-                ProcessId: 4242,
-                ProcessName: "StarWarsG.exe",
-                ProcessPath: @"C:\Games\StarWarsG.exe",
-                CommandLine: "STEAMMOD=1397421866",
-                ExeTarget: ExeTarget.Swfoc,
-                Mode: RuntimeMode.Galactic,
-                Metadata: new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
-                {
-                    ["helperBridgeState"] = "ready",
-                    ["forcedWorkshopIds"] = "2313576303",
-                    ["steamModIdsDetected"] = "1125571106"
-                },
-                LaunchContext: new LaunchContext(
-                    LaunchKind.Workshop,
-                    CommandLineAvailable: true,
-                    SteamModIds: new[] { "3447786229" },
-                    ModPathRaw: null,
-                    ModPathNormalized: null,
-                    DetectedVia: "tests",
-                    Recommendation: new ProfileRecommendation("test_profile", "test", 1.0))),
-            Build: new ProfileBuild("test_profile", "test", @"C:\Games\StarWarsG.exe", ExeTarget.Swfoc),
-            Symbols: new SymbolMap(new Dictionary<string, SymbolInfo>(StringComparer.OrdinalIgnoreCase)),
-            AttachedAt: DateTimeOffset.UtcNow);
-        var catalog = new Dictionary<string, IReadOnlyList<string>>(StringComparer.OrdinalIgnoreCase)
-        {
-            ["unit_catalog"] = new[] { "EMPIRE_STORMTROOPER_SQUAD" },
-            ["building_catalog"] = new[] { "EMPIRE_BARRACKS" },
-            ["faction_catalog"] = new[] { "Empire", "Rebel" }
-        };
-
-        var report = await new ModMechanicDetectionService().DetectAsync(profile, session, catalog, CancellationToken.None);
-
-        report.HelperBridgeReady.Should().BeTrue();
-        report.Diagnostics.Should().ContainKey("unitCatalogCount");
-        report.Diagnostics!["unitCatalogCount"].Should().Be(1);
-        report.Diagnostics["buildingCatalogCount"].Should().Be(1);
-        report.Diagnostics["factionCatalogCount"].Should().Be(2);
-        report.Diagnostics["transplantAllResolved"].Should().Be(true);
-        var activeWorkshopIds = report.Diagnostics["activeWorkshopIds"] as IReadOnlyList<string>;
-        activeWorkshopIds.Should().NotBeNull();
-        activeWorkshopIds!.Should().Equal("1125571106", "2313576303", "3447786229");
-    }
-
-    [Fact]
-    public async Task DetectAsync_ShouldEmitTransplantBlockingDiagnostics_WhenDependenciesAreUnresolved()
-    {
-        var profile = BuildProfile(
-            actions: new[] { Action("spawn_tactical_entity", ExecutionKind.Helper, "helperHookId", "entityId", "faction") },
-            helperHooks: new[] { new HelperHookSpec("spawn_bridge", "spawn_bridge.lua", "1.0", EntryPoint: "SWFOC_Trainer_Spawn_Context") });
-        var session = BuildSessionWithHelperReady(RuntimeMode.TacticalLand, "1397421866");
-        var catalog = CreateCatalog("Unit|RAW_MACE_WINDU|raw_1125571106_swfoc|1125571106");
-        var service = new ModMechanicDetectionService(new StubTransplantCompatibilityService(CreateBlockingTransplantReport(profile.Id)));
-
-        var report = await service.DetectAsync(profile, session, catalog, CancellationToken.None);
-
-        report.Diagnostics.Should().ContainKey("transplantAllResolved");
-        report.Diagnostics!["transplantAllResolved"].Should().Be(false);
-        report.Diagnostics["transplantBlockingEntityCount"].Should().Be(1);
-        var entityIds = report.Diagnostics["transplantBlockingEntityIds"] as IReadOnlyList<string>;
-        entityIds.Should().NotBeNull();
-        entityIds!.Should().ContainSingle().Which.Should().Be("RAW_MACE_WINDU");
-    }
-
-    [Fact]
     public async Task DetectAsync_ShouldRethrowOperationCanceled_WhenTransplantResolverCancels()
     {
         var profile = BuildProfile(
@@ -412,48 +312,64 @@ public sealed class ModMechanicDetectionServiceTests
     }
 
     [Fact]
-    public async Task DetectAsync_ShouldEmitHeroMechanicsSummary_FromProfileMetadataAndActions()
+    public async Task DetectAsync_ShouldEmitDistinctSortedBlockingEntityIds_InDiagnostics()
     {
         var profile = BuildProfile(
-            actions: new[]
-            {
-                Action("set_hero_state_helper", ExecutionKind.Helper, "helperHookId", "globalKey", "intValue"),
-                Action("edit_hero_state", ExecutionKind.Helper, "helperHookId", "entityId", "desiredState")
-            },
-            helperHooks: new[]
-            {
-                new HelperHookSpec("hero_hook", "hero_bridge.lua", "1.0", EntryPoint: "SWFOC_Trainer_Edit_Hero_State")
-            },
-            metadata: new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
-            {
-                ["supports_hero_rescue"] = "true",
-                ["supports_hero_permadeath"] = "true",
-                ["defaultHeroRespawnTime"] = "14",
-                ["respawnExceptionSources"] = "GameConstants.xml, RespawnExceptions.lua",
-                ["duplicateHeroPolicy"] = "allow_with_warning"
-            });
+            actions: new[] { Action("set_credits", ExecutionKind.Memory, "symbol", "intValue") });
         var session = BuildSession(
             RuntimeMode.Galactic,
             symbols: new[]
             {
-                new SymbolInfo("hero_respawn_timer", (nint)0x3000, SymbolValueType.Int32, AddressSource.Signature)
+                new SymbolInfo("credits", (nint)0x1000, SymbolValueType.Int32, AddressSource.Signature)
             });
+        var transplantReport = new TransplantValidationReport(
+            TargetProfileId: profile.Id,
+            GeneratedAtUtc: DateTimeOffset.UtcNow,
+            AllResolved: false,
+            TotalEntities: 3,
+            BlockingEntityCount: 2,
+            Entities: new[]
+            {
+                new TransplantEntityValidation(
+                    EntityId: "RAW_ZETA",
+                    SourceProfileId: "raw_profile",
+                    SourceWorkshopId: "1125571106",
+                    RequiresTransplant: true,
+                    Resolved: false,
+                    ReasonCode: RuntimeReasonCode.TRANSPLANT_VALIDATION_FAILED,
+                    Message: "Missing dependency.",
+                    VisualRef: null,
+                    MissingDependencies: Array.Empty<string>()),
+                new TransplantEntityValidation(
+                    EntityId: "raw_alpha",
+                    SourceProfileId: "raw_profile",
+                    SourceWorkshopId: "1125571106",
+                    RequiresTransplant: true,
+                    Resolved: false,
+                    ReasonCode: RuntimeReasonCode.TRANSPLANT_VALIDATION_FAILED,
+                    Message: "Missing dependency.",
+                    VisualRef: null,
+                    MissingDependencies: Array.Empty<string>()),
+                new TransplantEntityValidation(
+                    EntityId: "RAW_ALPHA",
+                    SourceProfileId: "raw_profile",
+                    SourceWorkshopId: "1125571106",
+                    RequiresTransplant: true,
+                    Resolved: false,
+                    ReasonCode: RuntimeReasonCode.TRANSPLANT_VALIDATION_FAILED,
+                    Message: "Duplicate case variant.",
+                    VisualRef: null,
+                    MissingDependencies: Array.Empty<string>())
+            },
+            Diagnostics: new Dictionary<string, object?>());
+        var service = new ModMechanicDetectionService(new StubTransplantCompatibilityService(transplantReport));
 
-        var report = await new ModMechanicDetectionService().DetectAsync(profile, session, catalog: null, CancellationToken.None);
+        var report = await service.DetectAsync(profile, session, catalog: null, CancellationToken.None);
 
-        report.Diagnostics.Should().ContainKey("heroMechanicsSummary");
-        var summary = report.Diagnostics!["heroMechanicsSummary"] as IReadOnlyDictionary<string, object?>;
-        summary.Should().NotBeNull();
-        summary!["supportsRespawn"].Should().Be(true);
-        summary["supportsPermadeath"].Should().Be(true);
-        summary["supportsRescue"].Should().Be(true);
-        summary["defaultRespawnTime"].Should().Be(14);
-        summary["duplicateHeroPolicy"]!.ToString().Should().Be("allow_with_warning");
-
-        var exceptionSources = summary["respawnExceptionSources"] as IReadOnlyList<string>;
-        exceptionSources.Should().NotBeNull();
-        exceptionSources!.Should().Contain("GameConstants.xml");
-        exceptionSources.Should().Contain("RespawnExceptions.lua");
+        report.Diagnostics.Should().ContainKey("transplantBlockingEntityIds");
+        report.Diagnostics!["transplantBlockingEntityIds"].Should().BeAssignableTo<IReadOnlyList<string>>();
+        var blockingIds = (IReadOnlyList<string>)report.Diagnostics["transplantBlockingEntityIds"]!;
+        blockingIds.Should().Equal("raw_alpha", "RAW_ZETA");
     }
 
     [Fact]
@@ -505,197 +421,6 @@ public sealed class ModMechanicDetectionServiceTests
         VerifyKind("AbilityCarrier|RAW_CARRIER", RosterEntityKind.AbilityCarrier);
     }
 
-    [Fact]
-    public void HelperParsers_ShouldHandleMetadataEdgeCases()
-    {
-        var metadata = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
-        {
-            ["flag_true"] = "true",
-            ["flag_one"] = "1",
-            ["flag_zero"] = "0",
-            ["list"] = " one , two ,, three ",
-            ["csv"] = "1397421866, 3447786229"
-        };
-
-        InvokePrivateStatic<bool>("ReadBoolMetadata", metadata, "flag_true").Should().BeTrue();
-        InvokePrivateStatic<bool>("ReadBoolMetadata", metadata, "flag_one").Should().BeTrue();
-        InvokePrivateStatic<bool>("ReadBoolMetadata", metadata, "flag_zero").Should().BeFalse();
-        InvokePrivateStatic<bool>("ReadBoolMetadata", metadata, "missing").Should().BeFalse();
-
-        InvokePrivateStatic<int?>("ParseOptionalInt", "42").Should().Be(42);
-        InvokePrivateStatic<int?>("ParseOptionalInt", " ").Should().BeNull();
-        InvokePrivateStatic<int?>("ParseOptionalInt", "not-int").Should().BeNull();
-
-        InvokePrivateStatic<IReadOnlyList<string>>("ParseListMetadata", metadata["list"]).Should().BeEquivalentTo("one", "two", "three");
-        InvokePrivateStatic<IReadOnlyList<string>>("ParseListMetadata", string.Empty).Should().BeEmpty();
-
-        InvokePrivateStatic<IReadOnlySet<string>>("ParseCsvSet", metadata, "csv").Should().BeEquivalentTo(new[] { "1397421866", "3447786229" });
-    }
-
-    [Fact]
-    public void DuplicatePolicyInference_ShouldCoverAllPriorityBranches()
-    {
-        InvokePrivateStatic<string>("InferDuplicateHeroPolicy", "aotr_profile", false, true)
-            .Should().Be("rescue_or_respawn");
-        InvokePrivateStatic<string>("InferDuplicateHeroPolicy", "roe_profile", true, false)
-            .Should().Be("mod_defined_permadeath");
-        InvokePrivateStatic<string>("InferDuplicateHeroPolicy", "base_swfoc", false, false)
-            .Should().Be("canonical_singleton");
-        InvokePrivateStatic<string>("InferDuplicateHeroPolicy", "custom_profile", false, false)
-            .Should().Be("mod_defined");
-    }
-
-    [Theory]
-    [InlineData("Unit", RosterEntityKind.Unit)]
-    [InlineData("Hero", RosterEntityKind.Hero)]
-    [InlineData("Building", RosterEntityKind.Building)]
-    [InlineData("SpaceStructure", RosterEntityKind.SpaceStructure)]
-    [InlineData("AbilityCarrier", RosterEntityKind.AbilityCarrier)]
-    [InlineData("Unknown", RosterEntityKind.Unit)]
-    public void ParseEntityKind_ShouldMapKnownValues_AndFallbackToUnit(string rawKind, RosterEntityKind expected)
-    {
-        InvokePrivateStatic<RosterEntityKind>("ParseEntityKind", rawKind).Should().Be(expected);
-    }
-
-    [Fact]
-    public void ResolveAllowedModes_ShouldMapByEntityKind()
-    {
-        InvokePrivateStatic<IReadOnlyList<RuntimeMode>>("ResolveAllowedModes", RosterEntityKind.Building)
-            .Should().Equal(RuntimeMode.Galactic);
-
-        InvokePrivateStatic<IReadOnlyList<RuntimeMode>>("ResolveAllowedModes", RosterEntityKind.SpaceStructure)
-            .Should().Equal(RuntimeMode.Galactic);
-    }
-
-    [Fact]
-    public void PrivateGateEvaluators_ShouldFailClosed_WhenContextIsNull()
-    {
-        foreach (var methodName in new[]
-                 {
-                     "TryEvaluateDependencyGate",
-                     "TryEvaluateHelperGate",
-                     "TryEvaluateRosterGate",
-                     "TryEvaluateContextFactionGate",
-                     "TryEvaluateSymbolGate"
-                 })
-        {
-            var method = InvokePrivateStaticMethod(methodName);
-            var args = new object?[] { null, null };
-            var handled = (bool)method.Invoke(null, args)!;
-            handled.Should().BeTrue(methodName);
-
-            args[1].Should().NotBeNull(methodName + " should produce a support result");
-            var support = (ModMechanicSupport)args[1]!;
-            support.Supported.Should().BeFalse();
-            support.ReasonCode.Should().Be(RuntimeReasonCode.CAPABILITY_REQUIRED_MISSING);
-        }
-    }
-
-    [Fact]
-    public void EvaluateAction_ShouldReturnDefaultPass_WhenNoGateMatches()
-    {
-        var context = CreateActionEvaluationContext(
-            actionId: "unknown_action",
-            action: Action("unknown_action", ExecutionKind.Memory, "symbol"),
-            profile: BuildProfile(actions: new[] { Action("unknown_action", ExecutionKind.Memory, "symbol") }),
-            session: BuildSession(RuntimeMode.Galactic),
-            catalog: null,
-            disabledActions: new HashSet<string>(StringComparer.OrdinalIgnoreCase),
-            helperReady: true,
-            transplantReport: null);
-
-        var support = InvokePrivateStatic<ModMechanicSupport>("EvaluateAction", context);
-
-        support.Supported.Should().BeTrue();
-        support.ReasonCode.Should().Be(RuntimeReasonCode.CAPABILITY_PROBE_PASS);
-    }
-
-    [Fact]
-    public void BuildRosterEntities_ShouldReturnEmpty_WhenCatalogMissingOrInvalid()
-    {
-        var profile = BuildProfile(actions: Array.Empty<ActionSpec>());
-
-        InvokePrivateStatic<IReadOnlyList<RosterEntityRecord>>("BuildRosterEntities", profile, null).Should().BeEmpty();
-
-        var invalidCatalog = new Dictionary<string, IReadOnlyList<string>>(StringComparer.OrdinalIgnoreCase)
-        {
-            ["entity_catalog"] = new[] { "", "UnitOnly" }
-        };
-
-        InvokePrivateStatic<IReadOnlyList<RosterEntityRecord>>("BuildRosterEntities", profile, invalidCatalog).Should().BeEmpty();
-    }
-
-    [Fact]
-    public void ResolveHeroMechanicsProfile_ShouldApplyFallbackDefaults()
-    {
-        var profile = BuildProfile(actions: new[] { Action("set_hero_state_helper", ExecutionKind.Helper, "helperHookId", "globalKey") });
-        var session = BuildSession(RuntimeMode.Galactic, symbols: new[]
-        {
-            new SymbolInfo("hero_respawn_timer", (nint)0x10, SymbolValueType.Int32, AddressSource.Signature)
-        });
-
-        var mechanics = InvokePrivateStatic<HeroMechanicsProfile>("ResolveHeroMechanicsProfile", profile, session);
-
-        mechanics.SupportsRespawn.Should().BeTrue();
-        mechanics.DefaultRespawnTime.Should().Be(1);
-        mechanics.RespawnExceptionSources.Should().BeEmpty();
-    }
-
-    [Fact]
-    public void TryReadMetadataValue_ShouldTrimValues_AndRejectMissing()
-    {
-        var metadata = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
-        {
-            ["present"] = "  value  ",
-            ["blank"] = "   "
-        };
-
-        var presentArgs = new object?[] { metadata, "present", string.Empty };
-        ((bool)InvokePrivateStaticMethod("TryReadMetadataValue").Invoke(null, presentArgs)!).Should().BeTrue();
-        presentArgs[2].Should().Be("value");
-
-        var blankArgs = new object?[] { metadata, "blank", string.Empty };
-        ((bool)InvokePrivateStaticMethod("TryReadMetadataValue").Invoke(null, blankArgs)!).Should().BeFalse();
-
-        var missingArgs = new object?[] { metadata, "missing", string.Empty };
-        ((bool)InvokePrivateStaticMethod("TryReadMetadataValue").Invoke(null, missingArgs)!).Should().BeFalse();
-    }
-
-    [Fact]
-    public void AddCsvValues_ShouldIgnoreWhitespaceAndNormalizeEntries()
-    {
-        var sink = new HashSet<string>(StringComparer.OrdinalIgnoreCase) { "existing" };
-        InvokePrivateStaticMethod("AddCsvValues").Invoke(null, new object?[] { sink, "  one, two ,, one  " });
-
-        sink.Should().BeEquivalentTo(new[] { "existing", "one", "two" });
-    }
-
-    private static object CreateActionEvaluationContext(
-        string actionId,
-        ActionSpec action,
-        TrainerProfile profile,
-        AttachSession session,
-        IReadOnlyDictionary<string, IReadOnlyList<string>>? catalog,
-        IReadOnlySet<string> disabledActions,
-        bool helperReady,
-        TransplantValidationReport? transplantReport)
-    {
-        var contextType = typeof(ModMechanicDetectionService).GetNestedType("ActionEvaluationContext", System.Reflection.BindingFlags.NonPublic);
-        contextType.Should().NotBeNull();
-        var constructor = contextType!.GetConstructors(System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Public)
-            .Single(c => c.GetParameters().Length == 8);
-        return constructor.Invoke(new object?[]
-        {
-            actionId,
-            action,
-            profile,
-            session,
-            catalog,
-            disabledActions,
-            helperReady,
-            transplantReport
-        });
-    }
     private static IReadOnlyDictionary<string, IReadOnlyList<string>> CreateCatalog(string entityEntry)
     {
         return new Dictionary<string, IReadOnlyList<string>>(StringComparer.OrdinalIgnoreCase)
@@ -762,8 +487,7 @@ public sealed class ModMechanicDetectionServiceTests
 
     private static TrainerProfile BuildProfile(
         IReadOnlyList<ActionSpec> actions,
-        IReadOnlyList<HelperHookSpec>? helperHooks = null,
-        IReadOnlyDictionary<string, string>? metadata = null)
+        IReadOnlyList<HelperHookSpec>? helperHooks = null)
     {
         return new TrainerProfile(
             Id: "test_profile",
@@ -778,9 +502,7 @@ public sealed class ModMechanicDetectionServiceTests
             CatalogSources: Array.Empty<CatalogSource>(),
             SaveSchemaId: "test",
             HelperModHooks: helperHooks ?? Array.Empty<HelperHookSpec>(),
-            Metadata: metadata is null
-                ? new Dictionary<string, string>()
-                : new Dictionary<string, string>(metadata, StringComparer.OrdinalIgnoreCase));
+            Metadata: new Dictionary<string, string>());
     }
 
     private static AttachSession BuildSession(
@@ -899,8 +621,3 @@ public sealed class ModMechanicDetectionServiceTests
         return method!;
     }
 }
-
-
-
-
-

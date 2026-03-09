@@ -1,4 +1,5 @@
 using System.Reflection;
+using System.Windows.Input;
 using FluentAssertions;
 using SwfocTrainer.App.ViewModels;
 using Xunit;
@@ -25,7 +26,6 @@ public sealed class MainViewModelFactoriesCoverageTests
         collections.ActionReliability.Should().BeEmpty();
         collections.SelectedUnitTransactions.Should().BeEmpty();
         collections.SpawnPresets.Should().BeEmpty();
-        collections.EntityRoster.Should().BeEmpty();
         collections.LiveOpsDiagnostics.Should().BeEmpty();
         collections.ModCompatibilityRows.Should().BeEmpty();
         collections.ActiveFreezes.Should().BeEmpty();
@@ -99,6 +99,150 @@ public sealed class MainViewModelFactoriesCoverageTests
         instance.LaunchAndAttachCommand.Should().NotBeNull();
     }
 
+    [Fact]
+    public void CreateSaveCommands_ShouldRespectContextPredicates()
+    {
+        var context = new MainViewModelSaveCommandContext
+        {
+            BrowseSaveAsync = () => Task.CompletedTask,
+            LoadSaveAsync = () => Task.CompletedTask,
+            EditSaveFieldAsync = () => Task.CompletedTask,
+            ValidateSaveAsync = () => Task.CompletedTask,
+            RefreshSaveDiffPreviewAsync = () => Task.CompletedTask,
+            WriteSaveAsync = () => Task.CompletedTask,
+            BrowsePatchPackAsync = () => Task.CompletedTask,
+            ExportPatchPackAsync = () => Task.CompletedTask,
+            LoadPatchPackAsync = () => Task.CompletedTask,
+            PreviewPatchPackAsync = () => Task.CompletedTask,
+            ApplyPatchPackAsync = () => Task.CompletedTask,
+            RestoreSaveBackupAsync = () => Task.CompletedTask,
+            LoadHotkeysAsync = () => Task.CompletedTask,
+            SaveHotkeysAsync = () => Task.CompletedTask,
+            AddHotkeyAsync = () => Task.CompletedTask,
+            RemoveHotkeyAsync = () => Task.CompletedTask,
+            CanLoadSave = () => false,
+            CanEditSave = () => true,
+            CanValidateSave = () => false,
+            CanRefreshDiff = () => true,
+            CanWriteSave = () => false,
+            CanExportPatchPack = () => true,
+            CanLoadPatchPack = () => false,
+            CanPreviewPatchPack = () => true,
+            CanApplyPatchPack = () => false,
+            CanRestoreBackup = () => true,
+            CanRemoveHotkey = () => false
+        };
+
+        var commands = MainViewModelFactories.CreateSaveCommands(context);
+
+        commands.BrowseSave.CanExecute(null).Should().BeTrue();
+        commands.LoadSave.CanExecute(null).Should().BeFalse();
+        commands.EditSave.CanExecute(null).Should().BeTrue();
+        commands.ValidateSave.CanExecute(null).Should().BeFalse();
+        commands.RefreshDiff.CanExecute(null).Should().BeTrue();
+        commands.WriteSave.CanExecute(null).Should().BeFalse();
+        commands.BrowsePatchPack.CanExecute(null).Should().BeTrue();
+        commands.ExportPatchPack.CanExecute(null).Should().BeTrue();
+        commands.LoadPatchPack.CanExecute(null).Should().BeFalse();
+        commands.PreviewPatchPack.CanExecute(null).Should().BeTrue();
+        commands.ApplyPatchPack.CanExecute(null).Should().BeFalse();
+        commands.RestoreBackup.CanExecute(null).Should().BeTrue();
+        commands.LoadHotkeys.CanExecute(null).Should().BeTrue();
+        commands.SaveHotkeys.CanExecute(null).Should().BeTrue();
+        commands.AddHotkey.CanExecute(null).Should().BeTrue();
+        commands.RemoveHotkey.CanExecute(null).Should().BeFalse();
+    }
+
+    [Fact]
+    public void CreateLiveOpsCommands_ShouldEvaluateDynamicGuards()
+    {
+        var isAttached = false;
+        var canUseProfile = false;
+        var canRunSpawnBatch = false;
+        var canUseSupportBundleOutputDirectory = false;
+        var canScaffoldProfile = true;
+        var context = new MainViewModelLiveOpsCommandContext
+        {
+            RefreshActionReliabilityAsync = () => Task.CompletedTask,
+            CaptureSelectedUnitBaselineAsync = () => Task.CompletedTask,
+            ApplySelectedUnitDraftAsync = () => Task.CompletedTask,
+            RevertSelectedUnitTransactionAsync = () => Task.CompletedTask,
+            RestoreSelectedUnitBaselineAsync = () => Task.CompletedTask,
+            LoadSpawnPresetsAsync = () => Task.CompletedTask,
+            RunSpawnBatchAsync = () => Task.CompletedTask,
+            ScaffoldModProfileAsync = () => Task.CompletedTask,
+            ExportCalibrationArtifactAsync = () => Task.CompletedTask,
+            BuildModCompatibilityReportAsync = () => Task.CompletedTask,
+            ExportSupportBundleAsync = () => Task.CompletedTask,
+            ExportTelemetrySnapshotAsync = () => Task.CompletedTask,
+            CanRunSpawnBatch = () => canRunSpawnBatch,
+            CanScaffoldModProfile = () => canScaffoldProfile,
+            CanUseSupportBundleOutputDirectory = () => canUseSupportBundleOutputDirectory,
+            IsAttached = () => isAttached,
+            CanUseSelectedProfile = () => canUseProfile
+        };
+
+        var commands = MainViewModelFactories.CreateLiveOpsCommands(context);
+
+        commands.RefreshActionReliability.CanExecute(null).Should().BeFalse();
+        commands.CaptureSelectedUnitBaseline.CanExecute(null).Should().BeFalse();
+        commands.ApplySelectedUnitDraft.CanExecute(null).Should().BeFalse();
+        commands.RevertSelectedUnitTransaction.CanExecute(null).Should().BeFalse();
+        commands.RestoreSelectedUnitBaseline.CanExecute(null).Should().BeFalse();
+        commands.LoadSpawnPresets.CanExecute(null).Should().BeFalse();
+        commands.RunSpawnBatch.CanExecute(null).Should().BeFalse();
+        commands.ScaffoldModProfile.CanExecute(null).Should().BeTrue();
+        commands.ExportCalibrationArtifact.CanExecute(null).Should().BeFalse();
+        commands.BuildCompatibilityReport.CanExecute(null).Should().BeFalse();
+        commands.ExportSupportBundle.CanExecute(null).Should().BeFalse();
+        commands.ExportTelemetrySnapshot.CanExecute(null).Should().BeFalse();
+
+        isAttached = true;
+        canUseProfile = true;
+        canRunSpawnBatch = true;
+        canUseSupportBundleOutputDirectory = true;
+
+        commands.RefreshActionReliability.CanExecute(null).Should().BeTrue();
+        commands.CaptureSelectedUnitBaseline.CanExecute(null).Should().BeTrue();
+        commands.ApplySelectedUnitDraft.CanExecute(null).Should().BeTrue();
+        commands.RevertSelectedUnitTransaction.CanExecute(null).Should().BeTrue();
+        commands.RestoreSelectedUnitBaseline.CanExecute(null).Should().BeTrue();
+        commands.LoadSpawnPresets.CanExecute(null).Should().BeTrue();
+        commands.RunSpawnBatch.CanExecute(null).Should().BeTrue();
+        commands.ScaffoldModProfile.CanExecute(null).Should().BeTrue();
+        commands.ExportCalibrationArtifact.CanExecute(null).Should().BeTrue();
+        commands.BuildCompatibilityReport.CanExecute(null).Should().BeTrue();
+        commands.ExportSupportBundle.CanExecute(null).Should().BeTrue();
+        commands.ExportTelemetrySnapshot.CanExecute(null).Should().BeTrue();
+    }
+
+    [Fact]
+    public void CreateQuickCommands_ShouldGateAllCommandsOnAttachmentState()
+    {
+        var isAttached = false;
+        var context = new MainViewModelQuickCommandContext
+        {
+            QuickSetCreditsAsync = () => Task.CompletedTask,
+            QuickFreezeTimerAsync = () => Task.CompletedTask,
+            QuickToggleFogAsync = () => Task.CompletedTask,
+            QuickToggleAiAsync = () => Task.CompletedTask,
+            QuickInstantBuildAsync = () => Task.CompletedTask,
+            QuickUnitCapAsync = () => Task.CompletedTask,
+            QuickGodModeAsync = () => Task.CompletedTask,
+            QuickOneHitAsync = () => Task.CompletedTask,
+            QuickUnfreezeAllAsync = () => Task.CompletedTask,
+            IsAttached = () => isAttached
+        };
+
+        var commands = MainViewModelFactories.CreateQuickCommands(context);
+
+        GetQuickCommands(commands).Should().OnlyContain(command => !command.CanExecute(null));
+
+        isAttached = true;
+
+        GetQuickCommands(commands).Should().OnlyContain(command => command.CanExecute(null));
+    }
+
     private static MainViewModelDependencies CreateNullDependencies()
     {
         return new MainViewModelDependencies
@@ -127,6 +271,31 @@ public sealed class MainViewModelFactoriesCoverageTests
         };
     }
 
+    private static IReadOnlyList<ICommand> GetQuickCommands((
+        ICommand QuickSetCredits,
+        ICommand QuickFreezeTimer,
+        ICommand QuickToggleFog,
+        ICommand QuickToggleAi,
+        ICommand QuickInstantBuild,
+        ICommand QuickUnitCap,
+        ICommand QuickGodMode,
+        ICommand QuickOneHit,
+        ICommand QuickUnfreezeAll) commands)
+    {
+        return
+        [
+            commands.QuickSetCredits,
+            commands.QuickFreezeTimer,
+            commands.QuickToggleFog,
+            commands.QuickToggleAi,
+            commands.QuickInstantBuild,
+            commands.QuickUnitCap,
+            commands.QuickGodMode,
+            commands.QuickOneHit,
+            commands.QuickUnfreezeAll
+        ];
+    }
+
     private sealed class CoreStateTestDouble : MainViewModelCoreStateBase
     {
         public CoreStateTestDouble(MainViewModelDependencies dependencies)
@@ -139,4 +308,3 @@ public sealed class MainViewModelFactoriesCoverageTests
         public string ExportedLaunchWorkshopId => _launchWorkshopId;
     }
 }
-

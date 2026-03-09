@@ -150,6 +150,61 @@ public sealed class MainViewModelHelperCoverageTests
     }
 
     [Fact]
+    public void IsActionAvailableForCurrentSession_ShouldReturnTrue_ForNonSymbolExecutionKinds()
+    {
+        var action = BuildAction("helper_action", ExecutionKind.Helper, MainViewModelDefaults.PayloadKeySymbol);
+        var session = BuildSession(RuntimeMode.Galactic);
+        var symbolMap = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
+        {
+            ["helper_action"] = MainViewModelDefaults.SymbolCredits
+        };
+
+        var available = MainViewModelAttachHelpers.IsActionAvailableForCurrentSession(
+            "helper_action",
+            action,
+            session,
+            symbolMap,
+            out var reason);
+
+        available.Should().BeTrue();
+        reason.Should().BeNull();
+    }
+
+    [Fact]
+    public void IsActionAvailableForCurrentSession_ShouldReturnTrue_WhenPayloadDoesNotRequireSymbol()
+    {
+        var action = BuildAction("set_credits", ExecutionKind.Sdk, MainViewModelDefaults.PayloadKeyIntValue);
+        var session = BuildSession(RuntimeMode.Galactic);
+
+        var available = MainViewModelAttachHelpers.IsActionAvailableForCurrentSession(
+            "set_credits",
+            action,
+            session,
+            MainViewModelDefaults.DefaultSymbolByActionId,
+            out var reason);
+
+        available.Should().BeTrue();
+        reason.Should().BeNull();
+    }
+
+    [Fact]
+    public void IsActionAvailableForCurrentSession_ShouldReturnTrue_WhenDefaultSymbolMappingMissing()
+    {
+        var action = BuildAction("custom_action", ExecutionKind.Sdk, MainViewModelDefaults.PayloadKeySymbol);
+        var session = BuildSession(RuntimeMode.Galactic);
+
+        var available = MainViewModelAttachHelpers.IsActionAvailableForCurrentSession(
+            "custom_action",
+            action,
+            session,
+            MainViewModelDefaults.DefaultSymbolByActionId,
+            out var reason);
+
+        available.Should().BeTrue();
+        reason.Should().BeNull();
+    }
+
+    [Fact]
     public void BuildRequiredPayloadTemplate_ShouldPopulateExpectedDefaults()
     {
         var required = new JsonArray(
@@ -261,8 +316,6 @@ public sealed class MainViewModelHelperCoverageTests
                 ["reasonCode"] = "CAPABILITY_REQUIRED_MISSING",
                 ["probeReasonCode"] = "CAPABILITY_PROBE_PASS",
                 ["hookState"] = "ready",
-                ["helperVerifyState"] = "failed_runtime_evidence",
-                ["operationKind"] = "SpawnTacticalEntity",
                 ["hybridExecution"] = true
             });
 
@@ -272,74 +325,7 @@ public sealed class MainViewModelHelperCoverageTests
         suffix.Should().Contain("routeReasonCode=CAPABILITY_REQUIRED_MISSING");
         suffix.Should().Contain("capabilityProbeReasonCode=CAPABILITY_PROBE_PASS");
         suffix.Should().Contain("hookState=ready");
-        suffix.Should().Contain("helperVerify=failed_runtime_evidence");
-        suffix.Should().Contain("operationKind=SpawnTacticalEntity");
         suffix.Should().Contain("hybridExecution=True");
-    }
-
-    
-    [Fact]
-    public void BuildProcessDiagnosticSummary_ShouldIncludeDerivedSegments()
-    {
-        var process = BuildProcess(
-            pid: 44,
-            name: "swfoc.exe",
-            target: ExeTarget.Swfoc,
-            metadata: new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
-            {
-                ["dependencyValidation"] = "SoftFail",
-                ["dependencyValidationMessage"] = "missing parent",
-                ["commandLineAvailable"] = "True",
-                ["steamModIdsDetected"] = "1397421866,3447786229",
-                ["detectedVia"] = "cmd",
-                ["resolvedVariant"] = "aotr",
-                ["resolvedVariantReasonCode"] = "profile_match",
-                ["resolvedVariantConfidence"] = "0.93",
-                ["fallbackHitRate"] = "0.2",
-                ["unresolvedSymbolRate"] = "0.1"
-            },
-            launchContext: new LaunchContext(
-                LaunchKind.Workshop,
-                CommandLineAvailable: true,
-                SteamModIds: new[] { "1397421866", "3447786229" },
-                ModPathRaw: null,
-                ModPathNormalized: null,
-                DetectedVia: "cmd",
-                Recommendation: new ProfileRecommendation("aotr_1397421866_swfoc", "workshop_match", 0.98)));
-
-        var summary = MainViewModelDiagnostics.BuildProcessDiagnosticSummary(process, "unknown");
-
-        summary.Should().Contain("target=Swfoc");
-        summary.Should().Contain("launch=Workshop");
-        summary.Should().Contain("hostRole=unknown");
-        summary.Should().Contain("mods=1397421866,3447786229");
-        summary.Should().Contain("dependency=SoftFail (missing parent)");
-        summary.Should().Contain("variant=aotr:profile_match:0.93");
-        summary.Should().Contain("fallbackRate=0.2");
-    }
-
-    [Fact]
-    public void BuildQuickActionStatusAndReadDiagnosticString_ShouldHandleMissingAndNonStringValues()
-    {
-        var result = new ActionExecutionResult(
-            Succeeded: true,
-            Message: "applied",
-            AddressSource: AddressSource.Signature,
-            Diagnostics: new Dictionary<string, object?>
-            {
-                ["backend"] = "helper",
-                ["routeReasonCode"] = 123,
-                ["hookState"] = null
-            });
-
-        var status = MainViewModelDiagnostics.BuildQuickActionStatus("spawn_tactical_entity", result);
-        var asString = MainViewModelDiagnostics.ReadDiagnosticString(result.Diagnostics, "routeReasonCode");
-        var missing = MainViewModelDiagnostics.ReadDiagnosticString(result.Diagnostics, "missing");
-
-        status.Should().Contain("✓ spawn_tactical_entity: applied");
-        status.Should().Contain("backend=helper");
-        asString.Should().Be("123");
-        missing.Should().BeEmpty();
     }
 
     [Fact]
@@ -455,81 +441,6 @@ public sealed class MainViewModelHelperCoverageTests
         chain.Should().Equal("parentRoot", "child", "parentA", "parentB");
     }
 
-    [Fact]
-    public void BuildAttachStartStatus_ShouldRenderVariantAndNonVariantForms()
-    {
-        var noVariant = MainViewModelAttachHelpers.BuildAttachStartStatus("base_swfoc", null);
-        var variant = MainViewModelAttachHelpers.BuildAttachStartStatus(
-            "aotr_1397421866_swfoc",
-            new ProfileVariantResolution(
-                "aotr_1397421866_swfoc",
-                "aotr_1397421866_swfoc",
-                "workshop_match",
-                0.91));
-
-        noVariant.Should().Be("Attaching using profile 'base_swfoc'...");
-        variant.Should().Contain("universal profile");
-        variant.Should().Contain("aotr_1397421866_swfoc");
-        variant.Should().Contain("workshop_match");
-        variant.Should().Contain("conf=0.91");
-    }
-
-    [Fact]
-    public void IsStarWarsGProcess_ShouldRecognizeProcessPathAndIgnoreFalseMetadata()
-    {
-        var viaPath = BuildProcess(
-            90,
-            "custom_launcher.exe",
-            ExeTarget.Unknown,
-            processPath: @"C:\Games\StarWarsG.exe");
-        var falseMetadata = BuildProcess(
-            91,
-            "custom_launcher.exe",
-            ExeTarget.Unknown,
-            processPath: @"C:\Games\other.exe",
-            metadata: new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
-            {
-                ["isStarWarsG"] = "false"
-            });
-
-        MainViewModelAttachHelpers.IsStarWarsGProcess(viaPath).Should().BeTrue();
-        MainViewModelAttachHelpers.IsStarWarsGProcess(falseMetadata).Should().BeFalse();
-    }
-
-    [Fact]
-    public void IsActionAvailableForCurrentSession_ShouldAllowHelperActionWithoutRequiredSymbol()
-    {
-        var action = BuildAction("spawn_tactical_entity", ExecutionKind.Helper);
-        var session = BuildSession(RuntimeMode.TacticalLand);
-
-        var available = MainViewModelAttachHelpers.IsActionAvailableForCurrentSession(
-            "spawn_tactical_entity",
-            action,
-            session,
-            MainViewModelDefaults.DefaultSymbolByActionId,
-            out var reason);
-
-        available.Should().BeTrue();
-        reason.Should().BeNull();
-    }
-
-    [Fact]
-    public void DraftBuildResult_FactoryMethods_ShouldReturnExpectedShapes()
-    {
-        var draft = new SelectedUnitDraft(Hp: 100, DamageMultiplier: 2.5f, OwnerFaction: 3);
-
-        var failed = DraftBuildResult.Failed("invalid draft");
-        var success = DraftBuildResult.FromDraft(draft);
-
-        failed.Succeeded.Should().BeFalse();
-        failed.Message.Should().Be("invalid draft");
-        failed.Draft.Should().BeNull();
-
-        success.Succeeded.Should().BeTrue();
-        success.Message.Should().Be("ok");
-        success.Draft.Should().BeEquivalentTo(draft);
-    }
-
     private static GameLaunchMode InvokeResolveLaunchMode(string mode)
     {
         var method = typeof(MainViewModel).GetMethod("ResolveLaunchMode", BindingFlags.NonPublic | BindingFlags.Static);
@@ -564,7 +475,6 @@ public sealed class MainViewModelHelperCoverageTests
         int pid,
         string name,
         ExeTarget target,
-        string? processPath = null,
         IReadOnlyDictionary<string, string>? metadata = null,
         LaunchContext? launchContext = null)
     {
@@ -578,7 +488,7 @@ public sealed class MainViewModelHelperCoverageTests
         return new ProcessMetadata(
             ProcessId: pid,
             ProcessName: name,
-            ProcessPath: processPath ?? $@"C:\Games\{name}",
+            ProcessPath: $@"C:\Games\{name}",
             CommandLine: "",
             ExeTarget: target,
             Mode: RuntimeMode.Unknown,

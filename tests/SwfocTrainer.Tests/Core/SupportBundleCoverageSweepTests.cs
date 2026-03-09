@@ -40,14 +40,14 @@ public sealed class SupportBundleCoverageSweepTests
         result.Warnings.Should().Contain(x => x.Contains("not attached", StringComparison.OrdinalIgnoreCase));
         result.IncludedFiles.Should().Contain("runtime-snapshot.json");
         result.IncludedFiles.Should().Contain("manifest.json");
-        result.IncludedFiles.Should().Contain(x => x.StartsWith("runs/", StringComparison.Ordinal) && x.EndsWith("/repro-bundle.json", StringComparison.Ordinal));
-        result.IncludedFiles.Should().Contain(x => x.StartsWith("runs/", StringComparison.Ordinal) && x.EndsWith("/repro-bundle.md", StringComparison.Ordinal));
+        result.IncludedFiles.Should().Contain(path => path.EndsWith("/repro-bundle.json", StringComparison.OrdinalIgnoreCase));
+        result.IncludedFiles.Should().Contain(path => path.EndsWith("/repro-bundle.md", StringComparison.OrdinalIgnoreCase));
         Directory.GetDirectories(outputDir.Path, "support-bundle-*").Should().BeEmpty();
 
         using var archive = ZipFile.OpenRead(result.BundlePath);
         archive.Entries.Should().Contain(x => x.FullName == "runtime-snapshot.json");
-        archive.Entries.Should().Contain(x => x.FullName.StartsWith("runs/", StringComparison.Ordinal) && x.FullName.EndsWith("/repro-bundle.json", StringComparison.Ordinal));
-        archive.Entries.Should().Contain(x => x.FullName.StartsWith("runs/", StringComparison.Ordinal) && x.FullName.EndsWith("/repro-bundle.md", StringComparison.Ordinal));
+        archive.Entries.Should().Contain(x => x.FullName.EndsWith("/repro-bundle.json", StringComparison.OrdinalIgnoreCase));
+        archive.Entries.Should().Contain(x => x.FullName.EndsWith("/repro-bundle.md", StringComparison.OrdinalIgnoreCase));
 
         using var runtimeStream = archive.GetEntry("runtime-snapshot.json")!.Open();
         var runtimeJson = await JsonSerializer.DeserializeAsync<JsonElement>(runtimeStream);

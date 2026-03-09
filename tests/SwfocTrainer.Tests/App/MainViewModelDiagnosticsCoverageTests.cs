@@ -1,6 +1,5 @@
 using System.Text.Json;
 using FluentAssertions;
-using SwfocTrainer.App.Models;
 using SwfocTrainer.App.ViewModels;
 using SwfocTrainer.Core.Models;
 using Xunit;
@@ -10,38 +9,110 @@ namespace SwfocTrainer.Tests.App;
 public sealed class MainViewModelDiagnosticsCoverageTests
 {
     [Fact]
-    public void BuildProcessDiagnosticSummary_ShouldRenderRichProcessMetadata()
+    public void BuildDiagnosticsStatusSuffix_ShouldReturnEmpty_WhenDiagnosticsMissingOrUnmapped()
+    {
+        var withoutDiagnostics = new ActionExecutionResult(
+            Succeeded: true,
+            Message: "ok",
+            AddressSource: AddressSource.None,
+            Diagnostics: null);
+        var withUnmappedDiagnostics = new ActionExecutionResult(
+            Succeeded: true,
+            Message: "ok",
+            AddressSource: AddressSource.None,
+            Diagnostics: new Dictionary<string, object?>
+            {
+                ["backend"] = "  ",
+                ["unrelated"] = "value"
+            });
+
+        MainViewModelDiagnostics.BuildDiagnosticsStatusSuffix(withoutDiagnostics).Should().BeEmpty();
+        MainViewModelDiagnostics.BuildDiagnosticsStatusSuffix(withUnmappedDiagnostics).Should().BeEmpty();
+    }
+
+    [Fact]
+    public void BuildDiagnosticsStatusSuffix_ShouldPreferAliasKeysAndSkipWhitespaceValues()
+    {
+        var result = new ActionExecutionResult(
+            Succeeded: false,
+            Message: "failed",
+            AddressSource: AddressSource.Signature,
+            Diagnostics: new Dictionary<string, object?>
+            {
+                ["backend"] = " ",
+                ["backendRoute"] = "runtime",
+                ["routeReasonCode"] = "",
+                ["reasonCode"] = "CAPABILITY_REQUIRED_MISSING",
+                ["probeReasonCode"] = "CAPABILITY_PROBE_PASS",
+                ["hookState"] = 2,
+                ["hybridExecution"] = false
+            });
+
+        var suffix = MainViewModelDiagnostics.BuildDiagnosticsStatusSuffix(result);
+
+        suffix.Should().Contain("backend=runtime");
+        suffix.Should().Contain("routeReasonCode=CAPABILITY_REQUIRED_MISSING");
+        suffix.Should().Contain("capabilityProbeReasonCode=CAPABILITY_PROBE_PASS");
+        suffix.Should().Contain("hookState=2");
+        suffix.Should().Contain("hybridExecution=False");
+    }
+
+    [Fact]
+    public void BuildQuickActionStatus_ShouldPrefixOutcomeAndAppendDiagnostics()
+    {
+        var success = new ActionExecutionResult(
+            Succeeded: true,
+            Message: "applied",
+            AddressSource: AddressSource.Signature,
+            Diagnostics: new Dictionary<string, object?>
+            {
+                ["backend"] = "sdk"
+            });
+        var failure = new ActionExecutionResult(
+            Succeeded: false,
+            Message: "blocked",
+            AddressSource: AddressSource.None);
+
+        var successStatus = MainViewModelDiagnostics.BuildQuickActionStatus("set_credits", success);
+        var failureStatus = MainViewModelDiagnostics.BuildQuickActionStatus("set_credits", failure);
+
+        successStatus.Should().Be("✓ set_credits: applied [backend=sdk]");
+        failureStatus.Should().Be("✗ set_credits: blocked");
+    }
+
+    [Fact]
+    public void BuildProcessDiagnosticSummary_ShouldIncludeRecommendationAndDependencyContext()
     {
         var process = new ProcessMetadata(
-            ProcessId: 42,
+            ProcessId: 101,
             ProcessName: "swfoc.exe",
             ProcessPath: @"C:\Games\swfoc.exe",
-            CommandLine: "swfoc.exe STEAMMOD=1397421866",
+            CommandLine: "STEAMMOD=3447786229",
             ExeTarget: ExeTarget.Swfoc,
             Mode: RuntimeMode.Galactic,
             Metadata: new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
             {
-                ["dependencyValidation"] = "SoftFail",
-                ["dependencyValidationMessage"] = "parent missing",
                 ["commandLineAvailable"] = "True",
-                ["steamModIdsDetected"] = "1397421866,3447786229",
-                ["detectedVia"] = "snapshot",
-                ["fallbackHitRate"] = "0.15",
-                ["unresolvedSymbolRate"] = "0.35",
-                ["resolvedVariant"] = "roe_chain",
-                ["resolvedVariantReasonCode"] = "workshop_chain",
-                ["resolvedVariantConfidence"] = "0.91"
+                ["steamModIdsDetected"] = "3447786229,1397421866",
+                ["detectedVia"] = "cmd",
+                ["resolvedVariant"] = "roe",
+                ["resolvedVariantReasonCode"] = "workshop_match",
+                ["resolvedVariantConfidence"] = "0.95",
+                ["dependencyValidation"] = "SoftFail",
+                ["dependencyValidationMessage"] = "missing parent",
+                ["fallbackHitRate"] = "22%",
+                ["unresolvedSymbolRate"] = "5%"
             },
             LaunchContext: new LaunchContext(
                 LaunchKind.Workshop,
                 CommandLineAvailable: true,
-                SteamModIds: new[] { "1397421866", "3447786229" },
+                SteamModIds: new[] { "3447786229" },
                 ModPathRaw: null,
-                ModPathNormalized: @"Mods\ROE",
-                DetectedVia: "command_line",
-                Recommendation: new ProfileRecommendation("roe_3447786229_swfoc", "workshop_match", 0.82)),
+                ModPathNormalized: "Mods\\ROE",
+                DetectedVia: "cmd",
+                Recommendation: new ProfileRecommendation("roe_3447786229_swfoc", "workshop_match", 0.91)),
             HostRole: ProcessHostRole.GameHost,
-            MainModuleSize: 123456,
+            MainModuleSize: 4096,
             WorkshopMatchCount: 2,
             SelectionScore: 0.875);
 
@@ -51,182 +122,102 @@ public sealed class MainViewModelDiagnosticsCoverageTests
         summary.Should().Contain("launch=Workshop");
         summary.Should().Contain("hostRole=gamehost");
         summary.Should().Contain("score=0.88");
-        summary.Should().Contain("module=123456");
+        summary.Should().Contain("module=4096");
         summary.Should().Contain("workshopMatches=2");
-        summary.Should().Contain("cmdLine=True");
-        summary.Should().Contain("mods=1397421866,3447786229");
-        summary.Should().Contain(@"modPath=Mods\ROE");
-        summary.Should().Contain("rec=roe_3447786229_swfoc:workshop_match:0.82");
-        summary.Should().Contain("via=snapshot");
-        summary.Should().Contain("dependency=SoftFail (parent missing)");
-        summary.Should().Contain("variant=roe_chain:workshop_chain:0.91");
-        summary.Should().Contain("fallbackRate=0.15");
-        summary.Should().Contain("unresolvedRate=0.35");
+        summary.Should().Contain("mods=3447786229,1397421866");
+        summary.Should().Contain("modPath=Mods\\ROE");
+        summary.Should().Contain("rec=roe_3447786229_swfoc:workshop_match:0.91");
+        summary.Should().Contain("variant=roe:workshop_match:0.95");
+        summary.Should().Contain("dependency=SoftFail (missing parent)");
+        summary.Should().Contain("fallbackRate=22%");
+        summary.Should().Contain("unresolvedRate=5%");
     }
 
     [Fact]
-    public void BuildProcessDiagnosticSummary_ShouldRenderFallbackSegments_WhenMetadataMissing()
+    public void BuildProcessDiagnosticSummary_ShouldUseFallbackValues_WhenMetadataIsMissing()
     {
         var process = new ProcessMetadata(
-            ProcessId: 7,
-            ProcessName: "sweaw.exe",
-            ProcessPath: @"C:\Games\sweaw.exe",
+            ProcessId: 202,
+            ProcessName: "StarWarsG.exe",
+            ProcessPath: @"C:\Games\StarWarsG.exe",
             CommandLine: null,
-            ExeTarget: ExeTarget.Sweaw,
-            Mode: RuntimeMode.Menu,
-            Metadata: null,
-            LaunchContext: null,
-            HostRole: ProcessHostRole.Launcher,
-            MainModuleSize: 0,
-            WorkshopMatchCount: 0,
-            SelectionScore: 0d);
+            ExeTarget: ExeTarget.Swfoc,
+            Mode: RuntimeMode.Unknown);
 
         var summary = MainViewModelDiagnostics.BuildProcessDiagnosticSummary(process, "unknown");
 
         summary.Should().Contain("launch=Unknown");
-        summary.Should().Contain("hostRole=launcher");
-        summary.Should().Contain("score=0.00");
+        summary.Should().Contain("hostRole=unknown");
         summary.Should().Contain("module=n/a");
         summary.Should().Contain("mods=none");
         summary.Should().Contain("modPath=none");
         summary.Should().Contain("rec=none:unknown:0.00");
+        summary.Should().Contain("variant=n/a:n/a:0.00");
         summary.Should().Contain("via=unknown");
         summary.Should().Contain("dependency=Pass");
-        summary.Should().Contain("variant=n/a:n/a:0.00");
         summary.Should().Contain("fallbackRate=n/a");
         summary.Should().Contain("unresolvedRate=n/a");
     }
 
     [Fact]
-    public void ReadProcessMetadata_And_ReadProcessMods_ShouldHonorFallbacks()
+    public void FormatPatchValue_ShouldHandleNullAndJsonElementKinds()
     {
-        var emptyProcess = new ProcessMetadata(
-            1,
-            "game.exe",
-            "/tmp/game.exe",
-            null,
-            ExeTarget.Unknown,
-            RuntimeMode.Unknown,
-            Metadata: null);
+        using var doc = JsonDocument.Parse("{\"text\":\"credits\",\"count\":42,\"empty\":null}");
 
-        var whitespaceModsProcess = emptyProcess with
-        {
-            Metadata = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
-            {
-                ["steamModIdsDetected"] = "   "
-            }
-        };
-
-        MainViewModelDiagnostics.ReadProcessMetadata(emptyProcess, "missing", "fallback").Should().Be("fallback");
-        MainViewModelDiagnostics.ReadProcessMods(emptyProcess).Should().Be("none");
-        MainViewModelDiagnostics.ReadProcessMods(whitespaceModsProcess).Should().Be("none");
-    }
-
-    [Theory]
-    [InlineData("Pass", "", "dependency=Pass")]
-    [InlineData("SoftFail", "parent missing", "dependency=SoftFail (parent missing)")]
-    public void BuildProcessDependencySegment_ShouldFormatExpectedValue(string state, string message, string expected)
-    {
-        MainViewModelDiagnostics.BuildProcessDependencySegment(state, message).Should().Be(expected);
-    }
-
-    [Theory]
-    [InlineData(null, "null")]
-    [InlineData("\"alpha\"", "alpha")]
-    [InlineData("null", "null")]
-    [InlineData("123", "123")]
-    public void FormatPatchValue_ShouldHandleJsonElementBranches(string? jsonLiteral, string expected)
-    {
-        object? value = jsonLiteral is null
-            ? null
-            : JsonDocument.Parse(jsonLiteral).RootElement.Clone();
-
-        MainViewModelDiagnostics.FormatPatchValue(value).Should().Be(expected);
+        MainViewModelDiagnostics.FormatPatchValue(null).Should().Be("null");
+        MainViewModelDiagnostics.FormatPatchValue(doc.RootElement.GetProperty("text")).Should().Be("credits");
+        MainViewModelDiagnostics.FormatPatchValue(doc.RootElement.GetProperty("count")).Should().Be("42");
+        MainViewModelDiagnostics.FormatPatchValue(doc.RootElement.GetProperty("empty")).Should().Be("null");
+        MainViewModelDiagnostics.FormatPatchValue(13).Should().Be("13");
     }
 
     [Fact]
-    public void FormatPatchValue_ShouldHandlePlainObjects()
-    {
-        MainViewModelDiagnostics.FormatPatchValue(123).Should().Be("123");
-        MainViewModelDiagnostics.FormatPatchValue(true).Should().Be("True");
-    }
-
-    [Fact]
-    public void PatchSummaryAndDependencyDiagnostic_ShouldIncludeMetadata()
+    public void BuildPatchMetadataSummary_ShouldIncludeSchemaProfileAndOperationCount()
     {
         var pack = new SavePatchPack(
-            new SavePatchMetadata("1.0", "base_swfoc", "schema_v1", "hash123", DateTimeOffset.Parse("2026-03-09T10:00:00Z")),
-            new SavePatchCompatibility(new[] { "base_swfoc" }, "schema_v1"),
-            new[]
+            Metadata: new SavePatchMetadata(
+                SchemaVersion: "v1",
+                ProfileId: "roe_3447786229_swfoc",
+                SchemaId: "save_schema",
+                SourceHash: "ABC123",
+                CreatedAtUtc: DateTimeOffset.Parse("2026-03-09T10:00:00Z")),
+            Compatibility: new SavePatchCompatibility(
+                AllowedProfileIds: new[] { "roe_3447786229_swfoc" },
+                RequiredSchemaId: "save_schema"),
+            Operations: new[]
             {
-                new SavePatchOperation(SavePatchOperationKind.SetValue, "/credits", "credits", "Int32", 10, 20, 4)
+                new SavePatchOperation(SavePatchOperationKind.SetValue, "credits", "credits", "Int32", 1000, 1500, 0x12),
+                new SavePatchOperation(SavePatchOperationKind.SetValue, "fog", "fog", "Bool", false, true, 0x28)
             });
 
-        MainViewModelDiagnostics.BuildPatchMetadataSummary(pack).Should().Be("Patch 1.0 | profile=base_swfoc | schema=schema_v1 | ops=1");
-        MainViewModelDiagnostics.BuildDependencyDiagnostic("Pass", string.Empty).Should().Be("dependency: Pass");
-        MainViewModelDiagnostics.BuildDependencyDiagnostic("SoftFail", "missing parent").Should().Be("dependency: SoftFail (missing parent)");
+        var summary = MainViewModelDiagnostics.BuildPatchMetadataSummary(pack);
+
+        summary.Should().Be("Patch v1 | profile=roe_3447786229_swfoc | schema=save_schema | ops=2");
     }
 
     [Fact]
-    public void BuildDiagnosticsStatusSuffix_And_QuickActionStatus_ShouldRenderKnownDiagnosticKeys()
+    public void BuildDependencyDiagnostic_ShouldIncludeMessageOnlyWhenPresent()
     {
-        var result = new ActionExecutionResult(
-            Succeeded: true,
-            Message: "ok",
-            AddressSource: AddressSource.Signature,
-            Diagnostics: new Dictionary<string, object?>
-            {
-                ["backendRoute"] = "helper",
-                ["reasonCode"] = "ROUTE_OK",
-                ["capabilityProbeReasonCode"] = "PROBE_OK",
-                ["hookState"] = "active",
-                ["helperVerifyState"] = "Applied",
-                ["operationKind"] = "spawn_tactical_entity",
-                ["hybridExecution"] = true
-            });
-
-        var suffix = MainViewModelDiagnostics.BuildDiagnosticsStatusSuffix(result);
-        var status = MainViewModelDiagnostics.BuildQuickActionStatus("spawn_tactical_entity", result);
-
-        suffix.Should().Be(" [backend=helper, routeReasonCode=ROUTE_OK, capabilityProbeReasonCode=PROBE_OK, hookState=active, helperVerify=Applied, operationKind=spawn_tactical_entity, hybridExecution=True]");
-        status.Should().Be("✓ spawn_tactical_entity: ok [backend=helper, routeReasonCode=ROUTE_OK, capabilityProbeReasonCode=PROBE_OK, hookState=active, helperVerify=Applied, operationKind=spawn_tactical_entity, hybridExecution=True]");
+        MainViewModelDiagnostics.BuildDependencyDiagnostic("Pass", string.Empty)
+            .Should().Be("dependency: Pass");
+        MainViewModelDiagnostics.BuildDependencyDiagnostic("SoftFail", "missing files")
+            .Should().Be("dependency: SoftFail (missing files)");
     }
 
     [Fact]
-    public void BuildDiagnosticsStatusSuffix_ShouldReturnEmpty_WhenNoDiagnosticsExist()
-    {
-        MainViewModelDiagnostics.BuildDiagnosticsStatusSuffix(
-            new ActionExecutionResult(false, "boom", AddressSource.None, Diagnostics: null)).Should().BeEmpty();
-    }
-
-    [Fact]
-    public void ReadDiagnosticString_ShouldReturnStringifiedValues_AndEmptyForMissingKeys()
+    public void ReadDiagnosticString_ShouldHandleNullMissingAndNonStringValues()
     {
         var diagnostics = new Dictionary<string, object?>
         {
-            ["count"] = 3,
-            ["name"] = "token",
-            ["nullValue"] = null
+            ["route"] = "sdk",
+            ["attempt"] = 3,
+            ["empty"] = null
         };
 
-        MainViewModelDiagnostics.ReadDiagnosticString(diagnostics, "count").Should().Be("3");
-        MainViewModelDiagnostics.ReadDiagnosticString(diagnostics, "name").Should().Be("token");
-        MainViewModelDiagnostics.ReadDiagnosticString(diagnostics, "nullValue").Should().BeEmpty();
+        MainViewModelDiagnostics.ReadDiagnosticString(null, "route").Should().BeEmpty();
         MainViewModelDiagnostics.ReadDiagnosticString(diagnostics, "missing").Should().BeEmpty();
-        MainViewModelDiagnostics.ReadDiagnosticString(null, "missing").Should().BeEmpty();
-    }
-
-    [Fact]
-    public void ResolveBundleGateResult_ShouldReturnUnknownBlockedAndPassVariants()
-    {
-        MainViewModelDiagnostics.ResolveBundleGateResult(null, "unknown").Should().Be("unknown");
-        MainViewModelDiagnostics.ResolveBundleGateResult(
-                new ActionReliabilityViewItem("set_credits", "unavailable", "HOOK_MISSING", 0.2, "hook missing"),
-                "unknown")
-            .Should().Be("blocked");
-        MainViewModelDiagnostics.ResolveBundleGateResult(
-                new ActionReliabilityViewItem("set_credits", "stable", "OK", 1.0, "ready"),
-                "unknown")
-            .Should().Be("bundle_pass");
+        MainViewModelDiagnostics.ReadDiagnosticString(diagnostics, "empty").Should().BeEmpty();
+        MainViewModelDiagnostics.ReadDiagnosticString(diagnostics, "route").Should().Be("sdk");
+        MainViewModelDiagnostics.ReadDiagnosticString(diagnostics, "attempt").Should().Be("3");
     }
 }
