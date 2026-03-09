@@ -189,8 +189,15 @@ public sealed class CatalogService : ICatalogService
 
         var normalizedProfileId = profileIdValue.Trim();
 
-        ArgumentNullException.ThrowIfNull(source);
-        ArgumentNullException.ThrowIfNull(records);
+        if (source is null)
+        {
+            throw new ArgumentNullException(nameof(source));
+        }
+
+        if (records is null)
+        {
+            throw new ArgumentNullException(nameof(records));
+        }
 
         var sourcePath = NormalizeNonEmpty(source.Path);
         var sourceType = NormalizeNonEmpty(source.Type);
@@ -227,13 +234,12 @@ public sealed class CatalogService : ICatalogService
                     continue;
                 }
 
-                var parsedRecordValue = parsedRecord;
-                if (string.IsNullOrWhiteSpace(parsedRecordValue.EntityId))
+                if (parsedRecord is null || string.IsNullOrWhiteSpace(parsedRecord.EntityId))
                 {
                     continue;
                 }
 
-                AddOrMergeRecord(records, parsedRecordValue);
+                AddOrMergeRecord(records, parsedRecord);
             }
 
             return true;
@@ -426,7 +432,15 @@ public sealed class CatalogService : ICatalogService
         IDictionary<string, EntityCatalogRecord> records,
         EntityCatalogRecord incoming)
     {
-        ArgumentNullException.ThrowIfNull(records);
+        if (records is null)
+        {
+            throw new ArgumentNullException(nameof(records));
+        }
+
+        if (incoming is null)
+        {
+            throw new ArgumentNullException(nameof(incoming));
+        }
 
         var incomingEntityId = NormalizeNonEmpty(incoming.EntityId);
         if (incomingEntityId is null)
@@ -727,7 +741,12 @@ public sealed class CatalogService : ICatalogService
 
     private static IReadOnlyList<string> BuildTypedEntityCatalogEntries(IReadOnlyList<EntityCatalogRecord> entities)
     {
-        var sourceEntities = entities ?? throw new ArgumentNullException(nameof(entities));
+        if (entities is null)
+        {
+            throw new ArgumentNullException(nameof(entities));
+        }
+
+        var sourceEntities = entities;
         var typedEntries = new List<string>(sourceEntities.Count);
         foreach (var entity in sourceEntities)
         {
@@ -796,8 +815,18 @@ public sealed class CatalogService : ICatalogService
         Func<EntityCatalogRecord, bool> predicate,
         int limit)
     {
-        var sourceEntities = entities ?? throw new ArgumentNullException(nameof(entities));
-        var sourcePredicate = predicate ?? throw new ArgumentNullException(nameof(predicate));
+        if (entities is null)
+        {
+            throw new ArgumentNullException(nameof(entities));
+        }
+
+        if (predicate is null)
+        {
+            throw new ArgumentNullException(nameof(predicate));
+        }
+
+        var sourceEntities = entities;
+        var sourcePredicate = predicate;
 
         var selectedEntityIds = new List<string>();
         foreach (var entity in sourceEntities)
@@ -839,9 +868,13 @@ public sealed class CatalogService : ICatalogService
 
     private static string? NormalizeNonEmpty(string? value)
     {
-        return string.IsNullOrWhiteSpace(value)
-            ? null
-            : value.Trim();
+        if (value is null)
+        {
+            return null;
+        }
+
+        var trimmed = value.Trim();
+        return trimmed.Length == 0 ? null : trimmed;
     }
 
     private static IReadOnlyList<string> ParseListValue(string? raw)
