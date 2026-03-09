@@ -255,9 +255,11 @@ if (-not $coverageCandidates) {
 }
 
 if (-not $coverageCandidates) {
-    $artifactPaths = Get-ChildItem -Path $collectorRoot -Recurse -File -ErrorAction SilentlyContinue |
-        Sort-Object FullName |
-        Select-Object -ExpandProperty FullName
+    $artifactPaths = @(
+        Get-ChildItem -Path $collectorRoot -Recurse -File -ErrorAction SilentlyContinue |
+            Sort-Object FullName |
+            Select-Object -ExpandProperty FullName
+    )
 
     if ($artifactPaths.Count -gt 0) {
         Write-Output "collector_artifacts=$($artifactPaths -join ';')"
