@@ -8,37 +8,55 @@ public interface ICatalogService
 
     Task<IReadOnlyDictionary<string, IReadOnlyList<string>>> LoadCatalogAsync(string profileId)
     {
-        if (string.IsNullOrWhiteSpace(profileId))
+        if (profileId is null)
+        {
+            throw new ArgumentNullException(nameof(profileId));
+        }
+
+        var normalizedProfileId = profileId.Trim();
+        if (normalizedProfileId.Length == 0)
         {
             throw new ArgumentException("Value cannot be null or whitespace.", nameof(profileId));
         }
 
-        return LoadCatalogAsync(profileId, CancellationToken.None);
+        return LoadCatalogAsync(normalizedProfileId, CancellationToken.None);
     }
 
     async Task<EntityCatalogSnapshot> LoadTypedCatalogAsync(string profileId, CancellationToken cancellationToken)
     {
-        if (string.IsNullOrWhiteSpace(profileId))
+        if (profileId is null)
+        {
+            throw new ArgumentNullException(nameof(profileId));
+        }
+
+        var normalizedProfileId = profileId.Trim();
+        if (normalizedProfileId.Length == 0)
         {
             throw new ArgumentException("Value cannot be null or whitespace.", nameof(profileId));
         }
 
-        var legacyCatalog = await LoadCatalogAsync(profileId, cancellationToken).ConfigureAwait(false);
+        var legacyCatalog = await LoadCatalogAsync(normalizedProfileId, cancellationToken).ConfigureAwait(false);
         if (legacyCatalog is null)
         {
             throw new InvalidOperationException("Catalog service returned a null legacy catalog.");
         }
 
-        return EntityCatalogSnapshot.FromLegacy(profileId, legacyCatalog);
+        return EntityCatalogSnapshot.FromLegacy(normalizedProfileId, legacyCatalog);
     }
 
     Task<EntityCatalogSnapshot> LoadTypedCatalogAsync(string profileId)
     {
-        if (string.IsNullOrWhiteSpace(profileId))
+        if (profileId is null)
+        {
+            throw new ArgumentNullException(nameof(profileId));
+        }
+
+        var normalizedProfileId = profileId.Trim();
+        if (normalizedProfileId.Length == 0)
         {
             throw new ArgumentException("Value cannot be null or whitespace.", nameof(profileId));
         }
 
-        return LoadTypedCatalogAsync(profileId, CancellationToken.None);
+        return LoadTypedCatalogAsync(normalizedProfileId, CancellationToken.None);
     }
 }

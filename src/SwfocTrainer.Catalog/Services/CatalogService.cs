@@ -47,7 +47,7 @@ public sealed class CatalogService : ICatalogService
         Converters = { new JsonStringEnumConverter() }
     };
 
-    private sealed record CatalogMetadataContext(
+    private readonly record struct CatalogMetadataContext(
         string DisplayNameKey,
         string? EncyclopediaTextKey,
         string? RawVisualRef,
@@ -74,10 +74,11 @@ public sealed class CatalogService : ICatalogService
             throw new ArgumentException("Value cannot be null or whitespace.", nameof(profileId));
         }
 
-        var profile = await _profiles.ResolveInheritedProfileAsync(profileId, cancellationToken).ConfigureAwait(false);
+        var normalizedProfileId = profileId.Trim();
+        var profile = await _profiles.ResolveInheritedProfileAsync(normalizedProfileId, cancellationToken).ConfigureAwait(false);
         if (profile is null)
         {
-            throw new InvalidOperationException($"Profile '{profileId}' could not be resolved.");
+            throw new InvalidOperationException($"Profile '{normalizedProfileId}' could not be resolved.");
         }
 
         var snapshot = await LoadTypedCatalogAsync(profile, cancellationToken).ConfigureAwait(false);
@@ -96,10 +97,11 @@ public sealed class CatalogService : ICatalogService
             throw new ArgumentException("Value cannot be null or whitespace.", nameof(profileId));
         }
 
-        var profile = await _profiles.ResolveInheritedProfileAsync(profileId, cancellationToken).ConfigureAwait(false);
+        var normalizedProfileId = profileId.Trim();
+        var profile = await _profiles.ResolveInheritedProfileAsync(normalizedProfileId, cancellationToken).ConfigureAwait(false);
         if (profile is null)
         {
-            throw new InvalidOperationException($"Profile '{profileId}' could not be resolved.");
+            throw new InvalidOperationException($"Profile '{normalizedProfileId}' could not be resolved.");
         }
 
         return await LoadTypedCatalogAsync(profile, cancellationToken).ConfigureAwait(false);
@@ -117,7 +119,7 @@ public sealed class CatalogService : ICatalogService
             throw new ArgumentNullException(nameof(profile));
         }
 
-        var profileId = profile.Id;
+        var profileId = profile.Id?.Trim();
         if (string.IsNullOrWhiteSpace(profileId))
         {
             throw new InvalidOperationException("Profile id is required for catalog loading.");
@@ -175,13 +177,15 @@ public sealed class CatalogService : ICatalogService
             throw new ArgumentNullException(nameof(records));
         }
 
-        var sourcePath = source.Path;
-        if (string.IsNullOrWhiteSpace(sourcePath))
+        var normalizedProfileId = profileId.Trim();
+        var sourcePath = source.Path?.Trim();
+        var sourceType = source.Type?.Trim();
+        if (string.IsNullOrWhiteSpace(sourcePath) || string.IsNullOrWhiteSpace(sourceType))
         {
             return false;
         }
 
-        if (!source.Type.Equals("xml", StringComparison.OrdinalIgnoreCase))
+        if (!sourceType.Equals("xml", StringComparison.OrdinalIgnoreCase))
         {
             return false;
         }
@@ -201,7 +205,7 @@ public sealed class CatalogService : ICatalogService
             var document = XDocument.Load(sourcePath, LoadOptions.None);
             foreach (var element in document.Descendants())
             {
-                if (!TryCreateRecord(profileId, sourcePath, element, out var record))
+                if (!TryCreateRecord(normalizedProfileId, sourcePath, element, out var record))
                 {
                     continue;
                 }
@@ -239,24 +243,27 @@ public sealed class CatalogService : ICatalogService
             throw new ArgumentNullException(nameof(element));
         }
 
+        var normalizedProfileId = profileId.Trim();
+        var normalizedSourcePath = sourcePath.Trim();
+        var sourceElement = element;
         record = default!;
-        var entityId = GetEntityId(element);
+        var entityId = GetEntityId(sourceElement);
         if (string.IsNullOrWhiteSpace(entityId))
         {
             return false;
         }
 
-        var kind = CatalogEntityKindClassifier.ResolveKind(element.Name.LocalName, entityId);
-        var textId = GetElementValue(element, "Text_ID") ?? entityId;
-        var encyclopediaTextKey = GetElementValue(element, "Encyclopedia_Text");
+        var kind = CatalogEntityKindClassifier.ResolveKind(sourceElement.Name.LocalName, entityId);
+        var textId = GetElementValue(sourceElement, "Text_ID") ?? entityId;
+        var encyclopediaTextKey = GetElementValue(sourceElement, "Encyclopedia_Text");
         var rawVisualRef = VisualReferenceNames
-            .Select(name => GetElementValue(element, name))
+            .Select(name => GetElementValue(sourceElement, name))
             .FirstOrDefault(static value => !string.IsNullOrWhiteSpace(value));
-        var resolvedVisualRef = ResolveVisualReference(sourcePath, rawVisualRef);
-        var affiliations = ResolveAffiliations(element, kind, entityId);
-        var populationValue = ParseOptionalInt(GetElementValue(element, "Population_Value"));
-        var buildCostCredits = ParseOptionalInt(GetElementValue(element, "Build_Cost_Credits"));
-        var dependencyRefs = CollectDependencies(element, rawVisualRef);
+        var resolvedVisualRef = ResolveVisualReference(normalizedSourcePath, rawVisualRef);
+        var affiliations = ResolveAffiliations(sourceElement, kind, entityId);
+        var populationValue = ParseOptionalInt(GetElementValue(sourceElement, "Population_Value"));
+        var buildCostCredits = ParseOptionalInt(GetElementValue(sourceElement, "Build_Cost_Credits"));
+        var dependencyRefs = CollectDependencies(sourceElement, rawVisualRef);
         var visualState = ResolveVisualState(rawVisualRef, resolvedVisualRef);
         var compatibilityState = visualState == CatalogEntityVisualState.Missing
             ? CatalogEntityCompatibilityState.Blocked
@@ -268,8 +275,8 @@ public sealed class CatalogService : ICatalogService
             DisplayNameKey = textId,
             DisplayName = textId,
             Kind = kind,
-            SourceProfileId = profileId,
-            SourcePath = sourcePath,
+            SourceProfileId = normalizedProfileId,
+            SourcePath = normalizedSourcePath,
             Affiliations = affiliations,
             VisualRef = resolvedVisualRef ?? rawVisualRef,
             DependencyRefs = dependencyRefs,
@@ -337,6 +344,7 @@ public sealed class CatalogService : ICatalogService
 
         var entityCatalog = BuildLegacyEntityCatalogEntries(entities);
         var typedEntityCatalog = BuildTypedEntityCatalogEntries(entities);
+        var actionConstraints = actions.Keys.OrderBy(static key => key, StringComparer.OrdinalIgnoreCase).ToArray();
 
         return new Dictionary<string, IReadOnlyList<string>>(StringComparer.OrdinalIgnoreCase)
         {
@@ -347,7 +355,7 @@ public sealed class CatalogService : ICatalogService
             ["building_catalog"] = buildingCatalog,
             ["entity_catalog"] = entityCatalog,
             ["entity_catalog_typed"] = typedEntityCatalog,
-            ["action_constraints"] = actions.Keys.OrderBy(static key => key, StringComparer.OrdinalIgnoreCase).ToArray()
+            ["action_constraints"] = actionConstraints
         };
     }
 
@@ -368,7 +376,13 @@ public sealed class CatalogService : ICatalogService
             throw new ArgumentException("Value cannot be null or whitespace.", nameof(profileId));
         }
 
-        var path = Path.Combine(_options.CatalogRootPath, profileId, "catalog.json");
+        var catalogRootPath = _options.CatalogRootPath;
+        if (string.IsNullOrWhiteSpace(catalogRootPath))
+        {
+            throw new InvalidOperationException("Catalog root path is required.");
+        }
+
+        var path = Path.Combine(catalogRootPath, profileId, "catalog.json");
         if (!File.Exists(path))
         {
             return new Dictionary<string, IReadOnlyList<string>>(StringComparer.OrdinalIgnoreCase);
@@ -409,20 +423,27 @@ public sealed class CatalogService : ICatalogService
             throw new InvalidOperationException($"Catalog record '{incoming.EntityId}' resolved to null.");
         }
 
-        var mergedAffiliations = (existing.Affiliations ?? Array.Empty<string>())
-            .Concat(incoming.Affiliations ?? Array.Empty<string>())
+        var existingAffiliations = existing.Affiliations ?? Array.Empty<string>();
+        var incomingAffiliations = incoming.Affiliations ?? Array.Empty<string>();
+        var existingDependencies = existing.DependencyRefs ?? Array.Empty<string>();
+        var incomingDependencies = incoming.DependencyRefs ?? Array.Empty<string>();
+        var existingMetadata = existing.Metadata ?? new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+        var incomingMetadata = incoming.Metadata ?? new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+
+        var mergedAffiliations = existingAffiliations
+            .Concat(incomingAffiliations)
             .Where(static value => !string.IsNullOrWhiteSpace(value))
             .Distinct(StringComparer.OrdinalIgnoreCase)
             .ToArray();
 
-        var mergedDependencies = (existing.DependencyRefs ?? Array.Empty<string>())
-            .Concat(incoming.DependencyRefs ?? Array.Empty<string>())
+        var mergedDependencies = existingDependencies
+            .Concat(incomingDependencies)
             .Where(static value => !string.IsNullOrWhiteSpace(value))
             .Distinct(StringComparer.OrdinalIgnoreCase)
             .ToArray();
 
-        var mergedMetadata = (existing.Metadata ?? new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase))
-            .Concat(incoming.Metadata ?? new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase))
+        var mergedMetadata = existingMetadata
+            .Concat(incomingMetadata)
             .GroupBy(static pair => pair.Key, StringComparer.OrdinalIgnoreCase)
             .ToDictionary(
                 static group => group.Key,
@@ -449,7 +470,10 @@ public sealed class CatalogService : ICatalogService
 
     private static string? GetEntityId(XElement element)
     {
-        ArgumentNullException.ThrowIfNull(element);
+        if (element is null)
+        {
+            throw new ArgumentNullException(nameof(element));
+        }
 
         foreach (var attributeName in EntityIdentifierAttributes)
         {
@@ -465,11 +489,20 @@ public sealed class CatalogService : ICatalogService
 
     private static string? GetElementValue(XElement element, string name)
     {
-        ArgumentNullException.ThrowIfNull(element);
-        ArgumentException.ThrowIfNullOrWhiteSpace(name);
+        if (element is null)
+        {
+            throw new ArgumentNullException(nameof(element));
+        }
+
+        if (string.IsNullOrWhiteSpace(name))
+        {
+            throw new ArgumentException("Value cannot be null or whitespace.", nameof(name));
+        }
+
+        var normalizedName = name.Trim();
 
         var directElement = element.Elements()
-            .FirstOrDefault(candidate => candidate.Name.LocalName.Equals(name, StringComparison.OrdinalIgnoreCase));
+            .FirstOrDefault(candidate => candidate.Name.LocalName.Equals(normalizedName, StringComparison.OrdinalIgnoreCase));
         if (directElement is not null)
         {
             var value = directElement.Value?.Trim();
@@ -479,14 +512,17 @@ public sealed class CatalogService : ICatalogService
             }
         }
 
-        var attribute = element.Attribute(name);
+        var attribute = element.Attribute(normalizedName);
         var attributeValue = attribute?.Value?.Trim();
         return string.IsNullOrWhiteSpace(attributeValue) ? null : attributeValue;
     }
 
     private static IReadOnlyList<string> CollectDependencies(XElement element, string? visualRef)
     {
-        ArgumentNullException.ThrowIfNull(element);
+        if (element is null)
+        {
+            throw new ArgumentNullException(nameof(element));
+        }
 
         var values = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
         foreach (var child in element.Elements())
@@ -526,11 +562,6 @@ public sealed class CatalogService : ICatalogService
         if (element is null)
         {
             throw new ArgumentNullException(nameof(element));
-        }
-
-        if (context is null)
-        {
-            throw new ArgumentNullException(nameof(context));
         }
 
         var metadata = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
@@ -691,8 +722,15 @@ public sealed class CatalogService : ICatalogService
         Func<EntityCatalogRecord, bool> predicate,
         int limit)
     {
-        ArgumentNullException.ThrowIfNull(entities);
-        ArgumentNullException.ThrowIfNull(predicate);
+        if (entities is null)
+        {
+            throw new ArgumentNullException(nameof(entities));
+        }
+
+        if (predicate is null)
+        {
+            throw new ArgumentNullException(nameof(predicate));
+        }
 
         return entities
             .Where(predicate)
