@@ -192,15 +192,12 @@ public sealed class CatalogService : ICatalogService
         ArgumentNullException.ThrowIfNull(source);
         ArgumentNullException.ThrowIfNull(records);
 
-        var sourcePathValue = source.Path ?? string.Empty;
-        var sourceTypeValue = source.Type ?? string.Empty;
-        if (string.IsNullOrWhiteSpace(sourcePathValue) || string.IsNullOrWhiteSpace(sourceTypeValue))
+        var sourcePath = NormalizeNonEmpty(source.Path);
+        var sourceType = NormalizeNonEmpty(source.Type);
+        if (sourcePath is null || sourceType is null)
         {
             return false;
         }
-
-        var sourcePath = sourcePathValue.Trim();
-        var sourceType = sourceTypeValue.Trim();
 
         if (!sourceType.Equals("xml", StringComparison.OrdinalIgnoreCase))
         {
@@ -227,7 +224,7 @@ public sealed class CatalogService : ICatalogService
                     continue;
                 }
 
-                if (string.IsNullOrWhiteSpace(parsedRecord.EntityId))
+                if (parsedRecord is null || string.IsNullOrWhiteSpace(parsedRecord.EntityId))
                 {
                     continue;
                 }
@@ -427,21 +424,19 @@ public sealed class CatalogService : ICatalogService
     {
         ArgumentNullException.ThrowIfNull(records);
 
-        var incomingEntityIdValue = incoming.EntityId ?? string.Empty;
-        if (string.IsNullOrWhiteSpace(incomingEntityIdValue))
+        var incomingEntityId = NormalizeNonEmpty(incoming.EntityId);
+        if (incomingEntityId is null)
         {
             throw new InvalidOperationException("Incoming catalog record id is required.");
         }
 
-        var incomingEntityId = incomingEntityIdValue.Trim();
-
-        if (!records.TryGetValue(incomingEntityId, out var existing))
+        if (!records.TryGetValue(incomingEntityId, out var existing) || existing is null)
         {
             records[incomingEntityId] = incoming;
             return;
         }
 
-        var existingRecord = existing!;
+        var existingRecord = existing;
         var incomingRecord = incoming;
         var existingAffiliations = existingRecord.Affiliations ?? Array.Empty<string>();
         var incomingAffiliations = incomingRecord.Affiliations ?? Array.Empty<string>();
@@ -732,6 +727,11 @@ public sealed class CatalogService : ICatalogService
         var typedEntries = new List<string>(sourceEntities.Count);
         foreach (var entity in sourceEntities)
         {
+            if (entity is null)
+            {
+                continue;
+            }
+
             typedEntries.Add(JsonSerializer.Serialize(entity, TypedCatalogJsonOptions));
         }
 
@@ -799,10 +799,24 @@ public sealed class CatalogService : ICatalogService
         var sourceEntities = entities ?? throw new ArgumentNullException(nameof(entities));
         var sourcePredicate = predicate ?? throw new ArgumentNullException(nameof(predicate));
 
-        return sourceEntities
-            .Where(sourcePredicate)
-            .Select(static record => record.EntityId ?? string.Empty)
-            .Where(static entityId => !string.IsNullOrWhiteSpace(entityId))
+        var selectedEntityIds = new List<string>();
+        foreach (var entity in sourceEntities)
+        {
+            if (entity is null || !sourcePredicate(entity))
+            {
+                continue;
+            }
+
+            var entityId = NormalizeNonEmpty(entity.EntityId);
+            if (entityId is null)
+            {
+                continue;
+            }
+
+            selectedEntityIds.Add(entityId);
+        }
+
+        return selectedEntityIds
             .Distinct(StringComparer.OrdinalIgnoreCase)
             .OrderBy(static entityId => entityId, StringComparer.OrdinalIgnoreCase)
             .Take(limit)
@@ -820,6 +834,13 @@ public sealed class CatalogService : ICatalogService
         return string.IsNullOrWhiteSpace(normalizedResolvedVisualRef)
             ? CatalogEntityVisualState.Missing
             : CatalogEntityVisualState.Resolved;
+    }
+
+    private static string? NormalizeNonEmpty(string? value)
+    {
+        return string.IsNullOrWhiteSpace(value)
+            ? null
+            : value.Trim();
     }
 
     private static IReadOnlyList<string> ParseListValue(string? raw)
