@@ -62,14 +62,16 @@ public sealed class CatalogService : ICatalogService
 
     public CatalogService(CatalogOptions options, IProfileRepository profiles, ILogger<CatalogService> logger)
     {
-        _options = options;
-        _profiles = profiles;
-        _logger = logger;
+        _options = options ?? throw new ArgumentNullException(nameof(options));
+        _profiles = profiles ?? throw new ArgumentNullException(nameof(profiles));
+        _logger = logger ?? throw new ArgumentNullException(nameof(logger));
     }
 
     public async Task<IReadOnlyDictionary<string, IReadOnlyList<string>>> LoadCatalogAsync(string profileId, CancellationToken cancellationToken)
     {
+        ArgumentException.ThrowIfNullOrWhiteSpace(profileId);
         var profile = await _profiles.ResolveInheritedProfileAsync(profileId, cancellationToken).ConfigureAwait(false);
+        ArgumentNullException.ThrowIfNull(profile);
         var snapshot = await LoadTypedCatalogAsync(profile, cancellationToken).ConfigureAwait(false);
         return ProjectLegacyCatalog(snapshot, profile);
     }
@@ -81,7 +83,9 @@ public sealed class CatalogService : ICatalogService
 
     public async Task<EntityCatalogSnapshot> LoadTypedCatalogAsync(string profileId, CancellationToken cancellationToken)
     {
+        ArgumentException.ThrowIfNullOrWhiteSpace(profileId);
         var profile = await _profiles.ResolveInheritedProfileAsync(profileId, cancellationToken).ConfigureAwait(false);
+        ArgumentNullException.ThrowIfNull(profile);
         return await LoadTypedCatalogAsync(profile, cancellationToken).ConfigureAwait(false);
     }
 
@@ -92,17 +96,21 @@ public sealed class CatalogService : ICatalogService
 
     private async Task<EntityCatalogSnapshot> LoadTypedCatalogAsync(TrainerProfile profile, CancellationToken cancellationToken)
     {
-        var prebuilt = await LoadPrebuiltCatalogAsync(profile.Id, cancellationToken).ConfigureAwait(false);
+        ArgumentNullException.ThrowIfNull(profile);
+
+        var profileId = profile.Id;
+        var catalogSources = profile.CatalogSources ?? Array.Empty<CatalogSource>();
+        var prebuilt = await LoadPrebuiltCatalogAsync(profileId, cancellationToken).ConfigureAwait(false);
         if (prebuilt.Count > 0)
         {
-            return EntityCatalogSnapshot.FromLegacy(profile.Id, prebuilt);
+            return EntityCatalogSnapshot.FromLegacy(profileId, prebuilt);
         }
 
         var records = new Dictionary<string, EntityCatalogRecord>(StringComparer.OrdinalIgnoreCase);
         var parsed = 0;
-        foreach (var source in profile.CatalogSources)
+        foreach (var source in catalogSources)
         {
-            if (!TryParseCatalogSource(profile.Id, source, records))
+            if (!TryParseCatalogSource(profileId, source, records))
             {
                 continue;
             }
@@ -116,7 +124,7 @@ public sealed class CatalogService : ICatalogService
 
         return new EntityCatalogSnapshot
         {
-            ProfileId = profile.Id,
+            ProfileId = profileId,
             Entities = records.Values
                 .OrderBy(static record => record.EntityId, StringComparer.OrdinalIgnoreCase)
                 .ToArray()
@@ -128,16 +136,26 @@ public sealed class CatalogService : ICatalogService
         CatalogSource source,
         IDictionary<string, EntityCatalogRecord> records)
     {
+        ArgumentException.ThrowIfNullOrWhiteSpace(profileId);
+        ArgumentNullException.ThrowIfNull(source);
+        ArgumentNullException.ThrowIfNull(records);
+
+        var sourcePath = source.Path;
+        if (string.IsNullOrWhiteSpace(sourcePath))
+        {
+            return false;
+        }
+
         if (!source.Type.Equals("xml", StringComparison.OrdinalIgnoreCase))
         {
             return false;
         }
 
-        if (!File.Exists(source.Path))
+        if (!File.Exists(sourcePath))
         {
             if (source.Required)
             {
-                _logger.LogWarning("Required catalog source not found: {Path}", source.Path);
+                _logger.LogWarning("Required catalog source not found: {Path}", sourcePath);
             }
 
             return false;
@@ -145,10 +163,10 @@ public sealed class CatalogService : ICatalogService
 
         try
         {
-            var document = XDocument.Load(source.Path, LoadOptions.None);
+            var document = XDocument.Load(sourcePath, LoadOptions.None);
             foreach (var element in document.Descendants())
             {
-                if (!TryCreateRecord(profileId, source.Path, element, out var record))
+                if (!TryCreateRecord(profileId, sourcePath, element, out var record))
                 {
                     continue;
                 }
@@ -160,7 +178,7 @@ public sealed class CatalogService : ICatalogService
         }
         catch (Exception ex)
         {
-            _logger.LogWarning(ex, "Failed to parse catalog source: {Path}", source.Path);
+            _logger.LogWarning(ex, "Failed to parse catalog source: {Path}", sourcePath);
             return false;
         }
     }
@@ -171,6 +189,10 @@ public sealed class CatalogService : ICatalogService
         XElement element,
         out EntityCatalogRecord record)
     {
+        ArgumentException.ThrowIfNullOrWhiteSpace(profileId);
+        ArgumentException.ThrowIfNullOrWhiteSpace(sourcePath);
+        ArgumentNullException.ThrowIfNull(element);
+
         record = default!;
         var entityId = GetEntityId(element);
         if (string.IsNullOrWhiteSpace(entityId))
@@ -234,54 +256,45 @@ public sealed class CatalogService : ICatalogService
         EntityCatalogSnapshot snapshot,
         TrainerProfile profile)
     {
-        var unitCatalog = snapshot.Entities
-            .Where(static record => record.Kind is not CatalogEntityKind.Planet and not CatalogEntityKind.Faction)
-            .Select(static record => record.EntityId)
-            .Distinct(StringComparer.OrdinalIgnoreCase)
-            .OrderBy(static entityId => entityId, StringComparer.OrdinalIgnoreCase)
-            .Take(10000)
-            .ToArray();
+        ArgumentNullException.ThrowIfNull(snapshot);
+        ArgumentNullException.ThrowIfNull(profile);
 
-        var planetCatalog = snapshot.Entities
-            .Where(static record => record.Kind == CatalogEntityKind.Planet)
-            .Select(static record => record.EntityId)
-            .Distinct(StringComparer.OrdinalIgnoreCase)
-            .OrderBy(static entityId => entityId, StringComparer.OrdinalIgnoreCase)
-            .Take(2000)
-            .ToArray();
+        var entities = snapshot.Entities ?? Array.Empty<EntityCatalogRecord>();
+        var actions = profile.Actions ?? new Dictionary<string, ActionSpec>(StringComparer.OrdinalIgnoreCase);
 
-        var heroCatalog = snapshot.Entities
-            .Where(static record => record.Kind == CatalogEntityKind.Hero)
-            .Select(static record => record.EntityId)
-            .Distinct(StringComparer.OrdinalIgnoreCase)
-            .OrderBy(static entityId => entityId, StringComparer.OrdinalIgnoreCase)
-            .Take(2000)
-            .ToArray();
+        var unitCatalog = SelectEntityIds(
+            entities,
+            static record => record.Kind is not CatalogEntityKind.Planet and not CatalogEntityKind.Faction,
+            10000);
 
-        var factionCatalog = snapshot.Entities
-            .Where(static record => record.Kind == CatalogEntityKind.Faction)
-            .Select(static record => record.EntityId)
-            .Distinct(StringComparer.OrdinalIgnoreCase)
-            .OrderBy(static entityId => entityId, StringComparer.OrdinalIgnoreCase)
-            .Take(300)
-            .ToArray();
+        var planetCatalog = SelectEntityIds(
+            entities,
+            static record => record.Kind == CatalogEntityKind.Planet,
+            2000);
 
-        var buildingCatalog = snapshot.Entities
-            .Where(static record => record.Kind is CatalogEntityKind.Building or CatalogEntityKind.SpaceStructure)
-            .Select(static record => record.EntityId)
-            .Distinct(StringComparer.OrdinalIgnoreCase)
-            .OrderBy(static entityId => entityId, StringComparer.OrdinalIgnoreCase)
-            .Take(4000)
-            .ToArray();
+        var heroCatalog = SelectEntityIds(
+            entities,
+            static record => record.Kind == CatalogEntityKind.Hero,
+            2000);
 
-        var entityCatalog = snapshot.Entities
+        var factionCatalog = SelectEntityIds(
+            entities,
+            static record => record.Kind == CatalogEntityKind.Faction,
+            300);
+
+        var buildingCatalog = SelectEntityIds(
+            entities,
+            static record => record.Kind is CatalogEntityKind.Building or CatalogEntityKind.SpaceStructure,
+            4000);
+
+        var entityCatalog = entities
             .Where(static record => record.Kind is not CatalogEntityKind.Faction)
             .Select(BuildLegacyEntityEntry)
             .Distinct(StringComparer.OrdinalIgnoreCase)
             .OrderBy(static entry => entry, StringComparer.OrdinalIgnoreCase)
             .Take(20000)
             .ToArray();
-        var typedEntityCatalog = snapshot.Entities
+        var typedEntityCatalog = entities
             .Select(static record => JsonSerializer.Serialize(record, TypedCatalogJsonOptions))
             .ToArray();
 
@@ -294,17 +307,20 @@ public sealed class CatalogService : ICatalogService
             ["building_catalog"] = buildingCatalog,
             ["entity_catalog"] = entityCatalog,
             ["entity_catalog_typed"] = typedEntityCatalog,
-            ["action_constraints"] = profile.Actions.Keys.OrderBy(static key => key, StringComparer.OrdinalIgnoreCase).ToArray()
+            ["action_constraints"] = actions.Keys.OrderBy(static key => key, StringComparer.OrdinalIgnoreCase).ToArray()
         };
     }
 
     private static string BuildLegacyEntityEntry(EntityCatalogRecord record)
     {
+        ArgumentNullException.ThrowIfNull(record);
         return $"{CatalogEntityKindClassifier.ToLegacyToken(record.Kind)}|{record.EntityId}";
     }
 
     private async Task<Dictionary<string, IReadOnlyList<string>>> LoadPrebuiltCatalogAsync(string profileId, CancellationToken cancellationToken)
     {
+        ArgumentException.ThrowIfNullOrWhiteSpace(profileId);
+
         var path = Path.Combine(_options.CatalogRootPath, profileId, "catalog.json");
         if (!File.Exists(path))
         {
@@ -325,6 +341,9 @@ public sealed class CatalogService : ICatalogService
         IDictionary<string, EntityCatalogRecord> records,
         EntityCatalogRecord incoming)
     {
+        ArgumentNullException.ThrowIfNull(records);
+        ArgumentNullException.ThrowIfNull(incoming);
+
         if (!records.TryGetValue(incoming.EntityId, out var existing))
         {
             records[incoming.EntityId] = incoming;
@@ -371,6 +390,8 @@ public sealed class CatalogService : ICatalogService
 
     private static string? GetEntityId(XElement element)
     {
+        ArgumentNullException.ThrowIfNull(element);
+
         foreach (var attributeName in EntityIdentifierAttributes)
         {
             var attributeValue = element.Attribute(attributeName)?.Value?.Trim();
@@ -385,6 +406,9 @@ public sealed class CatalogService : ICatalogService
 
     private static string? GetElementValue(XElement element, string name)
     {
+        ArgumentNullException.ThrowIfNull(element);
+        ArgumentException.ThrowIfNullOrWhiteSpace(name);
+
         var directElement = element.Elements()
             .FirstOrDefault(candidate => candidate.Name.LocalName.Equals(name, StringComparison.OrdinalIgnoreCase));
         if (directElement is not null)
@@ -403,6 +427,8 @@ public sealed class CatalogService : ICatalogService
 
     private static IReadOnlyList<string> CollectDependencies(XElement element, string? visualRef)
     {
+        ArgumentNullException.ThrowIfNull(element);
+
         var values = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
         foreach (var child in element.Elements())
         {
@@ -438,6 +464,9 @@ public sealed class CatalogService : ICatalogService
         XElement element,
         CatalogMetadataContext context)
     {
+        ArgumentNullException.ThrowIfNull(element);
+        ArgumentNullException.ThrowIfNull(context);
+
         var metadata = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
         {
             ["elementName"] = element.Name.LocalName,
@@ -475,6 +504,8 @@ public sealed class CatalogService : ICatalogService
 
     private static string? ResolveVisualReference(string sourcePath, string? visualRef)
     {
+        ArgumentException.ThrowIfNullOrWhiteSpace(sourcePath);
+
         if (string.IsNullOrWhiteSpace(visualRef))
         {
             return null;
@@ -520,6 +551,23 @@ public sealed class CatalogService : ICatalogService
         }
 
         return null;
+    }
+
+    private static string[] SelectEntityIds(
+        IEnumerable<EntityCatalogRecord> entities,
+        Func<EntityCatalogRecord, bool> predicate,
+        int limit)
+    {
+        ArgumentNullException.ThrowIfNull(entities);
+        ArgumentNullException.ThrowIfNull(predicate);
+
+        return entities
+            .Where(predicate)
+            .Select(static record => record.EntityId)
+            .Distinct(StringComparer.OrdinalIgnoreCase)
+            .OrderBy(static entityId => entityId, StringComparer.OrdinalIgnoreCase)
+            .Take(limit)
+            .ToArray();
     }
 
     private static CatalogEntityVisualState ResolveVisualState(string? rawVisualRef, string? resolvedVisualRef)
