@@ -12,6 +12,9 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
+NONE_MARKER = "- None"
+PENDING_STATES = {"pending", "queued", "in_progress"}
+
 
 def _parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="Wait for required GitHub check contexts and assert they are successful.")
@@ -84,20 +87,11 @@ def _evaluate(
             missing.append(context)
             continue
 
-        source = observed.get("source")
-        if source == "check_run":
-            state = observed.get("state")
-            conclusion = observed.get("conclusion")
-            if state != "completed":
-                pending.append(f"{context}: status={state}")
-            elif conclusion != "success":
-                failed.append(f"{context}: conclusion={conclusion}")
-        else:
-            conclusion = observed.get("conclusion")
-            if conclusion in {"pending", "queued", "in_progress"}:
-                pending.append(f"{context}: state={conclusion}")
-            elif conclusion != "success":
-                failed.append(f"{context}: state={conclusion}")
+        failed_entry, pending_entry = _evaluate_observed_context(context, observed)
+        if failed_entry:
+            failed.append(failed_entry)
+        elif pending_entry:
+            pending.append(pending_entry)
 
     if missing or failed:
         status = "fail"
@@ -109,6 +103,25 @@ def _evaluate(
     else:
         status = "pass"
     return status, missing, failed, pending
+
+
+def _evaluate_observed_context(context: str, observed: dict[str, str]) -> tuple[str | None, str | None]:
+    source = observed.get("source")
+    if source == "check_run":
+        state = observed.get("state")
+        conclusion = observed.get("conclusion")
+        if state != "completed":
+            return None, f"{context}: status={state}"
+        if conclusion != "success":
+            return f"{context}: conclusion={conclusion}", None
+        return None, None
+
+    conclusion = observed.get("conclusion")
+    if conclusion in PENDING_STATES:
+        return None, f"{context}: state={conclusion}"
+    if conclusion != "success":
+        return f"{context}: state={conclusion}", None
+    return None, None
 
 
 def _render_md(payload: dict) -> str:
@@ -126,21 +139,21 @@ def _render_md(payload: dict) -> str:
     if missing:
         lines.extend(f"- `{name}`" for name in missing)
     else:
-        lines.append("- None")
+        lines.append(NONE_MARKER)
 
     lines.extend(["", "## Failed contexts"])
     failed = payload.get("failed") or []
     if failed:
         lines.extend(f"- {entry}" for entry in failed)
     else:
-        lines.append("- None")
+        lines.append(NONE_MARKER)
 
     lines.extend(["", "## Pending contexts"])
     pending = payload.get("pending") or []
     if pending:
         lines.extend(f"- {entry}" for entry in pending)
     else:
-        lines.append("- None")
+        lines.append(NONE_MARKER)
 
     lines.extend(["", f"- Timed out: `{payload.get('timed_out', False)}`"])
 

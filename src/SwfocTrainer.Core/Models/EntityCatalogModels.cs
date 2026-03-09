@@ -350,92 +350,77 @@ public static class CatalogEntityKindClassifier
         return incomingSpecificity > existingSpecificity ? incoming : existing;
     }
 
-    public static IReadOnlyList<string> InferAffiliations(string entityId)
+    public static IReadOnlyList<string> InferAffiliations(string? entityId)
     {
         if (string.IsNullOrWhiteSpace(entityId))
         {
             return Array.Empty<string>();
         }
 
-        var normalizedEntityId = (entityId ?? string.Empty).Trim();
+        var normalizedEntityId = entityId.Trim();
         return FactionMarkers
             .Where(marker => normalizedEntityId.Contains(marker, StringComparison.OrdinalIgnoreCase))
             .Distinct(StringComparer.OrdinalIgnoreCase)
             .ToArray();
     }
 
-    private static bool IsHeroName(string value)
+    private static bool IsHeroName(string? value)
     {
         if (string.IsNullOrWhiteSpace(value))
         {
             return false;
         }
 
-        var normalizedValue = (value ?? string.Empty).Trim();
+        var normalizedValue = value.Trim();
         return normalizedValue.Contains("HERO", StringComparison.OrdinalIgnoreCase) ||
                normalizedValue.Contains("VADER", StringComparison.OrdinalIgnoreCase) ||
                normalizedValue.Contains("PALPATINE", StringComparison.OrdinalIgnoreCase);
     }
 
-    private static bool IsFactionName(string value)
+    private static bool IsFactionName(string? value)
     {
         if (string.IsNullOrWhiteSpace(value))
         {
             return false;
         }
 
-        var normalizedValue = (value ?? string.Empty).Trim();
+        var normalizedValue = value.Trim();
         return FactionMarkers.Any(marker => normalizedValue.Equals(marker, StringComparison.OrdinalIgnoreCase)) ||
                normalizedValue.EndsWith("_FACTION", StringComparison.OrdinalIgnoreCase) ||
                normalizedValue.StartsWith("FACTION_", StringComparison.OrdinalIgnoreCase);
     }
 
-    private static bool IsBuildingName(string value)
+    private static bool IsBuildingName(string? value)
     {
         if (string.IsNullOrWhiteSpace(value))
         {
             return false;
         }
 
-        var normalizedValue = (value ?? string.Empty).Trim();
-        if (normalizedValue.Length == 0)
-        {
-            return false;
-        }
-
+        var normalizedValue = value.Trim();
         return BuildingNameMarkers.Any(marker => normalizedValue.Contains(marker, StringComparison.OrdinalIgnoreCase));
     }
 
-    private static bool IsSpaceStructureName(string value)
+    private static bool IsSpaceStructureName(string? value)
     {
         if (string.IsNullOrWhiteSpace(value))
         {
             return false;
         }
 
-        var normalizedValue = (value ?? string.Empty).Trim();
-        if (normalizedValue.Length == 0)
-        {
-            return false;
-        }
-
+        var normalizedValue = value.Trim();
         return SpaceStructureMarkers.Any(marker => normalizedValue.Contains(marker, StringComparison.OrdinalIgnoreCase));
     }
 
-    private static bool ContainsToken(string value, string token)
+    private static bool ContainsToken(string? value, string? token)
     {
         if (string.IsNullOrWhiteSpace(value) || string.IsNullOrWhiteSpace(token))
         {
             return false;
         }
 
-        var normalizedValue = (value ?? string.Empty).Trim();
-        var normalizedToken = (token ?? string.Empty).Trim();
-        if (normalizedValue.Length == 0 || normalizedToken.Length == 0)
-        {
-            return false;
-        }
-
+        var normalizedValue = value.Trim();
+        var normalizedToken = token.Trim();
         return normalizedValue.Contains(normalizedToken, StringComparison.OrdinalIgnoreCase);
     }
 
