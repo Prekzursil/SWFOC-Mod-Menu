@@ -77,7 +77,7 @@ public sealed class CatalogService : ICatalogService
             throw new ArgumentException(NullOrWhitespaceMessage, nameof(profileId));
         }
 
-        var normalizedProfileId = NormalizeRequiredValue(profileId, nameof(profileId));
+        var normalizedProfileId = profileId.Trim();
         var profile = await _profiles.ResolveInheritedProfileAsync(normalizedProfileId, cancellationToken).ConfigureAwait(false);
         if (profile is null)
         {
@@ -105,7 +105,7 @@ public sealed class CatalogService : ICatalogService
             throw new ArgumentException(NullOrWhitespaceMessage, nameof(profileId));
         }
 
-        var normalizedProfileId = profileId!.Trim();
+        var normalizedProfileId = profileId.Trim();
         var profile = await _profiles.ResolveInheritedProfileAsync(normalizedProfileId, cancellationToken).ConfigureAwait(false);
         if (profile is null)
         {
@@ -185,8 +185,8 @@ public sealed class CatalogService : ICatalogService
             throw new ArgumentNullException(nameof(records));
         }
 
-        var sourcePath = (source.Path ?? string.Empty).Trim();
-        var sourceType = (source.Type ?? string.Empty).Trim();
+        var sourcePath = NormalizeOptionalValue(source.Path);
+        var sourceType = NormalizeOptionalValue(source.Type);
         if (string.IsNullOrWhiteSpace(sourcePath) || string.IsNullOrWhiteSpace(sourceType))
         {
             return false;
@@ -409,7 +409,7 @@ public sealed class CatalogService : ICatalogService
             throw new ArgumentNullException(nameof(records));
         }
 
-        var incomingEntityId = incoming.EntityId ?? string.Empty;
+        var incomingEntityId = NormalizeOptionalValue(incoming.EntityId);
         if (string.IsNullOrWhiteSpace(incomingEntityId))
         {
             throw new InvalidOperationException("Incoming catalog record id is required.");
@@ -708,9 +708,13 @@ public sealed class CatalogService : ICatalogService
 
     private static IReadOnlyList<string> BuildTypedEntityCatalogEntries(IReadOnlyList<EntityCatalogRecord> entities)
     {
-        var sourceEntities = entities ?? throw new ArgumentNullException(nameof(entities));
-        var typedEntries = new List<string>(sourceEntities.Count);
-        foreach (var entity in sourceEntities)
+        if (entities is null)
+        {
+            throw new ArgumentNullException(nameof(entities));
+        }
+
+        var typedEntries = new List<string>(entities.Count);
+        foreach (var entity in entities)
         {
             typedEntries.Add(JsonSerializer.Serialize(entity, TypedCatalogJsonOptions));
         }
@@ -720,12 +724,12 @@ public sealed class CatalogService : ICatalogService
 
     private static IReadOnlyList<string> BuildCandidateRoots(string sourceDirectory)
     {
-        if (string.IsNullOrWhiteSpace(sourceDirectory))
+        var normalizedSourceDirectory = NormalizeOptionalValue(sourceDirectory);
+        if (string.IsNullOrWhiteSpace(normalizedSourceDirectory))
         {
             return Array.Empty<string>();
         }
 
-        var normalizedSourceDirectory = sourceDirectory.Trim();
         var sourceParent = Directory.GetParent(normalizedSourceDirectory);
         var sourceGrandParent = sourceParent is null
             ? null
@@ -745,13 +749,13 @@ public sealed class CatalogService : ICatalogService
 
     private static string? ResolveVisualReferenceFromRoot(string root, string visualRef)
     {
-        if (string.IsNullOrWhiteSpace(root) || string.IsNullOrWhiteSpace(visualRef))
+        var normalizedRoot = NormalizeOptionalValue(root);
+        var normalizedVisualRef = NormalizeOptionalValue(visualRef);
+        if (string.IsNullOrWhiteSpace(normalizedRoot) || string.IsNullOrWhiteSpace(normalizedVisualRef))
         {
             return null;
         }
 
-        var normalizedRoot = root.Trim();
-        var normalizedVisualRef = visualRef.Trim();
         foreach (var relativeDirectory in VisualSearchDirectories)
         {
             var candidate = string.IsNullOrWhiteSpace(relativeDirectory)
@@ -771,11 +775,18 @@ public sealed class CatalogService : ICatalogService
         Func<EntityCatalogRecord, bool> predicate,
         int limit)
     {
-        var sourceEntities = entities ?? throw new ArgumentNullException(nameof(entities));
-        var sourcePredicate = predicate ?? throw new ArgumentNullException(nameof(predicate));
+        if (entities is null)
+        {
+            throw new ArgumentNullException(nameof(entities));
+        }
 
-        return sourceEntities
-            .Where(sourcePredicate)
+        if (predicate is null)
+        {
+            throw new ArgumentNullException(nameof(predicate));
+        }
+
+        return entities
+            .Where(predicate)
             .Select(static record => record.EntityId ?? string.Empty)
             .Where(static entityId => !string.IsNullOrWhiteSpace(entityId))
             .Distinct(StringComparer.OrdinalIgnoreCase)
@@ -846,6 +857,16 @@ public sealed class CatalogService : ICatalogService
         }
 
         return normalized;
+    }
+
+    private static string NormalizeOptionalValue(string? value)
+    {
+        if (string.IsNullOrWhiteSpace(value))
+        {
+            return string.Empty;
+        }
+
+        return value.Trim();
     }
 
     private static CatalogEntityVisualState SelectVisualState(

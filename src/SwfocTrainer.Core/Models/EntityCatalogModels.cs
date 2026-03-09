@@ -350,7 +350,7 @@ public static class CatalogEntityKindClassifier
         return incomingSpecificity > existingSpecificity ? incoming : existing;
     }
 
-    public static IReadOnlyList<string> InferAffiliations(string? entityId)
+    public static IReadOnlyList<string> InferAffiliations(string entityId)
     {
         if (string.IsNullOrWhiteSpace(entityId))
         {
@@ -364,7 +364,7 @@ public static class CatalogEntityKindClassifier
             .ToArray();
     }
 
-    private static bool IsHeroName(string? value)
+    private static bool IsHeroName(string value)
     {
         if (string.IsNullOrWhiteSpace(value))
         {
@@ -377,7 +377,7 @@ public static class CatalogEntityKindClassifier
                normalizedValue.Contains("PALPATINE", StringComparison.OrdinalIgnoreCase);
     }
 
-    private static bool IsFactionName(string? value)
+    private static bool IsFactionName(string value)
     {
         if (string.IsNullOrWhiteSpace(value))
         {
@@ -390,7 +390,7 @@ public static class CatalogEntityKindClassifier
                normalizedValue.StartsWith("FACTION_", StringComparison.OrdinalIgnoreCase);
     }
 
-    private static bool IsBuildingName(string? value)
+    private static bool IsBuildingName(string value)
     {
         if (string.IsNullOrWhiteSpace(value))
         {
@@ -401,7 +401,7 @@ public static class CatalogEntityKindClassifier
         return BuildingNameMarkers.Any(marker => normalizedValue.Contains(marker, StringComparison.OrdinalIgnoreCase));
     }
 
-    private static bool IsSpaceStructureName(string? value)
+    private static bool IsSpaceStructureName(string value)
     {
         if (string.IsNullOrWhiteSpace(value))
         {
@@ -412,7 +412,7 @@ public static class CatalogEntityKindClassifier
         return SpaceStructureMarkers.Any(marker => normalizedValue.Contains(marker, StringComparison.OrdinalIgnoreCase));
     }
 
-    private static bool ContainsToken(string? value, string? token)
+    private static bool ContainsToken(string value, string token)
     {
         if (string.IsNullOrWhiteSpace(value) || string.IsNullOrWhiteSpace(token))
         {
