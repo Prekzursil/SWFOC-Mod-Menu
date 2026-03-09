@@ -181,23 +181,9 @@ public sealed class CatalogService : ICatalogService
         CatalogSource source,
         IDictionary<string, EntityCatalogRecord> records)
     {
-        var profileIdValue = profileId;
-        if (string.IsNullOrWhiteSpace(profileIdValue))
-        {
-            throw new ArgumentException(NullOrWhitespaceMessage, nameof(profileId));
-        }
-
-        var normalizedProfileId = profileIdValue.Trim();
-
-        if (source is null)
-        {
-            throw new ArgumentNullException(nameof(source));
-        }
-
-        if (records is null)
-        {
-            throw new ArgumentNullException(nameof(records));
-        }
+        var normalizedProfileId = NormalizeRequiredValue(profileId, nameof(profileId));
+        ArgumentNullException.ThrowIfNull(source);
+        ArgumentNullException.ThrowIfNull(records);
 
         var sourcePath = NormalizeNonEmpty(source.Path);
         var sourceType = NormalizeNonEmpty(source.Type);
@@ -214,40 +200,57 @@ public sealed class CatalogService : ICatalogService
             return false;
         }
 
-        if (!File.Exists(sourcePathValue))
+        if (!SourceExists(source, sourcePathValue))
         {
-            if (source.Required)
-            {
-                _logger.LogWarning("Required catalog source not found: {Path}", sourcePathValue);
-            }
-
             return false;
         }
 
         try
         {
-            var document = XDocument.Load(sourcePathValue, LoadOptions.None);
-            foreach (var element in document.Descendants())
-            {
-                if (!TryCreateRecord(normalizedProfileId, sourcePathValue, element, out var parsedRecord))
-                {
-                    continue;
-                }
-
-                if (string.IsNullOrWhiteSpace(parsedRecord.EntityId))
-                {
-                    continue;
-                }
-
-                AddOrMergeRecord(records, parsedRecord);
-            }
-
+            AppendXmlRecords(normalizedProfileId, sourcePathValue, records);
             return true;
         }
         catch (Exception ex)
         {
             _logger.LogWarning(ex, "Failed to parse catalog source: {Path}", sourcePathValue);
             return false;
+        }
+    }
+
+    private bool SourceExists(CatalogSource source, string sourcePath)
+    {
+        if (File.Exists(sourcePath))
+        {
+            return true;
+        }
+
+        if (source.Required)
+        {
+            _logger.LogWarning("Required catalog source not found: {Path}", sourcePath);
+        }
+
+        return false;
+    }
+
+    private static void AppendXmlRecords(
+        string profileId,
+        string sourcePath,
+        IDictionary<string, EntityCatalogRecord> records)
+    {
+        var document = XDocument.Load(sourcePath, LoadOptions.None);
+        foreach (var element in document.Descendants())
+        {
+            if (!TryCreateRecord(profileId, sourcePath, element, out var parsedRecord))
+            {
+                continue;
+            }
+
+            if (string.IsNullOrWhiteSpace(parsedRecord.EntityId))
+            {
+                continue;
+            }
+
+            AddOrMergeRecord(records, parsedRecord);
         }
     }
 
@@ -870,6 +873,12 @@ public sealed class CatalogService : ICatalogService
 
         var trimmed = value.Trim();
         return trimmed.Length == 0 ? null : trimmed;
+    }
+
+    private static string NormalizeRequiredValue(string value, string paramName)
+    {
+        return NormalizeNonEmpty(value)
+            ?? throw new ArgumentException(NullOrWhitespaceMessage, paramName);
     }
 
     private static IReadOnlyList<string> ParseListValue(string? raw)
