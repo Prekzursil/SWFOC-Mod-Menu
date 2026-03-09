@@ -267,18 +267,18 @@ public sealed class GameLaunchServiceTests
             BindingFlags.NonPublic | BindingFlags.Static);
         method.Should().NotBeNull();
 
-        var executable = Environment.ProcessPath;
-        executable.Should().NotBeNullOrWhiteSpace();
+        var launchSpec = BuildImmediateExitLaunchSpec();
 
         var process = (Process?)method!.Invoke(null, new object?[]
         {
-            executable!,
-            Path.GetDirectoryName(executable!)!,
-            "--version"
+            launchSpec.ExecutablePath,
+            launchSpec.WorkingDirectory,
+            launchSpec.Arguments
         });
 
         process.Should().NotBeNull();
         process!.WaitForExit(5000).Should().BeTrue();
+        process.ExitCode.Should().Be(0);
     }
 
     [Fact]
@@ -488,6 +488,23 @@ public sealed class GameLaunchServiceTests
         });
     }
 
+    private static (string ExecutablePath, string WorkingDirectory, string Arguments) BuildImmediateExitLaunchSpec()
+    {
+        if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+        {
+            var cmdExe = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.System), "cmd.exe");
+            return (cmdExe, Path.GetDirectoryName(cmdExe)!, "/c exit 0");
+        }
+
+        const string shellPath = "/bin/sh";
+        if (File.Exists(shellPath))
+        {
+            return (shellPath, Path.GetDirectoryName(shellPath)!, "-c \"exit 0\"");
+        }
+
+        throw new InvalidOperationException("No immediate-exit shell executable is available for the current platform.");
+    }
+
     private static void InvokeTerminateKnownTargets()
     {
         var terminateMethod = typeof(GameLaunchService).GetMethod(
@@ -579,7 +596,6 @@ public sealed class GameLaunchServiceTests
         return (string)result!;
     }
 }
-
 
 
 
