@@ -1,3 +1,4 @@
+#pragma warning disable CA1014
 using System.Text.Json;
 using System.Text.Json.Nodes;
 using FluentAssertions;

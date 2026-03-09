@@ -1,3 +1,4 @@
+#pragma warning disable CA1014
 using FluentAssertions;
 using SwfocTrainer.Core.Models;
 using SwfocTrainer.Runtime.Services;
