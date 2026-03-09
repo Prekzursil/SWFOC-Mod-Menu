@@ -122,7 +122,8 @@ public sealed class CatalogService : ICatalogService
             throw new ArgumentException(NullOrWhitespaceMessage, nameof(profileId));
         }
 
-        return LoadTypedCatalogAsync(profileId, CancellationToken.None);
+        var normalizedProfileId = profileId.Trim();
+        return LoadTypedCatalogAsync(normalizedProfileId, CancellationToken.None);
     }
 
     private async Task<EntityCatalogSnapshot> LoadTypedCatalogAsync(TrainerProfile profile, CancellationToken cancellationToken)
@@ -192,13 +193,13 @@ public sealed class CatalogService : ICatalogService
             throw new ArgumentNullException(nameof(records));
         }
 
-        var normalizedProfileId = profileId!.Trim();
-        var sourcePath = source.Path!.Trim();
-        var sourceType = source.Type!.Trim();
-        if (string.IsNullOrWhiteSpace(sourcePath) || string.IsNullOrWhiteSpace(sourceType))
+        var normalizedProfileId = profileId.Trim();
+        if (string.IsNullOrWhiteSpace(source.Path) || string.IsNullOrWhiteSpace(source.Type))
         {
             return false;
         }
+        var sourcePath = source.Path.Trim();
+        var sourceType = source.Type.Trim();
 
         if (!sourceType.Equals("xml", StringComparison.OrdinalIgnoreCase))
         {
@@ -220,12 +221,12 @@ public sealed class CatalogService : ICatalogService
             var document = XDocument.Load(sourcePath, LoadOptions.None);
             foreach (var element in document.Descendants())
             {
-                if (!TryCreateRecord(normalizedProfileId, sourcePath, element, out var record))
+                if (!TryCreateRecord(normalizedProfileId, sourcePath, element, out var parsedRecord))
                 {
                     continue;
                 }
 
-                AddOrMergeRecord(records, record);
+                AddOrMergeRecord(records, parsedRecord);
             }
 
             return true;
@@ -395,7 +396,7 @@ public sealed class CatalogService : ICatalogService
             throw new InvalidOperationException("Catalog root path is required.");
         }
 
-        var normalizedProfileId = profileId.Trim();
+        var normalizedProfileId = profileId is null ? string.Empty : profileId.Trim();
         var path = Path.Combine(catalogRootPath, normalizedProfileId, "catalog.json");
         if (!File.Exists(path))
         {
@@ -421,7 +422,7 @@ public sealed class CatalogService : ICatalogService
             throw new ArgumentNullException(nameof(records));
         }
 
-        var incomingEntityId = incoming.EntityId;
+        var incomingEntityId = incoming.EntityId ?? string.Empty;
         if (string.IsNullOrWhiteSpace(incomingEntityId))
         {
             throw new InvalidOperationException("Incoming catalog record id is required.");
@@ -725,9 +726,13 @@ public sealed class CatalogService : ICatalogService
             throw new ArgumentNullException(nameof(entities));
         }
 
-        return entities
-            .Select(static record => JsonSerializer.Serialize(record, TypedCatalogJsonOptions))
-            .ToArray();
+        var typedEntries = new List<string>(entities.Count);
+        foreach (var entity in entities)
+        {
+            typedEntries.Add(JsonSerializer.Serialize(entity, TypedCatalogJsonOptions));
+        }
+
+        return typedEntries;
     }
 
     private static IReadOnlyList<string> BuildCandidateRoots(string sourceDirectory)
@@ -809,10 +814,9 @@ public sealed class CatalogService : ICatalogService
             return CatalogEntityVisualState.Unknown;
         }
 
-        var hasResolvedVisual = !string.IsNullOrWhiteSpace(resolvedVisualRef);
-        return hasResolvedVisual
-            ? CatalogEntityVisualState.Resolved
-            : CatalogEntityVisualState.Missing;
+        return string.IsNullOrWhiteSpace(resolvedVisualRef)
+            ? CatalogEntityVisualState.Missing
+            : CatalogEntityVisualState.Resolved;
     }
 
     private static IReadOnlyList<string> ParseListValue(string? raw)
@@ -841,9 +845,15 @@ public sealed class CatalogService : ICatalogService
 
     private static string? ChooseValue(string? existing, string? incoming, string? fallback)
     {
-        if (string.IsNullOrWhiteSpace(existing) || (!string.IsNullOrWhiteSpace(fallback) && existing!.Equals(fallback, StringComparison.OrdinalIgnoreCase)))
+        var normalizedExisting = existing ?? string.Empty;
+        var normalizedIncoming = incoming ?? string.Empty;
+        var normalizedFallback = fallback ?? string.Empty;
+
+        if (string.IsNullOrWhiteSpace(normalizedExisting) ||
+            (!string.IsNullOrWhiteSpace(normalizedFallback) &&
+             normalizedExisting.Equals(normalizedFallback, StringComparison.OrdinalIgnoreCase)))
         {
-            return string.IsNullOrWhiteSpace(incoming) ? fallback : incoming!;
+            return string.IsNullOrWhiteSpace(normalizedIncoming) ? fallback : normalizedIncoming;
         }
 
         return existing;

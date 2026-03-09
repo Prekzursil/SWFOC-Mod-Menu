@@ -323,9 +323,9 @@ public static class CatalogEntityKindClassifier
         CatalogEntityKind existing,
         CatalogEntityKind incoming)
     {
-        var existingSpecificity = GetSpecificity(existing);
-        var incomingSpecificity = GetSpecificity(incoming);
-        return incomingSpecificity > existingSpecificity ? incoming : existing;
+        return GetSpecificity(incoming) > GetSpecificity(existing)
+            ? incoming
+            : existing;
     }
 
     public static IReadOnlyList<string> InferAffiliations(string entityId)
@@ -362,7 +362,7 @@ public static class CatalogEntityKindClassifier
             return false;
         }
 
-        var normalizedValue = value.Trim();
+        var normalizedValue = value?.Trim() ?? string.Empty;
         return FactionMarkers.Any(marker => normalizedValue.Equals(marker, StringComparison.OrdinalIgnoreCase)) ||
                normalizedValue.EndsWith("_FACTION", StringComparison.OrdinalIgnoreCase) ||
                normalizedValue.StartsWith("FACTION_", StringComparison.OrdinalIgnoreCase);
