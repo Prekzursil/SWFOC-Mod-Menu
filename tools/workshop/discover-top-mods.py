@@ -130,7 +130,8 @@ def build_validated_request(req: request.Request) -> request.Request:
 
 def open_validated_request(req: request.Request, timeout_sec: float):
     validated_request = build_validated_request(req)
-    # nosemgrep: python.lang.security.audit.dynamic-urllib-use-detected.dynamic-urllib-use-detected -- Request URL and redirect targets are constrained to HTTPS-only Steam allowlisted endpoints before opening.
+    # nosemgrep: python.lang.security.audit.dynamic-urllib-use-detected.dynamic-urllib-use-detected
+    # Request URL and redirect targets are constrained to HTTPS-only Steam allowlisted endpoints before opening.
     return STEAM_ONLY_OPENER.open(validated_request, timeout=timeout_sec)
 
 

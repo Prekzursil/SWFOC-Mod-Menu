@@ -138,6 +138,7 @@ function Get-LastExitCodeOrZero {
 }
 
 function Stop-WindowsDotnetTestProcesses {
+    [CmdletBinding(SupportsShouldProcess = $true)]
     param([switch]$Enabled)
 
     if (-not $Enabled) {
@@ -153,7 +154,9 @@ function Stop-WindowsDotnetTestProcesses {
 
         foreach ($target in $targets) {
             try {
-                Stop-Process -Id $target.Id -Force -ErrorAction Stop
+                if ($PSCmdlet.ShouldProcess("$($target.ProcessName) ($($target.Id))", 'Stop-Process')) {
+                    Stop-Process -Id $target.Id -Force -ErrorAction Stop
+                }
             }
             catch {
                 Write-Warning "Failed to stop lingering process $($target.ProcessName) ($($target.Id)): $($_.Exception.Message)"
