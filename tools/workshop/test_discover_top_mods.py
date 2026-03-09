@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Focused tests for workshop discovery URL validation."""
 
-from __future__ import annotations
+from __future__ import absolute_import, division
 
 import importlib.util
 import unittest

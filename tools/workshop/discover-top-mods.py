@@ -59,28 +59,49 @@ def unique_ordered(values: list[str]) -> list[str]:
     return out
 
 
-def validate_remote_url(raw_url: str) -> str:
-    parsed = parse.urlsplit(raw_url)
+def _ensure_https_scheme(parsed: parse.SplitResult, raw_url: str) -> None:
     if parsed.scheme.lower() != "https":
         raise ValueError(f"Unsupported URL scheme for remote fetch: {raw_url}")
 
+
+def _resolve_allowed_host(parsed: parse.SplitResult, raw_url: str) -> str:
     host = (parsed.hostname or "").lower()
     if host not in ALLOWED_STEAM_ENDPOINTS:
         raise ValueError(f"Unsupported remote host for workshop discovery: {host or raw_url}")
+    return host
 
+
+def _ensure_no_credentials(parsed: parse.SplitResult, raw_url: str) -> None:
     if parsed.username or parsed.password:
         raise ValueError(f"Unsupported credentials in remote fetch URL: {raw_url}")
 
+
+def _ensure_allowed_port(parsed: parse.SplitResult) -> None:
     if parsed.port not in (None, 443):
         raise ValueError(f"Unsupported remote port for workshop discovery: {parsed.port}")
 
+
+def _resolve_allowed_path(parsed: parse.SplitResult, host: str) -> str:
     normalized_path = parse.unquote(parsed.path or "/")
     allowed_paths = ALLOWED_STEAM_ENDPOINTS[host]
     if normalized_path not in allowed_paths:
         raise ValueError(f"Unsupported remote path for workshop discovery: {normalized_path}")
+    return normalized_path
 
+
+def _ensure_no_fragment(parsed: parse.SplitResult, raw_url: str) -> None:
     if parsed.fragment:
         raise ValueError(f"Unsupported URL fragment for remote fetch: {raw_url}")
+
+
+def validate_remote_url(raw_url: str) -> str:
+    parsed = parse.urlsplit(raw_url)
+    _ensure_https_scheme(parsed, raw_url)
+    host = _resolve_allowed_host(parsed, raw_url)
+    _ensure_no_credentials(parsed, raw_url)
+    _ensure_allowed_port(parsed)
+    normalized_path = _resolve_allowed_path(parsed, host)
+    _ensure_no_fragment(parsed, raw_url)
 
     return parse.urlunsplit(("https", host, normalized_path, parsed.query, ""))
 
