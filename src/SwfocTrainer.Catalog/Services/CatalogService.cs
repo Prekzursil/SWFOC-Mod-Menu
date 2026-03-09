@@ -72,12 +72,13 @@ public sealed class CatalogService : ICatalogService
 
     public async Task<IReadOnlyDictionary<string, IReadOnlyList<string>>> LoadCatalogAsync(string profileId, CancellationToken cancellationToken)
     {
-        if (string.IsNullOrWhiteSpace(profileId))
+        var profileIdValue = profileId;
+        if (string.IsNullOrWhiteSpace(profileIdValue))
         {
             throw new ArgumentException(NullOrWhitespaceMessage, nameof(profileId));
         }
 
-        var normalizedProfileId = profileId.Trim();
+        var normalizedProfileId = profileIdValue.Trim();
         var profile = await _profiles.ResolveInheritedProfileAsync(normalizedProfileId, cancellationToken).ConfigureAwait(false);
         if (profile is null)
         {
@@ -100,12 +101,13 @@ public sealed class CatalogService : ICatalogService
 
     public async Task<EntityCatalogSnapshot> LoadTypedCatalogAsync(string profileId, CancellationToken cancellationToken)
     {
-        if (string.IsNullOrWhiteSpace(profileId))
+        var profileIdValue = profileId;
+        if (string.IsNullOrWhiteSpace(profileIdValue))
         {
             throw new ArgumentException(NullOrWhitespaceMessage, nameof(profileId));
         }
 
-        var normalizedProfileId = profileId.Trim();
+        var normalizedProfileId = profileIdValue.Trim();
         var profile = await _profiles.ResolveInheritedProfileAsync(normalizedProfileId, cancellationToken).ConfigureAwait(false);
         if (profile is null)
         {
@@ -117,7 +119,13 @@ public sealed class CatalogService : ICatalogService
 
     public Task<EntityCatalogSnapshot> LoadTypedCatalogAsync(string profileId)
     {
-        var normalizedProfileId = NormalizeRequiredValue(profileId, nameof(profileId));
+        var profileIdValue = profileId;
+        if (string.IsNullOrWhiteSpace(profileIdValue))
+        {
+            throw new ArgumentException(NullOrWhitespaceMessage, nameof(profileId));
+        }
+
+        var normalizedProfileId = profileIdValue.Trim();
         return LoadTypedCatalogAsync(normalizedProfileId, CancellationToken.None);
     }
 
@@ -135,7 +143,7 @@ public sealed class CatalogService : ICatalogService
             throw new InvalidOperationException("Profile id is required for catalog loading.");
         }
 
-        var normalizedProfileId = NormalizeRequiredValue(profileId, nameof(profileId));
+        var normalizedProfileId = profileId.Trim();
         var catalogSources = sourceProfile.CatalogSources ?? Array.Empty<CatalogSource>();
         var prebuilt = await LoadPrebuiltCatalogAsync(normalizedProfileId, cancellationToken).ConfigureAwait(false);
         if (prebuilt.Count > 0)
@@ -173,7 +181,13 @@ public sealed class CatalogService : ICatalogService
         CatalogSource source,
         IDictionary<string, EntityCatalogRecord> records)
     {
-        var normalizedProfileId = NormalizeRequiredValue(profileId, nameof(profileId));
+        var profileIdValue = profileId;
+        if (string.IsNullOrWhiteSpace(profileIdValue))
+        {
+            throw new ArgumentException(NullOrWhitespaceMessage, nameof(profileId));
+        }
+
+        var normalizedProfileId = profileIdValue.Trim();
 
         if (source is null)
         {
@@ -185,12 +199,15 @@ public sealed class CatalogService : ICatalogService
             throw new ArgumentNullException(nameof(records));
         }
 
-        var sourcePath = NormalizeOptionalValue(source.Path);
-        var sourceType = NormalizeOptionalValue(source.Type);
-        if (string.IsNullOrWhiteSpace(sourcePath) || string.IsNullOrWhiteSpace(sourceType))
+        var sourcePathValue = source.Path;
+        var sourceTypeValue = source.Type;
+        if (string.IsNullOrWhiteSpace(sourcePathValue) || string.IsNullOrWhiteSpace(sourceTypeValue))
         {
             return false;
         }
+
+        var sourcePath = sourcePathValue.Trim();
+        var sourceType = sourceTypeValue.Trim();
 
         if (!sourceType.Equals("xml", StringComparison.OrdinalIgnoreCase))
         {
@@ -376,7 +393,13 @@ public sealed class CatalogService : ICatalogService
 
     private async Task<Dictionary<string, IReadOnlyList<string>>> LoadPrebuiltCatalogAsync(string profileId, CancellationToken cancellationToken)
     {
-        var normalizedProfileId = NormalizeRequiredValue(profileId, nameof(profileId));
+        var profileIdValue = profileId;
+        if (string.IsNullOrWhiteSpace(profileIdValue))
+        {
+            throw new ArgumentException(NullOrWhitespaceMessage, nameof(profileId));
+        }
+
+        var normalizedProfileId = profileIdValue.Trim();
 
         var catalogRootPath = _options.CatalogRootPath;
         if (string.IsNullOrWhiteSpace(catalogRootPath))
@@ -409,11 +432,13 @@ public sealed class CatalogService : ICatalogService
             throw new ArgumentNullException(nameof(records));
         }
 
-        var incomingEntityId = NormalizeOptionalValue(incoming.EntityId);
-        if (string.IsNullOrWhiteSpace(incomingEntityId))
+        var incomingEntityIdValue = incoming.EntityId;
+        if (string.IsNullOrWhiteSpace(incomingEntityIdValue))
         {
             throw new InvalidOperationException("Incoming catalog record id is required.");
         }
+
+        var incomingEntityId = incomingEntityIdValue.Trim();
 
         if (!records.TryGetValue(incomingEntityId, out var existing))
         {
@@ -457,13 +482,13 @@ public sealed class CatalogService : ICatalogService
             DisplayName = ChooseValue(existingRecord.DisplayName, incomingRecord.DisplayName, existingRecord.EntityId) ?? existingRecord.EntityId,
             EncyclopediaTextKey = ChooseValue(existingRecord.EncyclopediaTextKey, incomingRecord.EncyclopediaTextKey, null),
             SourcePath = ChooseValue(existingRecord.SourcePath, incomingRecord.SourcePath, null),
-            Affiliations = mergedAffiliations.Length == 0 ? existingRecord.Affiliations : mergedAffiliations,
+            Affiliations = mergedAffiliations.Length == 0 ? existingAffiliations : mergedAffiliations,
             VisualRef = ChooseValue(existingRecord.VisualRef, incomingRecord.VisualRef, null),
             VisualState = SelectVisualState(existingRecord.VisualState, incomingRecord.VisualState),
             CompatibilityState = SelectCompatibilityState(existingRecord.CompatibilityState, incomingRecord.CompatibilityState),
             PopulationValue = existingRecord.PopulationValue ?? incomingRecord.PopulationValue,
             BuildCostCredits = existingRecord.BuildCostCredits ?? incomingRecord.BuildCostCredits,
-            DependencyRefs = mergedDependencies.Length == 0 ? existingRecord.DependencyRefs : mergedDependencies,
+            DependencyRefs = mergedDependencies.Length == 0 ? existingDependencies : mergedDependencies,
             Metadata = mergedMetadata
         };
     }
@@ -708,10 +733,7 @@ public sealed class CatalogService : ICatalogService
 
     private static IReadOnlyList<string> BuildTypedEntityCatalogEntries(IReadOnlyList<EntityCatalogRecord> entities)
     {
-        if (entities is null)
-        {
-            throw new ArgumentNullException(nameof(entities));
-        }
+        ArgumentNullException.ThrowIfNull(entities);
 
         var typedEntries = new List<string>(entities.Count);
         foreach (var entity in entities)
@@ -724,11 +746,13 @@ public sealed class CatalogService : ICatalogService
 
     private static IReadOnlyList<string> BuildCandidateRoots(string sourceDirectory)
     {
-        var normalizedSourceDirectory = NormalizeOptionalValue(sourceDirectory);
-        if (string.IsNullOrWhiteSpace(normalizedSourceDirectory))
+        var sourceDirectoryValue = sourceDirectory;
+        if (string.IsNullOrWhiteSpace(sourceDirectoryValue))
         {
             return Array.Empty<string>();
         }
+
+        var normalizedSourceDirectory = sourceDirectoryValue.Trim();
 
         var sourceParent = Directory.GetParent(normalizedSourceDirectory);
         var sourceGrandParent = sourceParent is null
@@ -749,12 +773,15 @@ public sealed class CatalogService : ICatalogService
 
     private static string? ResolveVisualReferenceFromRoot(string root, string visualRef)
     {
-        var normalizedRoot = NormalizeOptionalValue(root);
-        var normalizedVisualRef = NormalizeOptionalValue(visualRef);
-        if (string.IsNullOrWhiteSpace(normalizedRoot) || string.IsNullOrWhiteSpace(normalizedVisualRef))
+        var rootValue = root;
+        var visualRefValue = visualRef;
+        if (string.IsNullOrWhiteSpace(rootValue) || string.IsNullOrWhiteSpace(visualRefValue))
         {
             return null;
         }
+
+        var normalizedRoot = rootValue.Trim();
+        var normalizedVisualRef = visualRefValue.Trim();
 
         foreach (var relativeDirectory in VisualSearchDirectories)
         {
@@ -775,15 +802,8 @@ public sealed class CatalogService : ICatalogService
         Func<EntityCatalogRecord, bool> predicate,
         int limit)
     {
-        if (entities is null)
-        {
-            throw new ArgumentNullException(nameof(entities));
-        }
-
-        if (predicate is null)
-        {
-            throw new ArgumentNullException(nameof(predicate));
-        }
+        ArgumentNullException.ThrowIfNull(entities);
+        ArgumentNullException.ThrowIfNull(predicate);
 
         return entities
             .Where(predicate)
@@ -846,27 +866,6 @@ public sealed class CatalogService : ICatalogService
         }
 
         return existing;
-    }
-
-    private static string NormalizeRequiredValue(string? value, string parameterName)
-    {
-        var normalized = (value ?? string.Empty).Trim();
-        if (normalized.Length == 0)
-        {
-            throw new ArgumentException(NullOrWhitespaceMessage, parameterName);
-        }
-
-        return normalized;
-    }
-
-    private static string NormalizeOptionalValue(string? value)
-    {
-        if (string.IsNullOrWhiteSpace(value))
-        {
-            return string.Empty;
-        }
-
-        return value.Trim();
     }
 
     private static CatalogEntityVisualState SelectVisualState(
