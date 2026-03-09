@@ -39,7 +39,20 @@ internal static class MainViewModelRosterHelpers
 
         var normalizedWorkshopId = selectedWorkshopId?.Trim() ?? string.Empty;
         var rows = new Dictionary<string, RosterEntityViewItem>(StringComparer.OrdinalIgnoreCase);
+        AddTypedRows(catalog, selectedProfileId, normalizedWorkshopId, rows);
+        AddLegacyRows(catalog, selectedProfileId, normalizedWorkshopId, rows);
 
+        return rows.Count == 0
+            ? Array.Empty<RosterEntityViewItem>()
+            : OrderRows(rows.Values);
+    }
+
+    private static void AddTypedRows(
+        IReadOnlyDictionary<string, IReadOnlyList<string>> catalog,
+        string selectedProfileId,
+        string selectedWorkshopId,
+        IDictionary<string, RosterEntityViewItem> rows)
+    {
         foreach (var key in TypedCatalogKeys)
         {
             if (!catalog.TryGetValue(key, out var typedEntries) || typedEntries is null)
@@ -49,7 +62,7 @@ internal static class MainViewModelRosterHelpers
 
             foreach (var entry in typedEntries)
             {
-                if (!TryParseTypedEntityRow(entry, selectedProfileId, normalizedWorkshopId, out var row))
+                if (!TryParseTypedEntityRow(entry, selectedProfileId, selectedWorkshopId, out var row))
                 {
                     continue;
                 }
@@ -57,34 +70,43 @@ internal static class MainViewModelRosterHelpers
                 rows[BuildRowKey(row)] = row;
             }
         }
+    }
 
+    private static void AddLegacyRows(
+        IReadOnlyDictionary<string, IReadOnlyList<string>> catalog,
+        string selectedProfileId,
+        string selectedWorkshopId,
+        IDictionary<string, RosterEntityViewItem> rows)
+    {
         if (!catalog.TryGetValue("entity_catalog", out var entries) || entries is null || entries.Count == 0)
         {
-            return rows.Count == 0
-                ? Array.Empty<RosterEntityViewItem>()
-                : OrderRows(rows.Values);
+            return;
         }
 
         foreach (var entry in entries)
         {
-            RosterEntityViewItem row;
-            if (TryParseTypedEntityRow(entry, selectedProfileId, normalizedWorkshopId, out var typedRow))
-            {
-                row = typedRow;
-            }
-            else if (!TryParseLegacyEntityRow(entry, selectedProfileId, normalizedWorkshopId, out var legacyRow))
+            if (!TryParseCatalogRow(entry, selectedProfileId, selectedWorkshopId, out var row))
             {
                 continue;
-            }
-            else
-            {
-                row = legacyRow;
             }
 
             rows.TryAdd(BuildRowKey(row), row);
         }
+    }
 
-        return OrderRows(rows.Values);
+    private static bool TryParseCatalogRow(
+        string raw,
+        string selectedProfileId,
+        string selectedWorkshopId,
+        out RosterEntityViewItem row)
+    {
+        if (TryParseTypedEntityRow(raw, selectedProfileId, selectedWorkshopId, out var typedRow))
+        {
+            row = typedRow;
+            return true;
+        }
+
+        return TryParseLegacyEntityRow(raw, selectedProfileId, selectedWorkshopId, out row);
     }
 
     private static IReadOnlyList<RosterEntityViewItem> OrderRows(IEnumerable<RosterEntityViewItem> rows)
@@ -318,33 +340,7 @@ internal static class MainViewModelRosterHelpers
                 continue;
             }
 
-            var values = new List<string>();
-            switch (node)
-            {
-                case JsonArray array:
-                    foreach (var item in array)
-                    {
-                        if (item is null)
-                        {
-                            continue;
-                        }
-
-                        var text = item.ToString().Trim();
-                        if (text.Length > 0)
-                        {
-                            values.Add(text);
-                        }
-                    }
-
-                    break;
-
-                default:
-                    values.AddRange(
-                        node.ToString()
-                            .Split(new[] { ';', ',' }, StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries)
-                            .Where(static value => value.Length > 0));
-                    break;
-            }
+            var values = ReadStringList(node);
 
             if (values.Count > 0)
             {
@@ -353,6 +349,38 @@ internal static class MainViewModelRosterHelpers
         }
 
         return [];
+    }
+
+    private static List<string> ReadStringList(JsonNode node)
+    {
+        return node switch
+        {
+            JsonArray array => ReadArrayStringList(array),
+            _ => ReadDelimitedStringList(node.ToString())
+        };
+    }
+
+    private static List<string> ReadArrayStringList(JsonArray array)
+    {
+        var values = new List<string>();
+        foreach (var item in array)
+        {
+            var text = item?.ToString().Trim();
+            if (!string.IsNullOrWhiteSpace(text))
+            {
+                values.Add(text);
+            }
+        }
+
+        return values;
+    }
+
+    private static List<string> ReadDelimitedStringList(string raw)
+    {
+        return raw
+            .Split(new[] { ';', ',' }, StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries)
+            .Where(static value => value.Length > 0)
+            .ToList();
     }
 
     private static string ReadString(JsonObject json, params string[] keys)
@@ -534,14 +562,6 @@ internal static class MainViewModelRosterHelpers
 
     private static string FirstNonEmpty(params string?[] values)
     {
-        foreach (var value in values)
-        {
-            if (!string.IsNullOrWhiteSpace(value))
-            {
-                return value.Trim();
-            }
-        }
-
-        return string.Empty;
+        return values.FirstOrDefault(static value => !string.IsNullOrWhiteSpace(value))?.Trim() ?? string.Empty;
     }
 }

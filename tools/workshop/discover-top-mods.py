@@ -16,6 +16,7 @@ from urllib import parse, request
 SCHEMA_VERSION = "1.0"
 DEFAULT_APP_ID = 32470
 DETAILS_API_URL = "https://api.steampowered.com/ISteamRemoteStorage/GetPublishedFileDetails/v1/"
+ALLOWED_STEAM_HOSTS = frozenset({"steamcommunity.com", "api.steampowered.com"})
 
 
 def utc_now_iso() -> str:
@@ -53,6 +54,24 @@ def unique_ordered(values: list[str]) -> list[str]:
         seen.add(value)
         out.append(value)
     return out
+
+
+def validate_remote_url(raw_url: str) -> str:
+    parsed = parse.urlparse(raw_url)
+    if parsed.scheme.lower() != "https":
+        raise ValueError(f"Unsupported URL scheme for remote fetch: {raw_url}")
+
+    host = (parsed.hostname or "").lower()
+    if host not in ALLOWED_STEAM_HOSTS:
+        raise ValueError(f"Unsupported remote host for workshop discovery: {host or raw_url}")
+
+    return raw_url
+
+
+def open_validated_request(req: request.Request, timeout_sec: float):
+    validate_remote_url(req.full_url)
+    # nosemgrep: python.lang.security.audit.dynamic-urllib-use-detected.dynamic-urllib-use-detected -- URL is validated to HTTPS and an explicit Steam allowlist before opening.
+    return request.urlopen(req, timeout=timeout_sec)
 
 
 def parse_timestamp_to_iso(value: Any) -> str:
@@ -239,7 +258,7 @@ def scrape_workshop_ids(app_id: int, pages: int, timeout_sec: float) -> tuple[li
         sources.append({"type": "workshop_browse", "uri": browse_url})
         req = request.Request(browse_url, headers={"User-Agent": "swfoc-discovery/1.0"})
         try:
-            with request.urlopen(req, timeout=timeout_sec) as response:
+            with open_validated_request(req, timeout_sec) as response:
                 html = response.read().decode("utf-8", errors="ignore")
             for match in pattern.findall(html):
                 if match not in workshop_ids:
@@ -268,7 +287,7 @@ def fetch_published_file_details(workshop_ids: list[str], timeout_sec: float) ->
         )
 
         try:
-            with request.urlopen(req, timeout=timeout_sec) as response:
+            with open_validated_request(req, timeout_sec) as response:
                 raw_payload = json.loads(response.read().decode("utf-8"))
             details = raw_payload.get("response", {}).get("publishedfiledetails", [])
             if isinstance(details, list):

@@ -10,17 +10,22 @@ namespace SwfocTrainer.Catalog.Services;
 
 public sealed class CatalogService : ICatalogService
 {
+    private const string ArtDirectory = "Art";
+    private const string TexturesDirectory = "Textures";
+    private const string UiDirectory = "UI";
+    private const string GuiDirectory = "Gui";
+
     private static readonly string[] EntityIdentifierAttributes = ["Name", "ID", "Id", "Object_Name", "Type"];
     private static readonly string[] VisualReferenceNames = ["Icon_Name", "IconName", "Portrait"];
     private static readonly string[] VisualSearchDirectories =
     [
         string.Empty,
-        "Art",
-        Path.Combine("Art", "Textures"),
-        Path.Combine("Art", "Textures", "UI"),
-        Path.Combine("Art", "Textures", "Gui"),
-        Path.Combine("Textures"),
-        Path.Combine("Textures", "UI")
+        ArtDirectory,
+        Path.Combine(ArtDirectory, TexturesDirectory),
+        Path.Combine(ArtDirectory, TexturesDirectory, UiDirectory),
+        Path.Combine(ArtDirectory, TexturesDirectory, GuiDirectory),
+        TexturesDirectory,
+        Path.Combine(TexturesDirectory, UiDirectory)
     ];
     private static readonly string[] DependencyNames =
     [
@@ -41,6 +46,15 @@ public sealed class CatalogService : ICatalogService
         PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
         Converters = { new JsonStringEnumConverter() }
     };
+
+    private sealed record CatalogMetadataContext(
+        string DisplayNameKey,
+        string? EncyclopediaTextKey,
+        string? RawVisualRef,
+        string? ResolvedVisualRef,
+        CatalogEntityVisualState VisualState,
+        int? PopulationValue,
+        int? BuildCostCredits);
 
     private readonly CatalogOptions _options;
     private readonly IProfileRepository _profiles;
@@ -185,6 +199,15 @@ public sealed class CatalogService : ICatalogService
             ? CatalogEntityCompatibilityState.Blocked
             : CatalogEntityCompatibilityState.Unknown;
 
+        var metadataContext = new CatalogMetadataContext(
+            textId,
+            encyclopediaTextKey,
+            rawVisualRef,
+            resolvedVisualRef,
+            visualState,
+            populationValue,
+            buildCostCredits);
+
         record = new EntityCatalogRecord
         {
             EntityId = entityId,
@@ -201,15 +224,7 @@ public sealed class CatalogService : ICatalogService
             PopulationValue = populationValue,
             BuildCostCredits = buildCostCredits,
             EncyclopediaTextKey = encyclopediaTextKey,
-            Metadata = BuildMetadata(
-                element,
-                textId,
-                encyclopediaTextKey,
-                rawVisualRef,
-                resolvedVisualRef,
-                visualState,
-                populationValue,
-                buildCostCredits)
+            Metadata = BuildMetadata(element, metadataContext)
         };
 
         return true;
@@ -421,44 +436,38 @@ public sealed class CatalogService : ICatalogService
 
     private static IReadOnlyDictionary<string, string> BuildMetadata(
         XElement element,
-        string displayNameKey,
-        string? encyclopediaTextKey,
-        string? rawVisualRef,
-        string? resolvedVisualRef,
-        CatalogEntityVisualState visualState,
-        int? populationValue,
-        int? buildCostCredits)
+        CatalogMetadataContext context)
     {
         var metadata = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
         {
             ["elementName"] = element.Name.LocalName,
-            ["displayNameKey"] = displayNameKey
+            ["displayNameKey"] = context.DisplayNameKey
         };
 
-        if (!string.IsNullOrWhiteSpace(encyclopediaTextKey))
+        if (!string.IsNullOrWhiteSpace(context.EncyclopediaTextKey))
         {
-            metadata["encyclopediaTextKey"] = encyclopediaTextKey;
+            metadata["encyclopediaTextKey"] = context.EncyclopediaTextKey;
         }
 
-        if (!string.IsNullOrWhiteSpace(rawVisualRef))
+        if (!string.IsNullOrWhiteSpace(context.RawVisualRef))
         {
-            metadata["visualRef"] = rawVisualRef;
-            metadata["visualState"] = visualState.ToString();
+            metadata["visualRef"] = context.RawVisualRef;
+            metadata["visualState"] = context.VisualState.ToString();
         }
 
-        if (!string.IsNullOrWhiteSpace(resolvedVisualRef))
+        if (!string.IsNullOrWhiteSpace(context.ResolvedVisualRef))
         {
-            metadata["resolvedVisualRef"] = resolvedVisualRef;
+            metadata["resolvedVisualRef"] = context.ResolvedVisualRef;
         }
 
-        if (populationValue.HasValue)
+        if (context.PopulationValue.HasValue)
         {
-            metadata["populationValue"] = populationValue.Value.ToString(System.Globalization.CultureInfo.InvariantCulture);
+            metadata["populationValue"] = context.PopulationValue.Value.ToString(System.Globalization.CultureInfo.InvariantCulture);
         }
 
-        if (buildCostCredits.HasValue)
+        if (context.BuildCostCredits.HasValue)
         {
-            metadata["buildCostCredits"] = buildCostCredits.Value.ToString(System.Globalization.CultureInfo.InvariantCulture);
+            metadata["buildCostCredits"] = context.BuildCostCredits.Value.ToString(System.Globalization.CultureInfo.InvariantCulture);
         }
 
         return metadata;
