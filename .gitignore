@@ -29,6 +29,9 @@ cache/
 # Test output
 TestResults/
 coverage/
+visual-adapter/node_modules/
+visual-adapter/playwright-report/
+visual-adapter/test-results/
 
 # NuGet
 *.nupkg

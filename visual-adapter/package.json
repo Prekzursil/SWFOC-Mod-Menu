@@ -1,0 +1,17 @@
+{
+  "name": "swfoc-desktop-visual-adapter",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "serve": "node server.mjs",
+    "e2e:chromatic": "playwright test --config=playwright.chromatic.config.mjs --project=chromium",
+    "e2e:applitools": "playwright test --config=playwright.applitools.config.mjs --project=chromium"
+  },
+  "devDependencies": {
+    "@applitools/eyes-playwright": "^1.45.0",
+    "@chromatic-com/playwright": "^0.12.8",
+    "@playwright/test": "^1.58.2",
+    "chromatic": "^13.3.2"
+  }
+}

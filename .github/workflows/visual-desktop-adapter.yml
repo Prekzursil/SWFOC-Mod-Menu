@@ -1,0 +1,110 @@
+name: desktop-visual-adapter
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'visual-adapter/**'
+      - '.github/workflows/visual-desktop-adapter.yml'
+  pull_request:
+    branches: [main]
+    paths:
+      - 'visual-adapter/**'
+      - '.github/workflows/visual-desktop-adapter.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: desktop-visual-adapter-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  chromatic-playwright:
+    name: Chromatic Playwright
+    runs-on: ubuntu-latest
+    env:
+      CHROMATIC_ARCHIVE_LOCATION: test-results/chromatic-archives
+    defaults:
+      run:
+        working-directory: visual-adapter
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: npm
+          cache-dependency-path: visual-adapter/package-lock.json
+
+      - name: Validate Chromatic token
+        run: |
+          if [ -z "${{ secrets.CHROMATIC_PROJECT_TOKEN }}" ]; then
+            echo 'CHROMATIC_PROJECT_TOKEN is not configured for this repository.' >&2
+            exit 1
+          fi
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install Playwright browser
+        run: npx playwright install --with-deps chromium
+
+      - name: Generate Chromatic archives
+        run: npm run e2e:chromatic
+
+      - name: Upload Playwright artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: chromatic-playwright-artifacts
+          path: |
+            visual-adapter/test-results
+            visual-adapter/playwright-report
+
+      - name: Upload to Chromatic
+        run: npx chromatic --playwright --project-token=${{ secrets.CHROMATIC_PROJECT_TOKEN }}
+
+  applitools-visual:
+    name: Applitools Visual
+    runs-on: ubuntu-latest
+    env:
+      APPLITOOLS_API_KEY: ${{ secrets.APPLITOOLS_API_KEY }}
+      APPLITOOLS_BATCH_NAME: SWFOC-Desktop-Adapter-${{ github.sha }}
+    defaults:
+      run:
+        working-directory: visual-adapter
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: npm
+          cache-dependency-path: visual-adapter/package-lock.json
+
+      - name: Validate Applitools key
+        run: |
+          if [ -z "${APPLITOOLS_API_KEY}" ]; then
+            echo 'APPLITOOLS_API_KEY is not configured for this repository.' >&2
+            exit 1
+          fi
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install Playwright browser
+        run: npx playwright install --with-deps chromium
+
+      - name: Run Applitools visual suite
+        run: npm run e2e:applitools
+
+      - name: Upload Playwright artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: applitools-visual-artifacts
+          path: |
+            visual-adapter/test-results
+            visual-adapter/playwright-report

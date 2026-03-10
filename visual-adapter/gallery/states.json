@@ -1,0 +1,159 @@
+[
+  {
+    "id": "runtime-attach-console",
+    "title": "Runtime attach console",
+    "subtitle": "MainWindow.xaml runtime toolbar plus quick actions",
+    "windowStatus": "Detached · base_swfoc · Symbols 128",
+    "seam": "Runtime tab: profile picker, launch controls, quick actions, payload editor",
+    "source": "Selected labels and controls from MainWindow.xaml Runtime tab",
+    "toolbar": [
+      "Load Profiles",
+      "Load Actions",
+      "Launch + Attach",
+      "Attach",
+      "Detach",
+      "Mode: Offline"
+    ],
+    "panels": [
+      {
+        "title": "Quick Actions",
+        "variant": "kpi",
+        "lines": [
+          "Credits set to 50,000 with freeze enabled",
+          "Freeze Timer, Toggle Fog, Toggle AI",
+          "Instant Build Patch, Unit Cap 99k",
+          "God Mode, One Hit Kill, Unfreeze All"
+        ]
+      },
+      {
+        "title": "Payload JSON",
+        "copy": "Deterministic payload editor for runtime actions, mirrored as static JSON text for snapshot stability."
+      },
+      {
+        "title": "Catalog, Helper & Hotkeys",
+        "lines": [
+          "Load Catalog",
+          "Deploy Helper",
+          "Verify Helper",
+          "Save Hotkeys"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "live-ops-transaction-lab",
+    "title": "Live Ops transaction lab",
+    "subtitle": "Selected Unit Transaction Lab and Spawn Preset Studio",
+    "windowStatus": "Live Ops · Reliability refreshed · Stop on first failure",
+    "seam": "Live Ops tab: unit transaction lab, spawn preset studio, operational diagnostics",
+    "source": "MainWindow.xaml Live Ops controls and default labels",
+    "toolbar": [
+      "Refresh Reliability",
+      "Load Spawn Presets",
+      "Capture Unit Baseline"
+    ],
+    "panels": [
+      {
+        "title": "Selected Unit Transaction Lab",
+        "lines": [
+          "Hull HP 2400 / Shield 900",
+          "Speed 1.10 / Damage x 1.35",
+          "Cooldown x 0.70 / Veterancy 3",
+          "Owner Faction: Empire"
+        ]
+      },
+      {
+        "title": "Spawn Preset Studio",
+        "lines": [
+          "Preset: Victory-II reinforcement sweep",
+          "Quantity: 4 · Delay: 250 ms",
+          "Faction: Empire · Entry Marker: NorthGate",
+          "Stop on first failure: enabled"
+        ]
+      },
+      {
+        "title": "Operational Diagnostics",
+        "variant": "kpi",
+        "lines": [
+          "Helper deploy verified",
+          "Catalog source resolved",
+          "Baseline captured for Tartan Patrol Cruiser"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "calibration-symbol-panel",
+    "title": "Calibration symbol panel",
+    "subtitle": "Calibrate Symbol workflow with candidate scan summary",
+    "windowStatus": "Calibration · Scan summary ready · reason: helper_matrix_hard_gate_not_enabled",
+    "seam": "Live Ops diagnostics column: calibration target, scan candidates, export artifact",
+    "source": "MainWindow.xaml calibration controls and diagnostics labels",
+    "toolbar": [
+      "Calibrate Symbol",
+      "Scan Candidates",
+      "Export Calibration Artifact"
+    ],
+    "panels": [
+      {
+        "title": "Calibration Inputs",
+        "lines": [
+          "Target Symbol: Tactical_Bomber_Hull",
+          "Address Hint: helper export offset",
+          "Expected Source: NamedPipeExtenderBackend"
+        ]
+      },
+      {
+        "title": "Candidate Summary",
+        "lines": [
+          "3 candidates scored above threshold",
+          "Top hit aligned with tactical toggle diagnostics",
+          "Rollback notes prepared for human review"
+        ]
+      },
+      {
+        "title": "Evidence Policy",
+        "variant": "kpi",
+        "copy": "This browser adapter intentionally mirrors deterministic diagnostics and labels from MainWindow so visual tools can review the same state without attaching to the game process."
+      }
+    ]
+  },
+  {
+    "id": "save-editor-patch-lab",
+    "title": "Save editor patch lab",
+    "subtitle": "Save Editor tab with patch pack metadata and validation status",
+    "windowStatus": "Save Editor · schema valid · patch pack ready",
+    "seam": "Save Editor tab: save path, patch pack metadata, compatibility grid",
+    "source": "MainWindow.xaml Save Editor labels and patch-pack controls",
+    "toolbar": [
+      "Browse",
+      "Load",
+      "Edit",
+      "Validate",
+      "Write Edited Save"
+    ],
+    "panels": [
+      {
+        "title": "Save Lab Patch Packs",
+        "lines": [
+          "Patch Pack Path: TestResults/runs/example/save_patch_pack.json",
+          "Summary: 2 operations, 0 schema violations",
+          "Compatibility: base, aotr, roe"
+        ]
+      },
+      {
+        "title": "Field Search",
+        "lines": [
+          "Query: Credits",
+          "Preview: /Economy/Credits",
+          "Edit value staged but not written"
+        ]
+      },
+      {
+        "title": "Status",
+        "variant": "kpi",
+        "copy": "Full save schema editing is profile-driven. Adapter keeps the copy and field labels stable for deterministic review."
+      }
+    ]
+  }
+]
