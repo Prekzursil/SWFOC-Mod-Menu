@@ -49,13 +49,3 @@ Run this command before completion claims:
 ```bash
 dotnet test tests/SwfocTrainer.Tests/SwfocTrainer.Tests.csproj -c Release --no-build --filter "FullyQualifiedName!~SwfocTrainer.Tests.Profiles.Live&FullyQualifiedName!~RuntimeAttachSmokeTests"
 ```
-
-## Agent Queue Contract
-
-- Intake work via `.github/ISSUE_TEMPLATE/agent_task.yml`.
-- Queue with label `agent:ready`.
-- Queue workflow posts execution packet and notifies `@copilot`.
-
-## Queue Trigger Warning
-
-Applying label `agent:ready` triggers the queue workflow immediately.
