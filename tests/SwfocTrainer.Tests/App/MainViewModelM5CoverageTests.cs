@@ -180,6 +180,7 @@ public sealed class MainViewModelM5CoverageTests
                   "entityId": "EMPIRE_STORMTROOPER_SQUAD",
                   "displayName": "Stormtrooper Squad",
                   "displayNameKey": "TEXT_STORMTROOPER",
+                  "displayNameSourcePath": "C:/mods/Data/Text/MasterTextFile_English.dat",
                   "kind": "Unit",
                   "sourceProfileId": "base_swfoc",
                   "sourceWorkshopId": "1125571106",
@@ -188,6 +189,7 @@ public sealed class MainViewModelM5CoverageTests
                   "populationValue": 2,
                   "buildCostCredits": 200,
                   "visualRef": "i_stormtrooper.tga",
+                  "iconCachePath": "C:/mods/cache/icons/i_stormtrooper.png",
                   "visualState": "Resolved",
                   "compatibilityState": "Native",
                   "dependencyRefs": ["EMPIRE_BARRACKS", "STORMTROOPER_COMPANY"]
@@ -208,10 +210,12 @@ public sealed class MainViewModelM5CoverageTests
         var typed = rows.Single(x => x.EntityId == "EMPIRE_STORMTROOPER_SQUAD");
         typed.DisplayName.Should().Be("Stormtrooper Squad");
         typed.DisplayNameKey.Should().Be("TEXT_STORMTROOPER");
+        typed.DisplayNameSourcePath.Should().Be("C:/mods/Data/Text/MasterTextFile_English.dat");
         typed.AffiliationSummary.Should().Be("EMPIRE, PENTASTAR");
         typed.PopulationCostText.Should().Be("2");
         typed.BuildCostText.Should().Be("200");
         typed.DependencySummary.Should().Be("EMPIRE_BARRACKS; STORMTROOPER_COMPANY");
+        typed.IconPath.Should().Be("C:/mods/cache/icons/i_stormtrooper.png");
         typed.SourceLabel.Should().Contain("base_swfoc");
         typed.SourceLabel.Should().Contain("1125571106");
 
@@ -245,5 +249,45 @@ public sealed class MainViewModelM5CoverageTests
         row.DependencySummary.Should().Be("dep_one,dep_two");
         row.VisualState.Should().Be(RosterEntityVisualState.Missing);
         row.CompatibilityState.Should().Be(RosterEntityCompatibilityState.Native);
+    }
+
+    [Fact]
+    public void BuildEntityRoster_ShouldCarryResolvedDisplayAndIconMetadata_FromTypedCatalog()
+    {
+        var catalog = new Dictionary<string, IReadOnlyList<string>>(StringComparer.OrdinalIgnoreCase)
+        {
+            ["entity_catalog_typed"] =
+            [
+                """
+                {
+                  "entityId": "EMPIRE_BARRACKS",
+                  "displayName": "Imperial Barracks",
+                  "displayNameKey": "TEXT_IMPERIAL_BARRACKS",
+                  "displayNameSourcePath": "C:/mods/Data/Text/MasterTextFile_English.dat",
+                  "kind": "Building",
+                  "sourceProfileId": "base_swfoc",
+                  "sourceWorkshopId": "1125571106",
+                  "affiliations": ["EMPIRE"],
+                  "populationValue": 0,
+                  "buildCostCredits": 400,
+                  "visualRef": "C:/mods/Art/Textures/UI/i_barracks.png",
+                  "iconCachePath": "C:/mods/cache/icons/i_barracks.png",
+                  "visualState": "Resolved",
+                  "compatibilityState": "Native"
+                }
+                """
+            ]
+        };
+
+        var row = MainViewModelRosterHelpers.BuildEntityRoster(catalog, "base_swfoc", "1125571106")
+            .Should()
+            .ContainSingle()
+            .Subject;
+
+        row.DisplayName.Should().Be("Imperial Barracks");
+        row.DisplayNameSourcePath.Should().Be("C:/mods/Data/Text/MasterTextFile_English.dat");
+        row.IconPath.Should().Be("C:/mods/cache/icons/i_barracks.png");
+        row.VisualRef.Should().Be("C:/mods/Art/Textures/UI/i_barracks.png");
+        row.VisualSummary.Should().Be("resolved (C:/mods/Art/Textures/UI/i_barracks.png)");
     }
 }

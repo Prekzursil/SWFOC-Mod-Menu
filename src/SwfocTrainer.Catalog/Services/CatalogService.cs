@@ -2,6 +2,7 @@
 
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using System.Text.RegularExpressions;
 using System.Xml.Linq;
 using Microsoft.Extensions.Logging;
 using SwfocTrainer.Catalog.Config;
@@ -30,6 +31,23 @@ public sealed class CatalogService : ICatalogService
         TexturesDirectory,
         Path.Combine(TexturesDirectory, UiDirectory)
     ];
+    private static readonly string[] TextSearchPatterns =
+    [
+        "MasterTextFile*.dat",
+        "MasterTextFile*.txt",
+        "MasterTextFile*.xml",
+        "*.dat",
+        "*.txt"
+    ];
+    private static readonly string[] SupportedPreviewExtensions =
+    [
+        ".png",
+        ".jpg",
+        ".jpeg",
+        ".bmp",
+        ".gif",
+        ".ico"
+    ];
     private static readonly string[] DependencyNames =
     [
         "Required_Structures",
@@ -49,12 +67,20 @@ public sealed class CatalogService : ICatalogService
         PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
         Converters = { new JsonStringEnumConverter() }
     };
+    private static readonly Regex TextAssignmentRegex = new(
+        "(?im)^\\s*([A-Z0-9_]+)\\s*(?:=|:)\\s*\"([^\"]+)\"\\s*$",
+        RegexOptions.Compiled);
+    private static readonly Regex TextInlineRegex = new(
+        "(?im)^\\s*([A-Z0-9_]+)\\s+\"([^\"]+)\"\\s*$",
+        RegexOptions.Compiled);
 
     private readonly record struct CatalogMetadataContext(
         string DisplayNameKey,
+        string? DisplayNameSourcePath,
         string? EncyclopediaTextKey,
         string? RawVisualRef,
         string? ResolvedVisualRef,
+        string? IconCachePath,
         CatalogEntityVisualState VisualState,
         int? PopulationValue,
         int? BuildCostCredits);
@@ -62,6 +88,8 @@ public sealed class CatalogService : ICatalogService
     private readonly CatalogOptions _options;
     private readonly IProfileRepository _profiles;
     private readonly ILogger<CatalogService> _logger;
+    private readonly Dictionary<string, IReadOnlyDictionary<string, string>> _textLookupCache =
+        new(StringComparer.OrdinalIgnoreCase);
 
     public CatalogService(CatalogOptions options, IProfileRepository profiles, ILogger<CatalogService> logger)
     {
@@ -232,7 +260,7 @@ public sealed class CatalogService : ICatalogService
         return false;
     }
 
-    private static void AppendXmlRecords(
+    private void AppendXmlRecords(
         string profileId,
         string sourcePath,
         IDictionary<string, EntityCatalogRecord> records)
@@ -271,7 +299,7 @@ public sealed class CatalogService : ICatalogService
         }
     }
 
-    private static bool TryCreateRecord(
+    private bool TryCreateRecord(
         string profileId,
         string sourcePath,
         XElement element,
@@ -304,11 +332,13 @@ public sealed class CatalogService : ICatalogService
 
         var kind = CatalogEntityKindClassifier.ResolveKind(sourceElement.Name.LocalName, entityId);
         var textId = GetElementValue(sourceElement, "Text_ID") ?? entityId;
+        var (resolvedDisplayName, displayNameSourcePath) = ResolveDisplayName(normalizedSourcePath, textId);
         var encyclopediaTextKey = GetElementValue(sourceElement, "Encyclopedia_Text");
         var rawVisualRef = VisualReferenceNames
             .Select(name => GetElementValue(sourceElement, name))
             .FirstOrDefault(static value => !string.IsNullOrWhiteSpace(value));
         var resolvedVisualRef = ResolveVisualReference(normalizedSourcePath, rawVisualRef);
+        var iconCachePath = ResolveIconCachePath(resolvedVisualRef);
         var affiliations = ResolveAffiliations(sourceElement, kind, entityId);
         var populationValue = ParseOptionalInt(GetElementValue(sourceElement, "Population_Value"));
         var buildCostCredits = ParseOptionalInt(GetElementValue(sourceElement, "Build_Cost_Credits"));
@@ -322,12 +352,14 @@ public sealed class CatalogService : ICatalogService
         {
             EntityId = entityId,
             DisplayNameKey = textId,
-            DisplayName = textId,
+            DisplayName = resolvedDisplayName,
+            DisplayNameSourcePath = displayNameSourcePath,
             Kind = kind,
             SourceProfileId = normalizedProfileId,
             SourcePath = normalizedSourcePath,
             Affiliations = affiliations,
             VisualRef = resolvedVisualRef ?? rawVisualRef,
+            IconCachePath = iconCachePath,
             DependencyRefs = dependencyRefs,
             VisualState = visualState,
             CompatibilityState = compatibilityState,
@@ -338,9 +370,11 @@ public sealed class CatalogService : ICatalogService
                 element,
                 CreateMetadataContext(
                     textId,
+                    displayNameSourcePath,
                     encyclopediaTextKey,
                     rawVisualRef,
                     resolvedVisualRef,
+                    iconCachePath,
                     visualState,
                     populationValue,
                     buildCostCredits))
@@ -509,10 +543,12 @@ public sealed class CatalogService : ICatalogService
             Kind = CatalogEntityKindClassifier.SelectMoreSpecificKind(existingRecord.Kind, incomingRecord.Kind),
             DisplayNameKey = ChooseValue(existingRecord.DisplayNameKey, incomingRecord.DisplayNameKey, existingRecord.EntityId) ?? existingRecord.EntityId,
             DisplayName = ChooseValue(existingRecord.DisplayName, incomingRecord.DisplayName, existingRecord.EntityId) ?? existingRecord.EntityId,
+            DisplayNameSourcePath = ChooseValue(existingRecord.DisplayNameSourcePath, incomingRecord.DisplayNameSourcePath, null),
             EncyclopediaTextKey = ChooseValue(existingRecord.EncyclopediaTextKey, incomingRecord.EncyclopediaTextKey, null),
             SourcePath = ChooseValue(existingRecord.SourcePath, incomingRecord.SourcePath, null),
             Affiliations = mergedAffiliations.Length == 0 ? existingAffiliations : mergedAffiliations,
             VisualRef = ChooseValue(existingRecord.VisualRef, incomingRecord.VisualRef, null),
+            IconCachePath = ChooseValue(existingRecord.IconCachePath, incomingRecord.IconCachePath, null),
             VisualState = SelectVisualState(existingRecord.VisualState, incomingRecord.VisualState),
             CompatibilityState = SelectCompatibilityState(existingRecord.CompatibilityState, incomingRecord.CompatibilityState),
             PopulationValue = existingRecord.PopulationValue ?? incomingRecord.PopulationValue,
@@ -636,6 +672,11 @@ public sealed class CatalogService : ICatalogService
             ["displayNameKey"] = metadataContext.DisplayNameKey
         };
 
+        if (!string.IsNullOrWhiteSpace(metadataContext.DisplayNameSourcePath))
+        {
+            metadata["displayNameSourcePath"] = metadataContext.DisplayNameSourcePath;
+        }
+
         if (!string.IsNullOrWhiteSpace(metadataContext.EncyclopediaTextKey))
         {
             metadata["encyclopediaTextKey"] = metadataContext.EncyclopediaTextKey;
@@ -652,6 +693,11 @@ public sealed class CatalogService : ICatalogService
             metadata["resolvedVisualRef"] = metadataContext.ResolvedVisualRef;
         }
 
+        if (!string.IsNullOrWhiteSpace(metadataContext.IconCachePath))
+        {
+            metadata["iconCachePath"] = metadataContext.IconCachePath;
+        }
+
         if (metadataContext.PopulationValue.HasValue)
         {
             metadata["populationValue"] = metadataContext.PopulationValue.Value.ToString(System.Globalization.CultureInfo.InvariantCulture);
@@ -663,6 +709,156 @@ public sealed class CatalogService : ICatalogService
         }
 
         return metadata;
+    }
+
+    private (string DisplayName, string? SourcePath) ResolveDisplayName(string sourcePath, string textId)
+    {
+        var normalizedTextId = NormalizeNonEmpty(textId);
+        if (normalizedTextId is null)
+        {
+            return (textId, null);
+        }
+
+        var sourceDirectory = Path.GetDirectoryName(sourcePath);
+        if (string.IsNullOrWhiteSpace(sourceDirectory))
+        {
+            return (normalizedTextId, null);
+        }
+
+        foreach (var root in BuildCandidateRoots(sourceDirectory))
+        {
+            foreach (var textSource in EnumerateTextSources(root))
+            {
+                var lookup = LoadTextLookup(textSource);
+                if (lookup.TryGetValue(normalizedTextId, out var displayName) &&
+                    !string.IsNullOrWhiteSpace(displayName))
+                {
+                    return (displayName.Trim(), textSource);
+                }
+            }
+        }
+
+        return (normalizedTextId, null);
+    }
+
+    private IEnumerable<string> EnumerateTextSources(string root)
+    {
+        foreach (var pattern in TextSearchPatterns)
+        {
+            IEnumerable<string> candidates;
+            try
+            {
+                candidates = Directory.EnumerateFiles(root, pattern, SearchOption.AllDirectories);
+            }
+            catch
+            {
+                continue;
+            }
+
+            foreach (var candidate in candidates
+                         .Where(static path => !string.IsNullOrWhiteSpace(path))
+                         .Distinct(StringComparer.OrdinalIgnoreCase)
+                         .OrderBy(static path => path, StringComparer.OrdinalIgnoreCase))
+            {
+                yield return candidate;
+            }
+        }
+    }
+
+    private IReadOnlyDictionary<string, string> LoadTextLookup(string textSourcePath)
+    {
+        if (_textLookupCache.TryGetValue(textSourcePath, out var cached))
+        {
+            return cached;
+        }
+
+        var lookup = BuildTextLookup(textSourcePath);
+        _textLookupCache[textSourcePath] = lookup;
+        return lookup;
+    }
+
+    private static IReadOnlyDictionary<string, string> BuildTextLookup(string textSourcePath)
+    {
+        try
+        {
+            var bytes = File.ReadAllBytes(textSourcePath);
+            if (bytes.Length == 0)
+            {
+                return new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+            }
+
+            foreach (var content in DecodeCandidateTextRepresentations(bytes))
+            {
+                var lookup = ParseTextLookup(content);
+                if (lookup.Count > 0)
+                {
+                    return lookup;
+                }
+            }
+        }
+        catch
+        {
+            // Best effort only.
+        }
+
+        return new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+    }
+
+    private static IEnumerable<string> DecodeCandidateTextRepresentations(byte[] bytes)
+    {
+        yield return System.Text.Encoding.UTF8.GetString(bytes);
+        yield return System.Text.Encoding.Unicode.GetString(bytes);
+        yield return System.Text.Encoding.BigEndianUnicode.GetString(bytes);
+        yield return System.Text.Encoding.Latin1.GetString(bytes);
+    }
+
+    private static IReadOnlyDictionary<string, string> ParseTextLookup(string content)
+    {
+        var lookup = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+        if (string.IsNullOrWhiteSpace(content))
+        {
+            return lookup;
+        }
+
+        AppendRegexMatches(lookup, TextAssignmentRegex.Matches(content));
+        AppendRegexMatches(lookup, TextInlineRegex.Matches(content));
+        return lookup;
+    }
+
+    private static void AppendRegexMatches(
+        IDictionary<string, string> lookup,
+        MatchCollection matches)
+    {
+        foreach (Match match in matches)
+        {
+            if (!match.Success || match.Groups.Count < 3)
+            {
+                continue;
+            }
+
+            var key = NormalizeNonEmpty(match.Groups[1].Value);
+            var value = NormalizeNonEmpty(match.Groups[2].Value);
+            if (key is null || value is null)
+            {
+                continue;
+            }
+
+            lookup[key] = value;
+        }
+    }
+
+    private static string? ResolveIconCachePath(string? resolvedVisualRef)
+    {
+        var normalizedPath = NormalizeNonEmpty(resolvedVisualRef);
+        if (normalizedPath is null)
+        {
+            return null;
+        }
+
+        var extension = Path.GetExtension(normalizedPath);
+        return SupportedPreviewExtensions.Contains(extension, StringComparer.OrdinalIgnoreCase)
+            ? normalizedPath
+            : null;
     }
 
     private static string? ResolveVisualReference(string sourcePath, string? visualRef)
@@ -704,18 +900,22 @@ public sealed class CatalogService : ICatalogService
 
     private static CatalogMetadataContext CreateMetadataContext(
         string displayNameKey,
+        string? displayNameSourcePath,
         string? encyclopediaTextKey,
         string? rawVisualRef,
         string? resolvedVisualRef,
+        string? iconCachePath,
         CatalogEntityVisualState visualState,
         int? populationValue,
         int? buildCostCredits)
     {
         return new CatalogMetadataContext(
             displayNameKey,
+            displayNameSourcePath,
             encyclopediaTextKey,
             rawVisualRef,
             resolvedVisualRef,
+            iconCachePath,
             visualState,
             populationValue,
             buildCostCredits);

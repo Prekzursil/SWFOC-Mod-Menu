@@ -152,15 +152,18 @@ internal static class MainViewModelRosterHelpers
         var dependencySummary = ResolveSegmentOrDefault(segments, 5, string.Empty);
         var displayName = entityId;
         var displayNameKey = string.Empty;
+        var displayNameSourcePath = string.Empty;
         var defaultFaction = ResolveDefaultFaction(kind);
         var visualState = InferVisualState(visualRef, null);
         var compatibilityState = ResolveCompatibilityState(sourceWorkshopId, selectedWorkshopId, null);
         var transplantReportId = ResolveTransplantReportId(compatibilityState, sourceWorkshopId, entityId, string.Empty);
+        var iconPath = ResolveIconPath(visualRef, string.Empty);
 
         row = new RosterEntityViewItem(
             EntityId: entityId,
             DisplayName: displayName,
             DisplayNameKey: displayNameKey,
+            DisplayNameSourcePath: displayNameSourcePath,
             EntityKind: kind,
             SourceProfileId: sourceProfileId,
             SourceWorkshopId: sourceWorkshopId,
@@ -169,6 +172,7 @@ internal static class MainViewModelRosterHelpers
             AffiliationSummary: defaultFaction,
             PopulationCostText: NotAvailableValue,
             BuildCostText: NotAvailableValue,
+            IconPath: iconPath,
             VisualRef: visualRef,
             VisualSummary: BuildVisualSummary(visualState, visualRef),
             VisualState: visualState,
@@ -223,6 +227,9 @@ internal static class MainViewModelRosterHelpers
             ReadString(json, "displayName", "DisplayName", "resolvedDisplayName", "ResolvedDisplayName", "name", "Name"),
             displayNameKey,
             entityId);
+        var displayNameSourcePath = FirstNonEmpty(
+            ReadString(json, "displayNameSourcePath", "DisplayNameSourcePath", "textSourcePath", "TextSourcePath"),
+            string.Empty);
         var sourceProfileId = FirstNonEmpty(
             ReadString(json, "sourceProfileId", "SourceProfileId", "profileId", "ProfileId"),
             selectedProfileId);
@@ -235,8 +242,11 @@ internal static class MainViewModelRosterHelpers
             affiliations.FirstOrDefault(),
             ResolveDefaultFaction(kind));
         var visualRef = FirstNonEmpty(
-            ReadString(json, "visualRef", "VisualRef", "iconPath", "IconPath", "iconCachePath", "IconCachePath"),
+            ReadString(json, "visualRef", "VisualRef"),
             string.Empty);
+        var iconPath = ResolveIconPath(
+            ReadString(json, "iconCachePath", "IconCachePath", "iconPath", "IconPath"),
+            visualRef);
         var dependencyRefs = ReadStringList(json, "dependencyRefs", "DependencyRefs", "dependencies", "Dependencies");
         var compatibilityState = ParseEnum(ReadString(json, "compatibilityState", "CompatibilityState"), ResolveCompatibilityState(sourceWorkshopId, selectedWorkshopId, null));
         var visualState = ParseEnum(ReadString(json, "visualState", "VisualState"), InferVisualState(visualRef, null));
@@ -250,6 +260,7 @@ internal static class MainViewModelRosterHelpers
             EntityId: entityId,
             DisplayName: displayName,
             DisplayNameKey: displayNameKey,
+            DisplayNameSourcePath: displayNameSourcePath,
             EntityKind: kind,
             SourceProfileId: sourceProfileId,
             SourceWorkshopId: sourceWorkshopId,
@@ -258,6 +269,7 @@ internal static class MainViewModelRosterHelpers
             AffiliationSummary: BuildAffiliationSummary(affiliations, defaultFaction),
             PopulationCostText: ReadScalarText(json, "populationValue", "PopulationValue", "population", "Population"),
             BuildCostText: ReadScalarText(json, "buildCostCredits", "BuildCostCredits", "buildCost", "BuildCost"),
+            IconPath: iconPath,
             VisualRef: visualRef,
             VisualSummary: BuildVisualSummary(visualState, visualRef),
             VisualState: visualState,
@@ -529,11 +541,22 @@ internal static class MainViewModelRosterHelpers
     {
         return visualState switch
         {
-            RosterEntityVisualState.Resolved when !string.IsNullOrWhiteSpace(visualRef) => $"resolved: {visualRef}",
+            RosterEntityVisualState.Resolved when !string.IsNullOrWhiteSpace(visualRef) => $"resolved ({visualRef})",
             RosterEntityVisualState.Resolved => "resolved",
             RosterEntityVisualState.Missing => "missing",
             _ => UnknownValue
         };
+    }
+
+    private static string ResolveIconPath(string? preferredPath, string? fallbackPath)
+    {
+        var preferred = FirstNonEmpty(preferredPath, string.Empty);
+        if (!string.IsNullOrWhiteSpace(preferred))
+        {
+            return preferred;
+        }
+
+        return FirstNonEmpty(fallbackPath, string.Empty);
     }
 
     private static string BuildCompatibilitySummary(RosterEntityCompatibilityState compatibilityState, string sourceWorkshopId)

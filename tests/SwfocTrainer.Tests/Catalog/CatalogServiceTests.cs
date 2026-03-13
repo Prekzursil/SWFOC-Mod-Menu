@@ -179,6 +179,81 @@ public sealed class CatalogServiceTests
     }
 
     [Fact]
+    public async Task LoadTypedCatalogAsync_ShouldResolveDisplayText_AndExposeResolvedIconPathMetadata()
+    {
+        var root = Path.Combine(Path.GetTempPath(), $"swfoc-catalog-tests-{Guid.NewGuid():N}");
+        Directory.CreateDirectory(root);
+
+        try
+        {
+            var profileId = "typed_catalog_with_text";
+            var dataDir = Path.Combine(root, "Data", "XML");
+            var textDir = Path.Combine(root, "Data", "Text");
+            var iconDir = Path.Combine(root, "Art", "Textures", "UI");
+            Directory.CreateDirectory(dataDir);
+            Directory.CreateDirectory(textDir);
+            Directory.CreateDirectory(iconDir);
+
+            var xmlPath = Path.Combine(dataDir, "ground-company.xml");
+            var textPath = Path.Combine(textDir, "MasterTextFile_English.dat");
+            var iconPath = Path.Combine(iconDir, "i_stormtrooper.png");
+
+            await File.WriteAllTextAsync(
+                xmlPath,
+                """
+                <Root>
+                  <GroundCompany Name="EMPIRE_STORMTROOPER_SQUAD">
+                    <Text_ID>TEXT_STORMTROOPER_SQUAD</Text_ID>
+                    <Encyclopedia_Text>TEXT_STORMTROOPER_SQUAD_DESC</Encyclopedia_Text>
+                    <Affiliation>EMPIRE</Affiliation>
+                    <Population_Value>2</Population_Value>
+                    <Build_Cost_Credits>150</Build_Cost_Credits>
+                    <Icon_Name>i_stormtrooper.png</Icon_Name>
+                  </GroundCompany>
+                </Root>
+                """);
+            await File.WriteAllTextAsync(
+                textPath,
+                """
+                TEXT_STORMTROOPER_SQUAD = "Stormtrooper Squad"
+                TEXT_STORMTROOPER_SQUAD_DESC = "Imperial front-line infantry."
+                """);
+            await File.WriteAllBytesAsync(iconPath, [0x89, 0x50, 0x4E, 0x47]);
+
+            var profile = CreateProfile(
+                profileId,
+                actions: CreateActions("spawn_context_entity"),
+                catalogSources:
+                [
+                    new CatalogSource("xml", xmlPath)
+                ]);
+
+            var service = new CatalogService(
+                new CatalogOptions { CatalogRootPath = root },
+                new StubProfileRepository(profile),
+                NullLogger<CatalogService>.Instance);
+
+            var snapshot = await service.LoadTypedCatalogAsync(profileId, CancellationToken.None);
+
+            var record = snapshot.Entities.Should().ContainSingle().Subject;
+            record.DisplayNameKey.Should().Be("TEXT_STORMTROOPER_SQUAD");
+            record.DisplayName.Should().Be("Stormtrooper Squad");
+            record.DisplayNameSourcePath.Should().Be(textPath);
+            record.VisualRef.Should().Be(iconPath);
+            record.IconCachePath.Should().Be(iconPath);
+            record.Metadata.Should().ContainKey("iconCachePath").WhoseValue.Should().Be(iconPath);
+            record.Metadata.Should().ContainKey("displayNameSourcePath").WhoseValue.Should().Be(textPath);
+        }
+        finally
+        {
+            if (Directory.Exists(root))
+            {
+                Directory.Delete(root, recursive: true);
+            }
+        }
+    }
+
+    [Fact]
     public async Task LoadCatalogAsync_ShouldNormalizeNullAndWhitespaceEntries_WhenMergingPrebuiltCatalog()
     {
         var root = Path.Combine(Path.GetTempPath(), $"swfoc-catalog-tests-{Guid.NewGuid():N}");

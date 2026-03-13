@@ -293,7 +293,35 @@
                         <GroupBox Grid.Row="2" Header="Chain Entity Roster" Margin="0,10,0,0">
                             <DataGrid ItemsSource="{Binding EntityRoster}" AutoGenerateColumns="False" IsReadOnly="True">
                                 <DataGrid.Columns>
-                                    <DataGridTextColumn Header="Entity" Binding="{Binding DisplayName}" Width="2*"/>
+                                    <DataGridTemplateColumn Header="Entity" Width="2.6*">
+                                        <DataGridTemplateColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                                    <Border Width="28" Height="28" CornerRadius="4" Margin="0,0,8,0" Background="#1F2937">
+                                                        <Grid>
+                                                            <Image Source="{Binding IconPath}" Stretch="UniformToFill"/>
+                                                            <TextBlock Text="{Binding EntityKind}" Foreground="White" FontSize="9" HorizontalAlignment="Center" VerticalAlignment="Center">
+                                                                <TextBlock.Style>
+                                                                    <Style TargetType="TextBlock">
+                                                                        <Setter Property="Visibility" Value="Collapsed"/>
+                                                                        <Style.Triggers>
+                                                                            <DataTrigger Binding="{Binding IconPath}" Value="">
+                                                                                <Setter Property="Visibility" Value="Visible"/>
+                                                                            </DataTrigger>
+                                                                        </Style.Triggers>
+                                                                    </Style>
+                                                                </TextBlock.Style>
+                                                            </TextBlock>
+                                                        </Grid>
+                                                    </Border>
+                                                    <StackPanel>
+                                                        <TextBlock Text="{Binding DisplayName}" FontWeight="SemiBold"/>
+                                                        <TextBlock Text="{Binding DisplayNameKey}" FontSize="10" Foreground="Gray"/>
+                                                    </StackPanel>
+                                                </StackPanel>
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.CellTemplate>
+                                    </DataGridTemplateColumn>
                                     <DataGridTextColumn Header="Key" Binding="{Binding DisplayNameKey}" Width="*"/>
                                     <DataGridTextColumn Header="Kind" Binding="{Binding EntityKind}" Width="*"/>
                                     <DataGridTextColumn Header="Factions" Binding="{Binding AffiliationSummary}" Width="*"/>
@@ -302,6 +330,7 @@
                                     <DataGridTextColumn Header="Visual" Binding="{Binding VisualSummary}" Width="1.4*"/>
                                     <DataGridTextColumn Header="Compat" Binding="{Binding CompatibilitySummary}" Width="1.2*"/>
                                     <DataGridTextColumn Header="Source" Binding="{Binding SourceLabel}" Width="1.3*"/>
+                                    <DataGridTextColumn Header="Text Source" Binding="{Binding DisplayNameSourcePath}" Width="1.6*"/>
                                 </DataGrid.Columns>
                             </DataGrid>
                         </GroupBox>

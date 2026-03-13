@@ -16,8 +16,10 @@ public sealed class EntityCatalogModelsTests
         record.EntityId.Should().BeEmpty();
         record.DisplayNameKey.Should().BeEmpty();
         record.DisplayName.Should().BeEmpty();
+        record.DisplayNameSourcePath.Should().BeNull();
         record.SourceProfileId.Should().BeEmpty();
         record.Affiliations.Should().BeEmpty();
+        record.IconCachePath.Should().BeNull();
         record.DependencyRefs.Should().BeEmpty();
         record.Metadata.Should().BeEmpty();
         record.DefaultAffiliation.Should().BeEmpty();

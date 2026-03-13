@@ -42,6 +42,8 @@ public readonly record struct EntityCatalogRecord
 
     public string DisplayName { get; init; } = string.Empty;
 
+    public string? DisplayNameSourcePath { get; init; }
+
     public CatalogEntityKind Kind { get; init; }
 
     public string SourceProfileId { get; init; } = string.Empty;
@@ -51,6 +53,8 @@ public readonly record struct EntityCatalogRecord
     public IReadOnlyList<string> Affiliations { get; init; } = Array.Empty<string>();
 
     public string? VisualRef { get; init; }
+
+    public string? IconCachePath { get; init; }
 
     public IReadOnlyList<string> DependencyRefs { get; init; } = Array.Empty<string>();
 
@@ -157,6 +161,8 @@ public sealed record EntityCatalogSnapshot
             Kind = normalizedKind,
             SourceProfileId = profileId,
             Affiliations = affiliations,
+            DisplayNameSourcePath = null,
+            IconCachePath = null,
             VisualState = CatalogEntityVisualState.Unknown,
             CompatibilityState = CatalogEntityCompatibilityState.Unknown
         };
@@ -186,7 +192,9 @@ public sealed record EntityCatalogSnapshot
             Kind = CatalogEntityKindClassifier.SelectMoreSpecificKind(existing.Kind, incoming.Kind),
             Affiliations = mergedAffiliations,
             DisplayNameKey = ChooseValue(existing.DisplayNameKey, incoming.DisplayNameKey, existing.EntityId),
-            DisplayName = ChooseValue(existing.DisplayName, incoming.DisplayName, existing.EntityId)
+            DisplayName = ChooseValue(existing.DisplayName, incoming.DisplayName, existing.EntityId),
+            DisplayNameSourcePath = ChooseOptionalValue(existing.DisplayNameSourcePath, incoming.DisplayNameSourcePath),
+            IconCachePath = ChooseOptionalValue(existing.IconCachePath, incoming.IconCachePath)
         };
     }
 
@@ -211,6 +219,20 @@ public sealed record EntityCatalogSnapshot
         }
 
         return existing;
+    }
+
+    private static string? ChooseOptionalValue(string? existing, string? incoming)
+    {
+        return string.IsNullOrWhiteSpace(existing)
+            ? NormalizeOptionalValue(incoming)
+            : existing;
+    }
+
+    private static string? NormalizeOptionalValue(string? value)
+    {
+        return string.IsNullOrWhiteSpace(value)
+            ? null
+            : value.Trim();
     }
 
     private static bool TryParseLegacyEntityEntry(
