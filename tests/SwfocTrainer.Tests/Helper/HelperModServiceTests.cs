@@ -5,6 +5,7 @@ using SwfocTrainer.Core.Models;
 using SwfocTrainer.Helper.Config;
 using SwfocTrainer.Helper.Services;
 using Xunit;
+using System.Text.Json;
 
 namespace SwfocTrainer.Tests.Helper;
 
@@ -29,6 +30,85 @@ public sealed class HelperModServiceTests
             File.ReadAllText(copiedScript).Should().Be(File.ReadAllText(scriptPath));
             File.Exists(Path.Combine(deployedRoot, "Data", "Scripts", "Library", "SwfocTrainer_HelperBootstrap.lua")).Should().BeTrue();
             File.Exists(Path.Combine(deployedRoot, "helper-deployment.json")).Should().BeTrue();
+        }
+        finally
+        {
+            DeleteDirectory(sourceRoot);
+            DeleteDirectory(installRoot);
+        }
+    }
+
+    [Fact]
+    public async Task DeployAsync_ShouldGenerateBootstrapLoader_WithRequireEntriesForEachHook()
+    {
+        var sourceRoot = CreateTempDirectory();
+        var installRoot = CreateTempDirectory();
+        try
+        {
+            WriteScript(sourceRoot, "scripts/common/spawn_bridge.lua", "-- spawn");
+            WriteScript(sourceRoot, "scripts/roe/respawn_bridge.lua", "-- respawn");
+            var hooks = new[]
+            {
+                new HelperHookSpec("spawn_bridge", "scripts/common/spawn_bridge.lua", "1.0.0", EntryPoint: "SWFOC_Trainer_Spawn"),
+                new HelperHookSpec("roe_respawn_bridge", "scripts/roe/respawn_bridge.lua", "1.0.0", EntryPoint: "SWFOC_Trainer_Toggle_Respawn")
+            };
+
+            var service = BuildService(BuildProfile("base_swfoc", hooks), sourceRoot, installRoot);
+
+            var deployedRoot = await service.DeployAsync("base_swfoc", CancellationToken.None);
+            var bootstrapPath = Path.Combine(deployedRoot, "Data", "Scripts", "Library", "SwfocTrainer_HelperBootstrap.lua");
+
+            var bootstrap = File.ReadAllText(bootstrapPath);
+            bootstrap.Should().Contain("SWFOC_TRAINER_HELPER_PROFILE = \"base_swfoc\"");
+            bootstrap.Should().Contain("SWFOC_TRAINER_HELPER_HOOK_COUNT = 2");
+            bootstrap.Should().Contain("SWFOC_TRAINER_HELPER_HOOKS = {");
+            bootstrap.Should().Contain("requirePath = \"common.spawn_bridge\"");
+            bootstrap.Should().Contain("requirePath = \"roe.respawn_bridge\"");
+            bootstrap.Should().Contain("entryPoint = \"SWFOC_Trainer_Spawn\"");
+            bootstrap.Should().Contain("entryPoint = \"SWFOC_Trainer_Toggle_Respawn\"");
+            bootstrap.Should().Contain("function SwfocTrainer_Helper_Bootstrap_LoadAll()");
+            bootstrap.Should().Contain("pcall(require, hook.requirePath)");
+        }
+        finally
+        {
+            DeleteDirectory(sourceRoot);
+            DeleteDirectory(installRoot);
+        }
+    }
+
+    [Fact]
+    public async Task DeployAsync_ShouldWriteManifest_WithHookMetadataAndHashes()
+    {
+        var sourceRoot = CreateTempDirectory();
+        var installRoot = CreateTempDirectory();
+        try
+        {
+            var scriptBody = "-- deployed helper";
+            WriteScript(sourceRoot, "scripts/common/spawn_bridge.lua", scriptBody);
+            var hooks = new[]
+            {
+                new HelperHookSpec("spawn_bridge", "scripts/common/spawn_bridge.lua", "1.2.3", EntryPoint: "SWFOC_Trainer_Spawn")
+            };
+
+            var service = BuildService(BuildProfile("base_swfoc", hooks), sourceRoot, installRoot);
+
+            var deployedRoot = await service.DeployAsync("base_swfoc", CancellationToken.None);
+            var manifestPath = Path.Combine(deployedRoot, "helper-deployment.json");
+            using var document = JsonDocument.Parse(File.ReadAllText(manifestPath));
+
+            var root = document.RootElement;
+            root.GetProperty("profileId").GetString().Should().Be("base_swfoc");
+            root.GetProperty("bootstrapScript").GetString().Should().Be("Data/Scripts/Library/SwfocTrainer_HelperBootstrap.lua");
+            var hooksElement = root.GetProperty("hooks");
+            hooksElement.GetArrayLength().Should().Be(1);
+            var hook = hooksElement[0];
+            hook.GetProperty("id").GetString().Should().Be("spawn_bridge");
+            hook.GetProperty("script").GetString().Should().Be("scripts/common/spawn_bridge.lua");
+            hook.GetProperty("deployedScript").GetString().Should().Be("Data/Scripts/Library/common/spawn_bridge.lua");
+            hook.GetProperty("requirePath").GetString().Should().Be("common.spawn_bridge");
+            hook.GetProperty("entryPoint").GetString().Should().Be("SWFOC_Trainer_Spawn");
+            hook.GetProperty("version").GetString().Should().Be("1.2.3");
+            hook.GetProperty("sha256").GetString().Should().NotBeNullOrWhiteSpace();
         }
         finally
         {
@@ -295,4 +375,3 @@ public sealed class HelperModServiceTests
         }
     }
 }
-
