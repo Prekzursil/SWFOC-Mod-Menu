@@ -139,6 +139,9 @@
                                                 <RowDefinition Height="Auto"/>
                                                 <RowDefinition Height="Auto"/>
                                                 <RowDefinition Height="Auto"/>
+                                                <RowDefinition Height="Auto"/>
+                                                <RowDefinition Height="Auto"/>
+                                                <RowDefinition Height="Auto"/>
                                             </Grid.RowDefinitions>
 
                                             <TextBlock Text="State" Margin="0,0,8,4"/>
@@ -147,16 +150,22 @@
                                             <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding HelperBridgeFeatures}" TextWrapping="Wrap" Margin="0,0,0,4"/>
                                             <TextBlock Grid.Row="2" Text="Mode" Margin="0,0,8,0"/>
                                             <TextBlock Grid.Row="2" Grid.Column="1" Text="{Binding EffectiveRuntimeMode}" Margin="0,0,0,4"/>
-                                            <TextBlock Grid.Row="3" Text="Last Verify" Margin="0,0,8,4"/>
-                                            <TextBlock Grid.Row="3" Grid.Column="1" Text="{Binding HelperLastVerifyState}" Margin="0,0,0,4"/>
-                                            <TextBlock Grid.Row="4" Text="Last Operation" Margin="0,0,8,4"/>
-                                            <TextBlock Grid.Row="4" Grid.Column="1" Text="{Binding HelperLastOperationSummary}" Margin="0,0,0,4"/>
-                                            <TextBlock Grid.Row="5" Text="Token" Margin="0,0,8,4"/>
-                                            <TextBlock Grid.Row="5" Grid.Column="1" Text="{Binding HelperLastOperationToken}" TextWrapping="Wrap" Margin="0,0,0,4"/>
-                                            <TextBlock Grid.Row="6" Text="Entrypoint" Margin="0,0,8,4"/>
-                                            <TextBlock Grid.Row="6" Grid.Column="1" Text="{Binding HelperLastEntryPoint}" TextWrapping="Wrap" Margin="0,0,0,4"/>
-                                            <TextBlock Grid.Row="7" Text="Applied Entity" Margin="0,0,8,0"/>
-                                            <TextBlock Grid.Row="7" Grid.Column="1" Text="{Binding HelperLastAppliedEntityId}" TextWrapping="Wrap"/>
+                                            <TextBlock Grid.Row="3" Text="Autoload" Margin="0,0,8,4"/>
+                                            <TextBlock Grid.Row="3" Grid.Column="1" Text="{Binding HelperAutoloadSummary}" TextWrapping="Wrap" Margin="0,0,0,4"/>
+                                            <TextBlock Grid.Row="4" Text="Autoload Target" Margin="0,0,8,4"/>
+                                            <TextBlock Grid.Row="4" Grid.Column="1" Text="{Binding HelperAutoloadStrategy}" TextWrapping="Wrap" Margin="0,0,0,4"/>
+                                            <TextBlock Grid.Row="5" Text="Autoload Script" Margin="0,0,8,4"/>
+                                            <TextBlock Grid.Row="5" Grid.Column="1" Text="{Binding HelperAutoloadScript}" TextWrapping="Wrap" Margin="0,0,0,4"/>
+                                            <TextBlock Grid.Row="6" Text="Last Verify" Margin="0,0,8,4"/>
+                                            <TextBlock Grid.Row="6" Grid.Column="1" Text="{Binding HelperLastVerifyState}" Margin="0,0,0,4"/>
+                                            <TextBlock Grid.Row="7" Text="Last Operation" Margin="0,0,8,4"/>
+                                            <TextBlock Grid.Row="7" Grid.Column="1" Text="{Binding HelperLastOperationSummary}" Margin="0,0,0,4"/>
+                                            <TextBlock Grid.Row="8" Text="Token" Margin="0,0,8,4"/>
+                                            <TextBlock Grid.Row="8" Grid.Column="1" Text="{Binding HelperLastOperationToken}" TextWrapping="Wrap" Margin="0,0,0,4"/>
+                                            <TextBlock Grid.Row="9" Text="Entrypoint" Margin="0,0,8,4"/>
+                                            <TextBlock Grid.Row="9" Grid.Column="1" Text="{Binding HelperLastEntryPoint}" TextWrapping="Wrap" Margin="0,0,0,4"/>
+                                            <TextBlock Grid.Row="10" Text="Applied Entity" Margin="0,0,8,0"/>
+                                            <TextBlock Grid.Row="10" Grid.Column="1" Text="{Binding HelperLastAppliedEntityId}" TextWrapping="Wrap"/>
                                         </Grid>
                                     </Border>
                                     <ListBox Grid.Row="2" ItemsSource="{Binding CatalogSummary}" Margin="0,8,0,0" Height="88"/>

@@ -125,6 +125,7 @@ public sealed class MainViewModelArtifactCoverageTests
         vm.LiveOpsDiagnostics.Should().BeEmpty();
         vm.HelperBridgeState.Should().Be("unknown");
         vm.HelperBridgeFeatures.Should().Be("none");
+        vm.HelperAutoloadState.Should().Be("unknown");
         vm.HelperLastOperationToken.Should().Be("unknown");
 
         runtime.CurrentSession = BuildSession(RuntimeMode.Galactic, metadata: new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
@@ -138,6 +139,10 @@ public sealed class MainViewModelArtifactCoverageTests
             ["helperBridgeState"] = " ready ",
             ["helperBridgeReasonCode"] = " CAPABILITY_PROBE_PASS ",
             ["helperBridgeFeatures"] = " spawn_tactical_entity ; ; place_planet_building, set_context_allegiance ",
+            ["helperAutoloadState"] = " pending_story_mode_load ",
+            ["helperAutoloadReasonCode"] = " story_wrapper_waiting_for_story_load ",
+            ["helperAutoloadStrategy"] = " story_wrapper_chain ",
+            ["helperAutoloadScript"] = " Library/PGStoryMode.lua ",
             ["helperLastOperationToken"] = " token-ops-001 ",
             ["helperLastOperationKind"] = " SpawnTacticalEntity ",
             ["helperLastVerifyState"] = " applied ",
@@ -150,6 +155,10 @@ public sealed class MainViewModelArtifactCoverageTests
         vm.HelperBridgeState.Should().Be("ready");
         vm.HelperBridgeReasonCode.Should().Be("CAPABILITY_PROBE_PASS");
         vm.HelperBridgeFeatures.Should().Be("spawn_tactical_entity, place_planet_building, set_context_allegiance");
+        vm.HelperAutoloadState.Should().Be("pending_story_mode_load");
+        vm.HelperAutoloadReasonCode.Should().Be("story_wrapper_waiting_for_story_load");
+        vm.HelperAutoloadStrategy.Should().Be("story_wrapper_chain");
+        vm.HelperAutoloadScript.Should().Be("Library/PGStoryMode.lua");
         vm.HelperLastOperationToken.Should().Be("token-ops-001");
         vm.HelperLastOperationKind.Should().Be("SpawnTacticalEntity");
         vm.HelperLastVerifyState.Should().Be("applied");
@@ -158,6 +167,8 @@ public sealed class MainViewModelArtifactCoverageTests
         vm.LiveOpsDiagnostics.Should().Contain(x => x.StartsWith("mode:"));
         vm.LiveOpsDiagnostics.Should().Contain(x => x.StartsWith("launch:"));
         vm.LiveOpsDiagnostics.Should().Contain("helper_features: spawn_tactical_entity, place_planet_building, set_context_allegiance");
+        vm.LiveOpsDiagnostics.Should().Contain("helper_autoload: pending_story_mode_load (story_wrapper_waiting_for_story_load)");
+        vm.LiveOpsDiagnostics.Should().Contain("helper_autoload_target: story_wrapper_chain -> Library/PGStoryMode.lua");
         vm.LiveOpsDiagnostics.Should().Contain(x => x.Contains("dependency:"));
     }
 

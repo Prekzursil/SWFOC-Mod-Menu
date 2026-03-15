@@ -11,6 +11,10 @@ public abstract class MainViewModelBindableMembersBase : MainViewModelCoreStateB
     private string _helperBridgeState = UnknownValue;
     private string _helperBridgeReasonCode = UnknownValue;
     private string _helperBridgeFeatures = "none";
+    private string _helperAutoloadState = UnknownValue;
+    private string _helperAutoloadReasonCode = UnknownValue;
+    private string _helperAutoloadStrategy = UnknownValue;
+    private string _helperAutoloadScript = UnknownValue;
     private string _helperLastOperationToken = UnknownValue;
     private string _helperLastOperationKind = UnknownValue;
     private string _helperLastVerifyState = UnknownValue;
@@ -171,6 +175,42 @@ public abstract class MainViewModelBindableMembersBase : MainViewModelCoreStateB
         set => SetField(_helperBridgeFeatures, value, newValue => _helperBridgeFeatures = newValue);
     }
 
+    public string HelperAutoloadState
+    {
+        get => _helperAutoloadState;
+        set
+        {
+            if (SetField(_helperAutoloadState, value, newValue => _helperAutoloadState = newValue))
+            {
+                OnPropertyChanged(nameof(HelperAutoloadSummary));
+            }
+        }
+    }
+
+    public string HelperAutoloadReasonCode
+    {
+        get => _helperAutoloadReasonCode;
+        set
+        {
+            if (SetField(_helperAutoloadReasonCode, value, newValue => _helperAutoloadReasonCode = newValue))
+            {
+                OnPropertyChanged(nameof(HelperAutoloadSummary));
+            }
+        }
+    }
+
+    public string HelperAutoloadStrategy
+    {
+        get => _helperAutoloadStrategy;
+        set => SetField(_helperAutoloadStrategy, value, newValue => _helperAutoloadStrategy = newValue);
+    }
+
+    public string HelperAutoloadScript
+    {
+        get => _helperAutoloadScript;
+        set => SetField(_helperAutoloadScript, value, newValue => _helperAutoloadScript = newValue);
+    }
+
     public string HelperLastOperationToken
     {
         get => _helperLastOperationToken;
@@ -205,6 +245,11 @@ public abstract class MainViewModelBindableMembersBase : MainViewModelCoreStateB
         string.IsNullOrWhiteSpace(HelperBridgeReasonCode) || HelperBridgeReasonCode == UnknownValue
             ? HelperBridgeState
             : $"{HelperBridgeState} ({HelperBridgeReasonCode})";
+
+    public string HelperAutoloadSummary =>
+        string.IsNullOrWhiteSpace(HelperAutoloadReasonCode) || HelperAutoloadReasonCode == UnknownValue
+            ? HelperAutoloadState
+            : $"{HelperAutoloadState} ({HelperAutoloadReasonCode})";
 
     public string HelperLastOperationSummary =>
         HelperLastOperationKind == UnknownValue && HelperLastVerifyState == UnknownValue

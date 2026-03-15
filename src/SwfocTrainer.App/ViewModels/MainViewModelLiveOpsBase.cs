@@ -111,6 +111,20 @@ public abstract class MainViewModelLiveOpsBase : MainViewModelBindableMembersBas
         {
             LiveOpsDiagnostics.Add($"helper_features: {HelperBridgeFeatures}");
         }
+
+        if (!string.IsNullOrWhiteSpace(HelperAutoloadState) &&
+            !string.Equals(HelperAutoloadState, UnknownValue, StringComparison.OrdinalIgnoreCase))
+        {
+            LiveOpsDiagnostics.Add($"helper_autoload: {HelperAutoloadSummary}");
+        }
+
+        if (!string.IsNullOrWhiteSpace(HelperAutoloadStrategy) &&
+            !string.Equals(HelperAutoloadStrategy, UnknownValue, StringComparison.OrdinalIgnoreCase) &&
+            !string.IsNullOrWhiteSpace(HelperAutoloadScript) &&
+            !string.Equals(HelperAutoloadScript, UnknownValue, StringComparison.OrdinalIgnoreCase))
+        {
+            LiveOpsDiagnostics.Add($"helper_autoload_target: {HelperAutoloadStrategy} -> {HelperAutoloadScript}");
+        }
     }
 
     private void AddLiveOpsDependencyDiagnostics(IReadOnlyDictionary<string, string>? metadata)
@@ -145,6 +159,10 @@ public abstract class MainViewModelLiveOpsBase : MainViewModelBindableMembersBas
         HelperBridgeState = UnknownValue;
         HelperBridgeReasonCode = UnknownValue;
         HelperBridgeFeatures = "none";
+        HelperAutoloadState = UnknownValue;
+        HelperAutoloadReasonCode = UnknownValue;
+        HelperAutoloadStrategy = UnknownValue;
+        HelperAutoloadScript = UnknownValue;
         HelperLastOperationToken = UnknownValue;
         HelperLastOperationKind = UnknownValue;
         HelperLastVerifyState = UnknownValue;
@@ -163,6 +181,10 @@ public abstract class MainViewModelLiveOpsBase : MainViewModelBindableMembersBas
         HelperBridgeState = NormalizeMetadataListValue(GetMetadataValueOrDefault(metadata, "helperBridgeState", UnknownValue), UnknownValue);
         HelperBridgeReasonCode = NormalizeMetadataListValue(GetMetadataValueOrDefault(metadata, "helperBridgeReasonCode", UnknownValue), UnknownValue);
         HelperBridgeFeatures = NormalizeMetadataListValue(GetMetadataValueOrDefault(metadata, "helperBridgeFeatures", "none"), "none");
+        HelperAutoloadState = NormalizeMetadataListValue(GetMetadataValueOrDefault(metadata, "helperAutoloadState", UnknownValue), UnknownValue);
+        HelperAutoloadReasonCode = NormalizeMetadataListValue(GetMetadataValueOrDefault(metadata, "helperAutoloadReasonCode", UnknownValue), UnknownValue);
+        HelperAutoloadStrategy = NormalizeMetadataListValue(GetMetadataValueOrDefault(metadata, "helperAutoloadStrategy", UnknownValue), UnknownValue);
+        HelperAutoloadScript = NormalizeMetadataListValue(GetMetadataValueOrDefault(metadata, "helperAutoloadScript", UnknownValue), UnknownValue);
         HelperLastOperationToken = NormalizeMetadataListValue(GetMetadataValueOrDefault(metadata, "helperLastOperationToken", UnknownValue), UnknownValue);
         HelperLastOperationKind = NormalizeMetadataListValue(GetMetadataValueOrDefault(metadata, "helperLastOperationKind", UnknownValue), UnknownValue);
         HelperLastVerifyState = NormalizeMetadataListValue(GetMetadataValueOrDefault(metadata, "helperLastVerifyState", UnknownValue), UnknownValue);

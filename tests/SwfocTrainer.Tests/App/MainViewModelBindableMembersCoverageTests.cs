@@ -36,6 +36,10 @@ public sealed class MainViewModelBindableMembersCoverageTests
         vm.HelperBridgeState = "ready";
         vm.HelperBridgeReasonCode = "CAPABILITY_PROBE_PASS";
         vm.HelperBridgeFeatures = "spawn_tactical_entity, set_context_allegiance";
+        vm.HelperAutoloadState = "pending_story_mode_load";
+        vm.HelperAutoloadReasonCode = "story_wrapper_waiting_for_story_load";
+        vm.HelperAutoloadStrategy = "story_wrapper_chain";
+        vm.HelperAutoloadScript = "Library/PGStoryMode.lua";
         vm.HelperLastOperationToken = "token-123";
         vm.HelperLastOperationKind = "SpawnTacticalEntity";
         vm.HelperLastVerifyState = "applied";
@@ -92,8 +96,11 @@ public sealed class MainViewModelBindableMembersCoverageTests
         vm.SaveSearchQuery.Should().Be("credits");
         vm.SelectedSpawnPreset.Should().NotBeNull();
         vm.HelperBridgeSummary.Should().Be("ready (CAPABILITY_PROBE_PASS)");
+        vm.HelperAutoloadSummary.Should().Be("pending_story_mode_load (story_wrapper_waiting_for_story_load)");
         vm.HelperLastOperationSummary.Should().Be("SpawnTacticalEntity (applied)");
         vm.HelperLastOperationToken.Should().Be("token-123");
+        vm.HelperAutoloadStrategy.Should().Be("story_wrapper_chain");
+        vm.HelperAutoloadScript.Should().Be("Library/PGStoryMode.lua");
         vm.HelperLastEntryPoint.Should().Be("SWFOC_Trainer_Spawn_Context");
         vm.HelperLastAppliedEntityId.Should().Be("EMPIRE_STORMTROOPER_SQUAD");
         vm.SpawnStopOnFailure.Should().BeFalse();
