@@ -1,6 +1,7 @@
 #pragma warning disable S4136
 using System.Security.Cryptography;
 using System.Text.Json;
+using System.Text.Json.Nodes;
 using Microsoft.Extensions.Logging;
 using SwfocTrainer.Core.Contracts;
 using SwfocTrainer.Core.Models;
@@ -8,7 +9,7 @@ using SwfocTrainer.Helper.Config;
 
 namespace SwfocTrainer.Helper.Services;
 
-public sealed class HelperModService : IHelperModService
+public sealed class HelperModService : IHelperModService, IHelperCommandTransportService
 {
     private const string DeploymentManifestFileName = "helper-deployment.json";
     private const string BootstrapScriptName = "SwfocTrainer_HelperBootstrap.lua";
@@ -170,6 +171,224 @@ public sealed class HelperModService : IHelperModService
     public Task<bool> VerifyAsync(string profileId)
     {
         return VerifyAsync(profileId, CancellationToken.None);
+    }
+
+    public async Task<HelperCommandTransportLayout> GetLayoutAsync(string profileId, CancellationToken cancellationToken)
+    {
+        var deployedRoot = await EnsureDeploymentRootAsync(profileId, cancellationToken);
+        return new HelperCommandTransportLayout(
+            ProfileId: profileId,
+            DeploymentRoot: deployedRoot,
+            ManifestPath: Path.Combine(deployedRoot, DeploymentManifestFileName),
+            BootstrapScriptPath: Path.Combine(GetLibraryRoot(deployedRoot), BootstrapScriptName),
+            Model: CommandTransportModel,
+            SchemaVersion: CommandTransportSchemaVersion,
+            PendingDirectory: GetPendingCommandRoot(deployedRoot),
+            ClaimedDirectory: GetClaimedCommandRoot(deployedRoot),
+            ReceiptDirectory: GetReceiptRoot(deployedRoot));
+    }
+
+    public async Task<HelperStagedCommand> StageCommandAsync(
+        string profileId,
+        string actionId,
+        string helperEntryPoint,
+        string operationToken,
+        JsonObject payload,
+        CancellationToken cancellationToken)
+    {
+        if (string.IsNullOrWhiteSpace(profileId))
+        {
+            throw new ArgumentException("Profile id is required.", nameof(profileId));
+        }
+
+        if (string.IsNullOrWhiteSpace(actionId))
+        {
+            throw new ArgumentException("Action id is required.", nameof(actionId));
+        }
+
+        if (string.IsNullOrWhiteSpace(helperEntryPoint))
+        {
+            throw new ArgumentException("Helper entry point is required.", nameof(helperEntryPoint));
+        }
+
+        if (string.IsNullOrWhiteSpace(operationToken))
+        {
+            throw new ArgumentException("Operation token is required.", nameof(operationToken));
+        }
+
+        ArgumentNullException.ThrowIfNull(payload);
+
+        var layout = await GetLayoutAsync(profileId, cancellationToken);
+        Directory.CreateDirectory(layout.PendingDirectory);
+        Directory.CreateDirectory(layout.ClaimedDirectory);
+        Directory.CreateDirectory(layout.ReceiptDirectory);
+
+        var safeToken = operationToken.Trim();
+        var commandPath = Path.Combine(layout.PendingDirectory, $"{safeToken}.json");
+        var claimPath = Path.Combine(layout.ClaimedDirectory, $"{safeToken}.json");
+        var receiptPath = Path.Combine(layout.ReceiptDirectory, $"{safeToken}.json");
+
+        if (File.Exists(commandPath))
+        {
+            File.Delete(commandPath);
+        }
+
+        if (File.Exists(claimPath))
+        {
+            File.Delete(claimPath);
+        }
+
+        if (File.Exists(receiptPath))
+        {
+            File.Delete(receiptPath);
+        }
+
+        payload["helperEntryPoint"] ??= helperEntryPoint;
+        payload["operationToken"] ??= safeToken;
+
+        var envelope = new JsonObject
+        {
+            ["schemaVersion"] = CommandTransportSchemaVersion,
+            ["transportModel"] = CommandTransportModel,
+            ["generatedAtUtc"] = DateTimeOffset.UtcNow.ToString("O"),
+            ["profileId"] = profileId,
+            ["actionId"] = actionId,
+            ["helperEntryPoint"] = helperEntryPoint,
+            ["operationToken"] = safeToken,
+            ["payload"] = payload.DeepClone()
+        };
+
+        await File.WriteAllTextAsync(
+            commandPath,
+            envelope.ToJsonString(new JsonSerializerOptions { WriteIndented = true }),
+            cancellationToken);
+
+        _logger.LogInformation(
+            "Staged helper overlay command for {ProfileId}: action={ActionId}, entryPoint={EntryPoint}, token={OperationToken}",
+            profileId,
+            actionId,
+            helperEntryPoint,
+            safeToken);
+
+        return new HelperStagedCommand(
+            ProfileId: profileId,
+            ActionId: actionId,
+            HelperEntryPoint: helperEntryPoint,
+            OperationToken: safeToken,
+            CommandPath: commandPath,
+            ClaimPath: claimPath,
+            ReceiptPath: receiptPath,
+            PayloadPath: commandPath);
+    }
+
+    public async Task<HelperCommandReceipt?> TryReadReceiptAsync(
+        string profileId,
+        string operationToken,
+        CancellationToken cancellationToken)
+    {
+        if (string.IsNullOrWhiteSpace(profileId))
+        {
+            throw new ArgumentException("Profile id is required.", nameof(profileId));
+        }
+
+        if (string.IsNullOrWhiteSpace(operationToken))
+        {
+            throw new ArgumentException("Operation token is required.", nameof(operationToken));
+        }
+
+        var layout = await GetLayoutAsync(profileId, cancellationToken);
+        var receiptPath = Path.Combine(layout.ReceiptDirectory, $"{operationToken.Trim()}.json");
+        if (!File.Exists(receiptPath))
+        {
+            return null;
+        }
+
+        await using var stream = File.OpenRead(receiptPath);
+        using var document = await JsonDocument.ParseAsync(stream, cancellationToken: cancellationToken);
+        var root = document.RootElement;
+
+        static string ReadString(JsonElement element, string propertyName)
+        {
+            if (element.TryGetProperty(propertyName, out var property) && property.ValueKind == JsonValueKind.String)
+            {
+                return property.GetString()?.Trim() ?? string.Empty;
+            }
+
+            return string.Empty;
+        }
+
+        static bool ReadBool(JsonElement element, string propertyName)
+        {
+            if (!element.TryGetProperty(propertyName, out var property))
+            {
+                return false;
+            }
+
+            return property.ValueKind switch
+            {
+                JsonValueKind.True => true,
+                JsonValueKind.False => false,
+                JsonValueKind.String when bool.TryParse(property.GetString(), out var parsed) => parsed,
+                _ => false
+            };
+        }
+
+        var status = ReadString(root, "status");
+        var stageState = ReadString(root, "stageState");
+        if (string.IsNullOrWhiteSpace(stageState))
+        {
+            stageState = status;
+        }
+
+        var verifyState = ReadString(root, "helperVerifyState");
+        var verificationSource = ReadString(root, "verificationSource");
+        var appliedEntityId = ReadString(root, "appliedEntityId");
+        var actionId = ReadString(root, "actionId");
+        var helperEntryPoint = ReadString(root, "helperEntryPoint");
+        var reasonCode = ReadString(root, "reasonCode");
+        var message = ReadString(root, "message");
+        var effectiveOperationToken = ReadString(root, "operationToken");
+        if (string.IsNullOrWhiteSpace(effectiveOperationToken))
+        {
+            effectiveOperationToken = operationToken.Trim();
+        }
+
+        var applied = ReadBool(root, "applied");
+        if (!applied && !string.IsNullOrWhiteSpace(status))
+        {
+            applied = status.Equals("applied", StringComparison.OrdinalIgnoreCase) ||
+                      status.Equals("verified", StringComparison.OrdinalIgnoreCase) ||
+                      status.Equals("success", StringComparison.OrdinalIgnoreCase);
+        }
+
+        if (string.IsNullOrWhiteSpace(stageState))
+        {
+            stageState = applied ? "applied" : "receipt_present";
+        }
+
+        if (string.IsNullOrWhiteSpace(verifyState))
+        {
+            verifyState = applied ? "receipt_present" : "receipt_failed";
+        }
+
+        if (string.IsNullOrWhiteSpace(reasonCode))
+        {
+            reasonCode = applied ? "overlay_receipt_applied" : "overlay_receipt_failed";
+        }
+
+        return new HelperCommandReceipt(
+            ProfileId: profileId,
+            ActionId: actionId,
+            HelperEntryPoint: helperEntryPoint,
+            OperationToken: effectiveOperationToken,
+            ReceiptPath: receiptPath,
+            StageState: stageState,
+            Applied: applied,
+            ReasonCode: reasonCode,
+            Message: message,
+            VerificationSource: verificationSource,
+            VerifyState: verifyState,
+            AppliedEntityId: appliedEntityId);
     }
 
     private Task<IReadOnlyList<ActivationScriptDeployment>> DeployActivationScriptsAsync(
@@ -669,6 +888,19 @@ public sealed class HelperModService : IHelperModService
             WriteIndented = true,
             PropertyNamingPolicy = JsonNamingPolicy.CamelCase
         });
+    }
+
+    private async Task<string> EnsureDeploymentRootAsync(string profileId, CancellationToken cancellationToken)
+    {
+        var targetRoot = Path.Combine(_options.InstallRoot, profileId);
+        if (!File.Exists(Path.Combine(targetRoot, DeploymentManifestFileName)) ||
+            !File.Exists(Path.Combine(GetLibraryRoot(targetRoot), BootstrapScriptName)) ||
+            !TransportDirectoriesExist(targetRoot))
+        {
+            return await DeployAsync(profileId, cancellationToken);
+        }
+
+        return targetRoot;
     }
 
     private static void EnsureTransportDirectories(string targetRoot)

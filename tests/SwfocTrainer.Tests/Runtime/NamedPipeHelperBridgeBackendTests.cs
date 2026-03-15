@@ -100,7 +100,7 @@ public sealed class NamedPipeHelperBridgeBackendTests
                 },
                 ProbeReasonCode: RuntimeReasonCode.CAPABILITY_PROBE_PASS)
         };
-        var backend = new NamedPipeHelperBridgeBackend(stubBackend);
+        var backend = new NamedPipeHelperBridgeBackend(stubBackend, helperCommandTransportService: new StubHelperCommandTransportService());
 
         var result = await backend.ProbeAsync(
             new HelperBridgeProbeRequest(
@@ -124,6 +124,141 @@ public sealed class NamedPipeHelperBridgeBackendTests
         diagnostics["configuredHooks"]?.ToString().Should().Be("spawn_bridge");
         diagnostics["configuredEntryPoints"]?.ToString().Should().Be("SWFOC_Trainer_Spawn_Context");
         diagnostics["helperExecutionPath"]?.ToString().Should().Be("native_dispatch_unavailable");
+        diagnostics["helperCommandTransportState"]?.ToString().Should().Be("ready");
+        diagnostics["helperCommandTransportModel"]?.ToString().Should().Be("overlay_command_inbox");
+    }
+
+    [Fact]
+    public async Task ExecuteAsync_ShouldStageOverlayCommand_WhenProbeIsExperimental()
+    {
+        var stubBackend = new StubExecutionBackend
+        {
+            ProbeReport = new CapabilityReport(
+                ProfileId: "test_profile",
+                ProbedAtUtc: DateTimeOffset.UtcNow,
+                Capabilities: new Dictionary<string, BackendCapability>(StringComparer.OrdinalIgnoreCase)
+                {
+                    ["set_credits"] = new BackendCapability(
+                        FeatureId: "set_credits",
+                        Available: true,
+                        Confidence: CapabilityConfidenceState.Verified,
+                        ReasonCode: RuntimeReasonCode.CAPABILITY_PROBE_PASS)
+                },
+                ProbeReasonCode: RuntimeReasonCode.CAPABILITY_PROBE_PASS)
+        };
+        var transport = new StubHelperCommandTransportService();
+        var backend = new NamedPipeHelperBridgeBackend(stubBackend, helperCommandTransportService: transport);
+
+        var result = await backend.ExecuteAsync(
+            BuildHelperRequest(
+                new JsonObject
+                {
+                    ["entityId"] = "EMP_ATAT",
+                    ["faction"] = "Empire"
+                },
+                new HelperHookSpec(
+                    Id: "spawn_bridge",
+                    Script: "scripts/common/spawn_bridge.lua",
+                    Version: "1.0.0",
+                    EntryPoint: "SWFOC_Trainer_Spawn_Context"),
+                processId: 4242,
+                actionId: "spawn_context_entity",
+                operationKind: HelperBridgeOperationKind.SpawnContextEntity,
+                operationToken: "token-stage-001"),
+            CancellationToken.None);
+
+        result.Succeeded.Should().BeFalse();
+        result.ReasonCode.Should().Be(RuntimeReasonCode.HELPER_VERIFICATION_FAILED);
+        transport.StageCalls.Should().HaveCount(1);
+        var stagedCall = transport.StageCalls[0];
+        stagedCall.ProfileId.Should().Be("test_profile");
+        stagedCall.ActionId.Should().Be("spawn_context_entity");
+        stagedCall.HelperEntryPoint.Should().Be("SWFOC_Trainer_Spawn_Context");
+        stagedCall.OperationToken.Should().Be("token-stage-001");
+        result.Diagnostics.Should().NotBeNull();
+        var diagnostics = result.Diagnostics!;
+        diagnostics["helperExecutionPath"]?.ToString().Should().Be("overlay_command_inbox_staged");
+        diagnostics["helperCommandTransportState"]?.ToString().Should().Be("staged");
+        diagnostics["helperCommandStageState"]?.ToString().Should().Be("pending");
+        diagnostics["helperStagedCommandPath"]?.ToString().Should().Be(@"C:\helper\pending\token-stage-001.json");
+        diagnostics["helperBridgeState"]?.ToString().Should().Be("experimental");
+    }
+
+    [Fact]
+    public async Task ExecuteAsync_ShouldReturnApplied_WhenOverlayReceiptAndTelemetryVerifyOperation()
+    {
+        var stubBackend = new StubExecutionBackend
+        {
+            ProbeReport = new CapabilityReport(
+                ProfileId: "test_profile",
+                ProbedAtUtc: DateTimeOffset.UtcNow,
+                Capabilities: new Dictionary<string, BackendCapability>(StringComparer.OrdinalIgnoreCase)
+                {
+                    ["set_credits"] = new BackendCapability(
+                        FeatureId: "set_credits",
+                        Available: true,
+                        Confidence: CapabilityConfidenceState.Verified,
+                        ReasonCode: RuntimeReasonCode.CAPABILITY_PROBE_PASS)
+                },
+                ProbeReasonCode: RuntimeReasonCode.CAPABILITY_PROBE_PASS)
+        };
+        var transport = new StubHelperCommandTransportService
+        {
+            ReceiptResult = new HelperCommandReceipt(
+                ProfileId: "test_profile",
+                ActionId: "spawn_context_entity",
+                HelperEntryPoint: "SWFOC_Trainer_Spawn_Context",
+                OperationToken: "token-live-001",
+                ReceiptPath: @"C:\helper\receipts\token-live-001.json",
+                StageState: "applied",
+                Applied: true,
+                ReasonCode: "overlay_receipt_applied",
+                Message: "Overlay applied command.",
+                VerificationSource: @"C:\Games\_LogFile.txt",
+                VerifyState: "receipt_present",
+                AppliedEntityId: "EMP_ATAT")
+        };
+        var telemetry = new StubTelemetryLogTailService
+        {
+            VerificationResult = new HelperOperationVerification(
+                Verified: true,
+                ReasonCode: "helper_operation_token_verified",
+                SourcePath: @"C:\Games\_LogFile.txt",
+                TimestampUtc: DateTimeOffset.UtcNow,
+                RawLine: "SWFOC_TRAINER_APPLIED token-live-001")
+        };
+        var backend = new NamedPipeHelperBridgeBackend(stubBackend, telemetry, transport);
+
+        var result = await backend.ExecuteAsync(
+            BuildHelperRequest(
+                new JsonObject
+                {
+                    ["entityId"] = "EMP_ATAT",
+                    ["faction"] = "Empire"
+                },
+                new HelperHookSpec(
+                    Id: "spawn_bridge",
+                    Script: "scripts/common/spawn_bridge.lua",
+                    Version: "1.0.0",
+                    EntryPoint: "SWFOC_Trainer_Spawn_Context"),
+                processId: 4242,
+                actionId: "spawn_context_entity",
+                operationKind: HelperBridgeOperationKind.SpawnContextEntity,
+                operationToken: "token-live-001"),
+            CancellationToken.None);
+
+        result.Succeeded.Should().BeTrue();
+        result.ReasonCode.Should().Be(RuntimeReasonCode.HELPER_EXECUTION_APPLIED);
+        result.Diagnostics.Should().NotBeNull();
+        var diagnostics = result.Diagnostics!;
+        diagnostics["helperExecutionPath"]?.ToString().Should().Be("overlay_command_inbox_verified");
+        diagnostics["helperBridgeState"]?.ToString().Should().Be("ready");
+        diagnostics["helperCommandTransportState"]?.ToString().Should().Be("receipt_verified");
+        diagnostics["helperCommandStageState"]?.ToString().Should().Be("applied");
+        diagnostics["helperEvidenceState"]?.ToString().Should().Be("verified");
+        diagnostics["helperReceiptReasonCode"]?.ToString().Should().Be("overlay_receipt_applied");
+        diagnostics["helperReceiptSourcePath"]?.ToString().Should().Be(@"C:\helper\receipts\token-live-001.json");
+        diagnostics["helperStagedReceiptPath"]?.ToString().Should().Be(@"C:\helper\receipts\token-live-001.json");
     }
 
     [Fact]
@@ -1180,6 +1315,55 @@ public sealed class NamedPipeHelperBridgeBackendTests
         {
             _ = cancellationToken;
             return GetHealthAsync();
+        }
+    }
+
+    private sealed class StubHelperCommandTransportService : IHelperCommandTransportService
+    {
+        public List<(string ProfileId, string ActionId, string HelperEntryPoint, string OperationToken, JsonObject Payload)> StageCalls { get; } = new();
+        public HelperCommandReceipt? ReceiptResult { get; set; }
+
+        public Task<HelperCommandTransportLayout> GetLayoutAsync(string profileId, CancellationToken cancellationToken)
+        {
+            _ = cancellationToken;
+            return Task.FromResult(new HelperCommandTransportLayout(
+                ProfileId: profileId,
+                DeploymentRoot: @"C:\helper",
+                ManifestPath: @"C:\helper\helper-deployment.json",
+                BootstrapScriptPath: @"C:\helper\Data\Scripts\Library\SwfocTrainer_HelperBootstrap.lua",
+                Model: "overlay_command_inbox",
+                SchemaVersion: "1.0",
+                PendingDirectory: @"C:\helper\pending",
+                ClaimedDirectory: @"C:\helper\claimed",
+                ReceiptDirectory: @"C:\helper\receipts"));
+        }
+
+        public Task<HelperStagedCommand> StageCommandAsync(string profileId, string actionId, string helperEntryPoint, string operationToken, JsonObject payload, CancellationToken cancellationToken)
+        {
+            _ = cancellationToken;
+            StageCalls.Add((profileId, actionId, helperEntryPoint, operationToken, payload));
+            return Task.FromResult(new HelperStagedCommand(
+                ProfileId: profileId,
+                ActionId: actionId,
+                HelperEntryPoint: helperEntryPoint,
+                OperationToken: operationToken,
+                CommandPath: $@"C:\helper\pending\{operationToken}.json",
+                ClaimPath: $@"C:\helper\claimed\{operationToken}.json",
+                ReceiptPath: $@"C:\helper\receipts\{operationToken}.json",
+                PayloadPath: $@"C:\helper\pending\{operationToken}.json"));
+        }
+
+        public Task<HelperCommandReceipt?> TryReadReceiptAsync(string profileId, string operationToken, CancellationToken cancellationToken)
+        {
+            _ = cancellationToken;
+            if (ReceiptResult is null ||
+                !ReceiptResult.ProfileId.Equals(profileId, StringComparison.OrdinalIgnoreCase) ||
+                !ReceiptResult.OperationToken.Equals(operationToken, StringComparison.OrdinalIgnoreCase))
+            {
+                return Task.FromResult<HelperCommandReceipt?>(null);
+            }
+
+            return Task.FromResult<HelperCommandReceipt?>(ReceiptResult);
         }
     }
 }

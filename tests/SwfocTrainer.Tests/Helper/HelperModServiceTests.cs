@@ -133,6 +133,155 @@ public sealed class HelperModServiceTests
     }
 
     [Fact]
+    public async Task GetLayoutAsync_ShouldReturnDeterministicTransportPaths()
+    {
+        var sourceRoot = CreateTempDirectory();
+        var installRoot = CreateTempDirectory();
+        try
+        {
+            WriteScript(sourceRoot, "scripts/common/spawn_bridge.lua", "-- helper script");
+            var service = BuildService(
+                BuildProfile("base_swfoc", [new HelperHookSpec("spawn_bridge", "scripts/common/spawn_bridge.lua", "1.0.0", EntryPoint: "SWFOC_Trainer_Spawn")]),
+                sourceRoot,
+                installRoot);
+
+            var layout = await ((IHelperCommandTransportService)service).GetLayoutAsync("base_swfoc", CancellationToken.None);
+
+            layout.ProfileId.Should().Be("base_swfoc");
+            layout.Model.Should().Be("overlay_command_inbox");
+            layout.SchemaVersion.Should().Be("1.0");
+            layout.PendingDirectory.Should().EndWith(Path.Combine("SwfocTrainer", "Runtime", "commands", "pending"));
+            layout.ClaimedDirectory.Should().EndWith(Path.Combine("SwfocTrainer", "Runtime", "commands", "claimed"));
+            layout.ReceiptDirectory.Should().EndWith(Path.Combine("SwfocTrainer", "Runtime", "receipts"));
+            File.Exists(layout.ManifestPath).Should().BeTrue();
+            File.Exists(layout.BootstrapScriptPath).Should().BeTrue();
+        }
+        finally
+        {
+            DeleteDirectory(sourceRoot);
+            DeleteDirectory(installRoot);
+        }
+    }
+
+    [Fact]
+    public async Task StageCommandAsync_ShouldWritePendingCommandEnvelope_AndResetStaleArtifacts()
+    {
+        var sourceRoot = CreateTempDirectory();
+        var installRoot = CreateTempDirectory();
+        try
+        {
+            WriteScript(sourceRoot, "scripts/common/spawn_bridge.lua", "-- helper script");
+            var service = BuildService(
+                BuildProfile("base_swfoc", [new HelperHookSpec("spawn_bridge", "scripts/common/spawn_bridge.lua", "1.0.0", EntryPoint: "SWFOC_Trainer_Spawn_Context")]),
+                sourceRoot,
+                installRoot);
+            var transport = (IHelperCommandTransportService)service;
+
+            var stagedInitial = await transport.StageCommandAsync(
+                "base_swfoc",
+                "spawn_context_entity",
+                "SWFOC_Trainer_Spawn_Context",
+                "token-1234",
+                new System.Text.Json.Nodes.JsonObject
+                {
+                    ["entityId"] = "EMP_ATAT",
+                    ["faction"] = "Empire"
+                },
+                CancellationToken.None);
+
+            File.WriteAllText(stagedInitial.ClaimPath, "{}");
+            File.WriteAllText(stagedInitial.ReceiptPath, "{}");
+
+            var staged = await transport.StageCommandAsync(
+                "base_swfoc",
+                "spawn_context_entity",
+                "SWFOC_Trainer_Spawn_Context",
+                "token-1234",
+                new System.Text.Json.Nodes.JsonObject
+                {
+                    ["entityId"] = "EMP_ATAT",
+                    ["faction"] = "Empire"
+                },
+                CancellationToken.None);
+
+            staged.CommandPath.Should().EndWith("token-1234.json");
+            File.Exists(staged.CommandPath).Should().BeTrue();
+            File.Exists(staged.ClaimPath).Should().BeFalse();
+            File.Exists(staged.ReceiptPath).Should().BeFalse();
+
+            using var document = JsonDocument.Parse(File.ReadAllText(staged.CommandPath));
+            var root = document.RootElement;
+            root.GetProperty("transportModel").GetString().Should().Be("overlay_command_inbox");
+            root.GetProperty("profileId").GetString().Should().Be("base_swfoc");
+            root.GetProperty("actionId").GetString().Should().Be("spawn_context_entity");
+            root.GetProperty("helperEntryPoint").GetString().Should().Be("SWFOC_Trainer_Spawn_Context");
+            root.GetProperty("operationToken").GetString().Should().Be("token-1234");
+            root.GetProperty("payload").GetProperty("entityId").GetString().Should().Be("EMP_ATAT");
+            root.GetProperty("payload").GetProperty("helperEntryPoint").GetString().Should().Be("SWFOC_Trainer_Spawn_Context");
+            root.GetProperty("payload").GetProperty("operationToken").GetString().Should().Be("token-1234");
+        }
+        finally
+        {
+            DeleteDirectory(sourceRoot);
+            DeleteDirectory(installRoot);
+        }
+    }
+
+    [Fact]
+    public async Task TryReadReceiptAsync_ShouldParseAppliedReceipt()
+    {
+        var sourceRoot = CreateTempDirectory();
+        var installRoot = CreateTempDirectory();
+        try
+        {
+            WriteScript(sourceRoot, "scripts/common/spawn_bridge.lua", "-- helper script");
+            var service = BuildService(
+                BuildProfile("base_swfoc", [new HelperHookSpec("spawn_bridge", "scripts/common/spawn_bridge.lua", "1.0.0", EntryPoint: "SWFOC_Trainer_Spawn_Context")]),
+                sourceRoot,
+                installRoot);
+            var transport = (IHelperCommandTransportService)service;
+
+            var layout = await transport.GetLayoutAsync("base_swfoc", CancellationToken.None);
+            Directory.CreateDirectory(layout.ReceiptDirectory);
+            var receiptPath = Path.Combine(layout.ReceiptDirectory, "token-verified.json");
+            await File.WriteAllTextAsync(
+                receiptPath,
+                """
+                {
+                  "operationToken": "token-verified",
+                  "actionId": "spawn_context_entity",
+                  "helperEntryPoint": "SWFOC_Trainer_Spawn_Context",
+                  "status": "applied",
+                  "helperVerifyState": "receipt_present",
+                  "reasonCode": "overlay_receipt_applied",
+                  "message": "Overlay applied command.",
+                  "verificationSource": "C:/Games/_LogFile.txt",
+                  "appliedEntityId": "EMP_ATAT"
+                }
+                """);
+
+            var receipt = await transport.TryReadReceiptAsync("base_swfoc", "token-verified", CancellationToken.None);
+
+            receipt.Should().NotBeNull();
+            receipt!.OperationToken.Should().Be("token-verified");
+            receipt.ActionId.Should().Be("spawn_context_entity");
+            receipt.HelperEntryPoint.Should().Be("SWFOC_Trainer_Spawn_Context");
+            receipt.Applied.Should().BeTrue();
+            receipt.StageState.Should().Be("applied");
+            receipt.VerifyState.Should().Be("receipt_present");
+            receipt.ReasonCode.Should().Be("overlay_receipt_applied");
+            receipt.VerificationSource.Should().Be("C:/Games/_LogFile.txt");
+            receipt.AppliedEntityId.Should().Be("EMP_ATAT");
+            receipt.ReceiptPath.Should().Be(receiptPath);
+        }
+        finally
+        {
+            DeleteDirectory(sourceRoot);
+            DeleteDirectory(installRoot);
+        }
+    }
+
+    [Fact]
     public async Task DeployAsync_ShouldGenerateAutoloadWrappers_WhenProfileDeclaresHelperAutoloadScripts()
     {
         var sourceRoot = CreateTempDirectory();
