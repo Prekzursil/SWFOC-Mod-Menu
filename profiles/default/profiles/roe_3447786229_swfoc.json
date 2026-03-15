@@ -88,6 +88,8 @@
     "requiredWorkshopIds": "1397421866,3447786229",
     "requiredMarkerFile": "Data/XML/Gameobjectfiles.xml",
     "dependencySensitiveActions": "spawn_unit_helper,set_hero_state_helper,toggle_roe_respawn_helper",
+    "helperAutoloadStrategy": "story_wrapper_chain",
+    "helperAutoloadScripts": "Library/PGStoryMode.lua",
     "localPathHints": "roe,order 66,order-66,3447786229",
     "localParentPathHints": "1397421866,aotr,awakening of the rebellion,awakening-of-the-rebellion",
     "profileAliases": "roe_3447786229_swfoc,roe,order66,order 66 submod"

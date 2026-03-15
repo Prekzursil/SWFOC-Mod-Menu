@@ -17,4 +17,13 @@ public interface ITelemetryLogTailService
     {
         return HelperOperationVerification.Unavailable("helper_operation_verification_not_supported");
     }
+
+    HelperAutoloadVerification VerifyAutoloadProfile(
+        string? processPath,
+        string? profileId,
+        DateTimeOffset nowUtc,
+        TimeSpan freshnessWindow)
+    {
+        return HelperAutoloadVerification.Unavailable("helper_autoload_verification_not_supported");
+    }
 }

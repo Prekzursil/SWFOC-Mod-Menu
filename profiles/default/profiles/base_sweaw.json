@@ -718,8 +718,6 @@
     "targetExecutable": "sweaw.exe",
     "profileAliases": "base_sweaw,sweaw,empire at war,eaw",
     "localPathHints": "sweaw,empire at war",
-    "helperAutoloadStrategy": "story_wrapper_chain",
-    "helperAutoloadScripts": "Story/Galactic.lua,Story/LandBattle.lua,Story/SpaceBattle.lua",
     "criticalSymbols": "credits,planet_owner,hero_respawn_timer,game_speed,unit_cap",
     "symbolValidationRules": "[{\"Symbol\":\"credits\",\"IntMin\":0,\"IntMax\":2000000000,\"Critical\":true},{\"Symbol\":\"planet_owner\",\"IntMin\":0,\"IntMax\":16,\"Critical\":true},{\"Symbol\":\"hero_respawn_timer\",\"IntMin\":0,\"IntMax\":86400,\"Critical\":true},{\"Symbol\":\"game_speed\",\"FloatMin\":0.05,\"FloatMax\":8.0,\"Critical\":true},{\"Symbol\":\"selected_hp\",\"Mode\":\"AnyTactical\",\"FloatMin\":0.0,\"FloatMax\":5000000.0},{\"Symbol\":\"selected_shield\",\"Mode\":\"AnyTactical\",\"FloatMin\":0.0,\"FloatMax\":5000000.0}]"
   }

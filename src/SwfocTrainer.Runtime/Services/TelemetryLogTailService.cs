@@ -17,6 +17,7 @@ public sealed class TelemetryLogTailService : ITelemetryLogTailService
     private readonly object _sync = new();
     private readonly Dictionary<string, long> _cursorByPath = new(StringComparer.OrdinalIgnoreCase);
     private readonly Dictionary<string, long> _operationCursorByPath = new(StringComparer.OrdinalIgnoreCase);
+    private readonly Dictionary<string, long> _autoloadCursorByPath = new(StringComparer.OrdinalIgnoreCase);
 
     public TelemetryModeResolution ResolveLatestMode(
         string? processPath,
@@ -72,6 +73,25 @@ public sealed class TelemetryLogTailService : ITelemetryLogTailService
         return VerifyOperationTokenCore(resolvedProcessPath, resolvedOperationToken, nowUtc, freshnessWindow);
     }
 
+    public HelperAutoloadVerification VerifyAutoloadProfile(
+        string? processPath,
+        string? profileId,
+        DateTimeOffset nowUtc,
+        TimeSpan freshnessWindow)
+    {
+        if (string.IsNullOrWhiteSpace(profileId))
+        {
+            return HelperAutoloadVerification.Unavailable("helper_autoload_profile_missing");
+        }
+
+        if (string.IsNullOrWhiteSpace(processPath))
+        {
+            return HelperAutoloadVerification.Unavailable("telemetry_process_path_missing");
+        }
+
+        return VerifyAutoloadProfileCore(processPath, profileId, nowUtc, freshnessWindow);
+    }
+
 
     private HelperOperationVerification VerifyOperationTokenCore(
         string processPath,
@@ -116,6 +136,53 @@ public sealed class TelemetryLogTailService : ITelemetryLogTailService
             SourcePath: logPath,
             TimestampUtc: timestampUtc,
             RawLine: parsed.RawLine);
+    }
+
+    private HelperAutoloadVerification VerifyAutoloadProfileCore(
+        string processPath,
+        string profileId,
+        DateTimeOffset nowUtc,
+        TimeSpan freshnessWindow)
+    {
+        var logPath = ResolveLogPath(processPath);
+        if (logPath is null)
+        {
+            return HelperAutoloadVerification.Unavailable("telemetry_log_missing");
+        }
+
+        ParsedHelperAutoloadLine? parsed = null;
+        lock (_sync)
+        {
+            var cursor = _autoloadCursorByPath.TryGetValue(logPath, out var stored) ? stored : 0L;
+            parsed = ReadLatestHelperAutoloadLine(logPath, profileId, ref cursor);
+            _autoloadCursorByPath[logPath] = cursor;
+        }
+
+        if (parsed is null)
+        {
+            return HelperAutoloadVerification.Unavailable("helper_autoload_not_found");
+        }
+
+        var timestamp = parsed.TimestampUtc ?? File.GetLastWriteTimeUtc(logPath);
+        var timestampUtc = new DateTimeOffset(timestamp, TimeSpan.Zero);
+        if (nowUtc - timestampUtc > freshnessWindow)
+        {
+            return HelperAutoloadVerification.Unavailable("helper_autoload_stale");
+        }
+
+        if (!parsed.Ready)
+        {
+            return HelperAutoloadVerification.Unavailable("helper_autoload_reported_failed");
+        }
+
+        return new HelperAutoloadVerification(
+            Ready: true,
+            ReasonCode: "helper_autoload_ready",
+            SourcePath: logPath,
+            TimestampUtc: timestampUtc,
+            RawLine: parsed.RawLine,
+            Strategy: parsed.Strategy,
+            Script: parsed.Script);
     }
 
 
@@ -226,6 +293,48 @@ public sealed class TelemetryLogTailService : ITelemetryLogTailService
         return ParseLatestHelperOperation(allLines.TakeLast(512).ToArray(), operationToken);
     }
 
+    private static ParsedHelperAutoloadLine? ReadLatestHelperAutoloadLine(string logPath, string profileId, ref long cursor)
+    {
+        using var stream = new FileStream(logPath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite | FileShare.Delete);
+        if (cursor < 0 || cursor > stream.Length)
+        {
+            cursor = 0;
+        }
+
+        stream.Seek(cursor, SeekOrigin.Begin);
+        using var reader = new StreamReader(stream);
+        var lines = new List<string>();
+        while (!reader.EndOfStream)
+        {
+            var line = reader.ReadLine();
+            if (!string.IsNullOrWhiteSpace(line))
+            {
+                lines.Add(line);
+            }
+        }
+
+        cursor = stream.Position;
+        var fromNewLines = ParseLatestHelperAutoload(lines, profileId);
+        if (fromNewLines is not null)
+        {
+            return fromNewLines;
+        }
+
+        stream.Seek(0, SeekOrigin.Begin);
+        reader.DiscardBufferedData();
+        var allLines = new List<string>();
+        while (!reader.EndOfStream)
+        {
+            var line = reader.ReadLine();
+            if (!string.IsNullOrWhiteSpace(line))
+            {
+                allLines.Add(line);
+            }
+        }
+
+        return ParseLatestHelperAutoload(allLines.TakeLast(512).ToArray(), profileId);
+    }
+
     private static ParsedHelperOperationLine? ParseLatestHelperOperation(IReadOnlyList<string>? lines, string operationToken)
     {
         var safeLines = lines;
@@ -292,6 +401,81 @@ public sealed class TelemetryLogTailService : ITelemetryLogTailService
 
         return status.Equals("FAILED", StringComparison.OrdinalIgnoreCase);
     }
+
+    private static ParsedHelperAutoloadLine? ParseLatestHelperAutoload(IReadOnlyList<string>? lines, string profileId)
+    {
+        if (lines is null || lines.Count == 0)
+        {
+            return null;
+        }
+
+        for (var index = lines.Count - 1; index >= 0; index--)
+        {
+            var parsed = ParseHelperAutoloadLine(lines[index], profileId);
+            if (parsed is not null)
+            {
+                return parsed;
+            }
+        }
+
+        return null;
+    }
+
+    private static ParsedHelperAutoloadLine? ParseHelperAutoloadLine(string? line, string profileId)
+    {
+        if (string.IsNullOrWhiteSpace(line))
+        {
+            return null;
+        }
+
+        var tokens = line.Split(' ', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
+        if (tokens.Length < 2)
+        {
+            return null;
+        }
+
+        var statusToken = tokens[0];
+        bool? ready = statusToken.Equals("SWFOC_TRAINER_HELPER_AUTOLOAD_READY", StringComparison.OrdinalIgnoreCase)
+            ? true
+            : statusToken.Equals("SWFOC_TRAINER_HELPER_AUTOLOAD_FAILED", StringComparison.OrdinalIgnoreCase)
+                ? false
+                : null;
+        if (ready is null)
+        {
+            return null;
+        }
+
+        var values = ParseKeyValueTokens(tokens.Skip(1));
+        if (!values.TryGetValue("profile", out var lineProfile) ||
+            !lineProfile.Equals(profileId, StringComparison.OrdinalIgnoreCase))
+        {
+            return null;
+        }
+
+        values.TryGetValue("strategy", out var strategy);
+        values.TryGetValue("script", out var script);
+        return new ParsedHelperAutoloadLine(line, ready.Value, null, strategy, script);
+    }
+
+    private static Dictionary<string, string> ParseKeyValueTokens(IEnumerable<string> tokens)
+    {
+        var values = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+        foreach (var token in tokens)
+        {
+            var separatorIndex = token.IndexOf('=');
+            if (separatorIndex <= 0 || separatorIndex >= token.Length - 1)
+            {
+                continue;
+            }
+
+            var key = token[..separatorIndex];
+            var value = token[(separatorIndex + 1)..];
+            values[key] = value;
+        }
+
+        return values;
+    }
+
     private static ParsedTelemetryLine? ParseLatestTelemetry(IEnumerable<string> lines)
     {
         if (lines is null)
@@ -393,5 +577,11 @@ public sealed class TelemetryLogTailService : ITelemetryLogTailService
     private sealed record ParsedTelemetryLine(string RawLine, string Mode, DateTime? TimestampUtc);
 
     private sealed record ParsedHelperOperationLine(string RawLine, bool Applied, DateTime? TimestampUtc);
-}
 
+    private sealed record ParsedHelperAutoloadLine(
+        string RawLine,
+        bool Ready,
+        DateTime? TimestampUtc,
+        string? Strategy,
+        string? Script);
+}

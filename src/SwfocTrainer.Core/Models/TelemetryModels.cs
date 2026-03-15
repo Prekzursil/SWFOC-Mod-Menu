@@ -34,3 +34,23 @@ public sealed record HelperOperationVerification(
             TimestampUtc: null,
             RawLine: null);
 }
+
+public sealed record HelperAutoloadVerification(
+    bool Ready,
+    string ReasonCode,
+    string SourcePath,
+    DateTimeOffset? TimestampUtc,
+    string? RawLine,
+    string? Strategy,
+    string? Script)
+{
+    public static HelperAutoloadVerification Unavailable(string reasonCode) =>
+        new(
+            Ready: false,
+            ReasonCode: reasonCode,
+            SourcePath: string.Empty,
+            TimestampUtc: null,
+            RawLine: null,
+            Strategy: null,
+            Script: null);
+}

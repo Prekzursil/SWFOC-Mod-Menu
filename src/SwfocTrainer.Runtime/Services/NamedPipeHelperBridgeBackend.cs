@@ -39,6 +39,11 @@ public sealed class NamedPipeHelperBridgeBackend : IHelperBridgeBackend
     private const string DiagnosticHelperEvidenceState = "helperEvidenceState";
     private const string DiagnosticHelperEvidenceReasonCode = "helperEvidenceReasonCode";
     private const string DiagnosticHelperEvidenceSourcePath = "helperEvidenceSourcePath";
+    private const string DiagnosticHelperAutoloadState = "helperAutoloadState";
+    private const string DiagnosticHelperAutoloadReasonCode = "helperAutoloadReasonCode";
+    private const string DiagnosticHelperAutoloadSourcePath = "helperAutoloadSourcePath";
+    private const string DiagnosticHelperAutoloadStrategy = "helperAutoloadStrategy";
+    private const string DiagnosticHelperAutoloadScript = "helperAutoloadScript";
     private const string DiagnosticConfiguredHooks = "configuredHooks";
     private const string DiagnosticConfiguredEntryPoints = "configuredEntryPoints";
     private const string DiagnosticBlockingReason = "blockingReason";
@@ -228,9 +233,17 @@ public sealed class NamedPipeHelperBridgeBackend : IHelperBridgeBackend
             return CreateReadyProbeResult(capabilityReport, availableFeatures);
         }
 
-        return HasConfiguredHooks(safeRequest.Hooks) && capabilityReport.ProbeReasonCode == RuntimeReasonCode.CAPABILITY_PROBE_PASS
-            ? CreateExperimentalProbeResult(capabilityReport, safeRequest.Hooks)
-            : CreateCapabilityUnavailableProbeResult(capabilityReport);
+        if (HasConfiguredHooks(safeRequest.Hooks) && capabilityReport.ProbeReasonCode == RuntimeReasonCode.CAPABILITY_PROBE_PASS)
+        {
+            var experimental = CreateExperimentalProbeResult(capabilityReport, safeRequest.Hooks);
+            var enrichedDiagnostics = experimental.Diagnostics is null
+                ? new Dictionary<string, object?>(StringComparer.OrdinalIgnoreCase)
+                : new Dictionary<string, object?>(experimental.Diagnostics, StringComparer.OrdinalIgnoreCase);
+            EnrichAutoloadDiagnostics(enrichedDiagnostics, process, safeRequest.ProfileId);
+            return experimental with { Diagnostics = enrichedDiagnostics };
+        }
+
+        return CreateCapabilityUnavailableProbeResult(capabilityReport);
     }
 
     public async Task<HelperBridgeExecutionResult> ExecuteAsync(HelperBridgeRequest request, CancellationToken cancellationToken)
@@ -373,6 +386,41 @@ public sealed class NamedPipeHelperBridgeBackend : IHelperBridgeBackend
     private static bool HasConfiguredHooks(IReadOnlyList<HelperHookSpec>? hooks)
     {
         return hooks is { Count: > 0 };
+    }
+
+    private void EnrichAutoloadDiagnostics(
+        IDictionary<string, object?> diagnostics,
+        ProcessMetadata process,
+        string profileId)
+    {
+        ArgumentNullException.ThrowIfNull(diagnostics);
+        ArgumentNullException.ThrowIfNull(process);
+
+        if (_telemetryLogTailService is null)
+        {
+            diagnostics[DiagnosticHelperAutoloadState] = "missing";
+            diagnostics[DiagnosticHelperAutoloadReasonCode] = "helper_autoload_verification_not_supported";
+            diagnostics[DiagnosticHelperAutoloadSourcePath] = string.Empty;
+            diagnostics[DiagnosticHelperAutoloadStrategy] = string.Empty;
+            diagnostics[DiagnosticHelperAutoloadScript] = string.Empty;
+            return;
+        }
+
+        var autoload = _telemetryLogTailService.VerifyAutoloadProfile(
+            process.ProcessPath,
+            profileId,
+            DateTimeOffset.UtcNow,
+            TimeSpan.FromMinutes(15));
+
+        diagnostics[DiagnosticHelperAutoloadState] = autoload.Ready ? "ready" : "missing";
+        diagnostics[DiagnosticHelperAutoloadReasonCode] = autoload.ReasonCode;
+        diagnostics[DiagnosticHelperAutoloadSourcePath] = autoload.SourcePath;
+        diagnostics[DiagnosticHelperAutoloadStrategy] = autoload.Strategy ?? string.Empty;
+        diagnostics[DiagnosticHelperAutoloadScript] = autoload.Script ?? string.Empty;
+        if (!string.IsNullOrWhiteSpace(autoload.RawLine))
+        {
+            diagnostics["helperAutoloadRawLine"] = autoload.RawLine;
+        }
     }
 
     private async Task<HelperBridgeProbeResult> ProbeForExecutionAsync(HelperBridgeRequest request, CancellationToken cancellationToken)

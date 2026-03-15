@@ -210,6 +210,46 @@ public sealed class HelperModServiceTests
     }
 
     [Fact]
+    public async Task DeployAsync_ShouldResolveLibraryAutoloadWrapper_FromWorkshopContentRoot_WhenProfileHasWorkshopId()
+    {
+        var sourceRoot = CreateTempDirectory();
+        var installRoot = CreateTempDirectory();
+        var workshopContentRoot = CreateTempDirectory();
+        try
+        {
+            WriteScript(sourceRoot, "scripts/common/spawn_bridge.lua", "-- helper script");
+            WriteScript(workshopContentRoot, "1397421866/Data/Scripts/Library/PGStoryMode.lua", "-- original pgstorymode");
+            var metadata = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
+            {
+                ["helperAutoloadScripts"] = "Library/PGStoryMode.lua",
+                ["helperAutoloadStrategy"] = "story_wrapper_chain"
+            };
+            var profile = BuildProfile(
+                "aotr_1397421866_swfoc",
+                [new HelperHookSpec("spawn_bridge", "scripts/common/spawn_bridge.lua", "1.0.0", EntryPoint: "SWFOC_Trainer_Spawn")],
+                metadata,
+                steamWorkshopId: "1397421866");
+            var service = BuildService(profile, sourceRoot, installRoot, workshopContentRoots: [workshopContentRoot]);
+
+            var deployedRoot = await service.DeployAsync("aotr_1397421866_swfoc", CancellationToken.None);
+
+            var wrapperPath = Path.Combine(deployedRoot, "Data", "Scripts", "Library", "PGStoryMode.lua");
+            var originalCopyPath = Path.Combine(deployedRoot, "Data", "Scripts", "Library", "SwfocTrainer", "Original", "Library", "PGStoryMode.lua");
+            File.Exists(wrapperPath).Should().BeTrue();
+            File.Exists(originalCopyPath).Should().BeTrue();
+            File.ReadAllText(wrapperPath).Should().Contain("require(\"SwfocTrainer_HelperBootstrap\")");
+            File.ReadAllText(wrapperPath).Should().Contain("require(\"SwfocTrainer.Original.Library.PGStoryMode\")");
+            File.ReadAllText(originalCopyPath).Should().Be("-- original pgstorymode");
+        }
+        finally
+        {
+            DeleteDirectory(sourceRoot);
+            DeleteDirectory(installRoot);
+            DeleteDirectory(workshopContentRoot);
+        }
+    }
+
+    [Fact]
     public async Task DeployAsync_ShouldThrow_WhenHookSourceMissing()
     {
         var sourceRoot = CreateTempDirectory();
@@ -412,14 +452,16 @@ public sealed class HelperModServiceTests
         TrainerProfile profile,
         string sourceRoot,
         string installRoot,
-        IReadOnlyList<string>? originalScriptSearchRoots = null)
+        IReadOnlyList<string>? originalScriptSearchRoots = null,
+        IReadOnlyList<string>? workshopContentRoots = null)
     {
         var repository = new StubProfileRepository(profile);
         var options = new HelperModOptions
         {
             SourceRoot = sourceRoot,
             InstallRoot = installRoot,
-            OriginalScriptSearchRoots = originalScriptSearchRoots ?? Array.Empty<string>()
+            OriginalScriptSearchRoots = originalScriptSearchRoots ?? Array.Empty<string>(),
+            WorkshopContentRoots = workshopContentRoots ?? Array.Empty<string>()
         };
         return new HelperModService(repository, options, NullLogger<HelperModService>.Instance);
     }
@@ -427,14 +469,15 @@ public sealed class HelperModServiceTests
     private static TrainerProfile BuildProfile(
         string profileId,
         IReadOnlyList<HelperHookSpec> hooks,
-        IReadOnlyDictionary<string, string>? metadata = null)
+        IReadOnlyDictionary<string, string>? metadata = null,
+        string? steamWorkshopId = null)
     {
         return new TrainerProfile(
             Id: profileId,
             DisplayName: profileId,
             Inherits: null,
             ExeTarget: ExeTarget.Swfoc,
-            SteamWorkshopId: null,
+            SteamWorkshopId: steamWorkshopId,
             SignatureSets: Array.Empty<SignatureSet>(),
             FallbackOffsets: new Dictionary<string, long>(),
             Actions: new Dictionary<string, ActionSpec>(),

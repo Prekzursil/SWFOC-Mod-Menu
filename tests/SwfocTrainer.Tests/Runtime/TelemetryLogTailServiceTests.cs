@@ -280,6 +280,42 @@ public sealed class TelemetryLogTailServiceTests
     }
 
     [Fact]
+    public void VerifyAutoloadProfile_ShouldReturnReady_WhenFreshAutoloadMarkerExists()
+    {
+        var tempRoot = Path.Combine(Path.GetTempPath(), $"swfoc-telemetry-{Guid.NewGuid():N}");
+        Directory.CreateDirectory(tempRoot);
+        var processPath = Path.Combine(tempRoot, "StarWarsG.exe");
+        File.WriteAllText(processPath, string.Empty);
+        var logPath = Path.Combine(tempRoot, "_LogFile.txt");
+        File.WriteAllText(
+            logPath,
+            "SWFOC_TRAINER_HELPER_AUTOLOAD_READY profile=aotr_1397421866_swfoc strategy=story_wrapper_chain script=Library/PGStoryMode.lua");
+
+        try
+        {
+            var service = new TelemetryLogTailService();
+            var result = service.VerifyAutoloadProfile(
+                processPath,
+                "aotr_1397421866_swfoc",
+                DateTimeOffset.UtcNow,
+                TimeSpan.FromMinutes(5));
+
+            result.Ready.Should().BeTrue();
+            result.ReasonCode.Should().Be("helper_autoload_ready");
+            result.SourcePath.Should().Be(logPath);
+            result.Strategy.Should().Be("story_wrapper_chain");
+            result.Script.Should().Be("Library/PGStoryMode.lua");
+        }
+        finally
+        {
+            if (Directory.Exists(tempRoot))
+            {
+                Directory.Delete(tempRoot, recursive: true);
+            }
+        }
+    }
+
+    [Fact]
     public void ResolveLatestMode_ShouldUseParentCorruptionLogFallback_WhenProcessLivesInChildDirectory()
     {
         var tempRoot = Path.Combine(Path.GetTempPath(), $"swfoc-telemetry-{Guid.NewGuid():N}");
