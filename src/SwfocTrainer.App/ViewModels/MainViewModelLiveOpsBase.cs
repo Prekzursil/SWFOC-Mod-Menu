@@ -69,11 +69,12 @@ public abstract class MainViewModelLiveOpsBase : MainViewModelBindableMembersBas
         var session = _runtime.CurrentSession;
         if (session is null)
         {
-            ResetHelperBridgeSurface();
+            ResetRuntimeSessionSurface();
             return;
         }
 
         var metadata = session.Process.Metadata;
+        ApplyRuntimeSessionMetadata(session);
         ApplyHelperBridgeMetadata(metadata);
         AddLiveOpsModeDiagnostics(session, metadata);
         AddLiveOpsLaunchDiagnostics(session, metadata);
@@ -84,6 +85,7 @@ public abstract class MainViewModelLiveOpsBase : MainViewModelBindableMembersBas
 
     private void AddLiveOpsModeDiagnostics(AttachSession session, IReadOnlyDictionary<string, string>? metadata)
     {
+        LiveOpsDiagnostics.Add($"attach: {AttachStateSummary}");
         LiveOpsDiagnostics.Add($"mode: {session.Process.Mode}");
         if (metadata is not null && metadata.TryGetValue("runtimeModeReasonCode", out var modeReason))
         {
@@ -116,6 +118,18 @@ public abstract class MainViewModelLiveOpsBase : MainViewModelBindableMembersBas
             !string.Equals(HelperAutoloadState, UnknownValue, StringComparison.OrdinalIgnoreCase))
         {
             LiveOpsDiagnostics.Add($"helper_autoload: {HelperAutoloadSummary}");
+        }
+
+        if (!string.IsNullOrWhiteSpace(HelperBridgeExecutionPath) &&
+            !string.Equals(HelperBridgeExecutionPath, UnknownValue, StringComparison.OrdinalIgnoreCase))
+        {
+            LiveOpsDiagnostics.Add($"helper_execution_path: {HelperBridgeExecutionPath}");
+        }
+
+        if (!string.IsNullOrWhiteSpace(HelperBridgeBlockingReason) &&
+            !string.Equals(HelperBridgeBlockingReason, UnknownValue, StringComparison.OrdinalIgnoreCase))
+        {
+            LiveOpsDiagnostics.Add($"helper_blocking_reason: {HelperBridgeBlockingReason}");
         }
 
         if (!string.IsNullOrWhiteSpace(HelperAutoloadStrategy) &&
@@ -154,11 +168,41 @@ public abstract class MainViewModelLiveOpsBase : MainViewModelBindableMembersBas
         return metadata.TryGetValue(key, out var value) ? value : fallback;
     }
 
+    protected void ResetRuntimeSessionSurface()
+    {
+        AttachState = "detached";
+        AttachedProcessSummary = UnknownValue;
+        RuntimeResolvedVariant = UnknownValue;
+        RuntimeResolvedVariantReasonCode = UnknownValue;
+        RuntimeResolvedVariantConfidence = "0.00";
+        ResetHelperBridgeSurface();
+    }
+
+    protected void ApplyRuntimeSessionMetadata(AttachSession session)
+    {
+        ArgumentNullException.ThrowIfNull(session);
+
+        AttachState = "attached";
+        AttachedProcessSummary = $"{session.Process.ProcessName}:{session.Process.ProcessId}";
+        var metadata = session.Process.Metadata;
+        RuntimeResolvedVariant = NormalizeMetadataListValue(
+            GetMetadataValueOrDefault(metadata ?? EmptyMetadata, "resolvedVariant", session.ProfileId),
+            session.ProfileId);
+        RuntimeResolvedVariantReasonCode = NormalizeMetadataListValue(
+            GetMetadataValueOrDefault(metadata ?? EmptyMetadata, "resolvedVariantReasonCode", UnknownValue),
+            UnknownValue);
+        RuntimeResolvedVariantConfidence = NormalizeMetadataListValue(
+            GetMetadataValueOrDefault(metadata ?? EmptyMetadata, "resolvedVariantConfidence", "1.00"),
+            "1.00");
+    }
+
     protected void ResetHelperBridgeSurface()
     {
         HelperBridgeState = UnknownValue;
         HelperBridgeReasonCode = UnknownValue;
         HelperBridgeFeatures = "none";
+        HelperBridgeExecutionPath = UnknownValue;
+        HelperBridgeBlockingReason = UnknownValue;
         HelperAutoloadState = UnknownValue;
         HelperAutoloadReasonCode = UnknownValue;
         HelperAutoloadStrategy = UnknownValue;
@@ -181,6 +225,12 @@ public abstract class MainViewModelLiveOpsBase : MainViewModelBindableMembersBas
         HelperBridgeState = NormalizeMetadataListValue(GetMetadataValueOrDefault(metadata, "helperBridgeState", UnknownValue), UnknownValue);
         HelperBridgeReasonCode = NormalizeMetadataListValue(GetMetadataValueOrDefault(metadata, "helperBridgeReasonCode", UnknownValue), UnknownValue);
         HelperBridgeFeatures = NormalizeMetadataListValue(GetMetadataValueOrDefault(metadata, "helperBridgeFeatures", "none"), "none");
+        HelperBridgeExecutionPath = NormalizeMetadataListValue(GetMetadataValueOrDefault(metadata, "helperExecutionPath", UnknownValue), UnknownValue);
+        var blockingReason = GetMetadataValueOrDefault(
+            metadata,
+            "helperBridgeBlockingReason",
+            GetMetadataValueOrDefault(metadata, "blockingReason", UnknownValue));
+        HelperBridgeBlockingReason = NormalizeMetadataListValue(blockingReason, UnknownValue);
         HelperAutoloadState = NormalizeMetadataListValue(GetMetadataValueOrDefault(metadata, "helperAutoloadState", UnknownValue), UnknownValue);
         HelperAutoloadReasonCode = NormalizeMetadataListValue(GetMetadataValueOrDefault(metadata, "helperAutoloadReasonCode", UnknownValue), UnknownValue);
         HelperAutoloadStrategy = NormalizeMetadataListValue(GetMetadataValueOrDefault(metadata, "helperAutoloadStrategy", UnknownValue), UnknownValue);
@@ -208,6 +258,13 @@ public abstract class MainViewModelLiveOpsBase : MainViewModelBindableMembersBas
         HelperLastVerifyState = NormalizeDiagnosticValue(
             MainViewModelDiagnostics.ReadDiagnosticString(diagnostics, "helperVerifyState"),
             HelperLastVerifyState);
+        HelperBridgeExecutionPath = NormalizeDiagnosticValue(
+            MainViewModelDiagnostics.ReadDiagnosticString(diagnostics, "helperExecutionPath"),
+            HelperBridgeExecutionPath);
+        HelperBridgeBlockingReason = NormalizeDiagnosticValue(
+            MainViewModelDiagnostics.ReadDiagnosticString(diagnostics, "helperBridgeBlockingReason") ??
+            MainViewModelDiagnostics.ReadDiagnosticString(diagnostics, "blockingReason"),
+            HelperBridgeBlockingReason);
         HelperLastEntryPoint = NormalizeDiagnosticValue(
             MainViewModelDiagnostics.ReadDiagnosticString(diagnostics, "helperEntryPoint"),
             HelperLastEntryPoint);
@@ -234,6 +291,9 @@ public abstract class MainViewModelLiveOpsBase : MainViewModelBindableMembersBas
     {
         return string.IsNullOrWhiteSpace(raw) ? fallback : raw.Trim();
     }
+
+    private static readonly IReadOnlyDictionary<string, string> EmptyMetadata =
+        new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
 
     protected async Task CaptureSelectedUnitBaselineAsync()
     {

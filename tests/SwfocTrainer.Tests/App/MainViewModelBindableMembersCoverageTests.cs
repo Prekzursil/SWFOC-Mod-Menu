@@ -36,6 +36,8 @@ public sealed class MainViewModelBindableMembersCoverageTests
         vm.HelperBridgeState = "ready";
         vm.HelperBridgeReasonCode = "CAPABILITY_PROBE_PASS";
         vm.HelperBridgeFeatures = "spawn_tactical_entity, set_context_allegiance";
+        vm.HelperBridgeExecutionPath = "native_dispatch_unavailable";
+        vm.HelperBridgeBlockingReason = "native_dispatch_unavailable";
         vm.HelperAutoloadState = "pending_story_mode_load";
         vm.HelperAutoloadReasonCode = "story_wrapper_waiting_for_story_load";
         vm.HelperAutoloadStrategy = "story_wrapper_chain";
@@ -45,6 +47,11 @@ public sealed class MainViewModelBindableMembersCoverageTests
         vm.HelperLastVerifyState = "applied";
         vm.HelperLastEntryPoint = "SWFOC_Trainer_Spawn_Context";
         vm.HelperLastAppliedEntityId = "EMPIRE_STORMTROOPER_SQUAD";
+        vm.AttachState = "attached";
+        vm.AttachedProcessSummary = "StarWarsG.exe:4242";
+        vm.RuntimeResolvedVariant = "aotr_1397421866_swfoc";
+        vm.RuntimeResolvedVariantReasonCode = "variant_match";
+        vm.RuntimeResolvedVariantConfidence = "0.97";
 
         vm.SelectedHotkey = new HotkeyBindingItem { Gesture = "Ctrl+1", ActionId = "set_credits", PayloadJson = "{}" };
         vm.SelectedSpawnPreset = new SpawnPresetViewItem("id", "label", "u", "Empire", "AUTO", 1, 0, "desc");
@@ -96,6 +103,7 @@ public sealed class MainViewModelBindableMembersCoverageTests
         vm.SaveSearchQuery.Should().Be("credits");
         vm.SelectedSpawnPreset.Should().NotBeNull();
         vm.HelperBridgeSummary.Should().Be("ready (CAPABILITY_PROBE_PASS)");
+        vm.HelperBridgeBlockSummary.Should().Be("native_dispatch_unavailable");
         vm.HelperAutoloadSummary.Should().Be("pending_story_mode_load (story_wrapper_waiting_for_story_load)");
         vm.HelperLastOperationSummary.Should().Be("SpawnTacticalEntity (applied)");
         vm.HelperLastOperationToken.Should().Be("token-123");
@@ -103,6 +111,8 @@ public sealed class MainViewModelBindableMembersCoverageTests
         vm.HelperAutoloadScript.Should().Be("Library/PGStoryMode.lua");
         vm.HelperLastEntryPoint.Should().Be("SWFOC_Trainer_Spawn_Context");
         vm.HelperLastAppliedEntityId.Should().Be("EMPIRE_STORMTROOPER_SQUAD");
+        vm.AttachStateSummary.Should().Be("attached (StarWarsG.exe:4242)");
+        vm.RuntimeVariantSummary.Should().Be("aotr_1397421866_swfoc (variant_match, conf=0.97)");
         vm.SpawnStopOnFailure.Should().BeFalse();
         vm.IsStrictPatchApply.Should().BeFalse();
         vm.HeroDefaultRespawnTime.Should().Be("300");

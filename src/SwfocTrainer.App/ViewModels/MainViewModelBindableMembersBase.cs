@@ -11,6 +11,8 @@ public abstract class MainViewModelBindableMembersBase : MainViewModelCoreStateB
     private string _helperBridgeState = UnknownValue;
     private string _helperBridgeReasonCode = UnknownValue;
     private string _helperBridgeFeatures = "none";
+    private string _helperBridgeExecutionPath = UnknownValue;
+    private string _helperBridgeBlockingReason = UnknownValue;
     private string _helperAutoloadState = UnknownValue;
     private string _helperAutoloadReasonCode = UnknownValue;
     private string _helperAutoloadStrategy = UnknownValue;
@@ -20,6 +22,11 @@ public abstract class MainViewModelBindableMembersBase : MainViewModelCoreStateB
     private string _helperLastVerifyState = UnknownValue;
     private string _helperLastEntryPoint = UnknownValue;
     private string _helperLastAppliedEntityId = UnknownValue;
+    private string _attachState = "detached";
+    private string _attachedProcessSummary = UnknownValue;
+    private string _runtimeResolvedVariant = UnknownValue;
+    private string _runtimeResolvedVariantReasonCode = UnknownValue;
+    private string _runtimeResolvedVariantConfidence = "0.00";
 
     protected MainViewModelBindableMembersBase(MainViewModelDependencies dependencies)
         : base(dependencies)
@@ -51,6 +58,7 @@ public abstract class MainViewModelBindableMembersBase : MainViewModelCoreStateB
             if (SetField(_selectedProfileId, value, newValue => _selectedProfileId = newValue))
             {
                 OnPropertyChanged(nameof(CanWorkWithProfile));
+                OnPropertyChanged(nameof(RuntimeVariantSummary));
             }
         }
     }
@@ -175,6 +183,30 @@ public abstract class MainViewModelBindableMembersBase : MainViewModelCoreStateB
         set => SetField(_helperBridgeFeatures, value, newValue => _helperBridgeFeatures = newValue);
     }
 
+    public string HelperBridgeExecutionPath
+    {
+        get => _helperBridgeExecutionPath;
+        set
+        {
+            if (SetField(_helperBridgeExecutionPath, value, newValue => _helperBridgeExecutionPath = newValue))
+            {
+                OnPropertyChanged(nameof(HelperBridgeBlockSummary));
+            }
+        }
+    }
+
+    public string HelperBridgeBlockingReason
+    {
+        get => _helperBridgeBlockingReason;
+        set
+        {
+            if (SetField(_helperBridgeBlockingReason, value, newValue => _helperBridgeBlockingReason = newValue))
+            {
+                OnPropertyChanged(nameof(HelperBridgeBlockSummary));
+            }
+        }
+    }
+
     public string HelperAutoloadState
     {
         get => _helperAutoloadState;
@@ -241,10 +273,102 @@ public abstract class MainViewModelBindableMembersBase : MainViewModelCoreStateB
         set => SetField(_helperLastAppliedEntityId, value, newValue => _helperLastAppliedEntityId = newValue);
     }
 
+    public string AttachState
+    {
+        get => _attachState;
+        set
+        {
+            if (SetField(_attachState, value, newValue => _attachState = newValue))
+            {
+                OnPropertyChanged(nameof(AttachStateSummary));
+            }
+        }
+    }
+
+    public string AttachedProcessSummary
+    {
+        get => _attachedProcessSummary;
+        set
+        {
+            if (SetField(_attachedProcessSummary, value, newValue => _attachedProcessSummary = newValue))
+            {
+                OnPropertyChanged(nameof(AttachStateSummary));
+            }
+        }
+    }
+
+    public string RuntimeResolvedVariant
+    {
+        get => _runtimeResolvedVariant;
+        set
+        {
+            if (SetField(_runtimeResolvedVariant, value, newValue => _runtimeResolvedVariant = newValue))
+            {
+                OnPropertyChanged(nameof(RuntimeVariantSummary));
+            }
+        }
+    }
+
+    public string RuntimeResolvedVariantReasonCode
+    {
+        get => _runtimeResolvedVariantReasonCode;
+        set
+        {
+            if (SetField(_runtimeResolvedVariantReasonCode, value, newValue => _runtimeResolvedVariantReasonCode = newValue))
+            {
+                OnPropertyChanged(nameof(RuntimeVariantSummary));
+            }
+        }
+    }
+
+    public string RuntimeResolvedVariantConfidence
+    {
+        get => _runtimeResolvedVariantConfidence;
+        set
+        {
+            if (SetField(_runtimeResolvedVariantConfidence, value, newValue => _runtimeResolvedVariantConfidence = newValue))
+            {
+                OnPropertyChanged(nameof(RuntimeVariantSummary));
+            }
+        }
+    }
+
     public string HelperBridgeSummary =>
         string.IsNullOrWhiteSpace(HelperBridgeReasonCode) || HelperBridgeReasonCode == UnknownValue
             ? HelperBridgeState
             : $"{HelperBridgeState} ({HelperBridgeReasonCode})";
+
+    public string HelperBridgeBlockSummary
+    {
+        get
+        {
+            var blockingReason = NormalizeSummaryValue(HelperBridgeBlockingReason);
+            var executionPath = NormalizeSummaryValue(HelperBridgeExecutionPath);
+            if (blockingReason is null && executionPath is null)
+            {
+                return UnknownValue;
+            }
+
+            if (blockingReason is not null &&
+                executionPath is not null &&
+                string.Equals(blockingReason, executionPath, StringComparison.OrdinalIgnoreCase))
+            {
+                return executionPath;
+            }
+
+            if (blockingReason is null)
+            {
+                return executionPath!;
+            }
+
+            if (executionPath is null)
+            {
+                return blockingReason;
+            }
+
+            return $"{executionPath} / {blockingReason}";
+        }
+    }
 
     public string HelperAutoloadSummary =>
         string.IsNullOrWhiteSpace(HelperAutoloadReasonCode) || HelperAutoloadReasonCode == UnknownValue
@@ -255,6 +379,31 @@ public abstract class MainViewModelBindableMembersBase : MainViewModelCoreStateB
         HelperLastOperationKind == UnknownValue && HelperLastVerifyState == UnknownValue
             ? UnknownValue
             : $"{HelperLastOperationKind} ({HelperLastVerifyState})";
+
+    public string AttachStateSummary =>
+        string.IsNullOrWhiteSpace(AttachedProcessSummary) || AttachedProcessSummary == UnknownValue
+            ? AttachState
+            : $"{AttachState} ({AttachedProcessSummary})";
+
+    public string RuntimeVariantSummary
+    {
+        get
+        {
+            var variant = NormalizeSummaryValue(RuntimeResolvedVariant)
+                          ?? NormalizeSummaryValue(SelectedProfileId)
+                          ?? UnknownValue;
+            var reason = NormalizeSummaryValue(RuntimeResolvedVariantReasonCode);
+            var confidence = NormalizeSummaryValue(RuntimeResolvedVariantConfidence);
+            if (reason is null)
+            {
+                return variant;
+            }
+
+            return confidence is null
+                ? $"{variant} ({reason})"
+                : $"{variant} ({reason}, conf={confidence})";
+        }
+    }
 
     public bool CanWorkWithProfile => !string.IsNullOrWhiteSpace(SelectedProfileId);
 
@@ -358,6 +507,17 @@ public abstract class MainViewModelBindableMembersBase : MainViewModelCoreStateB
     {
         get => _onboardingBaseProfileId;
         set => SetField(_onboardingBaseProfileId, value, newValue => _onboardingBaseProfileId = newValue);
+    }
+
+    private static string? NormalizeSummaryValue(string? value)
+    {
+        if (string.IsNullOrWhiteSpace(value))
+        {
+            return null;
+        }
+
+        var trimmed = value.Trim();
+        return string.Equals(trimmed, UnknownValue, StringComparison.OrdinalIgnoreCase) ? null : trimmed;
     }
 
     public string OnboardingDraftProfileId

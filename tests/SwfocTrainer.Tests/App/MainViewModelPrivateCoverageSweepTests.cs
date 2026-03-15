@@ -77,9 +77,12 @@ public sealed class MainViewModelPrivateCoverageSweepTests
                 {
                     ["resolvedVariant"] = "base_swfoc",
                     ["resolvedVariantReasonCode"] = "variant_match",
+                    ["resolvedVariantConfidence"] = "0.91",
                     ["helperBridgeState"] = "ready",
                     ["helperBridgeReasonCode"] = "CAPABILITY_PROBE_PASS",
                     ["helperBridgeFeatures"] = "spawn_tactical_entity,place_planet_building",
+                    ["helperExecutionPath"] = "native_dispatch_unavailable",
+                    ["helperBridgeBlockingReason"] = "native_dispatch_unavailable",
                     ["helperLastOperationToken"] = "token-attach-001",
                     ["helperLastOperationKind"] = "SpawnTacticalEntity",
                     ["helperLastVerifyState"] = "applied",
@@ -94,9 +97,19 @@ public sealed class MainViewModelPrivateCoverageSweepTests
 
         vm.RuntimeMode.Should().Be(RuntimeMode.Galactic);
         vm.ResolvedSymbolsCount.Should().Be(3);
+        vm.AttachState.Should().Be("attached");
+        vm.AttachedProcessSummary.Should().StartWith("swfoc.exe:");
+        vm.AttachStateSummary.Should().StartWith("attached (swfoc.exe:");
+        vm.RuntimeResolvedVariant.Should().Be("base_swfoc");
+        vm.RuntimeResolvedVariantReasonCode.Should().Be("variant_match");
+        vm.RuntimeResolvedVariantConfidence.Should().Be("0.91");
+        vm.RuntimeVariantSummary.Should().Be("base_swfoc (variant_match, conf=0.91)");
         vm.HelperBridgeState.Should().Be("ready");
         vm.HelperBridgeReasonCode.Should().Be("CAPABILITY_PROBE_PASS");
         vm.HelperBridgeFeatures.Should().Contain("place_planet_building");
+        vm.HelperBridgeExecutionPath.Should().Be("native_dispatch_unavailable");
+        vm.HelperBridgeBlockingReason.Should().Be("native_dispatch_unavailable");
+        vm.HelperBridgeBlockSummary.Should().Be("native_dispatch_unavailable");
         vm.HelperLastOperationToken.Should().Be("token-attach-001");
         vm.HelperLastOperationKind.Should().Be("SpawnTacticalEntity");
         vm.HelperLastVerifyState.Should().Be("applied");

@@ -15,34 +15,62 @@
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <StackPanel Orientation="Horizontal" Margin="0,0,0,12">
-            <TextBlock Text="Profile:" VerticalAlignment="Center" Margin="0,0,8,0"/>
-            <ComboBox Width="320" ItemsSource="{Binding Profiles}" SelectedItem="{Binding SelectedProfileId}"/>
-            <Button Content="Load Profiles" Command="{Binding LoadProfilesCommand}" Margin="8,0,0,0"/>
-            <Button Content="Load Actions" Command="{Binding LoadActionsCommand}" Margin="8,0,0,0"/>
-            <Button Content="Launch + Attach" Command="{Binding LaunchAndAttachCommand}" Margin="8,0,0,0"/>
-            <Button Content="Attach" Command="{Binding AttachCommand}" Margin="8,0,0,0"/>
-            <Button Content="Detach" Command="{Binding DetachCommand}" Margin="8,0,0,0"/>
-            <TextBlock Text="  Launch:" VerticalAlignment="Center" Margin="12,0,4,0"/>
-            <TextBox Width="80" Text="{Binding LaunchTarget, UpdateSourceTrigger=PropertyChanged}" ToolTip="Swfoc or Sweaw"/>
-            <TextBox Width="90" Margin="6,0,0,0" Text="{Binding LaunchMode, UpdateSourceTrigger=PropertyChanged}" ToolTip="Vanilla, SteamMod, or ModPath"/>
-            <TextBox Width="150" Margin="6,0,0,0" ToolTip="Workshop IDs (comma-separated, parent first)" Text="{Binding LaunchWorkshopId, UpdateSourceTrigger=PropertyChanged}"/>
-            <TextBox Width="170" Margin="6,0,0,0" ToolTip="MODPATH" Text="{Binding LaunchModPath, UpdateSourceTrigger=PropertyChanged}"/>
-            <CheckBox Content="Clean Start" Margin="6,0,0,0" IsChecked="{Binding TerminateExistingBeforeLaunch}" VerticalAlignment="Center"/>
-            <TextBlock Text="  Mode:" VerticalAlignment="Center" Margin="12,0,4,0"/>
-            <TextBlock Text="{Binding RuntimeMode}" VerticalAlignment="Center"/>
-            <TextBlock Text="  Override:" VerticalAlignment="Center" Margin="12,0,4,0"/>
-            <ComboBox Width="120"
-                      ItemsSource="{Binding RuntimeModeOverrideOptions}"
-                      SelectedItem="{Binding RuntimeModeOverride, UpdateSourceTrigger=PropertyChanged}"/>
-            <TextBlock Text="  Effective:" VerticalAlignment="Center" Margin="8,0,4,0"/>
-            <TextBlock Text="{Binding EffectiveRuntimeMode}" VerticalAlignment="Center"/>
-            <TextBlock Text="  Symbols:" VerticalAlignment="Center" Margin="12,0,4,0"/>
-            <TextBlock Text="{Binding ResolvedSymbolsCount}" VerticalAlignment="Center"/>
-            <TextBlock Text="  Helper:" VerticalAlignment="Center" Margin="12,0,4,0"/>
-            <TextBlock Text="{Binding HelperBridgeSummary}"
-                       VerticalAlignment="Center"
-                       ToolTip="{Binding HelperBridgeFeatures}"/>
+        <StackPanel Margin="0,0,0,12">
+            <WrapPanel>
+                <TextBlock Text="Profile:" VerticalAlignment="Center" Margin="0,0,8,0"/>
+                <ComboBox Width="320" ItemsSource="{Binding Profiles}" SelectedItem="{Binding SelectedProfileId}"/>
+                <Button Content="Load Profiles" Command="{Binding LoadProfilesCommand}" Margin="8,0,0,0"/>
+                <Button Content="Load Actions" Command="{Binding LoadActionsCommand}" Margin="8,0,0,0"/>
+                <Button Content="Launch + Attach" Command="{Binding LaunchAndAttachCommand}" Margin="8,0,0,0"/>
+                <Button Content="Attach" Command="{Binding AttachCommand}" Margin="8,0,0,0"/>
+                <Button Content="Detach" Command="{Binding DetachCommand}" Margin="8,0,0,0"/>
+                <TextBlock Text="  Launch:" VerticalAlignment="Center" Margin="12,0,4,0"/>
+                <TextBox Width="80" Text="{Binding LaunchTarget, UpdateSourceTrigger=PropertyChanged}" ToolTip="Swfoc or Sweaw"/>
+                <TextBox Width="90" Margin="6,0,0,0" Text="{Binding LaunchMode, UpdateSourceTrigger=PropertyChanged}" ToolTip="Vanilla, SteamMod, or ModPath"/>
+                <TextBox Width="150" Margin="6,0,0,0" ToolTip="Workshop IDs (comma-separated, parent first)" Text="{Binding LaunchWorkshopId, UpdateSourceTrigger=PropertyChanged}"/>
+                <TextBox Width="170" Margin="6,0,0,0" ToolTip="MODPATH" Text="{Binding LaunchModPath, UpdateSourceTrigger=PropertyChanged}"/>
+                <CheckBox Content="Clean Start" Margin="6,0,0,0" IsChecked="{Binding TerminateExistingBeforeLaunch}" VerticalAlignment="Center"/>
+                <TextBlock Text="  Mode:" VerticalAlignment="Center" Margin="12,0,4,0"/>
+                <TextBlock Text="{Binding RuntimeMode}" VerticalAlignment="Center"/>
+                <TextBlock Text="  Override:" VerticalAlignment="Center" Margin="12,0,4,0"/>
+                <ComboBox Width="120"
+                          ItemsSource="{Binding RuntimeModeOverrideOptions}"
+                          SelectedItem="{Binding RuntimeModeOverride, UpdateSourceTrigger=PropertyChanged}"/>
+                <TextBlock Text="  Effective:" VerticalAlignment="Center" Margin="8,0,4,0"/>
+                <TextBlock Text="{Binding EffectiveRuntimeMode}" VerticalAlignment="Center"/>
+                <TextBlock Text="  Symbols:" VerticalAlignment="Center" Margin="12,0,4,0"/>
+                <TextBlock Text="{Binding ResolvedSymbolsCount}" VerticalAlignment="Center"/>
+                <TextBlock Text="  Helper:" VerticalAlignment="Center" Margin="12,0,4,0"/>
+                <TextBlock Text="{Binding HelperBridgeSummary}"
+                           VerticalAlignment="Center"
+                           ToolTip="{Binding HelperBridgeFeatures}"/>
+            </WrapPanel>
+
+            <Border Margin="0,8,0,0"
+                    Padding="10,8"
+                    CornerRadius="6"
+                    Background="#141E2D"
+                    BorderBrush="#304056"
+                    BorderThickness="1">
+                <WrapPanel>
+                    <TextBlock Text="Selected Profile" FontWeight="SemiBold" Margin="0,0,6,0"/>
+                    <TextBlock Text="{Binding SelectedProfileId}" Margin="0,0,18,0"/>
+                    <TextBlock Text="Variant" FontWeight="SemiBold" Margin="0,0,6,0"/>
+                    <TextBlock Text="{Binding RuntimeVariantSummary}" Margin="0,0,18,0"/>
+                    <TextBlock Text="Attach" FontWeight="SemiBold" Margin="0,0,6,0"/>
+                    <TextBlock Text="{Binding AttachStateSummary}" Margin="0,0,18,0"/>
+                    <TextBlock Text="Mode" FontWeight="SemiBold" Margin="0,0,6,0"/>
+                    <TextBlock Text="{Binding EffectiveRuntimeMode}" Margin="0,0,18,0"/>
+                    <TextBlock Text="Helper" FontWeight="SemiBold" Margin="0,0,6,0"/>
+                    <TextBlock Text="{Binding HelperBridgeSummary}" Margin="0,0,18,0"/>
+                    <TextBlock Text="Last Helper" FontWeight="SemiBold" Margin="0,0,6,0"/>
+                    <TextBlock Text="{Binding HelperLastOperationSummary}" Margin="0,0,18,0"/>
+                    <TextBlock Text="Token" FontWeight="SemiBold" Margin="0,0,6,0"/>
+                    <TextBlock Text="{Binding HelperLastOperationToken}" Margin="0,0,18,0"/>
+                    <TextBlock Text="Blocked" FontWeight="SemiBold" Margin="0,0,6,0"/>
+                    <TextBlock Text="{Binding HelperBridgeBlockSummary}" TextWrapping="Wrap"/>
+                </WrapPanel>
+            </Border>
         </StackPanel>
 
         <TabControl Grid.Row="1" Background="#182132" BorderThickness="0">
@@ -142,6 +170,8 @@
                                                 <RowDefinition Height="Auto"/>
                                                 <RowDefinition Height="Auto"/>
                                                 <RowDefinition Height="Auto"/>
+                                                <RowDefinition Height="Auto"/>
+                                                <RowDefinition Height="Auto"/>
                                             </Grid.RowDefinitions>
 
                                             <TextBlock Text="State" Margin="0,0,8,4"/>
@@ -150,22 +180,26 @@
                                             <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding HelperBridgeFeatures}" TextWrapping="Wrap" Margin="0,0,0,4"/>
                                             <TextBlock Grid.Row="2" Text="Mode" Margin="0,0,8,0"/>
                                             <TextBlock Grid.Row="2" Grid.Column="1" Text="{Binding EffectiveRuntimeMode}" Margin="0,0,0,4"/>
-                                            <TextBlock Grid.Row="3" Text="Autoload" Margin="0,0,8,4"/>
-                                            <TextBlock Grid.Row="3" Grid.Column="1" Text="{Binding HelperAutoloadSummary}" TextWrapping="Wrap" Margin="0,0,0,4"/>
-                                            <TextBlock Grid.Row="4" Text="Autoload Target" Margin="0,0,8,4"/>
-                                            <TextBlock Grid.Row="4" Grid.Column="1" Text="{Binding HelperAutoloadStrategy}" TextWrapping="Wrap" Margin="0,0,0,4"/>
-                                            <TextBlock Grid.Row="5" Text="Autoload Script" Margin="0,0,8,4"/>
-                                            <TextBlock Grid.Row="5" Grid.Column="1" Text="{Binding HelperAutoloadScript}" TextWrapping="Wrap" Margin="0,0,0,4"/>
-                                            <TextBlock Grid.Row="6" Text="Last Verify" Margin="0,0,8,4"/>
-                                            <TextBlock Grid.Row="6" Grid.Column="1" Text="{Binding HelperLastVerifyState}" Margin="0,0,0,4"/>
-                                            <TextBlock Grid.Row="7" Text="Last Operation" Margin="0,0,8,4"/>
-                                            <TextBlock Grid.Row="7" Grid.Column="1" Text="{Binding HelperLastOperationSummary}" Margin="0,0,0,4"/>
-                                            <TextBlock Grid.Row="8" Text="Token" Margin="0,0,8,4"/>
-                                            <TextBlock Grid.Row="8" Grid.Column="1" Text="{Binding HelperLastOperationToken}" TextWrapping="Wrap" Margin="0,0,0,4"/>
-                                            <TextBlock Grid.Row="9" Text="Entrypoint" Margin="0,0,8,4"/>
-                                            <TextBlock Grid.Row="9" Grid.Column="1" Text="{Binding HelperLastEntryPoint}" TextWrapping="Wrap" Margin="0,0,0,4"/>
-                                            <TextBlock Grid.Row="10" Text="Applied Entity" Margin="0,0,8,0"/>
-                                            <TextBlock Grid.Row="10" Grid.Column="1" Text="{Binding HelperLastAppliedEntityId}" TextWrapping="Wrap"/>
+                                            <TextBlock Grid.Row="3" Text="Exec Path" Margin="0,0,8,4"/>
+                                            <TextBlock Grid.Row="3" Grid.Column="1" Text="{Binding HelperBridgeExecutionPath}" TextWrapping="Wrap" Margin="0,0,0,4"/>
+                                            <TextBlock Grid.Row="4" Text="Blocking Reason" Margin="0,0,8,4"/>
+                                            <TextBlock Grid.Row="4" Grid.Column="1" Text="{Binding HelperBridgeBlockingReason}" TextWrapping="Wrap" Margin="0,0,0,4"/>
+                                            <TextBlock Grid.Row="5" Text="Autoload" Margin="0,0,8,4"/>
+                                            <TextBlock Grid.Row="5" Grid.Column="1" Text="{Binding HelperAutoloadSummary}" TextWrapping="Wrap" Margin="0,0,0,4"/>
+                                            <TextBlock Grid.Row="6" Text="Autoload Target" Margin="0,0,8,4"/>
+                                            <TextBlock Grid.Row="6" Grid.Column="1" Text="{Binding HelperAutoloadStrategy}" TextWrapping="Wrap" Margin="0,0,0,4"/>
+                                            <TextBlock Grid.Row="7" Text="Autoload Script" Margin="0,0,8,4"/>
+                                            <TextBlock Grid.Row="7" Grid.Column="1" Text="{Binding HelperAutoloadScript}" TextWrapping="Wrap" Margin="0,0,0,4"/>
+                                            <TextBlock Grid.Row="8" Text="Last Verify" Margin="0,0,8,4"/>
+                                            <TextBlock Grid.Row="8" Grid.Column="1" Text="{Binding HelperLastVerifyState}" Margin="0,0,0,4"/>
+                                            <TextBlock Grid.Row="9" Text="Last Operation" Margin="0,0,8,4"/>
+                                            <TextBlock Grid.Row="9" Grid.Column="1" Text="{Binding HelperLastOperationSummary}" Margin="0,0,0,4"/>
+                                            <TextBlock Grid.Row="10" Text="Token" Margin="0,0,8,4"/>
+                                            <TextBlock Grid.Row="10" Grid.Column="1" Text="{Binding HelperLastOperationToken}" TextWrapping="Wrap" Margin="0,0,0,4"/>
+                                            <TextBlock Grid.Row="11" Text="Entrypoint" Margin="0,0,8,4"/>
+                                            <TextBlock Grid.Row="11" Grid.Column="1" Text="{Binding HelperLastEntryPoint}" TextWrapping="Wrap" Margin="0,0,0,4"/>
+                                            <TextBlock Grid.Row="12" Text="Applied Entity" Margin="0,0,8,0"/>
+                                            <TextBlock Grid.Row="12" Grid.Column="1" Text="{Binding HelperLastAppliedEntityId}" TextWrapping="Wrap"/>
                                         </Grid>
                                     </Border>
                                     <ListBox Grid.Row="2" ItemsSource="{Binding CatalogSummary}" Margin="0,8,0,0" Height="88"/>

@@ -478,6 +478,7 @@ public sealed class MainViewModel : MainViewModelSaveOpsBase
     }
     private void ApplyAttachSessionStatus(AttachSession session)
     {
+        ApplyRuntimeSessionMetadata(session);
         RuntimeMode = session.Process.Mode;
         ResolvedSymbolsCount = session.Symbols.Symbols.Count;
         ApplyHelperBridgeMetadata(session.Process.Metadata);
@@ -491,6 +492,11 @@ public sealed class MainViewModel : MainViewModelSaveOpsBase
     }
     private async Task HandleAttachFailureAsync(Exception ex)
     {
+        AttachState = "attach_failed";
+        AttachedProcessSummary = UnknownValue;
+        RuntimeResolvedVariant = SelectedProfileId ?? UnknownValue;
+        RuntimeResolvedVariantReasonCode = UnknownValue;
+        RuntimeResolvedVariantConfidence = "0.00";
         RuntimeMode = RuntimeMode.Unknown;
         ResolvedSymbolsCount = 0;
         ResetHelperBridgeSurface();
@@ -559,7 +565,7 @@ public sealed class MainViewModel : MainViewModelSaveOpsBase
         ActionReliability.Clear();
         SelectedUnitTransactions.Clear();
         LiveOpsDiagnostics.Clear();
-        ResetHelperBridgeSurface();
+        ResetRuntimeSessionSurface();
         Status = "Detached";
     }
     private async Task LoadActionsAsync()

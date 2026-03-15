@@ -123,8 +123,12 @@ public sealed class MainViewModelArtifactCoverageTests
         vm.InvokeRefreshLiveOpsDiagnostics();
 
         vm.LiveOpsDiagnostics.Should().BeEmpty();
+        vm.AttachState.Should().Be("detached");
+        vm.RuntimeVariantSummary.Should().Be("unknown");
         vm.HelperBridgeState.Should().Be("unknown");
         vm.HelperBridgeFeatures.Should().Be("none");
+        vm.HelperBridgeExecutionPath.Should().Be("unknown");
+        vm.HelperBridgeBlockingReason.Should().Be("unknown");
         vm.HelperAutoloadState.Should().Be("unknown");
         vm.HelperLastOperationToken.Should().Be("unknown");
 
@@ -139,6 +143,8 @@ public sealed class MainViewModelArtifactCoverageTests
             ["helperBridgeState"] = " ready ",
             ["helperBridgeReasonCode"] = " CAPABILITY_PROBE_PASS ",
             ["helperBridgeFeatures"] = " spawn_tactical_entity ; ; place_planet_building, set_context_allegiance ",
+            ["helperExecutionPath"] = " native_dispatch_unavailable ",
+            ["helperBridgeBlockingReason"] = " native_dispatch_unavailable ",
             ["helperAutoloadState"] = " pending_story_mode_load ",
             ["helperAutoloadReasonCode"] = " story_wrapper_waiting_for_story_load ",
             ["helperAutoloadStrategy"] = " story_wrapper_chain ",
@@ -152,9 +158,18 @@ public sealed class MainViewModelArtifactCoverageTests
 
         vm.InvokeRefreshLiveOpsDiagnostics();
 
+        vm.AttachState.Should().Be("attached");
+        vm.AttachedProcessSummary.Should().StartWith("swfoc.exe:");
+        vm.RuntimeResolvedVariant.Should().Be("base_swfoc");
+        vm.RuntimeResolvedVariantReasonCode.Should().Be("variant_match");
+        vm.RuntimeResolvedVariantConfidence.Should().Be("0.90");
+        vm.RuntimeVariantSummary.Should().Be("base_swfoc (variant_match, conf=0.90)");
         vm.HelperBridgeState.Should().Be("ready");
         vm.HelperBridgeReasonCode.Should().Be("CAPABILITY_PROBE_PASS");
         vm.HelperBridgeFeatures.Should().Be("spawn_tactical_entity, place_planet_building, set_context_allegiance");
+        vm.HelperBridgeExecutionPath.Should().Be("native_dispatch_unavailable");
+        vm.HelperBridgeBlockingReason.Should().Be("native_dispatch_unavailable");
+        vm.HelperBridgeBlockSummary.Should().Be("native_dispatch_unavailable");
         vm.HelperAutoloadState.Should().Be("pending_story_mode_load");
         vm.HelperAutoloadReasonCode.Should().Be("story_wrapper_waiting_for_story_load");
         vm.HelperAutoloadStrategy.Should().Be("story_wrapper_chain");
@@ -165,8 +180,11 @@ public sealed class MainViewModelArtifactCoverageTests
         vm.HelperLastEntryPoint.Should().Be("SWFOC_Trainer_Spawn_Context");
         vm.HelperLastAppliedEntityId.Should().Be("EMP_STORM_SQUAD");
         vm.LiveOpsDiagnostics.Should().Contain(x => x.StartsWith("mode:"));
+        vm.LiveOpsDiagnostics.Should().Contain(x => x.StartsWith("attach: attached (swfoc.exe:"));
         vm.LiveOpsDiagnostics.Should().Contain(x => x.StartsWith("launch:"));
         vm.LiveOpsDiagnostics.Should().Contain("helper_features: spawn_tactical_entity, place_planet_building, set_context_allegiance");
+        vm.LiveOpsDiagnostics.Should().Contain("helper_execution_path: native_dispatch_unavailable");
+        vm.LiveOpsDiagnostics.Should().Contain("helper_blocking_reason: native_dispatch_unavailable");
         vm.LiveOpsDiagnostics.Should().Contain("helper_autoload: pending_story_mode_load (story_wrapper_waiting_for_story_load)");
         vm.LiveOpsDiagnostics.Should().Contain("helper_autoload_target: story_wrapper_chain -> Library/PGStoryMode.lua");
         vm.LiveOpsDiagnostics.Should().Contain(x => x.Contains("dependency:"));
