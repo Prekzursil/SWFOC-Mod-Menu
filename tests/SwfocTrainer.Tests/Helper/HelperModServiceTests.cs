@@ -30,6 +30,9 @@ public sealed class HelperModServiceTests
             File.ReadAllText(copiedScript).Should().Be(File.ReadAllText(scriptPath));
             File.Exists(Path.Combine(deployedRoot, "Data", "Scripts", "Library", "SwfocTrainer_HelperBootstrap.lua")).Should().BeTrue();
             File.Exists(Path.Combine(deployedRoot, "helper-deployment.json")).Should().BeTrue();
+            Directory.Exists(Path.Combine(deployedRoot, "SwfocTrainer", "Runtime", "commands", "pending")).Should().BeTrue();
+            Directory.Exists(Path.Combine(deployedRoot, "SwfocTrainer", "Runtime", "commands", "claimed")).Should().BeTrue();
+            Directory.Exists(Path.Combine(deployedRoot, "SwfocTrainer", "Runtime", "receipts")).Should().BeTrue();
         }
         finally
         {
@@ -67,6 +70,11 @@ public sealed class HelperModServiceTests
             bootstrap.Should().Contain("entryPoint = \"SWFOC_Trainer_Spawn\"");
             bootstrap.Should().Contain("entryPoint = \"SWFOC_Trainer_Toggle_Respawn\"");
             bootstrap.Should().Contain("function SwfocTrainer_Helper_Bootstrap_LoadAll()");
+            bootstrap.Should().Contain("SWFOC_TRAINER_HELPER_COMMAND_TRANSPORT = \"overlay_command_inbox\"");
+            bootstrap.Should().Contain("SWFOC_TRAINER_HELPER_COMMAND_PENDING = \"SwfocTrainer/Runtime/commands/pending\"");
+            bootstrap.Should().Contain("function SwfocTrainer_Helper_Bootstrap_DescribeTransport()");
+            bootstrap.Should().Contain("function SwfocTrainer_Helper_Bootstrap_Execute_Command(command)");
+            bootstrap.Should().Contain("local fn = _G[entryPoint]");
             bootstrap.Should().Contain("pcall(require, hook.requirePath)");
         }
         finally
@@ -99,6 +107,13 @@ public sealed class HelperModServiceTests
             var root = document.RootElement;
             root.GetProperty("profileId").GetString().Should().Be("base_swfoc");
             root.GetProperty("bootstrapScript").GetString().Should().Be("Data/Scripts/Library/SwfocTrainer_HelperBootstrap.lua");
+            var commandTransport = root.GetProperty("commandTransport");
+            commandTransport.GetProperty("model").GetString().Should().Be("overlay_command_inbox");
+            commandTransport.GetProperty("schemaVersion").GetString().Should().Be("1.0");
+            commandTransport.GetProperty("pendingDirectory").GetString().Should().Be("SwfocTrainer/Runtime/commands/pending");
+            commandTransport.GetProperty("claimedDirectory").GetString().Should().Be("SwfocTrainer/Runtime/commands/claimed");
+            commandTransport.GetProperty("receiptDirectory").GetString().Should().Be("SwfocTrainer/Runtime/receipts");
+            commandTransport.GetProperty("executionMode").GetString().Should().Be("bootstrap_dispatch_ready");
             var hooksElement = root.GetProperty("hooks");
             hooksElement.GetArrayLength().Should().Be(1);
             var hook = hooksElement[0];
@@ -303,6 +318,7 @@ public sealed class HelperModServiceTests
             Directory.CreateDirectory(Path.GetDirectoryName(targetPath)!);
             File.WriteAllText(targetPath, "-- deployed script");
             File.WriteAllText(Path.Combine(installRoot, "base_swfoc", "Data", "Scripts", "Library", "SwfocTrainer_HelperBootstrap.lua"), "-- bootstrap");
+            CreateTransportDirectories(Path.Combine(installRoot, "base_swfoc"));
             var service = BuildService(profile, sourceRoot, installRoot);
 
             var verified = await service.VerifyAsync("base_swfoc", CancellationToken.None);
@@ -330,6 +346,7 @@ public sealed class HelperModServiceTests
             File.WriteAllText(targetPath, "-- deployed script");
             Directory.CreateDirectory(Path.Combine(installRoot, "base_swfoc", "Data", "Scripts", "Library"));
             File.WriteAllText(Path.Combine(installRoot, "base_swfoc", "Data", "Scripts", "Library", "SwfocTrainer_HelperBootstrap.lua"), "-- bootstrap");
+            CreateTransportDirectories(Path.Combine(installRoot, "base_swfoc"));
             File.WriteAllText(Path.Combine(installRoot, "base_swfoc", "helper-deployment.json"), """{"profileId":"base_swfoc"}""");
             var service = BuildService(profile, sourceRoot, installRoot);
 
@@ -363,6 +380,7 @@ public sealed class HelperModServiceTests
             File.WriteAllText(targetPath, "-- deployed script");
             Directory.CreateDirectory(Path.Combine(installRoot, "base_swfoc", "Data", "Scripts", "Library"));
             File.WriteAllText(Path.Combine(installRoot, "base_swfoc", "Data", "Scripts", "Library", "SwfocTrainer_HelperBootstrap.lua"), "-- bootstrap");
+            CreateTransportDirectories(Path.Combine(installRoot, "base_swfoc"));
             File.WriteAllText(Path.Combine(installRoot, "base_swfoc", "helper-deployment.json"), """{"profileId":"base_swfoc"}""");
             var service = BuildService(profile, sourceRoot, installRoot);
 
@@ -390,6 +408,7 @@ public sealed class HelperModServiceTests
             File.WriteAllText(targetPath, content);
             Directory.CreateDirectory(Path.Combine(installRoot, "base_swfoc", "Data", "Scripts", "Library"));
             File.WriteAllText(Path.Combine(installRoot, "base_swfoc", "Data", "Scripts", "Library", "SwfocTrainer_HelperBootstrap.lua"), "-- bootstrap");
+            CreateTransportDirectories(Path.Combine(installRoot, "base_swfoc"));
             File.WriteAllText(Path.Combine(installRoot, "base_swfoc", "helper-deployment.json"), """{"profileId":"base_swfoc"}""");
             var sha = Convert.ToHexString(System.Security.Cryptography.SHA256.HashData(System.Text.Encoding.UTF8.GetBytes(content)))
                 .ToLowerInvariant();
@@ -448,6 +467,33 @@ public sealed class HelperModServiceTests
         }
     }
 
+    [Fact]
+    public async Task VerifyAsync_ShouldReturnFalse_WhenTransportDirectoryMissing()
+    {
+        var sourceRoot = CreateTempDirectory();
+        var installRoot = CreateTempDirectory();
+        try
+        {
+            WriteScript(sourceRoot, "scripts/common/spawn_bridge.lua", "-- helper script");
+            var service = BuildService(
+                BuildProfile("base_swfoc", [new HelperHookSpec("spawn_bridge", "scripts/common/spawn_bridge.lua", "1.0.0", EntryPoint: "SWFOC_Trainer_Spawn")]),
+                sourceRoot,
+                installRoot);
+
+            var deployedRoot = await service.DeployAsync("base_swfoc", CancellationToken.None);
+            Directory.Delete(Path.Combine(deployedRoot, "SwfocTrainer", "Runtime", "commands", "claimed"), recursive: true);
+
+            var verified = await service.VerifyAsync("base_swfoc", CancellationToken.None);
+
+            verified.Should().BeFalse();
+        }
+        finally
+        {
+            DeleteDirectory(sourceRoot);
+            DeleteDirectory(installRoot);
+        }
+    }
+
     private static HelperModService BuildService(
         TrainerProfile profile,
         string sourceRoot,
@@ -501,6 +547,13 @@ public sealed class HelperModServiceTests
         var path = Path.Combine(Path.GetTempPath(), "swfoctrainer-helper-tests", Guid.NewGuid().ToString("N"));
         Directory.CreateDirectory(path);
         return path;
+    }
+
+    private static void CreateTransportDirectories(string deployedRoot)
+    {
+        Directory.CreateDirectory(Path.Combine(deployedRoot, "SwfocTrainer", "Runtime", "commands", "pending"));
+        Directory.CreateDirectory(Path.Combine(deployedRoot, "SwfocTrainer", "Runtime", "commands", "claimed"));
+        Directory.CreateDirectory(Path.Combine(deployedRoot, "SwfocTrainer", "Runtime", "receipts"));
     }
 
     private static void DeleteDirectory(string path)
