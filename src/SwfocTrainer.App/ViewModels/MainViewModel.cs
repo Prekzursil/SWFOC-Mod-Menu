@@ -14,7 +14,7 @@ public sealed class MainViewModel : MainViewModelSaveOpsBase
     public MainViewModel(MainViewModelDependencies dependencies)
         : base(dependencies)
     {
-        (Profiles, Actions, CatalogSummary, Updates, SaveDiffPreview, Hotkeys, SaveFields, FilteredSaveFields, SavePatchOperations, SavePatchCompatibility, ActionReliability, SelectedUnitTransactions, SpawnPresets, LiveOpsDiagnostics, ModCompatibilityRows, ActiveFreezes) = MainViewModelFactories.CreateCollections();
+        (Profiles, Actions, CatalogSummary, Updates, SaveDiffPreview, Hotkeys, SaveFields, FilteredSaveFields, SavePatchOperations, SavePatchCompatibility, ActionReliability, SelectedUnitTransactions, SpawnPresets, EntityRoster, LiveOpsDiagnostics, ModCompatibilityRows, ActiveFreezes) = MainViewModelFactories.CreateCollections();
 
         var commandContexts = CreateCommandContexts();
         (LoadProfilesCommand, LaunchAndAttachCommand, AttachCommand, DetachCommand, LoadActionsCommand, ExecuteActionCommand, LoadCatalogCommand, DeployHelperCommand, VerifyHelperCommand, CheckUpdatesCommand, InstallUpdateCommand, RollbackProfileUpdateCommand) = MainViewModelFactories.CreateCoreCommands(commandContexts.Core);
@@ -327,7 +327,17 @@ public sealed class MainViewModel : MainViewModelSaveOpsBase
 
     private async Task LaunchAndAttachAsync()
     {
-        var launchRequest = await BuildLaunchRequestAsync();
+        GameLaunchRequest launchRequest;
+        try
+        {
+            launchRequest = await BuildLaunchRequestAsync();
+        }
+        catch (Exception ex)
+        {
+            Status = $"Launch preparation failed: {ex.Message}";
+            return;
+        }
+
         Status = $"Launching {launchRequest.Target} ({launchRequest.Mode})...";
         var launchResult = await _gameLauncher.LaunchAsync(launchRequest);
         if (!launchResult.Succeeded)
@@ -348,22 +358,36 @@ public sealed class MainViewModel : MainViewModelSaveOpsBase
             : GameLaunchTarget.Swfoc;
         var mode = ResolveLaunchMode(LaunchMode);
         var workshopIds = BuildLaunchWorkshopIds();
+        TrainerProfile? resolvedProfile = null;
 
-        if (mode == GameLaunchMode.SteamMod && workshopIds.Count == 0 && !string.IsNullOrWhiteSpace(SelectedProfileId))
+        if (!string.IsNullOrWhiteSpace(SelectedProfileId))
         {
             try
             {
-                var profile = await _profiles.ResolveInheritedProfileAsync(SelectedProfileId);
-                workshopIds = ResolveProfileWorkshopChain(profile);
-                if (workshopIds.Count > 0)
+                resolvedProfile = await _profiles.ResolveInheritedProfileAsync(SelectedProfileId);
+                if (mode == GameLaunchMode.SteamMod && workshopIds.Count == 0)
                 {
-                    LaunchWorkshopId = string.Join(",", workshopIds);
+                    workshopIds = ResolveProfileWorkshopChain(resolvedProfile);
+                    if (workshopIds.Count > 0)
+                    {
+                        LaunchWorkshopId = string.Join(",", workshopIds);
+                    }
                 }
             }
             catch
             {
                 // Keep manual launcher input path as-is when profile lookup fails.
+                resolvedProfile = null;
             }
+        }
+
+        string? overlayModPath = null;
+        if (mode != GameLaunchMode.ModPath &&
+            resolvedProfile is not null &&
+            resolvedProfile.HelperModHooks.Count > 0 &&
+            _helper is not null)
+        {
+            overlayModPath = await _helper.DeployAsync(resolvedProfile.Id);
         }
 
         return new GameLaunchRequest(
@@ -372,7 +396,8 @@ public sealed class MainViewModel : MainViewModelSaveOpsBase
             WorkshopIds: workshopIds,
             ModPath: string.IsNullOrWhiteSpace(LaunchModPath) ? null : LaunchModPath.Trim(),
             ProfileIdHint: SelectedProfileId,
-            TerminateExistingTargets: TerminateExistingBeforeLaunch);
+            TerminateExistingTargets: TerminateExistingBeforeLaunch,
+            OverlayModPath: overlayModPath);
     }
 
     private static IReadOnlyList<string> ResolveProfileWorkshopChain(TrainerProfile profile)
@@ -453,8 +478,10 @@ public sealed class MainViewModel : MainViewModelSaveOpsBase
     }
     private void ApplyAttachSessionStatus(AttachSession session)
     {
+        ApplyRuntimeSessionMetadata(session);
         RuntimeMode = session.Process.Mode;
         ResolvedSymbolsCount = session.Symbols.Symbols.Count;
+        ApplyHelperBridgeMetadata(session.Process.Metadata);
         var signatureCount = session.Symbols.Symbols.Values.Count(x => x.Source == AddressSource.Signature);
         var fallbackCount = session.Symbols.Symbols.Values.Count(x => x.Source == AddressSource.Fallback);
         var healthyCount = session.Symbols.Symbols.Values.Count(x => x.HealthStatus == SymbolHealthStatus.Healthy);
@@ -465,8 +492,14 @@ public sealed class MainViewModel : MainViewModelSaveOpsBase
     }
     private async Task HandleAttachFailureAsync(Exception ex)
     {
+        AttachState = "attach_failed";
+        AttachedProcessSummary = UnknownValue;
+        RuntimeResolvedVariant = SelectedProfileId ?? UnknownValue;
+        RuntimeResolvedVariantReasonCode = UnknownValue;
+        RuntimeResolvedVariantConfidence = "0.00";
         RuntimeMode = RuntimeMode.Unknown;
         ResolvedSymbolsCount = 0;
+        ResetHelperBridgeSurface();
         var processHint = await BuildAttachProcessHintAsync();
         Status = $"Attach failed: {ex.Message}. {processHint}";
     }
@@ -532,6 +565,7 @@ public sealed class MainViewModel : MainViewModelSaveOpsBase
         ActionReliability.Clear();
         SelectedUnitTransactions.Clear();
         LiveOpsDiagnostics.Clear();
+        ResetRuntimeSessionSurface();
         Status = "Detached";
     }
     private async Task LoadActionsAsync()
@@ -605,6 +639,7 @@ public sealed class MainViewModel : MainViewModelSaveOpsBase
                 payloadNode,
                 RuntimeMode,
                 BuildActionContext(SelectedActionId));
+            ApplyHelperExecutionDiagnostics(result.Diagnostics);
             Status = result.Succeeded
                 ? $"Action succeeded: {result.Message}{MainViewModelDiagnostics.BuildDiagnosticsStatusSuffix(result)}"
                 : $"Action failed: {result.Message}{MainViewModelDiagnostics.BuildDiagnosticsStatusSuffix(result)}";

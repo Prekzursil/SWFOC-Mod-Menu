@@ -117,17 +117,20 @@ internal static class MainViewModelDiagnostics
 
     internal static string BuildDiagnosticsStatusSuffix(ActionExecutionResult result)
     {
-        if (result.Diagnostics is null)
+        var diagnostics = result.Diagnostics;
+        if (diagnostics is null)
         {
             return string.Empty;
         }
 
         var segments = new List<string>(capacity: 5);
-        AppendDiagnosticSegment(segments, result.Diagnostics, "backend", "backend", "backendRoute");
-        AppendDiagnosticSegment(segments, result.Diagnostics, "routeReasonCode", "routeReasonCode", "reasonCode");
-        AppendDiagnosticSegment(segments, result.Diagnostics, "capabilityProbeReasonCode", "capabilityProbeReasonCode", "probeReasonCode");
-        AppendDiagnosticSegment(segments, result.Diagnostics, "hookState", "hookState");
-        AppendDiagnosticSegment(segments, result.Diagnostics, "hybridExecution", "hybridExecution");
+        AppendDiagnosticSegment(segments, diagnostics, "backend", "backend", "backendRoute");
+        AppendDiagnosticSegment(segments, diagnostics, "routeReasonCode", "routeReasonCode", "reasonCode");
+        AppendDiagnosticSegment(segments, diagnostics, "capabilityProbeReasonCode", "capabilityProbeReasonCode", "probeReasonCode");
+        AppendDiagnosticSegment(segments, diagnostics, "hookState", "hookState");
+        AppendDiagnosticSegment(segments, diagnostics, "helperVerify", "helperVerifyState");
+        AppendDiagnosticSegment(segments, diagnostics, "operationKind", "operationKind");
+        AppendDiagnosticSegment(segments, diagnostics, "hybridExecution", "hybridExecution");
 
         return segments.Count == 0 ? string.Empty : $" [{string.Join(", ", segments)}]";
     }

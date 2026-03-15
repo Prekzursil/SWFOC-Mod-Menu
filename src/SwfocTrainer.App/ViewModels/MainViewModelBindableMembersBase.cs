@@ -8,6 +8,26 @@ namespace SwfocTrainer.App.ViewModels;
 
 public abstract class MainViewModelBindableMembersBase : MainViewModelCoreStateBase
 {
+    private string _helperBridgeState = UnknownValue;
+    private string _helperBridgeReasonCode = UnknownValue;
+    private string _helperBridgeFeatures = "none";
+    private string _helperBridgeExecutionPath = UnknownValue;
+    private string _helperBridgeBlockingReason = UnknownValue;
+    private string _helperAutoloadState = UnknownValue;
+    private string _helperAutoloadReasonCode = UnknownValue;
+    private string _helperAutoloadStrategy = UnknownValue;
+    private string _helperAutoloadScript = UnknownValue;
+    private string _helperLastOperationToken = UnknownValue;
+    private string _helperLastOperationKind = UnknownValue;
+    private string _helperLastVerifyState = UnknownValue;
+    private string _helperLastEntryPoint = UnknownValue;
+    private string _helperLastAppliedEntityId = UnknownValue;
+    private string _attachState = "detached";
+    private string _attachedProcessSummary = UnknownValue;
+    private string _runtimeResolvedVariant = UnknownValue;
+    private string _runtimeResolvedVariantReasonCode = UnknownValue;
+    private string _runtimeResolvedVariantConfidence = "0.00";
+
     protected MainViewModelBindableMembersBase(MainViewModelDependencies dependencies)
         : base(dependencies)
     {
@@ -27,6 +47,7 @@ public abstract class MainViewModelBindableMembersBase : MainViewModelCoreStateB
     public ObservableCollection<ActionReliabilityViewItem> ActionReliability { get; protected set; } = null!;
     public ObservableCollection<SelectedUnitTransactionViewItem> SelectedUnitTransactions { get; protected set; } = null!;
     public ObservableCollection<SpawnPresetViewItem> SpawnPresets { get; protected set; } = null!;
+    public ObservableCollection<RosterEntityViewItem> EntityRoster { get; protected set; } = null!;
     public ObservableCollection<string> LiveOpsDiagnostics { get; protected set; } = null!;
     public ObservableCollection<string> ModCompatibilityRows { get; protected set; } = null!;
     public string? SelectedProfileId
@@ -37,6 +58,7 @@ public abstract class MainViewModelBindableMembersBase : MainViewModelCoreStateB
             if (SetField(_selectedProfileId, value, newValue => _selectedProfileId = newValue))
             {
                 OnPropertyChanged(nameof(CanWorkWithProfile));
+                OnPropertyChanged(nameof(RuntimeVariantSummary));
             }
         }
     }
@@ -129,6 +151,258 @@ public abstract class MainViewModelBindableMembersBase : MainViewModelCoreStateB
     {
         get => _resolvedSymbolsCount;
         set => SetField(_resolvedSymbolsCount, value, newValue => _resolvedSymbolsCount = newValue);
+    }
+
+    public string HelperBridgeState
+    {
+        get => _helperBridgeState;
+        set
+        {
+            if (SetField(_helperBridgeState, value, newValue => _helperBridgeState = newValue))
+            {
+                OnPropertyChanged(nameof(HelperBridgeSummary));
+            }
+        }
+    }
+
+    public string HelperBridgeReasonCode
+    {
+        get => _helperBridgeReasonCode;
+        set
+        {
+            if (SetField(_helperBridgeReasonCode, value, newValue => _helperBridgeReasonCode = newValue))
+            {
+                OnPropertyChanged(nameof(HelperBridgeSummary));
+            }
+        }
+    }
+
+    public string HelperBridgeFeatures
+    {
+        get => _helperBridgeFeatures;
+        set => SetField(_helperBridgeFeatures, value, newValue => _helperBridgeFeatures = newValue);
+    }
+
+    public string HelperBridgeExecutionPath
+    {
+        get => _helperBridgeExecutionPath;
+        set
+        {
+            if (SetField(_helperBridgeExecutionPath, value, newValue => _helperBridgeExecutionPath = newValue))
+            {
+                OnPropertyChanged(nameof(HelperBridgeBlockSummary));
+            }
+        }
+    }
+
+    public string HelperBridgeBlockingReason
+    {
+        get => _helperBridgeBlockingReason;
+        set
+        {
+            if (SetField(_helperBridgeBlockingReason, value, newValue => _helperBridgeBlockingReason = newValue))
+            {
+                OnPropertyChanged(nameof(HelperBridgeBlockSummary));
+            }
+        }
+    }
+
+    public string HelperAutoloadState
+    {
+        get => _helperAutoloadState;
+        set
+        {
+            if (SetField(_helperAutoloadState, value, newValue => _helperAutoloadState = newValue))
+            {
+                OnPropertyChanged(nameof(HelperAutoloadSummary));
+            }
+        }
+    }
+
+    public string HelperAutoloadReasonCode
+    {
+        get => _helperAutoloadReasonCode;
+        set
+        {
+            if (SetField(_helperAutoloadReasonCode, value, newValue => _helperAutoloadReasonCode = newValue))
+            {
+                OnPropertyChanged(nameof(HelperAutoloadSummary));
+            }
+        }
+    }
+
+    public string HelperAutoloadStrategy
+    {
+        get => _helperAutoloadStrategy;
+        set => SetField(_helperAutoloadStrategy, value, newValue => _helperAutoloadStrategy = newValue);
+    }
+
+    public string HelperAutoloadScript
+    {
+        get => _helperAutoloadScript;
+        set => SetField(_helperAutoloadScript, value, newValue => _helperAutoloadScript = newValue);
+    }
+
+    public string HelperLastOperationToken
+    {
+        get => _helperLastOperationToken;
+        set => SetField(_helperLastOperationToken, value, newValue => _helperLastOperationToken = newValue);
+    }
+
+    public string HelperLastOperationKind
+    {
+        get => _helperLastOperationKind;
+        set => SetField(_helperLastOperationKind, value, newValue => _helperLastOperationKind = newValue);
+    }
+
+    public string HelperLastVerifyState
+    {
+        get => _helperLastVerifyState;
+        set => SetField(_helperLastVerifyState, value, newValue => _helperLastVerifyState = newValue);
+    }
+
+    public string HelperLastEntryPoint
+    {
+        get => _helperLastEntryPoint;
+        set => SetField(_helperLastEntryPoint, value, newValue => _helperLastEntryPoint = newValue);
+    }
+
+    public string HelperLastAppliedEntityId
+    {
+        get => _helperLastAppliedEntityId;
+        set => SetField(_helperLastAppliedEntityId, value, newValue => _helperLastAppliedEntityId = newValue);
+    }
+
+    public string AttachState
+    {
+        get => _attachState;
+        set
+        {
+            if (SetField(_attachState, value, newValue => _attachState = newValue))
+            {
+                OnPropertyChanged(nameof(AttachStateSummary));
+            }
+        }
+    }
+
+    public string AttachedProcessSummary
+    {
+        get => _attachedProcessSummary;
+        set
+        {
+            if (SetField(_attachedProcessSummary, value, newValue => _attachedProcessSummary = newValue))
+            {
+                OnPropertyChanged(nameof(AttachStateSummary));
+            }
+        }
+    }
+
+    public string RuntimeResolvedVariant
+    {
+        get => _runtimeResolvedVariant;
+        set
+        {
+            if (SetField(_runtimeResolvedVariant, value, newValue => _runtimeResolvedVariant = newValue))
+            {
+                OnPropertyChanged(nameof(RuntimeVariantSummary));
+            }
+        }
+    }
+
+    public string RuntimeResolvedVariantReasonCode
+    {
+        get => _runtimeResolvedVariantReasonCode;
+        set
+        {
+            if (SetField(_runtimeResolvedVariantReasonCode, value, newValue => _runtimeResolvedVariantReasonCode = newValue))
+            {
+                OnPropertyChanged(nameof(RuntimeVariantSummary));
+            }
+        }
+    }
+
+    public string RuntimeResolvedVariantConfidence
+    {
+        get => _runtimeResolvedVariantConfidence;
+        set
+        {
+            if (SetField(_runtimeResolvedVariantConfidence, value, newValue => _runtimeResolvedVariantConfidence = newValue))
+            {
+                OnPropertyChanged(nameof(RuntimeVariantSummary));
+            }
+        }
+    }
+
+    public string HelperBridgeSummary =>
+        string.IsNullOrWhiteSpace(HelperBridgeReasonCode) || HelperBridgeReasonCode == UnknownValue
+            ? HelperBridgeState
+            : $"{HelperBridgeState} ({HelperBridgeReasonCode})";
+
+    public string HelperBridgeBlockSummary
+    {
+        get
+        {
+            var blockingReason = NormalizeSummaryValue(HelperBridgeBlockingReason);
+            var executionPath = NormalizeSummaryValue(HelperBridgeExecutionPath);
+            if (blockingReason is null && executionPath is null)
+            {
+                return UnknownValue;
+            }
+
+            if (blockingReason is not null &&
+                executionPath is not null &&
+                string.Equals(blockingReason, executionPath, StringComparison.OrdinalIgnoreCase))
+            {
+                return executionPath;
+            }
+
+            if (blockingReason is null)
+            {
+                return executionPath!;
+            }
+
+            if (executionPath is null)
+            {
+                return blockingReason;
+            }
+
+            return $"{executionPath} / {blockingReason}";
+        }
+    }
+
+    public string HelperAutoloadSummary =>
+        string.IsNullOrWhiteSpace(HelperAutoloadReasonCode) || HelperAutoloadReasonCode == UnknownValue
+            ? HelperAutoloadState
+            : $"{HelperAutoloadState} ({HelperAutoloadReasonCode})";
+
+    public string HelperLastOperationSummary =>
+        HelperLastOperationKind == UnknownValue && HelperLastVerifyState == UnknownValue
+            ? UnknownValue
+            : $"{HelperLastOperationKind} ({HelperLastVerifyState})";
+
+    public string AttachStateSummary =>
+        string.IsNullOrWhiteSpace(AttachedProcessSummary) || AttachedProcessSummary == UnknownValue
+            ? AttachState
+            : $"{AttachState} ({AttachedProcessSummary})";
+
+    public string RuntimeVariantSummary
+    {
+        get
+        {
+            var variant = NormalizeSummaryValue(RuntimeResolvedVariant)
+                          ?? NormalizeSummaryValue(SelectedProfileId)
+                          ?? UnknownValue;
+            var reason = NormalizeSummaryValue(RuntimeResolvedVariantReasonCode);
+            var confidence = NormalizeSummaryValue(RuntimeResolvedVariantConfidence);
+            if (reason is null)
+            {
+                return variant;
+            }
+
+            return confidence is null
+                ? $"{variant} ({reason})"
+                : $"{variant} ({reason}, conf={confidence})";
+        }
     }
 
     public bool CanWorkWithProfile => !string.IsNullOrWhiteSpace(SelectedProfileId);
@@ -235,6 +509,17 @@ public abstract class MainViewModelBindableMembersBase : MainViewModelCoreStateB
         set => SetField(_onboardingBaseProfileId, value, newValue => _onboardingBaseProfileId = newValue);
     }
 
+    private static string? NormalizeSummaryValue(string? value)
+    {
+        if (string.IsNullOrWhiteSpace(value))
+        {
+            return null;
+        }
+
+        var trimmed = value.Trim();
+        return string.Equals(trimmed, UnknownValue, StringComparison.OrdinalIgnoreCase) ? null : trimmed;
+    }
+
     public string OnboardingDraftProfileId
     {
         get => _onboardingDraftProfileId;
@@ -275,6 +560,36 @@ public abstract class MainViewModelBindableMembersBase : MainViewModelCoreStateB
     {
         get => _modCompatibilitySummary;
         set => SetField(_modCompatibilitySummary, value, newValue => _modCompatibilitySummary = newValue);
+    }
+
+    public string HeroSupportsRespawn
+    {
+        get => _heroSupportsRespawn;
+        set => SetField(_heroSupportsRespawn, value, newValue => _heroSupportsRespawn = newValue);
+    }
+
+    public string HeroSupportsPermadeath
+    {
+        get => _heroSupportsPermadeath;
+        set => SetField(_heroSupportsPermadeath, value, newValue => _heroSupportsPermadeath = newValue);
+    }
+
+    public string HeroSupportsRescue
+    {
+        get => _heroSupportsRescue;
+        set => SetField(_heroSupportsRescue, value, newValue => _heroSupportsRescue = newValue);
+    }
+
+    public string HeroDefaultRespawnTime
+    {
+        get => _heroDefaultRespawnTime;
+        set => SetField(_heroDefaultRespawnTime, value, newValue => _heroDefaultRespawnTime = newValue);
+    }
+
+    public string HeroDuplicatePolicy
+    {
+        get => _heroDuplicatePolicy;
+        set => SetField(_heroDuplicatePolicy, value, newValue => _heroDuplicatePolicy = newValue);
     }
 
     public string OpsArtifactSummary

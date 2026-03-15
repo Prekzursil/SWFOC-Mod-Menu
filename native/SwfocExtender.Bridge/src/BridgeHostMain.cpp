@@ -1,4 +1,5 @@
 // cppcheck-suppress-file missingIncludeSystem
+// cppcheck-suppress-file misra-c2012-12.3
 #include "swfoc_extender/bridge/NamedPipeBridgeServer.hpp"
 #include "swfoc_extender/plugins/BuildPatchPlugin.hpp"
 #include "swfoc_extender/plugins/EconomyPlugin.hpp"
@@ -57,21 +58,21 @@ using swfoc::extender::bridge::host_json::TryReadInt;
 constexpr const char* kBackendName = "extender";
 constexpr const char* kDefaultPipeName = "SwfocExtenderBridge";
 
-constexpr std::array<const char*, 14> kSupportedFeatures {
-    "freeze_timer",
-    "toggle_fog_reveal",
-    "toggle_ai",
-    "set_unit_cap",
-    "toggle_instant_build_patch",
-    "set_credits",
-    "spawn_unit_helper",
-    "spawn_context_entity",
-    "spawn_tactical_entity",
-    "spawn_galactic_entity",
-    "place_planet_building",
-    "set_context_allegiance",
-    "set_hero_state_helper",
-    "toggle_roe_respawn_helper"};
+// cppcheck-suppress misra-c2012-12.3
+constexpr std::array<const char*, 20> kSupportedFeatures {
+    "freeze_timer", "toggle_fog_reveal", "toggle_ai", "set_unit_cap", "toggle_instant_build_patch", "set_credits",
+    "spawn_unit_helper", "spawn_context_entity", "spawn_tactical_entity", "spawn_galactic_entity", "place_planet_building",
+    "set_context_allegiance", "set_context_faction", "set_hero_state_helper", "toggle_roe_respawn_helper", "transfer_fleet_safe",
+    "flip_planet_owner", "switch_player_faction", "edit_hero_state", "create_hero_variant"};
+
+// cppcheck-suppress misra-c2012-12.3
+constexpr std::array<const char*, 3> kGlobalToggleFeatures {"freeze_timer", "toggle_fog_reveal", "toggle_ai"};
+
+// cppcheck-suppress misra-c2012-12.3
+constexpr std::array<const char*, 14> kHelperFeatures {
+    "spawn_unit_helper", "spawn_context_entity", "spawn_tactical_entity", "spawn_galactic_entity", "place_planet_building",
+    "set_context_allegiance", "set_context_faction", "set_hero_state_helper", "toggle_roe_respawn_helper", "transfer_fleet_safe",
+    "flip_planet_owner", "switch_player_faction", "edit_hero_state", "create_hero_variant"};
 
 /*
 Cppcheck note (targeted): if cppcheck runs without STL/Windows SDK include paths,
@@ -131,6 +132,10 @@ PluginRequest BuildPluginRequest(const BridgeCommand& command) {
     request.operationKind = ExtractStringValue(command.payloadJson, "operationKind");
     request.operationToken = ExtractStringValue(command.payloadJson, "operationToken");
     request.invocationContractVersion = ExtractStringValue(command.payloadJson, "helperInvocationContractVersion");
+    request.verificationContractVersion = ExtractStringValue(command.payloadJson, "verificationContractVersion");
+    request.operationPolicy = ExtractStringValue(command.payloadJson, "operationPolicy");
+    request.targetContext = ExtractStringValue(command.payloadJson, "targetContext");
+    request.mutationIntent = ExtractStringValue(command.payloadJson, "mutationIntent");
     request.unitId = ExtractStringValue(command.payloadJson, "unitId");
     request.entityId = ExtractStringValue(command.payloadJson, "entityId");
     request.entryMarker = ExtractStringValue(command.payloadJson, "entryMarker");
@@ -171,6 +176,25 @@ PluginRequest BuildPluginRequest(const BridgeCommand& command) {
     }
 
     return request;
+}
+
+template <std::size_t N>
+bool ContainsFeature(const std::string& featureId, const std::array<const char*, N>& candidates) {
+    for (const auto* candidate : candidates) {
+        if (featureId == candidate) {
+            return true;
+        }
+    }
+
+    return false;
+}
+
+bool IsGlobalToggleFeature(const std::string& featureId) {
+    return ContainsFeature(featureId, kGlobalToggleFeatures);
+}
+
+bool IsHelperFeature(const std::string& featureId) {
+    return ContainsFeature(featureId, kHelperFeatures);
 }
 
 bool IsSupportedFeature(const std::string& featureId) {
@@ -294,13 +318,15 @@ void AddHelperProbeFeature(
     const PluginRequest& probeContext,
     const char* featureId) {
     CapabilityState state {};
-    state.available = probeContext.processId > 0;
-    state.state = state.available ? "Verified" : "Unavailable";
-    state.reasonCode = state.available ? "CAPABILITY_PROBE_PASS" : "HELPER_BRIDGE_UNAVAILABLE";
+    state.available = false;
+    state.state = "Unavailable";
+    state.reasonCode = probeContext.processId > 0 ? "HELPER_VERIFICATION_FAILED" : "HELPER_BRIDGE_UNAVAILABLE";
     state.diagnostics = {
         {"probeSource", "native_helper_bridge"},
         {"processId", std::to_string(probeContext.processId)},
-        {"helperBridgeState", state.available ? "ready" : "unavailable"}};
+        {"helperBridgeState", "unavailable"},
+        {"helperExecutionPath", "native_dispatch_unavailable"},
+        {"helperVerifyState", "failed"}};
     snapshot.features.emplace(featureId, state);
 }
 
@@ -317,14 +343,9 @@ CapabilitySnapshot BuildCapabilityProbeSnapshot(const PluginRequest& probeContex
         probeContext,
         "toggle_instant_build_patch",
         {"instant_build_patch_injection", "instant_build_patch", "instant_build", "toggle_instant_build_patch"});
-    AddHelperProbeFeature(snapshot, probeContext, "spawn_unit_helper");
-    AddHelperProbeFeature(snapshot, probeContext, "spawn_context_entity");
-    AddHelperProbeFeature(snapshot, probeContext, "spawn_tactical_entity");
-    AddHelperProbeFeature(snapshot, probeContext, "spawn_galactic_entity");
-    AddHelperProbeFeature(snapshot, probeContext, "place_planet_building");
-    AddHelperProbeFeature(snapshot, probeContext, "set_context_allegiance");
-    AddHelperProbeFeature(snapshot, probeContext, "set_hero_state_helper");
-    AddHelperProbeFeature(snapshot, probeContext, "toggle_roe_respawn_helper");
+    for (const auto* featureId : kHelperFeatures) {
+        AddHelperProbeFeature(snapshot, probeContext, featureId);
+    }
 
     EnsureCapabilityEntries(snapshot);
     return snapshot;
@@ -494,20 +515,11 @@ BridgeResult HandleBridgeCommand(
         return BuildSetCreditsResult(command, economyPlugin);
     }
 
-    if (command.featureId == "freeze_timer" ||
-        command.featureId == "toggle_fog_reveal" ||
-        command.featureId == "toggle_ai") {
+    if (IsGlobalToggleFeature(command.featureId)) {
         return BuildGlobalToggleResult(command, globalTogglePlugin);
     }
 
-    if (command.featureId == "spawn_unit_helper" ||
-        command.featureId == "spawn_context_entity" ||
-        command.featureId == "spawn_tactical_entity" ||
-        command.featureId == "spawn_galactic_entity" ||
-        command.featureId == "place_planet_building" ||
-        command.featureId == "set_context_allegiance" ||
-        command.featureId == "set_hero_state_helper" ||
-        command.featureId == "toggle_roe_respawn_helper") {
+    if (IsHelperFeature(command.featureId)) {
         return BuildHelperResult(command, helperLuaPlugin);
     }
 
@@ -594,3 +606,4 @@ int main() {
     HelperLuaPlugin helperLuaPlugin;
     return RunBridgeHost(pipeName, economyPlugin, globalTogglePlugin, buildPatchPlugin, helperLuaPlugin);
 }
+

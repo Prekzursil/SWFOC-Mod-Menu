@@ -111,6 +111,11 @@ public abstract class MainViewModelCoreStateBase : INotifyPropertyChanged
     protected string _onboardingSummary = string.Empty;
     protected string _calibrationNotes = string.Empty;
     protected string _modCompatibilitySummary = string.Empty;
+    protected string _heroSupportsRespawn = UnknownValue;
+    protected string _heroSupportsPermadeath = UnknownValue;
+    protected string _heroSupportsRescue = UnknownValue;
+    protected string _heroDefaultRespawnTime = UnknownValue;
+    protected string _heroDuplicatePolicy = UnknownValue;
     protected string _opsArtifactSummary = string.Empty;
     protected string _launchTarget = MainViewModelDefaults.DefaultLaunchTarget;
     protected string _launchMode = MainViewModelDefaults.DefaultLaunchMode;
@@ -231,3 +236,4 @@ public abstract class MainViewModelCoreStateBase : INotifyPropertyChanged
         handler(this, new PropertyChangedEventArgs(memberName));
     }
 }
+

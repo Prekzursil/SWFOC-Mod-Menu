@@ -17,6 +17,36 @@ public sealed class ModMechanicDetectionService : IModMechanicDetectionService
     private const string ActionPlacePlanetBuilding = "place_planet_building";
     private const string ActionSetContextFaction = "set_context_faction";
     private const string ActionSetContextAllegiance = "set_context_allegiance";
+    private const string ActionTransferFleetSafe = "transfer_fleet_safe";
+    private const string ActionFlipPlanetOwner = "flip_planet_owner";
+    private const string ActionSwitchPlayerFaction = "switch_player_faction";
+    private const string ActionEditHeroState = "edit_hero_state";
+    private const string ActionCreateHeroVariant = "create_hero_variant";
+    private const string ActionEvaluationContextUnavailableMessage = "Action evaluation context is unavailable.";
+
+    private static readonly IReadOnlySet<string> SpawnRosterActionIds = new HashSet<string>(StringComparer.OrdinalIgnoreCase)
+    {
+        ActionSpawnUnitHelper,
+        ActionSpawnContextEntity,
+        ActionSpawnTacticalEntity,
+        ActionSpawnGalacticEntity,
+        ActionTransferFleetSafe,
+        ActionEditHeroState,
+        ActionCreateHeroVariant
+    };
+
+    private static readonly IReadOnlySet<string> BuildingRosterActionIds = new HashSet<string>(StringComparer.OrdinalIgnoreCase)
+    {
+        ActionPlacePlanetBuilding,
+        ActionFlipPlanetOwner
+    };
+
+    private static readonly IReadOnlySet<string> ContextFactionActionIds = new HashSet<string>(StringComparer.OrdinalIgnoreCase)
+    {
+        ActionSetContextFaction,
+        ActionSetContextAllegiance,
+        ActionSwitchPlayerFaction
+    };
 
     private readonly ITransplantCompatibilityService? _transplantCompatibilityService;
 
@@ -36,6 +66,15 @@ public sealed class ModMechanicDetectionService : IModMechanicDetectionService
         IReadOnlyDictionary<string, IReadOnlyList<string>>? catalog,
         CancellationToken cancellationToken)
     {
+        if (profile is null)
+        {
+            throw new ArgumentNullException(nameof(profile));
+        }
+        if (session is null)
+        {
+            throw new ArgumentNullException(nameof(session));
+        }
+
         cancellationToken.ThrowIfCancellationRequested();
 
         var disabledActions = ParseCsvSet(session.Process.Metadata, "dependencyDisabledActions");
@@ -48,6 +87,7 @@ public sealed class ModMechanicDetectionService : IModMechanicDetectionService
         var transplantReport = await TryResolveTransplantReportAsync(profile, activeWorkshopIds, rosterEntities, cancellationToken);
 
         var diagnostics = BuildDiagnostics(
+            profile,
             session,
             catalog,
             disabledActions,
@@ -78,15 +118,21 @@ public sealed class ModMechanicDetectionService : IModMechanicDetectionService
         IReadOnlyList<RosterEntityRecord> rosterEntities,
         CancellationToken cancellationToken)
     {
-        if (_transplantCompatibilityService is null)
+        var transplantCompatibilityService = _transplantCompatibilityService;
+        if (transplantCompatibilityService is null)
         {
             return null;
         }
 
+        var safeProfile = profile ?? throw new ArgumentNullException(nameof(profile));
+        var safeWorkshopIds = activeWorkshopIds ?? Array.Empty<string>();
+        var safeRosterEntities = rosterEntities ?? Array.Empty<RosterEntityRecord>();
+
         try
         {
-            return await _transplantCompatibilityService
-                .ValidateAsync(profile.Id, activeWorkshopIds, rosterEntities, cancellationToken);
+            var profileId = safeProfile.Id ?? string.Empty;
+            return await transplantCompatibilityService
+                .ValidateAsync(profileId, safeWorkshopIds, safeRosterEntities, cancellationToken);
         }
         catch (OperationCanceledException)
         {
@@ -99,24 +145,32 @@ public sealed class ModMechanicDetectionService : IModMechanicDetectionService
     }
 
     private Dictionary<string, object?> BuildDiagnostics(
+        TrainerProfile profile,
         AttachSession session,
         IReadOnlyDictionary<string, IReadOnlyList<string>>? catalog,
         IReadOnlySet<string> disabledActions,
         IReadOnlyList<string> activeWorkshopIds,
         TransplantValidationReport? transplantReport)
     {
+        var safeProfile = profile ?? throw new ArgumentNullException(nameof(profile));
+        var safeSession = session ?? throw new ArgumentNullException(nameof(session));
+
+        var heroMechanics = ResolveHeroMechanicsProfile(safeProfile, safeSession);
+        var processMetadata = safeSession.Process.Metadata;
+
         var diagnostics = new Dictionary<string, object?>(StringComparer.OrdinalIgnoreCase)
         {
-            ["dependencyValidation"] = ReadMetadataValue(session.Process.Metadata, "dependencyValidation") ?? string.Empty,
+            ["dependencyValidation"] = ReadMetadataValue(processMetadata, "dependencyValidation") ?? string.Empty,
             ["dependencyDisabledActions"] = disabledActions.OrderBy(x => x, StringComparer.OrdinalIgnoreCase).ToArray(),
-            ["helperBridgeState"] = ReadMetadataValue(session.Process.Metadata, "helperBridgeState") ?? "unknown",
+            ["helperBridgeState"] = ReadMetadataValue(processMetadata, "helperBridgeState") ?? "unknown",
             ["unitCatalogCount"] = catalog is not null && catalog.TryGetValue(UnitCatalogKey, out var units) ? units.Count : 0,
             ["factionCatalogCount"] = catalog is not null && catalog.TryGetValue(FactionCatalogKey, out var factions) ? factions.Count : 0,
             ["buildingCatalogCount"] = catalog is not null && catalog.TryGetValue(BuildingCatalogKey, out var buildings) ? buildings.Count : 0,
             ["activeWorkshopIds"] = activeWorkshopIds,
             ["transplantAllResolved"] = transplantReport?.AllResolved ?? true,
             ["transplantBlockingEntityCount"] = transplantReport?.BlockingEntityCount ?? 0,
-            ["transplantEnabled"] = _transplantCompatibilityService is not null
+            ["transplantEnabled"] = _transplantCompatibilityService is not null,
+            ["heroMechanicsSummary"] = BuildHeroMechanicsSummary(heroMechanics)
         };
 
         if (transplantReport is not null)
@@ -140,16 +194,30 @@ public sealed class ModMechanicDetectionService : IModMechanicDetectionService
         bool helperReady,
         TransplantValidationReport? transplantReport)
     {
-        var supports = new List<ModMechanicSupport>(profile.Actions.Count);
-        foreach (var (actionId, action) in profile.Actions.OrderBy(x => x.Key, StringComparer.OrdinalIgnoreCase))
+        var safeProfile = profile ?? throw new ArgumentNullException(nameof(profile));
+        var safeSession = session ?? throw new ArgumentNullException(nameof(session));
+        var safeDisabledActions = disabledActions ?? throw new ArgumentNullException(nameof(disabledActions));
+
+        var actions = safeProfile.Actions;
+        if (actions is null || actions.Count == 0)
         {
+            return Array.Empty<ModMechanicSupport>();
+        }
+
+        var supports = new List<ModMechanicSupport>(actions.Count);
+        foreach (var (actionId, action) in actions.OrderBy(x => x.Key, StringComparer.OrdinalIgnoreCase))
+        {
+            if (string.IsNullOrWhiteSpace(actionId) || action is null)
+            {
+                continue;
+            }
             supports.Add(EvaluateAction(new ActionEvaluationContext(
                 ActionId: actionId,
                 Action: action,
-                Profile: profile,
-                Session: session,
+                Profile: safeProfile,
+                Session: safeSession,
                 Catalog: catalog,
-                DisabledActions: disabledActions,
+                DisabledActions: safeDisabledActions,
                 HelperReady: helperReady,
                 TransplantReport: transplantReport)));
         }
@@ -178,6 +246,16 @@ public sealed class ModMechanicDetectionService : IModMechanicDetectionService
 
     private static bool TryEvaluateDependencyGate(ActionEvaluationContext context, out ModMechanicSupport support)
     {
+        if (context is null)
+        {
+            support = new ModMechanicSupport(
+                ActionId: string.Empty,
+                Supported: false,
+                ReasonCode: RuntimeReasonCode.CAPABILITY_REQUIRED_MISSING,
+                Message: ActionEvaluationContextUnavailableMessage,
+                Confidence: 0.99d);
+            return true;
+        }
         if (context.DisabledActions.Contains(context.ActionId))
         {
             support = new ModMechanicSupport(
@@ -211,6 +289,27 @@ public sealed class ModMechanicDetectionService : IModMechanicDetectionService
 
     private static bool TryEvaluateHelperGate(ActionEvaluationContext context, out ModMechanicSupport support)
     {
+        if (context is null)
+        {
+            support = new ModMechanicSupport(
+                ActionId: string.Empty,
+                Supported: false,
+                ReasonCode: RuntimeReasonCode.CAPABILITY_REQUIRED_MISSING,
+                Message: ActionEvaluationContextUnavailableMessage,
+                Confidence: 0.99d);
+            return true;
+        }
+        if (context.Action is null)
+        {
+            support = new ModMechanicSupport(
+                ActionId: context.ActionId,
+                Supported: false,
+                ReasonCode: RuntimeReasonCode.CAPABILITY_REQUIRED_MISSING,
+                Message: "Action metadata is unavailable for helper gate evaluation.",
+                Confidence: 0.99d);
+            return true;
+        }
+
         if (context.Action.ExecutionKind != ExecutionKind.Helper)
         {
             support = default!;
@@ -228,7 +327,20 @@ public sealed class ModMechanicDetectionService : IModMechanicDetectionService
             return true;
         }
 
-        if (context.Profile.HelperModHooks.Count == 0)
+        var profile = context.Profile;
+        if (profile is null)
+        {
+            support = new ModMechanicSupport(
+                ActionId: context.ActionId,
+                Supported: false,
+                ReasonCode: RuntimeReasonCode.CAPABILITY_REQUIRED_MISSING,
+                Message: "Profile metadata is unavailable for helper gate evaluation.",
+                Confidence: 0.99d);
+            return true;
+        }
+
+        var helperHooks = profile.HelperModHooks;
+        if (helperHooks is null || helperHooks.Count == 0)
         {
             support = new ModMechanicSupport(
                 ActionId: context.ActionId,
@@ -250,6 +362,27 @@ public sealed class ModMechanicDetectionService : IModMechanicDetectionService
 
     private static bool TryEvaluateRosterGate(ActionEvaluationContext context, out ModMechanicSupport support)
     {
+        if (context is null)
+        {
+            support = new ModMechanicSupport(
+                ActionId: string.Empty,
+                Supported: false,
+                ReasonCode: RuntimeReasonCode.CAPABILITY_REQUIRED_MISSING,
+                Message: ActionEvaluationContextUnavailableMessage,
+                Confidence: 0.99d);
+            return true;
+        }
+        if (string.IsNullOrWhiteSpace(context.ActionId))
+        {
+            support = new ModMechanicSupport(
+                ActionId: string.Empty,
+                Supported: false,
+                ReasonCode: RuntimeReasonCode.CAPABILITY_REQUIRED_MISSING,
+                Message: "Action id is missing for roster gate evaluation.",
+                Confidence: 0.99d);
+            return true;
+        }
+
         if (RequiresSpawnRoster(context.ActionId) &&
             (!HasCatalogEntries(context.Catalog, UnitCatalogKey) || !HasCatalogEntries(context.Catalog, FactionCatalogKey)))
         {
@@ -280,18 +413,52 @@ public sealed class ModMechanicDetectionService : IModMechanicDetectionService
 
     private static bool TryEvaluateContextFactionGate(ActionEvaluationContext context, out ModMechanicSupport support)
     {
-        if (!IsContextFactionAction(context.ActionId))
+        if (context is null)
+        {
+            support = new ModMechanicSupport(
+                ActionId: string.Empty,
+                Supported: false,
+                ReasonCode: RuntimeReasonCode.CAPABILITY_REQUIRED_MISSING,
+                Message: ActionEvaluationContextUnavailableMessage,
+                Confidence: 0.99d);
+            return true;
+        }
+        if (context.Session is null)
+        {
+            support = new ModMechanicSupport(
+                ActionId: context.ActionId,
+                Supported: false,
+                ReasonCode: RuntimeReasonCode.CAPABILITY_REQUIRED_MISSING,
+                Message: "Attach session is unavailable for context faction routing.",
+                Confidence: 0.99d);
+            return true;
+        }
+
+        var actionId = context.ActionId ?? string.Empty;
+        if (!IsContextFactionAction(actionId))
         {
             support = default!;
             return false;
         }
 
-        var hasTacticalOwner = TryGetHealthySymbol(context.Session, "selected_owner_faction");
-        var hasPlanetOwner = TryGetHealthySymbol(context.Session, "planet_owner");
+        if (StringComparer.OrdinalIgnoreCase.Equals(actionId, ActionSwitchPlayerFaction))
+        {
+            support = new ModMechanicSupport(
+                ActionId: actionId,
+                Supported: true,
+                ReasonCode: RuntimeReasonCode.CAPABILITY_PROBE_PASS,
+                Message: "Switch-player-faction flow is helper-routed for this chain.",
+                Confidence: 0.80d);
+            return true;
+        }
+
+        var safeSession = context.Session;
+        var hasTacticalOwner = TryGetHealthySymbol(safeSession, "selected_owner_faction");
+        var hasPlanetOwner = TryGetHealthySymbol(safeSession, "planet_owner");
         if (!hasTacticalOwner && !hasPlanetOwner)
         {
             support = new ModMechanicSupport(
-                ActionId: context.ActionId,
+                ActionId: actionId,
                 Supported: false,
                 ReasonCode: RuntimeReasonCode.CAPABILITY_REQUIRED_MISSING,
                 Message: "Neither selected-unit owner nor planet owner symbols are available.",
@@ -300,7 +467,7 @@ public sealed class ModMechanicDetectionService : IModMechanicDetectionService
         }
 
         support = new ModMechanicSupport(
-            ActionId: context.ActionId,
+            ActionId: actionId,
             Supported: true,
             ReasonCode: RuntimeReasonCode.CAPABILITY_PROBE_PASS,
             Message: "Context faction/allegiance routing symbols are available.",
@@ -310,13 +477,38 @@ public sealed class ModMechanicDetectionService : IModMechanicDetectionService
 
     private static bool TryEvaluateSymbolGate(ActionEvaluationContext context, out ModMechanicSupport support)
     {
-        if (!ActionSymbolRegistry.TryGetSymbol(context.ActionId, out var symbol))
+        if (context is null)
+        {
+            support = new ModMechanicSupport(
+                ActionId: string.Empty,
+                Supported: false,
+                ReasonCode: RuntimeReasonCode.CAPABILITY_REQUIRED_MISSING,
+                Message: ActionEvaluationContextUnavailableMessage,
+                Confidence: 0.99d);
+            return true;
+        }
+        var safeSession = context.Session;
+        var symbols = safeSession?.Symbols;
+        if (symbols is null)
+        {
+            support = new ModMechanicSupport(
+                ActionId: context.ActionId,
+                Supported: false,
+                ReasonCode: RuntimeReasonCode.CAPABILITY_REQUIRED_MISSING,
+                Message: "Session symbols are unavailable for symbol gate evaluation.",
+                Confidence: 0.99d);
+            return true;
+        }
+
+        var actionId = context.ActionId ?? string.Empty;
+        if (!ActionSymbolRegistry.TryGetSymbol(actionId, out var symbol) ||
+            string.IsNullOrWhiteSpace(symbol))
         {
             support = default!;
             return false;
         }
 
-        if (context.Session.Symbols.TryGetValue(symbol, out var symbolInfo) &&
+        if (symbols.TryGetValue(symbol, out var symbolInfo) &&
             symbolInfo is not null &&
             symbolInfo.Address != nint.Zero &&
             symbolInfo.HealthStatus != SymbolHealthStatus.Unresolved)
@@ -326,7 +518,7 @@ public sealed class ModMechanicDetectionService : IModMechanicDetectionService
         }
 
         support = new ModMechanicSupport(
-            ActionId: context.ActionId,
+            ActionId: actionId,
             Supported: false,
             ReasonCode: RuntimeReasonCode.CAPABILITY_REQUIRED_MISSING,
             Message: $"Symbol '{symbol}' is unresolved for this profile variant.",
@@ -336,7 +528,173 @@ public sealed class ModMechanicDetectionService : IModMechanicDetectionService
 
     private static bool HasCatalogEntries(IReadOnlyDictionary<string, IReadOnlyList<string>>? catalog, string key)
     {
-        return catalog is not null && catalog.TryGetValue(key, out var values) && values.Count > 0;
+        return catalog is not null && catalog.TryGetValue(key, out var values) && values is not null && values.Count > 0;
+    }
+
+    private static HeroMechanicsProfile ResolveHeroMechanicsProfile(TrainerProfile profile, AttachSession session)
+    {
+        var safeProfile = profile ?? throw new ArgumentNullException(nameof(profile));
+        var safeSession = session ?? throw new ArgumentNullException(nameof(session));
+
+        var supportsRespawn = SupportsHeroRespawn(safeProfile);
+        var supportsRescue = SupportsHeroRescue(safeProfile);
+        var supportsPermadeath = SupportsHeroPermadeath(safeProfile);
+        var defaultRespawnTime = ResolveDefaultRespawnTime(safeProfile, safeSession, supportsRespawn);
+        var respawnExceptionSources = ResolveRespawnExceptionSources(safeProfile);
+        var duplicateHeroPolicy = ResolveDuplicateHeroPolicy(safeProfile, supportsPermadeath, supportsRescue);
+
+        var profileId = safeProfile.Id ?? string.Empty;
+        var runtimeMode = safeSession.Process.Mode.ToString();
+
+        return new HeroMechanicsProfile(
+            SupportsRespawn: supportsRespawn,
+            SupportsPermadeath: supportsPermadeath,
+            SupportsRescue: supportsRescue,
+            DefaultRespawnTime: defaultRespawnTime,
+            RespawnExceptionSources: respawnExceptionSources,
+            DuplicateHeroPolicy: duplicateHeroPolicy,
+            Diagnostics: new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
+            {
+                ["profileId"] = profileId,
+                ["runtimeMode"] = runtimeMode
+            });
+    }
+
+    private static bool SupportsHeroRespawn(TrainerProfile profile)
+    {
+        var safeProfile = profile ?? throw new ArgumentNullException(nameof(profile));
+        var actions = safeProfile.Actions;
+        if (actions is null)
+        {
+            return false;
+        }
+
+        return actions.ContainsKey("set_hero_respawn_timer") ||
+               actions.ContainsKey("set_hero_state_helper") ||
+               actions.ContainsKey("toggle_roe_respawn_helper") ||
+               actions.ContainsKey("edit_hero_state");
+    }
+
+    private static bool SupportsHeroRescue(TrainerProfile profile)
+    {
+        var safeProfile = profile ?? throw new ArgumentNullException(nameof(profile));
+        var profileId = safeProfile.Id ?? string.Empty;
+        return ReadBoolMetadata(safeProfile.Metadata, "supports_hero_rescue") ||
+               profileId.Contains("aotr", StringComparison.OrdinalIgnoreCase);
+    }
+
+    private static bool SupportsHeroPermadeath(TrainerProfile profile)
+    {
+        var safeProfile = profile ?? throw new ArgumentNullException(nameof(profile));
+        var profileId = safeProfile.Id ?? string.Empty;
+        return ReadBoolMetadata(safeProfile.Metadata, "supports_hero_permadeath") ||
+               profileId.Contains("roe", StringComparison.OrdinalIgnoreCase);
+    }
+
+    private static int? ResolveDefaultRespawnTime(TrainerProfile profile, AttachSession session, bool supportsRespawn)
+    {
+        var safeProfile = profile ?? throw new ArgumentNullException(nameof(profile));
+        var safeSession = session ?? throw new ArgumentNullException(nameof(session));
+
+        var defaultRespawnTime = ParseOptionalInt(
+            ReadMetadataValue(safeProfile.Metadata, "defaultHeroRespawnTime") ??
+            ReadMetadataValue(safeProfile.Metadata, "default_hero_respawn_time"));
+
+        if (supportsRespawn && TryGetHealthySymbol(safeSession, "hero_respawn_timer") && defaultRespawnTime is null)
+        {
+            return 1;
+        }
+
+        return defaultRespawnTime;
+    }
+
+    private static IReadOnlyList<string> ResolveRespawnExceptionSources(TrainerProfile profile)
+    {
+        var safeProfile = profile ?? throw new ArgumentNullException(nameof(profile));
+        return ParseListMetadata(
+            ReadMetadataValue(safeProfile.Metadata, "respawnExceptionSources") ??
+            ReadMetadataValue(safeProfile.Metadata, "respawn_exception_sources"));
+    }
+
+    private static string ResolveDuplicateHeroPolicy(TrainerProfile profile, bool supportsPermadeath, bool supportsRescue)
+    {
+        var safeProfile = profile ?? throw new ArgumentNullException(nameof(profile));
+        return ReadMetadataValue(safeProfile.Metadata, "duplicateHeroPolicy") ??
+               ReadMetadataValue(safeProfile.Metadata, "duplicate_hero_policy") ??
+               InferDuplicateHeroPolicy(safeProfile.Id, supportsPermadeath, supportsRescue);
+    }
+    private static IReadOnlyDictionary<string, object?> BuildHeroMechanicsSummary(HeroMechanicsProfile profile)
+    {
+        return new Dictionary<string, object?>(StringComparer.OrdinalIgnoreCase)
+        {
+            ["supportsRespawn"] = profile.SupportsRespawn,
+            ["supportsPermadeath"] = profile.SupportsPermadeath,
+            ["supportsRescue"] = profile.SupportsRescue,
+            ["defaultRespawnTime"] = profile.DefaultRespawnTime,
+            ["respawnExceptionSources"] = profile.RespawnExceptionSources,
+            ["duplicateHeroPolicy"] = profile.DuplicateHeroPolicy
+        };
+    }
+
+    private static string InferDuplicateHeroPolicy(string profileId, bool supportsPermadeath, bool supportsRescue)
+    {
+        if (supportsRescue)
+        {
+            return "rescue_or_respawn";
+        }
+
+        if (supportsPermadeath)
+        {
+            return "mod_defined_permadeath";
+        }
+
+        if (profileId.Contains("base", StringComparison.OrdinalIgnoreCase))
+        {
+            return "canonical_singleton";
+        }
+
+        return "mod_defined";
+    }
+
+    private static bool ReadBoolMetadata(IReadOnlyDictionary<string, string>? metadata, string key)
+    {
+        if (!TryReadMetadataValue(metadata, key, out var value))
+        {
+            return false;
+        }
+
+        if (bool.TryParse(value, out var parsed))
+        {
+            return parsed;
+        }
+
+        return string.Equals(value, "1", StringComparison.OrdinalIgnoreCase) ||
+               string.Equals(value, "yes", StringComparison.OrdinalIgnoreCase);
+    }
+
+    private static int? ParseOptionalInt(string? value)
+    {
+        if (string.IsNullOrWhiteSpace(value))
+        {
+            return null;
+        }
+
+        return int.TryParse(value, out var parsed) ? parsed : null;
+    }
+
+    private static IReadOnlyList<string> ParseListMetadata(string? raw)
+    {
+        if (string.IsNullOrWhiteSpace(raw))
+        {
+            return Array.Empty<string>();
+        }
+
+        return raw
+            .Split(',', StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries)
+            .Where(static value => !string.IsNullOrWhiteSpace(value))
+            .Distinct(StringComparer.OrdinalIgnoreCase)
+            .OrderBy(static value => value, StringComparer.OrdinalIgnoreCase)
+            .ToArray();
     }
 
     private static IReadOnlyList<string> ParseActiveWorkshopIds(ProcessMetadata process)
@@ -453,27 +811,14 @@ public sealed class ModMechanicDetectionService : IModMechanicDetectionService
 
     private static RosterEntityKind ParseEntityKind(string value)
     {
-        if (value.Equals("Hero", StringComparison.OrdinalIgnoreCase))
+        return value switch
         {
-            return RosterEntityKind.Hero;
-        }
-
-        if (value.Equals("Building", StringComparison.OrdinalIgnoreCase))
-        {
-            return RosterEntityKind.Building;
-        }
-
-        if (value.Equals("SpaceStructure", StringComparison.OrdinalIgnoreCase))
-        {
-            return RosterEntityKind.SpaceStructure;
-        }
-
-        if (value.Equals("AbilityCarrier", StringComparison.OrdinalIgnoreCase))
-        {
-            return RosterEntityKind.AbilityCarrier;
-        }
-
-        return RosterEntityKind.Unit;
+            var x when x.Equals("Hero", StringComparison.OrdinalIgnoreCase) => RosterEntityKind.Hero,
+            var x when x.Equals("Building", StringComparison.OrdinalIgnoreCase) => RosterEntityKind.Building,
+            var x when x.Equals("SpaceStructure", StringComparison.OrdinalIgnoreCase) => RosterEntityKind.SpaceStructure,
+            var x when x.Equals("AbilityCarrier", StringComparison.OrdinalIgnoreCase) => RosterEntityKind.AbilityCarrier,
+            _ => RosterEntityKind.Unit
+        };
     }
 
     private static IReadOnlySet<string> ParseCsvSet(IReadOnlyDictionary<string, string>? metadata, string key)
@@ -489,31 +834,36 @@ public sealed class ModMechanicDetectionService : IModMechanicDetectionService
 
     private static string? ReadMetadataValue(IReadOnlyDictionary<string, string>? metadata, string key)
     {
-        if (metadata is null || !metadata.TryGetValue(key, out var value) || string.IsNullOrWhiteSpace(value))
+        return TryReadMetadataValue(metadata, key, out var value)
+            ? value
+            : null;
+    }
+
+    private static bool TryReadMetadataValue(IReadOnlyDictionary<string, string>? metadata, string key, out string value)
+    {
+        value = string.Empty;
+        if (metadata is null || !metadata.TryGetValue(key, out var raw) || string.IsNullOrWhiteSpace(raw))
         {
-            return null;
+            return false;
         }
 
-        return value.Trim();
+        value = raw.Trim();
+        return true;
     }
 
     private static bool RequiresSpawnRoster(string actionId)
     {
-        return actionId.Equals(ActionSpawnUnitHelper, StringComparison.OrdinalIgnoreCase) ||
-               actionId.Equals(ActionSpawnContextEntity, StringComparison.OrdinalIgnoreCase) ||
-               actionId.Equals(ActionSpawnTacticalEntity, StringComparison.OrdinalIgnoreCase) ||
-               actionId.Equals(ActionSpawnGalacticEntity, StringComparison.OrdinalIgnoreCase);
+        return SpawnRosterActionIds.Contains(actionId);
     }
 
     private static bool RequiresBuildingRoster(string actionId)
     {
-        return actionId.Equals(ActionPlacePlanetBuilding, StringComparison.OrdinalIgnoreCase);
+        return BuildingRosterActionIds.Contains(actionId);
     }
 
     private static bool IsContextFactionAction(string actionId)
     {
-        return actionId.Equals(ActionSetContextFaction, StringComparison.OrdinalIgnoreCase) ||
-               actionId.Equals(ActionSetContextAllegiance, StringComparison.OrdinalIgnoreCase);
+        return ContextFactionActionIds.Contains(actionId);
     }
 
     private static bool IsEntityOperationAction(string actionId)

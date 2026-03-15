@@ -95,6 +95,67 @@ public sealed class MegArchiveReaderTests
         ComputeSha256(format2Bytes).Should().Be("03ce98b378b17b35c13e59a605f25bba0dce1cd575a6bec12f70c948f0f73ac8");
     }
 
+    [Fact]
+    public void Open_ShouldFail_WhenPathIsWhitespace()
+    {
+        var reader = new MegArchiveReader();
+
+        var result = reader.Open("   ");
+
+        result.Succeeded.Should().BeFalse();
+        result.ReasonCode.Should().Be("invalid_path");
+    }
+
+    [Fact]
+    public void Open_ShouldFail_WhenFileIsMissing()
+    {
+        var reader = new MegArchiveReader();
+        var path = Path.Combine(Path.GetTempPath(), $"missing-{Guid.NewGuid():N}.meg");
+
+        var result = reader.Open(path);
+
+        result.Succeeded.Should().BeFalse();
+        result.ReasonCode.Should().Be("missing_file");
+    }
+
+    [Fact]
+    public void Open_ShouldFail_WithInvalidNameTableForFormat2()
+    {
+        var payload = new byte[20];
+        BinaryPrimitives.WriteUInt32LittleEndian(payload.AsSpan(0, 4), 0xFFFFFFFFu);
+        BinaryPrimitives.WriteUInt32LittleEndian(payload.AsSpan(4, 4), 0x3F7D70A4u);
+        BinaryPrimitives.WriteUInt32LittleEndian(payload.AsSpan(8, 4), 20u);
+        BinaryPrimitives.WriteUInt32LittleEndian(payload.AsSpan(12, 4), 1u);
+        BinaryPrimitives.WriteUInt32LittleEndian(payload.AsSpan(16, 4), 0u);
+
+        var reader = new MegArchiveReader();
+        var result = reader.Open(payload, "bad-names.meg");
+
+        result.Succeeded.Should().BeFalse();
+        result.ReasonCode.Should().Be("invalid_name_table");
+    }
+
+    [Fact]
+    public void Open_ShouldFail_WithInvalidFileTableForFormat2()
+    {
+        using var stream = new MemoryStream();
+        using var writer = new BinaryWriter(stream, Encoding.ASCII, leaveOpen: true);
+        writer.Write(0xFFFFFFFFu);
+        writer.Write(0x3F7D70A4u);
+        writer.Write(25u);
+        writer.Write(1u);
+        writer.Write(1u);
+        writer.Write((ushort)1);
+        writer.Write((ushort)0);
+        writer.Write((byte)'A');
+
+        var payload = stream.ToArray();
+        var reader = new MegArchiveReader();
+        var result = reader.Open(payload, "bad-files.meg");
+
+        result.Succeeded.Should().BeFalse();
+        result.ReasonCode.Should().Be("invalid_file_table");
+    }
     private static byte[] BuildFormat1Archive(IReadOnlyList<MegFixtureEntry> entries)
     {
         var nameTable = BuildNameTable(entries);
@@ -197,3 +258,5 @@ public sealed class MegArchiveReaderTests
 
     private sealed record MegFixtureEntry(string Path, byte[] Bytes);
 }
+
+

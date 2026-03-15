@@ -150,6 +150,61 @@ public sealed class MainViewModelHelperCoverageTests
     }
 
     [Fact]
+    public void IsActionAvailableForCurrentSession_ShouldReturnTrue_ForNonSymbolExecutionKinds()
+    {
+        var action = BuildAction("helper_action", ExecutionKind.Helper, MainViewModelDefaults.PayloadKeySymbol);
+        var session = BuildSession(RuntimeMode.Galactic);
+        var symbolMap = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
+        {
+            ["helper_action"] = MainViewModelDefaults.SymbolCredits
+        };
+
+        var available = MainViewModelAttachHelpers.IsActionAvailableForCurrentSession(
+            "helper_action",
+            action,
+            session,
+            symbolMap,
+            out var reason);
+
+        available.Should().BeTrue();
+        reason.Should().BeNull();
+    }
+
+    [Fact]
+    public void IsActionAvailableForCurrentSession_ShouldReturnTrue_WhenPayloadDoesNotRequireSymbol()
+    {
+        var action = BuildAction("set_credits", ExecutionKind.Sdk, MainViewModelDefaults.PayloadKeyIntValue);
+        var session = BuildSession(RuntimeMode.Galactic);
+
+        var available = MainViewModelAttachHelpers.IsActionAvailableForCurrentSession(
+            "set_credits",
+            action,
+            session,
+            MainViewModelDefaults.DefaultSymbolByActionId,
+            out var reason);
+
+        available.Should().BeTrue();
+        reason.Should().BeNull();
+    }
+
+    [Fact]
+    public void IsActionAvailableForCurrentSession_ShouldReturnTrue_WhenDefaultSymbolMappingMissing()
+    {
+        var action = BuildAction("custom_action", ExecutionKind.Sdk, MainViewModelDefaults.PayloadKeySymbol);
+        var session = BuildSession(RuntimeMode.Galactic);
+
+        var available = MainViewModelAttachHelpers.IsActionAvailableForCurrentSession(
+            "custom_action",
+            action,
+            session,
+            MainViewModelDefaults.DefaultSymbolByActionId,
+            out var reason);
+
+        available.Should().BeTrue();
+        reason.Should().BeNull();
+    }
+
+    [Fact]
     public void BuildRequiredPayloadTemplate_ShouldPopulateExpectedDefaults()
     {
         var required = new JsonArray(

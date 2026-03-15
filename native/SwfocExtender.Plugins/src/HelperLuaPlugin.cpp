@@ -1,7 +1,6 @@
 // cppcheck-suppress-file missingIncludeSystem
 #include "swfoc_extender/plugins/HelperLuaPlugin.hpp"
 
-#include <array>
 #include <string>
 
 namespace swfoc::extender::plugins {
@@ -15,8 +14,49 @@ bool IsSupportedHelperFeature(const std::string& featureId) {
            featureId == "spawn_galactic_entity" ||
            featureId == "place_planet_building" ||
            featureId == "set_context_allegiance" ||
+           featureId == "set_context_faction" ||
            featureId == "set_hero_state_helper" ||
-           featureId == "toggle_roe_respawn_helper";
+           featureId == "toggle_roe_respawn_helper" ||
+           featureId == "transfer_fleet_safe" ||
+           featureId == "flip_planet_owner" ||
+           featureId == "switch_player_faction" ||
+           featureId == "edit_hero_state" ||
+           featureId == "create_hero_variant";
+}
+
+
+const char* ResolveExpectedHelperEntryPoint(const std::string& featureId) {
+    static const std::pair<const char*, const char*> kEntryPointMap[] = {
+        {"spawn_unit_helper", "SWFOC_Trainer_Spawn"},
+        {"spawn_context_entity", "SWFOC_Trainer_Spawn_Context"},
+        {"spawn_tactical_entity", "SWFOC_Trainer_Spawn_Context"},
+        {"spawn_galactic_entity", "SWFOC_Trainer_Spawn_Context"},
+        {"place_planet_building", "SWFOC_Trainer_Place_Building"},
+        {"set_context_allegiance", "SWFOC_Trainer_Set_Context_Allegiance"},
+        {"set_context_faction", "SWFOC_Trainer_Set_Context_Allegiance"},
+        {"transfer_fleet_safe", "SWFOC_Trainer_Transfer_Fleet_Safe"},
+        {"flip_planet_owner", "SWFOC_Trainer_Flip_Planet_Owner"},
+        {"switch_player_faction", "SWFOC_Trainer_Switch_Player_Faction"},
+        {"edit_hero_state", "SWFOC_Trainer_Edit_Hero_State"},
+        {"create_hero_variant", "SWFOC_Trainer_Create_Hero_Variant"}
+    };
+
+    for (const auto& entry : kEntryPointMap) {
+        if (featureId == entry.first) {
+            return entry.second;
+        }
+    }
+
+    return nullptr;
+}
+bool HasValue(const std::string& value) {
+    return !value.empty();
+}
+
+void AddOptionalDiagnostic(std::map<std::string, std::string>& diagnostics, const char* key, const std::string& value) {
+    if (!value.empty()) {
+        diagnostics[key] = value;
+    }
 }
 
 PluginResult BuildFailure(
@@ -35,28 +75,38 @@ PluginResult BuildFailure(
     result.diagnostics.emplace("helperEntryPoint", request.helperEntryPoint);
     result.diagnostics.emplace("operationKind", request.operationKind);
     result.diagnostics.emplace("operationToken", request.operationToken);
+    result.diagnostics.emplace("operationPolicy", request.operationPolicy);
+    result.diagnostics.emplace("targetContext", request.targetContext);
+    result.diagnostics.emplace("mutationIntent", request.mutationIntent);
+    result.diagnostics.emplace("helperVerifyState", "failed");
+    result.diagnostics.emplace("helperExecutionPath", "contract_validation");
     return result;
 }
 
-void AddOptionalDiagnostic(std::map<std::string, std::string>& diagnostics, const char* key, const std::string& value);
-
-PluginResult BuildSuccess(const PluginRequest& request) {
+PluginResult BuildExecutionUnavailable(const PluginRequest& request) {
     PluginResult result {};
-    result.succeeded = true;
-    result.reasonCode = "HELPER_EXECUTION_APPLIED";
-    result.hookState = "HOOK_ONESHOT";
-    result.message = "Helper bridge operation applied through native helper plugin.";
+    result.succeeded = false;
+    result.reasonCode = "HELPER_VERIFICATION_FAILED";
+    result.hookState = "DENIED";
+    result.message = "Helper bridge execution requires in-process Lua dispatch; contract-only validation is fail-closed.";
     result.diagnostics = {
         {"featureId", request.featureId},
         {"helperHookId", request.helperHookId},
         {"helperEntryPoint", request.helperEntryPoint},
         {"helperScript", request.helperScript},
         {"helperInvocationSource", "native_bridge"},
-        {"helperVerifyState", "applied"},
+        {"helperVerifyState", "unavailable"},
+        {"helperExecutionPath", "native_dispatch_unavailable"},
+        {"helperMutationVerified", "false"},
         {"processId", std::to_string(request.processId)},
         {"operationKind", request.operationKind},
         {"operationToken", request.operationToken},
-        {"helperInvocationContractVersion", request.invocationContractVersion}};
+        {"helperInvocationContractVersion", request.invocationContractVersion},
+        {"verificationContractVersion", request.verificationContractVersion},
+        {"operationPolicy", request.operationPolicy},
+        {"targetContext", request.targetContext},
+        {"mutationIntent", request.mutationIntent}
+    };
 
     AddOptionalDiagnostic(result.diagnostics, "unitId", request.unitId);
     AddOptionalDiagnostic(result.diagnostics, "entityId", request.entityId);
@@ -76,10 +126,6 @@ PluginResult BuildSuccess(const PluginRequest& request) {
     result.diagnostics["forceOverride"] = request.forceOverride ? "true" : "false";
     result.diagnostics["appliedEntityId"] = !request.entityId.empty() ? request.entityId : request.unitId;
     return result;
-}
-
-bool HasValue(const std::string& value) {
-    return !value.empty();
 }
 
 bool IsSpawnFeature(const std::string& featureId) {
@@ -102,12 +148,6 @@ bool RequiresSpawnPlacement(const PluginRequest& request) {
 
 bool HasSpawnPlacement(const PluginRequest& request) {
     return HasValue(request.entryMarker) || HasValue(request.worldPosition);
-}
-
-void AddOptionalDiagnostic(std::map<std::string, std::string>& diagnostics, const char* key, const std::string& value) {
-    if (!value.empty()) {
-        diagnostics[key] = value;
-    }
 }
 
 bool ValidateCommonRequest(const PluginRequest& request, PluginResult& failure) {
@@ -136,11 +176,53 @@ bool ValidateCommonRequest(const PluginRequest& request, PluginResult& failure) 
         return false;
     }
 
+    if (!HasValue(request.helperScript)) {
+        failure = BuildFailure(
+            request,
+            "HELPER_INVOCATION_FAILED",
+            "Helper bridge execution requires helperScript metadata.");
+        return false;
+    }
+
+    const auto* expectedEntryPoint = ResolveExpectedHelperEntryPoint(request.featureId);
+    if (expectedEntryPoint != nullptr && request.helperEntryPoint != expectedEntryPoint) {
+        failure = BuildFailure(
+            request,
+            "HELPER_ENTRYPOINT_NOT_FOUND",
+            "Helper entrypoint did not match expected operation entrypoint.",
+            {{"expectedHelperEntryPoint", expectedEntryPoint}});
+        return false;
+    }
+
+    if (!HasValue(request.operationKind)) {
+        failure = BuildFailure(
+            request,
+            "HELPER_INVOCATION_FAILED",
+            "Helper bridge execution requires operationKind.");
+        return false;
+    }
+
     if (!HasValue(request.operationToken)) {
         failure = BuildFailure(
             request,
             "HELPER_VERIFICATION_FAILED",
             "Helper bridge execution requires a non-empty operation token for verification.");
+        return false;
+    }
+
+    if (!HasValue(request.invocationContractVersion) || !HasValue(request.verificationContractVersion)) {
+        failure = BuildFailure(
+            request,
+            "HELPER_VERIFICATION_FAILED",
+            "Helper bridge execution requires invocation and verification contract versions.");
+        return false;
+    }
+
+    if (!HasValue(request.operationPolicy) || !HasValue(request.targetContext) || !HasValue(request.mutationIntent)) {
+        failure = BuildFailure(
+            request,
+            "HELPER_INVOCATION_FAILED",
+            "Helper bridge execution requires operationPolicy, targetContext, and mutationIntent metadata.");
         return false;
     }
 
@@ -152,14 +234,14 @@ bool ValidateSpawnUnitRequest(const PluginRequest& request, PluginResult& failur
         return true;
     }
 
-    if (HasValue(request.unitId) && HasValue(request.entryMarker) && HasValue(request.faction)) {
+    if (HasValue(request.unitId) && HasSpawnFaction(request) && HasSpawnPlacement(request)) {
         return true;
     }
 
     failure = BuildFailure(
         request,
         "HELPER_INVOCATION_FAILED",
-        "spawn_unit_helper requires unitId, entryMarker, and faction payload fields.");
+        "spawn_unit_helper requires unitId, faction/targetFaction, and entryMarker/worldPosition.");
     return false;
 }
 
@@ -184,15 +266,15 @@ bool ValidateSpawnRequest(const PluginRequest& request, PluginResult& failure) {
         return false;
     }
 
-    if (!RequiresSpawnPlacement(request) || HasSpawnPlacement(request)) {
-        return true;
+    if (RequiresSpawnPlacement(request) && !HasSpawnPlacement(request)) {
+        failure = BuildFailure(
+            request,
+            "HELPER_INVOCATION_FAILED",
+            "Tactical/context spawn requires entryMarker or worldPosition.");
+        return false;
     }
 
-    failure = BuildFailure(
-        request,
-        "HELPER_INVOCATION_FAILED",
-        "Tactical/context spawn requires entryMarker or worldPosition.");
-    return false;
+    return true;
 }
 
 bool ValidateBuildingRequest(const PluginRequest& request, PluginResult& failure) {
@@ -208,43 +290,109 @@ bool ValidateBuildingRequest(const PluginRequest& request, PluginResult& failure
         return false;
     }
 
-    if (HasValue(request.targetFaction) || HasValue(request.faction)) {
-        return true;
+    if (!HasValue(request.targetFaction) && !HasValue(request.faction)) {
+        failure = BuildFailure(
+            request,
+            "HELPER_INVOCATION_FAILED",
+            "place_planet_building requires faction or targetFaction.");
+        return false;
     }
 
-    failure = BuildFailure(
-        request,
-        "HELPER_INVOCATION_FAILED",
-        "place_planet_building requires faction or targetFaction.");
-    return false;
+    return true;
 }
 
 bool ValidateAllegianceRequest(const PluginRequest& request, PluginResult& failure) {
-    if (request.featureId != "set_context_allegiance") {
+    if (request.featureId != "set_context_allegiance" && request.featureId != "set_context_faction") {
         return true;
     }
 
-    if (HasValue(request.targetFaction) || HasValue(request.faction)) {
-        return true;
+    if (!HasValue(request.targetFaction) && !HasValue(request.faction)) {
+        failure = BuildFailure(
+            request,
+            "HELPER_INVOCATION_FAILED",
+            "set_context_allegiance requires faction or targetFaction.");
+        return false;
     }
 
-    failure = BuildFailure(
-        request,
-        "HELPER_INVOCATION_FAILED",
-        "set_context_allegiance requires faction or targetFaction.");
-    return false;
+    return true;
 }
 
 bool ValidateHeroStateRequest(const PluginRequest& request, PluginResult& failure) {
-    if (request.featureId != "set_hero_state_helper" || HasValue(request.globalKey)) {
+    if (request.featureId == "set_hero_state_helper" || request.featureId == "edit_hero_state") {
+        if (!HasValue(request.globalKey) && !HasValue(request.entityId)) {
+            failure = BuildFailure(
+                request,
+                "HELPER_INVOCATION_FAILED",
+                "Hero state operations require globalKey or entityId payload field.");
+            return false;
+        }
+    }
+
+    return true;
+}
+
+bool ValidateTransferFleetRequest(const PluginRequest& request, PluginResult& failure) {
+    if (request.featureId != "transfer_fleet_safe") {
         return true;
     }
 
-    failure = BuildFailure(
-        request,
-        "HELPER_INVOCATION_FAILED",
-        "set_hero_state_helper requires globalKey payload field.");
-    return false;
+    if (!HasValue(request.entityId) || !HasValue(request.sourceFaction) || !HasValue(request.targetFaction)) {
+        failure = BuildFailure(
+            request,
+            "HELPER_INVOCATION_FAILED",
+            "transfer_fleet_safe requires entityId, sourceFaction, and targetFaction.");
+        return false;
+    }
+
+    return true;
+}
+
+bool ValidatePlanetFlipRequest(const PluginRequest& request, PluginResult& failure) {
+    if (request.featureId != "flip_planet_owner") {
+        return true;
+    }
+
+    if (!HasValue(request.entityId) || !HasValue(request.targetFaction)) {
+        failure = BuildFailure(
+            request,
+            "HELPER_INVOCATION_FAILED",
+            "flip_planet_owner requires entityId and targetFaction.");
+        return false;
+    }
+
+    return true;
+}
+
+bool ValidateSwitchFactionRequest(const PluginRequest& request, PluginResult& failure) {
+    if (request.featureId != "switch_player_faction") {
+        return true;
+    }
+
+    if (!HasValue(request.targetFaction)) {
+        failure = BuildFailure(
+            request,
+            "HELPER_INVOCATION_FAILED",
+            "switch_player_faction requires targetFaction.");
+        return false;
+    }
+
+    return true;
+}
+
+bool ValidateHeroVariantRequest(const PluginRequest& request, PluginResult& failure) {
+    if (request.featureId != "create_hero_variant") {
+        return true;
+    }
+
+    if (!HasValue(request.entityId) || !HasValue(request.unitId)) {
+        failure = BuildFailure(
+            request,
+            "HELPER_INVOCATION_FAILED",
+            "create_hero_variant requires entityId and unitId (variant id)." );
+        return false;
+    }
+
+    return true;
 }
 
 bool ValidateRequest(const PluginRequest& request, PluginResult& failure) {
@@ -253,14 +401,24 @@ bool ValidateRequest(const PluginRequest& request, PluginResult& failure) {
            ValidateSpawnRequest(request, failure) &&
            ValidateBuildingRequest(request, failure) &&
            ValidateAllegianceRequest(request, failure) &&
-           ValidateHeroStateRequest(request, failure);
+           ValidateHeroStateRequest(request, failure) &&
+           ValidateTransferFleetRequest(request, failure) &&
+           ValidatePlanetFlipRequest(request, failure) &&
+           ValidateSwitchFactionRequest(request, failure) &&
+           ValidateHeroVariantRequest(request, failure);
 }
 
-CapabilityState BuildAvailableCapability() {
+CapabilityState BuildUnavailableCapability() {
     CapabilityState state {};
-    state.available = true;
-    state.state = "Verified";
-    state.reasonCode = "CAPABILITY_PROBE_PASS";
+    state.available = false;
+    state.state = "Unavailable";
+    state.reasonCode = "HELPER_VERIFICATION_FAILED";
+    state.diagnostics = {
+        {"probeSource", "native_helper_bridge"},
+        {"helperBridgeState", "unavailable"},
+        {"helperExecutionPath", "native_dispatch_unavailable"},
+        {"helperVerifyState", "failed"}
+    };
     return state;
 }
 
@@ -276,20 +434,27 @@ PluginResult HelperLuaPlugin::execute(const PluginRequest& request) {
         return failure;
     }
 
-    return BuildSuccess(request);
+    return BuildExecutionUnavailable(request);
 }
 
 CapabilitySnapshot HelperLuaPlugin::capabilitySnapshot() const {
     CapabilitySnapshot snapshot {};
-    snapshot.features.emplace("spawn_unit_helper", BuildAvailableCapability());
-    snapshot.features.emplace("spawn_context_entity", BuildAvailableCapability());
-    snapshot.features.emplace("spawn_tactical_entity", BuildAvailableCapability());
-    snapshot.features.emplace("spawn_galactic_entity", BuildAvailableCapability());
-    snapshot.features.emplace("place_planet_building", BuildAvailableCapability());
-    snapshot.features.emplace("set_context_allegiance", BuildAvailableCapability());
-    snapshot.features.emplace("set_hero_state_helper", BuildAvailableCapability());
-    snapshot.features.emplace("toggle_roe_respawn_helper", BuildAvailableCapability());
+    snapshot.features.emplace("spawn_unit_helper", BuildUnavailableCapability());
+    snapshot.features.emplace("spawn_context_entity", BuildUnavailableCapability());
+    snapshot.features.emplace("spawn_tactical_entity", BuildUnavailableCapability());
+    snapshot.features.emplace("spawn_galactic_entity", BuildUnavailableCapability());
+    snapshot.features.emplace("place_planet_building", BuildUnavailableCapability());
+    snapshot.features.emplace("set_context_allegiance", BuildUnavailableCapability());
+    snapshot.features.emplace("set_context_faction", BuildUnavailableCapability());
+    snapshot.features.emplace("set_hero_state_helper", BuildUnavailableCapability());
+    snapshot.features.emplace("toggle_roe_respawn_helper", BuildUnavailableCapability());
+    snapshot.features.emplace("transfer_fleet_safe", BuildUnavailableCapability());
+    snapshot.features.emplace("flip_planet_owner", BuildUnavailableCapability());
+    snapshot.features.emplace("switch_player_faction", BuildUnavailableCapability());
+    snapshot.features.emplace("edit_hero_state", BuildUnavailableCapability());
+    snapshot.features.emplace("create_hero_variant", BuildUnavailableCapability());
     return snapshot;
 }
 
 } // namespace swfoc::extender::plugins
+

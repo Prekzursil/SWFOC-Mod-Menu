@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-from __future__ import annotations
 
 import argparse
 import json
@@ -10,7 +9,10 @@ import urllib.parse
 import urllib.request
 from datetime import datetime, timezone
 from pathlib import Path
-from typing import Any
+from typing import Any, Dict, List, Optional, Tuple
+
+NONE_MARKER = "- None"
+PENDING_STATES = {"pending", "queued", "in_progress"}
 
 
 def _parse_args() -> argparse.Namespace:
@@ -25,7 +27,7 @@ def _parse_args() -> argparse.Namespace:
     return parser.parse_args()
 
 
-def _api_get(repo: str, path: str, token: str) -> dict[str, Any]:
+def _api_get(repo: str, path: str, token: str) -> Dict[str, Any]:
     url = f"https://api.github.com/repos/{repo}/{path.lstrip('/')}"
     req = urllib.request.Request(
         url,
@@ -37,13 +39,22 @@ def _api_get(repo: str, path: str, token: str) -> dict[str, Any]:
         },
         method="GET",
     )
+    # nosemgrep: python.lang.security.audit.dynamic-urllib-use-detected.dynamic-urllib-use-detected
     with urllib.request.urlopen(req, timeout=30) as resp:
         return json.loads(resp.read().decode("utf-8"))
 
 
-def _collect_contexts(check_runs_payload: dict[str, Any], status_payload: dict[str, Any]) -> dict[str, dict[str, str]]:
-    contexts: dict[str, dict[str, str]] = {}
+def _collect_contexts(check_runs_payload: Dict[str, Any], status_payload: Dict[str, Any]) -> Dict[str, Dict[str, str]]:
+    contexts: Dict[str, Dict[str, str]] = {}
+    _collect_check_run_contexts(check_runs_payload, contexts)
+    _collect_status_contexts(status_payload, contexts)
+    return contexts
 
+
+def _collect_check_run_contexts(
+    check_runs_payload: Dict[str, Any],
+    contexts: Dict[str, Dict[str, str]],
+) -> None:
     for run in check_runs_payload.get("check_runs", []) or []:
         name = str(run.get("name") or "").strip()
         if not name:
@@ -54,6 +65,11 @@ def _collect_contexts(check_runs_payload: dict[str, Any], status_payload: dict[s
             "source": "check_run",
         }
 
+
+def _collect_status_contexts(
+    status_payload: Dict[str, Any],
+    contexts: Dict[str, Dict[str, str]],
+) -> None:
     for status in status_payload.get("statuses", []) or []:
         name = str(status.get("context") or "").strip()
         if not name:
@@ -64,12 +80,15 @@ def _collect_contexts(check_runs_payload: dict[str, Any], status_payload: dict[s
             "source": "status",
         }
 
-    return contexts
-
-
-def _evaluate(required: list[str], contexts: dict[str, dict[str, str]]) -> tuple[str, list[str], list[str]]:
-    missing: list[str] = []
-    failed: list[str] = []
+def _evaluate(
+    required: List[str],
+    contexts: Dict[str, Dict[str, str]],
+    *,
+    timed_out: bool = False,
+) -> Tuple[str, List[str], List[str], List[str]]:
+    missing: List[str] = []
+    failed: List[str] = []
+    pending: List[str] = []
 
     for context in required:
         observed = contexts.get(context)
@@ -77,24 +96,51 @@ def _evaluate(required: list[str], contexts: dict[str, dict[str, str]]) -> tuple
             missing.append(context)
             continue
 
-        source = observed.get("source")
-        if source == "check_run":
-            state = observed.get("state")
-            conclusion = observed.get("conclusion")
-            if state != "completed":
-                failed.append(f"{context}: status={state}")
-            elif conclusion != "success":
-                failed.append(f"{context}: conclusion={conclusion}")
-        else:
-            conclusion = observed.get("conclusion")
-            if conclusion != "success":
-                failed.append(f"{context}: state={conclusion}")
+        failed_entry, pending_entry = _evaluate_observed_context(context, observed)
+        if failed_entry:
+            failed.append(failed_entry)
+        elif pending_entry:
+            pending.append(pending_entry)
 
-    status = "pass" if not missing and not failed else "fail"
-    return status, missing, failed
+    status = _resolve_status(missing, failed, pending, timed_out)
+    if status == "fail" and pending and timed_out:
+        failed.extend(pending)
+    return status, missing, failed, pending
 
 
-def _render_md(payload: dict) -> str:
+def _resolve_status(
+    missing: List[str],
+    failed: List[str],
+    pending: List[str],
+    timed_out: bool,
+) -> str:
+    if missing or failed or (pending and timed_out):
+        return "fail"
+    if pending:
+        return "pending"
+    return "pass"
+
+
+def _evaluate_observed_context(context: str, observed: Dict[str, str]) -> Tuple[Optional[str], Optional[str]]:
+    source = observed.get("source")
+    if source == "check_run":
+        state = observed.get("state")
+        conclusion = observed.get("conclusion")
+        if state != "completed":
+            return None, f"{context}: status={state}"
+        if conclusion != "success":
+            return f"{context}: conclusion={conclusion}", None
+        return None, None
+
+    conclusion = observed.get("conclusion")
+    if conclusion in PENDING_STATES:
+        return None, f"{context}: state={conclusion}"
+    if conclusion != "success":
+        return f"{context}: state={conclusion}", None
+    return None, None
+
+
+def _render_md(payload: Dict[str, Any]) -> str:
     lines = [
         "# Quality Zero Gate - Required Contexts",
         "",
@@ -105,23 +151,25 @@ def _render_md(payload: dict) -> str:
         "## Missing contexts",
     ]
 
-    missing = payload.get("missing") or []
-    if missing:
-        lines.extend(f"- `{name}`" for name in missing)
-    else:
-        lines.append("- None")
+    _append_context_section(lines, "## Missing contexts", payload.get("missing") or [], "`{}`")
+    _append_context_section(lines, "## Failed contexts", payload.get("failed") or [], "{}")
+    _append_context_section(lines, "## Pending contexts", payload.get("pending") or [], "{}")
 
-    lines.extend(["", "## Failed contexts"])
-    failed = payload.get("failed") or []
-    if failed:
-        lines.extend(f"- {entry}" for entry in failed)
-    else:
-        lines.append("- None")
+    lines.extend(["", f"- Timed out: `{payload.get('timed_out', False)}`"])
 
     return "\n".join(lines) + "\n"
 
 
-def _safe_output_path(raw: str, fallback: str, base: Path | None = None) -> Path:
+def _append_context_section(lines: List[str], title: str, values: List[str], template: str) -> None:
+    lines.extend(["", title])
+    if values:
+        lines.extend(f"- {template.format(value)}" for value in values)
+        return
+
+    lines.append(NONE_MARKER)
+
+
+def _safe_output_path(raw: str, fallback: str, base: Optional[Path] = None) -> Path:
     root = (base or Path.cwd()).resolve()
     candidate = Path((raw or "").strip() or fallback).expanduser()
     if not candidate.is_absolute():
@@ -132,6 +180,56 @@ def _safe_output_path(raw: str, fallback: str, base: Path | None = None) -> Path
     except ValueError as exc:
         raise ValueError(f"Output path escapes workspace root: {candidate}") from exc
     return resolved
+
+
+def _build_payload(
+    *,
+    status: str,
+    args: argparse.Namespace,
+    required: List[str],
+    missing: List[str],
+    failed: List[str],
+    pending: List[str],
+    contexts: Dict[str, Dict[str, Any]],
+    timed_out: bool,
+) -> Dict[str, Any]:
+    return {
+        "status": status,
+        "repo": args.repo,
+        "sha": args.sha,
+        "required": required,
+        "missing": missing,
+        "failed": failed,
+        "pending": pending,
+        "contexts": contexts,
+        "timestamp_utc": datetime.now(timezone.utc).isoformat(),
+        "timed_out": timed_out,
+    }
+
+
+def _fetch_context_snapshot(args: argparse.Namespace, token: str) -> Dict[str, Dict[str, Any]]:
+    check_runs = _api_get(args.repo, f"commits/{args.sha}/check-runs?per_page=100", token)
+    statuses = _api_get(args.repo, f"commits/{args.sha}/status", token)
+    return _collect_contexts(check_runs, statuses)
+
+
+def _should_keep_waiting(
+    *,
+    status: str,
+    missing: List[str],
+    contexts: Dict[str, Dict[str, Any]],
+) -> bool:
+    if status == "pass":
+        return False
+
+    if missing:
+        return True
+
+    return any(
+        value.get("state") != "completed"
+        for value in contexts.values()
+        if value.get("source") == "check_run"
+    )
 
 
 def main() -> int:
@@ -146,32 +244,41 @@ def main() -> int:
 
     deadline = time.time() + max(args.timeout_seconds, 1)
 
-    final_payload: dict[str, Any] | None = None
+    final_payload: Optional[Dict[str, Any]] = None
+    timed_out = False
     while time.time() <= deadline:
-        check_runs = _api_get(args.repo, f"commits/{args.sha}/check-runs?per_page=100", token)
-        statuses = _api_get(args.repo, f"commits/{args.sha}/status", token)
-        contexts = _collect_contexts(check_runs, statuses)
-        status, missing, failed = _evaluate(required, contexts)
+        contexts = _fetch_context_snapshot(args, token)
+        status, missing, failed, pending = _evaluate(required, contexts, timed_out=False)
 
-        final_payload = {
-            "status": status,
-            "repo": args.repo,
-            "sha": args.sha,
-            "required": required,
-            "missing": missing,
-            "failed": failed,
-            "contexts": contexts,
-            "timestamp_utc": datetime.now(timezone.utc).isoformat(),
-        }
+        final_payload = _build_payload(
+            status=status,
+            args=args,
+            required=required,
+            missing=missing,
+            failed=failed,
+            pending=pending,
+            contexts=contexts,
+            timed_out=False,
+        )
 
-        if status == "pass":
-            break
-
-        # wait only while there are missing contexts or in-progress check-runs
-        in_progress = any(v.get("state") != "completed" for v in contexts.values() if v.get("source") == "check_run")
-        if not missing and not in_progress:
+        if not _should_keep_waiting(status=status, missing=missing, contexts=contexts):
             break
         time.sleep(max(args.poll_seconds, 1))
+    else:
+        timed_out = True
+
+    if final_payload and timed_out and final_payload["status"] != "pass":
+        status, missing, failed, pending = _evaluate(required, final_payload["contexts"], timed_out=True)
+        final_payload = _build_payload(
+            status=status,
+            args=args,
+            required=required,
+            missing=missing,
+            failed=failed,
+            pending=pending,
+            contexts=final_payload["contexts"],
+            timed_out=True,
+        )
 
     if final_payload is None:
         raise SystemExit("No payload collected")

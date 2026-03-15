@@ -29,6 +29,10 @@ struct PluginRequest {
     [[maybe_unused]] std::string operationKind {};
     [[maybe_unused]] std::string operationToken {};
     [[maybe_unused]] std::string invocationContractVersion {};
+    [[maybe_unused]] std::string verificationContractVersion {};
+    [[maybe_unused]] std::string operationPolicy {};
+    [[maybe_unused]] std::string targetContext {};
+    [[maybe_unused]] std::string mutationIntent {};
     [[maybe_unused]] std::string unitId {};
     [[maybe_unused]] std::string entityId {};
     [[maybe_unused]] std::string entryMarker {};

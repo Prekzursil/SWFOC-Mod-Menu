@@ -75,10 +75,11 @@
         "boolValue": "required:boolean"
       },
       "verifyContract": {
-        "helperVerifyState": "applied"
+        "helperVerifyState": "applied",
+        "helperExecutionPath": "required:echo"
       },
       "metadata": {
-        "sha256": "e3eefa9702c3c648049eb83bca60874c7ae00926c9f96f951f23144e7ae3a88b"
+        "sha256": "d590b31df0faf162bf8c7f46f96138900d8d7e7651e192f31d429b6081f2d677"
       }
     }
   ],
@@ -87,6 +88,8 @@
     "requiredWorkshopIds": "1397421866,3447786229",
     "requiredMarkerFile": "Data/XML/Gameobjectfiles.xml",
     "dependencySensitiveActions": "spawn_unit_helper,set_hero_state_helper,toggle_roe_respawn_helper",
+    "helperAutoloadStrategy": "story_wrapper_chain",
+    "helperAutoloadScripts": "Library/PGStoryMode.lua",
     "localPathHints": "roe,order 66,order-66,3447786229",
     "localParentPathHints": "1397421866,aotr,awakening of the rebellion,awakening-of-the-rebellion",
     "profileAliases": "roe_3447786229_swfoc,roe,order66,order 66 submod"

@@ -35,7 +35,7 @@ class CoverageStats:
 _PAIR_RE = re.compile(r"^(?P<name>[^=]+)=(?P<path>.+)$")
 _XML_LINES_VALID_RE = re.compile(r'lines-valid="([0-9]+(?:\\.[0-9]+)?)"')
 _XML_LINES_COVERED_RE = re.compile(r'lines-covered="([0-9]+(?:\\.[0-9]+)?)"')
-_XML_LINE_HITS_RE = re.compile(r"<line\\b[^>]*\\bhits=\"([0-9]+(?:\\.[0-9]+)?)\"")
+_XML_LINE_HITS_RE = re.compile(r'<line\b[^>]*\bhits="([0-9]+(?:\.[0-9]+)?)"')
 _CONDITION_COVERAGE_RE = re.compile(r"\((?P<covered>\d+)/(?P<total>\d+)\)")
 _XML_CLASS_RE = re.compile(r"<class\b(?P<attrs>[^>]*)>(?P<body>.*?)</class>", re.IGNORECASE | re.DOTALL)
 _XML_LINE_RE = re.compile(r"<line\b(?P<attrs>[^>]*)/?>", re.IGNORECASE)
@@ -146,6 +146,9 @@ def parse_coverage_xml(name: str, path: Path, include_generated: bool) -> Covera
     # Fallback for malformed XML without class/line data.
     if line_total == 0:
         line_covered, line_total = _parse_fallback_line_totals(text)
+
+    if line_total == 0:
+        raise ValueError(f"{name} coverage XML did not contain any parseable line data: {path}")
 
     return CoverageStats(
         name=name,

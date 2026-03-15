@@ -16,6 +16,11 @@ public sealed class NamedPipeHelperBridgeBackend : IHelperBridgeBackend
     private const string ActionToggleRoeRespawnHelper = "toggle_roe_respawn_helper";
     private const string ActionSetContextAllegiance = "set_context_allegiance";
     private const string ActionSetContextFaction = "set_context_faction";
+    private const string ActionTransferFleetSafe = "transfer_fleet_safe";
+    private const string ActionFlipPlanetOwner = "flip_planet_owner";
+    private const string ActionSwitchPlayerFaction = "switch_player_faction";
+    private const string ActionEditHeroState = "edit_hero_state";
+    private const string ActionCreateHeroVariant = "create_hero_variant";
 
     private const string DiagnosticHelperBridgeState = "helperBridgeState";
     private const string DiagnosticProbeReasonCode = "probeReasonCode";
@@ -25,11 +30,36 @@ public sealed class NamedPipeHelperBridgeBackend : IHelperBridgeBackend
     private const string DiagnosticHelperEntryPoint = "helperEntryPoint";
     private const string DiagnosticHelperHookId = "helperHookId";
     private const string DiagnosticHelperVerifyState = "helperVerifyState";
+    private const string DiagnosticHelperExecutionPath = "helperExecutionPath";
     private const string DiagnosticOperationKind = "operationKind";
     private const string DiagnosticOperationToken = "operationToken";
     private const string DiagnosticProcessId = "processId";
     private const string DiagnosticProcessName = "processName";
     private const string DiagnosticProcessPath = "processPath";
+    private const string DiagnosticHelperEvidenceState = "helperEvidenceState";
+    private const string DiagnosticHelperEvidenceReasonCode = "helperEvidenceReasonCode";
+    private const string DiagnosticHelperEvidenceSourcePath = "helperEvidenceSourcePath";
+    private const string DiagnosticHelperAutoloadState = "helperAutoloadState";
+    private const string DiagnosticHelperAutoloadReasonCode = "helperAutoloadReasonCode";
+    private const string DiagnosticHelperAutoloadSourcePath = "helperAutoloadSourcePath";
+    private const string DiagnosticHelperAutoloadStrategy = "helperAutoloadStrategy";
+    private const string DiagnosticHelperAutoloadScript = "helperAutoloadScript";
+    private const string DiagnosticConfiguredHooks = "configuredHooks";
+    private const string DiagnosticConfiguredEntryPoints = "configuredEntryPoints";
+    private const string DiagnosticBlockingReason = "blockingReason";
+    private const string DiagnosticHelperCommandTransportState = "helperCommandTransportState";
+    private const string DiagnosticHelperCommandTransportModel = "helperCommandTransportModel";
+    private const string DiagnosticHelperCommandPendingDirectory = "helperCommandPendingDirectory";
+    private const string DiagnosticHelperCommandClaimedDirectory = "helperCommandClaimedDirectory";
+    private const string DiagnosticHelperCommandReceiptDirectory = "helperCommandReceiptDirectory";
+    private const string DiagnosticHelperStagedCommandPath = "helperStagedCommandPath";
+    private const string DiagnosticHelperStagedClaimPath = "helperStagedClaimPath";
+    private const string DiagnosticHelperStagedReceiptPath = "helperStagedReceiptPath";
+    private const string DiagnosticHelperCommandStageState = "helperCommandStageState";
+    private const string DiagnosticAppliedEntityId = "appliedEntityId";
+    private const string DiagnosticHelperReceiptReasonCode = "helperReceiptReasonCode";
+    private const string DiagnosticHelperReceiptMessage = "helperReceiptMessage";
+    private const string DiagnosticHelperReceiptSourcePath = "helperReceiptSourcePath";
 
     private const string PayloadOperationKind = "operationKind";
     private const string PayloadOperationToken = "operationToken";
@@ -39,8 +69,19 @@ public sealed class NamedPipeHelperBridgeBackend : IHelperBridgeBackend
     private const string PayloadHelperScript = "helperScript";
     private const string PayloadHelperArgContract = "helperArgContract";
     private const string PayloadHelperVerifyContract = "helperVerifyContract";
-
+    private const string PayloadOperationPolicy = "operationPolicy";
+    private const string PayloadTargetContext = "targetContext";
+    private const string PayloadMutationIntent = "mutationIntent";
+    private const string PayloadVerificationContractVersion = "verificationContractVersion";
+    private const string PayloadAllowCrossFaction = "allowCrossFaction";
+    private const string PayloadPlacementMode = "placementMode";
+    private const string PayloadForceOverride = "forceOverride";
     private const string InvocationSourceNativeBridge = "native_bridge";
+    private const string InvocationSourceOverlayCommandInbox = "overlay_command_inbox";
+    private const string MutationIntentSpawnEntity = "spawn_entity";
+    private const string ExecutionPathContractValidationOnly = "contract_validation_only";
+    private static readonly TimeSpan OverlayReceiptWaitWindow = TimeSpan.FromMilliseconds(350);
+    private static readonly TimeSpan OverlayReceiptPollDelay = TimeSpan.FromMilliseconds(25);
 
     private static readonly string[] HelperFeatureIds =
     [
@@ -51,48 +92,208 @@ public sealed class NamedPipeHelperBridgeBackend : IHelperBridgeBackend
         ActionPlacePlanetBuilding,
         ActionSetHeroStateHelper,
         ActionToggleRoeRespawnHelper,
-        ActionSetContextAllegiance
+        ActionSetContextAllegiance,
+        ActionSetContextFaction,
+        ActionTransferFleetSafe,
+        ActionFlipPlanetOwner,
+        ActionSwitchPlayerFaction,
+        ActionEditHeroState,
+        ActionCreateHeroVariant
     ];
 
-    private readonly IExecutionBackend _backend;
+    private static readonly IReadOnlyDictionary<string, string> DefaultOperationPolicies =
+        new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
+        {
+            [ActionSpawnContextEntity] = "tactical_ephemeral_zero_pop",
+            [ActionSpawnTacticalEntity] = "tactical_ephemeral_zero_pop",
+            [ActionSpawnGalacticEntity] = "galactic_persistent_spawn",
+            [ActionPlacePlanetBuilding] = "galactic_building_safe_rules",
+            [ActionTransferFleetSafe] = "fleet_transfer_safe",
+            [ActionFlipPlanetOwner] = "planet_flip_transactional",
+            [ActionSwitchPlayerFaction] = "switch_player_faction",
+            [ActionEditHeroState] = "hero_state_adaptive",
+            [ActionCreateHeroVariant] = "hero_variant_patch_mod"
+        };
 
-    public NamedPipeHelperBridgeBackend(IExecutionBackend backend)
+    private static readonly IReadOnlyDictionary<string, string> DefaultMutationIntents =
+        new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
+        {
+            [ActionSpawnUnitHelper] = MutationIntentSpawnEntity,
+            [ActionSpawnContextEntity] = MutationIntentSpawnEntity,
+            [ActionSpawnTacticalEntity] = MutationIntentSpawnEntity,
+            [ActionSpawnGalacticEntity] = MutationIntentSpawnEntity,
+            [ActionPlacePlanetBuilding] = "place_building",
+            [ActionSetContextAllegiance] = "set_context_allegiance",
+            [ActionSetContextFaction] = "set_context_allegiance",
+            [ActionSetHeroStateHelper] = "edit_hero_state",
+            [ActionEditHeroState] = "edit_hero_state",
+            [ActionToggleRoeRespawnHelper] = "toggle_respawn_policy",
+            [ActionTransferFleetSafe] = "transfer_fleet_safe",
+            [ActionFlipPlanetOwner] = "flip_planet_owner",
+            [ActionSwitchPlayerFaction] = "switch_player_faction",
+            [ActionCreateHeroVariant] = "create_hero_variant"
+        };
+
+    private static readonly IReadOnlyDictionary<string, HelperBridgeOperationKind> DefaultOperationKinds =
+        new Dictionary<string, HelperBridgeOperationKind>(StringComparer.OrdinalIgnoreCase)
+        {
+            [ActionSpawnUnitHelper] = HelperBridgeOperationKind.SpawnUnitHelper,
+            [ActionSpawnContextEntity] = HelperBridgeOperationKind.SpawnContextEntity,
+            [ActionSpawnTacticalEntity] = HelperBridgeOperationKind.SpawnTacticalEntity,
+            [ActionSpawnGalacticEntity] = HelperBridgeOperationKind.SpawnGalacticEntity,
+            [ActionPlacePlanetBuilding] = HelperBridgeOperationKind.PlacePlanetBuilding,
+            [ActionSetContextAllegiance] = HelperBridgeOperationKind.SetContextAllegiance,
+            [ActionSetContextFaction] = HelperBridgeOperationKind.SetContextAllegiance,
+            [ActionTransferFleetSafe] = HelperBridgeOperationKind.TransferFleetSafe,
+            [ActionFlipPlanetOwner] = HelperBridgeOperationKind.FlipPlanetOwner,
+            [ActionSwitchPlayerFaction] = HelperBridgeOperationKind.SwitchPlayerFaction,
+            [ActionEditHeroState] = HelperBridgeOperationKind.EditHeroState,
+            [ActionCreateHeroVariant] = HelperBridgeOperationKind.CreateHeroVariant,
+            [ActionSetHeroStateHelper] = HelperBridgeOperationKind.SetHeroStateHelper,
+            [ActionToggleRoeRespawnHelper] = HelperBridgeOperationKind.ToggleRoeRespawnHelper
+        };
+
+    private static readonly IReadOnlyDictionary<string, string> DefaultHelperEntryPoints =
+        new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
+        {
+            [ActionSpawnContextEntity] = "SWFOC_Trainer_Spawn_Context",
+            [ActionSpawnTacticalEntity] = "SWFOC_Trainer_Spawn_Context",
+            [ActionSpawnGalacticEntity] = "SWFOC_Trainer_Spawn_Context",
+            [ActionPlacePlanetBuilding] = "SWFOC_Trainer_Place_Building",
+            [ActionSetContextAllegiance] = "SWFOC_Trainer_Set_Context_Allegiance",
+            [ActionSetContextFaction] = "SWFOC_Trainer_Set_Context_Allegiance",
+            [ActionTransferFleetSafe] = "SWFOC_Trainer_Transfer_Fleet_Safe",
+            [ActionFlipPlanetOwner] = "SWFOC_Trainer_Flip_Planet_Owner",
+            [ActionSwitchPlayerFaction] = "SWFOC_Trainer_Switch_Player_Faction",
+            [ActionEditHeroState] = "SWFOC_Trainer_Edit_Hero_State",
+            [ActionCreateHeroVariant] = "SWFOC_Trainer_Create_Hero_Variant"
+        };
+
+    private static readonly IReadOnlyDictionary<string, Action<JsonObject>> ActionSpecificPayloadDefaults =
+        new Dictionary<string, Action<JsonObject>>(StringComparer.OrdinalIgnoreCase)
+        {
+            [ActionSpawnContextEntity] = static payload =>
+            {
+                ApplySpawnDefaults(payload, populationPolicy: "ForceZeroTactical", persistencePolicy: "EphemeralBattleOnly");
+                payload[PayloadPlacementMode] ??= "reinforcement_zone";
+            },
+            [ActionSpawnTacticalEntity] = static payload =>
+            {
+                ApplySpawnDefaults(payload, populationPolicy: "ForceZeroTactical", persistencePolicy: "EphemeralBattleOnly");
+                payload[PayloadPlacementMode] ??= "reinforcement_zone";
+            },
+            [ActionSpawnGalacticEntity] = static payload =>
+            {
+                ApplySpawnDefaults(payload, populationPolicy: "Normal", persistencePolicy: "PersistentGalactic");
+            },
+            [ActionPlacePlanetBuilding] = static payload =>
+            {
+                payload[PayloadPlacementMode] ??= "safe_rules";
+                payload[PayloadForceOverride] ??= false;
+                payload[PayloadAllowCrossFaction] ??= true;
+            },
+            [ActionTransferFleetSafe] = static payload =>
+            {
+                payload[PayloadAllowCrossFaction] ??= true;
+                payload[PayloadPlacementMode] ??= "safe_transfer";
+                payload[PayloadForceOverride] ??= false;
+            },
+            [ActionFlipPlanetOwner] = static payload =>
+            {
+                payload[PayloadAllowCrossFaction] ??= true;
+                payload["flipMode"] ??= "convert_everything";
+                payload["planetFlipMode"] ??= payload["flipMode"]?.GetValue<string>() ?? "convert_everything";
+                payload[PayloadForceOverride] ??= false;
+            },
+            [ActionSwitchPlayerFaction] = static payload => payload[PayloadAllowCrossFaction] ??= true,
+            [ActionEditHeroState] = static payload =>
+            {
+                payload["heroStatePolicy"] ??= "mod_adaptive";
+                payload["desiredState"] ??= "alive";
+                payload["allowDuplicate"] ??= false;
+                payload[PayloadAllowCrossFaction] ??= true;
+            },
+            [ActionCreateHeroVariant] = static payload =>
+            {
+                payload["variantGenerationMode"] ??= "patch_mod_overlay";
+                payload[PayloadAllowCrossFaction] ??= true;
+            }
+        };
+
+    private readonly IExecutionBackend _backend;
+    private readonly ITelemetryLogTailService? _telemetryLogTailService;
+    private readonly IHelperCommandTransportService? _helperCommandTransportService;
+
+    public NamedPipeHelperBridgeBackend(
+        IExecutionBackend backend,
+        ITelemetryLogTailService? telemetryLogTailService = null,
+        IHelperCommandTransportService? helperCommandTransportService = null)
     {
         _backend = backend;
+        _telemetryLogTailService = telemetryLogTailService;
+        _helperCommandTransportService = helperCommandTransportService;
     }
 
     public async Task<HelperBridgeProbeResult> ProbeAsync(HelperBridgeProbeRequest request, CancellationToken cancellationToken)
     {
-        if (request.Process.ProcessId <= 0)
+        var safeRequest = request ?? throw new ArgumentNullException(nameof(request));
+        var process = safeRequest.Process ?? throw new ArgumentNullException(nameof(request));
+
+        if (process.ProcessId <= 0)
         {
-            return CreateProcessUnavailableProbeResult(request.Process.ProcessId);
+            return CreateProcessUnavailableProbeResult(process.ProcessId);
         }
 
-        var capabilityReport = await _backend.ProbeCapabilitiesAsync(request.ProfileId, request.Process, cancellationToken);
+        var capabilityReport = await _backend.ProbeCapabilitiesAsync(safeRequest.ProfileId, process, cancellationToken);
         var availableFeatures = HelperFeatureIds
             .Where(featureId => capabilityReport.IsFeatureAvailable(featureId))
             .ToArray();
 
-        return availableFeatures.Length == 0
-            ? CreateCapabilityUnavailableProbeResult(capabilityReport)
-            : CreateReadyProbeResult(capabilityReport, availableFeatures);
+        if (availableFeatures.Length > 0)
+        {
+            return CreateReadyProbeResult(capabilityReport, availableFeatures);
+        }
+
+        if (HasConfiguredHooks(safeRequest.Hooks) && capabilityReport.ProbeReasonCode == RuntimeReasonCode.CAPABILITY_PROBE_PASS)
+        {
+            var experimental = CreateExperimentalProbeResult(capabilityReport, safeRequest.Hooks);
+            var enrichedDiagnostics = experimental.Diagnostics is null
+                ? new Dictionary<string, object?>(StringComparer.OrdinalIgnoreCase)
+                : new Dictionary<string, object?>(experimental.Diagnostics, StringComparer.OrdinalIgnoreCase);
+            EnrichAutoloadDiagnostics(
+                enrichedDiagnostics,
+                process,
+                safeRequest.ProfileId,
+                safeRequest.AutoloadStrategy,
+                safeRequest.AutoloadScripts);
+            await EnrichTransportDiagnosticsAsync(enrichedDiagnostics, safeRequest.ProfileId, cancellationToken);
+            return experimental with { Diagnostics = enrichedDiagnostics };
+        }
+
+        return CreateCapabilityUnavailableProbeResult(capabilityReport);
     }
 
     public async Task<HelperBridgeExecutionResult> ExecuteAsync(HelperBridgeRequest request, CancellationToken cancellationToken)
     {
-        var probe = await ProbeForExecutionAsync(request, cancellationToken);
+        var safeRequest = request ?? throw new ArgumentNullException(nameof(request));
+        var process = safeRequest.Process ?? throw new ArgumentNullException(nameof(request));
+        _ = safeRequest.ActionRequest ?? throw new ArgumentNullException(nameof(request));
+
+        var operation = ResolveOperationContext(safeRequest);
+        var payload = BuildPayload(safeRequest, operation);
+        var probe = await ProbeForExecutionAsync(safeRequest, cancellationToken) ??
+                    CreateProcessUnavailableProbeResult(process.ProcessId);
         if (!probe.Available)
         {
-            return CreateProbeFailureExecutionResult(probe);
+            var stagedResult = await TryStageOverlayCommandAsync(safeRequest, probe, operation, payload, cancellationToken);
+            return stagedResult ?? CreateProbeFailureExecutionResult(probe);
         }
 
-        var operation = ResolveOperationContext(request);
-        var payload = BuildPayload(request, operation);
-        var actionRequest = BuildActionRequest(request, payload, operation);
+        var actionRequest = BuildActionRequest(safeRequest, payload, operation);
 
-        var capabilityReport = await _backend.ProbeCapabilitiesAsync(actionRequest.ProfileId, request.Process, cancellationToken);
+        var capabilityReport = await _backend.ProbeCapabilitiesAsync(actionRequest.ProfileId, process, cancellationToken);
         var executionResult = await _backend.ExecuteAsync(actionRequest, capabilityReport, cancellationToken);
-        var diagnostics = BuildExecutionDiagnostics(request, executionResult, operation);
+        var diagnostics = BuildExecutionDiagnostics(safeRequest, executionResult, operation);
 
         if (!executionResult.Succeeded)
         {
@@ -108,9 +309,14 @@ public sealed class NamedPipeHelperBridgeBackend : IHelperBridgeBackend
             return CreateVerificationFailureResult(tokenFailureMessage, diagnostics, "failed_operation_token");
         }
 
-        if (!ValidateVerificationContract(request.Hook, diagnostics, out var verificationMessage))
+        if (!ValidateVerificationContract(safeRequest, diagnostics, out var verificationMessage))
         {
             return CreateVerificationFailureResult(verificationMessage, diagnostics, "failed_contract");
+        }
+
+        if (!ValidateOperationEvidence(safeRequest.Process, operation.OperationToken, diagnostics, out var evidenceMessage))
+        {
+            return CreateVerificationFailureResult(evidenceMessage, diagnostics, "failed_runtime_evidence");
         }
 
         return CreateExecutionResult(
@@ -135,6 +341,8 @@ public sealed class NamedPipeHelperBridgeBackend : IHelperBridgeBackend
 
     private static HelperBridgeProbeResult CreateCapabilityUnavailableProbeResult(CapabilityReport capabilityReport)
     {
+        ArgumentNullException.ThrowIfNull(capabilityReport);
+
         return new HelperBridgeProbeResult(
             Available: false,
             ReasonCode: RuntimeReasonCode.HELPER_BRIDGE_UNAVAILABLE,
@@ -148,8 +356,48 @@ public sealed class NamedPipeHelperBridgeBackend : IHelperBridgeBackend
             });
     }
 
+    private static HelperBridgeProbeResult CreateExperimentalProbeResult(
+        CapabilityReport capabilityReport,
+        IReadOnlyList<HelperHookSpec> hooks)
+    {
+        ArgumentNullException.ThrowIfNull(capabilityReport);
+        ArgumentNullException.ThrowIfNull(hooks);
+
+        var configuredHooks = hooks
+            .Select(static hook => hook.Id)
+            .Where(static value => !string.IsNullOrWhiteSpace(value))
+            .Distinct(StringComparer.OrdinalIgnoreCase)
+            .ToArray();
+        var configuredEntryPoints = hooks
+            .Select(static hook => hook.EntryPoint)
+            .Where(static value => !string.IsNullOrWhiteSpace(value))
+            .Select(static value => value!.Trim())
+            .Distinct(StringComparer.OrdinalIgnoreCase)
+            .ToArray();
+
+        return new HelperBridgeProbeResult(
+            Available: false,
+            ReasonCode: RuntimeReasonCode.HELPER_VERIFICATION_FAILED,
+            Message: "Helper hooks are configured, but native in-process dispatch is still unavailable.",
+            Diagnostics: new Dictionary<string, object?>
+            {
+                [DiagnosticHelperBridgeState] = "experimental",
+                [DiagnosticProbeReasonCode] = capabilityReport.ProbeReasonCode.ToString(),
+                [DiagnosticAvailableFeatures] = string.Empty,
+                [DiagnosticCapabilityCount] = capabilityReport.Capabilities.Count,
+                [DiagnosticConfiguredHooks] = string.Join(",", configuredHooks),
+                [DiagnosticConfiguredEntryPoints] = string.Join(",", configuredEntryPoints),
+                [DiagnosticHelperExecutionPath] = "native_dispatch_unavailable",
+                [DiagnosticHelperVerifyState] = "unavailable",
+                [DiagnosticBlockingReason] = "native_dispatch_unavailable"
+            });
+    }
+
     private static HelperBridgeProbeResult CreateReadyProbeResult(CapabilityReport capabilityReport, IReadOnlyCollection<string> availableFeatures)
     {
+        ArgumentNullException.ThrowIfNull(capabilityReport);
+        ArgumentNullException.ThrowIfNull(availableFeatures);
+
         return new HelperBridgeProbeResult(
             Available: true,
             ReasonCode: RuntimeReasonCode.CAPABILITY_PROBE_PASS,
@@ -163,15 +411,108 @@ public sealed class NamedPipeHelperBridgeBackend : IHelperBridgeBackend
             });
     }
 
+    private static bool HasConfiguredHooks(IReadOnlyList<HelperHookSpec>? hooks)
+    {
+        return hooks is { Count: > 0 };
+    }
+
+    private async Task EnrichTransportDiagnosticsAsync(
+        IDictionary<string, object?> diagnostics,
+        string profileId,
+        CancellationToken cancellationToken)
+    {
+        ArgumentNullException.ThrowIfNull(diagnostics);
+
+        if (_helperCommandTransportService is null)
+        {
+            diagnostics[DiagnosticHelperCommandTransportState] = "missing";
+            return;
+        }
+
+        try
+        {
+            var layout = await _helperCommandTransportService.GetLayoutAsync(profileId, cancellationToken);
+            diagnostics[DiagnosticHelperCommandTransportState] = "ready";
+            diagnostics[DiagnosticHelperCommandTransportModel] = layout.Model;
+            diagnostics[DiagnosticHelperCommandPendingDirectory] = layout.PendingDirectory;
+            diagnostics[DiagnosticHelperCommandClaimedDirectory] = layout.ClaimedDirectory;
+            diagnostics[DiagnosticHelperCommandReceiptDirectory] = layout.ReceiptDirectory;
+        }
+        catch (Exception ex)
+        {
+            diagnostics[DiagnosticHelperCommandTransportState] = "failed";
+            diagnostics["helperCommandTransportError"] = ex.Message;
+        }
+    }
+
+    private void EnrichAutoloadDiagnostics(
+        IDictionary<string, object?> diagnostics,
+        ProcessMetadata process,
+        string profileId,
+        string? autoloadStrategy,
+        IReadOnlyList<string>? autoloadScripts)
+    {
+        ArgumentNullException.ThrowIfNull(diagnostics);
+        ArgumentNullException.ThrowIfNull(process);
+
+        if (_telemetryLogTailService is null)
+        {
+            diagnostics[DiagnosticHelperAutoloadState] = "missing";
+            diagnostics[DiagnosticHelperAutoloadReasonCode] = "helper_autoload_verification_not_supported";
+            diagnostics[DiagnosticHelperAutoloadSourcePath] = string.Empty;
+            diagnostics[DiagnosticHelperAutoloadStrategy] = autoloadStrategy ?? string.Empty;
+            diagnostics[DiagnosticHelperAutoloadScript] = autoloadScripts?.FirstOrDefault() ?? string.Empty;
+            return;
+        }
+
+        var autoload = _telemetryLogTailService.VerifyAutoloadProfile(
+            process.ProcessPath,
+            profileId,
+            DateTimeOffset.UtcNow,
+            TimeSpan.FromMinutes(15));
+
+        var pendingStoryModeLoad = !autoload.Ready &&
+            autoload.ReasonCode.Equals("helper_autoload_not_found", StringComparison.OrdinalIgnoreCase) &&
+            !string.IsNullOrWhiteSpace(autoloadStrategy) &&
+            autoloadStrategy.Equals("story_wrapper_chain", StringComparison.OrdinalIgnoreCase);
+
+        diagnostics[DiagnosticHelperAutoloadState] = autoload.Ready
+            ? "ready"
+            : pendingStoryModeLoad
+                ? "pending_story_mode_load"
+                : "missing";
+        diagnostics[DiagnosticHelperAutoloadReasonCode] = pendingStoryModeLoad
+            ? "story_wrapper_waiting_for_story_load"
+            : autoload.ReasonCode;
+        diagnostics[DiagnosticHelperAutoloadSourcePath] = autoload.SourcePath;
+        diagnostics[DiagnosticHelperAutoloadStrategy] = autoload.Strategy ?? autoloadStrategy ?? string.Empty;
+        diagnostics[DiagnosticHelperAutoloadScript] = autoload.Script ?? autoloadScripts?.FirstOrDefault() ?? string.Empty;
+        if (!string.IsNullOrWhiteSpace(autoload.RawLine))
+        {
+            diagnostics["helperAutoloadRawLine"] = autoload.RawLine;
+        }
+    }
+
     private async Task<HelperBridgeProbeResult> ProbeForExecutionAsync(HelperBridgeRequest request, CancellationToken cancellationToken)
     {
-        var hooks = request.Hook is null ? Array.Empty<HelperHookSpec>() : new[] { request.Hook };
-        var probeRequest = new HelperBridgeProbeRequest(request.ActionRequest.ProfileId, request.Process, hooks);
-        return await ProbeAsync(probeRequest, cancellationToken);
+        var safeRequest = request ?? throw new ArgumentNullException(nameof(request));
+        var process = safeRequest.Process ?? throw new ArgumentNullException(nameof(request));
+        var actionRequest = safeRequest.ActionRequest ?? throw new ArgumentNullException(nameof(request));
+
+        var hooks = safeRequest.Hook is null ? Array.Empty<HelperHookSpec>() : new[] { safeRequest.Hook };
+        var probeRequest = new HelperBridgeProbeRequest(
+            actionRequest.ProfileId,
+            process,
+            hooks,
+            safeRequest.AutoloadStrategy,
+            safeRequest.AutoloadScripts);
+        return await ProbeAsync(probeRequest, cancellationToken) ?? CreateProcessUnavailableProbeResult(process.ProcessId);
     }
 
     private static HelperBridgeExecutionResult CreateProbeFailureExecutionResult(HelperBridgeProbeResult probe)
     {
+        ArgumentNullException.ThrowIfNull(probe);
+
         return new HelperBridgeExecutionResult(
             Succeeded: false,
             ReasonCode: probe.ReasonCode,
@@ -179,44 +520,233 @@ public sealed class NamedPipeHelperBridgeBackend : IHelperBridgeBackend
             Diagnostics: probe.Diagnostics);
     }
 
+    private async Task<HelperBridgeExecutionResult?> TryStageOverlayCommandAsync(
+        HelperBridgeRequest request,
+        HelperBridgeProbeResult probe,
+        HelperOperationContext operation,
+        JsonObject payload,
+        CancellationToken cancellationToken)
+    {
+        if (_helperCommandTransportService is null ||
+            request.Hook is null ||
+            !IsExperimentalOverlayProbe(probe.Diagnostics))
+        {
+            return null;
+        }
+
+        var helperEntryPoint = ResolveHelperEntryPoint(payload, request.Hook.EntryPoint);
+        if (string.IsNullOrWhiteSpace(helperEntryPoint))
+        {
+            return null;
+        }
+
+        try
+        {
+            var staged = await _helperCommandTransportService.StageCommandAsync(
+                request.ActionRequest.ProfileId,
+                request.ActionRequest.Action.Id,
+                helperEntryPoint,
+                operation.OperationToken,
+                payload.DeepClone() as JsonObject ?? new JsonObject(),
+                cancellationToken);
+
+            var diagnostics = probe.Diagnostics is null
+                ? new Dictionary<string, object?>(StringComparer.OrdinalIgnoreCase)
+                : new Dictionary<string, object?>(probe.Diagnostics, StringComparer.OrdinalIgnoreCase);
+
+            diagnostics[DiagnosticHelperBridgeState] = "experimental";
+            diagnostics[DiagnosticHelperInvocationSource] = InvocationSourceOverlayCommandInbox;
+            diagnostics[DiagnosticHelperEntryPoint] = helperEntryPoint;
+            diagnostics[DiagnosticHelperHookId] = request.Hook.Id;
+            diagnostics[DiagnosticHelperVerifyState] = "staged_unverified";
+            diagnostics[DiagnosticHelperEvidenceState] = "not_checked";
+            diagnostics[DiagnosticHelperEvidenceReasonCode] = "waiting_for_overlay_execution";
+            diagnostics[DiagnosticHelperEvidenceSourcePath] = string.Empty;
+            diagnostics[DiagnosticOperationKind] = operation.OperationKind.ToString();
+            diagnostics[DiagnosticOperationToken] = operation.OperationToken;
+            diagnostics[DiagnosticHelperExecutionPath] = "overlay_command_inbox_staged";
+            diagnostics[DiagnosticBlockingReason] = "awaiting_overlay_execution";
+            diagnostics[DiagnosticHelperCommandTransportState] = "staged";
+            diagnostics[DiagnosticHelperCommandStageState] = "pending";
+            diagnostics[DiagnosticHelperStagedCommandPath] = staged.CommandPath;
+            diagnostics[DiagnosticHelperStagedClaimPath] = staged.ClaimPath;
+            diagnostics[DiagnosticHelperStagedReceiptPath] = staged.ReceiptPath;
+            diagnostics[DiagnosticHelperCommandPendingDirectory] = Path.GetDirectoryName(staged.CommandPath) ?? string.Empty;
+            diagnostics[DiagnosticHelperCommandClaimedDirectory] = Path.GetDirectoryName(staged.ClaimPath) ?? string.Empty;
+            diagnostics[DiagnosticHelperCommandReceiptDirectory] = Path.GetDirectoryName(staged.ReceiptPath) ?? string.Empty;
+            diagnostics[PayloadOperationPolicy] = request.OperationPolicy ?? string.Empty;
+            diagnostics[PayloadTargetContext] = request.TargetContext ?? request.ActionRequest.RuntimeMode.ToString();
+            diagnostics[PayloadMutationIntent] = request.MutationIntent ?? string.Empty;
+            diagnostics[PayloadVerificationContractVersion] = request.VerificationContractVersion;
+            diagnostics[DiagnosticAppliedEntityId] = ResolveAppliedEntityId(payload);
+
+            var receipt = await WaitForOverlayReceiptAsync(request.ActionRequest.ProfileId, operation.OperationToken, cancellationToken);
+            if (receipt is not null)
+            {
+                ApplyOverlayReceiptDiagnostics(diagnostics, receipt);
+                if (!string.IsNullOrWhiteSpace(receipt.AppliedEntityId))
+                {
+                    diagnostics[DiagnosticAppliedEntityId] = receipt.AppliedEntityId;
+                }
+
+                if (!receipt.Applied)
+                {
+                    return CreateExecutionResult(
+                        succeeded: false,
+                        reasonCode: RuntimeReasonCode.HELPER_VERIFICATION_FAILED,
+                        message: string.IsNullOrWhiteSpace(receipt.Message)
+                            ? "Helper overlay receipt reported the command as not applied."
+                            : receipt.Message,
+                        diagnostics: diagnostics);
+                }
+
+                if (!ValidateOperationEvidence(request.Process, operation.OperationToken, diagnostics, out var evidenceFailureMessage))
+                {
+                    diagnostics[DiagnosticHelperExecutionPath] = "overlay_command_inbox_receipted_unverified";
+                    diagnostics[DiagnosticBlockingReason] = "awaiting_overlay_evidence";
+                    return CreateVerificationFailureResult(
+                        evidenceFailureMessage,
+                        diagnostics,
+                        string.IsNullOrWhiteSpace(receipt.VerifyState) ? "receipt_present_unverified" : receipt.VerifyState);
+                }
+
+                diagnostics[DiagnosticHelperBridgeState] = "ready";
+                diagnostics[DiagnosticHelperExecutionPath] = "overlay_command_inbox_verified";
+                diagnostics[DiagnosticBlockingReason] = string.Empty;
+                diagnostics[DiagnosticHelperCommandTransportState] = "receipt_verified";
+                diagnostics[DiagnosticHelperCommandStageState] = string.IsNullOrWhiteSpace(receipt.StageState) ? "applied" : receipt.StageState;
+                diagnostics[DiagnosticHelperVerifyState] = "verified";
+
+                return CreateExecutionResult(
+                    succeeded: true,
+                    reasonCode: RuntimeReasonCode.HELPER_EXECUTION_APPLIED,
+                    message: string.IsNullOrWhiteSpace(receipt.Message)
+                        ? "Helper overlay command was applied and verified."
+                        : receipt.Message,
+                    diagnostics: diagnostics);
+            }
+
+            return CreateExecutionResult(
+                succeeded: false,
+                reasonCode: RuntimeReasonCode.HELPER_VERIFICATION_FAILED,
+                message: "Helper command was staged for overlay transport, but runtime execution has not been verified yet.",
+                diagnostics: diagnostics);
+        }
+        catch (Exception ex)
+        {
+            var diagnostics = probe.Diagnostics is null
+                ? new Dictionary<string, object?>(StringComparer.OrdinalIgnoreCase)
+                : new Dictionary<string, object?>(probe.Diagnostics, StringComparer.OrdinalIgnoreCase);
+            diagnostics[DiagnosticHelperCommandTransportState] = "failed";
+            diagnostics[DiagnosticHelperCommandStageState] = "failed";
+            diagnostics["helperCommandTransportError"] = ex.Message;
+            return CreateExecutionResult(
+                succeeded: false,
+                reasonCode: RuntimeReasonCode.HELPER_VERIFICATION_FAILED,
+                message: $"Helper command staging failed: {ex.Message}",
+                diagnostics: diagnostics);
+        }
+    }
+
+    private async Task<HelperCommandReceipt?> WaitForOverlayReceiptAsync(
+        string profileId,
+        string operationToken,
+        CancellationToken cancellationToken)
+    {
+        if (_helperCommandTransportService is null)
+        {
+            return null;
+        }
+
+        var startedAt = DateTimeOffset.UtcNow;
+        while (true)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+
+            var receipt = await _helperCommandTransportService.TryReadReceiptAsync(profileId, operationToken, cancellationToken);
+            if (receipt is not null)
+            {
+                return receipt;
+            }
+
+            if (DateTimeOffset.UtcNow - startedAt >= OverlayReceiptWaitWindow)
+            {
+                return null;
+            }
+
+            await Task.Delay(OverlayReceiptPollDelay, cancellationToken);
+        }
+    }
+
+    private static void ApplyOverlayReceiptDiagnostics(
+        IDictionary<string, object?> diagnostics,
+        HelperCommandReceipt receipt)
+    {
+        diagnostics[DiagnosticHelperReceiptReasonCode] = receipt.ReasonCode;
+        diagnostics[DiagnosticHelperReceiptMessage] = receipt.Message;
+        diagnostics[DiagnosticHelperReceiptSourcePath] = receipt.ReceiptPath;
+        diagnostics[DiagnosticHelperStagedReceiptPath] = receipt.ReceiptPath;
+        diagnostics[DiagnosticHelperCommandStageState] = receipt.StageState;
+        diagnostics[DiagnosticHelperVerifyState] = string.IsNullOrWhiteSpace(receipt.VerifyState)
+            ? "receipt_present"
+            : receipt.VerifyState;
+        if (!string.IsNullOrWhiteSpace(receipt.VerificationSource))
+        {
+            diagnostics[DiagnosticHelperEvidenceSourcePath] = receipt.VerificationSource;
+        }
+    }
+
     private static HelperOperationContext ResolveOperationContext(HelperBridgeRequest request)
     {
-        var operationKind = request.OperationKind == HelperBridgeOperationKind.Unknown
-            ? ResolveOperationKind(request.ActionRequest.Action.Id)
-            : request.OperationKind;
+        var safeRequest = request ?? throw new ArgumentNullException(nameof(request));
+        var actionRequest = safeRequest.ActionRequest ?? throw new ArgumentNullException(nameof(request));
 
-        var operationToken = string.IsNullOrWhiteSpace(request.OperationToken)
+        var operationKind = safeRequest.OperationKind == HelperBridgeOperationKind.Unknown
+            ? ResolveOperationKind(actionRequest.Action.Id)
+            : safeRequest.OperationKind;
+
+        var operationToken = string.IsNullOrWhiteSpace(safeRequest.OperationToken)
             ? Guid.NewGuid().ToString("N")
-            : request.OperationToken.Trim();
+            : safeRequest.OperationToken.Trim();
 
         return new HelperOperationContext(operationKind, operationToken);
     }
 
     private static JsonObject BuildPayload(HelperBridgeRequest request, HelperOperationContext operation)
     {
-        var payload = request.ActionRequest.Payload.DeepClone() as JsonObject ?? new JsonObject();
+        var safeRequest = request ?? throw new ArgumentNullException(nameof(request));
+        var actionRequest = safeRequest.ActionRequest ?? throw new ArgumentNullException(nameof(request));
+
+        var payload = actionRequest.Payload.DeepClone() as JsonObject ?? new JsonObject();
         payload[PayloadOperationKind] ??= operation.OperationKind.ToString();
         payload[PayloadOperationToken] ??= operation.OperationToken;
-        payload[PayloadHelperInvocationContractVersion] ??= request.InvocationContractVersion;
+        payload[PayloadHelperInvocationContractVersion] ??= safeRequest.InvocationContractVersion;
+        payload[PayloadOperationPolicy] ??= safeRequest.OperationPolicy ?? ResolveDefaultOperationPolicy(actionRequest.Action.Id);
+        payload[PayloadTargetContext] ??= safeRequest.TargetContext ?? actionRequest.RuntimeMode.ToString();
+        payload[PayloadMutationIntent] ??= safeRequest.MutationIntent ?? ResolveDefaultMutationIntent(actionRequest.Action.Id);
+        payload[PayloadVerificationContractVersion] ??= safeRequest.VerificationContractVersion;
 
-        ApplyActionSpecificDefaults(request.ActionRequest.Action.Id, payload);
-        ApplyHookPayload(request, payload);
+        ApplyActionSpecificDefaults(actionRequest.Action.Id, payload);
+        ApplyHookPayload(safeRequest, payload);
         return payload;
     }
 
     private static void ApplyHookPayload(HelperBridgeRequest request, JsonObject payload)
     {
-        var hook = request.Hook;
+        var safeRequest = request ?? throw new ArgumentNullException(nameof(request));
+        var actionRequest = safeRequest.ActionRequest ?? throw new ArgumentNullException(nameof(request));
+
+        var hook = safeRequest.Hook;
         if (hook is null)
         {
             return;
         }
 
         ApplyHookIdentity(payload, hook);
-        ApplyHookEntryPoint(payload, request.ActionRequest.Action.Id, hook.EntryPoint);
+        ApplyHookEntryPoint(payload, actionRequest.Action.Id, hook.EntryPoint);
         ApplyHookScript(payload, hook.Script);
         ApplyHookArgContract(payload, hook.ArgContract);
-        ApplyHookVerifyContract(payload, request.VerificationContract, hook.VerifyContract);
+        ApplyHookVerifyContract(payload, safeRequest.VerificationContract, hook.VerifyContract);
     }
 
     private static ActionExecutionRequest BuildActionRequest(
@@ -224,23 +754,31 @@ public sealed class NamedPipeHelperBridgeBackend : IHelperBridgeBackend
         JsonObject payload,
         HelperOperationContext operation)
     {
+        var safeRequest = request ?? throw new ArgumentNullException(nameof(request));
+        var process = safeRequest.Process ?? throw new ArgumentNullException(nameof(request));
+        var actionRequest = safeRequest.ActionRequest ?? throw new ArgumentNullException(nameof(request));
+
         var context = new Dictionary<string, object?>(StringComparer.OrdinalIgnoreCase);
-        if (request.ActionRequest.Context is not null)
+        if (actionRequest.Context is not null)
         {
-            foreach (var kv in request.ActionRequest.Context)
+            foreach (var kv in actionRequest.Context)
             {
                 context[kv.Key] = kv.Value;
             }
         }
 
-        context[DiagnosticProcessId] = request.Process.ProcessId;
-        context[DiagnosticProcessName] = request.Process.ProcessName;
-        context[DiagnosticProcessPath] = request.Process.ProcessPath;
+        context[DiagnosticProcessId] = process.ProcessId;
+        context[DiagnosticProcessName] = process.ProcessName;
+        context[DiagnosticProcessPath] = process.ProcessPath;
         context[DiagnosticHelperInvocationSource] = InvocationSourceNativeBridge;
         context[DiagnosticOperationKind] = operation.OperationKind.ToString();
         context[DiagnosticOperationToken] = operation.OperationToken;
+        context[PayloadOperationPolicy] = safeRequest.OperationPolicy ?? string.Empty;
+        context[PayloadTargetContext] = safeRequest.TargetContext ?? actionRequest.RuntimeMode.ToString();
+        context[PayloadMutationIntent] = safeRequest.MutationIntent ?? string.Empty;
+        context[PayloadVerificationContractVersion] = safeRequest.VerificationContractVersion;
 
-        return request.ActionRequest with
+        return actionRequest with
         {
             Payload = payload,
             Context = context
@@ -317,9 +855,16 @@ public sealed class NamedPipeHelperBridgeBackend : IHelperBridgeBackend
             [DiagnosticHelperInvocationSource] = InvocationSourceNativeBridge,
             [DiagnosticHelperEntryPoint] = request.Hook?.EntryPoint ?? string.Empty,
             [DiagnosticHelperHookId] = request.Hook?.Id ?? string.Empty,
-            [DiagnosticHelperVerifyState] = helperState,
+            [DiagnosticHelperVerifyState] = "pending_backend_verification",
+            [DiagnosticHelperEvidenceState] = "not_checked",
+            [DiagnosticHelperEvidenceReasonCode] = "helper_operation_verification_not_supported",
+            [DiagnosticHelperEvidenceSourcePath] = string.Empty,
             [DiagnosticOperationKind] = operation.OperationKind.ToString(),
-            [DiagnosticOperationToken] = operation.OperationToken
+            [DiagnosticOperationToken] = operation.OperationToken,
+            [PayloadOperationPolicy] = request.OperationPolicy ?? string.Empty,
+            [PayloadTargetContext] = request.TargetContext ?? request.ActionRequest.RuntimeMode.ToString(),
+            [PayloadMutationIntent] = request.MutationIntent ?? string.Empty,
+            [PayloadVerificationContractVersion] = request.VerificationContractVersion
         };
     }
 
@@ -360,6 +905,49 @@ public sealed class NamedPipeHelperBridgeBackend : IHelperBridgeBackend
         return false;
     }
 
+    private static bool IsExperimentalOverlayProbe(IReadOnlyDictionary<string, object?>? diagnostics)
+    {
+        return TryGetStringDiagnostic(diagnostics, DiagnosticHelperBridgeState, out var helperBridgeState) &&
+               helperBridgeState?.Equals("experimental", StringComparison.OrdinalIgnoreCase) == true;
+    }
+
+    private static string ResolveHelperEntryPoint(JsonObject payload, string? configuredEntryPoint)
+    {
+        if (payload.TryGetPropertyValue(PayloadHelperEntryPoint, out var payloadEntryPoint) &&
+            payloadEntryPoint is not null)
+        {
+            var value = payloadEntryPoint.GetValue<string?>();
+            if (!string.IsNullOrWhiteSpace(value))
+            {
+                return value.Trim();
+            }
+        }
+
+        return configuredEntryPoint?.Trim() ?? string.Empty;
+    }
+
+    private static string ResolveAppliedEntityId(JsonObject payload)
+    {
+        static string ReadString(JsonNode? node)
+        {
+            return node is null ? string.Empty : node.GetValue<string?>()?.Trim() ?? string.Empty;
+        }
+
+        var entityId = ReadString(payload["entityId"]);
+        if (!string.IsNullOrWhiteSpace(entityId))
+        {
+            return entityId;
+        }
+
+        var unitId = ReadString(payload["unitId"]);
+        if (!string.IsNullOrWhiteSpace(unitId))
+        {
+            return unitId;
+        }
+
+        return string.Empty;
+    }
+
     private static HelperBridgeExecutionResult CreateVerificationFailureResult(
         string message,
         Dictionary<string, object?> diagnostics,
@@ -371,6 +959,45 @@ public sealed class NamedPipeHelperBridgeBackend : IHelperBridgeBackend
             reasonCode: RuntimeReasonCode.HELPER_VERIFICATION_FAILED,
             message: message,
             diagnostics: diagnostics);
+    }
+
+    private bool ValidateOperationEvidence(
+        ProcessMetadata process,
+        string operationToken,
+        IDictionary<string, object?> diagnostics,
+        out string failureMessage)
+    {
+        if (_telemetryLogTailService is null)
+        {
+            diagnostics[DiagnosticHelperEvidenceState] = "missing";
+            diagnostics[DiagnosticHelperEvidenceReasonCode] = "helper_operation_verification_not_supported";
+            diagnostics[DiagnosticHelperEvidenceSourcePath] = string.Empty;
+            failureMessage = "Helper verification failed: telemetry operation evidence service is unavailable.";
+            return false;
+        }
+
+        var verification = _telemetryLogTailService.VerifyOperationToken(
+            process.ProcessPath,
+            operationToken,
+            DateTimeOffset.UtcNow,
+            TimeSpan.FromMinutes(2));
+
+        diagnostics[DiagnosticHelperEvidenceState] = verification.Verified ? "verified" : "missing";
+        diagnostics[DiagnosticHelperEvidenceReasonCode] = verification.ReasonCode;
+        diagnostics[DiagnosticHelperEvidenceSourcePath] = verification.SourcePath;
+        if (!string.IsNullOrWhiteSpace(verification.RawLine))
+        {
+            diagnostics["helperEvidenceRawLine"] = verification.RawLine;
+        }
+
+        if (verification.Verified)
+        {
+            failureMessage = string.Empty;
+            return true;
+        }
+
+        failureMessage = $"Helper verification failed: operation token '{operationToken}' was not confirmed by telemetry evidence ({verification.ReasonCode}).";
+        return false;
     }
 
     private static HelperBridgeExecutionResult CreateExecutionResult(
@@ -403,43 +1030,32 @@ public sealed class NamedPipeHelperBridgeBackend : IHelperBridgeBackend
         return true;
     }
 
+    private static string ResolveDefaultOperationPolicy(string actionId)
+    {
+        return DefaultOperationPolicies.TryGetValue(actionId, out var policy)
+            ? policy
+            : "helper_operation_default";
+    }
+
+    private static string ResolveDefaultMutationIntent(string actionId)
+    {
+        return DefaultMutationIntents.TryGetValue(actionId, out var intent)
+            ? intent
+            : "unknown";
+    }
+
     private static HelperBridgeOperationKind ResolveOperationKind(string actionId)
     {
-        return actionId switch
-        {
-            var value when value.Equals(ActionSpawnUnitHelper, StringComparison.OrdinalIgnoreCase) => HelperBridgeOperationKind.SpawnUnitHelper,
-            var value when value.Equals(ActionSpawnContextEntity, StringComparison.OrdinalIgnoreCase) => HelperBridgeOperationKind.SpawnContextEntity,
-            var value when value.Equals(ActionSpawnTacticalEntity, StringComparison.OrdinalIgnoreCase) => HelperBridgeOperationKind.SpawnTacticalEntity,
-            var value when value.Equals(ActionSpawnGalacticEntity, StringComparison.OrdinalIgnoreCase) => HelperBridgeOperationKind.SpawnGalacticEntity,
-            var value when value.Equals(ActionPlacePlanetBuilding, StringComparison.OrdinalIgnoreCase) => HelperBridgeOperationKind.PlacePlanetBuilding,
-            var value when value.Equals(ActionSetContextAllegiance, StringComparison.OrdinalIgnoreCase) ||
-                       value.Equals(ActionSetContextFaction, StringComparison.OrdinalIgnoreCase) => HelperBridgeOperationKind.SetContextAllegiance,
-            var value when value.Equals(ActionSetHeroStateHelper, StringComparison.OrdinalIgnoreCase) => HelperBridgeOperationKind.SetHeroStateHelper,
-            var value when value.Equals(ActionToggleRoeRespawnHelper, StringComparison.OrdinalIgnoreCase) => HelperBridgeOperationKind.ToggleRoeRespawnHelper,
-            _ => HelperBridgeOperationKind.Unknown
-        };
+        return DefaultOperationKinds.TryGetValue(actionId, out var kind)
+            ? kind
+            : HelperBridgeOperationKind.Unknown;
     }
 
     private static void ApplyActionSpecificDefaults(string actionId, JsonObject payload)
     {
-        if (actionId.Equals(ActionSpawnContextEntity, StringComparison.OrdinalIgnoreCase) ||
-            actionId.Equals(ActionSpawnTacticalEntity, StringComparison.OrdinalIgnoreCase))
+        if (ActionSpecificPayloadDefaults.TryGetValue(actionId, out var applyDefaults))
         {
-            ApplySpawnDefaults(payload, populationPolicy: "ForceZeroTactical", persistencePolicy: "EphemeralBattleOnly");
-            return;
-        }
-
-        if (actionId.Equals(ActionSpawnGalacticEntity, StringComparison.OrdinalIgnoreCase))
-        {
-            ApplySpawnDefaults(payload, populationPolicy: "Normal", persistencePolicy: "PersistentGalactic");
-            return;
-        }
-
-        if (actionId.Equals(ActionPlacePlanetBuilding, StringComparison.OrdinalIgnoreCase))
-        {
-            payload["placementMode"] ??= "safe_rules";
-            payload["forceOverride"] ??= false;
-            payload["allowCrossFaction"] ??= true;
+            applyDefaults(payload);
         }
     }
 
@@ -447,16 +1063,16 @@ public sealed class NamedPipeHelperBridgeBackend : IHelperBridgeBackend
     {
         payload["populationPolicy"] ??= populationPolicy;
         payload["persistencePolicy"] ??= persistencePolicy;
-        payload["allowCrossFaction"] ??= true;
+        payload[PayloadAllowCrossFaction] ??= true;
     }
 
     private static bool ValidateVerificationContract(
-        HelperHookSpec? hook,
+        HelperBridgeRequest request,
         IReadOnlyDictionary<string, object?> diagnostics,
         out string failureMessage)
     {
-        var verifyContract = hook?.VerifyContract;
-        if (verifyContract is null || verifyContract.Count == 0)
+        var verifyContract = BuildEffectiveVerificationContract(request);
+        if (verifyContract.Count == 0)
         {
             failureMessage = string.Empty;
             return true;
@@ -476,6 +1092,36 @@ public sealed class NamedPipeHelperBridgeBackend : IHelperBridgeBackend
         return true;
     }
 
+    private static IReadOnlyDictionary<string, string> BuildEffectiveVerificationContract(HelperBridgeRequest request)
+    {
+        var effective = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+
+        MergeContractEntries(effective, request.Hook?.VerifyContract);
+        MergeContractEntries(effective, request.VerificationContract);
+
+        if (request.Hook is not null || request.VerificationContract is not null)
+        {
+            effective[DiagnosticHelperVerifyState] = "applied";
+            effective[DiagnosticHelperExecutionPath] = $"required_not:{ExecutionPathContractValidationOnly}";
+        }
+
+        return effective;
+    }
+
+    private static void MergeContractEntries(
+        IDictionary<string, string> target,
+        IReadOnlyDictionary<string, string>? source)
+    {
+        if (source is null || source.Count == 0)
+        {
+            return;
+        }
+
+        foreach (var entry in source)
+        {
+            target[entry.Key] = entry.Value;
+        }
+    }
     private static bool ValidateVerificationEntry(
         string key,
         string? expected,
@@ -499,6 +1145,40 @@ public sealed class NamedPipeHelperBridgeBackend : IHelperBridgeBackend
             return false;
         }
 
+        if (normalizedExpected.StartsWith("required_not:", StringComparison.OrdinalIgnoreCase))
+        {
+            var forbiddenValue = normalizedExpected[13..].Trim();
+            if (string.IsNullOrWhiteSpace(actual))
+            {
+                failureMessage = $"Helper verification failed: required diagnostic '{key}' was not populated.";
+                return false;
+            }
+
+            if (!string.Equals(actual, forbiddenValue, StringComparison.OrdinalIgnoreCase))
+            {
+                failureMessage = string.Empty;
+                return true;
+            }
+
+            failureMessage =
+                $"Helper verification failed: diagnostic '{key}' must not equal '{forbiddenValue}' when execution is unverified.";
+            return false;
+        }
+
+        if (normalizedExpected.StartsWith("not:", StringComparison.OrdinalIgnoreCase))
+        {
+            var forbiddenValue = normalizedExpected[4..].Trim();
+            if (!string.Equals(actual, forbiddenValue, StringComparison.OrdinalIgnoreCase))
+            {
+                failureMessage = string.Empty;
+                return true;
+            }
+
+            failureMessage =
+                $"Helper verification failed: diagnostic '{key}' must not equal '{forbiddenValue}' when execution is unverified.";
+            return false;
+        }
+
         if (string.Equals(actual, normalizedExpected, StringComparison.OrdinalIgnoreCase))
         {
             failureMessage = string.Empty;
@@ -512,16 +1192,9 @@ public sealed class NamedPipeHelperBridgeBackend : IHelperBridgeBackend
 
     private static string ResolveDefaultHelperEntryPoint(string actionId, string? hookEntryPoint)
     {
-        if (actionId.Equals(ActionSpawnContextEntity, StringComparison.OrdinalIgnoreCase) ||
-            actionId.Equals(ActionSpawnTacticalEntity, StringComparison.OrdinalIgnoreCase) ||
-            actionId.Equals(ActionSpawnGalacticEntity, StringComparison.OrdinalIgnoreCase))
+        if (DefaultHelperEntryPoints.TryGetValue(actionId, out var entryPoint))
         {
-            return "SWFOC_Trainer_Spawn_Context";
-        }
-
-        if (actionId.Equals(ActionPlacePlanetBuilding, StringComparison.OrdinalIgnoreCase))
-        {
-            return "SWFOC_Trainer_Place_Building";
+            return entryPoint;
         }
 
         return string.IsNullOrWhiteSpace(hookEntryPoint) ? string.Empty : hookEntryPoint;

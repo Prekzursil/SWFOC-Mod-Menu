@@ -36,6 +36,37 @@ public sealed class SupportBundleServiceTests
         }
     }
 
+    [Fact]
+    public async Task SupportBundleService_ShouldExportDetachedSnapshotWarning_WhenRuntimeNotAttached()
+    {
+        var outputDir = Path.Combine(Path.GetTempPath(), $"swfoc-support-detached-{Guid.NewGuid():N}");
+        Directory.CreateDirectory(outputDir);
+
+        try
+        {
+            var service = new SupportBundleService(new StubRuntimeAdapter(), CreateTelemetry());
+            var result = await service.ExportAsync(new SupportBundleRequest(
+                OutputDirectory: outputDir,
+                ProfileId: "custom_detached",
+                Notes: "detached",
+                MaxRecentRuns: 1));
+
+            result.Succeeded.Should().BeTrue();
+            result.Warnings.Should().Contain(x => x.Contains("not attached", StringComparison.OrdinalIgnoreCase));
+
+            using var archive = ZipFile.OpenRead(result.BundlePath);
+            var runtimeEntry = archive.Entries.Single(entry => entry.FullName.Equals("runtime-snapshot.json", StringComparison.OrdinalIgnoreCase));
+            using var reader = new StreamReader(runtimeEntry.Open());
+            var json = await reader.ReadToEndAsync();
+            json.Should().Contain("\"attached\": false");
+            json.Should().Contain("\"profileId\": \"custom_detached\"");
+        }
+        finally
+        {
+            DeleteDirectoryIfExists(outputDir);
+        }
+    }
+
     private static StubRuntimeAdapter CreateAttachedRuntime()
     {
         return new StubRuntimeAdapter

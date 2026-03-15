@@ -64,4 +64,53 @@ public sealed class MegaFilesXmlIndexBuilderTests
 
         enabled.Select(x => x.FileName).Should().ContainInOrder("A.meg", "B.meg");
     }
+
+    [Fact]
+    public void Build_ShouldReturnEmptyForWhitespace_AndReportInvalidXml()
+    {
+        var builder = new MegaFilesXmlIndexBuilder();
+
+        var empty = builder.Build("   ");
+        var invalid = builder.Build("<MegaFiles>");
+
+        empty.Should().BeSameAs(SwfocTrainer.DataIndex.Models.MegaFilesIndex.Empty);
+        invalid.Files.Should().BeEmpty();
+        invalid.Diagnostics.Should().ContainSingle(x => x.Contains("Invalid MegaFiles XML", StringComparison.OrdinalIgnoreCase));
+    }
+
+    [Fact]
+    public void Build_ShouldReadPathAttribute_AndHonorIsEnabledFlag()
+    {
+        const string xml = """
+<MegaFiles>
+  <MegaFile Path="Mods/Custom.meg" IsEnabled="false" />
+</MegaFiles>
+""";
+
+        var index = new MegaFilesXmlIndexBuilder().Build(xml);
+
+        index.Diagnostics.Should().BeEmpty();
+        index.Files.Should().ContainSingle();
+        index.Files[0].FileName.Should().Be("Mods/Custom.meg");
+        index.Files[0].Enabled.Should().BeFalse();
+        index.Files[0].Attributes.Should().ContainKey("Path").WhoseValue.Should().Be("Mods/Custom.meg");
+    }
+
+    [Fact]
+    public void Build_ShouldSupportCaseInsensitiveElementNames_AndTrimAttributeValues()
+    {
+        const string xml = """
+<root>
+  <megafile Filename="  Lower.meg  " Enabled="TRUE" />
+  <FILE File="Upper.meg" Enabled="false" />
+</root>
+""";
+
+        var index = new MegaFilesXmlIndexBuilder().Build(xml);
+
+        index.Diagnostics.Should().BeEmpty();
+        index.Files.Select(x => x.FileName).Should().ContainInOrder("Lower.meg", "Upper.meg");
+        index.Files[0].Enabled.Should().BeTrue();
+        index.Files[1].Enabled.Should().BeFalse();
+    }
 }

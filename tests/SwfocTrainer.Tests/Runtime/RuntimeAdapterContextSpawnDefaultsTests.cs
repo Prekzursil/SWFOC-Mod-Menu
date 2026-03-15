@@ -36,6 +36,19 @@ public sealed class RuntimeAdapterContextSpawnDefaultsTests
         payload["symbol"]!.GetValue<string>().Should().Be("planet_owner");
     }
 
+    [Fact]
+    public void ApplyContextSymbolHint_ShouldPreserveExistingSymbol()
+    {
+        var payload = new JsonObject
+        {
+            ["symbol"] = "custom_symbol"
+        };
+
+        InvokePrivateStatic("ApplyContextSymbolHint", payload, "set_planet_owner");
+
+        payload["symbol"]!.GetValue<string>().Should().Be("custom_symbol");
+    }
+
     [Theory]
     [InlineData("set_context_faction", "Faction")]
     [InlineData("set_context_allegiance", "Faction")]
@@ -48,6 +61,7 @@ public sealed class RuntimeAdapterContextSpawnDefaultsTests
     }
 
     [Theory]
+    [InlineData("runtimeModeOverride", "Galactic", RuntimeMode.Galactic)]
     [InlineData("runtimeModeOverride", "TacticalLand", RuntimeMode.TacticalLand)]
     [InlineData("runtimeModeOverride", "TacticalSpace", RuntimeMode.TacticalSpace)]
     [InlineData("runtimeModeOverride", "AnyTactical", RuntimeMode.AnyTactical)]
@@ -82,6 +96,24 @@ public sealed class RuntimeAdapterContextSpawnDefaultsTests
 
         parsed.Should().Be(expectedParsed);
         mode.Should().Be(expectedMode);
+    }
+
+    [Theory]
+    [InlineData("")]
+    [InlineData("   ")]
+    [InlineData("Skirmish")]
+    public void TryResolveTelemetryModeFromContext_ShouldRejectBlankOrUnsupportedValues(string telemetry)
+    {
+        var context = new Dictionary<string, object?>
+        {
+            ["telemetryRuntimeMode"] = telemetry
+        };
+
+        var args = new object?[] { context, RuntimeMode.Unknown };
+        var parsed = (bool)InvokePrivateStatic("TryResolveTelemetryModeFromContext", args)!;
+
+        parsed.Should().BeFalse();
+        ((RuntimeMode)args[1]!).Should().Be(RuntimeMode.Unknown);
     }
 
     [Fact]
@@ -130,6 +162,27 @@ public sealed class RuntimeAdapterContextSpawnDefaultsTests
     }
 
     [Fact]
+    public void ApplyContextSpawnPayloadDefaults_ShouldPreserveExplicitPayloadValues()
+    {
+        var payload = new JsonObject
+        {
+            ["helperHookId"] = "custom_hook",
+            ["helperEntryPoint"] = "CustomEntry",
+            ["populationPolicy"] = "CustomPopulation",
+            ["persistencePolicy"] = "CustomPersistence",
+            ["allowCrossFaction"] = false
+        };
+
+        InvokePrivateStatic("ApplyContextSpawnPayloadDefaults", payload, "spawn_tactical_entity");
+
+        payload["helperHookId"]!.GetValue<string>().Should().Be("custom_hook");
+        payload["helperEntryPoint"]!.GetValue<string>().Should().Be("CustomEntry");
+        payload["populationPolicy"]!.GetValue<string>().Should().Be("CustomPopulation");
+        payload["persistencePolicy"]!.GetValue<string>().Should().Be("CustomPersistence");
+        payload["allowCrossFaction"]!.GetValue<bool>().Should().BeFalse();
+    }
+
+    [Fact]
     public void ResolveHelperHookId_ShouldPreferPayloadHook_WhenProvided()
     {
         var request = BuildRequest("spawn_context_entity", new JsonObject
@@ -147,6 +200,11 @@ public sealed class RuntimeAdapterContextSpawnDefaultsTests
     [InlineData("spawn_tactical_entity", "spawn_bridge")]
     [InlineData("spawn_galactic_entity", "spawn_bridge")]
     [InlineData("place_planet_building", "spawn_bridge")]
+    [InlineData("transfer_fleet_safe", "spawn_bridge")]
+    [InlineData("flip_planet_owner", "spawn_bridge")]
+    [InlineData("switch_player_faction", "spawn_bridge")]
+    [InlineData("edit_hero_state", "spawn_bridge")]
+    [InlineData("create_hero_variant", "spawn_bridge")]
     [InlineData("toggle_ai", "toggle_ai")]
     public void ResolveHelperHookId_ShouldUseExpectedDefaults(string actionId, string expectedHook)
     {
@@ -165,6 +223,11 @@ public sealed class RuntimeAdapterContextSpawnDefaultsTests
     [InlineData("place_planet_building", HelperBridgeOperationKind.PlacePlanetBuilding)]
     [InlineData("set_context_faction", HelperBridgeOperationKind.SetContextAllegiance)]
     [InlineData("set_context_allegiance", HelperBridgeOperationKind.SetContextAllegiance)]
+    [InlineData("transfer_fleet_safe", HelperBridgeOperationKind.TransferFleetSafe)]
+    [InlineData("flip_planet_owner", HelperBridgeOperationKind.FlipPlanetOwner)]
+    [InlineData("switch_player_faction", HelperBridgeOperationKind.SwitchPlayerFaction)]
+    [InlineData("edit_hero_state", HelperBridgeOperationKind.EditHeroState)]
+    [InlineData("create_hero_variant", HelperBridgeOperationKind.CreateHeroVariant)]
     [InlineData("set_hero_state_helper", HelperBridgeOperationKind.SetHeroStateHelper)]
     [InlineData("toggle_roe_respawn_helper", HelperBridgeOperationKind.ToggleRoeRespawnHelper)]
     [InlineData("unknown_action", HelperBridgeOperationKind.Unknown)]
@@ -174,6 +237,40 @@ public sealed class RuntimeAdapterContextSpawnDefaultsTests
 
         operationKind.Should().Be(expected);
     }
+
+    [Theory]
+    [InlineData("spawn_tactical_entity", "tactical_ephemeral_zero_pop")]
+    [InlineData("spawn_galactic_entity", "galactic_persistent_spawn")]
+    [InlineData("place_planet_building", "galactic_building_safe_rules")]
+    [InlineData("transfer_fleet_safe", "fleet_transfer_safe")]
+    [InlineData("flip_planet_owner", "planet_flip_transactional")]
+    [InlineData("switch_player_faction", "switch_player_faction")]
+    [InlineData("edit_hero_state", "hero_state_adaptive")]
+    [InlineData("create_hero_variant", "hero_variant_patch_mod")]
+    [InlineData("toggle_ai", "helper_operation_default")]
+    public void ResolveHelperOperationPolicy_ShouldMapExpectedPolicy(string actionId, string expectedPolicy)
+    {
+        var request = BuildRequest(actionId, new JsonObject());
+
+        var policy = (string?)InvokePrivateStatic("ResolveHelperOperationPolicy", request);
+
+        policy.Should().Be(expectedPolicy);
+    }
+
+    [Theory]
+    [InlineData("transfer_fleet_safe", "transfer_fleet_safe")]
+    [InlineData("flip_planet_owner", "flip_planet_owner")]
+    [InlineData("switch_player_faction", "switch_player_faction")]
+    [InlineData("edit_hero_state", "edit_hero_state")]
+    [InlineData("set_hero_state_helper", "edit_hero_state")]
+    [InlineData("create_hero_variant", "create_hero_variant")]
+    public void ResolveMutationIntent_ShouldMapExpectedIntent(string actionId, string expectedIntent)
+    {
+        var intent = (string?)InvokePrivateStatic("ResolveMutationIntent", actionId);
+
+        intent.Should().Be(expectedIntent);
+    }
+
 
     [Fact]
     public void TryResolveContextFactionRequest_ShouldReturnNone_WhenActionIsNotContextRouted()
@@ -218,6 +315,21 @@ public sealed class RuntimeAdapterContextSpawnDefaultsTests
         redirected.Payload["populationPolicy"]!.GetValue<string>().Should().Be("ForceZeroTactical");
         redirected.Payload["persistencePolicy"]!.GetValue<string>().Should().Be("EphemeralBattleOnly");
         redirected.Payload["allowCrossFaction"]!.GetValue<bool>().Should().BeTrue();
+    }
+
+    [Fact]
+    public void TryResolveContextFactionRequest_ShouldRedirectFactionAlias_WhenProfileHasPlanetOwnerAction()
+    {
+        var adapter = CreateAdapter();
+        SetAttachedProfile(adapter, BuildProfileWithActions("set_planet_owner"));
+
+        var request = BuildRequest("set_context_allegiance", new JsonObject(), runtimeMode: RuntimeMode.Galactic);
+        var resolution = InvokePrivateInstance(adapter, "TryResolveContextFactionRequest", request);
+        var redirected = ReadProperty<ActionExecutionRequest?>(resolution, "RedirectedRequest");
+
+        redirected.Should().NotBeNull();
+        redirected!.Action.Id.Should().Be("set_planet_owner");
+        redirected.Payload["symbol"]!.GetValue<string>().Should().Be("planet_owner");
     }
 
     private static Type GetPrivateNestedType(string typeName)
@@ -379,5 +491,4 @@ public sealed class RuntimeAdapterContextSpawnDefaultsTests
         }
     }
 }
-
 

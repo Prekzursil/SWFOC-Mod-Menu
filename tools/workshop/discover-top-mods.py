@@ -16,6 +16,10 @@ from urllib import parse, request
 SCHEMA_VERSION = "1.0"
 DEFAULT_APP_ID = 32470
 DETAILS_API_URL = "https://api.steampowered.com/ISteamRemoteStorage/GetPublishedFileDetails/v1/"
+ALLOWED_STEAM_ENDPOINTS = {
+    "steamcommunity.com": frozenset({"/workshop/browse/"}),
+    "api.steampowered.com": frozenset({"/ISteamRemoteStorage/GetPublishedFileDetails/v1/"}),
+}
 
 
 def utc_now_iso() -> str:
@@ -53,6 +57,82 @@ def unique_ordered(values: list[str]) -> list[str]:
         seen.add(value)
         out.append(value)
     return out
+
+
+def _ensure_https_scheme(parsed: parse.SplitResult, raw_url: str) -> None:
+    if parsed.scheme.lower() != "https":
+        raise ValueError(f"Unsupported URL scheme for remote fetch: {raw_url}")
+
+
+def _resolve_allowed_host(parsed: parse.SplitResult, raw_url: str) -> str:
+    host = (parsed.hostname or "").lower()
+    if host not in ALLOWED_STEAM_ENDPOINTS:
+        raise ValueError(f"Unsupported remote host for workshop discovery: {host or raw_url}")
+    return host
+
+
+def _ensure_no_credentials(parsed: parse.SplitResult, raw_url: str) -> None:
+    if parsed.username or parsed.password:
+        raise ValueError(f"Unsupported credentials in remote fetch URL: {raw_url}")
+
+
+def _ensure_allowed_port(parsed: parse.SplitResult) -> None:
+    if parsed.port not in (None, 443):
+        raise ValueError(f"Unsupported remote port for workshop discovery: {parsed.port}")
+
+
+def _resolve_allowed_path(parsed: parse.SplitResult, host: str) -> str:
+    normalized_path = parse.unquote(parsed.path or "/")
+    allowed_paths = ALLOWED_STEAM_ENDPOINTS[host]
+    if normalized_path not in allowed_paths:
+        raise ValueError(f"Unsupported remote path for workshop discovery: {normalized_path}")
+    return normalized_path
+
+
+def _ensure_no_fragment(parsed: parse.SplitResult, raw_url: str) -> None:
+    if parsed.fragment:
+        raise ValueError(f"Unsupported URL fragment for remote fetch: {raw_url}")
+
+
+def validate_remote_url(raw_url: str) -> str:
+    parsed = parse.urlsplit(raw_url)
+    _ensure_https_scheme(parsed, raw_url)
+    host = _resolve_allowed_host(parsed, raw_url)
+    _ensure_no_credentials(parsed, raw_url)
+    _ensure_allowed_port(parsed)
+    normalized_path = _resolve_allowed_path(parsed, host)
+    _ensure_no_fragment(parsed, raw_url)
+
+    return parse.urlunsplit(("https", host, normalized_path, parsed.query, ""))
+
+
+class SteamAllowlistRedirectHandler(request.HTTPRedirectHandler):
+    def redirect_request(self, req, fp, code, msg, headers, newurl):
+        validated_url = validate_remote_url(newurl)
+        return super().redirect_request(req, fp, code, msg, headers, validated_url)
+
+
+STEAM_ONLY_OPENER = request.build_opener(SteamAllowlistRedirectHandler)
+
+
+def build_validated_request(req: request.Request) -> request.Request:
+    validated_url = validate_remote_url(req.full_url)
+    if validated_url == req.full_url:
+        return req
+
+    return request.Request(
+        validated_url,
+        data=req.data,
+        headers=dict(req.header_items()),
+        method=req.get_method(),
+    )
+
+
+def open_validated_request(req: request.Request, timeout_sec: float):
+    validated_request = build_validated_request(req)
+    # nosemgrep: python.lang.security.audit.dynamic-urllib-use-detected.dynamic-urllib-use-detected
+    # Request URL and redirect targets are constrained to HTTPS-only Steam allowlisted endpoints before opening.
+    return STEAM_ONLY_OPENER.open(validated_request, timeout=timeout_sec)
 
 
 def parse_timestamp_to_iso(value: Any) -> str:
@@ -239,7 +319,7 @@ def scrape_workshop_ids(app_id: int, pages: int, timeout_sec: float) -> tuple[li
         sources.append({"type": "workshop_browse", "uri": browse_url})
         req = request.Request(browse_url, headers={"User-Agent": "swfoc-discovery/1.0"})
         try:
-            with request.urlopen(req, timeout=timeout_sec) as response:
+            with open_validated_request(req, timeout_sec) as response:
                 html = response.read().decode("utf-8", errors="ignore")
             for match in pattern.findall(html):
                 if match not in workshop_ids:
@@ -268,7 +348,7 @@ def fetch_published_file_details(workshop_ids: list[str], timeout_sec: float) ->
         )
 
         try:
-            with request.urlopen(req, timeout=timeout_sec) as response:
+            with open_validated_request(req, timeout_sec) as response:
                 raw_payload = json.loads(response.read().decode("utf-8"))
             details = raw_payload.get("response", {}).get("publishedfiledetails", [])
             if isinstance(details, list):

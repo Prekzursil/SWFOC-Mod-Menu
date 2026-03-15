@@ -4,6 +4,7 @@
     <TargetFramework>net8.0-windows</TargetFramework>
     <UseWPF>true</UseWPF>
     <EnableWindowsTargeting>true</EnableWindowsTargeting>
+    <CLSCompliant>false</CLSCompliant>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="../SwfocTrainer.Core/SwfocTrainer.Core.csproj" />

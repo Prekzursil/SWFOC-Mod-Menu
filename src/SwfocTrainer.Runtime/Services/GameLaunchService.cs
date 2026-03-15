@@ -10,10 +10,14 @@ public sealed class GameLaunchService : IGameLaunchService
     private const string DiagnosticLaunchState = "launchState";
     private const string DiagnosticResolvedRoot = "resolvedRoot";
     private const string DiagnosticTarget = "target";
+    private const string DiagnosticOverlayModPath = "overlayModPath";
+    private const string DiagnosticLaunchHost = "launchHost";
     private const string LaunchStateRootMissing = "root_missing";
     private const string LaunchStateExeMissing = "exe_missing";
     private const string LaunchStateStartFailed = "start_failed";
     private const string LaunchStateStarted = "started";
+    private const string LaunchHostDirectGameHost = "direct_game_host";
+    private const string LaunchHostLauncherStubFallback = "launcher_stub_fallback";
 
     private static readonly string[] DefaultRoots =
     [
@@ -129,21 +133,25 @@ public sealed class GameLaunchService : IGameLaunchService
 
     private static (string ExecutablePath, GameLaunchResult? Failure) TryResolveExecutable(string root, GameLaunchTarget target)
     {
-        var executablePath = ResolveExecutablePath(root, target);
-        if (File.Exists(executablePath))
+        foreach (var executablePath in ResolveExecutableCandidates(root, target))
         {
-            return (executablePath, null);
+            if (File.Exists(executablePath))
+            {
+                return (executablePath, null);
+            }
         }
 
+        var preferredExecutablePath = ResolveExecutableCandidates(root, target).FirstOrDefault() ?? ResolveExecutablePath(root, target);
         var failure = CreateFailureResult(
-            message: $"Executable not found: {executablePath}",
+            message: $"Executable not found: {preferredExecutablePath}",
             state: LaunchStateExeMissing,
-            executablePath: executablePath,
+            executablePath: preferredExecutablePath,
             arguments: string.Empty,
             diagnostics: new Dictionary<string, object?>
             {
                 [DiagnosticResolvedRoot] = root,
-                [DiagnosticTarget] = target.ToString()
+                [DiagnosticTarget] = target.ToString(),
+                ["attemptedExecutables"] = ResolveExecutableCandidates(root, target).ToArray()
             });
         return (string.Empty, failure);
     }
@@ -168,19 +176,57 @@ public sealed class GameLaunchService : IGameLaunchService
                 ["mode"] = request.Mode.ToString(),
                 ["profileIdHint"] = request.ProfileIdHint ?? string.Empty,
                 [DiagnosticResolvedRoot] = root,
-                ["workshopIds"] = NormalizeWorkshopIds(request.WorkshopIds)
+                ["workshopIds"] = NormalizeWorkshopIds(request.WorkshopIds),
+                [DiagnosticOverlayModPath] = request.OverlayModPath ?? string.Empty,
+                [DiagnosticLaunchHost] = ClassifyLaunchHost(executablePath, request.Target)
             });
+    }
+
+    private static IReadOnlyList<string> ResolveExecutableCandidates(string root, GameLaunchTarget target)
+    {
+        return target switch
+        {
+            GameLaunchTarget.Sweaw =>
+            [
+                Path.Combine(root, "GameData", "sweaw.exe")
+            ],
+            GameLaunchTarget.Swfoc =>
+            [
+                Path.Combine(root, "corruption", "StarWarsG.exe"),
+                Path.Combine(root, "corruption", "swfoc.exe")
+            ],
+            _ =>
+            [
+                Path.Combine(root, "corruption", "StarWarsG.exe"),
+                Path.Combine(root, "corruption", "swfoc.exe")
+            ]
+        };
+    }
+
+    private static string ClassifyLaunchHost(string executablePath, GameLaunchTarget target)
+    {
+        if (target == GameLaunchTarget.Swfoc &&
+            Path.GetFileName(executablePath).Equals("StarWarsG.exe", StringComparison.OrdinalIgnoreCase))
+        {
+            return LaunchHostDirectGameHost;
+        }
+
+        if (target == GameLaunchTarget.Swfoc)
+        {
+            return LaunchHostLauncherStubFallback;
+        }
+
+        return LaunchHostDirectGameHost;
     }
 
     private static string BuildArguments(GameLaunchRequest request)
     {
+        var overlayArgument = BuildModPathArgument(request.OverlayModPath);
         return request.Mode switch
         {
-            GameLaunchMode.SteamMod => BuildSteamModArguments(request.WorkshopIds),
-            GameLaunchMode.ModPath => string.IsNullOrWhiteSpace(request.ModPath)
-                ? string.Empty
-                : $"MODPATH=\"{request.ModPath}\"",
-            _ => string.Empty
+            GameLaunchMode.SteamMod => JoinArguments(overlayArgument, BuildSteamModArguments(request.WorkshopIds)),
+            GameLaunchMode.ModPath => BuildModPathArgument(request.ModPath),
+            _ => overlayArgument
         };
     }
 
@@ -234,6 +280,18 @@ public sealed class GameLaunchService : IGameLaunchService
         }
 
         return string.Join(" ", normalized.Select(static id => $"STEAMMOD={id}"));
+    }
+
+    private static string BuildModPathArgument(string? modPath)
+    {
+        return string.IsNullOrWhiteSpace(modPath)
+            ? string.Empty
+            : $"MODPATH=\"{modPath}\"";
+    }
+
+    private static string JoinArguments(params string?[] values)
+    {
+        return string.Join(" ", values.Where(static value => !string.IsNullOrWhiteSpace(value)));
     }
 
     private static IReadOnlyList<string> NormalizeWorkshopIds(IReadOnlyList<string>? workshopIds)

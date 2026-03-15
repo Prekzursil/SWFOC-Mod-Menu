@@ -217,6 +217,40 @@ public sealed class WorkshopInventoryServiceTests
     }
 
     [Fact]
+    public async Task DiscoverInstalledAsync_ShouldIgnoreNonNumericWorkshopDirectories()
+    {
+        var tempRoot = Path.Combine(Path.GetTempPath(), $"swfoc-workshop-inventory-{Guid.NewGuid():N}");
+        Directory.CreateDirectory(tempRoot);
+        try
+        {
+            var workshopRoot = Path.Combine(tempRoot, "content", "32470");
+            Directory.CreateDirectory(workshopRoot);
+            Directory.CreateDirectory(Path.Combine(workshopRoot, "1234567890"));
+            Directory.CreateDirectory(Path.Combine(workshopRoot, "abc123"));
+            Directory.CreateDirectory(Path.Combine(workshopRoot, "9876x"));
+
+            var service = new WorkshopInventoryService(NullLogger<WorkshopInventoryService>.Instance);
+            var result = await service.DiscoverInstalledAsync(
+                new WorkshopInventoryRequest(
+                    AppId: "32470",
+                    ManifestPath: Path.Combine(tempRoot, "missing.acf"),
+                    WorkshopContentRootPath: workshopRoot,
+                    FetchRemoteMetadata: false),
+                CancellationToken.None);
+
+            result.Items.Select(x => x.WorkshopId).Should().Equal("1234567890");
+            result.Diagnostics.Should().Contain("manifest_missing");
+        }
+        finally
+        {
+            if (Directory.Exists(tempRoot))
+            {
+                Directory.Delete(tempRoot, recursive: true);
+            }
+        }
+    }
+
+    [Fact]
     public async Task DiscoverInstalledAsync_ShouldNotIncludeUnknownParentIds_InResolvedChains()
     {
         var tempRoot = Path.Combine(Path.GetTempPath(), $"swfoc-workshop-inventory-{Guid.NewGuid():N}");
@@ -585,6 +619,31 @@ public sealed class WorkshopInventoryServiceTests
         var parsed = (bool)method!.Invoke(null, args)!;
 
         parsed.Should().BeFalse();
+    }
+
+    [Fact]
+    public void TryGetDetailsArray_ShouldReturnFalse_WhenPublishedFileDetailsNodeIsNotArray()
+    {
+        using var payload = JsonDocument.Parse("""{"response":{"publishedfiledetails":{}}}""");
+        var method = typeof(WorkshopInventoryService).GetMethod("TryGetDetailsArray", BindingFlags.NonPublic | BindingFlags.Static);
+        method.Should().NotBeNull();
+
+        var args = new object?[] { payload, null };
+        var parsed = (bool)method!.Invoke(null, args)!;
+
+        parsed.Should().BeFalse();
+    }
+
+    [Fact]
+    public void BuildPostForm_ShouldEmitIndexedIdsAndItemCount()
+    {
+        var method = typeof(WorkshopInventoryService).GetMethod("BuildPostForm", BindingFlags.NonPublic | BindingFlags.Static);
+        method.Should().NotBeNull();
+        var form = (Dictionary<string, string>)method!.Invoke(null, new object?[] { new[] { "1397421866", "3447786229" } })!;
+
+        form.Should().Contain("itemcount", "2");
+        form.Should().Contain("publishedfileids[0]", "1397421866");
+        form.Should().Contain("publishedfileids[1]", "3447786229");
     }
 
     [Fact]

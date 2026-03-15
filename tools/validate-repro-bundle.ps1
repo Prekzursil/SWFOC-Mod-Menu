@@ -120,6 +120,26 @@ foreach ($required in @("totalActions", "routedActions", "blockedActions", "reas
     Confirm-ValidationField -Object $bundle.allegianceRoutingSummary -Field $required -Errors $errors
 }
 
+foreach ($required in @("supportsRespawn", "supportsPermadeath", "supportsRescue", "defaultRespawnTime", "duplicateHeroPolicy", "respawnExceptionSources")) {
+    Confirm-ValidationField -Object $bundle.heroMechanicsSummary -Field $required -Errors $errors -AllowNull:($required -eq "defaultRespawnTime")
+}
+
+foreach ($required in @("tacticalEphemeralCount", "galacticPersistentCount", "crossFactionEnabledCount", "forceOverrideCount")) {
+    Confirm-ValidationField -Object $bundle.operationPolicySummary -Field $required -Errors $errors
+}
+
+foreach ($required in @("totalActions", "safeTransfers", "blockedTransfers", "reasonCodes")) {
+    Confirm-ValidationField -Object $bundle.fleetTransferSafetySummary -Field $required -Errors $errors
+}
+
+foreach ($required in @("totalActions", "emptyRetreatCount", "convertEverythingCount", "blockedActions", "reasonCodes")) {
+    Confirm-ValidationField -Object $bundle.planetFlipSummary -Field $required -Errors $errors
+}
+
+foreach ($required in @("hasBlockers", "blockingEntityCount", "blockingEntityIds", "reasonCodes")) {
+    Confirm-ValidationField -Object $bundle.entityTransplantBlockers -Field $required -Errors $errors
+}
+
 if ($Strict) {
     $hasPassed = (@($liveTests | Where-Object { $_.outcome -eq "Passed" })).Count -gt 0
     if ($bundle.classification -eq "passed" -and -not $hasPassed) {

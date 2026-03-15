@@ -5,12 +5,49 @@ namespace SwfocTrainer.App.ViewModels;
 
 internal static class MainViewModelPayloadHelpers
 {
+    private const string PayloadPlacementModeKey = "placementMode";
+    private const string PayloadAllowCrossFactionKey = "allowCrossFaction";
+    private const string PayloadForceOverrideKey = "forceOverride";
+    private const string PayloadPopulationPolicyKey = "populationPolicy";
+    private const string PayloadPersistencePolicyKey = "persistencePolicy";
+    private const string DefaultFlipMode = "convert_everything";
+
+    private static readonly IReadOnlyDictionary<string, Action<JsonObject>> ActionPayloadDefaults =
+        new Dictionary<string, Action<JsonObject>>(StringComparer.OrdinalIgnoreCase)
+        {
+            ["spawn_tactical_entity"] = ApplySpawnTacticalDefaults,
+            ["spawn_galactic_entity"] = ApplySpawnGalacticDefaults,
+            ["place_planet_building"] = ApplyPlanetBuildingDefaults,
+            ["transfer_fleet_safe"] = ApplyTransferFleetDefaults,
+            ["flip_planet_owner"] = ApplyPlanetFlipDefaults,
+            ["switch_player_faction"] = ApplySwitchPlayerFactionDefaults,
+            ["edit_hero_state"] = ApplyEditHeroStateDefaults,
+            ["create_hero_variant"] = ApplyCreateHeroVariantDefaults
+        };
+
     internal static JsonObject BuildRequiredPayloadTemplate(
         string actionId,
         JsonArray required,
         IReadOnlyDictionary<string, string> defaultSymbolByActionId,
         IReadOnlyDictionary<string, string> defaultHelperHookByActionId)
     {
+        if (actionId is null)
+        {
+            throw new ArgumentNullException(nameof(actionId));
+        }
+        if (required is null)
+        {
+            throw new ArgumentNullException(nameof(required));
+        }
+        if (defaultSymbolByActionId is null)
+        {
+            throw new ArgumentNullException(nameof(defaultSymbolByActionId));
+        }
+        if (defaultHelperHookByActionId is null)
+        {
+            throw new ArgumentNullException(nameof(defaultHelperHookByActionId));
+        }
+
         var payload = new JsonObject();
 
         foreach (var node in required)
@@ -33,6 +70,15 @@ internal static class MainViewModelPayloadHelpers
 
     internal static void ApplyActionSpecificPayloadDefaults(string actionId, JsonObject payload)
     {
+        if (actionId is null)
+        {
+            throw new ArgumentNullException(nameof(actionId));
+        }
+        if (payload is null)
+        {
+            throw new ArgumentNullException(nameof(payload));
+        }
+
         if (actionId.Equals(MainViewModelDefaults.ActionSetCredits, StringComparison.OrdinalIgnoreCase))
         {
             payload[MainViewModelDefaults.PayloadKeyLockCredits] = false;
@@ -42,6 +88,11 @@ internal static class MainViewModelPayloadHelpers
             !payload.ContainsKey(MainViewModelDefaults.PayloadKeyIntValue))
         {
             payload[MainViewModelDefaults.PayloadKeyIntValue] = MainViewModelDefaults.DefaultCreditsValue;
+        }
+
+        if (ActionPayloadDefaults.TryGetValue(actionId, out var applyDefaults))
+        {
+            applyDefaults?.Invoke(payload);
         }
     }
 
@@ -61,6 +112,23 @@ internal static class MainViewModelPayloadHelpers
         IReadOnlyDictionary<string, string> defaultSymbolByActionId,
         IReadOnlyDictionary<string, string> defaultHelperHookByActionId)
     {
+        if (actionId is null)
+        {
+            throw new ArgumentNullException(nameof(actionId));
+        }
+        if (key is null)
+        {
+            throw new ArgumentNullException(nameof(key));
+        }
+        if (defaultSymbolByActionId is null)
+        {
+            throw new ArgumentNullException(nameof(defaultSymbolByActionId));
+        }
+        if (defaultHelperHookByActionId is null)
+        {
+            throw new ArgumentNullException(nameof(defaultHelperHookByActionId));
+        }
+
         return key switch
         {
             MainViewModelDefaults.PayloadKeySymbol => JsonValue.Create(defaultSymbolByActionId.TryGetValue(actionId, out var sym) ? sym : string.Empty),
@@ -81,9 +149,109 @@ internal static class MainViewModelPayloadHelpers
             "entryMarker" => JsonValue.Create(string.Empty),
             "faction" => JsonValue.Create(string.Empty),
             "globalKey" => JsonValue.Create(string.Empty),
+            "desiredState" => JsonValue.Create("alive"),
+            "populationPolicy" => JsonValue.Create("Normal"),
+            "persistencePolicy" => JsonValue.Create("PersistentGalactic"),
+            PayloadPlacementModeKey => JsonValue.Create(string.Empty),
+            PayloadAllowCrossFactionKey => JsonValue.Create(true),
+            "allowDuplicate" => JsonValue.Create(false),
+            PayloadForceOverrideKey => JsonValue.Create(false),
+            "planetFlipMode" => JsonValue.Create(DefaultFlipMode),
+            "flipMode" => JsonValue.Create(DefaultFlipMode),
+            "variantGenerationMode" => JsonValue.Create("patch_mod_overlay"),
             "nodePath" => JsonValue.Create(string.Empty),
             "value" => JsonValue.Create(string.Empty),
             _ => JsonValue.Create(string.Empty)
         };
     }
+
+    private static void ApplySpawnTacticalDefaults(JsonObject payload)
+    {
+        var targetPayload = payload ?? throw new ArgumentNullException(nameof(payload));
+        ApplySpawnDefaults(targetPayload, "ForceZeroTactical", "EphemeralBattleOnly");
+        targetPayload[PayloadPlacementModeKey] ??= "reinforcement_zone";
+    }
+
+    private static void ApplySpawnGalacticDefaults(JsonObject payload)
+    {
+        var targetPayload = payload ?? throw new ArgumentNullException(nameof(payload));
+        ApplySpawnDefaults(targetPayload, "Normal", "PersistentGalactic");
+    }
+
+    private static void ApplyPlanetBuildingDefaults(JsonObject payload)
+    {
+        if (payload is null)
+        {
+            throw new ArgumentNullException(nameof(payload));
+        }
+        payload[PayloadPlacementModeKey] ??= "safe_rules";
+        payload[PayloadAllowCrossFactionKey] ??= true;
+        payload[PayloadForceOverrideKey] ??= false;
+    }
+
+    private static void ApplyTransferFleetDefaults(JsonObject payload)
+    {
+        if (payload is null)
+        {
+            throw new ArgumentNullException(nameof(payload));
+        }
+        payload[PayloadPlacementModeKey] ??= "safe_transfer";
+        payload[PayloadAllowCrossFactionKey] ??= true;
+        payload[PayloadForceOverrideKey] ??= false;
+    }
+
+    private static void ApplyPlanetFlipDefaults(JsonObject payload)
+    {
+        if (payload is null)
+        {
+            throw new ArgumentNullException(nameof(payload));
+        }
+        payload["flipMode"] ??= DefaultFlipMode;
+        payload["planetFlipMode"] ??= payload["flipMode"]?.GetValue<string>() ?? DefaultFlipMode;
+        payload[PayloadAllowCrossFactionKey] ??= true;
+        payload[PayloadForceOverrideKey] ??= false;
+    }
+
+    private static void ApplySwitchPlayerFactionDefaults(JsonObject payload)
+    {
+        if (payload is null)
+        {
+            throw new ArgumentNullException(nameof(payload));
+        }
+        payload[PayloadAllowCrossFactionKey] ??= true;
+    }
+
+    private static void ApplyEditHeroStateDefaults(JsonObject payload)
+    {
+        if (payload is null)
+        {
+            throw new ArgumentNullException(nameof(payload));
+        }
+        payload["desiredState"] ??= "alive";
+        payload["allowDuplicate"] ??= false;
+    }
+
+    private static void ApplyCreateHeroVariantDefaults(JsonObject payload)
+    {
+        if (payload is null)
+        {
+            throw new ArgumentNullException(nameof(payload));
+        }
+        payload["variantGenerationMode"] ??= "patch_mod_overlay";
+        payload[PayloadAllowCrossFactionKey] ??= true;
+    }
+
+    private static void ApplySpawnDefaults(JsonObject payload, string populationPolicy, string persistencePolicy)
+    {
+        if (payload is null)
+        {
+            throw new ArgumentNullException(nameof(payload));
+        }
+
+        payload[PayloadPopulationPolicyKey] ??= populationPolicy;
+        payload[PayloadPersistencePolicyKey] ??= persistencePolicy;
+        payload[PayloadAllowCrossFactionKey] ??= true;
+    }
 }
+
+

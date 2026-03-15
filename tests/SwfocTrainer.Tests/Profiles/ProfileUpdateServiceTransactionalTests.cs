@@ -15,6 +15,41 @@ namespace SwfocTrainer.Tests.Profiles;
 public sealed class ProfileUpdateServiceTransactionalTests
 {
     [Fact]
+    public async Task CheckForUpdatesAsync_ShouldReturnRemoteProfilesWithDifferentVersions()
+    {
+        var tempRoot = Path.Combine(Path.GetTempPath(), $"swfoc-profile-check-{Guid.NewGuid():N}");
+
+        try
+        {
+            var profileId = "base_swfoc";
+            Directory.CreateDirectory(Path.Combine(tempRoot, "default", "profiles"));
+            Directory.CreateDirectory(Path.Combine(tempRoot, "cache"));
+
+            var service = new GitHubProfileUpdateService(
+                new HttpClient(CreateHttpHandler(profileId, BuildZipWithProfile(profileId, BuildProfileJson("new")), ComputeSha256(BuildZipWithProfile(profileId, BuildProfileJson("new"))))),
+                new ProfileRepositoryOptions
+                {
+                    ProfilesRootPath = Path.Combine(tempRoot, "default"),
+                    ManifestFileName = "manifest.json",
+                    DownloadCachePath = Path.Combine(tempRoot, "cache"),
+                    RemoteManifestUrl = "https://example.invalid/manifest.json"
+                },
+                new StubProfileRepository(BuildManifest(profileId, "1.0.0")));
+
+            var updates = await service.CheckForUpdatesAsync(CancellationToken.None);
+
+            updates.Should().ContainSingle(profileId);
+        }
+        finally
+        {
+            if (Directory.Exists(tempRoot))
+            {
+                Directory.Delete(tempRoot, recursive: true);
+            }
+        }
+    }
+
+    [Fact]
     public async Task InstallProfileTransactionalAsync_ShouldInstallAndRollback()
     {
         var tempRoot = Path.Combine(Path.GetTempPath(), $"swfoc-profile-update-{Guid.NewGuid():N}");
@@ -33,6 +68,76 @@ public sealed class ProfileUpdateServiceTransactionalTests
 
             var rolledBackJson = await File.ReadAllTextAsync(setup.ExistingPath);
             rolledBackJson.Should().Contain("\"displayName\":\"old\"");
+        }
+        finally
+        {
+            if (Directory.Exists(tempRoot))
+            {
+                Directory.Delete(tempRoot, recursive: true);
+            }
+        }
+    }
+
+    [Fact]
+    public async Task InstallProfileTransactionalAsync_ShouldFail_WhenProfileMissingFromManifest()
+    {
+        var tempRoot = Path.Combine(Path.GetTempPath(), $"swfoc-profile-missing-{Guid.NewGuid():N}");
+
+        try
+        {
+            var setup = await CreateInstallSetupAsync(tempRoot);
+            var handler = CreateManifestOnlyHandler("other_profile", version: "1.2.3");
+            var service = new GitHubProfileUpdateService(
+                new HttpClient(handler),
+                new ProfileRepositoryOptions
+                {
+                    ProfilesRootPath = Path.Combine(tempRoot, "default"),
+                    ManifestFileName = "manifest.json",
+                    DownloadCachePath = Path.Combine(tempRoot, "cache"),
+                    RemoteManifestUrl = "https://example.invalid/manifest.json"
+                },
+                new StubProfileRepository());
+
+            var install = await service.InstallProfileTransactionalAsync(setup.ProfileId);
+
+            install.Succeeded.Should().BeFalse();
+            install.Message.Should().Contain("not present in remote manifest");
+            install.ReasonCode.Should().Be("profile_missing_in_manifest");
+        }
+        finally
+        {
+            if (Directory.Exists(tempRoot))
+            {
+                Directory.Delete(tempRoot, recursive: true);
+            }
+        }
+    }
+
+    [Fact]
+    public async Task InstallProfileTransactionalAsync_ShouldFail_WhenPackageHashDoesNotMatchManifest()
+    {
+        var tempRoot = Path.Combine(Path.GetTempPath(), $"swfoc-profile-hash-{Guid.NewGuid():N}");
+
+        try
+        {
+            var setup = await CreateInstallSetupAsync(tempRoot);
+            var zipBytes = BuildZipWithProfile(setup.ProfileId, BuildProfileJson(displayName: "new"));
+            var service = new GitHubProfileUpdateService(
+                new HttpClient(CreateHttpHandler(setup.ProfileId, zipBytes, "deadbeef")),
+                new ProfileRepositoryOptions
+                {
+                    ProfilesRootPath = Path.Combine(tempRoot, "default"),
+                    ManifestFileName = "manifest.json",
+                    DownloadCachePath = Path.Combine(tempRoot, "cache"),
+                    RemoteManifestUrl = "https://example.invalid/manifest.json"
+                },
+                new StubProfileRepository());
+
+            var install = await service.InstallProfileTransactionalAsync(setup.ProfileId);
+
+            install.Succeeded.Should().BeFalse();
+            install.ReasonCode.Should().Be("sha_mismatch");
+            install.Message.Should().Contain("Expected");
         }
         finally
         {
@@ -102,6 +207,49 @@ public sealed class ProfileUpdateServiceTransactionalTests
         });
     }
 
+    private static StubHttpMessageHandler CreateManifestOnlyHandler(string profileId, string version)
+    {
+        var manifestJson = JsonSerializer.Serialize(new
+        {
+            version = "1.0.0",
+            publishedAt = "2026-01-01T00:00:00Z",
+            profiles = new[]
+            {
+                new
+                {
+                    id = profileId,
+                    version,
+                    sha256 = "abc",
+                    downloadUrl = $"https://example.invalid/{profileId}.zip",
+                    minAppVersion = "1.0.0",
+                    description = "test"
+                }
+            }
+        });
+
+        return new StubHttpMessageHandler(new Dictionary<string, (string ContentType, byte[] Body)>
+        {
+            ["https://example.invalid/manifest.json"] = ("application/json", Encoding.UTF8.GetBytes(manifestJson))
+        });
+    }
+
+    private static ProfileManifest BuildManifest(string profileId, string version)
+    {
+        return new ProfileManifest(
+            Version: "1.0.0",
+            PublishedAt: DateTimeOffset.Parse("2026-01-01T00:00:00Z"),
+            Profiles:
+            [
+                new ProfileManifestEntry(
+                    Id: profileId,
+                    Version: version,
+                    Sha256: "abc",
+                    DownloadUrl: $"https://example.invalid/{profileId}.zip",
+                    MinAppVersion: "1.0.0",
+                    Description: "local")
+            ]);
+    }
+
     private static void AssertInstallResult(ProfileInstallResult install)
     {
         install.Succeeded.Should().BeTrue();
@@ -161,10 +309,22 @@ public sealed class ProfileUpdateServiceTransactionalTests
 
     private sealed class StubProfileRepository : IProfileRepository
     {
+        private readonly ProfileManifest _manifest;
+
+        public StubProfileRepository()
+            : this(BuildManifest("base_swfoc", "1.0.0"))
+        {
+        }
+
+        public StubProfileRepository(ProfileManifest manifest)
+        {
+            _manifest = manifest;
+        }
+
         public Task<ProfileManifest> LoadManifestAsync(CancellationToken cancellationToken = default)
         {
             _ = cancellationToken;
-            throw new NotImplementedException();
+            return Task.FromResult(_manifest);
         }
 
         public Task<TrainerProfile> LoadProfileAsync(string profileId, CancellationToken cancellationToken = default)
