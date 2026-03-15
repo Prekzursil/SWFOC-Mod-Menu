@@ -118,6 +118,98 @@ public sealed class HelperModServiceTests
     }
 
     [Fact]
+    public async Task DeployAsync_ShouldGenerateAutoloadWrappers_WhenProfileDeclaresHelperAutoloadScripts()
+    {
+        var sourceRoot = CreateTempDirectory();
+        var installRoot = CreateTempDirectory();
+        var originalScriptsRoot = CreateTempDirectory();
+        try
+        {
+            WriteScript(sourceRoot, "scripts/common/spawn_bridge.lua", "-- helper script");
+            WriteScript(originalScriptsRoot, "Story/Galactic.lua", "-- original galactic");
+            WriteScript(originalScriptsRoot, "Story/LandBattle.lua", "-- original land");
+            var metadata = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
+            {
+                ["helperAutoloadScripts"] = "Story/Galactic.lua,Story/LandBattle.lua"
+            };
+            var profile = BuildProfile(
+                "base_swfoc",
+                [new HelperHookSpec("spawn_bridge", "scripts/common/spawn_bridge.lua", "1.0.0", EntryPoint: "SWFOC_Trainer_Spawn")],
+                metadata);
+            var service = BuildService(profile, sourceRoot, installRoot, originalScriptSearchRoots: [originalScriptsRoot]);
+
+            var deployedRoot = await service.DeployAsync("base_swfoc", CancellationToken.None);
+
+            var galacticWrapper = Path.Combine(deployedRoot, "Data", "Scripts", "Story", "Galactic.lua");
+            var galacticOriginal = Path.Combine(deployedRoot, "Data", "Scripts", "Library", "SwfocTrainer", "Original", "Story", "Galactic.lua");
+            var landWrapper = Path.Combine(deployedRoot, "Data", "Scripts", "Story", "LandBattle.lua");
+            var landOriginal = Path.Combine(deployedRoot, "Data", "Scripts", "Library", "SwfocTrainer", "Original", "Story", "LandBattle.lua");
+
+            File.Exists(galacticWrapper).Should().BeTrue();
+            File.Exists(galacticOriginal).Should().BeTrue();
+            File.Exists(landWrapper).Should().BeTrue();
+            File.Exists(landOriginal).Should().BeTrue();
+
+            var wrapper = File.ReadAllText(galacticWrapper);
+            wrapper.Should().Contain("require(\"SwfocTrainer_HelperBootstrap\")");
+            wrapper.Should().Contain("require(\"SwfocTrainer.Original.Story.Galactic\")");
+            wrapper.Should().Contain("SWFOC_TRAINER_HELPER_AUTOLOAD_READY");
+            File.ReadAllText(galacticOriginal).Should().Be("-- original galactic");
+        }
+        finally
+        {
+            DeleteDirectory(sourceRoot);
+            DeleteDirectory(installRoot);
+            DeleteDirectory(originalScriptsRoot);
+        }
+    }
+
+    [Fact]
+    public async Task DeployAsync_ShouldWriteManifest_WithActivationScripts_WhenAutoloadWrappersAreGenerated()
+    {
+        var sourceRoot = CreateTempDirectory();
+        var installRoot = CreateTempDirectory();
+        var originalScriptsRoot = CreateTempDirectory();
+        try
+        {
+            WriteScript(sourceRoot, "scripts/common/spawn_bridge.lua", "-- helper script");
+            WriteScript(originalScriptsRoot, "Story/SpaceBattle.lua", "-- original space");
+            var metadata = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
+            {
+                ["helperAutoloadScripts"] = "Story/SpaceBattle.lua",
+                ["helperAutoloadStrategy"] = "story_wrapper_chain"
+            };
+            var profile = BuildProfile(
+                "base_swfoc",
+                [new HelperHookSpec("spawn_bridge", "scripts/common/spawn_bridge.lua", "1.0.0", EntryPoint: "SWFOC_Trainer_Spawn")],
+                metadata);
+            var service = BuildService(profile, sourceRoot, installRoot, originalScriptSearchRoots: [originalScriptsRoot]);
+
+            var deployedRoot = await service.DeployAsync("base_swfoc", CancellationToken.None);
+            var manifestPath = Path.Combine(deployedRoot, "helper-deployment.json");
+            using var document = JsonDocument.Parse(File.ReadAllText(manifestPath));
+
+            var root = document.RootElement;
+            root.GetProperty("activationStrategy").GetString().Should().Be("story_wrapper_chain");
+            var activationScripts = root.GetProperty("activationScripts");
+            activationScripts.GetArrayLength().Should().Be(1);
+            var activation = activationScripts[0];
+            activation.GetProperty("script").GetString().Should().Be("Story/SpaceBattle.lua");
+            activation.GetProperty("deployedScript").GetString().Should().Be("Data/Scripts/Story/SpaceBattle.lua");
+            activation.GetProperty("originalCopy").GetString().Should().Be("Data/Scripts/Library/SwfocTrainer/Original/Story/SpaceBattle.lua");
+            activation.GetProperty("originalSourcePath").GetString().Should().EndWith("Story\\SpaceBattle.lua");
+            activation.GetProperty("bootstrapRequirePath").GetString().Should().Be("SwfocTrainer_HelperBootstrap");
+            activation.GetProperty("originalRequirePath").GetString().Should().Be("SwfocTrainer.Original.Story.SpaceBattle");
+        }
+        finally
+        {
+            DeleteDirectory(sourceRoot);
+            DeleteDirectory(installRoot);
+            DeleteDirectory(originalScriptsRoot);
+        }
+    }
+
+    [Fact]
     public async Task DeployAsync_ShouldThrow_WhenHookSourceMissing()
     {
         var sourceRoot = CreateTempDirectory();
@@ -281,18 +373,61 @@ public sealed class HelperModServiceTests
         }
     }
 
-    private static HelperModService BuildService(TrainerProfile profile, string sourceRoot, string installRoot)
+    [Fact]
+    public async Task VerifyAsync_ShouldReturnFalse_WhenAutoloadWrapperIsMissing()
+    {
+        var sourceRoot = CreateTempDirectory();
+        var installRoot = CreateTempDirectory();
+        var originalScriptsRoot = CreateTempDirectory();
+        try
+        {
+            WriteScript(sourceRoot, "scripts/common/spawn_bridge.lua", "-- helper script");
+            WriteScript(originalScriptsRoot, "Story/Galactic.lua", "-- original galactic");
+            var metadata = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
+            {
+                ["helperAutoloadScripts"] = "Story/Galactic.lua"
+            };
+            var profile = BuildProfile(
+                "base_swfoc",
+                [new HelperHookSpec("spawn_bridge", "scripts/common/spawn_bridge.lua", "1.0.0", EntryPoint: "SWFOC_Trainer_Spawn")],
+                metadata);
+            var service = BuildService(profile, sourceRoot, installRoot, originalScriptSearchRoots: [originalScriptsRoot]);
+
+            var deployedRoot = await service.DeployAsync("base_swfoc", CancellationToken.None);
+            File.Delete(Path.Combine(deployedRoot, "Data", "Scripts", "Story", "Galactic.lua"));
+
+            var verified = await service.VerifyAsync("base_swfoc", CancellationToken.None);
+
+            verified.Should().BeFalse();
+        }
+        finally
+        {
+            DeleteDirectory(sourceRoot);
+            DeleteDirectory(installRoot);
+            DeleteDirectory(originalScriptsRoot);
+        }
+    }
+
+    private static HelperModService BuildService(
+        TrainerProfile profile,
+        string sourceRoot,
+        string installRoot,
+        IReadOnlyList<string>? originalScriptSearchRoots = null)
     {
         var repository = new StubProfileRepository(profile);
         var options = new HelperModOptions
         {
             SourceRoot = sourceRoot,
-            InstallRoot = installRoot
+            InstallRoot = installRoot,
+            OriginalScriptSearchRoots = originalScriptSearchRoots ?? Array.Empty<string>()
         };
         return new HelperModService(repository, options, NullLogger<HelperModService>.Instance);
     }
 
-    private static TrainerProfile BuildProfile(string profileId, IReadOnlyList<HelperHookSpec> hooks)
+    private static TrainerProfile BuildProfile(
+        string profileId,
+        IReadOnlyList<HelperHookSpec> hooks,
+        IReadOnlyDictionary<string, string>? metadata = null)
     {
         return new TrainerProfile(
             Id: profileId,
@@ -306,7 +441,8 @@ public sealed class HelperModServiceTests
             FeatureFlags: new Dictionary<string, bool>(),
             CatalogSources: Array.Empty<CatalogSource>(),
             SaveSchemaId: "save-schema",
-            HelperModHooks: hooks);
+            HelperModHooks: hooks,
+            Metadata: metadata);
     }
 
     private static string WriteScript(string sourceRoot, string relativePath, string content)

@@ -19,6 +19,8 @@ public sealed class HelperOptionsCoverageTests
         options.SourceRoot.Should().Contain("profiles");
         options.InstallRoot.Should().NotBeNullOrWhiteSpace();
         options.InstallRoot.Should().Contain("SwfocTrainer");
+        options.GameRootCandidates.Should().NotBeEmpty();
+        options.WorkshopContentRoots.Should().NotBeEmpty();
     }
 
     [Fact]

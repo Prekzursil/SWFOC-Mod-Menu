@@ -3,6 +3,7 @@ using System.Security.Cryptography;
 using System.Text.Json;
 using Microsoft.Extensions.Logging;
 using SwfocTrainer.Core.Contracts;
+using SwfocTrainer.Core.Models;
 using SwfocTrainer.Helper.Config;
 
 namespace SwfocTrainer.Helper.Services;
@@ -11,6 +12,11 @@ public sealed class HelperModService : IHelperModService
 {
     private const string DeploymentManifestFileName = "helper-deployment.json";
     private const string BootstrapScriptName = "SwfocTrainer_HelperBootstrap.lua";
+    private const string BootstrapRequirePath = "SwfocTrainer_HelperBootstrap";
+    private const string AutoloadStrategyMetadataKey = "helperAutoloadStrategy";
+    private const string AutoloadScriptsMetadataKey = "helperAutoloadScripts";
+    private const string DefaultAutoloadStrategy = "story_wrapper_chain";
+    private const string OriginalScriptCopyRoot = "SwfocTrainer/Original";
 
     private readonly IProfileRepository _profiles;
     private readonly HelperModOptions _options;
@@ -42,7 +48,7 @@ public sealed class HelperModService : IHelperModService
                 throw new FileNotFoundException($"Helper hook source not found: {sourcePath}");
             }
 
-            var destination = GetDeployedScriptPath(targetRoot, script);
+            var destination = GetDeployedHookScriptPath(targetRoot, script);
             var destinationDir = Path.GetDirectoryName(destination);
             if (!string.IsNullOrWhiteSpace(destinationDir))
             {
@@ -57,7 +63,7 @@ public sealed class HelperModService : IHelperModService
                 id = hook.Id,
                 script = hook.Script.Replace('\\', '/'),
                 deployedScript = relativeDeployedScript,
-                requirePath = NormalizeLuaRequirePath(hook.Script),
+                requirePath = NormalizeHookLuaRequirePath(hook.Script),
                 entryPoint = hook.EntryPoint ?? string.Empty,
                 version = hook.Version,
                 sha256 = ComputeSha256(destination)
@@ -66,15 +72,27 @@ public sealed class HelperModService : IHelperModService
 
         var bootstrapPath = Path.Combine(GetLibraryRoot(targetRoot), BootstrapScriptName);
         File.WriteAllText(bootstrapPath, BuildBootstrapScript(profile.Id, profile.HelperModHooks));
+
+        var activationStrategy = ResolveActivationStrategy(profile);
+        var activationScripts = await DeployActivationScriptsAsync(targetRoot, profile, activationStrategy, cancellationToken);
+
         File.WriteAllText(
             Path.Combine(targetRoot, DeploymentManifestFileName),
             BuildDeploymentManifest(
                 profile.Id,
                 deployedScripts,
                 Path.GetRelativePath(targetRoot, bootstrapPath).Replace('\\', '/'),
+                activationStrategy,
+                activationScripts,
                 deployedHookManifests));
 
-        _logger.LogInformation("Deployed helper hooks for {ProfileId} into {TargetRoot}", profileId, targetRoot);
+        _logger.LogInformation(
+            "Deployed helper hooks for {ProfileId} into {TargetRoot} (activationStrategy={ActivationStrategy}, activationScripts={ActivationCount})",
+            profileId,
+            targetRoot,
+            activationStrategy,
+            activationScripts.Count);
+
         return targetRoot;
     }
 
@@ -94,7 +112,7 @@ public sealed class HelperModService : IHelperModService
 
         foreach (var hook in profile.HelperModHooks)
         {
-            var path = GetDeployedScriptPath(targetRoot, hook.Script);
+            var path = GetDeployedHookScriptPath(targetRoot, hook.Script);
             if (!File.Exists(path))
             {
                 return false;
@@ -113,14 +131,22 @@ public sealed class HelperModService : IHelperModService
             }
         }
 
-        return true;
-    }
+        var activationStrategy = ResolveActivationStrategy(profile);
+        if (string.IsNullOrWhiteSpace(activationStrategy))
+        {
+            return true;
+        }
 
-    private static string ComputeSha256(string path)
-    {
-        using var sha = SHA256.Create();
-        using var stream = File.OpenRead(path);
-        return Convert.ToHexString(sha.ComputeHash(stream)).ToLowerInvariant();
+        foreach (var activationScript in ResolveAutoloadScripts(profile))
+        {
+            if (!File.Exists(GetActivationWrapperPath(targetRoot, activationScript)) ||
+                !File.Exists(GetOriginalCopyPath(targetRoot, activationScript)))
+            {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     public Task<string> DeployAsync(string profileId)
@@ -133,21 +159,187 @@ public sealed class HelperModService : IHelperModService
         return VerifyAsync(profileId, CancellationToken.None);
     }
 
+    private Task<IReadOnlyList<ActivationScriptDeployment>> DeployActivationScriptsAsync(
+        string targetRoot,
+        TrainerProfile profile,
+        string activationStrategy,
+        CancellationToken cancellationToken)
+    {
+        _ = cancellationToken;
+
+        var autoloadScripts = ResolveAutoloadScripts(profile);
+        if (autoloadScripts.Count == 0)
+        {
+            return Task.FromResult<IReadOnlyList<ActivationScriptDeployment>>(Array.Empty<ActivationScriptDeployment>());
+        }
+
+        var searchRoots = ResolveOriginalScriptSearchRoots(profile);
+        var deployments = new List<ActivationScriptDeployment>(autoloadScripts.Count);
+
+        foreach (var activationScript in autoloadScripts)
+        {
+            var normalizedScript = NormalizeDataScriptsRelativePath(activationScript);
+            var originalSourcePath = ResolveOriginalScriptSourcePath(searchRoots, normalizedScript)
+                ?? throw new FileNotFoundException(
+                    $"Original activation script not found for helper autoload '{normalizedScript}'. " +
+                    $"Search roots: {string.Join(", ", searchRoots)}");
+
+            var originalCopyPath = GetOriginalCopyPath(targetRoot, normalizedScript);
+            var originalCopyDirectory = Path.GetDirectoryName(originalCopyPath);
+            if (!string.IsNullOrWhiteSpace(originalCopyDirectory))
+            {
+                Directory.CreateDirectory(originalCopyDirectory);
+            }
+
+            File.Copy(originalSourcePath, originalCopyPath, overwrite: true);
+
+            var wrapperPath = GetActivationWrapperPath(targetRoot, normalizedScript);
+            var wrapperDirectory = Path.GetDirectoryName(wrapperPath);
+            if (!string.IsNullOrWhiteSpace(wrapperDirectory))
+            {
+                Directory.CreateDirectory(wrapperDirectory);
+            }
+
+            var originalRequirePath = NormalizeLuaRequirePath(Path.Combine(OriginalScriptCopyRoot, normalizedScript));
+            File.WriteAllText(wrapperPath, BuildAutoloadWrapperScript(profile.Id, activationStrategy, normalizedScript, originalRequirePath));
+
+            deployments.Add(new ActivationScriptDeployment(
+                Script: normalizedScript.Replace('\\', '/'),
+                DeployedScript: Path.GetRelativePath(targetRoot, wrapperPath).Replace('\\', '/'),
+                OriginalCopy: Path.GetRelativePath(targetRoot, originalCopyPath).Replace('\\', '/'),
+                OriginalSourcePath: originalSourcePath,
+                BootstrapRequirePath: BootstrapRequirePath,
+                OriginalRequirePath: originalRequirePath));
+        }
+
+        return Task.FromResult<IReadOnlyList<ActivationScriptDeployment>>(deployments);
+    }
+
+    private IReadOnlyList<string> ResolveOriginalScriptSearchRoots(TrainerProfile profile)
+    {
+        var roots = new List<string>();
+        var seen = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+
+        foreach (var explicitRoot in _options.OriginalScriptSearchRoots)
+        {
+            AddSearchRoot(roots, seen, explicitRoot);
+        }
+
+        if (roots.Count > 0)
+        {
+            return roots;
+        }
+
+        foreach (var workshopId in ResolveWorkshopChain(profile))
+        {
+            foreach (var workshopRoot in _options.WorkshopContentRoots)
+            {
+                AddSearchRoot(roots, seen, Path.Combine(workshopRoot, workshopId, "Data", "Scripts"));
+            }
+        }
+
+        foreach (var gameRoot in _options.GameRootCandidates)
+        {
+            var scriptsRoot = profile.ExeTarget == ExeTarget.Sweaw
+                ? Path.Combine(gameRoot, "GameData", "Data", "Scripts")
+                : Path.Combine(gameRoot, "corruption", "Data", "Scripts");
+            AddSearchRoot(roots, seen, scriptsRoot);
+        }
+
+        return roots;
+    }
+
+    private static IReadOnlyList<string> ResolveWorkshopChain(TrainerProfile profile)
+    {
+        var ordered = new List<string>();
+        var seen = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+
+        void AddWorkshopIds(string? value)
+        {
+            if (string.IsNullOrWhiteSpace(value))
+            {
+                return;
+            }
+
+            foreach (var token in value.Split(',', StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries))
+            {
+                if (seen.Add(token))
+                {
+                    ordered.Add(token);
+                }
+            }
+        }
+
+        AddWorkshopIds(profile.SteamWorkshopId);
+        if (profile.Metadata is not null)
+        {
+            profile.Metadata.TryGetValue("requiredWorkshopIds", out var requiredWorkshopIds);
+            AddWorkshopIds(requiredWorkshopIds);
+            profile.Metadata.TryGetValue("parentDependencies", out var parentDependencies);
+            AddWorkshopIds(parentDependencies);
+        }
+
+        return ordered;
+    }
+
+    private static void AddSearchRoot(ICollection<string> roots, ISet<string> seen, string? candidate)
+    {
+        if (string.IsNullOrWhiteSpace(candidate))
+        {
+            return;
+        }
+
+        var normalized = candidate.Trim();
+        if (Directory.Exists(normalized) && seen.Add(normalized))
+        {
+            roots.Add(normalized);
+        }
+    }
+
+    private static string? ResolveOriginalScriptSourcePath(IReadOnlyList<string> searchRoots, string normalizedScript)
+    {
+        foreach (var root in searchRoots)
+        {
+            var candidate = Path.Combine(root, normalizedScript);
+            if (File.Exists(candidate))
+            {
+                return candidate;
+            }
+        }
+
+        return null;
+    }
+
+    private static string ComputeSha256(string path)
+    {
+        using var sha = SHA256.Create();
+        using var stream = File.OpenRead(path);
+        return Convert.ToHexString(sha.ComputeHash(stream)).ToLowerInvariant();
+    }
+
     private static string GetLibraryRoot(string targetRoot)
     {
         return Path.Combine(targetRoot, "Data", "Scripts", "Library");
     }
 
-    private static string GetDeployedScriptPath(string targetRoot, string script)
+    private static string GetDeployedHookScriptPath(string targetRoot, string script)
     {
-        return Path.Combine(GetLibraryRoot(targetRoot), NormalizeScriptRelativePath(script));
+        return Path.Combine(GetLibraryRoot(targetRoot), NormalizeHookRelativePath(script));
     }
 
-    private static string NormalizeScriptRelativePath(string script)
+    private static string GetActivationWrapperPath(string targetRoot, string script)
     {
-        var normalized = script
-            .Replace(Path.AltDirectorySeparatorChar, Path.DirectorySeparatorChar)
-            .TrimStart(Path.DirectorySeparatorChar);
+        return Path.Combine(targetRoot, "Data", "Scripts", NormalizeDataScriptsRelativePath(script));
+    }
+
+    private static string GetOriginalCopyPath(string targetRoot, string script)
+    {
+        return Path.Combine(GetLibraryRoot(targetRoot), OriginalScriptCopyRoot, NormalizeDataScriptsRelativePath(script));
+    }
+
+    private static string NormalizeHookRelativePath(string script)
+    {
+        var normalized = NormalizeDataScriptsRelativePath(script);
         var scriptPrefix = $"scripts{Path.DirectorySeparatorChar}";
         if (normalized.StartsWith(scriptPrefix, StringComparison.OrdinalIgnoreCase))
         {
@@ -157,9 +349,24 @@ public sealed class HelperModService : IHelperModService
         return normalized;
     }
 
-    private static string NormalizeLuaRequirePath(string script)
+    private static string NormalizeDataScriptsRelativePath(string script)
     {
-        var relativePath = NormalizeScriptRelativePath(script)
+        var normalized = script
+            .Replace(Path.AltDirectorySeparatorChar, Path.DirectorySeparatorChar)
+            .TrimStart(Path.DirectorySeparatorChar);
+
+        var dataScriptsPrefix = $"Data{Path.DirectorySeparatorChar}Scripts{Path.DirectorySeparatorChar}";
+        if (normalized.StartsWith(dataScriptsPrefix, StringComparison.OrdinalIgnoreCase))
+        {
+            normalized = normalized[dataScriptsPrefix.Length..];
+        }
+
+        return normalized;
+    }
+
+    private static string NormalizeHookLuaRequirePath(string script)
+    {
+        var relativePath = NormalizeHookRelativePath(script)
             .Replace(Path.DirectorySeparatorChar, '.');
 
         if (relativePath.EndsWith(".lua", StringComparison.OrdinalIgnoreCase))
@@ -170,7 +377,53 @@ public sealed class HelperModService : IHelperModService
         return relativePath.Trim('.');
     }
 
-    private static string BuildBootstrapScript(string profileId, IReadOnlyList<SwfocTrainer.Core.Models.HelperHookSpec> hooks)
+    private static string NormalizeLuaRequirePath(string script)
+    {
+        var relativePath = NormalizeDataScriptsRelativePath(script)
+            .Replace(Path.DirectorySeparatorChar, '.');
+
+        if (relativePath.EndsWith(".lua", StringComparison.OrdinalIgnoreCase))
+        {
+            relativePath = relativePath[..^4];
+        }
+
+        return relativePath.Trim('.');
+    }
+
+    private static string ResolveActivationStrategy(TrainerProfile profile)
+    {
+        if (profile.Metadata is null)
+        {
+            return string.Empty;
+        }
+
+        if (profile.Metadata.TryGetValue(AutoloadStrategyMetadataKey, out var explicitStrategy) &&
+            !string.IsNullOrWhiteSpace(explicitStrategy))
+        {
+            return explicitStrategy.Trim();
+        }
+
+        return ResolveAutoloadScripts(profile).Count > 0 ? DefaultAutoloadStrategy : string.Empty;
+    }
+
+    private static IReadOnlyList<string> ResolveAutoloadScripts(TrainerProfile profile)
+    {
+        if (profile.Metadata is null ||
+            !profile.Metadata.TryGetValue(AutoloadScriptsMetadataKey, out var rawScripts) ||
+            string.IsNullOrWhiteSpace(rawScripts))
+        {
+            return Array.Empty<string>();
+        }
+
+        return rawScripts
+            .Split(',', StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries)
+            .Select(NormalizeDataScriptsRelativePath)
+            .Where(static value => !string.IsNullOrWhiteSpace(value))
+            .Distinct(StringComparer.OrdinalIgnoreCase)
+            .ToArray();
+    }
+
+    private static string BuildBootstrapScript(string profileId, IReadOnlyList<HelperHookSpec> hooks)
     {
         var lines = new List<string>
         {
@@ -185,7 +438,7 @@ public sealed class HelperModService : IHelperModService
             lines.Add("    {");
             lines.Add($"        id = \"{EscapeLuaString(hook.Id)}\",");
             lines.Add($"        script = \"{EscapeLuaString(hook.Script.Replace('\\', '/'))}\",");
-            lines.Add($"        requirePath = \"{EscapeLuaString(NormalizeLuaRequirePath(hook.Script))}\",");
+            lines.Add($"        requirePath = \"{EscapeLuaString(NormalizeHookLuaRequirePath(hook.Script))}\",");
             lines.Add($"        entryPoint = \"{EscapeLuaString(hook.EntryPoint ?? string.Empty)}\",");
             lines.Add($"        version = \"{EscapeLuaString(hook.Version)}\"");
             lines.Add("    },");
@@ -236,6 +489,50 @@ public sealed class HelperModService : IHelperModService
         return string.Join(Environment.NewLine, lines) + Environment.NewLine;
     }
 
+    private static string BuildAutoloadWrapperScript(
+        string profileId,
+        string activationStrategy,
+        string scriptPath,
+        string originalRequirePath)
+    {
+        var normalizedScriptPath = scriptPath.Replace('\\', '/');
+        var lines = new List<string>
+        {
+            "-- Auto-generated helper activation wrapper for SWFOC Trainer.",
+            "local function SwfocTrainer_Helper_Autoload_Output(message)",
+            "    if message == nil or message == \"\" then",
+            "        return",
+            "    end",
+            string.Empty,
+            "    if _OuputDebug then",
+            "        pcall(function()",
+            "            _OuputDebug(message)",
+            "        end)",
+            "        return",
+            "    end",
+            string.Empty,
+            "    if _OutputDebug then",
+            "        pcall(function()",
+            "            _OutputDebug(message)",
+            "        end)",
+            "    end",
+            "end",
+            string.Empty,
+            "local bootstrap_ok, bootstrap_error = pcall(function()",
+            $"    return require(\"{EscapeLuaString(BootstrapRequirePath)}\")",
+            "end)",
+            "if bootstrap_ok then",
+            $"    SwfocTrainer_Helper_Autoload_Output(\"SWFOC_TRAINER_HELPER_AUTOLOAD_READY profile={EscapeLuaString(profileId)} strategy={EscapeLuaString(activationStrategy)} script={EscapeLuaString(normalizedScriptPath)}\")",
+            "else",
+            $"    SwfocTrainer_Helper_Autoload_Output(\"SWFOC_TRAINER_HELPER_AUTOLOAD_FAILED profile={EscapeLuaString(profileId)} strategy={EscapeLuaString(activationStrategy)} script={EscapeLuaString(normalizedScriptPath)} error=\" .. tostring(bootstrap_error))",
+            "end",
+            string.Empty,
+            $"return require(\"{EscapeLuaString(originalRequirePath)}\")"
+        };
+
+        return string.Join(Environment.NewLine, lines) + Environment.NewLine;
+    }
+
     private static string EscapeLuaString(string value)
     {
         return value
@@ -247,6 +544,8 @@ public sealed class HelperModService : IHelperModService
         string profileId,
         IReadOnlyList<string> deployedScripts,
         string bootstrapPath,
+        string activationStrategy,
+        IReadOnlyList<ActivationScriptDeployment> activationScripts,
         IReadOnlyList<object> hooks)
     {
         var manifest = new
@@ -254,13 +553,24 @@ public sealed class HelperModService : IHelperModService
             profileId,
             generatedAtUtc = DateTimeOffset.UtcNow,
             bootstrapScript = bootstrapPath,
+            activationStrategy,
+            activationScripts,
             deployedScripts,
             hooks
         };
 
         return JsonSerializer.Serialize(manifest, new JsonSerializerOptions
         {
-            WriteIndented = true
+            WriteIndented = true,
+            PropertyNamingPolicy = JsonNamingPolicy.CamelCase
         });
     }
+
+    private sealed record ActivationScriptDeployment(
+        string Script,
+        string DeployedScript,
+        string OriginalCopy,
+        string OriginalSourcePath,
+        string BootstrapRequirePath,
+        string OriginalRequirePath);
 }
