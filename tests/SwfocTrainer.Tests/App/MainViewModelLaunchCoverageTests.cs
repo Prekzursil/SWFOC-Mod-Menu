@@ -51,6 +51,35 @@ public sealed class MainViewModelLaunchCoverageTests
     }
 
     [Fact]
+    public async Task BuildLaunchRequestAsync_ShouldDeployHelperOverlay_WhenLaunchSupportsOverlay()
+    {
+        var viewModel = CreateUninitializedViewModel();
+        var helper = new StubHelperModService(@"C:\Users\tester\AppData\Local\SwfocTrainer\helper_mod\base_swfoc");
+        SetPrivateField(viewModel, "_profiles", new StubProfileRepository(BuildProfile(
+            steamWorkshopId: "3447786229",
+            metadata: new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
+            {
+                ["requiredWorkshopIds"] = "1397421866,3447786229"
+            },
+            helperHooks: new[]
+            {
+                new HelperHookSpec("spawn_bridge", "scripts/common/spawn_bridge.lua", "1.0.0")
+            })));
+        SetPrivateField(viewModel, "_helper", helper);
+
+        viewModel.LaunchTarget = "Swfoc";
+        viewModel.LaunchMode = "SteamMod";
+        viewModel.LaunchWorkshopId = string.Empty;
+        viewModel.SelectedProfileId = "test_profile";
+
+        var request = await InvokeBuildLaunchRequestAsync(viewModel);
+
+        request.WorkshopIds.Should().Equal("3447786229", "1397421866");
+        request.OverlayModPath.Should().Be(@"C:\Users\tester\AppData\Local\SwfocTrainer\helper_mod\base_swfoc");
+        helper.DeployCalls.Should().Equal("test_profile");
+    }
+
+    [Fact]
     public async Task BuildLaunchRequestAsync_ShouldFallbackToManualInputs_WhenProfileLookupThrows()
     {
         var viewModel = CreateUninitializedViewModel();
@@ -110,6 +139,36 @@ public sealed class MainViewModelLaunchCoverageTests
         viewModel.Status.Should().Contain("Launch started (pid=4242). Attaching...");
     }
 
+    [Fact]
+    public async Task LaunchAndAttachAsync_ShouldSetPreparationFailureStatus_WhenHelperOverlayDeployFails()
+    {
+        var viewModel = CreateUninitializedViewModel();
+        var launcher = new RecordingGameLaunchService(new GameLaunchResult(
+            Succeeded: true,
+            Message: "started",
+            ProcessId: 4242,
+            ExecutablePath: @"C:\Games\swfoc.exe",
+            Arguments: string.Empty));
+        SetPrivateField(viewModel, "_gameLauncher", launcher);
+        SetPrivateField(viewModel, "_profiles", new StubProfileRepository(BuildProfile(
+            steamWorkshopId: "3447786229",
+            metadata: new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase),
+            helperHooks: new[]
+            {
+                new HelperHookSpec("spawn_bridge", "scripts/common/spawn_bridge.lua", "1.0.0")
+            })));
+        SetPrivateField(viewModel, "_helper", new ThrowingHelperModService("helper deploy failed"));
+
+        viewModel.LaunchTarget = "Swfoc";
+        viewModel.LaunchMode = "SteamMod";
+        viewModel.SelectedProfileId = "test_profile";
+
+        await InvokeLaunchAndAttachAsync(viewModel);
+
+        viewModel.Status.Should().Contain("Launch preparation failed: helper deploy failed");
+        launcher.CallCount.Should().Be(0);
+    }
+
     private static MainViewModel CreateUninitializedViewModel()
     {
 #pragma warning disable SYSLIB0050
@@ -161,7 +220,10 @@ public sealed class MainViewModelLaunchCoverageTests
         field!.SetValue(instance, value);
     }
 
-    private static TrainerProfile BuildProfile(string steamWorkshopId, IReadOnlyDictionary<string, string> metadata)
+    private static TrainerProfile BuildProfile(
+        string steamWorkshopId,
+        IReadOnlyDictionary<string, string> metadata,
+        IReadOnlyList<HelperHookSpec>? helperHooks = null)
     {
         return new TrainerProfile(
             Id: "test_profile",
@@ -175,7 +237,7 @@ public sealed class MainViewModelLaunchCoverageTests
             FeatureFlags: new Dictionary<string, bool>(),
             CatalogSources: Array.Empty<CatalogSource>(),
             SaveSchemaId: "test",
-            HelperModHooks: Array.Empty<HelperHookSpec>(),
+            HelperModHooks: helperHooks ?? Array.Empty<HelperHookSpec>(),
             Metadata: metadata);
     }
 
@@ -193,6 +255,76 @@ public sealed class MainViewModelLaunchCoverageTests
             _ = request;
             cancellationToken.ThrowIfCancellationRequested();
             return Task.FromResult(_result);
+        }
+    }
+
+    private sealed class RecordingGameLaunchService : IGameLaunchService
+    {
+        private readonly GameLaunchResult _result;
+
+        public RecordingGameLaunchService(GameLaunchResult result)
+        {
+            _result = result;
+        }
+
+        public int CallCount { get; private set; }
+
+        public Task<GameLaunchResult> LaunchAsync(GameLaunchRequest request, CancellationToken cancellationToken)
+        {
+            _ = request;
+            cancellationToken.ThrowIfCancellationRequested();
+            CallCount++;
+            return Task.FromResult(_result);
+        }
+    }
+
+    private sealed class StubHelperModService : IHelperModService
+    {
+        private readonly string _deployPath;
+
+        public StubHelperModService(string deployPath)
+        {
+            _deployPath = deployPath;
+        }
+
+        public List<string> DeployCalls { get; } = new();
+
+        public Task<string> DeployAsync(string profileId, CancellationToken cancellationToken)
+        {
+            _ = cancellationToken;
+            DeployCalls.Add(profileId);
+            return Task.FromResult(_deployPath);
+        }
+
+        public Task<bool> VerifyAsync(string profileId, CancellationToken cancellationToken)
+        {
+            _ = profileId;
+            _ = cancellationToken;
+            return Task.FromResult(true);
+        }
+    }
+
+    private sealed class ThrowingHelperModService : IHelperModService
+    {
+        private readonly string _message;
+
+        public ThrowingHelperModService(string message)
+        {
+            _message = message;
+        }
+
+        public Task<string> DeployAsync(string profileId, CancellationToken cancellationToken)
+        {
+            _ = profileId;
+            _ = cancellationToken;
+            throw new InvalidOperationException(_message);
+        }
+
+        public Task<bool> VerifyAsync(string profileId, CancellationToken cancellationToken)
+        {
+            _ = profileId;
+            _ = cancellationToken;
+            throw new InvalidOperationException(_message);
         }
     }
 
@@ -275,5 +407,4 @@ public sealed class MainViewModelLaunchCoverageTests
             }
     }
 }
-
 

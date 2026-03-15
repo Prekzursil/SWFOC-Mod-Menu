@@ -327,7 +327,17 @@ public sealed class MainViewModel : MainViewModelSaveOpsBase
 
     private async Task LaunchAndAttachAsync()
     {
-        var launchRequest = await BuildLaunchRequestAsync();
+        GameLaunchRequest launchRequest;
+        try
+        {
+            launchRequest = await BuildLaunchRequestAsync();
+        }
+        catch (Exception ex)
+        {
+            Status = $"Launch preparation failed: {ex.Message}";
+            return;
+        }
+
         Status = $"Launching {launchRequest.Target} ({launchRequest.Mode})...";
         var launchResult = await _gameLauncher.LaunchAsync(launchRequest);
         if (!launchResult.Succeeded)
@@ -348,22 +358,36 @@ public sealed class MainViewModel : MainViewModelSaveOpsBase
             : GameLaunchTarget.Swfoc;
         var mode = ResolveLaunchMode(LaunchMode);
         var workshopIds = BuildLaunchWorkshopIds();
+        TrainerProfile? resolvedProfile = null;
 
-        if (mode == GameLaunchMode.SteamMod && workshopIds.Count == 0 && !string.IsNullOrWhiteSpace(SelectedProfileId))
+        if (!string.IsNullOrWhiteSpace(SelectedProfileId))
         {
             try
             {
-                var profile = await _profiles.ResolveInheritedProfileAsync(SelectedProfileId);
-                workshopIds = ResolveProfileWorkshopChain(profile);
-                if (workshopIds.Count > 0)
+                resolvedProfile = await _profiles.ResolveInheritedProfileAsync(SelectedProfileId);
+                if (mode == GameLaunchMode.SteamMod && workshopIds.Count == 0)
                 {
-                    LaunchWorkshopId = string.Join(",", workshopIds);
+                    workshopIds = ResolveProfileWorkshopChain(resolvedProfile);
+                    if (workshopIds.Count > 0)
+                    {
+                        LaunchWorkshopId = string.Join(",", workshopIds);
+                    }
                 }
             }
             catch
             {
                 // Keep manual launcher input path as-is when profile lookup fails.
+                resolvedProfile = null;
             }
+        }
+
+        string? overlayModPath = null;
+        if (mode != GameLaunchMode.ModPath &&
+            resolvedProfile is not null &&
+            resolvedProfile.HelperModHooks.Count > 0 &&
+            _helper is not null)
+        {
+            overlayModPath = await _helper.DeployAsync(resolvedProfile.Id);
         }
 
         return new GameLaunchRequest(
@@ -372,7 +396,8 @@ public sealed class MainViewModel : MainViewModelSaveOpsBase
             WorkshopIds: workshopIds,
             ModPath: string.IsNullOrWhiteSpace(LaunchModPath) ? null : LaunchModPath.Trim(),
             ProfileIdHint: SelectedProfileId,
-            TerminateExistingTargets: TerminateExistingBeforeLaunch);
+            TerminateExistingTargets: TerminateExistingBeforeLaunch,
+            OverlayModPath: overlayModPath);
     }
 
     private static IReadOnlyList<string> ResolveProfileWorkshopChain(TrainerProfile profile)

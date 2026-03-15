@@ -1,7 +1,10 @@
 using System.Reflection;
 using System.Xml.Linq;
 using FluentAssertions;
+using Microsoft.Extensions.Logging.Abstractions;
+using SwfocTrainer.Catalog.Config;
 using SwfocTrainer.Catalog.Services;
+using SwfocTrainer.Core.Contracts;
 using SwfocTrainer.Core.Models;
 using Xunit;
 
@@ -81,7 +84,9 @@ public sealed class CatalogHelperCoverageTests
 
         try
         {
-            var sourcePath = Path.Combine(root, "Factions.xml");
+            var sourceDirectory = Path.Combine(root, "Data", "XML");
+            Directory.CreateDirectory(sourceDirectory);
+            var sourcePath = Path.Combine(sourceDirectory, "Factions.xml");
             File.WriteAllText(sourcePath, "<Root />");
 
             var element = XElement.Parse("<Faction Name=\"REBEL\" Text_ID=\"TEXT_REBEL\" Encyclopedia_Text=\"TEXT_REBEL_DESC\" />");
@@ -116,7 +121,9 @@ public sealed class CatalogHelperCoverageTests
 
         try
         {
-            var sourcePath = Path.Combine(root, "Objects.xml");
+            var sourceDirectory = Path.Combine(root, "Data", "XML");
+            Directory.CreateDirectory(sourceDirectory);
+            var sourcePath = Path.Combine(sourceDirectory, "Objects.xml");
             File.WriteAllText(sourcePath, "<Root />");
 
             var element = XElement.Parse("<LandUnit Alias=\"EMPIRE_TROOPER\" />");
@@ -137,12 +144,80 @@ public sealed class CatalogHelperCoverageTests
 
     private static (bool Created, EntityCatalogRecord Record) InvokeTryCreateRecord(string profileId, string sourcePath, XElement element)
     {
-        var method = typeof(CatalogService).GetMethod("TryCreateRecord", BindingFlags.Static | BindingFlags.NonPublic);
+        var catalogRoot = Path.GetDirectoryName(sourcePath);
+        catalogRoot.Should().NotBeNullOrWhiteSpace();
+
+        var service = new CatalogService(
+            new CatalogOptions { CatalogRootPath = catalogRoot! },
+            new StubProfileRepository(CreateProfile(profileId)),
+            NullLogger<CatalogService>.Instance);
+
+        var method = typeof(CatalogService).GetMethod("TryCreateRecord", BindingFlags.Instance | BindingFlags.NonPublic);
         method.Should().NotBeNull();
 
         var args = new object?[] { profileId, sourcePath, element, null };
-        var created = (bool)method!.Invoke(null, args)!;
+        var created = (bool)method!.Invoke(service, args)!;
         var record = args[3] is EntityCatalogRecord typed ? typed : default;
         return (created, record);
+    }
+
+    private static TrainerProfile CreateProfile(string profileId)
+    {
+        return new TrainerProfile(
+            Id: profileId,
+            DisplayName: "catalog helper profile",
+            Inherits: null,
+            ExeTarget: ExeTarget.Swfoc,
+            SteamWorkshopId: null,
+            SignatureSets: Array.Empty<SignatureSet>(),
+            FallbackOffsets: new Dictionary<string, long>(StringComparer.OrdinalIgnoreCase),
+            Actions: new Dictionary<string, ActionSpec>(StringComparer.OrdinalIgnoreCase),
+            FeatureFlags: new Dictionary<string, bool>(StringComparer.OrdinalIgnoreCase),
+            CatalogSources: Array.Empty<CatalogSource>(),
+            SaveSchemaId: "test_schema",
+            HelperModHooks: Array.Empty<HelperHookSpec>(),
+            Metadata: new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase));
+    }
+
+    private sealed class StubProfileRepository(TrainerProfile profile) : IProfileRepository
+    {
+        public Task<ProfileManifest> LoadManifestAsync(CancellationToken cancellationToken)
+        {
+            _ = cancellationToken;
+            return Task.FromResult(new ProfileManifest(
+                Version: "1.0",
+                PublishedAt: DateTimeOffset.UtcNow,
+                Profiles: new[]
+                {
+                    new ProfileManifestEntry(profile.Id, "1.0", "hash", "url", "1.0")
+                }));
+        }
+
+        public Task<TrainerProfile> LoadProfileAsync(string profileId, CancellationToken cancellationToken)
+        {
+            _ = profileId;
+            _ = cancellationToken;
+            return Task.FromResult(profile);
+        }
+
+        public Task<TrainerProfile> ResolveInheritedProfileAsync(string profileId, CancellationToken cancellationToken)
+        {
+            _ = profileId;
+            _ = cancellationToken;
+            return Task.FromResult(profile);
+        }
+
+        public Task ValidateProfileAsync(TrainerProfile profileToValidate, CancellationToken cancellationToken)
+        {
+            _ = profileToValidate;
+            _ = cancellationToken;
+            return Task.CompletedTask;
+        }
+
+        public Task<IReadOnlyList<string>> ListAvailableProfilesAsync(CancellationToken cancellationToken)
+        {
+            _ = cancellationToken;
+            return Task.FromResult((IReadOnlyList<string>)new[] { profile.Id });
+        }
     }
 }

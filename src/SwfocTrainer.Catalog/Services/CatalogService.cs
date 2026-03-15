@@ -743,12 +743,19 @@ public sealed class CatalogService : ICatalogService
 
     private IEnumerable<string> EnumerateTextSources(string root)
     {
+        var enumerationOptions = new EnumerationOptions
+        {
+            RecurseSubdirectories = true,
+            IgnoreInaccessible = true,
+            AttributesToSkip = FileAttributes.ReparsePoint | FileAttributes.System
+        };
+
         foreach (var pattern in TextSearchPatterns)
         {
-            IEnumerable<string> candidates;
+            string[] candidates;
             try
             {
-                candidates = Directory.EnumerateFiles(root, pattern, SearchOption.AllDirectories);
+                candidates = Directory.GetFiles(root, pattern, enumerationOptions);
             }
             catch
             {

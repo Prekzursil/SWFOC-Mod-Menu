@@ -10,6 +10,7 @@ public sealed class GameLaunchService : IGameLaunchService
     private const string DiagnosticLaunchState = "launchState";
     private const string DiagnosticResolvedRoot = "resolvedRoot";
     private const string DiagnosticTarget = "target";
+    private const string DiagnosticOverlayModPath = "overlayModPath";
     private const string LaunchStateRootMissing = "root_missing";
     private const string LaunchStateExeMissing = "exe_missing";
     private const string LaunchStateStartFailed = "start_failed";
@@ -168,19 +169,19 @@ public sealed class GameLaunchService : IGameLaunchService
                 ["mode"] = request.Mode.ToString(),
                 ["profileIdHint"] = request.ProfileIdHint ?? string.Empty,
                 [DiagnosticResolvedRoot] = root,
-                ["workshopIds"] = NormalizeWorkshopIds(request.WorkshopIds)
+                ["workshopIds"] = NormalizeWorkshopIds(request.WorkshopIds),
+                [DiagnosticOverlayModPath] = request.OverlayModPath ?? string.Empty
             });
     }
 
     private static string BuildArguments(GameLaunchRequest request)
     {
+        var overlayArgument = BuildModPathArgument(request.OverlayModPath);
         return request.Mode switch
         {
-            GameLaunchMode.SteamMod => BuildSteamModArguments(request.WorkshopIds),
-            GameLaunchMode.ModPath => string.IsNullOrWhiteSpace(request.ModPath)
-                ? string.Empty
-                : $"MODPATH=\"{request.ModPath}\"",
-            _ => string.Empty
+            GameLaunchMode.SteamMod => JoinArguments(overlayArgument, BuildSteamModArguments(request.WorkshopIds)),
+            GameLaunchMode.ModPath => BuildModPathArgument(request.ModPath),
+            _ => overlayArgument
         };
     }
 
@@ -234,6 +235,18 @@ public sealed class GameLaunchService : IGameLaunchService
         }
 
         return string.Join(" ", normalized.Select(static id => $"STEAMMOD={id}"));
+    }
+
+    private static string BuildModPathArgument(string? modPath)
+    {
+        return string.IsNullOrWhiteSpace(modPath)
+            ? string.Empty
+            : $"MODPATH=\"{modPath}\"";
+    }
+
+    private static string JoinArguments(params string?[] values)
+    {
+        return string.Join(" ", values.Where(static value => !string.IsNullOrWhiteSpace(value)));
     }
 
     private static IReadOnlyList<string> NormalizeWorkshopIds(IReadOnlyList<string>? workshopIds)

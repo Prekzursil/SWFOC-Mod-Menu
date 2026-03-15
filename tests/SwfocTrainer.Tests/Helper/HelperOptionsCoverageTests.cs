@@ -35,7 +35,8 @@ public sealed class HelperOptionsCoverageTests
             var deployedRoot = await service.DeployAsync("base_swfoc");
 
             deployedRoot.Should().Be(Path.Combine(installRoot, "base_swfoc"));
-            File.Exists(Path.Combine(deployedRoot, "common", "spawn_bridge.lua")).Should().BeTrue();
+            File.Exists(Path.Combine(deployedRoot, "Data", "Scripts", "Library", "common", "spawn_bridge.lua")).Should().BeTrue();
+            File.Exists(Path.Combine(deployedRoot, "helper-deployment.json")).Should().BeTrue();
         }
         finally
         {

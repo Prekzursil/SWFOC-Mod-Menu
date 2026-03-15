@@ -24,9 +24,11 @@ public sealed class HelperModServiceTests
             var deployedRoot = await service.DeployAsync("base_swfoc", CancellationToken.None);
 
             deployedRoot.Should().Be(Path.Combine(installRoot, "base_swfoc"));
-            var copiedScript = Path.Combine(deployedRoot, "common", "spawn_bridge.lua");
+            var copiedScript = Path.Combine(deployedRoot, "Data", "Scripts", "Library", "common", "spawn_bridge.lua");
             File.Exists(copiedScript).Should().BeTrue();
             File.ReadAllText(copiedScript).Should().Be(File.ReadAllText(scriptPath));
+            File.Exists(Path.Combine(deployedRoot, "Data", "Scripts", "Library", "SwfocTrainer_HelperBootstrap.lua")).Should().BeTrue();
+            File.Exists(Path.Combine(deployedRoot, "helper-deployment.json")).Should().BeTrue();
         }
         finally
         {
@@ -78,6 +80,31 @@ public sealed class HelperModServiceTests
     }
 
     [Fact]
+    public async Task VerifyAsync_ShouldReturnFalse_WhenDeploymentReportIsMissing()
+    {
+        var sourceRoot = CreateTempDirectory();
+        var installRoot = CreateTempDirectory();
+        try
+        {
+            var profile = BuildProfile("base_swfoc", [new HelperHookSpec("spawn", "common/spawn_bridge.lua", "1.0.0")]);
+            var targetPath = Path.Combine(installRoot, "base_swfoc", "Data", "Scripts", "Library", "common", "spawn_bridge.lua");
+            Directory.CreateDirectory(Path.GetDirectoryName(targetPath)!);
+            File.WriteAllText(targetPath, "-- deployed script");
+            File.WriteAllText(Path.Combine(installRoot, "base_swfoc", "Data", "Scripts", "Library", "SwfocTrainer_HelperBootstrap.lua"), "-- bootstrap");
+            var service = BuildService(profile, sourceRoot, installRoot);
+
+            var verified = await service.VerifyAsync("base_swfoc", CancellationToken.None);
+
+            verified.Should().BeFalse();
+        }
+        finally
+        {
+            DeleteDirectory(sourceRoot);
+            DeleteDirectory(installRoot);
+        }
+    }
+
+    [Fact]
     public async Task VerifyAsync_ShouldReturnTrue_WhenHookExistsWithoutHashMetadata()
     {
         var sourceRoot = CreateTempDirectory();
@@ -86,9 +113,12 @@ public sealed class HelperModServiceTests
         {
             var script = "common/spawn_bridge.lua";
             var profile = BuildProfile("base_swfoc", [new HelperHookSpec("spawn", script, "1.0.0")]);
-            var targetPath = Path.Combine(installRoot, "base_swfoc", "common", "spawn_bridge.lua");
+            var targetPath = Path.Combine(installRoot, "base_swfoc", "Data", "Scripts", "Library", "common", "spawn_bridge.lua");
             Directory.CreateDirectory(Path.GetDirectoryName(targetPath)!);
             File.WriteAllText(targetPath, "-- deployed script");
+            Directory.CreateDirectory(Path.Combine(installRoot, "base_swfoc", "Data", "Scripts", "Library"));
+            File.WriteAllText(Path.Combine(installRoot, "base_swfoc", "Data", "Scripts", "Library", "SwfocTrainer_HelperBootstrap.lua"), "-- bootstrap");
+            File.WriteAllText(Path.Combine(installRoot, "base_swfoc", "helper-deployment.json"), """{"profileId":"base_swfoc"}""");
             var service = BuildService(profile, sourceRoot, installRoot);
 
             var verified = await service.VerifyAsync("base_swfoc", CancellationToken.None);
@@ -116,9 +146,12 @@ public sealed class HelperModServiceTests
             };
             var hook = new HelperHookSpec("spawn", script, "1.0.0", Metadata: metadata);
             var profile = BuildProfile("base_swfoc", [hook]);
-            var targetPath = Path.Combine(installRoot, "base_swfoc", "common", "spawn_bridge.lua");
+            var targetPath = Path.Combine(installRoot, "base_swfoc", "Data", "Scripts", "Library", "common", "spawn_bridge.lua");
             Directory.CreateDirectory(Path.GetDirectoryName(targetPath)!);
             File.WriteAllText(targetPath, "-- deployed script");
+            Directory.CreateDirectory(Path.Combine(installRoot, "base_swfoc", "Data", "Scripts", "Library"));
+            File.WriteAllText(Path.Combine(installRoot, "base_swfoc", "Data", "Scripts", "Library", "SwfocTrainer_HelperBootstrap.lua"), "-- bootstrap");
+            File.WriteAllText(Path.Combine(installRoot, "base_swfoc", "helper-deployment.json"), """{"profileId":"base_swfoc"}""");
             var service = BuildService(profile, sourceRoot, installRoot);
 
             var verified = await service.VerifyAsync("base_swfoc", CancellationToken.None);
@@ -140,9 +173,12 @@ public sealed class HelperModServiceTests
         try
         {
             var content = "-- deployed script";
-            var targetPath = Path.Combine(installRoot, "base_swfoc", "common", "spawn_bridge.lua");
+            var targetPath = Path.Combine(installRoot, "base_swfoc", "Data", "Scripts", "Library", "common", "spawn_bridge.lua");
             Directory.CreateDirectory(Path.GetDirectoryName(targetPath)!);
             File.WriteAllText(targetPath, content);
+            Directory.CreateDirectory(Path.Combine(installRoot, "base_swfoc", "Data", "Scripts", "Library"));
+            File.WriteAllText(Path.Combine(installRoot, "base_swfoc", "Data", "Scripts", "Library", "SwfocTrainer_HelperBootstrap.lua"), "-- bootstrap");
+            File.WriteAllText(Path.Combine(installRoot, "base_swfoc", "helper-deployment.json"), """{"profileId":"base_swfoc"}""");
             var sha = Convert.ToHexString(System.Security.Cryptography.SHA256.HashData(System.Text.Encoding.UTF8.GetBytes(content)))
                 .ToLowerInvariant();
 
@@ -259,5 +295,4 @@ public sealed class HelperModServiceTests
         }
     }
 }
-
 

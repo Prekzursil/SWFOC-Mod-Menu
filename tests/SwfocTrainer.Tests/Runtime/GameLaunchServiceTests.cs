@@ -24,6 +24,20 @@ public sealed class GameLaunchServiceTests
     }
 
     [Fact]
+    public void BuildArguments_ShouldEmitOverlayModPathBeforeSteamMods_WhenOverlayPathProvided()
+    {
+        var request = new GameLaunchRequest(
+            Target: GameLaunchTarget.Swfoc,
+            Mode: GameLaunchMode.SteamMod,
+            WorkshopIds: new[] { "1397421866", "3447786229" },
+            OverlayModPath: @"C:\Users\tester\AppData\Local\SwfocTrainer\helper_mod\base_swfoc");
+
+        var args = InvokeBuildArguments(request);
+
+        args.Should().Be("MODPATH=\"C:\\Users\\tester\\AppData\\Local\\SwfocTrainer\\helper_mod\\base_swfoc\" STEAMMOD=1397421866 STEAMMOD=3447786229");
+    }
+
+    [Fact]
     public void BuildArguments_ShouldNormalizeCsvAndPreserveInputOrder()
     {
         var request = new GameLaunchRequest(
@@ -47,6 +61,19 @@ public sealed class GameLaunchServiceTests
         var args = InvokeBuildArguments(request);
 
         args.Should().BeEmpty();
+    }
+
+    [Fact]
+    public void BuildArguments_ShouldEmitOverlayModPath_ForVanillaMode_WhenProvided()
+    {
+        var request = new GameLaunchRequest(
+            Target: GameLaunchTarget.Swfoc,
+            Mode: GameLaunchMode.Vanilla,
+            OverlayModPath: @"C:\Users\tester\AppData\Local\SwfocTrainer\helper_mod\base_swfoc");
+
+        var args = InvokeBuildArguments(request);
+
+        args.Should().Be("MODPATH=\"C:\\Users\\tester\\AppData\\Local\\SwfocTrainer\\helper_mod\\base_swfoc\"");
     }
 
     [Fact]
