@@ -182,6 +182,56 @@ public sealed class NamedPipeHelperBridgeBackendTests
     }
 
     [Fact]
+    public async Task ProbeAsync_ShouldMarkStoryWrapperAutoloadAsPending_WhenTelemetryHasNoMarkerYet()
+    {
+        var stubBackend = new StubExecutionBackend
+        {
+            ProbeReport = new CapabilityReport(
+                ProfileId: "aotr_1397421866_swfoc",
+                ProbedAtUtc: DateTimeOffset.UtcNow,
+                Capabilities: new Dictionary<string, BackendCapability>(StringComparer.OrdinalIgnoreCase)
+                {
+                    ["set_credits"] = new BackendCapability(
+                        FeatureId: "set_credits",
+                        Available: true,
+                        Confidence: CapabilityConfidenceState.Verified,
+                        ReasonCode: RuntimeReasonCode.CAPABILITY_PROBE_PASS)
+                },
+                ProbeReasonCode: RuntimeReasonCode.CAPABILITY_PROBE_PASS)
+        };
+        var telemetry = new StubTelemetryLogTailService
+        {
+            AutoloadResult = HelperAutoloadVerification.Unavailable("helper_autoload_not_found")
+        };
+        var backend = new NamedPipeHelperBridgeBackend(stubBackend, telemetry);
+
+        var result = await backend.ProbeAsync(
+            new HelperBridgeProbeRequest(
+                "aotr_1397421866_swfoc",
+                BuildProcess(processId: 4242),
+                new[]
+                {
+                    new HelperHookSpec(
+                        Id: "spawn_bridge",
+                        Script: "scripts/common/spawn_bridge.lua",
+                        Version: "1.0.0",
+                        EntryPoint: "SWFOC_Trainer_Spawn_Context")
+                },
+                AutoloadStrategy: "story_wrapper_chain",
+                AutoloadScripts: new[] { "Library/PGStoryMode.lua" }),
+            CancellationToken.None);
+
+        result.Available.Should().BeFalse();
+        result.Diagnostics.Should().NotBeNull();
+        var diagnostics = result.Diagnostics!;
+        diagnostics["helperBridgeState"]?.ToString().Should().Be("experimental");
+        diagnostics["helperAutoloadState"]?.ToString().Should().Be("pending_story_mode_load");
+        diagnostics["helperAutoloadReasonCode"]?.ToString().Should().Be("story_wrapper_waiting_for_story_load");
+        diagnostics["helperAutoloadStrategy"]?.ToString().Should().Be("story_wrapper_chain");
+        diagnostics["helperAutoloadScript"]?.ToString().Should().Be("Library/PGStoryMode.lua");
+    }
+
+    [Fact]
     public async Task ExecuteAsync_ShouldSurfaceProbeFailure_WhenHelperBridgeIsUnavailable()
     {
         var backend = new NamedPipeHelperBridgeBackend(new StubExecutionBackend());

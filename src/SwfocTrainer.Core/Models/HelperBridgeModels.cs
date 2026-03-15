@@ -21,7 +21,9 @@ public enum HelperBridgeOperationKind
 public sealed record HelperBridgeProbeRequest(
     string ProfileId,
     ProcessMetadata Process,
-    IReadOnlyList<HelperHookSpec> Hooks);
+    IReadOnlyList<HelperHookSpec> Hooks,
+    string? AutoloadStrategy = null,
+    IReadOnlyList<string>? AutoloadScripts = null);
 
 public sealed record HelperBridgeProbeResult(
     bool Available,
@@ -41,7 +43,9 @@ public sealed record HelperBridgeRequest(
     string? TargetContext = null,
     string? MutationIntent = null,
     string VerificationContractVersion = "1.0",
-    IReadOnlyDictionary<string, object?>? Context = null);
+    IReadOnlyDictionary<string, object?>? Context = null,
+    string? AutoloadStrategy = null,
+    IReadOnlyList<string>? AutoloadScripts = null);
 
 public sealed record HelperBridgeExecutionResult(
     bool Succeeded,

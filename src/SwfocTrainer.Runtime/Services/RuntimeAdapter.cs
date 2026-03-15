@@ -156,7 +156,12 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
         CancellationToken cancellationToken)
     {
         var probe = await _helperBridgeBackend.ProbeAsync(
-            new HelperBridgeProbeRequest(profile.Id, session.Process, profile.HelperModHooks),
+            new HelperBridgeProbeRequest(
+                profile.Id,
+                session.Process,
+                profile.HelperModHooks,
+                ReadHelperAutoloadStrategy(profile),
+                ReadHelperAutoloadScripts(profile)),
             cancellationToken);
         var metadata = session.Process.Metadata is null
             ? new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
@@ -196,6 +201,35 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
 
         var normalized = value.ToString()?.Trim();
         return string.IsNullOrWhiteSpace(normalized) ? null : normalized;
+    }
+
+    private static string? ReadHelperAutoloadStrategy(TrainerProfile? profile)
+    {
+        if (profile?.Metadata is null ||
+            !profile.Metadata.TryGetValue("helperAutoloadStrategy", out var strategy) ||
+            string.IsNullOrWhiteSpace(strategy))
+        {
+            return null;
+        }
+
+        return strategy.Trim();
+    }
+
+    private static IReadOnlyList<string>? ReadHelperAutoloadScripts(TrainerProfile? profile)
+    {
+        if (profile?.Metadata is null ||
+            !profile.Metadata.TryGetValue("helperAutoloadScripts", out var scripts) ||
+            string.IsNullOrWhiteSpace(scripts))
+        {
+            return null;
+        }
+
+        return scripts
+            .Split(',', StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries)
+            .Select(static value => value.Trim())
+            .Where(static value => value.Length > 0)
+            .Distinct(StringComparer.OrdinalIgnoreCase)
+            .ToArray();
     }
 
     private static void TryApplyProbeMetadata(
@@ -3426,7 +3460,9 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
             new HelperBridgeProbeRequest(
                 effectiveRequest.ProfileId,
                 CurrentSession.Process,
-                [hook]),
+                [hook],
+                ReadHelperAutoloadStrategy(_attachedProfile),
+                ReadHelperAutoloadScripts(_attachedProfile)),
             cancellationToken);
         if (!probe.Available)
         {
@@ -3456,7 +3492,9 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
                 TargetContext: effectiveRequest.RuntimeMode.ToString(),
                 MutationIntent: ResolveMutationIntent(effectiveRequest.Action.Id),
                 VerificationContractVersion: "1.1",
-                Context: effectiveRequest.Context),
+                Context: effectiveRequest.Context,
+                AutoloadStrategy: ReadHelperAutoloadStrategy(_attachedProfile),
+                AutoloadScripts: ReadHelperAutoloadScripts(_attachedProfile)),
             cancellationToken);
 
         var baseDiagnostics = MergeDiagnostics(policyDiagnostics, bridgeResult.Diagnostics);
@@ -6566,4 +6604,3 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
         return info;
     }
 }
-

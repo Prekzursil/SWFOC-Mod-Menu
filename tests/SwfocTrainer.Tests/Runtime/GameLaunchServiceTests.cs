@@ -511,10 +511,12 @@ public sealed class GameLaunchServiceTests
         var root = Path.Combine(Path.GetTempPath(), $"swfoc-launch-started-{Guid.NewGuid():N}");
         var executableDirectory = Path.Combine(root, "corruption");
         Directory.CreateDirectory(executableDirectory);
-        var executablePath = Path.Combine(executableDirectory, "swfoc.exe");
+        var executablePath = Path.Combine(executableDirectory, "StarWarsG.exe");
+        var launcherPath = Path.Combine(executableDirectory, "swfoc.exe");
         var sourceExecutable = Environment.ProcessPath;
         sourceExecutable.Should().NotBeNullOrWhiteSpace();
         File.Copy(sourceExecutable!, executablePath, overwrite: true);
+        File.Copy(sourceExecutable!, launcherPath, overwrite: true);
 
         var previousOverride = Environment.GetEnvironmentVariable("SWFOC_GAME_ROOT");
         try
@@ -533,6 +535,7 @@ public sealed class GameLaunchServiceTests
             result.Diagnostics!["launchState"]?.ToString().Should().Be("started");
             result.Arguments.Should().Be("STEAMMOD=1397421866 STEAMMOD=3447786229 STEAMMOD=3287776766");
             result.ExecutablePath.Should().Be(executablePath);
+            result.Diagnostics["launchHost"]?.ToString().Should().Be("direct_game_host");
             result.Diagnostics["workshopIds"].Should().BeAssignableTo<IReadOnlyList<string>>();
             var workshopIds = (IReadOnlyList<string>)result.Diagnostics["workshopIds"]!;
             workshopIds.Should().Equal("1397421866", "3447786229", "3287776766");
@@ -560,6 +563,80 @@ public sealed class GameLaunchServiceTests
         var args = InvokeBuildArguments(request);
 
         args.Should().Be("STEAMMOD=1397421866 STEAMMOD=3447786229 STEAMMOD=3287776766");
+    }
+
+    [Fact]
+    public void TryResolveExecutable_ShouldPreferStarWarsG_WhenDirectHostExists()
+    {
+        var method = typeof(GameLaunchService).GetMethod(
+            "TryResolveExecutable",
+            BindingFlags.NonPublic | BindingFlags.Static);
+        method.Should().NotBeNull();
+
+        var root = Path.Combine(Path.GetTempPath(), $"swfoc-launch-starwarsg-{Guid.NewGuid():N}");
+        var corruption = Path.Combine(root, "corruption");
+        Directory.CreateDirectory(corruption);
+        var directHostPath = Path.Combine(corruption, "StarWarsG.exe");
+        var launcherPath = Path.Combine(corruption, "swfoc.exe");
+        File.WriteAllBytes(directHostPath, new byte[] { 0x4D, 0x5A });
+        File.WriteAllBytes(launcherPath, new byte[] { 0x4D, 0x5A });
+
+        try
+        {
+            var tuple = method!.Invoke(null, new object?[] { root, GameLaunchTarget.Swfoc });
+            tuple.Should().NotBeNull();
+            var path = (string?)tuple!.GetType().GetField("Item1", BindingFlags.Public | BindingFlags.Instance)?.GetValue(tuple);
+            var failure = tuple.GetType().GetField("Item2", BindingFlags.Public | BindingFlags.Instance)?.GetValue(tuple);
+
+            path.Should().Be(directHostPath);
+            failure.Should().BeNull();
+        }
+        finally
+        {
+            if (Directory.Exists(root))
+            {
+                Directory.Delete(root, recursive: true);
+            }
+        }
+    }
+
+    [Fact]
+    public async Task LaunchAsync_ShouldFallbackToSwfocLauncher_WhenStarWarsGHostMissing()
+    {
+        var service = new GameLaunchService();
+        var root = Path.Combine(Path.GetTempPath(), $"swfoc-launch-fallback-{Guid.NewGuid():N}");
+        var executableDirectory = Path.Combine(root, "corruption");
+        Directory.CreateDirectory(executableDirectory);
+        var launcherPath = Path.Combine(executableDirectory, "swfoc.exe");
+        var sourceExecutable = Environment.ProcessPath;
+        sourceExecutable.Should().NotBeNullOrWhiteSpace();
+        File.Copy(sourceExecutable!, launcherPath, overwrite: true);
+
+        var previousOverride = Environment.GetEnvironmentVariable("SWFOC_GAME_ROOT");
+        try
+        {
+            Environment.SetEnvironmentVariable("SWFOC_GAME_ROOT", root);
+            var result = await service.LaunchAsync(
+                new GameLaunchRequest(
+                    Target: GameLaunchTarget.Swfoc,
+                    Mode: GameLaunchMode.Vanilla),
+                CancellationToken.None);
+
+            result.Succeeded.Should().BeTrue();
+            result.ExecutablePath.Should().Be(launcherPath);
+            result.Diagnostics.Should().NotBeNull();
+            result.Diagnostics!["launchHost"]?.ToString().Should().Be("launcher_stub_fallback");
+
+            TryTerminateProcess(result.ProcessId);
+        }
+        finally
+        {
+            Environment.SetEnvironmentVariable("SWFOC_GAME_ROOT", previousOverride);
+            if (Directory.Exists(root))
+            {
+                Directory.Delete(root, recursive: true);
+            }
+        }
     }
 
     private static string[] GetMutableDefaultRoots()

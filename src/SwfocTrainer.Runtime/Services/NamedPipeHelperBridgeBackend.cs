@@ -239,7 +239,12 @@ public sealed class NamedPipeHelperBridgeBackend : IHelperBridgeBackend
             var enrichedDiagnostics = experimental.Diagnostics is null
                 ? new Dictionary<string, object?>(StringComparer.OrdinalIgnoreCase)
                 : new Dictionary<string, object?>(experimental.Diagnostics, StringComparer.OrdinalIgnoreCase);
-            EnrichAutoloadDiagnostics(enrichedDiagnostics, process, safeRequest.ProfileId);
+            EnrichAutoloadDiagnostics(
+                enrichedDiagnostics,
+                process,
+                safeRequest.ProfileId,
+                safeRequest.AutoloadStrategy,
+                safeRequest.AutoloadScripts);
             return experimental with { Diagnostics = enrichedDiagnostics };
         }
 
@@ -391,7 +396,9 @@ public sealed class NamedPipeHelperBridgeBackend : IHelperBridgeBackend
     private void EnrichAutoloadDiagnostics(
         IDictionary<string, object?> diagnostics,
         ProcessMetadata process,
-        string profileId)
+        string profileId,
+        string? autoloadStrategy,
+        IReadOnlyList<string>? autoloadScripts)
     {
         ArgumentNullException.ThrowIfNull(diagnostics);
         ArgumentNullException.ThrowIfNull(process);
@@ -401,8 +408,8 @@ public sealed class NamedPipeHelperBridgeBackend : IHelperBridgeBackend
             diagnostics[DiagnosticHelperAutoloadState] = "missing";
             diagnostics[DiagnosticHelperAutoloadReasonCode] = "helper_autoload_verification_not_supported";
             diagnostics[DiagnosticHelperAutoloadSourcePath] = string.Empty;
-            diagnostics[DiagnosticHelperAutoloadStrategy] = string.Empty;
-            diagnostics[DiagnosticHelperAutoloadScript] = string.Empty;
+            diagnostics[DiagnosticHelperAutoloadStrategy] = autoloadStrategy ?? string.Empty;
+            diagnostics[DiagnosticHelperAutoloadScript] = autoloadScripts?.FirstOrDefault() ?? string.Empty;
             return;
         }
 
@@ -412,11 +419,22 @@ public sealed class NamedPipeHelperBridgeBackend : IHelperBridgeBackend
             DateTimeOffset.UtcNow,
             TimeSpan.FromMinutes(15));
 
-        diagnostics[DiagnosticHelperAutoloadState] = autoload.Ready ? "ready" : "missing";
-        diagnostics[DiagnosticHelperAutoloadReasonCode] = autoload.ReasonCode;
+        var pendingStoryModeLoad = !autoload.Ready &&
+            autoload.ReasonCode.Equals("helper_autoload_not_found", StringComparison.OrdinalIgnoreCase) &&
+            !string.IsNullOrWhiteSpace(autoloadStrategy) &&
+            autoloadStrategy.Equals("story_wrapper_chain", StringComparison.OrdinalIgnoreCase);
+
+        diagnostics[DiagnosticHelperAutoloadState] = autoload.Ready
+            ? "ready"
+            : pendingStoryModeLoad
+                ? "pending_story_mode_load"
+                : "missing";
+        diagnostics[DiagnosticHelperAutoloadReasonCode] = pendingStoryModeLoad
+            ? "story_wrapper_waiting_for_story_load"
+            : autoload.ReasonCode;
         diagnostics[DiagnosticHelperAutoloadSourcePath] = autoload.SourcePath;
-        diagnostics[DiagnosticHelperAutoloadStrategy] = autoload.Strategy ?? string.Empty;
-        diagnostics[DiagnosticHelperAutoloadScript] = autoload.Script ?? string.Empty;
+        diagnostics[DiagnosticHelperAutoloadStrategy] = autoload.Strategy ?? autoloadStrategy ?? string.Empty;
+        diagnostics[DiagnosticHelperAutoloadScript] = autoload.Script ?? autoloadScripts?.FirstOrDefault() ?? string.Empty;
         if (!string.IsNullOrWhiteSpace(autoload.RawLine))
         {
             diagnostics["helperAutoloadRawLine"] = autoload.RawLine;
@@ -430,7 +448,12 @@ public sealed class NamedPipeHelperBridgeBackend : IHelperBridgeBackend
         var actionRequest = safeRequest.ActionRequest ?? throw new ArgumentNullException(nameof(request));
 
         var hooks = safeRequest.Hook is null ? Array.Empty<HelperHookSpec>() : new[] { safeRequest.Hook };
-        var probeRequest = new HelperBridgeProbeRequest(actionRequest.ProfileId, process, hooks);
+        var probeRequest = new HelperBridgeProbeRequest(
+            actionRequest.ProfileId,
+            process,
+            hooks,
+            safeRequest.AutoloadStrategy,
+            safeRequest.AutoloadScripts);
         return await ProbeAsync(probeRequest, cancellationToken) ?? CreateProcessUnavailableProbeResult(process.ProcessId);
     }
 
