@@ -39,6 +39,9 @@ public sealed class NamedPipeHelperBridgeBackend : IHelperBridgeBackend
     private const string DiagnosticHelperEvidenceState = "helperEvidenceState";
     private const string DiagnosticHelperEvidenceReasonCode = "helperEvidenceReasonCode";
     private const string DiagnosticHelperEvidenceSourcePath = "helperEvidenceSourcePath";
+    private const string DiagnosticConfiguredHooks = "configuredHooks";
+    private const string DiagnosticConfiguredEntryPoints = "configuredEntryPoints";
+    private const string DiagnosticBlockingReason = "blockingReason";
 
     private const string PayloadOperationKind = "operationKind";
     private const string PayloadOperationToken = "operationToken";
@@ -220,9 +223,14 @@ public sealed class NamedPipeHelperBridgeBackend : IHelperBridgeBackend
             .Where(featureId => capabilityReport.IsFeatureAvailable(featureId))
             .ToArray();
 
-        return availableFeatures.Length == 0
-            ? CreateCapabilityUnavailableProbeResult(capabilityReport)
-            : CreateReadyProbeResult(capabilityReport, availableFeatures);
+        if (availableFeatures.Length > 0)
+        {
+            return CreateReadyProbeResult(capabilityReport, availableFeatures);
+        }
+
+        return HasConfiguredHooks(safeRequest.Hooks) && capabilityReport.ProbeReasonCode == RuntimeReasonCode.CAPABILITY_PROBE_PASS
+            ? CreateExperimentalProbeResult(capabilityReport, safeRequest.Hooks)
+            : CreateCapabilityUnavailableProbeResult(capabilityReport);
     }
 
     public async Task<HelperBridgeExecutionResult> ExecuteAsync(HelperBridgeRequest request, CancellationToken cancellationToken)
@@ -307,6 +315,43 @@ public sealed class NamedPipeHelperBridgeBackend : IHelperBridgeBackend
             });
     }
 
+    private static HelperBridgeProbeResult CreateExperimentalProbeResult(
+        CapabilityReport capabilityReport,
+        IReadOnlyList<HelperHookSpec> hooks)
+    {
+        ArgumentNullException.ThrowIfNull(capabilityReport);
+        ArgumentNullException.ThrowIfNull(hooks);
+
+        var configuredHooks = hooks
+            .Select(static hook => hook.Id)
+            .Where(static value => !string.IsNullOrWhiteSpace(value))
+            .Distinct(StringComparer.OrdinalIgnoreCase)
+            .ToArray();
+        var configuredEntryPoints = hooks
+            .Select(static hook => hook.EntryPoint)
+            .Where(static value => !string.IsNullOrWhiteSpace(value))
+            .Select(static value => value!.Trim())
+            .Distinct(StringComparer.OrdinalIgnoreCase)
+            .ToArray();
+
+        return new HelperBridgeProbeResult(
+            Available: false,
+            ReasonCode: RuntimeReasonCode.HELPER_VERIFICATION_FAILED,
+            Message: "Helper hooks are configured, but native in-process dispatch is still unavailable.",
+            Diagnostics: new Dictionary<string, object?>
+            {
+                [DiagnosticHelperBridgeState] = "experimental",
+                [DiagnosticProbeReasonCode] = capabilityReport.ProbeReasonCode.ToString(),
+                [DiagnosticAvailableFeatures] = string.Empty,
+                [DiagnosticCapabilityCount] = capabilityReport.Capabilities.Count,
+                [DiagnosticConfiguredHooks] = string.Join(",", configuredHooks),
+                [DiagnosticConfiguredEntryPoints] = string.Join(",", configuredEntryPoints),
+                [DiagnosticHelperExecutionPath] = "native_dispatch_unavailable",
+                [DiagnosticHelperVerifyState] = "unavailable",
+                [DiagnosticBlockingReason] = "native_dispatch_unavailable"
+            });
+    }
+
     private static HelperBridgeProbeResult CreateReadyProbeResult(CapabilityReport capabilityReport, IReadOnlyCollection<string> availableFeatures)
     {
         ArgumentNullException.ThrowIfNull(capabilityReport);
@@ -323,6 +368,11 @@ public sealed class NamedPipeHelperBridgeBackend : IHelperBridgeBackend
                 [DiagnosticAvailableFeatures] = string.Join(",", availableFeatures),
                 [DiagnosticCapabilityCount] = capabilityReport.Capabilities.Count
             });
+    }
+
+    private static bool HasConfiguredHooks(IReadOnlyList<HelperHookSpec>? hooks)
+    {
+        return hooks is { Count: > 0 };
     }
 
     private async Task<HelperBridgeProbeResult> ProbeForExecutionAsync(HelperBridgeRequest request, CancellationToken cancellationToken)
@@ -812,4 +862,3 @@ public sealed class NamedPipeHelperBridgeBackend : IHelperBridgeBackend
         HelperBridgeOperationKind OperationKind,
         string OperationToken);
 }
-

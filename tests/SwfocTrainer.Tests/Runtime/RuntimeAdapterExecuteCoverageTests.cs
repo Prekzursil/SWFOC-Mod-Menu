@@ -402,6 +402,40 @@ public sealed class RuntimeAdapterExecuteCoverageTests
     }
 
     [Fact]
+    public async Task ApplyHelperBridgeProbeMetadataAsync_ShouldPreserveDiagnosticBridgeState_WhenProbeIsUnavailable()
+    {
+        var helperBackend = new StubHelperBridgeBackend
+        {
+            ProbeResult = new HelperBridgeProbeResult(
+                Available: false,
+                ReasonCode: RuntimeReasonCode.HELPER_VERIFICATION_FAILED,
+                Message: "native dispatch unavailable",
+                Diagnostics: new Dictionary<string, object?>
+                {
+                    ["helperBridgeState"] = "experimental",
+                    ["availableFeatures"] = "spawn_context_entity",
+                    ["helperExecutionPath"] = "native_dispatch_unavailable"
+                })
+        };
+        var harness = new AdapterHarness { HelperBridgeBackend = helperBackend };
+        var profile = BuildProfile("set_hero_state_helper");
+        var adapter = harness.CreateAdapter(profile, RuntimeMode.Galactic);
+        var method = typeof(RuntimeAdapter).GetMethod(
+            "ApplyHelperBridgeProbeMetadataAsync",
+            BindingFlags.Instance | BindingFlags.NonPublic);
+        method.Should().NotBeNull();
+
+        var session = BuildSession(RuntimeMode.Galactic);
+        var task = (Task<AttachSession>)method!.Invoke(adapter, new object?[] { session, profile, CancellationToken.None })!;
+        var enriched = await task;
+
+        enriched.Process.Metadata.Should().ContainKey("helperBridgeState");
+        enriched.Process.Metadata!["helperBridgeState"].Should().Be("experimental");
+        enriched.Process.Metadata["helperBridgeReasonCode"].Should().Be(RuntimeReasonCode.HELPER_VERIFICATION_FAILED.ToString());
+        enriched.Process.Metadata["helperBridgeFeatures"].Should().Be("spawn_context_entity");
+    }
+
+    [Fact]
     public void ApplyDependencyValidation_ShouldThrowOnHardFail_AndPopulateSoftFailState()
     {
         var hardHarness = new AdapterHarness
@@ -1507,4 +1541,3 @@ public sealed class RuntimeAdapterExecuteCoverageTests
         field!.SetValue(instance, value);
     }
 }
-

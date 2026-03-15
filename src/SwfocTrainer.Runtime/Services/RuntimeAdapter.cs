@@ -162,7 +162,8 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
             ? new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
             : new Dictionary<string, string>(session.Process.Metadata, StringComparer.OrdinalIgnoreCase);
 
-        metadata["helperBridgeState"] = probe.Available ? "ready" : "unavailable";
+        metadata["helperBridgeState"] = ReadProbeDiagnosticString(probe.Diagnostics, "helperBridgeState")
+            ?? (probe.Available ? "ready" : "unavailable");
         metadata["helperBridgeReasonCode"] = probe.ReasonCode.ToString();
         if (probe.Diagnostics is not null &&
             probe.Diagnostics.TryGetValue("availableFeatures", out var features) &&
@@ -171,6 +172,10 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
             metadata["helperBridgeFeatures"] = features.ToString() ?? string.Empty;
         }
 
+        TryApplyProbeMetadata(probe.Diagnostics, metadata, "configuredHooks", "helperBridgeConfiguredHooks");
+        TryApplyProbeMetadata(probe.Diagnostics, metadata, "configuredEntryPoints", "helperBridgeConfiguredEntryPoints");
+        TryApplyProbeMetadata(probe.Diagnostics, metadata, "blockingReason", "helperBridgeBlockingReason");
+
         return session with
         {
             Process = session.Process with
@@ -178,6 +183,32 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
                 Metadata = metadata
             }
         };
+    }
+
+    private static string? ReadProbeDiagnosticString(IReadOnlyDictionary<string, object?>? diagnostics, string key)
+    {
+        if (diagnostics is null ||
+            !diagnostics.TryGetValue(key, out var value) ||
+            value is null)
+        {
+            return null;
+        }
+
+        var normalized = value.ToString()?.Trim();
+        return string.IsNullOrWhiteSpace(normalized) ? null : normalized;
+    }
+
+    private static void TryApplyProbeMetadata(
+        IReadOnlyDictionary<string, object?>? diagnostics,
+        IDictionary<string, string> metadata,
+        string diagnosticKey,
+        string metadataKey)
+    {
+        var value = ReadProbeDiagnosticString(diagnostics, diagnosticKey);
+        if (!string.IsNullOrWhiteSpace(value))
+        {
+            metadata[metadataKey] = value;
+        }
     }
 
     private async Task<AttachProfileContext> ResolveAttachProfileContextAsync(
@@ -6535,5 +6566,4 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
         return info;
     }
 }
-
 

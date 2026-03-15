@@ -83,6 +83,50 @@ public sealed class NamedPipeHelperBridgeBackendTests
     }
 
     [Fact]
+    public async Task ProbeAsync_ShouldReturnExperimentalDiagnostics_WhenHooksExistButNativeDispatchIsUnavailable()
+    {
+        var stubBackend = new StubExecutionBackend
+        {
+            ProbeReport = new CapabilityReport(
+                ProfileId: "test_profile",
+                ProbedAtUtc: DateTimeOffset.UtcNow,
+                Capabilities: new Dictionary<string, BackendCapability>(StringComparer.OrdinalIgnoreCase)
+                {
+                    ["set_credits"] = new BackendCapability(
+                        FeatureId: "set_credits",
+                        Available: true,
+                        Confidence: CapabilityConfidenceState.Verified,
+                        ReasonCode: RuntimeReasonCode.CAPABILITY_PROBE_PASS)
+                },
+                ProbeReasonCode: RuntimeReasonCode.CAPABILITY_PROBE_PASS)
+        };
+        var backend = new NamedPipeHelperBridgeBackend(stubBackend);
+
+        var result = await backend.ProbeAsync(
+            new HelperBridgeProbeRequest(
+                "test_profile",
+                BuildProcess(processId: 4242),
+                new[]
+                {
+                    new HelperHookSpec(
+                        Id: "spawn_bridge",
+                        Script: "scripts/common/spawn_bridge.lua",
+                        Version: "1.0.0",
+                        EntryPoint: "SWFOC_Trainer_Spawn_Context")
+                }),
+            CancellationToken.None);
+
+        result.Available.Should().BeFalse();
+        result.ReasonCode.Should().Be(RuntimeReasonCode.HELPER_VERIFICATION_FAILED);
+        result.Diagnostics.Should().NotBeNull();
+        var diagnostics = result.Diagnostics!;
+        diagnostics["helperBridgeState"]?.ToString().Should().Be("experimental");
+        diagnostics["configuredHooks"]?.ToString().Should().Be("spawn_bridge");
+        diagnostics["configuredEntryPoints"]?.ToString().Should().Be("SWFOC_Trainer_Spawn_Context");
+        diagnostics["helperExecutionPath"]?.ToString().Should().Be("native_dispatch_unavailable");
+    }
+
+    [Fact]
     public async Task ExecuteAsync_ShouldSurfaceProbeFailure_WhenHelperBridgeIsUnavailable()
     {
         var backend = new NamedPipeHelperBridgeBackend(new StubExecutionBackend());
