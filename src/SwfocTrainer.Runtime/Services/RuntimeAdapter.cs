@@ -180,6 +180,11 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
         TryApplyProbeMetadata(probe.Diagnostics, metadata, "configuredHooks", "helperBridgeConfiguredHooks");
         TryApplyProbeMetadata(probe.Diagnostics, metadata, "configuredEntryPoints", "helperBridgeConfiguredEntryPoints");
         TryApplyProbeMetadata(probe.Diagnostics, metadata, "blockingReason", "helperBridgeBlockingReason");
+        TryApplyProbeMetadata(probe.Diagnostics, metadata, "helperAutoloadState", "helperAutoloadState");
+        TryApplyProbeMetadata(probe.Diagnostics, metadata, "helperAutoloadReasonCode", "helperAutoloadReasonCode");
+        TryApplyProbeMetadata(probe.Diagnostics, metadata, "helperAutoloadSourcePath", "helperAutoloadSourcePath");
+        TryApplyProbeMetadata(probe.Diagnostics, metadata, "helperAutoloadStrategy", "helperAutoloadStrategy");
+        TryApplyProbeMetadata(probe.Diagnostics, metadata, "helperAutoloadScript", "helperAutoloadScript");
 
         return session with
         {

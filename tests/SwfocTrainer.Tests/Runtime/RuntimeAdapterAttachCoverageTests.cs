@@ -145,6 +145,60 @@ public sealed class RuntimeAdapterAttachCoverageTests
     }
 
     [Fact]
+    public async Task ApplyHelperBridgeProbeMetadataAsync_ShouldPersistHelperAutoloadDiagnostics()
+    {
+        var profile = ReflectionCoverageVariantFactory.BuildProfile() with
+        {
+            Metadata = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
+            {
+                ["helperAutoloadStrategy"] = "story_wrapper_chain",
+                ["helperAutoloadScripts"] = "Library/PGStoryMode.lua"
+            },
+            HelperModHooks =
+            [
+                new HelperHookSpec(
+                    Id: "spawn_bridge",
+                    Script: "scripts/common/spawn_bridge.lua",
+                    Version: "1.0.0",
+                    EntryPoint: "SWFOC_Trainer_Spawn_Context")
+            ]
+        };
+        var harness = new AdapterHarness
+        {
+            HelperBridgeBackend = new StubHelperBridgeBackend
+            {
+                ProbeResult = new HelperBridgeProbeResult(
+                    Available: false,
+                    ReasonCode: RuntimeReasonCode.HELPER_VERIFICATION_FAILED,
+                    Message: "pending",
+                    Diagnostics: new Dictionary<string, object?>
+                    {
+                        ["helperBridgeState"] = "experimental",
+                        ["helperAutoloadState"] = "pending_story_mode_load",
+                        ["helperAutoloadReasonCode"] = "story_wrapper_waiting_for_story_load",
+                        ["helperAutoloadStrategy"] = "story_wrapper_chain",
+                        ["helperAutoloadScript"] = "Library/PGStoryMode.lua"
+                    })
+            }
+        };
+        var adapter = harness.CreateAdapter(profile, RuntimeMode.Galactic);
+        var session = RuntimeAdapterExecuteCoverageTests.BuildSession(RuntimeMode.Galactic);
+
+        var method = RuntimeAdapterType.GetMethod("ApplyHelperBridgeProbeMetadataAsync", BindingFlags.Instance | BindingFlags.NonPublic);
+        method.Should().NotBeNull();
+
+        var updated = await InvokePrivateAsync(method!, adapter, session, profile, CancellationToken.None);
+        var updatedSession = updated.Should().BeOfType<AttachSession>().Subject;
+
+        updatedSession.Process.Metadata.Should().NotBeNull();
+        updatedSession.Process.Metadata!["helperBridgeState"].Should().Be("experimental");
+        updatedSession.Process.Metadata["helperAutoloadState"].Should().Be("pending_story_mode_load");
+        updatedSession.Process.Metadata["helperAutoloadReasonCode"].Should().Be("story_wrapper_waiting_for_story_load");
+        updatedSession.Process.Metadata["helperAutoloadStrategy"].Should().Be("story_wrapper_chain");
+        updatedSession.Process.Metadata["helperAutoloadScript"].Should().Be("Library/PGStoryMode.lua");
+    }
+
+    [Fact]
     public void TryWriteCalibrationScanArtifact_ShouldPersistOutputAndLatestFiles()
     {
         var profile = ReflectionCoverageVariantFactory.BuildProfile();
