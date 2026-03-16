@@ -1,5 +1,9 @@
 name: Codecov Analytics
 
+permissions:
+  contents: read
+  id-token: write
+
 on:
   push:
     branches: [main, master]
@@ -7,91 +11,17 @@ on:
     branches: [main, master]
   workflow_dispatch:
 
-permissions:
-  contents: read
-
 jobs:
-  codecov-analytics:
-    name: Codecov Analytics
-    runs-on: windows-latest
-    env:
+  shared-codecov-analytics:
+    permissions:
+      contents: read
+      id-token: write
+    uses: Prekzursil/quality-zero-platform/.github/workflows/reusable-codecov-analytics.yml@2be048255a27d55eb7be18b82091b57f29d34ee6
+    with:
+      repo_slug: ${{ github.repository }}
+      event_name: ${{ github.event_name }}
+      sha: ${{ github.event.pull_request.head.sha || github.sha }}
+      platform_repository: Prekzursil/quality-zero-platform
+      platform_ref: 2be048255a27d55eb7be18b82091b57f29d34ee6
+    secrets:
       CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
-      CODACY_API_TOKEN: ${{ secrets.CODACY_API_TOKEN }}
-      CODACY_ORGANIZATION_PROVIDER: gh
-      CODACY_USERNAME: Prekzursil
-      CODACY_PROJECT_NAME: ${{ github.event.repository.name }}
-    steps:
-      - uses: actions/checkout@v6
-      - uses: actions/setup-python@v6
-        with:
-          python-version: '3.12'
-      - uses: actions/setup-node@v6
-        with:
-          node-version: '20'
-      - uses: actions/setup-dotnet@v4
-        with:
-          dotnet-version: '8.0.x'
-
-      - name: Collect deterministic coverage
-        shell: pwsh
-        run: |
-          pwsh -ExecutionPolicy Bypass -File ./tools/quality/collect-dotnet-coverage.ps1 -Configuration Release -DeterministicOnly
-
-      - name: Resolve coverage report path
-        shell: pwsh
-        run: |
-          $candidates = @(
-            (Join-Path (Get-Location) 'TestResults/coverage/cobertura.xml'),
-            (Join-Path (Get-Location) 'tests/SwfocTrainer.Tests/TestResults/coverage.cobertura.xml'),
-            (Join-Path (Get-Location) 'TestResults/coverage.cobertura.xml')
-          )
-          $resolved = $candidates | Where-Object { Test-Path -Path $_ } | Select-Object -First 1
-          if (-not $resolved) {
-            throw "Coverage report not found. Checked: $($candidates -join '; ')"
-          }
-
-          Write-Host "Using coverage report: $resolved"
-          "CODECOV_COVERAGE_FILE=$resolved" | Out-File -FilePath $env:GITHUB_ENV -Append -Encoding utf8
-
-      - name: Enforce 100% line+branch coverage
-        if: ${{ github.event_name != 'pull_request' }}
-        run: |
-          python3 scripts/quality/assert_coverage_100.py \
-            --xml "dotnet=${{ env.CODECOV_COVERAGE_FILE }}" \
-            --out-json "codecov-analytics/coverage.json" \
-            --out-md "codecov-analytics/coverage.md"
-
-      - name: Mark PR mode (coverage evidence only)
-        if: ${{ github.event_name == 'pull_request' }}
-        run: |
-          New-Item -ItemType Directory -Path codecov-analytics -Force | Out-Null
-          @'
-          {
-            "status": "pass",
-            "mode": "pull_request_evidence_only",
-            "note": "100/100 hard gate enforced on protected branch pushes."
-          }
-          '@ | Out-File -FilePath codecov-analytics/coverage.json -Encoding utf8
-          @'
-          # Coverage 100 Gate
-
-          - Status: `pass`
-          - Mode: `pull_request_evidence_only`
-          - Note: `100/100` hard gate is enforced on protected branch pushes.
-          '@ | Out-File -FilePath codecov-analytics/coverage.md -Encoding utf8
-
-      - name: Upload coverage to Codecov
-        if: ${{ always() }}
-        uses: codecov/codecov-action@v5
-        with:
-          files: ${{ env.CODECOV_COVERAGE_FILE }}
-          flags: dotnet
-          fail_ci_if_error: true
-          disable_search: true
-          verbose: true
-      - name: Upload coverage to Codacy
-        if: ${{ always() }}
-        uses: codacy/codacy-coverage-reporter-action@v1
-        with:
-          api-token: ${{ env.CODACY_API_TOKEN }}
-          coverage-reports: ${{ env.CODECOV_COVERAGE_FILE }}
