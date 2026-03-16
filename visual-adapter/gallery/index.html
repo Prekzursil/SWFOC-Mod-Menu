@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SWFOC Desktop Adapter Gallery</title>
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <main class="app-shell">
+      <header class="hero">
+        <p class="eyebrow">Desktop adapter visual lane</p>
+        <h1>SWFOC Desktop Adapter Gallery</h1>
+        <p class="hero-copy">
+          Browser-hosted snapshots of selected MainWindow states so Chromatic Playwright and Applitools Visual can
+          validate the same deterministic surface without touching the live WPF process.
+        </p>
+      </header>
+      <section id="gallery" class="gallery" aria-live="polite"></section>
+    </main>
+    <script type="module" src="/app.mjs"></script>
+  </body>
+</html>

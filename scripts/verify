@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+repo_root="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+cd "$repo_root"
+
+echo "[verify] Running deterministic SWFOC test suite..."
+dotnet test tests/SwfocTrainer.Tests/SwfocTrainer.Tests.csproj   -c Release   --no-build   --filter "FullyQualifiedName!~SwfocTrainer.Tests.Profiles.Live&FullyQualifiedName!~RuntimeAttachSmokeTests"
