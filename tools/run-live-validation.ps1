@@ -5,6 +5,11 @@ param(
     [string[]]$ForceWorkshopIds = @(),
     [string]$ForceProfileId = "",
     [switch]$AutoLaunch,
+    [switch]$EnableGalacticAutomation,
+    [string]$GalacticAutomationRecipePath = "",
+    [int]$GalacticAutomationTimeoutSeconds = 90,
+    [bool]$GalacticAutomationRequireHelperAutoload = $true,
+    [bool]$GalacticAutomationMaterializeFixture = $true,
     [switch]$RunAllInstalledChainsDeep,
     [string]$GameRoot = "",
     [int]$LaunchWaitSeconds = 45,
@@ -757,6 +762,7 @@ function Start-AutoLaunchSession {
 
     Write-Output ("Auto-launch process visible: {0} (pid={1})" -f $visible.ProcessName, $visible.Id)
 
+    $requiredVisible = $null
     if (-not [string]::IsNullOrWhiteSpace([string]$plan.RequiredHostName)) {
         $requiredVisible = Wait-ForAnyProcess -Names @($plan.RequiredHostName) -TimeoutSeconds $TimeoutSeconds
         if ($null -eq $requiredVisible) {
@@ -777,6 +783,20 @@ function Start-AutoLaunchSession {
     }
 
     Write-Output ("Auto-launch post-stabilization host: {0} (pid={1})" -f $postLaunchVisible.ProcessName, $postLaunchVisible.Id)
+
+    return [PSCustomObject]@{
+        GameRoot = $root
+        LaunchExecutable = $exePath
+        LaunchArguments = $launchArgs
+        StartedPid = $started.Id
+        VisibleHostPid = $visible.Id
+        VisibleHostName = $visible.ProcessName
+        RequiredHostPid = if ($null -ne $requiredVisible) { $requiredVisible.Id } else { 0 }
+        RequiredHostName = if ($null -ne $requiredVisible) { $requiredVisible.ProcessName } else { [string]$plan.RequiredHostName }
+        PostLaunchHostPid = $postLaunchVisible.Id
+        PostLaunchHostName = $postLaunchVisible.ProcessName
+        Scope = $SelectedScope
+    }
 }
 
 function Get-LastExitCodeOrZero {
@@ -858,6 +878,107 @@ function Test-ShouldPreSkipForTacticalContext {
     }
 
     return $message
+}
+
+function Resolve-GalacticAutomationProfileId {
+    param(
+        [Parameter(Mandatory = $true)][string]$SelectedScope,
+        [string]$ForcedProfileId,
+        $TestDefinition
+    )
+
+    if (-not [string]::IsNullOrWhiteSpace($ForcedProfileId)) {
+        return $ForcedProfileId
+    }
+
+    if ($null -ne $TestDefinition -and
+        $null -ne $TestDefinition.PSObject.Properties["GalacticProfileId"] -and
+        -not [string]::IsNullOrWhiteSpace([string]$TestDefinition.GalacticProfileId)) {
+        return [string]$TestDefinition.GalacticProfileId
+    }
+
+    switch ($SelectedScope) {
+        "ROE" { return "roe_3447786229_swfoc" }
+        "AOTR" { return "aotr_1397421866_swfoc" }
+        default { return "" }
+    }
+}
+
+function Invoke-GalacticContextAutomation {
+    param(
+        [Parameter(Mandatory = $true)][string[]]$PythonCommand,
+        [Parameter(Mandatory = $true)][string]$ProfileId,
+        [Parameter(Mandatory = $true)][string]$RunResultsDirectory,
+        [Parameter(Mandatory = $true)][string]$ProfileRootPath,
+        [string]$RecipePath,
+        [int]$ProcessId = 0,
+        [int]$VerifyTimeoutSeconds = 90,
+        [bool]$RequireHelperAutoload = $true,
+        [bool]$MaterializeFixture = $true
+    )
+
+    if ($PythonCommand.Count -eq 0 -or $null -eq $PythonCommand[0]) {
+        throw "Galactic automation requested but Python was not found in the active shell."
+    }
+
+    $scriptPath = Resolve-ArtifactPath -Path "tools/live/drive-galactic-context.py"
+    if (-not (Test-Path -Path $scriptPath)) {
+        throw ("Galactic automation script missing: {0}" -f $scriptPath)
+    }
+
+    $resolvedProfileRoot = Resolve-ArtifactPath -Path $ProfileRootPath
+    $receiptPath = Join-Path $RunResultsDirectory ("galactic-context-{0}.json" -f $ProfileId)
+
+    $pythonArgs = @()
+    if (Test-IsWslPythonCommand -Command $PythonCommand) {
+        $pythonArgs += @(
+            (Convert-ToWslPath -Path $scriptPath),
+            "--profile-root", (Convert-ToWslPath -Path $resolvedProfileRoot),
+            "--profile-id", $ProfileId,
+            "--receipt-path", (Convert-ToWslPath -Path $receiptPath),
+            "--verify-timeout-seconds", [string]$VerifyTimeoutSeconds,
+            "--pretty"
+        )
+        if (-not [string]::IsNullOrWhiteSpace($RecipePath)) {
+            $pythonArgs += @("--recipe-path", (Convert-ToWslPath -Path (Resolve-ArtifactPath -Path $RecipePath)))
+        }
+    }
+    else {
+        $pythonArgs += @(
+            $scriptPath,
+            "--profile-root", $resolvedProfileRoot,
+            "--profile-id", $ProfileId,
+            "--receipt-path", $receiptPath,
+            "--verify-timeout-seconds", [string]$VerifyTimeoutSeconds,
+            "--pretty"
+        )
+        if (-not [string]::IsNullOrWhiteSpace($RecipePath)) {
+            $pythonArgs += @("--recipe-path", (Resolve-ArtifactPath -Path $RecipePath))
+        }
+    }
+
+    if ($RequireHelperAutoload) {
+        $pythonArgs += "--require-helper-autoload"
+    }
+    if ($MaterializeFixture) {
+        $pythonArgs += "--materialize-fixture"
+    }
+    if ($ProcessId -gt 0) {
+        $pythonArgs += @("--process-id", [string]$ProcessId)
+    }
+
+    $result = Invoke-CapturedCommand -Command $PythonCommand -Arguments $pythonArgs
+    if (-not (Test-Path -Path $receiptPath)) {
+        throw ("Galactic automation did not emit receipt: {0}" -f $receiptPath)
+    }
+
+    $receipt = Get-Content -Raw -Path $receiptPath | ConvertFrom-Json
+    if ($result.ExitCode -ne 0) {
+        $reasonCode = if ($receipt.result.reasonCode) { [string]$receipt.result.reasonCode } else { "galactic_context_blocked" }
+        throw ("Galactic automation failed: {0}" -f $reasonCode)
+    }
+
+    return $receipt
 }
 
 function Invoke-CapturedCommand {
@@ -1645,12 +1766,13 @@ $($matrixRows -join "`n")
     return
 }
 
+$autoLaunchSessionInfo = $null
 if ($AutoLaunch) {
     if ($forcedChainMissingParentIds.Count -gt 0) {
         Write-Warning ("Skipping auto-launch due missing parent dependencies for forced chain: {0}" -f ($forcedChainMissingParentIds -join ","))
     }
     else {
-        Start-AutoLaunchSession `
+        $autoLaunchSessionInfo = Start-AutoLaunchSession `
             -SelectedScope $Scope `
             -ForcedWorkshopIds $forceWorkshopIdsNormalized `
             -ForcedProfileId $forceProfileIdNormalized `
@@ -1687,6 +1809,7 @@ $testDefinitions = @(
         TrxBase = "live-roe-health.trx"
         Scopes = @("ROE")
         RequiresGalacticContext = $true
+        GalacticProfileId = "roe_3447786229_swfoc"
     },
     [PSCustomObject]@{
         Name = "Live Credits"
@@ -1706,6 +1829,8 @@ $testDefinitions = @(
 
 $summaries = New-Object System.Collections.Generic.List[object]
 $fatalError = $null
+$galacticPhasePrepared = $false
+$galacticPhaseReceipt = $null
 $forcedMissingParentMessage = ""
 if ($forcedChainMissingParentIds.Count -gt 0) {
     $forcedMissingParentMessage = "parent_dependency_missing: missing parent dependency IDs = " + ($forcedChainMissingParentIds -join ",") + "; chainResolutionSource=" + $forcedChainResolutionSource
@@ -1744,14 +1869,66 @@ foreach ($test in $testDefinitions) {
     }
 
     if ($requiresGalacticContext) {
-        $preSkipMessage = Test-ShouldPreSkipForTacticalContext -Summaries $summaries -TestName $test.TestName -AutoLaunchEnabled $AutoLaunch
-        if (-not [string]::IsNullOrWhiteSpace($preSkipMessage)) {
-            Write-Output ("Pre-skip {0}: LiveTacticalToggleWorkflowTests already confirmed tactical context during auto-launch." -f $test.TestName)
-            $summaries.Add([PSCustomObject]@{
-                Name = $test.TestName
-                Summary = New-LiveTestSummary -Trx $trxPath -Outcome "Skipped" -Skipped 1 -Message $preSkipMessage
-            })
-            continue
+        if ($EnableGalacticAutomation) {
+            if (-not $galacticPhasePrepared) {
+                try {
+                    $galacticProfileId = Resolve-GalacticAutomationProfileId `
+                        -SelectedScope $Scope `
+                        -ForcedProfileId $forceProfileIdNormalized `
+                        -TestDefinition $test
+                    if ([string]::IsNullOrWhiteSpace($galacticProfileId)) {
+                        throw "Galactic automation requires an explicit profile selection. Use -Scope AOTR/ROE or -ForceProfileId."
+                    }
+
+                    if ($AutoLaunch) {
+                        $autoLaunchSessionInfo = Start-AutoLaunchSession `
+                            -SelectedScope $Scope `
+                            -ForcedWorkshopIds $forceWorkshopIdsNormalized `
+                            -ForcedProfileId $forceProfileIdNormalized `
+                            -OverrideGameRoot $GameRoot `
+                            -TimeoutSeconds $LaunchWaitSeconds `
+                            -StabilizationSeconds $LaunchStabilizationSeconds
+                    }
+
+                    $galacticProcessId = 0
+                    if ($null -ne $autoLaunchSessionInfo -and $null -ne $autoLaunchSessionInfo.PostLaunchHostPid) {
+                        $galacticProcessId = [int]$autoLaunchSessionInfo.PostLaunchHostPid
+                    }
+
+                    $galacticPhaseReceipt = Invoke-GalacticContextAutomation `
+                        -PythonCommand $pythonCmd `
+                        -ProfileId $galacticProfileId `
+                        -RunResultsDirectory $runResultsDirectory `
+                        -ProfileRootPath $ProfileRoot `
+                        -RecipePath $GalacticAutomationRecipePath `
+                        -ProcessId $galacticProcessId `
+                        -VerifyTimeoutSeconds $GalacticAutomationTimeoutSeconds `
+                        -RequireHelperAutoload $GalacticAutomationRequireHelperAutoload `
+                        -MaterializeFixture $GalacticAutomationMaterializeFixture
+
+                    $galacticPhasePrepared = $true
+                    Write-Output ("Galactic automation ready: profile={0} status={1} reason={2}" -f $galacticProfileId, $galacticPhaseReceipt.result.status, $galacticPhaseReceipt.result.reasonCode)
+                }
+                catch {
+                    $fatalError = $_.Exception
+                    $summaries.Add([PSCustomObject]@{
+                        Name = $test.TestName
+                        Summary = New-LiveTestSummary -Trx $trxPath -Outcome "Failed" -Failed 1 -Message $fatalError.Message
+                    })
+                    continue
+                }
+            }
+        }
+        else {
+            $preSkipMessage = Test-ShouldPreSkipForTacticalContext -Summaries $summaries -TestName $test.TestName -AutoLaunchEnabled $AutoLaunch
+            if (-not [string]::IsNullOrWhiteSpace($preSkipMessage)) {
+                Write-Output ("Pre-skip {0}: LiveTacticalToggleWorkflowTests already confirmed tactical context during auto-launch." -f $test.TestName)
+                $summaries.Add([PSCustomObject]@{
+                    Name = $test.TestName
+                    Summary = New-LiveTestSummary -Trx $trxPath -Outcome "Skipped" -Skipped 1 -Message $preSkipMessage
+                })
+                continue
+            }
         }
     }
 
