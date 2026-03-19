@@ -787,6 +787,79 @@ function Get-LastExitCodeOrZero {
     return 0
 }
 
+function New-LiveTestSummary {
+    param(
+        [Parameter(Mandatory = $true)][string]$Trx,
+        [Parameter(Mandatory = $true)][string]$Outcome,
+        [int]$Passed = 0,
+        [int]$Failed = 0,
+        [int]$Skipped = 0,
+        [string]$Message = ""
+    )
+
+    return [PSCustomObject]@{
+        Trx = $Trx
+        Outcome = $Outcome
+        Passed = $Passed
+        Failed = $Failed
+        Skipped = $Skipped
+        Message = $Message
+    }
+}
+
+function Get-LiveTestEntry {
+    param(
+        [Parameter(Mandatory = $true)][System.Collections.Generic.List[object]]$Summaries,
+        [Parameter(Mandatory = $true)][string]$TestName
+    )
+
+    return ($Summaries | Where-Object { $_.Name -eq $TestName } | Select-Object -First 1)
+}
+
+function Get-GalacticContextPreSkipMessage {
+    param([Parameter(Mandatory = $true)][string]$TestName)
+
+    switch ($TestName) {
+        "LiveHeroHelperWorkflowTests" {
+            return "hero helper precondition unmet: service wrapper did not observe a galactic/campaign script load. Enter galactic/campaign context and retry."
+        }
+        "LiveRoeRuntimeHealthTests" {
+            return "set_credits precondition unmet: hook sync tick not observed. Enter galactic/campaign context and retry."
+        }
+        default {
+            return ""
+        }
+    }
+}
+
+function Test-ShouldPreSkipForTacticalContext {
+    param(
+        [Parameter(Mandatory = $true)][System.Collections.Generic.List[object]]$Summaries,
+        [Parameter(Mandatory = $true)][string]$TestName,
+        [bool]$AutoLaunchEnabled = $false
+    )
+
+    if (-not $AutoLaunchEnabled) {
+        return $null
+    }
+
+    $message = Get-GalacticContextPreSkipMessage -TestName $TestName
+    if ([string]::IsNullOrWhiteSpace($message)) {
+        return $null
+    }
+
+    $tacticalEntry = Get-LiveTestEntry -Summaries $Summaries -TestName "LiveTacticalToggleWorkflowTests"
+    if ($null -eq $tacticalEntry -or $null -eq $tacticalEntry.Summary) {
+        return $null
+    }
+
+    if ([string]$tacticalEntry.Summary.Outcome -ne "Passed") {
+        return $null
+    }
+
+    return $message
+}
+
 function Invoke-CapturedCommand {
     param(
         [string[]]$Command,
@@ -1605,6 +1678,7 @@ $testDefinitions = @(
         Filter = "FullyQualifiedName~LiveHeroHelperWorkflowTests"
         TrxBase = "live-hero-helper.trx"
         Scopes = @("AOTR", "ROE")
+        RequiresGalacticContext = $true
     },
     [PSCustomObject]@{
         Name = "Live ROE Runtime Health"
@@ -1612,6 +1686,7 @@ $testDefinitions = @(
         Filter = "FullyQualifiedName~LiveRoeRuntimeHealthTests"
         TrxBase = "live-roe-health.trx"
         Scopes = @("ROE")
+        RequiresGalacticContext = $true
     },
     [PSCustomObject]@{
         Name = "Live Credits"
@@ -1642,14 +1717,7 @@ foreach ($test in $testDefinitions) {
     if (-not [string]::IsNullOrWhiteSpace($forcedMissingParentMessage)) {
         $summaries.Add([PSCustomObject]@{
             Name = $test.TestName
-            Summary = [PSCustomObject]@{
-                Trx = $trxPath
-                Outcome = "Skipped"
-                Passed = 0
-                Failed = 0
-                Skipped = 1
-                Message = $forcedMissingParentMessage
-            }
+            Summary = New-LiveTestSummary -Trx $trxPath -Outcome "Skipped" -Skipped 1 -Message $forcedMissingParentMessage
         })
         continue
     }
@@ -1657,14 +1725,7 @@ foreach ($test in $testDefinitions) {
     if (-not (Test-RunSelection -Scopes $test.Scopes -SelectedScope $Scope)) {
         $summaries.Add([PSCustomObject]@{
             Name = $test.TestName
-            Summary = [PSCustomObject]@{
-                Trx = $trxPath
-                Outcome = "Skipped"
-                Passed = 0
-                Failed = 0
-                Skipped = 1
-                Message = "scope_not_selected"
-            }
+            Summary = New-LiveTestSummary -Trx $trxPath -Outcome "Skipped" -Skipped 1 -Message "scope_not_selected"
         })
         continue
     }
@@ -1672,16 +1733,26 @@ foreach ($test in $testDefinitions) {
     if ($null -ne $fatalError) {
         $summaries.Add([PSCustomObject]@{
             Name = $test.TestName
-            Summary = [PSCustomObject]@{
-                Trx = $trxPath
-                Outcome = "Missing"
-                Passed = 0
-                Failed = 0
-                Skipped = 0
-                Message = "not_executed_due_to_prior_failure"
-            }
+            Summary = New-LiveTestSummary -Trx $trxPath -Outcome "Missing" -Message "not_executed_due_to_prior_failure"
         })
         continue
+    }
+
+    $requiresGalacticContext = $false
+    if ($null -ne $test.PSObject.Properties["RequiresGalacticContext"]) {
+        $requiresGalacticContext = [bool]$test.RequiresGalacticContext
+    }
+
+    if ($requiresGalacticContext) {
+        $preSkipMessage = Test-ShouldPreSkipForTacticalContext -Summaries $summaries -TestName $test.TestName -AutoLaunchEnabled $AutoLaunch
+        if (-not [string]::IsNullOrWhiteSpace($preSkipMessage)) {
+            Write-Output ("Pre-skip {0}: LiveTacticalToggleWorkflowTests already confirmed tactical context during auto-launch." -f $test.TestName)
+            $summaries.Add([PSCustomObject]@{
+                Name = $test.TestName
+                Summary = New-LiveTestSummary -Trx $trxPath -Outcome "Skipped" -Skipped 1 -Message $preSkipMessage
+            })
+            continue
+        }
     }
 
     try {
@@ -1700,14 +1771,7 @@ foreach ($test in $testDefinitions) {
         $fatalError = $_.Exception
         $summaries.Add([PSCustomObject]@{
             Name = $test.TestName
-            Summary = [PSCustomObject]@{
-                Trx = $trxPath
-                Outcome = "Failed"
-                Passed = 0
-                Failed = 1
-                Skipped = 0
-                Message = $fatalError.Message
-            }
+            Summary = New-LiveTestSummary -Trx $trxPath -Outcome "Failed" -Failed 1 -Message $fatalError.Message
         })
     }
 }
