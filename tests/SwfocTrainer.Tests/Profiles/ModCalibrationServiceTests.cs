@@ -71,6 +71,26 @@ public sealed class ModCalibrationServiceTests
         }
     }
 
+    [Fact]
+    public async Task BuildCompatibilityReportAsync_ShouldCaptureSessionUnavailableAndDependencyNotes()
+    {
+        var profile = BuildCriticalSymbolProfile();
+        var service = new ModCalibrationService(new ActionReliabilityService());
+
+        var report = await service.BuildCompatibilityReportAsync(
+            profile,
+            session: null,
+            new DependencyValidationResult(DependencyValidationStatus.HardFail, "missing helper", new HashSet<string>(StringComparer.OrdinalIgnoreCase)),
+            catalog: null);
+
+        report.PromotionReady.Should().BeFalse();
+        report.UnresolvedCriticalSymbols.Should().Be(1);
+        report.Actions.Should().ContainSingle();
+        report.Actions[0].State.Should().Be(ActionReliabilityState.Unavailable);
+        report.Notes.Should().Contain(note => note.Contains("No attach session", StringComparison.OrdinalIgnoreCase));
+        report.Notes.Should().Contain(note => note.Contains("HardFail", StringComparison.OrdinalIgnoreCase));
+    }
+
     private static TrainerProfile BuildCriticalSymbolProfile()
     {
         return new TrainerProfile(

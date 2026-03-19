@@ -5,10 +5,13 @@ using System.Linq;
 using System.Text.Json.Nodes;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using Microsoft.Extensions.Logging.Abstractions;
 using Microsoft.Extensions.Logging;
 using SwfocTrainer.Core.Contracts;
 using SwfocTrainer.Core.Models;
 using SwfocTrainer.Core.Services;
+using SwfocTrainer.Helper.Config;
+using SwfocTrainer.Helper.Services;
 using SwfocTrainer.Runtime.Interop;
 using SwfocTrainer.Runtime.Scanning;
 
@@ -55,6 +58,11 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
     private const string PayloadPersistencePolicyKey = "persistencePolicy";
     private const string PayloadAllowCrossFactionKey = "allowCrossFaction";
     private const string PayloadSymbolKey = "symbol";
+    private const string PayloadPlacementModeKey = "placementMode";
+    private const string PayloadForceOverrideKey = "forceOverride";
+    private const string PayloadEntityIdKey = "entityId";
+    private const string PayloadTargetFactionKey = "targetFaction";
+    private const string PayloadSourceFactionKey = "sourceFaction";
     private const string ContextSpawnDefaultHookId = "spawn_bridge";
     private const string ContextSpawnEntryPoint = "SWFOC_Trainer_Spawn_Context";
     private const string ContextSpawnLegacyEntryPoint = "SWFOC_Trainer_Spawn";
@@ -62,6 +70,7 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
     private const string PopulationPolicyNormal = "Normal";
     private const string PersistencePolicyEphemeralBattleOnly = "EphemeralBattleOnly";
     private const string PersistencePolicyPersistentGalactic = "PersistentGalactic";
+    private const string UnknownTokenText = "unknown";
 
     public RuntimeAdapter(
         IProcessLocator processLocator,
@@ -80,8 +89,11 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
         _sdkOperationRouter = ResolveOptionalService<ISdkOperationRouter>(serviceProvider);
         _backendRouter = ResolveOptionalService<IBackendRouter>(serviceProvider) ?? new BackendRouter();
         _extenderBackend = ResolveOptionalService<IExecutionBackend>(serviceProvider) ?? new NamedPipeExtenderBackend();
-        _helperBridgeBackend = ResolveOptionalService<IHelperBridgeBackend>(serviceProvider) ?? new NamedPipeHelperBridgeBackend(_extenderBackend);
         _telemetryLogTailService = ResolveOptionalService<ITelemetryLogTailService>(serviceProvider) ?? new TelemetryLogTailService();
+        var helperCommandTransportService = ResolveOptionalService<IHelperCommandTransportService>(serviceProvider)
+            ?? CreateDefaultHelperCommandTransportService(profileRepository);
+        _helperBridgeBackend = ResolveOptionalService<IHelperBridgeBackend>(serviceProvider)
+            ?? new NamedPipeHelperBridgeBackend(_extenderBackend, _telemetryLogTailService, helperCommandTransportService);
         _logger = logger;
         _calibrationArtifactRoot = Path.Combine(
             Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
@@ -105,6 +117,59 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
     public Task<AttachSession> AttachAsync(string profileId)
     {
         return AttachAsync(profileId, CancellationToken.None);
+    }
+
+    private static IHelperCommandTransportService? CreateDefaultHelperCommandTransportService(IProfileRepository profileRepository)
+    {
+        ArgumentNullException.ThrowIfNull(profileRepository);
+
+        var sourceRoot = ResolveHelperSourceRoot();
+        if (string.IsNullOrWhiteSpace(sourceRoot) || !Directory.Exists(sourceRoot))
+        {
+            return null;
+        }
+
+        var options = new HelperModOptions
+        {
+            SourceRoot = sourceRoot,
+            InstallRoot = Path.Combine(
+                Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
+                "SwfocTrainer",
+                "helper_mod")
+        };
+
+        return new HelperModService(profileRepository, options, NullLogger<HelperModService>.Instance);
+    }
+
+    private static string? ResolveHelperSourceRoot()
+    {
+        foreach (var seed in EnumerateHelperSourceRootSeeds())
+        {
+            if (string.IsNullOrWhiteSpace(seed))
+            {
+                continue;
+            }
+
+            var current = seed;
+            for (var depth = 0; depth < 6 && !string.IsNullOrWhiteSpace(current); depth++)
+            {
+                var candidate = Path.Combine(current, "profiles", "default", "helper");
+                if (Directory.Exists(candidate))
+                {
+                    return candidate;
+                }
+
+                current = Path.GetDirectoryName(current);
+            }
+        }
+
+        return null;
+    }
+
+    private static IEnumerable<string> EnumerateHelperSourceRootSeeds()
+    {
+        yield return Directory.GetCurrentDirectory();
+        yield return AppContext.BaseDirectory;
     }
 
     public async Task<AttachSession> AttachAsync(string profileId, CancellationToken cancellationToken)
@@ -150,13 +215,19 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
         CancellationToken cancellationToken)
     {
         var probe = await _helperBridgeBackend.ProbeAsync(
-            new HelperBridgeProbeRequest(profile.Id, session.Process, profile.HelperModHooks),
+            new HelperBridgeProbeRequest(
+                profile.Id,
+                session.Process,
+                profile.HelperModHooks,
+                ReadHelperAutoloadStrategy(profile),
+                ReadHelperAutoloadScripts(profile)),
             cancellationToken);
         var metadata = session.Process.Metadata is null
             ? new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
             : new Dictionary<string, string>(session.Process.Metadata, StringComparer.OrdinalIgnoreCase);
 
-        metadata["helperBridgeState"] = probe.Available ? "ready" : "unavailable";
+        metadata["helperBridgeState"] = ReadProbeDiagnosticString(probe.Diagnostics, "helperBridgeState")
+            ?? (probe.Available ? "ready" : "unavailable");
         metadata["helperBridgeReasonCode"] = probe.ReasonCode.ToString();
         if (probe.Diagnostics is not null &&
             probe.Diagnostics.TryGetValue("availableFeatures", out var features) &&
@@ -165,6 +236,15 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
             metadata["helperBridgeFeatures"] = features.ToString() ?? string.Empty;
         }
 
+        TryApplyProbeMetadata(probe.Diagnostics, metadata, "configuredHooks", "helperBridgeConfiguredHooks");
+        TryApplyProbeMetadata(probe.Diagnostics, metadata, "configuredEntryPoints", "helperBridgeConfiguredEntryPoints");
+        TryApplyProbeMetadata(probe.Diagnostics, metadata, "blockingReason", "helperBridgeBlockingReason");
+        TryApplyProbeMetadata(probe.Diagnostics, metadata, "helperAutoloadState", "helperAutoloadState");
+        TryApplyProbeMetadata(probe.Diagnostics, metadata, "helperAutoloadReasonCode", "helperAutoloadReasonCode");
+        TryApplyProbeMetadata(probe.Diagnostics, metadata, "helperAutoloadSourcePath", "helperAutoloadSourcePath");
+        TryApplyProbeMetadata(probe.Diagnostics, metadata, "helperAutoloadStrategy", "helperAutoloadStrategy");
+        TryApplyProbeMetadata(probe.Diagnostics, metadata, "helperAutoloadScript", "helperAutoloadScript");
+
         return session with
         {
             Process = session.Process with
@@ -172,6 +252,61 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
                 Metadata = metadata
             }
         };
+    }
+
+    private static string? ReadProbeDiagnosticString(IReadOnlyDictionary<string, object?>? diagnostics, string key)
+    {
+        if (diagnostics is null ||
+            !diagnostics.TryGetValue(key, out var value) ||
+            value is null)
+        {
+            return null;
+        }
+
+        var normalized = value.ToString()?.Trim();
+        return string.IsNullOrWhiteSpace(normalized) ? null : normalized;
+    }
+
+    private static string? ReadHelperAutoloadStrategy(TrainerProfile? profile)
+    {
+        if (profile?.Metadata is null ||
+            !profile.Metadata.TryGetValue("helperAutoloadStrategy", out var strategy) ||
+            string.IsNullOrWhiteSpace(strategy))
+        {
+            return null;
+        }
+
+        return strategy.Trim();
+    }
+
+    private static IReadOnlyList<string>? ReadHelperAutoloadScripts(TrainerProfile? profile)
+    {
+        if (profile?.Metadata is null ||
+            !profile.Metadata.TryGetValue("helperAutoloadScripts", out var scripts) ||
+            string.IsNullOrWhiteSpace(scripts))
+        {
+            return null;
+        }
+
+        return scripts
+            .Split(',', StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries)
+            .Select(static value => value.Trim())
+            .Where(static value => value.Length > 0)
+            .Distinct(StringComparer.OrdinalIgnoreCase)
+            .ToArray();
+    }
+
+    private static void TryApplyProbeMetadata(
+        IReadOnlyDictionary<string, object?>? diagnostics,
+        IDictionary<string, string> metadata,
+        string diagnosticKey,
+        string metadataKey)
+    {
+        var value = ReadProbeDiagnosticString(diagnostics, diagnosticKey);
+        if (!string.IsNullOrWhiteSpace(value))
+        {
+            metadata[metadataKey] = value;
+        }
     }
 
     private async Task<AttachProfileContext> ResolveAttachProfileContextAsync(
@@ -812,7 +947,7 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
     {
         if (string.IsNullOrWhiteSpace(value))
         {
-            return "unknown";
+            return UnknownTokenText;
         }
 
         var sanitized = new string(value
@@ -820,7 +955,7 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
             .Select(ch => char.IsLetterOrDigit(ch) ? ch : '_')
             .ToArray())
             .Trim('_');
-        return string.IsNullOrWhiteSpace(sanitized) ? "unknown" : sanitized;
+        return string.IsNullOrWhiteSpace(sanitized) ? UnknownTokenText : sanitized;
     }
 
     private object BuildCalibrationSnapshotPayload(
@@ -1160,7 +1295,7 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
             }
 
             if (!TryLoadCreditsHookModuleData(
-                    CurrentSession.Process.ProcessId,
+                    CurrentSession!.Process.ProcessId,
                     out _,
                     out var moduleBytes,
                     out var failureMessage))
@@ -1520,7 +1655,7 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
         }
 
         return _telemetryLogTailService.ResolveLatestMode(
-            CurrentSession.Process.ProcessPath,
+            CurrentSession!.Process.ProcessPath,
             DateTimeOffset.UtcNow,
             TimeSpan.FromMinutes(5));
     }
@@ -1929,7 +2064,7 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
             return probeHookState!;
         }
 
-        return "unknown";
+        return UnknownTokenText;
     }
 
     private static bool ResolveExpertOverrideEnabledDiagnosticValue(
@@ -2251,8 +2386,8 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
 
         if (CurrentSession is not null)
         {
-            merged["processId"] = CurrentSession.Process.ProcessId;
-            merged["processPath"] = CurrentSession.Process.ProcessPath;
+            merged["processId"] = CurrentSession!.Process.ProcessId;
+            merged["processPath"] = CurrentSession!.Process.ProcessPath;
         }
 
         return merged;
@@ -2271,9 +2406,9 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
 
         if (CurrentSession is not null)
         {
-            merged["processId"] = CurrentSession.Process.ProcessId;
-            merged["processName"] = CurrentSession.Process.ProcessName;
-            merged["processPath"] = CurrentSession.Process.ProcessPath;
+            merged["processId"] = CurrentSession!.Process.ProcessId;
+            merged["processName"] = CurrentSession!.Process.ProcessName;
+            merged["processPath"] = CurrentSession!.Process.ProcessPath;
         }
 
         var resolvedAnchors = BuildResolvedAnchors(request);
@@ -3358,60 +3493,81 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
                 });
         }
 
-        var hookId = ResolveHelperHookId(request);
+        var policyResolution = ApplyHelperActionPolicies(request);
+        if (policyResolution.BlockedResult is not null)
+        {
+            return policyResolution.BlockedResult;
+        }
+
+        var effectiveRequest = policyResolution.Request;
+        var policyDiagnostics = policyResolution.Diagnostics;
+        var hookId = ResolveHelperHookId(effectiveRequest);
         var hook = _attachedProfile?.HelperModHooks
             .FirstOrDefault(candidate => candidate.Id.Equals(hookId, StringComparison.OrdinalIgnoreCase));
         if (hook is null)
         {
             return new ActionExecutionResult(
                 false,
-                $"Helper hook '{hookId}' is not defined in profile '{request.ProfileId}'.",
+                $"Helper hook '{hookId}' is not defined in profile '{effectiveRequest.ProfileId}'.",
                 AddressSource.None,
-                new Dictionary<string, object?>
-                {
-                    [DiagnosticReasonCodeKey] = RuntimeReasonCode.HELPER_ENTRYPOINT_NOT_FOUND.ToString(),
-                    [PayloadHelperHookIdKey] = hookId,
-                    ["helperBridgeState"] = "denied"
-                });
+                MergeDiagnostics(
+                    policyDiagnostics,
+                    new Dictionary<string, object?>
+                    {
+                        [DiagnosticReasonCodeKey] = RuntimeReasonCode.HELPER_ENTRYPOINT_NOT_FOUND.ToString(),
+                        [PayloadHelperHookIdKey] = hookId,
+                        ["helperBridgeState"] = "denied"
+                    }));
         }
 
         var probe = await _helperBridgeBackend.ProbeAsync(
             new HelperBridgeProbeRequest(
-                request.ProfileId,
+                effectiveRequest.ProfileId,
                 CurrentSession.Process,
-                [hook]),
+                [hook],
+                ReadHelperAutoloadStrategy(_attachedProfile),
+                ReadHelperAutoloadScripts(_attachedProfile)),
             cancellationToken);
-        if (!probe.Available)
+        if (!probe.Available && !IsExperimentalHelperBridgeProbe(probe.Diagnostics))
         {
             return new ActionExecutionResult(
                 false,
                 probe.Message,
                 AddressSource.None,
                 MergeDiagnostics(
-                    probe.Diagnostics,
-                    new Dictionary<string, object?>
-                    {
-                        [DiagnosticReasonCodeKey] = probe.ReasonCode.ToString(),
-                        [PayloadHelperHookIdKey] = hook.Id
-                    }));
+                    policyDiagnostics,
+                    MergeDiagnostics(
+                        probe.Diagnostics,
+                        new Dictionary<string, object?>
+                        {
+                            [DiagnosticReasonCodeKey] = probe.ReasonCode.ToString(),
+                            [PayloadHelperHookIdKey] = hook.Id
+                })));
         }
 
         var bridgeResult = await _helperBridgeBackend.ExecuteAsync(
             new HelperBridgeRequest(
-                ActionRequest: request,
+                ActionRequest: effectiveRequest,
                 Process: CurrentSession.Process,
                 Hook: hook,
-                OperationKind: ResolveHelperOperationKind(request.Action.Id),
+                OperationKind: ResolveHelperOperationKind(effectiveRequest.Action.Id),
                 VerificationContract: hook.VerifyContract,
-                Context: request.Context),
+                OperationPolicy: ResolveHelperOperationPolicy(effectiveRequest),
+                TargetContext: effectiveRequest.RuntimeMode.ToString(),
+                MutationIntent: ResolveMutationIntent(effectiveRequest.Action.Id),
+                VerificationContractVersion: "1.1",
+                Context: effectiveRequest.Context,
+                AutoloadStrategy: ReadHelperAutoloadStrategy(_attachedProfile),
+                AutoloadScripts: ReadHelperAutoloadScripts(_attachedProfile)),
             cancellationToken);
 
+        var baseDiagnostics = MergeDiagnostics(policyDiagnostics, bridgeResult.Diagnostics);
         return new ActionExecutionResult(
             bridgeResult.Succeeded,
             bridgeResult.Message,
             AddressSource.None,
             MergeDiagnostics(
-                bridgeResult.Diagnostics,
+                baseDiagnostics,
                 new Dictionary<string, object?>
                 {
                     [DiagnosticReasonCodeKey] = bridgeResult.ReasonCode.ToString(),
@@ -3419,6 +3575,474 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
                     ["helperEntryPoint"] = hook.EntryPoint ?? string.Empty
                 }));
     }
+
+    private static bool IsExperimentalHelperBridgeProbe(IReadOnlyDictionary<string, object?>? diagnostics)
+    {
+        if (diagnostics is null)
+        {
+            return false;
+        }
+
+        if (!diagnostics.TryGetValue("helperBridgeState", out var rawState))
+        {
+            return false;
+        }
+
+        return string.Equals(rawState?.ToString(), "experimental", StringComparison.OrdinalIgnoreCase);
+    }
+
+    private static HelperActionPolicyResolution ApplyHelperActionPolicies(ActionExecutionRequest request)
+    {
+        var payload = ClonePayload(request.Payload);
+        var diagnostics = new Dictionary<string, object?>(StringComparer.OrdinalIgnoreCase);
+        var policyReasonCodes = new List<string>();
+
+        HelperActionPolicyResolution? failure = null;
+        if (request.Action.Id.Equals(ActionIdSpawnTacticalEntity, StringComparison.OrdinalIgnoreCase))
+        {
+            failure = ApplySpawnTacticalPolicies(request, payload, policyReasonCodes, diagnostics);
+        }
+        else if (request.Action.Id.Equals(ActionIdSpawnGalacticEntity, StringComparison.OrdinalIgnoreCase))
+        {
+            ApplySpawnGalacticPolicies(payload);
+        }
+        else if (request.Action.Id.Equals(ActionIdPlacePlanetBuilding, StringComparison.OrdinalIgnoreCase))
+        {
+            failure = ApplyPlanetBuildingPolicies(request, payload, policyReasonCodes, diagnostics);
+        }
+        else if (request.Action.Id.Equals(ActionIdTransferFleetSafe, StringComparison.OrdinalIgnoreCase))
+        {
+            failure = ApplyTransferFleetPolicies(request, payload, policyReasonCodes, diagnostics);
+        }
+        else if (request.Action.Id.Equals(ActionIdFlipPlanetOwner, StringComparison.OrdinalIgnoreCase))
+        {
+            failure = ApplyPlanetFlipPolicies(request, payload, policyReasonCodes, diagnostics);
+        }
+        else if (request.Action.Id.Equals(ActionIdSwitchPlayerFaction, StringComparison.OrdinalIgnoreCase))
+        {
+            failure = ApplySwitchPlayerFactionPolicies(request, payload, policyReasonCodes, diagnostics);
+        }
+        else if (request.Action.Id.Equals(ActionIdEditHeroState, StringComparison.OrdinalIgnoreCase))
+        {
+            failure = ApplyEditHeroStatePolicies(request, payload, policyReasonCodes, diagnostics);
+        }
+        else if (request.Action.Id.Equals(ActionIdCreateHeroVariant, StringComparison.OrdinalIgnoreCase))
+        {
+            failure = ApplyCreateHeroVariantPolicies(request, payload, policyReasonCodes, diagnostics);
+        }
+        else if (ShouldDefaultCrossFaction(request.Action.Id))
+        {
+            payload[PayloadAllowCrossFactionKey] ??= true;
+        }
+
+        if (failure is not null)
+        {
+            return failure;
+        }
+
+        if (policyReasonCodes.Any())
+        {
+            diagnostics["policyReasonCodes"] = policyReasonCodes.ToArray();
+        }
+
+        var effectiveRequest = request with { Payload = payload };
+        return new HelperActionPolicyResolution(effectiveRequest, diagnostics, null);
+    }
+
+    private static HelperActionPolicyResolution? ApplySpawnTacticalPolicies(
+        ActionExecutionRequest request,
+        JsonObject payload,
+        ICollection<string> policyReasonCodes,
+        IReadOnlyDictionary<string, object?> diagnostics)
+    {
+        EnforcePayloadValue(payload, PayloadPopulationPolicyKey, PopulationPolicyForceZeroTactical, policyReasonCodes, RuntimeReasonCode.SPAWN_POPULATION_POLICY_ENFORCED);
+        EnforcePayloadValue(payload, PayloadPersistencePolicyKey, PersistencePolicyEphemeralBattleOnly, policyReasonCodes, RuntimeReasonCode.SPAWN_EPHEMERAL_POLICY_ENFORCED);
+        payload[PayloadAllowCrossFactionKey] ??= true;
+        payload[PayloadPlacementModeKey] ??= "reinforcement_zone";
+
+        if (HasAnyPayloadValue(payload, "entryMarker", "worldPosition"))
+        {
+            return null;
+        }
+
+        return BuildPolicyFailure(
+            request,
+            RuntimeReasonCode.SPAWN_PLACEMENT_INVALID,
+            "Tactical spawn requires entryMarker or worldPosition for safe placement.",
+            policyReasonCodes,
+            diagnostics);
+    }
+
+    private static void ApplySpawnGalacticPolicies(JsonObject payload)
+    {
+        payload[PayloadPopulationPolicyKey] ??= PopulationPolicyNormal;
+        payload[PayloadPersistencePolicyKey] ??= PersistencePolicyPersistentGalactic;
+        payload[PayloadAllowCrossFactionKey] ??= true;
+    }
+
+    private static HelperActionPolicyResolution? ApplyPlanetBuildingPolicies(
+        ActionExecutionRequest request,
+        JsonObject payload,
+        ICollection<string> policyReasonCodes,
+        IReadOnlyDictionary<string, object?> diagnostics)
+    {
+        var forceOverride = TryReadBooleanPayload(payload, PayloadForceOverrideKey, out var explicitForceOverride) && explicitForceOverride;
+        var explicitPlacementMode = TryReadStringPayload(payload, PayloadPlacementModeKey, out var placementMode)
+            ? placementMode
+            : string.Empty;
+
+        payload[PayloadAllowCrossFactionKey] ??= true;
+        payload[PayloadPlacementModeKey] ??= "safe_rules";
+        payload[PayloadForceOverrideKey] ??= false;
+
+        if (!HasAnyPayloadValue(payload, PayloadEntityIdKey, "entityBlueprintId", "unitId"))
+        {
+            return BuildPolicyFailure(
+                request,
+                RuntimeReasonCode.BUILDING_PREREQ_MISSING,
+                "Building placement requires entityId/entityBlueprintId (or unitId fallback).",
+                policyReasonCodes,
+                diagnostics);
+        }
+
+        if (!HasAnyPayloadValue(payload, "planetId", "planetEntityId", "entryMarker", "worldPosition"))
+        {
+            return BuildPolicyFailure(
+                request,
+                RuntimeReasonCode.BUILDING_SLOT_INVALID,
+                "Building placement requires planetId/planetEntityId (or explicit placement marker).",
+                policyReasonCodes,
+                diagnostics);
+        }
+
+        if (!forceOverride && !string.IsNullOrWhiteSpace(explicitPlacementMode) &&
+            !string.Equals(explicitPlacementMode, "safe_rules", StringComparison.OrdinalIgnoreCase))
+        {
+            return BuildPolicyFailure(
+                request,
+                RuntimeReasonCode.BUILDING_SLOT_INVALID,
+                "Building placement denied: placementMode requires safe_rules unless forceOverride=true.",
+                policyReasonCodes,
+                diagnostics);
+        }
+
+        if (forceOverride)
+        {
+            AppendPolicyReason(policyReasonCodes, RuntimeReasonCode.BUILDING_FORCE_OVERRIDE_APPLIED);
+        }
+
+        return null;
+    }
+
+    private static HelperActionPolicyResolution? ApplyTransferFleetPolicies(
+        ActionExecutionRequest request,
+        JsonObject payload,
+        ICollection<string> policyReasonCodes,
+        IReadOnlyDictionary<string, object?> diagnostics)
+    {
+        payload[PayloadAllowCrossFactionKey] ??= true;
+        payload[PayloadPlacementModeKey] ??= "safe_transfer";
+        payload[PayloadForceOverrideKey] ??= false;
+
+        if (!HasAnyPayloadValue(payload, PayloadEntityIdKey, "fleetEntityId"))
+        {
+            return BuildPolicyFailure(
+                request,
+                RuntimeReasonCode.CAPABILITY_REQUIRED_MISSING,
+                "Fleet transfer requires entityId/fleetEntityId.",
+                policyReasonCodes,
+                diagnostics);
+        }
+
+        if (!HasAnyPayloadValue(payload, PayloadSourceFactionKey) || !HasAnyPayloadValue(payload, PayloadTargetFactionKey))
+        {
+            return BuildPolicyFailure(
+                request,
+                RuntimeReasonCode.CAPABILITY_REQUIRED_MISSING,
+                "Fleet transfer requires sourceFaction and targetFaction.",
+                policyReasonCodes,
+                diagnostics);
+        }
+
+        if (TryReadStringPayload(payload, PayloadSourceFactionKey, out var sourceFaction) &&
+            TryReadStringPayload(payload, PayloadTargetFactionKey, out var targetFaction) &&
+            sourceFaction.Equals(targetFaction, StringComparison.OrdinalIgnoreCase))
+        {
+            return BuildPolicyFailure(
+                request,
+                RuntimeReasonCode.SAFETY_MUTATION_BLOCKED,
+                "Fleet transfer requires sourceFaction and targetFaction to differ.",
+                policyReasonCodes,
+                diagnostics);
+        }
+
+        var forceOverride = TryReadBooleanPayload(payload, PayloadForceOverrideKey, out var explicitForceOverride) && explicitForceOverride;
+        if (!forceOverride && !HasAnyPayloadValue(payload, "safePlanetId", "safe_planet_id", "targetPlanetId"))
+        {
+            return BuildPolicyFailure(
+                request,
+                RuntimeReasonCode.SAFETY_MUTATION_BLOCKED,
+                "Fleet transfer requires safePlanetId/targetPlanetId unless forceOverride=true.",
+                policyReasonCodes,
+                diagnostics);
+        }
+
+        return null;
+    }
+
+    private static HelperActionPolicyResolution? ApplyPlanetFlipPolicies(
+        ActionExecutionRequest request,
+        JsonObject payload,
+        ICollection<string> policyReasonCodes,
+        IReadOnlyDictionary<string, object?> diagnostics)
+    {
+        payload[PayloadAllowCrossFactionKey] ??= true;
+        payload[PayloadForceOverrideKey] ??= false;
+
+        if (!TryReadStringPayload(payload, "flipMode", out var flipMode))
+        {
+            flipMode = TryReadStringPayload(payload, "planetFlipMode", out var legacyFlipMode)
+                ? legacyFlipMode
+                : "convert_everything";
+            payload["flipMode"] = flipMode;
+        }
+
+        payload["planetFlipMode"] = flipMode;
+
+        if (!HasAnyPayloadValue(payload, PayloadEntityIdKey, "planetEntityId", "planetId"))
+        {
+            return BuildPolicyFailure(
+                request,
+                RuntimeReasonCode.CAPABILITY_REQUIRED_MISSING,
+                "Planet flip requires entityId/planetEntityId/planetId.",
+                policyReasonCodes,
+                diagnostics);
+        }
+
+        if (!HasAnyPayloadValue(payload, PayloadTargetFactionKey))
+        {
+            return BuildPolicyFailure(
+                request,
+                RuntimeReasonCode.CAPABILITY_REQUIRED_MISSING,
+                "Planet flip requires targetFaction.",
+                policyReasonCodes,
+                diagnostics);
+        }
+
+        if (!string.Equals(flipMode, "empty_and_retreat", StringComparison.OrdinalIgnoreCase) &&
+            !string.Equals(flipMode, "convert_everything", StringComparison.OrdinalIgnoreCase))
+        {
+            return BuildPolicyFailure(
+                request,
+                RuntimeReasonCode.SAFETY_MUTATION_BLOCKED,
+                "Planet flip mode must be empty_and_retreat or convert_everything.",
+                policyReasonCodes,
+                diagnostics);
+        }
+
+        return null;
+    }
+
+    private static HelperActionPolicyResolution? ApplySwitchPlayerFactionPolicies(
+        ActionExecutionRequest request,
+        JsonObject payload,
+        ICollection<string> policyReasonCodes,
+        IReadOnlyDictionary<string, object?> diagnostics)
+    {
+        payload[PayloadAllowCrossFactionKey] ??= true;
+
+        if (!HasAnyPayloadValue(payload, PayloadTargetFactionKey))
+        {
+            return BuildPolicyFailure(
+                request,
+                RuntimeReasonCode.CAPABILITY_REQUIRED_MISSING,
+                "Switch player faction requires targetFaction.",
+                policyReasonCodes,
+                diagnostics);
+        }
+
+        return null;
+    }
+
+    private static HelperActionPolicyResolution? ApplyEditHeroStatePolicies(
+        ActionExecutionRequest request,
+        JsonObject payload,
+        ICollection<string> policyReasonCodes,
+        IReadOnlyDictionary<string, object?> diagnostics)
+    {
+        payload[PayloadAllowCrossFactionKey] ??= true;
+        payload["heroStatePolicy"] ??= "mod_adaptive";
+        payload["desiredState"] ??= "alive";
+        payload["allowDuplicate"] ??= false;
+
+        if (!HasAnyPayloadValue(payload, PayloadEntityIdKey, "heroEntityId", "heroGlobalKey", "globalKey"))
+        {
+            return BuildPolicyFailure(
+                request,
+                RuntimeReasonCode.CAPABILITY_REQUIRED_MISSING,
+                "Hero state edit requires entityId/heroEntityId or heroGlobalKey/globalKey.",
+                policyReasonCodes,
+                diagnostics);
+        }
+
+        if (!TryReadStringPayload(payload, "desiredState", out var desiredState))
+        {
+            desiredState = "alive";
+        }
+
+        if (!string.Equals(desiredState, "alive", StringComparison.OrdinalIgnoreCase) &&
+            !string.Equals(desiredState, "dead", StringComparison.OrdinalIgnoreCase) &&
+            !string.Equals(desiredState, "respawn_pending", StringComparison.OrdinalIgnoreCase) &&
+            !string.Equals(desiredState, "permadead", StringComparison.OrdinalIgnoreCase) &&
+            !string.Equals(desiredState, "remove", StringComparison.OrdinalIgnoreCase))
+        {
+            return BuildPolicyFailure(
+                request,
+                RuntimeReasonCode.SAFETY_MUTATION_BLOCKED,
+                "desiredState must be one of alive, dead, respawn_pending, permadead, remove.",
+                policyReasonCodes,
+                diagnostics);
+        }
+
+        return null;
+    }
+
+    private static HelperActionPolicyResolution? ApplyCreateHeroVariantPolicies(
+        ActionExecutionRequest request,
+        JsonObject payload,
+        ICollection<string> policyReasonCodes,
+        IReadOnlyDictionary<string, object?> diagnostics)
+    {
+        payload[PayloadAllowCrossFactionKey] ??= true;
+        payload["variantGenerationMode"] ??= "patch_mod_overlay";
+
+        if (!HasAnyPayloadValue(payload, PayloadEntityIdKey, "sourceHeroId"))
+        {
+            return BuildPolicyFailure(
+                request,
+                RuntimeReasonCode.CAPABILITY_REQUIRED_MISSING,
+                "Hero variant creation requires entityId/sourceHeroId.",
+                policyReasonCodes,
+                diagnostics);
+        }
+
+        if (!HasAnyPayloadValue(payload, "unitId", "variantHeroId"))
+        {
+            return BuildPolicyFailure(
+                request,
+                RuntimeReasonCode.CAPABILITY_REQUIRED_MISSING,
+                "Hero variant creation requires unitId/variantHeroId.",
+                policyReasonCodes,
+                diagnostics);
+        }
+
+        return null;
+    }
+
+    private static bool ShouldDefaultCrossFaction(string actionId)
+    {
+        return actionId.Equals(ActionIdTransferFleetSafe, StringComparison.OrdinalIgnoreCase) ||
+               actionId.Equals(ActionIdFlipPlanetOwner, StringComparison.OrdinalIgnoreCase) ||
+               actionId.Equals(ActionIdSwitchPlayerFaction, StringComparison.OrdinalIgnoreCase) ||
+               actionId.Equals(ActionIdSetContextFaction, StringComparison.OrdinalIgnoreCase) ||
+               actionId.Equals(ActionIdSetContextAllegiance, StringComparison.OrdinalIgnoreCase) ||
+               actionId.Equals(ActionIdEditHeroState, StringComparison.OrdinalIgnoreCase) ||
+               actionId.Equals(ActionIdCreateHeroVariant, StringComparison.OrdinalIgnoreCase);
+    }
+    private static HelperActionPolicyResolution BuildPolicyFailure(
+        ActionExecutionRequest request,
+        RuntimeReasonCode reasonCode,
+        string message,
+        IEnumerable<string> policyReasonCodes,
+        IReadOnlyDictionary<string, object?> diagnostics)
+    {
+        var mergedDiagnostics = new Dictionary<string, object?>(diagnostics, StringComparer.OrdinalIgnoreCase)
+        {
+            [DiagnosticReasonCodeKey] = reasonCode.ToString(),
+            ["helperPolicyState"] = "blocked"
+        };
+
+        if (policyReasonCodes.Any())
+        {
+            mergedDiagnostics["policyReasonCodes"] = policyReasonCodes.ToArray();
+        }
+
+        return new HelperActionPolicyResolution(
+            request,
+            mergedDiagnostics,
+            new ActionExecutionResult(
+                false,
+                message,
+                AddressSource.None,
+                mergedDiagnostics));
+    }
+
+    private static void EnforcePayloadValue(
+        JsonObject payload,
+        string key,
+        string value,
+        ICollection<string> policyReasonCodes,
+        RuntimeReasonCode reasonCode)
+    {
+        if (!TryReadStringPayload(payload, key, out var existing) ||
+            !string.Equals(existing, value, StringComparison.OrdinalIgnoreCase))
+        {
+            payload[key] = value;
+            AppendPolicyReason(policyReasonCodes, reasonCode);
+        }
+    }
+
+    private static void AppendPolicyReason(ICollection<string> reasons, RuntimeReasonCode reasonCode)
+    {
+        var text = reasonCode.ToString();
+        if (!reasons.Contains(text, StringComparer.OrdinalIgnoreCase))
+        {
+            reasons.Add(text);
+        }
+    }
+
+    private static bool TryReadStringPayload(JsonObject payload, string key, out string value)
+    {
+        value = string.Empty;
+        if (!payload.TryGetPropertyValue(key, out var node) || node is null)
+        {
+            return false;
+        }
+
+        try
+        {
+            var candidate = node.GetValue<string>();
+            if (string.IsNullOrWhiteSpace(candidate))
+            {
+                return false;
+            }
+
+            value = candidate.Trim();
+            return true;
+        }
+        catch
+        {
+            return false;
+        }
+    }
+
+    private static bool HasAnyPayloadValue(JsonObject payload, params string[] keys)
+    {
+        foreach (var key in keys)
+        {
+            if (TryReadStringPayload(payload, key, out _))
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    private sealed record HelperActionPolicyResolution(
+        ActionExecutionRequest Request,
+        IReadOnlyDictionary<string, object?> Diagnostics,
+        ActionExecutionResult? BlockedResult);
 
     private static string ResolveHelperHookId(ActionExecutionRequest request)
     {
@@ -3432,7 +4056,12 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
         if (request.Action.Id.Equals(ActionIdSpawnContextEntity, StringComparison.OrdinalIgnoreCase) ||
             request.Action.Id.Equals(ActionIdSpawnTacticalEntity, StringComparison.OrdinalIgnoreCase) ||
             request.Action.Id.Equals(ActionIdSpawnGalacticEntity, StringComparison.OrdinalIgnoreCase) ||
-            request.Action.Id.Equals(ActionIdPlacePlanetBuilding, StringComparison.OrdinalIgnoreCase))
+            request.Action.Id.Equals(ActionIdPlacePlanetBuilding, StringComparison.OrdinalIgnoreCase) ||
+            request.Action.Id.Equals(ActionIdTransferFleetSafe, StringComparison.OrdinalIgnoreCase) ||
+            request.Action.Id.Equals(ActionIdFlipPlanetOwner, StringComparison.OrdinalIgnoreCase) ||
+            request.Action.Id.Equals(ActionIdSwitchPlayerFaction, StringComparison.OrdinalIgnoreCase) ||
+            request.Action.Id.Equals(ActionIdEditHeroState, StringComparison.OrdinalIgnoreCase) ||
+            request.Action.Id.Equals(ActionIdCreateHeroVariant, StringComparison.OrdinalIgnoreCase))
         {
             return "spawn_bridge";
         }
@@ -3473,6 +4102,31 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
             return HelperBridgeOperationKind.SetContextAllegiance;
         }
 
+        if (actionId.Equals(ActionIdTransferFleetSafe, StringComparison.OrdinalIgnoreCase))
+        {
+            return HelperBridgeOperationKind.TransferFleetSafe;
+        }
+
+        if (actionId.Equals(ActionIdFlipPlanetOwner, StringComparison.OrdinalIgnoreCase))
+        {
+            return HelperBridgeOperationKind.FlipPlanetOwner;
+        }
+
+        if (actionId.Equals(ActionIdSwitchPlayerFaction, StringComparison.OrdinalIgnoreCase))
+        {
+            return HelperBridgeOperationKind.SwitchPlayerFaction;
+        }
+
+        if (actionId.Equals(ActionIdEditHeroState, StringComparison.OrdinalIgnoreCase))
+        {
+            return HelperBridgeOperationKind.EditHeroState;
+        }
+
+        if (actionId.Equals(ActionIdCreateHeroVariant, StringComparison.OrdinalIgnoreCase))
+        {
+            return HelperBridgeOperationKind.CreateHeroVariant;
+        }
+
         if (actionId.Equals(ActionIdSetHeroStateHelper, StringComparison.OrdinalIgnoreCase))
         {
             return HelperBridgeOperationKind.SetHeroStateHelper;
@@ -3484,6 +4138,60 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
         }
 
         return HelperBridgeOperationKind.Unknown;
+    }
+
+    private static string ResolveHelperOperationPolicy(ActionExecutionRequest request)
+    {
+        if (request.Payload.TryGetPropertyValue("operationPolicy", out var rawPolicy) &&
+            rawPolicy is JsonValue rawPolicyValue &&
+            rawPolicyValue.TryGetValue<string>(out var explicitPolicy) &&
+            !string.IsNullOrWhiteSpace(explicitPolicy))
+        {
+            return explicitPolicy;
+        }
+
+        return request.Action.Id switch
+        {
+            var id when id.Equals(ActionIdSpawnTacticalEntity, StringComparison.OrdinalIgnoreCase) =>
+                "tactical_ephemeral_zero_pop",
+            var id when id.Equals(ActionIdSpawnGalacticEntity, StringComparison.OrdinalIgnoreCase) =>
+                "galactic_persistent_spawn",
+            var id when id.Equals(ActionIdPlacePlanetBuilding, StringComparison.OrdinalIgnoreCase) =>
+                "galactic_building_safe_rules",
+            var id when id.Equals(ActionIdTransferFleetSafe, StringComparison.OrdinalIgnoreCase) =>
+                "fleet_transfer_safe",
+            var id when id.Equals(ActionIdFlipPlanetOwner, StringComparison.OrdinalIgnoreCase) =>
+                "planet_flip_transactional",
+            var id when id.Equals(ActionIdSwitchPlayerFaction, StringComparison.OrdinalIgnoreCase) =>
+                "switch_player_faction",
+            var id when id.Equals(ActionIdEditHeroState, StringComparison.OrdinalIgnoreCase) =>
+                "hero_state_adaptive",
+            var id when id.Equals(ActionIdCreateHeroVariant, StringComparison.OrdinalIgnoreCase) =>
+                "hero_variant_patch_mod",
+            _ => "helper_operation_default"
+        };
+    }
+
+    private static string ResolveMutationIntent(string actionId)
+    {
+        return actionId switch
+        {
+            var id when id.Equals(ActionIdSpawnContextEntity, StringComparison.OrdinalIgnoreCase) ||
+                     id.Equals(ActionIdSpawnTacticalEntity, StringComparison.OrdinalIgnoreCase) ||
+                     id.Equals(ActionIdSpawnGalacticEntity, StringComparison.OrdinalIgnoreCase) ||
+                     id.Equals(ActionIdSpawnUnitHelper, StringComparison.OrdinalIgnoreCase) => "spawn_entity",
+            var id when id.Equals(ActionIdPlacePlanetBuilding, StringComparison.OrdinalIgnoreCase) => "place_building",
+            var id when id.Equals(ActionIdSetContextFaction, StringComparison.OrdinalIgnoreCase) ||
+                     id.Equals(ActionIdSetContextAllegiance, StringComparison.OrdinalIgnoreCase) => "set_context_allegiance",
+            var id when id.Equals(ActionIdTransferFleetSafe, StringComparison.OrdinalIgnoreCase) => "transfer_fleet_safe",
+            var id when id.Equals(ActionIdFlipPlanetOwner, StringComparison.OrdinalIgnoreCase) => "flip_planet_owner",
+            var id when id.Equals(ActionIdSwitchPlayerFaction, StringComparison.OrdinalIgnoreCase) => "switch_player_faction",
+            var id when id.Equals(ActionIdEditHeroState, StringComparison.OrdinalIgnoreCase) ||
+                     id.Equals(ActionIdSetHeroStateHelper, StringComparison.OrdinalIgnoreCase) => "edit_hero_state",
+            var id when id.Equals(ActionIdCreateHeroVariant, StringComparison.OrdinalIgnoreCase) => "create_hero_variant",
+            var id when id.Equals(ActionIdToggleRoeRespawnHelper, StringComparison.OrdinalIgnoreCase) => "toggle_respawn_policy",
+            _ => UnknownTokenText
+        };
     }
 
     private Task<ActionExecutionResult> ExecuteSaveActionAsync(ActionExecutionRequest request, CancellationToken cancellationToken)  // NOSONAR
@@ -3900,16 +4608,9 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
     private FogPatchFallbackResolution ResolveFogPatchFallbackAddress()  // NOSONAR
     {
         EnsureAttached();
-        if (_memory is null || CurrentSession is null)
-        {
-            return FogPatchFallbackResolution.Fail(
-                RuntimeReasonCode.SAFETY_FAIL_CLOSED,
-                "Fog fallback patch resolution failed: no active attached process.");
-        }
-
         try
         {
-            using var process = Process.GetProcessById(CurrentSession.Process.ProcessId);
+            using var process = Process.GetProcessById(CurrentSession!.Process.ProcessId);
             var module = process.MainModule;
             if (module is null)
             {
@@ -3919,8 +4620,8 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
             }
 
             var baseAddress = module.BaseAddress;
-            var moduleBytes = _memory.ReadBytes(baseAddress, module.ModuleMemorySize);
-            var orderedPatterns = CurrentSession.Process.ExeTarget == ExeTarget.Sweaw
+            var moduleBytes = _memory!.ReadBytes(baseAddress, module.ModuleMemorySize);
+            var orderedPatterns = CurrentSession!.Process.ExeTarget == ExeTarget.Sweaw
                 ? new[]
                 {
                     (Pattern: FogFallbackPatternSweaw, BranchOffset: 4),
@@ -4935,14 +5636,9 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
     private UnitCapHookResolution ResolveUnitCapHookInjectionAddress()
     {
         EnsureAttached();
-        if (_memory is null || CurrentSession is null)
-        {
-            return UnitCapHookResolution.Fail("No active process for unit cap hook resolution.");
-        }
-
         try
         {
-            using var process = Process.GetProcessById(CurrentSession.Process.ProcessId);
+            using var process = Process.GetProcessById(CurrentSession!.Process.ProcessId);
             var module = process.MainModule;
             if (module is null)
             {
@@ -4950,7 +5646,7 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
             }
 
             var baseAddress = module.BaseAddress;
-            var moduleBytes = _memory.ReadBytes(baseAddress, module.ModuleMemorySize);
+            var moduleBytes = _memory!.ReadBytes(baseAddress, module.ModuleMemorySize);
             var pattern = AobPattern.Parse(UnitCapHookPatternText);
             var hits = FindPatternOffsets(moduleBytes, pattern, maxHits: 3);
             if (hits.Count == 1)
@@ -4974,14 +5670,9 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
     private InstantBuildHookResolution ResolveInstantBuildHookInjectionAddress()
     {
         EnsureAttached();
-        if (_memory is null || CurrentSession is null)
-        {
-            return InstantBuildHookResolution.Fail("No active process for instant build hook resolution.");
-        }
-
         try
         {
-            using var process = Process.GetProcessById(CurrentSession.Process.ProcessId);
+            using var process = Process.GetProcessById(CurrentSession!.Process.ProcessId);
             var module = process.MainModule;
             if (module is null)
             {
@@ -4989,7 +5680,7 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
             }
 
             var baseAddress = module.BaseAddress;
-            var moduleBytes = _memory.ReadBytes(baseAddress, module.ModuleMemorySize);
+            var moduleBytes = _memory!.ReadBytes(baseAddress, module.ModuleMemorySize);
 
             foreach (var patternBytes in InstantBuildHookPatterns)
             {
@@ -5194,14 +5885,9 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
     private CreditsHookResolution ResolveCreditsHookInjectionAddress()
     {
         EnsureAttached();
-        if (_memory is null || CurrentSession is null)
-        {
-            return CreditsHookResolution.Fail("No active process for credits hook resolution.");
-        }
-
         try
         {
-            if (!TryLoadCreditsHookModuleData(CurrentSession.Process.ProcessId, out var baseAddress, out var moduleBytes, out var moduleFailure))
+            if (!TryLoadCreditsHookModuleData(CurrentSession!.Process.ProcessId, out var baseAddress, out var moduleBytes, out var moduleFailure))
             {
                 return CreditsHookResolution.Fail(moduleFailure!);
             }

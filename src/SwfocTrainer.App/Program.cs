@@ -118,8 +118,15 @@ internal static class Program
         services.AddSingleton<ISdkOperationRouter, SdkOperationRouter>();
         services.AddSingleton<IBackendRouter, BackendRouter>();
         services.AddSingleton<IExecutionBackend, NamedPipeExtenderBackend>();
+        services.AddSingleton<ITelemetryLogTailService, TelemetryLogTailService>();
+        services.AddSingleton<HelperModService>();
+        services.AddSingleton<IHelperModService>(provider => provider.GetRequiredService<HelperModService>());
+        services.AddSingleton<IHelperCommandTransportService>(provider => provider.GetRequiredService<HelperModService>());
         services.AddSingleton<IHelperBridgeBackend>(provider =>
-            new NamedPipeHelperBridgeBackend(provider.GetRequiredService<IExecutionBackend>()));
+            new NamedPipeHelperBridgeBackend(
+                provider.GetRequiredService<IExecutionBackend>(),
+                provider.GetRequiredService<ITelemetryLogTailService>(),
+                provider.GetService<IHelperCommandTransportService>()));
         services.AddSingleton<IActionReliabilityService, ActionReliabilityService>();
         services.AddSingleton<ITransplantCompatibilityService, TransplantCompatibilityService>();
         services.AddSingleton<IContentTransplantService, ContentTransplantService>();
@@ -137,7 +144,6 @@ internal static class Program
         services.AddSingleton<ISelectedUnitTransactionService, SelectedUnitTransactionService>();
         services.AddSingleton<ISpawnPresetService, SpawnPresetService>();
         services.AddSingleton<ICatalogService, CatalogService>();
-        services.AddSingleton<IHelperModService, HelperModService>();
         services.AddSingleton<IModOnboardingService, ModOnboardingService>();
         services.AddSingleton<ISaveCodec, BinarySaveCodec>();
         services.AddSingleton<ISavePatchPackService, SavePatchPackService>();

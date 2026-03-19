@@ -13,22 +13,109 @@
       "name": "eaw_steam_legacy",
       "gameBuild": "eaw_steam_1.1.0",
       "signatures": [
-        { "name": "credits", "pattern": "8B 0D ?? ?? ?? ?? 89 4C", "offset": 2, "addressMode": "ReadRipRelative32AtOffset", "valueType": "Int32" },
-        { "name": "game_timer_freeze", "pattern": "89 15 ?? ?? ?? ?? 8B 45", "offset": 2, "addressMode": "ReadRipRelative32AtOffset", "valueType": "Bool" },
-        { "name": "fog_reveal", "pattern": "80 3D ?? ?? ?? ?? 00 74", "offset": 2, "addressMode": "ReadRipRelative32AtOffset", "valueType": "Bool" },
-        { "name": "ai_enabled", "pattern": "C6 05 ?? ?? ?? ?? 01 75", "offset": 2, "addressMode": "ReadRipRelative32AtOffset", "valueType": "Bool" },
-        { "name": "instant_build", "pattern": "F3 0F 10 0D ?? ?? ?? ?? F3 0F 59", "offset": 4, "addressMode": "ReadRipRelative32AtOffset", "valueType": "Float" },
-        { "name": "selected_hp", "pattern": "F3 0F 10 91 ?? ?? ?? ?? F3 0F 11", "offset": 4, "valueType": "Float" },
-        { "name": "selected_shield", "pattern": "F3 0F 10 89 ?? ?? ?? ?? F3 0F 11", "offset": 4, "valueType": "Float" },
-        { "name": "selected_speed", "pattern": "F3 0F 10 99 ?? ?? ?? ?? F3 0F 59", "offset": 4, "valueType": "Float" },
-        { "name": "selected_damage_multiplier", "pattern": "F3 0F 10 A1 ?? ?? ?? ?? F3 0F 59", "offset": 4, "valueType": "Float" },
-        { "name": "selected_cooldown_multiplier", "pattern": "F3 0F 10 A9 ?? ?? ?? ?? F3 0F 59", "offset": 4, "valueType": "Float" },
-        { "name": "selected_veterancy", "pattern": "8B 81 ?? ?? ?? ?? 89 45", "offset": 2, "valueType": "Int32" },
-        { "name": "selected_owner_faction", "pattern": "8B 89 ?? ?? ?? ?? 89 4D", "offset": 2, "valueType": "Int32" },
-        { "name": "planet_owner", "pattern": "8B 86 ?? ?? ?? ?? 89 45", "offset": 2, "valueType": "Int32" },
-        { "name": "hero_respawn_timer", "pattern": "8B 8E ?? ?? ?? ?? 89 4D", "offset": 2, "valueType": "Int32" },
-        { "name": "unit_cap", "pattern": "48 8B 74 24 68 8B C7", "offset": 0, "addressMode": "HitPlusOffset", "valueType": "Byte" },
-        { "name": "game_speed", "pattern": "F3 0F 11 05 ?? ?? ?? ?? C3 CC CC CC CC CC CC CC F3 0F 10 05", "offset": 4, "addressMode": "ReadRipRelative32AtOffset", "valueType": "Float" }
+        {
+          "name": "credits",
+          "pattern": "8B 0D ?? ?? ?? ?? 89 4C",
+          "offset": 2,
+          "addressMode": "ReadRipRelative32AtOffset",
+          "valueType": "Int32"
+        },
+        {
+          "name": "game_timer_freeze",
+          "pattern": "89 15 ?? ?? ?? ?? 8B 45",
+          "offset": 2,
+          "addressMode": "ReadRipRelative32AtOffset",
+          "valueType": "Bool"
+        },
+        {
+          "name": "fog_reveal",
+          "pattern": "80 3D ?? ?? ?? ?? 00 74",
+          "offset": 2,
+          "addressMode": "ReadRipRelative32AtOffset",
+          "valueType": "Bool"
+        },
+        {
+          "name": "ai_enabled",
+          "pattern": "C6 05 ?? ?? ?? ?? 01 75",
+          "offset": 2,
+          "addressMode": "ReadRipRelative32AtOffset",
+          "valueType": "Bool"
+        },
+        {
+          "name": "instant_build",
+          "pattern": "F3 0F 10 0D ?? ?? ?? ?? F3 0F 59",
+          "offset": 4,
+          "addressMode": "ReadRipRelative32AtOffset",
+          "valueType": "Float"
+        },
+        {
+          "name": "selected_hp",
+          "pattern": "F3 0F 10 91 ?? ?? ?? ?? F3 0F 11",
+          "offset": 4,
+          "valueType": "Float"
+        },
+        {
+          "name": "selected_shield",
+          "pattern": "F3 0F 10 89 ?? ?? ?? ?? F3 0F 11",
+          "offset": 4,
+          "valueType": "Float"
+        },
+        {
+          "name": "selected_speed",
+          "pattern": "F3 0F 10 99 ?? ?? ?? ?? F3 0F 59",
+          "offset": 4,
+          "valueType": "Float"
+        },
+        {
+          "name": "selected_damage_multiplier",
+          "pattern": "F3 0F 10 A1 ?? ?? ?? ?? F3 0F 59",
+          "offset": 4,
+          "valueType": "Float"
+        },
+        {
+          "name": "selected_cooldown_multiplier",
+          "pattern": "F3 0F 10 A9 ?? ?? ?? ?? F3 0F 59",
+          "offset": 4,
+          "valueType": "Float"
+        },
+        {
+          "name": "selected_veterancy",
+          "pattern": "8B 81 ?? ?? ?? ?? 89 45",
+          "offset": 2,
+          "valueType": "Int32"
+        },
+        {
+          "name": "selected_owner_faction",
+          "pattern": "8B 89 ?? ?? ?? ?? 89 4D",
+          "offset": 2,
+          "valueType": "Int32"
+        },
+        {
+          "name": "planet_owner",
+          "pattern": "8B 86 ?? ?? ?? ?? 89 45",
+          "offset": 2,
+          "valueType": "Int32"
+        },
+        {
+          "name": "hero_respawn_timer",
+          "pattern": "8B 8E ?? ?? ?? ?? 89 4D",
+          "offset": 2,
+          "valueType": "Int32"
+        },
+        {
+          "name": "unit_cap",
+          "pattern": "48 8B 74 24 68 8B C7",
+          "offset": 0,
+          "addressMode": "HitPlusOffset",
+          "valueType": "Byte"
+        },
+        {
+          "name": "game_speed",
+          "pattern": "F3 0F 11 05 ?? ?? ?? ?? C3 CC CC CC CC CC CC CC F3 0F 10 05",
+          "offset": 4,
+          "addressMode": "ReadRipRelative32AtOffset",
+          "valueType": "Float"
+        }
       ]
     }
   ],
@@ -57,7 +144,9 @@
       "mode": "Unknown",
       "executionKind": "Memory",
       "payloadSchema": {
-        "required": ["symbol"]
+        "required": [
+          "symbol"
+        ]
       },
       "verifyReadback": false,
       "cooldownMs": 0,
@@ -69,7 +158,10 @@
       "mode": "Unknown",
       "executionKind": "Memory",
       "payloadSchema": {
-        "required": ["symbol", "intValue"]
+        "required": [
+          "symbol",
+          "intValue"
+        ]
       },
       "verifyReadback": true,
       "cooldownMs": 250,
@@ -81,7 +173,10 @@
       "mode": "Unknown",
       "executionKind": "Memory",
       "payloadSchema": {
-        "required": ["symbol", "boolValue"]
+        "required": [
+          "symbol",
+          "boolValue"
+        ]
       },
       "verifyReadback": false,
       "cooldownMs": 100,
@@ -93,7 +188,10 @@
       "mode": "Unknown",
       "executionKind": "Memory",
       "payloadSchema": {
-        "required": ["symbol", "boolValue"]
+        "required": [
+          "symbol",
+          "boolValue"
+        ]
       },
       "verifyReadback": false,
       "cooldownMs": 100,
@@ -105,7 +203,10 @@
       "mode": "Unknown",
       "executionKind": "Memory",
       "payloadSchema": {
-        "required": ["symbol", "boolValue"]
+        "required": [
+          "symbol",
+          "boolValue"
+        ]
       },
       "verifyReadback": false,
       "cooldownMs": 100,
@@ -117,7 +218,10 @@
       "mode": "Galactic",
       "executionKind": "Memory",
       "payloadSchema": {
-        "required": ["symbol", "floatValue"]
+        "required": [
+          "symbol",
+          "floatValue"
+        ]
       },
       "verifyReadback": true,
       "cooldownMs": 100,
@@ -129,7 +233,12 @@
       "mode": "Unknown",
       "executionKind": "Helper",
       "payloadSchema": {
-        "required": ["helperHookId", "unitId", "entryMarker", "faction"]
+        "required": [
+          "helperHookId",
+          "unitId",
+          "entryMarker",
+          "faction"
+        ]
       },
       "verifyReadback": false,
       "cooldownMs": 250,
@@ -141,7 +250,10 @@
       "mode": "Unknown",
       "executionKind": "Helper",
       "payloadSchema": {
-        "required": ["entityId", "faction"]
+        "required": [
+          "entityId",
+          "faction"
+        ]
       },
       "verifyReadback": false,
       "cooldownMs": 250,
@@ -153,7 +265,10 @@
       "mode": "AnyTactical",
       "executionKind": "Helper",
       "payloadSchema": {
-        "required": ["entityId", "faction"]
+        "required": [
+          "entityId",
+          "faction"
+        ]
       },
       "verifyReadback": false,
       "cooldownMs": 250,
@@ -165,7 +280,10 @@
       "mode": "Galactic",
       "executionKind": "Helper",
       "payloadSchema": {
-        "required": ["entityId", "faction"]
+        "required": [
+          "entityId",
+          "faction"
+        ]
       },
       "verifyReadback": false,
       "cooldownMs": 250,
@@ -177,11 +295,89 @@
       "mode": "Galactic",
       "executionKind": "Helper",
       "payloadSchema": {
-        "required": ["entityId", "targetFaction"]
+        "required": [
+          "entityId",
+          "targetFaction"
+        ]
       },
       "verifyReadback": false,
       "cooldownMs": 250,
       "description": "Place a building from the building roster on the selected planet."
+    },
+    "transfer_fleet_safe": {
+      "id": "transfer_fleet_safe",
+      "category": "Campaign",
+      "mode": "Galactic",
+      "executionKind": "Helper",
+      "payloadSchema": {
+        "required": [
+          "entityId",
+          "sourceFaction",
+          "targetFaction"
+        ]
+      },
+      "verifyReadback": false,
+      "cooldownMs": 300,
+      "description": "Safely transfer fleet allegiance by relocation-first workflow to avoid auto-battle triggers."
+    },
+    "flip_planet_owner": {
+      "id": "flip_planet_owner",
+      "category": "Campaign",
+      "mode": "Galactic",
+      "executionKind": "Helper",
+      "payloadSchema": {
+        "required": [
+          "entityId",
+          "targetFaction"
+        ]
+      },
+      "verifyReadback": false,
+      "cooldownMs": 300,
+      "description": "Flip planet allegiance with explicit mode (empty_and_retreat or convert_everything)."
+    },
+    "switch_player_faction": {
+      "id": "switch_player_faction",
+      "category": "Global",
+      "mode": "Galactic",
+      "executionKind": "Helper",
+      "payloadSchema": {
+        "required": [
+          "targetFaction"
+        ]
+      },
+      "verifyReadback": false,
+      "cooldownMs": 300,
+      "description": "Switch active player-side control to target faction with explicit diagnostics."
+    },
+    "edit_hero_state": {
+      "id": "edit_hero_state",
+      "category": "Hero",
+      "mode": "Unknown",
+      "executionKind": "Helper",
+      "payloadSchema": {
+        "required": [
+          "entityId",
+          "desiredState"
+        ]
+      },
+      "verifyReadback": false,
+      "cooldownMs": 300,
+      "description": "Apply mod-adaptive hero state transitions (alive/dead/respawn_pending/permadead)."
+    },
+    "create_hero_variant": {
+      "id": "create_hero_variant",
+      "category": "Hero",
+      "mode": "Galactic",
+      "executionKind": "Helper",
+      "payloadSchema": {
+        "required": [
+          "entityId",
+          "unitId"
+        ]
+      },
+      "verifyReadback": false,
+      "cooldownMs": 300,
+      "description": "Generate custom hero variant scaffolding for patch-mod overlay workflows."
     },
     "set_selected_hp": {
       "id": "set_selected_hp",
@@ -189,7 +385,10 @@
       "mode": "AnyTactical",
       "executionKind": "Memory",
       "payloadSchema": {
-        "required": ["symbol", "floatValue"]
+        "required": [
+          "symbol",
+          "floatValue"
+        ]
       },
       "verifyReadback": true,
       "cooldownMs": 80,
@@ -201,7 +400,10 @@
       "mode": "AnyTactical",
       "executionKind": "Memory",
       "payloadSchema": {
-        "required": ["symbol", "floatValue"]
+        "required": [
+          "symbol",
+          "floatValue"
+        ]
       },
       "verifyReadback": true,
       "cooldownMs": 80,
@@ -213,7 +415,10 @@
       "mode": "AnyTactical",
       "executionKind": "Memory",
       "payloadSchema": {
-        "required": ["symbol", "floatValue"]
+        "required": [
+          "symbol",
+          "floatValue"
+        ]
       },
       "verifyReadback": true,
       "cooldownMs": 80,
@@ -225,7 +430,10 @@
       "mode": "AnyTactical",
       "executionKind": "Memory",
       "payloadSchema": {
-        "required": ["symbol", "floatValue"]
+        "required": [
+          "symbol",
+          "floatValue"
+        ]
       },
       "verifyReadback": true,
       "cooldownMs": 80,
@@ -237,7 +445,10 @@
       "mode": "AnyTactical",
       "executionKind": "Memory",
       "payloadSchema": {
-        "required": ["symbol", "floatValue"]
+        "required": [
+          "symbol",
+          "floatValue"
+        ]
       },
       "verifyReadback": true,
       "cooldownMs": 80,
@@ -249,7 +460,10 @@
       "mode": "AnyTactical",
       "executionKind": "Memory",
       "payloadSchema": {
-        "required": ["symbol", "intValue"]
+        "required": [
+          "symbol",
+          "intValue"
+        ]
       },
       "verifyReadback": true,
       "cooldownMs": 80,
@@ -261,7 +475,10 @@
       "mode": "AnyTactical",
       "executionKind": "Memory",
       "payloadSchema": {
-        "required": ["symbol", "intValue"]
+        "required": [
+          "symbol",
+          "intValue"
+        ]
       },
       "verifyReadback": true,
       "cooldownMs": 80,
@@ -273,7 +490,10 @@
       "mode": "Galactic",
       "executionKind": "Memory",
       "payloadSchema": {
-        "required": ["symbol", "intValue"]
+        "required": [
+          "symbol",
+          "intValue"
+        ]
       },
       "verifyReadback": true,
       "cooldownMs": 200,
@@ -285,7 +505,9 @@
       "mode": "Unknown",
       "executionKind": "Memory",
       "payloadSchema": {
-        "required": ["intValue"]
+        "required": [
+          "intValue"
+        ]
       },
       "verifyReadback": true,
       "cooldownMs": 120,
@@ -297,7 +519,9 @@
       "mode": "Unknown",
       "executionKind": "Memory",
       "payloadSchema": {
-        "required": ["intValue"]
+        "required": [
+          "intValue"
+        ]
       },
       "verifyReadback": true,
       "cooldownMs": 120,
@@ -309,7 +533,10 @@
       "mode": "Galactic",
       "executionKind": "Memory",
       "payloadSchema": {
-        "required": ["symbol", "intValue"]
+        "required": [
+          "symbol",
+          "intValue"
+        ]
       },
       "verifyReadback": true,
       "cooldownMs": 200,
@@ -321,7 +548,9 @@
       "mode": "Unknown",
       "executionKind": "CodePatch",
       "payloadSchema": {
-        "required": ["intValue"]
+        "required": [
+          "intValue"
+        ]
       },
       "verifyReadback": false,
       "cooldownMs": 200,
@@ -333,7 +562,9 @@
       "mode": "Unknown",
       "executionKind": "CodePatch",
       "payloadSchema": {
-        "required": ["intValue"]
+        "required": [
+          "intValue"
+        ]
       },
       "verifyReadback": false,
       "cooldownMs": 200,
@@ -345,7 +576,9 @@
       "mode": "Unknown",
       "executionKind": "CodePatch",
       "payloadSchema": {
-        "required": ["enable"]
+        "required": [
+          "enable"
+        ]
       },
       "verifyReadback": false,
       "cooldownMs": 120,
@@ -357,7 +590,9 @@
       "mode": "Unknown",
       "executionKind": "CodePatch",
       "payloadSchema": {
-        "required": ["enable"]
+        "required": [
+          "enable"
+        ]
       },
       "verifyReadback": false,
       "cooldownMs": 200,
@@ -369,7 +604,10 @@
       "mode": "Unknown",
       "executionKind": "Memory",
       "payloadSchema": {
-        "required": ["symbol", "floatValue"]
+        "required": [
+          "symbol",
+          "floatValue"
+        ]
       },
       "verifyReadback": true,
       "cooldownMs": 100,
@@ -381,7 +619,10 @@
       "mode": "Unknown",
       "executionKind": "Freeze",
       "payloadSchema": {
-        "required": ["symbol", "freeze"]
+        "required": [
+          "symbol",
+          "freeze"
+        ]
       },
       "verifyReadback": false,
       "cooldownMs": 0,
@@ -393,7 +634,9 @@
       "mode": "Unknown",
       "executionKind": "Freeze",
       "payloadSchema": {
-        "required": ["symbol"]
+        "required": [
+          "symbol"
+        ]
       },
       "verifyReadback": false,
       "cooldownMs": 0,
@@ -405,7 +648,10 @@
       "mode": "SaveEditor",
       "executionKind": "Save",
       "payloadSchema": {
-        "required": ["nodePath", "value"]
+        "required": [
+          "nodePath",
+          "value"
+        ]
       },
       "verifyReadback": false,
       "cooldownMs": 0,
@@ -446,13 +692,24 @@
         "populationPolicy": "optional:string",
         "persistencePolicy": "optional:string",
         "worldPosition": "optional:string",
-        "forceOverride": "optional:bool"
+        "forceOverride": "optional:bool",
+        "sourceFaction": "optional:string",
+        "placementMode": "optional:string",
+        "operationPolicy": "required:string",
+        "targetContext": "required:string",
+        "mutationIntent": "required:string",
+        "verificationContractVersion": "required:string",
+        "globalKey": "optional:string",
+        "allowCrossFaction": "optional:bool",
+        "operationToken": "optional:string"
       },
       "verifyContract": {
-        "helperVerifyState": "applied"
+        "helperVerifyState": "applied",
+        "operationToken": "required:echo",
+        "helperExecutionPath": "required:echo"
       },
       "metadata": {
-        "sha256": "d249abd37ba84f7ec485ca1916d9d7c77d6c4dc6cf152ff30258a0e35f663514"
+        "sha256": "8b526b409f9fb3aa89563fa165913dbc30e46e0ab69a4e2e4626a05952558100"
       }
     }
   ],

@@ -36,6 +36,11 @@ public sealed partial class RuntimeAdapter
     private const string ActionIdSpawnTacticalEntity = "spawn_tactical_entity";
     private const string ActionIdSpawnGalacticEntity = "spawn_galactic_entity";
     private const string ActionIdPlacePlanetBuilding = "place_planet_building";
+    private const string ActionIdTransferFleetSafe = "transfer_fleet_safe";
+    private const string ActionIdFlipPlanetOwner = "flip_planet_owner";
+    private const string ActionIdSwitchPlayerFaction = "switch_player_faction";
+    private const string ActionIdEditHeroState = "edit_hero_state";
+    private const string ActionIdCreateHeroVariant = "create_hero_variant";
     private const string ActionIdSpawnUnitHelper = "spawn_unit_helper";
     private const string ActionIdSetHeroStateHelper = "set_hero_state_helper";
     private const string ActionIdToggleRoeRespawnHelper = "toggle_roe_respawn_helper";

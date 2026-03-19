@@ -19,7 +19,8 @@ public sealed record GameLaunchRequest(
     IReadOnlyList<string>? WorkshopIds = null,
     string? ModPath = null,
     string? ProfileIdHint = null,
-    bool TerminateExistingTargets = false);
+    bool TerminateExistingTargets = false,
+    string? OverlayModPath = null);
 
 public sealed record GameLaunchResult(
     bool Succeeded,

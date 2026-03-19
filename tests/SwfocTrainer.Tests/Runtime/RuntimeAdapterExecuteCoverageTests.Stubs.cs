@@ -147,6 +147,8 @@ internal sealed class StubHelperBridgeBackend : IHelperBridgeBackend
         Message: "applied");
 
     public Exception? ExecuteException { get; set; }
+    public HelperBridgeRequest? LastExecuteRequest { get; private set; }
+    public int ExecuteCallCount { get; private set; }
 
     public Task<HelperBridgeProbeResult> ProbeAsync(HelperBridgeProbeRequest request, CancellationToken cancellationToken)
     {
@@ -157,7 +159,8 @@ internal sealed class StubHelperBridgeBackend : IHelperBridgeBackend
 
     public Task<HelperBridgeExecutionResult> ExecuteAsync(HelperBridgeRequest request, CancellationToken cancellationToken)
     {
-        _ = request;
+        LastExecuteRequest = request;
+        ExecuteCallCount++;
         _ = cancellationToken;
         if (ExecuteException is not null)
         {

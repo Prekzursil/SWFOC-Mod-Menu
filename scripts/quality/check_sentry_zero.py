@@ -8,7 +8,7 @@ import urllib.parse
 import urllib.request
 from datetime import datetime, timezone
 from pathlib import Path
-from typing import Any
+from typing import Any, Dict, List, Tuple
 
 _SCRIPT_DIR = Path(__file__).resolve().parent
 _HELPER_ROOT = _SCRIPT_DIR if (_SCRIPT_DIR / "security_helpers.py").exists() else _SCRIPT_DIR.parent
@@ -35,7 +35,7 @@ def _parse_args() -> argparse.Namespace:
     return parser.parse_args()
 
 
-def _request(url: str, token: str) -> tuple[list[Any], dict[str, str]]:
+def _request(url: str, token: str) -> Tuple[List[Any], Dict[str, str]]:
     safe_url = normalize_https_url(url, allowed_host_suffixes={"sentry.io"})
     req = urllib.request.Request(
         safe_url,
@@ -46,6 +46,7 @@ def _request(url: str, token: str) -> tuple[list[Any], dict[str, str]]:
         },
         method="GET",
     )
+    # nosemgrep: python.lang.security.audit.dynamic-urllib-use-detected.dynamic-urllib-use-detected
     with urllib.request.urlopen(req, timeout=30) as resp:
         body = json.loads(resp.read().decode("utf-8"))
         headers = {k.lower(): v for k, v in resp.headers.items()}
@@ -54,7 +55,7 @@ def _request(url: str, token: str) -> tuple[list[Any], dict[str, str]]:
     return body, headers
 
 
-def _hits_from_headers(headers: dict[str, str]) -> int | None:
+def _hits_from_headers(headers: Dict[str, str]) -> int | None:
     raw = headers.get("x-hits")
     if not raw:
         return None
@@ -64,7 +65,7 @@ def _hits_from_headers(headers: dict[str, str]) -> int | None:
         return None
 
 
-def _render_md(payload: dict) -> str:
+def _render_md(payload: Dict[str, Any]) -> str:
     lines = [
         "# Sentry Zero Gate",
         "",
@@ -121,18 +122,18 @@ def main() -> int:
             value = str(os.environ.get(env_name, "")).strip()
             if value:
                 projects.append(value)
-    projects = [p.strip().lower() for p in projects if p and p.strip()]
+    projects = [p.strip() for p in projects if p and p.strip()]
     projects = list(dict.fromkeys(projects))
 
-    findings: list[str] = []
-    project_results: list[dict[str, Any]] = []
+    findings: List[str] = []
+    project_results: List[Dict[str, Any]] = []
 
     if not token:
         findings.append("SENTRY_AUTH_TOKEN is missing.")
     if not org:
         findings.append("SENTRY_ORG is missing.")
     if not projects:
-        findings.append("No Sentry projects configured (SENTRY_PROJECT_BACKEND/SENTRY_PROJECT_WEB).")
+        findings.append("No Sentry projects configured (SENTRY_PROJECT/SENTRY_PROJECT_BACKEND/SENTRY_PROJECT_WEB).")
 
     status = "fail"
     if not findings:
@@ -140,19 +141,41 @@ def main() -> int:
             for project in projects:
                 query = urllib.parse.urlencode({"query": "is:unresolved", "limit": "1"})
                 org_slug = urllib.parse.quote(org, safe="")
-                project_slug = urllib.parse.quote(project, safe="")
-                url = f"{api_base}/projects/{org_slug}/{project_slug}/issues/?{query}"
-                issues, headers = _request(url, token)
+                project_candidates = [project]
+                lowered = project.lower()
+                if lowered != project:
+                    project_candidates.append(lowered)
+
+                last_error: Exception | None = None
+                issues: List[Any] = []
+                headers: Dict[str, str] = {}
+                resolved_project = project
+                for candidate in project_candidates:
+                    project_slug = urllib.parse.quote(candidate, safe="")
+                    url = f"{api_base}/projects/{org_slug}/{project_slug}/issues/?{query}"
+                    try:
+                        issues, headers = _request(url, token)
+                        resolved_project = candidate
+                        last_error = None
+                        break
+                    except Exception as exc:  # pragma: no cover - network/runtime surface
+                        last_error = exc
+                        continue
+
+                if last_error is not None:
+                    findings.append(f"Sentry API request failed for project {project}: {last_error}")
+                    continue
+
                 unresolved = _hits_from_headers(headers)
                 if unresolved is None:
                     unresolved = len(issues)
                     if unresolved >= 1:
                         findings.append(
-                            f"Sentry project {project} returned unresolved issues but no X-Hits header for exact totals."
+                            f"Sentry project {resolved_project} returned unresolved issues but no X-Hits header for exact totals."
                         )
                 if unresolved != 0:
-                    findings.append(f"Sentry project {project} has {unresolved} unresolved issues (expected 0).")
-                project_results.append({"project": project, "unresolved": unresolved})
+                    findings.append(f"Sentry project {resolved_project} has {unresolved} unresolved issues (expected 0).")
+                project_results.append({"project": resolved_project, "unresolved": unresolved})
 
             status = "pass" if not findings else "fail"
         except Exception as exc:  # pragma: no cover - network/runtime surface

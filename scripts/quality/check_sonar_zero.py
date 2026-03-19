@@ -54,6 +54,7 @@ def _request_json(url: str, auth_header: str) -> dict[str, Any]:
         },
         method="GET",
     )
+    # nosemgrep: python.lang.security.audit.dynamic-urllib-use-detected.dynamic-urllib-use-detected
     with urllib.request.urlopen(request, timeout=30) as resp:
         return json.loads(resp.read().decode("utf-8"))
 

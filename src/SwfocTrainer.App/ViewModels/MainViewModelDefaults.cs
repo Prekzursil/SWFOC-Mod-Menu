@@ -43,6 +43,7 @@ internal static class MainViewModelDefaults
     internal const string DefaultLaunchMode = "Vanilla";
     internal const string DefaultCreditsValueText = "1000000";
     internal const string DefaultPayloadJsonTemplate = "{\n  \"symbol\": \"credits\",\n  \"intValue\": 1000000,\n  \"lockCredits\": false\n}";
+    internal const string HelperHookSpawnBridge = "spawn_bridge";
 
     internal static readonly IReadOnlyDictionary<string, string> DefaultSymbolByActionId =
         new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
@@ -72,7 +73,16 @@ internal static class MainViewModelDefaults
     internal static readonly IReadOnlyDictionary<string, string> DefaultHelperHookByActionId =
         new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
         {
-            ["spawn_unit_helper"] = "spawn_bridge",
+            ["spawn_unit_helper"] = HelperHookSpawnBridge,
+            ["spawn_context_entity"] = HelperHookSpawnBridge,
+            ["spawn_tactical_entity"] = HelperHookSpawnBridge,
+            ["spawn_galactic_entity"] = HelperHookSpawnBridge,
+            ["place_planet_building"] = HelperHookSpawnBridge,
+            ["transfer_fleet_safe"] = HelperHookSpawnBridge,
+            ["flip_planet_owner"] = HelperHookSpawnBridge,
+            ["switch_player_faction"] = HelperHookSpawnBridge,
+            ["edit_hero_state"] = HelperHookSpawnBridge,
+            ["create_hero_variant"] = HelperHookSpawnBridge,
             ["set_hero_state_helper"] = "aotr_hero_state_bridge",
             ["toggle_roe_respawn_helper"] = "roe_respawn_bridge",
         };

@@ -1,5 +1,6 @@
 using FluentAssertions;
 using Microsoft.Extensions.Logging.Abstractions;
+using System.Text.Json;
 using System.Text.Json.Nodes;
 using SwfocTrainer.Core.Models;
 using SwfocTrainer.Profiles.Config;
@@ -67,6 +68,14 @@ public sealed class LiveHeroHelperWorkflowTests
         var action = profile.Actions[actionSpec.Value.ActionId];
         var result = await runtime.ExecuteAsync(new ActionExecutionRequest(action, actionSpec.Value.Payload, profileId, session.Process.Mode));
         _output.WriteLine($"helper action={actionSpec.Value.ActionId} success={result.Succeeded} message={result.Message}");
+        if (!result.Succeeded && result.Diagnostics is not null)
+        {
+            _output.WriteLine($"helper diagnostics={JsonSerializer.Serialize(result.Diagnostics)}");
+        }
+        if (ShouldSkipForGalacticHelperPrecondition(result))
+        {
+            throw LiveSkip.For(_output, "hero helper precondition unmet: service wrapper did not observe a galactic/campaign script load. Enter galactic/campaign context and retry.");
+        }
         AssertHelperActionResult(result);
     }
 
@@ -103,8 +112,32 @@ public sealed class LiveHeroHelperWorkflowTests
         result.Succeeded.Should().BeTrue();
         result.Diagnostics.Should().NotBeNull();
         result.Diagnostics!["reasonCode"]?.ToString().Should().Be(RuntimeReasonCode.HELPER_EXECUTION_APPLIED.ToString());
-        result.Diagnostics["helperInvocationSource"]?.ToString().Should().Be("native_bridge");
+        result.Diagnostics["helperInvocationSource"]?.ToString().Should().Be("overlay_command_inbox");
+        result.Diagnostics["helperExecutionPath"]?.ToString().Should().Be("overlay_command_inbox_verified");
         result.Diagnostics["helperVerifyState"]?.ToString().Should().Be("applied");
+    }
+
+    private static bool ShouldSkipForGalacticHelperPrecondition(ActionExecutionResult result)
+    {
+        if (result.Succeeded || result.Diagnostics is null)
+        {
+            return false;
+        }
+
+        var diagnostics = result.Diagnostics;
+        var autoloadState = diagnostics.TryGetValue("helperAutoloadState", out var rawAutoloadState)
+            ? rawAutoloadState?.ToString()
+            : null;
+        var blockingReason = diagnostics.TryGetValue("blockingReason", out var rawBlockingReason)
+            ? rawBlockingReason?.ToString()
+            : null;
+        var runtimeMode = diagnostics.TryGetValue("runtimeModeEffective", out var rawRuntimeMode)
+            ? rawRuntimeMode?.ToString()
+            : null;
+
+        return string.Equals(autoloadState, "pending_service_wrapper_load", StringComparison.OrdinalIgnoreCase) &&
+               string.Equals(blockingReason, "awaiting_overlay_execution", StringComparison.OrdinalIgnoreCase) &&
+               string.Equals(runtimeMode, RuntimeMode.AnyTactical.ToString(), StringComparison.OrdinalIgnoreCase);
     }
 
     private static SupportedProcessContext? SelectHelperTargetContext(

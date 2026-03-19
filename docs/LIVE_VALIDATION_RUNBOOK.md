@@ -303,3 +303,19 @@ pwsh ./tools/research/export-story-flow-graph.ps1 `
 
 pwsh ./tools/lua-harness/run-lua-harness.ps1 -Strict
 ```
+
+## M5 Addendum (2026-03-04)
+
+- Full installed-chain hard-fail run command:
+  - `pwsh -ExecutionPolicy Bypass -File ./tools/run-live-validation.ps1 -Configuration Release -NoBuild -Scope FULL -AutoLaunch -RunAllInstalledChainsDeep -EmitReproBundle $true -FailOnMissingArtifacts -Strict`
+- Expected hard-fail semantics:
+  - unresolved parent dependency chains classify `blocked_dependency_missing_parent` with `launchAttempted=false`.
+  - environment failures classify `blocked_environment` and block completion.
+- Chain matrix evidence:
+  - `TestResults/runs/20260304-043659/chain-matrix-summary.json`
+  - `TestResults/runs/20260304-043659/chain-matrix-summary.md`
+
+- Supplemental chain matrix evidence (rerun):
+  - `TestResults/runs/20260304-102055/chain-matrix-summary.json` (entries=28, blocked_dependency_missing_parent=2, blocked_environment=0)
+  - `TestResults/runs/20260304-102055/chain-matrix-summary.md`
+

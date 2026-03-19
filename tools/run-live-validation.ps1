@@ -5,6 +5,11 @@ param(
     [string[]]$ForceWorkshopIds = @(),
     [string]$ForceProfileId = "",
     [switch]$AutoLaunch,
+    [switch]$EnableGalacticAutomation,
+    [string]$GalacticAutomationRecipePath = "",
+    [int]$GalacticAutomationTimeoutSeconds = 90,
+    [bool]$GalacticAutomationRequireHelperAutoload = $true,
+    [bool]$GalacticAutomationMaterializeFixture = $true,
     [switch]$RunAllInstalledChainsDeep,
     [string]$GameRoot = "",
     [int]$LaunchWaitSeconds = 45,
@@ -565,6 +570,130 @@ function Resolve-ScopeLaunchPlan {
     }
 }
 
+function Resolve-HelperOverlaySourcePath {
+    param([string]$ProfileId)
+
+    if ([string]::IsNullOrWhiteSpace($ProfileId)) {
+        return ""
+    }
+
+    $candidate = Join-Path $env:LOCALAPPDATA (Join-Path "SwfocTrainer\helper_mod" $ProfileId.Trim())
+    if (Test-Path -Path $candidate) {
+        return (Resolve-Path -Path $candidate).ProviderPath
+    }
+
+    return ""
+}
+
+function Resolve-HelperOverlayMirrorPath {
+    param(
+        [string]$ProfileId,
+        [string]$GameRoot
+    )
+
+    if ([string]::IsNullOrWhiteSpace($ProfileId) -or [string]::IsNullOrWhiteSpace($GameRoot)) {
+        return ""
+    }
+
+    return (Join-Path $GameRoot (Join-Path "corruption\Mods\SwfocTrainer_Helper" $ProfileId.Trim()))
+}
+
+function Get-RelativePathCompat {
+    param(
+        [Parameter(Mandatory = $true)][string]$BasePath,
+        [Parameter(Mandatory = $true)][string]$TargetPath
+    )
+
+    $pathType = [System.IO.Path]
+    $relativeMethod = $pathType.GetMethod("GetRelativePath", [System.Type[]]@([string], [string]))
+    if ($null -ne $relativeMethod) {
+        return $relativeMethod.Invoke($null, @($BasePath, $TargetPath))
+    }
+
+    $fullBasePath = [System.IO.Path]::GetFullPath($BasePath)
+    if (-not $fullBasePath.EndsWith([System.IO.Path]::DirectorySeparatorChar)) {
+        $fullBasePath += [System.IO.Path]::DirectorySeparatorChar
+    }
+
+    $fullTargetPath = [System.IO.Path]::GetFullPath($TargetPath)
+    $baseUri = [System.Uri]::new($fullBasePath)
+    $targetUri = [System.Uri]::new($fullTargetPath)
+    return ([System.Uri]::UnescapeDataString($baseUri.MakeRelativeUri($targetUri).ToString()) -replace '/', '\')
+}
+
+function Copy-DirectoryTree {
+    param(
+        [Parameter(Mandatory = $true)][string]$SourceRoot,
+        [Parameter(Mandatory = $true)][string]$DestinationRoot
+    )
+
+    if (Test-Path -Path $DestinationRoot) {
+        Remove-Item -Path $DestinationRoot -Recurse -Force
+    }
+
+    New-Item -ItemType Directory -Path $DestinationRoot -Force | Out-Null
+
+    Get-ChildItem -Path $SourceRoot -Recurse -Directory | ForEach-Object {
+        $relative = Get-RelativePathCompat -BasePath $SourceRoot -TargetPath $_.FullName
+        New-Item -ItemType Directory -Path (Join-Path $DestinationRoot $relative) -Force | Out-Null
+    }
+
+    Get-ChildItem -Path $SourceRoot -Recurse -File | ForEach-Object {
+        $relative = Get-RelativePathCompat -BasePath $SourceRoot -TargetPath $_.FullName
+        $destination = Join-Path $DestinationRoot $relative
+        $destinationDirectory = Split-Path -Path $destination -Parent
+        if (-not [string]::IsNullOrWhiteSpace($destinationDirectory)) {
+            New-Item -ItemType Directory -Path $destinationDirectory -Force | Out-Null
+        }
+
+        Copy-Item -Path $_.FullName -Destination $destination -Force
+    }
+}
+
+function Resolve-HelperOverlayModPath {
+    param(
+        [string]$ProfileId,
+        [string]$GameRoot
+    )
+
+    $sourcePath = Resolve-HelperOverlaySourcePath -ProfileId $ProfileId
+    if ([string]::IsNullOrWhiteSpace($sourcePath)) {
+        return ""
+    }
+
+    $mirrorPath = Resolve-HelperOverlayMirrorPath -ProfileId $ProfileId -GameRoot $GameRoot
+    if ([string]::IsNullOrWhiteSpace($mirrorPath)) {
+        return $sourcePath
+    }
+
+    Copy-DirectoryTree -SourceRoot $sourcePath -DestinationRoot $mirrorPath
+    return (Resolve-Path -Path $mirrorPath).ProviderPath
+}
+
+function Normalize-HelperOverlayLaunchPath {
+    param(
+        [string]$OverlayModPath,
+        [string]$GameRoot
+    )
+
+    if ([string]::IsNullOrWhiteSpace($OverlayModPath)) {
+        return ""
+    }
+
+    if ([string]::IsNullOrWhiteSpace($GameRoot) -or -not [System.IO.Path]::IsPathRooted($OverlayModPath)) {
+        return $OverlayModPath
+    }
+
+    $modsRoot = [System.IO.Path]::GetFullPath((Join-Path $GameRoot "corruption\Mods"))
+    $fullOverlayPath = [System.IO.Path]::GetFullPath($OverlayModPath)
+    if (-not $fullOverlayPath.StartsWith($modsRoot, [System.StringComparison]::OrdinalIgnoreCase)) {
+        return $fullOverlayPath
+    }
+
+    $launchDirectory = Join-Path $GameRoot "corruption"
+    return ((Get-RelativePathCompat -BasePath $launchDirectory -TargetPath $fullOverlayPath) -replace '/', '\')
+}
+
 function Start-AutoLaunchSession {
     [CmdletBinding(SupportsShouldProcess = $true)]
     param(
@@ -591,13 +720,22 @@ function Start-AutoLaunchSession {
         Stop-LiveGameProcesses -Confirm:$false
     }
 
-    $launchArgs = ""
+    $launchArgsParts = New-Object System.Collections.Generic.List[string]
+    $overlayModPath = Resolve-HelperOverlayModPath -ProfileId $ForcedProfileId -GameRoot $root
     if ($null -ne $plan.WorkshopIds) {
         $normalizedWorkshopIds = @($plan.WorkshopIds | ForEach-Object { [string]$_ } | Where-Object { -not [string]::IsNullOrWhiteSpace($_) })
         if ($normalizedWorkshopIds.Count -gt 0) {
-            $launchArgs = ($normalizedWorkshopIds | ForEach-Object { "STEAMMOD=$_" }) -join " "
+            foreach ($workshopId in $normalizedWorkshopIds) {
+                [void]$launchArgsParts.Add("STEAMMOD=$workshopId")
+            }
         }
     }
+
+    if (-not [string]::IsNullOrWhiteSpace($overlayModPath)) {
+        $launchOverlayPath = Normalize-HelperOverlayLaunchPath -OverlayModPath $overlayModPath -GameRoot $root
+        [void]$launchArgsParts.Add(("MODPATH=""{0}""" -f $launchOverlayPath))
+    }
+    $launchArgs = ($launchArgsParts.ToArray() -join " ")
     Write-Output ("Auto-launch: exe='{0}' args='{1}' root='{2}' scope={3}" -f $exePath, $launchArgs, $root, $SelectedScope)
     $startParams = @{
         FilePath = $exePath
@@ -624,6 +762,7 @@ function Start-AutoLaunchSession {
 
     Write-Output ("Auto-launch process visible: {0} (pid={1})" -f $visible.ProcessName, $visible.Id)
 
+    $requiredVisible = $null
     if (-not [string]::IsNullOrWhiteSpace([string]$plan.RequiredHostName)) {
         $requiredVisible = Wait-ForAnyProcess -Names @($plan.RequiredHostName) -TimeoutSeconds $TimeoutSeconds
         if ($null -eq $requiredVisible) {
@@ -644,6 +783,20 @@ function Start-AutoLaunchSession {
     }
 
     Write-Output ("Auto-launch post-stabilization host: {0} (pid={1})" -f $postLaunchVisible.ProcessName, $postLaunchVisible.Id)
+
+    return [PSCustomObject]@{
+        GameRoot = $root
+        LaunchExecutable = $exePath
+        LaunchArguments = $launchArgs
+        StartedPid = $started.Id
+        VisibleHostPid = $visible.Id
+        VisibleHostName = $visible.ProcessName
+        RequiredHostPid = if ($null -ne $requiredVisible) { $requiredVisible.Id } else { 0 }
+        RequiredHostName = if ($null -ne $requiredVisible) { $requiredVisible.ProcessName } else { [string]$plan.RequiredHostName }
+        PostLaunchHostPid = $postLaunchVisible.Id
+        PostLaunchHostName = $postLaunchVisible.ProcessName
+        Scope = $SelectedScope
+    }
 }
 
 function Get-LastExitCodeOrZero {
@@ -652,6 +805,180 @@ function Get-LastExitCodeOrZero {
     }
 
     return 0
+}
+
+function New-LiveTestSummary {
+    param(
+        [Parameter(Mandatory = $true)][string]$Trx,
+        [Parameter(Mandatory = $true)][string]$Outcome,
+        [int]$Passed = 0,
+        [int]$Failed = 0,
+        [int]$Skipped = 0,
+        [string]$Message = ""
+    )
+
+    return [PSCustomObject]@{
+        Trx = $Trx
+        Outcome = $Outcome
+        Passed = $Passed
+        Failed = $Failed
+        Skipped = $Skipped
+        Message = $Message
+    }
+}
+
+function Get-LiveTestEntry {
+    param(
+        [Parameter(Mandatory = $true)][System.Collections.Generic.List[object]]$Summaries,
+        [Parameter(Mandatory = $true)][string]$TestName
+    )
+
+    return ($Summaries | Where-Object { $_.Name -eq $TestName } | Select-Object -First 1)
+}
+
+function Get-GalacticContextPreSkipMessage {
+    param([Parameter(Mandatory = $true)][string]$TestName)
+
+    switch ($TestName) {
+        "LiveHeroHelperWorkflowTests" {
+            return "hero helper precondition unmet: service wrapper did not observe a galactic/campaign script load. Enter galactic/campaign context and retry."
+        }
+        "LiveRoeRuntimeHealthTests" {
+            return "set_credits precondition unmet: hook sync tick not observed. Enter galactic/campaign context and retry."
+        }
+        default {
+            return ""
+        }
+    }
+}
+
+function Test-ShouldPreSkipForTacticalContext {
+    param(
+        [Parameter(Mandatory = $true)][System.Collections.Generic.List[object]]$Summaries,
+        [Parameter(Mandatory = $true)][string]$TestName,
+        [bool]$AutoLaunchEnabled = $false
+    )
+
+    if (-not $AutoLaunchEnabled) {
+        return $null
+    }
+
+    $message = Get-GalacticContextPreSkipMessage -TestName $TestName
+    if ([string]::IsNullOrWhiteSpace($message)) {
+        return $null
+    }
+
+    $tacticalEntry = Get-LiveTestEntry -Summaries $Summaries -TestName "LiveTacticalToggleWorkflowTests"
+    if ($null -eq $tacticalEntry -or $null -eq $tacticalEntry.Summary) {
+        return $null
+    }
+
+    if ([string]$tacticalEntry.Summary.Outcome -ne "Passed") {
+        return $null
+    }
+
+    return $message
+}
+
+function Resolve-GalacticAutomationProfileId {
+    param(
+        [Parameter(Mandatory = $true)][string]$SelectedScope,
+        [string]$ForcedProfileId,
+        $TestDefinition
+    )
+
+    if (-not [string]::IsNullOrWhiteSpace($ForcedProfileId)) {
+        return $ForcedProfileId
+    }
+
+    if ($null -ne $TestDefinition -and
+        $null -ne $TestDefinition.PSObject.Properties["GalacticProfileId"] -and
+        -not [string]::IsNullOrWhiteSpace([string]$TestDefinition.GalacticProfileId)) {
+        return [string]$TestDefinition.GalacticProfileId
+    }
+
+    switch ($SelectedScope) {
+        "ROE" { return "roe_3447786229_swfoc" }
+        "AOTR" { return "aotr_1397421866_swfoc" }
+        default { return "" }
+    }
+}
+
+function Invoke-GalacticContextAutomation {
+    param(
+        [Parameter(Mandatory = $true)][string[]]$PythonCommand,
+        [Parameter(Mandatory = $true)][string]$ProfileId,
+        [Parameter(Mandatory = $true)][string]$RunResultsDirectory,
+        [Parameter(Mandatory = $true)][string]$ProfileRootPath,
+        [string]$RecipePath,
+        [int]$ProcessId = 0,
+        [int]$VerifyTimeoutSeconds = 90,
+        [bool]$RequireHelperAutoload = $true,
+        [bool]$MaterializeFixture = $true
+    )
+
+    if ($PythonCommand.Count -eq 0 -or $null -eq $PythonCommand[0]) {
+        throw "Galactic automation requested but Python was not found in the active shell."
+    }
+
+    $scriptPath = Resolve-ArtifactPath -Path "tools/live/drive-galactic-context.py"
+    if (-not (Test-Path -Path $scriptPath)) {
+        throw ("Galactic automation script missing: {0}" -f $scriptPath)
+    }
+
+    $resolvedProfileRoot = Resolve-ArtifactPath -Path $ProfileRootPath
+    $receiptPath = Join-Path $RunResultsDirectory ("galactic-context-{0}.json" -f $ProfileId)
+
+    $pythonArgs = @()
+    if (Test-IsWslPythonCommand -Command $PythonCommand) {
+        $pythonArgs += @(
+            (Convert-ToWslPath -Path $scriptPath),
+            "--profile-root", (Convert-ToWslPath -Path $resolvedProfileRoot),
+            "--profile-id", $ProfileId,
+            "--receipt-path", (Convert-ToWslPath -Path $receiptPath),
+            "--verify-timeout-seconds", [string]$VerifyTimeoutSeconds,
+            "--pretty"
+        )
+        if (-not [string]::IsNullOrWhiteSpace($RecipePath)) {
+            $pythonArgs += @("--recipe-path", (Convert-ToWslPath -Path (Resolve-ArtifactPath -Path $RecipePath)))
+        }
+    }
+    else {
+        $pythonArgs += @(
+            $scriptPath,
+            "--profile-root", $resolvedProfileRoot,
+            "--profile-id", $ProfileId,
+            "--receipt-path", $receiptPath,
+            "--verify-timeout-seconds", [string]$VerifyTimeoutSeconds,
+            "--pretty"
+        )
+        if (-not [string]::IsNullOrWhiteSpace($RecipePath)) {
+            $pythonArgs += @("--recipe-path", (Resolve-ArtifactPath -Path $RecipePath))
+        }
+    }
+
+    if ($RequireHelperAutoload) {
+        $pythonArgs += "--require-helper-autoload"
+    }
+    if ($MaterializeFixture) {
+        $pythonArgs += "--materialize-fixture"
+    }
+    if ($ProcessId -gt 0) {
+        $pythonArgs += @("--process-id", [string]$ProcessId)
+    }
+
+    $result = Invoke-CapturedCommand -Command $PythonCommand -Arguments $pythonArgs
+    if (-not (Test-Path -Path $receiptPath)) {
+        throw ("Galactic automation did not emit receipt: {0}" -f $receiptPath)
+    }
+
+    $receipt = Get-Content -Raw -Path $receiptPath | ConvertFrom-Json
+    if ($result.ExitCode -ne 0) {
+        $reasonCode = if ($receipt.result.reasonCode) { [string]$receipt.result.reasonCode } else { "galactic_context_blocked" }
+        throw ("Galactic automation failed: {0}" -f $reasonCode)
+    }
+
+    return $receipt
 }
 
 function Invoke-CapturedCommand {
@@ -995,15 +1322,12 @@ function Invoke-LiveTest {
     }
 
     try {
-        $startInfo = [System.Diagnostics.ProcessStartInfo]::new()
-        $startInfo.FileName = $dotnetExe
-        $startInfo.UseShellExecute = $false
-        $startInfo.CreateNoWindow = $true
-        foreach ($arg in $dotnetArgs) {
-            [void]$startInfo.ArgumentList.Add([string]$arg)
-        }
-
-        $dotnetProcess = [System.Diagnostics.Process]::Start($startInfo)
+        $dotnetProcess = Start-Process `
+            -FilePath $dotnetExe `
+            -ArgumentList $dotnetArgs `
+            -WorkingDirectory $repoRoot `
+            -NoNewWindow `
+            -PassThru
 
         if ($null -eq $dotnetProcess) {
             throw "dotnet test failed for '$Name': process did not start."
@@ -1176,9 +1500,42 @@ function Read-TrxSummary {
     }
 }
 
+function Resolve-EffectiveForceProfileId {
+    param(
+        [string]$SelectedScope,
+        [string]$CurrentProfileId,
+        [string[]]$ForcedWorkshopIds
+    )
+
+    if (-not [string]::IsNullOrWhiteSpace($CurrentProfileId)) {
+        return $CurrentProfileId.Trim()
+    }
+
+    $scopeUpper = if ([string]::IsNullOrWhiteSpace($SelectedScope)) { "" } else { $SelectedScope.Trim().ToUpperInvariant() }
+    switch ($scopeUpper) {
+        "ROE" { return "roe_3447786229_swfoc" }
+        "AOTR" { return "aotr_1397421866_swfoc" }
+    }
+
+    $forcedIds = @($ForcedWorkshopIds | Where-Object { -not [string]::IsNullOrWhiteSpace($_) })
+    $forceChainKey = ($forcedIds -join ",")
+    if ($forceChainKey -eq ($defaultRoeWorkshopChain -join ",")) {
+        return "roe_3447786229_swfoc"
+    }
+
+    if ($forceChainKey -eq ($defaultAotrWorkshopChain -join ",")) {
+        return "aotr_1397421866_swfoc"
+    }
+
+    return ""
+}
+
 $forceWorkshopIdsNormalized = @(ConvertTo-ForcedWorkshopIds -RawIds $ForceWorkshopIds)
 $forceWorkshopIdsCsv = if ($forceWorkshopIdsNormalized.Count -eq 0) { "" } else { ($forceWorkshopIdsNormalized -join ",") }
-$forceProfileIdNormalized = if ([string]::IsNullOrWhiteSpace($ForceProfileId)) { "" } else { $ForceProfileId.Trim() }
+$forceProfileIdNormalized = Resolve-EffectiveForceProfileId `
+    -SelectedScope $Scope `
+    -CurrentProfileId $ForceProfileId `
+    -ForcedWorkshopIds $forceWorkshopIdsNormalized
 
 $dotnetExe = Resolve-DotnetCommand
 $pythonCmd = @(Resolve-PythonCommand)
@@ -1409,12 +1766,13 @@ $($matrixRows -join "`n")
     return
 }
 
+$autoLaunchSessionInfo = $null
 if ($AutoLaunch) {
     if ($forcedChainMissingParentIds.Count -gt 0) {
         Write-Warning ("Skipping auto-launch due missing parent dependencies for forced chain: {0}" -f ($forcedChainMissingParentIds -join ","))
     }
     else {
-        Start-AutoLaunchSession `
+        $autoLaunchSessionInfo = Start-AutoLaunchSession `
             -SelectedScope $Scope `
             -ForcedWorkshopIds $forceWorkshopIdsNormalized `
             -ForcedProfileId $forceProfileIdNormalized `
@@ -1442,6 +1800,7 @@ $testDefinitions = @(
         Filter = "FullyQualifiedName~LiveHeroHelperWorkflowTests"
         TrxBase = "live-hero-helper.trx"
         Scopes = @("AOTR", "ROE")
+        RequiresGalacticContext = $true
     },
     [PSCustomObject]@{
         Name = "Live ROE Runtime Health"
@@ -1449,6 +1808,8 @@ $testDefinitions = @(
         Filter = "FullyQualifiedName~LiveRoeRuntimeHealthTests"
         TrxBase = "live-roe-health.trx"
         Scopes = @("ROE")
+        RequiresGalacticContext = $true
+        GalacticProfileId = "roe_3447786229_swfoc"
     },
     [PSCustomObject]@{
         Name = "Live Credits"
@@ -1468,6 +1829,8 @@ $testDefinitions = @(
 
 $summaries = New-Object System.Collections.Generic.List[object]
 $fatalError = $null
+$galacticPhasePrepared = $false
+$galacticPhaseReceipt = $null
 $forcedMissingParentMessage = ""
 if ($forcedChainMissingParentIds.Count -gt 0) {
     $forcedMissingParentMessage = "parent_dependency_missing: missing parent dependency IDs = " + ($forcedChainMissingParentIds -join ",") + "; chainResolutionSource=" + $forcedChainResolutionSource
@@ -1479,14 +1842,7 @@ foreach ($test in $testDefinitions) {
     if (-not [string]::IsNullOrWhiteSpace($forcedMissingParentMessage)) {
         $summaries.Add([PSCustomObject]@{
             Name = $test.TestName
-            Summary = [PSCustomObject]@{
-                Trx = $trxPath
-                Outcome = "Skipped"
-                Passed = 0
-                Failed = 0
-                Skipped = 1
-                Message = $forcedMissingParentMessage
-            }
+            Summary = New-LiveTestSummary -Trx $trxPath -Outcome "Skipped" -Skipped 1 -Message $forcedMissingParentMessage
         })
         continue
     }
@@ -1494,14 +1850,7 @@ foreach ($test in $testDefinitions) {
     if (-not (Test-RunSelection -Scopes $test.Scopes -SelectedScope $Scope)) {
         $summaries.Add([PSCustomObject]@{
             Name = $test.TestName
-            Summary = [PSCustomObject]@{
-                Trx = $trxPath
-                Outcome = "Skipped"
-                Passed = 0
-                Failed = 0
-                Skipped = 1
-                Message = "scope_not_selected"
-            }
+            Summary = New-LiveTestSummary -Trx $trxPath -Outcome "Skipped" -Skipped 1 -Message "scope_not_selected"
         })
         continue
     }
@@ -1509,16 +1858,78 @@ foreach ($test in $testDefinitions) {
     if ($null -ne $fatalError) {
         $summaries.Add([PSCustomObject]@{
             Name = $test.TestName
-            Summary = [PSCustomObject]@{
-                Trx = $trxPath
-                Outcome = "Missing"
-                Passed = 0
-                Failed = 0
-                Skipped = 0
-                Message = "not_executed_due_to_prior_failure"
-            }
+            Summary = New-LiveTestSummary -Trx $trxPath -Outcome "Missing" -Message "not_executed_due_to_prior_failure"
         })
         continue
+    }
+
+    $requiresGalacticContext = $false
+    if ($null -ne $test.PSObject.Properties["RequiresGalacticContext"]) {
+        $requiresGalacticContext = [bool]$test.RequiresGalacticContext
+    }
+
+    if ($requiresGalacticContext) {
+        if ($EnableGalacticAutomation) {
+            if (-not $galacticPhasePrepared) {
+                try {
+                    $galacticProfileId = Resolve-GalacticAutomationProfileId `
+                        -SelectedScope $Scope `
+                        -ForcedProfileId $forceProfileIdNormalized `
+                        -TestDefinition $test
+                    if ([string]::IsNullOrWhiteSpace($galacticProfileId)) {
+                        throw "Galactic automation requires an explicit profile selection. Use -Scope AOTR/ROE or -ForceProfileId."
+                    }
+
+                    if ($AutoLaunch) {
+                        $autoLaunchSessionInfo = Start-AutoLaunchSession `
+                            -SelectedScope $Scope `
+                            -ForcedWorkshopIds $forceWorkshopIdsNormalized `
+                            -ForcedProfileId $forceProfileIdNormalized `
+                            -OverrideGameRoot $GameRoot `
+                            -TimeoutSeconds $LaunchWaitSeconds `
+                            -StabilizationSeconds $LaunchStabilizationSeconds
+                    }
+
+                    $galacticProcessId = 0
+                    if ($null -ne $autoLaunchSessionInfo -and $null -ne $autoLaunchSessionInfo.PostLaunchHostPid) {
+                        $galacticProcessId = [int]$autoLaunchSessionInfo.PostLaunchHostPid
+                    }
+
+                    $galacticPhaseReceipt = Invoke-GalacticContextAutomation `
+                        -PythonCommand $pythonCmd `
+                        -ProfileId $galacticProfileId `
+                        -RunResultsDirectory $runResultsDirectory `
+                        -ProfileRootPath $ProfileRoot `
+                        -RecipePath $GalacticAutomationRecipePath `
+                        -ProcessId $galacticProcessId `
+                        -VerifyTimeoutSeconds $GalacticAutomationTimeoutSeconds `
+                        -RequireHelperAutoload $GalacticAutomationRequireHelperAutoload `
+                        -MaterializeFixture $GalacticAutomationMaterializeFixture
+
+                    $galacticPhasePrepared = $true
+                    Write-Output ("Galactic automation ready: profile={0} status={1} reason={2}" -f $galacticProfileId, $galacticPhaseReceipt.result.status, $galacticPhaseReceipt.result.reasonCode)
+                }
+                catch {
+                    $fatalError = $_.Exception
+                    $summaries.Add([PSCustomObject]@{
+                        Name = $test.TestName
+                        Summary = New-LiveTestSummary -Trx $trxPath -Outcome "Failed" -Failed 1 -Message $fatalError.Message
+                    })
+                    continue
+                }
+            }
+        }
+        else {
+            $preSkipMessage = Test-ShouldPreSkipForTacticalContext -Summaries $summaries -TestName $test.TestName -AutoLaunchEnabled $AutoLaunch
+            if (-not [string]::IsNullOrWhiteSpace($preSkipMessage)) {
+                Write-Output ("Pre-skip {0}: LiveTacticalToggleWorkflowTests already confirmed tactical context during auto-launch." -f $test.TestName)
+                $summaries.Add([PSCustomObject]@{
+                    Name = $test.TestName
+                    Summary = New-LiveTestSummary -Trx $trxPath -Outcome "Skipped" -Skipped 1 -Message $preSkipMessage
+                })
+                continue
+            }
+        }
     }
 
     try {
@@ -1537,14 +1948,7 @@ foreach ($test in $testDefinitions) {
         $fatalError = $_.Exception
         $summaries.Add([PSCustomObject]@{
             Name = $test.TestName
-            Summary = [PSCustomObject]@{
-                Trx = $trxPath
-                Outcome = "Failed"
-                Passed = 0
-                Failed = 1
-                Skipped = 0
-                Message = $fatalError.Message
-            }
+            Summary = New-LiveTestSummary -Trx $trxPath -Outcome "Failed" -Failed 1 -Message $fatalError.Message
         })
     }
 }

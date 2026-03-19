@@ -36,7 +36,13 @@ public sealed class NamedPipeExtenderBackend : IExecutionBackend
         "place_planet_building",
         "set_hero_state_helper",
         "toggle_roe_respawn_helper",
-        "set_context_allegiance"
+        "set_context_allegiance",
+        "set_context_faction",
+        "transfer_fleet_safe",
+        "flip_planet_owner",
+        "switch_player_faction",
+        "edit_hero_state",
+        "create_hero_variant"
     ];
 
     private static readonly object HostSync = new();

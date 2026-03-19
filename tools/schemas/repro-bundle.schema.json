@@ -17,6 +17,11 @@
     "transplantSummary",
     "rosterVisualCoverage",
     "allegianceRoutingSummary",
+    "entityTransplantBlockers",
+    "planetFlipSummary",
+    "fleetTransferSafetySummary",
+    "operationPolicySummary",
+    "heroMechanicsSummary",
     "runtimeMode",
     "selectedHostProcess",
     "backendRouteDecision",
@@ -30,62 +35,153 @@
     "nextAction"
   ],
   "properties": {
-    "schemaVersion": { "type": "string", "const": "1.3" },
-    "runId": { "type": "string", "minLength": 1 },
-    "startedAtUtc": { "type": "string", "format": "date-time" },
+    "schemaVersion": {
+      "type": "string",
+      "const": "1.3"
+    },
+    "runId": {
+      "type": "string",
+      "minLength": 1
+    },
+    "startedAtUtc": {
+      "type": "string",
+      "format": "date-time"
+    },
     "scope": {
       "type": "string",
-      "enum": ["AOTR", "ROE", "TACTICAL", "FULL"]
+      "enum": [
+        "AOTR",
+        "ROE",
+        "TACTICAL",
+        "FULL"
+      ]
     },
     "processSnapshot": {
       "type": "array",
       "items": {
         "type": "object",
-        "required": ["pid", "name", "commandLine"],
+        "required": [
+          "pid",
+          "name",
+          "commandLine"
+        ],
         "properties": {
-          "pid": { "type": "integer" },
-          "name": { "type": "string" },
-          "path": { "type": ["string", "null"] },
-          "commandLine": { "type": ["string", "null"] },
+          "pid": {
+            "type": "integer"
+          },
+          "name": {
+            "type": "string"
+          },
+          "path": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "commandLine": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
           "steamModIds": {
             "type": "array",
-            "items": { "type": "string" }
+            "items": {
+              "type": "string"
+            }
           }
         }
       }
     },
     "launchContext": {
       "type": "object",
-      "required": ["profileId", "reasonCode", "confidence", "launchKind", "source"],
+      "required": [
+        "profileId",
+        "reasonCode",
+        "confidence",
+        "launchKind",
+        "source"
+      ],
       "properties": {
-        "profileId": { "type": ["string", "null"] },
-        "reasonCode": { "type": ["string", "null"] },
-        "confidence": { "type": ["number", "null"] },
-        "launchKind": { "type": ["string", "null"] },
-        "source": { "type": "string", "enum": ["detected", "forced"] },
+        "profileId": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "reasonCode": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "confidence": {
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "launchKind": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "source": {
+          "type": "string",
+          "enum": [
+            "detected",
+            "forced"
+          ]
+        },
         "forcedWorkshopIds": {
           "type": "array",
-          "items": { "type": "string" }
+          "items": {
+            "type": "string"
+          }
         },
-        "forcedProfileId": { "type": ["string", "null"] }
+        "forcedProfileId": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
       }
     },
     "installedModContext": {
       "type": "object",
-      "required": ["source", "installedWorkshopIds", "installedCount"],
+      "required": [
+        "source",
+        "installedWorkshopIds",
+        "installedCount"
+      ],
       "properties": {
-        "source": { "type": "string" },
+        "source": {
+          "type": "string"
+        },
         "installedWorkshopIds": {
           "type": "array",
-          "items": { "type": "string" }
+          "items": {
+            "type": "string"
+          }
         },
-        "installedCount": { "type": "integer", "minimum": 0 },
-        "launchProfileId": { "type": ["string", "null"] }
+        "installedCount": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "launchProfileId": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
       }
     },
     "resolvedSubmodChain": {
       "type": "array",
-      "items": { "type": "string" }
+      "items": {
+        "type": "string"
+      }
     },
     "mechanicGatingSummary": {
       "type": "object",
@@ -100,17 +196,38 @@
         "skippedActions"
       ],
       "properties": {
-        "helperBridgeState": { "type": "string" },
-        "blockedActionCount": { "type": "integer", "minimum": 0 },
+        "helperBridgeState": {
+          "type": "string"
+        },
+        "blockedActionCount": {
+          "type": "integer",
+          "minimum": 0
+        },
         "blockedActions": {
           "type": "array",
-          "items": { "type": "string" }
+          "items": {
+            "type": "string"
+          }
         },
-        "summary": { "type": "string" },
-        "totalActions": { "type": "integer", "minimum": 0 },
-        "passedActions": { "type": "integer", "minimum": 0 },
-        "failedActions": { "type": "integer", "minimum": 0 },
-        "skippedActions": { "type": "integer", "minimum": 0 }
+        "summary": {
+          "type": "string"
+        },
+        "totalActions": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "passedActions": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "failedActions": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "skippedActions": {
+          "type": "integer",
+          "minimum": 0
+        }
       }
     },
     "entityOperationSummary": {
@@ -123,10 +240,22 @@
         "operations"
       ],
       "properties": {
-        "totalActions": { "type": "integer", "minimum": 0 },
-        "passedActions": { "type": "integer", "minimum": 0 },
-        "failedActions": { "type": "integer", "minimum": 0 },
-        "skippedActions": { "type": "integer", "minimum": 0 },
+        "totalActions": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "passedActions": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "failedActions": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "skippedActions": {
+          "type": "integer",
+          "minimum": 0
+        },
         "operations": {
           "type": "array",
           "items": {
@@ -140,15 +269,31 @@
               "forceOverride"
             ],
             "properties": {
-              "actionId": { "type": "string" },
+              "actionId": {
+                "type": "string"
+              },
               "outcome": {
                 "type": "string",
-                "enum": ["Passed", "Failed", "Skipped", "Missing", "Unknown"]
+                "enum": [
+                  "Passed",
+                  "Failed",
+                  "Skipped",
+                  "Missing",
+                  "Unknown"
+                ]
               },
-              "persistencePolicy": { "type": "string" },
-              "populationPolicy": { "type": "string" },
-              "allowCrossFaction": { "type": "string" },
-              "forceOverride": { "type": "string" }
+              "persistencePolicy": {
+                "type": "string"
+              },
+              "populationPolicy": {
+                "type": "string"
+              },
+              "allowCrossFaction": {
+                "type": "string"
+              },
+              "forceOverride": {
+                "type": "string"
+              }
             }
           }
         }
@@ -164,16 +309,27 @@
         "reasonCodes"
       ],
       "properties": {
-        "enabled": { "type": "boolean" },
-        "allResolved": { "type": "boolean" },
-        "blockingEntityCount": { "type": "integer", "minimum": 0 },
+        "enabled": {
+          "type": "boolean"
+        },
+        "allResolved": {
+          "type": "boolean"
+        },
+        "blockingEntityCount": {
+          "type": "integer",
+          "minimum": 0
+        },
         "blockingEntityIds": {
           "type": "array",
-          "items": { "type": "string" }
+          "items": {
+            "type": "string"
+          }
         },
         "reasonCodes": {
           "type": "array",
-          "items": { "type": "string" }
+          "items": {
+            "type": "string"
+          }
         }
       }
     },
@@ -186,12 +342,23 @@
         "missingEntityIds"
       ],
       "properties": {
-        "totalEntities": { "type": "integer", "minimum": 0 },
-        "visualResolvedCount": { "type": "integer", "minimum": 0 },
-        "visualMissingCount": { "type": "integer", "minimum": 0 },
+        "totalEntities": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "visualResolvedCount": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "visualMissingCount": {
+          "type": "integer",
+          "minimum": 0
+        },
         "missingEntityIds": {
           "type": "array",
-          "items": { "type": "string" }
+          "items": {
+            "type": "string"
+          }
         }
       }
     },
@@ -204,91 +371,210 @@
         "reasonCodes"
       ],
       "properties": {
-        "totalActions": { "type": "integer", "minimum": 0 },
-        "routedActions": { "type": "integer", "minimum": 0 },
-        "blockedActions": { "type": "integer", "minimum": 0 },
+        "totalActions": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "routedActions": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "blockedActions": {
+          "type": "integer",
+          "minimum": 0
+        },
         "reasonCodes": {
           "type": "array",
-          "items": { "type": "string" }
+          "items": {
+            "type": "string"
+          }
         }
       }
     },
     "runtimeMode": {
       "type": "object",
-      "required": ["hint", "effective", "reasonCode"],
+      "required": [
+        "hint",
+        "effective",
+        "reasonCode"
+      ],
       "properties": {
-        "hint": { "type": "string" },
-        "effective": { "type": "string" },
-        "reasonCode": { "type": "string" }
+        "hint": {
+          "type": "string"
+        },
+        "effective": {
+          "type": "string"
+        },
+        "reasonCode": {
+          "type": "string"
+        }
       }
     },
     "selectedHostProcess": {
       "type": "object",
-      "required": ["pid", "name", "hostRole", "selectionScore"],
+      "required": [
+        "pid",
+        "name",
+        "hostRole",
+        "selectionScore"
+      ],
       "properties": {
-        "pid": { "type": ["integer", "null"] },
-        "name": { "type": ["string", "null"] },
-        "hostRole": { "type": "string" },
-        "selectionScore": { "type": "number" },
-        "workshopMatchCount": { "type": "integer" },
-        "mainModuleSize": { "type": "integer" }
+        "pid": {
+          "type": [
+            "integer",
+            "null"
+          ]
+        },
+        "name": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "hostRole": {
+          "type": "string"
+        },
+        "selectionScore": {
+          "type": "number"
+        },
+        "workshopMatchCount": {
+          "type": "integer"
+        },
+        "mainModuleSize": {
+          "type": "integer"
+        }
       }
     },
     "backendRouteDecision": {
       "type": "object",
-      "required": ["backend", "allowed", "reasonCode"],
+      "required": [
+        "backend",
+        "allowed",
+        "reasonCode"
+      ],
       "properties": {
-        "backend": { "type": "string" },
-        "allowed": { "type": "boolean" },
-        "reasonCode": { "type": "string" },
-        "message": { "type": ["string", "null"] }
+        "backend": {
+          "type": "string"
+        },
+        "allowed": {
+          "type": "boolean"
+        },
+        "reasonCode": {
+          "type": "string"
+        },
+        "message": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
       }
     },
     "capabilityProbeSnapshot": {
       "type": "object",
-      "required": ["backend", "probeReasonCode", "capabilityCount"],
+      "required": [
+        "backend",
+        "probeReasonCode",
+        "capabilityCount"
+      ],
       "properties": {
-        "backend": { "type": "string" },
-        "probeReasonCode": { "type": "string" },
-        "capabilityCount": { "type": "integer" },
+        "backend": {
+          "type": "string"
+        },
+        "probeReasonCode": {
+          "type": "string"
+        },
+        "capabilityCount": {
+          "type": "integer"
+        },
         "requiredCapabilities": {
           "type": "array",
-          "items": { "type": "string" }
+          "items": {
+            "type": "string"
+          }
         }
       }
     },
     "hookInstallReport": {
       "type": "object",
-      "required": ["state", "reasonCode"],
+      "required": [
+        "state",
+        "reasonCode"
+      ],
       "properties": {
-        "state": { "type": "string" },
-        "reasonCode": { "type": "string" },
-        "details": { "type": ["string", "null"] }
+        "state": {
+          "type": "string"
+        },
+        "reasonCode": {
+          "type": "string"
+        },
+        "details": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
       }
     },
     "overlayState": {
       "type": "object",
-      "required": ["available", "visible", "reasonCode"],
+      "required": [
+        "available",
+        "visible",
+        "reasonCode"
+      ],
       "properties": {
-        "available": { "type": "boolean" },
-        "visible": { "type": "boolean" },
-        "reasonCode": { "type": "string" }
+        "available": {
+          "type": "boolean"
+        },
+        "visible": {
+          "type": "boolean"
+        },
+        "reasonCode": {
+          "type": "string"
+        }
       }
     },
     "actionStatusDiagnostics": {
       "type": "object",
-      "required": ["status", "source", "summary", "entries"],
+      "required": [
+        "status",
+        "source",
+        "summary",
+        "entries"
+      ],
       "properties": {
-        "status": { "type": "string" },
-        "source": { "type": "string" },
+        "status": {
+          "type": "string"
+        },
+        "source": {
+          "type": "string"
+        },
         "summary": {
           "type": "object",
-          "required": ["total", "passed", "failed", "skipped"],
+          "required": [
+            "total",
+            "passed",
+            "failed",
+            "skipped"
+          ],
           "properties": {
-            "total": { "type": "integer", "minimum": 0 },
-            "passed": { "type": "integer", "minimum": 0 },
-            "failed": { "type": "integer", "minimum": 0 },
-            "skipped": { "type": "integer", "minimum": 0 }
+            "total": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "passed": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "failed": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "skipped": {
+              "type": "integer",
+              "minimum": 0
+            }
           }
         },
         "entries": {
@@ -308,55 +594,146 @@
               "skipReasonCode"
             ],
             "properties": {
-              "profileId": { "type": "string" },
-              "actionId": { "type": "string" },
+              "profileId": {
+                "type": "string"
+              },
+              "actionId": {
+                "type": "string"
+              },
               "outcome": {
                 "type": "string",
-                "enum": ["Passed", "Failed", "Skipped", "Missing", "Unknown"]
+                "enum": [
+                  "Passed",
+                  "Failed",
+                  "Skipped",
+                  "Missing",
+                  "Unknown"
+                ]
               },
-              "backendRoute": { "type": ["string", "null"] },
-              "routeReasonCode": { "type": ["string", "null"] },
-              "capabilityProbeReasonCode": { "type": ["string", "null"] },
-              "hybridExecution": { "type": ["boolean", "null"] },
-              "hasFallbackMarker": { "type": "boolean" },
-              "message": { "type": ["string", "null"] },
-              "skipReasonCode": { "type": ["string", "null"] }
+              "backendRoute": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "routeReasonCode": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "capabilityProbeReasonCode": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "hybridExecution": {
+                "type": [
+                  "boolean",
+                  "null"
+                ]
+              },
+              "hasFallbackMarker": {
+                "type": "boolean"
+              },
+              "message": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "skipReasonCode": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              }
             }
           }
         },
-        "error": { "type": ["string", "null"] }
+        "error": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
       }
     },
     "liveTests": {
       "type": "array",
       "items": {
         "type": "object",
-        "required": ["name", "outcome", "trxPath", "message"],
+        "required": [
+          "name",
+          "outcome",
+          "trxPath",
+          "message"
+        ],
         "properties": {
-          "name": { "type": "string" },
+          "name": {
+            "type": "string"
+          },
           "outcome": {
             "type": "string",
-            "enum": ["Passed", "Failed", "Skipped", "Missing", "Unknown"]
+            "enum": [
+              "Passed",
+              "Failed",
+              "Skipped",
+              "Missing",
+              "Unknown"
+            ]
           },
-          "passed": { "type": "integer" },
-          "failed": { "type": "integer" },
-          "skipped": { "type": "integer" },
-          "trxPath": { "type": "string" },
-          "message": { "type": ["string", "null"] }
+          "passed": {
+            "type": "integer"
+          },
+          "failed": {
+            "type": "integer"
+          },
+          "skipped": {
+            "type": "integer"
+          },
+          "trxPath": {
+            "type": "string"
+          },
+          "message": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
         }
       }
     },
     "diagnostics": {
       "type": "object",
-      "required": ["dependencyState", "helperReadiness", "symbolHealthSummary"],
+      "required": [
+        "dependencyState",
+        "helperReadiness",
+        "symbolHealthSummary"
+      ],
       "properties": {
-        "dependencyState": { "type": "string" },
-        "helperReadiness": { "type": "string" },
-        "helperBridgeState": { "type": "string" },
-        "helperEntryPoint": { "type": "string" },
-        "helperInvocationSource": { "type": "string" },
-        "helperVerifyState": { "type": "string" },
-        "symbolHealthSummary": { "type": "string" }
+        "dependencyState": {
+          "type": "string"
+        },
+        "helperReadiness": {
+          "type": "string"
+        },
+        "helperBridgeState": {
+          "type": "string"
+        },
+        "helperEntryPoint": {
+          "type": "string"
+        },
+        "helperInvocationSource": {
+          "type": "string"
+        },
+        "helperVerifyState": {
+          "type": "string"
+        },
+        "symbolHealthSummary": {
+          "type": "string"
+        }
       }
     },
     "classification": {
@@ -370,6 +747,166 @@
         "blocked_dependency_missing_parent"
       ]
     },
-    "nextAction": { "type": "string", "minLength": 1 }
+    "nextAction": {
+      "type": "string",
+      "minLength": 1
+    },
+    "heroMechanicsSummary": {
+      "type": "object",
+      "required": [
+        "supportsRespawn",
+        "supportsPermadeath",
+        "supportsRescue",
+        "defaultRespawnTime",
+        "duplicateHeroPolicy",
+        "respawnExceptionSources"
+      ],
+      "properties": {
+        "supportsRespawn": {
+          "type": "boolean"
+        },
+        "supportsPermadeath": {
+          "type": "boolean"
+        },
+        "supportsRescue": {
+          "type": "boolean"
+        },
+        "defaultRespawnTime": {
+          "type": [
+            "integer",
+            "null"
+          ]
+        },
+        "duplicateHeroPolicy": {
+          "type": "string"
+        },
+        "respawnExceptionSources": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "operationPolicySummary": {
+      "type": "object",
+      "required": [
+        "tacticalEphemeralCount",
+        "galacticPersistentCount",
+        "crossFactionEnabledCount",
+        "forceOverrideCount"
+      ],
+      "properties": {
+        "tacticalEphemeralCount": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "galacticPersistentCount": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "crossFactionEnabledCount": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "forceOverrideCount": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    },
+    "fleetTransferSafetySummary": {
+      "type": "object",
+      "required": [
+        "totalActions",
+        "safeTransfers",
+        "blockedTransfers",
+        "reasonCodes"
+      ],
+      "properties": {
+        "totalActions": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "safeTransfers": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "blockedTransfers": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "reasonCodes": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "planetFlipSummary": {
+      "type": "object",
+      "required": [
+        "totalActions",
+        "emptyRetreatCount",
+        "convertEverythingCount",
+        "blockedActions",
+        "reasonCodes"
+      ],
+      "properties": {
+        "totalActions": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "emptyRetreatCount": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "convertEverythingCount": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "blockedActions": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "reasonCodes": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "entityTransplantBlockers": {
+      "type": "object",
+      "required": [
+        "hasBlockers",
+        "blockingEntityCount",
+        "blockingEntityIds",
+        "reasonCodes"
+      ],
+      "properties": {
+        "hasBlockers": {
+          "type": "boolean"
+        },
+        "blockingEntityCount": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "blockingEntityIds": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "reasonCodes": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    }
   }
 }

@@ -38,6 +38,11 @@ public sealed class ActionReliabilityService : IActionReliabilityService
         "spawn_tactical_entity",
         "spawn_galactic_entity",
         "place_planet_building",
+        "transfer_fleet_safe",
+        "flip_planet_owner",
+        "switch_player_faction",
+        "edit_hero_state",
+        "create_hero_variant",
         "set_selected_hp",
         "set_selected_shield",
         "set_selected_speed",
@@ -307,12 +312,16 @@ public sealed class ActionReliabilityService : IActionReliabilityService
         return actionId.Equals("spawn_unit_helper", StringComparison.OrdinalIgnoreCase) ||
                actionId.Equals("spawn_context_entity", StringComparison.OrdinalIgnoreCase) ||
                actionId.Equals("spawn_tactical_entity", StringComparison.OrdinalIgnoreCase) ||
-               actionId.Equals("spawn_galactic_entity", StringComparison.OrdinalIgnoreCase);
+               actionId.Equals("spawn_galactic_entity", StringComparison.OrdinalIgnoreCase) ||
+               actionId.Equals("transfer_fleet_safe", StringComparison.OrdinalIgnoreCase) ||
+               actionId.Equals("edit_hero_state", StringComparison.OrdinalIgnoreCase) ||
+               actionId.Equals("create_hero_variant", StringComparison.OrdinalIgnoreCase);
     }
 
     private static bool RequiresBuildingCatalog(string actionId)
     {
-        return actionId.Equals("place_planet_building", StringComparison.OrdinalIgnoreCase);
+        return actionId.Equals("place_planet_building", StringComparison.OrdinalIgnoreCase) ||
+               actionId.Equals("flip_planet_owner", StringComparison.OrdinalIgnoreCase);
     }
 
     private IReadOnlyDictionary<string, ModMechanicSupport>? ResolveMechanicSupportMap(

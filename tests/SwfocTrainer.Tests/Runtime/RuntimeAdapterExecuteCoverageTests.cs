@@ -402,6 +402,40 @@ public sealed class RuntimeAdapterExecuteCoverageTests
     }
 
     [Fact]
+    public async Task ApplyHelperBridgeProbeMetadataAsync_ShouldPreserveDiagnosticBridgeState_WhenProbeIsUnavailable()
+    {
+        var helperBackend = new StubHelperBridgeBackend
+        {
+            ProbeResult = new HelperBridgeProbeResult(
+                Available: false,
+                ReasonCode: RuntimeReasonCode.HELPER_VERIFICATION_FAILED,
+                Message: "native dispatch unavailable",
+                Diagnostics: new Dictionary<string, object?>
+                {
+                    ["helperBridgeState"] = "experimental",
+                    ["availableFeatures"] = "spawn_context_entity",
+                    ["helperExecutionPath"] = "native_dispatch_unavailable"
+                })
+        };
+        var harness = new AdapterHarness { HelperBridgeBackend = helperBackend };
+        var profile = BuildProfile("set_hero_state_helper");
+        var adapter = harness.CreateAdapter(profile, RuntimeMode.Galactic);
+        var method = typeof(RuntimeAdapter).GetMethod(
+            "ApplyHelperBridgeProbeMetadataAsync",
+            BindingFlags.Instance | BindingFlags.NonPublic);
+        method.Should().NotBeNull();
+
+        var session = BuildSession(RuntimeMode.Galactic);
+        var task = (Task<AttachSession>)method!.Invoke(adapter, new object?[] { session, profile, CancellationToken.None })!;
+        var enriched = await task;
+
+        enriched.Process.Metadata.Should().ContainKey("helperBridgeState");
+        enriched.Process.Metadata!["helperBridgeState"].Should().Be("experimental");
+        enriched.Process.Metadata["helperBridgeReasonCode"].Should().Be(RuntimeReasonCode.HELPER_VERIFICATION_FAILED.ToString());
+        enriched.Process.Metadata["helperBridgeFeatures"].Should().Be("spawn_context_entity");
+    }
+
+    [Fact]
     public void ApplyDependencyValidation_ShouldThrowOnHardFail_AndPopulateSoftFailState()
     {
         var hardHarness = new AdapterHarness
@@ -593,6 +627,477 @@ public sealed class RuntimeAdapterExecuteCoverageTests
         result.Diagnostics.Should().ContainKey("reasonCode");
         result.Diagnostics!["reasonCode"]!.ToString().Should().Be(RuntimeReasonCode.HELPER_BRIDGE_UNAVAILABLE.ToString());
     }
+
+    [Fact]
+    public async Task ExecuteHelperActionAsync_ShouldContinueIntoBridgeExecution_WhenProbeIsExperimental()
+    {
+        var helper = new StubHelperBridgeBackend
+        {
+            ProbeResult = new HelperBridgeProbeResult(
+                Available: false,
+                ReasonCode: RuntimeReasonCode.HELPER_VERIFICATION_FAILED,
+                Message: "native dispatch unavailable",
+                Diagnostics: new Dictionary<string, object?>
+                {
+                    ["helperBridgeState"] = "experimental",
+                    ["helperExecutionPath"] = "native_dispatch_unavailable"
+                }),
+            ExecuteResult = new HelperBridgeExecutionResult(
+                Succeeded: true,
+                ReasonCode: RuntimeReasonCode.HELPER_EXECUTION_APPLIED,
+                Message: "overlay applied",
+                Diagnostics: new Dictionary<string, object?>
+                {
+                    ["helperVerifyState"] = "verified",
+                    ["helperExecutionPath"] = "overlay_command_inbox_verified"
+                })
+        };
+
+        var harness = new AdapterHarness
+        {
+            HelperBridgeBackend = helper
+        };
+        var profile = BuildProfile("set_hero_state_helper");
+        var adapter = harness.CreateAdapter(profile, RuntimeMode.Galactic);
+
+        var method = typeof(RuntimeAdapter).GetMethod("ExecuteHelperActionAsync", BindingFlags.Instance | BindingFlags.NonPublic);
+        method.Should().NotBeNull();
+        var task = (Task<ActionExecutionResult>)method!.Invoke(adapter, new object?[]
+        {
+            BuildRequest("set_hero_state_helper", RuntimeMode.Galactic),
+            CancellationToken.None
+        })!;
+        var result = await task;
+
+        helper.ExecuteCallCount.Should().Be(1);
+        result.Succeeded.Should().BeTrue();
+        result.Message.Should().Be("overlay applied");
+        result.Diagnostics.Should().ContainKey("reasonCode");
+        result.Diagnostics!["reasonCode"]!.ToString().Should().Be(RuntimeReasonCode.HELPER_EXECUTION_APPLIED.ToString());
+        result.Diagnostics["helperExecutionPath"]!.ToString().Should().Be("overlay_command_inbox_verified");
+    }
+
+    [Fact]
+    public async Task ExecuteHelperActionAsync_ShouldEnforceTacticalSpawnPolicies_AndAnnotateDiagnostics()
+    {
+        var helper = new StubHelperBridgeBackend
+        {
+            ExecuteResult = new HelperBridgeExecutionResult(
+                Succeeded: true,
+                ReasonCode: RuntimeReasonCode.HELPER_EXECUTION_APPLIED,
+                Message: "spawn applied",
+                Diagnostics: new Dictionary<string, object?>
+                {
+                    ["helperVerifyState"] = "applied"
+                })
+        };
+        var harness = new AdapterHarness
+        {
+            HelperBridgeBackend = helper
+        };
+        var profile = BuildProfile("spawn_tactical_entity");
+        var adapter = harness.CreateAdapter(profile, RuntimeMode.TacticalLand);
+
+        var request = new ActionExecutionRequest(
+            Action: new ActionSpec(
+                "spawn_tactical_entity",
+                ActionCategory.Unit,
+                RuntimeMode.AnyTactical,
+                ExecutionKind.Helper,
+                new JsonObject(),
+                VerifyReadback: false,
+                CooldownMs: 0),
+            Payload: new JsonObject
+            {
+                ["helperHookId"] = "spawn_bridge",
+                ["entityId"] = "UNIT_TROOPER",
+                ["entryMarker"] = "Land_Reinforcement_Point",
+                ["populationPolicy"] = "Normal",
+                ["persistencePolicy"] = "PersistentGalactic"
+            },
+            ProfileId: "profile",
+            RuntimeMode: RuntimeMode.TacticalLand,
+            Context: null);
+
+        var result = await adapter.ExecuteAsync(request, CancellationToken.None);
+
+        result.Succeeded.Should().BeTrue();
+        result.Diagnostics.Should().ContainKey("policyReasonCodes");
+        var policyReasonCodes = result.Diagnostics!["policyReasonCodes"] as IReadOnlyList<string>;
+        policyReasonCodes.Should().NotBeNull();
+        policyReasonCodes!.Should().Contain(RuntimeReasonCode.SPAWN_POPULATION_POLICY_ENFORCED.ToString());
+        policyReasonCodes.Should().Contain(RuntimeReasonCode.SPAWN_EPHEMERAL_POLICY_ENFORCED.ToString());
+
+        helper.LastExecuteRequest.Should().NotBeNull();
+        var effectivePayload = helper.LastExecuteRequest!.ActionRequest.Payload;
+        effectivePayload["populationPolicy"]!.GetValue<string>().Should().Be("ForceZeroTactical");
+        effectivePayload["persistencePolicy"]!.GetValue<string>().Should().Be("EphemeralBattleOnly");
+    }
+
+    [Fact]
+    public async Task ExecuteHelperActionAsync_ShouldFailClosedForBuildingPlacement_WhenEntityIsMissing()
+    {
+        var helper = new StubHelperBridgeBackend();
+        var harness = new AdapterHarness
+        {
+            HelperBridgeBackend = helper
+        };
+        var profile = BuildProfile("place_planet_building");
+        var adapter = harness.CreateAdapter(profile, RuntimeMode.Galactic);
+
+        var request = new ActionExecutionRequest(
+            Action: new ActionSpec(
+                "place_planet_building",
+                ActionCategory.Campaign,
+                RuntimeMode.Galactic,
+                ExecutionKind.Helper,
+                new JsonObject(),
+                VerifyReadback: false,
+                CooldownMs: 0),
+            Payload: new JsonObject
+            {
+                ["helperHookId"] = "spawn_bridge",
+                ["planetId"] = "Coruscant"
+            },
+            ProfileId: "profile",
+            RuntimeMode: RuntimeMode.Galactic,
+            Context: null);
+
+        var result = await adapter.ExecuteAsync(request, CancellationToken.None);
+
+        result.Succeeded.Should().BeFalse();
+        result.Diagnostics.Should().ContainKey("reasonCode");
+        result.Diagnostics!["reasonCode"]!.ToString().Should().Be(RuntimeReasonCode.BUILDING_PREREQ_MISSING.ToString());
+        helper.ExecuteCallCount.Should().Be(0);
+    }
+
+    [Fact]
+    public async Task ExecuteHelperActionAsync_ShouldFailClosedForTacticalSpawn_WhenPlacementIsMissing()
+    {
+        var helper = new StubHelperBridgeBackend();
+        var harness = new AdapterHarness
+        {
+            HelperBridgeBackend = helper
+        };
+        var profile = BuildProfile("spawn_tactical_entity");
+        var adapter = harness.CreateAdapter(profile, RuntimeMode.TacticalLand);
+
+        var request = new ActionExecutionRequest(
+            Action: new ActionSpec(
+                "spawn_tactical_entity",
+                ActionCategory.Unit,
+                RuntimeMode.AnyTactical,
+                ExecutionKind.Helper,
+                new JsonObject(),
+                VerifyReadback: false,
+                CooldownMs: 0),
+            Payload: new JsonObject
+            {
+                ["helperHookId"] = "spawn_bridge",
+                ["entityId"] = "UNIT_STORMTROOPER"
+            },
+            ProfileId: "profile",
+            RuntimeMode: RuntimeMode.TacticalLand,
+            Context: null);
+
+        var result = await adapter.ExecuteAsync(request, CancellationToken.None);
+
+        result.Succeeded.Should().BeFalse();
+        result.Diagnostics.Should().ContainKey("reasonCode");
+        result.Diagnostics!["reasonCode"]!.ToString().Should().Be(RuntimeReasonCode.SPAWN_PLACEMENT_INVALID.ToString());
+        helper.ExecuteCallCount.Should().Be(0);
+    }
+
+    [Fact]
+    public async Task ExecuteHelperActionAsync_ShouldAnnotateBuildingForceOverride_WhenExplicitlyEnabled()
+    {
+        var helper = new StubHelperBridgeBackend
+        {
+            ExecuteResult = new HelperBridgeExecutionResult(
+                Succeeded: true,
+                ReasonCode: RuntimeReasonCode.HELPER_EXECUTION_APPLIED,
+                Message: "building placed",
+                Diagnostics: new Dictionary<string, object?>
+                {
+                    ["helperVerifyState"] = "applied"
+                })
+        };
+        var harness = new AdapterHarness
+        {
+            HelperBridgeBackend = helper
+        };
+        var profile = BuildProfile("place_planet_building");
+        var adapter = harness.CreateAdapter(profile, RuntimeMode.Galactic);
+
+        var request = new ActionExecutionRequest(
+            Action: new ActionSpec(
+                "place_planet_building",
+                ActionCategory.Campaign,
+                RuntimeMode.Galactic,
+                ExecutionKind.Helper,
+                new JsonObject(),
+                VerifyReadback: false,
+                CooldownMs: 0),
+            Payload: new JsonObject
+            {
+                ["helperHookId"] = "spawn_bridge",
+                ["entityId"] = "E_GROUND_FACTORY",
+                ["planetId"] = "Coruscant",
+                ["forceOverride"] = true
+            },
+            ProfileId: "profile",
+            RuntimeMode: RuntimeMode.Galactic,
+            Context: null);
+
+        var result = await adapter.ExecuteAsync(request, CancellationToken.None);
+
+        result.Succeeded.Should().BeTrue();
+        result.Diagnostics.Should().ContainKey("policyReasonCodes");
+        var policyReasonCodes = result.Diagnostics!["policyReasonCodes"] as IReadOnlyList<string>;
+        policyReasonCodes.Should().NotBeNull();
+        policyReasonCodes!.Should().Contain(RuntimeReasonCode.BUILDING_FORCE_OVERRIDE_APPLIED.ToString());
+    }
+
+    [Fact]
+    public async Task ExecuteHelperActionAsync_ShouldFailClosedForFleetTransfer_WhenSafePlanetMissingWithoutOverride()
+    {
+        var helper = new StubHelperBridgeBackend();
+        var harness = new AdapterHarness
+        {
+            HelperBridgeBackend = helper
+        };
+        var profile = BuildProfile("transfer_fleet_safe");
+        var adapter = harness.CreateAdapter(profile, RuntimeMode.Galactic);
+
+        var request = new ActionExecutionRequest(
+            Action: new ActionSpec(
+                "transfer_fleet_safe",
+                ActionCategory.Campaign,
+                RuntimeMode.Galactic,
+                ExecutionKind.Helper,
+                new JsonObject(),
+                VerifyReadback: false,
+                CooldownMs: 0),
+            Payload: new JsonObject
+            {
+                ["helperHookId"] = "spawn_bridge",
+                ["entityId"] = "FLEET_A",
+                ["sourceFaction"] = "Empire",
+                ["targetFaction"] = "Rebel"
+            },
+            ProfileId: "profile",
+            RuntimeMode: RuntimeMode.Galactic,
+            Context: null);
+
+        var result = await adapter.ExecuteAsync(request, CancellationToken.None);
+
+        result.Succeeded.Should().BeFalse();
+        result.Diagnostics.Should().ContainKey("reasonCode");
+        result.Diagnostics!["reasonCode"]!.ToString().Should().Be(RuntimeReasonCode.SAFETY_MUTATION_BLOCKED.ToString());
+        helper.ExecuteCallCount.Should().Be(0);
+    }
+
+    [Fact]
+    public async Task ExecuteHelperActionAsync_ShouldApplyFleetTransferDefaults_WhenValidPayloadProvided()
+    {
+        var helper = new StubHelperBridgeBackend
+        {
+            ExecuteResult = new HelperBridgeExecutionResult(
+                Succeeded: true,
+                ReasonCode: RuntimeReasonCode.HELPER_EXECUTION_APPLIED,
+                Message: "transfer applied",
+                Diagnostics: new Dictionary<string, object?>
+                {
+                    ["helperVerifyState"] = "applied"
+                })
+        };
+        var harness = new AdapterHarness
+        {
+            HelperBridgeBackend = helper
+        };
+        var profile = BuildProfile("transfer_fleet_safe");
+        var adapter = harness.CreateAdapter(profile, RuntimeMode.Galactic);
+
+        var request = new ActionExecutionRequest(
+            Action: new ActionSpec(
+                "transfer_fleet_safe",
+                ActionCategory.Campaign,
+                RuntimeMode.Galactic,
+                ExecutionKind.Helper,
+                new JsonObject(),
+                VerifyReadback: false,
+                CooldownMs: 0),
+            Payload: new JsonObject
+            {
+                ["helperHookId"] = "spawn_bridge",
+                ["entityId"] = "FLEET_A",
+                ["sourceFaction"] = "Empire",
+                ["targetFaction"] = "Rebel",
+                ["safePlanetId"] = "Coruscant"
+            },
+            ProfileId: "profile",
+            RuntimeMode: RuntimeMode.Galactic,
+            Context: null);
+
+        var result = await adapter.ExecuteAsync(request, CancellationToken.None);
+
+        result.Succeeded.Should().BeTrue();
+        helper.LastExecuteRequest.Should().NotBeNull();
+        var payload = helper.LastExecuteRequest!.ActionRequest.Payload;
+        payload["allowCrossFaction"]!.GetValue<bool>().Should().BeTrue();
+        payload["placementMode"]!.GetValue<string>().Should().Be("safe_transfer");
+    }
+
+    [Fact]
+    public async Task ExecuteHelperActionAsync_ShouldFailClosedForPlanetFlip_WhenModeInvalid()
+    {
+        var helper = new StubHelperBridgeBackend();
+        var harness = new AdapterHarness
+        {
+            HelperBridgeBackend = helper
+        };
+        var profile = BuildProfile("flip_planet_owner");
+        var adapter = harness.CreateAdapter(profile, RuntimeMode.Galactic);
+
+        var request = new ActionExecutionRequest(
+            Action: new ActionSpec(
+                "flip_planet_owner",
+                ActionCategory.Campaign,
+                RuntimeMode.Galactic,
+                ExecutionKind.Helper,
+                new JsonObject(),
+                VerifyReadback: false,
+                CooldownMs: 0),
+            Payload: new JsonObject
+            {
+                ["helperHookId"] = "spawn_bridge",
+                ["entityId"] = "Coruscant",
+                ["targetFaction"] = "Rebel",
+                ["flipMode"] = "unsafe_mode"
+            },
+            ProfileId: "profile",
+            RuntimeMode: RuntimeMode.Galactic,
+            Context: null);
+
+        var result = await adapter.ExecuteAsync(request, CancellationToken.None);
+
+        result.Succeeded.Should().BeFalse();
+        result.Diagnostics.Should().ContainKey("reasonCode");
+        result.Diagnostics!["reasonCode"]!.ToString().Should().Be(RuntimeReasonCode.SAFETY_MUTATION_BLOCKED.ToString());
+        helper.ExecuteCallCount.Should().Be(0);
+    }
+
+    [Fact]
+    public async Task ExecuteHelperActionAsync_ShouldFailClosedForSwitchPlayerFaction_WhenTargetMissing()
+    {
+        var helper = new StubHelperBridgeBackend();
+        var harness = new AdapterHarness
+        {
+            HelperBridgeBackend = helper
+        };
+        var profile = BuildProfile("switch_player_faction");
+        var adapter = harness.CreateAdapter(profile, RuntimeMode.Galactic);
+
+        var request = new ActionExecutionRequest(
+            Action: new ActionSpec(
+                "switch_player_faction",
+                ActionCategory.Global,
+                RuntimeMode.Galactic,
+                ExecutionKind.Helper,
+                new JsonObject(),
+                VerifyReadback: false,
+                CooldownMs: 0),
+            Payload: new JsonObject
+            {
+                ["helperHookId"] = "spawn_bridge"
+            },
+            ProfileId: "profile",
+            RuntimeMode: RuntimeMode.Galactic,
+            Context: null);
+
+        var result = await adapter.ExecuteAsync(request, CancellationToken.None);
+
+        result.Succeeded.Should().BeFalse();
+        result.Diagnostics.Should().ContainKey("reasonCode");
+        result.Diagnostics!["reasonCode"]!.ToString().Should().Be(RuntimeReasonCode.CAPABILITY_REQUIRED_MISSING.ToString());
+        helper.ExecuteCallCount.Should().Be(0);
+    }
+
+    [Fact]
+    public async Task ExecuteHelperActionAsync_ShouldFailClosedForEditHeroState_WhenDesiredStateInvalid()
+    {
+        var helper = new StubHelperBridgeBackend();
+        var harness = new AdapterHarness
+        {
+            HelperBridgeBackend = helper
+        };
+        var profile = BuildProfile("edit_hero_state");
+        var adapter = harness.CreateAdapter(profile, RuntimeMode.Galactic);
+
+        var request = new ActionExecutionRequest(
+            Action: new ActionSpec(
+                "edit_hero_state",
+                ActionCategory.Hero,
+                RuntimeMode.Galactic,
+                ExecutionKind.Helper,
+                new JsonObject(),
+                VerifyReadback: false,
+                CooldownMs: 0),
+            Payload: new JsonObject
+            {
+                ["helperHookId"] = "spawn_bridge",
+                ["entityId"] = "HERO_VADER",
+                ["desiredState"] = "zombie"
+            },
+            ProfileId: "profile",
+            RuntimeMode: RuntimeMode.Galactic,
+            Context: null);
+
+        var result = await adapter.ExecuteAsync(request, CancellationToken.None);
+
+        result.Succeeded.Should().BeFalse();
+        result.Diagnostics.Should().ContainKey("reasonCode");
+        result.Diagnostics!["reasonCode"]!.ToString().Should().Be(RuntimeReasonCode.SAFETY_MUTATION_BLOCKED.ToString());
+        helper.ExecuteCallCount.Should().Be(0);
+    }
+
+    [Fact]
+    public async Task ExecuteHelperActionAsync_ShouldFailClosedForCreateHeroVariant_WhenVariantMissing()
+    {
+        var helper = new StubHelperBridgeBackend();
+        var harness = new AdapterHarness
+        {
+            HelperBridgeBackend = helper
+        };
+        var profile = BuildProfile("create_hero_variant");
+        var adapter = harness.CreateAdapter(profile, RuntimeMode.Galactic);
+
+        var request = new ActionExecutionRequest(
+            Action: new ActionSpec(
+                "create_hero_variant",
+                ActionCategory.Hero,
+                RuntimeMode.Galactic,
+                ExecutionKind.Helper,
+                new JsonObject(),
+                VerifyReadback: false,
+                CooldownMs: 0),
+            Payload: new JsonObject
+            {
+                ["helperHookId"] = "spawn_bridge",
+                ["entityId"] = "HERO_VADER"
+            },
+            ProfileId: "profile",
+            RuntimeMode: RuntimeMode.Galactic,
+            Context: null);
+
+        var result = await adapter.ExecuteAsync(request, CancellationToken.None);
+
+        result.Succeeded.Should().BeFalse();
+        result.Diagnostics.Should().ContainKey("reasonCode");
+        result.Diagnostics!["reasonCode"]!.ToString().Should().Be(RuntimeReasonCode.CAPABILITY_REQUIRED_MISSING.ToString());
+        helper.ExecuteCallCount.Should().Be(0);
+    }
+
 
     [Fact]
     public void ResolveMemoryActionSymbol_ShouldThrow_WhenPayloadSymbolMissing()
@@ -861,6 +1366,60 @@ public sealed class RuntimeAdapterExecuteCoverageTests
         result.Succeeded.Should().BeTrue();
     }
 
+    [Fact]
+    public async Task ExecuteAsync_ShouldReturnDeterministicResults_ForM5ActionMatrixCoverage()
+    {
+        var actionIds = new[]
+        {
+            "spawn_context_entity",
+            "spawn_tactical_entity",
+            "spawn_galactic_entity",
+            "place_planet_building",
+            "set_context_allegiance",
+            "set_context_faction",
+            "transfer_fleet_safe",
+            "flip_planet_owner",
+            "switch_player_faction",
+            "edit_hero_state",
+            "create_hero_variant",
+            "set_hero_state_helper",
+            "toggle_roe_respawn_helper"
+        };
+
+        var profile = BuildProfile(actionIds);
+        var runtimeModes = new[] { RuntimeMode.Galactic, RuntimeMode.TacticalLand, RuntimeMode.TacticalSpace, RuntimeMode.Unknown };
+
+        foreach (var mode in runtimeModes)
+        {
+            foreach (var actionId in actionIds)
+            {
+                var harness = new AdapterHarness
+                {
+                    HelperBridgeBackend = new StubHelperBridgeBackend
+                    {
+                        ExecuteResult = new HelperBridgeExecutionResult(
+                            Succeeded: true,
+                            ReasonCode: RuntimeReasonCode.HELPER_EXECUTION_APPLIED,
+                            Message: "applied",
+                            Diagnostics: new Dictionary<string, object?>
+                            {
+                                ["operationToken"] = $"token-{actionId}-{mode}",
+                                ["helperVerifyState"] = "applied",
+                                ["helperExecutionPath"] = "runtime_verified"
+                            })
+                    }
+                };
+
+                var adapter = harness.CreateAdapter(profile, mode);
+                var result = await adapter.ExecuteAsync(BuildRequest(actionId, mode), CancellationToken.None);
+
+                result.Should().NotBeNull();
+                result.Diagnostics.Should().NotBeNull();
+                result.Diagnostics!.Should().ContainKey("reasonCode");
+            }
+        }
+    }
+
     private static ActionExecutionRequest BuildRequest(string actionId, RuntimeMode runtimeMode)
     {
         var payload = new JsonObject
@@ -922,7 +1481,12 @@ public sealed class RuntimeAdapterExecuteCoverageTests
                     Id: "hero_hook",
                     Script: "scripts/aotr/hero_state_bridge.lua",
                     Version: "1.0.0",
-                    EntryPoint: "SWFOC_Trainer_Set_Hero_Respawn")
+                    EntryPoint: "SWFOC_Trainer_Set_Hero_Respawn"),
+                new HelperHookSpec(
+                    Id: "spawn_bridge",
+                    Script: "scripts/common/spawn_bridge.lua",
+                    Version: "1.1.0",
+                    EntryPoint: "SWFOC_Trainer_Spawn_Context")
             ],
             Metadata: new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase));
     }
@@ -959,7 +1523,12 @@ public sealed class RuntimeAdapterExecuteCoverageTests
                     Id: "hero_hook",
                     Script: "scripts/aotr/hero_state_bridge.lua",
                     Version: "1.0.0",
-                    EntryPoint: "SWFOC_Trainer_Set_Hero_Respawn")
+                    EntryPoint: "SWFOC_Trainer_Set_Hero_Respawn"),
+                new HelperHookSpec(
+                    Id: "spawn_bridge",
+                    Script: "scripts/common/spawn_bridge.lua",
+                    Version: "1.1.0",
+                    EntryPoint: "SWFOC_Trainer_Spawn_Context")
             ],
             Metadata: new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase));
     }
@@ -1021,4 +1590,3 @@ public sealed class RuntimeAdapterExecuteCoverageTests
         field!.SetValue(instance, value);
     }
 }
-

@@ -15,14 +15,14 @@ jobs:
     name: Coverage 100 Gate
     runs-on: windows-latest
     steps:
-      - uses: actions/checkout@v6
-      - uses: actions/setup-python@v6
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
+      - uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 # v6
         with:
           python-version: '3.12'
-      - uses: actions/setup-node@v6
+      - uses: actions/setup-node@53b83947a5a98c8d113130e565377fae1a50d02f # v6
         with:
           node-version: '20'
-      - uses: actions/setup-dotnet@v4
+      - uses: actions/setup-dotnet@67a3573c9a986a3f9c594539f4ab511d57bb3ce9 # v4
         with:
           dotnet-version: '8.0.x'
 
@@ -48,35 +48,13 @@ jobs:
           "COVERAGE_REPORT_FILE=$resolved" | Out-File -FilePath $env:GITHUB_ENV -Append -Encoding utf8
 
       - name: Enforce 100% coverage
-        if: ${{ github.event_name != 'pull_request' }}
+        shell: pwsh
         run: |
-          python3 scripts/quality/assert_coverage_100.py \
-            --xml "dotnet=${{ env.COVERAGE_REPORT_FILE }}" \
-            --out-json "coverage-100/coverage.json" \
-            --out-md "coverage-100/coverage.md"
-
-      - name: Mark PR mode (coverage evidence only)
-        if: ${{ github.event_name == 'pull_request' }}
-        run: |
-          New-Item -ItemType Directory -Path coverage-100 -Force | Out-Null
-          @'
-          {
-            "status": "pass",
-            "mode": "pull_request_evidence_only",
-            "note": "100/100 hard gate enforced on protected branch pushes."
-          }
-          '@ | Out-File -FilePath coverage-100/coverage.json -Encoding utf8
-          @'
-          # Coverage 100 Gate
-
-          - Status: `pass`
-          - Mode: `pull_request_evidence_only`
-          - Note: `100/100` hard gate is enforced on protected branch pushes.
-          '@ | Out-File -FilePath coverage-100/coverage.md -Encoding utf8
+          python scripts/quality/assert_coverage_100.py --xml "dotnet=${{ env.COVERAGE_REPORT_FILE }}" --out-json "coverage-100/coverage.json" --out-md "coverage-100/coverage.md"
 
       - name: Upload coverage artifacts
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:
           name: coverage-100
           path: |

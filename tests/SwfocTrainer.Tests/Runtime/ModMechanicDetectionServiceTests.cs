@@ -81,6 +81,45 @@ public sealed class ModMechanicDetectionServiceTests
     }
 
     [Fact]
+    public async Task DetectAsync_ShouldUseFallbackBlockerDetails_WhenTransplantReportOmitsUnresolvedEntityRecords()
+    {
+        var profile = BuildProfile(
+            actions: new[] { Action("spawn_tactical_entity", ExecutionKind.Helper, "helperHookId", "entityId", "faction") },
+            helperHooks: new[] { new HelperHookSpec("spawn_bridge", "spawn_bridge.lua", "1.0", EntryPoint: "SWFOC_Trainer_Spawn_Context") });
+        var session = BuildSessionWithHelperReady(RuntimeMode.TacticalLand, "1397421866");
+        var catalog = CreateCatalog("Unit|AOTR_AT_AT|aotr_1397421866_swfoc|1397421866");
+        var transplantReport = new TransplantValidationReport(
+            TargetProfileId: profile.Id,
+            GeneratedAtUtc: DateTimeOffset.UtcNow,
+            AllResolved: false,
+            TotalEntities: 1,
+            BlockingEntityCount: 1,
+            Entities: new[]
+            {
+                new TransplantEntityValidation(
+                    EntityId: "AOTR_AT_AT",
+                    SourceProfileId: "aotr_1397421866_swfoc",
+                    SourceWorkshopId: "1397421866",
+                    RequiresTransplant: true,
+                    Resolved: true,
+                    ReasonCode: RuntimeReasonCode.CAPABILITY_PROBE_PASS,
+                    Message: "Entity was resolved.",
+                    VisualRef: null,
+                    MissingDependencies: Array.Empty<string>())
+            },
+            Diagnostics: new Dictionary<string, object?>());
+        var service = new ModMechanicDetectionService(new StubTransplantCompatibilityService(transplantReport));
+
+        var report = await service.DetectAsync(profile, session, catalog, CancellationToken.None);
+
+        var spawnSupport = report.ActionSupport.Single(x => x.ActionId == "spawn_tactical_entity");
+        spawnSupport.Supported.Should().BeFalse();
+        spawnSupport.ReasonCode.Should().Be(RuntimeReasonCode.CROSS_MOD_TRANSPLANT_REQUIRED);
+        spawnSupport.Message.Should().Contain("unknown_entity");
+        spawnSupport.Message.Should().Contain(RuntimeReasonCode.TRANSPLANT_VALIDATION_FAILED.ToString());
+    }
+
+    [Fact]
     public async Task DetectAsync_ShouldBlockHelperActions_WhenHelperBridgeUnavailable()
     {
         var profile = BuildProfile(
@@ -270,6 +309,67 @@ public sealed class ModMechanicDetectionServiceTests
 
         var support = report.ActionSupport.Single(x => x.ActionId == "unknown_runtime_action");
         support.Supported.Should().BeTrue();
+    }
+
+    [Fact]
+    public async Task DetectAsync_ShouldEmitDistinctSortedBlockingEntityIds_InDiagnostics()
+    {
+        var profile = BuildProfile(
+            actions: new[] { Action("set_credits", ExecutionKind.Memory, "symbol", "intValue") });
+        var session = BuildSession(
+            RuntimeMode.Galactic,
+            symbols: new[]
+            {
+                new SymbolInfo("credits", (nint)0x1000, SymbolValueType.Int32, AddressSource.Signature)
+            });
+        var transplantReport = new TransplantValidationReport(
+            TargetProfileId: profile.Id,
+            GeneratedAtUtc: DateTimeOffset.UtcNow,
+            AllResolved: false,
+            TotalEntities: 3,
+            BlockingEntityCount: 2,
+            Entities: new[]
+            {
+                new TransplantEntityValidation(
+                    EntityId: "RAW_ZETA",
+                    SourceProfileId: "raw_profile",
+                    SourceWorkshopId: "1125571106",
+                    RequiresTransplant: true,
+                    Resolved: false,
+                    ReasonCode: RuntimeReasonCode.TRANSPLANT_VALIDATION_FAILED,
+                    Message: "Missing dependency.",
+                    VisualRef: null,
+                    MissingDependencies: Array.Empty<string>()),
+                new TransplantEntityValidation(
+                    EntityId: "raw_alpha",
+                    SourceProfileId: "raw_profile",
+                    SourceWorkshopId: "1125571106",
+                    RequiresTransplant: true,
+                    Resolved: false,
+                    ReasonCode: RuntimeReasonCode.TRANSPLANT_VALIDATION_FAILED,
+                    Message: "Missing dependency.",
+                    VisualRef: null,
+                    MissingDependencies: Array.Empty<string>()),
+                new TransplantEntityValidation(
+                    EntityId: "RAW_ALPHA",
+                    SourceProfileId: "raw_profile",
+                    SourceWorkshopId: "1125571106",
+                    RequiresTransplant: true,
+                    Resolved: false,
+                    ReasonCode: RuntimeReasonCode.TRANSPLANT_VALIDATION_FAILED,
+                    Message: "Duplicate case variant.",
+                    VisualRef: null,
+                    MissingDependencies: Array.Empty<string>())
+            },
+            Diagnostics: new Dictionary<string, object?>());
+        var service = new ModMechanicDetectionService(new StubTransplantCompatibilityService(transplantReport));
+
+        var report = await service.DetectAsync(profile, session, catalog: null, CancellationToken.None);
+
+        report.Diagnostics.Should().ContainKey("transplantBlockingEntityIds");
+        report.Diagnostics!["transplantBlockingEntityIds"].Should().BeAssignableTo<IReadOnlyList<string>>();
+        var blockingIds = (IReadOnlyList<string>)report.Diagnostics["transplantBlockingEntityIds"]!;
+        blockingIds.Should().Equal("raw_alpha", "RAW_ZETA");
     }
 
     [Fact]

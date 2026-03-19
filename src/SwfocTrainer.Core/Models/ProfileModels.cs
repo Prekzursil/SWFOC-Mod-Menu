@@ -109,6 +109,8 @@ public sealed record ProfileManifest(
 
 public static class JsonProfileSerializer
 {
+    private const char Utf8Bom = '\uFEFF';
+
     private static readonly JsonSerializerOptions Options = new()
     {
         PropertyNameCaseInsensitive = true,
@@ -116,7 +118,15 @@ public static class JsonProfileSerializer
         Converters = { new JsonStringEnumConverter() }
     };
 
-    public static T? Deserialize<T>(string json) => JsonSerializer.Deserialize<T>(json, Options);
+    public static T? Deserialize<T>(string json)
+    {
+        if (json is null)
+        {
+            throw new ArgumentNullException(nameof(json));
+        }
+
+        return JsonSerializer.Deserialize<T>(NormalizeJson(json!), Options);
+    }
 
     public static string Serialize<T>(T value) => JsonSerializer.Serialize(value, Options);
 
@@ -124,5 +134,21 @@ public static class JsonProfileSerializer
     {
         var node = JsonSerializer.SerializeToNode(value, Options) as JsonObject;
         return node ?? new JsonObject();
+    }
+
+    private static string NormalizeJson(string json)
+    {
+        if (json is null)
+        {
+            throw new ArgumentNullException(nameof(json));
+        }
+
+        var sourceJson = json!;
+        if (sourceJson.Length == 0 || sourceJson[0] != Utf8Bom)
+        {
+            return sourceJson;
+        }
+
+        return sourceJson.TrimStart(Utf8Bom);
     }
 }

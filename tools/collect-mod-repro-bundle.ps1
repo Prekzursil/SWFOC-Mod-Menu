@@ -1168,6 +1168,118 @@ function Get-AllegianceRoutingSummary {
     }
 }
 
+function Get-HeroMechanicsSummary {
+    param(
+        [object]$RuntimeResult,
+        [object]$ActionStatusDiagnostics,
+        [string]$ProfileId
+    )
+
+    $runtimeSummary = Get-JsonMemberValue -Object $RuntimeResult -Names @("heroMechanicsSummary", "HeroMechanicsSummary")
+    if ($null -ne $runtimeSummary) {
+        return [ordered]@{
+            supportsRespawn = ConvertTo-BooleanOrDefault -Value (Get-JsonMemberValue -Object $runtimeSummary -Names @("supportsRespawn", "SupportsRespawn")) -Default $false
+            supportsPermadeath = ConvertTo-BooleanOrDefault -Value (Get-JsonMemberValue -Object $runtimeSummary -Names @("supportsPermadeath", "SupportsPermadeath")) -Default $false
+            supportsRescue = ConvertTo-BooleanOrDefault -Value (Get-JsonMemberValue -Object $runtimeSummary -Names @("supportsRescue", "SupportsRescue")) -Default $false
+            defaultRespawnTime = Get-JsonMemberValue -Object $runtimeSummary -Names @("defaultRespawnTime", "DefaultRespawnTime")
+            duplicateHeroPolicy = [string](Get-JsonMemberValue -Object $runtimeSummary -Names @("duplicateHeroPolicy", "DuplicateHeroPolicy"))
+            respawnExceptionSources = @(ConvertTo-StringArray -Value (Get-JsonMemberValue -Object $runtimeSummary -Names @("respawnExceptionSources", "RespawnExceptionSources")))
+        }
+    }
+
+    $entries = @($ActionStatusDiagnostics.entries)
+    $actionIds = @($entries | ForEach-Object { [string]$_.actionId })
+    $supportsRespawn = @($actionIds | Where-Object { $_ -eq "set_hero_state_helper" -or $_ -eq "toggle_roe_respawn_helper" -or $_ -eq "edit_hero_state" }).Count -gt 0
+    $supportsRescue = $ProfileId -like "aotr_*"
+    $supportsPermadeath = $ProfileId -like "roe_*"
+
+    return [ordered]@{
+        supportsRespawn = $supportsRespawn
+        supportsPermadeath = $supportsPermadeath
+        supportsRescue = $supportsRescue
+        defaultRespawnTime = $null
+        duplicateHeroPolicy = if ($supportsPermadeath) { "mod_defined_permadeath" } elseif ($supportsRescue) { "rescue_or_respawn" } else { "mod_defined" }
+        respawnExceptionSources = @()
+    }
+}
+
+function Get-OperationPolicySummary {
+    param([object]$EntityOperationSummary)
+
+    $operations = @($EntityOperationSummary.operations)
+    return [ordered]@{
+        tacticalEphemeralCount = [int](@($operations | Where-Object { [string]$_.persistencePolicy -eq "EphemeralBattleOnly" }).Count)
+        galacticPersistentCount = [int](@($operations | Where-Object { [string]$_.persistencePolicy -eq "PersistentGalactic" }).Count)
+        crossFactionEnabledCount = [int](@($operations | Where-Object { [string]$_.allowCrossFaction -eq "true" }).Count)
+        forceOverrideCount = [int](@($operations | Where-Object { [string]$_.forceOverride -eq "true" }).Count)
+    }
+}
+
+function Get-FleetTransferSafetySummary {
+    param([object]$ActionStatusDiagnostics)
+
+    $entries = @($ActionStatusDiagnostics.entries | Where-Object { ([string]$_.actionId) -eq "transfer_fleet_safe" })
+    $reasons = New-Object System.Collections.Generic.HashSet[string]([StringComparer]::OrdinalIgnoreCase)
+    foreach ($entry in $entries) {
+        foreach ($candidate in @([string]$entry.routeReasonCode, [string]$entry.skipReasonCode)) {
+            if (-not [string]::IsNullOrWhiteSpace($candidate)) {
+                [void]$reasons.Add($candidate)
+            }
+        }
+    }
+
+    return [ordered]@{
+        totalActions = [int]$entries.Count
+        safeTransfers = [int](@($entries | Where-Object { ([string]$_.outcome) -eq "Passed" }).Count)
+        blockedTransfers = [int](@($entries | Where-Object { ([string]$_.outcome) -ne "Passed" }).Count)
+        reasonCodes = @($reasons | Sort-Object)
+    }
+}
+
+function Get-PlanetFlipSummary {
+    param([object]$ActionStatusDiagnostics)
+
+    $entries = @($ActionStatusDiagnostics.entries | Where-Object { ([string]$_.actionId) -eq "flip_planet_owner" })
+    $reasons = New-Object System.Collections.Generic.HashSet[string]([StringComparer]::OrdinalIgnoreCase)
+    $emptyRetreatCount = 0
+    $convertEverythingCount = 0
+    foreach ($entry in $entries) {
+        $message = [string]$entry.message
+        if ($message -match "empty" -or $message -match "retreat") {
+            $emptyRetreatCount++
+        }
+        elseif (($entry.outcome -eq "Passed")) {
+            $convertEverythingCount++
+        }
+
+        foreach ($candidate in @([string]$entry.routeReasonCode, [string]$entry.skipReasonCode)) {
+            if (-not [string]::IsNullOrWhiteSpace($candidate)) {
+                [void]$reasons.Add($candidate)
+            }
+        }
+    }
+
+    return [ordered]@{
+        totalActions = [int]$entries.Count
+        emptyRetreatCount = [int]$emptyRetreatCount
+        convertEverythingCount = [int]$convertEverythingCount
+        blockedActions = [int](@($entries | Where-Object { ([string]$_.outcome) -ne "Passed" }).Count)
+        reasonCodes = @($reasons | Sort-Object)
+    }
+}
+
+function Get-EntityTransplantBlockers {
+    param([object]$TransplantSummary)
+
+    $blockingEntityIds = @(ConvertTo-StringArray -Value $TransplantSummary.blockingEntityIds)
+    return [ordered]@{
+        hasBlockers = [bool](-not [bool]$TransplantSummary.allResolved -or $blockingEntityIds.Count -gt 0)
+        blockingEntityCount = [int]$blockingEntityIds.Count
+        blockingEntityIds = @($blockingEntityIds)
+        reasonCodes = @(ConvertTo-StringArray -Value $TransplantSummary.reasonCodes)
+    }
+}
+
 if (-not (Test-Path -Path $SummaryPath)) {
     throw "Summary path not found: $SummaryPath"
 }
@@ -1335,6 +1447,14 @@ $rosterVisualCoverage = Get-RosterVisualCoverage `
     -RuntimeResult $runtimeResult `
     -TransplantSummary $transplantSummary
 $allegianceRoutingSummary = Get-AllegianceRoutingSummary -ActionStatusDiagnostics $actionStatusDiagnostics
+$heroMechanicsSummary = Get-HeroMechanicsSummary `
+    -RuntimeResult $runtimeResult `
+    -ActionStatusDiagnostics $actionStatusDiagnostics `
+    -ProfileId ([string]$launchContext.profileId)
+$operationPolicySummary = Get-OperationPolicySummary -EntityOperationSummary $entityOperationSummary
+$fleetTransferSafetySummary = Get-FleetTransferSafetySummary -ActionStatusDiagnostics $actionStatusDiagnostics
+$planetFlipSummary = Get-PlanetFlipSummary -ActionStatusDiagnostics $actionStatusDiagnostics
+$entityTransplantBlockers = Get-EntityTransplantBlockers -TransplantSummary $transplantSummary
 
 $bundle = [ordered]@{
     schemaVersion = "1.3"
@@ -1350,6 +1470,11 @@ $bundle = [ordered]@{
     transplantSummary = $transplantSummary
     rosterVisualCoverage = $rosterVisualCoverage
     allegianceRoutingSummary = $allegianceRoutingSummary
+    heroMechanicsSummary = $heroMechanicsSummary
+    operationPolicySummary = $operationPolicySummary
+    fleetTransferSafetySummary = $fleetTransferSafetySummary
+    planetFlipSummary = $planetFlipSummary
+    entityTransplantBlockers = $entityTransplantBlockers
     runtimeMode = $runtimeMode
     selectedHostProcess = $selectedHostProcess
     backendRouteDecision = $backendRouteDecision
@@ -1427,6 +1552,11 @@ if (@($actionStatusRows).Count -eq 0) {
 - transplant summary: enabled=$($transplantSummary.enabled) allResolved=$($transplantSummary.allResolved) blocking=$($transplantSummary.blockingEntityCount) reasons=$((@($transplantSummary.reasonCodes) -join ','))
 - roster visual coverage: total=$($rosterVisualCoverage.totalEntities) resolved=$($rosterVisualCoverage.visualResolvedCount) missing=$($rosterVisualCoverage.visualMissingCount)
 - allegiance routing summary: total=$($allegianceRoutingSummary.totalActions) routed=$($allegianceRoutingSummary.routedActions) blocked=$($allegianceRoutingSummary.blockedActions) reasons=$((@($allegianceRoutingSummary.reasonCodes) -join ','))
+- hero mechanics summary: respawn=$($heroMechanicsSummary.supportsRespawn) permadeath=$($heroMechanicsSummary.supportsPermadeath) rescue=$($heroMechanicsSummary.supportsRescue) defaultRespawn=$($heroMechanicsSummary.defaultRespawnTime) duplicatePolicy=$($heroMechanicsSummary.duplicateHeroPolicy)
+- operation policy summary: tacticalEphemeral=$($operationPolicySummary.tacticalEphemeralCount) galacticPersistent=$($operationPolicySummary.galacticPersistentCount) crossFactionEnabled=$($operationPolicySummary.crossFactionEnabledCount) forceOverride=$($operationPolicySummary.forceOverrideCount)
+- fleet transfer safety summary: total=$($fleetTransferSafetySummary.totalActions) safe=$($fleetTransferSafetySummary.safeTransfers) blocked=$($fleetTransferSafetySummary.blockedTransfers) reasons=$((@($fleetTransferSafetySummary.reasonCodes) -join ','))
+- planet flip summary: total=$($planetFlipSummary.totalActions) emptyRetreat=$($planetFlipSummary.emptyRetreatCount) convertEverything=$($planetFlipSummary.convertEverythingCount) blocked=$($planetFlipSummary.blockedActions)
+- transplant blockers: hasBlockers=$($entityTransplantBlockers.hasBlockers) count=$($entityTransplantBlockers.blockingEntityCount) ids=$((@($entityTransplantBlockers.blockingEntityIds) -join ','))
 - promoted action diagnostics: status=$($actionStatusDiagnostics.status) checks=$($actionStatusDiagnostics.summary.total) passed=$($actionStatusDiagnostics.summary.passed) failed=$($actionStatusDiagnostics.summary.failed) skipped=$($actionStatusDiagnostics.summary.skipped)
 
 ## Process Snapshot

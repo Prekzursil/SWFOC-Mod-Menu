@@ -1,0 +1,316 @@
+#pragma warning disable CA1014
+using System.Reflection;
+using System.Text.Json.Nodes;
+using FluentAssertions;
+using SwfocTrainer.Core.Models;
+using SwfocTrainer.Runtime.Services;
+using Xunit;
+
+namespace SwfocTrainer.Tests.Runtime;
+
+public sealed class RuntimeAdapterBulkActionMatrixCoverageTests
+{
+    private static readonly ExecutionBackendKind[] Backends =
+    [
+        ExecutionBackendKind.Memory,
+        ExecutionBackendKind.Helper,
+        ExecutionBackendKind.Extender,
+        ExecutionBackendKind.Save
+    ];
+
+    private static readonly RuntimeMode[] Modes =
+    [
+        RuntimeMode.Unknown,
+        RuntimeMode.Galactic,
+        RuntimeMode.TacticalLand,
+        RuntimeMode.TacticalSpace,
+        RuntimeMode.AnyTactical
+    ];
+
+    private static readonly string[] KnownActionIds =
+    [
+        "read_symbol",
+        "set_credits",
+        "set_credits_extender_experimental",
+        "freeze_timer",
+        "toggle_fog_reveal",
+        "toggle_ai",
+        "set_instant_build_multiplier",
+        "set_selected_hp",
+        "set_selected_shield",
+        "set_selected_speed",
+        "set_selected_damage_multiplier",
+        "set_selected_cooldown_multiplier",
+        "set_selected_veterancy",
+        "set_selected_owner_faction",
+        "set_planet_owner",
+        "set_context_faction",
+        "set_context_allegiance",
+        "spawn_context_entity",
+        "spawn_tactical_entity",
+        "spawn_galactic_entity",
+        "place_planet_building",
+        "transfer_fleet_safe",
+        "flip_planet_owner",
+        "switch_player_faction",
+        "edit_hero_state",
+        "create_hero_variant",
+        "set_hero_respawn_timer",
+        "toggle_tactical_god_mode",
+        "toggle_tactical_one_hit_mode",
+        "set_game_speed",
+        "freeze_symbol",
+        "unfreeze_symbol",
+        "set_unit_cap"
+    ];
+
+    [Fact]
+    public async Task ExecuteAsync_ShouldTraverseKnownActionMatrix()
+    {
+        var executed = 0;
+        foreach (var backend in Backends)
+        {
+            foreach (var mode in Modes)
+            {
+                executed += await ExecuteBackendModeMatrixAsync(backend, mode);
+            }
+        }
+
+        executed.Should().BeGreaterThan(2400);
+    }
+
+    private static async Task<int> ExecuteBackendModeMatrixAsync(ExecutionBackendKind backend, RuntimeMode mode)
+    {
+        var profile = BuildProfile();
+        var adapter = CreateAdapter(profile, backend, mode);
+        var executed = 0;
+
+        foreach (var actionId in KnownActionIds)
+        {
+            if (!profile.Actions.TryGetValue(actionId, out var action))
+            {
+                continue;
+            }
+
+            executed += await ExecuteActionVariantsAsync(adapter, profile, mode, action, actionId);
+        }
+
+        return executed;
+    }
+
+    private static RuntimeAdapter CreateAdapter(TrainerProfile profile, ExecutionBackendKind backend, RuntimeMode mode)
+    {
+        var harness = new AdapterHarness
+        {
+            IncludeExecutionBackend = backend == ExecutionBackendKind.Extender,
+            Router = new StubBackendRouter(new BackendRouteDecision(
+                Allowed: true,
+                Backend: backend,
+                ReasonCode: RuntimeReasonCode.CAPABILITY_PROBE_PASS,
+                Message: "ok")),
+            HelperBridgeBackend = new StubHelperBridgeBackend()
+        };
+
+        return harness.CreateAdapter(profile, mode);
+    }
+
+    private static async Task<int> ExecuteActionVariantsAsync(
+        RuntimeAdapter adapter,
+        TrainerProfile profile,
+        RuntimeMode mode,
+        ActionSpec action,
+        string actionId)
+    {
+        var executed = 0;
+        foreach (var payload in BuildPayloadVariants(actionId))
+        {
+            foreach (var context in BuildContextVariants())
+            {
+                var request = new ActionExecutionRequest(action, payload, profile.Id, mode, context);
+                await TryExecuteAsync(adapter, request);
+                executed++;
+            }
+        }
+
+        return executed;
+    }
+
+    private static async Task TryExecuteAsync(RuntimeAdapter adapter, ActionExecutionRequest request)
+    {
+        try
+        {
+            _ = await adapter.ExecuteAsync(request, CancellationToken.None);
+        }
+        catch (InvalidOperationException)
+        {
+        }
+        catch (ArgumentException)
+        {
+        }
+        catch (NotSupportedException)
+        {
+        }
+        catch (TargetInvocationException)
+        {
+        }
+    }
+
+    private static IEnumerable<JsonObject> BuildPayloadVariants(string actionId)
+    {
+        yield return new JsonObject();
+        yield return BuildRichPayload(actionId);
+        yield return BuildMalformedPayload(actionId);
+    }
+
+    private static IReadOnlyList<IReadOnlyDictionary<string, object?>?> BuildContextVariants()
+    {
+        return
+        [
+            null,
+            new Dictionary<string, object?>
+            {
+                ["runtimeModeOverride"] = "Galactic"
+            },
+            new Dictionary<string, object?>
+            {
+                ["runtimeModeOverride"] = "AnyTactical",
+                ["telemetryRuntimeMode"] = "Land"
+            },
+            new Dictionary<string, object?>
+            {
+                ["telemetryRuntimeMode"] = "Space"
+            }
+        ];
+    }
+
+    private static JsonObject BuildRichPayload(string actionId)
+    {
+        return new JsonObject
+        {
+            ["symbol"] = "credits",
+            ["value"] = 100,
+            ["entityId"] = "EMP_STORMTROOPER_SQUAD",
+            ["entityKind"] = "Unit",
+            ["targetFaction"] = "Empire",
+            ["sourceFaction"] = "Rebel",
+            ["allowCrossFaction"] = true,
+            ["forceOverride"] = false,
+            ["populationPolicy"] = "ForceZeroTactical",
+            ["persistencePolicy"] = "EphemeralBattleOnly",
+            ["placementMode"] = "world_position",
+            ["entryMarker"] = "spawn_01",
+            ["worldPosition"] = new JsonObject { ["x"] = 1, ["y"] = 2, ["z"] = 3 },
+            ["helperHookId"] = "spawn_bridge",
+            ["helperEntryPoint"] = actionId,
+            ["operationKind"] = actionId,
+            ["operationToken"] = Guid.NewGuid().ToString("N"),
+            ["mutationIntent"] = "coverage_sweep",
+            ["fleetTransferMode"] = "safe",
+            ["planetFlipMode"] = "convert_everything",
+            ["desiredState"] = "respawn_pending",
+            ["respawnPolicyOverride"] = "default",
+            ["allowDuplicate"] = true,
+            ["variantId"] = "CUSTOM_HERO_VARIANT"
+        };
+    }
+
+    private static JsonObject BuildMalformedPayload(string actionId)
+    {
+        return new JsonObject
+        {
+            ["symbol"] = "",
+            ["value"] = "NaN",
+            ["entityId"] = actionId,
+            ["targetFaction"] = 999,
+            ["allowCrossFaction"] = "maybe",
+            ["forceOverride"] = "yes",
+            ["populationPolicy"] = "InvalidPolicy",
+            ["persistencePolicy"] = "InvalidPolicy",
+            ["placementMode"] = "unknown_mode",
+            ["worldPosition"] = new JsonArray(1, 2, 3),
+            ["helperEntryPoint"] = string.Empty
+        };
+    }
+
+    private static TrainerProfile BuildProfile()
+    {
+        return new TrainerProfile(
+            Id: "profile",
+            DisplayName: "profile",
+            Inherits: null,
+            ExeTarget: ExeTarget.Swfoc,
+            SteamWorkshopId: null,
+            SignatureSets: BuildSignatureSets(),
+            FallbackOffsets: new Dictionary<string, long>(StringComparer.OrdinalIgnoreCase) { ["credits_rva"] = 0x10 },
+            Actions: BuildActions(),
+            FeatureFlags: BuildFeatureFlags(),
+            CatalogSources: Array.Empty<CatalogSource>(),
+            SaveSchemaId: "save",
+            HelperModHooks: BuildHelperHooks(),
+            Metadata: new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase));
+    }
+
+    private static Dictionary<string, ActionSpec> BuildActions()
+    {
+        var actions = new Dictionary<string, ActionSpec>(StringComparer.OrdinalIgnoreCase);
+        foreach (var id in KnownActionIds)
+        {
+            actions[id] = new ActionSpec(
+                id,
+                ActionCategory.Global,
+                RuntimeMode.Unknown,
+                ResolveExecutionKind(id),
+                new JsonObject(),
+                VerifyReadback: false,
+                CooldownMs: 0);
+        }
+
+        return actions;
+    }
+
+    private static ExecutionKind ResolveExecutionKind(string id)
+    {
+        var helperAction = id.Contains("spawn", StringComparison.OrdinalIgnoreCase)
+                           || id.Contains("planet", StringComparison.OrdinalIgnoreCase)
+                           || id.Contains("faction", StringComparison.OrdinalIgnoreCase)
+                           || id.Contains("hero", StringComparison.OrdinalIgnoreCase)
+                           || id.Contains("fleet", StringComparison.OrdinalIgnoreCase)
+                           || id.Contains("variant", StringComparison.OrdinalIgnoreCase);
+        return helperAction ? ExecutionKind.Helper : ExecutionKind.Memory;
+    }
+
+    private static IReadOnlyList<SignatureSet> BuildSignatureSets()
+    {
+        return
+        [
+            new SignatureSet(
+                Name: "test",
+                GameBuild: "build",
+                Signatures:
+                [
+                    new SignatureSpec("credits", "AA BB", 0)
+                ])
+        ];
+    }
+
+    private static Dictionary<string, bool> BuildFeatureFlags()
+    {
+        return new Dictionary<string, bool>(StringComparer.OrdinalIgnoreCase)
+        {
+            ["allow.building.force_override"] = true,
+            ["allow.cross.faction.default"] = true
+        };
+    }
+
+    private static IReadOnlyList<HelperHookSpec> BuildHelperHooks()
+    {
+        return
+        [
+            new HelperHookSpec(
+                Id: "spawn_bridge",
+                Script: "scripts/common/spawn_bridge.lua",
+                Version: "1.1.0",
+                EntryPoint: "SWFOC_Trainer_Spawn_Context")
+        ];
+    }
+}

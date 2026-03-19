@@ -3,6 +3,8 @@
     <TargetFramework>net8.0-windows</TargetFramework>
     <EnableWindowsTargeting>true</EnableWindowsTargeting>
     <IsPackable>false</IsPackable>
+    <CLSCompliant>false</CLSCompliant>
+    <NoWarn>$(NoWarn);CA1014</NoWarn>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.14.1" />
@@ -34,3 +36,5 @@
     <ProjectReference Include="../../src/SwfocTrainer.Transplant/SwfocTrainer.Transplant.csproj" />
   </ItemGroup>
 </Project>
+
+

@@ -1,0 +1,204 @@
+#!/usr/bin/env python3
+from __future__ import absolute_import, division
+
+import argparse
+import json
+from datetime import datetime, timezone
+from pathlib import Path
+from typing import Any, Dict, List, Set, Tuple
+
+
+def parse_args() -> argparse.Namespace:
+    parser = argparse.ArgumentParser(description="Assert coverage thresholds for all language components in manifest.")
+    parser.add_argument("--manifest", required=True, help="Path to coverage-manifest.json")
+    parser.add_argument("--min-line", type=float, default=100.0, help="Minimum line coverage percent")
+    parser.add_argument("--min-branch", type=float, default=100.0, help="Minimum branch coverage percent")
+    parser.add_argument(
+        "--required-languages",
+        default="csharp,cpp,lua,powershell,python",
+        help="Comma-separated required language list",
+    )
+    parser.add_argument("--out-json", default="coverage-100/coverage-all.json", help="Output JSON summary path")
+    parser.add_argument("--out-md", default="coverage-100/coverage-all.md", help="Output markdown summary path")
+    return parser.parse_args()
+
+
+def safe_percent(covered: int, total: int) -> float:
+    if total <= 0:
+        return 100.0
+    return (covered / total) * 100.0
+
+
+def load_manifest(path: Path) -> Dict[str, Any]:
+    with path.open("r", encoding="utf-8") as handle:
+        payload = json.load(handle)
+    if not isinstance(payload, dict):
+        raise ValueError("Manifest root must be a JSON object")
+    return payload
+
+
+def parse_component(component: Dict[str, Any]) -> Dict[str, Any]:
+    name = str(component.get("name", "unknown"))
+    language = str(component.get("language", "unknown")).strip().lower()
+    source_type = str(component.get("sourceType", "unknown"))
+    line_covered = int(component.get("lineCovered", 0))
+    line_total = int(component.get("lineTotal", 0))
+    branch_covered = int(component.get("branchCovered", 0))
+    branch_total = int(component.get("branchTotal", 0))
+    artifact_path = str(component.get("artifactPath", ""))
+
+    line_percent = safe_percent(line_covered, line_total)
+    branch_percent = safe_percent(branch_covered, branch_total)
+
+    return {
+        "name": name,
+        "language": language,
+        "sourceType": source_type,
+        "lineCovered": line_covered,
+        "lineTotal": line_total,
+        "linePercent": line_percent,
+        "branchCovered": branch_covered,
+        "branchTotal": branch_total,
+        "branchPercent": branch_percent,
+        "artifactPath": artifact_path,
+    }
+
+
+def evaluate_component(
+    normalized_component: Dict[str, Any],
+    min_line: float,
+    min_branch: float,
+) -> List[str]:
+    findings: List[str] = []
+    name = normalized_component["name"]
+    language = normalized_component["language"]
+    line_percent = float(normalized_component["linePercent"])
+    line_covered = int(normalized_component["lineCovered"])
+    line_total = int(normalized_component["lineTotal"])
+    branch_percent = float(normalized_component["branchPercent"])
+    branch_covered = int(normalized_component["branchCovered"])
+    branch_total = int(normalized_component["branchTotal"])
+
+    if line_percent < min_line:
+        findings.append(
+            f"{name} ({language}) line coverage below {min_line:.2f}%: {line_percent:.2f}% ({line_covered}/{line_total})"
+        )
+
+    if branch_percent < min_branch:
+        findings.append(
+            f"{name} ({language}) branch coverage below {min_branch:.2f}%: {branch_percent:.2f}% ({branch_covered}/{branch_total})"
+        )
+
+    return findings
+
+
+def evaluate_components(
+    components: List[Dict[str, Any]],
+    min_line: float,
+    min_branch: float,
+    required_languages: Set[str],
+) -> Tuple[str, List[str], List[Dict[str, Any]]]:
+    findings: List[str] = []
+    normalized: List[Dict[str, Any]] = []
+
+    seen_languages = {str(component.get("language", "")).strip().lower() for component in components}
+    missing = sorted(language for language in required_languages if language not in seen_languages)
+    if missing:
+        findings.append(f"missing required language components: {', '.join(missing)}")
+
+    for component in components:
+        parsed_component = parse_component(component)
+        findings.extend(evaluate_component(parsed_component, min_line=min_line, min_branch=min_branch))
+        normalized.append(parsed_component)
+
+    status = "pass" if not findings else "fail"
+    return status, findings, normalized
+
+
+def render_markdown(payload: Dict[str, Any]) -> str:
+    lines = [
+        "# Coverage All Gate",
+        "",
+        f"- Status: `{payload['status']}`",
+        f"- Timestamp (UTC): `{payload['timestampUtc']}`",
+        f"- Min line threshold: `{payload['minLine']}`",
+        f"- Min branch threshold: `{payload['minBranch']}`",
+        "",
+        "## Components",
+    ]
+
+    components = payload.get("components", [])
+    if not components:
+        lines.append("- None")
+    else:
+        for component in components:
+            lines.append(
+                "- `{name}` ({language}, {sourceType}): line `{linePercent:.2f}%` ({lineCovered}/{lineTotal}), "
+                "branch `{branchPercent:.2f}%` ({branchCovered}/{branchTotal}) artifact `{artifactPath}`".format(
+                    **component
+                )
+            )
+
+    lines.append("")
+    lines.append("## Findings")
+    findings = payload.get("findings", [])
+    if findings:
+        lines.extend(f"- {finding}" for finding in findings)
+    else:
+        lines.append("- None")
+
+    return "\n".join(lines) + "\n"
+
+
+def ensure_output(path: Path) -> Path:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    return path
+
+
+def parse_required_languages(raw_value: str) -> Set[str]:
+    return {
+        language.strip().lower()
+        for language in str(raw_value).split(",")
+        if language.strip()
+    }
+
+
+def main() -> int:
+    args = parse_args()
+    manifest_path = Path(args.manifest)
+    manifest = load_manifest(manifest_path)
+    components = manifest.get("components", [])
+    if not isinstance(components, list):
+        raise ValueError("Manifest components must be an array")
+
+    required_languages = parse_required_languages(args.required_languages)
+
+    status, findings, normalized = evaluate_components(
+        [component for component in components if isinstance(component, dict)],
+        min_line=args.min_line,
+        min_branch=args.min_branch,
+        required_languages=required_languages,
+    )
+
+    payload = {
+        "status": status,
+        "timestampUtc": datetime.now(timezone.utc).isoformat(),
+        "manifest": str(manifest_path),
+        "minLine": args.min_line,
+        "minBranch": args.min_branch,
+        "requiredLanguages": sorted(required_languages),
+        "components": normalized,
+        "findings": findings,
+    }
+
+    out_json = ensure_output(Path(args.out_json))
+    out_md = ensure_output(Path(args.out_md))
+    out_json.write_text(json.dumps(payload, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+    out_md.write_text(render_markdown(payload), encoding="utf-8")
+    print(out_md.read_text(encoding="utf-8"), end="")
+
+    return 0 if status == "pass" else 1
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

@@ -1,0 +1,102 @@
+{
+  "schemaVersion": "1.0",
+  "cases": [
+    {
+      "name": "aotr_exact_fixture",
+      "profileId": "aotr_1397421866_swfoc",
+      "saves": [
+        {
+          "name": "swfoc_trainer_live_aotr_galactic.PetroglyphFoC64Save",
+          "fileMagic": "PGSAVE01",
+          "campaignMode": 1,
+          "sizeBytes": 401408
+        },
+        {
+          "name": "save_game_AOTR_Era_4.PetroglyphFoC64Save",
+          "fileMagic": "PGSAVE01",
+          "campaignMode": 1,
+          "sizeBytes": 401408
+        }
+      ]
+    },
+    {
+      "name": "aotr_materialize_fixture_from_existing",
+      "profileId": "aotr_1397421866_swfoc",
+      "materializeFixture": true,
+      "saves": [
+        {
+          "name": "save_game_AOTR_Era_4.PetroglyphFoC64Save",
+          "fileMagic": "PGSAVE01",
+          "campaignMode": 1,
+          "sizeBytes": 401408
+        },
+        {
+          "name": "generic_tactical_slot.PetroglyphFoC64Save",
+          "fileMagic": "PGSAVE01",
+          "campaignMode": 0,
+          "sizeBytes": 401408
+        }
+      ]
+    },
+    {
+      "name": "roe_existing_hint_order66",
+      "profileId": "roe_3447786229_swfoc",
+      "saves": [
+        {
+          "name": "order66_campaign_slot_01.PetroglyphFoC64Save",
+          "fileMagic": "PGSAVE01",
+          "campaignMode": 1,
+          "sizeBytes": 417792
+        }
+      ]
+    },
+    {
+      "name": "roe_fixture_required_without_hint",
+      "profileId": "roe_3447786229_swfoc",
+      "saves": [
+        {
+          "name": "save_game_AOTR_Era_4.PetroglyphFoC64Save",
+          "fileMagic": "PGSAVE01",
+          "campaignMode": 1,
+          "sizeBytes": 401408
+        }
+      ]
+    },
+    {
+      "name": "reject_non_galactic_fixture",
+      "profileId": "aotr_1397421866_swfoc",
+      "saves": [
+        {
+          "name": "swfoc_trainer_live_aotr_galactic.PetroglyphFoC64Save",
+          "fileMagic": "PGSAVE01",
+          "campaignMode": 0,
+          "sizeBytes": 401408
+        }
+      ]
+    },
+    {
+      "name": "aotr_exact_fixture_real_magic",
+      "profileId": "aotr_1397421866_swfoc",
+      "saves": [
+        {
+          "name": "swfoc_trainer_live_aotr_galactic.PetroglyphFoC64Save",
+          "fileMagic": "RGMH\u0001\u0000\u0000\u0000",
+          "campaignMode": 1,
+          "sizeBytes": 401408
+        }
+      ]
+    },
+    {
+      "name": "roe_reject_aotr_fixture_without_roe_hints",
+      "profileId": "roe_3447786229_swfoc",
+      "saves": [
+        {
+          "name": "swfoc_trainer_live_aotr_galactic.PetroglyphFoC64Save",
+          "fileMagic": "RGMH\u0001\u0000\u0000\u0000",
+          "campaignMode": 1,
+          "sizeBytes": 401408
+        }
+      ]
+    }
+  ]
+}

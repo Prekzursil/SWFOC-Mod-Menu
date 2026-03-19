@@ -68,4 +68,35 @@ public sealed class FlowLabSnapshotBuilderTests
         snapshot.ModeCounts.Should().ContainSingle(x => x.Mode == FlowModeHint.TacticalSpace && x.Count == 2);
         snapshot.Diagnostics.Should().ContainInOrder("flow-warning", "meg-warning");
     }
+
+    [Fact]
+    public void Build_ShouldDeduplicateTrimAndSortScriptReferences_CaseInsensitive()
+    {
+        var flowReport = new FlowIndexReport(
+            [
+                new FlowPlotRecord(
+                    "Campaign",
+                    "Data/XML/Story/Campaign.xml",
+                    [
+                        new FlowEventRecord("STORY_GALACTIC_TURN", FlowModeHint.Galactic, "Campaign.xml", " story/a.lua ", new Dictionary<string, string>()),
+                        new FlowEventRecord("STORY_GALACTIC_TURN", FlowModeHint.Galactic, "Campaign.xml", "Story/A.lua", new Dictionary<string, string>()),
+                        new FlowEventRecord("STORY_SPACE_TACTICAL", FlowModeHint.TacticalSpace, "Campaign.xml", "Story/B.lua", new Dictionary<string, string>())
+                    ])
+            ],
+            []);
+
+        var megaIndex = new MegaFilesIndex(
+            [
+                new MegaFileEntry("Zulu.meg", 3, true, new Dictionary<string, string>()),
+                new MegaFileEntry("Alpha.meg", 1, true, new Dictionary<string, string>()),
+                new MegaFileEntry("Hidden.meg", 2, false, new Dictionary<string, string>())
+            ],
+            []);
+
+        var snapshot = new FlowLabSnapshotBuilder().Build(flowReport, megaIndex);
+
+        snapshot.ScriptReferences.Should().ContainInOrder("story/a.lua", "Story/B.lua");
+        snapshot.ScriptReferences.Should().HaveCount(2);
+        snapshot.MegaLoadOrder.Should().ContainInOrder("Alpha.meg", "Zulu.meg");
+    }
 }
