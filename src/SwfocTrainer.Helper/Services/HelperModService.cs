@@ -1,4 +1,5 @@
 #pragma warning disable S4136
+using System.Globalization;
 using System.Security.Cryptography;
 using System.Text.Json;
 using System.Text.Json.Nodes;
@@ -22,8 +23,10 @@ public sealed class HelperModService : IHelperModService, IHelperCommandTranspor
     private const string OriginalScriptCopyRoot = "SwfocTrainer/Original";
     private const string RuntimeTransportRoot = "SwfocTrainer/Runtime";
     private const string PendingCommandRoot = "SwfocTrainer/Runtime/commands/pending";
+    private const string DispatchCommandRelativePath = "SwfocTrainer/Runtime/commands/dispatch.lua";
     private const string ClaimedCommandRoot = "SwfocTrainer/Runtime/commands/claimed";
     private const string ReceiptRoot = "SwfocTrainer/Runtime/receipts";
+    private const string LaunchMirrorRootName = "SwfocTrainer_Helper";
 
     private readonly IProfileRepository _profiles;
     private readonly HelperModOptions _options;
@@ -39,10 +42,10 @@ public sealed class HelperModService : IHelperModService, IHelperCommandTranspor
     public async Task<string> DeployAsync(string profileId, CancellationToken cancellationToken)
     {
         var profile = await _profiles.ResolveInheritedProfileAsync(profileId, cancellationToken);
-        var targetRoot = Path.Combine(_options.InstallRoot, profileId);
-        Directory.CreateDirectory(targetRoot);
-        Directory.CreateDirectory(GetLibraryRoot(targetRoot));
-        EnsureTransportDirectories(targetRoot);
+        var sourceRoot = GetSourceDeploymentRoot(profileId);
+        Directory.CreateDirectory(sourceRoot);
+        ResetTransportState(sourceRoot);
+        Directory.CreateDirectory(GetLibraryRoot(sourceRoot));
 
         var deployedScripts = new List<string>();
         var deployedHookManifests = new List<object>();
@@ -56,7 +59,7 @@ public sealed class HelperModService : IHelperModService, IHelperCommandTranspor
                 throw new FileNotFoundException($"Helper hook source not found: {sourcePath}");
             }
 
-            var destination = GetDeployedHookScriptPath(targetRoot, script);
+            var destination = GetDeployedHookScriptPath(sourceRoot, script);
             var destinationDir = Path.GetDirectoryName(destination);
             if (!string.IsNullOrWhiteSpace(destinationDir))
             {
@@ -64,7 +67,7 @@ public sealed class HelperModService : IHelperModService, IHelperCommandTranspor
             }
 
             File.Copy(sourcePath, destination, overwrite: true);
-            var relativeDeployedScript = Path.GetRelativePath(targetRoot, destination).Replace('\\', '/');
+            var relativeDeployedScript = Path.GetRelativePath(sourceRoot, destination).Replace('\\', '/');
             deployedScripts.Add(relativeDeployedScript);
             deployedHookManifests.Add(new
             {
@@ -78,37 +81,64 @@ public sealed class HelperModService : IHelperModService, IHelperCommandTranspor
             });
         }
 
-        var bootstrapPath = Path.Combine(GetLibraryRoot(targetRoot), BootstrapScriptName);
-        File.WriteAllText(bootstrapPath, BuildBootstrapScript(profile.Id, profile.HelperModHooks));
+        var bootstrapPath = Path.Combine(GetLibraryRoot(sourceRoot), BootstrapScriptName);
+        File.WriteAllText(bootstrapPath, BuildBootstrapScript(sourceRoot, profile.Id, profile.HelperModHooks));
 
         var activationStrategy = ResolveActivationStrategy(profile);
-        var activationScripts = await DeployActivationScriptsAsync(targetRoot, profile, activationStrategy, cancellationToken);
+        var activationScripts = await DeployActivationScriptsAsync(sourceRoot, profile, activationStrategy, cancellationToken);
 
         File.WriteAllText(
-            Path.Combine(targetRoot, DeploymentManifestFileName),
+            Path.Combine(sourceRoot, DeploymentManifestFileName),
             BuildDeploymentManifest(
                 profile.Id,
                 deployedScripts,
-                Path.GetRelativePath(targetRoot, bootstrapPath).Replace('\\', '/'),
+                Path.GetRelativePath(sourceRoot, bootstrapPath).Replace('\\', '/'),
                 activationStrategy,
                 activationScripts,
                 BuildCommandTransportManifest(),
                 deployedHookManifests));
 
+        var runtimeRoot = ResolveRuntimeDeploymentRoot(profileId);
+        if (!runtimeRoot.Equals(sourceRoot, StringComparison.OrdinalIgnoreCase))
+        {
+            MirrorDeployment(sourceRoot, runtimeRoot);
+            File.WriteAllText(
+                Path.Combine(GetLibraryRoot(runtimeRoot), BootstrapScriptName),
+                BuildBootstrapScript(runtimeRoot, profile.Id, profile.HelperModHooks));
+        }
+
         _logger.LogInformation(
-            "Deployed helper hooks for {ProfileId} into {TargetRoot} (activationStrategy={ActivationStrategy}, activationScripts={ActivationCount})",
+            "Deployed helper hooks for {ProfileId} into {TargetRoot} (runtimeRoot={RuntimeRoot}, activationStrategy={ActivationStrategy}, activationScripts={ActivationCount})",
             profileId,
-            targetRoot,
+            sourceRoot,
+            runtimeRoot,
             activationStrategy,
             activationScripts.Count);
 
-        return targetRoot;
+        return runtimeRoot;
     }
 
     public async Task<bool> VerifyAsync(string profileId, CancellationToken cancellationToken)
     {
         var profile = await _profiles.ResolveInheritedProfileAsync(profileId, cancellationToken);
-        var targetRoot = Path.Combine(_options.InstallRoot, profileId);
+        var sourceRoot = GetSourceDeploymentRoot(profileId);
+        if (!VerifyDeploymentRoot(profile, sourceRoot))
+        {
+            return false;
+        }
+
+        var runtimeRoot = ResolveRuntimeDeploymentRoot(profileId);
+        if (!runtimeRoot.Equals(sourceRoot, StringComparison.OrdinalIgnoreCase) &&
+            !VerifyDeploymentRoot(profile, runtimeRoot))
+        {
+            return false;
+        }
+
+        return true;
+    }
+
+    private bool VerifyDeploymentRoot(TrainerProfile profile, string targetRoot)
+    {
         if (!File.Exists(Path.Combine(targetRoot, DeploymentManifestFileName)))
         {
             return false;
@@ -145,18 +175,15 @@ public sealed class HelperModService : IHelperModService, IHelperCommandTranspor
             }
         }
 
-        var activationStrategy = ResolveActivationStrategy(profile);
-        if (string.IsNullOrWhiteSpace(activationStrategy))
+        if (!string.IsNullOrWhiteSpace(ResolveActivationStrategy(profile)))
         {
-            return true;
-        }
-
-        foreach (var activationScript in ResolveAutoloadScripts(profile))
-        {
-            if (!File.Exists(GetActivationWrapperPath(targetRoot, activationScript)) ||
-                !File.Exists(GetOriginalCopyPath(targetRoot, activationScript)))
+            foreach (var activationScript in ResolveAutoloadScripts(profile))
             {
-                return false;
+                if (!File.Exists(GetActivationWrapperPath(targetRoot, activationScript)) ||
+                    !File.Exists(GetOriginalCopyPath(targetRoot, activationScript)))
+                {
+                    return false;
+                }
             }
         }
 
@@ -183,6 +210,7 @@ public sealed class HelperModService : IHelperModService, IHelperCommandTranspor
             BootstrapScriptPath: Path.Combine(GetLibraryRoot(deployedRoot), BootstrapScriptName),
             Model: CommandTransportModel,
             SchemaVersion: CommandTransportSchemaVersion,
+            DispatchCommandPath: GetDispatchCommandPath(deployedRoot),
             PendingDirectory: GetPendingCommandRoot(deployedRoot),
             ClaimedDirectory: GetClaimedCommandRoot(deployedRoot),
             ReceiptDirectory: GetReceiptRoot(deployedRoot));
@@ -227,6 +255,7 @@ public sealed class HelperModService : IHelperModService, IHelperCommandTranspor
         var commandPath = Path.Combine(layout.PendingDirectory, $"{safeToken}.json");
         var claimPath = Path.Combine(layout.ClaimedDirectory, $"{safeToken}.json");
         var receiptPath = Path.Combine(layout.ReceiptDirectory, $"{safeToken}.json");
+        var dispatchPath = layout.DispatchCommandPath;
 
         if (File.Exists(commandPath))
         {
@@ -241,6 +270,11 @@ public sealed class HelperModService : IHelperModService, IHelperCommandTranspor
         if (File.Exists(receiptPath))
         {
             File.Delete(receiptPath);
+        }
+
+        if (File.Exists(dispatchPath))
+        {
+            File.Delete(dispatchPath);
         }
 
         payload["helperEntryPoint"] ??= helperEntryPoint;
@@ -263,6 +297,11 @@ public sealed class HelperModService : IHelperModService, IHelperCommandTranspor
             envelope.ToJsonString(new JsonSerializerOptions { WriteIndented = true }),
             cancellationToken);
 
+        await File.WriteAllTextAsync(
+            dispatchPath,
+            BuildDispatchCommandScript(profileId, actionId, helperEntryPoint, safeToken, payload),
+            cancellationToken);
+
         _logger.LogInformation(
             "Staged helper overlay command for {ProfileId}: action={ActionId}, entryPoint={EntryPoint}, token={OperationToken}",
             profileId,
@@ -278,7 +317,7 @@ public sealed class HelperModService : IHelperModService, IHelperCommandTranspor
             CommandPath: commandPath,
             ClaimPath: claimPath,
             ReceiptPath: receiptPath,
-            PayloadPath: commandPath);
+            PayloadPath: dispatchPath);
     }
 
     public async Task<HelperCommandReceipt?> TryReadReceiptAsync(
@@ -296,9 +335,8 @@ public sealed class HelperModService : IHelperModService, IHelperCommandTranspor
             throw new ArgumentException("Operation token is required.", nameof(operationToken));
         }
 
-        var layout = await GetLayoutAsync(profileId, cancellationToken);
-        var receiptPath = Path.Combine(layout.ReceiptDirectory, $"{operationToken.Trim()}.json");
-        if (!File.Exists(receiptPath))
+        var receiptPath = ResolveTransportArtifactPath(profileId, operationToken.Trim(), ReceiptRoot);
+        if (string.IsNullOrWhiteSpace(receiptPath) || !File.Exists(receiptPath))
         {
             return null;
         }
@@ -389,6 +427,71 @@ public sealed class HelperModService : IHelperModService, IHelperCommandTranspor
             VerificationSource: verificationSource,
             VerifyState: verifyState,
             AppliedEntityId: appliedEntityId);
+    }
+
+    public async Task<HelperCommandClaim?> TryReadClaimAsync(
+        string profileId,
+        string operationToken,
+        CancellationToken cancellationToken)
+    {
+        if (string.IsNullOrWhiteSpace(profileId))
+        {
+            throw new ArgumentException("Profile id is required.", nameof(profileId));
+        }
+
+        if (string.IsNullOrWhiteSpace(operationToken))
+        {
+            throw new ArgumentException("Operation token is required.", nameof(operationToken));
+        }
+
+        var claimPath = ResolveTransportArtifactPath(profileId, operationToken.Trim(), ClaimedCommandRoot);
+        if (string.IsNullOrWhiteSpace(claimPath) || !File.Exists(claimPath))
+        {
+            return null;
+        }
+
+        await using var stream = File.OpenRead(claimPath);
+        using var document = await JsonDocument.ParseAsync(stream, cancellationToken: cancellationToken);
+        var root = document.RootElement;
+
+        static string ReadString(JsonElement element, string propertyName)
+        {
+            if (element.TryGetProperty(propertyName, out var property) && property.ValueKind == JsonValueKind.String)
+            {
+                return property.GetString()?.Trim() ?? string.Empty;
+            }
+
+            return string.Empty;
+        }
+
+        var actionId = ReadString(root, "actionId");
+        var helperEntryPoint = ReadString(root, "helperEntryPoint");
+        var effectiveOperationToken = ReadString(root, "operationToken");
+        if (string.IsNullOrWhiteSpace(effectiveOperationToken))
+        {
+            effectiveOperationToken = operationToken.Trim();
+        }
+
+        var stageState = ReadString(root, "stageState");
+        if (string.IsNullOrWhiteSpace(stageState))
+        {
+            stageState = "claimed";
+        }
+
+        var message = ReadString(root, "message");
+        if (string.IsNullOrWhiteSpace(message))
+        {
+            message = "Overlay command claimed.";
+        }
+
+        return new HelperCommandClaim(
+            ProfileId: profileId,
+            ActionId: actionId,
+            HelperEntryPoint: helperEntryPoint,
+            OperationToken: effectiveOperationToken,
+            ClaimPath: claimPath,
+            StageState: stageState,
+            Message: message);
     }
 
     private Task<IReadOnlyList<ActivationScriptDeployment>> DeployActivationScriptsAsync(
@@ -655,160 +758,518 @@ public sealed class HelperModService : IHelperModService, IHelperCommandTranspor
             .ToArray();
     }
 
-    private static string BuildBootstrapScript(string profileId, IReadOnlyList<HelperHookSpec> hooks)
+    private static string BuildBootstrapScript(string targetRoot, string profileId, IReadOnlyList<HelperHookSpec> hooks)
     {
-        var lines = new List<string>
-        {
-            "-- Auto-generated by SWFOC Trainer.",
-            $"SWFOC_TRAINER_HELPER_PROFILE = \"{EscapeLuaString(profileId)}\"",
-            $"SWFOC_TRAINER_HELPER_HOOK_COUNT = {hooks.Count}",
-            $"SWFOC_TRAINER_HELPER_COMMAND_TRANSPORT = \"{EscapeLuaString(CommandTransportModel)}\"",
-            $"SWFOC_TRAINER_HELPER_COMMAND_TRANSPORT_SCHEMA = \"{EscapeLuaString(CommandTransportSchemaVersion)}\"",
-            $"SWFOC_TRAINER_HELPER_COMMAND_ROOT = \"{EscapeLuaString(RuntimeTransportRoot)}\"",
-            $"SWFOC_TRAINER_HELPER_COMMAND_PENDING = \"{EscapeLuaString(PendingCommandRoot)}\"",
-            $"SWFOC_TRAINER_HELPER_COMMAND_CLAIMED = \"{EscapeLuaString(ClaimedCommandRoot)}\"",
-            $"SWFOC_TRAINER_HELPER_RECEIPT_ROOT = \"{EscapeLuaString(ReceiptRoot)}\"",
-            "SWFOC_TRAINER_HELPER_HOOKS = {"
-        };
+        var hookEntries = string.Join(Environment.NewLine, hooks.Select(BuildBootstrapHookEntry));
+        var dispatchCommandPath = NormalizeLuaFilePath(GetDispatchCommandPath(targetRoot));
+        var claimedRootPath = NormalizeLuaFilePath(GetClaimedCommandRoot(targetRoot));
+        var receiptRootPath = NormalizeLuaFilePath(GetReceiptRoot(targetRoot));
 
-        foreach (var hook in hooks)
+        return $$"""
+-- Auto-generated by SWFOC Trainer.
+SWFOC_TRAINER_HELPER_PROFILE = "{{EscapeLuaString(profileId)}}"
+SWFOC_TRAINER_HELPER_HOOK_COUNT = {{hooks.Count}}
+SWFOC_TRAINER_HELPER_COMMAND_TRANSPORT = "{{EscapeLuaString(CommandTransportModel)}}"
+SWFOC_TRAINER_HELPER_COMMAND_TRANSPORT_SCHEMA = "{{EscapeLuaString(CommandTransportSchemaVersion)}}"
+SWFOC_TRAINER_HELPER_COMMAND_ROOT = "{{EscapeLuaString(RuntimeTransportRoot)}}"
+SWFOC_TRAINER_HELPER_COMMAND_PENDING = "{{EscapeLuaString(PendingCommandRoot)}}"
+SWFOC_TRAINER_HELPER_COMMAND_DISPATCH = "{{EscapeLuaString(dispatchCommandPath)}}"
+SWFOC_TRAINER_HELPER_COMMAND_CLAIMED = "{{EscapeLuaString(ClaimedCommandRoot)}}"
+SWFOC_TRAINER_HELPER_COMMAND_CLAIMED_ABS = "{{EscapeLuaString(claimedRootPath)}}"
+SWFOC_TRAINER_HELPER_RECEIPT_ROOT = "{{EscapeLuaString(ReceiptRoot)}}"
+SWFOC_TRAINER_HELPER_RECEIPT_ROOT_ABS = "{{EscapeLuaString(receiptRootPath)}}"
+SWFOC_TRAINER_HELPER_HOOKS = {
+{{hookEntries}}
+}
+
+local SWFOC_TRAINER_HELPER_LAST_COMMAND_TOKEN = nil
+
+local function SwfocTrainer_Helper_Bootstrap_Output(message)
+    if message == nil or message == "" then
+        return
+    end
+
+    if _OuputDebug then
+        pcall(function()
+            _OuputDebug(message)
+        end)
+        return
+    end
+
+    if _OutputDebug then
+        pcall(function()
+            _OutputDebug(message)
+        end)
+    end
+end
+
+local function SwfocTrainer_Helper_Bootstrap_Has_Value(value)
+    return value ~= nil and tostring(value) ~= ""
+end
+
+local function SwfocTrainer_Helper_Bootstrap_Escape_Json_String(value)
+    local text = tostring(value or "")
+    text = string.gsub(text, "\\", "\\\\")
+    text = string.gsub(text, '"', '\\"')
+    text = string.gsub(text, "\r", "\\r")
+    text = string.gsub(text, "\n", "\\n")
+    return text
+end
+
+local function SwfocTrainer_Helper_Bootstrap_Write_Text(path, content)
+    if not io or not io.open or not SwfocTrainer_Helper_Bootstrap_Has_Value(path) then
+        return false, "io_unavailable"
+    end
+
+    local file, open_error = io.open(path, "w")
+    if not file then
+        return false, tostring(open_error or "open_failed")
+    end
+
+    local ok, write_error = pcall(function()
+        file:write(content or "")
+    end)
+    file:close()
+    if not ok then
+        return false, tostring(write_error)
+    end
+
+    return true, nil
+end
+
+local function SwfocTrainer_Helper_Bootstrap_Delete_File(path)
+    if not SwfocTrainer_Helper_Bootstrap_Has_Value(path) then
+        return true, nil
+    end
+
+    if not os or not os.remove then
+        return false, "remove_unavailable"
+    end
+
+    local ok, remove_error = pcall(function()
+        return os.remove(path)
+    end)
+    if not ok then
+        return false, tostring(remove_error)
+    end
+
+    return true, nil
+end
+
+function SwfocTrainer_Helper_Bootstrap_Describe()
+    return {
+        profile = SWFOC_TRAINER_HELPER_PROFILE,
+        hookCount = SWFOC_TRAINER_HELPER_HOOK_COUNT,
+        transport = SWFOC_TRAINER_HELPER_COMMAND_TRANSPORT,
+        schemaVersion = SWFOC_TRAINER_HELPER_COMMAND_TRANSPORT_SCHEMA
+    }
+end
+
+function SwfocTrainer_Helper_Bootstrap_DescribeTransport()
+    return {
+        model = SWFOC_TRAINER_HELPER_COMMAND_TRANSPORT,
+        schemaVersion = SWFOC_TRAINER_HELPER_COMMAND_TRANSPORT_SCHEMA,
+        root = SWFOC_TRAINER_HELPER_COMMAND_ROOT,
+        pending = SWFOC_TRAINER_HELPER_COMMAND_PENDING,
+        dispatch = SWFOC_TRAINER_HELPER_COMMAND_DISPATCH,
+        claimed = SWFOC_TRAINER_HELPER_COMMAND_CLAIMED,
+        claimedAbsolute = SWFOC_TRAINER_HELPER_COMMAND_CLAIMED_ABS,
+        receipts = SWFOC_TRAINER_HELPER_RECEIPT_ROOT,
+        receiptsAbsolute = SWFOC_TRAINER_HELPER_RECEIPT_ROOT_ABS
+    }
+end
+
+local function SwfocTrainer_Helper_Bootstrap_Resolve_Command()
+    if not SwfocTrainer_Helper_Bootstrap_Has_Value(SWFOC_TRAINER_HELPER_COMMAND_DISPATCH) then
+        return nil, "dispatch_path_missing"
+    end
+
+    local ok, loaded = pcall(dofile, SWFOC_TRAINER_HELPER_COMMAND_DISPATCH)
+    if not ok then
+        return nil, tostring(loaded)
+    end
+
+    if type(loaded) ~= "table" then
+        return nil, "dispatch_command_invalid"
+    end
+
+    return loaded, nil
+end
+
+local function SwfocTrainer_Helper_Bootstrap_Resolve_Command_Payload(command)
+    if type(command) ~= "table" then
+        return nil
+    end
+
+    local payload = command["payload"]
+    if type(payload) == "table" then
+        return payload
+    end
+
+    return command
+end
+
+local function SwfocTrainer_Helper_Bootstrap_Resolve_Command_EntryPoint(command)
+    if type(command) ~= "table" then
+        return nil
+    end
+
+    local candidate = command["helperEntryPoint"]
+    if candidate == nil or candidate == "" then
+        candidate = command["entryPoint"]
+    end
+
+    return candidate
+end
+
+local function SwfocTrainer_Helper_Bootstrap_Resolve_Command_OperationToken(command)
+    if type(command) ~= "table" then
+        return ""
+    end
+
+    local operationToken = tostring(command["operationToken"] or command["operation_token"] or "")
+    if SwfocTrainer_Helper_Bootstrap_Has_Value(operationToken) then
+        return operationToken
+    end
+
+    local payload = SwfocTrainer_Helper_Bootstrap_Resolve_Command_Payload(command)
+    if type(payload) == "table" then
+        return tostring(payload["operationToken"] or payload["operation_token"] or "")
+    end
+
+    return ""
+end
+
+local function SwfocTrainer_Helper_Bootstrap_Resolve_Applied_Entity_Id(command)
+    local payload = SwfocTrainer_Helper_Bootstrap_Resolve_Command_Payload(command)
+    if type(payload) ~= "table" then
+        return ""
+    end
+
+    local candidate = payload["appliedEntityId"] or payload["entityId"] or payload["unitId"] or payload["targetFaction"] or payload["globalKey"] or ""
+    return tostring(candidate or "")
+end
+
+local function SwfocTrainer_Helper_Bootstrap_Resolve_Command_Args(command)
+    if type(command) ~= "table" then
+        return {}
+    end
+
+    local args = command["args"]
+    if type(args) == "table" then
+        return args
+    end
+
+    local payload = SwfocTrainer_Helper_Bootstrap_Resolve_Command_Payload(command)
+    if type(payload) ~= "table" then
+        return {}
+    end
+
+    local entryPoint = SwfocTrainer_Helper_Bootstrap_Resolve_Command_EntryPoint(command)
+    local operationToken = SwfocTrainer_Helper_Bootstrap_Resolve_Command_OperationToken(command)
+    local faction = payload["targetFaction"] or payload["faction"]
+
+    if entryPoint == "SWFOC_Trainer_Spawn" then
+        return { payload["unitId"] or payload["entityId"], payload["entryMarker"] or payload["worldPosition"], faction, operationToken }
+    end
+
+    if entryPoint == "SWFOC_Trainer_Spawn_Context" then
+        return {
+            payload["entityId"],
+            payload["unitId"],
+            payload["entryMarker"] or payload["worldPosition"],
+            faction,
+            payload["targetContext"],
+            operationToken,
+            payload["operationPolicy"],
+            payload["mutationIntent"],
+            payload["placementMode"]
+        }
+    end
+
+    if entryPoint == "SWFOC_Trainer_Place_Building" then
+        return { payload["entityId"], payload["entryMarker"] or payload["worldPosition"], faction, payload["forceOverride"], operationToken }
+    end
+
+    if entryPoint == "SWFOC_Trainer_Set_Context_Allegiance" then
+        return { payload["entityId"], faction, payload["sourceFaction"], payload["targetContext"], payload["allowCrossFaction"], operationToken }
+    end
+
+    if entryPoint == "SWFOC_Trainer_Transfer_Fleet_Safe" then
+        return { payload["entityId"], payload["sourceFaction"], faction, payload["safePlanetId"] or payload["entryMarker"], payload["forceOverride"], operationToken }
+    end
+
+    if entryPoint == "SWFOC_Trainer_Flip_Planet_Owner" then
+        return { payload["entityId"], faction, payload["flipMode"], payload["forceOverride"], operationToken }
+    end
+
+    if entryPoint == "SWFOC_Trainer_Switch_Player_Faction" then
+        return { faction, operationToken }
+    end
+
+    if entryPoint == "SWFOC_Trainer_Edit_Hero_State" then
+        return { payload["entityId"], payload["globalKey"], payload["desiredState"] or payload["heroState"], payload["allowDuplicate"] or payload["forceOverride"], operationToken }
+    end
+
+    if entryPoint == "SWFOC_Trainer_Create_Hero_Variant" then
+        return { payload["sourceHeroId"] or payload["sourceEntityId"] or payload["entityId"], payload["variantHeroId"] or payload["unitId"], faction, operationToken }
+    end
+
+    if entryPoint == "SWFOC_Trainer_Set_Hero_Respawn" then
+        return { payload["globalKey"], payload["intValue"] or payload["value"], operationToken }
+    end
+
+    return { payload }
+end
+
+local function SwfocTrainer_Helper_Bootstrap_Invoke_EntryPoint(entryPoint, args)
+    if entryPoint == nil or entryPoint == "" then
+        return false, "missing_entry_point"
+    end
+
+    local fn = _G[entryPoint]
+    if type(fn) ~= "function" then
+        return false, "missing_runtime_function"
+    end
+
+    local ok, result = pcall(function()
+        return fn(table.unpack(args))
+    end)
+    if not ok then
+        return false, tostring(result)
+    end
+
+    if result == nil then
+        return true, "invoked"
+    end
+
+    return result and true or false, tostring(result)
+end
+
+local function SwfocTrainer_Helper_Bootstrap_Compose_Claim_Path(operationToken)
+    return SWFOC_TRAINER_HELPER_COMMAND_CLAIMED_ABS .. "/" .. tostring(operationToken) .. ".json"
+end
+
+local function SwfocTrainer_Helper_Bootstrap_Compose_Receipt_Path(operationToken)
+    return SWFOC_TRAINER_HELPER_RECEIPT_ROOT_ABS .. "/" .. tostring(operationToken) .. ".json"
+end
+
+local function SwfocTrainer_Helper_Bootstrap_Write_Claim(command, stageState, message)
+    local operationToken = SwfocTrainer_Helper_Bootstrap_Resolve_Command_OperationToken(command)
+    if not SwfocTrainer_Helper_Bootstrap_Has_Value(operationToken) then
+        return false, "missing_operation_token"
+    end
+
+    local claimPath = SwfocTrainer_Helper_Bootstrap_Compose_Claim_Path(operationToken)
+    local body = "{\n" ..
+        "  \"operationToken\": \"" .. SwfocTrainer_Helper_Bootstrap_Escape_Json_String(operationToken) .. "\",\n" ..
+        "  \"actionId\": \"" .. SwfocTrainer_Helper_Bootstrap_Escape_Json_String(tostring(command[\"actionId\"] or "")) .. "\",\n" ..
+        "  \"helperEntryPoint\": \"" .. SwfocTrainer_Helper_Bootstrap_Escape_Json_String(tostring(command[\"helperEntryPoint\"] or "")) .. "\",\n" ..
+        "  \"stageState\": \"" .. SwfocTrainer_Helper_Bootstrap_Escape_Json_String(stageState or "claimed") .. "\",\n" ..
+        "  \"message\": \"" .. SwfocTrainer_Helper_Bootstrap_Escape_Json_String(message or "Overlay command claimed.") .. "\"\n" ..
+        "}"
+
+    return SwfocTrainer_Helper_Bootstrap_Write_Text(claimPath, body)
+end
+
+local function SwfocTrainer_Helper_Bootstrap_Write_Receipt(command, applied, reasonCode, message, stageState, verifyState, appliedEntityId)
+    local operationToken = SwfocTrainer_Helper_Bootstrap_Resolve_Command_OperationToken(command)
+    if not SwfocTrainer_Helper_Bootstrap_Has_Value(operationToken) then
+        return false, "missing_operation_token"
+    end
+
+    local receiptPath = SwfocTrainer_Helper_Bootstrap_Compose_Receipt_Path(operationToken)
+    local effectiveVerifyState = verifyState
+    if not SwfocTrainer_Helper_Bootstrap_Has_Value(effectiveVerifyState) then
+        effectiveVerifyState = applied and "receipt_present" or "receipt_failed"
+    end
+
+    local effectiveReasonCode = reasonCode
+    if not SwfocTrainer_Helper_Bootstrap_Has_Value(effectiveReasonCode) then
+        effectiveReasonCode = applied and "overlay_receipt_applied" or "overlay_execution_failed"
+    end
+
+    local status = applied and "applied" or "failed"
+    local body = "{\n" ..
+        "  \"operationToken\": \"" .. SwfocTrainer_Helper_Bootstrap_Escape_Json_String(operationToken) .. "\",\n" ..
+        "  \"actionId\": \"" .. SwfocTrainer_Helper_Bootstrap_Escape_Json_String(tostring(command[\"actionId\"] or "")) .. "\",\n" ..
+        "  \"helperEntryPoint\": \"" .. SwfocTrainer_Helper_Bootstrap_Escape_Json_String(tostring(command[\"helperEntryPoint\"] or "")) .. "\",\n" ..
+        "  \"status\": \"" .. status .. "\",\n" ..
+        "  \"stageState\": \"" .. SwfocTrainer_Helper_Bootstrap_Escape_Json_String(stageState or status) .. "\",\n" ..
+        "  \"applied\": " .. (applied and "true" or "false") .. ",\n" ..
+        "  \"helperVerifyState\": \"" .. SwfocTrainer_Helper_Bootstrap_Escape_Json_String(effectiveVerifyState) .. "\",\n" ..
+        "  \"reasonCode\": \"" .. SwfocTrainer_Helper_Bootstrap_Escape_Json_String(effectiveReasonCode) .. "\",\n" ..
+        "  \"message\": \"" .. SwfocTrainer_Helper_Bootstrap_Escape_Json_String(message or "") .. "\",\n" ..
+        "  \"verificationSource\": \"_LogFile.txt\",\n" ..
+        "  \"appliedEntityId\": \"" .. SwfocTrainer_Helper_Bootstrap_Escape_Json_String(appliedEntityId or "") .. "\"\n" ..
+        "}"
+
+    return SwfocTrainer_Helper_Bootstrap_Write_Text(receiptPath, body)
+end
+
+function SwfocTrainer_Helper_Bootstrap_Execute_Command(command)
+    local entryPoint = SwfocTrainer_Helper_Bootstrap_Resolve_Command_EntryPoint(command)
+    local args = SwfocTrainer_Helper_Bootstrap_Resolve_Command_Args(command)
+    local operationToken = SwfocTrainer_Helper_Bootstrap_Resolve_Command_OperationToken(command)
+    local appliedEntityId = SwfocTrainer_Helper_Bootstrap_Resolve_Applied_Entity_Id(command)
+
+    local ok, detail = SwfocTrainer_Helper_Bootstrap_Invoke_EntryPoint(entryPoint, args)
+    if ok then
+        SwfocTrainer_Helper_Bootstrap_Output("SWFOC_TRAINER_HELPER_COMMAND_ACCEPTED profile=" .. SWFOC_TRAINER_HELPER_PROFILE .. " entry=" .. tostring(entryPoint) .. " token=" .. operationToken)
+        return true, "overlay_receipt_applied", appliedEntityId, "Overlay command applied."
+    end
+
+    SwfocTrainer_Helper_Bootstrap_Output("SWFOC_TRAINER_HELPER_COMMAND_FAILED profile=" .. SWFOC_TRAINER_HELPER_PROFILE .. " entry=" .. tostring(entryPoint) .. " token=" .. operationToken .. " error=" .. tostring(detail))
+    return false, tostring(detail or "overlay_execution_failed"), appliedEntityId, tostring(detail or "Overlay command failed.")
+end
+
+function SwfocTrainer_Helper_Bootstrap_Pump()
+    local command, load_error = SwfocTrainer_Helper_Bootstrap_Resolve_Command()
+    if command == nil then
+        if SwfocTrainer_Helper_Bootstrap_Has_Value(load_error) and load_error ~= "dispatch_path_missing" then
+            SwfocTrainer_Helper_Bootstrap_Output("SWFOC_TRAINER_HELPER_COMMAND_LOAD_FAILED profile=" .. SWFOC_TRAINER_HELPER_PROFILE .. " error=" .. tostring(load_error))
+        end
+        return false
+    end
+
+    local operationToken = SwfocTrainer_Helper_Bootstrap_Resolve_Command_OperationToken(command)
+    if not SwfocTrainer_Helper_Bootstrap_Has_Value(operationToken) then
+        SwfocTrainer_Helper_Bootstrap_Output("SWFOC_TRAINER_HELPER_COMMAND_INVALID profile=" .. SWFOC_TRAINER_HELPER_PROFILE .. " reason=missing_operation_token")
+        SwfocTrainer_Helper_Bootstrap_Delete_File(SWFOC_TRAINER_HELPER_COMMAND_DISPATCH)
+        return false
+    end
+
+    if SWFOC_TRAINER_HELPER_LAST_COMMAND_TOKEN == operationToken then
+        return false
+    end
+
+    SWFOC_TRAINER_HELPER_LAST_COMMAND_TOKEN = operationToken
+    SwfocTrainer_Helper_Bootstrap_Write_Claim(command, "claimed", "Overlay command claimed.")
+    local applied, reasonCode, appliedEntityId, detailMessage = SwfocTrainer_Helper_Bootstrap_Execute_Command(command)
+    local receiptMessage = detailMessage
+    if not SwfocTrainer_Helper_Bootstrap_Has_Value(receiptMessage) then
+        receiptMessage = applied and "Overlay command applied." or "Overlay command failed."
+    end
+    SwfocTrainer_Helper_Bootstrap_Write_Receipt(command, applied, reasonCode, receiptMessage, applied and "applied" or "failed", applied and "receipt_present" or "receipt_failed", appliedEntityId)
+    SwfocTrainer_Helper_Bootstrap_Delete_File(SWFOC_TRAINER_HELPER_COMMAND_DISPATCH)
+    return applied
+end
+
+function SwfocTrainer_Helper_Bootstrap_LoadAll()
+    local loaded = 0
+    for _, hook in ipairs(SWFOC_TRAINER_HELPER_HOOKS) do
+        local ok, module_or_error = pcall(require, hook.requirePath)
+        if ok then
+            loaded = loaded + 1
+            SwfocTrainer_Helper_Bootstrap_Output("SWFOC_TRAINER_HELPER_BOOTSTRAP_LOADED profile=" .. SWFOC_TRAINER_HELPER_PROFILE .. " hook=" .. hook.id .. " require=" .. hook.requirePath)
+        else
+            SwfocTrainer_Helper_Bootstrap_Output("SWFOC_TRAINER_HELPER_BOOTSTRAP_FAILED profile=" .. SWFOC_TRAINER_HELPER_PROFILE .. " hook=" .. hook.id .. " require=" .. hook.requirePath .. " error=" .. tostring(module_or_error))
+        end
+    end
+
+    return loaded
+end
+
+SwfocTrainer_Helper_Bootstrap_LoadAll()
+SwfocTrainer_Helper_Bootstrap_Pump()
+""" + Environment.NewLine;
+    }
+
+    private static string BuildBootstrapHookEntry(HelperHookSpec hook)
+    {
+        return $$"""
+    {
+        id = "{{EscapeLuaString(hook.Id)}}",
+        script = "{{EscapeLuaString(hook.Script.Replace('\\', '/'))}}",
+        requirePath = "{{EscapeLuaString(NormalizeHookLuaRequirePath(hook.Script))}}",
+        entryPoint = "{{EscapeLuaString(hook.EntryPoint ?? string.Empty)}}",
+        version = "{{EscapeLuaString(hook.Version)}}"
+    },
+""";
+    }
+
+    private static string BuildDispatchCommandScript(string profileId, string actionId, string helperEntryPoint, string operationToken, JsonObject payload)
+    {
+        return $$"""
+return {
+    ["schemaVersion"] = "{{EscapeLuaString(CommandTransportSchemaVersion)}}",
+    ["transportModel"] = "{{EscapeLuaString(CommandTransportModel)}}",
+    ["generatedAtUtc"] = "{{DateTimeOffset.UtcNow:O}}",
+    ["profileId"] = "{{EscapeLuaString(profileId)}}",
+    ["actionId"] = "{{EscapeLuaString(actionId)}}",
+    ["helperEntryPoint"] = "{{EscapeLuaString(helperEntryPoint)}}",
+    ["operationToken"] = "{{EscapeLuaString(operationToken)}}",
+    ["payload"] = {{BuildLuaLiteral(payload, 1)}}
+}
+""" + Environment.NewLine;
+    }
+
+    private static string BuildLuaLiteral(JsonNode? node, int indentLevel = 0)
+    {
+        if (node is null)
         {
-            lines.Add("    {");
-            lines.Add($"        id = \"{EscapeLuaString(hook.Id)}\",");
-            lines.Add($"        script = \"{EscapeLuaString(hook.Script.Replace('\\', '/'))}\",");
-            lines.Add($"        requirePath = \"{EscapeLuaString(NormalizeHookLuaRequirePath(hook.Script))}\",");
-            lines.Add($"        entryPoint = \"{EscapeLuaString(hook.EntryPoint ?? string.Empty)}\",");
-            lines.Add($"        version = \"{EscapeLuaString(hook.Version)}\"");
-            lines.Add("    },");
+            return "nil";
         }
 
-        lines.Add("}");
-        lines.Add(string.Empty);
-        lines.Add("local function SwfocTrainer_Helper_Bootstrap_Output(message)");
-        lines.Add("    if message == nil or message == \"\" then");
-        lines.Add("        return");
-        lines.Add("    end");
-        lines.Add(string.Empty);
-        lines.Add("    if _OuputDebug then");
-        lines.Add("        pcall(function()");
-        lines.Add("            _OuputDebug(message)");
-        lines.Add("        end)");
-        lines.Add("        return");
-        lines.Add("    end");
-        lines.Add(string.Empty);
-        lines.Add("    if _OutputDebug then");
-        lines.Add("        pcall(function()");
-        lines.Add("            _OutputDebug(message)");
-        lines.Add("        end)");
-        lines.Add("    end");
-        lines.Add("end");
-        lines.Add(string.Empty);
-        lines.Add("function SwfocTrainer_Helper_Bootstrap_Describe()");
-        lines.Add("    return {");
-        lines.Add("        profile = SWFOC_TRAINER_HELPER_PROFILE,");
-        lines.Add("        hookCount = SWFOC_TRAINER_HELPER_HOOK_COUNT,");
-        lines.Add("        transport = SWFOC_TRAINER_HELPER_COMMAND_TRANSPORT,");
-        lines.Add("        schemaVersion = SWFOC_TRAINER_HELPER_COMMAND_TRANSPORT_SCHEMA");
-        lines.Add("    }");
-        lines.Add("end");
-        lines.Add(string.Empty);
-        lines.Add("function SwfocTrainer_Helper_Bootstrap_DescribeTransport()");
-        lines.Add("    return {");
-        lines.Add("        model = SWFOC_TRAINER_HELPER_COMMAND_TRANSPORT,");
-        lines.Add("        schemaVersion = SWFOC_TRAINER_HELPER_COMMAND_TRANSPORT_SCHEMA,");
-        lines.Add("        root = SWFOC_TRAINER_HELPER_COMMAND_ROOT,");
-        lines.Add("        pending = SWFOC_TRAINER_HELPER_COMMAND_PENDING,");
-        lines.Add("        claimed = SWFOC_TRAINER_HELPER_COMMAND_CLAIMED,");
-        lines.Add("        receipts = SWFOC_TRAINER_HELPER_RECEIPT_ROOT");
-        lines.Add("    }");
-        lines.Add("end");
-        lines.Add(string.Empty);
-        lines.Add("local function SwfocTrainer_Helper_Bootstrap_Resolve_Command_EntryPoint(command)");
-        lines.Add("    if type(command) ~= \"table\" then");
-        lines.Add("        return nil");
-        lines.Add("    end");
-        lines.Add(string.Empty);
-        lines.Add("    local candidate = command[\"helperEntryPoint\"]");
-        lines.Add("    if candidate == nil or candidate == \"\" then");
-        lines.Add("        candidate = command[\"entryPoint\"]");
-        lines.Add("    end");
-        lines.Add(string.Empty);
-        lines.Add("    return candidate");
-        lines.Add("end");
-        lines.Add(string.Empty);
-        lines.Add("local function SwfocTrainer_Helper_Bootstrap_Resolve_Command_Args(command)");
-        lines.Add("    if type(command) ~= \"table\" then");
-        lines.Add("        return {}");
-        lines.Add("    end");
-        lines.Add(string.Empty);
-        lines.Add("    local args = command[\"args\"]");
-        lines.Add("    if type(args) == \"table\" then");
-        lines.Add("        return args");
-        lines.Add("    end");
-        lines.Add(string.Empty);
-        lines.Add("    return {}");
-        lines.Add("end");
-        lines.Add(string.Empty);
-        lines.Add("local function SwfocTrainer_Helper_Bootstrap_Invoke_EntryPoint(entryPoint, args)");
-        lines.Add("    if entryPoint == nil or entryPoint == \"\" then");
-        lines.Add("        return false, \"missing_entry_point\"");
-        lines.Add("    end");
-        lines.Add(string.Empty);
-        lines.Add("    local fn = _G[entryPoint]");
-        lines.Add("    if type(fn) ~= \"function\" then");
-        lines.Add("        return false, \"missing_runtime_function\"");
-        lines.Add("    end");
-        lines.Add(string.Empty);
-        lines.Add("    local ok, result = pcall(function()");
-        lines.Add("        return fn(table.unpack(args))");
-        lines.Add("    end)");
-        lines.Add("    if not ok then");
-        lines.Add("        return false, tostring(result)");
-        lines.Add("    end");
-        lines.Add(string.Empty);
-        lines.Add("    if result == nil then");
-        lines.Add("        return true, \"invoked\"");
-        lines.Add("    end");
-        lines.Add(string.Empty);
-        lines.Add("    return result and true or false, tostring(result)");
-        lines.Add("end");
-        lines.Add(string.Empty);
-        lines.Add("function SwfocTrainer_Helper_Bootstrap_Execute_Command(command)");
-        lines.Add("    local entryPoint = SwfocTrainer_Helper_Bootstrap_Resolve_Command_EntryPoint(command)");
-        lines.Add("    local args = SwfocTrainer_Helper_Bootstrap_Resolve_Command_Args(command)");
-        lines.Add("    local operationToken = \"\"");
-        lines.Add("    if type(command) == \"table\" then");
-        lines.Add("        operationToken = tostring(command[\"operationToken\"] or command[\"operation_token\"] or \"\")");
-        lines.Add("    end");
-        lines.Add(string.Empty);
-        lines.Add("    local ok, detail = SwfocTrainer_Helper_Bootstrap_Invoke_EntryPoint(entryPoint, args)");
-        lines.Add("    if ok then");
-        lines.Add("        SwfocTrainer_Helper_Bootstrap_Output(\"SWFOC_TRAINER_HELPER_COMMAND_ACCEPTED profile=\" .. SWFOC_TRAINER_HELPER_PROFILE .. \" entry=\" .. tostring(entryPoint) .. \" token=\" .. operationToken)");
-        lines.Add("        return true");
-        lines.Add("    end");
-        lines.Add(string.Empty);
-        lines.Add("    SwfocTrainer_Helper_Bootstrap_Output(\"SWFOC_TRAINER_HELPER_COMMAND_FAILED profile=\" .. SWFOC_TRAINER_HELPER_PROFILE .. \" entry=\" .. tostring(entryPoint) .. \" token=\" .. operationToken .. \" error=\" .. tostring(detail))");
-        lines.Add("    return false");
-        lines.Add("end");
-        lines.Add(string.Empty);
-        lines.Add("function SwfocTrainer_Helper_Bootstrap_LoadAll()");
-        lines.Add("    local loaded = 0");
-        lines.Add("    for _, hook in ipairs(SWFOC_TRAINER_HELPER_HOOKS) do");
-        lines.Add("        local ok, module_or_error = pcall(require, hook.requirePath)");
-        lines.Add("        if ok then");
-        lines.Add("            loaded = loaded + 1");
-        lines.Add("            SwfocTrainer_Helper_Bootstrap_Output(\"SWFOC_TRAINER_HELPER_BOOTSTRAP_LOADED profile=\" .. SWFOC_TRAINER_HELPER_PROFILE .. \" hook=\" .. hook.id .. \" require=\" .. hook.requirePath)");
-        lines.Add("        else");
-        lines.Add("            SwfocTrainer_Helper_Bootstrap_Output(\"SWFOC_TRAINER_HELPER_BOOTSTRAP_FAILED profile=\" .. SWFOC_TRAINER_HELPER_PROFILE .. \" hook=\" .. hook.id .. \" require=\" .. hook.requirePath .. \" error=\" .. tostring(module_or_error))");
-        lines.Add("        end");
-        lines.Add("    end");
-        lines.Add(string.Empty);
-        lines.Add("    return loaded");
-        lines.Add("end");
-        lines.Add(string.Empty);
-        lines.Add("SwfocTrainer_Helper_Bootstrap_LoadAll()");
+        if (node is JsonValue value)
+        {
+            if (value.TryGetValue<string>(out var stringValue))
+            {
+                return $"\"{EscapeLuaString(stringValue)}\"";
+            }
 
-        return string.Join(Environment.NewLine, lines) + Environment.NewLine;
+            if (value.TryGetValue<bool>(out var boolValue))
+            {
+                return boolValue ? "true" : "false";
+            }
+
+            if (value.TryGetValue<int>(out var intValue))
+            {
+                return intValue.ToString(CultureInfo.InvariantCulture);
+            }
+
+            if (value.TryGetValue<long>(out var longValue))
+            {
+                return longValue.ToString(CultureInfo.InvariantCulture);
+            }
+
+            if (value.TryGetValue<double>(out var doubleValue))
+            {
+                return doubleValue.ToString(CultureInfo.InvariantCulture);
+            }
+        }
+
+        var indent = new string(' ', indentLevel * 4);
+        var childIndent = new string(' ', (indentLevel + 1) * 4);
+
+        if (node is JsonArray array)
+        {
+            if (array.Count == 0)
+            {
+                return "{}";
+            }
+
+            var items = array.Select(item => $"{childIndent}{BuildLuaLiteral(item, indentLevel + 1)}");
+            return "{\n" + string.Join(",\n", items) + "\n" + indent + "}";
+        }
+
+        if (node is JsonObject obj)
+        {
+            if (obj.Count == 0)
+            {
+                return "{}";
+            }
+
+            var properties = obj.Select(kvp => $"{childIndent}[\"{EscapeLuaString(kvp.Key)}\"] = {BuildLuaLiteral(kvp.Value, indentLevel + 1)}");
+            return "{\n" + string.Join(",\n", properties) + "\n" + indent + "}";
+        }
+
+        return "nil";
+    }
+
+    private static string NormalizeLuaFilePath(string path)
+    {
+        return path.Replace('\\', '/');
     }
 
     private static string BuildAutoloadWrapperScript(
@@ -840,18 +1301,70 @@ public sealed class HelperModService : IHelperModService, IHelperCommandTranspor
             "    end",
             "end",
             string.Empty,
+            "local function SwfocTrainer_Helper_Safe_Pump()",
+            "    if SwfocTrainer_Helper_Bootstrap_Pump then",
+            "        pcall(function()",
+            "            SwfocTrainer_Helper_Bootstrap_Pump()",
+            "        end)",
+            "    end",
+            "end",
+            string.Empty,
             "local bootstrap_ok, bootstrap_error = pcall(function()",
             $"    return require(\"{EscapeLuaString(BootstrapRequirePath)}\")",
             "end)",
             "if bootstrap_ok then",
             $"    SwfocTrainer_Helper_Autoload_Output(\"SWFOC_TRAINER_HELPER_AUTOLOAD_READY profile={EscapeLuaString(profileId)} strategy={EscapeLuaString(activationStrategy)} script={EscapeLuaString(normalizedScriptPath)}\")",
+            "    SwfocTrainer_Helper_Safe_Pump()",
             "else",
             $"    SwfocTrainer_Helper_Autoload_Output(\"SWFOC_TRAINER_HELPER_AUTOLOAD_FAILED profile={EscapeLuaString(profileId)} strategy={EscapeLuaString(activationStrategy)} script={EscapeLuaString(normalizedScriptPath)} error=\" .. tostring(bootstrap_error))",
             "end",
             string.Empty,
-            $"return require(\"{EscapeLuaString(originalRequirePath)}\")"
+            $"local original_module = require(\"{EscapeLuaString(originalRequirePath)}\")"
         };
 
+        if (normalizedScriptPath.Equals("Library/PGBase.lua", StringComparison.OrdinalIgnoreCase))
+        {
+            lines.AddRange(
+            [
+                "local original_PumpEvents = PumpEvents",
+                "if type(original_PumpEvents) == \"function\" then",
+                "    function PumpEvents(...)",
+                "        if bootstrap_ok then",
+                "            SwfocTrainer_Helper_Safe_Pump()",
+                "        end",
+                "        return original_PumpEvents(...)",
+                "    end",
+                "end"
+            ]);
+        }
+        else if (normalizedScriptPath.Equals("Library/PGStoryMode.lua", StringComparison.OrdinalIgnoreCase))
+        {
+            lines.AddRange(
+            [
+                "local original_PG_Story_State_Init = PG_Story_State_Init",
+                "if type(original_PG_Story_State_Init) == \"function\" then",
+                "    function PG_Story_State_Init(message)",
+                "        if bootstrap_ok and (message == OnEnter or message == OnUpdate) then",
+                "            SwfocTrainer_Helper_Safe_Pump()",
+                "        end",
+                "        return original_PG_Story_State_Init(message)",
+                "    end",
+                "end",
+                string.Empty,
+                "local original_Story_Event_Trigger = Story_Event_Trigger",
+                "if type(original_Story_Event_Trigger) == \"function\" then",
+                "    function Story_Event_Trigger(...)",
+                "        if bootstrap_ok then",
+                "            SwfocTrainer_Helper_Safe_Pump()",
+                "        end",
+                "        return original_Story_Event_Trigger(...)",
+                "    end",
+                "end"
+            ]);
+        }
+
+        lines.Add(string.Empty);
+        lines.Add("return original_module");
         return string.Join(Environment.NewLine, lines) + Environment.NewLine;
     }
 
@@ -892,15 +1405,108 @@ public sealed class HelperModService : IHelperModService, IHelperCommandTranspor
 
     private async Task<string> EnsureDeploymentRootAsync(string profileId, CancellationToken cancellationToken)
     {
-        var targetRoot = Path.Combine(_options.InstallRoot, profileId);
-        if (!File.Exists(Path.Combine(targetRoot, DeploymentManifestFileName)) ||
-            !File.Exists(Path.Combine(GetLibraryRoot(targetRoot), BootstrapScriptName)) ||
-            !TransportDirectoriesExist(targetRoot))
+        if (!await VerifyAsync(profileId, cancellationToken))
         {
             return await DeployAsync(profileId, cancellationToken);
         }
 
-        return targetRoot;
+        return ResolveRuntimeDeploymentRoot(profileId);
+    }
+
+    private string GetSourceDeploymentRoot(string profileId)
+    {
+        return Path.Combine(_options.InstallRoot, profileId);
+    }
+
+    private string ResolveRuntimeDeploymentRoot(string profileId)
+    {
+        var gameRoot = ResolveGameRoot();
+        if (string.IsNullOrWhiteSpace(gameRoot))
+        {
+            return GetSourceDeploymentRoot(profileId);
+        }
+
+        return Path.Combine(gameRoot, "corruption", "Mods", LaunchMirrorRootName, profileId);
+    }
+
+    private string? ResolveGameRoot()
+    {
+        foreach (var candidate in _options.GameRootCandidates)
+        {
+            if (string.IsNullOrWhiteSpace(candidate) || !Directory.Exists(candidate))
+            {
+                continue;
+            }
+
+            var resolved = Path.GetFullPath(candidate.Trim());
+            if (Directory.Exists(Path.Combine(resolved, "corruption")))
+            {
+                return resolved;
+            }
+        }
+
+        return null;
+    }
+
+    private static void MirrorDeployment(string sourceRoot, string runtimeRoot)
+    {
+        if (Directory.Exists(runtimeRoot))
+        {
+            Directory.Delete(runtimeRoot, recursive: true);
+        }
+
+        CopyDirectory(sourceRoot, runtimeRoot);
+    }
+
+    private string? ResolveTransportArtifactPath(string profileId, string operationToken, string artifactRoot)
+    {
+        foreach (var root in EnumerateTransportRoots(profileId))
+        {
+            var candidate = Path.Combine(
+                root,
+                artifactRoot.Replace('/', Path.DirectorySeparatorChar),
+                $"{operationToken}.json");
+            if (File.Exists(candidate))
+            {
+                return candidate;
+            }
+        }
+
+        return null;
+    }
+
+    private IEnumerable<string> EnumerateTransportRoots(string profileId)
+    {
+        var runtimeRoot = ResolveRuntimeDeploymentRoot(profileId);
+        if (!string.IsNullOrWhiteSpace(runtimeRoot))
+        {
+            yield return runtimeRoot;
+        }
+
+        var sourceRoot = GetSourceDeploymentRoot(profileId);
+        if (!sourceRoot.Equals(runtimeRoot, StringComparison.OrdinalIgnoreCase))
+        {
+            yield return sourceRoot;
+        }
+    }
+
+    private static void CopyDirectory(string sourceRoot, string destinationRoot)
+    {
+        Directory.CreateDirectory(destinationRoot);
+
+        foreach (var directory in Directory.GetDirectories(sourceRoot, "*", SearchOption.AllDirectories))
+        {
+            var relative = Path.GetRelativePath(sourceRoot, directory);
+            Directory.CreateDirectory(Path.Combine(destinationRoot, relative));
+        }
+
+        foreach (var file in Directory.GetFiles(sourceRoot, "*", SearchOption.AllDirectories))
+        {
+            var relative = Path.GetRelativePath(sourceRoot, file);
+            var destination = Path.Combine(destinationRoot, relative);
+            Directory.CreateDirectory(Path.GetDirectoryName(destination)!);
+            File.Copy(file, destination, overwrite: true);
+        }
     }
 
     private static void EnsureTransportDirectories(string targetRoot)
@@ -909,6 +1515,17 @@ public sealed class HelperModService : IHelperModService, IHelperCommandTranspor
         Directory.CreateDirectory(GetPendingCommandRoot(targetRoot));
         Directory.CreateDirectory(GetClaimedCommandRoot(targetRoot));
         Directory.CreateDirectory(GetReceiptRoot(targetRoot));
+    }
+
+    private static void ResetTransportState(string targetRoot)
+    {
+        var transportRoot = GetCommandTransportRoot(targetRoot);
+        if (Directory.Exists(transportRoot))
+        {
+            Directory.Delete(transportRoot, recursive: true);
+        }
+
+        EnsureTransportDirectories(targetRoot);
     }
 
     private static bool TransportDirectoriesExist(string targetRoot)
@@ -929,6 +1546,11 @@ public sealed class HelperModService : IHelperModService, IHelperCommandTranspor
         return Path.Combine(targetRoot, PendingCommandRoot.Replace('/', Path.DirectorySeparatorChar));
     }
 
+    private static string GetDispatchCommandPath(string targetRoot)
+    {
+        return Path.Combine(targetRoot, DispatchCommandRelativePath.Replace('/', Path.DirectorySeparatorChar));
+    }
+
     private static string GetClaimedCommandRoot(string targetRoot)
     {
         return Path.Combine(targetRoot, ClaimedCommandRoot.Replace('/', Path.DirectorySeparatorChar));
@@ -947,10 +1569,12 @@ public sealed class HelperModService : IHelperModService, IHelperCommandTranspor
             schemaVersion = CommandTransportSchemaVersion,
             root = RuntimeTransportRoot,
             pendingDirectory = PendingCommandRoot,
+            dispatchCommandPath = DispatchCommandRelativePath,
             claimedDirectory = ClaimedCommandRoot,
             receiptDirectory = ReceiptRoot,
             commandFilePattern = "*.json",
             receiptFilePattern = "*.json",
+            dispatchFileFormat = "lua_table",
             executionMode = "bootstrap_dispatch_ready"
         };
     }

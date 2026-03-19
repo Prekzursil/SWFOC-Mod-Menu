@@ -44,6 +44,12 @@ function Resolve-RecommendedGenerator {
         return $null
     }
 
+    switch ($ProductLineVersion.Trim()) {
+        "2026" { return "Visual Studio 18 2026" }
+        "2022" { return "Visual Studio 17 2022" }
+        "2019" { return "Visual Studio 16 2019" }
+    }
+
     $majorToken = ($ProductLineVersion -split '[^0-9]')[0]
     [int]$major = 0
     if (-not [int]::TryParse($majorToken, [ref]$major)) {
@@ -60,9 +66,13 @@ function Resolve-RecommendedGenerator {
 function Resolve-VisualStudioMetadata {
     function Resolve-VisualStudioMetadataFromDisk {
         $roots = @(
+            "C:\Program Files (x86)\Microsoft Visual Studio",
             "C:\Program Files\Microsoft Visual Studio",
+            "D:\Program Files (x86)\Microsoft Visual Studio",
             "D:\Program Files\Microsoft Visual Studio",
+            "/mnt/c/Program Files (x86)/Microsoft Visual Studio",
             "/mnt/c/Program Files/Microsoft Visual Studio",
+            "/mnt/d/Program Files (x86)/Microsoft Visual Studio",
             "/mnt/d/Program Files/Microsoft Visual Studio"
         )
 

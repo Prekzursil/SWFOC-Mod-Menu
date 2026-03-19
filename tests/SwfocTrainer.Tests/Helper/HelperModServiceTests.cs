@@ -72,8 +72,12 @@ public sealed class HelperModServiceTests
             bootstrap.Should().Contain("function SwfocTrainer_Helper_Bootstrap_LoadAll()");
             bootstrap.Should().Contain("SWFOC_TRAINER_HELPER_COMMAND_TRANSPORT = \"overlay_command_inbox\"");
             bootstrap.Should().Contain("SWFOC_TRAINER_HELPER_COMMAND_PENDING = \"SwfocTrainer/Runtime/commands/pending\"");
+            bootstrap.Should().Contain("SWFOC_TRAINER_HELPER_COMMAND_DISPATCH = ");
             bootstrap.Should().Contain("function SwfocTrainer_Helper_Bootstrap_DescribeTransport()");
             bootstrap.Should().Contain("function SwfocTrainer_Helper_Bootstrap_Execute_Command(command)");
+            bootstrap.Should().Contain("function SwfocTrainer_Helper_Bootstrap_Pump()");
+            bootstrap.Should().Contain("pcall(dofile, SWFOC_TRAINER_HELPER_COMMAND_DISPATCH)");
+            bootstrap.Should().Contain("SwfocTrainer_Helper_Bootstrap_Write_Receipt(");
             bootstrap.Should().Contain("local fn = _G[entryPoint]");
             bootstrap.Should().Contain("pcall(require, hook.requirePath)");
         }
@@ -113,6 +117,8 @@ public sealed class HelperModServiceTests
             commandTransport.GetProperty("pendingDirectory").GetString().Should().Be("SwfocTrainer/Runtime/commands/pending");
             commandTransport.GetProperty("claimedDirectory").GetString().Should().Be("SwfocTrainer/Runtime/commands/claimed");
             commandTransport.GetProperty("receiptDirectory").GetString().Should().Be("SwfocTrainer/Runtime/receipts");
+            commandTransport.GetProperty("dispatchCommandPath").GetString().Should().Be("SwfocTrainer/Runtime/commands/dispatch.lua");
+            commandTransport.GetProperty("dispatchFileFormat").GetString().Should().Be("lua_table");
             commandTransport.GetProperty("executionMode").GetString().Should().Be("bootstrap_dispatch_ready");
             var hooksElement = root.GetProperty("hooks");
             hooksElement.GetArrayLength().Should().Be(1);
@@ -150,6 +156,7 @@ public sealed class HelperModServiceTests
             layout.ProfileId.Should().Be("base_swfoc");
             layout.Model.Should().Be("overlay_command_inbox");
             layout.SchemaVersion.Should().Be("1.0");
+            layout.DispatchCommandPath.Should().EndWith(Path.Combine("SwfocTrainer", "Runtime", "commands", "dispatch.lua"));
             layout.PendingDirectory.Should().EndWith(Path.Combine("SwfocTrainer", "Runtime", "commands", "pending"));
             layout.ClaimedDirectory.Should().EndWith(Path.Combine("SwfocTrainer", "Runtime", "commands", "claimed"));
             layout.ReceiptDirectory.Should().EndWith(Path.Combine("SwfocTrainer", "Runtime", "receipts"));
@@ -191,6 +198,7 @@ public sealed class HelperModServiceTests
 
             File.WriteAllText(stagedInitial.ClaimPath, "{}");
             File.WriteAllText(stagedInitial.ReceiptPath, "{}");
+            File.WriteAllText(stagedInitial.PayloadPath, "return { stale = true }");
 
             var staged = await transport.StageCommandAsync(
                 "base_swfoc",
@@ -208,6 +216,8 @@ public sealed class HelperModServiceTests
             File.Exists(staged.CommandPath).Should().BeTrue();
             File.Exists(staged.ClaimPath).Should().BeFalse();
             File.Exists(staged.ReceiptPath).Should().BeFalse();
+            staged.PayloadPath.Should().EndWith(Path.Combine("SwfocTrainer", "Runtime", "commands", "dispatch.lua"));
+            File.Exists(staged.PayloadPath).Should().BeTrue();
 
             using var document = JsonDocument.Parse(File.ReadAllText(staged.CommandPath));
             var root = document.RootElement;
@@ -219,6 +229,15 @@ public sealed class HelperModServiceTests
             root.GetProperty("payload").GetProperty("entityId").GetString().Should().Be("EMP_ATAT");
             root.GetProperty("payload").GetProperty("helperEntryPoint").GetString().Should().Be("SWFOC_Trainer_Spawn_Context");
             root.GetProperty("payload").GetProperty("operationToken").GetString().Should().Be("token-1234");
+
+            var dispatch = File.ReadAllText(staged.PayloadPath);
+            dispatch.Should().Contain("return {");
+            dispatch.Should().Contain("[\"actionId\"] = \"spawn_context_entity\"");
+            dispatch.Should().Contain("[\"helperEntryPoint\"] = \"SWFOC_Trainer_Spawn_Context\"");
+            dispatch.Should().Contain("[\"operationToken\"] = \"token-1234\"");
+            dispatch.Should().Contain("[\"payload\"] = {");
+            dispatch.Should().Contain("[\"entityId\"] = \"EMP_ATAT\"");
+            dispatch.Should().Contain("[\"faction\"] = \"Empire\"");
         }
         finally
         {
@@ -282,6 +301,147 @@ public sealed class HelperModServiceTests
     }
 
     [Fact]
+    public async Task TryReadReceiptAsync_ShouldReadRuntimeMirrorReceipt_WithoutRedeployingFromStaleSourceTransport()
+    {
+        var sourceRoot = CreateTempDirectory();
+        var installRoot = CreateTempDirectory();
+        var gameRoot = CreateTempDirectory();
+        try
+        {
+            Directory.CreateDirectory(Path.Combine(gameRoot, "corruption"));
+            WriteScript(sourceRoot, "scripts/common/spawn_bridge.lua", "-- helper script");
+            var service = BuildService(
+                BuildProfile("base_swfoc", [new HelperHookSpec("spawn_bridge", "scripts/common/spawn_bridge.lua", "1.0.0", EntryPoint: "SWFOC_Trainer_Spawn_Context")]),
+                sourceRoot,
+                installRoot,
+                gameRootCandidates: [gameRoot]);
+            var transport = (IHelperCommandTransportService)service;
+
+            var runtimeRoot = Path.Combine(gameRoot, "corruption", "Mods", "SwfocTrainer_Helper", "base_swfoc");
+            CreateTransportDirectories(runtimeRoot);
+            var receiptPath = Path.Combine(runtimeRoot, "SwfocTrainer", "Runtime", "receipts", "token-runtime.json");
+            await File.WriteAllTextAsync(
+                receiptPath,
+                """
+                {
+                  "operationToken": "token-runtime",
+                  "actionId": "spawn_context_entity",
+                  "helperEntryPoint": "SWFOC_Trainer_Spawn_Context",
+                  "status": "applied",
+                  "helperVerifyState": "receipt_present",
+                  "reasonCode": "overlay_receipt_applied",
+                  "message": "Runtime mirror applied command.",
+                  "verificationSource": "C:/Games/_LogFile.txt",
+                  "appliedEntityId": "EMP_ATAT"
+                }
+                """);
+
+            var receipt = await transport.TryReadReceiptAsync("base_swfoc", "token-runtime", CancellationToken.None);
+
+            receipt.Should().NotBeNull();
+            receipt!.ReceiptPath.Should().Be(receiptPath);
+            receipt.Message.Should().Be("Runtime mirror applied command.");
+            receipt.Applied.Should().BeTrue();
+        }
+        finally
+        {
+            DeleteDirectory(sourceRoot);
+            DeleteDirectory(installRoot);
+            DeleteDirectory(gameRoot);
+        }
+    }
+
+    [Fact]
+    public async Task TryReadClaimAsync_ShouldReadRuntimeMirrorClaim_WithoutRedeployingFromStaleSourceTransport()
+    {
+        var sourceRoot = CreateTempDirectory();
+        var installRoot = CreateTempDirectory();
+        var gameRoot = CreateTempDirectory();
+        try
+        {
+            Directory.CreateDirectory(Path.Combine(gameRoot, "corruption"));
+            WriteScript(sourceRoot, "scripts/common/spawn_bridge.lua", "-- helper script");
+            var service = BuildService(
+                BuildProfile("base_swfoc", [new HelperHookSpec("spawn_bridge", "scripts/common/spawn_bridge.lua", "1.0.0", EntryPoint: "SWFOC_Trainer_Spawn_Context")]),
+                sourceRoot,
+                installRoot,
+                gameRootCandidates: [gameRoot]);
+            var transport = (IHelperCommandTransportService)service;
+
+            var runtimeRoot = Path.Combine(gameRoot, "corruption", "Mods", "SwfocTrainer_Helper", "base_swfoc");
+            CreateTransportDirectories(runtimeRoot);
+            var claimPath = Path.Combine(runtimeRoot, "SwfocTrainer", "Runtime", "commands", "claimed", "token-claim.json");
+            await File.WriteAllTextAsync(
+                claimPath,
+                """
+                {
+                  "operationToken": "token-claim",
+                  "actionId": "spawn_context_entity",
+                  "helperEntryPoint": "SWFOC_Trainer_Spawn_Context",
+                  "stageState": "claimed",
+                  "message": "Runtime mirror claimed command."
+                }
+                """);
+
+            var claim = await transport.TryReadClaimAsync("base_swfoc", "token-claim", CancellationToken.None);
+
+            claim.Should().NotBeNull();
+            claim!.ClaimPath.Should().Be(claimPath);
+            claim.StageState.Should().Be("claimed");
+            claim.Message.Should().Be("Runtime mirror claimed command.");
+        }
+        finally
+        {
+            DeleteDirectory(sourceRoot);
+            DeleteDirectory(installRoot);
+            DeleteDirectory(gameRoot);
+        }
+    }
+
+    [Fact]
+    public async Task DeployAsync_ShouldClearStaleTransportArtifacts_FromSourceAndRuntimeRoots()
+    {
+        var sourceRoot = CreateTempDirectory();
+        var installRoot = CreateTempDirectory();
+        var gameRoot = CreateTempDirectory();
+        try
+        {
+            Directory.CreateDirectory(Path.Combine(gameRoot, "corruption"));
+            WriteScript(sourceRoot, "scripts/common/spawn_bridge.lua", "-- helper script");
+            var service = BuildService(
+                BuildProfile("base_swfoc", [new HelperHookSpec("spawn_bridge", "scripts/common/spawn_bridge.lua", "1.0.0", EntryPoint: "SWFOC_Trainer_Spawn_Context")]),
+                sourceRoot,
+                installRoot,
+                gameRootCandidates: [gameRoot]);
+
+            var sourceDeploymentRoot = Path.Combine(installRoot, "base_swfoc");
+            CreateTransportDirectories(sourceDeploymentRoot);
+            File.WriteAllText(Path.Combine(sourceDeploymentRoot, "SwfocTrainer", "Runtime", "commands", "dispatch.lua"), "return { stale = true }");
+            File.WriteAllText(Path.Combine(sourceDeploymentRoot, "SwfocTrainer", "Runtime", "commands", "pending", "stale.json"), "{}");
+            File.WriteAllText(Path.Combine(sourceDeploymentRoot, "SwfocTrainer", "Runtime", "commands", "claimed", "stale.json"), "{}");
+            File.WriteAllText(Path.Combine(sourceDeploymentRoot, "SwfocTrainer", "Runtime", "receipts", "stale.json"), "{}");
+
+            var deployedRoot = await service.DeployAsync("base_swfoc", CancellationToken.None);
+
+            var runtimeDispatchPath = Path.Combine(deployedRoot, "SwfocTrainer", "Runtime", "commands", "dispatch.lua");
+            File.Exists(Path.Combine(sourceDeploymentRoot, "SwfocTrainer", "Runtime", "commands", "dispatch.lua")).Should().BeFalse();
+            Directory.GetFiles(Path.Combine(sourceDeploymentRoot, "SwfocTrainer", "Runtime", "commands", "pending")).Should().BeEmpty();
+            Directory.GetFiles(Path.Combine(sourceDeploymentRoot, "SwfocTrainer", "Runtime", "commands", "claimed")).Should().BeEmpty();
+            Directory.GetFiles(Path.Combine(sourceDeploymentRoot, "SwfocTrainer", "Runtime", "receipts")).Should().BeEmpty();
+            File.Exists(runtimeDispatchPath).Should().BeFalse();
+            Directory.GetFiles(Path.Combine(deployedRoot, "SwfocTrainer", "Runtime", "commands", "pending")).Should().BeEmpty();
+            Directory.GetFiles(Path.Combine(deployedRoot, "SwfocTrainer", "Runtime", "commands", "claimed")).Should().BeEmpty();
+            Directory.GetFiles(Path.Combine(deployedRoot, "SwfocTrainer", "Runtime", "receipts")).Should().BeEmpty();
+        }
+        finally
+        {
+            DeleteDirectory(sourceRoot);
+            DeleteDirectory(installRoot);
+            DeleteDirectory(gameRoot);
+        }
+    }
+
+    [Fact]
     public async Task DeployAsync_ShouldGenerateAutoloadWrappers_WhenProfileDeclaresHelperAutoloadScripts()
     {
         var sourceRoot = CreateTempDirectory();
@@ -316,6 +476,7 @@ public sealed class HelperModServiceTests
 
             var wrapper = File.ReadAllText(galacticWrapper);
             wrapper.Should().Contain("require(\"SwfocTrainer_HelperBootstrap\")");
+            wrapper.Should().Contain("SwfocTrainer_Helper_Bootstrap_Pump()");
             wrapper.Should().Contain("require(\"SwfocTrainer.Original.Story.Galactic\")");
             wrapper.Should().Contain("SWFOC_TRAINER_HELPER_AUTOLOAD_READY");
             File.ReadAllText(galacticOriginal).Should().Be("-- original galactic");
@@ -410,6 +571,150 @@ public sealed class HelperModServiceTests
             DeleteDirectory(sourceRoot);
             DeleteDirectory(installRoot);
             DeleteDirectory(workshopContentRoot);
+        }
+    }
+
+    [Fact]
+    public async Task DeployAsync_ShouldWrapPumpEvents_ForLibraryPgBaseAutoloadScripts()
+    {
+        var sourceRoot = CreateTempDirectory();
+        var installRoot = CreateTempDirectory();
+        var workshopContentRoot = CreateTempDirectory();
+        try
+        {
+            WriteScript(sourceRoot, "scripts/common/spawn_bridge.lua", "-- helper script");
+            WriteScript(workshopContentRoot, "1397421866/Data/Scripts/Library/PGBase.lua", "-- original pgbase");
+            var metadata = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
+            {
+                ["helperAutoloadScripts"] = "Library/PGBase.lua",
+                ["helperAutoloadStrategy"] = "service_wrapper_chain"
+            };
+            var profile = BuildProfile(
+                "aotr_1397421866_swfoc",
+                [new HelperHookSpec("spawn_bridge", "scripts/common/spawn_bridge.lua", "1.0.0", EntryPoint: "SWFOC_Trainer_Spawn")],
+                metadata,
+                steamWorkshopId: "1397421866");
+            var service = BuildService(profile, sourceRoot, installRoot, workshopContentRoots: [workshopContentRoot]);
+
+            var deployedRoot = await service.DeployAsync("aotr_1397421866_swfoc", CancellationToken.None);
+
+            var wrapperPath = Path.Combine(deployedRoot, "Data", "Scripts", "Library", "PGBase.lua");
+            File.Exists(wrapperPath).Should().BeTrue();
+            var wrapper = File.ReadAllText(wrapperPath);
+            wrapper.Should().Contain("require(\"SwfocTrainer_HelperBootstrap\")");
+            wrapper.Should().Contain("local original_PumpEvents = PumpEvents");
+            wrapper.Should().Contain("function PumpEvents(...)");
+            wrapper.Should().Contain("SwfocTrainer_Helper_Safe_Pump()");
+            wrapper.Should().Contain("return original_PumpEvents(...)");
+            wrapper.Should().Contain("require(\"SwfocTrainer.Original.Library.PGBase\")");
+        }
+        finally
+        {
+            DeleteDirectory(sourceRoot);
+            DeleteDirectory(installRoot);
+            DeleteDirectory(workshopContentRoot);
+        }
+    }
+
+    [Fact]
+    public async Task DeployAsync_ShouldMirrorHelperOverlayIntoGameCorruptionMods_WhenGameRootIsAvailable()
+    {
+        var sourceRoot = CreateTempDirectory();
+        var installRoot = CreateTempDirectory();
+        var workshopContentRoot = CreateTempDirectory();
+        var gameRoot = CreateTempDirectory();
+        try
+        {
+            Directory.CreateDirectory(Path.Combine(gameRoot, "corruption"));
+            WriteScript(sourceRoot, "scripts/common/spawn_bridge.lua", "-- helper script");
+            WriteScript(workshopContentRoot, "1397421866/Data/Scripts/Library/PGBase.lua", "-- original pgbase");
+            var metadata = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
+            {
+                ["helperAutoloadScripts"] = "Library/PGBase.lua",
+                ["helperAutoloadStrategy"] = "service_wrapper_chain"
+            };
+            var profile = BuildProfile(
+                "aotr_1397421866_swfoc",
+                [new HelperHookSpec("spawn_bridge", "scripts/common/spawn_bridge.lua", "1.0.0", EntryPoint: "SWFOC_Trainer_Spawn")],
+                metadata,
+                steamWorkshopId: "1397421866");
+            var service = BuildService(
+                profile,
+                sourceRoot,
+                installRoot,
+                workshopContentRoots: [workshopContentRoot],
+                gameRootCandidates: [gameRoot]);
+
+            var deployedRoot = await service.DeployAsync("aotr_1397421866_swfoc", CancellationToken.None);
+
+            var sourceDeployment = Path.Combine(installRoot, "aotr_1397421866_swfoc");
+            var mirroredDeployment = Path.Combine(gameRoot, "corruption", "Mods", "SwfocTrainer_Helper", "aotr_1397421866_swfoc");
+
+            deployedRoot.Should().Be(mirroredDeployment);
+            File.Exists(Path.Combine(sourceDeployment, "helper-deployment.json")).Should().BeTrue();
+            File.Exists(Path.Combine(mirroredDeployment, "helper-deployment.json")).Should().BeTrue();
+            File.Exists(Path.Combine(mirroredDeployment, "Data", "Scripts", "Library", "PGBase.lua")).Should().BeTrue();
+            File.Exists(Path.Combine(mirroredDeployment, "Data", "Scripts", "Library", "SwfocTrainer_HelperBootstrap.lua")).Should().BeTrue();
+            var sourceBootstrap = File.ReadAllText(Path.Combine(sourceDeployment, "Data", "Scripts", "Library", "SwfocTrainer_HelperBootstrap.lua"));
+            var mirroredBootstrap = File.ReadAllText(Path.Combine(mirroredDeployment, "Data", "Scripts", "Library", "SwfocTrainer_HelperBootstrap.lua"));
+            sourceBootstrap.Should().Contain(NormalizeLuaPath(Path.Combine(sourceDeployment, "SwfocTrainer", "Runtime", "commands", "dispatch.lua")));
+            mirroredBootstrap.Should().Contain(NormalizeLuaPath(Path.Combine(mirroredDeployment, "SwfocTrainer", "Runtime", "commands", "dispatch.lua")));
+            mirroredBootstrap.Should().NotContain(NormalizeLuaPath(Path.Combine(sourceDeployment, "SwfocTrainer", "Runtime", "commands", "dispatch.lua")));
+
+            var transportLayout = await ((IHelperCommandTransportService)service).GetLayoutAsync("aotr_1397421866_swfoc", CancellationToken.None);
+            transportLayout.DeploymentRoot.Should().Be(mirroredDeployment);
+            transportLayout.PendingDirectory.Should().StartWith(mirroredDeployment);
+        }
+        finally
+        {
+            DeleteDirectory(sourceRoot);
+            DeleteDirectory(installRoot);
+            DeleteDirectory(workshopContentRoot);
+            DeleteDirectory(gameRoot);
+        }
+    }
+
+    [Fact]
+    public async Task GetLayoutAsync_ShouldRedeploy_WhenExistingActivationWrapperNoLongerMatchesProfile()
+    {
+        var sourceRoot = CreateTempDirectory();
+        var installRoot = CreateTempDirectory();
+        var originalScriptsRoot = CreateTempDirectory();
+        try
+        {
+            WriteScript(sourceRoot, "scripts/common/spawn_bridge.lua", "-- helper script");
+            WriteScript(originalScriptsRoot, "Story/Galactic.lua", "-- original galactic");
+            var metadata = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
+            {
+                ["helperAutoloadScripts"] = "Story/Galactic.lua",
+                ["helperAutoloadStrategy"] = "story_wrapper_chain"
+            };
+            var profile = BuildProfile(
+                "base_swfoc",
+                [new HelperHookSpec("spawn_bridge", "scripts/common/spawn_bridge.lua", "1.0.0", EntryPoint: "SWFOC_Trainer_Spawn")],
+                metadata);
+            var deployedRoot = Path.Combine(installRoot, "base_swfoc");
+            Directory.CreateDirectory(Path.Combine(deployedRoot, "Data", "Scripts", "Library", "common"));
+            Directory.CreateDirectory(Path.Combine(deployedRoot, "Data", "Scripts", "Library"));
+            File.WriteAllText(Path.Combine(deployedRoot, "Data", "Scripts", "Library", "common", "spawn_bridge.lua"), "-- helper script");
+            File.WriteAllText(Path.Combine(deployedRoot, "Data", "Scripts", "Library", "SwfocTrainer_HelperBootstrap.lua"), "-- stale bootstrap");
+            CreateTransportDirectories(deployedRoot);
+            File.WriteAllText(Path.Combine(deployedRoot, "helper-deployment.json"), """{"profileId":"base_swfoc"}""");
+
+            var service = BuildService(profile, sourceRoot, installRoot, originalScriptSearchRoots: [originalScriptsRoot]);
+
+            var layout = await ((IHelperCommandTransportService)service).GetLayoutAsync("base_swfoc", CancellationToken.None);
+
+            layout.ProfileId.Should().Be("base_swfoc");
+            File.Exists(Path.Combine(deployedRoot, "Data", "Scripts", "Story", "Galactic.lua")).Should().BeTrue();
+            File.ReadAllText(Path.Combine(deployedRoot, "Data", "Scripts", "Story", "Galactic.lua"))
+                .Should().Contain("SWFOC_TRAINER_HELPER_AUTOLOAD_READY");
+        }
+        finally
+        {
+            DeleteDirectory(sourceRoot);
+            DeleteDirectory(installRoot);
+            DeleteDirectory(originalScriptsRoot);
         }
     }
 
@@ -648,7 +953,8 @@ public sealed class HelperModServiceTests
         string sourceRoot,
         string installRoot,
         IReadOnlyList<string>? originalScriptSearchRoots = null,
-        IReadOnlyList<string>? workshopContentRoots = null)
+        IReadOnlyList<string>? workshopContentRoots = null,
+        IReadOnlyList<string>? gameRootCandidates = null)
     {
         var repository = new StubProfileRepository(profile);
         var options = new HelperModOptions
@@ -656,7 +962,8 @@ public sealed class HelperModServiceTests
             SourceRoot = sourceRoot,
             InstallRoot = installRoot,
             OriginalScriptSearchRoots = originalScriptSearchRoots ?? Array.Empty<string>(),
-            WorkshopContentRoots = workshopContentRoots ?? Array.Empty<string>()
+            WorkshopContentRoots = workshopContentRoots ?? Array.Empty<string>(),
+            GameRootCandidates = gameRootCandidates ?? Array.Empty<string>()
         };
         return new HelperModService(repository, options, NullLogger<HelperModService>.Instance);
     }
@@ -697,6 +1004,8 @@ public sealed class HelperModServiceTests
         Directory.CreateDirectory(path);
         return path;
     }
+
+    private static string NormalizeLuaPath(string path) => path.Replace('\\', '/');
 
     private static void CreateTransportDirectories(string deployedRoot)
     {

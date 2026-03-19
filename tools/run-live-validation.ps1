@@ -565,6 +565,130 @@ function Resolve-ScopeLaunchPlan {
     }
 }
 
+function Resolve-HelperOverlaySourcePath {
+    param([string]$ProfileId)
+
+    if ([string]::IsNullOrWhiteSpace($ProfileId)) {
+        return ""
+    }
+
+    $candidate = Join-Path $env:LOCALAPPDATA (Join-Path "SwfocTrainer\helper_mod" $ProfileId.Trim())
+    if (Test-Path -Path $candidate) {
+        return (Resolve-Path -Path $candidate).ProviderPath
+    }
+
+    return ""
+}
+
+function Resolve-HelperOverlayMirrorPath {
+    param(
+        [string]$ProfileId,
+        [string]$GameRoot
+    )
+
+    if ([string]::IsNullOrWhiteSpace($ProfileId) -or [string]::IsNullOrWhiteSpace($GameRoot)) {
+        return ""
+    }
+
+    return (Join-Path $GameRoot (Join-Path "corruption\Mods\SwfocTrainer_Helper" $ProfileId.Trim()))
+}
+
+function Get-RelativePathCompat {
+    param(
+        [Parameter(Mandatory = $true)][string]$BasePath,
+        [Parameter(Mandatory = $true)][string]$TargetPath
+    )
+
+    $pathType = [System.IO.Path]
+    $relativeMethod = $pathType.GetMethod("GetRelativePath", [System.Type[]]@([string], [string]))
+    if ($null -ne $relativeMethod) {
+        return $relativeMethod.Invoke($null, @($BasePath, $TargetPath))
+    }
+
+    $fullBasePath = [System.IO.Path]::GetFullPath($BasePath)
+    if (-not $fullBasePath.EndsWith([System.IO.Path]::DirectorySeparatorChar)) {
+        $fullBasePath += [System.IO.Path]::DirectorySeparatorChar
+    }
+
+    $fullTargetPath = [System.IO.Path]::GetFullPath($TargetPath)
+    $baseUri = [System.Uri]::new($fullBasePath)
+    $targetUri = [System.Uri]::new($fullTargetPath)
+    return ([System.Uri]::UnescapeDataString($baseUri.MakeRelativeUri($targetUri).ToString()) -replace '/', '\')
+}
+
+function Copy-DirectoryTree {
+    param(
+        [Parameter(Mandatory = $true)][string]$SourceRoot,
+        [Parameter(Mandatory = $true)][string]$DestinationRoot
+    )
+
+    if (Test-Path -Path $DestinationRoot) {
+        Remove-Item -Path $DestinationRoot -Recurse -Force
+    }
+
+    New-Item -ItemType Directory -Path $DestinationRoot -Force | Out-Null
+
+    Get-ChildItem -Path $SourceRoot -Recurse -Directory | ForEach-Object {
+        $relative = Get-RelativePathCompat -BasePath $SourceRoot -TargetPath $_.FullName
+        New-Item -ItemType Directory -Path (Join-Path $DestinationRoot $relative) -Force | Out-Null
+    }
+
+    Get-ChildItem -Path $SourceRoot -Recurse -File | ForEach-Object {
+        $relative = Get-RelativePathCompat -BasePath $SourceRoot -TargetPath $_.FullName
+        $destination = Join-Path $DestinationRoot $relative
+        $destinationDirectory = Split-Path -Path $destination -Parent
+        if (-not [string]::IsNullOrWhiteSpace($destinationDirectory)) {
+            New-Item -ItemType Directory -Path $destinationDirectory -Force | Out-Null
+        }
+
+        Copy-Item -Path $_.FullName -Destination $destination -Force
+    }
+}
+
+function Resolve-HelperOverlayModPath {
+    param(
+        [string]$ProfileId,
+        [string]$GameRoot
+    )
+
+    $sourcePath = Resolve-HelperOverlaySourcePath -ProfileId $ProfileId
+    if ([string]::IsNullOrWhiteSpace($sourcePath)) {
+        return ""
+    }
+
+    $mirrorPath = Resolve-HelperOverlayMirrorPath -ProfileId $ProfileId -GameRoot $GameRoot
+    if ([string]::IsNullOrWhiteSpace($mirrorPath)) {
+        return $sourcePath
+    }
+
+    Copy-DirectoryTree -SourceRoot $sourcePath -DestinationRoot $mirrorPath
+    return (Resolve-Path -Path $mirrorPath).ProviderPath
+}
+
+function Normalize-HelperOverlayLaunchPath {
+    param(
+        [string]$OverlayModPath,
+        [string]$GameRoot
+    )
+
+    if ([string]::IsNullOrWhiteSpace($OverlayModPath)) {
+        return ""
+    }
+
+    if ([string]::IsNullOrWhiteSpace($GameRoot) -or -not [System.IO.Path]::IsPathRooted($OverlayModPath)) {
+        return $OverlayModPath
+    }
+
+    $modsRoot = [System.IO.Path]::GetFullPath((Join-Path $GameRoot "corruption\Mods"))
+    $fullOverlayPath = [System.IO.Path]::GetFullPath($OverlayModPath)
+    if (-not $fullOverlayPath.StartsWith($modsRoot, [System.StringComparison]::OrdinalIgnoreCase)) {
+        return $fullOverlayPath
+    }
+
+    $launchDirectory = Join-Path $GameRoot "corruption"
+    return ((Get-RelativePathCompat -BasePath $launchDirectory -TargetPath $fullOverlayPath) -replace '/', '\')
+}
+
 function Start-AutoLaunchSession {
     [CmdletBinding(SupportsShouldProcess = $true)]
     param(
@@ -591,13 +715,22 @@ function Start-AutoLaunchSession {
         Stop-LiveGameProcesses -Confirm:$false
     }
 
-    $launchArgs = ""
+    $launchArgsParts = New-Object System.Collections.Generic.List[string]
+    $overlayModPath = Resolve-HelperOverlayModPath -ProfileId $ForcedProfileId -GameRoot $root
     if ($null -ne $plan.WorkshopIds) {
         $normalizedWorkshopIds = @($plan.WorkshopIds | ForEach-Object { [string]$_ } | Where-Object { -not [string]::IsNullOrWhiteSpace($_) })
         if ($normalizedWorkshopIds.Count -gt 0) {
-            $launchArgs = ($normalizedWorkshopIds | ForEach-Object { "STEAMMOD=$_" }) -join " "
+            foreach ($workshopId in $normalizedWorkshopIds) {
+                [void]$launchArgsParts.Add("STEAMMOD=$workshopId")
+            }
         }
     }
+
+    if (-not [string]::IsNullOrWhiteSpace($overlayModPath)) {
+        $launchOverlayPath = Normalize-HelperOverlayLaunchPath -OverlayModPath $overlayModPath -GameRoot $root
+        [void]$launchArgsParts.Add(("MODPATH=""{0}""" -f $launchOverlayPath))
+    }
+    $launchArgs = ($launchArgsParts.ToArray() -join " ")
     Write-Output ("Auto-launch: exe='{0}' args='{1}' root='{2}' scope={3}" -f $exePath, $launchArgs, $root, $SelectedScope)
     $startParams = @{
         FilePath = $exePath
@@ -995,15 +1128,12 @@ function Invoke-LiveTest {
     }
 
     try {
-        $startInfo = [System.Diagnostics.ProcessStartInfo]::new()
-        $startInfo.FileName = $dotnetExe
-        $startInfo.UseShellExecute = $false
-        $startInfo.CreateNoWindow = $true
-        foreach ($arg in $dotnetArgs) {
-            [void]$startInfo.ArgumentList.Add([string]$arg)
-        }
-
-        $dotnetProcess = [System.Diagnostics.Process]::Start($startInfo)
+        $dotnetProcess = Start-Process `
+            -FilePath $dotnetExe `
+            -ArgumentList $dotnetArgs `
+            -WorkingDirectory $repoRoot `
+            -NoNewWindow `
+            -PassThru
 
         if ($null -eq $dotnetProcess) {
             throw "dotnet test failed for '$Name': process did not start."
@@ -1176,9 +1306,42 @@ function Read-TrxSummary {
     }
 }
 
+function Resolve-EffectiveForceProfileId {
+    param(
+        [string]$SelectedScope,
+        [string]$CurrentProfileId,
+        [string[]]$ForcedWorkshopIds
+    )
+
+    if (-not [string]::IsNullOrWhiteSpace($CurrentProfileId)) {
+        return $CurrentProfileId.Trim()
+    }
+
+    $scopeUpper = if ([string]::IsNullOrWhiteSpace($SelectedScope)) { "" } else { $SelectedScope.Trim().ToUpperInvariant() }
+    switch ($scopeUpper) {
+        "ROE" { return "roe_3447786229_swfoc" }
+        "AOTR" { return "aotr_1397421866_swfoc" }
+    }
+
+    $forcedIds = @($ForcedWorkshopIds | Where-Object { -not [string]::IsNullOrWhiteSpace($_) })
+    $forceChainKey = ($forcedIds -join ",")
+    if ($forceChainKey -eq ($defaultRoeWorkshopChain -join ",")) {
+        return "roe_3447786229_swfoc"
+    }
+
+    if ($forceChainKey -eq ($defaultAotrWorkshopChain -join ",")) {
+        return "aotr_1397421866_swfoc"
+    }
+
+    return ""
+}
+
 $forceWorkshopIdsNormalized = @(ConvertTo-ForcedWorkshopIds -RawIds $ForceWorkshopIds)
 $forceWorkshopIdsCsv = if ($forceWorkshopIdsNormalized.Count -eq 0) { "" } else { ($forceWorkshopIdsNormalized -join ",") }
-$forceProfileIdNormalized = if ([string]::IsNullOrWhiteSpace($ForceProfileId)) { "" } else { $ForceProfileId.Trim() }
+$forceProfileIdNormalized = Resolve-EffectiveForceProfileId `
+    -SelectedScope $Scope `
+    -CurrentProfileId $ForceProfileId `
+    -ForcedWorkshopIds $forceWorkshopIdsNormalized
 
 $dotnetExe = Resolve-DotnetCommand
 $pythonCmd = @(Resolve-PythonCommand)

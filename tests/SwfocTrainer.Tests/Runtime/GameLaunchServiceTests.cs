@@ -24,7 +24,7 @@ public sealed class GameLaunchServiceTests
     }
 
     [Fact]
-    public void BuildArguments_ShouldEmitOverlayModPathBeforeSteamMods_WhenOverlayPathProvided()
+    public void BuildArguments_ShouldEmitOverlayModPathAfterSteamMods_WhenOverlayPathProvided()
     {
         var request = new GameLaunchRequest(
             Target: GameLaunchTarget.Swfoc,
@@ -34,7 +34,22 @@ public sealed class GameLaunchServiceTests
 
         var args = InvokeBuildArguments(request);
 
-        args.Should().Be("MODPATH=\"C:\\Users\\tester\\AppData\\Local\\SwfocTrainer\\helper_mod\\base_swfoc\" STEAMMOD=1397421866 STEAMMOD=3447786229");
+        args.Should().Be("STEAMMOD=1397421866 STEAMMOD=3447786229 MODPATH=\"C:\\Users\\tester\\AppData\\Local\\SwfocTrainer\\helper_mod\\base_swfoc\"");
+    }
+
+    [Fact]
+    public void BuildArguments_ShouldEmitRelativeOverlayModPath_WhenOverlayLivesUnderCorruptionMods()
+    {
+        var root = @"D:\SteamLibrary\steamapps\common\Star Wars Empire at War";
+        var request = new GameLaunchRequest(
+            Target: GameLaunchTarget.Swfoc,
+            Mode: GameLaunchMode.SteamMod,
+            WorkshopIds: new[] { "1397421866", "3447786229" },
+            OverlayModPath: @"D:\SteamLibrary\steamapps\common\Star Wars Empire at War\corruption\Mods\SwfocTrainer_Helper\roe_3447786229_swfoc");
+
+        var args = InvokeBuildArguments(request, root);
+
+        args.Should().Be("STEAMMOD=1397421866 STEAMMOD=3447786229 MODPATH=\"Mods\\SwfocTrainer_Helper\\roe_3447786229_swfoc\"");
     }
 
     [Fact]
@@ -678,14 +693,19 @@ public sealed class GameLaunchServiceTests
         }
     }
 
-    private static string InvokeBuildArguments(GameLaunchRequest request)
+    private static string InvokeBuildArguments(GameLaunchRequest request, string? resolvedRoot = null)
     {
-        var method = typeof(GameLaunchService).GetMethod(
-            "BuildArguments",
-            BindingFlags.NonPublic | BindingFlags.Static);
+        var method = typeof(GameLaunchService)
+            .GetMethods(BindingFlags.NonPublic | BindingFlags.Static)
+            .Single(x =>
+                x.Name.Equals("BuildArguments", StringComparison.Ordinal) &&
+                x.GetParameters().Length == (resolvedRoot is null ? 1 : 2));
 
         method.Should().NotBeNull();
-        var result = method!.Invoke(null, new object?[] { request });
+        var parameters = resolvedRoot is null
+            ? new object?[] { request }
+            : new object?[] { request, resolvedRoot };
+        var result = method!.Invoke(null, parameters);
         result.Should().BeOfType<string>();
         return (string)result!;
     }

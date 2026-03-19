@@ -471,18 +471,26 @@ public sealed class NamedPipeHelperBridgeBackend : IHelperBridgeBackend
             DateTimeOffset.UtcNow,
             TimeSpan.FromMinutes(15));
 
-        var pendingStoryModeLoad = !autoload.Ready &&
-            autoload.ReasonCode.Equals("helper_autoload_not_found", StringComparison.OrdinalIgnoreCase) &&
+        var autoloadNotFound = !autoload.Ready &&
+            autoload.ReasonCode.Equals("helper_autoload_not_found", StringComparison.OrdinalIgnoreCase);
+        var pendingStoryModeLoad = autoloadNotFound &&
             !string.IsNullOrWhiteSpace(autoloadStrategy) &&
             autoloadStrategy.Equals("story_wrapper_chain", StringComparison.OrdinalIgnoreCase);
+        var pendingServiceWrapperLoad = autoloadNotFound &&
+            !string.IsNullOrWhiteSpace(autoloadStrategy) &&
+            autoloadStrategy.Equals("service_wrapper_chain", StringComparison.OrdinalIgnoreCase);
 
         diagnostics[DiagnosticHelperAutoloadState] = autoload.Ready
             ? "ready"
             : pendingStoryModeLoad
                 ? "pending_story_mode_load"
+                : pendingServiceWrapperLoad
+                    ? "pending_service_wrapper_load"
                 : "missing";
         diagnostics[DiagnosticHelperAutoloadReasonCode] = pendingStoryModeLoad
             ? "story_wrapper_waiting_for_story_load"
+            : pendingServiceWrapperLoad
+                ? "service_wrapper_waiting_for_script_load"
             : autoload.ReasonCode;
         diagnostics[DiagnosticHelperAutoloadSourcePath] = autoload.SourcePath;
         diagnostics[DiagnosticHelperAutoloadStrategy] = autoload.Strategy ?? autoloadStrategy ?? string.Empty;
@@ -574,15 +582,27 @@ public sealed class NamedPipeHelperBridgeBackend : IHelperBridgeBackend
             diagnostics[DiagnosticHelperCommandPendingDirectory] = Path.GetDirectoryName(staged.CommandPath) ?? string.Empty;
             diagnostics[DiagnosticHelperCommandClaimedDirectory] = Path.GetDirectoryName(staged.ClaimPath) ?? string.Empty;
             diagnostics[DiagnosticHelperCommandReceiptDirectory] = Path.GetDirectoryName(staged.ReceiptPath) ?? string.Empty;
+            diagnostics["helperCommandPathExistsAtStage"] = File.Exists(staged.CommandPath);
+            diagnostics["helperDispatchPathExistsAtStage"] = File.Exists(staged.PayloadPath);
             diagnostics[PayloadOperationPolicy] = request.OperationPolicy ?? string.Empty;
             diagnostics[PayloadTargetContext] = request.TargetContext ?? request.ActionRequest.RuntimeMode.ToString();
             diagnostics[PayloadMutationIntent] = request.MutationIntent ?? string.Empty;
             diagnostics[PayloadVerificationContractVersion] = request.VerificationContractVersion;
             diagnostics[DiagnosticAppliedEntityId] = ResolveAppliedEntityId(payload);
 
-            var receipt = await WaitForOverlayReceiptAsync(request.ActionRequest.ProfileId, operation.OperationToken, cancellationToken);
-            if (receipt is not null)
+            var overlayProgress = await WaitForOverlayProgressAsync(
+                request.ActionRequest.ProfileId,
+                operation.OperationToken,
+                staged,
+                cancellationToken);
+            diagnostics["helperCommandPathExistsAfterWait"] = overlayProgress.CommandPathExists;
+            diagnostics["helperClaimPathExistsAfterWait"] = overlayProgress.ClaimPathExists;
+            diagnostics["helperReceiptPathExistsAfterWait"] = overlayProgress.ReceiptPathExists;
+            diagnostics["helperDispatchPathExistsAfterWait"] = overlayProgress.DispatchPathExists;
+
+            if (overlayProgress.Receipt is not null)
             {
+                var receipt = overlayProgress.Receipt;
                 ApplyOverlayReceiptDiagnostics(diagnostics, receipt);
                 if (!string.IsNullOrWhiteSpace(receipt.AppliedEntityId))
                 {
@@ -626,6 +646,23 @@ public sealed class NamedPipeHelperBridgeBackend : IHelperBridgeBackend
                     diagnostics: diagnostics);
             }
 
+            if (overlayProgress.Claim is not null)
+            {
+                ApplyOverlayClaimDiagnostics(diagnostics, overlayProgress.Claim);
+                diagnostics[DiagnosticHelperExecutionPath] = "overlay_command_inbox_claimed_unverified";
+                diagnostics[DiagnosticBlockingReason] = "awaiting_overlay_receipt";
+                diagnostics[DiagnosticHelperCommandTransportState] = "claim_present";
+                diagnostics[DiagnosticHelperVerifyState] = "claimed_unverified";
+
+                return CreateExecutionResult(
+                    succeeded: false,
+                    reasonCode: RuntimeReasonCode.HELPER_VERIFICATION_FAILED,
+                    message: string.IsNullOrWhiteSpace(overlayProgress.Claim.Message)
+                        ? "Helper overlay command was claimed, but no receipt or verified evidence was produced yet."
+                        : overlayProgress.Claim.Message,
+                    diagnostics: diagnostics);
+            }
+
             return CreateExecutionResult(
                 succeeded: false,
                 reasonCode: RuntimeReasonCode.HELPER_VERIFICATION_FAILED,
@@ -648,14 +685,29 @@ public sealed class NamedPipeHelperBridgeBackend : IHelperBridgeBackend
         }
     }
 
-    private async Task<HelperCommandReceipt?> WaitForOverlayReceiptAsync(
+    private sealed record OverlayProgressSnapshot(
+        HelperCommandClaim? Claim,
+        HelperCommandReceipt? Receipt,
+        bool CommandPathExists,
+        bool ClaimPathExists,
+        bool ReceiptPathExists,
+        bool DispatchPathExists);
+
+    private async Task<OverlayProgressSnapshot> WaitForOverlayProgressAsync(
         string profileId,
         string operationToken,
+        HelperStagedCommand staged,
         CancellationToken cancellationToken)
     {
         if (_helperCommandTransportService is null)
         {
-            return null;
+            return new OverlayProgressSnapshot(
+                Claim: null,
+                Receipt: null,
+                CommandPathExists: File.Exists(staged.CommandPath),
+                ClaimPathExists: File.Exists(staged.ClaimPath),
+                ReceiptPathExists: File.Exists(staged.ReceiptPath),
+                DispatchPathExists: File.Exists(staged.PayloadPath));
         }
 
         var startedAt = DateTimeOffset.UtcNow;
@@ -663,18 +715,46 @@ public sealed class NamedPipeHelperBridgeBackend : IHelperBridgeBackend
         {
             cancellationToken.ThrowIfCancellationRequested();
 
+            var claim = await _helperCommandTransportService.TryReadClaimAsync(profileId, operationToken, cancellationToken);
             var receipt = await _helperCommandTransportService.TryReadReceiptAsync(profileId, operationToken, cancellationToken);
             if (receipt is not null)
             {
-                return receipt;
+                return new OverlayProgressSnapshot(
+                    Claim: claim,
+                    Receipt: receipt,
+                    CommandPathExists: File.Exists(staged.CommandPath),
+                    ClaimPathExists: File.Exists(staged.ClaimPath),
+                    ReceiptPathExists: File.Exists(staged.ReceiptPath),
+                    DispatchPathExists: File.Exists(staged.PayloadPath));
             }
 
             if (DateTimeOffset.UtcNow - startedAt >= OverlayReceiptWaitWindow)
             {
-                return null;
+                return new OverlayProgressSnapshot(
+                    Claim: claim,
+                    Receipt: null,
+                    CommandPathExists: File.Exists(staged.CommandPath),
+                    ClaimPathExists: File.Exists(staged.ClaimPath),
+                    ReceiptPathExists: File.Exists(staged.ReceiptPath),
+                    DispatchPathExists: File.Exists(staged.PayloadPath));
             }
 
             await Task.Delay(OverlayReceiptPollDelay, cancellationToken);
+        }
+    }
+
+    private static void ApplyOverlayClaimDiagnostics(
+        IDictionary<string, object?> diagnostics,
+        HelperCommandClaim claim)
+    {
+        diagnostics[DiagnosticHelperCommandStageState] = claim.StageState;
+        diagnostics["helperClaimStageState"] = claim.StageState;
+        diagnostics["helperClaimMessage"] = claim.Message;
+        diagnostics["helperClaimSourcePath"] = claim.ClaimPath;
+        diagnostics[DiagnosticHelperStagedClaimPath] = claim.ClaimPath;
+        if (!string.IsNullOrWhiteSpace(claim.HelperEntryPoint))
+        {
+            diagnostics[DiagnosticHelperEntryPoint] = claim.HelperEntryPoint;
         }
     }
 

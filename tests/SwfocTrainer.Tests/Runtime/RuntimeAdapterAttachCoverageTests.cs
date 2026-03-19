@@ -14,6 +14,37 @@ public sealed class RuntimeAdapterAttachCoverageTests
     private static readonly Type RuntimeAdapterType = typeof(RuntimeAdapter);
 
     [Fact]
+    public void Constructor_ShouldProvide_DefaultHelperCommandTransport_For_NonDi_RuntimeAdapter()
+    {
+        var profile = ReflectionCoverageVariantFactory.BuildProfile() with
+        {
+            HelperModHooks =
+            [
+                new HelperHookSpec(
+                    Id: "spawn_bridge",
+                    Script: "scripts/common/spawn_bridge.lua",
+                    Version: "1.0.0",
+                    EntryPoint: "SWFOC_Trainer_Spawn_Context")
+            ]
+        };
+
+        var adapter = new RuntimeAdapter(
+            new MultiProcessLocator(Array.Empty<ProcessMetadata>()),
+            new StubProfileRepository(profile),
+            new FixedSignatureResolver(new SymbolMap(new Dictionary<string, SymbolInfo>())),
+            NullLogger<RuntimeAdapter>.Instance);
+
+        var helperBridgeField = RuntimeAdapterType.GetField("_helperBridgeBackend", BindingFlags.Instance | BindingFlags.NonPublic);
+        helperBridgeField.Should().NotBeNull();
+        var helperBridge = helperBridgeField!.GetValue(adapter);
+        helperBridge.Should().BeOfType<NamedPipeHelperBridgeBackend>();
+
+        var transportField = typeof(NamedPipeHelperBridgeBackend).GetField("_helperCommandTransportService", BindingFlags.Instance | BindingFlags.NonPublic);
+        transportField.Should().NotBeNull();
+        transportField!.GetValue(helperBridge).Should().NotBeNull("non-DI runtime flows should still stage helper overlay commands");
+    }
+
+    [Fact]
     public async Task PrepareAttachSessionArtifactsAsync_ShouldThrow_WhenProfileHasNoSignatureSets()
     {
         var profile = ReflectionCoverageVariantFactory.BuildProfile() with { SignatureSets = Array.Empty<SignatureSet>() };

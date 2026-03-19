@@ -629,6 +629,55 @@ public sealed class RuntimeAdapterExecuteCoverageTests
     }
 
     [Fact]
+    public async Task ExecuteHelperActionAsync_ShouldContinueIntoBridgeExecution_WhenProbeIsExperimental()
+    {
+        var helper = new StubHelperBridgeBackend
+        {
+            ProbeResult = new HelperBridgeProbeResult(
+                Available: false,
+                ReasonCode: RuntimeReasonCode.HELPER_VERIFICATION_FAILED,
+                Message: "native dispatch unavailable",
+                Diagnostics: new Dictionary<string, object?>
+                {
+                    ["helperBridgeState"] = "experimental",
+                    ["helperExecutionPath"] = "native_dispatch_unavailable"
+                }),
+            ExecuteResult = new HelperBridgeExecutionResult(
+                Succeeded: true,
+                ReasonCode: RuntimeReasonCode.HELPER_EXECUTION_APPLIED,
+                Message: "overlay applied",
+                Diagnostics: new Dictionary<string, object?>
+                {
+                    ["helperVerifyState"] = "verified",
+                    ["helperExecutionPath"] = "overlay_command_inbox_verified"
+                })
+        };
+
+        var harness = new AdapterHarness
+        {
+            HelperBridgeBackend = helper
+        };
+        var profile = BuildProfile("set_hero_state_helper");
+        var adapter = harness.CreateAdapter(profile, RuntimeMode.Galactic);
+
+        var method = typeof(RuntimeAdapter).GetMethod("ExecuteHelperActionAsync", BindingFlags.Instance | BindingFlags.NonPublic);
+        method.Should().NotBeNull();
+        var task = (Task<ActionExecutionResult>)method!.Invoke(adapter, new object?[]
+        {
+            BuildRequest("set_hero_state_helper", RuntimeMode.Galactic),
+            CancellationToken.None
+        })!;
+        var result = await task;
+
+        helper.ExecuteCallCount.Should().Be(1);
+        result.Succeeded.Should().BeTrue();
+        result.Message.Should().Be("overlay applied");
+        result.Diagnostics.Should().ContainKey("reasonCode");
+        result.Diagnostics!["reasonCode"]!.ToString().Should().Be(RuntimeReasonCode.HELPER_EXECUTION_APPLIED.ToString());
+        result.Diagnostics["helperExecutionPath"]!.ToString().Should().Be("overlay_command_inbox_verified");
+    }
+
+    [Fact]
     public async Task ExecuteHelperActionAsync_ShouldEnforceTacticalSpawnPolicies_AndAnnotateDiagnostics()
     {
         var helper = new StubHelperBridgeBackend

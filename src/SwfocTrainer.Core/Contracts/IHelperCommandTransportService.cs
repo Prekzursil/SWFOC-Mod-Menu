@@ -15,6 +15,11 @@ public interface IHelperCommandTransportService
         JsonObject payload,
         CancellationToken cancellationToken);
 
+    Task<HelperCommandClaim?> TryReadClaimAsync(
+        string profileId,
+        string operationToken,
+        CancellationToken cancellationToken);
+
     Task<HelperCommandReceipt?> TryReadReceiptAsync(
         string profileId,
         string operationToken,

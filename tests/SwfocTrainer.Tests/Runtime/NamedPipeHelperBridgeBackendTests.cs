@@ -262,6 +262,68 @@ public sealed class NamedPipeHelperBridgeBackendTests
     }
 
     [Fact]
+    public async Task ExecuteAsync_ShouldReturnClaimedUnverified_WhenOverlayClaimExistsWithoutReceipt()
+    {
+        var stubBackend = new StubExecutionBackend
+        {
+            ProbeReport = new CapabilityReport(
+                ProfileId: "test_profile",
+                ProbedAtUtc: DateTimeOffset.UtcNow,
+                Capabilities: new Dictionary<string, BackendCapability>(StringComparer.OrdinalIgnoreCase)
+                {
+                    ["set_credits"] = new BackendCapability(
+                        FeatureId: "set_credits",
+                        Available: true,
+                        Confidence: CapabilityConfidenceState.Verified,
+                        ReasonCode: RuntimeReasonCode.CAPABILITY_PROBE_PASS)
+                },
+                ProbeReasonCode: RuntimeReasonCode.CAPABILITY_PROBE_PASS)
+        };
+        var transport = new StubHelperCommandTransportService
+        {
+            ClaimResult = new HelperCommandClaim(
+                ProfileId: "test_profile",
+                ActionId: "spawn_context_entity",
+                HelperEntryPoint: "SWFOC_Trainer_Spawn_Context",
+                OperationToken: "token-claim-001",
+                ClaimPath: @"C:\helper\claimed\token-claim-001.json",
+                StageState: "claimed",
+                Message: "Overlay command claimed.")
+        };
+        var backend = new NamedPipeHelperBridgeBackend(stubBackend, helperCommandTransportService: transport);
+
+        var result = await backend.ExecuteAsync(
+            BuildHelperRequest(
+                new JsonObject
+                {
+                    ["entityId"] = "EMP_ATAT",
+                    ["faction"] = "Empire"
+                },
+                new HelperHookSpec(
+                    Id: "spawn_bridge",
+                    Script: "scripts/common/spawn_bridge.lua",
+                    Version: "1.0.0",
+                    EntryPoint: "SWFOC_Trainer_Spawn_Context"),
+                processId: 4242,
+                actionId: "spawn_context_entity",
+                operationKind: HelperBridgeOperationKind.SpawnContextEntity,
+                operationToken: "token-claim-001"),
+            CancellationToken.None);
+
+        result.Succeeded.Should().BeFalse();
+        result.ReasonCode.Should().Be(RuntimeReasonCode.HELPER_VERIFICATION_FAILED);
+        result.Diagnostics.Should().NotBeNull();
+        var diagnostics = result.Diagnostics!;
+        diagnostics["helperExecutionPath"]?.ToString().Should().Be("overlay_command_inbox_claimed_unverified");
+        diagnostics["helperCommandTransportState"]?.ToString().Should().Be("claim_present");
+        diagnostics["helperCommandStageState"]?.ToString().Should().Be("claimed");
+        diagnostics["helperVerifyState"]?.ToString().Should().Be("claimed_unverified");
+        diagnostics["blockingReason"]?.ToString().Should().Be("awaiting_overlay_receipt");
+        diagnostics["helperClaimStageState"]?.ToString().Should().Be("claimed");
+        diagnostics["helperClaimSourcePath"]?.ToString().Should().Be(@"C:\helper\claimed\token-claim-001.json");
+    }
+
+    [Fact]
     public async Task ProbeAsync_ShouldIncludeAutoloadEvidence_WhenTelemetryReportsHelperAutoloadReady()
     {
         var stubBackend = new StubExecutionBackend
@@ -364,6 +426,56 @@ public sealed class NamedPipeHelperBridgeBackendTests
         diagnostics["helperAutoloadReasonCode"]?.ToString().Should().Be("story_wrapper_waiting_for_story_load");
         diagnostics["helperAutoloadStrategy"]?.ToString().Should().Be("story_wrapper_chain");
         diagnostics["helperAutoloadScript"]?.ToString().Should().Be("Library/PGStoryMode.lua");
+    }
+
+    [Fact]
+    public async Task ProbeAsync_ShouldMarkServiceWrapperAutoloadAsPending_WhenTelemetryHasNoMarkerYet()
+    {
+        var stubBackend = new StubExecutionBackend
+        {
+            ProbeReport = new CapabilityReport(
+                ProfileId: "aotr_1397421866_swfoc",
+                ProbedAtUtc: DateTimeOffset.UtcNow,
+                Capabilities: new Dictionary<string, BackendCapability>(StringComparer.OrdinalIgnoreCase)
+                {
+                    ["set_credits"] = new BackendCapability(
+                        FeatureId: "set_credits",
+                        Available: true,
+                        Confidence: CapabilityConfidenceState.Verified,
+                        ReasonCode: RuntimeReasonCode.CAPABILITY_PROBE_PASS)
+                },
+                ProbeReasonCode: RuntimeReasonCode.CAPABILITY_PROBE_PASS)
+        };
+        var telemetry = new StubTelemetryLogTailService
+        {
+            AutoloadResult = HelperAutoloadVerification.Unavailable("helper_autoload_not_found")
+        };
+        var backend = new NamedPipeHelperBridgeBackend(stubBackend, telemetry);
+
+        var result = await backend.ProbeAsync(
+            new HelperBridgeProbeRequest(
+                "aotr_1397421866_swfoc",
+                BuildProcess(processId: 4242),
+                new[]
+                {
+                    new HelperHookSpec(
+                        Id: "spawn_bridge",
+                        Script: "scripts/common/spawn_bridge.lua",
+                        Version: "1.0.0",
+                        EntryPoint: "SWFOC_Trainer_Spawn_Context")
+                },
+                AutoloadStrategy: "service_wrapper_chain",
+                AutoloadScripts: new[] { "Library/PGBase.lua" }),
+            CancellationToken.None);
+
+        result.Available.Should().BeFalse();
+        result.Diagnostics.Should().NotBeNull();
+        var diagnostics = result.Diagnostics!;
+        diagnostics["helperBridgeState"]?.ToString().Should().Be("experimental");
+        diagnostics["helperAutoloadState"]?.ToString().Should().Be("pending_service_wrapper_load");
+        diagnostics["helperAutoloadReasonCode"]?.ToString().Should().Be("service_wrapper_waiting_for_script_load");
+        diagnostics["helperAutoloadStrategy"]?.ToString().Should().Be("service_wrapper_chain");
+        diagnostics["helperAutoloadScript"]?.ToString().Should().Be("Library/PGBase.lua");
     }
 
     [Fact]
@@ -1321,6 +1433,7 @@ public sealed class NamedPipeHelperBridgeBackendTests
     private sealed class StubHelperCommandTransportService : IHelperCommandTransportService
     {
         public List<(string ProfileId, string ActionId, string HelperEntryPoint, string OperationToken, JsonObject Payload)> StageCalls { get; } = new();
+        public HelperCommandClaim? ClaimResult { get; set; }
         public HelperCommandReceipt? ReceiptResult { get; set; }
 
         public Task<HelperCommandTransportLayout> GetLayoutAsync(string profileId, CancellationToken cancellationToken)
@@ -1333,6 +1446,7 @@ public sealed class NamedPipeHelperBridgeBackendTests
                 BootstrapScriptPath: @"C:\helper\Data\Scripts\Library\SwfocTrainer_HelperBootstrap.lua",
                 Model: "overlay_command_inbox",
                 SchemaVersion: "1.0",
+                DispatchCommandPath: @"C:\helper\commands\dispatch.lua",
                 PendingDirectory: @"C:\helper\pending",
                 ClaimedDirectory: @"C:\helper\claimed",
                 ReceiptDirectory: @"C:\helper\receipts"));
@@ -1350,7 +1464,7 @@ public sealed class NamedPipeHelperBridgeBackendTests
                 CommandPath: $@"C:\helper\pending\{operationToken}.json",
                 ClaimPath: $@"C:\helper\claimed\{operationToken}.json",
                 ReceiptPath: $@"C:\helper\receipts\{operationToken}.json",
-                PayloadPath: $@"C:\helper\pending\{operationToken}.json"));
+                PayloadPath: @"C:\helper\commands\dispatch.lua"));
         }
 
         public Task<HelperCommandReceipt?> TryReadReceiptAsync(string profileId, string operationToken, CancellationToken cancellationToken)
@@ -1364,6 +1478,19 @@ public sealed class NamedPipeHelperBridgeBackendTests
             }
 
             return Task.FromResult<HelperCommandReceipt?>(ReceiptResult);
+        }
+
+        public Task<HelperCommandClaim?> TryReadClaimAsync(string profileId, string operationToken, CancellationToken cancellationToken)
+        {
+            _ = cancellationToken;
+            if (ClaimResult is null ||
+                !ClaimResult.ProfileId.Equals(profileId, StringComparison.OrdinalIgnoreCase) ||
+                !ClaimResult.OperationToken.Equals(operationToken, StringComparison.OrdinalIgnoreCase))
+            {
+                return Task.FromResult<HelperCommandClaim?>(null);
+            }
+
+            return Task.FromResult<HelperCommandClaim?>(ClaimResult);
         }
     }
 }

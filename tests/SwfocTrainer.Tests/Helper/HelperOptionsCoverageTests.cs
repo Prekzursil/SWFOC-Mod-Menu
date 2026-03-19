@@ -53,7 +53,8 @@ public sealed class HelperOptionsCoverageTests
         var options = new HelperModOptions
         {
             SourceRoot = sourceRoot,
-            InstallRoot = installRoot
+            InstallRoot = installRoot,
+            GameRootCandidates = Array.Empty<string>()
         };
 
         return new HelperModService(repository, options, NullLogger<HelperModService>.Instance);

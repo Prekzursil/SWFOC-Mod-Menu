@@ -45,7 +45,7 @@ public sealed class GameLaunchService : IGameLaunchService
             return Task.FromResult(executableResolution.Failure);
         }
 
-        var arguments = BuildArguments(request);
+        var arguments = BuildArguments(request, rootResolution.Root);
         Process process;
         try
         {
@@ -221,11 +221,17 @@ public sealed class GameLaunchService : IGameLaunchService
 
     private static string BuildArguments(GameLaunchRequest request)
     {
-        var overlayArgument = BuildModPathArgument(request.OverlayModPath);
+        return BuildArguments(request, resolvedRoot: null);
+    }
+
+    private static string BuildArguments(GameLaunchRequest request, string? resolvedRoot)
+    {
+        var overlayArgument = BuildModPathArgument(request.OverlayModPath, request.Target, resolvedRoot);
+        var steamModArguments = BuildSteamModArguments(request.WorkshopIds);
         return request.Mode switch
         {
-            GameLaunchMode.SteamMod => JoinArguments(overlayArgument, BuildSteamModArguments(request.WorkshopIds)),
-            GameLaunchMode.ModPath => BuildModPathArgument(request.ModPath),
+            GameLaunchMode.SteamMod => JoinArguments(steamModArguments, overlayArgument),
+            GameLaunchMode.ModPath => BuildModPathArgument(request.ModPath, request.Target, resolvedRoot),
             _ => overlayArgument
         };
     }
@@ -282,11 +288,48 @@ public sealed class GameLaunchService : IGameLaunchService
         return string.Join(" ", normalized.Select(static id => $"STEAMMOD={id}"));
     }
 
-    private static string BuildModPathArgument(string? modPath)
+    private static string BuildModPathArgument(string? modPath, GameLaunchTarget target, string? resolvedRoot)
     {
-        return string.IsNullOrWhiteSpace(modPath)
+        var normalized = NormalizeModPathForLaunch(modPath, target, resolvedRoot);
+        return string.IsNullOrWhiteSpace(normalized)
             ? string.Empty
-            : $"MODPATH=\"{modPath}\"";
+            : $"MODPATH=\"{normalized}\"";
+    }
+
+    private static string NormalizeModPathForLaunch(string? modPath, GameLaunchTarget target, string? resolvedRoot)
+    {
+        if (string.IsNullOrWhiteSpace(modPath))
+        {
+            return string.Empty;
+        }
+
+        var trimmed = modPath.Trim();
+        if (string.IsNullOrWhiteSpace(resolvedRoot) || !Path.IsPathRooted(trimmed))
+        {
+            return trimmed;
+        }
+
+        var launchDirectory = GetLaunchDirectoryForTarget(resolvedRoot, target);
+        var modsRoot = Path.Combine(launchDirectory, "Mods");
+        var fullModPath = Path.GetFullPath(trimmed);
+        var fullModsRoot = Path.GetFullPath(modsRoot);
+
+        if (!fullModPath.StartsWith(fullModsRoot, StringComparison.OrdinalIgnoreCase))
+        {
+            return fullModPath;
+        }
+
+        var relativePath = Path.GetRelativePath(launchDirectory, fullModPath);
+        return relativePath.Replace('/', '\\');
+    }
+
+    private static string GetLaunchDirectoryForTarget(string resolvedRoot, GameLaunchTarget target)
+    {
+        return target switch
+        {
+            GameLaunchTarget.Sweaw => Path.Combine(resolvedRoot, "GameData"),
+            _ => Path.Combine(resolvedRoot, "corruption")
+        };
     }
 
     private static string JoinArguments(params string?[] values)

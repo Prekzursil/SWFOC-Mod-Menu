@@ -5,10 +5,13 @@ using System.Linq;
 using System.Text.Json.Nodes;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using Microsoft.Extensions.Logging.Abstractions;
 using Microsoft.Extensions.Logging;
 using SwfocTrainer.Core.Contracts;
 using SwfocTrainer.Core.Models;
 using SwfocTrainer.Core.Services;
+using SwfocTrainer.Helper.Config;
+using SwfocTrainer.Helper.Services;
 using SwfocTrainer.Runtime.Interop;
 using SwfocTrainer.Runtime.Scanning;
 
@@ -87,7 +90,10 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
         _backendRouter = ResolveOptionalService<IBackendRouter>(serviceProvider) ?? new BackendRouter();
         _extenderBackend = ResolveOptionalService<IExecutionBackend>(serviceProvider) ?? new NamedPipeExtenderBackend();
         _telemetryLogTailService = ResolveOptionalService<ITelemetryLogTailService>(serviceProvider) ?? new TelemetryLogTailService();
-        _helperBridgeBackend = ResolveOptionalService<IHelperBridgeBackend>(serviceProvider) ?? new NamedPipeHelperBridgeBackend(_extenderBackend, _telemetryLogTailService);
+        var helperCommandTransportService = ResolveOptionalService<IHelperCommandTransportService>(serviceProvider)
+            ?? CreateDefaultHelperCommandTransportService(profileRepository);
+        _helperBridgeBackend = ResolveOptionalService<IHelperBridgeBackend>(serviceProvider)
+            ?? new NamedPipeHelperBridgeBackend(_extenderBackend, _telemetryLogTailService, helperCommandTransportService);
         _logger = logger;
         _calibrationArtifactRoot = Path.Combine(
             Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
@@ -111,6 +117,59 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
     public Task<AttachSession> AttachAsync(string profileId)
     {
         return AttachAsync(profileId, CancellationToken.None);
+    }
+
+    private static IHelperCommandTransportService? CreateDefaultHelperCommandTransportService(IProfileRepository profileRepository)
+    {
+        ArgumentNullException.ThrowIfNull(profileRepository);
+
+        var sourceRoot = ResolveHelperSourceRoot();
+        if (string.IsNullOrWhiteSpace(sourceRoot) || !Directory.Exists(sourceRoot))
+        {
+            return null;
+        }
+
+        var options = new HelperModOptions
+        {
+            SourceRoot = sourceRoot,
+            InstallRoot = Path.Combine(
+                Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
+                "SwfocTrainer",
+                "helper_mod")
+        };
+
+        return new HelperModService(profileRepository, options, NullLogger<HelperModService>.Instance);
+    }
+
+    private static string? ResolveHelperSourceRoot()
+    {
+        foreach (var seed in EnumerateHelperSourceRootSeeds())
+        {
+            if (string.IsNullOrWhiteSpace(seed))
+            {
+                continue;
+            }
+
+            var current = seed;
+            for (var depth = 0; depth < 6 && !string.IsNullOrWhiteSpace(current); depth++)
+            {
+                var candidate = Path.Combine(current, "profiles", "default", "helper");
+                if (Directory.Exists(candidate))
+                {
+                    return candidate;
+                }
+
+                current = Path.GetDirectoryName(current);
+            }
+        }
+
+        return null;
+    }
+
+    private static IEnumerable<string> EnumerateHelperSourceRootSeeds()
+    {
+        yield return Directory.GetCurrentDirectory();
+        yield return AppContext.BaseDirectory;
     }
 
     public async Task<AttachSession> AttachAsync(string profileId, CancellationToken cancellationToken)
@@ -3469,7 +3528,7 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
                 ReadHelperAutoloadStrategy(_attachedProfile),
                 ReadHelperAutoloadScripts(_attachedProfile)),
             cancellationToken);
-        if (!probe.Available)
+        if (!probe.Available && !IsExperimentalHelperBridgeProbe(probe.Diagnostics))
         {
             return new ActionExecutionResult(
                 false,
@@ -3483,7 +3542,7 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
                         {
                             [DiagnosticReasonCodeKey] = probe.ReasonCode.ToString(),
                             [PayloadHelperHookIdKey] = hook.Id
-                        })));
+                })));
         }
 
         var bridgeResult = await _helperBridgeBackend.ExecuteAsync(
@@ -3515,6 +3574,21 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
                     [PayloadHelperHookIdKey] = hook.Id,
                     ["helperEntryPoint"] = hook.EntryPoint ?? string.Empty
                 }));
+    }
+
+    private static bool IsExperimentalHelperBridgeProbe(IReadOnlyDictionary<string, object?>? diagnostics)
+    {
+        if (diagnostics is null)
+        {
+            return false;
+        }
+
+        if (!diagnostics.TryGetValue("helperBridgeState", out var rawState))
+        {
+            return false;
+        }
+
+        return string.Equals(rawState?.ToString(), "experimental", StringComparison.OrdinalIgnoreCase);
     }
 
     private static HelperActionPolicyResolution ApplyHelperActionPolicies(ActionExecutionRequest request)
