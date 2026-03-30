@@ -1,0 +1,13 @@
+{
+  "name": "swfoc-mod-menu-visual-chromatic",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "e2e:chromatic": "playwright test --config ./playwright.chromatic.config.js ./e2e/visual-pack.spec.js"
+  },
+  "devDependencies": {
+    "@chromatic-com/playwright": "^0.12.8",
+    "@playwright/test": "1.58.2",
+    "chromatic": "^16.0.0"
+  }
+}

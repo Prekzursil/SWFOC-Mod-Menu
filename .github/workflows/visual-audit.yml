@@ -1,4 +1,4 @@
-name: Applitools Visual Zero
+name: Applitools Visual
 
 on:
   push:
@@ -25,8 +25,8 @@ on:
         type: string
 
 jobs:
-  applitools-visual-zero:
-    name: Applitools Visual Zero
+  applitools-visual:
+    name: Applitools Visual
     runs-on: ubuntu-latest
     permissions:
       contents: read

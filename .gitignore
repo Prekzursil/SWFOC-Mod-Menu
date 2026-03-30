@@ -29,6 +29,9 @@ cache/
 # Test output
 TestResults/
 coverage/
+tools/visual-chromatic/node_modules/
+tools/visual-chromatic/playwright-report/
+tools/visual-chromatic/test-results/
 
 # NuGet
 *.nupkg
