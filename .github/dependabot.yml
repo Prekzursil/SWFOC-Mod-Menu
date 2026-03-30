@@ -1,40 +1,62 @@
 version: 2
 updates:
-  - package-ecosystem: "nuget"
-    directory: "/"
-    schedule:
-      interval: "weekly"
-    open-pull-requests-limit: 3
-    groups:
-      nuget-patch-minor:
-        patterns:
-          - "*"
-        update-types:
-          - "patch"
-          - "minor"
-    ignore:
-      - dependency-name: "*"
-        update-types:
-          - "version-update:semver-major"
-    labels:
-      - "type:chore"
-      - "area:ci"
-      - "dependencies"
-
-  - package-ecosystem: "github-actions"
-    directory: "/"
-    schedule:
-      interval: "weekly"
-    open-pull-requests-limit: 3
-    groups:
-      github-actions-grouped:
-        patterns:
-          - "*"
-    ignore:
-      - dependency-name: "*"
-        update-types:
-          - "version-update:semver-major"
-    labels:
-      - "type:chore"
-      - "area:ci"
-      - "dependencies"
+- package-ecosystem: nuget
+  directory: /
+  schedule:
+    interval: weekly
+  open-pull-requests-limit: 10
+  groups:
+    nuget-root-patch-minor:
+      patterns:
+      - '*'
+      update-types:
+      - patch
+      - minor
+  ignore:
+  - dependency-name: '*'
+    update-types:
+    - version-update:semver-major
+  labels:
+  - dependencies
+  - type:chore
+  - area:ci
+- package-ecosystem: npm
+  directory: /tools/visual-chromatic
+  schedule:
+    interval: weekly
+  open-pull-requests-limit: 10
+  groups:
+    npm-tools-visual-chromatic-patch-minor:
+      patterns:
+      - '*'
+      update-types:
+      - patch
+      - minor
+  ignore:
+  - dependency-name: '*'
+    update-types:
+    - version-update:semver-major
+  labels:
+  - dependencies
+  - type:chore
+  - area:ci
+- package-ecosystem: github-actions
+  directory: /
+  schedule:
+    interval: weekly
+  open-pull-requests-limit: 10
+  groups:
+    github-actions-root-patch-minor:
+      patterns:
+      - '*'
+      update-types:
+      - patch
+      - minor
+  ignore:
+  - dependency-name: '*'
+    update-types:
+    - version-update:semver-major
+  labels:
+  - dependencies
+  - type:chore
+  - area:ci

@@ -1,57 +1,31 @@
-name: codeql
-
-on:
-  push:
-    branches:
-      - main
-  pull_request:
-    branches:
-      - main
-  schedule:
-    - cron: "23 3 * * 1"
+name: CodeQL
 
 permissions:
   actions: read
   contents: read
   security-events: write
 
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+    branches: [main, master]
+  merge_group:
+    types: [checks_requested]
+  schedule:
+    - cron: "23 3 * * 1"
+  workflow_dispatch:
+
 jobs:
-  analyze:
-    name: Analyze (${{ matrix.language }})
-    runs-on: ${{ matrix.os }}
-    strategy:
-      fail-fast: false
-      matrix:
-        include:
-          - language: csharp
-            os: windows-latest
-          - language: python
-            os: ubuntu-latest
-          - language: actions
-            os: ubuntu-latest
-
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Initialize CodeQL
-        uses: github/codeql-action/init@v4
-        with:
-          languages: ${{ matrix.language }}
-
-      - name: Setup .NET
-        if: matrix.language == 'csharp'
-        uses: actions/setup-dotnet@v4
-        with:
-          dotnet-version: "8.0.x"
-
-      - name: Build C# targets
-        if: matrix.language == 'csharp'
-        run: |
-          dotnet restore SwfocTrainer.sln
-          dotnet build SwfocTrainer.sln -c Release --no-restore
-
-      - name: Analyze
-        uses: github/codeql-action/analyze@v4
-        with:
-          category: "/language:${{ matrix.language }}"
+  codeql:
+    permissions:
+      actions: read
+      contents: read
+      security-events: write
+    uses: Prekzursil/quality-zero-platform/.github/workflows/reusable-codeql.yml@d7a94db4ab57df42940832cf67b730c673af7da6
+    with:
+      repo_slug: ${{ github.repository }}
+      event_name: ${{ github.event_name }}
+      sha: ${{ github.event.pull_request.head.sha || github.sha }}
+      platform_repository: Prekzursil/quality-zero-platform
+      platform_ref: main
