@@ -3,16 +3,8 @@ name: Chromatic Playwright
 on:
   push:
     branches: [main]
-    paths:
-      - "tools/fixtures/visual/**"
-      - "tools/visual-chromatic/**"
-      - ".github/workflows/chromatic-playwright.yml"
   pull_request:
     branches: [main]
-    paths:
-      - "tools/fixtures/visual/**"
-      - "tools/visual-chromatic/**"
-      - ".github/workflows/chromatic-playwright.yml"
   workflow_dispatch:
 
 permissions:
