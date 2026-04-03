@@ -25,6 +25,9 @@ public sealed class GitHubProfileUpdateService : IProfileUpdateService
 
     public GitHubProfileUpdateService(HttpClient httpClient, ProfileRepositoryOptions options, IProfileRepository repository)
     {
+        ArgumentNullException.ThrowIfNull(httpClient);
+        ArgumentNullException.ThrowIfNull(options);
+        ArgumentNullException.ThrowIfNull(repository);
         _httpClient = httpClient;
         _options = options;
         _repository = repository;
