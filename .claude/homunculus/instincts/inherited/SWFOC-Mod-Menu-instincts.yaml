@@ -1,0 +1,346 @@
+# Instincts generated from https://github.com/Prekzursil/SWFOC-Mod-Menu
+# Generated: 2026-04-03T23:39:47.681Z
+# Version: 2.0
+# NOTE: This file supplements (does not replace) any existing curated instincts.
+# High-confidence manually curated instincts should be preserved alongside these.
+
+---
+id: SWFOC-Mod-Menu-commit-conventional
+trigger: "when writing a commit message"
+confidence: 0.85
+domain: git
+source: repo-analysis
+source_repo: https://github.com/Prekzursil/SWFOC-Mod-Menu
+---
+
+# SWFOC Mod Menu Commit Conventional
+
+## Action
+
+Use conventional commit format with prefixes: fix
+
+## Evidence
+
+- 3 commits analyzed
+- Detected conventional commit pattern
+- Examples: fix(profiles): apply Phase 2 RE critical corrections, fix(ci): resolve coverage gate crash, sonar PR analysis, and npm security alerts
+
+---
+id: SWFOC-Mod-Menu-commit-length
+trigger: "when writing a commit message"
+confidence: 0.6
+domain: git
+source: repo-analysis
+source_repo: https://github.com/Prekzursil/SWFOC-Mod-Menu
+---
+
+# SWFOC Mod Menu Commit Length
+
+## Action
+
+Write moderate-length commit messages (~67 characters)
+
+## Evidence
+
+- Average commit message length: 67 chars
+- Based on 3 commits
+
+---
+id: SWFOC-Mod-Menu-naming-files
+trigger: "when creating a new file"
+confidence: 0.8
+domain: code-style
+source: repo-analysis
+source_repo: https://github.com/Prekzursil/SWFOC-Mod-Menu
+---
+
+# SWFOC Mod Menu Naming Files
+
+## Action
+
+Use snake_case naming convention
+
+## Evidence
+
+- Analyzed file naming patterns in repository
+- Dominant pattern: snake_case
+
+---
+id: SWFOC-Mod-Menu-import-relative
+trigger: "when importing modules"
+confidence: 0.75
+domain: code-style
+source: repo-analysis
+source_repo: https://github.com/Prekzursil/SWFOC-Mod-Menu
+---
+
+# SWFOC Mod Menu Import Relative
+
+## Action
+
+Use relative imports for project files
+
+## Evidence
+
+- Import analysis shows relative import pattern
+- Example: import { x } from '../lib/x'
+
+---
+id: SWFOC-Mod-Menu-export-style
+trigger: "when exporting from a module"
+confidence: 0.7
+domain: code-style
+source: repo-analysis
+source_repo: https://github.com/Prekzursil/SWFOC-Mod-Menu
+---
+
+# SWFOC Mod Menu Export Style
+
+## Action
+
+Prefer named exports
+
+## Evidence
+
+- Export pattern analysis
+- Dominant style: named
+
+---
+id: SWFOC-Mod-Menu-test-separate
+trigger: "when writing tests"
+confidence: 0.8
+domain: testing
+source: repo-analysis
+source_repo: https://github.com/Prekzursil/SWFOC-Mod-Menu
+---
+
+# SWFOC Mod Menu Test Separate
+
+## Action
+
+Place tests in the tests/ or __tests__/ directory, mirroring src structure
+
+## Evidence
+
+- Separate test directory pattern detected
+- Tests live in dedicated test folders
+
+---
+id: SWFOC-Mod-Menu-workflow-ci-pipeline-fix-and-maintenance
+trigger: "when doing ci pipeline fix and maintenance"
+confidence: 0.6
+domain: workflow
+source: repo-analysis
+source_repo: https://github.com/Prekzursil/SWFOC-Mod-Menu
+---
+
+# SWFOC Mod Menu Workflow Ci Pipeline Fix And Maintenance
+
+## Action
+
+Follow the ci-pipeline-fix-and-maintenance workflow:
+1. Identify failing or misconfigured CI pipeline (coverage, secrets, external tools).
+2. Update relevant .github/workflows/*.yml files to fix parameters, secrets, or steps.
+3. Upgrade or patch dependencies in test or tool subprojects if required.
+4. Commit changes with descriptive message referencing the specific CI issue.
+
+## Evidence
+
+- Workflow detected from commit patterns
+- Frequency: ~2x per month
+- Files: .github/workflows/*.yml, tests/**/Tests.csproj, tools/**/package.json
+
+---
+id: swfoc-mod-menu-instinct-file-naming
+trigger: "When creating or renaming a file in the repository"
+confidence: 0.8
+domain: code-style
+source: repo-analysis
+source_repo: Prekzursil/SWFOC-Mod-Menu
+---
+
+# Swfoc Mod Menu Instinct File Naming
+
+## Action
+
+Use snake_case for file names
+
+## Evidence
+
+- Pattern in codeStyle.namingConventions.files
+
+---
+id: swfoc-mod-menu-instinct-function-naming
+trigger: "When defining a function"
+confidence: 0.8
+domain: code-style
+source: repo-analysis
+source_repo: Prekzursil/SWFOC-Mod-Menu
+---
+
+# Swfoc Mod Menu Instinct Function Naming
+
+## Action
+
+Use camelCase for function names
+
+## Evidence
+
+- Pattern in codeStyle.namingConventions.functions
+
+---
+id: swfoc-mod-menu-instinct-class-naming
+trigger: "When defining a class"
+confidence: 0.8
+domain: code-style
+source: repo-analysis
+source_repo: Prekzursil/SWFOC-Mod-Menu
+---
+
+# Swfoc Mod Menu Instinct Class Naming
+
+## Action
+
+Use PascalCase for class names
+
+## Evidence
+
+- Pattern in codeStyle.namingConventions.classes
+
+---
+id: swfoc-mod-menu-instinct-constant-naming
+trigger: "When defining a constant"
+confidence: 0.8
+domain: code-style
+source: repo-analysis
+source_repo: Prekzursil/SWFOC-Mod-Menu
+---
+
+# Swfoc Mod Menu Instinct Constant Naming
+
+## Action
+
+Use SCREAMING_SNAKE_CASE for constant names
+
+## Evidence
+
+- Pattern in codeStyle.namingConventions.constants
+
+---
+id: swfoc-mod-menu-instinct-import-style
+trigger: "When importing modules in TypeScript files"
+confidence: 0.8
+domain: code-style
+source: repo-analysis
+source_repo: Prekzursil/SWFOC-Mod-Menu
+---
+
+# Swfoc Mod Menu Instinct Import Style
+
+## Action
+
+Use relative import paths
+
+## Evidence
+
+- Pattern in codeStyle.importStyle
+
+---
+id: swfoc-mod-menu-instinct-export-style
+trigger: "When exporting modules or functions"
+confidence: 0.8
+domain: code-style
+source: repo-analysis
+source_repo: Prekzursil/SWFOC-Mod-Menu
+---
+
+# Swfoc Mod Menu Instinct Export Style
+
+## Action
+
+Use named exports
+
+## Evidence
+
+- Pattern in codeStyle.exportStyle
+
+---
+id: swfoc-mod-menu-instinct-test-location
+trigger: "When adding or organizing test files"
+confidence: 0.8
+domain: testing
+source: repo-analysis
+source_repo: Prekzursil/SWFOC-Mod-Menu
+---
+
+# Swfoc Mod Menu Instinct Test Location
+
+## Action
+
+Place tests in the separate 'tests' folder
+
+## Evidence
+
+- Pattern in architecture.folderStructure.testLocation
+- tests/SwfocTrainer.Tests/SwfocTrainer.Tests.csproj
+
+---
+id: swfoc-mod-menu-instinct-git-commit-format
+trigger: "When writing a commit message"
+confidence: 0.9
+domain: git
+source: repo-analysis
+source_repo: Prekzursil/SWFOC-Mod-Menu
+---
+
+# Swfoc Mod Menu Instinct Git Commit Format
+
+## Action
+
+Use conventional commits with a 'fix' prefix for bug fixes, followed by scope and colon (e.g., fix(scope): description)
+
+## Evidence
+
+- Pattern in commits.prefixes
+- Examples: fix(profiles): apply Phase 2 RE critical corrections
+
+---
+id: swfoc-mod-menu-instinct-git-commit-length
+trigger: "When writing a commit message"
+confidence: 0.7
+domain: git
+source: repo-analysis
+source_repo: Prekzursil/SWFOC-Mod-Menu
+---
+
+# Swfoc Mod Menu Instinct Git Commit Length
+
+## Action
+
+Keep commit messages concise, averaging around 67 characters
+
+## Evidence
+
+- Pattern in commits.averageLength
+
+---
+id: swfoc-mod-menu-instinct-ci-pipeline-fix
+trigger: "When CI workflows fail or need updates due to coverage issues, secrets misconfiguration, or integration problems with tools like SonarCloud"
+confidence: 0.9
+domain: workflow
+source: repo-analysis
+source_repo: Prekzursil/SWFOC-Mod-Menu
+---
+
+# Swfoc Mod Menu Instinct Ci Pipeline Fix
+
+## Action
+
+Update relevant .github/workflows/*.yml files and related config/dependency files to resolve the issue, then commit with a descriptive message referencing the CI problem
+
+## Evidence
+
+- Workflow: ci-pipeline-fix-and-maintenance
+- Commits: fix(ci): resolve coverage gate crash, sonar PR analysis, and npm security alerts
+- Files: .github/workflows/*.yml, tests/**/Tests.csproj, tools/**/package.json
+
