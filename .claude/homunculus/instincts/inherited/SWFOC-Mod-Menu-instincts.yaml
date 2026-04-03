@@ -1,0 +1,281 @@
+# Instincts generated from https://github.com/Prekzursil/SWFOC-Mod-Menu
+# Generated: 2026-04-03T23:18:13.784Z
+# Version: 2.0
+# NOTE: This file supplements (does not replace) any existing curated instincts.
+# High-confidence manually curated instincts should be preserved alongside these.
+
+---
+id: SWFOC-Mod-Menu-commit-conventional
+trigger: "when writing a commit message"
+confidence: 0.85
+domain: git
+source: repo-analysis
+source_repo: https://github.com/Prekzursil/SWFOC-Mod-Menu
+---
+
+# SWFOC Mod Menu Commit Conventional
+
+## Action
+
+Use conventional commit format with prefixes: fix
+
+## Evidence
+
+- 1 commits analyzed
+- Detected conventional commit pattern
+- Examples: fix(profiles): apply Phase 2 RE critical corrections
+
+---
+id: SWFOC-Mod-Menu-commit-length
+trigger: "when writing a commit message"
+confidence: 0.6
+domain: git
+source: repo-analysis
+source_repo: https://github.com/Prekzursil/SWFOC-Mod-Menu
+---
+
+# SWFOC Mod Menu Commit Length
+
+## Action
+
+Write moderate-length commit messages (~52 characters)
+
+## Evidence
+
+- Average commit message length: 52 chars
+- Based on 1 commits
+
+---
+id: SWFOC-Mod-Menu-naming-files
+trigger: "when creating a new file"
+confidence: 0.8
+domain: code-style
+source: repo-analysis
+source_repo: https://github.com/Prekzursil/SWFOC-Mod-Menu
+---
+
+# SWFOC Mod Menu Naming Files
+
+## Action
+
+Use snake_case naming convention
+
+## Evidence
+
+- Analyzed file naming patterns in repository
+- Dominant pattern: snake_case
+
+---
+id: SWFOC-Mod-Menu-import-relative
+trigger: "when importing modules"
+confidence: 0.75
+domain: code-style
+source: repo-analysis
+source_repo: https://github.com/Prekzursil/SWFOC-Mod-Menu
+---
+
+# SWFOC Mod Menu Import Relative
+
+## Action
+
+Use relative imports for project files
+
+## Evidence
+
+- Import analysis shows relative import pattern
+- Example: import { x } from '../lib/x'
+
+---
+id: SWFOC-Mod-Menu-export-style
+trigger: "when exporting from a module"
+confidence: 0.7
+domain: code-style
+source: repo-analysis
+source_repo: https://github.com/Prekzursil/SWFOC-Mod-Menu
+---
+
+# SWFOC Mod Menu Export Style
+
+## Action
+
+Prefer named exports
+
+## Evidence
+
+- Export pattern analysis
+- Dominant style: named
+
+---
+id: SWFOC-Mod-Menu-test-separate
+trigger: "when writing tests"
+confidence: 0.8
+domain: testing
+source: repo-analysis
+source_repo: https://github.com/Prekzursil/SWFOC-Mod-Menu
+---
+
+# SWFOC Mod Menu Test Separate
+
+## Action
+
+Place tests in the tests/ or __tests__/ directory, mirroring src structure
+
+## Evidence
+
+- Separate test directory pattern detected
+- Tests live in dedicated test folders
+
+---
+id: swfoc-mod-menu-instinct-file-naming
+trigger: "When creating a new file"
+confidence: 0.9
+domain: code-style
+source: repo-analysis
+source_repo: Prekzursil/SWFOC-Mod-Menu
+---
+
+# Swfoc Mod Menu Instinct File Naming
+
+## Action
+
+Name the file using snake_case
+
+## Evidence
+
+- Pattern in namingConventions.files: snake_case
+
+---
+id: swfoc-mod-menu-instinct-function-naming
+trigger: "When defining a new function"
+confidence: 0.9
+domain: code-style
+source: repo-analysis
+source_repo: Prekzursil/SWFOC-Mod-Menu
+---
+
+# Swfoc Mod Menu Instinct Function Naming
+
+## Action
+
+Name the function using camelCase
+
+## Evidence
+
+- Pattern in namingConventions.functions: camelCase
+
+---
+id: swfoc-mod-menu-instinct-class-naming
+trigger: "When defining a new class"
+confidence: 0.9
+domain: code-style
+source: repo-analysis
+source_repo: Prekzursil/SWFOC-Mod-Menu
+---
+
+# Swfoc Mod Menu Instinct Class Naming
+
+## Action
+
+Name the class using PascalCase
+
+## Evidence
+
+- Pattern in namingConventions.classes: PascalCase
+
+---
+id: swfoc-mod-menu-instinct-constant-naming
+trigger: "When declaring a constant"
+confidence: 0.9
+domain: code-style
+source: repo-analysis
+source_repo: Prekzursil/SWFOC-Mod-Menu
+---
+
+# Swfoc Mod Menu Instinct Constant Naming
+
+## Action
+
+Name the constant using SCREAMING_SNAKE_CASE
+
+## Evidence
+
+- Pattern in namingConventions.constants: SCREAMING_SNAKE_CASE
+
+---
+id: swfoc-mod-menu-instinct-import-style
+trigger: "When importing modules"
+confidence: 0.8
+domain: code-style
+source: repo-analysis
+source_repo: Prekzursil/SWFOC-Mod-Menu
+---
+
+# Swfoc Mod Menu Instinct Import Style
+
+## Action
+
+Use relative import paths
+
+## Evidence
+
+- Pattern in importStyle: relative
+
+---
+id: swfoc-mod-menu-instinct-export-style
+trigger: "When exporting from a module"
+confidence: 0.8
+domain: code-style
+source: repo-analysis
+source_repo: Prekzursil/SWFOC-Mod-Menu
+---
+
+# Swfoc Mod Menu Instinct Export Style
+
+## Action
+
+Use named exports
+
+## Evidence
+
+- Pattern in exportStyle: named
+
+---
+id: swfoc-mod-menu-instinct-commit-format
+trigger: "When writing a git commit message"
+confidence: 0.9
+domain: git
+source: repo-analysis
+source_repo: Prekzursil/SWFOC-Mod-Menu
+---
+
+# Swfoc Mod Menu Instinct Commit Format
+
+## Action
+
+Use the conventional commit format with a 'fix' prefix and a scope in parentheses, followed by a concise description
+
+## Evidence
+
+- Pattern in commits.type: conventional
+- Pattern in commits.prefixes: fix
+- Seen in commit: fix(profiles): apply Phase 2 RE critical corrections
+
+---
+id: swfoc-mod-menu-instinct-test-location
+trigger: "When adding or updating tests"
+confidence: 0.8
+domain: testing
+source: repo-analysis
+source_repo: Prekzursil/SWFOC-Mod-Menu
+---
+
+# Swfoc Mod Menu Instinct Test Location
+
+## Action
+
+Place test files in a separate directory from source files
+
+## Evidence
+
+- Pattern in architecture.folderStructure.testLocation: separate
+
