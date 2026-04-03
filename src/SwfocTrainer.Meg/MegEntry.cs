@@ -2,8 +2,8 @@ namespace SwfocTrainer.Meg;
 
 public sealed record MegEntry(
     string Path,
-    uint Crc32,
+    long Crc32,
     int Index,
     int SizeBytes,
     int StartOffset,
-    ushort Flags = 0);
+    int Flags = 0);
