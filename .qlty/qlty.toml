@@ -6,3 +6,11 @@ default = true
 
 [smells]
 mode = "block"
+
+[[smells.exclude]]
+path = "tests/**"
+reason = "Test files use repetitive patterns by design — duplicated setup/assert blocks are expected in xUnit test suites"
+
+[[smells.exclude]]
+path = "tools/**"
+reason = "Standalone Python scripts are utility tools — complexity thresholds are less actionable here"
