@@ -1,0 +1,6 @@
+interface:
+  display_name: "SWFOC Mod Menu"
+  short_description: "Repo-specific patterns and workflows for SWFOC-Mod-Menu"
+  default_prompt: "Use the SWFOC-Mod-Menu repo skill to follow existing architecture, testing, and workflow conventions."
+policy:
+  allow_implicit_invocation: true
