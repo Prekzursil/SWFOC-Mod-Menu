@@ -674,7 +674,12 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
             File.WriteAllText(filePath, JsonSerializer.Serialize(payload, new JsonSerializerOptions { WriteIndented = true }));
             return filePath;
         }
-        catch (Exception ex)
+        catch (IOException ex)
+        {
+            _logger.LogWarning(ex, "Failed to emit calibration snapshot.");
+            return null;
+        }
+        catch (UnauthorizedAccessException ex)
         {
             _logger.LogWarning(ex, "Failed to emit calibration snapshot.");
             return null;
@@ -730,7 +735,11 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
                     snippet = BuildPatternSnippet(moduleBytes, hits[0], pattern.Bytes.Length);
                 }
             }
-            catch (Exception ex)
+            catch (FormatException ex)
+            {
+                snippet = $"pattern_parse_error: {ex.Message}";
+            }
+            catch (ArgumentException ex)
             {
                 snippet = $"pattern_parse_error: {ex.Message}";
             }
@@ -780,7 +789,12 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
             File.WriteAllText(latestPath, json);
             return outputPath;
         }
-        catch (Exception ex)
+        catch (IOException ex)
+        {
+            _logger.LogWarning(ex, "Failed to persist calibration scan artifact for symbol {Symbol}.", targetSymbol);
+            return null;
+        }
+        catch (UnauthorizedAccessException ex)
         {
             _logger.LogWarning(ex, "Failed to persist calibration scan artifact for symbol {Symbol}.", targetSymbol);
             return null;
@@ -1195,7 +1209,15 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
         {
             throw;
         }
-        catch (Exception ex)
+        catch (InvalidOperationException ex)
+        {
+            return new RuntimeCalibrationScanResult(
+                Succeeded: false,
+                ReasonCode: "scan_failed",
+                Message: $"Calibration scan failed: {ex.Message}",
+                Candidates: Array.Empty<RuntimeCalibrationCandidate>());
+        }
+        catch (System.ComponentModel.Win32Exception ex)
         {
             return new RuntimeCalibrationScanResult(
                 Succeeded: false,
@@ -3153,7 +3175,16 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
         {
             writeValue(activeSymbol.Address, requestedValue);
         }
-        catch (Exception ex)
+        catch (InvalidOperationException ex)
+        {
+            return new WriteAttemptResult<T>(
+                false,
+                $"{attemptPrefix}_write_exception",
+                $"Write failed for symbol '{symbol}' at {ToHex(activeSymbol.Address)}: {ex.Message}",
+                false,
+                default);
+        }
+        catch (System.ComponentModel.Win32Exception ex)
         {
             return new WriteAttemptResult<T>(
                 false,
@@ -3195,7 +3226,16 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
         {
             observed = readValue(activeSymbol.Address);
         }
-        catch (Exception ex)
+        catch (InvalidOperationException ex)
+        {
+            return new WriteAttemptResult<T>(
+                false,
+                $"{attemptPrefix}_readback_exception",
+                $"Readback failed for symbol '{symbol}' at {ToHex(activeSymbol.Address)}: {ex.Message}",
+                false,
+                default);
+        }
+        catch (System.ComponentModel.Win32Exception ex)
         {
             return new WriteAttemptResult<T>(
                 false,
@@ -3259,7 +3299,12 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
             LogReResolvedSymbol(symbol, normalized);
             return BuildReResolveSuccessResult(normalized);
         }
-        catch (Exception ex)
+        catch (InvalidOperationException ex)
+        {
+            _logger.LogWarning(ex, "Failed to re-resolve symbol {Symbol}.", symbol);
+            return BuildReResolveExceptionResult(symbol, ex);
+        }
+        catch (System.ComponentModel.Win32Exception ex)
         {
             _logger.LogWarning(ex, "Failed to re-resolve symbol {Symbol}.", symbol);
             return BuildReResolveExceptionResult(symbol, ex);
@@ -3986,7 +4031,13 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
                 RuntimeReasonCode.PATTERN_MISSING,
                 "Fog fallback patch pattern missing in current module.");
         }
-        catch (Exception ex)
+        catch (InvalidOperationException ex)
+        {
+            return FogPatchFallbackResolution.Fail(
+                RuntimeReasonCode.SAFETY_FAIL_CLOSED,
+                $"Fog fallback patch resolution failed: {ex.Message}");
+        }
+        catch (System.ComponentModel.Win32Exception ex)
         {
             return FogPatchFallbackResolution.Fail(
                 RuntimeReasonCode.SAFETY_FAIL_CLOSED,
@@ -4089,7 +4140,14 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
             _activeCodePatches.Remove("unit_cap");
             return null;
         }
-        catch (Exception ex)
+        catch (InvalidOperationException ex)
+        {
+            return new ActionExecutionResult(
+                false,
+                $"Failed to disable instant-build patch before unit cap hook install: {ex.Message}",
+                AddressSource.None);
+        }
+        catch (System.ComponentModel.Win32Exception ex)
         {
             return new ActionExecutionResult(
                 false,
@@ -4433,7 +4491,11 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
         {
             currentBytes = _memory!.ReadBytes(injectionAddress, expectedOriginalBytes.Length);
         }
-        catch (Exception ex)
+        catch (InvalidOperationException ex)
+        {
+            return CreditsHookPatchResult.Fail($"Credits hook patch failed: unable to read injection bytes ({ex.Message}).");
+        }
+        catch (System.ComponentModel.Win32Exception ex)
         {
             return CreditsHookPatchResult.Fail($"Credits hook patch failed: unable to read injection bytes ({ex.Message}).");
         }
@@ -4476,7 +4538,14 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
                 $"Credits hook installed at {ToHex(context.InjectionAddress)} with cave {ToHex(context.CaveAddress)}.",
                 diagnostics);
         }
-        catch (Exception ex)
+        catch (InvalidOperationException ex)
+        {
+            TryRollbackCreditsHookInstall(context.InjectionAddress, context.CurrentBytes);
+            _memory!.Free(context.CaveAddress);
+            ClearCreditsHookState();
+            return CreditsHookPatchResult.Fail($"Credits hook patch write failed: {ex.Message}");
+        }
+        catch (System.ComponentModel.Win32Exception ex)
         {
             TryRollbackCreditsHookInstall(context.InjectionAddress, context.CurrentBytes);
             _memory!.Free(context.CaveAddress);
@@ -4716,7 +4785,14 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
             currentBytes = _memory!.ReadBytes(injectionAddress, UnitCapHookOriginalBytes.Length);
             return null;
         }
-        catch (Exception ex)
+        catch (InvalidOperationException ex)
+        {
+            return new ActionExecutionResult(
+                false,
+                $"Unit cap hook failed: unable to read injection bytes ({ex.Message}).",
+                AddressSource.None);
+        }
+        catch (System.ComponentModel.Win32Exception ex)
         {
             return new ActionExecutionResult(
                 false,
@@ -4749,7 +4825,14 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
                     [DiagnosticKeyState] = "installed"
                 });
         }
-        catch (Exception ex)
+        catch (InvalidOperationException ex)
+        {
+            TryRestoreBytesAfterHookFailure(injectionAddress, currentBytes);
+            _memory!.Free(caveAddress);
+            ClearUnitCapHookState();
+            return new ActionExecutionResult(false, $"Unit cap hook patch failed: {ex.Message}", AddressSource.None);
+        }
+        catch (System.ComponentModel.Win32Exception ex)
         {
             TryRestoreBytesAfterHookFailure(injectionAddress, currentBytes);
             _memory!.Free(caveAddress);
@@ -4854,7 +4937,14 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
             currentBytes = _memory!.ReadBytes(injectionAddress, InstantBuildHookInstructionLength);
             return null;
         }
-        catch (Exception ex)
+        catch (InvalidOperationException ex)
+        {
+            return new ActionExecutionResult(
+                false,
+                $"Instant build hook failed: unable to read injection bytes ({ex.Message}).",
+                AddressSource.None);
+        }
+        catch (System.ComponentModel.Win32Exception ex)
         {
             return new ActionExecutionResult(
                 false,
@@ -4889,7 +4979,14 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
                     [DiagnosticKeyState] = "installed"
                 });
         }
-        catch (Exception ex)
+        catch (InvalidOperationException ex)
+        {
+            TryRestoreBytesAfterHookFailure(injectionAddress, currentBytes);
+            _memory!.Free(caveAddress);
+            ClearInstantBuildHookState();
+            return new ActionExecutionResult(false, $"Instant build hook patch failed: {ex.Message}", AddressSource.None);
+        }
+        catch (System.ComponentModel.Win32Exception ex)
         {
             TryRestoreBytesAfterHookFailure(injectionAddress, currentBytes);
             _memory!.Free(caveAddress);
@@ -4968,7 +5065,11 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
 
             return UnitCapHookResolution.Fail($"Unit cap hook pattern not unique (hits={hits.Count}).");
         }
-        catch (Exception ex)
+        catch (InvalidOperationException ex)
+        {
+            return UnitCapHookResolution.Fail($"Unit cap hook resolution failed: {ex.Message}");
+        }
+        catch (System.ComponentModel.Win32Exception ex)
         {
             return UnitCapHookResolution.Fail($"Unit cap hook resolution failed: {ex.Message}");
         }
@@ -5006,7 +5107,11 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
 
             return InstantBuildHookResolution.Fail("Instant build hook pattern not found or not unique.");
         }
-        catch (Exception ex)
+        catch (InvalidOperationException ex)
+        {
+            return InstantBuildHookResolution.Fail($"Instant build hook resolution failed: {ex.Message}");
+        }
+        catch (System.ComponentModel.Win32Exception ex)
         {
             return InstantBuildHookResolution.Fail($"Instant build hook resolution failed: {ex.Message}");
         }
@@ -5218,7 +5323,11 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
             var allCandidates = FindAllCreditsHookCandidates(moduleBytes);
             return ResolveCreditsHookFromCandidateSet(baseAddress, moduleBytes, allCandidates, creditsRva);
         }
-        catch (Exception ex)
+        catch (InvalidOperationException ex)
+        {
+            return CreditsHookResolution.Fail($"Credits hook pattern resolution failed: {ex.Message}");
+        }
+        catch (System.ComponentModel.Win32Exception ex)
         {
             return CreditsHookResolution.Fail($"Credits hook pattern resolution failed: {ex.Message}");
         }
@@ -5589,7 +5698,11 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
                 _memory.WriteBytes(address, originalBytes, executablePatch: true);
                 _logger.LogInformation("Restored code patch '{Symbol}' at {Address} on detach.", symbol, $"0x{address.ToInt64():X}");
             }
-            catch (Exception ex)
+            catch (InvalidOperationException ex)
+            {
+                _logger.LogWarning(ex, "Failed to restore code patch '{Symbol}' at detach.", symbol);
+            }
+            catch (System.ComponentModel.Win32Exception ex)
             {
                 _logger.LogWarning(ex, "Failed to restore code patch '{Symbol}' at detach.", symbol);
             }
@@ -5611,7 +5724,11 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
             {
                 _memory.WriteBytes(_creditsHookInjectionAddress, _creditsHookOriginalBytesBackup, executablePatch: true);
             }
-            catch (Exception ex)
+            catch (InvalidOperationException ex)
+            {
+                _logger.LogWarning(ex, "Failed to restore credits hook bytes at detach.");
+            }
+            catch (System.ComponentModel.Win32Exception ex)
             {
                 _logger.LogWarning(ex, "Failed to restore credits hook bytes at detach.");
             }
@@ -5626,7 +5743,11 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
                     _logger.LogWarning("Failed to free credits hook code cave at {Address}.", ToHex(_creditsHookCodeCaveAddress));
                 }
             }
-            catch (Exception ex)
+            catch (InvalidOperationException ex)
+            {
+                _logger.LogWarning(ex, "Failed while freeing credits hook code cave.");
+            }
+            catch (System.ComponentModel.Win32Exception ex)
             {
                 _logger.LogWarning(ex, "Failed while freeing credits hook code cave.");
             }
@@ -5658,7 +5779,11 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
             {
                 _memory.WriteBytes(_unitCapHookInjectionAddress, _unitCapHookOriginalBytesBackup, executablePatch: true);
             }
-            catch (Exception ex)
+            catch (InvalidOperationException ex)
+            {
+                _logger.LogWarning(ex, "Failed to restore unit cap hook bytes at detach.");
+            }
+            catch (System.ComponentModel.Win32Exception ex)
             {
                 _logger.LogWarning(ex, "Failed to restore unit cap hook bytes at detach.");
             }
@@ -5673,7 +5798,11 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
                     _logger.LogWarning("Failed to free unit cap hook code cave at {Address}.", ToHex(_unitCapHookCodeCaveAddress));
                 }
             }
-            catch (Exception ex)
+            catch (InvalidOperationException ex)
+            {
+                _logger.LogWarning(ex, "Failed while freeing unit cap hook code cave.");
+            }
+            catch (System.ComponentModel.Win32Exception ex)
             {
                 _logger.LogWarning(ex, "Failed while freeing unit cap hook code cave.");
             }
@@ -5701,7 +5830,11 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
             {
                 _memory.WriteBytes(_instantBuildHookInjectionAddress, _instantBuildHookOriginalBytesBackup, executablePatch: true);
             }
-            catch (Exception ex)
+            catch (InvalidOperationException ex)
+            {
+                _logger.LogWarning(ex, "Failed to restore instant build hook bytes at detach.");
+            }
+            catch (System.ComponentModel.Win32Exception ex)
             {
                 _logger.LogWarning(ex, "Failed to restore instant build hook bytes at detach.");
             }
@@ -5716,7 +5849,11 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
                     _logger.LogWarning("Failed to free instant build hook code cave at {Address}.", ToHex(_instantBuildHookCodeCaveAddress));
                 }
             }
-            catch (Exception ex)
+            catch (InvalidOperationException ex)
+            {
+                _logger.LogWarning(ex, "Failed while freeing instant build hook code cave.");
+            }
+            catch (System.ComponentModel.Win32Exception ex)
             {
                 _logger.LogWarning(ex, "Failed while freeing instant build hook code cave.");
             }
@@ -5748,7 +5885,11 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
                     ToHex(_fogPatchFallbackAddress));
             }
         }
-        catch (Exception ex)
+        catch (InvalidOperationException ex)
+        {
+            _logger.LogWarning(ex, "Failed to restore fog fallback patch byte at detach.");
+        }
+        catch (System.ComponentModel.Win32Exception ex)
         {
             _logger.LogWarning(ex, "Failed to restore fog fallback patch byte at detach.");
         }

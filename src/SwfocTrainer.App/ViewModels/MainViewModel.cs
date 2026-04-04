@@ -589,7 +589,7 @@ public sealed class MainViewModel : MainViewModelSaveOpsBase
             {
                 payloadNode = JsonNode.Parse(PayloadJson) as JsonObject ?? new JsonObject();
             }
-            catch (Exception ex)
+            catch (System.Text.Json.JsonException ex)
             {
                 Status = $"Invalid payload JSON: {ex.Message}";
                 return;

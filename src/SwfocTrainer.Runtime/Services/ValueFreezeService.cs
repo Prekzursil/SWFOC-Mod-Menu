@@ -131,7 +131,12 @@ public sealed class ValueFreezeService : IValueFreezeService
             {
                 await WriteEntryAsync(entry);
             }
-            catch (Exception ex)
+            catch (InvalidOperationException ex)
+            {
+                _logger.LogDebug(ex, "Freeze pulse write failed for {Symbol}", entry.Symbol);
+                // Don't remove the entry — it may succeed on the next pulse (e.g., transient memory protection issue).
+            }
+            catch (System.ComponentModel.Win32Exception ex)
             {
                 _logger.LogDebug(ex, "Freeze pulse write failed for {Symbol}", entry.Symbol);
                 // Don't remove the entry — it may succeed on the next pulse (e.g., transient memory protection issue).

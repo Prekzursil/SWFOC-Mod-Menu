@@ -51,7 +51,17 @@ internal static class SignatureResolverFallbacks
                 LastValidatedAt: DateTimeOffset.UtcNow);
             return true;
         }
-        catch (Exception ex)
+        catch (InvalidOperationException ex)
+        {
+            attempt.Logger.LogDebug(
+                ex,
+                "Fallback test-read failed for {Symbol} at 0x{Address:X} (offset 0x{Offset:X})",
+                attempt.SymbolName,
+                address.ToInt64(),
+                attempt.Offset);
+            return false;
+        }
+        catch (System.ComponentModel.Win32Exception ex)
         {
             attempt.Logger.LogDebug(
                 ex,
