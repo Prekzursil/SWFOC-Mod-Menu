@@ -51,6 +51,7 @@ internal sealed class ProcessMemoryAccessor : IDisposable
 
     public void WriteBytes(nint address, byte[] buffer, bool executablePatch)
     {
+        ArgumentNullException.ThrowIfNull(buffer);
         if (buffer.Length == 0)
         {
             return;
@@ -118,6 +119,11 @@ internal sealed class ProcessMemoryAccessor : IDisposable
 
     public byte[] ReadBytes(nint address, int count)
     {
+        if (count < 0)
+        {
+            throw new ArgumentOutOfRangeException(nameof(count), "Read count must be non-negative.");
+        }
+
         var buffer = new byte[count];
         if (!NativeMethods.ReadProcessMemory(_handle, address, buffer, count, out var read) || read.ToInt64() != count)
         {

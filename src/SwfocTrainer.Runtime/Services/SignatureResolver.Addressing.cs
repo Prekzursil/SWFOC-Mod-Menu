@@ -13,6 +13,8 @@ internal static class SignatureResolverAddressing
         out nint resolvedAddress,
         out string? diagnostics)
     {
+        ArgumentNullException.ThrowIfNull(signature);
+        ArgumentNullException.ThrowIfNull(moduleBytes);
         resolvedAddress = nint.Zero;
         diagnostics = null;
 

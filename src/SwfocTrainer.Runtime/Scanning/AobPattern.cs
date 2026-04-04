@@ -11,6 +11,7 @@ internal sealed class AobPattern
 
     public static AobPattern Parse(string pattern)
     {
+        ArgumentNullException.ThrowIfNull(pattern);
         var parts = pattern.Split(' ', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
         var bytes = new byte?[parts.Length];
         for (var i = 0; i < parts.Length; i++)

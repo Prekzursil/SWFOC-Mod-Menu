@@ -36,6 +36,8 @@ public sealed class ModMechanicDetectionService : IModMechanicDetectionService
         IReadOnlyDictionary<string, IReadOnlyList<string>>? catalog,
         CancellationToken cancellationToken)
     {
+        ArgumentNullException.ThrowIfNull(profile);
+        ArgumentNullException.ThrowIfNull(session);
         cancellationToken.ThrowIfCancellationRequested();
 
         var disabledActions = ParseCsvSet(session.Process.Metadata, "dependencyDisabledActions");

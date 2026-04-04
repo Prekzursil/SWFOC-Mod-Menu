@@ -23,6 +23,7 @@ public sealed class GameLaunchService : IGameLaunchService
 
     public Task<GameLaunchResult> LaunchAsync(GameLaunchRequest request, CancellationToken cancellationToken)
     {
+        ArgumentNullException.ThrowIfNull(request);
         cancellationToken.ThrowIfCancellationRequested();
         if (request.TerminateExistingTargets)
         {
@@ -69,7 +70,10 @@ public sealed class GameLaunchService : IGameLaunchService
         {
             foreach (var process in Process.GetProcessesByName(processName))
             {
-                TryKillProcess(process);
+                using (process)
+                {
+                    TryKillProcess(process);
+                }
             }
         }
     }
