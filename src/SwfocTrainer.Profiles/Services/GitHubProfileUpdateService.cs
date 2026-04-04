@@ -107,7 +107,7 @@ public sealed class GitHubProfileUpdateService : IProfileUpdateService
     {
         ArgumentNullException.ThrowIfNull(profileId);
         var profilesDir = ResolveProfilesDirectory();
-        var destination = Path.Combine(profilesDir, $"{profileId}.json");
+        var destination = Path.Join(profilesDir, $"{profileId}.json");
         var backupPattern = $"{profileId}.json.bak.*";
 
         var backup = Directory.GetFiles(profilesDir, backupPattern)
@@ -247,7 +247,7 @@ public sealed class GitHubProfileUpdateService : IProfileUpdateService
         ProfileManifestEntry entry,
         CancellationToken cancellationToken)
     {
-        var zipPath = Path.Combine(_options.DownloadCachePath, $"{profileId}-{entry.Version}.zip");
+        var zipPath = Path.Join(_options.DownloadCachePath, $"{profileId}-{entry.Version}.zip");
         var downloadFailure = await TryDownloadPackageAsync(profileId, entry.DownloadUrl, zipPath, cancellationToken);
         if (downloadFailure is not null)
         {
@@ -383,7 +383,7 @@ public sealed class GitHubProfileUpdateService : IProfileUpdateService
 
     private static (string Destination, string? BackupPath) InstallProfileFile(string profileId, string targetProfileJson, string profilesDir)
     {
-        var destination = Path.Combine(profilesDir, $"{profileId}.json");
+        var destination = Path.Join(profilesDir, $"{profileId}.json");
         var backup = $"{destination}.bak.{DateTimeOffset.UtcNow.ToString(ReceiptTimestampFormat)}";
         string? backupPath = null;
         if (File.Exists(destination))
@@ -411,14 +411,14 @@ public sealed class GitHubProfileUpdateService : IProfileUpdateService
 
     private string ResolveProfilesDirectory()
     {
-        var profilesDir = Path.Combine(_options.ProfilesRootPath, ProfilesDirectoryName);
+        var profilesDir = Path.Join(_options.ProfilesRootPath, ProfilesDirectoryName);
         Directory.CreateDirectory(profilesDir);
         return profilesDir;
     }
 
     private string PrepareExtractDirectory(string profileId, string version)
     {
-        var extractDir = Path.Combine(_options.DownloadCachePath, $"extract-{profileId}-{version}");
+        var extractDir = Path.Join(_options.DownloadCachePath, $"extract-{profileId}-{version}");
         if (Directory.Exists(extractDir))
         {
             Directory.Delete(extractDir, recursive: true);
@@ -477,9 +477,9 @@ public sealed class GitHubProfileUpdateService : IProfileUpdateService
         string expectedSha256,
         CancellationToken cancellationToken)
     {
-        var receiptsRoot = Path.Combine(_options.DownloadCachePath, ReceiptsDirectoryName);
+        var receiptsRoot = Path.Join(_options.DownloadCachePath, ReceiptsDirectoryName);
         Directory.CreateDirectory(receiptsRoot);
-        var receiptPath = Path.Combine(receiptsRoot, $"install-{profileId}-{DateTimeOffset.UtcNow.ToString(ReceiptTimestampFormat)}.json");
+        var receiptPath = Path.Join(receiptsRoot, $"install-{profileId}-{DateTimeOffset.UtcNow.ToString(ReceiptTimestampFormat)}.json");
 
         var payload = new
         {
@@ -502,9 +502,9 @@ public sealed class GitHubProfileUpdateService : IProfileUpdateService
         string backupPath,
         CancellationToken cancellationToken)
     {
-        var receiptsRoot = Path.Combine(_options.DownloadCachePath, ReceiptsDirectoryName);
+        var receiptsRoot = Path.Join(_options.DownloadCachePath, ReceiptsDirectoryName);
         Directory.CreateDirectory(receiptsRoot);
-        var receiptPath = Path.Combine(receiptsRoot, $"rollback-{profileId}-{DateTimeOffset.UtcNow.ToString(ReceiptTimestampFormat)}.json");
+        var receiptPath = Path.Join(receiptsRoot, $"rollback-{profileId}-{DateTimeOffset.UtcNow.ToString(ReceiptTimestampFormat)}.json");
 
         var payload = new
         {

@@ -17,9 +17,9 @@ public sealed class SpawnPresetServiceTests
     {
         using var temp = new TempDirectory();
         var harness = CreateHarness(temp.Path);
-        var presetDir = Path.Combine(temp.Path, "test_profile");
+        var presetDir = Path.Join(temp.Path, "test_profile");
         Directory.CreateDirectory(presetDir);
-        var presetPath = Path.Combine(presetDir, "spawn_presets.json");
+        var presetPath = Path.Join(presetDir, "spawn_presets.json");
 
         var doc = new
         {
@@ -144,10 +144,10 @@ public sealed class SpawnPresetServiceTests
             new JsonObject
             {
                 ["required"] = new JsonArray(
-                    (JsonNode)JsonValue.Create("helperHookId")!,
-                    (JsonNode)JsonValue.Create("unitId")!,
-                    (JsonNode)JsonValue.Create("entryMarker")!,
-                    (JsonNode)JsonValue.Create("faction")!)
+                    JsonValue.Create("helperHookId"),
+                    JsonValue.Create("unitId"),
+                    JsonValue.Create("entryMarker"),
+                    JsonValue.Create("faction"))
             },
             VerifyReadback: false,
             CooldownMs: 0);

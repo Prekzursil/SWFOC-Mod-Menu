@@ -96,7 +96,7 @@ public sealed class ProfileVariantResolverTests
         var root = TestPaths.FindRepoRoot();
         var repository = new FileSystemProfileRepository(new ProfileRepositoryOptions
         {
-            ProfilesRootPath = Path.Combine(root, "profiles", "default")
+            ProfilesRootPath = Path.Join(root, "profiles", "default")
         });
 
         return new ProfileVariantResolver(

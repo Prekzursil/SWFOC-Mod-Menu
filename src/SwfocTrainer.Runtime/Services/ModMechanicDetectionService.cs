@@ -94,7 +94,11 @@ public sealed class ModMechanicDetectionService : IModMechanicDetectionService
         {
             throw;
         }
-        catch
+        catch (InvalidOperationException)
+        {
+            return null;
+        }
+        catch (IOException)
         {
             return null;
         }

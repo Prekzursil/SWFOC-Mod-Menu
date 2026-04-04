@@ -14,27 +14,22 @@ internal static class XmlObjectExtractor
             var doc = XDocument.Load(xmlPath, LoadOptions.None);
             var values = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
 
-            foreach (var element in doc.Descendants())
+            foreach (var value in doc.Descendants()
+                .SelectMany(_ => InterestingAttributes, (element, attrName) => element.Attribute(attrName))
+                .Where(attr => attr is not null)
+                .Select(attr => attr!.Value?.Trim())
+                .Where(value => !string.IsNullOrWhiteSpace(value) && value!.Length <= 96))
             {
-                foreach (var attrName in InterestingAttributes)
-                {
-                    var attr = element.Attribute(attrName);
-                    if (attr is null)
-                    {
-                        continue;
-                    }
-
-                    var value = attr.Value?.Trim();
-                    if (!string.IsNullOrWhiteSpace(value) && value.Length <= 96)
-                    {
-                        values.Add(value);
-                    }
-                }
+                values.Add(value!);
             }
 
             return values.ToArray();
         }
-        catch
+        catch (System.Xml.XmlException)
+        {
+            return Array.Empty<string>();
+        }
+        catch (IOException)
         {
             return Array.Empty<string>();
         }

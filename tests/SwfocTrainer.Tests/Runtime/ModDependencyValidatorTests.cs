@@ -11,12 +11,12 @@ public sealed class ModDependencyValidatorTests
     [Fact]
     public void Validate_Should_Pass_When_Local_Mod_And_Parent_Hints_Satisfy_Dependencies()
     {
-        var tempRoot = Path.Combine(Path.GetTempPath(), $"swfoc-validator-{Guid.NewGuid():N}");
+        var tempRoot = Path.Join(Path.GetTempPath(), $"swfoc-validator-{Guid.NewGuid():N}");
         Directory.CreateDirectory(tempRoot);
         try
         {
-            var roeRoot = Path.Combine(tempRoot, "roe-submod");
-            var aotrRoot = Path.Combine(tempRoot, "aotr-parent");
+            var roeRoot = Path.Join(tempRoot, "roe-submod");
+            var aotrRoot = Path.Join(tempRoot, "aotr-parent");
             WriteMarker(roeRoot);
             WriteMarker(aotrRoot);
 
@@ -45,11 +45,11 @@ public sealed class ModDependencyValidatorTests
     [Fact]
     public void Validate_Should_SoftFail_When_Dependencies_Are_Missing()
     {
-        var tempRoot = Path.Combine(Path.GetTempPath(), $"swfoc-validator-{Guid.NewGuid():N}");
+        var tempRoot = Path.Join(Path.GetTempPath(), $"swfoc-validator-{Guid.NewGuid():N}");
         Directory.CreateDirectory(tempRoot);
         try
         {
-            var roeRoot = Path.Combine(tempRoot, "roe-submod");
+            var roeRoot = Path.Join(tempRoot, "roe-submod");
             WriteMarker(roeRoot);
 
             var profile = CreateProfile(new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
@@ -83,7 +83,7 @@ public sealed class ModDependencyValidatorTests
             ["requiredMarkerFile"] = "../escape/path.xml"
         });
 
-        var process = CreateProcess(Path.Combine(Path.GetTempPath(), "dummy-mod"));
+        var process = CreateProcess(Path.Join(Path.GetTempPath(), "dummy-mod"));
         var validator = new ModDependencyValidator();
 
         var result = validator.Validate(profile, process);
@@ -128,7 +128,7 @@ public sealed class ModDependencyValidatorTests
         var process = new ProcessMetadata(
             777,
             "StarWarsG",
-            Path.Combine(modPath, "..", "corruption", "StarWarsG.exe"),
+            Path.Join(modPath, "..", "corruption", "StarWarsG.exe"),
             $"StarWarsG.exe MODPATH=\"{modPath}\"",
             ExeTarget.Swfoc,
             RuntimeMode.Unknown,
@@ -144,7 +144,7 @@ public sealed class ModDependencyValidatorTests
 
     private static void WriteMarker(string root)
     {
-        var markerPath = Path.Combine(root, "Data", "XML", "Gameobjectfiles.xml");
+        var markerPath = Path.Join(root, "Data", "XML", "Gameobjectfiles.xml");
         Directory.CreateDirectory(Path.GetDirectoryName(markerPath)!);
         File.WriteAllText(markerPath, "<GameObjectFiles />");
     }

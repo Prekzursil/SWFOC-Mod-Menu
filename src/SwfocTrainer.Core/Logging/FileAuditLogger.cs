@@ -29,7 +29,7 @@ public sealed class FileAuditLogger : IAuditLogger
     {
         ArgumentNullException.ThrowIfNull(record);
         var fileName = $"audit-{record.Timestamp:yyyy-MM-dd}.jsonl";
-        var path = Path.Combine(_logDirectory, fileName);
+        var path = Path.Join(_logDirectory, fileName);
         var line = JsonSerializer.Serialize(record, JsonOptions) + Environment.NewLine;
 
         await File.AppendAllTextAsync(path, line, Encoding.UTF8, cancellationToken);

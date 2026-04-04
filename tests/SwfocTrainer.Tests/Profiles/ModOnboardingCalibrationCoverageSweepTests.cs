@@ -81,10 +81,10 @@ public sealed class ModOnboardingCalibrationCoverageSweepTests
                 "steammod=222")
         };
 
-        var workshopIds = InvokeStatic<IReadOnlyList<string>>(nameof(ModOnboardingService), "InferWorkshopIds", (object)samples);
+        var workshopIds = InvokeStatic<IReadOnlyList<string>>(nameof(ModOnboardingService), "InferWorkshopIds", samples);
         workshopIds.Should().Equal("111", "222");
 
-        var pathHints = InvokeStatic<IReadOnlyList<string>>(nameof(ModOnboardingService), "InferPathHints", (object)samples);
+        var pathHints = InvokeStatic<IReadOnlyList<string>>(nameof(ModOnboardingService), "InferPathHints", samples);
         pathHints.Should().Contain("republic");
         pathHints.Should().Contain("rise");
         pathHints.Should().Contain("revenge");

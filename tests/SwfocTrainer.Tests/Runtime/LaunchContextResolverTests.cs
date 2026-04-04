@@ -220,7 +220,7 @@ public sealed class LaunchContextResolverTests
         var root = TestPaths.FindRepoRoot();
         var repo = new FileSystemProfileRepository(new ProfileRepositoryOptions
         {
-            ProfilesRootPath = Path.Combine(root, "profiles", "default")
+            ProfilesRootPath = Path.Join(root, "profiles", "default")
         });
 
         var ids = await repo.ListAvailableProfilesAsync();

@@ -15,18 +15,14 @@ public static class ActionPayloadValidator
 
         if (schema["required"] is JsonArray requiredArray)
         {
-            foreach (var required in requiredArray)
-            {
-                var name = required?.GetValue<string>();
-                if (string.IsNullOrWhiteSpace(name))
-                {
-                    continue;
-                }
+            var missingField = requiredArray
+                .Select(r => r?.GetValue<string>())
+                .Where(name => !string.IsNullOrWhiteSpace(name))
+                .FirstOrDefault(name => !payload.ContainsKey(name!));
 
-                if (!payload.ContainsKey(name))
-                {
-                    return (false, $"Missing required payload field: {name}");
-                }
+            if (missingField is not null)
+            {
+                return (false, $"Missing required payload field: {missingField}");
             }
         }
 

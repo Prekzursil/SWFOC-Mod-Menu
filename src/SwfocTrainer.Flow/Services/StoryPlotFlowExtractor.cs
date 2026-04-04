@@ -168,16 +168,11 @@ public sealed class StoryPlotFlowExtractor
         ArgumentNullException.ThrowIfNull(element);
         ArgumentNullException.ThrowIfNull(names);
 
-        foreach (var name in names)
-        {
-            var value = element.Attribute(name)?.Value;
-            if (!string.IsNullOrWhiteSpace(value))
-            {
-                return value.Trim();
-            }
-        }
-
-        return null;
+        return names
+            .Select(name => element.Attribute(name)?.Value)
+            .Where(value => !string.IsNullOrWhiteSpace(value))
+            .Select(value => value!.Trim())
+            .FirstOrDefault();
     }
 
     private static FlowModeHint ResolveModeHint(string eventName)

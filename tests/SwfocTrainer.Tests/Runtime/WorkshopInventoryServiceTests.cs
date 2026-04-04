@@ -16,18 +16,18 @@ public sealed class WorkshopInventoryServiceTests
     [Fact]
     public async Task DiscoverInstalledAsync_ShouldCollectInstalledIds_FromManifestAndWorkshopRoot()
     {
-        var tempRoot = Path.Combine(Path.GetTempPath(), $"swfoc-workshop-inventory-{Guid.NewGuid():N}");
+        var tempRoot = Path.Join(Path.GetTempPath(), $"swfoc-workshop-inventory-{Guid.NewGuid():N}");
         Directory.CreateDirectory(tempRoot);
         try
         {
-            var manifestPath = Path.Combine(tempRoot, "appworkshop_32470.acf");
+            var manifestPath = Path.Join(tempRoot, "appworkshop_32470.acf");
             await File.WriteAllTextAsync(
                 manifestPath,
                 "\"AppWorkshop\"\n{\n  \"WorkshopItemsInstalled\"\n  {\n    \"1397421866\" { }\n    \"3447786229\" { }\n  }\n}\n");
 
-            var workshopRoot = Path.Combine(tempRoot, "content", "32470");
+            var workshopRoot = Path.Join(tempRoot, "content", "32470");
             Directory.CreateDirectory(workshopRoot);
-            Directory.CreateDirectory(Path.Combine(workshopRoot, "3287776766"));
+            Directory.CreateDirectory(Path.Join(workshopRoot, "3287776766"));
 
             var service = new WorkshopInventoryService(NullLogger<WorkshopInventoryService>.Instance);
             var result = await service.DiscoverInstalledAsync(
@@ -59,7 +59,7 @@ public sealed class WorkshopInventoryServiceTests
     [Fact]
     public async Task DiscoverInstalledAsync_ShouldClassifySubmod_WhenChildrenDeclareParentDependency()
     {
-        var tempRoot = Path.Combine(Path.GetTempPath(), $"swfoc-workshop-inventory-{Guid.NewGuid():N}");
+        var tempRoot = Path.Join(Path.GetTempPath(), $"swfoc-workshop-inventory-{Guid.NewGuid():N}");
         Directory.CreateDirectory(tempRoot);
         try
         {
@@ -93,7 +93,7 @@ public sealed class WorkshopInventoryServiceTests
     [Fact]
     public async Task DiscoverInstalledAsync_ShouldUseDescriptionFallback_AndTagSubmodClassification()
     {
-        var tempRoot = Path.Combine(Path.GetTempPath(), $"swfoc-workshop-inventory-{Guid.NewGuid():N}");
+        var tempRoot = Path.Join(Path.GetTempPath(), $"swfoc-workshop-inventory-{Guid.NewGuid():N}");
         Directory.CreateDirectory(tempRoot);
         try
         {
@@ -129,11 +129,11 @@ public sealed class WorkshopInventoryServiceTests
     [Fact]
     public async Task DiscoverInstalledAsync_ShouldResolveParentFirstChain_WhenParentAndChildInstalled()
     {
-        var tempRoot = Path.Combine(Path.GetTempPath(), $"swfoc-workshop-inventory-{Guid.NewGuid():N}");
+        var tempRoot = Path.Join(Path.GetTempPath(), $"swfoc-workshop-inventory-{Guid.NewGuid():N}");
         Directory.CreateDirectory(tempRoot);
         try
         {
-            var manifestPath = Path.Combine(tempRoot, "appworkshop_32470.acf");
+            var manifestPath = Path.Join(tempRoot, "appworkshop_32470.acf");
             await File.WriteAllTextAsync(
                 manifestPath,
                 "\"AppWorkshop\"\n{\n  \"WorkshopItemsInstalled\"\n  {\n    \"1397421866\" { }\n    \"3447786229\" { }\n  }\n}\n");
@@ -163,11 +163,11 @@ public sealed class WorkshopInventoryServiceTests
     [Fact]
     public async Task DiscoverInstalledAsync_ShouldMarkPartialMissingReason_WhenOnlySomeParentsResolve()
     {
-        var tempRoot = Path.Combine(Path.GetTempPath(), $"swfoc-workshop-inventory-{Guid.NewGuid():N}");
+        var tempRoot = Path.Join(Path.GetTempPath(), $"swfoc-workshop-inventory-{Guid.NewGuid():N}");
         Directory.CreateDirectory(tempRoot);
         try
         {
-            var manifestPath = Path.Combine(tempRoot, "appworkshop_32470.acf");
+            var manifestPath = Path.Join(tempRoot, "appworkshop_32470.acf");
             await File.WriteAllTextAsync(
                 manifestPath,
                 "\"AppWorkshop\"\n{\n  \"WorkshopItemsInstalled\"\n  {\n    \"1397421866\" { }\n    \"3661482670\" { }\n  }\n}\n");
@@ -205,8 +205,8 @@ public sealed class WorkshopInventoryServiceTests
         var result = await service.DiscoverInstalledAsync(
             new WorkshopInventoryRequest(
                 AppId: "32470",
-                ManifestPath: Path.Combine(Path.GetTempPath(), $"missing-{Guid.NewGuid():N}.acf"),
-                WorkshopContentRootPath: Path.Combine(Path.GetTempPath(), $"missing-root-{Guid.NewGuid():N}"),
+                ManifestPath: Path.Join(Path.GetTempPath(), $"missing-{Guid.NewGuid():N}.acf"),
+                WorkshopContentRootPath: Path.Join(Path.GetTempPath(), $"missing-root-{Guid.NewGuid():N}"),
                 FetchRemoteMetadata: false),
             CancellationToken.None);
 
@@ -219,7 +219,7 @@ public sealed class WorkshopInventoryServiceTests
     [Fact]
     public async Task DiscoverInstalledAsync_ShouldNotIncludeUnknownParentIds_InResolvedChains()
     {
-        var tempRoot = Path.Combine(Path.GetTempPath(), $"swfoc-workshop-inventory-{Guid.NewGuid():N}");
+        var tempRoot = Path.Join(Path.GetTempPath(), $"swfoc-workshop-inventory-{Guid.NewGuid():N}");
         Directory.CreateDirectory(tempRoot);
         try
         {
@@ -249,7 +249,7 @@ public sealed class WorkshopInventoryServiceTests
     [Fact]
     public async Task DiscoverInstalledAsync_ShouldUseEnvironmentManifestAndWorkshopRoot_WhenRequestPathsAreOmitted()
     {
-        var tempRoot = Path.Combine(Path.GetTempPath(), $"swfoc-workshop-inventory-{Guid.NewGuid():N}");
+        var tempRoot = Path.Join(Path.GetTempPath(), $"swfoc-workshop-inventory-{Guid.NewGuid():N}");
         Directory.CreateDirectory(tempRoot);
         var previousManifest = Environment.GetEnvironmentVariable("SWFOC_WORKSHOP_MANIFEST_PATH");
         var previousWorkshopRoot = Environment.GetEnvironmentVariable("SWFOC_WORKSHOP_CONTENT_ROOT");
@@ -289,7 +289,7 @@ public sealed class WorkshopInventoryServiceTests
     [Fact]
     public async Task DiscoverInstalledAsync_ShouldRecordHttpFailure_WhenMetadataFetchReturnsNonSuccessStatus()
     {
-        var tempRoot = Path.Combine(Path.GetTempPath(), $"swfoc-workshop-inventory-{Guid.NewGuid():N}");
+        var tempRoot = Path.Join(Path.GetTempPath(), $"swfoc-workshop-inventory-{Guid.NewGuid():N}");
         Directory.CreateDirectory(tempRoot);
         try
         {
@@ -320,7 +320,7 @@ public sealed class WorkshopInventoryServiceTests
     [Fact]
     public async Task DiscoverInstalledAsync_ShouldRecordFetchFailure_WhenMetadataFetchThrows()
     {
-        var tempRoot = Path.Combine(Path.GetTempPath(), $"swfoc-workshop-inventory-{Guid.NewGuid():N}");
+        var tempRoot = Path.Join(Path.GetTempPath(), $"swfoc-workshop-inventory-{Guid.NewGuid():N}");
         Directory.CreateDirectory(tempRoot);
         try
         {
@@ -351,7 +351,7 @@ public sealed class WorkshopInventoryServiceTests
     [Fact]
     public async Task DiscoverInstalledAsync_ShouldRecordParseFailure_WhenMetadataPayloadIsInvalidJson()
     {
-        var tempRoot = Path.Combine(Path.GetTempPath(), $"swfoc-workshop-inventory-{Guid.NewGuid():N}");
+        var tempRoot = Path.Join(Path.GetTempPath(), $"swfoc-workshop-inventory-{Guid.NewGuid():N}");
         Directory.CreateDirectory(tempRoot);
         try
         {
@@ -382,7 +382,7 @@ public sealed class WorkshopInventoryServiceTests
     [Fact]
     public async Task DiscoverInstalledAsync_ShouldRecordMissingPayload_WhenDetailsArrayIsAbsent()
     {
-        var tempRoot = Path.Combine(Path.GetTempPath(), $"swfoc-workshop-inventory-{Guid.NewGuid():N}");
+        var tempRoot = Path.Join(Path.GetTempPath(), $"swfoc-workshop-inventory-{Guid.NewGuid():N}");
         Directory.CreateDirectory(tempRoot);
         try
         {
@@ -413,7 +413,7 @@ public sealed class WorkshopInventoryServiceTests
     [Fact]
     public async Task DiscoverInstalledAsync_ShouldClassifySubmod_WhenSubmodKeywordIsPresent()
     {
-        var tempRoot = Path.Combine(Path.GetTempPath(), $"swfoc-workshop-inventory-{Guid.NewGuid():N}");
+        var tempRoot = Path.Join(Path.GetTempPath(), $"swfoc-workshop-inventory-{Guid.NewGuid():N}");
         Directory.CreateDirectory(tempRoot);
         try
         {
@@ -647,7 +647,7 @@ public sealed class WorkshopInventoryServiceTests
 
     private static async Task<string> WriteSingleItemManifestAsync(string tempRoot, string workshopId)
     {
-        var manifestPath = Path.Combine(tempRoot, "appworkshop_32470.acf");
+        var manifestPath = Path.Join(tempRoot, "appworkshop_32470.acf");
         await File.WriteAllTextAsync(
             manifestPath,
             "\"AppWorkshop\"\n{\n  \"WorkshopItemsInstalled\"\n  {\n    \"" + workshopId + "\" { }\n  }\n}\n");
@@ -656,19 +656,19 @@ public sealed class WorkshopInventoryServiceTests
 
     private static string CreateWorkshopRoot(string tempRoot, string workshopId)
     {
-        var workshopRoot = Path.Combine(tempRoot, "content", "32470");
+        var workshopRoot = Path.Join(tempRoot, "content", "32470");
         Directory.CreateDirectory(workshopRoot);
-        Directory.CreateDirectory(Path.Combine(workshopRoot, workshopId));
+        Directory.CreateDirectory(Path.Join(workshopRoot, workshopId));
         return workshopRoot;
     }
 
     private static string CreateWorkshopRoot(string tempRoot, params string[] workshopIds)
     {
-        var workshopRoot = Path.Combine(tempRoot, "content", "32470");
+        var workshopRoot = Path.Join(tempRoot, "content", "32470");
         Directory.CreateDirectory(workshopRoot);
         foreach (var workshopId in workshopIds)
         {
-            Directory.CreateDirectory(Path.Combine(workshopRoot, workshopId));
+            Directory.CreateDirectory(Path.Join(workshopRoot, workshopId));
         }
 
         return workshopRoot;
@@ -800,15 +800,15 @@ public sealed class WorkshopInventoryServiceTests
 
     private sealed class StaticJsonHttpHandler(string payload, HttpStatusCode statusCode) : HttpMessageHandler
     {
-        protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
+        protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
         {
+            await Task.CompletedTask;
             _ = request;
             _ = cancellationToken;
-            var response = new HttpResponseMessage(statusCode)
+            return new HttpResponseMessage(statusCode)
             {
                 Content = new StringContent(payload, Encoding.UTF8, "application/json")
             };
-            return Task.FromResult(response);
         }
     }
 

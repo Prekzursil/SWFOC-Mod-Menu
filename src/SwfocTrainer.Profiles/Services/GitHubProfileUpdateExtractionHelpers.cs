@@ -65,7 +65,7 @@ internal static class GitHubProfileUpdateExtractionHelpers
         }
 
         var relativePath = normalizedEntryPath.Replace('/', Path.DirectorySeparatorChar);
-        var destinationPath = Path.GetFullPath(Path.Combine(extractionRoot, relativePath));
+        var destinationPath = Path.GetFullPath(Path.Join(extractionRoot, relativePath));
         if (!destinationPath.StartsWith(extractionRootPrefix, StringComparison.OrdinalIgnoreCase))
         {
             throw new InvalidDataException($"Archive entry escapes extraction root: {originalEntryPath}");

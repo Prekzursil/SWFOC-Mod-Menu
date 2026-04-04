@@ -76,7 +76,11 @@ internal static class MainViewModelRuntimeModeOverrideHelpers
             var root = JsonSerializer.Deserialize<Dictionary<string, string>>(json);
             return Normalize(root is not null && root.TryGetValue(SettingsModeOverride, out var value) ? value : null);
         }
-        catch
+        catch (IOException)
+        {
+            return ModeOverrideAuto;
+        }
+        catch (JsonException)
         {
             return ModeOverrideAuto;
         }
@@ -101,6 +105,6 @@ internal static class MainViewModelRuntimeModeOverrideHelpers
 
     private static string GetSettingsPath()
     {
-        return Path.Combine(TrustedPathPolicy.GetOrCreateAppDataRoot(), SettingsFileName);
+        return Path.Join(TrustedPathPolicy.GetOrCreateAppDataRoot(), SettingsFileName);
     }
 }

@@ -42,7 +42,7 @@ public sealed class ContentTransplantService : IContentTransplantService
         {
             var outputDirectory = Path.GetFullPath(plan.OutputDirectory);
             Directory.CreateDirectory(outputDirectory);
-            artifactPath = Path.Combine(outputDirectory, "transplant-report.json");
+            artifactPath = Path.Join(outputDirectory, "transplant-report.json");
 
             var artifact = new
             {

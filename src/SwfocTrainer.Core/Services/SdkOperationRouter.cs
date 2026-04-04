@@ -87,7 +87,7 @@ public sealed class SdkOperationRouter : ISdkOperationRouter
 
         var (variant, capability) = await ResolveVariantAndCapabilityAsync(
             request,
-            processPath ?? string.Empty,
+            processPath!,
             processId,
             cancellationToken);
 
@@ -374,7 +374,7 @@ public sealed class SdkOperationRouter : ISdkOperationRouter
             var values = JsonSerializer.Deserialize<string[]>(serialized) ?? Array.Empty<string>();
             return CreateAnchorSet(values);
         }
-        catch
+        catch (JsonException)
         {
             return CreateEmptyAnchorSet();
         }

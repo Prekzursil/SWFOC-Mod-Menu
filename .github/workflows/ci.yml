@@ -154,7 +154,7 @@ jobs:
 
       - name: SonarCloud scan (with coverage)
         if: always()
-        uses: SonarSource/sonarcloud-github-action@v5
+        uses: SonarSource/sonarcloud-github-action@ffc3010689be73b8e5ae0c57ce35968afd7909e8 # v5
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -166,7 +166,7 @@ jobs:
 
       - name: Upload coverage to Codecov
         if: always()
-        uses: codecov/codecov-action@v5
+        uses: codecov/codecov-action@75cd11691c0faa626561e295848008c8a7dddffe # v5
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
           files: TestResults/coverage/opencover.opencover.xml
@@ -193,23 +193,6 @@ jobs:
           } else {
             Write-Output "Coverage file not found, skipping QLTY upload"
           }
-        continue-on-error: true
-
-      - name: Upload coverage to Codacy
-        if: always()
-        uses: codacy/codacy-coverage-reporter-action@v1
-        with:
-          project-token: ${{ secrets.CODACY_PROJECT_TOKEN }}
-          coverage-reports: TestResults/coverage/opencover.opencover.xml
-        continue-on-error: true
-
-      - name: Upload coverage to DeepSource
-        if: always()
-        uses: deepsourcelabs/test-coverage-action@master
-        with:
-          key: csharp
-          coverage-file: TestResults/coverage/opencover.opencover.xml
-          dsn: ${{ secrets.DEEPSOURCE_DSN }}
         continue-on-error: true
 
       - name: Upload Test Results

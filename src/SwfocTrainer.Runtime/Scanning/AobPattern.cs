@@ -17,14 +17,9 @@ internal sealed class AobPattern
         for (var i = 0; i < parts.Length; i++)
         {
             var token = parts[i];
-            if (token == "??" || token == "?")
-            {
-                bytes[i] = null;
-            }
-            else
-            {
-                bytes[i] = Convert.ToByte(token, 16);
-            }
+            bytes[i] = token is "??" or "?"
+                ? null
+                : Convert.ToByte(token, 16);
         }
 
         return new AobPattern(bytes);

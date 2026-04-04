@@ -136,7 +136,7 @@ def _query_and_evaluate(open_issues_url: str, token: str) -> Tuple[str, Optional
         elif open_issues != 0:
             findings.append(f"DeepScan reports {open_issues} open issues (expected 0).")
         status = "pass" if not findings else "fail"
-    except (urllib.error.URLError, OSError, ValueError) as exc:  # pragma: no cover - network/runtime surface
+    except (OSError, ValueError) as exc:  # pragma: no cover - network/runtime surface
         findings.append(f"DeepScan API request failed: {exc}")
         status = "fail"
     return status, open_issues, findings

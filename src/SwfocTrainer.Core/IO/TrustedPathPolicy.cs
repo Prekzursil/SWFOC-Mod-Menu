@@ -11,7 +11,7 @@ public static class TrustedPathPolicy
 
     public static string GetOrCreateAppDataRoot()
     {
-        var root = Path.Combine(
+        var root = Path.Join(
             Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
             "SwfocTrainer");
 
@@ -49,7 +49,7 @@ public static class TrustedPathPolicy
                 continue;
             }
 
-            current = Path.Combine(current, segment);
+            current = Path.Join(current, segment);
         }
 
         var candidate = NormalizeAbsolute(current);
@@ -120,7 +120,7 @@ public static class TrustedPathPolicy
         }
 
         var outputName = $"{Path.GetFileNameWithoutExtension(source)}{suffix}{Path.GetExtension(source)}";
-        var candidate = NormalizeAbsolute(Path.Combine(directory, outputName));
+        var candidate = NormalizeAbsolute(Path.Join(directory, outputName));
         EnsureSubPath(directory, candidate);
         return candidate;
     }

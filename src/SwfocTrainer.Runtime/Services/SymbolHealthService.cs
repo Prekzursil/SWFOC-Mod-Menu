@@ -125,7 +125,7 @@ public sealed class SymbolHealthService : ISymbolHealthService
                 ? parsed
                 : Array.Empty<SymbolValidationRule>();
         }
-        catch
+        catch (JsonException)
         {
             return Array.Empty<SymbolValidationRule>();
         }

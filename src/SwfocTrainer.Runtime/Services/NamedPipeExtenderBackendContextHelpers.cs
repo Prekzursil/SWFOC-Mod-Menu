@@ -311,9 +311,9 @@ internal static class NamedPipeExtenderBackendContextHelpers
                 destination[kv.Key] = kv.Value;
             }
         }
-        catch
+        catch (JsonException)
         {
-            // ignored
+            // ignored — malformed serialized anchor map
         }
     }
 

@@ -153,7 +153,7 @@ public sealed class WorkshopInventoryService : IWorkshopInventoryService
 
         foreach (var steamRoot in EnumerateDefaultSteamRoots())
         {
-            yield return Path.Combine(steamRoot, "steamapps", "workshop", $"appworkshop_{appId}.acf");
+            yield return Path.Join(steamRoot, "steamapps", "workshop", $"appworkshop_{appId}.acf");
         }
     }
 
@@ -174,7 +174,7 @@ public sealed class WorkshopInventoryService : IWorkshopInventoryService
 
         foreach (var steamRoot in EnumerateDefaultSteamRoots())
         {
-            yield return Path.Combine(steamRoot, "steamapps", "workshop", "content", appId);
+            yield return Path.Join(steamRoot, "steamapps", "workshop", "content", appId);
         }
     }
 
@@ -195,18 +195,18 @@ public sealed class WorkshopInventoryService : IWorkshopInventoryService
         var programFilesX86 = Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86);
         if (!string.IsNullOrWhiteSpace(programFilesX86))
         {
-            Add(Path.Combine(programFilesX86, "Steam"));
+            Add(Path.Join(programFilesX86, "Steam"));
         }
 
         var programFiles = Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles);
         if (!string.IsNullOrWhiteSpace(programFiles))
         {
-            Add(Path.Combine(programFiles, "Steam"));
+            Add(Path.Join(programFiles, "Steam"));
         }
 
         foreach (var drive in DriveInfo.GetDrives().Where(d => d.DriveType is DriveType.Fixed && d.IsReady))
         {
-            Add(Path.Combine(drive.RootDirectory.FullName, "SteamLibrary"));
+            Add(Path.Join(drive.RootDirectory.FullName, "SteamLibrary"));
         }
 
         return seen;

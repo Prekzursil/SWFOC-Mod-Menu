@@ -349,8 +349,7 @@ public sealed class TrainerOrchestrator
                 actionId,
                 result.AddressSource,
                 result.Succeeded,
-                result.Message,
-                diagnostics),
+                result.Message) { Diagnostics = diagnostics },
             cancellationToken);
     }
 }

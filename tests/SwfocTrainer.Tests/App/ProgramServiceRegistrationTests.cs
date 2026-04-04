@@ -37,13 +37,15 @@ public sealed class ProgramServiceRegistrationTests
 
             InvokeConfigureServices(services);
 
-            var optionsDescriptor = services.Single(x => x.ServiceType.FullName == "SwfocTrainer.Profiles.Config.ProfileRepositoryOptions");
+            var optionsDescriptor = services.Single(x => x.ServiceType is { FullName: "SwfocTrainer.Profiles.Config.ProfileRepositoryOptions" });
             optionsDescriptor.ImplementationInstance.Should().NotBeNull();
-            var remoteManifestUrl = optionsDescriptor.ImplementationInstance!
+            var instance = optionsDescriptor.ImplementationInstance!;
+            var remoteManifestUrl = instance
                 .GetType()
                 .GetProperty("RemoteManifestUrl", BindingFlags.Instance | BindingFlags.Public)?
-                .GetValue(optionsDescriptor.ImplementationInstance) as string;
-            remoteManifestUrl.Should().Be("https://example.invalid/manifest.json");
+                .GetValue(instance) as string;
+            remoteManifestUrl.Should().NotBeNull();
+            remoteManifestUrl!.Should().Be("https://example.invalid/manifest.json");
         }
         finally
         {

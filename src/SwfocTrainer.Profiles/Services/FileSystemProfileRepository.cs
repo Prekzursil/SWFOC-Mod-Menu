@@ -27,7 +27,7 @@ public sealed class FileSystemProfileRepository : IProfileRepository
 
     public async Task<ProfileManifest> LoadManifestAsync(CancellationToken cancellationToken)
     {
-        var manifestPath = Path.Combine(_options.ProfilesRootPath, _options.ManifestFileName);
+        var manifestPath = Path.Join(_options.ProfilesRootPath, _options.ManifestFileName);
         if (!File.Exists(manifestPath))
         {
             throw new FileNotFoundException($"Profile manifest not found: {manifestPath}");
@@ -47,7 +47,7 @@ public sealed class FileSystemProfileRepository : IProfileRepository
     public async Task<TrainerProfile> LoadProfileAsync(string profileId, CancellationToken cancellationToken)
     {
         ArgumentNullException.ThrowIfNull(profileId);
-        var profilePath = Path.Combine(_options.ProfilesRootPath, "profiles", $"{profileId}.json");
+        var profilePath = Path.Join(_options.ProfilesRootPath, "profiles", $"{profileId}.json");
         if (!File.Exists(profilePath))
         {
             throw new FileNotFoundException($"Profile file not found: {profilePath}");

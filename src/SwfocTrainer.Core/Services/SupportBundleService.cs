@@ -36,9 +36,9 @@ public sealed class SupportBundleService : ISupportBundleService
         Directory.CreateDirectory(request.OutputDirectory);
 
         var runId = DateTimeOffset.UtcNow.ToString("yyyyMMddHHmmss");
-        var stagingRoot = Path.Combine(request.OutputDirectory, $"support-bundle-{runId}");
-        var bundlePath = Path.Combine(request.OutputDirectory, $"support-bundle-{runId}.zip");
-        var manifestPath = Path.Combine(request.OutputDirectory, $"support-bundle-{runId}.manifest.json");
+        var stagingRoot = Path.Join(request.OutputDirectory, $"support-bundle-{runId}");
+        var bundlePath = Path.Join(request.OutputDirectory, $"support-bundle-{runId}.zip");
+        var manifestPath = Path.Join(request.OutputDirectory, $"support-bundle-{runId}.manifest.json");
 
         var included = new List<string>();
         var warnings = new List<string>();
@@ -60,7 +60,7 @@ public sealed class SupportBundleService : ISupportBundleService
 
             var manifestPayload = BuildManifestPayload(request, included, warnings);
             await WriteJsonAsync(manifestPath, manifestPayload, cancellationToken);
-            var manifestInBundlePath = Path.Combine(stagingRoot, "manifest.json");
+            var manifestInBundlePath = Path.Join(stagingRoot, "manifest.json");
             await WriteJsonAsync(manifestInBundlePath, manifestPayload, cancellationToken);
             included.Add("manifest.json");
             RecreateBundle(bundlePath, stagingRoot);
@@ -83,7 +83,7 @@ public sealed class SupportBundleService : ISupportBundleService
 
     private static void CopyLogs(string stagingRoot, List<string> included, List<string> warnings)
     {
-        var logsRoot = Path.Combine(
+        var logsRoot = Path.Join(
             Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
             "SwfocTrainer",
             "logs");
@@ -94,7 +94,7 @@ public sealed class SupportBundleService : ISupportBundleService
             return;
         }
 
-        var targetRoot = Path.Combine(stagingRoot, "logs");
+        var targetRoot = Path.Join(stagingRoot, "logs");
         Directory.CreateDirectory(targetRoot);
         foreach (var path in Directory
                      .GetFiles(logsRoot, "*.jsonl", SearchOption.TopDirectoryOnly)
@@ -102,7 +102,7 @@ public sealed class SupportBundleService : ISupportBundleService
                      .Take(10))
         {
             var fileName = Path.GetFileName(path);
-            var dest = Path.Combine(targetRoot, fileName);
+            var dest = Path.Join(targetRoot, fileName);
             File.Copy(path, dest, overwrite: true);
             included.Add($"logs/{fileName}");
         }
@@ -110,7 +110,7 @@ public sealed class SupportBundleService : ISupportBundleService
 
     private static void CopyCalibrationArtifacts(string stagingRoot, List<string> included, List<string> warnings)
     {
-        var calibrationRoot = Path.Combine(
+        var calibrationRoot = Path.Join(
             Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
             "SwfocTrainer",
             "calibration");
@@ -121,7 +121,7 @@ public sealed class SupportBundleService : ISupportBundleService
             return;
         }
 
-        var targetRoot = Path.Combine(stagingRoot, "calibration");
+        var targetRoot = Path.Join(stagingRoot, "calibration");
         Directory.CreateDirectory(targetRoot);
         foreach (var path in Directory
                      .GetFiles(calibrationRoot, "*.json", SearchOption.AllDirectories)
@@ -129,7 +129,7 @@ public sealed class SupportBundleService : ISupportBundleService
                      .Take(8))
         {
             var fileName = Path.GetFileName(path);
-            var dest = Path.Combine(targetRoot, fileName);
+            var dest = Path.Join(targetRoot, fileName);
             File.Copy(path, dest, overwrite: true);
             included.Add($"calibration/{fileName}");
         }
@@ -138,7 +138,7 @@ public sealed class SupportBundleService : ISupportBundleService
     private static void CopyRecentReproBundles(string stagingRoot, List<string> included, List<string> warnings, int maxRecentRuns)
     {
         var repoRoot = Directory.GetCurrentDirectory();
-        var runRoot = Path.Combine(repoRoot, "TestResults", "runs");
+        var runRoot = Path.Join(repoRoot, "TestResults", "runs");
         if (!Directory.Exists(runRoot))
         {
             warnings.Add("TestResults/runs directory not found.");
@@ -150,24 +150,24 @@ public sealed class SupportBundleService : ISupportBundleService
             .Take(Math.Max(maxRecentRuns, 1))
             .ToArray();
 
-        var targetRoot = Path.Combine(stagingRoot, "runs");
+        var targetRoot = Path.Join(stagingRoot, "runs");
         Directory.CreateDirectory(targetRoot);
 
         foreach (var runDir in runDirs)
         {
             var runId = Path.GetFileName(runDir);
-            var targetRun = Path.Combine(targetRoot, runId);
+            var targetRun = Path.Join(targetRoot, runId);
             Directory.CreateDirectory(targetRun);
 
             foreach (var name in new[] { "repro-bundle.json", "repro-bundle.md" })
             {
-                var source = Path.Combine(runDir, name);
+                var source = Path.Join(runDir, name);
                 if (!File.Exists(source))
                 {
                     continue;
                 }
 
-                var dest = Path.Combine(targetRun, name);
+                var dest = Path.Join(targetRun, name);
                 File.Copy(source, dest, overwrite: true);
                 included.Add($"runs/{runId}/{name}");
             }
@@ -182,7 +182,7 @@ public sealed class SupportBundleService : ISupportBundleService
         string? notes,
         CancellationToken cancellationToken)
     {
-        var path = Path.Combine(stagingRoot, "runtime-snapshot.json");
+        var path = Path.Join(stagingRoot, "runtime-snapshot.json");
         if (_runtime.CurrentSession is null)
         {
             await WriteDetachedRuntimeSnapshotAsync(path, profileId, notes, included, warnings, cancellationToken);
@@ -195,7 +195,7 @@ public sealed class SupportBundleService : ISupportBundleService
 
     private async Task WriteTelemetrySnapshotAsync(string stagingRoot, List<string> included, CancellationToken cancellationToken)
     {
-        var telemetryDir = Path.Combine(stagingRoot, "telemetry");
+        var telemetryDir = Path.Join(stagingRoot, "telemetry");
         Directory.CreateDirectory(telemetryDir);
         var telemetryPath = await _telemetry.ExportSnapshotAsync(telemetryDir, cancellationToken);
         included.Add($"telemetry/{Path.GetFileName(telemetryPath)}");

@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text.Json;
 using SwfocTrainer.App.Models;
 using SwfocTrainer.Core.Models;
 
@@ -31,7 +32,15 @@ public abstract class MainViewModelLiveOpsBase : MainViewModelBindableMembersBas
         {
             catalog = await _catalog.LoadCatalogAsync(SelectedProfileId);
         }
-        catch (Exception ex) when (ex is IOException or InvalidOperationException or System.Text.Json.JsonException)
+        catch (IOException)
+        {
+            // Catalog is optional for reliability scoring — tolerate I/O and deserialization failures.
+        }
+        catch (InvalidOperationException)
+        {
+            // Catalog is optional for reliability scoring — tolerate I/O and deserialization failures.
+        }
+        catch (JsonException)
         {
             // Catalog is optional for reliability scoring — tolerate I/O and deserialization failures.
         }
@@ -133,7 +142,11 @@ public abstract class MainViewModelLiveOpsBase : MainViewModelBindableMembersBas
             RefreshSelectedUnitTransactions();
             Status = $"Selected-unit baseline captured at {snapshot.CapturedAt:HH:mm:ss} UTC.";
         }
-        catch (Exception ex)
+        catch (InvalidOperationException ex)
+        {
+            Status = $"✗ Capture selected-unit baseline failed: {ex.Message}";
+        }
+        catch (System.ComponentModel.Win32Exception ex)
         {
             Status = $"✗ Capture selected-unit baseline failed: {ex.Message}";
         }

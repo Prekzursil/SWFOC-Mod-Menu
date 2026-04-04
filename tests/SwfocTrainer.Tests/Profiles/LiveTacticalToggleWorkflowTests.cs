@@ -74,7 +74,7 @@ public sealed class LiveTacticalToggleWorkflowTests
         var repoRoot = TestPaths.FindRepoRoot();
         var profileRepo = new FileSystemProfileRepository(new ProfileRepositoryOptions
         {
-            ProfilesRootPath = Path.Combine(repoRoot, "profiles", "default")
+            ProfilesRootPath = Path.Join(repoRoot, "profiles", "default")
         });
         var resolver = new SignatureResolver(NullLogger<SignatureResolver>.Instance);
         var runtime = new RuntimeAdapter(locator, profileRepo, resolver, NullLogger<RuntimeAdapter>.Instance);
@@ -117,7 +117,11 @@ public sealed class LiveTacticalToggleWorkflowTests
         {
             return await runtime.ReadAsync<byte>(symbol) == 0;
         }
-        catch (Exception ex)
+        catch (InvalidOperationException ex)
+        {
+            throw LiveSkip.For(_output, $"tactical symbols not readable: {ex.Message}");
+        }
+        catch (System.ComponentModel.Win32Exception ex)
         {
             throw LiveSkip.For(_output, $"tactical symbols not readable: {ex.Message}");
         }

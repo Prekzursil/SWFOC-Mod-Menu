@@ -20,8 +20,7 @@ public sealed record ActionAuditRecord
         string actionId,
         AddressSource addressSource,
         bool succeeded,
-        string message,
-        IReadOnlyDictionary<string, object?>? diagnostics = null)
+        string message)
     {
         ArgumentNullException.ThrowIfNull(profileId);
         ArgumentNullException.ThrowIfNull(actionId);
@@ -33,6 +32,5 @@ public sealed record ActionAuditRecord
         AddressSource = addressSource;
         Succeeded = succeeded;
         Message = message;
-        Diagnostics = diagnostics;
     }
 }

@@ -12,8 +12,8 @@ public sealed class LaunchContextScriptSmokeTests
     public void DetectLaunchContextScript_Should_Match_Expected_Recommendations_From_Fixtures()
     {
         var root = TestPaths.FindRepoRoot();
-        var scriptPath = Path.Combine(root, "tools", "detect-launch-context.py");
-        var fixturePath = Path.Combine(root, "tools", "fixtures", "launch_context_cases.json");
+        var scriptPath = Path.Join(root, "tools", "detect-launch-context.py");
+        var fixturePath = Path.Join(root, "tools", "fixtures", "launch_context_cases.json");
 
         if (!File.Exists(scriptPath) || !File.Exists(fixturePath))
         {
@@ -75,7 +75,11 @@ public sealed class LaunchContextScriptSmokeTests
             process.WaitForExit(5000);
             return process.ExitCode == 0;
         }
-        catch
+        catch (InvalidOperationException)
+        {
+            return false;
+        }
+        catch (System.ComponentModel.Win32Exception)
         {
             return false;
         }
@@ -123,7 +127,7 @@ public sealed class LaunchContextScriptSmokeTests
         return new ProcessStartInfo
         {
             FileName = python.FileName,
-            Arguments = $"{pythonArgsPrefix}\"{scriptPath}\" --from-process-json \"{fixturePath}\" --profile-root \"{Path.Combine(root, "profiles", "default")}\"",
+            Arguments = $"{pythonArgsPrefix}\"{scriptPath}\" --from-process-json \"{fixturePath}\" --profile-root \"{Path.Join(root, "profiles", "default")}\"",
             RedirectStandardOutput = true,
             RedirectStandardError = true,
             UseShellExecute = false,

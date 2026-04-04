@@ -10,11 +10,11 @@ public sealed class TelemetryLogTailServiceTests
     [Fact]
     public void ResolveLatestMode_ShouldReturnLand_WhenFreshTelemetryLineExists()
     {
-        var tempRoot = Path.Combine(Path.GetTempPath(), $"swfoc-telemetry-{Guid.NewGuid():N}");
+        var tempRoot = Path.Join(Path.GetTempPath(), $"swfoc-telemetry-{Guid.NewGuid():N}");
         Directory.CreateDirectory(tempRoot);
-        var processPath = Path.Combine(tempRoot, "StarWarsG.exe");
+        var processPath = Path.Join(tempRoot, "StarWarsG.exe");
         File.WriteAllText(processPath, string.Empty);
-        var logPath = Path.Combine(tempRoot, "_LogFile.txt");
+        var logPath = Path.Join(tempRoot, "_LogFile.txt");
         var now = DateTimeOffset.UtcNow;
         File.WriteAllText(logPath, $"SWFOC_TRAINER_TELEMETRY timestamp={now:O} mode=TacticalLand");
 
@@ -40,12 +40,12 @@ public sealed class TelemetryLogTailServiceTests
     [Fact]
     public void ResolveLatestMode_ShouldReturnUnavailable_WhenTelemetryIsStale()
     {
-        var tempRoot = Path.Combine(Path.GetTempPath(), $"swfoc-telemetry-{Guid.NewGuid():N}");
+        var tempRoot = Path.Join(Path.GetTempPath(), $"swfoc-telemetry-{Guid.NewGuid():N}");
         Directory.CreateDirectory(tempRoot);
-        var processPath = Path.Combine(tempRoot, "StarWarsG.exe");
+        var processPath = Path.Join(tempRoot, "StarWarsG.exe");
         File.WriteAllText(processPath, string.Empty);
         var stale = DateTimeOffset.UtcNow.AddMinutes(-10);
-        File.WriteAllText(Path.Combine(tempRoot, "_LogFile.txt"), $"SWFOC_TRAINER_TELEMETRY timestamp={stale:O} mode=Galactic");
+        File.WriteAllText(Path.Join(tempRoot, "_LogFile.txt"), $"SWFOC_TRAINER_TELEMETRY timestamp={stale:O} mode=Galactic");
 
         try
         {
@@ -67,11 +67,11 @@ public sealed class TelemetryLogTailServiceTests
     [Fact]
     public void ResolveLatestMode_ShouldReturnTacticalSpace_WhenSpaceAliasTelemetryLineExists()
     {
-        var tempRoot = Path.Combine(Path.GetTempPath(), $"swfoc-telemetry-{Guid.NewGuid():N}");
+        var tempRoot = Path.Join(Path.GetTempPath(), $"swfoc-telemetry-{Guid.NewGuid():N}");
         Directory.CreateDirectory(tempRoot);
-        var processPath = Path.Combine(tempRoot, "StarWarsG.exe");
+        var processPath = Path.Join(tempRoot, "StarWarsG.exe");
         File.WriteAllText(processPath, string.Empty);
-        var logPath = Path.Combine(tempRoot, "_LogFile.txt");
+        var logPath = Path.Join(tempRoot, "_LogFile.txt");
         var now = DateTimeOffset.UtcNow;
         File.WriteAllText(logPath, $"SWFOC_TRAINER_TELEMETRY timestamp={now:O} mode=Space");
 
@@ -97,12 +97,12 @@ public sealed class TelemetryLogTailServiceTests
     [Fact]
     public void ResolveLatestMode_ShouldReturnAnyTactical_WhenAnyTacticalTelemetryLineExists()
     {
-        var tempRoot = Path.Combine(Path.GetTempPath(), $"swfoc-telemetry-{Guid.NewGuid():N}");
+        var tempRoot = Path.Join(Path.GetTempPath(), $"swfoc-telemetry-{Guid.NewGuid():N}");
         Directory.CreateDirectory(tempRoot);
-        var processPath = Path.Combine(tempRoot, "StarWarsG.exe");
+        var processPath = Path.Join(tempRoot, "StarWarsG.exe");
         File.WriteAllText(processPath, string.Empty);
         var now = DateTimeOffset.UtcNow;
-        File.WriteAllText(Path.Combine(tempRoot, "_LogFile.txt"), $"SWFOC_TRAINER_TELEMETRY timestamp={now:O} mode=AnyTactical");
+        File.WriteAllText(Path.Join(tempRoot, "_LogFile.txt"), $"SWFOC_TRAINER_TELEMETRY timestamp={now:O} mode=AnyTactical");
 
         try
         {
@@ -136,12 +136,12 @@ public sealed class TelemetryLogTailServiceTests
     [Fact]
     public void ResolveLatestMode_ShouldReturnUnavailable_WhenTelemetryModeIsUnknown()
     {
-        var tempRoot = Path.Combine(Path.GetTempPath(), $"swfoc-telemetry-{Guid.NewGuid():N}");
+        var tempRoot = Path.Join(Path.GetTempPath(), $"swfoc-telemetry-{Guid.NewGuid():N}");
         Directory.CreateDirectory(tempRoot);
-        var processPath = Path.Combine(tempRoot, "StarWarsG.exe");
+        var processPath = Path.Join(tempRoot, "StarWarsG.exe");
         File.WriteAllText(processPath, string.Empty);
         var now = DateTimeOffset.UtcNow;
-        File.WriteAllText(Path.Combine(tempRoot, "_LogFile.txt"), $"SWFOC_TRAINER_TELEMETRY timestamp={now:O} mode=Skirmish");
+        File.WriteAllText(Path.Join(tempRoot, "_LogFile.txt"), $"SWFOC_TRAINER_TELEMETRY timestamp={now:O} mode=Skirmish");
 
         try
         {
@@ -165,12 +165,12 @@ public sealed class TelemetryLogTailServiceTests
     [InlineData("mode=AnyTactical", RuntimeMode.AnyTactical)]
     public void ResolveLatestMode_ShouldParseAdditionalModes(string modeFragment, RuntimeMode expectedMode)
     {
-        var tempRoot = Path.Combine(Path.GetTempPath(), $"swfoc-telemetry-{Guid.NewGuid():N}");
+        var tempRoot = Path.Join(Path.GetTempPath(), $"swfoc-telemetry-{Guid.NewGuid():N}");
         Directory.CreateDirectory(tempRoot);
-        var processPath = Path.Combine(tempRoot, "StarWarsG.exe");
+        var processPath = Path.Join(tempRoot, "StarWarsG.exe");
         File.WriteAllText(processPath, string.Empty);
         var now = DateTimeOffset.UtcNow;
-        File.WriteAllText(Path.Combine(tempRoot, "_LogFile.txt"), $"SWFOC_TRAINER_TELEMETRY timestamp={now:O} {modeFragment}");
+        File.WriteAllText(Path.Join(tempRoot, "_LogFile.txt"), $"SWFOC_TRAINER_TELEMETRY timestamp={now:O} {modeFragment}");
 
         try
         {
@@ -193,12 +193,12 @@ public sealed class TelemetryLogTailServiceTests
     [Fact]
     public void ResolveLatestMode_ShouldReturnUnavailable_WhenModeIsUnknown()
     {
-        var tempRoot = Path.Combine(Path.GetTempPath(), $"swfoc-telemetry-{Guid.NewGuid():N}");
+        var tempRoot = Path.Join(Path.GetTempPath(), $"swfoc-telemetry-{Guid.NewGuid():N}");
         Directory.CreateDirectory(tempRoot);
-        var processPath = Path.Combine(tempRoot, "StarWarsG.exe");
+        var processPath = Path.Join(tempRoot, "StarWarsG.exe");
         File.WriteAllText(processPath, string.Empty);
         File.WriteAllText(
-            Path.Combine(tempRoot, "_LogFile.txt"),
+            Path.Join(tempRoot, "_LogFile.txt"),
             $"SWFOC_TRAINER_TELEMETRY timestamp={DateTimeOffset.UtcNow:O} mode=UnknownMode");
 
         try

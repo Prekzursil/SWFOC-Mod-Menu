@@ -162,7 +162,7 @@ public sealed class NamedPipeExtenderBackend : IExecutionBackend
                 AppendNonEmptyAnchorValues(parsedAnchors, anchors);
             }
         }
-        catch
+        catch (JsonException)
         {
             // Keep seeded defaults when metadata parsing fails.
         }
@@ -575,9 +575,13 @@ public sealed class NamedPipeExtenderBackend : IExecutionBackend
         {
             roots.Add(Path.GetFullPath(path));
         }
-        catch
+        catch (IOException)
         {
-            // ignored
+            // ignored — invalid path
+        }
+        catch (ArgumentException)
+        {
+            // ignored — invalid path characters
         }
     }
 
@@ -593,7 +597,11 @@ public sealed class NamedPipeExtenderBackend : IExecutionBackend
         {
             directory = new DirectoryInfo(startPath);
         }
-        catch
+        catch (ArgumentException)
+        {
+            return;
+        }
+        catch (System.Security.SecurityException)
         {
             return;
         }
@@ -609,12 +617,12 @@ public sealed class NamedPipeExtenderBackend : IExecutionBackend
     {
         var known = new[]
         {
-            Path.Combine(root, NativeDirectoryName, "runtime", BridgeHostWindowsExecutableName),
-            Path.Combine(root, NativeDirectoryName, "build-win-vs", "SwfocExtender.Bridge", "Release", BridgeHostWindowsExecutableName),
-            Path.Combine(root, NativeDirectoryName, "build-win-vs", "SwfocExtender.Bridge", "x64", "Release", BridgeHostWindowsExecutableName),
-            Path.Combine(root, NativeDirectoryName, "build-win-codex", "SwfocExtender.Bridge", "Release", BridgeHostWindowsExecutableName),
-            Path.Combine(root, NativeDirectoryName, "build-win", BridgeHostWindowsExecutableName),
-            Path.Combine(root, NativeDirectoryName, "build-wsl", BridgeHostPosixExecutableName)
+            Path.Join(root, NativeDirectoryName, "runtime", BridgeHostWindowsExecutableName),
+            Path.Join(root, NativeDirectoryName, "build-win-vs", "SwfocExtender.Bridge", "Release", BridgeHostWindowsExecutableName),
+            Path.Join(root, NativeDirectoryName, "build-win-vs", "SwfocExtender.Bridge", "x64", "Release", BridgeHostWindowsExecutableName),
+            Path.Join(root, NativeDirectoryName, "build-win-codex", "SwfocExtender.Bridge", "Release", BridgeHostWindowsExecutableName),
+            Path.Join(root, NativeDirectoryName, "build-win", BridgeHostWindowsExecutableName),
+            Path.Join(root, NativeDirectoryName, "build-wsl", BridgeHostPosixExecutableName)
         };
 
         foreach (var path in known)
@@ -625,7 +633,7 @@ public sealed class NamedPipeExtenderBackend : IExecutionBackend
 
     private static void AddDiscoveredNativeBuildCandidates(HashSet<string> candidates, string root)
     {
-        var nativeRoot = Path.Combine(root, NativeDirectoryName);
+        var nativeRoot = Path.Join(root, NativeDirectoryName);
         if (!Directory.Exists(nativeRoot))
         {
             return;
@@ -643,7 +651,11 @@ public sealed class NamedPipeExtenderBackend : IExecutionBackend
                 candidates.Add(path);
             }
         }
-        catch
+        catch (IOException)
+        {
+            // ignored: candidate discovery is best-effort.
+        }
+        catch (UnauthorizedAccessException)
         {
             // ignored: candidate discovery is best-effort.
         }

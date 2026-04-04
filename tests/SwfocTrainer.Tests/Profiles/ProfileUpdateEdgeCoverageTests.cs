@@ -233,16 +233,17 @@ public sealed class ProfileUpdateEdgeCoverageTests
             _responses = responses;
         }
 
-        protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
+        protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
         {
+            await Task.CompletedTask;
             _ = cancellationToken;
             var key = request.RequestUri!.ToString();
             if (!_responses.TryGetValue(key, out var payload))
             {
-                return Task.FromResult(new HttpResponseMessage(HttpStatusCode.NotFound)
+                return new HttpResponseMessage(HttpStatusCode.NotFound)
                 {
                     Content = new StringContent("not found")
-                });
+                };
             }
 
             if (payload.Error is not null)
@@ -255,7 +256,7 @@ public sealed class ProfileUpdateEdgeCoverageTests
                 Content = new ByteArrayContent(payload.Body)
             };
             response.Content.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue(payload.ContentType);
-            return Task.FromResult(response);
+            return response;
         }
     }
 
@@ -263,9 +264,9 @@ public sealed class ProfileUpdateEdgeCoverageTests
     {
         public TempRoot()
         {
-            RootPath = Path.Combine(Path.GetTempPath(), $"swfoc-profile-update-edge-{Guid.NewGuid():N}");
-            ProfilesRoot = Path.Combine(RootPath, "default");
-            CacheRoot = Path.Combine(RootPath, "cache");
+            RootPath = Path.Join(Path.GetTempPath(), $"swfoc-profile-update-edge-{Guid.NewGuid():N}");
+            ProfilesRoot = Path.Join(RootPath, "default");
+            CacheRoot = Path.Join(RootPath, "cache");
             Directory.CreateDirectory(ProfilesRoot);
             Directory.CreateDirectory(CacheRoot);
         }

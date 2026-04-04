@@ -180,8 +180,8 @@ public sealed class LaunchContextRuntimeScriptParityTests
     private static bool TryResolveScriptInputs(out ScriptInputs? inputs)
     {
         var root = TestPaths.FindRepoRoot();
-        var scriptPath = Path.Combine(root, "tools", "detect-launch-context.py");
-        var fixturePath = Path.Combine(root, "tools", "fixtures", "launch_context_cases.json");
+        var scriptPath = Path.Join(root, "tools", "detect-launch-context.py");
+        var fixturePath = Path.Join(root, "tools", "fixtures", "launch_context_cases.json");
         if (!File.Exists(scriptPath) || !File.Exists(fixturePath))
         {
             inputs = null;
@@ -207,7 +207,7 @@ public sealed class LaunchContextRuntimeScriptParityTests
         return new ProcessStartInfo
         {
             FileName = inputs.Python.FileName,
-            Arguments = $"{pythonArgsPrefix}\"{inputs.ScriptPath}\" --from-process-json \"{inputs.FixturePath}\" --profile-root \"{Path.Combine(inputs.Root, "profiles", "default")}\"",
+            Arguments = $"{pythonArgsPrefix}\"{inputs.ScriptPath}\" --from-process-json \"{inputs.FixturePath}\" --profile-root \"{Path.Join(inputs.Root, "profiles", "default")}\"",
             RedirectStandardOutput = true,
             RedirectStandardError = true,
             UseShellExecute = false,
@@ -240,7 +240,7 @@ public sealed class LaunchContextRuntimeScriptParityTests
         var root = TestPaths.FindRepoRoot();
         var repo = new FileSystemProfileRepository(new ProfileRepositoryOptions
         {
-            ProfilesRootPath = Path.Combine(root, "profiles", "default")
+            ProfilesRootPath = Path.Join(root, "profiles", "default")
         });
 
         var ids = await repo.ListAvailableProfilesAsync();

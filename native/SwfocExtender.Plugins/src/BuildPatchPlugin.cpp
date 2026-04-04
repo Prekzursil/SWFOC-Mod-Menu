@@ -352,8 +352,7 @@ PluginResult BuildPatchPlugin::ExecuteInstantBuildApply(
     std::string_view restoreKey,
     std::string& writeError,
     process_mutation::WriteOperationDiagnostics& writeDiagnostics) {
-    const auto enabledByte = static_cast<std::uint8_t>(1);
-    if (!process_mutation::TryWriteValue<std::uint8_t>(
+    if (const auto enabledByte = static_cast<std::uint8_t>(1); !process_mutation::TryWriteValue<std::uint8_t>(
             request.processId(),
             targetAddress,
             enabledByte,

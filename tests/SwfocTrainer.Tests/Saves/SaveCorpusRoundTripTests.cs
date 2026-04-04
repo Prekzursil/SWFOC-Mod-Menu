@@ -19,8 +19,8 @@ public sealed class SaveCorpusRoundTripTests
     public async Task Codec_ShouldRoundTripForShippedSchemaCorpusFixtures()
     {
         var root = TestPaths.FindRepoRoot();
-        var fixtureDir = Path.Combine(root, "tools", "fixtures", "save-corpus");
-        var manifestPath = Path.Combine(fixtureDir, "manifest.json");
+        var fixtureDir = Path.Join(root, "tools", "fixtures", "save-corpus");
+        var manifestPath = Path.Join(fixtureDir, "manifest.json");
         File.Exists(manifestPath).Should().BeTrue("save corpus fixtures must be tracked for all shipped schemas");
 
         var manifest = JsonSerializer.Deserialize<SaveCorpusManifest>(await File.ReadAllTextAsync(manifestPath), JsonOptions);
@@ -30,7 +30,7 @@ public sealed class SaveCorpusRoundTripTests
 
         var options = new SaveOptions
         {
-            SchemaRootPath = Path.Combine(root, "profiles", "default", "schemas")
+            SchemaRootPath = Path.Join(root, "profiles", "default", "schemas")
         };
 
         var codec = new BinarySaveCodec(options, NullLogger<BinarySaveCodec>.Instance);
@@ -41,7 +41,7 @@ public sealed class SaveCorpusRoundTripTests
             fixture.Should().NotBeNull();
             fixture!.SyntheticByteLength.Should().BeGreaterThan(0);
 
-            var tempPath = Path.Combine(Path.GetTempPath(), $"swfoc-corpus-{fixture.SchemaId}-{Guid.NewGuid():N}.sav");
+            var tempPath = Path.Join(Path.GetTempPath(), $"swfoc-corpus-{fixture.SchemaId}-{Guid.NewGuid():N}.sav");
             try
             {
                 await File.WriteAllBytesAsync(tempPath, new byte[fixture.SyntheticByteLength]);

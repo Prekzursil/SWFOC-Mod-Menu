@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text.Json.Nodes;
 using SwfocTrainer.App.Models;
@@ -42,7 +43,15 @@ public abstract class MainViewModelQuickActionsBase : MainViewModelLiveOpsBase
             ToggleQuickActionState(toggleKey, result.Succeeded);
             Status = MainViewModelDiagnostics.BuildQuickActionStatus(actionId, result);
         }
-        catch (Exception ex)
+        catch (InvalidOperationException ex)
+        {
+            Status = $"✗ {actionId}: {ex.Message}";
+        }
+        catch (System.ComponentModel.Win32Exception ex)
+        {
+            Status = $"✗ {actionId}: {ex.Message}";
+        }
+        catch (IOException ex)
         {
             Status = $"✗ {actionId}: {ex.Message}";
         }
@@ -130,7 +139,15 @@ public abstract class MainViewModelQuickActionsBase : MainViewModelLiveOpsBase
 
             Status = creditsStatus.StatusMessage;
         }
-        catch (Exception ex)
+        catch (InvalidOperationException ex)
+        {
+            Status = $"✗ Credits: {ex.Message}";
+        }
+        catch (System.ComponentModel.Win32Exception ex)
+        {
+            Status = $"✗ Credits: {ex.Message}";
+        }
+        catch (IOException ex)
         {
             Status = $"✗ Credits: {ex.Message}";
         }

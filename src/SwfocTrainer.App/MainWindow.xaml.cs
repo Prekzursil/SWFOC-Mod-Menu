@@ -70,8 +70,8 @@ public partial class MainWindow : Window
 
         var keyToken = key switch
         {
-            >= Key.D0 and <= Key.D9 => ((int)(key - Key.D0)).ToString(),
-            >= Key.NumPad0 and <= Key.NumPad9 => ((int)(key - Key.NumPad0)).ToString(),
+            >= Key.D0 and <= Key.D9 => (key - Key.D0).ToString(),
+            >= Key.NumPad0 and <= Key.NumPad9 => (key - Key.NumPad0).ToString(),
             _ => key.ToString()
         };
 

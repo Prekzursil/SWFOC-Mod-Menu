@@ -46,7 +46,7 @@ public sealed class LiveActionSmokeTests
         var repoRoot = TestPaths.FindRepoRoot();
         var profileRepo = new FileSystemProfileRepository(new ProfileRepositoryOptions
         {
-            ProfilesRootPath = Path.Combine(repoRoot, "profiles", "default")
+            ProfilesRootPath = Path.Join(repoRoot, "profiles", "default")
         });
 
         var resolver = new SignatureResolver(NullLogger<SignatureResolver>.Instance);

@@ -143,7 +143,7 @@ def _query_codacy_issues(
                 continue
             findings.append(f"Codacy API request failed: HTTP {exc.code}")
             return "fail", None, findings
-        except (urllib.error.URLError, OSError, ValueError) as exc:  # pragma: no cover
+        except (OSError, ValueError) as exc:  # pragma: no cover
             findings.append(f"Codacy API request failed: {exc}")
             return "fail", None, findings
 

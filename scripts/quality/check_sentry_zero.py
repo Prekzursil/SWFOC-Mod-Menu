@@ -166,7 +166,7 @@ def _query_all_projects(
             findings.extend(proj_findings)
             project_results.append({"project": project, "unresolved": unresolved})
         status = "pass" if not findings else "fail"
-    except (urllib.error.URLError, OSError, ValueError) as exc:  # pragma: no cover - network/runtime surface
+    except (OSError, ValueError) as exc:  # pragma: no cover - network/runtime surface
         findings.append(f"Sentry API request failed: {exc}")
         status = "fail"
     return status, project_results, findings

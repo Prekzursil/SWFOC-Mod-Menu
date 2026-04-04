@@ -104,7 +104,7 @@ public sealed class CapabilityMapResolver : ICapabilityMapResolver
 
     private async Task<CapabilityMap?> LoadMapAsync(BinaryFingerprint fingerprint, CancellationToken cancellationToken)
     {
-        var mapPath = Path.Combine(_mapsRootPath, $"{fingerprint.FingerprintId}.json");
+        var mapPath = Path.Join(_mapsRootPath, $"{fingerprint.FingerprintId}.json");
         if (!File.Exists(mapPath))
         {
             return null;

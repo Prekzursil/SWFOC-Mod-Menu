@@ -134,8 +134,7 @@ PluginResult EconomyPlugin::execute(const PluginRequest& request) {
         return BuildInvalidAnchorResult(request, *resolvedAnchor);
     }
 
-    std::string writeError;
-    if (!process_mutation::TryWriteValue<std::int32_t>(
+    if (std::string writeError; !process_mutation::TryWriteValue<std::int32_t>(
             request.processId(),
             targetAddress,
             request.intValue(),

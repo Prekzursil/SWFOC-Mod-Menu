@@ -210,7 +210,11 @@ public sealed class ValueFreezeService : IValueFreezeService
                     {
                         _runtime.WriteAsync(entry.Symbol, entry.Value).GetAwaiter().GetResult();
                     }
-                    catch
+                    catch (InvalidOperationException)
+                    {
+                        // Swallow — transient failure, retry on next cycle.
+                    }
+                    catch (System.ComponentModel.Win32Exception)
                     {
                         // Swallow — transient failure, retry on next cycle.
                     }

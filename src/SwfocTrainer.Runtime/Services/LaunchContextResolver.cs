@@ -165,12 +165,9 @@ public sealed class LaunchContextResolver : ILaunchContextResolver
     {
         var score = 0;
 
-        if (!string.IsNullOrWhiteSpace(profile.SteamWorkshopId))
+        if (!string.IsNullOrWhiteSpace(profile.SteamWorkshopId) && steamModIds.Contains(profile.SteamWorkshopId))
         {
-            if (steamModIds.Contains(profile.SteamWorkshopId))  // NOSONAR
-            {
-                score = Math.Max(score, 1000);
-            }
+            score = Math.Max(score, 1000);
         }
 
         var requiredIds = BuildRequiredWorkshopIds(profile);

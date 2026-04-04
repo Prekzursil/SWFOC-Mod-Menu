@@ -1,3 +1,4 @@
+using System.IO;
 using System.Windows.Input;
 using System.Diagnostics;
 using System.Windows;
@@ -45,18 +46,25 @@ public sealed class AsyncCommand : ICommand
         {
             await _execute();
         }
-        catch (Exception ex)
+        catch (InvalidOperationException ex)
         {
-            // Unhandled exceptions in async void crash the WPF process. Prefer surfacing an error and keeping the app alive.
             Debug.WriteLine(ex);
-            try
-            {
-                MessageBox.Show(ex.Message, "Operation Failed", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
-            catch
-            {
-                // ignored
-            }
+            TryShowError(ex.Message);
+        }
+        catch (System.ComponentModel.Win32Exception ex)
+        {
+            Debug.WriteLine(ex);
+            TryShowError(ex.Message);
+        }
+        catch (IOException ex)
+        {
+            Debug.WriteLine(ex);
+            TryShowError(ex.Message);
+        }
+        catch (KeyNotFoundException ex)
+        {
+            Debug.WriteLine(ex);
+            TryShowError(ex.Message);
         }
         finally
         {
@@ -72,4 +80,16 @@ public sealed class AsyncCommand : ICommand
     }
 
     public static void RaiseCanExecuteChanged() => CommandManager.InvalidateRequerySuggested();
+
+    private static void TryShowError(string message)
+    {
+        try
+        {
+            MessageBox.Show(message, "Operation Failed", MessageBoxButton.OK, MessageBoxImage.Error);
+        }
+        catch (InvalidOperationException)
+        {
+            // Window may not be available during shutdown.
+        }
+    }
 }
