@@ -40,11 +40,10 @@ public sealed class ProgramServiceRegistrationTests
             var optionsDescriptor = services.Single(x => x.ServiceType is { FullName: "SwfocTrainer.Profiles.Config.ProfileRepositoryOptions" });
             optionsDescriptor.ImplementationInstance.Should().NotBeNull();
             var instance = optionsDescriptor.ImplementationInstance!;
-            var remoteManifestUrl = instance
+            var remoteManifestUrl = (instance
                 .GetType()
                 .GetProperty("RemoteManifestUrl", BindingFlags.Instance | BindingFlags.Public)?
-                .GetValue(instance) as string;
-            remoteManifestUrl.Should().NotBeNull();
+                .GetValue(instance) as string) ?? string.Empty;
             remoteManifestUrl.Should().Be("https://example.invalid/manifest.json");
         }
         finally
