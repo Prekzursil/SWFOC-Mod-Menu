@@ -29,44 +29,53 @@ jobs:
           dotnet-version: "8.0.x"
 
       - name: Install SonarScanner
-        shell: bash
+        shell: pwsh
         run: |
           dotnet tool install --global dotnet-sonarscanner
-          echo "$HOME/.dotnet/tools" >> "$GITHUB_PATH"
+          $toolsPath = Join-Path $env:USERPROFILE ".dotnet\tools"
+          echo $toolsPath | Out-File -Append -Encoding utf8 $env:GITHUB_PATH
 
       - name: Restore
         run: dotnet restore SwfocTrainer.sln
 
       - name: Sonar Begin
-        shell: bash
+        shell: pwsh
         env:
           EVENT_NAME: ${{ github.event_name }}
           PR_NUMBER: ${{ github.event.pull_request.number }}
           PR_BRANCH: ${{ github.head_ref }}
           PR_BASE: ${{ github.base_ref }}
         run: |
-          SONAR_ARGS="/k:Prekzursil_SWFOC-Mod-Menu /o:prekzursil /d:sonar.token=$SONAR_TOKEN /d:sonar.host.url=https://sonarcloud.io"
-          SONAR_ARGS="$SONAR_ARGS /d:sonar.cs.opencover.reportPaths=TestResults/coverage/opencover.xml"
-          if [ "$EVENT_NAME" = "pull_request" ] && [ -n "$PR_NUMBER" ]; then
-            SONAR_ARGS="$SONAR_ARGS /d:sonar.pullrequest.key=$PR_NUMBER /d:sonar.pullrequest.branch=$PR_BRANCH /d:sonar.pullrequest.base=$PR_BASE"
-          fi
-          dotnet-sonarscanner begin $SONAR_ARGS
+          $sonarArgs = @(
+            "begin",
+            "/k:Prekzursil_SWFOC-Mod-Menu",
+            "/o:prekzursil",
+            "/d:sonar.token=$env:SONAR_TOKEN",
+            "/d:sonar.host.url=https://sonarcloud.io",
+            "/d:sonar.cs.opencover.reportPaths=TestResults/coverage/opencover.xml"
+          )
+          if ($env:EVENT_NAME -eq "pull_request" -and $env:PR_NUMBER) {
+            $sonarArgs += "/d:sonar.pullrequest.key=$env:PR_NUMBER"
+            $sonarArgs += "/d:sonar.pullrequest.branch=$env:PR_BRANCH"
+            $sonarArgs += "/d:sonar.pullrequest.base=$env:PR_BASE"
+          }
+          dotnet-sonarscanner @sonarArgs
 
       - name: Build
         run: dotnet build SwfocTrainer.sln -c Release --no-restore
 
       - name: Test with coverage
-        shell: bash
+        shell: pwsh
         run: |
-          dotnet test tests/SwfocTrainer.Tests/SwfocTrainer.Tests.csproj \
-            -c Release --no-build \
-            --filter "FullyQualifiedName!~SwfocTrainer.Tests.Profiles.Live&FullyQualifiedName!~RuntimeAttachSmokeTests" \
-            -p:CollectCoverage=true \
-            -p:CoverletOutputFormat=opencover \
-            -p:CoverletOutput="TestResults/coverage/opencover" \
-            -p:ExcludeByFile="**/obj/**%2c**/*.g.cs%2c**/*.g.i.cs"
+          dotnet test tests/SwfocTrainer.Tests/SwfocTrainer.Tests.csproj `
+            -c Release --no-build `
+            --filter "FullyQualifiedName!~SwfocTrainer.Tests.Profiles.Live&FullyQualifiedName!~RuntimeAttachSmokeTests" `
+            -p:CollectCoverage=true `
+            -p:CoverletOutputFormat=opencover `
+            '-p:CoverletOutput=TestResults/coverage/opencover' `
+            '-p:ExcludeByFile=**/obj/**%2c**/*.g.cs%2c**/*.g.i.cs'
 
       - name: Sonar End
-        shell: bash
+        shell: pwsh
         run: |
-          dotnet-sonarscanner end /d:sonar.token="$SONAR_TOKEN"
+          dotnet-sonarscanner end /d:sonar.token="$env:SONAR_TOKEN"
