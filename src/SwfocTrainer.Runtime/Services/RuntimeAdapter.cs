@@ -937,42 +937,12 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
 
     private static IReadOnlyList<SymbolValidationRule> ParseSymbolValidationRules(TrainerProfile profile)
     {
-        if (profile.Metadata is null ||
-            !profile.Metadata.TryGetValue("symbolValidationRules", out var raw) ||
-            string.IsNullOrWhiteSpace(raw))
-        {
-            return Array.Empty<SymbolValidationRule>();
-        }
-
-        try
-        {
-            var parsed = JsonSerializer.Deserialize<List<SymbolValidationRule>>(raw, SymbolValidationJsonOptions);
-            return parsed is not null
-                ? parsed
-                : Array.Empty<SymbolValidationRule>();
-        }
-        catch (JsonException)
-        {
-            return Array.Empty<SymbolValidationRule>();
-        }
+        return ProfileMetadataParser.ParseSymbolValidationRules(profile);
     }
 
     private static HashSet<string> ParseCriticalSymbols(TrainerProfile profile)
     {
-        var symbols = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
-        if (profile.Metadata is null ||
-            !profile.Metadata.TryGetValue("criticalSymbols", out var raw) ||
-            string.IsNullOrWhiteSpace(raw))
-        {
-            return symbols;
-        }
-
-        foreach (var symbol in raw.Split(',', StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries))
-        {
-            symbols.Add(symbol);
-        }
-
-        return symbols;
+        return ProfileMetadataParser.ParseCriticalSymbolSet(profile);
     }
 
     private static long? TryGetFileSize(string? path)

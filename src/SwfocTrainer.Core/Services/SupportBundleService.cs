@@ -83,55 +83,58 @@ public sealed class SupportBundleService : ISupportBundleService
 
     private static void CopyLogs(string stagingRoot, List<string> included, List<string> warnings)
     {
-        var logsRoot = Path.Join(
-            Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
-            "SwfocTrainer",
-            "logs");
-
-        if (!Directory.Exists(logsRoot))
-        {
-            warnings.Add("Log directory not found in LocalAppData.");
-            return;
-        }
-
-        var targetRoot = Path.Join(stagingRoot, "logs");
-        Directory.CreateDirectory(targetRoot);
-        foreach (var path in Directory
-                     .GetFiles(logsRoot, "*.jsonl", SearchOption.TopDirectoryOnly)
-                     .OrderByDescending(File.GetLastWriteTimeUtc)
-                     .Take(10))
-        {
-            var fileName = Path.GetFileName(path);
-            var dest = Path.Join(targetRoot, fileName);
-            File.Copy(path, dest, overwrite: true);
-            included.Add($"logs/{fileName}");
-        }
+        CopyAppDataArtifacts(
+            stagingRoot, included, warnings,
+            subfolder: "logs",
+            searchPattern: "*.jsonl",
+            searchOption: SearchOption.TopDirectoryOnly,
+            maxFiles: 10,
+            missingWarning: "Log directory not found in LocalAppData.");
     }
 
     private static void CopyCalibrationArtifacts(string stagingRoot, List<string> included, List<string> warnings)
     {
-        var calibrationRoot = Path.Join(
+        CopyAppDataArtifacts(
+            stagingRoot, included, warnings,
+            subfolder: "calibration",
+            searchPattern: "*.json",
+            searchOption: SearchOption.AllDirectories,
+            maxFiles: 8,
+            missingWarning: "Calibration artifact directory not found in LocalAppData.");
+    }
+
+    private static void CopyAppDataArtifacts(
+        string stagingRoot,
+        List<string> included,
+        List<string> warnings,
+        string subfolder,
+        string searchPattern,
+        SearchOption searchOption,
+        int maxFiles,
+        string missingWarning)
+    {
+        var sourceRoot = Path.Join(
             Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
             "SwfocTrainer",
-            "calibration");
+            subfolder);
 
-        if (!Directory.Exists(calibrationRoot))
+        if (!Directory.Exists(sourceRoot))
         {
-            warnings.Add("Calibration artifact directory not found in LocalAppData.");
+            warnings.Add(missingWarning);
             return;
         }
 
-        var targetRoot = Path.Join(stagingRoot, "calibration");
+        var targetRoot = Path.Join(stagingRoot, subfolder);
         Directory.CreateDirectory(targetRoot);
         foreach (var path in Directory
-                     .GetFiles(calibrationRoot, "*.json", SearchOption.AllDirectories)
+                     .GetFiles(sourceRoot, searchPattern, searchOption)
                      .OrderByDescending(File.GetLastWriteTimeUtc)
-                     .Take(8))
+                     .Take(maxFiles))
         {
             var fileName = Path.GetFileName(path);
             var dest = Path.Join(targetRoot, fileName);
             File.Copy(path, dest, overwrite: true);
-            included.Add($"calibration/{fileName}");
+            included.Add($"{subfolder}/{fileName}");
         }
     }
 

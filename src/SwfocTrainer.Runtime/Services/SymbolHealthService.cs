@@ -1,18 +1,11 @@
-using System.Text.Json;
-using System.Text.Json.Serialization;
 using SwfocTrainer.Core.Contracts;
 using SwfocTrainer.Core.Models;
+using SwfocTrainer.Core.Services;
 
 namespace SwfocTrainer.Runtime.Services;
 
 public sealed class SymbolHealthService : ISymbolHealthService
 {
-    private static readonly JsonSerializerOptions JsonOptions = new()
-    {
-        PropertyNameCaseInsensitive = true,
-        Converters = { new JsonStringEnumConverter() }
-    };
-
     public SymbolValidationResult Evaluate(SymbolInfo symbol, TrainerProfile profile, RuntimeMode mode)
     {
         ArgumentNullException.ThrowIfNull(symbol);
@@ -25,7 +18,7 @@ public sealed class SymbolHealthService : ISymbolHealthService
                 0.0d);
         }
 
-        var isCritical = IsCriticalSymbol(profile, symbol.Name);
+        var isCritical = ProfileMetadataParser.ParseCriticalSymbolSet(profile).Contains(symbol.Name);
         var state = BuildInitialValidationState(symbol.Source);
         state = ApplyModeRuleState(state, GetMatchingRule(profile, symbol.Name, mode), mode);
         state = ApplyCriticalState(state, isCritical);
@@ -80,7 +73,7 @@ public sealed class SymbolHealthService : ISymbolHealthService
 
     private static SymbolValidationRule? GetMatchingRule(TrainerProfile profile, string symbolName, RuntimeMode mode)
     {
-        var rules = ParseSymbolValidationRules(profile)
+        var rules = ProfileMetadataParser.ParseSymbolValidationRules(profile)
             .Where(x => x.Symbol.Equals(symbolName, StringComparison.OrdinalIgnoreCase))
             .ToArray();
         if (rules.Length == 0)
@@ -107,41 +100,6 @@ public sealed class SymbolHealthService : ISymbolHealthService
         }
 
         return rules.FirstOrDefault(x => x.Mode is null) ?? rules[0];
-    }
-
-    private static IReadOnlyList<SymbolValidationRule> ParseSymbolValidationRules(TrainerProfile profile)
-    {
-        if (profile.Metadata is null ||
-            !profile.Metadata.TryGetValue("symbolValidationRules", out var raw) ||
-            string.IsNullOrWhiteSpace(raw))
-        {
-            return Array.Empty<SymbolValidationRule>();
-        }
-
-        try
-        {
-            var parsed = JsonSerializer.Deserialize<List<SymbolValidationRule>>(raw, JsonOptions);
-            return parsed is not null
-                ? parsed
-                : Array.Empty<SymbolValidationRule>();
-        }
-        catch (JsonException)
-        {
-            return Array.Empty<SymbolValidationRule>();
-        }
-    }
-
-    private static bool IsCriticalSymbol(TrainerProfile profile, string symbolName)
-    {
-        if (profile.Metadata is null ||
-            !profile.Metadata.TryGetValue("criticalSymbols", out var raw) ||
-            string.IsNullOrWhiteSpace(raw))
-        {
-            return false;
-        }
-
-        var symbols = raw.Split(',', StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries);
-        return symbols.Any(s => s.Equals(symbolName, StringComparison.OrdinalIgnoreCase));
     }
 
     private sealed record SymbolValidationState(SymbolHealthStatus Status, string Reason, double Confidence);

@@ -341,13 +341,16 @@ public sealed class TrainerOrchestrator
             return Task.CompletedTask;
         }
 
+        var context = new ActionContext(
+            profileId,
+            _runtime.CurrentSession.Process.ProcessId,
+            actionId,
+            result.AddressSource);
+
         return _auditLogger.WriteAsync(
             new ActionAuditRecord(
                 DateTimeOffset.UtcNow,
-                profileId,
-                _runtime.CurrentSession.Process.ProcessId,
-                actionId,
-                result.AddressSource,
+                context,
                 result.Succeeded,
                 result.Message) { Diagnostics = diagnostics },
             cancellationToken);
