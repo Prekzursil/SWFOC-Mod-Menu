@@ -40,11 +40,14 @@ public sealed record WorkshopInventoryGraph(
 {
     public static WorkshopInventoryGraph Empty() => Empty("32470");
 
-    public static WorkshopInventoryGraph Empty(string appId) =>
-        new(
+    public static WorkshopInventoryGraph Empty(string appId)
+    {
+        ArgumentNullException.ThrowIfNull(appId);
+        return new WorkshopInventoryGraph(
             AppId: appId,
             GeneratedAtUtc: DateTimeOffset.UtcNow,
             Items: Array.Empty<WorkshopInventoryItem>(),
             Diagnostics: Array.Empty<string>(),
             Chains: Array.Empty<WorkshopInventoryChain>());
+    }
 }

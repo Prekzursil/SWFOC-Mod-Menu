@@ -54,6 +54,8 @@ public sealed class ActionReliabilityService : IActionReliabilityService
         AttachSession session,
         IReadOnlyDictionary<string, IReadOnlyList<string>>? catalog)
     {
+        ArgumentNullException.ThrowIfNull(profile);
+        ArgumentNullException.ThrowIfNull(session);
         var disabledActions = ParseCsvSet(session.Process.Metadata, "dependencyDisabledActions");
         var criticalSymbols = ParseCsvSet(profile.Metadata, "criticalSymbols");
         var mechanicSupport = ResolveMechanicSupportMap(profile, session, catalog);

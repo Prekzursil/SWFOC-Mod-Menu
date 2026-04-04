@@ -35,6 +35,8 @@ public sealed class SelectedUnitTransactionService : ISelectedUnitTransactionSer
 
     public SelectedUnitTransactionService(IRuntimeAdapter runtime, TrainerOrchestrator orchestrator)
     {
+        ArgumentNullException.ThrowIfNull(runtime);
+        ArgumentNullException.ThrowIfNull(orchestrator);
         _runtime = runtime;
         _orchestrator = orchestrator;
     }
@@ -57,6 +59,8 @@ public sealed class SelectedUnitTransactionService : ISelectedUnitTransactionSer
         RuntimeMode runtimeMode,
         CancellationToken cancellationToken)
     {
+        ArgumentNullException.ThrowIfNull(profileId);
+        ArgumentNullException.ThrowIfNull(draft);
         var runtimeModeFailure = ValidateRuntimeMode(runtimeMode, "transaction");
         if (runtimeModeFailure is not null)
         {
@@ -106,6 +110,7 @@ public sealed class SelectedUnitTransactionService : ISelectedUnitTransactionSer
         RuntimeMode runtimeMode,
         CancellationToken cancellationToken)
     {
+        ArgumentNullException.ThrowIfNull(profileId);
         if (_history.Count == 0)
         {
             return Failed("No selected-unit transaction history exists.", "history_empty");
@@ -128,6 +133,7 @@ public sealed class SelectedUnitTransactionService : ISelectedUnitTransactionSer
         RuntimeMode runtimeMode,
         CancellationToken cancellationToken)
     {
+        ArgumentNullException.ThrowIfNull(profileId);
         if (Baseline is null)
         {
             return Task.FromResult(Failed("No baseline snapshot captured yet.", "baseline_missing"));

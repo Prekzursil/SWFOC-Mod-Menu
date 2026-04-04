@@ -20,11 +20,13 @@ public sealed class ModCalibrationService : IModCalibrationService
 
     public ModCalibrationService(IActionReliabilityService actionReliability)
     {
+        ArgumentNullException.ThrowIfNull(actionReliability);
         _actionReliability = actionReliability;
     }
 
     public async Task<ModCalibrationArtifactResult> ExportCalibrationArtifactAsync(ModCalibrationArtifactRequest request, CancellationToken cancellationToken)
     {
+        ArgumentNullException.ThrowIfNull(request);
         ValidateArtifactRequest(request);
 
         Directory.CreateDirectory(request.OutputDirectory);
@@ -56,6 +58,7 @@ public sealed class ModCalibrationService : IModCalibrationService
         IReadOnlyDictionary<string, IReadOnlyList<string>>? catalog,
         CancellationToken cancellationToken)
     {
+        ArgumentNullException.ThrowIfNull(profile);
         var runtimeMode = session?.Process.Mode ?? RuntimeMode.Unknown;
         var dependencyStatus = dependencyValidation?.Status ?? InferDependencyStatus(session);
         var actionRows = BuildActionCompatibilityRows(profile, session, catalog);

@@ -35,6 +35,7 @@ public static class ActionSymbolRegistry
 
     public static bool TryGetSymbol(string actionId, out string symbol)
     {
+        ArgumentNullException.ThrowIfNull(actionId);
         if (ActionSymbols.TryGetValue(actionId, out symbol!))
         {
             return true;
