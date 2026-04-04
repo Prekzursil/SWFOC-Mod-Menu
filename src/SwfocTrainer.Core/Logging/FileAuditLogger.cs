@@ -42,6 +42,7 @@ public sealed class FileAuditLogger : IAuditLogger
 
     public Task WriteAsync(ActionAuditRecord record)
     {
+        ArgumentNullException.ThrowIfNull(record);
         return WriteAsync(record, CancellationToken.None);
     }
 }

@@ -24,6 +24,7 @@ public sealed class HelperModService : IHelperModService
 
     public async Task<string> DeployAsync(string profileId, CancellationToken cancellationToken)
     {
+        ArgumentNullException.ThrowIfNull(profileId);
         var profile = await _profiles.ResolveInheritedProfileAsync(profileId, cancellationToken);
         var targetRoot = Path.Combine(_options.InstallRoot, profileId);
         Directory.CreateDirectory(targetRoot);
@@ -52,6 +53,7 @@ public sealed class HelperModService : IHelperModService
 
     public async Task<bool> VerifyAsync(string profileId, CancellationToken cancellationToken)
     {
+        ArgumentNullException.ThrowIfNull(profileId);
         var profile = await _profiles.ResolveInheritedProfileAsync(profileId, cancellationToken);
         var targetRoot = Path.Combine(_options.InstallRoot, profileId);
 

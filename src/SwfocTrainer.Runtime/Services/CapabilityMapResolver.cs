@@ -32,6 +32,8 @@ public sealed class CapabilityMapResolver : ICapabilityMapResolver
         IReadOnlySet<string> resolvedAnchors)
     {
         ArgumentNullException.ThrowIfNull(fingerprint);
+        ArgumentNullException.ThrowIfNull(requestedProfileId);
+        ArgumentNullException.ThrowIfNull(operationId);
         ArgumentNullException.ThrowIfNull(resolvedAnchors);
         return ResolveAsync(fingerprint, requestedProfileId, operationId, resolvedAnchors, CancellationToken.None);
     }
@@ -44,6 +46,8 @@ public sealed class CapabilityMapResolver : ICapabilityMapResolver
         CancellationToken cancellationToken)
     {
         ArgumentNullException.ThrowIfNull(fingerprint);
+        ArgumentNullException.ThrowIfNull(requestedProfileId);
+        ArgumentNullException.ThrowIfNull(operationId);
         ArgumentNullException.ThrowIfNull(resolvedAnchors);
         var map = await LoadMapAsync(fingerprint, cancellationToken);
         if (map is null)

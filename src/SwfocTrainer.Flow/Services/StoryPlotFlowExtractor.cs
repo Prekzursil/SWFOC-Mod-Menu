@@ -38,6 +38,7 @@ public sealed class StoryPlotFlowExtractor
 
     public FlowIndexReport Extract(string xmlContent, string sourceFile)
     {
+        ArgumentNullException.ThrowIfNull(xmlContent);
         ArgumentNullException.ThrowIfNull(sourceFile);
 
         if (string.IsNullOrWhiteSpace(xmlContent))

@@ -275,6 +275,7 @@ public abstract class MainViewModelQuickActionsBase : MainViewModelLiveOpsBase
 
     public async Task<bool> ExecuteHotkeyAsync(string gesture)
     {
+        ArgumentNullException.ThrowIfNull(gesture);
         if (!CanExecuteHotkey())
         {
             return false;

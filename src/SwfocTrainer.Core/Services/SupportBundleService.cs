@@ -77,6 +77,7 @@ public sealed class SupportBundleService : ISupportBundleService
 
     public Task<SupportBundleResult> ExportAsync(SupportBundleRequest request)
     {
+        ArgumentNullException.ThrowIfNull(request);
         return ExportAsync(request, CancellationToken.None);
     }
 

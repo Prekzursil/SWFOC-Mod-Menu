@@ -74,6 +74,7 @@ public sealed class NamedPipeExtenderBackend : IExecutionBackend
         string profileId,
         ProcessMetadata processContext)
     {
+        ArgumentNullException.ThrowIfNull(profileId);
         ArgumentNullException.ThrowIfNull(processContext);
         return ProbeCapabilitiesAsync(profileId, processContext, CancellationToken.None);
     }
@@ -83,6 +84,7 @@ public sealed class NamedPipeExtenderBackend : IExecutionBackend
         ProcessMetadata processContext,
         CancellationToken cancellationToken)
     {
+        ArgumentNullException.ThrowIfNull(profileId);
         ArgumentNullException.ThrowIfNull(processContext);
         var result = await SendAsync(CreateProbeCommand(profileId, processContext), cancellationToken);
         if (!result.Succeeded)

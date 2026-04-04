@@ -24,7 +24,7 @@
 
 #if defined(_WIN32)
 #define NOMINMAX
-#include <windows.h>
+#include <Windows.h>
 #endif
 
 namespace swfoc::extender::bridge::host_json {
@@ -340,6 +340,19 @@ CapabilitySnapshot BuildCapabilityProbeSnapshot(const PluginRequest& probeContex
     return snapshot;
 }
 
+void AppendDiagnosticsJson(std::ostringstream& out, const std::map<std::string, std::string, std::less<>>& diagnostics) {
+    out << R"(,"diagnostics":{)";
+    auto firstDiagnostic = true;
+    for (const auto& [key, value] : diagnostics) {
+        if (!firstDiagnostic) {
+            out << ',';
+        }
+        firstDiagnostic = false;
+        out << '"' << EscapeJson(key) << R"(":")" << EscapeJson(value) << '"';
+    }
+    out << '}';
+}
+
 std::string CapabilitySnapshotToJson(const CapabilitySnapshot& snapshot) {
     std::ostringstream out;
     out << '{';
@@ -355,16 +368,7 @@ std::string CapabilitySnapshotToJson(const CapabilitySnapshot& snapshot) {
             << R"("state":")" << EscapeJson(state.state) << R"(",)"
             << R"("reasonCode":")" << EscapeJson(state.reasonCode) << '"';
         if (!state.diagnostics.empty()) {
-            out << R"(,"diagnostics":{)";
-            auto firstDiagnostic = true;
-            for (const auto& [key, value] : state.diagnostics) {
-                if (!firstDiagnostic) {
-                    out << ',';
-                }
-                firstDiagnostic = false;
-                out << '"' << EscapeJson(key) << R"(":")" << EscapeJson(value) << '"';
-            }
-            out << '}';
+            AppendDiagnosticsJson(out, state.diagnostics);
         }
 
         out << '}';
@@ -540,7 +544,7 @@ std::string ResolvePipeName() {
     return kDefaultPipeName;
 }
 
-constinit std::atomic<bool> g_running {true};
+static constinit std::atomic<bool> g_running {true};
 
 #if defined(_WIN32)
 BOOL WINAPI CtrlHandler(DWORD signalType) {

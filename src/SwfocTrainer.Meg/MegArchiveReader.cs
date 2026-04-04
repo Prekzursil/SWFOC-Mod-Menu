@@ -40,6 +40,7 @@ public sealed class MegArchiveReader : IMegArchiveReader
 
     public MegOpenResult Open(ReadOnlyMemory<byte> payload, string sourceName)
     {
+        ArgumentNullException.ThrowIfNull(sourceName);
         if (payload.Length < 8)
         {
             return MegOpenResult.Fail("invalid_header", "MEG payload is too small to contain a valid header.");

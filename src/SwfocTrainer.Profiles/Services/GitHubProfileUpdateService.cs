@@ -60,6 +60,7 @@ public sealed class GitHubProfileUpdateService : IProfileUpdateService
 
     public async Task<string> InstallProfileAsync(string profileId, CancellationToken cancellationToken)
     {
+        ArgumentNullException.ThrowIfNull(profileId);
         var result = await InstallProfileTransactionalAsync(profileId, cancellationToken);
         if (!result.Succeeded)
         {
@@ -71,6 +72,7 @@ public sealed class GitHubProfileUpdateService : IProfileUpdateService
 
     public async Task<ProfileInstallResult> InstallProfileTransactionalAsync(string profileId, CancellationToken cancellationToken)
     {
+        ArgumentNullException.ThrowIfNull(profileId);
         if (string.IsNullOrWhiteSpace(_options.RemoteManifestUrl))
         {
             return BuildInstallFailure(profileId, "Remote manifest URL is not configured.", "remote_manifest_not_configured");
@@ -103,6 +105,7 @@ public sealed class GitHubProfileUpdateService : IProfileUpdateService
 
     public async Task<ProfileRollbackResult> RollbackLastInstallAsync(string profileId, CancellationToken cancellationToken)
     {
+        ArgumentNullException.ThrowIfNull(profileId);
         var profilesDir = ResolveProfilesDirectory();
         var destination = Path.Combine(profilesDir, $"{profileId}.json");
         var backupPattern = $"{profileId}.json.bak.*";

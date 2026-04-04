@@ -186,6 +186,7 @@ public abstract class MainViewModelSaveOpsBase : MainViewModelQuickActionsBase
     }
     protected bool PreparePatchPreview(string selectedProfileId)
     {
+        ArgumentNullException.ThrowIfNull(selectedProfileId);
         var variantMessage = ValidateSaveRuntimeVariant(selectedProfileId);
         if (variantMessage is null)
         {
@@ -235,6 +236,8 @@ public abstract class MainViewModelSaveOpsBase : MainViewModelQuickActionsBase
     }
     protected void AppendPatchCompatibilityRows(string severity, string reasonCode, IEnumerable<string> messages)
     {
+        ArgumentNullException.ThrowIfNull(severity);
+        ArgumentNullException.ThrowIfNull(reasonCode);
         ArgumentNullException.ThrowIfNull(messages);
         foreach (var message in messages) { SavePatchCompatibility.Add(new SavePatchCompatibilityViewItem(severity, reasonCode, message)); }
     }
@@ -292,6 +295,7 @@ public abstract class MainViewModelSaveOpsBase : MainViewModelQuickActionsBase
     }
     protected string? ValidateSaveRuntimeVariant(string requestedProfileId)
     {
+        ArgumentNullException.ThrowIfNull(requestedProfileId);
         var session = _runtime.CurrentSession;
         if (session?.Process.Metadata is null)
         {
@@ -394,6 +398,7 @@ public abstract class MainViewModelSaveOpsBase : MainViewModelQuickActionsBase
     protected void SetLoadedPatchPack(SavePatchPack pack, string path)
     {
         ArgumentNullException.ThrowIfNull(pack);
+        ArgumentNullException.ThrowIfNull(path);
         _loadedPatchPack = pack;
         SavePatchPackPath = path;
         SavePatchMetadataSummary =

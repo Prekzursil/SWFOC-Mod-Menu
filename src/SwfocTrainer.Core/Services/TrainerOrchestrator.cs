@@ -101,6 +101,9 @@ public sealed class TrainerOrchestrator
         System.Text.Json.Nodes.JsonObject payload,
         RuntimeMode runtimeMode)
     {
+        ArgumentNullException.ThrowIfNull(profileId);
+        ArgumentNullException.ThrowIfNull(actionId);
+        ArgumentNullException.ThrowIfNull(payload);
         return ExecuteAsync(profileId, actionId, payload, runtimeMode, null, CancellationToken.None);
     }
 
@@ -111,6 +114,9 @@ public sealed class TrainerOrchestrator
         RuntimeMode runtimeMode,
         IReadOnlyDictionary<string, object?>? context)
     {
+        ArgumentNullException.ThrowIfNull(profileId);
+        ArgumentNullException.ThrowIfNull(actionId);
+        ArgumentNullException.ThrowIfNull(payload);
         return ExecuteAsync(profileId, actionId, payload, runtimeMode, context, CancellationToken.None);
     }
 

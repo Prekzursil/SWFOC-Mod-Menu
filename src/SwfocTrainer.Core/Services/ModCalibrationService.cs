@@ -240,6 +240,7 @@ public sealed class ModCalibrationService : IModCalibrationService
 
     public Task<ModCalibrationArtifactResult> ExportCalibrationArtifactAsync(ModCalibrationArtifactRequest request)
     {
+        ArgumentNullException.ThrowIfNull(request);
         return ExportCalibrationArtifactAsync(request, CancellationToken.None);
     }
 
@@ -247,6 +248,7 @@ public sealed class ModCalibrationService : IModCalibrationService
         TrainerProfile profile,
         AttachSession? session)
     {
+        ArgumentNullException.ThrowIfNull(profile);
         return BuildCompatibilityReportAsync(profile, session, null, null, CancellationToken.None);
     }
 
@@ -256,6 +258,7 @@ public sealed class ModCalibrationService : IModCalibrationService
         DependencyValidationResult? dependencyValidation,
         IReadOnlyDictionary<string, IReadOnlyList<string>>? catalog)
     {
+        ArgumentNullException.ThrowIfNull(profile);
         return BuildCompatibilityReportAsync(profile, session, dependencyValidation, catalog, CancellationToken.None);
     }
 

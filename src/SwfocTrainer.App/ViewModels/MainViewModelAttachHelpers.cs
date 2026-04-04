@@ -70,6 +70,7 @@ internal static class MainViewModelAttachHelpers
 
     internal static bool IsStarWarsGProcess(ProcessMetadata process)
     {
+        ArgumentNullException.ThrowIfNull(process);
         if (process.ProcessName.Equals("StarWarsG", StringComparison.OrdinalIgnoreCase) ||
             process.ProcessName.Equals("StarWarsG.exe", StringComparison.OrdinalIgnoreCase))
         {

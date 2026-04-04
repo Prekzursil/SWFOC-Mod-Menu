@@ -536,9 +536,13 @@ public sealed class GameLaunchServiceTests
                 process.WaitForExit(5000);
             }
         }
-        catch
+        catch (InvalidOperationException)
         {
-            // Best effort cleanup for process launched during tests.
+            // Process already exited — safe to ignore during test cleanup.
+        }
+        catch (SystemException)
+        {
+            // Process access error — best effort cleanup for test-launched processes.
         }
     }
 

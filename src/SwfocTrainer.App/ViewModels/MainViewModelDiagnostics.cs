@@ -20,6 +20,9 @@ internal static class MainViewModelDiagnostics
 
     internal static string ReadProcessMetadata(ProcessMetadata process, string key, string fallback)
     {
+        ArgumentNullException.ThrowIfNull(process);
+        ArgumentNullException.ThrowIfNull(key);
+        ArgumentNullException.ThrowIfNull(fallback);
         if (process.Metadata is null || !process.Metadata.TryGetValue(key, out var value))
         {
             return fallback;
@@ -30,12 +33,15 @@ internal static class MainViewModelDiagnostics
 
     internal static string ReadProcessMods(ProcessMetadata process)
     {
+        ArgumentNullException.ThrowIfNull(process);
         var mods = ReadProcessMetadata(process, "steamModIdsDetected", string.Empty);
         return string.IsNullOrWhiteSpace(mods) ? "none" : mods;
     }
 
     internal static string BuildProcessDependencySegment(string dependencyState, string dependencyMessage)
     {
+        ArgumentNullException.ThrowIfNull(dependencyState);
+        ArgumentNullException.ThrowIfNull(dependencyMessage);
         return dependencyState.Equals("Pass", StringComparison.OrdinalIgnoreCase) ||
                string.IsNullOrWhiteSpace(dependencyMessage)
             ? $"dependency={dependencyState}"
@@ -70,6 +76,8 @@ internal static class MainViewModelDiagnostics
 
     internal static string BuildDependencyDiagnostic(string dependency, string dependencyMessage)
     {
+        ArgumentNullException.ThrowIfNull(dependency);
+        ArgumentNullException.ThrowIfNull(dependencyMessage);
         return string.IsNullOrWhiteSpace(dependencyMessage)
             ? $"dependency: {dependency}"
             : $"dependency: {dependency} ({dependencyMessage})";
@@ -77,6 +85,7 @@ internal static class MainViewModelDiagnostics
 
     internal static object ParsePrimitive(string input)
     {
+        ArgumentNullException.ThrowIfNull(input);
         if (int.TryParse(input, NumberStyles.Integer, CultureInfo.InvariantCulture, out var intValue))
         {
             return intValue;
@@ -109,6 +118,7 @@ internal static class MainViewModelDiagnostics
 
     internal static string ResolveBundleGateResult(ActionReliabilityViewItem? reliability, string unknownValue)
     {
+        ArgumentNullException.ThrowIfNull(unknownValue);
         if (reliability is null)
         {
             return unknownValue;
@@ -147,6 +157,7 @@ internal static class MainViewModelDiagnostics
 
     internal static string ReadDiagnosticString(IReadOnlyDictionary<string, object?>? diagnostics, string key)
     {
+        ArgumentNullException.ThrowIfNull(key);
         if (diagnostics is null || !diagnostics.TryGetValue(key, out var raw) || raw is null)
         {
             return string.Empty;

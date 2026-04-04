@@ -211,6 +211,7 @@ public abstract class MainViewModelCoreStateBase : INotifyPropertyChanged
         Action<T> assign,
         [CallerMemberName] string? memberName = null)
     {
+        ArgumentNullException.ThrowIfNull(assign);
         if (EqualityComparer<T>.Default.Equals(currentValue, value))
         {
             return false;

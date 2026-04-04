@@ -1144,7 +1144,8 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
         RuntimeCalibrationScanRequest request,
         CancellationToken cancellationToken)
     {
-        if (request is null || string.IsNullOrWhiteSpace(request.TargetSymbol))
+        ArgumentNullException.ThrowIfNull(request);
+        if (string.IsNullOrWhiteSpace(request.TargetSymbol))
         {
             return new RuntimeCalibrationScanResult(
                 Succeeded: false,
@@ -1210,10 +1211,6 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
                 Message: resultMessage,
                 Candidates: candidates,
                 ArtifactPath: artifactPath);
-        }
-        catch (OperationCanceledException)
-        {
-            throw;
         }
         catch (InvalidOperationException ex)
         {

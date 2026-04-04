@@ -44,6 +44,7 @@ public sealed class ModOnboardingService : IModOnboardingService
 
     public async Task<ModOnboardingResult> ScaffoldDraftProfileAsync(ModOnboardingRequest request, CancellationToken cancellationToken)
     {
+        ArgumentNullException.ThrowIfNull(request);
         if (string.IsNullOrWhiteSpace(request.DraftProfileId))
         {
             throw new InvalidDataException("DraftProfileId is required.");
@@ -134,6 +135,7 @@ public sealed class ModOnboardingService : IModOnboardingService
         ModOnboardingSeedBatchRequest request,
         CancellationToken cancellationToken)
     {
+        ArgumentNullException.ThrowIfNull(request);
         if (request.Seeds is null || request.Seeds.Count == 0)
         {
             throw new InvalidDataException("At least one generated profile seed is required.");

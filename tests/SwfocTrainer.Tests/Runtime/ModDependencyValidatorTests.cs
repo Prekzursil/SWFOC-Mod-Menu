@@ -158,9 +158,13 @@ public sealed class ModDependencyValidatorTests
                 Directory.Delete(path, recursive: true);
             }
         }
-        catch
+        catch (IOException)
         {
-            // no-op in tests
+            // no-op — files may be locked during test cleanup
+        }
+        catch (UnauthorizedAccessException)
+        {
+            // no-op — permission errors during test cleanup
         }
     }
 }

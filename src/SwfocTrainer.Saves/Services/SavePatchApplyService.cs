@@ -62,6 +62,9 @@ public sealed class SavePatchApplyService : ISavePatchApplyService
         bool strict,
         CancellationToken cancellationToken)
     {
+        ArgumentNullException.ThrowIfNull(targetSavePath);
+        ArgumentNullException.ThrowIfNull(pack);
+        ArgumentNullException.ThrowIfNull(targetProfileId);
         var paths = BuildApplyFilePaths(targetSavePath);
         var targetLoad = await TryLoadTargetDocumentAsync(paths.TargetPath, pack.Metadata.SchemaId, cancellationToken);
         if (targetLoad.Failure is not null)
@@ -119,6 +122,7 @@ public sealed class SavePatchApplyService : ISavePatchApplyService
 
     public async Task<SaveRollbackResult> RestoreLastBackupAsync(string targetSavePath, CancellationToken cancellationToken)
     {
+        ArgumentNullException.ThrowIfNull(targetSavePath);
         var normalizedTargetPath = NormalizeTargetPath(targetSavePath);
         var backupPath = await _helper.ResolveLatestBackupPathAsync(normalizedTargetPath, cancellationToken);
         if (string.IsNullOrWhiteSpace(backupPath) || !File.Exists(backupPath))

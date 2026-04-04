@@ -34,6 +34,7 @@ internal static class MainViewModelHotkeyHelpers
 
     internal static string BuildDefaultHotkeyPayloadJson(string actionId)
     {
+        ArgumentNullException.ThrowIfNull(actionId);
         return BuildDefaultHotkeyPayload(actionId).ToJsonString();
     }
 

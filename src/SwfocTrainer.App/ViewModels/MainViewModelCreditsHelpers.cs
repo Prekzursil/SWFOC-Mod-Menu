@@ -69,11 +69,13 @@ internal readonly record struct CreditsStatusResult(bool IsValid, bool ShouldFre
 {
     internal static CreditsStatusResult Success(bool shouldFreeze, string statusMessage)
     {
+        ArgumentNullException.ThrowIfNull(statusMessage);
         return new CreditsStatusResult(true, shouldFreeze, statusMessage);
     }
 
     internal static CreditsStatusResult Failure(string statusMessage)
     {
+        ArgumentNullException.ThrowIfNull(statusMessage);
         return new CreditsStatusResult(false, false, statusMessage);
     }
 }

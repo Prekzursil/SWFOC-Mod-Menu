@@ -18,6 +18,7 @@ internal static class SavePatchFieldCodec
     {
         ArgumentNullException.ThrowIfNull(raw);
         ArgumentNullException.ThrowIfNull(field);
+        ArgumentNullException.ThrowIfNull(endianness);
         if (field.Offset < 0 || field.Offset + field.Length > raw.Length)
         {
             return null;
@@ -42,6 +43,7 @@ internal static class SavePatchFieldCodec
 
     public static object? NormalizePatchValue(object? rawValue, string valueType)
     {
+        ArgumentNullException.ThrowIfNull(valueType);
         var scalar = rawValue is JsonElement element ? ExtractJsonElementScalar(element) : rawValue;
         if (scalar is null)
         {

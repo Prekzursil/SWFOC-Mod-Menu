@@ -114,6 +114,8 @@ public sealed class SignatureResolver : ISignatureResolver
 
     internal static string? SelectBestGhidraPackPath(string symbolPackRoot, string fingerprintId)
     {
+        ArgumentNullException.ThrowIfNull(symbolPackRoot);
+        ArgumentNullException.ThrowIfNull(fingerprintId);
         return SignatureResolverSymbolHydration.SelectBestGhidraPackPath(symbolPackRoot, fingerprintId);
     }
 

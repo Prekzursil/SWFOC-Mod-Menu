@@ -97,6 +97,7 @@ public sealed class TelemetrySnapshotService : ITelemetrySnapshotService
 
     public Task<string> ExportSnapshotAsync(string outputDirectory)
     {
+        ArgumentNullException.ThrowIfNull(outputDirectory);
         return ExportSnapshotAsync(outputDirectory, CancellationToken.None);
     }
 

@@ -19,9 +19,13 @@ internal sealed class TempDirectory : IDisposable
                 Directory.Delete(Path, recursive: true);
             }
         }
-        catch
+        catch (IOException)
         {
-            // ignore cleanup failures in test teardown
+            // ignore cleanup failures in test teardown — files may be locked
+        }
+        catch (UnauthorizedAccessException)
+        {
+            // ignore permission errors during cleanup
         }
     }
 }

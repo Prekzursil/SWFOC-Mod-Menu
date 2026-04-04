@@ -81,6 +81,8 @@ public sealed class ActionReliabilityService : IActionReliabilityService
         TrainerProfile profile,
         AttachSession session)
     {
+        ArgumentNullException.ThrowIfNull(profile);
+        ArgumentNullException.ThrowIfNull(session);
         return Evaluate(profile, session, null);
     }
 

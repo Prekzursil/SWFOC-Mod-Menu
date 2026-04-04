@@ -22,6 +22,7 @@ internal sealed class SaveSchemaRepository
 
     public async Task<SaveSchema> LoadSchemaAsync(string schemaId, CancellationToken cancellationToken)
     {
+        ArgumentNullException.ThrowIfNull(schemaId);
         var path = Path.Combine(_options.SchemaRootPath, $"{schemaId}.json");
         if (!File.Exists(path))
         {

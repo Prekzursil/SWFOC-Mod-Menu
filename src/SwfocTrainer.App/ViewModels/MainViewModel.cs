@@ -498,6 +498,8 @@ public sealed class MainViewModel : MainViewModelSaveOpsBase
     }
     protected override async Task<bool> EnsureActionAvailableForCurrentSessionAsync(string actionId, string statusPrefix)
     {
+        ArgumentNullException.ThrowIfNull(actionId);
+        ArgumentNullException.ThrowIfNull(statusPrefix);
         var session = _runtime.CurrentSession;
         if (session is null)
         {

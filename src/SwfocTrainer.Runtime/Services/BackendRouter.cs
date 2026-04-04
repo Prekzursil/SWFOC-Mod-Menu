@@ -134,7 +134,7 @@ public sealed class BackendRouter : IBackendRouter
             return null;
         }
 
-        return raw as string ?? raw.ToString();
+        return raw as string ?? raw.ToString() ?? string.Empty;
     }
 
     private static bool? ReadContextBool(IReadOnlyDictionary<string, object?>? context, string key)
@@ -149,7 +149,8 @@ public sealed class BackendRouter : IBackendRouter
             return boolValue;
         }
 
-        return bool.TryParse(raw.ToString(), out var parsed) ? parsed : null;
+        var rawText = raw.ToString();
+        return rawText is not null && bool.TryParse(rawText, out var parsed) ? parsed : null;
     }
 
     private static BackendRouteDecision? TryResolveRequiredCapabilityContract(

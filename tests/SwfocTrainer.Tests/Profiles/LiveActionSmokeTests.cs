@@ -126,7 +126,17 @@ public sealed class LiveActionSmokeTests
             _output.WriteLine($"{successLabel} read succeeded: {value}");
             return value;
         }
-        catch (Exception ex)
+        catch (InvalidOperationException ex)
+        {
+            readFailures.Add($"{symbolName}: {ex.Message}");
+            return null;
+        }
+        catch (IOException ex)
+        {
+            readFailures.Add($"{symbolName}: {ex.Message}");
+            return null;
+        }
+        catch (TimeoutException ex)
         {
             readFailures.Add($"{symbolName}: {ex.Message}");
             return null;

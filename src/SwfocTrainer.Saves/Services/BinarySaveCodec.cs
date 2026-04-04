@@ -28,6 +28,8 @@ public sealed class BinarySaveCodec : ISaveCodec
 
     public async Task<SaveDocument> LoadAsync(string path, string schemaId, CancellationToken cancellationToken)
     {
+        ArgumentNullException.ThrowIfNull(path);
+        ArgumentNullException.ThrowIfNull(schemaId);
         var normalizedPath = NormalizeSaveFilePath(path, requireExistingFile: true);
         var schema = await _schemaRepository.LoadSchemaAsync(schemaId, cancellationToken);
         var bytes = await File.ReadAllBytesAsync(normalizedPath, cancellationToken);
@@ -37,6 +39,8 @@ public sealed class BinarySaveCodec : ISaveCodec
 
     public async Task EditAsync(SaveDocument document, string nodePath, object? value, CancellationToken cancellationToken)
     {
+        ArgumentNullException.ThrowIfNull(document);
+        ArgumentNullException.ThrowIfNull(nodePath);
         var schema = await _schemaRepository.LoadSchemaAsync(document.SchemaId, cancellationToken);
 
         var targetField = schema.FieldDefs.FirstOrDefault(f =>
@@ -53,6 +57,7 @@ public sealed class BinarySaveCodec : ISaveCodec
 
     public async Task<SaveValidationResult> ValidateAsync(SaveDocument document, CancellationToken cancellationToken)
     {
+        ArgumentNullException.ThrowIfNull(document);
         var schema = await _schemaRepository.LoadSchemaAsync(document.SchemaId, cancellationToken);
         var errors = new List<string>();
         var warnings = new List<string>();
@@ -88,6 +93,8 @@ public sealed class BinarySaveCodec : ISaveCodec
 
     public async Task WriteAsync(SaveDocument document, string outputPath, CancellationToken cancellationToken)
     {
+        ArgumentNullException.ThrowIfNull(document);
+        ArgumentNullException.ThrowIfNull(outputPath);
         var normalizedOutput = NormalizeSaveFilePath(outputPath, requireExistingFile: false);
         var outputDirectory = Path.GetDirectoryName(normalizedOutput);
         if (string.IsNullOrWhiteSpace(outputDirectory))
@@ -103,6 +110,7 @@ public sealed class BinarySaveCodec : ISaveCodec
 
     public async Task<bool> RoundTripCheckAsync(SaveDocument document, CancellationToken cancellationToken)
     {
+        ArgumentNullException.ThrowIfNull(document);
         var tempRoot = Path.GetFullPath(Path.GetTempPath());
         var tempPath = NormalizeSaveFilePath(
             Path.Combine(tempRoot, $"swfoc-roundtrip-{Guid.NewGuid():N}.sav"),

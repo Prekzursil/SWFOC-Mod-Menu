@@ -87,7 +87,7 @@ public sealed class SdkOperationRouter : ISdkOperationRouter
 
         var (variant, capability) = await ResolveVariantAndCapabilityAsync(
             request,
-            processPath!,
+            processPath ?? string.Empty,
             processId,
             cancellationToken);
 
@@ -363,7 +363,7 @@ public sealed class SdkOperationRouter : ISdkOperationRouter
         return new HashSet<string>(
             rawValues
                 .Where(value => !string.IsNullOrWhiteSpace(value))
-                .Select(static value => value!),
+                .OfType<string>(),
             StringComparer.OrdinalIgnoreCase);
     }
 

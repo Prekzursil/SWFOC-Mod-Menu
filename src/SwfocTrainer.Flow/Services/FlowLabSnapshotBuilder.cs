@@ -22,7 +22,8 @@ public sealed class FlowLabSnapshotBuilder
         var scriptReferences = events
             .Select(evt => evt.ScriptReference)
             .Where(reference => !string.IsNullOrWhiteSpace(reference))
-            .Select(reference => reference!.Trim())
+            .OfType<string>()
+            .Select(reference => reference.Trim())
             .Distinct(_scriptReferenceComparer)
             .OrderBy(reference => reference, _scriptReferenceComparer)
             .ToArray();

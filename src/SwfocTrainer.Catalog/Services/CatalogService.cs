@@ -45,6 +45,7 @@ public sealed class CatalogService : ICatalogService
 
     public async Task<IReadOnlyDictionary<string, IReadOnlyList<string>>> LoadCatalogAsync(string profileId, CancellationToken cancellationToken)
     {
+        ArgumentNullException.ThrowIfNull(profileId);
         var result = new Dictionary<string, IReadOnlyList<string>>(StringComparer.OrdinalIgnoreCase);
         var profile = await _profiles.ResolveInheritedProfileAsync(profileId, cancellationToken);
 

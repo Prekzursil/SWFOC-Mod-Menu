@@ -72,7 +72,11 @@ public sealed class LaunchContextRuntimeScriptParityTests
         {
             return Process.Start(psi);
         }
-        catch
+        catch (InvalidOperationException)
+        {
+            return null;
+        }
+        catch (SystemException)
         {
             return null;
         }
@@ -163,7 +167,11 @@ public sealed class LaunchContextRuntimeScriptParityTests
             process.WaitForExit(5000);
             return process.ExitCode == 0;
         }
-        catch
+        catch (InvalidOperationException)
+        {
+            return false;
+        }
+        catch (SystemException)
         {
             return false;
         }

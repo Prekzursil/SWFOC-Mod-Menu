@@ -20,6 +20,7 @@ public static class ProfileValidator
 
     public static void Validate(TrainerProfile profile)
     {
+        ArgumentNullException.ThrowIfNull(profile);
         ValidateRequiredFields(profile);
         ValidateOptionalPreference(
             profile.Id,

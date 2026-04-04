@@ -44,6 +44,7 @@ public sealed class ProfileVariantResolver : IProfileVariantResolver
         string requestedProfileId,
         CancellationToken cancellationToken)
     {
+        ArgumentNullException.ThrowIfNull(requestedProfileId);
         return ResolveAsync(requestedProfileId, null, cancellationToken);
     }
 
@@ -52,6 +53,7 @@ public sealed class ProfileVariantResolver : IProfileVariantResolver
         IReadOnlyList<ProcessMetadata>? processes,
         CancellationToken cancellationToken)
     {
+        ArgumentNullException.ThrowIfNull(requestedProfileId);
         if (!string.Equals(requestedProfileId, UniversalProfileId, StringComparison.OrdinalIgnoreCase))
         {
             return new ProfileVariantResolution(

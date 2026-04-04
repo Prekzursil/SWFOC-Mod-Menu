@@ -158,6 +158,8 @@ public sealed class SelectedUnitTransactionService : ISelectedUnitTransactionSer
         SelectedUnitDraft draft,
         RuntimeMode runtimeMode)
     {
+        ArgumentNullException.ThrowIfNull(profileId);
+        ArgumentNullException.ThrowIfNull(draft);
         return ApplyAsync(profileId, draft, runtimeMode, CancellationToken.None);
     }
 
@@ -165,6 +167,7 @@ public sealed class SelectedUnitTransactionService : ISelectedUnitTransactionSer
         string profileId,
         RuntimeMode runtimeMode)
     {
+        ArgumentNullException.ThrowIfNull(profileId);
         return RevertLastAsync(profileId, runtimeMode, CancellationToken.None);
     }
 
@@ -172,6 +175,7 @@ public sealed class SelectedUnitTransactionService : ISelectedUnitTransactionSer
         string profileId,
         RuntimeMode runtimeMode)
     {
+        ArgumentNullException.ThrowIfNull(profileId);
         return RestoreBaselineAsync(profileId, runtimeMode, CancellationToken.None);
     }
 

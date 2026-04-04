@@ -29,6 +29,7 @@ internal static class SignatureResolverSymbolHydration
         IReadOnlyList<SignatureSet> signatureSets,
         IDictionary<string, SymbolInfo> symbols)
     {
+        ArgumentNullException.ThrowIfNull(ghidraSymbolPackRoot);
         ArgumentNullException.ThrowIfNull(logger);
         ArgumentNullException.ThrowIfNull(module);
         ArgumentNullException.ThrowIfNull(signatureSets);
@@ -113,6 +114,8 @@ internal static class SignatureResolverSymbolHydration
 
     internal static string? SelectBestGhidraPackPath(string symbolPackRoot, string fingerprintId)
     {
+        ArgumentNullException.ThrowIfNull(symbolPackRoot);
+        ArgumentNullException.ThrowIfNull(fingerprintId);
         if (string.IsNullOrWhiteSpace(symbolPackRoot) ||
             string.IsNullOrWhiteSpace(fingerprintId) ||
             !Directory.Exists(symbolPackRoot))

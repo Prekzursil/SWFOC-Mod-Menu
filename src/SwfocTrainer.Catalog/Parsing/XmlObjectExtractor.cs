@@ -8,6 +8,7 @@ internal static class XmlObjectExtractor
 
     public static IReadOnlyList<string> ExtractObjectNames(string xmlPath)
     {
+        ArgumentNullException.ThrowIfNull(xmlPath);
         try
         {
             var doc = XDocument.Load(xmlPath, LoadOptions.None);

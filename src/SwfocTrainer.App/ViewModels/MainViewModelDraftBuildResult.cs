@@ -6,6 +6,7 @@ internal sealed record DraftBuildResult(bool Succeeded, string Message, Selected
 {
     internal static DraftBuildResult Failed(string message)
     {
+        ArgumentNullException.ThrowIfNull(message);
         return new DraftBuildResult(false, message, null);
     }
 

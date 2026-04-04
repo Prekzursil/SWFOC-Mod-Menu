@@ -34,6 +34,9 @@ public sealed class SavePatchPackService : ISavePatchPackService
         string profileId,
         CancellationToken cancellationToken)
     {
+        ArgumentNullException.ThrowIfNull(originalDoc);
+        ArgumentNullException.ThrowIfNull(editedDoc);
+        ArgumentNullException.ThrowIfNull(profileId);
         if (string.IsNullOrWhiteSpace(profileId))
         {
             throw new InvalidOperationException("Profile ID is required for patch-pack export.");
@@ -59,6 +62,7 @@ public sealed class SavePatchPackService : ISavePatchPackService
 
     public async Task<SavePatchPack> LoadPackAsync(string path, CancellationToken cancellationToken)
     {
+        ArgumentNullException.ThrowIfNull(path);
         var normalizedPath = TrustedPathPolicy.NormalizeAbsolute(path);
         TrustedPathPolicy.EnsureAllowedExtension(normalizedPath, ".json");
         if (!File.Exists(normalizedPath))
@@ -111,6 +115,9 @@ public sealed class SavePatchPackService : ISavePatchPackService
         string targetProfileId,
         CancellationToken cancellationToken)
     {
+        ArgumentNullException.ThrowIfNull(pack);
+        ArgumentNullException.ThrowIfNull(targetDoc);
+        ArgumentNullException.ThrowIfNull(targetProfileId);
         cancellationToken.ThrowIfCancellationRequested();
 
         var errors = new List<string>();
@@ -163,6 +170,9 @@ public sealed class SavePatchPackService : ISavePatchPackService
         string targetProfileId,
         CancellationToken cancellationToken)
     {
+        ArgumentNullException.ThrowIfNull(pack);
+        ArgumentNullException.ThrowIfNull(targetDoc);
+        ArgumentNullException.ThrowIfNull(targetProfileId);
         var schema = await _schemaRepository.LoadSchemaAsync(targetDoc.SchemaId, cancellationToken);
         var compatibility = await ValidateCompatibilityAsync(pack, targetDoc, targetProfileId, cancellationToken);
         var errors = compatibility.Errors.ToList();

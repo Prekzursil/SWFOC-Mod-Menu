@@ -8,6 +8,8 @@ internal static class GitHubProfileUpdateExtractionHelpers
 {
     internal static void ExtractToDirectorySafely(string zipPath, string extractDir)
     {
+        ArgumentNullException.ThrowIfNull(zipPath);
+        ArgumentNullException.ThrowIfNull(extractDir);
         var extractionRoot = Path.GetFullPath(extractDir);
         Directory.CreateDirectory(extractionRoot);
         var extractionRootPrefix = extractionRoot.EndsWith(Path.DirectorySeparatorChar)

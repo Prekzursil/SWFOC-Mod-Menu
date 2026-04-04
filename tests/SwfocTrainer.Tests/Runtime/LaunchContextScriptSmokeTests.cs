@@ -101,7 +101,11 @@ public sealed class LaunchContextScriptSmokeTests
             process.WaitForExit(20000);
             return new ScriptRunResult(stdout, stderr, process.ExitCode);
         }
-        catch
+        catch (InvalidOperationException)
+        {
+            return null;
+        }
+        catch (SystemException)
         {
             return null;
         }

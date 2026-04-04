@@ -32,6 +32,7 @@ internal sealed class SavePatchApplyServiceHelper
 
     public async Task<string?> ResolveLatestBackupPathAsync(string targetPath, CancellationToken cancellationToken)
     {
+        ArgumentNullException.ThrowIfNull(targetPath);
         if (!TryGetTargetLocation(targetPath, out var directory, out var fileName))
         {
             return null;
@@ -48,6 +49,8 @@ internal sealed class SavePatchApplyServiceHelper
 
     public (object? Value, SavePatchApplyResult? Failure) TryNormalizePatchValue(SavePatchOperation operation, string reasonValueNormalizationFailed)
     {
+        ArgumentNullException.ThrowIfNull(operation);
+        ArgumentNullException.ThrowIfNull(reasonValueNormalizationFailed);
         try
         {
             return (SavePatchFieldCodec.NormalizePatchValue(operation.NewValue, operation.ValueType), null);
@@ -85,6 +88,9 @@ internal sealed class SavePatchApplyServiceHelper
         string reasonFieldApplyFailed,
         CancellationToken cancellationToken)
     {
+        ArgumentNullException.ThrowIfNull(targetDoc);
+        ArgumentNullException.ThrowIfNull(operation);
+        ArgumentNullException.ThrowIfNull(reasonFieldApplyFailed);
         try
         {
             await ApplyFieldWithFallbackSelectorAsync(targetDoc, operation, value, cancellationToken);
@@ -104,6 +110,7 @@ internal sealed class SavePatchApplyServiceHelper
 
     public void TryDeleteTempOutput(string tempOutputPath)
     {
+        ArgumentNullException.ThrowIfNull(tempOutputPath);
         if (!File.Exists(tempOutputPath))
         {
             return;

@@ -9,6 +9,7 @@ public sealed class MegaFilesXmlIndexBuilder
 
     public MegaFilesIndex Build(string megaFilesXmlContent)
     {
+        ArgumentNullException.ThrowIfNull(megaFilesXmlContent);
         if (string.IsNullOrWhiteSpace(megaFilesXmlContent))
         {
             return MegaFilesIndex.Empty;

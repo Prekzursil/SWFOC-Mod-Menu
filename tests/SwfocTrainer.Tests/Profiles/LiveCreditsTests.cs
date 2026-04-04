@@ -119,7 +119,17 @@ public sealed class LiveCreditsTests
             _output.WriteLine($"Credits symbol: addr=0x{symbol.Address.ToInt64():X}  source={symbol.Source}  currentValue={originalCredits}");
             return (symbol, originalCredits);
         }
-        catch (Exception ex)
+        catch (InvalidOperationException ex)
+        {
+            _output.WriteLine($"FAIL — Cannot read credits: {ex.Message}");
+            return null;
+        }
+        catch (IOException ex)
+        {
+            _output.WriteLine($"FAIL — Cannot read credits: {ex.Message}");
+            return null;
+        }
+        catch (TimeoutException ex)
         {
             _output.WriteLine($"FAIL — Cannot read credits: {ex.Message}");
             return null;

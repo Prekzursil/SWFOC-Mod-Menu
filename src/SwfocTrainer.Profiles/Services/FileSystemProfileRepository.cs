@@ -46,6 +46,7 @@ public sealed class FileSystemProfileRepository : IProfileRepository
 
     public async Task<TrainerProfile> LoadProfileAsync(string profileId, CancellationToken cancellationToken)
     {
+        ArgumentNullException.ThrowIfNull(profileId);
         var profilePath = Path.Combine(_options.ProfilesRootPath, "profiles", $"{profileId}.json");
         if (!File.Exists(profilePath))
         {
@@ -62,6 +63,7 @@ public sealed class FileSystemProfileRepository : IProfileRepository
 
     public async Task<TrainerProfile> ResolveInheritedProfileAsync(string profileId, CancellationToken cancellationToken)
     {
+        ArgumentNullException.ThrowIfNull(profileId);
         var seen = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
         return await ResolveInternalAsync(profileId, seen, cancellationToken);
     }
@@ -85,6 +87,7 @@ public sealed class FileSystemProfileRepository : IProfileRepository
 
     public Task ValidateProfileAsync(TrainerProfile profile, CancellationToken cancellationToken)
     {
+        ArgumentNullException.ThrowIfNull(profile);
         ProfileValidator.Validate(profile);
         return Task.CompletedTask;
     }

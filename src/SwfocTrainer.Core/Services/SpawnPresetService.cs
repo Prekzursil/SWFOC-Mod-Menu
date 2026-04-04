@@ -237,6 +237,7 @@ public sealed class SpawnPresetService : ISpawnPresetService
 
     public Task<IReadOnlyList<SpawnPreset>> LoadPresetsAsync(string profileId)
     {
+        ArgumentNullException.ThrowIfNull(profileId);
         return LoadPresetsAsync(profileId, CancellationToken.None);
     }
 
@@ -245,6 +246,8 @@ public sealed class SpawnPresetService : ISpawnPresetService
         SpawnBatchPlan plan,
         RuntimeMode runtimeMode)
     {
+        ArgumentNullException.ThrowIfNull(profileId);
+        ArgumentNullException.ThrowIfNull(plan);
         return ExecuteBatchAsync(profileId, plan, runtimeMode, CancellationToken.None);
     }
 

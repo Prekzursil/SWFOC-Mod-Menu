@@ -70,6 +70,8 @@ internal static class MainViewModelSelectedUnitDraftHelpers
         out int? ownerFaction,
         out string error)
     {
+        ArgumentNullException.ThrowIfNull(veterancyInput);
+        ArgumentNullException.ThrowIfNull(ownerFactionInput);
         veterancy = null;
         ownerFaction = null;
         if (!MainViewModelSelectedUnitParsingHelpers.TryParseSelectedUnitInt(veterancyInput, "Veterancy must be an integer.", out veterancy, out error))

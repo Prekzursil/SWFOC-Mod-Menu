@@ -12,7 +12,7 @@
 
 #if defined(_WIN32)
 #define NOMINMAX
-#include <windows.h>
+#include <Windows.h>
 #endif
 
 namespace swfoc::extender::plugins::process_mutation {
@@ -45,7 +45,7 @@ TPtr address_as_ptr(std::uintptr_t address) noexcept
 template <typename TValue>
 const std::uint8_t* value_as_bytes(const TValue& value) noexcept
 {
-    return reinterpret_cast<const std::uint8_t*>(&value); // NOSONAR — byte access requires cast
+    return static_cast<const std::uint8_t*>(static_cast<const void*>(&value));
 }
 
 inline void SetBaseDiagnostics(WriteOperationDiagnostics* diagnostics, std::string mode, SIZE_T length, std::string restoreStatus)

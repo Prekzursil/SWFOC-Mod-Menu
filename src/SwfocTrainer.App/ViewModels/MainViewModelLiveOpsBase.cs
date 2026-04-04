@@ -329,6 +329,7 @@ public abstract class MainViewModelLiveOpsBase : MainViewModelBindableMembersBas
 
     protected IReadOnlyDictionary<string, object?> BuildActionContext(string actionId)
     {
+        ArgumentNullException.ThrowIfNull(actionId);
         var reliability = ActionReliability.FirstOrDefault(x => x.ActionId.Equals(actionId, StringComparison.OrdinalIgnoreCase));
         return new Dictionary<string, object?>
         {
