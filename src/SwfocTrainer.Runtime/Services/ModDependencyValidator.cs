@@ -187,26 +187,23 @@ public sealed class ModDependencyValidator : IModDependencyValidator
     {
         var roots = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
 
-        foreach (var root in DriveInfo.GetDrives().Where(drive => drive.IsReady).Select(drive => drive.RootDirectory.FullName))
+        foreach (var steamRoot in DriveInfo.GetDrives()
+                     .Where(drive => drive.IsReady)
+                     .SelectMany(drive => new[]
+                     {
+                         Path.Join(drive.RootDirectory.FullName, "SteamLibrary"),
+                         Path.Join(drive.RootDirectory.FullName, "Program Files (x86)", "Steam"),
+                         Path.Join(drive.RootDirectory.FullName, "Program Files", "Steam")
+                     }))
         {
-            var steamCandidates = new[]
+            var workshopRoot = Path.Join(steamRoot, "steamapps", "workshop", "content", WorkshopAppId);
+            if (Directory.Exists(workshopRoot))
             {
-                Path.Join(root, "SteamLibrary"),
-                Path.Join(root, "Program Files (x86)", "Steam"),
-                Path.Join(root, "Program Files", "Steam")
-            };
-
-            foreach (var steamRoot in steamCandidates)
-            {
-                var workshopRoot = Path.Join(steamRoot, "steamapps", "workshop", "content", WorkshopAppId);
-                if (Directory.Exists(workshopRoot))
-                {
-                    roots.Add(workshopRoot);
-                }
-
-                var libraryFoldersPath = Path.Join(steamRoot, "steamapps", "libraryfolders.vdf");
-                AddWorkshopRootsFromLibraryFolders(libraryFoldersPath, roots);
+                roots.Add(workshopRoot);
             }
+
+            var libraryFoldersPath = Path.Join(steamRoot, "steamapps", "libraryfolders.vdf");
+            AddWorkshopRootsFromLibraryFolders(libraryFoldersPath, roots);
         }
 
         foreach (var linuxCandidate in LinuxWorkshopCandidates.Where(Directory.Exists))
