@@ -110,13 +110,11 @@ public sealed class WorkshopInventoryService : IWorkshopInventoryService
 
         diagnostics.Add($"manifest={manifestPath}");
         var text = File.ReadAllText(manifestPath);
-        foreach (Match match in InstalledIdRegex.Matches(text))
+        foreach (var id in InstalledIdRegex.Matches(text).Cast<Match>()
+            .Select(match => match.Groups["id"].Value)
+            .Where(id => !string.IsNullOrWhiteSpace(id)))
         {
-            var id = match.Groups["id"].Value;
-            if (!string.IsNullOrWhiteSpace(id))
-            {
-                ids.Add(id);
-            }
+            ids.Add(id);
         }
     }
 
@@ -129,13 +127,11 @@ public sealed class WorkshopInventoryService : IWorkshopInventoryService
                 continue;
             }
 
-            foreach (var directory in Directory.EnumerateDirectories(root))
+            foreach (var id in Directory.EnumerateDirectories(root)
+                .Select(Path.GetFileName)
+                .Where(id => !string.IsNullOrWhiteSpace(id) && id!.All(char.IsDigit)))
             {
-                var id = Path.GetFileName(directory);
-                if (!string.IsNullOrWhiteSpace(id) && id.All(char.IsDigit))
-                {
-                    ids.Add(id);
-                }
+                ids.Add(id!);
             }
         }
     }
@@ -308,14 +304,15 @@ public sealed class WorkshopInventoryService : IWorkshopInventoryService
             return Array.Empty<WorkshopInventoryItem>();
         }
 
-        var mappedItems = new List<WorkshopInventoryItem>();
-        foreach (var detail in detailsNode.EnumerateArray())
-        {
-            if (TryMapItem(detail, out var mapped))
+        var mappedItems = detailsNode.EnumerateArray()
+            .Select(detail =>
             {
-                mappedItems.Add(mapped);
-            }
-        }
+                var found = TryMapItem(detail, out var mapped);
+                return (Found: found, Item: mapped);
+            })
+            .Where(x => x.Found)
+            .Select(x => x.Item)
+            .ToList();
 
         return mappedItems;
     }
@@ -438,15 +435,13 @@ public sealed class WorkshopInventoryService : IWorkshopInventoryService
         }
 
         var tags = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
-        foreach (var tag in tagsNode.EnumerateArray())
-        {
-            var value = tag.TryGetProperty("tag", out var tagName)
+        foreach (var value in tagsNode.EnumerateArray()
+            .Select(tag => tag.TryGetProperty("tag", out var tagName)
                 ? tagName.GetString()
-                : tag.GetString();
-            if (!string.IsNullOrWhiteSpace(value))
-            {
-                tags.Add(value.Trim());
-            }
+                : tag.GetString())
+            .Where(value => !string.IsNullOrWhiteSpace(value)))
+        {
+            tags.Add(value!.Trim());
         }
 
         return tags.OrderBy(x => x, StringComparer.OrdinalIgnoreCase).ToArray();
@@ -489,13 +484,11 @@ public sealed class WorkshopInventoryService : IWorkshopInventoryService
             return;
         }
 
-        foreach (Match match in SteamModRegex.Matches(description))
+        foreach (var id in SteamModRegex.Matches(description).Cast<Match>()
+            .Select(match => match.Groups["id"].Value)
+            .Where(id => !string.IsNullOrWhiteSpace(id) && !string.Equals(id, selfId, StringComparison.OrdinalIgnoreCase)))
         {
-            var id = match.Groups["id"].Value;
-            if (!string.IsNullOrWhiteSpace(id) && !string.Equals(id, selfId, StringComparison.OrdinalIgnoreCase))
-            {
-                parents.Add(id);
-            }
+            parents.Add(id);
         }
     }
 

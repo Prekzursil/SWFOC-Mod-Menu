@@ -261,16 +261,9 @@ public sealed class ModDependencyValidator : IModDependencyValidator
 
     private static string? FindWorkshopFolder(string id, IReadOnlyList<string> workshopRoots)
     {
-        foreach (var root in workshopRoots)
-        {
-            var candidate = Path.Combine(root, id);
-            if (Directory.Exists(candidate))
-            {
-                return candidate;
-            }
-        }
-
-        return null;
+        return workshopRoots
+            .Select(root => Path.Combine(root, id))
+            .FirstOrDefault(Directory.Exists);
     }
 
     private static bool HasMarker(string root, string marker)
@@ -320,27 +313,15 @@ public sealed class ModDependencyValidator : IModDependencyValidator
             return;
         }
 
-        foreach (var root in roots.ToArray())
+        foreach (var hintedPath in roots.ToArray()
+            .Select(root => Directory.GetParent(root)?.FullName)
+            .Where(parent => !string.IsNullOrWhiteSpace(parent))
+            .SelectMany(parent => parentHints
+                .Where(hint => !hint.Contains(PathTraversalToken, StringComparison.Ordinal))
+                .Select(hint => Path.Combine(parent!, hint)))
+            .Where(Directory.Exists))
         {
-            var parent = Directory.GetParent(root)?.FullName;
-            if (string.IsNullOrWhiteSpace(parent))
-            {
-                continue;
-            }
-
-            foreach (var hint in parentHints)
-            {
-                if (hint.Contains(PathTraversalToken, StringComparison.Ordinal))
-                {
-                    continue;
-                }
-
-                var hintedPath = Path.Combine(parent, hint);
-                if (Directory.Exists(hintedPath))
-                {
-                    roots.Add(hintedPath);
-                }
-            }
+            roots.Add(hintedPath);
         }
     }
 

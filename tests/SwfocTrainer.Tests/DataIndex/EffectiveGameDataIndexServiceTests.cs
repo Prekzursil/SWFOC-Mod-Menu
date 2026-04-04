@@ -142,9 +142,8 @@ public sealed class EffectiveGameDataIndexServiceTests
     {
         using var stream = new MemoryStream();
         using var writer = new BinaryWriter(stream, Encoding.ASCII, leaveOpen: true);
-        foreach (var entry in entries)
+        foreach (var encoded in entries.Select(entry => Encoding.ASCII.GetBytes(entry.Path)))
         {
-            var encoded = Encoding.ASCII.GetBytes(entry.Path);
             writer.Write((ushort)encoded.Length);
             writer.Write((ushort)0);
             writer.Write(encoded);

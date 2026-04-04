@@ -509,12 +509,10 @@ public sealed class SavePatchPackService : ISavePatchPackService
 
     private static void ValidateRawOperationContract(JsonElement operation, int index, ICollection<string> errors)
     {
-        foreach (var field in new[] { "kind", "fieldPath", "fieldId", "valueType", "newValue", "offset" })
+        foreach (var field in new[] { "kind", "fieldPath", "fieldId", "valueType", "newValue", "offset" }
+            .Where(field => !TryGetPropertyIgnoreCase(operation, field, out _)))
         {
-            if (!TryGetPropertyIgnoreCase(operation, field, out _))
-            {
-                errors.Add($"operations[{index}].{field} is required");
-            }
+            errors.Add($"operations[{index}].{field} is required");
         }
 
         if (TryGetPropertyIgnoreCase(operation, "newValue", out var newValue) &&

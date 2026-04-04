@@ -57,21 +57,13 @@ public sealed class BinarySaveCodec : ISaveCodec
         var errors = new List<string>();
         var warnings = new List<string>();
 
-        foreach (var block in schema.RootBlocks)
-        {
-            if (block.Offset < 0 || block.Offset + block.Length > document.Raw.Length)
-            {
-                errors.Add($"Block '{block.Id}' is out of range ({block.Offset}..{block.Offset + block.Length})");
-            }
-        }
+        errors.AddRange(schema.RootBlocks
+            .Where(block => block.Offset < 0 || block.Offset + block.Length > document.Raw.Length)
+            .Select(block => $"Block '{block.Id}' is out of range ({block.Offset}..{block.Offset + block.Length})"));
 
-        foreach (var field in schema.FieldDefs)
-        {
-            if (field.Offset < 0 || field.Offset + field.Length > document.Raw.Length)
-            {
-                errors.Add($"Field '{field.Id}' is out of range ({field.Offset}..{field.Offset + field.Length})");
-            }
-        }
+        errors.AddRange(schema.FieldDefs
+            .Where(field => field.Offset < 0 || field.Offset + field.Length > document.Raw.Length)
+            .Select(field => $"Field '{field.Id}' is out of range ({field.Offset}..{field.Offset + field.Length})"));
 
         foreach (var rule in schema.ValidationRules)
         {

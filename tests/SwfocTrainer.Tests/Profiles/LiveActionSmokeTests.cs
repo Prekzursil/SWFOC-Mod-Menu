@@ -77,13 +77,13 @@ public sealed class LiveActionSmokeTests
     private void LogResolvedSymbols(AttachSession session)
     {
         _output.WriteLine($"Resolved symbols: {session.Symbols.Symbols.Count}");
-        foreach (var symbolName in session.Symbols.Symbols.Keys.OrderBy(x => x))
+        foreach (var (symbolName, symbol) in session.Symbols.Symbols
+            .OrderBy(kvp => kvp.Key)
+            .Where(kvp => kvp.Value is not null)
+            .Select(kvp => (kvp.Key, kvp.Value)))
         {
-            if (session.Symbols.Symbols.TryGetValue(symbolName, out var symbol))
-            {
-                _output.WriteLine(
-                    $"{symbolName}: 0x{symbol.Address.ToInt64():X} source={symbol.Source} diag={symbol.Diagnostics}");
-            }
+            _output.WriteLine(
+                $"{symbolName}: 0x{symbol.Address.ToInt64():X} source={symbol.Source} diag={symbol.Diagnostics}");
         }
     }
 

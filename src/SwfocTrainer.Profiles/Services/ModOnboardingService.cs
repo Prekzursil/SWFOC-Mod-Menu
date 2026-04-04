@@ -528,12 +528,9 @@ public sealed class ModOnboardingService : IModOnboardingService
             }
         }
 
-        foreach (var hint in inferred.Where(x => !string.IsNullOrWhiteSpace(x)))  // NOSONAR
+        foreach (var hint in inferred.Where(x => !string.IsNullOrWhiteSpace(x) && IsPathHintCandidate(x)))  // NOSONAR
         {
-            if (IsPathHintCandidate(hint))
-            {
-                merged.Add(hint);
-            }
+            merged.Add(hint);
         }
 
         return merged.OrderBy(x => x, StringComparer.OrdinalIgnoreCase).Take(16).ToArray();

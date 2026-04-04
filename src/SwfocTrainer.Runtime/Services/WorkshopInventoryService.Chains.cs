@@ -148,12 +148,10 @@ internal static class WorkshopInventoryChainResolver
         ISet<string> visited,
         ICollection<string> ordered)
     {
-        if (string.IsNullOrWhiteSpace(currentId) || !map.ContainsKey(currentId) || !visited.Add(currentId))
+        if (string.IsNullOrWhiteSpace(currentId) || !map.TryGetValue(currentId, out var parent) || !visited.Add(currentId))
         {
             return;
         }
-
-        var parent = map[currentId];
         foreach (var ancestor in parent.ParentWorkshopIds)
         {
             BuildParentStack(ancestor, map, visited, ordered);
