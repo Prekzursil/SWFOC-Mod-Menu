@@ -268,9 +268,11 @@ public sealed class SelectedUnitTransactionService : ISelectedUnitTransactionSer
     private static SelectedUnitTransactionResult BuildApplyFailureResult(string transactionId, ChangeExecutionOutcome execution)
     {
         var rollbackSucceeded = execution.RollbackSteps.All(x => x.Succeeded);
+        var failedActionId = execution.FailedChange?.ActionId ?? "unknown";
+        var failureMessage = execution.FailureResult?.Message ?? "Unknown failure";
         var message = rollbackSucceeded
-            ? $"Apply failed at '{execution.FailedChange!.ActionId}' and rollback succeeded. {execution.FailureResult!.Message}"
-            : $"Apply failed at '{execution.FailedChange!.ActionId}' and rollback was partial. {execution.FailureResult!.Message}";
+            ? $"Apply failed at '{failedActionId}' and rollback succeeded. {failureMessage}"
+            : $"Apply failed at '{failedActionId}' and rollback was partial. {failureMessage}";
         return new SelectedUnitTransactionResult(
             false,
             message,
@@ -285,9 +287,11 @@ public sealed class SelectedUnitTransactionService : ISelectedUnitTransactionSer
         string operation,
         ChangeExecutionOutcome execution)
     {
+        var failedActionId = execution.FailedChange?.ActionId ?? "unknown";
+        var failureMessage = execution.FailureResult?.Message ?? "Unknown failure";
         return new SelectedUnitTransactionResult(
             false,
-            $"Selected-unit {operation} failed at '{execution.FailedChange!.ActionId}'. {execution.FailureResult!.Message}",
+            $"Selected-unit {operation} failed at '{failedActionId}'. {failureMessage}",
             transactionId,
             execution.Steps,
             RolledBack: execution.RollbackSteps.All(x => x.Succeeded),

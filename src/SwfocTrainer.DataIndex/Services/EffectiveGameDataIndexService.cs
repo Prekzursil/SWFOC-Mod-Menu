@@ -17,12 +17,15 @@ public sealed class EffectiveGameDataIndexService
         MegaFilesXmlIndexBuilder megaFilesXmlIndexBuilder,
         IMegArchiveReader megArchiveReader)
     {
+        ArgumentNullException.ThrowIfNull(megaFilesXmlIndexBuilder);
+        ArgumentNullException.ThrowIfNull(megArchiveReader);
         _megaFilesXmlIndexBuilder = megaFilesXmlIndexBuilder;
         _megArchiveReader = megArchiveReader;
     }
 
     public EffectiveFileMapReport Build(EffectiveGameDataIndexRequest request)
     {
+        ArgumentNullException.ThrowIfNull(request);
         if (string.IsNullOrWhiteSpace(request.ProfileId) || string.IsNullOrWhiteSpace(request.GameRootPath))
         {
             return EffectiveFileMapReport.Empty with

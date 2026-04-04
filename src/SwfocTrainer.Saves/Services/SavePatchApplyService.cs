@@ -42,6 +42,9 @@ public sealed class SavePatchApplyService : ISavePatchApplyService
         ISavePatchPackService patchPackService,
         ILogger<SavePatchApplyService> logger)
     {
+        ArgumentNullException.ThrowIfNull(saveCodec);
+        ArgumentNullException.ThrowIfNull(patchPackService);
+        ArgumentNullException.ThrowIfNull(logger);
         _saveCodec = saveCodec;
         _patchPackService = patchPackService;
         _logger = logger;

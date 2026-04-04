@@ -200,6 +200,7 @@ public abstract class MainViewModelSaveOpsBase : MainViewModelQuickActionsBase
     }
     protected void PopulatePatchPreviewOperations(SavePatchPreview preview)
     {
+        ArgumentNullException.ThrowIfNull(preview);
         SavePatchOperations.Clear();
         foreach (var operation in preview.OperationsToApply)
         {
@@ -214,6 +215,8 @@ public abstract class MainViewModelSaveOpsBase : MainViewModelQuickActionsBase
     }
     protected void PopulatePatchCompatibilityRows(SavePatchCompatibilityResult compatibility, SavePatchPreview preview)
     {
+        ArgumentNullException.ThrowIfNull(compatibility);
+        ArgumentNullException.ThrowIfNull(preview);
         SavePatchCompatibility.Clear();
         SavePatchCompatibility.Add(new SavePatchCompatibilityViewItem(
             "info",
@@ -232,6 +235,7 @@ public abstract class MainViewModelSaveOpsBase : MainViewModelQuickActionsBase
     }
     protected void AppendPatchCompatibilityRows(string severity, string reasonCode, IEnumerable<string> messages)
     {
+        ArgumentNullException.ThrowIfNull(messages);
         foreach (var message in messages) { SavePatchCompatibility.Add(new SavePatchCompatibilityViewItem(severity, reasonCode, message)); }
     }
     protected async Task ApplyPatchPackAsync()
@@ -389,6 +393,7 @@ public abstract class MainViewModelSaveOpsBase : MainViewModelQuickActionsBase
     }
     protected void SetLoadedPatchPack(SavePatchPack pack, string path)
     {
+        ArgumentNullException.ThrowIfNull(pack);
         _loadedPatchPack = pack;
         SavePatchPackPath = path;
         SavePatchMetadataSummary =

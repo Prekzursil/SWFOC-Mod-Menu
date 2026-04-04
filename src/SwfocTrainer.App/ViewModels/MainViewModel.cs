@@ -308,10 +308,10 @@ public sealed class MainViewModel : MainViewModelSaveOpsBase
             .ToArray();
 
         return contexts
-            .Where(context => context.Recommendation is not null && !string.IsNullOrWhiteSpace(context.Recommendation.ProfileId))
-            .OrderByDescending(context => context.Recommendation.Confidence)
-            .ThenByDescending(context => context.LaunchKind == LaunchKind.Workshop || context.LaunchKind == LaunchKind.Mixed)
-            .Select(context => context.Recommendation.ProfileId)
+            .Where(context => context?.Recommendation is not null && !string.IsNullOrWhiteSpace(context.Recommendation.ProfileId))
+            .OrderByDescending(context => context!.Recommendation!.Confidence)
+            .ThenByDescending(context => context!.LaunchKind == LaunchKind.Workshop || context!.LaunchKind == LaunchKind.Mixed)
+            .Select(context => context!.Recommendation!.ProfileId)
             .FirstOrDefault();
     }
     private async Task<(string EffectiveProfileId, ProfileVariantResolution? Variant)> ResolveAttachProfileAsync(string requestedProfileId)

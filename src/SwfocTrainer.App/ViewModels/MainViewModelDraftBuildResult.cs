@@ -11,6 +11,7 @@ internal sealed record DraftBuildResult(bool Succeeded, string Message, Selected
 
     internal static DraftBuildResult FromDraft(SelectedUnitDraft draft)
     {
+        ArgumentNullException.ThrowIfNull(draft);
         return new DraftBuildResult(true, "ok", draft);
     }
 }

@@ -10,11 +10,13 @@ public sealed class ContentTransplantService : IContentTransplantService
 
     public ContentTransplantService(ITransplantCompatibilityService compatibilityService)
     {
+        ArgumentNullException.ThrowIfNull(compatibilityService);
         _compatibilityService = compatibilityService;
     }
 
     public async Task<TransplantResult> ExecuteAsync(TransplantPlan plan, CancellationToken cancellationToken)
     {
+        ArgumentNullException.ThrowIfNull(plan);
         var report = await _compatibilityService.ValidateAsync(
             plan.TargetProfileId,
             plan.ActiveWorkshopIds,

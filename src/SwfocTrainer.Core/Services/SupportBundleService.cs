@@ -289,8 +289,8 @@ public sealed class SupportBundleService : ISupportBundleService
                 session.Process.ProcessName,
                 session.Process.ProcessPath,
                 launchKind = session.Process.LaunchContext?.LaunchKind.ToString() ?? "Unknown",
-                launchReasonCode = session.Process.LaunchContext?.Recommendation.ReasonCode ?? "unknown",
-                launchConfidence = session.Process.LaunchContext?.Recommendation.Confidence ?? 0.0d
+                launchReasonCode = session.Process.LaunchContext?.Recommendation?.ReasonCode ?? "unknown",
+                launchConfidence = session.Process.LaunchContext?.Recommendation?.Confidence ?? 0.0d
             },
             runtimeMode = session.Process.Mode.ToString(),
             symbolHealthSummary = symbolSummary

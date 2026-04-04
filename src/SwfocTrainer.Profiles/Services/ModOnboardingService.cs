@@ -114,7 +114,9 @@ public sealed class ModOnboardingService : IModOnboardingService
             Metadata: metadata);
 
         var outputPath = ResolveDraftPath(profileId, request.NamespaceRoot);
-        Directory.CreateDirectory(Path.GetDirectoryName(outputPath)!);
+        var outputDir = Path.GetDirectoryName(outputPath)
+            ?? throw new InvalidOperationException($"Cannot resolve parent directory for '{outputPath}'.");
+        Directory.CreateDirectory(outputDir);
         var json = JsonProfileSerializer.Serialize(draftProfile);
         await File.WriteAllTextAsync(outputPath, json, cancellationToken);
 
@@ -187,16 +189,18 @@ public sealed class ModOnboardingService : IModOnboardingService
         {
             try
             {
-                var displayName = resolvedDisplayName!.Trim();
-                profileId = NormalizeProfileId(resolvedSeedDraftProfileId!);
+                var displayName = (resolvedDisplayName ?? throw new InvalidOperationException("DisplayName resolved to null after validation.")).Trim();
+                profileId = NormalizeProfileId(resolvedSeedDraftProfileId ?? throw new InvalidOperationException("DraftProfileId resolved to null after validation."));
                 if (!usedProfileIds.Add(profileId))
                 {
                     errors.Add($"Duplicate normalized DraftProfileId '{profileId}' in batch request.");
                 }
                 else
                 {
+                    var sourceRunId = resolvedSourceRunId ?? throw new InvalidOperationException("SourceRunId resolved to null after validation.");
+                    var resolvedBaseProfileId = baseProfileId ?? throw new InvalidOperationException("BaseProfileId resolved to null after validation.");
                     var scaffold = await BuildSeedScaffoldAsync(
-                        new BuildSeedScaffoldParams(seed, profileId, displayName, resolvedSourceRunId!, baseProfileId!, namespaceRoot, warnings), cancellationToken);
+                        new BuildSeedScaffoldParams(seed, profileId, displayName, sourceRunId, resolvedBaseProfileId, namespaceRoot, warnings), cancellationToken);
                     workshopIds = scaffold.WorkshopIds;
                     pathHints = scaffold.PathHints;
                     aliases = scaffold.Aliases;
@@ -324,7 +328,9 @@ public sealed class ModOnboardingService : IModOnboardingService
             RequiredCapabilities: requiredCapabilities);
 
         var outputPath = ResolveDraftPath(p.ProfileId, p.NamespaceRoot);
-        Directory.CreateDirectory(Path.GetDirectoryName(outputPath)!);
+        var seedOutputDir = Path.GetDirectoryName(outputPath)
+            ?? throw new InvalidOperationException($"Cannot resolve parent directory for '{outputPath}'.");
+        Directory.CreateDirectory(seedOutputDir);
         var json = JsonProfileSerializer.Serialize(draftProfile);
         await File.WriteAllTextAsync(outputPath, json, cancellationToken);
 

@@ -6,6 +6,8 @@ internal static class MainViewModelCreditsHelpers
 {
     internal static bool TryParseCreditsValue(string creditsValue, out int value, out string errorStatus)
     {
+        ArgumentNullException.ThrowIfNull(creditsValue);
+
         if (int.TryParse(creditsValue, out value) && value >= 0)
         {
             errorStatus = string.Empty;
@@ -35,6 +37,9 @@ internal static class MainViewModelCreditsHelpers
         string stateTag,
         string diagnosticsSuffix)
     {
+        ArgumentNullException.ThrowIfNull(stateTag);
+        ArgumentNullException.ThrowIfNull(diagnosticsSuffix);
+
         if (creditsFreeze)
         {
             if (!stateTag.Equals("HOOK_LOCK", StringComparison.OrdinalIgnoreCase))

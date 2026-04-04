@@ -109,11 +109,13 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
 
     public Task<AttachSession> AttachAsync(string profileId)
     {
+        ArgumentNullException.ThrowIfNull(profileId);
         return AttachAsync(profileId, CancellationToken.None);
     }
 
     public async Task<AttachSession> AttachAsync(string profileId, CancellationToken cancellationToken)
     {
+        ArgumentNullException.ThrowIfNull(profileId);
         if (IsAttached)
         {
             return CurrentSession!;
@@ -1110,11 +1112,13 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
 
     public Task<T> ReadAsync<T>(string symbol) where T : unmanaged
     {
+        ArgumentNullException.ThrowIfNull(symbol);
         return ReadAsync<T>(symbol, CancellationToken.None);
     }
 
     public Task<T> ReadAsync<T>(string symbol, CancellationToken cancellationToken) where T : unmanaged
     {
+        ArgumentNullException.ThrowIfNull(symbol);
         EnsureAttached();
         var sym = ResolveSymbol(symbol);
         var value = _memory!.Read<T>(sym.Address);
@@ -1123,11 +1127,13 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
 
     public Task WriteAsync<T>(string symbol, T value) where T : unmanaged
     {
+        ArgumentNullException.ThrowIfNull(symbol);
         return WriteAsync(symbol, value, CancellationToken.None);
     }
 
     public Task WriteAsync<T>(string symbol, T value, CancellationToken cancellationToken) where T : unmanaged
     {
+        ArgumentNullException.ThrowIfNull(symbol);
         EnsureAttached();
         var sym = ResolveSymbol(symbol);
         _memory!.Write(sym.Address, value);
@@ -1229,11 +1235,13 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
 
     public Task<ActionExecutionResult> ExecuteAsync(ActionExecutionRequest request)
     {
+        ArgumentNullException.ThrowIfNull(request);
         return ExecuteAsync(request, CancellationToken.None);
     }
 
     public async Task<ActionExecutionResult> ExecuteAsync(ActionExecutionRequest request, CancellationToken cancellationToken)
     {
+        ArgumentNullException.ThrowIfNull(request);
         EnsureAttached();
         var modeResolution = ResolveEffectiveMode(request);
         var effectiveRequest = modeResolution.Request;

@@ -12,6 +12,9 @@ public sealed class MegArchive
         byte[] payload,
         IReadOnlyList<string> diagnostics)
     {
+        ArgumentNullException.ThrowIfNull(entries);
+        ArgumentNullException.ThrowIfNull(payload);
+        ArgumentNullException.ThrowIfNull(diagnostics);
         Source = source;
         Format = format;
         Entries = entries;

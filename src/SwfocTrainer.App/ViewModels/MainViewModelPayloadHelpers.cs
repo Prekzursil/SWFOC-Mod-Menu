@@ -11,6 +11,7 @@ internal static class MainViewModelPayloadHelpers
         IReadOnlyDictionary<string, string> defaultSymbolByActionId,
         IReadOnlyDictionary<string, string> defaultHelperHookByActionId)
     {
+        ArgumentNullException.ThrowIfNull(actionId);
         ArgumentNullException.ThrowIfNull(required);
         ArgumentNullException.ThrowIfNull(defaultSymbolByActionId);
         ArgumentNullException.ThrowIfNull(defaultHelperHookByActionId);
@@ -36,6 +37,9 @@ internal static class MainViewModelPayloadHelpers
 
     internal static void ApplyActionSpecificPayloadDefaults(string actionId, JsonObject payload)
     {
+        ArgumentNullException.ThrowIfNull(actionId);
+        ArgumentNullException.ThrowIfNull(payload);
+
         if (actionId.Equals(MainViewModelDefaults.ActionSetCredits, StringComparison.OrdinalIgnoreCase))
         {
             payload[MainViewModelDefaults.PayloadKeyLockCredits] = false;

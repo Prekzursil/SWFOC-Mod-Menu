@@ -20,6 +20,10 @@ internal sealed class SavePatchApplyServiceHelper
         string selectorNotFoundInSchemaText,
         string selectorUnknownFieldText)
     {
+        ArgumentNullException.ThrowIfNull(saveCodec);
+        ArgumentNullException.ThrowIfNull(logger);
+        ArgumentNullException.ThrowIfNull(selectorNotFoundInSchemaText);
+        ArgumentNullException.ThrowIfNull(selectorUnknownFieldText);
         _saveCodec = saveCodec;
         _logger = logger;
         _selectorNotFoundInSchemaText = selectorNotFoundInSchemaText;

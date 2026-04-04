@@ -9,10 +9,15 @@ namespace SwfocTrainer.Saves.Internal;
 internal static class SavePatchFieldCodec
 {
     public static string ComputeSha256Hex(byte[] bytes)
-        => Convert.ToHexString(SHA256.HashData(bytes)).ToLowerInvariant();
+    {
+        ArgumentNullException.ThrowIfNull(bytes);
+        return Convert.ToHexString(SHA256.HashData(bytes)).ToLowerInvariant();
+    }
 
     public static object? ReadFieldValue(byte[] raw, SaveFieldDefinition field, string endianness)
     {
+        ArgumentNullException.ThrowIfNull(raw);
+        ArgumentNullException.ThrowIfNull(field);
         if (field.Offset < 0 || field.Offset + field.Length > raw.Length)
         {
             return null;

@@ -75,6 +75,7 @@ public sealed class TelemetrySnapshotService : ITelemetrySnapshotService
 
     public async Task<string> ExportSnapshotAsync(string outputDirectory, CancellationToken cancellationToken)
     {
+        ArgumentNullException.ThrowIfNull(outputDirectory);
         if (string.IsNullOrWhiteSpace(outputDirectory))
         {
             throw new InvalidDataException("Output directory is required.");

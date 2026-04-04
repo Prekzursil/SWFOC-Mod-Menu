@@ -153,7 +153,7 @@ public sealed class ModCalibrationService : IModCalibrationService
             path = session.Process.ProcessPath,
             commandLineAvailable = session.Process.LaunchContext?.CommandLineAvailable ?? false,
             launchKind = session.Process.LaunchContext?.LaunchKind.ToString() ?? "Unknown",
-            launchReasonCode = session.Process.LaunchContext?.Recommendation.ReasonCode ?? "unknown"
+            launchReasonCode = session.Process.LaunchContext?.Recommendation?.ReasonCode ?? "unknown"
         };
     }
 

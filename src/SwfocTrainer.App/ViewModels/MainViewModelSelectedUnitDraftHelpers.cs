@@ -21,6 +21,8 @@ internal static class MainViewModelSelectedUnitDraftHelpers
         out SelectedUnitFloatValues values,
         out string error)
     {
+        ArgumentNullException.ThrowIfNull(inputs);
+
         var hp = default(float?);
         var shield = default(float?);
         var speed = default(float?);

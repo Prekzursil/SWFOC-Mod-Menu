@@ -11,6 +11,8 @@ public sealed class TransplantCompatibilityService : ITransplantCompatibilitySer
         IReadOnlyList<RosterEntityRecord> entities,
         CancellationToken cancellationToken)
     {
+        ArgumentNullException.ThrowIfNull(activeWorkshopIds);
+        ArgumentNullException.ThrowIfNull(entities);
         cancellationToken.ThrowIfCancellationRequested();
 
         var activeSet = activeWorkshopIds

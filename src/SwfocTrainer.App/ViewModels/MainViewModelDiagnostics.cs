@@ -137,6 +137,7 @@ internal static class MainViewModelDiagnostics
 
     internal static string BuildQuickActionStatus(string actionId, ActionExecutionResult result)
     {
+        ArgumentNullException.ThrowIfNull(actionId);
         ArgumentNullException.ThrowIfNull(result);
         var diagnosticsSuffix = BuildDiagnosticsStatusSuffix(result);
         return result.Succeeded
@@ -165,6 +166,10 @@ internal static class MainViewModelDiagnostics
         string segmentKey,
         params string[] candidateKeys)
     {
+        ArgumentNullException.ThrowIfNull(segments);
+        ArgumentNullException.ThrowIfNull(diagnostics);
+        ArgumentNullException.ThrowIfNull(candidateKeys);
+
         foreach (var key in candidateKeys)
         {
             var value = TryGetDiagnosticString(diagnostics, key);

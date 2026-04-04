@@ -222,7 +222,9 @@ public sealed class GitHubProfileUpdateService : IProfileUpdateService
             return (null, remoteManifestOutcome.Failure);
         }
 
-        var entry = remoteManifestOutcome.Manifest!.Profiles
+        var manifest = remoteManifestOutcome.Manifest
+            ?? throw new InvalidOperationException("Remote manifest resolved to null after successful fetch.");
+        var entry = manifest.Profiles
             .FirstOrDefault(x => string.Equals(x.Id, profileId, StringComparison.OrdinalIgnoreCase));
         if (entry is null)
         {

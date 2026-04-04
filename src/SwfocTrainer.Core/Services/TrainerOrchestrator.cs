@@ -227,23 +227,26 @@ public sealed class TrainerOrchestrator
 
     private ActionExecutionResult? TryBuildFreezeSetResult(string symbol, System.Text.Json.Nodes.JsonObject payload)
     {
-        if (payload[IntValueKey] is not null)
+        var intNode = payload[IntValueKey];
+        if (intNode is not null)
         {
-            var value = payload[IntValueKey]!.GetValue<int>();
+            var value = intNode.GetValue<int>();
             _freezeService.FreezeInt(symbol, value);
             return BuildFreezeResult(symbol, "int", value);
         }
 
-        if (payload[FloatValueKey] is not null)
+        var floatNode = payload[FloatValueKey];
+        if (floatNode is not null)
         {
             var value = ReadFloatFreezeValue(payload);
             _freezeService.FreezeFloat(symbol, value);
             return BuildFreezeResult(symbol, "float", value);
         }
 
-        if (payload[BoolValueKey] is not null)
+        var boolNode = payload[BoolValueKey];
+        if (boolNode is not null)
         {
-            var value = payload[BoolValueKey]!.GetValue<bool>();
+            var value = boolNode.GetValue<bool>();
             _freezeService.FreezeBool(symbol, value);
             return BuildFreezeResult(symbol, "bool", value);
         }
@@ -253,13 +256,15 @@ public sealed class TrainerOrchestrator
 
     private static float ReadFloatFreezeValue(System.Text.Json.Nodes.JsonObject payload)
     {
+        var node = payload[FloatValueKey]
+            ?? throw new InvalidOperationException("Expected floatValue node in payload.");
         try
         {
-            return payload[FloatValueKey]!.GetValue<float>();
+            return node.GetValue<float>();
         }
         catch (InvalidOperationException)
         {
-            return (float)payload[FloatValueKey]!.GetValue<double>();
+            return (float)node.GetValue<double>();
         }
     }
 

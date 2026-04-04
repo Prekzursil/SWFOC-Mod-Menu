@@ -9,13 +9,14 @@ internal sealed class StubHttpMessageHandler : HttpMessageHandler
 
     public StubHttpMessageHandler(IReadOnlyDictionary<string, (string ContentType, byte[] Body)> responses)
     {
-        _responses = responses;
+        _responses = responses ?? throw new ArgumentNullException(nameof(responses));
     }
 
     protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
     {
         _ = cancellationToken;
-        var key = request.RequestUri!.ToString();
+        var uri = request.RequestUri ?? throw new InvalidOperationException("Request URI is null.");
+        var key = uri.ToString();
         if (!_responses.TryGetValue(key, out var payload))
         {
             return Task.FromResult(new HttpResponseMessage(HttpStatusCode.NotFound)

@@ -6,6 +6,8 @@ public static class SaveDiffService
 
     public static IReadOnlyList<string> BuildDiffPreview(byte[] original, byte[] current, int maxEntries)
     {
+        ArgumentNullException.ThrowIfNull(original);
+        ArgumentNullException.ThrowIfNull(current);
         var result = new List<string>();
         var len = Math.Min(original.Length, current.Length);
         for (var i = 0; i < len; i++)

@@ -38,6 +38,8 @@ public sealed class StoryPlotFlowExtractor
 
     public FlowIndexReport Extract(string xmlContent, string sourceFile)
     {
+        ArgumentNullException.ThrowIfNull(sourceFile);
+
         if (string.IsNullOrWhiteSpace(xmlContent))
         {
             return FlowIndexReport.Empty;
@@ -86,6 +88,10 @@ public sealed class StoryPlotFlowExtractor
         MegaFilesIndex megaFilesIndex,
         string symbolPackJson)
     {
+        ArgumentNullException.ThrowIfNull(flowReport);
+        ArgumentNullException.ThrowIfNull(megaFilesIndex);
+        ArgumentNullException.ThrowIfNull(symbolPackJson);
+
         if (flowReport.Plots.Count == 0)
         {
             return FlowCapabilityLinkReport.Empty;
@@ -158,6 +164,9 @@ public sealed class StoryPlotFlowExtractor
 
     private static string? ReadFirstNonEmptyAttribute(XElement element, params string[] names)
     {
+        ArgumentNullException.ThrowIfNull(element);
+        ArgumentNullException.ThrowIfNull(names);
+
         foreach (var name in names)
         {
             var value = element.Attribute(name)?.Value;

@@ -82,7 +82,7 @@ public abstract class MainViewModelLiveOpsBase : MainViewModelBindableMembersBas
     private void AddLiveOpsLaunchDiagnostics(AttachSession session, IReadOnlyDictionary<string, string>? metadata)
     {
         LiveOpsDiagnostics.Add($"launch: {session.Process.LaunchContext?.LaunchKind ?? LaunchKind.Unknown}");
-        LiveOpsDiagnostics.Add($"recommendation: {session.Process.LaunchContext?.Recommendation.ProfileId ?? "none"}");
+        LiveOpsDiagnostics.Add($"recommendation: {session.Process.LaunchContext?.Recommendation?.ProfileId ?? "none"}");
         if (metadata is not null && metadata.TryGetValue("resolvedVariant", out var resolvedVariant))
         {
             var reason = GetMetadataValueOrDefault(metadata, "resolvedVariantReasonCode", UnknownValue);

@@ -39,6 +39,7 @@ internal static class MainViewModelHotkeyHelpers
 
     internal static async Task<string> LoadHotkeysAsync(ObservableCollection<HotkeyBindingItem> hotkeys)
     {
+        ArgumentNullException.ThrowIfNull(hotkeys);
         hotkeys.Clear();
         var path = GetHotkeyFilePath();
         TrustedPathPolicy.EnsureSubPath(TrustedPathPolicy.GetOrCreateAppDataRoot(), path);
@@ -106,6 +107,8 @@ internal static class MainViewModelHotkeyHelpers
         string actionId,
         ActionExecutionResult result)
     {
+        ArgumentNullException.ThrowIfNull(gesture);
+        ArgumentNullException.ThrowIfNull(actionId);
         ArgumentNullException.ThrowIfNull(result);
         var diagnosticsSuffix = MainViewModelDiagnostics.BuildDiagnosticsStatusSuffix(result);
         return result.Succeeded

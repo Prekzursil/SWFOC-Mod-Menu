@@ -20,11 +20,14 @@ public sealed class LuaHarnessRunner : ILuaHarnessRunner
 
     public Task<LuaHarnessRunResult> RunAsync(LuaHarnessRunRequest request)
     {
+        ArgumentNullException.ThrowIfNull(request);
         return RunAsync(request, CancellationToken.None);
     }
 
     public async Task<LuaHarnessRunResult> RunAsync(LuaHarnessRunRequest request, CancellationToken cancellationToken)
     {
+        ArgumentNullException.ThrowIfNull(request);
+
         if (string.IsNullOrWhiteSpace(request.ScriptPath) || !File.Exists(request.ScriptPath))
         {
             return new LuaHarnessRunResult(
