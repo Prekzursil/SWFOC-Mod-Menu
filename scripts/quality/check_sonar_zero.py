@@ -45,7 +45,7 @@ def _auth_header(token: str) -> str:
 
 def _request_json(url: str, auth_header: str) -> dict[str, Any]:
     safe_url = normalize_https_url(url, allowed_host_suffixes={"sonarcloud.io"}).rstrip("/")
-    request = urllib.request.Request(
+    req = urllib.request.Request(
         safe_url,
         headers={
             "Accept": "application/json",
@@ -54,7 +54,7 @@ def _request_json(url: str, auth_header: str) -> dict[str, Any]:
         },
         method="GET",
     )
-    with urllib.request.urlopen(request, timeout=30) as resp:
+    with urllib.request.urlopen(req, timeout=30) as resp:
         return json.loads(resp.read().decode("utf-8"))
 
 

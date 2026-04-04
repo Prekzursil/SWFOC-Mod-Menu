@@ -84,7 +84,7 @@ public sealed class ActionReliabilityService : IActionReliabilityService
         return Evaluate(profile, session, null);
     }
 
-    private static ActionReliabilityInfo EvaluateAction(  // NOSONAR
+    private static ActionReliabilityInfo EvaluateAction(
         TrainerProfile profile,
         string actionId,
         ActionSpec action,
@@ -94,31 +94,49 @@ public sealed class ActionReliabilityService : IActionReliabilityService
         IReadOnlyDictionary<string, IReadOnlyList<string>>? catalog,
         IReadOnlyDictionary<string, ModMechanicSupport>? mechanicSupport)
     {
-        if (mechanicSupport is not null &&
-            mechanicSupport.TryGetValue(actionId, out var support) &&
-            !support.Supported)
+        return TryEvaluateMechanicSupport(actionId, mechanicSupport)
+            ?? TryEvaluateFeatureFlags(profile, actionId)
+            ?? TryEvaluateDependencyBlock(actionId, disabledActions)
+            ?? TryEvaluateModeConstraints(actionId, action, session)
+            ?? TryEvaluateHelperAction(actionId, action, session, catalog)
+            ?? EvaluateSymbolAction(actionId, action, session, criticalSymbols);
+    }
+
+    private static ActionReliabilityInfo? TryEvaluateMechanicSupport(
+        string actionId,
+        IReadOnlyDictionary<string, ModMechanicSupport>? mechanicSupport)
+    {
+        if (mechanicSupport is null ||
+            !mechanicSupport.TryGetValue(actionId, out var support) ||
+            support.Supported)
         {
-            return new ActionReliabilityInfo(
-                actionId,
-                ActionReliabilityState.Unavailable,
-                support.ReasonCode.ToString(),
-                ClampConfidence(support.Confidence),
-                support.Message);
+            return null;
         }
 
-        if (FallbackFeatureFlags.TryGetValue(actionId, out var featureFlag) &&
-            (!profile.FeatureFlags.TryGetValue(featureFlag, out var enabled) || !enabled))
-        {
-            return new ActionReliabilityInfo(
-                actionId,
-                ActionReliabilityState.Unavailable,
-                "fallback_disabled",
-                1.00d,
-                $"Fallback action is disabled by feature flag '{featureFlag}'.");
-        }
+        return new ActionReliabilityInfo(
+            actionId,
+            ActionReliabilityState.Unavailable,
+            support.ReasonCode.ToString(),
+            ClampConfidence(support.Confidence),
+            support.Message);
+    }
 
-        if (FallbackFeatureFlags.ContainsKey(actionId))
+    private static ActionReliabilityInfo? TryEvaluateFeatureFlags(
+        TrainerProfile profile,
+        string actionId)
+    {
+        if (FallbackFeatureFlags.TryGetValue(actionId, out var featureFlag))
         {
+            if (!profile.FeatureFlags.TryGetValue(featureFlag, out var enabled) || !enabled)
+            {
+                return new ActionReliabilityInfo(
+                    actionId,
+                    ActionReliabilityState.Unavailable,
+                    "fallback_disabled",
+                    1.00d,
+                    $"Fallback action is disabled by feature flag '{featureFlag}'.");
+            }
+
             return new ActionReliabilityInfo(
                 actionId,
                 ActionReliabilityState.Experimental,
@@ -127,19 +145,18 @@ public sealed class ActionReliabilityService : IActionReliabilityService
                 "Fallback action is enabled but remains experimental pending live validation.");
         }
 
-        if (ExperimentalFeatureFlags.TryGetValue(actionId, out var experimentalFlag) &&
-            (!profile.FeatureFlags.TryGetValue(experimentalFlag, out var experimentalEnabled) || !experimentalEnabled))
+        if (ExperimentalFeatureFlags.TryGetValue(actionId, out var experimentalFlag))
         {
-            return new ActionReliabilityInfo(
-                actionId,
-                ActionReliabilityState.Unavailable,
-                "experimental_disabled",
-                1.00d,
-                $"Experimental action is disabled by feature flag '{experimentalFlag}'.");
-        }
+            if (!profile.FeatureFlags.TryGetValue(experimentalFlag, out var experimentalEnabled) || !experimentalEnabled)
+            {
+                return new ActionReliabilityInfo(
+                    actionId,
+                    ActionReliabilityState.Unavailable,
+                    "experimental_disabled",
+                    1.00d,
+                    $"Experimental action is disabled by feature flag '{experimentalFlag}'.");
+            }
 
-        if (ExperimentalFeatureFlags.ContainsKey(actionId))
-        {
             return new ActionReliabilityInfo(
                 actionId,
                 ActionReliabilityState.Experimental,
@@ -148,16 +165,31 @@ public sealed class ActionReliabilityService : IActionReliabilityService
                 "Experimental action is enabled and remains non-authoritative pending live validation.");
         }
 
-        if (disabledActions.Contains(actionId))
+        return null;
+    }
+
+    private static ActionReliabilityInfo? TryEvaluateDependencyBlock(
+        string actionId,
+        IReadOnlySet<string> disabledActions)
+    {
+        if (!disabledActions.Contains(actionId))
         {
-            return new ActionReliabilityInfo(
-                actionId,
-                ActionReliabilityState.Unavailable,
-                "dependency_soft_blocked",
-                0.99d,
-                "Action disabled by dependency validator.");
+            return null;
         }
 
+        return new ActionReliabilityInfo(
+            actionId,
+            ActionReliabilityState.Unavailable,
+            "dependency_soft_blocked",
+            0.99d,
+            "Action disabled by dependency validator.");
+    }
+
+    private static ActionReliabilityInfo? TryEvaluateModeConstraints(
+        string actionId,
+        ActionSpec action,
+        AttachSession session)
+    {
         if (session.Process.Mode == RuntimeMode.Unknown &&
             StrictBundleActions.Contains(actionId))
         {
@@ -169,75 +201,97 @@ public sealed class ActionReliabilityService : IActionReliabilityService
                 "Action belongs to a strict bundle and requires concrete runtime mode detection.");
         }
 
-        if (action.Mode != RuntimeMode.Unknown)
+        if (action.Mode == RuntimeMode.Unknown)
         {
-            if (session.Process.Mode == RuntimeMode.Unknown)
-            {
-                return new ActionReliabilityInfo(
-                    actionId,
-                    ActionReliabilityState.Unavailable,
-                    "mode_unknown_strict_gate",
-                    0.90d,
-                    $"Action requires runtime mode {action.Mode}.");
-            }
-
-            if (!IsModeCompatible(action.Mode, session.Process.Mode))
-            {
-                return new ActionReliabilityInfo(
-                    actionId,
-                    ActionReliabilityState.Unavailable,
-                    "mode_mismatch",
-                    1.00d,
-                    $"Action requires mode {action.Mode}, current mode is {session.Process.Mode}.");
-            }
+            return null;
         }
 
-        if (action.ExecutionKind == ExecutionKind.Helper)
+        if (session.Process.Mode == RuntimeMode.Unknown)
         {
-            var helperBridgeState = ReadMetadataValue(session.Process.Metadata, "helperBridgeState");
-            if (!string.Equals(helperBridgeState, "ready", StringComparison.OrdinalIgnoreCase))
-            {
-                return new ActionReliabilityInfo(
-                    actionId,
-                    ActionReliabilityState.Unavailable,
-                    "helper_bridge_unavailable",
-                    0.98d,
-                    "Helper bridge is unavailable for this attachment.");
-            }
-
-            if (RequiresSpawnCatalog(actionId) &&
-                (catalog is null ||
-                 !catalog.TryGetValue("unit_catalog", out var units) ||
-                 units.Count == 0 ||
-                 !catalog.TryGetValue("faction_catalog", out var factions) ||
-                 factions.Count == 0))
-            {
-                return new ActionReliabilityInfo(
-                    actionId,
-                    ActionReliabilityState.Unavailable,
-                    "catalog_unavailable",
-                    0.95d,
-                    "Unit/faction roster catalog is unavailable for helper-guided spawn workflows.");
-            }
-
-            if (RequiresBuildingCatalog(actionId) &&
-                (catalog is null ||
-                 !catalog.TryGetValue("building_catalog", out var buildings) ||
-                 buildings.Count == 0 ||
-                 !catalog.TryGetValue("faction_catalog", out var buildingFactions) ||
-                 buildingFactions.Count == 0))
-            {
-                return new ActionReliabilityInfo(
-                    actionId,
-                    ActionReliabilityState.Unavailable,
-                    "building_catalog_unavailable",
-                    0.95d,
-                    "Building/faction catalog is unavailable for planet building workflows.");
-            }
-
-            return new ActionReliabilityInfo(actionId, ActionReliabilityState.Stable, "helper_ready", 0.85d);
+            return new ActionReliabilityInfo(
+                actionId,
+                ActionReliabilityState.Unavailable,
+                "mode_unknown_strict_gate",
+                0.90d,
+                $"Action requires runtime mode {action.Mode}.");
         }
 
+        if (!IsModeCompatible(action.Mode, session.Process.Mode))
+        {
+            return new ActionReliabilityInfo(
+                actionId,
+                ActionReliabilityState.Unavailable,
+                "mode_mismatch",
+                1.00d,
+                $"Action requires mode {action.Mode}, current mode is {session.Process.Mode}.");
+        }
+
+        return null;
+    }
+
+    private static ActionReliabilityInfo? TryEvaluateHelperAction(
+        string actionId,
+        ActionSpec action,
+        AttachSession session,
+        IReadOnlyDictionary<string, IReadOnlyList<string>>? catalog)
+    {
+        if (action.ExecutionKind != ExecutionKind.Helper)
+        {
+            return null;
+        }
+
+        var helperBridgeState = ReadMetadataValue(session.Process.Metadata, "helperBridgeState");
+        if (!string.Equals(helperBridgeState, "ready", StringComparison.OrdinalIgnoreCase))
+        {
+            return new ActionReliabilityInfo(
+                actionId,
+                ActionReliabilityState.Unavailable,
+                "helper_bridge_unavailable",
+                0.98d,
+                "Helper bridge is unavailable for this attachment.");
+        }
+
+        if (RequiresSpawnCatalog(actionId) && !IsCatalogAvailable(catalog, "unit_catalog", "faction_catalog"))
+        {
+            return new ActionReliabilityInfo(
+                actionId,
+                ActionReliabilityState.Unavailable,
+                "catalog_unavailable",
+                0.95d,
+                "Unit/faction roster catalog is unavailable for helper-guided spawn workflows.");
+        }
+
+        if (RequiresBuildingCatalog(actionId) && !IsCatalogAvailable(catalog, "building_catalog", "faction_catalog"))
+        {
+            return new ActionReliabilityInfo(
+                actionId,
+                ActionReliabilityState.Unavailable,
+                "building_catalog_unavailable",
+                0.95d,
+                "Building/faction catalog is unavailable for planet building workflows.");
+        }
+
+        return new ActionReliabilityInfo(actionId, ActionReliabilityState.Stable, "helper_ready", 0.85d);
+    }
+
+    private static bool IsCatalogAvailable(
+        IReadOnlyDictionary<string, IReadOnlyList<string>>? catalog,
+        string primaryKey,
+        string factionKey)
+    {
+        return catalog is not null &&
+               catalog.TryGetValue(primaryKey, out var primary) &&
+               primary.Count > 0 &&
+               catalog.TryGetValue(factionKey, out var factions) &&
+               factions.Count > 0;
+    }
+
+    private static ActionReliabilityInfo EvaluateSymbolAction(
+        string actionId,
+        ActionSpec action,
+        AttachSession session,
+        IReadOnlySet<string> criticalSymbols)
+    {
         if (!RequiresSymbol(action))
         {
             return new ActionReliabilityInfo(actionId, ActionReliabilityState.Stable, "non_symbol_action", 0.85d);
@@ -266,8 +320,7 @@ public sealed class ActionReliabilityService : IActionReliabilityService
                 $"Required symbol '{symbol}' is unresolved.");
         }
 
-        var isCritical = criticalSymbols.Contains(symbol);
-        if (isCritical && symbolInfo.HealthStatus != SymbolHealthStatus.Healthy)
+        if (criticalSymbols.Contains(symbol) && symbolInfo.HealthStatus != SymbolHealthStatus.Healthy)
         {
             return new ActionReliabilityInfo(
                 actionId,

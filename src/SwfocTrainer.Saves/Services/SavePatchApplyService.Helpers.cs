@@ -48,7 +48,19 @@ internal sealed class SavePatchApplyServiceHelper
         {
             return (SavePatchFieldCodec.NormalizePatchValue(operation.NewValue, operation.ValueType), null);
         }
-        catch (Exception ex)
+        catch (FormatException ex)
+        {
+            _logger.LogWarning(ex, "Patch value normalization failed for field {FieldId}", operation.FieldId);
+            return (
+                null,
+                BuildFailure(
+                    SavePatchApplyClassification.ValidationFailed,
+                    reasonValueNormalizationFailed,
+                    "Patch operation value could not be normalized.",
+                    operation.FieldId,
+                    operation.FieldPath));
+        }
+        catch (InvalidOperationException ex)
         {
             _logger.LogWarning(ex, "Patch value normalization failed for field {FieldId}", operation.FieldId);
             return (
@@ -74,7 +86,7 @@ internal sealed class SavePatchApplyServiceHelper
             await ApplyFieldWithFallbackSelectorAsync(targetDoc, operation, value, cancellationToken);
             return null;
         }
-        catch (Exception ex)
+        catch (InvalidOperationException ex)
         {
             _logger.LogWarning(ex, "Patch field apply failed for {FieldId}", operation.FieldId);
             return BuildFailure(
@@ -97,7 +109,7 @@ internal sealed class SavePatchApplyServiceHelper
         {
             File.Delete(tempOutputPath);
         }
-        catch (Exception ex)
+        catch (IOException ex)
         {
             _logger.LogWarning(ex, "Temporary patch output cleanup failed for {TempOutputPath}", tempOutputPath);
         }
@@ -193,7 +205,11 @@ internal sealed class SavePatchApplyServiceHelper
                 receipt.BackupPath,
                 invalidReason);
         }
-        catch (Exception ex)
+        catch (IOException ex)
+        {
+            _logger.LogWarning(ex, "Receipt parse failed for {ReceiptPath}. Continuing backup lookup.", receiptPath);
+        }
+        catch (JsonException ex)
         {
             _logger.LogWarning(ex, "Receipt parse failed for {ReceiptPath}. Continuing backup lookup.", receiptPath);
         }
@@ -238,20 +254,15 @@ internal sealed class SavePatchApplyServiceHelper
             await _saveCodec.EditAsync(targetDoc, selector, value, cancellationToken);
             return SelectorApplyAttempt.AppliedAttempt;
         }
-        catch (Exception ex) when (IsSelectorMismatchError(ex))
+        catch (InvalidOperationException ex) when (IsSelectorMismatchError(ex))
         {
             _logger.LogDebug(ex, failureMessage, fieldIdForLogging);
             return SelectorApplyAttempt.Mismatch(ex);
         }
     }
 
-    private bool IsSelectorMismatchError(Exception exception)
+    private bool IsSelectorMismatchError(InvalidOperationException exception)
     {
-        if (exception is not InvalidOperationException)
-        {
-            return false;
-        }
-
         return exception.Message.Contains(_selectorNotFoundInSchemaText, StringComparison.OrdinalIgnoreCase)
                || exception.Message.Contains(_selectorUnknownFieldText, StringComparison.OrdinalIgnoreCase);
     }
@@ -269,7 +280,12 @@ internal sealed class SavePatchApplyServiceHelper
         {
             normalized = TrustedPathPolicy.NormalizeAbsolute(path);
         }
-        catch (Exception ex)
+        catch (ArgumentException ex)
+        {
+            invalidReason = $"path normalization failed: {ex.GetType().Name}";
+            return false;
+        }
+        catch (IOException ex)
         {
             invalidReason = $"path normalization failed: {ex.GetType().Name}";
             return false;

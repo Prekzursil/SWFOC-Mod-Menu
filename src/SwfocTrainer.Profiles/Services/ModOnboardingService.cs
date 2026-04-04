@@ -157,7 +157,7 @@ public sealed class ModOnboardingService : IModOnboardingService
             Results: results);
     }
 
-    private async Task<ModOnboardingBatchItemResult> ScaffoldDraftFromSeedAsync(  // NOSONAR
+    private async Task<ModOnboardingBatchItemResult> ScaffoldDraftFromSeedAsync(
         GeneratedProfileSeed seed,
         int index,
         string? namespaceRoot,
@@ -180,31 +180,8 @@ public sealed class ModOnboardingService : IModOnboardingService
         IReadOnlyList<string> pathHints = Array.Empty<string>();
         IReadOnlyList<string> aliases = Array.Empty<string>();
 
-        if (string.IsNullOrWhiteSpace(resolvedSeedDraftProfileId))
-        {
-            errors.Add("DraftProfileId is required.");
-        }
-
-        if (string.IsNullOrWhiteSpace(resolvedDisplayName))
-        {
-            errors.Add("DisplayName is required.");
-        }
-
-        if (string.IsNullOrWhiteSpace(resolvedSourceRunId))
-        {
-            errors.Add("SourceRunId is required.");
-        }
-
-        if (!double.IsFinite(seed.Confidence))
-        {
-            errors.Add("Confidence must be finite.");
-        }
-
         var baseProfileId = ResolveBaseProfileId(seed);
-        if (string.IsNullOrWhiteSpace(baseProfileId))
-        {
-            errors.Add("BaseProfileId or ParentProfile is required.");
-        }
+        ValidateSeedInputs(resolvedSeedDraftProfileId, resolvedDisplayName, resolvedSourceRunId, seed.Confidence, baseProfileId, errors);
 
         if (errors.Count == 0)
         {
@@ -218,125 +195,27 @@ public sealed class ModOnboardingService : IModOnboardingService
                 }
                 else
                 {
-                    var baseProfile = await _profiles.ResolveInheritedProfileAsync(baseProfileId!, cancellationToken);
-                    var launchSamples = seed.LaunchSamples ?? Array.Empty<ModLaunchSample>();
-                    workshopIds = MergeWorkshopIds(seed.WorkshopId, seed.RequiredWorkshopIds, InferWorkshopIds(launchSamples));
-                    pathHints = MergePathHints(seed.LocalPathHints, InferPathHints(launchSamples));
-                    aliases = InferAliases(profileId, displayName, seed.ProfileAliases);
-                    var requiredCapabilities = MergeRequiredCapabilities(baseProfile.RequiredCapabilities, seed.RequiredCapabilities);
-
-                    if (workshopIds.Count == 0)
-                    {
-                        warnings.Add("No STEAMMOD markers were inferred from launch samples.");
-                    }
-
-                    if (pathHints.Count == 0)
-                    {
-                        warnings.Add("No local path hints were inferred from launch samples.");
-                    }
-
-                    var metadata = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
-                    {
-                        ["origin"] = "auto_discovery",
-                        ["sourceRunId"] = resolvedSourceRunId!.Trim(),
-                        ["confidence"] = seed.Confidence.ToString("0.00", CultureInfo.InvariantCulture),
-                        ["parentProfile"] = ResolveParentProfile(seed, baseProfile.Id)
-                    };
-
-                    if (workshopIds.Count > 0)
-                    {
-                        metadata["requiredWorkshopIds"] = string.Join(',', workshopIds);
-                    }
-
-                    if (aliases.Count > 0)
-                    {
-                        metadata["profileAliases"] = string.Join(',', aliases);
-                    }
-
-                    if (pathHints.Count > 0)
-                    {
-                        metadata["localPathHints"] = string.Join(',', pathHints);
-                    }
-
-                    if (!string.IsNullOrWhiteSpace(seed.Notes))
-                    {
-                        metadata["onboardingNotes"] = seed.Notes.Trim();
-                    }
-
-                    if (!string.IsNullOrWhiteSpace(seed.Title))
-                    {
-                        metadata["seedTitle"] = seed.Title.Trim();
-                    }
-
-                    if (!string.IsNullOrWhiteSpace(seed.WorkshopId))
-                    {
-                        metadata["workshopId"] = seed.WorkshopId.Trim();
-                    }
-
-                    if (!string.IsNullOrWhiteSpace(seed.CandidateBaseProfile))
-                    {
-                        metadata["candidateBaseProfile"] = seed.CandidateBaseProfile.Trim();
-                    }
-
-                    if (!string.IsNullOrWhiteSpace(seed.RiskLevel))
-                    {
-                        metadata["riskLevel"] = NormalizeRiskLevel(seed.RiskLevel);
-                    }
-
-                    if (seed.ParentDependencies is { Count: > 0 })
-                    {
-                        metadata["parentDependencies"] = string.Join(',', seed.ParentDependencies.Where(x => !string.IsNullOrWhiteSpace(x)));
-                    }
-
-                    if (seed.LaunchHints is { Count: > 0 })
-                    {
-                        metadata["launchHints"] = string.Join(',', seed.LaunchHints.Where(x => !string.IsNullOrWhiteSpace(x)));
-                    }
-
-                    if (seed.AnchorHints is { Count: > 0 })
-                    {
-                        metadata["anchorHints"] = string.Join(',', seed.AnchorHints.Where(x => !string.IsNullOrWhiteSpace(x)));
-                    }
-
-                    if (requiredCapabilities.Count > 0)
-                    {
-                        metadata["requiredCapabilities"] = string.Join(',', requiredCapabilities);
-                    }
-
-                    var draftProfile = new TrainerProfile(
-                        Id: profileId,
-                        DisplayName: displayName,
-                        Inherits: baseProfile.Id,
-                        ExeTarget: baseProfile.ExeTarget,
-                        SteamWorkshopId: workshopIds.Count > 0 ? workshopIds[0] : baseProfile.SteamWorkshopId,
-                        SignatureSets: Array.Empty<SignatureSet>(),
-                        FallbackOffsets: new Dictionary<string, long>(StringComparer.OrdinalIgnoreCase),
-                        Actions: new Dictionary<string, ActionSpec>(StringComparer.OrdinalIgnoreCase),
-                        FeatureFlags: new Dictionary<string, bool>(StringComparer.OrdinalIgnoreCase)
-                        {
-                            ["customModDraft"] = true,
-                            ["auto_discovery"] = true,
-                            ["allow_fog_patch_fallback"] = false,
-                            ["allow_unit_cap_patch_fallback"] = false,
-                            ["requires_calibration_before_mutation"] = true
-                        },
-                        CatalogSources: Array.Empty<CatalogSource>(),
-                        SaveSchemaId: baseProfile.SaveSchemaId,
-                        HelperModHooks: Array.Empty<HelperHookSpec>(),
-                        Metadata: metadata,
-                        RequiredCapabilities: requiredCapabilities);
-
-                    outputPath = ResolveDraftPath(profileId, namespaceRoot);
-                    Directory.CreateDirectory(Path.GetDirectoryName(outputPath)!);
-                    var json = JsonProfileSerializer.Serialize(draftProfile);
-                    await File.WriteAllTextAsync(outputPath, json, cancellationToken);
+                    var scaffold = await BuildSeedScaffoldAsync(
+                        seed, profileId, displayName, resolvedSourceRunId!, baseProfileId!, namespaceRoot, warnings, cancellationToken);
+                    workshopIds = scaffold.WorkshopIds;
+                    pathHints = scaffold.PathHints;
+                    aliases = scaffold.Aliases;
+                    outputPath = scaffold.OutputPath;
                 }
             }
             catch (OperationCanceledException) when (cancellationToken.IsCancellationRequested)
             {
                 throw;
             }
-            catch (Exception ex)
+            catch (IOException ex)
+            {
+                errors.Add(ex.Message);
+            }
+            catch (InvalidOperationException ex)
+            {
+                errors.Add(ex.Message);
+            }
+            catch (UnauthorizedAccessException ex)
             {
                 errors.Add(ex.Message);
             }
@@ -354,6 +233,168 @@ public sealed class ModOnboardingService : IModOnboardingService
             Warnings: warnings,
             Errors: errors);
     }
+
+    private static void ValidateSeedInputs(
+        string? draftProfileId,
+        string? displayName,
+        string? sourceRunId,
+        double confidence,
+        string? baseProfileId,
+        List<string> errors)
+    {
+        if (string.IsNullOrWhiteSpace(draftProfileId))
+        {
+            errors.Add("DraftProfileId is required.");
+        }
+
+        if (string.IsNullOrWhiteSpace(displayName))
+        {
+            errors.Add("DisplayName is required.");
+        }
+
+        if (string.IsNullOrWhiteSpace(sourceRunId))
+        {
+            errors.Add("SourceRunId is required.");
+        }
+
+        if (!double.IsFinite(confidence))
+        {
+            errors.Add("Confidence must be finite.");
+        }
+
+        if (string.IsNullOrWhiteSpace(baseProfileId))
+        {
+            errors.Add("BaseProfileId or ParentProfile is required.");
+        }
+    }
+
+    private async Task<SeedScaffoldResult> BuildSeedScaffoldAsync(
+        GeneratedProfileSeed seed,
+        string profileId,
+        string displayName,
+        string sourceRunId,
+        string baseProfileId,
+        string? namespaceRoot,
+        List<string> warnings,
+        CancellationToken cancellationToken)
+    {
+        var baseProfile = await _profiles.ResolveInheritedProfileAsync(baseProfileId, cancellationToken);
+        var launchSamples = seed.LaunchSamples ?? Array.Empty<ModLaunchSample>();
+        var workshopIds = MergeWorkshopIds(seed.WorkshopId, seed.RequiredWorkshopIds, InferWorkshopIds(launchSamples));
+        var pathHints = MergePathHints(seed.LocalPathHints, InferPathHints(launchSamples));
+        var aliases = InferAliases(profileId, displayName, seed.ProfileAliases);
+        var requiredCapabilities = MergeRequiredCapabilities(baseProfile.RequiredCapabilities, seed.RequiredCapabilities);
+
+        if (workshopIds.Count == 0)
+        {
+            warnings.Add("No STEAMMOD markers were inferred from launch samples.");
+        }
+
+        if (pathHints.Count == 0)
+        {
+            warnings.Add("No local path hints were inferred from launch samples.");
+        }
+
+        var metadata = BuildSeedMetadata(seed, sourceRunId, baseProfile.Id, workshopIds, aliases, pathHints, requiredCapabilities);
+
+        var draftProfile = new TrainerProfile(
+            Id: profileId,
+            DisplayName: displayName,
+            Inherits: baseProfile.Id,
+            ExeTarget: baseProfile.ExeTarget,
+            SteamWorkshopId: workshopIds.Count > 0 ? workshopIds[0] : baseProfile.SteamWorkshopId,
+            SignatureSets: Array.Empty<SignatureSet>(),
+            FallbackOffsets: new Dictionary<string, long>(StringComparer.OrdinalIgnoreCase),
+            Actions: new Dictionary<string, ActionSpec>(StringComparer.OrdinalIgnoreCase),
+            FeatureFlags: new Dictionary<string, bool>(StringComparer.OrdinalIgnoreCase)
+            {
+                ["customModDraft"] = true,
+                ["auto_discovery"] = true,
+                ["allow_fog_patch_fallback"] = false,
+                ["allow_unit_cap_patch_fallback"] = false,
+                ["requires_calibration_before_mutation"] = true
+            },
+            CatalogSources: Array.Empty<CatalogSource>(),
+            SaveSchemaId: baseProfile.SaveSchemaId,
+            HelperModHooks: Array.Empty<HelperHookSpec>(),
+            Metadata: metadata,
+            RequiredCapabilities: requiredCapabilities);
+
+        var outputPath = ResolveDraftPath(profileId, namespaceRoot);
+        Directory.CreateDirectory(Path.GetDirectoryName(outputPath)!);
+        var json = JsonProfileSerializer.Serialize(draftProfile);
+        await File.WriteAllTextAsync(outputPath, json, cancellationToken);
+
+        return new SeedScaffoldResult(workshopIds, pathHints, aliases, outputPath);
+    }
+
+    private static Dictionary<string, string> BuildSeedMetadata(
+        GeneratedProfileSeed seed,
+        string sourceRunId,
+        string baseProfileId,
+        IReadOnlyList<string> workshopIds,
+        IReadOnlyList<string> aliases,
+        IReadOnlyList<string> pathHints,
+        IReadOnlyList<string> requiredCapabilities)
+    {
+        var metadata = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
+        {
+            ["origin"] = "auto_discovery",
+            ["sourceRunId"] = sourceRunId.Trim(),
+            ["confidence"] = seed.Confidence.ToString("0.00", CultureInfo.InvariantCulture),
+            ["parentProfile"] = ResolveParentProfile(seed, baseProfileId)
+        };
+
+        AddMetadataIfNotEmpty(metadata, "requiredWorkshopIds", workshopIds);
+        AddMetadataIfNotEmpty(metadata, "profileAliases", aliases);
+        AddMetadataIfNotEmpty(metadata, "localPathHints", pathHints);
+        AddTrimmedMetadata(metadata, "onboardingNotes", seed.Notes);
+        AddTrimmedMetadata(metadata, "seedTitle", seed.Title);
+        AddTrimmedMetadata(metadata, "workshopId", seed.WorkshopId);
+        AddTrimmedMetadata(metadata, "candidateBaseProfile", seed.CandidateBaseProfile);
+
+        if (!string.IsNullOrWhiteSpace(seed.RiskLevel))
+        {
+            metadata["riskLevel"] = NormalizeRiskLevel(seed.RiskLevel);
+        }
+
+        AddFilteredListMetadata(metadata, "parentDependencies", seed.ParentDependencies);
+        AddFilteredListMetadata(metadata, "launchHints", seed.LaunchHints);
+        AddFilteredListMetadata(metadata, "anchorHints", seed.AnchorHints);
+        AddMetadataIfNotEmpty(metadata, "requiredCapabilities", requiredCapabilities);
+
+        return metadata;
+    }
+
+    private static void AddMetadataIfNotEmpty(Dictionary<string, string> metadata, string key, IReadOnlyList<string> values)
+    {
+        if (values.Count > 0)
+        {
+            metadata[key] = string.Join(',', values);
+        }
+    }
+
+    private static void AddTrimmedMetadata(Dictionary<string, string> metadata, string key, string? value)
+    {
+        if (!string.IsNullOrWhiteSpace(value))
+        {
+            metadata[key] = value.Trim();
+        }
+    }
+
+    private static void AddFilteredListMetadata(Dictionary<string, string> metadata, string key, IReadOnlyList<string>? values)
+    {
+        if (values is { Count: > 0 })
+        {
+            metadata[key] = string.Join(',', values.Where(x => !string.IsNullOrWhiteSpace(x)));
+        }
+    }
+
+    private readonly record struct SeedScaffoldResult(
+        IReadOnlyList<string> WorkshopIds,
+        IReadOnlyList<string> PathHints,
+        IReadOnlyList<string> Aliases,
+        string OutputPath);
 
     private string ResolveDraftPath(string profileId, string? namespaceRoot)
     {

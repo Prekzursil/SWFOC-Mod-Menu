@@ -230,7 +230,11 @@ public sealed class ModDependencyValidator : IModDependencyValidator
         {
             content = File.ReadAllText(libraryFoldersPath);
         }
-        catch (Exception)
+        catch (IOException)
+        {
+            return;
+        }
+        catch (UnauthorizedAccessException)
         {
             return;
         }

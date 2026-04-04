@@ -49,7 +49,7 @@ public sealed class MegaFilesXmlIndexBuilder
         {
             return XDocument.Parse(content, LoadOptions.None);
         }
-        catch (Exception ex)
+        catch (System.Xml.XmlException ex)
         {
             diagnostics.Add($"Invalid MegaFiles XML: {ex.Message}");
             return null;

@@ -27,7 +27,7 @@ public sealed class MegArchiveReader : IMegArchiveReader
             var bytes = File.ReadAllBytes(megPath);
             return Open(bytes, megPath);
         }
-        catch (Exception ex)
+        catch (IOException ex)
         {
             return MegOpenResult.Fail("io_error", $"Failed reading MEG file '{megPath}': {ex.Message}");
         }
@@ -51,7 +51,12 @@ public sealed class MegArchiveReader : IMegArchiveReader
         {
             return TryOpen(bytes, sourceName, diagnostics);
         }
-        catch (Exception ex)
+        catch (InvalidOperationException ex)
+        {
+            diagnostics.Add($"Unhandled parse exception: {ex.Message}");
+            return MegOpenResult.Fail("parse_exception", $"MEG parse failed: {ex.Message}", diagnostics);
+        }
+        catch (FormatException ex)
         {
             diagnostics.Add($"Unhandled parse exception: {ex.Message}");
             return MegOpenResult.Fail("parse_exception", $"MEG parse failed: {ex.Message}", diagnostics);

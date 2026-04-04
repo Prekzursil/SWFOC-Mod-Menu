@@ -365,7 +365,11 @@ public sealed class NamedPipeExtenderBackend : IExecutionBackend
         {
             return CreateTimeoutResult(command.CommandId);
         }
-        catch (Exception ex)
+        catch (IOException ex)
+        {
+            return CreateUnreachableResult(command.CommandId, ex.Message);
+        }
+        catch (TimeoutException ex)
         {
             return CreateUnreachableResult(command.CommandId, ex.Message);
         }

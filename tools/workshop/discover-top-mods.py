@@ -10,7 +10,7 @@ import re
 import sys
 from pathlib import Path
 from typing import Any
-from urllib import parse, request
+from urllib import error, parse, request
 
 
 SCHEMA_VERSION = "1.0"
@@ -244,7 +244,7 @@ def scrape_workshop_ids(app_id: int, pages: int, timeout_sec: float) -> tuple[li
             for match in pattern.findall(html):
                 if match not in workshop_ids:
                     workshop_ids.append(match)
-        except Exception as exc:  # noqa: BLE001
+        except (error.URLError, OSError, ValueError) as exc:
             print(f"warning: failed to scrape {browse_url}: {exc}", file=sys.stderr)
 
     return workshop_ids, sources
@@ -273,7 +273,7 @@ def fetch_published_file_details(workshop_ids: list[str], timeout_sec: float) ->
             details = raw_payload.get("response", {}).get("publishedfiledetails", [])
             if isinstance(details, list):
                 all_details.extend([item for item in details if isinstance(item, dict)])
-        except Exception as exc:  # noqa: BLE001
+        except (error.URLError, OSError, ValueError) as exc:
             print(f"warning: failed to fetch file details for batch starting at {start}: {exc}", file=sys.stderr)
 
     return all_details

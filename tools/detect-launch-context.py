@@ -192,7 +192,7 @@ def reason_code_for_profile(profile_id: str, source: str) -> str:
     return "unknown"
 
 
-def profile_priority_key(profile: ProfileInfo) -> tuple[bool, bool, str]:
+def profile_priority_key(profile: ProfileInfo) -> tuple[int, str]:
     return (profile_sort_priority(profile.profile_id), profile.profile_id)
 
 
@@ -439,7 +439,7 @@ def _parse_args() -> argparse.Namespace:
 def _load_profiles_or_none(profile_root: str) -> dict[str, ProfileInfo] | None:
     try:
         return load_profiles(Path(profile_root))
-    except Exception as exc:
+    except (FileNotFoundError, json.JSONDecodeError, OSError) as exc:
         print(f"profile-load-error: {exc}", file=sys.stderr)
         return None
 
@@ -448,7 +448,7 @@ def _load_cases_payload(input_path: str) -> dict[str, Any] | None:
     try:
         with open(input_path, "r", encoding="utf-8") as f:
             payload = json.load(f)
-    except Exception as exc:
+    except (FileNotFoundError, json.JSONDecodeError, OSError) as exc:
         print(f"input-read-error: {exc}", file=sys.stderr)
         return None
 

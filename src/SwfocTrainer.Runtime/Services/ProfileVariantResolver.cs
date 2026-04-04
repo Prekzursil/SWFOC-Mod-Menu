@@ -176,7 +176,12 @@ public sealed class ProfileVariantResolver : IProfileVariantResolver
                 ProcessId: process.ProcessId,
                 ProcessName: process.ProcessName);
         }
-        catch (Exception ex)
+        catch (IOException ex)
+        {
+            _logger.LogDebug(ex, "Fingerprint-based profile resolution failed for PID {Pid}", process.ProcessId);
+            return null;
+        }
+        catch (InvalidOperationException ex)
         {
             _logger.LogDebug(ex, "Fingerprint-based profile resolution failed for PID {Pid}", process.ProcessId);
             return null;
@@ -218,7 +223,12 @@ public sealed class ProfileVariantResolver : IProfileVariantResolver
 
             return profiles;
         }
-        catch (Exception ex)
+        catch (IOException ex)
+        {
+            _logger.LogDebug(ex, "Failed to load profiles for launch-context hint resolution.");
+            return Array.Empty<TrainerProfile>();
+        }
+        catch (InvalidOperationException ex)
         {
             _logger.LogDebug(ex, "Failed to load profiles for launch-context hint resolution.");
             return Array.Empty<TrainerProfile>();
