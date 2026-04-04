@@ -45,7 +45,7 @@ public sealed class ProgramServiceRegistrationTests
                 .GetProperty("RemoteManifestUrl", BindingFlags.Instance | BindingFlags.Public)?
                 .GetValue(instance) as string;
             remoteManifestUrl.Should().NotBeNull();
-            remoteManifestUrl!.Should().Be("https://example.invalid/manifest.json");
+            remoteManifestUrl.Should().Be("https://example.invalid/manifest.json");
         }
         finally
         {
