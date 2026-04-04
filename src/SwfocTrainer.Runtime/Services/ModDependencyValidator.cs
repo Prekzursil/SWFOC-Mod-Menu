@@ -8,7 +8,7 @@ public sealed class ModDependencyValidator : IModDependencyValidator
 {
     private static readonly TimeSpan RegexMatchTimeout = TimeSpan.FromMilliseconds(250);
     private const string WorkshopAppId = "32470";
-    private const string PathTraversalToken = "..";
+    private const string PathTraversalSequence = "..";
     private const string DependencyMetadataMarkerKey = "requiredMarkerFile";
     private const string DependencySoftFailSuffix = "Attach will continue, but dependency-sensitive actions are temporarily disabled.";
     private const string LibraryFolderPathPattern = "\"path\"\\s*\"([^\"]+)\"";
@@ -49,7 +49,7 @@ public sealed class ModDependencyValidator : IModDependencyValidator
 
     private static DependencyValidationResult? ValidateMarkerMetadata(string? marker)
     {
-        if (string.IsNullOrWhiteSpace(marker) || !marker.Contains(PathTraversalToken, StringComparison.Ordinal))
+        if (string.IsNullOrWhiteSpace(marker) || !marker.Contains(PathTraversalSequence, StringComparison.Ordinal))
         {
             return null;
         }
@@ -321,7 +321,7 @@ public sealed class ModDependencyValidator : IModDependencyValidator
             .Select(root => Directory.GetParent(root)?.FullName)
             .Where(parent => !string.IsNullOrWhiteSpace(parent))
             .SelectMany(parent => parentHints
-                .Where(hint => !hint.Contains(PathTraversalToken, StringComparison.Ordinal))
+                .Where(hint => !hint.Contains(PathTraversalSequence, StringComparison.Ordinal))
                 .Select(hint => Path.Join(parent!, hint)))
             .Where(Directory.Exists))
         {
