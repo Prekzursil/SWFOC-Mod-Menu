@@ -135,7 +135,7 @@ public sealed class LaunchContextRuntimeScriptParityTests
             ("py", "-3")
         };
 
-        var match = candidates.Cast<(string FileName, string PrefixArgs)?>().FirstOrDefault(c => CanExecute(c!.Value));
+        var match = candidates.Select(c => ((string FileName, string PrefixArgs)?)c).FirstOrDefault(c => CanExecute(c!.Value));
         return match;
     }
 

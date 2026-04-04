@@ -1,0 +1,29 @@
+version = 1
+
+test_patterns = ["tests/**"]
+
+exclude_patterns = [
+  "native/build-*/**",
+  "native/runtime/**",
+  "TestResults/**",
+  "artifacts/**",
+  "coverage-100/**",
+  "1397421866(original mod)/**",
+  "3447786229(submod)/**",
+  "3661482670(cheat_mode_example)/**",
+]
+
+[[analyzers]]
+name = "csharp"
+enabled = true
+
+[[analyzers]]
+name = "python"
+enabled = true
+
+  [analyzers.meta]
+  runtime_version = "3.x"
+
+[[analyzers]]
+name = "test-coverage"
+enabled = true

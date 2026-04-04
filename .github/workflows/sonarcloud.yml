@@ -46,6 +46,7 @@ jobs:
           PR_BASE: ${{ github.base_ref }}
         run: |
           SONAR_ARGS="/k:Prekzursil_SWFOC-Mod-Menu /o:prekzursil /d:sonar.token=$SONAR_TOKEN /d:sonar.host.url=https://sonarcloud.io"
+          SONAR_ARGS="$SONAR_ARGS /d:sonar.cs.opencover.reportPaths=TestResults/coverage/opencover.xml"
           if [ "$EVENT_NAME" = "pull_request" ] && [ -n "$PR_NUMBER" ]; then
             SONAR_ARGS="$SONAR_ARGS /d:sonar.pullrequest.key=$PR_NUMBER /d:sonar.pullrequest.branch=$PR_BRANCH /d:sonar.pullrequest.base=$PR_BASE"
           fi
@@ -53,6 +54,17 @@ jobs:
 
       - name: Build
         run: dotnet build SwfocTrainer.sln -c Release --no-restore
+
+      - name: Test with coverage
+        shell: bash
+        run: |
+          dotnet test tests/SwfocTrainer.Tests/SwfocTrainer.Tests.csproj \
+            -c Release --no-build \
+            --filter "FullyQualifiedName!~SwfocTrainer.Tests.Profiles.Live&FullyQualifiedName!~RuntimeAttachSmokeTests" \
+            -p:CollectCoverage=true \
+            -p:CoverletOutputFormat=opencover \
+            -p:CoverletOutput="TestResults/coverage/opencover" \
+            -p:ExcludeByFile="**/obj/**%2c**/*.g.cs%2c**/*.g.i.cs"
 
       - name: Sonar End
         shell: bash

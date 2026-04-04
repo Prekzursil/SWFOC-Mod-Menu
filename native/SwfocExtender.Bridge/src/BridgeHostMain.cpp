@@ -6,6 +6,7 @@
 #include "swfoc_extender/plugins/HelperLuaPlugin.hpp"
 #include "swfoc_extender/plugins/ProcessMutationHelpers.hpp"
 
+#include <algorithm>
 #include <array>
 #include <atomic>
 #include <chrono>
@@ -16,6 +17,7 @@
 #include <map>
 #include <sstream>
 #include <string>
+#include <string_view>
 #include <thread>
 #include <vector>
 
@@ -25,12 +27,12 @@
 #endif
 
 namespace swfoc::extender::bridge::host_json {
-std::string EscapeJson(const std::string& value);
-std::string ToDiagnosticsJson(const std::map<std::string, std::string>& values);
-bool TryReadBool(const std::string& payloadJson, const std::string& key, bool& value);
-bool TryReadInt(const std::string& payloadJson, const std::string& key, int& value);
-std::string ExtractStringValue(const std::string& json, const std::string& key);
-std::map<std::string, std::string> ExtractStringMap(const std::string& json, const std::string& key);
+std::string EscapeJson(std::string_view value);
+std::string ToDiagnosticsJson(const std::map<std::string, std::string, std::less<>>& values);
+bool TryReadBool(std::string_view payloadJson, std::string_view key, bool& value);
+bool TryReadInt(std::string_view payloadJson, std::string_view key, int& value);
+std::string ExtractStringValue(std::string_view json, std::string_view key);
+std::map<std::string, std::string, std::less<>> ExtractStringMap(std::string_view json, std::string_view key);
 } // namespace swfoc::extender::bridge::host_json
 
 namespace {
@@ -54,6 +56,7 @@ using swfoc::extender::bridge::host_json::ToDiagnosticsJson;
 using swfoc::extender::bridge::host_json::TryReadBool;
 using swfoc::extender::bridge::host_json::TryReadInt;
 
+// S5421: global constants
 constexpr const char* kBackendName = "extender";
 constexpr const char* kDefaultPipeName = "SwfocExtenderBridge";
 
@@ -79,13 +82,13 @@ missingIncludeSystem can be suppressed per translation unit with:
   --suppress=missingIncludeSystem:native/SwfocExtender.Bridge/src/BridgeHostMain.cpp
 */
 
-bool ResolveLockCredits(const std::string& payloadJson) {
-    bool lockCredits = false;
+bool ResolveLockCredits(std::string_view payloadJson) {
+    auto lockCredits = false;
     if (TryReadBool(payloadJson, "lockCredits", lockCredits)) {
         return lockCredits;
     }
 
-    bool legacyForce = false;
+    auto legacyForce = false;
     return TryReadBool(payloadJson, "forcePatchHook", legacyForce) && legacyForce;
 }
 
@@ -94,7 +97,7 @@ int ResolveProcessId(const BridgeCommand& command) {
         return command.processId;
     }
 
-    int payloadProcessId = 0;
+    auto payloadProcessId = 0;
     if (TryReadInt(command.payloadJson, "processId", payloadProcessId) && payloadProcessId > 0) {
         return payloadProcessId;
     }
@@ -102,7 +105,7 @@ int ResolveProcessId(const BridgeCommand& command) {
     return 0;
 }
 
-std::map<std::string, std::string> ResolveAnchors(const BridgeCommand& command) {
+std::map<std::string, std::string, std::less<>> ResolveAnchors(const BridgeCommand& command) {
     auto anchors = command.resolvedAnchors;
 
     const auto payloadAnchors = ExtractStringMap(command.payloadJson, "anchors");
@@ -110,9 +113,10 @@ std::map<std::string, std::string> ResolveAnchors(const BridgeCommand& command) 
         anchors[key] = value;
     }
 
-    const auto legacySymbol = ExtractStringValue(command.payloadJson, "symbol");
-    if (!legacySymbol.empty() && anchors.find(legacySymbol) == anchors.end()) {
-        anchors.emplace(legacySymbol, legacySymbol);
+    // S6171: use contains() instead of find() != end()
+    if (const auto legacySymbol = ExtractStringValue(command.payloadJson, "symbol");
+        !legacySymbol.empty() && !anchors.contains(legacySymbol)) {
+        anchors.try_emplace(legacySymbol, legacySymbol);
     }
 
     return anchors;
@@ -120,72 +124,65 @@ std::map<std::string, std::string> ResolveAnchors(const BridgeCommand& command) 
 
 PluginRequest BuildPluginRequest(const BridgeCommand& command) {
     PluginRequest request {};
-    request.featureId = command.featureId;
-    request.profileId = command.profileId;
-    request.processId = ResolveProcessId(command);
+    request.identity.featureId = command.featureId;
+    request.identity.profileId = command.profileId;
+    request.identity.processId = ResolveProcessId(command);
     request.anchors = ResolveAnchors(command);
-    request.lockValue = ResolveLockCredits(command.payloadJson);
-    request.helperHookId = ExtractStringValue(command.payloadJson, "helperHookId");
-    request.helperEntryPoint = ExtractStringValue(command.payloadJson, "helperEntryPoint");
-    request.helperScript = ExtractStringValue(command.payloadJson, "helperScript");
-    request.operationKind = ExtractStringValue(command.payloadJson, "operationKind");
-    request.operationToken = ExtractStringValue(command.payloadJson, "operationToken");
-    request.invocationContractVersion = ExtractStringValue(command.payloadJson, "helperInvocationContractVersion");
-    request.unitId = ExtractStringValue(command.payloadJson, "unitId");
-    request.entityId = ExtractStringValue(command.payloadJson, "entityId");
-    request.entryMarker = ExtractStringValue(command.payloadJson, "entryMarker");
-    request.faction = ExtractStringValue(command.payloadJson, "faction");
-    request.targetFaction = ExtractStringValue(command.payloadJson, "targetFaction");
-    request.sourceFaction = ExtractStringValue(command.payloadJson, "sourceFaction");
-    request.globalKey = ExtractStringValue(command.payloadJson, "globalKey");
-    request.populationPolicy = ExtractStringValue(command.payloadJson, "populationPolicy");
-    request.persistencePolicy = ExtractStringValue(command.payloadJson, "persistencePolicy");
-    request.placementMode = ExtractStringValue(command.payloadJson, "placementMode");
-    request.worldPosition = ExtractStringValue(command.payloadJson, "worldPosition");
+    request.payload.lockValue = ResolveLockCredits(command.payloadJson);
+    request.helperBridge.helperHookId = ExtractStringValue(command.payloadJson, "helperHookId");
+    request.helperBridge.helperEntryPoint = ExtractStringValue(command.payloadJson, "helperEntryPoint");
+    request.helperBridge.helperScript = ExtractStringValue(command.payloadJson, "helperScript");
+    request.helperBridge.operationKind = ExtractStringValue(command.payloadJson, "operationKind");
+    request.helperBridge.operationToken = ExtractStringValue(command.payloadJson, "operationToken");
+    request.helperBridge.invocationContractVersion = ExtractStringValue(command.payloadJson, "helperInvocationContractVersion");
+    request.entityContext.unitId = ExtractStringValue(command.payloadJson, "unitId");
+    request.entityContext.entityId = ExtractStringValue(command.payloadJson, "entityId");
+    request.entityContext.entryMarker = ExtractStringValue(command.payloadJson, "entryMarker");
+    request.entityContext.faction = ExtractStringValue(command.payloadJson, "faction");
+    request.entityContext.targetFaction = ExtractStringValue(command.payloadJson, "targetFaction");
+    request.entityContext.sourceFaction = ExtractStringValue(command.payloadJson, "sourceFaction");
+    request.entityContext.globalKey = ExtractStringValue(command.payloadJson, "globalKey");
+    request.entityContext.populationPolicy = ExtractStringValue(command.payloadJson, "populationPolicy");
+    request.entityContext.persistencePolicy = ExtractStringValue(command.payloadJson, "persistencePolicy");
+    request.entityContext.placementMode = ExtractStringValue(command.payloadJson, "placementMode");
+    request.entityContext.worldPosition = ExtractStringValue(command.payloadJson, "worldPosition");
 
-    int intValue = 0;
-    if (TryReadInt(command.payloadJson, "intValue", intValue)) {
-        request.intValue = intValue;
+    if (auto intValue = 0; TryReadInt(command.payloadJson, "intValue", intValue)) {
+        request.payload.intValue = intValue;
     }
 
-    bool boolValue = false;
-    if (TryReadBool(command.payloadJson, "boolValue", boolValue)) {
-        request.boolValue = boolValue;
+    if (auto boolValue = false; TryReadBool(command.payloadJson, "boolValue", boolValue)) {
+        request.payload.boolValue = boolValue;
     }
 
-    bool enable = false;
-    if (TryReadBool(command.payloadJson, "enable", enable)) {
-        request.enable = enable;
+    if (auto enable = false; TryReadBool(command.payloadJson, "enable", enable)) {
+        request.payload.enable = enable;
     } else if (command.featureId == "set_unit_cap" || command.featureId == "toggle_instant_build_patch") {
-        request.enable = true;
+        request.payload.enable = true;
     }
 
-    bool allowCrossFaction = false;
-    if (TryReadBool(command.payloadJson, "allowCrossFaction", allowCrossFaction)) {
-        request.allowCrossFaction = allowCrossFaction;
+    if (auto allowCrossFaction = false; TryReadBool(command.payloadJson, "allowCrossFaction", allowCrossFaction)) {
+        request.payload.allowCrossFaction = allowCrossFaction;
     }
 
-    bool forceOverride = false;
-    if (TryReadBool(command.payloadJson, "forceOverride", forceOverride)) {
-        request.forceOverride = forceOverride;
+    if (auto forceOverride = false; TryReadBool(command.payloadJson, "forceOverride", forceOverride)) {
+        request.payload.forceOverride = forceOverride;
     }
 
     return request;
 }
 
-bool IsSupportedFeature(const std::string& featureId) {
-    for (const auto* supported : kSupportedFeatures) {
-        if (featureId == supported) {
-            return true;
-        }
-    }
-
-    return false;
+// S5566: use ranges algorithm instead of manual loop
+bool IsSupportedFeature(std::string_view featureId) {
+    return std::ranges::any_of(kSupportedFeatures, [&](const char* supported) {
+        return featureId == supported;
+    });
 }
 
 void EnsureCapabilityEntries(CapabilitySnapshot& snapshot) {
     for (const auto* featureId : kSupportedFeatures) {
-        if (snapshot.features.find(featureId) != snapshot.features.end()) {
+        // S6171: use contains()
+        if (snapshot.features.contains(featureId)) {
             continue;
         }
 
@@ -193,7 +190,7 @@ void EnsureCapabilityEntries(CapabilitySnapshot& snapshot) {
         state.available = false;
         state.state = "Unknown";
         state.reasonCode = "CAPABILITY_REQUIRED_MISSING";
-        snapshot.features.emplace(featureId, state);
+        snapshot.features.try_emplace(featureId, state);
     }
 }
 
@@ -212,7 +209,7 @@ struct AnchorProbeResult {
     std::string probeSource {"candidate_missing"};
 };
 
-std::string ResolveProbeSource(const std::string& anchorValue) {
+std::string ResolveProbeSource(std::string_view anchorValue) {
     if (anchorValue.empty()) {
         return "candidate_missing";
     }
@@ -220,11 +217,42 @@ std::string ResolveProbeSource(const std::string& anchorValue) {
     return anchorValue == "probe" ? "seed_placeholder" : "resolved_anchor";
 }
 
+// S134/S924: extracted helper to reduce nesting in ProbeReadableAnchor
+AnchorProbeResult ProbeCandidate(
+    const PluginRequest& probeContext,
+    const std::string& candidateKey,
+    const std::string& candidateValue) {
+    AnchorProbeResult result {};
+    result.anchorKey = candidateKey;
+    result.anchorValue = candidateValue;
+    result.probeSource = ResolveProbeSource(candidateValue);
+
+    std::uintptr_t address = 0;
+    result.parseOk = process_mutation::TryParseAddress(candidateValue, address);
+    if (!result.parseOk) {
+        result.reasonCode = "CAPABILITY_ANCHOR_INVALID";
+        return result;
+    }
+
+    std::vector<std::uint8_t> bytes;
+    std::string readError;
+    result.readOk = process_mutation::TryReadBytes(probeContext.processId(), address, 1, bytes, readError);
+    if (!result.readOk) {
+        result.readError = readError;
+        result.reasonCode = "CAPABILITY_ANCHOR_UNREADABLE";
+        return result;
+    }
+
+    result.available = true;
+    result.reasonCode = "CAPABILITY_PROBE_PASS";
+    return result;
+}
+
 AnchorProbeResult ProbeReadableAnchor(
     const PluginRequest& probeContext,
     std::initializer_list<const char*> candidates) {
     AnchorProbeResult result {};
-    if (probeContext.processId <= 0) {
+    if (probeContext.processId() <= 0) {
         result.reasonCode = "CAPABILITY_REQUIRED_MISSING";
         result.probeSource = "process_missing";
         return result;
@@ -236,29 +264,7 @@ AnchorProbeResult ProbeReadableAnchor(
             continue;
         }
 
-        result.anchorKey = it->first;
-        result.anchorValue = it->second;
-        result.probeSource = ResolveProbeSource(it->second);
-
-        std::uintptr_t address = 0;
-        result.parseOk = process_mutation::TryParseAddress(it->second, address);
-        if (!result.parseOk) {
-            result.reasonCode = "CAPABILITY_ANCHOR_INVALID";
-            return result;
-        }
-
-        std::vector<std::uint8_t> bytes;
-        std::string readError;
-        result.readOk = process_mutation::TryReadBytes(probeContext.processId, address, 1, bytes, readError);
-        if (!result.readOk) {
-            result.readError = readError;
-            result.reasonCode = "CAPABILITY_ANCHOR_UNREADABLE";
-            return result;
-        }
-
-        result.available = true;
-        result.reasonCode = "CAPABILITY_PROBE_PASS";
-        return result;
+        return ProbeCandidate(probeContext, it->first, it->second);
     }
 
     result.reasonCode = "CAPABILITY_REQUIRED_MISSING";
@@ -286,7 +292,8 @@ void AddProbeFeature(
     const char* featureId,
     std::initializer_list<const char*> anchorCandidates) {
     const auto probe = ProbeReadableAnchor(probeContext, anchorCandidates);
-    snapshot.features.emplace(featureId, BuildProbeState(probe));
+    // S6030: try_emplace
+    snapshot.features.try_emplace(featureId, BuildProbeState(probe));
 }
 
 void AddHelperProbeFeature(
@@ -294,14 +301,15 @@ void AddHelperProbeFeature(
     const PluginRequest& probeContext,
     const char* featureId) {
     CapabilityState state {};
-    state.available = probeContext.processId > 0;
+    state.available = probeContext.processId() > 0;
     state.state = state.available ? "Verified" : "Unavailable";
     state.reasonCode = state.available ? "CAPABILITY_PROBE_PASS" : "HELPER_BRIDGE_UNAVAILABLE";
     state.diagnostics = {
         {"probeSource", "native_helper_bridge"},
-        {"processId", std::to_string(probeContext.processId)},
+        {"processId", std::to_string(probeContext.processId())},
         {"helperBridgeState", state.available ? "ready" : "unavailable"}};
-    snapshot.features.emplace(featureId, state);
+    // S6030: try_emplace
+    snapshot.features.try_emplace(featureId, state);
 }
 
 CapabilitySnapshot BuildCapabilityProbeSnapshot(const PluginRequest& probeContext) {
@@ -340,19 +348,19 @@ std::string CapabilitySnapshotToJson(const CapabilitySnapshot& snapshot) {
         }
         first = false;
         out
-            << '"' << EscapeJson(featureId) << "\":{"
-            << "\"available\":" << (state.available ? "true" : "false") << ','
-            << "\"state\":\"" << EscapeJson(state.state) << "\"," 
-            << "\"reasonCode\":\"" << EscapeJson(state.reasonCode) << "\"";
+            << '"' << EscapeJson(featureId) << R"(":{)"
+            << R"("available":)" << (state.available ? "true" : "false") << ','
+            << R"("state":")" << EscapeJson(state.state) << R"(",)"
+            << R"("reasonCode":")" << EscapeJson(state.reasonCode) << '"';
         if (!state.diagnostics.empty()) {
-            out << ",\"diagnostics\":{";
+            out << R"(,"diagnostics":{)";
             auto firstDiagnostic = true;
             for (const auto& [key, value] : state.diagnostics) {
                 if (!firstDiagnostic) {
                     out << ',';
                 }
                 firstDiagnostic = false;
-                out << '"' << EscapeJson(key) << "\":\"" << EscapeJson(value) << '"';
+                out << '"' << EscapeJson(key) << R"(":")" << EscapeJson(value) << '"';
             }
             out << '}';
         }
@@ -363,36 +371,33 @@ std::string CapabilitySnapshotToJson(const CapabilitySnapshot& snapshot) {
     return out.str();
 }
 
+// S5566: use ranges algorithm
 std::string ResolveProbeHookState(const CapabilitySnapshot& snapshot) {
-    for (const auto& [_, state] : snapshot.features) {
-        if (state.available) {
-            return "HOOK_READY";
-        }
-    }
-
-    return "HOOK_NOT_INSTALLED";
+    const auto hasAvailable = std::ranges::any_of(
+        snapshot.features, [](const auto& entry) { return entry.second.available; });
+    return hasAvailable ? "HOOK_READY" : "HOOK_NOT_INSTALLED";
 }
 
 BridgeResult BuildBridgeResult(
     const BridgeCommand& command,
     bool succeeded,
-    const std::string& reasonCode,
-    const std::string& hookState,
-    const std::string& message,
-    const std::string& diagnosticsJson) {
+    std::string_view reasonCode,
+    std::string_view hookState,
+    std::string_view message,
+    std::string_view diagnosticsJson) {
     BridgeResult result {};
     result.commandId = command.commandId;
     result.succeeded = succeeded;
-    result.reasonCode = reasonCode;
+    result.reasonCode = std::string(reasonCode);
     result.backend = kBackendName;
-    result.hookState = hookState;
-    result.message = message;
-    result.diagnosticsJson = diagnosticsJson;
+    result.hookState = std::string(hookState);
+    result.message = std::string(message);
+    result.diagnosticsJson = std::string(diagnosticsJson);
     return result;
 }
 
 BridgeResult BuildHealthResult(const BridgeCommand& command) {
-    return BuildBridgeResult(command, true, "CAPABILITY_PROBE_PASS", "RUNNING", "Extender bridge is healthy.", "{\"bridge\":\"active\"}");
+    return BuildBridgeResult(command, true, "CAPABILITY_PROBE_PASS", "RUNNING", "Extender bridge is healthy.", R"({"bridge":"active"})");
 }
 
 BridgeResult BuildCapabilityProbeResult(
@@ -406,10 +411,10 @@ BridgeResult BuildCapabilityProbeResult(
     std::ostringstream diagnostics;
     diagnostics
         << "{"
-        << "\"bridge\":\"active\","
-        << "\"processId\":" << probeContext.processId << ','
-        << "\"anchorCount\":" << probeContext.anchors.size() << ','
-        << "\"capabilities\":" << CapabilitySnapshotToJson(merged)
+        << R"("bridge":"active",)"
+        << R"("processId":)" << probeContext.processId() << ','
+        << R"("anchorCount":)" << probeContext.anchors.size() << ','
+        << R"("capabilities":)" << CapabilitySnapshotToJson(merged)
         << "}";
 
     return BuildBridgeResult(command, true, "CAPABILITY_PROBE_PASS", ResolveProbeHookState(merged), "Capability probe completed.", diagnostics.str());
@@ -417,7 +422,7 @@ BridgeResult BuildCapabilityProbeResult(
 
 BridgeResult BuildMissingIntValueResult(const BridgeCommand& command) {
     return BuildBridgeResult(
-        command, false, "CAPABILITY_REQUIRED_MISSING", "DENIED", "Payload is missing required intValue.", "{\"requiredField\":\"intValue\"}");
+        command, false, "CAPABILITY_REQUIRED_MISSING", "DENIED", "Payload is missing required intValue.", R"({"requiredField":"intValue"})");
 }
 
 BridgeResult BuildBridgeResultFromPlugin(
@@ -427,8 +432,8 @@ BridgeResult BuildBridgeResultFromPlugin(
     auto diagnostics = pluginResult.diagnostics;
 
     diagnostics["featureId"] = command.featureId;
-    if (pluginRequest.processId > 0) {
-        diagnostics["processId"] = std::to_string(pluginRequest.processId);
+    if (pluginRequest.processId() > 0) {
+        diagnostics["processId"] = std::to_string(pluginRequest.processId());
     }
 
     if (!command.processName.empty()) {
@@ -441,13 +446,13 @@ BridgeResult BuildBridgeResultFromPlugin(
 }
 
 BridgeResult BuildSetCreditsResult(const BridgeCommand& command, EconomyPlugin& economyPlugin) {
-    int intValue = 0;
+    auto intValue = 0;
     if (!TryReadInt(command.payloadJson, "intValue", intValue)) {
         return BuildMissingIntValueResult(command);
     }
 
     auto pluginRequest = BuildPluginRequest(command);
-    pluginRequest.intValue = intValue;
+    pluginRequest.payload.intValue = intValue;
 
     return BuildBridgeResultFromPlugin(command, pluginRequest, economyPlugin.execute(pluginRequest));
 }
@@ -469,7 +474,8 @@ BridgeResult BuildHelperResult(const BridgeCommand& command, HelperLuaPlugin& he
 
 BridgeResult BuildUnsupportedFeatureResult(const BridgeCommand& command) {
     return BuildBridgeResult(
-        command, false, "CAPABILITY_REQUIRED_MISSING", "DENIED", "Feature not supported by current extender host.", "{\"featureId\":\"" + EscapeJson(command.featureId) + "\"}");
+        command, false, "CAPABILITY_REQUIRED_MISSING", "DENIED", "Feature not supported by current extender host.",
+        R"({"featureId":")" + EscapeJson(command.featureId) + R"("})");
 }
 
 BridgeResult HandleBridgeCommand(
@@ -514,13 +520,24 @@ BridgeResult HandleBridgeCommand(
     return BuildPatchResult(command, buildPatchPlugin);
 }
 
+// S1874: replace deprecated std::getenv with MSVC-safe _dupenv_s
+std::string GetEnvSafe(const char* name) {
+    char* val = nullptr;
+    std::size_t len = 0;
+    if (_dupenv_s(&val, &len, name) != 0 || val == nullptr) {
+        return {};
+    }
+    std::string result(val);
+    free(val);
+    return result;
+}
+
 std::string ResolvePipeName() {
-    const auto* envPipe = std::getenv("SWFOC_EXTENDER_PIPE_NAME");
-    if (envPipe == nullptr || *envPipe == '\0') {
-        return kDefaultPipeName;
+    if (const auto envPipe = GetEnvSafe("SWFOC_EXTENDER_PIPE_NAME"); !envPipe.empty()) {
+        return envPipe;
     }
 
-    return envPipe;
+    return kDefaultPipeName;
 }
 
 std::atomic<bool> g_running {true};
@@ -562,12 +579,12 @@ void ConfigureBridgeHandler(
 }
 
 int RunBridgeHost(
-    const std::string& pipeName,
+    std::string_view pipeName,
     EconomyPlugin& economyPlugin,
     GlobalTogglePlugin& globalTogglePlugin,
     BuildPatchPlugin& buildPatchPlugin,
     HelperLuaPlugin& helperLuaPlugin) {
-    NamedPipeBridgeServer server(pipeName);
+    NamedPipeBridgeServer server{std::string(pipeName)};
     ConfigureBridgeHandler(server, economyPlugin, globalTogglePlugin, buildPatchPlugin, helperLuaPlugin);
 
     if (!server.start()) {

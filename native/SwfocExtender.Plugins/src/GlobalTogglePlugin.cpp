@@ -22,11 +22,11 @@ constexpr std::array<std::string_view, 2> kFreezeTimerAnchors {"game_timer_freez
 constexpr std::array<std::string_view, 2> kFogRevealAnchors {"fog_reveal", "toggle_fog_reveal"};
 constexpr std::array<std::string_view, 2> kAiAnchors {"ai_enabled", "toggle_ai"};
 
-bool IsGlobalToggleFeature(const std::string& featureId) {
+bool IsGlobalToggleFeature(std::string_view featureId) {
     return featureId == "freeze_timer" || featureId == "toggle_fog_reveal" || featureId == "toggle_ai";
 }
 
-const std::array<std::string_view, 2>& AnchorCandidates(const std::string& featureId) {
+const std::array<std::string_view, 2>& AnchorCandidates(std::string_view featureId) {
     if (featureId == "freeze_timer") {
         return kFreezeTimerAnchors;
     }
@@ -38,11 +38,10 @@ const std::array<std::string_view, 2>& AnchorCandidates(const std::string& featu
     return kAiAnchors;
 }
 
-std::optional<AnchorMatch> FindAnchor(const PluginRequest& request, const std::string& featureId) {
+std::optional<AnchorMatch> FindAnchor(const PluginRequest& request, std::string_view featureId) {
     const auto& candidates = AnchorCandidates(featureId);
     for (const auto key : candidates) {
-        const auto it = request.anchors.find(std::string(key));
-        if (it != request.anchors.end() && !it->second.empty()) {
+        if (const auto it = request.anchors.find(key); it != request.anchors.end() && !it->second.empty()) {
             return AnchorMatch {it->first, it->second};
         }
     }
@@ -56,7 +55,7 @@ PluginResult BuildUnsupportedFeatureResult(const PluginRequest& request) {
     result.reasonCode = "CAPABILITY_REQUIRED_MISSING";
     result.hookState = "DENIED";
     result.message = "Global toggle plugin only handles freeze_timer, toggle_fog_reveal, and toggle_ai.";
-    result.diagnostics = {{"featureId", request.featureId}};
+    result.diagnostics = {{"featureId", request.featureId()}};
     return result;
 }
 
@@ -67,9 +66,9 @@ PluginResult BuildMissingProcessResult(const PluginRequest& request) {
     result.hookState = "DENIED";
     result.message = "processId is required for global toggle mutations.";
     result.diagnostics = {
-        {"featureId", request.featureId},
+        {"featureId", request.featureId()},
         {"requiredField", "processId"},
-        {"processId", std::to_string(request.processId)}};
+        {"processId", std::to_string(request.processId())}};
     return result;
 }
 
@@ -80,7 +79,7 @@ PluginResult BuildMissingAnchorResult(const PluginRequest& request) {
     result.hookState = "DENIED";
     result.message = "anchors map missing required symbol anchor for feature.";
     result.diagnostics = {
-        {"featureId", request.featureId},
+        {"featureId", request.featureId()},
         {"requiredField", "anchors"},
         {"anchorCount", std::to_string(request.anchors.size())}};
     return result;
@@ -103,7 +102,7 @@ PluginResult BuildInvalidAnchorResult(
     result.hookState = "DENIED";
     result.message = "anchor value could not be parsed as target address.";
     result.diagnostics = {
-        {"featureId", request.featureId},
+        {"featureId", request.featureId()},
         {"anchorKey", resolvedAnchor.first},
         {"anchorValue", resolvedAnchor.second},
         {"processMutationApplied", "false"}};
@@ -114,19 +113,19 @@ PluginResult BuildWriteFailureResult(
     const PluginRequest& request,
     const AnchorMatch& resolvedAnchor,
     bool boolValue,
-    const std::string& error) {
+    std::string_view error) {
     PluginResult result {};
     result.succeeded = false;
     result.reasonCode = "SAFETY_MUTATION_BLOCKED";
     result.hookState = "DENIED";
     result.message = "global toggle process write failed.";
     result.diagnostics = {
-        {"featureId", request.featureId},
-        {"processId", std::to_string(request.processId)},
+        {"featureId", request.featureId()},
+        {"processId", std::to_string(request.processId())},
         {"anchorKey", resolvedAnchor.first},
         {"anchorValue", resolvedAnchor.second},
         {"boolValue", boolValue ? "true" : "false"},
-        {"error", error},
+        {"error", std::string(error)},
         {"processMutationApplied", "false"}};
     return result;
 }
@@ -141,8 +140,8 @@ PluginResult BuildMutationSuccessResult(
     result.hookState = "HOOK_ONESHOT";
     result.message = "Global toggle value applied through extender plugin.";
     result.diagnostics = {
-        {"featureId", request.featureId},
-        {"processId", std::to_string(request.processId)},
+        {"featureId", request.featureId()},
+        {"processId", std::to_string(request.processId())},
         {"anchorKey", resolvedAnchor.first},
         {"anchorValue", resolvedAnchor.second},
         {"boolValue", boolValue ? "true" : "false"},
@@ -157,23 +156,23 @@ const char* GlobalTogglePlugin::id() const noexcept {
 }
 
 PluginResult GlobalTogglePlugin::execute(const PluginRequest& request) {
-    if (!IsGlobalToggleFeature(request.featureId)) {
+    if (!IsGlobalToggleFeature(request.featureId())) {
         return BuildUnsupportedFeatureResult(request);
     }
 
-    if (request.processId <= 0) {
+    if (request.processId() <= 0) {
         return BuildMissingProcessResult(request);
     }
 
-    const auto resolvedAnchor = FindAnchor(request, request.featureId);
+    const auto resolvedAnchor = FindAnchor(request, request.featureId());
     if (!resolvedAnchor.has_value()) {
         return BuildMissingAnchorResult(request);
     }
 
-    const bool nextValue = request.boolValue;
-    if (request.featureId == "freeze_timer") {
+    const bool nextValue = request.boolValue();
+    if (request.featureId() == "freeze_timer") {
         freezeTimerEnabled_.store(nextValue);
-    } else if (request.featureId == "toggle_fog_reveal") {
+    } else if (request.featureId() == "toggle_fog_reveal") {
         fogRevealEnabled_.store(nextValue);
     } else {
         aiEnabled_.store(nextValue);
@@ -186,7 +185,7 @@ PluginResult GlobalTogglePlugin::execute(const PluginRequest& request) {
 
     std::string writeError;
     const auto encoded = static_cast<std::uint8_t>(nextValue ? 1 : 0);
-    if (!process_mutation::TryWriteValue<std::uint8_t>(request.processId, targetAddress, encoded, writeError)) {
+    if (!process_mutation::TryWriteValue<std::uint8_t>(request.processId(), targetAddress, encoded, writeError)) {
         return BuildWriteFailureResult(request, *resolvedAnchor, nextValue, writeError);
     }
 
@@ -195,9 +194,9 @@ PluginResult GlobalTogglePlugin::execute(const PluginRequest& request) {
 
 CapabilitySnapshot GlobalTogglePlugin::capabilitySnapshot() const {
     CapabilitySnapshot snapshot {};
-    snapshot.features.emplace("freeze_timer", BuildCapabilityState());
-    snapshot.features.emplace("toggle_fog_reveal", BuildCapabilityState());
-    snapshot.features.emplace("toggle_ai", BuildCapabilityState());
+    snapshot.features.try_emplace("freeze_timer", BuildCapabilityState());
+    snapshot.features.try_emplace("toggle_fog_reveal", BuildCapabilityState());
+    snapshot.features.try_emplace("toggle_ai", BuildCapabilityState());
     return snapshot;
 }
 

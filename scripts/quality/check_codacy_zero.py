@@ -55,30 +55,29 @@ def _request_json(url: str, token: str, *, method: str = "GET", data: dict[str, 
         return json.loads(resp.read().decode("utf-8"))
 
 
+def _find_total_in_keys(mapping: dict[str, Any]) -> int | None:
+    for key, value in mapping.items():
+        if key in TOTAL_KEYS and isinstance(value, (int, float)):
+            return int(value)
+    return None
+
+
+def _nested_candidates(mapping: dict[str, Any]) -> list[Any]:
+    priority = [mapping.get(k) for k in ("pagination", "page", "meta") if k in mapping]
+    return priority + list(mapping.values())
+
+
 def extract_total_open(payload: Any) -> int | None:
-    if isinstance(payload, dict):
-        for key, value in payload.items():
-            if key in TOTAL_KEYS and isinstance(value, (int, float)):
-                return int(value)
-
-        # common pagination structures
-        for key in ("pagination", "page", "meta"):
-            nested = payload.get(key)
-            total = extract_total_open(nested)
-            if total is not None:
-                return total
-
-        for value in payload.values():
-            total = extract_total_open(value)
-            if total is not None:
-                return total
-
-    if isinstance(payload, list):
-        for item in payload:
-            total = extract_total_open(item)
-            if total is not None:
-                return total
-
+    stack: list[Any] = [payload]
+    while stack:
+        current = stack.pop()
+        if isinstance(current, dict):
+            result = _find_total_in_keys(current)
+            if result is not None:
+                return result
+            stack.extend(_nested_candidates(current))
+        elif isinstance(current, list):
+            stack.extend(current)
     return None
 
 
