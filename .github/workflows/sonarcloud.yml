@@ -47,10 +47,14 @@ jobs:
         shell: bash
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          EVENT_NAME: ${{ github.event_name }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+          PR_BRANCH: ${{ github.head_ref }}
+          PR_BASE: ${{ github.base_ref }}
         run: |
           SONAR_ARGS="/k:Prekzursil_SWFOC-Mod-Menu /o:prekzursil /d:sonar.token=$SONAR_TOKEN /d:sonar.host.url=https://sonarcloud.io"
-          if [ "${{ github.event_name }}" = "pull_request" ]; then
-            SONAR_ARGS="$SONAR_ARGS /d:sonar.pullrequest.key=${{ github.event.pull_request.number }} /d:sonar.pullrequest.branch=${{ github.head_ref }} /d:sonar.pullrequest.base=${{ github.base_ref }}"
+          if [ "$EVENT_NAME" = "pull_request" ] && [ -n "$PR_NUMBER" ]; then
+            SONAR_ARGS="$SONAR_ARGS /d:sonar.pullrequest.key=$PR_NUMBER /d:sonar.pullrequest.branch=$PR_BRANCH /d:sonar.pullrequest.base=$PR_BASE"
           fi
           dotnet-sonarscanner begin $SONAR_ARGS
 
