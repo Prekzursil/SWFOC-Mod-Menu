@@ -25,7 +25,7 @@ PluginResult BuildFailure(
     const PluginRequest& request,
     std::string_view reasonCode,
     std::string_view message,
-    const std::map<std::string, std::string, std::less<>>& diagnostics = {}) {
+    const StringMap& diagnostics = {}) {
     PluginResult result {};
     result.succeeded = false;
     result.reasonCode = std::string(reasonCode);
@@ -40,7 +40,7 @@ PluginResult BuildFailure(
     return result;
 }
 
-void AddOptionalDiagnostic(std::map<std::string, std::string, std::less<>>& diagnostics, const char* key, std::string_view value);
+void AddOptionalDiagnostic(StringMap& diagnostics, const char* key, std::string_view value);
 
 PluginResult BuildSuccess(const PluginRequest& request) {
     PluginResult result {};
@@ -106,7 +106,7 @@ bool HasSpawnPlacement(const PluginRequest& request) {
     return HasValue(request.entryMarker()) || HasValue(request.worldPosition());
 }
 
-void AddOptionalDiagnostic(std::map<std::string, std::string, std::less<>>& diagnostics, const char* key, std::string_view value) {
+void AddOptionalDiagnostic(StringMap& diagnostics, const char* key, std::string_view value) {
     if (!value.empty()) {
         diagnostics[key] = std::string(value);
     }

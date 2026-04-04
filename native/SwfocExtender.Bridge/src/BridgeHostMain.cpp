@@ -29,11 +29,11 @@
 
 namespace swfoc::extender::bridge::host_json {
 std::string EscapeJson(std::string_view value);
-std::string ToDiagnosticsJson(const std::map<std::string, std::string, std::less<>>& values);
+std::string ToDiagnosticsJson(const StringMap& values);
 bool TryReadBool(std::string_view payloadJson, std::string_view key, bool& value);
 bool TryReadInt(std::string_view payloadJson, std::string_view key, int& value);
 std::string ExtractStringValue(std::string_view json, std::string_view key);
-std::map<std::string, std::string, std::less<>> ExtractStringMap(std::string_view json, std::string_view key);
+StringMap ExtractStringMap(std::string_view json, std::string_view key);
 } // namespace swfoc::extender::bridge::host_json
 
 namespace {
@@ -41,6 +41,7 @@ namespace {
 using swfoc::extender::bridge::BridgeCommand;
 using swfoc::extender::bridge::BridgeResult;
 using swfoc::extender::bridge::NamedPipeBridgeServer;
+using swfoc::extender::bridge::StringMap;
 using swfoc::extender::plugins::BuildPatchPlugin;
 using swfoc::extender::plugins::CapabilitySnapshot;
 using swfoc::extender::plugins::CapabilityState;
@@ -110,7 +111,7 @@ int ResolveProcessId(const BridgeCommand& command) {
     return 0;
 }
 
-std::map<std::string, std::string, std::less<>> ResolveAnchors(const BridgeCommand& command) {
+StringMap ResolveAnchors(const BridgeCommand& command) {
     auto anchors = command.resolvedAnchors;
 
     const auto payloadAnchors = ExtractStringMap(command.payloadJson, "anchors");
@@ -186,6 +187,27 @@ PluginRequest BuildPluginRequest(const BridgeCommand& command) {
 bool IsSupportedFeature(std::string_view featureId) {
     return std::ranges::any_of(kSupportedFeatures, [&](const char* supported) {
         return featureId == supported;
+    });
+}
+
+bool IsGlobalToggleFeature(std::string_view featureId) {
+    return featureId == "freeze_timer" ||
+           featureId == "toggle_fog_reveal" ||
+           featureId == "toggle_ai";
+}
+
+bool IsHelperFeature(std::string_view featureId) {
+    constexpr std::array<const char*, 8> kHelperFeatures = {
+        "spawn_unit_helper",
+        "spawn_context_entity",
+        "spawn_tactical_entity",
+        "spawn_galactic_entity",
+        "place_planet_building",
+        "set_context_allegiance",
+        "set_hero_state_helper",
+        "toggle_roe_respawn_helper"};
+    return std::ranges::any_of(kHelperFeatures, [&](const char* f) {
+        return featureId == f;
     });
 }
 
@@ -348,7 +370,7 @@ CapabilitySnapshot BuildCapabilityProbeSnapshot(const PluginRequest& probeContex
     return snapshot;
 }
 
-void AppendDiagnosticsJson(std::ostringstream& out, const std::map<std::string, std::string, std::less<>>& diagnostics) {
+void AppendDiagnosticsJson(std::ostringstream& out, const StringMap& diagnostics) {
     out << R"(,"diagnostics":{)";
     auto firstDiagnostic = true;
     for (const auto& [key, value] : diagnostics) {
@@ -514,20 +536,11 @@ BridgeResult HandleBridgeCommand(
         return BuildSetCreditsResult(command, economyPlugin);
     }
 
-    if (command.featureId == "freeze_timer" ||
-        command.featureId == "toggle_fog_reveal" ||
-        command.featureId == "toggle_ai") {
+    if (IsGlobalToggleFeature(command.featureId)) {
         return BuildGlobalToggleResult(command, globalTogglePlugin);
     }
 
-    if (command.featureId == "spawn_unit_helper" ||
-        command.featureId == "spawn_context_entity" ||
-        command.featureId == "spawn_tactical_entity" ||
-        command.featureId == "spawn_galactic_entity" ||
-        command.featureId == "place_planet_building" ||
-        command.featureId == "set_context_allegiance" ||
-        command.featureId == "set_hero_state_helper" ||
-        command.featureId == "toggle_roe_respawn_helper") {
+    if (IsHelperFeature(command.featureId)) {
         return BuildHelperResult(command, helperLuaPlugin);
     }
 

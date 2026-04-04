@@ -15,7 +15,7 @@ suppress only this header:
 
 namespace swfoc::extender::plugins {
 
-using StringMap = StringMap;
+using StringMap = std::map<std::string, std::string, std::less<>>;
 
 struct PluginRequest {
     // --- Identity fields ---

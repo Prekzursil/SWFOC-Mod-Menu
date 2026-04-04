@@ -15,7 +15,7 @@ bool CapabilityProbe::isAvailable(std::string_view featureId) const {
     return it != capabilities_.end() && it->second.available;
 }
 
-const std::unordered_map<std::string, CapabilityEntry, StringHash, std::equal_to<>>& CapabilityProbe::snapshot() const noexcept {
+const CapabilityProbe::CapabilityMap& CapabilityProbe::snapshot() const noexcept {
     return capabilities_;
 }
 
