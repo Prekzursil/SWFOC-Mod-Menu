@@ -7,9 +7,9 @@ This is not aspirational. This is a hard requirement. If you push code that fail
 
 ## Thresholds (non-negotiable)
 
-- **Issues on all providers:** 0 (SonarCloud, CodeQL, QLTY)
+- **Issues on all providers:** 0 (SonarCloud, CodeQL, QLTY, DeepSource, DeepScan, Sentry)
 - **Coverage:** 100% line AND branch (Codecov, SonarCloud)
-- **Security alerts:** 0 (Dependabot, CodeQL)
+- **Security alerts:** 0 (Dependabot, CodeQL, Semgrep)
 - **Suppressions:** FORBIDDEN. No `// NOSONAR`, no `#pragma warning disable`, no `# noqa`, no `[SuppressMessage]`. Fix the code.
 
 ## Before Writing Any Code

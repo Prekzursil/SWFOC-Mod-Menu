@@ -184,8 +184,9 @@ jobs:
       - name: Upload coverage to QLTY
         if: always()
         shell: pwsh
+        env:
+          QLTY_COVERAGE_TOKEN: ${{ secrets.QLTY_COVERAGE_TOKEN }}
         run: |
-          $env:QLTY_COVERAGE_TOKEN = "${{ secrets.QLTY_COVERAGE_TOKEN }}"
           if (Test-Path TestResults/coverage/Cobertura.xml) {
             Invoke-WebRequest -Uri "https://qlty.sh/install.ps1" -OutFile install-qlty.ps1
             pwsh ./install-qlty.ps1
