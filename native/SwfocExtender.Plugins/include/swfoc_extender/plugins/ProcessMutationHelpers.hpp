@@ -1,9 +1,11 @@
 // cppcheck-suppress-file missingIncludeSystem
 #pragma once
 
+#include <bit>
 #include <charconv>
 #include <cstdint>
 #include <format>
+#include <span>
 #include <string>
 #include <string_view>
 #include <vector>
@@ -37,17 +39,13 @@ namespace detail {
 template <typename TPtr>
 TPtr address_as_ptr(std::uintptr_t address) noexcept
 {
-    // NOLINT: reinterpret_cast is unavoidable for integer-to-pointer conversion
-    return reinterpret_cast<TPtr>(address);
+    return std::bit_cast<TPtr>(address);
 }
 
-/// Wraps reinterpret_cast for treating a value's storage as a byte pointer.
-/// Centralises the unavoidable cast so call sites stay free of raw reinterpret_cast.
 template <typename TValue>
 const std::uint8_t* value_as_bytes(const TValue& value) noexcept
 {
-    // NOLINT: reinterpret_cast is unavoidable for type-punning to byte pointer
-    return reinterpret_cast<const std::uint8_t*>(&value);
+    return reinterpret_cast<const std::uint8_t*>(&value); // NOSONAR — byte access requires cast
 }
 
 inline void SetBaseDiagnostics(WriteOperationDiagnostics* diagnostics, std::string mode, SIZE_T length, std::string restoreStatus)
