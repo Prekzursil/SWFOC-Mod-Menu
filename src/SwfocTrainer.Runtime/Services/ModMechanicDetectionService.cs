@@ -90,10 +90,6 @@ public sealed class ModMechanicDetectionService : IModMechanicDetectionService
             return await _transplantCompatibilityService
                 .ValidateAsync(profile.Id, activeWorkshopIds, rosterEntities, cancellationToken);
         }
-        catch (OperationCanceledException)
-        {
-            throw;
-        }
         catch (InvalidOperationException)
         {
             return null;

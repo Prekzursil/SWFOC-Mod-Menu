@@ -557,10 +557,7 @@ std::string ResolvePipeName() {
 }
 
 namespace {
-std::atomic<bool>& RunningFlag() {
-    static std::atomic<bool> value{true};
-    return value;
-}
+constinit std::atomic<bool> g_running{true};
 } // namespace
 
 #if defined(_WIN32)
@@ -569,7 +566,7 @@ BOOL WINAPI CtrlHandler(DWORD signalType) {
         signalType == CTRL_CLOSE_EVENT ||
         signalType == CTRL_BREAK_EVENT ||
         signalType == CTRL_SHUTDOWN_EVENT) {
-        RunningFlag().store(false);
+        g_running.store(false);
         return TRUE;
     }
     return FALSE;
@@ -583,7 +580,7 @@ void InstallCtrlHandler() {
 }
 
 void WaitForShutdownSignal() {
-    while (RunningFlag().load()) {
+    while (g_running.load()) {
         std::this_thread::sleep_for(std::chrono::milliseconds(100));
     }
 }
