@@ -33,7 +33,9 @@ bool TryParseIntFromText(std::string_view valueText, int& value) {
         std::size_t consumed = 0;
         value = std::stoi(std::string(valueText), &consumed);
         return consumed != 0;
-    } catch (const std::exception&) {
+    } catch (const std::invalid_argument&) {
+        return false;
+    } catch (const std::out_of_range&) {
         return false;
     }
 }

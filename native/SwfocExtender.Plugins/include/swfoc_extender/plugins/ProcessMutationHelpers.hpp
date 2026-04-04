@@ -41,6 +41,15 @@ TPtr address_as_ptr(std::uintptr_t address) noexcept
     return reinterpret_cast<TPtr>(address);
 }
 
+/// Wraps reinterpret_cast for treating a value's storage as a byte pointer.
+/// Centralises the unavoidable cast so call sites stay free of raw reinterpret_cast.
+template <typename TValue>
+const std::uint8_t* value_as_bytes(const TValue& value) noexcept
+{
+    // NOLINT: reinterpret_cast is unavoidable for type-punning to byte pointer
+    return reinterpret_cast<const std::uint8_t*>(&value);
+}
+
 inline void SetBaseDiagnostics(WriteOperationDiagnostics* diagnostics, std::string mode, SIZE_T length, std::string restoreStatus)
 {
     if (diagnostics == nullptr)
@@ -95,13 +104,13 @@ inline bool TryReadProcessExact(HANDLE process, std::uintptr_t address, SIZE_T l
 {
     output.resize(length);
     SIZE_T bytesRead = 0;
-    const auto ok = ReadProcessMemory(
-        process,
-        address_as_ptr<LPCVOID>(address),
-        output.data(),
-        length,
-        &bytesRead);
-    if (!ok || bytesRead != length)
+    if (const auto ok = ReadProcessMemory(
+            process,
+            address_as_ptr<LPCVOID>(address),
+            output.data(),
+            length,
+            &bytesRead);
+        !ok || bytesRead != length)
     {
         output.clear();
         error = BuildWin32Error("ReadProcessMemory failed", ok ? ERROR_SUCCESS : GetLastError());
@@ -111,16 +120,16 @@ inline bool TryReadProcessExact(HANDLE process, std::uintptr_t address, SIZE_T l
     return true;
 }
 
-inline bool TryWriteProcessExact(HANDLE process, std::uintptr_t address, const void* bytes, SIZE_T length, std::string& error)
+inline bool TryWriteProcessExact(HANDLE process, std::uintptr_t address, const std::uint8_t* bytes, SIZE_T length, std::string& error)
 {
     SIZE_T written = 0;
-    const auto ok = WriteProcessMemory(
-        process,
-        address_as_ptr<LPVOID>(address),
-        bytes,
-        length,
-        &written);
-    if (!ok || written != length)
+    if (const auto ok = WriteProcessMemory(
+            process,
+            address_as_ptr<LPVOID>(address),
+            bytes,
+            length,
+            &written);
+        !ok || written != length)
     {
         error = BuildWin32Error("WriteProcessMemory failed", ok ? ERROR_SUCCESS : GetLastError());
         return false;
@@ -190,7 +199,7 @@ inline bool TryParseAddress(std::string_view raw, std::uintptr_t& address) {
         return false;
     }
 
-    address = static_cast<std::uintptr_t>(parsed);
+    address = parsed;
     return true;
 }
 
@@ -290,7 +299,7 @@ inline bool TryWriteValue(
         return TryWriteBytesPatchSafe(
             processId,
             address,
-            reinterpret_cast<const std::uint8_t*>(&value),
+            detail::value_as_bytes(value),
             sizeof(TValue),
             error,
             diagnostics);
@@ -308,7 +317,7 @@ inline bool TryWriteValue(
         return false;
     }
 
-    const auto writeOk = detail::TryWriteProcessExact(process, address, &value, sizeof(TValue), error);
+    const auto writeOk = detail::TryWriteProcessExact(process, address, detail::value_as_bytes(value), sizeof(TValue), error);
     CloseHandle(process);
     return writeOk;
 #else

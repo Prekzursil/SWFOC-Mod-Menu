@@ -1205,8 +1205,9 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
                 Candidates: candidates,
                 ArtifactPath: artifactPath);
         }
-        catch (OperationCanceledException)
+        catch (OperationCanceledException ex)
         {
+            _logger.LogDebug(ex, "Calibration scan cancelled.");
             throw;
         }
         catch (InvalidOperationException ex)

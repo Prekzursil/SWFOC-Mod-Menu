@@ -29,14 +29,6 @@ missingIncludeSystem can be suppressed per translation unit with:
   --suppress=missingIncludeSystem:native/SwfocExtender.Bridge/src/NamedPipeBridgeServer.cpp
 */
 
-// S6045: transparent hash for heterogeneous lookup in unordered containers
-struct StringHash {
-    using is_transparent = void;
-    std::size_t operator()(std::string_view sv) const {
-        return std::hash<std::string_view>{}(sv);
-    }
-};
-
 std::string BuildFullPipeName(std::string_view pipeName) {
     // S6009: pipeName is string_view; we concatenate with a raw string prefix
     // S3628: raw string literal for the pipe prefix
@@ -144,9 +136,11 @@ bool TryReadInt(std::string_view json, std::string_view key, std::int32_t& value
             return false;
         }
 
-        value = static_cast<std::int32_t>(parsed);
+        value = parsed;
         return true;
-    } catch (const std::exception&) {
+    } catch (const std::invalid_argument&) {
+        return false;
+    } catch (const std::out_of_range&) {
         return false;
     }
 }
@@ -359,10 +353,10 @@ HANDLE CreateBridgePipe(const std::string& fullPipeName) {
 }
 
 bool TryConnectClient(HANDLE pipe) {
-    const BOOL connected = ConnectNamedPipe(pipe, nullptr)
-        ? TRUE
-        : (GetLastError() == ERROR_PIPE_CONNECTED ? TRUE : FALSE);
-    return connected != FALSE;
+    if (ConnectNamedPipe(pipe, nullptr)) {
+        return true;
+    }
+    return GetLastError() == ERROR_PIPE_CONNECTED;
 }
 
 bool TryCreateConnectedPipe(const std::string& fullPipeName, HANDLE& pipe) {
@@ -380,17 +374,20 @@ bool TryCreateConnectedPipe(const std::string& fullPipeName, HANDLE& pipe) {
     return true;
 }
 
+bool ShouldContinueReading(std::string& commandLine, DWORD bytesRead, std::size_t bufferSize) {
+    if (const auto linePos = commandLine.find('\n'); linePos != std::string::npos) {
+        commandLine.erase(linePos);
+        return false;
+    }
+    return bytesRead >= bufferSize;
+}
+
 std::string ReadCommandLine(HANDLE pipe, std::array<char, kPipeBufferSize>& buffer) {
     std::string commandLine;
     DWORD bytesRead = 0;
     while (ReadFile(pipe, buffer.data(), static_cast<DWORD>(buffer.size()), &bytesRead, nullptr) != FALSE && bytesRead > 0) {
         commandLine.append(buffer.data(), bytesRead);
-        if (const auto linePos = commandLine.find('\n'); linePos != std::string::npos) {
-            commandLine.erase(linePos);
-            break;
-        }
-
-        if (bytesRead < buffer.size()) {
+        if (!ShouldContinueReading(commandLine, bytesRead, buffer.size())) {
             break;
         }
     }
@@ -454,15 +451,15 @@ void NamedPipeBridgeServer::stop() {
     const auto fullPipeName = BuildFullPipeName(pipeName_);
     const auto deadline = std::chrono::steady_clock::now() + std::chrono::milliseconds(800);
     while (std::chrono::steady_clock::now() < deadline) {
-        auto client = CreateFileA(
-            fullPipeName.c_str(),
-            GENERIC_READ | GENERIC_WRITE,
-            0,
-            nullptr,
-            OPEN_EXISTING,
-            0,
-            nullptr);
-        if (client != INVALID_HANDLE_VALUE) {
+        if (auto client = CreateFileA(
+                fullPipeName.c_str(),
+                GENERIC_READ | GENERIC_WRITE,
+                0,
+                nullptr,
+                OPEN_EXISTING,
+                0,
+                nullptr);
+            client != INVALID_HANDLE_VALUE) {
             CloseHandle(client);
             break;
         }
@@ -491,8 +488,7 @@ BridgeResult NamedPipeBridgeServer::handleRawCommand(std::string_view jsonLine) 
     command.payloadJson = ExtractObjectJson(jsonLine, "payload");
     command.processName = ExtractStringValue(jsonLine, "processName");
     command.resolvedAnchors = ExtractStringMap(jsonLine, "resolvedAnchors");
-    std::int32_t processId = 0;
-    if (TryReadInt(jsonLine, "processId", processId)) {
+    if (std::int32_t processId = 0; TryReadInt(jsonLine, "processId", processId)) {
         command.processId = processId;
     }
 
@@ -524,7 +520,7 @@ BridgeResult NamedPipeBridgeServer::handleRawCommand(std::string_view jsonLine) 
     return result;
 }
 
-void NamedPipeBridgeServer::runLoop() {
+void NamedPipeBridgeServer::runLoop() const {
 #if !defined(_WIN32)
     while (running_.load()) {
         std::this_thread::sleep_for(kServerPollDelay);
@@ -538,7 +534,7 @@ void NamedPipeBridgeServer::runLoop() {
     };
 
     while (running_.load()) {
-        HANDLE pipe = INVALID_HANDLE_VALUE;
+        auto pipe = INVALID_HANDLE_VALUE;
         if (!TryCreateConnectedPipe(fullPipeName, pipe)) {
             continue;
         }

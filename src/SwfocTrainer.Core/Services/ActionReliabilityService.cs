@@ -63,7 +63,7 @@ public sealed class ActionReliabilityService : IActionReliabilityService
 
         foreach (var (actionId, action) in profile.Actions.OrderBy(x => x.Key, StringComparer.OrdinalIgnoreCase))
         {
-            results.Add(EvaluateAction(
+            results.Add(EvaluateAction(new EvaluateActionParams(
                 profile,
                 actionId,
                 action,
@@ -71,7 +71,7 @@ public sealed class ActionReliabilityService : IActionReliabilityService
                 disabledActions,
                 criticalSymbols,
                 catalog,
-                mechanicSupport));
+                mechanicSupport)));
         }
 
         return results;
@@ -84,22 +84,24 @@ public sealed class ActionReliabilityService : IActionReliabilityService
         return Evaluate(profile, session, null);
     }
 
-    private static ActionReliabilityInfo EvaluateAction(
-        TrainerProfile profile,
-        string actionId,
-        ActionSpec action,
-        AttachSession session,
-        IReadOnlySet<string> disabledActions,
-        IReadOnlySet<string> criticalSymbols,
-        IReadOnlyDictionary<string, IReadOnlyList<string>>? catalog,
-        IReadOnlyDictionary<string, ModMechanicSupport>? mechanicSupport)
+    private readonly record struct EvaluateActionParams(
+        TrainerProfile Profile,
+        string ActionId,
+        ActionSpec Action,
+        AttachSession Session,
+        IReadOnlySet<string> DisabledActions,
+        IReadOnlySet<string> CriticalSymbols,
+        IReadOnlyDictionary<string, IReadOnlyList<string>>? Catalog,
+        IReadOnlyDictionary<string, ModMechanicSupport>? MechanicSupport);
+
+    private static ActionReliabilityInfo EvaluateAction(EvaluateActionParams p)
     {
-        return TryEvaluateMechanicSupport(actionId, mechanicSupport)
-            ?? TryEvaluateFeatureFlags(profile, actionId)
-            ?? TryEvaluateDependencyBlock(actionId, disabledActions)
-            ?? TryEvaluateModeConstraints(actionId, action, session)
-            ?? TryEvaluateHelperAction(actionId, action, session, catalog)
-            ?? EvaluateSymbolAction(actionId, action, session, criticalSymbols);
+        return TryEvaluateMechanicSupport(p.ActionId, p.MechanicSupport)
+            ?? TryEvaluateFeatureFlags(p.Profile, p.ActionId)
+            ?? TryEvaluateDependencyBlock(p.ActionId, p.DisabledActions)
+            ?? TryEvaluateModeConstraints(p.ActionId, p.Action, p.Session)
+            ?? TryEvaluateHelperAction(p.ActionId, p.Action, p.Session, p.Catalog)
+            ?? EvaluateSymbolAction(p.ActionId, p.Action, p.Session, p.CriticalSymbols);
     }
 
     private static ActionReliabilityInfo? TryEvaluateMechanicSupport(

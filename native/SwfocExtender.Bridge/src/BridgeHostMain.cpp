@@ -15,6 +15,7 @@
 #include <cstdlib>
 #include <iostream>
 #include <map>
+#include <memory>
 #include <sstream>
 #include <string>
 #include <string_view>
@@ -83,13 +84,15 @@ missingIncludeSystem can be suppressed per translation unit with:
 */
 
 bool ResolveLockCredits(std::string_view payloadJson) {
-    auto lockCredits = false;
-    if (TryReadBool(payloadJson, "lockCredits", lockCredits)) {
+    if (auto lockCredits = false; TryReadBool(payloadJson, "lockCredits", lockCredits)) {
         return lockCredits;
     }
 
-    auto legacyForce = false;
-    return TryReadBool(payloadJson, "forcePatchHook", legacyForce) && legacyForce;
+    if (auto legacyForce = false; TryReadBool(payloadJson, "forcePatchHook", legacyForce)) {
+        return legacyForce;
+    }
+
+    return false;
 }
 
 int ResolveProcessId(const BridgeCommand& command) {
@@ -97,8 +100,7 @@ int ResolveProcessId(const BridgeCommand& command) {
         return command.processId;
     }
 
-    auto payloadProcessId = 0;
-    if (TryReadInt(command.payloadJson, "processId", payloadProcessId) && payloadProcessId > 0) {
+    if (auto payloadProcessId = 0; TryReadInt(command.payloadJson, "processId", payloadProcessId) && payloadProcessId > 0) {
         return payloadProcessId;
     }
 
@@ -220,8 +222,8 @@ std::string ResolveProbeSource(std::string_view anchorValue) {
 // S134/S924: extracted helper to reduce nesting in ProbeReadableAnchor
 AnchorProbeResult ProbeCandidate(
     const PluginRequest& probeContext,
-    const std::string& candidateKey,
-    const std::string& candidateValue) {
+    std::string_view candidateKey,
+    std::string_view candidateValue) {
     AnchorProbeResult result {};
     result.anchorKey = candidateKey;
     result.anchorValue = candidateValue;
@@ -428,7 +430,7 @@ BridgeResult BuildMissingIntValueResult(const BridgeCommand& command) {
 BridgeResult BuildBridgeResultFromPlugin(
     const BridgeCommand& command,
     const PluginRequest& pluginRequest,
-    PluginResult pluginResult) {
+    const PluginResult& pluginResult) {
     auto diagnostics = pluginResult.diagnostics;
 
     diagnostics["featureId"] = command.featureId;
@@ -523,13 +525,11 @@ BridgeResult HandleBridgeCommand(
 // S1874: replace deprecated std::getenv with MSVC-safe _dupenv_s
 std::string GetEnvSafe(const char* name) {
     char* val = nullptr;
-    std::size_t len = 0;
-    if (_dupenv_s(&val, &len, name) != 0 || val == nullptr) {
+    if (std::size_t len = 0; _dupenv_s(&val, &len, name) != 0 || val == nullptr) {
         return {};
     }
-    std::string result(val);
-    free(val);
-    return result;
+    auto guard = std::unique_ptr<char, decltype(&free)>(val, &free);
+    return {guard.get()};
 }
 
 std::string ResolvePipeName() {
@@ -540,7 +540,7 @@ std::string ResolvePipeName() {
     return kDefaultPipeName;
 }
 
-std::atomic<bool> g_running {true};
+constinit std::atomic<bool> g_running {true};
 
 #if defined(_WIN32)
 BOOL WINAPI CtrlHandler(DWORD signalType) {

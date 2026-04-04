@@ -40,7 +40,7 @@ PluginResult BuildFailure(
     return result;
 }
 
-void AddOptionalDiagnostic(std::map<std::string, std::string, std::less<>>& diagnostics, const char* key, const std::string& value);
+void AddOptionalDiagnostic(std::map<std::string, std::string, std::less<>>& diagnostics, const char* key, std::string_view value);
 
 PluginResult BuildSuccess(const PluginRequest& request) {
     PluginResult result {};
@@ -106,9 +106,9 @@ bool HasSpawnPlacement(const PluginRequest& request) {
     return HasValue(request.entryMarker()) || HasValue(request.worldPosition());
 }
 
-void AddOptionalDiagnostic(std::map<std::string, std::string, std::less<>>& diagnostics, const char* key, const std::string& value) {
+void AddOptionalDiagnostic(std::map<std::string, std::string, std::less<>>& diagnostics, const char* key, std::string_view value) {
     if (!value.empty()) {
-        diagnostics[key] = value;
+        diagnostics[key] = std::string(value);
     }
 }
 

@@ -196,7 +196,7 @@ public sealed class ModOnboardingService : IModOnboardingService
                 else
                 {
                     var scaffold = await BuildSeedScaffoldAsync(
-                        seed, profileId, displayName, resolvedSourceRunId!, baseProfileId!, namespaceRoot, warnings, cancellationToken);
+                        new BuildSeedScaffoldParams(seed, profileId, displayName, resolvedSourceRunId!, baseProfileId!, namespaceRoot, warnings), cancellationToken);
                     workshopIds = scaffold.WorkshopIds;
                     pathHints = scaffold.PathHints;
                     aliases = scaffold.Aliases;
@@ -268,38 +268,41 @@ public sealed class ModOnboardingService : IModOnboardingService
         }
     }
 
+    private readonly record struct BuildSeedScaffoldParams(
+        GeneratedProfileSeed Seed,
+        string ProfileId,
+        string DisplayName,
+        string SourceRunId,
+        string BaseProfileId,
+        string? NamespaceRoot,
+        List<string> Warnings);
+
     private async Task<SeedScaffoldResult> BuildSeedScaffoldAsync(
-        GeneratedProfileSeed seed,
-        string profileId,
-        string displayName,
-        string sourceRunId,
-        string baseProfileId,
-        string? namespaceRoot,
-        List<string> warnings,
+        BuildSeedScaffoldParams p,
         CancellationToken cancellationToken)
     {
-        var baseProfile = await _profiles.ResolveInheritedProfileAsync(baseProfileId, cancellationToken);
-        var launchSamples = seed.LaunchSamples ?? Array.Empty<ModLaunchSample>();
-        var workshopIds = MergeWorkshopIds(seed.WorkshopId, seed.RequiredWorkshopIds, InferWorkshopIds(launchSamples));
-        var pathHints = MergePathHints(seed.LocalPathHints, InferPathHints(launchSamples));
-        var aliases = InferAliases(profileId, displayName, seed.ProfileAliases);
-        var requiredCapabilities = MergeRequiredCapabilities(baseProfile.RequiredCapabilities, seed.RequiredCapabilities);
+        var baseProfile = await _profiles.ResolveInheritedProfileAsync(p.BaseProfileId, cancellationToken);
+        var launchSamples = p.Seed.LaunchSamples ?? Array.Empty<ModLaunchSample>();
+        var workshopIds = MergeWorkshopIds(p.Seed.WorkshopId, p.Seed.RequiredWorkshopIds, InferWorkshopIds(launchSamples));
+        var pathHints = MergePathHints(p.Seed.LocalPathHints, InferPathHints(launchSamples));
+        var aliases = InferAliases(p.ProfileId, p.DisplayName, p.Seed.ProfileAliases);
+        var requiredCapabilities = MergeRequiredCapabilities(baseProfile.RequiredCapabilities, p.Seed.RequiredCapabilities);
 
         if (workshopIds.Count == 0)
         {
-            warnings.Add("No STEAMMOD markers were inferred from launch samples.");
+            p.Warnings.Add("No STEAMMOD markers were inferred from launch samples.");
         }
 
         if (pathHints.Count == 0)
         {
-            warnings.Add("No local path hints were inferred from launch samples.");
+            p.Warnings.Add("No local path hints were inferred from launch samples.");
         }
 
-        var metadata = BuildSeedMetadata(seed, sourceRunId, baseProfile.Id, workshopIds, aliases, pathHints, requiredCapabilities);
+        var metadata = BuildSeedMetadata(p.Seed, p.SourceRunId, baseProfile.Id, workshopIds, aliases, pathHints, requiredCapabilities);
 
         var draftProfile = new TrainerProfile(
-            Id: profileId,
-            DisplayName: displayName,
+            Id: p.ProfileId,
+            DisplayName: p.DisplayName,
             Inherits: baseProfile.Id,
             ExeTarget: baseProfile.ExeTarget,
             SteamWorkshopId: workshopIds.Count > 0 ? workshopIds[0] : baseProfile.SteamWorkshopId,
@@ -320,7 +323,7 @@ public sealed class ModOnboardingService : IModOnboardingService
             Metadata: metadata,
             RequiredCapabilities: requiredCapabilities);
 
-        var outputPath = ResolveDraftPath(profileId, namespaceRoot);
+        var outputPath = ResolveDraftPath(p.ProfileId, p.NamespaceRoot);
         Directory.CreateDirectory(Path.GetDirectoryName(outputPath)!);
         var json = JsonProfileSerializer.Serialize(draftProfile);
         await File.WriteAllTextAsync(outputPath, json, cancellationToken);

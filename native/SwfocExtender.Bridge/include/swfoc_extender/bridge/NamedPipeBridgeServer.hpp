@@ -53,7 +53,7 @@ public:
     [[nodiscard]] bool running() const noexcept;
 
 private:
-    void runLoop();
+    void runLoop() const;
     [[nodiscard]] BridgeResult handleRawCommand(std::string_view jsonLine) const;
 
     [[maybe_unused]] std::string pipeName_;

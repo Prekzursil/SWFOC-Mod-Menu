@@ -254,10 +254,8 @@ PluginResult BuildPatchPlugin::execute(const PluginRequest& request) {
     const auto resolvedAnchor = FindAnchor(request, request.featureId());
 
     const auto enablePatch = request.enable() || request.boolValue();
-    if (request.featureId() == "set_unit_cap") {
-        if (IsUnitCapOutOfBounds(request, enablePatch)) {
-            return BuildInvalidUnitCapResult(request);
-        }
+    if (request.featureId() == "set_unit_cap" && IsUnitCapOutOfBounds(request, enablePatch)) {
+        return BuildInvalidUnitCapResult(request);
     }
 
     if (!resolvedAnchor.has_value()) {
@@ -327,11 +325,10 @@ PluginResult BuildPatchPlugin::execute(const PluginRequest& request) {
     process_mutation::WriteOperationDiagnostics writeDiagnostics {};
     if (request.featureId() == "set_unit_cap") {
         const auto clamped = std::clamp(request.intValue(), kMinUnitCap, kMaxUnitCap);
-        const auto encoded = static_cast<std::int32_t>(clamped);
         if (!process_mutation::TryWriteValue<std::int32_t>(
                 request.processId(),
                 targetAddress,
-                encoded,
+                clamped,
                 writeError,
                 process_mutation::WriteMutationMode::Patch,
                 &writeDiagnostics)) {

@@ -439,7 +439,7 @@ def _parse_args() -> argparse.Namespace:
 def _load_profiles_or_none(profile_root: str) -> dict[str, ProfileInfo] | None:
     try:
         return load_profiles(Path(profile_root))
-    except (FileNotFoundError, json.JSONDecodeError, OSError) as exc:
+    except (json.JSONDecodeError, OSError) as exc:
         print(f"profile-load-error: {exc}", file=sys.stderr)
         return None
 
@@ -448,7 +448,7 @@ def _load_cases_payload(input_path: str) -> dict[str, Any] | None:
     try:
         with open(input_path, "r", encoding="utf-8") as f:
             payload = json.load(f)
-    except (FileNotFoundError, json.JSONDecodeError, OSError) as exc:
+    except (json.JSONDecodeError, OSError) as exc:
         print(f"input-read-error: {exc}", file=sys.stderr)
         return None
 
