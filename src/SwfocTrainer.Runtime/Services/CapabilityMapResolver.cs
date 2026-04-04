@@ -80,13 +80,13 @@ public sealed class CapabilityMapResolver : ICapabilityMapResolver
             return declaredUnavailable;
         }
 
-        return ResolveOperationAnchors(
+        return ResolveOperationAnchors(new AnchorResolutionInput(
             fingerprint,
             requestedProfileId,
             operationId,
             operation,
             resolvedAnchors,
-            ResolveCapabilityHint(map, operationId));
+            ResolveCapabilityHint(map, operationId)));
     }
 
     public Task<string?> ResolveDefaultProfileIdAsync(BinaryFingerprint fingerprint)
@@ -214,53 +214,55 @@ public sealed class CapabilityMapResolver : ICapabilityMapResolver
         return false;
     }
 
-    private static CapabilityResolutionResult ResolveOperationAnchors(
-        BinaryFingerprint fingerprint,
-        string requestedProfileId,
-        string operationId,
-        CapabilityOperationMap operation,
-        IReadOnlySet<string> resolvedAnchors,
-        CapabilityAvailabilityHint? capabilityHint)
+    private readonly record struct AnchorResolutionInput(
+        BinaryFingerprint Fingerprint,
+        string RequestedProfileId,
+        string OperationId,
+        CapabilityOperationMap Operation,
+        IReadOnlySet<string> ResolvedAnchors,
+        CapabilityAvailabilityHint? CapabilityHint);
+
+    private static CapabilityResolutionResult ResolveOperationAnchors(AnchorResolutionInput input)
     {
         var comparer = StringComparer.OrdinalIgnoreCase;
-        var matched = operation.RequiredAnchors
-            .Where(anchor => ContainsAnchor(resolvedAnchors, anchor, comparer))
+        var matched = input.Operation.RequiredAnchors
+            .Where(anchor => ContainsAnchor(input.ResolvedAnchors, anchor, comparer))
             .ToArray();
-        var missingRequired = operation.RequiredAnchors
-            .Where(anchor => !ContainsAnchor(resolvedAnchors, anchor, comparer))
+        var missingRequired = input.Operation.RequiredAnchors
+            .Where(anchor => !ContainsAnchor(input.ResolvedAnchors, anchor, comparer))
             .ToArray();
         if (missingRequired.Length > 0)
         {
             return BuildRequiredAnchorsMissingResult(
-                requestedProfileId,
-                operationId,
-                operation,
-                fingerprint,
+                input.RequestedProfileId,
+                input.OperationId,
+                input.Operation,
+                input.Fingerprint,
                 matched,
                 missingRequired,
-                capabilityHint);
+                input.CapabilityHint);
         }
 
-        var missingOptional = operation.OptionalAnchors
-            .Where(anchor => !ContainsAnchor(resolvedAnchors, anchor, comparer))
+        var missingOptional = input.Operation.OptionalAnchors
+            .Where(anchor => !ContainsAnchor(input.ResolvedAnchors, anchor, comparer))
             .ToArray();
         if (missingOptional.Length > 0)
         {
             return BuildOptionalAnchorsMissingResult(
-                requestedProfileId,
-                operationId,
-                fingerprint.FingerprintId,
+                input.RequestedProfileId,
+                input.OperationId,
+                input.Fingerprint.FingerprintId,
                 matched,
                 missingOptional,
-                capabilityHint);
+                input.CapabilityHint);
         }
 
         return BuildAllRequiredAnchorsPresentResult(
-            requestedProfileId,
-            operationId,
-            fingerprint.FingerprintId,
+            input.RequestedProfileId,
+            input.OperationId,
+            input.Fingerprint.FingerprintId,
             matched,
-            capabilityHint);
+            input.CapabilityHint);
     }
 
     private static CapabilityResolutionResult BuildRequiredAnchorsMissingResult(

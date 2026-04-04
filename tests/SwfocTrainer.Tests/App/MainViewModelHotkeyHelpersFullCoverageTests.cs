@@ -224,10 +224,12 @@ public sealed class MainViewModelHotkeyHelpersFullCoverageTests
     [Fact]
     public void BuildHotkeyStatus_WithDiagnostics_ShouldAppendSuffix()
     {
+        // The "backend" segment uses candidateKeys=["backendRoute"], so "backendRoute"
+        // must be present for the segment to appear in the suffix.
         var result = new ActionExecutionResult(true, "ok", AddressSource.None,
             Diagnostics: new Dictionary<string, object?>
             {
-                ["backend"] = "sdk"
+                ["backendRoute"] = "sdk"
             });
 
         var status = MainViewModelHotkeyHelpers.BuildHotkeyStatus("Ctrl+1", "a", result);

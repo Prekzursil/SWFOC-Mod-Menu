@@ -133,11 +133,7 @@ internal sealed class SavePatchApplyServiceHelper
         CancellationToken cancellationToken)
     {
         var fieldIdAttempt = await TryApplySelectorAsync(
-            targetDoc,
-            operation.FieldId,
-            value,
-            operation.FieldId,
-            "FieldId selector failed for {FieldId}. Attempting fieldPath fallback.",
+            new SelectorApplyInput(targetDoc, operation.FieldId, value, operation.FieldId, "FieldId selector failed for {FieldId}. Attempting fieldPath fallback."),
             cancellationToken);
         if (fieldIdAttempt.WasApplied)
         {
@@ -145,11 +141,7 @@ internal sealed class SavePatchApplyServiceHelper
         }
 
         var fieldPathAttempt = await TryApplySelectorAsync(
-            targetDoc,
-            operation.FieldPath,
-            value,
-            operation.FieldId,
-            "FieldPath fallback selector failed for {FieldId}.",
+            new SelectorApplyInput(targetDoc, operation.FieldPath, value, operation.FieldId, "FieldPath fallback selector failed for {FieldId}."),
             cancellationToken);
         if (fieldPathAttempt.WasApplied)
         {
@@ -247,27 +239,30 @@ internal sealed class SavePatchApplyServiceHelper
             .FirstOrDefault();
     }
 
+    private readonly record struct SelectorApplyInput(
+        SaveDocument TargetDoc,
+        string? Selector,
+        object? Value,
+        string FieldIdForLogging,
+        string FailureMessage);
+
     private async Task<SelectorApplyAttempt> TryApplySelectorAsync(
-        SaveDocument targetDoc,
-        string? selector,
-        object? value,
-        string fieldIdForLogging,
-        string failureMessage,
+        SelectorApplyInput input,
         CancellationToken cancellationToken)
     {
-        if (string.IsNullOrWhiteSpace(selector))
+        if (string.IsNullOrWhiteSpace(input.Selector))
         {
             return SelectorApplyAttempt.NotAttempted;
         }
 
         try
         {
-            await _saveCodec.EditAsync(targetDoc, selector, value, cancellationToken);
+            await _saveCodec.EditAsync(input.TargetDoc, input.Selector, input.Value, cancellationToken);
             return SelectorApplyAttempt.AppliedAttempt;
         }
         catch (InvalidOperationException ex) when (IsSelectorMismatchError(ex))
         {
-            _logger.LogDebug(ex, failureMessage, fieldIdForLogging);
+            _logger.LogDebug(ex, input.FailureMessage, input.FieldIdForLogging);
             return SelectorApplyAttempt.Mismatch(ex);
         }
     }

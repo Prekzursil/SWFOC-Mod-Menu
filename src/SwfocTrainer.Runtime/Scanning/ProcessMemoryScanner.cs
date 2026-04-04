@@ -7,6 +7,20 @@ internal static class ProcessMemoryScanner
 {
     private readonly record struct FloatScanCriteria(float Value, float Tolerance);
 
+    internal readonly record struct FloatApproxScanRequest(
+        int ProcessId,
+        float Value,
+        float Tolerance,
+        bool WritableOnly,
+        int MaxResults);
+
+    public static IReadOnlyList<nint> ScanFloatApprox(
+        FloatApproxScanRequest request,
+        CancellationToken cancellationToken)
+    {
+        return ScanFloatApprox(request.ProcessId, request.Value, request.Tolerance, request.WritableOnly, request.MaxResults, cancellationToken);
+    }
+
     public static IReadOnlyList<nint> ScanInt32(
         int processId,
         int value,

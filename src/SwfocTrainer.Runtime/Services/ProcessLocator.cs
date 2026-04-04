@@ -161,7 +161,7 @@ public sealed class ProcessLocator : IProcessLocator
         var forcedContext = ResolveForcedContext(probe.CommandLine, modPathRaw, steamModIds, options);
         var effectiveSteamModIds = forcedContext.EffectiveSteamModIds;
         var hostRole = DetermineHostRole(detection);
-        var metadata = BuildBaseMetadata(detection, probe.CommandLine, probe.MainModuleSize, hostRole, effectiveSteamModIds, modPathRaw);
+        var metadata = BuildBaseMetadata(new BaseMetadataInput(detection, probe.CommandLine, probe.MainModuleSize, hostRole, effectiveSteamModIds, modPathRaw));
         metadata["launchContextSource"] = forcedContext.Source;
         if (forcedContext.IsForced)
         {
@@ -222,26 +222,28 @@ public sealed class ProcessLocator : IProcessLocator
         return TryGetCommandLine(processId);
     }
 
-    private static Dictionary<string, string> BuildBaseMetadata(
-        ProcessDetection detection,
-        string? commandLine,
-        int mainModuleSize,
-        ProcessHostRole hostRole,
-        IReadOnlyCollection<string> steamModIds,
-        string? modPathRaw)
+    private readonly record struct BaseMetadataInput(
+        ProcessDetection Detection,
+        string? CommandLine,
+        int MainModuleSize,
+        ProcessHostRole HostRole,
+        IReadOnlyCollection<string> SteamModIds,
+        string? ModPathRaw);
+
+    private static Dictionary<string, string> BuildBaseMetadata(BaseMetadataInput input)
     {
         return new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
         {
-            ["targetHint"] = detection.ExeTarget.ToString(),
-            ["hasModPath"] = (!string.IsNullOrWhiteSpace(modPathRaw)).ToString(),
-            ["hasSteamMod"] = (steamModIds.Count > 0).ToString(),
-            ["detectedVia"] = detection.DetectedVia,
-            ["commandLineAvailable"] = (!string.IsNullOrWhiteSpace(commandLine)).ToString(),
-            ["isStarWarsG"] = detection.IsStarWarsG.ToString(),
-            ["steamModIdsDetected"] = steamModIds.Count == 0 ? string.Empty : string.Join(",", steamModIds),
-            ["hostRole"] = hostRole.ToString().ToLowerInvariant(),
-            ["mainModuleSize"] = mainModuleSize.ToString(),
-            ["workshopMatchCount"] = steamModIds.Count.ToString(),
+            ["targetHint"] = input.Detection.ExeTarget.ToString(),
+            ["hasModPath"] = (!string.IsNullOrWhiteSpace(input.ModPathRaw)).ToString(),
+            ["hasSteamMod"] = (input.SteamModIds.Count > 0).ToString(),
+            ["detectedVia"] = input.Detection.DetectedVia,
+            ["commandLineAvailable"] = (!string.IsNullOrWhiteSpace(input.CommandLine)).ToString(),
+            ["isStarWarsG"] = input.Detection.IsStarWarsG.ToString(),
+            ["steamModIdsDetected"] = input.SteamModIds.Count == 0 ? string.Empty : string.Join(",", input.SteamModIds),
+            ["hostRole"] = input.HostRole.ToString().ToLowerInvariant(),
+            ["mainModuleSize"] = input.MainModuleSize.ToString(),
+            ["workshopMatchCount"] = input.SteamModIds.Count.ToString(),
             ["selectionScore"] = "0.00"
         };
     }

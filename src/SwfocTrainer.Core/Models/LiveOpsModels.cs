@@ -38,14 +38,16 @@ public sealed record SelectedUnitDraft(
     int? OwnerFaction = null)
 {
     [JsonIgnore]
-    public bool IsEmpty =>
-        Hp is null &&
-        Shield is null &&
-        Speed is null &&
-        DamageMultiplier is null &&
-        CooldownMultiplier is null &&
-        Veterancy is null &&
-        OwnerFaction is null;
+    public bool IsEmpty
+    {
+        get
+        {
+            var hasNoFloatEdits = Hp is null && Shield is null && Speed is null;
+            var hasNoMultiplierEdits = DamageMultiplier is null && CooldownMultiplier is null;
+            var hasNoIntEdits = Veterancy is null && OwnerFaction is null;
+            return hasNoFloatEdits && hasNoMultiplierEdits && hasNoIntEdits;
+        }
+    }
 }
 
 /// <summary>
@@ -70,6 +72,18 @@ public sealed record SelectedUnitTransactionResult(
     IReadOnlyList<ActionExecutionResult> Steps,
     bool RolledBack = false,
     IReadOnlyList<ActionExecutionResult>? RollbackSteps = null);
+
+/// <summary>
+/// Groups parameters for building a spawn batch plan.
+/// </summary>
+public sealed record SpawnBatchPlanOptions(
+    string ProfileId,
+    SpawnPreset Preset,
+    int Quantity = 0,
+    int DelayMs = -1,
+    string? FactionOverride = null,
+    string? EntryMarkerOverride = null,
+    bool StopOnFailure = false);
 
 /// <summary>
 /// Profile-scoped spawn preset definition.

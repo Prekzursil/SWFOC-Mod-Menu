@@ -34,7 +34,7 @@ internal static class SignatureResolverSymbolHydration
         ArgumentNullException.ThrowIfNull(module);
         ArgumentNullException.ThrowIfNull(signatureSets);
         ArgumentNullException.ThrowIfNull(symbols);
-        if (!TryLoadGhidraSymbolPack(ghidraSymbolPackRoot, logger, module, out var fingerprintId, out var packPath, out var pack))
+        if (!TryLoadGhidraSymbolPack(new GhidraPackInput(ghidraSymbolPackRoot, logger, module), out var fingerprintId, out var packPath, out var pack))
         {
             return;
         }
@@ -57,28 +57,31 @@ internal static class SignatureResolverSymbolHydration
             fingerprintId);
     }
 
+    private readonly record struct GhidraPackInput(
+        string GhidraSymbolPackRoot,
+        ILogger<SignatureResolver> Logger,
+        ProcessModule Module);
+
     private static bool TryLoadGhidraSymbolPack(
-        string ghidraSymbolPackRoot,
-        ILogger<SignatureResolver> logger,
-        ProcessModule module,
+        GhidraPackInput input,
         out string fingerprintId,
         out string packPath,
         out GhidraSymbolPackDto pack)
     {
         pack = null!;
-        if (!TryResolveGhidraPackPath(ghidraSymbolPackRoot, module, out fingerprintId, out packPath))
+        if (!TryResolveGhidraPackPath(input.GhidraSymbolPackRoot, input.Module, out fingerprintId, out packPath))
         {
             return false;
         }
 
-        if (!TryDeserializeGhidraSymbolPack(logger, packPath, out var candidate))
+        if (!TryDeserializeGhidraSymbolPack(input.Logger, packPath, out var candidate))
         {
             return false;
         }
 
         if (!IsMatchingFingerprint(candidate.BinaryFingerprint?.FingerprintId, fingerprintId))
         {
-            logger.LogWarning(
+            input.Logger.LogWarning(
                 "Ignoring ghidra symbol pack {Path}: fingerprint mismatch (expected {Expected}, actual {Actual})",
                 packPath,
                 fingerprintId,

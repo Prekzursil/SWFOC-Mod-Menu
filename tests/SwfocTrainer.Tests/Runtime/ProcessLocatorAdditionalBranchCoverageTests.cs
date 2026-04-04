@@ -601,11 +601,9 @@ public sealed class ProcessLocatorAdditionalBranchCoverageTests
         method.Should().NotBeNull();
 
         var detection = CreateDetection(ExeTarget.Swfoc, true, "test");
-        var result = (Dictionary<string, string>)method!.Invoke(null, new object?[]
-        {
-            detection, "cmd line", 12345, ProcessHostRole.GameHost,
-            new[] { "111", "222" }, "Mods/AOTR"
-        })!;
+        var input = CreateBaseMetadataInput(detection, "cmd line", 12345, ProcessHostRole.GameHost,
+            new[] { "111", "222" }, "Mods/AOTR");
+        var result = (Dictionary<string, string>)method!.Invoke(null, new object?[] { input })!;
 
         result["targetHint"].Should().Be("Swfoc");
         result["hasModPath"].Should().Be("True");
@@ -625,16 +623,23 @@ public sealed class ProcessLocatorAdditionalBranchCoverageTests
         method.Should().NotBeNull();
 
         var detection = CreateDetection(ExeTarget.Swfoc, false, "test");
-        var result = (Dictionary<string, string>)method!.Invoke(null, new object?[]
-        {
-            detection, null, 0, ProcessHostRole.Launcher,
-            Array.Empty<string>(), null
-        })!;
+        var input = CreateBaseMetadataInput(detection, null, 0, ProcessHostRole.Launcher,
+            Array.Empty<string>(), null);
+        var result = (Dictionary<string, string>)method!.Invoke(null, new object?[] { input })!;
 
         result["hasSteamMod"].Should().Be("False");
         result["hasModPath"].Should().Be("False");
         result["steamModIdsDetected"].Should().BeEmpty();
         result["commandLineAvailable"].Should().Be("False");
+    }
+
+    private static object CreateBaseMetadataInput(
+        object detection, string? commandLine, int mainModuleSize,
+        ProcessHostRole hostRole, IReadOnlyCollection<string> steamModIds, string? modPathRaw)
+    {
+        var inputType = typeof(ProcessLocator).GetNestedType("BaseMetadataInput", BindingFlags.NonPublic);
+        inputType.Should().NotBeNull();
+        return Activator.CreateInstance(inputType!, detection, commandLine, mainModuleSize, hostRole, steamModIds, modPathRaw)!;
     }
 
     // ── ApplyLaunchContextMetadata ────────────────────────────────────────
