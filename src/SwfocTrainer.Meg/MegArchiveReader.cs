@@ -381,7 +381,7 @@ public sealed class MegArchiveReader : IMegArchiveReader
         var entries = new List<MegEntry>((int)header.FileCount);
         for (var i = 0; i < header.FileCount; i++)
         {
-            if (!TryParseEntryRecord(bytes, header, ref cursor, diagnostics, i, out var parsedEntry))
+            if (!TryParseEntryRecord(new EntryParseContext(bytes, header, diagnostics, i), ref cursor, out var parsedEntry))
             {
                 return null;
             }
@@ -409,47 +409,50 @@ public sealed class MegArchiveReader : IMegArchiveReader
         return entries;
     }
 
+    private readonly record struct EntryParseContext(
+        byte[] Bytes,
+        ParsedHeader Header,
+        ICollection<string> Diagnostics,
+        int EntryIndex);
+
     private static bool TryParseEntryRecord(
-        byte[] bytes,
-        ParsedHeader header,
+        EntryParseContext ctx,
         ref int cursor,
-        ICollection<string> diagnostics,
-        int entryIndex,
         out ParsedEntry entry)
     {
         entry = default;
-        if (!TryEnsureRange(bytes.Length, cursor, 20, out var rangeError))
+        if (!TryEnsureRange(ctx.Bytes.Length, cursor, 20, out var rangeError))
         {
-            diagnostics.Add($"File[{entryIndex}] record truncated: {rangeError}");
+            ctx.Diagnostics.Add($"File[{ctx.EntryIndex}] record truncated: {rangeError}");
             return false;
         }
 
-        if (header.SupportsEntryFlags)
+        if (ctx.Header.SupportsEntryFlags)
         {
-            var entryFlags = ReadUInt16(bytes, cursor);
+            var entryFlags = ReadUInt16(ctx.Bytes, cursor);
             if (entryFlags != 0)
             {
-                diagnostics.Add($"File[{entryIndex}] has unsupported encrypted/compressed flags={entryFlags}.");
+                ctx.Diagnostics.Add($"File[{ctx.EntryIndex}] has unsupported encrypted/compressed flags={entryFlags}.");
                 return false;
             }
 
             entry = new ParsedEntry(
                 EntryFlags: entryFlags,
-                Crc: ReadUInt32(bytes, cursor + 2),
-                Index: ReadUInt32(bytes, cursor + 6),
-                Size: ReadUInt32(bytes, cursor + 10),
-                Start: ReadUInt32(bytes, cursor + 14),
-                NameIndex: ReadUInt16(bytes, cursor + 18));
+                Crc: ReadUInt32(ctx.Bytes, cursor + 2),
+                Index: ReadUInt32(ctx.Bytes, cursor + 6),
+                Size: ReadUInt32(ctx.Bytes, cursor + 10),
+                Start: ReadUInt32(ctx.Bytes, cursor + 14),
+                NameIndex: ReadUInt16(ctx.Bytes, cursor + 18));
         }
         else
         {
             entry = new ParsedEntry(
                 EntryFlags: 0,
-                Crc: ReadUInt32(bytes, cursor),
-                Index: ReadUInt32(bytes, cursor + 4),
-                Size: ReadUInt32(bytes, cursor + 8),
-                Start: ReadUInt32(bytes, cursor + 12),
-                NameIndex: ReadUInt32(bytes, cursor + 16));
+                Crc: ReadUInt32(ctx.Bytes, cursor),
+                Index: ReadUInt32(ctx.Bytes, cursor + 4),
+                Size: ReadUInt32(ctx.Bytes, cursor + 8),
+                Start: ReadUInt32(ctx.Bytes, cursor + 12),
+                NameIndex: ReadUInt32(ctx.Bytes, cursor + 16));
         }
 
         cursor += 20;

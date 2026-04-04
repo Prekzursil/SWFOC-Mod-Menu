@@ -93,18 +93,18 @@ public sealed class MegWave2CoverageTests
     }
 
     [Fact]
-    public void Open_ShouldReportNameTableTrailingBytes_ForFormat3NonEncrypted()
+    public void Open_ShouldParseFormat2_WithSingleEntry()
     {
-        // Build a non-encrypted format3-style payload that falls through to format2
-        // because the magic is 0xFFFFFFFF (shared between format2 and format3).
-        // The format2 parser will pick it up. This tests the format2 path with trailing name bytes.
+        // Build a format2 payload (magic 0xFFFFFFFF, 0x3F7D70A4) with no trailing bytes.
+        // Format2 does not have an explicit nameTableSize field, so trailing bytes
+        // would misalign the file table cursor. This tests the format2 path cleanly.
         var nameBytes = Encoding.ASCII.GetBytes("A.txt");
 
         using var stream = new MemoryStream();
         using var writer = new BinaryWriter(stream, Encoding.ASCII, leaveOpen: true);
 
-        var nameTableSize = 4 + nameBytes.Length + 3; // 3 extra trailing bytes
-        var fileTableStart = 20 + nameTableSize;
+        var nameEntrySize = 4 + nameBytes.Length; // 2-byte length + 2-byte flags + name bytes
+        var fileTableStart = 20 + nameEntrySize;
         var dataStart = fileTableStart + 20;
 
         writer.Write(0xFFFFFFFFu);
@@ -116,19 +116,18 @@ public sealed class MegWave2CoverageTests
         writer.Write((ushort)nameBytes.Length);
         writer.Write((ushort)0);
         writer.Write(nameBytes);
-        writer.Write(new byte[3]); // trailing bytes
 
         var contentBytes = "x"u8.ToArray();
-        writer.Write(0u);
-        writer.Write(0u);
+        writer.Write(0u);       // crc
+        writer.Write(0u);       // index
         writer.Write((uint)contentBytes.Length);
         writer.Write((uint)dataStart);
-        writer.Write(0u);
+        writer.Write(0u);       // nameIndex
         writer.Write(contentBytes);
 
         var payload = stream.ToArray();
         var reader = new MegArchiveReader();
-        var result = reader.Open(payload, "format2_trailing.meg");
+        var result = reader.Open(payload, "format2_single_entry.meg");
 
         result.Succeeded.Should().BeTrue();
         result.Archive!.Entries.Should().ContainSingle();

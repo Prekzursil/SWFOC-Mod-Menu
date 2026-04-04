@@ -549,14 +549,9 @@ public sealed class BackendRouterBranchCoverageTests
         method.Should().NotBeNull();
 
         var diagnostics = new Dictionary<string, object?>(StringComparer.OrdinalIgnoreCase);
-        var result = method!.Invoke(null, new object?[] {
-            ExecutionBackendKind.Extender,
-            "extender",
-            true,
-            Array.Empty<string>(),
-            diagnostics,
-            false
-        });
+        var input = CreateCapabilityContractInput(
+            ExecutionBackendKind.Extender, "extender", true, Array.Empty<string>(), false);
+        var result = method!.Invoke(null, new object?[] { input, diagnostics });
         result.Should().BeNull();
     }
 
@@ -569,14 +564,9 @@ public sealed class BackendRouterBranchCoverageTests
         method.Should().NotBeNull();
 
         var diagnostics = new Dictionary<string, object?>(StringComparer.OrdinalIgnoreCase);
-        var result = method!.Invoke(null, new object?[] {
-            ExecutionBackendKind.Extender,
-            "extender",
-            false,
-            new[] { "missing_cap" },
-            diagnostics,
-            false
-        });
+        var input = CreateCapabilityContractInput(
+            ExecutionBackendKind.Extender, "extender", false, new[] { "missing_cap" }, false);
+        var result = method!.Invoke(null, new object?[] { input, diagnostics });
         result.Should().BeNull();
     }
 
@@ -589,15 +579,33 @@ public sealed class BackendRouterBranchCoverageTests
         method.Should().NotBeNull();
 
         var diagnostics = new Dictionary<string, object?>(StringComparer.OrdinalIgnoreCase);
-        var result = method!.Invoke(null, new object?[] {
-            ExecutionBackendKind.Memory,
-            "auto",
-            true,
-            new[] { "missing_cap" },
-            diagnostics,
-            false
-        });
+        var input = CreateCapabilityContractInput(
+            ExecutionBackendKind.Memory, "auto", true, new[] { "missing_cap" }, false);
+        var result = method!.Invoke(null, new object?[] { input, diagnostics });
         result.Should().BeNull();
+    }
+
+    /// <summary>
+    /// Creates a CapabilityContractInput (private nested record struct) via reflection.
+    /// </summary>
+    private static object CreateCapabilityContractInput(
+        ExecutionBackendKind preferredBackend,
+        string? backendPreference,
+        bool isMutating,
+        IReadOnlyCollection<string> missingRequired,
+        bool isPromotedExtenderAction)
+    {
+        var inputType = typeof(BackendRouter).GetNestedType(
+            "CapabilityContractInput",
+            System.Reflection.BindingFlags.NonPublic);
+        inputType.Should().NotBeNull();
+        return Activator.CreateInstance(
+            inputType!,
+            preferredBackend,
+            backendPreference,
+            isMutating,
+            missingRequired,
+            isPromotedExtenderAction)!;
     }
 
     // ── Resolve integration: non-extender preferred route ─────────────────

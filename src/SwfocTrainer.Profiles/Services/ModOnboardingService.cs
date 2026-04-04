@@ -185,7 +185,7 @@ public sealed class ModOnboardingService : IModOnboardingService
         IReadOnlyList<string> aliases = Array.Empty<string>();
 
         var baseProfileId = ResolveBaseProfileId(seed);
-        ValidateSeedInputs(resolvedSeedDraftProfileId, resolvedDisplayName, resolvedSourceRunId, seed.Confidence, baseProfileId, errors);
+        ValidateSeedInputs(new SeedValidationInput(resolvedSeedDraftProfileId, resolvedDisplayName, resolvedSourceRunId, seed.Confidence, baseProfileId), errors);
 
         if (errors.Count == 0)
         {
@@ -240,35 +240,38 @@ public sealed class ModOnboardingService : IModOnboardingService
             Errors: errors);
     }
 
+    private readonly record struct SeedValidationInput(
+        string? DraftProfileId,
+        string? DisplayName,
+        string? SourceRunId,
+        double Confidence,
+        string? BaseProfileId);
+
     private static void ValidateSeedInputs(
-        string? draftProfileId,
-        string? displayName,
-        string? sourceRunId,
-        double confidence,
-        string? baseProfileId,
+        SeedValidationInput input,
         List<string> errors)
     {
-        if (string.IsNullOrWhiteSpace(draftProfileId))
+        if (string.IsNullOrWhiteSpace(input.DraftProfileId))
         {
             errors.Add("DraftProfileId is required.");
         }
 
-        if (string.IsNullOrWhiteSpace(displayName))
+        if (string.IsNullOrWhiteSpace(input.DisplayName))
         {
             errors.Add("DisplayName is required.");
         }
 
-        if (string.IsNullOrWhiteSpace(sourceRunId))
+        if (string.IsNullOrWhiteSpace(input.SourceRunId))
         {
             errors.Add("SourceRunId is required.");
         }
 
-        if (!double.IsFinite(confidence))
+        if (!double.IsFinite(input.Confidence))
         {
             errors.Add("Confidence must be finite.");
         }
 
-        if (string.IsNullOrWhiteSpace(baseProfileId))
+        if (string.IsNullOrWhiteSpace(input.BaseProfileId))
         {
             errors.Add("BaseProfileId or ParentProfile is required.");
         }

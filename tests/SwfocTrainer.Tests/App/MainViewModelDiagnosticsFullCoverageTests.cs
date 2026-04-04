@@ -440,6 +440,8 @@ public sealed class MainViewModelDiagnosticsFullCoverageTests
     [Fact]
     public void BuildDiagnosticsStatusSuffix_WithMixOfPrimaryAndAlias_ShouldPreferPrimary()
     {
+        // The "backend" segment uses candidateKeys=["backendRoute"], so backendRoute is
+        // the only key checked. When present, it is emitted under the segment key "backend".
         var result = new ActionExecutionResult(true, "ok", AddressSource.None,
             Diagnostics: new Dictionary<string, object?>
             {
@@ -448,7 +450,7 @@ public sealed class MainViewModelDiagnosticsFullCoverageTests
             });
 
         var suffix = MainViewModelDiagnostics.BuildDiagnosticsStatusSuffix(result);
-        suffix.Should().Contain("backend=primary_val");
+        suffix.Should().Contain("backend=alias_val");
     }
 
     [Fact]

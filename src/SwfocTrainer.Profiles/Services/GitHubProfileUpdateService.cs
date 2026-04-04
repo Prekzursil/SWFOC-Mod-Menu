@@ -93,11 +93,7 @@ public sealed class GitHubProfileUpdateService : IProfileUpdateService
 
         var (destination, backupPath) = InstallProfileFile(profileId, preparedInstall.TargetProfileJson!, preparedInstall.ProfilesDirectory!);
         var receiptPath = await WriteInstallReceiptAsync(
-            profileId,
-            destination,
-            backupPath,
-            entry.Version,
-            entry.Sha256,
+            new InstallReceiptInput(profileId, destination, backupPath, entry.Version, entry.Sha256),
             cancellationToken);
 
         return BuildInstallSuccess(profileId, destination, backupPath, receiptPath, entry.Version);
@@ -469,27 +465,30 @@ public sealed class GitHubProfileUpdateService : IProfileUpdateService
         return Convert.ToHexString(hash).ToLowerInvariant();
     }
 
+    private readonly record struct InstallReceiptInput(
+        string ProfileId,
+        string InstalledPath,
+        string? BackupPath,
+        string Version,
+        string ExpectedSha256);
+
     private async Task<string> WriteInstallReceiptAsync(
-        string profileId,
-        string installedPath,
-        string? backupPath,
-        string version,
-        string expectedSha256,
+        InstallReceiptInput input,
         CancellationToken cancellationToken)
     {
         var receiptsRoot = Path.Join(_options.DownloadCachePath, ReceiptsDirectoryName);
         Directory.CreateDirectory(receiptsRoot);
-        var receiptPath = Path.Join(receiptsRoot, $"install-{profileId}-{DateTimeOffset.UtcNow.ToString(ReceiptTimestampFormat)}.json");
+        var receiptPath = Path.Join(receiptsRoot, $"install-{input.ProfileId}-{DateTimeOffset.UtcNow.ToString(ReceiptTimestampFormat)}.json");
 
         var payload = new
         {
             type = "install",
             generatedAtUtc = DateTimeOffset.UtcNow,
-            profileId,
-            installedPath,
-            backupPath,
-            version,
-            expectedSha256
+            profileId = input.ProfileId,
+            installedPath = input.InstalledPath,
+            backupPath = input.BackupPath,
+            version = input.Version,
+            expectedSha256 = input.ExpectedSha256
         };
 
         await File.WriteAllTextAsync(receiptPath, JsonSerializer.Serialize(payload, _jsonOptions), cancellationToken);

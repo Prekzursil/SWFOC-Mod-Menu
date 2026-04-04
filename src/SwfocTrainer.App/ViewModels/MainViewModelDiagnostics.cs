@@ -86,34 +86,40 @@ internal static class MainViewModelDiagnostics
     internal static object ParsePrimitive(string input)
     {
         ArgumentNullException.ThrowIfNull(input);
+        return TryParseIntegerPrimitive(input)
+               ?? TryParseBoolPrimitive(input)
+               ?? TryParseFloatingPointPrimitive(input.Trim())
+               ?? (object)input;
+    }
+
+    private static object? TryParseIntegerPrimitive(string input)
+    {
         if (int.TryParse(input, NumberStyles.Integer, CultureInfo.InvariantCulture, out var intValue))
         {
             return intValue;
         }
 
-        if (long.TryParse(input, NumberStyles.Integer, CultureInfo.InvariantCulture, out var longValue))
-        {
-            return longValue;
-        }
+        return long.TryParse(input, NumberStyles.Integer, CultureInfo.InvariantCulture, out var longValue)
+            ? longValue
+            : null;
+    }
 
-        if (bool.TryParse(input, out var boolValue))
-        {
-            return boolValue;
-        }
+    private static object? TryParseBoolPrimitive(string input)
+    {
+        return bool.TryParse(input, out var boolValue) ? boolValue : null;
+    }
 
-        var trimmed = input.Trim();
+    private static object? TryParseFloatingPointPrimitive(string trimmed)
+    {
         if (trimmed.EndsWith("f", StringComparison.OrdinalIgnoreCase) &&
             float.TryParse(trimmed[..^1], NumberStyles.Float | NumberStyles.AllowThousands, CultureInfo.InvariantCulture, out var floatValue))
         {
             return floatValue;
         }
 
-        if (double.TryParse(trimmed, NumberStyles.Float | NumberStyles.AllowThousands, CultureInfo.InvariantCulture, out var doubleValue))
-        {
-            return doubleValue;
-        }
-
-        return input;
+        return double.TryParse(trimmed, NumberStyles.Float | NumberStyles.AllowThousands, CultureInfo.InvariantCulture, out var doubleValue)
+            ? doubleValue
+            : null;
     }
 
     internal static string ResolveBundleGateResult(ActionReliabilityViewItem? reliability, string unknownValue)
@@ -136,7 +142,7 @@ internal static class MainViewModelDiagnostics
         }
 
         var segments = new List<string>(capacity: 5);
-        AppendDiagnosticSegment(segments, result.Diagnostics, "backend", "backend", "backendRoute");
+        AppendDiagnosticSegment(segments, result.Diagnostics, "backend", "backendRoute");
         AppendDiagnosticSegment(segments, result.Diagnostics, "routeReasonCode", "routeReasonCode", "reasonCode");
         AppendDiagnosticSegment(segments, result.Diagnostics, "capabilityProbeReasonCode", "capabilityProbeReasonCode", "probeReasonCode");
         AppendDiagnosticSegment(segments, result.Diagnostics, "hookState", "hookState");

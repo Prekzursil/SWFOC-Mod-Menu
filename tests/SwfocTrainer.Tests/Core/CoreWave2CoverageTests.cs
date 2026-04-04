@@ -1,4 +1,5 @@
 using FluentAssertions;
+using SwfocTrainer.Core.IO;
 using SwfocTrainer.Core.Logging;
 using SwfocTrainer.Core.Models;
 using SwfocTrainer.Core.Services;
@@ -237,15 +238,25 @@ public sealed class CoreWave2CoverageTests
     [Fact]
     public async Task FileAuditLogger_ShouldWriteToCustomDirectory()
     {
-        using var tempDir = new TempDirectory("swfoc-audit-test");
-        var logger = new FileAuditLogger(tempDir.Path);
-        var context = new ActionContext("test_profile", 99, "test_action", AddressSource.Fallback);
-        var record = new ActionAuditRecord(DateTimeOffset.UtcNow, context, true, "Custom dir test");
+        // The custom directory must be under the trusted root (AppData\Local\SwfocTrainer)
+        var appRoot = TrustedPathPolicy.GetOrCreateAppDataRoot();
+        var customDir = Path.Join(appRoot, $"audit-test-{Guid.NewGuid():N}");
+        Directory.CreateDirectory(customDir);
+        try
+        {
+            var logger = new FileAuditLogger(customDir);
+            var context = new ActionContext("test_profile", 99, "test_action", AddressSource.Fallback);
+            var record = new ActionAuditRecord(DateTimeOffset.UtcNow, context, true, "Custom dir test");
 
-        await logger.WriteAsync(record, CancellationToken.None);
+            await logger.WriteAsync(record, CancellationToken.None);
 
-        var logFiles = Directory.GetFiles(tempDir.Path, "audit-*.jsonl");
-        logFiles.Should().NotBeEmpty();
+            var logFiles = Directory.GetFiles(customDir, "audit-*.jsonl");
+            logFiles.Should().NotBeEmpty();
+        }
+        finally
+        {
+            try { Directory.Delete(customDir, true); } catch { /* best-effort cleanup */ }
+        }
     }
 
     #endregion

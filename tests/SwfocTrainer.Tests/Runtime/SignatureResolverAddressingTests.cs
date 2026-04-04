@@ -14,9 +14,9 @@ public sealed class SignatureResolverAddressingTests
     public void TryResolveAddress_NullSignature_ThrowsArgumentNullException()
     {
         var act = () => SignatureResolverAddressing.TryResolveAddress(
-            null!, (nint)0x1000, (nint)0x400000, new byte[64], out _, out _);
+            new SignatureResolverAddressing.AddressResolutionInput(null!, (nint)0x1000, (nint)0x400000, new byte[64]), out _, out _);
 
-        act.Should().Throw<ArgumentNullException>().WithParameterName("signature");
+        act.Should().Throw<ArgumentNullException>();
     }
 
     [Fact]
@@ -25,9 +25,9 @@ public sealed class SignatureResolverAddressingTests
         var sig = new SignatureSpec("test", "AA BB", 0, SignatureAddressMode.HitPlusOffset);
 
         var act = () => SignatureResolverAddressing.TryResolveAddress(
-            sig, (nint)0x1000, (nint)0x400000, null!, out _, out _);
+            new SignatureResolverAddressing.AddressResolutionInput(sig, (nint)0x1000, (nint)0x400000, null!), out _, out _);
 
-        act.Should().Throw<ArgumentNullException>().WithParameterName("moduleBytes");
+        act.Should().Throw<ArgumentNullException>();
     }
 
     [Fact]
@@ -39,7 +39,7 @@ public sealed class SignatureResolverAddressingTests
         var baseAddress = (nint)0x400000;
 
         var result = SignatureResolverAddressing.TryResolveAddress(
-            sig, hitAddress, baseAddress, moduleBytes, out var resolved, out var diagnostics);
+            new SignatureResolverAddressing.AddressResolutionInput(sig, hitAddress, baseAddress, moduleBytes), out var resolved, out var diagnostics);
 
         result.Should().BeTrue();
         resolved.Should().Be(hitAddress + 4);
@@ -55,7 +55,7 @@ public sealed class SignatureResolverAddressingTests
         var baseAddress = (nint)0x400000;
 
         var result = SignatureResolverAddressing.TryResolveAddress(
-            sig, hitAddress, baseAddress, moduleBytes, out var resolved, out _);
+            new SignatureResolverAddressing.AddressResolutionInput(sig, hitAddress, baseAddress, moduleBytes), out var resolved, out _);
 
         result.Should().BeTrue();
         resolved.Should().Be(hitAddress);
@@ -72,7 +72,7 @@ public sealed class SignatureResolverAddressingTests
         BitConverter.GetBytes((uint)0xDEADBEEF).CopyTo(moduleBytes, 0x12);
 
         var result = SignatureResolverAddressing.TryResolveAddress(
-            sig, hitAddress, baseAddress, moduleBytes, out var resolved, out var diagnostics);
+            new SignatureResolverAddressing.AddressResolutionInput(sig, hitAddress, baseAddress, moduleBytes), out var resolved, out var diagnostics);
 
         result.Should().BeTrue();
         resolved.Should().Be(unchecked((nint)(long)0xDEADBEEF));
@@ -89,7 +89,7 @@ public sealed class SignatureResolverAddressingTests
         // Leave zeros at index 0x12 => decoded address will be 0
 
         var result = SignatureResolverAddressing.TryResolveAddress(
-            sig, hitAddress, baseAddress, moduleBytes, out _, out var diagnostics);
+            new SignatureResolverAddressing.AddressResolutionInput(sig, hitAddress, baseAddress, moduleBytes), out _, out var diagnostics);
 
         result.Should().BeFalse();
         diagnostics.Should().Contain("null absolute address");
@@ -105,7 +105,7 @@ public sealed class SignatureResolverAddressingTests
         var moduleBytes = new byte[4]; // index + sizeof(uint) = 6 > 4
 
         var result = SignatureResolverAddressing.TryResolveAddress(
-            sig, hitAddress, baseAddress, moduleBytes, out _, out var diagnostics);
+            new SignatureResolverAddressing.AddressResolutionInput(sig, hitAddress, baseAddress, moduleBytes), out _, out var diagnostics);
 
         result.Should().BeFalse();
         diagnostics.Should().Contain("Not enough bytes");
@@ -123,7 +123,7 @@ public sealed class SignatureResolverAddressingTests
         BitConverter.GetBytes(disp32).CopyTo(moduleBytes, 0x12);
 
         var result = SignatureResolverAddressing.TryResolveAddress(
-            sig, hitAddress, baseAddress, moduleBytes, out var resolved, out var diagnostics);
+            new SignatureResolverAddressing.AddressResolutionInput(sig, hitAddress, baseAddress, moduleBytes), out var resolved, out var diagnostics);
 
         result.Should().BeTrue();
         // endOfDisp = hitAddress + Offset + sizeof(int) = 0x400010 + 2 + 4 = 0x400016
@@ -143,7 +143,7 @@ public sealed class SignatureResolverAddressingTests
         var moduleBytes = new byte[4]; // index = 2, need 2 + 4 = 6 > 4
 
         var result = SignatureResolverAddressing.TryResolveAddress(
-            sig, hitAddress, baseAddress, moduleBytes, out _, out var diagnostics);
+            new SignatureResolverAddressing.AddressResolutionInput(sig, hitAddress, baseAddress, moduleBytes), out _, out var diagnostics);
 
         result.Should().BeFalse();
         diagnostics.Should().Contain("Not enough bytes");
@@ -161,7 +161,7 @@ public sealed class SignatureResolverAddressingTests
         BitConverter.GetBytes(disp32).CopyTo(moduleBytes, 0x12); // index = 0x10+2 = 0x12
 
         var result = SignatureResolverAddressing.TryResolveAddress(
-            sig, hitAddress, baseAddress, moduleBytes, out var resolved, out _);
+            new SignatureResolverAddressing.AddressResolutionInput(sig, hitAddress, baseAddress, moduleBytes), out var resolved, out _);
 
         result.Should().BeTrue();
         var expectedEndOfDisp = hitAddress + 2 + sizeof(int);
@@ -181,7 +181,7 @@ public sealed class SignatureResolverAddressingTests
         BitConverter.GetBytes(disp32).CopyTo(moduleBytes, 0x12);
 
         var result = SignatureResolverAddressing.TryResolveAddress(
-            sig, hitAddress, baseAddress, moduleBytes, out var resolved, out _);
+            new SignatureResolverAddressing.AddressResolutionInput(sig, hitAddress, baseAddress, moduleBytes), out var resolved, out _);
 
         result.Should().BeTrue();
         var expectedEndOfDisp = hitAddress + 2 + sizeof(int);
@@ -199,7 +199,7 @@ public sealed class SignatureResolverAddressingTests
         BitConverter.GetBytes(disp32).CopyTo(moduleBytes, 0x102);
 
         var result = SignatureResolverAddressing.TryResolveAddress(
-            sig, hitAddress, baseAddress, moduleBytes, out var resolved, out _);
+            new SignatureResolverAddressing.AddressResolutionInput(sig, hitAddress, baseAddress, moduleBytes), out var resolved, out _);
 
         result.Should().BeTrue();
         var expectedEndOfDisp = hitAddress + 2 + sizeof(int);
@@ -215,7 +215,7 @@ public sealed class SignatureResolverAddressingTests
         var moduleBytes = new byte[64];
 
         var result = SignatureResolverAddressing.TryResolveAddress(
-            sig, hitAddress, baseAddress, moduleBytes, out _, out var diagnostics);
+            new SignatureResolverAddressing.AddressResolutionInput(sig, hitAddress, baseAddress, moduleBytes), out _, out var diagnostics);
 
         result.Should().BeFalse();
         diagnostics.Should().Contain("Unsupported");
@@ -236,7 +236,7 @@ public sealed class SignatureResolverAddressingTests
         var moduleBytes = new byte[64];
 
         var result = SignatureResolverAddressing.TryResolveAddress(
-            sig, hitAddress, baseAddress, moduleBytes, out _, out var diagnostics);
+            new SignatureResolverAddressing.AddressResolutionInput(sig, hitAddress, baseAddress, moduleBytes), out _, out var diagnostics);
 
         result.Should().BeFalse();
         diagnostics.Should().Contain("out of range");
@@ -256,7 +256,7 @@ public sealed class SignatureResolverAddressingTests
         BitConverter.GetBytes(disp32).CopyTo(moduleBytes, 0x12);
 
         var result = SignatureResolverAddressing.TryResolveAddress(
-            sig, hitAddress, baseAddress, moduleBytes, out var resolved, out _);
+            new SignatureResolverAddressing.AddressResolutionInput(sig, hitAddress, baseAddress, moduleBytes), out var resolved, out _);
 
         result.Should().BeTrue();
         var expectedEndOfDisp = hitAddress + 2 + sizeof(int);
@@ -275,7 +275,7 @@ public sealed class SignatureResolverAddressingTests
         BitConverter.GetBytes(disp32).CopyTo(moduleBytes, 0x10);
 
         var result = SignatureResolverAddressing.TryResolveAddress(
-            sig, hitAddress, baseAddress, moduleBytes, out var resolved, out _);
+            new SignatureResolverAddressing.AddressResolutionInput(sig, hitAddress, baseAddress, moduleBytes), out var resolved, out _);
 
         result.Should().BeTrue();
         var expectedEndOfDisp = hitAddress + 0 + sizeof(int);

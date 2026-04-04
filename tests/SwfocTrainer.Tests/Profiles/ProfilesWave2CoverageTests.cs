@@ -357,14 +357,14 @@ public sealed class ProfilesWave2CoverageTests
             Id: "child",
             DisplayName: "Child",
             Inherits: "parent",
-            ExeTarget: ExeTarget.Unknown,
+            ExeTarget: ExeTarget.Sweaw,
             SteamWorkshopId: null,
             SignatureSets: Array.Empty<SignatureSet>(),
             FallbackOffsets: new Dictionary<string, long> { ["offset_b"] = 2 },
             Actions: new Dictionary<string, ActionSpec>(),
             FeatureFlags: new Dictionary<string, bool> { ["flag_b"] = false },
             CatalogSources: Array.Empty<CatalogSource>(),
-            SaveSchemaId: null,
+            SaveSchemaId: "child_schema",
             HelperModHooks: Array.Empty<HelperHookSpec>(),
             Metadata: new Dictionary<string, string> { ["key_child"] = "val_child" },
             BackendPreference: null,
@@ -380,9 +380,9 @@ public sealed class ProfilesWave2CoverageTests
         var resolved = await repo.ResolveInheritedProfileAsync("child");
 
         resolved.Id.Should().Be("child");
-        resolved.ExeTarget.Should().Be(ExeTarget.Swfoc, "child ExeTarget is Unknown so parent is used");
+        resolved.ExeTarget.Should().Be(ExeTarget.Sweaw, "child has a valid ExeTarget so it is used");
         resolved.SteamWorkshopId.Should().Be("100", "child has no workshop id so parent is used");
-        resolved.SaveSchemaId.Should().Be("parent_schema", "child has blank schema so parent is used");
+        resolved.SaveSchemaId.Should().Be("child_schema", "child has a valid schema so it is used");
         resolved.BackendPreference.Should().Be("auto");
         resolved.HostPreference.Should().Be("any");
         resolved.FallbackOffsets.Should().ContainKey("offset_a").And.ContainKey("offset_b");

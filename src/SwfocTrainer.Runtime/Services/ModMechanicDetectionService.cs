@@ -55,13 +55,13 @@ public sealed class ModMechanicDetectionService : IModMechanicDetectionService
             disabledActions,
             activeWorkshopIds,
             transplantReport);
-        var supports = BuildActionSupport(
+        var supports = BuildActionSupport(new ActionSupportInput(
             profile,
             session,
             catalog,
             disabledActions,
             helperReady,
-            transplantReport);
+            transplantReport));
 
         var report = new ModMechanicReport(
             ProfileId: profile.Id,
@@ -134,26 +134,28 @@ public sealed class ModMechanicDetectionService : IModMechanicDetectionService
         return diagnostics;
     }
 
-    private static IReadOnlyList<ModMechanicSupport> BuildActionSupport(
-        TrainerProfile profile,
-        AttachSession session,
-        IReadOnlyDictionary<string, IReadOnlyList<string>>? catalog,
-        IReadOnlySet<string> disabledActions,
-        bool helperReady,
-        TransplantValidationReport? transplantReport)
+    private readonly record struct ActionSupportInput(
+        TrainerProfile Profile,
+        AttachSession Session,
+        IReadOnlyDictionary<string, IReadOnlyList<string>>? Catalog,
+        IReadOnlySet<string> DisabledActions,
+        bool HelperReady,
+        TransplantValidationReport? TransplantReport);
+
+    private static IReadOnlyList<ModMechanicSupport> BuildActionSupport(ActionSupportInput input)
     {
-        var supports = new List<ModMechanicSupport>(profile.Actions.Count);
-        foreach (var (actionId, action) in profile.Actions.OrderBy(x => x.Key, StringComparer.OrdinalIgnoreCase))
+        var supports = new List<ModMechanicSupport>(input.Profile.Actions.Count);
+        foreach (var (actionId, action) in input.Profile.Actions.OrderBy(x => x.Key, StringComparer.OrdinalIgnoreCase))
         {
             supports.Add(EvaluateAction(new ActionEvaluationContext(
                 ActionId: actionId,
                 Action: action,
-                Profile: profile,
-                Session: session,
-                Catalog: catalog,
-                DisabledActions: disabledActions,
-                HelperReady: helperReady,
-                TransplantReport: transplantReport)));
+                Profile: input.Profile,
+                Session: input.Session,
+                Catalog: input.Catalog,
+                DisabledActions: input.DisabledActions,
+                HelperReady: input.HelperReady,
+                TransplantReport: input.TransplantReport)));
         }
 
         return supports;

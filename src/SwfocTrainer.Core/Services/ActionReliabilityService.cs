@@ -311,6 +311,15 @@ public sealed class ActionReliabilityService : IActionReliabilityService
                 "Action has a symbol payload but no symbol hint mapping.");
         }
 
+        return EvaluateResolvedSymbol(actionId, symbol, session, criticalSymbols);
+    }
+
+    private static ActionReliabilityInfo EvaluateResolvedSymbol(
+        string actionId,
+        string symbol,
+        AttachSession session,
+        IReadOnlySet<string> criticalSymbols)
+    {
         if (!session.Symbols.TryGetValue(symbol, out var symbolInfo) ||
             symbolInfo is null ||
             symbolInfo.Address == nint.Zero ||
@@ -334,7 +343,8 @@ public sealed class ActionReliabilityService : IActionReliabilityService
                 $"Critical symbol '{symbol}' is {symbolInfo.HealthStatus}.");
         }
 
-        if (symbolInfo.HealthStatus == SymbolHealthStatus.Degraded || symbolInfo.Source == AddressSource.Fallback)
+        var isDegraded = symbolInfo.HealthStatus == SymbolHealthStatus.Degraded || symbolInfo.Source == AddressSource.Fallback;
+        if (isDegraded)
         {
             return new ActionReliabilityInfo(
                 actionId,

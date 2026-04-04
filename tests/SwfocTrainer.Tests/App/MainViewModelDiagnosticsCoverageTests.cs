@@ -60,13 +60,15 @@ public sealed class MainViewModelDiagnosticsCoverageTests
     [Fact]
     public void BuildQuickActionStatus_ShouldPrefixOutcomeAndAppendDiagnostics()
     {
+        // The "backend" segment uses candidateKeys=["backendRoute"], so "backendRoute"
+        // must be present for the segment to appear.
         var success = new ActionExecutionResult(
             Succeeded: true,
             Message: "applied",
             AddressSource: AddressSource.Signature,
             Diagnostics: new Dictionary<string, object?>
             {
-                ["backend"] = "sdk"
+                ["backendRoute"] = "sdk"
             });
         var failure = new ActionExecutionResult(
             Succeeded: false,

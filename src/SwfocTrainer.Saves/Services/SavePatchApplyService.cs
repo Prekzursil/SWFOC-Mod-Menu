@@ -94,12 +94,7 @@ public sealed class SavePatchApplyService : ISavePatchApplyService
         }
 
         return await PersistPatchedSaveAsync(
-            targetDoc,
-            pack,
-            compatibility,
-            targetProfileId,
-            paths,
-            preApplyBytes,
+            new PersistPatchContext(targetDoc, pack, compatibility, targetProfileId, paths, preApplyBytes),
             cancellationToken);
     }
 
@@ -312,56 +307,59 @@ public sealed class SavePatchApplyService : ISavePatchApplyService
             "Patched save failed validation checks.");
     }
 
+    private readonly record struct PersistPatchContext(
+        SaveDocument TargetDoc,
+        SavePatchPack Pack,
+        SavePatchCompatibilityResult Compatibility,
+        string TargetProfileId,
+        ApplyFilePaths Paths,
+        byte[] PreApplyBytes);
+
     private async Task<SavePatchApplyResult> PersistPatchedSaveAsync(
-        SaveDocument targetDoc,
-        SavePatchPack pack,
-        SavePatchCompatibilityResult compatibility,
-        string targetProfileId,
-        ApplyFilePaths paths,
-        byte[] preApplyBytes,
+        PersistPatchContext ctx,
         CancellationToken cancellationToken)
     {
         try
         {
-            await File.WriteAllBytesAsync(paths.BackupPath, preApplyBytes, cancellationToken);
+            await File.WriteAllBytesAsync(ctx.Paths.BackupPath, ctx.PreApplyBytes, cancellationToken);
 
-            await _saveCodec.WriteAsync(targetDoc, paths.TempOutputPath, cancellationToken);
-            File.Move(paths.TempOutputPath, paths.TargetPath, overwrite: true);
+            await _saveCodec.WriteAsync(ctx.TargetDoc, ctx.Paths.TempOutputPath, cancellationToken);
+            File.Move(ctx.Paths.TempOutputPath, ctx.Paths.TargetPath, overwrite: true);
 
-            var appliedHash = SavePatchFieldCodec.ComputeSha256Hex(await File.ReadAllBytesAsync(paths.TargetPath, cancellationToken));
-            await WriteReceiptAsync(paths.ReceiptPath, new SavePatchApplyReceipt(
-                RunId: paths.RunId,
+            var appliedHash = SavePatchFieldCodec.ComputeSha256Hex(await File.ReadAllBytesAsync(ctx.Paths.TargetPath, cancellationToken));
+            await WriteReceiptAsync(ctx.Paths.ReceiptPath, new SavePatchApplyReceipt(
+                RunId: ctx.Paths.RunId,
                 AppliedAtUtc: DateTimeOffset.UtcNow,
-                TargetPath: paths.TargetPath,
-                BackupPath: paths.BackupPath,
-                ReceiptPath: paths.ReceiptPath,
-                ProfileId: targetProfileId,
-                SchemaId: pack.Metadata.SchemaId,
+                TargetPath: ctx.Paths.TargetPath,
+                BackupPath: ctx.Paths.BackupPath,
+                ReceiptPath: ctx.Paths.ReceiptPath,
+                ProfileId: ctx.TargetProfileId,
+                SchemaId: ctx.Pack.Metadata.SchemaId,
                 Classification: SavePatchApplyClassification.Applied.ToString(),
-                SourceHash: pack.Metadata.SourceHash,
-                TargetHash: compatibility.TargetHash,
+                SourceHash: ctx.Pack.Metadata.SourceHash,
+                TargetHash: ctx.Compatibility.TargetHash,
                 AppliedHash: appliedHash,
-                OperationsApplied: pack.Operations.Count), cancellationToken);
+                OperationsApplied: ctx.Pack.Operations.Count), cancellationToken);
 
             return new SavePatchApplyResult(
                 SavePatchApplyClassification.Applied,
                 Applied: true,
-                Message: $"Applied {pack.Operations.Count} operation(s).",
-                OutputPath: paths.TargetPath,
-                BackupPath: paths.BackupPath,
-                ReceiptPath: paths.ReceiptPath);
+                Message: $"Applied {ctx.Pack.Operations.Count} operation(s).",
+                OutputPath: ctx.Paths.TargetPath,
+                BackupPath: ctx.Paths.BackupPath,
+                ReceiptPath: ctx.Paths.ReceiptPath);
         }
         catch (IOException ex)
         {
-            _logger.LogError(ex, "Patch apply write path failed for {TargetSavePath}", paths.TargetPath);
-            _helper.TryDeleteTempOutput(paths.TempOutputPath);
-            return await RestoreAfterWriteFailureAsync(paths.TargetPath, preApplyBytes, paths.BackupPath, paths.ReceiptPath, cancellationToken);
+            _logger.LogError(ex, "Patch apply write path failed for {TargetSavePath}", ctx.Paths.TargetPath);
+            _helper.TryDeleteTempOutput(ctx.Paths.TempOutputPath);
+            return await RestoreAfterWriteFailureAsync(ctx.Paths.TargetPath, ctx.PreApplyBytes, ctx.Paths.BackupPath, ctx.Paths.ReceiptPath, cancellationToken);
         }
         catch (UnauthorizedAccessException ex)
         {
-            _logger.LogError(ex, "Patch apply write path failed for {TargetSavePath}", paths.TargetPath);
-            _helper.TryDeleteTempOutput(paths.TempOutputPath);
-            return await RestoreAfterWriteFailureAsync(paths.TargetPath, preApplyBytes, paths.BackupPath, paths.ReceiptPath, cancellationToken);
+            _logger.LogError(ex, "Patch apply write path failed for {TargetSavePath}", ctx.Paths.TargetPath);
+            _helper.TryDeleteTempOutput(ctx.Paths.TempOutputPath);
+            return await RestoreAfterWriteFailureAsync(ctx.Paths.TargetPath, ctx.PreApplyBytes, ctx.Paths.BackupPath, ctx.Paths.ReceiptPath, cancellationToken);
         }
     }
 
