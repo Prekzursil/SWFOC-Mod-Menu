@@ -557,7 +557,10 @@ std::string ResolvePipeName() {
 }
 
 namespace {
-constinit std::atomic<bool> g_running{true};
+struct ShutdownState {
+    mutable std::atomic<bool> running{true};
+};
+constinit const ShutdownState kShutdown;
 } // namespace
 
 #if defined(_WIN32)
@@ -566,7 +569,7 @@ BOOL WINAPI CtrlHandler(DWORD signalType) {
         signalType == CTRL_CLOSE_EVENT ||
         signalType == CTRL_BREAK_EVENT ||
         signalType == CTRL_SHUTDOWN_EVENT) {
-        g_running.store(false);
+        kShutdown.running.store(false);
         return TRUE;
     }
     return FALSE;
@@ -580,7 +583,7 @@ void InstallCtrlHandler() {
 }
 
 void WaitForShutdownSignal() {
-    while (g_running.load()) {
+    while (kShutdown.running.load()) {
         std::this_thread::sleep_for(std::chrono::milliseconds(100));
     }
 }
