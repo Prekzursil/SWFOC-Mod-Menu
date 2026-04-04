@@ -325,20 +325,12 @@ public sealed class ProcessLocator : IProcessLocator
         }
 
         var ids = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
-        foreach (var raw in workshopIds)
+        foreach (var token in workshopIds
+            .Where(raw => !string.IsNullOrWhiteSpace(raw))
+            .SelectMany(raw => raw.Split(',', StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries))
+            .Where(token => !string.IsNullOrWhiteSpace(token)))  // NOSONAR
         {
-            if (string.IsNullOrWhiteSpace(raw))
-            {
-                continue;
-            }
-
-            foreach (var token in raw.Split(',', StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries))  // NOSONAR
-            {
-                if (!string.IsNullOrWhiteSpace(token))
-                {
-                    ids.Add(token);
-                }
-            }
+            ids.Add(token);
         }
 
         return ids
@@ -515,21 +507,17 @@ public sealed class ProcessLocator : IProcessLocator
         }
 
         var ids = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
-        foreach (Match match in Regex.Matches(commandLine, @"steammod\s*=\s*(\d+)", RegexOptions.IgnoreCase))  // NOSONAR
+        foreach (var match in Regex.Matches(commandLine, @"steammod\s*=\s*(\d+)", RegexOptions.IgnoreCase).Cast<Match>()
+            .Where(m => m.Groups.Count > 1 && !string.IsNullOrWhiteSpace(m.Groups[1].Value)))  // NOSONAR
         {
-            if (match.Groups.Count > 1 && !string.IsNullOrWhiteSpace(match.Groups[1].Value))
-            {
-                ids.Add(match.Groups[1].Value);
-            }
+            ids.Add(match.Groups[1].Value);
         }
 
         // Also infer IDs from mod paths containing workshop content folder segments.
-        foreach (Match match in Regex.Matches(commandLine, @"[\\/]+32470[\\/]+(\d+)", RegexOptions.IgnoreCase))  // NOSONAR
+        foreach (var match in Regex.Matches(commandLine, @"[\\/]+32470[\\/]+(\d+)", RegexOptions.IgnoreCase).Cast<Match>()
+            .Where(m => m.Groups.Count > 1 && !string.IsNullOrWhiteSpace(m.Groups[1].Value)))  // NOSONAR
         {
-            if (match.Groups.Count > 1 && !string.IsNullOrWhiteSpace(match.Groups[1].Value))
-            {
-                ids.Add(match.Groups[1].Value);
-            }
+            ids.Add(match.Groups[1].Value);
         }
 
         return ids.OrderBy(x => x, StringComparer.Ordinal).ToArray();

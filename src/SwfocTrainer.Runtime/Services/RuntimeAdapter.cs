@@ -1981,18 +1981,16 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
         IReadOnlyList<string> keys,
         out string? value)
     {
-        value = null;
-        foreach (var key in keys)
-        {
-            if (TryReadDiagnosticString(diagnostics, key, out var resolved) &&
-                !string.IsNullOrWhiteSpace(resolved))
+        var match = keys
+            .Select(key =>
             {
-                value = resolved;
-                return true;
-            }
-        }
+                TryReadDiagnosticString(diagnostics, key, out var resolved);
+                return resolved;
+            })
+            .FirstOrDefault(resolved => !string.IsNullOrWhiteSpace(resolved));
 
-        return false;
+        value = match;
+        return match is not null;
     }
 
     private static bool TryReadDiagnosticString(
@@ -5330,16 +5328,15 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
 
     private static List<CreditsHookCandidate> ParseCreditsHookCandidates(byte[] moduleBytes, IEnumerable<int> offsets)
     {
-        var candidates = new List<CreditsHookCandidate>();
-        foreach (var offset in offsets)
-        {
-            if (TryParseCreditsCvttss2siInstruction(moduleBytes, offset, out var instruction))
+        return offsets
+            .Select(offset =>
             {
-                candidates.Add(new CreditsHookCandidate(offset, instruction));
-            }
-        }
-
-        return candidates;
+                var parsed = TryParseCreditsCvttss2siInstruction(moduleBytes, offset, out var instruction);
+                return (Offset: offset, Instruction: instruction, Parsed: parsed);
+            })
+            .Where(x => x.Parsed)
+            .Select(x => new CreditsHookCandidate(x.Offset, x.Instruction))
+            .ToList();
     }
 
     private static List<CreditsHookCandidate> SelectImmediateStoreCandidates(

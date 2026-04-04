@@ -46,15 +46,8 @@ public sealed class LaunchContextScriptSmokeTests
             ("py", "-3")
         };
 
-        foreach (var candidate in candidates)
-        {
-            if (CanExecute(candidate))
-            {
-                return candidate;
-            }
-        }
-
-        return null;
+        var match = candidates.Where(CanExecute).Select(c => ((string FileName, string PrefixArgs)?)c).FirstOrDefault();
+        return match;
     }
 
     private static bool CanExecute((string FileName, string PrefixArgs) launcher)

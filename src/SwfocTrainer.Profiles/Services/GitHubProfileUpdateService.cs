@@ -50,14 +50,10 @@ public sealed class GitHubProfileUpdateService : IProfileUpdateService
         var local = await _repository.LoadManifestAsync(cancellationToken);
         var localVersions = local.Profiles.ToDictionary(x => x.Id, x => x.Version, StringComparer.OrdinalIgnoreCase);
 
-        var updates = new List<string>();
-        foreach (var entry in remote.Profiles)
-        {
-            if (!localVersions.TryGetValue(entry.Id, out var localVersion) || !string.Equals(localVersion, entry.Version, StringComparison.OrdinalIgnoreCase))
-            {
-                updates.Add(entry.Id);
-            }
-        }
+        var updates = remote.Profiles
+            .Where(entry => !localVersions.TryGetValue(entry.Id, out var localVersion) || !string.Equals(localVersion, entry.Version, StringComparison.OrdinalIgnoreCase))
+            .Select(entry => entry.Id)
+            .ToList();
 
         return updates;
     }

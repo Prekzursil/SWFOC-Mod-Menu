@@ -80,20 +80,13 @@ public sealed class LaunchContextRuntimeScriptParityTests
 
     private static IReadOnlyDictionary<string, ScriptRecommendation> BuildScriptRecommendationsByName(JsonArray results)
     {
-        var byName = new Dictionary<string, ScriptRecommendation>(StringComparer.OrdinalIgnoreCase);
-        foreach (var node in results)
-        {
-            var obj = node!.AsObject();
-            var caseName = obj["input"]?["name"]?.GetValue<string>();
-            if (string.IsNullOrWhiteSpace(caseName))
-            {
-                continue;
-            }
-
-            byName[caseName] = BuildScriptRecommendation(obj);
-        }
-
-        return byName;
+        return results
+            .Select(node => node!.AsObject())
+            .Where(obj => !string.IsNullOrWhiteSpace(obj["input"]?["name"]?.GetValue<string>()))
+            .ToDictionary(
+                obj => obj["input"]!["name"]!.GetValue<string>(),
+                BuildScriptRecommendation,
+                StringComparer.OrdinalIgnoreCase);
     }
 
     private static ScriptRecommendation BuildScriptRecommendation(JsonObject obj)
@@ -142,15 +135,8 @@ public sealed class LaunchContextRuntimeScriptParityTests
             ("py", "-3")
         };
 
-        foreach (var candidate in candidates)
-        {
-            if (CanExecute(candidate))
-            {
-                return candidate;
-            }
-        }
-
-        return null;
+        var match = candidates.Where(CanExecute).Select(c => ((string FileName, string PrefixArgs)?)c).FirstOrDefault();
+        return match;
     }
 
     private static bool CanExecute((string FileName, string PrefixArgs) launcher)

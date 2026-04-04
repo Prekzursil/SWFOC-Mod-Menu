@@ -209,15 +209,15 @@ internal sealed class SavePatchApplyServiceHelper
             .OrderByDescending(info => info.LastWriteTimeUtc)
             .Select(info => info.FullName);
 
-        foreach (var candidate in backupCandidates)
-        {
-            if (TryNormalizeBackupCandidatePath(candidate, out var candidatePath, out _))
+        return backupCandidates
+            .Select(candidate =>
             {
-                return candidatePath;
-            }
-        }
-
-        return null;
+                var found = TryNormalizeBackupCandidatePath(candidate, out var candidatePath, out _);
+                return (Found: found, Path: candidatePath);
+            })
+            .Where(x => x.Found)
+            .Select(x => x.Path)
+            .FirstOrDefault();
     }
 
     private async Task<SelectorApplyAttempt> TryApplySelectorAsync(
