@@ -1,6 +1,7 @@
 using System.Text.Json;
 using System.Text.Json.Nodes;
 using FluentAssertions;
+using SwfocTrainer.Tests.Common;
 using SwfocTrainer.Core.Contracts;
 using SwfocTrainer.Core.Logging;
 using SwfocTrainer.Core.Models;
@@ -303,29 +304,4 @@ public sealed class SpawnPresetServiceTests
         }
     }
 
-    private sealed class TempDirectory : IDisposable
-    {
-        public TempDirectory()
-        {
-            Path = System.IO.Path.Combine(System.IO.Path.GetTempPath(), $"swfoc-test-{Guid.NewGuid():N}");
-            Directory.CreateDirectory(Path);
-        }
-
-        public string Path { get; }
-
-        public void Dispose()
-        {
-            try
-            {
-                if (Directory.Exists(Path))
-                {
-                    Directory.Delete(Path, recursive: true);
-                }
-            }
-            catch
-            {
-                // ignore cleanup failures
-            }
-        }
-    }
 }

@@ -1,6 +1,7 @@
 using System.Reflection;
 using System.Text.Json.Nodes;
 using FluentAssertions;
+using SwfocTrainer.Tests.Common;
 using SwfocTrainer.Core.Contracts;
 using SwfocTrainer.Core.Models;
 using SwfocTrainer.Core.Services;
@@ -252,22 +253,4 @@ public sealed class ModOnboardingCalibrationCoverageSweepTests
         }
     }
 
-    private sealed class TempDirectory : IDisposable
-    {
-        public TempDirectory(string prefix)
-        {
-            Path = System.IO.Path.Combine(System.IO.Path.GetTempPath(), $"{prefix}-{Guid.NewGuid():N}");
-            Directory.CreateDirectory(Path);
-        }
-
-        public string Path { get; }
-
-        public void Dispose()
-        {
-            if (Directory.Exists(Path))
-            {
-                Directory.Delete(Path, recursive: true);
-            }
-        }
-    }
 }
