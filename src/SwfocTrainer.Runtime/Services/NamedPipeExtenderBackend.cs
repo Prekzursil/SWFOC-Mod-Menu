@@ -17,7 +17,7 @@ public sealed class NamedPipeExtenderBackend : IExecutionBackend
     private const string PipeNameEnvironmentVariable = "SWFOC_EXTENDER_PIPE_NAME";
     private const string ExtenderBackendId = "extender";
     private const string ProbePlaceholderAnchorValue = "probe";
-    private const string ProbeResolvedAnchorsMetadataKey = "probeResolvedAnchorsJson";
+    private const string ProbeResolvedAnchorsMetadata = "probeResolvedAnchorsJson";
     private const string NativeDirectoryName = "native";
     private const string BridgeHostWindowsExecutableName = "SwfocExtender.Host.exe";
     private const string BridgeHostPosixExecutableName = "SwfocExtender.Host";
@@ -172,7 +172,7 @@ public sealed class NamedPipeExtenderBackend : IExecutionBackend
     {
         rawAnchors = string.Empty;
         if (processContext.Metadata is null ||
-            !processContext.Metadata.TryGetValue(ProbeResolvedAnchorsMetadataKey, out var candidate) ||
+            !processContext.Metadata.TryGetValue(ProbeResolvedAnchorsMetadata, out var candidate) ||
             string.IsNullOrWhiteSpace(candidate))
         {
             return false;
@@ -505,7 +505,12 @@ public sealed class NamedPipeExtenderBackend : IExecutionBackend
                 Thread.Sleep(200);
                 return _bridgeHostProcess is not null && !_bridgeHostProcess.HasExited;
             }
-            catch
+            catch (InvalidOperationException)
+            {
+                _bridgeHostProcess = null;
+                return false;
+            }
+            catch (System.ComponentModel.Win32Exception)
             {
                 _bridgeHostProcess = null;
                 return false;

@@ -194,7 +194,7 @@ internal static class MainViewModelAttachHelpers
             return null;
         }
 
-        var requiresSymbol = required.Any(x => string.Equals(x?.GetValue<string>(), MainViewModelDefaults.PayloadKeySymbol, StringComparison.OrdinalIgnoreCase));
+        var requiresSymbol = required.Any(x => string.Equals(x?.GetValue<string>(), MainViewModelDefaults.PayloadSymbol, StringComparison.OrdinalIgnoreCase));
         if (!requiresSymbol)
         {
             return null;

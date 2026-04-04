@@ -27,3 +27,7 @@ enabled = true
 [[analyzers]]
 name = "test-coverage"
 enabled = true
+
+  [analyzers.meta]
+  required_line_coverage = 100.0
+  required_branch_coverage = 100.0

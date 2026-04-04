@@ -8,6 +8,7 @@ import sys
 from dataclasses import dataclass
 from datetime import datetime, timezone
 from pathlib import Path
+from typing import Dict, List, Optional, Tuple
 
 
 @dataclass
@@ -63,7 +64,7 @@ def _parse_args() -> argparse.Namespace:
     return parser.parse_args()
 
 
-def parse_named_path(value: str) -> tuple[str, Path]:
+def parse_named_path(value: str) -> Tuple[str, Path]:
     match = _PAIR_RE.match(value.strip())
     if not match:
         raise ValueError(f"Invalid input '{value}'. Expected format: name=path")
@@ -81,11 +82,11 @@ def _count_hit(hits_raw: str) -> int:
         return 0
 
 
-def _parse_xml_attrs(raw: str) -> dict[str, str]:
+def _parse_xml_attrs(raw: str) -> Dict[str, str]:
     return {match.group(1): match.group(2) for match in _XML_ATTR_RE.finditer(raw)}
 
 
-def _parse_class_lines(class_body: str) -> tuple[int, int, int, int]:
+def _parse_class_lines(class_body: str) -> Tuple[int, int, int, int]:
     line_total = 0
     line_covered = 0
     branch_total = 0
@@ -104,7 +105,7 @@ def _parse_class_lines(class_body: str) -> tuple[int, int, int, int]:
     return line_total, line_covered, branch_total, branch_covered
 
 
-def _parse_xml_classes(text: str, include_generated: bool) -> tuple[int, int, int, int]:
+def _parse_xml_classes(text: str, include_generated: bool) -> Tuple[int, int, int, int]:
     line_total = 0
     line_covered = 0
     branch_total = 0
@@ -125,7 +126,7 @@ def _parse_xml_classes(text: str, include_generated: bool) -> tuple[int, int, in
     return line_total, line_covered, branch_total, branch_covered
 
 
-def _parse_fallback_line_totals(text: str) -> tuple[int, int]:
+def _parse_fallback_line_totals(text: str) -> Tuple[int, int]:
     lines_valid_match = _XML_LINES_VALID_RE.search(text)
     lines_covered_match = _XML_LINES_COVERED_RE.search(text)
     if lines_valid_match and lines_covered_match:
@@ -188,8 +189,8 @@ def parse_lcov(name: str, path: Path) -> CoverageStats:
     )
 
 
-def evaluate(stats: list[CoverageStats]) -> tuple[str, list[str]]:
-    findings: list[str] = []
+def evaluate(stats: List[CoverageStats]) -> Tuple[str, List[str]]:
+    findings: List[str] = []
     for item in stats:
         if item.line_percent < 100.0:
             findings.append(
@@ -252,7 +253,7 @@ def _render_md(payload: dict) -> str:
     return "\n".join(lines) + "\n"
 
 
-def _safe_output_path(raw: str, fallback: str, base: Path | None = None) -> Path:
+def _safe_output_path(raw: str, fallback: str, base: Optional[Path] = None) -> Path:
     root = (base or Path.cwd()).resolve()
     candidate = Path((raw or "").strip() or fallback).expanduser()
     if not candidate.is_absolute():
@@ -268,7 +269,7 @@ def _safe_output_path(raw: str, fallback: str, base: Path | None = None) -> Path
 def main() -> int:
     args = _parse_args()
 
-    stats: list[CoverageStats] = []
+    stats: List[CoverageStats] = []
     for item in args.xml:
         name, path = parse_named_path(item)
         stats.append(parse_coverage_xml(name, path, include_generated=args.include_generated))

@@ -7,6 +7,9 @@ default = true
 [smells]
 mode = "block"
 
+[coverage]
+target = 100.0
+
 [[smells.exclude]]
 path = "tests/**"
 reason = "Test files use repetitive patterns by design — duplicated setup/assert blocks are expected in xUnit test suites"

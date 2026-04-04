@@ -9,7 +9,7 @@ public sealed class ModDependencyValidator : IModDependencyValidator
     private static readonly TimeSpan RegexMatchTimeout = TimeSpan.FromMilliseconds(250);
     private const string WorkshopAppId = "32470";
     private const string PathTraversalSequence = "..";
-    private const string DependencyMetadataMarkerKey = "requiredMarkerFile";
+    private const string DependencyMetadataMarker = "requiredMarkerFile";
     private const string DependencySoftFailSuffix = "Attach will continue, but dependency-sensitive actions are temporarily disabled.";
     private const string LibraryFolderPathPattern = "\"path\"\\s*\"([^\"]+)\"";
     private const string ModPathPattern = "modpath\\s*=\\s*(?:\"(?<quoted>[^\"]+)\"|(?<unquoted>[^\\s]+))";
@@ -24,7 +24,7 @@ public sealed class ModDependencyValidator : IModDependencyValidator
     {
         ArgumentNullException.ThrowIfNull(profile);
         ArgumentNullException.ThrowIfNull(process);
-        var marker = ReadMetadata(profile, DependencyMetadataMarkerKey);
+        var marker = ReadMetadata(profile, DependencyMetadataMarker);
         var markerFailure = ValidateMarkerMetadata(marker);
         if (markerFailure is not null)
         {

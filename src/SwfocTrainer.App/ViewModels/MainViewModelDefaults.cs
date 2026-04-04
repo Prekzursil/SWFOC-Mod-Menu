@@ -26,13 +26,13 @@ internal static class MainViewModelDefaults
     internal const string SymbolTacticalOneHitMode = "tactical_one_hit_mode";
     internal const string SymbolGameSpeed = "game_speed";
 
-    internal const string PayloadKeySymbol = "symbol";
-    internal const string PayloadKeyIntValue = "intValue";
-    internal const string PayloadKeyBoolValue = "boolValue";
-    internal const string PayloadKeyEnable = "enable";
-    internal const string PayloadKeyFloatValue = "floatValue";
-    internal const string PayloadKeyFreeze = "freeze";
-    internal const string PayloadKeyLockCredits = "lockCredits";
+    internal const string PayloadSymbol = "symbol";
+    internal const string PayloadIntValue = "intValue";
+    internal const string PayloadBoolValue = "boolValue";
+    internal const string PayloadEnable = "enable";
+    internal const string PayloadFloatValue = "floatValue";
+    internal const string PayloadFreeze = "freeze";
+    internal const string PayloadLockCredits = "lockCredits";
 
     internal const string BaseSwfocProfileId = "base_swfoc";
 

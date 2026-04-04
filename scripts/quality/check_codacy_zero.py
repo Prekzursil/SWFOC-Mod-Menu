@@ -3,13 +3,14 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 import sys
 import urllib.error
 import urllib.parse
 import urllib.request
 from datetime import datetime, timezone
 from pathlib import Path
-from typing import Any
+from typing import Any, Dict, List, Optional, Tuple
 
 _SCRIPT_DIR = Path(__file__).resolve().parent
 _HELPER_ROOT = _SCRIPT_DIR if (_SCRIPT_DIR / "security_helpers.py").exists() else _SCRIPT_DIR.parent
@@ -34,7 +35,7 @@ def _parse_args() -> argparse.Namespace:
     return parser.parse_args()
 
 
-def _request_json(url: str, token: str, *, method: str = "GET", data: dict[str, Any] | None = None) -> dict[str, Any]:
+def _request_json(url: str, token: str, *, method: str = "GET", data: Optional[Dict[str, Any]] = None) -> Dict[str, Any]:
     safe_url = normalize_https_url(url, allowed_host_suffixes={"codacy.com"}).rstrip("/")
     body = None
     headers = {
@@ -51,24 +52,25 @@ def _request_json(url: str, token: str, *, method: str = "GET", data: dict[str, 
         method=method,
         data=body,
     )
+    # URL validated above via normalize_https_url
     with urllib.request.urlopen(req, timeout=30) as resp:
         return json.loads(resp.read().decode("utf-8"))
 
 
-def _find_total_in_keys(mapping: dict[str, Any]) -> int | None:
+def _find_total_in_keys(mapping: Dict[str, Any]) -> Optional[int]:
     for key, value in mapping.items():
         if key in TOTAL_KEYS and isinstance(value, (int, float)):
             return int(value)
     return None
 
 
-def _nested_candidates(mapping: dict[str, Any]) -> list[Any]:
+def _nested_candidates(mapping: Dict[str, Any]) -> List[Any]:
     priority = [mapping.get(k) for k in ("pagination", "page", "meta") if k in mapping]
     return priority + list(mapping.values())
 
 
-def extract_total_open(payload: Any) -> int | None:
-    stack: list[Any] = [payload]
+def extract_total_open(payload: Any) -> Optional[int]:
+    stack: List[Any] = [payload]
     while stack:
         current = stack.pop()
         if isinstance(current, dict):
@@ -100,7 +102,7 @@ def _render_md(payload: dict) -> str:
     return "\n".join(lines) + "\n"
 
 
-def _safe_output_path(raw: str, fallback: str, base: Path | None = None) -> Path:
+def _safe_output_path(raw: str, fallback: str, base: Optional[Path] = None) -> Path:
     root = (base or Path.cwd()).resolve()
     candidate = Path((raw or "").strip() or fallback).expanduser()
     if not candidate.is_absolute():
@@ -115,12 +117,12 @@ def _safe_output_path(raw: str, fallback: str, base: Path | None = None) -> Path
 
 def _query_codacy_issues(
     api_base: str, token: str, owner: str, repo: str, provider_hint: str
-) -> tuple[str, int | None, list[str]]:
+) -> Tuple[str, Optional[int], List[str]]:
     """Query Codacy API for open issue count. Returns (status, open_issues, findings)."""
-    findings: list[str] = []
+    findings: List[str] = []
     query = urllib.parse.urlencode({"limit": "1"})
     provider_candidates = list(dict.fromkeys(p for p in [provider_hint, "gh", "github"] if p))
-    last_exc: Exception | None = None
+    last_exc: Optional[urllib.error.HTTPError] = None
 
     for provider in provider_candidates:
         url = (
@@ -141,7 +143,7 @@ def _query_codacy_issues(
                 continue
             findings.append(f"Codacy API request failed: HTTP {exc.code}")
             return "fail", None, findings
-        except Exception as exc:  # pragma: no cover
+        except (urllib.error.URLError, OSError, ValueError) as exc:  # pragma: no cover
             findings.append(f"Codacy API request failed: {exc}")
             return "fail", None, findings
 
@@ -152,8 +154,6 @@ def _query_codacy_issues(
 
 
 def main() -> int:
-    import os
-
     args = _parse_args()
     token = (args.token or os.environ.get("CODACY_API_TOKEN", "")).strip()
     api_base = normalize_https_url(CODACY_API_BASE, allowed_hosts={"api.codacy.com"}).rstrip("/")

@@ -1,10 +1,11 @@
 from __future__ import annotations
 
 import ipaddress
+from typing import Optional, Set
 from urllib.parse import urlparse, urlunparse
 
 
-def _validate_url_scheme_and_host(parsed, raw_url: str) -> str:
+def _validate_url_scheme_and_host(parsed: object, raw_url: str) -> str:
     """Validate scheme, hostname presence, and credentials."""
     if parsed.scheme != "https":
         raise ValueError(f"Only https URLs are allowed: {raw_url!r}")
@@ -15,7 +16,7 @@ def _validate_url_scheme_and_host(parsed, raw_url: str) -> str:
     return parsed.hostname.lower().strip(".")
 
 
-def _validate_host_allowlist(hostname: str, allowed_hosts: set[str] | None) -> None:
+def _validate_host_allowlist(hostname: str, allowed_hosts: Optional[Set[str]]) -> None:
     """Check hostname against explicit allowlist."""
     if allowed_hosts is None:
         return
@@ -24,7 +25,7 @@ def _validate_host_allowlist(hostname: str, allowed_hosts: set[str] | None) -> N
         raise ValueError(f"URL host is not in allowlist: {hostname}")
 
 
-def _validate_host_suffix_allowlist(hostname: str, allowed_host_suffixes: set[str] | None) -> None:
+def _validate_host_suffix_allowlist(hostname: str, allowed_host_suffixes: Optional[Set[str]]) -> None:
     """Check hostname against suffix allowlist."""
     if allowed_host_suffixes is None:
         return
@@ -50,8 +51,8 @@ def _reject_private_ip(hostname: str) -> None:
 def normalize_https_url(
     raw_url: str,
     *,
-    allowed_hosts: set[str] | None = None,
-    allowed_host_suffixes: set[str] | None = None,
+    allowed_hosts: Optional[Set[str]] = None,
+    allowed_host_suffixes: Optional[Set[str]] = None,
     strip_query: bool = False,
 ) -> str:
     """Validate user-provided URLs for CLI scripts."""

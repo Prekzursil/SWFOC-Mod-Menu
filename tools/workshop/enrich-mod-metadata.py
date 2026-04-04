@@ -8,7 +8,7 @@ import datetime as dt
 import json
 import re
 from pathlib import Path
-from typing import Any
+from typing import Any, Dict, List, Optional, Set
 
 
 SCHEMA_VERSION = "1.0"
@@ -31,9 +31,9 @@ def clamp_confidence(value: Any) -> float:
     return round(numeric, 2)
 
 
-def unique_ordered(values: list[str]) -> list[str]:
-    seen: set[str] = set()
-    out: list[str] = []
+def unique_ordered(values: List[str]) -> List[str]:
+    seen: Set[str] = set()
+    out: List[str] = []
     for value in values:
         if value in seen:
             continue
@@ -44,10 +44,10 @@ def unique_ordered(values: list[str]) -> list[str]:
 
 def infer_required_capabilities(
     candidate_base_profile: str,
-    launch_hints: list[str],
-    normalized_tags: list[str],
-    parent_dependencies: list[str],
-) -> list[str]:
+    launch_hints: List[str],
+    normalized_tags: List[str],
+    parent_dependencies: List[str],
+) -> List[str]:
     capabilities = ["set_credits", "freeze_timer", "toggle_fog_reveal", "toggle_ai"]
 
     if candidate_base_profile != "base_sweaw":
@@ -75,15 +75,15 @@ def infer_required_capabilities(
 
 def build_anchor_hints(
     title: str,
-    normalized_tags: list[str],
+    normalized_tags: List[str],
     workshop_id: str,
     candidate_base_profile: str,
-    parent_dependencies: list[str],
-) -> list[str]:
+    parent_dependencies: List[str],
+) -> List[str]:
     title_tokens = re.findall(r"[a-z0-9]+", title.lower())
     filtered_tokens = [token for token in title_tokens if len(token) >= 4]
 
-    anchors: list[str] = []
+    anchors: List[str] = []
     anchors.extend([f"title:{token}" for token in filtered_tokens[:4]])
     anchors.extend([f"tag:{tag}" for tag in normalized_tags[:4]])
     anchors.append(f"workshop:{workshop_id}")
@@ -93,8 +93,8 @@ def build_anchor_hints(
     return unique_ordered(anchors)
 
 
-def normalize_dependency_ids(raw_dependencies: Any) -> list[str]:
-    deps: list[str] = []
+def normalize_dependency_ids(raw_dependencies: Any) -> List[str]:
+    deps: List[str] = []
     if isinstance(raw_dependencies, list):
         for item in raw_dependencies:
             dep = str(item or "").strip()
@@ -103,8 +103,8 @@ def normalize_dependency_ids(raw_dependencies: Any) -> list[str]:
     return unique_ordered(deps)
 
 
-def normalize_text_list(raw_values: Any) -> list[str]:
-    values: list[str] = []
+def normalize_text_list(raw_values: Any) -> List[str]:
+    values: List[str] = []
     if isinstance(raw_values, list):
         for item in raw_values:
             value = str(item or "").strip()
@@ -120,7 +120,7 @@ def ensure_risk_level(raw: Any) -> str:
     return "medium"
 
 
-def to_seed(mod: dict[str, Any], source_run_id: str) -> dict[str, Any] | None:
+def to_seed(mod: Dict[str, Any], source_run_id: str) -> Optional[Dict[str, Any]]:
     workshop_id = str(mod.get("workshopId") or "").strip()
     if not workshop_id.isdigit():
         return None

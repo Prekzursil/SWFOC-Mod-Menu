@@ -12,7 +12,7 @@ import os
 from dataclasses import dataclass
 from datetime import datetime, timezone
 from pathlib import Path
-from typing import Dict, List, Tuple
+from typing import Dict, List, Optional, Set, Tuple
 
 
 SCHEMA_VERSION = "1.0"
@@ -66,7 +66,7 @@ def _normalize_anchor_id(symbol_name: str) -> str:
     return "_".join(part for part in normalized.split("_") if part)
 
 
-def _parse_address(address: str) -> int | None:
+def _parse_address(address: str) -> Optional[int]:
     cleaned = address.strip().lower()
     if cleaned.startswith("0x"):
         cleaned = cleaned[2:]
@@ -117,7 +117,7 @@ def _build_anchors(module_name: str, symbols: List[RawSymbol]) -> List[dict]:
     return anchors
 
 
-def _build_capabilities(anchor_ids: set[str]) -> List[dict]:
+def _build_capabilities(anchor_ids: Set[str]) -> List[dict]:
     capabilities = []
     for feature_id, required in DEFAULT_FEATURE_REQUIREMENTS.items():
         missing = [anchor for anchor in required if anchor not in anchor_ids]
@@ -149,7 +149,7 @@ def _parse_args() -> argparse.Namespace:
     return parser.parse_args()
 
 
-def _resolve_paths(args: argparse.Namespace) -> tuple[Path, Path, Path, Path]:
+def _resolve_paths(args: argparse.Namespace) -> Tuple[Path, Path, Path, Path]:
     return (
         Path(args.raw_symbols).resolve(),
         Path(args.binary_path).resolve(),
@@ -163,8 +163,8 @@ def _build_symbol_pack(
     module_name: str,
     file_sha256: str,
     fingerprint_id: str,
-    anchors: list[dict],
-    capabilities: list[dict],
+    anchors: List[dict],
+    capabilities: List[dict],
 ) -> dict:
     return {
         "schemaVersion": SCHEMA_VERSION,
@@ -190,9 +190,9 @@ def _build_summary(
     raw_symbols_path: Path,
     output_pack: Path,
     decompile_archive_path: str,
-    symbols: list[RawSymbol],
-    anchors: list[dict],
-    capabilities: list[dict],
+    symbols: List[RawSymbol],
+    anchors: List[dict],
+    capabilities: List[dict],
 ) -> dict:
     available_count = sum(1 for item in capabilities if item["available"])
     warnings = [

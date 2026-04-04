@@ -152,8 +152,33 @@ jobs:
         run: |
           pwsh ./tools/lua-harness/run-lua-harness.ps1 -Strict
 
+      - name: Upload coverage to Codecov
+        if: always()
+        uses: codecov/codecov-action@v5
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          files: TestResults/coverage/opencover.opencover.xml
+          flags: dotnet
+          fail_ci_if_error: false
+
+      - name: Transform coverage for QLTY
+        if: always()
+        run: |
+          dotnet tool install -g dotnet-reportgenerator-globaltool 2>$null
+          reportgenerator -reports:TestResults/coverage/opencover.opencover.xml -targetdir:TestResults/coverage -reporttypes:Cobertura 2>$null
+        shell: pwsh
+        continue-on-error: true
+
+      - name: Upload coverage to QLTY
+        if: always()
+        uses: qltysh/qlty-coverage@v1
+        with:
+          token: ${{ secrets.QLTY_COVERAGE_TOKEN }}
+          files: TestResults/coverage/Cobertura.xml
+        continue-on-error: true
+
       - name: Upload coverage to Codacy
-        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        if: always()
         uses: codacy/codacy-coverage-reporter-action@v1
         with:
           project-token: ${{ secrets.CODACY_PROJECT_TOKEN }}
@@ -161,7 +186,7 @@ jobs:
         continue-on-error: true
 
       - name: Upload coverage to DeepSource
-        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        if: always()
         uses: deepsourcelabs/test-coverage-action@master
         with:
           key: csharp

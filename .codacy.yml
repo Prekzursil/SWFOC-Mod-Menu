@@ -1,4 +1,4 @@
-# Only exclude non-source artifacts and local mod mirrors.
+# Only exclude non-source artifacts, generated files, and local mod mirrors.
 # All source, tests, tooling, and docs must be analyzable with zero exclusions.
 exclude_paths:
   - "(new)codex(plans)/**"
@@ -7,3 +7,4 @@ exclude_paths:
   - "3661482670(cheat_mode_example)/**"
   - "TestResults/**"
   - "artifacts/**"
+  - "**/package-lock.json"
