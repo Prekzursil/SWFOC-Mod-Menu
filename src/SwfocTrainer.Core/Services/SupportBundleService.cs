@@ -81,60 +81,55 @@ public sealed class SupportBundleService : ISupportBundleService
         return ExportAsync(request, CancellationToken.None);
     }
 
+    private sealed record ArtifactCopySpec(
+        string Subfolder,
+        string SearchPattern,
+        SearchOption SearchOption,
+        int MaxFiles,
+        string MissingWarning);
+
     private static void CopyLogs(string stagingRoot, List<string> included, List<string> warnings)
     {
-        CopyAppDataArtifacts(
-            stagingRoot, included, warnings,
-            subfolder: "logs",
-            searchPattern: "*.jsonl",
-            searchOption: SearchOption.TopDirectoryOnly,
-            maxFiles: 10,
-            missingWarning: "Log directory not found in LocalAppData.");
+        CopyAppDataArtifacts(stagingRoot, included, warnings,
+            new ArtifactCopySpec("logs", "*.jsonl", SearchOption.TopDirectoryOnly, 10,
+                "Log directory not found in LocalAppData."));
     }
 
     private static void CopyCalibrationArtifacts(string stagingRoot, List<string> included, List<string> warnings)
     {
-        CopyAppDataArtifacts(
-            stagingRoot, included, warnings,
-            subfolder: "calibration",
-            searchPattern: "*.json",
-            searchOption: SearchOption.AllDirectories,
-            maxFiles: 8,
-            missingWarning: "Calibration artifact directory not found in LocalAppData.");
+        CopyAppDataArtifacts(stagingRoot, included, warnings,
+            new ArtifactCopySpec("calibration", "*.json", SearchOption.AllDirectories, 8,
+                "Calibration artifact directory not found in LocalAppData."));
     }
 
     private static void CopyAppDataArtifacts(
         string stagingRoot,
         List<string> included,
         List<string> warnings,
-        string subfolder,
-        string searchPattern,
-        SearchOption searchOption,
-        int maxFiles,
-        string missingWarning)
+        ArtifactCopySpec spec)
     {
         var sourceRoot = Path.Join(
             Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
             "SwfocTrainer",
-            subfolder);
+            spec.Subfolder);
 
         if (!Directory.Exists(sourceRoot))
         {
-            warnings.Add(missingWarning);
+            warnings.Add(spec.MissingWarning);
             return;
         }
 
-        var targetRoot = Path.Join(stagingRoot, subfolder);
+        var targetRoot = Path.Join(stagingRoot, spec.Subfolder);
         Directory.CreateDirectory(targetRoot);
         foreach (var path in Directory
-                     .GetFiles(sourceRoot, searchPattern, searchOption)
+                     .GetFiles(sourceRoot, spec.SearchPattern, spec.SearchOption)
                      .OrderByDescending(File.GetLastWriteTimeUtc)
-                     .Take(maxFiles))
+                     .Take(spec.MaxFiles))
         {
             var fileName = Path.GetFileName(path);
             var dest = Path.Join(targetRoot, fileName);
             File.Copy(path, dest, overwrite: true);
-            included.Add($"{subfolder}/{fileName}");
+            included.Add($"{spec.Subfolder}/{fileName}");
         }
     }
 
