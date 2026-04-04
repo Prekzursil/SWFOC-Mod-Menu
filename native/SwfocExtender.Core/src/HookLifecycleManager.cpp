@@ -2,28 +2,28 @@
 
 namespace swfoc::extender::core {
 
-void HookLifecycleManager::markInstalled(const std::string& hookId) {
+void HookLifecycleManager::markInstalled(std::string_view hookId) {
     HookRecord record {};
     record.state = HookState::Installed;
     record.reasonCode = "HOOK_OK";
-    hooks_[hookId] = record;
+    hooks_[std::string{hookId}] = record;
 }
 
-void HookLifecycleManager::markFailed(const std::string& hookId, const std::string& reasonCode) {
+void HookLifecycleManager::markFailed(std::string_view hookId, std::string_view reasonCode) {
     HookRecord record {};
     record.state = HookState::Failed;
     record.reasonCode = reasonCode;
-    hooks_[hookId] = record;
+    hooks_[std::string{hookId}] = record;
 }
 
-void HookLifecycleManager::markRolledBack(const std::string& hookId) {
+void HookLifecycleManager::markRolledBack(std::string_view hookId) {
     HookRecord record {};
     record.state = HookState::RolledBack;
     record.reasonCode = "ROLLBACK_SUCCESS";
-    hooks_[hookId] = record;
+    hooks_[std::string{hookId}] = record;
 }
 
-HookRecord HookLifecycleManager::get(const std::string& hookId) const {
+HookRecord HookLifecycleManager::get(std::string_view hookId) const {
     const auto it = hooks_.find(hookId);
     if (it == hooks_.end()) {
         return HookRecord{};

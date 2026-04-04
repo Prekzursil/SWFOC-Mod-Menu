@@ -26,13 +26,13 @@ public sealed class NamedPipeHelperBridgeBackend : IHelperBridgeBackend
     private const string DiagnosticHelperHookId = "helperHookId";
     private const string DiagnosticHelperVerifyState = "helperVerifyState";
     private const string DiagnosticOperationKind = "operationKind";
-    private const string DiagnosticOperationToken = "operationToken";
+    private const string DiagnosticOperationCorrelationId = "operationToken";
     private const string DiagnosticProcessId = "processId";
     private const string DiagnosticProcessName = "processName";
     private const string DiagnosticProcessPath = "processPath";
 
     private const string PayloadOperationKind = "operationKind";
-    private const string PayloadOperationToken = "operationToken";
+    private const string PayloadOperationCorrelationId = "operationToken";
     private const string PayloadHelperInvocationContractVersion = "helperInvocationContractVersion";
     private const string PayloadHelperHookId = "helperHookId";
     private const string PayloadHelperEntryPoint = "helperEntryPoint";
@@ -199,7 +199,7 @@ public sealed class NamedPipeHelperBridgeBackend : IHelperBridgeBackend
     {
         var payload = request.ActionRequest.Payload.DeepClone() as JsonObject ?? new JsonObject();
         payload[PayloadOperationKind] ??= operation.OperationKind.ToString();
-        payload[PayloadOperationToken] ??= operation.OperationToken;
+        payload[PayloadOperationCorrelationId] ??= operation.OperationToken;
         payload[PayloadHelperInvocationContractVersion] ??= request.InvocationContractVersion;
 
         ApplyActionSpecificDefaults(request.ActionRequest.Action.Id, payload);
@@ -241,7 +241,7 @@ public sealed class NamedPipeHelperBridgeBackend : IHelperBridgeBackend
         context[DiagnosticProcessPath] = request.Process.ProcessPath;
         context[DiagnosticHelperInvocationSource] = InvocationSourceNativeBridge;
         context[DiagnosticOperationKind] = operation.OperationKind.ToString();
-        context[DiagnosticOperationToken] = operation.OperationToken;
+        context[DiagnosticOperationCorrelationId] = operation.OperationToken;
 
         return request.ActionRequest with
         {
@@ -322,7 +322,7 @@ public sealed class NamedPipeHelperBridgeBackend : IHelperBridgeBackend
             [DiagnosticHelperHookId] = request.Hook?.Id ?? string.Empty,
             [DiagnosticHelperVerifyState] = helperState,
             [DiagnosticOperationKind] = operation.OperationKind.ToString(),
-            [DiagnosticOperationToken] = operation.OperationToken
+            [DiagnosticOperationCorrelationId] = operation.OperationToken
         };
     }
 
@@ -347,7 +347,7 @@ public sealed class NamedPipeHelperBridgeBackend : IHelperBridgeBackend
         out string failureMessage)
     {
         failureMessage = string.Empty;
-        if (!TryGetStringDiagnostic(backendDiagnostics, DiagnosticOperationToken, out var backendOperationToken))
+        if (!TryGetStringDiagnostic(backendDiagnostics, DiagnosticOperationCorrelationId, out var backendOperationToken))
         {
             failureMessage = "Helper verification failed: operation token was not returned by backend diagnostics.";
             return false;

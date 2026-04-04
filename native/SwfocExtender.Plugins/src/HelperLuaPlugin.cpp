@@ -2,13 +2,15 @@
 #include "swfoc_extender/plugins/HelperLuaPlugin.hpp"
 
 #include <array>
+#include <format>
 #include <string>
+#include <string_view>
 
 namespace swfoc::extender::plugins {
 
 namespace {
 
-bool IsSupportedHelperFeature(const std::string& featureId) {
+bool IsSupportedHelperFeature(std::string_view featureId) {
     return featureId == "spawn_unit_helper" ||
            featureId == "spawn_context_entity" ||
            featureId == "spawn_tactical_entity" ||
@@ -21,24 +23,24 @@ bool IsSupportedHelperFeature(const std::string& featureId) {
 
 PluginResult BuildFailure(
     const PluginRequest& request,
-    const std::string& reasonCode,
-    const std::string& message,
-    const std::map<std::string, std::string>& diagnostics = {}) {
+    std::string_view reasonCode,
+    std::string_view message,
+    const std::map<std::string, std::string, std::less<>>& diagnostics = {}) {
     PluginResult result {};
     result.succeeded = false;
-    result.reasonCode = reasonCode;
+    result.reasonCode = std::string(reasonCode);
     result.hookState = "DENIED";
-    result.message = message;
+    result.message = std::string(message);
     result.diagnostics = diagnostics;
-    result.diagnostics.emplace("featureId", request.featureId);
-    result.diagnostics.emplace("helperHookId", request.helperHookId);
-    result.diagnostics.emplace("helperEntryPoint", request.helperEntryPoint);
-    result.diagnostics.emplace("operationKind", request.operationKind);
-    result.diagnostics.emplace("operationToken", request.operationToken);
+    result.diagnostics.try_emplace("featureId", request.featureId());
+    result.diagnostics.try_emplace("helperHookId", request.helperHookId());
+    result.diagnostics.try_emplace("helperEntryPoint", request.helperEntryPoint());
+    result.diagnostics.try_emplace("operationKind", request.operationKind());
+    result.diagnostics.try_emplace("operationToken", request.operationToken());
     return result;
 }
 
-void AddOptionalDiagnostic(std::map<std::string, std::string>& diagnostics, const char* key, const std::string& value);
+void AddOptionalDiagnostic(std::map<std::string, std::string, std::less<>>& diagnostics, const char* key, const std::string& value);
 
 PluginResult BuildSuccess(const PluginRequest& request) {
     PluginResult result {};
@@ -47,71 +49,71 @@ PluginResult BuildSuccess(const PluginRequest& request) {
     result.hookState = "HOOK_ONESHOT";
     result.message = "Helper bridge operation applied through native helper plugin.";
     result.diagnostics = {
-        {"featureId", request.featureId},
-        {"helperHookId", request.helperHookId},
-        {"helperEntryPoint", request.helperEntryPoint},
-        {"helperScript", request.helperScript},
+        {"featureId", request.featureId()},
+        {"helperHookId", request.helperHookId()},
+        {"helperEntryPoint", request.helperEntryPoint()},
+        {"helperScript", request.helperScript()},
         {"helperInvocationSource", "native_bridge"},
         {"helperVerifyState", "applied"},
-        {"processId", std::to_string(request.processId)},
-        {"operationKind", request.operationKind},
-        {"operationToken", request.operationToken},
-        {"helperInvocationContractVersion", request.invocationContractVersion}};
+        {"processId", std::to_string(request.processId())},
+        {"operationKind", request.operationKind()},
+        {"operationToken", request.operationToken()},
+        {"helperInvocationContractVersion", request.invocationContractVersion()}};
 
-    AddOptionalDiagnostic(result.diagnostics, "unitId", request.unitId);
-    AddOptionalDiagnostic(result.diagnostics, "entityId", request.entityId);
-    AddOptionalDiagnostic(result.diagnostics, "entryMarker", request.entryMarker);
-    AddOptionalDiagnostic(result.diagnostics, "worldPosition", request.worldPosition);
-    AddOptionalDiagnostic(result.diagnostics, "faction", request.faction);
-    AddOptionalDiagnostic(result.diagnostics, "targetFaction", request.targetFaction);
-    AddOptionalDiagnostic(result.diagnostics, "sourceFaction", request.sourceFaction);
-    AddOptionalDiagnostic(result.diagnostics, "populationPolicy", request.populationPolicy);
-    AddOptionalDiagnostic(result.diagnostics, "persistencePolicy", request.persistencePolicy);
-    AddOptionalDiagnostic(result.diagnostics, "placementMode", request.placementMode);
-    AddOptionalDiagnostic(result.diagnostics, "globalKey", request.globalKey);
+    AddOptionalDiagnostic(result.diagnostics, "unitId", request.unitId());
+    AddOptionalDiagnostic(result.diagnostics, "entityId", request.entityId());
+    AddOptionalDiagnostic(result.diagnostics, "entryMarker", request.entryMarker());
+    AddOptionalDiagnostic(result.diagnostics, "worldPosition", request.worldPosition());
+    AddOptionalDiagnostic(result.diagnostics, "faction", request.faction());
+    AddOptionalDiagnostic(result.diagnostics, "targetFaction", request.targetFaction());
+    AddOptionalDiagnostic(result.diagnostics, "sourceFaction", request.sourceFaction());
+    AddOptionalDiagnostic(result.diagnostics, "populationPolicy", request.populationPolicy());
+    AddOptionalDiagnostic(result.diagnostics, "persistencePolicy", request.persistencePolicy());
+    AddOptionalDiagnostic(result.diagnostics, "placementMode", request.placementMode());
+    AddOptionalDiagnostic(result.diagnostics, "globalKey", request.globalKey());
 
-    result.diagnostics["intValue"] = std::to_string(request.intValue);
-    result.diagnostics["boolValue"] = request.boolValue ? "true" : "false";
-    result.diagnostics["allowCrossFaction"] = request.allowCrossFaction ? "true" : "false";
-    result.diagnostics["forceOverride"] = request.forceOverride ? "true" : "false";
-    result.diagnostics["appliedEntityId"] = !request.entityId.empty() ? request.entityId : request.unitId;
+    result.diagnostics["intValue"] = std::to_string(request.intValue());
+    result.diagnostics["boolValue"] = request.boolValue() ? "true" : "false";
+    result.diagnostics["allowCrossFaction"] = request.allowCrossFaction() ? "true" : "false";
+    result.diagnostics["forceOverride"] = request.forceOverride() ? "true" : "false";
+    result.diagnostics["appliedEntityId"] = !request.entityId().empty() ? request.entityId() : request.unitId();
     return result;
 }
 
-bool HasValue(const std::string& value) {
+bool HasValue(std::string_view value) {
     return !value.empty();
 }
 
-bool IsSpawnFeature(const std::string& featureId) {
+bool IsSpawnFeature(std::string_view featureId) {
     return featureId == "spawn_context_entity" ||
            featureId == "spawn_tactical_entity" ||
            featureId == "spawn_galactic_entity";
 }
 
 bool HasSpawnEntityIdentity(const PluginRequest& request) {
-    return HasValue(request.entityId) || HasValue(request.unitId);
+    return HasValue(request.entityId()) || HasValue(request.unitId());
 }
 
 bool HasSpawnFaction(const PluginRequest& request) {
-    return HasValue(request.faction) || HasValue(request.targetFaction);
+    return HasValue(request.faction()) || HasValue(request.targetFaction());
 }
 
 bool RequiresSpawnPlacement(const PluginRequest& request) {
-    return request.featureId != "spawn_galactic_entity";
+    return request.featureId() != "spawn_galactic_entity";
 }
 
 bool HasSpawnPlacement(const PluginRequest& request) {
-    return HasValue(request.entryMarker) || HasValue(request.worldPosition);
+    return HasValue(request.entryMarker()) || HasValue(request.worldPosition());
 }
 
-void AddOptionalDiagnostic(std::map<std::string, std::string>& diagnostics, const char* key, const std::string& value) {
+void AddOptionalDiagnostic(std::map<std::string, std::string, std::less<>>& diagnostics, const char* key, const std::string& value) {
     if (!value.empty()) {
         diagnostics[key] = value;
     }
 }
 
 bool ValidateCommonRequest(const PluginRequest& request, PluginResult& failure) {
-    if (!IsSupportedHelperFeature(request.featureId)) {
+    if (!IsSupportedHelperFeature(request.featureId())) {
         failure = BuildFailure(
             request,
             "CAPABILITY_REQUIRED_MISSING",
@@ -119,16 +121,16 @@ bool ValidateCommonRequest(const PluginRequest& request, PluginResult& failure) 
         return false;
     }
 
-    if (request.processId <= 0) {
+    if (request.processId() <= 0) {
         failure = BuildFailure(
             request,
             "HELPER_BRIDGE_UNAVAILABLE",
             "Helper bridge execution requires an attached process.",
-            {{"processId", std::to_string(request.processId)}});
+            {{"processId", std::to_string(request.processId())}});
         return false;
     }
 
-    if (!HasValue(request.helperHookId) || !HasValue(request.helperEntryPoint)) {
+    if (!HasValue(request.helperHookId()) || !HasValue(request.helperEntryPoint())) {
         failure = BuildFailure(
             request,
             "HELPER_ENTRYPOINT_NOT_FOUND",
@@ -136,7 +138,7 @@ bool ValidateCommonRequest(const PluginRequest& request, PluginResult& failure) 
         return false;
     }
 
-    if (!HasValue(request.operationToken)) {
+    if (!HasValue(request.operationToken())) {
         failure = BuildFailure(
             request,
             "HELPER_VERIFICATION_FAILED",
@@ -148,11 +150,11 @@ bool ValidateCommonRequest(const PluginRequest& request, PluginResult& failure) 
 }
 
 bool ValidateSpawnUnitRequest(const PluginRequest& request, PluginResult& failure) {
-    if (request.featureId != "spawn_unit_helper") {
+    if (request.featureId() != "spawn_unit_helper") {
         return true;
     }
 
-    if (HasValue(request.unitId) && HasValue(request.entryMarker) && HasValue(request.faction)) {
+    if (HasValue(request.unitId()) && HasValue(request.entryMarker()) && HasValue(request.faction())) {
         return true;
     }
 
@@ -164,7 +166,7 @@ bool ValidateSpawnUnitRequest(const PluginRequest& request, PluginResult& failur
 }
 
 bool ValidateSpawnRequest(const PluginRequest& request, PluginResult& failure) {
-    if (!IsSpawnFeature(request.featureId)) {
+    if (!IsSpawnFeature(request.featureId())) {
         return true;
     }
 
@@ -196,11 +198,11 @@ bool ValidateSpawnRequest(const PluginRequest& request, PluginResult& failure) {
 }
 
 bool ValidateBuildingRequest(const PluginRequest& request, PluginResult& failure) {
-    if (request.featureId != "place_planet_building") {
+    if (request.featureId() != "place_planet_building") {
         return true;
     }
 
-    if (!HasValue(request.entityId)) {
+    if (!HasValue(request.entityId())) {
         failure = BuildFailure(
             request,
             "HELPER_INVOCATION_FAILED",
@@ -208,7 +210,7 @@ bool ValidateBuildingRequest(const PluginRequest& request, PluginResult& failure
         return false;
     }
 
-    if (HasValue(request.targetFaction) || HasValue(request.faction)) {
+    if (HasValue(request.targetFaction()) || HasValue(request.faction())) {
         return true;
     }
 
@@ -220,11 +222,11 @@ bool ValidateBuildingRequest(const PluginRequest& request, PluginResult& failure
 }
 
 bool ValidateAllegianceRequest(const PluginRequest& request, PluginResult& failure) {
-    if (request.featureId != "set_context_allegiance") {
+    if (request.featureId() != "set_context_allegiance") {
         return true;
     }
 
-    if (HasValue(request.targetFaction) || HasValue(request.faction)) {
+    if (HasValue(request.targetFaction()) || HasValue(request.faction())) {
         return true;
     }
 
@@ -236,7 +238,7 @@ bool ValidateAllegianceRequest(const PluginRequest& request, PluginResult& failu
 }
 
 bool ValidateHeroStateRequest(const PluginRequest& request, PluginResult& failure) {
-    if (request.featureId != "set_hero_state_helper" || HasValue(request.globalKey)) {
+    if (request.featureId() != "set_hero_state_helper" || HasValue(request.globalKey())) {
         return true;
     }
 
@@ -271,8 +273,7 @@ const char* HelperLuaPlugin::id() const noexcept {
 }
 
 PluginResult HelperLuaPlugin::execute(const PluginRequest& request) {
-    PluginResult failure {};
-    if (!ValidateRequest(request, failure)) {
+    if (PluginResult failure {}; !ValidateRequest(request, failure)) {
         return failure;
     }
 
@@ -281,14 +282,14 @@ PluginResult HelperLuaPlugin::execute(const PluginRequest& request) {
 
 CapabilitySnapshot HelperLuaPlugin::capabilitySnapshot() const {
     CapabilitySnapshot snapshot {};
-    snapshot.features.emplace("spawn_unit_helper", BuildAvailableCapability());
-    snapshot.features.emplace("spawn_context_entity", BuildAvailableCapability());
-    snapshot.features.emplace("spawn_tactical_entity", BuildAvailableCapability());
-    snapshot.features.emplace("spawn_galactic_entity", BuildAvailableCapability());
-    snapshot.features.emplace("place_planet_building", BuildAvailableCapability());
-    snapshot.features.emplace("set_context_allegiance", BuildAvailableCapability());
-    snapshot.features.emplace("set_hero_state_helper", BuildAvailableCapability());
-    snapshot.features.emplace("toggle_roe_respawn_helper", BuildAvailableCapability());
+    snapshot.features.try_emplace("spawn_unit_helper", BuildAvailableCapability());
+    snapshot.features.try_emplace("spawn_context_entity", BuildAvailableCapability());
+    snapshot.features.try_emplace("spawn_tactical_entity", BuildAvailableCapability());
+    snapshot.features.try_emplace("spawn_galactic_entity", BuildAvailableCapability());
+    snapshot.features.try_emplace("place_planet_building", BuildAvailableCapability());
+    snapshot.features.try_emplace("set_context_allegiance", BuildAvailableCapability());
+    snapshot.features.try_emplace("set_hero_state_helper", BuildAvailableCapability());
+    snapshot.features.try_emplace("toggle_roe_respawn_helper", BuildAvailableCapability());
     return snapshot;
 }
 

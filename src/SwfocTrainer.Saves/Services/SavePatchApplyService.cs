@@ -139,7 +139,16 @@ public sealed class SavePatchApplyService : ISavePatchApplyService
                 BackupPath: backupPath,
                 RestoredHash: restoredHash);
         }
-        catch (Exception ex)
+        catch (IOException ex)
+        {
+            _logger.LogError(ex, "Backup restore failed. Target={TargetPath} Backup={BackupPath}", normalizedTargetPath, backupPath);
+            return new SaveRollbackResult(
+                Restored: false,
+                Message: "Backup restore failed.",
+                TargetPath: normalizedTargetPath,
+                BackupPath: backupPath);
+        }
+        catch (UnauthorizedAccessException ex)
         {
             _logger.LogError(ex, "Backup restore failed. Target={TargetPath} Backup={BackupPath}", normalizedTargetPath, backupPath);
             return new SaveRollbackResult(
@@ -165,7 +174,17 @@ public sealed class SavePatchApplyService : ISavePatchApplyService
             var targetDoc = await _saveCodec.LoadAsync(normalizedTargetPath, schemaId, cancellationToken);
             return (targetDoc, null);
         }
-        catch (Exception ex)
+        catch (IOException ex)
+        {
+            _logger.LogError(ex, "Target save load failed for patch apply. Target={TargetPath} Schema={SchemaId}", normalizedTargetPath, schemaId);
+            return (
+                null,
+                BuildFailure(
+                    SavePatchApplyClassification.CompatibilityFailed,
+                    ReasonTargetLoadFailed,
+                    "Target save could not be loaded."));
+        }
+        catch (InvalidOperationException ex)
         {
             _logger.LogError(ex, "Target save load failed for patch apply. Target={TargetPath} Schema={SchemaId}", normalizedTargetPath, schemaId);
             return (
@@ -325,7 +344,13 @@ public sealed class SavePatchApplyService : ISavePatchApplyService
                 BackupPath: paths.BackupPath,
                 ReceiptPath: paths.ReceiptPath);
         }
-        catch (Exception ex)
+        catch (IOException ex)
+        {
+            _logger.LogError(ex, "Patch apply write path failed for {TargetSavePath}", paths.TargetPath);
+            _helper.TryDeleteTempOutput(paths.TempOutputPath);
+            return await RestoreAfterWriteFailureAsync(paths.TargetPath, preApplyBytes, paths.BackupPath, paths.ReceiptPath, cancellationToken);
+        }
+        catch (UnauthorizedAccessException ex)
         {
             _logger.LogError(ex, "Patch apply write path failed for {TargetSavePath}", paths.TargetPath);
             _helper.TryDeleteTempOutput(paths.TempOutputPath);
@@ -350,7 +375,17 @@ public sealed class SavePatchApplyService : ISavePatchApplyService
                 backupPath: File.Exists(backupPath) ? backupPath : null,
                 receiptPath: File.Exists(receiptPath) ? receiptPath : null);
         }
-        catch (Exception rollbackEx)
+        catch (IOException rollbackEx)
+        {
+            _logger.LogError(rollbackEx, "Rollback failed after write failure for {TargetSavePath}", normalizedTargetPath);
+            return BuildFailure(
+                SavePatchApplyClassification.WriteFailed,
+                ReasonWriteFailed,
+                "Save write failed and automatic rollback did not complete.",
+                backupPath: File.Exists(backupPath) ? backupPath : null,
+                receiptPath: File.Exists(receiptPath) ? receiptPath : null);
+        }
+        catch (UnauthorizedAccessException rollbackEx)
         {
             _logger.LogError(rollbackEx, "Rollback failed after write failure for {TargetSavePath}", normalizedTargetPath);
             return BuildFailure(

@@ -167,14 +167,29 @@ public abstract class MainViewModelLiveOpsBase : MainViewModelBindableMembersBas
             : $"✗ Selected-unit apply failed: {result.Message}";
     }
 
-    protected async Task RevertSelectedUnitTransactionAsync()
+    protected Task RevertSelectedUnitTransactionAsync()
+        => ExecuteSelectedUnitOperationAsync(
+            (profile, mode) => _selectedUnitTransactions.RevertLastAsync(profile, mode),
+            "Reverted selected-unit transaction",
+            "Revert failed");
+
+    protected Task RestoreSelectedUnitBaselineAsync()
+        => ExecuteSelectedUnitOperationAsync(
+            (profile, mode) => _selectedUnitTransactions.RestoreBaselineAsync(profile, mode),
+            "Selected-unit baseline restored",
+            "Baseline restore failed");
+
+    private async Task ExecuteSelectedUnitOperationAsync(
+        Func<string, RuntimeMode, Task<SelectedUnitTransactionResult>> operation,
+        string successLabel,
+        string failureLabel)
     {
         if (string.IsNullOrWhiteSpace(SelectedProfileId))
         {
             return;
         }
 
-        var result = await _selectedUnitTransactions.RevertLastAsync(SelectedProfileId, RuntimeMode);
+        var result = await operation(SelectedProfileId, RuntimeMode);
         RefreshSelectedUnitTransactions();
         if (result.Succeeded)
         {
@@ -183,28 +198,8 @@ public abstract class MainViewModelLiveOpsBase : MainViewModelBindableMembersBas
         }
 
         Status = result.Succeeded
-            ? $"✓ Reverted selected-unit transaction ({result.TransactionId})."
-            : $"✗ Revert failed: {result.Message}";
-    }
-
-    protected async Task RestoreSelectedUnitBaselineAsync()
-    {
-        if (string.IsNullOrWhiteSpace(SelectedProfileId))
-        {
-            return;
-        }
-
-        var result = await _selectedUnitTransactions.RestoreBaselineAsync(SelectedProfileId, RuntimeMode);
-        RefreshSelectedUnitTransactions();
-        if (result.Succeeded)
-        {
-            var latest = await _selectedUnitTransactions.CaptureAsync();
-            ApplyDraftFromSnapshot(latest);
-        }
-
-        Status = result.Succeeded
-            ? $"✓ Selected-unit baseline restored ({result.TransactionId})."
-            : $"✗ Baseline restore failed: {result.Message}";
+            ? $"✓ {successLabel} ({result.TransactionId})."
+            : $"✗ {failureLabel}: {result.Message}";
     }
 
     protected async Task LoadSpawnPresetsAsync()

@@ -64,3 +64,23 @@ native/**/*.sln
 native/runtime/
 native/logs/
 *.pid
+
+# QLTY local analysis
+.qlty/logs/
+.qlty/out/
+.qlty/plugin_cachedir/
+.qlty/results/
+
+# Python cache
+__pycache__/
+*.pyc
+
+# Temp analysis artifacts
+.tmp_lizard_env/
+coverage-100/
+scratch/
+checkcov.ps1
+tmp_codacy_*.json
+
+# Cheat Engine tables (local RE workspace)
+*.ct

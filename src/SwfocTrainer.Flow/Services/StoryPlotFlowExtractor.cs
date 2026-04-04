@@ -49,7 +49,7 @@ public sealed class StoryPlotFlowExtractor
         {
             document = XDocument.Parse(xmlContent, LoadOptions.None);
         }
-        catch (Exception ex)
+        catch (System.Xml.XmlException ex)
         {
             diagnostics.Add($"Invalid XML '{sourceFile}': {ex.Message}");
             return new FlowIndexReport(Array.Empty<FlowPlotRecord>(), diagnostics);
@@ -251,7 +251,7 @@ public sealed class StoryPlotFlowExtractor
 
             return true;
         }
-        catch (Exception ex)
+        catch (JsonException ex)
         {
             diagnostics.Add($"symbol-pack parse failed: {ex.Message}");
             return false;

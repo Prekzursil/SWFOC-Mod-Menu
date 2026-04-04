@@ -365,7 +365,11 @@ public sealed class NamedPipeExtenderBackend : IExecutionBackend
         {
             return CreateTimeoutResult(command.CommandId);
         }
-        catch (Exception ex)
+        catch (IOException ex)
+        {
+            return CreateUnreachableResult(command.CommandId, ex.Message);
+        }
+        catch (TimeoutException ex)
         {
             return CreateUnreachableResult(command.CommandId, ex.Message);
         }
@@ -510,9 +514,9 @@ public sealed class NamedPipeExtenderBackend : IExecutionBackend
     private static string? ResolveBridgeHostPath()
     {
         var fromEnv = Environment.GetEnvironmentVariable("SWFOC_EXTENDER_HOST_PATH");
-        if (!string.IsNullOrWhiteSpace(fromEnv) && File.Exists(fromEnv))
+        if (!string.IsNullOrWhiteSpace(fromEnv) && File.Exists(fromEnv) && IsAllowedBridgeHostPath(fromEnv))
         {
-            return fromEnv;
+            return Path.GetFullPath(fromEnv);
         }
 
         var candidates = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
@@ -529,6 +533,18 @@ public sealed class NamedPipeExtenderBackend : IExecutionBackend
             .ThenByDescending(file => file.Name.Equals(BridgeHostWindowsExecutableName, StringComparison.OrdinalIgnoreCase))
             .Select(file => file.FullName)
             .FirstOrDefault();
+    }
+
+    private static bool IsAllowedBridgeHostPath(string path)
+    {
+        // Reject path traversal and ensure the target is the expected executable.
+        if (path.Contains("..", StringComparison.Ordinal))
+        {
+            return false;
+        }
+
+        var fileName = Path.GetFileName(path);
+        return fileName.Equals(BridgeHostWindowsExecutableName, StringComparison.OrdinalIgnoreCase);
     }
 
     private static IEnumerable<string> ResolveSearchRoots()

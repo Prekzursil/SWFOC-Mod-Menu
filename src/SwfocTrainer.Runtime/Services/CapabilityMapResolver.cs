@@ -111,7 +111,12 @@ public sealed class CapabilityMapResolver : ICapabilityMapResolver
             var json = await File.ReadAllTextAsync(mapPath, cancellationToken);
             return DeserializeCapabilityMap(json, fingerprint);
         }
-        catch (Exception ex)
+        catch (IOException ex)
+        {
+            _logger.LogWarning(ex, "Failed to parse capability map for fingerprint {FingerprintId}", fingerprint.FingerprintId);
+            return null;
+        }
+        catch (System.Text.Json.JsonException ex)
         {
             _logger.LogWarning(ex, "Failed to parse capability map for fingerprint {FingerprintId}", fingerprint.FingerprintId);
             return null;

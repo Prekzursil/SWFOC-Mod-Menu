@@ -8,6 +8,8 @@
 // cppcheck-suppress missingIncludeSystem
 #include <cstdint>
 // cppcheck-suppress missingIncludeSystem
+#include <format>
+// cppcheck-suppress missingIncludeSystem
 #include <optional>
 // cppcheck-suppress missingIncludeSystem
 #include <string>
@@ -27,11 +29,11 @@ constexpr std::array<std::string_view, 4> kInstantBuildAnchors {"instant_build_p
 constexpr std::int32_t kMinUnitCap = 1;
 constexpr std::int32_t kMaxUnitCap = 100000;
 
-bool IsBuildPatchFeature(const std::string& featureId) {
+bool IsBuildPatchFeature(std::string_view featureId) {
     return featureId == "set_unit_cap" || featureId == "toggle_instant_build_patch";
 }
 
-std::vector<std::string_view> AnchorCandidates(const std::string& featureId) {
+std::vector<std::string_view> AnchorCandidates(std::string_view featureId) {
     if (featureId == "set_unit_cap") {
         return {kUnitCapAnchors.begin(), kUnitCapAnchors.end()};
     }
@@ -39,11 +41,10 @@ std::vector<std::string_view> AnchorCandidates(const std::string& featureId) {
     return {kInstantBuildAnchors.begin(), kInstantBuildAnchors.end()};
 }
 
-std::optional<AnchorMatch> FindAnchor(const PluginRequest& request, const std::string& featureId) {
-    const auto& candidates = AnchorCandidates(featureId);
-    for (const auto key : candidates) {
-        const auto it = request.anchors.find(std::string(key));
-        if (it != request.anchors.end() && !it->second.empty()) {
+std::optional<AnchorMatch> FindAnchor(const PluginRequest& request, std::string_view featureId) {
+    const auto candidates = AnchorCandidates(featureId);
+    for (const auto& key : candidates) {
+        if (const auto it = request.anchors.find(key); it != request.anchors.end() && !it->second.empty()) {
             return AnchorMatch {it->first, it->second};
         }
     }
@@ -57,7 +58,7 @@ PluginResult BuildUnsupportedFeatureResult(const PluginRequest& request) {
     result.reasonCode = "CAPABILITY_REQUIRED_MISSING";
     result.hookState = "DENIED";
     result.message = "Build patch plugin only handles set_unit_cap and toggle_instant_build_patch.";
-    result.diagnostics = {{"featureId", request.featureId}};
+    result.diagnostics = {{"featureId", request.featureId()}};
     return result;
 }
 
@@ -68,9 +69,9 @@ PluginResult BuildMissingProcessResult(const PluginRequest& request) {
     result.hookState = "DENIED";
     result.message = "processId is required for build patch mutations.";
     result.diagnostics = {
-        {"featureId", request.featureId},
+        {"featureId", request.featureId()},
         {"requiredField", "processId"},
-        {"processId", std::to_string(request.processId)}};
+        {"processId", std::to_string(request.processId())}};
     return result;
 }
 
@@ -81,8 +82,8 @@ PluginResult BuildInvalidUnitCapResult(const PluginRequest& request) {
     result.hookState = "DENIED";
     result.message = "set_unit_cap requires intValue within safe bounds when enabled.";
     result.diagnostics = {
-        {"featureId", request.featureId},
-        {"intValue", std::to_string(request.intValue)},
+        {"featureId", request.featureId()},
+        {"intValue", std::to_string(request.intValue())},
         {"minIntValue", std::to_string(kMinUnitCap)},
         {"maxIntValue", std::to_string(kMaxUnitCap)}};
     return result;
@@ -95,7 +96,7 @@ PluginResult BuildMissingAnchorResult(const PluginRequest& request) {
     result.hookState = "DENIED";
     result.message = "anchors map missing required symbol anchor for build patch operation.";
     result.diagnostics = {
-        {"featureId", request.featureId},
+        {"featureId", request.featureId()},
         {"requiredField", "anchors"},
         {"anchorCount", std::to_string(request.anchors.size())}};
     return result;
@@ -114,25 +115,25 @@ const char* BoolToString(bool value) {
 }
 
 bool IsUnitCapOutOfBounds(const PluginRequest& request, bool enablePatch) {
-    return enablePatch && (request.intValue < kMinUnitCap || request.intValue > kMaxUnitCap);
+    return enablePatch && (request.intValue() < kMinUnitCap || request.intValue() > kMaxUnitCap);
 }
 
 PluginResult BuildPatchRestoreStateMissingResult(
     const PluginRequest& request,
     const AnchorMatch& resolvedAnchor,
-    const std::string& restoreKey) {
+    std::string_view restoreKey) {
     PluginResult result {};
     result.succeeded = false;
     result.reasonCode = "PATCH_RESTORE_STATE_MISSING";
     result.hookState = "DENIED";
     result.message = "Build patch restore was requested without a cached pre-patch snapshot.";
     result.diagnostics = {
-        {"featureId", request.featureId},
-        {"processId", std::to_string(request.processId)},
+        {"featureId", request.featureId()},
+        {"processId", std::to_string(request.processId())},
         {"anchorKey", resolvedAnchor.first},
         {"anchorValue", resolvedAnchor.second},
-        {"intValue", std::to_string(request.intValue)},
-        {"restoreKey", restoreKey},
+        {"intValue", std::to_string(request.intValue())},
+        {"restoreKey", std::string(restoreKey)},
         {"processMutationApplied", "false"},
         {"operation", "restore_missing"}};
     return result;
@@ -145,18 +146,30 @@ PluginResult BuildInvalidAnchorResult(const PluginRequest& request, const Anchor
     result.hookState = "DENIED";
     result.message = "anchor value could not be parsed as target address.";
     result.diagnostics = {
-        {"featureId", request.featureId},
+        {"featureId", request.featureId()},
         {"anchorKey", resolvedAnchor.first},
         {"anchorValue", resolvedAnchor.second},
         {"processMutationApplied", "false"}};
     return result;
 }
 
+struct MutationSuccessParams {
+    const PluginRequest& request;
+    const AnchorMatch& resolvedAnchor;
+    bool enablePatch;
+    std::int32_t appliedValue;
+    std::string_view reasonCode;
+    std::string_view message;
+    std::string_view operation;
+    std::string_view restoreKey;
+    const process_mutation::WriteOperationDiagnostics& diagnostics;
+};
+
 PluginResult BuildWriteFailureResult(
     const PluginRequest& request,
     const AnchorMatch& resolvedAnchor,
     bool enablePatch,
-    const std::string& error,
+    std::string_view error,
     const process_mutation::WriteOperationDiagnostics& diagnostics) {
     PluginResult result {};
     result.succeeded = false;
@@ -164,13 +177,13 @@ PluginResult BuildWriteFailureResult(
     result.hookState = "DENIED";
     result.message = "build patch process write failed.";
     result.diagnostics = {
-        {"featureId", request.featureId},
-        {"processId", std::to_string(request.processId)},
+        {"featureId", request.featureId()},
+        {"processId", std::to_string(request.processId())},
         {"anchorKey", resolvedAnchor.first},
         {"anchorValue", resolvedAnchor.second},
         {"enable", BoolToString(enablePatch)},
-        {"intValue", std::to_string(request.intValue)},
-        {"error", error},
+        {"intValue", std::to_string(request.intValue())},
+        {"error", std::string(error)},
         {"writeMode", diagnostics.writeMode},
         {"oldProtect", diagnostics.oldProtect},
         {"len", diagnostics.len},
@@ -179,34 +192,25 @@ PluginResult BuildWriteFailureResult(
     return result;
 }
 
-PluginResult BuildMutationSuccessResult(
-    const PluginRequest& request,
-    const AnchorMatch& resolvedAnchor,
-    bool enablePatch,
-    std::int32_t appliedValue,
-    const std::string& reasonCode,
-    const std::string& message,
-    const std::string& operation,
-    const std::string& restoreKey,
-    const process_mutation::WriteOperationDiagnostics& diagnostics) {
+PluginResult BuildMutationSuccessResult(const MutationSuccessParams& params) {
     PluginResult result {};
     result.succeeded = true;
-    result.reasonCode = reasonCode;
+    result.reasonCode = std::string(params.reasonCode);
     result.hookState = "HOOK_ONESHOT";
-    result.message = message;
+    result.message = std::string(params.message);
     result.diagnostics = {
-        {"featureId", request.featureId},
-        {"processId", std::to_string(request.processId)},
-        {"anchorKey", resolvedAnchor.first},
-        {"anchorValue", resolvedAnchor.second},
-        {"enable", BoolToString(enablePatch)},
-        {"intValue", std::to_string(appliedValue)},
-        {"restoreKey", restoreKey},
-        {"operation", operation},
-        {"writeMode", diagnostics.writeMode},
-        {"oldProtect", diagnostics.oldProtect},
-        {"len", diagnostics.len},
-        {"restoreProtectOk", diagnostics.restoreProtectOk},
+        {"featureId", params.request.featureId()},
+        {"processId", std::to_string(params.request.processId())},
+        {"anchorKey", params.resolvedAnchor.first},
+        {"anchorValue", params.resolvedAnchor.second},
+        {"enable", BoolToString(params.enablePatch)},
+        {"intValue", std::to_string(params.appliedValue)},
+        {"restoreKey", std::string(params.restoreKey)},
+        {"operation", std::string(params.operation)},
+        {"writeMode", params.diagnostics.writeMode},
+        {"oldProtect", params.diagnostics.oldProtect},
+        {"len", params.diagnostics.len},
+        {"restoreProtectOk", params.diagnostics.restoreProtectOk},
         {"processMutationApplied", "true"}};
     return result;
 }
@@ -214,20 +218,20 @@ PluginResult BuildMutationSuccessResult(
 PluginResult BuildReadFailureResult(
     const PluginRequest& request,
     const AnchorMatch& resolvedAnchor,
-    const std::string& error,
-    const std::string& operation) {
+    std::string_view error,
+    std::string_view operation) {
     PluginResult result {};
     result.succeeded = false;
     result.reasonCode = "SAFETY_MUTATION_BLOCKED";
     result.hookState = "DENIED";
     result.message = "build patch memory read failed.";
     result.diagnostics = {
-        {"featureId", request.featureId},
-        {"processId", std::to_string(request.processId)},
+        {"featureId", request.featureId()},
+        {"processId", std::to_string(request.processId())},
         {"anchorKey", resolvedAnchor.first},
         {"anchorValue", resolvedAnchor.second},
-        {"operation", operation},
-        {"error", error},
+        {"operation", std::string(operation)},
+        {"error", std::string(error)},
         {"processMutationApplied", "false"}};
     return result;
 }
@@ -239,18 +243,18 @@ const char* BuildPatchPlugin::id() const noexcept {
 }
 
 PluginResult BuildPatchPlugin::execute(const PluginRequest& request) {
-    if (!IsBuildPatchFeature(request.featureId)) {
+    if (!IsBuildPatchFeature(request.featureId())) {
         return BuildUnsupportedFeatureResult(request);
     }
 
-    if (request.processId <= 0) {
+    if (request.processId() <= 0) {
         return BuildMissingProcessResult(request);
     }
 
-    const auto resolvedAnchor = FindAnchor(request, request.featureId);
+    const auto resolvedAnchor = FindAnchor(request, request.featureId());
 
-    const bool enablePatch = request.enable || request.boolValue;
-    if (request.featureId == "set_unit_cap") {
+    const auto enablePatch = request.enable() || request.boolValue();
+    if (request.featureId() == "set_unit_cap") {
         if (IsUnitCapOutOfBounds(request, enablePatch)) {
             return BuildInvalidUnitCapResult(request);
         }
@@ -275,7 +279,7 @@ PluginResult BuildPatchPlugin::execute(const PluginRequest& request) {
         std::string writeError;
         process_mutation::WriteOperationDiagnostics writeDiagnostics {};
         if (!process_mutation::TryWriteBytesPatchSafe(
-                request.processId,
+                request.processId(),
                 targetAddress,
                 restoreBytes.data(),
                 restoreBytes.size(),
@@ -285,31 +289,31 @@ PluginResult BuildPatchPlugin::execute(const PluginRequest& request) {
         }
 
         RemoveRestoreBytes(restoreKey);
-        if (request.featureId == "set_unit_cap") {
-            ApplyUnitCapState(enablePatch, request.intValue);
+        if (request.featureId() == "set_unit_cap") {
+            ApplyUnitCapState(enablePatch, request.intValue());
         } else {
             ApplyInstantBuildState(enablePatch);
         }
 
-        return BuildMutationSuccessResult(
-            request,
-            *resolvedAnchor,
-            enablePatch,
-            request.featureId == "set_unit_cap" ? request.intValue : 0,
-            "PATCH_RESTORE_APPLIED",
-            "Build patch restore applied through extender plugin.",
-            "restore",
-            restoreKey,
-            writeDiagnostics);
+        return BuildMutationSuccessResult({
+            .request = request,
+            .resolvedAnchor = *resolvedAnchor,
+            .enablePatch = enablePatch,
+            .appliedValue = request.featureId() == "set_unit_cap" ? request.intValue() : 0,
+            .reasonCode = "PATCH_RESTORE_APPLIED",
+            .message = "Build patch restore applied through extender plugin.",
+            .operation = "restore",
+            .restoreKey = restoreKey,
+            .diagnostics = writeDiagnostics});
     }
 
-    const auto writeLength = request.featureId == "set_unit_cap"
+    const auto writeLength = request.featureId() == "set_unit_cap"
         ? sizeof(std::int32_t)
         : sizeof(std::uint8_t);
     std::vector<std::uint8_t> originalBytes;
     std::string readError;
     if (!process_mutation::TryReadBytes(
-            request.processId,
+            request.processId(),
             targetAddress,
             writeLength,
             originalBytes,
@@ -321,11 +325,11 @@ PluginResult BuildPatchPlugin::execute(const PluginRequest& request) {
 
     std::string writeError;
     process_mutation::WriteOperationDiagnostics writeDiagnostics {};
-    if (request.featureId == "set_unit_cap") {
-        const auto clamped = std::clamp(request.intValue, kMinUnitCap, kMaxUnitCap);
+    if (request.featureId() == "set_unit_cap") {
+        const auto clamped = std::clamp(request.intValue(), kMinUnitCap, kMaxUnitCap);
         const auto encoded = static_cast<std::int32_t>(clamped);
         if (!process_mutation::TryWriteValue<std::int32_t>(
-                request.processId,
+                request.processId(),
                 targetAddress,
                 encoded,
                 writeError,
@@ -334,22 +338,22 @@ PluginResult BuildPatchPlugin::execute(const PluginRequest& request) {
             return BuildWriteFailureResult(request, *resolvedAnchor, enablePatch, writeError, writeDiagnostics);
         }
 
-        ApplyUnitCapState(enablePatch, request.intValue);
-        return BuildMutationSuccessResult(
-            request,
-            *resolvedAnchor,
-            enablePatch,
-            clamped,
-            "CAPABILITY_PROBE_PASS",
-            "Build patch value applied through extender plugin.",
-            "apply",
-            restoreKey,
-            writeDiagnostics);
+        ApplyUnitCapState(enablePatch, request.intValue());
+        return BuildMutationSuccessResult({
+            .request = request,
+            .resolvedAnchor = *resolvedAnchor,
+            .enablePatch = enablePatch,
+            .appliedValue = clamped,
+            .reasonCode = "CAPABILITY_PROBE_PASS",
+            .message = "Build patch value applied through extender plugin.",
+            .operation = "apply",
+            .restoreKey = restoreKey,
+            .diagnostics = writeDiagnostics});
     }
 
     const auto enabledByte = static_cast<std::uint8_t>(1);
     if (!process_mutation::TryWriteValue<std::uint8_t>(
-            request.processId,
+            request.processId(),
             targetAddress,
             enabledByte,
             writeError,
@@ -359,22 +363,22 @@ PluginResult BuildPatchPlugin::execute(const PluginRequest& request) {
     }
 
     ApplyInstantBuildState(enablePatch);
-    return BuildMutationSuccessResult(
-        request,
-        *resolvedAnchor,
-        enablePatch,
-        1,
-        "CAPABILITY_PROBE_PASS",
-        "Build patch value applied through extender plugin.",
-        "apply",
-        restoreKey,
-        writeDiagnostics);
+    return BuildMutationSuccessResult({
+        .request = request,
+        .resolvedAnchor = *resolvedAnchor,
+        .enablePatch = enablePatch,
+        .appliedValue = 1,
+        .reasonCode = "CAPABILITY_PROBE_PASS",
+        .message = "Build patch value applied through extender plugin.",
+        .operation = "apply",
+        .restoreKey = restoreKey,
+        .diagnostics = writeDiagnostics});
 }
 
 CapabilitySnapshot BuildPatchPlugin::capabilitySnapshot() const {
     CapabilitySnapshot snapshot {};
-    snapshot.features.emplace("set_unit_cap", BuildCapabilityState());
-    snapshot.features.emplace(
+    snapshot.features.try_emplace("set_unit_cap", BuildCapabilityState());
+    snapshot.features.try_emplace(
         "toggle_instant_build_patch",
         BuildCapabilityState());
     return snapshot;
@@ -393,11 +397,11 @@ void BuildPatchPlugin::ApplyInstantBuildState(bool enablePatch) {
     instantBuildPatchEnabled_.store(enablePatch);
 }
 
-std::string BuildPatchPlugin::BuildRestoreKey(const PluginRequest& request, const std::string& anchorKey, std::uintptr_t address) {
-    return std::to_string(request.processId) + "|" + request.featureId + "|" + anchorKey + "|" + std::to_string(address);
+std::string BuildPatchPlugin::BuildRestoreKey(const PluginRequest& request, std::string_view anchorKey, std::uintptr_t address) {
+    return std::format("{}|{}|{}|{}", request.processId(), request.featureId(), anchorKey, address);
 }
 
-bool BuildPatchPlugin::TryReadRestoreBytes(const std::string& key, std::vector<std::uint8_t>& bytes) {
+bool BuildPatchPlugin::TryReadRestoreBytes(std::string_view key, std::vector<std::uint8_t>& bytes) {
     std::scoped_lock lock(restoreBytesMutex_);
     const auto it = restoreBytesByKey_.find(key);
     if (it == restoreBytesByKey_.end()) {
@@ -414,9 +418,11 @@ void BuildPatchPlugin::StoreRestoreBytes(std::string key, std::vector<std::uint8
     restoreBytesByKey_[std::move(key)] = std::move(bytes);
 }
 
-void BuildPatchPlugin::RemoveRestoreBytes(const std::string& key) {
+void BuildPatchPlugin::RemoveRestoreBytes(std::string_view key) {
     std::scoped_lock lock(restoreBytesMutex_);
-    restoreBytesByKey_.erase(key);
+    if (const auto it = restoreBytesByKey_.find(key); it != restoreBytesByKey_.end()) {
+        restoreBytesByKey_.erase(it);
+    }
 }
 
 } // namespace swfoc::extender::plugins

@@ -70,7 +70,11 @@ public sealed class BinaryFingerprintService : IBinaryFingerprintService
             productVersion = version.ProductVersion;
             fileVersion = version.FileVersion;
         }
-        catch (Exception ex)
+        catch (IOException ex)
+        {
+            _logger.LogDebug(ex, "Unable to read version metadata for {Path}", fullPath);
+        }
+        catch (UnauthorizedAccessException ex)
         {
             _logger.LogDebug(ex, "Unable to read version metadata for {Path}", fullPath);
         }

@@ -37,7 +37,7 @@ jobs:
       - name: Build
         run: dotnet build SwfocTrainer.sln -c Release --no-restore
 
-      - name: Test (deterministic suite)
+      - name: Test (deterministic suite with coverage)
         run: >
           dotnet test tests/SwfocTrainer.Tests/SwfocTrainer.Tests.csproj
           -c Release
@@ -45,6 +45,10 @@ jobs:
           --logger "trx;LogFileName=tests.trx"
           --results-directory TestResults
           --filter "FullyQualifiedName!~SwfocTrainer.Tests.Profiles.Live&FullyQualifiedName!~RuntimeAttachSmokeTests"
+          -p:CollectCoverage=true
+          -p:CoverletOutputFormat=opencover
+          -p:CoverletOutput=TestResults/coverage/opencover
+          -p:ExcludeByFile="**/obj/**%2c**/*.g.cs%2c**/*.g.i.cs"
 
       - name: Launch-context fixture smoke
         shell: pwsh
@@ -147,6 +151,23 @@ jobs:
         shell: pwsh
         run: |
           pwsh ./tools/lua-harness/run-lua-harness.ps1 -Strict
+
+      - name: Upload coverage to Codacy
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        uses: codacy/codacy-coverage-reporter-action@v1
+        with:
+          project-token: ${{ secrets.CODACY_PROJECT_TOKEN }}
+          coverage-reports: TestResults/coverage/opencover.opencover.xml
+        continue-on-error: true
+
+      - name: Upload coverage to DeepSource
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        uses: deepsourcelabs/test-coverage-action@master
+        with:
+          key: csharp
+          coverage-file: TestResults/coverage/opencover.opencover.xml
+          dsn: ${{ secrets.DEEPSOURCE_DSN }}
+        continue-on-error: true
 
       - name: Upload Test Results
         if: always()

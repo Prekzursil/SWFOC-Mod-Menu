@@ -250,7 +250,13 @@ public sealed class WorkshopInventoryService : IWorkshopInventoryService
         {
             response = await _httpClient.SendAsync(message, cancellationToken);
         }
-        catch (Exception ex)
+        catch (HttpRequestException ex)
+        {
+            diagnostics.Add($"details_fetch_failed batch_start={offset} message={ex.Message}");
+            _logger.LogWarning(ex, "Workshop details fetch failed for batch starting {Offset}", offset);
+            return Array.Empty<WorkshopInventoryItem>();
+        }
+        catch (TaskCanceledException ex)
         {
             diagnostics.Add($"details_fetch_failed batch_start={offset} message={ex.Message}");
             _logger.LogWarning(ex, "Workshop details fetch failed for batch starting {Offset}", offset);
@@ -271,7 +277,7 @@ public sealed class WorkshopInventoryService : IWorkshopInventoryService
                 using var payload = await JsonDocument.ParseAsync(stream, cancellationToken: cancellationToken);
                 return ExtractMappedItems(payload, offset, diagnostics);
             }
-            catch (Exception ex)
+            catch (System.Text.Json.JsonException ex)
             {
                 diagnostics.Add($"details_parse_failed batch_start={offset} message={ex.Message}");
                 return Array.Empty<WorkshopInventoryItem>();

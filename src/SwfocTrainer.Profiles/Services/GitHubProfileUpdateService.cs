@@ -134,7 +134,17 @@ public sealed class GitHubProfileUpdateService : IProfileUpdateService
                 Message: $"Rollback restored '{profileId}' from backup.",
                 ReasonCode: null);
         }
-        catch (Exception ex)
+        catch (IOException ex)
+        {
+            return new ProfileRollbackResult(
+                Restored: false,
+                ProfileId: profileId,
+                RestoredPath: destination,
+                BackupPath: backup,
+                Message: $"Rollback failed: {ex.Message}",
+                ReasonCode: "rollback_copy_failed");
+        }
+        catch (UnauthorizedAccessException ex)
         {
             return new ProfileRollbackResult(
                 Restored: false,
@@ -175,7 +185,16 @@ public sealed class GitHubProfileUpdateService : IProfileUpdateService
         {
             remote = await _httpClient.GetFromJsonAsync<ProfileManifest>(_options.RemoteManifestUrl, _jsonOptions, cancellationToken);
         }
-        catch (Exception ex)
+        catch (HttpRequestException ex)
+        {
+            return (
+                null,
+                BuildInstallFailure(
+                    profileId,
+                    $"Failed to fetch remote manifest: {ex.Message}",
+                    "manifest_fetch_failed"));
+        }
+        catch (System.Text.Json.JsonException ex)
         {
             return (
                 null,
@@ -278,7 +297,11 @@ public sealed class GitHubProfileUpdateService : IProfileUpdateService
                 await stream.CopyToAsync(file, cancellationToken);
             }
         }
-        catch (Exception ex)
+        catch (HttpRequestException ex)
+        {
+            return BuildInstallFailure(profileId, $"Failed to download package: {ex.Message}", "download_failed");
+        }
+        catch (IOException ex)
         {
             return BuildInstallFailure(profileId, $"Failed to download package: {ex.Message}", "download_failed");
         }
@@ -309,7 +332,11 @@ public sealed class GitHubProfileUpdateService : IProfileUpdateService
         {
             GitHubProfileUpdateExtractionHelpers.ExtractToDirectorySafely(zipPath, extractDir);
         }
-        catch (Exception ex)
+        catch (IOException ex)
+        {
+            return BuildInstallFailure(profileId, $"Failed to extract package: {ex.Message}", "extract_failed");
+        }
+        catch (InvalidDataException ex)
         {
             return BuildInstallFailure(profileId, $"Failed to extract package: {ex.Message}", "extract_failed");
         }
@@ -333,7 +360,15 @@ public sealed class GitHubProfileUpdateService : IProfileUpdateService
         {
             ProfileValidator.Validate(parsedProfile);
         }
-        catch (Exception ex)
+        catch (InvalidDataException ex)
+        {
+            return BuildInstallFailure(profileId, $"Downloaded profile failed validation: {ex.Message}", "profile_validation_failed");
+        }
+        catch (InvalidOperationException ex)
+        {
+            return BuildInstallFailure(profileId, $"Downloaded profile failed validation: {ex.Message}", "profile_validation_failed");
+        }
+        catch (ArgumentException ex)
         {
             return BuildInstallFailure(profileId, $"Downloaded profile failed validation: {ex.Message}", "profile_validation_failed");
         }

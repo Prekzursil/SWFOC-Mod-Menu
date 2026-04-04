@@ -6,6 +6,8 @@
 #include <chrono>
 #include <map>
 #include <sstream>
+#include <stdexcept>
+#include <string_view>
 #include <utility>
 
 #if defined(_WIN32)
@@ -27,60 +29,78 @@ missingIncludeSystem can be suppressed per translation unit with:
   --suppress=missingIncludeSystem:native/SwfocExtender.Bridge/src/NamedPipeBridgeServer.cpp
 */
 
-std::string BuildFullPipeName(const std::string& pipeName) {
-    return std::string("\\\\.\\pipe\\") + pipeName;
+// S6045: transparent hash for heterogeneous lookup in unordered containers
+struct StringHash {
+    using is_transparent = void;
+    std::size_t operator()(std::string_view sv) const {
+        return std::hash<std::string_view>{}(sv);
+    }
+};
+
+std::string BuildFullPipeName(std::string_view pipeName) {
+    // S6009: pipeName is string_view; we concatenate with a raw string prefix
+    // S3628: raw string literal for the pipe prefix
+    auto result = std::string(R"(\\.\pipe\)");
+    result.append(pipeName);
+    return result;
 }
 
-std::string ExtractStringValue(const std::string& json, const std::string& key) {
-    const auto quotedKey = "\"" + key + "\"";
-    auto keyPos = json.find(quotedKey);
-    if (keyPos == std::string::npos) {
+std::string ExtractStringValue(std::string_view json, std::string_view key) {
+    auto quotedKey = std::string("\"");
+    quotedKey.append(key);
+    quotedKey.push_back('"');
+
+    const auto keyPos = json.find(quotedKey);
+    if (keyPos == std::string_view::npos) {
         return {};
     }
 
-    auto colonPos = json.find(':', keyPos + quotedKey.length());
-    if (colonPos == std::string::npos) {
+    const auto colonPos = json.find(':', keyPos + quotedKey.length());
+    if (colonPos == std::string_view::npos) {
         return {};
     }
 
-    auto firstQuote = json.find('"', colonPos + 1);
-    if (firstQuote == std::string::npos) {
+    const auto firstQuote = json.find('"', colonPos + 1);
+    if (firstQuote == std::string_view::npos) {
         return {};
     }
 
-    auto secondQuote = json.find('"', firstQuote + 1);
-    if (secondQuote == std::string::npos || secondQuote <= firstQuote) {
+    const auto secondQuote = json.find('"', firstQuote + 1);
+    if (secondQuote == std::string_view::npos || secondQuote <= firstQuote) {
         return {};
     }
 
-    return json.substr(firstQuote + 1, secondQuote - firstQuote - 1);
+    return std::string(json.substr(firstQuote + 1, secondQuote - firstQuote - 1));
 }
 
-std::string ExtractObjectJson(const std::string& json, const std::string& key) {
-    const auto quotedKey = "\"" + key + "\"";
-    auto keyPos = json.find(quotedKey);
-    if (keyPos == std::string::npos) {
+std::string ExtractObjectJson(std::string_view json, std::string_view key) {
+    auto quotedKey = std::string("\"");
+    quotedKey.append(key);
+    quotedKey.push_back('"');
+
+    const auto keyPos = json.find(quotedKey);
+    if (keyPos == std::string_view::npos) {
         return "{}";
     }
 
-    auto colonPos = json.find(':', keyPos + quotedKey.length());
-    if (colonPos == std::string::npos) {
+    const auto colonPos = json.find(':', keyPos + quotedKey.length());
+    if (colonPos == std::string_view::npos) {
         return "{}";
     }
 
-    auto openBrace = json.find('{', colonPos + 1);
-    if (openBrace == std::string::npos) {
+    const auto openBrace = json.find('{', colonPos + 1);
+    if (openBrace == std::string_view::npos) {
         return "{}";
     }
 
     auto depth = 0;
-    for (std::size_t i = openBrace; i < json.size(); ++i) {
+    for (auto i = openBrace; i < json.size(); ++i) {
         if (json[i] == '{') {
             ++depth;
         } else if (json[i] == '}') {
             --depth;
             if (depth == 0) {
-                return json.substr(openBrace, i - openBrace + 1);
+                return std::string(json.substr(openBrace, i - openBrace + 1));
             }
         }
     }
@@ -88,23 +108,26 @@ std::string ExtractObjectJson(const std::string& json, const std::string& key) {
     return "{}";
 }
 
-bool TryFindValueStart(const std::string& json, const std::string& key, std::size_t& start) {
-    const auto quotedKey = "\"" + key + "\"";
+bool TryFindValueStart(std::string_view json, std::string_view key, std::size_t& start) {
+    auto quotedKey = std::string("\"");
+    quotedKey.append(key);
+    quotedKey.push_back('"');
+
     const auto keyPos = json.find(quotedKey);
-    if (keyPos == std::string::npos) {
+    if (keyPos == std::string_view::npos) {
         return false;
     }
 
     const auto colonPos = json.find(':', keyPos + quotedKey.size());
-    if (colonPos == std::string::npos) {
+    if (colonPos == std::string_view::npos) {
         return false;
     }
 
     start = json.find_first_not_of(" \t\r\n", colonPos + 1);
-    return start != std::string::npos;
+    return start != std::string_view::npos;
 }
 
-bool TryReadInt(const std::string& json, const std::string& key, std::int32_t& value) {
+bool TryReadInt(std::string_view json, std::string_view key, std::int32_t& value) {
     std::size_t start = 0;
     if (!TryFindValueStart(json, key, start)) {
         return false;
@@ -116,21 +139,21 @@ bool TryReadInt(const std::string& json, const std::string& key, std::int32_t& v
 
     try {
         std::size_t consumed = 0;
-        const auto parsed = std::stoi(json.c_str() + start, &consumed);
+        const auto parsed = std::stoi(std::string(json.substr(start)), &consumed);
         if (consumed == 0) {
             return false;
         }
 
         value = static_cast<std::int32_t>(parsed);
         return true;
-    } catch (...) {
+    } catch (const std::exception&) {
         return false;
     }
 }
 
-std::size_t FindUnescapedQuote(const std::string& value, std::size_t start) {
+std::size_t FindUnescapedQuote(std::string_view value, std::size_t start) {
     auto escaped = false;
-    for (std::size_t i = start; i < value.size(); ++i) {
+    for (auto i = start; i < value.size(); ++i) {
         if (escaped) {
             escaped = false;
             continue;
@@ -146,10 +169,10 @@ std::size_t FindUnescapedQuote(const std::string& value, std::size_t start) {
         }
     }
 
-    return std::string::npos;
+    return std::string_view::npos;
 }
 
-std::string TrimAsciiWhitespace(std::string value) {
+std::string TrimAsciiWhitespace(std::string_view value) {
     auto first = value.begin();
     while (first != value.end() && std::isspace(static_cast<unsigned char>(*first)) != 0) {
         ++first;
@@ -160,23 +183,23 @@ std::string TrimAsciiWhitespace(std::string value) {
         --last;
     }
 
-    return std::string(first, last);
+    return {first, last};
 }
 
-std::size_t SkipAsciiWhitespace(const std::string& value, std::size_t cursor) {
+std::size_t SkipAsciiWhitespace(std::string_view value, std::size_t cursor) {
     return value.find_first_not_of(" \t\r\n", cursor);
 }
 
-bool TryParseFlatStringMapEntryKey(const std::string& objectJson, std::size_t& cursor, std::string& key);
-bool TryParseFlatStringMapEntryValue(const std::string& objectJson, std::size_t& cursor, std::string& value);
+bool TryParseFlatStringMapEntryKey(std::string_view objectJson, std::size_t& cursor, std::string& key);
+bool TryParseFlatStringMapEntryValue(std::string_view objectJson, std::size_t& cursor, std::string& value);
 
 bool TryParseFlatStringMapEntry(
-    const std::string& objectJson,
+    std::string_view objectJson,
     std::size_t& cursor,
     std::string& key,
     std::string& value) {
     cursor = SkipAsciiWhitespace(objectJson, cursor);
-    if (cursor == std::string::npos || objectJson[cursor] == '}') {
+    if (cursor == std::string_view::npos || objectJson[cursor] == '}') {
         return false;
     }
 
@@ -189,42 +212,42 @@ bool TryParseFlatStringMapEntry(
     }
 
     cursor = SkipAsciiWhitespace(objectJson, cursor);
-    if (cursor != std::string::npos && objectJson[cursor] == ',') {
+    if (cursor != std::string_view::npos && objectJson[cursor] == ',') {
         ++cursor;
     }
 
     return true;
 }
 
-bool TryParseFlatStringMapEntryKey(const std::string& objectJson, std::size_t& cursor, std::string& key) {
+bool TryParseFlatStringMapEntryKey(std::string_view objectJson, std::size_t& cursor, std::string& key) {
     if (objectJson[cursor] != '"') {
         return false;
     }
 
     const auto keyEnd = FindUnescapedQuote(objectJson, cursor + 1);
-    if (keyEnd == std::string::npos) {
+    if (keyEnd == std::string_view::npos) {
         return false;
     }
 
-    key = objectJson.substr(cursor + 1, keyEnd - cursor - 1);
+    key = std::string(objectJson.substr(cursor + 1, keyEnd - cursor - 1));
     cursor = objectJson.find(':', keyEnd + 1);
-    if (cursor == std::string::npos) {
+    if (cursor == std::string_view::npos) {
         return false;
     }
 
     ++cursor;
     cursor = SkipAsciiWhitespace(objectJson, cursor);
-    return cursor != std::string::npos;
+    return cursor != std::string_view::npos;
 }
 
-bool TryParseFlatStringMapEntryValue(const std::string& objectJson, std::size_t& cursor, std::string& value) {
+bool TryParseFlatStringMapEntryValue(std::string_view objectJson, std::size_t& cursor, std::string& value) {
     if (objectJson[cursor] == '"') {
         const auto valueEnd = FindUnescapedQuote(objectJson, cursor + 1);
-        if (valueEnd == std::string::npos) {
+        if (valueEnd == std::string_view::npos) {
             return false;
         }
 
-        value = objectJson.substr(cursor + 1, valueEnd - cursor - 1);
+        value = std::string(objectJson.substr(cursor + 1, valueEnd - cursor - 1));
         cursor = valueEnd + 1;
     } else {
         auto tokenEnd = cursor;
@@ -239,10 +262,10 @@ bool TryParseFlatStringMapEntryValue(const std::string& objectJson, std::size_t&
     return true;
 }
 
-std::map<std::string, std::string> ParseFlatStringMapObject(const std::string& objectJson) {
-    std::map<std::string, std::string> parsed;
+std::map<std::string, std::string, std::less<>> ParseFlatStringMapObject(std::string_view objectJson) {
+    std::map<std::string, std::string, std::less<>> parsed;
     auto cursor = objectJson.find('{');
-    if (cursor == std::string::npos) {
+    if (cursor == std::string_view::npos) {
         return parsed;
     }
 
@@ -258,30 +281,30 @@ std::map<std::string, std::string> ParseFlatStringMapObject(const std::string& o
     return parsed;
 }
 
-std::map<std::string, std::string> ExtractStringMap(const std::string& json, const std::string& key) {
+std::map<std::string, std::string, std::less<>> ExtractStringMap(std::string_view json, std::string_view key) {
     const auto objectJson = ExtractObjectJson(json, key);
     return ParseFlatStringMapObject(objectJson);
 }
 
-std::string EscapeJson(const std::string& value) {
+std::string EscapeJson(std::string_view value) {
     std::string escaped;
     escaped.reserve(value.size() + 8);
     for (const auto ch : value) {
         switch (ch) {
         case '\\':
-            escaped += "\\\\";
+            escaped += R"(\\)";
             break;
         case '"':
-            escaped += "\\\"";
+            escaped += R"(\")";
             break;
         case '\n':
-            escaped += "\\n";
+            escaped += R"(\n)";
             break;
         case '\r':
-            escaped += "\\r";
+            escaped += R"(\r)";
             break;
         case '\t':
-            escaped += "\\t";
+            escaped += R"(\t)";
             break;
         default:
             escaped.push_back(ch);
@@ -295,30 +318,30 @@ std::string EscapeJson(const std::string& value) {
 std::string ToJsonLine(const BridgeResult& result) {
     std::ostringstream out;
     out << '{';
-    out << "\"commandId\":\"" << EscapeJson(result.commandId) << "\",";
-    out << "\"succeeded\":" << (result.succeeded ? "true" : "false") << ',';
-    out << "\"reasonCode\":\"" << EscapeJson(result.reasonCode) << "\",";
-    out << "\"backend\":\"" << EscapeJson(result.backend) << "\",";
-    out << "\"hookState\":\"" << EscapeJson(result.hookState) << "\",";
-    out << "\"message\":\"" << EscapeJson(result.message) << "\",";
-    out << "\"diagnostics\":" << (result.diagnosticsJson.empty() ? "{}" : result.diagnosticsJson);
+    out << R"("commandId":")" << EscapeJson(result.commandId) << R"(",)";
+    out << R"("succeeded":)" << (result.succeeded ? "true" : "false") << ',';
+    out << R"("reasonCode":")" << EscapeJson(result.reasonCode) << R"(",)";
+    out << R"("backend":")" << EscapeJson(result.backend) << R"(",)";
+    out << R"("hookState":")" << EscapeJson(result.hookState) << R"(",)";
+    out << R"("message":")" << EscapeJson(result.message) << R"(",)";
+    out << R"("diagnostics":)" << (result.diagnosticsJson.empty() ? "{}" : result.diagnosticsJson);
     out << '}';
     return out.str();
 }
 
 BridgeResult BuildBridgeFailureResult(
-    std::string commandId,
-    std::string hookState,
-    std::string message,
-    std::string diagnosticsJson) {
+    std::string_view commandId,
+    std::string_view hookState,
+    std::string_view message,
+    std::string_view diagnosticsJson) {
     BridgeResult result {};
-    result.commandId = std::move(commandId);
+    result.commandId = std::string(commandId);
     result.succeeded = false;
     result.reasonCode = "CAPABILITY_BACKEND_UNAVAILABLE";
     result.backend = "extender";
-    result.hookState = std::move(hookState);
-    result.message = std::move(message);
-    result.diagnosticsJson = std::move(diagnosticsJson);
+    result.hookState = std::string(hookState);
+    result.message = std::string(message);
+    result.diagnosticsJson = std::string(diagnosticsJson);
     return result;
 }
 
@@ -338,7 +361,7 @@ HANDLE CreateBridgePipe(const std::string& fullPipeName) {
 bool TryConnectClient(HANDLE pipe) {
     const BOOL connected = ConnectNamedPipe(pipe, nullptr)
         ? TRUE
-        : (GetLastError() == ERROR_PIPE_CONNECTED);
+        : (GetLastError() == ERROR_PIPE_CONNECTED ? TRUE : FALSE);
     return connected != FALSE;
 }
 
@@ -360,10 +383,9 @@ bool TryCreateConnectedPipe(const std::string& fullPipeName, HANDLE& pipe) {
 std::string ReadCommandLine(HANDLE pipe, std::array<char, kPipeBufferSize>& buffer) {
     std::string commandLine;
     DWORD bytesRead = 0;
-    while (ReadFile(pipe, buffer.data(), static_cast<DWORD>(buffer.size()), &bytesRead, nullptr) && bytesRead > 0) {
+    while (ReadFile(pipe, buffer.data(), static_cast<DWORD>(buffer.size()), &bytesRead, nullptr) != FALSE && bytesRead > 0) {
         commandLine.append(buffer.data(), bytesRead);
-        const auto linePos = commandLine.find('\n');
-        if (linePos != std::string::npos) {
+        if (const auto linePos = commandLine.find('\n'); linePos != std::string::npos) {
             commandLine.erase(linePos);
             break;
         }
@@ -385,7 +407,7 @@ void WriteResponse(HANDLE pipe, const BridgeResult& result) {
     response.push_back('\n');
 
     DWORD bytesWritten = 0;
-    WriteFile(pipe, response.data(), static_cast<DWORD>(response.size()), &bytesWritten, nullptr);
+    (void)WriteFile(pipe, response.data(), static_cast<DWORD>(response.size()), &bytesWritten, nullptr);
     FlushFileBuffers(pipe);
 }
 
@@ -419,7 +441,7 @@ bool NamedPipeBridgeServer::start() {
         return true;
     }
 
-    worker_ = std::thread([this]() { runLoop(); });
+    worker_ = std::jthread([this]() { runLoop(); });
     return true;
 }
 
@@ -430,7 +452,7 @@ void NamedPipeBridgeServer::stop() {
 
 #if defined(_WIN32)
     const auto fullPipeName = BuildFullPipeName(pipeName_);
-    auto deadline = std::chrono::steady_clock::now() + std::chrono::milliseconds(800);
+    const auto deadline = std::chrono::steady_clock::now() + std::chrono::milliseconds(800);
     while (std::chrono::steady_clock::now() < deadline) {
         auto client = CreateFileA(
             fullPipeName.c_str(),
@@ -448,6 +470,7 @@ void NamedPipeBridgeServer::stop() {
     }
 #endif
 
+    // jthread auto-joins, but we request_stop + join explicitly for deterministic shutdown
     if (worker_.joinable()) {
         worker_.join();
     }
@@ -457,7 +480,7 @@ bool NamedPipeBridgeServer::running() const noexcept {
     return running_.load();
 }
 
-BridgeResult NamedPipeBridgeServer::handleRawCommand(const std::string& jsonLine) const {
+BridgeResult NamedPipeBridgeServer::handleRawCommand(std::string_view jsonLine) const {
     BridgeCommand command;
     command.commandId = ExtractStringValue(jsonLine, "commandId");
     command.featureId = ExtractStringValue(jsonLine, "featureId");
@@ -478,7 +501,7 @@ BridgeResult NamedPipeBridgeServer::handleRawCommand(const std::string& jsonLine
             {},
             "invalid_command",
             "Command payload missing commandId.",
-            "{\"parseError\":\"missing_commandId\"}");
+            R"({"parseError":"missing_commandId"})");
     }
 
     if (!handler_) {
@@ -486,7 +509,7 @@ BridgeResult NamedPipeBridgeServer::handleRawCommand(const std::string& jsonLine
             command.commandId,
             "handler_missing",
             "Bridge handler is not configured.",
-            "{\"handler\":\"missing\"}");
+            R"({"handler":"missing"})");
     }
 
     auto result = handler_(command);

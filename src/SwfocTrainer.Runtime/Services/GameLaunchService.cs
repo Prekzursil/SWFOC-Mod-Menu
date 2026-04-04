@@ -181,11 +181,28 @@ public sealed class GameLaunchService : IGameLaunchService
         return request.Mode switch
         {
             GameLaunchMode.SteamMod => BuildSteamModArguments(request.WorkshopIds),
-            GameLaunchMode.ModPath => string.IsNullOrWhiteSpace(request.ModPath)
-                ? string.Empty
-                : $"MODPATH=\"{request.ModPath}\"",
+            GameLaunchMode.ModPath => BuildModPathArgument(request.ModPath),
             _ => string.Empty
         };
+    }
+
+    private static string BuildModPathArgument(string? modPath)
+    {
+        if (string.IsNullOrWhiteSpace(modPath))
+        {
+            return string.Empty;
+        }
+
+        var trimmed = modPath.Trim();
+
+        // Reject path traversal sequences and shell metacharacters.
+        if (trimmed.Contains("..", StringComparison.Ordinal) ||
+            trimmed.IndexOfAny(['|', '&', ';', '`', '$', '>', '<', '!', '{', '}']) >= 0)
+        {
+            return string.Empty;
+        }
+
+        return $"MODPATH=\"{trimmed}\"";
     }
 
     private static Process StartProcess(string executablePath, string root, string arguments)
@@ -237,7 +254,9 @@ public sealed class GameLaunchService : IGameLaunchService
             return string.Empty;
         }
 
-        return string.Join(" ", normalized.Select(static id => $"STEAMMOD={id}"));
+        return string.Join(" ", normalized
+            .Where(static id => id.All(char.IsAsciiDigit))
+            .Select(static id => $"STEAMMOD={id}"));
     }
 
     private static IReadOnlyList<string> NormalizeWorkshopIds(IReadOnlyList<string>? workshopIds)

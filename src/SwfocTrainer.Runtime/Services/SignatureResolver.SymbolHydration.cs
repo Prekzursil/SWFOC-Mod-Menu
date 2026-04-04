@@ -304,7 +304,12 @@ internal static class SignatureResolverSymbolHydration
             pack = candidate;
             return true;
         }
-        catch (Exception ex)
+        catch (IOException ex)
+        {
+            logger.LogWarning(ex, "Failed to consume ghidra symbol pack at {Path}", packPath);
+            return false;
+        }
+        catch (System.Text.Json.JsonException ex)
         {
             logger.LogWarning(ex, "Failed to consume ghidra symbol pack at {Path}", packPath);
             return false;
