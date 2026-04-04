@@ -171,10 +171,16 @@ jobs:
 
       - name: Upload coverage to QLTY
         if: always()
-        uses: qltysh/qlty-coverage@v1
-        with:
-          token: ${{ secrets.QLTY_COVERAGE_TOKEN }}
-          files: TestResults/coverage/Cobertura.xml
+        shell: pwsh
+        run: |
+          $env:QLTY_COVERAGE_TOKEN = "${{ secrets.QLTY_COVERAGE_TOKEN }}"
+          if (Test-Path TestResults/coverage/Cobertura.xml) {
+            Invoke-WebRequest -Uri "https://qlty.sh/install.ps1" -OutFile install-qlty.ps1
+            pwsh ./install-qlty.ps1
+            qlty coverage publish --tag dotnet TestResults/coverage/Cobertura.xml
+          } else {
+            Write-Output "Coverage file not found, skipping QLTY upload"
+          }
         continue-on-error: true
 
       - name: Upload coverage to Codacy
