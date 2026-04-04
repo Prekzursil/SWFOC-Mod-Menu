@@ -37,7 +37,7 @@ public sealed class ModCalibrationService : IModCalibrationService
         var payload = BuildCalibrationPayload(request, moduleFingerprint, candidates);
 
         var safeProfileId = SanitizeFileToken(request.ProfileId);
-        var artifactPath = Path.Combine(
+        var artifactPath = Path.Join(
             request.OutputDirectory,
             $"calibration-{safeProfileId}-{DateTimeOffset.UtcNow:yyyyMMddHHmmss}.json");
 
@@ -264,7 +264,7 @@ public sealed class ModCalibrationService : IModCalibrationService
 
     private static DependencyValidationStatus InferDependencyStatus(AttachSession? session)
     {
-        if (session?.Process.Metadata is null)
+        if (session?.Process?.Metadata is null)
         {
             return DependencyValidationStatus.Pass;
         }

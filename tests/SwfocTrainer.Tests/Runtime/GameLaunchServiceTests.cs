@@ -79,7 +79,7 @@ public sealed class GameLaunchServiceTests
     public async Task LaunchAsync_ShouldReturnExeMissing_WhenOverrideRootDoesNotContainTargetExe()
     {
         var service = new GameLaunchService();
-        var root = Path.Combine(Path.GetTempPath(), $"swfoc-launch-test-{Guid.NewGuid():N}");
+        var root = Path.Join(Path.GetTempPath(), $"swfoc-launch-test-{Guid.NewGuid():N}");
         Directory.CreateDirectory(root);
 
         var previous = Environment.GetEnvironmentVariable("SWFOC_GAME_ROOT");
@@ -205,10 +205,10 @@ public sealed class GameLaunchServiceTests
             BindingFlags.NonPublic | BindingFlags.Static);
         method.Should().NotBeNull();
 
-        var root = Path.Combine(Path.GetTempPath(), $"swfoc-launch-exe-{Guid.NewGuid():N}");
-        var corruption = Path.Combine(root, "corruption");
+        var root = Path.Join(Path.GetTempPath(), $"swfoc-launch-exe-{Guid.NewGuid():N}");
+        var corruption = Path.Join(root, "corruption");
         Directory.CreateDirectory(corruption);
-        var executablePath = Path.Combine(corruption, "swfoc.exe");
+        var executablePath = Path.Join(corruption, "swfoc.exe");
         File.WriteAllBytes(executablePath, new byte[] { 0x4D, 0x5A });
 
         try
@@ -284,10 +284,10 @@ public sealed class GameLaunchServiceTests
     public async Task LaunchAsync_ShouldReturnStartFailed_WhenExecutableCannotStart()
     {
         var service = new GameLaunchService();
-        var root = Path.Combine(Path.GetTempPath(), $"swfoc-launch-start-failed-{Guid.NewGuid():N}");
-        var executableDirectory = Path.Combine(root, "corruption");
+        var root = Path.Join(Path.GetTempPath(), $"swfoc-launch-start-failed-{Guid.NewGuid():N}");
+        var executableDirectory = Path.Join(root, "corruption");
         Directory.CreateDirectory(executableDirectory);
-        var executablePath = Path.Combine(executableDirectory, "swfoc.exe");
+        var executablePath = Path.Join(executableDirectory, "swfoc.exe");
         await File.WriteAllTextAsync(executablePath, "not-an-executable");
 
         var previousOverride = Environment.GetEnvironmentVariable("SWFOC_GAME_ROOT");
@@ -321,9 +321,9 @@ public sealed class GameLaunchServiceTests
             return;
         }
 
-        var tempRoot = Path.Combine(Path.GetTempPath(), $"swfoc-launch-kill-{Guid.NewGuid():N}");
+        var tempRoot = Path.Join(Path.GetTempPath(), $"swfoc-launch-kill-{Guid.NewGuid():N}");
         Directory.CreateDirectory(tempRoot);
-        var executablePath = Path.Combine(tempRoot, RuntimeInformation.IsOSPlatform(OSPlatform.Windows) ? "swfoc.exe" : "swfoc");
+        var executablePath = Path.Join(tempRoot, RuntimeInformation.IsOSPlatform(OSPlatform.Windows) ? "swfoc.exe" : "swfoc");
 
         try
         {
@@ -362,7 +362,7 @@ public sealed class GameLaunchServiceTests
     public async Task LaunchAsync_ShouldReturnRootMissing_WhenNoRootCanBeResolved()
     {
         var service = new GameLaunchService();
-        var overrideRoot = Path.Combine(Path.GetTempPath(), $"swfoc-launch-root-missing-{Guid.NewGuid():N}");
+        var overrideRoot = Path.Join(Path.GetTempPath(), $"swfoc-launch-root-missing-{Guid.NewGuid():N}");
         var defaultRoots = GetMutableDefaultRoots();
         var originalRoots = defaultRoots.ToArray();
         var previousOverride = Environment.GetEnvironmentVariable("SWFOC_GAME_ROOT");
@@ -371,7 +371,7 @@ public sealed class GameLaunchServiceTests
         {
             for (var index = 0; index < defaultRoots.Length; index++)
             {
-                defaultRoots[index] = Path.Combine(Path.GetTempPath(), $"swfoc-default-root-missing-{Guid.NewGuid():N}", index.ToString());
+                defaultRoots[index] = Path.Join(Path.GetTempPath(), $"swfoc-default-root-missing-{Guid.NewGuid():N}", index.ToString());
             }
 
             Environment.SetEnvironmentVariable("SWFOC_GAME_ROOT", overrideRoot);
@@ -395,10 +395,10 @@ public sealed class GameLaunchServiceTests
     public async Task LaunchAsync_ShouldReturnStarted_WithNormalizedSteamModArguments()
     {
         var service = new GameLaunchService();
-        var root = Path.Combine(Path.GetTempPath(), $"swfoc-launch-started-{Guid.NewGuid():N}");
-        var executableDirectory = Path.Combine(root, "corruption");
+        var root = Path.Join(Path.GetTempPath(), $"swfoc-launch-started-{Guid.NewGuid():N}");
+        var executableDirectory = Path.Join(root, "corruption");
         Directory.CreateDirectory(executableDirectory);
-        var executablePath = Path.Combine(executableDirectory, "swfoc.exe");
+        var executablePath = Path.Join(executableDirectory, "swfoc.exe");
         var sourceExecutable = Environment.ProcessPath;
         sourceExecutable.Should().NotBeNullOrWhiteSpace();
         File.Copy(sourceExecutable!, executablePath, overwrite: true);
@@ -459,7 +459,7 @@ public sealed class GameLaunchServiceTests
     {
         if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
         {
-            var cmdExe = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.System), "cmd.exe");
+            var cmdExe = Path.Join(Environment.GetFolderPath(Environment.SpecialFolder.System), "cmd.exe");
             File.Copy(cmdExe, executablePath, overwrite: true);
             return Process.Start(new ProcessStartInfo(executablePath, "/c timeout /t 30 /nobreak >nul")
             {

@@ -12,8 +12,8 @@ public sealed class LuaHarnessRunnerTests
     public async Task RunAsync_ShouldExecuteOfflineHarness_AndEmitTelemetryMarker()
     {
         var root = TestPaths.FindRepoRoot();
-        var harnessScript = Path.Combine(root, "tools", "lua-harness", "run-lua-harness.ps1");
-        var luaScript = Path.Combine(root, "mods", "SwfocTrainerTelemetry", "Data", "Scripts", "TelemetryModeEmitter.lua");
+        var harnessScript = Path.Join(root, "tools", "lua-harness", "run-lua-harness.ps1");
+        var luaScript = Path.Join(root, "mods", "SwfocTrainerTelemetry", "Data", "Scripts", "TelemetryModeEmitter.lua");
         var runner = new LuaHarnessRunner(harnessScript);
 
         var result = await runner.RunAsync(new LuaHarnessRunRequest(luaScript, Mode: "TacticalLand"));
@@ -26,10 +26,10 @@ public sealed class LuaHarnessRunnerTests
     public async Task RunAsync_ShouldFail_WhenLuaScriptDoesNotExist()
     {
         var root = TestPaths.FindRepoRoot();
-        var harnessScript = Path.Combine(root, "tools", "lua-harness", "run-lua-harness.ps1");
+        var harnessScript = Path.Join(root, "tools", "lua-harness", "run-lua-harness.ps1");
         var runner = new LuaHarnessRunner(harnessScript);
 
-        var result = await runner.RunAsync(new LuaHarnessRunRequest(Path.Combine(root, "missing.lua")));
+        var result = await runner.RunAsync(new LuaHarnessRunRequest(Path.Join(root, "missing.lua")));
 
         result.Succeeded.Should().BeFalse();
         result.ReasonCode.Should().Be("lua_script_missing");

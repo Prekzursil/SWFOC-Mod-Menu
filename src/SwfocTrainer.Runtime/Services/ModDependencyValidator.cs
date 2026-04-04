@@ -187,25 +187,24 @@ public sealed class ModDependencyValidator : IModDependencyValidator
     {
         var roots = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
 
-        foreach (var drive in DriveInfo.GetDrives().Where(drive => drive.IsReady))
+        foreach (var root in DriveInfo.GetDrives().Where(drive => drive.IsReady).Select(drive => drive.RootDirectory.FullName))
         {
-            var root = drive.RootDirectory.FullName;
             var steamCandidates = new[]
             {
-                Path.Combine(root, "SteamLibrary"),
-                Path.Combine(root, "Program Files (x86)", "Steam"),
-                Path.Combine(root, "Program Files", "Steam")
+                Path.Join(root, "SteamLibrary"),
+                Path.Join(root, "Program Files (x86)", "Steam"),
+                Path.Join(root, "Program Files", "Steam")
             };
 
             foreach (var steamRoot in steamCandidates)
             {
-                var workshopRoot = Path.Combine(steamRoot, "steamapps", "workshop", "content", WorkshopAppId);
+                var workshopRoot = Path.Join(steamRoot, "steamapps", "workshop", "content", WorkshopAppId);
                 if (Directory.Exists(workshopRoot))
                 {
                     roots.Add(workshopRoot);
                 }
 
-                var libraryFoldersPath = Path.Combine(steamRoot, "steamapps", "libraryfolders.vdf");
+                var libraryFoldersPath = Path.Join(steamRoot, "steamapps", "libraryfolders.vdf");
                 AddWorkshopRootsFromLibraryFolders(libraryFoldersPath, roots);
             }
         }
@@ -245,17 +244,11 @@ public sealed class ModDependencyValidator : IModDependencyValidator
             .Select(match => match.Groups)
             .Where(groups => groups.Count >= 2);
 
-        foreach (var groups in groupsSequence)
+        foreach (var pathValue in groupsSequence
+            .Select(groups => groups[1].Value.Replace("\\\\", "\\", StringComparison.Ordinal).Trim())
+            .Where(pathValue => !string.IsNullOrWhiteSpace(pathValue)))
         {
-            var pathValue = groups[1].Value
-                .Replace("\\\\", "\\", StringComparison.Ordinal)
-                .Trim();
-            if (string.IsNullOrWhiteSpace(pathValue))
-            {
-                continue;
-            }
-
-            var workshopRoot = Path.Combine(pathValue, "steamapps", "workshop", "content", WorkshopAppId);
+            var workshopRoot = Path.Join(pathValue, "steamapps", "workshop", "content", WorkshopAppId);
             if (Directory.Exists(workshopRoot))
             {
                 roots.Add(workshopRoot);
@@ -273,7 +266,7 @@ public sealed class ModDependencyValidator : IModDependencyValidator
     private static bool HasMarker(string root, string marker)
     {
         var safeMarker = marker.Replace('/', Path.DirectorySeparatorChar).Replace('\\', Path.DirectorySeparatorChar);
-        var markerPath = Path.Combine(root, safeMarker);
+        var markerPath = Path.Join(root, safeMarker);
         return File.Exists(markerPath);
     }
 
@@ -350,13 +343,13 @@ public sealed class ModDependencyValidator : IModDependencyValidator
             return candidates.ToArray();
         }
 
-        candidates.Add(Path.GetFullPath(Path.Combine(processDir, normalized)));
+        candidates.Add(Path.GetFullPath(Path.Join(processDir, normalized)));
 
         var oneUp = Directory.GetParent(processDir)?.FullName;
         if (!string.IsNullOrWhiteSpace(oneUp))
         {
-            candidates.Add(Path.GetFullPath(Path.Combine(oneUp, normalized)));
-            candidates.Add(Path.GetFullPath(Path.Combine(oneUp, "corruption", normalized)));
+            candidates.Add(Path.GetFullPath(Path.Join(oneUp, normalized)));
+            candidates.Add(Path.GetFullPath(Path.Join(oneUp, "corruption", normalized)));
         }
 
         return candidates.ToArray();

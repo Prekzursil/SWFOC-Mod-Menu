@@ -87,7 +87,7 @@ public sealed class EffectiveGameDataIndexService
         IDictionary<string, int> activeIndexByPath,
         ref int rank)
     {
-        var megaFilesXmlPath = Path.Combine(request.GameRootPath, request.MegaFilesXmlRelativePath);
+        var megaFilesXmlPath = Path.Join(request.GameRootPath, request.MegaFilesXmlRelativePath);
         if (!File.Exists(megaFilesXmlPath))
         {
             diagnostics.Add($"MegaFiles.xml not found at '{megaFilesXmlPath}'.");
@@ -193,13 +193,13 @@ public sealed class EffectiveGameDataIndexService
             return File.Exists(fileName) ? fileName : null;
         }
 
-        var direct = Path.Combine(gameRootPath, fileName);
+        var direct = Path.Join(gameRootPath, fileName);
         if (File.Exists(direct))
         {
             return direct;
         }
 
-        var underData = Path.Combine(gameRootPath, "Data", fileName);
+        var underData = Path.Join(gameRootPath, "Data", fileName);
         if (File.Exists(underData))
         {
             return underData;

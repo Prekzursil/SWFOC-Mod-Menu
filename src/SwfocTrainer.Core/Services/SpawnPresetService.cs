@@ -253,7 +253,7 @@ public sealed class SpawnPresetService : ISpawnPresetService
 
     private string BuildPresetPath(string profileId)
     {
-        return Path.Combine(_options.PresetRootPath, profileId, "spawn_presets.json");
+        return Path.Join(_options.PresetRootPath, profileId, "spawn_presets.json");
     }
 
     private async Task<IReadOnlyList<SpawnPreset>> GenerateDefaultPresetsAsync(string profileId, CancellationToken cancellationToken)
@@ -263,7 +263,11 @@ public sealed class SpawnPresetService : ISpawnPresetService
         {
             catalog = await _catalog.LoadCatalogAsync(profileId, cancellationToken);
         }
-        catch
+        catch (InvalidOperationException)
+        {
+            return Array.Empty<SpawnPreset>();
+        }
+        catch (IOException)
         {
             return Array.Empty<SpawnPreset>();
         }

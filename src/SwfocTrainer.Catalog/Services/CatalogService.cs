@@ -167,7 +167,7 @@ public sealed class CatalogService : ICatalogService
 
     private async Task<Dictionary<string, IReadOnlyList<string>>> LoadPrebuiltCatalogAsync(string profileId, CancellationToken cancellationToken)
     {
-        var path = Path.Combine(_options.CatalogRootPath, profileId, "catalog.json");
+        var path = Path.Join(_options.CatalogRootPath, profileId, "catalog.json");
         if (!File.Exists(path))
         {
             return new Dictionary<string, IReadOnlyList<string>>(StringComparer.OrdinalIgnoreCase);

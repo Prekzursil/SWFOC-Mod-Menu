@@ -187,7 +187,11 @@ public sealed class ProcessLocator : IProcessLocator
             path = mainModule?.FileName ?? string.Empty;
             mainModuleSize = mainModule?.ModuleMemorySize ?? 0;
         }
-        catch
+        catch (InvalidOperationException)
+        {
+            path = string.Empty;
+        }
+        catch (System.ComponentModel.Win32Exception)
         {
             path = string.Empty;
         }
@@ -586,7 +590,11 @@ public sealed class ProcessLocator : IProcessLocator
             _cachedProfilesLoadedAtUtc = now;
             return profiles;
         }
-        catch
+        catch (InvalidOperationException)
+        {
+            return Array.Empty<TrainerProfile>();
+        }
+        catch (KeyNotFoundException)
         {
             return Array.Empty<TrainerProfile>();
         }

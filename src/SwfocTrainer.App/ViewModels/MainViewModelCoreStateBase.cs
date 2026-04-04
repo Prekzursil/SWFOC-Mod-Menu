@@ -117,7 +117,7 @@ public abstract class MainViewModelCoreStateBase : INotifyPropertyChanged
     private protected string _launchWorkshopId = string.Empty;
     private protected string _launchModPath = string.Empty;
     private protected bool _terminateExistingBeforeLaunch;
-    private protected string _supportBundleOutputDirectory = Path.Combine(
+    private protected string _supportBundleOutputDirectory = Path.Join(
         Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
         "SwfocTrainer",
         "support");

@@ -97,7 +97,11 @@ public sealed class SignatureResolver : ISignatureResolver
             {
                 return Process.GetProcessById(profileBuild.ProcessId);
             }
-            catch
+            catch (ArgumentException)
+            {
+                // fall back to name search below
+            }
+            catch (InvalidOperationException)
             {
                 // fall back to name search below
             }

@@ -18,7 +18,7 @@ public sealed class SdkExecutionGuard : ISdkExecutionGuard
             return new SdkExecutionDecision(true, resolution.ReasonCode, "Read-only operation allowed in degraded capability state.");
         }
 
-        var reason = isMutation && resolution.State != SdkCapabilityStatus.Available
+        var reason = isMutation
             ? CapabilityReasonCode.MutationBlockedByCapabilityState
             : resolution.ReasonCode;
 

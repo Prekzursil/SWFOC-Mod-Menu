@@ -57,7 +57,7 @@ public sealed class TelemetryLogTailServiceCoverageTests
         using var sandbox = new TelemetrySandbox(processSubdirectory: "GameData");
         var now = DateTimeOffset.UtcNow;
         var corruptionLogPath = sandbox.WriteLog(
-            Path.Combine("..", "corruption", "LogFile.txt"),
+            Path.Join("..", "corruption", "LogFile.txt"),
             $"SWFOC_TRAINER_TELEMETRY timestamp={now:O} mode=Space");
         var service = new TelemetryLogTailService();
 
@@ -136,12 +136,12 @@ public sealed class TelemetryLogTailServiceCoverageTests
 
         public TelemetrySandbox(string? processSubdirectory = null)
         {
-            _root = Path.Combine(Path.GetTempPath(), $"swfoc-telemetry-coverage-{Guid.NewGuid():N}");
+            _root = Path.Join(Path.GetTempPath(), $"swfoc-telemetry-coverage-{Guid.NewGuid():N}");
             var processDirectory = string.IsNullOrWhiteSpace(processSubdirectory)
                 ? _root
-                : Path.Combine(_root, processSubdirectory);
+                : Path.Join(_root, processSubdirectory);
             Directory.CreateDirectory(processDirectory);
-            ProcessPath = Path.Combine(processDirectory, "StarWarsG.exe");
+            ProcessPath = Path.Join(processDirectory, "StarWarsG.exe");
             File.WriteAllText(ProcessPath, string.Empty);
         }
 
@@ -150,7 +150,7 @@ public sealed class TelemetryLogTailServiceCoverageTests
         public string WriteLog(string relativePath, params string[] lines)
         {
             var processDirectory = Path.GetDirectoryName(ProcessPath)!;
-            var combinedPath = Path.Combine(processDirectory, relativePath);
+            var combinedPath = Path.Join(processDirectory, relativePath);
             var fullPath = Path.GetFullPath(combinedPath);
             var directory = Path.GetDirectoryName(fullPath);
             if (!string.IsNullOrWhiteSpace(directory))

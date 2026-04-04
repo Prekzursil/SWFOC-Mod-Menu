@@ -195,7 +195,7 @@ def main() -> int:
             )
             findings.extend(_evaluate_metrics(open_issues, security_hotspots_to_review, quality_gate))
             status = "pass" if not findings else "fail"
-        except (urllib.error.URLError, OSError, ValueError) as exc:  # pragma: no cover - network/runtime surface
+        except (OSError, ValueError) as exc:  # pragma: no cover - network/runtime surface
             status = "fail"
             findings.append(f"Sonar API request failed: {exc}")
 

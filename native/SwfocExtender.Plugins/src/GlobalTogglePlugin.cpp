@@ -185,8 +185,7 @@ PluginResult GlobalTogglePlugin::execute(const PluginRequest& request) {
     }
 
     std::string writeError;
-    const auto encoded = static_cast<std::uint8_t>(nextValue ? 1 : 0);
-    if (!process_mutation::TryWriteValue<std::uint8_t>(request.processId(), targetAddress, encoded, writeError)) {
+    if (const auto encoded = static_cast<std::uint8_t>(nextValue ? 1 : 0); !process_mutation::TryWriteValue<std::uint8_t>(request.processId(), targetAddress, encoded, writeError)) {
         return BuildWriteFailureResult(request, *resolvedAnchor, nextValue, writeError);
     }
 

@@ -297,7 +297,7 @@ public abstract class MainViewModelSaveOpsBase : MainViewModelQuickActionsBase
     {
         ArgumentNullException.ThrowIfNull(requestedProfileId);
         var session = _runtime.CurrentSession;
-        if (session?.Process.Metadata is null)
+        if (session?.Process?.Metadata is null)
         {
             return null;
         }
@@ -525,7 +525,7 @@ public abstract class MainViewModelSaveOpsBase : MainViewModelQuickActionsBase
     protected async Task ExportCalibrationArtifactAsync()
     {
         var profileId = !string.IsNullOrWhiteSpace(SelectedProfileId) ? SelectedProfileId : OnboardingDraftProfileId;
-        var outputDir = Path.Combine(SupportBundleOutputDirectory, "calibration");
+        var outputDir = Path.Join(SupportBundleOutputDirectory, "calibration");
         Directory.CreateDirectory(outputDir);
 
         var request = new ModCalibrationArtifactRequest(
@@ -566,7 +566,7 @@ public abstract class MainViewModelSaveOpsBase : MainViewModelQuickActionsBase
 
     protected async Task ExportTelemetrySnapshotAsync()
     {
-        var telemetryDir = Path.Combine(SupportBundleOutputDirectory, "telemetry");
+        var telemetryDir = Path.Join(SupportBundleOutputDirectory, "telemetry");
         Directory.CreateDirectory(telemetryDir);
         var path = await _telemetry.ExportSnapshotAsync(telemetryDir);
         OpsArtifactSummary = path;

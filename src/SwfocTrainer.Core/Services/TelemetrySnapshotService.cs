@@ -85,7 +85,7 @@ public sealed class TelemetrySnapshotService : ITelemetrySnapshotService
         Directory.CreateDirectory(normalizedOutputDirectory);
         var snapshot = CreateSnapshot();
         var fileName = $"telemetry-snapshot-{snapshot.GeneratedAtUtc:yyyyMMddHHmmss}.json";
-        var path = Path.GetFullPath(Path.Combine(normalizedOutputDirectory, fileName));
+        var path = Path.GetFullPath(Path.Join(normalizedOutputDirectory, fileName));
         if (!path.StartsWith(normalizedOutputDirectory, StringComparison.OrdinalIgnoreCase))
         {
             throw new InvalidDataException("Output path must remain within the selected directory.");
@@ -115,7 +115,7 @@ public sealed class TelemetrySnapshotService : ITelemetrySnapshotService
     {
         var rootPath = Path.IsPathRooted(outputDirectory)
             ? outputDirectory
-            : Path.Combine(AppContext.BaseDirectory, outputDirectory);
+            : Path.Join(AppContext.BaseDirectory, outputDirectory);
         var fullPath = Path.GetFullPath(rootPath);
         return fullPath.TrimEnd(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar);
     }

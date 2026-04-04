@@ -2,11 +2,11 @@ namespace SwfocTrainer.Profiles.Config;
 
 public sealed class ProfileRepositoryOptions
 {
-    public string ProfilesRootPath { get; init; } = Path.Combine(AppContext.BaseDirectory, "profiles");
+    public string ProfilesRootPath { get; init; } = Path.Join(AppContext.BaseDirectory, "profiles");
 
     public string ManifestFileName { get; init; } = "manifest.json";
 
-    public string DownloadCachePath { get; init; } = Path.Combine(
+    public string DownloadCachePath { get; init; } = Path.Join(
         Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
         "SwfocTrainer",
         "cache");

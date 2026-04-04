@@ -181,14 +181,13 @@ internal static class MainViewModelDiagnostics
         ArgumentNullException.ThrowIfNull(diagnostics);
         ArgumentNullException.ThrowIfNull(candidateKeys);
 
-        foreach (var key in candidateKeys)
+        var firstValue = candidateKeys
+            .Select(key => TryGetDiagnosticString(diagnostics, key))
+            .FirstOrDefault(value => !string.IsNullOrWhiteSpace(value));
+
+        if (firstValue is not null)
         {
-            var value = TryGetDiagnosticString(diagnostics, key);
-            if (!string.IsNullOrWhiteSpace(value))
-            {
-                segments.Add($"{segmentKey}={value}");
-                return;
-            }
+            segments.Add($"{segmentKey}={firstValue}");
         }
     }
 

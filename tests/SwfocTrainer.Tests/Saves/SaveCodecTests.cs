@@ -15,12 +15,12 @@ public sealed class SaveCodecTests
         var root = TestPaths.FindRepoRoot();
         var options = new SaveOptions
         {
-            SchemaRootPath = Path.Combine(root, "profiles", "default", "schemas")
+            SchemaRootPath = Path.Join(root, "profiles", "default", "schemas")
         };
 
         var codec = new BinarySaveCodec(options, NullLogger<BinarySaveCodec>.Instance);
 
-        var tempFile = Path.Combine(Path.GetTempPath(), $"swfoc-codec-test-{Guid.NewGuid():N}.sav");
+        var tempFile = Path.Join(Path.GetTempPath(), $"swfoc-codec-test-{Guid.NewGuid():N}.sav");
         try
         {
             var bytes = new byte[300_000];
@@ -53,8 +53,8 @@ public sealed class SaveCodecTests
         var codec = new BinarySaveCodec(options, NullLogger<BinarySaveCodec>.Instance);
         const string schemaId = "save_codec_extended_types";
 
-        var tempFile = Path.Combine(Path.GetTempPath(), $"swfoc-codec-extended-{Guid.NewGuid():N}.sav");
-        var output = Path.Combine(Path.GetTempPath(), $"swfoc-codec-extended-out-{Guid.NewGuid():N}.sav");
+        var tempFile = Path.Join(Path.GetTempPath(), $"swfoc-codec-extended-{Guid.NewGuid():N}.sav");
+        var output = Path.Join(Path.GetTempPath(), $"swfoc-codec-extended-out-{Guid.NewGuid():N}.sav");
         try
         {
             await File.WriteAllBytesAsync(tempFile, new byte[128]);
@@ -79,10 +79,10 @@ public sealed class SaveCodecTests
 
     private static async Task<string> CreateExtendedSchemaAsync()
     {
-        var schemaRoot = Path.Combine(Path.GetTempPath(), $"swfoc-codec-schema-{Guid.NewGuid():N}");
+        var schemaRoot = Path.Join(Path.GetTempPath(), $"swfoc-codec-schema-{Guid.NewGuid():N}");
         Directory.CreateDirectory(schemaRoot);
         const string schemaId = "save_codec_extended_types";
-        var schemaPath = Path.Combine(schemaRoot, $"{schemaId}.json");
+        var schemaPath = Path.Join(schemaRoot, $"{schemaId}.json");
         var schemaJson = """
         {
           "schemaId": "save_codec_extended_types",

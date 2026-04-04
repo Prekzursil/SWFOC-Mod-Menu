@@ -257,10 +257,10 @@ public sealed class ProfileUpdateServiceCoverageSweepTests
     {
         public TempRoot()
         {
-            Root = Path.Combine(Path.GetTempPath(), $"swfoc-profile-update-sweep-{Guid.NewGuid():N}");
-            ProfilesRoot = Path.Combine(Root, "default");
-            CacheRoot = Path.Combine(Root, "cache");
-            Directory.CreateDirectory(Path.Combine(ProfilesRoot, "profiles"));
+            Root = Path.Join(Path.GetTempPath(), $"swfoc-profile-update-sweep-{Guid.NewGuid():N}");
+            ProfilesRoot = Path.Join(Root, "default");
+            CacheRoot = Path.Join(Root, "cache");
+            Directory.CreateDirectory(Path.Join(ProfilesRoot, "profiles"));
             Directory.CreateDirectory(CacheRoot);
         }
 

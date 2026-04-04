@@ -397,7 +397,12 @@ public sealed class ActionReliabilityService : IActionReliabilityService
                     x => x.Last(),
                     StringComparer.OrdinalIgnoreCase);
         }
-        catch
+        catch (InvalidOperationException)
+        {
+            // Reliability computation must remain fail-safe and non-throwing in UI refresh paths.
+            return null;
+        }
+        catch (OperationCanceledException)
         {
             // Reliability computation must remain fail-safe and non-throwing in UI refresh paths.
             return null;

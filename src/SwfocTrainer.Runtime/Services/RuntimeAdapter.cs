@@ -88,7 +88,7 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
         _helperBridgeBackend = ResolveOptionalService<IHelperBridgeBackend>(serviceProvider) ?? new NamedPipeHelperBridgeBackend(_extenderBackend);
         _telemetryLogTailService = ResolveOptionalService<ITelemetryLogTailService>(serviceProvider) ?? new TelemetryLogTailService();
         _logger = logger;
-        _calibrationArtifactRoot = Path.Combine(
+        _calibrationArtifactRoot = Path.Join(
             Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
             "SwfocTrainer",
             "calibration");
@@ -580,7 +580,11 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
             using var process = Process.GetProcessById(processId);
             return process.MainModule?.ModuleMemorySize ?? 0;
         }
-        catch
+        catch (InvalidOperationException)
+        {
+            return 0;
+        }
+        catch (System.ComponentModel.Win32Exception)
         {
             return 0;
         }
@@ -692,7 +696,7 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
     {
         var safeTimestamp = generatedAtUtc.ToString("yyyyMMdd_HHmmss");
         var safeProfile = profileId.Replace('/', '_').Replace('\\', '_');
-        return Path.Combine(_calibrationArtifactRoot, $"attach_{safeProfile}_{safeTimestamp}.json");
+        return Path.Join(_calibrationArtifactRoot, $"attach_{safeProfile}_{safeTimestamp}.json");
     }
 
     private IReadOnlyList<RuntimeCalibrationCandidate> BuildCalibrationCandidates(  // NOSONAR
@@ -767,14 +771,14 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
         try
         {
             var generatedAt = DateTimeOffset.UtcNow;
-            var scanRoot = Path.Combine(_calibrationArtifactRoot, "scans");
+            var scanRoot = Path.Join(_calibrationArtifactRoot, "scans");
             Directory.CreateDirectory(scanRoot);
 
             var safeProfile = SanitizeArtifactToken(profileId);
             var safeSymbol = SanitizeArtifactToken(targetSymbol);
             var timestamp = generatedAt.ToString("yyyyMMdd_HHmmss");
-            var outputPath = Path.Combine(scanRoot, $"scan_{safeProfile}_{safeSymbol}_{timestamp}.json");
-            var latestPath = Path.Combine(scanRoot, "scan_latest.json");
+            var outputPath = Path.Join(scanRoot, $"scan_{safeProfile}_{safeSymbol}_{timestamp}.json");
+            var latestPath = Path.Join(scanRoot, "scan_latest.json");
 
             var payload = new
             {
@@ -933,42 +937,12 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
 
     private static IReadOnlyList<SymbolValidationRule> ParseSymbolValidationRules(TrainerProfile profile)
     {
-        if (profile.Metadata is null ||
-            !profile.Metadata.TryGetValue("symbolValidationRules", out var raw) ||
-            string.IsNullOrWhiteSpace(raw))
-        {
-            return Array.Empty<SymbolValidationRule>();
-        }
-
-        try
-        {
-            var parsed = JsonSerializer.Deserialize<List<SymbolValidationRule>>(raw, SymbolValidationJsonOptions);
-            return parsed is not null
-                ? parsed
-                : Array.Empty<SymbolValidationRule>();
-        }
-        catch
-        {
-            return Array.Empty<SymbolValidationRule>();
-        }
+        return ProfileMetadataParser.ParseSymbolValidationRules(profile);
     }
 
     private static HashSet<string> ParseCriticalSymbols(TrainerProfile profile)
     {
-        var symbols = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
-        if (profile.Metadata is null ||
-            !profile.Metadata.TryGetValue("criticalSymbols", out var raw) ||
-            string.IsNullOrWhiteSpace(raw))
-        {
-            return symbols;
-        }
-
-        foreach (var symbol in raw.Split(',', StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries))
-        {
-            symbols.Add(symbol);
-        }
-
-        return symbols;
+        return ProfileMetadataParser.ParseCriticalSymbolSet(profile);
     }
 
     private static long? TryGetFileSize(string? path)
@@ -982,7 +956,11 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
         {
             return new FileInfo(path).Length;
         }
-        catch
+        catch (IOException)
+        {
+            return null;
+        }
+        catch (UnauthorizedAccessException)
         {
             return null;
         }
@@ -1000,7 +978,11 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
             var utc = File.GetLastWriteTimeUtc(path);
             return new DateTimeOffset(utc, TimeSpan.Zero);
         }
-        catch
+        catch (IOException)
+        {
+            return null;
+        }
+        catch (UnauthorizedAccessException)
         {
             return null;
         }
@@ -1020,7 +1002,11 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
             var hash = sha.ComputeHash(stream);
             return Convert.ToHexString(hash).ToLowerInvariant();
         }
-        catch
+        catch (IOException)
+        {
+            return null;
+        }
+        catch (UnauthorizedAccessException)
         {
             return null;
         }
@@ -1310,7 +1296,28 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
             RecordActionTelemetry(request, result);
             return result;
         }
-        catch (Exception ex)
+        catch (InvalidOperationException ex)
+        {
+            var failed = ApplyRuntimeModeDiagnostics(CreateExecutionExceptionResult(effectiveRequest, routeDecision, capabilityReport, ex), modeResolution.Diagnostics);
+            failed = ApplyContextActionDiagnostics(failed, request.Action.Id, contextActionRoute);
+            RecordActionTelemetry(request, failed);
+            return failed;
+        }
+        catch (System.ComponentModel.Win32Exception ex)
+        {
+            var failed = ApplyRuntimeModeDiagnostics(CreateExecutionExceptionResult(effectiveRequest, routeDecision, capabilityReport, ex), modeResolution.Diagnostics);
+            failed = ApplyContextActionDiagnostics(failed, request.Action.Id, contextActionRoute);
+            RecordActionTelemetry(request, failed);
+            return failed;
+        }
+        catch (IOException ex)
+        {
+            var failed = ApplyRuntimeModeDiagnostics(CreateExecutionExceptionResult(effectiveRequest, routeDecision, capabilityReport, ex), modeResolution.Diagnostics);
+            failed = ApplyContextActionDiagnostics(failed, request.Action.Id, contextActionRoute);
+            RecordActionTelemetry(request, failed);
+            return failed;
+        }
+        catch (KeyNotFoundException ex)
         {
             var failed = ApplyRuntimeModeDiagnostics(CreateExecutionExceptionResult(effectiveRequest, routeDecision, capabilityReport, ex), modeResolution.Diagnostics);
             failed = ApplyContextActionDiagnostics(failed, request.Action.Id, contextActionRoute);
@@ -1712,7 +1719,11 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
         {
             report = await _modMechanicDetectionService.DetectAsync(profile, CurrentSession, catalog: null, cancellationToken);
         }
-        catch
+        catch (InvalidOperationException)
+        {
+            return null;
+        }
+        catch (OperationCanceledException)
         {
             return null;
         }
@@ -2440,7 +2451,11 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
             value = node.GetValue<string>();
             return !string.IsNullOrWhiteSpace(value);
         }
-        catch
+        catch (FormatException)
+        {
+            return false;
+        }
+        catch (InvalidOperationException)
         {
             return false;
         }
@@ -2564,9 +2579,9 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
                 destination[kv.Key] = kv.Value;
             }
         }
-        catch
+        catch (JsonException)
         {
-            // ignored
+            // ignored — malformed serialized anchor map
         }
     }
 
@@ -3017,7 +3032,19 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
                 _ => ValidationOutcome.Pass()
             };
         }
-        catch
+        catch (FormatException)
+        {
+            return ValidationOutcome.Fail(
+                "observed_cast_failed",
+                $"Could not validate observed value for symbol '{symbol}' as {valueType}.");
+        }
+        catch (InvalidCastException)
+        {
+            return ValidationOutcome.Fail(
+                "observed_cast_failed",
+                $"Could not validate observed value for symbol '{symbol}' as {valueType}.");
+        }
+        catch (OverflowException)
         {
             return ValidationOutcome.Fail(
                 "observed_cast_failed",
@@ -4597,7 +4624,11 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
         {
             _memory!.WriteBytes(injectionAddress, originalBytes, executablePatch: true);
         }
-        catch
+        catch (InvalidOperationException)
+        {
+            // Best-effort rollback.
+        }
+        catch (System.ComponentModel.Win32Exception)
         {
             // Best-effort rollback.
         }
@@ -4686,7 +4717,7 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
         {
             hintAddress = (nint)preferredAddress;
         }
-        catch
+        catch (OverflowException)
         {
             return false;
         }
@@ -5006,7 +5037,11 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
         {
             _memory!.WriteBytes(injectionAddress, originalBytes, executablePatch: true);
         }
-        catch
+        catch (InvalidOperationException)
+        {
+            // Best-effort rollback.
+        }
+        catch (System.ComponentModel.Win32Exception)
         {
             // Best-effort rollback.
         }
@@ -5367,7 +5402,11 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
             var creditsSymbol = ResolveSymbol(SymbolCredits);
             return creditsSymbol.Address.ToInt64() - baseAddress.ToInt64();
         }
-        catch
+        catch (InvalidOperationException)
+        {
+            return -1;
+        }
+        catch (KeyNotFoundException)
         {
             return -1;
         }
@@ -5926,9 +5965,13 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
             value = node.GetValue<bool>();
             return true;
         }
-        catch
+        catch (FormatException)
         {
-            // ignored
+            // Fall through to int parsing
+        }
+        catch (InvalidOperationException)
+        {
+            // Fall through to int parsing
         }
 
         try
@@ -5937,9 +5980,13 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
             value = asInt != 0;
             return true;
         }
-        catch
+        catch (FormatException)
         {
-            // ignored
+            // Fall through to string parsing
+        }
+        catch (InvalidOperationException)
+        {
+            // Fall through to string parsing
         }
 
         try
@@ -5951,9 +5998,13 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
                 return true;
             }
         }
-        catch
+        catch (FormatException)
         {
-            // ignored
+            // All parse attempts exhausted
+        }
+        catch (InvalidOperationException)
+        {
+            // All parse attempts exhausted
         }
 
         return false;

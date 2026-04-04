@@ -411,8 +411,8 @@ public sealed class ModOnboardingService : IModOnboardingService
     {
         var defaultNamespaceRoot = Directory.GetParent(_options.ProfilesRootPath)?.FullName ?? _options.ProfilesRootPath;
         var normalizedNamespace = NormalizeNamespace(namespaceRoot);
-        var customProfilesDir = Path.Combine(defaultNamespaceRoot, normalizedNamespace, "profiles");
-        return Path.Combine(customProfilesDir, $"{profileId}.json");
+        var customProfilesDir = Path.Join(defaultNamespaceRoot, normalizedNamespace, "profiles");
+        return Path.Join(customProfilesDir, $"{profileId}.json");
     }
 
     private static string NormalizeNamespace(string? namespaceRoot)
@@ -624,23 +624,12 @@ public sealed class ModOnboardingService : IModOnboardingService
 
     private static IReadOnlyList<string> InferWorkshopIds(IReadOnlyList<ModLaunchSample> samples)
     {
-        var ids = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
-        foreach (var sample in samples)  // NOSONAR
-        {
-            if (string.IsNullOrWhiteSpace(sample.CommandLine))
-            {
-                continue;
-            }
-
-            foreach (Match match in SteamModRegex.Matches(sample.CommandLine))
-            {
-                var id = match.Groups["id"].Value;
-                if (!string.IsNullOrWhiteSpace(id))
-                {
-                    ids.Add(id);
-                }
-            }
-        }
+        var ids = new HashSet<string>(
+            samples
+                .Where(sample => !string.IsNullOrWhiteSpace(sample.CommandLine))
+                .SelectMany(sample => SteamModRegex.Matches(sample.CommandLine!).Select(match => match.Groups["id"].Value))
+                .Where(id => !string.IsNullOrWhiteSpace(id)),
+            StringComparer.OrdinalIgnoreCase);
 
         return ids.OrderBy(x => x, StringComparer.OrdinalIgnoreCase).ToArray();
     }
@@ -661,19 +650,11 @@ public sealed class ModOnboardingService : IModOnboardingService
             {
                 inputs.Add(sample.CommandLine);
 
-                foreach (Match match in ModPathRegex.Matches(sample.CommandLine))
-                {
-                    var raw = match.Groups["path"].Value.Trim();
-                    if (raw.StartsWith('"') && raw.EndsWith('"') && raw.Length > 1)
-                    {
-                        raw = raw[1..^1];
-                    }
-
-                    if (!string.IsNullOrWhiteSpace(raw))
-                    {
-                        inputs.Add(raw);
-                    }
-                }
+                inputs.AddRange(
+                    ModPathRegex.Matches(sample.CommandLine)
+                        .Select(match => match.Groups["path"].Value.Trim())
+                        .Select(raw => raw.StartsWith('"') && raw.EndsWith('"') && raw.Length > 1 ? raw[1..^1] : raw)
+                        .Where(raw => !string.IsNullOrWhiteSpace(raw)));
             }
 
             foreach (var input in inputs)
@@ -720,19 +701,13 @@ public sealed class ModOnboardingService : IModOnboardingService
             .Replace('-', ' ')
             .Replace('.', ' ');
 
-        foreach (var token in cleaned.Split(' ', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries))
-        {
-            var normalized = new string(token
+        return cleaned.Split(' ', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries)
+            .Select(token => new string(token
                 .ToLowerInvariant()
                 .Where(ch => char.IsLetterOrDigit(ch) || ch == '_')
                 .ToArray())
-                .Trim('_');
-
-            if (!string.IsNullOrWhiteSpace(normalized))
-            {
-                yield return normalized;
-            }
-        }
+                .Trim('_'))
+            .Where(normalized => !string.IsNullOrWhiteSpace(normalized));
     }
 
     private static IReadOnlyList<string> InferAliases(string profileId, string displayName, IReadOnlyList<string>? userAliases)  // NOSONAR

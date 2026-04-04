@@ -78,8 +78,8 @@ public sealed class MegArchiveReaderTests
     public void Open_ShouldParseFixtureArchives_WithStableEntryHashes()
     {
         var root = TestPaths.FindRepoRoot();
-        var format1Path = Path.Combine(root, "tools", "fixtures", "meg", "sample_format1.meg");
-        var format2Path = Path.Combine(root, "tools", "fixtures", "meg", "sample_format2.meg");
+        var format1Path = Path.Join(root, "tools", "fixtures", "meg", "sample_format1.meg");
+        var format2Path = Path.Join(root, "tools", "fixtures", "meg", "sample_format2.meg");
         var reader = new MegArchiveReader();
 
         var format1 = reader.Open(format1Path);

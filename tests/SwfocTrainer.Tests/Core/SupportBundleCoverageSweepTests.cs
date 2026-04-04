@@ -113,10 +113,10 @@ public sealed class SupportBundleCoverageSweepTests
         public static async Task<RunFixture> CreateAsync()
         {
             var runId = $"support-sweep-{Guid.NewGuid():N}";
-            var runRoot = System.IO.Path.Combine(Directory.GetCurrentDirectory(), "TestResults", "runs", runId);
+            var runRoot = System.IO.Path.Join(Directory.GetCurrentDirectory(), "TestResults", "runs", runId);
             Directory.CreateDirectory(runRoot);
-            await File.WriteAllTextAsync(System.IO.Path.Combine(runRoot, "repro-bundle.json"), "{\"schemaVersion\":\"1.1\"}");
-            await File.WriteAllTextAsync(System.IO.Path.Combine(runRoot, "repro-bundle.md"), "# repro");
+            await File.WriteAllTextAsync(System.IO.Path.Join(runRoot, "repro-bundle.json"), "{\"schemaVersion\":\"1.1\"}");
+            await File.WriteAllTextAsync(System.IO.Path.Join(runRoot, "repro-bundle.md"), "# repro");
             return new RunFixture(runRoot, runId);
         }
 

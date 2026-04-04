@@ -82,7 +82,7 @@ public sealed class ModMechanicDetectionServiceBranchCoverageTests
         var parsed = InvokePrivateStatic<IReadOnlySet<string>>("ParseCsvSet", metadata, "dependencyDisabledActions");
         var missing = InvokePrivateStatic<IReadOnlySet<string>>(
             "ParseCsvSet",
-            (IReadOnlyDictionary<string, string>?)null,
+            null,
             "dependencyDisabledActions");
         var whitespace = InvokePrivateStatic<IReadOnlySet<string>>(
             "ParseCsvSet",

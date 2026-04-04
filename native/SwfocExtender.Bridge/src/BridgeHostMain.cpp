@@ -85,13 +85,11 @@ missingIncludeSystem can be suppressed per translation unit with:
 */
 
 bool ResolveLockCredits(std::string_view payloadJson) {
-    auto lockCredits = false;
-    if (TryReadBool(payloadJson, "lockCredits", lockCredits)) {
+    if (auto lockCredits = false; TryReadBool(payloadJson, "lockCredits", lockCredits)) {
         return lockCredits;
     }
 
-    auto legacyForce = false;
-    if (TryReadBool(payloadJson, "forcePatchHook", legacyForce)) {
+    if (auto legacyForce = false; TryReadBool(payloadJson, "forcePatchHook", legacyForce)) {
         return legacyForce;
     }
 
@@ -103,8 +101,7 @@ int ResolveProcessId(const BridgeCommand& command) {
         return command.processId;
     }
 
-    auto payloadProcessId = 0;
-    if (TryReadInt(command.payloadJson, "processId", payloadProcessId) && payloadProcessId > 0) {
+    if (auto payloadProcessId = 0; TryReadInt(command.payloadJson, "processId", payloadProcessId) && payloadProcessId > 0) {
         return payloadProcessId;
     }
 
@@ -120,8 +117,7 @@ StringMap ResolveAnchors(const BridgeCommand& command) {
     }
 
     // S6171: use contains() instead of find() != end()
-    const auto legacySymbol = ExtractStringValue(command.payloadJson, "symbol");
-    if (!legacySymbol.empty() && !anchors.contains(legacySymbol)) {
+    if (const auto legacySymbol = ExtractStringValue(command.payloadJson, "symbol"); !legacySymbol.empty() && !anchors.contains(legacySymbol)) {
         anchors.try_emplace(legacySymbol, legacySymbol);
     }
 
@@ -153,30 +149,25 @@ PluginRequest BuildPluginRequest(const BridgeCommand& command) {
     request.entityContext.placementMode = ExtractStringValue(command.payloadJson, "placementMode");
     request.entityContext.worldPosition = ExtractStringValue(command.payloadJson, "worldPosition");
 
-    auto intValue = 0;
-    if (TryReadInt(command.payloadJson, "intValue", intValue)) {
+    if (auto intValue = 0; TryReadInt(command.payloadJson, "intValue", intValue)) {
         request.payload.intValue = intValue;
     }
 
-    auto boolValue = false;
-    if (TryReadBool(command.payloadJson, "boolValue", boolValue)) {
+    if (auto boolValue = false; TryReadBool(command.payloadJson, "boolValue", boolValue)) {
         request.payload.boolValue = boolValue;
     }
 
-    auto enable = false;
-    if (TryReadBool(command.payloadJson, "enable", enable)) {
+    if (auto enable = false; TryReadBool(command.payloadJson, "enable", enable)) {
         request.payload.enable = enable;
     } else if (command.featureId == "set_unit_cap" || command.featureId == "toggle_instant_build_patch") {
         request.payload.enable = true;
     }
 
-    auto allowCrossFaction = false;
-    if (TryReadBool(command.payloadJson, "allowCrossFaction", allowCrossFaction)) {
+    if (auto allowCrossFaction = false; TryReadBool(command.payloadJson, "allowCrossFaction", allowCrossFaction)) {
         request.payload.allowCrossFaction = allowCrossFaction;
     }
 
-    auto forceOverride = false;
-    if (TryReadBool(command.payloadJson, "forceOverride", forceOverride)) {
+    if (auto forceOverride = false; TryReadBool(command.payloadJson, "forceOverride", forceOverride)) {
         request.payload.forceOverride = forceOverride;
     }
 
@@ -550,8 +541,7 @@ BridgeResult HandleBridgeCommand(
 // S1874: replace deprecated std::getenv with MSVC-safe _dupenv_s
 std::string GetEnvSafe(const char* name) {
     char* val = nullptr;
-    std::size_t len = 0;
-    if (_dupenv_s(&val, &len, name) != 0 || val == nullptr) {
+    if (std::size_t len = 0; _dupenv_s(&val, &len, name) != 0 || val == nullptr) {
         return {};
     }
     auto guard = std::unique_ptr<char, decltype(&free)>(val, &free);
@@ -559,15 +549,19 @@ std::string GetEnvSafe(const char* name) {
 }
 
 std::string ResolvePipeName() {
-    const auto envPipe = GetEnvSafe("SWFOC_EXTENDER_PIPE_NAME");
-    if (!envPipe.empty()) {
+    if (const auto envPipe = GetEnvSafe("SWFOC_EXTENDER_PIPE_NAME"); !envPipe.empty()) {
         return envPipe;
     }
 
     return kDefaultPipeName;
 }
 
-static constinit std::atomic<bool> g_running {true};
+namespace {
+struct ShutdownState {
+    mutable std::atomic<bool> running{true};
+};
+constinit const ShutdownState kShutdown;
+} // namespace
 
 #if defined(_WIN32)
 BOOL WINAPI CtrlHandler(DWORD signalType) {
@@ -575,7 +569,7 @@ BOOL WINAPI CtrlHandler(DWORD signalType) {
         signalType == CTRL_CLOSE_EVENT ||
         signalType == CTRL_BREAK_EVENT ||
         signalType == CTRL_SHUTDOWN_EVENT) {
-        g_running.store(false);
+        kShutdown.running.store(false);
         return TRUE;
     }
     return FALSE;
@@ -589,7 +583,7 @@ void InstallCtrlHandler() {
 }
 
 void WaitForShutdownSignal() {
-    while (g_running.load()) {
+    while (kShutdown.running.load()) {
         std::this_thread::sleep_for(std::chrono::milliseconds(100));
     }
 }

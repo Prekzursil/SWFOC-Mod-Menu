@@ -90,15 +90,10 @@ public sealed class MegaFilesXmlIndexBuilder
 
     private static string? ReadFirstNonEmptyAttribute(XElement element, params string[] names)
     {
-        foreach (var name in names)
-        {
-            var value = element.Attribute(name)?.Value;
-            if (!string.IsNullOrWhiteSpace(value))
-            {
-                return value.Trim();
-            }
-        }
-
-        return null;
+        return names
+            .Select(name => element.Attribute(name)?.Value)
+            .Where(value => !string.IsNullOrWhiteSpace(value))
+            .Select(value => value!.Trim())
+            .FirstOrDefault();
     }
 }

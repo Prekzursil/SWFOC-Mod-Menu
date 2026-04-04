@@ -419,17 +419,10 @@ public sealed class SelectedUnitTransactionService : ISelectedUnitTransactionSer
 
     private static List<SelectedUnitChange> BuildChanges(SelectedUnitSnapshot before, SelectedUnitDraft draft)
     {
-        var changes = new List<SelectedUnitChange>(Bindings.Count);
-        foreach (var binding in Bindings)
-        {
-            var change = BuildChangeForBinding(before, draft, binding);
-            if (change is not null)
-            {
-                changes.Add(change);
-            }
-        }
-
-        return changes;
+        return Bindings
+            .Select(binding => BuildChangeForBinding(before, draft, binding))
+            .Where(change => change is not null)
+            .ToList()!;
     }
 
     private static SelectedUnitChange? BuildChangeForBinding(SelectedUnitSnapshot before, SelectedUnitDraft draft, FieldBinding binding)

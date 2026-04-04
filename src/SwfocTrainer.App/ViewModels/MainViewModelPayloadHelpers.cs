@@ -17,19 +17,12 @@ internal static class MainViewModelPayloadHelpers
         ArgumentNullException.ThrowIfNull(defaultHelperHookByActionId);
         var payload = new JsonObject();
 
-        foreach (var node in required)
+        foreach (var (key, value) in required
+            .Select(node => node?.GetValue<string>())
+            .Where(key => !string.IsNullOrWhiteSpace(key))
+            .Select(key => (key!, BuildRequiredPayloadValue(actionId, key!, defaultSymbolByActionId, defaultHelperHookByActionId))))
         {
-            var key = node?.GetValue<string>();
-            if (string.IsNullOrWhiteSpace(key))
-            {
-                continue;
-            }
-
-            payload[key] = BuildRequiredPayloadValue(
-                actionId,
-                key,
-                defaultSymbolByActionId,
-                defaultHelperHookByActionId);
+            payload[key] = value;
         }
 
         return payload;

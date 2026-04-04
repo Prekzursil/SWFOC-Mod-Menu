@@ -13,13 +13,13 @@ public sealed class CatalogServiceTests
     [Fact]
     public async Task LoadCatalogAsync_ShouldEmitBuildingAndEntityCatalogs_FromPrebuiltCatalog()
     {
-        var root = Path.Combine(Path.GetTempPath(), $"swfoc-catalog-tests-{Guid.NewGuid():N}");
+        var root = Path.Join(Path.GetTempPath(), $"swfoc-catalog-tests-{Guid.NewGuid():N}");
         Directory.CreateDirectory(root);
 
         try
         {
             var profileId = "test_profile";
-            var profileCatalogDir = Path.Combine(root, profileId);
+            var profileCatalogDir = Path.Join(root, profileId);
             Directory.CreateDirectory(profileCatalogDir);
 
             await WriteCatalogFixtureAsync(profileCatalogDir);
@@ -43,7 +43,7 @@ public sealed class CatalogServiceTests
 
     private static async Task WriteCatalogFixtureAsync(string profileCatalogDir)
     {
-        var catalogPath = Path.Combine(profileCatalogDir, "catalog.json");
+        var catalogPath = Path.Join(profileCatalogDir, "catalog.json");
         await File.WriteAllTextAsync(
             catalogPath,
             """

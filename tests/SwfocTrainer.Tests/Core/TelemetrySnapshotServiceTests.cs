@@ -23,7 +23,7 @@ public sealed class TelemetrySnapshotServiceTests
         snapshot.FailureRate.Should().BeApproximately(1d / 3d, 0.0001);
         snapshot.FallbackRate.Should().BeApproximately(1d / 3d, 0.0001);
 
-        var dir = Path.Combine(Path.GetTempPath(), $"swfoc-telemetry-{Guid.NewGuid():N}");
+        var dir = Path.Join(Path.GetTempPath(), $"swfoc-telemetry-{Guid.NewGuid():N}");
         Directory.CreateDirectory(dir);
         try
         {

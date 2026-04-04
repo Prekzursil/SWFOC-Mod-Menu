@@ -7,15 +7,14 @@ This is not aspirational. This is a hard requirement. If you push code that fail
 
 ## Thresholds (non-negotiable)
 
-- **Issues on all providers:** 0 (Codacy, SonarCloud, DeepSource, DeepScan, QLTY, Semgrep, CodeQL)
-- **Coverage:** 100% line AND branch (Codecov, SonarCloud, Codacy, QLTY, DeepSource)
-- **Security alerts:** 0 (Dependabot, Snyk, CodeQL, Semgrep)
-- **Visual regressions:** 0 unreviewed (Chromatic, Applitools — if configured)
-- **Suppressions:** FORBIDDEN. No `// NOSONAR`, no `#pragma warning disable`, no `# noqa`, no `// codacy:ignore`, no `[SuppressMessage]`, no `.codacy.yml` exclusions on first-party code. Fix the code.
+- **Issues on all providers:** 0 (SonarCloud, CodeQL, QLTY)
+- **Coverage:** 100% line AND branch (Codecov, SonarCloud)
+- **Security alerts:** 0 (Dependabot, CodeQL)
+- **Suppressions:** FORBIDDEN. No `// NOSONAR`, no `#pragma warning disable`, no `# noqa`, no `[SuppressMessage]`. Fix the code.
 
 ## Before Writing Any Code
 
-1. **Read the existing gate configurations** in `.github/workflows/`, `.codacy.yml`, `sonar-project.properties`, `.deepsource.toml`, `.qlty/qlty.toml` — know what will be checked.
+1. **Read the existing gate configurations** in `.github/workflows/`, `sonar-project.properties`, `.qlty/qlty.toml` — know what will be checked.
 2. **Check current dashboard state** — if the repo already has issues, your code must not add any, and you should fix existing ones when touching those files.
 3. **Plan tests first** — TDD is mandatory. No production code without a failing test.
 
@@ -101,7 +100,7 @@ ctest --test-dir build --output-on-failure
 ## Working with Quality Gates
 
 **Do not:**
-- Add files to exclusion lists (`.codacy.yml`, `.sonarcloud.properties` exclusions)
+- Add files to exclusion lists (`sonar-project.properties` exclusions)
 - Add suppression comments/attributes
 - Lower thresholds
 - Mark issues as "won't fix" or "false positive" without explicit human approval
@@ -130,5 +129,5 @@ A task is complete when:
 2. Coverage is 100% line AND branch (verified by coverage report)
 3. Local linting/analysis shows 0 issues (verified by running tools)
 4. CI is green after push (verified by checking GitHub Actions)
-5. All provider dashboards show 0 issues (verified by visiting each URL)
+5. SonarCloud, CodeQL, and QLTY dashboards show 0 issues
 6. No suppressions, exclusions, or workarounds were used

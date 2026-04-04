@@ -113,7 +113,7 @@ public sealed class BinarySaveCodec : ISaveCodec
         ArgumentNullException.ThrowIfNull(document);
         var tempRoot = Path.GetFullPath(Path.GetTempPath());
         var tempPath = NormalizeSaveFilePath(
-            Path.Combine(tempRoot, $"swfoc-roundtrip-{Guid.NewGuid():N}.sav"),
+            Path.Join(tempRoot, $"swfoc-roundtrip-{Guid.NewGuid():N}.sav"),
             requireExistingFile: false);
         TrustedPathPolicy.EnsureSubPath(tempRoot, tempPath);
         try

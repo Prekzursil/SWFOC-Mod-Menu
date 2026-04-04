@@ -12,17 +12,18 @@ internal sealed class StubHttpMessageHandler : HttpMessageHandler
         _responses = responses ?? throw new ArgumentNullException(nameof(responses));
     }
 
-    protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
+    protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
     {
+        await Task.CompletedTask;
         _ = cancellationToken;
         var uri = request.RequestUri ?? throw new InvalidOperationException("Request URI is null.");
         var key = uri.ToString();
         if (!_responses.TryGetValue(key, out var payload))
         {
-            return Task.FromResult(new HttpResponseMessage(HttpStatusCode.NotFound)
+            return new HttpResponseMessage(HttpStatusCode.NotFound)
             {
                 Content = new StringContent("not found")
-            });
+            };
         }
 
         var response = new HttpResponseMessage(HttpStatusCode.OK)
@@ -30,6 +31,6 @@ internal sealed class StubHttpMessageHandler : HttpMessageHandler
             Content = new ByteArrayContent(payload.Body)
         };
         response.Content.Headers.ContentType = new MediaTypeHeaderValue(payload.ContentType);
-        return Task.FromResult(response);
+        return response;
     }
 }

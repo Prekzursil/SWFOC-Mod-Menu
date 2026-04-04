@@ -375,8 +375,7 @@ bool TryCreateConnectedPipe(const std::string& fullPipeName, HANDLE& pipe) {
 }
 
 bool ShouldContinueReading(std::string& commandLine, DWORD bytesRead, std::size_t bufferSize) {
-    const auto linePos = commandLine.find('\n');
-    if (linePos != std::string::npos) {
+    if (const auto linePos = commandLine.find('\n'); linePos != std::string::npos) {
         commandLine.erase(linePos);
         return false;
     }
@@ -489,8 +488,7 @@ BridgeResult NamedPipeBridgeServer::handleRawCommand(std::string_view jsonLine) 
     command.payloadJson = ExtractObjectJson(jsonLine, "payload");
     command.processName = ExtractStringValue(jsonLine, "processName");
     command.resolvedAnchors = ExtractStringMap(jsonLine, "resolvedAnchors");
-    std::int32_t processId = 0;
-    if (TryReadInt(jsonLine, "processId", processId)) {
+    if (std::int32_t processId = 0; TryReadInt(jsonLine, "processId", processId)) {
         command.processId = processId;
     }
 

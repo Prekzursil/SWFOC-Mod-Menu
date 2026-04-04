@@ -4,7 +4,7 @@ internal sealed class TempDirectory : IDisposable
 {
     public TempDirectory(string prefix = "swfoc-test")
     {
-        Path = System.IO.Path.Combine(System.IO.Path.GetTempPath(), $"{prefix}-{Guid.NewGuid():N}");
+        Path = System.IO.Path.Join(System.IO.Path.GetTempPath(), $"{prefix}-{Guid.NewGuid():N}");
         Directory.CreateDirectory(Path);
     }
 

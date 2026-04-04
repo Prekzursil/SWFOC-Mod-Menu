@@ -12,7 +12,7 @@ public sealed class BinaryFingerprintServiceTests
     [Fact]
     public async Task CaptureFromPathAsync_ShouldProduceStableFingerprint()
     {
-        var tempPath = Path.Combine(Path.GetTempPath(), $"swfoc-fingerprint-{Guid.NewGuid():N}.bin");
+        var tempPath = Path.Join(Path.GetTempPath(), $"swfoc-fingerprint-{Guid.NewGuid():N}.bin");
         await File.WriteAllBytesAsync(tempPath, Encoding.UTF8.GetBytes("swfoc-fingerprint-test"));
 
         try

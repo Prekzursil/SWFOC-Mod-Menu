@@ -14,7 +14,7 @@ public sealed class NamedPipeExtenderBackendTests
     [Fact]
     public void Constructor_WithOptionalPipeName_ShouldUseEnvironmentOrDefaultPipe()
     {
-        var backend = new NamedPipeExtenderBackend((string?)null);
+        var backend = new NamedPipeExtenderBackend(null);
         backend.Should().NotBeNull();
     }
 

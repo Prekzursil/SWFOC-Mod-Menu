@@ -11,16 +11,16 @@ public sealed class EffectiveGameDataIndexServiceTests
     [Fact]
     public void Build_ShouldRespectModGameMegPrecedence_AndTrackShadowing()
     {
-        var tempRoot = Path.Combine(Path.GetTempPath(), $"swfoc-effective-index-{Guid.NewGuid():N}");
-        var gameRoot = Path.Combine(tempRoot, "game");
-        var modRoot = Path.Combine(tempRoot, "mod");
-        Directory.CreateDirectory(Path.Combine(gameRoot, "Data"));
-        Directory.CreateDirectory(Path.Combine(gameRoot, "Data", "XML"));
-        Directory.CreateDirectory(Path.Combine(modRoot, "Data", "XML"));
+        var tempRoot = Path.Join(Path.GetTempPath(), $"swfoc-effective-index-{Guid.NewGuid():N}");
+        var gameRoot = Path.Join(tempRoot, "game");
+        var modRoot = Path.Join(tempRoot, "mod");
+        Directory.CreateDirectory(Path.Join(gameRoot, "Data"));
+        Directory.CreateDirectory(Path.Join(gameRoot, "Data", "XML"));
+        Directory.CreateDirectory(Path.Join(modRoot, "Data", "XML"));
 
         try
         {
-            var megaFilesXmlPath = Path.Combine(gameRoot, "Data", "MegaFiles.xml");
+            var megaFilesXmlPath = Path.Join(gameRoot, "Data", "MegaFiles.xml");
             File.WriteAllText(
                 megaFilesXmlPath,
                 """
@@ -31,19 +31,19 @@ public sealed class EffectiveGameDataIndexServiceTests
                 """);
 
             File.WriteAllBytes(
-                Path.Combine(gameRoot, "Data", "Base.meg"),
+                Path.Join(gameRoot, "Data", "Base.meg"),
                 BuildFormat2Archive([
                     new FixtureEntry("Data/XML/Shared.xml", "<from-base-meg/>"u8.ToArray())
                 ]));
             File.WriteAllBytes(
-                Path.Combine(gameRoot, "Data", "Patch.meg"),
+                Path.Join(gameRoot, "Data", "Patch.meg"),
                 BuildFormat2Archive([
                     new FixtureEntry("Data/XML/Shared.xml", "<from-patch-meg/>"u8.ToArray()),
                     new FixtureEntry("Data/XML/PatchOnly.xml", "<patch-only/>"u8.ToArray())
                 ]));
 
-            File.WriteAllText(Path.Combine(gameRoot, "Data", "XML", "Shared.xml"), "<from-game-loose/>");
-            File.WriteAllText(Path.Combine(modRoot, "Data", "XML", "Shared.xml"), "<from-mod-loose/>");
+            File.WriteAllText(Path.Join(gameRoot, "Data", "XML", "Shared.xml"), "<from-game-loose/>");
+            File.WriteAllText(Path.Join(modRoot, "Data", "XML", "Shared.xml"), "<from-mod-loose/>");
 
             var service = new EffectiveGameDataIndexService();
             var report = service.Build(new EffectiveGameDataIndexRequest(
@@ -82,7 +82,7 @@ public sealed class EffectiveGameDataIndexServiceTests
     [Fact]
     public void Build_ShouldEmitDiagnostic_WhenMegaFilesXmlIsMissing()
     {
-        var tempRoot = Path.Combine(Path.GetTempPath(), $"swfoc-effective-index-{Guid.NewGuid():N}");
+        var tempRoot = Path.Join(Path.GetTempPath(), $"swfoc-effective-index-{Guid.NewGuid():N}");
         Directory.CreateDirectory(tempRoot);
 
         try

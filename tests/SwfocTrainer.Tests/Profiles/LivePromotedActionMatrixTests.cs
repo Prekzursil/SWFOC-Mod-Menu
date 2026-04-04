@@ -137,7 +137,7 @@ public sealed class LivePromotedActionMatrixTests
         var repoRoot = TestPaths.FindRepoRoot();
         var profileRepo = new FileSystemProfileRepository(new ProfileRepositoryOptions
         {
-            ProfilesRootPath = Path.Combine(repoRoot, "profiles", "default")
+            ProfilesRootPath = Path.Join(repoRoot, "profiles", "default")
         });
         var resolver = new SignatureResolver(NullLogger<SignatureResolver>.Instance);
         var runtime = new RuntimeAdapter(locator, profileRepo, resolver, NullLogger<RuntimeAdapter>.Instance);
@@ -454,7 +454,7 @@ public sealed class LivePromotedActionMatrixTests
             return;
         }
 
-        var path = Path.Combine(outputDir, "live-promoted-action-matrix.json");
+        var path = Path.Join(outputDir, "live-promoted-action-matrix.json");
         var payload = new
         {
             testName = nameof(LivePromotedActionMatrixTests),

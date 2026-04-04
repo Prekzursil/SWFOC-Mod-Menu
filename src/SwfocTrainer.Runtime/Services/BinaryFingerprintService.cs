@@ -123,7 +123,11 @@ public sealed class BinaryFingerprintService : IBinaryFingerprintService
                 .ToArray();
             return Task.FromResult<IReadOnlyList<string>>(modules);
         }
-        catch
+        catch (InvalidOperationException)
+        {
+            return Task.FromResult<IReadOnlyList<string>>(Array.Empty<string>());
+        }
+        catch (System.ComponentModel.Win32Exception)
         {
             return Task.FromResult<IReadOnlyList<string>>(Array.Empty<string>());
         }

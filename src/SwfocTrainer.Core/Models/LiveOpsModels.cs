@@ -133,5 +133,5 @@ public sealed class LiveOpsOptions
     /// <summary>
     /// Root directory containing profile-scoped Live Ops preset files.
     /// </summary>
-    public string PresetRootPath { get; init; } = Path.Combine(AppContext.BaseDirectory, "profiles", "default", "presets");
+    public string PresetRootPath { get; init; } = Path.Join(AppContext.BaseDirectory, "profiles", "default", "presets");
 }

@@ -273,7 +273,7 @@ internal static class ProcessMemoryScanner
             nextAddress = baseAddress + (nint)regionSize;
             return true;
         }
-        catch
+        catch (OverflowException)
         {
             nextAddress = nint.Zero;
             return false;

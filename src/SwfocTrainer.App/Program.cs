@@ -41,9 +41,9 @@ internal static class Program
     {
         ArgumentNullException.ThrowIfNull(services);
         var appData = TrustedPathPolicy.GetOrCreateAppDataRoot();
-        var profilesRoot = Path.Combine(AppContext.BaseDirectory, "profiles", "default");
+        var profilesRoot = Path.Join(AppContext.BaseDirectory, "profiles", "default");
         var remoteManifest = Environment.GetEnvironmentVariable("SWFOC_PROFILE_MANIFEST_URL");
-        var capabilityMapsRoot = Path.Combine(profilesRoot, "sdk", "maps");
+        var capabilityMapsRoot = Path.Join(profilesRoot, "sdk", "maps");
 
         ConfigureLogging(services);
         RegisterOptions(services, appData, profilesRoot, remoteManifest);
@@ -71,29 +71,29 @@ internal static class Program
         {
             ProfilesRootPath = profilesRoot,
             ManifestFileName = "manifest.json",
-            DownloadCachePath = Path.Combine(appData, "cache"),
+            DownloadCachePath = Path.Join(appData, "cache"),
             RemoteManifestUrl = remoteManifest
         });
 
         services.AddSingleton(new CatalogOptions
         {
-            CatalogRootPath = Path.Combine(profilesRoot, "catalog")
+            CatalogRootPath = Path.Join(profilesRoot, "catalog")
         });
 
         services.AddSingleton(new HelperModOptions
         {
-            SourceRoot = Path.Combine(profilesRoot, "helper"),
-            InstallRoot = Path.Combine(appData, "helper_mod")
+            SourceRoot = Path.Join(profilesRoot, "helper"),
+            InstallRoot = Path.Join(appData, "helper_mod")
         });
 
         services.AddSingleton(new SaveOptions
         {
-            SchemaRootPath = Path.Combine(profilesRoot, "schemas")
+            SchemaRootPath = Path.Join(profilesRoot, "schemas")
         });
 
         services.AddSingleton(new LiveOpsOptions
         {
-            PresetRootPath = Path.Combine(profilesRoot, "presets")
+            PresetRootPath = Path.Join(profilesRoot, "presets")
         });
     }
 
@@ -102,7 +102,7 @@ internal static class Program
         string appData,
         string capabilityMapsRoot)
     {
-        services.AddSingleton<IAuditLogger>(_ => new FileAuditLogger(Path.Combine(appData, "logs")));
+        services.AddSingleton<IAuditLogger>(_ => new FileAuditLogger(Path.Join(appData, "logs")));
 
         services.AddSingleton<IProfileRepository, FileSystemProfileRepository>();
         services.AddSingleton<ILaunchContextResolver, LaunchContextResolver>();

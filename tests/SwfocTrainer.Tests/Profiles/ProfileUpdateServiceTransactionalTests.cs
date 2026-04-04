@@ -18,7 +18,7 @@ public sealed class ProfileUpdateServiceTransactionalTests
     [Fact]
     public async Task InstallProfileTransactionalAsync_ShouldInstallAndRollback()
     {
-        var tempRoot = Path.Combine(Path.GetTempPath(), $"swfoc-profile-update-{Guid.NewGuid():N}");
+        var tempRoot = Path.Join(Path.GetTempPath(), $"swfoc-profile-update-{Guid.NewGuid():N}");
 
         try
         {
@@ -46,14 +46,14 @@ public sealed class ProfileUpdateServiceTransactionalTests
 
     private static async Task<InstallSetup> CreateInstallSetupAsync(string tempRoot)
     {
-        var profilesRoot = Path.Combine(tempRoot, "default");
-        var profilesDir = Path.Combine(profilesRoot, "profiles");
-        var cacheDir = Path.Combine(tempRoot, "cache");
+        var profilesRoot = Path.Join(tempRoot, "default");
+        var profilesDir = Path.Join(profilesRoot, "profiles");
+        var cacheDir = Path.Join(tempRoot, "cache");
         Directory.CreateDirectory(profilesDir);
         Directory.CreateDirectory(cacheDir);
 
         var profileId = "base_swfoc";
-        var existingPath = Path.Combine(profilesDir, $"{profileId}.json");
+        var existingPath = Path.Join(profilesDir, $"{profileId}.json");
         await File.WriteAllTextAsync(existingPath, BuildProfileJson(displayName: "old"));
 
         var zipBytes = BuildZipWithProfile(profileId, BuildProfileJson(displayName: "new"));
