@@ -34,7 +34,7 @@ public sealed class SaveCorpusRoundTripTests
         };
 
         var codec = new BinarySaveCodec(options, NullLogger<BinarySaveCodec>.Instance);
-        foreach (var fixturePath in manifest.Fixtures.Select(name => Path.Combine(fixtureDir, name)))
+        foreach (var fixturePath in manifest.Fixtures.Select(name => Path.Join(fixtureDir, name)))
         {
             File.Exists(fixturePath).Should().BeTrue();
             var fixture = JsonSerializer.Deserialize<SaveCorpusFixture>(await File.ReadAllTextAsync(fixturePath), JsonOptions);

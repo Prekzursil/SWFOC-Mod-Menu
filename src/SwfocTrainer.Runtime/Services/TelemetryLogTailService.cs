@@ -60,8 +60,8 @@ public sealed class TelemetryLogTailService : ITelemetryLogTailService
         {
             Path.Combine(processDirectory, "_LogFile.txt"),
             Path.Combine(processDirectory, "LogFile.txt"),
-            Path.Combine(processDirectory, "corruption", "LogFile.txt"),
-            Path.Combine(parentDirectory, "corruption", "LogFile.txt")
+            Path.Join(processDirectory, "corruption", "LogFile.txt"),
+            Path.Join(parentDirectory, "corruption", "LogFile.txt")
         };
 
         return candidates

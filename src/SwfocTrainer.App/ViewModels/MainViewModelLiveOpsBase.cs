@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using SwfocTrainer.App.Models;
 using SwfocTrainer.Core.Models;
@@ -30,9 +31,9 @@ public abstract class MainViewModelLiveOpsBase : MainViewModelBindableMembersBas
         {
             catalog = await _catalog.LoadCatalogAsync(SelectedProfileId);
         }
-        catch
+        catch (Exception ex) when (ex is IOException or InvalidOperationException or System.Text.Json.JsonException)
         {
-            // Catalog is optional for reliability scoring.
+            // Catalog is optional for reliability scoring — tolerate I/O and deserialization failures.
         }
 
         var currentSession = _runtime.CurrentSession;

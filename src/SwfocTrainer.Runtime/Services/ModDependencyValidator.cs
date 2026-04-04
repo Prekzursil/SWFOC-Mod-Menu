@@ -262,7 +262,7 @@ public sealed class ModDependencyValidator : IModDependencyValidator
     private static string? FindWorkshopFolder(string id, IReadOnlyList<string> workshopRoots)
     {
         return workshopRoots
-            .Select(root => Path.Combine(root, id))
+            .Select(root => Path.Join(root, id))
             .FirstOrDefault(Directory.Exists);
     }
 
@@ -318,7 +318,7 @@ public sealed class ModDependencyValidator : IModDependencyValidator
             .Where(parent => !string.IsNullOrWhiteSpace(parent))
             .SelectMany(parent => parentHints
                 .Where(hint => !hint.Contains(PathTraversalToken, StringComparison.Ordinal))
-                .Select(hint => Path.Combine(parent!, hint)))
+                .Select(hint => Path.Join(parent!, hint)))
             .Where(Directory.Exists))
         {
             roots.Add(hintedPath);
