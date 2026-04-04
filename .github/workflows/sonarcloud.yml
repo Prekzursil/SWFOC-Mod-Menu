@@ -15,39 +15,31 @@ permissions:
 jobs:
   sonarcloud:
     runs-on: ubuntu-latest
+    env:
+      SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
     steps:
-      - name: Sonar token not configured
-        if: ${{ secrets.SONAR_TOKEN == '' }}
-        run: echo "SONAR_TOKEN is not configured; skipping SonarCloud scan."
-
       - name: Checkout
-        if: ${{ secrets.SONAR_TOKEN != '' }}
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
       - name: Setup .NET
-        if: ${{ secrets.SONAR_TOKEN != '' }}
         uses: actions/setup-dotnet@v4
         with:
           dotnet-version: "8.0.x"
 
       - name: Install SonarScanner
-        if: ${{ secrets.SONAR_TOKEN != '' }}
         shell: bash
         run: |
           dotnet tool install --global dotnet-sonarscanner
           echo "$HOME/.dotnet/tools" >> "$GITHUB_PATH"
 
       - name: Restore
-        if: ${{ secrets.SONAR_TOKEN != '' }}
         run: dotnet restore SwfocTrainer.sln
 
       - name: Sonar Begin
-        if: ${{ secrets.SONAR_TOKEN != '' }}
         shell: bash
         env:
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
           EVENT_NAME: ${{ github.event_name }}
           PR_NUMBER: ${{ github.event.pull_request.number }}
           PR_BRANCH: ${{ github.head_ref }}
@@ -60,13 +52,9 @@ jobs:
           dotnet-sonarscanner begin $SONAR_ARGS
 
       - name: Build
-        if: ${{ secrets.SONAR_TOKEN != '' }}
         run: dotnet build SwfocTrainer.sln -c Release --no-restore
 
       - name: Sonar End
-        if: ${{ secrets.SONAR_TOKEN != '' }}
         shell: bash
-        env:
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         run: |
           dotnet-sonarscanner end /d:sonar.token="$SONAR_TOKEN"
