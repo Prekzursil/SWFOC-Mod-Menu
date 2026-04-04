@@ -27,6 +27,8 @@ struct StringHash {
 
 class BuildPatchPlugin final : public IPlugin {
 public:
+    using RestoreBytesMap = std::unordered_map<std::string, std::vector<std::uint8_t>, detail::StringHash, std::equal_to<>>;
+
     BuildPatchPlugin() = default;
 
     const char* id() const noexcept override;
@@ -49,7 +51,7 @@ private:
     std::atomic<std::int32_t> unitCapValue_ {0};
     std::mutex restoreBytesMutex_;
     // cppcheck-suppress unusedStructMember
-    std::unordered_map<std::string, std::vector<std::uint8_t>, detail::StringHash, std::equal_to<>> restoreBytesByKey_;
+    RestoreBytesMap restoreBytesByKey_;
 };
 
 } // namespace swfoc::extender::plugins

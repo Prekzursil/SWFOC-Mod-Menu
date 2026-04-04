@@ -152,6 +152,18 @@ jobs:
         run: |
           pwsh ./tools/lua-harness/run-lua-harness.ps1 -Strict
 
+      - name: SonarCloud scan (with coverage)
+        if: always()
+        uses: SonarSource/sonarcloud-github-action@v5
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          args: >
+            -Dsonar.cs.opencover.reportsPaths=TestResults/coverage/opencover.opencover.xml
+            -Dsonar.coverage.exclusions=tests/**,scripts/**,tools/**,native/**
+        continue-on-error: true
+
       - name: Upload coverage to Codecov
         if: always()
         uses: codecov/codecov-action@v5

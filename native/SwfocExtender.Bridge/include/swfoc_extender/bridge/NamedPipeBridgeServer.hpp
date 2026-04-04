@@ -18,6 +18,8 @@ suppress only this header:
 
 namespace swfoc::extender::bridge {
 
+using StringMap = std::map<std::string, std::string, std::less<>>;
+
 struct BridgeCommand {
     [[maybe_unused]] std::string commandId;
     [[maybe_unused]] std::string featureId;
@@ -28,7 +30,7 @@ struct BridgeCommand {
     [[maybe_unused]] std::string payloadJson;
     [[maybe_unused]] std::int32_t processId {0};
     [[maybe_unused]] std::string processName;
-    [[maybe_unused]] std::map<std::string, std::string, std::less<>> resolvedAnchors {};
+    [[maybe_unused]] StringMap resolvedAnchors {};
 };
 
 struct BridgeResult {

@@ -30,14 +30,16 @@ struct CapabilityEntry {
 
 class CapabilityProbe {
 public:
+    using CapabilityMap = std::unordered_map<std::string, CapabilityEntry, StringHash, std::equal_to<>>;
+
     CapabilityProbe() = default;
 
     void markAvailable(std::string_view featureId, std::string_view reasonCode = "CAPABILITY_PROBE_PASS");
     bool isAvailable(std::string_view featureId) const;
-    const std::unordered_map<std::string, CapabilityEntry, StringHash, std::equal_to<>>& snapshot() const noexcept;
+    const CapabilityMap& snapshot() const noexcept;
 
 private:
-    [[maybe_unused]] std::unordered_map<std::string, CapabilityEntry, StringHash, std::equal_to<>> capabilities_;
+    [[maybe_unused]] CapabilityMap capabilities_;
 };
 
 } // namespace swfoc::extender::core

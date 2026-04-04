@@ -18,9 +18,9 @@ namespace {
 
 using AnchorMatch = std::pair<std::string, std::string>;
 
-constexpr std::array<std::string_view, 2> kFreezeTimerAnchors {"game_timer_freeze", "freeze_timer"};
-constexpr std::array<std::string_view, 2> kFogRevealAnchors {"fog_reveal", "toggle_fog_reveal"};
-constexpr std::array<std::string_view, 2> kAiAnchors {"ai_enabled", "toggle_ai"};
+constexpr std::array<std::string_view, 2> kFreezeTimerAnchors = {"game_timer_freeze", "freeze_timer"};
+constexpr std::array<std::string_view, 2> kFogRevealAnchors = {"fog_reveal", "toggle_fog_reveal"};
+constexpr std::array<std::string_view, 2> kAiAnchors = {"ai_enabled", "toggle_ai"};
 
 bool IsGlobalToggleFeature(std::string_view featureId) {
     return featureId == "freeze_timer" || featureId == "toggle_fog_reveal" || featureId == "toggle_ai";
@@ -41,7 +41,8 @@ const std::array<std::string_view, 2>& AnchorCandidates(std::string_view feature
 std::optional<AnchorMatch> FindAnchor(const PluginRequest& request, std::string_view featureId) {
     const auto& candidates = AnchorCandidates(featureId);
     for (const auto key : candidates) {
-        if (const auto it = request.anchors.find(key); it != request.anchors.end() && !it->second.empty()) {
+        const auto it = request.anchors.find(key);
+        if (it != request.anchors.end() && !it->second.empty()) {
             return AnchorMatch {it->first, it->second};
         }
     }

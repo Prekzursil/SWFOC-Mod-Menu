@@ -24,8 +24,8 @@ namespace {
 
 using AnchorMatch = std::pair<std::string, std::string>;
 
-constexpr std::array<std::string_view, 2> kUnitCapAnchors {"unit_cap", "set_unit_cap"};
-constexpr std::array<std::string_view, 4> kInstantBuildAnchors {"instant_build_patch_injection", "instant_build_patch", "instant_build", "toggle_instant_build_patch"};
+constexpr std::array<std::string_view, 2> kUnitCapAnchors = {"unit_cap", "set_unit_cap"};
+constexpr std::array<std::string_view, 4> kInstantBuildAnchors = {"instant_build_patch_injection", "instant_build_patch", "instant_build", "toggle_instant_build_patch"};
 constexpr std::int32_t kMinUnitCap = 1;
 constexpr std::int32_t kMaxUnitCap = 100000;
 
@@ -44,7 +44,8 @@ std::vector<std::string_view> AnchorCandidates(std::string_view featureId) {
 std::optional<AnchorMatch> FindAnchor(const PluginRequest& request, std::string_view featureId) {
     const auto candidates = AnchorCandidates(featureId);
     for (const auto& key : candidates) {
-        if (const auto it = request.anchors.find(key); it != request.anchors.end() && !it->second.empty()) {
+        const auto it = request.anchors.find(key);
+        if (it != request.anchors.end() && !it->second.empty()) {
             return AnchorMatch {it->first, it->second};
         }
     }
@@ -417,7 +418,8 @@ void BuildPatchPlugin::StoreRestoreBytes(std::string key, std::vector<std::uint8
 
 void BuildPatchPlugin::RemoveRestoreBytes(std::string_view key) {
     std::scoped_lock lock(restoreBytesMutex_);
-    if (const auto it = restoreBytesByKey_.find(key); it != restoreBytesByKey_.end()) {
+    const auto it = restoreBytesByKey_.find(key);
+    if (it != restoreBytesByKey_.end()) {
         restoreBytesByKey_.erase(it);
     }
 }

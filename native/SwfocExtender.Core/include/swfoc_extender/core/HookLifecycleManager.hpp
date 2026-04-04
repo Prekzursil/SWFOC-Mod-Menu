@@ -30,6 +30,8 @@ struct HookRecord {
 
 class HookLifecycleManager {
 public:
+    using HookMap = std::unordered_map<std::string, HookRecord, StringHash, std::equal_to<>>;
+
     HookLifecycleManager() = default;
 
     void markInstalled(std::string_view hookId);
@@ -38,7 +40,7 @@ public:
     HookRecord get(std::string_view hookId) const;
 
 private:
-    [[maybe_unused]] std::unordered_map<std::string, HookRecord, StringHash, std::equal_to<>> hooks_;
+    [[maybe_unused]] HookMap hooks_;
 };
 
 } // namespace swfoc::extender::core

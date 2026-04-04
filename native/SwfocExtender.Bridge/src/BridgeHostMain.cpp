@@ -61,7 +61,7 @@ using swfoc::extender::bridge::host_json::TryReadInt;
 constexpr const char* kBackendName = "extender";
 constexpr const char* kDefaultPipeName = "SwfocExtenderBridge";
 
-constexpr std::array<const char*, 14> kSupportedFeatures {
+constexpr std::array<const char*, 14> kSupportedFeatures = {
     "freeze_timer",
     "toggle_fog_reveal",
     "toggle_ai",
@@ -84,11 +84,13 @@ missingIncludeSystem can be suppressed per translation unit with:
 */
 
 bool ResolveLockCredits(std::string_view payloadJson) {
-    if (auto lockCredits = false; TryReadBool(payloadJson, "lockCredits", lockCredits)) {
+    auto lockCredits = false;
+    if (TryReadBool(payloadJson, "lockCredits", lockCredits)) {
         return lockCredits;
     }
 
-    if (auto legacyForce = false; TryReadBool(payloadJson, "forcePatchHook", legacyForce)) {
+    auto legacyForce = false;
+    if (TryReadBool(payloadJson, "forcePatchHook", legacyForce)) {
         return legacyForce;
     }
 
@@ -100,7 +102,8 @@ int ResolveProcessId(const BridgeCommand& command) {
         return command.processId;
     }
 
-    if (auto payloadProcessId = 0; TryReadInt(command.payloadJson, "processId", payloadProcessId) && payloadProcessId > 0) {
+    auto payloadProcessId = 0;
+    if (TryReadInt(command.payloadJson, "processId", payloadProcessId) && payloadProcessId > 0) {
         return payloadProcessId;
     }
 
@@ -116,8 +119,8 @@ std::map<std::string, std::string, std::less<>> ResolveAnchors(const BridgeComma
     }
 
     // S6171: use contains() instead of find() != end()
-    if (const auto legacySymbol = ExtractStringValue(command.payloadJson, "symbol");
-        !legacySymbol.empty() && !anchors.contains(legacySymbol)) {
+    const auto legacySymbol = ExtractStringValue(command.payloadJson, "symbol");
+    if (!legacySymbol.empty() && !anchors.contains(legacySymbol)) {
         anchors.try_emplace(legacySymbol, legacySymbol);
     }
 
@@ -149,25 +152,30 @@ PluginRequest BuildPluginRequest(const BridgeCommand& command) {
     request.entityContext.placementMode = ExtractStringValue(command.payloadJson, "placementMode");
     request.entityContext.worldPosition = ExtractStringValue(command.payloadJson, "worldPosition");
 
-    if (auto intValue = 0; TryReadInt(command.payloadJson, "intValue", intValue)) {
+    auto intValue = 0;
+    if (TryReadInt(command.payloadJson, "intValue", intValue)) {
         request.payload.intValue = intValue;
     }
 
-    if (auto boolValue = false; TryReadBool(command.payloadJson, "boolValue", boolValue)) {
+    auto boolValue = false;
+    if (TryReadBool(command.payloadJson, "boolValue", boolValue)) {
         request.payload.boolValue = boolValue;
     }
 
-    if (auto enable = false; TryReadBool(command.payloadJson, "enable", enable)) {
+    auto enable = false;
+    if (TryReadBool(command.payloadJson, "enable", enable)) {
         request.payload.enable = enable;
     } else if (command.featureId == "set_unit_cap" || command.featureId == "toggle_instant_build_patch") {
         request.payload.enable = true;
     }
 
-    if (auto allowCrossFaction = false; TryReadBool(command.payloadJson, "allowCrossFaction", allowCrossFaction)) {
+    auto allowCrossFaction = false;
+    if (TryReadBool(command.payloadJson, "allowCrossFaction", allowCrossFaction)) {
         request.payload.allowCrossFaction = allowCrossFaction;
     }
 
-    if (auto forceOverride = false; TryReadBool(command.payloadJson, "forceOverride", forceOverride)) {
+    auto forceOverride = false;
+    if (TryReadBool(command.payloadJson, "forceOverride", forceOverride)) {
         request.payload.forceOverride = forceOverride;
     }
 
@@ -529,7 +537,8 @@ BridgeResult HandleBridgeCommand(
 // S1874: replace deprecated std::getenv with MSVC-safe _dupenv_s
 std::string GetEnvSafe(const char* name) {
     char* val = nullptr;
-    if (std::size_t len = 0; _dupenv_s(&val, &len, name) != 0 || val == nullptr) {
+    std::size_t len = 0;
+    if (_dupenv_s(&val, &len, name) != 0 || val == nullptr) {
         return {};
     }
     auto guard = std::unique_ptr<char, decltype(&free)>(val, &free);
@@ -537,7 +546,8 @@ std::string GetEnvSafe(const char* name) {
 }
 
 std::string ResolvePipeName() {
-    if (const auto envPipe = GetEnvSafe("SWFOC_EXTENDER_PIPE_NAME"); !envPipe.empty()) {
+    const auto envPipe = GetEnvSafe("SWFOC_EXTENDER_PIPE_NAME");
+    if (!envPipe.empty()) {
         return envPipe;
     }
 
