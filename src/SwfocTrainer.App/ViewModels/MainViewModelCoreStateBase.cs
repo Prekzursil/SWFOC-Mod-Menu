@@ -150,6 +150,7 @@ public abstract class MainViewModelCoreStateBase : INotifyPropertyChanged
 
     protected MainViewModelCoreStateBase(MainViewModelDependencies dependencies)
     {
+        ArgumentNullException.ThrowIfNull(dependencies);
         (_profiles, _processLocator, _launchContextResolver, _profileVariantResolver, _gameLauncher, _runtime, _orchestrator, _catalog, _saveCodec,
             _savePatchPackService, _savePatchApplyService, _helper, _updates, _modOnboarding, _modCalibration, _supportBundles, _telemetry,
             _freezeService, _actionReliability, _selectedUnitTransactions, _spawnPresets) = CreateDependencyTuple(dependencies);

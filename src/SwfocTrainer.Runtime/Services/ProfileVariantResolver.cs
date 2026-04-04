@@ -30,6 +30,8 @@ public sealed class ProfileVariantResolver : IProfileVariantResolver
         IBinaryFingerprintService? fingerprintService,
         ICapabilityMapResolver? capabilityMapResolver)
     {
+        ArgumentNullException.ThrowIfNull(launchContextResolver);
+        ArgumentNullException.ThrowIfNull(logger);
         _launchContextResolver = launchContextResolver;
         _logger = logger;
         _profileRepository = profileRepository;

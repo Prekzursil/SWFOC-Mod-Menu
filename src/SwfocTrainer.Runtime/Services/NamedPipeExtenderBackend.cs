@@ -74,6 +74,7 @@ public sealed class NamedPipeExtenderBackend : IExecutionBackend
         string profileId,
         ProcessMetadata processContext)
     {
+        ArgumentNullException.ThrowIfNull(processContext);
         return ProbeCapabilitiesAsync(profileId, processContext, CancellationToken.None);
     }
 
@@ -82,6 +83,7 @@ public sealed class NamedPipeExtenderBackend : IExecutionBackend
         ProcessMetadata processContext,
         CancellationToken cancellationToken)
     {
+        ArgumentNullException.ThrowIfNull(processContext);
         var result = await SendAsync(CreateProbeCommand(profileId, processContext), cancellationToken);
         if (!result.Succeeded)
         {
@@ -244,6 +246,8 @@ public sealed class NamedPipeExtenderBackend : IExecutionBackend
         ActionExecutionRequest command,
         CapabilityReport capabilityReport)
     {
+        ArgumentNullException.ThrowIfNull(command);
+        ArgumentNullException.ThrowIfNull(capabilityReport);
         return ExecuteAsync(command, capabilityReport, CancellationToken.None);
     }
 
@@ -252,6 +256,8 @@ public sealed class NamedPipeExtenderBackend : IExecutionBackend
         CapabilityReport capabilityReport,
         CancellationToken cancellationToken)
     {
+        ArgumentNullException.ThrowIfNull(command);
+        ArgumentNullException.ThrowIfNull(capabilityReport);
         var commandContext = command.Context;
         var extenderCommand = new ExtenderCommand(
             CommandId: Guid.NewGuid().ToString("N"),

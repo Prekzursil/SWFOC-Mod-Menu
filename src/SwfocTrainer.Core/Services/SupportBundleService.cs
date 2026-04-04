@@ -19,12 +19,15 @@ public sealed class SupportBundleService : ISupportBundleService
 
     public SupportBundleService(IRuntimeAdapter runtime, ITelemetrySnapshotService telemetry)
     {
+        ArgumentNullException.ThrowIfNull(runtime);
+        ArgumentNullException.ThrowIfNull(telemetry);
         _runtime = runtime;
         _telemetry = telemetry;
     }
 
     public async Task<SupportBundleResult> ExportAsync(SupportBundleRequest request, CancellationToken cancellationToken)
     {
+        ArgumentNullException.ThrowIfNull(request);
         if (string.IsNullOrWhiteSpace(request.OutputDirectory))
         {
             throw new InvalidDataException("Output directory is required.");

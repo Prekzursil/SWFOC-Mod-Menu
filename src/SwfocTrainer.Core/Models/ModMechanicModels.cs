@@ -15,12 +15,15 @@ public sealed record ModMechanicReport(
     IReadOnlyList<ModMechanicSupport> ActionSupport,
     IReadOnlyDictionary<string, object?> Diagnostics)
 {
-    public static ModMechanicReport Empty(string profileId) =>
-        new(
+    public static ModMechanicReport Empty(string profileId)
+    {
+        ArgumentNullException.ThrowIfNull(profileId);
+        return new ModMechanicReport(
             ProfileId: profileId,
             GeneratedAtUtc: DateTimeOffset.UtcNow,
             DependenciesSatisfied: false,
             HelperBridgeReady: false,
             ActionSupport: Array.Empty<ModMechanicSupport>(),
             Diagnostics: new Dictionary<string, object?>());
+    }
 }

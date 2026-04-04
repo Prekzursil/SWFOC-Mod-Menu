@@ -12,6 +12,7 @@ internal static class NamedPipeExtenderBackendContextHelpers
         IReadOnlyDictionary<string, object?>? diagnostics,
         IEnumerable<string> nativeAuthoritativeFeatureIds)
     {
+        ArgumentNullException.ThrowIfNull(nativeAuthoritativeFeatureIds);
         var capabilities = new Dictionary<string, BackendCapability>(StringComparer.OrdinalIgnoreCase);
         if (!TryGetCapabilitiesElement(diagnostics, out var element))
         {

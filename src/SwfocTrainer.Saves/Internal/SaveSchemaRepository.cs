@@ -16,6 +16,7 @@ internal sealed class SaveSchemaRepository
 
     public SaveSchemaRepository(SaveOptions options)
     {
+        ArgumentNullException.ThrowIfNull(options);
         _options = options;
     }
 

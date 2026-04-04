@@ -20,6 +20,7 @@ public static class TrustedPathPolicy
 
     public static string EnsureDirectory(string path)
     {
+        ArgumentNullException.ThrowIfNull(path);
         var normalized = NormalizeAbsolute(path);
         Directory.CreateDirectory(normalized);
         return normalized;
@@ -37,6 +38,8 @@ public static class TrustedPathPolicy
 
     public static string CombineUnderRoot(string rootPath, params string[] segments)
     {
+        ArgumentNullException.ThrowIfNull(rootPath);
+        ArgumentNullException.ThrowIfNull(segments);
         var root = NormalizeAbsolute(rootPath);
         var current = root;
         foreach (var segment in segments)
@@ -56,6 +59,8 @@ public static class TrustedPathPolicy
 
     public static string EnsureSubPath(string rootPath, string candidatePath)
     {
+        ArgumentNullException.ThrowIfNull(rootPath);
+        ArgumentNullException.ThrowIfNull(candidatePath);
         var root = NormalizeAbsolute(rootPath);
         var candidate = NormalizeAbsolute(candidatePath);
         if (!IsSubPath(root, candidate))
@@ -68,6 +73,8 @@ public static class TrustedPathPolicy
 
     public static bool IsSubPath(string rootPath, string candidatePath)
     {
+        ArgumentNullException.ThrowIfNull(rootPath);
+        ArgumentNullException.ThrowIfNull(candidatePath);
         var root = NormalizeAbsolute(rootPath).TrimEnd(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar);
         var candidate = NormalizeAbsolute(candidatePath).TrimEnd(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar);
 
@@ -82,6 +89,8 @@ public static class TrustedPathPolicy
 
     public static void EnsureAllowedExtension(string path, params string[] allowedExtensions)
     {
+        ArgumentNullException.ThrowIfNull(path);
+        ArgumentNullException.ThrowIfNull(allowedExtensions);
         if (allowedExtensions.Length == 0)
         {
             return;
@@ -101,6 +110,8 @@ public static class TrustedPathPolicy
 
     public static string BuildSiblingFilePath(string sourcePath, string suffix)
     {
+        ArgumentNullException.ThrowIfNull(sourcePath);
+        ArgumentNullException.ThrowIfNull(suffix);
         var source = NormalizeAbsolute(sourcePath);
         var directory = Path.GetDirectoryName(source);
         if (string.IsNullOrWhiteSpace(directory))

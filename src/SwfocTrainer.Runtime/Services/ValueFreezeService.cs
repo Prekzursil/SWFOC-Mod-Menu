@@ -32,6 +32,8 @@ public sealed class ValueFreezeService : IValueFreezeService
 
     public ValueFreezeService(IRuntimeAdapter runtime, ILogger<ValueFreezeService> logger, int pulseIntervalMs)
     {
+        ArgumentNullException.ThrowIfNull(runtime);
+        ArgumentNullException.ThrowIfNull(logger);
         _runtime = runtime;
         _logger = logger;
         _timer = new Timer(PulseCallback, null, pulseIntervalMs, pulseIntervalMs);
@@ -49,6 +51,7 @@ public sealed class ValueFreezeService : IValueFreezeService
 
     public void FreezeInt(string symbol, int value)
     {
+        ArgumentNullException.ThrowIfNull(symbol);
         _entries[symbol] = new FreezeEntry(symbol, FreezeKind.Int32, IntValue: value);
         _logger.LogInformation("Freeze registered: {Symbol} = {Value} (int)", symbol, value);
     }
@@ -60,6 +63,7 @@ public sealed class ValueFreezeService : IValueFreezeService
     /// </summary>
     public void FreezeIntAggressive(string symbol, int value)
     {
+        ArgumentNullException.ThrowIfNull(symbol);
         // Remove from regular entries to avoid double-writing.
         _entries.TryRemove(symbol, out _);
 
@@ -70,18 +74,21 @@ public sealed class ValueFreezeService : IValueFreezeService
 
     public void FreezeFloat(string symbol, float value)
     {
+        ArgumentNullException.ThrowIfNull(symbol);
         _entries[symbol] = new FreezeEntry(symbol, FreezeKind.Float, FloatValue: value);
         _logger.LogInformation("Freeze registered: {Symbol} = {Value} (float)", symbol, value);
     }
 
     public void FreezeBool(string symbol, bool value)
     {
+        ArgumentNullException.ThrowIfNull(symbol);
         _entries[symbol] = new FreezeEntry(symbol, FreezeKind.Bool, BoolValue: value);
         _logger.LogInformation("Freeze registered: {Symbol} = {Value} (bool)", symbol, value);
     }
 
     public bool Unfreeze(string symbol)
     {
+        ArgumentNullException.ThrowIfNull(symbol);
         var removedRegular = _entries.TryRemove(symbol, out _);
         var removedAggressive = _aggressiveEntries.TryRemove(symbol, out _);
         var removed = removedRegular || removedAggressive;
@@ -104,6 +111,7 @@ public sealed class ValueFreezeService : IValueFreezeService
 
     public bool IsFrozen(string symbol)
     {
+        ArgumentNullException.ThrowIfNull(symbol);
         return _entries.ContainsKey(symbol) || _aggressiveEntries.ContainsKey(symbol);
     }
 

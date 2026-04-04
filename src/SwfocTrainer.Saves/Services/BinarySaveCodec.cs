@@ -20,6 +20,8 @@ public sealed class BinarySaveCodec : ISaveCodec
 
     public BinarySaveCodec(SaveOptions options, ILogger<BinarySaveCodec> logger)
     {
+        ArgumentNullException.ThrowIfNull(options);
+        ArgumentNullException.ThrowIfNull(logger);
         _schemaRepository = new SaveSchemaRepository(options);
         _logger = logger;
     }

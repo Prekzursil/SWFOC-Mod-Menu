@@ -12,7 +12,7 @@ namespace SwfocTrainer.App.ViewModels;
 public sealed class MainViewModel : MainViewModelSaveOpsBase
 {
     public MainViewModel(MainViewModelDependencies dependencies)
-        : base(dependencies)
+        : base(dependencies ?? throw new ArgumentNullException(nameof(dependencies)))
     {
         (Profiles, Actions, CatalogSummary, Updates, SaveDiffPreview, Hotkeys, SaveFields, FilteredSaveFields, SavePatchOperations, SavePatchCompatibility, ActionReliability, SelectedUnitTransactions, SpawnPresets, LiveOpsDiagnostics, ModCompatibilityRows, ActiveFreezes) = MainViewModelFactories.CreateCollections();
 
@@ -250,7 +250,7 @@ public sealed class MainViewModel : MainViewModelSaveOpsBase
     }
     private async Task AttachAsync()
     {
-        if (SelectedProfileId is null)
+        if (string.IsNullOrWhiteSpace(SelectedProfileId))
         {
             return;
         }
@@ -304,10 +304,11 @@ public sealed class MainViewModel : MainViewModelSaveOpsBase
         var resolvedProfiles = await LoadResolvedProfilesForLaunchContextAsync();
         var contexts = processes
             .Select(process => process.LaunchContext ?? _launchContextResolver.Resolve(process, resolvedProfiles))
+            .Where(context => context is not null)
             .ToArray();
 
         return contexts
-            .Where(context => !string.IsNullOrWhiteSpace(context.Recommendation.ProfileId))
+            .Where(context => context.Recommendation is not null && !string.IsNullOrWhiteSpace(context.Recommendation.ProfileId))
             .OrderByDescending(context => context.Recommendation.Confidence)
             .ThenByDescending(context => context.LaunchKind == LaunchKind.Workshop || context.LaunchKind == LaunchKind.Mixed)
             .Select(context => context.Recommendation.ProfileId)
@@ -322,7 +323,8 @@ public sealed class MainViewModel : MainViewModelSaveOpsBase
 
         var processes = await _processLocator.FindSupportedProcessesAsync();
         var variant = await _profileVariantResolver.ResolveAsync(requestedProfileId, processes, CancellationToken.None);
-        return (variant.ResolvedProfileId, variant);
+        var effectiveId = variant?.ResolvedProfileId ?? requestedProfileId;
+        return (effectiveId, variant);
     }
 
     private async Task LaunchAndAttachAsync()
@@ -343,10 +345,10 @@ public sealed class MainViewModel : MainViewModelSaveOpsBase
 
     private async Task<GameLaunchRequest> BuildLaunchRequestAsync()
     {
-        var target = LaunchTarget.Equals("Sweaw", StringComparison.OrdinalIgnoreCase)
+        var target = string.Equals(LaunchTarget, "Sweaw", StringComparison.OrdinalIgnoreCase)
             ? GameLaunchTarget.Sweaw
             : GameLaunchTarget.Swfoc;
-        var mode = ResolveLaunchMode(LaunchMode);
+        var mode = ResolveLaunchMode(LaunchMode ?? string.Empty);
         var workshopIds = BuildLaunchWorkshopIds();
 
         if (mode == GameLaunchMode.SteamMod && workshopIds.Count == 0 && !string.IsNullOrWhiteSpace(SelectedProfileId))
@@ -453,6 +455,7 @@ public sealed class MainViewModel : MainViewModelSaveOpsBase
     }
     private void ApplyAttachSessionStatus(AttachSession session)
     {
+        ArgumentNullException.ThrowIfNull(session);
         RuntimeMode = session.Process.Mode;
         ResolvedSymbolsCount = session.Symbols.Symbols.Count;
         var signatureCount = session.Symbols.Symbols.Values.Count(x => x.Source == AddressSource.Signature);
@@ -536,7 +539,7 @@ public sealed class MainViewModel : MainViewModelSaveOpsBase
     }
     private async Task LoadActionsAsync()
     {
-        if (SelectedProfileId is null)
+        if (string.IsNullOrWhiteSpace(SelectedProfileId))
         {
             return;
         }
@@ -574,7 +577,7 @@ public sealed class MainViewModel : MainViewModelSaveOpsBase
     }
     private async Task ExecuteActionAsync()
     {
-        if (SelectedProfileId is null)
+        if (string.IsNullOrWhiteSpace(SelectedProfileId))
         {
             return;
         }
@@ -617,6 +620,8 @@ public sealed class MainViewModel : MainViewModelSaveOpsBase
 
     private static string? ResolveProfileFeatureGateReason(string actionId, TrainerProfile profile)
     {
+        ArgumentNullException.ThrowIfNull(profile);
+
         var featureFlag = actionId switch
         {
             "toggle_fog_reveal_patch_fallback" => "allow_fog_patch_fallback",

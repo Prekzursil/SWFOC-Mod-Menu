@@ -27,6 +27,7 @@ public sealed class FileAuditLogger : IAuditLogger
 
     public async Task WriteAsync(ActionAuditRecord record, CancellationToken cancellationToken)
     {
+        ArgumentNullException.ThrowIfNull(record);
         var fileName = $"audit-{record.Timestamp:yyyy-MM-dd}.jsonl";
         var path = Path.Combine(_logDirectory, fileName);
         var line = JsonSerializer.Serialize(record, JsonOptions) + Environment.NewLine;

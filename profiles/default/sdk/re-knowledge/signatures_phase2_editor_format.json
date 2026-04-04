@@ -1,0 +1,118 @@
+{
+  "_meta": {
+    "generated": "2026-04-03T23:07:20.713606+00:00",
+    "source": "swfoc_memory Phase 2 RE findings",
+    "target": "SWFOC Editor profile system",
+    "format": "Editor-compatible signature and fallback definitions"
+  },
+  "new_signatures_for_profile": [
+    {
+      "name": "add_credits_func",
+      "pattern": "48 89 5C 24 08 57 48 83 EC 40 0F 29 74 24 30 41 0F B6 F8 0F 29 7C 24 20 0F 28 F1 0F 57 FF 48 8B D9",
+      "offset": 0,
+      "addressMode": "HitPlusOffset",
+      "valueType": "Int32",
+      "description": "AddCredits function prologue (player+0x70 credits, float)"
+    },
+    {
+      "name": "set_tech_level_func",
+      "pattern": "56 57 41 54 48 83 EC 40 8B C2 48 89 5C 24 60 48 8B F9 4C 89 7C 24 30 45 33 E4",
+      "offset": 0,
+      "addressMode": "HitPlusOffset",
+      "valueType": "Int32",
+      "description": "SetTechLevel function prologue (player+0x84 tech, int32)"
+    },
+    {
+      "name": "set_speed_override_func",
+      "pattern": "48 8B 81 A8 00 00 00 48 85 C0 74 ?? 89 90 A0 02 00 00 C6 80 9C 02 00 00 01",
+      "offset": 0,
+      "addressMode": "HitPlusOffset",
+      "valueType": "Int32",
+      "description": "SetSpeedOverride (obj+0xA8->locomotor, +0x29C flag, +0x2A0 speed float)"
+    }
+  ],
+  "new_fallback_offsets": {
+    "add_credits_func": 2618224,
+    "set_tech_level_func": 2656640,
+    "set_speed_override_func": 3837072,
+    "clear_speed_override_func": 3733680,
+    "schedule_hero_respawn_func": 4778768,
+    "player_array_global": 10579952,
+    "player_count_global": 10579960,
+    "default_hero_respawn_time": 11626992
+  },
+  "corrections": {
+    "hero_respawn_timer": {
+      "old_value": 1384560,
+      "new_value": 11626992,
+      "reason": "RE Phase 2 found Default_Hero_Respawn_Time at RVA 0xB169F0, not 0x152070"
+    }
+  },
+  "field_offsets_reference": {
+    "PlayerObject": {
+      "credits": {
+        "offset": "0x70",
+        "type": "float32",
+        "access": "PlayerArray[player_id]+0x70"
+      },
+      "max_credits": {
+        "offset": "0x74",
+        "type": "float32"
+      },
+      "tech_level": {
+        "offset": "0x84",
+        "type": "int32"
+      },
+      "max_tech_level": {
+        "offset": "0x88",
+        "type": "int32"
+      }
+    },
+    "GameObjectClass": {
+      "hp": {
+        "offset": "0x5C",
+        "type": "float32"
+      },
+      "owner_player_id": {
+        "offset": "0x58",
+        "type": "int32"
+      },
+      "locomotor_ptr": {
+        "offset": "0xA8",
+        "type": "pointer"
+      },
+      "game_object_type_ptr": {
+        "offset": "0x298",
+        "type": "pointer"
+      },
+      "invulnerability_flag": {
+        "offset": "0x3A7",
+        "type": "uint8"
+      }
+    },
+    "LocomotorComponent": {
+      "speed_override_enabled": {
+        "offset": "0x29C",
+        "type": "uint8"
+      },
+      "speed_override_value": {
+        "offset": "0x2A0",
+        "type": "float32"
+      }
+    },
+    "Globals": {
+      "PlayerArray": {
+        "rva": "0xA16FF0",
+        "decimal": 10579952
+      },
+      "PlayerCount": {
+        "rva": "0xA16FF8",
+        "decimal": 10579960
+      },
+      "Default_Hero_Respawn_Time": {
+        "rva": "0xB169F0",
+        "decimal": 11495920
+      }
+    }
+  }
+}

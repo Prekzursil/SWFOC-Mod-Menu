@@ -36,6 +36,8 @@ public sealed class ModOnboardingService : IModOnboardingService
 
     public ModOnboardingService(IProfileRepository profiles, ProfileRepositoryOptions options)
     {
+        ArgumentNullException.ThrowIfNull(profiles);
+        ArgumentNullException.ThrowIfNull(options);
         _profiles = profiles;
         _options = options;
     }

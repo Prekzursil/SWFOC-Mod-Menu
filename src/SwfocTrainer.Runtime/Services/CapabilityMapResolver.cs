@@ -19,6 +19,8 @@ public sealed class CapabilityMapResolver : ICapabilityMapResolver
 
     public CapabilityMapResolver(string mapsRootPath, ILogger<CapabilityMapResolver> logger)
     {
+        ArgumentNullException.ThrowIfNull(mapsRootPath);
+        ArgumentNullException.ThrowIfNull(logger);
         _mapsRootPath = mapsRootPath;
         _logger = logger;
     }
@@ -29,6 +31,8 @@ public sealed class CapabilityMapResolver : ICapabilityMapResolver
         string operationId,
         IReadOnlySet<string> resolvedAnchors)
     {
+        ArgumentNullException.ThrowIfNull(fingerprint);
+        ArgumentNullException.ThrowIfNull(resolvedAnchors);
         return ResolveAsync(fingerprint, requestedProfileId, operationId, resolvedAnchors, CancellationToken.None);
     }
 
@@ -39,6 +43,8 @@ public sealed class CapabilityMapResolver : ICapabilityMapResolver
         IReadOnlySet<string> resolvedAnchors,
         CancellationToken cancellationToken)
     {
+        ArgumentNullException.ThrowIfNull(fingerprint);
+        ArgumentNullException.ThrowIfNull(resolvedAnchors);
         var map = await LoadMapAsync(fingerprint, cancellationToken);
         if (map is null)
         {
@@ -81,11 +87,13 @@ public sealed class CapabilityMapResolver : ICapabilityMapResolver
 
     public Task<string?> ResolveDefaultProfileIdAsync(BinaryFingerprint fingerprint)
     {
+        ArgumentNullException.ThrowIfNull(fingerprint);
         return ResolveDefaultProfileIdAsync(fingerprint, CancellationToken.None);
     }
 
     public async Task<string?> ResolveDefaultProfileIdAsync(BinaryFingerprint fingerprint, CancellationToken cancellationToken)
     {
+        ArgumentNullException.ThrowIfNull(fingerprint);
         var map = await LoadMapAsync(fingerprint, cancellationToken);
         return map?.DefaultProfileId;
     }

@@ -8,12 +8,15 @@ public sealed record TelemetryModeResolution(
     DateTimeOffset? TimestampUtc,
     string? RawLine)
 {
-    public static TelemetryModeResolution Unavailable(string reasonCode) =>
-        new(
+    public static TelemetryModeResolution Unavailable(string reasonCode)
+    {
+        ArgumentNullException.ThrowIfNull(reasonCode);
+        return new TelemetryModeResolution(
             Available: false,
             Mode: RuntimeMode.Unknown,
             ReasonCode: reasonCode,
             SourcePath: string.Empty,
             TimestampUtc: null,
             RawLine: null);
+    }
 }

@@ -22,6 +22,12 @@ public sealed class SdkOperationRouter : ISdkOperationRouter
         ISdkExecutionGuard sdkExecutionGuard,
         ISdkDiagnosticsSink sdkDiagnosticsSink)
     {
+        ArgumentNullException.ThrowIfNull(sdkRuntimeAdapter);
+        ArgumentNullException.ThrowIfNull(profileVariantResolver);
+        ArgumentNullException.ThrowIfNull(binaryFingerprintService);
+        ArgumentNullException.ThrowIfNull(capabilityMapResolver);
+        ArgumentNullException.ThrowIfNull(sdkExecutionGuard);
+        ArgumentNullException.ThrowIfNull(sdkDiagnosticsSink);
         _sdkRuntimeAdapter = sdkRuntimeAdapter;
         _profileVariantResolver = profileVariantResolver;
         _binaryFingerprintService = binaryFingerprintService;
@@ -48,11 +54,13 @@ public sealed class SdkOperationRouter : ISdkOperationRouter
 
     public Task<SdkOperationResult> ExecuteAsync(SdkOperationRequest request)
     {
+        ArgumentNullException.ThrowIfNull(request);
         return ExecuteAsync(request, CancellationToken.None);
     }
 
     public async Task<SdkOperationResult> ExecuteAsync(SdkOperationRequest request, CancellationToken cancellationToken)
     {
+        ArgumentNullException.ThrowIfNull(request);
         if (!IsSdkFeatureGateEnabled())
         {
             return await WriteAndReturnAsync(request, CreateFeatureGateDisabledResult(), cancellationToken);

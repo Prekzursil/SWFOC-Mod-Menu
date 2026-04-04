@@ -19,6 +19,8 @@ public sealed class SignatureResolver : ISignatureResolver
 
     public SignatureResolver(ILogger<SignatureResolver> logger, string ghidraSymbolPackRoot)
     {
+        ArgumentNullException.ThrowIfNull(logger);
+        ArgumentNullException.ThrowIfNull(ghidraSymbolPackRoot);
         _logger = logger;
         _ghidraSymbolPackRoot = ghidraSymbolPackRoot;
     }
@@ -29,6 +31,9 @@ public sealed class SignatureResolver : ISignatureResolver
         IReadOnlyDictionary<string, long> fallbackOffsets,
         CancellationToken cancellationToken)
     {
+        ArgumentNullException.ThrowIfNull(profileBuild);
+        ArgumentNullException.ThrowIfNull(signatureSets);
+        ArgumentNullException.ThrowIfNull(fallbackOffsets);
         // Signature scanning is CPU-bound and can take noticeable time. Run off the UI thread.
         return Task.Run(() => ResolveInternal(profileBuild, signatureSets, fallbackOffsets, cancellationToken), cancellationToken);
     }
@@ -38,6 +43,9 @@ public sealed class SignatureResolver : ISignatureResolver
         IReadOnlyList<SignatureSet> signatureSets,
         IReadOnlyDictionary<string, long> fallbackOffsets)
     {
+        ArgumentNullException.ThrowIfNull(profileBuild);
+        ArgumentNullException.ThrowIfNull(signatureSets);
+        ArgumentNullException.ThrowIfNull(fallbackOffsets);
         return ResolveAsync(profileBuild, signatureSets, fallbackOffsets, CancellationToken.None);
     }
 

@@ -15,6 +15,8 @@ public sealed class SymbolHealthService : ISymbolHealthService
 
     public SymbolValidationResult Evaluate(SymbolInfo symbol, TrainerProfile profile, RuntimeMode mode)
     {
+        ArgumentNullException.ThrowIfNull(symbol);
+        ArgumentNullException.ThrowIfNull(profile);
         if (symbol.Address == nint.Zero)
         {
             return new SymbolValidationResult(

@@ -6,6 +6,8 @@ public static class ActionPayloadValidator
 {
     public static (bool IsValid, string Message) Validate(JsonObject schema, JsonObject payload)
     {
+        ArgumentNullException.ThrowIfNull(schema);
+        ArgumentNullException.ThrowIfNull(payload);
         if (schema.Count == 0)
         {
             return (true, "No payload schema defined");

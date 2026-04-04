@@ -10,6 +10,7 @@ internal static class MainViewModelDiagnostics
 {
     internal static string BuildProcessDiagnosticSummary(ProcessMetadata process, string unknownValue)
     {
+        ArgumentNullException.ThrowIfNull(process);
         var dependencySegment = BuildProcessDependencySegment(
             ReadProcessMetadata(process, "dependencyValidation", "Pass"),
             ReadProcessMetadata(process, "dependencyValidationMessage", string.Empty));
@@ -63,7 +64,8 @@ internal static class MainViewModelDiagnostics
 
     internal static string BuildPatchMetadataSummary(SavePatchPack pack)
     {
-        return $"Patch {(pack.Metadata.SchemaVersion)} | profile={pack.Metadata.ProfileId} | schema={pack.Metadata.SchemaId} | ops={pack.Operations.Count}";
+        ArgumentNullException.ThrowIfNull(pack);
+        return $"Patch {pack.Metadata.SchemaVersion} | profile={pack.Metadata.ProfileId} | schema={pack.Metadata.SchemaId} | ops={pack.Operations.Count}";
     }
 
     internal static string BuildDependencyDiagnostic(string dependency, string dependencyMessage)
@@ -117,6 +119,7 @@ internal static class MainViewModelDiagnostics
 
     internal static string BuildDiagnosticsStatusSuffix(ActionExecutionResult result)
     {
+        ArgumentNullException.ThrowIfNull(result);
         if (result.Diagnostics is null)
         {
             return string.Empty;
@@ -134,6 +137,7 @@ internal static class MainViewModelDiagnostics
 
     internal static string BuildQuickActionStatus(string actionId, ActionExecutionResult result)
     {
+        ArgumentNullException.ThrowIfNull(result);
         var diagnosticsSuffix = BuildDiagnosticsStatusSuffix(result);
         return result.Succeeded
             ? $"✓ {actionId}: {result.Message}{diagnosticsSuffix}"

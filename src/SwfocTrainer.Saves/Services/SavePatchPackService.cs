@@ -24,6 +24,7 @@ public sealed class SavePatchPackService : ISavePatchPackService
 
     public SavePatchPackService(SaveOptions options)
     {
+        ArgumentNullException.ThrowIfNull(options);
         _schemaRepository = new SaveSchemaRepository(options);
     }
 

@@ -20,6 +20,7 @@ internal static class MainViewModelHotkeyHelpers
 
     internal static JsonObject ParseHotkeyPayload(HotkeyBindingItem binding)
     {
+        ArgumentNullException.ThrowIfNull(binding);
         try
         {
             return JsonNode.Parse(binding.PayloadJson ?? "{}") as JsonObject
@@ -89,9 +90,12 @@ internal static class MainViewModelHotkeyHelpers
 
     internal static async Task<string> SaveHotkeysAsync(IReadOnlyCollection<HotkeyBindingItem> hotkeys)
     {
+        ArgumentNullException.ThrowIfNull(hotkeys);
         var hotkeyPath = GetHotkeyFilePath();
         TrustedPathPolicy.EnsureSubPath(TrustedPathPolicy.GetOrCreateAppDataRoot(), hotkeyPath);
-        Directory.CreateDirectory(Path.GetDirectoryName(hotkeyPath)!);
+        var hotkeyDirectory = Path.GetDirectoryName(hotkeyPath)
+            ?? throw new InvalidOperationException("Hotkey file path has no parent directory.");
+        Directory.CreateDirectory(hotkeyDirectory);
         var json = JsonSerializer.Serialize(hotkeys, new JsonSerializerOptions { WriteIndented = true });
         await File.WriteAllTextAsync(hotkeyPath, json);
         return $"Saved {hotkeys.Count} hotkey bindings";
@@ -102,6 +106,7 @@ internal static class MainViewModelHotkeyHelpers
         string actionId,
         ActionExecutionResult result)
     {
+        ArgumentNullException.ThrowIfNull(result);
         var diagnosticsSuffix = MainViewModelDiagnostics.BuildDiagnosticsStatusSuffix(result);
         return result.Succeeded
             ? $"Hotkey {gesture}: {actionId} succeeded{diagnosticsSuffix}"

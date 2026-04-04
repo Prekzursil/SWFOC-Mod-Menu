@@ -6,6 +6,7 @@ internal static class WorkshopInventoryChainResolver
 {
     internal static IReadOnlyList<WorkshopInventoryChain> ResolveChains(IReadOnlyList<WorkshopInventoryItem> items)
     {
+        ArgumentNullException.ThrowIfNull(items);
         if (items.Count == 0)
         {
             return Array.Empty<WorkshopInventoryChain>();

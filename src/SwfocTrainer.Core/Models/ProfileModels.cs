@@ -83,6 +83,7 @@ public sealed record SymbolMap(IReadOnlyDictionary<string, SymbolInfo> Symbols)
 {
     public bool TryGetValue(string symbol, out SymbolInfo? info)
     {
+        ArgumentNullException.ThrowIfNull(symbol);
         if (Symbols.TryGetValue(symbol, out var value))
         {
             info = value;
@@ -116,12 +117,21 @@ public static class JsonProfileSerializer
         Converters = { new JsonStringEnumConverter() }
     };
 
-    public static T? Deserialize<T>(string json) => JsonSerializer.Deserialize<T>(json, Options);
+    public static T? Deserialize<T>(string json)
+    {
+        ArgumentNullException.ThrowIfNull(json);
+        return JsonSerializer.Deserialize<T>(json, Options);
+    }
 
-    public static string Serialize<T>(T value) => JsonSerializer.Serialize(value, Options);
+    public static string Serialize<T>(T value)
+    {
+        ArgumentNullException.ThrowIfNull(value);
+        return JsonSerializer.Serialize(value, Options);
+    }
 
     public static JsonObject ToJsonObject<T>(T value)
     {
+        ArgumentNullException.ThrowIfNull(value);
         var node = JsonSerializer.SerializeToNode(value, Options) as JsonObject;
         return node ?? new JsonObject();
     }

@@ -22,12 +22,14 @@ public sealed class WorkshopInventoryService : IWorkshopInventoryService
     private readonly HttpClient _httpClient;
 
     public WorkshopInventoryService(ILogger<WorkshopInventoryService> logger)
-        : this(logger, CreateHttpClient())
+        : this(logger ?? throw new ArgumentNullException(nameof(logger)), CreateHttpClient())
     {
     }
 
     internal WorkshopInventoryService(ILogger<WorkshopInventoryService> logger, HttpClient httpClient)
     {
+        ArgumentNullException.ThrowIfNull(logger);
+        ArgumentNullException.ThrowIfNull(httpClient);
         _logger = logger;
         _httpClient = httpClient;
     }
@@ -36,6 +38,7 @@ public sealed class WorkshopInventoryService : IWorkshopInventoryService
         WorkshopInventoryRequest request,
         CancellationToken cancellationToken)
     {
+        ArgumentNullException.ThrowIfNull(request);
         var appId = string.IsNullOrWhiteSpace(request.AppId) ? DefaultAppId : request.AppId.Trim();
         var diagnostics = new List<string>();
         var installedIds = ReadInstalledWorkshopIds(request, appId, diagnostics);

@@ -7,11 +7,13 @@ public sealed class NoopSdkRuntimeAdapter : ISdkRuntimeAdapter
 {
     public Task<SdkOperationResult> ExecuteAsync(SdkOperationRequest request)
     {
+        ArgumentNullException.ThrowIfNull(request);
         return ExecuteAsync(request, CancellationToken.None);
     }
 
     public Task<SdkOperationResult> ExecuteAsync(SdkOperationRequest request, CancellationToken cancellationToken)
     {
+        ArgumentNullException.ThrowIfNull(request);
         var result = new SdkOperationResult(
             false,
             "SDK runtime adapter is not implemented for this build.",

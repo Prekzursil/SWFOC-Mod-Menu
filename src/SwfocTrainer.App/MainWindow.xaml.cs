@@ -8,11 +8,16 @@ public partial class MainWindow : Window
 {
     public MainWindow(MainViewModel viewModel)
     {
+        ArgumentNullException.ThrowIfNull(viewModel);
         InitializeComponent();
         DataContext = viewModel;
         Loaded += (_, _) =>
         {
-            var vm = (MainViewModel)DataContext;
+            if (DataContext is not MainViewModel vm)
+            {
+                return;
+            }
+
             vm.LoadProfilesCommand.Execute(null);
             vm.LoadHotkeysCommand.Execute(null);
         };

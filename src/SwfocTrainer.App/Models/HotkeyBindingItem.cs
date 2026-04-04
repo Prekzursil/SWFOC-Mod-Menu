@@ -11,12 +11,13 @@ public sealed class HotkeyBindingItem
         get => _gesture;
         set
         {
-            if (_gesture == value)
+            var safeValue = value ?? string.Empty;
+            if (_gesture == safeValue)
             {
                 return;
             }
 
-            _gesture = value;
+            _gesture = safeValue;
         }
     }
 
@@ -25,12 +26,13 @@ public sealed class HotkeyBindingItem
         get => _actionId;
         set
         {
-            if (_actionId == value)
+            var safeValue = value ?? string.Empty;
+            if (_actionId == safeValue)
             {
                 return;
             }
 
-            _actionId = value;
+            _actionId = safeValue;
         }
     }
 
@@ -39,12 +41,13 @@ public sealed class HotkeyBindingItem
         get => _payloadJson;
         set
         {
-            if (_payloadJson == value)
+            var safeValue = value ?? "{}";
+            if (_payloadJson == safeValue)
             {
                 return;
             }
 
-            _payloadJson = value;
+            _payloadJson = safeValue;
         }
     }
 }

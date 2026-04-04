@@ -17,7 +17,7 @@ public abstract class MainViewModelLiveOpsBase : MainViewModelBindableMembersBas
     protected async Task RefreshActionReliabilityAsync()
     {
         ActionReliability.Clear();
-        if (SelectedProfileId is null || _runtime.CurrentSession is null)
+        if (string.IsNullOrWhiteSpace(SelectedProfileId) || _runtime.CurrentSession is null)
         {
             return;
         }
@@ -35,7 +35,13 @@ public abstract class MainViewModelLiveOpsBase : MainViewModelBindableMembersBas
             // Catalog is optional for reliability scoring.
         }
 
-        var reliability = _actionReliability.Evaluate(profile, _runtime.CurrentSession, catalog);
+        var currentSession = _runtime.CurrentSession;
+        if (currentSession is null)
+        {
+            return;
+        }
+
+        var reliability = _actionReliability.Evaluate(profile, currentSession, catalog);
         foreach (var item in reliability)
         {
             ActionReliability.Add(new ActionReliabilityViewItem(
@@ -134,7 +140,7 @@ public abstract class MainViewModelLiveOpsBase : MainViewModelBindableMembersBas
 
     protected async Task ApplySelectedUnitDraftAsync()
     {
-        if (SelectedProfileId is null)
+        if (string.IsNullOrWhiteSpace(SelectedProfileId))
         {
             return;
         }
@@ -146,7 +152,8 @@ public abstract class MainViewModelLiveOpsBase : MainViewModelBindableMembersBas
             return;
         }
 
-        var result = await _selectedUnitTransactions.ApplyAsync(SelectedProfileId, draftResult.Draft!, RuntimeMode);
+        var draft = draftResult.Draft ?? throw new InvalidOperationException("Draft build succeeded but Draft is null.");
+        var result = await _selectedUnitTransactions.ApplyAsync(SelectedProfileId, draft, RuntimeMode);
         RefreshSelectedUnitTransactions();
         if (result.Succeeded)
         {
@@ -161,7 +168,7 @@ public abstract class MainViewModelLiveOpsBase : MainViewModelBindableMembersBas
 
     protected async Task RevertSelectedUnitTransactionAsync()
     {
-        if (SelectedProfileId is null)
+        if (string.IsNullOrWhiteSpace(SelectedProfileId))
         {
             return;
         }
@@ -181,7 +188,7 @@ public abstract class MainViewModelLiveOpsBase : MainViewModelBindableMembersBas
 
     protected async Task RestoreSelectedUnitBaselineAsync()
     {
-        if (SelectedProfileId is null)
+        if (string.IsNullOrWhiteSpace(SelectedProfileId))
         {
             return;
         }
@@ -201,7 +208,7 @@ public abstract class MainViewModelLiveOpsBase : MainViewModelBindableMembersBas
 
     protected async Task LoadSpawnPresetsAsync()
     {
-        if (SelectedProfileId is null)
+        if (string.IsNullOrWhiteSpace(SelectedProfileId))
         {
             return;
         }
@@ -240,7 +247,8 @@ public abstract class MainViewModelLiveOpsBase : MainViewModelBindableMembersBas
             return;
         }
 
-        var preset = batchInputs.SelectedPreset!.ToCorePreset();
+        var selectedPreset = batchInputs.SelectedPreset ?? throw new InvalidOperationException("Spawn batch succeeded but preset is null.");
+        var preset = selectedPreset.ToCorePreset();
         var plan = _spawnPresets.BuildBatchPlan(
             batchInputs.ProfileId,
             preset,
@@ -258,6 +266,7 @@ public abstract class MainViewModelLiveOpsBase : MainViewModelBindableMembersBas
 
     protected void ApplyDraftFromSnapshot(SelectedUnitSnapshot snapshot)
     {
+        ArgumentNullException.ThrowIfNull(snapshot);
         SelectedUnitHp = snapshot.Hp.ToString(DecimalPrecision3);
         SelectedUnitShield = snapshot.Shield.ToString(DecimalPrecision3);
         SelectedUnitSpeed = snapshot.Speed.ToString(DecimalPrecision3);

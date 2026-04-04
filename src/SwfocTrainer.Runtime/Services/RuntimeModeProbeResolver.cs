@@ -30,6 +30,7 @@ public static class RuntimeModeProbeResolver
 
     public static RuntimeModeProbeResult Resolve(RuntimeMode modeHint, SymbolMap symbols)
     {
+        ArgumentNullException.ThrowIfNull(symbols);
         var tacticalSignalCount = CountSignals(symbols, TacticalIndicators);
         var galacticSignalCount = CountSignals(symbols, GalacticIndicators);
         if (TryResolveSingleSignalMode(modeHint, tacticalSignalCount, galacticSignalCount, out var singleSignalResult))

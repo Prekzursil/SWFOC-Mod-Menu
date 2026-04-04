@@ -26,6 +26,11 @@ public sealed class TrainerOrchestrator
         IAuditLogger auditLogger,
         ITelemetrySnapshotService telemetry)
     {
+        ArgumentNullException.ThrowIfNull(profiles);
+        ArgumentNullException.ThrowIfNull(runtime);
+        ArgumentNullException.ThrowIfNull(freezeService);
+        ArgumentNullException.ThrowIfNull(auditLogger);
+        ArgumentNullException.ThrowIfNull(telemetry);
         _profiles = profiles;
         _runtime = runtime;
         _freezeService = freezeService;
@@ -55,6 +60,9 @@ public sealed class TrainerOrchestrator
         IReadOnlyDictionary<string, object?>? context,
         CancellationToken cancellationToken)
     {
+        ArgumentNullException.ThrowIfNull(profileId);
+        ArgumentNullException.ThrowIfNull(actionId);
+        ArgumentNullException.ThrowIfNull(payload);
         var profile = await _profiles.ResolveInheritedProfileAsync(profileId, cancellationToken);
         if (!profile.Actions.TryGetValue(actionId, out var action))
         {

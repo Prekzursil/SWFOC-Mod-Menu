@@ -58,11 +58,13 @@ public sealed class NamedPipeHelperBridgeBackend : IHelperBridgeBackend
 
     public NamedPipeHelperBridgeBackend(IExecutionBackend backend)
     {
+        ArgumentNullException.ThrowIfNull(backend);
         _backend = backend;
     }
 
     public async Task<HelperBridgeProbeResult> ProbeAsync(HelperBridgeProbeRequest request, CancellationToken cancellationToken)
     {
+        ArgumentNullException.ThrowIfNull(request);
         if (request.Process.ProcessId <= 0)
         {
             return CreateProcessUnavailableProbeResult(request.Process.ProcessId);
@@ -80,6 +82,7 @@ public sealed class NamedPipeHelperBridgeBackend : IHelperBridgeBackend
 
     public async Task<HelperBridgeExecutionResult> ExecuteAsync(HelperBridgeRequest request, CancellationToken cancellationToken)
     {
+        ArgumentNullException.ThrowIfNull(request);
         var probe = await ProbeForExecutionAsync(request, cancellationToken);
         if (!probe.Available)
         {

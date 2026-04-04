@@ -17,6 +17,7 @@ public sealed class AsyncCommand : ICommand
 
     public AsyncCommand(Func<Task> execute, Func<bool>? canExecute)
     {
+        ArgumentNullException.ThrowIfNull(execute);
         _execute = execute;
         _canExecute = canExecute;
     }
