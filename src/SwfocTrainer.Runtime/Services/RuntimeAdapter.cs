@@ -70,6 +70,11 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
         ILogger<RuntimeAdapter> logger,
         IServiceProvider serviceProvider)
     {
+        ArgumentNullException.ThrowIfNull(processLocator);
+        ArgumentNullException.ThrowIfNull(profileRepository);
+        ArgumentNullException.ThrowIfNull(signatureResolver);
+        ArgumentNullException.ThrowIfNull(logger);
+        ArgumentNullException.ThrowIfNull(serviceProvider);
         _processLocator = processLocator;
         _profileRepository = profileRepository;
         _signatureResolver = signatureResolver;

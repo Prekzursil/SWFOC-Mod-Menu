@@ -22,6 +22,10 @@ public sealed class BackendRouter : IBackendRouter
         ProcessMetadata process,
         CapabilityReport capabilityReport)
     {
+        ArgumentNullException.ThrowIfNull(request);
+        ArgumentNullException.ThrowIfNull(profile);
+        ArgumentNullException.ThrowIfNull(process);
+        ArgumentNullException.ThrowIfNull(capabilityReport);
         var state = CreateRouteResolutionState(request, profile, process, capabilityReport);
 
         var requiredCapabilityDecision = TryResolveRequiredCapabilityContract(

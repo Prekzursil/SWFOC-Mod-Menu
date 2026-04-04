@@ -20,8 +20,10 @@ public sealed record TransplantValidationReport(
     IReadOnlyList<TransplantEntityValidation> Entities,
     IReadOnlyDictionary<string, object?> Diagnostics)
 {
-    public static TransplantValidationReport Empty(string targetProfileId) =>
-        new(
+    public static TransplantValidationReport Empty(string targetProfileId)
+    {
+        ArgumentNullException.ThrowIfNull(targetProfileId);
+        return new TransplantValidationReport(
             TargetProfileId: targetProfileId,
             GeneratedAtUtc: DateTimeOffset.UtcNow,
             AllResolved: true,
@@ -29,6 +31,7 @@ public sealed record TransplantValidationReport(
             BlockingEntityCount: 0,
             Entities: Array.Empty<TransplantEntityValidation>(),
             Diagnostics: new Dictionary<string, object?>());
+    }
 }
 
 public sealed record TransplantPlan(

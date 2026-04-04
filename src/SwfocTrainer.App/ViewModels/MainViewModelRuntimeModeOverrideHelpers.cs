@@ -87,7 +87,9 @@ internal static class MainViewModelRuntimeModeOverrideHelpers
         var normalized = Normalize(modeOverride);
         var path = GetSettingsPath();
         TrustedPathPolicy.EnsureSubPath(TrustedPathPolicy.GetOrCreateAppDataRoot(), path);
-        Directory.CreateDirectory(Path.GetDirectoryName(path)!);
+        var settingsDirectory = Path.GetDirectoryName(path)
+            ?? throw new InvalidOperationException("Runtime mode settings path has no parent directory.");
+        Directory.CreateDirectory(settingsDirectory);
         var data = new Dictionary<string, string>(StringComparer.Ordinal)
         {
             [SettingsKeyModeOverride] = normalized

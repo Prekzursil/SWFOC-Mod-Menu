@@ -22,6 +22,7 @@ public static class SdkOperationCatalog
 
     public static bool TryGet(string operationId, out SdkOperationDefinition definition)
     {
+        ArgumentNullException.ThrowIfNull(operationId);
         return Operations.TryGetValue(operationId, out definition!);
     }
 
@@ -64,6 +65,7 @@ public sealed record SdkOperationDefinition(
 
     public static SdkOperationDefinition ReadOnly(string operationId)
     {
+        ArgumentNullException.ThrowIfNull(operationId);
         return new SdkOperationDefinition(
             operationId,
             IsMutation: false,
@@ -73,6 +75,8 @@ public sealed record SdkOperationDefinition(
 
     public static SdkOperationDefinition Mutation(string operationId, params RuntimeMode[] allowedModes)
     {
+        ArgumentNullException.ThrowIfNull(operationId);
+        ArgumentNullException.ThrowIfNull(allowedModes);
         return new SdkOperationDefinition(
             operationId,
             IsMutation: true,

@@ -25,6 +25,10 @@ public sealed class SpawnPresetService : ISpawnPresetService
         TrainerOrchestrator orchestrator,
         LiveOpsOptions options)
     {
+        ArgumentNullException.ThrowIfNull(profiles);
+        ArgumentNullException.ThrowIfNull(catalog);
+        ArgumentNullException.ThrowIfNull(orchestrator);
+        ArgumentNullException.ThrowIfNull(options);
         _profiles = profiles;
         _catalog = catalog;
         _orchestrator = orchestrator;
@@ -33,6 +37,7 @@ public sealed class SpawnPresetService : ISpawnPresetService
 
     public async Task<IReadOnlyList<SpawnPreset>> LoadPresetsAsync(string profileId, CancellationToken cancellationToken)
     {
+        ArgumentNullException.ThrowIfNull(profileId);
         var presetPath = BuildPresetPath(profileId);
         if (File.Exists(presetPath))
         {
@@ -58,6 +63,8 @@ public sealed class SpawnPresetService : ISpawnPresetService
         string? entryMarkerOverride,
         bool stopOnFailure)
     {
+        ArgumentNullException.ThrowIfNull(profileId);
+        ArgumentNullException.ThrowIfNull(preset);
         var normalizedQuantity = Math.Clamp(quantity <= 0 ? preset.DefaultQuantity : quantity, 1, 100);
         var normalizedDelay = Math.Clamp(delayMs < 0 ? preset.DefaultDelayMs : delayMs, 0, 5000);
         var faction = string.IsNullOrWhiteSpace(factionOverride) ? preset.Faction : factionOverride.Trim();
@@ -82,6 +89,8 @@ public sealed class SpawnPresetService : ISpawnPresetService
         RuntimeMode runtimeMode,
         CancellationToken cancellationToken)
     {
+        ArgumentNullException.ThrowIfNull(profileId);
+        ArgumentNullException.ThrowIfNull(plan);
         if (runtimeMode == RuntimeMode.Unknown)
         {
             return BuildFailedBatchResult("Spawn batch blocked: runtime mode is unknown.", blockedByMode: true);

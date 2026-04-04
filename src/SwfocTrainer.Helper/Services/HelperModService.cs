@@ -14,6 +14,9 @@ public sealed class HelperModService : IHelperModService
 
     public HelperModService(IProfileRepository profiles, HelperModOptions options, ILogger<HelperModService> logger)
     {
+        ArgumentNullException.ThrowIfNull(profiles);
+        ArgumentNullException.ThrowIfNull(options);
+        ArgumentNullException.ThrowIfNull(logger);
         _profiles = profiles;
         _options = options;
         _logger = logger;

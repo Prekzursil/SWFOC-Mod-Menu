@@ -29,6 +29,10 @@ internal static class SignatureResolverSymbolHydration
         IReadOnlyList<SignatureSet> signatureSets,
         IDictionary<string, SymbolInfo> symbols)
     {
+        ArgumentNullException.ThrowIfNull(logger);
+        ArgumentNullException.ThrowIfNull(module);
+        ArgumentNullException.ThrowIfNull(signatureSets);
+        ArgumentNullException.ThrowIfNull(symbols);
         if (!TryLoadGhidraSymbolPack(ghidraSymbolPackRoot, logger, module, out var fingerprintId, out var packPath, out var pack))
         {
             return;
@@ -343,6 +347,7 @@ internal static class SignatureResolverSymbolHydration
 
     private static bool TryBuildFingerprintId(ProcessModule module, out string fingerprintId, out string moduleName)
     {
+        ArgumentNullException.ThrowIfNull(module);
         fingerprintId = string.Empty;
         moduleName = Path.GetFileName(module.FileName ?? module.ModuleName ?? "module");
         if (string.IsNullOrWhiteSpace(module.FileName) || !File.Exists(module.FileName))

@@ -14,6 +14,7 @@ public sealed class LuaHarnessRunner : ILuaHarnessRunner
 
     public LuaHarnessRunner(string harnessScriptPath)
     {
+        ArgumentNullException.ThrowIfNull(harnessScriptPath);
         _harnessScriptPath = harnessScriptPath;
     }
 

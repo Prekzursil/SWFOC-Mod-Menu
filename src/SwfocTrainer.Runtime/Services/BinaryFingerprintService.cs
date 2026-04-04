@@ -12,26 +12,31 @@ public sealed class BinaryFingerprintService : IBinaryFingerprintService
 
     public BinaryFingerprintService(ILogger<BinaryFingerprintService> logger)
     {
+        ArgumentNullException.ThrowIfNull(logger);
         _logger = logger;
     }
 
     public Task<BinaryFingerprint> CaptureFromPathAsync(string modulePath)
     {
+        ArgumentNullException.ThrowIfNull(modulePath);
         return CaptureFromPathAsync(modulePath, null, CancellationToken.None);
     }
 
     public Task<BinaryFingerprint> CaptureFromPathAsync(string modulePath, CancellationToken cancellationToken)
     {
+        ArgumentNullException.ThrowIfNull(modulePath);
         return CaptureFromPathAsync(modulePath, null, cancellationToken);
     }
 
     public Task<BinaryFingerprint> CaptureFromPathAsync(string modulePath, int processId)
     {
+        ArgumentNullException.ThrowIfNull(modulePath);
         return CaptureFromPathAsync(modulePath, processId, CancellationToken.None);
     }
 
     public Task<BinaryFingerprint> CaptureFromPathAsync(string modulePath, int processId, CancellationToken cancellationToken)
     {
+        ArgumentNullException.ThrowIfNull(modulePath);
         return CaptureFromPathAsync(modulePath, (int?)processId, cancellationToken);
     }
 
@@ -107,7 +112,7 @@ public sealed class BinaryFingerprintService : IBinaryFingerprintService
             using var process = Process.GetProcessById(processId.Value);
             var modules = process.Modules
                 .Cast<ProcessModule>()
-                .Select(x => x.ModuleName)
+                .Select(x => x.ModuleName ?? string.Empty)
                 .Where(x => !string.IsNullOrWhiteSpace(x))
                 .Distinct(StringComparer.OrdinalIgnoreCase)
                 .OrderBy(x => x, StringComparer.OrdinalIgnoreCase)

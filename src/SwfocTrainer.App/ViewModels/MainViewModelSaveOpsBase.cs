@@ -38,7 +38,7 @@ public abstract class MainViewModelSaveOpsBase : MainViewModelQuickActionsBase
         => LoadSaveAsync(clearPatchSummary: true);
     protected async Task LoadSaveAsync(bool clearPatchSummary)
     {
-        if (SelectedProfileId is null)
+        if (string.IsNullOrWhiteSpace(SelectedProfileId))
         {
             return;
         }
@@ -136,7 +136,8 @@ public abstract class MainViewModelSaveOpsBase : MainViewModelQuickActionsBase
             return;
         }
 
-        var outputPath = TrustedPathPolicy.NormalizeAbsolute(dialog.FileName);
+        var outputPath = TrustedPathPolicy.NormalizeAbsolute(dialog.FileName
+            ?? throw new InvalidOperationException("Save dialog returned a null file name."));
         TrustedPathPolicy.EnsureAllowedExtension(outputPath, ".json");
         var outputDirectory = Path.GetDirectoryName(outputPath);
         if (string.IsNullOrWhiteSpace(outputDirectory))
@@ -344,6 +345,7 @@ public abstract class MainViewModelSaveOpsBase : MainViewModelQuickActionsBase
     }
     protected IEnumerable<SaveFieldViewItem> FlattenNodes(SaveNode root)
     {
+        ArgumentNullException.ThrowIfNull(root);
         if (root.Children is null || root.Children.Count == 0)
         {
             if (!string.Equals(root.ValueType, "root", StringComparison.OrdinalIgnoreCase))
@@ -417,7 +419,7 @@ public abstract class MainViewModelSaveOpsBase : MainViewModelQuickActionsBase
 
     protected async Task LoadCatalogAsync()
     {
-        if (SelectedProfileId is null) { return; }
+        if (string.IsNullOrWhiteSpace(SelectedProfileId)) { return; }
 
         CatalogSummary.Clear();
         var catalog = await _catalog.LoadCatalogAsync(SelectedProfileId);
@@ -428,7 +430,7 @@ public abstract class MainViewModelSaveOpsBase : MainViewModelQuickActionsBase
 
     protected async Task DeployHelperAsync()
     {
-        if (SelectedProfileId is null) { return; }
+        if (string.IsNullOrWhiteSpace(SelectedProfileId)) { return; }
 
         var path = await _helper.DeployAsync(SelectedProfileId);
         Status = $"Helper deployed to: {path}";
@@ -436,7 +438,7 @@ public abstract class MainViewModelSaveOpsBase : MainViewModelQuickActionsBase
 
     protected async Task VerifyHelperAsync()
     {
-        if (SelectedProfileId is null) { return; }
+        if (string.IsNullOrWhiteSpace(SelectedProfileId)) { return; }
 
         var ok = await _helper.VerifyAsync(SelectedProfileId);
         Status = ok ? "Helper verification passed" : "Helper verification failed";
@@ -453,7 +455,7 @@ public abstract class MainViewModelSaveOpsBase : MainViewModelQuickActionsBase
 
     protected async Task InstallUpdateAsync()
     {
-        if (SelectedProfileId is null) { return; }
+        if (string.IsNullOrWhiteSpace(SelectedProfileId)) { return; }
         var result = await _updates.InstallProfileTransactionalAsync(SelectedProfileId);
         if (!result.Succeeded)
         {
@@ -470,7 +472,7 @@ public abstract class MainViewModelSaveOpsBase : MainViewModelQuickActionsBase
 
     protected async Task RollbackProfileUpdateAsync()
     {
-        if (SelectedProfileId is null) { return; }
+        if (string.IsNullOrWhiteSpace(SelectedProfileId)) { return; }
         var rollback = await _updates.RollbackLastInstallAsync(SelectedProfileId);
         if (!rollback.Restored)
         {
@@ -507,7 +509,7 @@ public abstract class MainViewModelSaveOpsBase : MainViewModelQuickActionsBase
 
     protected async Task ExportCalibrationArtifactAsync()
     {
-        var profileId = SelectedProfileId ?? OnboardingDraftProfileId;
+        var profileId = !string.IsNullOrWhiteSpace(SelectedProfileId) ? SelectedProfileId : OnboardingDraftProfileId;
         var outputDir = Path.Combine(SupportBundleOutputDirectory, "calibration");
         Directory.CreateDirectory(outputDir);
 
@@ -526,7 +528,7 @@ public abstract class MainViewModelSaveOpsBase : MainViewModelQuickActionsBase
 
     protected async Task BuildCompatibilityReportAsync()
     {
-        var profileId = SelectedProfileId ?? OnboardingDraftProfileId;
+        var profileId = !string.IsNullOrWhiteSpace(SelectedProfileId) ? SelectedProfileId : OnboardingDraftProfileId;
         var profile = await _profiles.ResolveInheritedProfileAsync(profileId);
         var report = await _modCalibration.BuildCompatibilityReportAsync(profile, _runtime.CurrentSession);
 

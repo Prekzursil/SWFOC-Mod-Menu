@@ -9,6 +9,7 @@ public static class ModOnboardingServiceExtensions
         ModOnboardingRequest request)
     {
         ArgumentNullException.ThrowIfNull(service);
+        ArgumentNullException.ThrowIfNull(request);
         return service.ScaffoldDraftProfileAsync(request, CancellationToken.None);
     }
 
@@ -17,6 +18,7 @@ public static class ModOnboardingServiceExtensions
         ModOnboardingSeedBatchRequest request)
     {
         ArgumentNullException.ThrowIfNull(service);
+        ArgumentNullException.ThrowIfNull(request);
         return service.ScaffoldDraftProfilesFromSeedsAsync(request, CancellationToken.None);
     }
 }

@@ -55,12 +55,13 @@ public sealed class TelemetryLogTailService : ITelemetryLogTailService
             return null;
         }
 
+        var parentDirectory = Directory.GetParent(processDirectory)?.FullName ?? processDirectory;
         var candidates = new[]
         {
             Path.Combine(processDirectory, "_LogFile.txt"),
             Path.Combine(processDirectory, "LogFile.txt"),
             Path.Combine(processDirectory, "corruption", "LogFile.txt"),
-            Path.Combine(Directory.GetParent(processDirectory)?.FullName ?? processDirectory, "corruption", "LogFile.txt")
+            Path.Combine(parentDirectory, "corruption", "LogFile.txt")
         };
 
         return candidates

@@ -22,6 +22,8 @@ public sealed class ModDependencyValidator : IModDependencyValidator
 
     public DependencyValidationResult Validate(TrainerProfile profile, ProcessMetadata process)
     {
+        ArgumentNullException.ThrowIfNull(profile);
+        ArgumentNullException.ThrowIfNull(process);
         var marker = ReadMetadata(profile, DependencyMetadataMarkerKey);
         var markerFailure = ValidateMarkerMetadata(marker);
         if (markerFailure is not null)

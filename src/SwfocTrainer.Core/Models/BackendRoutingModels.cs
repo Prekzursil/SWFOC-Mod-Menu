@@ -37,11 +37,13 @@ public sealed record CapabilityReport(
 {
     public static CapabilityReport Unknown(string profileId)
     {
+        ArgumentNullException.ThrowIfNull(profileId);
         return Unknown(profileId, RuntimeReasonCode.CAPABILITY_UNKNOWN);
     }
 
     public static CapabilityReport Unknown(string profileId, RuntimeReasonCode reasonCode)
     {
+        ArgumentNullException.ThrowIfNull(profileId);
         return new CapabilityReport(
             profileId,
             DateTimeOffset.UtcNow,
@@ -51,6 +53,7 @@ public sealed record CapabilityReport(
 
     public bool IsFeatureAvailable(string featureId)
     {
+        ArgumentNullException.ThrowIfNull(featureId);
         return Capabilities.TryGetValue(featureId, out var capability) && capability.Available;
     }
 }

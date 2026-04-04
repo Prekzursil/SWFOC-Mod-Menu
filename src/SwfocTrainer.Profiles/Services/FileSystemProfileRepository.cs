@@ -21,6 +21,7 @@ public sealed class FileSystemProfileRepository : IProfileRepository
 
     public FileSystemProfileRepository(ProfileRepositoryOptions options)
     {
+        ArgumentNullException.ThrowIfNull(options);
         _options = options;
     }
 

@@ -19,6 +19,8 @@ public sealed class LaunchContextResolver : ILaunchContextResolver
 
     public LaunchContext Resolve(ProcessMetadata process, IReadOnlyList<TrainerProfile> profiles)
     {
+        ArgumentNullException.ThrowIfNull(process);
+        ArgumentNullException.ThrowIfNull(profiles);
         var commandLineAvailable = !string.IsNullOrWhiteSpace(process.CommandLine);
         var steamModIds = ExtractSteamModIds(process).OrderBy(x => x, StringComparer.Ordinal).ToArray();
         var modPathRaw = ExtractModPath(process.CommandLine);

@@ -7,6 +7,7 @@ public sealed class SdkExecutionGuard : ISdkExecutionGuard
 {
     public SdkExecutionDecision CanExecute(CapabilityResolutionResult resolution, bool isMutation)
     {
+        ArgumentNullException.ThrowIfNull(resolution);
         if (resolution.State == SdkCapabilityStatus.Available)
         {
             return new SdkExecutionDecision(true, resolution.ReasonCode, "Capability available.");

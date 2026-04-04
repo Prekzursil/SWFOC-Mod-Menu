@@ -20,6 +20,7 @@ public sealed class TelemetrySnapshotService : ITelemetrySnapshotService
 
     public void RecordAction(string actionId, AddressSource source, bool succeeded)
     {
+        ArgumentNullException.ThrowIfNull(actionId);
         if (string.IsNullOrWhiteSpace(actionId))
         {
             return;

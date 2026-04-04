@@ -70,6 +70,9 @@ internal static class SignatureResolverFallbacks
         nint hit,
         in SignatureHitContext context)
     {
+        ArgumentNullException.ThrowIfNull(logger);
+        ArgumentNullException.ThrowIfNull(signatureSet);
+        ArgumentNullException.ThrowIfNull(signature);
         if (SignatureResolverAddressing.TryResolveAddress(
                 signature,
                 hit,
@@ -124,6 +127,11 @@ internal static class SignatureResolverFallbacks
         nint baseAddress,
         IDictionary<string, SymbolInfo> symbols)
     {
+        ArgumentNullException.ThrowIfNull(logger);
+        ArgumentNullException.ThrowIfNull(signature);
+        ArgumentNullException.ThrowIfNull(fallbackOffsets);
+        ArgumentNullException.ThrowIfNull(accessor);
+        ArgumentNullException.ThrowIfNull(symbols);
         if (fallbackOffsets.TryGetValue(signature.Name, out var fallback) && !symbols.ContainsKey(signature.Name))
         {
             if (TryApplyFallback(new FallbackAttempt(
@@ -171,6 +179,10 @@ internal static class SignatureResolverFallbacks
         nint baseAddress,
         IDictionary<string, SymbolInfo> symbols)
     {
+        ArgumentNullException.ThrowIfNull(logger);
+        ArgumentNullException.ThrowIfNull(fallbackOffsets);
+        ArgumentNullException.ThrowIfNull(accessor);
+        ArgumentNullException.ThrowIfNull(symbols);
         foreach (var fallback in fallbackOffsets)
         {
             if (symbols.ContainsKey(fallback.Key))

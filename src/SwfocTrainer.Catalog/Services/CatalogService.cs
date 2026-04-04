@@ -35,6 +35,9 @@ public sealed class CatalogService : ICatalogService
 
     public CatalogService(CatalogOptions options, IProfileRepository profiles, ILogger<CatalogService> logger)
     {
+        ArgumentNullException.ThrowIfNull(options);
+        ArgumentNullException.ThrowIfNull(profiles);
+        ArgumentNullException.ThrowIfNull(logger);
         _options = options;
         _profiles = profiles;
         _logger = logger;

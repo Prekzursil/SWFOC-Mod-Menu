@@ -9,6 +9,8 @@ internal static class MainViewModelAttachHelpers
 {
     internal static string BuildAttachProcessHintSummary(IReadOnlyList<ProcessMetadata> processes, string unknownValue)
     {
+        ArgumentNullException.ThrowIfNull(processes);
+
         var summary = string.Join(", ", processes
             .Take(3)
             .Select(process => BuildAttachProcessHintSegment(process, unknownValue)));
@@ -52,6 +54,9 @@ internal static class MainViewModelAttachHelpers
         IReadOnlyDictionary<string, string> defaultSymbolByActionId,
         out string? unavailableReason)
     {
+        ArgumentNullException.ThrowIfNull(spec);
+        ArgumentNullException.ThrowIfNull(session);
+
         unavailableReason = ResolveActionUnavailableReason(actionId, spec, session, defaultSymbolByActionId);
         return string.IsNullOrWhiteSpace(unavailableReason);
     }
@@ -81,11 +86,12 @@ internal static class MainViewModelAttachHelpers
         var mods = MainViewModelDiagnostics.ReadProcessMetadata(process, "steamModIdsDetected", string.Empty);
         var via = MainViewModelDiagnostics.ReadProcessMetadata(process, "detectedVia", unknownValue);
         var launch = launchContext?.LaunchKind.ToString() ?? "n/a";
-        var recommended = launchContext?.Recommendation.ProfileId ?? string.Empty;
-        var reason = launchContext?.Recommendation.ReasonCode ?? unknownValue;
-        var confidence = launchContext is null
+        var recommendation = launchContext?.Recommendation;
+        var recommended = recommendation?.ProfileId ?? string.Empty;
+        var reason = recommendation?.ReasonCode ?? unknownValue;
+        var confidence = recommendation is null
             ? "0.00"
-            : launchContext.Recommendation.Confidence.ToString("0.00");
+            : recommendation.Confidence.ToString("0.00");
         return $"{process.ProcessName}:{process.ProcessId}:{process.ExeTarget}:cmd={cmd}:mods={mods}:launch={launch}:rec={recommended}:{reason}:{confidence}:via={via}";
     }
 

@@ -53,7 +53,7 @@ public sealed class ProcessLocator : IProcessLocator
     }
 
     public async Task<IReadOnlyList<ProcessMetadata>> FindSupportedProcessesAsync(
-        ProcessLocatorOptions options,
+        ProcessLocatorOptions? options,
         CancellationToken cancellationToken)
     {
         options ??= ProcessLocatorOptions.None;
@@ -63,13 +63,16 @@ public sealed class ProcessLocator : IProcessLocator
 
         foreach (var process in Process.GetProcesses())
         {
-            var metadata = TryBuildProcessMetadata(process, wmiByPid, profiles, options);
-            if (metadata is null)
+            using (process)
             {
-                continue;
-            }
+                var metadata = TryBuildProcessMetadata(process, wmiByPid, profiles, options);
+                if (metadata is null)
+                {
+                    continue;
+                }
 
-            list.Add(metadata);
+                list.Add(metadata);
+            }
         }
 
         return list;
@@ -82,7 +85,7 @@ public sealed class ProcessLocator : IProcessLocator
 
     public async Task<ProcessMetadata?> FindBestMatchAsync(
         ExeTarget target,
-        ProcessLocatorOptions options,
+        ProcessLocatorOptions? options,
         CancellationToken cancellationToken)
     {
         options ??= ProcessLocatorOptions.None;
