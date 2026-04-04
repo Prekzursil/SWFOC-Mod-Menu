@@ -39,6 +39,7 @@ internal static class Program
 
     private static void ConfigureServices(IServiceCollection services)
     {
+        ArgumentNullException.ThrowIfNull(services);
         var appData = TrustedPathPolicy.GetOrCreateAppDataRoot();
         var profilesRoot = Path.Combine(AppContext.BaseDirectory, "profiles", "default");
         var remoteManifest = Environment.GetEnvironmentVariable("SWFOC_PROFILE_MANIFEST_URL");

@@ -10,6 +10,9 @@ internal static class MainViewModelQuickActionHelpers
         IEnumerable<string> frozenSymbols,
         IEnumerable<string> activeToggles)
     {
+        ArgumentNullException.ThrowIfNull(activeFreezes);
+        ArgumentNullException.ThrowIfNull(frozenSymbols);
+        ArgumentNullException.ThrowIfNull(activeToggles);
         activeFreezes.Clear();
         foreach (var symbol in frozenSymbols)
         {

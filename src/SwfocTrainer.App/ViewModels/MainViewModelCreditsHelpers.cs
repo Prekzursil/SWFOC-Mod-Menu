@@ -19,6 +19,7 @@ internal static class MainViewModelCreditsHelpers
 
     internal static string ResolveCreditsStateTag(ActionExecutionResult result, bool creditsFreeze)
     {
+        ArgumentNullException.ThrowIfNull(result);
         var stateTag = MainViewModelDiagnostics.ReadDiagnosticString(result.Diagnostics, "creditsStateTag");
         if (!string.IsNullOrWhiteSpace(stateTag))
         {

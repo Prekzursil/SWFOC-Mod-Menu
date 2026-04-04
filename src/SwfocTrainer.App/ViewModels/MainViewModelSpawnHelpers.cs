@@ -22,6 +22,8 @@ internal static class MainViewModelSpawnHelpers
 
     internal static SpawnBatchInputResult TryBuildBatchInputs(SpawnBatchInputRequest request)
     {
+        ArgumentNullException.ThrowIfNull(request);
+
         if (request.SelectedProfileId is null || request.SelectedSpawnPreset is null)
         {
             return new SpawnBatchInputResult(

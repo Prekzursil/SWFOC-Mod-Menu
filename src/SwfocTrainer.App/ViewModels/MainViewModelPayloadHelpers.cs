@@ -11,6 +11,9 @@ internal static class MainViewModelPayloadHelpers
         IReadOnlyDictionary<string, string> defaultSymbolByActionId,
         IReadOnlyDictionary<string, string> defaultHelperHookByActionId)
     {
+        ArgumentNullException.ThrowIfNull(required);
+        ArgumentNullException.ThrowIfNull(defaultSymbolByActionId);
+        ArgumentNullException.ThrowIfNull(defaultHelperHookByActionId);
         var payload = new JsonObject();
 
         foreach (var node in required)

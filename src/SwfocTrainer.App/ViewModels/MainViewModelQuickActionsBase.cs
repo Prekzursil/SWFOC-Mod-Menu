@@ -18,7 +18,14 @@ public abstract class MainViewModelQuickActionsBase : MainViewModelLiveOpsBase
 
     protected async Task QuickRunActionAsync(string actionId, JsonObject payload, string? toggleKey = null)
     {
+        ArgumentNullException.ThrowIfNull(payload);
+
         if (!CanRunQuickAction())
+        {
+            return;
+        }
+
+        if (string.IsNullOrWhiteSpace(actionId))
         {
             return;
         }
