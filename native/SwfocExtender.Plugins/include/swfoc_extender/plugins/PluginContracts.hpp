@@ -15,6 +15,8 @@ suppress only this header:
 
 namespace swfoc::extender::plugins {
 
+using StringMap = std::map<std::string, std::string, std::less<>>;
+
 struct PluginRequest {
     // --- Identity fields ---
     struct Identity {
@@ -86,7 +88,7 @@ struct PluginRequest {
     Payload payload {};
     HelperBridge helperBridge {};
     EntityContext entityContext {};
-    [[maybe_unused]] std::map<std::string, std::string, std::less<>> anchors {};
+    [[maybe_unused]] StringMap anchors {};
 
     // Convenience accessors — keep call-site code short
     [[nodiscard]] const std::string& featureId() const noexcept { return identity.featureId; }
@@ -130,7 +132,7 @@ struct CapabilityState {
     [[maybe_unused]] bool available {false};
     [[maybe_unused]] std::string state {"Unknown"};
     [[maybe_unused]] std::string reasonCode {"CAPABILITY_BACKEND_UNAVAILABLE"};
-    [[maybe_unused]] std::map<std::string, std::string, std::less<>> diagnostics {};
+    [[maybe_unused]] StringMap diagnostics {};
 
     CapabilityState() = default;
     CapabilityState(const CapabilityState&) = default;
@@ -154,7 +156,7 @@ struct PluginResult {
     [[maybe_unused]] std::string reasonCode {"CAPABILITY_UNKNOWN"};
     [[maybe_unused]] std::string hookState {"none"};
     [[maybe_unused]] std::string message {};
-    [[maybe_unused]] std::map<std::string, std::string, std::less<>> diagnostics {};
+    [[maybe_unused]] StringMap diagnostics {};
 
     PluginResult() = default;
     PluginResult(const PluginResult&) = default;

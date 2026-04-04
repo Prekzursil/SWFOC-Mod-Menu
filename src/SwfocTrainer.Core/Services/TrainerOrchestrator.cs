@@ -7,11 +7,11 @@ namespace SwfocTrainer.Core.Services;
 
 public sealed class TrainerOrchestrator
 {
-    private const string FreezeSymbolKey = "symbol";
-    private const string FreezeToggleKey = "freeze";
-    private const string IntValueKey = "intValue";
-    private const string FloatValueKey = "floatValue";
-    private const string BoolValueKey = "boolValue";
+    private const string FreezeSymbolField = "symbol";
+    private const string FreezeToggleField = "freeze";
+    private const string IntValueField = "intValue";
+    private const string FloatValueField = "floatValue";
+    private const string BoolValueField = "boolValue";
 
     private readonly IProfileRepository _profiles;
     private readonly IRuntimeAdapter _runtime;
@@ -195,14 +195,14 @@ public sealed class TrainerOrchestrator
 
     private ActionExecutionResult ExecuteFreezeAction(ActionSpec action, System.Text.Json.Nodes.JsonObject payload)
     {
-        var symbol = payload[FreezeSymbolKey]?.GetValue<string>();
+        var symbol = payload[FreezeSymbolField]?.GetValue<string>();
         if (string.IsNullOrWhiteSpace(symbol))
         {
             return new ActionExecutionResult(false, "Freeze action requires 'symbol' in payload.", AddressSource.None);
         }
 
         // Determine freeze vs unfreeze
-        var freeze = payload[FreezeToggleKey]?.GetValue<bool>()
+        var freeze = payload[FreezeToggleField]?.GetValue<bool>()
             ?? !action.Id.Equals("unfreeze_symbol", StringComparison.OrdinalIgnoreCase);
 
         if (!freeze)
@@ -233,7 +233,7 @@ public sealed class TrainerOrchestrator
 
     private ActionExecutionResult? TryBuildFreezeSetResult(string symbol, System.Text.Json.Nodes.JsonObject payload)
     {
-        var intNode = payload[IntValueKey];
+        var intNode = payload[IntValueField];
         if (intNode is not null)
         {
             var value = intNode.GetValue<int>();
@@ -241,7 +241,7 @@ public sealed class TrainerOrchestrator
             return BuildFreezeResult(symbol, "int", value);
         }
 
-        var floatNode = payload[FloatValueKey];
+        var floatNode = payload[FloatValueField];
         if (floatNode is not null)
         {
             var value = ReadFloatFreezeValue(payload);
@@ -249,7 +249,7 @@ public sealed class TrainerOrchestrator
             return BuildFreezeResult(symbol, "float", value);
         }
 
-        var boolNode = payload[BoolValueKey];
+        var boolNode = payload[BoolValueField];
         if (boolNode is not null)
         {
             var value = boolNode.GetValue<bool>();
@@ -262,7 +262,7 @@ public sealed class TrainerOrchestrator
 
     private static float ReadFloatFreezeValue(System.Text.Json.Nodes.JsonObject payload)
     {
-        var node = payload[FloatValueKey]
+        var node = payload[FloatValueField]
             ?? throw new InvalidOperationException("Expected floatValue node in payload.");
         try
         {
@@ -287,7 +287,7 @@ public sealed class TrainerOrchestrator
     {
         var diagnostics = new Dictionary<string, object?>
         {
-            [FreezeSymbolKey] = symbol,
+            [FreezeSymbolField] = symbol,
             ["frozen"] = frozen
         };
 

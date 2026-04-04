@@ -24,8 +24,8 @@ namespace {
 
 using AnchorMatch = std::pair<std::string, std::string>;
 
-constexpr std::array<std::string_view, 2> kUnitCapAnchors {"unit_cap", "set_unit_cap"};
-constexpr std::array<std::string_view, 4> kInstantBuildAnchors {"instant_build_patch_injection", "instant_build_patch", "instant_build", "toggle_instant_build_patch"};
+constexpr std::array<std::string_view, 2> kUnitCapAnchors = {"unit_cap", "set_unit_cap"};
+constexpr std::array<std::string_view, 4> kInstantBuildAnchors = {"instant_build_patch_injection", "instant_build_patch", "instant_build", "toggle_instant_build_patch"};
 constexpr std::int32_t kMinUnitCap = 1;
 constexpr std::int32_t kMaxUnitCap = 100000;
 
@@ -44,7 +44,8 @@ std::vector<std::string_view> AnchorCandidates(std::string_view featureId) {
 std::optional<AnchorMatch> FindAnchor(const PluginRequest& request, std::string_view featureId) {
     const auto candidates = AnchorCandidates(featureId);
     for (const auto& key : candidates) {
-        if (const auto it = request.anchors.find(key); it != request.anchors.end() && !it->second.empty()) {
+        const auto it = request.anchors.find(key);
+        if (it != request.anchors.end() && !it->second.empty()) {
             return AnchorMatch {it->first, it->second};
         }
     }
@@ -242,6 +243,139 @@ const char* BuildPatchPlugin::id() const noexcept {
     return "build_patch";
 }
 
+PluginResult BuildPatchPlugin::ExecuteRestore(
+    const PluginRequest& request,
+    const AnchorMatch& resolvedAnchor,
+    std::uintptr_t targetAddress,
+    std::string_view restoreKey) {
+    std::vector<std::uint8_t> restoreBytes;
+    if (!TryReadRestoreBytes(restoreKey, restoreBytes)) {
+        return BuildPatchRestoreStateMissingResult(request, resolvedAnchor, restoreKey);
+    }
+
+    std::string writeError;
+    process_mutation::WriteOperationDiagnostics writeDiagnostics {};
+    if (!process_mutation::TryWriteBytesPatchSafe(
+            request.processId(),
+            targetAddress,
+            restoreBytes.data(),
+            restoreBytes.size(),
+            writeError,
+            &writeDiagnostics)) {
+        return BuildWriteFailureResult(request, resolvedAnchor, false, writeError, writeDiagnostics);
+    }
+
+    RemoveRestoreBytes(restoreKey);
+    if (request.featureId() == "set_unit_cap") {
+        ApplyUnitCapState(false, request.intValue());
+    } else {
+        ApplyInstantBuildState(false);
+    }
+
+    return BuildMutationSuccessResult({
+        .request = request,
+        .resolvedAnchor = resolvedAnchor,
+        .enablePatch = false,
+        .appliedValue = request.featureId() == "set_unit_cap" ? request.intValue() : 0,
+        .reasonCode = "PATCH_RESTORE_APPLIED",
+        .message = "Build patch restore applied through extender plugin.",
+        .operation = "restore",
+        .restoreKey = restoreKey,
+        .diagnostics = writeDiagnostics});
+}
+
+PluginResult BuildPatchPlugin::ExecuteApply(
+    const PluginRequest& request,
+    const AnchorMatch& resolvedAnchor,
+    std::uintptr_t targetAddress,
+    std::string_view restoreKey) {
+    const auto isUnitCap = request.featureId() == "set_unit_cap";
+    const auto writeLength = isUnitCap ? sizeof(std::int32_t) : sizeof(std::uint8_t);
+
+    std::vector<std::uint8_t> originalBytes;
+    std::string readError;
+    if (!process_mutation::TryReadBytes(
+            request.processId(),
+            targetAddress,
+            writeLength,
+            originalBytes,
+            readError)) {
+        return BuildReadFailureResult(request, resolvedAnchor, readError, "capture_original");
+    }
+
+    StoreRestoreBytes(restoreKey, std::move(originalBytes));
+
+    std::string writeError;
+    process_mutation::WriteOperationDiagnostics writeDiagnostics {};
+    if (isUnitCap) {
+        return ExecuteUnitCapApply(request, resolvedAnchor, targetAddress, restoreKey, writeError, writeDiagnostics);
+    }
+
+    return ExecuteInstantBuildApply(request, resolvedAnchor, targetAddress, restoreKey, writeError, writeDiagnostics);
+}
+
+PluginResult BuildPatchPlugin::ExecuteUnitCapApply(
+    const PluginRequest& request,
+    const AnchorMatch& resolvedAnchor,
+    std::uintptr_t targetAddress,
+    std::string_view restoreKey,
+    std::string& writeError,
+    process_mutation::WriteOperationDiagnostics& writeDiagnostics) {
+    const auto clamped = std::clamp(request.intValue(), kMinUnitCap, kMaxUnitCap);
+    if (!process_mutation::TryWriteValue<std::int32_t>(
+            request.processId(),
+            targetAddress,
+            clamped,
+            writeError,
+            process_mutation::WriteMutationMode::Patch,
+            &writeDiagnostics)) {
+        return BuildWriteFailureResult(request, resolvedAnchor, true, writeError, writeDiagnostics);
+    }
+
+    ApplyUnitCapState(true, request.intValue());
+    return BuildMutationSuccessResult({
+        .request = request,
+        .resolvedAnchor = resolvedAnchor,
+        .enablePatch = true,
+        .appliedValue = clamped,
+        .reasonCode = "CAPABILITY_PROBE_PASS",
+        .message = "Build patch value applied through extender plugin.",
+        .operation = "apply",
+        .restoreKey = restoreKey,
+        .diagnostics = writeDiagnostics});
+}
+
+PluginResult BuildPatchPlugin::ExecuteInstantBuildApply(
+    const PluginRequest& request,
+    const AnchorMatch& resolvedAnchor,
+    std::uintptr_t targetAddress,
+    std::string_view restoreKey,
+    std::string& writeError,
+    process_mutation::WriteOperationDiagnostics& writeDiagnostics) {
+    const auto enabledByte = static_cast<std::uint8_t>(1);
+    if (!process_mutation::TryWriteValue<std::uint8_t>(
+            request.processId(),
+            targetAddress,
+            enabledByte,
+            writeError,
+            process_mutation::WriteMutationMode::Patch,
+            &writeDiagnostics)) {
+        return BuildWriteFailureResult(request, resolvedAnchor, true, writeError, writeDiagnostics);
+    }
+
+    ApplyInstantBuildState(true);
+    return BuildMutationSuccessResult({
+        .request = request,
+        .resolvedAnchor = resolvedAnchor,
+        .enablePatch = true,
+        .appliedValue = 1,
+        .reasonCode = "CAPABILITY_PROBE_PASS",
+        .message = "Build patch value applied through extender plugin.",
+        .operation = "apply",
+        .restoreKey = restoreKey,
+        .diagnostics = writeDiagnostics});
+}
+
 PluginResult BuildPatchPlugin::execute(const PluginRequest& request) {
     if (!IsBuildPatchFeature(request.featureId())) {
         return BuildUnsupportedFeatureResult(request);
@@ -251,13 +385,12 @@ PluginResult BuildPatchPlugin::execute(const PluginRequest& request) {
         return BuildMissingProcessResult(request);
     }
 
-    const auto resolvedAnchor = FindAnchor(request, request.featureId());
-
     const auto enablePatch = request.enable() || request.boolValue();
     if (request.featureId() == "set_unit_cap" && IsUnitCapOutOfBounds(request, enablePatch)) {
         return BuildInvalidUnitCapResult(request);
     }
 
+    const auto resolvedAnchor = FindAnchor(request, request.featureId());
     if (!resolvedAnchor.has_value()) {
         return BuildMissingAnchorResult(request);
     }
@@ -269,107 +402,10 @@ PluginResult BuildPatchPlugin::execute(const PluginRequest& request) {
 
     const auto restoreKey = BuildRestoreKey(request, resolvedAnchor->first, targetAddress);
     if (!enablePatch) {
-        std::vector<std::uint8_t> restoreBytes;
-        if (!TryReadRestoreBytes(restoreKey, restoreBytes)) {
-            return BuildPatchRestoreStateMissingResult(request, *resolvedAnchor, restoreKey);
-        }
-
-        std::string writeError;
-        process_mutation::WriteOperationDiagnostics writeDiagnostics {};
-        if (!process_mutation::TryWriteBytesPatchSafe(
-                request.processId(),
-                targetAddress,
-                restoreBytes.data(),
-                restoreBytes.size(),
-                writeError,
-                &writeDiagnostics)) {
-            return BuildWriteFailureResult(request, *resolvedAnchor, enablePatch, writeError, writeDiagnostics);
-        }
-
-        RemoveRestoreBytes(restoreKey);
-        if (request.featureId() == "set_unit_cap") {
-            ApplyUnitCapState(enablePatch, request.intValue());
-        } else {
-            ApplyInstantBuildState(enablePatch);
-        }
-
-        return BuildMutationSuccessResult({
-            .request = request,
-            .resolvedAnchor = *resolvedAnchor,
-            .enablePatch = enablePatch,
-            .appliedValue = request.featureId() == "set_unit_cap" ? request.intValue() : 0,
-            .reasonCode = "PATCH_RESTORE_APPLIED",
-            .message = "Build patch restore applied through extender plugin.",
-            .operation = "restore",
-            .restoreKey = restoreKey,
-            .diagnostics = writeDiagnostics});
+        return ExecuteRestore(request, *resolvedAnchor, targetAddress, restoreKey);
     }
 
-    const auto writeLength = request.featureId() == "set_unit_cap"
-        ? sizeof(std::int32_t)
-        : sizeof(std::uint8_t);
-    std::vector<std::uint8_t> originalBytes;
-    std::string readError;
-    if (!process_mutation::TryReadBytes(
-            request.processId(),
-            targetAddress,
-            writeLength,
-            originalBytes,
-            readError)) {
-        return BuildReadFailureResult(request, *resolvedAnchor, readError, "capture_original");
-    }
-
-    StoreRestoreBytes(restoreKey, std::move(originalBytes));
-
-    std::string writeError;
-    process_mutation::WriteOperationDiagnostics writeDiagnostics {};
-    if (request.featureId() == "set_unit_cap") {
-        const auto clamped = std::clamp(request.intValue(), kMinUnitCap, kMaxUnitCap);
-        if (!process_mutation::TryWriteValue<std::int32_t>(
-                request.processId(),
-                targetAddress,
-                clamped,
-                writeError,
-                process_mutation::WriteMutationMode::Patch,
-                &writeDiagnostics)) {
-            return BuildWriteFailureResult(request, *resolvedAnchor, enablePatch, writeError, writeDiagnostics);
-        }
-
-        ApplyUnitCapState(enablePatch, request.intValue());
-        return BuildMutationSuccessResult({
-            .request = request,
-            .resolvedAnchor = *resolvedAnchor,
-            .enablePatch = enablePatch,
-            .appliedValue = clamped,
-            .reasonCode = "CAPABILITY_PROBE_PASS",
-            .message = "Build patch value applied through extender plugin.",
-            .operation = "apply",
-            .restoreKey = restoreKey,
-            .diagnostics = writeDiagnostics});
-    }
-
-    const auto enabledByte = static_cast<std::uint8_t>(1);
-    if (!process_mutation::TryWriteValue<std::uint8_t>(
-            request.processId(),
-            targetAddress,
-            enabledByte,
-            writeError,
-            process_mutation::WriteMutationMode::Patch,
-            &writeDiagnostics)) {
-        return BuildWriteFailureResult(request, *resolvedAnchor, enablePatch, writeError, writeDiagnostics);
-    }
-
-    ApplyInstantBuildState(enablePatch);
-    return BuildMutationSuccessResult({
-        .request = request,
-        .resolvedAnchor = *resolvedAnchor,
-        .enablePatch = enablePatch,
-        .appliedValue = 1,
-        .reasonCode = "CAPABILITY_PROBE_PASS",
-        .message = "Build patch value applied through extender plugin.",
-        .operation = "apply",
-        .restoreKey = restoreKey,
-        .diagnostics = writeDiagnostics});
+    return ExecuteApply(request, *resolvedAnchor, targetAddress, restoreKey);
 }
 
 CapabilitySnapshot BuildPatchPlugin::capabilitySnapshot() const {
@@ -417,7 +453,8 @@ void BuildPatchPlugin::StoreRestoreBytes(std::string key, std::vector<std::uint8
 
 void BuildPatchPlugin::RemoveRestoreBytes(std::string_view key) {
     std::scoped_lock lock(restoreBytesMutex_);
-    if (const auto it = restoreBytesByKey_.find(key); it != restoreBytesByKey_.end()) {
+    const auto it = restoreBytesByKey_.find(key);
+    if (it != restoreBytesByKey_.end()) {
         restoreBytesByKey_.erase(it);
     }
 }

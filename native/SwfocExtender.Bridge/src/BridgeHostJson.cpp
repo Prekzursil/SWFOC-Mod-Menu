@@ -7,6 +7,9 @@
 #include <string_view>
 
 namespace swfoc::extender::bridge::host_json {
+
+using StringMap = std::map<std::string, std::string, std::less<>>;
+
 namespace {
 
 bool TryFindValueStart(std::string_view payloadJson, std::string_view key, std::size_t& start) {
@@ -186,8 +189,8 @@ bool TryParseFlatStringMapEntryValue(std::string_view objectJson, std::size_t& c
     return true;
 }
 
-std::map<std::string, std::string, std::less<>> ParseFlatStringMapObject(std::string_view objectJson) {
-    std::map<std::string, std::string, std::less<>> parsed;
+StringMap ParseFlatStringMapObject(std::string_view objectJson) {
+    StringMap parsed;
     auto cursor = objectJson.find('{');
     if (cursor == std::string_view::npos) {
         return parsed;
@@ -236,7 +239,7 @@ std::string EscapeJson(std::string_view value) {
     return escaped;
 }
 
-std::string ToDiagnosticsJson(const std::map<std::string, std::string, std::less<>>& values) {
+std::string ToDiagnosticsJson(const StringMap& values) {
     std::ostringstream out;
     out << '{';
     auto first = true;
@@ -311,7 +314,7 @@ std::string ExtractStringValue(std::string_view json, std::string_view key) {
     return std::string(json.substr(firstQuote + 1, secondQuote - firstQuote - 1));
 }
 
-std::map<std::string, std::string, std::less<>> ExtractStringMap(std::string_view json, std::string_view key) {
+StringMap ExtractStringMap(std::string_view json, std::string_view key) {
     return ParseFlatStringMapObject(ExtractObjectJson(json, key));
 }
 

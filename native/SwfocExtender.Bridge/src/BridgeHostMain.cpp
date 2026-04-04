@@ -29,11 +29,11 @@
 
 namespace swfoc::extender::bridge::host_json {
 std::string EscapeJson(std::string_view value);
-std::string ToDiagnosticsJson(const std::map<std::string, std::string, std::less<>>& values);
+std::string ToDiagnosticsJson(const StringMap& values);
 bool TryReadBool(std::string_view payloadJson, std::string_view key, bool& value);
 bool TryReadInt(std::string_view payloadJson, std::string_view key, int& value);
 std::string ExtractStringValue(std::string_view json, std::string_view key);
-std::map<std::string, std::string, std::less<>> ExtractStringMap(std::string_view json, std::string_view key);
+StringMap ExtractStringMap(std::string_view json, std::string_view key);
 } // namespace swfoc::extender::bridge::host_json
 
 namespace {
@@ -41,6 +41,7 @@ namespace {
 using swfoc::extender::bridge::BridgeCommand;
 using swfoc::extender::bridge::BridgeResult;
 using swfoc::extender::bridge::NamedPipeBridgeServer;
+using swfoc::extender::bridge::StringMap;
 using swfoc::extender::plugins::BuildPatchPlugin;
 using swfoc::extender::plugins::CapabilitySnapshot;
 using swfoc::extender::plugins::CapabilityState;
@@ -61,7 +62,7 @@ using swfoc::extender::bridge::host_json::TryReadInt;
 constexpr const char* kBackendName = "extender";
 constexpr const char* kDefaultPipeName = "SwfocExtenderBridge";
 
-constexpr std::array<const char*, 14> kSupportedFeatures {
+constexpr std::array<const char*, 14> kSupportedFeatures = {
     "freeze_timer",
     "toggle_fog_reveal",
     "toggle_ai",
@@ -84,11 +85,13 @@ missingIncludeSystem can be suppressed per translation unit with:
 */
 
 bool ResolveLockCredits(std::string_view payloadJson) {
-    if (auto lockCredits = false; TryReadBool(payloadJson, "lockCredits", lockCredits)) {
+    auto lockCredits = false;
+    if (TryReadBool(payloadJson, "lockCredits", lockCredits)) {
         return lockCredits;
     }
 
-    if (auto legacyForce = false; TryReadBool(payloadJson, "forcePatchHook", legacyForce)) {
+    auto legacyForce = false;
+    if (TryReadBool(payloadJson, "forcePatchHook", legacyForce)) {
         return legacyForce;
     }
 
@@ -100,14 +103,15 @@ int ResolveProcessId(const BridgeCommand& command) {
         return command.processId;
     }
 
-    if (auto payloadProcessId = 0; TryReadInt(command.payloadJson, "processId", payloadProcessId) && payloadProcessId > 0) {
+    auto payloadProcessId = 0;
+    if (TryReadInt(command.payloadJson, "processId", payloadProcessId) && payloadProcessId > 0) {
         return payloadProcessId;
     }
 
     return 0;
 }
 
-std::map<std::string, std::string, std::less<>> ResolveAnchors(const BridgeCommand& command) {
+StringMap ResolveAnchors(const BridgeCommand& command) {
     auto anchors = command.resolvedAnchors;
 
     const auto payloadAnchors = ExtractStringMap(command.payloadJson, "anchors");
@@ -116,8 +120,8 @@ std::map<std::string, std::string, std::less<>> ResolveAnchors(const BridgeComma
     }
 
     // S6171: use contains() instead of find() != end()
-    if (const auto legacySymbol = ExtractStringValue(command.payloadJson, "symbol");
-        !legacySymbol.empty() && !anchors.contains(legacySymbol)) {
+    const auto legacySymbol = ExtractStringValue(command.payloadJson, "symbol");
+    if (!legacySymbol.empty() && !anchors.contains(legacySymbol)) {
         anchors.try_emplace(legacySymbol, legacySymbol);
     }
 
@@ -149,25 +153,30 @@ PluginRequest BuildPluginRequest(const BridgeCommand& command) {
     request.entityContext.placementMode = ExtractStringValue(command.payloadJson, "placementMode");
     request.entityContext.worldPosition = ExtractStringValue(command.payloadJson, "worldPosition");
 
-    if (auto intValue = 0; TryReadInt(command.payloadJson, "intValue", intValue)) {
+    auto intValue = 0;
+    if (TryReadInt(command.payloadJson, "intValue", intValue)) {
         request.payload.intValue = intValue;
     }
 
-    if (auto boolValue = false; TryReadBool(command.payloadJson, "boolValue", boolValue)) {
+    auto boolValue = false;
+    if (TryReadBool(command.payloadJson, "boolValue", boolValue)) {
         request.payload.boolValue = boolValue;
     }
 
-    if (auto enable = false; TryReadBool(command.payloadJson, "enable", enable)) {
+    auto enable = false;
+    if (TryReadBool(command.payloadJson, "enable", enable)) {
         request.payload.enable = enable;
     } else if (command.featureId == "set_unit_cap" || command.featureId == "toggle_instant_build_patch") {
         request.payload.enable = true;
     }
 
-    if (auto allowCrossFaction = false; TryReadBool(command.payloadJson, "allowCrossFaction", allowCrossFaction)) {
+    auto allowCrossFaction = false;
+    if (TryReadBool(command.payloadJson, "allowCrossFaction", allowCrossFaction)) {
         request.payload.allowCrossFaction = allowCrossFaction;
     }
 
-    if (auto forceOverride = false; TryReadBool(command.payloadJson, "forceOverride", forceOverride)) {
+    auto forceOverride = false;
+    if (TryReadBool(command.payloadJson, "forceOverride", forceOverride)) {
         request.payload.forceOverride = forceOverride;
     }
 
@@ -178,6 +187,27 @@ PluginRequest BuildPluginRequest(const BridgeCommand& command) {
 bool IsSupportedFeature(std::string_view featureId) {
     return std::ranges::any_of(kSupportedFeatures, [&](const char* supported) {
         return featureId == supported;
+    });
+}
+
+bool IsGlobalToggleFeature(std::string_view featureId) {
+    return featureId == "freeze_timer" ||
+           featureId == "toggle_fog_reveal" ||
+           featureId == "toggle_ai";
+}
+
+bool IsHelperFeature(std::string_view featureId) {
+    constexpr std::array<const char*, 8> kHelperFeatures = {
+        "spawn_unit_helper",
+        "spawn_context_entity",
+        "spawn_tactical_entity",
+        "spawn_galactic_entity",
+        "place_planet_building",
+        "set_context_allegiance",
+        "set_hero_state_helper",
+        "toggle_roe_respawn_helper"};
+    return std::ranges::any_of(kHelperFeatures, [&](const char* f) {
+        return featureId == f;
     });
 }
 
@@ -340,7 +370,7 @@ CapabilitySnapshot BuildCapabilityProbeSnapshot(const PluginRequest& probeContex
     return snapshot;
 }
 
-void AppendDiagnosticsJson(std::ostringstream& out, const std::map<std::string, std::string, std::less<>>& diagnostics) {
+void AppendDiagnosticsJson(std::ostringstream& out, const StringMap& diagnostics) {
     out << R"(,"diagnostics":{)";
     auto firstDiagnostic = true;
     for (const auto& [key, value] : diagnostics) {
@@ -506,20 +536,11 @@ BridgeResult HandleBridgeCommand(
         return BuildSetCreditsResult(command, economyPlugin);
     }
 
-    if (command.featureId == "freeze_timer" ||
-        command.featureId == "toggle_fog_reveal" ||
-        command.featureId == "toggle_ai") {
+    if (IsGlobalToggleFeature(command.featureId)) {
         return BuildGlobalToggleResult(command, globalTogglePlugin);
     }
 
-    if (command.featureId == "spawn_unit_helper" ||
-        command.featureId == "spawn_context_entity" ||
-        command.featureId == "spawn_tactical_entity" ||
-        command.featureId == "spawn_galactic_entity" ||
-        command.featureId == "place_planet_building" ||
-        command.featureId == "set_context_allegiance" ||
-        command.featureId == "set_hero_state_helper" ||
-        command.featureId == "toggle_roe_respawn_helper") {
+    if (IsHelperFeature(command.featureId)) {
         return BuildHelperResult(command, helperLuaPlugin);
     }
 
@@ -529,7 +550,8 @@ BridgeResult HandleBridgeCommand(
 // S1874: replace deprecated std::getenv with MSVC-safe _dupenv_s
 std::string GetEnvSafe(const char* name) {
     char* val = nullptr;
-    if (std::size_t len = 0; _dupenv_s(&val, &len, name) != 0 || val == nullptr) {
+    std::size_t len = 0;
+    if (_dupenv_s(&val, &len, name) != 0 || val == nullptr) {
         return {};
     }
     auto guard = std::unique_ptr<char, decltype(&free)>(val, &free);
@@ -537,7 +559,8 @@ std::string GetEnvSafe(const char* name) {
 }
 
 std::string ResolvePipeName() {
-    if (const auto envPipe = GetEnvSafe("SWFOC_EXTENDER_PIPE_NAME"); !envPipe.empty()) {
+    const auto envPipe = GetEnvSafe("SWFOC_EXTENDER_PIPE_NAME");
+    if (!envPipe.empty()) {
         return envPipe;
     }
 

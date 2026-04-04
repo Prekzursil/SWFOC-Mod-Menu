@@ -152,8 +152,51 @@ jobs:
         run: |
           pwsh ./tools/lua-harness/run-lua-harness.ps1 -Strict
 
+      - name: SonarCloud scan (with coverage)
+        if: always()
+        uses: SonarSource/sonarcloud-github-action@v5
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          args: >
+            -Dsonar.cs.opencover.reportsPaths=TestResults/coverage/opencover.opencover.xml
+            -Dsonar.coverage.exclusions=tests/**,scripts/**,tools/**,native/**
+        continue-on-error: true
+
+      - name: Upload coverage to Codecov
+        if: always()
+        uses: codecov/codecov-action@v5
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          files: TestResults/coverage/opencover.opencover.xml
+          flags: dotnet
+          fail_ci_if_error: false
+
+      - name: Transform coverage for QLTY
+        if: always()
+        run: |
+          dotnet tool install -g dotnet-reportgenerator-globaltool 2>$null
+          reportgenerator -reports:TestResults/coverage/opencover.opencover.xml -targetdir:TestResults/coverage -reporttypes:Cobertura 2>$null
+        shell: pwsh
+        continue-on-error: true
+
+      - name: Upload coverage to QLTY
+        if: always()
+        shell: pwsh
+        run: |
+          $env:QLTY_COVERAGE_TOKEN = "${{ secrets.QLTY_COVERAGE_TOKEN }}"
+          if (Test-Path TestResults/coverage/Cobertura.xml) {
+            Invoke-WebRequest -Uri "https://qlty.sh/install.ps1" -OutFile install-qlty.ps1
+            pwsh ./install-qlty.ps1
+            qlty coverage publish --tag dotnet TestResults/coverage/Cobertura.xml
+          } else {
+            Write-Output "Coverage file not found, skipping QLTY upload"
+          }
+        continue-on-error: true
+
       - name: Upload coverage to Codacy
-        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        if: always()
         uses: codacy/codacy-coverage-reporter-action@v1
         with:
           project-token: ${{ secrets.CODACY_PROJECT_TOKEN }}
@@ -161,7 +204,7 @@ jobs:
         continue-on-error: true
 
       - name: Upload coverage to DeepSource
-        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        if: always()
         uses: deepsourcelabs/test-coverage-action@master
         with:
           key: csharp

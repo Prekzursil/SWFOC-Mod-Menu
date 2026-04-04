@@ -19,7 +19,7 @@ import re
 import sys
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Any
+from typing import Any, Dict, List, Optional, Set, Tuple
 
 SCHEMA_VERSION = "1.0"
 
@@ -28,18 +28,18 @@ SCHEMA_VERSION = "1.0"
 class ProfileInfo:
     profile_id: str
     exe_target: str
-    steam_workshop_id: str | None
-    metadata: dict[str, str]
+    steam_workshop_id: Optional[str]
+    metadata: Dict[str, str]
 
 
-EXE_HINT_MATCHERS: tuple[tuple[str, tuple[str, ...]], ...] = (
+EXE_HINT_MATCHERS: Tuple[Tuple[str, Tuple[str, ...]], ...] = (
     ("sweaw", ("sweaw", "sweaw.exe")),
     ("swfoc", ("swfoc", "swfoc.exe")),
     ("starwarsg", ("starwarsg", "starwarsg.exe")),
 )
 
 
-def normalize_token(value: str | None) -> str | None:
+def normalize_token(value: Optional[str]) -> Optional[str]:
     if not value:
         return None
     out = value.strip().strip('"').replace("\\", "/")
@@ -48,17 +48,17 @@ def normalize_token(value: str | None) -> str | None:
     return out.lower()
 
 
-def parse_steammod_ids(command_line: str | None) -> list[str]:
+def parse_steammod_ids(command_line: Optional[str]) -> List[str]:
     if not command_line:
         return []
     ids = set(re.findall(r"steammod\s*=\s*(\d+)", command_line, flags=re.IGNORECASE))
     return sorted(ids)
 
 
-def parse_forced_workshop_ids(raw: str | None) -> list[str]:
+def parse_forced_workshop_ids(raw: Optional[str]) -> List[str]:
     if not raw:
         return []
-    ids: set[str] = set()
+    ids: Set[str] = set()
     for token in raw.split(","):
         value = token.strip()
         if value:
@@ -66,7 +66,7 @@ def parse_forced_workshop_ids(raw: str | None) -> list[str]:
     return sorted(ids)
 
 
-def parse_modpath(command_line: str | None) -> str | None:
+def parse_modpath(command_line: Optional[str]) -> Optional[str]:
     if not command_line:
         return None
     match = re.search(r'modpath\s*=\s*(?:"([^"]+)"|([^\s]+))', command_line, flags=re.IGNORECASE)
@@ -78,26 +78,26 @@ def parse_modpath(command_line: str | None) -> str | None:
     return value.strip().strip('"')
 
 
-def parse_csv(metadata: dict[str, str], key: str) -> list[str]:
+def parse_csv(metadata: Dict[str, str], key: str) -> List[str]:
     raw = metadata.get(key, "")
     if not raw:
         return []
     return [x.strip() for x in raw.split(",") if x.strip()]
 
 
-def load_profiles(profile_root: Path) -> dict[str, ProfileInfo]:  # NOSONAR
+def load_profiles(profile_root: Path) -> Dict[str, ProfileInfo]:  # NOSONAR
     profiles_dir = profile_root / "profiles"
     if not profiles_dir.exists():
         raise FileNotFoundError(f"Missing profiles directory: {profiles_dir}")
 
-    manifest_profile_ids: set[str] | None = None
+    manifest_profile_ids: Optional[Set[str]] = None
     manifest_path = profile_root / "manifest.json"
     if manifest_path.exists():
         with open(manifest_path, "r", encoding="utf-8") as f:
             manifest_payload = json.load(f)
         manifest_profiles = manifest_payload.get("profiles") if isinstance(manifest_payload, dict) else None
         if isinstance(manifest_profiles, list):
-            ids: set[str] = set()
+            ids: Set[str] = set()
             for item in manifest_profiles:
                 if not isinstance(item, dict):
                     continue
@@ -106,7 +106,7 @@ def load_profiles(profile_root: Path) -> dict[str, ProfileInfo]:  # NOSONAR
                     ids.add(profile_id)
             manifest_profile_ids = ids
 
-    out: dict[str, ProfileInfo] = {}
+    out: Dict[str, ProfileInfo] = {}
     for json_file in sorted(glob.glob(str(profiles_dir / "*.json"))):
         with open(json_file, "r", encoding="utf-8") as f:
             data = json.load(f)
@@ -126,7 +126,7 @@ def load_profiles(profile_root: Path) -> dict[str, ProfileInfo]:  # NOSONAR
     return out
 
 
-def infer_launch_kind(steam_ids: list[str], modpath_norm: str | None, exe_hint: str) -> str:
+def infer_launch_kind(steam_ids: List[str], modpath_norm: Optional[str], exe_hint: str) -> str:
     if steam_ids and modpath_norm:
         return "Mixed"
     if steam_ids:
@@ -138,19 +138,19 @@ def infer_launch_kind(steam_ids: list[str], modpath_norm: str | None, exe_hint: 
     return "Unknown"
 
 
-def _text_or_empty(value: str | None) -> str:
+def _text_or_empty(value: Optional[str]) -> str:
     return (value or "").lower()
 
 
-def _contains_any_token(haystack: str, needles: tuple[str, ...]) -> bool:
+def _contains_any_token(haystack: str, needles: Tuple[str, ...]) -> bool:
     return any(needle in haystack for needle in needles)
 
 
-def _matches_exe_hint(fields: tuple[str, str, str], needles: tuple[str, ...]) -> bool:
+def _matches_exe_hint(fields: Tuple[str, str, str], needles: Tuple[str, ...]) -> bool:
     return any(_contains_any_token(field, needles) for field in fields)
 
 
-def detect_exe_hint(process_name: str | None, process_path: str | None, command_line: str | None) -> str:
+def detect_exe_hint(process_name: Optional[str], process_path: Optional[str], command_line: Optional[str]) -> str:
     fields = (
         _text_or_empty(process_name),
         _text_or_empty(process_path),
@@ -162,8 +162,8 @@ def detect_exe_hint(process_name: str | None, process_path: str | None, command_
     return "unknown"
 
 
-def gather_hints(profile: ProfileInfo) -> list[str]:
-    hints: set[str] = set()
+def gather_hints(profile: ProfileInfo) -> List[str]:
+    hints: Set[str] = set()
     hints.add(profile.profile_id.lower())
     if profile.steam_workshop_id:
         hints.add(profile.steam_workshop_id)
@@ -192,7 +192,7 @@ def reason_code_for_profile(profile_id: str, source: str) -> str:
     return "unknown"
 
 
-def profile_priority_key(profile: ProfileInfo) -> tuple[int, str]:
+def profile_priority_key(profile: ProfileInfo) -> Tuple[int, str]:
     return (profile_sort_priority(profile.profile_id), profile.profile_id)
 
 
@@ -205,8 +205,8 @@ def profile_sort_priority(profile_id: str) -> int:
     return 2
 
 
-def required_workshop_ids(profile: ProfileInfo) -> list[str]:
-    ids: list[str] = []
+def required_workshop_ids(profile: ProfileInfo) -> List[str]:
+    ids: List[str] = []
     if profile.steam_workshop_id:
         ids.append(profile.steam_workshop_id)
     ids.extend(parse_csv(profile.metadata, "requiredWorkshopIds"))
@@ -214,7 +214,7 @@ def required_workshop_ids(profile: ProfileInfo) -> list[str]:
     return sorted(set(ids))
 
 
-def score_workshop_match(profile: ProfileInfo, steam_ids: set[str]) -> int:
+def score_workshop_match(profile: ProfileInfo, steam_ids: Set[str]) -> int:
     score = 0
     if profile.steam_workshop_id and profile.steam_workshop_id in steam_ids:
         score = max(score, 1000)
@@ -231,12 +231,12 @@ def score_workshop_match(profile: ProfileInfo, steam_ids: set[str]) -> int:
     return score
 
 
-def steam_profile_match(profiles: dict[str, ProfileInfo], steam_ids: list[str]) -> ProfileInfo | None:
+def steam_profile_match(profiles: Dict[str, ProfileInfo], steam_ids: List[str]) -> Optional[ProfileInfo]:
     if not steam_ids:
         return None
 
     steam_set = set(steam_ids)
-    best_profile: ProfileInfo | None = None
+    best_profile: Optional[ProfileInfo] = None
     best_score = 0
     best_required_count = -1
     for profile in profiles.values():
@@ -257,8 +257,8 @@ def steam_profile_match(profiles: dict[str, ProfileInfo], steam_ids: list[str]) 
     return best_profile
 
 
-def best_modpath_match(profiles: dict[str, ProfileInfo], modpath_norm: str) -> ProfileInfo | None:
-    hint_matches: list[tuple[int, ProfileInfo]] = []
+def best_modpath_match(profiles: Dict[str, ProfileInfo], modpath_norm: str) -> Optional[ProfileInfo]:
+    hint_matches: List[Tuple[int, ProfileInfo]] = []
     for profile in profiles.values():
         hints = gather_hints(profile)
         score = 0
@@ -275,7 +275,7 @@ def best_modpath_match(profiles: dict[str, ProfileInfo], modpath_norm: str) -> P
     return hint_matches[0][1]
 
 
-def fallback_profile_for_exe(exe_hint: str, profiles: dict[str, ProfileInfo]) -> dict[str, Any] | None:
+def fallback_profile_for_exe(exe_hint: str, profiles: Dict[str, ProfileInfo]) -> Optional[Dict[str, Any]]:
     if exe_hint == "sweaw" and "base_sweaw" in profiles:
         return {
             "profileId": "base_sweaw",
@@ -294,11 +294,11 @@ def fallback_profile_for_exe(exe_hint: str, profiles: dict[str, ProfileInfo]) ->
 
 
 def recommend_profile(
-    profiles: dict[str, ProfileInfo],
-    steam_ids: list[str],
-    modpath_norm: str | None,
+    profiles: Dict[str, ProfileInfo],
+    steam_ids: List[str],
+    modpath_norm: Optional[str],
     exe_hint: str,
-) -> dict[str, Any]:
+) -> Dict[str, Any]:
     # 1) Exact workshop-id match.
     best_steam_match = steam_profile_match(profiles, steam_ids)
     if best_steam_match:
@@ -331,7 +331,7 @@ def recommend_profile(
     }
 
 
-def dependency_hints(profiles: dict[str, ProfileInfo], profile_id: str | None) -> dict[str, Any]:
+def dependency_hints(profiles: Dict[str, ProfileInfo], profile_id: Optional[str]) -> Dict[str, Any]:
     if not profile_id or profile_id not in profiles:
         return {
             "requiredWorkshopIds": [],
@@ -343,7 +343,7 @@ def dependency_hints(profiles: dict[str, ProfileInfo], profile_id: str | None) -
         }
 
     profile = profiles[profile_id]
-    required_ids = []
+    required_ids: List[str] = []
     if profile.steam_workshop_id:
         required_ids.append(profile.steam_workshop_id)
     required_ids.extend(parse_csv(profile.metadata, "requiredWorkshopIds"))
@@ -362,11 +362,11 @@ def dependency_hints(profiles: dict[str, ProfileInfo], profile_id: str | None) -
 
 
 def detect_one(  # NOSONAR
-    process_input: dict[str, Any],
-    profiles: dict[str, ProfileInfo],
-    forced_workshop_ids: list[str] | None = None,
-    forced_profile_id: str | None = None,
-) -> dict[str, Any]:
+    process_input: Dict[str, Any],
+    profiles: Dict[str, ProfileInfo],
+    forced_workshop_ids: Optional[List[str]] = None,
+    forced_profile_id: Optional[str] = None,
+) -> Dict[str, Any]:
     case_name = process_input.get("name")
     case_name = str(case_name) if case_name is not None else None
     process_name = str(process_input.get("processName", "") or "")
@@ -436,7 +436,7 @@ def _parse_args() -> argparse.Namespace:
     return parser.parse_args()
 
 
-def _load_profiles_or_none(profile_root: str) -> dict[str, ProfileInfo] | None:
+def _load_profiles_or_none(profile_root: str) -> Optional[Dict[str, ProfileInfo]]:
     try:
         return load_profiles(Path(profile_root))
     except (json.JSONDecodeError, OSError) as exc:
@@ -444,7 +444,7 @@ def _load_profiles_or_none(profile_root: str) -> dict[str, ProfileInfo] | None:
         return None
 
 
-def _load_cases_payload(input_path: str) -> dict[str, Any] | None:
+def _load_cases_payload(input_path: str) -> Optional[Dict[str, Any]]:
     try:
         with open(input_path, "r", encoding="utf-8") as f:
             payload = json.load(f)
@@ -460,11 +460,11 @@ def _load_cases_payload(input_path: str) -> dict[str, Any] | None:
 
 
 def _build_multi_case_output(
-    payload: dict[str, Any],
-    profiles: dict[str, ProfileInfo],
-    forced_workshop_ids: list[str],
-    forced_profile_id: str | None,
-) -> dict[str, Any]:
+    payload: Dict[str, Any],
+    profiles: Dict[str, ProfileInfo],
+    forced_workshop_ids: List[str],
+    forced_profile_id: Optional[str],
+) -> Dict[str, Any]:
     cases = payload.get("cases", [])
     results = [
         detect_one(
@@ -482,7 +482,7 @@ def _build_multi_case_output(
     }
 
 
-def _single_process_input(args: argparse.Namespace) -> dict[str, str | None]:
+def _single_process_input(args: argparse.Namespace) -> Dict[str, Optional[str]]:
     return {
         "processName": args.process_name,
         "processPath": args.process_path,

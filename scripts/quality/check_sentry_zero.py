@@ -3,12 +3,14 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 import sys
+import urllib.error
 import urllib.parse
 import urllib.request
 from datetime import datetime, timezone
 from pathlib import Path
-from typing import Any
+from typing import Any, Dict, List, Optional, Tuple
 
 _SCRIPT_DIR = Path(__file__).resolve().parent
 _HELPER_ROOT = _SCRIPT_DIR if (_SCRIPT_DIR / "security_helpers.py").exists() else _SCRIPT_DIR.parent
@@ -35,7 +37,7 @@ def _parse_args() -> argparse.Namespace:
     return parser.parse_args()
 
 
-def _request(url: str, token: str) -> tuple[list[Any], dict[str, str]]:
+def _request(url: str, token: str) -> Tuple[List[Any], Dict[str, str]]:
     safe_url = normalize_https_url(url, allowed_host_suffixes={"sentry.io"})
     req = urllib.request.Request(
         safe_url,
@@ -46,6 +48,7 @@ def _request(url: str, token: str) -> tuple[list[Any], dict[str, str]]:
         },
         method="GET",
     )
+    # URL validated above via normalize_https_url
     with urllib.request.urlopen(req, timeout=30) as resp:
         body = json.loads(resp.read().decode("utf-8"))
         headers = {k.lower(): v for k, v in resp.headers.items()}
@@ -54,7 +57,7 @@ def _request(url: str, token: str) -> tuple[list[Any], dict[str, str]]:
     return body, headers
 
 
-def _hits_from_headers(headers: dict[str, str]) -> int | None:
+def _hits_from_headers(headers: Dict[str, str]) -> Optional[int]:
     raw = headers.get("x-hits")
     if not raw:
         return None
@@ -91,7 +94,7 @@ def _render_md(payload: dict) -> str:
     return "\n".join(lines) + "\n"
 
 
-def _safe_output_path(raw: str, fallback: str, base: Path | None = None) -> Path:
+def _safe_output_path(raw: str, fallback: str, base: Optional[Path] = None) -> Path:
     root = (base or Path.cwd()).resolve()
     candidate = Path((raw or "").strip() or fallback).expanduser()
     if not candidate.is_absolute():
@@ -104,10 +107,8 @@ def _safe_output_path(raw: str, fallback: str, base: Path | None = None) -> Path
     return resolved
 
 
-def _resolve_projects(args_project: list[str]) -> list[str]:
+def _resolve_projects(args_project: List[str]) -> List[str]:
     """Resolve project slugs from CLI args or environment variables, deduplicated."""
-    import os
-
     projects = [p for p in args_project if p]
     if not projects:
         single_project = str(os.environ.get("SENTRY_PROJECT", "")).strip()
@@ -121,9 +122,9 @@ def _resolve_projects(args_project: list[str]) -> list[str]:
     return list(dict.fromkeys(projects))
 
 
-def _validate_sentry_config(token: str, org: str, projects: list[str]) -> list[str]:
+def _validate_sentry_config(token: str, org: str, projects: List[str]) -> List[str]:
     """Return a list of configuration-error findings (empty means valid)."""
-    findings: list[str] = []
+    findings: List[str] = []
     if not token:
         findings.append("SENTRY_AUTH_TOKEN is missing.")
     if not org:
@@ -133,9 +134,9 @@ def _validate_sentry_config(token: str, org: str, projects: list[str]) -> list[s
     return findings
 
 
-def _query_project(api_base: str, org: str, project: str, token: str) -> tuple[int, list[str]]:
+def _query_project(api_base: str, org: str, project: str, token: str) -> Tuple[int, List[str]]:
     """Query a single Sentry project for unresolved issues, returning the count and any findings."""
-    findings: list[str] = []
+    findings: List[str] = []
     query = urllib.parse.urlencode({"query": "is:unresolved", "limit": "1"})
     org_slug = urllib.parse.quote(org, safe="")
     project_slug = urllib.parse.quote(project, safe="")
@@ -154,18 +155,18 @@ def _query_project(api_base: str, org: str, project: str, token: str) -> tuple[i
 
 
 def _query_all_projects(
-    api_base: str, org: str, projects: list[str], token: str
-) -> tuple[str, list[dict[str, Any]], list[str]]:
+    api_base: str, org: str, projects: List[str], token: str
+) -> Tuple[str, List[Dict[str, Any]], List[str]]:
     """Query all projects and return the overall status, per-project results, and findings."""
-    findings: list[str] = []
-    project_results: list[dict[str, Any]] = []
+    findings: List[str] = []
+    project_results: List[Dict[str, Any]] = []
     try:
         for project in projects:
             unresolved, proj_findings = _query_project(api_base, org, project, token)
             findings.extend(proj_findings)
             project_results.append({"project": project, "unresolved": unresolved})
         status = "pass" if not findings else "fail"
-    except Exception as exc:  # pragma: no cover - network/runtime surface
+    except (urllib.error.URLError, OSError, ValueError) as exc:  # pragma: no cover - network/runtime surface
         findings.append(f"Sentry API request failed: {exc}")
         status = "fail"
     return status, project_results, findings
@@ -181,8 +182,6 @@ def _write_reports(payload: dict, out_json: Path, out_md: Path) -> None:
 
 
 def main() -> int:
-    import os
-
     args = _parse_args()
     token = (args.token or os.environ.get("SENTRY_AUTH_TOKEN", "")).strip()
     org = (args.org or os.environ.get("SENTRY_ORG", "")).strip()
@@ -190,7 +189,7 @@ def main() -> int:
     projects = _resolve_projects(args.project)
 
     findings = _validate_sentry_config(token, org, projects)
-    project_results: list[dict[str, Any]] = []
+    project_results: List[Dict[str, Any]] = []
 
     status = "fail"
     if not findings:

@@ -402,7 +402,7 @@ public sealed class NamedPipeHelperBridgeBackend : IHelperBridgeBackend
             return false;
         }
 
-        value = rawValue.ToString();
+        value = rawValue.ToString() ?? string.Empty;
         return true;
     }
 

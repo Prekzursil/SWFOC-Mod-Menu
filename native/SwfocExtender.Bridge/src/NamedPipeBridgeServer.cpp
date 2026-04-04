@@ -256,8 +256,8 @@ bool TryParseFlatStringMapEntryValue(std::string_view objectJson, std::size_t& c
     return true;
 }
 
-std::map<std::string, std::string, std::less<>> ParseFlatStringMapObject(std::string_view objectJson) {
-    std::map<std::string, std::string, std::less<>> parsed;
+StringMap ParseFlatStringMapObject(std::string_view objectJson) {
+    StringMap parsed;
     auto cursor = objectJson.find('{');
     if (cursor == std::string_view::npos) {
         return parsed;
@@ -275,7 +275,7 @@ std::map<std::string, std::string, std::less<>> ParseFlatStringMapObject(std::st
     return parsed;
 }
 
-std::map<std::string, std::string, std::less<>> ExtractStringMap(std::string_view json, std::string_view key) {
+StringMap ExtractStringMap(std::string_view json, std::string_view key) {
     const auto objectJson = ExtractObjectJson(json, key);
     return ParseFlatStringMapObject(objectJson);
 }
@@ -375,7 +375,8 @@ bool TryCreateConnectedPipe(const std::string& fullPipeName, HANDLE& pipe) {
 }
 
 bool ShouldContinueReading(std::string& commandLine, DWORD bytesRead, std::size_t bufferSize) {
-    if (const auto linePos = commandLine.find('\n'); linePos != std::string::npos) {
+    const auto linePos = commandLine.find('\n');
+    if (linePos != std::string::npos) {
         commandLine.erase(linePos);
         return false;
     }
@@ -488,7 +489,8 @@ BridgeResult NamedPipeBridgeServer::handleRawCommand(std::string_view jsonLine) 
     command.payloadJson = ExtractObjectJson(jsonLine, "payload");
     command.processName = ExtractStringValue(jsonLine, "processName");
     command.resolvedAnchors = ExtractStringMap(jsonLine, "resolvedAnchors");
-    if (std::int32_t processId = 0; TryReadInt(jsonLine, "processId", processId)) {
+    std::int32_t processId = 0;
+    if (TryReadInt(jsonLine, "processId", processId)) {
         command.processId = processId;
     }
 
@@ -528,7 +530,7 @@ void NamedPipeBridgeServer::runLoop() const {
     return;
 #else
     const auto fullPipeName = BuildFullPipeName(pipeName_);
-    std::array<char, kPipeBufferSize> buffer {};
+    std::array<char, kPipeBufferSize> buffer = {};
     const auto handleCommand = [this](const std::string& commandLine) {
         return handleRawCommand(commandLine);
     };

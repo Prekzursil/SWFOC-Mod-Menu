@@ -52,7 +52,7 @@ internal static class NamedPipeExtenderBackendContextHelpers
             return (int)longValue;
         }
 
-        return int.TryParse(raw.ToString(), out var parsed) ? parsed : 0;
+        return int.TryParse(raw.ToString() ?? string.Empty, out var parsed) ? parsed : 0;
     }
 
     internal static string ReadContextString(IReadOnlyDictionary<string, object?>? context, string key)

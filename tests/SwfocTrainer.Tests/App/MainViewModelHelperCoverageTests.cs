@@ -91,7 +91,7 @@ public sealed class MainViewModelHelperCoverageTests
     [Fact]
     public void IsActionAvailableForCurrentSession_ShouldReturnFalse_WhenDependencyDisablesAction()
     {
-        var action = BuildAction(MainViewModelDefaults.ActionSetCredits, ExecutionKind.Sdk, MainViewModelDefaults.PayloadKeySymbol, MainViewModelDefaults.PayloadKeyIntValue);
+        var action = BuildAction(MainViewModelDefaults.ActionSetCredits, ExecutionKind.Sdk, MainViewModelDefaults.PayloadSymbol, MainViewModelDefaults.PayloadIntValue);
         var session = BuildSession(
             RuntimeMode.Galactic,
             metadata: new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
@@ -113,7 +113,7 @@ public sealed class MainViewModelHelperCoverageTests
     [Fact]
     public void IsActionAvailableForCurrentSession_ShouldReturnFalse_WhenRequiredSymbolUnresolved()
     {
-        var action = BuildAction(MainViewModelDefaults.ActionSetCredits, ExecutionKind.Sdk, MainViewModelDefaults.PayloadKeySymbol, MainViewModelDefaults.PayloadKeyIntValue);
+        var action = BuildAction(MainViewModelDefaults.ActionSetCredits, ExecutionKind.Sdk, MainViewModelDefaults.PayloadSymbol, MainViewModelDefaults.PayloadIntValue);
         var session = BuildSession(RuntimeMode.Galactic);
 
         var available = MainViewModelAttachHelpers.IsActionAvailableForCurrentSession(
@@ -130,7 +130,7 @@ public sealed class MainViewModelHelperCoverageTests
     [Fact]
     public void IsActionAvailableForCurrentSession_ShouldReturnTrue_WhenRequiredSymbolIsHealthy()
     {
-        var action = BuildAction(MainViewModelDefaults.ActionSetCredits, ExecutionKind.Sdk, MainViewModelDefaults.PayloadKeySymbol, MainViewModelDefaults.PayloadKeyIntValue);
+        var action = BuildAction(MainViewModelDefaults.ActionSetCredits, ExecutionKind.Sdk, MainViewModelDefaults.PayloadSymbol, MainViewModelDefaults.PayloadIntValue);
         var session = BuildSession(
             RuntimeMode.Galactic,
             symbols: new[]
@@ -153,9 +153,9 @@ public sealed class MainViewModelHelperCoverageTests
     public void BuildRequiredPayloadTemplate_ShouldPopulateExpectedDefaults()
     {
         var required = new JsonArray(
-            JsonValue.Create(MainViewModelDefaults.PayloadKeySymbol),
-            JsonValue.Create(MainViewModelDefaults.PayloadKeyIntValue),
-            JsonValue.Create(MainViewModelDefaults.PayloadKeyFreeze),
+            JsonValue.Create(MainViewModelDefaults.PayloadSymbol),
+            JsonValue.Create(MainViewModelDefaults.PayloadIntValue),
+            JsonValue.Create(MainViewModelDefaults.PayloadFreeze),
             JsonValue.Create("patchBytes"),
             JsonValue.Create("helperHookId"),
             null,
@@ -167,9 +167,9 @@ public sealed class MainViewModelHelperCoverageTests
             MainViewModelDefaults.DefaultSymbolByActionId,
             MainViewModelDefaults.DefaultHelperHookByActionId);
 
-        payload[MainViewModelDefaults.PayloadKeySymbol]!.GetValue<string>().Should().Be("credits");
-        payload[MainViewModelDefaults.PayloadKeyIntValue]!.GetValue<int>().Should().Be(MainViewModelDefaults.DefaultCreditsValue);
-        payload[MainViewModelDefaults.PayloadKeyFreeze]!.GetValue<bool>().Should().BeTrue();
+        payload[MainViewModelDefaults.PayloadSymbol]!.GetValue<string>().Should().Be("credits");
+        payload[MainViewModelDefaults.PayloadIntValue]!.GetValue<int>().Should().Be(MainViewModelDefaults.DefaultCreditsValue);
+        payload[MainViewModelDefaults.PayloadFreeze]!.GetValue<bool>().Should().BeTrue();
         payload["patchBytes"]!.GetValue<string>().Should().Be("90 90 90 90 90");
         payload["helperHookId"]!.GetValue<string>().Should().Be(MainViewModelDefaults.ActionSetCredits);
     }
@@ -181,7 +181,7 @@ public sealed class MainViewModelHelperCoverageTests
 
         MainViewModelPayloadHelpers.ApplyActionSpecificPayloadDefaults(MainViewModelDefaults.ActionSetCredits, payload);
 
-        payload[MainViewModelDefaults.PayloadKeyLockCredits]!.GetValue<bool>().Should().BeFalse();
+        payload[MainViewModelDefaults.PayloadLockCredits]!.GetValue<bool>().Should().BeFalse();
     }
 
     [Fact]
@@ -191,7 +191,7 @@ public sealed class MainViewModelHelperCoverageTests
 
         MainViewModelPayloadHelpers.ApplyActionSpecificPayloadDefaults(MainViewModelDefaults.ActionFreezeSymbol, payload);
 
-        payload[MainViewModelDefaults.PayloadKeyIntValue]!.GetValue<int>().Should().Be(MainViewModelDefaults.DefaultCreditsValue);
+        payload[MainViewModelDefaults.PayloadIntValue]!.GetValue<int>().Should().Be(MainViewModelDefaults.DefaultCreditsValue);
     }
 
     [Fact]
@@ -199,12 +199,12 @@ public sealed class MainViewModelHelperCoverageTests
     {
         var payload = new JsonObject
         {
-            [MainViewModelDefaults.PayloadKeyIntValue] = 42
+            [MainViewModelDefaults.PayloadIntValue] = 42
         };
 
         MainViewModelPayloadHelpers.ApplyActionSpecificPayloadDefaults(MainViewModelDefaults.ActionFreezeSymbol, payload);
 
-        payload[MainViewModelDefaults.PayloadKeyIntValue]!.GetValue<int>().Should().Be(42);
+        payload[MainViewModelDefaults.PayloadIntValue]!.GetValue<int>().Should().Be(42);
     }
 
     [Fact]
@@ -212,9 +212,9 @@ public sealed class MainViewModelHelperCoverageTests
     {
         var payload = MainViewModelPayloadHelpers.BuildCreditsPayload(value: 12345, lockCredits: true);
 
-        payload[MainViewModelDefaults.PayloadKeySymbol]!.GetValue<string>().Should().Be("credits");
-        payload[MainViewModelDefaults.PayloadKeyIntValue]!.GetValue<int>().Should().Be(12345);
-        payload[MainViewModelDefaults.PayloadKeyLockCredits]!.GetValue<bool>().Should().BeTrue();
+        payload[MainViewModelDefaults.PayloadSymbol]!.GetValue<string>().Should().Be("credits");
+        payload[MainViewModelDefaults.PayloadIntValue]!.GetValue<int>().Should().Be(12345);
+        payload[MainViewModelDefaults.PayloadLockCredits]!.GetValue<bool>().Should().BeTrue();
     }
 
     [Theory]

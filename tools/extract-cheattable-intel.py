@@ -14,7 +14,7 @@ import json
 import re
 from dataclasses import asdict, dataclass, field
 from pathlib import Path
-from typing import Iterable
+from typing import Iterable, List, Set, Tuple
 
 from defusedxml import ElementTree as element_tree
 
@@ -50,12 +50,12 @@ class ScriptIntel:
     group: str
     description: str
     technique: str
-    aob_scans: list[AobScan] = field(default_factory=list)
-    injection_points: list[str] = field(default_factory=list)
-    constant_writes: list[ConstantWrite] = field(default_factory=list)
-    disable_restore_bytes: list[str] = field(default_factory=list)
+    aob_scans: List[AobScan] = field(default_factory=list)
+    injection_points: List[str] = field(default_factory=list)
+    constant_writes: List[ConstantWrite] = field(default_factory=list)
+    disable_restore_bytes: List[str] = field(default_factory=list)
     trainer_mapping: str = "unmapped"
-    notes: list[str] = field(default_factory=list)
+    notes: List[str] = field(default_factory=list)
 
 
 def parse_args() -> argparse.Namespace:
@@ -87,8 +87,8 @@ def normalize_description(raw: str | None) -> str:
     return value.strip()
 
 
-def technique_from_script(script: str, writes: list[ConstantWrite]) -> tuple[str, list[str]]:
-    notes: list[str] = []
+def technique_from_script(script: str, writes: List[ConstantWrite]) -> Tuple[str, List[str]]:
+    notes: List[str] = []
     lowered = script.lower()
     has_code_cave = "alloc(newmem" in lowered and "jmp newmem" in lowered
     bypass_jump_hint = ("remove the jump" in lowered) or ("kill the jump" in lowered)
@@ -122,10 +122,10 @@ def mapping_from_description(description: str) -> str:
     return "unmapped"
 
 
-def parse_restore_bytes(script: str) -> list[str]:
+def parse_restore_bytes(script: str) -> List[str]:
     lines = script.splitlines()
     in_disable = False
-    values: list[str] = []
+    values: List[str] = []
     for line in lines:
         stripped = line.strip()
         if stripped.upper() == "[DISABLE]":
@@ -176,7 +176,7 @@ def extract_intel_from_script(group: str, description: str, script: str) -> Scri
     )
 
 
-def iter_cheat_entries(root: element_tree.Element) -> Iterable[tuple[str, element_tree.Element]]:
+def iter_cheat_entries(root: element_tree.Element) -> Iterable[Tuple[str, element_tree.Element]]:
     top = root.find("CheatEntries")
     if top is None:
         return
@@ -194,9 +194,9 @@ def iter_cheat_entries(root: element_tree.Element) -> Iterable[tuple[str, elemen
             yield (group_name, child)
 
 
-def dedupe_intel(records: list[ScriptIntel]) -> list[ScriptIntel]:
-    seen: set[tuple[str, str, str]] = set()
-    result: list[ScriptIntel] = []
+def dedupe_intel(records: List[ScriptIntel]) -> List[ScriptIntel]:
+    seen: Set[Tuple[str, str, str]] = set()
+    result: List[ScriptIntel] = []
     for item in records:
         primary_pattern = item.aob_scans[0].pattern if item.aob_scans else ""
         key = (item.group, item.description.lower(), primary_pattern)
@@ -207,8 +207,8 @@ def dedupe_intel(records: list[ScriptIntel]) -> list[ScriptIntel]:
     return result
 
 
-def render_markdown(records: list[ScriptIntel], source_path: Path) -> str:
-    lines: list[str] = []
+def render_markdown(records: List[ScriptIntel], source_path: Path) -> str:
+    lines: List[str] = []
     append_intro(lines, source_path)
     append_summary_table(lines, records)
     append_actionable_notes(lines)
@@ -216,7 +216,7 @@ def render_markdown(records: list[ScriptIntel], source_path: Path) -> str:
     return "\n".join(lines).rstrip() + "\n"
 
 
-def append_intro(lines: list[str], source_path: Path) -> None:
+def append_intro(lines: List[str], source_path: Path) -> None:
     lines.append("# Cheat Table Intelligence")
     lines.append("")
     lines.append(f"Source: `{source_path.name}`")
@@ -226,7 +226,7 @@ def append_intro(lines: list[str], source_path: Path) -> None:
     lines.append("")
 
 
-def append_summary_table(lines: list[str], records: list[ScriptIntel]) -> None:
+def append_summary_table(lines: List[str], records: List[ScriptIntel]) -> None:
     lines.append("## Extracted Scripts")
     lines.append("")
     lines.append("| Group | Entry | Technique | Trainer Mapping | Primary AOB |")
@@ -239,7 +239,7 @@ def append_summary_table(lines: list[str], records: list[ScriptIntel]) -> None:
     lines.append("")
 
 
-def append_actionable_notes(lines: list[str]) -> None:
+def append_actionable_notes(lines: List[str]) -> None:
     lines.append("## Actionable Notes")
     lines.append("")
     lines.append("1. `Infinite Credits` scripts confirm a dual-path flow (`float -> int convert`), matching the trainer's mirror-sync model.")
@@ -249,14 +249,14 @@ def append_actionable_notes(lines: list[str]) -> None:
     lines.append("")
 
 
-def append_detailed_entries(lines: list[str], records: list[ScriptIntel]) -> None:
+def append_detailed_entries(lines: List[str], records: List[ScriptIntel]) -> None:
     lines.append("## Detailed Entries")
     lines.append("")
     for item in records:
         append_detailed_entry(lines, item)
 
 
-def append_detailed_entry(lines: list[str], item: ScriptIntel) -> None:
+def append_detailed_entry(lines: List[str], item: ScriptIntel) -> None:
     lines.append(f"### {item.group} / {item.description}")
     lines.append(f"- Technique: `{item.technique}`")
     lines.append(f"- Trainer mapping: `{item.trainer_mapping}`")
@@ -268,7 +268,7 @@ def append_detailed_entry(lines: list[str], item: ScriptIntel) -> None:
     lines.append("")
 
 
-def append_injection_points(lines: list[str], injection_points: list[str]) -> None:
+def append_injection_points(lines: List[str], injection_points: List[str]) -> None:
     if not injection_points:
         return
 
@@ -276,7 +276,7 @@ def append_injection_points(lines: list[str], injection_points: list[str]) -> No
     lines.append(f"- Injection points: {points}")
 
 
-def append_aob_scans(lines: list[str], aob_scans: list[AobScan]) -> None:
+def append_aob_scans(lines: List[str], aob_scans: List[AobScan]) -> None:
     if not aob_scans:
         return
 
@@ -287,7 +287,7 @@ def append_aob_scans(lines: list[str], aob_scans: list[AobScan]) -> None:
         )
 
 
-def append_constant_writes(lines: list[str], constant_writes: list[ConstantWrite]) -> None:
+def append_constant_writes(lines: List[str], constant_writes: List[ConstantWrite]) -> None:
     if not constant_writes:
         return
 
@@ -296,7 +296,7 @@ def append_constant_writes(lines: list[str], constant_writes: list[ConstantWrite
         lines.append(f"  - `[{write.target}] <- ({write.value_type}){write.value}`")
 
 
-def append_restore_bytes(lines: list[str], restore_bytes: list[str]) -> None:
+def append_restore_bytes(lines: List[str], restore_bytes: List[str]) -> None:
     if not restore_bytes:
         return
 
@@ -305,7 +305,7 @@ def append_restore_bytes(lines: list[str], restore_bytes: list[str]) -> None:
         lines.append(f"  - `db {blob}`")
 
 
-def append_notes(lines: list[str], notes: list[str]) -> None:
+def append_notes(lines: List[str], notes: List[str]) -> None:
     if not notes:
         return
 
@@ -325,8 +325,8 @@ def should_skip_entry(description: str, variable_type: str) -> bool:
     return variable_type.lower() != "auto assembler script"
 
 
-def collect_script_intel(root: element_tree.Element) -> list[ScriptIntel]:
-    records: list[ScriptIntel] = []
+def collect_script_intel(root: element_tree.Element) -> List[ScriptIntel]:
+    records: List[ScriptIntel] = []
     for group, entry in iter_cheat_entries(root):
         description = normalize_description(entry.findtext("Description"))
         variable_type = (entry.findtext("VariableType") or "").strip()

@@ -12,11 +12,12 @@ namespace {
 
 using AnchorMatch = std::pair<std::string, std::string>;
 
-constexpr std::array<std::string_view, 2> kCreditsAnchors {"credits", "set_credits"};
+constexpr std::array<std::string_view, 2> kCreditsAnchors = {"credits", "set_credits"};
 
 std::optional<AnchorMatch> FindCreditsAnchor(const PluginRequest& request) {
     for (const auto& key : kCreditsAnchors) {
-        if (const auto it = request.anchors.find(key); it != request.anchors.end() && !it->second.empty()) {
+        const auto it = request.anchors.find(key);
+        if (it != request.anchors.end() && !it->second.empty()) {
             return AnchorMatch {it->first, it->second};
         }
     }
@@ -123,26 +124,28 @@ PluginResult EconomyPlugin::execute(const PluginRequest& request) {
         return result;
     }
 
-    if (const auto resolvedAnchor = FindCreditsAnchor(request); !resolvedAnchor.has_value()) {
+    const auto resolvedAnchor = FindCreditsAnchor(request);
+    if (!resolvedAnchor.has_value()) {
         return BuildMissingAnchorResult(request);
-    } else {
-        std::uintptr_t targetAddress = 0;
-        if (!process_mutation::TryParseAddress(resolvedAnchor->second, targetAddress)) {
-            return BuildInvalidAnchorResult(request, *resolvedAnchor);
-        }
-
-        if (std::string writeError; !process_mutation::TryWriteValue<std::int32_t>(
-                request.processId(),
-                targetAddress,
-                request.intValue(),
-                writeError)) {
-            return BuildWriteFailureResult(request, *resolvedAnchor, writeError);
-        }
-
-        lockEnabled_.store(request.lockValue());
-        lockedCreditsValue_.store(request.intValue());
-        return BuildMutationSuccessResult(request, *resolvedAnchor, request.intValue());
     }
+
+    std::uintptr_t targetAddress = 0;
+    if (!process_mutation::TryParseAddress(resolvedAnchor->second, targetAddress)) {
+        return BuildInvalidAnchorResult(request, *resolvedAnchor);
+    }
+
+    std::string writeError;
+    if (!process_mutation::TryWriteValue<std::int32_t>(
+            request.processId(),
+            targetAddress,
+            request.intValue(),
+            writeError)) {
+        return BuildWriteFailureResult(request, *resolvedAnchor, writeError);
+    }
+
+    lockEnabled_.store(request.lockValue());
+    lockedCreditsValue_.store(request.intValue());
+    return BuildMutationSuccessResult(request, *resolvedAnchor, request.intValue());
 }
 
 CapabilitySnapshot EconomyPlugin::capabilitySnapshot() const {

@@ -5,22 +5,22 @@ namespace SwfocTrainer.Runtime.Services;
 
 public sealed partial class RuntimeAdapter
 {
-    private const string DiagnosticKeyHookState = "hookState";
-    private const string DiagnosticKeyCreditsStateTag = "creditsStateTag";
-    private const string DiagnosticKeyState = "state";
-    private const string DiagnosticKeyExpertOverrideEnabled = "expertOverrideEnabled";
-    private const string DiagnosticKeyOverrideReason = "overrideReason";
-    private const string DiagnosticKeyRuntimeModeHint = "runtimeModeHint";
-    private const string DiagnosticKeyRuntimeModeProbe = "runtimeModeProbe";
-    private const string DiagnosticKeyRuntimeModeTelemetry = "runtimeModeTelemetry";
-    private const string DiagnosticKeyRuntimeModeTelemetryReasonCode = "runtimeModeTelemetryReasonCode";
-    private const string DiagnosticKeyRuntimeModeTelemetrySource = "runtimeModeTelemetrySource";
-    private const string DiagnosticKeyRuntimeModeEffective = "runtimeModeEffective";
-    private const string DiagnosticKeyRuntimeModeEffectiveSource = "runtimeModeEffectiveSource";
+    private const string DiagnosticHookState = "hookState";
+    private const string DiagnosticCreditsStateTag = "creditsStateTag";
+    private const string DiagnosticState = "state";
+    private const string DiagnosticExpertOverrideEnabled = "expertOverrideEnabled";
+    private const string DiagnosticOverrideReason = "overrideReason";
+    private const string DiagnosticRuntimeModeHint = "runtimeModeHint";
+    private const string DiagnosticRuntimeModeProbe = "runtimeModeProbe";
+    private const string DiagnosticRuntimeModeTelemetry = "runtimeModeTelemetry";
+    private const string DiagnosticRuntimeModeTelemetryReasonCode = "runtimeModeTelemetryReasonCode";
+    private const string DiagnosticRuntimeModeTelemetrySource = "runtimeModeTelemetrySource";
+    private const string DiagnosticRuntimeModeEffective = "runtimeModeEffective";
+    private const string DiagnosticRuntimeModeEffectiveSource = "runtimeModeEffectiveSource";
     private const string RuntimeModeSourceAuto = "auto";
     private const string RuntimeModeSourceManualOverride = "manual_override";
     private const string RuntimeModeSourceTelemetry = "telemetry";
-    private const string DiagnosticKeyPanicDisableState = "panicDisableState";
+    private const string DiagnosticPanicDisableState = "panicDisableState";
     private const string PanicDisableStateActive = "active";
     private const string PanicDisableStateInactive = "inactive";
     private const string ExpertOverrideEnvVarName = "SWFOC_EXPERT_MUTATION_OVERRIDES";
@@ -45,9 +45,9 @@ public sealed partial class RuntimeAdapter
 
     private static readonly string[] ResultHookStateKeys =
     [
-        DiagnosticKeyHookState,
-        DiagnosticKeyCreditsStateTag,
-        DiagnosticKeyState
+        DiagnosticHookState,
+        DiagnosticCreditsStateTag,
+        DiagnosticState
     ];
 
     private static readonly HashSet<string> PromotedExtenderActionIds = new(StringComparer.OrdinalIgnoreCase)

@@ -9,7 +9,7 @@ import json
 import re
 import sys
 from pathlib import Path
-from typing import Any
+from typing import Any, Dict, List, Optional, Set, Tuple
 from urllib import error, parse, request
 
 
@@ -44,9 +44,9 @@ def normalize_tag(raw: str) -> str:
     return value
 
 
-def unique_ordered(values: list[str]) -> list[str]:
-    seen: set[str] = set()
-    out: list[str] = []
+def unique_ordered(values: List[str]) -> List[str]:
+    seen: Set[str] = set()
+    out: List[str] = []
     for value in values:
         if value in seen:
             continue
@@ -73,8 +73,8 @@ def parse_timestamp_to_iso(value: Any) -> str:
     return utc_now_iso()
 
 
-def parse_dependency_ids(raw_items: Any) -> list[str]:
-    deps: list[str] = []
+def parse_dependency_ids(raw_items: Any) -> List[str]:
+    deps: List[str] = []
     if isinstance(raw_items, list):
         for item in raw_items:
             if isinstance(item, dict):
@@ -87,8 +87,8 @@ def parse_dependency_ids(raw_items: Any) -> list[str]:
     return unique_ordered(deps)
 
 
-def parse_normalized_tags(raw_tags: Any) -> list[str]:
-    tags: list[str] = []
+def parse_normalized_tags(raw_tags: Any) -> List[str]:
+    tags: List[str] = []
     if isinstance(raw_tags, list):
         for item in raw_tags:
             raw_tag = item.get("tag") if isinstance(item, dict) else item
@@ -100,7 +100,7 @@ def parse_normalized_tags(raw_tags: Any) -> list[str]:
     return unique_ordered(tags)
 
 
-def infer_candidate_base_profile(title: str, tags: list[str], parent_dependencies: list[str]) -> str:
+def infer_candidate_base_profile(title: str, tags: List[str], parent_dependencies: List[str]) -> str:
     title_lc = title.lower()
     tag_set = set(tags)
     dep_set = set(parent_dependencies)
@@ -123,7 +123,7 @@ def infer_candidate_base_profile(title: str, tags: list[str], parent_dependencie
     return "base_swfoc"
 
 
-def infer_launch_hints(base_profile: str, parent_dependencies: list[str], tags: list[str]) -> list[str]:
+def infer_launch_hints(base_profile: str, parent_dependencies: List[str], tags: List[str]) -> List[str]:
     hints = ["workshop"]
     hints.append("launch_sweaw" if base_profile == "base_sweaw" else "launch_swfoc")
 
@@ -140,7 +140,7 @@ def infer_launch_hints(base_profile: str, parent_dependencies: list[str], tags: 
     return unique_ordered(hints)
 
 
-def infer_risk_level(tags: list[str], parent_dependencies: list[str], subscriptions: int) -> str:
+def infer_risk_level(tags: List[str], parent_dependencies: List[str], subscriptions: int) -> str:
     tag_set = set(tags)
     if tag_set.intersection({"beta", "experimental", "unstable"}):
         return "high"
@@ -153,8 +153,8 @@ def infer_risk_level(tags: list[str], parent_dependencies: list[str], subscripti
 
 def infer_confidence(
     title: str,
-    tags: list[str],
-    parent_dependencies: list[str],
+    tags: List[str],
+    parent_dependencies: List[str],
     base_profile: str,
     subscriptions: int,
 ) -> float:
@@ -179,7 +179,7 @@ def canonical_mod_url(workshop_id: str) -> str:
     return f"https://steamcommunity.com/sharedfiles/filedetails/?id={workshop_id}"
 
 
-def normalize_mod_from_detail(detail: dict[str, Any]) -> dict[str, Any] | None:  # NOSONAR
+def normalize_mod_from_detail(detail: Dict[str, Any]) -> Optional[Dict[str, Any]]:  # NOSONAR
     workshop_id = str(detail.get("publishedfileid") or detail.get("workshopId") or detail.get("id") or "").strip()
     if not workshop_id.isdigit():
         return None
@@ -226,10 +226,10 @@ def normalize_mod_from_detail(detail: dict[str, Any]) -> dict[str, Any] | None: 
     }
 
 
-def scrape_workshop_ids(app_id: int, pages: int, timeout_sec: float) -> tuple[list[str], list[dict[str, str]]]:
+def scrape_workshop_ids(app_id: int, pages: int, timeout_sec: float) -> Tuple[List[str], List[Dict[str, str]]]:
     pattern = re.compile(r"sharedfiles/filedetails/\?id=(\d+)")
-    workshop_ids: list[str] = []
-    sources: list[dict[str, str]] = []
+    workshop_ids: List[str] = []
+    sources: List[Dict[str, str]] = []
 
     for page in range(1, pages + 1):
         browse_url = (
@@ -250,12 +250,12 @@ def scrape_workshop_ids(app_id: int, pages: int, timeout_sec: float) -> tuple[li
     return workshop_ids, sources
 
 
-def fetch_published_file_details(workshop_ids: list[str], timeout_sec: float) -> list[dict[str, Any]]:
-    all_details: list[dict[str, Any]] = []
+def fetch_published_file_details(workshop_ids: List[str], timeout_sec: float) -> List[Dict[str, Any]]:
+    all_details: List[Dict[str, Any]] = []
 
     for start in range(0, len(workshop_ids), 100):
         batch = workshop_ids[start : start + 100]
-        payload: dict[str, str] = {"itemcount": str(len(batch))}
+        payload: Dict[str, str] = {"itemcount": str(len(batch))}
         for index, workshop_id in enumerate(batch):
             payload[f"publishedfileids[{index}]"] = workshop_id
 
@@ -279,7 +279,7 @@ def fetch_published_file_details(workshop_ids: list[str], timeout_sec: float) ->
     return all_details
 
 
-def sort_mods(top_mods: list[dict[str, Any]], ranking_basis: str) -> list[dict[str, Any]]:
+def sort_mods(top_mods: List[Dict[str, Any]], ranking_basis: str) -> List[Dict[str, Any]]:
     if ranking_basis == "lifetime_subscriptions_desc":
         return sorted(
             top_mods,
@@ -297,11 +297,11 @@ def sort_mods(top_mods: list[dict[str, Any]], ranking_basis: str) -> list[dict[s
 def build_output(
     app_id: int,
     ranking_basis: str,
-    sources: list[dict[str, str]],
-    top_mods: list[dict[str, Any]],
+    sources: List[Dict[str, str]],
+    top_mods: List[Dict[str, Any]],
     generated_at_utc: str,
     retrieval_timestamp_utc: str,
-) -> dict[str, Any]:
+) -> Dict[str, Any]:
     return {
         "schemaVersion": SCHEMA_VERSION,
         "generatedAtUtc": generated_at_utc,
@@ -313,7 +313,7 @@ def build_output(
     }
 
 
-def load_source_payload(path: Path) -> tuple[list[dict[str, Any]], dict[str, Any]]:
+def load_source_payload(path: Path) -> Tuple[List[Dict[str, Any]], Dict[str, Any]]:
     with path.open("r", encoding="utf-8") as handle:
         payload = json.load(handle)
 
