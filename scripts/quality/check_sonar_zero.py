@@ -109,6 +109,67 @@ def _search_total(api_base: str, endpoint: str, query: dict[str, str], auth_head
     return int(paging.get("total") or 0)
 
 
+def _fetch_sonar_metrics(
+    api_base: str, auth: str, project_key: str, branch: str, pull_request: str
+) -> tuple[int, int, int, str]:
+    """Query SonarCloud for open issues, hotspot counts, and quality gate status."""
+    issues_query: dict[str, str] = {
+        "componentKeys": project_key,
+        "resolved": "false",
+        "ps": "1",
+    }
+    if branch:
+        issues_query["branch"] = branch
+    if pull_request:
+        issues_query["pullRequest"] = pull_request
+
+    open_issues = _search_total(api_base, "/api/issues/search", issues_query, auth)
+
+    hotspots_query = _scope_query(project_key, branch, pull_request)
+    hotspots_query["ps"] = "1"
+    security_hotspots_total = _search_total(
+        api_base, "/api/hotspots/search", dict(hotspots_query), auth
+    )
+    to_review_query = dict(hotspots_query)
+    to_review_query["status"] = UNRESOLVED_HOTSPOT_STATUS
+    security_hotspots_to_review = _search_total(
+        api_base, "/api/hotspots/search", to_review_query, auth
+    )
+
+    gate_query = _scope_query(project_key, branch, pull_request)
+    gate_url = f"{api_base}/api/qualitygates/project_status?{urllib.parse.urlencode(gate_query)}"
+    gate_payload = _request_json(gate_url, auth)
+    project_status = gate_payload.get("projectStatus") or {}
+    quality_gate = str(project_status.get("status") or "UNKNOWN")
+
+    return open_issues, security_hotspots_total, security_hotspots_to_review, quality_gate
+
+
+def _evaluate_metrics(
+    open_issues: int, security_hotspots_to_review: int, quality_gate: str
+) -> list[str]:
+    """Compare fetched metrics against the zero-issue thresholds and return findings."""
+    findings: list[str] = []
+    if open_issues != 0:
+        findings.append(f"Sonar reports {open_issues} open issues (expected 0).")
+    if security_hotspots_to_review != 0:
+        findings.append(
+            f"Sonar reports {security_hotspots_to_review} unresolved security hotspots (expected 0)."
+        )
+    if quality_gate != "OK":
+        findings.append(f"Sonar quality gate status is {quality_gate} (expected OK).")
+    return findings
+
+
+def _write_reports(payload: dict, out_json: Path, out_md: Path) -> None:
+    """Write the JSON and markdown report files and print the markdown to stdout."""
+    out_json.parent.mkdir(parents=True, exist_ok=True)
+    out_md.parent.mkdir(parents=True, exist_ok=True)
+    out_json.write_text(json.dumps(payload, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+    out_md.write_text(_render_md(payload), encoding="utf-8")
+    print(out_md.read_text(encoding="utf-8"), end="")
+
+
 def main() -> int:
     import os
 
@@ -128,50 +189,10 @@ def main() -> int:
     else:
         auth = _auth_header(token)
         try:
-            issues_query = {
-                "componentKeys": args.project_key,
-                "resolved": "false",
-                "ps": "1",
-            }
-            if args.branch:
-                issues_query["branch"] = args.branch
-            if args.pull_request:
-                issues_query["pullRequest"] = args.pull_request
-
-            open_issues = _search_total(api_base, "/api/issues/search", issues_query, auth)
-
-            hotspots_query = _scope_query(args.project_key, args.branch, args.pull_request)
-            hotspots_query["ps"] = "1"
-            security_hotspots_total = _search_total(
-                api_base,
-                "/api/hotspots/search",
-                dict(hotspots_query),
-                auth,
+            open_issues, security_hotspots_total, security_hotspots_to_review, quality_gate = (
+                _fetch_sonar_metrics(api_base, auth, args.project_key, args.branch, args.pull_request)
             )
-            to_review_query = dict(hotspots_query)
-            to_review_query["status"] = UNRESOLVED_HOTSPOT_STATUS
-            security_hotspots_to_review = _search_total(
-                api_base,
-                "/api/hotspots/search",
-                to_review_query,
-                auth,
-            )
-
-            gate_query = _scope_query(args.project_key, args.branch, args.pull_request)
-            gate_url = f"{api_base}/api/qualitygates/project_status?{urllib.parse.urlencode(gate_query)}"
-            gate_payload = _request_json(gate_url, auth)
-            project_status = gate_payload.get("projectStatus") or {}
-            quality_gate = str(project_status.get("status") or "UNKNOWN")
-
-            if open_issues != 0:
-                findings.append(f"Sonar reports {open_issues} open issues (expected 0).")
-            if security_hotspots_to_review != 0:
-                findings.append(
-                    f"Sonar reports {security_hotspots_to_review} unresolved security hotspots (expected 0)."
-                )
-            if quality_gate != "OK":
-                findings.append(f"Sonar quality gate status is {quality_gate} (expected OK).")
-
+            findings.extend(_evaluate_metrics(open_issues, security_hotspots_to_review, quality_gate))
             status = "pass" if not findings else "fail"
         except Exception as exc:  # pragma: no cover - network/runtime surface
             status = "fail"
@@ -195,12 +216,7 @@ def main() -> int:
         print(str(exc), file=sys.stderr)
         return 1
 
-    out_json.parent.mkdir(parents=True, exist_ok=True)
-    out_md.parent.mkdir(parents=True, exist_ok=True)
-    out_json.write_text(json.dumps(payload, indent=2, sort_keys=True) + "\n", encoding="utf-8")
-    out_md.write_text(_render_md(payload), encoding="utf-8")
-    print(out_md.read_text(encoding="utf-8"), end="")
-
+    _write_reports(payload, out_json, out_md)
     return 0 if status == "pass" else 1
 
 

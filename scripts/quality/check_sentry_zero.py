@@ -104,15 +104,11 @@ def _safe_output_path(raw: str, fallback: str, base: Path | None = None) -> Path
     return resolved
 
 
-def main() -> int:
+def _resolve_projects(args_project: list[str]) -> list[str]:
+    """Resolve project slugs from CLI args or environment variables, deduplicated."""
     import os
 
-    args = _parse_args()
-    token = (args.token or os.environ.get("SENTRY_AUTH_TOKEN", "")).strip()
-    org = (args.org or os.environ.get("SENTRY_ORG", "")).strip()
-    api_base = normalize_https_url(SENTRY_API_BASE, allowed_hosts={"sentry.io"}).rstrip("/")
-
-    projects = [p for p in args.project if p]
+    projects = [p for p in args_project if p]
     if not projects:
         single_project = str(os.environ.get("SENTRY_PROJECT", "")).strip()
         if single_project:
@@ -122,42 +118,84 @@ def main() -> int:
             if value:
                 projects.append(value)
     projects = [p.strip().lower() for p in projects if p and p.strip()]
-    projects = list(dict.fromkeys(projects))
+    return list(dict.fromkeys(projects))
 
+
+def _validate_sentry_config(token: str, org: str, projects: list[str]) -> list[str]:
+    """Return a list of configuration-error findings (empty means valid)."""
     findings: list[str] = []
-    project_results: list[dict[str, Any]] = []
-
     if not token:
         findings.append("SENTRY_AUTH_TOKEN is missing.")
     if not org:
         findings.append("SENTRY_ORG is missing.")
     if not projects:
         findings.append("No Sentry projects configured (SENTRY_PROJECT_BACKEND/SENTRY_PROJECT_WEB).")
+    return findings
+
+
+def _query_project(api_base: str, org: str, project: str, token: str) -> tuple[int, list[str]]:
+    """Query a single Sentry project for unresolved issues, returning the count and any findings."""
+    findings: list[str] = []
+    query = urllib.parse.urlencode({"query": "is:unresolved", "limit": "1"})
+    org_slug = urllib.parse.quote(org, safe="")
+    project_slug = urllib.parse.quote(project, safe="")
+    url = f"{api_base}/projects/{org_slug}/{project_slug}/issues/?{query}"
+    issues, headers = _request(url, token)
+    unresolved = _hits_from_headers(headers)
+    if unresolved is None:
+        unresolved = len(issues)
+        if unresolved >= 1:
+            findings.append(
+                f"Sentry project {project} returned unresolved issues but no X-Hits header for exact totals."
+            )
+    if unresolved != 0:
+        findings.append(f"Sentry project {project} has {unresolved} unresolved issues (expected 0).")
+    return unresolved, findings
+
+
+def _query_all_projects(
+    api_base: str, org: str, projects: list[str], token: str
+) -> tuple[str, list[dict[str, Any]], list[str]]:
+    """Query all projects and return the overall status, per-project results, and findings."""
+    findings: list[str] = []
+    project_results: list[dict[str, Any]] = []
+    try:
+        for project in projects:
+            unresolved, proj_findings = _query_project(api_base, org, project, token)
+            findings.extend(proj_findings)
+            project_results.append({"project": project, "unresolved": unresolved})
+        status = "pass" if not findings else "fail"
+    except Exception as exc:  # pragma: no cover - network/runtime surface
+        findings.append(f"Sentry API request failed: {exc}")
+        status = "fail"
+    return status, project_results, findings
+
+
+def _write_reports(payload: dict, out_json: Path, out_md: Path) -> None:
+    """Write the JSON and markdown report files and print the markdown to stdout."""
+    out_json.parent.mkdir(parents=True, exist_ok=True)
+    out_md.parent.mkdir(parents=True, exist_ok=True)
+    out_json.write_text(json.dumps(payload, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+    out_md.write_text(_render_md(payload), encoding="utf-8")
+    print(out_md.read_text(encoding="utf-8"), end="")
+
+
+def main() -> int:
+    import os
+
+    args = _parse_args()
+    token = (args.token or os.environ.get("SENTRY_AUTH_TOKEN", "")).strip()
+    org = (args.org or os.environ.get("SENTRY_ORG", "")).strip()
+    api_base = normalize_https_url(SENTRY_API_BASE, allowed_hosts={"sentry.io"}).rstrip("/")
+    projects = _resolve_projects(args.project)
+
+    findings = _validate_sentry_config(token, org, projects)
+    project_results: list[dict[str, Any]] = []
 
     status = "fail"
     if not findings:
-        try:
-            for project in projects:
-                query = urllib.parse.urlencode({"query": "is:unresolved", "limit": "1"})
-                org_slug = urllib.parse.quote(org, safe="")
-                project_slug = urllib.parse.quote(project, safe="")
-                url = f"{api_base}/projects/{org_slug}/{project_slug}/issues/?{query}"
-                issues, headers = _request(url, token)
-                unresolved = _hits_from_headers(headers)
-                if unresolved is None:
-                    unresolved = len(issues)
-                    if unresolved >= 1:
-                        findings.append(
-                            f"Sentry project {project} returned unresolved issues but no X-Hits header for exact totals."
-                        )
-                if unresolved != 0:
-                    findings.append(f"Sentry project {project} has {unresolved} unresolved issues (expected 0).")
-                project_results.append({"project": project, "unresolved": unresolved})
-
-            status = "pass" if not findings else "fail"
-        except Exception as exc:  # pragma: no cover - network/runtime surface
-            findings.append(f"Sentry API request failed: {exc}")
-            status = "fail"
+        status, project_results, api_findings = _query_all_projects(api_base, org, projects, token)
+        findings.extend(api_findings)
 
     payload = {
         "status": status,
@@ -174,11 +212,7 @@ def main() -> int:
         print(str(exc), file=sys.stderr)
         return 1
 
-    out_json.parent.mkdir(parents=True, exist_ok=True)
-    out_md.parent.mkdir(parents=True, exist_ok=True)
-    out_json.write_text(json.dumps(payload, indent=2, sort_keys=True) + "\n", encoding="utf-8")
-    out_md.write_text(_render_md(payload), encoding="utf-8")
-    print(out_md.read_text(encoding="utf-8"), end="")
+    _write_reports(payload, out_json, out_md)
     return 0 if status == "pass" else 1
 
 

@@ -313,7 +313,7 @@ public sealed class ModDependencyValidator : IModDependencyValidator
             return;
         }
 
-        foreach (var hintedPath in roots.ToArray()
+        foreach (var hintedPath in roots.AsEnumerable()
             .Select(root => Directory.GetParent(root)?.FullName)
             .Where(parent => !string.IsNullOrWhiteSpace(parent))
             .SelectMany(parent => parentHints

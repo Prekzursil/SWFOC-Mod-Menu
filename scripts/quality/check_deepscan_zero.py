@@ -27,20 +27,32 @@ def _parse_args() -> argparse.Namespace:
     return parser.parse_args()
 
 
+def _find_total_in_dict(payload: dict) -> int | None:
+    """Search a dict's own keys for a recognized total key with a numeric value."""
+    for key, value in payload.items():
+        if key in TOTAL_KEYS and isinstance(value, (int, float)):
+            return int(value)
+    return None
+
+
+def _find_total_in_children(children) -> int | None:
+    """Recursively search an iterable of child values for a total count."""
+    for child in children:
+        total = extract_total_open(child)
+        if total is not None:
+            return total
+    return None
+
+
 def extract_total_open(payload: Any) -> int | None:
+    """Walk a JSON payload tree to find the first recognized total-count field."""
     if isinstance(payload, dict):
-        for key, value in payload.items():
-            if key in TOTAL_KEYS and isinstance(value, (int, float)):
-                return int(value)
-        for nested in payload.values():
-            total = extract_total_open(nested)
-            if total is not None:
-                return total
-    elif isinstance(payload, list):
-        for nested in payload:
-            total = extract_total_open(nested)
-            if total is not None:
-                return total
+        direct = _find_total_in_dict(payload)
+        if direct is not None:
+            return direct
+        return _find_total_in_children(payload.values())
+    if isinstance(payload, list):
+        return _find_total_in_children(payload)
     return None
 
 
@@ -91,16 +103,9 @@ def _safe_output_path(raw: str, fallback: str, base: Path | None = None) -> Path
     return resolved
 
 
-def main() -> int:
-    import os
-
-    args = _parse_args()
-    token = (args.token or os.environ.get("DEEPSCAN_API_TOKEN", "")).strip()
-    open_issues_url = os.environ.get("DEEPSCAN_OPEN_ISSUES_URL", "").strip()
-
+def _validate_config(token: str, open_issues_url: str) -> tuple[str, list[str]]:
+    """Validate token and URL configuration, returning the normalized URL and any findings."""
     findings: list[str] = []
-    open_issues: int | None = None
-
     if not token:
         findings.append("DEEPSCAN_API_TOKEN is missing.")
     if not open_issues_url:
@@ -113,20 +118,50 @@ def main() -> int:
             )
         except ValueError as exc:
             findings.append(str(exc))
+    return open_issues_url, findings
+
+
+def _query_and_evaluate(open_issues_url: str, token: str) -> tuple[str, int | None, list[str]]:
+    """Query DeepScan API and evaluate the result against the zero-issue threshold."""
+    findings: list[str] = []
+    open_issues: int | None = None
+    try:
+        payload = _request_json(open_issues_url, token)
+        open_issues = extract_total_open(payload)
+        if open_issues is None:
+            findings.append("DeepScan response did not include a parseable total issue count.")
+        elif open_issues != 0:
+            findings.append(f"DeepScan reports {open_issues} open issues (expected 0).")
+        status = "pass" if not findings else "fail"
+    except Exception as exc:  # pragma: no cover - network/runtime surface
+        findings.append(f"DeepScan API request failed: {exc}")
+        status = "fail"
+    return status, open_issues, findings
+
+
+def _write_reports(payload: dict, out_json: Path, out_md: Path) -> None:
+    """Write the JSON and markdown report files and print the markdown to stdout."""
+    out_json.parent.mkdir(parents=True, exist_ok=True)
+    out_md.parent.mkdir(parents=True, exist_ok=True)
+    out_json.write_text(json.dumps(payload, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+    out_md.write_text(_render_md(payload), encoding="utf-8")
+    print(out_md.read_text(encoding="utf-8"), end="")
+
+
+def main() -> int:
+    import os
+
+    args = _parse_args()
+    token = (args.token or os.environ.get("DEEPSCAN_API_TOKEN", "")).strip()
+    raw_url = os.environ.get("DEEPSCAN_OPEN_ISSUES_URL", "").strip()
+
+    open_issues_url, findings = _validate_config(token, raw_url)
+    open_issues: int | None = None
 
     status = "fail"
     if not findings:
-        try:
-            payload = _request_json(open_issues_url, token)
-            open_issues = extract_total_open(payload)
-            if open_issues is None:
-                findings.append("DeepScan response did not include a parseable total issue count.")
-            elif open_issues != 0:
-                findings.append(f"DeepScan reports {open_issues} open issues (expected 0).")
-            status = "pass" if not findings else "fail"
-        except Exception as exc:  # pragma: no cover - network/runtime surface
-            findings.append(f"DeepScan API request failed: {exc}")
-            status = "fail"
+        status, open_issues, api_findings = _query_and_evaluate(open_issues_url, token)
+        findings.extend(api_findings)
 
     payload = {
         "status": status,
@@ -143,11 +178,7 @@ def main() -> int:
         print(str(exc), file=sys.stderr)
         return 1
 
-    out_json.parent.mkdir(parents=True, exist_ok=True)
-    out_md.parent.mkdir(parents=True, exist_ok=True)
-    out_json.write_text(json.dumps(payload, indent=2, sort_keys=True) + "\n", encoding="utf-8")
-    out_md.write_text(_render_md(payload), encoding="utf-8")
-    print(out_md.read_text(encoding="utf-8"), end="")
+    _write_reports(payload, out_json, out_md)
     return 0 if status == "pass" else 1
 
 

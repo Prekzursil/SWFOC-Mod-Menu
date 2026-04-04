@@ -346,6 +346,11 @@ public abstract class MainViewModelSaveOpsBase : MainViewModelQuickActionsBase
     protected IEnumerable<SaveFieldViewItem> FlattenNodes(SaveNode root)
     {
         ArgumentNullException.ThrowIfNull(root);
+        return FlattenNodesIterator(root);
+    }
+
+    private IEnumerable<SaveFieldViewItem> FlattenNodesIterator(SaveNode root)
+    {
         if (root.Children is null || root.Children.Count == 0)
         {
             if (!string.Equals(root.ValueType, "root", StringComparison.OrdinalIgnoreCase))
@@ -358,7 +363,7 @@ public abstract class MainViewModelSaveOpsBase : MainViewModelQuickActionsBase
 
         foreach (var child in root.Children)
         {
-            foreach (var nested in FlattenNodes(child))
+            foreach (var nested in FlattenNodesIterator(child))
             {
                 yield return nested;
             }

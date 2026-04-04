@@ -114,6 +114,44 @@ def _safe_output_path(raw: str, fallback: str, base: Path | None = None) -> Path
     return resolved
 
 
+def _query_codacy_issues(
+    api_base: str, token: str, owner: str, repo: str, provider_hint: str
+) -> tuple[str, int | None, list[str]]:
+    """Query Codacy API for open issue count. Returns (status, open_issues, findings)."""
+    findings: list[str] = []
+    query = urllib.parse.urlencode({"limit": "1"})
+    provider_candidates = list(dict.fromkeys(p for p in [provider_hint, "gh", "github"] if p))
+    last_exc: Exception | None = None
+
+    for provider in provider_candidates:
+        url = (
+            f"{api_base}/api/v3/analysis/organizations/{provider}/"
+            f"{owner}/repositories/{repo}/issues/search?{query}"
+        )
+        try:
+            payload = _request_json(url, token, method="POST", data={})
+            open_issues = extract_total_open(payload)
+            if open_issues is None:
+                findings.append("Codacy response did not include a parseable total issue count.")
+            elif open_issues != 0:
+                findings.append(f"Codacy reports {open_issues} open issues (expected 0).")
+            return ("pass" if not findings else "fail"), open_issues, findings
+        except urllib.error.HTTPError as exc:
+            last_exc = exc
+            if exc.code == 404:
+                continue
+            findings.append(f"Codacy API request failed: HTTP {exc.code}")
+            return "fail", None, findings
+        except Exception as exc:  # pragma: no cover
+            findings.append(f"Codacy API request failed: {exc}")
+            return "fail", None, findings
+
+    findings.append(f"Codacy API endpoint was not found for provider(s): {', '.join(provider_candidates)}.")
+    if last_exc is not None:
+        findings.append(f"Last Codacy API error: {last_exc}")
+    return "fail", None, findings
+
+
 def main() -> int:
     import os
 
@@ -123,51 +161,10 @@ def main() -> int:
     owner = urllib.parse.quote(args.owner.strip(), safe="")
     repo = urllib.parse.quote(args.repo.strip(), safe="")
 
-    findings: list[str] = []
-    open_issues: int | None = None
-
     if not token:
-        findings.append("CODACY_API_TOKEN is missing.")
-        status = "fail"
+        status, open_issues, findings = "fail", None, ["CODACY_API_TOKEN is missing."]
     else:
-        query = urllib.parse.urlencode({"limit": "1"})
-        provider_candidates = [args.provider, "gh", "github"]
-        provider_candidates = list(dict.fromkeys(p for p in provider_candidates if p))
-
-        last_exc: Exception | None = None
-        for provider in provider_candidates:
-            url = (
-                f"{api_base}/api/v3/analysis/organizations/{provider}/"
-                f"{owner}/repositories/{repo}/issues/search?{query}"
-            )
-            try:
-                payload = _request_json(url, token, method="POST", data={})
-                open_issues = extract_total_open(payload)
-                if open_issues is None:
-                    findings.append("Codacy response did not include a parseable total issue count.")
-                elif open_issues != 0:
-                    findings.append(f"Codacy reports {open_issues} open issues (expected 0).")
-                status = "pass" if not findings else "fail"
-                break
-            except urllib.error.HTTPError as exc:
-                last_exc = exc
-                if exc.code == 404:
-                    continue
-                findings.append(f"Codacy API request failed: HTTP {exc.code}")
-                status = "fail"
-                break
-            except Exception as exc:  # pragma: no cover - network/runtime surface
-                last_exc = exc
-                findings.append(f"Codacy API request failed: {exc}")
-                status = "fail"
-                break
-        else:
-            findings.append(
-                f"Codacy API endpoint was not found for provider(s): {', '.join(provider_candidates)}."
-            )
-            if last_exc is not None:
-                findings.append(f"Last Codacy API error: {last_exc}")
-            status = "fail"
+        status, open_issues, findings = _query_codacy_issues(api_base, token, owner, repo, args.provider)
 
     payload = {
         "status": status,

@@ -507,15 +507,17 @@ public sealed class ProcessLocator : IProcessLocator
         }
 
         var ids = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
-        foreach (var match in Regex.Matches(commandLine, @"steammod\s*=\s*(\d+)", RegexOptions.IgnoreCase).Cast<Match>()
-            .Where(m => m.Groups.Count > 1 && !string.IsNullOrWhiteSpace(m.Groups[1].Value)))  // NOSONAR
+        var steamModRegex = new Regex(@"steammod\s*=\s*(\d+)", RegexOptions.IgnoreCase, TimeSpan.FromMilliseconds(250));
+        foreach (var match in steamModRegex.Matches(commandLine).Cast<Match>()
+            .Where(m => m.Groups.Count > 1 && !string.IsNullOrWhiteSpace(m.Groups[1].Value)))
         {
             ids.Add(match.Groups[1].Value);
         }
 
         // Also infer IDs from mod paths containing workshop content folder segments.
-        foreach (var match in Regex.Matches(commandLine, @"[\\/]+32470[\\/]+(\d+)", RegexOptions.IgnoreCase).Cast<Match>()
-            .Where(m => m.Groups.Count > 1 && !string.IsNullOrWhiteSpace(m.Groups[1].Value)))  // NOSONAR
+        var workshopRegex = new Regex(@"[\\/]+32470[\\/]+(\d+)", RegexOptions.IgnoreCase, TimeSpan.FromMilliseconds(250));
+        foreach (var match in workshopRegex.Matches(commandLine).Cast<Match>()
+            .Where(m => m.Groups.Count > 1 && !string.IsNullOrWhiteSpace(m.Groups[1].Value)))
         {
             ids.Add(match.Groups[1].Value);
         }
