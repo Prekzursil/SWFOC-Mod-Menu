@@ -72,7 +72,7 @@ public sealed class SavePatchPackServiceTests
     {
         var service = CreateService();
 
-        var tempPath = Path.Combine(Path.GetTempPath(), $"swfoc-invalid-patch-{Guid.NewGuid():N}.json");
+        var tempPath = Path.Join(Path.GetTempPath(), $"swfoc-invalid-patch-{Guid.NewGuid():N}.json");
         try
         {
             await File.WriteAllTextAsync(tempPath, "{ \"metadata\": { \"schemaVersion\": \"1.0\" }, \"operations\": [] }");
@@ -116,7 +116,7 @@ public sealed class SavePatchPackServiceTests
     {
         var patchPackService = CreateService();
         var tempDir = CreateTempDirectory();
-        var patchPath = Path.Combine(tempDir, "roundtrip.patch.json");
+        var patchPath = Path.Join(tempDir, "roundtrip.patch.json");
 
         var originalBytes = CreateSyntheticBytes();
         var editedBytes = originalBytes.ToArray();
@@ -140,7 +140,7 @@ public sealed class SavePatchPackServiceTests
     {
         var patchPackService = CreateService();
         var root = TestPaths.FindRepoRoot();
-        var fixturePath = Path.Combine(root, "tools", "fixtures", "save_patch_pack_sample.json");
+        var fixturePath = Path.Join(root, "tools", "fixtures", "save_patch_pack_sample.json");
 
         var pack = await patchPackService.LoadPackAsync(fixturePath);
         var target = new SaveDocument("mem://target.sav", "base_swfoc_steam_v1", CreateSyntheticBytes(), EmptyRoot);
@@ -155,7 +155,7 @@ public sealed class SavePatchPackServiceTests
     public async Task LoadPackAsync_ShouldRejectMissingNewValueWithIndexedError()
     {
         var service = CreateService();
-        var tempPath = Path.Combine(Path.GetTempPath(), $"swfoc-invalid-newvalue-{Guid.NewGuid():N}.json");
+        var tempPath = Path.Join(Path.GetTempPath(), $"swfoc-invalid-newvalue-{Guid.NewGuid():N}.json");
 
         try
         {
@@ -202,7 +202,7 @@ public sealed class SavePatchPackServiceTests
     public async Task LoadPackAsync_ShouldRejectExplicitNullNewValue()
     {
         var service = CreateService();
-        var tempPath = Path.Combine(Path.GetTempPath(), $"swfoc-invalid-null-newvalue-{Guid.NewGuid():N}.json");
+        var tempPath = Path.Join(Path.GetTempPath(), $"swfoc-invalid-null-newvalue-{Guid.NewGuid():N}.json");
 
         try
         {
@@ -250,7 +250,7 @@ public sealed class SavePatchPackServiceTests
     public async Task LoadPackAsync_ShouldPreserveNullableOldValue_WithoutCoercion()
     {
         var service = CreateService();
-        var tempPath = Path.Combine(Path.GetTempPath(), $"swfoc-null-oldvalue-{Guid.NewGuid():N}.json");
+        var tempPath = Path.Join(Path.GetTempPath(), $"swfoc-null-oldvalue-{Guid.NewGuid():N}.json");
 
         try
         {
@@ -328,7 +328,7 @@ public sealed class SavePatchPackServiceTests
         var root = TestPaths.FindRepoRoot();
         var options = new SaveOptions
         {
-            SchemaRootPath = Path.Combine(root, "profiles", "default", "schemas")
+            SchemaRootPath = Path.Join(root, "profiles", "default", "schemas")
         };
 
         return new SavePatchPackService(options);
@@ -338,7 +338,7 @@ public sealed class SavePatchPackServiceTests
 
     private static string CreateTempDirectory()
     {
-        var path = Path.Combine(Path.GetTempPath(), $"swfoc-savepatch-pack-{Guid.NewGuid():N}");
+        var path = Path.Join(Path.GetTempPath(), $"swfoc-savepatch-pack-{Guid.NewGuid():N}");
         Directory.CreateDirectory(path);
         return path;
     }

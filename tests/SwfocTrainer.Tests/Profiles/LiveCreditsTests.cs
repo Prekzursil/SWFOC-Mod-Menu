@@ -53,7 +53,7 @@ public sealed class LiveCreditsTests
         var repoRoot = TestPaths.FindRepoRoot();
         var profileRepo = new FileSystemProfileRepository(new ProfileRepositoryOptions
         {
-            ProfilesRootPath = Path.Combine(repoRoot, "profiles", "default")
+            ProfilesRootPath = Path.Join(repoRoot, "profiles", "default")
         });
         var resolver = new SignatureResolver(NullLogger<SignatureResolver>.Instance);
         var runtime = new RuntimeAdapter(locator, profileRepo, resolver, NullLogger<RuntimeAdapter>.Instance);
@@ -119,7 +119,17 @@ public sealed class LiveCreditsTests
             _output.WriteLine($"Credits symbol: addr=0x{symbol.Address.ToInt64():X}  source={symbol.Source}  currentValue={originalCredits}");
             return (symbol, originalCredits);
         }
-        catch (Exception ex)
+        catch (InvalidOperationException ex)
+        {
+            _output.WriteLine($"FAIL — Cannot read credits: {ex.Message}");
+            return null;
+        }
+        catch (IOException ex)
+        {
+            _output.WriteLine($"FAIL — Cannot read credits: {ex.Message}");
+            return null;
+        }
+        catch (TimeoutException ex)
         {
             _output.WriteLine($"FAIL — Cannot read credits: {ex.Message}");
             return null;

@@ -363,7 +363,7 @@ public sealed class SdkOperationRouter : ISdkOperationRouter
         return new HashSet<string>(
             rawValues
                 .Where(value => !string.IsNullOrWhiteSpace(value))
-                .Select(static value => value!),
+                .OfType<string>(),
             StringComparer.OrdinalIgnoreCase);
     }
 
@@ -374,7 +374,7 @@ public sealed class SdkOperationRouter : ISdkOperationRouter
             var values = JsonSerializer.Deserialize<string[]>(serialized) ?? Array.Empty<string>();
             return CreateAnchorSet(values);
         }
-        catch
+        catch (JsonException)
         {
             return CreateEmptyAnchorSet();
         }

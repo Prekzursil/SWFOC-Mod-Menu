@@ -70,7 +70,11 @@ public sealed class BinaryFingerprintService : IBinaryFingerprintService
             productVersion = version.ProductVersion;
             fileVersion = version.FileVersion;
         }
-        catch (Exception ex)
+        catch (IOException ex)
+        {
+            _logger.LogDebug(ex, "Unable to read version metadata for {Path}", fullPath);
+        }
+        catch (UnauthorizedAccessException ex)
         {
             _logger.LogDebug(ex, "Unable to read version metadata for {Path}", fullPath);
         }
@@ -119,7 +123,11 @@ public sealed class BinaryFingerprintService : IBinaryFingerprintService
                 .ToArray();
             return Task.FromResult<IReadOnlyList<string>>(modules);
         }
-        catch
+        catch (InvalidOperationException)
+        {
+            return Task.FromResult<IReadOnlyList<string>>(Array.Empty<string>());
+        }
+        catch (System.ComponentModel.Win32Exception)
         {
             return Task.FromResult<IReadOnlyList<string>>(Array.Empty<string>());
         }

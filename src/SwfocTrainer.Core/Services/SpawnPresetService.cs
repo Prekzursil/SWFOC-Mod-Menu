@@ -237,6 +237,7 @@ public sealed class SpawnPresetService : ISpawnPresetService
 
     public Task<IReadOnlyList<SpawnPreset>> LoadPresetsAsync(string profileId)
     {
+        ArgumentNullException.ThrowIfNull(profileId);
         return LoadPresetsAsync(profileId, CancellationToken.None);
     }
 
@@ -245,12 +246,14 @@ public sealed class SpawnPresetService : ISpawnPresetService
         SpawnBatchPlan plan,
         RuntimeMode runtimeMode)
     {
+        ArgumentNullException.ThrowIfNull(profileId);
+        ArgumentNullException.ThrowIfNull(plan);
         return ExecuteBatchAsync(profileId, plan, runtimeMode, CancellationToken.None);
     }
 
     private string BuildPresetPath(string profileId)
     {
-        return Path.Combine(_options.PresetRootPath, profileId, "spawn_presets.json");
+        return Path.Join(_options.PresetRootPath, profileId, "spawn_presets.json");
     }
 
     private async Task<IReadOnlyList<SpawnPreset>> GenerateDefaultPresetsAsync(string profileId, CancellationToken cancellationToken)
@@ -260,7 +263,11 @@ public sealed class SpawnPresetService : ISpawnPresetService
         {
             catalog = await _catalog.LoadCatalogAsync(profileId, cancellationToken);
         }
-        catch
+        catch (InvalidOperationException)
+        {
+            return Array.Empty<SpawnPreset>();
+        }
+        catch (IOException)
         {
             return Array.Empty<SpawnPreset>();
         }
@@ -293,8 +300,9 @@ public sealed class SpawnPresetService : ISpawnPresetService
 
     private static SpawnPreset NormalizePreset(SpawnPreset preset)
     {
-        var id = string.IsNullOrWhiteSpace(preset.Id) ? preset.UnitId.ToLowerInvariant() : preset.Id;
-        var name = string.IsNullOrWhiteSpace(preset.Name) ? preset.UnitId : preset.Name;
+        var unitId = preset.UnitId ?? string.Empty;
+        var id = string.IsNullOrWhiteSpace(preset.Id) ? unitId.ToLowerInvariant() : preset.Id;
+        var name = string.IsNullOrWhiteSpace(preset.Name) ? unitId : preset.Name;
         var faction = string.IsNullOrWhiteSpace(preset.Faction) ? "EMPIRE" : preset.Faction;
         var marker = string.IsNullOrWhiteSpace(preset.EntryMarker) ? "AUTO" : preset.EntryMarker;
         var quantity = Math.Clamp(preset.DefaultQuantity <= 0 ? 1 : preset.DefaultQuantity, 1, 100);

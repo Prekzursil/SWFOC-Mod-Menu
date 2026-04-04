@@ -28,6 +28,8 @@ public sealed class BinarySaveCodec : ISaveCodec
 
     public async Task<SaveDocument> LoadAsync(string path, string schemaId, CancellationToken cancellationToken)
     {
+        ArgumentNullException.ThrowIfNull(path);
+        ArgumentNullException.ThrowIfNull(schemaId);
         var normalizedPath = NormalizeSaveFilePath(path, requireExistingFile: true);
         var schema = await _schemaRepository.LoadSchemaAsync(schemaId, cancellationToken);
         var bytes = await File.ReadAllBytesAsync(normalizedPath, cancellationToken);
@@ -37,6 +39,8 @@ public sealed class BinarySaveCodec : ISaveCodec
 
     public async Task EditAsync(SaveDocument document, string nodePath, object? value, CancellationToken cancellationToken)
     {
+        ArgumentNullException.ThrowIfNull(document);
+        ArgumentNullException.ThrowIfNull(nodePath);
         var schema = await _schemaRepository.LoadSchemaAsync(document.SchemaId, cancellationToken);
 
         var targetField = schema.FieldDefs.FirstOrDefault(f =>
@@ -53,25 +57,18 @@ public sealed class BinarySaveCodec : ISaveCodec
 
     public async Task<SaveValidationResult> ValidateAsync(SaveDocument document, CancellationToken cancellationToken)
     {
+        ArgumentNullException.ThrowIfNull(document);
         var schema = await _schemaRepository.LoadSchemaAsync(document.SchemaId, cancellationToken);
         var errors = new List<string>();
         var warnings = new List<string>();
 
-        foreach (var block in schema.RootBlocks)
-        {
-            if (block.Offset < 0 || block.Offset + block.Length > document.Raw.Length)
-            {
-                errors.Add($"Block '{block.Id}' is out of range ({block.Offset}..{block.Offset + block.Length})");
-            }
-        }
+        errors.AddRange(schema.RootBlocks
+            .Where(block => block.Offset < 0 || block.Offset + block.Length > document.Raw.Length)
+            .Select(block => $"Block '{block.Id}' is out of range ({block.Offset}..{block.Offset + block.Length})"));
 
-        foreach (var field in schema.FieldDefs)
-        {
-            if (field.Offset < 0 || field.Offset + field.Length > document.Raw.Length)
-            {
-                errors.Add($"Field '{field.Id}' is out of range ({field.Offset}..{field.Offset + field.Length})");
-            }
-        }
+        errors.AddRange(schema.FieldDefs
+            .Where(field => field.Offset < 0 || field.Offset + field.Length > document.Raw.Length)
+            .Select(field => $"Field '{field.Id}' is out of range ({field.Offset}..{field.Offset + field.Length})"));
 
         foreach (var rule in schema.ValidationRules)
         {
@@ -96,6 +93,8 @@ public sealed class BinarySaveCodec : ISaveCodec
 
     public async Task WriteAsync(SaveDocument document, string outputPath, CancellationToken cancellationToken)
     {
+        ArgumentNullException.ThrowIfNull(document);
+        ArgumentNullException.ThrowIfNull(outputPath);
         var normalizedOutput = NormalizeSaveFilePath(outputPath, requireExistingFile: false);
         var outputDirectory = Path.GetDirectoryName(normalizedOutput);
         if (string.IsNullOrWhiteSpace(outputDirectory))
@@ -111,9 +110,10 @@ public sealed class BinarySaveCodec : ISaveCodec
 
     public async Task<bool> RoundTripCheckAsync(SaveDocument document, CancellationToken cancellationToken)
     {
+        ArgumentNullException.ThrowIfNull(document);
         var tempRoot = Path.GetFullPath(Path.GetTempPath());
         var tempPath = NormalizeSaveFilePath(
-            Path.Combine(tempRoot, $"swfoc-roundtrip-{Guid.NewGuid():N}.sav"),
+            Path.Join(tempRoot, $"swfoc-roundtrip-{Guid.NewGuid():N}.sav"),
             requireExistingFile: false);
         TrustedPathPolicy.EnsureSubPath(tempRoot, tempPath);
         try

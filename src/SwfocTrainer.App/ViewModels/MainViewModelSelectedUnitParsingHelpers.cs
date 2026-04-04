@@ -8,6 +8,8 @@ internal static class MainViewModelSelectedUnitParsingHelpers
         out float? value,
         out string error)
     {
+        ArgumentNullException.ThrowIfNull(input);
+        ArgumentNullException.ThrowIfNull(errorMessage);
         if (TryParseOptionalFloat(input, out value))
         {
             error = string.Empty;
@@ -24,6 +26,8 @@ internal static class MainViewModelSelectedUnitParsingHelpers
         out int? value,
         out string error)
     {
+        ArgumentNullException.ThrowIfNull(input);
+        ArgumentNullException.ThrowIfNull(errorMessage);
         if (TryParseOptionalInt(input, out value))
         {
             error = string.Empty;

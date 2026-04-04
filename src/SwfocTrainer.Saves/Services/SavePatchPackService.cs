@@ -34,6 +34,9 @@ public sealed class SavePatchPackService : ISavePatchPackService
         string profileId,
         CancellationToken cancellationToken)
     {
+        ArgumentNullException.ThrowIfNull(originalDoc);
+        ArgumentNullException.ThrowIfNull(editedDoc);
+        ArgumentNullException.ThrowIfNull(profileId);
         if (string.IsNullOrWhiteSpace(profileId))
         {
             throw new InvalidOperationException("Profile ID is required for patch-pack export.");
@@ -59,6 +62,7 @@ public sealed class SavePatchPackService : ISavePatchPackService
 
     public async Task<SavePatchPack> LoadPackAsync(string path, CancellationToken cancellationToken)
     {
+        ArgumentNullException.ThrowIfNull(path);
         var normalizedPath = TrustedPathPolicy.NormalizeAbsolute(path);
         TrustedPathPolicy.EnsureAllowedExtension(normalizedPath, ".json");
         if (!File.Exists(normalizedPath))
@@ -111,6 +115,9 @@ public sealed class SavePatchPackService : ISavePatchPackService
         string targetProfileId,
         CancellationToken cancellationToken)
     {
+        ArgumentNullException.ThrowIfNull(pack);
+        ArgumentNullException.ThrowIfNull(targetDoc);
+        ArgumentNullException.ThrowIfNull(targetProfileId);
         cancellationToken.ThrowIfCancellationRequested();
 
         var errors = new List<string>();
@@ -163,13 +170,16 @@ public sealed class SavePatchPackService : ISavePatchPackService
         string targetProfileId,
         CancellationToken cancellationToken)
     {
+        ArgumentNullException.ThrowIfNull(pack);
+        ArgumentNullException.ThrowIfNull(targetDoc);
+        ArgumentNullException.ThrowIfNull(targetProfileId);
         var schema = await _schemaRepository.LoadSchemaAsync(targetDoc.SchemaId, cancellationToken);
         var compatibility = await ValidateCompatibilityAsync(pack, targetDoc, targetProfileId, cancellationToken);
         var errors = compatibility.Errors.ToList();
         var warnings = compatibility.Warnings.ToList();
 
         var fieldLookup = BuildFieldLookup(schema);
-        var operations = BuildPreviewOperations(pack, targetDoc, schema, fieldLookup, errors, warnings);
+        var operations = BuildPreviewOperations(new PreviewBuildContext(pack, targetDoc, schema, fieldLookup, errors, warnings));
 
         return new SavePatchPreview(
             IsCompatible: errors.Count == 0,
@@ -364,16 +374,18 @@ public sealed class SavePatchPackService : ISavePatchPackService
         return new FieldLookup(byPath, byId);
     }
 
-    private static List<SavePatchOperation> BuildPreviewOperations(
-        SavePatchPack pack,
-        SaveDocument targetDoc,
-        SaveSchema schema,
-        FieldLookup fieldLookup,
-        List<string> errors,
-        List<string> warnings)
+    private readonly record struct PreviewBuildContext(
+        SavePatchPack Pack,
+        SaveDocument TargetDoc,
+        SaveSchema Schema,
+        FieldLookup FieldLookup,
+        List<string> Errors,
+        List<string> Warnings);
+
+    private static List<SavePatchOperation> BuildPreviewOperations(PreviewBuildContext ctx)
     {
-        var operations = new List<SavePatchOperation>(pack.Operations.Count);
-        var validOperations = pack.Operations
+        var operations = new List<SavePatchOperation>(ctx.Pack.Operations.Count);
+        var validOperations = ctx.Pack.Operations
             .Select(operation => (Operation: operation, ValidationError: ValidatePreviewOperation(operation)))
             .Where(entry =>
             {
@@ -382,22 +394,22 @@ public sealed class SavePatchPackService : ISavePatchPackService
                     return true;
                 }
 
-                errors.Add(entry.ValidationError!);
+                ctx.Errors.Add(entry.ValidationError!);
                 return false;
             })
             .Select(entry => entry.Operation);
 
         foreach (var operation in validOperations)
         {
-            var field = ResolveField(fieldLookup.ByPath, fieldLookup.ById, operation, warnings);
+            var field = ResolveField(ctx.FieldLookup.ByPath, ctx.FieldLookup.ById, operation, ctx.Warnings);
             if (field is null)
             {
-                errors.Add($"Field not found for operation id='{operation.FieldId}' path='{operation.FieldPath}'.");
+                ctx.Errors.Add($"Field not found for operation id='{operation.FieldId}' path='{operation.FieldPath}'.");
                 continue;
             }
 
             var normalizedValue = SavePatchFieldCodec.NormalizePatchValue(operation.NewValue, operation.ValueType);
-            var currentValue = SavePatchFieldCodec.ReadFieldValue(targetDoc.Raw, field, schema.Endianness);
+            var currentValue = SavePatchFieldCodec.ReadFieldValue(ctx.TargetDoc.Raw, field, ctx.Schema.Endianness);
             if (!SavePatchFieldCodec.ValuesEqual(currentValue, normalizedValue))
             {
                 operations.Add(operation with { NewValue = normalizedValue });
@@ -509,12 +521,10 @@ public sealed class SavePatchPackService : ISavePatchPackService
 
     private static void ValidateRawOperationContract(JsonElement operation, int index, ICollection<string> errors)
     {
-        foreach (var field in new[] { "kind", "fieldPath", "fieldId", "valueType", "newValue", "offset" })
+        foreach (var field in new[] { "kind", "fieldPath", "fieldId", "valueType", "newValue", "offset" }
+            .Where(field => !TryGetPropertyIgnoreCase(operation, field, out _)))
         {
-            if (!TryGetPropertyIgnoreCase(operation, field, out _))
-            {
-                errors.Add($"operations[{index}].{field} is required");
-            }
+            errors.Add($"operations[{index}].{field} is required");
         }
 
         if (TryGetPropertyIgnoreCase(operation, "newValue", out var newValue) &&

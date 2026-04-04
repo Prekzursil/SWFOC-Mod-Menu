@@ -7,11 +7,11 @@ namespace SwfocTrainer.Core.Services;
 
 public sealed class TrainerOrchestrator
 {
-    private const string FreezeSymbolKey = "symbol";
-    private const string FreezeToggleKey = "freeze";
-    private const string IntValueKey = "intValue";
-    private const string FloatValueKey = "floatValue";
-    private const string BoolValueKey = "boolValue";
+    private const string FreezeSymbolField = "symbol";
+    private const string FreezeToggleField = "freeze";
+    private const string IntValueField = "intValue";
+    private const string FloatValueField = "floatValue";
+    private const string BoolValueField = "boolValue";
 
     private readonly IProfileRepository _profiles;
     private readonly IRuntimeAdapter _runtime;
@@ -101,6 +101,9 @@ public sealed class TrainerOrchestrator
         System.Text.Json.Nodes.JsonObject payload,
         RuntimeMode runtimeMode)
     {
+        ArgumentNullException.ThrowIfNull(profileId);
+        ArgumentNullException.ThrowIfNull(actionId);
+        ArgumentNullException.ThrowIfNull(payload);
         return ExecuteAsync(profileId, actionId, payload, runtimeMode, null, CancellationToken.None);
     }
 
@@ -111,6 +114,9 @@ public sealed class TrainerOrchestrator
         RuntimeMode runtimeMode,
         IReadOnlyDictionary<string, object?>? context)
     {
+        ArgumentNullException.ThrowIfNull(profileId);
+        ArgumentNullException.ThrowIfNull(actionId);
+        ArgumentNullException.ThrowIfNull(payload);
         return ExecuteAsync(profileId, actionId, payload, runtimeMode, context, CancellationToken.None);
     }
 
@@ -189,14 +195,14 @@ public sealed class TrainerOrchestrator
 
     private ActionExecutionResult ExecuteFreezeAction(ActionSpec action, System.Text.Json.Nodes.JsonObject payload)
     {
-        var symbol = payload[FreezeSymbolKey]?.GetValue<string>();
+        var symbol = payload[FreezeSymbolField]?.GetValue<string>();
         if (string.IsNullOrWhiteSpace(symbol))
         {
             return new ActionExecutionResult(false, "Freeze action requires 'symbol' in payload.", AddressSource.None);
         }
 
         // Determine freeze vs unfreeze
-        var freeze = payload[FreezeToggleKey]?.GetValue<bool>()
+        var freeze = payload[FreezeToggleField]?.GetValue<bool>()
             ?? !action.Id.Equals("unfreeze_symbol", StringComparison.OrdinalIgnoreCase);
 
         if (!freeze)
@@ -227,23 +233,26 @@ public sealed class TrainerOrchestrator
 
     private ActionExecutionResult? TryBuildFreezeSetResult(string symbol, System.Text.Json.Nodes.JsonObject payload)
     {
-        if (payload[IntValueKey] is not null)
+        var intNode = payload[IntValueField];
+        if (intNode is not null)
         {
-            var value = payload[IntValueKey]!.GetValue<int>();
+            var value = intNode.GetValue<int>();
             _freezeService.FreezeInt(symbol, value);
             return BuildFreezeResult(symbol, "int", value);
         }
 
-        if (payload[FloatValueKey] is not null)
+        var floatNode = payload[FloatValueField];
+        if (floatNode is not null)
         {
             var value = ReadFloatFreezeValue(payload);
             _freezeService.FreezeFloat(symbol, value);
             return BuildFreezeResult(symbol, "float", value);
         }
 
-        if (payload[BoolValueKey] is not null)
+        var boolNode = payload[BoolValueField];
+        if (boolNode is not null)
         {
-            var value = payload[BoolValueKey]!.GetValue<bool>();
+            var value = boolNode.GetValue<bool>();
             _freezeService.FreezeBool(symbol, value);
             return BuildFreezeResult(symbol, "bool", value);
         }
@@ -253,13 +262,15 @@ public sealed class TrainerOrchestrator
 
     private static float ReadFloatFreezeValue(System.Text.Json.Nodes.JsonObject payload)
     {
+        var node = payload[FloatValueField]
+            ?? throw new InvalidOperationException("Expected floatValue node in payload.");
         try
         {
-            return payload[FloatValueKey]!.GetValue<float>();
+            return node.GetValue<float>();
         }
         catch (InvalidOperationException)
         {
-            return (float)payload[FloatValueKey]!.GetValue<double>();
+            return (float)node.GetValue<double>();
         }
     }
 
@@ -276,7 +287,7 @@ public sealed class TrainerOrchestrator
     {
         var diagnostics = new Dictionary<string, object?>
         {
-            [FreezeSymbolKey] = symbol,
+            [FreezeSymbolField] = symbol,
             ["frozen"] = frozen
         };
 
@@ -330,16 +341,18 @@ public sealed class TrainerOrchestrator
             return Task.CompletedTask;
         }
 
+        var context = new ActionContext(
+            profileId,
+            _runtime.CurrentSession.Process.ProcessId,
+            actionId,
+            result.AddressSource);
+
         return _auditLogger.WriteAsync(
             new ActionAuditRecord(
                 DateTimeOffset.UtcNow,
-                profileId,
-                _runtime.CurrentSession.Process.ProcessId,
-                actionId,
-                result.AddressSource,
+                context,
                 result.Succeeded,
-                result.Message,
-                diagnostics),
+                result.Message) { Diagnostics = diagnostics },
             cancellationToken);
     }
 }

@@ -17,7 +17,7 @@ public sealed class NamedPipeExtenderBackend : IExecutionBackend
     private const string PipeNameEnvironmentVariable = "SWFOC_EXTENDER_PIPE_NAME";
     private const string ExtenderBackendId = "extender";
     private const string ProbePlaceholderAnchorValue = "probe";
-    private const string ProbeResolvedAnchorsMetadataKey = "probeResolvedAnchorsJson";
+    private const string ProbeResolvedAnchorsMetadata = "probeResolvedAnchorsJson";
     private const string NativeDirectoryName = "native";
     private const string BridgeHostWindowsExecutableName = "SwfocExtender.Host.exe";
     private const string BridgeHostPosixExecutableName = "SwfocExtender.Host";
@@ -74,6 +74,7 @@ public sealed class NamedPipeExtenderBackend : IExecutionBackend
         string profileId,
         ProcessMetadata processContext)
     {
+        ArgumentNullException.ThrowIfNull(profileId);
         ArgumentNullException.ThrowIfNull(processContext);
         return ProbeCapabilitiesAsync(profileId, processContext, CancellationToken.None);
     }
@@ -83,6 +84,7 @@ public sealed class NamedPipeExtenderBackend : IExecutionBackend
         ProcessMetadata processContext,
         CancellationToken cancellationToken)
     {
+        ArgumentNullException.ThrowIfNull(profileId);
         ArgumentNullException.ThrowIfNull(processContext);
         var result = await SendAsync(CreateProbeCommand(profileId, processContext), cancellationToken);
         if (!result.Succeeded)
@@ -160,7 +162,7 @@ public sealed class NamedPipeExtenderBackend : IExecutionBackend
                 AppendNonEmptyAnchorValues(parsedAnchors, anchors);
             }
         }
-        catch
+        catch (JsonException)
         {
             // Keep seeded defaults when metadata parsing fails.
         }
@@ -170,7 +172,7 @@ public sealed class NamedPipeExtenderBackend : IExecutionBackend
     {
         rawAnchors = string.Empty;
         if (processContext.Metadata is null ||
-            !processContext.Metadata.TryGetValue(ProbeResolvedAnchorsMetadataKey, out var candidate) ||
+            !processContext.Metadata.TryGetValue(ProbeResolvedAnchorsMetadata, out var candidate) ||
             string.IsNullOrWhiteSpace(candidate))
         {
             return false;
@@ -365,7 +367,11 @@ public sealed class NamedPipeExtenderBackend : IExecutionBackend
         {
             return CreateTimeoutResult(command.CommandId);
         }
-        catch (Exception ex)
+        catch (IOException ex)
+        {
+            return CreateUnreachableResult(command.CommandId, ex.Message);
+        }
+        catch (TimeoutException ex)
         {
             return CreateUnreachableResult(command.CommandId, ex.Message);
         }
@@ -499,7 +505,12 @@ public sealed class NamedPipeExtenderBackend : IExecutionBackend
                 Thread.Sleep(200);
                 return _bridgeHostProcess is not null && !_bridgeHostProcess.HasExited;
             }
-            catch
+            catch (InvalidOperationException)
+            {
+                _bridgeHostProcess = null;
+                return false;
+            }
+            catch (System.ComponentModel.Win32Exception)
             {
                 _bridgeHostProcess = null;
                 return false;
@@ -510,9 +521,9 @@ public sealed class NamedPipeExtenderBackend : IExecutionBackend
     private static string? ResolveBridgeHostPath()
     {
         var fromEnv = Environment.GetEnvironmentVariable("SWFOC_EXTENDER_HOST_PATH");
-        if (!string.IsNullOrWhiteSpace(fromEnv) && File.Exists(fromEnv))
+        if (!string.IsNullOrWhiteSpace(fromEnv) && File.Exists(fromEnv) && IsAllowedBridgeHostPath(fromEnv))
         {
-            return fromEnv;
+            return Path.GetFullPath(fromEnv);
         }
 
         var candidates = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
@@ -529,6 +540,18 @@ public sealed class NamedPipeExtenderBackend : IExecutionBackend
             .ThenByDescending(file => file.Name.Equals(BridgeHostWindowsExecutableName, StringComparison.OrdinalIgnoreCase))
             .Select(file => file.FullName)
             .FirstOrDefault();
+    }
+
+    private static bool IsAllowedBridgeHostPath(string path)
+    {
+        // Reject path traversal and ensure the target is the expected executable.
+        if (path.Contains("..", StringComparison.Ordinal))
+        {
+            return false;
+        }
+
+        var fileName = Path.GetFileName(path);
+        return fileName.Equals(BridgeHostWindowsExecutableName, StringComparison.OrdinalIgnoreCase);
     }
 
     private static IEnumerable<string> ResolveSearchRoots()
@@ -552,9 +575,13 @@ public sealed class NamedPipeExtenderBackend : IExecutionBackend
         {
             roots.Add(Path.GetFullPath(path));
         }
-        catch
+        catch (IOException)
         {
-            // ignored
+            // ignored — invalid path
+        }
+        catch (ArgumentException)
+        {
+            // ignored — invalid path characters
         }
     }
 
@@ -570,7 +597,11 @@ public sealed class NamedPipeExtenderBackend : IExecutionBackend
         {
             directory = new DirectoryInfo(startPath);
         }
-        catch
+        catch (ArgumentException)
+        {
+            return;
+        }
+        catch (System.Security.SecurityException)
         {
             return;
         }
@@ -586,12 +617,12 @@ public sealed class NamedPipeExtenderBackend : IExecutionBackend
     {
         var known = new[]
         {
-            Path.Combine(root, NativeDirectoryName, "runtime", BridgeHostWindowsExecutableName),
-            Path.Combine(root, NativeDirectoryName, "build-win-vs", "SwfocExtender.Bridge", "Release", BridgeHostWindowsExecutableName),
-            Path.Combine(root, NativeDirectoryName, "build-win-vs", "SwfocExtender.Bridge", "x64", "Release", BridgeHostWindowsExecutableName),
-            Path.Combine(root, NativeDirectoryName, "build-win-codex", "SwfocExtender.Bridge", "Release", BridgeHostWindowsExecutableName),
-            Path.Combine(root, NativeDirectoryName, "build-win", BridgeHostWindowsExecutableName),
-            Path.Combine(root, NativeDirectoryName, "build-wsl", BridgeHostPosixExecutableName)
+            Path.Join(root, NativeDirectoryName, "runtime", BridgeHostWindowsExecutableName),
+            Path.Join(root, NativeDirectoryName, "build-win-vs", "SwfocExtender.Bridge", "Release", BridgeHostWindowsExecutableName),
+            Path.Join(root, NativeDirectoryName, "build-win-vs", "SwfocExtender.Bridge", "x64", "Release", BridgeHostWindowsExecutableName),
+            Path.Join(root, NativeDirectoryName, "build-win-codex", "SwfocExtender.Bridge", "Release", BridgeHostWindowsExecutableName),
+            Path.Join(root, NativeDirectoryName, "build-win", BridgeHostWindowsExecutableName),
+            Path.Join(root, NativeDirectoryName, "build-wsl", BridgeHostPosixExecutableName)
         };
 
         foreach (var path in known)
@@ -602,7 +633,7 @@ public sealed class NamedPipeExtenderBackend : IExecutionBackend
 
     private static void AddDiscoveredNativeBuildCandidates(HashSet<string> candidates, string root)
     {
-        var nativeRoot = Path.Combine(root, NativeDirectoryName);
+        var nativeRoot = Path.Join(root, NativeDirectoryName);
         if (!Directory.Exists(nativeRoot))
         {
             return;
@@ -620,7 +651,11 @@ public sealed class NamedPipeExtenderBackend : IExecutionBackend
                 candidates.Add(path);
             }
         }
-        catch
+        catch (IOException)
+        {
+            // ignored: candidate discovery is best-effort.
+        }
+        catch (UnauthorizedAccessException)
         {
             // ignored: candidate discovery is best-effort.
         }

@@ -23,6 +23,12 @@ internal static class SignatureResolverFallbacks
         byte[] ModuleBytes,
         IDictionary<string, SymbolInfo> Symbols);
 
+    internal readonly record struct SignatureMissContext(
+        IReadOnlyDictionary<string, long> FallbackOffsets,
+        ProcessMemoryAccessor Accessor,
+        nint BaseAddress,
+        IDictionary<string, SymbolInfo> Symbols);
+
     /// <summary>
     /// Validates a fallback offset by attempting a test read at <c>baseAddress + offset</c>.
     /// Profile fallback offsets are author-curated, so rather than guessing module bounds we
@@ -51,7 +57,17 @@ internal static class SignatureResolverFallbacks
                 LastValidatedAt: DateTimeOffset.UtcNow);
             return true;
         }
-        catch (Exception ex)
+        catch (InvalidOperationException ex)
+        {
+            attempt.Logger.LogDebug(
+                ex,
+                "Fallback test-read failed for {Symbol} at 0x{Address:X} (offset 0x{Offset:X})",
+                attempt.SymbolName,
+                address.ToInt64(),
+                attempt.Offset);
+            return false;
+        }
+        catch (System.ComponentModel.Win32Exception ex)
         {
             attempt.Logger.LogDebug(
                 ex,
@@ -74,10 +90,7 @@ internal static class SignatureResolverFallbacks
         ArgumentNullException.ThrowIfNull(signatureSet);
         ArgumentNullException.ThrowIfNull(signature);
         if (SignatureResolverAddressing.TryResolveAddress(
-                signature,
-                hit,
-                context.BaseAddress,
-                context.ModuleBytes,
+                new SignatureResolverAddressing.AddressResolutionInput(signature, hit, context.BaseAddress, context.ModuleBytes),
                 out var address,
                 out var diagnostics))
         {
@@ -122,26 +135,20 @@ internal static class SignatureResolverFallbacks
     internal static void HandleSignatureMiss(
         ILogger<SignatureResolver> logger,
         SignatureSpec signature,
-        IReadOnlyDictionary<string, long> fallbackOffsets,
-        ProcessMemoryAccessor accessor,
-        nint baseAddress,
-        IDictionary<string, SymbolInfo> symbols)
+        in SignatureMissContext context)
     {
         ArgumentNullException.ThrowIfNull(logger);
         ArgumentNullException.ThrowIfNull(signature);
-        ArgumentNullException.ThrowIfNull(fallbackOffsets);
-        ArgumentNullException.ThrowIfNull(accessor);
-        ArgumentNullException.ThrowIfNull(symbols);
-        if (fallbackOffsets.TryGetValue(signature.Name, out var fallback) && !symbols.ContainsKey(signature.Name))
+        if (context.FallbackOffsets.TryGetValue(signature.Name, out var fallback) && !context.Symbols.ContainsKey(signature.Name))
         {
             if (TryApplyFallback(new FallbackAttempt(
                     logger,
-                    accessor,
-                    baseAddress,
+                    context.Accessor,
+                    context.BaseAddress,
                     signature.Name,
                     signature.ValueType,
                     fallback,
-                    symbols,
+                    context.Symbols,
                     "Fallback offset")))
             {
                 logger.LogWarning("Signature miss for {Symbol}; fallback offset applied (0x{Offset:X})", signature.Name, fallback);
@@ -156,6 +163,17 @@ internal static class SignatureResolverFallbacks
         }
 
         logger.LogWarning("Signature miss for {Symbol} and no fallback offset available", signature.Name);
+    }
+
+    internal static void HandleSignatureMiss(
+        ILogger<SignatureResolver> logger,
+        SignatureSpec signature,
+        IReadOnlyDictionary<string, long> fallbackOffsets,
+        ProcessMemoryAccessor accessor,
+        nint baseAddress,
+        IDictionary<string, SymbolInfo> symbols)
+    {
+        HandleSignatureMiss(logger, signature, new SignatureMissContext(fallbackOffsets, accessor, baseAddress, symbols));
     }
 
     private static SymbolInfo CreateSignatureSymbol(SignatureSet signatureSet, SignatureSpec signature, nint address)

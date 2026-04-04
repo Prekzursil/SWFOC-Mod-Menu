@@ -22,7 +22,8 @@ internal sealed class SaveSchemaRepository
 
     public async Task<SaveSchema> LoadSchemaAsync(string schemaId, CancellationToken cancellationToken)
     {
-        var path = Path.Combine(_options.SchemaRootPath, $"{schemaId}.json");
+        ArgumentNullException.ThrowIfNull(schemaId);
+        var path = Path.Join(_options.SchemaRootPath, $"{schemaId}.json");
         if (!File.Exists(path))
         {
             throw new FileNotFoundException($"Save schema not found: {path}");

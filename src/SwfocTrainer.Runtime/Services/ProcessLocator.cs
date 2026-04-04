@@ -161,7 +161,7 @@ public sealed class ProcessLocator : IProcessLocator
         var forcedContext = ResolveForcedContext(probe.CommandLine, modPathRaw, steamModIds, options);
         var effectiveSteamModIds = forcedContext.EffectiveSteamModIds;
         var hostRole = DetermineHostRole(detection);
-        var metadata = BuildBaseMetadata(detection, probe.CommandLine, probe.MainModuleSize, hostRole, effectiveSteamModIds, modPathRaw);
+        var metadata = BuildBaseMetadata(new BaseMetadataInput(detection, probe.CommandLine, probe.MainModuleSize, hostRole, effectiveSteamModIds, modPathRaw));
         metadata["launchContextSource"] = forcedContext.Source;
         if (forcedContext.IsForced)
         {
@@ -187,7 +187,11 @@ public sealed class ProcessLocator : IProcessLocator
             path = mainModule?.FileName ?? string.Empty;
             mainModuleSize = mainModule?.ModuleMemorySize ?? 0;
         }
-        catch
+        catch (InvalidOperationException)
+        {
+            path = string.Empty;
+        }
+        catch (System.ComponentModel.Win32Exception)
         {
             path = string.Empty;
         }
@@ -218,26 +222,28 @@ public sealed class ProcessLocator : IProcessLocator
         return TryGetCommandLine(processId);
     }
 
-    private static Dictionary<string, string> BuildBaseMetadata(
-        ProcessDetection detection,
-        string? commandLine,
-        int mainModuleSize,
-        ProcessHostRole hostRole,
-        IReadOnlyCollection<string> steamModIds,
-        string? modPathRaw)
+    private readonly record struct BaseMetadataInput(
+        ProcessDetection Detection,
+        string? CommandLine,
+        int MainModuleSize,
+        ProcessHostRole HostRole,
+        IReadOnlyCollection<string> SteamModIds,
+        string? ModPathRaw);
+
+    private static Dictionary<string, string> BuildBaseMetadata(BaseMetadataInput input)
     {
         return new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
         {
-            ["targetHint"] = detection.ExeTarget.ToString(),
-            ["hasModPath"] = (!string.IsNullOrWhiteSpace(modPathRaw)).ToString(),
-            ["hasSteamMod"] = (steamModIds.Count > 0).ToString(),
-            ["detectedVia"] = detection.DetectedVia,
-            ["commandLineAvailable"] = (!string.IsNullOrWhiteSpace(commandLine)).ToString(),
-            ["isStarWarsG"] = detection.IsStarWarsG.ToString(),
-            ["steamModIdsDetected"] = steamModIds.Count == 0 ? string.Empty : string.Join(",", steamModIds),
-            ["hostRole"] = hostRole.ToString().ToLowerInvariant(),
-            ["mainModuleSize"] = mainModuleSize.ToString(),
-            ["workshopMatchCount"] = steamModIds.Count.ToString(),
+            ["targetHint"] = input.Detection.ExeTarget.ToString(),
+            ["hasModPath"] = (!string.IsNullOrWhiteSpace(input.ModPathRaw)).ToString(),
+            ["hasSteamMod"] = (input.SteamModIds.Count > 0).ToString(),
+            ["detectedVia"] = input.Detection.DetectedVia,
+            ["commandLineAvailable"] = (!string.IsNullOrWhiteSpace(input.CommandLine)).ToString(),
+            ["isStarWarsG"] = input.Detection.IsStarWarsG.ToString(),
+            ["steamModIdsDetected"] = input.SteamModIds.Count == 0 ? string.Empty : string.Join(",", input.SteamModIds),
+            ["hostRole"] = input.HostRole.ToString().ToLowerInvariant(),
+            ["mainModuleSize"] = input.MainModuleSize.ToString(),
+            ["workshopMatchCount"] = input.SteamModIds.Count.ToString(),
             ["selectionScore"] = "0.00"
         };
     }
@@ -325,20 +331,12 @@ public sealed class ProcessLocator : IProcessLocator
         }
 
         var ids = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
-        foreach (var raw in workshopIds)
+        foreach (var token in workshopIds
+            .Where(raw => !string.IsNullOrWhiteSpace(raw))
+            .SelectMany(raw => raw.Split(',', StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries))
+            .Where(token => !string.IsNullOrWhiteSpace(token)))  // NOSONAR
         {
-            if (string.IsNullOrWhiteSpace(raw))
-            {
-                continue;
-            }
-
-            foreach (var token in raw.Split(',', StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries))  // NOSONAR
-            {
-                if (!string.IsNullOrWhiteSpace(token))
-                {
-                    ids.Add(token);
-                }
-            }
+            ids.Add(token);
         }
 
         return ids
@@ -515,21 +513,19 @@ public sealed class ProcessLocator : IProcessLocator
         }
 
         var ids = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
-        foreach (Match match in Regex.Matches(commandLine, @"steammod\s*=\s*(\d+)", RegexOptions.IgnoreCase))  // NOSONAR
+        var steamModRegex = new Regex(@"steammod\s*=\s*(\d+)", RegexOptions.IgnoreCase, TimeSpan.FromMilliseconds(250));
+        foreach (var match in steamModRegex.Matches(commandLine).Cast<Match>()
+            .Where(m => m.Groups.Count > 1 && !string.IsNullOrWhiteSpace(m.Groups[1].Value)))
         {
-            if (match.Groups.Count > 1 && !string.IsNullOrWhiteSpace(match.Groups[1].Value))
-            {
-                ids.Add(match.Groups[1].Value);
-            }
+            ids.Add(match.Groups[1].Value);
         }
 
         // Also infer IDs from mod paths containing workshop content folder segments.
-        foreach (Match match in Regex.Matches(commandLine, @"[\\/]+32470[\\/]+(\d+)", RegexOptions.IgnoreCase))  // NOSONAR
+        var workshopRegex = new Regex(@"[\\/]+32470[\\/]+(\d+)", RegexOptions.IgnoreCase, TimeSpan.FromMilliseconds(250));
+        foreach (var match in workshopRegex.Matches(commandLine).Cast<Match>()
+            .Where(m => m.Groups.Count > 1 && !string.IsNullOrWhiteSpace(m.Groups[1].Value)))
         {
-            if (match.Groups.Count > 1 && !string.IsNullOrWhiteSpace(match.Groups[1].Value))
-            {
-                ids.Add(match.Groups[1].Value);
-            }
+            ids.Add(match.Groups[1].Value);
         }
 
         return ids.OrderBy(x => x, StringComparer.Ordinal).ToArray();
@@ -596,7 +592,11 @@ public sealed class ProcessLocator : IProcessLocator
             _cachedProfilesLoadedAtUtc = now;
             return profiles;
         }
-        catch
+        catch (InvalidOperationException)
+        {
+            return Array.Empty<TrainerProfile>();
+        }
+        catch (KeyNotFoundException)
         {
             return Array.Empty<TrainerProfile>();
         }

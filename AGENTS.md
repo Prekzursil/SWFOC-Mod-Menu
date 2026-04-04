@@ -1,61 +1,67 @@
-# SWFOC Agent Operating Contract
+# AGENTS.md — Universal Quality Contract for Codex
 
-## Purpose
+## Hard Requirements
 
-This repository uses an evidence-first AI engineering workflow for SWFOC runtime/mod reliability.
-Every change must produce verifiable artifacts that explain what was tested, what failed, and why.
+Every line of code must pass all quality gates on first push. Zero issues across all providers. 100% line and branch coverage. No suppressions, no exclusions, no workarounds.
 
-## Scope
+## Before Writing Code
 
-Applies to all contributors and all automation agents working in this repository.
-Scoped contracts in subdirectories can add stricter rules but cannot weaken this contract.
+1. Read gate configs: `.github/workflows/`, `.codacy.yml`, `sonar-project.properties`, `.deepsource.toml`
+2. Plan tests first — write test signatures before implementation
+3. Check complexity budget — will any function exceed CCN 15? Split before writing
 
-## Required Evidence
+## Coding Constraints
 
-1. Runtime/tooling/test changes must include deterministic test evidence or an explicit justified skip.
-2. Mod/runtime bugfixes must include a reproducible bundle:
+### C# / .NET
+- `<Nullable>enable</Nullable>` in every .csproj — fix all CS8600-CS8604 warnings
+- `ArgumentNullException.ThrowIfNull()` for every reference parameter
+- `?.` and `??` for nullable member access — never use `!` null-forgiving
+- `[assembly: CLSCompliant(true)]` — no `uint`/`sbyte`/`ushort` in public APIs
+- Catch specific exceptions only — never bare `catch (Exception)`
+- CCN ≤ 15, function length ≤ 50 lines, parameters ≤ 5
+- `dotnet build --warnaserror` must pass with 0 warnings
 
-- `TestResults/runs/<runId>/repro-bundle.json`
-- `TestResults/runs/<runId>/repro-bundle.md`
+### Python
+- Type annotations on all function signatures
+- No `shell=True` in subprocess calls
+- No hardcoded secrets — use `os.environ[]`
+- No `eval()`/`exec()` with untrusted input
+- CCN ≤ 15, function ≤ 50 lines, parameters ≤ 5
+- `bandit -r src/ -ll` must show 0 findings
 
-1. PRs must include affected profile IDs and reason-code-level diagnostics when runtime behavior changes.
+### TypeScript
+- `"strict": true` — no `any` types
+- ESLint `--max-warnings 0`
+- No `console.log` in production code
 
-## Risk Policy
+### C++
+- Smart pointers over raw new/delete
+- `static_cast` over C-style casts
+- `constexpr` where possible
+- Lowercase includes, include what you use
 
-- Default merge policy: human-reviewed only.
-- Use explicit risk labels: `risk:low`, `risk:medium`, `risk:high`.
-- High-risk runtime changes require explicit rollback notes.
+## Forbidden Practices
 
-## Reliability Loop
+- `// NOSONAR`, `#pragma warning disable`, `# noqa`, `// codacy:ignore`
+- `[SuppressMessage]` attributes
+- `.codacy.yml` file exclusions on first-party code
+- Lowering any threshold or gate
+- Marking issues as "false positive" without human approval
+- Pushing without running local verification
 
-1. Intake issue with reproduction details.
-2. Run live-validation tooling to collect a reproducible bundle.
-3. Classify failure by explicit reason code.
-4. Implement fix on branch.
-5. Attach evidence in PR.
-6. Close issue only when linked evidence confirms acceptance criteria.
+## Pre-Push Verification (MANDATORY)
 
-## Safety Rules
+Run the appropriate verification commands and confirm 0 failures before every push. If verification fails, fix before pushing. Never push failing code.
 
-1. No blind fixed-address runtime actions.
-2. No silent success when artifacts are missing.
-3. Keep profile compatibility explicit (`base`, `aotr`, `roe`, `custom`).
-4. Prefer additive, reversible changes.
+## Coverage
 
-## Canonical Verification Command
+100% line AND branch. Every public method tested. Every branch tested. Every new line covered. Coverage reported to ALL providers: Codecov, SonarCloud, Codacy, QLTY, DeepSource.
 
-Run this command before completion claims:
+## Definition of Done
 
-```bash
-dotnet test tests/SwfocTrainer.Tests/SwfocTrainer.Tests.csproj -c Release --no-build --filter "FullyQualifiedName!~SwfocTrainer.Tests.Profiles.Live&FullyQualifiedName!~RuntimeAttachSmokeTests"
-```
-
-## Agent Queue Contract
-
-- Intake work via `.github/ISSUE_TEMPLATE/agent_task.yml`.
-- Queue with label `agent:ready`.
-- Queue workflow posts execution packet and notifies `@copilot`.
-
-## Queue Trigger Warning
-
-Applying label `agent:ready` triggers the queue workflow immediately.
+1. Tests pass (verified by running, not assumption)
+2. Coverage 100% (verified by report)
+3. Local analysis 0 issues (verified by tools)
+4. CI green (verified by GitHub Actions)
+5. All dashboards 0 issues (verified by visiting URLs)
+6. No suppressions used

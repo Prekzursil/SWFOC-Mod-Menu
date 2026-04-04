@@ -1,16 +1,18 @@
 // cppcheck-suppress-file missingIncludeSystem
 #pragma once
 
+#include <bit>
 #include <charconv>
 #include <cstdint>
-#include <sstream>
+#include <format>
+#include <span>
 #include <string>
 #include <string_view>
 #include <vector>
 
 #if defined(_WIN32)
 #define NOMINMAX
-#include <windows.h>
+#include <Windows.h>
 #endif
 
 namespace swfoc::extender::plugins::process_mutation {
@@ -30,6 +32,21 @@ struct WriteOperationDiagnostics
 };
 
 namespace detail {
+
+/// Wraps reinterpret_cast for casting integer addresses to Win32 pointer types.
+/// Centralises the unavoidable cast required by ReadProcessMemory / WriteProcessMemory /
+/// VirtualProtectEx so that call sites stay free of raw reinterpret_cast.
+template <typename TPtr>
+TPtr address_as_ptr(std::uintptr_t address) noexcept
+{
+    return std::bit_cast<TPtr>(address);
+}
+
+template <typename TValue>
+const std::uint8_t* value_as_bytes(const TValue& value) noexcept
+{
+    return static_cast<const std::uint8_t*>(static_cast<const void*>(&value));
+}
 
 inline void SetBaseDiagnostics(WriteOperationDiagnostics* diagnostics, std::string mode, SIZE_T length, std::string restoreStatus)
 {
@@ -62,14 +79,12 @@ inline bool IsInvalidDataWriteRequest(std::int32_t processId, std::uintptr_t add
 #if defined(_WIN32)
 inline std::string BuildWin32Error(std::string_view prefix, DWORD code)
 {
-    return std::string(prefix) + " (" + std::to_string(code) + ")";
+    return std::format("{} ({})", prefix, code);
 }
 
 inline std::string FormatProtect(DWORD protect)
 {
-    std::ostringstream oldProtectHex;
-    oldProtectHex << "0x" << std::hex << static_cast<unsigned long long>(protect);
-    return oldProtectHex.str();
+    return std::format("0x{:x}", static_cast<unsigned long long>(protect));
 }
 
 inline HANDLE OpenProcessHandle(DWORD accessMask, std::int32_t processId, std::string& error)
@@ -87,13 +102,13 @@ inline bool TryReadProcessExact(HANDLE process, std::uintptr_t address, SIZE_T l
 {
     output.resize(length);
     SIZE_T bytesRead = 0;
-    const auto ok = ReadProcessMemory(
-        process,
-        reinterpret_cast<LPCVOID>(address),
-        output.data(),
-        length,
-        &bytesRead);
-    if (!ok || bytesRead != length)
+    if (const auto ok = ReadProcessMemory(
+            process,
+            address_as_ptr<LPCVOID>(address),
+            output.data(),
+            length,
+            &bytesRead);
+        !ok || bytesRead != length)
     {
         output.clear();
         error = BuildWin32Error("ReadProcessMemory failed", ok ? ERROR_SUCCESS : GetLastError());
@@ -103,16 +118,16 @@ inline bool TryReadProcessExact(HANDLE process, std::uintptr_t address, SIZE_T l
     return true;
 }
 
-inline bool TryWriteProcessExact(HANDLE process, std::uintptr_t address, const void* bytes, SIZE_T length, std::string& error)
+inline bool TryWriteProcessExact(HANDLE process, std::uintptr_t address, const std::uint8_t* bytes, SIZE_T length, std::string& error)
 {
     SIZE_T written = 0;
-    const auto ok = WriteProcessMemory(
-        process,
-        reinterpret_cast<LPVOID>(address),
-        bytes,
-        length,
-        &written);
-    if (!ok || written != length)
+    if (const auto ok = WriteProcessMemory(
+            process,
+            address_as_ptr<LPVOID>(address),
+            bytes,
+            length,
+            &written);
+        !ok || written != length)
     {
         error = BuildWin32Error("WriteProcessMemory failed", ok ? ERROR_SUCCESS : GetLastError());
         return false;
@@ -123,7 +138,7 @@ inline bool TryWriteProcessExact(HANDLE process, std::uintptr_t address, const v
 
 inline bool TryEnablePatchProtection(HANDLE process, std::uintptr_t address, SIZE_T length, DWORD& oldProtect, std::string& error)
 {
-    if (VirtualProtectEx(process, reinterpret_cast<LPVOID>(address), length, PAGE_EXECUTE_READWRITE, &oldProtect))
+    if (VirtualProtectEx(process, address_as_ptr<LPVOID>(address), length, PAGE_EXECUTE_READWRITE, &oldProtect))
     {
         return true;
     }
@@ -141,7 +156,7 @@ inline bool TryRestorePatchProtection(
     WriteOperationDiagnostics* diagnostics)
 {
     DWORD ignoredProtect = 0;
-    const auto restoreOk = VirtualProtectEx(process, reinterpret_cast<LPVOID>(address), length, oldProtect, &ignoredProtect);
+    const auto restoreOk = VirtualProtectEx(process, address_as_ptr<LPVOID>(address), length, oldProtect, &ignoredProtect);
     if (diagnostics != nullptr)
     {
         diagnostics->restoreProtectOk = restoreOk ? "true" : "false";
@@ -182,7 +197,7 @@ inline bool TryParseAddress(std::string_view raw, std::uintptr_t& address) {
         return false;
     }
 
-    address = static_cast<std::uintptr_t>(parsed);
+    address = parsed;
     return true;
 }
 
@@ -282,7 +297,7 @@ inline bool TryWriteValue(
         return TryWriteBytesPatchSafe(
             processId,
             address,
-            reinterpret_cast<const std::uint8_t*>(&value),
+            detail::value_as_bytes(value),
             sizeof(TValue),
             error,
             diagnostics);
@@ -300,7 +315,7 @@ inline bool TryWriteValue(
         return false;
     }
 
-    const auto writeOk = detail::TryWriteProcessExact(process, address, &value, sizeof(TValue), error);
+    const auto writeOk = detail::TryWriteProcessExact(process, address, detail::value_as_bytes(value), sizeof(TValue), error);
     CloseHandle(process);
     return writeOk;
 #else

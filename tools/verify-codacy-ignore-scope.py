@@ -9,6 +9,7 @@ import json
 import sys
 from collections import Counter
 from pathlib import Path
+from typing import Dict, List, Optional, Set, Tuple
 
 DEFAULT_ALLOWED_PATTERNS = [
     "(new)codex(plans)/**",
@@ -38,12 +39,12 @@ PROTECTED_PREFIXES = [
     "native/",
 ]
 
-SCANNER_EXCLUDED_ROOT_PREFIXES = {
+SCANNER_EXCLUDED_ROOT_PREFIXES: Set[str] = {
     ".git",
     "scratch",
 }
 
-SCANNER_EXCLUDED_DIR_NAMES = {
+SCANNER_EXCLUDED_DIR_NAMES: Set[str] = {
     "bin",
     "obj",
     "__pycache__",
@@ -57,7 +58,7 @@ def unquote(value: str) -> str:
     return value
 
 
-def update_quote_state(char: str, in_single_quote: bool, in_double_quote: bool) -> tuple[bool, bool]:
+def update_quote_state(char: str, in_single_quote: bool, in_double_quote: bool) -> Tuple[bool, bool]:
     if char == "'" and not in_double_quote:
         return (not in_single_quote, in_double_quote)
     if char == '"' and not in_single_quote:
@@ -91,7 +92,7 @@ def is_top_level_key(line: str, stripped: str) -> bool:
     return False
 
 
-def parse_exclude_item(stripped: str) -> str | None:
+def parse_exclude_item(stripped: str) -> Optional[str]:
     if not stripped or stripped.startswith("#"):
         return None
     if not stripped.startswith("- "):
@@ -102,8 +103,8 @@ def parse_exclude_item(stripped: str) -> str | None:
     return unquote(normalized_value)
 
 
-def parse_exclude_paths(codacy_path: Path) -> list[str]:
-    paths: list[str] = []
+def parse_exclude_paths(codacy_path: Path) -> List[str]:
+    paths: List[str] = []
     lines = codacy_path.read_text(encoding="utf-8").splitlines()
     in_block = False
     for line in lines:
@@ -129,8 +130,8 @@ def should_skip_scanned_path(relative_path: str) -> bool:
     return any(part in SCANNER_EXCLUDED_DIR_NAMES for part in parts)
 
 
-def list_repository_files(repo_root: Path) -> list[str]:
-    files: list[str] = []
+def list_repository_files(repo_root: Path) -> List[str]:
+    files: List[str] = []
     for path in repo_root.rglob("*"):
         if not path.is_file():
             continue
@@ -141,8 +142,8 @@ def list_repository_files(repo_root: Path) -> list[str]:
     return sorted(files)
 
 
-def match_ignored_files(files: list[str], patterns: list[str]) -> tuple[list[str], dict[str, int]]:
-    ignored: list[str] = []
+def match_ignored_files(files: List[str], patterns: List[str]) -> Tuple[List[str], Dict[str, int]]:
+    ignored: List[str] = []
     pattern_counts: Counter[str] = Counter()
     for path in files:
         matched = False
@@ -156,7 +157,7 @@ def match_ignored_files(files: list[str], patterns: list[str]) -> tuple[list[str
     return ignored, dict(pattern_counts)
 
 
-def build_report(repo_root: Path, codacy_file: Path, patterns: list[str]) -> dict[str, object]:
+def build_report(repo_root: Path, codacy_file: Path, patterns: List[str]) -> Dict[str, object]:
     repository_files = list_repository_files(repo_root)
     ignored_files, pattern_counts = match_ignored_files(repository_files, patterns)
     return {
@@ -169,8 +170,8 @@ def build_report(repo_root: Path, codacy_file: Path, patterns: list[str]) -> dic
     }
 
 
-def strict_violations(patterns: list[str], ignored_files: list[str]) -> list[dict[str, object]]:
-    violations: list[dict[str, object]] = []
+def strict_violations(patterns: List[str], ignored_files: List[str]) -> List[Dict[str, object]]:
+    violations: List[Dict[str, object]] = []
 
     for disallowed in DEFAULT_DISALLOWED_BROAD_PATTERNS:
         if disallowed in patterns:
@@ -252,7 +253,7 @@ def main() -> int:
     patterns = parse_exclude_paths(codacy_file)
     report = build_report(repo_root, codacy_file.relative_to(repo_root), patterns)
 
-    violations: list[dict[str, object]] = []
+    violations: List[Dict[str, object]] = []
     if args.strict:
         # Recompute full ignored list for strict checks to avoid sample-only validation.
         full_ignored, _ = match_ignored_files(list_repository_files(repo_root), patterns)

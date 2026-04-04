@@ -230,7 +230,11 @@ public sealed class MainViewModel : MainViewModelSaveOpsBase
 
             return MainViewModelAttachHelpers.ResolveFallbackProfileRecommendation(processes, BaseSwfocProfileId);
         }
-        catch
+        catch (InvalidOperationException)
+        {
+            // If process enumeration fails (permissions/WMI), don't block the UI.
+        }
+        catch (System.ComponentModel.Win32Exception)
         {
             // If process enumeration fails (permissions/WMI), don't block the UI.
         }
@@ -277,7 +281,15 @@ public sealed class MainViewModel : MainViewModelSaveOpsBase
             RefreshLiveOpsDiagnostics();
             await RefreshActionReliabilityAsync();
         }
-        catch (Exception ex)
+        catch (InvalidOperationException ex)
+        {
+            await HandleAttachFailureAsync(ex);
+        }
+        catch (System.ComponentModel.Win32Exception ex)
+        {
+            await HandleAttachFailureAsync(ex);
+        }
+        catch (IOException ex)
         {
             await HandleAttachFailureAsync(ex);
         }
@@ -294,7 +306,11 @@ public sealed class MainViewModel : MainViewModelSaveOpsBase
 
             return MainViewModelAttachHelpers.BuildAttachProcessHintSummary(all, UnknownValue);
         }
-        catch
+        catch (InvalidOperationException)
+        {
+            return "Could not enumerate process diagnostics.";
+        }
+        catch (System.ComponentModel.Win32Exception)
         {
             return "Could not enumerate process diagnostics.";
         }
@@ -308,10 +324,10 @@ public sealed class MainViewModel : MainViewModelSaveOpsBase
             .ToArray();
 
         return contexts
-            .Where(context => context.Recommendation is not null && !string.IsNullOrWhiteSpace(context.Recommendation.ProfileId))
-            .OrderByDescending(context => context.Recommendation.Confidence)
-            .ThenByDescending(context => context.LaunchKind == LaunchKind.Workshop || context.LaunchKind == LaunchKind.Mixed)
-            .Select(context => context.Recommendation.ProfileId)
+            .Where(context => context?.Recommendation is not null && !string.IsNullOrWhiteSpace(context.Recommendation.ProfileId))
+            .OrderByDescending(context => context!.Recommendation!.Confidence)
+            .ThenByDescending(context => context!.LaunchKind == LaunchKind.Workshop || context!.LaunchKind == LaunchKind.Mixed)
+            .Select(context => context!.Recommendation!.ProfileId)
             .FirstOrDefault();
     }
     private async Task<(string EffectiveProfileId, ProfileVariantResolution? Variant)> ResolveAttachProfileAsync(string requestedProfileId)
@@ -362,7 +378,11 @@ public sealed class MainViewModel : MainViewModelSaveOpsBase
                     LaunchWorkshopId = string.Join(",", workshopIds);
                 }
             }
-            catch
+            catch (InvalidOperationException)
+            {
+                // Keep manual launcher input path as-is when profile lookup fails.
+            }
+            catch (KeyNotFoundException)
             {
                 // Keep manual launcher input path as-is when profile lookup fails.
             }
@@ -438,20 +458,12 @@ public sealed class MainViewModel : MainViewModelSaveOpsBase
             return Array.Empty<string>();
         }
 
-        var ordered = new List<string>();
         var seen = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
-        foreach (var token in LaunchWorkshopId.Split(',', StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries))
-        {
-            var value = token.Trim();
-            if (value.Length == 0 || !seen.Add(value))
-            {
-                continue;
-            }
-
-            ordered.Add(value);
-        }
-
-        return ordered;
+        return LaunchWorkshopId
+            .Split(',', StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries)
+            .Select(token => token.Trim())
+            .Where(value => value.Length > 0 && seen.Add(value))
+            .ToList();
     }
     private void ApplyAttachSessionStatus(AttachSession session)
     {
@@ -491,13 +503,19 @@ public sealed class MainViewModel : MainViewModelSaveOpsBase
             _loadedActionSpecs = profile.Actions;
             return _loadedActionSpecs.TryGetValue(actionId, out actionSpec) ? actionSpec : null;
         }
-        catch
+        catch (InvalidOperationException)
+        {
+            return null;
+        }
+        catch (KeyNotFoundException)
         {
             return null;
         }
     }
     protected override async Task<bool> EnsureActionAvailableForCurrentSessionAsync(string actionId, string statusPrefix)
     {
+        ArgumentNullException.ThrowIfNull(actionId);
+        ArgumentNullException.ThrowIfNull(statusPrefix);
         var session = _runtime.CurrentSession;
         if (session is null)
         {
@@ -589,7 +607,7 @@ public sealed class MainViewModel : MainViewModelSaveOpsBase
             {
                 payloadNode = JsonNode.Parse(PayloadJson) as JsonObject ?? new JsonObject();
             }
-            catch (Exception ex)
+            catch (System.Text.Json.JsonException ex)
             {
                 Status = $"Invalid payload JSON: {ex.Message}";
                 return;
@@ -612,7 +630,15 @@ public sealed class MainViewModel : MainViewModelSaveOpsBase
                 ? $"Action succeeded: {result.Message}{MainViewModelDiagnostics.BuildDiagnosticsStatusSuffix(result)}"
                 : $"Action failed: {result.Message}{MainViewModelDiagnostics.BuildDiagnosticsStatusSuffix(result)}";
         }
-        catch (Exception ex)
+        catch (InvalidOperationException ex)
+        {
+            Status = $"Action failed: {ex.Message}";
+        }
+        catch (System.ComponentModel.Win32Exception ex)
+        {
+            Status = $"Action failed: {ex.Message}";
+        }
+        catch (IOException ex)
         {
             Status = $"Action failed: {ex.Message}";
         }

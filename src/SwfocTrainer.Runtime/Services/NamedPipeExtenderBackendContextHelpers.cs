@@ -36,6 +36,7 @@ internal static class NamedPipeExtenderBackendContextHelpers
 
     internal static int ReadContextInt(IReadOnlyDictionary<string, object?>? context, string key)
     {
+        ArgumentNullException.ThrowIfNull(key);
         if (!TryReadContextValue(context, key, out var raw) || raw is null)
         {
             return 0;
@@ -51,11 +52,12 @@ internal static class NamedPipeExtenderBackendContextHelpers
             return (int)longValue;
         }
 
-        return int.TryParse(raw.ToString(), out var parsed) ? parsed : 0;
+        return int.TryParse(raw.ToString() ?? string.Empty, out var parsed) ? parsed : 0;
     }
 
     internal static string ReadContextString(IReadOnlyDictionary<string, object?>? context, string key)
     {
+        ArgumentNullException.ThrowIfNull(key);
         if (!TryReadContextValue(context, key, out var raw) || raw is null)
         {
             return string.Empty;
@@ -223,7 +225,7 @@ internal static class NamedPipeExtenderBackendContextHelpers
                 continue;
             }
 
-            destination[kv.Key] = kv.Value.ToString();
+            destination[kv.Key] = kv.Value.ToString() ?? string.Empty;
         }
 
         return true;
@@ -238,7 +240,7 @@ internal static class NamedPipeExtenderBackendContextHelpers
 
         foreach (var property in element.EnumerateObject())
         {
-            destination[property.Name] = property.Value.ToString();
+            destination[property.Name] = property.Value.ToString() ?? string.Empty;
         }
 
         return true;
@@ -258,7 +260,7 @@ internal static class NamedPipeExtenderBackendContextHelpers
                 continue;
             }
 
-            destination[kv.Key] = kv.Value.ToString();
+            destination[kv.Key] = kv.Value.ToString() ?? string.Empty;
         }
 
         return true;
@@ -309,9 +311,9 @@ internal static class NamedPipeExtenderBackendContextHelpers
                 destination[kv.Key] = kv.Value;
             }
         }
-        catch
+        catch (JsonException)
         {
-            // ignored
+            // ignored — malformed serialized anchor map
         }
     }
 

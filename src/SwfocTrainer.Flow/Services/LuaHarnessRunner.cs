@@ -20,11 +20,14 @@ public sealed class LuaHarnessRunner : ILuaHarnessRunner
 
     public Task<LuaHarnessRunResult> RunAsync(LuaHarnessRunRequest request)
     {
+        ArgumentNullException.ThrowIfNull(request);
         return RunAsync(request, CancellationToken.None);
     }
 
     public async Task<LuaHarnessRunResult> RunAsync(LuaHarnessRunRequest request, CancellationToken cancellationToken)
     {
+        ArgumentNullException.ThrowIfNull(request);
+
         if (string.IsNullOrWhiteSpace(request.ScriptPath) || !File.Exists(request.ScriptPath))
         {
             return new LuaHarnessRunResult(
@@ -74,7 +77,7 @@ public sealed class LuaHarnessRunner : ILuaHarnessRunner
         var current = new DirectoryInfo(AppContext.BaseDirectory);
         while (current is not null)
         {
-            var candidate = Path.Combine(current.FullName, "tools", "lua-harness", "run-lua-harness.ps1");
+            var candidate = Path.Join(current.FullName, "tools", "lua-harness", "run-lua-harness.ps1");
             if (File.Exists(candidate))
             {
                 return candidate;
@@ -83,6 +86,6 @@ public sealed class LuaHarnessRunner : ILuaHarnessRunner
             current = current.Parent;
         }
 
-        return Path.Combine(Directory.GetCurrentDirectory(), "tools", "lua-harness", "run-lua-harness.ps1");
+        return Path.Join(Directory.GetCurrentDirectory(), "tools", "lua-harness", "run-lua-harness.ps1");
     }
 }

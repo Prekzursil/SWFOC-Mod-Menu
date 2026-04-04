@@ -110,13 +110,11 @@ public sealed class WorkshopInventoryService : IWorkshopInventoryService
 
         diagnostics.Add($"manifest={manifestPath}");
         var text = File.ReadAllText(manifestPath);
-        foreach (Match match in InstalledIdRegex.Matches(text))
+        foreach (var id in InstalledIdRegex.Matches(text).Cast<Match>()
+            .Select(match => match.Groups["id"].Value)
+            .Where(id => !string.IsNullOrWhiteSpace(id)))
         {
-            var id = match.Groups["id"].Value;
-            if (!string.IsNullOrWhiteSpace(id))
-            {
-                ids.Add(id);
-            }
+            ids.Add(id);
         }
     }
 
@@ -129,13 +127,11 @@ public sealed class WorkshopInventoryService : IWorkshopInventoryService
                 continue;
             }
 
-            foreach (var directory in Directory.EnumerateDirectories(root))
+            foreach (var id in Directory.EnumerateDirectories(root)
+                .Select(Path.GetFileName)
+                .Where(id => !string.IsNullOrWhiteSpace(id) && id!.All(char.IsDigit)))
             {
-                var id = Path.GetFileName(directory);
-                if (!string.IsNullOrWhiteSpace(id) && id.All(char.IsDigit))
-                {
-                    ids.Add(id);
-                }
+                ids.Add(id!);
             }
         }
     }
@@ -157,7 +153,7 @@ public sealed class WorkshopInventoryService : IWorkshopInventoryService
 
         foreach (var steamRoot in EnumerateDefaultSteamRoots())
         {
-            yield return Path.Combine(steamRoot, "steamapps", "workshop", $"appworkshop_{appId}.acf");
+            yield return Path.Join(steamRoot, "steamapps", "workshop", $"appworkshop_{appId}.acf");
         }
     }
 
@@ -178,7 +174,7 @@ public sealed class WorkshopInventoryService : IWorkshopInventoryService
 
         foreach (var steamRoot in EnumerateDefaultSteamRoots())
         {
-            yield return Path.Combine(steamRoot, "steamapps", "workshop", "content", appId);
+            yield return Path.Join(steamRoot, "steamapps", "workshop", "content", appId);
         }
     }
 
@@ -199,18 +195,18 @@ public sealed class WorkshopInventoryService : IWorkshopInventoryService
         var programFilesX86 = Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86);
         if (!string.IsNullOrWhiteSpace(programFilesX86))
         {
-            Add(Path.Combine(programFilesX86, "Steam"));
+            Add(Path.Join(programFilesX86, "Steam"));
         }
 
         var programFiles = Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles);
         if (!string.IsNullOrWhiteSpace(programFiles))
         {
-            Add(Path.Combine(programFiles, "Steam"));
+            Add(Path.Join(programFiles, "Steam"));
         }
 
         foreach (var drive in DriveInfo.GetDrives().Where(d => d.DriveType is DriveType.Fixed && d.IsReady))
         {
-            Add(Path.Combine(drive.RootDirectory.FullName, "SteamLibrary"));
+            Add(Path.Join(drive.RootDirectory.FullName, "SteamLibrary"));
         }
 
         return seen;
@@ -254,7 +250,13 @@ public sealed class WorkshopInventoryService : IWorkshopInventoryService
         {
             response = await _httpClient.SendAsync(message, cancellationToken);
         }
-        catch (Exception ex)
+        catch (HttpRequestException ex)
+        {
+            diagnostics.Add($"details_fetch_failed batch_start={offset} message={ex.Message}");
+            _logger.LogWarning(ex, "Workshop details fetch failed for batch starting {Offset}", offset);
+            return Array.Empty<WorkshopInventoryItem>();
+        }
+        catch (TaskCanceledException ex)
         {
             diagnostics.Add($"details_fetch_failed batch_start={offset} message={ex.Message}");
             _logger.LogWarning(ex, "Workshop details fetch failed for batch starting {Offset}", offset);
@@ -275,7 +277,7 @@ public sealed class WorkshopInventoryService : IWorkshopInventoryService
                 using var payload = await JsonDocument.ParseAsync(stream, cancellationToken: cancellationToken);
                 return ExtractMappedItems(payload, offset, diagnostics);
             }
-            catch (Exception ex)
+            catch (System.Text.Json.JsonException ex)
             {
                 diagnostics.Add($"details_parse_failed batch_start={offset} message={ex.Message}");
                 return Array.Empty<WorkshopInventoryItem>();
@@ -308,14 +310,15 @@ public sealed class WorkshopInventoryService : IWorkshopInventoryService
             return Array.Empty<WorkshopInventoryItem>();
         }
 
-        var mappedItems = new List<WorkshopInventoryItem>();
-        foreach (var detail in detailsNode.EnumerateArray())
-        {
-            if (TryMapItem(detail, out var mapped))
+        var mappedItems = detailsNode.EnumerateArray()
+            .Select(detail =>
             {
-                mappedItems.Add(mapped);
-            }
-        }
+                var found = TryMapItem(detail, out var mapped);
+                return (Found: found, Item: mapped);
+            })
+            .Where(x => x.Found)
+            .Select(x => x.Item)
+            .ToList();
 
         return mappedItems;
     }
@@ -438,15 +441,13 @@ public sealed class WorkshopInventoryService : IWorkshopInventoryService
         }
 
         var tags = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
-        foreach (var tag in tagsNode.EnumerateArray())
-        {
-            var value = tag.TryGetProperty("tag", out var tagName)
+        foreach (var value in tagsNode.EnumerateArray()
+            .Select(tag => tag.TryGetProperty("tag", out var tagName)
                 ? tagName.GetString()
-                : tag.GetString();
-            if (!string.IsNullOrWhiteSpace(value))
-            {
-                tags.Add(value.Trim());
-            }
+                : tag.GetString())
+            .Where(value => !string.IsNullOrWhiteSpace(value)))
+        {
+            tags.Add(value!.Trim());
         }
 
         return tags.OrderBy(x => x, StringComparer.OrdinalIgnoreCase).ToArray();
@@ -489,13 +490,11 @@ public sealed class WorkshopInventoryService : IWorkshopInventoryService
             return;
         }
 
-        foreach (Match match in SteamModRegex.Matches(description))
+        foreach (var id in SteamModRegex.Matches(description).Cast<Match>()
+            .Select(match => match.Groups["id"].Value)
+            .Where(id => !string.IsNullOrWhiteSpace(id) && !string.Equals(id, selfId, StringComparison.OrdinalIgnoreCase)))
         {
-            var id = match.Groups["id"].Value;
-            if (!string.IsNullOrWhiteSpace(id) && !string.Equals(id, selfId, StringComparison.OrdinalIgnoreCase))
-            {
-                parents.Add(id);
-            }
+            parents.Add(id);
         }
     }
 

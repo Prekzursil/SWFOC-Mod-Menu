@@ -243,12 +243,12 @@ public sealed class ModOnboardingServiceTests
 
     private static async Task<(ModOnboardingService Service, string TempRoot)> CreateServiceAsync()
     {
-        var tempRoot = Path.Combine(Path.GetTempPath(), $"swfoc-onboarding-{Guid.NewGuid():N}");
-        var defaultRoot = Path.Combine(tempRoot, "default");
-        var profilesDir = Path.Combine(defaultRoot, "profiles");
+        var tempRoot = Path.Join(Path.GetTempPath(), $"swfoc-onboarding-{Guid.NewGuid():N}");
+        var defaultRoot = Path.Join(tempRoot, "default");
+        var profilesDir = Path.Join(defaultRoot, "profiles");
         Directory.CreateDirectory(profilesDir);
 
-        await File.WriteAllTextAsync(Path.Combine(defaultRoot, "manifest.json"), """
+        await File.WriteAllTextAsync(Path.Join(defaultRoot, "manifest.json"), """
         {
           "version": "1.0.0",
           "publishedAt": "2026-01-01T00:00:00Z",
@@ -284,14 +284,14 @@ public sealed class ModOnboardingServiceTests
             Metadata: null);
 
         await File.WriteAllTextAsync(
-            Path.Combine(profilesDir, "base_swfoc.json"),
+            Path.Join(profilesDir, "base_swfoc.json"),
             JsonProfileSerializer.Serialize(baseProfile));
 
         var options = new ProfileRepositoryOptions
         {
             ProfilesRootPath = defaultRoot,
             ManifestFileName = "manifest.json",
-            DownloadCachePath = Path.Combine(tempRoot, "cache")
+            DownloadCachePath = Path.Join(tempRoot, "cache")
         };
 
         var repository = new FileSystemProfileRepository(options);

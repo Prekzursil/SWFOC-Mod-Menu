@@ -14,7 +14,7 @@ internal static class MainViewModelRuntimeModeOverrideHelpers
     internal const string ModeOverrideTacticalSpace = "TacticalSpace";
 
     private const string SettingsFileName = "runtime-mode-settings.json";
-    private const string SettingsKeyModeOverride = "modeOverride";
+    private const string SettingsModeOverride = "modeOverride";
 
     internal static readonly IReadOnlyList<string> ModeOverrideOptions =
     [
@@ -74,9 +74,13 @@ internal static class MainViewModelRuntimeModeOverrideHelpers
         {
             var json = File.ReadAllText(path);
             var root = JsonSerializer.Deserialize<Dictionary<string, string>>(json);
-            return Normalize(root is not null && root.TryGetValue(SettingsKeyModeOverride, out var value) ? value : null);
+            return Normalize(root is not null && root.TryGetValue(SettingsModeOverride, out var value) ? value : null);
         }
-        catch
+        catch (IOException)
+        {
+            return ModeOverrideAuto;
+        }
+        catch (JsonException)
         {
             return ModeOverrideAuto;
         }
@@ -92,7 +96,7 @@ internal static class MainViewModelRuntimeModeOverrideHelpers
         Directory.CreateDirectory(settingsDirectory);
         var data = new Dictionary<string, string>(StringComparer.Ordinal)
         {
-            [SettingsKeyModeOverride] = normalized
+            [SettingsModeOverride] = normalized
         };
 
         var json = JsonSerializer.Serialize(data, new JsonSerializerOptions { WriteIndented = true });
@@ -101,6 +105,6 @@ internal static class MainViewModelRuntimeModeOverrideHelpers
 
     private static string GetSettingsPath()
     {
-        return Path.Combine(TrustedPathPolicy.GetOrCreateAppDataRoot(), SettingsFileName);
+        return Path.Join(TrustedPathPolicy.GetOrCreateAppDataRoot(), SettingsFileName);
     }
 }

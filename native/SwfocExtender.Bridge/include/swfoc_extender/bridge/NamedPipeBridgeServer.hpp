@@ -7,6 +7,7 @@
 #include <functional>
 #include <map>
 #include <string>
+#include <string_view>
 #include <thread>
 
 /*
@@ -16,6 +17,8 @@ suppress only this header:
 */
 
 namespace swfoc::extender::bridge {
+
+using StringMap = std::map<std::string, std::string, std::less<>>;
 
 struct BridgeCommand {
     [[maybe_unused]] std::string commandId;
@@ -27,7 +30,7 @@ struct BridgeCommand {
     [[maybe_unused]] std::string payloadJson;
     [[maybe_unused]] std::int32_t processId {0};
     [[maybe_unused]] std::string processName;
-    [[maybe_unused]] std::map<std::string, std::string> resolvedAnchors {};
+    [[maybe_unused]] StringMap resolvedAnchors {};
 };
 
 struct BridgeResult {
@@ -49,16 +52,16 @@ public:
     void setHandler(Handler handler);
     bool start();
     void stop();
-    bool running() const noexcept;
+    [[nodiscard]] bool running() const noexcept;
 
 private:
-    void runLoop();
-    BridgeResult handleRawCommand(const std::string& jsonLine) const;
+    void runLoop() const;
+    [[nodiscard]] BridgeResult handleRawCommand(std::string_view jsonLine) const;
 
     [[maybe_unused]] std::string pipeName_;
     Handler handler_;
     std::atomic<bool> running_ {false};
-    std::thread worker_;
+    std::jthread worker_;
 };
 
 } // namespace swfoc::extender::bridge

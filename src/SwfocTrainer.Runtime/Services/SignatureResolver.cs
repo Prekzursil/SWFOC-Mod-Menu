@@ -75,14 +75,14 @@ public sealed class SignatureResolver : ISignatureResolver
             module,
             signatureSets,
             symbols);
-        ResolveSignatures(
-            signatureSets,
+        var context = new SignatureResolutionContext(
             fallbackOffsets,
             cancellationToken,
             baseAddress,
             moduleBytes,
             accessor,
             symbols);
+        ResolveSignatures(signatureSets, context);
         SignatureResolverFallbacks.ApplyStandaloneFallbacks(_logger, fallbackOffsets, accessor, baseAddress, symbols);
 
         return new SymbolMap(symbols);
@@ -97,7 +97,11 @@ public sealed class SignatureResolver : ISignatureResolver
             {
                 return Process.GetProcessById(profileBuild.ProcessId);
             }
-            catch
+            catch (ArgumentException)
+            {
+                // fall back to name search below
+            }
+            catch (InvalidOperationException)
             {
                 // fall back to name search below
             }
@@ -114,25 +118,15 @@ public sealed class SignatureResolver : ISignatureResolver
 
     internal static string? SelectBestGhidraPackPath(string symbolPackRoot, string fingerprintId)
     {
+        ArgumentNullException.ThrowIfNull(symbolPackRoot);
+        ArgumentNullException.ThrowIfNull(fingerprintId);
         return SignatureResolverSymbolHydration.SelectBestGhidraPackPath(symbolPackRoot, fingerprintId);
     }
 
     private void ResolveSignatures(
         IReadOnlyList<SignatureSet> signatureSets,
-        IReadOnlyDictionary<string, long> fallbackOffsets,
-        CancellationToken cancellationToken,
-        nint baseAddress,
-        byte[] moduleBytes,
-        ProcessMemoryAccessor accessor,
-        IDictionary<string, SymbolInfo> symbols)
+        SignatureResolutionContext context)
     {
-        var context = new SignatureResolutionContext(
-            fallbackOffsets,
-            cancellationToken,
-            baseAddress,
-            moduleBytes,
-            accessor,
-            symbols);
         foreach (var signatureSet in signatureSets)
         {
             foreach (var signature in signatureSet.Signatures)
@@ -160,10 +154,11 @@ public sealed class SignatureResolver : ISignatureResolver
             SignatureResolverFallbacks.HandleSignatureMiss(
                 _logger,
                 signature,
-                context.FallbackOffsets,
-                context.Accessor,
-                context.BaseAddress,
-                context.Symbols);
+                new SignatureResolverFallbacks.SignatureMissContext(
+                    context.FallbackOffsets,
+                    context.Accessor,
+                    context.BaseAddress,
+                    context.Symbols));
             return;
         }
 

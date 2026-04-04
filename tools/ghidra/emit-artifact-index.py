@@ -10,7 +10,7 @@ import hashlib
 import json
 from datetime import datetime, timezone
 from pathlib import Path
-from typing import Any
+from typing import Any, Dict, Optional
 
 
 SCHEMA_VERSION = "1.0"
@@ -29,11 +29,11 @@ def _sha256(path: Path) -> str:
     return digest.hexdigest()
 
 
-def _normalize_path(path: Path | str) -> str:
+def _normalize_path(path: object) -> str:
     return str(path).replace("\\", "/")
 
 
-def _read_json(path: Path) -> dict[str, Any]:
+def _read_json(path: Path) -> Dict[str, Any]:
     return json.loads(path.read_text(encoding="utf-8"))
 
 
@@ -41,7 +41,7 @@ def _build_fingerprint_id(module_name: str, file_sha256: str) -> str:
     return f"{Path(module_name).stem.lower().replace(' ', '_')}_{file_sha256[:16]}"
 
 
-def _load_symbol_pack_fingerprint(symbol_pack_path: Path) -> dict[str, str] | None:
+def _load_symbol_pack_fingerprint(symbol_pack_path: Path) -> Optional[Dict[str, str]]:
     if not symbol_pack_path.exists():
         return None
 
@@ -67,7 +67,7 @@ def _load_symbol_pack_fingerprint(symbol_pack_path: Path) -> dict[str, str] | No
     }
 
 
-def _resolve_binary_fingerprint(symbol_pack_path: Path, binary_path: Path) -> dict[str, str]:
+def _resolve_binary_fingerprint(symbol_pack_path: Path, binary_path: Path) -> Dict[str, str]:
     fingerprint = _load_symbol_pack_fingerprint(symbol_pack_path)
     if fingerprint is not None:
         return fingerprint
@@ -81,7 +81,7 @@ def _resolve_binary_fingerprint(symbol_pack_path: Path, binary_path: Path) -> di
     }
 
 
-def _resolve_hash(path: Path) -> str | None:
+def _resolve_hash(path: Path) -> Optional[str]:
     if not path.exists():
         return None
     return _sha256(path)

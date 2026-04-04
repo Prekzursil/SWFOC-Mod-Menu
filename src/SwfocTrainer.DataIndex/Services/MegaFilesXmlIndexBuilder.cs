@@ -9,6 +9,7 @@ public sealed class MegaFilesXmlIndexBuilder
 
     public MegaFilesIndex Build(string megaFilesXmlContent)
     {
+        ArgumentNullException.ThrowIfNull(megaFilesXmlContent);
         if (string.IsNullOrWhiteSpace(megaFilesXmlContent))
         {
             return MegaFilesIndex.Empty;
@@ -49,7 +50,7 @@ public sealed class MegaFilesXmlIndexBuilder
         {
             return XDocument.Parse(content, LoadOptions.None);
         }
-        catch (Exception ex)
+        catch (System.Xml.XmlException ex)
         {
             diagnostics.Add($"Invalid MegaFiles XML: {ex.Message}");
             return null;
@@ -89,15 +90,10 @@ public sealed class MegaFilesXmlIndexBuilder
 
     private static string? ReadFirstNonEmptyAttribute(XElement element, params string[] names)
     {
-        foreach (var name in names)
-        {
-            var value = element.Attribute(name)?.Value;
-            if (!string.IsNullOrWhiteSpace(value))
-            {
-                return value.Trim();
-            }
-        }
-
-        return null;
+        return names
+            .Select(name => element.Attribute(name)?.Value)
+            .Where(value => !string.IsNullOrWhiteSpace(value))
+            .Select(value => value!.Trim())
+            .FirstOrDefault();
     }
 }

@@ -13,9 +13,9 @@ public sealed class SignatureResolverPackSelectionTests
         try
         {
             var fingerprintId = "starwarsg_deadbeefcafefeed";
-            var exactPath = Path.Combine(root, $"{fingerprintId}.json");
-            var indexedPath = Path.Combine(root, "from-index.json");
-            var fallbackPath = Path.Combine(root, "nested", "fallback.json");
+            var exactPath = Path.Join(root, $"{fingerprintId}.json");
+            var indexedPath = Path.Join(root, "from-index.json");
+            var fallbackPath = Path.Join(root, "nested", "fallback.json");
 
             Directory.CreateDirectory(Path.GetDirectoryName(fallbackPath)!);
             WritePack(exactPath, fingerprintId, "2026-02-25T10:00:00Z");
@@ -40,13 +40,13 @@ public sealed class SignatureResolverPackSelectionTests
         try
         {
             var fingerprintId = "starwarsg_deadbeefcafefeed";
-            var indexedPath = Path.Combine(root, "packs", "from-index.json");
-            var fallbackPath = Path.Combine(root, "packs", "fallback.json");
+            var indexedPath = Path.Join(root, "packs", "from-index.json");
+            var fallbackPath = Path.Join(root, "packs", "fallback.json");
 
             Directory.CreateDirectory(Path.GetDirectoryName(indexedPath)!);
             WritePack(indexedPath, fingerprintId, "2026-02-20T10:00:00Z");
             WritePack(fallbackPath, fingerprintId, "2026-02-28T10:00:00Z");
-            WriteArtifactIndex(root, fingerprintId, Path.Combine("packs", "from-index.json"));
+            WriteArtifactIndex(root, fingerprintId, Path.Join("packs", "from-index.json"));
 
             var selected = SignatureResolver.SelectBestGhidraPackPath(root, fingerprintId);
 
@@ -65,9 +65,9 @@ public sealed class SignatureResolverPackSelectionTests
         try
         {
             var fingerprintId = "starwarsg_deadbeefcafefeed";
-            var newerPath = Path.Combine(root, "packs", "newer.json");
-            var tieA = Path.Combine(root, "packs", "a.json");
-            var tieB = Path.Combine(root, "packs", "b.json");
+            var newerPath = Path.Join(root, "packs", "newer.json");
+            var tieA = Path.Join(root, "packs", "a.json");
+            var tieB = Path.Join(root, "packs", "b.json");
 
             Directory.CreateDirectory(Path.GetDirectoryName(newerPath)!);
             WritePack(newerPath, fingerprintId, "2026-02-28T10:00:00Z");
@@ -94,8 +94,8 @@ public sealed class SignatureResolverPackSelectionTests
         try
         {
             var expectedFingerprint = "starwarsg_deadbeefcafefeed";
-            var exactPath = Path.Combine(root, $"{expectedFingerprint}.json");
-            var fallbackPath = Path.Combine(root, "fallback.json");
+            var exactPath = Path.Join(root, $"{expectedFingerprint}.json");
+            var fallbackPath = Path.Join(root, "fallback.json");
 
             WritePack(exactPath, "wrong_fingerprint", "2026-02-20T10:00:00Z");
             WritePack(fallbackPath, expectedFingerprint, "2026-02-21T10:00:00Z");
@@ -112,7 +112,7 @@ public sealed class SignatureResolverPackSelectionTests
 
     private static string CreateTempRoot()
     {
-        var path = Path.Combine(Path.GetTempPath(), $"swfoc-ghidra-pack-{Guid.NewGuid():N}");
+        var path = Path.Join(Path.GetTempPath(), $"swfoc-ghidra-pack-{Guid.NewGuid():N}");
         Directory.CreateDirectory(path);
         return path;
     }
@@ -141,7 +141,7 @@ public sealed class SignatureResolverPackSelectionTests
 
     private static void WriteArtifactIndex(string root, string fingerprintId, string symbolPackPath)
     {
-        var indexPath = Path.Combine(root, "artifact-index.json");
+        var indexPath = Path.Join(root, "artifact-index.json");
         var json = $$"""
                      {
                        "schemaVersion": "1.0",

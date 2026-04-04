@@ -38,6 +38,9 @@ public sealed class StoryPlotFlowExtractor
 
     public FlowIndexReport Extract(string xmlContent, string sourceFile)
     {
+        ArgumentNullException.ThrowIfNull(xmlContent);
+        ArgumentNullException.ThrowIfNull(sourceFile);
+
         if (string.IsNullOrWhiteSpace(xmlContent))
         {
             return FlowIndexReport.Empty;
@@ -49,7 +52,7 @@ public sealed class StoryPlotFlowExtractor
         {
             document = XDocument.Parse(xmlContent, LoadOptions.None);
         }
-        catch (Exception ex)
+        catch (System.Xml.XmlException ex)
         {
             diagnostics.Add($"Invalid XML '{sourceFile}': {ex.Message}");
             return new FlowIndexReport(Array.Empty<FlowPlotRecord>(), diagnostics);
@@ -86,6 +89,10 @@ public sealed class StoryPlotFlowExtractor
         MegaFilesIndex megaFilesIndex,
         string symbolPackJson)
     {
+        ArgumentNullException.ThrowIfNull(flowReport);
+        ArgumentNullException.ThrowIfNull(megaFilesIndex);
+        ArgumentNullException.ThrowIfNull(symbolPackJson);
+
         if (flowReport.Plots.Count == 0)
         {
             return FlowCapabilityLinkReport.Empty;
@@ -158,16 +165,14 @@ public sealed class StoryPlotFlowExtractor
 
     private static string? ReadFirstNonEmptyAttribute(XElement element, params string[] names)
     {
-        foreach (var name in names)
-        {
-            var value = element.Attribute(name)?.Value;
-            if (!string.IsNullOrWhiteSpace(value))
-            {
-                return value.Trim();
-            }
-        }
+        ArgumentNullException.ThrowIfNull(element);
+        ArgumentNullException.ThrowIfNull(names);
 
-        return null;
+        return names
+            .Select(name => element.Attribute(name)?.Value)
+            .Where(value => !string.IsNullOrWhiteSpace(value))
+            .Select(value => value!.Trim())
+            .FirstOrDefault();
     }
 
     private static FlowModeHint ResolveModeHint(string eventName)
@@ -251,7 +256,7 @@ public sealed class StoryPlotFlowExtractor
 
             return true;
         }
-        catch (Exception ex)
+        catch (JsonException ex)
         {
             diagnostics.Add($"symbol-pack parse failed: {ex.Message}");
             return false;

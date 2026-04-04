@@ -12,11 +12,11 @@ namespace {
 
 using AnchorMatch = std::pair<std::string, std::string>;
 
-constexpr std::array<std::string_view, 2> kCreditsAnchors {"credits", "set_credits"};
+constexpr std::array<std::string_view, 2> kCreditsAnchors = {"credits", "set_credits"};
 
 std::optional<AnchorMatch> FindCreditsAnchor(const PluginRequest& request) {
-    for (const auto key : kCreditsAnchors) {
-        const auto it = request.anchors.find(std::string(key));
+    for (const auto& key : kCreditsAnchors) {
+        const auto it = request.anchors.find(key);
         if (it != request.anchors.end() && !it->second.empty()) {
             return AnchorMatch {it->first, it->second};
         }
@@ -32,7 +32,7 @@ PluginResult BuildMissingAnchorResult(const PluginRequest& request) {
     result.hookState = "DENIED";
     result.message = "anchors map missing required credits anchor.";
     result.diagnostics = {
-        {"featureId", request.featureId},
+        {"featureId", request.featureId()},
         {"requiredField", "anchors"},
         {"anchorCount", std::to_string(request.anchors.size())}};
     return result;
@@ -45,7 +45,7 @@ PluginResult BuildInvalidAnchorResult(const PluginRequest& request, const Anchor
     result.hookState = "DENIED";
     result.message = "credits anchor value is invalid.";
     result.diagnostics = {
-        {"featureId", request.featureId},
+        {"featureId", request.featureId()},
         {"anchorKey", anchor.first},
         {"anchorValue", anchor.second}};
     return result;
@@ -54,17 +54,17 @@ PluginResult BuildInvalidAnchorResult(const PluginRequest& request, const Anchor
 PluginResult BuildWriteFailureResult(
     const PluginRequest& request,
     const AnchorMatch& anchor,
-    const std::string& error) {
+    std::string_view error) {
     PluginResult result {};
     result.succeeded = false;
     result.reasonCode = "SAFETY_MUTATION_BLOCKED";
     result.hookState = "DENIED";
     result.message = "credits process write failed.";
     result.diagnostics = {
-        {"featureId", request.featureId},
+        {"featureId", request.featureId()},
         {"anchorKey", anchor.first},
         {"anchorValue", anchor.second},
-        {"error", error},
+        {"error", std::string(error)},
         {"processMutationApplied", "false"}};
     return result;
 }
@@ -76,15 +76,15 @@ PluginResult BuildMutationSuccessResult(
     PluginResult result {};
     result.succeeded = true;
     result.reasonCode = "CAPABILITY_PROBE_PASS";
-    result.hookState = request.lockValue ? "HOOK_LOCK" : "HOOK_ONESHOT";
+    result.hookState = request.lockValue() ? "HOOK_LOCK" : "HOOK_ONESHOT";
     result.message = "Credits value applied through extender plugin.";
     result.diagnostics = {
-        {"featureId", request.featureId},
-        {"processId", std::to_string(request.processId)},
+        {"featureId", request.featureId()},
+        {"processId", std::to_string(request.processId())},
         {"anchorKey", anchor.first},
         {"anchorValue", anchor.second},
         {"intValue", std::to_string(appliedValue)},
-        {"lockValue", request.lockValue ? "true" : "false"},
+        {"lockValue", request.lockValue() ? "true" : "false"},
         {"processMutationApplied", "true"}};
     return result;
 }
@@ -104,23 +104,23 @@ const char* EconomyPlugin::id() const noexcept {
 }
 
 PluginResult EconomyPlugin::execute(const PluginRequest& request) {
-    if (request.featureId != "set_credits") {
+    if (request.featureId() != "set_credits") {
         PluginResult result {};
         result.succeeded = false;
         result.reasonCode = "CAPABILITY_REQUIRED_MISSING";
         result.hookState = "DENIED";
         result.message = "Economy plugin only handles set_credits.";
-        result.diagnostics = {{"featureId", request.featureId}};
+        result.diagnostics = {{"featureId", request.featureId()}};
         return result;
     }
 
-    if (request.intValue < 0) {
+    if (request.intValue() < 0) {
         PluginResult result {};
         result.succeeded = false;
         result.reasonCode = "SAFETY_MUTATION_BLOCKED";
         result.hookState = "DENIED";
         result.message = "intValue must be non-negative for set_credits.";
-        result.diagnostics = {{"intValue", std::to_string(request.intValue)}};
+        result.diagnostics = {{"intValue", std::to_string(request.intValue())}};
         return result;
     }
 
@@ -134,23 +134,22 @@ PluginResult EconomyPlugin::execute(const PluginRequest& request) {
         return BuildInvalidAnchorResult(request, *resolvedAnchor);
     }
 
-    std::string writeError;
-    if (!process_mutation::TryWriteValue<std::int32_t>(
-            request.processId,
+    if (std::string writeError; !process_mutation::TryWriteValue<std::int32_t>(
+            request.processId(),
             targetAddress,
-            request.intValue,
+            request.intValue(),
             writeError)) {
         return BuildWriteFailureResult(request, *resolvedAnchor, writeError);
     }
 
-    lockEnabled_.store(request.lockValue);
-    lockedCreditsValue_.store(request.intValue);
-    return BuildMutationSuccessResult(request, *resolvedAnchor, request.intValue);
+    lockEnabled_.store(request.lockValue());
+    lockedCreditsValue_.store(request.intValue());
+    return BuildMutationSuccessResult(request, *resolvedAnchor, request.intValue());
 }
 
 CapabilitySnapshot EconomyPlugin::capabilitySnapshot() const {
     CapabilitySnapshot snapshot {};
-    snapshot.features.emplace("set_credits", BuildCapabilityState());
+    snapshot.features.try_emplace("set_credits", BuildCapabilityState());
     return snapshot;
 }
 

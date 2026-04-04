@@ -34,11 +34,13 @@ internal static class MainViewModelHotkeyHelpers
 
     internal static string BuildDefaultHotkeyPayloadJson(string actionId)
     {
+        ArgumentNullException.ThrowIfNull(actionId);
         return BuildDefaultHotkeyPayload(actionId).ToJsonString();
     }
 
     internal static async Task<string> LoadHotkeysAsync(ObservableCollection<HotkeyBindingItem> hotkeys)
     {
+        ArgumentNullException.ThrowIfNull(hotkeys);
         hotkeys.Clear();
         var path = GetHotkeyFilePath();
         TrustedPathPolicy.EnsureSubPath(TrustedPathPolicy.GetOrCreateAppDataRoot(), path);
@@ -106,6 +108,8 @@ internal static class MainViewModelHotkeyHelpers
         string actionId,
         ActionExecutionResult result)
     {
+        ArgumentNullException.ThrowIfNull(gesture);
+        ArgumentNullException.ThrowIfNull(actionId);
         ArgumentNullException.ThrowIfNull(result);
         var diagnosticsSuffix = MainViewModelDiagnostics.BuildDiagnosticsStatusSuffix(result);
         return result.Succeeded
@@ -119,45 +123,45 @@ internal static class MainViewModelHotkeyHelpers
         {
             MainViewModelDefaults.ActionSetCredits => new JsonObject
             {
-                [MainViewModelDefaults.PayloadKeySymbol] = MainViewModelDefaults.SymbolCredits,
-                [MainViewModelDefaults.PayloadKeyIntValue] = MainViewModelDefaults.DefaultCreditsValue,
-                [MainViewModelDefaults.PayloadKeyLockCredits] = false
+                [MainViewModelDefaults.PayloadSymbol] = MainViewModelDefaults.SymbolCredits,
+                [MainViewModelDefaults.PayloadIntValue] = MainViewModelDefaults.DefaultCreditsValue,
+                [MainViewModelDefaults.PayloadLockCredits] = false
             },
             MainViewModelDefaults.ActionFreezeTimer => new JsonObject
             {
-                [MainViewModelDefaults.PayloadKeySymbol] = MainViewModelDefaults.SymbolGameTimerFreeze,
-                [MainViewModelDefaults.PayloadKeyBoolValue] = true
+                [MainViewModelDefaults.PayloadSymbol] = MainViewModelDefaults.SymbolGameTimerFreeze,
+                [MainViewModelDefaults.PayloadBoolValue] = true
             },
             MainViewModelDefaults.ActionToggleFogReveal => new JsonObject
             {
-                [MainViewModelDefaults.PayloadKeySymbol] = MainViewModelDefaults.SymbolFogReveal,
-                [MainViewModelDefaults.PayloadKeyBoolValue] = true
+                [MainViewModelDefaults.PayloadSymbol] = MainViewModelDefaults.SymbolFogReveal,
+                [MainViewModelDefaults.PayloadBoolValue] = true
             },
             MainViewModelDefaults.ActionSetUnitCap => new JsonObject
             {
-                [MainViewModelDefaults.PayloadKeySymbol] = MainViewModelDefaults.SymbolUnitCap,
-                [MainViewModelDefaults.PayloadKeyIntValue] = MainViewModelDefaults.DefaultUnitCapValue,
-                [MainViewModelDefaults.PayloadKeyEnable] = true
+                [MainViewModelDefaults.PayloadSymbol] = MainViewModelDefaults.SymbolUnitCap,
+                [MainViewModelDefaults.PayloadIntValue] = MainViewModelDefaults.DefaultUnitCapValue,
+                [MainViewModelDefaults.PayloadEnable] = true
             },
             MainViewModelDefaults.ActionToggleInstantBuildPatch => new JsonObject
             {
-                [MainViewModelDefaults.PayloadKeyEnable] = true
+                [MainViewModelDefaults.PayloadEnable] = true
             },
             MainViewModelDefaults.ActionSetGameSpeed => new JsonObject
             {
-                [MainViewModelDefaults.PayloadKeySymbol] = MainViewModelDefaults.SymbolGameSpeed,
-                [MainViewModelDefaults.PayloadKeyFloatValue] = MainViewModelDefaults.DefaultGameSpeedValue
+                [MainViewModelDefaults.PayloadSymbol] = MainViewModelDefaults.SymbolGameSpeed,
+                [MainViewModelDefaults.PayloadFloatValue] = MainViewModelDefaults.DefaultGameSpeedValue
             },
             MainViewModelDefaults.ActionFreezeSymbol => new JsonObject
             {
-                [MainViewModelDefaults.PayloadKeySymbol] = MainViewModelDefaults.SymbolCredits,
-                [MainViewModelDefaults.PayloadKeyFreeze] = true,
-                [MainViewModelDefaults.PayloadKeyIntValue] = MainViewModelDefaults.DefaultCreditsValue
+                [MainViewModelDefaults.PayloadSymbol] = MainViewModelDefaults.SymbolCredits,
+                [MainViewModelDefaults.PayloadFreeze] = true,
+                [MainViewModelDefaults.PayloadIntValue] = MainViewModelDefaults.DefaultCreditsValue
             },
             MainViewModelDefaults.ActionUnfreezeSymbol => new JsonObject
             {
-                [MainViewModelDefaults.PayloadKeySymbol] = MainViewModelDefaults.SymbolCredits,
-                [MainViewModelDefaults.PayloadKeyFreeze] = false
+                [MainViewModelDefaults.PayloadSymbol] = MainViewModelDefaults.SymbolCredits,
+                [MainViewModelDefaults.PayloadFreeze] = false
             },
             _ => new JsonObject()
         };

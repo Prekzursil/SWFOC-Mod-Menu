@@ -186,6 +186,7 @@ public abstract class MainViewModelSaveOpsBase : MainViewModelQuickActionsBase
     }
     protected bool PreparePatchPreview(string selectedProfileId)
     {
+        ArgumentNullException.ThrowIfNull(selectedProfileId);
         var variantMessage = ValidateSaveRuntimeVariant(selectedProfileId);
         if (variantMessage is null)
         {
@@ -200,6 +201,7 @@ public abstract class MainViewModelSaveOpsBase : MainViewModelQuickActionsBase
     }
     protected void PopulatePatchPreviewOperations(SavePatchPreview preview)
     {
+        ArgumentNullException.ThrowIfNull(preview);
         SavePatchOperations.Clear();
         foreach (var operation in preview.OperationsToApply)
         {
@@ -214,6 +216,8 @@ public abstract class MainViewModelSaveOpsBase : MainViewModelQuickActionsBase
     }
     protected void PopulatePatchCompatibilityRows(SavePatchCompatibilityResult compatibility, SavePatchPreview preview)
     {
+        ArgumentNullException.ThrowIfNull(compatibility);
+        ArgumentNullException.ThrowIfNull(preview);
         SavePatchCompatibility.Clear();
         SavePatchCompatibility.Add(new SavePatchCompatibilityViewItem(
             "info",
@@ -232,6 +236,9 @@ public abstract class MainViewModelSaveOpsBase : MainViewModelQuickActionsBase
     }
     protected void AppendPatchCompatibilityRows(string severity, string reasonCode, IEnumerable<string> messages)
     {
+        ArgumentNullException.ThrowIfNull(severity);
+        ArgumentNullException.ThrowIfNull(reasonCode);
+        ArgumentNullException.ThrowIfNull(messages);
         foreach (var message in messages) { SavePatchCompatibility.Add(new SavePatchCompatibilityViewItem(severity, reasonCode, message)); }
     }
     protected async Task ApplyPatchPackAsync()
@@ -288,8 +295,9 @@ public abstract class MainViewModelSaveOpsBase : MainViewModelQuickActionsBase
     }
     protected string? ValidateSaveRuntimeVariant(string requestedProfileId)
     {
+        ArgumentNullException.ThrowIfNull(requestedProfileId);
         var session = _runtime.CurrentSession;
-        if (session?.Process.Metadata is null)
+        if (session?.Process?.Metadata is null)
         {
             return null;
         }
@@ -346,6 +354,11 @@ public abstract class MainViewModelSaveOpsBase : MainViewModelQuickActionsBase
     protected IEnumerable<SaveFieldViewItem> FlattenNodes(SaveNode root)
     {
         ArgumentNullException.ThrowIfNull(root);
+        return FlattenNodesIterator(root);
+    }
+
+    private IEnumerable<SaveFieldViewItem> FlattenNodesIterator(SaveNode root)
+    {
         if (root.Children is null || root.Children.Count == 0)
         {
             if (!string.Equals(root.ValueType, "root", StringComparison.OrdinalIgnoreCase))
@@ -358,7 +371,7 @@ public abstract class MainViewModelSaveOpsBase : MainViewModelQuickActionsBase
 
         foreach (var child in root.Children)
         {
-            foreach (var nested in FlattenNodes(child))
+            foreach (var nested in FlattenNodesIterator(child))
             {
                 yield return nested;
             }
@@ -384,6 +397,8 @@ public abstract class MainViewModelSaveOpsBase : MainViewModelQuickActionsBase
     }
     protected void SetLoadedPatchPack(SavePatchPack pack, string path)
     {
+        ArgumentNullException.ThrowIfNull(pack);
+        ArgumentNullException.ThrowIfNull(path);
         _loadedPatchPack = pack;
         SavePatchPackPath = path;
         SavePatchMetadataSummary =
@@ -510,7 +525,7 @@ public abstract class MainViewModelSaveOpsBase : MainViewModelQuickActionsBase
     protected async Task ExportCalibrationArtifactAsync()
     {
         var profileId = !string.IsNullOrWhiteSpace(SelectedProfileId) ? SelectedProfileId : OnboardingDraftProfileId;
-        var outputDir = Path.Combine(SupportBundleOutputDirectory, "calibration");
+        var outputDir = Path.Join(SupportBundleOutputDirectory, "calibration");
         Directory.CreateDirectory(outputDir);
 
         var request = new ModCalibrationArtifactRequest(
@@ -551,7 +566,7 @@ public abstract class MainViewModelSaveOpsBase : MainViewModelQuickActionsBase
 
     protected async Task ExportTelemetrySnapshotAsync()
     {
-        var telemetryDir = Path.Combine(SupportBundleOutputDirectory, "telemetry");
+        var telemetryDir = Path.Join(SupportBundleOutputDirectory, "telemetry");
         Directory.CreateDirectory(telemetryDir);
         var path = await _telemetry.ExportSnapshotAsync(telemetryDir);
         OpsArtifactSummary = path;

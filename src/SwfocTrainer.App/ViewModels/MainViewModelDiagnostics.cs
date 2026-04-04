@@ -20,6 +20,9 @@ internal static class MainViewModelDiagnostics
 
     internal static string ReadProcessMetadata(ProcessMetadata process, string key, string fallback)
     {
+        ArgumentNullException.ThrowIfNull(process);
+        ArgumentNullException.ThrowIfNull(key);
+        ArgumentNullException.ThrowIfNull(fallback);
         if (process.Metadata is null || !process.Metadata.TryGetValue(key, out var value))
         {
             return fallback;
@@ -30,12 +33,15 @@ internal static class MainViewModelDiagnostics
 
     internal static string ReadProcessMods(ProcessMetadata process)
     {
+        ArgumentNullException.ThrowIfNull(process);
         var mods = ReadProcessMetadata(process, "steamModIdsDetected", string.Empty);
         return string.IsNullOrWhiteSpace(mods) ? "none" : mods;
     }
 
     internal static string BuildProcessDependencySegment(string dependencyState, string dependencyMessage)
     {
+        ArgumentNullException.ThrowIfNull(dependencyState);
+        ArgumentNullException.ThrowIfNull(dependencyMessage);
         return dependencyState.Equals("Pass", StringComparison.OrdinalIgnoreCase) ||
                string.IsNullOrWhiteSpace(dependencyMessage)
             ? $"dependency={dependencyState}"
@@ -70,6 +76,8 @@ internal static class MainViewModelDiagnostics
 
     internal static string BuildDependencyDiagnostic(string dependency, string dependencyMessage)
     {
+        ArgumentNullException.ThrowIfNull(dependency);
+        ArgumentNullException.ThrowIfNull(dependencyMessage);
         return string.IsNullOrWhiteSpace(dependencyMessage)
             ? $"dependency: {dependency}"
             : $"dependency: {dependency} ({dependencyMessage})";
@@ -77,38 +85,46 @@ internal static class MainViewModelDiagnostics
 
     internal static object ParsePrimitive(string input)
     {
+        ArgumentNullException.ThrowIfNull(input);
+        return TryParseIntegerPrimitive(input)
+               ?? TryParseBoolPrimitive(input)
+               ?? TryParseFloatingPointPrimitive(input.Trim())
+               ?? (object)input;
+    }
+
+    private static object? TryParseIntegerPrimitive(string input)
+    {
         if (int.TryParse(input, NumberStyles.Integer, CultureInfo.InvariantCulture, out var intValue))
         {
             return intValue;
         }
 
-        if (long.TryParse(input, NumberStyles.Integer, CultureInfo.InvariantCulture, out var longValue))
-        {
-            return longValue;
-        }
+        return long.TryParse(input, NumberStyles.Integer, CultureInfo.InvariantCulture, out var longValue)
+            ? longValue
+            : null;
+    }
 
-        if (bool.TryParse(input, out var boolValue))
-        {
-            return boolValue;
-        }
+    private static object? TryParseBoolPrimitive(string input)
+    {
+        return bool.TryParse(input, out var boolValue) ? boolValue : null;
+    }
 
-        var trimmed = input.Trim();
+    private static object? TryParseFloatingPointPrimitive(string trimmed)
+    {
         if (trimmed.EndsWith("f", StringComparison.OrdinalIgnoreCase) &&
             float.TryParse(trimmed[..^1], NumberStyles.Float | NumberStyles.AllowThousands, CultureInfo.InvariantCulture, out var floatValue))
         {
             return floatValue;
         }
 
-        if (double.TryParse(trimmed, NumberStyles.Float | NumberStyles.AllowThousands, CultureInfo.InvariantCulture, out var doubleValue))
-        {
-            return doubleValue;
-        }
-
-        return input;
+        return double.TryParse(trimmed, NumberStyles.Float | NumberStyles.AllowThousands, CultureInfo.InvariantCulture, out var doubleValue)
+            ? doubleValue
+            : null;
     }
 
     internal static string ResolveBundleGateResult(ActionReliabilityViewItem? reliability, string unknownValue)
     {
+        ArgumentNullException.ThrowIfNull(unknownValue);
         if (reliability is null)
         {
             return unknownValue;
@@ -126,7 +142,7 @@ internal static class MainViewModelDiagnostics
         }
 
         var segments = new List<string>(capacity: 5);
-        AppendDiagnosticSegment(segments, result.Diagnostics, "backend", "backend", "backendRoute");
+        AppendDiagnosticSegment(segments, result.Diagnostics, "backend", "backendRoute");
         AppendDiagnosticSegment(segments, result.Diagnostics, "routeReasonCode", "routeReasonCode", "reasonCode");
         AppendDiagnosticSegment(segments, result.Diagnostics, "capabilityProbeReasonCode", "capabilityProbeReasonCode", "probeReasonCode");
         AppendDiagnosticSegment(segments, result.Diagnostics, "hookState", "hookState");
@@ -137,6 +153,7 @@ internal static class MainViewModelDiagnostics
 
     internal static string BuildQuickActionStatus(string actionId, ActionExecutionResult result)
     {
+        ArgumentNullException.ThrowIfNull(actionId);
         ArgumentNullException.ThrowIfNull(result);
         var diagnosticsSuffix = BuildDiagnosticsStatusSuffix(result);
         return result.Succeeded
@@ -146,6 +163,7 @@ internal static class MainViewModelDiagnostics
 
     internal static string ReadDiagnosticString(IReadOnlyDictionary<string, object?>? diagnostics, string key)
     {
+        ArgumentNullException.ThrowIfNull(key);
         if (diagnostics is null || !diagnostics.TryGetValue(key, out var raw) || raw is null)
         {
             return string.Empty;
@@ -165,14 +183,17 @@ internal static class MainViewModelDiagnostics
         string segmentKey,
         params string[] candidateKeys)
     {
-        foreach (var key in candidateKeys)
+        ArgumentNullException.ThrowIfNull(segments);
+        ArgumentNullException.ThrowIfNull(diagnostics);
+        ArgumentNullException.ThrowIfNull(candidateKeys);
+
+        var firstValue = candidateKeys
+            .Select(key => TryGetDiagnosticString(diagnostics, key))
+            .FirstOrDefault(value => !string.IsNullOrWhiteSpace(value));
+
+        if (firstValue is not null)
         {
-            var value = TryGetDiagnosticString(diagnostics, key);
-            if (!string.IsNullOrWhiteSpace(value))
-            {
-                segments.Add($"{segmentKey}={value}");
-                return;
-            }
+            segments.Add($"{segmentKey}={firstValue}");
         }
     }
 

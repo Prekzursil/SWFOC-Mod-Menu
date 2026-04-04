@@ -42,6 +42,9 @@ public sealed class SavePatchApplyService : ISavePatchApplyService
         ISavePatchPackService patchPackService,
         ILogger<SavePatchApplyService> logger)
     {
+        ArgumentNullException.ThrowIfNull(saveCodec);
+        ArgumentNullException.ThrowIfNull(patchPackService);
+        ArgumentNullException.ThrowIfNull(logger);
         _saveCodec = saveCodec;
         _patchPackService = patchPackService;
         _logger = logger;
@@ -59,6 +62,9 @@ public sealed class SavePatchApplyService : ISavePatchApplyService
         bool strict,
         CancellationToken cancellationToken)
     {
+        ArgumentNullException.ThrowIfNull(targetSavePath);
+        ArgumentNullException.ThrowIfNull(pack);
+        ArgumentNullException.ThrowIfNull(targetProfileId);
         var paths = BuildApplyFilePaths(targetSavePath);
         var targetLoad = await TryLoadTargetDocumentAsync(paths.TargetPath, pack.Metadata.SchemaId, cancellationToken);
         if (targetLoad.Failure is not null)
@@ -88,12 +94,7 @@ public sealed class SavePatchApplyService : ISavePatchApplyService
         }
 
         return await PersistPatchedSaveAsync(
-            targetDoc,
-            pack,
-            compatibility,
-            targetProfileId,
-            paths,
-            preApplyBytes,
+            new PersistPatchContext(targetDoc, pack, compatibility, targetProfileId, paths, preApplyBytes),
             cancellationToken);
     }
 
@@ -116,6 +117,7 @@ public sealed class SavePatchApplyService : ISavePatchApplyService
 
     public async Task<SaveRollbackResult> RestoreLastBackupAsync(string targetSavePath, CancellationToken cancellationToken)
     {
+        ArgumentNullException.ThrowIfNull(targetSavePath);
         var normalizedTargetPath = NormalizeTargetPath(targetSavePath);
         var backupPath = await _helper.ResolveLatestBackupPathAsync(normalizedTargetPath, cancellationToken);
         if (string.IsNullOrWhiteSpace(backupPath) || !File.Exists(backupPath))
@@ -139,7 +141,16 @@ public sealed class SavePatchApplyService : ISavePatchApplyService
                 BackupPath: backupPath,
                 RestoredHash: restoredHash);
         }
-        catch (Exception ex)
+        catch (IOException ex)
+        {
+            _logger.LogError(ex, "Backup restore failed. Target={TargetPath} Backup={BackupPath}", normalizedTargetPath, backupPath);
+            return new SaveRollbackResult(
+                Restored: false,
+                Message: "Backup restore failed.",
+                TargetPath: normalizedTargetPath,
+                BackupPath: backupPath);
+        }
+        catch (UnauthorizedAccessException ex)
         {
             _logger.LogError(ex, "Backup restore failed. Target={TargetPath} Backup={BackupPath}", normalizedTargetPath, backupPath);
             return new SaveRollbackResult(
@@ -165,7 +176,17 @@ public sealed class SavePatchApplyService : ISavePatchApplyService
             var targetDoc = await _saveCodec.LoadAsync(normalizedTargetPath, schemaId, cancellationToken);
             return (targetDoc, null);
         }
-        catch (Exception ex)
+        catch (IOException ex)
+        {
+            _logger.LogError(ex, "Target save load failed for patch apply. Target={TargetPath} Schema={SchemaId}", normalizedTargetPath, schemaId);
+            return (
+                null,
+                BuildFailure(
+                    SavePatchApplyClassification.CompatibilityFailed,
+                    ReasonTargetLoadFailed,
+                    "Target save could not be loaded."));
+        }
+        catch (InvalidOperationException ex)
         {
             _logger.LogError(ex, "Target save load failed for patch apply. Target={TargetPath} Schema={SchemaId}", normalizedTargetPath, schemaId);
             return (
@@ -286,50 +307,59 @@ public sealed class SavePatchApplyService : ISavePatchApplyService
             "Patched save failed validation checks.");
     }
 
+    private readonly record struct PersistPatchContext(
+        SaveDocument TargetDoc,
+        SavePatchPack Pack,
+        SavePatchCompatibilityResult Compatibility,
+        string TargetProfileId,
+        ApplyFilePaths Paths,
+        byte[] PreApplyBytes);
+
     private async Task<SavePatchApplyResult> PersistPatchedSaveAsync(
-        SaveDocument targetDoc,
-        SavePatchPack pack,
-        SavePatchCompatibilityResult compatibility,
-        string targetProfileId,
-        ApplyFilePaths paths,
-        byte[] preApplyBytes,
+        PersistPatchContext ctx,
         CancellationToken cancellationToken)
     {
         try
         {
-            await File.WriteAllBytesAsync(paths.BackupPath, preApplyBytes, cancellationToken);
+            await File.WriteAllBytesAsync(ctx.Paths.BackupPath, ctx.PreApplyBytes, cancellationToken);
 
-            await _saveCodec.WriteAsync(targetDoc, paths.TempOutputPath, cancellationToken);
-            File.Move(paths.TempOutputPath, paths.TargetPath, overwrite: true);
+            await _saveCodec.WriteAsync(ctx.TargetDoc, ctx.Paths.TempOutputPath, cancellationToken);
+            File.Move(ctx.Paths.TempOutputPath, ctx.Paths.TargetPath, overwrite: true);
 
-            var appliedHash = SavePatchFieldCodec.ComputeSha256Hex(await File.ReadAllBytesAsync(paths.TargetPath, cancellationToken));
-            await WriteReceiptAsync(paths.ReceiptPath, new SavePatchApplyReceipt(
-                RunId: paths.RunId,
+            var appliedHash = SavePatchFieldCodec.ComputeSha256Hex(await File.ReadAllBytesAsync(ctx.Paths.TargetPath, cancellationToken));
+            await WriteReceiptAsync(ctx.Paths.ReceiptPath, new SavePatchApplyReceipt(
+                RunId: ctx.Paths.RunId,
                 AppliedAtUtc: DateTimeOffset.UtcNow,
-                TargetPath: paths.TargetPath,
-                BackupPath: paths.BackupPath,
-                ReceiptPath: paths.ReceiptPath,
-                ProfileId: targetProfileId,
-                SchemaId: pack.Metadata.SchemaId,
+                TargetPath: ctx.Paths.TargetPath,
+                BackupPath: ctx.Paths.BackupPath,
+                ReceiptPath: ctx.Paths.ReceiptPath,
+                ProfileId: ctx.TargetProfileId,
+                SchemaId: ctx.Pack.Metadata.SchemaId,
                 Classification: SavePatchApplyClassification.Applied.ToString(),
-                SourceHash: pack.Metadata.SourceHash,
-                TargetHash: compatibility.TargetHash,
+                SourceHash: ctx.Pack.Metadata.SourceHash,
+                TargetHash: ctx.Compatibility.TargetHash,
                 AppliedHash: appliedHash,
-                OperationsApplied: pack.Operations.Count), cancellationToken);
+                OperationsApplied: ctx.Pack.Operations.Count), cancellationToken);
 
             return new SavePatchApplyResult(
                 SavePatchApplyClassification.Applied,
                 Applied: true,
-                Message: $"Applied {pack.Operations.Count} operation(s).",
-                OutputPath: paths.TargetPath,
-                BackupPath: paths.BackupPath,
-                ReceiptPath: paths.ReceiptPath);
+                Message: $"Applied {ctx.Pack.Operations.Count} operation(s).",
+                OutputPath: ctx.Paths.TargetPath,
+                BackupPath: ctx.Paths.BackupPath,
+                ReceiptPath: ctx.Paths.ReceiptPath);
         }
-        catch (Exception ex)
+        catch (IOException ex)
         {
-            _logger.LogError(ex, "Patch apply write path failed for {TargetSavePath}", paths.TargetPath);
-            _helper.TryDeleteTempOutput(paths.TempOutputPath);
-            return await RestoreAfterWriteFailureAsync(paths.TargetPath, preApplyBytes, paths.BackupPath, paths.ReceiptPath, cancellationToken);
+            _logger.LogError(ex, "Patch apply write path failed for {TargetSavePath}", ctx.Paths.TargetPath);
+            _helper.TryDeleteTempOutput(ctx.Paths.TempOutputPath);
+            return await RestoreAfterWriteFailureAsync(ctx.Paths.TargetPath, ctx.PreApplyBytes, ctx.Paths.BackupPath, ctx.Paths.ReceiptPath, cancellationToken);
+        }
+        catch (UnauthorizedAccessException ex)
+        {
+            _logger.LogError(ex, "Patch apply write path failed for {TargetSavePath}", ctx.Paths.TargetPath);
+            _helper.TryDeleteTempOutput(ctx.Paths.TempOutputPath);
+            return await RestoreAfterWriteFailureAsync(ctx.Paths.TargetPath, ctx.PreApplyBytes, ctx.Paths.BackupPath, ctx.Paths.ReceiptPath, cancellationToken);
         }
     }
 
@@ -350,7 +380,17 @@ public sealed class SavePatchApplyService : ISavePatchApplyService
                 backupPath: File.Exists(backupPath) ? backupPath : null,
                 receiptPath: File.Exists(receiptPath) ? receiptPath : null);
         }
-        catch (Exception rollbackEx)
+        catch (IOException rollbackEx)
+        {
+            _logger.LogError(rollbackEx, "Rollback failed after write failure for {TargetSavePath}", normalizedTargetPath);
+            return BuildFailure(
+                SavePatchApplyClassification.WriteFailed,
+                ReasonWriteFailed,
+                "Save write failed and automatic rollback did not complete.",
+                backupPath: File.Exists(backupPath) ? backupPath : null,
+                receiptPath: File.Exists(receiptPath) ? receiptPath : null);
+        }
+        catch (UnauthorizedAccessException rollbackEx)
         {
             _logger.LogError(rollbackEx, "Rollback failed after write failure for {TargetSavePath}", normalizedTargetPath);
             return BuildFailure(

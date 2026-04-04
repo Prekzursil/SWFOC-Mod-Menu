@@ -18,7 +18,7 @@ public sealed class SavePatchApplyServiceTests
     {
         var fixture = CreateFixture();
         var tempDir = CreateTempDirectory();
-        var targetPath = Path.Combine(tempDir, "campaign.sav");
+        var targetPath = Path.Join(tempDir, "campaign.sav");
 
         await File.WriteAllBytesAsync(targetPath, CreateSyntheticBytes());
         var preHash = ComputeFileHash(targetPath);
@@ -49,7 +49,7 @@ public sealed class SavePatchApplyServiceTests
     {
         var fixture = CreateFixture();
         var tempDir = CreateTempDirectory();
-        var targetPath = Path.Combine(tempDir, "campaign.sav");
+        var targetPath = Path.Join(tempDir, "campaign.sav");
 
         await File.WriteAllBytesAsync(targetPath, CreateSyntheticBytes());
 
@@ -68,7 +68,7 @@ public sealed class SavePatchApplyServiceTests
     {
         var fixture = CreateFixture();
         var tempDir = CreateTempDirectory();
-        var targetPath = Path.Combine(tempDir, "campaign.sav");
+        var targetPath = Path.Join(tempDir, "campaign.sav");
 
         await File.WriteAllBytesAsync(targetPath, CreateSyntheticBytes());
         var preHash = ComputeFileHash(targetPath);
@@ -91,8 +91,8 @@ public sealed class SavePatchApplyServiceTests
     {
         var fixture = CreateFixture();
         var tempDir = CreateTempDirectory();
-        var sourcePath = Path.Combine(tempDir, "source.sav");
-        var targetPath = Path.Combine(tempDir, "target.sav");
+        var sourcePath = Path.Join(tempDir, "source.sav");
+        var targetPath = Path.Join(tempDir, "target.sav");
 
         await File.WriteAllBytesAsync(sourcePath, CreateSyntheticBytes());
         await File.WriteAllBytesAsync(targetPath, CreateSyntheticBytes());
@@ -117,8 +117,8 @@ public sealed class SavePatchApplyServiceTests
     {
         var fixture = CreateFixture();
         var tempDir = CreateTempDirectory();
-        var sourcePath = Path.Combine(tempDir, "source.sav");
-        var targetPath = Path.Combine(tempDir, "target.sav");
+        var sourcePath = Path.Join(tempDir, "source.sav");
+        var targetPath = Path.Join(tempDir, "target.sav");
 
         await File.WriteAllBytesAsync(sourcePath, CreateSyntheticBytes());
         await File.WriteAllBytesAsync(targetPath, CreateSyntheticBytes());
@@ -143,7 +143,7 @@ public sealed class SavePatchApplyServiceTests
     {
         var fixture = CreateFixture();
         var tempDir = CreateTempDirectory();
-        var targetPath = Path.Combine(tempDir, "campaign.sav");
+        var targetPath = Path.Join(tempDir, "campaign.sav");
 
         await File.WriteAllBytesAsync(targetPath, CreateSyntheticBytes());
         var patch = await BuildPatchAsync(fixture.Codec, fixture.PatchPackService, targetPath, "/economy/credits_empire", 4321, "base_swfoc");
@@ -169,7 +169,7 @@ public sealed class SavePatchApplyServiceTests
     {
         var fixture = CreateFixture();
         var tempDir = CreateTempDirectory();
-        var targetPath = Path.Combine(tempDir, "campaign.sav");
+        var targetPath = Path.Join(tempDir, "campaign.sav");
 
         await File.WriteAllBytesAsync(targetPath, CreateSyntheticBytes());
         var patch = await BuildPatchAsync(fixture.Codec, fixture.PatchPackService, targetPath, "/economy/credits_empire", 2468, "base_swfoc");
@@ -196,7 +196,7 @@ public sealed class SavePatchApplyServiceTests
     {
         var fixture = CreateFixture();
         var tempDir = CreateTempDirectory();
-        var targetPath = Path.Combine(tempDir, "campaign.sav");
+        var targetPath = Path.Join(tempDir, "campaign.sav");
 
         await File.WriteAllBytesAsync(targetPath, CreateSyntheticBytes());
         var patch = await BuildPatchAsync(fixture.Codec, fixture.PatchPackService, targetPath, "/economy/credits_empire", 4444, "base_swfoc");
@@ -221,7 +221,7 @@ public sealed class SavePatchApplyServiceTests
     {
         var fixture = CreateFixture();
         var tempDir = CreateTempDirectory();
-        var targetPath = Path.Combine(tempDir, "campaign.sav");
+        var targetPath = Path.Join(tempDir, "campaign.sav");
 
         await File.WriteAllBytesAsync(targetPath, CreateSyntheticBytes());
         var preHash = ComputeFileHash(targetPath);
@@ -244,7 +244,7 @@ public sealed class SavePatchApplyServiceTests
     {
         var fixture = CreateFixture();
         var tempDir = CreateTempDirectory();
-        var targetPath = Path.Combine(tempDir, "campaign.sav");
+        var targetPath = Path.Join(tempDir, "campaign.sav");
 
         await File.WriteAllBytesAsync(targetPath, CreateSyntheticBytes());
         var preHash = ComputeFileHash(targetPath);
@@ -255,7 +255,7 @@ public sealed class SavePatchApplyServiceTests
 
         var receiptJson = await File.ReadAllTextAsync(apply.ReceiptPath!);
         var receiptNode = JsonNode.Parse(receiptJson)!.AsObject();
-        receiptNode["BackupPath"] = Path.Combine(tempDir, "missing-backup.sav");
+        receiptNode["BackupPath"] = Path.Join(tempDir, "missing-backup.sav");
         var newerReceiptPath = $"{targetPath}.apply-receipt.999999999999999.json";
         await File.WriteAllTextAsync(newerReceiptPath, receiptNode.ToJsonString(new System.Text.Json.JsonSerializerOptions { WriteIndented = true }));
         File.SetLastWriteTimeUtc(newerReceiptPath, DateTime.UtcNow.AddMinutes(2));
@@ -271,7 +271,7 @@ public sealed class SavePatchApplyServiceTests
     {
         var fixture = CreateFixture();
         var tempDir = CreateTempDirectory();
-        var targetPath = Path.Combine(tempDir, "campaign.sav");
+        var targetPath = Path.Join(tempDir, "campaign.sav");
 
         await File.WriteAllBytesAsync(targetPath, CreateSyntheticBytes());
         var patch = await BuildPatchAsync(fixture.Codec, fixture.PatchPackService, targetPath, "/economy/credits_empire", 2000, "base_swfoc");
@@ -315,7 +315,7 @@ public sealed class SavePatchApplyServiceTests
         var root = TestPaths.FindRepoRoot();
         var options = new SaveOptions
         {
-            SchemaRootPath = Path.Combine(root, "profiles", "default", "schemas")
+            SchemaRootPath = Path.Join(root, "profiles", "default", "schemas")
         };
 
         var codec = new BinarySaveCodec(options, NullLogger<BinarySaveCodec>.Instance);
@@ -328,7 +328,7 @@ public sealed class SavePatchApplyServiceTests
 
     private static string CreateTempDirectory()
     {
-        var path = Path.Combine(Path.GetTempPath(), $"swfoc-savepatch-{Guid.NewGuid():N}");
+        var path = Path.Join(Path.GetTempPath(), $"swfoc-savepatch-{Guid.NewGuid():N}");
         Directory.CreateDirectory(path);
         return path;
     }

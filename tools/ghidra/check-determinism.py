@@ -14,7 +14,7 @@ import inspect
 import json
 import sys
 from pathlib import Path
-from typing import Callable, cast
+from typing import Callable, Optional, Tuple, cast
 
 REASON_CODE_DETERMINISM_MISMATCH = "GHIDRA_DETERMINISM_MISMATCH"
 REASON_CODE_OK = "GHIDRA_DETERMINISM_PASS"
@@ -52,7 +52,7 @@ def _trusted_emitter_path(emitter_path: Path) -> str:
     return _validated_path_text(resolved, "emitter_path", must_exist=True)
 
 
-def _validate_emitter_command(command: tuple[str, ...]) -> None:
+def _validate_emitter_command(command: Tuple[str, ...]) -> None:
     if len(command) != 12:
         raise ValueError("invalid-emitter-command-length")
     if command[2::2] != EXPECTED_EMITTER_FLAGS:
@@ -80,7 +80,7 @@ def _supports_zero_arg_call(main_fn: Callable[..., object]) -> bool:
     return True
 
 
-def _load_emitter_main(emitter_path: Path) -> Callable[[], int | None]:
+def _load_emitter_main(emitter_path: Path) -> Callable[[], Optional[int]]:
     spec = importlib.util.spec_from_file_location("ghidra_emit_symbol_pack", emitter_path)
     if spec is None or spec.loader is None:
         raise RuntimeError(f"failed to load emitter module from {emitter_path}")
@@ -96,10 +96,10 @@ def _load_emitter_main(emitter_path: Path) -> Callable[[], int | None]:
     if not _supports_zero_arg_call(validated_main_fn):
         raise RuntimeError(f"emitter module main() must accept zero arguments: {emitter_path}")
 
-    return cast(Callable[[], int | None], validated_main_fn)
+    return cast(Callable[[], Optional[int]], validated_main_fn)
 
 
-def _run_emitter_main(command: tuple[str, ...]) -> None:
+def _run_emitter_main(command: Tuple[str, ...]) -> None:
     _validate_emitter_command(command)
     main_fn = _load_emitter_main(Path(command[1]))
     previous_argv = list(sys.argv)
@@ -113,7 +113,7 @@ def _run_emitter_main(command: tuple[str, ...]) -> None:
         raise RuntimeError(f"emitter execution failed with exit code {exit_code}")
 
 
-def _invoke_main(main_fn: Callable[[], int | None]) -> int | None:
+def _invoke_main(main_fn: Callable[[], Optional[int]]) -> Optional[int]:
     return main_fn()
 
 
@@ -169,7 +169,7 @@ def _parse_args() -> argparse.Namespace:
     return parser.parse_args()
 
 
-def _prepare_paths(args: argparse.Namespace) -> tuple[Path, Path, Path, Path]:
+def _prepare_paths(args: argparse.Namespace) -> Tuple[Path, Path, Path, Path]:
     script_dir = Path(__file__).resolve().parent
     emitter_path = script_dir / EXPECTED_EMITTER_NAME
     raw_symbols_path = Path(args.raw_symbols).resolve()
@@ -196,7 +196,7 @@ def _run_determinism_pair(
     binary_path: Path,
     analysis_run_id_base: str,
     output_dir: Path,
-) -> tuple[Path, Path]:
+) -> Tuple[Path, Path]:
     first_pack = output_dir / "symbol-pack.first.json"
     first_summary = output_dir / "analysis-summary.first.json"
     second_pack = output_dir / "symbol-pack.second.json"

@@ -10,11 +10,13 @@ public sealed class ContentTransplantService : IContentTransplantService
 
     public ContentTransplantService(ITransplantCompatibilityService compatibilityService)
     {
+        ArgumentNullException.ThrowIfNull(compatibilityService);
         _compatibilityService = compatibilityService;
     }
 
     public async Task<TransplantResult> ExecuteAsync(TransplantPlan plan, CancellationToken cancellationToken)
     {
+        ArgumentNullException.ThrowIfNull(plan);
         var report = await _compatibilityService.ValidateAsync(
             plan.TargetProfileId,
             plan.ActiveWorkshopIds,
@@ -40,7 +42,7 @@ public sealed class ContentTransplantService : IContentTransplantService
         {
             var outputDirectory = Path.GetFullPath(plan.OutputDirectory);
             Directory.CreateDirectory(outputDirectory);
-            artifactPath = Path.Combine(outputDirectory, "transplant-report.json");
+            artifactPath = Path.Join(outputDirectory, "transplant-report.json");
 
             var artifact = new
             {

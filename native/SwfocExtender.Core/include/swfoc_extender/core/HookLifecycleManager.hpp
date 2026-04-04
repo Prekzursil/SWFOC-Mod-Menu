@@ -2,7 +2,10 @@
 // cppcheck-suppress-file unusedStructMember
 #pragma once
 
+#include "swfoc_extender/core/StringHash.hpp"
+
 #include <string>
+#include <string_view>
 #include <unordered_map>
 
 /*
@@ -27,15 +30,17 @@ struct HookRecord {
 
 class HookLifecycleManager {
 public:
+    using HookMap = std::unordered_map<std::string, HookRecord, StringHash, std::equal_to<>>;
+
     HookLifecycleManager() = default;
 
-    void markInstalled(const std::string& hookId);
-    void markFailed(const std::string& hookId, const std::string& reasonCode);
-    void markRolledBack(const std::string& hookId);
-    HookRecord get(const std::string& hookId) const;
+    void markInstalled(std::string_view hookId);
+    void markFailed(std::string_view hookId, std::string_view reasonCode);
+    void markRolledBack(std::string_view hookId);
+    HookRecord get(std::string_view hookId) const;
 
 private:
-    [[maybe_unused]] std::unordered_map<std::string, HookRecord> hooks_;
+    [[maybe_unused]] HookMap hooks_;
 };
 
 } // namespace swfoc::extender::core

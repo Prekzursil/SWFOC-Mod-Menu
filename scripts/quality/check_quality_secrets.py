@@ -7,6 +7,7 @@ import os
 import sys
 from datetime import datetime, timezone
 from pathlib import Path
+from typing import Dict, List, Optional, Set
 
 DEFAULT_REQUIRED_SECRETS = [
     "SONAR_TOKEN",
@@ -29,9 +30,9 @@ def _parse_args() -> argparse.Namespace:
     return parser.parse_args()
 
 
-def _dedupe(items: list[str]) -> list[str]:
-    seen: set[str] = set()
-    out: list[str] = []
+def _dedupe(items: List[str]) -> List[str]:
+    seen: Set[str] = set()
+    out: List[str] = []
     for item in items:
         key = str(item or "").strip()
         if not key or key in seen:
@@ -41,7 +42,7 @@ def _dedupe(items: list[str]) -> list[str]:
     return out
 
 
-def evaluate_env(required_secrets: list[str], required_vars: list[str]) -> dict[str, list[str]]:
+def evaluate_env(required_secrets: List[str], required_vars: List[str]) -> Dict[str, List[str]]:
     missing_secrets = [name for name in required_secrets if not str(os.environ.get(name, "")).strip()]
     missing_vars = [name for name in required_vars if not str(os.environ.get(name, "")).strip()]
     present_secrets = [name for name in required_secrets if name not in missing_secrets]
@@ -79,7 +80,7 @@ def _render_md(payload: dict) -> str:
     return "\n".join(lines) + "\n"
 
 
-def _safe_output_path(raw: str, fallback: str, base: Path | None = None) -> Path:
+def _safe_output_path(raw: str, fallback: str, base: Optional[Path] = None) -> Path:
     root = (base or Path.cwd()).resolve()
     candidate = Path((raw or "").strip() or fallback).expanduser()
     if not candidate.is_absolute():

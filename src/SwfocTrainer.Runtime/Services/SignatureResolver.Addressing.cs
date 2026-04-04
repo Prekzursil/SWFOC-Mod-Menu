@@ -5,35 +5,38 @@ namespace SwfocTrainer.Runtime.Services;
 
 internal static class SignatureResolverAddressing
 {
+    internal readonly record struct AddressResolutionInput(
+        SignatureSpec Signature,
+        nint HitAddress,
+        nint BaseAddress,
+        byte[] ModuleBytes);
+
     internal static bool TryResolveAddress(
-        SignatureSpec signature,
-        nint hitAddress,
-        nint baseAddress,
-        byte[] moduleBytes,
+        AddressResolutionInput input,
         out nint resolvedAddress,
         out string? diagnostics)
     {
-        ArgumentNullException.ThrowIfNull(signature);
-        ArgumentNullException.ThrowIfNull(moduleBytes);
+        ArgumentNullException.ThrowIfNull(input.Signature);
+        ArgumentNullException.ThrowIfNull(input.ModuleBytes);
         resolvedAddress = nint.Zero;
         diagnostics = null;
 
-        if (!TryComputeValueIndex(signature, hitAddress, baseAddress, out var index, out diagnostics))
+        if (!TryComputeValueIndex(input.Signature, input.HitAddress, input.BaseAddress, out var index, out diagnostics))
         {
             return false;
         }
 
-        switch (signature.AddressMode)
+        switch (input.Signature.AddressMode)
         {
             case SignatureAddressMode.HitPlusOffset:
-                resolvedAddress = hitAddress + signature.Offset;
+                resolvedAddress = input.HitAddress + input.Signature.Offset;
                 return true;
             case SignatureAddressMode.ReadAbsolute32AtOffset:
-                return TryResolveAbsolute32(signature, index, moduleBytes, out resolvedAddress, out diagnostics);
+                return TryResolveAbsolute32(input.Signature, index, input.ModuleBytes, out resolvedAddress, out diagnostics);
             case SignatureAddressMode.ReadRipRelative32AtOffset:
-                return TryResolveRipRelative32(signature, hitAddress, index, moduleBytes, out resolvedAddress, out diagnostics);
+                return TryResolveRipRelative32(input.Signature, input.HitAddress, index, input.ModuleBytes, out resolvedAddress, out diagnostics);
             default:
-                diagnostics = $"Unsupported signature address mode '{signature.AddressMode}'";
+                diagnostics = $"Unsupported signature address mode '{input.Signature.AddressMode}'";
                 return false;
         }
     }

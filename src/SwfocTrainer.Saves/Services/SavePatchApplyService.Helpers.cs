@@ -20,6 +20,10 @@ internal sealed class SavePatchApplyServiceHelper
         string selectorNotFoundInSchemaText,
         string selectorUnknownFieldText)
     {
+        ArgumentNullException.ThrowIfNull(saveCodec);
+        ArgumentNullException.ThrowIfNull(logger);
+        ArgumentNullException.ThrowIfNull(selectorNotFoundInSchemaText);
+        ArgumentNullException.ThrowIfNull(selectorUnknownFieldText);
         _saveCodec = saveCodec;
         _logger = logger;
         _selectorNotFoundInSchemaText = selectorNotFoundInSchemaText;
@@ -28,6 +32,7 @@ internal sealed class SavePatchApplyServiceHelper
 
     public async Task<string?> ResolveLatestBackupPathAsync(string targetPath, CancellationToken cancellationToken)
     {
+        ArgumentNullException.ThrowIfNull(targetPath);
         if (!TryGetTargetLocation(targetPath, out var directory, out var fileName))
         {
             return null;
@@ -44,11 +49,25 @@ internal sealed class SavePatchApplyServiceHelper
 
     public (object? Value, SavePatchApplyResult? Failure) TryNormalizePatchValue(SavePatchOperation operation, string reasonValueNormalizationFailed)
     {
+        ArgumentNullException.ThrowIfNull(operation);
+        ArgumentNullException.ThrowIfNull(reasonValueNormalizationFailed);
         try
         {
             return (SavePatchFieldCodec.NormalizePatchValue(operation.NewValue, operation.ValueType), null);
         }
-        catch (Exception ex)
+        catch (FormatException ex)
+        {
+            _logger.LogWarning(ex, "Patch value normalization failed for field {FieldId}", operation.FieldId);
+            return (
+                null,
+                BuildFailure(
+                    SavePatchApplyClassification.ValidationFailed,
+                    reasonValueNormalizationFailed,
+                    "Patch operation value could not be normalized.",
+                    operation.FieldId,
+                    operation.FieldPath));
+        }
+        catch (InvalidOperationException ex)
         {
             _logger.LogWarning(ex, "Patch value normalization failed for field {FieldId}", operation.FieldId);
             return (
@@ -69,12 +88,15 @@ internal sealed class SavePatchApplyServiceHelper
         string reasonFieldApplyFailed,
         CancellationToken cancellationToken)
     {
+        ArgumentNullException.ThrowIfNull(targetDoc);
+        ArgumentNullException.ThrowIfNull(operation);
+        ArgumentNullException.ThrowIfNull(reasonFieldApplyFailed);
         try
         {
             await ApplyFieldWithFallbackSelectorAsync(targetDoc, operation, value, cancellationToken);
             return null;
         }
-        catch (Exception ex)
+        catch (InvalidOperationException ex)
         {
             _logger.LogWarning(ex, "Patch field apply failed for {FieldId}", operation.FieldId);
             return BuildFailure(
@@ -88,6 +110,7 @@ internal sealed class SavePatchApplyServiceHelper
 
     public void TryDeleteTempOutput(string tempOutputPath)
     {
+        ArgumentNullException.ThrowIfNull(tempOutputPath);
         if (!File.Exists(tempOutputPath))
         {
             return;
@@ -97,7 +120,7 @@ internal sealed class SavePatchApplyServiceHelper
         {
             File.Delete(tempOutputPath);
         }
-        catch (Exception ex)
+        catch (IOException ex)
         {
             _logger.LogWarning(ex, "Temporary patch output cleanup failed for {TempOutputPath}", tempOutputPath);
         }
@@ -110,11 +133,7 @@ internal sealed class SavePatchApplyServiceHelper
         CancellationToken cancellationToken)
     {
         var fieldIdAttempt = await TryApplySelectorAsync(
-            targetDoc,
-            operation.FieldId,
-            value,
-            operation.FieldId,
-            "FieldId selector failed for {FieldId}. Attempting fieldPath fallback.",
+            new SelectorApplyInput(targetDoc, operation.FieldId, value, operation.FieldId, "FieldId selector failed for {FieldId}. Attempting fieldPath fallback."),
             cancellationToken);
         if (fieldIdAttempt.WasApplied)
         {
@@ -122,11 +141,7 @@ internal sealed class SavePatchApplyServiceHelper
         }
 
         var fieldPathAttempt = await TryApplySelectorAsync(
-            targetDoc,
-            operation.FieldPath,
-            value,
-            operation.FieldId,
-            "FieldPath fallback selector failed for {FieldId}.",
+            new SelectorApplyInput(targetDoc, operation.FieldPath, value, operation.FieldId, "FieldPath fallback selector failed for {FieldId}."),
             cancellationToken);
         if (fieldPathAttempt.WasApplied)
         {
@@ -193,7 +208,11 @@ internal sealed class SavePatchApplyServiceHelper
                 receipt.BackupPath,
                 invalidReason);
         }
-        catch (Exception ex)
+        catch (IOException ex)
+        {
+            _logger.LogWarning(ex, "Receipt parse failed for {ReceiptPath}. Continuing backup lookup.", receiptPath);
+        }
+        catch (JsonException ex)
         {
             _logger.LogWarning(ex, "Receipt parse failed for {ReceiptPath}. Continuing backup lookup.", receiptPath);
         }
@@ -209,49 +228,47 @@ internal sealed class SavePatchApplyServiceHelper
             .OrderByDescending(info => info.LastWriteTimeUtc)
             .Select(info => info.FullName);
 
-        foreach (var candidate in backupCandidates)
-        {
-            if (TryNormalizeBackupCandidatePath(candidate, out var candidatePath, out _))
+        return backupCandidates
+            .Select(candidate =>
             {
-                return candidatePath;
-            }
-        }
-
-        return null;
+                var found = TryNormalizeBackupCandidatePath(candidate, out var candidatePath, out _);
+                return (Found: found, Path: candidatePath);
+            })
+            .Where(x => x.Found)
+            .Select(x => x.Path)
+            .FirstOrDefault();
     }
 
+    private readonly record struct SelectorApplyInput(
+        SaveDocument TargetDoc,
+        string? Selector,
+        object? Value,
+        string FieldIdForLogging,
+        string FailureMessage);
+
     private async Task<SelectorApplyAttempt> TryApplySelectorAsync(
-        SaveDocument targetDoc,
-        string? selector,
-        object? value,
-        string fieldIdForLogging,
-        string failureMessage,
+        SelectorApplyInput input,
         CancellationToken cancellationToken)
     {
-        if (string.IsNullOrWhiteSpace(selector))
+        if (string.IsNullOrWhiteSpace(input.Selector))
         {
             return SelectorApplyAttempt.NotAttempted;
         }
 
         try
         {
-            await _saveCodec.EditAsync(targetDoc, selector, value, cancellationToken);
+            await _saveCodec.EditAsync(input.TargetDoc, input.Selector, input.Value, cancellationToken);
             return SelectorApplyAttempt.AppliedAttempt;
         }
-        catch (Exception ex) when (IsSelectorMismatchError(ex))
+        catch (InvalidOperationException ex) when (IsSelectorMismatchError(ex))
         {
-            _logger.LogDebug(ex, failureMessage, fieldIdForLogging);
+            _logger.LogDebug(ex, input.FailureMessage, input.FieldIdForLogging);
             return SelectorApplyAttempt.Mismatch(ex);
         }
     }
 
-    private bool IsSelectorMismatchError(Exception exception)
+    private bool IsSelectorMismatchError(InvalidOperationException exception)
     {
-        if (exception is not InvalidOperationException)
-        {
-            return false;
-        }
-
         return exception.Message.Contains(_selectorNotFoundInSchemaText, StringComparison.OrdinalIgnoreCase)
                || exception.Message.Contains(_selectorUnknownFieldText, StringComparison.OrdinalIgnoreCase);
     }
@@ -269,7 +286,12 @@ internal sealed class SavePatchApplyServiceHelper
         {
             normalized = TrustedPathPolicy.NormalizeAbsolute(path);
         }
-        catch (Exception ex)
+        catch (ArgumentException ex)
+        {
+            invalidReason = $"path normalization failed: {ex.GetType().Name}";
+            return false;
+        }
+        catch (IOException ex)
         {
             invalidReason = $"path normalization failed: {ex.GetType().Name}";
             return false;

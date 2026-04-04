@@ -1,5 +1,7 @@
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Text.Json;
 using SwfocTrainer.App.Models;
 using SwfocTrainer.Core.Models;
 
@@ -30,9 +32,17 @@ public abstract class MainViewModelLiveOpsBase : MainViewModelBindableMembersBas
         {
             catalog = await _catalog.LoadCatalogAsync(SelectedProfileId);
         }
-        catch
+        catch (IOException)
         {
-            // Catalog is optional for reliability scoring.
+            // Catalog is optional for reliability scoring — tolerate I/O and deserialization failures.
+        }
+        catch (InvalidOperationException)
+        {
+            // Catalog is optional for reliability scoring — tolerate I/O and deserialization failures.
+        }
+        catch (JsonException)
+        {
+            // Catalog is optional for reliability scoring — tolerate I/O and deserialization failures.
         }
 
         var currentSession = _runtime.CurrentSession;
@@ -81,7 +91,7 @@ public abstract class MainViewModelLiveOpsBase : MainViewModelBindableMembersBas
     private void AddLiveOpsLaunchDiagnostics(AttachSession session, IReadOnlyDictionary<string, string>? metadata)
     {
         LiveOpsDiagnostics.Add($"launch: {session.Process.LaunchContext?.LaunchKind ?? LaunchKind.Unknown}");
-        LiveOpsDiagnostics.Add($"recommendation: {session.Process.LaunchContext?.Recommendation.ProfileId ?? "none"}");
+        LiveOpsDiagnostics.Add($"recommendation: {session.Process.LaunchContext?.Recommendation?.ProfileId ?? "none"}");
         if (metadata is not null && metadata.TryGetValue("resolvedVariant", out var resolvedVariant))
         {
             var reason = GetMetadataValueOrDefault(metadata, "resolvedVariantReasonCode", UnknownValue);
@@ -132,7 +142,11 @@ public abstract class MainViewModelLiveOpsBase : MainViewModelBindableMembersBas
             RefreshSelectedUnitTransactions();
             Status = $"Selected-unit baseline captured at {snapshot.CapturedAt:HH:mm:ss} UTC.";
         }
-        catch (Exception ex)
+        catch (InvalidOperationException ex)
+        {
+            Status = $"✗ Capture selected-unit baseline failed: {ex.Message}";
+        }
+        catch (System.ComponentModel.Win32Exception ex)
         {
             Status = $"✗ Capture selected-unit baseline failed: {ex.Message}";
         }
@@ -166,14 +180,29 @@ public abstract class MainViewModelLiveOpsBase : MainViewModelBindableMembersBas
             : $"✗ Selected-unit apply failed: {result.Message}";
     }
 
-    protected async Task RevertSelectedUnitTransactionAsync()
+    protected Task RevertSelectedUnitTransactionAsync()
+        => ExecuteSelectedUnitOperationAsync(
+            (profile, mode) => _selectedUnitTransactions.RevertLastAsync(profile, mode),
+            "Reverted selected-unit transaction",
+            "Revert failed");
+
+    protected Task RestoreSelectedUnitBaselineAsync()
+        => ExecuteSelectedUnitOperationAsync(
+            (profile, mode) => _selectedUnitTransactions.RestoreBaselineAsync(profile, mode),
+            "Selected-unit baseline restored",
+            "Baseline restore failed");
+
+    private async Task ExecuteSelectedUnitOperationAsync(
+        Func<string, RuntimeMode, Task<SelectedUnitTransactionResult>> operation,
+        string successLabel,
+        string failureLabel)
     {
         if (string.IsNullOrWhiteSpace(SelectedProfileId))
         {
             return;
         }
 
-        var result = await _selectedUnitTransactions.RevertLastAsync(SelectedProfileId, RuntimeMode);
+        var result = await operation(SelectedProfileId, RuntimeMode);
         RefreshSelectedUnitTransactions();
         if (result.Succeeded)
         {
@@ -182,28 +211,8 @@ public abstract class MainViewModelLiveOpsBase : MainViewModelBindableMembersBas
         }
 
         Status = result.Succeeded
-            ? $"✓ Reverted selected-unit transaction ({result.TransactionId})."
-            : $"✗ Revert failed: {result.Message}";
-    }
-
-    protected async Task RestoreSelectedUnitBaselineAsync()
-    {
-        if (string.IsNullOrWhiteSpace(SelectedProfileId))
-        {
-            return;
-        }
-
-        var result = await _selectedUnitTransactions.RestoreBaselineAsync(SelectedProfileId, RuntimeMode);
-        RefreshSelectedUnitTransactions();
-        if (result.Succeeded)
-        {
-            var latest = await _selectedUnitTransactions.CaptureAsync();
-            ApplyDraftFromSnapshot(latest);
-        }
-
-        Status = result.Succeeded
-            ? $"✓ Selected-unit baseline restored ({result.TransactionId})."
-            : $"✗ Baseline restore failed: {result.Message}";
+            ? $"✓ {successLabel} ({result.TransactionId})."
+            : $"✗ {failureLabel}: {result.Message}";
     }
 
     protected async Task LoadSpawnPresetsAsync()
@@ -333,6 +342,7 @@ public abstract class MainViewModelLiveOpsBase : MainViewModelBindableMembersBas
 
     protected IReadOnlyDictionary<string, object?> BuildActionContext(string actionId)
     {
+        ArgumentNullException.ThrowIfNull(actionId);
         var reliability = ActionReliability.FirstOrDefault(x => x.ActionId.Equals(actionId, StringComparison.OrdinalIgnoreCase));
         return new Dictionary<string, object?>
         {

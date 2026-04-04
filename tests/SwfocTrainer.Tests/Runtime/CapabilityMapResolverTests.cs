@@ -55,7 +55,7 @@ public sealed class CapabilityMapResolverTests
     [Fact]
     public async Task ResolveAsync_ShouldFailClosed_WhenMapMissing()
     {
-        var mapsRoot = Path.Combine(Path.GetTempPath(), $"swfoc-cap-map-{Guid.NewGuid():N}");
+        var mapsRoot = Path.Join(Path.GetTempPath(), $"swfoc-cap-map-{Guid.NewGuid():N}");
         Directory.CreateDirectory(mapsRoot);
 
         try
@@ -266,7 +266,7 @@ public sealed class CapabilityMapResolverTests
     [Fact]
     public async Task ResolveAsync_ShouldAllow_CustomSwfoc_Profile_When_DefaultProfile_Is_BaseSwfoc()
     {
-        var mapsRoot = Path.Combine(Path.GetTempPath(), $"swfoc-cap-map-{Guid.NewGuid():N}");
+        var mapsRoot = Path.Join(Path.GetTempPath(), $"swfoc-cap-map-{Guid.NewGuid():N}");
         Directory.CreateDirectory(mapsRoot);
 
         try
@@ -295,7 +295,7 @@ public sealed class CapabilityMapResolverTests
               }
             }
             """;
-            await File.WriteAllTextAsync(Path.Combine(mapsRoot, "fp-custom-profile.json"), mapJson);
+            await File.WriteAllTextAsync(Path.Join(mapsRoot, "fp-custom-profile.json"), mapJson);
 
             var resolver = new CapabilityMapResolver(mapsRoot, NullLogger<CapabilityMapResolver>.Instance);
             var result = await resolver.ResolveAsync(
@@ -316,7 +316,7 @@ public sealed class CapabilityMapResolverTests
     [Fact]
     public async Task ResolveAsync_ShouldReject_CustomSwfoc_Profile_When_DefaultProfile_Is_Sweaw()
     {
-        var mapsRoot = Path.Combine(Path.GetTempPath(), $"swfoc-cap-map-{Guid.NewGuid():N}");
+        var mapsRoot = Path.Join(Path.GetTempPath(), $"swfoc-cap-map-{Guid.NewGuid():N}");
         Directory.CreateDirectory(mapsRoot);
 
         try
@@ -345,7 +345,7 @@ public sealed class CapabilityMapResolverTests
               }
             }
             """;
-            await File.WriteAllTextAsync(Path.Combine(mapsRoot, "fp-custom-profile-mismatch.json"), mapJson);
+            await File.WriteAllTextAsync(Path.Join(mapsRoot, "fp-custom-profile-mismatch.json"), mapJson);
 
             var resolver = new CapabilityMapResolver(mapsRoot, NullLogger<CapabilityMapResolver>.Instance);
             var result = await resolver.ResolveAsync(
@@ -365,7 +365,7 @@ public sealed class CapabilityMapResolverTests
 
     private static string CreateMapsRoot()
     {
-        var mapsRoot = Path.Combine(Path.GetTempPath(), $"swfoc-cap-map-{Guid.NewGuid():N}");
+        var mapsRoot = Path.Join(Path.GetTempPath(), $"swfoc-cap-map-{Guid.NewGuid():N}");
         Directory.CreateDirectory(mapsRoot);
         return mapsRoot;
     }
@@ -385,7 +385,7 @@ public sealed class CapabilityMapResolverTests
 
     private static Task WriteMapAsync(string mapsRoot, string fingerprintId, string mapJson)
     {
-        return File.WriteAllTextAsync(Path.Combine(mapsRoot, $"{fingerprintId}.json"), mapJson);
+        return File.WriteAllTextAsync(Path.Join(mapsRoot, $"{fingerprintId}.json"), mapJson);
     }
 
     private static async Task<CapabilityResolutionResult> ResolveUnavailableFreezeTimerCapabilityAsync(

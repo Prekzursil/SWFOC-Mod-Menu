@@ -45,6 +45,7 @@ public sealed class CatalogService : ICatalogService
 
     public async Task<IReadOnlyDictionary<string, IReadOnlyList<string>>> LoadCatalogAsync(string profileId, CancellationToken cancellationToken)
     {
+        ArgumentNullException.ThrowIfNull(profileId);
         var result = new Dictionary<string, IReadOnlyList<string>>(StringComparer.OrdinalIgnoreCase);
         var profile = await _profiles.ResolveInheritedProfileAsync(profileId, cancellationToken);
 
@@ -166,7 +167,7 @@ public sealed class CatalogService : ICatalogService
 
     private async Task<Dictionary<string, IReadOnlyList<string>>> LoadPrebuiltCatalogAsync(string profileId, CancellationToken cancellationToken)
     {
-        var path = Path.Combine(_options.CatalogRootPath, profileId, "catalog.json");
+        var path = Path.Join(_options.CatalogRootPath, profileId, "catalog.json");
         if (!File.Exists(path))
         {
             return new Dictionary<string, IReadOnlyList<string>>(StringComparer.OrdinalIgnoreCase);

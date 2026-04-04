@@ -48,7 +48,19 @@ public sealed class GameLaunchService : IGameLaunchService
         {
             process = StartProcess(executableResolution.ExecutablePath, rootResolution.Root, arguments);
         }
-        catch (Exception ex)
+        catch (InvalidOperationException ex)
+        {
+            return Task.FromResult(CreateFailureResult(
+                message: $"Process start failed: {ex.Message}",
+                state: LaunchStateStartFailed,
+                executablePath: executableResolution.ExecutablePath,
+                arguments: arguments,
+                diagnostics: new Dictionary<string, object?>
+                {
+                    ["exceptionType"] = ex.GetType().Name
+                }));
+        }
+        catch (System.ComponentModel.Win32Exception ex)
         {
             return Task.FromResult(CreateFailureResult(
                 message: $"Process start failed: {ex.Message}",
@@ -84,7 +96,11 @@ public sealed class GameLaunchService : IGameLaunchService
         {
             process.Kill(entireProcessTree: true);
         }
-        catch
+        catch (InvalidOperationException)
+        {
+            // Ignore termination failures for stale processes.
+        }
+        catch (System.ComponentModel.Win32Exception)
         {
             // Ignore termination failures for stale processes.
         }
@@ -105,9 +121,9 @@ public sealed class GameLaunchService : IGameLaunchService
     {
         return target switch
         {
-            GameLaunchTarget.Sweaw => Path.Combine(root, "GameData", "sweaw.exe"),
-            GameLaunchTarget.Swfoc => Path.Combine(root, "corruption", "swfoc.exe"),
-            _ => Path.Combine(root, "corruption", "swfoc.exe")
+            GameLaunchTarget.Sweaw => Path.Join(root, "GameData", "sweaw.exe"),
+            GameLaunchTarget.Swfoc => Path.Join(root, "corruption", "swfoc.exe"),
+            _ => Path.Join(root, "corruption", "swfoc.exe")
         };
     }
 
@@ -181,11 +197,28 @@ public sealed class GameLaunchService : IGameLaunchService
         return request.Mode switch
         {
             GameLaunchMode.SteamMod => BuildSteamModArguments(request.WorkshopIds),
-            GameLaunchMode.ModPath => string.IsNullOrWhiteSpace(request.ModPath)
-                ? string.Empty
-                : $"MODPATH=\"{request.ModPath}\"",
+            GameLaunchMode.ModPath => BuildModPathArgument(request.ModPath),
             _ => string.Empty
         };
+    }
+
+    private static string BuildModPathArgument(string? modPath)
+    {
+        if (string.IsNullOrWhiteSpace(modPath))
+        {
+            return string.Empty;
+        }
+
+        var trimmed = modPath.Trim();
+
+        // Reject path traversal sequences and shell metacharacters.
+        if (trimmed.Contains("..", StringComparison.Ordinal) ||
+            trimmed.IndexOfAny(['|', '&', ';', '`', '$', '>', '<', '!', '{', '}']) >= 0)
+        {
+            return string.Empty;
+        }
+
+        return $"MODPATH=\"{trimmed}\"";
     }
 
     private static Process StartProcess(string executablePath, string root, string arguments)
@@ -237,7 +270,9 @@ public sealed class GameLaunchService : IGameLaunchService
             return string.Empty;
         }
 
-        return string.Join(" ", normalized.Select(static id => $"STEAMMOD={id}"));
+        return string.Join(" ", normalized
+            .Where(static id => id.All(char.IsAsciiDigit))
+            .Select(static id => $"STEAMMOD={id}"));
     }
 
     private static IReadOnlyList<string> NormalizeWorkshopIds(IReadOnlyList<string>? workshopIds)
@@ -247,26 +282,13 @@ public sealed class GameLaunchService : IGameLaunchService
             return Array.Empty<string>();
         }
 
-        var values = new List<string>();
         var seen = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
-        foreach (var raw in workshopIds)
-        {
-            if (string.IsNullOrWhiteSpace(raw))
-            {
-                continue;
-            }
-
-            foreach (var token in raw.Split(',', StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries))
-            {
-                var id = token.Trim();
-                if (id.Length == 0 || !seen.Add(id))
-                {
-                    continue;
-                }
-
-                values.Add(id);
-            }
-        }
+        var values = workshopIds
+            .Where(raw => !string.IsNullOrWhiteSpace(raw))
+            .SelectMany(raw => raw.Split(',', StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries))
+            .Select(token => token.Trim())
+            .Where(id => id.Length > 0 && seen.Add(id))
+            .ToList();
 
         return values;
     }

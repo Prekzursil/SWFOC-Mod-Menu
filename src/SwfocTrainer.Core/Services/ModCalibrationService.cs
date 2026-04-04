@@ -37,7 +37,7 @@ public sealed class ModCalibrationService : IModCalibrationService
         var payload = BuildCalibrationPayload(request, moduleFingerprint, candidates);
 
         var safeProfileId = SanitizeFileToken(request.ProfileId);
-        var artifactPath = Path.Combine(
+        var artifactPath = Path.Join(
             request.OutputDirectory,
             $"calibration-{safeProfileId}-{DateTimeOffset.UtcNow:yyyyMMddHHmmss}.json");
 
@@ -153,7 +153,7 @@ public sealed class ModCalibrationService : IModCalibrationService
             path = session.Process.ProcessPath,
             commandLineAvailable = session.Process.LaunchContext?.CommandLineAvailable ?? false,
             launchKind = session.Process.LaunchContext?.LaunchKind.ToString() ?? "Unknown",
-            launchReasonCode = session.Process.LaunchContext?.Recommendation.ReasonCode ?? "unknown"
+            launchReasonCode = session.Process.LaunchContext?.Recommendation?.ReasonCode ?? "unknown"
         };
     }
 
@@ -240,6 +240,7 @@ public sealed class ModCalibrationService : IModCalibrationService
 
     public Task<ModCalibrationArtifactResult> ExportCalibrationArtifactAsync(ModCalibrationArtifactRequest request)
     {
+        ArgumentNullException.ThrowIfNull(request);
         return ExportCalibrationArtifactAsync(request, CancellationToken.None);
     }
 
@@ -247,6 +248,7 @@ public sealed class ModCalibrationService : IModCalibrationService
         TrainerProfile profile,
         AttachSession? session)
     {
+        ArgumentNullException.ThrowIfNull(profile);
         return BuildCompatibilityReportAsync(profile, session, null, null, CancellationToken.None);
     }
 
@@ -256,12 +258,13 @@ public sealed class ModCalibrationService : IModCalibrationService
         DependencyValidationResult? dependencyValidation,
         IReadOnlyDictionary<string, IReadOnlyList<string>>? catalog)
     {
+        ArgumentNullException.ThrowIfNull(profile);
         return BuildCompatibilityReportAsync(profile, session, dependencyValidation, catalog, CancellationToken.None);
     }
 
     private static DependencyValidationStatus InferDependencyStatus(AttachSession? session)
     {
-        if (session?.Process.Metadata is null)
+        if (session?.Process?.Metadata is null)
         {
             return DependencyValidationStatus.Pass;
         }

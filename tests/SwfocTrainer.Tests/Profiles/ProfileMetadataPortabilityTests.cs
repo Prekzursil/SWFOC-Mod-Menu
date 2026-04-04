@@ -21,7 +21,7 @@ public sealed class ProfileMetadataPortabilityTests
     public void DefaultProfiles_ShouldNotContain_UserSpecific_SaveRootDefaults()
     {
         var root = TestPaths.FindRepoRoot();
-        var profileDirectory = Path.Combine(root, "profiles", "default", "profiles");
+        var profileDirectory = Path.Join(root, "profiles", "default", "profiles");
         var profileFiles = Directory.GetFiles(profileDirectory, "*.json", SearchOption.TopDirectoryOnly);
 
         profileFiles.Should().NotBeEmpty();
@@ -38,7 +38,7 @@ public sealed class ProfileMetadataPortabilityTests
     public void DefaultProfiles_ShouldNotContain_LegacyTacticalModeEntries()
     {
         var root = TestPaths.FindRepoRoot();
-        var profileDirectory = Path.Combine(root, "profiles", "default", "profiles");
+        var profileDirectory = Path.Join(root, "profiles", "default", "profiles");
         var profileFiles = Directory.GetFiles(profileDirectory, "*.json", SearchOption.TopDirectoryOnly);
 
         profileFiles.Should().NotBeEmpty();

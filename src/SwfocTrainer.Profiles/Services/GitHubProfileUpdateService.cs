@@ -50,20 +50,17 @@ public sealed class GitHubProfileUpdateService : IProfileUpdateService
         var local = await _repository.LoadManifestAsync(cancellationToken);
         var localVersions = local.Profiles.ToDictionary(x => x.Id, x => x.Version, StringComparer.OrdinalIgnoreCase);
 
-        var updates = new List<string>();
-        foreach (var entry in remote.Profiles)
-        {
-            if (!localVersions.TryGetValue(entry.Id, out var localVersion) || !string.Equals(localVersion, entry.Version, StringComparison.OrdinalIgnoreCase))
-            {
-                updates.Add(entry.Id);
-            }
-        }
+        var updates = remote.Profiles
+            .Where(entry => !localVersions.TryGetValue(entry.Id, out var localVersion) || !string.Equals(localVersion, entry.Version, StringComparison.OrdinalIgnoreCase))
+            .Select(entry => entry.Id)
+            .ToList();
 
         return updates;
     }
 
     public async Task<string> InstallProfileAsync(string profileId, CancellationToken cancellationToken)
     {
+        ArgumentNullException.ThrowIfNull(profileId);
         var result = await InstallProfileTransactionalAsync(profileId, cancellationToken);
         if (!result.Succeeded)
         {
@@ -75,6 +72,7 @@ public sealed class GitHubProfileUpdateService : IProfileUpdateService
 
     public async Task<ProfileInstallResult> InstallProfileTransactionalAsync(string profileId, CancellationToken cancellationToken)
     {
+        ArgumentNullException.ThrowIfNull(profileId);
         if (string.IsNullOrWhiteSpace(_options.RemoteManifestUrl))
         {
             return BuildInstallFailure(profileId, "Remote manifest URL is not configured.", "remote_manifest_not_configured");
@@ -95,11 +93,7 @@ public sealed class GitHubProfileUpdateService : IProfileUpdateService
 
         var (destination, backupPath) = InstallProfileFile(profileId, preparedInstall.TargetProfileJson!, preparedInstall.ProfilesDirectory!);
         var receiptPath = await WriteInstallReceiptAsync(
-            profileId,
-            destination,
-            backupPath,
-            entry.Version,
-            entry.Sha256,
+            new InstallReceiptInput(profileId, destination, backupPath, entry.Version, entry.Sha256),
             cancellationToken);
 
         return BuildInstallSuccess(profileId, destination, backupPath, receiptPath, entry.Version);
@@ -107,8 +101,9 @@ public sealed class GitHubProfileUpdateService : IProfileUpdateService
 
     public async Task<ProfileRollbackResult> RollbackLastInstallAsync(string profileId, CancellationToken cancellationToken)
     {
+        ArgumentNullException.ThrowIfNull(profileId);
         var profilesDir = ResolveProfilesDirectory();
-        var destination = Path.Combine(profilesDir, $"{profileId}.json");
+        var destination = Path.Join(profilesDir, $"{profileId}.json");
         var backupPattern = $"{profileId}.json.bak.*";
 
         var backup = Directory.GetFiles(profilesDir, backupPattern)
@@ -138,7 +133,17 @@ public sealed class GitHubProfileUpdateService : IProfileUpdateService
                 Message: $"Rollback restored '{profileId}' from backup.",
                 ReasonCode: null);
         }
-        catch (Exception ex)
+        catch (IOException ex)
+        {
+            return new ProfileRollbackResult(
+                Restored: false,
+                ProfileId: profileId,
+                RestoredPath: destination,
+                BackupPath: backup,
+                Message: $"Rollback failed: {ex.Message}",
+                ReasonCode: "rollback_copy_failed");
+        }
+        catch (UnauthorizedAccessException ex)
         {
             return new ProfileRollbackResult(
                 Restored: false,
@@ -179,7 +184,16 @@ public sealed class GitHubProfileUpdateService : IProfileUpdateService
         {
             remote = await _httpClient.GetFromJsonAsync<ProfileManifest>(_options.RemoteManifestUrl, _jsonOptions, cancellationToken);
         }
-        catch (Exception ex)
+        catch (HttpRequestException ex)
+        {
+            return (
+                null,
+                BuildInstallFailure(
+                    profileId,
+                    $"Failed to fetch remote manifest: {ex.Message}",
+                    "manifest_fetch_failed"));
+        }
+        catch (System.Text.Json.JsonException ex)
         {
             return (
                 null,
@@ -207,7 +221,9 @@ public sealed class GitHubProfileUpdateService : IProfileUpdateService
             return (null, remoteManifestOutcome.Failure);
         }
 
-        var entry = remoteManifestOutcome.Manifest!.Profiles
+        var manifest = remoteManifestOutcome.Manifest
+            ?? throw new InvalidOperationException("Remote manifest resolved to null after successful fetch.");
+        var entry = manifest.Profiles
             .FirstOrDefault(x => string.Equals(x.Id, profileId, StringComparison.OrdinalIgnoreCase));
         if (entry is null)
         {
@@ -227,7 +243,7 @@ public sealed class GitHubProfileUpdateService : IProfileUpdateService
         ProfileManifestEntry entry,
         CancellationToken cancellationToken)
     {
-        var zipPath = Path.Combine(_options.DownloadCachePath, $"{profileId}-{entry.Version}.zip");
+        var zipPath = Path.Join(_options.DownloadCachePath, $"{profileId}-{entry.Version}.zip");
         var downloadFailure = await TryDownloadPackageAsync(profileId, entry.DownloadUrl, zipPath, cancellationToken);
         if (downloadFailure is not null)
         {
@@ -282,7 +298,11 @@ public sealed class GitHubProfileUpdateService : IProfileUpdateService
                 await stream.CopyToAsync(file, cancellationToken);
             }
         }
-        catch (Exception ex)
+        catch (HttpRequestException ex)
+        {
+            return BuildInstallFailure(profileId, $"Failed to download package: {ex.Message}", "download_failed");
+        }
+        catch (IOException ex)
         {
             return BuildInstallFailure(profileId, $"Failed to download package: {ex.Message}", "download_failed");
         }
@@ -313,7 +333,11 @@ public sealed class GitHubProfileUpdateService : IProfileUpdateService
         {
             GitHubProfileUpdateExtractionHelpers.ExtractToDirectorySafely(zipPath, extractDir);
         }
-        catch (Exception ex)
+        catch (IOException ex)
+        {
+            return BuildInstallFailure(profileId, $"Failed to extract package: {ex.Message}", "extract_failed");
+        }
+        catch (InvalidDataException ex)
         {
             return BuildInstallFailure(profileId, $"Failed to extract package: {ex.Message}", "extract_failed");
         }
@@ -337,7 +361,15 @@ public sealed class GitHubProfileUpdateService : IProfileUpdateService
         {
             ProfileValidator.Validate(parsedProfile);
         }
-        catch (Exception ex)
+        catch (InvalidDataException ex)
+        {
+            return BuildInstallFailure(profileId, $"Downloaded profile failed validation: {ex.Message}", "profile_validation_failed");
+        }
+        catch (InvalidOperationException ex)
+        {
+            return BuildInstallFailure(profileId, $"Downloaded profile failed validation: {ex.Message}", "profile_validation_failed");
+        }
+        catch (ArgumentException ex)
         {
             return BuildInstallFailure(profileId, $"Downloaded profile failed validation: {ex.Message}", "profile_validation_failed");
         }
@@ -347,7 +379,7 @@ public sealed class GitHubProfileUpdateService : IProfileUpdateService
 
     private static (string Destination, string? BackupPath) InstallProfileFile(string profileId, string targetProfileJson, string profilesDir)
     {
-        var destination = Path.Combine(profilesDir, $"{profileId}.json");
+        var destination = Path.Join(profilesDir, $"{profileId}.json");
         var backup = $"{destination}.bak.{DateTimeOffset.UtcNow.ToString(ReceiptTimestampFormat)}";
         string? backupPath = null;
         if (File.Exists(destination))
@@ -375,14 +407,14 @@ public sealed class GitHubProfileUpdateService : IProfileUpdateService
 
     private string ResolveProfilesDirectory()
     {
-        var profilesDir = Path.Combine(_options.ProfilesRootPath, ProfilesDirectoryName);
+        var profilesDir = Path.Join(_options.ProfilesRootPath, ProfilesDirectoryName);
         Directory.CreateDirectory(profilesDir);
         return profilesDir;
     }
 
     private string PrepareExtractDirectory(string profileId, string version)
     {
-        var extractDir = Path.Combine(_options.DownloadCachePath, $"extract-{profileId}-{version}");
+        var extractDir = Path.Join(_options.DownloadCachePath, $"extract-{profileId}-{version}");
         if (Directory.Exists(extractDir))
         {
             Directory.Delete(extractDir, recursive: true);
@@ -433,27 +465,30 @@ public sealed class GitHubProfileUpdateService : IProfileUpdateService
         return Convert.ToHexString(hash).ToLowerInvariant();
     }
 
+    private readonly record struct InstallReceiptInput(
+        string ProfileId,
+        string InstalledPath,
+        string? BackupPath,
+        string Version,
+        string ExpectedSha256);
+
     private async Task<string> WriteInstallReceiptAsync(
-        string profileId,
-        string installedPath,
-        string? backupPath,
-        string version,
-        string expectedSha256,
+        InstallReceiptInput input,
         CancellationToken cancellationToken)
     {
-        var receiptsRoot = Path.Combine(_options.DownloadCachePath, ReceiptsDirectoryName);
+        var receiptsRoot = Path.Join(_options.DownloadCachePath, ReceiptsDirectoryName);
         Directory.CreateDirectory(receiptsRoot);
-        var receiptPath = Path.Combine(receiptsRoot, $"install-{profileId}-{DateTimeOffset.UtcNow.ToString(ReceiptTimestampFormat)}.json");
+        var receiptPath = Path.Join(receiptsRoot, $"install-{input.ProfileId}-{DateTimeOffset.UtcNow.ToString(ReceiptTimestampFormat)}.json");
 
         var payload = new
         {
             type = "install",
             generatedAtUtc = DateTimeOffset.UtcNow,
-            profileId,
-            installedPath,
-            backupPath,
-            version,
-            expectedSha256
+            profileId = input.ProfileId,
+            installedPath = input.InstalledPath,
+            backupPath = input.BackupPath,
+            version = input.Version,
+            expectedSha256 = input.ExpectedSha256
         };
 
         await File.WriteAllTextAsync(receiptPath, JsonSerializer.Serialize(payload, _jsonOptions), cancellationToken);
@@ -466,9 +501,9 @@ public sealed class GitHubProfileUpdateService : IProfileUpdateService
         string backupPath,
         CancellationToken cancellationToken)
     {
-        var receiptsRoot = Path.Combine(_options.DownloadCachePath, ReceiptsDirectoryName);
+        var receiptsRoot = Path.Join(_options.DownloadCachePath, ReceiptsDirectoryName);
         Directory.CreateDirectory(receiptsRoot);
-        var receiptPath = Path.Combine(receiptsRoot, $"rollback-{profileId}-{DateTimeOffset.UtcNow.ToString(ReceiptTimestampFormat)}.json");
+        var receiptPath = Path.Join(receiptsRoot, $"rollback-{profileId}-{DateTimeOffset.UtcNow.ToString(ReceiptTimestampFormat)}.json");
 
         var payload = new
         {

@@ -29,12 +29,8 @@ public sealed class BackendRouter : IBackendRouter
         var state = CreateRouteResolutionState(request, profile, process, capabilityReport);
 
         var requiredCapabilityDecision = TryResolveRequiredCapabilityContract(
-            state.PreferredBackend,
-            profile.BackendPreference,
-            state.MutatingAction,
-            state.MissingRequired,
-            state.Diagnostics,
-            state.PromotedExtenderAction);
+            new CapabilityContractInput(state.PreferredBackend, profile.BackendPreference, state.MutatingAction, state.MissingRequired, state.PromotedExtenderAction),
+            state.Diagnostics);
         if (requiredCapabilityDecision is not null)
         {
             return requiredCapabilityDecision;
@@ -134,7 +130,7 @@ public sealed class BackendRouter : IBackendRouter
             return null;
         }
 
-        return raw as string ?? raw.ToString();
+        return raw as string ?? raw.ToString() ?? string.Empty;
     }
 
     private static bool? ReadContextBool(IReadOnlyDictionary<string, object?>? context, string key)
@@ -149,30 +145,34 @@ public sealed class BackendRouter : IBackendRouter
             return boolValue;
         }
 
-        return bool.TryParse(raw.ToString(), out var parsed) ? parsed : null;
+        var rawText = raw.ToString();
+        return rawText is not null && bool.TryParse(rawText, out var parsed) ? parsed : null;
     }
 
+    private readonly record struct CapabilityContractInput(
+        ExecutionBackendKind PreferredBackend,
+        string? BackendPreference,
+        bool IsMutating,
+        IReadOnlyCollection<string> MissingRequired,
+        bool IsPromotedExtenderAction);
+
     private static BackendRouteDecision? TryResolveRequiredCapabilityContract(
-        ExecutionBackendKind preferredBackend,
-        string? backendPreference,
-        bool isMutating,
-        IReadOnlyCollection<string> missingRequired,
-        IReadOnlyDictionary<string, object?> diagnostics,
-        bool isPromotedExtenderAction)
+        CapabilityContractInput input,
+        IReadOnlyDictionary<string, object?> diagnostics)
     {
-        var enforceCapabilityContract = preferredBackend == ExecutionBackendKind.Extender ||
-                                        IsHardExtenderPreference(backendPreference) ||
-                                        isPromotedExtenderAction;
-        if (missingRequired.Count == 0 || !isMutating || !enforceCapabilityContract)
+        var enforceCapabilityContract = input.PreferredBackend == ExecutionBackendKind.Extender ||
+                                        IsHardExtenderPreference(input.BackendPreference) ||
+                                        input.IsPromotedExtenderAction;
+        if (input.MissingRequired.Count == 0 || !input.IsMutating || !enforceCapabilityContract)
         {
             return null;
         }
 
         return new BackendRouteDecision(
             Allowed: false,
-            Backend: preferredBackend,
+            Backend: input.PreferredBackend,
             ReasonCode: RuntimeReasonCode.CAPABILITY_REQUIRED_MISSING,
-            Message: $"Blocked by required capability contract: {string.Join(", ", missingRequired)}.",
+            Message: $"Blocked by required capability contract: {string.Join(", ", input.MissingRequired)}.",
             Diagnostics: diagnostics);
     }
 

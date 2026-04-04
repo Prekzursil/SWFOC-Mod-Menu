@@ -21,43 +21,31 @@ internal static class MainViewModelSelectedUnitDraftHelpers
         out SelectedUnitFloatValues values,
         out string error)
     {
-        var hp = default(float?);
-        var shield = default(float?);
-        var speed = default(float?);
-        var damage = default(float?);
-        var cooldown = default(float?);
+        ArgumentNullException.ThrowIfNull(inputs);
 
-        if (!MainViewModelSelectedUnitParsingHelpers.TryParseSelectedUnitFloat(inputs.HpInput, "HP must be a number.", out hp, out error))
+        var empty = new SelectedUnitFloatValues(null, null, null, null, null);
+        var fields = new (string Input, string ErrorMessage)[]
         {
-            values = new SelectedUnitFloatValues(null, null, null, null, null);
-            return false;
+            (inputs.HpInput, "HP must be a number."),
+            (inputs.ShieldInput, "Shield must be a number."),
+            (inputs.SpeedInput, "Speed must be a number."),
+            (inputs.DamageInput, "Damage multiplier must be a number."),
+            (inputs.CooldownInput, "Cooldown multiplier must be a number."),
+        };
+
+        var parsed = new float?[fields.Length];
+        for (var i = 0; i < fields.Length; i++)
+        {
+            if (!MainViewModelSelectedUnitParsingHelpers.TryParseSelectedUnitFloat(
+                    fields[i].Input, fields[i].ErrorMessage, out parsed[i], out error))
+            {
+                values = empty;
+                return false;
+            }
         }
 
-        if (!MainViewModelSelectedUnitParsingHelpers.TryParseSelectedUnitFloat(inputs.ShieldInput, "Shield must be a number.", out shield, out error))
-        {
-            values = new SelectedUnitFloatValues(null, null, null, null, null);
-            return false;
-        }
-
-        if (!MainViewModelSelectedUnitParsingHelpers.TryParseSelectedUnitFloat(inputs.SpeedInput, "Speed must be a number.", out speed, out error))
-        {
-            values = new SelectedUnitFloatValues(null, null, null, null, null);
-            return false;
-        }
-
-        if (!MainViewModelSelectedUnitParsingHelpers.TryParseSelectedUnitFloat(inputs.DamageInput, "Damage multiplier must be a number.", out damage, out error))
-        {
-            values = new SelectedUnitFloatValues(null, null, null, null, null);
-            return false;
-        }
-
-        if (!MainViewModelSelectedUnitParsingHelpers.TryParseSelectedUnitFloat(inputs.CooldownInput, "Cooldown multiplier must be a number.", out cooldown, out error))
-        {
-            values = new SelectedUnitFloatValues(null, null, null, null, null);
-            return false;
-        }
-
-        values = new SelectedUnitFloatValues(hp, shield, speed, damage, cooldown);
+        error = string.Empty;
+        values = new SelectedUnitFloatValues(parsed[0], parsed[1], parsed[2], parsed[3], parsed[4]);
         return true;
     }
 
@@ -68,6 +56,8 @@ internal static class MainViewModelSelectedUnitDraftHelpers
         out int? ownerFaction,
         out string error)
     {
+        ArgumentNullException.ThrowIfNull(veterancyInput);
+        ArgumentNullException.ThrowIfNull(ownerFactionInput);
         veterancy = null;
         ownerFaction = null;
         if (!MainViewModelSelectedUnitParsingHelpers.TryParseSelectedUnitInt(veterancyInput, "Veterancy must be an integer.", out veterancy, out error))

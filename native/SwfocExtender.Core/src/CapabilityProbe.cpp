@@ -2,20 +2,20 @@
 
 namespace swfoc::extender::core {
 
-void CapabilityProbe::markAvailable(const std::string& featureId, const std::string& reasonCode) {
+void CapabilityProbe::markAvailable(std::string_view featureId, std::string_view reasonCode) {
     CapabilityEntry entry {};
     entry.available = true;
     entry.state = CapabilityState::Verified;
     entry.reasonCode = reasonCode;
-    capabilities_[featureId] = entry;
+    capabilities_[std::string{featureId}] = entry;
 }
 
-bool CapabilityProbe::isAvailable(const std::string& featureId) const {
+bool CapabilityProbe::isAvailable(std::string_view featureId) const {
     const auto it = capabilities_.find(featureId);
     return it != capabilities_.end() && it->second.available;
 }
 
-const std::unordered_map<std::string, CapabilityEntry>& CapabilityProbe::snapshot() const noexcept {
+const CapabilityProbe::CapabilityMap& CapabilityProbe::snapshot() const noexcept {
     return capabilities_;
 }
 

@@ -95,7 +95,7 @@ public sealed class LiveRoeRuntimeHealthTests
         var repoRoot = TestPaths.FindRepoRoot();
         profileRepo = new FileSystemProfileRepository(new ProfileRepositoryOptions
         {
-            ProfilesRootPath = Path.Combine(repoRoot, "profiles", "default")
+            ProfilesRootPath = Path.Join(repoRoot, "profiles", "default")
         });
         var resolver = new SignatureResolver(NullLogger<SignatureResolver>.Instance);
         return new RuntimeAdapter(locator, profileRepo, resolver, NullLogger<RuntimeAdapter>.Instance);
@@ -178,7 +178,7 @@ public sealed class LiveRoeRuntimeHealthTests
         }
 
         var payload = BuildRuntimeEvidencePayload(process, profileId, result);
-        var path = Path.Combine(outputDir, "live-roe-runtime-evidence.json");
+        var path = Path.Join(outputDir, "live-roe-runtime-evidence.json");
         File.WriteAllText(path, JsonSerializer.Serialize(payload, new JsonSerializerOptions { WriteIndented = true }));
     }
 

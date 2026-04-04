@@ -3,6 +3,7 @@ using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Text.Json;
+using SwfocTrainer.Tests.Common;
 using FluentAssertions;
 using SwfocTrainer.Core.Contracts;
 using SwfocTrainer.Core.Models;
@@ -17,7 +18,7 @@ public sealed class ProfileUpdateServiceTransactionalTests
     [Fact]
     public async Task InstallProfileTransactionalAsync_ShouldInstallAndRollback()
     {
-        var tempRoot = Path.Combine(Path.GetTempPath(), $"swfoc-profile-update-{Guid.NewGuid():N}");
+        var tempRoot = Path.Join(Path.GetTempPath(), $"swfoc-profile-update-{Guid.NewGuid():N}");
 
         try
         {
@@ -45,14 +46,14 @@ public sealed class ProfileUpdateServiceTransactionalTests
 
     private static async Task<InstallSetup> CreateInstallSetupAsync(string tempRoot)
     {
-        var profilesRoot = Path.Combine(tempRoot, "default");
-        var profilesDir = Path.Combine(profilesRoot, "profiles");
-        var cacheDir = Path.Combine(tempRoot, "cache");
+        var profilesRoot = Path.Join(tempRoot, "default");
+        var profilesDir = Path.Join(profilesRoot, "profiles");
+        var cacheDir = Path.Join(tempRoot, "cache");
         Directory.CreateDirectory(profilesDir);
         Directory.CreateDirectory(cacheDir);
 
         var profileId = "base_swfoc";
-        var existingPath = Path.Combine(profilesDir, $"{profileId}.json");
+        var existingPath = Path.Join(profilesDir, $"{profileId}.json");
         await File.WriteAllTextAsync(existingPath, BuildProfileJson(displayName: "old"));
 
         var zipBytes = BuildZipWithProfile(profileId, BuildProfileJson(displayName: "new"));
@@ -128,36 +129,6 @@ public sealed class ProfileUpdateServiceTransactionalTests
 
     private static string ComputeSha256(byte[] bytes)
         => Convert.ToHexString(System.Security.Cryptography.SHA256.HashData(bytes)).ToLowerInvariant();
-
-    private sealed class StubHttpMessageHandler : HttpMessageHandler
-    {
-        private readonly IReadOnlyDictionary<string, (string ContentType, byte[] Body)> _responses;
-
-        public StubHttpMessageHandler(IReadOnlyDictionary<string, (string ContentType, byte[] Body)> responses)
-        {
-            _responses = responses;
-        }
-
-        protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
-        {
-            _ = cancellationToken;
-            var key = request.RequestUri!.ToString();
-            if (!_responses.TryGetValue(key, out var payload))
-            {
-                return Task.FromResult(new HttpResponseMessage(HttpStatusCode.NotFound)
-                {
-                    Content = new StringContent("not found")
-                });
-            }
-
-            var response = new HttpResponseMessage(HttpStatusCode.OK)
-            {
-                Content = new ByteArrayContent(payload.Body)
-            };
-            response.Content.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue(payload.ContentType);
-            return Task.FromResult(response);
-        }
-    }
 
     private sealed class StubProfileRepository : IProfileRepository
     {

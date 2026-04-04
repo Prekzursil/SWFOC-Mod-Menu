@@ -46,7 +46,7 @@ public sealed class LiveActionSmokeTests
         var repoRoot = TestPaths.FindRepoRoot();
         var profileRepo = new FileSystemProfileRepository(new ProfileRepositoryOptions
         {
-            ProfilesRootPath = Path.Combine(repoRoot, "profiles", "default")
+            ProfilesRootPath = Path.Join(repoRoot, "profiles", "default")
         });
 
         var resolver = new SignatureResolver(NullLogger<SignatureResolver>.Instance);
@@ -77,13 +77,13 @@ public sealed class LiveActionSmokeTests
     private void LogResolvedSymbols(AttachSession session)
     {
         _output.WriteLine($"Resolved symbols: {session.Symbols.Symbols.Count}");
-        foreach (var symbolName in session.Symbols.Symbols.Keys.OrderBy(x => x))
+        foreach (var (symbolName, symbol) in session.Symbols.Symbols
+            .OrderBy(kvp => kvp.Key)
+            .Where(kvp => kvp.Value is not null)
+            .Select(kvp => (kvp.Key, kvp.Value)))
         {
-            if (session.Symbols.Symbols.TryGetValue(symbolName, out var symbol))
-            {
-                _output.WriteLine(
-                    $"{symbolName}: 0x{symbol.Address.ToInt64():X} source={symbol.Source} diag={symbol.Diagnostics}");
-            }
+            _output.WriteLine(
+                $"{symbolName}: 0x{symbol.Address.ToInt64():X} source={symbol.Source} diag={symbol.Diagnostics}");
         }
     }
 
@@ -126,7 +126,17 @@ public sealed class LiveActionSmokeTests
             _output.WriteLine($"{successLabel} read succeeded: {value}");
             return value;
         }
-        catch (Exception ex)
+        catch (InvalidOperationException ex)
+        {
+            readFailures.Add($"{symbolName}: {ex.Message}");
+            return null;
+        }
+        catch (IOException ex)
+        {
+            readFailures.Add($"{symbolName}: {ex.Message}");
+            return null;
+        }
+        catch (TimeoutException ex)
         {
             readFailures.Add($"{symbolName}: {ex.Message}");
             return null;

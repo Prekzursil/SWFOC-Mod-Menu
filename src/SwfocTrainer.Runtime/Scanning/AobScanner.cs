@@ -6,6 +6,7 @@ internal static class AobScanner
 {
     public static nint FindPattern(Process process, byte[] memory, nint baseAddress, AobPattern pattern)
     {
+        ArgumentNullException.ThrowIfNull(process);
         ArgumentNullException.ThrowIfNull(memory);
         ArgumentNullException.ThrowIfNull(pattern);
         return FindPattern(memory, baseAddress, pattern);

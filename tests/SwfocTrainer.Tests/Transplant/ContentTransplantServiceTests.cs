@@ -11,7 +11,7 @@ public sealed class ContentTransplantServiceTests
     public async Task ExecuteAsync_ShouldEmitArtifact_WhenOutputDirectoryProvided()
     {
         var service = new ContentTransplantService(new TransplantCompatibilityService());
-        var tempRoot = Path.Combine(Path.GetTempPath(), $"swfoc-transplant-{Guid.NewGuid():N}");
+        var tempRoot = Path.Join(Path.GetTempPath(), $"swfoc-transplant-{Guid.NewGuid():N}");
 
         try
         {

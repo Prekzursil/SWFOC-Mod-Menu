@@ -11,7 +11,7 @@ public sealed class ReproBundleSchemaContractTests
     public void ReproBundleSchema_Should_Require_ActionStatusDiagnostics()
     {
         var repoRoot = TestPaths.FindRepoRoot();
-        var schemaPath = Path.Combine(repoRoot, "tools", "schemas", "repro-bundle.schema.json");
+        var schemaPath = Path.Join(repoRoot, "tools", "schemas", "repro-bundle.schema.json");
         var schema = JsonNode.Parse(File.ReadAllText(schemaPath))!.AsObject();
 
         var required = schema["required"]!

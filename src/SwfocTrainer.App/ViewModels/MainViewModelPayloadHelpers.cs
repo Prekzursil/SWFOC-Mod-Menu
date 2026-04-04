@@ -11,24 +11,18 @@ internal static class MainViewModelPayloadHelpers
         IReadOnlyDictionary<string, string> defaultSymbolByActionId,
         IReadOnlyDictionary<string, string> defaultHelperHookByActionId)
     {
+        ArgumentNullException.ThrowIfNull(actionId);
         ArgumentNullException.ThrowIfNull(required);
         ArgumentNullException.ThrowIfNull(defaultSymbolByActionId);
         ArgumentNullException.ThrowIfNull(defaultHelperHookByActionId);
         var payload = new JsonObject();
 
-        foreach (var node in required)
+        foreach (var (key, value) in required
+            .Select(node => node?.GetValue<string>())
+            .Where(key => !string.IsNullOrWhiteSpace(key))
+            .Select(key => (key!, BuildRequiredPayloadValue(actionId, key!, defaultSymbolByActionId, defaultHelperHookByActionId))))
         {
-            var key = node?.GetValue<string>();
-            if (string.IsNullOrWhiteSpace(key))
-            {
-                continue;
-            }
-
-            payload[key] = BuildRequiredPayloadValue(
-                actionId,
-                key,
-                defaultSymbolByActionId,
-                defaultHelperHookByActionId);
+            payload[key] = value;
         }
 
         return payload;
@@ -36,15 +30,18 @@ internal static class MainViewModelPayloadHelpers
 
     internal static void ApplyActionSpecificPayloadDefaults(string actionId, JsonObject payload)
     {
+        ArgumentNullException.ThrowIfNull(actionId);
+        ArgumentNullException.ThrowIfNull(payload);
+
         if (actionId.Equals(MainViewModelDefaults.ActionSetCredits, StringComparison.OrdinalIgnoreCase))
         {
-            payload[MainViewModelDefaults.PayloadKeyLockCredits] = false;
+            payload[MainViewModelDefaults.PayloadLockCredits] = false;
         }
 
         if (actionId.Equals(MainViewModelDefaults.ActionFreezeSymbol, StringComparison.OrdinalIgnoreCase) &&
-            !payload.ContainsKey(MainViewModelDefaults.PayloadKeyIntValue))
+            !payload.ContainsKey(MainViewModelDefaults.PayloadIntValue))
         {
-            payload[MainViewModelDefaults.PayloadKeyIntValue] = MainViewModelDefaults.DefaultCreditsValue;
+            payload[MainViewModelDefaults.PayloadIntValue] = MainViewModelDefaults.DefaultCreditsValue;
         }
     }
 
@@ -52,9 +49,9 @@ internal static class MainViewModelPayloadHelpers
     {
         return new JsonObject
         {
-            [MainViewModelDefaults.PayloadKeySymbol] = MainViewModelDefaults.SymbolCredits,
-            [MainViewModelDefaults.PayloadKeyIntValue] = value,
-            [MainViewModelDefaults.PayloadKeyLockCredits] = lockCredits
+            [MainViewModelDefaults.PayloadSymbol] = MainViewModelDefaults.SymbolCredits,
+            [MainViewModelDefaults.PayloadIntValue] = value,
+            [MainViewModelDefaults.PayloadLockCredits] = lockCredits
         };
     }
 
@@ -66,17 +63,17 @@ internal static class MainViewModelPayloadHelpers
     {
         return key switch
         {
-            MainViewModelDefaults.PayloadKeySymbol => JsonValue.Create(defaultSymbolByActionId.TryGetValue(actionId, out var sym) ? sym : string.Empty),
-            MainViewModelDefaults.PayloadKeyIntValue => JsonValue.Create(actionId switch
+            MainViewModelDefaults.PayloadSymbol => JsonValue.Create(defaultSymbolByActionId.TryGetValue(actionId, out var sym) ? sym : string.Empty),
+            MainViewModelDefaults.PayloadIntValue => JsonValue.Create(actionId switch
             {
                 MainViewModelDefaults.ActionSetCredits => MainViewModelDefaults.DefaultCreditsValue,
                 MainViewModelDefaults.ActionSetUnitCap => MainViewModelDefaults.DefaultUnitCapValue,
                 _ => 0
             }),
-            MainViewModelDefaults.PayloadKeyFloatValue => JsonValue.Create(1.0f),
-            MainViewModelDefaults.PayloadKeyBoolValue => JsonValue.Create(true),
-            MainViewModelDefaults.PayloadKeyEnable => JsonValue.Create(true),
-            MainViewModelDefaults.PayloadKeyFreeze => JsonValue.Create(!actionId.Equals(MainViewModelDefaults.ActionUnfreezeSymbol, StringComparison.OrdinalIgnoreCase)),
+            MainViewModelDefaults.PayloadFloatValue => JsonValue.Create(1.0f),
+            MainViewModelDefaults.PayloadBoolValue => JsonValue.Create(true),
+            MainViewModelDefaults.PayloadEnable => JsonValue.Create(true),
+            MainViewModelDefaults.PayloadFreeze => JsonValue.Create(!actionId.Equals(MainViewModelDefaults.ActionUnfreezeSymbol, StringComparison.OrdinalIgnoreCase)),
             "patchBytes" => JsonValue.Create("90 90 90 90 90"),
             "originalBytes" => JsonValue.Create("48 8B 74 24 68"),
             "helperHookId" => JsonValue.Create(defaultHelperHookByActionId.TryGetValue(actionId, out var hook) ? hook : actionId),

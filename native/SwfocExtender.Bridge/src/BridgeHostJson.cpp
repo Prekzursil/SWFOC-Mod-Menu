@@ -2,62 +2,75 @@
 #include <cctype>
 #include <map>
 #include <sstream>
+#include <stdexcept>
 #include <string>
+#include <string_view>
 
 namespace swfoc::extender::bridge::host_json {
+
+using StringMap = std::map<std::string, std::string, std::less<>>;
+
 namespace {
 
-bool TryFindValueStart(const std::string& payloadJson, const std::string& key, std::size_t& start) {
-    const auto quotedKey = "\"" + key + "\"";
+bool TryFindValueStart(std::string_view payloadJson, std::string_view key, std::size_t& start) {
+    auto quotedKey = std::string("\"");
+    quotedKey.append(key);
+    quotedKey.push_back('"');
+
     const auto keyPos = payloadJson.find(quotedKey);
-    if (keyPos == std::string::npos) {
+    if (keyPos == std::string_view::npos) {
         return false;
     }
 
     const auto colonPos = payloadJson.find(':', keyPos + quotedKey.size());
-    if (colonPos == std::string::npos) {
+    if (colonPos == std::string_view::npos) {
         return false;
     }
 
     start = payloadJson.find_first_not_of(" \t\r\n", colonPos + 1);
-    return start != std::string::npos;
+    return start != std::string_view::npos;
 }
 
-bool TryParseIntFromText(const std::string& valueText, int& value) {
+bool TryParseIntFromText(std::string_view valueText, int& value) {
     try {
         std::size_t consumed = 0;
-        value = std::stoi(valueText, &consumed);
+        value = std::stoi(std::string(valueText), &consumed);
         return consumed != 0;
-    } catch (...) {
+    } catch (const std::invalid_argument&) {
+        return false;
+    } catch (const std::out_of_range&) {
         return false;
     }
 }
 
-std::string ExtractObjectJson(const std::string& json, const std::string& key) {
-    const auto quotedKey = "\"" + key + "\"";
-    auto keyPos = json.find(quotedKey);
-    if (keyPos == std::string::npos) {
+std::string ExtractObjectJson(std::string_view json, std::string_view key) {
+    auto quotedKey = std::string("\"");
+    quotedKey.append(key);
+    quotedKey.push_back('"');
+
+    const auto keyPos = json.find(quotedKey);
+    if (keyPos == std::string_view::npos) {
         return "{}";
     }
 
-    auto colonPos = json.find(':', keyPos + quotedKey.length());
-    if (colonPos == std::string::npos) {
+    const auto colonPos = json.find(':', keyPos + quotedKey.length());
+    if (colonPos == std::string_view::npos) {
         return "{}";
     }
 
-    auto openBrace = json.find('{', colonPos + 1);
-    if (openBrace == std::string::npos) {
+    const auto openBrace = json.find('{', colonPos + 1);
+    if (openBrace == std::string_view::npos) {
         return "{}";
     }
 
     auto depth = 0;
-    for (std::size_t i = openBrace; i < json.size(); ++i) {
+    for (auto i = openBrace; i < json.size(); ++i) {
         if (json[i] == '{') {
             ++depth;
         } else if (json[i] == '}') {
             --depth;
             if (depth == 0) {
-                return json.substr(openBrace, i - openBrace + 1);
+                return std::string(json.substr(openBrace, i - openBrace + 1));
             }
         }
     }
@@ -65,9 +78,9 @@ std::string ExtractObjectJson(const std::string& json, const std::string& key) {
     return "{}";
 }
 
-std::size_t FindUnescapedQuote(const std::string& value, std::size_t start) {
+std::size_t FindUnescapedQuote(std::string_view value, std::size_t start) {
     auto escaped = false;
-    for (std::size_t i = start; i < value.size(); ++i) {
+    for (auto i = start; i < value.size(); ++i) {
         if (escaped) {
             escaped = false;
             continue;
@@ -83,10 +96,10 @@ std::size_t FindUnescapedQuote(const std::string& value, std::size_t start) {
         }
     }
 
-    return std::string::npos;
+    return std::string_view::npos;
 }
 
-std::string TrimAsciiWhitespace(std::string value) {
+std::string TrimAsciiWhitespace(std::string_view value) {
     auto first = value.begin();
     while (first != value.end() && std::isspace(static_cast<unsigned char>(*first)) != 0) {
         ++first;
@@ -97,23 +110,23 @@ std::string TrimAsciiWhitespace(std::string value) {
         --last;
     }
 
-    return std::string(first, last);
+    return {first, last};
 }
 
-std::size_t SkipAsciiWhitespace(const std::string& value, std::size_t cursor) {
+std::size_t SkipAsciiWhitespace(std::string_view value, std::size_t cursor) {
     return value.find_first_not_of(" \t\r\n", cursor);
 }
 
-bool TryParseFlatStringMapEntryKey(const std::string& objectJson, std::size_t& cursor, std::string& key);
-bool TryParseFlatStringMapEntryValue(const std::string& objectJson, std::size_t& cursor, std::string& value);
+bool TryParseFlatStringMapEntryKey(std::string_view objectJson, std::size_t& cursor, std::string& key);
+bool TryParseFlatStringMapEntryValue(std::string_view objectJson, std::size_t& cursor, std::string& value);
 
 bool TryParseFlatStringMapEntry(
-    const std::string& objectJson,
+    std::string_view objectJson,
     std::size_t& cursor,
     std::string& key,
     std::string& value) {
     cursor = SkipAsciiWhitespace(objectJson, cursor);
-    if (cursor == std::string::npos || objectJson[cursor] == '}') {
+    if (cursor == std::string_view::npos || objectJson[cursor] == '}') {
         return false;
     }
 
@@ -126,42 +139,42 @@ bool TryParseFlatStringMapEntry(
     }
 
     cursor = SkipAsciiWhitespace(objectJson, cursor);
-    if (cursor != std::string::npos && objectJson[cursor] == ',') {
+    if (cursor != std::string_view::npos && objectJson[cursor] == ',') {
         ++cursor;
     }
 
     return true;
 }
 
-bool TryParseFlatStringMapEntryKey(const std::string& objectJson, std::size_t& cursor, std::string& key) {
+bool TryParseFlatStringMapEntryKey(std::string_view objectJson, std::size_t& cursor, std::string& key) {
     if (objectJson[cursor] != '"') {
         return false;
     }
 
     const auto keyEnd = FindUnescapedQuote(objectJson, cursor + 1);
-    if (keyEnd == std::string::npos) {
+    if (keyEnd == std::string_view::npos) {
         return false;
     }
 
-    key = objectJson.substr(cursor + 1, keyEnd - cursor - 1);
+    key = std::string(objectJson.substr(cursor + 1, keyEnd - cursor - 1));
     cursor = objectJson.find(':', keyEnd + 1);
-    if (cursor == std::string::npos) {
+    if (cursor == std::string_view::npos) {
         return false;
     }
 
     ++cursor;
     cursor = SkipAsciiWhitespace(objectJson, cursor);
-    return cursor != std::string::npos;
+    return cursor != std::string_view::npos;
 }
 
-bool TryParseFlatStringMapEntryValue(const std::string& objectJson, std::size_t& cursor, std::string& value) {
+bool TryParseFlatStringMapEntryValue(std::string_view objectJson, std::size_t& cursor, std::string& value) {
     if (objectJson[cursor] == '"') {
         const auto valueEnd = FindUnescapedQuote(objectJson, cursor + 1);
-        if (valueEnd == std::string::npos) {
+        if (valueEnd == std::string_view::npos) {
             return false;
         }
 
-        value = objectJson.substr(cursor + 1, valueEnd - cursor - 1);
+        value = std::string(objectJson.substr(cursor + 1, valueEnd - cursor - 1));
         cursor = valueEnd + 1;
     } else {
         auto tokenEnd = cursor;
@@ -176,10 +189,10 @@ bool TryParseFlatStringMapEntryValue(const std::string& objectJson, std::size_t&
     return true;
 }
 
-std::map<std::string, std::string> ParseFlatStringMapObject(const std::string& objectJson) {
-    std::map<std::string, std::string> parsed;
+StringMap ParseFlatStringMapObject(std::string_view objectJson) {
+    StringMap parsed;
     auto cursor = objectJson.find('{');
-    if (cursor == std::string::npos) {
+    if (cursor == std::string_view::npos) {
         return parsed;
     }
 
@@ -197,25 +210,25 @@ std::map<std::string, std::string> ParseFlatStringMapObject(const std::string& o
 
 } // namespace
 
-std::string EscapeJson(const std::string& value) {
+std::string EscapeJson(std::string_view value) {
     std::string escaped;
     escaped.reserve(value.size() + 8);
     for (const auto ch : value) {
         switch (ch) {
         case '\\':
-            escaped += "\\\\";
+            escaped += R"(\\)";
             break;
         case '"':
-            escaped += "\\\"";
+            escaped += R"(\")";
             break;
         case '\n':
-            escaped += "\\n";
+            escaped += R"(\n)";
             break;
         case '\r':
-            escaped += "\\r";
+            escaped += R"(\r)";
             break;
         case '\t':
-            escaped += "\\t";
+            escaped += R"(\t)";
             break;
         default:
             escaped.push_back(ch);
@@ -226,7 +239,7 @@ std::string EscapeJson(const std::string& value) {
     return escaped;
 }
 
-std::string ToDiagnosticsJson(const std::map<std::string, std::string>& values) {
+std::string ToDiagnosticsJson(const StringMap& values) {
     std::ostringstream out;
     out << '{';
     auto first = true;
@@ -235,13 +248,13 @@ std::string ToDiagnosticsJson(const std::map<std::string, std::string>& values) 
             out << ',';
         }
         first = false;
-        out << '"' << EscapeJson(key) << "\":\"" << EscapeJson(value) << '"';
+        out << '"' << EscapeJson(key) << R"(":")" << EscapeJson(value) << '"';
     }
     out << '}';
     return out.str();
 }
 
-bool TryReadBool(const std::string& payloadJson, const std::string& key, bool& value) {
+bool TryReadBool(std::string_view payloadJson, std::string_view key, bool& value) {
     std::size_t start = 0;
     if (!TryFindValueStart(payloadJson, key, start)) {
         return false;
@@ -260,7 +273,7 @@ bool TryReadBool(const std::string& payloadJson, const std::string& key, bool& v
     return false;
 }
 
-bool TryReadInt(const std::string& payloadJson, const std::string& key, int& value) {
+bool TryReadInt(std::string_view payloadJson, std::string_view key, int& value) {
     std::size_t start = 0;
     if (!TryFindValueStart(payloadJson, key, start)) {
         return false;
@@ -273,32 +286,35 @@ bool TryReadInt(const std::string& payloadJson, const std::string& key, int& val
     return TryParseIntFromText(payloadJson.substr(start), value);
 }
 
-std::string ExtractStringValue(const std::string& json, const std::string& key) {
-    const auto quotedKey = "\"" + key + "\"";
-    auto keyPos = json.find(quotedKey);
-    if (keyPos == std::string::npos) {
+std::string ExtractStringValue(std::string_view json, std::string_view key) {
+    auto quotedKey = std::string("\"");
+    quotedKey.append(key);
+    quotedKey.push_back('"');
+
+    const auto keyPos = json.find(quotedKey);
+    if (keyPos == std::string_view::npos) {
         return {};
     }
 
-    auto colonPos = json.find(':', keyPos + quotedKey.length());
-    if (colonPos == std::string::npos) {
+    const auto colonPos = json.find(':', keyPos + quotedKey.length());
+    if (colonPos == std::string_view::npos) {
         return {};
     }
 
-    auto firstQuote = json.find('"', colonPos + 1);
-    if (firstQuote == std::string::npos) {
+    const auto firstQuote = json.find('"', colonPos + 1);
+    if (firstQuote == std::string_view::npos) {
         return {};
     }
 
-    auto secondQuote = json.find('"', firstQuote + 1);
-    if (secondQuote == std::string::npos || secondQuote <= firstQuote) {
+    const auto secondQuote = json.find('"', firstQuote + 1);
+    if (secondQuote == std::string_view::npos || secondQuote <= firstQuote) {
         return {};
     }
 
-    return json.substr(firstQuote + 1, secondQuote - firstQuote - 1);
+    return std::string(json.substr(firstQuote + 1, secondQuote - firstQuote - 1));
 }
 
-std::map<std::string, std::string> ExtractStringMap(const std::string& json, const std::string& key) {
+StringMap ExtractStringMap(std::string_view json, std::string_view key) {
     return ParseFlatStringMapObject(ExtractObjectJson(json, key));
 }
 

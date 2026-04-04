@@ -78,8 +78,8 @@ public sealed class MegArchiveReaderTests
     public void Open_ShouldParseFixtureArchives_WithStableEntryHashes()
     {
         var root = TestPaths.FindRepoRoot();
-        var format1Path = Path.Combine(root, "tools", "fixtures", "meg", "sample_format1.meg");
-        var format2Path = Path.Combine(root, "tools", "fixtures", "meg", "sample_format2.meg");
+        var format1Path = Path.Join(root, "tools", "fixtures", "meg", "sample_format1.meg");
+        var format2Path = Path.Join(root, "tools", "fixtures", "meg", "sample_format2.meg");
         var reader = new MegArchiveReader();
 
         var format1 = reader.Open(format1Path);
@@ -178,9 +178,8 @@ public sealed class MegArchiveReaderTests
     {
         using var stream = new MemoryStream();
         using var writer = new BinaryWriter(stream, Encoding.ASCII, leaveOpen: true);
-        foreach (var entry in entries)
+        foreach (var encoded in entries.Select(entry => Encoding.ASCII.GetBytes(entry.Path)))
         {
-            var encoded = Encoding.ASCII.GetBytes(entry.Path);
             writer.Write((ushort)encoded.Length);
             writer.Write((ushort)0);
             writer.Write(encoded);

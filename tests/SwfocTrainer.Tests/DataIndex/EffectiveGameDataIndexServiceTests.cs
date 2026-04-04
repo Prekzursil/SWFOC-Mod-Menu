@@ -11,16 +11,16 @@ public sealed class EffectiveGameDataIndexServiceTests
     [Fact]
     public void Build_ShouldRespectModGameMegPrecedence_AndTrackShadowing()
     {
-        var tempRoot = Path.Combine(Path.GetTempPath(), $"swfoc-effective-index-{Guid.NewGuid():N}");
-        var gameRoot = Path.Combine(tempRoot, "game");
-        var modRoot = Path.Combine(tempRoot, "mod");
-        Directory.CreateDirectory(Path.Combine(gameRoot, "Data"));
-        Directory.CreateDirectory(Path.Combine(gameRoot, "Data", "XML"));
-        Directory.CreateDirectory(Path.Combine(modRoot, "Data", "XML"));
+        var tempRoot = Path.Join(Path.GetTempPath(), $"swfoc-effective-index-{Guid.NewGuid():N}");
+        var gameRoot = Path.Join(tempRoot, "game");
+        var modRoot = Path.Join(tempRoot, "mod");
+        Directory.CreateDirectory(Path.Join(gameRoot, "Data"));
+        Directory.CreateDirectory(Path.Join(gameRoot, "Data", "XML"));
+        Directory.CreateDirectory(Path.Join(modRoot, "Data", "XML"));
 
         try
         {
-            var megaFilesXmlPath = Path.Combine(gameRoot, "Data", "MegaFiles.xml");
+            var megaFilesXmlPath = Path.Join(gameRoot, "Data", "MegaFiles.xml");
             File.WriteAllText(
                 megaFilesXmlPath,
                 """
@@ -31,19 +31,19 @@ public sealed class EffectiveGameDataIndexServiceTests
                 """);
 
             File.WriteAllBytes(
-                Path.Combine(gameRoot, "Data", "Base.meg"),
+                Path.Join(gameRoot, "Data", "Base.meg"),
                 BuildFormat2Archive([
                     new FixtureEntry("Data/XML/Shared.xml", "<from-base-meg/>"u8.ToArray())
                 ]));
             File.WriteAllBytes(
-                Path.Combine(gameRoot, "Data", "Patch.meg"),
+                Path.Join(gameRoot, "Data", "Patch.meg"),
                 BuildFormat2Archive([
                     new FixtureEntry("Data/XML/Shared.xml", "<from-patch-meg/>"u8.ToArray()),
                     new FixtureEntry("Data/XML/PatchOnly.xml", "<patch-only/>"u8.ToArray())
                 ]));
 
-            File.WriteAllText(Path.Combine(gameRoot, "Data", "XML", "Shared.xml"), "<from-game-loose/>");
-            File.WriteAllText(Path.Combine(modRoot, "Data", "XML", "Shared.xml"), "<from-mod-loose/>");
+            File.WriteAllText(Path.Join(gameRoot, "Data", "XML", "Shared.xml"), "<from-game-loose/>");
+            File.WriteAllText(Path.Join(modRoot, "Data", "XML", "Shared.xml"), "<from-mod-loose/>");
 
             var service = new EffectiveGameDataIndexService();
             var report = service.Build(new EffectiveGameDataIndexRequest(
@@ -82,7 +82,7 @@ public sealed class EffectiveGameDataIndexServiceTests
     [Fact]
     public void Build_ShouldEmitDiagnostic_WhenMegaFilesXmlIsMissing()
     {
-        var tempRoot = Path.Combine(Path.GetTempPath(), $"swfoc-effective-index-{Guid.NewGuid():N}");
+        var tempRoot = Path.Join(Path.GetTempPath(), $"swfoc-effective-index-{Guid.NewGuid():N}");
         Directory.CreateDirectory(tempRoot);
 
         try
@@ -101,6 +101,166 @@ public sealed class EffectiveGameDataIndexServiceTests
                 Directory.Delete(tempRoot, recursive: true);
             }
         }
+    }
+
+    [Fact]
+    public void Build_ShouldThrow_WhenRequestIsNull()
+    {
+        var service = new EffectiveGameDataIndexService();
+        var act = () => service.Build(null!);
+        act.Should().Throw<ArgumentNullException>();
+    }
+
+    [Fact]
+    public void Build_ShouldReturnEmptyWithDiagnostic_WhenProfileIdIsBlank()
+    {
+        var service = new EffectiveGameDataIndexService();
+        var report = service.Build(new EffectiveGameDataIndexRequest(
+            ProfileId: "",
+            GameRootPath: "C:/games"));
+
+        report.Diagnostics.Should().Contain("profileId and gameRootPath are required.");
+    }
+
+    [Fact]
+    public void Build_ShouldReturnEmptyWithDiagnostic_WhenGameRootPathIsBlank()
+    {
+        var service = new EffectiveGameDataIndexService();
+        var report = service.Build(new EffectiveGameDataIndexRequest(
+            ProfileId: "base_swfoc",
+            GameRootPath: "  "));
+
+        report.Diagnostics.Should().Contain("profileId and gameRootPath are required.");
+    }
+
+    [Fact]
+    public void Build_ShouldSkipModPath_WhenModPathIsNull()
+    {
+        var tempRoot = Path.Join(Path.GetTempPath(), $"swfoc-effective-index-{Guid.NewGuid():N}");
+        Directory.CreateDirectory(tempRoot);
+
+        try
+        {
+            var service = new EffectiveGameDataIndexService();
+            var report = service.Build(new EffectiveGameDataIndexRequest(
+                ProfileId: "base_swfoc",
+                GameRootPath: tempRoot,
+                ModPath: null));
+
+            report.Should().NotBeNull();
+        }
+        finally
+        {
+            if (Directory.Exists(tempRoot))
+            {
+                Directory.Delete(tempRoot, recursive: true);
+            }
+        }
+    }
+
+    [Fact]
+    public void Build_ShouldEmitDiagnostic_WhenLooseFileRootDoesNotExist()
+    {
+        var tempRoot = Path.Join(Path.GetTempPath(), $"swfoc-effective-index-{Guid.NewGuid():N}");
+        Directory.CreateDirectory(tempRoot);
+
+        try
+        {
+            var service = new EffectiveGameDataIndexService();
+            var report = service.Build(new EffectiveGameDataIndexRequest(
+                ProfileId: "base_swfoc",
+                GameRootPath: tempRoot,
+                ModPath: Path.Join(tempRoot, "nonexistent_mod_dir")));
+
+            report.Diagnostics.Should().Contain(x => x.Contains("does not exist"));
+        }
+        finally
+        {
+            if (Directory.Exists(tempRoot))
+            {
+                Directory.Delete(tempRoot, recursive: true);
+            }
+        }
+    }
+
+    [Fact]
+    public void Build_ShouldEmitDiagnostic_WhenMegFileNotFound()
+    {
+        var tempRoot = Path.Join(Path.GetTempPath(), $"swfoc-effective-index-{Guid.NewGuid():N}");
+        var gameRoot = Path.Join(tempRoot, "game");
+        Directory.CreateDirectory(Path.Join(gameRoot, "Data"));
+
+        try
+        {
+            File.WriteAllText(Path.Join(gameRoot, "Data", "MegaFiles.xml"), """
+<MegaFiles>
+  <MegaFile Name="Missing.meg" Enabled="true" />
+</MegaFiles>
+""");
+
+            var service = new EffectiveGameDataIndexService();
+            var report = service.Build(new EffectiveGameDataIndexRequest(
+                ProfileId: "base_swfoc",
+                GameRootPath: gameRoot));
+
+            report.Diagnostics.Should().Contain(x => x.Contains("Missing.meg") && x.Contains("was not found"));
+        }
+        finally
+        {
+            if (Directory.Exists(tempRoot))
+            {
+                Directory.Delete(tempRoot, recursive: true);
+            }
+        }
+    }
+
+    [Fact]
+    public void Build_ShouldEmitDiagnostic_WhenMegFileCannotBeParsed()
+    {
+        var tempRoot = Path.Join(Path.GetTempPath(), $"swfoc-effective-index-{Guid.NewGuid():N}");
+        var gameRoot = Path.Join(tempRoot, "game");
+        Directory.CreateDirectory(Path.Join(gameRoot, "Data"));
+
+        try
+        {
+            File.WriteAllText(Path.Join(gameRoot, "Data", "MegaFiles.xml"), """
+<MegaFiles>
+  <MegaFile Name="Bad.meg" Enabled="true" />
+</MegaFiles>
+""");
+            File.WriteAllBytes(Path.Join(gameRoot, "Data", "Bad.meg"), new byte[] { 0, 1, 2, 3 });
+
+            var service = new EffectiveGameDataIndexService();
+            var report = service.Build(new EffectiveGameDataIndexRequest(
+                ProfileId: "base_swfoc",
+                GameRootPath: gameRoot));
+
+            report.Diagnostics.Should().Contain(x => x.Contains("MEG parse"));
+        }
+        finally
+        {
+            if (Directory.Exists(tempRoot))
+            {
+                Directory.Delete(tempRoot, recursive: true);
+            }
+        }
+    }
+
+    [Fact]
+    public void DefaultConstructor_ShouldWork()
+    {
+        var service = new EffectiveGameDataIndexService();
+        service.Should().NotBeNull();
+    }
+
+    [Fact]
+    public void Constructor_ShouldThrow_WhenDependenciesAreNull()
+    {
+        var act1 = () => new EffectiveGameDataIndexService(null!, new SwfocTrainer.Meg.MegArchiveReader());
+        var act2 = () => new EffectiveGameDataIndexService(new MegaFilesXmlIndexBuilder(), null!);
+
+        act1.Should().Throw<ArgumentNullException>();
+        act2.Should().Throw<ArgumentNullException>();
     }
 
     private static byte[] BuildFormat2Archive(IReadOnlyList<FixtureEntry> entries)
@@ -142,9 +302,8 @@ public sealed class EffectiveGameDataIndexServiceTests
     {
         using var stream = new MemoryStream();
         using var writer = new BinaryWriter(stream, Encoding.ASCII, leaveOpen: true);
-        foreach (var entry in entries)
+        foreach (var encoded in entries.Select(entry => Encoding.ASCII.GetBytes(entry.Path)))
         {
-            var encoded = Encoding.ASCII.GetBytes(entry.Path);
             writer.Write((ushort)encoded.Length);
             writer.Write((ushort)0);
             writer.Write(encoded);

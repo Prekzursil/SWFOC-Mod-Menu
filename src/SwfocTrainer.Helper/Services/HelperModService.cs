@@ -24,19 +24,20 @@ public sealed class HelperModService : IHelperModService
 
     public async Task<string> DeployAsync(string profileId, CancellationToken cancellationToken)
     {
+        ArgumentNullException.ThrowIfNull(profileId);
         var profile = await _profiles.ResolveInheritedProfileAsync(profileId, cancellationToken);
-        var targetRoot = Path.Combine(_options.InstallRoot, profileId);
+        var targetRoot = Path.Join(_options.InstallRoot, profileId);
         Directory.CreateDirectory(targetRoot);
 
         foreach (var script in profile.HelperModHooks.Select(hook => hook.Script))
         {
-            var sourcePath = Path.Combine(_options.SourceRoot, script);
+            var sourcePath = Path.Join(_options.SourceRoot, script);
             if (!File.Exists(sourcePath))
             {
                 throw new FileNotFoundException($"Helper hook source not found: {sourcePath}");
             }
 
-            var destination = Path.Combine(targetRoot, script);
+            var destination = Path.Join(targetRoot, script);
             var destinationDir = Path.GetDirectoryName(destination);
             if (!string.IsNullOrWhiteSpace(destinationDir))
             {
@@ -52,12 +53,13 @@ public sealed class HelperModService : IHelperModService
 
     public async Task<bool> VerifyAsync(string profileId, CancellationToken cancellationToken)
     {
+        ArgumentNullException.ThrowIfNull(profileId);
         var profile = await _profiles.ResolveInheritedProfileAsync(profileId, cancellationToken);
-        var targetRoot = Path.Combine(_options.InstallRoot, profileId);
+        var targetRoot = Path.Join(_options.InstallRoot, profileId);
 
         foreach (var hook in profile.HelperModHooks)
         {
-            var path = Path.Combine(targetRoot, hook.Script);
+            var path = Path.Join(targetRoot, hook.Script);
             if (!File.Exists(path))
             {
                 return false;

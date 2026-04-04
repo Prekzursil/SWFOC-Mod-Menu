@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text.Json.Nodes;
 using SwfocTrainer.App.Models;
@@ -18,6 +19,7 @@ public abstract class MainViewModelQuickActionsBase : MainViewModelLiveOpsBase
 
     protected async Task QuickRunActionAsync(string actionId, JsonObject payload, string? toggleKey = null)
     {
+        ArgumentNullException.ThrowIfNull(actionId);
         ArgumentNullException.ThrowIfNull(payload);
 
         if (!CanRunQuickAction())
@@ -41,7 +43,15 @@ public abstract class MainViewModelQuickActionsBase : MainViewModelLiveOpsBase
             ToggleQuickActionState(toggleKey, result.Succeeded);
             Status = MainViewModelDiagnostics.BuildQuickActionStatus(actionId, result);
         }
-        catch (Exception ex)
+        catch (InvalidOperationException ex)
+        {
+            Status = $"✗ {actionId}: {ex.Message}";
+        }
+        catch (System.ComponentModel.Win32Exception ex)
+        {
+            Status = $"✗ {actionId}: {ex.Message}";
+        }
+        catch (IOException ex)
         {
             Status = $"✗ {actionId}: {ex.Message}";
         }
@@ -129,7 +139,15 @@ public abstract class MainViewModelQuickActionsBase : MainViewModelLiveOpsBase
 
             Status = creditsStatus.StatusMessage;
         }
-        catch (Exception ex)
+        catch (InvalidOperationException ex)
+        {
+            Status = $"✗ Credits: {ex.Message}";
+        }
+        catch (System.ComponentModel.Win32Exception ex)
+        {
+            Status = $"✗ Credits: {ex.Message}";
+        }
+        catch (IOException ex)
         {
             Status = $"✗ Credits: {ex.Message}";
         }
@@ -165,8 +183,8 @@ public abstract class MainViewModelQuickActionsBase : MainViewModelLiveOpsBase
         ActionFreezeTimer,
         new JsonObject
         {
-            [PayloadKeySymbol] = SymbolGameTimerFreeze,
-            [PayloadKeyBoolValue] = !_activeToggles.Contains(SymbolGameTimerFreeze)
+            [PayloadSymbol] = SymbolGameTimerFreeze,
+            [PayloadBoolValue] = !_activeToggles.Contains(SymbolGameTimerFreeze)
         },
         SymbolGameTimerFreeze);
 
@@ -174,8 +192,8 @@ public abstract class MainViewModelQuickActionsBase : MainViewModelLiveOpsBase
         ActionToggleFogReveal,
         new JsonObject
         {
-            [PayloadKeySymbol] = SymbolFogReveal,
-            [PayloadKeyBoolValue] = !_activeToggles.Contains(SymbolFogReveal)
+            [PayloadSymbol] = SymbolFogReveal,
+            [PayloadBoolValue] = !_activeToggles.Contains(SymbolFogReveal)
         },
         SymbolFogReveal);
 
@@ -183,8 +201,8 @@ public abstract class MainViewModelQuickActionsBase : MainViewModelLiveOpsBase
         ActionToggleAi,
         new JsonObject
         {
-            [PayloadKeySymbol] = SymbolAiEnabled,
-            [PayloadKeyBoolValue] = _activeToggles.Contains(SymbolAiEnabled)
+            [PayloadSymbol] = SymbolAiEnabled,
+            [PayloadBoolValue] = _activeToggles.Contains(SymbolAiEnabled)
         },
         SymbolAiEnabled);
 
@@ -192,20 +210,20 @@ public abstract class MainViewModelQuickActionsBase : MainViewModelLiveOpsBase
         ActionToggleInstantBuildPatch,
         new JsonObject
         {
-            [PayloadKeyEnable] = !_activeToggles.Contains(SymbolInstantBuildNop)
+            [PayloadEnable] = !_activeToggles.Contains(SymbolInstantBuildNop)
         },
         SymbolInstantBuildNop);
 
     protected Task QuickUnitCapAsync()
         => QuickRunActionAsync(ActionSetUnitCap,
-            new JsonObject { [PayloadKeySymbol] = SymbolUnitCap, [PayloadKeyIntValue] = DefaultUnitCapValue, [PayloadKeyEnable] = true });
+            new JsonObject { [PayloadSymbol] = SymbolUnitCap, [PayloadIntValue] = DefaultUnitCapValue, [PayloadEnable] = true });
 
     protected Task QuickGodModeAsync() => QuickRunActionAsync(
         ActionToggleTacticalGodMode,
         new JsonObject
         {
-            [PayloadKeySymbol] = SymbolTacticalGodMode,
-            [PayloadKeyBoolValue] = !_activeToggles.Contains(SymbolTacticalGodMode)
+            [PayloadSymbol] = SymbolTacticalGodMode,
+            [PayloadBoolValue] = !_activeToggles.Contains(SymbolTacticalGodMode)
         },
         SymbolTacticalGodMode);
 
@@ -213,8 +231,8 @@ public abstract class MainViewModelQuickActionsBase : MainViewModelLiveOpsBase
         ActionToggleTacticalOneHitMode,
         new JsonObject
         {
-            [PayloadKeySymbol] = SymbolTacticalOneHitMode,
-            [PayloadKeyBoolValue] = !_activeToggles.Contains(SymbolTacticalOneHitMode)
+            [PayloadSymbol] = SymbolTacticalOneHitMode,
+            [PayloadBoolValue] = !_activeToggles.Contains(SymbolTacticalOneHitMode)
         },
         SymbolTacticalOneHitMode);
 
@@ -274,6 +292,7 @@ public abstract class MainViewModelQuickActionsBase : MainViewModelLiveOpsBase
 
     public async Task<bool> ExecuteHotkeyAsync(string gesture)
     {
+        ArgumentNullException.ThrowIfNull(gesture);
         if (!CanExecuteHotkey())
         {
             return false;

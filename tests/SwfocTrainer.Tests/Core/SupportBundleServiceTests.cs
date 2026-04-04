@@ -15,7 +15,7 @@ public sealed class SupportBundleServiceTests
         var runtime = CreateAttachedRuntime();
         var telemetry = CreateTelemetry();
         var runId = await CreateRunFixtureAsync();
-        var outputDir = Path.Combine(Path.GetTempPath(), $"swfoc-support-{Guid.NewGuid():N}");
+        var outputDir = Path.Join(Path.GetTempPath(), $"swfoc-support-{Guid.NewGuid():N}");
         Directory.CreateDirectory(outputDir);
 
         try
@@ -32,7 +32,7 @@ public sealed class SupportBundleServiceTests
         finally
         {
             DeleteDirectoryIfExists(outputDir);
-            DeleteDirectoryIfExists(Path.Combine(Directory.GetCurrentDirectory(), "TestResults", "runs", runId));
+            DeleteDirectoryIfExists(Path.Join(Directory.GetCurrentDirectory(), "TestResults", "runs", runId));
         }
     }
 
@@ -62,10 +62,10 @@ public sealed class SupportBundleServiceTests
     private static async Task<string> CreateRunFixtureAsync()
     {
         var runId = $"support-bundle-test-{Guid.NewGuid():N}";
-        var runRoot = Path.Combine(Directory.GetCurrentDirectory(), "TestResults", "runs", runId);
+        var runRoot = Path.Join(Directory.GetCurrentDirectory(), "TestResults", "runs", runId);
         Directory.CreateDirectory(runRoot);
-        await File.WriteAllTextAsync(Path.Combine(runRoot, "repro-bundle.json"), "{\"schemaVersion\":\"1.1\"}");
-        await File.WriteAllTextAsync(Path.Combine(runRoot, "repro-bundle.md"), "# repro");
+        await File.WriteAllTextAsync(Path.Join(runRoot, "repro-bundle.json"), "{\"schemaVersion\":\"1.1\"}");
+        await File.WriteAllTextAsync(Path.Join(runRoot, "repro-bundle.md"), "# repro");
         return runId;
     }
 

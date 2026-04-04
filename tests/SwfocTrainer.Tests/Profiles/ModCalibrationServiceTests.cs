@@ -26,7 +26,7 @@ public sealed class ModCalibrationServiceTests
     [Fact]
     public async Task ExportCalibrationArtifactAsync_ShouldWriteCandidateArtifactJson()
     {
-        var outputDir = Path.Combine(Path.GetTempPath(), $"swfoc-calibration-{Guid.NewGuid():N}");
+        var outputDir = Path.Join(Path.GetTempPath(), $"swfoc-calibration-{Guid.NewGuid():N}");
         Directory.CreateDirectory(outputDir);
 
         try

@@ -24,7 +24,7 @@ public sealed class RuntimeAttachSmokeTests
         var root = TestPaths.FindRepoRoot();
         var options = new ProfileRepositoryOptions
         {
-            ProfilesRootPath = Path.Combine(root, "profiles", "default")
+            ProfilesRootPath = Path.Join(root, "profiles", "default")
         };
 
         var repository = new FileSystemProfileRepository(options);

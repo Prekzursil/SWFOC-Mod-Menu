@@ -145,6 +145,7 @@ internal static class MainViewModelFactories
         ICommand InstallUpdate,
         ICommand RollbackProfileUpdate) CreateCoreCommands(MainViewModelCoreCommandContext context)
     {
+        ArgumentNullException.ThrowIfNull(context);
         return (
             new AsyncCommand(context.LoadProfilesAsync),
             new AsyncCommand(context.LaunchAndAttachAsync, context.CanUseSelectedProfile),
@@ -178,6 +179,7 @@ internal static class MainViewModelFactories
         ICommand AddHotkey,
         ICommand RemoveHotkey) CreateSaveCommands(MainViewModelSaveCommandContext context)
     {
+        ArgumentNullException.ThrowIfNull(context);
         return (
             new AsyncCommand(context.BrowseSaveAsync),
             new AsyncCommand(context.LoadSaveAsync, context.CanLoadSave),
@@ -211,6 +213,7 @@ internal static class MainViewModelFactories
         ICommand ExportSupportBundle,
         ICommand ExportTelemetrySnapshot) CreateLiveOpsCommands(MainViewModelLiveOpsCommandContext context)
     {
+        ArgumentNullException.ThrowIfNull(context);
         return (
             new AsyncCommand(context.RefreshActionReliabilityAsync, () => context.IsAttached() && context.CanUseSelectedProfile()),
             new AsyncCommand(context.CaptureSelectedUnitBaselineAsync, context.IsAttached),
@@ -237,6 +240,7 @@ internal static class MainViewModelFactories
         ICommand QuickOneHit,
         ICommand QuickUnfreezeAll) CreateQuickCommands(MainViewModelQuickCommandContext context)
     {
+        ArgumentNullException.ThrowIfNull(context);
         return (
             new AsyncCommand(context.QuickSetCreditsAsync, context.IsAttached),
             new AsyncCommand(context.QuickFreezeTimerAsync, context.IsAttached),

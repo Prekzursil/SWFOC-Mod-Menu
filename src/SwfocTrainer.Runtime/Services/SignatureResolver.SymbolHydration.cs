@@ -19,7 +19,7 @@ internal static class SignatureResolverSymbolHydration
             return envOverride;
         }
 
-        return Path.GetFullPath(Path.Combine(Directory.GetCurrentDirectory(), "profiles", "default", "sdk", "ghidra", "symbol-packs"));
+        return Path.GetFullPath(Path.Join(Directory.GetCurrentDirectory(), "profiles", "default", "sdk", "ghidra", "symbol-packs"));
     }
 
     internal static void TryHydrateSymbolsFromGhidraPack(
@@ -29,11 +29,12 @@ internal static class SignatureResolverSymbolHydration
         IReadOnlyList<SignatureSet> signatureSets,
         IDictionary<string, SymbolInfo> symbols)
     {
+        ArgumentNullException.ThrowIfNull(ghidraSymbolPackRoot);
         ArgumentNullException.ThrowIfNull(logger);
         ArgumentNullException.ThrowIfNull(module);
         ArgumentNullException.ThrowIfNull(signatureSets);
         ArgumentNullException.ThrowIfNull(symbols);
-        if (!TryLoadGhidraSymbolPack(ghidraSymbolPackRoot, logger, module, out var fingerprintId, out var packPath, out var pack))
+        if (!TryLoadGhidraSymbolPack(new GhidraPackInput(ghidraSymbolPackRoot, logger, module), out var fingerprintId, out var packPath, out var pack))
         {
             return;
         }
@@ -56,28 +57,31 @@ internal static class SignatureResolverSymbolHydration
             fingerprintId);
     }
 
+    private readonly record struct GhidraPackInput(
+        string GhidraSymbolPackRoot,
+        ILogger<SignatureResolver> Logger,
+        ProcessModule Module);
+
     private static bool TryLoadGhidraSymbolPack(
-        string ghidraSymbolPackRoot,
-        ILogger<SignatureResolver> logger,
-        ProcessModule module,
+        GhidraPackInput input,
         out string fingerprintId,
         out string packPath,
         out GhidraSymbolPackDto pack)
     {
         pack = null!;
-        if (!TryResolveGhidraPackPath(ghidraSymbolPackRoot, module, out fingerprintId, out packPath))
+        if (!TryResolveGhidraPackPath(input.GhidraSymbolPackRoot, input.Module, out fingerprintId, out packPath))
         {
             return false;
         }
 
-        if (!TryDeserializeGhidraSymbolPack(logger, packPath, out var candidate))
+        if (!TryDeserializeGhidraSymbolPack(input.Logger, packPath, out var candidate))
         {
             return false;
         }
 
         if (!IsMatchingFingerprint(candidate.BinaryFingerprint?.FingerprintId, fingerprintId))
         {
-            logger.LogWarning(
+            input.Logger.LogWarning(
                 "Ignoring ghidra symbol pack {Path}: fingerprint mismatch (expected {Expected}, actual {Actual})",
                 packPath,
                 fingerprintId,
@@ -113,6 +117,8 @@ internal static class SignatureResolverSymbolHydration
 
     internal static string? SelectBestGhidraPackPath(string symbolPackRoot, string fingerprintId)
     {
+        ArgumentNullException.ThrowIfNull(symbolPackRoot);
+        ArgumentNullException.ThrowIfNull(fingerprintId);
         if (string.IsNullOrWhiteSpace(symbolPackRoot) ||
             string.IsNullOrWhiteSpace(fingerprintId) ||
             !Directory.Exists(symbolPackRoot))
@@ -121,7 +127,7 @@ internal static class SignatureResolverSymbolHydration
         }
 
         var candidates = new List<PackSelectionCandidate>();
-        var exactPath = Path.Combine(symbolPackRoot, $"{fingerprintId}.json");
+        var exactPath = Path.Join(symbolPackRoot, $"{fingerprintId}.json");
         TryAddPackCandidate(candidates, exactPath, precedence: 0, fingerprintId);
 
         var indexedPath = ResolvePackPathFromArtifactIndex(symbolPackRoot, fingerprintId);
@@ -162,7 +168,11 @@ internal static class SignatureResolverSymbolHydration
                 .Where(path => !Path.GetFileName(path).Equals(ArtifactIndexFileName, StringComparison.OrdinalIgnoreCase))
                 .ToArray();
         }
-        catch
+        catch (IOException)
+        {
+            return Array.Empty<string>();
+        }
+        catch (UnauthorizedAccessException)
         {
             return Array.Empty<string>();
         }
@@ -213,7 +223,11 @@ internal static class SignatureResolverSymbolHydration
             generatedAtUtc = pack.BuildMetadata?.GeneratedAtUtc ?? DateTimeOffset.MinValue;
             return true;
         }
-        catch
+        catch (JsonException)
+        {
+            return false;
+        }
+        catch (IOException)
         {
             return false;
         }
@@ -221,7 +235,7 @@ internal static class SignatureResolverSymbolHydration
 
     private static string? ResolvePackPathFromArtifactIndex(string symbolPackRoot, string fingerprintId)
     {
-        var indexPath = Path.Combine(symbolPackRoot, ArtifactIndexFileName);
+        var indexPath = Path.Join(symbolPackRoot, ArtifactIndexFileName);
         if (!TryReadArtifactIndex(indexPath, out var index))
         {
             return null;
@@ -257,7 +271,11 @@ internal static class SignatureResolverSymbolHydration
             index = candidate;
             return true;
         }
-        catch
+        catch (JsonException)
+        {
+            return false;
+        }
+        catch (IOException)
         {
             return false;
         }
@@ -281,7 +299,7 @@ internal static class SignatureResolverSymbolHydration
             return configuredPath;
         }
 
-        return Path.GetFullPath(Path.Combine(symbolPackRoot, configuredPath));
+        return Path.GetFullPath(Path.Join(symbolPackRoot, configuredPath));
     }
 
     private static bool TryDeserializeGhidraSymbolPack(
@@ -304,7 +322,12 @@ internal static class SignatureResolverSymbolHydration
             pack = candidate;
             return true;
         }
-        catch (Exception ex)
+        catch (IOException ex)
+        {
+            logger.LogWarning(ex, "Failed to consume ghidra symbol pack at {Path}", packPath);
+            return false;
+        }
+        catch (System.Text.Json.JsonException ex)
         {
             logger.LogWarning(ex, "Failed to consume ghidra symbol pack at {Path}", packPath);
             return false;

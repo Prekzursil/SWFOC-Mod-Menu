@@ -48,13 +48,13 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
     private const int InstantBuildHookInstructionLength = 6;
     private const int InstantBuildHookJumpLength = 5;
     private const int InstantBuildHookCaveSize = 31;
-    private const string DiagnosticReasonCodeKey = "reasonCode";
-    private const string PayloadHelperHookIdKey = "helperHookId";
-    private const string PayloadHelperEntryPointKey = "helperEntryPoint";
-    private const string PayloadPopulationPolicyKey = "populationPolicy";
-    private const string PayloadPersistencePolicyKey = "persistencePolicy";
-    private const string PayloadAllowCrossFactionKey = "allowCrossFaction";
-    private const string PayloadSymbolKey = "symbol";
+    private const string DiagnosticReasonCode = "reasonCode";
+    private const string PayloadHelperHookId = "helperHookId";
+    private const string PayloadHelperEntryPoint = "helperEntryPoint";
+    private const string PayloadPopulationPolicy = "populationPolicy";
+    private const string PayloadPersistencePolicy = "persistencePolicy";
+    private const string PayloadAllowCrossFaction = "allowCrossFaction";
+    private const string PayloadSymbolField = "symbol";
     private const string ContextSpawnDefaultHookId = "spawn_bridge";
     private const string ContextSpawnEntryPoint = "SWFOC_Trainer_Spawn_Context";
     private const string ContextSpawnLegacyEntryPoint = "SWFOC_Trainer_Spawn";
@@ -88,7 +88,7 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
         _helperBridgeBackend = ResolveOptionalService<IHelperBridgeBackend>(serviceProvider) ?? new NamedPipeHelperBridgeBackend(_extenderBackend);
         _telemetryLogTailService = ResolveOptionalService<ITelemetryLogTailService>(serviceProvider) ?? new TelemetryLogTailService();
         _logger = logger;
-        _calibrationArtifactRoot = Path.Combine(
+        _calibrationArtifactRoot = Path.Join(
             Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
             "SwfocTrainer",
             "calibration");
@@ -109,11 +109,13 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
 
     public Task<AttachSession> AttachAsync(string profileId)
     {
+        ArgumentNullException.ThrowIfNull(profileId);
         return AttachAsync(profileId, CancellationToken.None);
     }
 
     public async Task<AttachSession> AttachAsync(string profileId, CancellationToken cancellationToken)
     {
+        ArgumentNullException.ThrowIfNull(profileId);
         if (IsAttached)
         {
             return CurrentSession!;
@@ -578,7 +580,11 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
             using var process = Process.GetProcessById(processId);
             return process.MainModule?.ModuleMemorySize ?? 0;
         }
-        catch
+        catch (InvalidOperationException)
+        {
+            return 0;
+        }
+        catch (System.ComponentModel.Win32Exception)
         {
             return 0;
         }
@@ -674,7 +680,12 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
             File.WriteAllText(filePath, JsonSerializer.Serialize(payload, new JsonSerializerOptions { WriteIndented = true }));
             return filePath;
         }
-        catch (Exception ex)
+        catch (IOException ex)
+        {
+            _logger.LogWarning(ex, "Failed to emit calibration snapshot.");
+            return null;
+        }
+        catch (UnauthorizedAccessException ex)
         {
             _logger.LogWarning(ex, "Failed to emit calibration snapshot.");
             return null;
@@ -685,7 +696,7 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
     {
         var safeTimestamp = generatedAtUtc.ToString("yyyyMMdd_HHmmss");
         var safeProfile = profileId.Replace('/', '_').Replace('\\', '_');
-        return Path.Combine(_calibrationArtifactRoot, $"attach_{safeProfile}_{safeTimestamp}.json");
+        return Path.Join(_calibrationArtifactRoot, $"attach_{safeProfile}_{safeTimestamp}.json");
     }
 
     private IReadOnlyList<RuntimeCalibrationCandidate> BuildCalibrationCandidates(  // NOSONAR
@@ -730,7 +741,11 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
                     snippet = BuildPatternSnippet(moduleBytes, hits[0], pattern.Bytes.Length);
                 }
             }
-            catch (Exception ex)
+            catch (FormatException ex)
+            {
+                snippet = $"pattern_parse_error: {ex.Message}";
+            }
+            catch (ArgumentException ex)
             {
                 snippet = $"pattern_parse_error: {ex.Message}";
             }
@@ -756,14 +771,14 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
         try
         {
             var generatedAt = DateTimeOffset.UtcNow;
-            var scanRoot = Path.Combine(_calibrationArtifactRoot, "scans");
+            var scanRoot = Path.Join(_calibrationArtifactRoot, "scans");
             Directory.CreateDirectory(scanRoot);
 
             var safeProfile = SanitizeArtifactToken(profileId);
             var safeSymbol = SanitizeArtifactToken(targetSymbol);
             var timestamp = generatedAt.ToString("yyyyMMdd_HHmmss");
-            var outputPath = Path.Combine(scanRoot, $"scan_{safeProfile}_{safeSymbol}_{timestamp}.json");
-            var latestPath = Path.Combine(scanRoot, "scan_latest.json");
+            var outputPath = Path.Join(scanRoot, $"scan_{safeProfile}_{safeSymbol}_{timestamp}.json");
+            var latestPath = Path.Join(scanRoot, "scan_latest.json");
 
             var payload = new
             {
@@ -780,7 +795,12 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
             File.WriteAllText(latestPath, json);
             return outputPath;
         }
-        catch (Exception ex)
+        catch (IOException ex)
+        {
+            _logger.LogWarning(ex, "Failed to persist calibration scan artifact for symbol {Symbol}.", targetSymbol);
+            return null;
+        }
+        catch (UnauthorizedAccessException ex)
         {
             _logger.LogWarning(ex, "Failed to persist calibration scan artifact for symbol {Symbol}.", targetSymbol);
             return null;
@@ -917,42 +937,12 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
 
     private static IReadOnlyList<SymbolValidationRule> ParseSymbolValidationRules(TrainerProfile profile)
     {
-        if (profile.Metadata is null ||
-            !profile.Metadata.TryGetValue("symbolValidationRules", out var raw) ||
-            string.IsNullOrWhiteSpace(raw))
-        {
-            return Array.Empty<SymbolValidationRule>();
-        }
-
-        try
-        {
-            var parsed = JsonSerializer.Deserialize<List<SymbolValidationRule>>(raw, SymbolValidationJsonOptions);
-            return parsed is not null
-                ? parsed
-                : Array.Empty<SymbolValidationRule>();
-        }
-        catch
-        {
-            return Array.Empty<SymbolValidationRule>();
-        }
+        return ProfileMetadataParser.ParseSymbolValidationRules(profile);
     }
 
     private static HashSet<string> ParseCriticalSymbols(TrainerProfile profile)
     {
-        var symbols = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
-        if (profile.Metadata is null ||
-            !profile.Metadata.TryGetValue("criticalSymbols", out var raw) ||
-            string.IsNullOrWhiteSpace(raw))
-        {
-            return symbols;
-        }
-
-        foreach (var symbol in raw.Split(',', StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries))
-        {
-            symbols.Add(symbol);
-        }
-
-        return symbols;
+        return ProfileMetadataParser.ParseCriticalSymbolSet(profile);
     }
 
     private static long? TryGetFileSize(string? path)
@@ -966,7 +956,11 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
         {
             return new FileInfo(path).Length;
         }
-        catch
+        catch (IOException)
+        {
+            return null;
+        }
+        catch (UnauthorizedAccessException)
         {
             return null;
         }
@@ -984,7 +978,11 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
             var utc = File.GetLastWriteTimeUtc(path);
             return new DateTimeOffset(utc, TimeSpan.Zero);
         }
-        catch
+        catch (IOException)
+        {
+            return null;
+        }
+        catch (UnauthorizedAccessException)
         {
             return null;
         }
@@ -1004,7 +1002,11 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
             var hash = sha.ComputeHash(stream);
             return Convert.ToHexString(hash).ToLowerInvariant();
         }
-        catch
+        catch (IOException)
+        {
+            return null;
+        }
+        catch (UnauthorizedAccessException)
         {
             return null;
         }
@@ -1096,11 +1098,13 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
 
     public Task<T> ReadAsync<T>(string symbol) where T : unmanaged
     {
+        ArgumentNullException.ThrowIfNull(symbol);
         return ReadAsync<T>(symbol, CancellationToken.None);
     }
 
     public Task<T> ReadAsync<T>(string symbol, CancellationToken cancellationToken) where T : unmanaged
     {
+        ArgumentNullException.ThrowIfNull(symbol);
         EnsureAttached();
         var sym = ResolveSymbol(symbol);
         var value = _memory!.Read<T>(sym.Address);
@@ -1109,11 +1113,13 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
 
     public Task WriteAsync<T>(string symbol, T value) where T : unmanaged
     {
+        ArgumentNullException.ThrowIfNull(symbol);
         return WriteAsync(symbol, value, CancellationToken.None);
     }
 
     public Task WriteAsync<T>(string symbol, T value, CancellationToken cancellationToken) where T : unmanaged
     {
+        ArgumentNullException.ThrowIfNull(symbol);
         EnsureAttached();
         var sym = ResolveSymbol(symbol);
         _memory!.Write(sym.Address, value);
@@ -1124,7 +1130,8 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
         RuntimeCalibrationScanRequest request,
         CancellationToken cancellationToken)
     {
-        if (request is null || string.IsNullOrWhiteSpace(request.TargetSymbol))
+        ArgumentNullException.ThrowIfNull(request);
+        if (string.IsNullOrWhiteSpace(request.TargetSymbol))
         {
             return new RuntimeCalibrationScanResult(
                 Succeeded: false,
@@ -1191,11 +1198,15 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
                 Candidates: candidates,
                 ArtifactPath: artifactPath);
         }
-        catch (OperationCanceledException)
+        catch (InvalidOperationException ex)
         {
-            throw;
+            return new RuntimeCalibrationScanResult(
+                Succeeded: false,
+                ReasonCode: "scan_failed",
+                Message: $"Calibration scan failed: {ex.Message}",
+                Candidates: Array.Empty<RuntimeCalibrationCandidate>());
         }
-        catch (Exception ex)
+        catch (System.ComponentModel.Win32Exception ex)
         {
             return new RuntimeCalibrationScanResult(
                 Succeeded: false,
@@ -1207,11 +1218,13 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
 
     public Task<ActionExecutionResult> ExecuteAsync(ActionExecutionRequest request)
     {
+        ArgumentNullException.ThrowIfNull(request);
         return ExecuteAsync(request, CancellationToken.None);
     }
 
     public async Task<ActionExecutionResult> ExecuteAsync(ActionExecutionRequest request, CancellationToken cancellationToken)
     {
+        ArgumentNullException.ThrowIfNull(request);
         EnsureAttached();
         var modeResolution = ResolveEffectiveMode(request);
         var effectiveRequest = modeResolution.Request;
@@ -1283,7 +1296,28 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
             RecordActionTelemetry(request, result);
             return result;
         }
-        catch (Exception ex)
+        catch (InvalidOperationException ex)
+        {
+            var failed = ApplyRuntimeModeDiagnostics(CreateExecutionExceptionResult(effectiveRequest, routeDecision, capabilityReport, ex), modeResolution.Diagnostics);
+            failed = ApplyContextActionDiagnostics(failed, request.Action.Id, contextActionRoute);
+            RecordActionTelemetry(request, failed);
+            return failed;
+        }
+        catch (System.ComponentModel.Win32Exception ex)
+        {
+            var failed = ApplyRuntimeModeDiagnostics(CreateExecutionExceptionResult(effectiveRequest, routeDecision, capabilityReport, ex), modeResolution.Diagnostics);
+            failed = ApplyContextActionDiagnostics(failed, request.Action.Id, contextActionRoute);
+            RecordActionTelemetry(request, failed);
+            return failed;
+        }
+        catch (IOException ex)
+        {
+            var failed = ApplyRuntimeModeDiagnostics(CreateExecutionExceptionResult(effectiveRequest, routeDecision, capabilityReport, ex), modeResolution.Diagnostics);
+            failed = ApplyContextActionDiagnostics(failed, request.Action.Id, contextActionRoute);
+            RecordActionTelemetry(request, failed);
+            return failed;
+        }
+        catch (KeyNotFoundException ex)
         {
             var failed = ApplyRuntimeModeDiagnostics(CreateExecutionExceptionResult(effectiveRequest, routeDecision, capabilityReport, ex), modeResolution.Diagnostics);
             failed = ApplyContextActionDiagnostics(failed, request.Action.Id, contextActionRoute);
@@ -1355,7 +1389,7 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
             AddressSource.None,
             new Dictionary<string, object?>
             {
-                [DiagnosticReasonCodeKey] = RuntimeReasonCode.MODE_STRICT_TACTICAL_UNSPECIFIED.ToString(),
+                [DiagnosticReasonCode] = RuntimeReasonCode.MODE_STRICT_TACTICAL_UNSPECIFIED.ToString(),
                 ["runtimeMode"] = mode.ToString()
             });
     }
@@ -1368,7 +1402,7 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
             AddressSource.None,
             new Dictionary<string, object?>
             {
-                [DiagnosticReasonCodeKey] = RuntimeReasonCode.CAPABILITY_REQUIRED_MISSING.ToString(),
+                [DiagnosticReasonCode] = RuntimeReasonCode.CAPABILITY_REQUIRED_MISSING.ToString(),
                 ["routedActionId"] = targetActionId
             });
     }
@@ -1386,46 +1420,46 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
 
     private static void ApplyContextSpawnPayloadDefaults(JsonObject payload, string targetActionId)
     {
-        if (!payload.ContainsKey(PayloadHelperHookIdKey))
+        if (!payload.ContainsKey(PayloadHelperHookId))
         {
-            payload[PayloadHelperHookIdKey] = ContextSpawnDefaultHookId;
+            payload[PayloadHelperHookId] = ContextSpawnDefaultHookId;
         }
 
-        if (!payload.ContainsKey(PayloadHelperEntryPointKey))
+        if (!payload.ContainsKey(PayloadHelperEntryPoint))
         {
-            payload[PayloadHelperEntryPointKey] = targetActionId.Equals(ActionIdSpawnGalacticEntity, StringComparison.OrdinalIgnoreCase) ||
+            payload[PayloadHelperEntryPoint] = targetActionId.Equals(ActionIdSpawnGalacticEntity, StringComparison.OrdinalIgnoreCase) ||
                                                   targetActionId.Equals(ActionIdSpawnTacticalEntity, StringComparison.OrdinalIgnoreCase)
                 ? ContextSpawnEntryPoint
                 : ContextSpawnLegacyEntryPoint;
         }
 
-        if (!payload.ContainsKey(PayloadPopulationPolicyKey))
+        if (!payload.ContainsKey(PayloadPopulationPolicy))
         {
-            payload[PayloadPopulationPolicyKey] = targetActionId.Equals(ActionIdSpawnTacticalEntity, StringComparison.OrdinalIgnoreCase)
+            payload[PayloadPopulationPolicy] = targetActionId.Equals(ActionIdSpawnTacticalEntity, StringComparison.OrdinalIgnoreCase)
                 ? PopulationPolicyForceZeroTactical
                 : PopulationPolicyNormal;
         }
 
-        if (!payload.ContainsKey(PayloadPersistencePolicyKey))
+        if (!payload.ContainsKey(PayloadPersistencePolicy))
         {
-            payload[PayloadPersistencePolicyKey] = targetActionId.Equals(ActionIdSpawnTacticalEntity, StringComparison.OrdinalIgnoreCase)
+            payload[PayloadPersistencePolicy] = targetActionId.Equals(ActionIdSpawnTacticalEntity, StringComparison.OrdinalIgnoreCase)
                 ? PersistencePolicyEphemeralBattleOnly
                 : PersistencePolicyPersistentGalactic;
         }
 
-        if (!payload.ContainsKey(PayloadAllowCrossFactionKey))
+        if (!payload.ContainsKey(PayloadAllowCrossFaction))
         {
-            payload[PayloadAllowCrossFactionKey] = true;
+            payload[PayloadAllowCrossFaction] = true;
         }
     }
 
     private static void ApplyContextSymbolHint(JsonObject payload, string targetActionId)
     {
-        if (!payload.ContainsKey(PayloadSymbolKey) &&
+        if (!payload.ContainsKey(PayloadSymbolField) &&
             ActionSymbolRegistry.TryGetSymbol(targetActionId, out var symbolHint) &&
             !string.IsNullOrWhiteSpace(symbolHint))
         {
-            payload[PayloadSymbolKey] = symbolHint;
+            payload[PayloadSymbolField] = symbolHint;
         }
     }
 
@@ -1483,24 +1517,24 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
         var context = request.Context is null
             ? new Dictionary<string, object?>(StringComparer.OrdinalIgnoreCase)
             : new Dictionary<string, object?>(request.Context, StringComparer.OrdinalIgnoreCase);
-        context[DiagnosticKeyRuntimeModeHint] = hintMode.ToString();
-        context[DiagnosticKeyRuntimeModeProbe] = probeMode.ToString();
-        context[DiagnosticKeyRuntimeModeTelemetry] = telemetryResolution.Available ? telemetryResolution.Mode.ToString() : RuntimeMode.Unknown.ToString();
-        context[DiagnosticKeyRuntimeModeTelemetryReasonCode] = telemetryResolution.ReasonCode;
-        context[DiagnosticKeyRuntimeModeTelemetrySource] = telemetryResolution.SourcePath;
-        context[DiagnosticKeyRuntimeModeEffective] = effectiveMode.ToString();
-        context[DiagnosticKeyRuntimeModeEffectiveSource] = source;
+        context[DiagnosticRuntimeModeHint] = hintMode.ToString();
+        context[DiagnosticRuntimeModeProbe] = probeMode.ToString();
+        context[DiagnosticRuntimeModeTelemetry] = telemetryResolution.Available ? telemetryResolution.Mode.ToString() : RuntimeMode.Unknown.ToString();
+        context[DiagnosticRuntimeModeTelemetryReasonCode] = telemetryResolution.ReasonCode;
+        context[DiagnosticRuntimeModeTelemetrySource] = telemetryResolution.SourcePath;
+        context[DiagnosticRuntimeModeEffective] = effectiveMode.ToString();
+        context[DiagnosticRuntimeModeEffectiveSource] = source;
 
         var effectiveRequest = request with { RuntimeMode = effectiveMode, Context = context };
         var diagnostics = new Dictionary<string, object?>(StringComparer.OrdinalIgnoreCase)
         {
-            [DiagnosticKeyRuntimeModeHint] = hintMode.ToString(),
-            [DiagnosticKeyRuntimeModeProbe] = probeMode.ToString(),
-            [DiagnosticKeyRuntimeModeTelemetry] = telemetryResolution.Available ? telemetryResolution.Mode.ToString() : RuntimeMode.Unknown.ToString(),
-            [DiagnosticKeyRuntimeModeTelemetryReasonCode] = telemetryResolution.ReasonCode,
-            [DiagnosticKeyRuntimeModeTelemetrySource] = telemetryResolution.SourcePath,
-            [DiagnosticKeyRuntimeModeEffective] = effectiveMode.ToString(),
-            [DiagnosticKeyRuntimeModeEffectiveSource] = source
+            [DiagnosticRuntimeModeHint] = hintMode.ToString(),
+            [DiagnosticRuntimeModeProbe] = probeMode.ToString(),
+            [DiagnosticRuntimeModeTelemetry] = telemetryResolution.Available ? telemetryResolution.Mode.ToString() : RuntimeMode.Unknown.ToString(),
+            [DiagnosticRuntimeModeTelemetryReasonCode] = telemetryResolution.ReasonCode,
+            [DiagnosticRuntimeModeTelemetrySource] = telemetryResolution.SourcePath,
+            [DiagnosticRuntimeModeEffective] = effectiveMode.ToString(),
+            [DiagnosticRuntimeModeEffectiveSource] = source
         };
 
         return (effectiveRequest, diagnostics);
@@ -1540,7 +1574,7 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
             return false;
         }
 
-        var value = raw as string ?? raw.ToString();
+        var value = raw as string ?? raw.ToString() ?? string.Empty;
         if (string.IsNullOrWhiteSpace(value))
         {
             return false;
@@ -1582,7 +1616,7 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
             return null;
         }
 
-        var value = raw as string ?? raw.ToString();
+        var value = raw as string ?? raw.ToString() ?? string.Empty;
         if (string.IsNullOrWhiteSpace(value) || value.Equals("Auto", StringComparison.OrdinalIgnoreCase))
         {
             return null;
@@ -1685,7 +1719,11 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
         {
             report = await _modMechanicDetectionService.DetectAsync(profile, CurrentSession, catalog: null, cancellationToken);
         }
-        catch
+        catch (InvalidOperationException)
+        {
+            return null;
+        }
+        catch (OperationCanceledException)
         {
             return null;
         }
@@ -1704,7 +1742,7 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
                 report.Diagnostics,
                 new Dictionary<string, object?>
                 {
-                    [DiagnosticReasonCodeKey] = support.ReasonCode.ToString(),
+                    [DiagnosticReasonCode] = support.ReasonCode.ToString(),
                     ["mechanicGating"] = "blocked",
                     ["mechanicActionId"] = support.ActionId
                 }));
@@ -1722,7 +1760,7 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
                 routeDecision.Diagnostics,
                 new Dictionary<string, object?>
                 {
-                    [DiagnosticReasonCodeKey] = routeDecision.ReasonCode.ToString()  // NOSONAR
+                    [DiagnosticReasonCode] = routeDecision.ReasonCode.ToString()  // NOSONAR
                 }));
         return ApplyBackendRouteDiagnostics(blocked, routeDecision, capabilityReport);
     }
@@ -1852,7 +1890,7 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
                 AddressSource.None,
                 new Dictionary<string, object?>
                 {
-                    [DiagnosticReasonCodeKey] = RuntimeReasonCode.CAPABILITY_BACKEND_UNAVAILABLE.ToString(),
+                    [DiagnosticReasonCode] = RuntimeReasonCode.CAPABILITY_BACKEND_UNAVAILABLE.ToString(),
                     ["backendRoute"] = ExecutionBackendKind.Extender.ToString()
                 });
         }
@@ -1886,12 +1924,12 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
                 ["backendRoute"] = routeDecision.Backend.ToString(),
                 ["routeReasonCode"] = routeDecision.ReasonCode.ToString(),
                 ["capabilityProbeReasonCode"] = capabilityReport.ProbeReasonCode.ToString(),
-                [DiagnosticKeyHookState] = hookState,
+                [DiagnosticHookState] = hookState,
                 ["hybridExecution"] = hybridExecution,
                 ["capabilityCount"] = capabilityReport.Capabilities.Count,
-                [DiagnosticKeyExpertOverrideEnabled] = expertOverrideEnabled,
-                [DiagnosticKeyOverrideReason] = overrideReason,
-                [DiagnosticKeyPanicDisableState] = panicDisableState
+                [DiagnosticExpertOverrideEnabled] = expertOverrideEnabled,
+                [DiagnosticOverrideReason] = overrideReason,
+                [DiagnosticPanicDisableState] = panicDisableState
             });
         return result with { Diagnostics = diagnostics };
     }
@@ -1929,7 +1967,7 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
             return hookState!;
         }
 
-        if (TryResolveFirstDiagnosticValue(capabilityDiagnostics, [DiagnosticKeyHookState], out var probeHookState))
+        if (TryResolveFirstDiagnosticValue(capabilityDiagnostics, [DiagnosticHookState], out var probeHookState))
         {
             return probeHookState!;
         }
@@ -1941,7 +1979,7 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
         IReadOnlyDictionary<string, object?>? diagnostics,
         bool defaultValue)
     {
-        if (!TryReadDiagnosticString(diagnostics, DiagnosticKeyExpertOverrideEnabled, out var raw) ||
+        if (!TryReadDiagnosticString(diagnostics, DiagnosticExpertOverrideEnabled, out var raw) ||
             string.IsNullOrWhiteSpace(raw))
         {
             return defaultValue;
@@ -1954,7 +1992,7 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
         IReadOnlyDictionary<string, object?>? diagnostics,
         string defaultValue)
     {
-        if (TryReadDiagnosticString(diagnostics, DiagnosticKeyOverrideReason, out var reason) &&
+        if (TryReadDiagnosticString(diagnostics, DiagnosticOverrideReason, out var reason) &&
             !string.IsNullOrWhiteSpace(reason))
         {
             return reason!;
@@ -1967,7 +2005,7 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
         IReadOnlyDictionary<string, object?>? diagnostics,
         string defaultValue)
     {
-        if (TryReadDiagnosticString(diagnostics, DiagnosticKeyPanicDisableState, out var state) &&
+        if (TryReadDiagnosticString(diagnostics, DiagnosticPanicDisableState, out var state) &&
             !string.IsNullOrWhiteSpace(state))
         {
             return state!;
@@ -1981,18 +2019,16 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
         IReadOnlyList<string> keys,
         out string? value)
     {
-        value = null;
-        foreach (var key in keys)
-        {
-            if (TryReadDiagnosticString(diagnostics, key, out var resolved) &&
-                !string.IsNullOrWhiteSpace(resolved))
+        var match = keys
+            .Select(key =>
             {
-                value = resolved;
-                return true;
-            }
-        }
+                TryReadDiagnosticString(diagnostics, key, out var resolved);
+                return resolved;
+            })
+            .FirstOrDefault(resolved => !string.IsNullOrWhiteSpace(resolved));
 
-        return false;
+        value = match;
+        return match is not null;
     }
 
     private static bool TryReadDiagnosticString(
@@ -2006,7 +2042,7 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
             return false;
         }
 
-        value = raw.ToString();
+        value = raw.ToString() ?? string.Empty;
         return !string.IsNullOrWhiteSpace(value);
     }
 
@@ -2183,9 +2219,9 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
             {
                 ["backend"] = riskyBackend.ToString(),
                 ["overrideBackend"] = riskyBackend.ToString(),
-                [DiagnosticKeyExpertOverrideEnabled] = true,
-                [DiagnosticKeyPanicDisableState] = overrideState.PanicDisableState,
-                [DiagnosticKeyOverrideReason] = overrideReason,
+                [DiagnosticExpertOverrideEnabled] = true,
+                [DiagnosticPanicDisableState] = overrideState.PanicDisableState,
+                [DiagnosticOverrideReason] = overrideReason,
                 ["riskyOverride"] = true,
                 ["riskyAction"] = true
             });
@@ -2316,7 +2352,7 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
 
     private void TryAddPayloadSymbolAnchor(JsonObject payload, IDictionary<string, string> anchors)
     {
-        if (TryReadPayloadString(payload, PayloadSymbolKey, out var payloadSymbol))
+        if (TryReadPayloadString(payload, PayloadSymbolField, out var payloadSymbol))
         {
             TryAddResolvedSymbolAnchor(anchors, payloadSymbol!);
         }
@@ -2415,7 +2451,11 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
             value = node.GetValue<string>();
             return !string.IsNullOrWhiteSpace(value);
         }
-        catch
+        catch (FormatException)
+        {
+            return false;
+        }
+        catch (InvalidOperationException)
         {
             return false;
         }
@@ -2539,9 +2579,9 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
                 destination[kv.Key] = kv.Value;
             }
         }
-        catch
+        catch (JsonException)
         {
-            // ignored
+            // ignored — malformed serialized anchor map
         }
     }
 
@@ -2573,7 +2613,7 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
 
     private static string ResolveMemoryActionSymbol(JsonObject payload)
     {
-        var symbol = payload[PayloadSymbolKey]?.GetValue<string>();
+        var symbol = payload[PayloadSymbolField]?.GetValue<string>();
         if (string.IsNullOrWhiteSpace(symbol))
         {
             throw new InvalidOperationException("Memory action payload requires 'symbol'.");
@@ -2992,7 +3032,19 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
                 _ => ValidationOutcome.Pass()
             };
         }
-        catch
+        catch (FormatException)
+        {
+            return ValidationOutcome.Fail(
+                "observed_cast_failed",
+                $"Could not validate observed value for symbol '{symbol}' as {valueType}.");
+        }
+        catch (InvalidCastException)
+        {
+            return ValidationOutcome.Fail(
+                "observed_cast_failed",
+                $"Could not validate observed value for symbol '{symbol}' as {valueType}.");
+        }
+        catch (OverflowException)
         {
             return ValidationOutcome.Fail(
                 "observed_cast_failed",
@@ -3155,7 +3207,16 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
         {
             writeValue(activeSymbol.Address, requestedValue);
         }
-        catch (Exception ex)
+        catch (InvalidOperationException ex)
+        {
+            return new WriteAttemptResult<T>(
+                false,
+                $"{attemptPrefix}_write_exception",
+                $"Write failed for symbol '{symbol}' at {ToHex(activeSymbol.Address)}: {ex.Message}",
+                false,
+                default);
+        }
+        catch (System.ComponentModel.Win32Exception ex)
         {
             return new WriteAttemptResult<T>(
                 false,
@@ -3197,7 +3258,16 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
         {
             observed = readValue(activeSymbol.Address);
         }
-        catch (Exception ex)
+        catch (InvalidOperationException ex)
+        {
+            return new WriteAttemptResult<T>(
+                false,
+                $"{attemptPrefix}_readback_exception",
+                $"Readback failed for symbol '{symbol}' at {ToHex(activeSymbol.Address)}: {ex.Message}",
+                false,
+                default);
+        }
+        catch (System.ComponentModel.Win32Exception ex)
         {
             return new WriteAttemptResult<T>(
                 false,
@@ -3261,7 +3331,12 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
             LogReResolvedSymbol(symbol, normalized);
             return BuildReResolveSuccessResult(normalized);
         }
-        catch (Exception ex)
+        catch (InvalidOperationException ex)
+        {
+            _logger.LogWarning(ex, "Failed to re-resolve symbol {Symbol}.", symbol);
+            return BuildReResolveExceptionResult(symbol, ex);
+        }
+        catch (System.ComponentModel.Win32Exception ex)
         {
             _logger.LogWarning(ex, "Failed to re-resolve symbol {Symbol}.", symbol);
             return BuildReResolveExceptionResult(symbol, ex);
@@ -3358,7 +3433,7 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
                 AddressSource.None,
                 new Dictionary<string, object?>
                 {
-                    [DiagnosticReasonCodeKey] = RuntimeReasonCode.HELPER_BRIDGE_UNAVAILABLE.ToString(),
+                    [DiagnosticReasonCode] = RuntimeReasonCode.HELPER_BRIDGE_UNAVAILABLE.ToString(),
                     ["helperBridgeState"] = "unavailable"
                 });
         }
@@ -3374,8 +3449,8 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
                 AddressSource.None,
                 new Dictionary<string, object?>
                 {
-                    [DiagnosticReasonCodeKey] = RuntimeReasonCode.HELPER_ENTRYPOINT_NOT_FOUND.ToString(),
-                    [PayloadHelperHookIdKey] = hookId,
+                    [DiagnosticReasonCode] = RuntimeReasonCode.HELPER_ENTRYPOINT_NOT_FOUND.ToString(),
+                    [PayloadHelperHookId] = hookId,
                     ["helperBridgeState"] = "denied"
                 });
         }
@@ -3396,8 +3471,8 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
                     probe.Diagnostics,
                     new Dictionary<string, object?>
                     {
-                        [DiagnosticReasonCodeKey] = probe.ReasonCode.ToString(),
-                        [PayloadHelperHookIdKey] = hook.Id
+                        [DiagnosticReasonCode] = probe.ReasonCode.ToString(),
+                        [PayloadHelperHookId] = hook.Id
                     }));
         }
 
@@ -3419,15 +3494,15 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
                 bridgeResult.Diagnostics,
                 new Dictionary<string, object?>
                 {
-                    [DiagnosticReasonCodeKey] = bridgeResult.ReasonCode.ToString(),
-                    [PayloadHelperHookIdKey] = hook.Id,
+                    [DiagnosticReasonCode] = bridgeResult.ReasonCode.ToString(),
+                    [PayloadHelperHookId] = hook.Id,
                     ["helperEntryPoint"] = hook.EntryPoint ?? string.Empty
                 }));
     }
 
     private static string ResolveHelperHookId(ActionExecutionRequest request)
     {
-        if (request.Payload[PayloadHelperHookIdKey] is JsonValue jsonValue &&
+        if (request.Payload[PayloadHelperHookId] is JsonValue jsonValue &&
             jsonValue.TryGetValue<string>(out var explicitHookId) &&
             !string.IsNullOrWhiteSpace(explicitHookId))
         {
@@ -3589,7 +3664,7 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
         out string? symbol,
         out ActionExecutionResult? failure)
     {
-        symbol = payload[PayloadSymbolKey]?.GetValue<string>();
+        symbol = payload[PayloadSymbolField]?.GetValue<string>();
         failure = null;
         if (!string.IsNullOrWhiteSpace(symbol))
         {
@@ -3645,7 +3720,7 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
                 true,
                 $"Code patch '{context.Symbol}' is already active.",
                 context.SymbolInfo.Source,
-                new Dictionary<string, object?> { ["address"] = ToHex(context.Address), [DiagnosticKeyState] = "already_patched" });
+                new Dictionary<string, object?> { ["address"] = ToHex(context.Address), [DiagnosticState] = "already_patched" });
         }
 
         if (!isOriginal)
@@ -3666,7 +3741,7 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
             new Dictionary<string, object?>
             {
                 ["address"] = ToHex(context.Address),
-                [DiagnosticKeyState] = "patched",
+                [DiagnosticState] = "patched",
                 ["bytesWritten"] = BitConverter.ToString(context.PatchBytes)
             });
     }
@@ -3685,7 +3760,7 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
                 new Dictionary<string, object?>
                 {
                     ["address"] = ToHex(saved.Address),
-                    [DiagnosticKeyState] = "restored",  // NOSONAR
+                    [DiagnosticState] = "restored",  // NOSONAR
                     ["bytesWritten"] = BitConverter.ToString(saved.OriginalBytes)
                 });
         }
@@ -3695,7 +3770,7 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
             true,
             $"Code patch '{context.Symbol}' was not active, wrote original bytes as safety restore.",
             context.SymbolInfo.Source,
-            new Dictionary<string, object?> { ["address"] = ToHex(context.Address), [DiagnosticKeyState] = "force_restored" });
+            new Dictionary<string, object?> { ["address"] = ToHex(context.Address), [DiagnosticState] = "force_restored" });
     }
 
     private static byte[] ParseHexBytes(string hex)
@@ -3728,7 +3803,7 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
                 ["fallbackAction"] = ActionIdSetUnitCapPatchFallback,  // NOSONAR
                 ["fallbackPath"] = "unit_cap_patch_fallback",  // NOSONAR
                 ["fallbackEnabled"] = true,
-                [DiagnosticReasonCodeKey] = ToReasonCode(reasonCode)
+                [DiagnosticReasonCode] = ToReasonCode(reasonCode)
             });
         return result with { Diagnostics = diagnostics };
     }
@@ -3752,7 +3827,7 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
                 {
                     ["fallbackAction"] = ActionIdToggleFogRevealPatchFallback,
                     ["fallbackPath"] = "fog_patch_fallback",  // NOSONAR
-                    [DiagnosticReasonCodeKey] = ToReasonCode(resolution.ReasonCode)
+                    [DiagnosticReasonCode] = ToReasonCode(resolution.ReasonCode)
                 }));
         }
 
@@ -3776,7 +3851,7 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
                 new Dictionary<string, object?>
                 {
                     ["fallbackAction"] = ActionIdToggleFogRevealPatchFallback,
-                    [DiagnosticReasonCodeKey] = ToReasonCode(RuntimeReasonCode.SAFETY_FAIL_CLOSED)
+                    [DiagnosticReasonCode] = ToReasonCode(RuntimeReasonCode.SAFETY_FAIL_CLOSED)
                 });
         }
 
@@ -3796,7 +3871,7 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
                     ["fallbackPath"] = "fog_patch_fallback",
                     ["address"] = ToHex(resolution.BranchAddress),
                     ["state"] = "already_patched",  // NOSONAR
-                    [DiagnosticReasonCodeKey] = ToReasonCode(RuntimeReasonCode.FALLBACK_APPLIED)
+                    [DiagnosticReasonCode] = ToReasonCode(RuntimeReasonCode.FALLBACK_APPLIED)
                 });
         }
 
@@ -3811,7 +3886,7 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
                     ["fallbackAction"] = ActionIdToggleFogRevealPatchFallback,
                     ["fallbackPath"] = "fog_patch_fallback",
                     ["address"] = ToHex(resolution.BranchAddress),
-                    [DiagnosticReasonCodeKey] = ToReasonCode(RuntimeReasonCode.SAFETY_FAIL_CLOSED)
+                    [DiagnosticReasonCode] = ToReasonCode(RuntimeReasonCode.SAFETY_FAIL_CLOSED)
                 });
         }
 
@@ -3830,7 +3905,7 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
                 ["pattern"] = resolution.PatternText,
                 ["address"] = ToHex(resolution.BranchAddress),
                 ["state"] = "patched",
-                [DiagnosticReasonCodeKey] = ToReasonCode(RuntimeReasonCode.FALLBACK_APPLIED)
+                [DiagnosticReasonCode] = ToReasonCode(RuntimeReasonCode.FALLBACK_APPLIED)
             });
     }
 
@@ -3845,7 +3920,7 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
                 new Dictionary<string, object?>
                 {
                     ["fallbackAction"] = ActionIdToggleFogRevealPatchFallback,
-                    [DiagnosticReasonCodeKey] = ToReasonCode(RuntimeReasonCode.SAFETY_FAIL_CLOSED)
+                    [DiagnosticReasonCode] = ToReasonCode(RuntimeReasonCode.SAFETY_FAIL_CLOSED)
                 });
         }
 
@@ -3867,7 +3942,7 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
                     ["fallbackPath"] = "fog_patch_fallback",
                     ["address"] = ToHex(address),
                     ["state"] = "already_restored",
-                    [DiagnosticReasonCodeKey] = ToReasonCode(RuntimeReasonCode.FALLBACK_RESTORED)
+                    [DiagnosticReasonCode] = ToReasonCode(RuntimeReasonCode.FALLBACK_RESTORED)
                 });
         }
 
@@ -3882,7 +3957,7 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
                     ["fallbackAction"] = ActionIdToggleFogRevealPatchFallback,
                     ["fallbackPath"] = "fog_patch_fallback",
                     ["address"] = ToHex(address),
-                    [DiagnosticReasonCodeKey] = ToReasonCode(RuntimeReasonCode.SAFETY_FAIL_CLOSED)
+                    [DiagnosticReasonCode] = ToReasonCode(RuntimeReasonCode.SAFETY_FAIL_CLOSED)
                 });
         }
 
@@ -3898,7 +3973,7 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
                 ["fallbackPath"] = "fog_patch_fallback",
                 ["address"] = ToHex(address),
                 ["state"] = "restored",
-                [DiagnosticReasonCodeKey] = ToReasonCode(RuntimeReasonCode.FALLBACK_RESTORED)
+                [DiagnosticReasonCode] = ToReasonCode(RuntimeReasonCode.FALLBACK_RESTORED)
             });
     }
 
@@ -3988,7 +4063,13 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
                 RuntimeReasonCode.PATTERN_MISSING,
                 "Fog fallback patch pattern missing in current module.");
         }
-        catch (Exception ex)
+        catch (InvalidOperationException ex)
+        {
+            return FogPatchFallbackResolution.Fail(
+                RuntimeReasonCode.SAFETY_FAIL_CLOSED,
+                $"Fog fallback patch resolution failed: {ex.Message}");
+        }
+        catch (System.ComponentModel.Win32Exception ex)
         {
             return FogPatchFallbackResolution.Fail(
                 RuntimeReasonCode.SAFETY_FAIL_CLOSED,
@@ -4033,7 +4114,7 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
             {
                 ["fallbackAction"] = actionId,
                 ["featureFlag"] = featureFlagKey,
-                [DiagnosticReasonCodeKey] = ToReasonCode(RuntimeReasonCode.FALLBACK_DISABLED)
+                [DiagnosticReasonCode] = ToReasonCode(RuntimeReasonCode.FALLBACK_DISABLED)
             });
     }
 
@@ -4091,7 +4172,14 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
             _activeCodePatches.Remove("unit_cap");
             return null;
         }
-        catch (Exception ex)
+        catch (InvalidOperationException ex)
+        {
+            return new ActionExecutionResult(
+                false,
+                $"Failed to disable instant-build patch before unit cap hook install: {ex.Message}",
+                AddressSource.None);
+        }
+        catch (System.ComponentModel.Win32Exception ex)
         {
             return new ActionExecutionResult(
                 false,
@@ -4206,7 +4294,7 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
         if (!patchResult.Succeeded)
         {
             diagnostics["hookError"] = patchResult.Message;
-            diagnostics[DiagnosticKeyCreditsStateTag] = "HOOK_REQUIRED";
+            diagnostics[DiagnosticCreditsStateTag] = "HOOK_REQUIRED";
             diagnostics["creditsRequestedValue"] = requestedValue;
             return new ActionExecutionResult(
                 false,
@@ -4272,7 +4360,7 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
             return null;
         }
 
-        diagnostics[DiagnosticKeyCreditsStateTag] = "HOOK_REQUIRED";
+        diagnostics[DiagnosticCreditsStateTag] = "HOOK_REQUIRED";
         diagnostics["creditsRequestedValue"] = requestedValue;
         return new ActionExecutionResult(
             false,
@@ -4336,7 +4424,7 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
         var message = lockCredits
             ? "[HOOK_LOCK] Set credits and enabled persistent lock (float+int sync)."
             : "[HOOK_ONESHOT] Set credits with one-shot float+int sync.";
-        diagnostics[DiagnosticKeyCreditsStateTag] = stateTag;
+        diagnostics[DiagnosticCreditsStateTag] = stateTag;
         diagnostics["creditsRequestedValue"] = requestedValue;
         return new ActionExecutionResult(true, message, source, diagnostics);
     }
@@ -4413,7 +4501,7 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
             {
                 ["hookAddress"] = ToHex(_creditsHookInjectionAddress),  // NOSONAR
                 ["hookCaveAddress"] = ToHex(_creditsHookCodeCaveAddress),  // NOSONAR
-                [DiagnosticKeyHookState] = "already_installed"
+                [DiagnosticHookState] = "already_installed"
             });
     }
 
@@ -4435,7 +4523,11 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
         {
             currentBytes = _memory!.ReadBytes(injectionAddress, expectedOriginalBytes.Length);
         }
-        catch (Exception ex)
+        catch (InvalidOperationException ex)
+        {
+            return CreditsHookPatchResult.Fail($"Credits hook patch failed: unable to read injection bytes ({ex.Message}).");
+        }
+        catch (System.ComponentModel.Win32Exception ex)
         {
             return CreditsHookPatchResult.Fail($"Credits hook patch failed: unable to read injection bytes ({ex.Message}).");
         }
@@ -4478,7 +4570,14 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
                 $"Credits hook installed at {ToHex(context.InjectionAddress)} with cave {ToHex(context.CaveAddress)}.",
                 diagnostics);
         }
-        catch (Exception ex)
+        catch (InvalidOperationException ex)
+        {
+            TryRollbackCreditsHookInstall(context.InjectionAddress, context.CurrentBytes);
+            _memory!.Free(context.CaveAddress);
+            ClearCreditsHookState();
+            return CreditsHookPatchResult.Fail($"Credits hook patch write failed: {ex.Message}");
+        }
+        catch (System.ComponentModel.Win32Exception ex)
         {
             TryRollbackCreditsHookInstall(context.InjectionAddress, context.CurrentBytes);
             _memory!.Free(context.CaveAddress);
@@ -4525,7 +4624,11 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
         {
             _memory!.WriteBytes(injectionAddress, originalBytes, executablePatch: true);
         }
-        catch
+        catch (InvalidOperationException)
+        {
+            // Best-effort rollback.
+        }
+        catch (System.ComponentModel.Win32Exception)
         {
             // Best-effort rollback.
         }
@@ -4614,7 +4717,7 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
         {
             hintAddress = (nint)preferredAddress;
         }
-        catch
+        catch (OverflowException)
         {
             return false;
         }
@@ -4706,7 +4809,7 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
                 ["hookAddress"] = ToHex(_unitCapHookInjectionAddress),
                 ["hookCaveAddress"] = ToHex(_unitCapHookCodeCaveAddress),
                 ["unitCapValue"] = capValue,
-                [DiagnosticKeyState] = "updated"
+                [DiagnosticState] = "updated"
             });
     }
 
@@ -4718,7 +4821,14 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
             currentBytes = _memory!.ReadBytes(injectionAddress, UnitCapHookOriginalBytes.Length);
             return null;
         }
-        catch (Exception ex)
+        catch (InvalidOperationException ex)
+        {
+            return new ActionExecutionResult(
+                false,
+                $"Unit cap hook failed: unable to read injection bytes ({ex.Message}).",
+                AddressSource.None);
+        }
+        catch (System.ComponentModel.Win32Exception ex)
         {
             return new ActionExecutionResult(
                 false,
@@ -4748,10 +4858,17 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
                     ["hookAddress"] = ToHex(injectionAddress),
                     ["hookCaveAddress"] = ToHex(caveAddress),
                     ["unitCapValue"] = capValue,
-                    [DiagnosticKeyState] = "installed"
+                    [DiagnosticState] = "installed"
                 });
         }
-        catch (Exception ex)
+        catch (InvalidOperationException ex)
+        {
+            TryRestoreBytesAfterHookFailure(injectionAddress, currentBytes);
+            _memory!.Free(caveAddress);
+            ClearUnitCapHookState();
+            return new ActionExecutionResult(false, $"Unit cap hook patch failed: {ex.Message}", AddressSource.None);
+        }
+        catch (System.ComponentModel.Win32Exception ex)
         {
             TryRestoreBytesAfterHookFailure(injectionAddress, currentBytes);
             _memory!.Free(caveAddress);
@@ -4770,7 +4887,7 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
         if (_unitCapHookOriginalBytesBackup is null || _unitCapHookInjectionAddress == nint.Zero)
         {
             return new ActionExecutionResult(true, "Unit cap hook is not active.", AddressSource.None,
-                new Dictionary<string, object?> { [DiagnosticKeyState] = "not_active" });
+                new Dictionary<string, object?> { [DiagnosticState] = "not_active" });
         }
 
         _memory.WriteBytes(_unitCapHookInjectionAddress, _unitCapHookOriginalBytesBackup, executablePatch: true);
@@ -4782,7 +4899,7 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
         var address = _unitCapHookInjectionAddress;
         ClearUnitCapHookState();
         return new ActionExecutionResult(true, "Unit cap hook disabled and original bytes restored.", AddressSource.Signature,
-            new Dictionary<string, object?> { ["hookAddress"] = ToHex(address), [DiagnosticKeyState] = "restored" });
+            new Dictionary<string, object?> { ["hookAddress"] = ToHex(address), [DiagnosticState] = "restored" });
     }
 
     private ActionExecutionResult EnsureInstantBuildHookInstalled()
@@ -4844,7 +4961,7 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
             {
                 ["hookAddress"] = ToHex(_instantBuildHookInjectionAddress),
                 ["hookCaveAddress"] = ToHex(_instantBuildHookCodeCaveAddress),
-                [DiagnosticKeyState] = "already_installed"
+                [DiagnosticState] = "already_installed"
             });
     }
 
@@ -4856,7 +4973,14 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
             currentBytes = _memory!.ReadBytes(injectionAddress, InstantBuildHookInstructionLength);
             return null;
         }
-        catch (Exception ex)
+        catch (InvalidOperationException ex)
+        {
+            return new ActionExecutionResult(
+                false,
+                $"Instant build hook failed: unable to read injection bytes ({ex.Message}).",
+                AddressSource.None);
+        }
+        catch (System.ComponentModel.Win32Exception ex)
         {
             return new ActionExecutionResult(
                 false,
@@ -4888,10 +5012,17 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
                 {
                     ["hookAddress"] = ToHex(injectionAddress),
                     ["hookCaveAddress"] = ToHex(caveAddress),
-                    [DiagnosticKeyState] = "installed"
+                    [DiagnosticState] = "installed"
                 });
         }
-        catch (Exception ex)
+        catch (InvalidOperationException ex)
+        {
+            TryRestoreBytesAfterHookFailure(injectionAddress, currentBytes);
+            _memory!.Free(caveAddress);
+            ClearInstantBuildHookState();
+            return new ActionExecutionResult(false, $"Instant build hook patch failed: {ex.Message}", AddressSource.None);
+        }
+        catch (System.ComponentModel.Win32Exception ex)
         {
             TryRestoreBytesAfterHookFailure(injectionAddress, currentBytes);
             _memory!.Free(caveAddress);
@@ -4906,7 +5037,11 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
         {
             _memory!.WriteBytes(injectionAddress, originalBytes, executablePatch: true);
         }
-        catch
+        catch (InvalidOperationException)
+        {
+            // Best-effort rollback.
+        }
+        catch (System.ComponentModel.Win32Exception)
         {
             // Best-effort rollback.
         }
@@ -4922,7 +5057,7 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
         if (_instantBuildHookOriginalBytesBackup is null || _instantBuildHookInjectionAddress == nint.Zero)
         {
             return new ActionExecutionResult(true, "Instant build hook is not active.", AddressSource.None,
-                new Dictionary<string, object?> { [DiagnosticKeyState] = "not_active" });
+                new Dictionary<string, object?> { [DiagnosticState] = "not_active" });
         }
 
         _memory.WriteBytes(_instantBuildHookInjectionAddress, _instantBuildHookOriginalBytesBackup, executablePatch: true);
@@ -4934,7 +5069,7 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
         var address = _instantBuildHookInjectionAddress;
         ClearInstantBuildHookState();
         return new ActionExecutionResult(true, "Instant build hook disabled and original bytes restored.", AddressSource.Signature,
-            new Dictionary<string, object?> { ["hookAddress"] = ToHex(address), [DiagnosticKeyState] = "restored" });
+            new Dictionary<string, object?> { ["hookAddress"] = ToHex(address), [DiagnosticState] = "restored" });
     }
 
     private UnitCapHookResolution ResolveUnitCapHookInjectionAddress()
@@ -4970,7 +5105,11 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
 
             return UnitCapHookResolution.Fail($"Unit cap hook pattern not unique (hits={hits.Count}).");
         }
-        catch (Exception ex)
+        catch (InvalidOperationException ex)
+        {
+            return UnitCapHookResolution.Fail($"Unit cap hook resolution failed: {ex.Message}");
+        }
+        catch (System.ComponentModel.Win32Exception ex)
         {
             return UnitCapHookResolution.Fail($"Unit cap hook resolution failed: {ex.Message}");
         }
@@ -5008,7 +5147,11 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
 
             return InstantBuildHookResolution.Fail("Instant build hook pattern not found or not unique.");
         }
-        catch (Exception ex)
+        catch (InvalidOperationException ex)
+        {
+            return InstantBuildHookResolution.Fail($"Instant build hook resolution failed: {ex.Message}");
+        }
+        catch (System.ComponentModel.Win32Exception ex)
         {
             return InstantBuildHookResolution.Fail($"Instant build hook resolution failed: {ex.Message}");
         }
@@ -5220,7 +5363,11 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
             var allCandidates = FindAllCreditsHookCandidates(moduleBytes);
             return ResolveCreditsHookFromCandidateSet(baseAddress, moduleBytes, allCandidates, creditsRva);
         }
-        catch (Exception ex)
+        catch (InvalidOperationException ex)
+        {
+            return CreditsHookResolution.Fail($"Credits hook pattern resolution failed: {ex.Message}");
+        }
+        catch (System.ComponentModel.Win32Exception ex)
         {
             return CreditsHookResolution.Fail($"Credits hook pattern resolution failed: {ex.Message}");
         }
@@ -5255,7 +5402,11 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
             var creditsSymbol = ResolveSymbol(SymbolCredits);
             return creditsSymbol.Address.ToInt64() - baseAddress.ToInt64();
         }
-        catch
+        catch (InvalidOperationException)
+        {
+            return -1;
+        }
+        catch (KeyNotFoundException)
         {
             return -1;
         }
@@ -5330,16 +5481,15 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
 
     private static List<CreditsHookCandidate> ParseCreditsHookCandidates(byte[] moduleBytes, IEnumerable<int> offsets)
     {
-        var candidates = new List<CreditsHookCandidate>();
-        foreach (var offset in offsets)
-        {
-            if (TryParseCreditsCvttss2siInstruction(moduleBytes, offset, out var instruction))
+        return offsets
+            .Select(offset =>
             {
-                candidates.Add(new CreditsHookCandidate(offset, instruction));
-            }
-        }
-
-        return candidates;
+                var parsed = TryParseCreditsCvttss2siInstruction(moduleBytes, offset, out var instruction);
+                return (Offset: offset, Instruction: instruction, Parsed: parsed);
+            })
+            .Where(x => x.Parsed)
+            .Select(x => new CreditsHookCandidate(x.Offset, x.Instruction))
+            .ToList();
     }
 
     private static List<CreditsHookCandidate> SelectImmediateStoreCandidates(
@@ -5592,7 +5742,11 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
                 _memory.WriteBytes(address, originalBytes, executablePatch: true);
                 _logger.LogInformation("Restored code patch '{Symbol}' at {Address} on detach.", symbol, $"0x{address.ToInt64():X}");
             }
-            catch (Exception ex)
+            catch (InvalidOperationException ex)
+            {
+                _logger.LogWarning(ex, "Failed to restore code patch '{Symbol}' at detach.", symbol);
+            }
+            catch (System.ComponentModel.Win32Exception ex)
             {
                 _logger.LogWarning(ex, "Failed to restore code patch '{Symbol}' at detach.", symbol);
             }
@@ -5614,7 +5768,11 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
             {
                 _memory.WriteBytes(_creditsHookInjectionAddress, _creditsHookOriginalBytesBackup, executablePatch: true);
             }
-            catch (Exception ex)
+            catch (InvalidOperationException ex)
+            {
+                _logger.LogWarning(ex, "Failed to restore credits hook bytes at detach.");
+            }
+            catch (System.ComponentModel.Win32Exception ex)
             {
                 _logger.LogWarning(ex, "Failed to restore credits hook bytes at detach.");
             }
@@ -5629,7 +5787,11 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
                     _logger.LogWarning("Failed to free credits hook code cave at {Address}.", ToHex(_creditsHookCodeCaveAddress));
                 }
             }
-            catch (Exception ex)
+            catch (InvalidOperationException ex)
+            {
+                _logger.LogWarning(ex, "Failed while freeing credits hook code cave.");
+            }
+            catch (System.ComponentModel.Win32Exception ex)
             {
                 _logger.LogWarning(ex, "Failed while freeing credits hook code cave.");
             }
@@ -5661,7 +5823,11 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
             {
                 _memory.WriteBytes(_unitCapHookInjectionAddress, _unitCapHookOriginalBytesBackup, executablePatch: true);
             }
-            catch (Exception ex)
+            catch (InvalidOperationException ex)
+            {
+                _logger.LogWarning(ex, "Failed to restore unit cap hook bytes at detach.");
+            }
+            catch (System.ComponentModel.Win32Exception ex)
             {
                 _logger.LogWarning(ex, "Failed to restore unit cap hook bytes at detach.");
             }
@@ -5676,7 +5842,11 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
                     _logger.LogWarning("Failed to free unit cap hook code cave at {Address}.", ToHex(_unitCapHookCodeCaveAddress));
                 }
             }
-            catch (Exception ex)
+            catch (InvalidOperationException ex)
+            {
+                _logger.LogWarning(ex, "Failed while freeing unit cap hook code cave.");
+            }
+            catch (System.ComponentModel.Win32Exception ex)
             {
                 _logger.LogWarning(ex, "Failed while freeing unit cap hook code cave.");
             }
@@ -5704,7 +5874,11 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
             {
                 _memory.WriteBytes(_instantBuildHookInjectionAddress, _instantBuildHookOriginalBytesBackup, executablePatch: true);
             }
-            catch (Exception ex)
+            catch (InvalidOperationException ex)
+            {
+                _logger.LogWarning(ex, "Failed to restore instant build hook bytes at detach.");
+            }
+            catch (System.ComponentModel.Win32Exception ex)
             {
                 _logger.LogWarning(ex, "Failed to restore instant build hook bytes at detach.");
             }
@@ -5719,7 +5893,11 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
                     _logger.LogWarning("Failed to free instant build hook code cave at {Address}.", ToHex(_instantBuildHookCodeCaveAddress));
                 }
             }
-            catch (Exception ex)
+            catch (InvalidOperationException ex)
+            {
+                _logger.LogWarning(ex, "Failed while freeing instant build hook code cave.");
+            }
+            catch (System.ComponentModel.Win32Exception ex)
             {
                 _logger.LogWarning(ex, "Failed while freeing instant build hook code cave.");
             }
@@ -5751,7 +5929,11 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
                     ToHex(_fogPatchFallbackAddress));
             }
         }
-        catch (Exception ex)
+        catch (InvalidOperationException ex)
+        {
+            _logger.LogWarning(ex, "Failed to restore fog fallback patch byte at detach.");
+        }
+        catch (System.ComponentModel.Win32Exception ex)
         {
             _logger.LogWarning(ex, "Failed to restore fog fallback patch byte at detach.");
         }
@@ -5783,9 +5965,13 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
             value = node.GetValue<bool>();
             return true;
         }
-        catch
+        catch (FormatException)
         {
-            // ignored
+            // Fall through to int parsing
+        }
+        catch (InvalidOperationException)
+        {
+            // Fall through to int parsing
         }
 
         try
@@ -5794,9 +5980,13 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
             value = asInt != 0;
             return true;
         }
-        catch
+        catch (FormatException)
         {
-            // ignored
+            // Fall through to string parsing
+        }
+        catch (InvalidOperationException)
+        {
+            // Fall through to string parsing
         }
 
         try
@@ -5808,9 +5998,13 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
                 return true;
             }
         }
-        catch
+        catch (FormatException)
         {
-            // ignored
+            // All parse attempts exhausted
+        }
+        catch (InvalidOperationException)
+        {
+            // All parse attempts exhausted
         }
 
         return false;

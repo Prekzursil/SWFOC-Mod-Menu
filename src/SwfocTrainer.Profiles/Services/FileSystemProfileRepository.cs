@@ -27,7 +27,7 @@ public sealed class FileSystemProfileRepository : IProfileRepository
 
     public async Task<ProfileManifest> LoadManifestAsync(CancellationToken cancellationToken)
     {
-        var manifestPath = Path.Combine(_options.ProfilesRootPath, _options.ManifestFileName);
+        var manifestPath = Path.Join(_options.ProfilesRootPath, _options.ManifestFileName);
         if (!File.Exists(manifestPath))
         {
             throw new FileNotFoundException($"Profile manifest not found: {manifestPath}");
@@ -46,7 +46,8 @@ public sealed class FileSystemProfileRepository : IProfileRepository
 
     public async Task<TrainerProfile> LoadProfileAsync(string profileId, CancellationToken cancellationToken)
     {
-        var profilePath = Path.Combine(_options.ProfilesRootPath, "profiles", $"{profileId}.json");
+        ArgumentNullException.ThrowIfNull(profileId);
+        var profilePath = Path.Join(_options.ProfilesRootPath, "profiles", $"{profileId}.json");
         if (!File.Exists(profilePath))
         {
             throw new FileNotFoundException($"Profile file not found: {profilePath}");
@@ -62,6 +63,7 @@ public sealed class FileSystemProfileRepository : IProfileRepository
 
     public async Task<TrainerProfile> ResolveInheritedProfileAsync(string profileId, CancellationToken cancellationToken)
     {
+        ArgumentNullException.ThrowIfNull(profileId);
         var seen = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
         return await ResolveInternalAsync(profileId, seen, cancellationToken);
     }
@@ -85,6 +87,7 @@ public sealed class FileSystemProfileRepository : IProfileRepository
 
     public Task ValidateProfileAsync(TrainerProfile profile, CancellationToken cancellationToken)
     {
+        ArgumentNullException.ThrowIfNull(profile);
         ProfileValidator.Validate(profile);
         return Task.CompletedTask;
     }

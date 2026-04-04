@@ -8,6 +8,8 @@ internal static class GitHubProfileUpdateExtractionHelpers
 {
     internal static void ExtractToDirectorySafely(string zipPath, string extractDir)
     {
+        ArgumentNullException.ThrowIfNull(zipPath);
+        ArgumentNullException.ThrowIfNull(extractDir);
         var extractionRoot = Path.GetFullPath(extractDir);
         Directory.CreateDirectory(extractionRoot);
         var extractionRootPrefix = extractionRoot.EndsWith(Path.DirectorySeparatorChar)
@@ -63,7 +65,7 @@ internal static class GitHubProfileUpdateExtractionHelpers
         }
 
         var relativePath = normalizedEntryPath.Replace('/', Path.DirectorySeparatorChar);
-        var destinationPath = Path.GetFullPath(Path.Combine(extractionRoot, relativePath));
+        var destinationPath = Path.GetFullPath(Path.Join(extractionRoot, relativePath));
         if (!destinationPath.StartsWith(extractionRootPrefix, StringComparison.OrdinalIgnoreCase))
         {
             throw new InvalidDataException($"Archive entry escapes extraction root: {originalEntryPath}");

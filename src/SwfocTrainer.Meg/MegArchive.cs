@@ -12,6 +12,11 @@ public sealed class MegArchive
         byte[] payload,
         IReadOnlyList<string> diagnostics)
     {
+        ArgumentNullException.ThrowIfNull(source);
+        ArgumentNullException.ThrowIfNull(format);
+        ArgumentNullException.ThrowIfNull(entries);
+        ArgumentNullException.ThrowIfNull(payload);
+        ArgumentNullException.ThrowIfNull(diagnostics);
         Source = source;
         Format = format;
         Entries = entries;
@@ -33,6 +38,7 @@ public sealed class MegArchive
 
     public bool TryOpenEntryStream(string entryPath, out Stream? stream, out string? error)
     {
+        ArgumentNullException.ThrowIfNull(entryPath);
         stream = null;
         error = null;
         if (!_entriesByPath.TryGetValue(NormalizePath(entryPath), out var entry))
@@ -53,6 +59,7 @@ public sealed class MegArchive
 
     public bool TryReadEntryBytes(string entryPath, out byte[] bytes, out string? error)
     {
+        ArgumentNullException.ThrowIfNull(entryPath);
         bytes = Array.Empty<byte>();
         error = null;
         if (!TryOpenEntryStream(entryPath, out var stream, out error) || stream is null)

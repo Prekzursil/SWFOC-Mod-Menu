@@ -22,6 +22,8 @@ public sealed class StoryFlowGraphExporter
 
     public StoryFlowGraphReport Build(FlowIndexReport flowReport)
     {
+        ArgumentNullException.ThrowIfNull(flowReport);
+
         if (flowReport.Plots.Count == 0)
         {
             return StoryFlowGraphReport.Empty with
@@ -46,6 +48,9 @@ public sealed class StoryFlowGraphExporter
 
     public static string BuildMarkdownSummary(string profileId, StoryFlowGraphReport graph)
     {
+        ArgumentNullException.ThrowIfNull(profileId);
+        ArgumentNullException.ThrowIfNull(graph);
+
         var builder = new StringBuilder();
         builder.AppendLine($"# Story Flow Graph ({profileId})");
         builder.AppendLine();
@@ -81,6 +86,10 @@ public sealed class StoryFlowGraphExporter
         ICollection<StoryFlowGraphNode> nodes,
         ICollection<StoryFlowGraphEdge> edges)
     {
+        ArgumentNullException.ThrowIfNull(plot);
+        ArgumentNullException.ThrowIfNull(nodes);
+        ArgumentNullException.ThrowIfNull(edges);
+
         var rootId = $"plot:{plot.PlotId}";
         nodes.Add(new StoryFlowGraphNode(
             NodeId: rootId,

@@ -17,12 +17,15 @@ public sealed class EffectiveGameDataIndexService
         MegaFilesXmlIndexBuilder megaFilesXmlIndexBuilder,
         IMegArchiveReader megArchiveReader)
     {
+        ArgumentNullException.ThrowIfNull(megaFilesXmlIndexBuilder);
+        ArgumentNullException.ThrowIfNull(megArchiveReader);
         _megaFilesXmlIndexBuilder = megaFilesXmlIndexBuilder;
         _megArchiveReader = megArchiveReader;
     }
 
     public EffectiveFileMapReport Build(EffectiveGameDataIndexRequest request)
     {
+        ArgumentNullException.ThrowIfNull(request);
         if (string.IsNullOrWhiteSpace(request.ProfileId) || string.IsNullOrWhiteSpace(request.GameRootPath))
         {
             return EffectiveFileMapReport.Empty with
@@ -84,7 +87,7 @@ public sealed class EffectiveGameDataIndexService
         IDictionary<string, int> activeIndexByPath,
         ref int rank)
     {
-        var megaFilesXmlPath = Path.Combine(request.GameRootPath, request.MegaFilesXmlRelativePath);
+        var megaFilesXmlPath = Path.Join(request.GameRootPath, request.MegaFilesXmlRelativePath);
         if (!File.Exists(megaFilesXmlPath))
         {
             diagnostics.Add($"MegaFiles.xml not found at '{megaFilesXmlPath}'.");
@@ -98,57 +101,68 @@ public sealed class EffectiveGameDataIndexService
             diagnostics.Add($"MegaFiles.xml: {diagnostic}");
         }
 
+        var megBuildState = new IndexBuildState
+        {
+            Diagnostics = diagnostics,
+            Records = records,
+            ActiveIndexByPath = activeIndexByPath,
+            Rank = rank
+        };
         foreach (var megaFileName in megaIndex
                      .GetEnabledFilesInLoadOrder()
                      .Select(static megaFile => megaFile.FileName))
         {
-            AddMegFileEntries(
-                request,
-                megaFileName,
-                diagnostics,
-                records,
-                activeIndexByPath,
-                ref rank);
+            AddMegFileEntries(request, megaFileName, megBuildState);
         }
+
+        rank = megBuildState.Rank;
+    }
+
+    private sealed class IndexBuildState
+    {
+        public required ICollection<string> Diagnostics { get; init; }
+        public required IList<MutableEffectiveEntry> Records { get; init; }
+        public required IDictionary<string, int> ActiveIndexByPath { get; init; }
+        public int Rank { get; set; }
     }
 
     private void AddMegFileEntries(
         EffectiveGameDataIndexRequest request,
         string megaFileName,
-        ICollection<string> diagnostics,
-        IList<MutableEffectiveEntry> records,
-        IDictionary<string, int> activeIndexByPath,
-        ref int rank)
+        IndexBuildState state)
     {
         var megaPath = ResolveMegaPath(request.GameRootPath, megaFileName);
         if (megaPath is null)
         {
-            diagnostics.Add($"MEG file '{megaFileName}' was not found under game root '{request.GameRootPath}'.");
+            state.Diagnostics.Add($"MEG file '{megaFileName}' was not found under game root '{request.GameRootPath}'.");
             return;
         }
 
         var openResult = _megArchiveReader.Open(megaPath);
         if (!openResult.Succeeded || openResult.Archive is null)
         {
-            diagnostics.Add($"MEG parse failed '{megaPath}' reason={openResult.ReasonCode} message={openResult.Message}");
+            state.Diagnostics.Add($"MEG parse failed '{megaPath}' reason={openResult.ReasonCode} message={openResult.Message}");
             foreach (var detail in openResult.Diagnostics)
             {
-                diagnostics.Add($"MEG parse detail '{megaPath}': {detail}");
+                state.Diagnostics.Add($"MEG parse detail '{megaPath}': {detail}");
             }
 
             return;
         }
 
+        var rank = state.Rank;
         foreach (var entryPath in openResult.Archive.Entries.Select(static entry => entry.Path))
         {
             AddEntry(
                 relativePath: NormalizePath(entryPath),
                 sourceType: "meg_entry",
                 sourcePath: $"{megaPath}:{entryPath}",
-                records,
-                activeIndexByPath,
+                state.Records,
+                state.ActiveIndexByPath,
                 ref rank);
         }
+
+        state.Rank = rank;
     }
 
     private static void AddLooseEntries(
@@ -190,13 +204,13 @@ public sealed class EffectiveGameDataIndexService
             return File.Exists(fileName) ? fileName : null;
         }
 
-        var direct = Path.Combine(gameRootPath, fileName);
+        var direct = Path.Join(gameRootPath, fileName);
         if (File.Exists(direct))
         {
             return direct;
         }
 
-        var underData = Path.Combine(gameRootPath, "Data", fileName);
+        var underData = Path.Join(gameRootPath, "Data", fileName);
         if (File.Exists(underData))
         {
             return underData;

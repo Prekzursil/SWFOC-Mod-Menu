@@ -8,8 +8,8 @@ public sealed class ModDependencyValidator : IModDependencyValidator
 {
     private static readonly TimeSpan RegexMatchTimeout = TimeSpan.FromMilliseconds(250);
     private const string WorkshopAppId = "32470";
-    private const string PathTraversalToken = "..";
-    private const string DependencyMetadataMarkerKey = "requiredMarkerFile";
+    private const string PathTraversalSequence = "..";
+    private const string DependencyMetadataMarker = "requiredMarkerFile";
     private const string DependencySoftFailSuffix = "Attach will continue, but dependency-sensitive actions are temporarily disabled.";
     private const string LibraryFolderPathPattern = "\"path\"\\s*\"([^\"]+)\"";
     private const string ModPathPattern = "modpath\\s*=\\s*(?:\"(?<quoted>[^\"]+)\"|(?<unquoted>[^\\s]+))";
@@ -24,7 +24,7 @@ public sealed class ModDependencyValidator : IModDependencyValidator
     {
         ArgumentNullException.ThrowIfNull(profile);
         ArgumentNullException.ThrowIfNull(process);
-        var marker = ReadMetadata(profile, DependencyMetadataMarkerKey);
+        var marker = ReadMetadata(profile, DependencyMetadataMarker);
         var markerFailure = ValidateMarkerMetadata(marker);
         if (markerFailure is not null)
         {
@@ -49,7 +49,7 @@ public sealed class ModDependencyValidator : IModDependencyValidator
 
     private static DependencyValidationResult? ValidateMarkerMetadata(string? marker)
     {
-        if (string.IsNullOrWhiteSpace(marker) || !marker.Contains(PathTraversalToken, StringComparison.Ordinal))
+        if (string.IsNullOrWhiteSpace(marker) || !marker.Contains(PathTraversalSequence, StringComparison.Ordinal))
         {
             return null;
         }
@@ -187,27 +187,23 @@ public sealed class ModDependencyValidator : IModDependencyValidator
     {
         var roots = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
 
-        foreach (var drive in DriveInfo.GetDrives().Where(drive => drive.IsReady))
+        foreach (var steamRoot in DriveInfo.GetDrives()
+                     .Where(drive => drive.IsReady)
+                     .SelectMany(drive => new[]
+                     {
+                         Path.Join(drive.RootDirectory.FullName, "SteamLibrary"),
+                         Path.Join(drive.RootDirectory.FullName, "Program Files (x86)", "Steam"),
+                         Path.Join(drive.RootDirectory.FullName, "Program Files", "Steam")
+                     }))
         {
-            var root = drive.RootDirectory.FullName;
-            var steamCandidates = new[]
+            var workshopRoot = Path.Join(steamRoot, "steamapps", "workshop", "content", WorkshopAppId);
+            if (Directory.Exists(workshopRoot))
             {
-                Path.Combine(root, "SteamLibrary"),
-                Path.Combine(root, "Program Files (x86)", "Steam"),
-                Path.Combine(root, "Program Files", "Steam")
-            };
-
-            foreach (var steamRoot in steamCandidates)
-            {
-                var workshopRoot = Path.Combine(steamRoot, "steamapps", "workshop", "content", WorkshopAppId);
-                if (Directory.Exists(workshopRoot))
-                {
-                    roots.Add(workshopRoot);
-                }
-
-                var libraryFoldersPath = Path.Combine(steamRoot, "steamapps", "libraryfolders.vdf");
-                AddWorkshopRootsFromLibraryFolders(libraryFoldersPath, roots);
+                roots.Add(workshopRoot);
             }
+
+            var libraryFoldersPath = Path.Join(steamRoot, "steamapps", "libraryfolders.vdf");
+            AddWorkshopRootsFromLibraryFolders(libraryFoldersPath, roots);
         }
 
         foreach (var linuxCandidate in LinuxWorkshopCandidates.Where(Directory.Exists))
@@ -230,7 +226,11 @@ public sealed class ModDependencyValidator : IModDependencyValidator
         {
             content = File.ReadAllText(libraryFoldersPath);
         }
-        catch (Exception)
+        catch (IOException)
+        {
+            return;
+        }
+        catch (UnauthorizedAccessException)
         {
             return;
         }
@@ -241,17 +241,11 @@ public sealed class ModDependencyValidator : IModDependencyValidator
             .Select(match => match.Groups)
             .Where(groups => groups.Count >= 2);
 
-        foreach (var groups in groupsSequence)
+        foreach (var pathValue in groupsSequence
+            .Select(groups => groups[1].Value.Replace("\\\\", "\\", StringComparison.Ordinal).Trim())
+            .Where(pathValue => !string.IsNullOrWhiteSpace(pathValue)))
         {
-            var pathValue = groups[1].Value
-                .Replace("\\\\", "\\", StringComparison.Ordinal)
-                .Trim();
-            if (string.IsNullOrWhiteSpace(pathValue))
-            {
-                continue;
-            }
-
-            var workshopRoot = Path.Combine(pathValue, "steamapps", "workshop", "content", WorkshopAppId);
+            var workshopRoot = Path.Join(pathValue, "steamapps", "workshop", "content", WorkshopAppId);
             if (Directory.Exists(workshopRoot))
             {
                 roots.Add(workshopRoot);
@@ -261,22 +255,15 @@ public sealed class ModDependencyValidator : IModDependencyValidator
 
     private static string? FindWorkshopFolder(string id, IReadOnlyList<string> workshopRoots)
     {
-        foreach (var root in workshopRoots)
-        {
-            var candidate = Path.Combine(root, id);
-            if (Directory.Exists(candidate))
-            {
-                return candidate;
-            }
-        }
-
-        return null;
+        return workshopRoots
+            .Select(root => Path.Join(root, id))
+            .FirstOrDefault(Directory.Exists);
     }
 
     private static bool HasMarker(string root, string marker)
     {
         var safeMarker = marker.Replace('/', Path.DirectorySeparatorChar).Replace('\\', Path.DirectorySeparatorChar);
-        var markerPath = Path.Combine(root, safeMarker);
+        var markerPath = Path.Join(root, safeMarker);
         return File.Exists(markerPath);
     }
 
@@ -320,27 +307,15 @@ public sealed class ModDependencyValidator : IModDependencyValidator
             return;
         }
 
-        foreach (var root in roots.ToArray())
+        foreach (var hintedPath in roots.ToArray()
+            .Select(root => Directory.GetParent(root)?.FullName)
+            .Where(parent => !string.IsNullOrWhiteSpace(parent))
+            .SelectMany(parent => parentHints
+                .Where(hint => !hint.Contains(PathTraversalSequence, StringComparison.Ordinal))
+                .Select(hint => Path.Join(parent!, hint)))
+            .Where(Directory.Exists))
         {
-            var parent = Directory.GetParent(root)?.FullName;
-            if (string.IsNullOrWhiteSpace(parent))
-            {
-                continue;
-            }
-
-            foreach (var hint in parentHints)
-            {
-                if (hint.Contains(PathTraversalToken, StringComparison.Ordinal))
-                {
-                    continue;
-                }
-
-                var hintedPath = Path.Combine(parent, hint);
-                if (Directory.Exists(hintedPath))
-                {
-                    roots.Add(hintedPath);
-                }
-            }
+            roots.Add(hintedPath);
         }
     }
 
@@ -365,13 +340,13 @@ public sealed class ModDependencyValidator : IModDependencyValidator
             return candidates.ToArray();
         }
 
-        candidates.Add(Path.GetFullPath(Path.Combine(processDir, normalized)));
+        candidates.Add(Path.GetFullPath(Path.Join(processDir, normalized)));
 
         var oneUp = Directory.GetParent(processDir)?.FullName;
         if (!string.IsNullOrWhiteSpace(oneUp))
         {
-            candidates.Add(Path.GetFullPath(Path.Combine(oneUp, normalized)));
-            candidates.Add(Path.GetFullPath(Path.Combine(oneUp, "corruption", normalized)));
+            candidates.Add(Path.GetFullPath(Path.Join(oneUp, normalized)));
+            candidates.Add(Path.GetFullPath(Path.Join(oneUp, "corruption", normalized)));
         }
 
         return candidates.ToArray();

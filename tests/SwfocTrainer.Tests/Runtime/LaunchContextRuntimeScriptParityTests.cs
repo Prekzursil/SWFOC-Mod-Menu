@@ -72,7 +72,11 @@ public sealed class LaunchContextRuntimeScriptParityTests
         {
             return Process.Start(psi);
         }
-        catch
+        catch (InvalidOperationException)
+        {
+            return null;
+        }
+        catch (SystemException)
         {
             return null;
         }
@@ -80,20 +84,13 @@ public sealed class LaunchContextRuntimeScriptParityTests
 
     private static IReadOnlyDictionary<string, ScriptRecommendation> BuildScriptRecommendationsByName(JsonArray results)
     {
-        var byName = new Dictionary<string, ScriptRecommendation>(StringComparer.OrdinalIgnoreCase);
-        foreach (var node in results)
-        {
-            var obj = node!.AsObject();
-            var caseName = obj["input"]?["name"]?.GetValue<string>();
-            if (string.IsNullOrWhiteSpace(caseName))
-            {
-                continue;
-            }
-
-            byName[caseName] = BuildScriptRecommendation(obj);
-        }
-
-        return byName;
+        return results
+            .Select(node => node!.AsObject())
+            .Where(obj => !string.IsNullOrWhiteSpace(obj["input"]?["name"]?.GetValue<string>()))
+            .ToDictionary(
+                obj => obj["input"]!["name"]!.GetValue<string>(),
+                BuildScriptRecommendation,
+                StringComparer.OrdinalIgnoreCase);
     }
 
     private static ScriptRecommendation BuildScriptRecommendation(JsonObject obj)
@@ -142,15 +139,8 @@ public sealed class LaunchContextRuntimeScriptParityTests
             ("py", "-3")
         };
 
-        foreach (var candidate in candidates)
-        {
-            if (CanExecute(candidate))
-            {
-                return candidate;
-            }
-        }
-
-        return null;
+        var match = candidates.Select(c => ((string FileName, string PrefixArgs)?)c).FirstOrDefault(c => CanExecute(c!.Value));
+        return match;
     }
 
     private static bool CanExecute((string FileName, string PrefixArgs) launcher)
@@ -177,7 +167,11 @@ public sealed class LaunchContextRuntimeScriptParityTests
             process.WaitForExit(5000);
             return process.ExitCode == 0;
         }
-        catch
+        catch (InvalidOperationException)
+        {
+            return false;
+        }
+        catch (SystemException)
         {
             return false;
         }
@@ -186,8 +180,8 @@ public sealed class LaunchContextRuntimeScriptParityTests
     private static bool TryResolveScriptInputs(out ScriptInputs? inputs)
     {
         var root = TestPaths.FindRepoRoot();
-        var scriptPath = Path.Combine(root, "tools", "detect-launch-context.py");
-        var fixturePath = Path.Combine(root, "tools", "fixtures", "launch_context_cases.json");
+        var scriptPath = Path.Join(root, "tools", "detect-launch-context.py");
+        var fixturePath = Path.Join(root, "tools", "fixtures", "launch_context_cases.json");
         if (!File.Exists(scriptPath) || !File.Exists(fixturePath))
         {
             inputs = null;
@@ -213,7 +207,7 @@ public sealed class LaunchContextRuntimeScriptParityTests
         return new ProcessStartInfo
         {
             FileName = inputs.Python.FileName,
-            Arguments = $"{pythonArgsPrefix}\"{inputs.ScriptPath}\" --from-process-json \"{inputs.FixturePath}\" --profile-root \"{Path.Combine(inputs.Root, "profiles", "default")}\"",
+            Arguments = $"{pythonArgsPrefix}\"{inputs.ScriptPath}\" --from-process-json \"{inputs.FixturePath}\" --profile-root \"{Path.Join(inputs.Root, "profiles", "default")}\"",
             RedirectStandardOutput = true,
             RedirectStandardError = true,
             UseShellExecute = false,
@@ -246,7 +240,7 @@ public sealed class LaunchContextRuntimeScriptParityTests
         var root = TestPaths.FindRepoRoot();
         var repo = new FileSystemProfileRepository(new ProfileRepositoryOptions
         {
-            ProfilesRootPath = Path.Combine(root, "profiles", "default")
+            ProfilesRootPath = Path.Join(root, "profiles", "default")
         });
 
         var ids = await repo.ListAvailableProfilesAsync();

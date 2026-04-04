@@ -1,6 +1,7 @@
 using System.Text.Json;
 using System.Text.Json.Nodes;
 using FluentAssertions;
+using SwfocTrainer.Tests.Common;
 using SwfocTrainer.Core.Contracts;
 using SwfocTrainer.Core.Logging;
 using SwfocTrainer.Core.Models;
@@ -16,9 +17,9 @@ public sealed class SpawnPresetServiceTests
     {
         using var temp = new TempDirectory();
         var harness = CreateHarness(temp.Path);
-        var presetDir = Path.Combine(temp.Path, "test_profile");
+        var presetDir = Path.Join(temp.Path, "test_profile");
         Directory.CreateDirectory(presetDir);
-        var presetPath = Path.Combine(presetDir, "spawn_presets.json");
+        var presetPath = Path.Join(presetDir, "spawn_presets.json");
 
         var doc = new
         {
@@ -115,6 +116,290 @@ public sealed class SpawnPresetServiceTests
         result.Attempted.Should().Be(0);
     }
 
+    [Fact]
+    public async Task ExecuteBatch_EmptyPlan_ShouldReturnSuccess()
+    {
+        using var temp = new TempDirectory();
+        var harness = CreateHarness(temp.Path);
+        var plan = new SpawnBatchPlan("test_profile", "preset_id", false, Array.Empty<SpawnBatchItem>());
+
+        var result = await harness.Service.ExecuteBatchAsync("test_profile", plan, RuntimeMode.Galactic);
+
+        result.Succeeded.Should().BeTrue();
+        result.Message.Should().Contain("no items");
+    }
+
+    [Fact]
+    public async Task ExecuteBatch_AllSucceed_ShouldReportFullSuccess()
+    {
+        using var temp = new TempDirectory();
+        var harness = CreateHarness(temp.Path);
+        var preset = new SpawnPreset("id", "name", "STORMTROOPER", "EMPIRE", "AUTO", 1, 0);
+        var plan = harness.Service.BuildBatchPlan("test_profile", preset, 3, 0, null, null, stopOnFailure: false);
+
+        var result = await harness.Service.ExecuteBatchAsync("test_profile", plan, RuntimeMode.Galactic);
+
+        result.Succeeded.Should().BeTrue();
+        result.SucceededCount.Should().Be(3);
+        result.FailedCount.Should().Be(0);
+        result.Message.Should().Contain("succeeded");
+    }
+
+    [Fact]
+    public async Task LoadPresets_ShouldGenerateDefaults_WhenNoPresetFileExists()
+    {
+        using var temp = new TempDirectory();
+        var harness = CreateHarness(temp.Path);
+
+        var presets = await harness.Service.LoadPresetsAsync("test_profile");
+
+        presets.Should().NotBeEmpty();
+        presets[0].Faction.Should().Be("EMPIRE");
+    }
+
+    [Fact]
+    public async Task LoadPresets_SingleParamOverload_ShouldWork()
+    {
+        using var temp = new TempDirectory();
+        var harness = CreateHarness(temp.Path);
+
+        var presets = await harness.Service.LoadPresetsAsync("test_profile");
+
+        presets.Should().NotBeEmpty();
+    }
+
+    [Fact]
+    public void BuildBatchPlan_ShouldUseFactionOverride()
+    {
+        using var temp = new TempDirectory();
+        var harness = CreateHarness(temp.Path);
+        var preset = new SpawnPreset("id", "name", "STORMTROOPER", "EMPIRE", "AUTO", 1, 50);
+
+        var plan = harness.Service.BuildBatchPlan("test_profile", preset, 2, 100, "REBEL", null, stopOnFailure: false);
+
+        plan.Items.Should().HaveCount(2);
+        plan.Items[0].Faction.Should().Be("REBEL");
+    }
+
+    [Fact]
+    public void BuildBatchPlan_ShouldUseEntryMarkerOverride()
+    {
+        using var temp = new TempDirectory();
+        var harness = CreateHarness(temp.Path);
+        var preset = new SpawnPreset("id", "name", "STORMTROOPER", "EMPIRE", "AUTO", 1, 50);
+
+        var plan = harness.Service.BuildBatchPlan("test_profile", preset, 1, 50, null, "MARKER_A", stopOnFailure: false);
+
+        plan.Items[0].EntryMarker.Should().Be("MARKER_A");
+    }
+
+    [Fact]
+    public void BuildBatchPlan_ShouldClampQuantityToMinimum()
+    {
+        using var temp = new TempDirectory();
+        var harness = CreateHarness(temp.Path);
+        var preset = new SpawnPreset("id", "name", "STORMTROOPER", "EMPIRE", "AUTO", 1, 50);
+
+        var plan = harness.Service.BuildBatchPlan("test_profile", preset, -5, 50, null, null, stopOnFailure: false);
+
+        plan.Items.Should().ContainSingle();
+    }
+
+    [Fact]
+    public void BuildBatchPlan_ShouldUsePresetDefaults_WhenQuantityIsZero()
+    {
+        using var temp = new TempDirectory();
+        var harness = CreateHarness(temp.Path);
+        var preset = new SpawnPreset("id", "name", "STORMTROOPER", "EMPIRE", "AUTO", 5, 50);
+
+        var plan = harness.Service.BuildBatchPlan("test_profile", preset, 0, 50, null, null, stopOnFailure: false);
+
+        plan.Items.Should().HaveCount(5);
+    }
+
+    [Fact]
+    public void BuildBatchPlan_ShouldUsePresetDefaultDelay_WhenDelayIsNegative()
+    {
+        using var temp = new TempDirectory();
+        var harness = CreateHarness(temp.Path);
+        var preset = new SpawnPreset("id", "name", "STORMTROOPER", "EMPIRE", "AUTO", 1, 200);
+
+        var plan = harness.Service.BuildBatchPlan("test_profile", preset, 1, -1, null, null, stopOnFailure: false);
+
+        plan.Items[0].DelayMs.Should().Be(200);
+    }
+
+    [Fact]
+    public async Task LoadPresets_ShouldNormalizeBlankFields()
+    {
+        using var temp = new TempDirectory();
+        var harness = CreateHarness(temp.Path);
+        var presetDir = Path.Join(temp.Path, "test_profile");
+        Directory.CreateDirectory(presetDir);
+        var doc = new
+        {
+            schemaVersion = "1.0",
+            presets = new[]
+            {
+                new
+                {
+                    id = "",
+                    name = "",
+                    unitId = "AT_ST",
+                    faction = "",
+                    entryMarker = "",
+                    defaultQuantity = -1,
+                    defaultDelayMs = -1
+                }
+            }
+        };
+        await File.WriteAllTextAsync(Path.Join(presetDir, "spawn_presets.json"), JsonSerializer.Serialize(doc));
+
+        var presets = await harness.Service.LoadPresetsAsync("test_profile");
+
+        presets.Should().ContainSingle();
+        presets[0].Id.Should().Be("at_st");
+        presets[0].Name.Should().Be("AT_ST");
+        presets[0].Faction.Should().Be("EMPIRE");
+        presets[0].EntryMarker.Should().Be("AUTO");
+        presets[0].DefaultQuantity.Should().BeGreaterThanOrEqualTo(1);
+        presets[0].DefaultDelayMs.Should().BeGreaterThanOrEqualTo(0);
+    }
+
+    [Fact]
+    public async Task ExecuteBatch_MissingSpawnAction_ShouldFail()
+    {
+        using var temp = new TempDirectory();
+        var profile = new TrainerProfile(
+            "no_spawn_profile",
+            "Test",
+            null,
+            ExeTarget.Swfoc,
+            null,
+            Array.Empty<SignatureSet>(),
+            new Dictionary<string, long>(),
+            new Dictionary<string, ActionSpec>(StringComparer.OrdinalIgnoreCase),
+            new Dictionary<string, bool>(),
+            Array.Empty<CatalogSource>(),
+            "schema",
+            Array.Empty<HelperHookSpec>());
+        var runtime = new RuntimeStub();
+        var repo = new ProfileRepositoryStub(profile);
+        var catalog = new CatalogStub();
+        var freeze = new FreezeStub();
+        var audit = new AuditStub();
+        var orchestrator = new TrainerOrchestrator(repo, runtime, freeze, audit);
+        var service = new SpawnPresetService(repo, catalog, orchestrator, new LiveOpsOptions { PresetRootPath = temp.Path });
+
+        var plan = new SpawnBatchPlan("no_spawn_profile", "preset_id", false,
+            new[] { new SpawnBatchItem(1, "STORMTROOPER", "EMPIRE", "AUTO", 0) });
+
+        var result = await service.ExecuteBatchAsync("no_spawn_profile", plan, RuntimeMode.Galactic);
+
+        result.Succeeded.Should().BeFalse();
+        result.Message.Should().Contain("does not expose spawn_unit_helper");
+    }
+
+    [Fact]
+    public async Task LoadPresets_ShouldGenerateDefaultsFromCatalog_WhenNoFactionCatalogExists()
+    {
+        using var temp = new TempDirectory();
+        var profile = BuildProfile();
+        var runtime = new RuntimeStub();
+        var repo = new ProfileRepositoryStub(profile);
+        var catalogStub = new CatalogStubNoFactions();
+        var freeze = new FreezeStub();
+        var audit = new AuditStub();
+        var orchestrator = new TrainerOrchestrator(repo, runtime, freeze, audit);
+        var service = new SpawnPresetService(repo, catalogStub, orchestrator, new LiveOpsOptions { PresetRootPath = temp.Path });
+
+        var presets = await service.LoadPresetsAsync("test_profile");
+
+        presets.Should().NotBeEmpty();
+        presets[0].Faction.Should().Be("EMPIRE");
+    }
+
+    [Fact]
+    public async Task LoadPresets_ShouldReturnEmpty_WhenCatalogHasNoUnits()
+    {
+        using var temp = new TempDirectory();
+        var profile = BuildProfile();
+        var runtime = new RuntimeStub();
+        var repo = new ProfileRepositoryStub(profile);
+        var catalogStub = new CatalogStubEmpty();
+        var freeze = new FreezeStub();
+        var audit = new AuditStub();
+        var orchestrator = new TrainerOrchestrator(repo, runtime, freeze, audit);
+        var service = new SpawnPresetService(repo, catalogStub, orchestrator, new LiveOpsOptions { PresetRootPath = temp.Path });
+
+        var presets = await service.LoadPresetsAsync("test_profile");
+
+        presets.Should().BeEmpty();
+    }
+
+    [Fact]
+    public async Task LoadPresets_ShouldReturnEmpty_WhenCatalogThrowsIOException()
+    {
+        using var temp = new TempDirectory();
+        var profile = BuildProfile();
+        var runtime = new RuntimeStub();
+        var repo = new ProfileRepositoryStub(profile);
+        var catalogStub = new CatalogStubThrowsIO();
+        var freeze = new FreezeStub();
+        var audit = new AuditStub();
+        var orchestrator = new TrainerOrchestrator(repo, runtime, freeze, audit);
+        var service = new SpawnPresetService(repo, catalogStub, orchestrator, new LiveOpsOptions { PresetRootPath = temp.Path });
+
+        var presets = await service.LoadPresetsAsync("test_profile");
+
+        presets.Should().BeEmpty();
+    }
+
+    [Fact]
+    public async Task LoadPresets_ShouldReturnEmpty_WhenCatalogThrowsInvalidOperation()
+    {
+        using var temp = new TempDirectory();
+        var profile = BuildProfile();
+        var runtime = new RuntimeStub();
+        var repo = new ProfileRepositoryStub(profile);
+        var catalogStub = new CatalogStubThrowsInvalidOp();
+        var freeze = new FreezeStub();
+        var audit = new AuditStub();
+        var orchestrator = new TrainerOrchestrator(repo, runtime, freeze, audit);
+        var service = new SpawnPresetService(repo, catalogStub, orchestrator, new LiveOpsOptions { PresetRootPath = temp.Path });
+
+        var presets = await service.LoadPresetsAsync("test_profile");
+
+        presets.Should().BeEmpty();
+    }
+
+    [Fact]
+    public async Task ExecuteBatch_WithDelay_ShouldStillComplete()
+    {
+        using var temp = new TempDirectory();
+        var harness = CreateHarness(temp.Path);
+        var preset = new SpawnPreset("id", "name", "STORMTROOPER", "EMPIRE", "AUTO", 1, 0);
+        var plan = harness.Service.BuildBatchPlan("test_profile", preset, 2, 10, null, null, stopOnFailure: false);
+
+        var result = await harness.Service.ExecuteBatchAsync("test_profile", plan, RuntimeMode.Galactic);
+
+        result.Succeeded.Should().BeTrue();
+        result.Attempted.Should().Be(2);
+    }
+
+    [Fact]
+    public void BuildBatchPlan_ShouldUseWhitespaceDefaultsForOverrides()
+    {
+        using var temp = new TempDirectory();
+        var harness = CreateHarness(temp.Path);
+        var preset = new SpawnPreset("id", "name", "STORMTROOPER", "EMPIRE", "MARKER_X", 1, 50);
+
+        var plan = harness.Service.BuildBatchPlan("test_profile", preset, 1, 50, "  ", "  ", stopOnFailure: false);
+
+        plan.Items[0].Faction.Should().Be("EMPIRE");
+        plan.Items[0].EntryMarker.Should().Be("MARKER_X");
+    }
+
     private static Harness CreateHarness(string presetRootPath)
     {
         var profile = BuildProfile();
@@ -143,10 +428,10 @@ public sealed class SpawnPresetServiceTests
             new JsonObject
             {
                 ["required"] = new JsonArray(
-                    (JsonNode)JsonValue.Create("helperHookId")!,
-                    (JsonNode)JsonValue.Create("unitId")!,
-                    (JsonNode)JsonValue.Create("entryMarker")!,
-                    (JsonNode)JsonValue.Create("faction")!)
+                    JsonValue.Create("helperHookId"),
+                    JsonValue.Create("unitId"),
+                    JsonValue.Create("entryMarker"),
+                    JsonValue.Create("faction"))
             },
             VerifyReadback: false,
             CooldownMs: 0);
@@ -303,29 +588,43 @@ public sealed class SpawnPresetServiceTests
         }
     }
 
-    private sealed class TempDirectory : IDisposable
+    private sealed class CatalogStubNoFactions : ICatalogService
     {
-        public TempDirectory()
+        public Task<IReadOnlyDictionary<string, IReadOnlyList<string>>> LoadCatalogAsync(string profileId, CancellationToken cancellationToken = default)
         {
-            Path = System.IO.Path.Combine(System.IO.Path.GetTempPath(), $"swfoc-test-{Guid.NewGuid():N}");
-            Directory.CreateDirectory(Path);
+            IReadOnlyDictionary<string, IReadOnlyList<string>> data = new Dictionary<string, IReadOnlyList<string>>
+            {
+                ["unit_catalog"] = new[] { "STORMTROOPER", "AT_ST" }
+            };
+            return Task.FromResult(data);
         }
+    }
 
-        public string Path { get; }
-
-        public void Dispose()
+    private sealed class CatalogStubEmpty : ICatalogService
+    {
+        public Task<IReadOnlyDictionary<string, IReadOnlyList<string>>> LoadCatalogAsync(string profileId, CancellationToken cancellationToken = default)
         {
-            try
+            IReadOnlyDictionary<string, IReadOnlyList<string>> data = new Dictionary<string, IReadOnlyList<string>>
             {
-                if (Directory.Exists(Path))
-                {
-                    Directory.Delete(Path, recursive: true);
-                }
-            }
-            catch
-            {
-                // ignore cleanup failures
-            }
+                ["unit_catalog"] = Array.Empty<string>()
+            };
+            return Task.FromResult(data);
+        }
+    }
+
+    private sealed class CatalogStubThrowsIO : ICatalogService
+    {
+        public Task<IReadOnlyDictionary<string, IReadOnlyList<string>>> LoadCatalogAsync(string profileId, CancellationToken cancellationToken = default)
+        {
+            throw new IOException("catalog IO failure");
+        }
+    }
+
+    private sealed class CatalogStubThrowsInvalidOp : ICatalogService
+    {
+        public Task<IReadOnlyDictionary<string, IReadOnlyList<string>>> LoadCatalogAsync(string profileId, CancellationToken cancellationToken = default)
+        {
+            throw new InvalidOperationException("catalog invalid op");
         }
     }
 }

@@ -20,6 +20,9 @@ internal static class MainViewModelAttachHelpers
 
     internal static string? ResolveFallbackProfileRecommendation(IReadOnlyList<ProcessMetadata> processes, string baseSwfocProfileId)
     {
+        ArgumentNullException.ThrowIfNull(processes);
+        ArgumentNullException.ThrowIfNull(baseSwfocProfileId);
+
         if (HasSteamModId(processes, "3447786229"))
         {
             return "roe_3447786229_swfoc";
@@ -42,6 +45,8 @@ internal static class MainViewModelAttachHelpers
 
     internal static string BuildAttachStartStatus(string effectiveProfileId, ProfileVariantResolution? variant)
     {
+        ArgumentNullException.ThrowIfNull(effectiveProfileId);
+
         return variant is null
             ? $"Attaching using profile '{effectiveProfileId}'..."
             : $"Attaching using universal profile -> '{effectiveProfileId}' ({variant.ReasonCode}, conf={variant.Confidence:0.00})...";
@@ -54,8 +59,10 @@ internal static class MainViewModelAttachHelpers
         IReadOnlyDictionary<string, string> defaultSymbolByActionId,
         out string? unavailableReason)
     {
+        ArgumentNullException.ThrowIfNull(actionId);
         ArgumentNullException.ThrowIfNull(spec);
         ArgumentNullException.ThrowIfNull(session);
+        ArgumentNullException.ThrowIfNull(defaultSymbolByActionId);
 
         unavailableReason = ResolveActionUnavailableReason(actionId, spec, session, defaultSymbolByActionId);
         return string.IsNullOrWhiteSpace(unavailableReason);
@@ -63,6 +70,7 @@ internal static class MainViewModelAttachHelpers
 
     internal static bool IsStarWarsGProcess(ProcessMetadata process)
     {
+        ArgumentNullException.ThrowIfNull(process);
         if (process.ProcessName.Equals("StarWarsG", StringComparison.OrdinalIgnoreCase) ||
             process.ProcessName.Equals("StarWarsG.exe", StringComparison.OrdinalIgnoreCase))
         {
@@ -186,7 +194,7 @@ internal static class MainViewModelAttachHelpers
             return null;
         }
 
-        var requiresSymbol = required.Any(x => string.Equals(x?.GetValue<string>(), MainViewModelDefaults.PayloadKeySymbol, StringComparison.OrdinalIgnoreCase));
+        var requiresSymbol = required.Any(x => string.Equals(x?.GetValue<string>(), MainViewModelDefaults.PayloadSymbol, StringComparison.OrdinalIgnoreCase));
         if (!requiresSymbol)
         {
             return null;
