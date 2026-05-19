@@ -1,4 +1,4 @@
-﻿#pragma warning disable S4136
+#pragma warning disable S4136
 using System.Globalization;
 using System.Text.RegularExpressions;
 using SwfocTrainer.Core.Contracts;

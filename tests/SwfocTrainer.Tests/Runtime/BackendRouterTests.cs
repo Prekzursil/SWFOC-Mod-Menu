@@ -6,6 +6,7 @@ using Xunit;
 
 namespace SwfocTrainer.Tests.Runtime;
 
+[Collection(EnvVarSerialCollection.Name)]
 public sealed class BackendRouterTests
 {
     [Theory]

@@ -1387,7 +1387,7 @@ public sealed class AppWave8ExtendedCoverageTests
         var result = await InvokeAsyncWithResult<GameLaunchRequest>(vm, "BuildLaunchRequestAsync");
 
         result.Should().NotBeNull();
-        result.Mode.Should().Be(GameLaunchMode.SteamMod);
+        result!.Mode.Should().Be(GameLaunchMode.SteamMod);
     }
 
     [Fact]

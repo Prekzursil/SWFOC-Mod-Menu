@@ -1041,7 +1041,7 @@ public sealed class RuntimeAdapterWave2CoverageTests
             "IsRel32Reachable", BindingFlags.Static | BindingFlags.NonPublic);
         method.Should().NotBeNull();
 
-        var result = (bool)method!.Invoke(null, new object[] { (nint)0x1000, 5, (nint)0x100000000 })!;
+        var result = (bool)method!.Invoke(null, new object[] { (nint)0x1000, 5, unchecked((nint)0x100000000) })!;
         result.Should().BeFalse();
     }
 

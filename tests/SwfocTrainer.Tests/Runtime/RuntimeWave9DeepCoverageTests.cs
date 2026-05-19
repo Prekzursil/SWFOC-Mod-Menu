@@ -92,7 +92,7 @@ public sealed class RuntimeWave9DeepCoverageTests
     // live processes can trigger "Operation Failed" Win32 dialog on Windows.
 
     [Fact]
-    public void BinaryFingerprint_TryGetLoadedModules_InvalidProcessId_ReturnsEmpty()
+    public async Task BinaryFingerprint_TryGetLoadedModules_InvalidProcessId_ReturnsEmpty()
     {
         // Exercises TryGetLoadedModulesAsync catch branches (lines 113-133)
         // Process.GetProcessById throws ArgumentException when process doesn't exist,
@@ -107,13 +107,13 @@ public sealed class RuntimeWave9DeepCoverageTests
 
         // Use a negative process ID to trigger the <= 0 check (line 108)
         var task = (Task<IReadOnlyList<string>>)method!.Invoke(null, new object?[] { (int?)-1, CancellationToken.None })!;
-        var result = task.GetAwaiter().GetResult();
+        var result = await task;
         result.Should().NotBeNull();
         result.Should().BeEmpty();
     }
 
     [Fact]
-    public void BinaryFingerprint_TryGetLoadedModules_NullProcessId_ReturnsEmpty()
+    public async Task BinaryFingerprint_TryGetLoadedModules_NullProcessId_ReturnsEmpty()
     {
         // Exercises the null/zero processId path (lines 108-111)
         var method = typeof(BinaryFingerprintService).GetMethod(
@@ -122,12 +122,12 @@ public sealed class RuntimeWave9DeepCoverageTests
         method.Should().NotBeNull();
 
         var task = (Task<IReadOnlyList<string>>)method!.Invoke(null, new object?[] { null, CancellationToken.None })!;
-        var result = task.GetAwaiter().GetResult();
+        var result = await task;
         result.Should().BeEmpty();
     }
 
     [Fact]
-    public void BinaryFingerprint_TryGetLoadedModules_ZeroProcessId_ReturnsEmpty()
+    public async Task BinaryFingerprint_TryGetLoadedModules_ZeroProcessId_ReturnsEmpty()
     {
         var method = typeof(BinaryFingerprintService).GetMethod(
             "TryGetLoadedModulesAsync",
@@ -135,7 +135,7 @@ public sealed class RuntimeWave9DeepCoverageTests
         method.Should().NotBeNull();
 
         var task = (Task<IReadOnlyList<string>>)method!.Invoke(null, new object?[] { (int?)0, CancellationToken.None })!;
-        var result = task.GetAwaiter().GetResult();
+        var result = await task;
         result.Should().BeEmpty();
     }
 
@@ -1099,7 +1099,7 @@ public sealed class RuntimeWave9DeepCoverageTests
     // ──────────────────────────────────────────────────────────────────
 
     [Fact]
-    public void RuntimeAdapter_WaitForCreditsHookTick_NullMemory_ReturnsFalse()
+    public async Task RuntimeAdapter_WaitForCreditsHookTick_NullMemory_ReturnsFalse()
     {
         // Covers WaitForCreditsHookTickAsync null memory/zero address path (lines 4418-4421)
         var adapter = CreateAttachedAdapter();
@@ -1111,7 +1111,7 @@ public sealed class RuntimeWave9DeepCoverageTests
         method.Should().NotBeNull();
 
         var task = (Task)method!.Invoke(adapter, new object[] { 0, 1000, CancellationToken.None })!;
-        task.GetAwaiter().GetResult();
+        await task;
         // Uses dynamic to get the Result from generic task
         var resultProp = task.GetType().GetProperty("Result");
         var result = resultProp!.GetValue(task);

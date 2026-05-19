@@ -12,6 +12,7 @@ namespace SwfocTrainer.Tests.Runtime;
 /// branches in ReadContext*, MapDefaultBackend, ResolveAutoFallback, promoted extender
 /// override, resolve API integration paths, and null guard edges.
 /// </summary>
+[Collection(EnvVarSerialCollection.Name)]
 public sealed class BackendRouterWave8BranchCoverageTests
 {
     private static readonly BindingFlags NonPublicStatic =

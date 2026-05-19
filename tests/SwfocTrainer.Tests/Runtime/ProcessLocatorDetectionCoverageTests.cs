@@ -127,37 +127,37 @@ public sealed class ProcessLocatorDetectionCoverageTests
     private sealed class StubProfileRepository : IProfileRepository
     {
         public Task<ProfileManifest> LoadManifestAsync(CancellationToken cancellationToken)
-            {
-                _ = cancellationToken;
-                throw new NotImplementedException();
-            }
+        {
+            _ = cancellationToken;
+            throw new NotImplementedException();
+        }
 
         public Task<TrainerProfile> LoadProfileAsync(string profileId, CancellationToken cancellationToken)
-            {
-                _ = profileId;
-                _ = cancellationToken;
-                throw new NotImplementedException();
-            }
+        {
+            _ = profileId;
+            _ = cancellationToken;
+            throw new NotImplementedException();
+        }
 
         public Task<TrainerProfile> ResolveInheritedProfileAsync(string profileId, CancellationToken cancellationToken)
-            {
-                _ = profileId;
-                _ = cancellationToken;
-                throw new NotImplementedException();
-            }
+        {
+            _ = profileId;
+            _ = cancellationToken;
+            throw new NotImplementedException();
+        }
 
         public Task ValidateProfileAsync(TrainerProfile profile, CancellationToken cancellationToken)
-            {
-                _ = profile;
-                _ = cancellationToken;
-                return Task.CompletedTask;
-            }
+        {
+            _ = profile;
+            _ = cancellationToken;
+            return Task.CompletedTask;
+        }
 
         public Task<IReadOnlyList<string>> ListAvailableProfilesAsync(CancellationToken cancellationToken)
-            {
-                _ = cancellationToken;
-                return Task.FromResult<IReadOnlyList<string>>(Array.Empty<string>());
-            }
+        {
+            _ = cancellationToken;
+            return Task.FromResult<IReadOnlyList<string>>(Array.Empty<string>());
+        }
     }
 }
 

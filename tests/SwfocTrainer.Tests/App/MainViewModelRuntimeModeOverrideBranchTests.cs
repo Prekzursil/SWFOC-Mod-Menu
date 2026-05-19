@@ -9,6 +9,7 @@ namespace SwfocTrainer.Tests.App;
 /// Branch coverage for MainViewModelRuntimeModeOverrideHelpers:
 /// Normalize, ResolveEffectiveRuntimeMode, Load, Save.
 /// </summary>
+[Collection(RuntimeModeSerialCollection.Name)]
 public sealed class MainViewModelRuntimeModeOverrideBranchTests
 {
     [Theory]

@@ -2,6 +2,7 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Windows.Input;
 using SwfocTrainer.App.Models;
+using SwfocTrainer.Core.Contracts;
 using SwfocTrainer.Core.Models;
 
 namespace SwfocTrainer.App.ViewModels;
@@ -369,6 +370,148 @@ public abstract class MainViewModelBindableMembersBase : MainViewModelCoreStateB
     {
         get => _creditsFreeze;
         set => SetField(_creditsFreeze, value, newValue => _creditsFreeze = newValue);
+    }
+
+    // v5 collections
+    public ObservableCollection<RosterBrowserViewItem> RosterEntries { get; protected set; } = new();
+    public ObservableCollection<FactionSnapshotViewItem> FactionSnapshots { get; protected set; } = new();
+
+    // Wave 2-6 collections
+    public ObservableCollection<PlanetViewItem> PlanetEntries { get; protected set; } = new();
+    public ObservableCollection<FleetViewItem> FleetEntries { get; protected set; } = new();
+    public ObservableCollection<StoryEventViewItem> StoryEventEntries { get; protected set; } = new();
+    public ObservableCollection<DamageLogViewItem> DamageLogEntries { get; protected set; } = new();
+    public ObservableCollection<MapHintViewItem> MapHintEntries { get; protected set; } = new();
+
+    // v5 properties
+    public string RosterSearchQuery
+    {
+        get => _rosterSearchQuery;
+        set => SetField(_rosterSearchQuery, value, newValue => _rosterSearchQuery = newValue);
+    }
+
+    public string RosterSelectedFaction
+    {
+        get => _rosterSelectedFaction;
+        set => SetField(_rosterSelectedFaction, value, newValue => _rosterSelectedFaction = newValue);
+    }
+
+    public string EnhancedSpawnUnitId
+    {
+        get => _enhancedSpawnUnitId;
+        set => SetField(_enhancedSpawnUnitId, value, newValue => _enhancedSpawnUnitId = newValue);
+    }
+
+    public string EnhancedSpawnFaction
+    {
+        get => _enhancedSpawnFaction;
+        set => SetField(_enhancedSpawnFaction, value, newValue => _enhancedSpawnFaction = newValue);
+    }
+
+    public string EnhancedSpawnQuantity
+    {
+        get => _enhancedSpawnQuantity;
+        set => SetField(_enhancedSpawnQuantity, value, newValue => _enhancedSpawnQuantity = newValue);
+    }
+
+    public string EnhancedSpawnMode
+    {
+        get => _enhancedSpawnMode;
+        set => SetField(_enhancedSpawnMode, value, newValue => _enhancedSpawnMode = newValue);
+    }
+
+    // v5 commands
+    public ICommand LoadRosterCommand { get; protected set; } = null!;
+    public ICommand RefreshDashboardCommand { get; protected set; } = null!;
+    public ICommand ExecuteEnhancedSpawnCommand { get; protected set; } = null!;
+
+    // Wave 2 commands
+    public ICommand TransferOwnershipCommand { get; protected set; } = null!;
+    public ICommand LoadPlanetsCommand { get; protected set; } = null!;
+    public ICommand LoadFleetsCommand { get; protected set; } = null!;
+    public ICommand SwitchFactionCommand { get; protected set; } = null!;
+
+    // Wave 3 commands
+    public ICommand ExecuteAiControlCommand { get; protected set; } = null!;
+    public ICommand ResetCooldownsCommand { get; protected set; } = null!;
+
+    // Wave 4 commands
+    public ICommand ExecuteCameraCommand { get; protected set; } = null!;
+    public ICommand LoadStoryEventsCommand { get; protected set; } = null!;
+    public ICommand FireStoryEventCommand { get; protected set; } = null!;
+
+    // Wave 5 commands
+    public ICommand DetectModConflictsCommand { get; protected set; } = null!;
+    public ICommand RefreshDamageLogCommand { get; protected set; } = null!;
+
+    // Wave 6 commands
+    public ICommand LoadDiplomacyCommand { get; protected set; } = null!;
+    public ICommand SetDiplomacyRelationCommand { get; protected set; } = null!;
+    public ICommand SetCorruptionCommand { get; protected set; } = null!;
+    public ICommand RemoveCorruptionCommand { get; protected set; } = null!;
+
+    // Wave 2 properties
+    public string TransferTargetFaction
+    {
+        get => _transferTargetFaction;
+        set => SetField(_transferTargetFaction, value, newValue => _transferTargetFaction = newValue);
+    }
+
+    public string SelectedPlanetId
+    {
+        get => _selectedPlanetId;
+        set => SetField(_selectedPlanetId, value, newValue => _selectedPlanetId = newValue);
+    }
+
+    public string SwitchFactionTarget
+    {
+        get => _switchFactionTarget;
+        set => SetField(_switchFactionTarget, value, newValue => _switchFactionTarget = newValue);
+    }
+
+    // Wave 3 properties
+    public string AiSuspendSeconds
+    {
+        get => _aiSuspendSeconds;
+        set => SetField(_aiSuspendSeconds, value, newValue => _aiSuspendSeconds = newValue);
+    }
+
+    public string CooldownTargetUnitId
+    {
+        get => _cooldownTargetUnitId;
+        set => SetField(_cooldownTargetUnitId, value, newValue => _cooldownTargetUnitId = newValue);
+    }
+
+    // Wave 4 properties
+    public string CameraCommand
+    {
+        get => _cameraCommand;
+        set => SetField(_cameraCommand, value, newValue => _cameraCommand = newValue);
+    }
+
+    public string SelectedStoryEvent
+    {
+        get => _selectedStoryEvent;
+        set => SetField(_selectedStoryEvent, value, newValue => _selectedStoryEvent = newValue);
+    }
+
+    public string CustomStoryEvent
+    {
+        get => _customStoryEvent;
+        set => SetField(_customStoryEvent, value, newValue => _customStoryEvent = newValue);
+    }
+
+    // Wave 6 properties
+    public string CorruptionPlanetId
+    {
+        get => _corruptionPlanetId;
+        set => SetField(_corruptionPlanetId, value, newValue => _corruptionPlanetId = newValue);
+    }
+
+    public string CorruptionType
+    {
+        get => _corruptionType;
+        set => SetField(_corruptionType, value, newValue => _corruptionType = newValue);
     }
 
     // Quick-action commands

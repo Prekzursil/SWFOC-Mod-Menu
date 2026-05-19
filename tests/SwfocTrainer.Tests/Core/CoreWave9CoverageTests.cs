@@ -158,10 +158,13 @@ public sealed class CoreWave9CoverageTests
     {
         var actions = new Dictionary<string, ActionSpec>
         {
-            ["set_selected_hp"] = MA("set_selected_hp"), ["set_selected_shield"] = MA("set_selected_shield"),
-            ["set_selected_speed"] = MA("set_selected_speed"), ["set_selected_damage_multiplier"] = MA("set_selected_damage_multiplier"),
+            ["set_selected_hp"] = MA("set_selected_hp"),
+            ["set_selected_shield"] = MA("set_selected_shield"),
+            ["set_selected_speed"] = MA("set_selected_speed"),
+            ["set_selected_damage_multiplier"] = MA("set_selected_damage_multiplier"),
             ["set_selected_cooldown_multiplier"] = MA("set_selected_cooldown_multiplier"),
-            ["set_selected_veterancy"] = MA("set_selected_veterancy"), ["set_selected_owner_faction"] = MA("set_selected_owner_faction")
+            ["set_selected_veterancy"] = MA("set_selected_veterancy"),
+            ["set_selected_owner_faction"] = MA("set_selected_owner_faction")
         };
         return BP(actions: actions);
     }

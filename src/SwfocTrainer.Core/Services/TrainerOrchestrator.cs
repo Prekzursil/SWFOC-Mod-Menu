@@ -352,7 +352,8 @@ public sealed class TrainerOrchestrator
                 DateTimeOffset.UtcNow,
                 context,
                 result.Succeeded,
-                result.Message) { Diagnostics = diagnostics },
+                result.Message)
+            { Diagnostics = diagnostics },
             cancellationToken);
     }
 }

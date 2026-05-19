@@ -205,3 +205,40 @@ Reliability rule for runtime/mod tasks:
   evidence: tool `tools/research/run-capability-intel.ps1`
   evidence: tool `tools/validate-binary-fingerprint.ps1`
   evidence: tool `tools/validate-signature-pack.ps1`
+
+## v5 Feature Expansion (Mod Editor)
+
+- [x] Core models and enums for 21 features (V5Models.cs: 22 records, 8 enums)
+  evidence: code `src/SwfocTrainer.Core/Models/V5Models.cs`
+- [x] Service interfaces for all 6 waves (IV5Services.cs: 14 interfaces)
+  evidence: code `src/SwfocTrainer.Core/Contracts/IV5Services.cs`
+- [x] Wave 1: RosterBrowserService + FactionDashboardService + EnhancedSpawnService
+  evidence: test `tests/SwfocTrainer.Tests/Core/RosterBrowserServiceTests.cs` (42 tests)
+  evidence: test `tests/SwfocTrainer.Tests/Core/FactionDashboardServiceTests.cs` (6 tests)
+  evidence: test `tests/SwfocTrainer.Tests/Core/EnhancedSpawnServiceTests.cs` (8 tests)
+- [x] Wave 1 ViewModel integration: V5FeaturesBase + Factory + DI + 3 XAML tabs
+  evidence: code `src/SwfocTrainer.App/ViewModels/MainViewModelV5FeaturesBase.cs`
+- [x] Wave 2: OwnershipTransferService + PlanetManagerService + FleetManagerService + FactionSwitchService
+  evidence: test `tests/SwfocTrainer.Tests/Core/OwnershipTransferServiceTests.cs` (11 tests)
+  evidence: test `tests/SwfocTrainer.Tests/Core/PlanetManagerServiceTests.cs` (16 tests)
+  evidence: test `tests/SwfocTrainer.Tests/Core/FleetManagerServiceTests.cs` (4 tests)
+  evidence: test `tests/SwfocTrainer.Tests/Core/FactionSwitchServiceTests.cs` (9 tests)
+- [x] Wave 3: AiControlService + CooldownManagerService
+  evidence: test `tests/SwfocTrainer.Tests/Core/AiControlServiceTests.cs` (16 tests)
+  evidence: test `tests/SwfocTrainer.Tests/Core/CooldownManagerServiceTests.cs` (9 tests)
+- [x] Wave 4: CameraDirectorService + StoryEventService
+  evidence: test `tests/SwfocTrainer.Tests/Core/CameraDirectorServiceTests.cs` (30 tests)
+  evidence: test `tests/SwfocTrainer.Tests/Core/StoryEventServiceTests.cs` (25 tests)
+- [x] Wave 5: ModConflictDetectorService + DamageLogService
+  evidence: test `tests/SwfocTrainer.Tests/Core/ModConflictDetectorServiceTests.cs` (20 tests)
+  evidence: test `tests/SwfocTrainer.Tests/Core/DamageLogServiceTests.cs` (26 tests)
+- [x] Wave 6: DiplomacyService + CorruptionService
+  evidence: test `tests/SwfocTrainer.Tests/Core/DiplomacyServiceTests.cs` (22 tests)
+  evidence: test `tests/SwfocTrainer.Tests/Core/CorruptionServiceTests.cs` (26 tests)
+- [x] Full DI + ViewModel + XAML integration for Waves 2-6 (12 services, 9 tabs)
+  evidence: code `src/SwfocTrainer.App/Program.cs` (12 new AddSingleton registrations)
+  evidence: code `src/SwfocTrainer.App/MainWindow.xaml` (12 new TabItems)
+- [ ] Bridge integration: wire v5 services to SwfocExtender native bridge for live game execution
+- [ ] Lua Script Workshop: AvalonEdit integration for in-app Lua editor
+- [ ] Veterancy Manager: RE investigation needed to confirm memory layout
+- [ ] Map Hints & Markers: implement Find_Hint display and fog-aware filtering

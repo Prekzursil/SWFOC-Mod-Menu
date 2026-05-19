@@ -153,6 +153,45 @@ public sealed class RuntimeWave10CoverageTests
         result.Should().Be(0d);
     }
 
+    [Fact]
+    public void IsProcessStillRunning_MissingPid_ReturnsFalse()
+    {
+        var result = (bool)InvokeStatic(RuntimeAdapterType, "IsProcessStillRunning", -12345)!;
+        result.Should().BeFalse();
+    }
+
+    [Fact]
+    public void TryGetMainModuleSize_MissingPid_ReturnsNull()
+    {
+        var result = InvokeStatic(RuntimeAdapterType, "TryGetMainModuleSize", -12345);
+        result.Should().BeNull();
+    }
+
+    [Fact]
+    public void TryCreateProcessSelectionCandidate_MissingPid_ReturnsNull()
+    {
+        var profile = CreateMinimalProfile("aotr");
+        var process = new ProcessMetadata(
+            -12345,
+            "StarWarsG",
+            @"C:\Games\StarWarsG.exe",
+            null,
+            ExeTarget.Swfoc,
+            RuntimeMode.Unknown,
+            null,
+            null,
+            ProcessHostRole.GameHost);
+
+        var result = InvokeStatic(
+            RuntimeAdapterType,
+            "TryCreateProcessSelectionCandidate",
+            profile,
+            process,
+            Array.Empty<string>());
+
+        result.Should().BeNull();
+    }
+
     // ================================================================
     // 6. ResolveProcessSelectionReason
     // ================================================================
@@ -246,7 +285,7 @@ public sealed class RuntimeWave10CoverageTests
     [Fact]
     public void ProcessContainsWorkshopId_InLaunchContext_ReturnsTrue()
     {
-        var launchContext = new LaunchContext(LaunchKind.Workshop, false, new[] { "456" }, null, null, null, null);
+        var launchContext = new LaunchContext(LaunchKind.Workshop, false, new[] { "456" }, null, null, null!, null!);
         var process = new ProcessMetadata(1, "test", "c:\\test.exe", null, ExeTarget.Swfoc,
             RuntimeMode.Unknown, LaunchContext: launchContext);
         var result = (bool)InvokeStatic(RuntimeAdapterType, "ProcessContainsWorkshopId", process, "456")!;

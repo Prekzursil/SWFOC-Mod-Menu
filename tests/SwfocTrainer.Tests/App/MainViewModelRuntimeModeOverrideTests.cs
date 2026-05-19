@@ -5,6 +5,7 @@ using Xunit;
 
 namespace SwfocTrainer.Tests.App;
 
+[Collection(RuntimeModeSerialCollection.Name)]
 public sealed class MainViewModelRuntimeModeOverrideTests
 {
     [Fact]

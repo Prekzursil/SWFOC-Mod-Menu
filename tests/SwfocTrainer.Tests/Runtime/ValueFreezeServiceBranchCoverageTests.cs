@@ -23,6 +23,20 @@ public sealed class ValueFreezeServiceBranchCoverageTests : IDisposable
         // Intentionally left empty — individual tests dispose their own service instances.
     }
 
+    private static async Task WaitForWrittenSymbolAsync(StubRuntimeAdapter runtime, string symbol, int timeoutMs = 1000)
+    {
+        var deadline = Environment.TickCount64 + timeoutMs;
+        while (Environment.TickCount64 < deadline)
+        {
+            if (runtime.WrittenSymbols.Any(written => string.Equals(written, symbol, StringComparison.OrdinalIgnoreCase)))
+            {
+                return;
+            }
+
+            await Task.Delay(20);
+        }
+    }
+
     // ── Constructor branches ───────────────────────────────────────────────
 
     [Fact]
@@ -302,9 +316,7 @@ public sealed class ValueFreezeServiceBranchCoverageTests : IDisposable
         using var svc = new ValueFreezeService(_runtime, _logger, 50);
         svc.FreezeInt("credits", 1000);
 
-        // Wait for at least one pulse to fire
-        await Task.Delay(200);
-
+        await WaitForWrittenSymbolAsync(_runtime, "credits");
         _runtime.WrittenSymbols.Should().Contain("credits");
     }
 
@@ -315,8 +327,7 @@ public sealed class ValueFreezeServiceBranchCoverageTests : IDisposable
         using var svc = new ValueFreezeService(_runtime, _logger, 50);
         svc.FreezeFloat("timer", 99.5f);
 
-        await Task.Delay(200);
-
+        await WaitForWrittenSymbolAsync(_runtime, "timer");
         _runtime.WrittenSymbols.Should().Contain("timer");
     }
 
@@ -327,8 +338,7 @@ public sealed class ValueFreezeServiceBranchCoverageTests : IDisposable
         using var svc = new ValueFreezeService(_runtime, _logger, 50);
         svc.FreezeBool("fog_reveal", true);
 
-        await Task.Delay(200);
-
+        await WaitForWrittenSymbolAsync(_runtime, "fog_reveal");
         _runtime.WrittenSymbols.Should().Contain("fog_reveal");
     }
 
@@ -339,8 +349,7 @@ public sealed class ValueFreezeServiceBranchCoverageTests : IDisposable
         using var svc = new ValueFreezeService(_runtime, _logger, 50);
         svc.FreezeBool("ai_enabled", false);
 
-        await Task.Delay(200);
-
+        await WaitForWrittenSymbolAsync(_runtime, "ai_enabled");
         _runtime.WrittenSymbols.Should().Contain("ai_enabled");
     }
 
@@ -451,9 +460,7 @@ public sealed class ValueFreezeServiceBranchCoverageTests : IDisposable
         using var svc = new ValueFreezeService(_runtime, _logger, int.MaxValue);
         svc.FreezeIntAggressive("credits", 5000);
 
-        // Wait for aggressive thread to write
-        await Task.Delay(200);
-
+        await WaitForWrittenSymbolAsync(_runtime, "credits");
         _runtime.WrittenSymbols.Should().Contain("credits");
     }
 

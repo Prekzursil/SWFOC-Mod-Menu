@@ -119,7 +119,12 @@ public sealed class ProcessLocator : IProcessLocator
         return FindBestMatchAsync(target, CancellationToken.None);
     }
 
-    private static ProcessDetection GetProcessDetection(string processName, string? processPath, string? commandLine)
+    // 2026-04-29 (iter 122): exposed `internal` for regression tests that
+    // probe specific (processName, processPath, commandLine) tuples — most
+    // notably the iter 120/121 SwfocExtender.Host case where the locator
+    // must NOT report ExeTarget.Swfoc for a sidecar binary. Other detection
+    // helpers stay `private` since they're called only from this method.
+    internal static ProcessDetection GetProcessDetection(string processName, string? processPath, string? commandLine)
     {
         if (TryDetectDirectTarget(processName, processPath, commandLine, out var directDetection))
         {
@@ -652,7 +657,10 @@ public sealed class ProcessLocator : IProcessLocator
 
     private sealed record WmiProcessInfo(string? CommandLine, string? ExecutablePath);
     private sealed record ProcessProbe(string Path, string? CommandLine, int MainModuleSize);
-    private sealed record ProcessDetection(ExeTarget ExeTarget, bool IsStarWarsG, string DetectedVia);
+    // 2026-04-29 (iter 122): nested record exposed `internal` for the
+    // ProcessLocatorRegressionTests that pin GetProcessDetection's behavior
+    // on synthetic (processName, processPath, commandLine) tuples.
+    internal sealed record ProcessDetection(ExeTarget ExeTarget, bool IsStarWarsG, string DetectedVia);
     private sealed record ProcessMetadataBuildInput(
         ProcessProbe Probe,
         ProcessDetection Detection,

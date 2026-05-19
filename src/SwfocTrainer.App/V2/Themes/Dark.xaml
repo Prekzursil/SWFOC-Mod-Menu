@@ -1,0 +1,142 @@
+<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <!--
+        Dark theme palette. Every key here also exists in Light.xaml with a
+        light-mode equivalent. The ThemeService swaps the active dictionary
+        at runtime, and every XAML control binds via DynamicResource so the
+        change is live.
+
+        Naming convention is semantic, not literal — "InputBackground", not
+        "Color1A2333" — so a third theme (high-contrast, sepia, custom) can
+        slot in later without renaming bindings.
+    -->
+
+    <!-- Surfaces -->
+    <SolidColorBrush x:Key="WindowBackground"  Color="#0F1621"/>
+    <SolidColorBrush x:Key="ChromeBackground"  Color="#1A2333"/>
+    <SolidColorBrush x:Key="TabBackground"     Color="#182132"/>
+    <SolidColorBrush x:Key="ListBackground"    Color="#0E1624"/>
+    <SolidColorBrush x:Key="AltRowBackground"  Color="#11192A"/>
+    <SolidColorBrush x:Key="StatusBackground"  Color="#182132"/>
+
+    <!-- Foregrounds -->
+    <SolidColorBrush x:Key="TextForeground"    Color="#E6EDF7"/>
+    <SolidColorBrush x:Key="AccentForeground"  Color="#9DB9DE"/>
+    <SolidColorBrush x:Key="HeaderForeground"  Color="#8FA4C2"/>
+    <SolidColorBrush x:Key="MutedForeground"   Color="#6D8AAD"/>
+    <SolidColorBrush x:Key="DimForeground"     Color="#54627A"/>
+    <SolidColorBrush x:Key="ListForeground"    Color="#C7D4E6"/>
+
+    <!-- Edges -->
+    <SolidColorBrush x:Key="BorderBrushBase"   Color="#2B3A54"/>
+    <SolidColorBrush x:Key="BorderBrushStrong" Color="#3A5078"/>
+
+    <!-- Buttons -->
+    <SolidColorBrush x:Key="ButtonBackground"  Color="#223049"/>
+    <SolidColorBrush x:Key="ButtonForeground"  Color="#E6EDF7"/>
+    <SolidColorBrush x:Key="ButtonBorderBrush" Color="#3A5078"/>
+
+    <!-- ComboBox interactions -->
+    <SolidColorBrush x:Key="ItemHoverBackground"    Color="#2A3A56"/>
+    <SolidColorBrush x:Key="ItemHoverForeground"    Color="#FFFFFF"/>
+    <SolidColorBrush x:Key="ItemSelectedBackground" Color="#3A5078"/>
+    <SolidColorBrush x:Key="ItemSelectedForeground" Color="#FFFFFF"/>
+
+    <!-- Input fields (TextBox / ComboBox / PasswordBox) -->
+    <SolidColorBrush x:Key="InputBackground"        Color="#15203A"/>
+    <SolidColorBrush x:Key="InputForeground"        Color="#E6EDF7"/>
+    <SolidColorBrush x:Key="InputBorderBrush"       Color="#3A5078"/>
+    <SolidColorBrush x:Key="InputCaretBrush"        Color="#E6EDF7"/>
+    <!-- Status banners -->
+    <SolidColorBrush x:Key="ConnectedBackground"    Color="#2E7D32"/>
+    <SolidColorBrush x:Key="DisconnectedBackground" Color="#C62828"/>
+    <!--
+        Warning banner brushes — used for "PHASE 2 PENDING — REPLAY MIRROR
+        ONLY" badges on Combat scalars + Speed per-faction/per-unit. Amber
+        on dark so the badge reads as advisory (not destructive) but is
+        impossible to miss. Foreground deliberately near-white so contrast
+        passes WCAG AA against the amber.
+    -->
+    <SolidColorBrush x:Key="WarningBackground"      Color="#8A5A00"/>
+    <SolidColorBrush x:Key="WarningForeground"      Color="#FFE082"/>
+    <SolidColorBrush x:Key="WarningBorderBrush"     Color="#C99A2D"/>
+
+    <!-- iter 65: activity-log duration color-coding. Operators now see
+         slow bridge calls pop without sorting the DataGrid by ms.
+         Buckets (Fast<50, Normal<200, Slow<500, VerySlow>=500) match
+         BridgeActivityEntry.DurationCategory. -->
+    <SolidColorBrush x:Key="DurationFastBrush"      Color="#7CCB7C"/>
+    <SolidColorBrush x:Key="DurationNormalBrush"    Color="#E0E0E0"/>
+    <SolidColorBrush x:Key="DurationSlowBrush"      Color="#FFC857"/>
+    <SolidColorBrush x:Key="DurationVerySlowBrush"  Color="#FF6B6B"/>
+
+    <!-- iter 70: bridge-health dot in the bottom status bar. Buckets
+         match BridgeActivityStats.HealthCategory. Slightly more
+         saturated than the duration brushes so the small 10×10 dot
+         reads at a glance. -->
+    <SolidColorBrush x:Key="BridgeHealthHealthyBrush"  Color="#4CAF50"/>
+    <SolidColorBrush x:Key="BridgeHealthDegradedBrush" Color="#FFB300"/>
+    <SolidColorBrush x:Key="BridgeHealthFailingBrush"  Color="#E53935"/>
+
+    <!--
+        Input-control styles. These force the SelectionBoxItem of a ComboBox
+        and the editor of a TextBox to use the high-contrast theme foreground.
+        Without these, WPF defaults make the inner content render as black
+        text on a near-black background in dark mode (the user-reported
+        "EMPIRE barely visible / Player slot blank" bug, 2026-04-27).
+
+        The styles are unkeyed so they apply implicitly to every TextBox /
+        ComboBox / ComboBoxItem in the app. Keep all setters DynamicResource
+        so the runtime theme swap (ThemeService.ApplyPreference) stays live.
+    -->
+    <Style TargetType="TextBox">
+        <Setter Property="Background" Value="{DynamicResource InputBackground}"/>
+        <Setter Property="Foreground" Value="{DynamicResource InputForeground}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource InputBorderBrush}"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="CaretBrush" Value="{DynamicResource InputCaretBrush}"/>
+        <Setter Property="SelectionBrush" Value="{DynamicResource ItemSelectedBackground}"/>
+        <Setter Property="Padding" Value="4,2"/>
+        <!--
+            TextElement.Foreground is an attached property that propagates
+            through every nested ContentPresenter in the default Aero
+            ControlTemplate. Setting it explicitly here cuts through the
+            cases where SelectionBoxItem ignores the templated Foreground
+            (notably the closed-state ContentPresenter on Win11).
+        -->
+        <Setter Property="TextElement.Foreground" Value="{DynamicResource InputForeground}"/>
+    </Style>
+
+    <Style TargetType="ComboBox">
+        <Setter Property="Background" Value="{DynamicResource InputBackground}"/>
+        <Setter Property="Foreground" Value="{DynamicResource InputForeground}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource InputBorderBrush}"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="Padding" Value="4,2"/>
+        <Setter Property="TextElement.Foreground" Value="{DynamicResource InputForeground}"/>
+        <!-- 2026-04-27: TextBlock.Foreground inherits down through the
+             ItemTemplate so DataTemplate-rendered closed-state items
+             (Player slot's "Slot 6 — UNDERWORLD") also pick up high
+             contrast even when the template doesn't bind explicitly. -->
+        <Setter Property="TextBlock.Foreground" Value="{DynamicResource InputForeground}"/>
+    </Style>
+
+    <Style TargetType="ComboBoxItem">
+        <Setter Property="Background" Value="{DynamicResource InputBackground}"/>
+        <Setter Property="Foreground" Value="{DynamicResource InputForeground}"/>
+        <Setter Property="Padding" Value="6,3"/>
+        <Style.Triggers>
+            <Trigger Property="IsHighlighted" Value="True">
+                <Setter Property="Background" Value="{DynamicResource ItemHoverBackground}"/>
+                <Setter Property="Foreground" Value="{DynamicResource ItemHoverForeground}"/>
+            </Trigger>
+            <Trigger Property="IsSelected" Value="True">
+                <Setter Property="Background" Value="{DynamicResource ItemSelectedBackground}"/>
+                <Setter Property="Foreground" Value="{DynamicResource ItemSelectedForeground}"/>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+</ResourceDictionary>

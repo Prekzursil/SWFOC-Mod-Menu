@@ -398,7 +398,7 @@ public sealed class MegWave8CoverageTests
         using (stream!)
         {
             using var ms = new MemoryStream();
-            stream.CopyTo(ms);
+            stream!.CopyTo(ms);
             Encoding.UTF8.GetString(ms.ToArray()).Should().Be("<unit/>");
         }
     }

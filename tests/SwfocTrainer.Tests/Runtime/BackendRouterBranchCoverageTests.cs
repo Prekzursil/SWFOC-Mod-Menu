@@ -11,6 +11,15 @@ namespace SwfocTrainer.Tests.Runtime;
 /// in route resolution, backend preference, promoted extender override, mutating checks,
 /// required capabilities, and fallback logic.
 /// </summary>
+/// <remarks>
+/// 2026-04-27 (iter 38): serialised via <see cref="EnvVarSerialCollection"/>
+/// because this class mutates <c>SWFOC_FORCE_PROMOTED_EXTENDER</c> on the
+/// process-global env. Without serialisation, xUnit's default per-class
+/// parallel runner races other classes touching the same var. The flake
+/// surfaced as `ResolvePromotedExtenderOverrideState_ShouldParseInt(value: "0")`
+/// during iter 37's full-suite run.
+/// </remarks>
+[Collection(EnvVarSerialCollection.Name)]
 public sealed class BackendRouterBranchCoverageTests
 {
     // ── IsMutating branches ────────────────────────────────────────────────

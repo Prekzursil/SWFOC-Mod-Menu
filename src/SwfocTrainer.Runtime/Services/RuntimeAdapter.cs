@@ -319,9 +319,19 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
         var requiredWorkshopIds = CollectRequiredWorkshopIds(profile);
         var pool = ResolveCandidatePool(profile, matches, requiredWorkshopIds);
 
-        if (pool.Length == 1)
+        var candidates = CreateProcessSelectionCandidates(profile, pool, requiredWorkshopIds);
+        if (candidates.Length == 0)
         {
-            var singleCandidate = CreateProcessSelectionCandidate(profile, pool[0], requiredWorkshopIds);
+            _logger.LogWarning(
+                "No live process candidates remained for profile {Profile} after checking {Count} discovered candidate(s).",
+                profile.Id,
+                pool.Length);
+            return null;
+        }
+
+        if (candidates.Length == 1)
+        {
+            var singleCandidate = candidates[0];
             return FinalizeProcessSelection(
                 singleCandidate.Process,
                 singleCandidate.MainModuleSize,
@@ -329,8 +339,7 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
                 singleCandidate.SelectionScore);
         }
 
-        var ranked = pool
-            .Select(candidate => CreateProcessSelectionCandidate(profile, candidate, requiredWorkshopIds))
+        var ranked = candidates
             .OrderByDescending(x => x.SelectionScore)
             .ThenByDescending(x => x.WorkshopMatchCount)
             .ThenByDescending(x => x.RecommendationMatch)
@@ -356,6 +365,32 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
             top.SelectionScore,
             top.MainModuleSize);
         return selected;
+    }
+
+    private ProcessSelectionCandidate[] CreateProcessSelectionCandidates(
+        TrainerProfile profile,
+        IReadOnlyCollection<ProcessMetadata> pool,
+        IReadOnlyCollection<string> requiredWorkshopIds)
+    {
+        var candidates = new List<ProcessSelectionCandidate>(pool.Count);
+        foreach (var process in pool)
+        {
+            var candidate = TryCreateProcessSelectionCandidate(profile, process, requiredWorkshopIds);
+            if (candidate.HasValue)
+            {
+                candidates.Add(candidate.Value);
+            }
+            else
+            {
+                _logger.LogDebug(
+                    "Skipping stale process candidate {Pid} ({Name}) for profile {Profile}.",
+                    process.ProcessId,
+                    process.ProcessName,
+                    profile.Id);
+            }
+        }
+
+        return candidates.ToArray();
     }
 
     private ProcessMetadata[] ResolveInitialProcessMatches(
@@ -439,16 +474,26 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
         return starWarsGCandidates.Length > 0 ? starWarsGCandidates : pool;
     }
 
-    private static ProcessSelectionCandidate CreateProcessSelectionCandidate(
+    private static ProcessSelectionCandidate? TryCreateProcessSelectionCandidate(
         TrainerProfile profile,
         ProcessMetadata process,
         IReadOnlyCollection<string> requiredWorkshopIds)
     {
+        if (!IsProcessStillRunning(process.ProcessId))
+        {
+            return null;
+        }
+
         var workshopMatchCount = requiredWorkshopIds.Count == 0
             ? 0
             : requiredWorkshopIds.Count(id => ProcessContainsWorkshopId(process, id));
         var recommendationMatch = process.LaunchContext?.Recommendation.ProfileId?.Equals(profile.Id, StringComparison.OrdinalIgnoreCase) == true;
         var mainModuleSize = process.MainModuleSize > 0 ? process.MainModuleSize : TryGetMainModuleSize(process.ProcessId);
+        if (!mainModuleSize.HasValue)
+        {
+            return null;
+        }
+
         var hasCommandLine = !string.IsNullOrWhiteSpace(process.CommandLine);
         var hostRoleScore = process.HostRole switch
         {
@@ -456,12 +501,12 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
             ProcessHostRole.Launcher => 1,
             _ => 0
         };
-        var selectionScore = ComputeSelectionScore(workshopMatchCount, recommendationMatch, hostRoleScore, hasCommandLine, mainModuleSize);
+        var selectionScore = ComputeSelectionScore(workshopMatchCount, recommendationMatch, hostRoleScore, hasCommandLine, mainModuleSize.Value);
         return new ProcessSelectionCandidate(
             process,
             workshopMatchCount,
             recommendationMatch,
-            mainModuleSize,
+            mainModuleSize.Value,
             hasCommandLine,
             selectionScore);
     }
@@ -573,16 +618,46 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
         return ids;
     }
 
-    private static int TryGetMainModuleSize(int processId)
+    private static bool IsProcessStillRunning(int processId)
     {
         try
         {
             using var process = Process.GetProcessById(processId);
-            return process.MainModule?.ModuleMemorySize ?? 0;
+            return !process.HasExited;
+        }
+        catch (ArgumentException)
+        {
+            return false;
         }
         catch (InvalidOperationException)
         {
-            return 0;
+            return false;
+        }
+        catch (System.ComponentModel.Win32Exception)
+        {
+            return true;
+        }
+    }
+
+    private static int? TryGetMainModuleSize(int processId)
+    {
+        try
+        {
+            using var process = Process.GetProcessById(processId);
+            if (process.HasExited)
+            {
+                return null;
+            }
+
+            return process.MainModule?.ModuleMemorySize ?? 0;
+        }
+        catch (ArgumentException)
+        {
+            return null;
+        }
+        catch (InvalidOperationException)
+        {
+            return null;
         }
         catch (System.ComponentModel.Win32Exception)
         {

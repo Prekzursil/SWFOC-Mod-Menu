@@ -198,8 +198,16 @@ public sealed class LivePromotedActionMatrixTests
         {
             return new AttachAttempt(await runtime.AttachAsync(profileId), null);
         }
-        catch (InvalidOperationException ex) when (ex.Message.Contains(RuntimeReasonCode.ATTACH_PROFILE_MISMATCH.ToString(), StringComparison.OrdinalIgnoreCase))
+        catch (InvalidOperationException ex) when (
+            ex.Message.Contains(RuntimeReasonCode.ATTACH_PROFILE_MISMATCH.ToString(), StringComparison.OrdinalIgnoreCase)
+            || ex.Message.Contains("ATTACH_NO_PROCESS", StringComparison.Ordinal))
         {
+            // 2026-04-29 (iter 121): also catch ATTACH_NO_PROCESS — same
+            // sidecar-process flake addressed by iter 120's
+            // LiveSkip.AttachOrSkipAsync. Here the matrix already aggregates
+            // attempts so we record the failure as a non-attach rather than
+            // skip — the matrix can decide later whether to skip the whole
+            // test based on count of successful attaches.
             return new AttachAttempt(null, ex.Message);
         }
     }

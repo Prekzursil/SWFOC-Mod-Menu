@@ -64,7 +64,7 @@ public sealed class LiveCreditsTests
 
         _output.WriteLine(
             $"Profile: {profileId} (reason={context.Recommendation.ReasonCode}, confidence={context.Recommendation.Confidence:0.00}) PID: {running.ProcessId}");
-        var session = await runtime.AttachAsync(profileId);
+        var session = await LiveSkip.AttachOrSkipAsync(runtime, profileId, _output);
         runtime.IsAttached.Should().BeTrue("runtime should report attached after a successful attach");
         var completed = await ExecuteCreditsDiagnosticsAsync(runtime, session);
         await runtime.DetachAsync();

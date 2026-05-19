@@ -239,7 +239,7 @@ public sealed class RuntimeAdapterCommandHandlerWave8Tests
     [Fact]
     public void IsRel32Reachable_ShouldReturnFalse_WhenTargetOutOfRange()
     {
-        var result = (bool)InvokeStatic("IsRel32Reachable", (nint)0x100000, 5, (nint)0x1_8000_0000)!;
+        var result = (bool)InvokeStatic("IsRel32Reachable", (nint)0x100000, 5, unchecked((nint)0x1_8000_0000))!;
         result.Should().BeFalse();
     }
 
@@ -257,7 +257,7 @@ public sealed class RuntimeAdapterCommandHandlerWave8Tests
     [Fact]
     public void ComputeRelativeDisplacement_ShouldThrow_WhenOutOfRange()
     {
-        var act = () => InvokeStatic("ComputeRelativeDisplacement", (nint)0x100, (nint)0x1_8000_0000);
+        var act = () => InvokeStatic("ComputeRelativeDisplacement", (nint)0x100, unchecked((nint)0x1_8000_0000));
         act.Should().Throw<TargetInvocationException>()
            .WithInnerException<InvalidOperationException>()
            .WithMessage("*rel32*");

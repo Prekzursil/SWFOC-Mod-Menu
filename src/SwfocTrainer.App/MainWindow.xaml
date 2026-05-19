@@ -555,6 +555,324 @@
                     </Grid>
                 </Grid>
             </TabItem>
+            <TabItem Header="Unit Roster">
+                <Grid Margin="12">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="Search:" VerticalAlignment="Center" Margin="0,0,8,0"/>
+                        <TextBox Width="200" Text="{Binding RosterSearchQuery, UpdateSourceTrigger=PropertyChanged}"/>
+                        <TextBlock Text="  Faction:" VerticalAlignment="Center" Margin="12,0,8,0"/>
+                        <TextBox Width="120" Text="{Binding RosterSelectedFaction, UpdateSourceTrigger=PropertyChanged}"/>
+                        <Button Content="Load Roster" Command="{Binding LoadRosterCommand}" Margin="8,0,0,0"/>
+                    </StackPanel>
+                    <DataGrid Grid.Row="1" Margin="0,10,0,0"
+                              ItemsSource="{Binding RosterEntries}"
+                              AutoGenerateColumns="False" IsReadOnly="True"
+                              CanUserSortColumns="True">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Name" Binding="{Binding DisplayName}" Width="*"/>
+                            <DataGridTextColumn Header="Faction" Binding="{Binding Faction}" Width="120"/>
+                            <DataGridTextColumn Header="Category" Binding="{Binding Category}" Width="120"/>
+                            <DataGridTextColumn Header="Kind" Binding="{Binding KindLabel}" Width="80"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </Grid>
+            </TabItem>
+
+            <TabItem Header="Spawner">
+                <Grid Margin="12">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <GroupBox Header="Spawn Configuration">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+                            <TextBlock Text="Unit ID:" VerticalAlignment="Center" Margin="0,0,8,6"/>
+                            <TextBox Grid.Column="1" Text="{Binding EnhancedSpawnUnitId}" Margin="0,0,8,6"/>
+                            <TextBlock Grid.Column="2" Text="Faction:" VerticalAlignment="Center" Margin="0,0,8,6"/>
+                            <TextBox Grid.Column="3" Text="{Binding EnhancedSpawnFaction}" Margin="0,0,0,6"/>
+                            <TextBlock Grid.Row="1" Text="Quantity:" VerticalAlignment="Center" Margin="0,0,8,6"/>
+                            <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding EnhancedSpawnQuantity}" Margin="0,0,8,6"/>
+                            <TextBlock Grid.Row="1" Grid.Column="2" Text="Mode:" VerticalAlignment="Center" Margin="0,0,8,6"/>
+                            <TextBox Grid.Row="1" Grid.Column="3" Text="{Binding EnhancedSpawnMode}" Margin="0,0,0,6"/>
+                            <StackPanel Grid.Row="2" Grid.ColumnSpan="4" Orientation="Horizontal" Margin="0,6,0,0">
+                                <Button Content="Spawn" Command="{Binding ExecuteEnhancedSpawnCommand}" Padding="12,4"/>
+                            </StackPanel>
+                        </Grid>
+                    </GroupBox>
+                </Grid>
+            </TabItem>
+
+            <TabItem Header="Faction Dashboard">
+                <Grid Margin="12">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <StackPanel Orientation="Horizontal">
+                        <Button Content="Refresh Dashboard" Command="{Binding RefreshDashboardCommand}"/>
+                    </StackPanel>
+                    <DataGrid Grid.Row="1" Margin="0,10,0,0"
+                              ItemsSource="{Binding FactionSnapshots}"
+                              AutoGenerateColumns="False" IsReadOnly="True">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Faction" Binding="{Binding FactionName}" Width="*"/>
+                            <DataGridTextColumn Header="Credits" Binding="{Binding Credits}" Width="100"/>
+                            <DataGridTextColumn Header="Units" Binding="{Binding UnitCount}" Width="80"/>
+                            <DataGridTextColumn Header="Planets" Binding="{Binding PlanetCount}" Width="80"/>
+                            <DataGridTextColumn Header="Tech" Binding="{Binding TechLevel}" Width="60"/>
+                            <DataGridTextColumn Header="Updated" Binding="{Binding LastUpdated}" Width="140"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </Grid>
+            </TabItem>
+
+            <TabItem Header="Planet Manager">
+                <Grid Margin="12">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <StackPanel Orientation="Horizontal">
+                        <Button Content="Load Planets" Command="{Binding LoadPlanetsCommand}"/>
+                        <TextBlock Text="  Planet ID:" VerticalAlignment="Center" Margin="12,0,8,0"/>
+                        <TextBox Width="160" Text="{Binding SelectedPlanetId, UpdateSourceTrigger=PropertyChanged}"/>
+                    </StackPanel>
+                    <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="0,8,0,0">
+                        <TextBlock Text="New Owner:" VerticalAlignment="Center" Margin="0,0,8,0"/>
+                        <TextBox Width="140" Text="{Binding TransferTargetFaction, UpdateSourceTrigger=PropertyChanged}"/>
+                        <Button Content="Transfer Ownership" Command="{Binding TransferOwnershipCommand}" Margin="8,0,0,0"/>
+                    </StackPanel>
+                    <DataGrid Grid.Row="2" Margin="0,10,0,0"
+                              ItemsSource="{Binding PlanetEntries}"
+                              AutoGenerateColumns="False" IsReadOnly="True"
+                              CanUserSortColumns="True">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Planet" Binding="{Binding DisplayName}" Width="*"/>
+                            <DataGridTextColumn Header="Owner" Binding="{Binding Owner}" Width="120"/>
+                            <DataGridTextColumn Header="Station Lv" Binding="{Binding StationLevel}" Width="80"/>
+                            <DataGridTextColumn Header="Buildings" Binding="{Binding Buildings}" Width="180"/>
+                            <DataGridTextColumn Header="Corruption" Binding="{Binding Corruption}" Width="100"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </Grid>
+            </TabItem>
+
+            <TabItem Header="Fleet Manager">
+                <Grid Margin="12">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <StackPanel Orientation="Horizontal">
+                        <Button Content="Load Fleets" Command="{Binding LoadFleetsCommand}"/>
+                    </StackPanel>
+                    <DataGrid Grid.Row="1" Margin="0,10,0,0"
+                              ItemsSource="{Binding FleetEntries}"
+                              AutoGenerateColumns="False" IsReadOnly="True"
+                              CanUserSortColumns="True">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Fleet" Binding="{Binding FleetId}" Width="*"/>
+                            <DataGridTextColumn Header="Faction" Binding="{Binding Faction}" Width="120"/>
+                            <DataGridTextColumn Header="Location" Binding="{Binding Location}" Width="140"/>
+                            <DataGridTextColumn Header="Units" Binding="{Binding UnitCount}" Width="60"/>
+                            <DataGridTextColumn Header="Composition" Binding="{Binding Composition}" Width="2*"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </Grid>
+            </TabItem>
+
+            <TabItem Header="Ownership">
+                <Grid Margin="12">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <GroupBox Header="Faction Switch">
+                        <StackPanel Orientation="Horizontal" Margin="8">
+                            <TextBlock Text="Target Faction:" VerticalAlignment="Center" Margin="0,0,8,0"/>
+                            <TextBox Width="160" Text="{Binding SwitchFactionTarget, UpdateSourceTrigger=PropertyChanged}"/>
+                            <Button Content="Switch Faction" Command="{Binding SwitchFactionCommand}" Margin="8,0,0,0"/>
+                        </StackPanel>
+                    </GroupBox>
+                    <GroupBox Grid.Row="1" Header="Ownership Transfer" Margin="0,10,0,0">
+                        <StackPanel Orientation="Horizontal" Margin="8">
+                            <TextBlock Text="Transfer To:" VerticalAlignment="Center" Margin="0,0,8,0"/>
+                            <TextBox Width="160" Text="{Binding TransferTargetFaction, UpdateSourceTrigger=PropertyChanged}"/>
+                            <Button Content="Transfer" Command="{Binding TransferOwnershipCommand}" Margin="8,0,0,0"/>
+                        </StackPanel>
+                    </GroupBox>
+                    <TextBlock Grid.Row="2" Text="Select a unit in-game before transferring ownership. Faction switch changes the player-controlled faction during galactic conquest."
+                               TextWrapping="Wrap" Margin="0,12,0,0" Opacity="0.6"/>
+                </Grid>
+            </TabItem>
+
+            <TabItem Header="AI Control">
+                <Grid Margin="12">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <GroupBox Header="AI Suspension">
+                        <StackPanel Orientation="Horizontal" Margin="8">
+                            <TextBlock Text="Suspend (sec):" VerticalAlignment="Center" Margin="0,0,8,0"/>
+                            <TextBox Width="80" Text="{Binding AiSuspendSeconds, UpdateSourceTrigger=PropertyChanged}"/>
+                            <Button Content="Suspend AI" Command="{Binding ExecuteAiControlCommand}" Margin="8,0,0,0"/>
+                        </StackPanel>
+                    </GroupBox>
+                    <GroupBox Grid.Row="1" Header="Cooldown Reset" Margin="0,10,0,0">
+                        <StackPanel Orientation="Horizontal" Margin="8">
+                            <TextBlock Text="Unit ID (blank=all):" VerticalAlignment="Center" Margin="0,0,8,0"/>
+                            <TextBox Width="160" Text="{Binding CooldownTargetUnitId, UpdateSourceTrigger=PropertyChanged}"/>
+                            <Button Content="Reset Cooldowns" Command="{Binding ResetCooldownsCommand}" Margin="8,0,0,0"/>
+                        </StackPanel>
+                    </GroupBox>
+                    <TextBlock Grid.Row="2" Text="AI suspension freezes faction AI decision-making for the specified duration. Cooldown reset clears ability timers on the target unit or all player units."
+                               TextWrapping="Wrap" Margin="0,12,0,0" Opacity="0.6"/>
+                </Grid>
+            </TabItem>
+
+            <TabItem Header="Camera Director">
+                <Grid Margin="12">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <GroupBox Header="Camera Commands">
+                        <StackPanel Orientation="Horizontal" Margin="8">
+                            <TextBlock Text="Command:" VerticalAlignment="Center" Margin="0,0,8,0"/>
+                            <TextBox Width="300" Text="{Binding CameraCommand, UpdateSourceTrigger=PropertyChanged}"
+                                     ToolTip="capture, play, stop, letterbox_on, letterbox_off, freeze, unfreeze"/>
+                            <Button Content="Execute" Command="{Binding ExecuteCameraCommand}" Margin="8,0,0,0"/>
+                        </StackPanel>
+                    </GroupBox>
+                    <TextBlock Grid.Row="1" Text="Camera director commands: capture (keyframe), play, stop, letterbox_on, letterbox_off, freeze, unfreeze. Used for cinematic content creation."
+                               TextWrapping="Wrap" Margin="0,12,0,0" Opacity="0.6"/>
+                </Grid>
+            </TabItem>
+
+            <TabItem Header="Story Events">
+                <Grid Margin="12">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <StackPanel Orientation="Horizontal">
+                        <Button Content="Load Events" Command="{Binding LoadStoryEventsCommand}"/>
+                        <TextBlock Text="  Custom Event:" VerticalAlignment="Center" Margin="12,0,8,0"/>
+                        <TextBox Width="200" Text="{Binding CustomStoryEvent, UpdateSourceTrigger=PropertyChanged}"/>
+                        <Button Content="Fire Event" Command="{Binding FireStoryEventCommand}" Margin="8,0,0,0"/>
+                    </StackPanel>
+                    <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="0,8,0,0">
+                        <TextBlock Text="Selected:" VerticalAlignment="Center" Margin="0,0,8,0"/>
+                        <ComboBox Width="300"
+                                  ItemsSource="{Binding StoryEventEntries}"
+                                  SelectedValue="{Binding SelectedStoryEvent}"
+                                  SelectedValuePath="EventId"
+                                  DisplayMemberPath="DisplayName"/>
+                    </StackPanel>
+                    <DataGrid Grid.Row="2" Margin="0,10,0,0"
+                              ItemsSource="{Binding StoryEventEntries}"
+                              AutoGenerateColumns="False" IsReadOnly="True">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Event ID" Binding="{Binding EventId}" Width="*"/>
+                            <DataGridTextColumn Header="Name" Binding="{Binding DisplayName}" Width="*"/>
+                            <DataGridTextColumn Header="Category" Binding="{Binding Category}" Width="120"/>
+                            <DataGridTextColumn Header="Source" Binding="{Binding Source}" Width="120"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </Grid>
+            </TabItem>
+
+            <TabItem Header="Damage Log">
+                <Grid Margin="12">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <StackPanel Orientation="Horizontal">
+                        <Button Content="Refresh" Command="{Binding RefreshDamageLogCommand}"/>
+                        <Button Content="Detect Mod Conflicts" Command="{Binding DetectModConflictsCommand}" Margin="8,0,0,0"/>
+                    </StackPanel>
+                    <DataGrid Grid.Row="1" Margin="0,10,0,0"
+                              ItemsSource="{Binding DamageLogEntries}"
+                              AutoGenerateColumns="False" IsReadOnly="True"
+                              CanUserSortColumns="True">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Time" Binding="{Binding Timestamp}" Width="100"/>
+                            <DataGridTextColumn Header="Source" Binding="{Binding Source}" Width="*"/>
+                            <DataGridTextColumn Header="Target" Binding="{Binding Target}" Width="*"/>
+                            <DataGridTextColumn Header="Damage" Binding="{Binding Damage}" Width="80"/>
+                            <DataGridTextColumn Header="Type" Binding="{Binding Type}" Width="100"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </Grid>
+            </TabItem>
+
+            <TabItem Header="Diplomacy">
+                <Grid Margin="12">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <StackPanel Orientation="Horizontal">
+                        <Button Content="Load Diplomacy" Command="{Binding LoadDiplomacyCommand}"/>
+                        <Button Content="Set Relation" Command="{Binding SetDiplomacyRelationCommand}" Margin="8,0,0,0"/>
+                    </StackPanel>
+                    <TextBlock Grid.Row="1" Text="Diplomacy management is mod-aware. Relations between factions can be read and modified when the active profile supports diplomacy hooks. Use Set Relation to change the default hostile/allied/neutral state between faction pairs."
+                               TextWrapping="Wrap" Margin="0,12,0,0" Opacity="0.6"/>
+                </Grid>
+            </TabItem>
+
+            <TabItem Header="Corruption">
+                <Grid Margin="12">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <GroupBox Header="Planet Corruption">
+                        <Grid Margin="8">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Text="Planet ID:" VerticalAlignment="Center" Margin="0,0,8,0"/>
+                            <TextBox Grid.Column="1" Text="{Binding CorruptionPlanetId, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,8,0"/>
+                            <TextBlock Grid.Column="2" Text="Type:" VerticalAlignment="Center" Margin="0,0,8,0"/>
+                            <TextBox Grid.Column="3" Text="{Binding CorruptionType, UpdateSourceTrigger=PropertyChanged}"
+                                     ToolTip="Racketeering, Bribery, Piracy, Kidnapping, Robbery"/>
+                        </Grid>
+                    </GroupBox>
+                    <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="0,10,0,0">
+                        <Button Content="Apply Corruption" Command="{Binding SetCorruptionCommand}"/>
+                        <Button Content="Remove Corruption" Command="{Binding RemoveCorruptionCommand}" Margin="8,0,0,0"/>
+                    </StackPanel>
+                    <TextBlock Grid.Row="2" Text="Corruption is a Forces of Corruption mechanic. Apply or remove corruption types on specific planets. Valid types: Racketeering, Bribery, Piracy, Kidnapping, Robbery."
+                               TextWrapping="Wrap" Margin="0,12,0,0" Opacity="0.6"/>
+                </Grid>
+            </TabItem>
         </TabControl>
 
         <Border Grid.Row="2" Background="#0D1422" BorderBrush="#2E3E5C" BorderThickness="1" Padding="10" Margin="0,12,0,0">

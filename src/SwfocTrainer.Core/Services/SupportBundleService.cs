@@ -54,7 +54,7 @@ public sealed class SupportBundleService : ISupportBundleService
         {
             CopyLogs(stagingRoot, included, warnings);
             CopyCalibrationArtifacts(stagingRoot, included, warnings);
-            CopyRecentReproBundles(stagingRoot, included, warnings, request.MaxRecentRuns);
+            CopyRecentReproBundles(stagingRoot, included, warnings, request.MaxRecentRuns, request.WorkingDirectoryOverride);
             await WriteRuntimeSnapshotAsync(stagingRoot, included, warnings, request.ProfileId, request.Notes, cancellationToken);
             await WriteTelemetrySnapshotAsync(stagingRoot, included, cancellationToken);
 
@@ -133,9 +133,18 @@ public sealed class SupportBundleService : ISupportBundleService
         }
     }
 
-    private static void CopyRecentReproBundles(string stagingRoot, List<string> included, List<string> warnings, int maxRecentRuns)
+    private static void CopyRecentReproBundles(
+        string stagingRoot,
+        List<string> included,
+        List<string> warnings,
+        int maxRecentRuns,
+        string? workingDirectoryOverride)
     {
-        var repoRoot = Directory.GetCurrentDirectory();
+        // Allow tests to pin the working directory and avoid contention on the
+        // process-global current directory when running in parallel.
+        var repoRoot = string.IsNullOrWhiteSpace(workingDirectoryOverride)
+            ? Directory.GetCurrentDirectory()
+            : workingDirectoryOverride;
         var runRoot = Path.Join(repoRoot, "TestResults", "runs");
         if (!Directory.Exists(runRoot))
         {

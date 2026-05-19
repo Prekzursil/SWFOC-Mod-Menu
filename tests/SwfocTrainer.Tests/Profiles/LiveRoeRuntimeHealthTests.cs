@@ -38,7 +38,7 @@ public sealed class LiveRoeRuntimeHealthTests
         var profileId = "roe_3447786229_swfoc";
         var runtime = BuildRuntimeAdapter(locator, out var profileRepo);
         var profile = await profileRepo.ResolveInheritedProfileAsync(profileId);
-        var session = await runtime.AttachAsync(profileId);
+        var session = await LiveSkip.AttachOrSkipAsync(runtime, profileId, _output);
         _output.WriteLine($"Attached PID={session.Process.ProcessId} Name={session.Process.ProcessName} Symbols={session.Symbols.Symbols.Count}");
 
         if (hasSwfoc && hasStarWarsG)

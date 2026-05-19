@@ -18,6 +18,7 @@ using Xunit;
 
 namespace SwfocTrainer.Tests.App;
 
+[Collection(RuntimeModeSerialCollection.Name)]
 public sealed class AppWave9CoverageTests
 {
     [Fact]
@@ -500,14 +501,23 @@ public sealed class AppWave9CoverageTests
 
     private static MainViewModelLiveOpsCommandContext BuildLiveOpsContext(bool attached, bool profile) => new()
     {
-        RefreshActionReliabilityAsync = () => Task.CompletedTask, CaptureSelectedUnitBaselineAsync = () => Task.CompletedTask,
-        ApplySelectedUnitDraftAsync = () => Task.CompletedTask, RevertSelectedUnitTransactionAsync = () => Task.CompletedTask,
-        RestoreSelectedUnitBaselineAsync = () => Task.CompletedTask, LoadSpawnPresetsAsync = () => Task.CompletedTask,
-        RunSpawnBatchAsync = () => Task.CompletedTask, ScaffoldModProfileAsync = () => Task.CompletedTask,
-        ExportCalibrationArtifactAsync = () => Task.CompletedTask, BuildModCompatibilityReportAsync = () => Task.CompletedTask,
-        ExportSupportBundleAsync = () => Task.CompletedTask, ExportTelemetrySnapshotAsync = () => Task.CompletedTask,
-        CanRunSpawnBatch = () => attached, CanScaffoldModProfile = () => attached, CanUseSupportBundleOutputDirectory = () => attached,
-        IsAttached = () => attached, CanUseSelectedProfile = () => profile
+        RefreshActionReliabilityAsync = () => Task.CompletedTask,
+        CaptureSelectedUnitBaselineAsync = () => Task.CompletedTask,
+        ApplySelectedUnitDraftAsync = () => Task.CompletedTask,
+        RevertSelectedUnitTransactionAsync = () => Task.CompletedTask,
+        RestoreSelectedUnitBaselineAsync = () => Task.CompletedTask,
+        LoadSpawnPresetsAsync = () => Task.CompletedTask,
+        RunSpawnBatchAsync = () => Task.CompletedTask,
+        ScaffoldModProfileAsync = () => Task.CompletedTask,
+        ExportCalibrationArtifactAsync = () => Task.CompletedTask,
+        BuildModCompatibilityReportAsync = () => Task.CompletedTask,
+        ExportSupportBundleAsync = () => Task.CompletedTask,
+        ExportTelemetrySnapshotAsync = () => Task.CompletedTask,
+        CanRunSpawnBatch = () => attached,
+        CanScaffoldModProfile = () => attached,
+        CanUseSupportBundleOutputDirectory = () => attached,
+        IsAttached = () => attached,
+        CanUseSelectedProfile = () => profile
     };
 
     private static MainViewModel CreateViewModel()

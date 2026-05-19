@@ -1645,7 +1645,7 @@ public sealed class RuntimeInfraWave6Tests : IDisposable
         var profile = new TrainerProfile("test", "test", null, ExeTarget.Swfoc, "123",
             Array.Empty<SignatureSet>(), new Dictionary<string, long>(),
             new Dictionary<string, ActionSpec>(), new Dictionary<string, bool>(),
-            Array.Empty<CatalogSource>(), null, Array.Empty<HelperHookSpec>(), null);
+            Array.Empty<CatalogSource>(), null!, Array.Empty<HelperHookSpec>(), null);
         var result = InvokeBuildRequiredWorkshopIds(profile);
         result.Should().Contain("123");
     }
@@ -1656,7 +1656,7 @@ public sealed class RuntimeInfraWave6Tests : IDisposable
         var profile = new TrainerProfile("test", "test", null, ExeTarget.Swfoc, "",
             Array.Empty<SignatureSet>(), new Dictionary<string, long>(),
             new Dictionary<string, ActionSpec>(), new Dictionary<string, bool>(),
-            Array.Empty<CatalogSource>(), null, Array.Empty<HelperHookSpec>(), null);
+            Array.Empty<CatalogSource>(), null!, Array.Empty<HelperHookSpec>(), null);
         var result = InvokeBuildRequiredWorkshopIds(profile);
         result.Should().BeEmpty();
     }
@@ -2047,7 +2047,7 @@ public sealed class RuntimeInfraWave6Tests : IDisposable
 
     private static ProcessMemoryAccessor CreateFakeAccessor()
     {
-        var accessor = (ProcessMemoryAccessor)System.Runtime.Serialization.FormatterServices
+        var accessor = (ProcessMemoryAccessor)System.Runtime.CompilerServices.RuntimeHelpers
             .GetUninitializedObject(typeof(ProcessMemoryAccessor));
         var handleField = typeof(ProcessMemoryAccessor).GetField(
             "_handle", BindingFlags.NonPublic | BindingFlags.Instance);
@@ -2116,7 +2116,7 @@ public sealed class RuntimeInfraWave6Tests : IDisposable
         return new TrainerProfile(id, id, null, ExeTarget.Swfoc, workshopId,
             Array.Empty<SignatureSet>(), new Dictionary<string, long>(),
             new Dictionary<string, ActionSpec>(), new Dictionary<string, bool>(),
-            Array.Empty<CatalogSource>(), null, Array.Empty<HelperHookSpec>(), meta);
+            Array.Empty<CatalogSource>(), null!, Array.Empty<HelperHookSpec>(), meta);
     }
 
     // ─── Reflection helpers for ProcessLocator private methods ───

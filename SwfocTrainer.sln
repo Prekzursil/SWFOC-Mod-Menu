@@ -28,6 +28,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SwfocTrainer.Meg", "src\Swf
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SwfocTrainer.Transplant", "src\SwfocTrainer.Transplant\SwfocTrainer.Transplant.csproj", "{77A1A535-D5BA-4962-96D5-C3F37B6FB035}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{396F410D-9B99-4F66-8CFB-442658B5B99E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SwfocTrainer.UiTests", "tests\SwfocTrainer.UiTests\SwfocTrainer.UiTests.csproj", "{31304402-E335-49EF-A0D5-AD9C4EC9993C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -82,6 +86,10 @@ Global
 		{77A1A535-D5BA-4962-96D5-C3F37B6FB035}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{77A1A535-D5BA-4962-96D5-C3F37B6FB035}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{77A1A535-D5BA-4962-96D5-C3F37B6FB035}.Release|Any CPU.Build.0 = Release|Any CPU
+		{31304402-E335-49EF-A0D5-AD9C4EC9993C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{31304402-E335-49EF-A0D5-AD9C4EC9993C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{31304402-E335-49EF-A0D5-AD9C4EC9993C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{31304402-E335-49EF-A0D5-AD9C4EC9993C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -91,5 +99,6 @@ Global
 		{C0B64C4D-4095-417F-A2D0-AE5E42D28262} = {A0EC6126-B74A-4E20-A25C-06EB590EA0A9}
 		{770853A3-EF6C-45B9-AC59-059E5AABA6EF} = {A0EC6126-B74A-4E20-A25C-06EB590EA0A9}
 		{77A1A535-D5BA-4962-96D5-C3F37B6FB035} = {A0EC6126-B74A-4E20-A25C-06EB590EA0A9}
+		{31304402-E335-49EF-A0D5-AD9C4EC9993C} = {396F410D-9B99-4F66-8CFB-442658B5B99E}
 	EndGlobalSection
 EndGlobal

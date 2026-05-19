@@ -304,7 +304,7 @@ public sealed class ProcessMemoryAccessorTests
     /// </summary>
     private static ProcessMemoryAccessor CreateWithHandle(nint handle)
     {
-        var accessor = (ProcessMemoryAccessor)System.Runtime.Serialization.FormatterServices
+        var accessor = (ProcessMemoryAccessor)System.Runtime.CompilerServices.RuntimeHelpers
             .GetUninitializedObject(typeof(ProcessMemoryAccessor));
         var handleField = typeof(ProcessMemoryAccessor).GetField(
             "_handle", BindingFlags.NonPublic | BindingFlags.Instance);

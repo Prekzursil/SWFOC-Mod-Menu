@@ -16,6 +16,7 @@ namespace SwfocTrainer.Tests.App;
 /// Wave 8 deep branch coverage — targets every remaining untested branch
 /// across the App package, pushing toward 100% coverage.
 /// </summary>
+[Collection(RuntimeModeSerialCollection.Name)]
 public sealed class AppWave8DeepBranchCoverageTests
 {
     // ─────────────────────────────────────────────────────────────────────────

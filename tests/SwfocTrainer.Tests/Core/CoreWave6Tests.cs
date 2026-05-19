@@ -805,7 +805,7 @@ public sealed class CoreWave6Tests
             Actions: actionDict,
             FeatureFlags: featureFlags ?? new Dictionary<string, bool>(),
             CatalogSources: Array.Empty<CatalogSource>(),
-            SaveSchemaId: null,
+            SaveSchemaId: null!,
             HelperModHooks: Array.Empty<HelperHookSpec>(),
             Metadata: metadata);
     }

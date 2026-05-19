@@ -26,7 +26,8 @@ public sealed class SupportBundleCoverageSweepTests
     public async Task ExportAsync_ShouldWriteDetachedSnapshotAndCleanStagingDirectory()
     {
         using var outputDir = new TempDirectory("swfoc-support-bundle");
-        using var runFixture = await RunFixture.CreateAsync();
+        using var workspace = new TempDirectory("swfoc-support-bundle-cwd");
+        using var runFixture = await RunFixture.CreateAsync(workspace.Path);
         var telemetry = new TelemetrySnapshotService();
         telemetry.RecordAction("spawn_tactical_entity", AddressSource.Signature, succeeded: true);
         var service = new SupportBundleService(new StubRuntimeAdapter(), telemetry);
@@ -35,7 +36,8 @@ public sealed class SupportBundleCoverageSweepTests
             OutputDirectory: outputDir.Path,
             ProfileId: "custom_profile",
             Notes: "detached",
-            MaxRecentRuns: 1));
+            MaxRecentRuns: 1,
+            WorkingDirectoryOverride: workspace.Path));
 
         result.Succeeded.Should().BeTrue();
         result.Warnings.Should().Contain(x => x.Contains("not attached", StringComparison.OrdinalIgnoreCase));
@@ -110,10 +112,11 @@ public sealed class SupportBundleCoverageSweepTests
 
         public string RunId { get; }
 
-        public static async Task<RunFixture> CreateAsync()
+        public static async Task<RunFixture> CreateAsync(string workspaceRoot)
         {
+            ArgumentNullException.ThrowIfNull(workspaceRoot);
             var runId = $"support-sweep-{Guid.NewGuid():N}";
-            var runRoot = System.IO.Path.Join(Directory.GetCurrentDirectory(), "TestResults", "runs", runId);
+            var runRoot = System.IO.Path.Join(workspaceRoot, "TestResults", "runs", runId);
             Directory.CreateDirectory(runRoot);
             await File.WriteAllTextAsync(System.IO.Path.Join(runRoot, "repro-bundle.json"), "{\"schemaVersion\":\"1.1\"}");
             await File.WriteAllTextAsync(System.IO.Path.Join(runRoot, "repro-bundle.md"), "# repro");

@@ -55,7 +55,7 @@ public sealed class LiveHeroHelperWorkflowTests
 
         var profileId = target.Context.Recommendation.ProfileId!;
         var profile = await profileRepo.ResolveInheritedProfileAsync(profileId);
-        var session = await runtime.AttachAsync(profileId);
+        var session = await LiveSkip.AttachOrSkipAsync(runtime, profileId, _output);
         _output.WriteLine($"Attached for helper smoke: profile={profileId} pid={session.Process.ProcessId} mode={session.Process.Mode}");
 
         var actionSpec = ResolveHelperAction(profileId, profile);
@@ -129,7 +129,9 @@ public sealed class LiveHeroHelperWorkflowTests
             return selected;
         }
 
-        var forcedProfileId = NormalizeProfileId(Environment.GetEnvironmentVariable("SWFOC_FORCE_PROFILE_ID"));
+        var forcedProfileId = ResolveForcedHelperProfileId(
+            Environment.GetEnvironmentVariable("SWFOC_FORCE_PROFILE_ID"),
+            Environment.GetEnvironmentVariable("SWFOC_FORCE_WORKSHOP_IDS"));
         if (!IsSupportedForcedHelperProfile(forcedProfileId))
         {
             return null;
@@ -137,6 +139,7 @@ public sealed class LiveHeroHelperWorkflowTests
 
         var forcedTarget = contexts
             .OrderByDescending(x => x.Context.Source.Equals("forced", StringComparison.OrdinalIgnoreCase))
+            .ThenByDescending(x => ContextMatchesForcedProfile(x.Context, forcedProfileId))
             .ThenByDescending(x => x.Process.ProcessName.Equals("StarWarsG", StringComparison.OrdinalIgnoreCase))
             .FirstOrDefault();
         if (forcedTarget is null)
@@ -153,6 +156,54 @@ public sealed class LiveHeroHelperWorkflowTests
             Source = "forced"
         };
         return forcedTarget with { Context = forcedContext };
+    }
+
+    private static string? ResolveForcedHelperProfileId(string? forcedProfileId, string? forcedWorkshopIds)
+    {
+        var normalizedProfileId = NormalizeProfileId(forcedProfileId);
+        if (IsSupportedForcedHelperProfile(normalizedProfileId))
+        {
+            return normalizedProfileId;
+        }
+
+        var workshopIds = ParseForcedWorkshopIds(forcedWorkshopIds);
+        if (workshopIds.Contains("3447786229"))
+        {
+            return "roe_3447786229_swfoc";
+        }
+
+        if (workshopIds.Contains("1397421866"))
+        {
+            return "aotr_1397421866_swfoc";
+        }
+
+        return null;
+    }
+
+    private static HashSet<string> ParseForcedWorkshopIds(string? forcedWorkshopIds)
+    {
+        var ids = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+        if (string.IsNullOrWhiteSpace(forcedWorkshopIds))
+        {
+            return ids;
+        }
+
+        foreach (var token in forcedWorkshopIds.Split(',', StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries))
+        {
+            ids.Add(token);
+        }
+
+        return ids;
+    }
+
+    private static bool ContextMatchesForcedProfile(LaunchContext context, string? forcedProfileId)
+    {
+        return forcedProfileId switch
+        {
+            "aotr_1397421866_swfoc" => context.SteamModIds.Any(x => x.Equals("1397421866", StringComparison.OrdinalIgnoreCase)),
+            "roe_3447786229_swfoc" => context.SteamModIds.Any(x => x.Equals("3447786229", StringComparison.OrdinalIgnoreCase)),
+            _ => false
+        };
     }
 
     private void WriteHelperContextDiagnostics(

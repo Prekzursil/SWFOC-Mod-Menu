@@ -48,7 +48,7 @@ public sealed class MainViewModelHotkeyHelpersBranchTests
         var binding = new HotkeyBindingItem
         {
             ActionId = MainViewModelDefaults.ActionSetCredits,
-            PayloadJson = null
+            PayloadJson = null!
         };
         var payload = MainViewModelHotkeyHelpers.ParseHotkeyPayload(binding);
         payload.Should().NotBeNull();

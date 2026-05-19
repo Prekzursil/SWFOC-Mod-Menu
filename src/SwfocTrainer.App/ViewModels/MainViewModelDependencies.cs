@@ -47,4 +47,32 @@ public sealed class MainViewModelDependencies
     public required ISelectedUnitTransactionService SelectedUnitTransactions { get; init; }
 
     public required ISpawnPresetService SpawnPresets { get; init; }
+
+    public required IRosterBrowserService RosterBrowser { get; init; }
+
+    public required IFactionDashboardService FactionDashboard { get; init; }
+
+    public required IEnhancedSpawnService EnhancedSpawn { get; init; }
+
+    // Wave 2
+    public required IOwnershipTransferService OwnershipTransfer { get; init; }
+    public required IPlanetManagerService PlanetManager { get; init; }
+    public required IFleetManagerService FleetManager { get; init; }
+    public required IFactionSwitchService FactionSwitch { get; init; }
+
+    // Wave 3
+    public required IAiControlService AiControl { get; init; }
+    public required ICooldownManagerService CooldownManager { get; init; }
+
+    // Wave 4
+    public required ICameraDirectorService CameraDirector { get; init; }
+    public required IStoryEventService StoryEvents { get; init; }
+
+    // Wave 5
+    public required IModConflictDetectorService ModConflicts { get; init; }
+    public required IDamageLogService DamageLog { get; init; }
+
+    // Wave 6
+    public required IDiplomacyService Diplomacy { get; init; }
+    public required ICorruptionService Corruption { get; init; }
 }

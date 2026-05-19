@@ -331,7 +331,7 @@ public sealed class CatalogWave6Tests : IDisposable
                 },
                 FeatureFlags: new Dictionary<string, bool>(),
                 CatalogSources: _catalogSources,
-                SaveSchemaId: null,
+                SaveSchemaId: null!,
                 HelperModHooks: Array.Empty<HelperHookSpec>());
         }
     }

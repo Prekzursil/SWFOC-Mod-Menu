@@ -9,7 +9,7 @@ using SwfocTrainer.Core.Models;
 
 namespace SwfocTrainer.App.ViewModels;
 
-public sealed class MainViewModel : MainViewModelSaveOpsBase
+public sealed class MainViewModel : MainViewModelV5FeaturesBase
 {
     public MainViewModel(MainViewModelDependencies dependencies)
         : base(dependencies ?? throw new ArgumentNullException(nameof(dependencies)))
@@ -21,6 +21,48 @@ public sealed class MainViewModel : MainViewModelSaveOpsBase
         (BrowseSaveCommand, LoadSaveCommand, EditSaveCommand, ValidateSaveCommand, RefreshDiffCommand, WriteSaveCommand, BrowsePatchPackCommand, ExportPatchPackCommand, LoadPatchPackCommand, PreviewPatchPackCommand, ApplyPatchPackCommand, RestoreBackupCommand, LoadHotkeysCommand, SaveHotkeysCommand, AddHotkeyCommand, RemoveHotkeyCommand) = MainViewModelFactories.CreateSaveCommands(commandContexts.Save);
         (RefreshActionReliabilityCommand, CaptureSelectedUnitBaselineCommand, ApplySelectedUnitDraftCommand, RevertSelectedUnitTransactionCommand, RestoreSelectedUnitBaselineCommand, LoadSpawnPresetsCommand, RunSpawnBatchCommand, ScaffoldModProfileCommand, ExportCalibrationArtifactCommand, BuildCompatibilityReportCommand, ExportSupportBundleCommand, ExportTelemetrySnapshotCommand) = MainViewModelFactories.CreateLiveOpsCommands(commandContexts.LiveOps);
         (QuickSetCreditsCommand, QuickFreezeTimerCommand, QuickToggleFogCommand, QuickToggleAiCommand, QuickInstantBuildCommand, QuickUnitCapCommand, QuickGodModeCommand, QuickOneHitCommand, QuickUnfreezeAllCommand) = MainViewModelFactories.CreateQuickCommands(commandContexts.Quick);
+
+        var v5Commands = MainViewModelFactories.CreateV5Commands(new MainViewModelV5CommandContext
+        {
+            LoadRosterAsync = LoadRosterAsync,
+            RefreshDashboardAsync = RefreshDashboardAsync,
+            ExecuteEnhancedSpawnAsync = ExecuteEnhancedSpawnAsync,
+            TransferOwnershipAsync = TransferOwnershipAsync,
+            LoadPlanetsAsync = LoadPlanetsAsync,
+            LoadFleetsAsync = LoadFleetsAsync,
+            SwitchFactionAsync = SwitchFactionAsync,
+            ExecuteAiControlAsync = ExecuteAiControlAsync,
+            ResetCooldownsAsync = ResetCooldownsAsync,
+            ExecuteCameraCommandAsync = ExecuteCameraCommandAsync,
+            LoadStoryEventsAsync = LoadStoryEventsAsync,
+            FireStoryEventAsync = FireStoryEventAsync,
+            DetectModConflictsAsync = DetectModConflictsAsync,
+            RefreshDamageLogAsync = RefreshDamageLogAsync,
+            LoadDiplomacyAsync = LoadDiplomacyAsync,
+            SetDiplomacyRelationAsync = SetDiplomacyRelationAsync,
+            SetCorruptionAsync = SetCorruptionAsync,
+            RemoveCorruptionAsync = RemoveCorruptionAsync,
+            IsAttached = () => _runtime.IsAttached,
+            CanUseSelectedProfile = () => !string.IsNullOrWhiteSpace(SelectedProfileId)
+        });
+        LoadRosterCommand = v5Commands.LoadRoster;
+        RefreshDashboardCommand = v5Commands.RefreshDashboard;
+        ExecuteEnhancedSpawnCommand = v5Commands.ExecuteEnhancedSpawn;
+        TransferOwnershipCommand = v5Commands.TransferOwnership;
+        LoadPlanetsCommand = v5Commands.LoadPlanets;
+        LoadFleetsCommand = v5Commands.LoadFleets;
+        SwitchFactionCommand = v5Commands.SwitchFaction;
+        ExecuteAiControlCommand = v5Commands.ExecuteAiControl;
+        ResetCooldownsCommand = v5Commands.ResetCooldowns;
+        ExecuteCameraCommand = v5Commands.ExecuteCameraCommand;
+        LoadStoryEventsCommand = v5Commands.LoadStoryEvents;
+        FireStoryEventCommand = v5Commands.FireStoryEvent;
+        DetectModConflictsCommand = v5Commands.DetectModConflicts;
+        RefreshDamageLogCommand = v5Commands.RefreshDamageLog;
+        LoadDiplomacyCommand = v5Commands.LoadDiplomacy;
+        SetDiplomacyRelationCommand = v5Commands.SetDiplomacyRelation;
+        SetCorruptionCommand = v5Commands.SetCorruption;
+        RemoveCorruptionCommand = v5Commands.RemoveCorruption;
 
         _freezeUiTimer = CreateFreezeUiTimer();
     }
