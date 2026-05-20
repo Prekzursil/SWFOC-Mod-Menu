@@ -75,6 +75,29 @@ namespace SwfocTrainer.Tests.Regression;
 ///   - LOW "Commit message 54 vs 48 count" → RESOLVED via scratchpad
 ///     correction; allowlist below has 48 entries.
 ///
+/// Iter-485 (8f97e1d adversarial-review drainage — same-file precision):
+///   - MEDIUM "Invariant #3 failure-message remediation hint" →
+///     RESOLVED via the `because` rewrite on invariant #3 below
+///     (explicit allowlist-shrinkage symmetry + "do NOT revert
+///     production-side drainage" anti-reversion guard).
+///   - LOW "Placeholder Skip-fact body lacks fail-on-activation guard" →
+///     RESOLVED via Assert.Fail in
+///     <see cref="ScriptBodyCodenameSweep_PlaceholderForFutureArc"/>
+///     (deletion of Skip now puts the test in a deliberately-red state).
+///   - LOW "using SwfocTrainer.Core.Services may be unused" →
+///     NOT-A-DEFECT: NamedPipeLuaBridgeClient lives in that namespace
+///     (verified iter-485 grep) and is used in CreateVm at line ~89.
+///   - LOW "FluentAssertions `because` precision audit" → RESOLVED as
+///     bundled into the invariant #3 rewrite per reviewer recommendation.
+///   - MEDIUM "Misfiled directory Regression/ vs DriftCatchers/" →
+///     DEFERRED (cross-file arc covering 6+ peer files; same scope as M4).
+///   - MEDIUM "Compound-word regex form" → DEFERRED (watch-item, no
+///     real-world drift yet; reverting `\b` re-introduces a known LOW).
+///   - MEDIUM "Sim-startup fixture refactor" → DEFERRED (re-affirmed
+///     9298748 LOW; multi-file arc, blocked by sealed V2BridgeAdapter).
+///   - LOW "Skip-message back-reference durability" → DEFERRED (anchor
+///     update bundled with next backlog rotation).
+///
 /// Discoverer: editor-polish hat, iter-482, picking from
 /// knowledge-base/polish_backlog_2026-05-20.md (3-MEDIUM cdbe4f12 set).
 /// Scope-honesty + word-boundary + Skip-placeholder follow-ups landed in
@@ -236,9 +259,19 @@ public sealed class Iter100to113PresetCodenameLeakSweepTests
                 "iter-388 allowlist-parity invariant: AllowlistedBracketedPrefixes " +
                 "contains entries that no longer appear in any production " +
                 $"preset label. Stale entry/entries: [{string.Join(", ", staleEntries)}]. " +
-                "Either (a) the most recent sweep forgot to remove them in the " +
-                "same commit (fix: drop from allowlist), OR (b) the production " +
-                "preset using this prefix was deleted (same fix).");
+                "REMEDIATION: delete the stale entry/entries from " +
+                "`AllowlistedBracketedPrefixes` in this file. " +
+                "This invariant exists to FORCE allowlist-shrinkage symmetry " +
+                "with sweep-drainage: when a sweep removes the last " +
+                "production label carrying a `[NNN]` prefix, the same " +
+                "commit MUST shrink the allowlist. Failing this assertion " +
+                "is the EXPECTED outcome of legitimate sweep work and is " +
+                "NOT a regression in the production change — do NOT revert " +
+                "the production-side drainage. Likely causes: (a) the most " +
+                "recent sweep forgot to remove the prefix in the same " +
+                "commit, OR (b) the production preset using this prefix " +
+                "was deleted in unrelated work. Both fixes are identical: " +
+                "drop the stale entry from `AllowlistedBracketedPrefixes`.");
         }
     }
 
@@ -270,10 +303,20 @@ public sealed class Iter100to113PresetCodenameLeakSweepTests
     [Fact(Skip = "iter-484 future arc: script-body codename sweep — see knowledge-base/polish_backlog_2026-05-20.md MEDIUM 'Script-body codename deferral'. Deletion of this Skip attribute IS the arc's natural entry point.")]
     public void ScriptBodyCodenameSweep_PlaceholderForFutureArc()
     {
-        // Intentionally empty — this Skip placeholder is the code-side
-        // breadcrumb. When the script-body sweep arc lands, replace this
-        // body with the actual regex-over-script-bodies assertion (mirror
-        // the NoPresetLabelContainsIterDigitsSubstring shape but apply to
-        // `p.Script` instead of `p.Label`).
+        // iter-485 (from 8f97e1d adversarial-review LOW "Placeholder
+        // Skip-fact body lacks fail-on-activation guard"): deliberately
+        // RED on activation. When a future arc removes the Skip attribute
+        // above (the natural entry-point per iter-484's design), this
+        // Assert.Fail forces the arc author to replace the body with the
+        // actual regex-over-script-bodies assertion before the test goes
+        // green. Empty body would have silently passed and masked
+        // incomplete arc work.
+        Assert.Fail(
+            "Script-body codename sweep arc activated but not implemented. " +
+            "Replace this Assert.Fail with the actual assertion — mirror " +
+            "the NoPresetLabelContainsIterDigitsSubstring shape but apply " +
+            "the `\\biter[ -]?\\d+\\b` regex to `p.Script` instead of " +
+            "`p.Label`. See the Skip attribute message for the 4-step " +
+            "playbook.");
     }
 }
