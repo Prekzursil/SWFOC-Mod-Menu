@@ -122,26 +122,31 @@ public sealed class Iter470LuaPlaygroundReadGlobalsCodenameTests
     }
 
     [Fact]
-    public void PresetMenu_Iter181WriteSideStaysAsCodename_NotRecategorised()
+    public void PresetMenu_Iter181WriteSideNotInReadCluster()
     {
-        // Defensive pin: the iter-181 SFXManager "Disable unit VO" preset is
-        // a WRITE/mutation wire (SFXManager.Allow_Unit_Reponse_VO = false),
-        // not a read. It MUST NOT be swept into the [read] cluster by an
-        // overzealous relabel pass. This pins the codename-as-prefix on the
-        // mutation entry so the iter-470 sweep does not accidentally widen
-        // its scope to mutations.
+        // iter-181 is a mutation wire (SFXManager.Allow_Unit_Reponse_VO =
+        // false); defensive pin against accidental absorption into [read]
+        // cluster. Future [write]/[mut] cluster can land in a later iter
+        // and update this pin accordingly.
         //
-        // Acceptable future behaviour: a separate semantic prefix for
-        // mutations (e.g. [write] or [mut]) could land in a later iter with
-        // its own dedicated regression-guard test. Until then, [181] stays.
+        // 2026-05-20 (iter 471): inverted from `Contains("[181]")` to
+        // `NotStartWith("[read] " / "[disc] ")`. The old shape pinned an
+        // iter-388-violating [NNN] codename in the production label as the
+        // expected state, which the adversarial reviewer flagged: it inverts
+        // the regression-guard discipline ("fails on old broken form AND
+        // passes on new form") because the label is the broken form. The
+        // new shape captures the defensive intent (don't sweep mutations
+        // into the [read] cluster) without pinning the violation.
         var (sim, vm) = CreateVm();
         using (sim)
         {
             var preset = vm.Iter100to113Presets.SingleOrDefault(
                 p => p.Script == "return SWFOC_SFXAllowUnitReponseVoLua('false')");
-            preset.Should().NotBeNull("[181] Disable unit VO preset survives iter-470 sweep");
-            preset!.Label.Should().Contain("[181]",
-                "the iter-181 mutation wire keeps its [NNN] codename — iter-470 only touched the Read-verb entries");
+            preset.Should().NotBeNull("the iter-181 mutation preset survives iter-470 sweep");
+            preset!.Label.Should().NotStartWith("[read] ",
+                "iter-181 mutation wire is not a read; defensive pin against accidental [read] cluster sweep")
+                .And.NotStartWith("[disc] ",
+                "iter-181 mutation wire is not discovery either; defensive pin against accidental [disc] cluster sweep");
             preset.Label.Should().Contain("typo",
                 "the iter-181 mutation wire still flags the engine typo 'Reponse'");
         }
