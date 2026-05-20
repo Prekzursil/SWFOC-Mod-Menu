@@ -18,90 +18,32 @@ namespace SwfocTrainer.Tests.Regression;
 /// They are NOT project-wide. If future work adds a second <c>IList&lt;Preset&gt;</c>
 /// property to <see cref="LuaPlaygroundTabViewModel"/>, or if other tab VMs
 /// surface preset dropdowns with iter-N codenames, those collections are
-/// not guarded by this file. A reflection-based "all-VMs all-preset-lists"
-/// extension is captured in the iter-482/484 polish backlog (cdbe4f12
-/// follow-up batch) as a future arc.
+/// NOT guarded by this file. A reflection-based "all-VMs all-preset-lists"
+/// extension is captured in the polish backlog as a future arc.
 ///
-/// Iter-467/468/469/470 added per-script regression guards that only fire
-/// on the specific scripts being relabelled in each iter. The cdbe4f12
-/// adversarial review (iter-470 sweep) flagged this as MEDIUM: the next
-/// stale `[NNN]` codename added anywhere else in the same roster wouldn't
-/// trip any test (drift surface left uncovered).
-///
-/// This file closes that gap for the Iter100to113Presets roster with three
-/// invariants:
-///
+/// Three invariants:
 ///   1. No preset label may contain a word-bounded "iter N" / "iter-N" /
-///      "iterN" token (case-insensitive). The `\b` boundaries (added in
-///      iter-484 per the 9298748 adversarial-review LOW) prevent false
-///      positives on legitimate substrings like `filter1`, `rerouter5`,
-///      `writer42`, `transmitter9`. Catches future drift where someone
-///      writes the raw "iter 500" form in a new label.
-///      Current count: 0 (none have ever been added in this form).
-///
+///      "iterN" token (case-insensitive). Catches raw "iter 500" form drift.
 ///   2. Bracketed `[NNN]` / `[NNN-NNN]` / `[NNN/NNN]` codename prefixes
-///      must be in the explicit allowlist below. Catches NEW `[NNN]`
-///      additions outside the sweep cadence; the allowlist must be
-///      extended (with a rationale comment) before any new prefix lands.
-///
-///   3. The allowlist may not contain stale entries. After each iter-388
-///      batch sweep (iter-380, iter-388, iter-464, iter-466, iter-468,
-///      iter-469, iter-470) drains a prefix, the allowlist must shrink in
-///      the same commit. Catches the failure mode where a sweep removes
-///      the production label but forgets to update this allowlist —
-///      which would silently re-admit any future re-introduction.
+///      must be in <see cref="AllowlistedBracketedPrefixes"/>. Forces
+///      written rationale before any new `[NNN]` lands.
+///   3. The allowlist may not contain stale entries — forces
+///      allowlist-shrinkage symmetry when a sweep drains a prefix.
 ///
 /// Pairs with the iter-388 codified rule's "Prospective uses" section
-/// (per feedback_codified_rule_self_validates_via_forward_application.md
-/// — iter-373 codified rule, 5th forward application here).
+/// (forward application of feedback_codified_rule_self_validates_via_forward_application.md).
 ///
-/// Drainage trail of the cdbe4f12 (iter-470 adversarial review) MEDIUMs:
-///   - MEDIUM "Global codename-leak fact" → THIS FILE (iter-482).
-///   - MEDIUM "Cluster membership identity" → still OPEN
-///     (Iter469/Iter470 floor-count Facts pin cardinality, not identity).
-///   - MEDIUM "Per-object vs global [read] discriminator" → still OPEN
-///     (iter-470 heuristic comment, not test-enforced).
+/// Currently-OPEN sibling drift surfaces (NOT guarded by this file):
+///   - cdbe4f12 MEDIUM "Cluster membership identity" — Iter469/Iter470
+///     floor-count Facts pin cardinality, not identity.
+///   - cdbe4f12 MEDIUM "Per-object vs global [read] discriminator" —
+///     iter-470 heuristic comment, not test-enforced.
+///   - Script-body codename sweep — see
+///     <see cref="ScriptBodyCodenameSweep_PlaceholderForFutureArc"/> below.
 ///
-/// Iter-484 (9298748 adversarial-review drainage):
-///   - MEDIUM "Test-class name + commit narrative oversell scope" →
-///     RESOLVED via this file's rename + this docstring rewrite.
-///   - MEDIUM "Script-body codename deferral lacks tracked placeholder" →
-///     RESOLVED via <see cref="ScriptBodyCodenameSweep_PlaceholderForFutureArc"/>
-///     skipped fact below.
-///   - LOW "Regex lacks word boundaries" → RESOLVED via `\b...\b`.
-///   - LOW "Sim-startup waste" → DEFERRED to a multi-file Iter46x/47x/48x
-///     fixture-pattern arc (changing this file alone creates inconsistency
-///     with the 6+ peer test files using the same CreateVm idiom).
-///   - LOW "Commit message 54 vs 48 count" → RESOLVED via scratchpad
-///     correction; allowlist below has 48 entries.
-///
-/// Iter-485 (8f97e1d adversarial-review drainage — same-file precision):
-///   - MEDIUM "Invariant #3 failure-message remediation hint" →
-///     RESOLVED via the `because` rewrite on invariant #3 below
-///     (explicit allowlist-shrinkage symmetry + "do NOT revert
-///     production-side drainage" anti-reversion guard).
-///   - LOW "Placeholder Skip-fact body lacks fail-on-activation guard" →
-///     RESOLVED via Assert.Fail in
-///     <see cref="ScriptBodyCodenameSweep_PlaceholderForFutureArc"/>
-///     (deletion of Skip now puts the test in a deliberately-red state).
-///   - LOW "using SwfocTrainer.Core.Services may be unused" →
-///     NOT-A-DEFECT: NamedPipeLuaBridgeClient lives in that namespace
-///     (verified iter-485 grep) and is used in CreateVm at line ~89.
-///   - LOW "FluentAssertions `because` precision audit" → RESOLVED as
-///     bundled into the invariant #3 rewrite per reviewer recommendation.
-///   - MEDIUM "Misfiled directory Regression/ vs DriftCatchers/" →
-///     DEFERRED (cross-file arc covering 6+ peer files; same scope as M4).
-///   - MEDIUM "Compound-word regex form" → DEFERRED (watch-item, no
-///     real-world drift yet; reverting `\b` re-introduces a known LOW).
-///   - MEDIUM "Sim-startup fixture refactor" → DEFERRED (re-affirmed
-///     9298748 LOW; multi-file arc, blocked by sealed V2BridgeAdapter).
-///   - LOW "Skip-message back-reference durability" → DEFERRED (anchor
-///     update bundled with next backlog rotation).
-///
-/// Discoverer: editor-polish hat, iter-482, picking from
-/// knowledge-base/polish_backlog_2026-05-20.md (3-MEDIUM cdbe4f12 set).
-/// Scope-honesty + word-boundary + Skip-placeholder follow-ups landed in
-/// iter-484 from the 9298748 adversarial review batch.
+/// Per-iter resolution history (iter-470 / 482 / 484 / 485 / 486) is
+/// curated in adjacent file <c>DRIFT_CATCHER_HISTORY.md</c>; raw audit
+/// trail lives in <c>git log -p</c> on this file.
 /// </summary>
 public sealed class Iter100to113PresetCodenameLeakSweepTests
 {
@@ -267,11 +209,10 @@ public sealed class Iter100to113PresetCodenameLeakSweepTests
                 "commit MUST shrink the allowlist. Failing this assertion " +
                 "is the EXPECTED outcome of legitimate sweep work and is " +
                 "NOT a regression in the production change — do NOT revert " +
-                "the production-side drainage. Likely causes: (a) the most " +
-                "recent sweep forgot to remove the prefix in the same " +
-                "commit, OR (b) the production preset using this prefix " +
-                "was deleted in unrelated work. Both fixes are identical: " +
-                "drop the stale entry from `AllowlistedBracketedPrefixes`.");
+                "the production-side drainage. Both `(a) sweep forgot to " +
+                "drain` and `(b) preset deleted in unrelated work` reduce " +
+                "to the same fix: drop the stale entry from " +
+                "`AllowlistedBracketedPrefixes`.");
         }
     }
 
@@ -311,6 +252,12 @@ public sealed class Iter100to113PresetCodenameLeakSweepTests
         // actual regex-over-script-bodies assertion before the test goes
         // green. Empty body would have silently passed and masked
         // incomplete arc work.
+        //
+        // Requires xunit v2/v3 Skip semantics: Skip is evaluated BEFORE
+        // body execution, so Assert.Fail stays dormant while Skip is set.
+        // If a future framework migration changes Skip evaluation order,
+        // this placeholder will turn red prematurely — re-evaluate at
+        // that time (iter-486 f18bc78 LOW "xunit-version-fragile" watch).
         Assert.Fail(
             "Script-body codename sweep arc activated but not implemented. " +
             "Replace this Assert.Fail with the actual assertion — mirror " +
