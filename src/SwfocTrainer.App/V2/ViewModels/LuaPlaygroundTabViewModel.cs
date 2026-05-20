@@ -426,6 +426,26 @@ public sealed class LuaPlaygroundTabViewModel : ObservableBase
             "return SWFOC_TriggerVictory('Sub_Tactical_Space')"),
         new("[450] Trigger victory: Sub_Tactical_Story (PHASE 2 PENDING)",
             "return SWFOC_TriggerVictory('Sub_Tactical_Story')"),
+
+        // ===== Iter 467 — Read-side discovery + bridge diagnostics =====
+        // Closes the preset-menu gap on operator-meaningful read-only LIVE
+        // wires that pre-date the iter-450 series but were never surfaced
+        // in the dropdown. All five are side-effect-free and safe to fire
+        // at any time; engine state is unchanged. Pair with iter-461
+        // operator-visible work cadence — extends discoverability path #2
+        // (preset menu) for wires already on path #1 (per-tab native UX).
+        new("— Discovery + diagnostics (read-only LIVE) —",
+            string.Empty),
+        new("[disc] List all players (roster CSV)",
+            "return SWFOC_GetAllPlayers()"),
+        new("[disc] List factions (CSV with faction names)",
+            "return SWFOC_ListFactions()"),
+        new("[disc] Enumerate Rebel-owned units (CSV)",
+            "return SWFOC_EnumerateUnits('Rebel')"),
+        new("[disc] Bridge self-test (read-only health probe)",
+            "return SWFOC_DiagSelfTest()"),
+        new("[disc] Bridge build banner (version + commit)",
+            "return SWFOC_GetBuildInfo()"),
     };
 
     private string _selectedIter100to113Preset = string.Empty;
