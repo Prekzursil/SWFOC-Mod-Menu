@@ -62,12 +62,18 @@ public class ObjAddrParserProperties
     // SWFOC_ListTacticalUnits hex row format and the iter-1.1.0 hoist
     // consolidation). Existing ObjAddrParserTests.cs:18-19 pins "1234ABCD" ->
     // 0x1234ABCDL. The skipped property challenged a documented contract;
-    // removed and replaced with a property that PINS the contract — bare digits
-    // are interpreted as hex, so the round-trip is against hex.ToString("X"),
-    // not addr.ToString(). This captures the v1.0.2 invariant under randomized
-    // inputs rather than challenging it.
+    // removed and replaced with a property that PINS the contract — hex strings
+    // WITHOUT the "0x" prefix round-trip via addr.ToString("X"), not
+    // addr.ToString(). The previous name `TryParse_NumericString_IsInterpretedAsHex`
+    // (iter-476) was imprecise because addr.ToString("X") yields hex-with-A-F
+    // for n>=10 (e.g. addr=10 → "A"), which is not a "numeric string" in the
+    // strict sense. iter-487 renamed to `TryParse_HexNoPrefix_RoundTrips` per
+    // iter-477 b064ddb adversarial review LOW (naming polish) — the new name
+    // matches the internal `hexNoPrefix` variable and accurately describes the
+    // invariant being pinned. This captures the v1.0.2 invariant under
+    // randomized inputs rather than challenging it.
     [Property(MaxTest = 500)]
-    public Property TryParse_NumericString_IsInterpretedAsHex(NonNegativeInt n)
+    public Property TryParse_HexNoPrefix_RoundTrips(NonNegativeInt n)
     {
         var addr = (long)n.Item;
         var hexNoPrefix = addr.ToString("X");
