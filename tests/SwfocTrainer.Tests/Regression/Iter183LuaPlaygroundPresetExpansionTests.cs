@@ -47,16 +47,30 @@ public sealed class Iter183LuaPlaygroundPresetExpansionTests
     [InlineData("[154]")]
     [InlineData("[157]")]
     [InlineData("[166]")]
-    [InlineData("[167]")]
-    [InlineData("[173]")]
+    // [167] / [173] / [178] tags removed per iter-469 / iter-470 — those
+    // entries were recategorised to the [read] semantic prefix per
+    // iter-388 codified rule (operator-visible labels drop iter-N
+    // codenames). The iter-469 and iter-470 regression-guards
+    // (Iter469LuaPlaygroundReadObjectCodenameTests +
+    //  Iter470LuaPlaygroundReadGlobalsCodenameTests) now pin those wires
+    // by their bridge script signature (SWFOC_GetHullLua /
+    // SWFOC_GetGameModeLua / SWFOC_GetLocalPlayerLua /
+    // SWFOC_ThreadGetCurrentStageLua etc.) and assert the [read] prefix
+    // presence — a stronger pin than the prior iter-N codename presence
+    // check.
     [InlineData("[177]")]
-    [InlineData("[178]")]
     [InlineData("[180]")]
     [InlineData("[182]")]
     public void PresetMenu_HasAtLeastOnePresetForIter(string iterTag)
     {
         // Pin: each major iter post-145 must have at least one preset entry
         // so operators can discover it via the dropdown.
+        //
+        // Iter-469 supersession note: iter-N codename presence is no longer
+        // a valid pin shape for entries recategorised to semantic prefixes
+        // (see iter-468's [disc] cluster + iter-469's [read] cluster). New
+        // pin tests for recategorised wires must use script-signature
+        // lookups instead of label-substring lookups.
         var (sim, vm) = CreateVm();
         using (sim)
         {

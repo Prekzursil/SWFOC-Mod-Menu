@@ -210,22 +210,27 @@ public sealed class LuaPlaygroundTabViewModel : ObservableBase
         new("[166] Resume mode-based music",
             "return SWFOC_ResumeModeBasedMusicLua()"),
         // 2026-04-29 (iter 167-172) — read-side wires (capture engine values)
-        new("[167] Read AT-AT current hull",
+        // Iter-469: relabelled [167]-[172] -> [read] per iter-388 codified rule
+        // (operator-visible labels drop iter-N codenames; semantic category
+        // tag instead). Per-object inspection cluster (LIVE read-only) —
+        // distinct from [disc] environment discovery cluster (iter-467/468).
+        new("[read] AT-AT current hull",
             "return SWFOC_GetHullLua('Find_First_Object(\"Empire_AT_AT\")')"),
-        new("[168] Check if AT-AT engines online",
+        new("[read] Check if AT-AT engines online",
             "return SWFOC_AreEnginesOnlineLua('Find_First_Object(\"Empire_AT_AT\")')"),
-        new("[169] Read Rebel current credits",
+        new("[read] Rebel current credits",
             "return SWFOC_GetCreditsLua('Find_Player(\"REBEL\")')"),
-        new("[170] Read AT-AT name",
+        new("[read] AT-AT name",
             "return SWFOC_GetNameLua('Find_First_Object(\"Empire_AT_AT\")')"),
-        new("[171] Read AT-AT current position",
+        new("[read] AT-AT current position",
             "return SWFOC_GetPositionLua('Find_First_Object(\"Empire_AT_AT\")')"),
-        new("[172] Read garrison units inside AT-AT",
+        new("[read] Garrison units inside AT-AT",
             "return SWFOC_GetGarrisonUnitsLua('Find_First_Object(\"Empire_AT_AT\")')"),
         // 2026-05-04 (iter 173-174) — arg-getter wires
-        new("[173] Check if AT-AT has 'DEPLOY' ability active",
+        // Iter-469: relabelled [173]-[174] -> [read] (same cluster as 167-172).
+        new("[read] Check if AT-AT has 'DEPLOY' ability active",
             "return SWFOC_IsAbilityActiveLua('Find_First_Object(\"Empire_AT_AT\")', '\"DEPLOY\"')"),
-        new("[174] Get bone position (HEAD bone of AT-AT)",
+        new("[read] Bone position (HEAD bone of AT-AT)",
             "return SWFOC_GetBonePositionLua('Find_First_Object(\"Empire_AT_AT\")', '\"HEAD\"')"),
         // 2026-05-04 (iter 175-176) — TaskForce arc
         new("[175] TaskForce Move_To Yavin",
@@ -233,13 +238,17 @@ public sealed class LuaPlaygroundTabViewModel : ObservableBase
         new("[176] TaskForce Land_Units on Hoth",
             "return SWFOC_TaskForceLandUnitsLua('my_taskforce', 'Find_Planet(\"Hoth\")')"),
         // 2026-05-04 (iter 177-178) — discovery + global-getter wires
+        // Iter-470: relabelled [178] -> [read] per iter-388 codified rule.
+        // The 2 explicit "Read X" globals extend the iter-469 [read] cluster
+        // from per-object inspection to ANY explicit Read operation. Absence
+        // of an object name in the label IS the global-scope signal.
         new("[177] Find_Object_Type for AT-AT",
             "return SWFOC_FindObjectTypeLua('\"Empire_AT_AT\"')"),
         new("[177] FindPlanet for Coruscant",
             "return SWFOC_FindPlanetLua('\"CORUSCANT\"')"),
-        new("[178] Read current game mode",
+        new("[read] Current game mode",
             "return SWFOC_GetGameModeLua()"),
-        new("[178] Read local player handle",
+        new("[read] Local player handle",
             "return SWFOC_GetLocalPlayerLua()"),
         // 2026-05-04 (iter 179-180) — pair-completion + namespaced
         new("[179] Check if Rebel is enemy of Empire",
@@ -253,7 +262,11 @@ public sealed class LuaPlaygroundTabViewModel : ObservableBase
         new("[180] Corrupt AT-AT (Underworld signature ability)",
             "return SWFOC_CorruptLua('Find_First_Object(\"Empire_AT_AT\")', '50')"),
         // 2026-05-05 (iter 181-182) — Thread/SFXManager + 2-arg globals
-        new("[181] Read current cinematic Thread stage",
+        // Iter-470: relabelled [181] Read-side -> [read] per iter-388 rule
+        // (joins iter-470 [178] globals in the extended [read] cluster).
+        // The [181] write-side "Disable unit VO" stays — it's a mutation
+        // (SFXManager.Allow_Unit_Reponse_VO = false), not a read.
+        new("[read] Current cinematic Thread stage",
             "return SWFOC_ThreadGetCurrentStageLua()"),
         new("[181] Disable unit VO (note: engine typo 'Reponse')",
             "return SWFOC_SFXAllowUnitReponseVoLua('false')"),
@@ -372,17 +385,23 @@ public sealed class LuaPlaygroundTabViewModel : ObservableBase
             "return SWFOC_GetTotalUnitsAlive()"),
 
         // ===== Iter 296 — SWFOC_GetPlanets real impl (galactic-mode planet enumeration) =====
-        new("[296] Get galactic planets (returns CSV `name;faction;tech` rows)",
+        // Iter-468: relabelled [296] -> [disc] per iter-388 codified rule
+        // (operator-visible labels drop iter-N codenames; semantic category
+        // tag instead). Extends iter-467's [disc] cluster to the standalone
+        // read-only discovery wires that predate the iter-450 series.
+        new("[disc] Get galactic planets (returns CSV `name;faction;tech` rows)",
             "return SWFOC_GetPlanets()"),
 
         // ===== Iter 299 — Faction roster + current mod (Audit B enumeration wires) =====
-        new("[299] Get faction roster — list units owned by faction (e.g. 'Rebel')",
+        // Iter-468: relabelled [299] -> [disc] per iter-388 codified rule.
+        new("[disc] Get faction roster — list units owned by faction (e.g. 'Rebel')",
             "return SWFOC_GetFactionRoster('Rebel')"),
-        new("[299] Get current mod (filesystem probe of ./Mods/*/Modinfo.xml)",
+        new("[disc] Get current mod (filesystem probe of ./Mods/*/Modinfo.xml)",
             "return SWFOC_GetCurrentMod()"),
 
         // ===== Iter 300 — ListMods (300th-iter milestone — full mod enumeration) =====
-        new("[300] List all installed mods (CSV `name;path` per row)",
+        // Iter-468: relabelled [300] -> [disc] per iter-388 codified rule.
+        new("[disc] List all installed mods (CSV `name;path` per row)",
             "return SWFOC_ListMods()"),
 
         // ===== Iter 450/451 — SWFOC_TriggerVictory (PHASE 2 PENDING) =====
