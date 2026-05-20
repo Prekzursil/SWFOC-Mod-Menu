@@ -76,10 +76,8 @@ public class ObjAddrParserProperties
     public Property TryParse_HexNoPrefix_RoundTrips(NonNegativeInt n)
     {
         var addr = (long)n.Item;
-        // Variable name is load-bearing — TryParse_HexNoPrefix_RoundTrips method
-        // name depends on this identifier (see rationale block above); rename in
-        // lockstep if a future refactor changes either side. iter-488 b064ddb
-        // adversarial-review LOW (08e0c59 review verdict, naming-coupling pin).
+        // Variable name is load-bearing — method name TryParse_HexNoPrefix_RoundTrips
+        // depends on this identifier; rename in lockstep. (iter-487 08e0c59 LOW pin.)
         var hexNoPrefix = addr.ToString("X");
         var result = ObjAddrParser.TryParse(hexNoPrefix);
         return (result.Success && result.Addr == addr).ToProperty();
