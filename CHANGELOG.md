@@ -5,6 +5,36 @@ This is the **final-product** changelog. Earlier per-iter notes are preserved un
 
 ---
 
+## v1.0.1 hotfix (2026-05-20) — bridge DLL only
+
+Operator-reported bug surfaced during live-game smoke against vanilla galactic mode.
+
+### Fixed
+
+- **Credits multiplier counter-intuitive direction** (`SWFOC_SetCreditsMultiplierGlobal`):
+  Previously, `mult=10x` multiplied **all** credit deltas including purchases,
+  so units cost 10x as much instead of income arriving 10x as fast. The
+  multiplier is now sign-gated: only positive deltas (income / rewards /
+  payroll) are scaled; negative deltas (purchases / ability costs / payments)
+  pass through unchanged.
+  - File: `swfoc_lua_bridge/lua_bridge.cpp` line 7283 — `Hook_AddCredits`
+    gated on `a2 > 0.0f` before applying `mult`.
+  - Bridge harness: 1100/0 still passing (no test depended on the broken
+    behaviour).
+- **`Lua_ListMods` snprintf truncation footgun** (CWE-787, pre-existing):
+  Clamp `snprintf` return value to `sizeof(row)-1` before using as `memcpy`
+  length. Pure defensive cleanup — no observed exploit, but Semgrep flagged
+  the pattern as unsafe. Cleared during the v1.0.1 build.
+
+### How to upgrade
+
+The Trainer Editor binary (`SwfocTrainer.App.exe`) is unchanged. Only the
+bridge DLL (`powrprof.dll`) deployed next to `StarWarsG.exe` needs updating.
+Replace it with the v1.0.1 build (size 423,936 bytes, timestamp 05/20/2026
+05:05:01), or run `bridge/deploy_and_launch.ps1` from a fresh repo clone.
+
+---
+
 ## Final Product (2026-05-19)
 
 This release strips the "V2" qualifier from every operator-visible surface. The
