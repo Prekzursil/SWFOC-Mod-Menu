@@ -322,9 +322,13 @@ public sealed class LuaPlaygroundTabViewModel : ObservableBase
         // NOTE: these are display-only direct writes; pair with iter-110 SWFOC_MakeInvulnerableLua
         // (engine-state-aware invulnerability via BehaviorMarker + hardpoint propagation) and
         // iter-153 SWFOC_SetCannotBeKilledLua (engine-state-aware cannot-be-killed) for full effect.
-        new("[243] Set invuln_flag = 1 (DISPLAY-only; pair with iter-110 MakeInvulnerableLua for engine effect)",
+        // Iter-482: dropped 'iter-110' / 'iter-153' cross-reference codenames per
+        // iter-388 codified rule (project-wide drift sweep — Iter482PresetCodenameLeakSweepTests).
+        // Cross-references now use the catalog's [NNN] prefix form, which the operator
+        // can scroll back to in the same dropdown.
+        new("[243] Set invuln_flag = 1 (DISPLAY-only; pair with [110] MakeInvulnerableLua for engine effect)",
             "return SWFOC_SetUnitField(0x12345678, 'invuln_flag', 1)"),
-        new("[243] Set prevent_death = 1 (bit 0x80 of GameObj+0x3A1; operator may prefer iter-153 SetCannotBeKilledLua)",
+        new("[243] Set prevent_death = 1 (bit 0x80 of GameObj+0x3A1; operator may prefer [153] SetCannotBeKilledLua)",
             "return SWFOC_SetUnitField(0x12345678, 'prevent_death', 1)"),
 
         // ===== Iter 258 — A1.x SetUnitField max_* batch 2 sub-field LIVE branches (TYPE-LEVEL writes) =====
@@ -344,7 +348,10 @@ public sealed class LuaPlaygroundTabViewModel : ObservableBase
         // confirmed NO TYPE-LEVEL max_speed offset in ledger; Override_Max_Speed @ 0x57E590 walks
         // unit+0x60 locomotor NOT unit+0x298 UnitType). This entry is INFORMATIONAL ONLY — clicking it
         // pastes a comment that points to the iter-99/100 LIVE alternatives already present above.
-        new("[267-268] max_speed HONEST DEFER → see iter-99 SetUnitSpeed (per-instance) or iter-100 SetPerFactionSpeedMultiplier",
+        // Iter-482: dropped 'iter-99 / iter-100' cross-reference codenames per
+        // iter-388 codified rule. The [100] preset cluster covers both SWFOC_SetUnitSpeed
+        // (per-instance) and SWFOC_SetPerFactionSpeedMultiplier; both are findable above.
+        new("[267-268] max_speed HONEST DEFER → see [100] SetUnitSpeed (per-instance) or [100] SetPerFactionSpeedMultiplier",
             "-- iter 267-268: max_speed has NO TYPE-LEVEL offset (semantic verification per iter-256 memory rule).\n" +
             "-- Use iter-99 SWFOC_SetUnitSpeed for per-instance speed override OR iter-100 SWFOC_SetPerFactionSpeedMultiplier for per-faction.\n" +
             "-- Both call SetSpeedOverride @ 0x3A8C90 directly. See catalog rationale for SWFOC_SetUnitField + UnitStatEditor comment for full audit trail.\n" +
@@ -362,7 +369,10 @@ public sealed class LuaPlaygroundTabViewModel : ObservableBase
         // attack_power LIVE branch would not add operator capability and would sacrifice iter-258
         // TYPE-LEVEL semantic consistency. This entry is INFORMATIONAL ONLY — clicking it pastes a
         // comment that points to all three alternatives.
-        new("[269-270] attack_power HONEST DEFER → alternative-set: iter-96 (global) / iter-154 (per-unit) / iter-225 (fire-rate)",
+        // Iter-482: dropped 'iter-96 / iter-154 / iter-225' cross-reference codenames per
+        // iter-388 codified rule. Alternative-set pattern preserved; cross-refs use the
+        // catalog's [NNN] prefix form.
+        new("[269-270] attack_power HONEST DEFER → alternative-set: [96] (global) / [154] (per-unit) / [225] (fire-rate)",
             "-- iter 269-270: attack_power has NO central per-unit read site (HardpointFire confirms damage is param-passed, computed from per-weapon XML).\n" +
             "-- Alternative-set pattern (iter-270 NEW, refines iter-251/268 single-alternative) — pick by SCOPE:\n" +
             "--   1. GLOBAL outgoing damage scaling   → iter-96  SWFOC_SetDamageMultiplierGlobal (Take_Damage_Outer detour)\n" +
@@ -373,7 +383,9 @@ public sealed class LuaPlaygroundTabViewModel : ObservableBase
             "return SWFOC_SetDamageModifierLua('Find_First_Object(\"Empire_AT_AT\")', '2.0')"),
 
         // ===== Iter 282 — A1.x SetFireRate getter pair (closes iter-225 setter; mirror of iter-96/iter-129 pair pattern) =====
-        new("[282] Read GLOBAL fire-rate multiplier (pair-flip with iter-225 setter)",
+        // Iter-482: dropped 'iter-225' cross-reference codename in label per iter-388
+        // codified rule. The setter is the [225] preset (findable above).
+        new("[282] Read GLOBAL fire-rate multiplier (pair-flip with [225] setter)",
             "return SWFOC_GetFireRateMultiplierGlobal()"),
 
         // ===== Iter 285 — Tier 3 overlay bridge wires (kills/deaths/units-alive for HUD) =====
