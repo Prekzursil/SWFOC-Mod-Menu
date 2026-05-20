@@ -139,22 +139,36 @@ public sealed class Iter470LuaPlaygroundReadGlobalsCodenameTests
         //
         // 2026-05-20 (iter 472): strengthened per c083bc3a adversarial
         // review (3 backlog findings — 2 MEDIUM + 1 LOW):
-        //   (a) `NotStartWith` slip-through: `[read]VO` (no space),
-        //       `  [read] VO` (whitespace), `Disable VO [read]` (suffix),
-        //       `[query] / [get] VO` (variant prefix) all bypass the
-        //       prefix-only check. Add a POSITIVE `Contain("Disable")`
-        //       assertion — the mutation verb is the durable signature;
-        //       any future relabel that sweeps the entry into a read-like
-        //       cluster would reframe the label (verb gone), tripping
-        //       this assertion regardless of prefix shape.
+        //   (a) `NotStartWith` slip-through: added positive `Contain("Disable")`
+        //       to catch sweeps that BOTH recluster AND rewrite the verb
+        //       (e.g. `[read] Unit VO state`).
         //   (b) Preset lookup via full `Script ==` string couples to the
-        //       engine-typo `Reponse`. If the bridge ever fixes the typo,
-        //       `SingleOrDefault` returns null with a misleading
-        //       "preset survives iter-470 sweep" NotBeNull failure. Switch
-        //       to `Label.Contains("Reponse")` — the typo IS the durable
-        //       lookup signature, and the 3rd `Contain("typo")` assertion
-        //       independently pins it, so they fall together with a
-        //       coherent failure mode.
+        //       engine-typo `Reponse`. Switched to `Label.Contains("Reponse")`
+        //       — the typo IS the durable lookup signature, and the 3rd
+        //       `Contain("typo")` assertion independently pins it, so they
+        //       fall together with a coherent failure mode.
+        //
+        // 2026-05-20 (iter 473): added `NotMatchRegex` per 6dbe73e adversarial
+        // review (HIGH finding). The iter-472 docstring overclaimed that
+        // `Contain("Disable")` covered ALL prefix-variation slip-throughs —
+        // but the verb survives PREFIX-PREPEND relabels (`[read] Disable
+        // unit VO`, `[query] Disable VO`, `  [read] Disable VO`,
+        // `Disable VO [read]`), so those bypass every iter-472 assertion.
+        // The verb-only guard catches verb-REWRITING relabels (`[read] Unit
+        // VO state`), not prefix-prepend ones. Honest coverage matrix:
+        //   - `NotStartWith("[read] ")` / `NotStartWith("[disc] ")` —
+        //     trailing-space prefix forms (iter-471 shape).
+        //   - `NotMatchRegex(@"(?i)^\s*\[(read|disc|query|get)\]")` —
+        //     covers the 4 prefix-prepend slip-throughs the iter-472
+        //     docstring claimed but didn't implement: leading whitespace
+        //     (`  [read] ...`), no trailing space (`[read]Disable...`),
+        //     case variants (`[READ]...`), and 2 additional cluster
+        //     keywords (`[query]`, `[get]`).
+        //   - `Contain("Disable")` — verb-rewriting relabels only.
+        //   - `Contain("typo")` — paired with `Label.Contains("Reponse")`
+        //     lookup; coherent fail on engine-typo fix.
+        // The suffix-form `Disable VO [read]` remains unguarded (low-
+        // probability future state); filed in polish_backlog if it surfaces.
         var (sim, vm) = CreateVm();
         using (sim)
         {
@@ -165,11 +179,15 @@ public sealed class Iter470LuaPlaygroundReadGlobalsCodenameTests
                 "iter-181 mutation wire is not a read; defensive pin against accidental [read] cluster sweep")
                 .And.NotStartWith("[disc] ",
                 "iter-181 mutation wire is not discovery either; defensive pin against accidental [disc] cluster sweep");
+            preset.Label.Should().NotMatchRegex(@"(?i)^\s*\[(read|disc|query|get)\]",
+                "iter-473: regex guard covers prefix-prepend slip-throughs that NotStartWith and " +
+                "Contain('Disable') do not catch — leading whitespace `  [read] Disable VO`, " +
+                "no-space `[read]Disable VO`, case variants `[READ] ...`, and the 2 additional " +
+                "cluster keywords [query]/[get] enumerated in the iter-472 docstring");
             preset.Label.Should().Contain("Disable",
-                "iter-472: positive guard — the mutation verb 'Disable' is the durable signature; " +
-                "if a future relabel sweep absorbs the entry into ANY cluster (regardless of prefix " +
-                "shape: [read]/[disc]/[query]/[get]/whitespace-leading/suffix-form), the verb would " +
-                "be reframed out and this assertion fires");
+                "iter-472 verb-rewriting guard: 'Disable' is the mutation-describing signature. " +
+                "Catches relabels that REWRITE the verb (e.g. `[read] Unit VO state`); " +
+                "prefix-prepend variants that keep the verb are caught by the NotMatchRegex above");
             preset.Label.Should().Contain("typo",
                 "the iter-181 mutation wire still flags the engine typo 'Reponse'");
         }
