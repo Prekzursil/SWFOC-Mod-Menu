@@ -2378,7 +2378,7 @@
                                 <Button Content="Read unit type"
                                         Command="{Binding ReadUnitTypeLuaCommand}"
                                         Margin="0,0,6,0" Padding="8,3"
-                                        ToolTip="SWFOC_GetTypeLua → composes (unit):Get_Type() and returns the GameObjectType handle. Iter-169 LIVE wire."/>
+                                        ToolTip="SWFOC_GetTypeLua → composes (unit):Get_Type() and returns the GameObjectType handle."/>
                                 <TextBlock Text="{Binding ReadUnitTypeLuaAction.Badge}"
                                            FontSize="9" FontWeight="SemiBold"
                                            Foreground="{DynamicResource MutedForeground}"
@@ -2387,7 +2387,7 @@
                                 <Button Content="Read unit owner"
                                         Command="{Binding ReadUnitOwnerLuaCommand}"
                                         Margin="0,0,6,0" Padding="8,3"
-                                        ToolTip="SWFOC_GetOwnerLua → composes (unit):Get_Owner() and returns the PlayerWrapper handle. Iter-168 LIVE wire."/>
+                                        ToolTip="SWFOC_GetOwnerLua → composes (unit):Get_Owner() and returns the PlayerWrapper handle."/>
                                 <TextBlock Text="{Binding ReadUnitOwnerLuaAction.Badge}"
                                            FontSize="9" FontWeight="SemiBold"
                                            Foreground="{DynamicResource MutedForeground}"
@@ -2396,7 +2396,7 @@
                                 <Button Content="Has attack target?"
                                         Command="{Binding ReadHasAttackTargetLuaCommand}"
                                         Margin="0,0,6,0" Padding="8,3"
-                                        ToolTip="SWFOC_HasAttackTargetLua → composes (unit):Has_Attack_Target() and returns 'true'/'false'. Iter-168 LIVE wire — confirms unit is engaged in combat."/>
+                                        ToolTip="SWFOC_HasAttackTargetLua → composes (unit):Has_Attack_Target() and returns 'true'/'false'. Confirms unit is engaged in combat."/>
                                 <TextBlock Text="{Binding ReadHasAttackTargetLuaAction.Badge}"
                                            FontSize="9" FontWeight="SemiBold"
                                            Foreground="{DynamicResource MutedForeground}"
@@ -2405,7 +2405,7 @@
                                 <Button Content="Engines online?"
                                         Command="{Binding ReadAreEnginesOnlineLuaCommand}"
                                         Margin="0,0,6,0" Padding="8,3"
-                                        ToolTip="SWFOC_AreEnginesOnlineLua → composes (unit):Are_Engines_Online() and returns 'true'/'false'. Iter-168 LIVE wire — relevant for ships in tactical battles."/>
+                                        ToolTip="SWFOC_AreEnginesOnlineLua → composes (unit):Are_Engines_Online() and returns 'true'/'false'. Relevant for ships in tactical battles."/>
                                 <TextBlock Text="{Binding ReadAreEnginesOnlineLuaAction.Badge}"
                                            FontSize="9" FontWeight="SemiBold"
                                            Foreground="{DynamicResource MutedForeground}"
@@ -4998,7 +4998,7 @@
                             <TextBlock Foreground="White" FontWeight="Bold"
                                        Text="Save Monitor — early-warning system for save corruption"/>
                             <TextBlock Foreground="#B3F8C0" TextWrapping="Wrap" Margin="0,4,0,0"
-                                       Text="Watches the Save folder; logs every save event with size delta. Surfaces a warning when a save grows by more than the threshold vs its prior version — the iter-466 soft-lock pattern is detectable as runaway file-size growth before the engine actually freezes."/>
+                                       Text="Watches the Save folder; logs every save event with size delta. Surfaces a warning when a save grows by more than the threshold vs its prior version — the known soft-lock pattern is detectable as runaway file-size growth before the engine actually freezes."/>
                             <TextBlock Margin="0,4,0,0" FontStyle="Italic"
                                        Foreground="{DynamicResource MutedForeground}">
                                 <Run Text="Status: "/>
