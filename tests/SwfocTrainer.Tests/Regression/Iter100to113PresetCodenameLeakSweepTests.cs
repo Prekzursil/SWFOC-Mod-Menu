@@ -9,21 +9,34 @@ using Xunit;
 namespace SwfocTrainer.Tests.Regression;
 
 /// <summary>
-/// 2026-05-21 (iter 482) — project-wide drift catcher for the iter-388
-/// "Internal-Codename-In-Tooltips-Drift" rule, applied to the entire
-/// <see cref="LuaPlaygroundTabViewModel.Iter100to113Presets"/> roster.
+/// 2026-05-21 (iter 482, scope-honest-renamed iter 484) — drift catcher for
+/// the iter-388 "Internal-Codename-In-Tooltips-Drift" rule, applied to the
+/// <see cref="LuaPlaygroundTabViewModel.Iter100to113Presets"/> roster only.
+///
+/// SCOPE (post iter-484 honesty pass): the three invariants below iterate
+/// exactly ONE collection — <c>LuaPlaygroundTabViewModel.Iter100to113Presets</c>.
+/// They are NOT project-wide. If future work adds a second <c>IList&lt;Preset&gt;</c>
+/// property to <see cref="LuaPlaygroundTabViewModel"/>, or if other tab VMs
+/// surface preset dropdowns with iter-N codenames, those collections are
+/// not guarded by this file. A reflection-based "all-VMs all-preset-lists"
+/// extension is captured in the iter-482/484 polish backlog (cdbe4f12
+/// follow-up batch) as a future arc.
 ///
 /// Iter-467/468/469/470 added per-script regression guards that only fire
 /// on the specific scripts being relabelled in each iter. The cdbe4f12
 /// adversarial review (iter-470 sweep) flagged this as MEDIUM: the next
-/// stale `[NNN]` codename added anywhere else in the roster wouldn't trip
-/// any test (drift surface left uncovered).
+/// stale `[NNN]` codename added anywhere else in the same roster wouldn't
+/// trip any test (drift surface left uncovered).
 ///
-/// This file closes that gap with three project-wide invariants:
+/// This file closes that gap for the Iter100to113Presets roster with three
+/// invariants:
 ///
-///   1. No preset label may contain the substring "iter N" / "iter-N" /
-///      "iterN" anywhere (case-insensitive). This catches future drift
-///      where someone writes the raw "iter 500" form in a new label.
+///   1. No preset label may contain a word-bounded "iter N" / "iter-N" /
+///      "iterN" token (case-insensitive). The `\b` boundaries (added in
+///      iter-484 per the 9298748 adversarial-review LOW) prevent false
+///      positives on legitimate substrings like `filter1`, `rerouter5`,
+///      `writer42`, `transmitter9`. Catches future drift where someone
+///      writes the raw "iter 500" form in a new label.
 ///      Current count: 0 (none have ever been added in this form).
 ///
 ///   2. Bracketed `[NNN]` / `[NNN-NNN]` / `[NNN/NNN]` codename prefixes
@@ -49,10 +62,25 @@ namespace SwfocTrainer.Tests.Regression;
 ///   - MEDIUM "Per-object vs global [read] discriminator" → still OPEN
 ///     (iter-470 heuristic comment, not test-enforced).
 ///
+/// Iter-484 (9298748 adversarial-review drainage):
+///   - MEDIUM "Test-class name + commit narrative oversell scope" →
+///     RESOLVED via this file's rename + this docstring rewrite.
+///   - MEDIUM "Script-body codename deferral lacks tracked placeholder" →
+///     RESOLVED via <see cref="ScriptBodyCodenameSweep_PlaceholderForFutureArc"/>
+///     skipped fact below.
+///   - LOW "Regex lacks word boundaries" → RESOLVED via `\b...\b`.
+///   - LOW "Sim-startup waste" → DEFERRED to a multi-file Iter46x/47x/48x
+///     fixture-pattern arc (changing this file alone creates inconsistency
+///     with the 6+ peer test files using the same CreateVm idiom).
+///   - LOW "Commit message 54 vs 48 count" → RESOLVED via scratchpad
+///     correction; allowlist below has 48 entries.
+///
 /// Discoverer: editor-polish hat, iter-482, picking from
 /// knowledge-base/polish_backlog_2026-05-20.md (3-MEDIUM cdbe4f12 set).
+/// Scope-honesty + word-boundary + Skip-placeholder follow-ups landed in
+/// iter-484 from the 9298748 adversarial review batch.
 /// </summary>
-public sealed class Iter482PresetCodenameLeakSweepTests
+public sealed class Iter100to113PresetCodenameLeakSweepTests
 {
     private static (SwfocSimulator sim, LuaPlaygroundTabViewModel vm) CreateVm()
     {
@@ -75,6 +103,8 @@ public sealed class Iter482PresetCodenameLeakSweepTests
     /// When the next sweep lands and drains an entry from the production
     /// roster, the same commit MUST remove it from this allowlist.
     /// Invariant #3 below pins that discipline.
+    ///
+    /// Count (verified iter-484 manual recount post 9298748 review): 48.
     /// </summary>
     private static readonly HashSet<string> AllowlistedBracketedPrefixes = new()
     {
@@ -104,16 +134,17 @@ public sealed class Iter482PresetCodenameLeakSweepTests
     [Fact]
     public void NoPresetLabelContainsIterDigitsSubstring()
     {
-        // Invariant #1: no label may contain "iter N" / "iter-N" / "iterN"
-        // substring anywhere (case-insensitive). This is the strict iter-388
-        // shape — the codified rule bans the literal "iter <number>" form
-        // in operator-visible strings. Catches future drift where someone
+        // Invariant #1: no label may contain a word-bounded "iter N" /
+        // "iter-N" / "iterN" token (case-insensitive). The `\b` boundaries
+        // (iter-484 9298748 adversarial-review LOW fix) prevent false
+        // positives on legitimate substrings like `filter1`, `rerouter5`,
+        // `writer42`, `transmitter9`. Catches future drift where someone
         // writes a label like "iter 500 spawn helper".
         var (sim, vm) = CreateVm();
         using (sim)
         {
             var iterDigitsRegex = new Regex(
-                @"iter[ -]?\d+",
+                @"\biter[ -]?\d+\b",
                 RegexOptions.IgnoreCase | RegexOptions.Compiled);
 
             var hits = vm.Iter100to113Presets
@@ -160,7 +191,7 @@ public sealed class Iter482PresetCodenameLeakSweepTests
             }
 
             unknownPrefixes.Should().BeEmpty(
-                "iter-388 project-wide drift catcher: NEW `[NNN]` codename " +
+                "iter-388 roster-scoped drift catcher: NEW `[NNN]` codename " +
                 "prefix(es) appeared without an allowlist extension. " +
                 $"Unknown prefix(es): [{string.Join(", ", unknownPrefixes.Select(u => $"{u.Prefix} in '{u.Label}'"))}]. " +
                 "Either (a) replace [NNN] with a semantic cluster prefix " +
@@ -209,5 +240,40 @@ public sealed class Iter482PresetCodenameLeakSweepTests
                 "same commit (fix: drop from allowlist), OR (b) the production " +
                 "preset using this prefix was deleted (same fix).");
         }
+    }
+
+    /// <summary>
+    /// iter-484 9298748 adversarial-review MEDIUM "Script-body codename
+    /// deferral lacks tracked placeholder" — code-side breadcrumb for the
+    /// future arc that sweeps `iter-N` substrings out of the preset SCRIPT
+    /// BODIES (the second <c>new(...)</c> argument that pastes into the
+    /// editor pane when an operator selects the preset).
+    ///
+    /// Iter-482 (this file's parent) scoped the cdbe4f12 MEDIUM to LABELS
+    /// only. Script bodies still carry `-- iter 267-268:` / `iter-99` /
+    /// `iter-100` / `iter-225` substrings inside the Lua source pasted to
+    /// the editor. Those substrings ARE operator-visible per the
+    /// iter-388 codified rule (the script renders in the editor pane on
+    /// preset selection), but were deferred because the label sweep is
+    /// the higher-blast-radius surface (visible in the dropdown without
+    /// selection).
+    ///
+    /// Deletion of the <c>Skip</c> attribute below is the natural commit
+    /// boundary for the script-body sweep arc. When undertaking that arc:
+    ///   1. Drop the Skip attribute.
+    ///   2. Update the regex to apply to <c>p.Script</c> in addition to
+    ///      (or instead of) <c>p.Label</c>.
+    ///   3. Rewrite each violating script-body comment/identifier.
+    ///   4. Close the corresponding entry in
+    ///      knowledge-base/polish_backlog_2026-05-20.md.
+    /// </summary>
+    [Fact(Skip = "iter-484 future arc: script-body codename sweep — see knowledge-base/polish_backlog_2026-05-20.md MEDIUM 'Script-body codename deferral'. Deletion of this Skip attribute IS the arc's natural entry point.")]
+    public void ScriptBodyCodenameSweep_PlaceholderForFutureArc()
+    {
+        // Intentionally empty — this Skip placeholder is the code-side
+        // breadcrumb. When the script-body sweep arc lands, replace this
+        // body with the actual regex-over-script-bodies assertion (mirror
+        // the NoPresetLabelContainsIterDigitsSubstring shape but apply to
+        // `p.Script` instead of `p.Label`).
     }
 }
