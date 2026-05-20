@@ -13,21 +13,26 @@ namespace SwfocTrainer.PropertyTests;
 /// </summary>
 public class ObjAddrParserProperties
 {
-    /// <summary>
-    /// TODO(editor-polish): FsCheck generated an input where IsNullOrWhiteSpace
-    /// returns true but ObjAddrParser.TryParse returned Success=true. Either
-    /// (a) the parser accepts some whitespace-only input as 0/empty-success,
-    /// or (b) my predicate is too broad. Investigate and either fix the parser
-    /// to fail on all whitespace-only input OR refine this property's predicate
-    /// to exclude the legitimate edge case.
-    /// </summary>
-    [Property(MaxTest = 500, Skip = "Edge case found 2026-05-20 — pending editor-polish investigation")]
-    public Property TryParse_OfNullOrEmpty_AlwaysFails(string? input)
+    // iter-475 included a [Property(Skip=...)] `TryParse_OfNullOrEmpty_AlwaysFails`
+    // with a TODO claiming FsCheck surfaced a whitespace counter-example. Per
+    // iter-476 7eb7020 adversarial review HIGH 1: ObjAddrParser.TryParse
+    // (ObjAddrParser.cs:43-46) returns (false, 0L, "Obj address is empty.")
+    // unconditionally when IsNullOrWhiteSpace(input) is true — no such
+    // counter-example can exist. The Skip carried a fabricated bug claim;
+    // removed to prevent permanent misinformation in test code.
+    //
+    // The whitespace-rejection invariant is already pinned by the existing
+    // concrete unit tests in src/SwfocTrainer.Core's test surface (and the
+    // `TryParse_OfWhitespacePadded_StripsAndParses` property below covers the
+    // padded-hex success path). No randomization adds value over those.
+
+    [Fact]
+    public void TryParse_OfNullOrEmpty_AlwaysFails()
     {
-        return Prop.When(
-            string.IsNullOrWhiteSpace(input),
-            () => ObjAddrParser.TryParse(input).Success == false
-        );
+        ObjAddrParser.TryParse((string?)null).Success.Should().BeFalse();
+        ObjAddrParser.TryParse(string.Empty).Success.Should().BeFalse();
+        ObjAddrParser.TryParse("   ").Success.Should().BeFalse();
+        ObjAddrParser.TryParse("\t\n\r ").Success.Should().BeFalse();
     }
 
     [Property(MaxTest = 500)]
@@ -48,20 +53,25 @@ public class ObjAddrParserProperties
         return (result.Success && result.Addr == addr).ToProperty();
     }
 
-    /// <summary>
-    /// TODO(editor-polish): FsCheck generated a decimal input that didn't
-    /// round-trip. Likely cause: ObjAddrParser parses some no-prefix inputs
-    /// as hex by default (e.g. "1234" -> 0x1234 = 4660), not as decimal 1234.
-    /// Either (a) update the parser to require explicit decimal marker (e.g.
-    /// "0d" prefix or pure-digit + leading zero) OR (b) refine the property
-    /// to only test values where decimal/hex are unambiguous (e.g. n > 0xFFFFFFFFL).
-    /// </summary>
-    [Property(MaxTest = 500, Skip = "Edge case found 2026-05-20 — pending editor-polish investigation of decimal vs hex default")]
-    public Property TryParse_RoundTrip_Decimal(NonNegativeInt n)
+    // iter-475 included a [Property(Skip=...)] `TryParse_RoundTrip_Decimal`
+    // with a TODO framing the parser's hex-by-default behavior as a bug, and
+    // suggesting fix path (a) "update the parser to require explicit decimal
+    // marker". Per iter-476 7eb7020 adversarial review HIGH 2: ObjAddrParser.cs
+    // lines 19-26 + 50-65 documents numeric-only-is-hex as INTENTIONAL design
+    // (Cross-Cutting #2 of the v1.0.2 plan, aligned with the
+    // SWFOC_ListTacticalUnits hex row format and the iter-1.1.0 hoist
+    // consolidation). Existing ObjAddrParserTests.cs:18-19 pins "1234ABCD" ->
+    // 0x1234ABCDL. The skipped property challenged a documented contract;
+    // removed and replaced with a property that PINS the contract — bare digits
+    // are interpreted as hex, so the round-trip is against hex.ToString("X"),
+    // not addr.ToString(). This captures the v1.0.2 invariant under randomized
+    // inputs rather than challenging it.
+    [Property(MaxTest = 500)]
+    public Property TryParse_NumericString_IsInterpretedAsHex(NonNegativeInt n)
     {
         var addr = (long)n.Item;
-        var dec = addr.ToString();
-        var result = ObjAddrParser.TryParse(dec);
+        var hexNoPrefix = addr.ToString("X");
+        var result = ObjAddrParser.TryParse(hexNoPrefix);
         return (result.Success && result.Addr == addr).ToProperty();
     }
 
