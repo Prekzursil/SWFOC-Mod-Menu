@@ -77,7 +77,7 @@ public class ObjAddrParserProperties
     {
         var addr = (long)n.Item;
         // Variable name is load-bearing — method name TryParse_HexNoPrefix_RoundTrips
-        // depends on this identifier; rename in lockstep. (iter-487 08e0c59 LOW pin.)
+        // depends on this identifier; rename in lockstep. (iter-488 08e0c59 adversarial-review LOW pin.)
         var hexNoPrefix = addr.ToString("X");
         var result = ObjAddrParser.TryParse(hexNoPrefix);
         return (result.Success && result.Addr == addr).ToProperty();
