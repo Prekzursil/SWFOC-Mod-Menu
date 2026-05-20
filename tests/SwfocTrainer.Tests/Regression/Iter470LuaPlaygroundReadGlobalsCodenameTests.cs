@@ -127,26 +127,49 @@ public sealed class Iter470LuaPlaygroundReadGlobalsCodenameTests
         // iter-181 is a mutation wire (SFXManager.Allow_Unit_Reponse_VO =
         // false); defensive pin against accidental absorption into [read]
         // cluster. Future [write]/[mut] cluster can land in a later iter
-        // and update this pin accordingly.
+        // and update this pin accordingly. Tracking entry:
+        // knowledge-base/polish_backlog_2026-05-20.md::iter_181_write_mut
         //
         // 2026-05-20 (iter 471): inverted from `Contains("[181]")` to
         // `NotStartWith("[read] " / "[disc] ")`. The old shape pinned an
         // iter-388-violating [NNN] codename in the production label as the
         // expected state, which the adversarial reviewer flagged: it inverts
         // the regression-guard discipline ("fails on old broken form AND
-        // passes on new form") because the label is the broken form. The
-        // new shape captures the defensive intent (don't sweep mutations
-        // into the [read] cluster) without pinning the violation.
+        // passes on new form") because the label is the broken form.
+        //
+        // 2026-05-20 (iter 472): strengthened per c083bc3a adversarial
+        // review (3 backlog findings — 2 MEDIUM + 1 LOW):
+        //   (a) `NotStartWith` slip-through: `[read]VO` (no space),
+        //       `  [read] VO` (whitespace), `Disable VO [read]` (suffix),
+        //       `[query] / [get] VO` (variant prefix) all bypass the
+        //       prefix-only check. Add a POSITIVE `Contain("Disable")`
+        //       assertion — the mutation verb is the durable signature;
+        //       any future relabel that sweeps the entry into a read-like
+        //       cluster would reframe the label (verb gone), tripping
+        //       this assertion regardless of prefix shape.
+        //   (b) Preset lookup via full `Script ==` string couples to the
+        //       engine-typo `Reponse`. If the bridge ever fixes the typo,
+        //       `SingleOrDefault` returns null with a misleading
+        //       "preset survives iter-470 sweep" NotBeNull failure. Switch
+        //       to `Label.Contains("Reponse")` — the typo IS the durable
+        //       lookup signature, and the 3rd `Contain("typo")` assertion
+        //       independently pins it, so they fall together with a
+        //       coherent failure mode.
         var (sim, vm) = CreateVm();
         using (sim)
         {
             var preset = vm.Iter100to113Presets.SingleOrDefault(
-                p => p.Script == "return SWFOC_SFXAllowUnitReponseVoLua('false')");
+                p => p.Label.Contains("Reponse"));
             preset.Should().NotBeNull("the iter-181 mutation preset survives iter-470 sweep");
             preset!.Label.Should().NotStartWith("[read] ",
                 "iter-181 mutation wire is not a read; defensive pin against accidental [read] cluster sweep")
                 .And.NotStartWith("[disc] ",
                 "iter-181 mutation wire is not discovery either; defensive pin against accidental [disc] cluster sweep");
+            preset.Label.Should().Contain("Disable",
+                "iter-472: positive guard — the mutation verb 'Disable' is the durable signature; " +
+                "if a future relabel sweep absorbs the entry into ANY cluster (regardless of prefix " +
+                "shape: [read]/[disc]/[query]/[get]/whitespace-leading/suffix-form), the verb would " +
+                "be reframed out and this assertion fires");
             preset.Label.Should().Contain("typo",
                 "the iter-181 mutation wire still flags the engine typo 'Reponse'");
         }
