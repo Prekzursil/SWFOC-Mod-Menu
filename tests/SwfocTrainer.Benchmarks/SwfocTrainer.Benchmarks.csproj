@@ -8,10 +8,10 @@
     <IsPackable>false</IsPackable>
     <RootNamespace>SwfocTrainer.Benchmarks</RootNamespace>
     <!--
-      Performance benchmark project per .ralph/specs/perf-benchmarker.md.
+      Performance benchmark project per Ralph orchestrator perf-benchmarker spec.
       The perf-benchmarker hat runs `dotnet run -c Release` against this
       project, parses BenchmarkDotNet JSON output, and compares against
-      .ralph/state/perf/baseline.json. Regressions > 10% block the loop.
+      the perf-benchmarker baseline file. Regressions > 10% block the loop.
 
       Scaffolded 2026-05-20; new benchmarks added by editor-polish iters
       that introduce or refactor public hot-path API.
@@ -23,7 +23,6 @@
 
   <ItemGroup>
     <PackageReference Include="BenchmarkDotNet" Version="0.13.12" />
-    <PackageReference Include="BenchmarkDotNet.Diagnostics.Windows" Version="0.13.12" />
   </ItemGroup>
 
   <ItemGroup>

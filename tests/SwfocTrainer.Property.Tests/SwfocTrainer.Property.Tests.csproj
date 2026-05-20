@@ -7,7 +7,7 @@
     <IsPackable>false</IsPackable>
     <RootNamespace>SwfocTrainer.PropertyTests</RootNamespace>
     <!--
-      Property-based test project per .ralph/specs/perf-benchmarker.md companion.
+      Property-based test project per Ralph orchestrator perf-benchmarker spec companion.
       FsCheck generates randomized inputs to find edge cases unit tests miss.
       Scaffolded 2026-05-20; new tests added by editor-polish iters that ship
       new public API surface (each new ObjAddrParser-class API gets a property
