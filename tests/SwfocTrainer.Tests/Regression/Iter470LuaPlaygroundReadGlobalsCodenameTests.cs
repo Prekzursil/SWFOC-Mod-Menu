@@ -129,6 +129,9 @@ public sealed class Iter470LuaPlaygroundReadGlobalsCodenameTests
         // cluster. Future [write]/[mut] cluster can land in a later iter
         // and update this pin accordingly. Tracking entry:
         // knowledge-base/polish_backlog_2026-05-20.md::iter_181_write_mut
+        // (deferred until a [write]/[mut] semantic-prefix cluster lands —
+        // no current cluster to migrate into; see backlog entry for
+        // promotion criteria, per iter-474 6dbe73e LOW finding).
         //
         // 2026-05-20 (iter 471): inverted from `Contains("[181]")` to
         // `NotStartWith("[read] " / "[disc] ")`. The old shape pinned an
@@ -169,11 +172,34 @@ public sealed class Iter470LuaPlaygroundReadGlobalsCodenameTests
         //     lookup; coherent fail on engine-typo fix.
         // The suffix-form `Disable VO [read]` remains unguarded (low-
         // probability future state); filed in polish_backlog if it surfaces.
+        //
+        // 2026-05-20 (iter 474): hardened preset lookup per 6dbe73e MEDIUM
+        // finding. iter-472 swapped `Script == "return SWFOC_..."` for
+        // `Label.Contains("Reponse")` — but that lookup is now coupled to
+        // the `Contain("typo")` assertion (both correlate on the engine-typo
+        // `Reponse`). A future paired read-side wire e.g. `[disc] Read
+        // Allow_Unit_Reponse_VO state` would also match `Label.Contains
+        // ("Reponse")` and cause `SingleOrDefault` to throw with a less-
+        // actionable multi-match error. Conjunction adds `Script.Contains
+        // ("SFXAllowUnitReponseVoLua")` — the SWFOC_ wrapper symbol present
+        // verbatim in this preset's script. Note: the 6dbe73e reviewer's
+        // literal suggestion was `Script.Contains("Allow_Unit_Reponse_VO")`
+        // (the engine STATE field name) — but that string is only in the
+        // dispatcher's BridgeAssertion / comments, not in the preset's
+        // script body. Using the wrapper symbol (the closest equivalent
+        // that's actually present in `Script`) preserves the reviewer's
+        // intent: survive label-typo-fix (wrapper still matches), survive
+        // script-arg-rewrite that keeps the wrapper (`('true')`/`('1')`
+        // etc.), AND disambiguate from a hypothetical paired read-side
+        // preset that returns the state via a DIFFERENT Lua surface (e.g.
+        // `Find_Object_Type` + `SFXManager.Allow_Unit_Reponse_VO` direct
+        // field read, no SWFOC_ wrapper involved).
         var (sim, vm) = CreateVm();
         using (sim)
         {
             var preset = vm.Iter100to113Presets.SingleOrDefault(
-                p => p.Label.Contains("Reponse"));
+                p => p.Label.Contains("Reponse")
+                    && p.Script.Contains("SFXAllowUnitReponseVoLua"));
             preset.Should().NotBeNull("the iter-181 mutation preset survives iter-470 sweep");
             preset!.Label.Should().NotStartWith("[read] ",
                 "iter-181 mutation wire is not a read; defensive pin against accidental [read] cluster sweep")
