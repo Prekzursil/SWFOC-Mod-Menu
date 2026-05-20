@@ -1,0 +1,49 @@
+<UserControl x:Class="SwfocTrainer.App.V2.Controls.SlotPickerControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d"
+             x:Name="Root"
+             d:DesignHeight="32" d:DesignWidth="300">
+    <!--
+        v1.1.0 SlotPickerControl
+        ========================
+        Reusable replacement for the typed-integer "Slot: -1" TextBoxes that
+        appear on Combat / Economy / Battle Control / Spawning / Speed / Cross-
+        Faction / World State / Galactic Diplomacy tabs.
+
+        Mirrors the canonical UX from PlayerStateTab `SelectedSlotEntry` (line 850
+        in MainWindowV2.xaml). Items must be IList<PlayerSlotEntry> — the
+        DisplayLabel shows as "Slot 6 — UNDERWORLD" when the faction name has
+        been populated by RefreshSlotMapCommand.
+
+        Operators get a dropdown instead of memorizing the "-1 = local, 0..N = specific"
+        convention.
+
+        Usage example in a host tab:
+            <controls:SlotPickerControl
+                ItemsSource="{Binding Slots}"
+                SelectedSlot="{Binding TargetSlot, Mode=TwoWay}"
+                RefreshCommand="{Binding RefreshSlotMapCommand}" />
+    -->
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="Auto"/>
+        </Grid.ColumnDefinitions>
+        <ComboBox Grid.Column="0"
+                  ItemsSource="{Binding ItemsSource, ElementName=Root}"
+                  SelectedItem="{Binding SelectedSlot, ElementName=Root, Mode=TwoWay}"
+                  DisplayMemberPath="DisplayLabel"
+                  MinWidth="180"
+                  ToolTip="Pick a player slot. Local human player is highlighted once the slot map is refreshed."/>
+        <Button Grid.Column="1"
+                Content="↻"
+                Command="{Binding RefreshCommand, ElementName=Root}"
+                Margin="4,0,0,0"
+                Padding="6,2"
+                ToolTip="Refresh slot → faction labels from the current game state."
+                Visibility="{Binding RefreshButtonVisibility, ElementName=Root}"/>
+    </Grid>
+</UserControl>

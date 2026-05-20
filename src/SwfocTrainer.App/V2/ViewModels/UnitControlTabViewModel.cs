@@ -1363,29 +1363,15 @@ public sealed class UnitControlTabViewModel : ObservableBase
 
     private bool TryParseObjAddr(out ulong addr)
     {
-        addr = 0;
-        var trimmed = (_objAddrInput ?? string.Empty).Trim();
-        if (string.IsNullOrEmpty(trimmed))
+        // v1.1.0: parse logic hoisted to SwfocTrainer.Core.Validation.ObjAddrParser
+        // so all 7+ V2 tabs accept the same inputs. The shared parser returns long
+        // (CLS-compliant per Core convention) and already bounds-checks against
+        // long.MaxValue, so the cast back to ulong is lossless here.
+        var (ok, parsed, err) = SwfocTrainer.Core.Validation.ObjAddrParser.TryParse(_objAddrInput);
+        addr = (ulong)parsed;
+        if (!ok)
         {
-            Append("[error] Obj address is empty.", error: true);
-            return false;
-        }
-
-        var span = trimmed.AsSpan();
-        if (span.StartsWith("0x", StringComparison.OrdinalIgnoreCase))
-        {
-            span = span[2..];
-        }
-
-        if (!ulong.TryParse(span, NumberStyles.HexNumber, CultureInfo.InvariantCulture, out addr))
-        {
-            Append($"[error] Obj address '{_objAddrInput}' is not a valid hex value.", error: true);
-            return false;
-        }
-
-        if (addr > (ulong)long.MaxValue)
-        {
-            Append($"[error] Obj address '{_objAddrInput}' is beyond long.MaxValue.", error: true);
+            Append($"[error] {err}", error: true);
             return false;
         }
 
