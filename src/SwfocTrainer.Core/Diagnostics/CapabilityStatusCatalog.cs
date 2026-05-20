@@ -272,12 +272,12 @@ public static class CapabilityStatusCatalog
               + "rule). Multi-iter A1.x offset RE required to hook damage-multiplier override at the combat "
               + "tick. Alternative for global one-hit-kill: iter-96 SetDamageMultiplierGlobal at large value."),
             ["SWFOC_FreezeAI"] = new("SWFOC_FreezeAI", CapabilityStatus.Phase2HookPending,
-                "BLOCKED-NO-RVA — AI scheduler. "
-              + "Iter 433: Event-driven subsystem (UnitAIBehaviorClass attached to GameObjects "
-              + "via QueryInterface; ticked per-frame by engine; per iter-426 "
-              + "feedback_event_driven_defer_pattern.md rule). Multi-iter A1.x offset RE "
-              + "required (alternative: iter-162 SWFOC_SuspendAiLua LIVE wire suspends "
-              + "PER-UNIT AI via Suspend_AI Lua API — operator should use that LIVE alternative)."),
+                "USE LIVE ALTERNATIVE: SWFOC_SuspendAiLua (LIVE) suspends per-unit AI via the "
+              + "engine's Suspend_AI Lua API — that's the recommended path for freezing AI "
+              + "behavior. This entry remains Phase 2 because the global AI scheduler is "
+              + "event-driven (UnitAIBehaviorClass attached to GameObjects via QueryInterface, "
+              + "ticked per-frame); flipping to LIVE needs a multi-iter offset RE arc per the "
+              + "event-driven-defer rule. v1.0.2: rationale prioritizes LIVE alternative."),
             // 2026-04-28 (iter 106-107): camera engine APIs are exposed via
             // Lua, not C++ setters. SWFOC_FreeCam still Phase 2 — there's no
             // engine `Free_Cam(enable)` Lua API; engine implements free-cam

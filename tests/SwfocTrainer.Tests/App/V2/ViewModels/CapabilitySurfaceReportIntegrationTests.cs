@@ -216,8 +216,12 @@ public sealed class CapabilitySurfaceReportIntegrationTests
         var godMode = new CapabilityAwareAction("X", "SWFOC_GodMode");
         godMode.Note.Should().Contain("Hardpoint-behavior sweep");
 
+        // v1.0.2: FreezeAI Note rewritten to lead with "USE LIVE ALTERNATIVE"
+        // (SuspendAiLua) per operator-trust pattern. The deferred-work rationale
+        // is now SECONDARY; the LIVE alternative pointer is PRIMARY.
         var freezeAi = new CapabilityAwareAction("X", "SWFOC_FreezeAI");
-        freezeAi.Note.Should().Contain("BLOCKED-NO-RVA");
+        freezeAi.Note.Should().Contain("USE LIVE ALTERNATIVE");
+        freezeAi.Note.Should().Contain("SuspendAiLua");
 
         var unknown = new CapabilityAwareAction("X", "SWFOC_DoesNotExist");
         unknown.Note.Should().Contain("Not in catalogue");

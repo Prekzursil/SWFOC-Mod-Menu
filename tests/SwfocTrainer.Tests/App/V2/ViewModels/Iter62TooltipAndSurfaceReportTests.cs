@@ -26,10 +26,14 @@ public sealed class Iter62TooltipAndSurfaceReportTests
     [Fact]
     public void Tooltip_Phase2PendingAction_IncludesBlockedReason()
     {
+        // v1.0.2: FreezeAI rationale rewritten to prioritize the LIVE alternative
+        // (SuspendAiLua) first, then the deferred-work explanation. This is the
+        // operator-trust pattern — surface what the operator CAN do now before
+        // what they can't.
         var action = new CapabilityAwareAction("Toggle freeze AI", "SWFOC_FreezeAI");
         action.Tooltip.Should().Contain("PHASE 2 PENDING");
-        action.Tooltip.Should().Contain("BLOCKED-NO-RVA");
-        action.Tooltip.Should().Contain("AI scheduler");
+        action.Tooltip.Should().Contain("USE LIVE ALTERNATIVE");
+        action.Tooltip.Should().Contain("SuspendAiLua");
     }
 
     [Fact]

@@ -123,7 +123,12 @@ public sealed class Iter252PresetMenuRefreshTests
         }
         dir.Should().NotBeNull("test must locate MainWindowV2.xaml");
         var xaml = File.ReadAllText(Path.Combine(dir!.FullName, "src", "SwfocTrainer.App", "V2", "MainWindowV2.xaml"));
-        xaml.Should().Contain("Iter 100-300 LIVE wires (+2 honest-defer notes)",
-            "iter-335 bumps GroupBox header from 'Iter 100-270 LIVE wires' to 'Iter 100-300 LIVE wires (+2 honest-defer notes)' to reflect the iter-282 GetFireRateMultiplierGlobal + iter-285 Tier 3 overlay bridge wires + iter-296 GetPlanets + iter-299 GetFactionRoster/GetCurrentMod + iter-300 ListMods preset additions");
+        // v1.0.2 update: header rewritten from "Iter 100-300 LIVE wires (+2 honest-defer notes)"
+        // to "LIVE wire examples (300+)" per improvement_plan_2026-05-20.md Part 1 HIGH #2 —
+        // drop iter-N + internal "honest-defer" jargon from operator-visible text.
+        xaml.Should().Contain("LIVE wire examples (300+)",
+            "v1.0.2 GroupBox header drops iter-N + honest-defer jargon (operator-trust pattern)");
+        xaml.Should().NotContain("Iter 100-300 LIVE wires (+2 honest-defer notes)",
+            "v1.0.2 removed the iter-300-era header; subsequent edits must not regress this");
     }
 }

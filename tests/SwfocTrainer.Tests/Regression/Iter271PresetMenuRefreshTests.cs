@@ -107,20 +107,26 @@ public class Iter271PresetMenuRefreshTests
     [Fact]
     public void GroupBoxHeader_ReflectsIter270Coverage()
     {
-        // MainWindowV2.xaml GroupBox header bumped "Iter 100-258" → "Iter 100-270"
-        // with explicit honest-defer-notes annotation distinguishing them from
-        // runnable LIVE wires.
-        // iter-335 update: header bumped "Iter 100-270" → "Iter 100-300 LIVE wires
-        // (+2 honest-defer notes)" when iter 282/285/296/299/300 presets got added
-        // (closes 30-iter doc gap). Per iter-260 lesson #3, this test stays tagged
-        // "Iter 271" but now pins the iter-335 header to keep the header-history
-        // audit trail live without splitting the test file.
+        // History of this header:
+        //   iter-271: "Iter 100-258" → "Iter 100-270 LIVE wires (+2 honest-defer notes)"
+        //   iter-335: "Iter 100-270" → "Iter 100-300 LIVE wires (+2 honest-defer notes)"
+        //   v1.0.2:   "Iter 100-300 LIVE wires (+2 honest-defer notes)" → "LIVE wire examples (300+)"
+        //
+        // v1.0.2 (improvement_plan_2026-05-20.md Part 1 HIGH #2): drop iter-N
+        // jargon from operator-visible GroupBox headers. The internal "honest-defer"
+        // notion leaked through the header text; replaced with a generic
+        // "LIVE wire examples (300+)" that conveys the same scope without dev
+        // vocabulary.
         var xaml = LoadXamlSource();
-        xaml.Should().Contain("Iter 100-300 LIVE wires (+2 honest-defer notes)",
-            "iter-335 GroupBox header must reflect iter-300 coverage + the 2 honest-defer informational entries (iter-271 era)");
+        xaml.Should().Contain("LIVE wire examples (300+)",
+            "v1.0.2 GroupBox header drops iter-N + honest-defer jargon (operator-trust pattern)");
         xaml.Should().NotContain("Iter 100-258 LIVE wires",
-            "iter-271 originally removed the iter-258-era header; iter-335 must NOT regress this");
+            "iter-271 removed the iter-258-era header; subsequent edits must not regress");
         xaml.Should().NotContain("Iter 100-270 LIVE wires",
-            "iter-335 must remove the iter-270-era header (replaced by iter-300 header)");
+            "iter-335 removed the iter-270-era header; subsequent edits must not regress");
+        xaml.Should().NotContain("Iter 100-300 LIVE wires",
+            "v1.0.2 removed the iter-300-era header; subsequent edits must not regress");
+        xaml.Should().NotContain("honest-defer notes)",
+            "v1.0.2 drops the internal 'honest-defer' jargon from operator-visible text");
     }
 }

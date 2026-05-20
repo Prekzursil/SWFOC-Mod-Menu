@@ -463,6 +463,7 @@ public sealed class MainViewModelV2 : ObservableBase, IDisposable
                 OnPropertyChanged(nameof(LiveTabsVisibility));
                 OnPropertyChanged(nameof(SavegameTabsVisibility));
                 OnPropertyChanged(nameof(ModeBadge));
+                OnPropertyChanged(nameof(WindowTitle)); // v1.0.2: title reflects mode
             }
         }
     }
@@ -562,8 +563,12 @@ public sealed class MainViewModelV2 : ObservableBase, IDisposable
     /// <summary>2026-04-27 (iter 53) — operator-facing composite quick-actions.</summary>
     public QuickActionsTabViewModel QuickActions { get; }
 
+    // v1.0.2 hotfix: include the mode badge so operators can see at a glance
+    // whether they're in LIVE TRAINER or SAVEGAME EDITOR mode without having
+    // to look at the top-bar pill. Bound to IsLiveMode via OnPropertyChanged
+    // below.
     public string WindowTitle =>
-        $"SWFOC Trainer Editor — pipe {_bridge.PipeName}";
+        $"SWFOC Trainer Editor — {ModeBadge} — pipe {_bridge.PipeName}";
 
     /// <summary>
     /// Called by MainWindowV2 when Loaded fires. Kicks off diagnostic probes

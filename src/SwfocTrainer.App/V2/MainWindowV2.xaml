@@ -48,6 +48,7 @@
         -->
         <infra:HealthCategoryToBrushConverter x:Key="HealthCategoryToBrush"/>
         <infra:StringEqualsMultiConverter x:Key="StringEqualsMultiConverter"/>
+        <infra:BadgeToIsEnabledConverter x:Key="BadgeToIsEnabled"/>
         <Style TargetType="TextBlock">
             <Setter Property="Foreground" Value="{DynamicResource TextForeground}"/>
             <Setter Property="VerticalAlignment" Value="Center"/>
@@ -1473,9 +1474,9 @@
                             <TextBlock Text=" Level:" Margin="12,0,6,0"/>
                             <TextBox Width="60" Text="{Binding CorruptionLevelInput, UpdateSourceTrigger=PropertyChanged}"/>
                             <Button Content="Set" Command="{Binding SetCorruptionCommand}" Margin="12,0,0,0"
-                                    ToolTip="ICorruptionService → set the chosen corruption type (Racketeering / Rebellion / Black-market) on the planet to the given level."/>
+                                    ToolTip="Set the chosen corruption type (Racketeering / Rebellion / Black-market) on the planet to the given level."/>
                             <Button Content="Remove" Command="{Binding RemoveCorruptionCommand}"
-                                    ToolTip="ICorruptionService → clear all corruption from the named planet."/>
+                                    ToolTip="Clear all corruption from the named planet."/>
                         </StackPanel>
                     </GroupBox>
 
@@ -1488,7 +1489,7 @@
                             <TextBlock Text=" Relation:" Margin="12,0,6,0"/>
                             <ComboBox ItemsSource="{Binding DiplomacyRelations}" SelectedItem="{Binding SelectedDiplomacyRelation}" Width="120"/>
                             <Button Content="Apply" Command="{Binding SetDiplomacyCommand}" Margin="12,0,0,0"
-                                    ToolTip="IDiplomacyService → set the relation between Faction A and Faction B (Allied / Hostile / Neutral / etc.). Galactic mode only."/>
+                                    ToolTip="Set the relation between Faction A and Faction B (Allied / Hostile / Neutral / etc.). Galactic mode only."/>
                         </StackPanel>
                     </GroupBox>
 
@@ -1508,7 +1509,7 @@
                                       Text="{Binding StoryEventId, UpdateSourceTrigger=PropertyChanged}"
                                       ToolTip="Pick a suggestion or type a custom event id (mod-defined events still work)."/>
                             <Button Content="Fire event" Command="{Binding FireStoryEventCommand}" Margin="8,0,0,0"
-                                    ToolTip="IStoryEventService → call Story_Event(name) so the engine triggers the named campaign event (cinematic / mission objective / etc.)."/>
+                                    ToolTip="Call Story_Event(name) so the engine triggers the named campaign event (cinematic / mission objective / etc.)."/>
                             <CheckBox Content="Maphack state" IsChecked="{Binding MaphackEnabled}" Margin="24,0,0,0" IsHitTestVisible="False"/>
                             <Button Content="Toggle maphack" Command="{Binding ToggleMaphackCommand}" Margin="8,0,0,0"/>
                         </StackPanel>
@@ -1613,7 +1614,7 @@
                                 edits don't "correct" it.
                             -->
                             <StackPanel Orientation="Horizontal" Margin="0,6,0,0">
-                                <TextBlock Text="SFX VO toggle (typo: Reponse): " VerticalAlignment="Center"/>
+                                <TextBlock Text="SFX VO toggle: " VerticalAlignment="Center"/>
                                 <StackPanel Margin="6,0,0,0">
                                     <Button Content="VO on" Command="{Binding SfxAllowUnitReponseVoOnCommand}"
                                             ToolTip="SWFOC_SFXAllowUnitReponseVoLua(1) → SFXManager.Allow_Unit_Reponse_VO(true). LIVE no-input — re-enables per-unit voice-over response to player commands. Engine misspelling 'Reponse' preserved verbatim."/>
@@ -1705,7 +1706,7 @@
                     <GroupBox Grid.Row="5" Header="Dump state">
                         <StackPanel Orientation="Horizontal">
                             <Button Content="Dump snapshot..." Command="{Binding DumpStateCommand}" MinWidth="160"
-                                    ToolTip="ICrashAnalyzerService → write a SWFOCSNAPv2 binary snapshot of the current world state to disk for offline replay analysis."/>
+                                    ToolTip="Write a SWFOCSNAPv2 binary snapshot of the current world state to disk for offline replay analysis."/>
                             <TextBlock Text="  Writes SWFOC_DumpState(path) to a user-chosen file." Foreground="{DynamicResource MutedForeground}"/>
                         </StackPanel>
                     </GroupBox>
@@ -2933,7 +2934,7 @@
                                 <TextBox Text="{Binding HardpointInspectAddrText, UpdateSourceTrigger=PropertyChanged}"
                                          FontFamily="Consolas, Lucida Console, monospace"
                                          Margin="0,0,0,6"
-                                         ToolTip="Engine pointer to the unit object. Walks Components array via lua_bridge.cpp:2228."/>
+                                         ToolTip="Engine pointer to the unit object. Walks the unit's Components array."/>
                                 <WrapPanel Orientation="Horizontal" Margin="0,0,0,6">
                                     <Button Content="Refresh hardpoints"
                                             Command="{Binding RefreshHardpointsCommand}"
@@ -4369,7 +4370,7 @@
                              docs/iter-100-113-quick-reference.md or remembering SWFOC_* names.
                              Replace placeholder addresses (0xABCD) and names (my_taskforce)
                              with real values from Tactical Units / Inspector tabs. -->
-                        <GroupBox Header="Iter 100-300 LIVE wires (+2 honest-defer notes)">
+                        <GroupBox Header="LIVE wire examples (300+)">
                             <StackPanel>
                                 <TextBlock TextWrapping="Wrap" FontSize="11"
                                            Foreground="{DynamicResource MutedForeground}"
