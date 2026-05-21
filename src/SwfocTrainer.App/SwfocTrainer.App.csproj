@@ -13,6 +13,7 @@
     <ProjectReference Include="../SwfocTrainer.Catalog/SwfocTrainer.Catalog.csproj" />
     <ProjectReference Include="../SwfocTrainer.Helper/SwfocTrainer.Helper.csproj" />
     <ProjectReference Include="../SwfocTrainer.Saves/SwfocTrainer.Saves.csproj" />
+    <ProjectReference Include="../SwfocTrainer.Savegame/SwfocTrainer.Savegame.csproj" />
     <ProjectReference Include="../SwfocTrainer.Transplant/SwfocTrainer.Transplant.csproj" />
   </ItemGroup>
   <ItemGroup>
