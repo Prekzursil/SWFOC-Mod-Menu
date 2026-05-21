@@ -36,6 +36,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SwfocTrainer.Property.Tests
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SwfocTrainer.Benchmarks", "tests\SwfocTrainer.Benchmarks\SwfocTrainer.Benchmarks.csproj", "{67A84045-7DA7-443E-89AB-39D1EF0AC938}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SwfocTrainer.Savegame", "src\SwfocTrainer.Savegame\SwfocTrainer.Savegame.csproj", "{BA671038-71FA-43D7-AD28-644D8628E274}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -102,6 +104,10 @@ Global
 		{67A84045-7DA7-443E-89AB-39D1EF0AC938}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{67A84045-7DA7-443E-89AB-39D1EF0AC938}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{67A84045-7DA7-443E-89AB-39D1EF0AC938}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BA671038-71FA-43D7-AD28-644D8628E274}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BA671038-71FA-43D7-AD28-644D8628E274}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BA671038-71FA-43D7-AD28-644D8628E274}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BA671038-71FA-43D7-AD28-644D8628E274}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -114,5 +120,6 @@ Global
 		{31304402-E335-49EF-A0D5-AD9C4EC9993C} = {396F410D-9B99-4F66-8CFB-442658B5B99E}
 		{6E07355C-E999-4A47-A1CC-07D250408E7F} = {396F410D-9B99-4F66-8CFB-442658B5B99E}
 		{67A84045-7DA7-443E-89AB-39D1EF0AC938} = {396F410D-9B99-4F66-8CFB-442658B5B99E}
+		{BA671038-71FA-43D7-AD28-644D8628E274} = {A0EC6126-B74A-4E20-A25C-06EB590EA0A9}
 	EndGlobalSection
 EndGlobal
