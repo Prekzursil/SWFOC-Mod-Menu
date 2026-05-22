@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:infra="clr-namespace:SwfocTrainer.App.V2.Infrastructure"
+        xmlns:tabs="clr-namespace:SwfocTrainer.App.Tabs"
         xmlns:sys="clr-namespace:System;assembly=mscorlib"
         xmlns:diag="clr-namespace:SwfocTrainer.Core.Diagnostics;assembly=SwfocTrainer.Core"
         mc:Ignorable="d"
@@ -5589,6 +5590,19 @@
                         </Grid>
                     </Grid>
                 </Grid>
+            </TabItem>
+
+            <!-- =================================================== Savegame Editor (iter-289c view; registered iter-561, savegame-editor spec) -->
+            <!-- Operator surface over the SwfocTrainer.Savegame engine: load a
+                 .PetroglyphFoC64Save, walk the chunk tree, edit/delete micro-
+                 chunks, validate + re-anchor the embedded mod hash, write back.
+                 The savegame hat built + tested SavegameEditorTab(.xaml) and its
+                 view-model in iter-289b/289c but deferred this App-shell wiring
+                 to editor-polish (MainWindowV2 + MainViewModelV2 are outside the
+                 savegame hat scope). iter-561 closes that deferral. -->
+            <TabItem Header="Savegame Editor"
+                     Visibility="{Binding SavegameTabsVisibility}">
+                <tabs:SavegameEditorTab DataContext="{Binding SavegameEditor}"/>
             </TabItem>
 
             <!-- =================================================== TAB 23: Quick Actions (iter 53) -->
