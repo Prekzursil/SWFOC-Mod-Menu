@@ -55,13 +55,23 @@ public class Iter271PresetMenuRefreshTests
     {
         // Iter 267-268 max_speed HONEST DEFER preset must surface the iter-99/100
         // LIVE alternative cross-references so operators can route correctly.
+        //
+        // iter-562 stale-pin correction: the preset script body cites the LIVE
+        // alternatives by their real bridge wrapper names — SWFOC_SetUnitSpeed /
+        // SWFOC_SetPerFactionSpeedMultiplier. This pin originally asserted the
+        // un-prefixed forms; a later iter normalised the script body to the
+        // SWFOC_-prefixed names (matching the sibling attack_power pins below,
+        // which already pin the prefixed form) but did not update this pin. The
+        // assertion intent — "the max_speed honest-defer preset cites the per-
+        // instance and per-faction LIVE alternatives" — is unchanged; only the
+        // exact expected substring is corrected to the current correct source.
         var source = LoadVmSource();
         source.Should().Contain("[267-268] max_speed HONEST DEFER",
             "iter-271 introduces the max_speed honest-defer informational preset");
-        source.Should().Contain("iter-99 SetUnitSpeed",
-            "iter-271 max_speed preset must cite iter-99 per-instance LIVE alternative");
-        source.Should().Contain("iter-100 SetPerFactionSpeedMultiplier",
-            "iter-271 max_speed preset must cite iter-100 per-faction LIVE alternative");
+        source.Should().Contain("iter-99 SWFOC_SetUnitSpeed",
+            "iter-271 max_speed preset must cite the iter-99 per-instance LIVE alternative");
+        source.Should().Contain("iter-100 SWFOC_SetPerFactionSpeedMultiplier",
+            "iter-271 max_speed preset must cite the iter-100 per-faction LIVE alternative");
         source.Should().Contain("SWFOC_SetUnitSpeed(0x12345678, 2.0)",
             "iter-271 max_speed preset must include a runnable example LIVE alternative script");
     }
