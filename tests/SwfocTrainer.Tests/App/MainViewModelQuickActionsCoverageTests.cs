@@ -30,7 +30,7 @@ public sealed class MainViewModelQuickActionsCoverageTests
         vm.SelectedProfileId = "test";
 
         await InvokeAsync(vm, "QuickRunActionAsync",
-            "set_credits", new JsonObject(), (string?)null);
+            "set_credits", new JsonObject(), null);
 
         vm.Status.Should().Be("Ready");
     }
@@ -43,7 +43,7 @@ public sealed class MainViewModelQuickActionsCoverageTests
         vm.SelectedProfileId = null;
 
         await InvokeAsync(vm, "QuickRunActionAsync",
-            "set_credits", new JsonObject(), (string?)null);
+            "set_credits", new JsonObject(), null);
 
         vm.Status.Should().Be("Ready");
     }
@@ -57,7 +57,7 @@ public sealed class MainViewModelQuickActionsCoverageTests
 
         // actionId is empty string after null guard — should hit the IsNullOrWhiteSpace guard
         await InvokeAsync(vm, "QuickRunActionAsync",
-            "", new JsonObject(), (string?)null);
+            "", new JsonObject(), null);
 
         vm.Status.Should().Be("Ready");
     }
@@ -96,7 +96,7 @@ public sealed class MainViewModelQuickActionsCoverageTests
         vm.SelectedProfileId = "test";
 
         await InvokeAsync(vm, "QuickRunActionAsync",
-            "set_credits", new JsonObject(), (string?)null);
+            "set_credits", new JsonObject(), null);
 
         vm.Status.Should().Contain("set_credits");
     }
@@ -130,7 +130,7 @@ public sealed class MainViewModelQuickActionsCoverageTests
         vm.SelectedProfileId = "test";
 
         await InvokeAsync(vm, "QuickRunActionAsync",
-            "set_credits", BuildValidCreditsPayload(), (string?)null);
+            "set_credits", BuildValidCreditsPayload(), null);
 
         vm.Status.Should().Contain("bad state");
     }
@@ -148,7 +148,7 @@ public sealed class MainViewModelQuickActionsCoverageTests
         vm.SelectedProfileId = "test";
 
         await InvokeAsync(vm, "QuickRunActionAsync",
-            "set_credits", BuildValidCreditsPayload(), (string?)null);
+            "set_credits", BuildValidCreditsPayload(), null);
 
         vm.Status.Should().Contain("access denied");
     }
@@ -166,7 +166,7 @@ public sealed class MainViewModelQuickActionsCoverageTests
         vm.SelectedProfileId = "test";
 
         await InvokeAsync(vm, "QuickRunActionAsync",
-            "set_credits", BuildValidCreditsPayload(), (string?)null);
+            "set_credits", BuildValidCreditsPayload(), null);
 
         vm.Status.Should().Contain("disk error");
     }
