@@ -28,9 +28,9 @@ public sealed class ProfilesWave7FinalTests
     [Fact]
     public void ExtractToDirectorySafely_EntryWithEmptyName_ShouldSkipEntry()
     {
-        var tempDir = Path.Combine(Path.GetTempPath(), "prof-w7-" + Guid.NewGuid().ToString("N"));
-        var zipPath = Path.Combine(tempDir, "test.zip");
-        var extractDir = Path.Combine(tempDir, "extract");
+        var tempDir = Path.Join(Path.GetTempPath(), "prof-w7-" + Guid.NewGuid().ToString("N"));
+        var zipPath = Path.Join(tempDir, "test.zip");
+        var extractDir = Path.Join(tempDir, "extract");
         Directory.CreateDirectory(tempDir);
         try
         {
@@ -43,7 +43,7 @@ public sealed class ProfilesWave7FinalTests
             }
 
             GitHubProfileUpdateExtractionHelpers.ExtractToDirectorySafely(zipPath, extractDir);
-            File.Exists(Path.Combine(extractDir, "valid.txt")).Should().BeTrue();
+            File.Exists(Path.Join(extractDir, "valid.txt")).Should().BeTrue();
         }
         finally
         {
@@ -54,9 +54,9 @@ public sealed class ProfilesWave7FinalTests
     [Fact]
     public void ExtractToDirectorySafely_EntryEscapingRoot_ShouldThrow()
     {
-        var tempDir = Path.Combine(Path.GetTempPath(), "prof-w7-esc-" + Guid.NewGuid().ToString("N"));
-        var zipPath = Path.Combine(tempDir, "evil.zip");
-        var extractDir = Path.Combine(tempDir, "extract");
+        var tempDir = Path.Join(Path.GetTempPath(), "prof-w7-esc-" + Guid.NewGuid().ToString("N"));
+        var zipPath = Path.Join(tempDir, "evil.zip");
+        var extractDir = Path.Join(tempDir, "extract");
         Directory.CreateDirectory(tempDir);
         try
         {
@@ -80,9 +80,9 @@ public sealed class ProfilesWave7FinalTests
     [Fact]
     public void ExtractToDirectorySafely_DirectoryEntry_ShouldCreateDirectory()
     {
-        var tempDir = Path.Combine(Path.GetTempPath(), "prof-w7-dir-" + Guid.NewGuid().ToString("N"));
-        var zipPath = Path.Combine(tempDir, "dirs.zip");
-        var extractDir = Path.Combine(tempDir, "extract");
+        var tempDir = Path.Join(Path.GetTempPath(), "prof-w7-dir-" + Guid.NewGuid().ToString("N"));
+        var zipPath = Path.Join(tempDir, "dirs.zip");
+        var extractDir = Path.Join(tempDir, "extract");
         Directory.CreateDirectory(tempDir);
         try
         {
@@ -95,8 +95,8 @@ public sealed class ProfilesWave7FinalTests
             }
 
             GitHubProfileUpdateExtractionHelpers.ExtractToDirectorySafely(zipPath, extractDir);
-            Directory.Exists(Path.Combine(extractDir, "subdir")).Should().BeTrue();
-            File.Exists(Path.Combine(extractDir, "subdir", "file.txt")).Should().BeTrue();
+            Directory.Exists(Path.Join(extractDir, "subdir")).Should().BeTrue();
+            File.Exists(Path.Join(extractDir, "subdir", "file.txt")).Should().BeTrue();
         }
         finally
         {
@@ -138,7 +138,7 @@ public sealed class ProfilesWave7FinalTests
             BindingFlags.NonPublic | BindingFlags.Instance);
         method.Should().NotBeNull();
 
-        var tempDir = Path.Combine(Path.GetTempPath(), "prof-w7-prep-" + Guid.NewGuid().ToString("N"));
+        var tempDir = Path.Join(Path.GetTempPath(), "prof-w7-prep-" + Guid.NewGuid().ToString("N"));
         Directory.CreateDirectory(tempDir);
         try
         {
@@ -146,9 +146,9 @@ public sealed class ProfilesWave7FinalTests
             var service = CreateService(options);
 
             // Pre-create the directory that should be deleted
-            var extractDir = Path.Combine(tempDir, "cache", "extract-testprofile-1.0");
+            var extractDir = Path.Join(tempDir, "cache", "extract-testprofile-1.0");
             Directory.CreateDirectory(extractDir);
-            File.WriteAllText(Path.Combine(extractDir, "old.txt"), "old");
+            File.WriteAllText(Path.Join(extractDir, "old.txt"), "old");
 
             var result = method!.Invoke(service, new object[] { "testprofile", "1.0" }) as string;
             result.Should().NotBeNull();
@@ -156,7 +156,7 @@ public sealed class ProfilesWave7FinalTests
             if (Directory.Exists(extractDir))
             {
                 // If PrepareExtractDirectory creates a new one, old files should be gone
-                File.Exists(Path.Combine(extractDir, "old.txt")).Should().BeFalse();
+                File.Exists(Path.Join(extractDir, "old.txt")).Should().BeFalse();
             }
         }
         finally
@@ -195,7 +195,7 @@ public sealed class ProfilesWave7FinalTests
         return new ProfileRepositoryOptions
         {
             ProfilesRootPath = rootPath,
-            DownloadCachePath = Path.Combine(rootPath, "cache"),
+            DownloadCachePath = Path.Join(rootPath, "cache"),
             RemoteManifestUrl = "https://example.com/manifest.json"
         };
     }

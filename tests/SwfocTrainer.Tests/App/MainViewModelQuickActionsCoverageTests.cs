@@ -824,7 +824,7 @@ public sealed class MainViewModelQuickActionsCoverageTests
                 new Dictionary<string, int>(), 0, 0, 0, 0);
 
         public Task<string> ExportSnapshotAsync(string outputDirectory, CancellationToken ct)
-            => Task.FromResult(Path.Combine(outputDirectory, "telemetry.json"));
+            => Task.FromResult(Path.Join(outputDirectory, "telemetry.json"));
 
         public void Reset() { }
     }
