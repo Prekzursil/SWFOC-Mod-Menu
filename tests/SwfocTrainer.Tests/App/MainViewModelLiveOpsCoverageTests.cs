@@ -695,7 +695,7 @@ public sealed class MainViewModelLiveOpsCoverageTests
         SetField(vm, "_spawnQuantity", "1");
         SetField(vm, "_spawnDelayMs", "125");
         SetField(vm, "_loadedActionSpecs",
-            (IReadOnlyDictionary<string, ActionSpec>)new Dictionary<string, ActionSpec>(StringComparer.OrdinalIgnoreCase));
+            new Dictionary<string, ActionSpec>(StringComparer.OrdinalIgnoreCase));
     }
 
     private static void SetField(object instance, string fieldName, object? value)

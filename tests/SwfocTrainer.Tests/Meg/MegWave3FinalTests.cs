@@ -375,7 +375,7 @@ public sealed class MegWave3FinalTests
         var nameBytes = Encoding.ASCII.GetBytes("test.xml");
         var nameTableSize = (uint)(4 + nameBytes.Length);
         uint nameCount = 1, fileCount = 1;
-        var dataStart = (uint)(24 + nameTableSize + 20);
+        var dataStart = (24 + nameTableSize + 20);
         var totalSize = (int)(dataStart + 10);
         var bytes = new byte[totalSize];
 

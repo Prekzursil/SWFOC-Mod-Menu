@@ -177,7 +177,7 @@ public sealed class MegWave6CoverageTests
         var nameBytes = Encoding.ASCII.GetBytes("test.xml");
         uint nameCount = 1, fileCount = 0;
         uint nameTableSize = 2; // Too small for actual name
-        var dataStart = (uint)(24 + nameTableSize);
+        var dataStart = (24 + nameTableSize);
         var totalSize = (int)(dataStart + 100);
         var bytes = new byte[totalSize];
 

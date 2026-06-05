@@ -399,7 +399,7 @@ public sealed class RuntimeAdapterDeepBranchCoverageTests
 
         var dest = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
         var pairs = new Dictionary<string, string> { ["key4"] = "0xEF01" };
-        method!.Invoke(null, new object?[] { dest, (IEnumerable<KeyValuePair<string, string>>)pairs });
+        method!.Invoke(null, new object?[] { dest, pairs });
         dest.Should().ContainKey("key4");
     }
 

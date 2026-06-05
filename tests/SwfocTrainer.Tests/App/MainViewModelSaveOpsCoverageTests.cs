@@ -802,7 +802,7 @@ public sealed class MainViewModelSaveOpsCoverageTests
     {
         var vm = CreateViewModel();
         InvokeProtected(vm, "AppendPatchCompatibilityRows",
-            "error", "err_code", new[] { "msg1", "msg2" } as IEnumerable<string>);
+            "error", "err_code", new[] { "msg1", "msg2" });
 
         vm.SavePatchCompatibility.Should().HaveCount(2);
     }
@@ -881,7 +881,7 @@ public sealed class MainViewModelSaveOpsCoverageTests
     public void AppendPatchArtifactRows_BothWhitespace_ShouldNotAdd()
     {
         var vm = CreateViewModel();
-        InvokeProtected(vm, "AppendPatchArtifactRows", (string?)"  ", (string?)"  ");
+        InvokeProtected(vm, "AppendPatchArtifactRows", "  ", "  ");
 
         vm.SavePatchCompatibility.Should().BeEmpty();
     }
@@ -890,7 +890,7 @@ public sealed class MainViewModelSaveOpsCoverageTests
     public void AppendPatchArtifactRows_OnlyBackup_ShouldAddOne()
     {
         var vm = CreateViewModel();
-        InvokeProtected(vm, "AppendPatchArtifactRows", (string?)@"C:\backup.sav", (string?)null);
+        InvokeProtected(vm, "AppendPatchArtifactRows", @"C:\backup.sav", (string?)null);
 
         vm.SavePatchCompatibility.Should().HaveCount(1);
         vm.SavePatchCompatibility[0].Code.Should().Be("backup_path");
@@ -900,7 +900,7 @@ public sealed class MainViewModelSaveOpsCoverageTests
     public void AppendPatchArtifactRows_OnlyReceipt_ShouldAddOne()
     {
         var vm = CreateViewModel();
-        InvokeProtected(vm, "AppendPatchArtifactRows", (string?)null, (string?)@"C:\receipt.json");
+        InvokeProtected(vm, "AppendPatchArtifactRows", (string?)null, @"C:\receipt.json");
 
         vm.SavePatchCompatibility.Should().HaveCount(1);
         vm.SavePatchCompatibility[0].Code.Should().Be("receipt_path");
@@ -910,7 +910,7 @@ public sealed class MainViewModelSaveOpsCoverageTests
     public void AppendPatchArtifactRows_BothPresent_ShouldAddTwo()
     {
         var vm = CreateViewModel();
-        InvokeProtected(vm, "AppendPatchArtifactRows", (string?)@"C:\backup.sav", (string?)@"C:\receipt.json");
+        InvokeProtected(vm, "AppendPatchArtifactRows", @"C:\backup.sav", @"C:\receipt.json");
 
         vm.SavePatchCompatibility.Should().HaveCount(2);
     }
@@ -1229,7 +1229,7 @@ public sealed class MainViewModelSaveOpsCoverageTests
             Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
             "SwfocTrainer", "support"));
         SetField(vm, "_loadedActionSpecs",
-            (IReadOnlyDictionary<string, ActionSpec>)new Dictionary<string, ActionSpec>(StringComparer.OrdinalIgnoreCase));
+            new Dictionary<string, ActionSpec>(StringComparer.OrdinalIgnoreCase));
     }
 
     private static void SetProp(object instance, string propName, object value)

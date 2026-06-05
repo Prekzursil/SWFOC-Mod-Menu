@@ -69,7 +69,7 @@ public sealed class SignatureResolverAddressingTests
         var hitAddress = (nint)(0x400000 + 0x10);
         var moduleBytes = new byte[64];
         // Place a non-zero uint at index (hitOffset + Offset) = (0x10 + 2) = 0x12
-        BitConverter.GetBytes((uint)0xDEADBEEF).CopyTo(moduleBytes, 0x12);
+        BitConverter.GetBytes(0xDEADBEEF).CopyTo(moduleBytes, 0x12);
 
         var result = SignatureResolverAddressing.TryResolveAddress(
             new SignatureResolverAddressing.AddressResolutionInput(sig, hitAddress, baseAddress, moduleBytes), out var resolved, out var diagnostics);
