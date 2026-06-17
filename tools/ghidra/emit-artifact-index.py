@@ -12,7 +12,6 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Dict, Optional
 
-
 SCHEMA_VERSION = "1.0"
 DEFAULT_CLASSIFICATION_CODE = "GHIDRA_ARTIFACT_INDEX_READY"
 
@@ -104,20 +103,26 @@ def main() -> int:
     symbol_pack_path = Path(args.symbol_pack).resolve()
     summary_path = Path(args.summary).resolve()
     output_path = Path(args.output).resolve()
-    decompile_archive_path = Path(args.decompile_archive).resolve() if args.decompile_archive else None
+    decompile_archive_path = (
+        Path(args.decompile_archive).resolve() if args.decompile_archive else None
+    )
 
     fingerprint = _resolve_binary_fingerprint(symbol_pack_path, binary_path)
     pointers = {
         "rawSymbolsPath": _normalize_path(raw_symbols_path),
         "symbolPackPath": _normalize_path(symbol_pack_path),
         "analysisSummaryPath": _normalize_path(summary_path),
-        "decompileArchivePath": _normalize_path(decompile_archive_path) if decompile_archive_path else None,
+        "decompileArchivePath": _normalize_path(decompile_archive_path)
+        if decompile_archive_path
+        else None,
     }
     file_hashes = {
         "rawSymbolsSha256": _resolve_hash(raw_symbols_path),
         "symbolPackSha256": _resolve_hash(symbol_pack_path),
         "analysisSummarySha256": _resolve_hash(summary_path),
-        "decompileArchiveSha256": _resolve_hash(decompile_archive_path) if decompile_archive_path else None,
+        "decompileArchiveSha256": _resolve_hash(decompile_archive_path)
+        if decompile_archive_path
+        else None,
     }
 
     payload = {

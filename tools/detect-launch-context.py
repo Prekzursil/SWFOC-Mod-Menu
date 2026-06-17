@@ -95,7 +95,9 @@ def load_profiles(profile_root: Path) -> Dict[str, ProfileInfo]:  # NOSONAR
     if manifest_path.exists():
         with open(manifest_path, "r", encoding="utf-8") as f:
             manifest_payload = json.load(f)
-        manifest_profiles = manifest_payload.get("profiles") if isinstance(manifest_payload, dict) else None
+        manifest_profiles = (
+            manifest_payload.get("profiles") if isinstance(manifest_payload, dict) else None
+        )
         if isinstance(manifest_profiles, list):
             ids: Set[str] = set()
             for item in manifest_profiles:
@@ -120,7 +122,9 @@ def load_profiles(profile_root: Path) -> Dict[str, ProfileInfo]:  # NOSONAR
         out[profile_id] = ProfileInfo(
             profile_id=profile_id,
             exe_target=str(data.get("exeTarget", "Unknown")),
-            steam_workshop_id=(str(data["steamWorkshopId"]) if data.get("steamWorkshopId") else None),
+            steam_workshop_id=(
+                str(data["steamWorkshopId"]) if data.get("steamWorkshopId") else None
+            ),
             metadata={str(k): str(v) for k, v in metadata.items()},
         )
     return out
@@ -150,7 +154,11 @@ def _matches_exe_hint(fields: Tuple[str, str, str], needles: Tuple[str, ...]) ->
     return any(_contains_any_token(field, needles) for field in fields)
 
 
-def detect_exe_hint(process_name: Optional[str], process_path: Optional[str], command_line: Optional[str]) -> str:
+def detect_exe_hint(
+    process_name: Optional[str],
+    process_path: Optional[str],
+    command_line: Optional[str],
+) -> str:
     fields = (
         _text_or_empty(process_name),
         _text_or_empty(process_path),
@@ -231,7 +239,9 @@ def score_workshop_match(profile: ProfileInfo, steam_ids: Set[str]) -> int:
     return score
 
 
-def steam_profile_match(profiles: Dict[str, ProfileInfo], steam_ids: List[str]) -> Optional[ProfileInfo]:
+def steam_profile_match(
+    profiles: Dict[str, ProfileInfo], steam_ids: List[str]
+) -> Optional[ProfileInfo]:
     if not steam_ids:
         return None
 
@@ -248,7 +258,11 @@ def steam_profile_match(profiles: Dict[str, ProfileInfo], steam_ids: List[str]) 
             best_profile is None
             or score > best_score
             or (score == best_score and required_count > best_required_count)
-            or (score == best_score and required_count == best_required_count and profile_priority_key(profile) < profile_priority_key(best_profile))
+            or (
+                score == best_score
+                and required_count == best_required_count
+                and profile_priority_key(profile) < profile_priority_key(best_profile)
+            )
         ):
             best_profile = profile
             best_score = score
@@ -257,7 +271,9 @@ def steam_profile_match(profiles: Dict[str, ProfileInfo], steam_ids: List[str]) 
     return best_profile
 
 
-def best_modpath_match(profiles: Dict[str, ProfileInfo], modpath_norm: str) -> Optional[ProfileInfo]:
+def best_modpath_match(
+    profiles: Dict[str, ProfileInfo], modpath_norm: str
+) -> Optional[ProfileInfo]:
     hint_matches: List[Tuple[int, ProfileInfo]] = []
     for profile in profiles.values():
         hints = gather_hints(profile)
@@ -275,7 +291,9 @@ def best_modpath_match(profiles: Dict[str, ProfileInfo], modpath_norm: str) -> O
     return hint_matches[0][1]
 
 
-def fallback_profile_for_exe(exe_hint: str, profiles: Dict[str, ProfileInfo]) -> Optional[Dict[str, Any]]:
+def fallback_profile_for_exe(
+    exe_hint: str, profiles: Dict[str, ProfileInfo]
+) -> Optional[Dict[str, Any]]:
     if exe_hint == "sweaw" and "base_sweaw" in profiles:
         return {
             "profileId": "base_sweaw",
@@ -302,7 +320,12 @@ def recommend_profile(
     # 1) Exact workshop-id match.
     best_steam_match = steam_profile_match(profiles, steam_ids)
     if best_steam_match:
-        confidence = 1.0 if best_steam_match.steam_workshop_id and best_steam_match.steam_workshop_id in set(steam_ids) else 0.97
+        confidence = (
+            1.0
+            if best_steam_match.steam_workshop_id
+            and best_steam_match.steam_workshop_id in set(steam_ids)
+            else 0.97
+        )
         return {
             "profileId": best_steam_match.profile_id,
             "reasonCode": reason_code_for_profile(best_steam_match.profile_id, "steam"),
@@ -376,7 +399,9 @@ def detect_one(  # NOSONAR
 
     steam_ids = parse_steammod_ids(command_line)
     forced_ids = sorted(set(forced_workshop_ids or []))
-    forced_profile = forced_profile_id.strip() if forced_profile_id and forced_profile_id.strip() else None
+    forced_profile = (
+        forced_profile_id.strip() if forced_profile_id and forced_profile_id.strip() else None
+    )
     modpath_raw = parse_modpath(command_line)
     modpath_norm = normalize_token(modpath_raw)
     exe_hint = detect_exe_hint(process_name, process_path, command_line)
@@ -424,7 +449,9 @@ def detect_one(  # NOSONAR
 
 
 def _parse_args() -> argparse.Namespace:
-    parser = argparse.ArgumentParser(description="Detect SWFOC launch context and profile recommendation")
+    parser = argparse.ArgumentParser(
+        description="Detect SWFOC launch context and profile recommendation"
+    )
     parser.add_argument("--command-line", dest="command_line", default=None)
     parser.add_argument("--process-name", dest="process_name", default=None)
     parser.add_argument("--process-path", dest="process_path", default=None)
@@ -504,18 +531,27 @@ def main() -> int:
         return 3
 
     forced_workshop_ids = parse_forced_workshop_ids(args.force_workshop_ids)
-    forced_profile_id = args.force_profile_id.strip() if args.force_profile_id and args.force_profile_id.strip() else None
+    forced_profile_id = (
+        args.force_profile_id.strip()
+        if args.force_profile_id and args.force_profile_id.strip()
+        else None
+    )
 
     if args.from_process_json:
         payload = _load_cases_payload(args.from_process_json)
         if payload is None:
             return 2
 
-        output: Any = _build_multi_case_output(payload, profiles, forced_workshop_ids, forced_profile_id)
+        output: Any = _build_multi_case_output(
+            payload, profiles, forced_workshop_ids, forced_profile_id
+        )
     else:
         process_input = _single_process_input(args)
         if not any(process_input.values()):
-            print("invalid-input: provide --from-process-json or process fields", file=sys.stderr)
+            print(
+                "invalid-input: provide --from-process-json or process fields",
+                file=sys.stderr,
+            )
             return 2
 
         output = detect_one(

@@ -25,7 +25,9 @@ def _validate_host_allowlist(hostname: str, allowed_hosts: Optional[Set[str]]) -
         raise ValueError(f"URL host is not in allowlist: {hostname}")
 
 
-def _validate_host_suffix_allowlist(hostname: str, allowed_host_suffixes: Optional[Set[str]]) -> None:
+def _validate_host_suffix_allowlist(
+    hostname: str, allowed_host_suffixes: Optional[Set[str]]
+) -> None:
     """Check hostname against suffix allowlist."""
     if allowed_host_suffixes is None:
         return

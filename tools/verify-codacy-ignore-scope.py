@@ -53,12 +53,16 @@ SCANNER_EXCLUDED_DIR_NAMES: Set[str] = {
 
 
 def unquote(value: str) -> str:
-    if (value.startswith('"') and value.endswith('"')) or (value.startswith("'") and value.endswith("'")):
+    if (value.startswith('"') and value.endswith('"')) or (
+        value.startswith("'") and value.endswith("'")
+    ):
         return value[1:-1]
     return value
 
 
-def update_quote_state(char: str, in_single_quote: bool, in_double_quote: bool) -> Tuple[bool, bool]:
+def update_quote_state(
+    char: str, in_single_quote: bool, in_double_quote: bool
+) -> Tuple[bool, bool]:
     if char == "'" and not in_double_quote:
         return (not in_single_quote, in_double_quote)
     if char == '"' and not in_single_quote:
@@ -149,7 +153,9 @@ def match_ignored_files(files: List[str], patterns: List[str]) -> Tuple[List[str
         matched = False
         for pattern in patterns:
             normalized_pattern = pattern.replace("\\", "/")
-            if fnmatch.fnmatch(path, normalized_pattern) or fnmatch.fnmatch(f"/{path}", f"/{normalized_pattern}"):
+            if fnmatch.fnmatch(path, normalized_pattern) or fnmatch.fnmatch(
+                f"/{path}", f"/{normalized_pattern}"
+            ):
                 matched = True
                 pattern_counts[pattern] += 1
         if matched:
@@ -193,7 +199,9 @@ def strict_violations(patterns: List[str], ignored_files: List[str]) -> List[Dic
             }
         )
 
-    protected_ignored = [f for f in ignored_files if any(f.startswith(prefix) for prefix in PROTECTED_PREFIXES)]
+    protected_ignored = [
+        f for f in ignored_files if any(f.startswith(prefix) for prefix in PROTECTED_PREFIXES)
+    ]
     if protected_ignored:
         sample = protected_ignored[:10]
         violations.append(

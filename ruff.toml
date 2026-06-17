@@ -1,0 +1,34 @@
+# Ruff configuration for the lean gate-1 Python lint/format lane.
+# Pinned via .pre-commit-config.yaml (ruff-pre-commit v0.15.17).
+#
+# NOTE: a standalone ruff.toml is used deliberately (NOT pyproject.toml) so that
+# adopting the lean gate does not accidentally trip the reusable workflow's
+# Python coverage lane, which keys on hashFiles('pyproject.toml','setup.cfg',
+# 'tox.ini'). This repo's Python is auxiliary RE/quality tooling with no pytest
+# suite; its coverage is governed by the .NET coverage gate, not a Python one.
+
+target-version = "py312"
+line-length = 100
+
+[lint]
+# Default-aligned ruff rule set (pyflakes F + pycodestyle E/W + import-sort I).
+# Kept lean: this is the security/correctness lint lane, not a style overhaul of
+# legacy tooling.
+select = ["E", "F", "W", "I"]
+# E501 (line too long) is intentionally NOT enforced by the linter: the
+# ruff-format pass is the single line-length authority, and it deliberately
+# leaves long string literals / URLs unwrapped (per ruff's formatter guidance).
+# Enforcing E501 here would only flag those unwrappable strings in legacy tooling
+# scripts, which the formatter cannot fix — i.e. noise, not a real defect.
+ignore = ["E501"]
+
+[lint.per-file-ignores]
+# E402 (module-level import not at top): these SaaS-zero check scripts insert the
+# repo's helper dir onto sys.path before importing security_helpers — a
+# deliberate bootstrap pattern. The scripts are slated for removal in the lean-
+# gate migration runbook (they back the deleted Sonar/Sentry/Codacy/DeepScan
+# gates); ignoring E402 here avoids churning soon-to-be-deleted code.
+"scripts/quality/check_sentry_zero.py" = ["E402"]
+"scripts/quality/check_sonar_zero.py" = ["E402"]
+"scripts/quality/check_codacy_zero.py" = ["E402"]
+"scripts/quality/check_deepscan_zero.py" = ["E402"]

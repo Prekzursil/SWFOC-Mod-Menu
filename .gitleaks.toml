@@ -1,0 +1,37 @@
+# gitleaks configuration for the lean secrets gate (charter gate 5).
+# Pinned tool: gitleaks 8.30.1. The gate runs via pre-commit over the working
+# tree (and standalone in CI) and must report 0 findings.
+#
+# Extends the upstream default ruleset. The working tree currently has 0
+# findings (baseline scan 2026-06-16), so this file carries only path allowlists
+# for vendored / generated / binary trees that are not our source and would only
+# ever produce upstream-example false positives. Add a new match/regex allowlist
+# entry here ONLY for a genuine, greppable test fixture (never a real secret),
+# with a dated reason.
+title = "swfoc-mod-menu lean secrets gate"
+
+[extend]
+useDefault = true
+
+[allowlist]
+description = "Vendored deps, build/test output, and binary game assets (not real secrets)."
+
+paths = [
+  '''(^|/)node_modules/''',
+  '''(^|/)\.venv/''',
+  '''(^|/)venv/''',
+  '''(^|/)dist/''',
+  '''(^|/)build/''',
+  '''(^|/)out/''',
+  '''(^|/)bin/''',
+  '''(^|/)obj/''',
+  '''(^|/)vendor/''',
+  '''(^|/)packages/''',
+  '''(^|/)TestResults/''',
+  '''(^|/)\.git/''',
+  '''.*\.egg-info/''',
+  # Binary game / reverse-engineering assets: Cheat Engine table and any packed
+  # game data carry high-entropy bytes that are not credentials.
+  '''.*\.CT$''',
+  '''.*\.(meg|dat|bin|dll|exe|pdb|so)$''',
+]

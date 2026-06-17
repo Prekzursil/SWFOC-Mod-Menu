@@ -10,12 +10,13 @@ import re
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Set
 
-
 SCHEMA_VERSION = "1.0"
 
 
 def utc_now_iso() -> str:
-    return dt.datetime.now(dt.timezone.utc).replace(microsecond=0).isoformat().replace("+00:00", "Z")
+    return (
+        dt.datetime.now(dt.timezone.utc).replace(microsecond=0).isoformat().replace("+00:00", "Z")
+    )
 
 
 def clamp_confidence(value: Any) -> float:
@@ -130,7 +131,9 @@ def to_seed(mod: Dict[str, Any], source_run_id: str) -> Optional[Dict[str, Any]]
     launch_hints = normalize_text_list(mod.get("launchHints"))
     normalized_tags = normalize_text_list(mod.get("normalizedTags"))
 
-    candidate_base_profile = str(mod.get("candidateBaseProfile") or "base_swfoc").strip() or "base_swfoc"
+    candidate_base_profile = (
+        str(mod.get("candidateBaseProfile") or "base_swfoc").strip() or "base_swfoc"
+    )
     required_capabilities = infer_required_capabilities(
         candidate_base_profile=candidate_base_profile,
         launch_hints=launch_hints,
@@ -159,10 +162,16 @@ def to_seed(mod: Dict[str, Any], source_run_id: str) -> Optional[Dict[str, Any]]
 
 
 def parse_args() -> argparse.Namespace:
-    parser = argparse.ArgumentParser(description="Enrich workshop top mods into generated profile seed JSON")
+    parser = argparse.ArgumentParser(
+        description="Enrich workshop top mods into generated profile seed JSON"
+    )
     parser.add_argument("--input", required=True, help="Input top mods JSON path")
     parser.add_argument("--output", required=True, help="Output generated profile seeds JSON path")
-    parser.add_argument("--source-run-id", required=True, help="Run id to stamp into each generated seed")
+    parser.add_argument(
+        "--source-run-id",
+        required=True,
+        help="Run id to stamp into each generated seed",
+    )
     return parser.parse_args()
 
 

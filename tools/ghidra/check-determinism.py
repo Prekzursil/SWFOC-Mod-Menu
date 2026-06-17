@@ -185,7 +185,9 @@ def _write_reversed_symbols(raw_symbols_path: Path, output_dir: Path) -> Path:
     reversed_payload = dict(raw_payload)
     reversed_payload["symbols"] = list(reversed(symbols))
     reversed_raw_path = output_dir / "raw-symbols.reversed.json"
-    reversed_raw_path.write_text(json.dumps(reversed_payload, indent=2, sort_keys=True), encoding="utf-8")
+    reversed_raw_path.write_text(
+        json.dumps(reversed_payload, indent=2, sort_keys=True), encoding="utf-8"
+    )
     return reversed_raw_path
 
 

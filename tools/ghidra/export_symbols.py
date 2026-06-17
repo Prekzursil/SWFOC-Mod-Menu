@@ -53,9 +53,7 @@ def run():
 
     current_program = _resolve_current_program()
     if current_program is None:
-        raise RuntimeError(
-            "currentProgram is only available in a Ghidra script runtime"
-        )
+        raise RuntimeError("currentProgram is only available in a Ghidra script runtime")
 
     out_path = sys.argv[0]
     symbols = []
