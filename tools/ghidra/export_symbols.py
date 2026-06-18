@@ -4,7 +4,10 @@
 import json
 import sys
 
-from ghidra.program.model.symbol import SymbolType
+# Ghidra's APIs are provided only by its embedded Jython runtime (no pip stubs
+# exist), so this import is unresolvable during static type checking. It resolves
+# correctly when the script runs inside Ghidra's script manager.
+from ghidra.program.model.symbol import SymbolType  # type: ignore[reportMissingImports]
 
 
 def _hex_address(addr):

@@ -2,10 +2,10 @@ from __future__ import annotations
 
 import ipaddress
 from typing import Optional, Set
-from urllib.parse import urlparse, urlunparse
+from urllib.parse import ParseResult, urlparse, urlunparse
 
 
-def _validate_url_scheme_and_host(parsed: object, raw_url: str) -> str:
+def _validate_url_scheme_and_host(parsed: ParseResult, raw_url: str) -> str:
     """Validate scheme, hostname presence, and credentials."""
     if parsed.scheme != "https":
         raise ValueError(f"Only https URLs are allowed: {raw_url!r}")

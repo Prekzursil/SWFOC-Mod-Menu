@@ -15,6 +15,7 @@ import re
 from dataclasses import asdict, dataclass, field
 from pathlib import Path
 from typing import Iterable, List, Set, Tuple
+from xml.etree.ElementTree import Element
 
 from defusedxml import ElementTree as element_tree
 
@@ -182,8 +183,8 @@ def extract_intel_from_script(group: str, description: str, script: str) -> Scri
 
 
 def iter_cheat_entries(
-    root: element_tree.Element,
-) -> Iterable[Tuple[str, element_tree.Element]]:
+    root: Element,
+) -> Iterable[Tuple[str, Element]]:
     top = root.find("CheatEntries")
     if top is None:
         return
@@ -340,7 +341,7 @@ def should_skip_entry(description: str, variable_type: str) -> bool:
     return variable_type.lower() != "auto assembler script"
 
 
-def collect_script_intel(root: element_tree.Element) -> List[ScriptIntel]:
+def collect_script_intel(root: Element) -> List[ScriptIntel]:
     records: List[ScriptIntel] = []
     for group, entry in iter_cheat_entries(root):
         description = normalize_description(entry.findtext("Description"))
@@ -364,6 +365,8 @@ def main() -> int:
 
     tree = element_tree.parse(ct_path)
     root = tree.getroot()
+    if root is None:
+        raise ValueError(f"Cheat table has no root element: {ct_path}")
 
     records = collect_script_intel(root)
 
