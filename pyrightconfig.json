@@ -1,0 +1,7 @@
+{
+  "typeCheckingMode": "standard",
+  "extraPaths": ["scripts"],
+  "exclude": [
+    "tests/python"
+  ]
+}

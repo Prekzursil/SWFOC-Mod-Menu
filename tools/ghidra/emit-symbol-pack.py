@@ -14,7 +14,6 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Dict, List, Optional, Set, Tuple
 
-
 SCHEMA_VERSION = "1.0"
 
 DEFAULT_FEATURE_REQUIREMENTS: Dict[str, List[str]] = {
@@ -127,7 +126,9 @@ def _build_capabilities(anchor_ids: Set[str]) -> List[dict]:
                 "featureId": feature_id,
                 "available": available,
                 "state": "Verified" if available else "Unavailable",
-                "reasonCode": "CAPABILITY_PROBE_PASS" if available else "CAPABILITY_REQUIRED_MISSING",
+                "reasonCode": "CAPABILITY_PROBE_PASS"
+                if available
+                else "CAPABILITY_REQUIRED_MISSING",
                 "requiredAnchors": required,
             }
         )
@@ -240,7 +241,12 @@ def main() -> int:
     output_summary.parent.mkdir(parents=True, exist_ok=True)
 
     symbol_pack = _build_symbol_pack(
-        args.analysis_run_id, module_name, file_sha256, fingerprint_id, anchors, capabilities
+        args.analysis_run_id,
+        module_name,
+        file_sha256,
+        fingerprint_id,
+        anchors,
+        capabilities,
     )
 
     output_pack.write_text(json.dumps(symbol_pack, indent=2, sort_keys=True), encoding="utf-8")

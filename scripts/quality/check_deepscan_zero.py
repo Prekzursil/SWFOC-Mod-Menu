@@ -23,9 +23,17 @@ TOTAL_KEYS = {"total", "totalItems", "total_items", "count", "hits", "open_issue
 
 def _parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="Assert DeepScan has zero total open issues.")
-    parser.add_argument("--token", default="", help="DeepScan API token (falls back to DEEPSCAN_API_TOKEN env)")
-    parser.add_argument("--out-json", default="deepscan-zero/deepscan.json", help="Output JSON path")
-    parser.add_argument("--out-md", default="deepscan-zero/deepscan.md", help="Output markdown path")
+    parser.add_argument(
+        "--token",
+        default="",
+        help="DeepScan API token (falls back to DEEPSCAN_API_TOKEN env)",
+    )
+    parser.add_argument(
+        "--out-json", default="deepscan-zero/deepscan.json", help="Output JSON path"
+    )
+    parser.add_argument(
+        "--out-md", default="deepscan-zero/deepscan.md", help="Output markdown path"
+    )
     return parser.parse_args()
 
 

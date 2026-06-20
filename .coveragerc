@@ -1,0 +1,25 @@
+# Coverage configuration for the repo's auxiliary Python tooling.
+# The lean quality gate runs `pytest --cov --cov-branch --cov-fail-under=100`;
+# this file scopes measurement to the first-party scripts/ and tools/ trees and
+# excludes only genuinely-unmeasurable code (see [run] omit).
+[run]
+branch = True
+source =
+    scripts
+    tools
+omit =
+    # Ghidra script: imports `ghidra.*` (only resolvable inside Ghidra's embedded
+    # Jython runtime) and executes run() at import time. It cannot be imported or
+    # exercised by a standard CPython test process, so it is genuinely
+    # unmeasurable outside Ghidra and is excluded rather than suppressed.
+    tools/ghidra/export_symbols.py
+    # The test suite itself.
+    tests/python/*
+
+[report]
+show_missing = True
+skip_covered = False
+exclude_lines =
+    pragma: no cover
+    if __name__ == .__main__.:
+    raise NotImplementedError

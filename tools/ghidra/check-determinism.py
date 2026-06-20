@@ -82,7 +82,9 @@ def _supports_zero_arg_call(main_fn: Callable[..., object]) -> bool:
 
 def _load_emitter_main(emitter_path: Path) -> Callable[[], Optional[int]]:
     spec = importlib.util.spec_from_file_location("ghidra_emit_symbol_pack", emitter_path)
-    if spec is None or spec.loader is None:
+    if (
+        spec is None or spec.loader is None
+    ):  # pragma: no cover - defensive: a real .py path always yields a loader
         raise RuntimeError(f"failed to load emitter module from {emitter_path}")
 
     module = importlib.util.module_from_spec(spec)
@@ -185,7 +187,9 @@ def _write_reversed_symbols(raw_symbols_path: Path, output_dir: Path) -> Path:
     reversed_payload = dict(raw_payload)
     reversed_payload["symbols"] = list(reversed(symbols))
     reversed_raw_path = output_dir / "raw-symbols.reversed.json"
-    reversed_raw_path.write_text(json.dumps(reversed_payload, indent=2, sort_keys=True), encoding="utf-8")
+    reversed_raw_path.write_text(
+        json.dumps(reversed_payload, indent=2, sort_keys=True), encoding="utf-8"
+    )
     return reversed_raw_path
 
 

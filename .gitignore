@@ -75,6 +75,15 @@ native/logs/
 __pycache__/
 *.pyc
 
+# Python virtualenvs and coverage data (local test runs)
+.venv/
+.venv-*/
+venv/
+.coverage
+.coverage.*
+.pytest_cache/
+htmlcov/
+
 # Temp analysis artifacts
 .tmp_lizard_env/
 coverage-100/

@@ -145,7 +145,12 @@ def _fetch_sonar_metrics(
     project_status = gate_payload.get("projectStatus") or {}
     quality_gate = str(project_status.get("status") or "UNKNOWN")
 
-    return open_issues, security_hotspots_total, security_hotspots_to_review, quality_gate
+    return (
+        open_issues,
+        security_hotspots_total,
+        security_hotspots_to_review,
+        quality_gate,
+    )
 
 
 def _evaluate_metrics(
@@ -190,12 +195,22 @@ def main() -> int:
     else:
         auth = _auth_header(token)
         try:
-            open_issues, security_hotspots_total, security_hotspots_to_review, quality_gate = (
-                _fetch_sonar_metrics(api_base, auth, args.project_key, args.branch, args.pull_request)
+            (
+                open_issues,
+                security_hotspots_total,
+                security_hotspots_to_review,
+                quality_gate,
+            ) = _fetch_sonar_metrics(
+                api_base, auth, args.project_key, args.branch, args.pull_request
             )
-            findings.extend(_evaluate_metrics(open_issues, security_hotspots_to_review, quality_gate))
+            findings.extend(
+                _evaluate_metrics(open_issues, security_hotspots_to_review, quality_gate)
+            )
             status = "pass" if not findings else "fail"
-        except (OSError, ValueError) as exc:  # pragma: no cover - network/runtime surface
+        except (
+            OSError,
+            ValueError,
+        ) as exc:  # pragma: no cover - network/runtime surface
             status = "fail"
             findings.append(f"Sonar API request failed: {exc}")
 
