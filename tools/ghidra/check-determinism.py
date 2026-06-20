@@ -82,7 +82,9 @@ def _supports_zero_arg_call(main_fn: Callable[..., object]) -> bool:
 
 def _load_emitter_main(emitter_path: Path) -> Callable[[], Optional[int]]:
     spec = importlib.util.spec_from_file_location("ghidra_emit_symbol_pack", emitter_path)
-    if spec is None or spec.loader is None:
+    if (
+        spec is None or spec.loader is None
+    ):  # pragma: no cover - defensive: a real .py path always yields a loader
         raise RuntimeError(f"failed to load emitter module from {emitter_path}")
 
     module = importlib.util.module_from_spec(spec)

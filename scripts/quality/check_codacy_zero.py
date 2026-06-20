@@ -155,7 +155,9 @@ def _query_codacy_issues(
     findings.append(
         f"Codacy API endpoint was not found for provider(s): {', '.join(provider_candidates)}."
     )
-    if last_exc is not None:
+    if (
+        last_exc is not None
+    ):  # pragma: no cover - loop only exits via all-404, which always sets last_exc
         findings.append(f"Last Codacy API error: {last_exc}")
     return "fail", None, findings
 

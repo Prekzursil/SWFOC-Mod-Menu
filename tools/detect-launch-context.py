@@ -73,7 +73,9 @@ def parse_modpath(command_line: Optional[str]) -> Optional[str]:
     if not match:
         return None
     value = match.group(1) or match.group(2)
-    if not value:
+    if (
+        not value
+    ):  # pragma: no cover - both regex alternatives require >=1 char, so a match is non-empty
         return None
     return value.strip().strip('"')
 
