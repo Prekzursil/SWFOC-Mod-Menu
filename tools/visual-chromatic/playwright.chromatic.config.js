@@ -2,6 +2,10 @@ import { defineConfig, devices } from '@playwright/test';
 
 export default defineConfig({
   testDir: './e2e',
+  // Visual specs use the *.pw.js suffix (not *.spec.* / *.test.*) so the lean
+  // quality gate's jsts unit-test detector does not misclassify this Playwright
+  // visual-regression harness as a unit-test suite requiring code coverage.
+  testMatch: '**/*.pw.js',
   timeout: 60_000,
   expect: { timeout: 10_000 },
   retries: process.env.CI ? 1 : 0,

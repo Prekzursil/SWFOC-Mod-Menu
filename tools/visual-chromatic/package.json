@@ -3,7 +3,7 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "e2e:chromatic": "playwright test --config ./playwright.chromatic.config.js ./e2e/visual-pack.spec.js"
+    "e2e:chromatic": "playwright test --config ./playwright.chromatic.config.js ./e2e/visual-pack.pw.js"
   },
   "devDependencies": {
     "@chromatic-com/playwright": "^0.12.3",
