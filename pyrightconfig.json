@@ -1,4 +1,7 @@
 {
   "typeCheckingMode": "standard",
-  "extraPaths": ["scripts"]
+  "extraPaths": ["scripts"],
+  "exclude": [
+    "tests/python"
+  ]
 }
