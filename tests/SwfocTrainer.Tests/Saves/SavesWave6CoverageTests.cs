@@ -58,11 +58,11 @@ public sealed class SavesWave6CoverageTests
     {
         var method = typeof(SavePatchApplyService).GetMethod("NormalizeTargetPath", BindingFlags.NonPublic | BindingFlags.Static);
         method.Should().NotBeNull();
-        var tempDir = Path.Combine(Path.GetTempPath(), Guid.NewGuid().ToString("N"));
+        var tempDir = Path.Join(Path.GetTempPath(), Guid.NewGuid().ToString("N"));
         Directory.CreateDirectory(tempDir);
         try
         {
-            var fakePath = Path.Combine(tempDir, "nonexistent.sav");
+            var fakePath = Path.Join(tempDir, "nonexistent.sav");
             var act = () => method!.Invoke(null, new object[] { fakePath });
             act.Should().Throw<TargetInvocationException>().WithInnerException<FileNotFoundException>();
         }
@@ -94,14 +94,14 @@ public sealed class SavesWave6CoverageTests
     public void TryDeleteTempOutput_FileDoesNotExist_ShouldNotThrow()
     {
         var helper = CreateHelper();
-        InvokeTryDeleteTempOutput(helper, Path.Combine(Path.GetTempPath(), Guid.NewGuid().ToString("N") + ".sav"));
+        InvokeTryDeleteTempOutput(helper, Path.Join(Path.GetTempPath(), Guid.NewGuid().ToString("N") + ".sav"));
     }
 
     [Fact]
     public void TryDeleteTempOutput_FileExists_ShouldDelete()
     {
         var helper = CreateHelper();
-        var tempPath = Path.Combine(Path.GetTempPath(), Guid.NewGuid().ToString("N") + ".sav");
+        var tempPath = Path.Join(Path.GetTempPath(), Guid.NewGuid().ToString("N") + ".sav");
         File.WriteAllBytes(tempPath, new byte[] { 0x01 });
         try { InvokeTryDeleteTempOutput(helper, tempPath); File.Exists(tempPath).Should().BeFalse(); }
         finally { if (File.Exists(tempPath)) File.Delete(tempPath); }
@@ -122,11 +122,11 @@ public sealed class SavesWave6CoverageTests
     public async Task ResolveLatestBackupPathAsync_EmptyDir_ShouldReturnNull()
     {
         var helper = CreateHelper();
-        var tempDir = Path.Combine(Path.GetTempPath(), Guid.NewGuid().ToString("N"));
+        var tempDir = Path.Join(Path.GetTempPath(), Guid.NewGuid().ToString("N"));
         Directory.CreateDirectory(tempDir);
         try
         {
-            var result = await InvokeResolveLatestBackupPathAsync(helper, Path.Combine(tempDir, "test.sav"), CancellationToken.None);
+            var result = await InvokeResolveLatestBackupPathAsync(helper, Path.Join(tempDir, "test.sav"), CancellationToken.None);
             result.Should().BeNull();
         }
         finally { Directory.Delete(tempDir, true); }
@@ -136,13 +136,13 @@ public sealed class SavesWave6CoverageTests
     public async Task ResolveLatestBackupPathAsync_WithBackup_ShouldReturnPath()
     {
         var helper = CreateHelper();
-        var tempDir = Path.Combine(Path.GetTempPath(), Guid.NewGuid().ToString("N"));
+        var tempDir = Path.Join(Path.GetTempPath(), Guid.NewGuid().ToString("N"));
         Directory.CreateDirectory(tempDir);
         try
         {
-            File.WriteAllBytes(Path.Combine(tempDir, "test.sav"), new byte[] { 0x01 });
-            File.WriteAllBytes(Path.Combine(tempDir, "test.sav.bak.20260101120000000.sav"), new byte[] { 0x02 });
-            var result = await InvokeResolveLatestBackupPathAsync(helper, Path.Combine(tempDir, "test.sav"), CancellationToken.None);
+            File.WriteAllBytes(Path.Join(tempDir, "test.sav"), new byte[] { 0x01 });
+            File.WriteAllBytes(Path.Join(tempDir, "test.sav.bak.20260101120000000.sav"), new byte[] { 0x02 });
+            var result = await InvokeResolveLatestBackupPathAsync(helper, Path.Join(tempDir, "test.sav"), CancellationToken.None);
             result.Should().NotBeNull();
         }
         finally { Directory.Delete(tempDir, true); }
@@ -152,13 +152,13 @@ public sealed class SavesWave6CoverageTests
     public async Task ResolveLatestBackupPathAsync_WithReceipt_ShouldReturnPath()
     {
         var helper = CreateHelper();
-        var tempDir = Path.Combine(Path.GetTempPath(), Guid.NewGuid().ToString("N"));
+        var tempDir = Path.Join(Path.GetTempPath(), Guid.NewGuid().ToString("N"));
         Directory.CreateDirectory(tempDir);
         try
         {
-            var savePath = Path.Combine(tempDir, "test.sav");
-            var backupPath = Path.Combine(tempDir, "test.sav.bak.20260101120000000.sav");
-            var receiptPath = Path.Combine(tempDir, "test.sav.apply-receipt.20260101120000000.json");
+            var savePath = Path.Join(tempDir, "test.sav");
+            var backupPath = Path.Join(tempDir, "test.sav.bak.20260101120000000.sav");
+            var receiptPath = Path.Join(tempDir, "test.sav.apply-receipt.20260101120000000.json");
             File.WriteAllBytes(savePath, new byte[] { 0x01 });
             File.WriteAllBytes(backupPath, new byte[] { 0x02 });
             var json = JsonSerializer.Serialize(new { RunId = "20260101120000000", AppliedAtUtc = DateTimeOffset.UtcNow, TargetPath = savePath, BackupPath = backupPath, ReceiptPath = receiptPath, ProfileId = "test", SchemaId = "test", Classification = "Applied", SourceHash = "abc", TargetHash = "def", AppliedHash = "ghi", OperationsApplied = 1 }, SavePatchApplyService.ReceiptJsonOptions);
@@ -173,14 +173,14 @@ public sealed class SavesWave6CoverageTests
     public async Task ResolveLatestBackupPathAsync_InvalidJson_ShouldFallBack()
     {
         var helper = CreateHelper();
-        var tempDir = Path.Combine(Path.GetTempPath(), Guid.NewGuid().ToString("N"));
+        var tempDir = Path.Join(Path.GetTempPath(), Guid.NewGuid().ToString("N"));
         Directory.CreateDirectory(tempDir);
         try
         {
-            File.WriteAllBytes(Path.Combine(tempDir, "test.sav"), new byte[] { 0x01 });
-            File.WriteAllBytes(Path.Combine(tempDir, "test.sav.bak.20260101120000000.sav"), new byte[] { 0x02 });
-            await File.WriteAllTextAsync(Path.Combine(tempDir, "test.sav.apply-receipt.20260101120000000.json"), "NOT JSON");
-            var result = await InvokeResolveLatestBackupPathAsync(helper, Path.Combine(tempDir, "test.sav"), CancellationToken.None);
+            File.WriteAllBytes(Path.Join(tempDir, "test.sav"), new byte[] { 0x01 });
+            File.WriteAllBytes(Path.Join(tempDir, "test.sav.bak.20260101120000000.sav"), new byte[] { 0x02 });
+            await File.WriteAllTextAsync(Path.Join(tempDir, "test.sav.apply-receipt.20260101120000000.json"), "NOT JSON");
+            var result = await InvokeResolveLatestBackupPathAsync(helper, Path.Join(tempDir, "test.sav"), CancellationToken.None);
             result.Should().NotBeNull();
         }
         finally { Directory.Delete(tempDir, true); }
@@ -190,14 +190,14 @@ public sealed class SavesWave6CoverageTests
     public async Task ResolveLatestBackupPathAsync_MissingBackupInReceipt_ShouldReturnNull()
     {
         var helper = CreateHelper();
-        var tempDir = Path.Combine(Path.GetTempPath(), Guid.NewGuid().ToString("N"));
+        var tempDir = Path.Join(Path.GetTempPath(), Guid.NewGuid().ToString("N"));
         Directory.CreateDirectory(tempDir);
         try
         {
-            var savePath = Path.Combine(tempDir, "test.sav");
+            var savePath = Path.Join(tempDir, "test.sav");
             File.WriteAllBytes(savePath, new byte[] { 0x01 });
-            var json = JsonSerializer.Serialize(new { RunId = "20260101120000000", AppliedAtUtc = DateTimeOffset.UtcNow, TargetPath = savePath, BackupPath = Path.Combine(tempDir, "nonexistent.sav"), ReceiptPath = Path.Combine(tempDir, "test.sav.apply-receipt.20260101120000000.json"), ProfileId = "test", SchemaId = "test", Classification = "Applied", SourceHash = "abc", TargetHash = "def", AppliedHash = "ghi", OperationsApplied = 1 }, SavePatchApplyService.ReceiptJsonOptions);
-            await File.WriteAllTextAsync(Path.Combine(tempDir, "test.sav.apply-receipt.20260101120000000.json"), json);
+            var json = JsonSerializer.Serialize(new { RunId = "20260101120000000", AppliedAtUtc = DateTimeOffset.UtcNow, TargetPath = savePath, BackupPath = Path.Join(tempDir, "nonexistent.sav"), ReceiptPath = Path.Join(tempDir, "test.sav.apply-receipt.20260101120000000.json"), ProfileId = "test", SchemaId = "test", Classification = "Applied", SourceHash = "abc", TargetHash = "def", AppliedHash = "ghi", OperationsApplied = 1 }, SavePatchApplyService.ReceiptJsonOptions);
+            await File.WriteAllTextAsync(Path.Join(tempDir, "test.sav.apply-receipt.20260101120000000.json"), json);
             var result = await InvokeResolveLatestBackupPathAsync(helper, savePath, CancellationToken.None);
             result.Should().BeNull();
         }
@@ -285,13 +285,13 @@ public sealed class SavesWave6CoverageTests
     [Fact]
     public async Task RestoreLastBackupAsync_NoBackup_ShouldReturnNotRestored()
     {
-        var tempDir = Path.Combine(Path.GetTempPath(), Guid.NewGuid().ToString("N"));
+        var tempDir = Path.Join(Path.GetTempPath(), Guid.NewGuid().ToString("N"));
         Directory.CreateDirectory(tempDir);
         try
         {
-            File.WriteAllBytes(Path.Combine(tempDir, "test.sav"), new byte[] { 0x01 });
+            File.WriteAllBytes(Path.Join(tempDir, "test.sav"), new byte[] { 0x01 });
             var service = new SavePatchApplyService(new StubSaveCodec(), new StubSavePatchPackService(), NullLogger<SavePatchApplyService>.Instance);
-            var result = await service.RestoreLastBackupAsync(Path.Combine(tempDir, "test.sav"));
+            var result = await service.RestoreLastBackupAsync(Path.Join(tempDir, "test.sav"));
             result.Restored.Should().BeFalse();
         }
         finally { Directory.Delete(tempDir, true); }
@@ -300,14 +300,14 @@ public sealed class SavesWave6CoverageTests
     [Fact]
     public async Task RestoreLastBackupAsync_WithBackup_ShouldRestore()
     {
-        var tempDir = Path.Combine(Path.GetTempPath(), Guid.NewGuid().ToString("N"));
+        var tempDir = Path.Join(Path.GetTempPath(), Guid.NewGuid().ToString("N"));
         Directory.CreateDirectory(tempDir);
         try
         {
-            File.WriteAllBytes(Path.Combine(tempDir, "test.sav"), new byte[] { 0x01, 0x02 });
-            File.WriteAllBytes(Path.Combine(tempDir, "test.sav.bak.20260101120000000.sav"), new byte[] { 0xAA, 0xBB });
+            File.WriteAllBytes(Path.Join(tempDir, "test.sav"), new byte[] { 0x01, 0x02 });
+            File.WriteAllBytes(Path.Join(tempDir, "test.sav.bak.20260101120000000.sav"), new byte[] { 0xAA, 0xBB });
             var service = new SavePatchApplyService(new StubSaveCodec(), new StubSavePatchPackService(), NullLogger<SavePatchApplyService>.Instance);
-            var result = await service.RestoreLastBackupAsync(Path.Combine(tempDir, "test.sav"));
+            var result = await service.RestoreLastBackupAsync(Path.Join(tempDir, "test.sav"));
             result.Restored.Should().BeTrue();
             result.RestoredHash.Should().NotBeNullOrWhiteSpace();
         }
@@ -337,11 +337,11 @@ public sealed class SavesWave6CoverageTests
 
     private static async Task RunApplyTestAsync(ISaveCodec codec, ISavePatchPackService packService, SavePatchPack pack, Action<SavePatchApplyResult> assertion, bool strict = true)
     {
-        var tempDir = Path.Combine(Path.GetTempPath(), Guid.NewGuid().ToString("N"));
+        var tempDir = Path.Join(Path.GetTempPath(), Guid.NewGuid().ToString("N"));
         Directory.CreateDirectory(tempDir);
         try
         {
-            var savePath = Path.Combine(tempDir, "test.sav");
+            var savePath = Path.Join(tempDir, "test.sav");
             File.WriteAllBytes(savePath, new byte[] { 0x01, 0x02, 0x03, 0x04 });
             var service = new SavePatchApplyService(codec, packService, NullLogger<SavePatchApplyService>.Instance);
             var result = await service.ApplyAsync(savePath, pack, "test", strict, CancellationToken.None);

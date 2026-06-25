@@ -38,7 +38,9 @@ _XML_LINES_VALID_RE = re.compile(r'lines-valid="(\d+(?:\\.\d+)?)"')
 _XML_LINES_COVERED_RE = re.compile(r'lines-covered="(\d+(?:\\.\d+)?)"')
 _XML_LINE_HITS_RE = re.compile(r"<line\\b[^>]*\\bhits=\"(\d+(?:\\.\d+)?)\"")
 _CONDITION_COVERAGE_RE = re.compile(r"\((?P<covered>\d+)/(?P<total>\d+)\)")
-_XML_CLASS_RE = re.compile(r"<class\b(?P<attrs>[^>]*)>(?P<body>.*?)</class>", re.IGNORECASE | re.DOTALL)
+_XML_CLASS_RE = re.compile(
+    r"<class\b(?P<attrs>[^>]*)>(?P<body>.*?)</class>", re.IGNORECASE | re.DOTALL
+)
 _XML_LINE_RE = re.compile(r"<line\b(?P<attrs>[^>]*)/?>", re.IGNORECASE)
 _XML_ATTR_RE = re.compile(r"([A-Za-z0-9_-]+)\s*=\s*\"([^\"]*)\"")
 _LCOV_BRANCH_FOUND_RE = re.compile(r"^BRF:(\d+)$")
@@ -51,7 +53,9 @@ _GENERATED_FILE_PATTERNS = [
 
 
 def _parse_args() -> argparse.Namespace:
-    parser = argparse.ArgumentParser(description="Assert 100% coverage for all declared components.")
+    parser = argparse.ArgumentParser(
+        description="Assert 100% coverage for all declared components."
+    )
     parser.add_argument("--xml", action="append", default=[], help="Coverage XML input: name=path")
     parser.add_argument("--lcov", action="append", default=[], help="LCOV input: name=path")
     parser.add_argument("--out-json", default="coverage-100/coverage.json", help="Output JSON path")
@@ -142,7 +146,9 @@ def _parse_fallback_line_totals(text: str) -> Tuple[int, int]:
 
 def parse_coverage_xml(name: str, path: Path, include_generated: bool) -> CoverageStats:
     text = path.read_text(encoding="utf-8")
-    line_total, line_covered, branch_total, branch_covered = _parse_xml_classes(text, include_generated)
+    line_total, line_covered, branch_total, branch_covered = _parse_xml_classes(
+        text, include_generated
+    )
 
     # Fallback for malformed XML without class/line data.
     if line_total == 0:
@@ -203,12 +209,16 @@ def evaluate(stats: List[CoverageStats]) -> Tuple[str, List[str]]:
 
     combined_line_total = sum(item.line_total for item in stats)
     combined_line_covered = sum(item.line_covered for item in stats)
-    combined_line = 100.0 if combined_line_total <= 0 else (combined_line_covered / combined_line_total) * 100.0
+    combined_line = (
+        100.0 if combined_line_total <= 0 else (combined_line_covered / combined_line_total) * 100.0
+    )
 
     combined_branch_total = sum(item.branch_total for item in stats)
     combined_branch_covered = sum(item.branch_covered for item in stats)
     combined_branch = (
-        100.0 if combined_branch_total <= 0 else (combined_branch_covered / combined_branch_total) * 100.0
+        100.0
+        if combined_branch_total <= 0
+        else (combined_branch_covered / combined_branch_total) * 100.0
     )
 
     if combined_line < 100.0:

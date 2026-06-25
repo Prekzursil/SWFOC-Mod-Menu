@@ -12,14 +12,15 @@ from pathlib import Path
 from typing import Any, Dict, List, Optional, Set, Tuple
 from urllib import error, parse, request
 
-
 SCHEMA_VERSION = "1.0"
 DEFAULT_APP_ID = 32470
 DETAILS_API_URL = "https://api.steampowered.com/ISteamRemoteStorage/GetPublishedFileDetails/v1/"
 
 
 def utc_now_iso() -> str:
-    return dt.datetime.now(dt.timezone.utc).replace(microsecond=0).isoformat().replace("+00:00", "Z")
+    return (
+        dt.datetime.now(dt.timezone.utc).replace(microsecond=0).isoformat().replace("+00:00", "Z")
+    )
 
 
 def as_int(value: Any, default: int = 0) -> int:
@@ -66,8 +67,11 @@ def parse_timestamp_to_iso(value: Any) -> str:
     if isinstance(value, (int, float)):
         if int(value) <= 0:
             return utc_now_iso()
-        return dt.datetime.fromtimestamp(int(value), tz=dt.timezone.utc).replace(microsecond=0).isoformat().replace(
-            "+00:00", "Z"
+        return (
+            dt.datetime.fromtimestamp(int(value), tz=dt.timezone.utc)
+            .replace(microsecond=0)
+            .isoformat()
+            .replace("+00:00", "Z")
         )
 
     return utc_now_iso()
@@ -100,7 +104,9 @@ def parse_normalized_tags(raw_tags: Any) -> List[str]:
     return unique_ordered(tags)
 
 
-def infer_candidate_base_profile(title: str, tags: List[str], parent_dependencies: List[str]) -> str:
+def infer_candidate_base_profile(
+    title: str, tags: List[str], parent_dependencies: List[str]
+) -> str:
     title_lc = title.lower()
     tag_set = set(tags)
     dep_set = set(parent_dependencies)
@@ -123,7 +129,9 @@ def infer_candidate_base_profile(title: str, tags: List[str], parent_dependencie
     return "base_swfoc"
 
 
-def infer_launch_hints(base_profile: str, parent_dependencies: List[str], tags: List[str]) -> List[str]:
+def infer_launch_hints(
+    base_profile: str, parent_dependencies: List[str], tags: List[str]
+) -> List[str]:
     hints = ["workshop"]
     hints.append("launch_sweaw" if base_profile == "base_sweaw" else "launch_swfoc")
 
@@ -179,23 +187,35 @@ def canonical_mod_url(workshop_id: str) -> str:
     return f"https://steamcommunity.com/sharedfiles/filedetails/?id={workshop_id}"
 
 
-def normalize_mod_from_detail(detail: Dict[str, Any]) -> Optional[Dict[str, Any]]:  # NOSONAR
-    workshop_id = str(detail.get("publishedfileid") or detail.get("workshopId") or detail.get("id") or "").strip()
+def normalize_mod_from_detail(
+    detail: Dict[str, Any],
+) -> Optional[Dict[str, Any]]:  # NOSONAR
+    workshop_id = str(
+        detail.get("publishedfileid") or detail.get("workshopId") or detail.get("id") or ""
+    ).strip()
     if not workshop_id.isdigit():
         return None
 
     title = str(detail.get("title") or f"Workshop Mod {workshop_id}").strip()
     subscriptions = as_int(detail.get("subscriptions"))
     lifetime_subscriptions = max(subscriptions, as_int(detail.get("lifetime_subscriptions")))
-    parent_dependencies = parse_dependency_ids(detail.get("children") or detail.get("parentDependencies"))
+    parent_dependencies = parse_dependency_ids(
+        detail.get("children") or detail.get("parentDependencies")
+    )
     normalized_tags = parse_normalized_tags(detail.get("tags") or detail.get("normalizedTags"))
-    candidate_base_profile = infer_candidate_base_profile(title, normalized_tags, parent_dependencies)
+    candidate_base_profile = infer_candidate_base_profile(
+        title, normalized_tags, parent_dependencies
+    )
 
     launch_hints_raw = detail.get("launchHints")
     if isinstance(launch_hints_raw, list) and launch_hints_raw:
-        launch_hints = unique_ordered([str(item).strip() for item in launch_hints_raw if str(item).strip()])
+        launch_hints = unique_ordered(
+            [str(item).strip() for item in launch_hints_raw if str(item).strip()]
+        )
     else:
-        launch_hints = infer_launch_hints(candidate_base_profile, parent_dependencies, normalized_tags)
+        launch_hints = infer_launch_hints(
+            candidate_base_profile, parent_dependencies, normalized_tags
+        )
 
     risk_level = str(detail.get("riskLevel") or "").strip().lower()
     if risk_level not in {"low", "medium", "high"}:
@@ -203,12 +223,24 @@ def normalize_mod_from_detail(detail: Dict[str, Any]) -> Optional[Dict[str, Any]
 
     raw_confidence = detail.get("confidence")
     if raw_confidence is None:
-        confidence = infer_confidence(title, normalized_tags, parent_dependencies, candidate_base_profile, subscriptions)
+        confidence = infer_confidence(
+            title,
+            normalized_tags,
+            parent_dependencies,
+            candidate_base_profile,
+            subscriptions,
+        )
     else:
         try:
             confidence = clamp_confidence(float(raw_confidence))
         except (TypeError, ValueError):
-            confidence = infer_confidence(title, normalized_tags, parent_dependencies, candidate_base_profile, subscriptions)
+            confidence = infer_confidence(
+                title,
+                normalized_tags,
+                parent_dependencies,
+                candidate_base_profile,
+                subscriptions,
+            )
 
     return {
         "workshopId": workshop_id,
@@ -216,7 +248,9 @@ def normalize_mod_from_detail(detail: Dict[str, Any]) -> Optional[Dict[str, Any]
         "url": str(detail.get("url") or canonical_mod_url(workshop_id)),
         "subscriptions": subscriptions,
         "lifetimeSubscriptions": lifetime_subscriptions,
-        "timeUpdated": parse_timestamp_to_iso(detail.get("time_updated") or detail.get("timeUpdated")),
+        "timeUpdated": parse_timestamp_to_iso(
+            detail.get("time_updated") or detail.get("timeUpdated")
+        ),
         "parentDependencies": parent_dependencies,
         "launchHints": launch_hints,
         "candidateBaseProfile": candidate_base_profile,
@@ -226,7 +260,9 @@ def normalize_mod_from_detail(detail: Dict[str, Any]) -> Optional[Dict[str, Any]
     }
 
 
-def scrape_workshop_ids(app_id: int, pages: int, timeout_sec: float) -> Tuple[List[str], List[Dict[str, str]]]:
+def scrape_workshop_ids(
+    app_id: int, pages: int, timeout_sec: float
+) -> Tuple[List[str], List[Dict[str, str]]]:
     pattern = re.compile(r"sharedfiles/filedetails/\?id=(\d+)")
     workshop_ids: List[str] = []
     sources: List[Dict[str, str]] = []
@@ -250,7 +286,9 @@ def scrape_workshop_ids(app_id: int, pages: int, timeout_sec: float) -> Tuple[Li
     return workshop_ids, sources
 
 
-def fetch_published_file_details(workshop_ids: List[str], timeout_sec: float) -> List[Dict[str, Any]]:
+def fetch_published_file_details(
+    workshop_ids: List[str], timeout_sec: float
+) -> List[Dict[str, Any]]:
     all_details: List[Dict[str, Any]] = []
 
     for start in range(0, len(workshop_ids), 100):
@@ -263,7 +301,10 @@ def fetch_published_file_details(workshop_ids: List[str], timeout_sec: float) ->
         req = request.Request(
             DETAILS_API_URL,
             data=body,
-            headers={"Content-Type": "application/x-www-form-urlencoded", "User-Agent": "swfoc-discovery/1.0"},
+            headers={
+                "Content-Type": "application/x-www-form-urlencoded",
+                "User-Agent": "swfoc-discovery/1.0",
+            },
             method="POST",
         )
 
@@ -274,7 +315,10 @@ def fetch_published_file_details(workshop_ids: List[str], timeout_sec: float) ->
             if isinstance(details, list):
                 all_details.extend([item for item in details if isinstance(item, dict)])
         except (error.URLError, OSError, ValueError) as exc:
-            print(f"warning: failed to fetch file details for batch starting at {start}: {exc}", file=sys.stderr)
+            print(
+                f"warning: failed to fetch file details for batch starting at {start}: {exc}",
+                file=sys.stderr,
+            )
 
     return all_details
 
@@ -283,13 +327,21 @@ def sort_mods(top_mods: List[Dict[str, Any]], ranking_basis: str) -> List[Dict[s
     if ranking_basis == "lifetime_subscriptions_desc":
         return sorted(
             top_mods,
-            key=lambda mod: (mod["lifetimeSubscriptions"], mod["subscriptions"], mod["timeUpdated"]),
+            key=lambda mod: (
+                mod["lifetimeSubscriptions"],
+                mod["subscriptions"],
+                mod["timeUpdated"],
+            ),
             reverse=True,
         )
 
     return sorted(
         top_mods,
-        key=lambda mod: (mod["subscriptions"], mod["lifetimeSubscriptions"], mod["timeUpdated"]),
+        key=lambda mod: (
+            mod["subscriptions"],
+            mod["lifetimeSubscriptions"],
+            mod["timeUpdated"],
+        ),
         reverse=True,
     )
 
@@ -318,10 +370,14 @@ def load_source_payload(path: Path) -> Tuple[List[Dict[str, Any]], Dict[str, Any
         payload = json.load(handle)
 
     if isinstance(payload, dict) and isinstance(payload.get("topMods"), list):
-        mods = [normalize_mod_from_detail(item) for item in payload["topMods"] if isinstance(item, dict)]
+        mods = [
+            normalize_mod_from_detail(item) for item in payload["topMods"] if isinstance(item, dict)
+        ]
         return [item for item in mods if item is not None], payload
 
-    if isinstance(payload, dict) and isinstance(payload.get("response", {}).get("publishedfiledetails"), list):
+    if isinstance(payload, dict) and isinstance(
+        payload.get("response", {}).get("publishedfiledetails"), list
+    ):
         details = payload["response"]["publishedfiledetails"]
         mods = [normalize_mod_from_detail(item) for item in details if isinstance(item, dict)]
         return [item for item in mods if item is not None], payload
@@ -335,7 +391,12 @@ def load_source_payload(path: Path) -> Tuple[List[Dict[str, Any]], Dict[str, Any
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="Discover top SWFOC workshop mods")
-    parser.add_argument("--app-id", type=int, default=DEFAULT_APP_ID, help="Steam app id (default: 32470)")
+    parser.add_argument(
+        "--app-id",
+        type=int,
+        default=DEFAULT_APP_ID,
+        help="Steam app id (default: 32470)",
+    )
     parser.add_argument("--limit", type=int, default=25, help="Maximum number of mods in output")
     parser.add_argument("--output", required=True, help="Output JSON path")
     parser.add_argument(
@@ -363,9 +424,13 @@ def main() -> int:
         top_mods = sort_mods(top_mods, args.ranking_basis)[: args.limit]
 
         generated_at_utc = str(original_payload.get("generatedAtUtc") or utc_now_iso())
-        retrieval_timestamp_utc = str(original_payload.get("retrievalTimestampUtc") or generated_at_utc)
+        retrieval_timestamp_utc = str(
+            original_payload.get("retrievalTimestampUtc") or generated_at_utc
+        )
 
-        sources = list(original_payload.get("sources", [])) if isinstance(original_payload, dict) else []
+        sources = (
+            list(original_payload.get("sources", [])) if isinstance(original_payload, dict) else []
+        )
         sources.append({"type": "fixture", "uri": str(source_path)})
 
         output = build_output(

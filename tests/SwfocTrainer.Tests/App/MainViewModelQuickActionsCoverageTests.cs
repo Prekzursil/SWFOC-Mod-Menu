@@ -30,7 +30,7 @@ public sealed class MainViewModelQuickActionsCoverageTests
         vm.SelectedProfileId = "test";
 
         await InvokeAsync(vm, "QuickRunActionAsync",
-            "set_credits", new JsonObject(), (string?)null);
+            "set_credits", new JsonObject(), null);
 
         vm.Status.Should().Be("Ready");
     }
@@ -43,7 +43,7 @@ public sealed class MainViewModelQuickActionsCoverageTests
         vm.SelectedProfileId = null;
 
         await InvokeAsync(vm, "QuickRunActionAsync",
-            "set_credits", new JsonObject(), (string?)null);
+            "set_credits", new JsonObject(), null);
 
         vm.Status.Should().Be("Ready");
     }
@@ -57,7 +57,7 @@ public sealed class MainViewModelQuickActionsCoverageTests
 
         // actionId is empty string after null guard — should hit the IsNullOrWhiteSpace guard
         await InvokeAsync(vm, "QuickRunActionAsync",
-            "", new JsonObject(), (string?)null);
+            "", new JsonObject(), null);
 
         vm.Status.Should().Be("Ready");
     }
@@ -70,18 +70,18 @@ public sealed class MainViewModelQuickActionsCoverageTests
         SetField(vm, "_runtime", new StubRuntime(session: session));
         SetField(vm, "_orchestrator", CreateOrchestrator(succeeded: true));
         SetField(vm, "_loadedActionSpecs",
-            (IReadOnlyDictionary<string, ActionSpec>)new Dictionary<string, ActionSpec>(StringComparer.OrdinalIgnoreCase));
+            new Dictionary<string, ActionSpec>(StringComparer.OrdinalIgnoreCase));
         vm.SelectedProfileId = "test";
 
         // First call — toggle ON
         await InvokeAsync(vm, "QuickRunActionAsync",
-            "freeze_timer", new JsonObject(), (string?)"game_timer_freeze");
+            "freeze_timer", new JsonObject(), "game_timer_freeze");
 
         vm.Status.Should().Contain("freeze_timer");
 
         // Second call — toggle OFF
         await InvokeAsync(vm, "QuickRunActionAsync",
-            "freeze_timer", new JsonObject(), (string?)"game_timer_freeze");
+            "freeze_timer", new JsonObject(), "game_timer_freeze");
     }
 
     [Fact]
@@ -92,11 +92,11 @@ public sealed class MainViewModelQuickActionsCoverageTests
         SetField(vm, "_runtime", new StubRuntime(session: session));
         SetField(vm, "_orchestrator", CreateOrchestrator(succeeded: true));
         SetField(vm, "_loadedActionSpecs",
-            (IReadOnlyDictionary<string, ActionSpec>)new Dictionary<string, ActionSpec>(StringComparer.OrdinalIgnoreCase));
+            new Dictionary<string, ActionSpec>(StringComparer.OrdinalIgnoreCase));
         vm.SelectedProfileId = "test";
 
         await InvokeAsync(vm, "QuickRunActionAsync",
-            "set_credits", new JsonObject(), (string?)null);
+            "set_credits", new JsonObject(), null);
 
         vm.Status.Should().Contain("set_credits");
     }
@@ -109,11 +109,11 @@ public sealed class MainViewModelQuickActionsCoverageTests
         SetField(vm, "_runtime", new StubRuntime(session: session));
         SetField(vm, "_orchestrator", CreateOrchestrator(succeeded: false));
         SetField(vm, "_loadedActionSpecs",
-            (IReadOnlyDictionary<string, ActionSpec>)new Dictionary<string, ActionSpec>(StringComparer.OrdinalIgnoreCase));
+            new Dictionary<string, ActionSpec>(StringComparer.OrdinalIgnoreCase));
         vm.SelectedProfileId = "test";
 
         await InvokeAsync(vm, "QuickRunActionAsync",
-            "set_credits", new JsonObject(), (string?)"credits");
+            "set_credits", new JsonObject(), "credits");
 
         vm.Status.Should().Contain("set_credits");
     }
@@ -126,11 +126,11 @@ public sealed class MainViewModelQuickActionsCoverageTests
         SetField(vm, "_runtime", new StubRuntime(session: session));
         SetField(vm, "_orchestrator", CreateThrowingOrchestrator(new InvalidOperationException("bad state")));
         SetField(vm, "_loadedActionSpecs",
-            (IReadOnlyDictionary<string, ActionSpec>)new Dictionary<string, ActionSpec>(StringComparer.OrdinalIgnoreCase));
+            new Dictionary<string, ActionSpec>(StringComparer.OrdinalIgnoreCase));
         vm.SelectedProfileId = "test";
 
         await InvokeAsync(vm, "QuickRunActionAsync",
-            "set_credits", BuildValidCreditsPayload(), (string?)null);
+            "set_credits", BuildValidCreditsPayload(), null);
 
         vm.Status.Should().Contain("bad state");
     }
@@ -144,11 +144,11 @@ public sealed class MainViewModelQuickActionsCoverageTests
         SetField(vm, "_orchestrator",
             CreateThrowingOrchestrator(new System.ComponentModel.Win32Exception("access denied")));
         SetField(vm, "_loadedActionSpecs",
-            (IReadOnlyDictionary<string, ActionSpec>)new Dictionary<string, ActionSpec>(StringComparer.OrdinalIgnoreCase));
+            new Dictionary<string, ActionSpec>(StringComparer.OrdinalIgnoreCase));
         vm.SelectedProfileId = "test";
 
         await InvokeAsync(vm, "QuickRunActionAsync",
-            "set_credits", BuildValidCreditsPayload(), (string?)null);
+            "set_credits", BuildValidCreditsPayload(), null);
 
         vm.Status.Should().Contain("access denied");
     }
@@ -162,11 +162,11 @@ public sealed class MainViewModelQuickActionsCoverageTests
         SetField(vm, "_orchestrator",
             CreateThrowingOrchestrator(new IOException("disk error")));
         SetField(vm, "_loadedActionSpecs",
-            (IReadOnlyDictionary<string, ActionSpec>)new Dictionary<string, ActionSpec>(StringComparer.OrdinalIgnoreCase));
+            new Dictionary<string, ActionSpec>(StringComparer.OrdinalIgnoreCase));
         vm.SelectedProfileId = "test";
 
         await InvokeAsync(vm, "QuickRunActionAsync",
-            "set_credits", BuildValidCreditsPayload(), (string?)null);
+            "set_credits", BuildValidCreditsPayload(), null);
 
         vm.Status.Should().Contain("disk error");
     }
@@ -227,7 +227,7 @@ public sealed class MainViewModelQuickActionsCoverageTests
         SetField(vm, "_orchestrator", CreateOrchestrator(succeeded: true, creditsStateTag: "HOOK_ONESHOT"));
         SetField(vm, "_freezeService", new StubFreezeService());
         SetField(vm, "_loadedActionSpecs",
-            (IReadOnlyDictionary<string, ActionSpec>)new Dictionary<string, ActionSpec>(StringComparer.OrdinalIgnoreCase));
+            new Dictionary<string, ActionSpec>(StringComparer.OrdinalIgnoreCase));
         vm.SelectedProfileId = "test";
 
         await InvokeAsync(vm, "QuickSetCreditsAsync");
@@ -248,7 +248,7 @@ public sealed class MainViewModelQuickActionsCoverageTests
         SetField(vm, "_freezeService", freezeService);
         SetField(vm, "_freezeUiTimer", CreateStoppedTimer());
         SetField(vm, "_loadedActionSpecs",
-            (IReadOnlyDictionary<string, ActionSpec>)new Dictionary<string, ActionSpec>(StringComparer.OrdinalIgnoreCase));
+            new Dictionary<string, ActionSpec>(StringComparer.OrdinalIgnoreCase));
         vm.SelectedProfileId = "test";
 
         await InvokeAsync(vm, "QuickSetCreditsAsync");
@@ -268,7 +268,7 @@ public sealed class MainViewModelQuickActionsCoverageTests
         SetField(vm, "_orchestrator", CreateOrchestrator(succeeded: true, creditsStateTag: "HOOK_ONESHOT"));
         SetField(vm, "_freezeService", new StubFreezeService());
         SetField(vm, "_loadedActionSpecs",
-            (IReadOnlyDictionary<string, ActionSpec>)new Dictionary<string, ActionSpec>(StringComparer.OrdinalIgnoreCase));
+            new Dictionary<string, ActionSpec>(StringComparer.OrdinalIgnoreCase));
         vm.SelectedProfileId = "test";
 
         await InvokeAsync(vm, "QuickSetCreditsAsync");
@@ -287,7 +287,7 @@ public sealed class MainViewModelQuickActionsCoverageTests
         SetField(vm, "_orchestrator", CreateOrchestrator(succeeded: true, creditsStateTag: "HOOK_LOCK"));
         SetField(vm, "_freezeService", new StubFreezeService());
         SetField(vm, "_loadedActionSpecs",
-            (IReadOnlyDictionary<string, ActionSpec>)new Dictionary<string, ActionSpec>(StringComparer.OrdinalIgnoreCase));
+            new Dictionary<string, ActionSpec>(StringComparer.OrdinalIgnoreCase));
         vm.SelectedProfileId = "test";
 
         await InvokeAsync(vm, "QuickSetCreditsAsync");
@@ -305,7 +305,7 @@ public sealed class MainViewModelQuickActionsCoverageTests
         SetField(vm, "_orchestrator", CreateOrchestrator(succeeded: false));
         SetField(vm, "_freezeService", new StubFreezeService());
         SetField(vm, "_loadedActionSpecs",
-            (IReadOnlyDictionary<string, ActionSpec>)new Dictionary<string, ActionSpec>(StringComparer.OrdinalIgnoreCase));
+            new Dictionary<string, ActionSpec>(StringComparer.OrdinalIgnoreCase));
         vm.SelectedProfileId = "test";
 
         await InvokeAsync(vm, "QuickSetCreditsAsync");
@@ -323,7 +323,7 @@ public sealed class MainViewModelQuickActionsCoverageTests
         SetField(vm, "_orchestrator", CreateThrowingOrchestrator(new InvalidOperationException("oom")));
         SetField(vm, "_freezeService", new StubFreezeService());
         SetField(vm, "_loadedActionSpecs",
-            (IReadOnlyDictionary<string, ActionSpec>)new Dictionary<string, ActionSpec>(StringComparer.OrdinalIgnoreCase));
+            new Dictionary<string, ActionSpec>(StringComparer.OrdinalIgnoreCase));
         vm.SelectedProfileId = "test";
 
         await InvokeAsync(vm, "QuickSetCreditsAsync");
@@ -341,7 +341,7 @@ public sealed class MainViewModelQuickActionsCoverageTests
         SetField(vm, "_orchestrator", CreateThrowingOrchestrator(new System.ComponentModel.Win32Exception("denied")));
         SetField(vm, "_freezeService", new StubFreezeService());
         SetField(vm, "_loadedActionSpecs",
-            (IReadOnlyDictionary<string, ActionSpec>)new Dictionary<string, ActionSpec>(StringComparer.OrdinalIgnoreCase));
+            new Dictionary<string, ActionSpec>(StringComparer.OrdinalIgnoreCase));
         vm.SelectedProfileId = "test";
 
         await InvokeAsync(vm, "QuickSetCreditsAsync");
@@ -359,7 +359,7 @@ public sealed class MainViewModelQuickActionsCoverageTests
         SetField(vm, "_orchestrator", CreateThrowingOrchestrator(new IOException("disk")));
         SetField(vm, "_freezeService", new StubFreezeService());
         SetField(vm, "_loadedActionSpecs",
-            (IReadOnlyDictionary<string, ActionSpec>)new Dictionary<string, ActionSpec>(StringComparer.OrdinalIgnoreCase));
+            new Dictionary<string, ActionSpec>(StringComparer.OrdinalIgnoreCase));
         vm.SelectedProfileId = "test";
 
         await InvokeAsync(vm, "QuickSetCreditsAsync");
@@ -380,7 +380,7 @@ public sealed class MainViewModelQuickActionsCoverageTests
         SetField(vm, "_orchestrator", CreateOrchestrator(succeeded: true, creditsStateTag: "HOOK_ONESHOT"));
         SetField(vm, "_freezeService", freezeService);
         SetField(vm, "_loadedActionSpecs",
-            (IReadOnlyDictionary<string, ActionSpec>)new Dictionary<string, ActionSpec>(StringComparer.OrdinalIgnoreCase));
+            new Dictionary<string, ActionSpec>(StringComparer.OrdinalIgnoreCase));
         vm.SelectedProfileId = "test";
 
         await InvokeAsync(vm, "QuickSetCreditsAsync");
@@ -517,7 +517,7 @@ public sealed class MainViewModelQuickActionsCoverageTests
         SetField(vm, "_runtime", new StubRuntime(session: BuildSession()));
         SetField(vm, "_orchestrator", CreateOrchestrator(succeeded: true));
         SetField(vm, "_loadedActionSpecs",
-            (IReadOnlyDictionary<string, ActionSpec>)new Dictionary<string, ActionSpec>(StringComparer.OrdinalIgnoreCase));
+            new Dictionary<string, ActionSpec>(StringComparer.OrdinalIgnoreCase));
         vm.SelectedProfileId = "test";
         vm.Hotkeys.Add(new HotkeyBindingItem
         {
@@ -593,7 +593,7 @@ public sealed class MainViewModelQuickActionsCoverageTests
         SetField(vm, "_spawnQuantity", "1");
         SetField(vm, "_spawnDelayMs", "125");
         SetField(vm, "_loadedActionSpecs",
-            (IReadOnlyDictionary<string, ActionSpec>)new Dictionary<string, ActionSpec>(StringComparer.OrdinalIgnoreCase));
+            new Dictionary<string, ActionSpec>(StringComparer.OrdinalIgnoreCase));
         SetField(vm, "_profiles", new StubProfiles());
         SetField(vm, "_freezeService", new StubFreezeService());
         SetField(vm, "_freezeUiTimer", CreateStoppedTimer());
@@ -824,7 +824,7 @@ public sealed class MainViewModelQuickActionsCoverageTests
                 new Dictionary<string, int>(), 0, 0, 0, 0);
 
         public Task<string> ExportSnapshotAsync(string outputDirectory, CancellationToken ct)
-            => Task.FromResult(Path.Combine(outputDirectory, "telemetry.json"));
+            => Task.FromResult(Path.Join(outputDirectory, "telemetry.json"));
 
         public void Reset() { }
     }

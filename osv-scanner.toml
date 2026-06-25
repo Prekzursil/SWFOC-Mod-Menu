@@ -1,0 +1,24 @@
+# osv-scanner configuration for the lean dependency gate (charter gate 6).
+# Pinned tool: osv-scanner 2.3.8. CI runs:
+#   osv-scanner scan source --config=osv-scanner.toml --recursive .
+# (see .github/workflows/reusable-quality.yml gate-deps step). The gate must
+# report 0 actionable CVEs.
+#
+# Dependency manifests present in this repo (discovered by `scan source`):
+#   - src/**/*.csproj                 (NuGet / .NET package references; versions
+#                                       centrally pinned via Directory.Build.props)
+#   - tools/visual-chromatic/package.json (+ its lockfile, npm tooling tree)
+#   - .github/workflows/*.yml         (GitHub Actions, also covered by Dependabot)
+#
+# POLICY: an [[IgnoredVulns]] entry is allowed ONLY for a vuln with no
+# non-breaking fix OR one provably unreachable in THIS product, each with a
+# reason + dated review note (greppable). No baseline file — clean-zero is
+# reached by upgrading where a safe fix exists. This file intentionally carries
+# no IgnoredVulns yet; add a dated, reasoned entry only when a real finding
+# appears that cannot be fixed by a safe upgrade.
+#
+# Example (commented) of the only kind of entry permitted here:
+# [[IgnoredVulns]]
+# id = "GHSA-xxxx-xxxx-xxxx"
+# reason = "No non-breaking fix; <component> path unreachable in this product."
+# ignoreUntil = 2026-12-31  # dated review

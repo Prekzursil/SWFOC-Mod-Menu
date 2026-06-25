@@ -472,7 +472,7 @@ public sealed class MainViewModelBindableMembersCoverageTests
         SetField(vm, "_launchModPath", string.Empty);
         SetField(vm, "_supportBundleOutputDirectory", "support");
         SetField(vm, "_loadedActionSpecs",
-            (IReadOnlyDictionary<string, ActionSpec>)new Dictionary<string, ActionSpec>(StringComparer.OrdinalIgnoreCase));
+            new Dictionary<string, ActionSpec>(StringComparer.OrdinalIgnoreCase));
 
         return vm;
     }

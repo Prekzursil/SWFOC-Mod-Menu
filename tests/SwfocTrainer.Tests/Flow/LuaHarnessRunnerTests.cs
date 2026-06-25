@@ -124,8 +124,8 @@ public sealed class LuaHarnessRunnerTests
         var harnessScript = Path.Join(root, "tools", "lua-harness", "run-lua-harness.ps1");
         var runner = new LuaHarnessRunner(harnessScript);
 
-        var act1 = async () => await runner.RunAsync((LuaHarnessRunRequest)null!);
-        var act2 = async () => await runner.RunAsync((LuaHarnessRunRequest)null!, CancellationToken.None);
+        var act1 = async () => await runner.RunAsync(null!);
+        var act2 = async () => await runner.RunAsync(null!, CancellationToken.None);
 
         await act1.Should().ThrowAsync<ArgumentNullException>();
         await act2.Should().ThrowAsync<ArgumentNullException>();

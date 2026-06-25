@@ -692,7 +692,7 @@ public sealed class MainViewModelSaveOpsCoverageTests
         var vm = CreateViewModel();
         var preview = new SavePatchPreview(true, Array.Empty<string>(), Array.Empty<string>(), Array.Empty<SavePatchOperation>());
         var act = () => InvokeProtected(vm, "PopulatePatchCompatibilityRows",
-            (SavePatchCompatibilityResult)null!, preview);
+            null!, preview);
         act.Should().Throw<TargetInvocationException>()
             .WithInnerException<ArgumentNullException>();
     }
@@ -703,7 +703,7 @@ public sealed class MainViewModelSaveOpsCoverageTests
         var vm = CreateViewModel();
         var compat = new SavePatchCompatibilityResult(true, true, "hash", Array.Empty<string>(), Array.Empty<string>());
         var act = () => InvokeProtected(vm, "PopulatePatchCompatibilityRows",
-            compat, (SavePatchPreview)null!);
+            compat, null!);
         act.Should().Throw<TargetInvocationException>()
             .WithInnerException<ArgumentNullException>();
     }
@@ -782,7 +782,7 @@ public sealed class MainViewModelSaveOpsCoverageTests
     {
         var vm = CreateViewModel();
         var act = () => InvokeProtected(vm, "AppendPatchCompatibilityRows",
-            "warn", "code", (IEnumerable<string>)null!);
+            "warn", "code", null!);
         act.Should().Throw<TargetInvocationException>()
             .WithInnerException<ArgumentNullException>();
     }
@@ -802,7 +802,7 @@ public sealed class MainViewModelSaveOpsCoverageTests
     {
         var vm = CreateViewModel();
         InvokeProtected(vm, "AppendPatchCompatibilityRows",
-            "error", "err_code", new[] { "msg1", "msg2" } as IEnumerable<string>);
+            "error", "err_code", new[] { "msg1", "msg2" });
 
         vm.SavePatchCompatibility.Should().HaveCount(2);
     }
@@ -813,7 +813,7 @@ public sealed class MainViewModelSaveOpsCoverageTests
     public void SetLoadedPatchPack_NullPack_ShouldThrow()
     {
         var vm = CreateViewModel();
-        var act = () => InvokeProtected(vm, "SetLoadedPatchPack", (SavePatchPack)null!, "path");
+        var act = () => InvokeProtected(vm, "SetLoadedPatchPack", null!, "path");
         act.Should().Throw<TargetInvocationException>()
             .WithInnerException<ArgumentNullException>();
     }
@@ -822,7 +822,7 @@ public sealed class MainViewModelSaveOpsCoverageTests
     public void SetLoadedPatchPack_NullPath_ShouldThrow()
     {
         var vm = CreateViewModel();
-        var act = () => InvokeProtected(vm, "SetLoadedPatchPack", BuildPatchPack(), (string)null!);
+        var act = () => InvokeProtected(vm, "SetLoadedPatchPack", BuildPatchPack(), null!);
         act.Should().Throw<TargetInvocationException>()
             .WithInnerException<ArgumentNullException>();
     }
@@ -872,7 +872,7 @@ public sealed class MainViewModelSaveOpsCoverageTests
     public void AppendPatchArtifactRows_BothNull_ShouldNotAdd()
     {
         var vm = CreateViewModel();
-        InvokeProtected(vm, "AppendPatchArtifactRows", (string?)null, (string?)null);
+        InvokeProtected(vm, "AppendPatchArtifactRows", null, null);
 
         vm.SavePatchCompatibility.Should().BeEmpty();
     }
@@ -881,7 +881,7 @@ public sealed class MainViewModelSaveOpsCoverageTests
     public void AppendPatchArtifactRows_BothWhitespace_ShouldNotAdd()
     {
         var vm = CreateViewModel();
-        InvokeProtected(vm, "AppendPatchArtifactRows", (string?)"  ", (string?)"  ");
+        InvokeProtected(vm, "AppendPatchArtifactRows", "  ", "  ");
 
         vm.SavePatchCompatibility.Should().BeEmpty();
     }
@@ -890,7 +890,7 @@ public sealed class MainViewModelSaveOpsCoverageTests
     public void AppendPatchArtifactRows_OnlyBackup_ShouldAddOne()
     {
         var vm = CreateViewModel();
-        InvokeProtected(vm, "AppendPatchArtifactRows", (string?)@"C:\backup.sav", (string?)null);
+        InvokeProtected(vm, "AppendPatchArtifactRows", @"C:\backup.sav", (string?)null);
 
         vm.SavePatchCompatibility.Should().HaveCount(1);
         vm.SavePatchCompatibility[0].Code.Should().Be("backup_path");
@@ -900,7 +900,7 @@ public sealed class MainViewModelSaveOpsCoverageTests
     public void AppendPatchArtifactRows_OnlyReceipt_ShouldAddOne()
     {
         var vm = CreateViewModel();
-        InvokeProtected(vm, "AppendPatchArtifactRows", (string?)null, (string?)@"C:\receipt.json");
+        InvokeProtected(vm, "AppendPatchArtifactRows", null, @"C:\receipt.json");
 
         vm.SavePatchCompatibility.Should().HaveCount(1);
         vm.SavePatchCompatibility[0].Code.Should().Be("receipt_path");
@@ -910,7 +910,7 @@ public sealed class MainViewModelSaveOpsCoverageTests
     public void AppendPatchArtifactRows_BothPresent_ShouldAddTwo()
     {
         var vm = CreateViewModel();
-        InvokeProtected(vm, "AppendPatchArtifactRows", (string?)@"C:\backup.sav", (string?)@"C:\receipt.json");
+        InvokeProtected(vm, "AppendPatchArtifactRows", @"C:\backup.sav", @"C:\receipt.json");
 
         vm.SavePatchCompatibility.Should().HaveCount(2);
     }
@@ -1229,7 +1229,7 @@ public sealed class MainViewModelSaveOpsCoverageTests
             Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
             "SwfocTrainer", "support"));
         SetField(vm, "_loadedActionSpecs",
-            (IReadOnlyDictionary<string, ActionSpec>)new Dictionary<string, ActionSpec>(StringComparer.OrdinalIgnoreCase));
+            new Dictionary<string, ActionSpec>(StringComparer.OrdinalIgnoreCase));
     }
 
     private static void SetProp(object instance, string propName, object value)

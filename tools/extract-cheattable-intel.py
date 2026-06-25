@@ -15,9 +15,9 @@ import re
 from dataclasses import asdict, dataclass, field
 from pathlib import Path
 from typing import Iterable, List, Set, Tuple
+from xml.etree.ElementTree import Element
 
 from defusedxml import ElementTree as element_tree
-
 
 AOB_SCAN_RE = re.compile(
     r"aobscanmodule\(\s*([^,\s]+)\s*,\s*([^,\s]+)\s*,\s*([0-9A-F? ]{1,512})\s*\)",
@@ -59,7 +59,9 @@ class ScriptIntel:
 
 
 def parse_args() -> argparse.Namespace:
-    parser = argparse.ArgumentParser(description="Extract trainer-facing intel from Cheat Engine .CT")
+    parser = argparse.ArgumentParser(
+        description="Extract trainer-facing intel from Cheat Engine .CT"
+    )
     parser.add_argument(
         "--ct",
         default="StarWarsG.CT",
@@ -144,7 +146,11 @@ def parse_restore_bytes(script: str) -> List[str]:
 
 def extract_intel_from_script(group: str, description: str, script: str) -> ScriptIntel:
     scans = [
-        AobScan(symbol=symbol.strip(), module=module.strip(), pattern=" ".join(pattern.strip().split()))
+        AobScan(
+            symbol=symbol.strip(),
+            module=module.strip(),
+            pattern=" ".join(pattern.strip().split()),
+        )
         for symbol, module, pattern in AOB_SCAN_RE.findall(script)
     ]
 
@@ -176,7 +182,9 @@ def extract_intel_from_script(group: str, description: str, script: str) -> Scri
     )
 
 
-def iter_cheat_entries(root: element_tree.Element) -> Iterable[Tuple[str, element_tree.Element]]:
+def iter_cheat_entries(
+    root: Element,
+) -> Iterable[Tuple[str, Element]]:
     top = root.find("CheatEntries")
     if top is None:
         return
@@ -222,7 +230,9 @@ def append_intro(lines: List[str], source_path: Path) -> None:
     lines.append(f"Source: `{source_path.name}`")
     lines.append("")
     lines.append("This is an extracted intelligence summary, not a direct CE table import.")
-    lines.append("It keeps AOB/patch techniques that are useful for trainer calibration and ignores unrelated table noise.")
+    lines.append(
+        "It keeps AOB/patch techniques that are useful for trainer calibration and ignores unrelated table noise."
+    )
     lines.append("")
 
 
@@ -242,10 +252,18 @@ def append_summary_table(lines: List[str], records: List[ScriptIntel]) -> None:
 def append_actionable_notes(lines: List[str]) -> None:
     lines.append("## Actionable Notes")
     lines.append("")
-    lines.append("1. `Infinite Credits` scripts confirm a dual-path flow (`float -> int convert`), matching the trainer's mirror-sync model.")
-    lines.append("2. `Maphack` scripts are branch-bypass patches, so they are an optional fallback path if symbol-based fog toggles regress.")
-    lines.append("3. `1 Sec/1 Cred Build` scripts are code-cave overrides with hardcoded values; useful as behavior anchors, not as final trainer behavior.")
-    lines.append("4. `Max Unit Cap` suggests a future patch-mode feature (`set_unit_cap`) if desired.")
+    lines.append(
+        "1. `Infinite Credits` scripts confirm a dual-path flow (`float -> int convert`), matching the trainer's mirror-sync model."
+    )
+    lines.append(
+        "2. `Maphack` scripts are branch-bypass patches, so they are an optional fallback path if symbol-based fog toggles regress."
+    )
+    lines.append(
+        "3. `1 Sec/1 Cred Build` scripts are code-cave overrides with hardcoded values; useful as behavior anchors, not as final trainer behavior."
+    )
+    lines.append(
+        "4. `Max Unit Cap` suggests a future patch-mode feature (`set_unit_cap`) if desired."
+    )
     lines.append("")
 
 
@@ -282,9 +300,7 @@ def append_aob_scans(lines: List[str], aob_scans: List[AobScan]) -> None:
 
     lines.append("- AOB scans:")
     for scan in aob_scans:
-        lines.append(
-            f"  - `{scan.symbol}` on `{scan.module}` with pattern `{scan.pattern}`"
-        )
+        lines.append(f"  - `{scan.symbol}` on `{scan.module}` with pattern `{scan.pattern}`")
 
 
 def append_constant_writes(lines: List[str], constant_writes: List[ConstantWrite]) -> None:
@@ -325,7 +341,7 @@ def should_skip_entry(description: str, variable_type: str) -> bool:
     return variable_type.lower() != "auto assembler script"
 
 
-def collect_script_intel(root: element_tree.Element) -> List[ScriptIntel]:
+def collect_script_intel(root: Element) -> List[ScriptIntel]:
     records: List[ScriptIntel] = []
     for group, entry in iter_cheat_entries(root):
         description = normalize_description(entry.findtext("Description"))
@@ -349,6 +365,8 @@ def main() -> int:
 
     tree = element_tree.parse(ct_path)
     root = tree.getroot()
+    if root is None:
+        raise ValueError(f"Cheat table has no root element: {ct_path}")
 
     records = collect_script_intel(root)
 

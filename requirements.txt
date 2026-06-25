@@ -1,0 +1,8 @@
+# Runtime dependencies for the repo's auxiliary Python tooling (scripts/, tools/).
+# The lean quality gate installs these before running the pytest suite so test
+# collection can import the modules under test. Kept minimal: only tools that
+# need a third-party package at import time are listed here.
+#
+# tools/extract-cheattable-intel.py parses Cheat Engine .CT (XML) with the
+# hardened defusedxml parser instead of the stdlib XML parser.
+defusedxml==0.7.1

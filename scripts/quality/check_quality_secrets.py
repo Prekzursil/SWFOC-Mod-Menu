@@ -22,11 +22,27 @@ DEFAULT_REQUIRED_VARS = [
 
 
 def _parse_args() -> argparse.Namespace:
-    parser = argparse.ArgumentParser(description="Validate required quality-gate secrets/variables are configured.")
-    parser.add_argument("--required-secret", action="append", default=[], help="Additional required secret env var name")
-    parser.add_argument("--required-var", action="append", default=[], help="Additional required variable env var name")
-    parser.add_argument("--out-json", default="quality-secrets/secrets.json", help="Output JSON path")
-    parser.add_argument("--out-md", default="quality-secrets/secrets.md", help="Output markdown path")
+    parser = argparse.ArgumentParser(
+        description="Validate required quality-gate secrets/variables are configured."
+    )
+    parser.add_argument(
+        "--required-secret",
+        action="append",
+        default=[],
+        help="Additional required secret env var name",
+    )
+    parser.add_argument(
+        "--required-var",
+        action="append",
+        default=[],
+        help="Additional required variable env var name",
+    )
+    parser.add_argument(
+        "--out-json", default="quality-secrets/secrets.json", help="Output JSON path"
+    )
+    parser.add_argument(
+        "--out-md", default="quality-secrets/secrets.md", help="Output markdown path"
+    )
     return parser.parse_args()
 
 
@@ -43,7 +59,9 @@ def _dedupe(items: List[str]) -> List[str]:
 
 
 def evaluate_env(required_secrets: List[str], required_vars: List[str]) -> Dict[str, List[str]]:
-    missing_secrets = [name for name in required_secrets if not str(os.environ.get(name, "")).strip()]
+    missing_secrets = [
+        name for name in required_secrets if not str(os.environ.get(name, "")).strip()
+    ]
     missing_vars = [name for name in required_vars if not str(os.environ.get(name, "")).strip()]
     present_secrets = [name for name in required_secrets if name not in missing_secrets]
     present_vars = [name for name in required_vars if name not in missing_vars]

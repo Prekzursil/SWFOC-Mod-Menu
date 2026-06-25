@@ -1,0 +1,54 @@
+# Lean 6-gate autofix lane (charter gate 1 lint/format/imports + gate 5 secrets).
+#
+# `pre-commit run --all-files` is the gate-lint-format-secrets entrypoint used by
+# the reusable quality workflow (.github/workflows/reusable-quality.yml). Every
+# rev is PINNED; bump versions here together with .quality/charter.yml so the
+# charter-check stays green. Pins mirror the proven lean gate (Prekzursil/Reframe).
+#
+# Scope at adoption: this repo's first-party autofixable source under gate 1 is
+# Python (Ruff) plus the cross-language secrets hook (gitleaks). C#/C++ live here
+# too (they get gates 2/3/4/6 via the reusable workflow), but their gate-1
+# formatters (dotnet-format / clang-format) require toolchains the reusable
+# workflow does not provision and would impose a brand-new style on the existing
+# tree, so wiring them is deferred — not faked. Ruff + gitleaks run clean here.
+minimum_pre_commit_version: "3.5.0"
+
+default_language_version:
+  python: python3
+
+exclude: |-
+  (?x)^(
+    node_modules/|
+    \.venv/|
+    venv/|
+    dist/|
+    build/|
+    out/|
+    bin/|
+    obj/|
+    vendor/|
+    packages/|
+    TestResults/|
+    .*\.egg-info/
+  )
+
+repos:
+  # ── Gate 1: Python lint + format + import-sort (Ruff) ──────────────────────
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.15.17
+    hooks:
+      - id: ruff
+        name: ruff (lint --fix, incl. import-sort I rules)
+        args: ["--fix"]
+        files: '\.py$'
+      - id: ruff-format
+        name: ruff (format)
+        files: '\.py$'
+
+  # ── Gate 5: secrets (gitleaks) ────────────────────────────────────────────
+  - repo: https://github.com/gitleaks/gitleaks
+    rev: v8.30.1
+    hooks:
+      - id: gitleaks
+        name: gitleaks (secrets)
+        args: ["--config", ".gitleaks.toml"]
