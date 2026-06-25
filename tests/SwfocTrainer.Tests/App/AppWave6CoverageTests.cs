@@ -109,7 +109,7 @@ public sealed class AppWave6CoverageTests
     [Fact]
     public void TryGetRequiredPayloadKeys_ActionNotInSpecs_ShouldReturnFalse()
     {
-        var vm = CreateVM(); SetField(vm, "_loadedActionSpecs", new Dictionary<string, ActionSpec>(StringComparer.OrdinalIgnoreCase) as IReadOnlyDictionary<string, ActionSpec>); SetField(vm, "_selectedActionId", "missing");
+        var vm = CreateVM(); SetField(vm, "_loadedActionSpecs", new Dictionary<string, ActionSpec>(StringComparer.OrdinalIgnoreCase)); SetField(vm, "_selectedActionId", "missing");
         SetField(vm, "_loadedActionSpecs", new Dictionary<string, ActionSpec>(StringComparer.OrdinalIgnoreCase));
         InvokeTryGetRequired(vm, out _).Should().BeFalse();
     }
@@ -119,7 +119,7 @@ public sealed class AppWave6CoverageTests
     {
         var vm = CreateVM();
         var specs1 = new Dictionary<string, ActionSpec>(StringComparer.OrdinalIgnoreCase) { ["a"] = new("a", ActionCategory.Global, RuntimeMode.Unknown, ExecutionKind.Sdk, new JsonObject(), false, 0) };
-        SetField(vm, "_loadedActionSpecs", (IReadOnlyDictionary<string, ActionSpec>)specs1); SetField(vm, "_selectedActionId", "a");
+        SetField(vm, "_loadedActionSpecs", specs1); SetField(vm, "_selectedActionId", "a");
         InvokeTryGetRequired(vm, out _).Should().BeFalse();
     }
 
@@ -128,7 +128,7 @@ public sealed class AppWave6CoverageTests
     {
         var vm = CreateVM();
         var specs2 = new Dictionary<string, ActionSpec>(StringComparer.OrdinalIgnoreCase) { ["a"] = new("a", ActionCategory.Global, RuntimeMode.Unknown, ExecutionKind.Sdk, new JsonObject { ["required"] = new JsonArray(JsonValue.Create("intValue")!) }, false, 0) };
-        SetField(vm, "_loadedActionSpecs", (IReadOnlyDictionary<string, ActionSpec>)specs2); SetField(vm, "_selectedActionId", "a");
+        SetField(vm, "_loadedActionSpecs", specs2); SetField(vm, "_selectedActionId", "a");
         InvokeTryGetRequired(vm, out _).Should().BeTrue();
     }
 

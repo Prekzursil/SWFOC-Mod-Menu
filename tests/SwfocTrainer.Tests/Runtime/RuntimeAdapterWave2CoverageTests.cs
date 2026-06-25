@@ -55,7 +55,7 @@ public sealed class RuntimeAdapterWave2CoverageTests
 
         var json = JsonSerializer.SerializeToElement(new Dictionary<string, string> { ["sym1"] = "0x100" });
         var destination = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
-        method!.Invoke(null, new object?[] { destination, (object)json });
+        method!.Invoke(null, new object?[] { destination, json });
         destination.Should().ContainKey("sym1");
     }
 
@@ -102,7 +102,7 @@ public sealed class RuntimeAdapterWave2CoverageTests
 
         var serialized = JsonSerializer.Serialize(new Dictionary<string, string> { ["x"] = "0xFF" });
         var destination = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
-        method!.Invoke(null, new object?[] { destination, (object)serialized });
+        method!.Invoke(null, new object?[] { destination, serialized });
         destination.Should().ContainKey("x");
     }
 
@@ -114,7 +114,7 @@ public sealed class RuntimeAdapterWave2CoverageTests
         method.Should().NotBeNull();
 
         var destination = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
-        method!.Invoke(null, new object?[] { destination, (object)"not-valid-json{{{" });
+        method!.Invoke(null, new object?[] { destination, "not-valid-json{{{" });
         destination.Should().BeEmpty();
     }
 
@@ -126,7 +126,7 @@ public sealed class RuntimeAdapterWave2CoverageTests
         method.Should().NotBeNull();
 
         var destination = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
-        method!.Invoke(null, new object?[] { destination, (object)"" });
+        method!.Invoke(null, new object?[] { destination, "" });
         destination.Should().BeEmpty();
     }
 
@@ -194,7 +194,7 @@ public sealed class RuntimeAdapterWave2CoverageTests
 
         var element = JsonSerializer.SerializeToElement(new[] { 1, 2, 3 });
         var destination = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
-        var result = (bool)method!.Invoke(null, new object?[] { destination, (object)element })!;
+        var result = (bool)method!.Invoke(null, new object?[] { destination, element })!;
         result.Should().BeFalse();
     }
 

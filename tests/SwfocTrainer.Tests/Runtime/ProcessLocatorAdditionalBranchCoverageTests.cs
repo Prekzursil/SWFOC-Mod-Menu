@@ -368,7 +368,7 @@ public sealed class ProcessLocatorAdditionalBranchCoverageTests
     {
         var options = new ProcessLocatorOptions(new[] { "forced_id" }, "forced_profile");
         var result = InvokeStaticMethod("ResolveForcedContext",
-            "cmd", (string?)null, new[] { "detected_id" }, options);
+            "cmd", null, new[] { "detected_id" }, options);
         ReadProperty<string>(result!, "Source").Should().Be("detected");
     }
 
@@ -386,7 +386,7 @@ public sealed class ProcessLocatorAdditionalBranchCoverageTests
     {
         var options = new ProcessLocatorOptions(new[] { "forced_id" }, "forced_profile");
         var result = InvokeStaticMethod("ResolveForcedContext",
-            "cmd", (string?)null, Array.Empty<string>(), options);
+            "cmd", null, Array.Empty<string>(), options);
         ReadProperty<string>(result!, "Source").Should().Be("forced");
         ReadProperty<bool>(result!, "IsForced").Should().BeTrue();
         ReadProperty<string>(result!, "ForcedProfileId").Should().Be("forced_profile");
@@ -397,7 +397,7 @@ public sealed class ProcessLocatorAdditionalBranchCoverageTests
     {
         var options = new ProcessLocatorOptions(null, "forced_profile");
         var result = InvokeStaticMethod("ResolveForcedContext",
-            "cmd", (string?)null, Array.Empty<string>(), options);
+            "cmd", null, Array.Empty<string>(), options);
         ReadProperty<string>(result!, "Source").Should().Be("forced");
     }
 
@@ -406,7 +406,7 @@ public sealed class ProcessLocatorAdditionalBranchCoverageTests
     {
         var options = ProcessLocatorOptions.None;
         var result = InvokeStaticMethod("ResolveForcedContext",
-            "cmd", (string?)null, Array.Empty<string>(), options);
+            "cmd", null, Array.Empty<string>(), options);
         ReadProperty<string>(result!, "Source").Should().Be("detected");
         ReadProperty<bool>(result!, "IsForced").Should().BeFalse();
     }
@@ -417,7 +417,7 @@ public sealed class ProcessLocatorAdditionalBranchCoverageTests
         // Forced profile but no forced workshop IDs, and no detected mod markers
         var options = new ProcessLocatorOptions(Array.Empty<string>(), "forced_profile");
         var result = InvokeStaticMethod("ResolveForcedContext",
-            "cmd", (string?)null, Array.Empty<string>(), options);
+            "cmd", null, Array.Empty<string>(), options);
         ReadProperty<string>(result!, "Source").Should().Be("forced");
     }
 
@@ -697,7 +697,7 @@ public sealed class ProcessLocatorAdditionalBranchCoverageTests
     {
         var options = new ProcessLocatorOptions(new[] { "id" }, null);
         var result = InvokeStaticMethod("ResolveForcedContext",
-            "cmd", (string?)null, Array.Empty<string>(), options);
+            "cmd", null, Array.Empty<string>(), options);
         ReadProperty<bool>(result!, "IsForced").Should().BeTrue();
     }
 
@@ -706,7 +706,7 @@ public sealed class ProcessLocatorAdditionalBranchCoverageTests
     {
         var options = ProcessLocatorOptions.None;
         var result = InvokeStaticMethod("ResolveForcedContext",
-            "cmd", (string?)null, Array.Empty<string>(), options);
+            "cmd", null, Array.Empty<string>(), options);
         ReadProperty<bool>(result!, "IsForced").Should().BeFalse();
     }
 

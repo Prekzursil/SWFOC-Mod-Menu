@@ -66,9 +66,9 @@ public sealed class SavesWave7FinalTests
     public void TryDeleteTempOutput_LockedFile_ShouldNotThrow()
     {
         var helper = CreateHelper();
-        var tempDir = Path.Combine(Path.GetTempPath(), "saves-w7-del-" + Guid.NewGuid().ToString("N"));
+        var tempDir = Path.Join(Path.GetTempPath(), "saves-w7-del-" + Guid.NewGuid().ToString("N"));
         Directory.CreateDirectory(tempDir);
-        var tempFile = Path.Combine(tempDir, "temp.sav");
+        var tempFile = Path.Join(tempDir, "temp.sav");
         try
         {
             File.WriteAllBytes(tempFile, new byte[10]);
@@ -109,9 +109,9 @@ public sealed class SavesWave7FinalTests
             BindingFlags.NonPublic | BindingFlags.Static);
         method.Should().NotBeNull();
 
-        var tempDir = Path.Combine(Path.GetTempPath(), "saves-w7-ext-" + Guid.NewGuid().ToString("N"));
+        var tempDir = Path.Join(Path.GetTempPath(), "saves-w7-ext-" + Guid.NewGuid().ToString("N"));
         Directory.CreateDirectory(tempDir);
-        var badPath = Path.Combine(tempDir, "backup.txt");
+        var badPath = Path.Join(tempDir, "backup.txt");
         File.WriteAllText(badPath, "data");
         try
         {
@@ -134,11 +134,11 @@ public sealed class SavesWave7FinalTests
             BindingFlags.NonPublic | BindingFlags.Static);
         method.Should().NotBeNull();
 
-        var tempDir = Path.Combine(Path.GetTempPath(), "saves-w7-ne-" + Guid.NewGuid().ToString("N"));
+        var tempDir = Path.Join(Path.GetTempPath(), "saves-w7-ne-" + Guid.NewGuid().ToString("N"));
         Directory.CreateDirectory(tempDir);
         try
         {
-            var missingPath = Path.Combine(tempDir, "backup.bak.001.sav");
+            var missingPath = Path.Join(tempDir, "backup.bak.001.sav");
             var args = new object?[] { missingPath, null, "" };
             var result = (bool)method!.Invoke(null, args)!;
             result.Should().BeFalse();
@@ -158,9 +158,9 @@ public sealed class SavesWave7FinalTests
             BindingFlags.NonPublic | BindingFlags.Static);
         method.Should().NotBeNull();
 
-        var tempDir = Path.Combine(Path.GetTempPath(), "saves-w7-ok-" + Guid.NewGuid().ToString("N"));
+        var tempDir = Path.Join(Path.GetTempPath(), "saves-w7-ok-" + Guid.NewGuid().ToString("N"));
         Directory.CreateDirectory(tempDir);
-        var savPath = Path.Combine(tempDir, "backup.bak.001.sav");
+        var savPath = Path.Join(tempDir, "backup.bak.001.sav");
         File.WriteAllBytes(savPath, new byte[10]);
         try
         {
@@ -182,9 +182,9 @@ public sealed class SavesWave7FinalTests
     [Fact]
     public async Task LoadPackAsync_OperationWithNegativeOffset_ShouldThrow()
     {
-        var tempDir = Path.Combine(Path.GetTempPath(), "saves-w7-pack-" + Guid.NewGuid().ToString("N"));
+        var tempDir = Path.Join(Path.GetTempPath(), "saves-w7-pack-" + Guid.NewGuid().ToString("N"));
         Directory.CreateDirectory(tempDir);
-        var packPath = Path.Combine(tempDir, "test.patch.json");
+        var packPath = Path.Join(tempDir, "test.patch.json");
         try
         {
             var json = JsonSerializer.Serialize(new
@@ -231,9 +231,9 @@ public sealed class SavesWave7FinalTests
     [Fact]
     public async Task LoadPackAsync_OperationWithMissingFieldId_ShouldThrow()
     {
-        var tempDir = Path.Combine(Path.GetTempPath(), "saves-w7-fid-" + Guid.NewGuid().ToString("N"));
+        var tempDir = Path.Join(Path.GetTempPath(), "saves-w7-fid-" + Guid.NewGuid().ToString("N"));
         Directory.CreateDirectory(tempDir);
-        var packPath = Path.Combine(tempDir, "test.patch.json");
+        var packPath = Path.Join(tempDir, "test.patch.json");
         try
         {
             var json = JsonSerializer.Serialize(new
@@ -280,9 +280,9 @@ public sealed class SavesWave7FinalTests
     [Fact]
     public async Task LoadPackAsync_OperationWithMissingNewValue_ShouldThrow()
     {
-        var tempDir = Path.Combine(Path.GetTempPath(), "saves-w7-nv-" + Guid.NewGuid().ToString("N"));
+        var tempDir = Path.Join(Path.GetTempPath(), "saves-w7-nv-" + Guid.NewGuid().ToString("N"));
         Directory.CreateDirectory(tempDir);
-        var packPath = Path.Combine(tempDir, "test.patch.json");
+        var packPath = Path.Join(tempDir, "test.patch.json");
         try
         {
             var json = @"{
@@ -326,9 +326,9 @@ public sealed class SavesWave7FinalTests
     [Fact]
     public async Task LoadPackAsync_MissingCompatibilitySection_ShouldThrow()
     {
-        var tempDir = Path.Combine(Path.GetTempPath(), "saves-w7-compat-" + Guid.NewGuid().ToString("N"));
+        var tempDir = Path.Join(Path.GetTempPath(), "saves-w7-compat-" + Guid.NewGuid().ToString("N"));
         Directory.CreateDirectory(tempDir);
-        var packPath = Path.Combine(tempDir, "test.patch.json");
+        var packPath = Path.Join(tempDir, "test.patch.json");
         try
         {
             var json = @"{
@@ -360,9 +360,9 @@ public sealed class SavesWave7FinalTests
     [Fact]
     public async Task LoadPackAsync_WrongSchemaVersion_ShouldThrow()
     {
-        var tempDir = Path.Combine(Path.GetTempPath(), "saves-w7-ver-" + Guid.NewGuid().ToString("N"));
+        var tempDir = Path.Join(Path.GetTempPath(), "saves-w7-ver-" + Guid.NewGuid().ToString("N"));
         Directory.CreateDirectory(tempDir);
-        var packPath = Path.Combine(tempDir, "test.patch.json");
+        var packPath = Path.Join(tempDir, "test.patch.json");
         try
         {
             var json = @"{
@@ -428,7 +428,7 @@ public sealed class SavesWave7FinalTests
 
     private static SavePatchPackService CreatePackService()
     {
-        var tempDir = Path.Combine(Path.GetTempPath(), "saves-w7-schemas-" + Guid.NewGuid().ToString("N"));
+        var tempDir = Path.Join(Path.GetTempPath(), "saves-w7-schemas-" + Guid.NewGuid().ToString("N"));
         Directory.CreateDirectory(tempDir);
         return new SavePatchPackService(new SaveOptions { SchemaRootPath = tempDir });
     }

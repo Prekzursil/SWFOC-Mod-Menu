@@ -558,7 +558,7 @@ public sealed class MegArchiveReaderBranchTests
             writer.Write(0u);
             writer.Write((uint)i);
             writer.Write((uint)entries[i].Bytes.Length);
-            writer.Write((uint)cursor);
+            writer.Write(cursor);
             writer.Write((ushort)i);
             cursor += (uint)entries[i].Bytes.Length;
         }

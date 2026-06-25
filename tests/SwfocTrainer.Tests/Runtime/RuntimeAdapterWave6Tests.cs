@@ -457,8 +457,8 @@ public sealed class RuntimeAdapterWave6Tests
     public void MergeDiagnostics_ShouldReturnPrimary_WhenBothEmpty()
     {
         var result = InvokeStatic("MergeDiagnostics",
-            (IReadOnlyDictionary<string, object?>?)null,
-            (IReadOnlyDictionary<string, object?>?)null);
+            null,
+            null);
         result.Should().BeNull();
     }
 
@@ -466,7 +466,7 @@ public sealed class RuntimeAdapterWave6Tests
     public void MergeDiagnostics_ShouldReturnPrimary_WhenSecondaryNull()
     {
         IReadOnlyDictionary<string, object?>? empty = new Dictionary<string, object?>();
-        var result = InvokeStatic("MergeDiagnostics", empty, (IReadOnlyDictionary<string, object?>?)null);
+        var result = InvokeStatic("MergeDiagnostics", empty, null);
         result.Should().Be(empty);
     }
 
@@ -709,7 +709,7 @@ public sealed class RuntimeAdapterWave6Tests
     [Fact]
     public void ValidateRequestedIntValue_ShouldPass_WhenNoRule()
     {
-        var result = InvokeStatic("ValidateRequestedIntValue", "test", 100L, (SymbolValidationRule?)null);
+        var result = InvokeStatic("ValidateRequestedIntValue", "test", 100L, null);
         result.Should().NotBeNull();
         var isValid = result!.GetType().GetProperty("IsValid")!.GetValue(result);
         isValid.Should().Be(true);
@@ -719,7 +719,7 @@ public sealed class RuntimeAdapterWave6Tests
     public void ValidateRequestedIntValue_ShouldFail_WhenBelowMin()
     {
         var rule = new SymbolValidationRule("test", IntMin: 10);
-        var result = InvokeStatic("ValidateRequestedIntValue", "test", 5L, (SymbolValidationRule?)rule);
+        var result = InvokeStatic("ValidateRequestedIntValue", "test", 5L, rule);
         var isValid = result!.GetType().GetProperty("IsValid")!.GetValue(result);
         isValid.Should().Be(false);
         var reasonCode = (string?)result.GetType().GetProperty("ReasonCode")!.GetValue(result);
@@ -730,7 +730,7 @@ public sealed class RuntimeAdapterWave6Tests
     public void ValidateRequestedIntValue_ShouldFail_WhenAboveMax()
     {
         var rule = new SymbolValidationRule("test", IntMax: 100);
-        var result = InvokeStatic("ValidateRequestedIntValue", "test", 200L, (SymbolValidationRule?)rule);
+        var result = InvokeStatic("ValidateRequestedIntValue", "test", 200L, rule);
         var isValid = result!.GetType().GetProperty("IsValid")!.GetValue(result);
         isValid.Should().Be(false);
         var reasonCode = (string?)result.GetType().GetProperty("ReasonCode")!.GetValue(result);
@@ -740,7 +740,7 @@ public sealed class RuntimeAdapterWave6Tests
     [Fact]
     public void ValidateRequestedFloatValue_ShouldFail_WhenNaN()
     {
-        var result = InvokeStatic("ValidateRequestedFloatValue", "test", double.NaN, (SymbolValidationRule?)null);
+        var result = InvokeStatic("ValidateRequestedFloatValue", "test", double.NaN, null);
         var isValid = result!.GetType().GetProperty("IsValid")!.GetValue(result);
         isValid.Should().Be(false);
     }
@@ -748,7 +748,7 @@ public sealed class RuntimeAdapterWave6Tests
     [Fact]
     public void ValidateRequestedFloatValue_ShouldFail_WhenInfinity()
     {
-        var result = InvokeStatic("ValidateRequestedFloatValue", "test", double.PositiveInfinity, (SymbolValidationRule?)null);
+        var result = InvokeStatic("ValidateRequestedFloatValue", "test", double.PositiveInfinity, null);
         var isValid = result!.GetType().GetProperty("IsValid")!.GetValue(result);
         isValid.Should().Be(false);
     }
@@ -757,7 +757,7 @@ public sealed class RuntimeAdapterWave6Tests
     public void ValidateRequestedFloatValue_ShouldFail_WhenBelowMin()
     {
         var rule = new SymbolValidationRule("test", FloatMin: 1.0);
-        var result = InvokeStatic("ValidateRequestedFloatValue", "test", 0.5d, (SymbolValidationRule?)rule);
+        var result = InvokeStatic("ValidateRequestedFloatValue", "test", 0.5d, rule);
         var isValid = result!.GetType().GetProperty("IsValid")!.GetValue(result);
         isValid.Should().Be(false);
     }
@@ -766,7 +766,7 @@ public sealed class RuntimeAdapterWave6Tests
     public void ValidateRequestedFloatValue_ShouldFail_WhenAboveMax()
     {
         var rule = new SymbolValidationRule("test", FloatMax: 10.0);
-        var result = InvokeStatic("ValidateRequestedFloatValue", "test", 20.0d, (SymbolValidationRule?)rule);
+        var result = InvokeStatic("ValidateRequestedFloatValue", "test", 20.0d, rule);
         var isValid = result!.GetType().GetProperty("IsValid")!.GetValue(result);
         isValid.Should().Be(false);
     }
@@ -774,7 +774,7 @@ public sealed class RuntimeAdapterWave6Tests
     [Fact]
     public void ValidateRequestedFloatValue_ShouldPass_WhenNoRule()
     {
-        var result = InvokeStatic("ValidateRequestedFloatValue", "test", 5.0d, (SymbolValidationRule?)null);
+        var result = InvokeStatic("ValidateRequestedFloatValue", "test", 5.0d, null);
         var isValid = result!.GetType().GetProperty("IsValid")!.GetValue(result);
         isValid.Should().Be(true);
     }
@@ -782,7 +782,7 @@ public sealed class RuntimeAdapterWave6Tests
     [Fact]
     public void ValidateObservedIntValue_ShouldPass_WhenNoRule()
     {
-        var result = InvokeStatic("ValidateObservedIntValue", "test", 100L, (SymbolValidationRule?)null);
+        var result = InvokeStatic("ValidateObservedIntValue", "test", 100L, null);
         var isValid = result!.GetType().GetProperty("IsValid")!.GetValue(result);
         isValid.Should().Be(true);
     }
@@ -791,7 +791,7 @@ public sealed class RuntimeAdapterWave6Tests
     public void ValidateObservedIntValue_ShouldFail_WhenBelowMin()
     {
         var rule = new SymbolValidationRule("test", IntMin: 10);
-        var result = InvokeStatic("ValidateObservedIntValue", "test", 1L, (SymbolValidationRule?)rule);
+        var result = InvokeStatic("ValidateObservedIntValue", "test", 1L, rule);
         var isValid = result!.GetType().GetProperty("IsValid")!.GetValue(result);
         isValid.Should().Be(false);
     }
@@ -800,7 +800,7 @@ public sealed class RuntimeAdapterWave6Tests
     public void ValidateObservedIntValue_ShouldFail_WhenAboveMax()
     {
         var rule = new SymbolValidationRule("test", IntMax: 50);
-        var result = InvokeStatic("ValidateObservedIntValue", "test", 100L, (SymbolValidationRule?)rule);
+        var result = InvokeStatic("ValidateObservedIntValue", "test", 100L, rule);
         var isValid = result!.GetType().GetProperty("IsValid")!.GetValue(result);
         isValid.Should().Be(false);
     }
@@ -808,7 +808,7 @@ public sealed class RuntimeAdapterWave6Tests
     [Fact]
     public void ValidateObservedFloatValue_ShouldPass_WhenNoRule()
     {
-        var result = InvokeStatic("ValidateObservedFloatValue", "test", 5.0d, (SymbolValidationRule?)null);
+        var result = InvokeStatic("ValidateObservedFloatValue", "test", 5.0d, null);
         var isValid = result!.GetType().GetProperty("IsValid")!.GetValue(result);
         isValid.Should().Be(true);
     }
@@ -816,7 +816,7 @@ public sealed class RuntimeAdapterWave6Tests
     [Fact]
     public void ValidateObservedFloatValue_ShouldFail_WhenNaN()
     {
-        var result = InvokeStatic("ValidateObservedFloatValue", "test", double.NaN, (SymbolValidationRule?)null);
+        var result = InvokeStatic("ValidateObservedFloatValue", "test", double.NaN, null);
         var isValid = result!.GetType().GetProperty("IsValid")!.GetValue(result);
         isValid.Should().Be(false);
     }
@@ -824,7 +824,7 @@ public sealed class RuntimeAdapterWave6Tests
     [Fact]
     public void ValidateObservedFloatValue_ShouldFail_WhenInfinity()
     {
-        var result = InvokeStatic("ValidateObservedFloatValue", "test", double.NegativeInfinity, (SymbolValidationRule?)null);
+        var result = InvokeStatic("ValidateObservedFloatValue", "test", double.NegativeInfinity, null);
         var isValid = result!.GetType().GetProperty("IsValid")!.GetValue(result);
         isValid.Should().Be(false);
     }
@@ -833,7 +833,7 @@ public sealed class RuntimeAdapterWave6Tests
     public void ValidateObservedFloatValue_ShouldFail_WhenBelowMin()
     {
         var rule = new SymbolValidationRule("test", FloatMin: 1.0);
-        var result = InvokeStatic("ValidateObservedFloatValue", "test", 0.1d, (SymbolValidationRule?)rule);
+        var result = InvokeStatic("ValidateObservedFloatValue", "test", 0.1d, rule);
         var isValid = result!.GetType().GetProperty("IsValid")!.GetValue(result);
         isValid.Should().Be(false);
     }
@@ -842,7 +842,7 @@ public sealed class RuntimeAdapterWave6Tests
     public void ValidateObservedFloatValue_ShouldFail_WhenAboveMax()
     {
         var rule = new SymbolValidationRule("test", FloatMax: 10.0);
-        var result = InvokeStatic("ValidateObservedFloatValue", "test", 20.0d, (SymbolValidationRule?)rule);
+        var result = InvokeStatic("ValidateObservedFloatValue", "test", 20.0d, rule);
         var isValid = result!.GetType().GetProperty("IsValid")!.GetValue(result);
         isValid.Should().Be(false);
     }
@@ -860,7 +860,7 @@ public sealed class RuntimeAdapterWave6Tests
     [InlineData(SymbolValueType.Int64, 42L)]
     public void ValidateObservedReadValue_ShouldPass_ForValidTypes(SymbolValueType type, object value)
     {
-        var result = InvokeStatic("ValidateObservedReadValue", "test", value, type, (SymbolValidationRule?)null);
+        var result = InvokeStatic("ValidateObservedReadValue", "test", value, type, null);
         var isValid = result!.GetType().GetProperty("IsValid")!.GetValue(result);
         isValid.Should().Be(true);
     }
@@ -868,7 +868,7 @@ public sealed class RuntimeAdapterWave6Tests
     [Fact]
     public void ValidateObservedReadValue_ShouldPass_ForPointerType()
     {
-        var result = InvokeStatic("ValidateObservedReadValue", "test", (object)"0x1000", SymbolValueType.Pointer, (SymbolValidationRule?)null);
+        var result = InvokeStatic("ValidateObservedReadValue", "test", "0x1000", SymbolValueType.Pointer, (SymbolValidationRule?)null);
         var isValid = result!.GetType().GetProperty("IsValid")!.GetValue(result);
         isValid.Should().Be(true);
     }
@@ -1000,7 +1000,7 @@ public sealed class RuntimeAdapterWave6Tests
     public void MergeAnchorMap_ShouldHandleNull()
     {
         var dest = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
-        InvokeStatic("MergeAnchorMap", (IDictionary<string, string>)dest, (object?)null);
+        InvokeStatic("MergeAnchorMap", dest, (object?)null);
         dest.Should().BeEmpty();
     }
 
@@ -1009,7 +1009,7 @@ public sealed class RuntimeAdapterWave6Tests
     {
         var dest = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
         var obj = new JsonObject { ["key1"] = "value1" };
-        InvokeStatic("MergeAnchorMap", (IDictionary<string, string>)dest, (object)obj);
+        InvokeStatic("MergeAnchorMap", dest, obj);
         dest.Should().ContainKey("key1");
     }
 
@@ -1018,7 +1018,7 @@ public sealed class RuntimeAdapterWave6Tests
     {
         var dest = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
         var json = JsonSerializer.Deserialize<JsonElement>("{\"key2\":\"value2\"}");
-        InvokeStatic("MergeAnchorMap", (IDictionary<string, string>)dest, (object)json);
+        InvokeStatic("MergeAnchorMap", dest, json);
         dest.Should().ContainKey("key2");
     }
 
@@ -1027,7 +1027,7 @@ public sealed class RuntimeAdapterWave6Tests
     {
         var dest = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
         var dict = new Dictionary<string, object?> { ["key3"] = "value3" } as IReadOnlyDictionary<string, object?>;
-        InvokeStatic("MergeAnchorMap", (IDictionary<string, string>)dest, (object)dict);
+        InvokeStatic("MergeAnchorMap", dest, dict);
         dest.Should().ContainKey("key3");
     }
 
@@ -1036,7 +1036,7 @@ public sealed class RuntimeAdapterWave6Tests
     {
         var dest = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
         var pairs = new Dictionary<string, string> { ["key4"] = "value4" } as IEnumerable<KeyValuePair<string, string>>;
-        InvokeStatic("MergeAnchorMap", (IDictionary<string, string>)dest, (object)pairs);
+        InvokeStatic("MergeAnchorMap", dest, pairs);
         dest.Should().ContainKey("key4");
     }
 
@@ -1045,7 +1045,7 @@ public sealed class RuntimeAdapterWave6Tests
     {
         var dest = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
         var serialized = JsonSerializer.Serialize(new Dictionary<string, string> { ["key5"] = "value5" });
-        InvokeStatic("MergeAnchorMap", (IDictionary<string, string>)dest, (object)serialized);
+        InvokeStatic("MergeAnchorMap", dest, serialized);
         dest.Should().ContainKey("key5");
     }
 
@@ -1053,7 +1053,7 @@ public sealed class RuntimeAdapterWave6Tests
     public void MergeAnchorMap_ShouldHandleMalformedJson()
     {
         var dest = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
-        InvokeStatic("MergeAnchorMap", (IDictionary<string, string>)dest, (object)"not_valid_json{");
+        InvokeStatic("MergeAnchorMap", dest, "not_valid_json{");
         dest.Should().BeEmpty();
     }
 
@@ -1062,7 +1062,7 @@ public sealed class RuntimeAdapterWave6Tests
     {
         var dest = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
         var pairs = new Dictionary<string, string> { ["key4"] = "", ["key5"] = "ok" } as IEnumerable<KeyValuePair<string, string>>;
-        InvokeStatic("MergeAnchorMap", (IDictionary<string, string>)dest, (object)pairs);
+        InvokeStatic("MergeAnchorMap", dest, pairs);
         dest.Should().NotContainKey("key4");
         dest.Should().ContainKey("key5");
     }
@@ -1835,7 +1835,7 @@ public sealed class RuntimeAdapterWave6Tests
     public void ResolveBackendDiagnosticValue_ShouldFallbackToRouteBackend()
     {
         var result = (string?)InvokeStatic("ResolveBackendDiagnosticValue",
-            (IReadOnlyDictionary<string, object?>?)null, ExecutionBackendKind.Memory);
+            null, ExecutionBackendKind.Memory);
         result.Should().Be("Memory");
     }
 
@@ -1851,8 +1851,8 @@ public sealed class RuntimeAdapterWave6Tests
     public void ResolveHookStateDiagnosticValue_ShouldReturnUnknown_WhenNoData()
     {
         var result = (string?)InvokeStatic("ResolveHookStateDiagnosticValue",
-            (IReadOnlyDictionary<string, object?>?)null,
-            (IReadOnlyDictionary<string, object?>?)null);
+            null,
+            null);
         result.Should().Be("unknown");
     }
 
@@ -1860,7 +1860,7 @@ public sealed class RuntimeAdapterWave6Tests
     public void ResolveExpertOverrideEnabledDiagnosticValue_ShouldReturnDefault_WhenNotPresent()
     {
         var result = (bool)InvokeStatic("ResolveExpertOverrideEnabledDiagnosticValue",
-            (IReadOnlyDictionary<string, object?>?)null, true)!;
+            null, true)!;
         result.Should().BeTrue();
     }
 
@@ -1868,7 +1868,7 @@ public sealed class RuntimeAdapterWave6Tests
     public void ResolveOverrideReasonDiagnosticValue_ShouldReturnDefault_WhenNotPresent()
     {
         var result = (string?)InvokeStatic("ResolveOverrideReasonDiagnosticValue",
-            (IReadOnlyDictionary<string, object?>?)null, "default_reason");
+            null, "default_reason");
         result.Should().Be("default_reason");
     }
 
@@ -1876,7 +1876,7 @@ public sealed class RuntimeAdapterWave6Tests
     public void ResolvePanicDisableStateDiagnosticValue_ShouldReturnDefault_WhenNotPresent()
     {
         var result = (string?)InvokeStatic("ResolvePanicDisableStateDiagnosticValue",
-            (IReadOnlyDictionary<string, object?>?)null, "inactive");
+            null, "inactive");
         result.Should().Be("inactive");
     }
 
@@ -2066,7 +2066,7 @@ public sealed class RuntimeAdapterWave6Tests
     public void IsCriticalSymbol_ShouldReturnFalse_WhenNotCritical()
     {
         var adapter = CreateAttachedAdapter();
-        var result = (bool)InvokePrivate(adapter, "IsCriticalSymbol", "credits", (SymbolValidationRule?)null)!;
+        var result = (bool)InvokePrivate(adapter, "IsCriticalSymbol", "credits", null)!;
         result.Should().BeFalse();
     }
 
@@ -2076,7 +2076,7 @@ public sealed class RuntimeAdapterWave6Tests
         var adapter = CreateAttachedAdapter();
         var criticalSymbols = GetField<HashSet<string>>(adapter, "_criticalSymbols");
         criticalSymbols!.Add("credits");
-        var result = (bool)InvokePrivate(adapter, "IsCriticalSymbol", "credits", (SymbolValidationRule?)null)!;
+        var result = (bool)InvokePrivate(adapter, "IsCriticalSymbol", "credits", null)!;
         result.Should().BeTrue();
     }
 
@@ -2085,7 +2085,7 @@ public sealed class RuntimeAdapterWave6Tests
     {
         var adapter = CreateAttachedAdapter();
         var rule = new SymbolValidationRule("credits", Critical: true);
-        var result = (bool)InvokePrivate(adapter, "IsCriticalSymbol", "credits", (SymbolValidationRule?)rule)!;
+        var result = (bool)InvokePrivate(adapter, "IsCriticalSymbol", "credits", rule)!;
         result.Should().BeTrue();
     }
 

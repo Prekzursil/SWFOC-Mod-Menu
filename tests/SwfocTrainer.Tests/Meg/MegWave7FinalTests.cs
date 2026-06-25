@@ -22,9 +22,9 @@ public sealed class MegWave7FinalTests
     [Fact]
     public void Open_WithLockedFile_ShouldReturnIoError()
     {
-        var tempDir = Path.Combine(Path.GetTempPath(), "meg-w7-" + Guid.NewGuid().ToString("N"));
+        var tempDir = Path.Join(Path.GetTempPath(), "meg-w7-" + Guid.NewGuid().ToString("N"));
         Directory.CreateDirectory(tempDir);
-        var megPath = Path.Combine(tempDir, "test.meg");
+        var megPath = Path.Join(tempDir, "test.meg");
         try
         {
             File.WriteAllBytes(megPath, new byte[16]);

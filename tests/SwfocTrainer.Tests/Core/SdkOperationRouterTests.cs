@@ -837,8 +837,8 @@ public sealed class SdkOperationRouterTests
     {
         var router = CreateRouter();
 
-        var act1 = async () => await router.ExecuteAsync((SdkOperationRequest)null!);
-        var act2 = async () => await router.ExecuteAsync((SdkOperationRequest)null!, CancellationToken.None);
+        var act1 = async () => await router.ExecuteAsync(null!);
+        var act2 = async () => await router.ExecuteAsync(null!, CancellationToken.None);
 
         await act1.Should().ThrowAsync<ArgumentNullException>();
         await act2.Should().ThrowAsync<ArgumentNullException>();

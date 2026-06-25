@@ -21,7 +21,7 @@ public sealed class DataIndexWave7FinalTests
     [Fact]
     public void Build_WithEmptyModPath_ShouldNotThrow()
     {
-        var tempDir = Path.Combine(Path.GetTempPath(), "di-w7-" + Guid.NewGuid().ToString("N"));
+        var tempDir = Path.Join(Path.GetTempPath(), "di-w7-" + Guid.NewGuid().ToString("N"));
         Directory.CreateDirectory(tempDir);
         try
         {
@@ -41,7 +41,7 @@ public sealed class DataIndexWave7FinalTests
     [Fact]
     public void Build_WithWhitespaceModPath_ShouldSkipModLooseEntries()
     {
-        var tempDir = Path.Combine(Path.GetTempPath(), "di-w7-ws-" + Guid.NewGuid().ToString("N"));
+        var tempDir = Path.Join(Path.GetTempPath(), "di-w7-ws-" + Guid.NewGuid().ToString("N"));
         Directory.CreateDirectory(tempDir);
         try
         {
@@ -63,9 +63,9 @@ public sealed class DataIndexWave7FinalTests
     [Fact]
     public void Build_WhenMegaFilesXmlHasDiagnostics_ShouldPropagate()
     {
-        var tempDir = Path.Combine(Path.GetTempPath(), "di-w7-diag-" + Guid.NewGuid().ToString("N"));
+        var tempDir = Path.Join(Path.GetTempPath(), "di-w7-diag-" + Guid.NewGuid().ToString("N"));
         Directory.CreateDirectory(tempDir);
-        var dataDir = Path.Combine(tempDir, "Data");
+        var dataDir = Path.Join(tempDir, "Data");
         Directory.CreateDirectory(dataDir);
         try
         {
@@ -73,7 +73,7 @@ public sealed class DataIndexWave7FinalTests
             var megaFilesContent = @"<MegaFiles>
   <MegaFile Filename=""nonexistent.meg"" />
 </MegaFiles>";
-            File.WriteAllText(Path.Combine(dataDir, "MegaFiles.xml"), megaFilesContent);
+            File.WriteAllText(Path.Join(dataDir, "MegaFiles.xml"), megaFilesContent);
 
             var request = new EffectiveGameDataIndexRequest("test", tempDir);
             var service = new EffectiveGameDataIndexService();
@@ -95,9 +95,9 @@ public sealed class DataIndexWave7FinalTests
     [Fact]
     public void Build_WhenMegFileNotUnderGameRoot_ShouldAddDiagnostic()
     {
-        var tempDir = Path.Combine(Path.GetTempPath(), "di-w7-resolve-" + Guid.NewGuid().ToString("N"));
+        var tempDir = Path.Join(Path.GetTempPath(), "di-w7-resolve-" + Guid.NewGuid().ToString("N"));
         Directory.CreateDirectory(tempDir);
-        var dataDir = Path.Combine(tempDir, "Data");
+        var dataDir = Path.Join(tempDir, "Data");
         Directory.CreateDirectory(dataDir);
         try
         {
@@ -105,7 +105,7 @@ public sealed class DataIndexWave7FinalTests
             var megaFilesContent = @"<MegaFiles>
   <MegaFile Filename=""missing_archive.meg"" />
 </MegaFiles>";
-            File.WriteAllText(Path.Combine(dataDir, "MegaFiles.xml"), megaFilesContent);
+            File.WriteAllText(Path.Join(dataDir, "MegaFiles.xml"), megaFilesContent);
 
             var request = new EffectiveGameDataIndexRequest("test", tempDir);
             var service = new EffectiveGameDataIndexService();
