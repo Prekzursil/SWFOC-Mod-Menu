@@ -2,10 +2,10 @@ from __future__ import annotations
 
 import ipaddress
 from typing import Optional, Set
-from urllib.parse import urlparse, urlunparse
+from urllib.parse import ParseResult, urlparse, urlunparse
 
 
-def _validate_url_scheme_and_host(parsed: object, raw_url: str) -> str:
+def _validate_url_scheme_and_host(parsed: ParseResult, raw_url: str) -> str:
     """Validate scheme, hostname presence, and credentials."""
     if parsed.scheme != "https":
         raise ValueError(f"Only https URLs are allowed: {raw_url!r}")
@@ -25,7 +25,9 @@ def _validate_host_allowlist(hostname: str, allowed_hosts: Optional[Set[str]]) -
         raise ValueError(f"URL host is not in allowlist: {hostname}")
 
 
-def _validate_host_suffix_allowlist(hostname: str, allowed_host_suffixes: Optional[Set[str]]) -> None:
+def _validate_host_suffix_allowlist(
+    hostname: str, allowed_host_suffixes: Optional[Set[str]]
+) -> None:
     """Check hostname against suffix allowlist."""
     if allowed_host_suffixes is None:
         return

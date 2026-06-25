@@ -1,0 +1,28 @@
+name: quality
+
+# Lean 6-gate quality gate (ADDITIVE; charter decided 2026-06-16).
+#
+# Thin ~5-line caller into the shared reusable workflow on the lean-gate template
+# branch, so this PR's CI exercises the real gate now. The migration runbook
+# re-pins this `uses:` to a tagged release once the template lands on main.
+#
+# This is ADDITIVE: it does NOT replace the existing fleet/SaaS workflows in this
+# repo (their deletion is deferred to the runbook), and it touches no
+# branch-protection / required-status-check contexts.
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: quality-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  quality:
+    uses: Prekzursil/quality-zero-platform/.github/workflows/reusable-quality.yml@v1

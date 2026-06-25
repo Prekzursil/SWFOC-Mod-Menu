@@ -19,7 +19,6 @@ if str(_HELPER_ROOT) not in sys.path:
 
 from security_helpers import normalize_https_url
 
-
 TOTAL_KEYS = {"total", "totalItems", "total_items", "count", "hits", "open_issues"}
 CODACY_API_BASE = "https://api.codacy.com"
 
@@ -29,13 +28,19 @@ def _parse_args() -> argparse.Namespace:
     parser.add_argument("--provider", default="gh", help="Organization provider, for example gh")
     parser.add_argument("--owner", required=True, help="Repository owner")
     parser.add_argument("--repo", required=True, help="Repository name")
-    parser.add_argument("--token", default="", help="Codacy API token (falls back to CODACY_API_TOKEN env)")
+    parser.add_argument(
+        "--token",
+        default="",
+        help="Codacy API token (falls back to CODACY_API_TOKEN env)",
+    )
     parser.add_argument("--out-json", default="codacy-zero/codacy.json", help="Output JSON path")
     parser.add_argument("--out-md", default="codacy-zero/codacy.md", help="Output markdown path")
     return parser.parse_args()
 
 
-def _request_json(url: str, token: str, *, method: str = "GET", data: Optional[Dict[str, Any]] = None) -> Dict[str, Any]:
+def _request_json(
+    url: str, token: str, *, method: str = "GET", data: Optional[Dict[str, Any]] = None
+) -> Dict[str, Any]:
     safe_url = normalize_https_url(url, allowed_host_suffixes={"codacy.com"}).rstrip("/")
     body = None
     headers = {
@@ -147,8 +152,12 @@ def _query_codacy_issues(
             findings.append(f"Codacy API request failed: {exc}")
             return "fail", None, findings
 
-    findings.append(f"Codacy API endpoint was not found for provider(s): {', '.join(provider_candidates)}.")
-    if last_exc is not None:
+    findings.append(
+        f"Codacy API endpoint was not found for provider(s): {', '.join(provider_candidates)}."
+    )
+    if (
+        last_exc is not None
+    ):  # pragma: no cover - loop only exits via all-404, which always sets last_exc
         findings.append(f"Last Codacy API error: {last_exc}")
     return "fail", None, findings
 
@@ -163,7 +172,9 @@ def main() -> int:
     if not token:
         status, open_issues, findings = "fail", None, ["CODACY_API_TOKEN is missing."]
     else:
-        status, open_issues, findings = _query_codacy_issues(api_base, token, owner, repo, args.provider)
+        status, open_issues, findings = _query_codacy_issues(
+            api_base, token, owner, repo, args.provider
+        )
 
     payload = {
         "status": status,

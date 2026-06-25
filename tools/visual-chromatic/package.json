@@ -3,11 +3,18 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "e2e:chromatic": "playwright test --config ./playwright.chromatic.config.js ./e2e/visual-pack.spec.js"
+    "e2e:chromatic": "playwright test --config ./playwright.chromatic.config.js ./e2e/visual-pack.pw.js"
   },
   "devDependencies": {
     "@chromatic-com/playwright": "^0.12.3",
     "@playwright/test": "1.58.2",
     "chromatic": "^16.0.0"
+  },
+  "overrides": {
+    "fast-uri": ">=3.1.2",
+    "postcss": ">=8.5.10",
+    "qs": ">=6.15.2",
+    "uuid": ">=11.1.1",
+    "ws": ">=8.21.0"
   }
 }

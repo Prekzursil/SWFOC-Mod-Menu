@@ -23,7 +23,9 @@ SENTRY_API_BASE = "https://sentry.io/api/0"
 
 
 def _parse_args() -> argparse.Namespace:
-    parser = argparse.ArgumentParser(description="Assert Sentry has zero unresolved issues for configured projects.")
+    parser = argparse.ArgumentParser(
+        description="Assert Sentry has zero unresolved issues for configured projects."
+    )
     parser.add_argument("--org", default="", help="Sentry org slug (falls back to SENTRY_ORG env)")
     parser.add_argument(
         "--project",
@@ -31,7 +33,11 @@ def _parse_args() -> argparse.Namespace:
         default=[],
         help="Project slug (repeatable, falls back to SENTRY_PROJECT_BACKEND/SENTRY_PROJECT_WEB env)",
     )
-    parser.add_argument("--token", default="", help="Sentry auth token (falls back to SENTRY_AUTH_TOKEN env)")
+    parser.add_argument(
+        "--token",
+        default="",
+        help="Sentry auth token (falls back to SENTRY_AUTH_TOKEN env)",
+    )
     parser.add_argument("--out-json", default="sentry-zero/sentry.json", help="Output JSON path")
     parser.add_argument("--out-md", default="sentry-zero/sentry.md", help="Output markdown path")
     return parser.parse_args()
@@ -130,7 +136,9 @@ def _validate_sentry_config(token: str, org: str, projects: List[str]) -> List[s
     if not org:
         findings.append("SENTRY_ORG is missing.")
     if not projects:
-        findings.append("No Sentry projects configured (SENTRY_PROJECT_BACKEND/SENTRY_PROJECT_WEB).")
+        findings.append(
+            "No Sentry projects configured (SENTRY_PROJECT_BACKEND/SENTRY_PROJECT_WEB)."
+        )
     return findings
 
 
@@ -150,7 +158,9 @@ def _query_project(api_base: str, org: str, project: str, token: str) -> Tuple[i
                 f"Sentry project {project} returned unresolved issues but no X-Hits header for exact totals."
             )
     if unresolved != 0:
-        findings.append(f"Sentry project {project} has {unresolved} unresolved issues (expected 0).")
+        findings.append(
+            f"Sentry project {project} has {unresolved} unresolved issues (expected 0)."
+        )
     return unresolved, findings
 
 

@@ -1,0 +1,90 @@
+# Lean SAST gate (charter gate 4) — small, pinned, high-signal in-repo ruleset.
+#
+# Scanned by `opengrep scan --config .quality/opengrep --error` in the reusable
+# quality workflow. The gate is clean-zero: any finding here fails CI. Rules are
+# kept deliberately narrow (true-positive security smells only) so the gate is
+# binary green/red and does not drown the signal in style noise — that is gate 1
+# (ruff / dotnet-format / clang-format) territory.
+#
+# Languages present in this repo: C#, C/C++, Python, JavaScript, Lua, PowerShell.
+# Opengrep/Semgrep CE rule schema (rule-compatible with Semgrep registry rules).
+
+rules:
+  # --- Python: dangerous dynamic execution ---------------------------------
+  - id: python-no-eval-exec
+    languages: [python]
+    severity: ERROR
+    message: >-
+      Use of eval()/exec() on dynamic input enables code injection. Replace with
+      an explicit parser or a constrained dispatch table.
+    metadata:
+      category: security
+      cwe: "CWE-95: Improper Neutralization of Directives in Dynamically Evaluated Code"
+    pattern-either:
+      - pattern: eval(...)
+      - pattern: exec(...)
+
+  # --- Python: shell invocation invites command injection ------------------
+  - id: python-subprocess-shell-true
+    languages: [python]
+    severity: ERROR
+    message: >-
+      subprocess call routed through the system shell can lead to command
+      injection when any argument is attacker-influenced. Pass an argv list and
+      keep the shell disabled.
+    metadata:
+      category: security
+      cwe: "CWE-78: OS Command Injection"
+    patterns:
+      - pattern-either:
+          - pattern: subprocess.run(..., shell=True, ...)
+          - pattern: subprocess.call(..., shell=True, ...)
+          - pattern: subprocess.Popen(..., shell=True, ...)
+          - pattern: subprocess.check_output(..., shell=True, ...)
+
+  # --- Python: insecure hash for security contexts -------------------------
+  - id: python-weak-hash-md5-sha1
+    languages: [python]
+    severity: ERROR
+    message: >-
+      MD5/SHA1 are unsuitable for security/integrity use. Use SHA-256+; if this
+      is a non-security checksum, pass usedforsecurity=False explicitly.
+    metadata:
+      category: security
+      cwe: "CWE-327: Use of a Broken or Risky Cryptographic Algorithm"
+    patterns:
+      - pattern-either:
+          - pattern: hashlib.md5(...)
+          - pattern: hashlib.sha1(...)
+      - pattern-not: hashlib.md5(..., usedforsecurity=False)
+      - pattern-not: hashlib.sha1(..., usedforsecurity=False)
+
+  # --- C/C++: classic unbounded string copies ------------------------------
+  - id: cpp-unbounded-string-copy
+    languages: [c, cpp]
+    severity: ERROR
+    message: >-
+      strcpy/strcat/sprintf/gets are unbounded and overflow fixed buffers. Use
+      the bounded forms (strncpy/snprintf/std::string) with explicit limits.
+    metadata:
+      category: security
+      cwe: "CWE-120: Buffer Copy without Checking Size of Input"
+    pattern-either:
+      - pattern: strcpy(...)
+      - pattern: strcat(...)
+      - pattern: sprintf(...)
+      - pattern: gets(...)
+
+  # --- JavaScript/TypeScript: eval / Function constructor ------------------
+  - id: js-no-eval
+    languages: [javascript, typescript]
+    severity: ERROR
+    message: >-
+      eval()/new Function() on dynamic input enables code injection. Use a real
+      parser or a static dispatch object instead.
+    metadata:
+      category: security
+      cwe: "CWE-95: Improper Neutralization of Directives in Dynamically Evaluated Code"
+    pattern-either:
+      - pattern: eval(...)
+      - pattern: new Function(...)

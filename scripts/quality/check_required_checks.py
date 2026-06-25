@@ -15,10 +15,14 @@ from typing import Any, Dict, List, Optional, Tuple
 
 
 def _parse_args() -> argparse.Namespace:
-    parser = argparse.ArgumentParser(description="Wait for required GitHub check contexts and assert they are successful.")
+    parser = argparse.ArgumentParser(
+        description="Wait for required GitHub check contexts and assert they are successful."
+    )
     parser.add_argument("--repo", required=True, help="owner/repo")
     parser.add_argument("--sha", required=True, help="commit SHA")
-    parser.add_argument("--required-context", action="append", default=[], help="Required context name")
+    parser.add_argument(
+        "--required-context", action="append", default=[], help="Required context name"
+    )
     parser.add_argument("--timeout-seconds", type=int, default=900)
     parser.add_argument("--poll-seconds", type=int, default=20)
     parser.add_argument("--out-json", default="quality-zero-gate/required-checks.json")
@@ -42,7 +46,9 @@ def _api_get(repo: str, path: str, token: str) -> Dict[str, Any]:
         return json.loads(resp.read().decode("utf-8"))
 
 
-def _collect_contexts(check_runs_payload: Dict[str, Any], status_payload: Dict[str, Any]) -> Dict[str, Dict[str, str]]:
+def _collect_contexts(
+    check_runs_payload: Dict[str, Any], status_payload: Dict[str, Any]
+) -> Dict[str, Dict[str, str]]:
     contexts: Dict[str, Dict[str, str]] = {}
 
     for run in check_runs_payload.get("check_runs", []) or []:
@@ -68,7 +74,9 @@ def _collect_contexts(check_runs_payload: Dict[str, Any], status_payload: Dict[s
     return contexts
 
 
-def _evaluate(required: List[str], contexts: Dict[str, Dict[str, str]]) -> Tuple[str, List[str], List[str]]:
+def _evaluate(
+    required: List[str], contexts: Dict[str, Dict[str, str]]
+) -> Tuple[str, List[str], List[str]]:
     missing: List[str] = []
     failed: List[str] = []
 
@@ -169,7 +177,11 @@ def main() -> int:
             break
 
         # wait only while there are missing contexts or in-progress check-runs
-        in_progress = any(v.get("state") != "completed" for v in contexts.values() if v.get("source") == "check_run")
+        in_progress = any(
+            v.get("state") != "completed"
+            for v in contexts.values()
+            if v.get("source") == "check_run"
+        )
         if not missing and not in_progress:
             break
         time.sleep(max(args.poll_seconds, 1))
@@ -186,7 +198,9 @@ def main() -> int:
 
     out_json.parent.mkdir(parents=True, exist_ok=True)
     out_md.parent.mkdir(parents=True, exist_ok=True)
-    out_json.write_text(json.dumps(final_payload, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+    out_json.write_text(
+        json.dumps(final_payload, indent=2, sort_keys=True) + "\n", encoding="utf-8"
+    )
     out_md.write_text(_render_md(final_payload), encoding="utf-8")
     print(out_md.read_text(encoding="utf-8"), end="")
 
