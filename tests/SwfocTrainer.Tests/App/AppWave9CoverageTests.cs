@@ -83,7 +83,7 @@ public sealed class AppWave9CoverageTests
             ["no_payload"] = new("no_payload", ActionCategory.Global, RuntimeMode.Unknown, ExecutionKind.Sdk,
                 new JsonObject { ["required"] = new JsonArray() }, false, 0)
         };
-        SetField(vm, "_loadedActionSpecs", (IReadOnlyDictionary<string, ActionSpec>)actions);
+        SetField(vm, "_loadedActionSpecs", actions);
         SetField(vm, "_selectedActionId", "no_payload");
         var original = vm.PayloadJson;
         Invoke(vm, "ApplyPayloadTemplateForSelectedAction");
@@ -131,7 +131,7 @@ public sealed class AppWave9CoverageTests
             ["set_credits"] = new("set_credits", ActionCategory.Economy, RuntimeMode.Unknown, ExecutionKind.Sdk,
                 new JsonObject { ["required"] = new JsonArray("symbol", "intValue") }, false, 0)
         };
-        SetField(vm, "_loadedActionSpecs", (IReadOnlyDictionary<string, ActionSpec>)actions);
+        SetField(vm, "_loadedActionSpecs", actions);
         SetField(vm, "_profiles", new FullStubProfiles(new[] { "test" }));
         vm.SelectedProfileId = "test";
         var result = await InvokeAsyncWithResult<bool>(vm, "EnsureActionAvailableForCurrentSessionAsync", "set_credits", "Test");
@@ -576,7 +576,7 @@ public sealed class AppWave9CoverageTests
         SetField(vm, "_launchModPath", string.Empty);
         SetField(vm, "_terminateExistingBeforeLaunch", false);
         SetField(vm, "_supportBundleOutputDirectory", Path.Join(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "SwfocTrainer", "support"));
-        SetField(vm, "_loadedActionSpecs", (IReadOnlyDictionary<string, ActionSpec>)new Dictionary<string, ActionSpec>(StringComparer.OrdinalIgnoreCase));
+        SetField(vm, "_loadedActionSpecs", new Dictionary<string, ActionSpec>(StringComparer.OrdinalIgnoreCase));
         SetField(vm, "_profiles", new FullStubProfiles(new[] { "test" }));
         SetField(vm, "_freezeService", new StubFreezeService());
         SetField(vm, "_freezeUiTimer", new DispatcherTimer { Interval = TimeSpan.FromHours(24) });
@@ -725,7 +725,7 @@ public sealed class AppWave9CoverageTests
     private sealed class StubSupportBundles : ISupportBundleService { private readonly bool _ok; public StubSupportBundles(bool ok) => _ok = ok; public Task<SupportBundleResult> ExportAsync(SupportBundleRequest r, CancellationToken ct) => Task.FromResult(new SupportBundleResult(_ok, @"C:\b.zip", @"C:\m.json", Array.Empty<string>(), Array.Empty<string>())); }
     private sealed class StubFreezeService : IValueFreezeService { public void FreezeInt(string s, int v) { } public void FreezeIntAggressive(string s, int v) { } public void FreezeFloat(string s, float v) { } public void FreezeBool(string s, bool v) { } public bool Unfreeze(string s) => false; public void UnfreezeAll() { } public bool IsFrozen(string s) => false; public IReadOnlyCollection<string> GetFrozenSymbols() => Array.Empty<string>(); public void Dispose() { } }
     private sealed class StubAuditLogger : IAuditLogger { public Task WriteAsync(ActionAuditRecord r, CancellationToken ct) => Task.CompletedTask; }
-    private sealed class StubTelemetry : ITelemetrySnapshotService { public void RecordAction(string a, AddressSource s, bool ok) { } public TelemetrySnapshot CreateSnapshot() => new(DateTimeOffset.UtcNow, new Dictionary<string, int>(), new Dictionary<string, int>(), new Dictionary<string, int>(), 0, 0, 0, 0); public Task<string> ExportSnapshotAsync(string d, CancellationToken ct) => Task.FromResult(Path.Combine(d, "t.json")); public void Reset() { } }
+    private sealed class StubTelemetry : ITelemetrySnapshotService { public void RecordAction(string a, AddressSource s, bool ok) { } public TelemetrySnapshot CreateSnapshot() => new(DateTimeOffset.UtcNow, new Dictionary<string, int>(), new Dictionary<string, int>(), new Dictionary<string, int>(), 0, 0, 0, 0); public Task<string> ExportSnapshotAsync(string d, CancellationToken ct) => Task.FromResult(Path.Join(d, "t.json")); public void Reset() { } }
     private sealed class StubActionReliability : IActionReliabilityService { public IReadOnlyList<ActionReliabilityInfo> Evaluate(TrainerProfile p, AttachSession s, IReadOnlyDictionary<string, IReadOnlyList<string>>? c) => Array.Empty<ActionReliabilityInfo>(); }
     private sealed class StubSelectedUnitTransactions : ISelectedUnitTransactionService
     {

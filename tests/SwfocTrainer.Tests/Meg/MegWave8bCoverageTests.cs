@@ -342,7 +342,7 @@ public sealed class MegWave8bCoverageTests
         BinaryPrimitives.WriteUInt32LittleEndian(bytes.AsSpan(cursor), 0); cursor += 4; // index
         BinaryPrimitives.WriteUInt32LittleEndian(bytes.AsSpan(cursor), (uint)contentBytes.Length); cursor += 4; // size
         BinaryPrimitives.WriteUInt32LittleEndian(bytes.AsSpan(cursor), (uint)dataStart); cursor += 4; // start
-        BinaryPrimitives.WriteUInt32LittleEndian(bytes.AsSpan(cursor), 0); cursor += 4; // nameIndex
+        BinaryPrimitives.WriteUInt32LittleEndian(bytes.AsSpan(cursor), 0); // nameIndex
 
         // Content
         contentBytes.CopyTo(bytes.AsSpan(dataStart));

@@ -521,7 +521,6 @@ public sealed class CoreWave8CoverageTests
     [Fact]
     public void Evaluate_ShouldClampNaNConfidence()
     {
-        var service = new ActionReliabilityService();
         var mechanicService2 = new StubModMechanicDetectionService(new ModMechanicReport(
             ProfileId: "test",
             GeneratedAtUtc: DateTimeOffset.UtcNow,

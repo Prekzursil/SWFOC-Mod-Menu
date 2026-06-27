@@ -83,6 +83,13 @@ public sealed class AsyncCommand : ICommand
 
     private static void TryShowError(string message)
     {
+        // No interactive WPF application (headless test runner / app shutdown): skip the
+        // modal dialog so MessageBox.Show cannot block with no message pump to dismiss it.
+        if (Application.Current is null)
+        {
+            return;
+        }
+
         try
         {
             MessageBox.Show(message, "Operation Failed", MessageBoxButton.OK, MessageBoxImage.Error);

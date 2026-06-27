@@ -1322,7 +1322,7 @@ public sealed class RuntimeWave10CoverageTests
     {
         var path = typeof(RuntimeWave10CoverageTests).Assembly.Location;
         var result = InvokeStatic(RuntimeAdapterType, "ComputeFileSha256", path) as string;
-        result.Should().HaveLength(64);
+        result!.Should().HaveLength(64);
     }
 
     // ================================================================
@@ -1732,7 +1732,7 @@ public sealed class RuntimeWave10CoverageTests
             BindingFlags.Static | BindingFlags.NonPublic);
         var result = method!.Invoke(null, new object[] { 5, 2, 1, 0x1234L });
         var msg = result!.GetType().GetProperty("Message")!.GetValue(result) as string;
-        msg.Should().Contain("0x1234");
+        msg!.Should().Contain("0x1234");
     }
 
     [Fact]
@@ -1742,7 +1742,7 @@ public sealed class RuntimeWave10CoverageTests
             BindingFlags.Static | BindingFlags.NonPublic);
         var result = method!.Invoke(null, new object[] { 0, 0, 0, 0L });
         var msg = result!.GetType().GetProperty("Message")!.GetValue(result) as string;
-        msg.Should().Contain("unavailable");
+        msg!.Should().Contain("unavailable");
     }
 
     // ================================================================

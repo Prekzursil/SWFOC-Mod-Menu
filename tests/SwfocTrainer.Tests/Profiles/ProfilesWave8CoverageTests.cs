@@ -423,7 +423,8 @@ public sealed class ProfilesWave8CoverageTests
             if (Directory.Exists(RootPath))
             {
                 try { Directory.Delete(RootPath, recursive: true); }
-                catch { /* ignore cleanup failures */ }
+                catch (IOException) { /* ignore cleanup failures */ }
+                catch (UnauthorizedAccessException) { /* ignore cleanup failures */ }
             }
         }
     }

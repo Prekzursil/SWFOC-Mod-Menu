@@ -1304,7 +1304,7 @@ public sealed class AppWave8DeepBranchCoverageTests
     [Fact]
     public void BuildRequiredPayloadTemplate_SkipsNullNodes()
     {
-        var required = new JsonArray(null as JsonNode, JsonValue.Create("enable")!);
+        var required = new JsonArray(null, JsonValue.Create("enable")!);
         var payload = MainViewModelPayloadHelpers.BuildRequiredPayloadTemplate(
             "test", required, new Dictionary<string, string>(), new Dictionary<string, string>());
         payload.Should().ContainKey("enable");

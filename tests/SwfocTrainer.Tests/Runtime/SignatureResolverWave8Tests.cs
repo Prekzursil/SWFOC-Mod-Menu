@@ -327,7 +327,7 @@ public sealed class SignatureResolverWave8Tests
     public void TryParseAddress_IntValue_ReturnsTrue()
     {
         var method = typeof(SignatureResolverSymbolHydration).GetMethod("TryParseAddress", NonPublicStatic)!;
-        var args = new object?[] { (int)0x1234, 0L };
+        var args = new object?[] { 0x1234, 0L };
         var result = (bool)method.Invoke(null, args)!;
         result.Should().BeTrue();
         ((long)args[1]!).Should().Be(0x1234);

@@ -30,7 +30,7 @@ public sealed class FlowWave10CoverageTests
             BindingFlags.NonPublic | BindingFlags.Static);
         method.Should().NotBeNull();
 
-        var json = JsonSerializer.Serialize(new { capabilities = (object?)null });
+        var json = JsonSerializer.Serialize(new { capabilities = default(object?) });
         var args = new object?[] { json, null, null };
         var result = (bool)method!.Invoke(null, args)!;
         result.Should().BeFalse();

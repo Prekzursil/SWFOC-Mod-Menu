@@ -438,12 +438,12 @@ public sealed class ProfilesWave8bCoverageTests
     {
         if (Directory.Exists(dir))
         {
-            try { Directory.Delete(dir, true); } catch { /* cleanup best-effort */ }
+            try { Directory.Delete(dir, true); } catch (IOException) { /* cleanup best-effort */ } catch (UnauthorizedAccessException) { /* cleanup best-effort */ }
         }
 
         if (File.Exists(file))
         {
-            try { File.Delete(file); } catch { /* cleanup best-effort */ }
+            try { File.Delete(file); } catch (IOException) { /* cleanup best-effort */ } catch (UnauthorizedAccessException) { /* cleanup best-effort */ }
         }
     }
 
@@ -475,7 +475,8 @@ public sealed class ProfilesWave8bCoverageTests
             if (Directory.Exists(RootPath))
             {
                 try { Directory.Delete(RootPath, recursive: true); }
-                catch { /* ignore cleanup failures */ }
+                catch (IOException) { /* ignore cleanup failures */ }
+                catch (UnauthorizedAccessException) { /* ignore cleanup failures */ }
             }
         }
     }

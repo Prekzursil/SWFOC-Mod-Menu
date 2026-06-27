@@ -674,7 +674,7 @@ public sealed class RuntimeWave9DeepCoverageTests
             method.Should().NotBeNull();
 
             // Should return null or a path; we just verify it doesn't throw
-            var result = method!.Invoke(null, Array.Empty<object>()) as string;
+            method!.Invoke(null, Array.Empty<object>());
             // Result depends on local file system; just assert no exception
         }
         finally
@@ -696,7 +696,7 @@ public sealed class RuntimeWave9DeepCoverageTests
             method.Should().NotBeNull();
 
             // Should fall through to candidate search since env path is rejected
-            var result = method!.Invoke(null, Array.Empty<object>());
+            method!.Invoke(null, Array.Empty<object>());
             // Not testing exact result, just that it doesn't crash
         }
         finally

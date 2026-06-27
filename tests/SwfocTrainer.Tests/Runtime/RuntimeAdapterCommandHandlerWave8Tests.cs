@@ -829,7 +829,7 @@ public sealed class RuntimeAdapterCommandHandlerWave8Tests
     [Fact]
     public void ValidateRequestedFloatValue_ShouldFail_WhenNaN()
     {
-        var result = InvokeStatic("ValidateRequestedFloatValue", "test", (double)double.NaN, (object?)null);
+        var result = InvokeStatic("ValidateRequestedFloatValue", "test", double.NaN, null);
         var isValid = (bool)result!.GetType().GetProperty("IsValid")!.GetValue(result)!;
         isValid.Should().BeFalse();
     }
@@ -837,7 +837,7 @@ public sealed class RuntimeAdapterCommandHandlerWave8Tests
     [Fact]
     public void ValidateRequestedFloatValue_ShouldFail_WhenInfinity()
     {
-        var result = InvokeStatic("ValidateRequestedFloatValue", "test", double.PositiveInfinity, (object?)null);
+        var result = InvokeStatic("ValidateRequestedFloatValue", "test", double.PositiveInfinity, null);
         var isValid = (bool)result!.GetType().GetProperty("IsValid")!.GetValue(result)!;
         isValid.Should().BeFalse();
     }
@@ -845,7 +845,7 @@ public sealed class RuntimeAdapterCommandHandlerWave8Tests
     [Fact]
     public void ValidateRequestedFloatValue_ShouldPass_WhenNoRule()
     {
-        var result = InvokeStatic("ValidateRequestedFloatValue", "test", 5.0, (object?)null);
+        var result = InvokeStatic("ValidateRequestedFloatValue", "test", 5.0, null);
         var isValid = (bool)result!.GetType().GetProperty("IsValid")!.GetValue(result)!;
         isValid.Should().BeTrue();
     }
@@ -871,7 +871,7 @@ public sealed class RuntimeAdapterCommandHandlerWave8Tests
     [Fact]
     public void ValidateObservedFloatValue_ShouldFail_WhenNaN()
     {
-        var result = InvokeStatic("ValidateObservedFloatValue", "test", (double)double.NaN, (object?)null);
+        var result = InvokeStatic("ValidateObservedFloatValue", "test", double.NaN, null);
         var isValid = (bool)result!.GetType().GetProperty("IsValid")!.GetValue(result)!;
         isValid.Should().BeFalse();
     }
@@ -897,7 +897,7 @@ public sealed class RuntimeAdapterCommandHandlerWave8Tests
     [Fact]
     public void ValidateRequestedIntValue_ShouldPass_WhenNoRule()
     {
-        var result = InvokeStatic("ValidateRequestedIntValue", "test", 100L, (object?)null);
+        var result = InvokeStatic("ValidateRequestedIntValue", "test", 100L, null);
         var isValid = (bool)result!.GetType().GetProperty("IsValid")!.GetValue(result)!;
         isValid.Should().BeTrue();
     }
@@ -923,7 +923,7 @@ public sealed class RuntimeAdapterCommandHandlerWave8Tests
     [Fact]
     public void ValidateObservedIntValue_ShouldPass_WhenNoRule()
     {
-        var result = InvokeStatic("ValidateObservedIntValue", "test", 100L, (object?)null);
+        var result = InvokeStatic("ValidateObservedIntValue", "test", 100L, null);
         var isValid = (bool)result!.GetType().GetProperty("IsValid")!.GetValue(result)!;
         isValid.Should().BeTrue();
     }
@@ -959,7 +959,7 @@ public sealed class RuntimeAdapterCommandHandlerWave8Tests
     public void ValidateObservedReadValue_ShouldFail_WhenCastFails(SymbolValueType valueType)
     {
         // Pass "not_a_number" which should trigger FormatException or InvalidCastException
-        var result = InvokeStatic("ValidateObservedReadValue", "test", (object)"not_a_number", valueType, (object?)null);
+        var result = InvokeStatic("ValidateObservedReadValue", "test", "not_a_number", valueType, null);
         var isValid = (bool)result!.GetType().GetProperty("IsValid")!.GetValue(result)!;
         isValid.Should().BeFalse();
         var reasonCode = (string)result.GetType().GetProperty("ReasonCode")!.GetValue(result)!;
@@ -969,7 +969,7 @@ public sealed class RuntimeAdapterCommandHandlerWave8Tests
     [Fact]
     public void ValidateObservedReadValue_ShouldPass_WhenUnknownValueType()
     {
-        var result = InvokeStatic("ValidateObservedReadValue", "test", (object)42, (SymbolValueType)999, (object?)null);
+        var result = InvokeStatic("ValidateObservedReadValue", "test", (object)42, (SymbolValueType)999, null);
         var isValid = (bool)result!.GetType().GetProperty("IsValid")!.GetValue(result)!;
         isValid.Should().BeTrue();
     }
@@ -977,7 +977,7 @@ public sealed class RuntimeAdapterCommandHandlerWave8Tests
     [Fact]
     public void ValidateObservedReadValue_ShouldValidateBoolCorrectly()
     {
-        var result = InvokeStatic("ValidateObservedReadValue", "test", (object)true, SymbolValueType.Bool, (object?)null);
+        var result = InvokeStatic("ValidateObservedReadValue", "test", (object)true, SymbolValueType.Bool, null);
         var isValid = (bool)result!.GetType().GetProperty("IsValid")!.GetValue(result)!;
         isValid.Should().BeTrue();
     }
@@ -1026,7 +1026,7 @@ public sealed class RuntimeAdapterCommandHandlerWave8Tests
     public void CreateSymbolDiagnostics_ShouldIncludeExpectedKeys()
     {
         var symbolInfo = new SymbolInfo("credits", (nint)0x1000, SymbolValueType.Int32, AddressSource.Signature, Confidence: 0.95);
-        var result = (Dictionary<string, object?>)InvokeStatic("CreateSymbolDiagnostics", symbolInfo, (object?)null, false)!;
+        var result = (Dictionary<string, object?>)InvokeStatic("CreateSymbolDiagnostics", symbolInfo, null, false)!;
         result.Should().ContainKey("address");
         result.Should().ContainKey("symbolSource");
         result.Should().ContainKey("symbolHealthStatus");
@@ -1100,7 +1100,7 @@ public sealed class RuntimeAdapterCommandHandlerWave8Tests
         var adapter = CreateAttachedAdapter();
         var criticals = new HashSet<string>(StringComparer.OrdinalIgnoreCase) { "credits" };
         SetField(adapter, "_criticalSymbols", criticals);
-        var result = (bool)InvokePrivate(adapter, "IsCriticalSymbol", "credits", (object?)null)!;
+        var result = (bool)InvokePrivate(adapter, "IsCriticalSymbol", "credits", null)!;
         result.Should().BeTrue();
     }
 
@@ -1117,7 +1117,7 @@ public sealed class RuntimeAdapterCommandHandlerWave8Tests
     public void IsCriticalSymbol_ShouldReturnFalse_WhenNotCritical()
     {
         var adapter = CreateAttachedAdapter();
-        var result = (bool)InvokePrivate(adapter, "IsCriticalSymbol", "test", (object?)null)!;
+        var result = (bool)InvokePrivate(adapter, "IsCriticalSymbol", "test", null)!;
         result.Should().BeFalse();
     }
 
@@ -1697,7 +1697,7 @@ public sealed class RuntimeAdapterCommandHandlerWave8Tests
     [Fact]
     public void MergeDiagnostics_ShouldReturnNull_WhenBothNull()
     {
-        var result = InvokeStatic("MergeDiagnostics", (object?)null, (object?)null);
+        var result = InvokeStatic("MergeDiagnostics", null, null);
         result.Should().BeNull();
     }
 
@@ -1715,7 +1715,7 @@ public sealed class RuntimeAdapterCommandHandlerWave8Tests
     public void MergeDiagnostics_ShouldReturnPrimary_WhenBothEmpty()
     {
         var primary = new Dictionary<string, object?>() as IReadOnlyDictionary<string, object?>;
-        var result = InvokeStatic("MergeDiagnostics", primary, (object?)null);
+        var result = InvokeStatic("MergeDiagnostics", primary, null);
         result.Should().BeSameAs(primary);
     }
 

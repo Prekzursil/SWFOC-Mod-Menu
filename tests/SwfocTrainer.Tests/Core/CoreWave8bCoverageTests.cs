@@ -32,7 +32,7 @@ public sealed class CoreWave8bCoverageTests
     [Fact]
     public void Validate_ShouldReturnValid_WhenRequiredIsNull()
     {
-        var schema = new JsonObject { ["required"] = (JsonNode?)null };
+        var schema = new JsonObject { ["required"] = null };
         var payload = new JsonObject();
         var (isValid, _) = ActionPayloadValidator.Validate(schema, payload);
         isValid.Should().BeTrue();

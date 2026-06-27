@@ -24,7 +24,7 @@ public sealed class DataIndexWave10CoverageTests
         var args = new object?[] { "   ", "loose", diagnostics, records, activeIndex, rank };
         method!.Invoke(null, args);
         diagnostics.Should().BeEmpty();
-        ((IList)records).Count.Should().Be(0);
+        records.Count.Should().Be(0);
     }
 
     // ── EffectiveGameDataIndexService: AddLooseEntries non-existent directory (line 181-184) ──

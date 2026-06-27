@@ -24,14 +24,14 @@ public sealed class CapabilityMapResolverWave8Tests : IDisposable
 
     public CapabilityMapResolverWave8Tests()
     {
-        _tempDir = Path.Combine(Path.GetTempPath(), $"capmap_wave8_{Guid.NewGuid():N}");
+        _tempDir = Path.Join(Path.GetTempPath(), $"capmap_wave8_{Guid.NewGuid():N}");
         Directory.CreateDirectory(_tempDir);
         _logger = NullLogger<CapabilityMapResolver>.Instance;
     }
 
     public void Dispose()
     {
-        try { Directory.Delete(_tempDir, true); } catch { /* cleanup best-effort */ }
+        try { Directory.Delete(_tempDir, true); } catch (IOException) { /* cleanup best-effort */ } catch (UnauthorizedAccessException) { /* cleanup best-effort */ }
     }
 
     // ── Null guards ──────────────────────────────────────────────────────

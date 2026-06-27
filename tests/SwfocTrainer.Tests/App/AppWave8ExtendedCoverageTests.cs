@@ -422,7 +422,7 @@ public sealed class AppWave8ExtendedCoverageTests
         SetField(vm, "_profiles", new FullStubProfiles(new[] { "test" }));
         SetField(vm, "_orchestrator", CreateOrchestrator(succeeded: true));
         SetField(vm, "_loadedActionSpecs",
-            (IReadOnlyDictionary<string, ActionSpec>)new Dictionary<string, ActionSpec>(StringComparer.OrdinalIgnoreCase));
+            new Dictionary<string, ActionSpec>(StringComparer.OrdinalIgnoreCase));
         vm.SelectedProfileId = "test";
         // Provide the required payload fields so orchestrator validation passes
         vm.PayloadJson = "{\"symbol\":\"credits\",\"intValue\":1000}";
@@ -440,7 +440,7 @@ public sealed class AppWave8ExtendedCoverageTests
         SetField(vm, "_profiles", new FullStubProfiles(new[] { "test" }));
         SetField(vm, "_orchestrator", CreateOrchestrator(succeeded: false));
         SetField(vm, "_loadedActionSpecs",
-            (IReadOnlyDictionary<string, ActionSpec>)new Dictionary<string, ActionSpec>(StringComparer.OrdinalIgnoreCase));
+            new Dictionary<string, ActionSpec>(StringComparer.OrdinalIgnoreCase));
         vm.SelectedProfileId = "test";
         vm.PayloadJson = "{\"symbol\":\"credits\",\"intValue\":1000}";
         SetField(vm, "_selectedActionId", "set_credits");
@@ -457,7 +457,7 @@ public sealed class AppWave8ExtendedCoverageTests
         SetField(vm, "_profiles", new FullStubProfiles(new[] { "test" }));
         SetField(vm, "_orchestrator", CreateThrowingOrchestrator(new InvalidOperationException("not attached")));
         SetField(vm, "_loadedActionSpecs",
-            (IReadOnlyDictionary<string, ActionSpec>)new Dictionary<string, ActionSpec>(StringComparer.OrdinalIgnoreCase));
+            new Dictionary<string, ActionSpec>(StringComparer.OrdinalIgnoreCase));
         vm.SelectedProfileId = "test";
         vm.PayloadJson = "{}";
         SetField(vm, "_selectedActionId", "set_credits");
@@ -474,7 +474,7 @@ public sealed class AppWave8ExtendedCoverageTests
         SetField(vm, "_profiles", new FullStubProfiles(new[] { "test" }));
         SetField(vm, "_orchestrator", CreateThrowingOrchestrator(new System.ComponentModel.Win32Exception("access denied")));
         SetField(vm, "_loadedActionSpecs",
-            (IReadOnlyDictionary<string, ActionSpec>)new Dictionary<string, ActionSpec>(StringComparer.OrdinalIgnoreCase));
+            new Dictionary<string, ActionSpec>(StringComparer.OrdinalIgnoreCase));
         vm.SelectedProfileId = "test";
         vm.PayloadJson = "{}";
         SetField(vm, "_selectedActionId", "set_credits");
@@ -491,7 +491,7 @@ public sealed class AppWave8ExtendedCoverageTests
         SetField(vm, "_profiles", new FullStubProfiles(new[] { "test" }));
         SetField(vm, "_orchestrator", CreateThrowingOrchestrator(new IOException("disk error")));
         SetField(vm, "_loadedActionSpecs",
-            (IReadOnlyDictionary<string, ActionSpec>)new Dictionary<string, ActionSpec>(StringComparer.OrdinalIgnoreCase));
+            new Dictionary<string, ActionSpec>(StringComparer.OrdinalIgnoreCase));
         vm.SelectedProfileId = "test";
         vm.PayloadJson = "{}";
         SetField(vm, "_selectedActionId", "set_credits");
@@ -511,7 +511,7 @@ public sealed class AppWave8ExtendedCoverageTests
         var vm = CreateViewModel();
         SetField(vm, "_runtime", new StubRuntime(session: null));
         SetField(vm, "_loadedActionSpecs",
-            (IReadOnlyDictionary<string, ActionSpec>)new Dictionary<string, ActionSpec>(StringComparer.OrdinalIgnoreCase));
+            new Dictionary<string, ActionSpec>(StringComparer.OrdinalIgnoreCase));
 
         var result = await InvokeAsyncWithResult<bool>(vm, "EnsureActionAvailableForCurrentSessionAsync", "set_credits", "prefix");
 
@@ -525,7 +525,7 @@ public sealed class AppWave8ExtendedCoverageTests
         SetField(vm, "_runtime", new StubRuntime(session: BuildSession()));
         SetField(vm, "_profiles", new FullStubProfiles(new[] { "test" }));
         SetField(vm, "_loadedActionSpecs",
-            (IReadOnlyDictionary<string, ActionSpec>)new Dictionary<string, ActionSpec>(StringComparer.OrdinalIgnoreCase));
+            new Dictionary<string, ActionSpec>(StringComparer.OrdinalIgnoreCase));
         vm.SelectedProfileId = null;
 
         var result = await InvokeAsyncWithResult<bool>(vm, "EnsureActionAvailableForCurrentSessionAsync", "nonexistent_action", "prefix");
@@ -542,7 +542,7 @@ public sealed class AppWave8ExtendedCoverageTests
     {
         var vm = CreateViewModel();
         SetField(vm, "_loadedActionSpecs",
-            (IReadOnlyDictionary<string, ActionSpec>)new Dictionary<string, ActionSpec>(StringComparer.OrdinalIgnoreCase));
+            new Dictionary<string, ActionSpec>(StringComparer.OrdinalIgnoreCase));
         vm.SelectedProfileId = null;
 
         var result = await InvokeAsyncWithResult<ActionSpec?>(vm, "ResolveActionSpecAsync", "unknown_action");
@@ -555,7 +555,7 @@ public sealed class AppWave8ExtendedCoverageTests
     {
         var vm = CreateViewModel();
         SetField(vm, "_loadedActionSpecs",
-            (IReadOnlyDictionary<string, ActionSpec>)new Dictionary<string, ActionSpec>(StringComparer.OrdinalIgnoreCase));
+            new Dictionary<string, ActionSpec>(StringComparer.OrdinalIgnoreCase));
         SetField(vm, "_profiles", new ThrowingProfiles(new InvalidOperationException("not found")));
         vm.SelectedProfileId = "test";
 
@@ -569,7 +569,7 @@ public sealed class AppWave8ExtendedCoverageTests
     {
         var vm = CreateViewModel();
         SetField(vm, "_loadedActionSpecs",
-            (IReadOnlyDictionary<string, ActionSpec>)new Dictionary<string, ActionSpec>(StringComparer.OrdinalIgnoreCase));
+            new Dictionary<string, ActionSpec>(StringComparer.OrdinalIgnoreCase));
         SetField(vm, "_profiles", new ThrowingProfiles(new KeyNotFoundException("not found")));
         vm.SelectedProfileId = "test";
 
@@ -692,7 +692,7 @@ public sealed class AppWave8ExtendedCoverageTests
         var vm = CreateViewModel();
         SetField(vm, "_selectedActionId", "nonexistent");
         SetField(vm, "_loadedActionSpecs",
-            (IReadOnlyDictionary<string, ActionSpec>)new Dictionary<string, ActionSpec>(StringComparer.OrdinalIgnoreCase));
+            new Dictionary<string, ActionSpec>(StringComparer.OrdinalIgnoreCase));
         var original = vm.PayloadJson;
 
         Invoke(vm, "ApplyPayloadTemplateForSelectedAction");
@@ -936,7 +936,7 @@ public sealed class AppWave8ExtendedCoverageTests
     [Fact]
     public async Task ExportTelemetrySnapshotAsync_ShouldSetStatus()
     {
-        var tempDir = Path.Combine(Path.GetTempPath(), "swfoc_test_" + Guid.NewGuid().ToString("N")[..8]);
+        var tempDir = Path.Join(Path.GetTempPath(), "swfoc_test_" + Guid.NewGuid().ToString("N")[..8]);
         var vm = CreateViewModel();
         SetField(vm, "_telemetry", new StubTelemetry());
         SetField(vm, "_supportBundleOutputDirectory", tempDir);
@@ -1442,7 +1442,7 @@ public sealed class AppWave8ExtendedCoverageTests
         SetField(vm, "_runtime", new StubRuntime(session: session));
         SetField(vm, "_orchestrator", CreateOrchestrator(succeeded: true));
         SetField(vm, "_loadedActionSpecs",
-            (IReadOnlyDictionary<string, ActionSpec>)new Dictionary<string, ActionSpec>(StringComparer.OrdinalIgnoreCase));
+            new Dictionary<string, ActionSpec>(StringComparer.OrdinalIgnoreCase));
         vm.SelectedProfileId = "test";
         return vm;
     }
@@ -1490,7 +1490,7 @@ public sealed class AppWave8ExtendedCoverageTests
         SetField(vm, "_supportBundleOutputDirectory",
             Path.Join(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "SwfocTrainer", "support"));
         SetField(vm, "_loadedActionSpecs",
-            (IReadOnlyDictionary<string, ActionSpec>)new Dictionary<string, ActionSpec>(StringComparer.OrdinalIgnoreCase));
+            new Dictionary<string, ActionSpec>(StringComparer.OrdinalIgnoreCase));
         SetField(vm, "_profiles", new FullStubProfiles(new[] { "test" }));
         SetField(vm, "_freezeService", new StubFreezeService());
         SetField(vm, "_freezeUiTimer", CreateStoppedTimer());
@@ -1954,7 +1954,7 @@ public sealed class AppWave8ExtendedCoverageTests
             => new(DateTimeOffset.UtcNow, new Dictionary<string, int>(), new Dictionary<string, int>(),
                 new Dictionary<string, int>(), 0, 0, 0, 0);
         public Task<string> ExportSnapshotAsync(string outputDirectory, CancellationToken ct)
-            => Task.FromResult(Path.Combine(outputDirectory, "telemetry.json"));
+            => Task.FromResult(Path.Join(outputDirectory, "telemetry.json"));
         public void Reset() { }
     }
 
