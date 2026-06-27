@@ -487,7 +487,7 @@ public sealed class RuntimeAdapterWave6Tests
     public void TryReadBooleanPayload_ShouldReturnTrue_FromBoolNode()
     {
         var payload = new JsonObject { ["lockCredits"] = true };
-        var result = InvokeStatic("TryReadBooleanPayload", payload, "lockCredits", false);
+        InvokeStatic("TryReadBooleanPayload", payload, "lockCredits", false);
         // The method is `out bool` so we test via the adapter flow
     }
 
@@ -567,7 +567,7 @@ public sealed class RuntimeAdapterWave6Tests
     [Fact]
     public void ResolveManualOverrideMode_ShouldReturnNull_ForNullContext()
     {
-        var result = InvokeStatic("ResolveManualOverrideMode", (IReadOnlyDictionary<string, object?>?)null);
+        var result = InvokeStatic("ResolveManualOverrideMode", default(IReadOnlyDictionary<string, object?>));
         result.Should().BeNull();
     }
 
@@ -868,7 +868,7 @@ public sealed class RuntimeAdapterWave6Tests
     [Fact]
     public void ValidateObservedReadValue_ShouldPass_ForPointerType()
     {
-        var result = InvokeStatic("ValidateObservedReadValue", "test", "0x1000", SymbolValueType.Pointer, (SymbolValidationRule?)null);
+        var result = InvokeStatic("ValidateObservedReadValue", "test", "0x1000", SymbolValueType.Pointer, default(SymbolValidationRule));
         var isValid = result!.GetType().GetProperty("IsValid")!.GetValue(result);
         isValid.Should().Be(true);
     }
@@ -1000,7 +1000,7 @@ public sealed class RuntimeAdapterWave6Tests
     public void MergeAnchorMap_ShouldHandleNull()
     {
         var dest = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
-        InvokeStatic("MergeAnchorMap", dest, (object?)null);
+        InvokeStatic("MergeAnchorMap", dest, default(object));
         dest.Should().BeEmpty();
     }
 
@@ -1819,7 +1819,7 @@ public sealed class RuntimeAdapterWave6Tests
     [Fact]
     public void ResolveHybridExecutionFlag_ShouldReturnFalse_WhenNotPresent()
     {
-        var result = (bool)InvokeStatic("ResolveHybridExecutionFlag", (IReadOnlyDictionary<string, object?>?)null)!;
+        var result = (bool)InvokeStatic("ResolveHybridExecutionFlag", default(IReadOnlyDictionary<string, object?>))!;
         result.Should().BeFalse();
     }
 

@@ -372,12 +372,6 @@ public sealed class MegWave3FinalTests
     public void Open_Format3_WithNonZeroEntryFlags_ShouldFail()
     {
         // Build a valid format3 archive with 1 name, 1 file, but flags != 0
-        var nameBytes = Encoding.ASCII.GetBytes("test.xml");
-        var nameTableSize = (uint)(4 + nameBytes.Length);
-        uint nameCount = 1, fileCount = 1;
-        var dataStart = (24 + nameTableSize + 20);
-        var totalSize = (int)(dataStart + 10);
-        var bytes = new byte[totalSize];
 
         // Non-encrypted format3: first=0x8FFFFFFF to detect format3 variant,
         // but it's always encrypted. Use format2 instead for flag test.

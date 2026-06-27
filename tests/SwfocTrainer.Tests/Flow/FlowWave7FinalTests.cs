@@ -39,7 +39,7 @@ public sealed class FlowWave7FinalTests
             BindingFlags.NonPublic | BindingFlags.Static);
         method.Should().NotBeNull("ResolveDefaultHarnessScriptPath must exist");
 
-        var result = method!.Invoke(null, Array.Empty<object>()) as string;
+        var result = method!.Invoke(null, Array.Empty<object>()) as string ?? throw new InvalidOperationException("test setup: expected non-null result.");
         result.Should().NotBeNullOrWhiteSpace();
         result!.Should().EndWith("run-lua-harness.ps1");
     }
@@ -103,7 +103,7 @@ public sealed class FlowWave7FinalTests
 
         var result = method!.Invoke(extractor, new object?[] { null, "test.xml" });
         result.Should().NotBeNull();
-        var events = result as IReadOnlyList<FlowEventRecord>;
+        var events = result as IReadOnlyList<FlowEventRecord> ?? throw new InvalidOperationException("test setup: expected non-null result.");
         events.Should().NotBeNull();
         events!.Should().BeEmpty();
     }

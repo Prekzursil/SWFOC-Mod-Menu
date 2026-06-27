@@ -1285,7 +1285,7 @@ public sealed class RuntimeAdapterBranchCoverageTests
         // Success counters should have at least one entry
         var successCounters = typeof(RuntimeAdapter)
             .GetField("_actionSuccessCounters", BindingFlags.Instance | BindingFlags.NonPublic)!
-            .GetValue(adapter) as Dictionary<string, int>;
+            .GetValue(adapter) as Dictionary<string, int> ?? throw new InvalidOperationException("test setup: expected non-null result.");
         successCounters.Should().NotBeNull();
         successCounters!.Values.Sum().Should().BeGreaterOrEqualTo(2);
     }

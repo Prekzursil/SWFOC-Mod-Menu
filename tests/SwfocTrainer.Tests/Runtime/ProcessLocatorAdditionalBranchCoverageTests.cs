@@ -220,7 +220,7 @@ public sealed class ProcessLocatorAdditionalBranchCoverageTests
     [Fact]
     public void ExtractSteamModIds_ShouldReturnEmpty_ForNull()
     {
-        var result = (string[])InvokeStaticMethod("ExtractSteamModIds", (string?)null)!;
+        var result = (string[])InvokeStaticMethod("ExtractSteamModIds", default(string))!;
         result.Should().BeEmpty();
     }
 
@@ -518,7 +518,7 @@ public sealed class ProcessLocatorAdditionalBranchCoverageTests
     public async Task FindBestMatchAsync_Parameterless_ShouldReturnNull_WhenNoMatch()
     {
         var locator = new ProcessLocator();
-        var result = await locator.FindBestMatchAsync(ExeTarget.Swfoc);
+        await locator.FindBestMatchAsync(ExeTarget.Swfoc);
         // No game running in test env, just verify it doesn't throw
     }
 
@@ -526,7 +526,7 @@ public sealed class ProcessLocatorAdditionalBranchCoverageTests
     public async Task FindBestMatchAsync_WithToken_ShouldWork()
     {
         var locator = new ProcessLocator();
-        var result = await locator.FindBestMatchAsync(ExeTarget.Swfoc, CancellationToken.None);
+        await locator.FindBestMatchAsync(ExeTarget.Swfoc, CancellationToken.None);
         // No game running in test env
     }
 
@@ -534,7 +534,7 @@ public sealed class ProcessLocatorAdditionalBranchCoverageTests
     public async Task FindBestMatchAsync_WithNullOptions_ShouldDefault()
     {
         var locator = new ProcessLocator();
-        var result = await locator.FindBestMatchAsync(ExeTarget.Swfoc, null, CancellationToken.None);
+        await locator.FindBestMatchAsync(ExeTarget.Swfoc, null, CancellationToken.None);
         // Should not throw
     }
 

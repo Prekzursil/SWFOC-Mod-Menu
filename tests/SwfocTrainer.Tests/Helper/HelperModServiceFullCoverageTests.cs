@@ -138,7 +138,7 @@ public sealed class HelperModServiceFullCoverageTests
             });
 
             var service = CreateService(profile, sourceRoot, installRoot);
-            var result = await service.DeployAsync("test_profile");
+            await service.DeployAsync("test_profile");
             File.Exists(Path.Join(installRoot, "test_profile", "scripts", "hook.lua")).Should().BeTrue();
         }
         finally

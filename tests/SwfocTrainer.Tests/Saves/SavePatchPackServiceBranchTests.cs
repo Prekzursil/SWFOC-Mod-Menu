@@ -655,7 +655,7 @@ public sealed class SavePatchPackServiceBranchTests
     {
         var service = CreateService();
         var pack = await CreateMinimalPackAsync(service);
-        var cts = new CancellationTokenSource();
+        using var cts = new CancellationTokenSource();
         cts.Cancel();
         var act = () => service.ValidateCompatibilityAsync(pack, MakeDoc(), "p", cts.Token);
         await act.Should().ThrowAsync<OperationCanceledException>();

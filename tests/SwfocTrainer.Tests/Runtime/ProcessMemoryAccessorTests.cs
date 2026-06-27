@@ -62,32 +62,22 @@ public sealed class ProcessMemoryAccessorTests
     [Fact]
     public void ReadBytes_NegativeCount_ThrowsArgumentOutOfRangeException()
     {
-        var accessor = CreateWithHandle((nint)0xDEAD);
-        try
+        using var accessor = CreateWithHandle((nint)0xDEAD);
         {
             var act = () => accessor.ReadBytes((nint)0x1000, -1);
             act.Should().Throw<ArgumentOutOfRangeException>()
                 .WithParameterName("count");
-        }
-        finally
-        {
-            accessor.Dispose();
         }
     }
 
     [Fact]
     public void ReadBytes_InvalidHandle_ThrowsInvalidOperationException()
     {
-        var accessor = CreateWithHandle((nint)0xDEAD);
-        try
+        using var accessor = CreateWithHandle((nint)0xDEAD);
         {
             var act = () => accessor.ReadBytes((nint)0x1000, 4);
             act.Should().Throw<InvalidOperationException>()
                 .WithMessage("*ReadProcessMemory*");
-        }
-        finally
-        {
-            accessor.Dispose();
         }
     }
 
@@ -97,8 +87,7 @@ public sealed class ProcessMemoryAccessorTests
         // count = 0 is allowed (not negative). ReadProcessMemory with 0 bytes on an
         // invalid handle may either return true with 0 bytes read (matching count)
         // or return false. We only verify no ArgumentOutOfRangeException is thrown.
-        var accessor = CreateWithHandle((nint)0xDEAD);
-        try
+        using var accessor = CreateWithHandle((nint)0xDEAD);
         {
             try
             {
@@ -110,10 +99,6 @@ public sealed class ProcessMemoryAccessorTests
                 // Also acceptable — depends on OS behavior
             }
         }
-        finally
-        {
-            accessor.Dispose();
-        }
     }
 
     // ──────────────── Read<T> ────────────────
@@ -121,16 +106,11 @@ public sealed class ProcessMemoryAccessorTests
     [Fact]
     public void Read_InvalidHandle_ThrowsInvalidOperationException()
     {
-        var accessor = CreateWithHandle((nint)0xDEAD);
-        try
+        using var accessor = CreateWithHandle((nint)0xDEAD);
         {
             var act = () => accessor.Read<int>((nint)0x1000);
             act.Should().Throw<InvalidOperationException>()
                 .WithMessage("*ReadProcessMemory*");
-        }
-        finally
-        {
-            accessor.Dispose();
         }
     }
 
@@ -139,16 +119,11 @@ public sealed class ProcessMemoryAccessorTests
     [Fact]
     public void Write_InvalidHandle_ThrowsInvalidOperationException()
     {
-        var accessor = CreateWithHandle((nint)0xDEAD);
-        try
+        using var accessor = CreateWithHandle((nint)0xDEAD);
         {
             var act = () => accessor.Write((nint)0x1000, 42);
             act.Should().Throw<InvalidOperationException>()
                 .WithMessage("*WriteProcessMemory*");
-        }
-        finally
-        {
-            accessor.Dispose();
         }
     }
 
@@ -157,64 +132,44 @@ public sealed class ProcessMemoryAccessorTests
     [Fact]
     public void WriteBytes_NullBuffer_ThrowsArgumentNullException()
     {
-        var accessor = CreateWithHandle((nint)0xDEAD);
-        try
+        using var accessor = CreateWithHandle((nint)0xDEAD);
         {
             var act = () => accessor.WriteBytes((nint)0x1000, null!, false);
             act.Should().Throw<ArgumentNullException>().WithParameterName("buffer");
-        }
-        finally
-        {
-            accessor.Dispose();
         }
     }
 
     [Fact]
     public void WriteBytes_EmptyBuffer_ReturnsImmediately()
     {
-        var accessor = CreateWithHandle((nint)0xDEAD);
-        try
+        using var accessor = CreateWithHandle((nint)0xDEAD);
         {
             // Empty buffer → early return, no P/Invoke call
             var act = () => accessor.WriteBytes((nint)0x1000, Array.Empty<byte>(), false);
             act.Should().NotThrow();
-        }
-        finally
-        {
-            accessor.Dispose();
         }
     }
 
     [Fact]
     public void WriteBytes_NonEmptyBuffer_InvalidHandle_Throws()
     {
-        var accessor = CreateWithHandle((nint)0xDEAD);
-        try
+        using var accessor = CreateWithHandle((nint)0xDEAD);
         {
             var act = () => accessor.WriteBytes((nint)0x1000, new byte[] { 0x90 }, false);
             act.Should().Throw<InvalidOperationException>()
                 .WithMessage("*WriteProcessMemory*");
-        }
-        finally
-        {
-            accessor.Dispose();
         }
     }
 
     [Fact]
     public void WriteBytes_ExecutablePatch_InvalidHandle_Throws()
     {
-        var accessor = CreateWithHandle((nint)0xDEAD);
-        try
+        using var accessor = CreateWithHandle((nint)0xDEAD);
         {
             // executablePatch = true → tries VirtualProtectEx first
             var act = () => accessor.WriteBytes((nint)0x1000, new byte[] { 0x90 }, true);
             act.Should().Throw<InvalidOperationException>()
                 .WithMessage("*VirtualProtectEx*");
-        }
-        finally
-        {
-            accessor.Dispose();
         }
     }
 
@@ -223,45 +178,30 @@ public sealed class ProcessMemoryAccessorTests
     [Fact]
     public void Allocate_InvalidHandle_ReturnsZero()
     {
-        var accessor = CreateWithHandle((nint)0xDEAD);
-        try
+        using var accessor = CreateWithHandle((nint)0xDEAD);
         {
             var result = accessor.Allocate((nuint)4096, executable: false);
             result.Should().Be(nint.Zero);
-        }
-        finally
-        {
-            accessor.Dispose();
         }
     }
 
     [Fact]
     public void Allocate_Executable_InvalidHandle_ReturnsZero()
     {
-        var accessor = CreateWithHandle((nint)0xDEAD);
-        try
+        using var accessor = CreateWithHandle((nint)0xDEAD);
         {
             var result = accessor.Allocate((nuint)4096, executable: true);
             result.Should().Be(nint.Zero);
-        }
-        finally
-        {
-            accessor.Dispose();
         }
     }
 
     [Fact]
     public void Allocate_WithPreferredAddress_InvalidHandle_ReturnsZero()
     {
-        var accessor = CreateWithHandle((nint)0xDEAD);
-        try
+        using var accessor = CreateWithHandle((nint)0xDEAD);
         {
             var result = accessor.Allocate((nuint)4096, executable: false, preferredAddress: (nint)0x10000);
             result.Should().Be(nint.Zero);
-        }
-        finally
-        {
-            accessor.Dispose();
         }
     }
 
@@ -270,30 +210,20 @@ public sealed class ProcessMemoryAccessorTests
     [Fact]
     public void Free_ZeroAddress_ReturnsTrue()
     {
-        var accessor = CreateWithHandle((nint)0xDEAD);
-        try
+        using var accessor = CreateWithHandle((nint)0xDEAD);
         {
             var result = accessor.Free(nint.Zero);
             result.Should().BeTrue();
-        }
-        finally
-        {
-            accessor.Dispose();
         }
     }
 
     [Fact]
     public void Free_NonZeroAddress_InvalidHandle_ReturnsFalse()
     {
-        var accessor = CreateWithHandle((nint)0xDEAD);
-        try
+        using var accessor = CreateWithHandle((nint)0xDEAD);
         {
             var result = accessor.Free((nint)0x1000);
             result.Should().BeFalse();
-        }
-        finally
-        {
-            accessor.Dispose();
         }
     }
 

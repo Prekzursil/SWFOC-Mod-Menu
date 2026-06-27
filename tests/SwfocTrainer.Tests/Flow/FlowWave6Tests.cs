@@ -204,7 +204,7 @@ public sealed class FlowWave6Tests
         var flowReport = new FlowIndexReport(plots, Array.Empty<string>());
         var megaIndex = MegaFilesIndex.Empty;
 
-        var symbolPack = JsonSerializer.Serialize(new { Capabilities = (object?)null });
+        var symbolPack = JsonSerializer.Serialize(new { Capabilities = default(object) });
         var result = StoryPlotFlowExtractor.BuildCapabilityLinkReport(flowReport, megaIndex, symbolPack);
         result.Diagnostics.Should().Contain(d => d.Contains("missing"));
     }
@@ -393,7 +393,7 @@ public sealed class FlowWave6Tests
         {
             Capabilities = new object[]
             {
-                new { FeatureId = (string?)null, Available = true, State = "Active", ReasonCode = "OK" },
+                new { FeatureId = default(string), Available = true, State = "Active", ReasonCode = "OK" },
                 new { FeatureId = "set_credits", Available = true, State = "Active", ReasonCode = "OK" }
             }
         });
@@ -417,7 +417,7 @@ public sealed class FlowWave6Tests
         {
             Capabilities = new object[]
             {
-                new { FeatureId = "set_credits", Available = false, State = (string?)null, ReasonCode = (string?)null }
+                new { FeatureId = "set_credits", Available = false, State = default(string), ReasonCode = default(string) }
             }
         });
 
