@@ -1,0 +1,677 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "SWFOC Camera & Selection System — Reverse Engineering Results",
+  "agent": "Agent 3I — Camera & Selection System RE",
+  "date": "2026-04-04",
+  "binary": "StarWarsG.exe (x86_64, MSVC, ASLR enabled)",
+  "notes": "All RVAs relative to module base. All offsets relative to struct base pointer. Ghidra static analysis only (CE runtime access failed due to privilege/ASLR resolution issue).",
+
+  "globals": {
+    "GameModeManagerClass_singleton": {
+      "rva": "0xB153E0",
+      "type": "GameModeManagerClass*",
+      "description": "Global singleton pointer to the GameModeManagerClass instance. This is the root of the game mode hierarchy. Contains an array of active GameModeClass instances (Galactic, Land, Space). Accessed by camera, selection, and event systems.",
+      "confidence": "CONFIRMED",
+      "evidence": "Referenced directly by SelectEventClass, SelectAllEventClass constructors (FUN_14028d930), GalacticCameraClass::Update (FUN_1403c2c00), and ControlGroupEventClass.",
+      "layout": {
+        "+0x48": "pointer to array of GameModeClass* pointers",
+        "+0x50": "int32 count of active game modes",
+        "+0xB4": "int32 current selection mode state (written by event system)"
+      }
+    },
+    "DAT_140b15418": {
+      "rva": "0xB15418",
+      "type": "pointer",
+      "description": "Secondary global pointer used by GalacticCameraClass::Update. Likely the GalacticModeClass singleton or active galactic state. Offset +0x18 leads to a sub-struct with +0x618 containing mode sub-state.",
+      "confidence": "DISCOVERED",
+      "evidence": "Read in FUN_1403c2c00 as guard condition for camera parameter selection."
+    },
+    "screen_aspect_ratio": {
+      "rva": "0xA12550",
+      "type": "float32",
+      "description": "Current screen aspect ratio. Returned by FUN_14014ee30(). Used when setting camera FOV/aspect.",
+      "confidence": "CONFIRMED",
+      "evidence": "Called in GalacticCameraClass::Update and passed to Camera::SetFovAspect."
+    },
+    "camera_globals_block": {
+      "rva_base": "0xB1599C",
+      "type": "float32[] block",
+      "description": "Block of galactic camera parameters controlling zoom, distance, and rotation. Used by GalacticCameraClass::Update.",
+      "confidence": "CONFIRMED",
+      "fields": {
+        "0xB1599C": { "name": "galactic_camera_zoom_angle", "type": "float32", "description": "Zoom rotation angle in radians for the galactic camera pitch." },
+        "0xB159A0": { "name": "galactic_camera_target_zoom_angle", "type": "float32", "description": "Target zoom angle (interpolation target during smooth zoom)." },
+        "0xB159A4": { "name": "galactic_camera_distance", "type": "float32", "description": "Camera distance from look-at point (arm length)." },
+        "0xB159A8": { "name": "galactic_camera_distance_scale", "type": "float32", "description": "Multiplier for zoom distance during camera transitions." },
+        "0xB159AC": { "name": "galactic_camera_look_dir_x", "type": "float32", "description": "X component of the galactic camera's normalized look direction." },
+        "0xB159B0": { "name": "galactic_camera_look_dir_y", "type": "float32", "description": "Y component of the galactic camera's normalized look direction." },
+        "0xB159B4": { "name": "galactic_camera_look_dir_z", "type": "float32", "description": "Z component of the galactic camera's normalized look direction." },
+        "0xB159C8": { "name": "galactic_camera_mode_value", "type": "float32", "description": "Camera mode value copied to GalacticCameraClass +0x08." }
+      }
+    }
+  },
+
+  "structs": {
+    "GameModeManagerClass": {
+      "description": "Singleton manager for all game modes. Holds the array of active GameModeClass instances. The current tactical/galactic mode can be retrieved by iterating the array and matching the mode type via vtable+0xE0.",
+      "global_rva": "0xB153E0",
+      "global_note": "This is a POINTER to the instance; dereference once.",
+      "confidence": "CONFIRMED",
+      "fields": [
+        { "offset": "0x00", "type": "int64", "name": "unknown_0x00", "description": "Set to -1 in destructor." },
+        { "offset": "0x08", "type": "int64", "name": "unknown_0x08", "description": "Cleared in destructor." },
+        { "offset": "0x48", "type": "pointer", "name": "game_mode_array", "description": "Pointer to array of GameModeClass* pointers." },
+        { "offset": "0x50", "type": "int32", "name": "game_mode_count", "description": "Number of entries in game_mode_array." },
+        { "offset": "0xB4", "type": "int32", "name": "selection_state", "description": "Selection system state integer. Written by SelectEvent and SelectAllEvent handlers." }
+      ],
+      "method_GetModeByType": {
+        "rva": "0x28A950",
+        "signature": "GameModeClass* GetModeByType(GameModeManagerClass* this, int modeType)",
+        "description": "Iterates game_mode_array, calls vtable[0xE0/8] on each to get its type, returns the one matching modeType. Known types: 0=Galactic, others TBD for Land/Space.",
+        "confidence": "CONFIRMED"
+      }
+    },
+
+    "GameModeClass": {
+      "description": "Base class for all game modes (Galactic, Land, Space). Contains the camera, selection state, objectives, control groups, and the scene graph for the current mode. This is a very large struct (0x320+ bytes for base, subclasses extend further).",
+      "vtable_rva_galactic": "from GalacticModeClass at 0x4B1270",
+      "vtable_rva_land": "from LandModeClass at 0x3B5210",
+      "vtable_rva_space": "from SpaceModeClass at 0x4D6BA0",
+      "confidence": "CONFIRMED",
+      "key_fields": [
+        { "offset": "0x00", "type": "pointer", "name": "vtable_ptr" },
+        { "offset": "0x08", "type": "int64", "name": "mode_id", "description": "Set to -1 initially." },
+        { "offset": "0x10", "type": "float32", "name": "game_speed_unknown", "description": "Initialized to 0." },
+        { "offset": "0x14", "type": "float32", "name": "game_speed_factor", "description": "Initialized to 1.0 (0x3f800000)." },
+        { "offset": "0x28", "type": "pointer", "name": "camera_ptr", "description": "Pointer to the CameraClass (SceneClass) for this mode. This is the primary camera used for rendering. Ref-counted (Release called in destructor at this[5])." },
+        { "offset": "0x30", "type": "pointer", "name": "unknown_ptr_0x30" },
+        { "offset": "0x38", "type": "pointer", "name": "unknown_ptr_0x38" },
+        { "offset": "0x40", "type": "pointer", "name": "unknown_ptr_0x40" },
+        { "offset": "0x90", "type": "pointer", "name": "scene_camera_ptr", "description": "Ref-counted pointer to CameraClass/SceneClass. Used by GalacticCameraClass::Update to get the active camera for the mode. Read as *(mode + 0x90). The CameraClass at this pointer has the actual camera transform sub-object." },
+        { "offset": "0x190", "type": "pointer", "name": "selection_object_array_ptr", "description": "Pointer to array of pointers to selected GameObjectClass instances. Part of the DynamicVector at +0x190 area." },
+        { "offset": "0x1A0", "type": "pointer", "name": "large_sub_object_ptr", "description": "Allocated 0x1390-byte sub-object. Likely TerrainClass or MapClass." },
+        { "offset": "0x228", "type": "float32", "name": "map_size_x", "description": "Initialized to 10000.0 (0x461c4000)." },
+        { "offset": "0x22C", "type": "float32", "name": "map_size_y", "description": "Initialized to 10000.0." },
+        { "offset": "0x230", "type": "float32", "name": "zoom_factor_1", "description": "Initialized to 1.0." },
+        { "offset": "0x234", "type": "float32", "name": "zoom_factor_2", "description": "Initialized to 1.0." }
+      ],
+      "notes": "The exact offset for the camera depends on the access pattern. In the GalacticCameraClass::Update, the mode pointer + 0x90 is used to get the camera. In the destructor, this[0x12] (offset 0x90) is the ref-counted camera object. This confirms offset 0x90."
+    },
+
+    "CameraClass": {
+      "description": "The Alamo engine's camera class. Contains the camera orientation matrix directly at +0x10 and a pointer to a 0x308-byte camera state sub-object at +0x40. The sub-object holds the full projection state, view matrices, viewport, and clip planes.",
+      "constructor_rva": "0x261470",
+      "confidence": "CONFIRMED",
+      "outer_fields": [
+        { "offset": "0x00", "type": "pointer", "name": "vtable_ptr" },
+        { "offset": "0x04", "type": "int32", "name": "ref_count", "description": "RefCountClass reference count." },
+        { "offset": "0x10", "type": "float32[12]", "name": "orientation_matrix_copy", "description": "Copy of the 3x4 orientation matrix (row-major, 12 floats)." },
+        { "offset": "0x40", "type": "pointer", "name": "camera_state_ptr", "description": "Pointer to the 0x308-byte camera state sub-object. This is the LIVE camera state that the renderer reads." }
+      ],
+      "camera_state_sub_object": {
+        "size": "0x308",
+        "alloc_rva": "0x140100 (called from constructor)",
+        "description": "The core camera state object. All camera parameters are here.",
+        "fields": [
+          {
+            "offset": "0x00",
+            "type": "float32[12]",
+            "name": "orientation_matrix",
+            "description": "3x4 column-major orientation matrix. Layout: [right.x, up.x, fwd.x, pos.x, right.y, up.y, fwd.y, pos.y, right.z, up.z, fwd.z, pos.z]. Each column is 3 floats at stride 0x10.",
+            "sub_fields": {
+              "right_vector": { "offsets": ["0x00", "0x10", "0x20"], "description": "Camera right vector (X axis)" },
+              "up_vector": { "offsets": ["0x04", "0x14", "0x24"], "description": "Camera up vector (Y axis)" },
+              "forward_vector": { "offsets": ["0x08", "0x18", "0x28"], "description": "Camera forward vector (Z axis, into screen)" },
+              "position": { "offsets": ["0x0C", "0x1C", "0x2C"], "description": "Camera world position (X, Y, Z)" }
+            },
+            "confidence": "CONFIRMED",
+            "evidence": "GetPosition reads +0x0C, +0x1C, +0x2C. GetForward reads +0x08, +0x18 (negated). TranslateLocal multiplies delta by matrix and adds to position columns."
+          },
+          {
+            "offset": "0x30",
+            "type": "float32",
+            "name": "near_clip",
+            "description": "Near clipping plane distance. Default: 1.0 (0x3f800000).",
+            "confidence": "CONFIRMED",
+            "evidence": "Read and written by SetClipPlanes/GetClipPlanes. Used in projection matrix build."
+          },
+          {
+            "offset": "0x34",
+            "type": "float32",
+            "name": "far_clip",
+            "description": "Far clipping plane distance. Default: 1000.0 (0x447a0000).",
+            "confidence": "CONFIRMED"
+          },
+          {
+            "offset": "0x38",
+            "type": "float32",
+            "name": "far_clip_bias",
+            "description": "Bias factor for far clip. Default: -1.0 (0xbf800000). When != -1.0, an alternate far distance is used.",
+            "confidence": "DISCOVERED"
+          },
+          {
+            "offset": "0x3C",
+            "type": "float32",
+            "name": "alt_far_clip",
+            "description": "Alternate far clip distance. Used when far_clip_bias != -1.0. Default: -1.0.",
+            "confidence": "DISCOVERED"
+          },
+          {
+            "offset": "0x44",
+            "type": "int32",
+            "name": "projection_mode",
+            "description": "0 = perspective projection, 1 = orthographic projection. Controls which projection math path is used.",
+            "confidence": "CONFIRMED",
+            "evidence": "Checked in FUN_1401417c0 and FUN_140141260. SetOrthoProjection sets this to 1."
+          },
+          {
+            "offset": "0x48",
+            "type": "float32",
+            "name": "fov_or_half_angle",
+            "description": "For perspective: FOV angle in radians. Default: pi/4 = 0.785 rad = 45 degrees (0x3f490fdb). For ortho: half-width.",
+            "confidence": "CONFIRMED",
+            "evidence": "Initialized to 0x3f490fdb (pi/4). Read by GetFov, written by SetFovAspect. Used with tan() in projection matrix."
+          },
+          {
+            "offset": "0x4C",
+            "type": "float32",
+            "name": "aspect_ratio",
+            "description": "Viewport aspect ratio. Default: 1.333 = 4:3 (0x3faaaaab). Set by SetFovAspect.",
+            "confidence": "CONFIRMED",
+            "evidence": "Initialized to 0x3faaaaab. Read by GetFov/GetAspect."
+          },
+          {
+            "offset": "0x50",
+            "type": "float32",
+            "name": "ortho_left",
+            "description": "Left edge for orthographic projection.",
+            "confidence": "CONFIRMED"
+          },
+          {
+            "offset": "0x54",
+            "type": "float32",
+            "name": "ortho_top",
+            "description": "Top edge for orthographic projection.",
+            "confidence": "CONFIRMED"
+          },
+          {
+            "offset": "0x58",
+            "type": "float32",
+            "name": "ortho_right",
+            "description": "Right edge for orthographic projection.",
+            "confidence": "CONFIRMED"
+          },
+          {
+            "offset": "0x5C",
+            "type": "float32",
+            "name": "ortho_bottom",
+            "description": "Bottom edge for orthographic projection.",
+            "confidence": "CONFIRMED"
+          },
+          {
+            "offset": "0x60",
+            "type": "uint8",
+            "name": "user_clip_enabled",
+            "description": "Non-zero enables a user-defined clip plane.",
+            "confidence": "DISCOVERED"
+          },
+          {
+            "offset": "0x64",
+            "type": "float32[4]",
+            "name": "user_clip_plane",
+            "description": "User-defined clip plane coefficients (a, b, c, d). Applied when user_clip_enabled != 0.",
+            "confidence": "DISCOVERED"
+          },
+          {
+            "offset": "0x74",
+            "type": "float32",
+            "name": "viewport_x",
+            "description": "Viewport origin X (normalized 0-1).",
+            "confidence": "CONFIRMED"
+          },
+          {
+            "offset": "0x78",
+            "type": "float32",
+            "name": "viewport_y",
+            "description": "Viewport origin Y (normalized, 1.0 - input).",
+            "confidence": "CONFIRMED"
+          },
+          {
+            "offset": "0x7C",
+            "type": "float32",
+            "name": "viewport_width",
+            "description": "Viewport width (normalized 0-1).",
+            "confidence": "CONFIRMED"
+          },
+          {
+            "offset": "0x80",
+            "type": "float32",
+            "name": "viewport_height",
+            "description": "Viewport height (normalized, 1.0 - input).",
+            "confidence": "CONFIRMED"
+          },
+          {
+            "offset": "0x84",
+            "type": "float32[12]",
+            "name": "inverse_orientation_matrix",
+            "description": "Computed inverse of the orientation matrix. Updated by FUN_14022d390.",
+            "confidence": "DISCOVERED"
+          },
+          {
+            "offset": "0xB4",
+            "type": "float32[16]",
+            "name": "projection_matrix",
+            "description": "4x4 projection matrix (perspective or ortho). Rebuilt by FUN_140141260.",
+            "confidence": "CONFIRMED"
+          },
+          {
+            "offset": "0xF4",
+            "type": "float32[16+]",
+            "name": "view_projection_matrix",
+            "description": "Combined view-projection matrix for the near clip. Built by FUN_140232c50 (perspective) or FUN_140232df0 (ortho).",
+            "confidence": "CONFIRMED"
+          },
+          {
+            "offset": "0x1FC",
+            "type": "float32[16+]",
+            "name": "far_view_projection_matrix",
+            "description": "Combined view-projection matrix for the far clip distance. Used for far-field rendering.",
+            "confidence": "CONFIRMED"
+          },
+          {
+            "offset": "0x304",
+            "type": "uint8",
+            "name": "dirty_flag",
+            "description": "Cleared (set to 0) during init.",
+            "confidence": "DISCOVERED"
+          }
+        ],
+        "initial_values": {
+          "orientation": "identity matrix",
+          "position": "(0, 0, -60) — offset 0x0C = 0xc2700000 = -60.0f",
+          "near_clip": "1.0",
+          "far_clip": "1000.0",
+          "fov": "pi/4 (45 degrees)",
+          "aspect": "1.333 (4:3)"
+        }
+      },
+      "methods": {
+        "GetTransformMatrix": {
+          "rva": "0x2619F0",
+          "signature": "void GetTransformMatrix(CameraClass* this, float* outMatrix12)",
+          "description": "Copies the 12-float orientation matrix from the sub-object.",
+          "confidence": "CONFIRMED"
+        },
+        "SetTransformMatrix": {
+          "rva": "0x261BD0",
+          "signature": "void SetTransformMatrix(CameraClass* this, float* inMatrix12)",
+          "description": "Sets the orientation matrix (12 floats at sub-object +0x00 to +0x2C). Recalculates the inverse matrix and view-projection matrices.",
+          "confidence": "CONFIRMED"
+        },
+        "GetPosition": {
+          "rva": "0x261A40",
+          "signature": "void GetPosition(CameraClass* this, float* outXYZ)",
+          "description": "Reads camera world position from matrix offsets +0x0C, +0x1C, +0x2C of the sub-object.",
+          "confidence": "CONFIRMED"
+        },
+        "GetForwardDirection": {
+          "rva": "0x261690",
+          "signature": "void GetForwardDirection(CameraClass* this, float* outFwd3, float* outUp3)",
+          "description": "Gets the negated forward vector from matrix offsets +0x08, +0x18 (XOR sign bit). Also returns a fixed up vector (0, -1, 0).",
+          "confidence": "CONFIRMED"
+        },
+        "TranslateLocal": {
+          "rva": "0x261C90",
+          "signature": "void TranslateLocal(CameraClass* this, float* deltaXYZ)",
+          "description": "Translates the camera in local space. Multiplies the 3D delta by the orientation matrix axes and adds to position. Recalculates inverse and view-proj matrices.",
+          "confidence": "CONFIRMED"
+        },
+        "GetFovAspect": {
+          "rva": "0x2618E0",
+          "signature": "void GetFovAspect(CameraClass* this, float* outFov, float* outAspect)",
+          "description": "Reads FOV from sub-object +0x48 and aspect ratio from +0x4C.",
+          "confidence": "CONFIRMED"
+        },
+        "SetFovAspect": {
+          "rva": "0x261A80",
+          "signature": "void SetFovAspect(CameraClass* this, float fov, float aspect)",
+          "description": "Sets FOV (+0x48), aspect (+0x4C), clears projection_mode to 0, rebuilds projection and view-proj matrices.",
+          "confidence": "CONFIRMED"
+        },
+        "SetPerspectiveProjection": {
+          "rva": "0x261AB0",
+          "signature": "void SetPerspectiveProjection(CameraClass* this, float left, float right, float top, float bottom, float nearClip, float farClip)",
+          "description": "Sets perspective projection from frustum edges. Calculates FOV and aspect from edges, sets clip planes at +0x30/+0x34.",
+          "confidence": "CONFIRMED"
+        },
+        "SetOrthoProjection": {
+          "rva": "0x261B50",
+          "signature": "void SetOrthoProjection(CameraClass* this, float left, float top, float right, float bottom, float nearClip, float farClip)",
+          "description": "Sets orthographic projection. Stores bounds at +0x50..+0x5C, sets projection_mode=1, rebuilds matrices.",
+          "confidence": "CONFIRMED"
+        },
+        "SetViewport": {
+          "rva": "0x261E00",
+          "signature": "void SetViewport(CameraClass* this, float x, float width, float y, float height)",
+          "description": "Sets viewport rect at sub-object +0x74..+0x80. Y and height are inverted (1.0 - input).",
+          "confidence": "CONFIRMED"
+        },
+        "GetFrustumBounds": {
+          "rva": "0x261900",
+          "signature": "void GetFrustumBounds(CameraClass* this, float* top, float* bottom, float* left, float* right, float* nearClip, float* farClip)",
+          "description": "Returns the frustum bounds. For perspective, calculates from FOV/aspect using tan(). For ortho, reads directly from +0x50..+0x5C.",
+          "confidence": "CONFIRMED"
+        },
+        "GetViewport": {
+          "rva": "0x261870",
+          "signature": "void GetViewport(CameraClass* this, bool p2, bool p3, bool p4)",
+          "description": "Reads viewport rect from sub-object +0x74..+0x80 and passes to FUN_14013d030.",
+          "confidence": "DISCOVERED"
+        },
+        "CopyFrom": {
+          "rva": "0x261590",
+          "signature": "CameraClass* CopyFrom(CameraClass* this, CameraClass* other)",
+          "description": "Copies camera state from another CameraClass instance. Copies inner sub-object and outer matrix.",
+          "confidence": "CONFIRMED"
+        },
+        "Render": {
+          "rva": "0x2611C0",
+          "signature": "bool Render(CameraClass* this, int pass)",
+          "description": "Iterates the scene model list, calling Prepare then Render on each model.",
+          "confidence": "DISCOVERED"
+        }
+      }
+    },
+
+    "GalacticCameraClass": {
+      "description": "Camera controller for the galactic (strategy) map. Manages the orbital camera that orbits around a look-at point with zoom, pitch, and rotation. Reads global camera parameters and interpolates between them during transitions.",
+      "constructor_rva": "0x3C2B20",
+      "update_rva": "0x3C2C00",
+      "confidence": "CONFIRMED",
+      "fields": [
+        { "offset": "0x00", "type": "pointer", "name": "vtable_ptr" },
+        { "offset": "0x08", "type": "float32", "name": "camera_mode_value", "description": "Copied from DAT_140b159c8 after update." },
+        { "offset": "0x0C", "type": "float32", "name": "look_at_x", "description": "Look-at target X position in world space." },
+        { "offset": "0x10", "type": "float32", "name": "look_at_y", "description": "Look-at target Y position." },
+        { "offset": "0x14", "type": "float32", "name": "look_at_z", "description": "Look-at target Z position." },
+        { "offset": "0x18", "type": "pointer", "name": "camera_class_ptr", "description": "Pointer to the CameraClass that this controller drives. Obtained from GameMode+0x90." },
+        { "offset": "0x28", "type": "float32", "name": "target_look_x", "description": "Interpolation target for look_at_x." },
+        { "offset": "0x2C", "type": "float32", "name": "target_look_y", "description": "Interpolation target for look_at_y." },
+        { "offset": "0x30", "type": "float32", "name": "target_look_z", "description": "Interpolation target for look_at_z." },
+        { "offset": "0x34", "type": "float32", "name": "orbit_distance", "description": "Distance from look-at point (zoom arm length). Multiplied by look direction globals." },
+        { "offset": "0x3C", "type": "float32", "name": "transition_timer", "description": "Timer for smooth camera transitions. Counts down toward 0." },
+        { "offset": "0x44", "type": "int32", "name": "update_state", "description": "Camera update state machine. Values 1-2 = transitioning, 3+ = free orbit mode." },
+        { "offset": "0x4C", "type": "float32", "name": "custom_camera_distance", "description": "Custom distance override used when mode sub-state <= 2." },
+        { "offset": "0x50", "type": "float32", "name": "custom_zoom_angle", "description": "Custom zoom rotation angle override." }
+      ],
+      "update_function": {
+        "rva": "0x3C2C00",
+        "description": "Main update function called each frame. 1) Gets current GameMode via GetModeByType(0). 2) Gets the CameraClass from mode+0x90. 3) Depending on update_state: interpolates position/zoom between current and target, or maintains free orbit. 4) Builds orientation matrix with rotation around X axis (pitch from zoom angle). 5) Sets the camera transform matrix and FOV/aspect.",
+        "camera_position_calculation": "The camera position is calculated as: position = look_at_point + rotation_matrix * (look_direction * distance). The look direction comes from globals at 0xB159AC/B0/B4. The rotation is built using FUN_1402cf8d0 (matrix rotation by angle).",
+        "confidence": "CONFIRMED"
+      }
+    },
+
+    "SelectEventClass": {
+      "description": "Event dispatched when the player selects a unit/object. Inherits from ScheduledEventClass. Event type ID = 5. References the GameModeManagerClass singleton.",
+      "constructor_rva": "0x3AC9D0",
+      "event_type": 5,
+      "confidence": "CONFIRMED",
+      "fields": [
+        { "offset": "0x1FC (from SelectEventClass_data base)", "type": "int32", "name": "selection_data", "description": "Initialized to 0. Likely the object ID or selection flags." }
+      ],
+      "global_reference": "Writes to GameModeManagerClass+0xB4 via FUN_14028d930."
+    },
+
+    "SelectAllEventClass": {
+      "description": "Event dispatched for 'select all units' command. Event type ID = 37.",
+      "constructor_rva": "0x437F40",
+      "event_type": 37,
+      "confidence": "CONFIRMED",
+      "global_reference": "Same as SelectEventClass — writes to GameModeManagerClass+0xB4."
+    },
+
+    "ControlGroupEventClass": {
+      "description": "Event for control group assign/recall (Ctrl+1..9 / 1..9). Event type ID = 30.",
+      "constructor_rva": "0x436060",
+      "event_type": 30,
+      "confidence": "CONFIRMED",
+      "fields": [
+        { "offset": "0x00", "type": "int32", "name": "group_number", "description": "Control group index (0-9)." },
+        { "offset": "0x04", "type": "int32", "name": "action", "description": "0 = assign to group, 1 = recall group (TBD)." }
+      ]
+    },
+
+    "LookEventClass": {
+      "description": "Event dispatched when camera should look at a target (corresponds to Lua Point_Camera_At). Event type ID = 4.",
+      "constructor_rva": "0x689670",
+      "event_type": 4,
+      "confidence": "CONFIRMED"
+    },
+
+    "SelectionDataPackClass": {
+      "description": "Per-object selection state data pack. Attached to GameObjectClass instances that can be selected. Pool-allocated (pool size 20). Contains 5 ref-counted pointers and selection state.",
+      "constructor_rva": "0x55BE30",
+      "destructor_rva": "0x55BE70",
+      "pool_size": 20,
+      "confidence": "CONFIRMED",
+      "fields": [
+        { "offset": "0x00", "type": "pointer (ref-counted)", "name": "selection_ref_0", "description": "First ref-counted pointer. Released in destructor." },
+        { "offset": "0x08", "type": "pointer (ref-counted)", "name": "selection_ref_1" },
+        { "offset": "0x10", "type": "pointer (ref-counted)", "name": "selection_ref_2" },
+        { "offset": "0x18", "type": "pointer (ref-counted)", "name": "selection_ref_3" },
+        { "offset": "0x20", "type": "pointer (ref-counted)", "name": "selection_ref_4" },
+        { "offset": "0x28", "type": "int32", "name": "selection_state", "description": "Initialized to 1. Selection state flags." },
+        { "offset": "0x30", "type": "msvc_sso_string", "name": "selection_group_name", "description": "String field (SSO). Freed in destructor via FID_conflict_Tidy_deallocate." },
+        { "offset": "0x48", "type": "int32", "name": "selection_type", "description": "Initialized to 7. Type/category of selection." }
+      ]
+    },
+
+    "SelectBehaviorClass": {
+      "description": "Behavior component attached to selectable GameObjectClass instances. Handles the selection logic (highlight, UI feedback, etc.). Size = 0x58 bytes. Inherits from BehaviorClass.",
+      "destructor_rva": "0x3C1960",
+      "size": "0x58",
+      "confidence": "CONFIRMED"
+    }
+  },
+
+  "functions": {
+    "D3DXMatrixPerspectiveFovLH": {
+      "rva": "0x7A882D",
+      "description": "D3DX import for building a left-handed perspective projection matrix from FOV. Called by the camera projection rebuild functions.",
+      "confidence": "CONFIRMED"
+    },
+    "D3DXMatrixPerspectiveFovRH": {
+      "rva": "0x7A87D3",
+      "description": "D3DX import for right-handed perspective projection.",
+      "confidence": "CONFIRMED"
+    },
+    "D3DXMatrixLookAtLH": {
+      "rva": "0x7A8827",
+      "description": "D3DX import for building a left-handed view matrix from eye/target/up. Used in camera view matrix construction.",
+      "confidence": "CONFIRMED"
+    },
+    "BuildPerspectiveViewProjectionMatrix": {
+      "rva": "0x232C50",
+      "description": "Builds a combined view-projection matrix for perspective cameras. Copies orientation, applies frustum signs, generates the combined matrix.",
+      "confidence": "CONFIRMED"
+    },
+    "BuildOrthoViewProjectionMatrix": {
+      "rva": "0x232DF0",
+      "description": "Builds a combined view-projection matrix for orthographic cameras.",
+      "confidence": "CONFIRMED"
+    },
+    "BuildProjectionMatrix_Perspective": {
+      "rva": "0x232220",
+      "description": "Builds the 4x4 perspective projection matrix from FOV, aspect, near, far. Uses tan() for FOV conversion.",
+      "confidence": "CONFIRMED"
+    },
+    "RebuildProjectionMatrix": {
+      "rva": "0x141260",
+      "description": "Rebuilds the projection matrix based on current projection_mode (0=perspective, 1=ortho). Dispatches to the appropriate builder.",
+      "confidence": "CONFIRMED"
+    },
+    "RebuildViewProjectionMatrices": {
+      "rva": "0x1417C0",
+      "description": "Rebuilds both near and far view-projection matrices. Called after any camera parameter change.",
+      "confidence": "CONFIRMED"
+    },
+    "MatrixRotateByAngle": {
+      "rva": "0x2CF8D0",
+      "description": "Applies a rotation by angle (radians) to a 3x3 rotation matrix. Uses sin/cos of the angle. Used by GalacticCameraClass for pitch/yaw rotation.",
+      "confidence": "CONFIRMED"
+    },
+    "CameraStateInit": {
+      "rva": "0x140100",
+      "description": "Initializes the 0x308-byte camera state sub-object with identity matrix, default FOV (pi/4), aspect (4:3), near clip (1.0), far clip (1000.0), and default position (0, 0, -60).",
+      "confidence": "CONFIRMED"
+    },
+    "GetScreenAspectRatio": {
+      "rva": "0x14EE30",
+      "description": "Returns the global screen aspect ratio from DAT_140a12550.",
+      "confidence": "CONFIRMED"
+    },
+    "GetModeByType": {
+      "rva": "0x28A950",
+      "description": "Iterates GameModeManagerClass's mode array, returning the GameModeClass* matching the given type ID. Called with type 0 for galactic mode.",
+      "confidence": "CONFIRMED"
+    },
+    "SetSelectionState": {
+      "rva": "0x28D930",
+      "description": "Sets the selection state integer at GameModeManagerClass+0xB4. Called by SelectEventClass and SelectAllEventClass constructors.",
+      "confidence": "CONFIRMED"
+    }
+  },
+
+  "access_patterns": {
+    "get_current_camera_position": {
+      "description": "How to read the active camera's world position at runtime.",
+      "chain": [
+        "1. Read GameModeManagerClass pointer at [module_base + 0xB153E0]",
+        "2. Call GetModeByType(mode_mgr, 0) to get the current galactic GameModeClass (or iterate to find active)",
+        "3. Read CameraClass pointer at [GameModeClass + 0x90]",
+        "4. Read camera_state_ptr at [CameraClass + 0x40]",
+        "5. Position X = float at [camera_state + 0x0C]",
+        "6. Position Y = float at [camera_state + 0x1C]",
+        "7. Position Z = float at [camera_state + 0x2C]"
+      ],
+      "pointer_chain_notation": "[module+0xB153E0] -> GetModeByType(0) -> +0x90 -> +0x40 -> {+0x0C, +0x1C, +0x2C}",
+      "confidence": "CONFIRMED"
+    },
+    "get_camera_zoom_level": {
+      "description": "How to read the camera's zoom/FOV.",
+      "chain": [
+        "1-4. Same as position chain above",
+        "5. FOV = float at [camera_state + 0x48] (radians)",
+        "6. Aspect = float at [camera_state + 0x4C]"
+      ],
+      "confidence": "CONFIRMED"
+    },
+    "get_camera_rotation": {
+      "description": "Camera orientation is encoded in the 3x4 matrix at camera_state +0x00. The forward direction is the Z column negated: forward = (-[+0x08], -[+0x18], 0). For the galactic camera, the rotation angle is stored in the GalacticCameraClass globals at 0xB1599C (pitch angle in radians).",
+      "confidence": "CONFIRMED"
+    },
+    "free_camera_unlock_mechanism": {
+      "description": "The GalacticCameraClass::Update (RVA 0x3C2C00) has an update_state field at +0x44. When update_state >= 4, the camera operates in free orbit mode with no position constraints. Setting update_state to a high value (e.g., 5) and writing custom look-at coordinates (+0x0C/+0x10/+0x14) and orbit distance (+0x34) would effectively unlock the camera. For a full free camera: bypass GalacticCameraClass::Update entirely by NOPing the call, then write the camera_state sub-object's orientation matrix directly.",
+      "nop_approach": "Find the call to GalacticCameraClass::Update and NOP it. Then write the camera_state transform matrix (12 floats at sub-object +0x00) directly each frame.",
+      "confidence": "DISCOVERED",
+      "status": "Theoretical — needs runtime validation"
+    },
+    "get_selected_unit": {
+      "description": "The selection system works through the event mechanism. SelectEventClass (type 5) and SelectAllEventClass (type 37) write to GameModeManagerClass+0xB4. The actual selected object list is maintained per-GameModeClass in the DynamicVector<GameObjectClass*> structures within the mode. The GameModeClass constructor at offset this[0x38] (0x1C0) initializes a DynamicVectorClass<DynamicVectorClass<GameObjectClass*>> which holds per-player selection groups.",
+      "chain": [
+        "1. Read GameModeManagerClass pointer at [module_base + 0xB153E0]",
+        "2. Get active GameModeClass via GetModeByType",
+        "3. The selection state is at GameModeClass — the DynamicVector<DynamicVectorClass<GameObjectClass*>> at approximately offset 0x1C0-0x1D8 holds per-player selection lists",
+        "4. For the local player, index into the outer vector by player slot",
+        "5. The inner DynamicVectorClass contains GameObjectClass* pointers to selected units"
+      ],
+      "confidence": "DISCOVERED",
+      "notes": "Exact offset for the selection vector needs runtime verification. The GameModeClass constructor shows DynamicVectorClass<DynamicVectorClass<GameObjectClass*>> at this[0x3B] (offset 0x1D8) with initialization using DAT_140a16fb0 (which is the max player count)."
+    },
+    "selection_via_selectbehavior": {
+      "description": "Individual objects have a SelectBehaviorClass (size 0x58) attached as a behavior component. To check if a specific GameObjectClass is selected, query its SelectionDataPackClass data pack. The data pack is attached through the standard data-pack system.",
+      "confidence": "DISCOVERED"
+    }
+  },
+
+  "d3d_engine_params": {
+    "description": "The Alamo engine uses named engine parameters for shader uniforms. These are factory classes that provide transform matrices to the rendering pipeline.",
+    "params": {
+      "Get_D3d_View_Transform": { "rva": "0x1ADC70", "description": "Provides the camera view matrix to shaders." },
+      "Get_D3d_Projection_Transform": { "rva": "0x1ADCF0", "description": "Provides the projection matrix." },
+      "Get_D3d_View_Inverse_Transform": { "rva": "0x1ADD70", "description": "Provides the inverse view matrix (camera-to-world)." },
+      "Get_D3d_View_Projection_Transform": { "rva": "0x1ADDF0", "description": "Provides the combined view-projection matrix." },
+      "Get_D3d_Model_Transform": { "rva": "0x1ADBF0", "description": "Provides the model (world) matrix." },
+      "Get_D3d_Model_View_Transform": { "rva": "0x1ADF70", "description": "Provides the combined model-view matrix." },
+      "Get_D3d_Model_View_Projection_Transform": { "rva": "0x1ADFF0", "description": "Provides the MVP matrix." },
+      "Get_D3d_Model_Inverse_Transform": { "rva": "0x1ADE70", "description": "Provides the inverse model matrix." },
+      "Get_D3d_Model_Inverse_Transpose_Transform": { "rva": "0x1ADEF0", "description": "Provides the inverse-transpose model matrix (for normals)." },
+      "Get_D3d_Model_View_Inverse_Transform": { "rva": "0x1AE070", "description": "Provides the inverse model-view matrix." }
+    },
+    "confidence": "CONFIRMED"
+  },
+
+  "class_hierarchy": {
+    "CameraClass": {
+      "inherits": ["RefCountClass"],
+      "rtti": ".?AVCameraClass@@"
+    },
+    "GalacticCameraClass": {
+      "inherits": ["unknown"],
+      "rtti": ".?AVGalacticCameraClass@@",
+      "description": "Camera controller for galactic map. Does NOT inherit from CameraClass. It DRIVES a CameraClass instance."
+    },
+    "GameModeClass": {
+      "inherits": ["SignalGeneratorClass"],
+      "subclasses": ["LandModeClass", "SpaceModeClass", "GalacticModeClass"]
+    },
+    "SelectEventClass": {
+      "inherits": ["ScheduledEventClass", "EventClass"]
+    },
+    "SelectAllEventClass": {
+      "inherits": ["ScheduledEventClass", "EventClass"]
+    },
+    "SelectBehaviorClass": {
+      "inherits": ["BehaviorClass"],
+      "size": "0x58"
+    },
+    "SelectionDataPackClass": {
+      "inherits": ["PooledObjectClass<SelectionDataPackClass, 20, EmptyLockerClass>"],
+      "pool_size": 20
+    }
+  },
+
+  "lua_function_mapping": {
+    "Point_Camera_At": {
+      "event_class": "LookEventClass",
+      "event_type_id": 4,
+      "description": "Dispatched as a LookEvent that sets the camera look-at target."
+    },
+    "Scroll_Camera_To": {
+      "description": "Likely uses the same GalacticCameraClass target interpolation. Sets target_look_x/y/z and starts a transition (update_state = 1 or 2).",
+      "confidence": "DISCOVERED"
+    },
+    "Zoom_Camera": {
+      "description": "Modifies the galactic camera globals at 0xB1599C (zoom angle) and 0xB159A4 (distance). The GalacticCameraClass::Update interpolates to these values.",
+      "confidence": "DISCOVERED"
+    },
+    "Rotate_Camera_By": {
+      "description": "Likely modifies the look direction globals at 0xB159AC/B0/B4 or applies a rotation to the GalacticCameraClass state.",
+      "confidence": "DISCOVERED"
+    },
+    "Select_Object": {
+      "event_class": "SelectEventClass",
+      "event_type_id": 5,
+      "description": "Dispatched as a SelectEvent. Writes to GameModeManagerClass+0xB4."
+    }
+  },
+
+  "next_steps": [
+    "RUNTIME VALIDATION: Attach CE with admin privileges or use the DLL bridge to resolve ASLR base and validate all offsets at runtime.",
+    "SELECTION VECTOR: Use runtime breakpoints on FUN_14028d930 to trace the exact selection list storage within GameModeClass. The DynamicVector<DynamicVectorClass<GameObjectClass*>> at GameModeClass+0x1D8 is the most likely candidate.",
+    "LAND/SPACE CAMERAS: LandModeClass and SpaceModeClass have their own camera controllers (not GalacticCameraClass). Decompile their update functions to map the tactical camera parameters.",
+    "FREE CAMERA: Implement free camera by: (a) finding the call to GalacticCameraClass::Update, (b) NOPing it, (c) writing the camera_state sub-object matrix directly via the DLL bridge.",
+    "SCREEN-TO-WORLD: The inverse view-projection matrix at camera_state+0x84 (or the engine param at RVA 0x1ADD70) provides the camera-to-world transform. Multiply a screen-space ray by this inverse to get world coordinates."
+  ]
+}

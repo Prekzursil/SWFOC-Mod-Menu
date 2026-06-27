@@ -1,0 +1,1324 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "GameObjectClass Complete Structure Map",
+  "description": "Complete field mapping of the Alamo engine GameObjectClass struct from SWFOC (StarWarsG.exe, x86_64). Produced by systematic Ghidra decompilation of constructors, SetHP, QueryInterface, SetSpeedOverride, Make_Invulnerable, Change_Owner, ScheduleHeroRespawn, and 20+ additional functions.",
+  "_meta": {
+    "agent": "Agent 3B",
+    "date": "2026-04-04",
+    "binary": "StarWarsG.exe",
+    "vtable_rva": "0x8661B8",
+    "ghidra_base": "0x140000000",
+    "constructor_rvas": ["0x388720", "0x388B60"],
+    "functions_decompiled": 25,
+    "xrefs_followed": 22,
+    "confidence_scale": "high = confirmed in 2+ functions; medium = confirmed in 1 function; low = inferred from context/naming"
+  },
+  "struct": {
+    "name": "GameObjectClass",
+    "vtable_rva": "0x8661B8",
+    "rtti_mangled_name": ".?AVGameObjectClass@@",
+    "minimum_size": "0x3C8",
+    "inherits": [
+      "RootClass",
+      "MultiLinkedListMember",
+      "VEmptyLockerClass::$0EA::VGameObjectClass::?$PooledObjectClass",
+      "CullObjectClass",
+      "SignalGeneratorClass"
+    ],
+    "additional_vtables": [
+      {"rva": "0x8661D8", "offset_in_object": 8, "for_class": "MultiLinkedListMember"},
+      {"rva": "0x866200", "offset_in_object": 24, "for_class": "CullObjectClass"},
+      {"rva": "0x866210", "offset_in_object": 32, "for_class": "SignalGeneratorClass"},
+      {"rva": "0x866228", "offset_in_object": 56, "for_class": "unknown_base_5"}
+    ],
+    "fields": [
+      {
+        "offset": "0x00",
+        "type": "pointer",
+        "width": 8,
+        "name": "vtable_ptr",
+        "description": "Pointer to the primary virtual function table. RVA 0x8661B8 identifies GameObjectClass. Written first in both constructors.",
+        "confidence": "high",
+        "source": ["constructor_0x388720", "constructor_0x388B60"]
+      },
+      {
+        "offset": "0x08",
+        "type": "pointer",
+        "width": 8,
+        "name": "vtable_MultiLinkedListMember",
+        "description": "Secondary vtable for MultiLinkedListMember base class.",
+        "confidence": "high",
+        "source": ["constructor_0x388720"]
+      },
+      {
+        "offset": "0x10",
+        "type": "uint64",
+        "width": 8,
+        "name": "linked_list_next",
+        "description": "MultiLinkedListMember next pointer. Initialized to 0 in constructor.",
+        "confidence": "medium",
+        "source": ["constructor_0x388720"]
+      },
+      {
+        "offset": "0x18",
+        "type": "pointer",
+        "width": 8,
+        "name": "vtable_CullObjectClass",
+        "description": "Secondary vtable for CullObjectClass base class.",
+        "confidence": "high",
+        "source": ["constructor_0x388720"]
+      },
+      {
+        "offset": "0x20",
+        "type": "pointer",
+        "width": 8,
+        "name": "vtable_SignalGeneratorClass",
+        "description": "Secondary vtable for SignalGeneratorClass base class.",
+        "confidence": "high",
+        "source": ["constructor_0x388720"]
+      },
+      {
+        "offset": "0x28",
+        "type": "undefined",
+        "width": 8,
+        "name": "signal_generator_data",
+        "description": "SignalGeneratorClass internal data. Initialized by SignalGeneratorClass::SignalGeneratorClass().",
+        "confidence": "medium",
+        "source": ["constructor_0x388720"]
+      },
+      {
+        "offset": "0x30",
+        "type": "uint64",
+        "width": 8,
+        "name": "signal_data_2",
+        "description": "Additional signal/cull object data. Initialized to 0.",
+        "confidence": "medium",
+        "source": ["constructor_0x388720"]
+      },
+      {
+        "offset": "0x38",
+        "type": "pointer",
+        "width": 8,
+        "name": "vtable_5",
+        "description": "Fifth vtable pointer (for unknown base class at offset 56 in RTTI). Present in additional_vtables array.",
+        "confidence": "high",
+        "source": ["constructor_0x388720"]
+      },
+      {
+        "offset": "0x40",
+        "type": "uint32",
+        "width": 4,
+        "name": "visibility_mask",
+        "description": "Cull/visibility bitmask. Initialized to 0x3FFFFF (all bits set). Used by the rendering/culling system to determine which cameras/viewports can see this object.",
+        "confidence": "high",
+        "source": ["constructor_0x388720", "constructor_0x388B60"]
+      },
+      {
+        "offset": "0x44",
+        "type": "uint32",
+        "width": 4,
+        "name": "visibility_mask_2",
+        "description": "Second visibility mask. Also initialized to 0x3FFFFF.",
+        "confidence": "high",
+        "source": ["constructor_0x388720", "constructor_0x388B60"]
+      },
+      {
+        "offset": "0x48",
+        "type": "int32",
+        "width": 4,
+        "name": "unique_session_id",
+        "description": "Session-unique allocation ID. Initialized to -1 (0xFFFFFFFF) in default constructor; set to param_3 in the full constructor. Used by FUN_1402AC980() for session tracking.",
+        "confidence": "high",
+        "source": ["constructor_0x388720", "constructor_0x388B60"]
+      },
+      {
+        "offset": "0x4C",
+        "type": "int32",
+        "width": 4,
+        "name": "session_id_high",
+        "description": "Upper 32 bits / secondary ID. Initialized to 0.",
+        "confidence": "medium",
+        "source": ["constructor_0x388B60"]
+      },
+      {
+        "offset": "0x50",
+        "type": "pointer",
+        "width": 8,
+        "name": "signal_listener_list",
+        "description": "Linked list of signal listeners. Initialized to NULL. Iterated in FUN_1403AC530 (transform update) to notify observers.",
+        "confidence": "high",
+        "source": ["constructor_0x388720", "FUN_1403AC530"]
+      },
+      {
+        "offset": "0x58",
+        "type": "int32",
+        "width": 4,
+        "name": "owner_player_id",
+        "description": "Index into the global PlayerListClass array identifying the owning player. SESSION-DEPENDENT. For sub-objects, use QueryInterface(3) to resolve the true owner via parent chain. Read by SetHP, Change_Owner, ScheduleHeroRespawn, and many others.",
+        "confidence": "high",
+        "source": ["SetHP_0x3A89D0", "Change_Owner_0x574D0E", "FUN_1403956C0", "ScheduleHeroRespawn_0x48EB10"],
+        "caveats": [
+          "Session-dependent index, not a persistent faction ID",
+          "For sub-objects (hardpoints, turrets), this may be stale -- use QueryInterface(3)",
+          "Value -1 means no owner / uninitialized"
+        ]
+      },
+      {
+        "offset": "0x5C",
+        "type": "float32",
+        "width": 4,
+        "name": "hp",
+        "description": "Current hitpoints. Written exclusively by SetHP (RVA 0x3A89D0). Clamped to [0.0, max_hp]. When HP reaches 0.0, the engine logs a death event. All known callers funnel through SetHP. Also set during spawn init in FUN_1403989A0 via GetMaxHealth.",
+        "confidence": "high",
+        "source": ["SetHP_0x3A89D0", "FUN_1403989A0"]
+      },
+      {
+        "offset": "0x60",
+        "type": "uint64",
+        "width": 8,
+        "name": "unknown_0x60",
+        "description": "Initialized to 0 in constructor. Referenced in Change_Owner via *(param_1 + 0x60) as the GameObjectClass pointer of the wrapper's underlying object.",
+        "confidence": "medium",
+        "source": ["constructor_0x388720"]
+      },
+      {
+        "offset": "0x68",
+        "type": "float32",
+        "width": 4,
+        "name": "spawn_position_x",
+        "description": "Initial spawn X coordinate. Set from param_4 in the full constructor. Used as the base position during object initialization.",
+        "confidence": "high",
+        "source": ["constructor_0x388B60"]
+      },
+      {
+        "offset": "0x6C",
+        "type": "float32",
+        "width": 4,
+        "name": "spawn_position_y",
+        "description": "Initial spawn Y coordinate (vertical/height). Set from param_4[1] in the full constructor.",
+        "confidence": "high",
+        "source": ["constructor_0x388B60"]
+      },
+      {
+        "offset": "0x70",
+        "type": "float32",
+        "width": 4,
+        "name": "spawn_position_z",
+        "description": "Initial spawn Z coordinate (depth). Set from param_4[2] in the full constructor. May have height offset (DFC) added from GameObjectType.",
+        "confidence": "high",
+        "source": ["constructor_0x388B60"]
+      },
+      {
+        "offset": "0x74",
+        "type": "float32",
+        "width": 4,
+        "name": "facing_x",
+        "description": "Initial facing direction X component. Set from param_5[0] in the full constructor.",
+        "confidence": "high",
+        "source": ["constructor_0x388B60"]
+      },
+      {
+        "offset": "0x78",
+        "type": "float32",
+        "width": 4,
+        "name": "current_position_x",
+        "description": "Current world position X. Written by the Make_Invulnerable/Teleport path. Read by FUN_1403A8710 alongside +0x7C and +0x80. Also set from spawn_position in constructor.",
+        "confidence": "high",
+        "source": ["Make_Invulnerable_0x3ABB80", "FUN_1403989A0", "FUN_1403AC530"]
+      },
+      {
+        "offset": "0x7C",
+        "type": "float32",
+        "width": 4,
+        "name": "current_position_y",
+        "description": "Current world position Y (height). Written by Make_Invulnerable/Teleport path. The 'y' in the engine coordinate system.",
+        "confidence": "high",
+        "source": ["Make_Invulnerable_0x3ABB80", "FUN_1403989A0", "FUN_1403AC530"]
+      },
+      {
+        "offset": "0x80",
+        "type": "float32",
+        "width": 4,
+        "name": "current_position_z",
+        "description": "Current world position Z (depth). Written by Make_Invulnerable/Teleport path.",
+        "confidence": "high",
+        "source": ["Make_Invulnerable_0x3ABB80", "FUN_1403989A0"]
+      },
+      {
+        "offset": "0x84",
+        "type": "float32",
+        "width": 4,
+        "name": "render_position_x",
+        "description": "Rendering/interpolated position X. Updated by FUN_1403A8710 which compares with param and sets dirty flag at +0x3A1. Distinct from current_position for interpolation.",
+        "confidence": "high",
+        "source": ["FUN_1403A8710"]
+      },
+      {
+        "offset": "0x88",
+        "type": "float32",
+        "width": 4,
+        "name": "render_position_y",
+        "description": "Rendering/interpolated position Y.",
+        "confidence": "high",
+        "source": ["FUN_1403A8710", "constructor_0x388B60"]
+      },
+      {
+        "offset": "0x8C",
+        "type": "float32",
+        "width": 4,
+        "name": "render_position_z",
+        "description": "Rendering/interpolated position Z. Also used as the facing/rotation Z in FUN_1403AC530 transform update.",
+        "confidence": "high",
+        "source": ["FUN_1403A8710", "FUN_1403AC530"]
+      },
+      {
+        "offset": "0x90",
+        "type": "float32",
+        "width": 4,
+        "name": "previous_position_x",
+        "description": "Previous frame position X. Updated by FUN_1403A8710 alongside render_position.",
+        "confidence": "high",
+        "source": ["FUN_1403A8710"]
+      },
+      {
+        "offset": "0x94",
+        "type": "float32",
+        "width": 4,
+        "name": "previous_position_y",
+        "description": "Previous frame position Y. Used by FUN_1403AC530 for rotation calculation.",
+        "confidence": "high",
+        "source": ["FUN_1403A8710", "FUN_1403AC530"]
+      },
+      {
+        "offset": "0x98",
+        "type": "float32",
+        "width": 4,
+        "name": "previous_position_z",
+        "description": "Previous frame position Z.",
+        "confidence": "high",
+        "source": ["FUN_1403A8710"]
+      },
+      {
+        "offset": "0xA8",
+        "type": "pointer",
+        "width": 8,
+        "name": "locomotor_component_ptr",
+        "description": "Pointer to the locomotor/movement behavior component. When non-null, contains speed override fields: flag at locomotor+0x29C (byte), value at locomotor+0x2A0 (float32). SetSpeedOverride writes both; ClearSpeedOverride zeros both.",
+        "confidence": "high",
+        "source": ["SetSpeedOverride_0x3A8C90", "ClearSpeedOverride_0x38F8B0", "FUN_1403989A0"],
+        "sub_fields": {
+          "+0x29C": {"type": "uint8", "name": "speed_override_active", "values": {"0": "off", "1": "on"}},
+          "+0x2A0": {"type": "float32", "name": "speed_override_value"}
+        }
+      },
+      {
+        "offset": "0xB0",
+        "type": "pointer",
+        "width": 8,
+        "name": "component_slot_0xB0",
+        "description": "Component pointer slot. Part of the component pointer block from 0xA8 to 0x240. Cleared during reset in FUN_1403989A0.",
+        "confidence": "medium",
+        "source": ["FUN_1403989A0"]
+      },
+      {
+        "offset": "0xB8",
+        "type": "pointer",
+        "width": 8,
+        "name": "parent_container_component_ptr",
+        "description": "Pointer to parent container component. FUN_1403956C0 returns (obj+0xB8)+0x68 as the player/faction identity when the object has a parent. Used for resolving ownership of sub-objects. Also read in FUN_140395920 for sub-object owner resolution.",
+        "confidence": "high",
+        "source": ["FUN_1403956C0", "FUN_140395920"]
+      },
+      {
+        "offset": "0xC0",
+        "type": "pointer",
+        "width": 8,
+        "name": "component_slot_0xC0",
+        "description": "Component pointer slot. Part of the component pointer block. Cleared during reset.",
+        "confidence": "medium",
+        "source": ["FUN_1403989A0"]
+      },
+      {
+        "offset": "0xC8",
+        "type": "pointer",
+        "width": 8,
+        "name": "component_slot_0xC8",
+        "description": "Component pointer slot.",
+        "confidence": "medium",
+        "source": ["FUN_1403989A0"]
+      },
+      {
+        "offset": "0xD0",
+        "type": "pointer",
+        "width": 8,
+        "name": "component_slot_0xD0",
+        "description": "Component pointer slot.",
+        "confidence": "medium",
+        "source": ["FUN_1403989A0"]
+      },
+      {
+        "offset": "0xD8",
+        "type": "pointer",
+        "width": 8,
+        "name": "targeting_data_ptr",
+        "description": "Pointer to targeting/AI data structure. FUN_140395920 reads *(obj+0xD8)+0x18 as a linked list for target priority evaluation.",
+        "confidence": "medium",
+        "source": ["FUN_140395920"]
+      },
+      {
+        "offset": "0xE0",
+        "type": "pointer",
+        "width": 8,
+        "name": "component_slot_0xE0",
+        "description": "Component pointer slot.",
+        "confidence": "medium",
+        "source": ["FUN_1403989A0"]
+      },
+      {
+        "offset": "0xE8",
+        "type": "pointer",
+        "width": 8,
+        "name": "component_slot_0xE8",
+        "description": "Component pointer slot.",
+        "confidence": "medium",
+        "source": ["FUN_1403989A0"]
+      },
+      {
+        "offset": "0xF0",
+        "type": "pointer",
+        "width": 8,
+        "name": "buff_modifier_component_ptr",
+        "description": "Pointer to combat buff/modifier component. FUN_140395C70 reads *(obj+0xF0)+0x138 for buff data. Used in health modifier calculations.",
+        "confidence": "medium",
+        "source": ["FUN_140395C70"]
+      },
+      {
+        "offset": "0xF8",
+        "type": "pointer",
+        "width": 8,
+        "name": "game_object_type_wrapper_ptr",
+        "description": "Pointer to the GameObjectType struct wrapper for this instance. Contains the type definition, refcounted. Written from param_2 in the full constructor.",
+        "confidence": "medium",
+        "source": ["constructor_0x388B60"]
+      },
+      {
+        "offset": "0x100",
+        "type": "pointer",
+        "width": 8,
+        "name": "combatant_behavior_ptr",
+        "description": "Pointer to CombatantBehaviorClass. Allocated (size 0x3B8) and initialized in FUN_1403989A0 when FUN_140374DA0 returns true. Contains combat-related state including weapon data at +0x2CC and nested structures.",
+        "confidence": "high",
+        "source": ["FUN_1403989A0", "FUN_1403A92F0"]
+      },
+      {
+        "offset": "0x108",
+        "type": "pointer",
+        "width": 8,
+        "name": "component_slot_0x108",
+        "description": "Component pointer slot.",
+        "confidence": "medium",
+        "source": ["FUN_1403989A0"]
+      },
+      {
+        "offset": "0x110",
+        "type": "pointer",
+        "width": 8,
+        "name": "component_slot_0x110",
+        "description": "Component pointer slot.",
+        "confidence": "medium",
+        "source": ["FUN_1403989A0"]
+      },
+      {
+        "offset": "0x118",
+        "type": "pointer",
+        "width": 8,
+        "name": "health_sub_object_ptr",
+        "description": "Pointer to a health-related sub-object. Used by the Take_Damage property dispatch path. Contains additional health state fields at deep offsets.",
+        "confidence": "high",
+        "source": ["alamo_engine_kb.json"]
+      },
+      {
+        "offset": "0x120",
+        "type": "pointer",
+        "width": 8,
+        "name": "component_slot_0x120",
+        "description": "Component pointer slot.",
+        "confidence": "medium",
+        "source": ["FUN_1403989A0"]
+      },
+      {
+        "offset": "0x128",
+        "type": "pointer",
+        "width": 8,
+        "name": "component_slot_0x128",
+        "description": "Component pointer slot.",
+        "confidence": "medium",
+        "source": ["FUN_1403989A0"]
+      },
+      {
+        "offset": "0x130",
+        "type": "pointer",
+        "width": 8,
+        "name": "component_slot_0x130",
+        "description": "Component pointer slot.",
+        "confidence": "medium",
+        "source": ["FUN_1403989A0"]
+      },
+      {
+        "offset": "0x138",
+        "type": "pointer",
+        "width": 8,
+        "name": "component_slot_0x138",
+        "description": "Component pointer slot.",
+        "confidence": "medium",
+        "source": ["FUN_1403989A0"]
+      },
+      {
+        "offset": "0x140",
+        "type": "pointer",
+        "width": 8,
+        "name": "component_slot_0x140",
+        "description": "Component pointer slot.",
+        "confidence": "medium",
+        "source": ["FUN_1403989A0"]
+      },
+      {
+        "offset": "0x148",
+        "type": "pointer",
+        "width": 8,
+        "name": "component_slot_0x148",
+        "description": "Component pointer slot.",
+        "confidence": "medium",
+        "source": ["FUN_1403989A0"]
+      },
+      {
+        "offset": "0x150",
+        "type": "pointer",
+        "width": 8,
+        "name": "component_slot_0x150",
+        "description": "Component pointer slot.",
+        "confidence": "medium",
+        "source": ["FUN_1403989A0"]
+      },
+      {
+        "offset": "0x158",
+        "type": "pointer",
+        "width": 8,
+        "name": "component_slot_0x158",
+        "description": "Component pointer slot.",
+        "confidence": "medium",
+        "source": ["FUN_1403989A0"]
+      },
+      {
+        "offset": "0x160",
+        "type": "pointer",
+        "width": 8,
+        "name": "component_slot_0x160",
+        "description": "Component pointer slot. Explicitly set to NULL in constructor.",
+        "confidence": "medium",
+        "source": ["constructor_0x388720", "FUN_1403989A0"]
+      },
+      {
+        "offset": "0x168",
+        "type": "pointer",
+        "width": 8,
+        "name": "component_slot_0x168",
+        "description": "Component pointer slot. Cleared during reset.",
+        "confidence": "medium",
+        "source": ["constructor_0x388720", "FUN_1403989A0"]
+      },
+      {
+        "offset": "0x170",
+        "type": "pointer",
+        "width": 8,
+        "name": "component_slot_0x170",
+        "description": "Component pointer slot.",
+        "confidence": "medium",
+        "source": ["FUN_1403989A0"]
+      },
+      {
+        "offset": "0x178",
+        "type": "pointer",
+        "width": 8,
+        "name": "component_slot_0x178",
+        "description": "Component pointer slot.",
+        "confidence": "medium",
+        "source": ["FUN_1403989A0"]
+      },
+      {
+        "offset": "0x180",
+        "type": "pointer",
+        "width": 8,
+        "name": "component_slot_0x180",
+        "description": "Component pointer slot.",
+        "confidence": "medium",
+        "source": ["FUN_1403989A0"]
+      },
+      {
+        "offset": "0x188",
+        "type": "pointer",
+        "width": 8,
+        "name": "component_slot_0x188",
+        "description": "Component pointer slot.",
+        "confidence": "medium",
+        "source": ["FUN_1403989A0"]
+      },
+      {
+        "offset": "0x190",
+        "type": "pointer",
+        "width": 8,
+        "name": "component_slot_0x190",
+        "description": "Component pointer slot.",
+        "confidence": "medium",
+        "source": ["FUN_1403989A0"]
+      },
+      {
+        "offset": "0x198",
+        "type": "pointer",
+        "width": 8,
+        "name": "component_slot_0x198",
+        "description": "Component pointer slot.",
+        "confidence": "medium",
+        "source": ["FUN_1403989A0"]
+      },
+      {
+        "offset": "0x1A0",
+        "type": "pointer",
+        "width": 8,
+        "name": "component_slot_0x1A0",
+        "description": "Component pointer slot.",
+        "confidence": "medium",
+        "source": ["FUN_1403989A0"]
+      },
+      {
+        "offset": "0x1A8",
+        "type": "pointer",
+        "width": 8,
+        "name": "component_slot_0x1A8",
+        "description": "Component pointer slot.",
+        "confidence": "medium",
+        "source": ["FUN_1403989A0"]
+      },
+      {
+        "offset": "0x1B0",
+        "type": "pointer",
+        "width": 8,
+        "name": "component_slot_0x1B0",
+        "description": "Component pointer slot.",
+        "confidence": "medium",
+        "source": ["FUN_1403989A0"]
+      },
+      {
+        "offset": "0x1B8",
+        "type": "pointer",
+        "width": 8,
+        "name": "component_slot_0x1B8",
+        "description": "Component pointer slot.",
+        "confidence": "medium",
+        "source": ["FUN_1403989A0"]
+      },
+      {
+        "offset": "0x1C0",
+        "type": "pointer",
+        "width": 8,
+        "name": "component_slot_0x1C0",
+        "description": "Component pointer slot.",
+        "confidence": "medium",
+        "source": ["FUN_1403989A0"]
+      },
+      {
+        "offset": "0x1C8",
+        "type": "pointer",
+        "width": 8,
+        "name": "component_slot_0x1C8",
+        "description": "Component pointer slot.",
+        "confidence": "medium",
+        "source": ["FUN_1403989A0"]
+      },
+      {
+        "offset": "0x1D0",
+        "type": "pointer",
+        "width": 8,
+        "name": "component_slot_0x1D0",
+        "description": "Component pointer slot.",
+        "confidence": "medium",
+        "source": ["FUN_1403989A0"]
+      },
+      {
+        "offset": "0x1D8",
+        "type": "pointer",
+        "width": 8,
+        "name": "component_slot_0x1D8",
+        "description": "Component pointer slot.",
+        "confidence": "medium",
+        "source": ["FUN_1403989A0"]
+      },
+      {
+        "offset": "0x1E0",
+        "type": "pointer",
+        "width": 8,
+        "name": "component_slot_0x1E0",
+        "description": "Component pointer slot.",
+        "confidence": "medium",
+        "source": ["FUN_1403989A0"]
+      },
+      {
+        "offset": "0x1E8",
+        "type": "pointer",
+        "width": 8,
+        "name": "component_slot_0x1E8",
+        "description": "Component pointer slot.",
+        "confidence": "medium",
+        "source": ["FUN_1403989A0"]
+      },
+      {
+        "offset": "0x1F0",
+        "type": "pointer",
+        "width": 8,
+        "name": "component_slot_0x1F0",
+        "description": "Component pointer slot.",
+        "confidence": "medium",
+        "source": ["FUN_1403989A0"]
+      },
+      {
+        "offset": "0x1F8",
+        "type": "pointer",
+        "width": 8,
+        "name": "component_slot_0x1F8",
+        "description": "Component pointer slot.",
+        "confidence": "medium",
+        "source": ["FUN_1403989A0"]
+      },
+      {
+        "offset": "0x200",
+        "type": "pointer",
+        "width": 8,
+        "name": "radar_map_data_ptr",
+        "description": "Pointer to RadarMapDataPackClass (size 0x20). Allocated in FUN_1403989A0 if NULL. Used for minimap representation of this object.",
+        "confidence": "high",
+        "source": ["FUN_1403989A0"]
+      },
+      {
+        "offset": "0x208",
+        "type": "uint64",
+        "width": 8,
+        "name": "unknown_0x208",
+        "description": "Unknown. Cleared during init.",
+        "confidence": "low",
+        "source": ["FUN_1403989A0"]
+      },
+      {
+        "offset": "0x210",
+        "type": "uint64",
+        "width": 8,
+        "name": "unknown_0x210",
+        "description": "Unknown. Cleared during init.",
+        "confidence": "low",
+        "source": ["FUN_1403989A0"]
+      },
+      {
+        "offset": "0x218",
+        "type": "pointer",
+        "width": 8,
+        "name": "component_slot_0x218",
+        "description": "Component pointer slot.",
+        "confidence": "medium",
+        "source": ["FUN_1403989A0"]
+      },
+      {
+        "offset": "0x220",
+        "type": "pointer",
+        "width": 8,
+        "name": "component_slot_0x220",
+        "description": "Component pointer slot.",
+        "confidence": "medium",
+        "source": ["FUN_1403989A0"]
+      },
+      {
+        "offset": "0x228",
+        "type": "pointer",
+        "width": 8,
+        "name": "component_slot_0x228",
+        "description": "Component pointer slot.",
+        "confidence": "medium",
+        "source": ["FUN_1403989A0"]
+      },
+      {
+        "offset": "0x230",
+        "type": "pointer",
+        "width": 8,
+        "name": "component_slot_0x230",
+        "description": "Component pointer slot. Explicitly set to NULL.",
+        "confidence": "medium",
+        "source": ["FUN_1403989A0"]
+      },
+      {
+        "offset": "0x240",
+        "type": "pointer",
+        "width": 8,
+        "name": "component_slot_0x240",
+        "description": "Component pointer slot. Referenced in FUN_1403A5840 for map node cleanup. Used in FUN_1403A4820 for hero/garrison logic -- contains sub-structure with +0x2A0 map manager ref and +0x328 counter.",
+        "confidence": "medium",
+        "source": ["FUN_1403989A0", "FUN_1403A5840", "FUN_1403A4820"]
+      },
+      {
+        "offset": "0x248",
+        "type": "float32[3]",
+        "width": 12,
+        "name": "orientation_matrix_row0",
+        "description": "First row of 3x3 orientation/rotation matrix. Initialized to identity matrix (1,0,0,0,1,0,0,0,1) in constructor. The RootClass_data offsets 0x1A8-0x1D0 map to raw struct offsets 0x248-0x270.",
+        "confidence": "high",
+        "source": ["constructor_0x388720", "constructor_0x388B60"]
+      },
+      {
+        "offset": "0x254",
+        "type": "float32[3]",
+        "width": 12,
+        "name": "orientation_matrix_row1",
+        "description": "Second row of orientation matrix. Identity: (0, 1, 0).",
+        "confidence": "high",
+        "source": ["constructor_0x388720"]
+      },
+      {
+        "offset": "0x260",
+        "type": "float32[3]",
+        "width": 12,
+        "name": "orientation_matrix_row2",
+        "description": "Third row of orientation matrix. Identity: (0, 0, 1).",
+        "confidence": "high",
+        "source": ["constructor_0x388720"]
+      },
+      {
+        "offset": "0x268",
+        "type": "uint8",
+        "width": 1,
+        "name": "death_check_flag",
+        "description": "Flag related to death state processing. Mapped from constructor's RootClass_data offset_0x1E8.",
+        "confidence": "medium",
+        "source": ["constructor_0x388720"]
+      },
+      {
+        "offset": "0x269",
+        "type": "uint8",
+        "width": 1,
+        "name": "spawn_initialized",
+        "description": "Set to 1 during construction. Indicates the object has been initialized post-spawn.",
+        "confidence": "medium",
+        "source": ["constructor_0x388720"]
+      },
+      {
+        "offset": "0x278",
+        "type": "pointer",
+        "width": 8,
+        "name": "component_array_ptr",
+        "description": "Pointer to an array of component (behavior) pointers. Each element is 8 bytes. Indexed by values in the component_lookup_table at +0x332. Used by QueryInterface: result = components[obj[0x332 + query_type]]. Components are added via FUN_14038CB30.",
+        "confidence": "high",
+        "source": ["QueryInterface_0x395AC0", "FUN_14038CB30", "FUN_1403989A0"]
+      },
+      {
+        "offset": "0x288",
+        "type": "int8",
+        "width": 1,
+        "name": "component_count",
+        "description": "Current number of components in the component_array. Incremented in FUN_14038CB30 when a new component is added.",
+        "confidence": "high",
+        "source": ["FUN_14038CB30"]
+      },
+      {
+        "offset": "0x289",
+        "type": "int8",
+        "width": 1,
+        "name": "component_capacity",
+        "description": "Capacity of the component_array. When component_count >= component_capacity, the array is grown via FUN_1403A59F0.",
+        "confidence": "high",
+        "source": ["FUN_14038CB30"]
+      },
+      {
+        "offset": "0x290",
+        "type": "int32",
+        "width": 4,
+        "name": "priority_component_count",
+        "description": "Count of priority/front-inserted components. Incremented in FUN_14038CB30 when a component is inserted at index 0 (priority behavior). Reset to 0 in FUN_1403989A0.",
+        "confidence": "high",
+        "source": ["FUN_14038CB30", "FUN_1403989A0"]
+      },
+      {
+        "offset": "0x298",
+        "type": "pointer",
+        "width": 8,
+        "name": "game_object_type_ptr",
+        "description": "Pointer to the GameObjectTypeClass struct that defines this object's type (unit definition). The type name string is at [GameObjectType+0xF8] as an MSVC SSO string. Max health is obtained via FUN_1403727A0 which reads GameObjectType+0xDCC. Used extensively: SetHP, spawn init, hero respawn, combat, etc.",
+        "confidence": "high",
+        "source": ["SetHP_0x3A89D0", "FUN_1403989A0", "FUN_1403727A0", "ScheduleHeroRespawn_0x48EB10"],
+        "type_sub_fields": {
+          "+0x0F8": "type_name (MSVC SSO string)",
+          "+0x110": "type_name_capacity (if >= 16, +0xF8 is heap pointer)",
+          "+0x140": "display_name (MSVC SSO string, used in AI label)",
+          "+0x158": "display_name_capacity",
+          "+0xDCC": "base_max_health (float32)",
+          "+0xDFC": "height_offset (float32, added to Z during spawn)",
+          "+0xE40": "hardpoint_definition_count (int32)",
+          "+0xE38": "hardpoint_definition_array_ptr",
+          "+0x1640": "initial_combat_param",
+          "+0x1AB0": "behavior_pack_array_ptr",
+          "+0x1AB8": "behavior_pack_array_end_ptr",
+          "+0x23EC": "hero_respawn_timer (float32)"
+        }
+      },
+      {
+        "offset": "0x2A0",
+        "type": "pointer",
+        "width": 8,
+        "name": "scene_node_ptr",
+        "description": "Pointer to the 3D scene/render node for this object. Contains the visual representation. Has sub-fields: +0x88 (animation state), +0xA4/+0xA8/+0xAC (render position XYZ), +0xB0/+0xB4/+0xB8 (render position copy). Checked extensively -- when non-null, the object has a visible representation. Cleared in FUN_1403989A0.",
+        "confidence": "high",
+        "source": ["FUN_1403989A0", "FUN_1403A4820", "FUN_1403A92F0", "Make_Invulnerable_0x3ABB80", "FUN_1403A5840"]
+      },
+      {
+        "offset": "0x2A8",
+        "type": "pointer",
+        "width": 8,
+        "name": "ai_label_display_ptr",
+        "description": "Pointer to the AI label/name display object. Allocated and managed in FUN_1403A4510. Contains a DrawTextClass used for debug/AI overhead labels. Cleared in FUN_1403989A0.",
+        "confidence": "high",
+        "source": ["FUN_1403A4510", "FUN_1403989A0"]
+      },
+      {
+        "offset": "0x2B0",
+        "type": "pointer",
+        "width": 8,
+        "name": "container_ref",
+        "description": "Reference to the parent container object. Used by the invulnerability system and FUN_1403963F0 which walks the container chain: while (obj+0x335 != -1) { obj = *(obj+0x2B0) }. When non-null, the object is contained within another object. Cleared in FUN_1403989A0.",
+        "confidence": "high",
+        "source": ["FUN_1403963F0", "FUN_1403989A0", "FUN_1403A5840"]
+      },
+      {
+        "offset": "0x2B8",
+        "type": "pointer",
+        "width": 8,
+        "name": "game_session_context_ptr",
+        "description": "Pointer to the game session/world context. Dereferenced as *(obj+0x2B8)+0x20 to reach the game mode manager which provides vtable calls for GetGameMode, GetPlayerManager, etc. Used by FUN_1403989A0, FUN_14039BCB0, FUN_1403A4510, FUN_1403A4820.",
+        "confidence": "high",
+        "source": ["FUN_1403989A0", "FUN_14039BCB0", "FUN_1403A4510", "FUN_1403A4820"]
+      },
+      {
+        "offset": "0x2D0",
+        "type": "pointer",
+        "width": 8,
+        "name": "hardpoint_array_ptr",
+        "description": "Pointer to DynamicVectorClass<HardPointClass*>. Allocated (size 0x18) and populated in FUN_1403989A0 when combatant_behavior_ptr exists. Each hardpoint is size 0xD8, created by FUN_140381A90. Contains weapon/turret sub-objects.",
+        "confidence": "high",
+        "source": ["FUN_1403989A0"]
+      },
+      {
+        "offset": "0x2E0",
+        "type": "pointer",
+        "width": 8,
+        "name": "map_garrison_node_ptr",
+        "description": "Pointer to map/garrison node. Referenced in FUN_1403A5840 for cleanup. When non-null and *(+0x2E0)+0x2A0 is valid, indicates the object is garrisoned on a map structure. Contains a counter at +0x328.",
+        "confidence": "medium",
+        "source": ["FUN_1403A5840", "constructor_0x388B60"]
+      },
+      {
+        "offset": "0x2F8",
+        "type": "pointer",
+        "width": 8,
+        "name": "garrison_map_ref_2",
+        "description": "Secondary garrison/map reference. Cleared alongside map_garrison_node_ptr in FUN_1403A5840.",
+        "confidence": "medium",
+        "source": ["FUN_1403A5840"]
+      },
+      {
+        "offset": "0x300",
+        "type": "uint8",
+        "width": 1,
+        "name": "object_flags_0x300",
+        "description": "Object state flags byte. Initialized from global DAT_140A28648 in constructor. Bit 6 (0x40) and bit 7 (0x80) are set when param_7 == 1 in the full constructor (0xC0 mask). Checked in FUN_1403A4820 as (obj+0x3A1) bit 3.",
+        "confidence": "high",
+        "source": ["constructor_0x388720", "constructor_0x388B60"]
+      },
+      {
+        "offset": "0x301",
+        "type": "uint8",
+        "width": 1,
+        "name": "object_flags_0x301",
+        "description": "Initialized from global DAT_140B2C379.",
+        "confidence": "medium",
+        "source": ["constructor_0x388720"]
+      },
+      {
+        "offset": "0x302",
+        "type": "uint8",
+        "width": 1,
+        "name": "object_flags_0x302",
+        "description": "Initialized from global DAT_140A28649.",
+        "confidence": "medium",
+        "source": ["constructor_0x388720"]
+      },
+      {
+        "offset": "0x303",
+        "type": "uint8",
+        "width": 1,
+        "name": "object_flags_0x303",
+        "description": "Initialized from global DAT_140B2C37A.",
+        "confidence": "medium",
+        "source": ["constructor_0x388720"]
+      },
+      {
+        "offset": "0x304",
+        "type": "uint8",
+        "width": 1,
+        "name": "object_flags_0x304",
+        "description": "Initialized from global DAT_140A2864A.",
+        "confidence": "medium",
+        "source": ["constructor_0x388720"]
+      },
+      {
+        "offset": "0x305",
+        "type": "uint8",
+        "width": 1,
+        "name": "active_flag",
+        "description": "Initialized to 1 in constructor. Likely indicates the object is active/alive.",
+        "confidence": "medium",
+        "source": ["constructor_0x388720"]
+      },
+      {
+        "offset": "0x307",
+        "type": "uint8",
+        "width": 1,
+        "name": "state_flag_0x307",
+        "description": "Initialized to 0.",
+        "confidence": "low",
+        "source": ["constructor_0x388720"]
+      },
+      {
+        "offset": "0x308",
+        "type": "uint32",
+        "width": 4,
+        "name": "state_0x308",
+        "description": "Initialized to 0.",
+        "confidence": "low",
+        "source": ["constructor_0x388720"]
+      },
+      {
+        "offset": "0x30C",
+        "type": "uint8",
+        "width": 1,
+        "name": "state_0x30C",
+        "description": "Initialized to 0xFF.",
+        "confidence": "low",
+        "source": ["constructor_0x388720"]
+      },
+      {
+        "offset": "0x310",
+        "type": "int32",
+        "width": 4,
+        "name": "state_0x310",
+        "description": "Initialized to -1 (0xFFFFFFFF).",
+        "confidence": "low",
+        "source": ["constructor_0x388720"]
+      },
+      {
+        "offset": "0x314",
+        "type": "uint64",
+        "width": 8,
+        "name": "state_0x314",
+        "description": "Initialized to 0.",
+        "confidence": "low",
+        "source": ["constructor_0x388720"]
+      },
+      {
+        "offset": "0x318",
+        "type": "uint64",
+        "width": 8,
+        "name": "state_0x318",
+        "description": "Initialized to 0.",
+        "confidence": "low",
+        "source": ["constructor_0x388720"]
+      },
+      {
+        "offset": "0x320",
+        "type": "uint64",
+        "width": 8,
+        "name": "state_0x320",
+        "description": "Initialized to 0.",
+        "confidence": "low",
+        "source": ["constructor_0x388720"]
+      },
+      {
+        "offset": "0x328",
+        "type": "uint32",
+        "width": 4,
+        "name": "state_0x328",
+        "description": "Initialized to 1.",
+        "confidence": "low",
+        "source": ["constructor_0x388720"]
+      },
+      {
+        "offset": "0x32C",
+        "type": "uint32",
+        "width": 4,
+        "name": "state_0x32C",
+        "description": "Initialized to 0.",
+        "confidence": "low",
+        "source": ["constructor_0x388720"]
+      },
+      {
+        "offset": "0x330",
+        "type": "uint8",
+        "width": 1,
+        "name": "hero_respawn_slot",
+        "description": "Used in ScheduleHeroRespawn as the last parameter to FUN_1403FE0A0. Read as (char)(obj+0x330). Likely an index into a respawn slot table.",
+        "confidence": "medium",
+        "source": ["ScheduleHeroRespawn_0x48EB10"]
+      },
+      {
+        "offset": "0x332",
+        "type": "uint8[0x6A]",
+        "width": 106,
+        "name": "component_lookup_table",
+        "description": "Byte array indexed by component query type ID (0 through 0x69). Each byte is either an index into the component_array (at +0x278) or 0xFF meaning 'no component of this type'. Used by QueryInterface: result = components[obj[0x332 + query_type]]. Known query types: 0=self, 1=behavior, 3=parent/container, 4=land_locomotor, 5=space_locomotor, 0x16=hardpoint_mgr, 0x19=ability, 0x3D=transform, 0x46=property_handler. Initialized from global template at 0x140866880. Range is 0x332 to 0x39B inclusive (106 bytes).",
+        "confidence": "high",
+        "source": ["QueryInterface_0x395AC0", "FUN_14038CB30", "constructor_0x388720", "FUN_1403989A0"],
+        "query_types": {
+          "0x00": "self (returns this)",
+          "0x01": "behavior_manager",
+          "0x03": "parent_container",
+          "0x04": "land_locomotor_component",
+          "0x05": "space_locomotor_component",
+          "0x07": "unknown_0x07 (checked in FUN_14039B950)",
+          "0x16": "hardpoint_manager",
+          "0x19": "ability_manager",
+          "0x3D": "transform_component",
+          "0x46": "property_handler"
+        }
+      },
+      {
+        "offset": "0x333",
+        "type": "uint8",
+        "width": 1,
+        "name": "behavior_component_index",
+        "description": "Shorthand for component_lookup_table[1]. Index into component array for the behavior manager. When != -1, the object has an active behavior system. Checked in FUN_14039BCB0.",
+        "confidence": "high",
+        "source": ["FUN_14039BCB0"]
+      },
+      {
+        "offset": "0x335",
+        "type": "uint8",
+        "width": 1,
+        "name": "parent_component_index",
+        "description": "Shorthand for component_lookup_table[3] (query type 3 = parent/container). 0xFF means this object has no parent (it is a top-level object). Any other value is an index into the component array pointing to the parent component. Used in Change_Owner, FUN_1403963F0, FUN_14039BCB0, FUN_1403AC530.",
+        "confidence": "high",
+        "source": ["Change_Owner_0x574D0E", "FUN_1403963F0", "FUN_14039BCB0", "FUN_1403AC530"]
+      },
+      {
+        "offset": "0x33E",
+        "type": "uint8",
+        "width": 1,
+        "name": "unknown_component_index_0x33E",
+        "description": "Component lookup table entry. Checked in FUN_1403A4820: when != -1 and FUN_1403751F0 returns false, the function returns early. Likely relates to a specific behavior type.",
+        "confidence": "medium",
+        "source": ["FUN_1403A4820"]
+      },
+      {
+        "offset": "0x348",
+        "type": "uint8",
+        "width": 1,
+        "name": "hardpoint_manager_index",
+        "description": "Shorthand for component_lookup_table[0x16]. When 0xFF, the object uses the direct HP path (no hardpoint indirection). When any other value, damage routing goes through the hardpoint manager. Checked in Make_Invulnerable and Take_Damage paths.",
+        "confidence": "high",
+        "source": ["Make_Invulnerable_0x3ABB80"]
+      },
+      {
+        "offset": "0x34B",
+        "type": "uint8",
+        "width": 1,
+        "name": "ability_manager_index",
+        "description": "Shorthand for component_lookup_table[0x19]. When != -1, the object has an ability system. Checked in FUN_1403A4820 to look up ability component and check +0x54 state.",
+        "confidence": "medium",
+        "source": ["FUN_1403A4820"]
+      },
+      {
+        "offset": "0x36F",
+        "type": "uint8",
+        "width": 1,
+        "name": "transform_component_index",
+        "description": "Shorthand for component_lookup_table[0x3D]. When != -1, the object has a transform component. Checked in Change_Owner for position updates.",
+        "confidence": "medium",
+        "source": ["Change_Owner_0x574D0E"]
+      },
+      {
+        "offset": "0x39E",
+        "type": "uint8",
+        "width": 1,
+        "name": "registered_with_session_flag",
+        "description": "Set to 1 when FUN_14029BFE0(session_context, this) is called, indicating the object has been registered with the game session manager. Checked before calling FUN_14029BFE0 to avoid double-registration. Set in FUN_14038CB30, FUN_1403989A0, FUN_1403A4820.",
+        "confidence": "high",
+        "source": ["FUN_14038CB30", "FUN_1403989A0", "FUN_1403A4820"]
+      },
+      {
+        "offset": "0x39F",
+        "type": "uint8",
+        "width": 1,
+        "name": "spawn_complete_flag",
+        "description": "Set to 1 in FUN_1403989A0 during the spawn initialization sequence. When == 1 in FUN_1403A4820, enables visual model attachment and hero clash node setup. When == 0 in FUN_1403A4820, skips animation setup.",
+        "confidence": "high",
+        "source": ["FUN_1403989A0", "FUN_1403A4820"]
+      },
+      {
+        "offset": "0x3A0",
+        "type": "uint8",
+        "width": 1,
+        "name": "state_flags_bitfield",
+        "description": "Bitfield of state/dirty flags. Bit 0 (0x01): HP change notification dirty flag (set by SetHP when object_id matches tracked ID). Bit 1 (0x02): used in ScheduleHeroRespawn -- if set, hero respawn is blocked. Bit 3 (0x08): animation/combat state flag (cleared/set in FUN_1403A92F0). Bit 4 (0x10): position lock flag (blocks render position updates in FUN_1403A8710). Bit 6 (0x40): used in ScheduleHeroRespawn -- if set alongside 0x02, respawn is blocked. Bit 7 (0x80): sign bit -- checked in FUN_1403989A0 (if < 0, skips hardpoint allocation).",
+        "confidence": "high",
+        "source": ["SetHP_0x3A89D0", "FUN_1403A8710", "FUN_1403A92F0", "FUN_1403989A0", "ScheduleHeroRespawn_0x48EB10"],
+        "bits": {
+          "0": "hp_dirty_notification",
+          "1": "death_state_flag",
+          "3": "combat_animation_state",
+          "4": "position_lock",
+          "6": "despawn_pending",
+          "7": "no_hardpoints_flag"
+        }
+      },
+      {
+        "offset": "0x3A1",
+        "type": "uint8",
+        "width": 1,
+        "name": "dirty_flags_bitfield",
+        "description": "Dirty/state flags bitfield. Bit 0 (0x01): transform dirty -- set in FUN_1403A8710 when position changes, cleared in FUN_1403AC530 at the end of transform update. Bit 3 (0x08): checked in FUN_1403A4820 for animation state. Bit 7 (0x80): prevent-death flag. When set, Take_Damage_Impl clamps HP to max(1.0, current_hp).",
+        "confidence": "high",
+        "source": ["FUN_1403A8710", "FUN_1403AC530", "FUN_1403989A0", "FUN_1403A4820"],
+        "bits": {
+          "0": "transform_dirty",
+          "3": "animation_state_flag",
+          "7": "prevent_death (cannot_be_killed)"
+        }
+      },
+      {
+        "offset": "0x3A6",
+        "type": "uint16",
+        "width": 2,
+        "name": "state_0x3A6",
+        "description": "Cleared to 0 in FUN_1403989A0 during spawn init.",
+        "confidence": "low",
+        "source": ["FUN_1403989A0"]
+      },
+      {
+        "offset": "0x3A7",
+        "type": "uint8",
+        "width": 1,
+        "name": "invulnerability_flag",
+        "description": "Invulnerability state. Checked by Take_Damage_Outer at multiple points. WARNING: Setting this byte manually does NOT work -- you must call Make_Invulnerable_Setter (RVA 0x3ABB80) which propagates to hardpoints and updates the behavior system. Located within the 0x3A6 cleared region.",
+        "confidence": "high",
+        "source": ["alamo_engine_kb.json"]
+      },
+      {
+        "offset": "0x3A8",
+        "type": "uint32",
+        "width": 4,
+        "name": "state_0x3A8",
+        "description": "Cleared to 0 in FUN_1403989A0 during spawn init.",
+        "confidence": "low",
+        "source": ["FUN_1403989A0"]
+      },
+      {
+        "offset": "0x3B5",
+        "type": "uint32",
+        "width": 4,
+        "name": "state_0x3B5",
+        "description": "Cleared to 0 in FUN_1403989A0.",
+        "confidence": "low",
+        "source": ["FUN_1403989A0"]
+      },
+      {
+        "offset": "0x3B9",
+        "type": "uint8",
+        "width": 1,
+        "name": "state_0x3B9",
+        "description": "Cleared to 0 in FUN_1403989A0.",
+        "confidence": "low",
+        "source": ["FUN_1403989A0"]
+      },
+      {
+        "offset": "0x3C0",
+        "type": "uint64",
+        "width": 8,
+        "name": "state_0x3C0",
+        "description": "Cleared to 0 in FUN_1403989A0. Likely the last field -- places minimum struct size at 0x3C8.",
+        "confidence": "medium",
+        "source": ["FUN_1403989A0"]
+      }
+    ],
+    "component_system": {
+      "description": "GameObjectClass uses a dynamic component architecture. Components are stored in a flat array at +0x278, indexed by a lookup table at +0x332. The lookup table maps query type IDs (0-0x69) to array indices. QueryInterface (vtable slot 3, RVA 0x395AC0) performs the lookup: if table[query_type] == 0xFF, return NULL; else return component_array[table[query_type]].",
+      "array_ptr_offset": "0x278",
+      "lookup_table_offset": "0x332",
+      "lookup_table_size": 106,
+      "count_offset": "0x288",
+      "capacity_offset": "0x289",
+      "query_interface_rva": "0x395AC0"
+    },
+    "position_system": {
+      "description": "Position is stored in three coordinate sets. spawn_position (0x68-0x70) holds the initial spawn point. current_position (0x78-0x80) holds the actual world position used by gameplay. render_position (0x84-0x8C) holds the interpolated position for rendering. previous_position (0x90-0x98) holds the last-frame position for interpolation/facing calculation.",
+      "spawn_position": {"x": "0x68", "y": "0x6C", "z": "0x70"},
+      "current_position": {"x": "0x78", "y": "0x7C", "z": "0x80"},
+      "render_position": {"x": "0x84", "y": "0x88", "z": "0x8C"},
+      "previous_position": {"x": "0x90", "y": "0x94", "z": "0x98"}
+    },
+    "scene_node_sub_fields": {
+      "description": "The scene node at +0x2A0 contains the 3D visual representation. Key sub-fields for the scene node object:",
+      "+0x88": "animation_state (int32, -1 = none)",
+      "+0xA4": "visual_position_x (float32)",
+      "+0xA8": "visual_position_y (float32)",
+      "+0xAC": "visual_position_z (float32)",
+      "+0xB0": "visual_position_copy_x (float32)",
+      "+0xB4": "visual_position_copy_y (float32)",
+      "+0xB8": "visual_position_copy_z (float32)"
+    },
+    "shield_system": {
+      "description": "Shields are managed through the behavior/component system, NOT through direct fields on GameObjectClass. ShieldBehaviorClass (size 0x48) and BaseShieldBehaviorClass (size 0x40) are separate component objects obtained via QueryInterface. The shield percentage is computed by the Lua wrapper calling through the component vtable. AffectedByShieldBehaviorClass and AffectedByShieldDataPackClass handle shield interaction data.",
+      "behavior_classes": [
+        "ShieldBehaviorClass (size 0x48, vtable at FUN_140549130 area)",
+        "BaseShieldBehaviorClass (size 0x40, vtable at FUN_14056AB40 area)",
+        "AffectedByShieldBehaviorClass",
+        "AffectedByShieldDataPackClass"
+      ],
+      "note": "To read shield values at runtime, use QueryInterface to get the shield behavior component, then read from the component's internal fields. There is no direct offset on GameObjectClass for shield HP."
+    },
+    "max_health_system": {
+      "description": "Max HP is NOT stored on the GameObjectClass instance. It is computed dynamically by FUN_1403727A0 which reads the base value from GameObjectType+0xDCC and applies multipliers: game mode multiplier (land vs space), player faction tech bonus (from Player+0x360 -> tech modifier at +0x50), and buff/debuff modifiers from the combat system. SetHP uses this function to clamp current HP to [0, max_hp].",
+      "base_max_hp_location": "GameObjectType+0xDCC (float32)",
+      "compute_function_rva": "0x3727A0"
+    }
+  },
+  "functions_decompiled": [
+    {"rva": "0x3A89D0", "name": "SetHP", "fields_accessed": ["0x5C", "0x50", "0x58", "0x298", "0x3A0"]},
+    {"rva": "0x395AC0", "name": "QueryInterface", "fields_accessed": ["0x332", "0x278"]},
+    {"rva": "0x3A8C90", "name": "SetSpeedOverride", "fields_accessed": ["0xA8"]},
+    {"rva": "0x38F8B0", "name": "ClearSpeedOverride", "fields_accessed": ["0xA8"]},
+    {"rva": "0x3ABB80", "name": "Make_Invulnerable_Setter", "fields_accessed": ["0x78", "0x7C", "0x80", "0x110", "0x2A0", "0x348"]},
+    {"rva": "0x5792E0", "name": "Get_Owner_Lua", "fields_accessed": ["0x60", "0x335", "0x58", "0xB8"]},
+    {"rva": "0x574BF0", "name": "Change_Owner_Lua", "fields_accessed": ["0x60", "0x335", "0x58", "0x298", "0x36F", "0x2A0", "0x3A0"]},
+    {"rva": "0x48EB10", "name": "ScheduleHeroRespawn", "fields_accessed": ["0x298", "0x58", "0x2B0", "0x3A0", "0x330"]},
+    {"rva": "0x388720", "name": "GameObjectClass_Constructor1", "fields_accessed": "all_fields_initialized"},
+    {"rva": "0x388B60", "name": "GameObjectClass_Constructor2", "fields_accessed": "all_fields_initialized"},
+    {"rva": "0x3989A0", "name": "SpawnInit", "fields_accessed": ["0x290", "0x39E", "0x2A0", "0x2A8", "0x2B0", "0x2D0", "0xA8-0x240", "0x332-0x39A", "0x298", "0x5C", "0x300", "0x3A6", "0x3A8", "0x3B5", "0x3B9", "0x3C0", "0x100", "0x39E", "0x200"]},
+    {"rva": "0x3A8710", "name": "UpdateRenderPosition", "fields_accessed": ["0x84", "0x88", "0x8C", "0x90", "0x94", "0x98", "0x3A0", "0x3A1"]},
+    {"rva": "0x3AC530", "name": "TransformUpdate", "fields_accessed": ["0x248-0x270", "0x78", "0x7C", "0x80", "0x94", "0x8C", "0x335", "0x3A1"]},
+    {"rva": "0x3973B0", "name": "GetTeamNode", "fields_accessed": ["0x298 (via QueryInterface 4,5,0x16)"]},
+    {"rva": "0x3727A0", "name": "GetMaxHealth", "fields_accessed": ["0x58", "0x298+0xDCC"]},
+    {"rva": "0x3A92F0", "name": "TakeDamageDispatch", "fields_accessed": ["0x2A0", "0x100", "0x3A0"]},
+    {"rva": "0x3956C0", "name": "ResolveOwnerIdentity", "fields_accessed": ["0xB8", "0x58"]},
+    {"rva": "0x395C70", "name": "GetCombatBuffs", "fields_accessed": ["0x58", "0xF0"]},
+    {"rva": "0x3963F0", "name": "WalkContainerChain", "fields_accessed": ["0x335", "0x2B0"]},
+    {"rva": "0x396380", "name": "GetTeamNodeOrHardpoint", "fields_accessed": ["0x348 (via QueryInterface 0x16)"]},
+    {"rva": "0x39BCB0", "name": "UpdateSceneManager", "fields_accessed": ["0x2B0", "0x348", "0x333"]},
+    {"rva": "0x38CB30", "name": "AddComponents", "fields_accessed": ["0x278", "0x288", "0x289", "0x290", "0x332", "0x39E", "0x2B8"]},
+    {"rva": "0x3A4820", "name": "UpdateVisualModel", "fields_accessed": ["0x298", "0x2B8", "0x33E", "0x2A0", "0x3A0", "0x3A1", "0x34B", "0x39F", "0x2E0", "0x2F8"]},
+    {"rva": "0x3A4510", "name": "UpdateAILabel", "fields_accessed": ["0x2A8", "0x2B8", "0x298", "0x58"]},
+    {"rva": "0x3A5840", "name": "CleanupGarrisonNode", "fields_accessed": ["0x2A0", "0x2E0", "0x298", "0x2F8"]},
+    {"rva": "0x395920", "name": "EvaluateTargetPriority", "fields_accessed": ["0xD8", "0x2B8", "0x58", "0xB8", "0x335", "0x298"]}
+  ]
+}

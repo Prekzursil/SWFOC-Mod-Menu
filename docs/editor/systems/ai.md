@@ -1,0 +1,516 @@
+# Ai
+
+**Architecture**: hierarchical goal-driven with perception-planning-execution loop
+
+**Singleton Rva**: 0x4D9C80
+
+**Per Player Class Rva**: 0x4AF810
+
+**Subsystem Count**: 7
+
+
+### Subsystems
+
+- Perception
+- Planning(4.0s)
+- Goal
+- Execution
+- Learning
+- Template
+- Budget
+
+**Build Task States**: 25
+
+
+### Perception Modes
+
+- Galactic
+- Land
+- Space
+- TacticalGrid
+
+**Enable Mechanism**: TheAIClass state_flags(+0x00) + active_flag(+0x04); per-player AIPlayerClass at PlayerClass+0x360
+
+
+## RE Findings Detail
+
+**Analysis**: SWFOC AI System Decompilation — Agent 3D Output
+
+Comprehensive map of the Alamo engine AI decision loop, subsystems, enable/disable mechanisms, production queue, diplomacy, and difficulty systems. Derived from Ghidra static analysis of StarWarsG.exe (x86_64).
+
+- **Date**: 2026-04-04
+
+
+### Architecture Overview
+
+- **summary**: The AI system is a hierarchical, goal-driven architecture centered on the TheAIClass singleton. Each non-human player gets an AIPlayerClass instance containing 7 ServicedAISystem subsystems. The system uses a perception-planning-execution loop with per-mode specializations (Galactic, Space, Land). Production is handled by a FiniteStateMachine-based AIBuildTaskClass with 25 named states. Diplomacy is event-driven (AllyEventClass) rather than polled. Difficulty is managed by DifficultyAdjustmentManagerClass (a database manager of DifficultyAdjustmentClass records).
+- **key_design_patterns**: Singleton pattern (TheAIClass, TheAIDataManagerClass, TheAIPlayerTypeManagerClass, TheAIGoalTypeManagerClass, TheAITemplateManagerClass), ServicedAISystemClass — base class for all tickable AI subsystems (inherits AIDiagnosticsClass, stores owner reference at +0x0), FiniteStateMachineClass<enum_BuildTaskStates> — state machine driving AIBuildTaskClass production, PerceptualEvaluatorClass hierarchy — 20+ evaluator types for sensing game state, Signal/Listener pattern — AILearningSystemClass uses SignalListenerClass + SignalGeneratorClass, Lua binding wrappers — LuaMemberFunctionWrapper<T> for exposing AI internals to Lua scripts, DatabaseObjectManagerClass<T> — manages typed collections (goals, templates, difficulty adjustments)
+
+
+### Singletons
+
+- **TheAIClass**:
+  - **constructor_rva**: 0x4D9C80
+  - **description**: Top-level AI singleton. Constructed with field_0x4 = 1, field_0x0 = 0x01010101 (4-byte enable/state flags). Manages all AI player instances. Access via SingletonInstance<class_TheAIClass> (ctor/dtor at 0x7EED80).
+  - **singleton_ctor_dtor_rva**: 0x7EED80
+  - **vtable_rva**: set in constructor (this->vftablePtr = &vftable)
+  - **fields**: {'offset': '0x00', 'type': 'uint32', 'name': 'state_flags', 'description': 'Written as 0x01010101 in constructor. 4 individual byte flags. Likely per-state enable bits (galactic, space, land, global).', 'confidence': 'medium'}, {'offset': '0x04', 'type': 'uint32', 'name': 'active_flag', 'description': 'Set to 1 in constructor. Probable global AI-active flag.', 'confidence': 'medium'}
+- **TheAIDataManagerClass**:
+  - **constructor_rva**: 0x4747E0
+  - **singleton_ctor_dtor_rva**: 0x7E6BA0
+  - **description**: Stores global AI configuration data. Has 8 undefined8 fields initialized to 0 at offsets 0x38..0x70.
+  - **fields_initialized_count**: 8
+- **TheAIPlayerTypeManagerClass**:
+  - **constructor_rva**: 0x4E9940
+  - **singleton_ctor_dtor_rva**: 0x7EED90
+  - **description**: Manages AI player type definitions. Uses a hash map (load factor 0x3f800000 = 1.0f). Maps player types to AI behavior profiles.
+  - **hash_map_initial_bucket_count**: 7
+  - **hash_map_load_factor**: 1.0
+- **TheAIGoalTypeManagerClass**:
+  - **constructor_rva**: 0x5E6690
+  - **description**: Manages all AI goal type definitions. Database of AIGoalTypeClass objects.
+- **TheAIGoalProposalFunctionSetManagerClass**:
+  - **constructor_rva**: 0x5E5C30
+  - **description**: Manages sets of goal proposal functions. These are the scoring functions that rank which goals the AI should pursue.
+- **TheAITemplateManagerClass**:
+  - **constructor_rva**: 0x4E8920
+  - **description**: Manages AI template definitions (build orders, force compositions, etc.). Database of AITemplateClass objects.
+
+
+### Per Player Ai Structure
+
+- **AIPlayerClass**:
+  - **constructor_rva**: 0x4AF810
+  - **description**: Per-player AI controller. Created for each AI-controlled player slot. Inherits AIDiagnosticsClass. Contains references to all 7 subsystems. Constructor takes 2 params: likely (player_ptr, ai_type_ptr).
+  - **inherits**: AIDiagnosticsClass
+  - **fields**: {'offset': 'data+0x00', 'type': 'pointer', 'name': 'param_1_ref', 'description': 'First constructor param — likely pointer to owning PlayerClass'}, {'offset': 'data+0x08', 'type': 'pointer', 'name': 'param_2_ref', 'description': 'Second constructor param — likely pointer to AIPlayerTypeClass'}, {'offset': 'data+0x10', 'type': 'pointer', 'name': 'subsystem_0', 'description': 'Initialized to 0. Subsystem slot (likely perception)'}, {'offset': 'data+0x18', 'type': 'pointer', 'name': 'subsystem_1', 'description': 'Initialized to 0. Subsystem slot (likely planning)'}, {'offset': 'data+0x20', 'type': 'pointer', 'name': 'subsystem_2', 'description': 'Initialized to 0. Subsystem slot (likely goal)'}, {'offset': 'data+0x28', 'type': 'pointer', 'name': 'subsystem_3', 'description': 'Initialized to 0. Subsystem slot (likely execution)'}, {'offset': 'data+0x30', 'type': 'int32', 'name': 'state_or_mode', 'description': 'Initialized to 0xFFFFFFFF (-1). Likely current game mode enum or uninitialized sentinel.'}
+
+
+### Subsystems
+
+- **_note**: All subsystems inherit ServicedAISystemClass, which inherits AIDiagnosticsClass. ServicedAISystemClass stores a reference to the owning AIPlayerClass at data+0x00 and has a field at data+0x08 initialized to 0.
+- **ServicedAISystemClass**:
+  - **constructor_rva**: 0x64C250
+  - **description**: Base class for all 7 AI subsystems. Provides tick/service interface via vtable virtual methods. Stores owning AIPlayerClass reference.
+  - **inherits**: AIDiagnosticsClass
+  - **fields**: {'offset': 'data+0x00', 'type': 'pointer', 'name': 'owner_ai_player', 'description': 'Pointer to the AIPlayerClass that owns this subsystem. Passed as param_1 in constructor.'}, {'offset': 'data+0x08', 'type': 'uint64', 'name': 'service_counter_or_state', 'description': 'Initialized to 0. Likely tick counter or active/inactive state.'}
+- **AIPerceptionSystemClass**:
+  - **constructor_rva**: 0x4DAD80
+  - **description**: Senses the game world. Feeds evaluator results into the planning system. Contains a hash map of PerceptionParameterBindings and a linked list of perception data.
+  - **inherits**: ServicedAISystemClass
+  - **specializations**:
+    - **GalacticPerceptionSystemClass**:
+      - **constructor_rva**: 0x4E1880
+      - **extra_fields**: 3
+      - **description**: Galactic map perception. 3 extra pointer/counter fields for planet-level sensing.
+    - **LandPerceptionSystemClass**:
+      - **constructor_rva**: 0x6B8980
+      - **description**: Land battle perception.
+    - **SpacePerceptionSystemClass**:
+      - **constructor_rva**: 0x6B9A20
+      - **description**: Space battle perception.
+    - **TacticalPerceptionGridClass**:
+      - **constructor_rva**: 0x653340
+      - **description**: Grid-based perception for tactical modes. Uses PerceptionGridEntryClass linked list.
+- **AIPlanningSystemClass**:
+  - **constructor_rva**: 0x6BAC00
+  - **description**: Generates plans from perception data and goal proposals. Contains a doubly-linked list (node size 0x20) for plan entries. Hash map (buckets=7, load=1.0). Planning interval stored as float 0x40800000 = 4.0 (at offset 0x10 — likely 4.0 seconds between plan recalculations).
+  - **inherits**: ServicedAISystemClass
+  - **key_values**:
+    - **plan_interval_seconds**: 4.0
+    - **plan_interval_hex**: 0x40800000
+    - **hash_map_initial_buckets**: 7
+    - **hash_map_load_factor**: 1.0
+  - **fields**: {'offset': 'data+0x00', 'type': 'pointer', 'name': 'active_plan_head'}, {'offset': 'data+0x08', 'type': 'pointer', 'name': 'plan_data_1'}, {'offset': 'data+0x10', 'type': 'float32', 'name': 'plan_interval', 'description': '4.0f — seconds between planning cycles'}, {'offset': 'data+0x18', 'type': 'pointer', 'name': 'plan_linked_list_head', 'description': 'Doubly-linked list node (allocated as 0x20 bytes, self-referencing sentinel)'}, {'offset': 'data+0x28', 'type': 'pointer', 'name': 'hash_map_ptr'}
+- **AIGoalSystemClass**:
+  - **constructor_rva**: 0x6C7970
+  - **description**: Manages active goals. Inherits ServicedAISystemClass. Contains an AIBudgetClass instance (at data+0x158) for resource allocation. Two large internal structures (initialized via FUN_140721360) at data+0x00 and data+0xA0 — likely active-goals list and completed-goals list.
+  - **inherits**: ServicedAISystemClass
+  - **specializations**:
+    - **GalacticGoalSystemClass**:
+      - **constructor_rva**: 0x6B8480
+      - **description**: Galactic-mode goals. Pure vtable override of AIGoalSystemClass.
+    - **LandGoalSystemClass**:
+      - **constructor_rva**: 0x6B86E0
+      - **description**: Land-mode goals.
+    - **SpaceGoalSystemClass**:
+      - **constructor_rva**: 0x6B88D0
+      - **description**: Space-mode goals.
+  - **fields**: {'offset': 'data+0x00', 'type': 'struct', 'size': '0xA0', 'name': 'goal_collection_1', 'description': 'Initialized by FUN_140721360. Likely active goals container.'}, {'offset': 'data+0xA0', 'type': 'struct', 'size': '0xA0', 'name': 'goal_collection_2', 'description': 'Initialized by FUN_140721360. Likely pending/completed goals.'}, {'offset': 'data+0x140', 'type': 'pointer', 'name': 'field_140'}, {'offset': 'data+0x148', 'type': 'pointer', 'name': 'field_148'}, {'offset': 'data+0x14C', 'type': 'int32', 'name': 'field_14C'}, {'offset': 'data+0x150', 'type': 'int32', 'name': 'field_150'}, {'offset': 'data+0x158', 'type': 'AIBudgetClass', 'name': 'budget', 'description': "Embedded AIBudgetClass instance for this goal system's resource budget."}, {'offset': 'data+0x1E8', 'type': 'hash_map', 'name': 'hash_map_1'}, {'offset': 'data+0x228', 'type': 'hash_map', 'name': 'hash_map_2'}, {'offset': 'data+0x268', 'type': 'pointer', 'name': 'field_268'}, {'offset': 'data+0x270', 'type': 'pointer', 'name': 'field_270'}, {'offset': 'data+0x278', 'type': 'pointer', 'name': 'field_278'}
+- **AIExecutionSystemClass**:
+  - **constructor_rva**: 0x524CE0
+  - **description**: Executes planned actions (movement, attacks, ability usage). 4 pointer fields + inherits ServicedAISystemClass.
+  - **inherits**: ServicedAISystemClass
+- **AILearningSystemClass**:
+  - **constructor_rva**: 0x585D00
+  - **description**: Tracks AI performance history. Inherits ServicedAISystemClass + MultiLinkedListMember + SignalListenerClass. Contains 5 hash maps and multiple counters. Stores historical data about build effectiveness, combat outcomes, etc. Very large struct (~0x198+ bytes of own data).
+  - **inherits**: ServicedAISystemClass, MultiLinkedListMember, SignalListenerClass
+  - **hash_map_count**: 5
+  - **total_data_fields_approx**: 50
+- **AITemplateSystemClass**:
+  - **constructor_rva**: 0x6BB9E0
+  - **description**: Manages force templates (predefined army compositions). Contains a linked list of active template instances. Inherits ServicedAISystemClass.
+  - **inherits**: ServicedAISystemClass
+  - **fields**: {'offset': 'data+0x00', 'type': 'pointer', 'name': 'template_linked_list_head', 'description': 'Doubly-linked sentinel node (0x18 bytes). Stores active force templates.'}, {'offset': 'data+0x08', 'type': 'uint64', 'name': 'field_08'}, {'offset': 'data+0x10', 'type': 'uint64', 'name': 'template_count_or_state'}, {'offset': 'data+0x18', 'type': 'uint64', 'name': 'field_18'}
+- **AIBudgetClass**:
+  - **constructor_rva**: 0x6109C0
+  - **description**: Resource budget allocator for the AI goal system. Inherits AIDiagnosticsClass. Contains a hash map of BudgetedCategoryStruct entries. Tracks allocated, spent, and remaining budget per category.
+  - **inherits**: AIDiagnosticsClass
+  - **fields**: {'offset': 'data+0x00', 'type': 'int32', 'name': 'total_budget_int'}, {'offset': 'data+0x04', 'type': 'float32', 'name': 'budget_multiplier', 'value': '0x3F800000 = 1.0f'}, {'offset': 'data+0x08', 'type': 'pointer', 'name': 'hash_map_sentinel', 'description': 'Self-referencing sentinel for budget category hash map'}, {'offset': 'data+0x18', 'type': 'pointer', 'name': 'hash_map_entries'}, {'offset': 'data+0x40', 'type': 'int32', 'name': 'field_40'}, {'offset': 'data+0x48', 'type': 'int32', 'name': 'field_48'}, {'offset': 'data+0x4C', 'type': 'int32', 'name': 'field_4C'}, {'offset': 'data+0x50', 'type': 'pointer', 'name': 'owner_ref', 'description': 'Reference to owning system (passed as param_1)'}, {'offset': 'data+0x58', 'type': 'int32', 'name': 'field_58'}, {'offset': 'data+0x5C', 'type': 'int32', 'name': 'field_5C'}, {'offset': 'data+0x60', 'type': 'int32', 'name': 'field_60'}
+  - **nested_structs**:
+    - **BudgetedCategoryStruct**:
+      - **constructor_rva**: 0x610A70
+      - **inherits**: AIDiagnosticsClass
+      - **fields**: {'offset': 'data+0x00', 'type': 'int32', 'name': 'category_id', 'value_on_init': '0xFFFFFFFF (-1 = unassigned)'}, {'offset': 'data+0x08', 'type': 'pointer', 'name': 'owner_ref'}, {'offset': 'data+0x10', 'type': 'int64', 'name': 'allocated_amount'}, {'offset': 'data+0x18', 'type': 'int32', 'name': 'priority', 'value_on_init': 1}, {'offset': 'data+0x20', 'type': 'int64', 'name': 'field_20'}, {'offset': 'data+0x28', 'type': 'int64', 'name': 'field_28'}, {'offset': 'data+0x30', 'type': 'int64', 'name': 'field_30'}, {'offset': 'data+0x38', 'type': 'int32', 'name': 'min_allocation', 'value_on_init': 1}, {'offset': 'data+0x40', 'type': 'int64', 'name': 'field_40'}, {'offset': 'data+0x48', 'type': 'int64', 'name': 'field_48'}, {'offset': 'data+0x50', 'type': 'int64', 'name': 'field_50'}
+
+
+### Production System
+
+- **AIBuildTaskClass**:
+  - **constructor_rva**: 0x6478C0
+  - **state_machine_handler_rva**: 0x64AEC0
+  - **description**: FiniteStateMachineClass<enum_BuildTaskStates>. The core production unit. Each build task is a refcounted, signal-listening state machine that progresses through 25 named states from INIT_TASK to ALL_FINISHED. Multiple AIBuildTaskClass instances can be active simultaneously per AI player, managed via MultiLinkedListClass<class_AIBuildTaskClass>.
+  - **inherits**: FiniteStateMachineClass<enum_BuildTaskStates>, RefCountClass, SignalListenerClass, SignalGeneratorClass
+  - **build_states**:
+    - **STATE_Global**:
+      - **id**: match on *(int*)(this+0x8+4)
+      - **description**: Default/global state handler
+    - **BUILD_STATE_INIT_TASK**:
+      - **id**: 1
+      - **description**: Initial state. Sets state to 1.
+    - **BUILD_STATE_PRODUCTION_QUEUED**:
+      - **id**: 2
+      - **description**: Production request queued. Polls game state via DAT_140b15418 (global game clock/state). Checks credit availability and population caps (query types 0x5F, 0x60 on game object properties).
+    - **BUILD_STATE_FREESTORE_ALLOC**:
+      - **id**: 3
+      - **description**: Allocates from the free store. Transitions to state 6 (PRODUCTION_END) on enter.
+    - **BUILD_STATE_GROUND_UNIT_PRODUCTION**:
+      - **id**: 4
+      - **description**: Ground unit being produced. Calls FUN_140648120 on enter.
+    - **BUILD_STATE_PRODUCTION_BEGIN**:
+      - **id**: 5
+      - **description**: Production started. Runs EVENT_Update poll loop same as state 2.
+    - **BUILD_STATE_PRODUCTION_END**:
+      - **id**: 6
+      - **description**: Production completed. Unregisters signal listeners. Calls FUN_140647ee0 (production finalize). If flag at +0xD0 is set, skips budget release.
+    - **BUILD_STATE_PRODUCTION_FAILED**:
+      - **id**: 7
+      - **description**: Production failed. Releases budget via FUN_1405fdd90. Notifies free store via FUN_1404d4ee0. Transitions to cleanup.
+    - **BUILD_STATE_PRODUCTION_FINISHED**:
+      - **id**: 8
+      - **description**: Completed successfully. Calls FUN_14064ad00 on enter.
+    - **BUILD_STATE_DEPENDANT_WAIT**:
+      - **id**: 9
+      - **description**: Waiting for dependent tasks. Checks offset_0xB8 (dependent task list) count at +0x30. Transitions to state 0xB when count reaches 0.
+    - **BUILD_STATE_FLEET_MERGE**:
+      - **id**: 10
+      - **description**: Merging produced units into fleet.
+    - **BUILD_STATE_PATHING_DEST**:
+      - **id**: 11
+      - **description**: Pathfinding to destination. Creates MovementBlockStatus. Uses AIExecutionPathFinder. Handles galactic object containment hierarchy (checks +0x335, +0x336, +0x337 on game objects — component lookup table entries).
+    - **BUILD_STATE_JOIN_TASK_FORCE**:
+      - **id**: 13
+      - **description**: Unit joining a task force.
+    - **BUILD_STATE_PRE_PATH_SEPERATE**:
+      - **id**: 14
+      - **description**: Pre-pathfinding separation. Issues FleetManagementEvents to split units for movement.
+    - **BUILD_STATE_WAIT_FOR_ALL**:
+      - **id**: 15
+      - **description**: Waiting for all sub-tasks to complete. Checks galactic mode (offset 0x34 in mode struct). Transitions to 0x13 (TRANSPORTS_TO_ORBIT) or 8 (PRODUCTION_FINISHED).
+    - **BUILD_STATE_DO_TASK_FORCE_MERGE**:
+      - **id**: 16
+      - **description**: Executing task force merge. Calls FUN_140512160 to check merge completion.
+    - **BUILD_STATE_WAIT_FOR_CREDITS**:
+      - **id**: 17
+      - **description**: Waiting for sufficient credits. Transitions to 0x12 (BUILD_TASK_LIST) on enter.
+    - **BUILD_STATE_BUILD_TASK_LIST**:
+      - **id**: 18
+      - **description**: Building the task list. Calls FUN_140648980 on enter.
+    - **BUILD_STATE_TRANSPORTS_TO_ORBIT**:
+      - **id**: 19
+      - **description**: Moving transports to orbit. Issues FleetManagementEvents for orbital transfer.
+    - **BUILD_STATE_READY_TO_MERGE**:
+      - **id**: 20
+      - **description**: Ready to merge. Checks task force type and decides between JOIN_TASK_FORCE (0xD) or DO_TASK_FORCE_MERGE (0x10).
+    - **BUILD_STATE_ALL_FINISHED**:
+      - **id**: 21
+      - **description**: All production tasks complete. Terminal state.
+    - **BUILD_STATE_WAIT_FOR_FREESTORE_ALLOC**:
+      - **id**: 22
+      - **description**: Waiting for free store allocation. Complex state with multiple paths: ground production (state 4), fleet merge (state 0xE), or sync move (state 0x18). Checks object hierarchy via component_lookup_table entries.
+    - **BUILD_STATE_HIJACK_UNIT**:
+      - **id**: 23
+      - **description**: Hijacking an existing unit for the build task. Calls FUN_140648370 on enter.
+    - **BUILD_STATE_WAIT_FOR_SYNC_MOVE**:
+      - **id**: 24
+      - **description**: Waiting for synchronized movement.
+    - **BUILD_STATE_SYNC_MOVE_COUNTDOWN**:
+      - **id**: 25
+      - **description**: Countdown timer for sync move. Decrements float at +0xD8 by elapsed time. When timer <= threshold at +0xD4, calls FUN_14064a1f0 (execute synchronized move).
+  - **fields**: {'offset': '0x08', 'type': 'int32', 'name': 'current_state', 'description': 'Written with the state ID on each state entry'}, {'offset': '0x18', 'type': 'pointer_to_string', 'name': 'current_state_name', 'description': "Debug string pointer — the state name (e.g., 'BUILD_STATE_INIT_TASK')"}, {'offset': '0x20', 'type': 'int32', 'name': 'transition_pending', 'description': 'Set to 1 when a state transition is requested'}, {'offset': 'field_0xC', 'type': 'int32', 'name': 'next_state', 'description': 'Target state for pending transition'}, {'offset': 'field_0x20', 'type': 'pointer_to_string', 'name': 'current_event_name', 'description': "Debug: 'EVENT_Enter', 'EVENT_Update'"}, {'offset': '0x60', 'type': 'pointer', 'name': 'target_game_object', 'description': 'The game object being produced or the production target location'}, {'offset': '0x68', 'type': 'pointer', 'name': 'production_structure', 'description': 'The building/structure performing the production. Null for non-structure tasks.'}, {'offset': '0x70', 'type': 'int32', 'name': 'production_type_id', 'value_on_init': '0xFFFFFFFF'}, {'offset': '0x74', 'type': 'int32', 'name': 'production_priority', 'value_on_init': 1}, {'offset': '0x78', 'type': 'pointer', 'name': 'dependent_task'}, {'offset': '0x80', 'type': 'pointer', 'name': 'build_type_ref', 'description': 'GameObjectTypeClass pointer for what to build'}, {'offset': '0x88', 'type': 'int32', 'name': 'build_type_id_2', 'value_on_init': '0xFFFFFFFF'}, {'offset': '0x90', 'type': 'pointer', 'name': 'destination_object', 'description': 'Where to send the produced unit'}, {'offset': '0x98', 'type': 'pointer', 'name': 'owning_ai_player', 'description': 'Pointer to AIPlayerClass (used heavily to access subsystems via +0xF0)'}, {'offset': '0xA0', 'type': 'uint8', 'name': 'cancelled_flag'}, {'offset': '0xA8', 'type': 'pointer', 'name': 'movement_block_status', 'description': 'MovementBlockStatus for pathfinding states'}, {'offset': '0xB0', 'type': 'pointer', 'name': 'merge_target'}, {'offset': '0xB8', 'type': 'pointer', 'name': 'dependent_task_list'}, {'offset': '0xC0', 'type': 'pointer', 'name': 'field_C0'}, {'offset': '0xC8', 'type': 'int32', 'name': 'field_C8'}, {'offset': '0xCC', 'type': 'int32', 'name': 'field_CC'}, {'offset': '0xD0', 'type': 'uint8', 'name': 'skip_budget_release_flag', 'description': 'When set, PRODUCTION_END skips budget release'}, {'offset': '0xD2', 'type': 'uint8', 'name': 'is_reinforcement_flag'}, {'offset': '0xD4', 'type': 'float32', 'name': 'sync_move_threshold', 'description': 'Timer threshold for SYNC_MOVE_COUNTDOWN state'}, {'offset': '0xD8', 'type': 'float32', 'name': 'sync_move_timer', 'value_on_init': '-1.0f (0xBF800000)'}
+- **AIPlanetBuildTaskClass**:
+  - **constructor_rva**: 0x6954B0
+  - **description**: Planet-level build task. Managed via MultiLinkedListClass<class_AIPlanetBuildTaskClass>. Coordinates multiple AIBuildTaskClass instances for a single planet.
+  - **list_constructor_rva**: 0x53B140
+- **AIFreeStoreClass**:
+  - **lua_wrapper_constructor_rva**: 0x4D22B0
+  - **description**: Manages available (unallocated) units that the AI can commandeer for goals. Lua-exposed via LuaMemberFunctionWrapper<class_AIFreeStoreClass>. Has registered Lua method 'Get_Object_Count'. Contains hash maps for tracking allocated vs. free units.
+  - **lua_methods**: Get_Object_Count
+  - **specializations**:
+    - **LandFreeStoreClass**:
+      - **constructor_rva**: 0x690980
+    - **SpaceFreeStoreClass**:
+      - **constructor_rva**: 0x690420
+    - **GalacticFreeStoreClass**:
+      - **lua_wrapper_rva**: 0x68EAF0
+- **ProduceForceBlockStatus**:
+  - **constructor_rva**: 0x6C6500
+  - **description**: Blocking status for force production. Inherits LuaMemberFunctionWrapper<class_BlockingStatus>. Used in Lua scripts via _ProduceObject. Lua scripts call this and it blocks until production completes.
+  - **inherits**: LuaMemberFunctionWrapper<class_BlockingStatus>
+  - **fields**: {'offset': '0x38', 'type': 'pointer', 'name': 'field_38'}, {'offset': '0x40', 'type': 'pointer', 'name': 'field_40'}, {'offset': '0x48', 'type': 'pointer', 'name': 'field_48'}
+
+
+### Perception System
+
+- **evaluator_hierarchy**:
+  - **description**: The perception system uses a hierarchy of PerceptualEvaluatorClass subclasses. Each evaluator scores a different aspect of the game world. Results feed into the planning system's goal proposal scoring.
+  - **base_class_destructor_rva**: 0x64C900
+  - **evaluator_types**: {'name': 'GameObjectPerceptualEvaluatorClass', 'rva': '0x6D7E50', 'description': 'Evaluates individual game objects (units, buildings)'}, {'name': 'GameObjectTypePerceptualEvaluatorClass', 'rva': '0x64F400', 'description': 'Evaluates by object type category'}, {'name': 'PlayerPerceptualEvaluatorClass', 'rva': '0x6DFAC0', 'description': 'Evaluates player-level state (economy, military strength)'}, {'name': 'SpaceShipPerceptualEvaluatorClass', 'rva': '0x6D1D70', 'description': 'Space-specific ship evaluation'}, {'name': 'TacticalLocationPerceptualEvaluatorClass', 'rva': '0x72C560', 'description': 'Evaluates tactical map positions'}, {'name': 'TacticalObjectPerceptualEvaluatorClass', 'rva': '0x730580', 'description': 'Evaluates tactical-mode objects'}, {'name': 'TacticalPlayerPerceptualEvaluatorClass', 'rva': '0x734780', 'description': 'Evaluates players in tactical mode'}, {'name': 'TacticalStructurePerceptualEvaluatorClass', 'rva': '0x734730', 'description': 'Evaluates tactical-mode structures'}, {'name': 'TacticalUnitPerceptualEvaluatorClass', 'rva': '0x7320D0', 'description': 'Evaluates tactical-mode units'}
+  - **galactic_evaluators**: GalacticGamePerceptualEvaluatorClass, GalacticPlayerPerceptualEvaluatorClass, PlanetPerceptualEvaluatorClass, PlanetForcePerceptualEvaluatorClass, PlanetTypePerceptualEvaluatorClass, GameForcePerceptualEvaluatorClass
+  - **other_evaluators**: FunctionPerceptualEvaluatorClass, HintPerceptualEvaluatorClass, ScriptPerceptualEvaluatorClass, RootLookupPerceptualEvaluatorClass
+- **PerceptionParameterBindingsClass**:
+  - **constructor_rvas**: 0x4DAE40, 0x64C840, 0x659C60
+  - **description**: Binds perception parameters (thresholds, weights) to evaluator instances. Multiple constructors for different contexts.
+- **PerceptionGridEntryClass**:
+  - **constructor_rva**: 0x653100
+  - **description**: Entry in the tactical perception grid. Stores per-cell sensing data.
+
+
+### Ai Enable Disable Mechanism
+
+- **description**: AI enable/disable operates at multiple levels: (1) TheAIClass singleton state_flags (0x01010101 = all active), (2) Per-player Is_Human flag on PlayerObject, (3) Per-unit Prevent_AI_Usage Lua method, (4) Suspend_AI global Lua function (time-based), (5) Player::Enable_As_Actor() Lua method. The AI system checks Is_Human on the player to decide whether to create an AIPlayerClass. The Suspend_AI function likely sets a timer on the TheAIClass singleton that suppresses all AI ticking.
+- **global_ai_singleton**:
+  - **rva**: TheAIClass singleton via SingletonInstance at 0x7EED80
+  - **state_flags_offset**: 0x00
+  - **state_flags_value_active**: 0x01010101
+  - **active_flag_offset**: 0x04
+  - **active_flag_value**: 1
+  - **description**: The TheAIClass constructor writes 0x01010101 to offset 0x00 (4 byte flags, likely per-mode: galactic=0x01, space=0x01, land=0x01, global=0x01) and 1 to offset 0x04. Setting these to 0 would disable AI globally.
+- **per_player_control**:
+  - **player_is_human_lua_binding**: Is_Human (string RVA 0x8AA448)
+  - **player_is_human_controlled_lua_binding**: IsHumanControlled (string RVA 0x8A5D58)
+  - **enable_as_actor_lua_binding**: Enable_As_Actor() on PlayerWrapper
+  - **description**: PlayerObject has Is_Human and IsHumanControlled methods. AI-controlled players have Is_Human returning false. Enable_As_Actor() on a PlayerWrapper activates AI for that player. The engine checks these flags when creating/destroying AIPlayerClass instances.
+- **per_unit_control**:
+  - **prevent_ai_usage_method**: Prevent_AI_Usage(bool) on GameObjectWrapper
+  - **warning**: Crashes in tactical if unit has no active AI (community-documented bug).
+  - **description**: Blocks AI from issuing commands to a specific unit. Useful for cinematic sequences or player-controlled units in AI factions.
+- **temporal_suspension**:
+  - **suspend_ai_function**: Suspend_AI(seconds) — global Lua function
+  - **description**: Pauses all AI processing for a specified number of seconds. Used during cinematics. Likely sets a countdown timer on TheAIClass or on the game clock that suppresses ServicedAISystemClass::Service calls.
+
+
+### Diplomacy System
+
+- **description**: Diplomacy in the Alamo engine is NOT a continuous state machine — it is event-driven. Alliance/enemy changes are discrete events (AllyEventClass) sent through the ScheduledEventClass system. The PlayerObject stores diplomatic state accessed via Is_Enemy(player) and Is_Ally(player) Lua methods. Make_Ally/Make_Enemy are global Lua functions that fire AllyEventClass events. CRITICAL: diplomatic state resets on every game mode change (galactic<->tactical transition).
+- **AllyEventClass**:
+  - **constructor_rva**: 0x689AD0
+  - **inherits**: ScheduledEventClass
+  - **event_type_id**: 0x23 (35)
+  - **description**: Event fired when alliance state changes between two players. Field at data+0x00 initialized to 0xFFFFFFFF (target player ID, -1 = none).
+  - **fields**: {'offset': 'data+0x00', 'type': 'int32', 'name': 'target_player_id', 'value_on_init': '0xFFFFFFFF'}, {'offset': 'EventClass_data+0x08', 'type': 'int32', 'name': 'event_type', 'value': '0x23 = AllyEvent'}
+- **player_diplomatic_methods**:
+  - **Is_Enemy**:
+    - **lua_string_rva**: 0x8AA468
+    - **returns**: boolean
+  - **Is_Ally**:
+    - **lua_string_rva**: 0x8AA478
+    - **returns**: boolean
+  - **Make_Ally**:
+    - **scope**: global Lua function
+    - **note**: Resets every game mode change
+  - **Make_Enemy**:
+    - **scope**: global Lua function
+    - **note**: Resets every game mode change
+- **storage_model**:
+  - **description**: Diplomatic state is stored per-player in the PlayerClass/PlayerObject struct. The exact storage is likely a bitfield or array indexed by opposing player_id (up to 8 players). This is NOT stored in a separate diplomacy manager — it is embedded in each PlayerClass instance. The ~PlayerClass destructor (RVA 0x27ED40) cleans up multiple DynamicVectorClass<int> arrays (10 of them in a loop) at offsets within PlayerClass_data — some of these likely hold per-opponent diplomatic flags.
+  - **player_class_destructor_rva**: 0x27ED40
+  - **diplomatic_arrays_loop_count**: 10
+  - **diplomatic_arrays_description**: 10 DynamicVectorClass<int> arrays cleaned up in ~PlayerClass. These 10 slots match the 10-player capacity. Each likely stores diplomatic state for one opposing player.
+
+
+### Difficulty System
+
+- **DifficultyAdjustmentManagerClass**:
+  - **constructor_rva**: 0x484B90
+  - **description**: Database manager of DifficultyAdjustmentClass records. Inherits DatabaseUIntConversionClass. Uses a hash map for lookup. Each DifficultyAdjustmentClass record modifies AI parameters (production speed, income multiplier, combat bonuses, etc.) based on difficulty setting.
+  - **inherits**: DatabaseUIntConversionClass, DatabaseObjectManagerClass<class_DifficultyAdjustmentClass>
+  - **hash_map_load_factor**: 1.0
+  - **hash_map_initial_buckets**: 7
+  - **fields**: {'offset': 'data+0x40', 'type': 'pointer', 'name': 'difficulty_name_string', 'description': 'SSO string (capacity 0x0F) for difficulty level name'}, {'offset': 'data+0x50', 'type': 'pointer', 'name': 'field_50'}, {'offset': 'data+0x58', 'type': 'int64', 'name': 'string_capacity', 'value': '0x0F'}, {'offset': 'data+0x60', 'type': 'int32', 'name': 'field_60'}
+
+
+### Ai Diagnostics
+
+- **AIDiagnosticsClass**:
+  - **description**: Base class for all AI classes that support diagnostic logging. Provides debug info tracking. The AIDiagnosticsClass is the common ancestor of virtually every AI class — AIPlayerClass, all ServicedAISystemClass subclasses, AIBudgetClass, BudgetedCategoryStruct, InstantiatedGoalClass all inherit from it.
+  - **fields**: {'offset': 'data+0x18', 'type': 'int64', 'name': 'diagnostics_data', 'description': 'Diagnostic tracking field. Set to 0 in most constructors. Likely frame counter or tick timestamp.'}
+- **AIDiagnosticsManagerClass**:
+  - **singleton_ctor_dtor_rva**: 0x7E6B80
+  - **description**: Singleton managing all AI diagnostics. Receives diagnostic data from all AIDiagnosticsClass instances.
+- **AILogWindow**:
+  - **constructor_rva**: 0x1AA10
+  - **global_data_rva**: 0xB39140
+  - **log_title**: AI Log
+  - **description**: Debug log window for AI. Inherits LogWindowItem. Initialized at static address 0xB39140 with atexit destructor. Title is 'AI Log'.
+
+
+### Goal System Detail
+
+- **InstantiatedGoalClass**:
+  - **constructor_rva**: 0x691660
+  - **description**: A live goal instance. Multiple inheritance: RefCountClass + SignalListenerClass + AIDiagnosticsClass. Contains references to goal type, owning system, priority, and state.
+  - **inherits**: RefCountClass, SignalListenerClass, AIDiagnosticsClass
+  - **fields**: {'offset': '0x40', 'type': 'pointer', 'name': 'field_40'}, {'offset': '0x48', 'type': 'pointer', 'name': 'field_48'}, {'offset': '0x50', 'type': 'pointer', 'name': 'field_50'}, {'offset': '0x58', 'type': 'int64', 'name': 'field_58'}, {'offset': '0x60', 'type': 'int64', 'name': 'field_60'}, {'offset': '0x68', 'type': 'int64', 'name': 'field_68'}, {'offset': '0x70', 'type': 'int64', 'name': 'field_70'}, {'offset': '0x78', 'type': 'int64', 'name': 'field_78'}, {'offset': '0x80', 'type': 'int64', 'name': 'field_80'}, {'offset': '0x88', 'type': 'pointer', 'name': 'param_1_ref', 'description': 'Constructor param_1 — likely the goal type or owning goal system'}
+- **AIGoalProposalFunctionSetClass**:
+  - **destructor_rva**: 0x476CB0
+  - **description**: Set of proposal scoring functions for a goal type. Managed by TheAIGoalProposalFunctionSetManagerClass.
+
+
+### Target Location System
+
+- **description**: AI target locations are wrappers around game positions that the AI uses for goal targeting.
+- **classes**:
+  - **PlanetAITargetLocationClass**:
+    - **constructor_rva**: 0x665470
+    - **description**: Galactic-mode target: a planet.
+  - **TacticalRegionAITargetLocationClass**:
+    - **constructor_rva**: 0x725310
+    - **description**: Tactical-mode target: a map region.
+  - **TacticalUnitAITargetLocationClass**:
+    - **constructor_rva**: 0x724B90
+    - **description**: Tactical-mode target: a specific unit.
+
+
+### Ai Hint Zones
+
+- **AIHintZoneClass**:
+  - **constructor_rva**: 0x5A8CC0
+  - **description**: Map hint zones that guide AI behavior. Used by Find_Hint Lua function. Contains two hash maps (unit lists for zone). Fields at data+0xB8 = category_id (0xFFFFFFFF initially), data+0xBC = priority (1).
+  - **fields**: {'offset': 'data+0xB8', 'type': 'int32', 'name': 'category_id', 'value_on_init': '0xFFFFFFFF'}, {'offset': 'data+0xBC', 'type': 'int32', 'name': 'priority', 'value_on_init': 1}
+
+
+### Execution Pathfinding
+
+- **AIExecutionPathFinderClass**:
+  - **constructor_rva**: 0x690BF0
+  - **destructor_rva**: 0x690D90
+  - **description**: Pathfinding for AI execution plans. Used by AIBuildTaskClass in PATHING_DEST states.
+
+
+### Task Force System
+
+- **description**: Task forces are collections of units organized for coordinated action. Each game mode has its own task force class.
+- **classes**:
+  - **TaskForceClass**:
+    - **destructor_rva**: 0x5F9440
+    - **lua_wrapper_rva**: 0x5F8760
+  - **GalacticTaskForceClass**:
+    - **lua_wrapper_rva**: 0x6CCE20
+  - **LandTaskForceClass**:
+    - **lua_wrapper_rva**: 0x6E8B80
+  - **SpaceTaskForceClass**:
+    - **lua_wrapper_rva**: 0x6E4810
+  - **TaskForceDefinitionClass**:
+    - **constructor_rva**: 0x66F5D0
+    - **description**: Template definition for a task force composition.
+
+
+### Global References
+
+- **DAT_140b15418**:
+  - **rva**: 0xB15418
+  - **description**: Global pointer checked in AIBuildTaskClass state machine. When non-null, calls vtable method at +0xE0 to get current game time. When null, falls back to DAT_140b153fc. This is the game clock / frame counter accessor.
+  - **usage**: AI production timing, state polling
+- **DAT_140b153fc**:
+  - **rva**: 0xB153FC
+  - **description**: Fallback game state value when DAT_140b15418 is null.
+- **DAT_140b168c8**:
+  - **rva**: 0xB168C8
+  - **description**: Global int used as capacity threshold in BUILD_STATE_PATHING_DEST. Compared against FUN_1403f9530 result (current force count on a planet).
+
+
+### Class Hierarchy Summary
+
+- **description**: Complete AI class inheritance tree as recovered from RTTI.
+- **tree**:
+  - **AIDiagnosticsClass**:
+    - **children**: {'name': 'AIPlayerClass', 'description': 'Per-player AI controller'}, {'name': 'ServicedAISystemClass', 'children': [{'name': 'AIPerceptionSystemClass', 'children': [{'name': 'GalacticPerceptionSystemClass'}, {'name': 'LandPerceptionSystemClass'}, {'name': 'SpacePerceptionSystemClass'}]}, {'name': 'AIPlanningSystemClass'}, {'name': 'AIGoalSystemClass', 'children': [{'name': 'GalacticGoalSystemClass'}, {'name': 'LandGoalSystemClass'}, {'name': 'SpaceGoalSystemClass'}]}, {'name': 'AIExecutionSystemClass'}, {'name': 'AILearningSystemClass'}, {'name': 'AITemplateSystemClass'}]}, {'name': 'AIBudgetClass', 'children': [{'name': 'BudgetedCategoryStruct'}]}, {'name': 'InstantiatedGoalClass'}, {'name': 'TacticalAIManagerClass'}
+
+
+### Lua Ai Bindings Summary
+
+- **global_functions**: {'name': 'Suspend_AI', 'params': 'seconds', 'description': 'Pauses all AI for N seconds'}, {'name': 'EvaluatePerception', 'params': '...', 'description': 'AI perception evaluation'}, {'name': 'GiveDesireBonus', 'params': '...', 'description': 'Modifies AI desire weights for goals'}, {'name': '_ProduceObject', 'params': 'player, type', 'description': 'AI production command (blocking)'}, {'name': 'FindTarget', 'params': 'evaluator, ...', 'description': 'AI target finder'}, {'name': 'Assemble_Fleet', 'params': 'player, planet, types', 'description': 'Assembles fleet at planet'}
+- **player_methods**: {'name': 'Is_Enemy', 'params': 'player', 'returns': 'boolean'}, {'name': 'Is_Ally', 'params': 'player', 'returns': 'boolean'}, {'name': 'Enable_As_Actor', 'params': 'none', 'description': 'Enables AI actor mode for player'}, {'name': 'Is_Human', 'params': 'none', 'returns': 'boolean'}, {'name': 'IsHumanControlled', 'params': 'none', 'returns': 'boolean'}, {'name': 'Make_Ally', 'params': 'player', 'note': 'Resets on game mode change'}, {'name': 'Make_Enemy', 'params': 'player', 'note': 'Resets on game mode change'}
+- **object_methods**: {'name': 'Prevent_AI_Usage', 'params': 'bool', 'note': 'Crashes in tactical if unit has no active AI'}, {'name': 'Set_As_Goal_System_Removable', 'params': 'bool', 'description': 'AI goal cleanup flag on TaskForceClass'}
+- **free_store_methods**: {'name': 'Get_Object_Count', 'wrapper': 'LuaMemberFunctionWrapper<class_AIFreeStoreClass>'}
+
+
+### Rva Index
+
+- **_note**: All RVAs relative to module base (0x140000000 in Ghidra). For runtime: address = module_base + rva.
+- **constructors**:
+  - **TheAIClass**: 0x4D9C80
+  - **AIPlayerClass**: 0x4AF810
+  - **ServicedAISystemClass**: 0x64C250
+  - **AIPerceptionSystemClass**: 0x4DAD80
+  - **GalacticPerceptionSystemClass**: 0x4E1880
+  - **LandPerceptionSystemClass**: 0x6B8980
+  - **SpacePerceptionSystemClass**: 0x6B9A20
+  - **TacticalPerceptionGridClass**: 0x653340
+  - **AIPlanningSystemClass**: 0x6BAC00
+  - **AIGoalSystemClass**: 0x6C7970
+  - **GalacticGoalSystemClass**: 0x6B8480
+  - **LandGoalSystemClass**: 0x6B86E0
+  - **SpaceGoalSystemClass**: 0x6B88D0
+  - **AIExecutionSystemClass**: 0x524CE0
+  - **AILearningSystemClass**: 0x585D00
+  - **AITemplateSystemClass**: 0x6BB9E0
+  - **AIBudgetClass**: 0x6109C0
+  - **BudgetedCategoryStruct**: 0x610A70
+  - **AIBuildTaskClass**: 0x6478C0
+  - **AIPlanetBuildTaskClass**: 0x6954B0
+  - **InstantiatedGoalClass**: 0x691660
+  - **TacticalAIManagerClass**: 0x5F4BE0
+  - **DifficultyAdjustmentManagerClass**: 0x484B90
+  - **AllyEventClass**: 0x689AD0
+  - **AIHintZoneClass**: 0x5A8CC0
+  - **AIExecutionPathFinderClass**: 0x690BF0
+  - **ProduceForceBlockStatus**: 0x6C6500
+  - **TheAIDataManagerClass**: 0x4747E0
+  - **TheAIPlayerTypeManagerClass**: 0x4E9940
+  - **TheAIGoalTypeManagerClass**: 0x5E6690
+  - **TheAIGoalProposalFunctionSetManagerClass**: 0x5E5C30
+  - **TheAITemplateManagerClass**: 0x4E8920
+  - **AILogWindow**: 0x1AA10
+  - **PlanetAITargetLocationClass**: 0x665470
+  - **TacticalRegionAITargetLocationClass**: 0x725310
+  - **TacticalUnitAITargetLocationClass**: 0x724B90
+  - **TaskForceDefinitionClass**: 0x66F5D0
+  - **FreeStoreMovementBlockStatus**: 0x71F630
+- **state_machine_handlers**:
+  - **AIBuildTaskClass_vfunction2**: 0x64AEC0
+- **singleton_ctors**:
+  - **SingletonInstance_TheAIClass**: 0x7EED80
+  - **SingletonInstance_TheAIPlayerTypeManagerClass**: 0x7EED90
+  - **SingletonInstance_AIDiagnosticsManagerClass**: 0x7E6B80
+  - **SingletonInstance_TheAIDataManagerClass**: 0x7E6BA0
+  - **SingletonInstance_GalacticPathFinderClass**: 0x7E6920
+- **destructors**:
+  - **PlayerClass**: 0x27ED40
+  - **AIGoalSystemClass**: 0x6C7A30
+  - **AIPerceptionSystemClass**: 0x4DAFD0
+  - **AIFreeStoreClass**: 0x4D2780
+  - **AIExecutionPathFinderClass**: 0x690D90
+  - **TaskForceClass**: 0x5F9440
+
