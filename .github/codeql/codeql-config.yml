@@ -1,0 +1,20 @@
+name: "SWFOC-Mod-Menu lean CodeQL config"
+
+# Scope CodeQL to FIRST-PARTY code only. The incorporated reverse-engineering
+# editor trees are vendored / reproduced-for-provenance material, not the
+# actively-maintained first-party trainer (src/, tools/, scripts/, native/).
+# They are ALREADY out of scope for every other lean gate — ruff + basedpyright
+# exclude them (ruff.toml extend-exclude / pyrightconfig.json exclude), gitleaks
+# allowlists the vendored deps, osv ignores them. CodeQL is scoped consistently
+# here so the lean "0 code-scanning alerts" bar reflects first-party code, not
+# third-party libraries (Dear ImGui, MinHook) or one-shot RE
+# tooling reproduced verbatim. This is a reasoned, greppable exclusion — not a
+# suppression of a first-party finding.
+paths-ignore:
+  - bridge
+  - swfoc_lua_bridge
+  - swfoc_overlay
+  - swfoc_toolkit
+  - ghidra_scripts
+  - re-findings
+  - docs

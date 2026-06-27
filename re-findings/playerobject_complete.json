@@ -1,0 +1,641 @@
+{
+  "struct_name": "PlayerClass",
+  "rtti_mangled_name": ".?AVPlayerClass@@",
+  "vtable_rva": "discovered_in_destructor",
+  "inherits": ["RefCountClass", "SignalGeneratorClass"],
+  "estimated_size": 1232,
+  "estimated_size_hex": "0x4D0",
+  "notes": [
+    "PlayerClass is the actual RTTI class name (confirmed via ~PlayerClass destructor at 0x14027ED40).",
+    "Previously called 'PlayerObject' in the KB -- that was an informal name.",
+    "The struct inherits RefCountClass and SignalGeneratorClass (confirmed in destructor).",
+    "Accessed via PlayerListClass global (RVA 0xA16FD0) -> player_array[slot_index].",
+    "PlayerArray shortcut at RVA 0xA16FF0 points directly into the array.",
+    "PlayerWrapper (Lua binding) stores the PlayerClass pointer at wrapper+0x28.",
+    "AIPlayerClass at +0x360 is a separate object, NOT inlined into PlayerClass."
+  ],
+  "fields": [
+    {
+      "offset": "0x00",
+      "name": "vtable_ptr",
+      "type": "pointer",
+      "size": 8,
+      "status": "CONFIRMED",
+      "evidence": "Standard vtable pointer. Destructor writes two vtable values during teardown."
+    },
+    {
+      "offset": "0x08",
+      "name": "refcount_data",
+      "type": "struct_inline",
+      "size": 8,
+      "status": "DISCOVERED",
+      "evidence": "RefCountClass base class data. Destructor calls FID_conflict__Tidy_deallocate on offset_0x8."
+    },
+    {
+      "offset": "0x10",
+      "name": "signal_generator_base",
+      "type": "struct_inline",
+      "size": 32,
+      "status": "DISCOVERED",
+      "evidence": "SignalGeneratorClass base class. Destructor calls SignalGeneratorClass::~SignalGeneratorClass."
+    },
+    {
+      "offset": "0x37",
+      "name": "playable",
+      "type": "uint8",
+      "size": 1,
+      "status": "CONFIRMED",
+      "evidence": "KB + rvas.h PlayerObj::Playable = 0x37. Used to determine if player slot is active."
+    },
+    {
+      "offset": "0x38",
+      "name": "padding_38",
+      "type": "unknown",
+      "size": 8,
+      "status": "DISCOVERED",
+      "evidence": "Gap between playable flag and DynamicVectorClass region starting at +0x40."
+    },
+    {
+      "offset": "0x48",
+      "name": "slot_index",
+      "type": "int32",
+      "size": 4,
+      "status": "CONFIRMED",
+      "evidence": "KB + rvas.h PlayerObj::SlotIndex = 0x48. Matches owner_player_id on GameObjectClass+0x58."
+    },
+    {
+      "offset": "0x4C",
+      "name": "player_id",
+      "type": "int32",
+      "size": 4,
+      "status": "CONFIRMED",
+      "evidence": "Accessed in AddCredits as *(param_1 + 0x4c), SetTechLevel as *(param_1 + 0x4c), PlayerList_FindByID returns matching player by this ID, Lua_Select_Object reads *(player + 0x4c). Used as the primary player identifier across the engine."
+    },
+    {
+      "offset": "0x54",
+      "name": "team_id",
+      "type": "int32",
+      "size": 4,
+      "status": "DISCOVERED",
+      "evidence": "Getter at 0x140602EE0 reads *(player + 0x54) and returns as double. Context suggests team or secondary ID. The LuaValue<double> getter wraps this int32."
+    },
+    {
+      "offset": "0x58",
+      "name": "ai_player_type_id",
+      "type": "int32",
+      "size": 4,
+      "status": "DISCOVERED",
+      "evidence": "AIPlayerClass constructor stores second param at +0x58 of the AI object. Referenced in Get_Name wrapper (reads *(*(player + 0x360) + 0x58)) to get AI type for name lookup."
+    },
+    {
+      "offset": "0x62",
+      "name": "local_player",
+      "type": "uint8",
+      "size": 1,
+      "status": "CONFIRMED",
+      "evidence": "KB + rvas.h PlayerObj::LocalPlayer = 0x62. Lua getter at 0x140603960 reads *(player + 0x62) as bool. Returns whether this is the local human player."
+    },
+    {
+      "offset": "0x68",
+      "name": "faction_ref",
+      "type": "pointer",
+      "size": 8,
+      "status": "CONFIRMED",
+      "evidence": "KB + rvas.h PlayerObj::FactionName = 0x68. SetTechLevel compares factions via FUN_1403751a0(obj, *(player + 0x68)). Lua_Get_Faction_Name getter at 0x140602A00 reads *(player + 0x68) and extracts string. Change_Owner reads this. Contains FactionClass pointer; faction name string is at *(faction + 0x28) with MSVC SSO at faction+0x40 capacity."
+    },
+    {
+      "offset": "0x70",
+      "name": "credits",
+      "type": "float32",
+      "size": 4,
+      "status": "CONFIRMED",
+      "evidence": "KB + rvas.h PlayerObj::Credits = 0x70. AddCredits (0x14027F370): reads/writes *(float*)(param_1 + 0x70). Lua_Get_Credits getter at 0x1406027F0 reads *(float*)(player + 0x70). Income multiplier applied for positive adds. Clamped to [0, max_credits]."
+    },
+    {
+      "offset": "0x74",
+      "name": "max_credits",
+      "type": "float32",
+      "size": 4,
+      "status": "CONFIRMED",
+      "evidence": "KB + rvas.h PlayerObj::MaxCredits = 0x74. AddCredits: if *(float*)(param_1 + 0x74) >= 0, credits clamped to this value. If negative, no cap enforced."
+    },
+    {
+      "offset": "0x84",
+      "name": "tech_level",
+      "type": "int32",
+      "size": 4,
+      "status": "CONFIRMED",
+      "evidence": "KB + rvas.h PlayerObj::TechLevel = 0x84. SetTechLevel (0x140288980): *(int*)(param_1 + 0x84) = clamped value. Lua_Get_Tech_Level at 0x140603040 reads *(int*)(player + 0x84). Auto-upgrade function at 0x140282190 increments this. Compared against objects' +0x89C tech requirement."
+    },
+    {
+      "offset": "0x88",
+      "name": "max_tech_level",
+      "type": "int32",
+      "size": 4,
+      "status": "CONFIRMED",
+      "evidence": "KB + rvas.h PlayerObj::MaxTechLevel = 0x88. SetTechLevel: param_2 clamped to *(int*)(param_1 + 0x88). Auto-upgrade checks *(param_1 + 0x84) < *(param_1 + 0x88)."
+    },
+    {
+      "offset": "0x8C",
+      "name": "dvec_int_array_0",
+      "type": "DynamicVectorClass<int>",
+      "size": 24,
+      "status": "DISCOVERED",
+      "evidence": "Destructor runs a loop destroying 10 inlined DynamicVectorClass<int> objects starting from offset_0xd0 region, iterating backwards in 24-byte strides. The first starts around 0x8C-0xD0 range."
+    },
+    {
+      "offset": "0xE0",
+      "name": "historically_built_types",
+      "type": "DynamicVectorClass<PlayerClass::HistoricallyBuiltObjectType>",
+      "size": 24,
+      "status": "CONFIRMED",
+      "evidence": "Destructor calls ~DynamicVectorClass<struct_PlayerClass::HistoricallyBuiltObjectType> at offset_0xe0."
+    },
+    {
+      "offset": "0xF8",
+      "name": "buildable_types_1",
+      "type": "DynamicVectorClass<GameObjectTypeClass const*>",
+      "size": 24,
+      "status": "DISCOVERED",
+      "evidence": "Destructor calls ~DynamicVectorClass<class_GameObjectTypeClass_const*> at offset_0xf8."
+    },
+    {
+      "offset": "0x108",
+      "name": "is_human_controlled",
+      "type": "uint8",
+      "size": 1,
+      "status": "CONFIRMED",
+      "evidence": "Lua getter at 0x140603A40 reads *(byte*)(player + 0x108) as bool. Returns LuaValue<bool>. Maps to 'Is_Human' / 'IsHumanControlled' Lua binding."
+    },
+    {
+      "offset": "0x110",
+      "name": "buildable_types_2",
+      "type": "DynamicVectorClass<GameObjectTypeClass const*>",
+      "size": 24,
+      "status": "DISCOVERED",
+      "evidence": "Destructor calls ~DynamicVectorClass<class_GameObjectTypeClass_const*> at offset_0x110."
+    },
+    {
+      "offset": "0x128",
+      "name": "buildable_types_3",
+      "type": "DynamicVectorClass<GameObjectTypeClass const*>",
+      "size": 24,
+      "status": "DISCOVERED",
+      "evidence": "Destructor calls ~DynamicVectorClass<class_GameObjectTypeClass_const*> at offset_0x128."
+    },
+    {
+      "offset": "0x140",
+      "name": "player_data_block_1",
+      "type": "struct_unknown",
+      "size": 64,
+      "status": "DISCOVERED",
+      "evidence": "Destructor calls cleanup function FUN_14027eb10 at field_0x140. Also calls FUN_140289530 at field_0x140."
+    },
+    {
+      "offset": "0x180",
+      "name": "player_data_block_2",
+      "type": "struct_unknown",
+      "size": 64,
+      "status": "DISCOVERED",
+      "evidence": "Destructor calls cleanup function FUN_14027eb10 at field_0x180. Also calls FUN_140289530 at field_0x180."
+    },
+    {
+      "offset": "0x1A8",
+      "name": "unlockable_types_dvec_header",
+      "type": "DynamicVectorClass_header",
+      "size": 8,
+      "status": "DISCOVERED",
+      "evidence": "FUN_140047aa0 called with (param_1 + 0x1a8) for vector resize in add_to_unlocked_list (0x14027F860)."
+    },
+    {
+      "offset": "0x1B0",
+      "name": "unlocked_types_array",
+      "type": "pointer",
+      "size": 8,
+      "status": "CONFIRMED",
+      "evidence": "Unlock_Tech (0x14027F860), Lock_Tech (0x140286150), IsUnlocked check (0x140282580) all read *(ptr*)(player + 0x1B0) as the data pointer of a DynamicVectorClass<GameObjectTypeClass*>. Contains the list of unlocked buildable types."
+    },
+    {
+      "offset": "0x1B8",
+      "name": "unlocked_types_count",
+      "type": "int32",
+      "size": 4,
+      "status": "CONFIRMED",
+      "evidence": "IsUnlocked (0x140282580) reads *(int*)(player + 0x1B8) for iteration count. Unlock_Tech increments it. Lock_Tech decrements via vector remove."
+    },
+    {
+      "offset": "0x1BC",
+      "name": "unlocked_types_capacity",
+      "type": "int32",
+      "size": 4,
+      "status": "CONFIRMED",
+      "evidence": "Unlock_Tech: capacity = *(int*)(param_1 + 0x1BC) * 2 >> 1 for growth check."
+    },
+    {
+      "offset": "0x1C0",
+      "name": "locked_types_dvec",
+      "type": "DynamicVectorClass<GameObjectTypeClass const*>",
+      "size": 24,
+      "status": "CONFIRMED",
+      "evidence": "Destructor calls FUN_14027ea70 at offset_0x1c0. Lock_Tech_Add (0x14027F7C0) uses offset 0x1C0 header, 0x1C8 data ptr, 0x1D0 count, 0x1D4 capacity. IsLocked (0x140282550) reads 0x1C8/0x1D0."
+    },
+    {
+      "offset": "0x1C8",
+      "name": "locked_types_array",
+      "type": "pointer",
+      "size": 8,
+      "status": "CONFIRMED",
+      "evidence": "IsLocked (0x140282550) reads *(ptr*)(player + 0x1C8). Unlock_Tech_Remove (0x140286100) reads same. Lock_Tech_Add writes to it."
+    },
+    {
+      "offset": "0x1D0",
+      "name": "locked_types_count",
+      "type": "int32",
+      "size": 4,
+      "status": "CONFIRMED",
+      "evidence": "IsLocked reads *(int*)(player + 0x1D0) for loop bound. Lock_Tech_Add increments."
+    },
+    {
+      "offset": "0x1D4",
+      "name": "locked_types_capacity",
+      "type": "int32",
+      "size": 4,
+      "status": "CONFIRMED",
+      "evidence": "Lock_Tech_Add: capacity = *(int*)(param_1 + 0x1D4) * 2 >> 1 for growth."
+    },
+    {
+      "offset": "0x1E0",
+      "name": "type_list_4",
+      "type": "DynamicVectorClass<GameObjectTypeClass const*>",
+      "size": 24,
+      "status": "DISCOVERED",
+      "evidence": "Destructor calls ~DynamicVectorClass<GameObjectTypeClass const*> at offset_0x1e0."
+    },
+    {
+      "offset": "0x1F8",
+      "name": "type_list_5",
+      "type": "DynamicVectorClass<GameObjectTypeClass const*>",
+      "size": 24,
+      "status": "DISCOVERED",
+      "evidence": "Destructor calls ~DynamicVectorClass<GameObjectTypeClass const*> at offset_0x1f8."
+    },
+    {
+      "offset": "0x210",
+      "name": "type_list_6",
+      "type": "DynamicVectorClass<GameObjectTypeClass const*>",
+      "size": 24,
+      "status": "DISCOVERED",
+      "evidence": "Destructor calls ~DynamicVectorClass<GameObjectTypeClass const*> at offset_0x210."
+    },
+    {
+      "offset": "0x228",
+      "name": "type_list_7",
+      "type": "DynamicVectorClass<GameObjectTypeClass const*>",
+      "size": 24,
+      "status": "DISCOVERED",
+      "evidence": "Destructor calls ~DynamicVectorClass<GameObjectTypeClass const*> at offset_0x228."
+    },
+    {
+      "offset": "0x250",
+      "name": "type_list_8_vtable",
+      "type": "DynamicVectorClass<GameObjectTypeClass const*>",
+      "size": 24,
+      "status": "DISCOVERED",
+      "evidence": "Destructor sets offset_0x250 = DynamicVectorClass vtable, then frees offset_0x258 data."
+    },
+    {
+      "offset": "0x258",
+      "name": "type_list_8_data",
+      "type": "pointer",
+      "size": 8,
+      "status": "DISCOVERED",
+      "evidence": "Destructor frees offset_0x258 (data ptr), resets offset_0x260 (count?) and offset_0x264 (capacity flags)."
+    },
+    {
+      "offset": "0x268",
+      "name": "type_list_9_vtable",
+      "type": "DynamicVectorClass<GameObjectTypeClass const*>",
+      "size": 24,
+      "status": "DISCOVERED",
+      "evidence": "Destructor sets offset_0x268 = DynamicVectorClass vtable, then frees offset_0x270 data."
+    },
+    {
+      "offset": "0x270",
+      "name": "type_list_9_data",
+      "type": "pointer",
+      "size": 8,
+      "status": "DISCOVERED",
+      "evidence": "Destructor frees offset_0x270 and resets offset_0x278 (count), offset_0x27c (capacity)."
+    },
+    {
+      "offset": "0x280",
+      "name": "int_vector",
+      "type": "DynamicVectorClass<int>",
+      "size": 24,
+      "status": "DISCOVERED",
+      "evidence": "Destructor calls ~DynamicVectorClass<int> at offset_0x280."
+    },
+    {
+      "offset": "0x298",
+      "name": "type_list_10",
+      "type": "DynamicVectorClass<GameObjectTypeClass const*>",
+      "size": 24,
+      "status": "DISCOVERED",
+      "evidence": "Destructor calls ~DynamicVectorClass<GameObjectTypeClass const*> at offset_0x298."
+    },
+    {
+      "offset": "0x2B0",
+      "name": "sub_object_ptr",
+      "type": "pointer",
+      "size": 8,
+      "status": "DISCOVERED",
+      "evidence": "Destructor: calls virtual destructor on *(offset_0x2b0), then nulls it. A polymorphic sub-object."
+    },
+    {
+      "offset": "0x2C0",
+      "name": "heap_buffer_1",
+      "type": "pointer",
+      "size": 8,
+      "status": "DISCOVERED",
+      "evidence": "Destructor calls thunk_FUN_1407864b8 (operator delete) on offset_0x2c0."
+    },
+    {
+      "offset": "0x2C8",
+      "name": "sub_struct_2c8",
+      "type": "struct_unknown",
+      "size": 40,
+      "status": "DISCOVERED",
+      "evidence": "Destructor calls FUN_1404c5b80 at field_0x2c8. Likely a specialized container."
+    },
+    {
+      "offset": "0x2F0",
+      "name": "large_sub_object",
+      "type": "pointer",
+      "size": 8,
+      "status": "DISCOVERED",
+      "evidence": "Destructor: if offset_0x2f0 != 0, calls FUN_140496830 then frees with size 0xB8. Contains MSVC SSO strings at sub+0x38, sub+0x58 (FileClass), sub+0xe0, sub+0x100. Likely a save/load or profile data structure."
+    },
+    {
+      "offset": "0x318",
+      "name": "data_block_318",
+      "type": "struct_unknown",
+      "size": 24,
+      "status": "DISCOVERED",
+      "evidence": "Destructor calls FUN_14027ecc0 at offset_0x318."
+    },
+    {
+      "offset": "0x360",
+      "name": "ai_player_ptr",
+      "type": "pointer (AIPlayerClass*)",
+      "size": 8,
+      "status": "CONFIRMED",
+      "evidence": "AddCredits: if *(ptr*)(player + 0x360) != 0, applies income multiplier from AI budget. SetTechLevel: propagates to AI via this pointer. Lua_Enable_As_Actor reads *(player + 0x360). Lua_Release_Credits_For_Tactical reads *(player + 0x360). Get_Name reads *(*(player + 0x360) + 0x58). Non-null for AI players, null for human players. Destructor calls FUN_140285dc0 at offset_0x360."
+    },
+    {
+      "offset": "0x370",
+      "name": "diplomacy_table",
+      "type": "pointer (int32[])",
+      "size": 8,
+      "status": "CONFIRMED",
+      "evidence": "Is_Enemy (0x1402824F0): returns *(int*)(*(ptr*)(player + 0x370) + other_player_id * 4) == 1. Is_Ally (0x1402823E0): returns same[...] == 0. Make_Ally/Make_Enemy (0x140288800): writes *(int*)(*(ptr*)(player + 0x370) + target_id * 4) = 0 or 1. Array indexed by player_id, int32 per entry: 0=ally, 1=enemy."
+    },
+    {
+      "offset": "0x378",
+      "name": "profile_data_ptr",
+      "type": "pointer",
+      "size": 8,
+      "status": "DISCOVERED",
+      "evidence": "Destructor: if offset_0x378 != 0, destroys MSVC SSO strings at sub+0x100, sub+0xe0, destroys FileClass at sub+0x58, destroys SSO at sub+0x38, frees with size 0x120. Large data structure -- likely player profile or save metadata."
+    },
+    {
+      "offset": "0x380",
+      "name": "black_market_items",
+      "type": "DynamicVectorClass<BlackMarketItemClass const*>",
+      "size": 24,
+      "status": "CONFIRMED",
+      "evidence": "Destructor calls ~DynamicVectorClass<class_BlackMarketItemClass_const*> at offset_0x380."
+    },
+    {
+      "offset": "0x398",
+      "name": "difficulty_level",
+      "type": "int32",
+      "size": 4,
+      "status": "DISCOVERED",
+      "evidence": "Lua getter at 0x140602AE0 reads *(int*)(player + 0x398) and returns as double. Context in LuaValue<double> property getter. Likely difficulty or a scoring metric."
+    },
+    {
+      "offset": "0x3F8",
+      "name": "advisor_hints_base",
+      "type": "uint8[]",
+      "size": 16,
+      "status": "CONFIRMED",
+      "evidence": "Lua_Enable_Advisor_Hints (0x140601E80): writes *(char*)(player + 0x3F8 + game_mode_index) = bool_value. Indexed by game mode ID (0=galactic, 1=land, 2=space). Array of per-mode advisor hint enable flags."
+    },
+    {
+      "offset": "0x448",
+      "name": "black_market_tutorial_flag",
+      "type": "uint8",
+      "size": 1,
+      "status": "CONFIRMED",
+      "evidence": "Lua_Set_Black_Market_Tutorial (0x140604300): *(char*)(player + 0x448) = bool. Directly written from Lua boolean parameter."
+    },
+    {
+      "offset": "0x449",
+      "name": "sabotage_tutorial_flag",
+      "type": "uint8",
+      "size": 1,
+      "status": "CONFIRMED",
+      "evidence": "Lua_Set_Sabotage_Tutorial (0x1406043C0): *(char*)(player + 0x449) = bool. Directly written from Lua boolean parameter."
+    },
+    {
+      "offset": "0x484",
+      "name": "space_station_level",
+      "type": "int32",
+      "size": 4,
+      "status": "DISCOVERED",
+      "evidence": "Lua getter at 0x140602690 reads *(int*)(player + 0x484) and returns as double. Last property registered in PlayerWrapper constructor (called with 'Get_Space_Station'). Likely Get_Space_Station_Level return value."
+    }
+  ],
+  "dynamic_vector_classes_in_struct": {
+    "summary": "The destructor reveals at least 15 DynamicVectorClass instances inlined into PlayerClass, plus 10 DynamicVectorClass<int> instances in a loop. These store buildable types, locked/unlocked tech lists, historically built types, and black market items.",
+    "confirmed_dvec_offsets": [
+      "0xE0 (HistoricallyBuiltObjectType)",
+      "0xF8 (GameObjectTypeClass const*)",
+      "0x110 (GameObjectTypeClass const*)",
+      "0x128 (GameObjectTypeClass const*)",
+      "0x1E0 (GameObjectTypeClass const*)",
+      "0x1F8 (GameObjectTypeClass const*)",
+      "0x210 (GameObjectTypeClass const*)",
+      "0x228 (GameObjectTypeClass const*)",
+      "0x280 (int)",
+      "0x298 (GameObjectTypeClass const*)",
+      "0x380 (BlackMarketItemClass const*)"
+    ]
+  },
+  "lua_wrapper_method_map": {
+    "description": "Mapping from PlayerWrapper constructor registration order to Lua method name and engine function. Each entry has the function pointer stored in the wrapper object, which dispatches to the PlayerClass method.",
+    "methods": [
+      {"lua_name": "Give_Money", "wrapper_rva": "0x603130", "engine_fn_rva": "0x27F370", "fields_accessed": ["0x70", "0x74", "0x360", "0x4C"]},
+      {"lua_name": "Get_Faction_Name", "wrapper_rva": "0x602A00", "engine_fn_rva": "n/a (inline)", "fields_accessed": ["0x68"]},
+      {"lua_name": "Get_Name (AI type name)", "wrapper_rva": "0x602060", "engine_fn_rva": "n/a (inline)", "fields_accessed": ["0x360"]},
+      {"lua_name": "Get_Credits", "wrapper_rva": "0x6027F0", "engine_fn_rva": "n/a (inline)", "fields_accessed": ["0x70"]},
+      {"lua_name": "Get_ID", "wrapper_rva": "0x602C40", "engine_fn_rva": "n/a (inline)", "fields_accessed": ["0x4C"]},
+      {"lua_name": "Get_Tech_Level", "wrapper_rva": "0x603040", "engine_fn_rva": "n/a (inline)", "fields_accessed": ["0x84"]},
+      {"lua_name": "Set_Tech_Level", "wrapper_rva": "0x604480", "engine_fn_rva": "0x288980", "fields_accessed": ["0x84", "0x88", "0x68", "0x4C", "0x1B0", "0x1B8", "0x1BC", "0xC1", "0xC2"]},
+      {"lua_name": "Unlock_Tech", "wrapper_rva": "0x604540", "engine_fn_rva": "0x286100 + 0x27F860", "fields_accessed": ["0x1B0", "0x1B8", "0x1C8", "0x1D0"]},
+      {"lua_name": "Lock_Tech", "wrapper_rva": "0x603B20", "engine_fn_rva": "0x286150 + 0x27F7C0", "fields_accessed": ["0x1B0", "0x1B8", "0x1C8", "0x1D0", "0x1D4"]},
+      {"lua_name": "Is_Enemy", "wrapper_rva": "0x603760", "engine_fn_rva": "0x2824F0", "fields_accessed": ["0x370", "0x4C"]},
+      {"lua_name": "Is_Ally", "wrapper_rva": "0x603560", "engine_fn_rva": "0x2823E0", "fields_accessed": ["0x370", "0x4C"]},
+      {"lua_name": "Is_Human", "wrapper_rva": "0x603A40", "engine_fn_rva": "n/a (inline)", "fields_accessed": ["0x108"]},
+      {"lua_name": "Is_Local_Player", "wrapper_rva": "0x603960", "engine_fn_rva": "n/a (inline)", "fields_accessed": ["0x62"]},
+      {"lua_name": "Make_Ally", "wrapper_rva": "0x6046A0", "engine_fn_rva": "0x288800", "fields_accessed": ["0x370", "0x4C"]},
+      {"lua_name": "Make_Enemy", "wrapper_rva": "0x604780", "engine_fn_rva": "0x288800", "fields_accessed": ["0x370", "0x4C"]},
+      {"lua_name": "Enable_As_Actor", "wrapper_rva": "0x602640", "engine_fn_rva": "0x4B0250", "fields_accessed": ["0x360"]},
+      {"lua_name": "Enable_Advisor_Hints", "wrapper_rva": "0x601E80", "engine_fn_rva": "n/a (inline)", "fields_accessed": ["0x3F8"]},
+      {"lua_name": "Select_Object", "wrapper_rva": "0x603F60", "engine_fn_rva": "0x2BD2F0", "fields_accessed": ["0x4C"]},
+      {"lua_name": "Retreat", "wrapper_rva": "0x603DE0", "engine_fn_rva": "0x340920", "fields_accessed": ["0x4C"]},
+      {"lua_name": "Release_Credits_For_Tactical", "wrapper_rva": "0x603C70", "engine_fn_rva": "0x4B06D0", "fields_accessed": ["0x360"]},
+      {"lua_name": "Disable_Bombing_Run", "wrapper_rva": "0x601AA0", "engine_fn_rva": "inline", "fields_accessed": ["0x4C"]},
+      {"lua_name": "Disable_Orbital_Bombardment", "wrapper_rva": "0x601BE0", "engine_fn_rva": "inline", "fields_accessed": ["0x4C"]},
+      {"lua_name": "Remove_Orbital_Bombardment", "wrapper_rva": "0x604860", "engine_fn_rva": "inline", "fields_accessed": ["0x4C"]},
+      {"lua_name": "Set_Black_Market_Tutorial", "wrapper_rva": "0x604300", "engine_fn_rva": "n/a (inline)", "fields_accessed": ["0x448"]},
+      {"lua_name": "Set_Sabotage_Tutorial", "wrapper_rva": "0x6043C0", "engine_fn_rva": "n/a (inline)", "fields_accessed": ["0x449"]},
+      {"lua_name": "Get_Space_Station_Level", "wrapper_rva": "0x602690", "engine_fn_rva": "n/a (inline)", "fields_accessed": ["0x484"]},
+      {"lua_name": "Get_Enemy_Player (build picker)", "wrapper_rva": "0x6028D0", "engine_fn_rva": "inline", "fields_accessed": ["0x360", "0x68"]},
+      {"lua_name": "Get_Difficulty", "wrapper_rva": "0x602AE0", "engine_fn_rva": "n/a (inline)", "fields_accessed": ["0x398"]},
+      {"lua_name": "Get_Team_ID", "wrapper_rva": "0x602EE0", "engine_fn_rva": "n/a (inline)", "fields_accessed": ["0x54"]},
+      {"lua_name": "Produce_Object_Type (random tech picker)", "wrapper_rva": "0x6031F0", "engine_fn_rva": "0x27F860 + 0x282190", "fields_accessed": ["0x84", "0x88", "0x68", "0x1B0", "0x1B8", "0xC1", "0xC2"]},
+      {"lua_name": "Get_Space_Station", "wrapper_rva": "0x6021C0", "engine_fn_rva": "inline", "fields_accessed": ["0x4C", "0x68"]}
+    ]
+  },
+  "key_engine_functions": [
+    {
+      "name": "AddCredits",
+      "rva": "0x27F370",
+      "signature": "float AddCredits(PlayerClass* player, float amount, char apply_to_ai)",
+      "fields_accessed": ["0x70", "0x74", "0x4C", "0x360"],
+      "notes": "If amount > 0 and AI player attached (+0x360 != 0), multiplies by income rate from AI budget at *(ai+0x20). Credits clamped to [0, max_credits] unless max_credits < 0."
+    },
+    {
+      "name": "SetTechLevel",
+      "rva": "0x288980",
+      "signature": "int SetTechLevel(PlayerClass* player, int level, char propagate, char notify)",
+      "fields_accessed": ["0x84", "0x88", "0x4C", "0x68", "0x1B0", "0x1B8", "0x1BC", "0xC1", "0xC2"],
+      "notes": "Clamps to [0, max_tech_level]. Iterates game objects matching faction, checks obj+0x89C tech req vs new level, adds to unlocked list if obj+0xC1 and obj+0xC2 flags set."
+    },
+    {
+      "name": "SetDiplomacy",
+      "rva": "0x288800",
+      "signature": "void SetDiplomacy(PlayerClass* player, int target_player_id, int relation)",
+      "fields_accessed": ["0x370"],
+      "notes": "Writes relation (0=ally, 1=enemy) into diplomacy_table[target_player_id]. Simple 1-line function."
+    },
+    {
+      "name": "IsEnemy",
+      "rva": "0x2824F0",
+      "signature": "bool IsEnemy(PlayerClass* self, PlayerClass* other)",
+      "fields_accessed": ["0x370", "0x4C"],
+      "notes": "Returns diplomacy_table[other->player_id] == 1."
+    },
+    {
+      "name": "IsAlly",
+      "rva": "0x2823E0",
+      "signature": "bool IsAlly(PlayerClass* self, PlayerClass* other)",
+      "fields_accessed": ["0x370", "0x4C"],
+      "notes": "Returns diplomacy_table[other->player_id] == 0."
+    },
+    {
+      "name": "IsUnlocked",
+      "rva": "0x282580",
+      "signature": "bool IsUnlocked(PlayerClass* player, GameObjectTypeClass* type)",
+      "fields_accessed": ["0x1B0", "0x1B8"],
+      "notes": "Linear scan of unlocked_types_array for matching pointer."
+    },
+    {
+      "name": "IsLocked",
+      "rva": "0x282550",
+      "signature": "bool IsLocked(PlayerClass* player, GameObjectTypeClass* type)",
+      "fields_accessed": ["0x1C8", "0x1D0"],
+      "notes": "Linear scan of locked_types_array for matching pointer."
+    },
+    {
+      "name": "AddToUnlockedList",
+      "rva": "0x27F860",
+      "signature": "void AddToUnlockedList(PlayerClass* player, GameObjectTypeClass* type)",
+      "fields_accessed": ["0x1A8", "0x1B0", "0x1B8", "0x1BC"],
+      "notes": "Checks for duplicates, grows vector if needed, appends type pointer."
+    },
+    {
+      "name": "AddToLockedList",
+      "rva": "0x27F7C0",
+      "signature": "void AddToLockedList(PlayerClass* player, GameObjectTypeClass* type)",
+      "fields_accessed": ["0x1C0", "0x1C8", "0x1D0", "0x1D4"],
+      "notes": "Same pattern as AddToUnlockedList but for locked types vector."
+    },
+    {
+      "name": "AutoUpgradeTechLevel",
+      "rva": "0x282190",
+      "signature": "void AutoUpgradeTechLevel(PlayerClass* player)",
+      "fields_accessed": ["0x84", "0x88"],
+      "notes": "If tech_level < max_tech_level, calls SetTechLevel(player, tech_level + 1, 1)."
+    },
+    {
+      "name": "PlayerList_FindByID",
+      "rva": "0x294BC0",
+      "signature": "PlayerClass* PlayerList_FindByID(PlayerListClass* list, int id)",
+      "fields_accessed": ["0x20", "0x28"],
+      "notes": "Bounds checks id against player_count, returns player_array[id]."
+    },
+    {
+      "name": "GetLocalPlayerID",
+      "rva": "0x294A70",
+      "signature": "int GetLocalPlayerID(PlayerListClass* list)",
+      "fields_accessed": ["field_0x30 (local_player_index)"],
+      "notes": "Returns player_id (0x4C) of the player at list->local_player_index."
+    }
+  ],
+  "functions_analyzed": 35,
+  "xrefs_followed": 31,
+  "analysis_method": "Ghidra MCP decompilation of PlayerClass destructor, 30 PlayerWrapper Lua methods, and 12 engine helper functions",
+  "analysis_date": "2026-04-04",
+  "field_offset_summary": {
+    "description": "Quick-reference of all unique offsets with confident names",
+    "offsets": {
+      "0x00": "vtable_ptr (pointer)",
+      "0x08": "refcount_data (inherited)",
+      "0x37": "playable (byte, CONFIRMED)",
+      "0x48": "slot_index (int32, CONFIRMED)",
+      "0x4C": "player_id (int32, CONFIRMED)",
+      "0x54": "team_id (int32, DISCOVERED)",
+      "0x62": "local_player (byte, CONFIRMED)",
+      "0x68": "faction_ref (pointer, CONFIRMED)",
+      "0x70": "credits (float32, CONFIRMED)",
+      "0x74": "max_credits (float32, CONFIRMED)",
+      "0x84": "tech_level (int32, CONFIRMED)",
+      "0x88": "max_tech_level (int32, CONFIRMED)",
+      "0xE0": "historically_built_types (DynamicVectorClass)",
+      "0xF8": "buildable_types_1 (DynamicVectorClass)",
+      "0x108": "is_human_controlled (byte, CONFIRMED)",
+      "0x110": "buildable_types_2 (DynamicVectorClass)",
+      "0x128": "buildable_types_3 (DynamicVectorClass)",
+      "0x1B0": "unlocked_types_array (pointer, CONFIRMED)",
+      "0x1B8": "unlocked_types_count (int32, CONFIRMED)",
+      "0x1BC": "unlocked_types_capacity (int32, CONFIRMED)",
+      "0x1C8": "locked_types_array (pointer, CONFIRMED)",
+      "0x1D0": "locked_types_count (int32, CONFIRMED)",
+      "0x1D4": "locked_types_capacity (int32, CONFIRMED)",
+      "0x2B0": "sub_object_ptr (pointer)",
+      "0x2C0": "heap_buffer_1 (pointer)",
+      "0x2F0": "large_sub_object (pointer, size 0xB8)",
+      "0x360": "ai_player_ptr (pointer, CONFIRMED)",
+      "0x370": "diplomacy_table (pointer to int32[], CONFIRMED)",
+      "0x378": "profile_data_ptr (pointer, size 0x120)",
+      "0x380": "black_market_items (DynamicVectorClass)",
+      "0x398": "difficulty_level (int32, DISCOVERED)",
+      "0x3F8": "advisor_hints_base (byte[], indexed by game_mode)",
+      "0x448": "black_market_tutorial_flag (byte, CONFIRMED)",
+      "0x449": "sabotage_tutorial_flag (byte, CONFIRMED)",
+      "0x484": "space_station_level (int32, DISCOVERED)"
+    }
+  }
+}

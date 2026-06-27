@@ -152,49 +152,11 @@ jobs:
         run: |
           pwsh ./tools/lua-harness/run-lua-harness.ps1 -Strict
 
-      - name: SonarCloud scan (with coverage)
-        if: always()
-        uses: SonarSource/sonarcloud-github-action@ffc3010689be73b8e5ae0c57ce35968afd7909e8 # v5
-        env:
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          args: >
-            -Dsonar.cs.opencover.reportsPaths=TestResults/coverage/opencover.opencover.xml
-            -Dsonar.coverage.exclusions=tests/**,scripts/**,tools/**,native/**
-        continue-on-error: true
-
-      - name: Upload coverage to Codecov
-        if: always()
-        uses: codecov/codecov-action@75cd11691c0faa626561e295848008c8a7dddffe # v5
-        with:
-          token: ${{ secrets.CODECOV_TOKEN }}
-          files: TestResults/coverage/opencover.opencover.xml
-          flags: dotnet
-          fail_ci_if_error: false
-
-      - name: Transform coverage for QLTY
-        if: always()
-        run: |
-          dotnet tool install -g dotnet-reportgenerator-globaltool 2>$null
-          reportgenerator -reports:TestResults/coverage/opencover.opencover.xml -targetdir:TestResults/coverage -reporttypes:Cobertura 2>$null
-        shell: pwsh
-        continue-on-error: true
-
-      - name: Upload coverage to QLTY
-        if: always()
-        shell: pwsh
-        env:
-          QLTY_COVERAGE_TOKEN: ${{ secrets.QLTY_COVERAGE_TOKEN }}
-        run: |
-          if (Test-Path TestResults/coverage/Cobertura.xml) {
-            Invoke-WebRequest -Uri "https://qlty.sh/install.ps1" -OutFile install-qlty.ps1
-            pwsh ./install-qlty.ps1
-            qlty coverage publish --tag dotnet TestResults/coverage/Cobertura.xml
-          } else {
-            Write-Output "Coverage file not found, skipping QLTY upload"
-          }
-        continue-on-error: true
+      # Retired 2026-06-27: SonarCloud / Codecov / QLTY coverage uploaders removed
+      # as part of the lean-gate migration (SaaS reporters are RETIRED machinery;
+      # the lean 6-gate quality workflow in .github/workflows/quality.yml is the
+      # authoritative gate). These were already non-blocking (continue-on-error),
+      # so their removal does not change build-test pass/fail.
 
       - name: Upload Test Results
         if: always()

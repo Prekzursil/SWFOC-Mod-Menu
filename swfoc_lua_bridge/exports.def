@@ -1,0 +1,8 @@
+LIBRARY powrprof
+EXPORTS
+    CallNtPowerInformation=Proxy_CallNtPowerInformation
+    PowerReadACValueIndex=Proxy_PowerReadACValueIndex
+    PowerReadDCValueIndex=Proxy_PowerReadDCValueIndex
+    PowerGetActiveScheme=Proxy_PowerGetActiveScheme
+    PowerSettingRegisterNotification=Proxy_PowerSettingRegisterNotification
+    PowerSettingUnregisterNotification=Proxy_PowerSettingUnregisterNotification

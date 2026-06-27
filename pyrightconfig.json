@@ -1,7 +1,15 @@
 {
   "typeCheckingMode": "standard",
-  "extraPaths": ["scripts"],
+  "extraPaths": [
+    "scripts"
+  ],
   "exclude": [
-    "tests/python"
+    "tests/python",
+    "bridge",
+    "swfoc_lua_bridge",
+    "swfoc_overlay",
+    "swfoc_toolkit",
+    "ghidra_scripts",
+    "re-findings"
   ]
 }

@@ -10,6 +10,12 @@
 target-version = "py312"
 line-length = 100
 
+# Incorporated reverse-engineering editor sources (bridge/toolkit/overlay/Lua
+# bridge/Ghidra scripts): vendored RE tooling reproduced verbatim for provenance,
+# not first-party-maintained Python; out of scope for the lean lint lane
+# (consistent with this repo treating Python as auxiliary tooling).
+extend-exclude = ["bridge", "swfoc_lua_bridge", "swfoc_overlay", "swfoc_toolkit", "ghidra_scripts"]
+
 [lint]
 # Default-aligned ruff rule set (pyflakes F + pycodestyle E/W + import-sort I).
 # Kept lean: this is the security/correctness lint lane, not a style overhaul of

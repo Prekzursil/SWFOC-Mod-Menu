@@ -34,4 +34,12 @@ paths = [
   # game data carry high-entropy bytes that are not credentials.
   '''.*\.CT$''',
   '''.*\.(meg|dat|bin|dll|exe|pdb|so)$''',
+  # Vendored third-party RE editor dependencies reproduced verbatim for
+  # provenance (2026-06-27 incorporation). These carry only upstream-example /
+  # high-entropy library constants, never our credentials:
+  #   - Dear ImGui (swfoc_overlay/imgui): generic-api-key FP on a base64-looking
+  #     lookup-table literal in imgui.cpp.
+  #   - MinHook (swfoc_lua_bridge/minhook): vendored hooking library.
+  '''(^|/)swfoc_overlay/imgui/''',
+  '''(^|/)swfoc_lua_bridge/minhook/''',
 ]
