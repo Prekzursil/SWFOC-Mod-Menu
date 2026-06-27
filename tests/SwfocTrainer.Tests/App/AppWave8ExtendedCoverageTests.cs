@@ -1120,7 +1120,7 @@ public sealed class AppWave8ExtendedCoverageTests
             ["set_credits"] = new("set_credits", ActionCategory.Economy, RuntimeMode.Unknown, ExecutionKind.Sdk,
                 new JsonObject { ["required"] = new JsonArray("symbol", "intValue") }, false, 0)
         };
-        SetField(vm, "_loadedActionSpecs", (IReadOnlyDictionary<string, ActionSpec>)actions);
+        SetField(vm, "_loadedActionSpecs", actions);
         vm.SelectedProfileId = "test";
         vm.Hotkeys.Add(new HotkeyBindingItem { Gesture = "Ctrl+Shift+1", ActionId = "set_credits", PayloadJson = "{}" });
 
