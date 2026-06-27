@@ -360,7 +360,7 @@ public sealed class ValueFreezeServiceBranchCoverageTests : IDisposable
     public async Task PulseCallback_ShouldNotWrite_WhenDisposed()
     {
         _runtime.SetAttached(true);
-        var svc = new ValueFreezeService(_runtime, _logger, 50);
+        using var svc = new ValueFreezeService(_runtime, _logger, 50);
         svc.FreezeInt("credits", 1000);
         svc.Dispose();
 
@@ -415,7 +415,7 @@ public sealed class ValueFreezeServiceBranchCoverageTests : IDisposable
     [Fact]
     public void Dispose_ShouldClearAllEntries()
     {
-        var svc = new ValueFreezeService(_runtime, _logger, int.MaxValue);
+        using var svc = new ValueFreezeService(_runtime, _logger, int.MaxValue);
         svc.FreezeInt("credits", 1000);
         svc.FreezeIntAggressive("fast", 2000);
         svc.Dispose();
@@ -426,7 +426,7 @@ public sealed class ValueFreezeServiceBranchCoverageTests : IDisposable
     [Fact]
     public void Dispose_CalledTwice_ShouldNotThrow()
     {
-        var svc = new ValueFreezeService(_runtime, _logger, int.MaxValue);
+        using var svc = new ValueFreezeService(_runtime, _logger, int.MaxValue);
         svc.Dispose();
         var act = () => svc.Dispose();
         act.Should().NotThrow();
@@ -435,7 +435,7 @@ public sealed class ValueFreezeServiceBranchCoverageTests : IDisposable
     [Fact]
     public void Dispose_ShouldStopAggressiveThread()
     {
-        var svc = new ValueFreezeService(_runtime, _logger, int.MaxValue);
+        using var svc = new ValueFreezeService(_runtime, _logger, int.MaxValue);
         svc.FreezeIntAggressive("credits", 1000);
         svc.Dispose();
         // Should not throw and aggressive thread should be stopped

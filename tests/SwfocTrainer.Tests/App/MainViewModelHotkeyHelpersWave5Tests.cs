@@ -115,7 +115,7 @@ public sealed class MainViewModelHotkeyHelpersWave5Tests
     public void BuildDefaultHotkeyPayloadJson_SetCredits_ShouldHaveCorrectKeys()
     {
         var json = MainViewModelHotkeyHelpers.BuildDefaultHotkeyPayloadJson(MainViewModelDefaults.ActionSetCredits);
-        var obj = JsonNode.Parse(json) as JsonObject;
+        var obj = JsonNode.Parse(json)!.AsObject();
         obj.Should().NotBeNull();
         obj![MainViewModelDefaults.PayloadSymbol]!.GetValue<string>().Should().Be("credits");
         obj[MainViewModelDefaults.PayloadIntValue]!.GetValue<int>().Should().Be(MainViewModelDefaults.DefaultCreditsValue);
@@ -126,7 +126,7 @@ public sealed class MainViewModelHotkeyHelpersWave5Tests
     public void BuildDefaultHotkeyPayloadJson_FreezeTimer_ShouldHaveBoolValueTrue()
     {
         var json = MainViewModelHotkeyHelpers.BuildDefaultHotkeyPayloadJson(MainViewModelDefaults.ActionFreezeTimer);
-        var obj = JsonNode.Parse(json) as JsonObject;
+        var obj = JsonNode.Parse(json)!.AsObject();
         obj.Should().NotBeNull();
         obj![MainViewModelDefaults.PayloadBoolValue]!.GetValue<bool>().Should().BeTrue();
     }
@@ -135,7 +135,7 @@ public sealed class MainViewModelHotkeyHelpersWave5Tests
     public void BuildDefaultHotkeyPayloadJson_SetGameSpeed_ShouldHaveFloatValue()
     {
         var json = MainViewModelHotkeyHelpers.BuildDefaultHotkeyPayloadJson(MainViewModelDefaults.ActionSetGameSpeed);
-        var obj = JsonNode.Parse(json) as JsonObject;
+        var obj = JsonNode.Parse(json)!.AsObject();
         obj.Should().NotBeNull();
         obj![MainViewModelDefaults.PayloadFloatValue]!.GetValue<float>().Should().Be(MainViewModelDefaults.DefaultGameSpeedValue);
     }
@@ -144,7 +144,7 @@ public sealed class MainViewModelHotkeyHelpersWave5Tests
     public void BuildDefaultHotkeyPayloadJson_UnfreezeSymbol_ShouldHaveFreezeFalse()
     {
         var json = MainViewModelHotkeyHelpers.BuildDefaultHotkeyPayloadJson(MainViewModelDefaults.ActionUnfreezeSymbol);
-        var obj = JsonNode.Parse(json) as JsonObject;
+        var obj = JsonNode.Parse(json)!.AsObject();
         obj.Should().NotBeNull();
         obj![MainViewModelDefaults.PayloadFreeze]!.GetValue<bool>().Should().BeFalse();
     }
@@ -153,7 +153,7 @@ public sealed class MainViewModelHotkeyHelpersWave5Tests
     public void BuildDefaultHotkeyPayloadJson_FreezeSymbol_ShouldHaveFreezeTrue()
     {
         var json = MainViewModelHotkeyHelpers.BuildDefaultHotkeyPayloadJson(MainViewModelDefaults.ActionFreezeSymbol);
-        var obj = JsonNode.Parse(json) as JsonObject;
+        var obj = JsonNode.Parse(json)!.AsObject();
         obj.Should().NotBeNull();
         obj![MainViewModelDefaults.PayloadFreeze]!.GetValue<bool>().Should().BeTrue();
         obj[MainViewModelDefaults.PayloadIntValue]!.GetValue<int>().Should().Be(MainViewModelDefaults.DefaultCreditsValue);
@@ -163,7 +163,7 @@ public sealed class MainViewModelHotkeyHelpersWave5Tests
     public void BuildDefaultHotkeyPayloadJson_ToggleInstantBuild_ShouldHaveEnableTrue()
     {
         var json = MainViewModelHotkeyHelpers.BuildDefaultHotkeyPayloadJson(MainViewModelDefaults.ActionToggleInstantBuildPatch);
-        var obj = JsonNode.Parse(json) as JsonObject;
+        var obj = JsonNode.Parse(json)!.AsObject();
         obj.Should().NotBeNull();
         obj![MainViewModelDefaults.PayloadEnable]!.GetValue<bool>().Should().BeTrue();
     }
@@ -172,7 +172,7 @@ public sealed class MainViewModelHotkeyHelpersWave5Tests
     public void BuildDefaultHotkeyPayloadJson_SetUnitCap_ShouldHaveCorrectValues()
     {
         var json = MainViewModelHotkeyHelpers.BuildDefaultHotkeyPayloadJson(MainViewModelDefaults.ActionSetUnitCap);
-        var obj = JsonNode.Parse(json) as JsonObject;
+        var obj = JsonNode.Parse(json)!.AsObject();
         obj.Should().NotBeNull();
         obj![MainViewModelDefaults.PayloadSymbol]!.GetValue<string>().Should().Be("unit_cap");
         obj[MainViewModelDefaults.PayloadIntValue]!.GetValue<int>().Should().Be(MainViewModelDefaults.DefaultUnitCapValue);

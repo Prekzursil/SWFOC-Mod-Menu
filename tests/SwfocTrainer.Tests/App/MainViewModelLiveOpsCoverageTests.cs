@@ -561,7 +561,7 @@ public sealed class MainViewModelLiveOpsCoverageTests
     public void ApplyDraftFromSnapshot_NullSnapshot_ShouldThrow()
     {
         var vm = CreateViewModel();
-        var act = () => Invoke(vm, "ApplyDraftFromSnapshot", (SelectedUnitSnapshot)null!);
+        var act = () => Invoke(vm, "ApplyDraftFromSnapshot", default(SelectedUnitSnapshot));
         act.Should().Throw<TargetInvocationException>()
             .WithInnerException<ArgumentNullException>();
     }
@@ -602,7 +602,7 @@ public sealed class MainViewModelLiveOpsCoverageTests
     public void BuildActionContext_NullActionId_ShouldThrow()
     {
         var vm = CreateViewModel();
-        var act = () => Invoke(vm, "BuildActionContext", (string)null!);
+        var act = () => Invoke(vm, "BuildActionContext", default(string));
         act.Should().Throw<TargetInvocationException>()
             .WithInnerException<ArgumentNullException>();
     }

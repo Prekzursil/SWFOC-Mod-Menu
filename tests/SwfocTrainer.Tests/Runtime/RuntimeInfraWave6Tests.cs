@@ -435,8 +435,6 @@ public sealed class RuntimeInfraWave6Tests : IDisposable
         var packPath = Path.Join(_tempRoot, "nofp.json");
         File.WriteAllText(packPath, """{"schemaVersion":"1.0"}""");
 
-        var packType = typeof(SignatureResolverSymbolHydration).GetNestedType(
-            "GhidraSymbolPackDto", BindingFlags.NonPublic);
         var args = new object?[] { Logger, packPath, null };
         var result = (bool)method!.Invoke(null, args)!;
         result.Should().BeFalse();
@@ -560,8 +558,6 @@ public sealed class RuntimeInfraWave6Tests : IDisposable
 
         var indexType = typeof(SignatureResolverSymbolHydration).GetNestedType(
             "GhidraArtifactIndexDto", BindingFlags.NonPublic);
-        var pointersType = typeof(SignatureResolverSymbolHydration).GetNestedType(
-            "GhidraArtifactPointersDto", BindingFlags.NonPublic);
 
         var index = Activator.CreateInstance(indexType!, new object?[] { null, null });
         var result = (bool)method!.Invoke(null, new[] { index, "some_fp" })!;
@@ -597,8 +593,6 @@ public sealed class RuntimeInfraWave6Tests : IDisposable
             "TryReadArtifactIndex", BindingFlags.NonPublic | BindingFlags.Static);
         method.Should().NotBeNull();
 
-        var indexType = typeof(SignatureResolverSymbolHydration).GetNestedType(
-            "GhidraArtifactIndexDto", BindingFlags.NonPublic);
         var args = new object?[] { Path.Join(_tempRoot, "nonexistent.json"), null };
         var result = (bool)method!.Invoke(null, args)!;
         result.Should().BeFalse();

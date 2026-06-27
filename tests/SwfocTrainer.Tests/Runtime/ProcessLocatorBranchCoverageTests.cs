@@ -430,7 +430,6 @@ public sealed class ProcessLocatorBranchCoverageTests
         var method = typeof(ProcessLocator).GetMethod("ResolveForcedContext", BindingFlags.Static | BindingFlags.NonPublic);
         method.Should().NotBeNull();
 
-        var optionsType = typeof(ProcessLocatorOptions);
         var options = new ProcessLocatorOptions(new[] { "99999" }, "forced_profile");
 
         var result = method!.Invoke(null, new object?[] { "cmd", "Mods/AOTR", new[] { "111" }, options });
@@ -506,7 +505,7 @@ public sealed class ProcessLocatorBranchCoverageTests
     {
         var locator = new ProcessLocator();
         // Most likely won't find swfoc in test environment, but should not throw
-        var result = await locator.FindBestMatchAsync(ExeTarget.Swfoc);
+        await locator.FindBestMatchAsync(ExeTarget.Swfoc);
         // result may be null, just shouldn't throw
     }
 
