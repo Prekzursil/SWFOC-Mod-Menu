@@ -53,7 +53,7 @@ public sealed class SavesWave7FinalTests
         // int32 with non-numeric string triggers FormatException
         var operation = new SavePatchOperation(
             SavePatchOperationKind.SetValue, "/field", "f1", "int32", null, "not_a_number", 0);
-        var (value, failure) = InvokeTryNormalizePatchValue(helper, operation, "value_norm_failed");
+        var (_, failure) = InvokeTryNormalizePatchValue(helper, operation, "value_norm_failed");
         failure.Should().NotBeNull();
         failure!.Applied.Should().BeFalse();
     }

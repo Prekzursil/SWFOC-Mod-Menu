@@ -889,7 +889,7 @@ public sealed class ModDependencyValidatorBranchCoverageTests
                 Directory.Delete(path, true);
             }
         }
-        catch (IOException) { }
-        catch (UnauthorizedAccessException) { }
+        catch (IOException) { /* best-effort test cleanup */ }
+        catch (UnauthorizedAccessException) { /* best-effort test cleanup */ }
     }
 }

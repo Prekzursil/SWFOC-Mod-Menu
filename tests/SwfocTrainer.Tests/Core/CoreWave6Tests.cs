@@ -446,7 +446,6 @@ public sealed class CoreWave6Tests
     [Fact]
     public void ClampConfidence_NaN_ShouldReturn050()
     {
-        var service = new ActionReliabilityService();
         var mechanic = new FakeModMechanicDetectionService(new ModMechanicReport(
             "p1", DateTimeOffset.UtcNow, true, true,
             new[] { new ModMechanicSupport("set_credits", false, RuntimeReasonCode.CAPABILITY_REQUIRED_MISSING, "bad", double.NaN) },

@@ -244,9 +244,8 @@ public sealed class MegArchiveReaderDeepBranchTests
         using var nameStream = new MemoryStream();
         using var nameWriter = new BinaryWriter(nameStream, Encoding.ASCII, leaveOpen: true);
         var names = new[] { "Z.txt", "A.txt" };
-        foreach (var name in names)
+        foreach (var nameBytes in names.Select(Encoding.ASCII.GetBytes))
         {
-            var nameBytes = Encoding.ASCII.GetBytes(name);
             nameWriter.Write((ushort)nameBytes.Length);
             nameWriter.Write((ushort)0);
             nameWriter.Write(nameBytes);

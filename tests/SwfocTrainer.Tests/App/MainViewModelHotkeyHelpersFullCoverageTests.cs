@@ -109,7 +109,7 @@ public sealed class MainViewModelHotkeyHelpersFullCoverageTests
     public void BuildDefaultHotkeyPayloadJson_KnownActions_ShouldContainExpectedKey(string actionId, string expectedKey)
     {
         var json = MainViewModelHotkeyHelpers.BuildDefaultHotkeyPayloadJson(actionId);
-        var obj = JsonNode.Parse(json) as JsonObject;
+        var obj = JsonNode.Parse(json)!.AsObject();
 
         obj.Should().NotBeNull();
         obj![expectedKey].Should().NotBeNull();
@@ -119,7 +119,7 @@ public sealed class MainViewModelHotkeyHelpersFullCoverageTests
     public void BuildDefaultHotkeyPayloadJson_UnknownAction_ShouldReturnEmptyObject()
     {
         var json = MainViewModelHotkeyHelpers.BuildDefaultHotkeyPayloadJson("unknown_action");
-        var obj = JsonNode.Parse(json) as JsonObject;
+        var obj = JsonNode.Parse(json)!.AsObject();
 
         obj.Should().NotBeNull();
         obj!.Count.Should().Be(0);
@@ -129,7 +129,7 @@ public sealed class MainViewModelHotkeyHelpersFullCoverageTests
     public void BuildDefaultHotkeyPayloadJson_SetCredits_ShouldHaveLockCreditsKey()
     {
         var json = MainViewModelHotkeyHelpers.BuildDefaultHotkeyPayloadJson(MainViewModelDefaults.ActionSetCredits);
-        var obj = JsonNode.Parse(json) as JsonObject;
+        var obj = JsonNode.Parse(json)!.AsObject();
 
         obj![MainViewModelDefaults.PayloadLockCredits]!.GetValue<bool>().Should().BeFalse();
         obj[MainViewModelDefaults.PayloadIntValue]!.GetValue<int>()
@@ -140,7 +140,7 @@ public sealed class MainViewModelHotkeyHelpersFullCoverageTests
     public void BuildDefaultHotkeyPayloadJson_FreezeSymbol_ShouldHaveFreezeKey()
     {
         var json = MainViewModelHotkeyHelpers.BuildDefaultHotkeyPayloadJson(MainViewModelDefaults.ActionFreezeSymbol);
-        var obj = JsonNode.Parse(json) as JsonObject;
+        var obj = JsonNode.Parse(json)!.AsObject();
 
         obj![MainViewModelDefaults.PayloadFreeze]!.GetValue<bool>().Should().BeTrue();
     }
@@ -149,7 +149,7 @@ public sealed class MainViewModelHotkeyHelpersFullCoverageTests
     public void BuildDefaultHotkeyPayloadJson_UnfreezeSymbol_ShouldHaveFreezeKeyFalse()
     {
         var json = MainViewModelHotkeyHelpers.BuildDefaultHotkeyPayloadJson(MainViewModelDefaults.ActionUnfreezeSymbol);
-        var obj = JsonNode.Parse(json) as JsonObject;
+        var obj = JsonNode.Parse(json)!.AsObject();
 
         obj![MainViewModelDefaults.PayloadFreeze]!.GetValue<bool>().Should().BeFalse();
     }
@@ -158,7 +158,7 @@ public sealed class MainViewModelHotkeyHelpersFullCoverageTests
     public void BuildDefaultHotkeyPayloadJson_SetGameSpeed_ShouldHaveFloatValue()
     {
         var json = MainViewModelHotkeyHelpers.BuildDefaultHotkeyPayloadJson(MainViewModelDefaults.ActionSetGameSpeed);
-        var obj = JsonNode.Parse(json) as JsonObject;
+        var obj = JsonNode.Parse(json)!.AsObject();
 
         obj![MainViewModelDefaults.PayloadFloatValue]!.GetValue<float>()
             .Should().Be(MainViewModelDefaults.DefaultGameSpeedValue);
@@ -168,7 +168,7 @@ public sealed class MainViewModelHotkeyHelpersFullCoverageTests
     public void BuildDefaultHotkeyPayloadJson_SetUnitCap_ShouldHaveEnableKey()
     {
         var json = MainViewModelHotkeyHelpers.BuildDefaultHotkeyPayloadJson(MainViewModelDefaults.ActionSetUnitCap);
-        var obj = JsonNode.Parse(json) as JsonObject;
+        var obj = JsonNode.Parse(json)!.AsObject();
 
         obj![MainViewModelDefaults.PayloadEnable]!.GetValue<bool>().Should().BeTrue();
         obj[MainViewModelDefaults.PayloadIntValue]!.GetValue<int>()

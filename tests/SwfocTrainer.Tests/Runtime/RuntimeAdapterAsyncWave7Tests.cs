@@ -1059,7 +1059,6 @@ public sealed class RuntimeAdapterAsyncWave7Tests
     public async Task ExecuteAsync_HelperRoute_MissingHook_ReturnsFailure()
     {
         // Create profile WITHOUT the hook ID the request references
-        var profile = BuildProfile("test_action");
         var actions = new Dictionary<string, ActionSpec>(StringComparer.OrdinalIgnoreCase)
         {
             ["test_action"] = new ActionSpec("test_action", ActionCategory.Hero, RuntimeMode.Unknown, ExecutionKind.Helper, new JsonObject(), false, 0)

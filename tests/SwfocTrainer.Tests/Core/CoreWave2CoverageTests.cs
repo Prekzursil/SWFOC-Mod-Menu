@@ -255,7 +255,9 @@ public sealed class CoreWave2CoverageTests
         }
         finally
         {
-            try { Directory.Delete(customDir, true); } catch { /* best-effort cleanup */ }
+            try { Directory.Delete(customDir, true); }
+            catch (IOException) { /* best-effort cleanup */ }
+            catch (UnauthorizedAccessException) { /* best-effort cleanup */ }
         }
     }
 

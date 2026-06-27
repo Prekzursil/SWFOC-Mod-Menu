@@ -609,7 +609,7 @@ public sealed class MainViewModelSaveOpsCoverageTests
     public void FlattenNodes_NullRoot_ShouldThrow()
     {
         var vm = CreateViewModel();
-        var act = () => InvokeProtected(vm, "FlattenNodes", (SaveNode)null!);
+        var act = () => InvokeProtected(vm, "FlattenNodes", default(SaveNode));
         act.Should().Throw<TargetInvocationException>()
             .WithInnerException<ArgumentNullException>();
     }
@@ -663,7 +663,7 @@ public sealed class MainViewModelSaveOpsCoverageTests
     public void PopulatePatchPreviewOperations_NullPreview_ShouldThrow()
     {
         var vm = CreateViewModel();
-        var act = () => InvokeProtected(vm, "PopulatePatchPreviewOperations", (SavePatchPreview)null!);
+        var act = () => InvokeProtected(vm, "PopulatePatchPreviewOperations", default(SavePatchPreview));
         act.Should().Throw<TargetInvocationException>()
             .WithInnerException<ArgumentNullException>();
     }
@@ -890,7 +890,7 @@ public sealed class MainViewModelSaveOpsCoverageTests
     public void AppendPatchArtifactRows_OnlyBackup_ShouldAddOne()
     {
         var vm = CreateViewModel();
-        InvokeProtected(vm, "AppendPatchArtifactRows", @"C:\backup.sav", (string?)null);
+        InvokeProtected(vm, "AppendPatchArtifactRows", @"C:\backup.sav", default(string));
 
         vm.SavePatchCompatibility.Should().HaveCount(1);
         vm.SavePatchCompatibility[0].Code.Should().Be("backup_path");

@@ -120,7 +120,7 @@ public sealed class ProfilesWave7FinalTests
         var result = method!.Invoke(null, new object[] { "testProfile", "/nonexistent/file.zip", "/tmp/extract" });
         // Should return a non-null ProfileInstallResult with failure
         result.Should().NotBeNull();
-        var installResult = result as ProfileInstallResult;
+        var installResult = result as ProfileInstallResult ?? throw new InvalidOperationException("test setup: expected non-null result.");
         installResult.Should().NotBeNull();
         installResult!.Succeeded.Should().BeFalse();
         installResult.ReasonCode.Should().Be("extract_failed");
@@ -150,7 +150,7 @@ public sealed class ProfilesWave7FinalTests
             Directory.CreateDirectory(extractDir);
             File.WriteAllText(Path.Join(extractDir, "old.txt"), "old");
 
-            var result = method!.Invoke(service, new object[] { "testprofile", "1.0" }) as string;
+            var result = method!.Invoke(service, new object[] { "testprofile", "1.0" }) as string ?? throw new InvalidOperationException("test setup: expected non-null result.");
             result.Should().NotBeNull();
             // The old directory contents should be gone (it was deleted)
             if (Directory.Exists(extractDir))

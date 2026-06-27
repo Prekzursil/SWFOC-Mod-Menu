@@ -770,7 +770,7 @@ public sealed class RuntimeAdapterWave2CoverageTests
         method.Should().NotBeNull();
 
         var primary = new Dictionary<string, object?> { ["a"] = "1" } as IReadOnlyDictionary<string, object?>;
-        var result = method!.Invoke(null, new object?[] { primary, null }) as IReadOnlyDictionary<string, object?>;
+        var result = method!.Invoke(null, new object?[] { primary, null }) as IReadOnlyDictionary<string, object?> ?? throw new InvalidOperationException("test setup: expected non-null result.");
         result.Should().NotBeNull();
         result!.Should().ContainKey("a");
     }
@@ -783,7 +783,7 @@ public sealed class RuntimeAdapterWave2CoverageTests
         method.Should().NotBeNull();
 
         var secondary = new Dictionary<string, object?> { ["b"] = "2" } as IReadOnlyDictionary<string, object?>;
-        var result = method!.Invoke(null, new object?[] { null, secondary }) as IReadOnlyDictionary<string, object?>;
+        var result = method!.Invoke(null, new object?[] { null, secondary }) as IReadOnlyDictionary<string, object?> ?? throw new InvalidOperationException("test setup: expected non-null result.");
         result.Should().NotBeNull();
         result!.Should().ContainKey("b");
     }
