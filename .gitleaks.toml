@@ -40,8 +40,6 @@ paths = [
   #   - Dear ImGui (swfoc_overlay/imgui): generic-api-key FP on a base64-looking
   #     lookup-table literal in imgui.cpp.
   #   - MinHook (swfoc_lua_bridge/minhook): vendored hooking library.
-  #   - PetroglyphTools (PetroglyphTools/): vendored upstream .NET PG-format lib.
   '''(^|/)swfoc_overlay/imgui/''',
   '''(^|/)swfoc_lua_bridge/minhook/''',
-  '''(^|/)PetroglyphTools/''',
 ]
