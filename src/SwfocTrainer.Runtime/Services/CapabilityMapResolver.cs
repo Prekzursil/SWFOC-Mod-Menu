@@ -1,4 +1,4 @@
-using System.Text.Json;
+﻿using System.Text.Json;
 using Microsoft.Extensions.Logging;
 using SwfocTrainer.Core.Contracts;
 using SwfocTrainer.Core.Models;
@@ -233,14 +233,9 @@ public sealed class CapabilityMapResolver : ICapabilityMapResolver
             .ToArray();
         if (missingRequired.Length > 0)
         {
-            return BuildRequiredAnchorsMissingResult(
-                input.RequestedProfileId,
-                input.OperationId,
-                input.Operation,
-                input.Fingerprint,
-                matched,
-                missingRequired,
-                input.CapabilityHint);
+            var requiredCtx = new AnchorValidationContext(
+                input.RequestedProfileId, input.OperationId, matched, missingRequired, input.CapabilityHint);
+            return BuildRequiredAnchorsMissingResult(requiredCtx, input.Operation, input.Fingerprint);
         }
 
         var missingOptional = input.Operation.OptionalAnchors
@@ -248,13 +243,9 @@ public sealed class CapabilityMapResolver : ICapabilityMapResolver
             .ToArray();
         if (missingOptional.Length > 0)
         {
-            return BuildOptionalAnchorsMissingResult(
-                input.RequestedProfileId,
-                input.OperationId,
-                input.Fingerprint.FingerprintId,
-                matched,
-                missingOptional,
-                input.CapabilityHint);
+            var optionalCtx = new AnchorValidationContext(
+                input.RequestedProfileId, input.OperationId, matched, missingOptional, input.CapabilityHint);
+            return BuildOptionalAnchorsMissingResult(optionalCtx, input.Fingerprint.FingerprintId);
         }
 
         return BuildAllRequiredAnchorsPresentResult(
@@ -266,44 +257,36 @@ public sealed class CapabilityMapResolver : ICapabilityMapResolver
     }
 
     private static CapabilityResolutionResult BuildRequiredAnchorsMissingResult(
-        string requestedProfileId,
-        string operationId,
+        AnchorValidationContext ctx,
         CapabilityOperationMap operation,
-        BinaryFingerprint fingerprint,
-        IReadOnlyList<string> matchedAnchors,
-        IReadOnlyList<string> missingAnchors,
-        CapabilityAvailabilityHint? capabilityHint)
+        BinaryFingerprint fingerprint)
     {
         return new CapabilityResolutionResult(
-            requestedProfileId,
-            operationId,
+            ctx.RequestedProfileId,
+            ctx.OperationId,
             SdkCapabilityStatus.Degraded,
             CapabilityReasonCode.RequiredAnchorsMissing,
-            BuildConfidence(matchedAnchors.Count, operation.RequiredAnchors.Count),
+            BuildConfidence(ctx.MatchedAnchors.Count, operation.RequiredAnchors.Count),
             fingerprint.FingerprintId,
-            matchedAnchors,
-            missingAnchors,
-            ResolveCapabilityMetadata(capabilityHint));
+            ctx.MatchedAnchors,
+            ctx.MissingAnchors,
+            ResolveCapabilityMetadata(ctx.CapabilityHint));
     }
 
     private static CapabilityResolutionResult BuildOptionalAnchorsMissingResult(
-        string requestedProfileId,
-        string operationId,
-        string fingerprintId,
-        IReadOnlyList<string> matchedAnchors,
-        IReadOnlyList<string> missingAnchors,
-        CapabilityAvailabilityHint? capabilityHint)
+        AnchorValidationContext ctx,
+        string fingerprintId)
     {
         return new CapabilityResolutionResult(
-            requestedProfileId,
-            operationId,
+            ctx.RequestedProfileId,
+            ctx.OperationId,
             SdkCapabilityStatus.Degraded,
             CapabilityReasonCode.OptionalAnchorsMissing,
             0.85d,
             fingerprintId,
-            matchedAnchors,
-            missingAnchors,
-            ResolveCapabilityMetadata(capabilityHint));
+            ctx.MatchedAnchors,
+            ctx.MissingAnchors,
+            ResolveCapabilityMetadata(ctx.CapabilityHint));
     }
 
     private static CapabilityResolutionResult BuildAllRequiredAnchorsPresentResult(
@@ -506,6 +489,14 @@ public sealed class CapabilityMapResolver : ICapabilityMapResolver
 
         public string[]? OptionalAnchors { get; set; } = Array.Empty<string>();
     }
+
+    private sealed record AnchorValidationContext(
+        string RequestedProfileId,
+        string OperationId,
+        IReadOnlyList<string> MatchedAnchors,
+        IReadOnlyList<string> MissingAnchors,
+        CapabilityAvailabilityHint? CapabilityHint);
+
 
     private sealed class CapabilityEntryDto
     {

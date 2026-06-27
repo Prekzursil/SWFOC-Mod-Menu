@@ -205,7 +205,7 @@ public sealed class LaunchContextResolver : ILaunchContextResolver
         foreach (var profile in profiles)
         {
             var score = 0;
-            foreach (var hint in BuildHints(profile).Where(h => modPathNormalized.Contains(h, StringComparison.OrdinalIgnoreCase)))  // NOSONAR
+            foreach (var hint in BuildHints(profile).Where(h => modPathNormalized.Contains(h, StringComparison.OrdinalIgnoreCase)))
             {
                 score = Math.Max(score, hint.Length);
             }
@@ -314,7 +314,7 @@ public sealed class LaunchContextResolver : ILaunchContextResolver
                 continue;
             }
 
-            foreach (var id in raw.Split(',', StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries).Where(id => !string.IsNullOrWhiteSpace(id)))  // NOSONAR
+            foreach (var id in raw.Split(',', StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries).Where(id => !string.IsNullOrWhiteSpace(id)))
             {
                 required.Add(id);
             }
@@ -386,7 +386,7 @@ public sealed class LaunchContextResolver : ILaunchContextResolver
         if (!string.IsNullOrWhiteSpace(process.CommandLine))
         {
             foreach (var match in SteamModRegex.Matches(process.CommandLine).Cast<Match>()
-                .Where(m => m.Groups.Count > 1 && !string.IsNullOrWhiteSpace(m.Groups[1].Value)))  // NOSONAR
+                .Where(m => m.Groups.Count > 1 && !string.IsNullOrWhiteSpace(m.Groups[1].Value)))
             {
                 ids.Add(match.Groups[1].Value);
             }

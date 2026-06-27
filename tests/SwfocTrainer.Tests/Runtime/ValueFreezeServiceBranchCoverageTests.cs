@@ -303,7 +303,7 @@ public sealed class ValueFreezeServiceBranchCoverageTests : IDisposable
         svc.FreezeInt("credits", 1000);
 
         // Wait for at least one pulse to fire
-        await Task.Delay(200);
+        await WaitForWriteAsync("credits");
 
         _runtime.WrittenSymbols.Should().Contain("credits");
     }
@@ -315,7 +315,7 @@ public sealed class ValueFreezeServiceBranchCoverageTests : IDisposable
         using var svc = new ValueFreezeService(_runtime, _logger, 50);
         svc.FreezeFloat("timer", 99.5f);
 
-        await Task.Delay(200);
+        await WaitForWriteAsync("timer");
 
         _runtime.WrittenSymbols.Should().Contain("timer");
     }
@@ -327,7 +327,7 @@ public sealed class ValueFreezeServiceBranchCoverageTests : IDisposable
         using var svc = new ValueFreezeService(_runtime, _logger, 50);
         svc.FreezeBool("fog_reveal", true);
 
-        await Task.Delay(200);
+        await WaitForWriteAsync("fog_reveal");
 
         _runtime.WrittenSymbols.Should().Contain("fog_reveal");
     }
@@ -339,7 +339,7 @@ public sealed class ValueFreezeServiceBranchCoverageTests : IDisposable
         using var svc = new ValueFreezeService(_runtime, _logger, 50);
         svc.FreezeBool("ai_enabled", false);
 
-        await Task.Delay(200);
+        await WaitForWriteAsync("ai_enabled");
 
         _runtime.WrittenSymbols.Should().Contain("ai_enabled");
     }
@@ -452,7 +452,7 @@ public sealed class ValueFreezeServiceBranchCoverageTests : IDisposable
         svc.FreezeIntAggressive("credits", 5000);
 
         // Wait for aggressive thread to write
-        await Task.Delay(200);
+        await WaitForWriteAsync("credits");
 
         _runtime.WrittenSymbols.Should().Contain("credits");
     }
@@ -549,6 +549,15 @@ public sealed class ValueFreezeServiceBranchCoverageTests : IDisposable
         svc.Unfreeze("a");
         svc.IsFrozen("a").Should().BeFalse();
         svc.IsFrozen("b").Should().BeTrue();
+    }
+
+    private async Task WaitForWriteAsync(string symbol, int timeoutMs = 5000)
+    {
+        var sw = System.Diagnostics.Stopwatch.StartNew();
+        while (sw.ElapsedMilliseconds < timeoutMs && !_runtime.WrittenSymbols.Contains(symbol))
+        {
+            await Task.Delay(20);
+        }
     }
 
     // ── Stubs ─────────────────────────────────────────────────────────────

@@ -1,4 +1,4 @@
-using System.Text.Json;
+﻿using System.Text.Json;
 using Microsoft.Extensions.Logging;
 using SwfocTrainer.Core.Contracts;
 using SwfocTrainer.Core.IO;
@@ -258,8 +258,7 @@ public sealed class SavePatchApplyService : ISavePatchApplyService
                 SavePatchApplyClassification.ValidationFailed,
                 ReasonUnsupportedOperationKind,
                 "Patch operation kind is not supported.",
-                operation.FieldId,
-                operation.FieldPath);
+                new FailureContext(FieldId: operation.FieldId, FieldPath: operation.FieldPath));
         }
 
         if (operation.NewValue is null)
@@ -268,8 +267,7 @@ public sealed class SavePatchApplyService : ISavePatchApplyService
                 SavePatchApplyClassification.ValidationFailed,
                 ReasonNewValueMissing,
                 "Patch operation is missing required newValue.",
-                operation.FieldId,
-                operation.FieldPath);
+                new FailureContext(FieldId: operation.FieldId, FieldPath: operation.FieldPath));
         }
 
         var normalization = _helper.TryNormalizePatchValue(operation, ReasonValueNormalizationFailed);
@@ -377,8 +375,7 @@ public sealed class SavePatchApplyService : ISavePatchApplyService
                 SavePatchApplyClassification.RolledBack,
                 ReasonWriteFailedRolledBack,
                 "Save write failed and original bytes were restored.",
-                backupPath: File.Exists(backupPath) ? backupPath : null,
-                receiptPath: File.Exists(receiptPath) ? receiptPath : null);
+                new FailureContext(BackupPath: File.Exists(backupPath) ? backupPath : null, ReceiptPath: File.Exists(receiptPath) ? receiptPath : null));
         }
         catch (IOException rollbackEx)
         {
@@ -387,8 +384,7 @@ public sealed class SavePatchApplyService : ISavePatchApplyService
                 SavePatchApplyClassification.WriteFailed,
                 ReasonWriteFailed,
                 "Save write failed and automatic rollback did not complete.",
-                backupPath: File.Exists(backupPath) ? backupPath : null,
-                receiptPath: File.Exists(receiptPath) ? receiptPath : null);
+                new FailureContext(BackupPath: File.Exists(backupPath) ? backupPath : null, ReceiptPath: File.Exists(receiptPath) ? receiptPath : null));
         }
         catch (UnauthorizedAccessException rollbackEx)
         {
@@ -397,8 +393,7 @@ public sealed class SavePatchApplyService : ISavePatchApplyService
                 SavePatchApplyClassification.WriteFailed,
                 ReasonWriteFailed,
                 "Save write failed and automatic rollback did not complete.",
-                backupPath: File.Exists(backupPath) ? backupPath : null,
-                receiptPath: File.Exists(receiptPath) ? receiptPath : null);
+                new FailureContext(BackupPath: File.Exists(backupPath) ? backupPath : null, ReceiptPath: File.Exists(receiptPath) ? receiptPath : null));
         }
     }
 
@@ -446,19 +441,22 @@ public sealed class SavePatchApplyService : ISavePatchApplyService
         SavePatchApplyClassification classification,
         string reasonCode,
         string message,
-        string? fieldId = null,
-        string? fieldPath = null,
-        string? backupPath = null,
-        string? receiptPath = null)
+        FailureContext? context = null)
     {
         return new SavePatchApplyResult(
             classification,
             Applied: false,
             Message: message,
-            BackupPath: backupPath,
-            ReceiptPath: receiptPath,
-            Failure: new SavePatchApplyFailure(reasonCode, message, fieldId, fieldPath));
+            BackupPath: context?.BackupPath,
+            ReceiptPath: context?.ReceiptPath,
+            Failure: new SavePatchApplyFailure(reasonCode, message, context?.FieldId, context?.FieldPath));
     }
+
+    private sealed record FailureContext(
+        string? FieldId = null,
+        string? FieldPath = null,
+        string? BackupPath = null,
+        string? ReceiptPath = null);
 
     private sealed record ApplyFilePaths(
         string TargetPath,

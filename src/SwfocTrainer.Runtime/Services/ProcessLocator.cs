@@ -170,11 +170,12 @@ public sealed class ProcessLocator : IProcessLocator
             metadata["forcedContextReason"] = "missing_cmdline_mod_markers";
         }
 
-        var provisional = BuildProcessMetadata(process, probe, detection, mode, metadata, null, hostRole, effectiveSteamModIds.Count);
+        var provisionalInput = new ProcessMetadataBuildInput(probe, detection, mode, metadata, null, hostRole, effectiveSteamModIds.Count);
+        var provisional = BuildProcessMetadata(process, provisionalInput);
         var launchContext = _launchContextResolver.Resolve(provisional, profiles);
         ApplyLaunchContextMetadata(metadata, launchContext);
 
-        return BuildProcessMetadata(process, probe, detection, mode, metadata, launchContext, hostRole, effectiveSteamModIds.Count);
+        return BuildProcessMetadata(process, provisionalInput with { LaunchContext = launchContext });
     }
 
     private static ProcessProbe CaptureProcessProbe(Process process, IReadOnlyDictionary<int, WmiProcessInfo> wmiByPid)
@@ -248,28 +249,22 @@ public sealed class ProcessLocator : IProcessLocator
         };
     }
 
-    private static ProcessMetadata BuildProcessMetadata(  // NOSONAR
+    private static ProcessMetadata BuildProcessMetadata(
         Process process,
-        ProcessProbe probe,
-        ProcessDetection detection,
-        RuntimeMode mode,
-        IReadOnlyDictionary<string, string> metadata,
-        LaunchContext? launchContext,
-        ProcessHostRole hostRole,
-        int workshopMatchCount)
+        ProcessMetadataBuildInput input)
     {
         return new ProcessMetadata(
             process.Id,
             process.ProcessName,
-            probe.Path,
-            probe.CommandLine,
-            detection.ExeTarget,
-            mode,
-            metadata,
-            launchContext,
-            hostRole,
-            probe.MainModuleSize,
-            workshopMatchCount,
+            input.Probe.Path,
+            input.Probe.CommandLine,
+            input.Detection.ExeTarget,
+            input.Mode,
+            input.Metadata,
+            input.LaunchContext,
+            input.HostRole,
+            input.Probe.MainModuleSize,
+            input.WorkshopMatchCount,
             0d);
     }
 
@@ -290,7 +285,7 @@ public sealed class ProcessLocator : IProcessLocator
     }
 
     private static ForcedContextResolution ResolveForcedContext(
-        string? commandLine,  // NOSONAR
+        string? commandLine,
         string? modPathRaw,
         IReadOnlyList<string> detectedSteamModIds,
         ProcessLocatorOptions options)
@@ -334,7 +329,7 @@ public sealed class ProcessLocator : IProcessLocator
         foreach (var token in workshopIds
             .Where(raw => !string.IsNullOrWhiteSpace(raw))
             .SelectMany(raw => raw.Split(',', StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries))
-            .Where(token => !string.IsNullOrWhiteSpace(token)))  // NOSONAR
+            .Where(token => !string.IsNullOrWhiteSpace(token)))
         {
             ids.Add(token);
         }
@@ -658,6 +653,15 @@ public sealed class ProcessLocator : IProcessLocator
     private sealed record WmiProcessInfo(string? CommandLine, string? ExecutablePath);
     private sealed record ProcessProbe(string Path, string? CommandLine, int MainModuleSize);
     private sealed record ProcessDetection(ExeTarget ExeTarget, bool IsStarWarsG, string DetectedVia);
+    private sealed record ProcessMetadataBuildInput(
+        ProcessProbe Probe,
+        ProcessDetection Detection,
+        RuntimeMode Mode,
+        IReadOnlyDictionary<string, string> Metadata,
+        LaunchContext? LaunchContext,
+        ProcessHostRole HostRole,
+        int WorkshopMatchCount);
+
     private sealed record ForcedContextResolution(
         string Source,
         IReadOnlyList<string> EffectiveSteamModIds,
