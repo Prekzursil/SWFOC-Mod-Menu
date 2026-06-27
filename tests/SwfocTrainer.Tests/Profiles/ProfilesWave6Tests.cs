@@ -599,14 +599,15 @@ public sealed class ProfilesWave6Tests : IDisposable
         var options = new ProfileRepositoryOptions { ProfilesRootPath = _tempRoot };
         var service = new ModOnboardingService(repo, options);
 
+        // Test intentionally passes null to non-nullable fields to verify validation errors
         var seed = new GeneratedProfileSeed(
-            DraftProfileId: null,
-            DisplayName: null,
-            BaseProfileId: null,
-            LaunchSamples: null,
-            SourceRunId: null,
+            DraftProfileId: null!,
+            DisplayName: null!,
+            BaseProfileId: null!,
+            LaunchSamples: null!,
+            SourceRunId: null!,
             Confidence: double.NaN,
-            ParentProfile: null);
+            ParentProfile: null!);
 
         var request = new ModOnboardingSeedBatchRequest("ns", new[] { seed });
         var result = await service.ScaffoldDraftProfilesFromSeedsAsync(request);
@@ -627,9 +628,9 @@ public sealed class ProfilesWave6Tests : IDisposable
         var service = new ModOnboardingService(repo, options);
 
         var seed1 = new GeneratedProfileSeed(
-            "same_id", "Name 1", "base_swfoc", null, "run1", 0.9, null);
+            "same_id", "Name 1", "base_swfoc", null!, "run1", 0.9, null!);
         var seed2 = new GeneratedProfileSeed(
-            "same_id", "Name 2", "base_swfoc", null, "run2", 0.9, null);
+            "same_id", "Name 2", "base_swfoc", null!, "run2", 0.9, null!);
 
         var request = new ModOnboardingSeedBatchRequest(null, new[] { seed1, seed2 });
         var result = await service.ScaffoldDraftProfilesFromSeedsAsync(request);
@@ -643,14 +644,15 @@ public sealed class ProfilesWave6Tests : IDisposable
         var options = new ProfileRepositoryOptions { ProfilesRootPath = _tempRoot };
         var service = new ModOnboardingService(repo, options);
 
+        // Test intentionally passes null to non-nullable fields to verify WorkshopId fallback
         var seed = new GeneratedProfileSeed(
-            DraftProfileId: null,
-            DisplayName: null,
+            DraftProfileId: null!,
+            DisplayName: null!,
             BaseProfileId: "base_swfoc",
-            LaunchSamples: null,
+            LaunchSamples: null!,
             SourceRunId: "run1",
             Confidence: 0.9,
-            ParentProfile: null,
+            ParentProfile: null!,
             WorkshopId: "123456");
 
         var request = new ModOnboardingSeedBatchRequest(null, new[] { seed });
@@ -667,11 +669,12 @@ public sealed class ProfilesWave6Tests : IDisposable
         var options = new ProfileRepositoryOptions { ProfilesRootPath = _tempRoot };
         var service = new ModOnboardingService(repo, options);
 
+        // Test intentionally passes null to non-nullable fields to verify Title fallback
         var seed = new GeneratedProfileSeed(
-            DraftProfileId: null,
-            DisplayName: null,
-            BaseProfileId: null,
-            LaunchSamples: null,
+            DraftProfileId: null!,
+            DisplayName: null!,
+            BaseProfileId: null!,
+            LaunchSamples: null!,
             SourceRunId: "run1",
             Confidence: 0.9,
             ParentProfile: "base_swfoc",
@@ -689,14 +692,15 @@ public sealed class ProfilesWave6Tests : IDisposable
         var options = new ProfileRepositoryOptions { ProfilesRootPath = _tempRoot };
         var service = new ModOnboardingService(repo, options);
 
+        // Test intentionally passes null for BaseProfileId/ParentProfile to verify CandidateBaseProfile resolution
         var seed = new GeneratedProfileSeed(
             DraftProfileId: "test_mod",
             DisplayName: "Test Mod",
-            BaseProfileId: null,
+            BaseProfileId: null!,
             LaunchSamples: new[] { new ModLaunchSample("test", "/path", "STEAMMOD=999 MODPATH=\"C:\\Mods\\test\"") },
             SourceRunId: "run1",
             Confidence: 0.9,
-            ParentProfile: null,
+            ParentProfile: null!,
             CandidateBaseProfile: "base_swfoc",
             RiskLevel: "high",
             ParentDependencies: new[] { "dep1" },
@@ -721,7 +725,7 @@ public sealed class ProfilesWave6Tests : IDisposable
         var service = new ModOnboardingService(repo, options);
 
         var seed = new GeneratedProfileSeed(
-            "test_mod", "Test", "base_swfoc", null, "run1", 0.9, null,
+            "test_mod", "Test", "base_swfoc", null!, "run1", 0.9, null!,
             RiskLevel: "CRITICAL");
 
         var request = new ModOnboardingSeedBatchRequest(null, new[] { seed });
@@ -861,7 +865,7 @@ public sealed class ProfilesWave6Tests : IDisposable
                 Actions: new Dictionary<string, ActionSpec>(),
                 FeatureFlags: new Dictionary<string, bool>(),
                 CatalogSources: Array.Empty<CatalogSource>(),
-                SaveSchemaId: null,
+                SaveSchemaId: null!,
                 HelperModHooks: Array.Empty<HelperHookSpec>());
         }
     }

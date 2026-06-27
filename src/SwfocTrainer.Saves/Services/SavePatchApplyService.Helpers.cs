@@ -64,8 +64,7 @@ internal sealed class SavePatchApplyServiceHelper
                     SavePatchApplyClassification.ValidationFailed,
                     reasonValueNormalizationFailed,
                     "Patch operation value could not be normalized.",
-                    operation.FieldId,
-                    operation.FieldPath));
+                    new HelperFailureContext(FieldId: operation.FieldId, FieldPath: operation.FieldPath)));
         }
         catch (InvalidOperationException ex)
         {
@@ -76,8 +75,7 @@ internal sealed class SavePatchApplyServiceHelper
                     SavePatchApplyClassification.ValidationFailed,
                     reasonValueNormalizationFailed,
                     "Patch operation value could not be normalized.",
-                    operation.FieldId,
-                    operation.FieldPath));
+                    new HelperFailureContext(FieldId: operation.FieldId, FieldPath: operation.FieldPath)));
         }
     }
 
@@ -103,8 +101,7 @@ internal sealed class SavePatchApplyServiceHelper
                 SavePatchApplyClassification.ValidationFailed,
                 reasonFieldApplyFailed,
                 "Patch operation could not be applied to target field.",
-                operation.FieldId,
-                operation.FieldPath);
+                new HelperFailureContext(FieldId: operation.FieldId, FieldPath: operation.FieldPath));
         }
     }
 
@@ -319,19 +316,22 @@ internal sealed class SavePatchApplyServiceHelper
         SavePatchApplyClassification classification,
         string reasonCode,
         string message,
-        string? fieldId = null,
-        string? fieldPath = null,
-        string? backupPath = null,
-        string? receiptPath = null)
+        HelperFailureContext? context = null)
     {
         return new SavePatchApplyResult(
             classification,
             Applied: false,
             Message: message,
-            BackupPath: backupPath,
-            ReceiptPath: receiptPath,
-            Failure: new SavePatchApplyFailure(reasonCode, message, fieldId, fieldPath));
+            BackupPath: context?.BackupPath,
+            ReceiptPath: context?.ReceiptPath,
+            Failure: new SavePatchApplyFailure(reasonCode, message, context?.FieldId, context?.FieldPath));
     }
+
+    private sealed record HelperFailureContext(
+        string? FieldId = null,
+        string? FieldPath = null,
+        string? BackupPath = null,
+        string? ReceiptPath = null);
 
     private sealed record SelectorApplyAttempt(bool WasApplied, Exception? MismatchError)
     {

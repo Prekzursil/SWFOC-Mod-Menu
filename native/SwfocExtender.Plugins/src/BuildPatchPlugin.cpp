@@ -303,7 +303,7 @@ PluginResult BuildPatchPlugin::ExecuteApply(
         return BuildReadFailureResult(request, resolvedAnchor, readError, "capture_original");
     }
 
-    StoreRestoreBytes(restoreKey, std::move(originalBytes));
+    StoreRestoreBytes(std::string(restoreKey), std::move(originalBytes));
 
     std::string writeError;
     process_mutation::WriteOperationDiagnostics writeDiagnostics {};

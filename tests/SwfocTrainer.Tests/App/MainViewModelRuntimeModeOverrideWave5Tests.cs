@@ -10,6 +10,7 @@ namespace SwfocTrainer.Tests.App;
 /// Normalize all branches, ResolveEffectiveRuntimeMode all overrides,
 /// ModeOverrideOptions list.
 /// </summary>
+[Collection(RuntimeModeSerialCollection.Name)]
 public sealed class MainViewModelRuntimeModeOverrideWave5Tests
 {
     [Theory]

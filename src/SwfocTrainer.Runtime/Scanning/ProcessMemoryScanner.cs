@@ -7,6 +7,20 @@ internal static class ProcessMemoryScanner
 {
     private readonly record struct FloatScanCriteria(float Value, float Tolerance);
 
+    private readonly record struct RegionScanContext(
+        nint Handle,
+        nint RegionBase,
+        long RegionSize,
+        List<nint> Results,
+        int MaxResults,
+        CancellationToken CancellationToken);
+
+    private readonly record struct ChunkReadContext(
+        nint Handle,
+        nint RegionBase,
+        long Offset,
+        int ToRead);
+
     internal readonly record struct FloatApproxScanRequest(
         int ProcessId,
         float Value,
@@ -39,7 +53,7 @@ internal static class ProcessMemoryScanner
             maxResults,
             cancellationToken,
             (handle, regionBase, regionSize, results, max, token) =>
-                ScanRegion(handle, regionBase, regionSize, value, results, max, token));
+                ScanRegion(new RegionScanContext(handle, regionBase, regionSize, results, max, token), value));
     }
 
     public static IReadOnlyList<nint> ScanFloatApprox(
@@ -67,56 +81,36 @@ internal static class ProcessMemoryScanner
             maxResults,
             cancellationToken,
             (handle, regionBase, regionSize, results, max, token) =>
-                ScanRegionFloatApprox(handle, regionBase, regionSize, criteria, results, max, token));
+                ScanRegionFloatApprox(new RegionScanContext(handle, regionBase, regionSize, results, max, token), criteria));
     }
 
     private static void ScanRegion(
-        nint handle,
-        nint regionBase,
-        long regionSize,
-        int value,
-        List<nint> results,
-        int maxResults,
-        CancellationToken cancellationToken)
+        RegionScanContext ctx,
+        int value)
     {
         ScanRegionChunks(
-            handle,
-            regionBase,
-            regionSize,
-            results,
-            maxResults,
-            cancellationToken,
+            ctx,
             (buffer, read, chunkBase) =>
             {
-                for (var i = 0; i <= read - 4 && results.Count < maxResults; i++)
+                for (var i = 0; i <= read - 4 && ctx.Results.Count < ctx.MaxResults; i++)
                 {
                     if (BitConverter.ToInt32(buffer, i) == value)
                     {
-                        results.Add(chunkBase + i);
+                        ctx.Results.Add(chunkBase + i);
                     }
                 }
             });
     }
 
     private static void ScanRegionFloatApprox(
-        nint handle,
-        nint regionBase,
-        long regionSize,
-        FloatScanCriteria criteria,
-        List<nint> results,
-        int maxResults,
-        CancellationToken cancellationToken)
+        RegionScanContext ctx,
+        FloatScanCriteria criteria)
     {
         ScanRegionChunks(
-            handle,
-            regionBase,
-            regionSize,
-            results,
-            maxResults,
-            cancellationToken,
+            ctx,
             (buffer, read, chunkBase) =>
             {
-                for (var i = 0; i <= read - 4 && results.Count < maxResults; i += 4)
+                for (var i = 0; i <= read - 4 && ctx.Results.Count < ctx.MaxResults; i += 4)
                 {
                     var candidate = BitConverter.ToSingle(buffer, i);
                     if (!float.IsFinite(candidate))
@@ -126,40 +120,35 @@ internal static class ProcessMemoryScanner
 
                     if (MathF.Abs(candidate - criteria.Value) <= criteria.Tolerance)
                     {
-                        results.Add(chunkBase + i);
+                        ctx.Results.Add(chunkBase + i);
                     }
                 }
             });
     }
 
     private static void ScanRegionChunks(
-        nint handle,
-        nint regionBase,
-        long regionSize,
-        List<nint> results,
-        int maxResults,
-        CancellationToken cancellationToken,
+        RegionScanContext ctx,
         Action<byte[], int, nint> chunkScanner)
     {
         const int chunkSize = 64 * 1024;
         var buffer = new byte[chunkSize];
 
-        for (long offset = 0; offset < regionSize && results.Count < maxResults; offset += chunkSize)
+        for (long offset = 0; offset < ctx.RegionSize && ctx.Results.Count < ctx.MaxResults; offset += chunkSize)
         {
-            cancellationToken.ThrowIfCancellationRequested();
-            var toRead = (int)Math.Min(chunkSize, regionSize - offset);
+            ctx.CancellationToken.ThrowIfCancellationRequested();
+            var toRead = (int)Math.Min(chunkSize, ctx.RegionSize - offset);
             if (toRead <= 0)
             {
                 break;
             }
 
             buffer = EnsureBufferSize(buffer, toRead);
-            if (!TryReadChunk(handle, regionBase, offset, buffer, toRead, out var read))
+            if (!TryReadChunk(new ChunkReadContext(ctx.Handle, ctx.RegionBase, offset, toRead), buffer, out var read))
             {
                 continue;
             }
 
-            chunkScanner(buffer, read, regionBase + (nint)offset);
+            chunkScanner(buffer, read, ctx.RegionBase + (nint)offset);
         }
     }
 
@@ -169,15 +158,12 @@ internal static class ProcessMemoryScanner
     }
 
     private static bool TryReadChunk(
-        nint handle,
-        nint regionBase,
-        long offset,
+        ChunkReadContext ctx,
         byte[] buffer,
-        int toRead,
         out int read)
     {
         read = 0;
-        if (!NativeMethods.ReadProcessMemory(handle, regionBase + (nint)offset, buffer, toRead, out var readRaw))
+        if (!NativeMethods.ReadProcessMemory(ctx.Handle, ctx.RegionBase + (nint)ctx.Offset, buffer, ctx.ToRead, out var readRaw))
         {
             return false;
         }

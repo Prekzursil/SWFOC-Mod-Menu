@@ -123,6 +123,32 @@ public abstract class MainViewModelCoreStateBase : INotifyPropertyChanged
         "support");
     private protected SpawnPresetViewItem? _selectedSpawnPreset;
 
+    // v5 backing fields
+    private protected string _rosterSearchQuery = string.Empty;
+    private protected string _rosterSelectedFaction = string.Empty;
+    private protected string _enhancedSpawnUnitId = string.Empty;
+    private protected string _enhancedSpawnFaction = string.Empty;
+    private protected string _enhancedSpawnQuantity = "1";
+    private protected string _enhancedSpawnMode = "Tactical";
+
+    // Wave 2 backing fields
+    private protected string _transferTargetFaction = string.Empty;
+    private protected string _selectedPlanetId = string.Empty;
+    private protected string _switchFactionTarget = string.Empty;
+
+    // Wave 3 backing fields
+    private protected string _aiSuspendSeconds = "9999";
+    private protected string _cooldownTargetUnitId = string.Empty;
+
+    // Wave 4 backing fields
+    private protected string _cameraCommand = string.Empty;
+    private protected string _selectedStoryEvent = string.Empty;
+    private protected string _customStoryEvent = string.Empty;
+
+    // Wave 6 backing fields
+    private protected string _corruptionPlanetId = string.Empty;
+    private protected string _corruptionType = "Racketeering";
+
     private protected SaveDocument? _loadedSave;
     private protected byte[]? _loadedSaveOriginal;
     private protected SavePatchPack? _loadedPatchPack;

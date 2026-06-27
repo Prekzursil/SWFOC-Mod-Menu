@@ -73,7 +73,7 @@ public sealed class MainViewModelDiagnosticsFullCoverageTests
             ProcessId: 4, ProcessName: "x.exe", ProcessPath: @"C:\x.exe",
             CommandLine: null, ExeTarget: ExeTarget.Swfoc, Mode: RuntimeMode.Unknown,
             LaunchContext: new LaunchContext(LaunchKind.BaseGame, true, Array.Empty<string>(),
-                null, null, "scan", null));
+                null, null, "scan", null!));
 
         var summary = MainViewModelDiagnostics.BuildProcessDiagnosticSummary(process, "unk");
 

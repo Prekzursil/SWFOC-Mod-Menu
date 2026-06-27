@@ -54,7 +54,7 @@ public sealed class MainViewModelHotkeyHelpersWave5Tests
         {
             Gesture = "Ctrl+1",
             ActionId = "unknown_action",
-            PayloadJson = null
+            PayloadJson = null!
         };
 
         var payload = MainViewModelHotkeyHelpers.ParseHotkeyPayload(binding);

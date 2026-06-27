@@ -15,6 +15,7 @@ namespace SwfocTrainer.Tests.App;
 /// RuntimeModeOverrideHelpers Load/Save edge cases (file not found, corrupt JSON, IOException/JsonException),
 /// MainViewModelFactories null guard.
 /// </summary>
+[Collection(RuntimeModeSerialCollection.Name)]
 public sealed class AppWave7FinalTests
 {
     #region View model record constructors

@@ -81,15 +81,32 @@ public sealed class AsyncCommand : ICommand
 
     public static void RaiseCanExecuteChanged() => CommandManager.InvalidateRequerySuggested();
 
+    /// <summary>
+    /// Replaceable hook for displaying error messages. Tests assign a no-op
+    /// delegate to avoid popping real WPF dialogs that block the test host.
+    /// </summary>
+    internal static Action<string> ErrorDisplayHook { get; set; } = DefaultShowError;
+
     private static void TryShowError(string message)
     {
         try
         {
-            MessageBox.Show(message, "Operation Failed", MessageBoxButton.OK, MessageBoxImage.Error);
+            ErrorDisplayHook(message);
         }
         catch (InvalidOperationException)
         {
             // Window may not be available during shutdown.
         }
+    }
+
+    private static void DefaultShowError(string message)
+    {
+        // Skip real dialogs when no WPF Application is initialized (test process).
+        if (Application.Current is null)
+        {
+            return;
+        }
+
+        MessageBox.Show(message, "Operation Failed", MessageBoxButton.OK, MessageBoxImage.Error);
     }
 }

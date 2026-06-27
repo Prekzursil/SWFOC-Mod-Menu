@@ -92,6 +92,30 @@ internal sealed class MainViewModelQuickCommandContext
     public required Func<bool> IsAttached { get; init; }
 }
 
+internal sealed class MainViewModelV5CommandContext
+{
+    public required Func<Task> LoadRosterAsync { get; init; }
+    public required Func<Task> RefreshDashboardAsync { get; init; }
+    public required Func<Task> ExecuteEnhancedSpawnAsync { get; init; }
+    public required Func<Task> TransferOwnershipAsync { get; init; }
+    public required Func<Task> LoadPlanetsAsync { get; init; }
+    public required Func<Task> LoadFleetsAsync { get; init; }
+    public required Func<Task> SwitchFactionAsync { get; init; }
+    public required Func<Task> ExecuteAiControlAsync { get; init; }
+    public required Func<Task> ResetCooldownsAsync { get; init; }
+    public required Func<Task> ExecuteCameraCommandAsync { get; init; }
+    public required Func<Task> LoadStoryEventsAsync { get; init; }
+    public required Func<Task> FireStoryEventAsync { get; init; }
+    public required Func<Task> DetectModConflictsAsync { get; init; }
+    public required Func<Task> RefreshDamageLogAsync { get; init; }
+    public required Func<Task> LoadDiplomacyAsync { get; init; }
+    public required Func<Task> SetDiplomacyRelationAsync { get; init; }
+    public required Func<Task> SetCorruptionAsync { get; init; }
+    public required Func<Task> RemoveCorruptionAsync { get; init; }
+    public required Func<bool> IsAttached { get; init; }
+    public required Func<bool> CanUseSelectedProfile { get; init; }
+}
+
 internal static class MainViewModelFactories
 {
     internal static (
@@ -251,5 +275,47 @@ internal static class MainViewModelFactories
             new AsyncCommand(context.QuickGodModeAsync, context.IsAttached),
             new AsyncCommand(context.QuickOneHitAsync, context.IsAttached),
             new AsyncCommand(context.QuickUnfreezeAllAsync, context.IsAttached));
+    }
+
+    internal static (
+        ICommand LoadRoster,
+        ICommand RefreshDashboard,
+        ICommand ExecuteEnhancedSpawn,
+        ICommand TransferOwnership,
+        ICommand LoadPlanets,
+        ICommand LoadFleets,
+        ICommand SwitchFaction,
+        ICommand ExecuteAiControl,
+        ICommand ResetCooldowns,
+        ICommand ExecuteCameraCommand,
+        ICommand LoadStoryEvents,
+        ICommand FireStoryEvent,
+        ICommand DetectModConflicts,
+        ICommand RefreshDamageLog,
+        ICommand LoadDiplomacy,
+        ICommand SetDiplomacyRelation,
+        ICommand SetCorruption,
+        ICommand RemoveCorruption) CreateV5Commands(MainViewModelV5CommandContext context)
+    {
+        ArgumentNullException.ThrowIfNull(context);
+        return (
+            new AsyncCommand(context.LoadRosterAsync, context.CanUseSelectedProfile),
+            new AsyncCommand(context.RefreshDashboardAsync, context.IsAttached),
+            new AsyncCommand(context.ExecuteEnhancedSpawnAsync, context.IsAttached),
+            new AsyncCommand(context.TransferOwnershipAsync, context.IsAttached),
+            new AsyncCommand(context.LoadPlanetsAsync, context.CanUseSelectedProfile),
+            new AsyncCommand(context.LoadFleetsAsync, context.CanUseSelectedProfile),
+            new AsyncCommand(context.SwitchFactionAsync, context.IsAttached),
+            new AsyncCommand(context.ExecuteAiControlAsync, context.IsAttached),
+            new AsyncCommand(context.ResetCooldownsAsync, context.IsAttached),
+            new AsyncCommand(context.ExecuteCameraCommandAsync, context.IsAttached),
+            new AsyncCommand(context.LoadStoryEventsAsync, context.CanUseSelectedProfile),
+            new AsyncCommand(context.FireStoryEventAsync, context.IsAttached),
+            new AsyncCommand(context.DetectModConflictsAsync),
+            new AsyncCommand(context.RefreshDamageLogAsync, context.IsAttached),
+            new AsyncCommand(context.LoadDiplomacyAsync, context.CanUseSelectedProfile),
+            new AsyncCommand(context.SetDiplomacyRelationAsync, context.IsAttached),
+            new AsyncCommand(context.SetCorruptionAsync, context.IsAttached),
+            new AsyncCommand(context.RemoveCorruptionAsync, context.IsAttached));
     }
 }

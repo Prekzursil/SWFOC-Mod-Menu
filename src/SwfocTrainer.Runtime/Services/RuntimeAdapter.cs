@@ -319,9 +319,19 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
         var requiredWorkshopIds = CollectRequiredWorkshopIds(profile);
         var pool = ResolveCandidatePool(profile, matches, requiredWorkshopIds);
 
-        if (pool.Length == 1)
+        var candidates = CreateProcessSelectionCandidates(profile, pool, requiredWorkshopIds);
+        if (candidates.Length == 0)
         {
-            var singleCandidate = CreateProcessSelectionCandidate(profile, pool[0], requiredWorkshopIds);
+            _logger.LogWarning(
+                "No live process candidates remained for profile {Profile} after checking {Count} discovered candidate(s).",
+                profile.Id,
+                pool.Length);
+            return null;
+        }
+
+        if (candidates.Length == 1)
+        {
+            var singleCandidate = candidates[0];
             return FinalizeProcessSelection(
                 singleCandidate.Process,
                 singleCandidate.MainModuleSize,
@@ -329,8 +339,7 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
                 singleCandidate.SelectionScore);
         }
 
-        var ranked = pool
-            .Select(candidate => CreateProcessSelectionCandidate(profile, candidate, requiredWorkshopIds))
+        var ranked = candidates
             .OrderByDescending(x => x.SelectionScore)
             .ThenByDescending(x => x.WorkshopMatchCount)
             .ThenByDescending(x => x.RecommendationMatch)
@@ -356,6 +365,32 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
             top.SelectionScore,
             top.MainModuleSize);
         return selected;
+    }
+
+    private ProcessSelectionCandidate[] CreateProcessSelectionCandidates(
+        TrainerProfile profile,
+        IReadOnlyCollection<ProcessMetadata> pool,
+        IReadOnlyCollection<string> requiredWorkshopIds)
+    {
+        var candidates = new List<ProcessSelectionCandidate>(pool.Count);
+        foreach (var process in pool)
+        {
+            var candidate = TryCreateProcessSelectionCandidate(profile, process, requiredWorkshopIds);
+            if (candidate.HasValue)
+            {
+                candidates.Add(candidate.Value);
+            }
+            else
+            {
+                _logger.LogDebug(
+                    "Skipping stale process candidate {Pid} ({Name}) for profile {Profile}.",
+                    process.ProcessId,
+                    process.ProcessName,
+                    profile.Id);
+            }
+        }
+
+        return candidates.ToArray();
     }
 
     private ProcessMetadata[] ResolveInitialProcessMatches(
@@ -439,16 +474,26 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
         return starWarsGCandidates.Length > 0 ? starWarsGCandidates : pool;
     }
 
-    private static ProcessSelectionCandidate CreateProcessSelectionCandidate(
+    private static ProcessSelectionCandidate? TryCreateProcessSelectionCandidate(
         TrainerProfile profile,
         ProcessMetadata process,
         IReadOnlyCollection<string> requiredWorkshopIds)
     {
+        if (!IsProcessStillRunning(process.ProcessId))
+        {
+            return null;
+        }
+
         var workshopMatchCount = requiredWorkshopIds.Count == 0
             ? 0
             : requiredWorkshopIds.Count(id => ProcessContainsWorkshopId(process, id));
         var recommendationMatch = process.LaunchContext?.Recommendation.ProfileId?.Equals(profile.Id, StringComparison.OrdinalIgnoreCase) == true;
         var mainModuleSize = process.MainModuleSize > 0 ? process.MainModuleSize : TryGetMainModuleSize(process.ProcessId);
+        if (!mainModuleSize.HasValue)
+        {
+            return null;
+        }
+
         var hasCommandLine = !string.IsNullOrWhiteSpace(process.CommandLine);
         var hostRoleScore = process.HostRole switch
         {
@@ -456,12 +501,12 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
             ProcessHostRole.Launcher => 1,
             _ => 0
         };
-        var selectionScore = ComputeSelectionScore(workshopMatchCount, recommendationMatch, hostRoleScore, hasCommandLine, mainModuleSize);
+        var selectionScore = ComputeSelectionScore(workshopMatchCount, recommendationMatch, hostRoleScore, hasCommandLine, mainModuleSize.Value);
         return new ProcessSelectionCandidate(
             process,
             workshopMatchCount,
             recommendationMatch,
-            mainModuleSize,
+            mainModuleSize.Value,
             hasCommandLine,
             selectionScore);
     }
@@ -573,16 +618,46 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
         return ids;
     }
 
-    private static int TryGetMainModuleSize(int processId)
+    private static bool IsProcessStillRunning(int processId)
     {
         try
         {
             using var process = Process.GetProcessById(processId);
-            return process.MainModule?.ModuleMemorySize ?? 0;
+            return !process.HasExited;
+        }
+        catch (ArgumentException)
+        {
+            return false;
         }
         catch (InvalidOperationException)
         {
-            return 0;
+            return false;
+        }
+        catch (System.ComponentModel.Win32Exception)
+        {
+            return true;
+        }
+    }
+
+    private static int? TryGetMainModuleSize(int processId)
+    {
+        try
+        {
+            using var process = Process.GetProcessById(processId);
+            if (process.HasExited)
+            {
+                return null;
+            }
+
+            return process.MainModule?.ModuleMemorySize ?? 0;
+        }
+        catch (ArgumentException)
+        {
+            return null;
+        }
+        catch (InvalidOperationException)
+        {
+            return null;
         }
         catch (System.ComponentModel.Win32Exception)
         {
@@ -699,7 +774,7 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
         return Path.Join(_calibrationArtifactRoot, $"attach_{safeProfile}_{safeTimestamp}.json");
     }
 
-    private IReadOnlyList<RuntimeCalibrationCandidate> BuildCalibrationCandidates(  // NOSONAR
+    private IReadOnlyList<RuntimeCalibrationCandidate> BuildCalibrationCandidates(
         IReadOnlyList<(string SetName, SignatureSpec Signature)> signatures,
         byte[] moduleBytes,
         int maxCandidates)
@@ -707,7 +782,7 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
         var candidates = new List<RuntimeCalibrationCandidate>(Math.Min(maxCandidates, signatures.Count));
         var dedupe = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
 
-        foreach (var entry in signatures)  // NOSONAR
+        foreach (var entry in signatures)
         {
             if (candidates.Count >= maxCandidates)
             {
@@ -1760,7 +1835,7 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
                 routeDecision.Diagnostics,
                 new Dictionary<string, object?>
                 {
-                    [DiagnosticReasonCode] = routeDecision.ReasonCode.ToString()  // NOSONAR
+                    [DiagnosticReasonCode] = routeDecision.ReasonCode.ToString()
                 }));
         return ApplyBackendRouteDiagnostics(blocked, routeDecision, capabilityReport);
     }
@@ -1796,7 +1871,7 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
                 routeDecision.Diagnostics,
                 new Dictionary<string, object?>
                 {
-                    ["failureReasonCode"] = "action_exception",  // NOSONAR
+                    ["failureReasonCode"] = "action_exception",
                     ["exceptionType"] = ex.GetType().Name
                 }));
         return ApplyBackendRouteDiagnostics(failed, routeDecision, capabilityReport);
@@ -2336,7 +2411,7 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
         return anchors;
     }
 
-    private void MergeAnchorsFromRequestContext(ActionExecutionRequest request, IDictionary<string, string> anchors)  // NOSONAR
+    private void MergeAnchorsFromRequestContext(ActionExecutionRequest request, IDictionary<string, string> anchors)
     {
         if (TryReadContextValue(request.Context, "resolvedAnchors", out var existingResolved))
         {
@@ -2397,7 +2472,7 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
             "toggle_fog_reveal" => ["fog_reveal", "toggle_fog_reveal"],
             ActionIdToggleFogRevealPatchFallback => ["fog_reveal", ActionIdToggleFogRevealPatchFallback],
             "toggle_ai" => ["ai_enabled", "toggle_ai"],
-            ActionIdSetUnitCap => ["unit_cap", ActionIdSetUnitCap],  // NOSONAR
+            ActionIdSetUnitCap => ["unit_cap", ActionIdSetUnitCap],
             ActionIdSetUnitCapPatchFallback => ["unit_cap", ActionIdSetUnitCapPatchFallback],
             ActionIdToggleInstantBuildPatch => ["instant_build_patch_injection", "instant_build_patch", "instant_build", ActionIdToggleInstantBuildPatch],
             ActionIdSetCredits => [SymbolCredits, ActionIdSetCredits],
@@ -2628,9 +2703,9 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
         CancellationToken cancellationToken)
     {
         var payload = request.Payload;
-        if (payload["intValue"] is null || !IsCreditsWrite(request, symbol))  // NOSONAR
+        if (payload["intValue"] is null || !IsCreditsWrite(request, symbol))
         {
-            return null;  // NOSONAR
+            return null;
         }
 
         var value = payload["intValue"]!.GetValue<int>();
@@ -2737,11 +2812,12 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
             context.IsCriticalSymbol,
             request.RuntimeMode,
             context.ValidationRule,
-            readValue: address => _memory!.Read<int>(address),
-            writeValue: (address, requestedValue) => _memory!.Write(address, requestedValue),
-            compareValues: static (expected, actual) => actual == expected,
-            validateObservedValue: observed => ValidateObservedIntValue(symbol, observed, context.ValidationRule),
-            formatValue: observed => observed.ToString(),
+            new WriteCallbacks<int>(
+                ReadValue: address => _memory!.Read<int>(address),
+                WriteValue: (address, requestedValue) => _memory!.Write(address, requestedValue),
+                CompareValues: static (expected, actual) => actual == expected,
+                ValidateObservedValue: observed => ValidateObservedIntValue(symbol, observed, context.ValidationRule),
+                FormatValue: observed => observed.ToString()),
             cancellationToken: cancellationToken);
     }
 
@@ -2766,11 +2842,12 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
             context.IsCriticalSymbol,
             request.RuntimeMode,
             context.ValidationRule,
-            readValue: address => _memory!.Read<float>(address),
-            writeValue: (address, requestedValue) => _memory!.Write(address, requestedValue),
-            compareValues: static (expected, actual) => Math.Abs(actual - expected) <= 0.0001f,
-            validateObservedValue: observed => ValidateObservedFloatValue(symbol, observed, context.ValidationRule),
-            formatValue: observed => observed.ToString("0.####"),
+            new WriteCallbacks<float>(
+                ReadValue: address => _memory!.Read<float>(address),
+                WriteValue: (address, requestedValue) => _memory!.Write(address, requestedValue),
+                CompareValues: static (expected, actual) => Math.Abs(actual - expected) <= 0.0001f,
+                ValidateObservedValue: observed => ValidateObservedFloatValue(symbol, observed, context.ValidationRule),
+                FormatValue: observed => observed.ToString("0.####")),
             cancellationToken: cancellationToken);
     }
 
@@ -2796,11 +2873,12 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
             context.IsCriticalSymbol,
             request.RuntimeMode,
             context.ValidationRule,
-            readValue: address => _memory!.Read<byte>(address),
-            writeValue: (address, requestedValue) => _memory!.Write(address, requestedValue),
-            compareValues: static (expected, actual) => actual == expected,
-            validateObservedValue: observed => ValidateObservedIntValue(symbol, observed, context.ValidationRule),
-            formatValue: observed => (observed != 0).ToString(),
+            new WriteCallbacks<byte>(
+                ReadValue: address => _memory!.Read<byte>(address),
+                WriteValue: (address, requestedValue) => _memory!.Write(address, requestedValue),
+                CompareValues: static (expected, actual) => actual == expected,
+                ValidateObservedValue: observed => ValidateObservedIntValue(symbol, observed, context.ValidationRule),
+                FormatValue: observed => (observed != 0).ToString()),
             cancellationToken: cancellationToken);
     }
 
@@ -2814,7 +2892,7 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
             symbolInfo.Source,
             new Dictionary<string, object?>
             {
-                ["address"] = $"0x{symbolInfo.Address.ToInt64():X}",  // NOSONAR
+                ["address"] = $"0x{symbolInfo.Address.ToInt64():X}",
                 ["failureReasonCode"] = requestedValidation.ReasonCode,
                 ["symbolHealthStatus"] = symbolInfo.HealthStatus.ToString(),
                 ["symbolConfidence"] = symbolInfo.Confidence
@@ -3092,7 +3170,7 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
         return parts.Count == 0 ? "none" : string.Join(";", parts);
     }
 
-    private async Task<ActionExecutionResult> WriteWithOptionalRetryAsync<T>(  // NOSONAR
+    private async Task<ActionExecutionResult> WriteWithOptionalRetryAsync<T>(
         string symbol,
         SymbolInfo symbolInfo,
         T requestedValue,
@@ -3100,37 +3178,29 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
         bool isCriticalSymbol,
         RuntimeMode runtimeMode,
         SymbolValidationRule? validationRule,
-        Func<nint, T> readValue,
-        Action<nint, T> writeValue,
-        Func<T, T, bool> compareValues,
-        Func<T, ValidationOutcome> validateObservedValue,
-        Func<T, string> formatValue,
+        WriteCallbacks<T> callbacks,
         CancellationToken cancellationToken)
         where T : struct
     {
         var diagnostics = CreateSymbolDiagnostics(symbolInfo, validationRule, isCriticalSymbol);
-        diagnostics["requestedValue"] = formatValue(requestedValue);
+        diagnostics["requestedValue"] = callbacks.FormatValue(requestedValue);
         var initial = ExecuteWriteAttempt(
             symbol,
             symbolInfo,
             requestedValue,
             verifyReadback,
             "initial",
-            readValue,
-            writeValue,
-            compareValues,
-            validateObservedValue,
-            formatValue);
+            callbacks);
         if (initial.HasObservedValue)
         {
-            diagnostics["readbackValue"] = formatValue(initial.ObservedValue);
+            diagnostics["readbackValue"] = callbacks.FormatValue(initial.ObservedValue);
         }
 
         if (initial.Success)
         {
             return new ActionExecutionResult(
                 true,
-                $"Wrote value {formatValue(requestedValue)} to symbol {symbol}",
+                $"Wrote value {callbacks.FormatValue(requestedValue)} to symbol {symbol}",
                 symbolInfo.Source,
                 diagnostics);
         }
@@ -3162,14 +3232,10 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
             requestedValue,
             verifyReadback,
             "retry",
-            readValue,
-            writeValue,
-            compareValues,
-            validateObservedValue,
-            formatValue);
+            callbacks);
         if (retryAttempt.HasObservedValue)
         {
-            diagnostics["retryReadbackValue"] = formatValue(retryAttempt.ObservedValue);
+            diagnostics["retryReadbackValue"] = callbacks.FormatValue(retryAttempt.ObservedValue);
         }
 
         if (retryAttempt.Success)
@@ -3177,12 +3243,12 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
             diagnostics.Remove("failureReasonCode");
             return new ActionExecutionResult(
                 true,
-                $"Wrote value {formatValue(requestedValue)} to symbol {symbol} after re-resolve retry.",
+                $"Wrote value {callbacks.FormatValue(requestedValue)} to symbol {symbol} after re-resolve retry.",
                 refreshedSymbol.Source,
                 diagnostics);
         }
 
-        diagnostics["failureReasonCode"] = retryAttempt.ReasonCode;  // NOSONAR
+        diagnostics["failureReasonCode"] = retryAttempt.ReasonCode;
         return new ActionExecutionResult(
             false,
             retryAttempt.Message,
@@ -3190,22 +3256,18 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
             diagnostics);
     }
 
-    private WriteAttemptResult<T> ExecuteWriteAttempt<T>(  // NOSONAR
+    private WriteAttemptResult<T> ExecuteWriteAttempt<T>(
         string symbol,
         SymbolInfo activeSymbol,
         T requestedValue,
         bool verifyReadback,
         string attemptPrefix,
-        Func<nint, T> readValue,
-        Action<nint, T> writeValue,
-        Func<T, T, bool> compareValues,
-        Func<T, ValidationOutcome> validateObservedValue,
-        Func<T, string> formatValue)
+        WriteCallbacks<T> callbacks)
         where T : struct
     {
         try
         {
-            writeValue(activeSymbol.Address, requestedValue);
+            callbacks.WriteValue(activeSymbol.Address, requestedValue);
         }
         catch (InvalidOperationException ex)
         {
@@ -3236,27 +3298,21 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
             activeSymbol,
             requestedValue,
             attemptPrefix,
-            readValue,
-            compareValues,
-            validateObservedValue,
-            formatValue);
+            callbacks);
     }
 
-    private WriteAttemptResult<T> BuildWriteAttemptReadbackResult<T>(  // NOSONAR
+    private WriteAttemptResult<T> BuildWriteAttemptReadbackResult<T>(
         string symbol,
         SymbolInfo activeSymbol,
         T requestedValue,
         string attemptPrefix,
-        Func<nint, T> readValue,
-        Func<T, T, bool> compareValues,
-        Func<T, ValidationOutcome> validateObservedValue,
-        Func<T, string> formatValue)
+        WriteCallbacks<T> callbacks)
         where T : struct
     {
         T observed;
         try
         {
-            observed = readValue(activeSymbol.Address);
+            observed = callbacks.ReadValue(activeSymbol.Address);
         }
         catch (InvalidOperationException ex)
         {
@@ -3277,8 +3333,8 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
                 default);
         }
 
-        var matches = compareValues(requestedValue, observed);
-        var observedValidation = validateObservedValue(observed);
+        var matches = callbacks.CompareValues(requestedValue, observed);
+        var observedValidation = callbacks.ValidateObservedValue(observed);
         if (matches && observedValidation.IsValid)
         {
             return WriteAttemptResult<T>.SuccessWithObservation(observed);
@@ -3289,7 +3345,7 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
             return new WriteAttemptResult<T>(
                 false,
                 $"{attemptPrefix}_readback_mismatch",
-                $"Readback mismatch for {symbol}: expected {formatValue(requestedValue)}, got {formatValue(observed)}",
+                $"Readback mismatch for {symbol}: expected {callbacks.FormatValue(requestedValue)}, got {callbacks.FormatValue(observed)}",
                 true,
                 observed);
         }
@@ -3423,7 +3479,7 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
         };
     }
 
-    private async Task<ActionExecutionResult> ExecuteHelperActionAsync(ActionExecutionRequest request, CancellationToken cancellationToken)  // NOSONAR
+    private async Task<ActionExecutionResult> ExecuteHelperActionAsync(ActionExecutionRequest request, CancellationToken cancellationToken)
     {
         if (CurrentSession is null)
         {
@@ -3566,7 +3622,7 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
         return HelperBridgeOperationKind.Unknown;
     }
 
-    private Task<ActionExecutionResult> ExecuteSaveActionAsync(ActionExecutionRequest request, CancellationToken cancellationToken)  // NOSONAR
+    private Task<ActionExecutionResult> ExecuteSaveActionAsync(ActionExecutionRequest request, CancellationToken cancellationToken)
     {
         return Task.FromResult(new ActionExecutionResult(
             true,
@@ -3581,7 +3637,7 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
     ///   - "patchBytes"   : hex string of bytes to write when enabling (e.g. "90 90 90 90 90")
     ///   - "originalBytes" : hex string of expected original bytes for validation (e.g. "48 8B 74 24 68")
     /// </summary>
-    private Task<ActionExecutionResult> ExecuteCodePatchActionAsync(ActionExecutionRequest request, CancellationToken cancellationToken)  // NOSONAR
+    private Task<ActionExecutionResult> ExecuteCodePatchActionAsync(ActionExecutionRequest request, CancellationToken cancellationToken)
     {
         if (TryDispatchSpecializedCodePatchAction(request, out var specializedResult))
         {
@@ -3642,7 +3698,7 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
             return false;
         }
 
-        var enable = payload["enable"]?.GetValue<bool>() ?? true;  // NOSONAR
+        var enable = payload["enable"]?.GetValue<bool>() ?? true;
         if (!TryParseCodePatchBytes(payload, out var patchBytes, out var originalBytes, out failure))
         {
             return false;
@@ -3760,7 +3816,7 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
                 new Dictionary<string, object?>
                 {
                     ["address"] = ToHex(saved.Address),
-                    [DiagnosticState] = "restored",  // NOSONAR
+                    [DiagnosticState] = "restored",
                     ["bytesWritten"] = BitConverter.ToString(saved.OriginalBytes)
                 });
         }
@@ -3794,14 +3850,14 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
         var result = await ExecuteUnitCapHookAsync(request);
         var enable = request.Payload["enable"]?.GetValue<bool>() ?? true;
         var reasonCode = result.Succeeded
-            ? (enable ? RuntimeReasonCode.FALLBACK_APPLIED : RuntimeReasonCode.FALLBACK_RESTORED)  // NOSONAR
+            ? (enable ? RuntimeReasonCode.FALLBACK_APPLIED : RuntimeReasonCode.FALLBACK_RESTORED)
             : InferPatchFailureReasonCode(result.Message);
         var diagnostics = MergeDiagnostics(
             result.Diagnostics,
             new Dictionary<string, object?>
             {
-                ["fallbackAction"] = ActionIdSetUnitCapPatchFallback,  // NOSONAR
-                ["fallbackPath"] = "unit_cap_patch_fallback",  // NOSONAR
+                ["fallbackAction"] = ActionIdSetUnitCapPatchFallback,
+                ["fallbackPath"] = "unit_cap_patch_fallback",
                 ["fallbackEnabled"] = true,
                 [DiagnosticReasonCode] = ToReasonCode(reasonCode)
             });
@@ -3826,7 +3882,7 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
                 new Dictionary<string, object?>
                 {
                     ["fallbackAction"] = ActionIdToggleFogRevealPatchFallback,
-                    ["fallbackPath"] = "fog_patch_fallback",  // NOSONAR
+                    ["fallbackPath"] = "fog_patch_fallback",
                     [DiagnosticReasonCode] = ToReasonCode(resolution.ReasonCode)
                 }));
         }
@@ -3870,7 +3926,7 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
                     ["fallbackAction"] = ActionIdToggleFogRevealPatchFallback,
                     ["fallbackPath"] = "fog_patch_fallback",
                     ["address"] = ToHex(resolution.BranchAddress),
-                    ["state"] = "already_patched",  // NOSONAR
+                    ["state"] = "already_patched",
                     [DiagnosticReasonCode] = ToReasonCode(RuntimeReasonCode.FALLBACK_APPLIED)
                 });
         }
@@ -3977,7 +4033,7 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
             });
     }
 
-    private FogPatchFallbackResolution ResolveFogPatchFallbackAddress()  // NOSONAR
+    private FogPatchFallbackResolution ResolveFogPatchFallbackAddress()
     {
         EnsureAttached();
         if (_memory is null || CurrentSession is null)
@@ -4499,8 +4555,8 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
             "Credits hook already installed.",
             new Dictionary<string, object?>
             {
-                ["hookAddress"] = ToHex(_creditsHookInjectionAddress),  // NOSONAR
-                ["hookCaveAddress"] = ToHex(_creditsHookCodeCaveAddress),  // NOSONAR
+                ["hookAddress"] = ToHex(_creditsHookInjectionAddress),
+                ["hookCaveAddress"] = ToHex(_creditsHookCodeCaveAddress),
                 [DiagnosticHookState] = "already_installed"
             });
     }
@@ -6057,6 +6113,14 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
 
     private readonly record struct ReResolveContext(AttachSession Session, TrainerProfile Profile);
 
+    private sealed record WriteCallbacks<T>(
+        Func<nint, T> ReadValue,
+        Action<nint, T> WriteValue,
+        Func<T, T, bool> CompareValues,
+        Func<T, ValidationOutcome> ValidateObservedValue,
+        Func<T, string> FormatValue)
+        where T : struct;
+
     private readonly record struct WriteAttemptResult<T>(
         bool Success,
         string ReasonCode,
@@ -6151,7 +6215,7 @@ public sealed partial class RuntimeAdapter : IRuntimeAdapter
         public static CreditsHookResolution Fail(string message) => new(nint.Zero, message);
     }
 
-    private sealed record CreditsCvttss2siInstruction(  // NOSONAR
+    private sealed record CreditsCvttss2siInstruction(
         byte ContextOffset,
         byte DestinationReg,
         byte[] OriginalBytes);

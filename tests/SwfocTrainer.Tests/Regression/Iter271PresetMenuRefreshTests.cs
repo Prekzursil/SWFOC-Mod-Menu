@@ -1,0 +1,142 @@
+using System.IO;
+using FluentAssertions;
+using Xunit;
+
+namespace SwfocTrainer.Tests.Regression;
+
+/// <summary>
+/// Iter 271 — Lua Playground preset menu refresh covering iter 267-268 + iter 269-270
+/// honest-defer arcs. Source-grep pin tests per iter-260 lesson #2 (bypasses VM
+/// construction; ~10x faster than instantiating LuaPlaygroundTabViewModel).
+///
+/// Adds 2 INFORMATIONAL preset entries:
+///   1. [267-268] max_speed HONEST DEFER → cite iter-99/100 LIVE alternatives.
+///   2. [269-270] attack_power HONEST DEFER → cite iter-96/154/225 alternative-set.
+///
+/// These entries surface the operator-trust audit trail at the preset-menu source
+/// layer. Operators searching for "max_speed" or "attack_power" find the honest-defer
+/// note + LIVE alternative cross-references in 1 click instead of grepping docs.
+///
+/// MainWindowV2.xaml GroupBox header bumped "Iter 100-258" → "Iter 100-270 LIVE wires
+/// (+2 honest-defer notes)" to reflect both the preset-list expansion and the
+/// honest-defer entries' distinct status from runnable LIVE wires.
+/// </summary>
+public class Iter271PresetMenuRefreshTests
+{
+    private static string LoadVmSource()
+    {
+        // Walk up from test bin/ to repo root, then to LuaPlaygroundTabViewModel.cs.
+        // Source-grep pattern bypasses construction so this test runs in ~1 ms.
+        var dir = new DirectoryInfo(Directory.GetCurrentDirectory());
+        while (dir != null && !File.Exists(Path.Combine(dir.FullName, "SwfocTrainer.sln")))
+            dir = dir.Parent;
+        dir.Should().NotBeNull("must find repo root containing SwfocTrainer.sln");
+        var path = Path.Combine(
+            dir!.FullName,
+            "src", "SwfocTrainer.App", "V2", "ViewModels", "LuaPlaygroundTabViewModel.cs");
+        File.Exists(path).Should().BeTrue($"LuaPlaygroundTabViewModel.cs must exist at {path}");
+        return File.ReadAllText(path);
+    }
+
+    private static string LoadXamlSource()
+    {
+        var dir = new DirectoryInfo(Directory.GetCurrentDirectory());
+        while (dir != null && !File.Exists(Path.Combine(dir.FullName, "SwfocTrainer.sln")))
+            dir = dir.Parent;
+        dir.Should().NotBeNull("must find repo root");
+        var path = Path.Combine(
+            dir!.FullName, "src", "SwfocTrainer.App", "V2", "MainWindowV2.xaml");
+        File.Exists(path).Should().BeTrue($"MainWindowV2.xaml must exist at {path}");
+        return File.ReadAllText(path);
+    }
+
+    [Fact]
+    public void Preset_MaxSpeedHonestDefer_IsPresent_WithIter267To268Tag()
+    {
+        // Iter 267-268 max_speed HONEST DEFER preset must surface the iter-99/100
+        // LIVE alternative cross-references so operators can route correctly.
+        //
+        // iter-562 stale-pin correction: the preset script body cites the LIVE
+        // alternatives by their real bridge wrapper names — SWFOC_SetUnitSpeed /
+        // SWFOC_SetPerFactionSpeedMultiplier. This pin originally asserted the
+        // un-prefixed forms; a later iter normalised the script body to the
+        // SWFOC_-prefixed names (matching the sibling attack_power pins below,
+        // which already pin the prefixed form) but did not update this pin. The
+        // assertion intent — "the max_speed honest-defer preset cites the per-
+        // instance and per-faction LIVE alternatives" — is unchanged; only the
+        // exact expected substring is corrected to the current correct source.
+        var source = LoadVmSource();
+        source.Should().Contain("[267-268] max_speed HONEST DEFER",
+            "iter-271 introduces the max_speed honest-defer informational preset");
+        source.Should().Contain("iter-99 SWFOC_SetUnitSpeed",
+            "iter-271 max_speed preset must cite the iter-99 per-instance LIVE alternative");
+        source.Should().Contain("iter-100 SWFOC_SetPerFactionSpeedMultiplier",
+            "iter-271 max_speed preset must cite the iter-100 per-faction LIVE alternative");
+        source.Should().Contain("SWFOC_SetUnitSpeed(0x12345678, 2.0)",
+            "iter-271 max_speed preset must include a runnable example LIVE alternative script");
+    }
+
+    [Fact]
+    public void Preset_AttackPowerHonestDefer_IsPresent_WithIter269To270Tag()
+    {
+        // Iter 269-270 attack_power HONEST DEFER preset must surface ALL THREE
+        // alternative-set LIVE alternatives (iter-96 + iter-154 + iter-225) so
+        // operators can pick by SCOPE (global / per-instance / fire-rate).
+        var source = LoadVmSource();
+        source.Should().Contain("[269-270] attack_power HONEST DEFER",
+            "iter-271 introduces the attack_power honest-defer informational preset");
+        source.Should().Contain("alternative-set",
+            "iter-271 attack_power preset must label the pattern explicitly for operator-trust");
+    }
+
+    [Fact]
+    public void Preset_AttackPowerHonestDefer_CitesAllThreeAlternativesByScope()
+    {
+        // Alternative-set pattern (iter-270 NEW) requires ALL THREE LIVE alternatives
+        // to be cited by SCOPE so operators don't miss the right one for their need.
+        var source = LoadVmSource();
+        source.Should().Contain("iter-96  SWFOC_SetDamageMultiplierGlobal",
+            "iter-271 attack_power preset must cite iter-96 GLOBAL outgoing damage scaling");
+        source.Should().Contain("iter-154 SWFOC_SetDamageModifierLua",
+            "iter-271 attack_power preset must cite iter-154 PER-INSTANCE damage scaling");
+        source.Should().Contain("iter-225 SWFOC_SetFireRateMultiplierGlobal",
+            "iter-271 attack_power preset must cite iter-225 GLOBAL fire-rate scaling");
+    }
+
+    [Fact]
+    public void Preset_HonestDeferEntries_ReferenceIter256MemoryRule()
+    {
+        // The iter-256 memory rule (feedback_aob_drift_across_binary_versions) is
+        // what justified the fresh RE walks at iter-267 + iter-269. Both honest-defer
+        // entries must reference it so operators see the audit trail.
+        var source = LoadVmSource();
+        source.Should().Contain("iter-256 memory rule",
+            "iter-271 honest-defer entries must reference the iter-256 memory rule that justified the RE walks");
+    }
+
+    [Fact]
+    public void GroupBoxHeader_ReflectsIter270Coverage()
+    {
+        // History of this header:
+        //   iter-271: "Iter 100-258" → "Iter 100-270 LIVE wires (+2 honest-defer notes)"
+        //   iter-335: "Iter 100-270" → "Iter 100-300 LIVE wires (+2 honest-defer notes)"
+        //   v1.0.2:   "Iter 100-300 LIVE wires (+2 honest-defer notes)" → "LIVE wire examples (300+)"
+        //
+        // v1.0.2 (improvement_plan_2026-05-20.md Part 1 HIGH #2): drop iter-N
+        // jargon from operator-visible GroupBox headers. The internal "honest-defer"
+        // notion leaked through the header text; replaced with a generic
+        // "LIVE wire examples (300+)" that conveys the same scope without dev
+        // vocabulary.
+        var xaml = LoadXamlSource();
+        xaml.Should().Contain("LIVE wire examples (300+)",
+            "v1.0.2 GroupBox header drops iter-N + honest-defer jargon (operator-trust pattern)");
+        xaml.Should().NotContain("Iter 100-258 LIVE wires",
+            "iter-271 removed the iter-258-era header; subsequent edits must not regress");
+        xaml.Should().NotContain("Iter 100-270 LIVE wires",
+            "iter-335 removed the iter-270-era header; subsequent edits must not regress");
+        xaml.Should().NotContain("Iter 100-300 LIVE wires",
+            "v1.0.2 removed the iter-300-era header; subsequent edits must not regress");
+        xaml.Should().NotContain("honest-defer notes)",
+            "v1.0.2 drops the internal 'honest-defer' jargon from operator-visible text");
+    }
+}

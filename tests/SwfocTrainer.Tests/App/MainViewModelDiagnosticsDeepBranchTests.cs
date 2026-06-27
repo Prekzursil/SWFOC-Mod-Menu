@@ -326,7 +326,7 @@ public sealed class MainViewModelDiagnosticsDeepBranchTests
                 ModPathRaw: @"C:\Mods\MyMod",
                 ModPathNormalized: @"C:\Mods\MyMod",
                 DetectedVia: "cmd",
-                Recommendation: null));
+                Recommendation: null!));
 
         var summary = MainViewModelDiagnostics.BuildProcessDiagnosticSummary(process, "unknown");
         summary.Should().Contain(@"modPath=C:\Mods\MyMod");

@@ -70,15 +70,60 @@ Route diagnostics are emitted on every action result:
    - receipt file `<target>.apply-receipt.<runId>.json`
 5. Roll back using `ISavePatchApplyService.RestoreLastBackupAsync`.
 
+## v5 Feature Expansion Layer
+
+The v5 expansion adds 15 new services and a dedicated ViewModel layer for 21 features across 6 waves:
+
+### ViewModel hierarchy
+
+```
+MainViewModelCoreStateBase         (backing fields, SetField)
+  MainViewModelBindableMembersBase (properties, ObservableCollections, ICommand declarations)
+    MainViewModelLiveOpsBase       (reliability, diagnostics, spawn)
+      MainViewModelQuickActionsBase(toggle actions, hotkeys, freeze)
+        MainViewModelSaveOpsBase   (save editor operations)
+          MainViewModelV5FeaturesBase  ← NEW: 15 command handlers for v5 features
+            MainViewModel          (top-level wiring, command contexts)
+```
+
+### v5 service interfaces (`Core/Contracts/IV5Services.cs`)
+
+| Interface | Wave | Feature |
+|-----------|------|---------|
+| `IRosterBrowserService` | 1 | Unit roster from mod XML |
+| `IFactionDashboardService` | 1 | Faction strength overview |
+| `IEnhancedSpawnService` | 1 | Cross-faction tactical/galactic spawning |
+| `ILiveInspectorService` | 1 | Selected unit HP/shield/stats display |
+| `IOwnershipTransferService` | 2 | Unit/planet ownership change |
+| `IPlanetManagerService` | 2 | Planet details and management |
+| `IFleetManagerService` | 2 | Fleet composition and movement |
+| `IFactionSwitchService` | 2 | Play-as-faction switching |
+| `IAiControlService` | 3 | AI suspend/resume/difficulty |
+| `ICooldownManagerService` | 3 | Ability cooldown reset |
+| `ICameraDirectorService` | 4 | Cinematic camera control |
+| `IStoryEventService` | 4 | Story event triggers |
+| `IModConflictDetectorService` | 5 | Cross-mod entity conflict detection |
+| `IDamageLogService` | 5 | Combat damage analytics |
+| `IDiplomacyService` | 6 | Alliance management (mod-aware) |
+| `ICorruptionService` | 6 | FoC corruption system (type-specific) |
+
+### v5 data models (`Core/Models/V5Models.cs`)
+
+22 sealed records and 8 enums covering all feature data: `RosterBrowserEntry`, `FactionDashboardSnapshot`, `EnhancedSpawnRequest`, `InspectorSnapshot`, `OwnershipTransferRequest`, `PlanetInfo`, `FleetInfo`, `CameraKeyframe`, `StoryEventEntry`, `DamageLogEntry`, `BattleStatsSummary`, `DiplomacyState`, `CorruptionEntry`, etc.
+
+### v5 XAML tabs (12 new tabs in `MainWindow.xaml`)
+
+Unit Roster, Spawner, Faction Dashboard, Planet Manager, Fleet Manager, Ownership, AI Control, Camera Director, Story Events, Damage Log, Diplomacy, Corruption.
+
 ## Projects
 
-- `SwfocTrainer.Core`: contracts, records, orchestrator, audit logger.
+- `SwfocTrainer.Core`: contracts, records, orchestrator, audit logger, **v5 services (15 new)**.
 - `SwfocTrainer.Runtime`: process + memory + signature scan.
 - `SwfocTrainer.Profiles`: manifest/profile loading, inheritance, updates.
 - `SwfocTrainer.Catalog`: prebuilt catalog loading and XML fallback parser.
 - `SwfocTrainer.Helper`: helper-mod deployment and hash verification.
 - `SwfocTrainer.Saves`: schema-driven save parse/edit/validate/write + patch-pack export/apply/rollback.
-- `SwfocTrainer.App`: WPF shell and user workflows.
+- `SwfocTrainer.App`: WPF shell and user workflows, **v5 ViewModel layer + 12 XAML tabs**.
 - `native/SwfocExtender.*`: native extender skeleton (`Core`, `Bridge`, `Overlay`, `Plugins`) for in-process vNext capabilities.
 
 ## Data roots

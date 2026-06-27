@@ -122,7 +122,22 @@ public sealed class MainViewModelFactoriesCoverageTests
             FreezeService = null!,
             ActionReliability = null!,
             SelectedUnitTransactions = null!,
-            SpawnPresets = null!
+            SpawnPresets = null!,
+            RosterBrowser = null!,
+            FactionDashboard = null!,
+            EnhancedSpawn = null!,
+            OwnershipTransfer = null!,
+            PlanetManager = null!,
+            FleetManager = null!,
+            FactionSwitch = null!,
+            AiControl = null!,
+            CooldownManager = null!,
+            CameraDirector = null!,
+            StoryEvents = null!,
+            ModConflicts = null!,
+            DamageLog = null!,
+            Diplomacy = null!,
+            Corruption = null!
         };
     }
 

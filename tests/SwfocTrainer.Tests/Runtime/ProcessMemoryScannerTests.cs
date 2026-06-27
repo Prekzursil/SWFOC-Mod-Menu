@@ -311,9 +311,15 @@ public sealed class ProcessMemoryScannerTests
         var method = typeof(ProcessMemoryScanner).GetMethod(
             "TryReadChunk", BindingFlags.NonPublic | BindingFlags.Static);
         method.Should().NotBeNull("TryReadChunk should exist");
-        var args = new object[] { handle, regionBase, offset, buffer, toRead, 0 };
+
+        // B4 refactored TryReadChunk to take ChunkReadContext record
+        var ctxType = typeof(ProcessMemoryScanner).GetNestedType(
+            "ChunkReadContext", BindingFlags.NonPublic);
+        ctxType.Should().NotBeNull("ChunkReadContext should exist");
+        var ctx = Activator.CreateInstance(ctxType!, handle, regionBase, offset, toRead);
+        var args = new object?[] { ctx, buffer, 0 };
         var result = (bool)method!.Invoke(null, args)!;
-        read = (int)args[5];
+        read = (int)args[2]!;
         return result;
     }
 

@@ -478,7 +478,7 @@ public sealed class SignatureResolverFallbacksTests
     private static ProcessMemoryAccessor CreateFakeAccessor()
     {
         // Use RuntimeHelpers to create an uninitialized instance (no constructor called)
-        var accessor = (ProcessMemoryAccessor)System.Runtime.Serialization.FormatterServices
+        var accessor = (ProcessMemoryAccessor)System.Runtime.CompilerServices.RuntimeHelpers
             .GetUninitializedObject(typeof(ProcessMemoryAccessor));
 
         // Set _handle to a known-invalid but non-zero value so Dispose doesn't skip

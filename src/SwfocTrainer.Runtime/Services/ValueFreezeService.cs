@@ -1,5 +1,4 @@
 using System.Collections.Concurrent;
-using System.Runtime.InteropServices;
 using Microsoft.Extensions.Logging;
 using SwfocTrainer.Core.Contracts;
 
@@ -9,14 +8,23 @@ namespace SwfocTrainer.Runtime.Services;
 /// Background service that continuously re-writes frozen memory values.
 /// <para>
 /// Regular symbols use a 50 ms <see cref="Timer"/> pulse (plenty fast for values the game doesn't
-/// actively overwrite). Symbols registered via <see cref="FreezeIntAggressive"/> use a dedicated
-/// high-frequency thread (~1-2 ms writes) backed by <c>timeBeginPeriod(1)</c>, which is fast
-/// enough to overpower the game's own float→int credit sync that runs every ~16 ms.
+/// actively overwrite). Symbols registered via <see cref="FreezeIntAggressive"/> use a
+/// <see cref="PeriodicTimer"/>-based async pump at a 16 ms cadence (matching the game's
+/// ~60 fps frame rate), which is sufficient to win the race against the game's per-frame
+/// float→int credit sync without affecting host-system responsiveness.
+/// </para>
+/// <para>
+/// History: an earlier implementation used <c>timeBeginPeriod(1)</c> + a tight <c>Thread.Sleep(1)</c>
+/// loop at <c>ThreadPriority.AboveNormal</c> with sync-over-async IPC. That combination raised
+/// the system-wide OS scheduler tick rate, hammered the bridge ~1000×/sec, and could freeze the
+/// host PC. See <c>knowledge-base/freeze_audit_2026-04-27.md</c> for details. The current
+/// implementation deliberately avoids <c>winmm.dll</c>, custom thread priorities, and busy loops.
 /// </para>
 /// </summary>
-public sealed class ValueFreezeService : IValueFreezeService
+public sealed class ValueFreezeService : IValueFreezeService, IAsyncDisposable
 {
     private const int DefaultPulseIntervalMs = 50;
+    private const int AggressivePulseIntervalMs = 16; // ~60 fps — matches game frame rate
 
     private readonly IRuntimeAdapter _runtime;
     private readonly ILogger<ValueFreezeService> _logger;
@@ -24,10 +32,10 @@ public sealed class ValueFreezeService : IValueFreezeService
     private readonly Timer _timer;
     private volatile bool _disposed;
 
-    // ── Aggressive freeze thread ─────────────────────────────────────────
+    // ── Aggressive freeze pump (PeriodicTimer-based, 16ms cadence) ───────
     private readonly ConcurrentDictionary<string, AggressiveFreezeEntry> _aggressiveEntries = new(StringComparer.OrdinalIgnoreCase);
-    private Thread? _aggressiveThread;
-    private volatile bool _aggressiveRunning;
+    private Task? _aggressivePump;
+    private CancellationTokenSource? _aggressiveCts;
     private readonly object _aggressiveLock = new();
 
     public ValueFreezeService(IRuntimeAdapter runtime, ILogger<ValueFreezeService> logger, int pulseIntervalMs)
@@ -155,31 +163,28 @@ public sealed class ValueFreezeService : IValueFreezeService
         };
     }
 
-    // ── Aggressive ~1 ms thread (for game-overwritten symbols like credits) ──
-
-    [DllImport("winmm.dll", EntryPoint = "timeBeginPeriod")]
-    private static extern uint TimeBeginPeriod(uint uMilliseconds);
-
-    [DllImport("winmm.dll", EntryPoint = "timeEndPeriod")]
-    private static extern uint TimeEndPeriod(uint uMilliseconds);
+    // ── Aggressive 16 ms pump (for game-overwritten symbols like credits) ──
+    //
+    // Implementation note: a previous version of this file used winmm.dll's
+    // timeBeginPeriod(1) + Thread.Sleep(1) at AboveNormal priority + sync-over-
+    // async IPC. That triple anti-pattern raised the system-wide OS scheduler
+    // tick to 1ms, preempted the desktop compositor, and could freeze the host
+    // machine. The current implementation uses standard async/await with
+    // PeriodicTimer at the natural 16 ms (60 fps) game-frame cadence, which is
+    // sufficient to win the race against the game's per-frame float→int sync.
 
     private void EnsureAggressiveThreadRunning()
     {
         lock (_aggressiveLock)
         {
-            if (_aggressiveRunning)
+            if (_aggressivePump is not null && !_aggressivePump.IsCompleted)
             {
                 return;
             }
 
-            _aggressiveRunning = true;
-            _aggressiveThread = new Thread(AggressiveWriteLoop)
-            {
-                IsBackground = true,
-                Priority = ThreadPriority.AboveNormal,
-                Name = "ValueFreezeService.AggressiveWriter"
-            };
-            _aggressiveThread.Start();
+            _aggressiveCts?.Dispose();
+            _aggressiveCts = new CancellationTokenSource();
+            _aggressivePump = Task.Run(() => AggressivePumpAsync(_aggressiveCts.Token));
         }
     }
 
@@ -187,50 +192,54 @@ public sealed class ValueFreezeService : IValueFreezeService
     {
         if (_aggressiveEntries.IsEmpty)
         {
-            _aggressiveRunning = false;
+            lock (_aggressiveLock)
+            {
+                _aggressiveCts?.Cancel();
+            }
         }
     }
 
-    private void AggressiveWriteLoop()
+    private async Task AggressivePumpAsync(CancellationToken ct)
     {
-        TimeBeginPeriod(1);
+        using var timer = new PeriodicTimer(TimeSpan.FromMilliseconds(AggressivePulseIntervalMs));
         try
         {
-            while (_aggressiveRunning && !_disposed)
+            while (await timer.WaitForNextTickAsync(ct).ConfigureAwait(false))
             {
+                if (_disposed)
+                {
+                    return;
+                }
                 if (!_runtime.IsAttached || _aggressiveEntries.IsEmpty)
                 {
-                    Thread.Sleep(10);
                     continue;
                 }
 
                 foreach (var entry in _aggressiveEntries.Values)
                 {
+                    if (ct.IsCancellationRequested)
+                    {
+                        return;
+                    }
                     try
                     {
-                        _runtime.WriteAsync(entry.Symbol, entry.Value).GetAwaiter().GetResult();
+                        await _runtime.WriteAsync(entry.Symbol, entry.Value)
+                            .ConfigureAwait(false);
                     }
                     catch (InvalidOperationException)
                     {
-                        // Swallow — transient failure, retry on next cycle.
+                        // Transient failure, retry on next tick.
                     }
                     catch (System.ComponentModel.Win32Exception)
                     {
-                        // Swallow — transient failure, retry on next cycle.
+                        // Transient failure, retry on next tick.
                     }
                 }
-
-                Thread.Sleep(1); // ~1-2 ms with timeBeginPeriod(1)
             }
         }
-        finally
+        catch (OperationCanceledException)
         {
-            TimeEndPeriod(1);
-            lock (_aggressiveLock)
-            {
-                _aggressiveRunning = false;
-                _aggressiveThread = null;
-            }
+            // Normal shutdown path.
         }
     }
 
@@ -242,11 +251,63 @@ public sealed class ValueFreezeService : IValueFreezeService
         }
 
         _disposed = true;
-        _aggressiveRunning = false;
         _timer.Dispose();
         _entries.Clear();
         _aggressiveEntries.Clear();
-        _aggressiveThread?.Join(500);
+
+        Task? pump;
+        CancellationTokenSource? cts;
+        lock (_aggressiveLock)
+        {
+            pump = _aggressivePump;
+            cts = _aggressiveCts;
+            _aggressivePump = null;
+        }
+        cts?.Cancel();
+        try
+        {
+            pump?.Wait(TimeSpan.FromMilliseconds(500));
+        }
+        catch (AggregateException)
+        {
+            // Pump completed with cancellation — expected.
+        }
+        cts?.Dispose();
+    }
+
+    public async ValueTask DisposeAsync()
+    {
+        if (_disposed)
+        {
+            return;
+        }
+
+        _disposed = true;
+        _timer.Dispose();
+        _entries.Clear();
+        _aggressiveEntries.Clear();
+
+        Task? pump;
+        CancellationTokenSource? cts;
+        lock (_aggressiveLock)
+        {
+            pump = _aggressivePump;
+            cts = _aggressiveCts;
+            _aggressivePump = null;
+        }
+        cts?.Cancel();
+        if (pump is not null)
+        {
+            try
+            {
+                await pump.ConfigureAwait(false);
+            }
+            catch (OperationCanceledException)
+            {
+                // Expected during shutdown.
+            }
+        }
+        cts?.Dispose();
     }
 
     private enum FreezeKind { Int32, Float, Bool }

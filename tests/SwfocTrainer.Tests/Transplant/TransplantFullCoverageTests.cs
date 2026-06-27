@@ -192,10 +192,11 @@ public sealed class TransplantFullCoverageTests
     }
 
     [Fact]
-    public async Task ContentTransplantService_ShouldThrow_WhenCompatibilityServiceIsNull()
+    public Task ContentTransplantService_ShouldThrow_WhenCompatibilityServiceIsNull()
     {
         var act = () => new ContentTransplantService(null!);
         act.Should().Throw<ArgumentNullException>();
+        return Task.CompletedTask;
     }
 
     [Fact]

@@ -92,7 +92,10 @@ public sealed class LiveTacticalToggleWorkflowTests
 
     private async Task<AttachSession> EnsureAttachedTacticalSessionAsync(RuntimeAdapter runtime, string profileId)
     {
-        var session = await runtime.AttachAsync(profileId);
+        // 2026-04-29 (iter 120, refactored iter 121): centralised
+        // ATTACH_NO_PROCESS-skip pattern lives in LiveSkip.AttachOrSkipAsync.
+        var session = await LiveSkip.AttachOrSkipAsync(runtime, profileId, _output);
+
         if (session.Process.Mode is not (RuntimeMode.AnyTactical or RuntimeMode.TacticalLand or RuntimeMode.TacticalSpace))
         {
             throw LiveSkip.For(_output, $"runtime mode is {session.Process.Mode}, tactical checks require AnyTactical/TacticalLand/TacticalSpace.");

@@ -314,53 +314,53 @@ public sealed class RuntimeAdapterContextSpawnDefaultsTests
     private sealed class StubProcessLocator : IProcessLocator
     {
         public Task<IReadOnlyList<ProcessMetadata>> FindSupportedProcessesAsync(CancellationToken cancellationToken)
-            {
-                _ = cancellationToken;
-                return Task.FromResult<IReadOnlyList<ProcessMetadata>>(Array.Empty<ProcessMetadata>());
-            }
+        {
+            _ = cancellationToken;
+            return Task.FromResult<IReadOnlyList<ProcessMetadata>>(Array.Empty<ProcessMetadata>());
+        }
 
         public Task<ProcessMetadata?> FindBestMatchAsync(ExeTarget target, CancellationToken cancellationToken)
-            {
-                _ = target;
-                _ = cancellationToken;
-                return Task.FromResult<ProcessMetadata?>(null);
-            }
+        {
+            _ = target;
+            _ = cancellationToken;
+            return Task.FromResult<ProcessMetadata?>(null);
+        }
     }
 
     private sealed class StubProfileRepository : IProfileRepository
     {
         public Task<ProfileManifest> LoadManifestAsync(CancellationToken cancellationToken)
-            {
-                _ = cancellationToken;
-                throw new NotImplementedException();
-            }
+        {
+            _ = cancellationToken;
+            throw new NotImplementedException();
+        }
 
         public Task<TrainerProfile> LoadProfileAsync(string profileId, CancellationToken cancellationToken)
-            {
-                _ = profileId;
-                _ = cancellationToken;
-                throw new NotImplementedException();
-            }
+        {
+            _ = profileId;
+            _ = cancellationToken;
+            throw new NotImplementedException();
+        }
 
         public Task<TrainerProfile> ResolveInheritedProfileAsync(string profileId, CancellationToken cancellationToken)
-            {
-                _ = profileId;
-                _ = cancellationToken;
-                throw new NotImplementedException();
-            }
+        {
+            _ = profileId;
+            _ = cancellationToken;
+            throw new NotImplementedException();
+        }
 
         public Task ValidateProfileAsync(TrainerProfile profile, CancellationToken cancellationToken)
-            {
-                _ = profile;
-                _ = cancellationToken;
-                return Task.CompletedTask;
-            }
+        {
+            _ = profile;
+            _ = cancellationToken;
+            return Task.CompletedTask;
+        }
 
         public Task<IReadOnlyList<string>> ListAvailableProfilesAsync(CancellationToken cancellationToken)
-            {
-                _ = cancellationToken;
-                return Task.FromResult<IReadOnlyList<string>>(Array.Empty<string>());
-            }
+        {
+            _ = cancellationToken;
+            return Task.FromResult<IReadOnlyList<string>>(Array.Empty<string>());
+        }
     }
 
     private sealed class StubSignatureResolver : ISignatureResolver

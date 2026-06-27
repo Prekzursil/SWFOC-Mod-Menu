@@ -18,6 +18,7 @@ logs/
 # Rider / VSCode
 .idea/
 .vscode/
+.claude/
 
 # OS
 .DS_Store
@@ -29,6 +30,7 @@ cache/
 # Test output
 TestResults/
 coverage/
+coverage-results/
 tools/visual-chromatic/node_modules/
 tools/visual-chromatic/playwright-report/
 tools/visual-chromatic/test-results/
@@ -66,6 +68,7 @@ native/logs/
 *.pid
 
 # QLTY local analysis
+.qlty/
 .qlty/logs/
 .qlty/out/
 .qlty/plugin_cachedir/
@@ -90,6 +93,14 @@ coverage-100/
 scratch/
 checkcov.ps1
 tmp_codacy_*.json
+_gen_wave*.py
+codacy-issues-fix-plan.md
+scripts/parse_cov.py
+*.err
+/publish/
+/0
+/1
+/NUL
 
 # Cheat Engine tables (local RE workspace)
 *.ct

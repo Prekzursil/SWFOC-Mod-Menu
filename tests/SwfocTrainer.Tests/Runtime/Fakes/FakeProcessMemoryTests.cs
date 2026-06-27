@@ -217,7 +217,7 @@ public sealed class FakeProcessMemoryTests
     public void Allocate_WithPreferredAddress_ShouldReturnPreferred()
     {
         using var memory = new FakeProcessMemory();
-        var preferred = (nint)0xBEEF_0000;
+        var preferred = unchecked((nint)0xBEEF_0000);
 
         var address = memory.Allocate(4096, executable: true, preferredAddress: preferred);
 

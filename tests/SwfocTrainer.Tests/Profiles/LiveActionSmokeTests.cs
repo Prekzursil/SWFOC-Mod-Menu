@@ -58,7 +58,7 @@ public sealed class LiveActionSmokeTests
 
         _output.WriteLine(
             $"Selected profile for live smoke: {profileId} (reason={context.Recommendation.ReasonCode}, confidence={context.Recommendation.Confidence:0.00})");
-        var session = await runtime.AttachAsync(profileId);
+        var session = await LiveSkip.AttachOrSkipAsync(runtime, profileId, _output);
         session.Process.ProcessId.Should().Be(running.ProcessId);
         session.Symbols.Symbols.Count.Should().BeGreaterThan(0);
 

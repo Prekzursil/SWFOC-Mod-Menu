@@ -307,7 +307,8 @@ public sealed class ModOnboardingService : IModOnboardingService
             p.Warnings.Add("No local path hints were inferred from launch samples.");
         }
 
-        var metadata = BuildSeedMetadata(p.Seed, p.SourceRunId, baseProfile.Id, workshopIds, aliases, pathHints, requiredCapabilities);
+        var metadataInput = new SeedMetadataInput(p.Seed, p.SourceRunId, baseProfile.Id, workshopIds, aliases, pathHints, requiredCapabilities);
+        var metadata = BuildSeedMetadata(metadataInput);
 
         var draftProfile = new TrainerProfile(
             Id: p.ProfileId,
@@ -342,26 +343,29 @@ public sealed class ModOnboardingService : IModOnboardingService
         return new SeedScaffoldResult(workshopIds, pathHints, aliases, outputPath);
     }
 
-    private static Dictionary<string, string> BuildSeedMetadata(
-        GeneratedProfileSeed seed,
-        string sourceRunId,
-        string baseProfileId,
-        IReadOnlyList<string> workshopIds,
-        IReadOnlyList<string> aliases,
-        IReadOnlyList<string> pathHints,
-        IReadOnlyList<string> requiredCapabilities)
+    private sealed record SeedMetadataInput(
+        GeneratedProfileSeed Seed,
+        string SourceRunId,
+        string BaseProfileId,
+        IReadOnlyList<string> WorkshopIds,
+        IReadOnlyList<string> Aliases,
+        IReadOnlyList<string> PathHints,
+        IReadOnlyList<string> RequiredCapabilities);
+
+    private static Dictionary<string, string> BuildSeedMetadata(SeedMetadataInput input)
     {
+        var seed = input.Seed;
         var metadata = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
         {
             ["origin"] = "auto_discovery",
-            ["sourceRunId"] = sourceRunId.Trim(),
+            ["sourceRunId"] = input.SourceRunId.Trim(),
             ["confidence"] = seed.Confidence.ToString("0.00", CultureInfo.InvariantCulture),
-            ["parentProfile"] = ResolveParentProfile(seed, baseProfileId)
+            ["parentProfile"] = ResolveParentProfile(seed, input.BaseProfileId)
         };
 
-        AddMetadataIfNotEmpty(metadata, "requiredWorkshopIds", workshopIds);
-        AddMetadataIfNotEmpty(metadata, "profileAliases", aliases);
-        AddMetadataIfNotEmpty(metadata, "localPathHints", pathHints);
+        AddMetadataIfNotEmpty(metadata, "requiredWorkshopIds", input.WorkshopIds);
+        AddMetadataIfNotEmpty(metadata, "profileAliases", input.Aliases);
+        AddMetadataIfNotEmpty(metadata, "localPathHints", input.PathHints);
         AddTrimmedMetadata(metadata, "onboardingNotes", seed.Notes);
         AddTrimmedMetadata(metadata, "seedTitle", seed.Title);
         AddTrimmedMetadata(metadata, "workshopId", seed.WorkshopId);
@@ -375,7 +379,7 @@ public sealed class ModOnboardingService : IModOnboardingService
         AddFilteredListMetadata(metadata, "parentDependencies", seed.ParentDependencies);
         AddFilteredListMetadata(metadata, "launchHints", seed.LaunchHints);
         AddFilteredListMetadata(metadata, "anchorHints", seed.AnchorHints);
-        AddMetadataIfNotEmpty(metadata, "requiredCapabilities", requiredCapabilities);
+        AddMetadataIfNotEmpty(metadata, "requiredCapabilities", input.RequiredCapabilities);
 
         return metadata;
     }
@@ -583,7 +587,7 @@ public sealed class ModOnboardingService : IModOnboardingService
             }
         }
 
-        foreach (var hint in inferred.Where(x => !string.IsNullOrWhiteSpace(x) && IsPathHintCandidate(x)))  // NOSONAR
+        foreach (var hint in inferred.Where(x => !string.IsNullOrWhiteSpace(x) && IsPathHintCandidate(x)))
         {
             merged.Add(hint);
         }
@@ -637,7 +641,7 @@ public sealed class ModOnboardingService : IModOnboardingService
         return ids.OrderBy(x => x, StringComparer.OrdinalIgnoreCase).ToArray();
     }
 
-    private static IReadOnlyList<string> InferPathHints(IReadOnlyList<ModLaunchSample> samples)  // NOSONAR
+    private static IReadOnlyList<string> InferPathHints(IReadOnlyList<ModLaunchSample> samples)
     {
         var hints = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
 
@@ -713,7 +717,7 @@ public sealed class ModOnboardingService : IModOnboardingService
             .Where(normalized => !string.IsNullOrWhiteSpace(normalized));
     }
 
-    private static IReadOnlyList<string> InferAliases(string profileId, string displayName, IReadOnlyList<string>? userAliases)  // NOSONAR
+    private static IReadOnlyList<string> InferAliases(string profileId, string displayName, IReadOnlyList<string>? userAliases)
     {
         var aliases = new HashSet<string>(StringComparer.OrdinalIgnoreCase)
         {
