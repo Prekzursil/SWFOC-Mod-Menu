@@ -104,3 +104,16 @@ tmp_codacy_*.json
 *.ilk
 *.pdb
 bridge/test_runs/
+
+# Vendored PetroglyphTools is incorporated SOURCE-ONLY. Its upstream bundles
+# copyrighted Star Wars game-asset binaries (mastertextfile_*.dat, *.meg, *.MTD)
+# as test fixtures — those were EXCLUDED at incorporation time and must never be
+# committed to this public repo.
+# NB: do NOT add bare "*.dat"/"*.meg"/"*.MTD"/"*.test" patterns here — git is
+# case-insensitive on Windows, so they also match PT's project/test directories
+# (PG.StarWarsGame.Files.DAT, ...MEG, ...MTD, *.Test) and would drop core source.
+# The game-asset binaries are guarded by name + by their Resources/ location.
+PetroglyphTools/**/Resources/**/mastertextfile*
+PetroglyphTools/**/Resources/**/creditstextfile*
+PetroglyphTools/**/bin/
+PetroglyphTools/**/obj/
