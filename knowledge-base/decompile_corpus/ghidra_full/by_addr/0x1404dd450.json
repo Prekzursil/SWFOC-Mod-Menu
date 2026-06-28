@@ -1,0 +1,7 @@
+{
+  "addr": "0x1404dd450",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */\n\nundefined8 FUN_1404dd450(uint param_1)\n\n{\n  int iVar1;\n  longlong lVar2;\n  int iVar3;\n  longlong *plVar4;\n  uint uVar5;\n  \n  uVar5 = (param_1 ^ 0xdeadbeef) & 0x7fffffff;\n  iVar3 = (uVar5 % 0x1f31d) * 0x41a7 + (uVar5 / 0x1f31d) * -0xb14;\n  iVar1 = iVar3 + 0x7fffffff;\n  if (-1 < iVar3) {\n    iVar1 = iVar3;\n  }\n  plVar4 = (longlong *)(((longlong)iVar1 & _DAT_140b31940) * 0x10 + _DAT_140b31928);\n  lVar2 = plVar4[1];\n  if (lVar2 != DAT_140b31918) {\n    iVar1 = *(int *)(lVar2 + 0x10);\n    iVar3 = iVar1 - param_1;\n    if ((int)param_1 < iVar1) {\n      do {\n        if (lVar2 == *plVar4) {\n          return 0;\n        }\n        lVar2 = *(longlong *)(lVar2 + 8);\n      } while ((int)param_1 < *(int *)(lVar2 + 0x10));\n      iVar1 = *(int *)(lVar2 + 0x10);\n      iVar3 = iVar1 - param_1;\n    }\n    if ((SBORROW4(iVar1,param_1) == iVar3 < 0) && (lVar2 != DAT_140b31918)) {\n      return *(undefined8 *)(lVar2 + 0x18);\n    }\n  }\n  return 0;\n}",
+  "fetched_at": "2026-04-26T18:15:20Z"
+}

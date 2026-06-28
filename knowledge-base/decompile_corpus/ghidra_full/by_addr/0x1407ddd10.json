@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407ddd10",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "char * FUN_1407ddd10(int param_1)\n\n{\n  errno_t eVar1;\n  longlong lVar2;\n  undefined8 uVar3;\n  int *piVar4;\n  longlong lVar5;\n  ulonglong uVar6;\n  char *_Src;\n  \n  uVar6 = (ulonglong)param_1;\n  lVar2 = __acrt_getptd_noexit();\n  if (lVar2 == 0) {\nLAB_1407ddd2a:\n    return \"Visual C++ CRT: Not enough memory to complete call to strerror.\";\n  }\n  if (*(longlong *)(lVar2 + 0x78) == 0) {\n    uVar3 = _calloc_base(0x86,1);\n    *(undefined8 *)(lVar2 + 0x78) = uVar3;\n    _free_base(0);\n    if (*(longlong *)(lVar2 + 0x78) == 0) goto LAB_1407ddd2a;\n  }\n  if ((DAT_1408ff1d8 < uVar6) ||\n     ((piVar4 = (int *)FUN_1407ddfa8(), (ulonglong)(longlong)*piVar4 < uVar6 &&\n      (uVar6 < DAT_1408ff1d0)))) {\n    piVar4 = (int *)FUN_1407ddfa8();\n    uVar6 = (ulonglong)*piVar4;\n  }\n  else {\n    piVar4 = (int *)FUN_1407ddfa8();\n    if ((ulonglong)(longlong)*piVar4 < uVar6) {\n      _Src = (&PTR_s_address_in_use_1408ff1e0)[uVar6 - DAT_1408ff1d0];\n      goto LAB_1407dddb7;\n    }\n  }\n  lVar5 = FUN_1407ddfa0();\n  _Src = *(char **)(lVar5 + uVar6 * 8);\nLAB_1407dddb7:\n  eVar1 = strncpy_s(*(char **)(lVar2 + 0x78),0x86,_Src,0x85);\n  if (eVar1 == 0) {\n    return *(char **)(lVar2 + 0x78);\n  }\n                    /* WARNING: Subroutine does not return */\n  _invoke_watson((wchar_t *)0x0,(wchar_t *)0x0,(wchar_t *)0x0,0,0);\n}",
+  "fetched_at": "2026-04-26T18:59:07Z"
+}

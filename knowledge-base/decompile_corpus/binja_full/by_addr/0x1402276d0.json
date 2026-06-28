@@ -1,0 +1,7 @@
+{
+  "addr": "0x1402276d0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1402276e4        *arg1 = &WinsockAsyncSocketImpl::`vftable'{for `PGNetAsyncSocketImpl'}\n1402276e9        SOCKET s = arg1[2]\n1402276f1        if (s != -1)\n1402276f3        closesocket(s)\n1402276f9        arg1[2] = -1\n140227701        int32_t temp0_1 = data_140a7e308\n140227701        data_140a7e308 -= 1\n140227708        if (temp0_1 == 1)\n14022770a        WSACleanup()\n140227717        *arg1 = &RefCountClass::`vftable'{for `IRefCountClass'}\n14022771e        if ((arg2 & 1) != 0)\n140227728        j_sub_1407864b8(arg1)\n14022773a        return arg1",
+  "fetched_at": "2026-04-26T17:29:23Z"
+}

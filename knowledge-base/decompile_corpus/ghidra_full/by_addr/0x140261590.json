@@ -1,0 +1,7 @@
+{
+  "addr": "0x140261590",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "longlong FUN_140261590(longlong param_1,longlong param_2)\n\n{\n  FUN_140140510(*(undefined8 *)(param_1 + 0x40),*(undefined8 *)(param_2 + 0x40));\n  *(undefined4 *)(param_1 + 0x10) = *(undefined4 *)(param_2 + 0x10);\n  *(undefined4 *)(param_1 + 0x14) = *(undefined4 *)(param_2 + 0x14);\n  *(undefined4 *)(param_1 + 0x18) = *(undefined4 *)(param_2 + 0x18);\n  *(undefined4 *)(param_1 + 0x1c) = *(undefined4 *)(param_2 + 0x1c);\n  *(undefined4 *)(param_1 + 0x20) = *(undefined4 *)(param_2 + 0x20);\n  *(undefined4 *)(param_1 + 0x24) = *(undefined4 *)(param_2 + 0x24);\n  *(undefined4 *)(param_1 + 0x28) = *(undefined4 *)(param_2 + 0x28);\n  *(undefined4 *)(param_1 + 0x2c) = *(undefined4 *)(param_2 + 0x2c);\n  *(undefined4 *)(param_1 + 0x30) = *(undefined4 *)(param_2 + 0x30);\n  *(undefined4 *)(param_1 + 0x34) = *(undefined4 *)(param_2 + 0x34);\n  *(undefined4 *)(param_1 + 0x38) = *(undefined4 *)(param_2 + 0x38);\n  *(undefined4 *)(param_1 + 0x3c) = *(undefined4 *)(param_2 + 0x3c);\n  return param_1;\n}",
+  "fetched_at": "2026-04-26T18:15:45Z"
+}

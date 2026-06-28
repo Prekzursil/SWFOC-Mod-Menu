@@ -1,0 +1,7 @@
+{
+  "addr": "0x14061dff0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14061e033        uint64_t zmm2[0x2] = sub_14061d890(arg1, arg2, arg3, arg4, arg5, arg6, arg8, arg9, 0, nullptr)\n14061e038        float zmm0 = *arg2\n14061e044        zmm0 - 9.99999984e+17f\n14061e049        if (is_unordered.d(zmm0, 9.99999984e+17f) || zmm0 != 9.99999984e+17f)\n14061e076        label_14061e076:\n14061e076        void var_18\n14061e076        int32_t* rax_3 = sub_14061ca90(arg1, &var_18, arg7, arg2, zmm2)\n14061e07d        *arg2 = *rax_3\n14061e082        arg2[1] = rax_3[1]\n14061e088        arg2[2] = rax_3[2]\n14061e04b        zmm0 = arg2[1]\n14061e050        zmm0 - 9.99999984e+17f\n14061e055        if (is_unordered.d(zmm0, 9.99999984e+17f) || zmm0 != 9.99999984e+17f)\n14061e053        goto label_14061e076\n14061e057        zmm0 = arg2[2]\n14061e05c        zmm0 - 9.99999984e+17f\n14061e061        if (is_unordered.d(zmm0, 9.99999984e+17f) || not(zmm0 == 9.99999984e+17f))\n14061e05f        goto label_14061e076\n14061e098        return arg2",
+  "fetched_at": "2026-04-26T17:23:41Z"
+}

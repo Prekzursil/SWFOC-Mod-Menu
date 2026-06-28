@@ -1,0 +1,7 @@
+{
+  "addr": "0x14079f768",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14079f77f        int64_t* rax = __dcrt_get_or_create_wide_environment_nolock()\n14079f786        int64_t* rdi = rax\n14079f791        if (rax != 0 && arg1 != 0)\n14079f793        int64_t rbx_1 = -1\n14079f797        rbx_1 += 1\n14079f79e        do while (arg1[rbx_1] != 0)\n14079f7a0        int16_t* i = *rax\n14079f7a6        while (i != 0)\n14079f7a8        int64_t rcx = -1\n14079f7ac        rcx += 1\n14079f7b3        do while (i[rcx] != 0)\n14079f7bf        if (rcx u> rbx_1 && i[rbx_1] == 0x3d && sub_14079fd90(i, arg1, rbx_1) == 0)\n14079f7e3        return *rdi + (rbx_1 << 1) + 2\n14079f7d3        rdi = &rdi[1]\n14079f7d7        i = *rdi\n14079f7e9        return 0",
+  "fetched_at": "2026-04-26T17:32:18Z"
+}

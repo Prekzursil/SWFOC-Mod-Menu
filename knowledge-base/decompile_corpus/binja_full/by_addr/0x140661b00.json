@@ -1,0 +1,7 @@
+{
+  "addr": "0x140661b00",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140661b14        void* i\n140661b14        if (arg3 != 0xe)\n140661b1e        if (arg3 == 0x12)\n140661bc1        *(arg1 + 0x50) = data_140b0a320\n140661bce        return \n140661b28        if (arg3 == 0x14)\n140661bad        *(arg1 + 0x54) = data_140b0a320\n140661bba        return \n140661b2e        if (arg3 != 0x1a)\n140661b3a        return sub_1406d8240(arg1) __tailcall\n140661b44        if (*(arg1 + 0x30) == 0)\n140661b99        *(arg1 + 0x58) = data_140b0a320\n140661ba6        return \n140661b49        if (arg4 != 0)\n140661b55        i = (**arg4)(arg4)\n140661b5a        if (i != 0)\n140661b6a        while (i != &data_140a2bf20)\n140661b6c        i = *(i + 8)\n140661b73        if (i == 0)\n140661b7f        return \n140661b8e        sub_1406dfaa0(*(arg1 + 0x30), *(arg4[2] + 0x478))\n140661b99        *(arg1 + 0x58) = data_140b0a320\n140661bd2        if (arg4 != 0)\n140661bda        i = (**arg4)(arg4)\n140661bdf        if (i != 0)\n140661beb        while (i != &data_140a2bee0)\n140661bed        i = *(i + 8)\n140661bf4        if (i == 0)\n140661c00        return \n140661c15        if (arg4[2] == *(*(*(*(arg1 + 0x18) + 0x28) + 0x28) + 0x28))\n140661c2f        sub_140220ed0(sub_140058570(), arg1 - 0x88, 0xe, arg4)\n140661c3e        return ",
+  "fetched_at": "2026-04-26T17:09:06Z"
+}

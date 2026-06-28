@@ -1,0 +1,7 @@
+{
+  "addr": "0x14013e0f0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "alD3dEffectInstance * FUN_14013e0f0(undefined8 param_1)\n\n{\n  char cVar1;\n  alD3dEffectInstance *paVar2;\n  \n  paVar2 = (alD3dEffectInstance *)FUN_140769c58(0x60);\n  if (paVar2 == (alD3dEffectInstance *)0x0) {\n    paVar2 = (alD3dEffectInstance *)0x0;\n  }\n  else {\n    paVar2 = alD3dEffectInstance::alD3dEffectInstance(paVar2);\n  }\n  cVar1 = FUN_14018b4d0(paVar2,param_1);\n  if (cVar1 != '\\0') {\n    return paVar2;\n  }\n  (*paVar2->vftablePtr->vfunction1)(paVar2);\n  (*paVar2->vftablePtr->vfunction2)(paVar2);\n  return (alD3dEffectInstance *)0x0;\n}",
+  "fetched_at": "2026-04-26T17:16:23Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401a7b50",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1401a7b67        if (arg1 == 0 || arg2 == 0 || arg3 s< 1)\n1401a7b95        return 0x80070057\n1401a7b6e        int64_t rbx = sx.q(arg3)\n1401a7b74        strncpy(arg1, arg2, rbx)\n1401a7b79        *(rbx + arg1 - 1) = 0\n1401a7b8a        return 0",
+  "fetched_at": "2026-04-26T17:25:14Z"
+}

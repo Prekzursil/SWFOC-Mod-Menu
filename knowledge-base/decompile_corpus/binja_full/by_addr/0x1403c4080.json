@@ -1,0 +1,7 @@
+{
+  "addr": "0x1403c4080",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1403c4093        if (((*(arg1 + 0x44) - 1) & 0xfffffffd) != 0)\n1403c4095        *(arg1 + 0x44) = 0\n1403c409c        int32_t rax_1\n1403c409c        rax_1.b = 0\n1403c40a3        return rax_1\n1403c40b6        sub_14032f380(data_140b15418 + 0xa0, *(arg1 + 0x20))\n1403c40c5        int64_t var_10 = 0xf\n1403c40d1        void* var_28\n1403c40d1        __builtin_strncpy(&var_28, \"GUI_Zoom\", 9)\n1403c40d6        int512_t zmm2\n1403c40d6        zmm2.o = zx.o(0)\n1403c40d9        int64_t var_18 = 8\n1403c40fb        sub_1402d5010(&data_140b27e60, &var_28, zmm2, 0, 0)\n1403c4109        if (var_10 u>= 0x10)\n1403c410b        void* rcx_2 = var_28\n1403c4113        void* rax_3 = rcx_2\n1403c411d        if (var_10 + 1 u>= 0x1000)\n1403c411f        rcx_2 = *(rcx_2 - 8)\n1403c4132        if (rax_3 - rcx_2 - 8 u> 0x1f)\n1403c4150        _invalid_parameter_noinfo_noreturn()\n1403c4150        noreturn\n1403c4134        j_sub_1407864b8(rcx_2)\n1403c4139        *(arg1 + 0x44) = 2\n1403c4140        uint64_t rax_2\n1403c4140        rax_2.b = 1\n1403c4142        *(arg1 + 0x38) = 0\n1403c414f        return rax_2",
+  "fetched_at": "2026-04-26T17:24:42Z"
+}

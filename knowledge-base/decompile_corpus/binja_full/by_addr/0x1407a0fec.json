@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407a0fec",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1407a100c        void* var_28\n1407a100c        _LocaleUpdate::_LocaleUpdate(&var_28, arg1)\n1407a104d        void var_20\n1407a104d        uint64_t result = InternalCompareStringA(&var_20, arg2, arg3, arg4, arg5, arg6, arg7, arg8)\n1407a1057        char var_10\n1407a1057        if (var_10 != 0)\n1407a1059        void* rcx_2 = var_28\n1407a105e        *(rcx_2 + 0x3a8) &= 0xfffffffd\n1407a1074        return result",
+  "fetched_at": "2026-04-26T17:32:20Z"
+}

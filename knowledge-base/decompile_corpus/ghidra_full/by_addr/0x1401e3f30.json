@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401e3f30",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* GUIGadgetClass member function inherited by GUIGadgetEditboxClass\n   GUIGadgetClass member function inherited by GUIGadgetIMEEditboxClass */\n\nvoid __thiscall GUIGadgetClass::vfunction11(GUIGadgetClass *this,char param_1)\n\n{\n  *(char *)((longlong)&(this->GUIGadgetClass_data).offset_0x70 + 1) = param_1;\n  if (param_1 == '\\0') {\n    *(undefined1 *)&(this->GUIGadgetClass_data).offset_0x70 = 0;\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T17:51:08Z"
+}

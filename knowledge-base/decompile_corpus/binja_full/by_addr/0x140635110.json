@@ -1,0 +1,7 @@
+{
+  "addr": "0x140635110",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14063511b        struct BehaviorClass::HolsterWeaponBehaviorClass::VTable** result = operator new(0x58)\n140635126        if (result == 0)\n140635171        return result\n14063512b        sub_1404c32d0(result)\n140635137        result[8].d = 0xffffffff\n14063513e        *result = &HolsterWeaponBehaviorClass::`vftable'{for `BehaviorClass'}\n140635148        result[1] = &HolsterWeaponBehaviorClass::`vftable'{for `RefCountClass'}\n140635153        result[3] = &HolsterWeaponBehaviorClass::`vftable'{for `SignalListenerClass'}\n140635159        *(result + 0x44) = 0\n14063515d        *(result + 0x4c) = 0\n140635160        result[0xa].b = 0\n14063516b        return result",
+  "fetched_at": "2026-04-26T17:24:23Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x140704610",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "char * __thiscall IncomeStreamModAbilityClass::vfunction3_for_IXMLLoadableClass(void)\n\n{\n  return \"Income_Stream_Mod_Ability\";\n}",
+  "fetched_at": "2026-04-26T17:52:08Z"
+}

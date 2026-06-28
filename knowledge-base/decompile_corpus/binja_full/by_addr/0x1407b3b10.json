@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407b3b10",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1407b3b30        int128_t var_38\n1407b3b30        __builtin_memcpy(&var_38, \"\\x00\\x00\\x80\\x3f\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x80\\x3f\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x80\\x3f\\x00\\x00\\x00\\x00\", 0x30)\n1407b3b49        wWinMainCRTStartup(&var_38)\n1407b3b54        sub_1407b49a0(arg1, arg2)\n1407b3b5c        sub_1407b5b00(arg1)\n1407b3b64        sub_1407b5fd0(arg1)\n1407b3b7b        return sub_1407b61a0(arg1)",
+  "fetched_at": "2026-04-26T17:32:59Z"
+}

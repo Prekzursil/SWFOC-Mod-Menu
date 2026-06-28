@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407bea70",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1407bea76        if (arg2 s>= 0x101)\n1407bea9d        return (&alLensFlare::`vftable'{for `alRenderable'}.vFunc_12)[sx.q(arg2)]\n1407bea86        return gzprintf(*(arg1 + 0x38), &data_1408fd594, zx.q(arg2)) __tailcall",
+  "fetched_at": "2026-04-26T17:33:30Z"
+}

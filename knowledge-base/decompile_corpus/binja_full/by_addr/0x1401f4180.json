@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401f4180",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1401f4186        BOOL result = *(arg1 + 0x2cc)\n1401f4195        if (*(arg1 + 0x2c4) != result)\n1401f419d        result = OpenClipboard(nullptr)\n1401f41a5        if (result != 0)\n1401f41b0        EmptyClipboard()\n1401f41ca        HGLOBAL hMem = GlobalAlloc(GMEM_MOVEABLE, (sx.q(*(arg1 + 0x2a4)) << 1) + 2)\n1401f41d6        if (hMem == 0)\n1401f4282        return CloseClipboard()\n1401f41e4        int32_t* rax = GlobalLock(hMem)\n1401f41f0        if (rax != 0)\n1401f41f2        int32_t rcx_1 = *(arg1 + 0x2cc)\n1401f4202        int32_t rsi_1 = *(arg1 + 0x2c4)\n1401f4208        bool cond:1_1 = rsi_1 s>= rcx_1\n1401f420a        int32_t rbp_1 = rsi_1\n1401f420c        if (rsi_1 s<= rcx_1)\n1401f420c        rsi_1 = rcx_1\n1401f420f        if (cond:1_1)\n1401f420f        rbp_1 = rcx_1\n1401f4214        int32_t rax_2 = rsi_1 - rbp_1\n1401f4218        if (rax_2 s> 0)\n1401f4231        memcpy(rax, *(arg1 + 0x298) + (sx.q(rbp_1) << 1), sx.q(rax_2) * 2)\n1401f423d        *(rax + (sx.q(rsi_1 - rbp_1) << 1)) = 0\n1401f4245        GlobalUnlock(hMem)\n1401f425d        SetClipboardData(0xd, hMem)\n1401f4263        CloseClipboard()\n1401f427b        return GlobalFree(hMem) __tailcall\n1401f4292        return result",
+  "fetched_at": "2026-04-26T17:27:22Z"
+}

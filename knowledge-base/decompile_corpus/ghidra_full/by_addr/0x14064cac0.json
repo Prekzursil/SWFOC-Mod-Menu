@@ -1,0 +1,7 @@
+{
+  "addr": "0x14064cac0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nPerceptualEvaluatorDiagnosticsNodeClass * __thiscall\nVisibleEvaluatorDiagnosticsNodeClass<class_TacticalGamePerceptualEvaluatorClass>::\nscalar_deleting_destructor\n          (VisibleEvaluatorDiagnosticsNodeClass<class_TacticalGamePerceptualEvaluatorClass> *this,\n          uint param_1)\n\n{\n  AIDiagnosticsNodeClass::~AIDiagnosticsNodeClass((AIDiagnosticsNodeClass *)this);\n  if ((param_1 & 1) != 0) {\n    thunk_FUN_1407864b8(this,0x30);\n  }\n  return (PerceptualEvaluatorDiagnosticsNodeClass *)this;\n}\n\n",
+  "fetched_at": "2026-04-26T17:05:30Z"
+}

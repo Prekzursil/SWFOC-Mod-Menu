@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407dab80",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1407dabaa        int64_t* rax = sub_1401427f0(data_140a62700, \"W_Space_FOW_Grid.tga\", 1, 1, 0)\n1407dabaf        int64_t* rcx_1 = *(arg1 + 0x380)\n1407dabbc        if (rcx_1 != rax)\n1407dabc1        if (rcx_1 != 0)\n1407dabc3        int64_t rdx_1 = *rcx_1\n1407dabc6        (*(rdx_1 + 8))(rcx_1, rdx_1)\n1407dabc9        *(arg1 + 0x380) = rax\n1407dabd3        if (rax != 0)\n1407dabdb        (**rax)(rax)\n1407dabfa        int64_t* rax_2 = sub_1401427f0(data_140a62700, \"W_Space_Reinforce_FOW_Grid.tga\", 1, 1, 0)\n1407dabff        int64_t* rcx_4 = *(arg1 + 0x388)\n1407dac0c        if (rcx_4 != rax_2)\n1407dac11        if (rcx_4 != 0)\n1407dac13        int64_t rdx_2 = *rcx_4\n1407dac16        (*(rdx_2 + 8))(rcx_4, rdx_2)\n1407dac19        *(arg1 + 0x388) = rax_2\n1407dac23        if (rax_2 != 0)\n1407dac2b        (**rax_2)(rax_2)\n1407dac2d        int64_t* rcx_6 = *(arg1 + 0x370)\n1407dac3e        int32_t result = (*(*rcx_6 + 0x88))(rcx_6, \"GridTexture\")\n1407dac47        if (result == 0xffffffff)\n1407dac6d        return result\n1407dac49        int64_t* rcx_7 = *(arg1 + 0x370)\n1407dac59        int64_t r9_2 = *rcx_7\n1407dac5c        return (*(r9_2 + 0xb8))(rcx_7, zx.q(result), *(arg1 + 0x380), r9_2)",
+  "fetched_at": "2026-04-26T17:34:05Z"
+}

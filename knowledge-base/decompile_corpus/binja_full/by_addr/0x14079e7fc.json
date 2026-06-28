@@ -1,0 +1,7 @@
+{
+  "addr": "0x14079e7fc",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14079e81a        if (arg1 != 0)\n14079e81c        int32_t rbx_1 = 0\n14079e825        int32_t rdi_1 = 0xe3\n14079e833        int32_t rax_6\n14079e833        while (true)\n14079e833        int32_t temp0_1\n14079e833        int32_t temp1_1\n14079e833        temp0_1:temp1_1 = sx.q(rdi_1 + rbx_1)\n14079e83b        int64_t rbp_1 = sx.q((temp1_1 - temp0_1) s>> 1)\n14079e84f        int32_t rax_5 = __ascii_wcsnicmp(arg1, (&data_1408dc580)[rbp_1 * 2], 0x55)\n14079e856        if (rax_5 == 0)\n14079e86e        rax_6 = *(rbp_1 * 0x10 + 0x1408dc588)\n14079e86e        break\n14079e858        if (rax_5 s>= 0)\n14079e85f        rbx_1 = (rbp_1 + 1).d\n14079e85a        rdi_1 = (rbp_1 - 1).d\n14079e864        if (rbx_1 s> rdi_1)\n14079e866        rax_6 = -1\n14079e869        break\n14079e87f        if (rax_6 s>= 0 && rax_6 u< 0xe4)\n14079e886        return zx.q(*(sx.q(rax_6) * 0x10 + &data_1408dab30))\n14079e890        return 0",
+  "fetched_at": "2026-04-26T17:32:15Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407ced80",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1407ced89        char* var_18 = arg2\n1407ced8e        int64_t rax = -1\n1407ced95        rax += 1\n1407ced9c        do while (arg2[rax] != 0)\n1407ceda1        int64_t var_10 = rax\n1407cedc6        return sub_1407cdb10(arg1, sub_1407b90f0(arg1, sub_1407cdd40, &var_18, arg2))",
+  "fetched_at": "2026-04-26T17:33:55Z"
+}

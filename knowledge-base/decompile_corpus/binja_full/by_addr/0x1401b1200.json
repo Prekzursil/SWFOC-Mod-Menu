@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401b1200",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1401b120a        int64_t* lpMem = arg1[1]\n1401b120e        struct DynamicVectorClass<struct alD3dEffect::EffectTex>::VTable* const result = &DynamicVectorClass<struct alD3dEffect::EffectTex>::`vftable'\n1401b1215        *arg1 = &DynamicVectorClass<struct alD3dEffect::EffectTex>::`vftable'\n1401b121e        if (lpMem != 0)\n1401b1227        if ((*(arg1 + 0x14) & 0x80000000) == 0)\n1401b1247        sub_1401b1370(lpMem, 3)\n1401b1237        HeapFree(GetProcessHeap(), HEAP_NONE, lpMem)\n1401b124c        result = nullptr\n1401b124e        *(arg1 + 0x14) &= 0x80000000\n1401b1255        arg1[1] = 0\n1401b1259        arg1[2].d = 0\n1401b1266        return result",
+  "fetched_at": "2026-04-26T17:25:37Z"
+}

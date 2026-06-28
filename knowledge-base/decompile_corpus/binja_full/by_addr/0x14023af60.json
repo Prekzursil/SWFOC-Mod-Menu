@@ -1,0 +1,7 @@
+{
+  "addr": "0x14023af60",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14023af71        *arg1 = &DatabaseUIntConversionClass::`vftable'\n14023af74        void** rdi = data_140b09358\n14023af7b        void** rbx = *rdi\n14023af81        if (rbx == rdi)\n14023b023        return &DatabaseUIntConversionClass::`vftable'\n14023af8b        while (rbx[6] != arg1)\n14023af8d        rbx = *rbx\n14023af93        if (rbx == rdi)\n14023af9f        return &DatabaseUIntConversionClass::`vftable'\n14023afb0        int64_t rax_2 = sub_14011f9c0(&data_140b09350, &rbx[2]) & data_140b09380\n14023afc2        void*** rdx_3 = data_140b09368 + (rax_2 << 4)\n14023afc5        void** rax_4 = *rdx_3\n14023afcc        if (rdx_3[1] != rbx)\n14023afe9        if (rax_4 == rbx)\n14023afee        *rdx_3 = *rbx\n14023afd1        if (rax_4 != rbx)\n14023afe0        rdx_3[1] = rbx[1]\n14023afd3        *rdx_3 = rdi\n14023afd6        rdx_3[1] = rdi\n14023aff1        void* rcx = *rbx\n14023aff7        data_140b09360 -= 1\n14023b002        *rbx[1] = rcx\n14023b009        *(rcx + 8) = rbx[1]\n14023b014        return sub_140144c90(&data_140b09358, rbx)",
+  "fetched_at": "2026-04-26T17:30:00Z"
+}

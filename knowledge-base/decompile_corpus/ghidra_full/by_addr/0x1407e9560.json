@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407e9560",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_1407e9560(void)\n\n{\n  longlong lVar1;\n  longlong *plVar2;\n  longlong *plVar3;\n  \n  DynamicVectorClass<class_PlayerClass*___ptr64>::~DynamicVectorClass<class_PlayerClass*___ptr64>\n            ((DynamicVectorClass<class_PlayerClass*___ptr64> *)&DAT_140a62058);\n  plVar2 = DAT_140a62048;\n  plVar3 = DAT_140a62040;\n  if (DAT_140a62040 != (longlong *)0x0) {\n    for (; plVar3 != plVar2; plVar3 = plVar3 + 1) {\n      lVar1 = *plVar3;\n      if (lVar1 != 0) {\n        (**(code **)(*(longlong *)(lVar1 + 0x18) + 8))(lVar1 + 0x18);\n      }\n    }\n    plVar3 = DAT_140a62040;\n    if ((0xfff < (DAT_140a62050 - (longlong)DAT_140a62040 & 0xfffffffffffffff8U)) &&\n       (plVar3 = (longlong *)DAT_140a62040[-1],\n       0x1f < (ulonglong)((longlong)DAT_140a62040 + (-8 - (longlong)plVar3)))) {\n                    /* WARNING: Subroutine does not return */\n      FUN_1407711cc();\n    }\n    thunk_FUN_1407864b8(plVar3);\n    DAT_140a62040 = (longlong *)0x0;\n    DAT_140a62048 = (longlong *)0x0;\n    DAT_140a62050 = 0;\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T19:01:31Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x1404c2d50",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1404c2d57        return \"TooltipDummyBehaviorClass\"",
+  "fetched_at": "2026-04-26T17:30:26Z"
+}

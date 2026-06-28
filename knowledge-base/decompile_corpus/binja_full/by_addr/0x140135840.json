@@ -1,0 +1,7 @@
+{
+  "addr": "0x140135840",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140135847        float zmm3 = *arg3\n14013584c        float zmm4 = arg3[1]\n140135852        float zmm0 = *arg2\n140135856        float zmm1 = arg2[1]\n14013585b        float zmm5 = arg3[2]\n140135864        float zmm2 = arg2[2]\n14013586e        int64_t* rcx = *(arg1 + 0xd8)\n140135875        float var_48 = zmm0\n14013587a        float var_40 = zmm2\n14013587f        float var_44 = zmm1\n140135884        float var_3c = zmm3\n140135889        zmm3 = zmm3 - zmm0\n14013588d        float var_38 = zmm4\n140135892        zmm4 = zmm4 - zmm1\n140135896        float var_34 = zmm5\n14013589b        zmm5 = zmm5 - zmm2\n1401358a2        float var_30 = zmm3\n1401358bd        float var_2c = zmm4\n1401358c5        float var_28 = zmm5\n1401358ca        zmm2 = zmm4 * zmm4 + zmm3 * zmm3 + zmm5 * zmm5\n1401358d6        float temp0 = _mm_sqrt_ss(0, zmm2)\n1401358da        float var_18 = zmm2\n1401358df        zmm1 = 1f / temp0\n1401358e3        float var_14 = temp0\n1401358f4        float var_24 = zmm3 * zmm1\n1401358f9        float var_20 = zmm4 * zmm1\n1401358fe        float var_1c = zmm5 * zmm1\n14013590d        return (*(*rcx + 0x18))(rcx, &var_48, arg4)",
+  "fetched_at": "2026-04-26T17:11:13Z"
+}

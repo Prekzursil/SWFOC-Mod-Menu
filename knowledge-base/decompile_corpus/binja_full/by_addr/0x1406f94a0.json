@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406f94a0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1406f94a6        struct SpecialAbilityClass::EnableRadarAbilityClass::VTable** result = arg1\n1406f94a9        sub_14048c780(arg1)\n1406f94b5        result[0x2f].b = 0\n1406f94bc        *result = &EnableRadarAbilityClass::`vftable'{for `SpecialAbilityClass'}\n1406f94c6        result[1] = &EnableRadarAbilityClass::`vftable'{for `RefCountClass'}\n1406f94cd        result[8].w = 1\n1406f94d3        *(result + 0x3c) = 5\n1406f94df        return result",
+  "fetched_at": "2026-04-26T17:26:44Z"
+}

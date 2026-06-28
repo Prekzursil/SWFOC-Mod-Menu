@@ -1,0 +1,7 @@
+{
+  "addr": "0x1405a8fd0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined8 * FUN_1405a8fd0(longlong param_1,uint param_2)\n\n{\n  REFMINIPDB2 **ppRVar1;\n  longlong *plVar2;\n  \n  if ((*(int *)(*(longlong *)((longlong)ThreadLocalStoragePointer + (ulonglong)_tls_index * 8) +\n               0xd4) < DAT_140b39550) && (_Init_thread_header(&DAT_140b39550), DAT_140b39550 == -1))\n  {\n    atexit(FUN_1407f5660);\n    _Init_thread_footer(&DAT_140b39550);\n  }\n  ppRVar1 = DAT_140b39540;\n  if ((longlong)DAT_140b39540 - (longlong)DAT_140b39538 >> 3 != 0) {\n    ppRVar1 = DAT_140b39538;\n  }\n  plVar2 = (longlong *)**(longlong **)(param_1 + 0x118);\n  DAT_140b39540 = ppRVar1;\n  if (plVar2 != *(longlong **)(param_1 + 0x118)) {\n    do {\n      if ((*(uint *)(plVar2 + 3) & param_2) != 0) {\n        if (ppRVar1 == DAT_140b39548) {\n          FUN_140045580(&DAT_140b39538);\n          ppRVar1 = DAT_140b39540;\n        }\n        else {\n          *ppRVar1 = (REFMINIPDB2 *)plVar2[2];\n          DAT_140b39540 = DAT_140b39540 + 1;\n          ppRVar1 = DAT_140b39540;\n        }\n      }\n      plVar2 = (longlong *)*plVar2;\n    } while (plVar2 != (longlong *)*(longlong *)(param_1 + 0x118));\n  }\n  std::\n  _Sort_unchecked<struct_REFMINIPDB2*___ptr64*___ptr64,bool_(__cdecl*)(struct_REFMINIPDB2_const*___ptr64,struct_REFMINIPDB2_const*___ptr64)>\n            (DAT_140b39538,ppRVar1,(longlong)ppRVar1 - (longlong)DAT_140b39538 >> 3,FUN_1405a9bb0);\n  return &DAT_140b39538;\n}",
+  "fetched_at": "2026-04-26T18:43:13Z"
+}

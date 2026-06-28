@@ -1,0 +1,7 @@
+{
+  "addr": "0x14013ef60",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined8 thunk_FUN_1401774b0(void)\n\n{\n  int iVar1;\n  \n  iVar1 = DAT_140a6e734;\n  DAT_140a6e734 = DAT_140a6e734 + -1;\n  DAT_140a6d421 = DAT_140a6e734 == 0;\n  if ((DAT_140a6e734 == 0) && (DAT_140a6d428 != '\\0')) {\n    FUN_1401a7370(iVar1);\n  }\n  FUN_14017a220();\n  return 0;\n}",
+  "fetched_at": "2026-04-26T17:17:24Z"
+}

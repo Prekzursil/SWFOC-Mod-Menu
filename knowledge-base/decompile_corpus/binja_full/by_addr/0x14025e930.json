@@ -1,0 +1,7 @@
+{
+  "addr": "0x14025e930",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14025e93e        int32_t arg_10 = 0\n14025e947        int32_t arg_8 = 0\n14025e94b        j_sub_140178490(&arg_10, &arg_8, nullptr)\n14025e958        return zx.q(arg_8)",
+  "fetched_at": "2026-04-26T17:31:09Z"
+}

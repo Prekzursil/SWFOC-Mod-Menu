@@ -1,0 +1,7 @@
+{
+  "addr": "0x14075ad6c",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* Library Function - Multiple Matches With Same Base Name\n    protected: virtual int __cdecl std::collate<char>::do_compare(char const * __ptr64,char const *\n   __ptr64,char const * __ptr64,char const * __ptr64)const __ptr64\n    protected: virtual int __cdecl std::collate<unsigned short>::do_compare(unsigned short const *\n   __ptr64,unsigned short const * __ptr64,unsigned short const * __ptr64,unsigned short const *\n   __ptr64)const __ptr64\n    protected: virtual int __cdecl std::collate<wchar_t>::do_compare(wchar_t const * __ptr64,wchar_t\n   const * __ptr64,wchar_t const * __ptr64,wchar_t const * __ptr64)const __ptr64\n   \n   Libraries: Visual Studio 2015 Release, Visual Studio 2017 Release, Visual Studio 2019 Release */\n\nulonglong __thiscall\ndo_compare(void *this,undefined8 param_1,undefined8 param_2,undefined8 param_3,undefined8 param_4)\n\n{\n  int iVar1;\n  ulonglong uVar2;\n  \n  iVar1 = thunk_FUN_140749512(param_1,param_2,param_3,param_4,(longlong)this + 0x10);\n  uVar2 = (ulonglong)(iVar1 != 0);\n  if (iVar1 < 0) {\n    uVar2 = 0xffffffff;\n  }\n  return uVar2;\n}",
+  "fetched_at": "2026-04-26T18:07:25Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x140532990",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140532997        *arg1 = &RadarMapDataPackClass::`vftable'{for `BaseDataPackClass'}\n14053299c        arg1[2] = 0\n1405329a0        arg1[3].d = 0\n1405329a3        arg1[1].b = 0\n1405329a9        return arg1",
+  "fetched_at": "2026-04-26T17:33:39Z"
+}

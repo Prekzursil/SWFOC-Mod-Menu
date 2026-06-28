@@ -1,0 +1,7 @@
+{
+  "addr": "0x140726390",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall\nProductionInstantiationMarshallerClass::vfunction3\n          (ProductionInstantiationMarshallerClass *this,int param_1,longlong param_2)\n\n{\n  undefined8 uVar1;\n  char cVar2;\n  int iVar3;\n  \n  uVar1 = *(undefined8 *)(*(longlong *)(param_2 + 0xd0) + (longlong)param_1 * 8);\n  if ((*(longlong *)(*(longlong *)(param_2 + 0x110) + -8) == 0) && (DAT_140b276bc != '\\0')) {\n    iVar3 = FUN_140373500(uVar1,*(undefined4 *)(param_2 + 0x198));\n    DAT_140b3a530 = DAT_140b3a530 - iVar3;\n  }\n  cVar2 = FUN_140370320(uVar1,0x5f,0xffffffff);\n  if (cVar2 != '\\0') {\n    DAT_140b3a534 = DAT_140b3a534 + 1;\n  }\n  cVar2 = FUN_140370320(uVar1,0x60,0xffffffff);\n  if (cVar2 != '\\0') {\n    DAT_140b3a540 = DAT_140b3a540 + 1;\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T18:00:21Z"
+}

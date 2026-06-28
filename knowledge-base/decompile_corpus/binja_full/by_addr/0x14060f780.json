@@ -1,0 +1,7 @@
+{
+  "addr": "0x14060f780",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14060f7b2        TEB* gsbase\n14060f7b2        if (data_140b39898 s> *(0xd4 + *(gsbase->ThreadLocalStoragePointer + (zx.q(data_140b3b9a0) << 3))))\n14060f80e        _Init_thread_header(&data_140b39898)\n14060f81a        if (data_140b39898 == 0xffffffff)\n14060f823        atexit(sub_1407f6250)\n14060f82f        _Init_thread_footer(&data_140b39898)\n14060f7b6        if (arg2 == 0)\n14060f806        return arg1 + 0xb8\n14060f7bb        if (arg2 == 1)\n14060f7f4        return arg1 + 0x58\n14060f7c0        if (arg2 == 2)\n14060f7e5        return arg1 + 0x88\n14060f7d3        return &data_140b39880",
+  "fetched_at": "2026-04-26T17:23:12Z"
+}

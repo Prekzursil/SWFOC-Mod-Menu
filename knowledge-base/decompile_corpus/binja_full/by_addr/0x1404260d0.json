@@ -1,0 +1,7 @@
+{
+  "addr": "0x1404260d0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1404260d3        if (arg2 == 0)\n1404260d3        return \n1404260e8        sub_1404f6c60(arg2)\n1404260f8        (**arg2)(arg2, 1)\n1404260fa        int64_t r8_1 = *(arg1 + 0x10)\n1404260fe        int64_t* rcx_2 = *(arg1 + 8)\n140426105        if (rcx_2 == r8_1)\n140426105        return \n140426107        while (true)\n140426107        int32_t* rdx = &rcx_2[1]\n14042610e        if (*rcx_2 == arg2)\n140426126        memcpy(rcx_2, rdx, r8_1 - rdx)\n14042612b        *(arg1 + 0x10) -= 8\n14042612b        break\n140426110        rcx_2 = rdx\n140426116        if (rdx == r8_1)\n140426122        return \n14042613a        return ",
+  "fetched_at": "2026-04-26T17:26:27Z"
+}

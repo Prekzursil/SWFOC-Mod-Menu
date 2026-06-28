@@ -1,0 +1,7 @@
+{
+  "addr": "0x140051b60",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140051b62        *arg1 = 0\n140051b6c        *(arg1 + 0x18) = 0\n140051b70        *(arg1 + 0x10) = &DynamicVectorClass<class DrawTextClass* __ptr64>::`vftable'\n140051b77        *(arg1 + 0x20) = 0\n140051b7b        *(arg1 + 0x2c) = 0\n140051b7e        *(arg1 + 8) = 0\n140051b82        return arg1",
+  "fetched_at": "2026-04-26T16:54:46Z"
+}

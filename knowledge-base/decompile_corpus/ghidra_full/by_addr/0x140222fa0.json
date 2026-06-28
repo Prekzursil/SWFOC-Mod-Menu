@@ -1,0 +1,7 @@
+{
+  "addr": "0x140222fa0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "DWORD FUN_140222fa0(void)\n\n{\n  LARGE_INTEGER local_res8 [4];\n  \n  if (DAT_140a7e2e8 == 0) {\n    FUN_140222e20();\n  }\n  QueryPerformanceCounter(local_res8);\n  return local_res8[0].s.LowPart;\n}",
+  "fetched_at": "2026-04-26T18:04:09Z"
+}

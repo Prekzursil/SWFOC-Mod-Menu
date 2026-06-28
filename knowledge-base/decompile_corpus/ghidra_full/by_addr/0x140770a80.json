@@ -1,0 +1,7 @@
+{
+  "addr": "0x140770a80",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* Library Function - Single Match\n    __vcrt_initialize_locks\n   \n   Library: Visual Studio 2019 Release */\n\nbool __vcrt_initialize_locks(void)\n\n{\n  int iVar1;\n  \n  iVar1 = __vcrt_InitializeCriticalSectionEx(&DAT_140b3bfd0,4000,0);\n  if (iVar1 == 0) {\n    __vcrt_uninitialize_locks();\n  }\n  else {\n    DAT_140b3bff8 = DAT_140b3bff8 + 1;\n  }\n  return iVar1 != 0;\n}",
+  "fetched_at": "2026-04-26T18:11:48Z"
+}

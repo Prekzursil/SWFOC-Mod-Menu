@@ -1,0 +1,7 @@
+{
+  "addr": "0x140476600",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140476616        *(arg1 + 0xa0) = 0\n14047661d        *(arg1 + 0x90) = 0\n140476630        int128_t* result = arg1 + 0x80\n140476633        if (*(arg1 + 0x98) u>= 0x10)\n140476635        result = *(arg1 + 0x80)\n140476638        *result = 0\n140476643        if (data_140b15418 != 0)\n140476649        result = sub_1405f67c0(*(arg2 + 0x58))\n140476651        int128_t zmm2 = *arg3\n140476654        int128_t zmm3 = arg3[1]\n140476658        *arg3 = *(arg1 + 0x80)\n14047665f        arg3[1] = *(arg1 + 0x90)\n140476668        *(arg1 + 0x80) = zmm2\n14047666b        *(arg1 + 0x90) = zmm3\n140476674        *(arg1 + 0xa0) = 1\n140476680        return result",
+  "fetched_at": "2026-04-26T17:28:13Z"
+}

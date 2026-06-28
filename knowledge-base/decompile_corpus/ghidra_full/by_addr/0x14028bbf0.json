@@ -1,0 +1,7 @@
+{
+  "addr": "0x14028bbf0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_14028bbf0(longlong param_1,undefined4 param_2,undefined4 param_3,undefined4 param_4)\n\n{\n  *(undefined4 *)(param_1 + 0x1fc) = param_4;\n  *(undefined4 *)(param_1 + 500) = param_2;\n  *(undefined4 *)(param_1 + 0x1f8) = param_3;\n  return;\n}",
+  "fetched_at": "2026-04-26T18:23:52Z"
+}

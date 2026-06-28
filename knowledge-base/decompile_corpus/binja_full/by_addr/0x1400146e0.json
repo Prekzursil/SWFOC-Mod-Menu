@@ -1,0 +1,7 @@
+{
+  "addr": "0x1400146e0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1400146f1        __builtin_strncpy(&data_140a14190, \"ENGLISH\", 7)\n140014725        __builtin_strncpy(&data_140a141b0, \"GERMAN\", 6)\n14001473f        __builtin_strncpy(&data_140a141d0, \"FRENCH\", 6)\n140014759        __builtin_strncpy(&data_140a141f0, \"SPANISH\", 7)\n140014780        __builtin_strncpy(&data_140a14210, \"ITALIAN\", 7)\n1400147a7        __builtin_strncpy(&data_140a14250, \"KOREAN\", 6)\n1400147c1        __builtin_strncpy(&data_140a14270, \"CHINESE\", 7)\n1400147e8        __builtin_strncpy(&data_140a14290, \"RUSSIAN\", 7)\n140014809        sub_140022730(&data_140a142b0, \"POLISH\", 6)\n140014823        data_140a142e0 = data_140802a40\n140014832        data_140a142d0 = 0\n14001483d        sub_140022730(&data_140a142d0, \"THAI\", 4)\n14001484d        return atexit(sub_1407ecce0) __tailcall",
+  "fetched_at": "2026-04-26T16:50:08Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x14013e060",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "alD3dEffectInstance * FUN_14013e060(char param_1)\n\n{\n  char cVar1;\n  alD3dEffectInstance *paVar2;\n  char *pcVar3;\n  \n  if (param_1 == '\\0') {\n    paVar2 = (alD3dEffectInstance *)FUN_140769c58(0x60);\n    if (paVar2 == (alD3dEffectInstance *)0x0) {\n      paVar2 = (alD3dEffectInstance *)0x0;\n    }\n    else {\n      paVar2 = alD3dEffectInstance::alD3dEffectInstance(paVar2);\n    }\n    pcVar3 = \"MeshGloss\";\n  }\n  else {\n    paVar2 = (alD3dEffectInstance *)FUN_140769c58(0x60);\n    if (paVar2 == (alD3dEffectInstance *)0x0) {\n      paVar2 = (alD3dEffectInstance *)0x0;\n      pcVar3 = \"RSkinGloss\";\n    }\n    else {\n      paVar2 = alD3dEffectInstance::alD3dEffectInstance(paVar2);\n      pcVar3 = \"RSkinGloss\";\n    }\n  }\n  cVar1 = FUN_14018b4d0(paVar2,pcVar3);\n  if (cVar1 == '\\0') {\n    (*paVar2->vftablePtr->vfunction1)(paVar2);\n    (*paVar2->vftablePtr->vfunction2)(paVar2);\n    paVar2 = (alD3dEffectInstance *)0x0;\n  }\n  return paVar2;\n}",
+  "fetched_at": "2026-04-26T17:16:22Z"
+}

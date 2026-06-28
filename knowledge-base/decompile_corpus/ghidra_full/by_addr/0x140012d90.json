@@ -1,0 +1,7 @@
+{
+  "addr": "0x140012d90",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nvoid FUN_140012d90(void)\n\n{\n  FUN_1400228a0(&DAT_140a11690,&PTR_1407ff7e8,0);\n  atexit(FUN_1407e8c20);\n  return;\n}\n\n",
+  "fetched_at": "2026-04-26T16:49:43Z"
+}

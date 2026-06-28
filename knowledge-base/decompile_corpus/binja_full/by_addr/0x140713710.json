@@ -1,0 +1,7 @@
+{
+  "addr": "0x140713710",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140713713        if (arg2 == 0)\n140713713        return \n140713723        uint64_t rax = *(arg2 + 0x100)\n140713733        if (rax == 0)\n140713733        return \n140713740        *(rax + 0x2cc) = 0\n140713752        if (data_140a10b50 == 0)\n140713757        struct SignalDispatcherClass::VTable** rax_1 = operator new(0x78)\n14071375f        if (rax_1 == 0)\n140713772        data_140a10b50 = 0\n140713769        data_140a10b50 = sub_140221820(rax_1)\n140713779        int32_t* rdx = data_140a7bc10\n140713787        bool cond:1_1 = rdx == data_140a7bc18\n14071378e        void** arg_10 = &data_140a10b48\n140713793        if (cond:1_1)\n1407137ae        sub_14001ded0(&data_140a7bc08, rdx, &arg_10)\n140713795        *rdx = &data_140a10b48\n140713798        data_140a7bc10 += 8\n1407137c5        sub_140220ed0(data_140a10b50, arg2 + 0x38, 0x29, 0)\n1407137ca        rax = *(arg2 + 0xa8)\n1407137e2        if (rax != 0 && *(rax + 0x29c) != 0)\n1407137e7        sub_14038f8b0(arg2)\n1407137ef        if (arg3 != 3)\n14071382f        sub_1403a92f0(arg2, 0x68, 0xffff, 0, 0x3f000000, 0x3f800000, 0, 0, 0, 0)\n140713843        return ",
+  "fetched_at": "2026-04-26T17:27:49Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x1402268a0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1402268b3        *arg1 = &NATUtilsClass::NATUtilsThreadClass::`vftable'{for `ThreadClass'}\n1402268b9        sub_14022e3e0(arg1)\n1402268c1        if ((arg2 & 1) != 0)\n1402268cb        j_sub_1407864b8(arg1)\n1402268dd        return arg1",
+  "fetched_at": "2026-04-26T17:29:21Z"
+}

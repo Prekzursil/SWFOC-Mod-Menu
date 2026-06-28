@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406f1ab0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1406f1ad8        if (arg2 == 0 || *(arg2 + 0x298) == 0 || arg3 != 0)\n1406f1bb0        int64_t result\n1406f1bb0        result.b = 0\n1406f1bb9        return result\n1406f1ae8        uint64_t rsi\n1406f1ae8        rsi.b = 0\n1406f1af7        int32_t r15 = *(arg2 + 0x58)\n1406f1afb        if (*(arg1 + 0x198) != 1)\n1406f1b7e        rsi = zx.q(sub_1406f1bc0(arg1, arg2, r15))\n1406f1b81        label_1406f1b81:\n1406f1b85        if (rsi.b == 1)\n1406f1b90        sub_14048e4d0(arg1, arg2, nullptr)\n1406f1b04        int32_t i = 0\n1406f1b13        if (((data_140a16fd8 - data_140a16fd0) s>> 3).d s> 0)\n1406f1b29        void* rax_3 = sub_140294bc0(&data_140a16fd0, i)\n1406f1b34        if (rax_3 != 0 && sub_1402823c0(rax_3, r15) == 1)\n1406f1b54        rsi.b |= sub_1406f1bc0(arg1, arg2, *(rax_3 + 0x4c))\n1406f1b5e        i += 1\n1406f1b6d        do while (i s< ((data_140a16fd8 - data_140a16fd0) s>> 3).d)\n1406f1b6d        goto label_1406f1b81\n1406f1baf        return zx.q(rsi.b)",
+  "fetched_at": "2026-04-26T17:26:25Z"
+}

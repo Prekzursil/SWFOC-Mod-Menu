@@ -1,0 +1,7 @@
+{
+  "addr": "0x140346690",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1403466bd        if (arg1 == 0 || arg2 == 0 || arg1 == arg2 || sub_14034c770(arg2, 0) == 0)\n1403466d0        return \n1403466e2        if (arg2[0x15].d - 0x74 u<= 3)\n140346700        return sub_1403d02e0(&data_140b27f60, arg1, arg2) __tailcall\n140346705        int32_t rcx_2 = *(arg1 + 0xa8)\n14034670e        void* rdx_6\n14034670e        if (rcx_2 == 0x74)\n1403467a1        rdx_6 = data_140a196f0\n1403467a8        label_1403467a8:\n1403467ab        if (rdx_6 != 0)\n1403467ba        sub_1403d0790(&data_140b27f60, rdx_6, arg2, arg3)\n1403467ab        return \n140346717        if (rcx_2 == 0x75)\n140346798        rdx_6 = data_140a1a0c8\n14034679f        goto label_1403467a8\n14034671c        if (rcx_2 == 0x76)\n14034678f        rdx_6 = data_140a1aaa0\n140346796        goto label_1403467a8\n140346721        if (rcx_2 != 0x77)\n140346721        return \n140346727        void* rdi_2 = data_140a18fe8\n140346731        if (rdi_2 == 0 || sub_14034c770(arg2, 0) == 0)\n140346759        return \n140346759        if (arg2[0x15].d - 0x74 u> 2)\n14034678a        return sub_1403d6c50(&data_140b27f60, rdi_2, arg2) __tailcall\n14034676d        return sub_1403d4460(&data_140b27f60, arg2) __tailcall\n1403467ce        return ",
+  "fetched_at": "2026-04-26T17:06:18Z"
+}

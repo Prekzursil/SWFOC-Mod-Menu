@@ -1,0 +1,7 @@
+{
+  "addr": "0x140761ea0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* Library Function - Multiple Matches With Same Base Name\n    protected: virtual unsigned short const * __ptr64 __cdecl std::ctype<unsigned\n   short>::do_tolower(unsigned short * __ptr64,unsigned short const * __ptr64)const __ptr64\n    protected: virtual wchar_t const * __ptr64 __cdecl std::ctype<wchar_t>::do_tolower(wchar_t *\n   __ptr64,wchar_t const * __ptr64)const __ptr64\n   \n   Library: Visual Studio 2019 Release */\n\nwchar_t * __thiscall do_tolower(void *this,wchar_t *param_1,wchar_t *param_2)\n\n{\n  wchar_t wVar1;\n  \n  if (param_1 != param_2) {\n    do {\n      wVar1 = _Towlower(*param_1,(_Ctypevec *)((longlong)this + 0x10));\n      *param_1 = wVar1;\n      param_1 = param_1 + 1;\n    } while (param_1 != param_2);\n  }\n  return param_1;\n}",
+  "fetched_at": "2026-04-26T18:08:39Z"
+}

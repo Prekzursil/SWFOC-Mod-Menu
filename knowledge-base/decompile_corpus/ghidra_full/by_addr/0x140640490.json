@@ -1,0 +1,7 @@
+{
+  "addr": "0x140640490",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nLocomotorCommonClass * FUN_140640490(void)\n\n{\n  LocomotorCommonClass *this;\n  \n  this = (LocomotorCommonClass *)FUN_140769c58(0x40);\n  if (this != (LocomotorCommonClass *)0x0) {\n                    /* inlined constructor:\n                       JetPackLocomotorBehaviorClass::JetPackLocomotorBehaviorClass */\n    LocomotorCommonClass::LocomotorCommonClass(this);\n    this->vftablePtr = (LocomotorCommonClass_vftable0 *)&JetPackLocomotorBehaviorClass::vftable;\n    this->vftablePtr = (LocomotorCommonClass_vftable1 *)&JetPackLocomotorBehaviorClass::vftable;\n    this->vftablePtr = (LocomotorCommonClass_vftable2 *)&JetPackLocomotorBehaviorClass::vftable;\n    return this;\n  }\n  return (LocomotorCommonClass *)0x0;\n}\n\n",
+  "fetched_at": "2026-04-26T17:03:01Z"
+}

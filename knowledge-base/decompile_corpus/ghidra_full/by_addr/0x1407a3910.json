@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407a3910",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* Library Function - Single Match\n    flush_pending\n   \n   Library: Visual Studio 2019 Release */\n\nvoid flush_pending(longlong param_1)\n\n{\n  int *piVar1;\n  longlong lVar2;\n  uint uVar3;\n  \n  lVar2 = *(longlong *)(param_1 + 0x28);\n  bi_flush(lVar2);\n  uVar3 = *(uint *)(param_1 + 0x18);\n  if (*(uint *)(lVar2 + 0x28) <= *(uint *)(param_1 + 0x18)) {\n    uVar3 = *(uint *)(lVar2 + 0x28);\n  }\n  if (uVar3 != 0) {\n    FUN_14076bd80(*(undefined8 *)(param_1 + 0x10),*(undefined8 *)(lVar2 + 0x20),uVar3);\n    *(longlong *)(param_1 + 0x10) = *(longlong *)(param_1 + 0x10) + (ulonglong)uVar3;\n    *(longlong *)(lVar2 + 0x20) = *(longlong *)(lVar2 + 0x20) + (ulonglong)uVar3;\n    *(int *)(param_1 + 0x1c) = *(int *)(param_1 + 0x1c) + uVar3;\n    *(int *)(param_1 + 0x18) = *(int *)(param_1 + 0x18) - uVar3;\n    piVar1 = (int *)(lVar2 + 0x28);\n    *piVar1 = *piVar1 - uVar3;\n    if (*piVar1 == 0) {\n      *(undefined8 *)(lVar2 + 0x20) = *(undefined8 *)(lVar2 + 0x10);\n    }\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T18:54:28Z"
+}

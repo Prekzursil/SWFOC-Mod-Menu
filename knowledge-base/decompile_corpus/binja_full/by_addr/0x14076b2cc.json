@@ -1,0 +1,7 @@
+{
+  "addr": "0x14076b2cc",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14076b2ed        void* result\n14076b2ed        result.b = _CatchTryBlock(arg2, sub_14076dad0(arg2, arg1)) != 0\n14076b2f5        return result",
+  "fetched_at": "2026-04-26T17:30:22Z"
+}

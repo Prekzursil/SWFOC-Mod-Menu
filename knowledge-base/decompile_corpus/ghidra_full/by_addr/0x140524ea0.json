@@ -1,0 +1,7 @@
+{
+  "addr": "0x140524ea0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "LandExecutionPathFinderClass * __thiscall\nLandExecutionPathFinderClass::scalar_deleting_destructor\n          (LandExecutionPathFinderClass *this,uint param_1)\n\n{\n  AIExecutionPathFinderClass::~AIExecutionPathFinderClass((AIExecutionPathFinderClass *)this);\n  if ((param_1 & 1) != 0) {\n    thunk_FUN_1407864b8(this,0xa8);\n  }\n  return this;\n}",
+  "fetched_at": "2026-04-26T18:27:05Z"
+}

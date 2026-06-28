@@ -1,0 +1,7 @@
+{
+  "addr": "0x1402010e0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1402010f0        char* result_1 = sx.q(*arg1) + arg2\n1402010fd        if (*result_1 != 0)\n140201103        label_140201103:\n140201103        char i = *arg3\n140201107        char* r9_1 = arg3\n14020110c        while (i != 0)\n140201112        r9_1 = &r9_1[1]\n140201118        if (i == *result_1)\n140201124        *result_1 = 0\n140201128        result_1 = &result_1[1]\n14020112f        if (*result_1 != 0)\n14020112f        goto label_140201103\n14020112f        goto label_140201131\n14020111a        i = *r9_1\n140201131        label_140201131:\n140201135        if (*result_1 != 0)\n140201137        char r8 = *arg3\n14020113b        char* result = result_1\n140201140        char* rcx_1 = arg3\n140201146        if (r8 != 0)\n14020114c        char rax_1 = r8\n140201150        while (true)\n140201150        rcx_1 = &rcx_1[1]\n140201156        if (rax_1 == *result_1)\n140201156        break\n140201158        rax_1 = *rcx_1\n14020115d        if (rax_1 == 0)\n14020115d        goto label_14020115f\n140201156        break\n14020115f        label_14020115f:\n14020115f        result_1 = &result_1[1]\n140201166        do while (*result_1 != 0)\n14020116d        *arg1 = result_1.d - arg2.d\n140201173        if (*result_1 != 0)\n140201175        *result_1 = 0\n140201179        *arg1 += 1\n140201188        return result\n140201195        return 0",
+  "fetched_at": "2026-04-26T17:27:42Z"
+}

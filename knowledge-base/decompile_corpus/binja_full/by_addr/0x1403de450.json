@@ -1,0 +1,7 @@
+{
+  "addr": "0x1403de450",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1403de460        if (*(arg1 + 0x21ac) != 0)\n1403de466        *(arg1 + 0x1128) = 1\n1403de474        sub_14001f910(arg1 + 0x1110)\n1403de47e        void* rax_1 = operator new(0x20)\n1403de48a        int64_t var_18_1 = 0x13\n1403de498        int64_t var_10_1 = 0x1f\n1403de4a4        __builtin_strncpy(rax_1, \"GUI_Dial_Switch_SFX\", 0x14)\n1403de4b2        int512_t zmm2\n1403de4b2        zmm2.o = zx.o(0)\n1403de4ca        void* var_28 = rax_1\n1403de4d7        sub_1402d5010(&data_140b27e60, &var_28, zmm2, 0, 0)\n1403de4e5        if (var_10_1 u>= 0x10)\n1403de4e7        void* rcx_1 = var_28\n1403de4ef        void* rax_2 = rcx_1\n1403de4f9        if (var_10_1 + 1 u>= 0x1000)\n1403de4fb        rcx_1 = *(rcx_1 - 8)\n1403de50e        if (rax_2 - rcx_1 - 8 u> 0x1f)\n1403de55d        _invalid_parameter_noinfo_noreturn()\n1403de55d        noreturn\n1403de510        j_sub_1407864b8(rcx_1)\n1403de51f        *(arg1 + 0x21ac) = 0\n1403de526        int64_t* result = sub_140347b50(0x47)\n1403de531        if (result == 0)\n1403de55c        return result\n1403de54c        return (*(*result + 0xa0))(result, sub_14034c200(result, 1), 0)",
+  "fetched_at": "2026-04-26T17:25:06Z"
+}

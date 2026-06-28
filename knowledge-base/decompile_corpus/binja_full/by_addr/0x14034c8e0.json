@@ -1,0 +1,7 @@
+{
+  "addr": "0x14034c8e0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14034c919        int128_t result\n14034c919        result.d = sub_14025b900(arg1, arg2, 0).d f* float.s(sub_14025e960()) f* data_140b28f60 f* arg3.d\n14034c929        return result",
+  "fetched_at": "2026-04-26T17:09:13Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x1405aea90",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1405aea96        struct ScheduledEventClass::SetupPhaseMoveEventClass::VTable** result = arg1\n1405aea99        sub_140512c50(arg1)\n1405aeaa5        result[9].d = 0xffffffff\n1405aeaac        *result = &SetupPhaseMoveEventClass::`vftable'{for `ScheduledEventClass'}\n1405aeab2        result[4].d = 0x1f\n1405aeabe        return result",
+  "fetched_at": "2026-04-26T17:37:13Z"
+}

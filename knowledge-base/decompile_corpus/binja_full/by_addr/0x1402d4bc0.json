@@ -1,0 +1,7 @@
+{
+  "addr": "0x1402d4bc0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1402d4bdc        if (arg2 == 0 || *arg1 == 0)\n1402d4cb9        int64_t result\n1402d4cb9        result.b = 0\n1402d4cc0        return result\n1402d4bec        if (sub_140220610(arg2) != 0)\n1402d4c9c        char i\n1402d4c03        int32_t rax = sub_140220710(arg2)\n1402d4c0b        if (rax u<= 7)\n1402d4c19        void* rdx\n1402d4c19        int32_t r8_1\n1402d4c19        switch (rax)\n1402d4c1b        case 0\n1402d4c1b        rdx = &arg1[0x80]\n1402d4c22        r8_1 = 1\n1402d4c2a        case 1\n1402d4c2a        rdx = &arg1[0x81]\n1402d4c31        r8_1 = 1\n1402d4c39        case 2\n1402d4c39        rdx = &arg1[0x82]\n1402d4c40        r8_1 = 1\n1402d4c48        case 3\n1402d4c48        rdx = &arg1[0x83]\n1402d4c4f        r8_1 = 1\n1402d4c57        case 4\n1402d4c57        rdx = &arg1[0x84]\n1402d4c79        r8_1 = 4\n1402d4c60        case 5\n1402d4c60        rdx = &arg1[0x88]\n1402d4c79        r8_1 = 4\n1402d4c69        case 6\n1402d4c69        rdx = &arg1[0x8c]\n1402d4c79        r8_1 = 4\n1402d4c72        case 7\n1402d4c72        rdx = &arg1[0x90]\n1402d4c79        r8_1 = 4\n1402d4c85        sub_140220730(arg2, rdx, r8_1, nullptr)\n1402d4c8d        sub_1402206a0(arg2)\n1402d4c95        i = sub_140220610(arg2)\n1402d4c9c        do while (i != 0)\n1402d4cb3        return 1",
+  "fetched_at": "2026-04-26T17:22:30Z"
+}

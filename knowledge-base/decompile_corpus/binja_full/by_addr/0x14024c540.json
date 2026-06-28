@@ -1,0 +1,7 @@
+{
+  "addr": "0x14024c540",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14024c545        int64_t* arg_8 = arg1\n14024c563        int64_t rax_2 = (arg1[1] - *arg1) s>> 3\n14024c56f        void* rax_3 = sub_140022650(arg1, arg2)\n14024c577        void* arg_20 = rax_3\n14024c57f        int64_t r15 = arg1[1]\n14024c584        int64_t* rdi = *arg1\n14024c588        int64_t* var_68 = rdi\n14024c58d        void* var_58 = rax_3\n14024c592        void* rbx = rax_3\n14024c595        void* var_50 = rax_3\n14024c59a        int64_t* var_48 = arg1\n14024c59f        void* rsi = rax_3\n14024c5a2        void* r14 = rax_3\n14024c5a8        while (rdi != r15)\n14024c5aa        int64_t* rcx = *rdi\n14024c5ad        *rsi = rcx\n14024c5b3        if (rcx != 0)\n14024c5b8        (**rcx)()\n14024c5ba        rbx = rsi + 8\n14024c5be        r14 = rbx\n14024c5c1        void* var_50_1 = rbx\n14024c5c6        rdi = &rdi[1]\n14024c5ca        int64_t* var_68_1 = rdi\n14024c5cf        rsi = rbx\n14024c5d4        void* var_58_1 = rbx\n14024c5d9        while (true)\n14024c5d9        void* var_60_1 = rbx\n14024c5e1        if (rbx == r14)\n14024c5e1        break\n14024c5e3        int64_t* rcx_1 = *rbx\n14024c5e9        if (rcx_1 != 0)\n14024c5ee        (*(*rcx_1 + 8))(rcx_1)\n14024c5f1        rbx += 8\n14024c61c        return sub_1400484a0(arg1, rax_3, rax_2, arg2) __tailcall",
+  "fetched_at": "2026-04-26T17:30:30Z"
+}

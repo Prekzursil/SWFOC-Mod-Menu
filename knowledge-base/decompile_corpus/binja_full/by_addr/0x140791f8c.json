@@ -1,0 +1,7 @@
+{
+  "addr": "0x140791f8c",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140791f98        uint8_t result = (*(arg1 + 0x14) u>> 0xd).b\n140791f9d        if ((result & 1) != 0)\n140791fa2        result = (*(arg1 + 0x14) u>> 6).b\n140791fa7        if ((result & 1) != 0)\n140791fad        _free_base(*(arg1 + 8))\n140791fb2        *(arg1 + 0x14) &= 0xfffffebf\n140791fba        result = 0\n140791fc0        __builtin_memset(arg1, 0, 0x14)\n140791fcb        return result",
+  "fetched_at": "2026-04-26T17:31:47Z"
+}

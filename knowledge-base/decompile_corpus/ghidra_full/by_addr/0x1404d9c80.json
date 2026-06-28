@@ -1,0 +1,7 @@
+{
+  "addr": "0x1404d9c80",
+  "tool": "ghidra",
+  "fact_id": "rva_ai_the_ai_class_ctor",
+  "body": "\nTheAIClass * __thiscall TheAIClass::TheAIClass(TheAIClass *this)\n\n{\n  *(undefined4 *)&(this->Singleton<class_TheAIClass>).field_0x4 = 1;\n  this->vftablePtr = &vftable;\n  *(undefined4 *)&this->Singleton<class_TheAIClass> = 0x1010101;\n  return this;\n}\n\n",
+  "fetched_at": "2026-04-26T16:43:45Z"
+}

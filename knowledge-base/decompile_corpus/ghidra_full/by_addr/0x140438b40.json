@@ -1,0 +1,7 @@
+{
+  "addr": "0x140438b40",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall\nLandMovementCoordinatorClass::vfunction4\n          (LandMovementCoordinatorClass *this,longlong *param_1,char param_2)\n\n{\n  char cVar1;\n  longlong *plVar2;\n  undefined8 uVar3;\n  longlong lVar4;\n  bool bVar5;\n  \n  if (param_1 == (longlong *)0x0) {\n    return;\n  }\n  plVar2 = (longlong *)(**(code **)(*param_1 + 0x10))(param_1,1);\n  if (plVar2 == (longlong *)0x0) {\n    return;\n  }\n  if ((char)param_1[0x69] == -1) {\n    cVar1 = (**(code **)(*plVar2 + 0x228))(plVar2);\n    if (cVar1 == '\\0') goto LAB_140438ba8;\n    param_1 = (longlong *)param_1[0x56];\n    bVar5 = param_1 == (longlong *)0x0;\n  }\n  else {\n    cVar1 = (**(code **)(*plVar2 + 0x230))();\n    bVar5 = cVar1 == '\\0';\n  }\n  if (bVar5) {\n    return;\n  }\nLAB_140438ba8:\n  if (*(char *)((longlong)param_1 + 0x35b) != -1) {\n    uVar3 = (**(code **)(*param_1 + 0x10))(param_1,0x29);\n    lVar4 = FUN_14042e3b0(uVar3,param_1);\n    if (lVar4 != 0) {\n      return;\n    }\n    lVar4 = FUN_14042e3d0(uVar3,param_1);\n    if (lVar4 != 0) {\n      return;\n    }\n  }\n  MovementCoordinatorClass::vfunction4((MovementCoordinatorClass *)this,(longlong)param_1,param_2);\n  return;\n}",
+  "fetched_at": "2026-04-26T17:52:13Z"
+}

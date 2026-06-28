@@ -1,0 +1,7 @@
+{
+  "addr": "0x14054fe50",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined4 * FUN_14054fe50(longlong *param_1,uint param_2)\n\n{\n  longlong lVar1;\n  ulonglong uVar2;\n  \n  lVar1 = *param_1;\n  uVar2 = (param_1[1] - lVar1) / 0x34;\n  if (param_2 < uVar2) {\n    return (undefined4 *)((ulonglong)param_2 * 0x34 + lVar1);\n  }\n  if (uVar2 != 0) {\n    return (undefined4 *)(uVar2 * 0x34 + -0x34 + lVar1);\n  }\n  return &DAT_140b39350;\n}",
+  "fetched_at": "2026-04-26T18:37:54Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x1405ab540",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1405ab557        int64_t* rcx = *(arg1 + 0x28)\n1405ab55e        uint64_t rax_1 = (*(*rcx + 0x10))(rcx, 0x16)\n1405ab561        uint64_t rsi = rax_1\n1405ab567        if (rax_1 != 0)\n1405ab570        rax_1 = sub_140405300(rax_1)\n1405ab579        if (rax_1.d != 0)\n1405ab584        int32_t i = 0\n1405ab598        int128_t zmm6 = 0xbf800000\n1405ab59d        if (rax_1.d != 0)\n1405ab5d2        void* rax_2\n1405ab5a5        rax_2 = sub_1404052d0(rsi, i)\n1405ab5ad        if (rax_2 != 0)\n1405ab5ba        int128_t zmm0\n1405ab5ba        float zmm7_1\n1405ab5ba        zmm0, rax_2, zmm6, zmm7_1 = sub_140373080(*(rax_2 + 0x298), *(arg1 + 0x28))\n1405ab5bf        zmm6.d f- zmm7_1\n1405ab5c2        if (is_unordered.d(zmm6.d, zmm7_1))\n1405ab5c9        if (not(zmm6.d f<= zmm0.d))\n1405ab5cb        zmm6 = zmm0\n1405ab5c9        if (zmm6.d f== zmm7_1 || not(zmm6.d f<= zmm0.d))\n1405ab5cb        zmm6 = zmm0\n1405ab5ce        i += 1\n1405ab5d2        do while (i u< rax_1.d)\n1405ab5da        if (not((zx.o(0)).d f>= zmm6.d))\n1405ab5fd        return rax_2\n1405ab5fe        int64_t* rcx_4 = *(arg1 + 0x28)\n1405ab60c        return sub_140370f00(rcx_4[0x53], rcx_4)\n1405ab625        return rax_1",
+  "fetched_at": "2026-04-26T17:37:06Z"
+}

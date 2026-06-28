@@ -1,0 +1,7 @@
+{
+  "addr": "0x1404c68dc",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall ProjectileBehaviorClass::vfunction1(ProjectileBehaviorClass *this,uint param_1)\n\n{\n  ~ProjectileBehaviorClass((ProjectileBehaviorClass *)&this[-1].RootClass_data.offset_0x328,param_1)\n  ;\n  return;\n}",
+  "fetched_at": "2026-04-26T18:12:23Z"
+}

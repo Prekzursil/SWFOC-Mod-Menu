@@ -1,0 +1,7 @@
+{
+  "addr": "0x140271360",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall ModelComponentClass::~ModelComponentClass(ModelComponentClass *this)\n\n{\n  longlong *plVar1;\n  \n  FUN_140271a10();\n  plVar1 = (longlong *)(this->BaseComponentClass_data).offset_0x8;\n  if (plVar1 != (longlong *)0x0) {\n    (**(code **)(*plVar1 + 8))();\n  }\n  plVar1 = (longlong *)(this->BaseComponentClass_data).offset_0x0;\n  if (plVar1 != (longlong *)0x0) {\n    (**(code **)(*plVar1 + 8))();\n  }\n  if (this->vftablePtr != (ModelComponentClass_vftable *)0x0) {\n                    /* WARNING: Could not recover jumptable at 0x00014027139c. Too many branches */\n                    /* WARNING: Treating indirect jump as call */\n    (**(code **)(this->vftablePtr->deleting_destructor + 8))();\n    return;\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T18:19:41Z"
+}

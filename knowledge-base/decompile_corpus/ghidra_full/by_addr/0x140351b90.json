@@ -1,0 +1,7 @@
+{
+  "addr": "0x140351b90",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\n/* BaseComponentClass member function inherited by ShellComponentClass\n   BaseComponentClass member function inherited by TextComponentClass\n   BaseComponentClass member function inherited by ModelComponentClass\n   BaseComponentClass member function inherited by BarComponentClass\n   BaseComponentClass member function inherited by SelectComponentClass */\n\nulonglong __thiscall BaseComponentClass::vfunction22(BaseComponentClass *this,longlong *param_1)\n\n{\n  ulonglong in_RAX;\n  \n  if ((longlong *)*param_1 != (longlong *)0x0) {\n    in_RAX = (**(code **)(*(longlong *)*param_1 + 8))();\n  }\n  return in_RAX & 0xffffffffffffff00;\n}\n\n",
+  "fetched_at": "2026-04-26T17:10:10Z"
+}

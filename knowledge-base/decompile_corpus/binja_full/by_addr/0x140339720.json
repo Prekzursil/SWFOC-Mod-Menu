@@ -1,0 +1,7 @@
+{
+  "addr": "0x140339720",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140339729        int32_t i = 0\n14033972b        char arg_20 = 0\n14033973c        if (data_140a17340 s> 0)\n140339748        int64_t* rdi_1 = nullptr\n140339760        int64_t var_28 = *(rdi_1 + data_140a17338)\n14033976c        public: __cdecl std::_Callable_base<class <lambda_508dc996854572947a45292d62928d80>, 0>::_Callable_base<class <lambda_508dc996854572947a45292d62928d80>, 0><class <lambda_508dc996854572947a45292d62928d80> &>(class <lambda_508dc996854572947a45292d62928d80> &)(arg2 + 0x98, &var_28)\n14033977f        sub_140206120(arg3, arg2, &arg_20, 0)\n140339784        i += 1\n140339786        rdi_1 = &rdi_1[1]\n140339790        do while (i s< data_140a17340)\n1403397b3        return sub_140209540(&data_140a14b80, arg2)",
+  "fetched_at": "2026-04-26T17:04:06Z"
+}

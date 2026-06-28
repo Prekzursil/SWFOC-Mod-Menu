@@ -1,0 +1,7 @@
+{
+  "addr": "0x140200240",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14020024a        int64_t rdi = sx.q(arg2)\n140200252        if (arg2 != 0)\n14020025f        char* r8_1 = arg1\n14020027e        char i\n140200270        i = *r8_1\n140200274        *(&data_140a7c0a0 - arg1 + r8_1) = i\n140200278        r8_1 = &r8_1[1]\n14020027e        do while (i != 0)\n140200287        _strupr(&data_140a7c0a0)\n14020029a        char* rax_1 = strstr(&data_140a7c0a0, data_140a13f60)\n14020029f        char* rdx_1 = rax_1\n1402002a5        if (rax_1 != 0)\n1402002fa        char* r8_2 = (&data_140a13f60)[rdi]\n140200320        char i_1\n140200310        i_1 = *r8_2\n140200314        r8_2 = &r8_2[1]\n140200318        *rdx_1 = i_1\n14020031a        rdx_1 = &rdx_1[1]\n140200320        do while (i_1 != 0)\n140200333        return &data_140a7c0a0\n1402002b5        char* rax_2 = strstr(&data_140a7c0a0, data_140a13fc0)\n1402002bd        if (rax_2 != 0)\n1402002c6        char* rdx_3 = (&data_140a13fc0)[rdi]\n1402002df        char i_2\n1402002d0        i_2 = *rdx_3\n1402002d3        rdx_3 = &rdx_3[1]\n1402002d7        *rax_2 = i_2\n1402002d9        rax_2 = &rax_2[1]\n1402002df        do while (i_2 != 0)\n1402002f2        return &data_140a7c0a0\n140200341        return arg1",
+  "fetched_at": "2026-04-26T17:27:40Z"
+}

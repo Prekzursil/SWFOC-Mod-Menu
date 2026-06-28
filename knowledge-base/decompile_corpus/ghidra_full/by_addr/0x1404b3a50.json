@@ -1,0 +1,7 @@
+{
+  "addr": "0x1404b3a50",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void EventQueueClass::EventQueueClass_Constructor_or_Destructor(undefined8 *param_1)\n\n{\n  *param_1 = &vftable;\n  thunk_FUN_1407864b8(param_1[4]);\n  param_1[4] = 0;\n  return;\n}",
+  "fetched_at": "2026-04-26T18:07:18Z"
+}

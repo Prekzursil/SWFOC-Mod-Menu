@@ -1,0 +1,7 @@
+{
+  "addr": "0x140615b40",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140615b40        int64_t* rdx_1 = *(arg1 + 0x30)\n140615b44        void** i = *rdx_1\n140615b4a        if (i != rdx_1)\n140615b50        void* rdx = i[3]\n140615b61        *(rdx + 0x4c) = arg2 f* *(rdx + 0x3c) f+ *(rdx + 0x4c)\n140615b66        i = *i\n140615b6d        do while (i != *(arg1 + 0x30))\n140615b6f        return i",
+  "fetched_at": "2026-04-26T17:23:24Z"
+}

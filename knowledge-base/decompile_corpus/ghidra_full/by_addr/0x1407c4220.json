@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407c4220",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "int FUN_1407c4220(undefined8 *param_1)\n\n{\n  int local_res10 [6];\n  \n  FUN_1407c3980(param_1,local_res10,4);\n  if (local_res10[0] < 0) {\n    FUN_1407bad30(*param_1,\"bad integer in %s\",param_1[5]);\n  }\n  return local_res10[0];\n}",
+  "fetched_at": "2026-04-26T18:57:00Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x1400719f0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140071a04        int64_t* rbp = *(arg1 + 0x2d0)\n140071a1f        void* r8_1 = *(arg1 + 0x2d8) - rbp\n140071a22        int64_t r10 = 0\n140071a25        int64_t rax\n140071a25        int64_t rdx\n140071a25        rdx:rax = muls.dp.q(-0x75270d0456c797dd, r8_1)\n140071a2c        int64_t rbx_1 = (r8_1 + rdx) s>> 8\n140071a3a        uint64_t result\n140071a3a        if (rbx_1 == neg.q(rbx_1 u>> 0x3f))\n140071aa6        label_140071aa6:\n140071aa6        result.b = 0\n140071a40        int64_t* r9_1 = rbp\n140071a47        while (true)\n140071a47        result = arg2\n140071a4e        if (arg2[3] u>= 8)\n140071a50        result = *arg2\n140071a58        int64_t* r8_2 = r9_1\n140071a5b        if (r9_1[3] u>= 8)\n140071a5d        r8_2 = *r9_1\n140071a60        int64_t i_1 = r9_1[2]\n140071a67        if (i_1 == arg2[2])\n140071a6c        if (i_1 != 0)\n140071a6e        void* r8_3 = r8_2 - result\n140071a83        int64_t i\n140071a79        if (*(r8_3 + result) != *result)\n140071a79        goto label_140071a97\n140071a7b        result += 2\n140071a7f        i = i_1\n140071a7f        i_1 -= 1\n140071a83        do while (i != 1)\n140071a93        result.b = (rbp[r10 * 0x3b + 0xc].d u>> 3).b & 1\n140071a95        break\n140071a97        label_140071a97:\n140071a97        r10 += 1\n140071a9a        r9_1 = &r9_1[0x3b]\n140071aa4        if (r10 u>= r8_1 s/ 0x1d8)\n140071aa4        goto label_140071aa6\n140071abc        return result",
+  "fetched_at": "2026-04-26T16:56:27Z"
+}

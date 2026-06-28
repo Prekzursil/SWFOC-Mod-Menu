@@ -1,0 +1,7 @@
+{
+  "addr": "0x1403a87c0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1403a87ca        struct BaseDataPackClass::GUIDataPackClass::VTable** result = *(arg1 + 0x1b0)\n1403a87d9        if (arg2 != 0xffffffff)\n1403a87f1        if (result == 0)\n1403a87f6        result = operator new(zx.q((&result[7]).d))\n1403a87fe        if (result != 0)\n1403a8803        result = sub_140564ed0(result)\n1403a8808        *(arg1 + 0x1b0) = result\n1403a880f        result[1].d = arg2\n1403a87de        if (result != 0)\n1403a87e0        result[1].d = arg2\n1403a881c        return result",
+  "fetched_at": "2026-04-26T17:24:07Z"
+}

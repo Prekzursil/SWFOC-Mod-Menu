@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406bba30",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "AITemplateSystemClass * __thiscall\nAITemplateSystemClass::vfunction1(AITemplateSystemClass *this,uint param_1)\n\n{\n  undefined8 *puVar1;\n  undefined8 *puVar2;\n  \n  puVar1 = (undefined8 *)(this->AITemplateSystemClass_data).offset_0x0;\n  *(undefined8 *)puVar1[1] = 0;\n  puVar1 = (undefined8 *)*puVar1;\n  while (puVar1 != (undefined8 *)0x0) {\n    puVar2 = (undefined8 *)*puVar1;\n    thunk_FUN_1407864b8(puVar1,0x18);\n    puVar1 = puVar2;\n  }\n  thunk_FUN_1407864b8((this->AITemplateSystemClass_data).offset_0x0,0x18);\n  ServicedAISystemClass::~ServicedAISystemClass((ServicedAISystemClass *)this);\n  if ((param_1 & 1) != 0) {\n    thunk_FUN_1407864b8(this,0x58);\n  }\n  return this;\n}",
+  "fetched_at": "2026-04-26T17:38:03Z"
+}

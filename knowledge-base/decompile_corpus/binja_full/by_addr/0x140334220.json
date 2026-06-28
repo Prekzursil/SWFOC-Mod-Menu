@@ -1,0 +1,7 @@
+{
+  "addr": "0x140334220",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140334228        int64_t* rbx = arg1 + 0x130\n14033423c        if (rbx == 0)\n140334284        rbx = arg3\n14033424e        if (WaitForSingleObject(*rbx, 0x2710) == WAIT_OBJECT_0)\n14033427e        rbx[1] = \"BroadcasterClass::Find_Player_From_ID\"\n140334250        rbx[1]\n140334289        int32_t rdi = 0\n140334296        int64_t result\n140334296        if (*(arg1 + 0xd8) s<= 0)\n1403342cb        label_1403342cb:\n1403342cb        result = 0\n1403342ae        while (true)\n1403342ae        int64_t r14_1 = sx.q(rdi) * 0x1d8\n1403342bf        if (sub_140202500(*(arg1 + 0xd0) + 0x70 + r14_1) == arg2)\n140334325        result = *(arg1 + 0xd0) + r14_1\n140334328        break\n1403342c1        rdi += 1\n1403342c9        if (rdi s>= *(arg1 + 0xd8))\n1403342c9        goto label_1403342cb\n1403342da        if (rbx != 0)\n1403342dc        rbx[1]\n1403342e0        HANDLE hMutex = *rbx\n1403342e3        rbx[1] = 0\n1403342f3        if (ReleaseMutex(hMutex) == 0)\n1403342f5        GetLastError()\n14033431d        return result",
+  "fetched_at": "2026-04-26T17:03:25Z"
+}

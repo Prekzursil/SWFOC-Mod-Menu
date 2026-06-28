@@ -1,0 +1,7 @@
+{
+  "addr": "0x1402634a0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1402634aa        int64_t* rdx = &arg1[2]\n1402634ae        *arg1 = &ModelAnimsListClass::`vftable'{for `RefCountClass'}\n1402634b1        int64_t i_2 = 0x77\n1402634b7        arg1[1].d = 0\n1402634bb        void* rax = &rdx[5]\n1402634c2        int64_t i_3 = 0x77\n140263606        int64_t i\n1402634d0        *rdx = 0\n1402634d3        rdx = &rdx[0x33]\n1402634da        __builtin_memset(rax - 0x20, 0, 0x20)\n1402634ea        __builtin_memset(rax, 0, 0x170)\n1402635fb        rax += 0x198\n140263602        i = i_3\n140263602        i_3 -= 0x11\n140263606        do while (i != 0x11)\n14026360c        void* rcx = &arg1[0x167]\n140263613        void* rax_1 = rcx + 0x28\n140263756        int64_t i_1\n140263620        *rcx = 0\n140263623        rcx += 0x198\n14026362a        __builtin_memset(rax_1 - 0x20, 0, 0x20)\n14026363a        __builtin_memset(rax_1, 0, 0x170)\n14026374b        rax_1 += 0x198\n140263752        i_1 = i_2\n140263752        i_2 -= 0x11\n140263756        do while (i_1 != 0x11)\n14026375f        return arg1",
+  "fetched_at": "2026-04-26T17:31:19Z"
+}

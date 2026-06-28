@@ -1,0 +1,7 @@
+{
+  "addr": "0x14076bd60",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14076bd6b        __builtin_memcpy(arg1, arg2, arg3)\n14076bd6f        return ",
+  "fetched_at": "2026-04-26T17:30:25Z"
+}

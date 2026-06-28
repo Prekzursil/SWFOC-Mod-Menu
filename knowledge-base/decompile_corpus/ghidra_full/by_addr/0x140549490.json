@@ -1,0 +1,7 @@
+{
+  "addr": "0x140549490",
+  "tool": "ghidra",
+  "fact_id": "rva_rear_shield_read_impl",
+  "body": "\nundefined4 FUN_140549490(undefined8 param_1,longlong param_2)\n\n{\n  if ((param_2 != 0) && (*(longlong *)(param_2 + 0xf0) != 0)) {\n    return *(undefined4 *)(*(longlong *)(param_2 + 0xf0) + 0xfc);\n  }\n  return 0;\n}\n\n",
+  "fetched_at": "2026-04-26T16:43:50Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x14020b9e0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14020b9e0        uint128_t* r9_1 = *(arg1 + 8)\n14020b9e7        if (r9_1 == 0)\n14020ba03        return \n14020b9f4        char temp0 = arg2.b\n14020b9f4        arg2.b = neg.b(arg2.b)\n14020b9fe        return memset(r9_1, (sbb.d(arg2, arg2, temp0 != 0)).b, sx.q((*arg1 + 7) s>> 3)) __tailcall",
+  "fetched_at": "2026-04-26T17:28:09Z"
+}

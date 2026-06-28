@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407a09f8",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1407a09fe        HANDLE rax = data_140a457a0\n1407a0a0b        if (rax == -2)\n1407a0a2e        rax = CreateFileW(u\"CONOUT$\", 0x40000000, FILE_SHARE_READ | FILE_SHARE_WRITE, nullptr, OPEN_EXISTING, SECURITY_ANONYMOUS, nullptr)\n1407a0a34        data_140a457a0 = rax\n1407a0a3f        int32_t rbx\n1407a0a3f        rbx.b = rax != -1\n1407a0a49        return zx.q(rbx)",
+  "fetched_at": "2026-04-26T17:32:20Z"
+}

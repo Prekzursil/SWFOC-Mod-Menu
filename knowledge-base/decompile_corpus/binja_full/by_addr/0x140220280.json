@@ -1,0 +1,7 @@
+{
+  "addr": "0x140220280",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140220291        arg1[1] = arg2\n14022029c        arg1[2].d = 0\n14022029f        *arg1 = &ChunkReaderClass::`vftable'\n1402202a5        __builtin_memset(&arg1[3], 0, 0x11)\n1402202b4        *(arg1 + 0x2c) = 0\n1402202b7        arg1[6] = 0\n1402202ca        arg1[3] = j_operator new(0x400)\n1402202ce        int64_t* rax_1 = j_operator new(0x800)\n1402202d6        if (rax_1 == 0)\n1402202ef        rax_1 = nullptr\n1402202d8        int64_t* rcx = rax_1\n1402202db        int64_t i_1 = 0x100\n1402202eb        int64_t i\n1402202e0        *rcx = 0\n1402202e3        rcx = &rcx[1]\n1402202e7        i = i_1\n1402202e7        i_1 -= 1\n1402202eb        do while (i != 1)\n1402202f7        arg1[4] = rax_1\n1402202fb        int16_t* rax_2 = operator new(2)\n140220303        if (rax_2 == 0)\n14022030a        rax_2 = nullptr\n140220305        *rax_2 = 0\n14022030d        uint128_t* rcx_1 = arg1[3]\n140220319        arg1[6] = rax_2\n14022031d        memset(rcx_1, 0, 0x400)\n14022032e        memset(arg1[4], 0, 0x800)\n140220339        arg1[6]->vFunc_0 = 0\n140220347        if ((*(*arg2 + 0x58))(arg2) == 0)\n140220354        (*(*arg2 + 8))(arg2, 0, 0)\n140220369        return arg1",
+  "fetched_at": "2026-04-26T17:29:06Z"
+}

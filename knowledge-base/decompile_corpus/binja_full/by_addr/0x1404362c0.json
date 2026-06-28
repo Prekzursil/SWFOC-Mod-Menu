@@ -1,0 +1,7 @@
+{
+  "addr": "0x1404362c0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1404362c6        struct ScheduledEventClass::PlaceBeaconEventClass::VTable** result = arg1\n1404362c9        sub_140512c50(arg1)\n1404362d5        result[9].d = 0xffffffff\n1404362dc        *result = &PlaceBeaconEventClass::`vftable'{for `ScheduledEventClass'}\n1404362e1        __builtin_memset(result + 0x4c, 0, 0x18)\n1404362f0        *(result + 0x64) = 0xffffffff\n1404362f7        result[4].d = 0x30\n140436303        return result",
+  "fetched_at": "2026-04-26T17:27:03Z"
+}

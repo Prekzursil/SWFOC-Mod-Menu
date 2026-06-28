@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401f6700",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall\nGUIGadgetIMEEditboxClass::vfunction7(GUIGadgetIMEEditboxClass *this,undefined8 param_1)\n\n{\n  FUN_1401d4060();\n  GUIGadgetClass::vfunction7((GUIGadgetClass *)this,param_1);\n  FUN_1400228a0(&(this->GUIGadgetEditboxClass_data).offset_0x58,&PTR_1407ff7e8,0);\n  return;\n}",
+  "fetched_at": "2026-04-26T17:53:41Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x14059fab0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14059fabf        void* rcx = arg1[3]\n14059fac6        if (rcx == 0)\n14059fac6        goto label_14059fb05\n14059fada        if (((arg1[5] - rcx) & 0xffffffffffffffe0) u< 0x1000)\n14059fada        goto label_14059faf4\n14059fadc        void* r8_1 = *(rcx - 8)\n14059faef        if (rcx - r8_1 - 8 u<= 0x1f)\n14059faf1        rcx = r8_1\n14059faf4        label_14059faf4:\n14059faf4        j_sub_1407864b8(rcx)\n14059faf9        __builtin_memset(&arg1[3], 0, 0x18)\n14059fb05        label_14059fb05:\n14059fb05        void* rcx_3 = *arg1\n14059fb0b        if (rcx_3 == 0)\n14059fb53        return \n14059fb1f        if (((arg1[2] - rcx_3) & 0xfffffffffffffff0) u< 0x1000)\n14059fb1f        goto label_14059fb39\n14059fb21        void* r8_2 = *(rcx_3 - 8)\n14059fb34        if (rcx_3 - r8_2 - 8 u<= 0x1f)\n14059fb36        rcx_3 = r8_2\n14059fb39        label_14059fb39:\n14059fb39        j_sub_1407864b8(rcx_3)\n14059fb3e        __builtin_memset(arg1, 0, 0x18)\n14059fb53        return \n14059fb54        _invalid_parameter_noinfo_noreturn()\n14059fb54        noreturn",
+  "fetched_at": "2026-04-26T17:36:47Z"
+}

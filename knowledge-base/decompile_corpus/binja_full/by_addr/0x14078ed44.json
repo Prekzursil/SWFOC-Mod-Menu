@@ -1,0 +1,7 @@
+{
+  "addr": "0x14078ed44",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14078ed49        int32_t* arg_20 = arg4\n14078ed5b        __vcrt_unlock(*arg2)\n14078ed69        replace_current_thread_locale_nolock(**arg3, nullptr)\n14078ed80        return __vcrt_lock(*arg4)",
+  "fetched_at": "2026-04-26T17:31:39Z"
+}

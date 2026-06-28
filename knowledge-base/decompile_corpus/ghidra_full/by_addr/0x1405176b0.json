@@ -1,0 +1,7 @@
+{
+  "addr": "0x1405176b0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "longlong FUN_1405176b0(undefined8 param_1,undefined8 param_2)\n\n{\n  longlong *plVar1;\n  undefined1 local_18 [24];\n  \n  plVar1 = (longlong *)FUN_140515680(param_1,local_18,param_2);\n  return *plVar1 + 0x18;\n}",
+  "fetched_at": "2026-04-26T18:23:39Z"
+}

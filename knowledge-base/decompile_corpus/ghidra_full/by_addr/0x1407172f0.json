@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407172f0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "char * __thiscall ForceConfuseAbilityClass::vfunction3_for_IXMLLoadableClass(void)\n\n{\n  return \"Force_Confuse_Ability\";\n}",
+  "fetched_at": "2026-04-26T17:56:51Z"
+}

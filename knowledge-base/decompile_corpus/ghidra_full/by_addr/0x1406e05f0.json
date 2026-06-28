@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406e05f0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* PlayerPerceptualEvaluatorClass member function inherited by\n   TacticalPlayerPerceptualEvaluatorClass\n   PlayerPerceptualEvaluatorClass member function inherited by LandPlayerPerceptualEvaluatorClass\n   PlayerPerceptualEvaluatorClass member function inherited by SpacePlayerPerceptualEvaluatorClass\n    */\n\nundefined8 __thiscall\nPlayerPerceptualEvaluatorClass::vfunction11\n          (PlayerPerceptualEvaluatorClass *this,longlong param_1,double *param_2)\n\n{\n  undefined **ppuVar1;\n  undefined8 uVar2;\n  \n  ppuVar1 = (this->SignalListenerClass_data).offset_0x0;\n  uVar2 = CONCAT71((int7)((ulonglong)*(longlong *)(param_1 + 0x58) >> 8),1);\n  if (*(undefined ***)(*(longlong *)(param_1 + 0x58) + 0x50) != ppuVar1) {\n    *param_2 = 0.0;\n    return uVar2;\n  }\n  *param_2 = (double)*(float *)(ppuVar1 + 0xe);\n  return uVar2;\n}",
+  "fetched_at": "2026-04-26T17:45:11Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x140568e10",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "ulonglong __thiscall TeamTargetingBehaviorClass::vfunction38(TeamTargetingBehaviorClass *this)\n\n{\n  ulonglong uVar1;\n  \n  if (DAT_140b15418 == (longlong *)0x0) {\n    uVar1 = (ulonglong)DAT_140b153fc;\n  }\n  else {\n    uVar1 = (**(code **)(*DAT_140b15418 + 0xe0))();\n  }\n  if ((int)uVar1 == 2) {\n    uVar1 = FUN_14039b950(this->offset_0x18,5,1);\n    if ((char)uVar1 != '\\0') {\n      return uVar1 & 0xffffffffffffff00;\n    }\n  }\n  return CONCAT71((int7)(uVar1 >> 8),1);\n}",
+  "fetched_at": "2026-04-26T18:39:44Z"
+}

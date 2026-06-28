@@ -1,0 +1,7 @@
+{
+  "addr": "0x14077e484",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14077e48e        *(arg1 + 0x60)\n14077e499        int16_t rax = __crt_stdio_input::skip_whitespace<class __crt_stdio_input::string_input_adapter,wchar_t>(arg1 + 8)\n14077e4a1        int64_t rax_1 = *(arg1 + 0x18)\n14077e4b9        if (rax_1 != *(arg1 + 8) && (rax_1 != *(arg1 + 0x10) || rax != 0xffff))\n14077e4bf        *(arg1 + 0x18) = rax_1 - 2\n14077e4c7        int64_t result = __crt_stdio_input::format_string_parser<char>::length(arg1 + 0x20)\n14077e4d0        if (result == 4)\n14077e4e9        return __crt_stdio_input::input_processor<float,wchar_t,class __crt_stdio_input::string_input_adapter<wchar_t> >::process_floating_point_specifier_t<float>(arg1)\n14077e4d6        if (result == 8)\n14077e4df        return __crt_stdio_input::input_processor<double,wchar_t,class __crt_stdio_input::string_input_adapter<wchar_t> >::process_floating_point_specifier_t<double>(arg1)\n14077e4d8        result.b = 0\n14077e4f8        return result",
+  "fetched_at": "2026-04-26T17:31:01Z"
+}

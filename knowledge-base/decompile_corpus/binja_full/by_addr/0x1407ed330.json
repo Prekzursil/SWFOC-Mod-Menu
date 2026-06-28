@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407ed330",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1407ed334        int64_t* rcx = data_140a14cb0\n1407ed33b        struct DynamicVectorClass<class std::string>::VTable* const result = &DynamicVectorClass<class std::string>::`vftable'\n1407ed342        data_140a14ca8 = &DynamicVectorClass<class std::string>::`vftable'\n1407ed34c        if (rcx != 0)\n1407ed358        if ((data_140a14cbc & 0x80000000) == 0)\n1407ed379        sub_14001eef0(rcx, 3)\n1407ed36c        HeapFree(GetProcessHeap(), HEAP_NONE, data_140a14cb0)\n1407ed37e        result = nullptr\n1407ed380        data_140a14cbc &= 0x80000000\n1407ed38a        data_140a14cb0 = 0\n1407ed391        data_140a14cb8 = 0\n1407ed39b        return result",
+  "fetched_at": "2026-04-26T17:36:12Z"
+}

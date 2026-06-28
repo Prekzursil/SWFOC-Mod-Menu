@@ -1,0 +1,7 @@
+{
+  "addr": "0x14078cfcc",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_14078cfcc(void)\n\n{\n  __acrt_execute_initializers(&PTR_LAB_1408d6520,&DAT_1408d6620);\n  return;\n}",
+  "fetched_at": "2026-04-26T18:52:11Z"
+}

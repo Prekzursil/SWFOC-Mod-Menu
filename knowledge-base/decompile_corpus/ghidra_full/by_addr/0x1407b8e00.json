@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407b8e00",
+  "tool": "ghidra",
+  "fact_id": "api_lua_getgcthreshold",
+  "body": "\nuint FUN_1407b8e00(longlong param_1)\n\n{\n  return *(uint *)(*(longlong *)(param_1 + 0x20) + 0x70) >> 10;\n}\n\n",
+  "fetched_at": "2026-04-26T16:44:24Z"
+}

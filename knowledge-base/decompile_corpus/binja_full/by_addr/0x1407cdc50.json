@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407cdc50",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1407cdc6c        int64_t rax = sub_1407b9cc0(arg1, arg2)\n1407cdc77        int64_t rax_1 = arg1[4]\n1407cdc82        (*(rax_1 + 0xc8))(rax_1 + 0xa0, arg3)\n1407cdc99        sub_1407b93f0(arg1, \"cannot read %s: %s\", rax + 1)\n1407cdca3        sub_1407b9880(arg1, arg2)\n1407cdcc1        return 2",
+  "fetched_at": "2026-04-26T17:33:52Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x14032f4d0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14032f4e5        void** rdx = *(arg3 + 0x68)\n14032f4f1        if (rdx[3] u>= 0x10)\n14032f4f3        rdx = *rdx\n14032f4fd        sub_140327b10(\"STORY - %s WON LAND BATTLE\\r\\n\", rdx)\n14032f507        int32_t arg_10 = 0\n14032f51f        int64_t result = sub_14032e5f0(arg1, 0x13, arg3, &arg_10, arg2)\n14032f527        if (arg2 != 0)\n14032f530        result = sub_140294a40(&data_140a16fd0)\n14032f538        if (arg3 == result)\n14032f541        result = sub_14028af60(&data_140b153e0)\n14032f548        if (result.b == 0)\n14032f557        return sub_140448cb0(&data_140b30350, arg2, 1)\n14032f56b        return result",
+  "fetched_at": "2026-04-26T17:02:34Z"
+}

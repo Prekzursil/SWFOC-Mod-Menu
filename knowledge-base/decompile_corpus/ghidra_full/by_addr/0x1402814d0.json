@@ -1,0 +1,7 @@
+{
+  "addr": "0x1402814d0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "bool FUN_1402814d0(longlong param_1)\n\n{\n  return *(longlong *)(param_1 + 0x360) != 0;\n}",
+  "fetched_at": "2026-04-26T18:22:21Z"
+}

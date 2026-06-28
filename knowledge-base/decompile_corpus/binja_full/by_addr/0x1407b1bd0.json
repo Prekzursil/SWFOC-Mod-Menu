@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407b1bd0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1407b1be2        int32_t rsi = 0\n1407b1bf1        if (data_140b3cd64 != 0)\n1407b1c01        int32_t rax_3 = ((*(arg1 + 0x110) - *(arg1 + 0x108)) s>> 3).d\n1407b1c0a        if (rax_3 s> 0)\n1407b1c0c        int64_t i = 0\n1407b1c17        int64_t* rcx = *(*(arg1 + 0x108) + (i << 3))\n1407b1c1e        (*(*rcx + 0x40))(rcx)\n1407b1c21        i += 1\n1407b1c27        do while (i s< sx.q(rax_3))\n1407b1c37        int32_t result = ((*(arg1 + 0xe0) - *(arg1 + 0xd8)) s>> 3).d\n1407b1c3d        if (result s<= 0)\n1407b1cc1        return result\n1407b1c44        int64_t i_1 = 0\n1407b1c61        int32_t* rcx_1 = *(*(arg1 + 0xd8) + (i_1 << 3))\n1407b1c69        int32_t var_28 = *rcx_1\n1407b1c74        int32_t var_24_1 = rcx_1[1]\n1407b1c86        int32_t var_20_1 = rcx_1[2]\n1407b1c8c        sub_1407b4840(arg1 + 0x120, rsi, &var_28, 0)\n1407b1c91        rsi += 1\n1407b1c93        i_1 += 1\n1407b1c99        do while (i_1 s< sx.q(result))\n1407b1ca5        return sub_1407b3b10(arg1 + 0x120, arg2)",
+  "fetched_at": "2026-04-26T17:32:55Z"
+}

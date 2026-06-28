@@ -1,0 +1,117 @@
+{
+  "$schema": "https://json-schema.org/draft-07/schema#",
+  "title": "SWFOC Verified Facts Ledger",
+  "description": "Structured, tool-attested ledger of claims about the SWFOC (Alamo engine) binary. Every entry records the claim, category, confidence level, the set of independent tools that corroborate it, and a per-tool evidence block. Lua-only corroboration is insufficient for VERIFIED status -- at least two distinct tools must agree.",
+  "type": "object",
+  "patternProperties": {
+    "^(rva|fact|struct|api)_[a-zA-Z0-9_]+$": {
+      "type": "object",
+      "required": [
+        "claim",
+        "category",
+        "confidence",
+        "tools_consensus",
+        "tool_findings",
+        "first_documented",
+        "last_verified"
+      ],
+      "properties": {
+        "claim": {
+          "type": "string",
+          "description": "Human-readable description of the fact being asserted."
+        },
+        "category": {
+          "type": "string",
+          "enum": [
+            "lua_binding",
+            "engine_function",
+            "struct_offset",
+            "lua_api",
+            "memory_layout",
+            "rtti_class",
+            "behavior_finding"
+          ]
+        },
+        "confidence": {
+          "type": "string",
+          "enum": [
+            "VERIFIED",
+            "LIVE_OBSERVED",
+            "UNVERIFIED",
+            "REFUTED",
+            "DEPRECATED"
+          ]
+        },
+        "tools_consensus": {
+          "type": "array",
+          "description": "List of distinct tools that independently corroborate the claim. At least 2 tools (non-Lua-only) are required to justify VERIFIED.",
+          "items": {
+            "type": "string",
+            "enum": [
+              "ida_pro",
+              "ghidra",
+              "binary_ninja",
+              "frida",
+              "cheat_engine",
+              "lua_runtime",
+              "test_harness"
+            ]
+          },
+          "minItems": 0,
+          "uniqueItems": true
+        },
+        "tool_findings": {
+          "type": "object",
+          "description": "Per-tool evidence bag. Keys should match values in tools_consensus.",
+          "additionalProperties": {
+            "type": "object",
+            "properties": {
+              "verified_at": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "evidence_ref": {
+                "type": "string",
+                "description": "File path, test ID, or decompiler session reference where this evidence can be reviewed."
+              },
+              "decompile_hash": {
+                "type": "string",
+                "description": "Optional hash of the decompiler output for drift detection."
+              },
+              "notes": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "first_documented": {
+          "type": "string",
+          "format": "date",
+          "description": "The date the claim was first recorded in any SWFOC document."
+        },
+        "last_verified": {
+          "type": "string",
+          "format": "date",
+          "description": "The date the claim was most recently checked against a live tool."
+        },
+        "engine_build_hash": {
+          "type": "string",
+          "description": "Optional hash or version string identifying the StarWarsG.exe build this claim was verified against."
+        },
+        "rva": {
+          "type": "string",
+          "pattern": "^0x[0-9A-Fa-f]+$",
+          "description": "RVA relative to image base 0x140000000 (Ghidra convention). Only applicable to code/data entries."
+        },
+        "supersedes": {
+          "type": "string",
+          "description": "ID of an earlier entry that this entry replaces. Used when a correction lands (e.g., mislabeled RVA)."
+        },
+        "notes": {
+          "type": "string"
+        }
+      }
+    }
+  },
+  "additionalProperties": false
+}

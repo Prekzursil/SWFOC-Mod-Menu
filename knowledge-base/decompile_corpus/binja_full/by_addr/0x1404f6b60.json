@@ -1,0 +1,7 @@
+{
+  "addr": "0x1404f6b60",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1404f6b63        if (arg2 == 0)\n1404f6b63        return \n1404f6b6e        void* arg_10 = arg2\n1404f6b92        if ((*(arg2 + 0x3a0) & 2) != 0 || *(arg2 + 0x333) == 0xff)\n1404f6b92        return \n1404f6b9b        void* i\n1404f6b9b        if (arg3 == 0)\n1404f6ba0        i = sub_140397260(arg2)\n1404f6ba8        if (arg3 == 0 && i != 0)\n1404f6ba8        return \n1404f6bae        i = *(arg1 + 0x28)\n1404f6bbd        while (i != *(arg1 + 0x30))\n1404f6bc3        if (*i == arg2)\n1404f6c5e        return \n1404f6bc9        i += 8\n1404f6bd2        int32_t* rdx_1 = *(arg1 + 0x30)\n1404f6bdf        if (rdx_1 == *(arg1 + 0x38))\n1404f6bf0        sub_140045580(arg1 + 0x28, rdx_1, &arg_10)\n1404f6be1        *rdx_1 = arg2\n1404f6be4        *(arg1 + 0x30) += 8\n1404f6bfc        if (*(arg1 + 0xa8) == 0)\n1404f6bfe        *(arg1 + 0xa8) = 1\n1404f6c1d        sub_140220e90(sub_140058570(), arg2 + 0x38, arg1, 0x10)\n1404f6c35        sub_140220ed0(sub_140058570(), arg2 + 0x38, 9, 0)\n1404f6c3a        void* rcx_4 = *(arg2 + 0x100)\n1404f6c49        if (rcx_4 != 0)\n1404f6c4f        sub_14037ca30(rcx_4 + 8)\n1404f6c5e        return ",
+  "fetched_at": "2026-04-26T17:31:44Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401f9860",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "float * FUN_1401f9860(float *param_1,float *param_2,float param_3)\n\n{\n  float fVar1;\n  float fVar2;\n  float fVar3;\n  \n  fVar1 = DAT_1407ffaf8;\n  *param_2 = 1.0;\n  param_2[1] = 1.0;\n  param_2[2] = 1.0;\n  param_2[3] = 1.0;\n  fVar3 = param_3 * *param_1;\n  if (0.0 <= fVar3) {\n    fVar2 = fVar1;\n    if (fVar3 <= fVar1) {\n      fVar2 = fVar3;\n    }\n  }\n  else {\n    fVar2 = 0.0;\n  }\n  *param_2 = fVar2;\n  fVar3 = param_3 * param_1[1];\n  if (0.0 <= fVar3) {\n    fVar2 = fVar1;\n    if (fVar3 <= fVar1) {\n      fVar2 = fVar3;\n    }\n  }\n  else {\n    fVar2 = 0.0;\n  }\n  param_2[1] = fVar2;\n  fVar3 = param_3 * param_1[2];\n  if (0.0 <= fVar3) {\n    fVar2 = fVar1;\n    if (fVar3 <= fVar1) {\n      fVar2 = fVar3;\n    }\n  }\n  else {\n    fVar2 = 0.0;\n  }\n  param_2[2] = fVar2;\n  param_3 = param_3 * param_1[3];\n  if (param_3 < 0.0) {\n    param_2[3] = 0.0;\n    return param_2;\n  }\n  if (param_3 <= fVar1) {\n    fVar1 = param_3;\n  }\n  param_2[3] = fVar1;\n  return param_2;\n}",
+  "fetched_at": "2026-04-26T17:54:19Z"
+}

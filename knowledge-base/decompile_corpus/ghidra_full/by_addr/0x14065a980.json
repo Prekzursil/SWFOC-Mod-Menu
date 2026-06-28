@@ -1,0 +1,7 @@
+{
+  "addr": "0x14065a980",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nundefined8 __thiscall\nFoggedPerceptualEvaluatorClass<class_PlanetPerceptualEvaluatorClass>::vfunction2\n          (FoggedPerceptualEvaluatorClass<class_PlanetPerceptualEvaluatorClass> *this,\n          undefined8 param_1,undefined8 param_2)\n\n{\n  int iVar1;\n  FoggedPerceptualEvaluatorClass<class_PlanetPerceptualEvaluatorClass>_vftable0 *pFVar2;\n  undefined4 uVar3;\n  undefined8 uVar4;\n  \n  uVar4 = (*this->vftablePtr->vfunction2)(this,param_1,param_2);\n  if ((char)uVar4 == '\\0') {\n    pFVar2 = this->vftablePtr;\n    FUN_1405f3e60(param_1);\n    uVar4 = (*pFVar2->vfunction2)(this,param_1,param_2);\n  }\n  else {\n    uVar3 = FUN_1405f3e60(param_1);\n    iVar1 = (this->VisiblePerceptualEvaluatorClass<class_PlanetPerceptualEvaluatorClass>_data).\n            offset_0x10;\n    if ((iVar1 != 0) &&\n       (uVar4 = FUN_14065a780(this,param_1,param_2,uVar3,iVar1), (char)uVar4 != '\\0')) {\n      return CONCAT71((int7)((ulonglong)uVar4 >> 8),1);\n    }\n    uVar4 = FUN_14064d990(this,param_1,param_2,uVar3);\n  }\n  return uVar4;\n}\n\n",
+  "fetched_at": "2026-04-26T17:07:27Z"
+}

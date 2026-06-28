@@ -1,0 +1,7 @@
+{
+  "addr": "0x140556840",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140556854        int32_t zmm1 = arg2[1]\n14055685c        int32_t var_28 = *arg2\n140556875        int64_t rax\n140556875        int64_t rdx_2\n140556875        rdx_2:rax = muls.dp.q(0x4924924924924925, *(arg1 + 0x140) - *(arg1 + 0x138))\n140556880        int32_t var_24 = zmm1\n140556886        int32_t var_20 = arg2[2]\n14055688c        int64_t rdx_3 = rdx_2 s>> 5\n140556897        int32_t i_1 = rdx_3.d + (rdx_3 u>> 0x3f).d\n14055689c        if (i_1 == 0)\n140556957        return (zx.o(0)).d\n14055692b        float zmm0_1\n14055692b        float zmm6_1\n14055692b        int32_t i\n1405568c0        i = i_1 - 1\n1405568ce        void* rbx_2 = zx.q(i) * 0x70 + *(arg1 + 0x138)\n1405568d8        zmm0_1, zmm6_1 = sub_1405c5530(rbx_2, &var_28)\n1405568ef        int64_t rax_4\n1405568ef        int64_t rdx_7\n1405568ef        rdx_7:rax_4 = muls.dp.q(0x4ec4ec4ec4ec4ec5, *(rbx_2 + 0x20) - *(rbx_2 + 0x18))\n1405568f2        int64_t rdx_8 = rdx_7 s>> 4\n140556902        int32_t* rax_7 = sub_14054fe50(rbx_2 + 0x18, rdx_8.d + (rdx_8 u>> 0x3f).d - 1)\n140556907        i_1 = i\n14055690d        var_28 = *rax_7\n140556918        int32_t var_24_1 = rax_7[1]\n140556923        int32_t var_20_1 = rax_7[2]\n14055692b        do while (i != 0)\n140556949        return zmm6_1 + zmm0_1",
+  "fetched_at": "2026-04-26T17:34:20Z"
+}

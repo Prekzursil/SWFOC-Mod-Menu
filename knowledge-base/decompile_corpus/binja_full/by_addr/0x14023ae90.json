@@ -1,0 +1,7 @@
+{
+  "addr": "0x14023ae90",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14023aea4        *arg1 = &DatabaseUIntConversionClass::`vftable'\n14023aea7        char** rsi = arg2\n14023aecd        void var_48\n14023aecd        int64_t rdx_1 = sub_14011f570(&data_140b09350, &var_48, rsi, sub_14011f9c0(&data_140b09350, arg2))[1]\n14023aed4        if (rdx_1 == 0)\n14023aed4        rdx_1 = data_140b09358\n14023aee3        if (rdx_1 == data_140b09358)\n14023aeed        void* var_38\n14023aeed        sub_14001e680(&var_38, rsi)\n14023aef7        struct DatabaseUIntConversionClass::VTable** var_18_1 = arg1\n14023af08        sub_14023b240(&data_140b09350, &var_48, &var_38)\n14023af16        int64_t var_20\n14023af16        if (var_20 u>= 0x10)\n14023af18        void* rcx_1 = var_38\n14023af20        void* rax_2 = rcx_1\n14023af2a        if (var_20 + 1 u>= 0x1000)\n14023af2c        rcx_1 = *(rcx_1 - 8)\n14023af3f        if (rax_2 - rcx_1 - 8 u> 0x1f)\n14023af54        _invalid_parameter_noinfo_noreturn()\n14023af54        noreturn\n14023af41        j_sub_1407864b8(rcx_1)\n14023af53        return arg1",
+  "fetched_at": "2026-04-26T17:30:00Z"
+}

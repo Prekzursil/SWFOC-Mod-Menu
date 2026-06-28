@@ -1,0 +1,7 @@
+{
+  "addr": "0x140793808",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* Library Function - Single Match\n    __acrt_GetLocaleInfoEx\n   \n   Libraries: Visual Studio 2017 Release, Visual Studio 2019 Release */\n\nvoid __acrt_GetLocaleInfoEx(undefined8 param_1,LCTYPE param_2,LPWSTR param_3,int param_4)\n\n{\n  LCID Locale;\n  void *pvVar1;\n  \n  pvVar1 = try_get_function(0xb,\"GetLocaleInfoEx\",(module_id *)&DAT_1408d8250,\n                            (module_id *)\"GetLocaleInfoEx\");\n  if (pvVar1 == (void *)0x0) {\n    Locale = __acrt_LocaleNameToLCID(param_1,0);\n    GetLocaleInfoW(Locale,param_2,param_3,param_4);\n  }\n  else {\n    (*(code *)PTR__guard_dispatch_icall_1407fdcd8)(param_1,param_2,param_3,param_4);\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T18:53:03Z"
+}

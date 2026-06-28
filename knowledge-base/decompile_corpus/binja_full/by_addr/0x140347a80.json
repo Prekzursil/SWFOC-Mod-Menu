@@ -1,0 +1,7 @@
+{
+  "addr": "0x140347a80",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140347a86        int32_t result = *(arg2 + 0xa8) - 0x32f\n140347a8e        if (result u<= 9)\n140347a96        result = *(arg1 + 0xa8) - 0x2cb\n140347a9e        if (result u<= 0x13)\n140347aa7        return sub_1403cf500(&data_140b27f60, arg2) __tailcall\n140347aac        return result",
+  "fetched_at": "2026-04-26T17:07:16Z"
+}

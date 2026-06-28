@@ -1,0 +1,7 @@
+{
+  "addr": "0x1405db2c0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1405db2cf        int64_t* rsi = *(arg1 + 0x60)\n1405db2d9        if (rsi != 0)\n1405db2db        void* rcx = *(arg1 + 0x68)\n1405db2e2        if (rcx != 0)\n1405db2f2        (*(*rsi + 0xb0))(rsi, sub_1402648b0(rcx))\n1405db2f8        void* rdx_2 = *(arg1 + 0x78)\n1405db301        if (rdx_2 != 0)\n1405db30a        sub_140260f10(&data_140b0a130, rdx_2)\n1405db30f        *(arg1 + 0x78) = 0\n1405db313        int64_t* rcx_2 = *(arg1 + 0x80)\n1405db31d        if (rcx_2 != 0)\n1405db322        (*(*rcx_2 + 8))(rcx_2)\n1405db325        *(arg1 + 0x80) = 0\n1405db32c        *(arg1 + 0xa0) = 1\n1405db333        int64_t* rcx_3 = *(arg1 + 0x60)\n1405db33a        if (rcx_3 != 0)\n1405db33f        (*(*rcx_3 + 8))(rcx_3)\n1405db342        *(arg1 + 0x60) = 0\n1405db346        *(arg1 + 0x98) = 0\n1405db34d        int64_t* rcx_4 = *(arg1 + 0x70)\n1405db354        if (rcx_4 != 0)\n1405db359        (*(*rcx_4 + 8))(rcx_4)\n1405db35c        *(arg1 + 0x70) = 0\n1405db360        int64_t* rcx_5 = *(arg1 + 0x68)\n1405db367        if (rcx_5 != 0)\n1405db36c        (*(*rcx_5 + 8))(rcx_5)\n1405db36f        *(arg1 + 0x68) = 0\n1405db378        *(arg1 + 0xa4) = 0\n1405db388        return ",
+  "fetched_at": "2026-04-26T17:38:22Z"
+}

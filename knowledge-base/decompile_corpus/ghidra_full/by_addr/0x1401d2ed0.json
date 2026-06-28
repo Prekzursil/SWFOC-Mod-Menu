@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401d2ed0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_1401d2ed0(undefined8 param_1)\n\n{\n  int iVar1;\n  longlong lVar2;\n  uint local_res10 [2];\n  undefined1 local_res18 [8];\n  \n  FUN_1401d2d90();\n  iVar1 = (*(code *)PTR_vfunction19_140a13708)(CONCAT62(DAT_140a7a0d0._2_6_,(ushort)DAT_140a7a0d0));\n  if ((((ushort)DAT_140a7a0d0 & 0x3ff) != 4) || (iVar1 == 0)) {\n    DAT_140a7a0db = '\\0';\n  }\n  else {\n    DAT_140a7a0db = '\\x01';\n  }\n  lVar2 = (*(code *)PTR_vfunction19_140a136a8)();\n  if (lVar2 == 0) {\n    DAT_140a7a0dc = 0;\n    return;\n  }\n  if (DAT_140a7a0db == '\\0') {\n    if (iVar1 != 0) {\n      iVar1 = (*(code *)PTR_vfunction19_140a136c0)();\n      if (iVar1 != 0) {\n        DAT_140a7a0dc = 1;\n        goto LAB_1401d2f75;\n      }\n    }\n    DAT_140a7a0dc = 0;\n  }\n  else {\n    (*(code *)PTR_vfunction19_140a136d0)(lVar2,local_res10,local_res18);\n    DAT_140a7a0dc = (~local_res10[0] & 1) + 1;\n  }\nLAB_1401d2f75:\n                    /* WARNING: Could not recover jumptable at 0x0001401d2f90. Too many branches */\n                    /* WARNING: Treating indirect jump as call */\n  (*(code *)PTR_vfunction19_140a136b0)(param_1,lVar2);\n  return;\n}",
+  "fetched_at": "2026-04-26T17:49:39Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401d5ed0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined1 __thiscall\nGUIGadgetTrackbarSliderClass::vfunction17(GUIGadgetTrackbarSliderClass *this,float *param_1)\n\n{\n  float fVar1;\n  float fVar2;\n  \n  fVar1 = *(float *)&(this->GUIGadgetTrackbarSliderClass_data).offset_0x18;\n  if (fVar1 <= *param_1) {\n    fVar2 = *(float *)((longlong)&(this->GUIGadgetTrackbarSliderClass_data).offset_0x18 + 4);\n    if (((fVar2 <= param_1[1]) &&\n        (*param_1 <= fVar1 + *(float *)&(this->GUIGadgetTrackbarSliderClass_data).offset_0x20)) &&\n       (param_1[1] <=\n        fVar2 + *(float *)((longlong)&(this->GUIGadgetTrackbarSliderClass_data).offset_0x20 + 4))) {\n      return 1;\n    }\n  }\n  return 0;\n}",
+  "fetched_at": "2026-04-26T17:50:01Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x140570550",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "_Facet_base * __thiscall\nstd::_Facet_base::scalar_deleting_destructor(_Facet_base *this,ulonglong param_1)\n\n{\n                    /* inlined destructor: std::_Facet_base::~_Facet_base */\n  this->vftablePtr = &vftable;\n  if ((param_1 & 1) != 0) {\n    thunk_FUN_1407864b8(this,8);\n  }\n  return this;\n}",
+  "fetched_at": "2026-04-26T18:40:13Z"
+}

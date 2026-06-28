@@ -1,0 +1,7 @@
+{
+  "addr": "0x14018f960",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14018f990        int32_t rbp_2 = (arg4 + 1) s/ 0x1f\n14018f9a5        int32_t r8_1 = arg1[2].d - 1\n14018f9ad        int32_t i = arg3 s/ 0x1f\n14018f9cc        int32_t result_2 = (arg5 + 1) s/ 0x1f\n14018f9cf        int32_t result_1 = 0\n14018f9d5        arg5 = 0\n14018f9e6        int32_t r13_2 = arg2 s/ 0x1f\n14018f9e9        if (arg2 s/ 0x1f s< 0)\n14018f9eb        r13_2 = 0\n14018f9f3        if (r13_2 s> r8_1)\n14018f9f3        r13_2 = r8_1\n14018f9f9        if (rbp_2 s< 0)\n14018f9fb        rbp_2 = 0\n14018fa02        if (rbp_2 s> r8_1)\n14018fa02        rbp_2 = r8_1\n14018fa09        int32_t result = *(arg1 + 0x14) - 1\n14018fa0d        if (i s< 0)\n14018fa0f        i = 0\n14018fa15        if (i s> result)\n14018fa15        i = result\n14018fa1b        if (result_2 s>= 0)\n14018fa20        result_1 = result_2\n14018fa23        if (result_2 s> result)\n14018fa23        result_1 = result\n14018fa26        arg5 = result_1\n14018fa2f        while (i s<= result_1)\n14018fa64        int32_t rbx_1 = r13_2\n14018fa6a        if (r13_2 s<= rbp_2)\n14018fa89        result = (*(*arg1 + 0x30))(arg1, zx.q(rbx_1), zx.q(i), zx.q(arg6), arg7, arg8)\n14018fa8c        rbx_1 += 1\n14018fa90        do while (rbx_1 s<= rbp_2)\n14018fa92        result_1 = arg5\n14018fa99        i += 1\n14018fabc        return result",
+  "fetched_at": "2026-04-26T17:24:16Z"
+}

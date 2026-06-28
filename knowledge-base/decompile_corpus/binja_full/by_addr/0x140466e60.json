@@ -1,0 +1,7 @@
+{
+  "addr": "0x140466e60",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140466e62        if (arg2 != 0)\n140466e62        return \n140466e72        int32_t* rdx = *arg3\n140466e80        if (*(rdx + 0x18) u>= 0x10)\n140466e82        rdx = *rdx\n140466e87        int64_t var_10_1 = 0xf\n140466e90        void* var_28 = nullptr\n140466e95        void* r8 = -ffffffffffffffff\n140466e9c        int64_t var_18_1 = 0\n140466ea1        r8 += 1\n140466ea8        do while (*(rdx + r8) != 0)\n140466eaf        sub_140022730(&var_28, rdx, r8)\n140466eca        *(arg1 + 0x360) = sub_1403303d0(&data_140a172d0, &var_28)\n140466ed5        if (var_10_1 u>= 0x10)\n140466ed7        void* rcx_1 = var_28\n140466edf        void* rax_1 = rcx_1\n140466ee9        if (var_10_1 + 1 u>= 0x1000)\n140466eeb        rcx_1 = *(rcx_1 - 8)\n140466efe        if (rax_1 - rcx_1 - 8 u> 0x1f)\n140466f33        _invalid_parameter_noinfo_noreturn()\n140466f33        noreturn\n140466f00        j_sub_1407864b8(rcx_1)\n140466f0d        if (*(arg1 + 0x360) != 0)\n140466f0d        return \n140466f0f        void** rdx_5 = *arg3\n140466f17        if (rdx_5[3] u>= 0x10)\n140466f19        rdx_5 = *rdx_5\n140466f23        sub_140467540(\"ERROR! STORY_VICTORY - Unable to find faction %s\\r\\n\", rdx_5)\n140466f32        return ",
+  "fetched_at": "2026-04-26T17:27:59Z"
+}

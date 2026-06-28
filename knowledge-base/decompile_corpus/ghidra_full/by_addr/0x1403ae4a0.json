@@ -1,0 +1,7 @@
+{
+  "addr": "0x1403ae4a0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "MoveToRayEventClass * __thiscall MoveToRayEventClass::MoveToRayEventClass(MoveToRayEventClass *this)\n\n{\n  ScheduledEventClass::ScheduledEventClass((ScheduledEventClass *)this);\n  (this->EventClass_data).offset_0x8 = 0xe;\n  this->vftablePtr = &vftable;\n  (this->MoveToRayEventClass_data).offset_0x0 = 0;\n  (this->MoveToRayEventClass_data).offset_0x8 = 0;\n  (this->MoveToRayEventClass_data).offset_0x10 = 0;\n  (this->MoveToRayEventClass_data).offset_0x18 = 0;\n  return this;\n}",
+  "fetched_at": "2026-04-26T17:33:39Z"
+}

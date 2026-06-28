@@ -1,0 +1,7 @@
+{
+  "addr": "0x14004a680",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nDynamicVectorClass<struct_InGameMessageClass::MessageStruct> * __thiscall\nDynamicVectorClass<struct_InGameMessageClass::MessageStruct>::scalar_deleting_destructor\n          (DynamicVectorClass<struct_InGameMessageClass::MessageStruct> *this,uint param_1)\n\n{\n  ~DynamicVectorClass<struct_InGameMessageClass::MessageStruct>(this);\n  if ((param_1 & 1) != 0) {\n    thunk_FUN_1407864b8(this,0x18);\n  }\n  return this;\n}\n\n",
+  "fetched_at": "2026-04-26T16:54:15Z"
+}

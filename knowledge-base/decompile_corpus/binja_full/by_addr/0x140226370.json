@@ -1,0 +1,7 @@
+{
+  "addr": "0x140226370",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140226380        sub_14001eb00(&arg1[0x35])\n14022638c        sub_14001eb00(&arg1[0x31])\n140226398        sub_14001eb00(&arg1[0x2c])\n1402263a4        sub_14001eb00(&arg1[0x28])\n1402263b0        sub_14001eb00(&arg1[0x24])\n1402263bc        sub_14001eb00(&arg1[0x20])\n1402263c8        sub_14001eb00(&arg1[0x1c])\n1402263d4        sub_14001eb00(&arg1[0x18])\n1402263e0        sub_14001eb00(&arg1[0x14])\n1402263ec        sub_14001eb00(&arg1[0x10])\n1402263f5        sub_14001eb00(&arg1[0xc])\n1402263fe        sub_14001eb00(&arg1[8])\n140226407        sub_14001eb00(&arg1[4])\n140226414        return sub_14001eb00(arg1) __tailcall",
+  "fetched_at": "2026-04-26T17:29:19Z"
+}

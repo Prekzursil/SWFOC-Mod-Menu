@@ -1,0 +1,7 @@
+{
+  "addr": "0x140201b60",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140201b6e        enum WAIT_EVENT result\n140201b6e        if (arg1[2] != 0)\n140201b7a        result = WaitForSingleObject(arg1[1], 0)\n140201b8a        if (result != WAIT_TIMEOUT && result != WAIT_FAILED)\n140201b95        int64_t rbx\n140201b95        rbx.b = 1\n140201ba9        if (UnmapViewOfFile(arg1[2]) == 0)\n140201ba9        rbx = 0\n140201bb8        if (CloseHandle(*arg1) == 0)\n140201bb8        rbx = 0\n140201bbb        ReleaseMutex(arg1[1])\n140201bcd        char rcx_5 = rbx.b\n140201bd5        if (CloseHandle(arg1[1]) == 0)\n140201bd5        rcx_5 = 0\n140201bd8        *arg1 = 0\n140201bdb        arg1[2] = 0\n140201be7        arg1[1] = -1\n140201bf4        return zx.q(rcx_5)\n140201bf5        result.b = 0\n140201bfc        return result",
+  "fetched_at": "2026-04-26T17:27:43Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x14018ca10",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall alD3dEffectParam<int>::vfunction2(alD3dEffectParam<int> *this)\n\n{\n  undefined8 *puVar1;\n  \n  puVar1 = (undefined8 *)FUN_140769c58(0x20);\n  if (puVar1 != (undefined8 *)0x0) {\n    *puVar1 = &alD3dEffectParamInterface::vftable;\n    puVar1[1] = (this->alD3dEffectParamInterface_data).offset_0x0;\n    *(undefined4 *)(puVar1 + 2) = (this->alD3dEffectParamInterface_data).offset_0x8;\n    *puVar1 = &vftable;\n    *(undefined4 *)(puVar1 + 3) = *(undefined4 *)&(this->alD3dEffectParamInterface_data).offset_0x10\n    ;\n    return;\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T17:33:30Z"
+}

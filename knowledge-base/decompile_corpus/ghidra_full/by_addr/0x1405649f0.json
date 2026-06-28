@@ -1,0 +1,7 @@
+{
+  "addr": "0x1405649f0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "CorruptSystemsDataPackClass * __thiscall\nCorruptSystemsDataPackClass::CorruptSystemsDataPackClass(CorruptSystemsDataPackClass *this)\n\n{\n  *(undefined8 *)\n   &(this->PooledObjectClass<class_CorruptSystemsDataPackClass,32,class_EmptyLockerClass>).field_0x4\n       = 0x3fffff;\n  this->vftablePtr = &vftable;\n  *(undefined4 *)\n   &this->PooledObjectClass<class_CorruptSystemsDataPackClass,32,class_EmptyLockerClass> = 0;\n  (this->CorruptSystemsDataPackClass_data).offset_0x4 = 0;\n  return this;\n}",
+  "fetched_at": "2026-04-26T18:39:20Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x14068af80",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_14068af80(void)\n\n{\n  SpawnAbilityClass *this;\n  \n  this = (SpawnAbilityClass *)FUN_140769c58(0x1d0);\n  if (this != (SpawnAbilityClass *)0x0) {\n    SpawnAbilityClass::SpawnAbilityClass(this);\n    return;\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T17:16:33Z"
+}

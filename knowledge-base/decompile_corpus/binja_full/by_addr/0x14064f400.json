@@ -1,0 +1,7 @@
+{
+  "addr": "0x14064f400",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14064f406        struct PerceptualEvaluatorClass::GameObjectTypePerceptualEvaluatorClass::VTable** result = arg1\n14064f409        sub_14064c900(arg1)\n14064f415        result[0x11] = 0\n14064f420        *result = &GameObjectTypePerceptualEvaluatorClass::`vftable'{for `PerceptualEvaluatorClass'}\n14064f42a        result[3] = &GameObjectTypePerceptualEvaluatorClass::`vftable'{for `AIDiagnosticsClass'}\n14064f436        return result",
+  "fetched_at": "2026-04-26T17:05:55Z"
+}

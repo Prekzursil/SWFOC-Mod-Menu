@@ -1,0 +1,7 @@
+{
+  "addr": "0x1405c78e0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* CollisionClass member function inherited by StoppedVsStoppedCollisionClass\n   CollisionClass member function inherited by TerrainCollisionClass */\n\nundefined8 __thiscall\nCollisionClass::vfunction9_for_SignalListenerClass(undefined8 param_1,longlong param_2)\n\n{\n  undefined8 uVar1;\n  \n  if (param_2 == 0) {\n    return 0;\n  }\n  uVar1 = FUN_140370f00(*(undefined8 *)(param_2 + 0x298));\n  return uVar1;\n}",
+  "fetched_at": "2026-04-26T18:44:54Z"
+}

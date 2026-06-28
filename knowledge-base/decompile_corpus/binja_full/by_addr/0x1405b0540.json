@@ -1,0 +1,7 @@
+{
+  "addr": "0x1405b0540",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1405b054b        struct ScheduledEventClass::SetMarkerIDEventClass::VTable** result = operator new(0x50)\n1405b0556        if (result == 0)\n1405b0587        return result\n1405b055b        sub_140512c50(result)\n1405b0567        result[9] = -1\n1405b056f        *result = &SetMarkerIDEventClass::`vftable'{for `ScheduledEventClass'}\n1405b0575        result[4].d = 0x35\n1405b0581        return result",
+  "fetched_at": "2026-04-26T17:37:15Z"
+}

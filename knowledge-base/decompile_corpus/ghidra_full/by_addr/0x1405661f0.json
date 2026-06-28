@@ -1,0 +1,7 @@
+{
+  "addr": "0x1405661f0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall\nTeamTargetingBehaviorClass::vfunction17\n          (TeamTargetingBehaviorClass *this,undefined **param_1,longlong param_2)\n\n{\n  undefined *puVar1;\n  undefined8 uVar2;\n  undefined **ppuVar3;\n  \n  if ((param_1 == this->offset_0x18) &&\n     (puVar1 = this->offset_0x18[0x1e], puVar1 != (undefined *)0x0)) {\n    if (*(longlong *)(puVar1 + 8) == param_2) {\n      (*this->vftablePtr->vfunction28)(this,'\\0');\n    }\n    if (*(longlong *)(puVar1 + 0x148) == param_2) {\n      ppuVar3 = param_1 + 7;\n      if (param_1 == (undefined **)0x0) {\n        ppuVar3 = (undefined **)0x0;\n      }\n      uVar2 = FUN_140058570();\n      FUN_140220ed0(uVar2,ppuVar3,0x29,0);\n      *(undefined8 *)(puVar1 + 0x148) = 0;\n      *(undefined4 *)(puVar1 + 0x150) = 0;\n      *(undefined4 *)(puVar1 + 0x154) = 0xffffffff;\n    }\n    if ((*(longlong *)(puVar1 + 0x10) != 0) &&\n       (*(longlong *)(*(longlong *)(puVar1 + 0x10) + 0x10) == param_2)) {\n      *(undefined8 *)(puVar1 + 0x10) = 0;\n    }\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T18:39:30Z"
+}

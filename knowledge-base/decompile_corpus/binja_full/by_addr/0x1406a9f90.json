@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406a9f90",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1406a9f9a        int64_t* rbx = *(arg3 + 0x10)\n1406a9f9e        uint64_t rdi\n1406a9f9e        rdi.b = 1\n1406a9fae        if (((*(arg3 + 0x18) - rbx) & 0xfffffffffffffff8) != 0)\n1406a9fb0        int64_t* rbx_1 = *rbx\n1406a9fb6        void* i\n1406a9fb6        if (rbx_1 != 0)\n1406a9fbe        i = (*(*rbx_1 + 0x20))(rbx_1)\n1406a9fc4        if (rbx_1 == 0 || i == 0)\n1406a9fde        label_1406a9fde:\n1406a9fde        rbx_1 = nullptr\n1406a9fd3        while (i != &data_140a157b0)\n1406a9fd5        i = *(i + 8)\n1406a9fdc        if (i == 0)\n1406a9fdc        goto label_1406a9fde\n1406aa018        (**rbx_1)(rbx_1)\n1406a9fe6        rdi = zx.q(rbx_1[2].b)\n1406a9fea        (*(*rbx_1 + 8))(rbx_1)\n1406a9fed        void* rcx_2 = data_140b15418\n1406a9ff7        if (rcx_2 != 0)\n1406a9ffc        void* rax_1\n1406a9ffc        rax_1.b = rdi.b == 0\n1406a9fff        *(rcx_2 + 0x278) = rax_1.b\n1406aa011        return 0",
+  "fetched_at": "2026-04-26T17:24:27Z"
+}

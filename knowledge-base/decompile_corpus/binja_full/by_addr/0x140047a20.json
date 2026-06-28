@@ -1,0 +1,7 @@
+{
+  "addr": "0x140047a20",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140047a2f        *arg1 = 0\n140047a37        arg1[1] = 0xffffffff\n140047a41        int64_t lpMem = *(arg1 + 0x10)\n140047a48        if (lpMem != 0)\n140047a51        if ((arg1[7] & 0x80000000) == 0)\n140047a6c        j_sub_1407864b8(lpMem)\n140047a61        HeapFree(GetProcessHeap(), HEAP_NONE, lpMem)\n140047a71        arg1[7] &= 0x80000000\n140047a78        *(arg1 + 0x10) = 0\n140047a7c        arg1[6] = 0\n140047a7f        *(arg1 + 0x20) = 0\n140047a83        *(arg1 + 0x28) = 0\n140047a8c        arg1[0xc].b = 1\n140047a9a        return ",
+  "fetched_at": "2026-04-26T16:54:01Z"
+}

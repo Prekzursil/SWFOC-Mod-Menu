@@ -1,0 +1,7 @@
+{
+  "addr": "0x140629f80",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140629f87        return \"SquashBehaviorClass\"",
+  "fetched_at": "2026-04-26T17:23:59Z"
+}

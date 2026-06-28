@@ -1,0 +1,7 @@
+{
+  "addr": "0x14062c9d0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall\nLandTeamInfantryLocomotorBehaviorClass::vfunction11\n          (LandTeamInfantryLocomotorBehaviorClass *this,undefined **param_1,char param_2)\n\n{\n  BehaviorClass::vfunction11((BehaviorClass *)this,param_1);\n  if (param_2 != '\\0') {\n    (*this->vftablePtr->vfunction96)(this,(undefined4 *)(this->offset_0x18 + 0xf));\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T17:32:31Z"
+}

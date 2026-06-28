@@ -1,0 +1,7 @@
+{
+  "addr": "0x14025fab0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_14025fab0(void)\n\n{\n  longlong lVar1;\n  longlong lVar2;\n  \n  lVar1 = DAT_140b0a0f0;\n  lVar2 = DAT_140b0a0e8;\n  if (DAT_140b0a0e8 != DAT_140b0a0f0) {\n    do {\n      FUN_14025d470(lVar2);\n      lVar2 = lVar2 + 0xa0;\n    } while (lVar2 != lVar1);\n    DAT_140b0a0f0 = DAT_140b0a0e8;\n    return;\n  }\n  DAT_140b0a0f0 = DAT_140b0a0e8;\n  return;\n}",
+  "fetched_at": "2026-04-26T18:15:11Z"
+}

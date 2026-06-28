@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401f0590",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1401f059f        struct GUIGadgetClass::GUIGadgetCheckboxClass::VTable** result = arg1\n1401f05a2        sub_1401e3c30(arg1)\n1401f05b5        *result = &GUIGadgetCheckboxClass::`vftable'{for `GUIGadgetClass'}\n1401f05b8        sub_140260490(&result[0x14])\n1401f05c4        sub_14025b330(&result[0x26])\n1401f05d2        __builtin_memset(&result[0x3f], 0, 0x20)\n1401f05f5        sub_14025c490(data_140a619f0, &result[0x14])\n1401f0608        sub_14025c490(data_140a619f0, &result[0x26])\n1401f0610        sub_1401e3ed0(result)\n1401f061d        *(result + 0x79) = 1\n1401f0621        result[0x13].b = 0\n1401f0632        return result",
+  "fetched_at": "2026-04-26T17:27:16Z"
+}

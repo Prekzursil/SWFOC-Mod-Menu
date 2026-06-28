@@ -1,0 +1,7 @@
+{
+  "addr": "0x14070dbb0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14070dbb6        struct SpecialAbilityClass::SabotagePoliticalControlAbilityClass::VTable** result = arg1\n14070dbb9        sub_14048c780(arg1)\n14070dbc5        result[0x2f].d = 1\n14070dbcf        *result = &SabotagePoliticalControlAbilityClass::`vftable'{for `SpecialAbilityClass'}\n14070dbd9        result[1] = &SabotagePoliticalControlAbilityClass::`vftable'{for `RefCountClass'}\n14070dbe0        *(result + 0x17c) = 0x3f800000\n14070dbea        result[0x30].d = 0x42f00000\n14070dbf4        result[8].w = 0x101\n14070dbfa        *(result + 0x3c) = 6\n14070dc06        return result",
+  "fetched_at": "2026-04-26T17:27:35Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x1400ecda0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1400ecdb5        int128_t zmm6 = zx.o(0)\n1400ecdd2        uint128_t zmm0\n1400ecdd2        zmm0.d = _mm_cvtepi32_ps(zx.o((data_140a621f8.d - 0xa) * 0x64 s/ 0xf0)).d f/ 100f\n1400ecddd        if (not(0f f> zmm0.d))\n1400ecde7        zmm6 = _mm_min_ss(0x3f800000, zmm0.d)\n1400ecdf0        void* rax_4 = operator new(0x20)\n1400ecdfc        int64_t var_28 = 0x1e\n1400ece0a        int64_t var_20 = 0x1f\n1400ece16        __builtin_strncpy(rax_4, \"IDC_SKIRMISH_GAME_TIMER_SLIDER\", 0x1f)\n1400ece45        int32_t rdx_4 = data_140a11d60\n1400ece4b        void* var_38 = rax_4\n1400ece50        sub_1401c9080(&data_140a78510, rdx_4, &var_38, zmm6)\n1400ece5e        if (var_20 u>= 0x10)\n1400ece60        void* rcx_1 = var_38\n1400ece68        void* rax_5 = rcx_1\n1400ece72        if (var_20 + 1 u>= 0x1000)\n1400ece74        rcx_1 = *(rcx_1 - 8)\n1400ece87        if (rax_5 - rcx_1 - 8 u> 0x1f)\n1400ece9c        _invalid_parameter_noinfo_noreturn()\n1400ece9c        noreturn\n1400ece89        j_sub_1407864b8(rcx_1)\n1400ece97        return sub_1400ecfa0() __tailcall",
+  "fetched_at": "2026-04-26T17:03:31Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x1404d29a0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1404d29c3        if (arg2 == 0 || *(arg2 + 0x333) != 0xff || sub_14039a2c0(arg2, *(*(*(*(arg1 + 0x38) + 0x28) + 0x28) + 0x28), 0).b == 0)\n1404d29e6        return \n1404d29f7        void* rax = (*(*arg2 + 0x10))(arg2, 0x29)\n1404d29fd        if (rax == 0)\n1404d29fd        return \n1404d2a1e        int128_t zmm6 = zx.o(0)\n1404d2a21        int128_t var_68 = zx.o(0)\n1404d2a27        int32_t var_58_1 = 0xffffffff\n1404d2a2f        void* rax_3 = sub_14042e3b0(rax, arg2)\n1404d2a34        void* var_50_1 = rax_3\n1404d2a40        if (rax_3 != 0)\n1404d2a4d        var_68:8.q = *(rax_3 + 0x298)\n1404d2a52        var_58_1 = 2\n1404d2a6e        sub_140220e90(sub_140058570(), rax_3 + 0x38, arg1 + 0x28, 0x10)\n1404d2a73        zmm6 = var_68\n1404d2a8d        int32_t var_48 = arg2[0xa].d\n1404d2a96        int128_t var_30_1 = var_58_1.o\n1404d2a9b        int128_t var_40_1 = zmm6\n1404d2aa0        sub_1404d1c30(arg1 + 0xe0, &var_68, &var_48)\n1404d2aba        sub_140220e90(sub_140058570(), &arg2[7], arg1 + 0x28, 0x10)\n1404d2ad4        sub_140220e90(sub_140058570(), &arg2[7], arg1 + 0x28, 0x1a)\n1404d2afe        return ",
+  "fetched_at": "2026-04-26T17:30:57Z"
+}

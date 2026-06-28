@@ -1,0 +1,7 @@
+{
+  "addr": "0x1404308b0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall RepairHardpointEventClass::vfunction5(RepairHardpointEventClass *this)\n\n{\n  int iVar1;\n  longlong lVar2;\n  \n  lVar2 = FUN_1402aca60(*(undefined8 *)(DAT_140b15418 + 0x18),\n                        (this->RepairHardpointEventClass_data).offset_0x0);\n  if (lVar2 != 0) {\n    iVar1 = *(int *)&(this->RepairHardpointEventClass_data).offset_0x4;\n    if (((-1 < iVar1) && (*(longlong *)(lVar2 + 0x2d0) != 0)) &&\n       (iVar1 < *(int *)(*(longlong *)(lVar2 + 0x2d0) + 0x10))) {\n      lVar2 = FUN_140396cb0(lVar2);\n      if (lVar2 != 0) {\n        FUN_140387d40(lVar2,1,*(undefined4 *)\n                               ((longlong)&(this->RepairHardpointEventClass_data).offset_0x4 + 4));\n        return;\n      }\n    }\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T17:50:37Z"
+}

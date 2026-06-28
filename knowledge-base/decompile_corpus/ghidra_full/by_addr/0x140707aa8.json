@@ -1,0 +1,7 @@
+{
+  "addr": "0x140707aa8",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall\nPlanetIncomeBonusAbilityClass::vfunction3_for_RefCountClass\n          (PlanetIncomeBonusAbilityClass *this,uint param_1)\n\n{\n  scalar_deleting_destructor\n            ((PlanetIncomeBonusAbilityClass *)\n             &this[-1].PlanetIncomeBonusAbilityClass_data.offset_0x28,param_1);\n  return;\n}",
+  "fetched_at": "2026-04-26T17:53:02Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401b2460",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "alD3dTransitionEffect * __thiscall\nalD3dTransitionEffect::scalar_deleting_destructor(alD3dTransitionEffect *this,uint param_1)\n\n{\n                    /* inlined destructor: alD3dTransitionEffect::~alD3dTransitionEffect */\n  this->vftablePtr = &vftable_for_RefCountClass;\n  this->vftablePtr = &vftable_for_MultiLinkedListMember;\n  MultiLinkedListMember::~MultiLinkedListMember((MultiLinkedListMember *)&this->vftablePtr);\n                    /* inlined destructor: RefCountClass::~RefCountClass */\n  this->vftablePtr = (alD3dTransitionEffect_vftable_for_RefCountClass *)&RefCountClass::vftable;\n  if ((param_1 & 1) != 0) {\n    thunk_FUN_1407864b8(this,0x20);\n  }\n  return this;\n}",
+  "fetched_at": "2026-04-26T17:43:41Z"
+}

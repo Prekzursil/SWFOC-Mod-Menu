@@ -1,0 +1,7 @@
+{
+  "addr": "0x14056a1b0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "ulonglong __thiscall\nFleetLocomotorBehaviorClass::vfunction27\n          (FleetLocomotorBehaviorClass *this,undefined4 *param_1,longlong param_2)\n\n{\n  undefined4 uVar1;\n  longlong lVar2;\n  ulonglong in_RAX;\n  \n  lVar2 = *(longlong *)(param_2 + 0xa8);\n  if (lVar2 != 0) {\n    *(undefined4 *)(lVar2 + 8) = *param_1;\n    *(undefined4 *)(lVar2 + 0xc) = param_1[1];\n    uVar1 = param_1[2];\n    *(undefined4 *)(lVar2 + 0x10) = uVar1;\n    return CONCAT71((uint7)(uint3)((uint)uVar1 >> 8),1);\n  }\n  return in_RAX & 0xffffffffffffff00;\n}",
+  "fetched_at": "2026-04-26T18:39:51Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x1404fc7e0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_1404fc7e0(longlong param_1,longlong param_2,undefined4 param_3)\n\n{\n  char cVar1;\n  int iVar2;\n  int iVar3;\n  longlong lVar4;\n  longlong *plVar5;\n  \n  iVar2 = *(int *)(param_1 + 0x28);\n  cVar1 = FUN_14039b1a0();\n  if (cVar1 != '\\0') {\n    param_2 = *(longlong *)(param_2 + 0x2b0);\n  }\n  if (0 < iVar2) {\n    plVar5 = *(longlong **)(param_1 + 0x20);\n    lVar4 = 0;\n    do {\n      if (param_2 == *plVar5) {\n        return;\n      }\n      lVar4 = lVar4 + 1;\n      plVar5 = plVar5 + 2;\n    } while (lVar4 < iVar2);\n  }\n  iVar2 = *(int *)(param_1 + 0x28);\n  iVar3 = *(int *)(param_1 + 0x2c) * 2 >> 1;\n  if (iVar3 <= iVar2) {\n    iVar2 = iVar3 / 10;\n    if (iVar3 / 10 < 10) {\n      iVar2 = 10;\n    }\n    FUN_1404fc8a0(param_1 + 0x18,iVar2 + iVar3,0,1);\n    iVar2 = *(int *)(param_1 + 0x28);\n  }\n  plVar5 = (longlong *)((longlong)iVar2 * 0x10 + *(longlong *)(param_1 + 0x20));\n  *(int *)(param_1 + 0x28) = iVar2 + 1;\n  *plVar5 = param_2;\n  *(undefined4 *)(plVar5 + 1) = param_3;\n  return;\n}",
+  "fetched_at": "2026-04-26T18:19:59Z"
+}

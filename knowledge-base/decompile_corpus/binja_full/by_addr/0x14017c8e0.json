@@ -1,0 +1,7 @@
+{
+  "addr": "0x14017c8e0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14017c8e3        *arg2 = *arg3\n14017c8e9        arg2[1] = arg3[1]\n14017c8f0        arg2[2] = arg3[2]\n14017c8f7        arg2[3] = arg3[8]\n14017c8fe        arg2[4] = arg3[9]\n14017c905        arg2[5] = arg3[0xa]\n14017c90c        arg2[6] = arg3[0xb]\n14017c913        arg2[7] = arg3[0xc]\n14017c91b        arg2[0x1c] = zx.d(arg3[7].b)\n14017c923        arg2[0x1d] = zx.d(*(arg3 + 0x1d))\n14017c92b        arg2[0x1e] = zx.d(*(arg3 + 0x1e))\n14017c933        arg2[0x1f] = zx.d(*(arg3 + 0x1f))\n14017c93a        arg2[0xe] = arg3[0xd]\n14017c941        arg2[0xf] = arg3[0xe]\n14017c948        arg2[0x10] = arg3[0xf]\n14017c94f        arg2[0x11] = arg3[0x10]\n14017c956        arg2[0x12] = arg3[0x11]\n14017c959        int32_t result = arg3[0x12]\n14017c95d        arg2[0x13] = result\n14017c960        return result",
+  "fetched_at": "2026-04-26T17:23:36Z"
+}

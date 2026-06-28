@@ -1,0 +1,7 @@
+{
+  "addr": "0x14056be20",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "ulonglong FUN_14056be20(undefined8 param_1,longlong param_2,float param_3)\n\n{\n  ulonglong in_RAX;\n  ulonglong uVar1;\n  float fVar2;\n  float fVar3;\n  \n  if ((((param_2 != 0) && (0.0 < param_3)) && (in_RAX = *(ulonglong *)(param_2 + 0xf0), in_RAX != 0)\n      ) && (param_3 = DAT_140b15b5c * param_3,\n           param_3 < *(float *)(in_RAX + 0xf8) || param_3 == *(float *)(in_RAX + 0xf8))) {\n    param_3 = *(float *)(in_RAX + 0xf8) - param_3;\n    if (*(longlong *)(param_2 + 0x298) == 0) {\n      fVar2 = 0.0;\n    }\n    else {\n      fVar2 = (float)FUN_140372320();\n      in_RAX = *(ulonglong *)(param_2 + 0xf0);\n    }\n    fVar3 = 0.0;\n    if ((0.0 <= param_3) && (fVar3 = fVar2, param_3 <= fVar2)) {\n      fVar3 = param_3;\n    }\n    uVar1 = 0;\n    if (in_RAX != 0) {\n      *(float *)(in_RAX + 0xf8) = fVar3;\n      uVar1 = (ulonglong)DAT_140a286f0;\n      if (*(uint *)(param_2 + 0x50) == DAT_140a286f0) {\n        *(byte *)(param_2 + 0x3a0) = *(byte *)(param_2 + 0x3a0) | 1;\n      }\n    }\n    return CONCAT71((int7)(uVar1 >> 8),1);\n  }\n  return in_RAX & 0xffffffffffffff00;\n}",
+  "fetched_at": "2026-04-26T18:40:02Z"
+}

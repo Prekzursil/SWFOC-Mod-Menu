@@ -1,0 +1,7 @@
+{
+  "addr": "0x14014e0f0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined * __thiscall alRenderableMesh::vfunction5_for_RefCountClass(void)\n\n{\n  return &DAT_140a12540;\n}",
+  "fetched_at": "2026-04-26T17:21:43Z"
+}

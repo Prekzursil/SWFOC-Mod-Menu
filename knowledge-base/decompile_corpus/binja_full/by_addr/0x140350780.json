@@ -1,0 +1,7 @@
+{
+  "addr": "0x140350780",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140350791        float zmm0 = *(arg1 + 0xac) - arg2\n1403507a2        *(arg1 + 0xac) = zmm0\n1403507aa        if (not(0f < zmm0))\n1403507ac        *(arg1 + 0xb4) -= 1\n1403507c1        if (*(arg1 + 0xb4) s> 0 || (arg1[0x18].b & 0x10) != 0)\n1403507d5        *(arg1 + 0xac) = zmm0 + 0.5f\n1403507c3        *(arg1 + 0xb4) = 0\n1403507c9        *(arg1 + 0xac) = 0\n1403507dd        zmm0 = *(arg1 + 0xac)\n1403507e8        if (zmm0 <= 0f)\n1403507e8        return \n1403507ed        zmm0 = zmm0 / 0.5f\n1403507f1        int64_t r8_1 = *(*arg1 + 0x78)\n1403507f8        arg1[0x16].d = zmm0\n140350800        if (not(zmm0 <= 0.5f))\n140350802        int64_t rdx\n140350802        rdx.b = 1\n140350804        r8_1(arg1, rdx)\n14035080d        if (data_140b2c198 == 0)\n14035080f        data_140b2c198 = 1\n14035080d        return \n140350821        r8_1(arg1, 0)\n140350824        int32_t rax = data_140b2c198\n14035082c        if (rax == 0)\n14035082c        return \n14035082e        int32_t temp0_1 = rax\n14035082e        rax -= 1\n140350831        if (temp0_1 - 1 s< 0)\n140350831        rax = 0\n140350834        data_140b2c198 = rax\n14035083f        return ",
+  "fetched_at": "2026-04-26T17:09:49Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x1405cb490",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "ulonglong __thiscall\nFighterLocomotorBehaviorClass::vfunction68(FighterLocomotorBehaviorClass *this,undefined8 param_1)\n\n{\n  undefined4 uVar1;\n  undefined *puVar2;\n  undefined4 *puVar3;\n  undefined8 local_28;\n  undefined4 local_20;\n  undefined1 local_1c [20];\n  \n  puVar2 = this->offset_0x18[0x15];\n  if (*(int *)(puVar2 + 0x48) != 0x1f) {\n    return (ulonglong)this->offset_0x18 & 0xffffffffffffff00;\n  }\n  local_28 = 0;\n  local_20 = 0;\n  puVar3 = (undefined4 *)FUN_14020acd0(local_1c,&local_28,param_1);\n  *(undefined4 *)(puVar2 + 0x38) = *puVar3;\n  *(undefined4 *)(puVar2 + 0x3c) = puVar3[1];\n  uVar1 = puVar3[2];\n  *(undefined4 *)(puVar2 + 0x40) = uVar1;\n  return CONCAT71((uint7)(uint3)((uint)uVar1 >> 8),1);\n}",
+  "fetched_at": "2026-04-26T18:45:10Z"
+}

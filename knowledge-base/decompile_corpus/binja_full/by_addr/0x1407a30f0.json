@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407a30f0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1407a3100        if (deflateStateCheck(arg1) != 0)\n1407a310c        return 0xfffffffe\n1407a310d        *(arg1 + 0x48) = 2\n1407a3119        void* rbx = *(arg1 + 0x28)\n1407a3124        *(arg1 + 0x1c) = 0\n1407a3127        *(arg1 + 0xc) = 0\n1407a312a        *(arg1 + 0x20) = 0\n1407a3132        int32_t rcx = *(rbx + 0x2c)\n1407a3135        *(rbx + 0x20) = *(rbx + 0x10)\n1407a3139        *(rbx + 0x28) = 0\n1407a313e        if (rcx s< 0)\n1407a3140        rcx = neg.d(rcx)\n1407a3142        *(rbx + 0x2c) = rcx\n1407a3148        int32_t rax_3\n1407a3148        if (rcx != 2)\n1407a3161        int32_t rax_4 = 0x71\n1407a316b        if (rcx != 0)\n1407a316b        rax_4 = 0x2a\n1407a3173        *(rbx + 8) = rax_4\n1407a3178        rax_3 = sub_1407a73e0(0, nullptr, 0)\n1407a314d        *(rbx + 8) = 0x39\n1407a3158        rax_3 = sub_1407a76d0(0, nullptr, 0)\n1407a317d        *(arg1 + 0x4c) = rax_3\n1407a3183        *(rbx + 0x40) = 0\n1407a3186        _tr_init(rbx)\n1407a319c        return 0",
+  "fetched_at": "2026-04-26T17:32:24Z"
+}

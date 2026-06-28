@@ -1,0 +1,7 @@
+{
+  "addr": "0x140653010",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14065301e        __builtin_memset(arg1, 0, 0x18)\n140653021        int64_t i_3 = arg2\n140653032        if (arg2 != 0)\n140653045        if (arg2 u> 0x3fffffffffffffff)\n1406530fa        sub_140022630()\n1406530fa        noreturn\n140653055        uint128_t* rax_1 = sub_140048c40(arg1, arg2)\n14065305a        *arg1 = rax_1\n14065305d        int64_t r15_1 = i_3 << 2\n140653065        arg1[1] = rax_1\n140653072        void* rbx_1 = rax_1\n140653079        arg1[2] = r15_1 + rax_1\n140653083        if (*arg3 != 0)\n14065309b        if (i_3 u>= 4)\n1406530a5        int64_t i_2 = ((i_3 - 4) u>> 2) + 1\n1406530ac        i_3 -= i_2 * 4\n1406530cb        int64_t i\n1406530b2        *rbx_1 = *arg3\n1406530b6        *(rbx_1 + 4) = *arg3\n1406530bb        *(rbx_1 + 8) = *arg3\n1406530c0        *(rbx_1 + 0xc) = *arg3\n1406530c3        rbx_1 += 0x10\n1406530c7        i = i_2\n1406530c7        i_2 -= 1\n1406530cb        do while (i != 1)\n1406530d0        if (i_3 != 0)\n1406530de        int64_t i_1\n1406530d4        *rbx_1 = *arg3\n1406530d6        rbx_1 += 4\n1406530da        i_1 = i_3\n1406530da        i_3 -= 1\n1406530de        do while (i_1 != 1)\n14065308d        memset(rax_1, 0, r15_1)\n140653092        rbx_1 += r15_1\n1406530e5        arg1[1] = rbx_1\n1406530f9        return arg1",
+  "fetched_at": "2026-04-26T17:06:25Z"
+}

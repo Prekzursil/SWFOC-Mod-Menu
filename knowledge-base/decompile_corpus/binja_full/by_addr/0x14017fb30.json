@@ -1,0 +1,7 @@
+{
+  "addr": "0x14017fb30",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14017fb34        void* result = data_140a6fe58\n14017fb3e        if (result == 0)\n14017fb4c        result = operator new(zx.q((result + 0x20).d))\n14017fb57        if (result != 0)\n14017fb5b        *(result + 0x18) = 0x112\n14017fb65        __builtin_memset(result, 0, 0x15)\n14017fb87        int32_t rax = sub_140177f50(0x1fffe0, 0x208, 0x112, 0, result)\n14017fb8c        *(result + 8) = 0xffff\n14017fb95        if (rax s< 0)\n14017fba1        OutputDebugStringA(sub_140001000(rax))\n14017fbae        OutputDebugStringA(&data_140819c5c)\n14017fbb4        data_140a6fe58 = result\n14017fbc7        return result\n14017fbcd        data_140a6fe58 = result\n14017fbd8        return result",
+  "fetched_at": "2026-04-26T17:23:48Z"
+}

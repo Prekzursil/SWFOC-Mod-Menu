@@ -1,0 +1,7 @@
+{
+  "addr": "0x14079bce0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14079bce0        return __crt_mbstring::__c32rtomb_utf8(arg1, arg2, arg3) __tailcall",
+  "fetched_at": "2026-04-26T17:32:10Z"
+}

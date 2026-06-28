@@ -1,0 +1,7 @@
+{
+  "addr": "0x1402010e0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "char * FUN_1402010e0(int *param_1,longlong param_2,char *param_3)\n\n{\n  char cVar1;\n  char *pcVar2;\n  char *pcVar3;\n  char *pcVar4;\n  \n  pcVar3 = (char *)(*param_1 + param_2);\n  if (*pcVar3 != '\\0') {\n    while (cVar1 = *param_3, cVar1 != '\\0') {\n      pcVar4 = param_3;\n      while (pcVar4 = pcVar4 + 1, cVar1 != *pcVar3) {\n        cVar1 = *pcVar4;\n        if (cVar1 == '\\0') goto LAB_140201131;\n      }\n      *pcVar3 = '\\0';\n      pcVar3 = pcVar3 + 1;\n      if (*pcVar3 == '\\0') break;\n    }\nLAB_140201131:\n    if (*pcVar3 != '\\0') {\n      pcVar4 = pcVar3;\n      do {\n        if (*param_3 != '\\0') {\n          pcVar2 = param_3;\n          cVar1 = *param_3;\n          do {\n            pcVar2 = pcVar2 + 1;\n            if (cVar1 == *pcVar4) goto LAB_140201168;\n            cVar1 = *pcVar2;\n          } while (cVar1 != '\\0');\n        }\n        pcVar4 = pcVar4 + 1;\n      } while (*pcVar4 != '\\0');\nLAB_140201168:\n      *param_1 = (int)pcVar4 - (int)param_2;\n      if (*pcVar4 != '\\0') {\n        *pcVar4 = '\\0';\n        *param_1 = *param_1 + 1;\n      }\n      return pcVar3;\n    }\n  }\n  return (char *)0x0;\n}",
+  "fetched_at": "2026-04-26T17:55:37Z"
+}

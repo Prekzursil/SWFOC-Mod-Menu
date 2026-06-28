@@ -1,0 +1,7 @@
+{
+  "addr": "0x140063880",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nvoid FUN_140063880(undefined8 param_1,undefined8 param_2,undefined4 param_3)\n\n{\n  char cVar1;\n  short sVar2;\n  float fVar3;\n  undefined4 local_res18 [2];\n  float local_res20;\n  float local_res24;\n  undefined1 local_38 [56];\n  \n  local_res18[0] = param_3;\n  ReleaseCapture();\n  FUN_14026cb30(local_38,local_res18);\n  cVar1 = FUN_1401c3660(&DAT_140a78510,3,0,local_38,0);\n  if (cVar1 == '\\0') {\n    FUN_140065d00();\n    sVar2 = (short)local_res18[0];\n    fVar3 = (float)(int)(short)((uint)local_res18[0] >> 0x10);\n    if (((DAT_140a60edf != '\\0') || (DAT_140a60eec != '\\0')) ||\n       (local_res20 = (float)(int)sVar2, local_res24 = fVar3,\n       cVar1 = FUN_1402f6c30(&DAT_140b27f60,3,&local_res20), cVar1 == '\\0')) {\n      FUN_140307860(&DAT_140b27f60,0,0);\n      local_res20 = (float)(int)sVar2;\n      local_res24 = fVar3;\n      FUN_140030fc0(&DAT_140a60df0,3,&local_res20,0,0);\n    }\n  }\n  return;\n}\n\n",
+  "fetched_at": "2026-04-26T16:55:38Z"
+}

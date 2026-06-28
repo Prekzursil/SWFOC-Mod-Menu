@@ -1,0 +1,7 @@
+{
+  "addr": "0x140791f8c",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* Library Function - Single Match\n    __acrt_stdio_free_buffer_nolock\n   \n   Library: Visual Studio 2019 Release */\n\nvoid __acrt_stdio_free_buffer_nolock(undefined8 *param_1)\n\n{\n  if (((*(uint *)((longlong)param_1 + 0x14) >> 0xd & 1) != 0) &&\n     ((*(uint *)((longlong)param_1 + 0x14) >> 6 & 1) != 0)) {\n    _free_base(param_1[1]);\n    LOCK();\n    *(uint *)((longlong)param_1 + 0x14) = *(uint *)((longlong)param_1 + 0x14) & 0xfffffebf;\n    UNLOCK();\n    param_1[1] = 0;\n    *param_1 = 0;\n    *(undefined4 *)(param_1 + 2) = 0;\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T18:52:51Z"
+}

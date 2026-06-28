@@ -1,0 +1,7 @@
+{
+  "addr": "0x14056bfb0",
+  "tool": "binary_ninja",
+  "fact_id": "rva_front_shield_read_impl",
+  "body": "14056bfb3        int512_t result\n14056bfb3        if (arg2 != 0)\n14056bfb5        void* rax_1 = *(arg2 + 0xf0)\n14056bfbf        if (rax_1 != 0)\n14056bfc1        result.o = *(rax_1 + 0xf8)\n14056bfc9        return result\n14056bfca        result.o = zx.o(0)\n14056bfcd        return result",
+  "fetched_at": "2026-04-26T16:43:51Z"
+}

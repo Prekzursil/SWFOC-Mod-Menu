@@ -1,0 +1,7 @@
+{
+  "addr": "0x140046ed0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140046ee3        *arg1 = &DynamicVectorClass<class TargetingHUDReticleClass>::`vftable'\n140046ee9        sub_1400472a0(arg1)\n140046ef1        if ((arg2 & 1) != 0)\n140046efb        j_sub_1407864b8(arg1)\n140046f0d        return arg1",
+  "fetched_at": "2026-04-26T16:53:49Z"
+}

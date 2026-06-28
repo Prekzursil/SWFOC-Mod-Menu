@@ -1,0 +1,7 @@
+{
+  "addr": "0x14075f86c",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* WARNING: Function: __security_check_cookie replaced with injection: security_check_cookie */\n\nundefined8 __thiscall\nstd::ctype<wchar_t>::vfunction15(ctype<wchar_t> *this,wchar_t param_1,char param_2)\n\n{\n  int iVar1;\n  undefined4 extraout_var;\n  undefined1 auStack_48 [32];\n  mbstate_t local_28 [2];\n  char local_20 [8];\n  ulonglong local_18;\n  \n  local_18 = DAT_140a44b98 ^ (ulonglong)auStack_48;\n  local_28[0] = 0;\n  local_28[1] = 0;\n  iVar1 = _Wcrtomb(local_20,param_1,local_28,(_Cvtvec *)(this + 3));\n  if (iVar1 != 1) {\n    local_20[0] = param_2;\n  }\n  return CONCAT71((int7)(CONCAT44(extraout_var,iVar1) >> 8),local_20[0]);\n}",
+  "fetched_at": "2026-04-26T18:08:09Z"
+}

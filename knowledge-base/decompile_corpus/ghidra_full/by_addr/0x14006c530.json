@@ -1,0 +1,7 @@
+{
+  "addr": "0x14006c530",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\n/* BaseComponentClass member function inherited by ShellComponentClass\n   BaseComponentClass member function inherited by IconComponentClass\n   BaseComponentClass member function inherited by TextComponentClass\n   BaseComponentClass member function inherited by ModelComponentClass\n   BaseComponentClass member function inherited by BarComponentClass\n   BaseComponentClass member function inherited by SelectComponentClass */\n\nundefined8 __thiscall BaseComponentClass::vfunction60(void)\n\n{\n  return 8;\n}\n\n",
+  "fetched_at": "2026-04-26T16:56:05Z"
+}

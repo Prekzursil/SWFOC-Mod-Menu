@@ -1,0 +1,7 @@
+{
+  "addr": "0x1405126c0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "EventClass * __thiscall EventClass::EventClass(EventClass *this)\n\n{\n  undefined4 uVar1;\n  \n  (this->EventClass_data).offset_0x8 = 0xffffffff;\n  this->LinkedListEntryClass<class_EventClass> = (LinkedListEntryClass<class_EventClass>)0x0;\n  (this->EventClass_data).offset_0x0 = 0;\n  *(undefined4 *)&this->field_0x8 = 0;\n  this->vftablePtr = &vftable;\n  uVar1 = FUN_140294a70(&DAT_140a16fd0);\n  (this->EventClass_data).offset_0xc = uVar1;\n  return this;\n}",
+  "fetched_at": "2026-04-26T18:22:33Z"
+}

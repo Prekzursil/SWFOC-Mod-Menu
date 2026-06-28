@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407cfae0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined8 FUN_1407cfae0(undefined8 param_1)\n\n{\n  int iVar1;\n  undefined4 uVar2;\n  undefined8 uVar3;\n  char *pcVar4;\n  char local_88 [128];\n  \n  FUN_1407ce130(param_1,1);\n  iVar1 = FUN_1407ce070(param_1,1,\"__tostring\");\n  if (iVar1 != 0) {\n    return 1;\n  }\n  uVar2 = FUN_1407b9e00(param_1,1);\n  switch(uVar2) {\n  case 0:\n    FUN_1407b94a0(param_1,&DAT_1408568cc,3);\n    return 1;\n  case 1:\n    iVar1 = FUN_1407b9b70(param_1,1);\n    pcVar4 = \"false\";\n    if (iVar1 != 0) {\n      pcVar4 = \"true\";\n    }\n    goto LAB_1407cfbb1;\n  case 2:\n  case 7:\n    uVar3 = FUN_1407b9da0(param_1,1);\n    pcVar4 = \"userdata: %p\";\n    break;\n  case 3:\n    pcVar4 = (char *)FUN_1407b9cc0(param_1,1);\n    goto LAB_1407cfbb1;\n  case 4:\n    FUN_1407b9600(param_1,1);\n    return 1;\n  case 5:\n    uVar3 = FUN_1407b9c20(param_1,1);\n    pcVar4 = \"table: %p\";\n    break;\n  case 6:\n    uVar3 = FUN_1407b9c20(param_1,1);\n    pcVar4 = \"function: %p\";\n    break;\n  case 8:\n    uVar3 = FUN_1407b9d60(param_1,1);\n    pcVar4 = \"thread: %p\";\n    break;\n  default:\n    goto switchD_1407cfb39_default;\n  }\n  FUN_140048ec0(local_88,pcVar4,uVar3);\nswitchD_1407cfb39_default:\n  pcVar4 = local_88;\nLAB_1407cfbb1:\n  FUN_1407b9540(param_1,pcVar4);\n  return 1;\n}",
+  "fetched_at": "2026-04-26T18:57:57Z"
+}

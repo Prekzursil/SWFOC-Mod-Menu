@@ -1,0 +1,7 @@
+{
+  "addr": "0x14071c960",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "char * __thiscall ShieldFlareAbilityClass::vfunction3_for_IXMLLoadableClass(void)\n\n{\n  return \"Shield_Flare_Ability\";\n}",
+  "fetched_at": "2026-04-26T17:58:06Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x140625040",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined8 __thiscall\nSimpleSpaceLocomotorBehaviorClass::vfunction93(SimpleSpaceLocomotorBehaviorClass *this)\n\n{\n  undefined *puVar1;\n  undefined8 uVar2;\n  \n  if (this->offset_0x18 != (undefined **)0x0) {\n    puVar1 = this->offset_0x18[0x53];\n    uVar2 = FUN_140373080(puVar1);\n    if ((float)uVar2 == 0.0) {\n      uVar2 = FUN_140370f00(puVar1,this->offset_0x18);\n    }\n    return uVar2;\n  }\n  return 0;\n}",
+  "fetched_at": "2026-04-26T17:30:59Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x1402f5000",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_1402f5000(longlong param_1,longlong param_2)\n\n{\n  char cVar1;\n  longlong *plVar2;\n  longlong lVar3;\n  undefined8 uVar4;\n  int iVar5;\n  \n  if (*(char *)(param_1 + 0x2a34) == '\\0') {\n    return;\n  }\n  iVar5 = 0x2df;\n  while ((((plVar2 = (longlong *)FUN_140347b50(iVar5), plVar2 == (longlong *)0x0 ||\n           (cVar1 = FUN_14034ce60(plVar2), cVar1 != '\\0')) ||\n          (lVar3 = FUN_14034c770(plVar2,0), lVar3 == 0)) ||\n         (lVar3 = FUN_1403973b0(lVar3), lVar3 != param_2))) {\n    iVar5 = iVar5 + 1;\n    if (0x2ff < iVar5) {\n      return;\n    }\n  }\n  uVar4 = FUN_14034c630(plVar2);\n  FUN_140025760(\"STORY REWARD - Flashing command bar component %s\\n\",uVar4);\n  (**(code **)(*plVar2 + 0x120))(plVar2,1,0,DAT_1408007c0,6);\n  return;\n}",
+  "fetched_at": "2026-04-26T17:25:59Z"
+}

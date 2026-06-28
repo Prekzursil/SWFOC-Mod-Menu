@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406b74e0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1406b74f8        *arg1 = &AIGoalProposalFunctionSetClass::`vftable'{for `DatabaseObjectManagerClass<class AIGoalProposalFunctionClass>'}\n1406b74fe        int64_t* rax = arg1[2]\n1406b7502        void** i = *rax\n1406b7508        if (i != rax)\n1406b7510        int64_t rdx = i[6]\n1406b7517        if (rdx != 0)\n1406b751f        (*arg1)->__offset(0x18).q(arg1, rdx)\n1406b7522        i = *i\n1406b7529        do while (i != arg1[2])\n1406b752f        sub_140145610(&arg1[1])\n1406b7537        sub_1406b7430(arg1)\n1406b7540        if ((arg2 & 1) != 0)\n1406b754a        j_sub_1407864b8(arg1)\n1406b7561        return arg1",
+  "fetched_at": "2026-04-26T17:24:45Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x140162a20",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140162a44        if (*(arg1 + 0x2c4) == 0 || *(arg1 + 0xf8) == 0)\n140162a44        return \n140162a4a        sub_140165cd0(arg1, arg2)\n140162a65        sub_14013d400(0, *(*(arg1 + 0x118) + 0x8c8), 0, 0)\n140162a6a        void* rdx_2 = *(arg1 + 0x118)\n140162a71        int32_t rcx = *(rdx_2 + 0x418)\n140162a89        if (rcx == 4 || rcx == 5 || rcx == 6 || rcx == 0xb)\n140162a9c        sub_14013d400(1, *(rdx_2 + 0xcd0), 0, 0)\n140162aa1        rdx_2 = *(arg1 + 0x118)\n140162ab4        int32_t rcx_4 = *(rdx_2 + 0x418)\n140162aba        int32_t r8 = *(arg1 + 0x2c4)\n140162ac1        if (*(rdx_2 + 0x87e) != 0)\n140162ac1        rcx_4 = 2\n140162ace        int32_t r9_1\n140162ace        r9_1.b = *(rdx_2 + 0x1358) != 0\n140162ad9        int32_t rdx_5\n140162ad9        if (*(rdx_2 + 0x86c) != 0)\n140162aef        int32_t temp3_1\n140162aef        int32_t temp4_1\n140162aef        temp3_1:temp4_1 = sx.q(r8)\n140162af5        rdx_5 = ((temp3_1 & 3) + temp4_1) s>> 2\n140162ae8        rdx_5 = r8 s/ 3\n140162b2b        j_sub_1401805b0(arg3, *(arg1 + 0x2c0), 0xffffffff, 0, r8, rdx_5, *(arg1 + 0x2c8), rcx_4, r9_1, 0)\n140162b30        *(arg1 + 0x2c4) = 0\n140162b44        return ",
+  "fetched_at": "2026-04-26T17:22:42Z"
+}

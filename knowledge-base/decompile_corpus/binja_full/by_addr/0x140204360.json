@@ -1,0 +1,7 @@
+{
+  "addr": "0x140204360",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140204360        arg1[1] = arg2\n14020436b        *arg1 = &BitStreamClass::`vftable'\n140204370        arg1[4] = 0\n14020437b        arg1[3] = &DynamicVectorClass<int32_t>::`vftable'\n14020437f        arg1[5] = 0\n140204383        arg1[2] = 0\n140204387        arg1[6] = &DynamicVectorClass<int32_t>::`vftable'\n14020438e        arg1[7] = 0\n140204392        arg1[8] = 0\n140204396        arg1[9].d = arg3\n14020439a        *(arg1 + 0x4c) = arg3\n14020439e        return arg1",
+  "fetched_at": "2026-04-26T17:27:49Z"
+}

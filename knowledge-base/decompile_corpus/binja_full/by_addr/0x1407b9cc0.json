@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407b9cc0",
+  "tool": "binary_ninja",
+  "fact_id": "api_lua_tostring",
+  "body": "1407b9ccf        void* rbx_2\n1407b9ccf        if (arg2 s<= 0)\n1407b9cf0        rbx_2 = sub_1407b9f20(arg1, arg2)\n1407b9cf3        label_1407b9cf3:\n1407b9cf6        if (rbx_2 != 0)\n1407b9d08        if (*rbx_2 == 4)\n1407b9d1c        return *(rbx_2 + 8) + 0x18\n1407b9d2a        int64_t result\n1407b9d2a        if (sub_1407c83c0(arg1, rbx_2) == 0)\n1407b9d36        result = 0\n1407b9d30        result = *(rbx_2 + 8) + 0x18\n1407b9d38        void* rdx_3 = arg1[4]\n1407b9d42        if (*(rdx_3 + 0x74) u>= *(rdx_3 + 0x70))\n1407b9d47        sub_1407bc850(arg1)\n1407b9d59        return result\n1407b9ce0        rbx_2 = arg1[3] - 0x10 + (sx.q(arg2) << 4)\n1407b9ce7        if (rbx_2 u< arg1[2])\n1407b9ce7        goto label_1407b9cf3\n1407b9d04        return 0",
+  "fetched_at": "2026-04-26T16:44:34Z"
+}

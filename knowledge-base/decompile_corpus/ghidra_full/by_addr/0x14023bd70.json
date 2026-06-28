@@ -1,0 +1,7 @@
+{
+  "addr": "0x14023bd70",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall PacketClass::~PacketClass(PacketClass *this)\n\n{\n  char cVar1;\n  \n  cVar1 = *(char *)&(this->RefCountClass_data).offset_0x48;\n  this->vftablePtr = &vftable;\n  this->vftablePtr = &vftable;\n  this->vftablePtr = &vftable;\n  if (cVar1 != '\\0') {\n    if ((this->RefCountClass_data).offset_0x40 != 0) {\n      thunk_FUN_1407864b8();\n      (this->RefCountClass_data).offset_0x40 = 0;\n    }\n    *(undefined1 *)&(this->RefCountClass_data).offset_0x48 = 0;\n  }\n                    /* inlined destructor: RefCountClass::~RefCountClass */\n  this->vftablePtr = (PacketClass_vftable2 *)&RefCountClass::vftable;\n  MultiLinkedListMember::~MultiLinkedListMember((MultiLinkedListMember *)&this->vftablePtr);\n  DynamicVectorClass<int>::~DynamicVectorClass<int>\n            ((DynamicVectorClass<int> *)&(this->BitStreamClass_data).offset_0x28);\n  DynamicVectorClass<int>::~DynamicVectorClass<int>\n            ((DynamicVectorClass<int> *)&(this->BitStreamClass_data).offset_0x10);\n  return;\n}",
+  "fetched_at": "2026-04-26T18:08:31Z"
+}

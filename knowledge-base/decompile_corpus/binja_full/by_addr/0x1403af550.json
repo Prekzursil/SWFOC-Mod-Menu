@@ -1,0 +1,7 @@
+{
+  "addr": "0x1403af550",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1403af563        if (arg2 == 0)\n1403af565        int64_t result\n1403af565        result.b = 0\n1403af571        return result\n1403af589        char r14 = sub_140512ca0(arg1, arg2)\n1403af594        if (sub_1402051c0(arg2, 0x62) == 0)\n1403af654        r14 = 0\n1403af5ac        *(arg1 + 0x48) = sub_1402043b0(arg2, 0x20)\n1403af5bc        *(arg1 + 0x4c) = sub_1402043b0(arg2, 0x20)\n1403af5d1        *(arg1 + 0x50) = sub_1402043b0(arg2, 1) & 1\n1403af5e3        *(arg1 + 0x51) = sub_1402043b0(arg2, 1) & 1\n1403af5f5        *(arg1 + 0x52) = sub_1402043b0(arg2, 1) & 1\n1403af5f8        int32_t rax_7 = sub_1402043b0(arg2, 0x20)\n1403af5fd        *(arg1 + 0x250) = rax_7\n1403af605        if (rax_7 != 0)\n1403af616        if (sub_1402051c0(arg2, rax_7 << 5) == 0)\n1403af654        r14 = 0\n1403af618        int32_t i = 0\n1403af620        if (*(arg1 + 0x250) s> 0)\n1403af627        void* rdi_1 = arg1 + 0x54\n1403af63d        *rdi_1 = sub_1402043b0(arg2, 0x20)\n1403af63f        rdi_1 += 4\n1403af643        i += 1\n1403af64b        do while (i s< *(arg1 + 0x250))\n1403af66f        return zx.q(r14)",
+  "fetched_at": "2026-04-26T17:24:16Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x14068a0b0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_14068a0b0(void)\n\n{\n  BaseDestructionAbilityClass *this;\n  \n  this = (BaseDestructionAbilityClass *)FUN_140769c58(0x180);\n  if (this != (BaseDestructionAbilityClass *)0x0) {\n    BaseDestructionAbilityClass::BaseDestructionAbilityClass(this);\n    return;\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T17:15:31Z"
+}

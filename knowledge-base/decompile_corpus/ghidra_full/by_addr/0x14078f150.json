@@ -1,0 +1,7 @@
+{
+  "addr": "0x14078f150",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "__acrt_ptd * FUN_14078f150(void)\n\n{\n  int iVar1;\n  __acrt_ptd *p_Var2;\n  \n  if ((DAT_140a44db0 == -1) ||\n     (p_Var2 = (__acrt_ptd *)__acrt_FlsGetValue(), p_Var2 == (__acrt_ptd *)0x0)) {\n    iVar1 = __acrt_FlsSetValue(DAT_140a44db0,0xffffffffffffffff);\n    if (iVar1 == 0) goto LAB_14078f1f1;\n    p_Var2 = (__acrt_ptd *)_calloc_base(1,0x3c8);\n    if (p_Var2 == (__acrt_ptd *)0x0) {\n      __acrt_FlsSetValue(DAT_140a44db0,0);\n      p_Var2 = (__acrt_ptd *)0x0;\n    }\n    else {\n      iVar1 = __acrt_FlsSetValue(DAT_140a44db0,p_Var2);\n      if (iVar1 != 0) {\n        construct_ptd_array(p_Var2);\n        _free_base(0);\n        goto LAB_14078f1e3;\n      }\n      __acrt_FlsSetValue(DAT_140a44db0,0);\n    }\n    _free_base(p_Var2);\n  }\n  else {\n    if (p_Var2 == (__acrt_ptd *)0xffffffffffffffff) goto LAB_14078f1f1;\nLAB_14078f1e3:\n    if (p_Var2 != (__acrt_ptd *)0x0) {\n      return p_Var2;\n    }\n  }\nLAB_14078f1f1:\n                    /* WARNING: Subroutine does not return */\n  FUN_140788f54();\n}",
+  "fetched_at": "2026-04-26T18:52:29Z"
+}

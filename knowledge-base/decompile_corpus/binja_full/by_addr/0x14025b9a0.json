@@ -1,0 +1,7 @@
+{
+  "addr": "0x14025b9a0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14025b9b4        int32_t rbx = 0\n14025b9b9        *arg2 = 0\n14025b9be        void* rcx = *(arg1 + 0x50)\n14025b9c8        int32_t rax\n14025b9c8        if (rcx != 0)\n14025b9ce        rax = sub_140271cd0(rcx)\n14025b9ca        rax = 0\n14025b9e2        uint128_t zmm1\n14025b9e2        zmm1.d = _mm_cvtepi32_ps(zx.o(*(arg1 + 0x60))).d f/ _mm_cvtepi32_ps(zx.o(rax)).d\n14025b9e6        *arg3 = zmm1.d\n14025b9eb        *arg4 = 0\n14025b9ed        void* rcx_1 = *(arg1 + 0x50)\n14025b9f4        if (rcx_1 != 0)\n14025b9fb        rbx = sub_140271c80(rcx_1)\n14025ba1a        zmm1 = _mm_cvtepi32_ps(zx.o(*(arg1 + 0x64)))\n14025ba1d        uint128_t result = _mm_cvtepi32_ps(zx.o(rbx))\n14025ba20        zmm1.d = zmm1.d f/ result.d\n14025ba24        *arg5 = zmm1.d\n14025ba2d        return result",
+  "fetched_at": "2026-04-26T17:31:03Z"
+}

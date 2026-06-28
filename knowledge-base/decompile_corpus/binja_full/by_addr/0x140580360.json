@@ -1,0 +1,7 @@
+{
+  "addr": "0x140580360",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14058036f        int64_t* rbx = *(arg3 + 0x10)\n140580380        int64_t r8_2 = (*(arg3 + 0x18) - rbx) s>> 3\n140580388        if (r8_2 != 1)\n140580394        sub_140248190(arg2, \"GameObjectWrapper::Set_Importance -- invalid number of parameters.  Expected 1, got %d.\", r8_2)\n1405803aa        return 0\n1405803b0        if (*(arg1 + 0x60) == 0)\n1405803bc        sub_140248620(arg2, \"GameObjectWrapper::Set_Importance -- this object is dead!\", r8_2)\n1405803d2        return 0\n1405803d3        int64_t* rbx_1 = *rbx\n1405803d9        if (rbx_1 != 0)\n1405803e1        void* i\n1405803e1        i, r8_2 = (*(*rbx_1 + 0x20))(rbx_1)\n1405803e7        while (i != 0)\n1405803f3        if (i == &data_140a157c0)\n140580425        (**rbx_1)(rbx_1)\n140580437        *(*(arg1 + 0x60) + 0x320) = _mm_cvtpd_ps(zx.o(rbx_1[2])).d\n140580442        (*(*rbx_1 + 8))(rbx_1)\n140580456        return 0\n1405803f5        i = *(i + 8)\n140580408        sub_140248190(arg2, \"GameObjectWrapper::Set_Importance -- invalid type for parameter 1.  Expected number.\", r8_2)\n14058041e        return 0",
+  "fetched_at": "2026-04-26T17:35:21Z"
+}

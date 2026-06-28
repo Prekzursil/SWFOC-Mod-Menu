@@ -1,0 +1,7 @@
+{
+  "addr": "0x14079d94c",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14079d961        if (arg5 != 0)\n14079d981        *arg5 = 0xffffffff\n14079d99b        if (arg1 != 0 && (arg6 == 0 || (arg4 & 0xfffffe7f) == 0))\n14079d99d        int32_t var_18 = 0\n14079d9a2        int32_t var_14_1 = 0\n14079d9c3        int32_t rax_4 = _sopen_nolock(&var_18, arg5, arg1, arg2, arg3, arg4.b, arg6)\n14079d9ca        int32_t var_14_2 = rax_4\n14079d9d3        if (var_18 != 0)\n14079d9d7        if (rax_4 != 0)\n14079d9d9        int64_t rcx_1 = sx.q(*arg5)\n14079d9ed        uint64_t rcx_3 = (zx.q(rcx_1.d) & 0x3f) * 9\n14079d9f1        int64_t rax_7 = (&data_140b3c4d0)[rcx_1 s>> 6]\n14079d9f5        *(rax_7 + (rcx_3 << 3) + 0x38) &= 0xfe\n14079d9fc        sub_1407990bc(*arg5)\n14079da03        if (rax_4 != 0)\n14079da05        *arg5 = 0xffffffff\n14079da08        return zx.q(rax_4)\n14079d96d        *_errno() = 0x16\n14079d96f        _invalid_parameter_noinfo()\n14079d974        return 0x16",
+  "fetched_at": "2026-04-26T17:32:14Z"
+}

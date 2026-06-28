@@ -1,0 +1,7 @@
+{
+  "addr": "0x1403c4200",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1403c420f        void* rcx = arg1[9]\n1403c4216        if (rcx != 0)\n1403c422a        if (((arg1[0xb] - rcx) & 0xfffffffffffffffc) u>= 0x1000)\n1403c422c        void* r8_1 = *(rcx - 8)\n1403c423f        if (rcx - r8_1 - 8 u> 0x1f)\n1403c428b        _invalid_parameter_noinfo_noreturn()\n1403c428b        noreturn\n1403c4241        rcx = r8_1\n1403c4244        j_sub_1407864b8(rcx)\n1403c424b        __builtin_memset(&arg1[9], 0, 0x18)\n1403c425b        sub_14001e870(&arg1[6])\n1403c4267        *arg1 = &RefCountClass::`vftable'{for `IRefCountClass'}\n1403c426e        if ((arg2 & 1) != 0)\n1403c4278        j_sub_1407864b8(arg1)\n1403c428a        return arg1",
+  "fetched_at": "2026-04-26T17:24:43Z"
+}

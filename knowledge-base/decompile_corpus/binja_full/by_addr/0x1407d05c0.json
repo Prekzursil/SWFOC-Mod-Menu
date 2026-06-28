@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407d05c0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1407d05d6        sub_1407b94a0(arg1, \"_G\", 2)\n1407d05e3        sub_1407b9600(arg1, 0xffffd8ef)\n1407d05f7        sub_1407ce7a0(arg1, nullptr, &data_1408fe120, 0)\n1407d060c        sub_1407b94a0(arg1, \"_VERSION\", 8)\n1407d0621        sub_1407b94a0(arg1, \"Lua 5.0.2\", 9)\n1407d062e        sub_1407b97c0(arg1, 0xfffffffd)\n1407d0643        sub_1407b94a0(arg1, \"newproxy\", 8)\n1407d064b        sub_1407b9140(arg1)\n1407d0658        sub_1407b9600(arg1, 0xffffffff)\n1407d0665        sub_1407b99d0(arg1, 0xfffffffe)\n1407d067a        sub_1407b94a0(arg1, \"__mode\", 6)\n1407d068f        sub_1407b94a0(arg1, U\"k\", 1)\n1407d069c        sub_1407b97c0(arg1, 0xfffffffd)\n1407d06b1        sub_1407b9340(arg1, sub_1407d04c0, 1)\n1407d06be        sub_1407b97c0(arg1, 0xfffffffd)\n1407d06cb        sub_1407b97c0(arg1, 0xffffffff)\n1407d06e4        sub_1407ce7a0(arg1, \"coroutine\", &data_1408fe2c0, 0)\n1407d06ec        sub_1407b9140(arg1)\n1407d06fb        sub_1407b9540(arg1, \"_LOADED\")\n1407d0708        sub_1407b8f00(arg1, 0xfffffffe)\n1407d0715        sub_1407b9a60(arg1, 0xffffd8ef)\n1407d0721        return 0",
+  "fetched_at": "2026-04-26T17:33:57Z"
+}

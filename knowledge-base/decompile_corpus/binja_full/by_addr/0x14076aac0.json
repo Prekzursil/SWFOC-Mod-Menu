@@ -1,0 +1,7 @@
+{
+  "addr": "0x14076aac0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14076aaca        int32_t* rbx = *arg1\n14076aadc        if (*rbx == 0xe06d7363 && rbx[6] == 4)\n14076aade        int32_t rdx_1 = rbx[8]\n14076aaf2        if (rdx_1 - 0x19930520 u<= 2 || rdx_1 == 0x1994000)\n14076ab06        *__current_exception() = rbx\n14076ab12        *__current_exception_context() = arg1[1]\n14076ab15        sub_14078ec58()\n14076ab15        noreturn\n14076ab00        return 0",
+  "fetched_at": "2026-04-26T17:30:19Z"
+}

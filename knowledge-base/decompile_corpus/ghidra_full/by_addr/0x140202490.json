@@ -1,0 +1,7 @@
+{
+  "addr": "0x140202490",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined8 FUN_140202490(longlong *param_1,longlong *param_2)\n\n{\n  return CONCAT71((int7)((ulonglong)*param_2 >> 8),*param_1 == *param_2);\n}",
+  "fetched_at": "2026-04-26T17:55:53Z"
+}

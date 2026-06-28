@@ -1,0 +1,7 @@
+{
+  "addr": "0x14020d140",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14020d144        float zmm1[0x2] = arg1[1]\n14020d149        zmm1[0] = zmm1[0] f* arg2[1]\n14020d14e        uint32_t zmm0[0x4] = *arg2\n14020d152        zmm0[0] = zmm0[0] f* *arg1\n14020d160        int128_t zmm7 = arg1[3]\n14020d165        zmm1[0] = zmm1[0] f+ zmm0[0]\n14020d169        zmm0 = arg1[2]\n14020d16e        zmm7.d = zmm7.d f* arg2[1]\n14020d173        zmm0[0] = zmm0[0] f* *arg2\n14020d177        zmm1[0] = zmm1[0] f* arg1[6]\n14020d17c        zmm7.d = zmm7.d f+ zmm0[0]\n14020d180        zmm0 = _mm_cvtps_pd(zmm1)\n14020d183        zmm7.d = zmm7.d f* arg1[7]\n14020d190        int128_t zmm6\n14020d190        zmm6.d = fconvert.s(sub_1407760bc(zmm0)[0].q)\n14020d1a1        int64_t result\n14020d1a1        result.d = fconvert.s(sub_1407760bc(_mm_cvtps_pd(zmm7.q)))\n14020d1a5        result.d = result.d f+ zmm6.d\n14020d1b2        return result",
+  "fetched_at": "2026-04-26T17:28:12Z"
+}

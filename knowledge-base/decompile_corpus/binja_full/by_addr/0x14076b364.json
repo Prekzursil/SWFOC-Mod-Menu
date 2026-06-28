@@ -1,0 +1,7 @@
+{
+  "addr": "0x14076b364",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14076b368        bool cond:0 = (*arg3 & 1) == 0\n14076b36c        int64_t rcx = *arg1\n14076b36f        int64_t arg_8 = rcx\n14076b374        if (not(cond:0))\n14076b37e        arg_8 = *(zx.q(*(arg3 + 0x14)) + rcx)\n14076b395        return __FrameHandler4::FrameUnwindToState(&arg_8, arg2, arg3, 0xffffffff)",
+  "fetched_at": "2026-04-26T17:30:22Z"
+}

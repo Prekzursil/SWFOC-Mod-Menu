@@ -1,0 +1,7 @@
+{
+  "addr": "0x140791d6c",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140791d76        int64_t rdi = sx.q(arg1)\n140791d84        enum WIN32_ERROR rbx_2\n140791d84        if (_get_osfhandle(rdi.d) != -1)\n140791d8a        void* rax_1 = data_140b3c4d0\n140791daf        int64_t rax_2\n140791daf        int64_t rax_3\n140791daf        if ((rdi.d == 1 && (*(rax_1 + 0xc8) & rdi.b) != 0) || (rdi.d == 2 && (*(rax_1 + 0x80) & 1) != 0))\n140791db1        rax_2 = _get_osfhandle(2)\n140791dbe        rax_3 = _get_osfhandle(1)\n140791dc6        if (((rdi.d == 1 && (*(rax_1 + 0xc8) & rdi.b) != 0) || (rdi.d == 2 && (*(rax_1 + 0x80) & 1) != 0)) && rax_3 == rax_2)\n140791d86        rbx_2 = NO_ERROR\n140791dda        if (CloseHandle(_get_osfhandle(rdi.d)) != 0)\n140791d86        rbx_2 = NO_ERROR\n140791de2        rbx_2 = GetLastError()\n140791d86        rbx_2 = NO_ERROR\n140791de6        _free_osfhnd(rdi.d)\n140791e07        *((&data_140b3c4d0)[rdi s>> 6] + (zx.q(rdi.d) & 0x3f) * 0x48 + 0x38) = 0\n140791e0e        if (rbx_2 == NO_ERROR)\n140791e1c        return 0\n140791e12        __acrt_errno_map_os_error(rbx_2)\n140791e17        return 0xffffffff",
+  "fetched_at": "2026-04-26T17:31:46Z"
+}

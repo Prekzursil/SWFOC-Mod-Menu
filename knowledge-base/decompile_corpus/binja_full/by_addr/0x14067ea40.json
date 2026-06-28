@@ -1,0 +1,7 @@
+{
+  "addr": "0x14067ea40",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14067ea61        int32_t result\n14067ea61        if (arg2 != 0 && arg3 != 0)\n14067ea67        void* rbx_1 = arg2[0x53]\n14067ea71        if (rbx_1 != 0)\n14067ea77        void* rdi_1 = arg3[0x53]\n14067ea81        if (rdi_1 != 0)\n14067ea8a        if (rbx_1 == rdi_1)\n14067ea8c        result.b = 1\n14067ea9d        return result\n14067eaaa        if (*(rbx_1 + 0x16a0) == *(rdi_1 + 0x16a0))\n14067ead5        float var_28\n14067ead5        float var_24\n14067ead5        float arg_10\n14067ead5        float arg_20\n14067ead5        sub_140396850(arg3, &arg_10, &var_28, sub_140396850(arg2, &var_24, &arg_20, arg4))\n14067eaf2        float zmm8_1 = sub_140371b10(rbx_1) * 20f * 0.5f\n14067eb00        float zmm0_2 = sub_140371b10(rdi_1) * 20f\n14067eb08        float zmm4_1 = arg_10\n14067eb0e        float zmm5_1 = var_24\n14067eb14        zmm0_2 = zmm0_2 * 0.5f\n14067eb1c        float zmm2_1 = arg_20\n14067eb22        float zmm3_1 = var_28\n14067eb3b        void* rcx_3\n14067eb3b        if (zmm0_2 + zmm4_1 < zmm5_1 || zmm0_2 + zmm3_1 < zmm2_1)\n14067eb41        rcx_3.b = 0\n14067eb3d        rcx_3.b = 1\n14067eb59        if (zmm8_1 + zmm5_1 < zmm4_1 || zmm8_1 + zmm2_1 < zmm3_1)\n14067eb5f        result.b = 0\n14067eb5b        result.b = 1\n14067eb6d        if (rcx_3.b != 0 && result.b != 0)\n14067ea8c        result.b = 1\n14067ea9d        return result\n14067eb78        result.b = 0\n14067eb84        return result",
+  "fetched_at": "2026-04-26T17:11:53Z"
+}

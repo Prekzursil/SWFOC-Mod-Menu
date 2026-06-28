@@ -1,0 +1,7 @@
+{
+  "addr": "0x14079d334",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* Library Function - Single Match\n    __acrt_fenv_get_control\n   \n   Libraries: Visual Studio 2017 Release, Visual Studio 2019 Release */\n\nuint __acrt_fenv_get_control(void)\n\n{\n  ushort uVar1;\n  uint uVar2;\n  uint uVar3;\n  uint uVar4;\n  \n  uVar4 = 0;\n  uVar1 = (ushort)MXCSR & 0x8040;\n  if (uVar1 == 0x8000) {\n    uVar4 = 0xc00;\n  }\n  else if (uVar1 == 0x40) {\n    uVar4 = 0x800;\n  }\n  else if (uVar1 == 0x8040) {\n    uVar4 = 0x400;\n  }\n  uVar2 = MXCSR & 0x6000;\n  if (uVar2 == 0) {\n    uVar3 = 0;\n  }\n  else if (uVar2 == 0x2000) {\n    uVar3 = 0x100;\n  }\n  else if (uVar2 == 0x4000) {\n    uVar3 = 0x200;\n  }\n  else {\n    uVar3 = 0x300;\n    if (uVar2 != 0x6000) {\n      uVar3 = 0;\n    }\n  }\n  uVar2 = (MXCSR >> 8 & 1) << 5 | (MXCSR >> 7 & 1) << 4 | (MXCSR >> 9 & 1) << 3 |\n          (MXCSR >> 10 & 1) << 2 | (MXCSR >> 0xb & 1) * 2 | MXCSR >> 0xc & 1;\n  return uVar3 << 0x16 | uVar2 << 0x18 | uVar2 | uVar3 | uVar4;\n}",
+  "fetched_at": "2026-04-26T18:53:58Z"
+}

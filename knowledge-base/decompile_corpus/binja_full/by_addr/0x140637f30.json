@@ -1,0 +1,7 @@
+{
+  "addr": "0x140637f30",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140637f37        return \"BoardableBehaviorClass\"",
+  "fetched_at": "2026-04-26T17:01:08Z"
+}

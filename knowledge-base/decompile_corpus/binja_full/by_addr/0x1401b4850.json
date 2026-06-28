@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401b4850",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1401b4860        *arg1 = &alSceneIterator::`vftable'\n1401b4866        if ((arg2 & 1) != 0)\n1401b486d        j_sub_1407864b8(arg1)\n1401b487a        return arg1",
+  "fetched_at": "2026-04-26T17:25:44Z"
+}

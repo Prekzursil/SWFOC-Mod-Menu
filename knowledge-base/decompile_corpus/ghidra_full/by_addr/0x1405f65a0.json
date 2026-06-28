@@ -1,0 +1,7 @@
+{
+  "addr": "0x1405f65a0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "AIDiagnosticsClass * __thiscall\nAIDiagnosticsClass::scalar_deleting_destructor(AIDiagnosticsClass *this,ulonglong param_1)\n\n{\n  longlong *plVar1;\n  undefined8 uVar2;\n  \n                    /* inlined destructor: AIDiagnosticsClass::~AIDiagnosticsClass */\n  this->vftablePtr = &vftable;\n  uVar2 = FUN_14004faa0();\n  FUN_1404764d0(uVar2,this);\n  plVar1 = (this->AIDiagnosticsClass_data).offset_0x8;\n  if (plVar1 != (longlong *)0x0) {\n    (**(code **)(*plVar1 + 8))(plVar1,1);\n    (this->AIDiagnosticsClass_data).offset_0x8 = (longlong *)0x0;\n  }\n  plVar1 = (this->AIDiagnosticsClass_data).offset_0x10;\n  if (plVar1 != (longlong *)0x0) {\n    (**(code **)(*plVar1 + 8))();\n  }\n  if ((param_1 & 1) != 0) {\n    thunk_FUN_1407864b8(this,0x28);\n  }\n  return this;\n}",
+  "fetched_at": "2026-04-26T17:23:28Z"
+}

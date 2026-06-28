@@ -1,0 +1,7 @@
+{
+  "addr": "0x1402787c0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined8 __thiscall TeletypeTextClass::vfunction27_for_DrawPrimitiveClass(TeletypeTextClass *this)\n\n{\n  longlong lVar1;\n  \n  lVar1 = *(longlong *)&(this->DrawTextClass_data).field_0x28;\n  return CONCAT71((int7)((ulonglong)lVar1 >> 8),(this->TeletypeTextClass_data).offset_0x48 == lVar1)\n  ;\n}",
+  "fetched_at": "2026-04-26T18:20:57Z"
+}

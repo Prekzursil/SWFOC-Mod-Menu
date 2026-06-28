@@ -1,0 +1,7 @@
+{
+  "addr": "0x14029b720",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "TreeCullClass * __thiscall\nTreeCullClass::scalar_deleting_destructor(TreeCullClass *this,uint param_1)\n\n{\n  longlong lVar1;\n  TreeCullClass *this_00;\n  \n  if ((param_1 & 2) == 0) {\n    ~TreeCullClass(this);\n    if ((param_1 & 1) != 0) {\n      thunk_FUN_1407864b8(this,0x38);\n    }\n    return this;\n  }\n  lVar1 = *(longlong *)&this[-1].TreeCullClass_data.offset_0x28;\n  this_00 = this + lVar1;\n  for (; lVar1 != 0; lVar1 = lVar1 + -1) {\n    this_00 = this_00 + -1;\n    ~TreeCullClass(this_00);\n  }\n  if ((param_1 & 1) != 0) {\n    thunk_FUN_1407864b8(&this[-1].TreeCullClass_data.offset_0x28,\n                        *(longlong *)&this[-1].TreeCullClass_data.offset_0x28 * 0x38 + 8);\n  }\n  return (TreeCullClass *)&this[-1].TreeCullClass_data.offset_0x28;\n}",
+  "fetched_at": "2026-04-26T18:25:41Z"
+}

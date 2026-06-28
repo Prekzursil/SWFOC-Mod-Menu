@@ -1,0 +1,7 @@
+{
+  "addr": "0x14034b7e0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\n/* ButtonComponentClass member function inherited by TextButtonComponentClass */\n\nvoid __thiscall ButtonComponentClass::vfunction17(ButtonComponentClass *this,char param_1)\n\n{\n  byte *pbVar1;\n  longlong lVar2;\n  undefined8 uVar3;\n  undefined1 local_18 [16];\n  \n  if (param_1 == '\\x01') {\n    pbVar1 = &(this->BaseComponentClass_data).offset_0xb8;\n    *pbVar1 = *pbVar1 | 4;\n    *(undefined4 *)&(this->ButtonComponentClass_data).offset_0x378 = 4;\n    if (((this->ButtonComponentClass_data).offset_0xc & 8) != 0) {\n      return;\n    }\n    lVar2 = (this->BaseComponentClass_data).offset_0x78;\n    if (lVar2 == 0) {\n      return;\n    }\n    if ((*(byte *)(lVar2 + 0x3e6) & 1) == 0) {\n      return;\n    }\n    uVar3 = 0x80;\n  }\n  else {\n    if (*(int *)&(this->ButtonComponentClass_data).offset_0x378 == 4) {\n      *(undefined4 *)&(this->ButtonComponentClass_data).offset_0x378 = 1;\n    }\n    pbVar1 = &(this->BaseComponentClass_data).offset_0xb8;\n    *pbVar1 = *pbVar1 & 0xfb;\n    if (((this->ButtonComponentClass_data).offset_0xc & 8) != 0) {\n      return;\n    }\n    lVar2 = (this->BaseComponentClass_data).offset_0x78;\n    if (lVar2 == 0) {\n      return;\n    }\n    if ((*(byte *)(lVar2 + 0x3e6) & 1) == 0) {\n      return;\n    }\n    uVar3 = 0xff;\n  }\n  FUN_1401f93e0(local_18,uVar3,uVar3,uVar3,0xff);\n  (*this->vftablePtr->vfunction3)(this,local_18);\n  FUN_1401f9440(local_18);\n  return;\n}\n\n",
+  "fetched_at": "2026-04-26T17:07:50Z"
+}

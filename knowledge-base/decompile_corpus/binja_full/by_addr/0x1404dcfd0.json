@@ -1,0 +1,7 @@
+{
+  "addr": "0x1404dcfd0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1404dcff8        if (data_140b31900 != 0)\n1404dcff8        return \n1404dcfff        struct SignalListenerClass::TacticalPerceptionGridClass::VTable** rax_1 = operator new(0xd0)\n1404dd007        if (rax_1 != 0)\n1404dd00c        rax_1 = sub_140653340(rax_1)\n1404dd014        data_140b31900 = rax_1\n1404dd028        sub_140657fc0(rax_1, arg1, arg2, arg3, arg4)\n1404dd041        return ",
+  "fetched_at": "2026-04-26T17:31:15Z"
+}

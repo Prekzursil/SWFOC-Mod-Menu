@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407d0180",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1407d0195        void* rax = sub_1407b9d60(arg1, 1)\n1407d01a0        if (rax == 0)\n1407d01af        sub_1407cdf80(arg1, (rax + 1).d)\n1407d01af        noreturn\n1407d01b7        char const* const rdx_1\n1407d01b7        void* r8_1\n1407d01b7        if (arg1 != rax)\n1407d01d2        void var_88\n1407d01d2        int32_t rax_1 = sub_1407bb5c0(rax, 0, &var_88)\n1407d01d9        int32_t rax_2\n1407d01d9        if (rax_1 == 0)\n1407d01de        rax_2 = sub_1407b8ef0(rax)\n1407d01e5        if (rax_1 != 0 || rax_2 != 0)\n1407d01f4        r8_1 = 9\n1407d01fa        rdx_1 = \"suspended\"\n1407d01e7        r8_1 = zx.q(rax_2 + 4)\n1407d01eb        rdx_1 = \"dead\"\n1407d01b9        r8_1 = 7\n1407d01bf        rdx_1 = \"running\"\n1407d0204        sub_1407b94a0(arg1, rdx_1, r8_1)\n1407d021e        return 1",
+  "fetched_at": "2026-04-26T17:33:57Z"
+}

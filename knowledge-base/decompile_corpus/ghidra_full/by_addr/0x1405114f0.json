@@ -1,0 +1,7 @@
+{
+  "addr": "0x1405114f0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall\nBitfieldConversionClass<enum_tVisibilityLevelType>::vfunction2\n          (BitfieldConversionClass<enum_tVisibilityLevelType> *this,undefined8 *param_1,\n          longlong *param_2)\n\n{\n  int local_res8 [8];\n  \n  (*this->vftablePtr->vfunction5)(this,param_1,local_res8);\n  *param_2 = (longlong)local_res8[0];\n  return;\n}",
+  "fetched_at": "2026-04-26T18:22:10Z"
+}

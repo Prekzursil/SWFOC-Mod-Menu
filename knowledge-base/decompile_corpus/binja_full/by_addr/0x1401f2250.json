@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401f2250",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1401f225a        struct GUIGadgetClass::GUIGadgetProgressbarClass::VTable** result = arg1\n1401f225d        sub_1401e3c30(arg1)\n1401f2270        *result = &GUIGadgetProgressbarClass::`vftable'{for `GUIGadgetClass'}\n1401f2273        sub_140260490(&result[0x14])\n1401f227f        sub_140260490(&result[0x26])\n1401f2286        result[0x3f].b = 1\n1401f2290        __builtin_memset(&result[0x38], 0, 0x38)\n1401f22c1        sub_1401f2d40(result)\n1401f22c9        result[0x13].d = 0\n1401f22d9        return result",
+  "fetched_at": "2026-04-26T17:27:19Z"
+}

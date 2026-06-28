@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406927f0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1406927f4        float result = *(arg1 + 0x50)\n140692813        if (*(arg1 + 0x74) s>= 1 && not(result <= 0.00999999978f) && not(40f <= result))\n140692838        return result + (1f - (result - 0.00999999978f) / (40f - 0.00999999978f)) * 1.60000002f\n14069283f        return result",
+  "fetched_at": "2026-04-26T17:19:13Z"
+}

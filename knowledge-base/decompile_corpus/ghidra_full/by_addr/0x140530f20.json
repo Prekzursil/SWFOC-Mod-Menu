@@ -1,0 +1,7 @@
+{
+  "addr": "0x140530f20",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* DebugTreeItem member function inherited by LogWindowItem\n   DebugTreeItem member function inherited by MainLogWindow\n   DebugTreeItem member function inherited by AILogWindow\n   DebugTreeItem member function inherited by StoryLogWindow\n   DebugTreeItem member function inherited by EventLogWindow */\n\nundefined * __thiscall DebugTreeItem::vfunction5(void)\n\n{\n  return &DAT_140b39770;\n}",
+  "fetched_at": "2026-04-26T18:28:56Z"
+}

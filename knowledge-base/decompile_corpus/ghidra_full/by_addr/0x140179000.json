@@ -1,0 +1,7 @@
+{
+  "addr": "0x140179000",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_140179000(longlong param_1)\n\n{\n  int iVar1;\n  longlong *local_res8 [4];\n  longlong **pplVar2;\n  uint uVar3;\n  undefined4 local_38 [2];\n  undefined8 local_30;\n  undefined1 local_28 [28];\n  undefined4 local_c;\n  \n  if (param_1 != 0) {\n    pplVar2 = local_res8;\n    (**(code **)(*DAT_140a6d480 + 0x90))(DAT_140a6d480,0,0,0,pplVar2);\n    uVar3 = (uint)((ulonglong)pplVar2 >> 0x20);\n    if (((local_res8[0] != (longlong *)0x0) &&\n        (iVar1 = (**(code **)(*local_res8[0] + 0x60))(local_res8[0],local_28), iVar1 == 0)) &&\n       (iVar1 = (**(code **)(*local_res8[0] + 0x68))(local_res8[0],local_38,0,0x2000), iVar1 == 0))\n    {\n      BinkCopyToBuffer(param_1,local_30,local_38[0],local_c,(ulonglong)uVar3 << 0x20,0,5);\n      (**(code **)(*local_res8[0] + 0x70))();\n    }\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T17:28:20Z"
+}

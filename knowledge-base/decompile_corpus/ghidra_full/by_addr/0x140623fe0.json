@@ -1,0 +1,7 @@
+{
+  "addr": "0x140623fe0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_140623fe0(undefined8 param_1,longlong param_2,longlong param_3)\n\n{\n  undefined8 uVar1;\n  uint uVar2;\n  undefined4 local_28;\n  undefined4 local_24;\n  undefined4 local_20;\n  undefined4 local_18;\n  undefined4 local_14;\n  undefined4 local_10;\n  \n  DAT_140a13e24 = DAT_140851168 * DAT_140a13e24 + DAT_14085116c;\n  uVar2 = *(uint *)(*(longlong *)(param_2 + 0x298) + 0x39c);\n  if ((~(DAT_140a13e24 >> 10) & 1 | 2) == 2) {\n    uVar2 = uVar2 ^ DAT_140800860;\n  }\n  *(uint *)(param_3 + 0x44) = uVar2;\n  *(undefined4 *)(param_3 + 0x54) = 0x3e19999a;\n  FUN_140559250(param_3);\n  local_28 = *(undefined4 *)(param_2 + 0x78);\n  local_24 = *(undefined4 *)(param_2 + 0x7c);\n  local_20 = *(undefined4 *)(param_2 + 0x80);\n  uVar1 = FUN_140623340(param_1);\n  FUN_14020acd0(&local_18,&local_28,uVar1);\n  *(undefined4 *)(param_3 + 0x38) = local_18;\n  *(undefined4 *)(param_3 + 0x40) = local_10;\n  *(undefined4 *)(param_3 + 0x3c) = local_14;\n  return;\n}",
+  "fetched_at": "2026-04-26T17:30:31Z"
+}

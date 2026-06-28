@@ -1,0 +1,7 @@
+{
+  "addr": "0x140223a60",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_140223a60(longlong param_1)\n\n{\n  LPVOID *ppv;\n  undefined8 *puVar1;\n  undefined8 *puVar2;\n  char cVar3;\n  HRESULT HVar4;\n  int iVar5;\n  \n  ppv = (LPVOID *)(param_1 + 0x50);\n  if (*(longlong *)(param_1 + 0x50) == 0) {\n    HVar4 = CoCreateInstance((IID *)&DAT_140853828,(LPUNKNOWN)0x0,1,(IID *)&DAT_140853838,ppv);\n    if (HVar4 < 0) {\n      *ppv = (LPVOID)0x0;\n      return;\n    }\n    puVar1 = (undefined8 *)(param_1 + 0x58);\n    iVar5 = (**(code **)(*(longlong *)*ppv + 0x38))(*ppv,puVar1);\n    if (iVar5 < 0) {\n      (**(code **)(*(longlong *)*ppv + 0x10))();\n      *ppv = (LPVOID)0x0;\n      return;\n    }\n    puVar2 = (undefined8 *)(param_1 + 0x60);\n    iVar5 = (**(code **)(*(longlong *)*puVar1 + 0x38))((longlong *)*puVar1,puVar2);\n    if (iVar5 < 0) {\n      (**(code **)(*(longlong *)*puVar1 + 0x10))();\n    }\n    else {\n      cVar3 = FUN_140224500(param_1);\n      if (cVar3 != '\\0') {\n        return;\n      }\n      (**(code **)(*(longlong *)*puVar2 + 0x10))();\n      *puVar2 = 0;\n      (**(code **)(*(longlong *)*puVar1 + 0x10))();\n    }\n    *puVar1 = 0;\n    (**(code **)(*(longlong *)*ppv + 0x10))();\n    *ppv = (LPVOID)0x0;\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T18:04:19Z"
+}

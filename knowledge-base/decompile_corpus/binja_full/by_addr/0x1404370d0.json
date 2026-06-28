@@ -1,0 +1,7 @@
+{
+  "addr": "0x1404370d0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1404370db        struct BehaviorClass::AsteroidFieldDamageBehaviorClass::VTable** result = operator new(0x48)\n1404370e6        if (result == 0)\n140437126        return result\n1404370eb        sub_1404c32d0(result)\n1404370f7        result[8] = 0\n1404370ff        *result = &AsteroidFieldDamageBehaviorClass::`vftable'{for `BehaviorClass'}\n140437109        result[1] = &AsteroidFieldDamageBehaviorClass::`vftable'{for `RefCountClass'}\n140437114        result[3] = &AsteroidFieldDamageBehaviorClass::`vftable'{for `SignalListenerClass'}\n140437120        return result",
+  "fetched_at": "2026-04-26T17:27:06Z"
+}

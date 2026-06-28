@@ -1,0 +1,7 @@
+{
+  "addr": "0x1404dbf10",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall\nAIGoalTargetPerceptionFunctionNodeClass::vfunction3(AIGoalTargetPerceptionFunctionNodeClass *this)\n\n{\n  undefined8 uVar1;\n  undefined8 uVar2;\n  longlong local_28 [3];\n  ulonglong local_10;\n  \n  uVar1 = FUN_1404ddc70(this,local_28);\n  uVar2 = FUN_14004faa0();\n  FUN_140475c90(uVar2,uVar1);\n  if (0xf < local_10) {\n    if (0xfff < local_10 + 1) {\n      if (0x1f < (local_28[0] - *(longlong *)(local_28[0] + -8)) - 8U) {\n                    /* WARNING: Subroutine does not return */\n        FUN_1407711cc(*(longlong *)(local_28[0] + -8),local_10 + 0x28);\n      }\n    }\n    thunk_FUN_1407864b8();\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T18:15:04Z"
+}

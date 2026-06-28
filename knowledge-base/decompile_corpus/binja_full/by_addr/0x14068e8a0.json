@@ -1,0 +1,7 @@
+{
+  "addr": "0x14068e8a0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14068e8aa        int64_t i_1 = arg3\n14068e8ad        int64_t* result = arg2\n14068e8b3        if (arg3 != 0)\n14068e8dc        int64_t i\n14068e8c4        *result = 0\n14068e8c7        result[1] = 0\n14068e8cb        pdb_internal::Array<struct DBI1::SrcMap>::Array<struct DBI1::SrcMap>(&result[2])\n14068e8d0        result[4] = 0\n14068e8d4        result = &result[5]\n14068e8d8        i = i_1\n14068e8d8        i_1 -= 1\n14068e8dc        do while (i != 1)\n14068e8f0        return result",
+  "fetched_at": "2026-04-26T17:17:07Z"
+}

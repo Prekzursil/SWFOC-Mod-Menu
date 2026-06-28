@@ -1,0 +1,7 @@
+{
+  "addr": "0x1405dc4b0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "StoryEventSelectPlanetClass * __thiscall\nStoryEventSelectPlanetClass::StoryEventSelectPlanetClass(StoryEventSelectPlanetClass *this)\n\n{\n  StoryEventClass::StoryEventClass((StoryEventClass *)this);\n  this->vftablePtr = &vftable;\n  (this->StoryEventSelectPlanetClass_data).offset_0x8 = 0;\n  (this->StoryEventSelectPlanetClass_data).offset_0x10 = 0;\n  (this->StoryEventSelectPlanetClass_data).offset_0x18 = 0;\n  (this->StoryEventSelectPlanetClass_data).offset_0x20 = 0;\n  return this;\n}",
+  "fetched_at": "2026-04-26T18:45:55Z"
+}

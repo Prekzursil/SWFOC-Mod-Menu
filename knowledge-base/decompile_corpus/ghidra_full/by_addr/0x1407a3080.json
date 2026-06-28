@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407a3080",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* Library Function - Single Match\n    deflateInit_\n   \n   Library: Visual Studio 2019 Release */\n\nvoid deflateInit_(undefined8 param_1,undefined8 param_2,undefined8 param_3,undefined4 param_4)\n\n{\n  deflateInit2_(param_1,param_2,8,0xf,8,0,param_3,param_4);\n  return;\n}",
+  "fetched_at": "2026-04-26T18:54:26Z"
+}

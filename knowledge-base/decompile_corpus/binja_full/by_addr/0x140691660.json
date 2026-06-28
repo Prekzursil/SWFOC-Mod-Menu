@@ -1,0 +1,7 @@
+{
+  "addr": "0x140691660",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14069167d        *arg1 = &RefCountClass::`vftable'{for `IRefCountClass'}\n14069168a        arg1[1].d = 0\n14069168d        arg1[2] = &SignalListenerClass::`vftable'{for `MultiLinkedListMember'}\n140691694        arg1[3] = 0\n14069169c        sub_1405f6520(&arg1[4])\n1406916ad        *arg1 = &InstantiatedGoalClass::`vftable'{for `RefCountClass'}\n1406916b7        arg1[2] = &InstantiatedGoalClass::`vftable'{for `SignalListenerClass'}\n1406916c2        arg1[4] = &InstantiatedGoalClass::`vftable'{for `AIDiagnosticsClass'}\n1406916c9        __builtin_memset(&arg1[9], 0, 0x48)\n1406916f8        arg1[0x12] = arg2\n140691709        return arg1",
+  "fetched_at": "2026-04-26T17:19:02Z"
+}

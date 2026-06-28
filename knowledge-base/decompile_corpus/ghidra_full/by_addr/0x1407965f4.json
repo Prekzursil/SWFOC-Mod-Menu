@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407965f4",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* Library Function - Single Match\n    __acrt_WideCharToMultiByte\n   \n   Library: Visual Studio 2019 Release */\n\nvoid __acrt_WideCharToMultiByte\n               (uint param_1,uint param_2,LPCWSTR param_3,int param_4,LPSTR param_5,int param_6,\n               LPBOOL param_7,LPBOOL param_8)\n\n{\n  LPBOOL lpUsedDefaultChar;\n  DWORD dwFlags;\n  LPBOOL pBVar1;\n  bool bVar2;\n  \n  pBVar1 = (LPBOOL)0x0;\n  dwFlags = 0;\n  if (param_1 < 0xc436) {\n    if ((param_1 - 0xc42c < 10) && ((0x2a7U >> (param_1 - 0xc42c & 0x1f) & 1) != 0))\n    goto LAB_140796663;\n    bVar2 = param_1 == 0x2a;\nLAB_140796659:\n    if (bVar2) goto LAB_140796663;\n  }\n  else {\n    if (param_1 == 0xd698) goto LAB_140796663;\n    if (0xdea9 < param_1) {\n      if ((param_1 < 0xdeb4) || (param_1 == 65000)) goto LAB_140796663;\n      bVar2 = param_1 == 0xfde9;\n      goto LAB_140796659;\n    }\n  }\n  dwFlags = param_2 & 0xffffff7f;\nLAB_140796663:\n  lpUsedDefaultChar = param_8;\n  if ((param_1 - 65000 < 2) &&\n     (param_7 = pBVar1, lpUsedDefaultChar = pBVar1, param_8 != (LPBOOL)0x0)) {\n    *param_8 = 0;\n  }\n                    /* WARNING: Could not recover jumptable at 0x00014079669a. Too many branches */\n                    /* WARNING: Treating indirect jump as call */\n  WideCharToMultiByte(param_1,dwFlags,param_3,param_4,param_5,param_6,(LPCSTR)param_7,\n                      lpUsedDefaultChar);\n  return;\n}",
+  "fetched_at": "2026-04-26T18:53:21Z"
+}

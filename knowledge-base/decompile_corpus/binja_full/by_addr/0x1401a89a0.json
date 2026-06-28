@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401a89a0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1401a89bc        int32_t var_28 = 1\n1401a89c6        int32_t var_24 = 3\n1401a89d0        int32_t var_20 = 2\n1401a89d7        int32_t i = 0\n1401a89dd        int32_t* rsi = &var_28\n1401a89e6        int32_t* rax_1 = operator new(0x140)\n1401a89f1        if (rax_1 == 0)\n1401a8ac4        return 0x8007000e\n1401a89fc        int32_t* rax_2 = operator new(0x20)\n1401a8a04        if (rax_2 == 0)\n1401a8aac        *(rax_1 + 0x138) = 0\n1401a8abf        sub_1401a9f20(rax_1, 1)\n1401a8ac4        return 0x8007000e\n1401a8a14        int32_t* rax_3 = sub_1401a8290(rax_2, 1, 0)\n1401a8a19        *(rax_1 + 0x138) = rax_3\n1401a8a23        if (rax_3 == 0)\n1401a8abf        sub_1401a9f20(rax_1, 1)\n1401a8ac4        return 0x8007000e\n1401a8a30        int32_t r8 = *rsi\n1401a8a33        *rax_1 = *arg2\n1401a8a35        rax_1[1] = r8\n1401a8a39        int64_t* rcx_1 = *arg1\n1401a8a47        if ((*(*rcx_1 + 0x70))(rcx_1, zx.q(*arg2), r8, &rax_1[2]) s< 0)\n1401a8a83        sub_1401a9f20(rax_1, 1)\n1401a8a52        int32_t rax_7 = sub_1401a8af0(arg1, rax_1, arg3)\n1401a8a5b        if (rax_7 s< 0)\n1401a8aa3        sub_1401a9f20(rax_1, 1)\n1401a8aa8        return zx.q(rax_7)\n1401a8a68        if (*(*(rax_1 + 0x138) + 0x14) == 0)\n1401a8a83        sub_1401a9f20(rax_1, 1)\n1401a8a74        sub_1401a82e0(*(arg2 + 0x460), rax_1)\n1401a8a88        i += 1\n1401a8a8a        rsi = &rsi[1]\n1401a8a91        do while (i u< 3)\n1401a8a97        return 0",
+  "fetched_at": "2026-04-26T17:25:18Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x140790884",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* Library Function - Single Match\n    __acrt_uninitialize_lowio\n   \n   Library: Visual Studio 2019 Release */\n\nundefined1 __acrt_uninitialize_lowio(void)\n\n{\n  ulonglong uVar1;\n  \n  uVar1 = 0;\n  do {\n    if (*(longlong *)((longlong)&DAT_140b3c4d0 + uVar1) != 0) {\n      __acrt_lowio_destroy_handle_array();\n      *(undefined8 *)((longlong)&DAT_140b3c4d0 + uVar1) = 0;\n    }\n    uVar1 = uVar1 + 8;\n  } while (uVar1 < 0x400);\n  return 1;\n}",
+  "fetched_at": "2026-04-26T18:52:38Z"
+}

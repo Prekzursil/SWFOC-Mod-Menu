@@ -1,0 +1,7 @@
+{
+  "addr": "0x140156240",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14015626f        if ((GetCurrentThreadId() != data_140a155d0 || data_140a62740 == 0) && *(arg1 + 0xec) s>= 0 && sub_14022fe40(arg1 + 0x20) s> 0)\n14015628c        *(*(arg1 + 0x1b0) + (sx.q(*(arg1 + 0xec)) << 2)) = arg2.d\n140156294        sub_140156720(arg1)\n140156299        int64_t rax_2\n140156299        rax_2.b = 1\n1401562a5        return rax_2\n1401562ab        uint32_t rax\n1401562ab        rax.b = 0\n1401562b2        return rax",
+  "fetched_at": "2026-04-26T17:22:25Z"
+}

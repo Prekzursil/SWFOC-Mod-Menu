@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407b9320",
+  "tool": "binary_ninja",
+  "fact_id": "api_lua_pushboolean",
+  "body": "1407b9320        int32_t* r8 = *(arg1 + 0x10)\n1407b9328        int32_t result\n1407b9328        result.b = arg2 != 0\n1407b932b        r8[2] = result\n1407b932f        *r8 = 1\n1407b9336        *(arg1 + 0x10) += 0x10\n1407b933b        return result",
+  "fetched_at": "2026-04-26T16:44:29Z"
+}

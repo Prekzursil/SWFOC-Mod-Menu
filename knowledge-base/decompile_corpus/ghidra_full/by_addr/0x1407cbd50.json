@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407cbd50",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_1407cbd50(longlong *param_1,int *param_2)\n\n{\n  longlong lVar1;\n  int iVar2;\n  \n  if (*param_2 != 0xb) {\n    lVar1 = *param_1;\n    iVar2 = *(int *)((longlong)param_1 + 0x3c) + 1;\n    if ((int)(uint)*(byte *)(lVar1 + 0x73) < iVar2) {\n      if (0xf9 < iVar2) {\n        FUN_1407be9e0(param_1[3],\"function or expression too complex\");\n        lVar1 = *param_1;\n      }\n      *(char *)(lVar1 + 0x73) = (char)iVar2;\n    }\n    *(int *)((longlong)param_1 + 0x3c) = *(int *)((longlong)param_1 + 0x3c) + 1;\n    FUN_1407cbdc0(param_1,param_2);\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T18:57:21Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401bdd40",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "bool FUN_1401bdd40(undefined8 param_1)\n\n{\n  BOOL BVar1;\n  DWORD local_res10 [6];\n  _STARTUPINFOA local_1a8;\n  _PROCESS_INFORMATION local_138;\n  CHAR local_118 [272];\n  \n  FUN_140048ec0(local_118,\"\\\"cmd.exe\\\" /C %s >> %s\",param_1,PTR_s__ArtProcessLog_txt_140a13500);\n  FUN_1401bde60(&DAT_14081bd54,param_1);\n  local_1a8.cb = 0x68;\n  local_1a8.hStdError._4_4_ = 0;\n  local_1a8._4_8_ = 0;\n  local_1a8._12_8_ = 0;\n  local_1a8._20_8_ = 0;\n  local_1a8._28_8_ = 0;\n  local_1a8.dwY = 0;\n  local_1a8.dwXSize = 0;\n  local_1a8.dwYSize = 0;\n  local_1a8.dwXCountChars = 0;\n  local_1a8.dwYCountChars = 0;\n  local_1a8.dwFillAttribute = 0;\n  local_1a8.dwFlags = 0;\n  local_1a8.wShowWindow = 0;\n  local_1a8.cbReserved2 = 0;\n  local_1a8._68_8_ = 0;\n  local_1a8._76_8_ = 0;\n  local_1a8._84_8_ = 0;\n  local_1a8._92_8_ = 0;\n  BVar1 = CreateProcessA((LPCSTR)0x0,local_118,(LPSECURITY_ATTRIBUTES)0x0,(LPSECURITY_ATTRIBUTES)0x0\n                         ,0,0x8000000,(LPVOID)0x0,(LPCSTR)0x0,&local_1a8,&local_138);\n  if (BVar1 != 0) {\n    local_res10[0] = 0x103;\n    do {\n      Sleep(10);\n      GetExitCodeProcess(local_138.hProcess,local_res10);\n    } while (local_res10[0] == 0x103);\n  }\n  FUN_1401bde60(&DAT_14084ea18);\n  return BVar1 != 0;\n}",
+  "fetched_at": "2026-04-26T17:45:51Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x1405f4be0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1405f4be6        struct AIDiagnosticsClass::TacticalAIManagerClass::VTable** result = arg1\n1405f4be9        sub_1405f6520(arg1)\n1405f4bf5        result[6] = -1\n1405f4bfd        *result = &TacticalAIManagerClass::`vftable'{for `AIDiagnosticsClass'}\n1405f4c02        result[5] = 0\n1405f4c06        __builtin_memset(&result[7], 0, 0x32)\n1405f4c2a        return result",
+  "fetched_at": "2026-04-26T17:22:28Z"
+}

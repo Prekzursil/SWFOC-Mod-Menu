@@ -1,0 +1,7 @@
+{
+  "addr": "0x14044c020",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_14044c020(char *param_1,float param_2,undefined4 param_3,char param_4)\n\n{\n  float fVar1;\n  longlong lVar2;\n  bool bVar3;\n  double dVar4;\n  float fVar5;\n  \n  fVar1 = DAT_1408007f4;\n  if (*(longlong **)(param_1 + 0x30) == (longlong *)0x0) {\n    return;\n  }\n  if (*param_1 == '\\0') {\n    return;\n  }\n  fVar5 = DAT_140852500;\n  if (DAT_140852500 <= param_2) {\n    fVar5 = DAT_1408007f4;\n    if (param_2 <= DAT_1408007f4) {\n      fVar5 = param_2;\n    }\n    if (0.0 <= fVar5) goto LAB_14044c08b;\n  }\n  fVar5 = fVar5 + DAT_1408007f4;\nLAB_14044c08b:\n  lVar2 = (**(code **)(**(longlong **)(param_1 + 0x30) + 0x1e8))();\n  fVar5 = fVar5 - *(float *)(lVar2 + 0x14);\n  *(float *)(param_1 + 0x74) = *(float *)(lVar2 + 0x14);\n  *(float *)(param_1 + 0x70) = fVar5;\n  dVar4 = (double)FUN_1407760bc((double)fVar5);\n  fVar5 = (float)dVar4;\n  if (param_4 == '\\0') {\n    bVar3 = DAT_1408524f8 < fVar5;\n  }\n  else {\n    bVar3 = fVar5 < DAT_1408524f8;\n  }\n  if (!bVar3 && fVar5 != DAT_1408524f8) {\n    fVar5 = *(float *)(param_1 + 0x70);\n    if (0.0 <= fVar5) {\n      fVar5 = fVar5 - fVar1;\n    }\n    else {\n      fVar5 = fVar5 + fVar1;\n    }\n    *(float *)(param_1 + 0x70) = fVar5;\n  }\n  *(undefined4 *)(param_1 + 0x78) = param_3;\n  param_1[0x7c] = '\\0';\n  param_1[0x7d] = '\\0';\n  param_1[0x7e] = '\\0';\n  param_1[0x7f] = '\\0';\n  param_1[0x80] = '\\x01';\n  return;\n}",
+  "fetched_at": "2026-04-26T17:54:22Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401854d0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1401854e4        uint64_t rdi = zx.q(arg2)\n1401854ea        int64_t r8_1 = sx.q(data_140a6e740) * 6\n140185502        *(&data_140a6e750:0xc + (r8_1 << 3)) = *(&data_140a6e750:0xc + (r8_1 << 3)) + 1f\n140185508        int32_t rax_1 = arg1[2].d\n14018550f        if (rax_1 s> 0)\n140185511        *(arg1 + 0xc) += rax_1\n140185514        arg1[2].d = 0\n14018551a        int64_t arg_8\n14018551a        if (*(arg1 + 0x14) == 0)\n14018551c        uint64_t rdx = zx.q(*(arg1 + 0xc))\n140185525        if ((rdx + rdi).d s< arg1[1].d)\n140185527        int64_t* rcx = *arg1\n140185548        (*(*rcx + 0x58))(rcx, zx.q((rdx * 3).d << 3), zx.q((rdi * 3).d << 3), &arg_8, 0x1000)\n140185550        arg1[2].d += rdi.d\n14018555d        return arg_8\n14018555e        *(arg1 + 0xc) = 0\n140185565        int64_t* rcx_1 = *arg1\n14018557e        (*(*rcx_1 + 0x58))(rcx_1, 0, zx.q((rdi * 3).d << 3), &arg_8, 0x2000)\n140185581        arg1[2].d += rdi.d\n140185584        int64_t rax_6 = arg_8\n140185589        *(arg1 + 0x14) = 0\n140185597        return rax_6",
+  "fetched_at": "2026-04-26T17:23:58Z"
+}

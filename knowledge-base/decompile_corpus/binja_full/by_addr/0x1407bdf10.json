@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407bdf10",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1407bdf13        if (arg2 s<= arg3)\n1407bdfb8        return \n1407bdf19        int64_t rbx\n1407bdf19        int64_t var_8 = rbx\n1407bdf21        int64_t rdi\n1407bdf21        int64_t arg_8 = rdi\n1407bdf3a        gzprintf(*(arg1 + 0x38), \"too many %s (limit=%d)\", arg4)\n1407bdf3f        int64_t rcx_1 = sx.q(*(arg1 + 0x10))\n1407bdf46        int32_t r9_1 = rcx_1.d\n1407bdf50        if (r9_1 == 0x116)\n1407bdf98        *(arg1 + 0x18)\n1407bdf5c        if (r9_1 == 0x11d || r9_1 == 0x11e)\n1407bdf93        **(arg1 + 0x48)\n1407bdf64        if (rcx_1.d s>= 0x101)\n1407bdf85        (&alLensFlare::`vftable'{for `alRenderable'}.vFunc_12)[rcx_1]\n1407bdf74        gzprintf(*(arg1 + 0x38), &data_1408fd594, zx.q(rcx_1.d))\n1407bdfa9        sub_1407bdfc0(arg1)\n1407bdfa9        noreturn",
+  "fetched_at": "2026-04-26T17:33:29Z"
+}

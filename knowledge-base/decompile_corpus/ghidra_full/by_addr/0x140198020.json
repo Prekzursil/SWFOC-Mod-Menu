@@ -1,0 +1,7 @@
+{
+  "addr": "0x140198020",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall alD3dRenderTarget::~alD3dRenderTarget(alD3dRenderTarget *this)\n\n{\n  this->vftablePtr = &vftable;\n  this->vftablePtr = &vftable;\n  this->vftablePtr = &vftable;\n  if (*(longlong **)&this->field_0x40 != (longlong *)0x0) {\n    (**(code **)(**(longlong **)&this->field_0x40 + 0x10))();\n    *(undefined8 *)&this->field_0x40 = 0;\n  }\n  if (*(longlong **)&this->field_0x38 != (longlong *)0x0) {\n    (**(code **)(**(longlong **)&this->field_0x38 + 8))();\n    *(undefined8 *)&this->field_0x38 = 0;\n  }\n  alD3dResource::~alD3dResource((alD3dResource *)&this->vftablePtr);\n  MultiLinkedListMember::~MultiLinkedListMember((MultiLinkedListMember *)&this->vftablePtr);\n                    /* inlined destructor: RefCountClass::~RefCountClass */\n  this->vftablePtr = (alD3dRenderTarget_vftable0 *)&RefCountClass::vftable;\n  return;\n}",
+  "fetched_at": "2026-04-26T17:36:04Z"
+}

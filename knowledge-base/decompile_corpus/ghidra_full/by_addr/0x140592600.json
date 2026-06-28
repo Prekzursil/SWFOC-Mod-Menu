@@ -1,0 +1,7 @@
+{
+  "addr": "0x140592600",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "StealthAbilityClass * __thiscall StealthAbilityClass::StealthAbilityClass(StealthAbilityClass *this)\n\n{\n  SpecialAbilityClass::SpecialAbilityClass((SpecialAbilityClass *)this);\n  this->vftablePtr = &vftable_for_IXMLLoadableClass;\n  this->vftablePtr = &vftable_for_RefCountClass;\n  FUN_1401f92f0(&this->StealthAbilityClass_data);\n  (this->StealthAbilityClass_data).offset_0x10 = 0;\n  return this;\n}",
+  "fetched_at": "2026-04-26T18:42:15Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x140264000",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14026402f        if (*(arg1 + 0x68) != 0 || arg2 == 0)\n14026402f        return \n14026403f        struct RefCountClass::alTerrainShadowBlob::VTable** rax_1 = operator new(0x148)\n140264047        struct RefCountClass::alTerrainShadowBlob::VTable** rbx_1\n140264047        if (rax_1 == 0)\n140264056        rbx_1 = nullptr\n140264051        rbx_1 = sub_14012f3e0(rax_1)\n140264058        struct RefCountClass::alTerrainShadowBlob::VTable** rcx_1 = *(arg1 + 0x68)\n14026405f        if (rcx_1 != rbx_1)\n140264064        if (rcx_1 != 0)\n140264069        (*rcx_1)->__offset(0x8).q(rcx_1)\n14026406c        *(arg1 + 0x68) = rbx_1\n140264070        rcx_1 = rbx_1\n140264076        if (rbx_1 != 0)\n14026407b        (*rbx_1)->__offset(0x0).q(rcx_1)\n14026407d        rcx_1 = *(arg1 + 0x68)\n140264085        *(arg1 + 0x70) = arg2\n140264089        rcx_1[0x1c].d = arg4\n140264096        int32_t zmm6_1 = sub_140136b00(arg2, *(arg1 + 0x68))\n1402640a3        *(arg1 + 0x78) = *arg3\n1402640a6        int32_t rax = arg3[1]\n1402640aa        *(arg1 + 0x80) = zmm6_1\n1402640b2        *(arg1 + 0x7c) = rax\n1402640ca        return ",
+  "fetched_at": "2026-04-26T17:31:20Z"
+}

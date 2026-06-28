@@ -1,0 +1,7 @@
+{
+  "addr": "0x140770f20",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* Library Function - Single Match\n    _CallSettingFrame_NotifyContinuationAddr\n   \n   Library: Visual Studio 2019 Release */\n\nvoid _CallSettingFrame_NotifyContinuationAddr(undefined8 param_1,undefined8 *param_2)\n\n{\n  _NLG_Notify(param_1,*param_2,2);\n  return;\n}",
+  "fetched_at": "2026-04-26T18:12:00Z"
+}

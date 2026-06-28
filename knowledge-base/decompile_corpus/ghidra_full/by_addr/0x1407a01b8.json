@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407a01b8",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* Library Function - Single Match\n    _controlfp_s\n   \n   Library: Visual Studio 2019 Release */\n\nerrno_t __cdecl _controlfp_s(uint *_CurrentState,uint _NewValue,uint _Mask)\n\n{\n  errno_t eVar1;\n  ulong *puVar2;\n  uint uVar3;\n  \n  uVar3 = _Mask & 0xfff7ffff;\n  if ((_NewValue & uVar3 & 0xfcf0fce0) == 0) {\n    if (_CurrentState == (uint *)0x0) {\n      _control87(_NewValue,uVar3);\n    }\n    else {\n      uVar3 = _control87(_NewValue,uVar3);\n      *_CurrentState = uVar3;\n    }\n    eVar1 = 0;\n  }\n  else {\n    if (_CurrentState != (uint *)0x0) {\n      uVar3 = _control87(0,0);\n      *_CurrentState = uVar3;\n    }\n    puVar2 = __doserrno();\n    eVar1 = 0x16;\n    *puVar2 = 0x16;\n    FUN_1407711ac();\n  }\n  return eVar1;\n}",
+  "fetched_at": "2026-04-26T18:54:15Z"
+}

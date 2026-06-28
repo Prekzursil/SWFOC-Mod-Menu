@@ -1,0 +1,7 @@
+{
+  "addr": "0x140622368",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall ExplosionBehaviorClass::vfunction3(ExplosionBehaviorClass *this,uint param_1)\n\n{\n  ~ExplosionBehaviorClass((ExplosionBehaviorClass *)&this[-1].RootClass_data.offset_0x338,param_1);\n  return;\n}",
+  "fetched_at": "2026-04-26T17:30:10Z"
+}

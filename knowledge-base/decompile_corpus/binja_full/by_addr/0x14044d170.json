@@ -1,0 +1,7 @@
+{
+  "addr": "0x14044d170",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14044d17b        struct EventClass::ChatEventClass::VTable** result = operator new(0x50)\n14044d186        if (result == 0)\n14044d1c7        return result\n14044d18b        sub_1405126c0(result)\n14044d197        result[4].d = 0x10\n14044d19e        *result = &ChatEventClass::`vftable'{for `EventClass'}\n14044d1a4        result[5] = 0\n14044d1ac        result[7] = 0\n14044d1b4        result[8] = 7\n14044d1c1        return result",
+  "fetched_at": "2026-04-26T17:27:35Z"
+}

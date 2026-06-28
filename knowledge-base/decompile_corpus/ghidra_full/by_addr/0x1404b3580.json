@@ -1,0 +1,7 @@
+{
+  "addr": "0x1404b3580",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "DynamicVectorClass<int> * __thiscall\nDynamicVectorClass<int>::DynamicVectorClass<int>(DynamicVectorClass<int> *this)\n\n{\n                    /* inlined constructor:\n                       SetAbilityAutofireEventClass::SetAbilityAutofireEventClass */\n  ScheduledEventClass::ScheduledEventClass((ScheduledEventClass *)this);\n  this->vftablePtr = (DynamicVectorClass<int>_vftable *)&SetAbilityAutofireEventClass::vftable;\n  (this->DynamicVectorClass<int>_data).offset_0x40 = &vftable;\n  *(undefined8 *)&(this->DynamicVectorClass<int>_data).offset_0x48 = 0;\n  this[1].vftablePtr = (DynamicVectorClass<int>_vftable *)0x0;\n  *(undefined4 *)((longlong)&this[1].DynamicVectorClass<int>_data.offset_0x0 + 4) = 0;\n  (this->DynamicVectorClass<int>_data).offset_0x18 = 0x3a;\n  return this;\n}",
+  "fetched_at": "2026-04-26T18:07:11Z"
+}

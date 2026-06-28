@@ -1,0 +1,7 @@
+{
+  "addr": "0x1404bde50",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1404bde50        int64_t arg_10 = arg2\n1404bde55        int64_t* arg_8 = arg1\n1404bde78        int64_t rax\n1404bde78        int64_t rdx\n1404bde78        rdx:rax = muls.dp.q(0x2aaaaaaaaaaaaaab, arg1[1] - *arg1)\n1404bde7e        int64_t rdi_1 = rdx s>> 2\n1404bde8f        void* rax_3 = sub_140379b50(arg1, arg2)\n1404bde94        void* arg_18 = rax_3\n1404bde99        int64_t r8_2 = arg1[1]\n1404bde9d        int128_t* rcx = *arg1\n1404bdea0        int128_t* var_38 = rcx\n1404bdea5        void* var_30 = rax_3\n1404bdeaa        void* rdx_2 = rax_3\n1404bdead        void* var_28 = rax_3\n1404bdeb2        int64_t* var_20 = arg1\n1404bdeba        while (rcx != r8_2)\n1404bdebf        *rdx_2 = *rcx\n1404bdec7        *(rdx_2 + 0x10) = rcx[1].q\n1404bdecc        rdx_2 += 0x18\n1404bded0        void* var_28_1 = rdx_2\n1404bded5        rcx += 0x18\n1404bded9        int128_t* var_38_1 = rcx\n1404bdee0        void* var_30_1 = rdx_2\n1404bdef8        return sub_1404bdda0(arg1, rax_3, rdi_1 + (rdi_1 u>> 0x3f), arg2) __tailcall",
+  "fetched_at": "2026-04-26T17:30:05Z"
+}

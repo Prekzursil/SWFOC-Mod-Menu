@@ -1,0 +1,7 @@
+{
+  "addr": "0x14068af20",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14068af29        struct IXMLLoadableClass::SpecialAbilityClass::VTable** result = operator new(0x188)\n14068af31        if (result == 0)\n14068af43        return result\n14068af3a        return sub_14070e390(result) __tailcall",
+  "fetched_at": "2026-04-26T17:16:31Z"
+}

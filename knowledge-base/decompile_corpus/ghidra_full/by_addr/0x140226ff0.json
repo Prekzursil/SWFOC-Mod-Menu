@@ -1,0 +1,7 @@
+{
+  "addr": "0x140226ff0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined * FUN_140226ff0(int param_1)\n\n{\n  int iVar1;\n  undefined *puVar2;\n  int iVar3;\n  \n  iVar3 = 0;\n  iVar1 = 10000;\n  if (param_1 != 10000) {\n    puVar2 = &DAT_140853cc0;\n    do {\n      if (iVar1 == -1) break;\n      iVar1 = *(int *)(puVar2 + 0x10);\n      puVar2 = puVar2 + 0x10;\n      iVar3 = iVar3 + 1;\n    } while (iVar1 != param_1);\n  }\n  return (&PTR_s_WSABASEERR_140853cc8)[(longlong)iVar3 * 2];\n}",
+  "fetched_at": "2026-04-26T18:04:46Z"
+}

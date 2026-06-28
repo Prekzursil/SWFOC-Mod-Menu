@@ -1,0 +1,7 @@
+{
+  "addr": "0x14079a1a8",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* Library Function - Single Match\n    __acrt_locale_initialize_time\n   \n   Libraries: Visual Studio 2017 Release, Visual Studio 2019 Release */\n\nundefined8 __acrt_locale_initialize_time(__crt_locale_data *param_1)\n\n{\n  bool bVar1;\n  undefined8 uVar2;\n  undefined **ppuVar3;\n  __crt_lc_time_data *p_Var4;\n  \n  if (*(longlong *)(param_1 + 0x150) == 0) {\n    ppuVar3 = &PTR_DAT_1408d68c0;\nLAB_14079a21f:\n    __acrt_locale_release_lc_time_reference(*(undefined8 *)(param_1 + 0x120));\n    uVar2 = 0;\n    *(undefined ***)(param_1 + 0x120) = ppuVar3;\n  }\n  else {\n    ppuVar3 = (undefined **)_calloc_base(1,0x2c0);\n    p_Var4 = (__crt_lc_time_data *)0x0;\n    if ((__crt_lc_time_data *)ppuVar3 != (__crt_lc_time_data *)0x0) {\n      bVar1 = initialize_lc_time((__crt_lc_time_data *)ppuVar3,param_1);\n      if (bVar1) {\n        *(undefined4 *)((longlong)ppuVar3 + 0x15c) = 1;\n        _free_base(0);\n        goto LAB_14079a21f;\n      }\n      __acrt_locale_free_time(ppuVar3);\n      p_Var4 = (__crt_lc_time_data *)ppuVar3;\n    }\n    _free_base(p_Var4);\n    uVar2 = 1;\n  }\n  return uVar2;\n}",
+  "fetched_at": "2026-04-26T18:53:43Z"
+}

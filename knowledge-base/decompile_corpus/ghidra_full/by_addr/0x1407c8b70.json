@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407c8b70",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_1407c8b70(longlong param_1)\n\n{\n  int iVar1;\n  undefined4 uVar2;\n  \n  *(int *)(param_1 + 0x58) = *(int *)(param_1 + 0x58) + 1;\n  if (200 < *(int *)(param_1 + 0x58)) {\n    FUN_1407be9e0(param_1,\"too many syntax levels\");\n  }\n  do {\n    iVar1 = *(int *)(param_1 + 0x10);\n    if ((((iVar1 == 0x104) || (iVar1 == 0x105)) || (iVar1 == 0x106)) ||\n       ((iVar1 == 0x114 || (iVar1 == 0x11f)))) break;\n    iVar1 = FUN_1407cac20(param_1);\n    if (*(int *)(param_1 + 0x10) == 0x3b) {\n      *(undefined4 *)(param_1 + 8) = *(undefined4 *)(param_1 + 4);\n      if (*(int *)(param_1 + 0x20) == 0x11f) {\n        uVar2 = FUN_1407be0c0(param_1,param_1 + 0x18);\n        *(undefined4 *)(param_1 + 0x10) = uVar2;\n      }\n      else {\n        uVar2 = *(undefined4 *)(param_1 + 0x20);\n        *(undefined4 *)(param_1 + 0x20) = 0x11f;\n        *(undefined4 *)(param_1 + 0x10) = uVar2;\n        *(undefined4 *)(param_1 + 0x14) = *(undefined4 *)(param_1 + 0x24);\n        *(undefined4 *)(param_1 + 0x18) = *(undefined4 *)(param_1 + 0x28);\n        *(undefined4 *)(param_1 + 0x1c) = *(undefined4 *)(param_1 + 0x2c);\n      }\n    }\n    *(undefined4 *)(*(longlong *)(param_1 + 0x30) + 0x3c) =\n         *(undefined4 *)(*(longlong *)(param_1 + 0x30) + 0x4c);\n  } while (iVar1 == 0);\n  *(int *)(param_1 + 0x58) = *(int *)(param_1 + 0x58) + -1;\n  return;\n}",
+  "fetched_at": "2026-04-26T18:57:12Z"
+}

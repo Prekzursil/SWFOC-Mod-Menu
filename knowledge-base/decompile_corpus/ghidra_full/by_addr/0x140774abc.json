@@ -1,0 +1,7 @@
+{
+  "addr": "0x140774abc",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* Library Function - Single Match\n    bool __cdecl __crt_strtox::is_overflow_condition<unsigned __int64>(unsigned int,unsigned\n   __int64)\n   \n   Library: Visual Studio 2019 Release */\n\nbool __cdecl __crt_strtox::is_overflow_condition<unsigned___int64>(uint param_1,__uint64 param_2)\n\n{\n  ulonglong uVar1;\n  \n  if ((param_1 & 4) != 0) {\n    return true;\n  }\n  if ((param_1 & 1) != 0) {\n    if ((param_1 & 2) == 0) {\n      uVar1 = 0x7fffffffffffffff;\n    }\n    else {\n      uVar1 = 0x8000000000000000;\n    }\n    if (uVar1 < param_2) {\n      return true;\n    }\n  }\n  return false;\n}",
+  "fetched_at": "2026-04-26T18:50:21Z"
+}

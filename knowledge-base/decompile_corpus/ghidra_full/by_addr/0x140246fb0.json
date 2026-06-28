@@ -1,0 +1,7 @@
+{
+  "addr": "0x140246fb0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_140246fb0(longlong param_1,undefined8 param_2,char param_3)\n\n{\n  LuaValue<double,4> *this;\n  \n  this = *(LuaValue<double,4> **)(param_1 + 0x58);\n  FUN_1407b9540(this);\n  FUN_1407b8e90(this,0xffffd8ef);\n  LuaValue<double,4>::~LuaValue<double,4>(this,param_3,'\\x01',0);\n  return;\n}",
+  "fetched_at": "2026-04-26T18:10:39Z"
+}

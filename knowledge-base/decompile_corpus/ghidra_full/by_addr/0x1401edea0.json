@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401edea0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "GUIGadgetTextClass * __thiscall\nGUIGadgetTextClass::scalar_deleting_destructor(GUIGadgetTextClass *this,ulonglong param_1)\n\n{\n                    /* inlined destructor: GUIGadgetTextClass::~GUIGadgetTextClass */\n  this->vftablePtr = &vftable;\n  vfunction25(this);\n  FID_conflict__Tidy_deallocate(&(this->GUIGadgetTextClass_data).offset_0x20);\n  DynamicVectorClass<class_DrawTextClass*___ptr64>::\n  ~DynamicVectorClass<class_DrawTextClass*___ptr64>\n            ((DynamicVectorClass<class_DrawTextClass*___ptr64> *)&this->GUIGadgetTextClass_data);\n  GUIGadgetClass::~GUIGadgetClass((GUIGadgetClass *)this);\n  if ((param_1 & 1) != 0) {\n    thunk_FUN_1407864b8(this,0xd8);\n  }\n  return this;\n}",
+  "fetched_at": "2026-04-26T17:52:32Z"
+}

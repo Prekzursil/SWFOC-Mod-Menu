@@ -1,0 +1,7 @@
+{
+  "addr": "0x14071f1a0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall AttackActionClass::vfunction13(AttackActionClass *this)\n\n{\n  _guard_check_icall();\n  if ((int)(this->AttackActionClass_data).offset_0x14 < 0) {\n    (this->AttackActionClass_data).offset_0x14 = 0xffff;\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T17:58:49Z"
+}

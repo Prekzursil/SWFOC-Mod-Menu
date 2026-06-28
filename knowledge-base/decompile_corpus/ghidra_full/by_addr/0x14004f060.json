@@ -1,0 +1,7 @@
+{
+  "addr": "0x14004f060",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nundefined4 FUN_14004f060(longlong param_1,undefined4 param_2)\n\n{\n  DWORD DVar1;\n  ulonglong uVar2;\n  LPVOID pvVar3;\n  FileClass local_98;\n  \n  FileClass::FileClass(&local_98,param_1);\n  uVar2 = FileClass::vfunction2(&local_98,0,0);\n  if ((char)uVar2 == '\\0') {\n    FUN_140025760(\"Could not open file: %s\\n\",param_1);\n  }\n  else {\n    DVar1 = FileClass::vfunction10(&local_98);\n    if (0 < (int)DVar1) {\n      pvVar3 = (LPVOID)thunk_FUN_140769c58((longlong)(int)DVar1);\n      FileClass::vfunction6(&local_98,pvVar3,DVar1);\n      param_2 = FUN_140215a30(pvVar3,DVar1,param_2);\n      FileClass::vfunction5(&local_98);\n      thunk_FUN_1407864b8(pvVar3);\n      FUN_140025760(\"CRC: %08X - %s\\n\",param_2,param_1);\n    }\n  }\n  FileClass::~FileClass(&local_98);\n  return param_2;\n}\n\n",
+  "fetched_at": "2026-04-26T16:54:33Z"
+}

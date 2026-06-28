@@ -1,0 +1,7 @@
+{
+  "addr": "0x14068a8c0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_14068a8c0(void)\n\n{\n  HeroProtectionAbilityClass *this;\n  \n  this = (HeroProtectionAbilityClass *)FUN_140769c58(0x180);\n  if (this != (HeroProtectionAbilityClass *)0x0) {\n    HeroProtectionAbilityClass::HeroProtectionAbilityClass(this);\n    return;\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T17:16:06Z"
+}

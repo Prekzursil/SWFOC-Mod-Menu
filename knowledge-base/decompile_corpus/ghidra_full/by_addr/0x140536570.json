@@ -1,0 +1,7 @@
+{
+  "addr": "0x140536570",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "longlong FUN_140536570(longlong param_1,longlong param_2)\n\n{\n  FUN_140536330();\n  FUN_140536330(param_1 + 0x20,param_2 + 0x20);\n  FUN_140536330(param_1 + 0x40,param_2 + 0x40);\n  FUN_140536330(param_1 + 0x60,param_2 + 0x60);\n  FUN_140536330(param_1 + 0x80,param_2 + 0x80);\n  FUN_140536330(param_1 + 0xa0,param_2 + 0xa0);\n  FUN_140536330(param_1 + 0xc0,param_2 + 0xc0);\n  FUN_140536330(param_1 + 0xe0,param_2 + 0xe0);\n  FUN_140536330(param_1 + 0x100,param_2 + 0x100);\n  FUN_140536330(param_1 + 0x120,param_2 + 0x120);\n  FUN_140536330(param_1 + 0x140,param_2 + 0x140);\n  return param_1;\n}",
+  "fetched_at": "2026-04-26T18:30:03Z"
+}

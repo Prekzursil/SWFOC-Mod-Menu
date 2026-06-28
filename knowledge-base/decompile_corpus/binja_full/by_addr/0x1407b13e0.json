@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407b13e0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1407b140d        if (GetCurrentThreadId() == data_140a155d0 && data_140a62740 != 0)\n1407b1420        return 0\n1407b1426        struct CollisionBodyClass::BoxCollisionBodyClass::VTable** rax_2 = operator new(0xf0)\n1407b142e        struct CollisionBodyClass::BoxCollisionBodyClass::VTable** result_2\n1407b142e        struct CollisionBodyClass::BoxCollisionBodyClass::VTable** result\n1407b142e        if (rax_2 == 0)\n1407b1455        result = nullptr\n1407b1457        result_2 = nullptr\n1407b1439        struct CollisionBodyClass::BoxCollisionBodyClass::VTable** result_1 = sub_1407ae590(rax_2, arg2, arg3)\n1407b143e        result_2 = result_1\n1407b1443        result = result_1\n1407b1449        if (result_1 != 0)\n1407b1451        (*result_1)->vFunc_0(result)\n1407b145c        struct CollisionBodyClass::BoxCollisionBodyClass::VTable*** rdx_1 = *(arg1 + 0x110)\n1407b146a        if (rdx_1 == *(arg1 + 0x118))\n1407b1492        sub_140045680(arg1 + 0x108, rdx_1, &result_2)\n1407b146c        *rdx_1 = result\n1407b1472        if (result != 0)\n1407b147a        (*result)->vFunc_0(result)\n1407b147c        *(arg1 + 0x110) += 8\n1407b149a        if (result != 0)\n1407b14a2        (*result)->vFunc_1(result)\n1407b14b7        return result",
+  "fetched_at": "2026-04-26T17:32:50Z"
+}

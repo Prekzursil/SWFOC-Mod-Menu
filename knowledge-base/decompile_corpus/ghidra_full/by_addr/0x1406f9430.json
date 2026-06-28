@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406f9430",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall\nEnableAbilityAbilityClass::vfunction29_for_IXMLLoadableClass\n          (EnableAbilityAbilityClass *this,undefined8 param_1,undefined8 param_2,undefined8 param_3)\n\n{\n  FUN_1405186b0(&DAT_140b38c10,param_1,param_2,this,param_3,0);\n  return;\n}",
+  "fetched_at": "2026-04-26T17:49:20Z"
+}

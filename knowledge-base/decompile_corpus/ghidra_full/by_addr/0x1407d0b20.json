@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407d0b20",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined8 FUN_1407d0b20(undefined8 param_1)\n\n{\n  int iVar1;\n  undefined8 uVar2;\n  int iVar3;\n  int iVar4;\n  double dVar5;\n  undefined8 local_res10;\n  undefined1 local_228 [544];\n  \n  uVar2 = FUN_1407ce8c0(param_1,2,&PTR_1407ff8a8,&local_res10);\n  dVar5 = (double)FUN_1407ce9b0(param_1,3,DAT_140854f30);\n  iVar3 = (int)dVar5;\n  dVar5 = (double)FUN_1407ce9b0(param_1,4,0);\n  iVar4 = (int)dVar5;\n  FUN_1407ce2c0(param_1,1,5);\n  if (iVar4 == 0) {\n    iVar4 = FUN_1407ce440(param_1,1);\n  }\n  FUN_1407ce050(param_1,local_228);\n  for (; iVar3 <= iVar4; iVar3 = iVar3 + 1) {\n    FUN_1407b9770(param_1,1,iVar3);\n    iVar1 = FUN_1407b9010(param_1,0xffffffff);\n    if (iVar1 == 0) {\n      FUN_1407cdf80(param_1,1,\"table contains non-strings\");\n    }\n    FUN_1407cdec0(local_228);\n    if (iVar3 != iVar4) {\n      FUN_1407cde20(local_228,uVar2,local_res10);\n    }\n  }\n  FUN_1407cea70(local_228);\n  return 1;\n}",
+  "fetched_at": "2026-04-26T18:58:05Z"
+}

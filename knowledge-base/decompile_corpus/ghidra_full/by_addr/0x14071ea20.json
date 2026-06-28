@@ -1,0 +1,7 @@
+{
+  "addr": "0x14071ea20",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "ulonglong __thiscall\nAttackActionClass::vfunction6\n          (AttackActionClass *this,longlong param_1,undefined8 param_2,longlong *param_3)\n\n{\n  longlong *plVar1;\n  longlong lVar2;\n  ulonglong in_RAX;\n  longlong lVar3;\n  longlong lVar4;\n  \n  if (param_1 == 0) {\n    return in_RAX & 0xffffffffffffff00;\n  }\n  plVar1 = &(this->ActionClass_data).offset_0xa8;\n  (this->ActionClass_data).offset_0x98 = param_1;\n  (this->ActionClass_data).offset_0xa0 = param_2;\n  if (plVar1 != param_3) {\n    lVar2 = *param_3;\n    lVar3 = param_3[1] - lVar2;\n    lVar4 = *plVar1;\n    if ((ulonglong)((this->ActionClass_data).offset_0xb8 - lVar4 >> 3) < (ulonglong)(lVar3 >> 3)) {\n      FUN_140378eb0(plVar1);\n      lVar4 = *plVar1;\n    }\n    FUN_14076bd80(lVar4,lVar2,lVar3);\n    in_RAX = lVar4 + lVar3;\n    (this->ActionClass_data).offset_0xb0 = in_RAX;\n  }\n  return CONCAT71((int7)(in_RAX >> 8),1);\n}",
+  "fetched_at": "2026-04-26T17:58:40Z"
+}

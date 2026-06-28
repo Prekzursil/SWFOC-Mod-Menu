@@ -1,0 +1,7 @@
+{
+  "addr": "0x14076a100",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14076a106        int64_t rax = data_140b3b990\n14076a112        if (rax != 0)\n14076a12a        return rax(&data_140b3b958, &data_140b3b968, zx.q(arg1)) __tailcall\n14076a138        LeaveCriticalSection(&data_140b3b968)\n14076a14a        WaitForSingleObjectEx(data_140b3b960, arg1, 0)\n14076a15c        return EnterCriticalSection(&data_140b3b968) __tailcall",
+  "fetched_at": "2026-04-26T17:30:18Z"
+}

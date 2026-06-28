@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406f4060",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined1 __thiscall\nCancelSpecialAbilityClass::vfunction6_for_IXMLLoadableClass\n          (CancelSpecialAbilityClass *this,longlong param_1,longlong param_2)\n\n{\n  undefined8 uVar1;\n  char cVar2;\n  \n  if (((param_1 != 0) && (param_2 != 0)) && (*(longlong *)(param_2 + 0x100) != 0)) {\n    uVar1 = FUN_140294bc0(&DAT_140a16fd0,*(undefined4 *)(param_1 + 0x58));\n    cVar2 = FUN_14039a2c0(param_2,uVar1,0);\n    if (cVar2 != '\\x01') {\n      return 1;\n    }\n  }\n  return 0;\n}",
+  "fetched_at": "2026-04-26T17:48:01Z"
+}

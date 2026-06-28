@@ -1,0 +1,7 @@
+{
+  "addr": "0x1403b0000",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined8 __thiscall EventFactoryClass<class_EscortEventClass,21>::vfunction2(void)\n\n{\n  return 0x15;\n}",
+  "fetched_at": "2026-04-26T17:34:08Z"
+}

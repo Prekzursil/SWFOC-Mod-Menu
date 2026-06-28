@@ -1,0 +1,7 @@
+{
+  "addr": "0x14044b2c0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_14044b2c0(char *param_1,undefined4 param_2)\n\n{\n  if (*param_1 != '\\0') {\n    FUN_14044cad0();\n    *(undefined4 *)(param_1 + 4) = param_2;\n    *(undefined4 *)(param_1 + 8) = param_2;\n    param_1[0xc] = '\\x01';\n    param_1[0xd] = '\\x01';\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T17:54:11Z"
+}

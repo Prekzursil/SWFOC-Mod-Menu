@@ -1,0 +1,7 @@
+{
+  "addr": "0x140326200",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140326211        if ((arg2 & 2) == 0)\n140326319        sub_140066590(arg1)\n140326322        if ((arg2 & 1) != 0)\n14032632c        j_sub_1407864b8(arg1)\n14032633b        return arg1\n14032621c        int64_t i = arg1[-1]\n14032622d        void* rbx_1 = &arg1[i * 3]\n140326234        while (i != 0)\n140326260        void* lpMem = *(rbx_1 - 0x10)\n140326264        rbx_1 -= 0x18\n140326268        i -= 1\n14032626b        *rbx_1 = &DynamicVectorClass<class std::string>::`vftable'\n140326271        if (lpMem != 0)\n14032627a        if ((*(rbx_1 + 0x14) & 0x80000000) == 0)\n1403262a5        `vector destructor iterator'(lpMem, 0x20, *(lpMem - 8), sub_14001eaa0)\n1403262aa        *(lpMem - 8)\n1403262ba        j_sub_1407864b8(lpMem - 8)\n14032628a        HeapFree(GetProcessHeap(), HEAP_NONE, lpMem)\n1403262bf        *(rbx_1 + 0x14) &= 0x80000000\n1403262c6        *(rbx_1 + 8) = 0\n1403262ca        *(rbx_1 + 0x10) = 0\n1403262f0        if ((arg2 & 1) != 0)\n140326304        j_sub_1407864b8(&arg1[-1])\n140326318        return &arg1[-1]",
+  "fetched_at": "2026-04-26T17:01:00Z"
+}

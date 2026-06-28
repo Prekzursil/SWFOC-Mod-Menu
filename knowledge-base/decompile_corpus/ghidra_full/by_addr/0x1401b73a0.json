@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401b73a0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_1401b73a0(longlong param_1,undefined4 *param_2,undefined4 *param_3)\n\n{\n  float fVar1;\n  float fVar2;\n  float fVar3;\n  undefined4 local_48;\n  undefined4 local_44;\n  undefined4 local_40;\n  undefined4 local_3c;\n  undefined8 local_38;\n  undefined8 uStack_30;\n  \n  local_48 = *param_2;\n  local_40 = *param_3;\n  local_38 = 0;\n  uStack_30 = 0;\n  local_44 = 0x3f800000;\n  local_3c = 0x3f800000;\n  FUN_140238620(&local_48,&local_38);\n  fVar2 = DAT_14084e0a0;\n  fVar1 = DAT_14084e09c;\n  local_44 = 0x3f800000;\n  local_3c = 0x3f800000;\n  fVar3 = (float)uStack_30 * DAT_14084e09c;\n  *(float *)(param_1 + 0x58) = local_38._4_4_ * DAT_14084e0a0 + (float)local_38 * DAT_14084e09c;\n  *(float *)(param_1 + 0x50) = uStack_30._4_4_ * fVar2 + fVar3;\n  local_48 = param_2[1];\n  local_40 = param_3[1];\n  local_38 = 0;\n  uStack_30 = 0;\n  FUN_140238620(&local_48,&local_38);\n  *(float *)(param_1 + 0x5c) = local_38._4_4_ * fVar2 + (float)local_38 * fVar1;\n  *(float *)(param_1 + 0x54) = uStack_30._4_4_ * fVar2 + (float)uStack_30 * fVar1;\n  return;\n}",
+  "fetched_at": "2026-04-26T17:45:05Z"
+}

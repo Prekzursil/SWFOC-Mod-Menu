@@ -1,0 +1,7 @@
+{
+  "addr": "0x140193f60",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140193f66        int64_t* result = *(arg1 + 0x400)\n140193f7e        if (result == 0 || *(result + 0x4c) != *(arg1 + 0x3f0))\n140193f8e        struct RefCountClass::alDepthBuffer::VTable** rax = operator new(0x60)\n140193f96        struct alDepthBuffer::alD3dDepthBuffer::VTable** rdi_1\n140193f96        if (rax == 0)\n140193fa5        rdi_1 = nullptr\n140193fa0        rdi_1 = sub_140198890(rax)\n140193fa7        struct alDepthBuffer::alD3dDepthBuffer::VTable** rcx_1 = *(arg1 + 0x400)\n140193fb1        if (rcx_1 != rdi_1)\n140193fb6        if (rcx_1 != 0)\n140193fbb        (*rcx_1)->vFunc_1(rcx_1)\n140193fbe        *(arg1 + 0x400) = rdi_1\n140193fc5        rcx_1 = rdi_1\n140193fcb        if (rdi_1 != 0)\n140193fd0        (*rdi_1)->__offset(0x0).q(rcx_1)\n140193fd2        rcx_1 = *(arg1 + 0x400)\n140193fd9        int32_t rdx_2 = *(arg1 + 0x3f0)\n140193fe8        sub_140198aa0(rcx_1, rdx_2, rdx_2, 0x50)\n140193fed        result = *(arg1 + 0x400)\n140194003        if (result[7] == 0 && result != 0)\n140194005        int64_t rdx_3 = *result\n14019400b        (*(rdx_3 + 8))(result, rdx_3)\n14019400e        result = nullptr\n140194010        *(arg1 + 0x400) = 0\n140194020        return result",
+  "fetched_at": "2026-04-26T17:24:24Z"
+}

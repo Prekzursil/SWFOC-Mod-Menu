@@ -1,0 +1,7 @@
+{
+  "addr": "0x1405cf3e0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1405cf3f3        *arg1 = &SpaceMovementCoordinatorClass::`vftable'{for `MovementCoordinatorClass'}\n1405cf3f9        sub_1404f6990(arg1)\n1405cf401        if ((arg2 & 1) != 0)\n1405cf40b        j_sub_1407864b8(arg1)\n1405cf41d        return arg1",
+  "fetched_at": "2026-04-26T17:37:56Z"
+}

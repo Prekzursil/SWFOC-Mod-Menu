@@ -1,0 +1,7 @@
+{
+  "addr": "0x1404b2020",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1404b2032        int512_t result\n1404b2032        if (sub_1402cd0c0(&data_140b27a10) != 1)\n1404b203c        result.o = data_140b301a8\n1404b2048        return result\n1404b2034        result.o = zx.o(0)\n1404b203b        return result",
+  "fetched_at": "2026-04-26T17:29:46Z"
+}

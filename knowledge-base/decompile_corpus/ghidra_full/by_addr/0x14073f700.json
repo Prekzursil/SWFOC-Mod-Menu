@@ -1,0 +1,7 @@
+{
+  "addr": "0x14073f700",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined * __thiscall ZoneReachabilityClass::vfunction5(void)\n\n{\n  return &DAT_140a44b38;\n}",
+  "fetched_at": "2026-04-26T18:03:42Z"
+}

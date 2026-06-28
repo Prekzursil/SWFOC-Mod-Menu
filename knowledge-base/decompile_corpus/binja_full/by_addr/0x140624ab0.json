@@ -1,0 +1,7 @@
+{
+  "addr": "0x140624ab0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140624ac2        sub_1404c2f70(arg1, arg2, arg3)\n140624ad2        void* rax = sub_1402ab640(*(data_140b15418 + 0x18))\n140624ae1        void* rcx_2 = *(arg2 + 0x298)\n140624aeb        int32_t zmm1 = *(arg2 + 0x7c)\n140624af0        float var_28 = *(arg2 + 0x78)\n140624afe        float var_20 = *(arg2 + 0x80)\n140624b04        int32_t var_24 = zmm1\n140624b0a        float zmm0 = *(rcx_2 + 0x1628)\n140624b15        float var_1c = zmm0\n140624b1b        float var_18 = zmm0\n140624b21        float var_14 = zmm0\n140624b27        int512_t zmm0_1 = sub_14020e780(rax, &var_28)\n140624b2c        void* i = *(rax + 8)\n140624b33        while (i != 0)\n140624b40        void* rax_1 = *(i + 8)\n140624b47        int64_t* rbx_1 = rax_1 - 0x28\n140624b4b        if (rax_1 == 0)\n140624b4b        rbx_1 = nullptr\n140624b5b        if (rbx_1 != 0 && (rbx_1[0x74].b & 0x42) == 0 && sub_140370630(rbx_1[0x53], *(arg2 + 0x298)) != 0 && *(rbx_1 + 0x339) != 0xff)\n140624b88        void* rax_4 = (*(*rbx_1 + 0x10))(rbx_1, 7)\n140624b8e        if (rax_4 != 0)\n140624b96        zmm0_1 = sub_14062e450(rax_4, arg2, zmm0_1)\n140624b9b        i = *(i + 0x18)\n140624bbd        return 0x650000",
+  "fetched_at": "2026-04-26T17:23:51Z"
+}

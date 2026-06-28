@@ -1,0 +1,7 @@
+{
+  "addr": "0x140215f80",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140215f92        int64_t entry_r8\n140215f92        sub_140216150(0, \"<Profile_Tree>\\n\", entry_r8)\n140215fb1        sub_140216150(0, \"</Profile_Tree>\\n\", sub_140216060(data_140a7cc28, 1))\n140215fbe        return sub_1402162b0(arg1) __tailcall",
+  "fetched_at": "2026-04-26T17:28:31Z"
+}

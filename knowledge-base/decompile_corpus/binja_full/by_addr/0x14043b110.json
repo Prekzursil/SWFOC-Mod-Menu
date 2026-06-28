@@ -1,0 +1,7 @@
+{
+  "addr": "0x14043b110",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14043b125        if (arg1 == 0 || arg2 == 0)\n14043b1fa        int64_t rax\n14043b1fa        rax.b = 0\n14043b201        return rax\n14043b140        void var_28\n14043b140        int32_t* rax_2\n14043b140        int512_t zmm2\n14043b140        rax_2, zmm2 = sub_140583150(sub_14041a530(arg1), &var_28, nullptr, arg3)\n14043b17e        (rax_2[2] f- data_140b2f280) f* data_140b2f290\n14043b186        (*rax_2 f- data_140b2f278) f* data_140b2f288 + (rax_2[1] f- data_140b2f27c) f* data_140b2f28c\n14043b19e        int32_t* rax_4\n14043b19e        float zmm6_1\n14043b19e        rax_4, zmm6_1 = sub_140583150(sub_14041a530(arg2), &var_28, nullptr, zmm2)\n14043b1f1        rax_4.b = zmm6_1 > (*rax_4 f- data_140b2f278) f* data_140b2f288 + (rax_4[1] f- data_140b2f27c) f* data_140b2f28c + (rax_4[2] f- data_140b2f280) f* data_140b2f290\n14043b1f9        return rax_4",
+  "fetched_at": "2026-04-26T17:27:12Z"
+}

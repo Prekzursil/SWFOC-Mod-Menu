@@ -1,0 +1,7 @@
+{
+  "addr": "0x1405124c0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "longlong * __thiscall FormationBlockStatus::vfunction21(FormationBlockStatus *this)\n\n{\n  longlong *plVar1;\n  longlong *plVar2;\n  longlong *plVar3;\n  longlong *local_res8;\n  \n  plVar1 = this->offset_0x50;\n  if (plVar1 == (longlong *)0x0) {\n    return (longlong *)0x0;\n  }\n  plVar3 = LuaValue<class_std::vector<class_SmartPtr<class_LuaVar>,class_std::allocator<class_SmartPtr<class_LuaVar>_>_>,2>\n           ::\n           ~LuaValue<class_std::vector<class_SmartPtr<class_LuaVar>,class_std::allocator<class_SmartPtr<class_LuaVar>_>_>,2>\n                     ();\n  local_res8 = plVar1;\n  (**(code **)*plVar1)(plVar1);\n  plVar2 = (longlong *)plVar3[3];\n  if (plVar2 == (longlong *)plVar3[4]) {\n    FUN_140144900(plVar3 + 2,plVar2,&local_res8);\n  }\n  else {\n    *plVar2 = (longlong)plVar1;\n    (**(code **)*plVar1)(plVar1);\n    plVar3[3] = plVar3[3] + 8;\n  }\n  (**(code **)(*plVar1 + 8))(plVar1);\n  return plVar3;\n}",
+  "fetched_at": "2026-04-26T18:22:32Z"
+}

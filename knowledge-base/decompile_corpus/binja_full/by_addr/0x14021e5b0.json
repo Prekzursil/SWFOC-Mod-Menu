@@ -1,0 +1,7 @@
+{
+  "addr": "0x14021e5b0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14021e5c5        if (arg1 != 0)\n14021e5ce        EnterCriticalSection(&data_140a7e2a0)\n14021e5d4        int32_t i = 0\n14021e5dc        if (data_140a15358 s> 0)\n14021e5ea        int64_t rdi_1 = sx.q(i) * 0x28\n14021e603        if (std::_String_const_iterator<class std::_String_val<struct std::_Simple_types<uint16_t> > >::operator==(data_140a15350 + rdi_1, arg1) != 0)\n14021e62e        void* rdx_2 = data_140a15350\n14021e638        if (rdx_2 == neg.q(rdi_1))\n14021e638        break\n14021e63a        int32_t rbx_1 = *(rdx_2 + rdi_1 + 0x1c)\n14021e644        LeaveCriticalSection(&data_140a7e2a0)\n14021e65b        return zx.q(rbx_1)\n14021e605        i += 1\n14021e60d        do while (i s< data_140a15358)\n14021e616        LeaveCriticalSection(&data_140a7e2a0)\n14021e62d        return 0",
+  "fetched_at": "2026-04-26T17:29:02Z"
+}

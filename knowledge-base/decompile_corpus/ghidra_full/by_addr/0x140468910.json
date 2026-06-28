@@ -1,0 +1,7 @@
+{
+  "addr": "0x140468910",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "longlong FUN_140468910(longlong param_1)\n\n{\n  if (*(float *)(param_1 + 0x448) <= DAT_1408007c0) {\n    return param_1 + 0x60;\n  }\n  return param_1 + 0x60 + (longlong)*(int *)(param_1 + 0x43c) * 0xd0;\n}",
+  "fetched_at": "2026-04-26T17:57:33Z"
+}

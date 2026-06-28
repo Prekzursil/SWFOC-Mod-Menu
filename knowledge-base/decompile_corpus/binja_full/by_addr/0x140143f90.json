@@ -1,0 +1,7 @@
+{
+  "addr": "0x140143f90",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140143fac        sub_1401456b0(arg1 + 0x90)\n140143fb1        int64_t* rax = *(arg1 + 0x58)\n140143fb5        void** i = *rax\n140143fbb        if (i != rax)\n140143fc2        int64_t* rbx_1 = i[6]\n140143fc9        if (rbx_1 != 0)\n140143fcb        int64_t rax_1 = *rbx_1\n140143fd1        int64_t* arg_8 = rbx_1\n140143fd6        (*rax_1)(rbx_1)\n140143fd8        int64_t* rdx_1 = *(arg1 + 0x98)\n140143fe0        if (rdx_1 == *(arg1 + 0xa0))\n140143ffc        sub_140144900(arg1 + 0x90, rdx_1, &arg_8)\n140143fe2        *rdx_1 = rbx_1\n140143feb        (**rbx_1)(rbx_1)\n140143fed        *(arg1 + 0x98) += 8\n140144007        (*(*rbx_1 + 8))(rbx_1)\n14014400a        i = *i\n140144011        do while (i != *(arg1 + 0x58))\n140144020        int64_t result\n140144020        while (true)\n140144020        result = *(arg1 + 0x90)\n14014402a        int64_t rcx_7 = (*(arg1 + 0x98) - result) s>> 3\n140144031        if (rcx_7 == 0)\n140144031        break\n140144038        sub_14013e770(*(result + (rcx_7 << 3) - 8))\n14014403d        void* rax_4 = *(arg1 + 0x98)\n140144044        int64_t* rcx_9 = *(rax_4 - 8)\n14014404b        if (rcx_9 != 0)\n140144050        (*(*rcx_9 + 8))(rcx_9)\n140144053        rax_4 = *(arg1 + 0x98)\n14014405e        *(arg1 + 0x98) = rax_4 - 8\n140144071        return result",
+  "fetched_at": "2026-04-26T17:19:48Z"
+}

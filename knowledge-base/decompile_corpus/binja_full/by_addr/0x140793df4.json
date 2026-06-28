@@ -1,0 +1,7 @@
+{
+  "addr": "0x140793df4",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140793e1a        int64_t rcx_3\n140793e1a        int64_t rdi\n140793e1a        rdi, rcx_3 = __memfill_u64(&data_140b3c980, __security_cookie, zx.q((not.q(sbb.q(arg1, arg1, false))).d) & 0x22)\n140793e22        uint64_t result\n140793e22        result.b = 1\n140793e24        return result",
+  "fetched_at": "2026-04-26T17:31:53Z"
+}

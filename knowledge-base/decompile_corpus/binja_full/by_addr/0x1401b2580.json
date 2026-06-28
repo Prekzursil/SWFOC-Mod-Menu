@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401b2580",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1401b2599        *arg1 = &alD3dTransitionEffectLinearWipe::`vftable'{for `alD3dTransitionEffect'}\n1401b25a5        arg1[2] = &alD3dTransitionEffectLinearWipe::`vftable'{for `MultiLinkedListMember'}\n1401b25a9        int64_t* rcx = arg1[6]\n1401b25b0        if (rcx != 0)\n1401b25b5        (*(*rcx + 8))(rcx)\n1401b25b8        arg1[6] = 0\n1401b25c0        int64_t* rcx_1 = arg1[7]\n1401b25c7        if (rcx_1 != 0)\n1401b25cc        (*(*rcx_1 + 8))(rcx_1)\n1401b25cf        arg1[7] = 0\n1401b25d7        int64_t* rcx_2 = arg1[8]\n1401b25de        if (rcx_2 != 0)\n1401b25e3        (*(*rcx_2 + 8))(rcx_2)\n1401b25e6        arg1[8] = 0\n1401b25ee        int64_t* rcx_3 = arg1[7]\n1401b25f5        if (rcx_3 != 0)\n1401b25fa        (*(*rcx_3 + 8))(rcx_3)\n1401b25fd        int64_t* rcx_4 = arg1[6]\n1401b2604        if (rcx_4 != 0)\n1401b2609        (*(*rcx_4 + 8))(rcx_4)\n1401b2613        *arg1 = &alD3dTransitionEffect::`vftable'{for `RefCountClass'}\n1401b2621        arg1[2] = &alD3dTransitionEffect::`vftable'{for `MultiLinkedListMember'}\n1401b2625        sub_14020a820(&arg1[2])\n1401b2631        *arg1 = &RefCountClass::`vftable'{for `IRefCountClass'}\n1401b2638        if ((arg2 & 1) != 0)\n1401b2642        j_sub_1407864b8(arg1)\n1401b2659        return arg1",
+  "fetched_at": "2026-04-26T17:25:42Z"
+}

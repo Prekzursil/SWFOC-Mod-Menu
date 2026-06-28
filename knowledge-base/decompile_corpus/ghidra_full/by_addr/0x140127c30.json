@@ -1,0 +1,7 @@
+{
+  "addr": "0x140127c30",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nint FUN_140127c30(void)\n\n{\n  undefined4 uVar1;\n  undefined4 uVar2;\n  undefined4 uVar3;\n  float fVar4;\n  char *local_38 [2];\n  undefined8 local_28;\n  ulonglong local_20;\n  \n  local_38[0] = (char *)FUN_140769c58(0x20);\n  uVar3 = s_IDC_DETAIL_LEVEL_SLIDER_140818bc0._12_4_;\n  uVar2 = s_IDC_DETAIL_LEVEL_SLIDER_140818bc0._8_4_;\n  uVar1 = s_IDC_DETAIL_LEVEL_SLIDER_140818bc0._4_4_;\n  local_28 = 0x17;\n  local_20 = 0x1f;\n  *(undefined4 *)local_38[0] = s_IDC_DETAIL_LEVEL_SLIDER_140818bc0._0_4_;\n  *(undefined4 *)(local_38[0] + 4) = uVar1;\n  *(undefined4 *)(local_38[0] + 8) = uVar2;\n  *(undefined4 *)(local_38[0] + 0xc) = uVar3;\n  *(undefined4 *)(local_38[0] + 0x10) = s_IDC_DETAIL_LEVEL_SLIDER_140818bc0._16_4_;\n  *(undefined2 *)(local_38[0] + 0x14) = s_IDC_DETAIL_LEVEL_SLIDER_140818bc0._20_2_;\n  local_38[0][0x16] = s_IDC_DETAIL_LEVEL_SLIDER_140818bc0[0x16];\n  local_38[0][0x17] = '\\0';\n  fVar4 = (float)FUN_1401c8fc0(&DAT_140a78510,DAT_140a12318,local_38);\n  if (0xf < local_20) {\n    if (0xfff < local_20 + 1) {\n      if ((char *)0x1f < local_38[0] + (-8 - *(longlong *)(local_38[0] + -8))) {\n                    /* WARNING: Subroutine does not return */\n        FUN_1407711cc(*(longlong *)(local_38[0] + -8),local_20 + 0x28);\n      }\n    }\n    thunk_FUN_1407864b8();\n  }\n  return (int)(fVar4 * DAT_1408007d8 + DAT_1408007c0);\n}\n\n",
+  "fetched_at": "2026-04-26T17:07:40Z"
+}

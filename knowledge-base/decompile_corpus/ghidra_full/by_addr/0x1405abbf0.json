@@ -1,0 +1,7 @@
+{
+  "addr": "0x1405abbf0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall\nLandTeamContainerLocomotorBehaviorClass::vfunction35(LandTeamContainerLocomotorBehaviorClass *this)\n\n{\n                    /* WARNING: Could not recover jumptable at 0x0001405abbf5. Too many branches */\n                    /* WARNING: Treating indirect jump as call */\n  (*this->vftablePtr->vfunction57)(this);\n  return;\n}",
+  "fetched_at": "2026-04-26T18:43:20Z"
+}

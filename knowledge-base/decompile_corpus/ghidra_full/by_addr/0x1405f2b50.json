@@ -1,0 +1,7 @@
+{
+  "addr": "0x1405f2b50",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_1405f2b50(void)\n\n{\n  if (DAT_140b396c0 == 0) {\n    FUN_1405f2b80(&DAT_140b396a0,&DAT_140b396a8,&DAT_140b396b0);\n    return;\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T17:22:40Z"
+}

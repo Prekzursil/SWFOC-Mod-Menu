@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407aa210",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_1407aa210(longlong param_1,undefined8 param_2)\n\n{\n  undefined1 local_res8 [8];\n  undefined1 local_res18 [8];\n  undefined1 local_res20 [8];\n  undefined1 local_18 [16];\n  \n  FUN_1401f94d0(param_2,local_res18,local_res20,local_18,local_res8);\n  *(uint *)(param_1 + 0xfc) =\n       CONCAT31(CONCAT21(CONCAT11(local_res8[0],local_res18[0]),local_res20[0]),local_18[0]);\n  FUN_1401f9440(param_2);\n  return;\n}",
+  "fetched_at": "2026-04-26T18:55:03Z"
+}

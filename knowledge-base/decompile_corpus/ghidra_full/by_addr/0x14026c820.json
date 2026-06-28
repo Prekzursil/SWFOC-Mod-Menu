@@ -1,0 +1,7 @@
+{
+  "addr": "0x14026c820",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall DrawRectClass::vfunction4(DrawRectClass *this,float param_1,float param_2)\n\n{\n  float fVar1;\n  longlong *plVar2;\n  undefined **ppuVar3;\n  \n  fVar1 = *(float *)&(this->DrawPrimitiveClass_data).offset_0x18;\n  *(float *)((longlong)&(this->DrawPrimitiveClass_data).offset_0x10 + 4) =\n       param_1 + *(float *)((longlong)&(this->DrawPrimitiveClass_data).offset_0x10 + 4);\n  *(float *)&(this->DrawPrimitiveClass_data).offset_0x18 = fVar1 - param_2;\n  (**(code **)(*(this->RefCountClass_data).offset_0x8 + 0x18))();\n  plVar2 = (longlong *)(this->RefCountClass_data).offset_0x10;\n  (**(code **)(*plVar2 + 0x18))(plVar2,param_1,param_2);\n  fVar1 = *(float *)&(this->RefCountClass_data).field_0x28;\n  ppuVar3 = (this->RefCountClass_data).offset_0x18;\n  (**(code **)(*ppuVar3 + 0x18))\n            (ppuVar3,fVar1 + param_1,\n             (param_2 + (float)(this->DrawPrimitiveClass_data).offset_0x20) - fVar1);\n  fVar1 = *(float *)&(this->RefCountClass_data).field_0x28;\n  plVar2 = *(longlong **)&(this->RefCountClass_data).field_0x20;\n                    /* WARNING: Could not recover jumptable at 0x00014026c8bb. Too many branches */\n                    /* WARNING: Treating indirect jump as call */\n  (**(code **)(*plVar2 + 0x18))\n            (plVar2,(param_1 +\n                    *(float *)((longlong)&(this->DrawPrimitiveClass_data).offset_0x18 + 4)) - fVar1,\n             fVar1 + param_2);\n  return;\n}",
+  "fetched_at": "2026-04-26T18:18:48Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x140540b00",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined8 __thiscall ActivateRetryDialog::vfunction11(void)\n\n{\n  if (DAT_140b30718 != (code *)0x0) {\n    (*DAT_140b30718)();\n  }\n  return 0;\n}",
+  "fetched_at": "2026-04-26T18:35:06Z"
+}

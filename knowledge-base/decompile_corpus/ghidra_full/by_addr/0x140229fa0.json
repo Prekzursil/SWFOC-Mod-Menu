@@ -1,0 +1,7 @@
+{
+  "addr": "0x140229fa0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_140229fa0(longlong param_1)\n\n{\n  int iVar1;\n  undefined1 *puVar2;\n  int iVar3;\n  \n  iVar1 = *(int *)(param_1 + 0xc);\n  if (1 < iVar1) {\n    *(int *)(param_1 + 0xc) = iVar1 + -1;\n    return;\n  }\n  if (iVar1 == 1) {\n    iVar3 = 0;\n    iVar1 = 1;\n    if (0 < *(int *)(param_1 + 0x14)) {\n      puVar2 = (undefined1 *)(param_1 + 0x5c);\n      do {\n        if ((puVar2[-0x34] == '\\x01') && (*puVar2 = 0, puVar2[-0x33] == '\\0')) {\n          FUN_14021d550(*(undefined8 *)(puVar2 + -0x3c));\n        }\n        iVar3 = iVar3 + 1;\n        puVar2 = puVar2 + 0x50;\n      } while (iVar3 < *(int *)(param_1 + 0x14));\n      iVar1 = *(int *)(param_1 + 0xc);\n    }\n    iVar1 = iVar1 + -1;\n  }\n  if (iVar1 < 1) {\n    iVar1 = 0;\n  }\n  *(int *)(param_1 + 0xc) = iVar1;\n  return;\n}",
+  "fetched_at": "2026-04-26T18:05:23Z"
+}

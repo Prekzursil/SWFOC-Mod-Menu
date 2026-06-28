@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401e95b0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall GUIGadgetComboboxClass::vfunction25(GUIGadgetComboboxClass *this)\n\n{\n  FUN_14025c490(DAT_140a619f0,&(this->GUIGadgetComboboxClass_data).field_0x178);\n  FUN_14025c490(DAT_140a619f0,&(this->GUIGadgetComboboxClass_data).field_0x58);\n  FUN_14025c490(DAT_140a619f0,&(this->GUIGadgetComboboxClass_data).field_0xe8);\n  (this->GUIGadgetComboboxClass_data).offset_0x300 = 0;\n  GUIGadgetClass::vfunction25((GUIGadgetClass *)this);\n  return;\n}",
+  "fetched_at": "2026-04-26T17:51:50Z"
+}

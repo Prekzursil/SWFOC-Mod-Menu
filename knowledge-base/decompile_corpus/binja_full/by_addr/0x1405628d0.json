@@ -1,0 +1,7 @@
+{
+  "addr": "0x1405628d0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1405628d6        struct BaseDataPackClass::MarkerDataPackClass::VTable* const result = &MarkerDataPackClass::`vftable'{for `BaseDataPackClass'}\n1405628e0        *arg1 = &MarkerDataPackClass::`vftable'{for `BaseDataPackClass'}\n1405628e3        int64_t rdx = arg1[4]\n1405628eb        if (rdx u>= 0x10)\n1405628ed        void* rcx = arg1[1]\n1405628fb        if (rdx + 1 u>= 0x1000)\n1405628fd        void* r8_1 = *(rcx - 8)\n140562910        if (rcx - r8_1 - 8 u> 0x1f)\n140562934        _invalid_parameter_noinfo_noreturn()\n140562934        noreturn\n140562912        rcx = r8_1\n140562915        result = j_sub_1407864b8(rcx)\n14056291a        arg1[3] = 0\n140562922        arg1[4] = 0xf\n14056292a        arg1[1].b = 0\n140562933        return result",
+  "fetched_at": "2026-04-26T17:34:28Z"
+}

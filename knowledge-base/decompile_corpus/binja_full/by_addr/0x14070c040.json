@@ -1,0 +1,7 @@
+{
+  "addr": "0x14070c040",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14070c047        return \"Reduce_Technology_Price_Ability\"",
+  "fetched_at": "2026-04-26T17:27:29Z"
+}

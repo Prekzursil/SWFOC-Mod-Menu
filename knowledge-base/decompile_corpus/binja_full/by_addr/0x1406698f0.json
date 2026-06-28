@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406698f0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140669908        int64_t* rcx = *(*(arg2 + 0x58) + 0x40)\n14066990f        int64_t* result = (*(*rcx + 0x40))(rcx)\n140669912        int32_t i_1 = 0\n140669917        *arg3 = 0\n140669928        if ((result[1] - *result) s>> 3 != 0)\n140669938        uint64_t i = 0\n140669943        int64_t* rcx_1 = *(*result + (i << 3))\n14066994a        int64_t* rax_4 = (*(*rcx_1 + 0x30))(rcx_1)\n140669955        int64_t r8 = *rax_4\n140669958        int64_t rax_5 = (*(r8 + 0x10))(rax_4, 3, r8)\n140669962        int64_t* rcx_4 = *(*result + (i << 3))\n140669966        int64_t rdx_3 = *rcx_4\n140669981        i_1 += 1\n140669987        i = zx.q(i_1)\n14066998e        *arg3 = fconvert.d(sub_1403f83b0(rax_5, (*(rdx_3 + 0x30))(rcx_4, rdx_3), *(arg1 + 0x98))) f+ *arg3\n1406699a1        do while (i u< (result[1] - *result) s>> 3)\n1406699b2        result.b = 1\n1406699bd        return result",
+  "fetched_at": "2026-04-26T17:10:00Z"
+}

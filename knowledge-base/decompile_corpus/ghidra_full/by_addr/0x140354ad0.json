@@ -1,0 +1,7 @@
+{
+  "addr": "0x140354ad0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nvoid __thiscall\nTextButtonComponentClass::vfunction45(TextButtonComponentClass *this,undefined4 param_1)\n\n{\n  (this->TextButtonComponentClass_data).offset_0x1b0 = param_1;\n  return;\n}\n\n",
+  "fetched_at": "2026-04-26T17:10:50Z"
+}

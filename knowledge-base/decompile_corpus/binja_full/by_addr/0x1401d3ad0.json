@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401d3ad0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1401d3ad9        int64_t result = data_140a7a0d0.q\n1401d3b00        if (result == 0xe00e0804 || result == 0xe0090404 || arg1 == 0)\n1401d3c0c        data_140a7a0da = 1\n1401d3b06        data_140a7a0da = 0\n1401d3b12        if (arg1.w == 0x404)\n1401d3b1f        int32_t rbx_1 = arg1 & 0xffff0000\n1401d3b2a        void var_218\n1401d3b2a        lstrcpyW(&var_218, u\"software\\microsoft\\windows\\currentversion\\\")\n1401d3b3d        wchar16 const* const lpString2 = u\"TINTLGNT\"\n1401d3b44        if (rbx_1 u>= 0x5010000)\n1401d3b44        lpString2 = u\"MSTCIPH\"\n1401d3b4d        lstrcatW(&var_218, lpString2)\n1401d3b72        HKEY phkResult[0x2]\n1401d3b72        result = RegOpenKeyExW(-0xffffffff80000001, &var_218, 0, KEY_READ, &phkResult)\n1401d3b7a        if (result.d == 0)\n1401d3b80        HKEY hKey = phkResult[0]\n1401d3ba2        uint32_t lpcbData = 4\n1401d3bc4        int32_t data\n1401d3bc4        void type\n1401d3bc4        if (RegQueryValueExW(hKey, u\"Keyboard Mapping\", nullptr, &type, &data, &lpcbData) == NO_ERROR)\n1401d3bc6        char data_1 = data.b\n1401d3bda        if (rbx_1 u<= 0x5000000 && data_1 - 0x22 u<= 1)\n1401d3bf1        data_140a7a0da = 1\n1401d3bef        if (((rbx_1 - 0x5010000) & 0xfffeffff) == 0 && data_1 - 0x22 u<= 2)\n1401d3bf1        data_140a7a0da = 1\n1401d3c0b        return RegCloseKey(phkResult[0])\n1401d3c1b        return result",
+  "fetched_at": "2026-04-26T17:26:44Z"
+}

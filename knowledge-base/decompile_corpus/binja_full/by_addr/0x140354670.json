@@ -1,0 +1,7 @@
+{
+  "addr": "0x140354670",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140354677        char* result = *(arg1 + 0x2a8)\n140354687        if (arg2 == 0)\n1403546b7        if (result == 0)\n1403546bf        return result\n14035468c        if (result != 0)\n140354691        void* r8_2 = arg2 - result\n1403546a5        uint32_t i\n1403546a5        uint32_t rdx\n140354694        rdx = zx.d(*result)\n140354697        i = zx.d(*(result + r8_2))\n14035469e        if (rdx != i)\n14035469e        break\n1403546a0        result = &result[1]\n1403546a5        do while (i != 0)\n1403546a9        if (rdx - i == 0)\n1403546ab        result.b = 1\n1403546b3        return result\n1403546cf        sub_1403547c0(arg1 + 0x2a8, arg2)\n1403546fc        void var_28\n1403546fc        void arg_10\n1403546fc        void arg_18\n1403546fc        void arg_20\n1403546fc        char rax = sub_140239500(&data_140b2bc90, arg2, &var_28, &arg_20, &arg_18, &arg_10)\n140354701        char rcx_1 = *(arg1 + 0x284)\n14035470d        if (rax == 0)\n140354714        rcx_1 &= 0xfb\n14035470f        rcx_1 |= 4\n140354717        void* rax_1 = *(arg1 + 0x80)\n14035471e        *(arg1 + 0x284) = rcx_1\n140354727        int128_t zmm3\n140354727        if (rax_1 == 0)\n140354733        zmm3 = 0x3f800000\n140354729        zmm3 = *(rax_1 + 0x398)\n140354748        sub_140354cc0(arg1 + 0x370, arg2, nullptr, zmm3)\n14035475c        return zx.q(rax)",
+  "fetched_at": "2026-04-26T17:10:39Z"
+}

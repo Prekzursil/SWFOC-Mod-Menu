@@ -1,0 +1,7 @@
+{
+  "addr": "0x140786138",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14078614f        if (arg3 == 0)\n140786156        *_errno() = 0x16\n14078615c        _invalid_parameter_noinfo()\n140786161        return nullptr\n14078616e        int64_t* lpParameter_1 = create_thread_parameter(arg3, arg4)\n140786173        int64_t* lpParameter = lpParameter_1\n140786179        HANDLE result\n140786179        if (lpParameter_1 == 0)\n1407861b8        result = nullptr\n14078619d        uint32_t threadId[0x4]\n14078619d        HANDLE result_1 = CreateThread(arg1, zx.q(arg2), thread_start<uint32_t (__cdecl*)(void* __ptr64)>, lpParameter, arg5, &threadId)\n1407861a3        result = result_1\n1407861a9        if (result_1 != 0)\n140786200        if (arg6 != 0)\n140786206        *arg6 = threadId[0]\n140786208        lpParameter = nullptr\n1407861b3        __acrt_errno_map_os_error(GetLastError())\n1407861b8        result = nullptr\n1407861bd        if (lpParameter != 0)\n1407861bf        HANDLE hObject = lpParameter[2]\n1407861c6        if (hObject != 0)\n1407861c8        CloseHandle(hObject)\n1407861ce        HMODULE hLibModule = lpParameter[3]\n1407861d5        if (hLibModule != 0)\n1407861d7        FreeLibrary(hLibModule)\n1407861e0        _free_base(lpParameter)\n1407861e5        return result",
+  "fetched_at": "2026-04-26T17:31:17Z"
+}

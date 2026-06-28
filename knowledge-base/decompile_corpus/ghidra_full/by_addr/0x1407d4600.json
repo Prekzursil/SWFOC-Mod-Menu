@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407d4600",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_1407d4600(longlong param_1,undefined8 param_2,undefined8 param_3,undefined4 param_4)\n\n{\n  int iVar1;\n  longlong lVar2;\n  \n  iVar1 = *(int *)(param_1 + 0x18);\n  if (0x1f < iVar1) {\n    FUN_1407ce300(*(undefined8 *)(param_1 + 0x10),\"too many captures\");\n  }\n  *(undefined8 *)(param_1 + ((longlong)iVar1 + 2) * 0x10) = param_2;\n  *(undefined4 *)(param_1 + 0x28 + (longlong)iVar1 * 0x10) = param_4;\n  *(int *)(param_1 + 0x18) = iVar1 + 1;\n  lVar2 = FUN_1407d3c60(param_1,param_2,param_3);\n  if (lVar2 == 0) {\n    *(int *)(param_1 + 0x18) = *(int *)(param_1 + 0x18) + -1;\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T18:58:21Z"
+}

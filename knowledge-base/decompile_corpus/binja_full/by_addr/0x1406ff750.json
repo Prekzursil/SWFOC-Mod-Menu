@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406ff750",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1406ff757        return \"Galaxy_Wide_Upgrade_Ability\"",
+  "fetched_at": "2026-04-26T17:26:56Z"
+}

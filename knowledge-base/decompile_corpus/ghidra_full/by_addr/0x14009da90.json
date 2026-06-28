@@ -1,0 +1,7 @@
+{
+  "addr": "0x14009da90",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nvoid FUN_14009da90(void)\n\n{\n  longlong lVar1;\n  longlong lVar2;\n  \n  lVar1 = DAT_140a61ea0;\n  lVar2 = DAT_140a61e98;\n  if (DAT_140a61e98 != DAT_140a61ea0) {\n    do {\n      FUN_1401f9440(lVar2 + 0x20);\n      FID_conflict__Tidy_deallocate(lVar2);\n      lVar2 = lVar2 + 0x30;\n    } while (lVar2 != lVar1);\n    DAT_140a61ea0 = DAT_140a61e98;\n    return;\n  }\n  DAT_140a61ea0 = DAT_140a61e98;\n  return;\n}\n\n",
+  "fetched_at": "2026-04-26T16:58:43Z"
+}

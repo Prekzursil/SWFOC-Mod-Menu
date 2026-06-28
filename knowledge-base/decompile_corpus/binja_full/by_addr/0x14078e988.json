@@ -1,0 +1,7 @@
+{
+  "addr": "0x14078e988",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14078e99c        uint64_t result\n14078e99c        if (arg2[2].d != 0)\n14078e9ee        result.b = 0\n14078e99e        int64_t rdx = arg2[1]\n14078e9aa        if (rdx - 2 u> 1)\n14078e9ee        result.b = 0\n14078e9af        result = string_is_alpha(*arg2, rdx)\n14078e9b6        if (result.b == 0)\n14078e9ee        result.b = 0\n14078e9c7        int32_t rax = wcsncpy_s(arg1, 0x40, *arg2, arg2[1])\n14078e9ce        if (rax == 0)\n14078e9e1        result = wcsncpy_s(&arg1[0x90], zx.q(rax + 0x55), *arg2, arg2[1])\n14078e9e8        if (rax != 0 || result.d != 0)\n14078e9fb        int64_t var_18 = 0\n14078ea0b        _invoke_watson()\n14078ea0b        noreturn\n14078e9ea        result.b = 1\n14078e9fa        return result",
+  "fetched_at": "2026-04-26T17:31:37Z"
+}

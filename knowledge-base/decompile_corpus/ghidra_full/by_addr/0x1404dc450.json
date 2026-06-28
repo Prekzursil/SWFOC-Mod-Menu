@@ -1,0 +1,7 @@
+{
+  "addr": "0x1404dc450",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined8 FUN_1404dc450(undefined8 param_1,longlong param_2)\n\n{\n  undefined8 local_28;\n  undefined8 local_18;\n  ulonglong local_10;\n  \n  local_10 = 0xf;\n  local_18 = 7;\n  local_28 = (ulonglong)\n             CONCAT16(s_Planet__140879808[6],\n                      CONCAT24(s_Planet__140879808._4_2_,s_Planet__140879808._0_4_));\n  FUN_14043e9e0(param_1,&local_28,param_2 + 0xf8);\n  if (0xf < local_10) {\n    if (0xfff < local_10 + 1) {\n      if (0x1f < (local_28 - *(longlong *)(local_28 - 8)) - 8) {\n                    /* WARNING: Subroutine does not return */\n        FUN_1407711cc(*(longlong *)(local_28 - 8),local_10 + 0x28);\n      }\n    }\n    thunk_FUN_1407864b8();\n  }\n  return param_1;\n}",
+  "fetched_at": "2026-04-26T18:15:09Z"
+}

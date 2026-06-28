@@ -1,0 +1,7 @@
+{
+  "addr": "0x140450ab0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140450ac3        *arg1 = &DynamicVectorClass<class DynamicVectorClass<class StoryEventClass* __ptr64> >::`vftable'\n140450ac9        sub_140326b80(arg1)\n140450ad1        if ((arg2 & 1) != 0)\n140450adb        j_sub_1407864b8(arg1)\n140450aed        return arg1",
+  "fetched_at": "2026-04-26T17:27:39Z"
+}

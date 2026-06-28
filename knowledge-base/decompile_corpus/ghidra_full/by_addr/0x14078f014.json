@@ -1,0 +1,7 @@
+{
+  "addr": "0x14078f014",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* Library Function - Single Match\n    void __cdecl replace_current_thread_locale_nolock(struct __acrt_ptd * __ptr64 const,struct\n   __crt_locale_data * __ptr64 const)\n   \n   Libraries: Visual Studio 2015 Release, Visual Studio 2017 Release, Visual Studio 2019 Release */\n\nvoid __cdecl replace_current_thread_locale_nolock(__acrt_ptd *param_1,__crt_locale_data *param_2)\n\n{\n  undefined **ppuVar1;\n  \n  if (*(longlong *)(param_1 + 0x90) != 0) {\n    __acrt_release_locale_ref();\n    ppuVar1 = *(undefined ***)(param_1 + 0x90);\n    if (((ppuVar1 != DAT_140b3c4c8) && (ppuVar1 != &PTR_DAT_140a44dc0)) &&\n       (*(int *)(ppuVar1 + 2) == 0)) {\n      __acrt_free_locale();\n    }\n  }\n  *(__crt_locale_data **)(param_1 + 0x90) = param_2;\n  if (param_2 != (__crt_locale_data *)0x0) {\n    __acrt_add_locale_ref(param_2);\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T18:52:28Z"
+}

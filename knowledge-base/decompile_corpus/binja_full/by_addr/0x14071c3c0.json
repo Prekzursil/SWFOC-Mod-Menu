@@ -1,0 +1,7 @@
+{
+  "addr": "0x14071c3c0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14071c3d1        struct IXMLLoadableClass::SpecialAbilityClass::VTable** result = arg1\n14071c3d4        *arg1 = &BuzzDroidsAbilityClass::`vftable'{for `SpecialAbilityClass'}\n14071c3e0        arg1[1] = &BuzzDroidsAbilityClass::`vftable'{for `RefCountClass'}\n14071c3eb        sub_1404c47c0(&arg1[0x35])\n14071c3f7        sub_1404c4770(&result[0x33])\n14071c3ff        sub_14048c8d0(result)\n14071c407        if ((arg2 & 1) != 0)\n14071c411        j_sub_1407864b8(result)\n14071c423        return result",
+  "fetched_at": "2026-04-26T17:28:07Z"
+}

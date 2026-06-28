@@ -1,0 +1,7 @@
+{
+  "addr": "0x14018fb60",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall\nalD3dTerrainRender::vfunction7\n          (alD3dTerrainRender *this,int param_1,int param_2,undefined1 param_3,undefined1 param_4,\n          undefined1 param_5)\n\n{\n  FUN_1401b62a0((&(this[4].vftablePtr)->deleting_destructor)\n                [param_2 * *(int *)&this[2].vftablePtr + param_1],this[1].vftablePtr,param_1,param_2\n                ,param_3,param_4,param_5);\n  FUN_1401b7330((&(this[4].vftablePtr)->deleting_destructor)\n                [param_1 + param_2 * *(int *)&this[2].vftablePtr],this[0x23].vftablePtr);\n  return;\n}",
+  "fetched_at": "2026-04-26T17:34:19Z"
+}

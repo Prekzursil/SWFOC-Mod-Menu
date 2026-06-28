@@ -1,0 +1,7 @@
+{
+  "addr": "0x140390e80",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_140390e80(longlong param_1)\n\n{\n  SpawnSquadronDataPackClass *pSVar1;\n  \n  if (*(longlong *)(param_1 + 0x118) == 0) {\n    pSVar1 = (SpawnSquadronDataPackClass *)FUN_140769c58(0x68);\n    if (pSVar1 != (SpawnSquadronDataPackClass *)0x0) {\n      pSVar1 = SpawnSquadronDataPackClass::SpawnSquadronDataPackClass(pSVar1);\n      *(SpawnSquadronDataPackClass **)(param_1 + 0x118) = pSVar1;\n      return;\n    }\n    *(undefined8 *)(param_1 + 0x118) = 0;\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T17:22:02Z"
+}

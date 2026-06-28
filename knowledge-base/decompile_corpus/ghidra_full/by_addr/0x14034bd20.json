@@ -1,0 +1,7 @@
+{
+  "addr": "0x14034bd20",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nvoid __thiscall\nTextComponentClass::vfunction37\n          (TextComponentClass *this,undefined8 param_2,char param_3,undefined4 param_4,\n          undefined4 param_5)\n\n{\n  byte *pbVar1;\n  \n  if (param_3 == '\\0') {\n    *(undefined4 *)((longlong)&(this->BaseComponentClass_data).offset_0xa8 + 4) = param_5;\n    *(undefined4 *)((longlong)&(this->BaseComponentClass_data).offset_0xa0 + 4) = param_4;\n  }\n  pbVar1 = &(this->BaseComponentClass_data).offset_0xb8;\n  *pbVar1 = *pbVar1 & 0xef;\n  pbVar1 = &(this->BaseComponentClass_data).offset_0xb8;\n  *pbVar1 = *pbVar1 | param_3 << 4;\n  return;\n}\n\n",
+  "fetched_at": "2026-04-26T17:07:58Z"
+}

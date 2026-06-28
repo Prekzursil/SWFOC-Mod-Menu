@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407dc330",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1407dc360        int64_t result\n1407dc360        if (*(arg1 + 0x360) == 0 || *(arg1 + 0x358) != arg2 || *(arg1 + 0x35c) != arg3)\n1407dc375        struct alTexture::alD3dTexture::VTable** rax = sub_14013e1b0(arg2, arg3, nullptr, 0)\n1407dc37a        int64_t* rcx_1 = *(arg1 + 0x360)\n1407dc387        if (rcx_1 != rax)\n1407dc38c        if (rcx_1 != 0)\n1407dc38e        int64_t rdx_1 = *rcx_1\n1407dc391        (*(rdx_1 + 8))(rcx_1, rdx_1)\n1407dc394        *(arg1 + 0x360) = rax\n1407dc39e        if (rax != 0)\n1407dc3a6        (*rax)->vFunc_0(rax)\n1407dc3a8        int64_t rcx_3 = *(arg1 + 0x378)\n1407dc3b7        if (rcx_3 != 0)\n1407dc3b9        j_sub_1407864b8(rcx_3)\n1407dc3be        *(arg1 + 0x378) = 0\n1407dc3d1        result = j_operator new(sx.q(arg2 * arg3))\n1407dc3d6        bool cond:1_1 = *(arg1 + 0x360) == 0\n1407dc3de        *(arg1 + 0x378) = result\n1407dc3e5        *(arg1 + 0x358) = arg2\n1407dc3eb        *(arg1 + 0x35c) = arg3\n1407dc3f6        if (cond:1_1 || result == 0)\n1407dc40f        result.b = 0\n1407dc41b        return result\n1407dc3f8        result.b = 1\n1407dc409        return result",
+  "fetched_at": "2026-04-26T17:34:06Z"
+}

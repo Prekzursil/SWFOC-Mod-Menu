@@ -1,0 +1,7 @@
+{
+  "addr": "0x140770178",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* Library Function - Single Match\n    int __cdecl ExFilterRethrowFH4(struct _EXCEPTION_POINTERS * __ptr64,struct EHExceptionRecord *\n   __ptr64,int,int * __ptr64)\n   \n   Library: Visual Studio 2019 Release */\n\nint __cdecl\nExFilterRethrowFH4(_EXCEPTION_POINTERS *param_1,EHExceptionRecord *param_2,int param_3,int *param_4)\n\n{\n  int iVar1;\n  longlong lVar2;\n  \n  iVar1 = ExFilterRethrow(param_1,param_2,param_4);\n  if (iVar1 == 0) {\n    lVar2 = FUN_14076d8ec();\n    *(int *)(lVar2 + 0x78) = param_3;\n  }\n  return iVar1;\n}",
+  "fetched_at": "2026-04-26T18:11:38Z"
+}

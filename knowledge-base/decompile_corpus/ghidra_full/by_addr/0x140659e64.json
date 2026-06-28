@@ -1,0 +1,7 @@
+{
+  "addr": "0x140659e64",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nvoid __thiscall\nFoggedPerceptualEvaluatorClass<class_PlanetPerceptualEvaluatorClass>::vfunction1\n          (FoggedPerceptualEvaluatorClass<class_PlanetPerceptualEvaluatorClass> *this,uint param_1)\n\n{\n  scalar_deleting_destructor\n            ((FoggedPerceptualEvaluatorClass<class_PlanetPerceptualEvaluatorClass> *)\n             &this[-1].VisiblePerceptualEvaluatorClass<class_PlanetPerceptualEvaluatorClass>_data.\n              offset_0x10,param_1);\n  return;\n}\n\n",
+  "fetched_at": "2026-04-26T17:07:14Z"
+}

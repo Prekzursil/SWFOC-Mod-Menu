@@ -1,0 +1,7 @@
+{
+  "addr": "0x14064c9a0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14064c9b9        *arg1 = &PerceptualEvaluatorClass::`vftable'{for `SignalGeneratorClass'}\n14064c9c3        arg1[3] = &PerceptualEvaluatorClass::`vftable'{for `AIDiagnosticsClass'}\n14064c9c7        int64_t* rax = arg1[9]\n14064c9cb        void** i = *rax\n14064c9d1        if (i != rax)\n14064c9d3        int64_t* rcx = i[3]\n14064c9da        if (rcx != 0)\n14064c9e4        (**rcx)(rcx, 1)\n14064c9e6        i = *i\n14064c9ed        do while (i != arg1[9])\n14064c9f3        sub_1400db9f0(&arg1[8])\n14064c9fc        sub_14007b260(&arg1[8])\n14064ca05        sub_1405f6540(&arg1[3])\n14064ca1c        return sub_140240640(arg1) __tailcall",
+  "fetched_at": "2026-04-26T17:05:26Z"
+}

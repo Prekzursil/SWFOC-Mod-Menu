@@ -1,0 +1,7 @@
+{
+  "addr": "0x1403aee50",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "MoveToObjectEventClass * __thiscall\nMoveToObjectEventClass::MoveToObjectEventClass(MoveToObjectEventClass *this)\n\n{\n  ScheduledEventClass::ScheduledEventClass((ScheduledEventClass *)this);\n  (this->EventClass_data).offset_0x8 = 2;\n  this->vftablePtr = &vftable;\n  (this->MoveToObjectEventClass_data).offset_0x200 = 0;\n  return this;\n}",
+  "fetched_at": "2026-04-26T17:33:50Z"
+}

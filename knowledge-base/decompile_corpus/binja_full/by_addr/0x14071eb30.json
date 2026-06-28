@@ -1,0 +1,7 @@
+{
+  "addr": "0x14071eb30",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14071eb42        struct ActionClass::AttackActionClass::VTable** result = operator new(0x130)\n14071eb4d        if (result == 0)\n14071ec26        return result\n14071eb59        sub_1405e8d00(result, arg1)\n14071eb6c        *result = &AttackActionClass::`vftable'{for `ActionClass'}\n14071eb76        sub_1404c3d60(&result[0x19], arg1 + 0xc8)\n14071eb88        result[0x1b].d = *(arg1 + 0xd8)\n14071eb9b        *(result + 0xdc) = *(arg1 + 0xdc)\n14071eba7        result[0x1c].d = *(arg1 + 0xe0)\n14071ebb3        *(result + 0xe4) = *(arg1 + 0xe4)\n14071ebbf        result[0x1d].d = *(arg1 + 0xe8)\n14071ebc5        sub_14001e680(&result[0x1e], arg1 + 0xf0)\n14071ebd8        sub_1404c3e00(&result[0x22], arg1 + 0x110)\n14071ebe7        result[0x24].b = *(arg1 + 0x120)\n14071ebf3        *(result + 0x124) = *(arg1 + 0x124)\n14071ebff        result[0x25].d = *(arg1 + 0x128)\n14071ec0b        *(result + 0x12c) = *(arg1 + 0x12c)\n14071ec1b        return result",
+  "fetched_at": "2026-04-26T17:28:13Z"
+}

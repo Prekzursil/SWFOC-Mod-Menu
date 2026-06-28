@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407247c0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "HeroClashInterface * __thiscall\nHeroClashInterface::HeroClashInterface\n          (HeroClashInterface *this,undefined8 param_1,undefined8 param_2)\n\n{\n  (this->HeroClashInterface_data).offset_0x0 = param_2;\n  this->vftablePtr = &vftable;\n  (this->HeroClashInterface_data).offset_0x8 = param_1;\n  return this;\n}",
+  "fetched_at": "2026-04-26T17:59:53Z"
+}

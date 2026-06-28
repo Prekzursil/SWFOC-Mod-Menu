@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407bc470",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1407bc474        void* rax = *(arg1 + 0xc0)\n1407bc47e        if (rax == 0)\n1407bc4a0        (*(*(arg1 + 0x20) + 0x78))()\n1407bc4a8        exit(1)\n1407bc4ad        breakpoint\n1407bc480        *(rax + 0x110) = arg2\n1407bc496        longjmp(*(arg1 + 0xc0) + 0x10, 1)\n1407bc49b        breakpoint",
+  "fetched_at": "2026-04-26T17:33:21Z"
+}

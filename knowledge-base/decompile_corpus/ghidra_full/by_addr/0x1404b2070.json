@@ -1,0 +1,7 @@
+{
+  "addr": "0x1404b2070",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined8 __thiscall GalacticModeClass::vfunction33(GalacticModeClass *this)\n\n{\n  return (this->GalacticModeClass_data).offset_0x318;\n}",
+  "fetched_at": "2026-04-26T18:06:53Z"
+}

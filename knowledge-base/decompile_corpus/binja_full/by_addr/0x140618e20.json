@@ -1,0 +1,7 @@
+{
+  "addr": "0x140618e20",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140618e27        return \"Slicer_Ability\"",
+  "fetched_at": "2026-04-26T17:23:31Z"
+}

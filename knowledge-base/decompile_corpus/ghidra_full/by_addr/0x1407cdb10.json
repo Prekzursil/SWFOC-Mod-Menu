@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407cdb10",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "ulonglong FUN_1407cdb10(undefined8 param_1,ulonglong param_2)\n\n{\n  int iVar1;\n  undefined8 uVar2;\n  undefined8 uVar3;\n  \n  if (((int)param_2 == 0) &&\n     (param_2 = FUN_1407b9280(param_1,param_2,0xffffffff,0), (int)param_2 == 0)) {\n    return param_2;\n  }\n  FUN_1407b9540(param_1,\"_ALERT\");\n  FUN_1407b8e90(param_1,0xffffd8ef);\n  iVar1 = FUN_1407b9e00(param_1,0xffffffff);\n  if (iVar1 != 6) {\n    uVar2 = FUN_1407b9cc0(param_1,0xfffffffe);\n    uVar3 = __acrt_iob_func(2);\n    FUN_1400e9400(uVar3,&DAT_140816db4,uVar2);\n    FUN_1407b9ab0(param_1,0xfffffffd);\n    return param_2 & 0xffffffff;\n  }\n  FUN_1407b8f00();\n  FUN_1407b8ba0(param_1,1);\n  return param_2 & 0xffffffff;\n}",
+  "fetched_at": "2026-04-26T18:57:35Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x14079a7c4",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14079a7d8        void var_f8\n14079a7d8        int64_t rax_1 = __security_cookie ^ &var_f8\n14079a7e3        *(arg1 + 0x10) |= 0x104\n14079a7f7        int16_t var_c8[0x58]\n14079a7f7        int32_t result = __acrt_GetUserDefaultLocaleName(&var_c8, 0x55)\n14079a7ff        if (result s> 1)\n14079a801        int64_t r9_1 = -1\n14079a80c        r9_1 += 1\n14079a814        do while (var_c8[r9_1] != 0)\n14079a82a        result = wcsncpy_s(arg1 + 0x258, 0x55, &var_c8, r9_1 + 1)\n14079a831        if (result != 0)\n14079a857        int64_t var_d8 = 0\n14079a863        _invoke_watson()\n14079a863        noreturn\n14079a83e        __security_check_cookie(rax_1 ^ &var_f8)\n14079a853        return result",
+  "fetched_at": "2026-04-26T17:32:08Z"
+}

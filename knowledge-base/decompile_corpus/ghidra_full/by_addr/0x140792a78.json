@@ -1,0 +1,7 @@
+{
+  "addr": "0x140792a78",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* Library Function - Single Match\n    wcscpy_s\n   \n   Libraries: Visual Studio 2015 Release, Visual Studio 2017 Release, Visual Studio 2019 Release */\n\nerrno_t __cdecl wcscpy_s(wchar_t *_Dst,rsize_t _SizeInWords,wchar_t *_Src)\n\n{\n  wchar_t wVar1;\n  ulong *puVar2;\n  ulong uVar3;\n  wchar_t *pwVar4;\n  \n  if ((_Dst != (wchar_t *)0x0) && (_SizeInWords != 0)) {\n    if (_Src != (wchar_t *)0x0) {\n      pwVar4 = _Dst;\n      do {\n        wVar1 = *(wchar_t *)(((longlong)_Src - (longlong)_Dst) + (longlong)pwVar4);\n        *pwVar4 = wVar1;\n        pwVar4 = pwVar4 + 1;\n        if (wVar1 == L'\\0') break;\n        _SizeInWords = _SizeInWords - 1;\n      } while (_SizeInWords != 0);\n      if (_SizeInWords != 0) {\n        return 0;\n      }\n      *_Dst = L'\\0';\n      puVar2 = __doserrno();\n      uVar3 = 0x22;\n      goto LAB_140792a9c;\n    }\n    *_Dst = L'\\0';\n  }\n  puVar2 = __doserrno();\n  uVar3 = 0x16;\nLAB_140792a9c:\n  *puVar2 = uVar3;\n  FUN_1407711ac();\n  return uVar3;\n}",
+  "fetched_at": "2026-04-26T18:52:56Z"
+}

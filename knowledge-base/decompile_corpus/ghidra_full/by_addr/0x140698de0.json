@@ -1,0 +1,7 @@
+{
+  "addr": "0x140698de0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined8 FUN_140698de0(longlong *param_1)\n\n{\n  uint uVar1;\n  uint uVar2;\n  uint uVar3;\n  uint uVar4;\n  int iVar5;\n  longlong lVar6;\n  uint uVar7;\n  float fVar8;\n  float fVar9;\n  \n  lVar6 = param_1[1] - *param_1 >> 4;\n  iVar5 = (int)lVar6;\n  if (((iVar5 == 0) || (*(float *)(*param_1 + 8 + (ulonglong)(iVar5 - 1) * 0x10) <= 0.0)) ||\n     (lVar6 == 0)) {\n    return 0;\n  }\n  fVar8 = (float)FUN_140532480(0);\n  lVar6 = *param_1;\n  iVar5 = 0;\n  uVar4 = (int)(param_1[1] - lVar6 >> 4) - 1;\n  uVar7 = uVar4;\n  do {\n    while( true ) {\n      uVar2 = uVar7 + iVar5;\n      uVar3 = uVar2 >> 1;\n      uVar1 = uVar3 - 1;\n      if (uVar2 >> 1 == 0) {\n        fVar9 = 0.0;\n      }\n      else {\n        fVar9 = *(float *)(lVar6 + 8 + (ulonglong)uVar1 * 0x10);\n      }\n      if (fVar8 <= fVar9) break;\n      if (fVar8 <= *(float *)(lVar6 + 8 + (ulonglong)uVar3 * 0x10)) goto LAB_140698ecf;\n      if (uVar4 <= uVar3) {\n        return *(undefined8 *)(lVar6 + (ulonglong)uVar4 * 0x10);\n      }\n      iVar5 = uVar3 + 1;\n    }\n    uVar3 = 0;\n    uVar7 = uVar1;\n  } while (uVar2 >> 1 != 0);\nLAB_140698ecf:\n  return *(undefined8 *)(lVar6 + (ulonglong)uVar3 * 0x10);\n}",
+  "fetched_at": "2026-04-26T17:20:22Z"
+}

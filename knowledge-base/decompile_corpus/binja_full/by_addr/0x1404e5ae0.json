@@ -1,0 +1,7 @@
+{
+  "addr": "0x1404e5ae0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1404e5af4        *arg1 = &TheShipNamesManagerClass::`vftable'\n1404e5afd        sub_14012ed60(&arg1[9])\n1404e5b06        sub_1400465e0(&arg1[1])\n1404e5b0e        if ((arg2 & 1) != 0)\n1404e5b18        j_sub_1407864b8(arg1)\n1404e5b2a        return arg1",
+  "fetched_at": "2026-04-26T17:31:25Z"
+}

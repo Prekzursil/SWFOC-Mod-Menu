@@ -1,0 +1,7 @@
+{
+  "addr": "0x14025a000",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "GetEvent * __thiscall GetEvent::vfunction3(GetEvent *this,ulonglong param_1)\n\n{\n  FUN_140259f90(&(this->RefCountClass_data).field_0x38);\n  FUN_140259f90(&(this->RefCountClass_data).field_0x20);\n  LuaUserVar::~LuaUserVar((LuaUserVar *)this);\n  if ((param_1 & 1) != 0) {\n    thunk_FUN_1407864b8(this,0x58);\n  }\n  return this;\n}",
+  "fetched_at": "2026-04-26T18:13:49Z"
+}

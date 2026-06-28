@@ -1,0 +1,7 @@
+{
+  "addr": "0x14006a000",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14006a007        *arg1 = &SteamClass::`vftable'\n14006a00c        arg1[1] = 0\n14006a010        arg1[2] = 0\n14006a017        return arg1",
+  "fetched_at": "2026-04-26T16:55:53Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x140046400",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nundefined4 *\nFUN_140046400(undefined4 *param_1,undefined4 param_2,undefined4 param_3,undefined4 param_4)\n\n{\n  *param_1 = param_2;\n  param_1[1] = param_3;\n  param_1[2] = param_4;\n  return param_1;\n}\n\n",
+  "fetched_at": "2026-04-26T16:53:43Z"
+}

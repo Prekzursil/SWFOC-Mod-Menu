@@ -1,0 +1,7 @@
+{
+  "addr": "0x140640b30",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140640b60        switch (sub_1403956a0(*(arg1 + 0x28)) - 3)\n140640b6b        case 0, 9, 0xa, 0x12, 0x13\n140640b6b        return 0xd\n140640b75        case 1, 0xb, 0xc, 0x14, 0x15\n140640b75        return 0xf\n140640b7c        return 0",
+  "fetched_at": "2026-04-26T17:03:06Z"
+}

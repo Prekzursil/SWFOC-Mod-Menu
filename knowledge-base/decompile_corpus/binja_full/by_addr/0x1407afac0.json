@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407afac0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1407afb41        if (not(*(arg1 + 0x10) f!= *arg2) && not(*(arg1 + 0x14) f!= arg2[1]) && not(*(arg1 + 0x18) f!= arg2[2]) && not(*(arg1 + 0x1c) f!= arg2[3]) && not(*(arg1 + 0x20) f!= arg2[4]) && not(*(arg1 + 0x24) f!= arg2[5]) && not(*(arg1 + 0x28) f!= arg2[6]) && not(*(arg1 + 0x2c) f!= arg2[7]) && not(*(arg1 + 0x30) f!= arg2[8]) && not(*(arg1 + 0x34) f!= arg2[9]) && not(*(arg1 + 0x38) f!= arg2[0xa]) && *(arg1 + 0x3c) f== arg2[0xb])\n1407afb48        return \n1407afb43        return sub_1407b31c0(arg1, arg2) __tailcall",
+  "fetched_at": "2026-04-26T17:32:45Z"
+}

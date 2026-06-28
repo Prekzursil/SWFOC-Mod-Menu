@@ -1,0 +1,7 @@
+{
+  "addr": "0x14021d7e0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined * FUN_14021d7e0(char param_1,char param_2)\n\n{\n  BOOL BVar1;\n  longlong lVar2;\n  char *pcVar3;\n  _SYSTEMTIME local_18;\n  \n  lVar2 = FUN_140216870();\n  if (lVar2 == 0) {\n    pcVar3 = \"{0FC0F8BD-6DC5-48fa-B8FB-7B7B7B82AFB1} Insert version number here...\";\n  }\n  else {\n    pcVar3 = (char *)FUN_140216870();\n  }\n  BVar1 = FileTimeToSystemTime((FILETIME *)(pcVar3 + 0xac),&local_18);\n  if (BVar1 == 0) {\n    return &DAT_140a7e100;\n  }\n  if (param_1 != '\\0') {\n    FUN_14021dc70(&DAT_140a7e100,0x100,\"%02d:%02d:%02d\",local_18.wHour,local_18.wMinute,\n                  local_18.wSecond);\n    return &DAT_140a7e100;\n  }\n  if (param_2 == '\\0') {\n    FUN_14021dc70(&DAT_140a7e100,0x100,\"%d-%d-%d - %02d:%02d:%02d\",local_18.wMonth,local_18.wDay,\n                  local_18.wYear,local_18.wHour,local_18.wMinute,local_18.wSecond);\n    return &DAT_140a7e100;\n  }\n  FUN_14021dc70(&DAT_140a7e100,0x100,\"%d-%d-%d\",local_18.wMonth,local_18.wDay,local_18.wYear);\n  return &DAT_140a7e100;\n}",
+  "fetched_at": "2026-04-26T18:02:21Z"
+}

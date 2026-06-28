@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401ae9c0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1401ae9fd        int32_t result = D3DXCreateEffect(sub_1401771a0(), \"float4 m_solidColor  = {0.0f, 1.0f, 0.0f, 1.0f};technique TNoShader<  string LOD=\"FIXEDFUNCTION\";>{\\tpass P0\\t{\\t\\tMaterialAmbient  = (m_solidColor); \\t\\tMaterialDiffuse  = (m_solidC\", zx.q(data_140a134d8), 0, 0, 0, 0, arg1 + 0x68, 0)\n1401aea06        if (result s>= 0)\n1401aea15        return result\n1401aea08        DebugBreak()\n1401aea0e        return result",
+  "fetched_at": "2026-04-26T17:25:32Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x140524ce0",
+  "tool": "binary_ninja",
+  "fact_id": "rva_ai_execution_system_ctor",
+  "body": "140524ce6        struct ServicedAISystemClass::AIExecutionSystemClass::VTable** result = arg1\n140524ce9        sub_14064c250(arg1, arg2)\n140524cf5        *result = &AIExecutionSystemClass::`vftable'{for `ServicedAISystemClass'}\n140524cfa        __builtin_memset(&result[7], 0, 0x1c)\n140524d09        result[4].b = 0\n140524d14        return result",
+  "fetched_at": "2026-04-26T16:43:47Z"
+}

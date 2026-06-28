@@ -1,0 +1,7 @@
+{
+  "addr": "0x140784afc",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140784b11        int64_t* rsi = **arg1\n140784b1f        int64_t rdi\n140784b1f        rdi.b = __acrt_stdio_begin_temporary_buffering_nolock(rsi)\n140784b3a        uint64_t result = _fwrite_nolock(*arg1[1], *arg1[2], *arg1[3], **arg1)\n140784b48        __acrt_stdio_end_temporary_buffering_nolock(rdi.b, rsi)\n140784b5f        return result",
+  "fetched_at": "2026-04-26T17:31:13Z"
+}

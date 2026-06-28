@@ -1,0 +1,7 @@
+{
+  "addr": "0x1405ea820",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1405ea829        void* rcx = *(arg1 + 0xa0)\n1405ea833        int64_t* result\n1405ea833        if (rcx != 0)\n1405ea840        if (*(arg1 + 0xe5) == 1)\n1405ea842        sub_14038f8d0(rcx)\n1405ea855        if (not(*(arg1 + 0xcc) f<= 0f))\n1405ea85e        sub_14038f8b0(*(arg1 + 0xa0))\n1405ea86c        int32_t zmm0_1\n1405ea86c        result, zmm0_1 = sub_1403a8e50(*(arg1 + 0xa0), 0)\n1405ea878        if (*(arg1 + 0xe4) == 1)\n1405ea87a        int64_t* rcx_3 = data_140b15418\n1405ea884        result = (*(*rcx_3 + 0x228))(rcx_3)\n1405ea88d        if (result != 0)\n1405ea89c        sub_1403a9910(*(arg1 + 0xa0), result, 1, zmm0_1)\n1405ea8a8        if (*(arg1 + 0xe8) == 1)\n1405ea8aa        int64_t* rcx_5 = *(arg1 + 0xa0)\n1405ea8b9        result = (*(*rcx_5 + 0x10))(rcx_5, 1)\n1405ea8bf        if (result != 0)\n1405ea8c1        int64_t rdx_2 = *result\n1405ea8c7        (*(rdx_2 + 0x200))(result, rdx_2)\n1405ea8cd        result.b = 1\n1405ea8d4        return result",
+  "fetched_at": "2026-04-26T17:38:32Z"
+}

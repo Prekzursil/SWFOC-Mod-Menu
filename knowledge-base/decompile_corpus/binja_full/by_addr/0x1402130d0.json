@@ -1,0 +1,7 @@
+{
+  "addr": "0x1402130d0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1402130ea        arg1[7] = 0xf\n1402130fc        *arg1 = &FileClass::`vftable'\n1402130ff        arg1[4] = 0\n140213103        void* rax = &arg1[4]\n140213107        void* rbx = -ffffffffffffffff\n14021310e        __builtin_memset(&arg1[0xa], 0, 0x14)\n140213112        __builtin_memset(&arg1[0xd], 0, 0x1c)\n14021312b        arg1[6] = 0\n140213133        arg1[9].b = 0\n14021313b        arg1[2] = -1\n14021313f        arg1[8] = -1\n140213143        arg1[1].d = 0xffffffff\n140213146        arg1[3].b = 0\n14021314f        if (arg1[7] u>= 0x10)\n140213151        rax = nullptr\n140213154        *rax = 0\n14021315b        int64_t rcx = arg1[0xd]\n140213162        if (rcx != 0)\n140213164        j_sub_1407864b8(rcx)\n140213169        arg1[0xd] = 0\n14021316d        int64_t rcx_1 = arg1[0xe]\n140213174        if (rcx_1 != 0)\n140213176        j_sub_1407864b8(rcx_1)\n14021317b        __builtin_memset(&arg1[0xe], 0, 0x14)\n140213183        void* rax_1 = &arg1[4]\n14021318e        arg1[6] = 0\n140213197        if (arg1[7] u>= 0x10)\n140213199        rax_1 = arg1[4]\n14021319d        *rax_1 = 0\n1402131a0        rbx += 1\n1402131a7        do while (*(rbx + arg2) != 0)\n1402131b3        sub_14005d900(&arg1[4], arg2, rbx)\n1402131d5        return arg1",
+  "fetched_at": "2026-04-26T17:28:25Z"
+}

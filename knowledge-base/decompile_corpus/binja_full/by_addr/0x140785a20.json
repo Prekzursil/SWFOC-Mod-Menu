@@ -1,0 +1,7 @@
+{
+  "addr": "0x140785a20",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140785a22        return _towlower_l(arg1, nullptr) __tailcall",
+  "fetched_at": "2026-04-26T17:31:15Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x140200090",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "int FUN_140200090(void)\n\n{\n  LANGID LVar1;\n  undefined4 *puVar2;\n  uint uVar3;\n  undefined8 *puVar4;\n  undefined8 *puVar5;\n  int iVar6;\n  undefined4 uVar7;\n  \n  LVar1 = GetUserDefaultLangID();\n  puVar2 = &DAT_140a14450;\n  if (DAT_140a14450 != 0xffff) {\n    uVar3 = DAT_140a14450;\n    do {\n      if (LVar1 == uVar3) {\n        iVar6 = puVar2[1];\n        uVar7 = puVar2[2];\n        if ((iVar6 - 5U < 3) || (iVar6 == 10)) {\n          puVar5 = &DAT_140a14190;\n          if (0xf < DAT_140a141a8) {\n            puVar5 = DAT_140a14190;\n          }\n          puVar4 = &DAT_140a14190 + (longlong)iVar6 * 4;\n          if (0xf < (&DAT_140a141a8)[(longlong)iVar6 * 4]) {\n            puVar4 = (undefined8 *)*puVar4;\n          }\n          FUN_140025760(\"Overriding detected language %s to %s\\n\",puVar4,puVar5);\n          iVar6 = 0;\n          uVar7 = 0;\n        }\n        puVar5 = &DAT_140a14190 + (longlong)iVar6 * 4;\n        if (0xf < (&DAT_140a141a8)[(longlong)iVar6 * 4]) {\n          puVar5 = (undefined8 *)*puVar5;\n        }\n        FUN_140025760(\"Supported language = %s\\n\",puVar5);\n        DAT_140a13ed8 = uVar7;\n        return iVar6;\n      }\n      uVar3 = puVar2[3];\n      puVar2 = puVar2 + 3;\n    } while (uVar3 != 0xffff);\n  }\n  DAT_140a13ed8 = 0;\n  return 0;\n}",
+  "fetched_at": "2026-04-26T17:55:23Z"
+}

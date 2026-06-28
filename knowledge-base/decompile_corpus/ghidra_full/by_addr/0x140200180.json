@@ -1,0 +1,7 @@
+{
+  "addr": "0x140200180",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "int FUN_140200180(char *param_1)\n\n{\n  int iVar1;\n  char *_Str1;\n  char *pcVar2;\n  int iVar3;\n  \n  if (param_1 != (char *)0x0) {\n    iVar3 = 0;\n    pcVar2 = (char *)&DAT_140a14190;\n    do {\n      _Str1 = pcVar2;\n      if (0xf < *(ulonglong *)(pcVar2 + 0x18)) {\n        _Str1 = *(char **)pcVar2;\n      }\n      iVar1 = _stricmp(_Str1,param_1);\n      if (iVar1 == 0) {\n        return iVar3;\n      }\n      iVar3 = iVar3 + 1;\n      pcVar2 = pcVar2 + 0x20;\n    } while ((longlong)pcVar2 < 0x140a142f0);\n  }\n  return -1;\n}",
+  "fetched_at": "2026-04-26T17:55:24Z"
+}

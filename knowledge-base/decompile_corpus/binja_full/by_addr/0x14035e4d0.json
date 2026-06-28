@@ -1,0 +1,7 @@
+{
+  "addr": "0x14035e4d0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14035e4df        if (arg2 s>= 0 && arg2 s< *(arg1 + 0x1e8) && arg3 s>= 0)\n14035e4e4        int64_t rdx = sx.q(arg2) * 3\n14035e4e8        int64_t rax_2 = *(arg1 + 0x1e0)\n14035e4f4        if (arg3 s< *(rax_2 + (rdx << 3) + 0x10))\n14035e502        return *(*(rax_2 + (rdx << 3) + 8) + (sx.q(arg3) << 3))\n14035e505        return 0",
+  "fetched_at": "2026-04-26T17:12:41Z"
+}

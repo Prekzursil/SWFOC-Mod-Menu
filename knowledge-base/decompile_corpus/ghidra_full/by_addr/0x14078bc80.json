@@ -1,0 +1,7 @@
+{
+  "addr": "0x14078bc80",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* Library Function - Single Match\n    _callnewh\n   \n   Libraries: Visual Studio 2017 Release, Visual Studio 2019 Release */\n\nint __cdecl _callnewh(size_t _Size)\n\n{\n  int iVar1;\n  longlong lVar2;\n  \n  lVar2 = _query_new_handler();\n  if ((lVar2 != 0) && (iVar1 = (*(code *)PTR__guard_dispatch_icall_1407fdcd8)(_Size), iVar1 != 0)) {\n    return 1;\n  }\n  return 0;\n}",
+  "fetched_at": "2026-04-26T18:51:56Z"
+}

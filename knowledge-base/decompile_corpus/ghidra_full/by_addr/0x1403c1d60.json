@@ -1,0 +1,7 @@
+{
+  "addr": "0x1403c1d60",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "SelectBehaviorClass * __thiscall\nSelectBehaviorClass::vfunction4(SelectBehaviorClass *this,int param_1)\n\n{\n  SelectBehaviorClass *pSVar1;\n  \n  pSVar1 = (SelectBehaviorClass *)0x0;\n  if (param_1 == 2) {\n    pSVar1 = this;\n  }\n  return pSVar1;\n}",
+  "fetched_at": "2026-04-26T17:36:33Z"
+}

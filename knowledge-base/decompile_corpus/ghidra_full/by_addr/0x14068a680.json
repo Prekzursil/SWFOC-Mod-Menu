@@ -1,0 +1,7 @@
+{
+  "addr": "0x14068a680",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_14068a680(void)\n\n{\n  ForceSightAbilityClass *this;\n  \n  this = (ForceSightAbilityClass *)FUN_140769c58(0x180);\n  if (this != (ForceSightAbilityClass *)0x0) {\n    ForceSightAbilityClass::ForceSightAbilityClass(this);\n    return;\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T17:15:56Z"
+}

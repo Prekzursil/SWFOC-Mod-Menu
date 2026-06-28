@@ -1,0 +1,7 @@
+{
+  "addr": "0x140647df0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140647e06        *(arg1 + 0x68) = arg2\n140647e0d        void* rbx = arg2 + 0x38\n140647e14        if (arg2 == 0)\n140647e14        rbx = nullptr\n140647e2b        sub_140220e90(sub_140058570(), rbx, arg1 + 0x40, 0x10)\n140647e30        void* rcx_1 = *(arg1 + 0xc8)\n140647e3a        if (rcx_1 != 0)\n140647e3c        sub_140695560(rcx_1)\n140647e41        void* rcx_2 = *(arg1 + 0xc8)\n140647e4b        if (rcx_2 != 0)\n140647e55        (*(*(rcx_2 + 0x10) + 8))(rcx_2 + 0x10)\n140647e58        *(arg1 + 0xc8) = 0\n140647e66        if (*(arg1 + 0xd0) != 0)\n140647e76        uint128_t zmm1_1 = zx.o(sub_1403711c0(*(arg1 + 0x88), nullptr))\n140647e7a        void* rax_3 = *(arg1 + 0xa0)\n140647e81        zmm1_1 = _mm_cvtepi32_ps(zmm1_1)\n140647e92        sub_1406931e0(*(*(rax_3 + 0xf0) + 0x88), zmm1_1)\n140647eb3        int32_t result = 3\n140647eb8        bool cond:1 = *(*(sub_1405f6fb0(*(*(arg1 + 0xa0) + 0xf0)) + 0x28) + 0x34) == 0\n140647ebb        *(arg1 + 0x28) = 1\n140647ebf        if (cond:1)\n140647ebf        result = 0x16\n140647ec2        *(arg1 + 0xc) = result\n140647ed9        return result",
+  "fetched_at": "2026-04-26T17:04:26Z"
+}

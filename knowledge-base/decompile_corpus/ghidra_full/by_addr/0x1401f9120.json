@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401f9120",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall GUIGadgetFrameClass::vfunction5(GUIGadgetFrameClass *this,undefined4 param_2)\n\n{\n  vfunction1 **ppvVar1;\n  uint uVar2;\n  ulonglong uVar3;\n  \n  uVar2 = 0;\n  if ((*(longlong *)&this[1].GUIGadgetClass_data - (longlong)this[1].vftablePtr) / 0x90 != 0) {\n    uVar3 = 0;\n    do {\n      ppvVar1 = &(this[1].vftablePtr)->vfunction1 + uVar3 * 0x12;\n      (**(code **)(*ppvVar1 + 0x40))(ppvVar1,param_2);\n      uVar2 = uVar2 + 1;\n      uVar3 = (ulonglong)uVar2;\n    } while (uVar3 < (ulonglong)\n                     ((*(longlong *)&this[1].GUIGadgetClass_data - (longlong)this[1].vftablePtr) /\n                     0x90));\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T17:54:00Z"
+}

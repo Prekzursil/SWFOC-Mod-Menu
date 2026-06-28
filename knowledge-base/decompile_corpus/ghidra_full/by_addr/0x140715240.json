@@ -1,0 +1,7 @@
+{
+  "addr": "0x140715240",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "char * __thiscall SuperLaserAbilityClass::vfunction3_for_IXMLLoadableClass(void)\n\n{\n  return \"Super_Laser_Ability\";\n}",
+  "fetched_at": "2026-04-26T17:56:29Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x14021ce30",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14021ce33        if (arg2 u> 3)\n14021ce33        return \n14021ce57        int64_t rcx = (sx.q(arg2) + 0xc8) * 5\n14021ce63        int32_t temp0_2 = _mm_min_ss(0x3f800000, _mm_max_ss(0, arg3))\n14021ce6a        *(arg1 + (rcx << 2) + 4) = temp0_2\n14021ce70        int32_t zmm0 = temp0_2 f- *(arg1 + (rcx << 2))\n14021ce75        *(arg1 + (rcx << 2) + 8) = zmm0\n14021ce7b        if (not(arg4 <= 0f))\n14021ce81        *(arg1 + (rcx << 2) + 8) = zmm0 f/ arg4\n14021ce8d        zmm0 = *(arg1 + (rcx << 2) + 8) f/ 1000f\n14021ce95        zmm0 f- 0f\n14021ce98        *(arg1 + (rcx << 2) + 8) = zmm0\n14021cea0        if (is_unordered.d(zmm0, 0f) || not(zmm0 f== 0f))\n14021cea2        arg4 - 0f\n14021cea7        if (not(is_unordered.d(arg4, 0f)) && not(arg4 != 0f))\n14021cea9        *(arg1 + (rcx << 2)) = temp0_2\n14021cea9        *(arg1 + (rcx << 2)) = temp0_2\n14021cebb        char var_10_1 = 1\n14021cede        sub_14021caf0(arg1, timeGetTime() - data_140a7bec0, arg1 + 0x1000, arg1 + 0x100c, arg1 + 0x1018)\n14021cee8        return ",
+  "fetched_at": "2026-04-26T17:28:57Z"
+}

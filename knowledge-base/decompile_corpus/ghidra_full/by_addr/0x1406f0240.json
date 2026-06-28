@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406f0240",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "BattlefieldModifierAbilityClass * __thiscall\nBattlefieldModifierAbilityClass::scalar_deleting_destructor\n          (BattlefieldModifierAbilityClass *this,uint param_1)\n\n{\n                    /* inlined destructor:\n                       BattlefieldModifierAbilityClass::~BattlefieldModifierAbilityClass */\n  this->vftablePtr = &vftable_for_IXMLLoadableClass;\n  this->vftablePtr = &vftable_for_RefCountClass;\n  (this->BattlefieldModifierAbilityClass_data).offset_0x0 = 0;\n  (this->BattlefieldModifierAbilityClass_data).offset_0x4 = 0;\n  (this->BattlefieldModifierAbilityClass_data).offset_0x8 = 0;\n  (this->BattlefieldModifierAbilityClass_data).offset_0xc = 0;\n  *(undefined8 *)&(this->BattlefieldModifierAbilityClass_data).offset_0x10 = 0;\n  *(undefined4 *)((longlong)&(this->BattlefieldModifierAbilityClass_data).offset_0x14 + 4) = 0;\n  *(undefined2 *)((longlong)&(this->BattlefieldModifierAbilityClass_data).offset_0x1c + 1) = 0;\n  *(undefined1 *)&(this->BattlefieldModifierAbilityClass_data).offset_0x1c = 0;\n  SpecialAbilityClass::~SpecialAbilityClass((SpecialAbilityClass *)this);\n  if ((param_1 & 1) != 0) {\n    thunk_FUN_1407864b8(this,0x198);\n  }\n  return this;\n}",
+  "fetched_at": "2026-04-26T17:47:20Z"
+}

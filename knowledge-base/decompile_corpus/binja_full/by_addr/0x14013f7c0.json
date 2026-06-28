@@ -1,0 +1,7 @@
+{
+  "addr": "0x14013f7c0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14013f7d0        if ((*(arg1 + 0x31) & 2) == 0)\n14013f7e6        arg1[7].d = *arg2\n14013f7ec        *(arg1 + 0x3c) = arg2[1]\n14013f7f2        arg1[8].d = arg2[2]\n14013f7f8        *(arg1 + 0x44) = arg2[3]\n14013f7fe        arg1[9].d = arg2[4]\n14013f804        *(arg1 + 0x4c) = arg2[5]\n14013f80a        arg1[0xa].d = arg2[6]\n14013f810        *(arg1 + 0x54) = arg2[7]\n14013f816        arg1[0xb].d = arg2[8]\n14013f81c        *(arg1 + 0x5c) = arg2[9]\n14013f822        arg1[0xc].d = arg2[0xa]\n14013f828        *(arg1 + 0x64) = arg2[0xb]\n14013f7dd        sub_140140010(arg2, &arg1[0xd], &arg1[7])\n14013f82b        arg1[6].b |= 0x10\n14013f82f        void* result = arg1[0x16]\n14013f83f        if (result != 0 && (*(result + 0x30) & 0x40) != 0)\n14013f84b        result = sub_14013fc40(arg1, nullptr)\n14013f850        int64_t* i = arg1[5]\n14013f857        while (i != 0)\n14013f860        int64_t* rcx_2 = *i\n14013f870        result = (*(*rcx_2 + 0x20))(rcx_2, i, &arg1[0x13])\n14013f873        i = i[2]\n14013f886        return result",
+  "fetched_at": "2026-04-26T17:19:06Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401d2ed0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1401d2ee2        sub_1401d2d90()\n1401d2f02        int64_t rdi\n1401d2f02        rdi.b = data_140a13708(data_140a7a0d0.q) != 0\n1401d2f12        int16_t rax_1\n1401d2f12        if ((data_140a7a0d0 & 0x3ff) != 4 || rdi.b == 0)\n1401d2f18        rax_1.b = 0\n1401d2f14        rax_1.b = 1\n1401d2f1d        data_140a7a0db = rax_1.b\n1401d2f23        int64_t result = data_140a136a8(arg1)\n1401d2f2f        if (result == 0)\n1401d2fa3        data_140a7a0dc = 0\n1401d2fae        return result\n1401d2f38        int32_t rcx_6\n1401d2f38        if (data_140a7a0db == 0)\n1401d2f5d        int32_t rax_2\n1401d2f5d        if (rdi.b != 0)\n1401d2f62        rax_2 = data_140a136c0(result)\n1401d2f6a        if (rdi.b == 0 || rax_2 == 0)\n1401d2f73        rcx_6 = 0\n1401d2f6c        rcx_6 = 1\n1401d2f47        int32_t arg_10\n1401d2f47        void arg_18\n1401d2f47        data_140a136d0(result, &arg_10, &arg_18)\n1401d2f56        rcx_6 = (not.d(arg_10) & 1) + 1\n1401d2f75        data_140a7a0dc = rcx_6\n1401d2f90        jump(data_140a136b0)",
+  "fetched_at": "2026-04-26T17:26:44Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x140771fe0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* Library Function - Single Match\n    void __cdecl __crt_stdio_output::force_decimal_point(char * __ptr64,struct __crt_locale_pointers\n   * __ptr64 const)\n   \n   Libraries: Visual Studio 2019 Debug, Visual Studio 2019 Release */\n\nvoid __cdecl __crt_stdio_output::force_decimal_point(char *param_1,__crt_locale_pointers *param_2)\n\n{\n  byte bVar1;\n  longlong *plVar2;\n  byte *pbVar3;\n  byte bVar4;\n  ulonglong uVar5;\n  bool bVar6;\n  \n  plVar2 = *(longlong **)param_2;\n  uVar5 = (ulonglong)(byte)*param_1;\n  if (*(char *)(uVar5 + plVar2[0x22]) != 'e') {\n    do {\n      uVar5 = (ulonglong)(byte)param_1[1];\n      param_1 = param_1 + 1;\n    } while ((*(byte *)(*plVar2 + uVar5 * 2) & 4) != 0);\n  }\n  bVar6 = *(char *)(uVar5 + plVar2[0x22]) == 'x';\n  if (bVar6) {\n    uVar5 = (ulonglong)(byte)param_1[2];\n  }\n  pbVar3 = (byte *)(param_1 + 2);\n  if (!bVar6) {\n    pbVar3 = (byte *)param_1;\n  }\n  *pbVar3 = **(byte **)plVar2[0x1f];\n  do {\n    pbVar3 = pbVar3 + 1;\n    bVar1 = *pbVar3;\n    bVar4 = (byte)uVar5;\n    *pbVar3 = bVar4;\n    uVar5 = (ulonglong)bVar1;\n  } while (bVar4 != 0);\n  return;\n}",
+  "fetched_at": "2026-04-26T18:50:06Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x14077fe78",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14077fe90        void* var_28\n14077fe90        _LocaleUpdate::_LocaleUpdate(&var_28, arg3)\n14077fea0        void* var_20\n14077fea0        uint64_t result = _strupr_s_l_stat(arg1, arg2, &var_20)\n14077feaa        char var_10\n14077feaa        if (var_10 != 0)\n14077feac        void* rcx_2 = var_28\n14077feb1        *(rcx_2 + 0x3a8) &= 0xfffffffd\n14077fec2        return result",
+  "fetched_at": "2026-04-26T17:31:04Z"
+}

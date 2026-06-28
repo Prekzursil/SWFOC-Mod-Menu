@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401f6740",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1401f6749        sub_1401f4300(arg1)\n1401f6750        BOOL result = OpenClipboard(nullptr)\n1401f6758        if (result == 0)\n1401f67e5        return result\n1401f6768        HANDLE hMem = GetClipboardData(0xd)\n1401f6774        if (hMem != 0)\n1401f677e        int32_t* lpString = GlobalLock(hMem)\n1401f678a        if (lpString != 0)\n1401f67a9        if (sub_1401d27c0(arg1 + 0x298, *(arg1 + 0x2c4), lpString, 0xffffffff) != 0)\n1401f67c2        sub_1401f67f0(arg1, lstrlenW(lpString) + *(arg1 + 0x2c4), 1)\n1401f67ca        GlobalUnlock(hMem)\n1401f67d5        return CloseClipboard()",
+  "fetched_at": "2026-04-26T17:27:24Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406e91e0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* Library Function - Single Match\n    public: virtual void * __ptr64 __cdecl Concurrency::details::UMSFreeThreadProxy::`scalar\n   deleting destructor'(unsigned int) __ptr64\n   \n   Libraries: Visual Studio 2017 Release, Visual Studio 2019 Release\n   ***** Removed Bad FID Symbol ***** */\n\nvoid * __thiscall\nLandTaskForceClass::scalar_deleting_destructor(LandTaskForceClass *this,uint param_1)\n\n{\n                    /* inlined destructor: LandTaskForceClass::~LandTaskForceClass */\n  this->vftablePtr = &vftable_for_LuaUserVar;\n  this->vftablePtr = &vftable_for_SignalListenerClass;\n  this->vftablePtr = &vftable_for_AIDiagnosticsClass;\n  TaskForceClass::~TaskForceClass((TaskForceClass *)this);\n  if ((param_1 & 1) != 0) {\n    thunk_FUN_1407864b8(this,0x120);\n  }\n  return this;\n}",
+  "fetched_at": "2026-04-26T17:46:19Z"
+}

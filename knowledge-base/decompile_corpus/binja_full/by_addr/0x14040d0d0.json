@@ -1,0 +1,7 @@
+{
+  "addr": "0x14040d0d0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14040d0dd        arg1[1] = 0\n14040d0e5        *arg1 = &FormationClass::`vftable'{for `SignalListenerClass'}\n14040d0ef        sub_14040d660(&arg1[2])\n14040d0f4        arg1[0x51].d = 0\n14040d11f        int32_t rax_1 = sub_1401ffb40(&data_140a13e24, 1, int.d(_mm_cvtepi32_ps(zx.o(data_140b0a340)).d)) + data_140b0a320\n14040d136        arg1[0x3b].d = int.d(_mm_cvtepi32_ps(zx.o(data_140b0a340)).d) + rax_1\n14040d142        int32_t rax_3 = data_140b0a320 - 0x1f4\n14040d147        arg1[0x4b] = arg1\n14040d14e        *(arg1 + 0x1dc) = rax_3\n14040d15c        return arg1",
+  "fetched_at": "2026-04-26T17:25:56Z"
+}

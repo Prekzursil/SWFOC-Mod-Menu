@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407a76d0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1407a76d3        return crc32_z(arg1, arg2, zx.q(arg3)) __tailcall",
+  "fetched_at": "2026-04-26T17:32:29Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x1405abac0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1405abadd        sub_1404c2f90(arg1, arg2)\n1405abae2        int64_t* result = arg1[5]\n1405abae6        void* rbx_1 = result[0x15]\n1405abaf0        if (rbx_1 != 0)\n1405abb06        sub_140559250(rbx_1, 0x16)\n1405abb0d        *(rbx_1 + 0xec) = 0\n1405abb13        int64_t* rcx_1 = data_140b15418\n1405abb1d        result = (*(*rcx_1 + 0x228))(rcx_1)\n1405abb26        if (result != 0)\n1405abb2f        result = sub_140426010(result)\n1405abb3a        if (result != 0)\n1405abb40        int64_t r9_1 = *result\n1405abb4c        (*(r9_1 + 0x18))(result, arg2, 0, r9_1)\n1405abb63        int32_t var_78 = *(arg2 + 0x78)\n1405abb68        int32_t zmm0_1 = *(arg2 + 0x80)\n1405abb70        int128_t var_68\n1405abb70        __builtin_memcpy(&var_68, \"\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x6b\\x0b\\x5e\\x5d\\x6b\\x0b\\x5e\\x5d\\x6b\\x0b\\x5e\\x5d\\x01\\x00\\x00\\x00\", 0x18)\n1405abb79        int32_t var_74_1 = (*(arg2 + 0x7c)).d\n1405abb7e        int32_t var_70_1 = zmm0_1\n1405abb83        int32_t var_6c_1 = 0\n1405abb8d        int64_t var_50\n1405abb8d        __builtin_memset(&var_50, 0, 0x24)\n1405abba0        int64_t var_2c_1 = 0x3f\n1405abba8        int64_t var_24_1 = 0x5d5e0b6b\n1405abbb0        int32_t var_1c_1 = 0\n1405abbb3        int32_t var_18_1 = 0x1000001\n1405abbc1        return sub_1404f8200(result, &var_78)\n1405abbe2        return result",
+  "fetched_at": "2026-04-26T17:37:06Z"
+}

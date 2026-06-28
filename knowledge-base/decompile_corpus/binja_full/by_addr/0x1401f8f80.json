@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401f8f80",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1401f8f92        struct GUIGadgetClass::GUIGadgetFrameClass::VTable** result_1 = operator new(0xb0)\n1401f8f97        struct GUIGadgetClass::GUIGadgetFrameClass::VTable** result = result_1\n1401f8f9d        if (result_1 == 0)\n1401f8fda        result = result_1\n1401f8faa        memset(result_1, 0, 0xb0)\n1401f8fb2        sub_1401e3c30(result)\n1401f8fbe        *result = &GUIGadgetFrameClass::`vftable'{for `GUIGadgetClass'}\n1401f8fc3        __builtin_memset(&result[0x13], 0, 0x18)\n1401f8fe8        result[1].d = *(arg1 + 8)\n1401f8fee        if (&result[2] != arg1 + 0x10)\n1401f8ff5        int32_t* rdx_1 = arg1 + 0x10\n1401f8ff8        if (*(arg1 + 0x28) u>= 0x10)\n1401f8ffa        rdx_1 = *(arg1 + 0x10)\n1401f9001        sub_140022730(&result[2], rdx_1, *(arg1 + 0x20))\n1401f900d        result[6].d = *(arg1 + 0x30)\n1401f9018        *(result + 0x34) = *(arg1 + 0x34)\n1401f901f        *(result + 0x44) = *(arg1 + 0x44)\n1401f9025        result[9].d = *(arg1 + 0x48)\n1401f902b        *(result + 0x4c) = *(arg1 + 0x4c)\n1401f9031        result[0xa].d = *(arg1 + 0x50)\n1401f9037        if (&result[0xb] != arg1 + 0x58)\n1401f903e        int32_t* rdx_2 = arg1 + 0x58\n1401f9041        if (*(arg1 + 0x70) u>= 8)\n1401f9043        rdx_2 = *(arg1 + 0x58)\n1401f904a        sub_1400228a0(&result[0xb], rdx_2, *(arg1 + 0x68))\n1401f905c        return result",
+  "fetched_at": "2026-04-26T17:27:26Z"
+}

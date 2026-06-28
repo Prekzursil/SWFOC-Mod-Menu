@@ -1,0 +1,7 @@
+{
+  "addr": "0x14064f510",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nGameObjectTypePerceptualEvaluatorClass * __thiscall\nGameObjectTypePerceptualEvaluatorClass::scalar_deleting_destructor\n          (GameObjectTypePerceptualEvaluatorClass *this,uint param_1)\n\n{\n                    /* inlined destructor:\n                       GameObjectTypePerceptualEvaluatorClass::~GameObjectTypePerceptualEvaluatorClass\n                        */\n  this->vftablePtr = &vftable_for_SignalGeneratorClass;\n  this->vftablePtr = &vftable_for_AIDiagnosticsClass;\n  PerceptualEvaluatorClass::~PerceptualEvaluatorClass((PerceptualEvaluatorClass *)this);\n  if ((param_1 & 1) != 0) {\n    thunk_FUN_1407864b8(this,0x90);\n  }\n  return this;\n}\n\n",
+  "fetched_at": "2026-04-26T17:05:59Z"
+}

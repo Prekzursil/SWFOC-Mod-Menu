@@ -1,0 +1,7 @@
+{
+  "addr": "0x14013cb90",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14013cb9a        int64_t rcx = data_140a62688\n14013cba1        int32_t i_2 = 0\n14013cba3        int64_t r8 = data_140a62680\n14013cbb0        int32_t i_3 = 0\n14013cbb9        if ((rcx - r8) s>> 4 != 0)\n14013cbbb        uint64_t i = 0\n14013cbc0        uint64_t rdx_1 = i * 2\n14013cbc8        (*(r8 + (rdx_1 << 3)))(*(r8 + (rdx_1 << 3) + 8), rdx_1)\n14013cbcc        rcx = data_140a62688\n14013cbd3        i_3 += 1\n14013cbd5        r8 = data_140a62680\n14013cbe2        i = zx.q(i_3)\n14013cbeb        do while (i u< (rcx - r8) s>> 4)\n14013cbfa        if ((rcx - r8) s>> 4 != 0)\n14013cbfa        rcx = r8\n14013cbfe        int64_t r8_1 = data_140a62698\n14013cc05        data_140a62688 = rcx\n14013cc0c        int64_t rcx_2 = data_140a626a0\n14013cc20        if ((rcx_2 - r8_1) s>> 4 != 0)\n14013cc22        uint64_t i_1 = 0\n14013cc30        uint64_t rdx_2 = i_1 * 2\n14013cc38        (*(r8_1 + (rdx_2 << 3)))(*(r8_1 + (rdx_2 << 3) + 8), rdx_2)\n14013cc3c        rcx_2 = data_140a626a0\n14013cc43        i_2 += 1\n14013cc45        r8_1 = data_140a62698\n14013cc52        i_1 = zx.q(i_2)\n14013cc5b        do while (i_1 u< (rcx_2 - r8_1) s>> 4)\n14013cc68        int64_t result = (rcx_2 - r8_1) s>> 4\n14013cc6f        if (result != 0)\n14013cc6f        rcx_2 = r8_1\n14013cc73        data_140a626a0 = rcx_2\n14013cc7f        return result",
+  "fetched_at": "2026-04-26T17:15:19Z"
+}

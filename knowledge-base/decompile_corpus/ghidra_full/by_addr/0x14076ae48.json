@@ -1,0 +1,7 @@
+{
+  "addr": "0x14076ae48",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* Library Function - Single Match\n    capture_current_context\n   \n   Libraries: Visual Studio 2015 Release, Visual Studio 2017 Release, Visual Studio 2019 Release */\n\nvoid capture_current_context(PCONTEXT param_1)\n\n{\n  DWORD64 ControlPc;\n  PRUNTIME_FUNCTION FunctionEntry;\n  DWORD64 local_res8;\n  ulonglong local_res10;\n  PVOID local_res18;\n  \n  RtlCaptureContext();\n  ControlPc = param_1->Rip;\n  FunctionEntry = RtlLookupFunctionEntry(ControlPc,&local_res8,(PUNWIND_HISTORY_TABLE)0x0);\n  if (FunctionEntry != (PRUNTIME_FUNCTION)0x0) {\n    RtlVirtualUnwind(0,local_res8,ControlPc,FunctionEntry,param_1,&local_res18,&local_res10,\n                     (PKNONVOLATILE_CONTEXT_POINTERS)0x0);\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T18:10:25Z"
+}

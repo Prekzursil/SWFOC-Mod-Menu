@@ -1,0 +1,7 @@
+{
+  "addr": "0x140773908",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140773908        *(arg1 + 0x20) += 8\n140773911        int16_t* r8 = *(*(arg1 + 0x20) - 8)\n140773918        int64_t r9_1\n140773918        if (r8 != 0)\n14077391a        r9_1 = *(r8 + 8)\n140773921        uint32_t result\n140773921        if (r8 == 0 || r9_1 == 0)\n140773968        result = 6\n14077396d        *(arg1 + 0x48) = \"(null)\"\n140773971        *(arg1 + 0x54) = 0\n140773923        int32_t rdx_1 = *(arg1 + 0x3c)\n140773929        int32_t rdx_2\n140773929        if (rdx_1 == 2)\n14077394b        rdx_2.b = 0\n140773933        if (rdx_1 == 3 || rdx_1 == 0xc)\n140773947        rdx_2.b = 1\n140773939        if (*(arg1 + 0x3c) == 0xd)\n14077394b        rdx_2.b = 0\n14077393b        void* rax\n14077393b        rax.b = *(arg1 + 0x41)\n14077393e        rax.b -= 0x63\n140773942        rdx_2.b = (rax.b & 0xef) != 0\n14077394d        *(arg1 + 0x48) = r9_1\n140773951        result = zx.d(*r8)\n140773957        if (rdx_2.b == 0)\n140773971        *(arg1 + 0x54) = 0\n140773959        *(arg1 + 0x54) = 1\n14077395d        result u>>= 1\n140773975        *(arg1 + 0x50) = result\n140773978        result.b = 1\n14077397a        return result",
+  "fetched_at": "2026-04-26T17:30:47Z"
+}

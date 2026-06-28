@@ -1,0 +1,7 @@
+{
+  "addr": "0x14035a000",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14035a003        if (arg2 == arg3)\n14035a003        return \n14035a009        int32_t* rcx = arg4 + 0x24\n14035a00d        void* rdx = arg2 - arg4\n14035a014        rcx[-9] = *(rcx + rdx - 0x24)\n14035a01b        rcx[-8] = *(rcx + rdx - 0x20)\n14035a022        rcx[-7] = *(rcx + rdx - 0x1c)\n14035a029        rcx[-6] = *(rcx + rdx - 0x18)\n14035a030        rcx[-5] = *(rcx + rdx - 0x14)\n14035a037        rcx[-4] = *(rcx + rdx - 0x10)\n14035a03e        rcx[-3] = *(rcx + rdx - 0xc)\n14035a045        rcx[-2] = *(rcx + rdx - 8)\n14035a04c        rcx[-1] = *(rcx + rdx - 4)\n14035a052        *rcx = *(rcx + rdx)\n14035a058        rcx[1] = *(rcx + rdx + 4)\n14035a05f        rcx[2] = *(rcx + rdx + 8)\n14035a066        rcx[3] = *(rcx + rdx + 0xc)\n14035a06d        rcx[4] = *(rcx + rdx + 0x10)\n14035a074        rcx[5] = *(rcx + rdx + 0x14)\n14035a07c        rcx[6].b = *(rcx + rdx + 0x18)\n14035a084        *(rcx + 0x19) = *(rcx + rdx + 0x19)\n14035a08b        rcx[7] = *(rcx + rdx + 0x1c)\n14035a092        rcx[8] = *(rcx + rdx + 0x20)\n14035a099        rcx[9] = *(rcx + rdx + 0x24)\n14035a0a0        rcx[0xa] = *(rcx + rdx + 0x28)\n14035a0a7        rcx[0xb] = *(rcx + rdx + 0x2c)\n14035a0aa        rcx = &rcx[0x15]\n14035a0b8        do while (rdx - 0x24 + rcx != arg3)\n14035a0be        return ",
+  "fetched_at": "2026-04-26T17:11:40Z"
+}

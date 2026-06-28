@@ -1,0 +1,7 @@
+{
+  "addr": "0x14068a650",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_14068a650(void)\n\n{\n  ForceLightningAbilityClass *this;\n  \n  this = (ForceLightningAbilityClass *)FUN_140769c58(0x1f8);\n  if (this != (ForceLightningAbilityClass *)0x0) {\n    ForceLightningAbilityClass::ForceLightningAbilityClass(this);\n    return;\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T17:15:55Z"
+}

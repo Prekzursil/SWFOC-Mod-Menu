@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407ce440",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "int FUN_1407ce440(undefined8 param_1,int param_2)\n\n{\n  int iVar1;\n  int iVar2;\n  int iVar3;\n  double dVar4;\n  \n  if (param_2 + 9999U < 10000) {\n    iVar1 = FUN_1407b8ef0();\n    param_2 = param_2 + 1 + iVar1;\n  }\n  iVar1 = 1;\n  FUN_1407b94a0(param_1,&DAT_1408fd330,1);\n  FUN_1407b9720(param_1,param_2);\n  dVar4 = (double)FUN_1407b9bc0(param_1,0xffffffff);\n  iVar3 = (int)dVar4;\n  if ((iVar3 == 0) && (iVar2 = FUN_1407b8fb0(param_1,0xffffffff), iVar2 == 0)) {\n    FUN_1407b9ab0(param_1,0xfffffffe);\n  }\n  else {\n    FUN_1407b9ab0(param_1,0xfffffffe);\n    if (-1 < iVar3) {\n      return iVar3;\n    }\n  }\n  FUN_1407cdd60(param_1);\n  FUN_1407b9600(param_1,param_2);\n  FUN_1407b9720(param_1,0xfffffffe);\n  dVar4 = (double)FUN_1407b9bc0(param_1,0xffffffff);\n  iVar3 = (int)dVar4;\n  if ((iVar3 == 0) && (iVar2 = FUN_1407b8fb0(param_1,0xffffffff), iVar2 == 0)) {\n    FUN_1407b9ab0(param_1,0xfffffffd);\n  }\n  else {\n    FUN_1407b9ab0(param_1,0xfffffffd);\n    if (-1 < iVar3) {\n      return iVar3;\n    }\n  }\n  FUN_1407b9770(param_1,param_2,1);\n  iVar3 = FUN_1407b9e00(param_1,0xffffffff);\n  while (iVar3 != 0) {\n    FUN_1407b9ab0(param_1,0xfffffffe);\n    iVar1 = iVar1 + 1;\n    FUN_1407b9770(param_1,param_2,iVar1);\n    iVar3 = FUN_1407b9e00(param_1,0xffffffff);\n  }\n  FUN_1407b9ab0(param_1,0xfffffffe);\n  return iVar1 + -1;\n}",
+  "fetched_at": "2026-04-26T18:57:42Z"
+}

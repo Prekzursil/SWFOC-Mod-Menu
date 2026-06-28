@@ -1,0 +1,7 @@
+{
+  "addr": "0x1403deac0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1403dead7        int64_t* rax = sub_140347b50(0x234)\n1403deaea        char var_28\n1403deaea        char var_20\n1403deaea        int64_t r8\n1403deaea        if (rax != 0)\n1403deaf2        r8.b = 1\n1403deafb        (*(*rax + 0x148))(rax, arg2, r8, 0)\n1403deb1c        var_20 = 1\n1403deb36        var_28 = (int.d(data_140b15d40 * 255f)).b\n1403deb58        (*(*rax + 0x128))(rax, zx.q(int.d(data_140b15d34 * 255f)), zx.q((int.d(data_140b15d38 * 255f)).b), zx.q(int.d(data_140b15d3c * 255f)), var_28, 1, arg3)\n1403deb64        int64_t* result = sub_140347b50(0x2af)\n1403deb6f        if (result == 0)\n1403debf3        return result\n1403deb77        r8.b = 1\n1403deb80        (*(*result + 0x148))(result, arg2, r8, 0, var_28, var_20, arg3)\n1403debdd        return (*(*result + 0x128))(result, zx.q(int.d(data_140b15d34 * 255f)), zx.q((int.d(data_140b15d38 * 255f)).b), zx.q(int.d(data_140b15d3c * 255f)), (int.d(data_140b15d40 * 255f)).b, 1)",
+  "fetched_at": "2026-04-26T17:25:07Z"
+}

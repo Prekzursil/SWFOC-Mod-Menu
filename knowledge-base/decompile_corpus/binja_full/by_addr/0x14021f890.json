@@ -1,0 +1,7 @@
+{
+  "addr": "0x14021f890",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14021f894        HKEY hKey = *arg1\n14021f897        uint32_t result = zx.d(arg3)\n14021f89b        uint32_t data = result\n14021f89f        uint32_t lpcbData[0x4]\n14021f89f        lpcbData[0] = 4\n14021f8aa        if (hKey != 0)\n14021f8c6        RegQueryValueExA(hKey, arg2, nullptr, nullptr, &data, &lpcbData)\n14021f8cc        result = data\n14021f8d2        result.b = result != 0\n14021f8d9        return result",
+  "fetched_at": "2026-04-26T17:29:04Z"
+}

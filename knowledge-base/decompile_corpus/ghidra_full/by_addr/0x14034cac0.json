@@ -1,0 +1,7 @@
+{
+  "addr": "0x14034cac0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nundefined4 FUN_14034cac0(longlong param_1)\n\n{\n  return *(undefined4 *)(param_1 + 8);\n}\n\n",
+  "fetched_at": "2026-04-26T17:09:21Z"
+}

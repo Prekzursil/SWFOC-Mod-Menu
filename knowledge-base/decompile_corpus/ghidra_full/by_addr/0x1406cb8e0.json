@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406cb8e0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* WARNING: Removing unreachable block (ram,0x0001406cb8f4) */\n\nundefined1 __thiscall BaseCombatantClass::vfunction45(void)\n\n{\n  return 0;\n}",
+  "fetched_at": "2026-04-26T17:40:42Z"
+}

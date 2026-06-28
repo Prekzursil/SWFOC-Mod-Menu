@@ -1,0 +1,7 @@
+{
+  "addr": "0x1402606b0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1402606c5        void* rcx = *(arg1 + 0x78)\n1402606cf        if (rcx == 0)\n1402606cf        return \n1402606df        int128_t zmm6\n1402606df        zmm6.d = float.s(zx.q(arg2))\n1402606e4        int32_t rax_2 = sub_140271cd0(rcx)\n1402606e9        void* rcx_1 = *(arg1 + 0x78)\n1402606f4        zmm6.d = zmm6.d f/ float.s(rax_2)\n1402606f8        *(arg1 + 0x80) = zmm6.d\n140260703        zmm6.d = float.s(zx.q(arg4))\n140260708        int32_t rax_3 = sub_140271cd0(rcx_1)\n14026070d        void* rcx_2 = *(arg1 + 0x78)\n140260718        zmm6.d = zmm6.d f/ float.s(rax_3)\n14026071c        zmm6.d = zmm6.d f+ *(arg1 + 0x80)\n140260724        *(arg1 + 0x84) = zmm6.d\n14026072f        zmm6.d = float.s(zx.q(arg3))\n140260734        int32_t rax_4 = sub_140271c80(rcx_2)\n140260739        void* rcx_3 = *(arg1 + 0x78)\n140260748        zmm6.d = zmm6.d f/ float.s(rax_4)\n14026074c        *(arg1 + 0x88) = zmm6.d\n140260757        zmm6.d = float.s(zx.q(arg5))\n140260768        zmm6.d = zmm6.d f/ float.s(sub_140271c80(rcx_3))\n14026076c        zmm6.d = zmm6.d f+ *(arg1 + 0x88)\n140260774        *(arg1 + 0x8c) = zmm6.d\n140260790        return ",
+  "fetched_at": "2026-04-26T17:31:13Z"
+}

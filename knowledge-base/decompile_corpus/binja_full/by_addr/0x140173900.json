@@ -1,0 +1,7 @@
+{
+  "addr": "0x140173900",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140173909        uint32_t result = GetCurrentThreadId()\n14017391e        if (result != data_140a155d0 || data_140a62740 == 0)\n140173924        int64_t* rcx = *(arg1 + 0x1f0)\n14017392e        if (rcx != 0)\n140173937        int32_t* rax_1 = (*(*rcx + 0x60))(rcx)\n14017393f        *(arg1 + 0x22c) = *rax_1\n140173948        *(arg1 + 0x230) = rax_1[1]\n140173951        *(arg1 + 0x234) = rax_1[2]\n140173957        int32_t zmm0 = rax_1[3]\n14017395c        *(arg1 + 0x238) = zmm0\n140173967        *(arg1 + 0x23c) = rax_1[4]\n140173970        *(arg1 + 0x240) = rax_1[5]\n140173979        *(arg1 + 0x244) = rax_1[6]\n140173982        *(arg1 + 0x248) = rax_1[7]\n14017398b        *(arg1 + 0x24c) = rax_1[8]\n140173994        *(arg1 + 0x250) = rax_1[9]\n14017399d        *(arg1 + 0x254) = rax_1[0xa]\n1401739a3        int32_t rax_7 = rax_1[0xb]\n1401739a6        *(arg1 + 0x210) = zmm0\n1401739ae        *(arg1 + 0x258) = rax_7\n1401739ba        *(arg1 + 0x214) = *(arg1 + 0x248)\n1401739c0        result = *(arg1 + 0x258)\n1401739c6        *(arg1 + 0x218) = result\n1401739d1        return result",
+  "fetched_at": "2026-04-26T17:23:04Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x1403dd840",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_1403dd840(longlong param_1)\n\n{\n  int iVar1;\n  longlong lVar2;\n  \n  iVar1 = 0;\n  if (0 < *(int *)(param_1 + 0x2960)) {\n    lVar2 = 0;\n    do {\n      (**(code **)(**(longlong **)(lVar2 + *(longlong *)(param_1 + 0x2958)) + 0x68))();\n      iVar1 = iVar1 + 1;\n      lVar2 = lVar2 + 8;\n    } while (iVar1 < *(int *)(param_1 + 0x2960));\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T17:39:01Z"
+}

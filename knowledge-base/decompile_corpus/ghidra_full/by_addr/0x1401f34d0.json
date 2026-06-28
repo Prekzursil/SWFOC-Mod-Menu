@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401f34d0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "GUIGadgetIMEEditboxClass * __thiscall\nGUIGadgetIMEEditboxClass::scalar_deleting_destructor(GUIGadgetIMEEditboxClass *this,uint param_1)\n\n{\n  ~GUIGadgetIMEEditboxClass(this);\n  if ((param_1 & 1) != 0) {\n    thunk_FUN_1407864b8(this,0x420);\n  }\n  return this;\n}",
+  "fetched_at": "2026-04-26T17:53:23Z"
+}

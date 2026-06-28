@@ -1,0 +1,7 @@
+{
+  "addr": "0x140496570",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "longlong * FUN_140496570(longlong param_1,longlong *param_2,byte *param_3)\n\n{\n  longlong lVar1;\n  longlong lVar2;\n  longlong *plVar3;\n  \n  lVar1 = *(longlong *)(param_1 + 8);\n  plVar3 = (longlong *)\n           ((*(ulonglong *)(param_1 + 0x30) &\n            (((((((((ulonglong)*param_3 ^ 0xcbf29ce484222325) * 0x100000001b3 ^\n                  (ulonglong)param_3[1]) * 0x100000001b3 ^ (ulonglong)param_3[2]) * 0x100000001b3 ^\n                (ulonglong)param_3[3]) * 0x100000001b3 ^ (ulonglong)param_3[4]) * 0x100000001b3 ^\n              (ulonglong)param_3[5]) * 0x100000001b3 ^ (ulonglong)param_3[6]) * 0x100000001b3 ^\n            (ulonglong)param_3[7]) * 0x100000001b3) * 0x10 + *(longlong *)(param_1 + 0x18));\n  lVar2 = plVar3[1];\n  if (lVar2 != lVar1) {\n    if (*(longlong *)param_3 == *(longlong *)(lVar2 + 0x10)) goto LAB_140496630;\n    while (lVar2 != *plVar3) {\n      lVar2 = *(longlong *)(lVar2 + 8);\n      if (*(longlong *)param_3 == *(longlong *)(lVar2 + 0x10)) {\n        if (lVar2 == 0) {\n          lVar2 = lVar1;\n        }\n        *param_2 = lVar2;\n        return param_2;\n      }\n    }\n  }\n  lVar2 = 0;\nLAB_140496630:\n  if (lVar2 == 0) {\n    lVar2 = lVar1;\n  }\n  *param_2 = lVar2;\n  return param_2;\n}",
+  "fetched_at": "2026-04-26T18:03:34Z"
+}

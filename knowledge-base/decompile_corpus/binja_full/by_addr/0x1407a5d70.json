@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407a5d70",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1407a5d87        scan_tree(arg1, arg1 + 0xbc, *(arg1 + 0xb48))\n1407a5d9a        scan_tree(arg1, arg1 + 0x9b0, *(arg1 + 0xb60))\n1407a5da6        sub_1407a5e40(arg1, arg1 + 0xb70)\n1407a5dab        uint64_t rdx_3 = 0x12\n1407a5db0        void* const rax = &data_1408e0608\n1407a5dcd        while (*(arg1 + (zx.q(*(rax + 2)) << 2) + 0xaa6) == 0)\n1407a5ddc        if (*(arg1 + (zx.q(*(rax + 1)) << 2) + 0xaa6) != 0)\n1407a5e18        rdx_3 = zx.q(rdx_3.d - 1)\n1407a5e18        break\n1407a5dea        if (*(arg1 + (zx.q(*rax) << 2) + 0xaa6) != 0)\n1407a5e13        rdx_3 = zx.q(rdx_3.d - 2)\n1407a5e16        break\n1407a5df9        if (*(arg1 + (zx.q(*(rax - 1)) << 2) + 0xaa6) != 0)\n1407a5e0e        rdx_3 = zx.q(rdx_3.d - 3)\n1407a5e11        break\n1407a5dfb        rax -= 4\n1407a5dff        rdx_3 = zx.q(rdx_3.d - 4)\n1407a5e0a        if (-0x1408e05f6 + rax s< 3)\n1407a5e0a        break\n1407a5e25        *(arg1 + 0x1700) += ((rdx_3 << 1) + 0x11).d + rdx_3.d\n1407a5e30        return zx.q(rdx_3.d)",
+  "fetched_at": "2026-04-26T17:32:28Z"
+}

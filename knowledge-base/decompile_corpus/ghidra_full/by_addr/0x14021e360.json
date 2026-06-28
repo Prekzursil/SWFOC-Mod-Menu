@@ -1,0 +1,7 @@
+{
+  "addr": "0x14021e360",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "DynamicVectorClass<struct_BandwidthStatsClass::StatsStruct> * __thiscall\nDynamicVectorClass<struct_BandwidthStatsClass::StatsStruct>::scalar_deleting_destructor\n          (DynamicVectorClass<struct_BandwidthStatsClass::StatsStruct> *this,uint param_1)\n\n{\n  ~DynamicVectorClass<struct_BandwidthStatsClass::StatsStruct>(this);\n  if ((param_1 & 1) != 0) {\n    thunk_FUN_1407864b8(this,0x18);\n  }\n  return this;\n}",
+  "fetched_at": "2026-04-26T18:02:29Z"
+}

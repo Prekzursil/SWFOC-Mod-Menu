@@ -1,0 +1,7 @@
+{
+  "addr": "0x14044d1d0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "ChatEventClass * __thiscall ChatEventClass::ChatEventClass(ChatEventClass *this)\n\n{\n  EventClass::EventClass((EventClass *)this);\n  (this->EventClass_data).offset_0x8 = 0x10;\n  this->vftablePtr = &vftable;\n  (this->ChatEventClass_data).offset_0x0 = 0;\n  (this->ChatEventClass_data).offset_0x10 = 0;\n  (this->ChatEventClass_data).offset_0x18 = 7;\n  return this;\n}",
+  "fetched_at": "2026-04-26T17:54:40Z"
+}

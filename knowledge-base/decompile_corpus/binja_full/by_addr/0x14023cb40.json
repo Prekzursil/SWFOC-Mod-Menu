@@ -1,0 +1,7 @@
+{
+  "addr": "0x14023cb40",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14023cb5e        EnterCriticalSection(arg1 + 0x90)\n14023cb69        void* result\n14023cb69        if (*(arg1 + 0x28) == 0)\n14023cbdc        result = nullptr\n14023cb72        void* rdx_1 = *(**(arg1 + 0x20) + 0x10)\n14023cb84        if (rdx_1 == 0 || *(rdx_1 + 0x80) != *(arg1 + 0x6c))\n14023cbb8        label_14023cbb8:\n14023cbb8        result = *(**(arg1 + 0x20) + 0x10)\n14023cbbf        if (result == 0)\n14023cbdc        result = nullptr\n14023cbc1        int32_t rax_7 = *(arg1 + 0x6c)\n14023cbca        if (*(result + 0x80) != rax_7)\n14023cbdc        result = nullptr\n14023cbd2        *(arg1 + 0x6c) = rax_7 + 1\n14023cbd5        sub_14023e030(arg1 + 0x20)\n14023cb94        if (sub_1402074d0(&data_140b09d08, rdx_1) == 0)\n14023cb94        goto label_14023cbb8\n14023cba0        if (sub_14023d9a0(arg1) == 0)\n14023cba0        goto label_14023cbb8\n14023cbac        result = sub_14023dab0(arg1, 0)\n14023cbe5        LeaveCriticalSection(arg1 + 0x90)\n14023cc02        return result",
+  "fetched_at": "2026-04-26T17:30:05Z"
+}

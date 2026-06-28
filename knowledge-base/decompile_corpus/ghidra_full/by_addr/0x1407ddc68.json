@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407ddc68",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* Library Function - Single Match\n    fread_s\n   \n   Library: Visual Studio 2019 Release */\n\nsize_t __cdecl fread_s(void *_DstBuf,size_t _DstSize,size_t _ElementSize,size_t _Count,FILE *_File)\n\n{\n  ulong *puVar1;\n  size_t sVar2;\n  \n  if ((_ElementSize != 0) && (_Count != 0)) {\n    if (_File != (FILE *)0x0) {\n      FUN_140784aa4(_File);\n      sVar2 = _fread_nolock_s(_DstBuf,_DstSize,_ElementSize,_Count,_File);\n      FUN_140784ab0(_File);\n      return sVar2;\n    }\n    if (_DstSize != 0xffffffffffffffff) {\n      FUN_14076c430(_DstBuf,0,_DstSize);\n    }\n    puVar1 = __doserrno();\n    *puVar1 = 0x16;\n    FUN_1407711ac();\n  }\n  return 0;\n}",
+  "fetched_at": "2026-04-26T18:59:06Z"
+}

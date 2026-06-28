@@ -1,0 +1,7 @@
+{
+  "addr": "0x1405f5230",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1405f5236        int32_t rdx = *(arg1 + 0x34)\n1405f523e        if (rdx == 0)\n1405f528d        struct AIDiagnosticsClass::VTable** rax_5 = operator new(0x2b8)\n1405f5295        if (rax_5 != 0)\n1405f52a2        return std::bad_function_call::bad_function_call(rax_5, arg1) __tailcall\n1405f5243        if (rdx == 1)\n1405f526e        struct AIDiagnosticsClass::VTable** rax_3 = operator new(0x2b8)\n1405f5276        if (rax_3 != 0)\n1405f5283        return sub_1406b86e0(rax_3, arg1) __tailcall\n1405f5248        if (rdx == 2)\n1405f524f        struct AIDiagnosticsClass::VTable** rax_1 = operator new(0x2b8)\n1405f5257        if (rax_1 != 0)\n1405f5264        return sub_1406b88d0(rax_1, arg1) __tailcall\n1405f52ae        return 0",
+  "fetched_at": "2026-04-26T17:22:29Z"
+}

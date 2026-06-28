@@ -1,0 +1,7 @@
+{
+  "addr": "0x14057d2f0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14057d2f6        int64_t* rcx = *(arg1 + 0x60)\n14057d300        if (rcx == 0)\n14057d399        return 0\n14057d316        struct LuaUserVar::GameObjectTypeWrapper::VTable** rax_1 = sub_1406051b0(sub_1403973b0(rcx), arg2)\n14057d321        if (rax_1 == 0)\n14057d331        return 0\n14057d337        struct LuaVar::LuaValue<class std::vector<class SmartPtr<class LuaVar> >, 2>::VTable** result = sub_14024a250()\n14057d33f        struct LuaUserVar::GameObjectTypeWrapper::VTable** arg_8 = rax_1\n14057d34a        (*rax_1)->__offset(0x0).q(rax_1)\n14057d34c        int64_t* rdx_1 = result[3]\n14057d354        if (rdx_1 == result[4])\n14057d371        sub_140144900(&result[2], rdx_1, &arg_8)\n14057d356        *rdx_1 = rax_1\n14057d35f        (*rax_1)->__offset(0x0).q(rax_1)\n14057d361        result[3] = &result[3]->vFunc_1\n14057d376        struct LuaUserVar::GameObjectTypeWrapper::VTable* rdx_2 = *rax_1\n14057d37c        rdx_2->__offset(0x8).q(rax_1, rdx_2)\n14057d391        return result",
+  "fetched_at": "2026-04-26T17:35:15Z"
+}

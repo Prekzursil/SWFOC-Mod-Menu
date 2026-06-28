@@ -1,0 +1,7 @@
+{
+  "addr": "0x140796e34",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140796e38        int32_t result = data_140b3caf4\n140796e40        if (result != 0)\n140796e73        return result\n140796e45        __vcrt_unlock(result + 6)\n140796e53        if (data_140b3caf4 == 0)\n140796e55        tzset_nolock()\n140796e5a        data_140b3caf4 += 1\n140796e6a        return __vcrt_lock(6) __tailcall",
+  "fetched_at": "2026-04-26T17:32:00Z"
+}

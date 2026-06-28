@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407df380",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1407df38f        __builtin_memset(arg1, 0, 0x30)\n1407df3a9        sub_1407dffe0(arg1, 0x20)\n1407df3c0        int64_t rax\n1407df3c0        int64_t rdx\n1407df3c0        rdx:rax = muls.dp.q(0x2aaaaaaaaaaaaaab, arg1[5] - arg1[3])\n1407df3c3        int64_t rdx_1 = rdx s>> 1\n1407df3d4        if (rdx_1 + (rdx_1 u>> 0x3f) u< 0x20)\n1407df3df        sub_140153a90(&arg1[3], 0x20)\n1407df3f1        return arg1",
+  "fetched_at": "2026-04-26T17:34:11Z"
+}

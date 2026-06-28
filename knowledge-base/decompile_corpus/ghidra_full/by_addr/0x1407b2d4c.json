@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407b2d4c",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall al3DCable::vfunction1_for_MultiLinkedListMember(al3DCable *this,uint param_1)\n\n{\n  scalar_deleting_destructor((al3DCable *)&this[-1].al3DCable_data.field_0x1b8,param_1);\n  return;\n}",
+  "fetched_at": "2026-04-26T18:55:40Z"
+}

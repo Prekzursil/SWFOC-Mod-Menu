@@ -1,0 +1,7 @@
+{
+  "addr": "0x140637f70",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140637f83        *arg1 = &DynamicTransformBehaviorClass::`vftable'{for `BehaviorClass'}\n140637f90        arg1[1] = &DynamicTransformBehaviorClass::`vftable'{for `RefCountClass'}\n140637f9b        arg1[3] = &DynamicTransformBehaviorClass::`vftable'{for `SignalListenerClass'}\n140637f9f        sub_1404c3310(arg1)\n140637fa7        if ((arg2 & 1) != 0)\n140637fb1        j_sub_1407864b8(arg1)\n140637fc3        return arg1",
+  "fetched_at": "2026-04-26T17:01:11Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x14060c650",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined1 __thiscall AutoResolveClass::vfunction29(AutoResolveClass *this)\n\n{\n  return *(undefined1 *)&(this->AutoResolveClass_data).offset_0x0;\n}",
+  "fetched_at": "2026-04-26T17:26:13Z"
+}

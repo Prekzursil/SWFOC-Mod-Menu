@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401ba5a0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1401ba5a7        char* rcx = arg1 + 8\n1401ba5b3        void var_118\n1401ba5b3        void* rdx = &var_118 - rcx\n1401ba5cc        char i\n1401ba5c0        i = *rcx\n1401ba5c3        *(rdx + rcx) = i\n1401ba5c6        rcx = &rcx[1]\n1401ba5cc        do while (i != 0)\n1401ba5d6        void var_119\n1401ba5d6        void* rax_1 = &var_119\n1401ba5e8        bool cond:0_1\n1401ba5e0        cond:0_1 = *(rax_1 + 1) != 0\n1401ba5e4        rax_1 += 1\n1401ba5e8        do while (cond:0_1)\n1401ba5ea        int64_t rdx_1 = 0\n1401ba5fe        char i_1\n1401ba5f0        i_1 = arg3[rdx_1]\n1401ba5f5        *(rax_1 + rdx_1) = i_1\n1401ba5f8        rdx_1 += 1\n1401ba5fe        do while (i_1 != 0)\n1401ba615        void var_1a8\n1401ba615        sub_1402130d0(&var_1a8, &var_118)\n1401ba624        char rax_2 = sub_140213840(&var_1a8, 0, 0)\n1401ba62b        uint32_t rax_3\n1401ba62b        if (rax_2 != 0)\n1401ba632        rax_3 = sub_140213db0(&var_1a8)\n1401ba63b        if (rax_2 == 0 || rax_3 == 0)\n1401ba692        *arg4 = nullptr\n1401ba69d        *arg5 = 0\n1401ba647        uint8_t* rax_4 = j_operator new(zx.q(rax_3))\n1401ba65a        sub_1402139d0(&var_1a8, rax_4, rax_3)\n1401ba667        *arg4 = rax_4\n1401ba672        *arg5 = rax_3\n1401ba679        sub_1402138d0(&var_1a8)\n1401ba6a4        sub_1402132f0(&var_1a8)\n1401ba6ba        return 0",
+  "fetched_at": "2026-04-26T17:25:56Z"
+}

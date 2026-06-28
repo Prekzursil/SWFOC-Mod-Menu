@@ -1,0 +1,7 @@
+{
+  "addr": "0x140371df0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140371dfe        int32_t arg_10\n140371dfe        float arg_18\n140371dfe        sub_140371be0(arg1, &arg_10, &arg_18)\n140371e03        int32_t zmm0 = arg_10\n140371e09        float zmm1 = arg_18\n140371e1f        return sqrtf(zmm0 f* zmm0 f+ zmm1 * zmm1) __tailcall",
+  "fetched_at": "2026-04-26T17:15:56Z"
+}

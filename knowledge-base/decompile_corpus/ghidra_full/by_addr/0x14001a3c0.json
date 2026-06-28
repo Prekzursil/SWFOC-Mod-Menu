@@ -1,0 +1,7 @@
+{
+  "addr": "0x14001a3c0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nvoid FUN_14001a3c0(void)\n\n{\n  ChatEventClass::ChatEventClass((ChatEventClass *)&DAT_140b37b30);\n  atexit(RefCountClass::RefCountClass_Constructor_or_Destructor);\n  return;\n}\n\n",
+  "fetched_at": "2026-04-26T16:51:07Z"
+}

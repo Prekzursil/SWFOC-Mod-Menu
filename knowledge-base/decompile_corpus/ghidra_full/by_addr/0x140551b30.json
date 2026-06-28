@@ -1,0 +1,7 @@
+{
+  "addr": "0x140551b30",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "AmbientSFXDataPackClass * __thiscall\nAmbientSFXDataPackClass::AmbientSFXDataPackClass(AmbientSFXDataPackClass *this)\n\n{\n  *(undefined4 *)&this->PooledObjectClass<class_AmbientSFXDataPackClass,20,class_EmptyLockerClass> =\n       0;\n  this->vftablePtr = &vftable;\n  return this;\n}",
+  "fetched_at": "2026-04-26T18:38:04Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x140725310",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140725313        arg1[2] = arg2\n14072531e        arg1[1].d = 0\n140725322        *arg1 = &TacticalRegionAITargetLocationClass::`vftable'{for `AITargetLocationClass'}\n140725328        arg1[3].d = 0xffffffff\n14072532f        arg1[5] = 0\n140725333        arg1[6] = 0\n140725337        return arg1",
+  "fetched_at": "2026-04-26T17:28:28Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x14020a820",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall MultiLinkedListMember::~MultiLinkedListMember(MultiLinkedListMember *this)\n\n{\n  longlong *plVar1;\n  longlong lVar2;\n  longlong *plVar3;\n  longlong *plVar4;\n  \n  this->vftablePtr = &vftable;\n  plVar1 = (this->MultiLinkedListMember_data).offset_0x0;\n  do {\n    if (plVar1 == (longlong *)0x0) {\n      return;\n    }\n    lVar2 = plVar1[4];\n    plVar4 = (longlong *)0x0;\n    do {\n      plVar3 = plVar1;\n      if (plVar3[4] == lVar2) {\n        *(longlong *)(*plVar3 + 8) = plVar3[1];\n        *(longlong *)plVar3[1] = *plVar3;\n        if (plVar4 == (longlong *)0x0) {\n          (this->MultiLinkedListMember_data).offset_0x0 = (longlong *)plVar3[2];\n        }\n        else {\n          plVar4[2] = plVar3[2];\n        }\n        thunk_FUN_1407864b8(plVar3,0x28);\n        *(int *)(lVar2 + 0x30) = *(int *)(lVar2 + 0x30) + -1;\n        *(undefined4 *)(lVar2 + 0x38) = 0xfffffc19;\n        break;\n      }\n      plVar1 = (longlong *)plVar3[2];\n      plVar4 = plVar3;\n    } while ((longlong *)plVar3[2] != (longlong *)0x0);\n    plVar1 = (this->MultiLinkedListMember_data).offset_0x0;\n  } while( true );\n}",
+  "fetched_at": "2026-04-26T17:58:06Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x14035cb10",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14035cb1d        int32_t i = 0\n14035cb22        arg1[0x13].b = 1\n14035cb29        arg1[2].d = 0\n14035cb34        if ((*(*arg1 + 0xf0))() == 1)\n14035cb39        int64_t* rax_2 = operator new(0x20)\n14035cb41        int64_t* rax_3\n14035cb41        if (rax_2 == 0)\n14035cb4d        rax_3 = nullptr\n14035cb46        rax_3 = sub_1404eab00(rax_2)\n14035cb53        arg1[0x54] = rax_3\n14035cb5a        sub_1404eb4e0(rax_3)\n14035cb6a        sub_1404d9df0(sub_14028a5d0(), arg1)\n14035cb79        sub_14044b500(&data_140a28c10, arg1)\n14035cb85        *(arg1 + 0x9a) = 1\n14035cba9        if (sub_14028afb0(&data_140b153e0) == 1 && ((data_140a16fd8 - data_140a16fd0) s>> 3).d s> 0)\n14035cbb9        void* rax_9 = sub_140294bc0(&data_140a16fd0, i)\n14035cbc1        if (rax_9 != 0)\n14035cbd0        sub_140288980(rax_9, 1, 0, 0)\n14035cbdc        i += 1\n14035cbeb        do while (i s< ((data_140a16fd8 - data_140a16fd0) s>> 3).d)\n14035cbed        int64_t result = data_140b31418\n14035cbf7        if (result == 0)\n14035cc05        return result\n14035cbf9        return result()",
+  "fetched_at": "2026-04-26T17:11:55Z"
+}

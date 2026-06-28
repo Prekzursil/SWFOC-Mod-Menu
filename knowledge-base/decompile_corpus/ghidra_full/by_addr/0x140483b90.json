@@ -1,0 +1,7 @@
+{
+  "addr": "0x140483b90",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall\nDatabaseObjectManagerClass<class_TargetingPrioritySetClass>::\n~DatabaseObjectManagerClass<class_TargetingPrioritySetClass>\n          (DatabaseObjectManagerClass<class_TargetingPrioritySetClass> *this)\n\n{\n  longlong *plVar1;\n  longlong *plVar2;\n  \n  this->vftablePtr = &vftable;\n  plVar1 = (this->DatabaseObjectManagerClass<class_TargetingPrioritySetClass>_data).offset_0x8;\n  plVar2 = (longlong *)*plVar1;\n  if (plVar2 != plVar1) {\n    do {\n      if (plVar2[6] != 0) {\n        (*this->vftablePtr->vfunction2)(this);\n      }\n      plVar2 = (longlong *)*plVar2;\n    } while (plVar2 != (this->DatabaseObjectManagerClass<class_TargetingPrioritySetClass>_data).\n                       offset_0x8);\n  }\n  FUN_140145610(&this->DatabaseObjectManagerClass<class_TargetingPrioritySetClass>_data);\n  FUN_1401450b0(&this->DatabaseObjectManagerClass<class_TargetingPrioritySetClass>_data);\n  DatabaseUIntConversionClass::~DatabaseUIntConversionClass((DatabaseUIntConversionClass *)this);\n  return;\n}",
+  "fetched_at": "2026-04-26T18:00:29Z"
+}

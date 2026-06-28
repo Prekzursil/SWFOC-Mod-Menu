@@ -1,0 +1,7 @@
+{
+  "addr": "0x140718ed0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140718ed6        struct SpecialAbilityClass::SensorJammingAbilityClass::VTable** result = arg1\n140718ed9        sub_14048c780(arg1)\n140718ee5        *result = &SensorJammingAbilityClass::`vftable'{for `SpecialAbilityClass'}\n140718ef6        result[0x33] = 0xf\n140718f01        result[1] = &SensorJammingAbilityClass::`vftable'{for `RefCountClass'}\n140718f07        result[0x2f].d = 0\n140718f0d        result[0x30] = 0\n140718f14        result[0x32] = 0\n140718f1b        sub_1401f92f0(&result[0x34])\n140718f23        result[0x36].b = 0\n140718f2f        return result",
+  "fetched_at": "2026-04-26T17:27:59Z"
+}

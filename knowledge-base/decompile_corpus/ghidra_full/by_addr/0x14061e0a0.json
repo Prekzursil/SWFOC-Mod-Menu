@@ -1,0 +1,7 @@
+{
+  "addr": "0x14061e0a0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined4 * __thiscall\nWalkLocomotorBehaviorClass::vfunction62(WalkLocomotorBehaviorClass *this,undefined4 *param_1)\n\n{\n  undefined **ppuVar1;\n  \n  ppuVar1 = this->offset_0x18;\n  *param_1 = *(undefined4 *)((longlong)ppuVar1 + 0x84);\n  param_1[1] = *(undefined4 *)(ppuVar1 + 0x11);\n  param_1[2] = *(undefined4 *)((longlong)ppuVar1 + 0x8c);\n  if ((ppuVar1[0x53][0xd2] != '\\0') && (ppuVar1[0x15] != (undefined *)0x0)) {\n    param_1[2] = *(undefined4 *)(ppuVar1[0x15] + 0x270);\n  }\n  return param_1;\n}",
+  "fetched_at": "2026-04-26T17:29:33Z"
+}

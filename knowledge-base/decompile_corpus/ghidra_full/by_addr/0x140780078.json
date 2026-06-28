@@ -1,0 +1,7 @@
+{
+  "addr": "0x140780078",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "char * __cdecl common_fgets<char>(char *param_1,int param_2,_iobuf *param_3)\n\n{\n  bool bVar1;\n  int iVar2;\n  ulong *puVar3;\n  char *pcVar4;\n  char *pcVar5;\n  int iVar6;\n  \n  if ((((param_1 == (char *)0x0) && (param_2 != 0)) || (param_2 < 0)) || (param_3 == (_iobuf *)0x0))\n  {\n    puVar3 = __doserrno();\n    *puVar3 = 0x16;\n    FUN_1407711ac();\n  }\n  else if (param_2 != 0) {\n    FUN_140784aa4(param_3);\n    bVar1 = __acrt_stdio_char_traits<char>::validate_stream_is_ansi_if_required(param_3);\n    pcVar5 = (char *)0x0;\n    if (bVar1) {\n      pcVar4 = param_1;\n      for (iVar6 = 1; iVar6 != param_2; iVar6 = iVar6 + 1) {\n        iVar2 = _fgetc_nolock(param_3);\n        if (iVar2 == -1) {\n          if (pcVar4 == param_1) goto LAB_140780067;\n          break;\n        }\n        *pcVar4 = (char)iVar2;\n        pcVar4 = pcVar4 + 1;\n        if ((char)iVar2 == '\\n') break;\n      }\n      *pcVar4 = '\\0';\n      pcVar5 = param_1;\n    }\nLAB_140780067:\n    FUN_140784ab0(param_3);\n    return pcVar5;\n  }\n  return (char *)0x0;\n}",
+  "fetched_at": "2026-04-26T18:50:57Z"
+}

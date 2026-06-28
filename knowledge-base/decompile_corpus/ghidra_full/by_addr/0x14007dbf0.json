@@ -1,0 +1,7 @@
+{
+  "addr": "0x14007dbf0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nvoid FUN_14007dbf0(undefined8 param_1,undefined8 param_2,char *param_3,char *param_4)\n\n{\n  longlong lVar1;\n  longlong lVar2;\n  ulonglong *puVar3;\n  char local_408 [1024];\n  \n  FUN_140048ec0(local_408,&DAT_140804390,param_2);\n  lVar1 = -1;\n  do {\n    lVar2 = lVar1;\n    lVar1 = lVar2 + 1;\n  } while (local_408[lVar2 + 1] != '\\0');\n  puVar3 = (ulonglong *)FUN_140022b20();\n  common_vsprintf<class___crt_stdio_output::standard_base,char>\n            (*puVar3 | 1,local_408 + lVar2 + 1,0xffffffffffffffff,param_3,\n             (__crt_locale_pointers *)0x0,param_4);\n  FUN_14007dab0(param_1,local_408);\n  return;\n}\n\n",
+  "fetched_at": "2026-04-26T16:57:11Z"
+}

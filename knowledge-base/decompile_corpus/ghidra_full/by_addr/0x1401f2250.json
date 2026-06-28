@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401f2250",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "GUIGadgetProgressbarClass * __thiscall\nGUIGadgetProgressbarClass::GUIGadgetProgressbarClass(GUIGadgetProgressbarClass *this)\n\n{\n  GUIGadgetClass::GUIGadgetClass((GUIGadgetClass *)this);\n  this->vftablePtr = &vftable;\n  TextureRectClass::TextureRectClass\n            ((TextureRectClass *)&(this->GUIGadgetProgressbarClass_data).field_0x8);\n  TextureRectClass::TextureRectClass\n            ((TextureRectClass *)&(this->GUIGadgetProgressbarClass_data).field_0x98);\n  (this->GUIGadgetProgressbarClass_data).offset_0x160 = 1;\n  (this->GUIGadgetProgressbarClass_data).offset_0x128 = (undefined8 *)0x0;\n  (this->GUIGadgetProgressbarClass_data).offset_0x130 = (undefined8 *)0x0;\n  (this->GUIGadgetProgressbarClass_data).offset_0x138 = 0;\n  (this->GUIGadgetProgressbarClass_data).offset_0x140 = 0;\n  (this->GUIGadgetProgressbarClass_data).offset_0x148 = 0;\n  (this->GUIGadgetProgressbarClass_data).offset_0x150 = 0;\n  (this->GUIGadgetProgressbarClass_data).offset_0x158 = 0;\n  vfunction25(this);\n  (this->GUIGadgetProgressbarClass_data).offset_0x0 = 0;\n  return this;\n}",
+  "fetched_at": "2026-04-26T17:53:11Z"
+}

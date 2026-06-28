@@ -1,0 +1,7 @@
+{
+  "addr": "0x140153be0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "alTerrainTrack * __thiscall alTerrainTrack::alTerrainTrack(alTerrainTrack *this)\n\n{\n  this->vftablePtr = &vftable_for_RefCountClass;\n  *(undefined4 *)&this->offset_0x0 = 0;\n  this->vftablePtr = &vftable_for_MultiLinkedListMember;\n  this->offset_0x10 = 0;\n  SplineClass::SplineClass((SplineClass *)&this->offset_0x18);\n  FUN_1401a20e0(&(this->alTerrainTrack_data).field_0x70);\n  *(undefined8 *)&(this->alTerrainTrack_data).offset_0x100 = 0xffffffffffffffff;\n  (this->alTerrainTrack_data).offset_0x108 = 0xffffffff;\n  (this->alTerrainTrack_data).offset_0x118 = 0;\n  (this->alTerrainTrack_data).offset_0x120 = 0;\n  (this->alTerrainTrack_data).offset_0x128 = 0;\n  (this->alTerrainTrack_data).offset_0x130 = 0;\n  (this->alTerrainTrack_data).offset_0x138 = 0;\n  (this->alTerrainTrack_data).offset_0x140 = 0;\n  (this->alTerrainTrack_data).offset_0x188 = (longlong *)0x0;\n  *(undefined8 *)&(this->alTerrainTrack_data).offset_0x190 = 0;\n  (this->alTerrainTrack_data).offset_0x1a0 = 0;\n  (this->alTerrainTrack_data).offset_0x1a8 = 0xf;\n  (this->alTerrainTrack_data).offset_0x1b8 = 0;\n  (this->alTerrainTrack_data).offset_0x1c0 = (undefined4 *)0x0;\n  (this->alTerrainTrack_data).offset_0x1c8 = (undefined4 *)0x0;\n  (this->alTerrainTrack_data).offset_0xd0 = 0;\n  (this->alTerrainTrack_data).offset_0xd8 = 0;\n  FUN_140153f80(this);\n  FUN_140157600(this);\n  return this;\n}",
+  "fetched_at": "2026-04-26T17:22:32Z"
+}

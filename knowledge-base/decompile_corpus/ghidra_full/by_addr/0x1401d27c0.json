@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401d27c0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined8 FUN_1401d27c0(longlong *param_1,int param_2,LPCWSTR param_3,int param_4)\n\n{\n  longlong lVar1;\n  char cVar2;\n  int iVar3;\n  \n  iVar3 = *(int *)((longlong)param_1 + 0xc);\n  if (param_2 <= iVar3) {\n    if (param_4 == -1) {\n      param_4 = lstrlenW(param_3);\n      iVar3 = *(int *)((longlong)param_1 + 0xc);\n    }\n    iVar3 = iVar3 + param_4;\n    if (iVar3 < 0xffff) {\n      if (((int)param_1[1] <= iVar3) && (cVar2 = FUN_1401d24f0(param_1,iVar3 + 1), cVar2 == '\\0')) {\n        return 0;\n      }\n      lVar1 = (longlong)param_2 * 2;\n      FUN_14076bd80(*param_1 + ((longlong)param_4 + (longlong)param_2) * 2,lVar1 + *param_1,\n                    (longlong)((*(int *)((longlong)param_1 + 0xc) - param_2) + 1) * 2);\n      FUN_14076bd80(*param_1 + lVar1,param_3,(longlong)param_4 * 2);\n      *(int *)((longlong)param_1 + 0xc) = *(int *)((longlong)param_1 + 0xc) + param_4;\n      *(undefined1 *)(param_1 + 3) = 1;\n      return 1;\n    }\n  }\n  return 0;\n}",
+  "fetched_at": "2026-04-26T17:49:30Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x1405aef30",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "SetupPhaseTriggerEndEventClass * __thiscall\nSetupPhaseTriggerEndEventClass::SetupPhaseTriggerEndEventClass(SetupPhaseTriggerEndEventClass *this)\n\n{\n  ScheduledEventClass::ScheduledEventClass((ScheduledEventClass *)this);\n  (this->EventClass_data).offset_0x8 = 0x20;\n  this->vftablePtr = &vftable;\n  return this;\n}",
+  "fetched_at": "2026-04-26T18:43:30Z"
+}

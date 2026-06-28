@@ -1,0 +1,7 @@
+{
+  "addr": "0x14048fb90",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "byte __thiscall SaveGameEventClass::vfunction6(SaveGameEventClass *this,longlong param_1)\n\n{\n  byte bVar1;\n  byte bVar2;\n  byte bVar3;\n  \n  if (param_1 == 0) {\n    return 0;\n  }\n  bVar1 = ScheduledEventClass::vfunction6((ScheduledEventClass *)this,param_1);\n  bVar2 = FUN_140204fb0(param_1,&(this->SaveGameEventClass_data).offset_0x8);\n  bVar3 = FUN_1402046f0(param_1,(this->SaveGameEventClass_data).offset_0x0,7);\n  return bVar3 & bVar1 & 1 & bVar2;\n}",
+  "fetched_at": "2026-04-26T18:02:17Z"
+}

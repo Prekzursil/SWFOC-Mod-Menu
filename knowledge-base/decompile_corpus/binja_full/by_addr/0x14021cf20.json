@@ -1,0 +1,7 @@
+{
+  "addr": "0x14021cf20",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14021cf23        if (arg2 u> 3)\n14021cf2d        return 1f\n14021cf3b        float result = *(arg1 + (sx.q(arg2) + 0xc8) * 0x14)\n14021cf42        if (arg2 == 0)\n14021cf4c        return result\n14021cf44        return result f* *(arg1 + 0xfa0)",
+  "fetched_at": "2026-04-26T17:28:58Z"
+}

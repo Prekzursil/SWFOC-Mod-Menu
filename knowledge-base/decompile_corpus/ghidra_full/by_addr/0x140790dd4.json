@@ -1,0 +1,7 @@
+{
+  "addr": "0x140790dd4",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* Library Function - Single Match\n    _handle_nanf\n   \n   Libraries: Visual Studio 2017 Release, Visual Studio 2019 Release */\n\nuint _handle_nanf(uint param_1)\n\n{\n  return param_1 | 0x400000;\n}",
+  "fetched_at": "2026-04-26T18:52:41Z"
+}

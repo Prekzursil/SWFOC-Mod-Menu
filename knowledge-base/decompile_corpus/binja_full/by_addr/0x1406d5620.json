@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406d5620",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1406d562b        struct TacticalLocationPerceptualEvaluatorClass::LandLocationPerceptualEvaluatorClass::VTable** result = operator new(0x108)\n1406d5636        if (result == 0)\n1406d5679        int64_t rdx_1 = *nullptr\n1406d567c        (*(rdx_1 + 0x40))(0, rdx_1)\n1406d5686        return 0\n1406d563b        sub_14072c560(result)\n1406d564a        *result = &LandLocationPerceptualEvaluatorClass::`vftable'{for `TacticalLocationPerceptualEvaluatorClass'}\n1406d5654        result[3] = &LandLocationPerceptualEvaluatorClass::`vftable'{for `AIDiagnosticsClass'}\n1406d565f        result[0x11] = &LandLocationPerceptualEvaluatorClass::`vftable'{for `SignalListenerClass'}\n1406d5669        (*result)->vFunc_8(result)\n1406d5674        return result",
+  "fetched_at": "2026-04-26T17:25:39Z"
+}

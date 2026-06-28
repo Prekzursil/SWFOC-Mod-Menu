@@ -1,0 +1,7 @@
+{
+  "addr": "0x14021f890",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined8 FUN_14021f890(undefined8 *param_1,LPCSTR param_2,ulonglong param_3)\n\n{\n  DWORD local_res8 [4];\n  uint local_res18 [4];\n  \n  param_3 = param_3 & 0xff;\n  local_res18[0] = (uint)param_3;\n  local_res8[0] = 4;\n  if ((HKEY)*param_1 != (HKEY)0x0) {\n    RegQueryValueExA((HKEY)*param_1,param_2,(LPDWORD)0x0,(LPDWORD)0x0,(LPBYTE)local_res18,local_res8\n                    );\n    param_3 = (ulonglong)local_res18[0];\n  }\n  return CONCAT71((int7)(param_3 >> 8),(int)param_3 != 0);\n}",
+  "fetched_at": "2026-04-26T18:02:54Z"
+}

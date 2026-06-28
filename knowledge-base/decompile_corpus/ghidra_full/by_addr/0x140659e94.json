@@ -1,0 +1,7 @@
+{
+  "addr": "0x140659e94",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nvoid __thiscall\nPlanetPerceptualEvaluatorClass::vfunction1(PlanetPerceptualEvaluatorClass *this,uint param_1)\n\n{\n  scalar_deleting_destructor\n            ((PlanetPerceptualEvaluatorClass *)&this[-1].SignalListenerClass_data.offset_0xc0,\n             param_1);\n  return;\n}\n\n",
+  "fetched_at": "2026-04-26T17:07:16Z"
+}

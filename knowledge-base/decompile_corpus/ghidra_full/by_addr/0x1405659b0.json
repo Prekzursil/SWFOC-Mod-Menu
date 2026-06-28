@@ -1,0 +1,7 @@
+{
+  "addr": "0x1405659b0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "char * __thiscall SpecialAbilityDataClass::vfunction3_for_IXMLLoadableClass(void)\n\n{\n  return \"Unit_Ability\";\n}",
+  "fetched_at": "2026-04-26T18:39:27Z"
+}

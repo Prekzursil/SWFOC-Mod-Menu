@@ -1,0 +1,7 @@
+{
+  "addr": "0x140665d80",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140665d9d        char rax = sub_14021fe20(arg2, 3, arg3, arg4)\n140665da5        void* arg_8 = arg1\n140665dd3        char rbx = rax & 1 & sub_14021ffa0(arg2, 1) & sub_1402200b0(arg2, &arg_8, 8, nullptr)\n140665dd5        char rax_3 = sub_140220030(arg2)\n140665de1        sub_1401fec80(arg_8)\n140665de8        void* rax_4 = arg1 + 0x18\n140665def        if (arg1 == 0)\n140665def        rax_4 = nullptr\n140665df6        arg_8 = rax_4\n140665e1c        rbx = rbx & rax_3 & sub_14021ffa0(arg2, 2) & sub_1402200b0(arg2, &arg_8, 8, nullptr)\n140665e1e        char rax_7 = sub_140220030(arg2)\n140665e2a        int512_t zmm1 = sub_1401fec80(arg_8)\n140665e5b        rbx = rbx & rax_7 & sub_14021ffa0(arg2, 0) & sub_1402200b0(arg2, arg1 + 0x28, 8, nullptr) & sub_140220030(arg2)\n140665e5d        char rax_11\n140665e5d        int64_t r8\n140665e5d        rax_11, r8 = sub_14021feb0(arg2)\n140665e62        rbx &= rax_11\n140665e69        if (*(arg1 + 0x30) == 0)\n140665eb4        return zx.q(rbx)\n140665e73        char rax_12\n140665e73        int64_t r8_1\n140665e73        rax_12, r8_1 = sub_14021fe20(arg2, 4, r8, zmm1)\n140665e89        rbx = rbx & rax_12 & sub_140664c00(*(arg1 + 0x30), arg2, r8_1, zmm1)\n140665ea1        return sub_14021feb0(arg2) & rbx",
+  "fetched_at": "2026-04-26T17:09:31Z"
+}

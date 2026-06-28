@@ -1,0 +1,7 @@
+{
+  "addr": "0x140692c80",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "longlong * FUN_140692c80(longlong param_1)\n\n{\n  longlong *plVar1;\n  \n  plVar1 = (longlong *)**(undefined8 **)(param_1 + 0x48);\n  if (0xf < (ulonglong)plVar1[3]) {\n    plVar1 = (longlong *)*plVar1;\n  }\n  return plVar1;\n}",
+  "fetched_at": "2026-04-26T17:19:17Z"
+}

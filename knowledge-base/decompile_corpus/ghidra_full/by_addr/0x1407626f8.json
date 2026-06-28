@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407626f8",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* Library Function - Single Match\n    protected: void __cdecl std::_Mpunct<char>::_Getvals<char>(char,struct lconv const * __ptr64)\n   __ptr64\n   \n   Library: Visual Studio 2019 Release */\n\nvoid __thiscall std::_Mpunct<char>::_Getvals<char>(_Mpunct<char> *this,char param_1,lconv *param_2)\n\n{\n  _Crt_new_delete *p_Var1;\n  _Mpunct<char>_vftable *p_Var2;\n  _Crt_new_delete _Var3;\n  undefined **ppuVar4;\n  char *pcVar5;\n  \n  p_Var1 = &this[4]._Crt_new_delete;\n  if (*(char *)((longlong)&this[4].vftablePtr + 4) == '\\0') {\n    pcVar5 = param_2->currency_symbol;\n  }\n  else {\n    pcVar5 = param_2->int_curr_symbol;\n  }\n  p_Var2 = (_Mpunct<char>_vftable *)FUN_140741710(pcVar5,0,p_Var1);\n  this[2].vftablePtr = p_Var2;\n  ppuVar4 = &PTR_1407ff8a8;\n  if ((byte)param_2->p_sign_posn < 5) {\n    ppuVar4 = (undefined **)param_2->positive_sign;\n  }\n  _Var3 = (_Crt_new_delete)FUN_140741710(ppuVar4,0,p_Var1);\n  this[2]._Crt_new_delete = _Var3;\n  pcVar5 = \"-\";\n  if ((byte)param_2->n_sign_posn < 5) {\n    pcVar5 = param_2->negative_sign;\n  }\n  p_Var2 = (_Mpunct<char>_vftable *)FUN_140741710(pcVar5,0,p_Var1);\n  this[3].vftablePtr = p_Var2;\n  *(char *)&this[1]._Crt_new_delete = *param_2->mon_decimal_point;\n  this[1]._Crt_new_delete.field_0x1 = *param_2->mon_thousands_sep;\n  return;\n}",
+  "fetched_at": "2026-04-26T18:08:52Z"
+}

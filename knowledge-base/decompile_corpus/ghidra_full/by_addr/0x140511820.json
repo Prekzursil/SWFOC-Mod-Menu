@@ -1,0 +1,7 @@
+{
+  "addr": "0x140511820",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "InvasionBlockStatus * __thiscall InvasionBlockStatus::InvasionBlockStatus(InvasionBlockStatus *this)\n\n{\n  LuaMemberFunctionWrapper<class_BlockingStatus>::LuaMemberFunctionWrapper<class_BlockingStatus>\n            ((LuaMemberFunctionWrapper<class_BlockingStatus> *)this);\n  *(undefined8 *)&this->field_0x38 = 0;\n  this->vftablePtr = &vftable;\n  this->vftablePtr = &vftable;\n  *(undefined2 *)&this->field_0x40 = 0;\n  return this;\n}",
+  "fetched_at": "2026-04-26T18:22:13Z"
+}

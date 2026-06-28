@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406df790",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "PerceptualEvaluatorClass * __thiscall\nRootLookupPerceptualEvaluatorClass::~RootLookupPerceptualEvaluatorClass(void)\n\n{\n  PerceptualEvaluatorClass *this;\n  \n  this = (PerceptualEvaluatorClass *)FUN_140769c58(0xb0);\n  if (this != (PerceptualEvaluatorClass *)0x0) {\n    PerceptualEvaluatorClass::~PerceptualEvaluatorClass(this);\n    *(undefined4 *)&this[1].vftablePtr = 0xffffffff;\n    this->vftablePtr =\n         (PerceptualEvaluatorClass_vftable_for_SignalGeneratorClass *)\n         &vftable_for_SignalGeneratorClass;\n    this->vftablePtr =\n         (PerceptualEvaluatorClass_vftable_for_AIDiagnosticsClass *)&vftable_for_AIDiagnosticsClass;\n    this[1].SignalGeneratorClass_data.offset_0x0 = '\\0';\n    *(undefined3 *)&this[1].SignalGeneratorClass_data.field_0x1 = 0;\n    this[1].SignalGeneratorClass_data.offset_0x4 = 0;\n    this[1].vftablePtr = (PerceptualEvaluatorClass_vftable_for_AIDiagnosticsClass *)0x0;\n    this[1].AIDiagnosticsClass_data.offset_0x0 = 0xf;\n    return this;\n  }\n  return (PerceptualEvaluatorClass *)0x0;\n}",
+  "fetched_at": "2026-04-26T17:44:53Z"
+}

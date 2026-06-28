@@ -1,0 +1,7 @@
+{
+  "addr": "0x14066fb30",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14066fb51        int32_t i = 0\n14066fb56        struct TaskForceClass::LandTaskForceClass::VTable** result = nullptr\n14066fb6d        int32_t r14 = *(*(sub_1405f6fb0(arg2) + 0x28) + 0x34)\n14066fb71        sub_1406c0100(arg3, arg1)\n14066fb87        if (((data_140b3a748 - data_140b3a740) & 0xfffffffffffffff0) == 0)\n14066fb8f        sub_1406c0750(arg3, arg1)\n14066fba8        if (((data_140b3a790 - data_140b3a788) & 0xfffffffffffffff0) == 0 && *(arg1 + 0x4b) == 0)\n14066fbaa        return nullptr\n14066fbb1        if (r14 == 0)\n14066fbe4        result = sub_1406cd360(arg1, arg2)\n14066fbc4        if (r14 == 2)\n14066fbe4        result = sub_1406e6640(arg1, arg2)\n14066fbd7        if (r14 == 1)\n14066fbe4        result = sub_1406eaa20(arg1, arg2)\n14066fbf4        if (((data_140b3a748 - data_140b3a740) s>> 4).d s> 0)\n14066fbf6        int64_t rdi_1 = 0\n14066fc00        int64_t** rax_6 = data_140b3a740\n14066fc0f        sub_1405f9fd0(result, *(rax_6 + rdi_1), *(rax_6 + rdi_1 + 8))\n14066fc18        rdi_1 += 0x10\n14066fc1f        i += 1\n14066fc27        do while (i s< ((data_140b3a748 - data_140b3a740) s>> 4).d)\n14066fc29        return result",
+  "fetched_at": "2026-04-26T17:10:43Z"
+}

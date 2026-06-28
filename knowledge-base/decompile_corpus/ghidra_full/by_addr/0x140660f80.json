@@ -1,0 +1,7 @@
+{
+  "addr": "0x140660f80",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nlonglong __thiscall\nFoggedPerceptualUnitEvaluatorClass<class_PlanetPerceptualEvaluatorClass>::vfunction10\n          (FoggedPerceptualUnitEvaluatorClass<class_PlanetPerceptualEvaluatorClass> *this)\n\n{\n  uint uVar1;\n  ulonglong uVar2;\n  uint7 uVar3;\n  char cVar4;\n  \n  if (DAT_140b15418 == (longlong *)0x0) {\n    uVar2 = (ulonglong)DAT_140b153fc;\n  }\n  else {\n    uVar2 = (**(code **)(*DAT_140b15418 + 0xe0))();\n  }\n  cVar4 = DAT_140b15aec;\n  if ((int)uVar2 != 0) {\n    uVar1 = (int)uVar2 - 1;\n    uVar2 = (ulonglong)uVar1;\n    cVar4 = DAT_140b15aee;\n    if ((uVar1 != 0) && (cVar4 = '\\0', uVar1 == 1)) {\n      cVar4 = DAT_140b15aed;\n    }\n  }\n  uVar3 = (uint7)(uVar2 >> 8);\n  if ((*(char *)&(this->SignalListenerClass_data).offset_0x0 == '\\0') && (cVar4 != '\\0')) {\n    return (ulonglong)uVar3 << 8;\n  }\n  return CONCAT71(uVar3,1);\n}\n\n",
+  "fetched_at": "2026-04-26T17:09:03Z"
+}

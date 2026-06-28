@@ -1,0 +1,7 @@
+{
+  "addr": "0x14074bdd8",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14074bde2        bool cond:0 = arg1[4].d == 0\n14074bded        *arg1 = &std::ctype<wchar_t>::`vftable'{for `std::ctype_base'}\n14074bdf5        if (not(cond:0))\n14074bdfb        free(arg1[3])\n14074be04        free(arg1[5])\n14074be10        *arg1 = &std::_Facet_base::`vftable'\n14074be17        if ((arg2 & 1) != 0)\n14074be21        j_sub_1407864b8(arg1)\n14074be33        return arg1",
+  "fetched_at": "2026-04-26T17:29:43Z"
+}

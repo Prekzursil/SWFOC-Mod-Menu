@@ -1,0 +1,7 @@
+{
+  "addr": "0x1405f9fd0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_1405f9fd0(longlong param_1,undefined8 param_2,undefined4 param_3)\n\n{\n  undefined8 *puVar1;\n  undefined4 *puVar2;\n  undefined8 uVar3;\n  longlong *plVar4;\n  longlong *local_res8;\n  undefined4 local_res18 [4];\n  \n  local_res18[0] = param_3;\n  uVar3 = ActionDrivenHeroClashClass::vfunction5(*(ActionDrivenHeroClashClass **)(param_1 + 0xf0));\n  plVar4 = (longlong *)FUN_1406051b0(param_2,uVar3);\n  local_res8 = plVar4;\n  if (plVar4 != (longlong *)0x0) {\n    (**(code **)*plVar4)(plVar4);\n  }\n  puVar1 = *(undefined8 **)(param_1 + 0x68);\n  if (puVar1 == *(undefined8 **)(param_1 + 0x70)) {\n    FUN_140045680(param_1 + 0x60,puVar1,&local_res8);\n  }\n  else {\n    *puVar1 = plVar4;\n    if (plVar4 != (longlong *)0x0) {\n      (**(code **)*plVar4)(plVar4);\n    }\n    *(longlong *)(param_1 + 0x68) = *(longlong *)(param_1 + 0x68) + 8;\n  }\n  if (plVar4 != (longlong *)0x0) {\n    (**(code **)(*plVar4 + 8))(plVar4);\n  }\n  puVar2 = *(undefined4 **)(param_1 + 0x98);\n  if (puVar2 != *(undefined4 **)(param_1 + 0xa0)) {\n    *puVar2 = param_3;\n    *(longlong *)(param_1 + 0x98) = *(longlong *)(param_1 + 0x98) + 4;\n    return;\n  }\n  FUN_140045480(param_1 + 0x90,puVar2,local_res18);\n  return;\n}",
+  "fetched_at": "2026-04-26T17:24:06Z"
+}

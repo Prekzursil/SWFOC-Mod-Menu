@@ -1,0 +1,7 @@
+{
+  "addr": "0x140268350",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall FillRectClass::vfunction5(FillRectClass *this,undefined4 param_2,undefined4 param_3)\n\n{\n  FillRectClass_vftable0 *pFVar1;\n  \n  pFVar1 = this->vftablePtr;\n  *(undefined4 *)((longlong)&(this->DrawPrimitiveClass_data).offset_0x18 + 4) = param_2;\n  (this->DrawPrimitiveClass_data).offset_0x20 = param_3;\n                    /* WARNING: Could not recover jumptable at 0x00014026835d. Too many branches */\n                    /* WARNING: Treating indirect jump as call */\n  (*pFVar1->_guard_check_icall)();\n  return;\n}",
+  "fetched_at": "2026-04-26T18:18:18Z"
+}

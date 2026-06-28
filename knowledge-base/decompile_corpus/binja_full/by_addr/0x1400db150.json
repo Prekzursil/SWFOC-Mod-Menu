@@ -1,0 +1,7 @@
+{
+  "addr": "0x1400db150",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1400db172        int64_t rbp = arg3\n1400db179        int64_t* rsi = arg2\n1400db17c        int64_t* rdi = arg1\n1400db185        if (((arg2 - arg1) & 0xfffffffffffffff8) s> 0x100)\n1400db193        if (rbp s<= 0)\n1400db24a        sub_1400da6b0(rdi, rsi)\n1400db255        void* i = (rsi - rdi) & 0xfffffffffffffff8\n1400db25d        if (i s>= 0x10)\n1400db25f        void* rsi_1 = &rsi[-1]\n1400db278        int64_t arg_8 = *rsi_1\n1400db28f        *rsi_1 = *rdi\n1400db292        char var_38_1 = arg4\n1400db296        sub_1400daf30(rdi, 0, (rsi_1 - rdi) s>> 3, &arg_8)\n1400db29b        rsi_1 -= 8\n1400db2a3        i = (8 - rdi + rsi_1) & 0xfffffffffffffff8\n1400db2ab        do while (i s>= 0x10)\n1400db23f        return i\n1400db1a8        int64_t* var_28\n1400db1a8        sub_1400da980(&var_28, rdi, rsi, arg4)\n1400db1ad        int64_t* r15_1 = var_28\n1400db1cb        rbp = (rbp s>> 1) + (rbp s>> 2)\n1400db1ce        uint64_t r9_1 = zx.q(arg4)\n1400db1e2        int64_t* var_20\n1400db1e2        if (((r15_1 - rdi) & 0xfffffffffffffff8) s>= ((rsi - var_20) & 0xfffffffffffffff8))\n1400db1fa        sub_1400db150(var_20, rsi, rbp, r9_1)\n1400db1ff        rsi = r15_1\n1400db1ea        sub_1400db150(rdi, r15_1, rbp, r9_1)\n1400db1ef        rdi = var_20\n1400db212        do while (((rsi - rdi) & 0xfffffffffffffff8) s> 0x100)\n1400db222        return sub_1400da4c0(rdi, rsi)",
+  "fetched_at": "2026-04-26T17:02:22Z"
+}

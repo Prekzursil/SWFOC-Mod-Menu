@@ -1,0 +1,7 @@
+{
+  "addr": "0x14007d770",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nvoid FUN_14007d770(longlong param_1)\n\n{\n  undefined8 *puVar1;\n  \n  puVar1 = *(undefined8 **)(param_1 + 0x30);\n  if (puVar1 != *(undefined8 **)(param_1 + 0x38)) {\n    do {\n      (**(code **)(*(longlong *)*puVar1 + 8))();\n      puVar1 = puVar1 + 1;\n    } while (puVar1 != *(undefined8 **)(param_1 + 0x38));\n  }\n  return;\n}\n\n",
+  "fetched_at": "2026-04-26T16:57:10Z"
+}

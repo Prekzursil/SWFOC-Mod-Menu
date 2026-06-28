@@ -1,0 +1,7 @@
+{
+  "addr": "0x140014290",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140014299        timeBeginPeriod(1)\n1400142ac        data_140a7bec0 = timeGetTime()\n1400142b6        return atexit(sub_1407ec6f0) __tailcall",
+  "fetched_at": "2026-04-26T16:50:06Z"
+}

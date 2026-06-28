@@ -1,0 +1,7 @@
+{
+  "addr": "0x1404c2540",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1404c2547        return \"IonStunEffectBehaviorClass\"",
+  "fetched_at": "2026-04-26T17:30:18Z"
+}

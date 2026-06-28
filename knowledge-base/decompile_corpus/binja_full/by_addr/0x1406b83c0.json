@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406b83c0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1406b83d2        int32_t r9_2 = (arg2.d ^ 0xdeadbeef) & 0x7fffffff\n1406b83f7        int32_t rax_1 = r9_2 u/ 0x1f31d * 0xb14\n1406b83fe        int32_t rcx = r9_2 u% 0x1f31d * 0x41a7\n1406b8405        int32_t rcx_1 = rcx - rax_1\n1406b8407        int32_t rax_2 = rcx_1 + 0x7fffffff\n1406b840d        if (rcx - rax_1 s>= 0)\n1406b840d        rax_2 = rcx_1\n1406b841e        int64_t* rcx_5 = ((sx.q(rax_2) & *(arg1 + 0x80)) << 4) + *(arg1 + 0x68)\n1406b8422        void* const result = rcx_5[1]\n1406b842a        if (result == *(arg1 + 0x58))\n1406b842c        label_1406b842c:\n1406b843a        result.b = *(arg1 + 0x58) != *(arg1 + 0x58)\n1406b843d        return result\n1406b8445        while (arg2 u< *(result + 0x10))\n1406b844a        if (result == *rcx_5)\n1406b844a        goto label_1406b842c\n1406b844c        result = *(result + 8)\n1406b845c        if (*(result + 0x10) u< arg2)\n1406b845c        result = nullptr\n1406b8463        void* const result_1 = result\n1406b8466        if (result == 0)\n1406b8466        result_1 = *(arg1 + 0x58)\n1406b846f        result.b = result_1 != *(arg1 + 0x58)\n1406b8472        return result",
+  "fetched_at": "2026-04-26T17:24:47Z"
+}

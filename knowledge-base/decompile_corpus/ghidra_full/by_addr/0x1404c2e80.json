@@ -1,0 +1,7 @@
+{
+  "addr": "0x1404c2e80",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "char * __thiscall StarshipDummyBehaviorClass::vfunction9(void)\n\n{\n  return \"StarshipDummyBehaviorClass\";\n}",
+  "fetched_at": "2026-04-26T18:11:01Z"
+}

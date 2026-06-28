@@ -1,0 +1,7 @@
+{
+  "addr": "0x140440d00",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140440d0a        uint128_t zmm0\n140440d0a        zmm0.q = 0x400921fb54442d18 f* 2.0\n140440d12        __builtin_memset(arg1, 0, 0x3c)\n140440d21        zmm0 = _mm_cvtpd_ps(zmm0)\n140440d34        __builtin_memset(arg1 + 0x48, 0, 0x14)\n140440d3f        *(arg1 + 0x64) = 0\n140440d43        *(arg1 + 0x6c) = 0\n140440d47        __builtin_memset(arg1 + 0x78, 0, 0x30)\n140440d71        *(arg1 + 0x3c) = zmm0.d\n140440d76        *(arg1 + 0x40) = 0x3f800000\n140440d7e        *(arg1 + 0x5c) = 0x1000000\n140440d85        return arg1",
+  "fetched_at": "2026-04-26T17:27:17Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x14078237c",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140782394        void* var_28\n140782394        _LocaleUpdate::_LocaleUpdate(&var_28, arg3)\n1407823a4        void* var_20\n1407823a4        uint64_t result = _strlwr_s_l_stat(arg1, arg2, &var_20)\n1407823ae        char var_10\n1407823ae        if (var_10 != 0)\n1407823b0        void* rcx_2 = var_28\n1407823b5        *(rcx_2 + 0x3a8) &= 0xfffffffd\n1407823c6        return result",
+  "fetched_at": "2026-04-26T17:31:10Z"
+}

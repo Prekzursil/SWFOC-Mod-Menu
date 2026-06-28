@@ -1,0 +1,7 @@
+{
+  "addr": "0x14018cf00",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall\nalD3dEffectParam<float>::vfunction5(alD3dEffectParam<float> *this,undefined4 *param_1)\n\n{\n  *(undefined4 *)&(this->alD3dEffectParamInterface_data).offset_0x10 = *param_1;\n  return;\n}",
+  "fetched_at": "2026-04-26T17:33:44Z"
+}

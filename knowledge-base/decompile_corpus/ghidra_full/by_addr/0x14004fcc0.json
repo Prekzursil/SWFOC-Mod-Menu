@@ -1,0 +1,7 @@
+{
+  "addr": "0x14004fcc0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nTheDebugWindowManagerClass * FUN_14004fcc0(void)\n\n{\n  TheDebugWindowManagerClass *this;\n  undefined **local_res8 [4];\n  \n  if (DAT_140a10990 == (TheDebugWindowManagerClass *)0x0) {\n    this = (TheDebugWindowManagerClass *)FUN_140769c58(0x40);\n    if (this == (TheDebugWindowManagerClass *)0x0) {\n      DAT_140a10990 = (TheDebugWindowManagerClass *)0x0;\n    }\n    else {\n      DAT_140a10990 = TheDebugWindowManagerClass::TheDebugWindowManagerClass(this);\n    }\n    local_res8[0] = &PTR_vftable_140a10988;\n    if (DAT_140a7bc10 != DAT_140a7bc18) {\n      *DAT_140a7bc10 = &PTR_vftable_140a10988;\n      DAT_140a7bc10 = DAT_140a7bc10 + 1;\n      return DAT_140a10990;\n    }\n    FUN_14001ded0(&DAT_140a7bc08,DAT_140a7bc10,local_res8);\n  }\n  return DAT_140a10990;\n}\n\n",
+  "fetched_at": "2026-04-26T16:54:40Z"
+}

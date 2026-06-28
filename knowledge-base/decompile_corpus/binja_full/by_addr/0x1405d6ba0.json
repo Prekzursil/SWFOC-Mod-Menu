@@ -1,0 +1,7 @@
+{
+  "addr": "0x1405d6ba0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1405d6ba6        struct ScheduledEventClass::TacticalSuperWeaponEventClass::VTable** result = arg1\n1405d6ba9        sub_140512c50(arg1)\n1405d6bb5        result[4].d = 0x26\n1405d6bbc        *result = &TacticalSuperWeaponEventClass::`vftable'{for `ScheduledEventClass'}\n1405d6bc2        result[9] = 0x3fffff\n1405d6bcf        return result",
+  "fetched_at": "2026-04-26T17:38:08Z"
+}

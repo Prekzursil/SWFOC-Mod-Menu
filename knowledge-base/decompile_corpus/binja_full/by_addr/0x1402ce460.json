@@ -1,0 +1,7 @@
+{
+  "addr": "0x1402ce460",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1402ce469        int64_t* rcx = data_140b15418\n1402ce473        if (rcx == 0)\n1402ce473        return \n1402ce481        int128_t zmm6 = zx.o(0)\n1402ce489        int128_t zmm7 = zx.o(0)\n1402ce495        if ((*(*rcx + 0xe0))(rcx) == 1)\n1402ce497        zmm6 = *(arg1 + 0x128)\n1402ce49f        zmm7 = *(arg1 + 0x12c)\n1402ce4a7        int32_t* rcx_1 = *(arg1 + 0x148)\n1402ce4b0        *(arg1 + 0x10e) = 1\n1402ce4b9        *(arg1 + 0x10) = *rcx_1\n1402ce4bf        *(arg1 + 0x14) = rcx_1[7]\n1402ce4c4        int32_t zmm0 = rcx_1[0xb]\n1402ce4c9        *(arg1 + 0x44) = zmm0\n1402ce4ce        *(arg1 + 0x48) = zmm0\n1402ce4d3        *(arg1 + 0x4c) = 0\n1402ce4d6        zmm0 = rcx_1[0x10]\n1402ce4de        *(arg1 + 0x30) = zmm0\n1402ce4e3        *(arg1 + 0x34) = zmm0\n1402ce4e8        *(arg1 + 0x38) = 0\n1402ce4eb        *(arg1 + 0x18) = zmm6.d\n1402ce4f0        *(arg1 + 0x1c) = zmm7.d\n1402ce4fd        sub_1402d0df0(arg1, sub_1402d0670(arg1, 1))\n1402ce511        return ",
+  "fetched_at": "2026-04-26T17:33:47Z"
+}

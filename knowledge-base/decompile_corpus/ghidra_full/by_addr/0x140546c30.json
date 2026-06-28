@@ -1,0 +1,7 @@
+{
+  "addr": "0x140546c30",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined * __thiscall SpawnFromReinforcePoolClass::vfunction5(void)\n\n{\n  return &DAT_140a448e0;\n}",
+  "fetched_at": "2026-04-26T18:37:23Z"
+}

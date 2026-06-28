@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407062d0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1407062e3        *arg1 = &LuckyShotAttackAbilityClass::`vftable'{for `SpecialAbilityClass'}\n1407062f0        arg1[1] = &LuckyShotAttackAbilityClass::`vftable'{for `RefCountClass'}\n1407062f4        sub_14048c8d0(arg1)\n1407062fc        if ((arg2 & 1) != 0)\n140706306        j_sub_1407864b8(arg1)\n140706318        return arg1",
+  "fetched_at": "2026-04-26T17:27:17Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x140780988",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* Library Function - Single Match\n    __acrt_errno_from_os_error\n   \n   Libraries: Visual Studio 2015 Release, Visual Studio 2017 Release, Visual Studio 2019 Release */\n\nundefined4 __acrt_errno_from_os_error(int param_1)\n\n{\n  uint uVar1;\n  undefined4 uVar2;\n  ulonglong uVar3;\n  int *piVar4;\n  \n  uVar3 = 0;\n  piVar4 = &DAT_1408d3420;\n  do {\n    if (param_1 == *piVar4) {\n      return *(undefined4 *)(&UNK_1408d3424 + uVar3 * 8);\n    }\n    uVar1 = (int)uVar3 + 1;\n    uVar3 = (ulonglong)uVar1;\n    piVar4 = piVar4 + 2;\n  } while (uVar1 < 0x2d);\n  if (param_1 - 0x13U < 0x12) {\n    return 0xd;\n  }\n  uVar2 = 0x16;\n  if (param_1 - 0xbcU < 0xf) {\n    uVar2 = 8;\n  }\n  return uVar2;\n}",
+  "fetched_at": "2026-04-26T18:51:01Z"
+}

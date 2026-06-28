@@ -1,0 +1,7 @@
+{
+  "addr": "0x14060c600",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "float __thiscall AutoResolveClass::vfunction21(AutoResolveClass *this)\n\n{\n  float fVar1;\n  \n  fVar1 = ((float)(DAT_140b0a320 - *(int *)&(this->AutoResolveClass_data).field_0x30) /\n          (float)DAT_140b0a340) / (DAT_140b16d94 * DAT_1408abef4);\n  if (DAT_1407ffaf8 <= fVar1) {\n    fVar1 = DAT_1407ffaf8;\n  }\n  return DAT_1407ffaf8 - fVar1;\n}",
+  "fetched_at": "2026-04-26T17:26:12Z"
+}

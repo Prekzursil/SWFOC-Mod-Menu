@@ -1,0 +1,7 @@
+{
+  "addr": "0x14029e730",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall TerrainHeightSamplerClass::vfunction1(TerrainHeightSamplerClass *this)\n\n{\n  FUN_140135140(this[1].vftablePtr);\n  return;\n}",
+  "fetched_at": "2026-04-26T18:26:03Z"
+}

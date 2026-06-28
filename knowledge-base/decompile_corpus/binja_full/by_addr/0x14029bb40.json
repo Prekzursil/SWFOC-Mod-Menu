@@ -1,0 +1,7 @@
+{
+  "addr": "0x14029bb40",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14029bb5b        int32_t rcx_2 = (*(arg1 + 0x14) * 2) s>> 1\n14029bb5d        int32_t i_2 = *(arg1 + 0x10)\n14029bb62        if (i_2 s>= rcx_2)\n14029bb76        int32_t rdx_2 = rcx_2 s/ 0xa\n14029bb7f        if (rdx_2 s< 0xa)\n14029bb7f        rdx_2 = 0xa\n14029bb8a        sub_1402b6fa0(arg1, rdx_2 + rcx_2, 0, 1)\n14029bb8f        i_2 = *(arg1 + 0x10)\n14029bb94        if (i_2 s> 0)\n14029bb9d        if ((*(arg1 + 0x14) & 0x80000000) == 0)\n14029bbbf        int32_t rsi_1 = i_2 - 1\n14029bbc2        uint64_t i_1 = zx.q(i_2)\n14029bbf3        uint64_t i\n14029bbe6        sub_14029b350(sx.q(i_2) * 0x58 + *(arg1 + 8), sx.q(rsi_1) * 0x58 + *(arg1 + 8))\n14029bbeb        rsi_1 -= 1\n14029bbed        i_2 -= 1\n14029bbef        i = i_1\n14029bbef        i_1 -= 1\n14029bbf3        do while (i != 1)\n14029bb9f        int32_t* rdx_4 = *(arg1 + 8)\n14029bbae        memcpy(&rdx_4[0x16], rdx_4, sx.q(i_2) * 0x58)\n14029bc07        sub_14029b350(*(arg1 + 8), arg2)\n14029bc0c        *(arg1 + 0x10) += 1\n14029bc0f        int32_t* result\n14029bc0f        result.b = 1\n14029bc21        return result",
+  "fetched_at": "2026-04-26T17:32:45Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x1404c2d50",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "char * __thiscall TooltipDummyBehaviorClass::vfunction9(void)\n\n{\n  return \"TooltipDummyBehaviorClass\";\n}",
+  "fetched_at": "2026-04-26T18:10:53Z"
+}

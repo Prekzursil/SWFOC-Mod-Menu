@@ -1,0 +1,7 @@
+{
+  "addr": "0x140347b70",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nundefined ** FUN_140347b70(char *param_1)\n\n{\n  int iVar1;\n  undefined **ppuVar2;\n  int iVar3;\n  \n  if (param_1 != (char *)0x0) {\n    iVar3 = 0;\n    ppuVar2 = &PTR_s_i_main_commandbar_140a174e0;\n    do {\n      if ((*ppuVar2 != (char *)0x0) && (iVar1 = _stricmp(param_1,*ppuVar2), iVar1 == 0)) {\n        return &PTR_s_i_main_commandbar_140a174e0 + (longlong)iVar3 * 9;\n      }\n      iVar3 = iVar3 + 1;\n      ppuVar2 = ppuVar2 + 9;\n    } while ((longlong)ppuVar2 < 0x140a28448);\n  }\n  return (undefined **)0x0;\n}\n\n",
+  "fetched_at": "2026-04-26T17:07:21Z"
+}

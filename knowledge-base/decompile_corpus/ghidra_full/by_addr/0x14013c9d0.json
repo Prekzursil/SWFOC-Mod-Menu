@@ -1,0 +1,7 @@
+{
+  "addr": "0x14013c9d0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "alEmitter * __thiscall alEmitter::scalar_deleting_destructor(alEmitter *this,ulonglong param_1)\n\n{\n  longlong *plVar1;\n  \n                    /* inlined destructor: alEmitter::~alEmitter */\n  this->vftablePtr = &vftable_for_RefCountClass;\n  this->vftablePtr = &vftable_for_MultiLinkedListMember;\n  this->vftablePtr = &vftable_for_CullObjectClass;\n  plVar1 = (this->alEmitter_data).offset_0x0;\n  if (plVar1 != (longlong *)0x0) {\n    (**(code **)(*plVar1 + 8))();\n    (this->alEmitter_data).offset_0x0 = (longlong *)0x0;\n  }\n  FUN_140172a60((this->alEmitter_data).offset_0x8,0);\n  plVar1 = (this->alEmitter_data).offset_0x0;\n  if (plVar1 != (longlong *)0x0) {\n    (**(code **)(*plVar1 + 8))();\n    (this->alEmitter_data).offset_0x0 = (longlong *)0x0;\n  }\n  FUN_140172a60((this->alEmitter_data).offset_0x8,1);\n  plVar1 = (this->alEmitter_data).offset_0x8;\n  if (plVar1 != (longlong *)0x0) {\n    (**(code **)(*plVar1 + 8))();\n    (this->alEmitter_data).offset_0x8 = (longlong *)0x0;\n  }\n  plVar1 = (this->alEmitter_data).offset_0x0;\n  if (plVar1 != (longlong *)0x0) {\n    (**(code **)(*plVar1 + 8))();\n  }\n  alRenderable::~alRenderable((alRenderable *)this);\n  if ((param_1 & 1) != 0) {\n    thunk_FUN_1407864b8(this,0x2f8);\n  }\n  return this;\n}",
+  "fetched_at": "2026-04-26T17:15:15Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407eed90",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void SingletonInstance<class_TheAIPlayerTypeManagerClass>::\n     SingletonInstance<class_TheAIPlayerTypeManagerClass>_Constructor_or_Destructor(void)\n\n{\n  PTR_vftable_140a16de8 = (undefined *)&vftable;\n  return;\n}",
+  "fetched_at": "2026-04-26T19:02:49Z"
+}

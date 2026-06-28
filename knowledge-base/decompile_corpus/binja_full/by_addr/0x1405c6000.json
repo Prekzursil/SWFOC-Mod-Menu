@@ -1,0 +1,7 @@
+{
+  "addr": "0x1405c6000",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1405c6019        *arg1 = &CollisionClass::`vftable'{for `SignalListenerClass'}\n1405c601c        int32_t i_1 = 0\n1405c6025        arg1[2] = &CollisionClass::`vftable'{for `AIDiagnosticsClass'}\n1405c6029        void* rcx = arg1[8]\n1405c603b        if ((arg1[9] - rcx) s>> 3 != 0)\n1405c603d        uint64_t i = 0\n1405c6040        int64_t* rcx_1 = *(rcx + (i << 3))\n1405c6047        if (rcx_1 != 0)\n1405c6051        int64_t* rax_4 = (*(*rcx_1 + 0x10))(rcx_1, 1)\n1405c6057        if (rax_4 != 0)\n1405c6059        int64_t r8_1 = *rax_4\n1405c6062        (*(r8_1 + 0x180))(rax_4, zx.q(arg1[7].d), r8_1)\n1405c6069        rcx = arg1[8]\n1405c606d        i_1 += 1\n1405c6076        i = zx.q(i_1)\n1405c607f        do while (i u< (arg1[9] - rcx) s>> 3)\n1405c6084        if (rcx != 0)\n1405c6098        if (((arg1[0xa] - rcx) & 0xfffffffffffffff8) u>= 0x1000)\n1405c609a        void* r8_2 = *(rcx - 8)\n1405c60ad        if (rcx - r8_2 - 8 u> 0x1f)\n1405c60f9        _invalid_parameter_noinfo_noreturn()\n1405c60f9        noreturn\n1405c60af        rcx = r8_2\n1405c60b2        j_sub_1407864b8(rcx)\n1405c60b7        __builtin_memset(&arg1[8], 0, 0x18)\n1405c60d3        sub_1405f6540(&arg1[2])\n1405c60e2        *arg1 = &SignalListenerClass::`vftable'{for `MultiLinkedListMember'}\n1405c60f4        return sub_14020a820(arg1) __tailcall",
+  "fetched_at": "2026-04-26T17:37:37Z"
+}

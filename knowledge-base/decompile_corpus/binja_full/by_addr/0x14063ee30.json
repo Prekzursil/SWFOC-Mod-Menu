@@ -1,0 +1,7 @@
+{
+  "addr": "0x14063ee30",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14063ee3b        struct BehaviorClass::TelekinesisTargetBehaviorClass::VTable** result = operator new(0x40)\n14063ee46        if (result == 0)\n14063ee7e        return result\n14063ee4b        sub_1404c32d0(result)\n14063ee57        *result = &TelekinesisTargetBehaviorClass::`vftable'{for `BehaviorClass'}\n14063ee61        result[1] = &TelekinesisTargetBehaviorClass::`vftable'{for `RefCountClass'}\n14063ee6c        result[3] = &TelekinesisTargetBehaviorClass::`vftable'{for `SignalListenerClass'}\n14063ee78        return result",
+  "fetched_at": "2026-04-26T17:02:32Z"
+}

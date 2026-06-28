@@ -1,0 +1,7 @@
+{
+  "addr": "0x14060cf00",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined8 __thiscall AutoResolveClass::vfunction6(AutoResolveClass *this,undefined4 param_1)\n\n{\n  if (*(char *)((longlong)&(this->AutoResolveClass_data).offset_0x0 + 1) == '\\0') {\n    return 0x80670003;\n  }\n  if ((this->AutoResolveClass_data).offset_0x2 != '\\0') {\n    return 0x8067000a;\n  }\n  (this->AutoResolveClass_data).offset_0x2 = 1;\n  *(undefined4 *)&(this->AutoResolveClass_data).field_0x8 = param_1;\n  return 0;\n}",
+  "fetched_at": "2026-04-26T17:26:25Z"
+}

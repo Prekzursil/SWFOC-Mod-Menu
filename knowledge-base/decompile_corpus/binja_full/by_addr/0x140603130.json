@@ -1,0 +1,7 @@
+{
+  "addr": "0x140603130",
+  "tool": "binary_ninja",
+  "fact_id": "rva_lua_give_money",
+  "body": "140603148        int64_t* rbx_1\n140603148        if (arg3 != 0)\n14060314e        rbx_1 = *(arg3 + 0x10)\n14060315f        char const* const rdx\n14060315f        if (arg3 == 0 || ((*(arg3 + 0x18) - rbx_1) & 0xfffffffffffffff8) == 0)\n1406031cf        rdx = \"PlayerWrapper::Lua_Give_Money -- Missing required parameter.\"\n140603161        int64_t* rbx_2 = *rbx_1\n140603167        if (rbx_2 != 0)\n14060316f        void* i\n14060316f        i, arg3 = (*(*rbx_2 + 0x20))(rbx_2)\n140603175        while (i != 0)\n140603183        if (i == &data_140a157c0)\n14060319d        (**rbx_2)(rbx_2)\n1406031af        sub_14027f370(*(arg1 + 0x28), _mm_cvtpd_ps(zx.o(rbx_2[2])), 1)\n1406031ba        (*(*rbx_2 + 8))(rbx_2)\n1406031ce        return 0\n140603185        i = *(i + 8)\n14060318e        rdx = \"PlayerWrapper::Lua_Give_Money -- Parameter 1 must be a number.\"\n1406031d9        sub_140248190(arg2, rdx, arg3)\n1406031ef        return 0",
+  "fetched_at": "2026-04-26T16:44:00Z"
+}

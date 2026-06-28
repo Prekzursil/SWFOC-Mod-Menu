@@ -1,0 +1,7 @@
+{
+  "addr": "0x140143800",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14014380f        char var_408[0x408]\n14014380f        void* r8 = &var_408 - arg2\n14014382d        char i\n140143820        i = *arg2\n140143823        *(r8 + arg2) = i\n140143827        arg2 = &arg2[1]\n14014382d        do while (i != 0)\n140143834        int64_t rax_1 = -1\n140143840        rax_1 += 1\n140143847        do while (var_408[rax_1] != 0)\n140143849        int32_t rax_2 = rax_1.d - 1\n14014384c        int64_t rcx = sx.q(rax_2)\n14014384f        if (rax_1.d - 1 s>= 0)\n14014385e        int64_t temp1_1\n140143856        if (var_408[rcx] == 0x2e)\n140143865        var_408[sx.q(rax_2)] = 0\n140143865        break\n140143858        rax_2 -= 1\n14014385a        temp1_1 = rcx\n14014385a        rcx -= 1\n14014385e        do while (temp1_1 - 1 s>= 0)\n140143875        char (* rcx_2)[0x408] = &var_408\n14014388c        char i_1\n140143880        i_1 = *rcx_2\n140143883        *(arg1 - &var_408 + rcx_2) = i_1\n140143886        rcx_2 = &(*rcx_2)[1]\n14014388c        do while (i_1 != 0)\n140143898        return _strlwr(arg1) __tailcall",
+  "fetched_at": "2026-04-26T17:19:45Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x140511f10",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "FormationBlockStatus * __thiscall\nLandUnitsBlockStatus::scalar_deleting_destructor(LandUnitsBlockStatus *this,ulonglong param_1)\n\n{\n  longlong lVar1;\n  longlong lVar2;\n  ulonglong uVar3;\n  \n  if (this->offset_0x50 != (longlong *)0x0) {\n    (**(code **)(*this->offset_0x50 + 8))();\n  }\n  lVar1 = *(longlong *)&this->field_0x40;\n  if (lVar1 != 0) {\n    uVar3 = this->offset_0x48 - lVar1 & 0xfffffffffffffffc;\n    lVar2 = lVar1;\n    if (0xfff < uVar3) {\n      lVar2 = *(longlong *)(lVar1 + -8);\n      if (0x1f < (lVar1 - lVar2) - 8U) {\n                    /* WARNING: Subroutine does not return */\n        FUN_1407711cc(lVar1 - lVar2,uVar3 + 0x27);\n      }\n    }\n    thunk_FUN_1407864b8(lVar2);\n    *(undefined8 *)&this->field_0x40 = 0;\n    this->offset_0x40 = 0;\n    this->offset_0x48 = 0;\n  }\n                    /* inlined destructor: SignalListenerClass::~SignalListenerClass */\n  this->vftablePtr = (LandUnitsBlockStatus_vftable1 *)&SignalListenerClass::vftable;\n  MultiLinkedListMember::~MultiLinkedListMember((MultiLinkedListMember *)&this->vftablePtr);\n  if (*(longlong **)&this->field_0x28 != (longlong *)0x0) {\n    (**(code **)(**(longlong **)&this->field_0x28 + 8))();\n  }\n  LuaUserVar::~LuaUserVar((LuaUserVar *)this);\n  if ((param_1 & 1) != 0) {\n    thunk_FUN_1407864b8(this,0x60);\n  }\n  return (FormationBlockStatus *)this;\n}",
+  "fetched_at": "2026-04-26T18:22:24Z"
+}

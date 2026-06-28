@@ -1,0 +1,7 @@
+{
+  "addr": "0x1403905b0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_1403905b0(longlong param_1)\n\n{\n  DebrisDataPackClass *pDVar1;\n  \n  if (*(longlong *)(param_1 + 0x130) == 0) {\n    pDVar1 = (DebrisDataPackClass *)FUN_140769c58(0x18);\n    if (pDVar1 != (DebrisDataPackClass *)0x0) {\n      pDVar1 = DebrisDataPackClass::DebrisDataPackClass(pDVar1);\n      *(DebrisDataPackClass **)(param_1 + 0x130) = pDVar1;\n      return;\n    }\n    *(undefined8 *)(param_1 + 0x130) = 0;\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T17:21:41Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x14020c180",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "ulonglong FUN_14020c180(float *param_1,float *param_2,char *param_3)\n\n{\n  float fVar1;\n  float fVar2;\n  float fVar3;\n  float fVar4;\n  float fVar5;\n  ulonglong in_RAX;\n  float fVar6;\n  \n  fVar6 = param_1[7] * param_2[1] + param_1[6] * *param_2 + param_1[8] * param_2[2];\n  if (((DAT_140815de4 <= ABS(fVar6)) &&\n      (fVar6 = (float)((uint)((*param_1 * *param_2 + param_1[1] * param_2[1] +\n                              param_1[2] * param_2[2]) - param_2[3]) ^ DAT_140800860) / fVar6,\n      0.0 < fVar6)) && (fVar6 < *(float *)(param_3 + 4))) {\n    *(float *)(param_3 + 4) = fVar6;\n    *(float *)(param_3 + 0xc) = *param_2;\n    *(float *)(param_3 + 0x10) = param_2[1];\n    fVar5 = param_2[2];\n    *(float *)(param_3 + 0x14) = fVar5;\n    if ((*param_3 != '\\0') && ((float *)(param_3 + 0x18) != (float *)0x0)) {\n      fVar1 = param_1[7];\n      fVar2 = param_1[6];\n      fVar3 = param_1[1];\n      fVar4 = *param_1;\n      *(float *)(param_3 + 0x20) = fVar6 * param_1[8] + param_1[2];\n      *(float *)(param_3 + 0x1c) = fVar6 * fVar1 + fVar3;\n      *(float *)(param_3 + 0x18) = fVar6 * fVar2 + fVar4;\n    }\n    return CONCAT71((uint7)(uint3)((uint)fVar5 >> 8),1);\n  }\n  return in_RAX & 0xffffffffffffff00;\n}",
+  "fetched_at": "2026-04-26T17:58:33Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x140665ec0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140665ed5        struct PerceptualEvaluatorClass::VisiblePerceptualEvaluatorClass<class GalacticPlayerPerceptualEvaluatorClass>::VTable** result = arg1\n140665ed8        sub_14064c900(arg1)\n140665ee9        *result = &VisiblePerceptualEvaluatorClass<class GalacticPlayerPerceptualEvaluatorClass>::`vftable'{for `PerceptualEvaluatorClass'}\n140665ef3        result[3] = &VisiblePerceptualEvaluatorClass<class GalacticPlayerPerceptualEvaluatorClass>::`vftable'{for `AIDiagnosticsClass'}\n140665ef9        int128_t zmm0 = *arg2\n140665efc        result[0x13].d = arg3\n140665f02        *(result + 0x9c) = 0\n140665f08        *(result + 0x88) = zmm0\n140665f0f        result[0x14] = 0\n140665f16        result[0x15] = 0\n140665f1d        int64_t* rax = operator new(0x80)\n140665f27        *rax = rax\n140665f2a        rax[1] = rax\n140665f2e        rax[2] = rax\n140665f32        rax[3].w = 0x101\n140665f38        result[0x14] = rax\n140665f4c        return result",
+  "fetched_at": "2026-04-26T17:09:31Z"
+}

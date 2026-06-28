@@ -1,0 +1,7 @@
+{
+  "addr": "0x140195650",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_140195650(undefined4 param_1)\n\n{\n  int iVar1;\n  longlong lVar2;\n  longlong *plVar3;\n  undefined **ppuVar4;\n  \n  DAT_140a70044 = 0;\n  ppuVar4 = (undefined **)PTR_LOOP_140a12af0;\n  if ((undefined **)PTR_LOOP_140a12af0 != &PTR_LOOP_140a12ae8) {\n    do {\n      plVar3 = (longlong *)(ppuVar4[3] + -0x10);\n      if (ppuVar4[3] == (undefined *)0x0) {\n        plVar3 = (longlong *)0x0;\n      }\n      (**(code **)(*plVar3 + 0x28))(plVar3,param_1);\n      iVar1 = (**(code **)(*plVar3 + 0x20))(plVar3);\n      *(int *)(plVar3 + 4) = iVar1;\n      if (*(char *)((longlong)plVar3 + 0x24) == '\\0') {\n        DAT_140a70044 = DAT_140a70044 + iVar1;\n        ppuVar4 = (undefined **)ppuVar4[1];\n      }\n      else {\n        plVar3 = (longlong *)(ppuVar4[3] + -0x10);\n        if (ppuVar4[3] == (undefined *)0x0) {\n          plVar3 = (longlong *)0x0;\n        }\n        if (plVar3 != (longlong *)0x0) {\n          ppuVar4 = (undefined **)ppuVar4[1];\n          lVar2 = FUN_14020abe0(&PTR_vftable_140a12ae0,plVar3 + 2);\n          if (lVar2 != 0) {\n            (**(code **)(*plVar3 + 8))(plVar3);\n          }\n        }\n      }\n    } while (ppuVar4 != &PTR_LOOP_140a12ae8);\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T17:35:16Z"
+}

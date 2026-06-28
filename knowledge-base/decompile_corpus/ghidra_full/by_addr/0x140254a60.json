@@ -1,0 +1,7 @@
+{
+  "addr": "0x140254a60",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "LuaMemberFunctionWrapper<class_LuaCreateThread> * __thiscall\nLuaMemberFunctionWrapper<class_BlockingStatus>::scalar_deleting_destructor\n          (LuaMemberFunctionWrapper<class_BlockingStatus> *this,uint param_1)\n\n{\n  LuaUserVar::~LuaUserVar((LuaUserVar *)this);\n  if ((param_1 & 1) != 0) {\n    thunk_FUN_1407864b8(this,0x40);\n  }\n  return (LuaMemberFunctionWrapper<class_LuaCreateThread> *)this;\n}",
+  "fetched_at": "2026-04-26T18:12:29Z"
+}

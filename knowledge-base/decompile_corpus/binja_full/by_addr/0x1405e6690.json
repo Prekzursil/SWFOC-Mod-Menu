@@ -1,0 +1,7 @@
+{
+  "addr": "0x1405e6690",
+  "tool": "binary_ninja",
+  "fact_id": "rva_ai_goal_type_mgr_ctor",
+  "body": "1405e669a        struct DatabaseUIntConversionClass::DatabaseObjectManagerClass<class AIGoalTypeClass>::VTable** result = arg1\n1405e669d        sub_14023ae90(arg1, arg2)\n1405e66ab        *result = &DatabaseObjectManagerClass<class AIGoalTypeClass>::`vftable'{for `DatabaseUIntConversionClass'}\n1405e66b0        result[1].b = 0\n1405e66b3        __builtin_memset(result + 0xc, 0, 0x14)\n1405e66c1        int64_t* rax = operator new(0x38)\n1405e66cd        *rax = rax\n1405e66d0        rax[1] = rax\n1405e66d4        result[2] = rax\n1405e66d8        int64_t r8 = result[2]\n1405e66dc        __builtin_memset(&result[4], 0, 0x18)\n1405e66e7        result[7] = 7\n1405e66ef        result[8] = 8\n1405e66f7        *(result + 0xc) = 0x3f800000\n1405e66fe        sub_140048250(&result[4], 0x10, r8)\n1405e670a        *result = &TheAIGoalTypeManagerClass::`vftable'{for `DatabaseObjectManagerClass<class AIGoalTypeClass>'}\n1405e671a        return result",
+  "fetched_at": "2026-04-26T16:43:55Z"
+}

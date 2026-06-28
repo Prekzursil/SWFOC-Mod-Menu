@@ -1,0 +1,7 @@
+{
+  "addr": "0x14020e370",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14020e389        *arg1 = &TreeCullClass::`vftable'{for `CullSystemClass'}\n14020e38e        arg1[1] = 0\n14020e397        uint128_t* rax = operator new(0xf0)\n14020e3a2        void* const rax_1\n14020e3a2        if (rax == 0)\n14020e3be        rax_1 = nullptr\n14020e3af        memset(rax, 0, 0xf0)\n14020e3b7        rax_1 = sub_1402115c0(rax)\n14020e3c1        arg1[2] = rax_1\n14020e3c5        *(rax_1 + 0x48) = 0\n14020e3c9        arg1[3] = 0\n14020e3cd        *(arg1 + 0x24) = 0\n14020e3d0        arg1[6].b = 0\n14020e3d4        arg1[4].b = 0\n14020e3d8        arg1[5] = 0x43fa0000\n14020e3e0        struct CullSystemClass::TreeCullClass::VTable*** rdx = data_140a7c688\n14020e3e7        bool cond:0 = rdx == data_140a7c690\n14020e3ee        struct CullSystemClass::TreeCullClass::VTable** arg_8 = arg1\n14020e3f3        if (cond:0)\n14020e41f        sub_14001ded0(&data_140a7c680, rdx, &arg_8)\n14020e436        return arg1\n14020e3f5        *rdx = arg1\n14020e3fb        data_140a7c688 += 8\n14020e412        return arg1",
+  "fetched_at": "2026-04-26T17:28:15Z"
+}

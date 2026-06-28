@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406383e0",
+  "tool": "ghidra",
+  "fact_id": "rva_combatant_behavior_ctor",
+  "body": "\nCombatantBehaviorClass * __thiscall\nCombatantBehaviorClass::CombatantBehaviorClass(CombatantBehaviorClass *this)\n\n{\n  BehaviorClass::BehaviorClass((BehaviorClass *)this);\n  this->vftablePtr = &vftable;\n  this->vftablePtr = &vftable;\n  this->vftablePtr = &vftable;\n  return this;\n}\n\n",
+  "fetched_at": "2026-04-26T16:44:05Z"
+}

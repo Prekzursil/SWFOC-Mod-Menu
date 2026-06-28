@@ -1,0 +1,7 @@
+{
+  "addr": "0x140498fd0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140498ff4        return _mm_max_ss(0, _mm_min_ss(0x3f800000, 1f - *(arg1 + 0x1c) f/ *(arg1 + 0x10)))",
+  "fetched_at": "2026-04-26T17:29:15Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x14039a320",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14039a320        void* r8 = *(arg1 + 0x298)\n14039a32a        if (r8 == 0)\n14039a32c        int64_t rax\n14039a32c        rax.b = 0\n14039a32e        return rax\n14039a32f        char rax_1 = *(r8 + 0xd0)\n14039a339        if (arg2 == 0)\n14039a342        return rax_1\n14039a33b        return rax_1 & *(r8 + 0xd1)",
+  "fetched_at": "2026-04-26T17:23:51Z"
+}

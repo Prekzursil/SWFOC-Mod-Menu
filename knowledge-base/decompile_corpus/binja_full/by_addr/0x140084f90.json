@@ -1,0 +1,7 @@
+{
+  "addr": "0x140084f90",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140084f9a        void* rbx = *arg1\n140084fa3        if (rbx == 0)\n140084fa3        return \n140084fae        int64_t rsi_1 = arg1[1]\n140084fb5        if (rbx != rsi_1)\n140084fbb        sub_1404ad530(rbx + 0x10)\n140084fc0        rbx += 0x30\n140084fc7        do while (rbx != rsi_1)\n140084fc9        rbx = *arg1\n140084fe2        int64_t rax_1\n140084fe2        int64_t rdx_1\n140084fe2        rdx_1:rax_1 = muls.dp.q(0x2aaaaaaaaaaaaaab, arg1[2] - rbx)\n140084fe5        int64_t rdx_2 = rdx_1 s>> 3\n140085002        if ((rdx_2 + (rdx_2 u>> 0x3f)) * 0x30 u>= 0x1000)\n140085004        void* rax_4 = *(rbx - 8)\n140085017        if (rbx - rax_4 - 8 u> 0x1f)\n14008503c        _invalid_parameter_noinfo_noreturn()\n14008503c        noreturn\n140085019        rbx = rax_4\n14008501f        j_sub_1407864b8(rbx)\n140085026        __builtin_memset(arg1, 0, 0x18)\n14008503b        return ",
+  "fetched_at": "2026-04-26T16:57:30Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x14069c920",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall MarkupBlockStatus::vfunction1(MarkupBlockStatus *this,uint param_1)\n\n{\n  scalar_deleting_destructor((MarkupBlockStatus *)&this[-1].offset_0x60,param_1);\n  return;\n}",
+  "fetched_at": "2026-04-26T17:20:51Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x14012d770",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14012d773        if (arg2 == 0)\n14012d773        return \n14012d788        int64_t r9_1 = *arg2\n14012d798        int64_t rbp_1 = sx.q(arg3)\n14012d7b6        (*(r9_1 + 0x58))(arg2, rbp_1 * 0x30 + *(arg1[0x1d] + 0x28), arg4, r9_1)\n14012d7c0        int64_t* var_10_1 = arg2\n14012d7c5        (**arg2)(arg2)\n14012d7c7        arg2[0x16] = arg1\n14012d7ce        int32_t* rdx_4 = arg1[0x1f]\n14012d7d5        int32_t var_18 = rbp_1.d\n14012d7e0        if (rdx_4 == arg1[0x20])\n14012d806        sub_14012e9e0(&arg1[0x1e], rdx_4, &var_18)\n14012d7e2        *rdx_4 = rbp_1.d\n14012d7e7        *(rdx_4 + 8) = arg2\n14012d7ee        (**arg2)(arg2)\n14012d7f0        arg1[0x1f] += 0x10\n14012d80e        sub_14012def0(arg1)\n14012d816        int64_t* rax_4 = sub_14013fe60(arg1)\n14012d823        if (rax_4 != 0)\n14012d825        int64_t r8_1 = *arg2\n14012d82e        (*(r8_1 + 0x68))(arg2, rax_4, r8_1)\n14012d838        (*(*arg2 + 8))(arg2)\n14012d84a        return ",
+  "fetched_at": "2026-04-26T17:10:04Z"
+}

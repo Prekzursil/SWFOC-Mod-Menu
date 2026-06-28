@@ -1,0 +1,7 @@
+{
+  "addr": "0x1400a3560",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1400a356c        if (arg1 == 1)\n1400a356e        void* rbx_1 = data_140b15418\n1400a3578        if (rbx_1 != 0)\n1400a3583        sub_14044de50(&data_140b306dd, 0)\n1400a358c        char rax_1\n1400a358c        if (*(rbx_1 + 0xc) != 0)\n1400a3595        rax_1 = sub_14028b060(&data_140b153e0)\n1400a35ae        if ((*(rbx_1 + 0xc) == 0 || rax_1 != 0) && data_140b2a8c8 != 0 && data_140b153d0 == 1)\n1400a35b0        data_140b153d0 = 0\n1400a35b7        data_140b153d5 = 0\n1400a3578        goto label_1400a35c5\n1400a35c3        if (arg2 == 1)\n1400a35c5        label_1400a35c5:\n1400a35cc        if (data_140a61eba == 1)\n1400a35d5        sub_14022a220(&data_140a7d530)\n1400a35e1        sub_140228680(&data_140a7d108)\n1400a35ed        sub_14022c840(&data_140a7dfe0)\n1400a35f9        sub_1402d28e0(&data_140b2b300)\n1400a3605        sub_1402d28e0(&data_140b2b3b0)\n1400a360a        data_140a61eba = 0\n1400a3611        bool cond:0 = data_140a61eb9 == 0\n1400a3618        char result = data_140a61ebb\n1400a3624        data_140b30392 = result\n1400a362a        if (not(cond:0))\n1400a363a        if (sub_1402cd0c0(&data_140b27a10) != 0)\n1400a3646        sub_140262490(sub_14004fba0(), 0)\n1400a365b        result = sub_1401c1d20(&data_140a78510, data_140a11420, 1)\n1400a3660        data_140a11420 = 0xffffffff\n1400a366a        data_140a61eb9 = 0\n1400a3675        return result",
+  "fetched_at": "2026-04-26T16:58:54Z"
+}

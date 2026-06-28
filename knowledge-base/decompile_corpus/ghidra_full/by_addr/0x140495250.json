@@ -1,0 +1,7 @@
+{
+  "addr": "0x140495250",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_140495250(longlong param_1,int param_2)\n\n{\n  int iVar1;\n  int iVar2;\n  bool bVar3;\n  char cVar4;\n  int iVar5;\n  longlong lVar6;\n  char *pcVar7;\n  \n  if ((param_2 < 0) || (*(int *)(param_1 + 0x28) <= param_2)) {\n    return;\n  }\n  pcVar7 = (char *)((longlong)param_2 * 0x78 + *(longlong *)(param_1 + 0x20));\n  iVar1 = *(int *)(*(longlong *)(param_1 + 8) + 0x10);\n  if (*pcVar7 != '\\0') {\n    if ((DAT_140b15418 != (longlong *)0x0) &&\n       (lVar6 = (**(code **)(*DAT_140b15418 + 0x220))(), lVar6 != 0)) {\n      bVar3 = BitwiseAnd<bool>::BitwiseAnd<bool>_Constructor_or_Destructor(lVar6);\n      if (!bVar3) {\n        return;\n      }\n      cVar4 = FUN_14028af80(&DAT_140b153e0);\n      if (cVar4 != '\\0') {\n        return;\n      }\n      cVar4 = FUN_14028b060(&DAT_140b153e0);\n      if (cVar4 != '\\0') {\n        return;\n      }\n    }\n    iVar5 = FUN_1404950f0(pcVar7,iVar1);\n    if (iVar5 <= iVar1) {\n      return;\n    }\n    iVar2 = *(int *)(pcVar7 + 0xc);\n    if (((iVar2 < iVar5) && (iVar2 != -1)) && (iVar2 < iVar1)) {\n      return;\n    }\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T18:03:24Z"
+}

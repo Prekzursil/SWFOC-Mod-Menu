@@ -1,0 +1,7 @@
+{
+  "addr": "0x14078f730",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14078f736        uint64_t result = data_140b3cbc0\n14078f743        if (*arg2 != result)\n14078f745        result = zx.q(*(arg1 + 0x3a8))\n14078f751        if ((data_140a44f90 & result.d) == 0)\n14078f753        result = __acrt_update_thread_multibyte_data()\n14078f758        *arg2 = result\n14078f760        return result",
+  "fetched_at": "2026-04-26T17:31:40Z"
+}

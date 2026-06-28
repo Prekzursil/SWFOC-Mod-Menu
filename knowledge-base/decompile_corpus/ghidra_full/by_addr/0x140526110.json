@@ -1,0 +1,7 @@
+{
+  "addr": "0x140526110",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined8 __thiscall AIExecutionSystemClass::vfunction4(void)\n\n{\n  return (ulonglong)DAT_1408007b4;\n}",
+  "fetched_at": "2026-04-26T18:27:13Z"
+}

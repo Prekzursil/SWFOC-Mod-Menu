@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407bac90",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_1407bac90(longlong param_1)\n\n{\n  longlong lVar1;\n  \n  lVar1 = *(longlong *)(param_1 + 0x58);\n  if (lVar1 != *(longlong *)(param_1 + 0x80)) {\n    do {\n      if (((*(uint *)(lVar1 + 0x10) & 1) == 0) && ((*(uint *)(lVar1 + 0x10) & 2) != 0)) {\n        *(undefined8 *)(lVar1 + 0x18) = **(undefined8 **)(lVar1 + 0x20);\n      }\n      lVar1 = lVar1 + -0x30;\n    } while (lVar1 != *(longlong *)(param_1 + 0x80));\n    *(undefined1 *)(param_1 + 0x8e) = 1;\n    return;\n  }\n  *(undefined1 *)(param_1 + 0x8e) = 1;\n  return;\n}",
+  "fetched_at": "2026-04-26T18:56:19Z"
+}

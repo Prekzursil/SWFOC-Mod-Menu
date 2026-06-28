@@ -1,0 +1,7 @@
+{
+  "addr": "0x140326c00",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nvoid FUN_140326c00(undefined8 param_1,longlong param_2)\n\n{\n  undefined8 ****ppppuVar1;\n  undefined8 ***local_28 [3];\n  ulonglong local_10;\n  \n  FUN_14001e680(local_28,*(longlong *)(param_2 + 0x298) + 0xf8);\n  ppppuVar1 = local_28;\n  if (0xf < local_10) {\n    ppppuVar1 = (undefined8 ****)local_28[0];\n  }\n  FUN_140327b10(\"STORY - PLANET CONQUERED %s\\r\\n\",ppppuVar1);\n  FUN_14032e5f0(param_1,3,0,local_28,param_2);\n  FUN_14032e5f0(param_1,0xf,0,param_2,0);\n  if (0xf < local_10) {\n    if (0xfff < local_10 + 1) {\n      if (0x1f < (ulonglong)((longlong)local_28[0] + (-8 - (longlong)local_28[0][-1]))) {\n                    /* WARNING: Subroutine does not return */\n        FUN_1407711cc(local_28[0][-1],local_10 + 0x28);\n      }\n    }\n    thunk_FUN_1407864b8();\n  }\n  return;\n}\n\n",
+  "fetched_at": "2026-04-26T17:01:16Z"
+}

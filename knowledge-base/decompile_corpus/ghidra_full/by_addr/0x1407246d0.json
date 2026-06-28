@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407246d0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall StoryPlotWrapper::vfunction2(StoryPlotWrapper *this)\n\n{\n  this->offset_0x8 = (undefined **)0x0;\n  return;\n}",
+  "fetched_at": "2026-04-26T17:59:49Z"
+}

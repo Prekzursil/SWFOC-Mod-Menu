@@ -1,0 +1,7 @@
+{
+  "addr": "0x140198778",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14019877c        return Concurrency::details::_AsyncTaskCollection::`scalar deleting destructor'(arg1 - 0x10, arg2) __tailcall",
+  "fetched_at": "2026-04-26T17:24:36Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406d1c50",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "LandLocationPerceptualEvaluatorClass * __thiscall\nSpaceLocationPerceptualEvaluatorClass::scalar_deleting_destructor\n          (SpaceLocationPerceptualEvaluatorClass *this,uint param_1)\n\n{\n  SignalListenerClass::~SignalListenerClass((SignalListenerClass *)this);\n  if ((param_1 & 1) != 0) {\n    thunk_FUN_1407864b8(this,0x108);\n  }\n  return (LandLocationPerceptualEvaluatorClass *)this;\n}",
+  "fetched_at": "2026-04-26T17:42:04Z"
+}

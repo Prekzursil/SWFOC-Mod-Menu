@@ -1,0 +1,7 @@
+{
+  "addr": "0x1403ae940",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined8 __thiscall EventFactoryClass<class_MoveToRayFacingEventClass,19>::vfunction2(void)\n\n{\n  return 0x13;\n}",
+  "fetched_at": "2026-04-26T17:33:44Z"
+}

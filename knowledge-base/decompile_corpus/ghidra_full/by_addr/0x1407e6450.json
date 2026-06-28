@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407e6450",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void SingletonInstance<class_SteamPeerLobbyClass>::\n     SingletonInstance<class_SteamPeerLobbyClass>_Constructor_or_Destructor(void)\n\n{\n  PTR_vftable_1409cf050 = (undefined *)&vftable;\n  return;\n}",
+  "fetched_at": "2026-04-26T19:00:45Z"
+}

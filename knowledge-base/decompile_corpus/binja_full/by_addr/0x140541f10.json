@@ -1,0 +1,7 @@
+{
+  "addr": "0x140541f10",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140541f1a        int64_t* rcx = data_140b15418\n140541f2a        char rax_1\n140541f2a        int64_t r8\n140541f2a        rax_1, r8 = (*(*rcx + 0xf0))(rcx)\n140541f32        if (rax_1 == 0)\n140541f3e        sub_140248190(arg2, \"LuaEnableFog -- Command only valid in a land tactical game.\", r8)\n140541f4f        return 0\n140541f59        int64_t* rbx = *(arg3 + 0x10)\n140541f68        char const* const rdx\n140541f68        if ((*(arg3 + 0x18) - rbx) s>> 3 u>= 1)\n140541f73        int64_t* rbx_1 = *rbx\n140541f79        if (rbx_1 != 0)\n140541f81        void* i\n140541f81        i, r8 = (*(*rbx_1 + 0x20))(rbx_1)\n140541f87        while (i != 0)\n140541f93        if (i == &data_140a157b0)\n140541fc5        (**rbx_1)(rbx_1)\n140541fd2        sub_14044b0e0(&data_140a28c10, rbx_1[2].b)\n140541fdd        (*(*rbx_1 + 8))(rbx_1)\n140541ff1        return 0\n140541f95        i = *(i + 8)\n140541f9e        rdx = \"LuaEnableFog -- invalid type for parameter 1.  Expected bool.\"\n140541f6a        rdx = \"LuaEnableFog -- Expected bool parameter 1\"\n140541fa8        sub_140248190(arg2, rdx, r8)\n140541fbe        return 0",
+  "fetched_at": "2026-04-26T17:33:57Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x1405f6520",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1405f6527        *arg1 = &AIDiagnosticsClass::`vftable'\n1405f652c        __builtin_memset(&arg1[1], 0, 0x18)\n1405f653b        arg1[4].b = 1\n1405f653f        return arg1",
+  "fetched_at": "2026-04-26T17:22:33Z"
+}

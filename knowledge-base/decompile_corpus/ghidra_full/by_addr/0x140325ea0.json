@@ -1,0 +1,7 @@
+{
+  "addr": "0x140325ea0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nvoid __thiscall\nDynamicVectorClass<class_DynamicVectorClass<class_std::basic_string<char,struct_std::char_traits<char>,class_std::allocator<char>_>_>_>\n::\n~DynamicVectorClass<class_DynamicVectorClass<class_std::basic_string<char,struct_std::char_traits<char>,class_std::allocator<char>_>_>_>\n          (DynamicVectorClass<class_DynamicVectorClass<class_std::basic_string<char,struct_std::char_traits<char>,class_std::allocator<char>_>_>_>\n           *this)\n\n{\n  this->vftablePtr = &vftable;\n  FUN_140326b80();\n  return;\n}\n\n",
+  "fetched_at": "2026-04-26T17:00:56Z"
+}

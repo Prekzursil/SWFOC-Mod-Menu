@@ -1,0 +1,7 @@
+{
+  "addr": "0x140524a50",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall\nTacticalSellBehaviorClass::vfunction10(TacticalSellBehaviorClass *this,undefined **param_1)\n\n{\n  SpawnIndigenousUnitsBehaviorClass::vbase_destructor\n            ((SpawnIndigenousUnitsBehaviorClass *)this,param_1);\n  *(undefined8 *)(param_1[0x28] + 8) = 0;\n  return;\n}",
+  "fetched_at": "2026-04-26T18:26:59Z"
+}

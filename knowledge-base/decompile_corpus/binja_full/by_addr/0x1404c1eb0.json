@@ -1,0 +1,7 @@
+{
+  "addr": "0x1404c1eb0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1404c1eb6        struct EventClass::PerformanceMetricsEventClass::VTable** result = arg1\n1404c1eb9        sub_1405126c0(arg1)\n1404c1ec5        result[4].d = 0x12\n1404c1ecc        *result = &PerformanceMetricsEventClass::`vftable'{for `EventClass'}\n1404c1ed7        return result",
+  "fetched_at": "2026-04-26T17:30:12Z"
+}

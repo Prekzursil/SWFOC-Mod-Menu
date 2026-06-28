@@ -1,0 +1,7 @@
+{
+  "addr": "0x140341ca0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nDynamicVectorClass<struct_VictoryMonitorClass::AwaitingVictoryTestType> * __thiscall\nDynamicVectorClass<struct_VictoryMonitorClass::AwaitingVictoryTestType>::scalar_deleting_destructor\n          (DynamicVectorClass<struct_VictoryMonitorClass::AwaitingVictoryTestType> *this,\n          uint param_1)\n\n{\n  ~DynamicVectorClass<struct_VictoryMonitorClass::AwaitingVictoryTestType>(this);\n  if ((param_1 & 1) != 0) {\n    thunk_FUN_1407864b8(this,0x18);\n  }\n  return this;\n}\n\n",
+  "fetched_at": "2026-04-26T17:05:56Z"
+}

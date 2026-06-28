@@ -1,0 +1,7 @@
+{
+  "addr": "0x140724b90",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140724b93        arg1[2] = arg2\n140724b97        arg1[4] = 0\n140724ba2        *arg1 = &TacticalUnitAITargetLocationClass::`vftable'{for `AITargetLocationClass'}\n140724bac        arg1[3] = &TacticalUnitAITargetLocationClass::`vftable'{for `SignalListenerClass'}\n140724bb3        arg1[1].d = 0\n140724bb7        arg1[5] = 0\n140724bbb        arg1[6].d = 0x3fffff\n140724bc2        *(arg1 + 0x34) = 0xffffffff\n140724bc9        return arg1",
+  "fetched_at": "2026-04-26T17:28:26Z"
+}

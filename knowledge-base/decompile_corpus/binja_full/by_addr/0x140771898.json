@@ -1,0 +1,7 @@
+{
+  "addr": "0x140771898",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1407718bc        void* result\n1407718bc        if (arg2 u<= 0x3fffffffffffffff)\n1407718d0        char rsi_1 = 0\n1407718d2        int64_t rbp_2 = arg2 << 2\n1407718dd        if (*(arg1 + 0x408) != 0)\n1407718ef        if (rbp_2 u> *(arg1 + 0x400))\n1407718ef        goto label_1407718f8\n1407718f1        result.b = 1\n1407718ef        if (rbp_2 u<= 0x400 || rbp_2 u<= *(arg1 + 0x400))\n1407718f1        result.b = 1\n1407718f8        label_1407718f8:\n1407718f8        int64_t rax = _malloc_base(rbp_2)\n140771903        if (rax != 0)\n14077190c        _free_base(*(arg1 + 0x408))\n140771911        *(arg1 + 0x408) = rax\n140771918        rsi_1 = 1\n14077191b        *(arg1 + 0x400) = rbp_2\n140771924        _free_base(0)\n140771929        result.b = rsi_1\n1407718c3        *_errno() = 0xc\n1407718c9        result.b = 0\n140771940        return result",
+  "fetched_at": "2026-04-26T17:30:42Z"
+}

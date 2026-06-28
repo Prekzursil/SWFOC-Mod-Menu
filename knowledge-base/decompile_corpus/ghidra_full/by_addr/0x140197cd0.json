@@ -1,0 +1,7 @@
+{
+  "addr": "0x140197cd0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_140197cd0(void)\n\n{\n  undefined8 uVar1;\n  undefined *puVar2;\n  longlong lVar3;\n  \n  if (DAT_140a12b2d != '\\0') {\n    uVar1 = FUN_14017f860();\n    puVar2 = &DAT_140a70388;\n    lVar3 = 3;\n    D3DXVec4TransformArray(&DAT_140a70388,0x10,&DAT_140a700e8,0x10,uVar1,3);\n    do {\n      D3DXVec4Normalize(puVar2,puVar2);\n      puVar2 = puVar2 + 0x10;\n      lVar3 = lVar3 + -1;\n    } while (lVar3 != 0);\n    DAT_140a12b2d = '\\0';\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T17:36:00Z"
+}

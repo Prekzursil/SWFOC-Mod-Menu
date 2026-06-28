@@ -1,0 +1,7 @@
+{
+  "addr": "0x140703ee0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "IncomeStreamModAbilityClass * __thiscall\nIncomeStreamModAbilityClass::scalar_deleting_destructor\n          (IncomeStreamModAbilityClass *this,ulonglong param_1)\n\n{\n                    /* inlined destructor: IncomeStreamModAbilityClass::~IncomeStreamModAbilityClass\n                        */\n  this->vftablePtr = &vftable_for_IXMLLoadableClass;\n  this->vftablePtr = &vftable_for_RefCountClass;\n  (this->IncomeStreamModAbilityClass_data).offset_0x0 = 0;\n  (this->IncomeStreamModAbilityClass_data).offset_0x8 = 0;\n  (this->IncomeStreamModAbilityClass_data).offset_0x20 = 0;\n  FUN_1404c4770(&(this->IncomeStreamModAbilityClass_data).field_0x10);\n  SpecialAbilityClass::~SpecialAbilityClass((SpecialAbilityClass *)this);\n  if ((param_1 & 1) != 0) {\n    thunk_FUN_1407864b8(this,0x1a0);\n  }\n  return this;\n}",
+  "fetched_at": "2026-04-26T17:52:04Z"
+}

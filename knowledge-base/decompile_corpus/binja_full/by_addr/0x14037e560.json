@@ -1,0 +1,7 @@
+{
+  "addr": "0x14037e560",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14037e574        *arg1 = &LineSubClass::`vftable'{for `alRenderable'}\n14037e580        arg1[2] = &LineSubClass::`vftable'{for `MultiLinkedListMember'}\n14037e58b        arg1[4] = &LineSubClass::`vftable'{for `CullObjectClass'}\n14037e58f        int64_t rcx = arg1[0x12f]\n14037e599        if (rcx != 0)\n14037e5a0        j_sub_1407864b8(rcx)\n14037e5a5        arg1[0x12f] = 0\n14037e5b0        int64_t rcx_1 = arg1[0x130]\n14037e5ba        if (rcx_1 != 0)\n14037e5c1        j_sub_1407864b8(rcx_1)\n14037e5c6        arg1[0x130] = 0\n14037e5d1        int64_t* rcx_2 = arg1[0x12e]\n14037e5db        if (rcx_2 != 0)\n14037e5e0        (*(*rcx_2 + 8))(rcx_2)\n14037e5ea        sub_14037e490(&arg1[0x12a])\n14037e5ef        int64_t* rcx_4 = arg1[0x28]\n14037e5f9        if (rcx_4 != 0)\n14037e5fe        (*(*rcx_4 + 8))(rcx_4)\n14037e601        int64_t* rcx_5 = arg1[0x27]\n14037e60b        if (rcx_5 != 0)\n14037e610        (*(*rcx_5 + 8))(rcx_5)\n14037e622        sub_14013f770(arg1)\n14037e62b        if ((arg2 & 1) != 0)\n14037e635        j_sub_1407864b8(arg1)\n14037e647        return arg1",
+  "fetched_at": "2026-04-26T17:19:37Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x1402e9700",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1402e9711        if (*(arg1 + 0x2028) != 0)\n1402e9711        return \n1402e9730        *(arg1 + 0x2028) = operator new(0x18)\n1402e9737        void* rax_2 = sub_140347b50(0x231)\n1402e9754        **(arg1 + 0x2028) = sub_14034b3e0(*(rax_2 + 0x80))\n1402e975e        int64_t* rcx_3 = **(arg1 + 0x2028)\n1402e9761        int64_t r8_1 = *rcx_3\n1402e9764        (*(r8_1 + 8))(rcx_3, 0, r8_1)\n1402e9771        int64_t* rcx_5 = **(arg1 + 0x2028)\n1402e9774        int64_t r8_2 = *rcx_5\n1402e9777        (*(r8_2 + 0x78))(rcx_5, 0, r8_2)\n1402e978c        *(**(arg1 + 0x2028) + 0x98) = *(rax_2 + 0x98)\n1402e97a3        *(**(arg1 + 0x2028) + 0xa8) = *(rax_2 + 0xa8)\n1402e97b3        int64_t rbx_1 = ***(arg1 + 0x2028)\n1402e97b9        void* rax_9 = sub_14034c340(rax_2)\n1402e97ce        (*(rbx_1 + 0xa0))(**(arg1 + 0x2028), rax_9, 0)\n1402e97e5        *(*(arg1 + 0x2028) + 8) = 0\n1402e97f4        *(*(arg1 + 0x2028) + 0x10) = 1\n1402e97fd        return ",
+  "fetched_at": "2026-04-26T17:22:52Z"
+}

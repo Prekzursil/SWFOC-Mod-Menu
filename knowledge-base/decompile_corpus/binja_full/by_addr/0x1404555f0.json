@@ -1,0 +1,7 @@
+{
+  "addr": "0x1404555f0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1404555f3        if (arg2 == 0)\n1404555f3        return \n140455611        int64_t rcx = arg1[0x6c]\n140455618        int32_t i_1 = 0\n140455631        if ((arg1[0x6d] - rcx) s>> 5 == 0)\n140455631        return \n14045563c        uint64_t i = 0\n140455643        int64_t* rdx = arg2\n14045564a        char** rax_5 = (i << 5) + rcx\n140455652        if (arg2[3] u>= 0x10)\n140455654        rdx = *arg2\n14045565c        char* rcx_1 = rax_5\n14045565f        if (rax_5[3] u>= 0x10)\n140455661        rcx_1 = *rax_5\n140455664        int64_t r8 = rax_5[2]\n14045566c        if (r8 == arg2[2] && memcmp(rcx_1, rdx, r8) == 0)\n14045567d        if (arg3 != 0)\n140455695        char rax_7\n140455695        int64_t rdx_2\n140455695        rax_7, rdx_2 = sub_140455ce0(arg1, arg3, arg1[0x75].d)\n14045569c        if (rax_7 != 0)\n1404556ce        int64_t rax = arg1[0x6f]\n1404556d5        *(rax + (i << 2)) -= 1\n1404556dc        if (*(rax + (i << 2)) s<= 0)\n1404556e7        sub_140455db0(arg1, arg3, 0)\n1404556dc        break\n1404556a5        sub_140467540(\"Event didn't trigger because filter did not match\\r\\n\", rdx_2)\n140455684        sub_140455db0(arg1, nullptr, 0)\n1404556aa        rcx = arg1[0x6c]\n1404556b1        i_1 += 1\n1404556bd        i = zx.q(i_1)\n1404556c6        do while (i u< (arg1[0x6d] - rcx) s>> 5)\n140455706        return ",
+  "fetched_at": "2026-04-26T17:27:45Z"
+}

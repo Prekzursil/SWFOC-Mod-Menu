@@ -1,0 +1,7 @@
+{
+  "addr": "0x140263fa0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_140263fa0(longlong param_1,undefined8 param_2,undefined4 param_3,undefined8 param_4,\n                  longlong param_5)\n\n{\n  undefined4 uVar1;\n  ulonglong uVar2;\n  \n  uVar2 = 0xffffffffffffffff;\n  do {\n    uVar2 = uVar2 + 1;\n  } while (*(char *)(param_5 + uVar2) != '\\0');\n  uVar1 = FUN_140215a30(param_5,uVar2 & 0xffffffff,0);\n  FUN_140278ee0(*(undefined8 *)(param_1 + 0xb0),param_2,uVar1,param_3);\n  return;\n}",
+  "fetched_at": "2026-04-26T18:16:21Z"
+}

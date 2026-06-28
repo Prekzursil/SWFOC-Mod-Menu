@@ -1,0 +1,7 @@
+{
+  "addr": "0x1402286e0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1402286ef        int32_t* rbx = arg1 + 0x40\n1402286fb        int128_t zmm7 = arg2\n1402286fe        int64_t i_1 = 0x10\n140228730        int64_t i\n140228707        if (rbx[-4].b == 1)\n140228711        arg2.d = zmm7.d f* *rbx\n140228719        arg2.d = arg2.d f* arg3.d\n14022871d        arg2.d = arg2.d f* rbx[2]\n140228722        AIL_set_sample_volume_pan(*(rbx - 0x18), arg2, rbx[3])\n140228728        rbx = &rbx[0x10]\n14022872c        i = i_1\n14022872c        i_1 -= 1\n140228730        do while (i != 1)\n140228746        return ",
+  "fetched_at": "2026-04-26T17:29:27Z"
+}

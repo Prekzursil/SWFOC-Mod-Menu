@@ -1,0 +1,7 @@
+{
+  "addr": "0x14078c02c",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14078c053        TEB* gsbase\n14078c053        if (__acrt_get_process_end_policy() != 1 && ((gsbase->ProcessEnvironmentBlock->NtGlobalFlag u>> 8).b & 1) == 0)\n14078c060        TerminateProcess(GetCurrentProcess(), arg1)\n14078c060        noreturn\n14078c068        try_cor_exit_process(arg1)\n14078c06f        ExitProcess(arg1)\n14078c06f        noreturn",
+  "fetched_at": "2026-04-26T17:31:26Z"
+}

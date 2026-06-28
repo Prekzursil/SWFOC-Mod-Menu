@@ -1,0 +1,7 @@
+{
+  "addr": "0x1402139d0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1402139d7        if (arg2 != 0)\n1402139d9        HANDLE hFile = *(arg1 + 0x10)\n1402139ed        if ((hFile != -1 || *(arg1 + 0x40) != hFile) && *(arg1 + 8) == 0)\n1402139f3        if (hFile == -1)\n140213a2e        return sub_14021a810(data_140a7d080, *(arg1 + 0x40), arg2, zx.q(arg3)) __tailcall\n140213a0e        int32_t numberOfBytesRead\n140213a0e        if (ReadFile(hFile, arg2, arg3, &numberOfBytesRead, nullptr) != 0)\n140213a18        return zx.q(numberOfBytesRead)\n140213a3c        return 0xffffffff",
+  "fetched_at": "2026-04-26T17:28:26Z"
+}

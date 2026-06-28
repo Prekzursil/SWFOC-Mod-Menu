@@ -1,0 +1,7 @@
+{
+  "addr": "0x14018d890",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall alD3dTexture2D::~alD3dTexture2D(alD3dTexture2D *this)\n\n{\n  longlong *plVar1;\n  int iVar2;\n  int iVar3;\n  int iVar4;\n  undefined1 local_28 [24];\n  int local_10;\n  int local_c;\n  \n  this->vftablePtr = &vftable;\n  this->vftablePtr = &vftable;\n  plVar1 = (longlong *)this->offset_0x70;\n  iVar4 = 0;\n  iVar3 = 0;\n  if (plVar1 != (longlong *)0x0) {\n    iVar2 = (**(code **)(*plVar1 + 0x88))(plVar1,0,local_28);\n    iVar4 = 0;\n    iVar3 = 0;\n    if (iVar2 == 0) {\n      iVar4 = local_10;\n      iVar3 = local_c;\n    }\n  }\n  DAT_140a6e748 = DAT_140a6e748 + (float)(iVar4 * iVar3 * -4);\n  if ((longlong *)this->offset_0x70 != (longlong *)0x0) {\n    (**(code **)(*(longlong *)this->offset_0x70 + 0x10))();\n  }\n  this->offset_0x70 = 0;\n  alD3dTexture::~alD3dTexture((alD3dTexture *)this);\n  return;\n}",
+  "fetched_at": "2026-04-26T17:33:55Z"
+}

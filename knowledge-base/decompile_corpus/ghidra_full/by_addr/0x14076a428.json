@@ -1,0 +1,7 @@
+{
+  "addr": "0x14076a428",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void entry(void)\n\n{\n  __security_init_cookie();\n  __scrt_common_main_seh();\n  return;\n}",
+  "fetched_at": "2026-04-26T18:10:03Z"
+}

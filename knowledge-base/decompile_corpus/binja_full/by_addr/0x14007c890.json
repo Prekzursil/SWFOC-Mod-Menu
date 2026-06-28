@@ -1,0 +1,7 @@
+{
+  "addr": "0x14007c890",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14007c895        int64_t arg_10 = arg2\n14007c89a        int64_t* arg_8 = arg1\n14007c8aa        void** rbx = arg1\n14007c8b1        int64_t rdi_1 = arg1[1] - *arg1\n14007c8b4        int64_t* rax = sub_14007cc80(arg1, arg2)\n14007c8bc        int64_t* arg_18 = rax\n14007c8ce        int64_t result = sub_14007cad0(rbx, *rbx, rbx[1], rax)\n14007c8d4        void* rcx_1 = *rbx\n14007c8da        if (rcx_1 != 0)\n14007c8e3        sub_140079450(rcx_1, rbx[1])\n14007c8e8        void* rcx_2 = *rbx\n14007c8fd        if (((rbx[2] - rcx_2) & 0xffffffffffffffc0) u>= 0x1000)\n14007c903        void* r8_2 = *(rcx_2 - 8)\n14007c912        if (rcx_2 - r8_2 - 8 u> 0x1f)\n14007c943        _invalid_parameter_noinfo_noreturn()\n14007c943        noreturn\n14007c914        rcx_2 = r8_2\n14007c917        result = j_sub_1407864b8(rcx_2)\n14007c91c        *rbx = rax\n14007c926        rbx[1] = (rdi_1 & 0xffffffffffffffc0) + rax\n14007c931        rbx[2] = &rax[arg2 * 8]\n14007c942        return result",
+  "fetched_at": "2026-04-26T16:57:03Z"
+}

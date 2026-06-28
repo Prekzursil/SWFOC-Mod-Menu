@@ -1,0 +1,7 @@
+{
+  "addr": "0x140248d10",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140248d31        int512_t zmm0\n140248d31        int512_t zmm1\n140248d31        zmm0, zmm1 = sub_1407b94a0(*(arg1 + 0x58), \"LuaThreadTable\", 0xe)\n140248d3f        sub_1407b8e90(*(arg1 + 0x58), 0xffffd8ef, zmm0, zmm1)\n140248d4d        int32_t result = sub_1407b9e00(*(arg1 + 0x58), 0xffffffff)\n140248d55        if (result != 5)\n140248d92        return result\n140248d5e        sub_1407b95e0(*(arg1 + 0x58), arg2)\n140248d67        sub_1407b9510(*(arg1 + 0x58))\n140248d75        sub_1407b9a60(*(arg1 + 0x58), 0xfffffffd)\n140248d83        return sub_1407b9ab0(*(arg1 + 0x58), 0xfffffffe)",
+  "fetched_at": "2026-04-26T17:30:24Z"
+}

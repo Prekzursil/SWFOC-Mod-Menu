@@ -1,0 +1,7 @@
+{
+  "addr": "0x14014f420",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14014f4a3        char rdi = sub_14021fe20(arg2, 0x10, arg3, arg4) & 1 & sub_14021ffa0(arg2, 0) & sub_1402200b0(arg2, arg1 + 0x220, 4, nullptr) & sub_140220030(arg2) & sub_14021ffa0(arg2, 1) & sub_1402200b0(arg2, arg1 + 0x224, 1, nullptr)\n14014f50b        rdi = rdi & sub_140220030(arg2) & sub_14021ffa0(arg2, 2) & sub_1402200b0(arg2, arg1 + 0x21c, 4, nullptr) & sub_140220030(arg2) & sub_14021ffa0(arg2, 3) & sub_1402200b0(arg2, arg1 + 0xa4, 0xc, nullptr)\n14014f573        rdi = rdi & sub_140220030(arg2) & sub_14021ffa0(arg2, 4) & sub_1402200b0(arg2, arg1 + 0xa0, 4, nullptr) & sub_140220030(arg2) & sub_14021ffa0(arg2, 5) & sub_1402200b0(arg2, arg1 + 0x98, 8, nullptr)\n14014f5db        rdi = rdi & sub_140220030(arg2) & sub_14021ffa0(arg2, 6) & sub_1402200b0(arg2, arg1 + 0xb0, 4, nullptr) & sub_140220030(arg2) & sub_14021ffa0(arg2, 7) & sub_1402200b0(arg2, arg1 + 0x154, 4, nullptr)\n14014f643        rdi = rdi & sub_140220030(arg2) & sub_14021ffa0(arg2, 8) & sub_1402200b0(arg2, arg1 + 0x158, 4, nullptr) & sub_140220030(arg2) & sub_14021ffa0(arg2, 0xa) & sub_1402200b0(arg2, arg1 + 0x150, 4, nullptr)\n14014f682        rdi = rdi & sub_140220030(arg2) & sub_14021ffa0(arg2, 0xb) & sub_1402200b0(arg2, arg1 + 0x160, 4, nullptr) & sub_140220030(arg2)\n14014f69c        return sub_14021feb0(arg2) & rdi",
+  "fetched_at": "2026-04-26T17:22:17Z"
+}

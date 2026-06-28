@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406fad50",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall\nEnhanceDefenseAbilityClass::vfunction33_for_IXMLLoadableClass\n          (EnhanceDefenseAbilityClass *this,undefined8 param_1,undefined8 param_2,\n          undefined8 *param_3,double *param_4)\n\n{\n  *param_3 = *(undefined8 *)&(this->RefCountClass_data).field_0x38;\n  *param_4 = (double)(*(float *)&(this->EnhanceDefenseAbilityClass_data).offset_0x0 + DAT_1407ffaf8)\n  ;\n  return;\n}",
+  "fetched_at": "2026-04-26T17:49:42Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x14070ec10",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14070ec17        return \"Starbase_Upgrade_Ability\"",
+  "fetched_at": "2026-04-26T17:27:38Z"
+}

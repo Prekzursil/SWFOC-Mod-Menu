@@ -1,0 +1,7 @@
+{
+  "addr": "0x14061bc80",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14061bc8c        int64_t result = sub_14048f2c0(arg1)\n14061bc95        if (*(arg1 + 0x3c) != 6)\n14061bc9c        void* r8_1 = arg1 + 0x18\n14061bca0        if (*(arg1 + 0x30) u>= 0x10)\n14061bca2        r8_1 = *r8_1\n14061bcb1        char var_108[0x100]\n14061bcb1        sscanf_s(&var_108, \"Error: (%s) The only currently supported Activation_Style is Ground_Activated.\", r8_1)\n14061bcbb        result = sub_1402149d0(&var_108)\n14061bcc0        *(arg1 + 0x3c) = 6\n14061bccf        return result",
+  "fetched_at": "2026-04-26T17:23:36Z"
+}

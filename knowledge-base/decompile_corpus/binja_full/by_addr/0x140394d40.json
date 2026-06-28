@@ -1,0 +1,7 @@
+{
+  "addr": "0x140394d40",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140394d60        void* rdx = *(arg1 + 0x2d0)\n140394d6f        if (rdx != 0 && arg2 != 0)\n140394d71        int64_t rax_1 = -1\n140394d80        rax_1 += 1\n140394d87        do while (arg2[rax_1] != 0)\n140394d8c        if (rax_1 != 0)\n140394d8e        int64_t rbp_1 = sx.q(*(rdx + 0x10))\n140394d96        if (rbp_1 s>= 1)\n140394d98        int64_t rbx_1 = 0\n140394dab        void* result = *(*(*(arg1 + 0x2d0) + 8) + (rbx_1 << 3))\n140394db2        if (result != 0)\n140394db4        void* rdx_1 = *(result + 0x20)\n140394dbb        if (rdx_1 != 0)\n140394dbd        char* rdx_2 = rdx_1 + 0xa0\n140394dc9        if (*(rdx_2 + 0x18) u>= 0x10)\n140394dcb        rdx_2 = *rdx_2\n140394dd8        if (_stricmp(arg2, rdx_2) == 0)\n140394dff        return result\n140394dda        rbx_1 += 1\n140394de0        do while (rbx_1 s< rbp_1)\n140394de2        return nullptr",
+  "fetched_at": "2026-04-26T17:23:40Z"
+}

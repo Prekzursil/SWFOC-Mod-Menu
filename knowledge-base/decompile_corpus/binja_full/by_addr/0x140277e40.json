@@ -1,0 +1,7 @@
+{
+  "addr": "0x140277e40",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140277e40        float zmm3 = *(arg1 + 0x68)\n140277e48        float zmm2 = *(arg1 + 0x64)\n140277e5b        float temp0 = __maxss_xmmss_memss(data_140a16cdc, data_140a16cd8)\n140277e72        int32_t temp0_1 = _mm_sqrt_ss(0, zmm2 * zmm2 + zmm3 * zmm3)\n140277e79        float result\n140277e79        if (not(temp0_1 f<= 0f))\n140277e83        result = 1f f/ temp0_1\n140277e8b        zmm2 = zmm2 * result\n140277e8f        *(arg1 + 0x68) = zmm3 * result\n140277ea1        result = *(arg1 + 0x50) * 0.5f / temp0\n140277ea5        zmm2 = zmm2 * result\n140277ea9        result = result f* *(arg1 + 0x68)\n140277eae        *(arg1 + 0x64) = zmm2\n140277eb3        *(arg1 + 0x68) = result\n140277ebd        zmm2 = zmm2 f+ *(arg1 + 0x54)\n140277ec2        arg2[1] = result f+ *(arg1 + 0x58)\n140277ec7        *arg2 = zmm2\n140277eda        result = *(arg1 + 0x68) f+ *(arg1 + 0x60)\n140277edf        arg2[2] = *(arg1 + 0x64) f+ *(arg1 + 0x5c)\n140277ee4        arg2[3] = result\n140277ef8        result = *(arg1 + 0x60) f- *(arg1 + 0x68)\n140277efd        arg2[4] = *(arg1 + 0x5c) f- *(arg1 + 0x64)\n140277f02        arg2[5] = result\n140277f16        result = *(arg1 + 0x58) f- *(arg1 + 0x68)\n140277f1b        arg2[6] = *(arg1 + 0x54) f- *(arg1 + 0x64)\n140277f20        arg2[7] = result\n140277f25        return result",
+  "fetched_at": "2026-04-26T17:31:57Z"
+}

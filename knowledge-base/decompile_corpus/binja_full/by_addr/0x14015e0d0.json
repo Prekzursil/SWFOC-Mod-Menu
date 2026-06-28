@@ -1,0 +1,7 @@
+{
+  "addr": "0x14015e0d0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14015e0d9        arg1[2] = arg3\n14015e0e7        *arg1 = &alRenderTask::`vftable'{for `MultiLinkedListMember'}\n14015e0ef        arg1[3] = arg5\n14015e0f8        arg1[4] = arg6\n14015e0fc        __builtin_memset(&arg1[0xa], 0, 0x14)\n14015e100        arg1[1] = 0\n14015e104        arg1[5].d = 0\n14015e117        int64_t rcx_1 = sx.q(*(arg2 + 0x1c4)) * 2\n14015e121        *(arg1 + 0x2c) = *(arg2 + (rcx_1 << 3) + 0xa4)\n14015e12b        arg1[6].d = *(arg2 + (rcx_1 << 3) + 0xa8)\n14015e135        *(arg1 + 0x34) = *(arg2 + (rcx_1 << 3) + 0xac)\n14015e13f        arg1[7].d = *(arg2 + (rcx_1 << 3) + 0xb0)\n14015e158        arg1[0xa] = *(arg2 + (sx.q(*(arg2 + 0x2d0)) << 3) + 0x248)\n14015e15c        *arg1 = &alMeshRenderTask::`vftable'{for `alRenderTask'}\n14015e15f        arg1[0xd] = 0\n14015e163        arg1[0xe] = arg4\n14015e173        arg1[0xf] = *(arg2 + (sx.q(*(arg2 + 0xb0)) << 3) + 0x28)\n14015e180        arg1[0xd] = (*(*arg3 + 0x60))(arg3)\n14015e18c        return arg1",
+  "fetched_at": "2026-04-26T17:22:35Z"
+}

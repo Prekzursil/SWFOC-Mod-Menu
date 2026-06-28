@@ -1,0 +1,7 @@
+{
+  "addr": "0x140740e68",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* Library Function - Single Match\n    private: __cdecl std::locale::_Locimp::_Locimp(class std::locale::_Locimp const & __ptr64)\n   __ptr64\n   \n   Library: Visual Studio 2019 Release */\n\n_Locimp * __thiscall std::locale::_Locimp::_Locimp(_Locimp *this,_Locimp *param_1)\n\n{\n  longlong *this_00;\n  _Locimp *p_Var1;\n  \n  *(undefined4 *)&this->_Crt_new_delete = 1;\n  this->vftablePtr = &vftable;\n  (this->_Locimp_data).offset_0x0 = 0;\n  (this->_Locimp_data).offset_0x8 = *(longlong *)(param_1 + 0x18);\n  (this->_Locimp_data).offset_0x10 = *(undefined4 *)(param_1 + 0x20);\n  (this->_Locimp_data).offset_0x14 = (bool)param_1[0x24];\n  this_00 = &(this->_Locimp_data).offset_0x18;\n  p_Var1 = *(_Locimp **)(param_1 + 0x28);\n  if (p_Var1 == (_Locimp *)0x0) {\n    p_Var1 = param_1 + 0x30;\n  }\n  *this_00 = 0;\n  (this->_Locimp_data).offset_0x20 = 0;\n  _Yarn<char>::operator=((_Yarn<char> *)this_00,(char *)p_Var1);\n  _Locimp_ctor((_Locimp *)this,param_1);\n  return this;\n}",
+  "fetched_at": "2026-04-26T18:04:05Z"
+}

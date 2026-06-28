@@ -1,0 +1,7 @@
+{
+  "addr": "0x14025e390",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_14025e390(char param_1,float param_2)\n\n{\n  float fVar1;\n  \n  fVar1 = DAT_140858808;\n  if (param_1 != '\\0') {\n    fVar1 = DAT_14085880c;\n  }\n  if (param_2 != 0.0) {\n    fVar1 = param_2;\n  }\n  if (((param_1 != '\\0') && (param_2 != 0.0)) && (DAT_14080351c < fVar1)) {\n    DAT_140a7c410 = fVar1;\n  }\n  DAT_140a7c46e = param_1;\n  FUN_14014ee20();\n  PlayerProfileClass::vfunction2((PlayerProfileClass *)&DAT_140a7c230);\n  return;\n}",
+  "fetched_at": "2026-04-26T18:14:52Z"
+}

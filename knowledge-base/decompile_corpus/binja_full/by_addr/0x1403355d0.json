@@ -1,0 +1,7 @@
+{
+  "addr": "0x1403355d0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1403355da        int64_t* rbx = arg1 + 0x130\n1403355e7        if (rbx == 0)\n14033562f        rbx = arg2\n1403355f9        if (WaitForSingleObject(*rbx, 0x2710) == WAIT_OBJECT_0)\n140335629        rbx[1] = \"BroadcasterClass::Get_Local_Player\"\n1403355fb        rbx[1]\n140335634        int64_t rax_3 = sx.q(*(arg1 + 0xd8))\n14033563b        int32_t rdx_2 = 0\n14033563f        void* result\n14033563f        if (rax_3.d s<= 0)\n140335669        label_140335669:\n140335669        result = nullptr\n140335641        void* r9_1 = *(arg1 + 0xd0)\n14033564b        int64_t rcx_2 = 0\n14033564d        char* rax_4 = r9_1 + 0xc3\n140335657        while (*rax_4 == 0)\n140335659        rdx_2 += 1\n14033565b        rcx_2 += 1\n14033565e        rax_4 = &rax_4[0x1d8]\n140335667        if (rcx_2 s>= rax_3)\n140335667        goto label_140335669\n1403356c9        result = sx.q(rdx_2) * 0x1d8 + r9_1\n14033566e        if (rbx == 0)\n1403356db        return result\n140335670        HANDLE hMutex = *rbx\n140335678        rbx[1]\n14033567c        rbx[1] = 0\n14033568c        if (ReleaseMutex(hMutex) == 0)\n14033568e        GetLastError()\n1403356be        return result",
+  "fetched_at": "2026-04-26T17:03:37Z"
+}

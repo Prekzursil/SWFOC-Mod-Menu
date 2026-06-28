@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407711fc",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14077120d        if (IsProcessorFeaturePresent(PF_FASTFAIL_AVAILABLE) != 0)\n140771214        trap(0xd)\n140771225        __acrt_call_reportfault(2, 0xc0000417)\n14077123c        noreturn TerminateProcess(GetCurrentProcess(), 0xc0000417) __tailcall",
+  "fetched_at": "2026-04-26T17:30:41Z"
+}

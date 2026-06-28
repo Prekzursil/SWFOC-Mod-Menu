@@ -1,0 +1,7 @@
+{
+  "addr": "0x14062b250",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14062b257        return \"LureBehaviorClass\"",
+  "fetched_at": "2026-04-26T17:24:03Z"
+}

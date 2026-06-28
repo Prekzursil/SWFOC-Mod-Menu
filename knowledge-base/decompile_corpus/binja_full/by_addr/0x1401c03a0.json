@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401c03a0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1401c03aa        int64_t lpMem = arg1[1]\n1401c03ae        struct DynamicVectorClass<class XMLDatabase::XMLNodeClass* __ptr64>::VTable* const result = &DynamicVectorClass<class XMLDatabase::XMLNodeClass* __ptr64>::`vftable'\n1401c03b5        *arg1 = &DynamicVectorClass<class XMLDatabase::XMLNodeClass* __ptr64>::`vftable'\n1401c03be        if (lpMem != 0)\n1401c03c7        if ((*(arg1 + 0x14) & 0x80000000) == 0)\n1401c03e2        j_sub_1407864b8(lpMem)\n1401c03d7        HeapFree(GetProcessHeap(), HEAP_NONE, lpMem)\n1401c03e7        result = nullptr\n1401c03e9        *(arg1 + 0x14) &= 0x80000000\n1401c03f0        arg1[1] = 0\n1401c03f4        arg1[2].d = 0\n1401c0401        return result",
+  "fetched_at": "2026-04-26T17:26:06Z"
+}

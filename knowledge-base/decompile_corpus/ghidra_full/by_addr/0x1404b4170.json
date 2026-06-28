@@ -1,0 +1,7 @@
+{
+  "addr": "0x1404b4170",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "ScheduledEventClass * __thiscall\nEventFactoryClass<class_SpecialAbilityEventClass,13>::vfunction1(void)\n\n{\n  ScheduledEventClass *this;\n  \n  this = (ScheduledEventClass *)FUN_140769c58(0x158);\n  if (this != (ScheduledEventClass *)0x0) {\n    ScheduledEventClass::ScheduledEventClass(this);\n    this->vftablePtr = (ScheduledEventClass_vftable *)&SpecialAbilityEventClass::vftable;\n    FUN_1404bdf20(this + 1,0);\n    this[1].LinkedListEntryClass<class_EventClass> = (LinkedListEntryClass<class_EventClass>)0x0;\n    *(undefined4 *)&this[1].EventClass_data.offset_0x0 = 0;\n    *(undefined1 *)((longlong)&this[1].EventClass_data.offset_0x0 + 4) = 0;\n    FUN_1404b3db0(&this[1].EventClass_data.offset_0x8,0);\n    DynamicVectorClass<class_GameObjectTypeClass_const*___ptr64>::\n    ~DynamicVectorClass<class_GameObjectTypeClass_const*___ptr64>\n              ((DynamicVectorClass<class_GameObjectTypeClass_const*___ptr64> *)\n               &this[2].ScheduledEventClass_data.offset_0x18);\n    *(undefined4 *)&this[4].EventClass_data.offset_0x0 = 0;\n    *(undefined4 *)((longlong)&this[4].EventClass_data.offset_0x0 + 4) = 0x3fffff;\n    this[4].EventClass_data.offset_0x8 = 0x3fffff;\n    this[4].EventClass_data.offset_0xc = 0;\n    *(undefined1 *)&this[4].ScheduledEventClass_data.offset_0x8 = 0;\n    (this->EventClass_data).offset_0x8 = 0xd;\n    return this;\n  }\n  return (ScheduledEventClass *)0x0;\n}",
+  "fetched_at": "2026-04-26T18:07:26Z"
+}

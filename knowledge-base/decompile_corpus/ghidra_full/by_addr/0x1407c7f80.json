@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407c7f80",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_1407c7f80(undefined8 param_1,int *param_2,undefined8 param_3,int param_4)\n\n{\n  int *piVar1;\n  \n  if (100 < param_4) {\n    FUN_1407bad30(param_1,\"loop in gettable\");\n  }\n  if (*param_2 == 5) {\n    piVar1 = (int *)FUN_1407bfd90(*(undefined8 *)(param_2 + 2),param_3);\n    if (*piVar1 == 0) {\n      FUN_1407c8010(param_1,param_2,param_3,param_4 + 1);\n    }\n  }\n  else {\n    FUN_1407c7ef0(param_1,param_2,param_3,param_4 + 1);\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T18:57:08Z"
+}

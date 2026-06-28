@@ -1,0 +1,7 @@
+{
+  "addr": "0x14017d570",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14017d573        *arg2 = *arg3\n14017d579        arg2[1] = arg3[1]\n14017d580        arg2[2] = arg3[2]\n14017d58a        arg2[3] = arg3[0x20]\n14017d594        arg2[4] = arg3[0x21]\n14017d59e        arg2[5] = arg3[0x22]\n14017d5a8        arg2[6] = arg3[0x23]\n14017d5b0        arg2[7].b = arg3[0x1c].b\n14017d5b8        *(arg2 + 0x1d) = arg3[0x1d].b\n14017d5c0        *(arg2 + 0x1e) = arg3[0x1e].b\n14017d5c8        *(arg2 + 0x1f) = arg3[0x1f].b\n14017d5cf        arg2[8] = arg3[3]\n14017d5d6        arg2[9] = arg3[4]\n14017d5dd        arg2[0xa] = arg3[5]\n14017d5e4        arg2[0xb] = arg3[6]\n14017d5eb        arg2[0xc] = arg3[7]\n14017d5f2        arg2[0xd] = arg3[0xe]\n14017d5f9        arg2[0xe] = arg3[0xf]\n14017d600        arg2[0xf] = arg3[0x10]\n14017d607        arg2[0x10] = arg3[0x11]\n14017d60e        arg2[0x11] = arg3[0x12]\n14017d611        int32_t result = arg3[0x13]\n14017d615        arg2[0x12] = result\n14017d618        return result",
+  "fetched_at": "2026-04-26T17:23:44Z"
+}

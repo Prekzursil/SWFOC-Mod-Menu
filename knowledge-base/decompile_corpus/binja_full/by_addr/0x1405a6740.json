@@ -1,0 +1,7 @@
+{
+  "addr": "0x1405a6740",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1405a674e        *arg1 = 0\n1405a6753        __builtin_memset(&arg1[4], 0, 0x14)\n1405a6761        int64_t* rax = operator new(0x20)\n1405a676d        *rax = rax\n1405a6770        rax[1] = rax\n1405a6774        *(arg1 + 8) = rax\n1405a6778        int64_t r8 = *(arg1 + 8)\n1405a677c        __builtin_memset(&arg1[0x18], 0, 0x18)\n1405a6787        *(arg1 + 0x30) = 7\n1405a678f        *(arg1 + 0x38) = 8\n1405a6797        *(arg1 + 4) = 0x3f800000\n1405a679e        sub_140048250(&arg1[0x18], 0x10, r8)\n1405a67a6        __builtin_memset(&arg1[0x40], 0, 0x34)\n1405a67c1        __builtin_memset(&arg1[0x78], 0, 0x1c)\n1405a67d9        __builtin_memset(&arg1[0x98], 0, 0x1c)\n1405a67f4        __builtin_memset(&arg1[0xb8], 0, 0x9c)\n1405a687f        *(arg1 + 0x154) = 0x3dcccccd\n1405a6889        *(arg1 + 0x158) = 0xffffffff\n1405a6893        *(arg1 + 0x160) = 0\n1405a6899        arg1[0x164] = 0\n1405a68aa        return arg1",
+  "fetched_at": "2026-04-26T17:36:58Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x14070e0a0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14070e0a7        return \"Sabotage_Political_Control_Ability\"",
+  "fetched_at": "2026-04-26T17:27:36Z"
+}

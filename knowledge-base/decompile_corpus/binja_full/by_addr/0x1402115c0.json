@@ -1,0 +1,7 @@
+{
+  "addr": "0x1402115c0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1402115c8        void* rdx = arg1 + 0x14\n1402115d2        int32_t zmm4 = 0f + 0f\n1402115d6        int64_t i_1 = 3\n1402115dc        int32_t zmm2 = 0f - 0f\n140211691        int64_t i\n1402115f0        __builtin_memset(rdx + 4, 0, 0x18)\n140211602        int32_t zmm1 = zmm4 f* 0.5f\n14021160a        *(rdx - 0x14) = zmm4 f* 0.5f\n14021160f        rdx += 0x50\n140211621        *(rdx - 0x60) = zmm1\n140211630        *(rdx - 0x5c) = zmm1\n140211643        *(rdx - 0x58) = (zmm2 & 0x7fffffff) f* 0.5f\n14021164c        *(rdx - 0x54) = zmm2 & 0x7fffffff\n140211662        zmm1 = *(rdx - 0x54) f* 0.5f\n140211666        *(rdx - 0x50) = zmm2 & 0x7fffffff\n14021166e        int32_t zmm0 = *(rdx - 0x50) f* 0.5f\n140211672        *(rdx - 0x54) = zmm1\n140211677        *(rdx - 0x50) = zmm0\n14021167c        __builtin_memset(rdx - 0x34, 0, 0x1a)\n14021168d        i = i_1\n14021168d        i_1 -= 1\n140211691        do while (i != 1)\n14021169a        return arg1",
+  "fetched_at": "2026-04-26T17:28:21Z"
+}

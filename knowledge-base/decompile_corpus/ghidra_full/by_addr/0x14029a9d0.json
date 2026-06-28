@@ -1,0 +1,7 @@
+{
+  "addr": "0x14029a9d0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall\nReferenceListClass<class_GameObjectClass>::~ReferenceListClass<class_GameObjectClass>\n          (ReferenceListClass<class_GameObjectClass> *this)\n\n{\n  longlong lVar1;\n  undefined1 local_res8 [32];\n  \n  this->vftablePtr = &vftable;\n  lVar1 = FUN_1402ac2f0();\n  while (lVar1 != 0) {\n    lVar1 = FUN_14020ac80(this,local_res8);\n    if ((lVar1 != 0) && ((longlong *)(lVar1 + -0x18) != (longlong *)0x0)) {\n      (**(code **)(*(longlong *)(lVar1 + -0x18) + 8))();\n    }\n    lVar1 = FUN_1402ac2f0(this);\n  }\n  GenericMultiLinkedList::~GenericMultiLinkedList((GenericMultiLinkedList *)this);\n  return;\n}",
+  "fetched_at": "2026-04-26T18:25:31Z"
+}

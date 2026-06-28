@@ -1,0 +1,7 @@
+{
+  "addr": "0x1402753e0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140275413        float var_68\n140275413        int32_t r8\n140275413        int32_t zmm8_1\n140275413        int32_t zmm9_1\n140275413        r8, zmm8_1, zmm9_1 = sub_1401b3670(*(arg1 + 0x80), &var_68)\n140275425        float zmm3 = var_68\n140275450        void* rcx_1 = *(arg1 + 0x80)\n140275457        float var_54\n140275457        float zmm7 = var_54 * 1.10000002f\n14027545b        float var_58\n14027545b        float zmm5 = var_58 * 1.10000002f\n14027545f        float var_5c\n14027545f        float zmm6 = var_5c * 1.10000002f\n14027546a        int32_t var_98 = zmm8_1\n140275475        int32_t var_94 = zmm8_1\n140275480        int32_t var_a8 = zmm9_1\n14027548b        float var_64\n14027548b        float var_74 = var_64 - zmm5\n140275491        float var_84 = zmm5 + var_64\n140275497        float var_78 = zmm3 - zmm6\n1402754a6        float var_88 = zmm6 + zmm3\n1402754ac        float var_60\n1402754ac        float zmm4 = var_60 - zmm7\n1402754b0        zmm7 = zmm7 + var_60\n1402754b4        float var_70 = zmm4\n1402754ba        float var_80 = zmm7\n1402754c4        float var_90 = zmm7 - zmm4\n1402754ef        return sub_1401b3be0(rcx_1, &var_78, r8)",
+  "fetched_at": "2026-04-26T17:31:53Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x14062dd40",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall IdleBehaviorClass::vfunction8(IdleBehaviorClass *this,longlong param_1)\n\n{\n  int iVar1;\n  \n  if (param_1 != 0) {\n    FUN_140390930(param_1);\n    iVar1 = FUN_1401ffb40(&DAT_140a13e24,0xd2,0x1c2);\n    *(int *)(*(longlong *)(param_1 + 0xd8) + 8) =\n         *(int *)(*(longlong *)(*(longlong *)(param_1 + 0x2b8) + 0x20) + 0x10) + iVar1;\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T17:32:40Z"
+}

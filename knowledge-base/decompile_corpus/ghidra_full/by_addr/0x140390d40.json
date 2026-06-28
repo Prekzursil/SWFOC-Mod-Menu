@@ -1,0 +1,7 @@
+{
+  "addr": "0x140390d40",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_140390d40(longlong param_1)\n\n{\n  ProximityMineDataPackClass *pPVar1;\n  \n  if (*(longlong *)(param_1 + 0x220) == 0) {\n    pPVar1 = (ProximityMineDataPackClass *)FUN_140769c58(0x28);\n    if (pPVar1 != (ProximityMineDataPackClass *)0x0) {\n      pPVar1 = ProximityMineDataPackClass::ProximityMineDataPackClass(pPVar1);\n      *(ProximityMineDataPackClass **)(param_1 + 0x220) = pPVar1;\n      return;\n    }\n    *(undefined8 *)(param_1 + 0x220) = 0;\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T17:21:58Z"
+}

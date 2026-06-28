@@ -1,0 +1,7 @@
+{
+  "addr": "0x140326870",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140326887        sub_140327b10(\"STORY - Starting a space battle\\r\\n\", arg2)\n1403268b4        return sub_14032e5f0(arg1, 0x18, 0, arg2, data_140b30428)",
+  "fetched_at": "2026-04-26T17:01:08Z"
+}

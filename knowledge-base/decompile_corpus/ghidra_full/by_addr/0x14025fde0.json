@@ -1,0 +1,7 @@
+{
+  "addr": "0x14025fde0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */\n\nvoid thunk_FUN_14013ce50(void)\n\n{\n  DWORD DVar1;\n  float fVar2;\n  \n  if (*(int *)(*(longlong *)((longlong)ThreadLocalStoragePointer + (ulonglong)_tls_index * 8) + 0xd4\n              ) < DAT_140a626c8) {\n    _Init_thread_header(&DAT_140a626c8);\n    if (DAT_140a626c8 == -1) {\n      DVar1 = timeGetTime();\n      _DAT_140a626c4 = (float)(DVar1 - _DAT_140a7bec0) * DAT_14080350c;\n      _Init_thread_footer(&DAT_140a626c8);\n    }\n  }\n  DVar1 = timeGetTime();\n  fVar2 = (float)(DVar1 - _DAT_140a7bec0) * DAT_14080350c;\n  FUN_140178250();\n  FUN_14017b420(fVar2 - _DAT_140a626c4);\n  FUN_14017ef60();\n  _DAT_140a626c4 = fVar2;\n  return;\n}",
+  "fetched_at": "2026-04-26T18:15:19Z"
+}

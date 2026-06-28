@@ -1,0 +1,7 @@
+{
+  "addr": "0x14076dad0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14076dad3        return __FrameHandler3::StateFromIp(arg1, arg2, *arg2) __tailcall",
+  "fetched_at": "2026-04-26T17:30:32Z"
+}

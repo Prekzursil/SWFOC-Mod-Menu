@@ -1,0 +1,7 @@
+{
+  "addr": "0x1404993f0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1404993f6        struct ScheduledEventClass::QuitGameEventClass::VTable** result = arg1\n1404993f9        sub_140512c50(arg1)\n140499405        result[4].d = 0xf\n14049940c        *result = &QuitGameEventClass::`vftable'{for `ScheduledEventClass'}\n140499417        return result",
+  "fetched_at": "2026-04-26T17:29:16Z"
+}

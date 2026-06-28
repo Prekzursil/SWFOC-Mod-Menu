@@ -1,0 +1,7 @@
+{
+  "addr": "0x14042d7a0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall FleetLocomotorBehaviorClass::vfunction29(FleetLocomotorBehaviorClass *this)\n\n{\n                    /* WARNING: Could not recover jumptable at 0x00014042d7a3. Too many branches */\n                    /* WARNING: Treating indirect jump as call */\n  (*this->vftablePtr->_guard_check_icall)();\n  return;\n}",
+  "fetched_at": "2026-04-26T17:49:44Z"
+}

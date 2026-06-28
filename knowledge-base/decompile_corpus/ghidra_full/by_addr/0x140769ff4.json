@@ -1,0 +1,7 @@
+{
+  "addr": "0x140769ff4",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* Library Function - Single Match\n    _Init_thread_footer\n   \n   Library: Visual Studio 2019 Release */\n\nvoid _Init_thread_footer(int *param_1)\n\n{\n  ulonglong uVar1;\n  \n  EnterCriticalSection((LPCRITICAL_SECTION)&DAT_140b3b968);\n  uVar1 = (ulonglong)_tls_index;\n  DAT_140a44b60 = DAT_140a44b60 + 1;\n  *param_1 = DAT_140a44b60;\n  *(int *)(*(longlong *)((longlong)ThreadLocalStoragePointer + uVar1 * 8) + 0xd4) = DAT_140a44b60;\n  LeaveCriticalSection((LPCRITICAL_SECTION)&DAT_140b3b968);\n  _Init_thread_notify();\n  return;\n}",
+  "fetched_at": "2026-04-26T18:09:56Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x140428710",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "WaypointLineSubClass * __thiscall\nWaypointLineSubClass::scalar_deleting_destructor(WaypointLineSubClass *this,ulonglong param_1)\n\n{\n  longlong *plVar1;\n  \n                    /* inlined destructor: WaypointLineSubClass::~WaypointLineSubClass */\n  this->vftablePtr = &vftable_for_RefCountClass;\n  this->vftablePtr = &vftable_for_MultiLinkedListMember;\n  this->vftablePtr = &vftable_for_CullObjectClass;\n  FUN_1401415b0(&(this->WaypointLineSubClass_data).offset_0x68);\n  plVar1 = (longlong *)(this->WaypointLineSubClass_data).offset_0x58;\n  if (plVar1 != (longlong *)0x0) {\n    (**(code **)(*plVar1 + 8))();\n  }\n  FUN_1401f9440(&(this->WaypointLineSubClass_data).field_0x48);\n  alRenderable::~alRenderable((alRenderable *)this);\n  if ((param_1 & 1) != 0) {\n    thunk_FUN_1407864b8(this,0x148);\n  }\n  return this;\n}",
+  "fetched_at": "2026-04-26T17:48:18Z"
+}

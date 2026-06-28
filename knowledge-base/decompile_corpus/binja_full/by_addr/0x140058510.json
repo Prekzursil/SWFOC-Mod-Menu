@@ -1,0 +1,7 @@
+{
+  "addr": "0x140058510",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14005851a        void* lpMem = *(arg1 + 8)\n140058524        if (lpMem == 0)\n140058524        return \n14005852d        if ((*(arg1 + 0x14) & 0x80000000) == 0)\n14005854d        sub_1400583d0(lpMem, 3)\n14005853d        HeapFree(GetProcessHeap(), HEAP_NONE, lpMem)\n140058554        *(arg1 + 0x14) &= 0x80000000\n14005855b        *(arg1 + 8) = 0\n14005855f        *(arg1 + 0x10) = 0\n14005856c        return ",
+  "fetched_at": "2026-04-26T16:55:06Z"
+}

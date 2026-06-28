@@ -1,0 +1,7 @@
+{
+  "addr": "0x14006d830",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14006d83c        int64_t var_10 = 0xf\n14006d845        int64_t* rbx = arg3\n14006d848        int64_t* var_28 = nullptr\n14006d850        int64_t var_18 = 0\n14006d864        sub_140200cd0(&var_28, \"%lld\", arg4)\n14006d870        int64_t rax = SteamInternal_ContextInit(&data_140a10e00)\n14006d87c        int64_t* r9 = &var_28\n14006d881        if (var_10 u>= 0x10)\n14006d881        r9 = var_28\n14006d88c        int64_t* rcx_1 = *(rax + 0x20)\n14006d890        if (rbx[3] u>= 0x10)\n14006d892        rbx = *rbx\n14006d89e        int64_t result = (*(*rcx_1 + 0xa0))(rcx_1, arg2, rbx, r9)\n14006d8ad        if (var_10 u< 0x10)\n14006d8e7        return result\n14006d8af        int64_t* rcx_2 = var_28\n14006d8b7        int64_t* rax_2 = rcx_2\n14006d8c1        if (var_10 + 1 u>= 0x1000)\n14006d8c3        rcx_2 = rcx_2[-1]\n14006d8d6        if (rax_2 - rcx_2 - 8 u> 0x1f)\n14006d8e8        _invalid_parameter_noinfo_noreturn()\n14006d8e8        noreturn\n14006d8d8        return j_sub_1407864b8(rcx_2)",
+  "fetched_at": "2026-04-26T16:56:12Z"
+}

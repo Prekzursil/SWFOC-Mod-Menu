@@ -1,0 +1,7 @@
+{
+  "addr": "0x140186720",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined * __thiscall alD3dTexture::vfunction5(void)\n\n{\n  return &DAT_140a6fea0;\n}",
+  "fetched_at": "2026-04-26T17:32:07Z"
+}

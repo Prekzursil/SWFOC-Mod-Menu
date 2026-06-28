@@ -1,0 +1,7 @@
+{
+  "addr": "0x140574fb0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140574fc1        if (*(arg1 + 0x60) == 0)\n140574fcd        sub_140248190(arg2, \"GameObjectWrapper::Contains_Hero -- this object is already dead.\", arg3)\n140574fd9        return 0\n140574fe4        int64_t* rax_2 = operator new(0x18)\n140574fef        if (rax_2 == 0)\n14057509a        return 0\n14057500c        rax_2[2].b = sub_14038fa20(*(arg1 + 0x60), nullptr)\n140575011        *rax_2 = &LuaValue<bool, 5>::`vftable'{for `LuaVar'}\n140575014        rax_2[1].d = 0\n140575017        struct LuaVar::LuaValue<class std::vector<class SmartPtr<class LuaVar> >, 2>::VTable** result = sub_14024a250()\n14057501f        int64_t* arg_8 = rax_2\n14057502a        (**rax_2)(rax_2)\n14057502c        int64_t* rdx = result[3]\n140575034        if (rdx == result[4])\n14057506b        sub_140144900(&result[2], rdx, &arg_8)\n140575076        (*(*rax_2 + 8))(rax_2)\n14057508b        return result\n140575036        *rdx = rax_2\n14057503f        (**rax_2)(rax_2)\n140575041        result[3] = &result[3]->vFunc_1\n14057504c        (*(*rax_2 + 8))(rax_2)\n140575061        return result",
+  "fetched_at": "2026-04-26T17:35:00Z"
+}

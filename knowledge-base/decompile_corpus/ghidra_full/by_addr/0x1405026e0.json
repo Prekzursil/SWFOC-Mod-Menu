@@ -1,0 +1,7 @@
+{
+  "addr": "0x1405026e0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall\nAffectedByShieldBehaviorClass::vfunction2\n          (AffectedByShieldBehaviorClass *this,longlong param_1,int param_2,undefined8 param_3)\n\n{\n  undefined4 *puVar1;\n  undefined8 uVar2;\n  AffectedByShieldBehaviorClass *pAVar3;\n  \n  if (param_2 != 0x28) {\n    BehaviorClass::vfunction2((BehaviorClass *)this,param_1,param_2,param_3);\n    return;\n  }\n  pAVar3 = (AffectedByShieldBehaviorClass *)(param_1 + -0x38);\n  if (param_1 == 0) {\n    pAVar3 = (AffectedByShieldBehaviorClass *)0x0;\n  }\n  if (pAVar3 != (AffectedByShieldBehaviorClass *)0x0) {\n    puVar1 = &this[-1].RootClass_data.offset_0x328;\n    FUN_140502ce0(puVar1,pAVar3,this->offset_0x0);\n    if (puVar1 == (undefined4 *)0x0) {\n      this = (AffectedByShieldBehaviorClass *)0x0;\n    }\n    uVar2 = FUN_140058570();\n    FUN_140220eb0(uVar2,param_1,this,0x28);\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T18:20:30Z"
+}

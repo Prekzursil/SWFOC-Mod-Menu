@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401f8420",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined8 __thiscall GUIGadgetIMELocaleIndicatorClass::vfunction8(void)\n\n{\n  return 0xd;\n}",
+  "fetched_at": "2026-04-26T17:53:53Z"
+}

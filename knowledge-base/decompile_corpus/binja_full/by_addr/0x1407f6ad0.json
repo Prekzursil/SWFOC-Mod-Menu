@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407f6ad0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1407f6ad6        int64_t* rbx = data_140b39c50\n1407f6ae0        if (rbx == 0)\n1407f6ae0        return \n1407f6af2        int64_t rdi_1 = data_140b39c58\n1407f6afc        if (rbx != rdi_1)\n1407f6b00        int64_t rdx_1 = rbx[3]\n1407f6b08        if (rdx_1 u>= 0x10)\n1407f6b0a        void* rcx_1 = *rbx\n1407f6b17        if (rdx_1 + 1 u>= 0x1000)\n1407f6b19        void* r8_1 = *(rcx_1 - 8)\n1407f6b2c        if (rcx_1 - r8_1 - 8 u> 0x1f)\n1407f6b2c        goto label_1407f6bb2\n1407f6b32        rcx_1 = r8_1\n1407f6b35        j_sub_1407864b8(rcx_1)\n1407f6b3a        rbx[2] = 0\n1407f6b3e        rbx[3] = 0xf\n1407f6b46        *rbx = 0\n1407f6b49        rbx = &rbx[4]\n1407f6b50        do while (rbx != rdi_1)\n1407f6b52        rbx = data_140b39c50\n1407f6b60        int64_t* rax_2 = rbx\n1407f6b71        if (((data_140b39c60 - rbx) & 0xffffffffffffffe0) u>= 0x1000)\n1407f6b73        rbx = rbx[-1]\n1407f6b86        if (rax_2 - rbx - 8 u> 0x1f)\n1407f6bb2        label_1407f6bb2:\n1407f6bb2        _invalid_parameter_noinfo_noreturn()\n1407f6bb2        noreturn\n1407f6b8b        j_sub_1407864b8(rbx)\n1407f6b98        __builtin_memset(&data_140b39c50, 0, 0x18)\n1407f6bb1        return ",
+  "fetched_at": "2026-04-26T17:37:54Z"
+}

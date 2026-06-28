@@ -1,0 +1,7 @@
+{
+  "addr": "0x140370320",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined4 FUN_140370320(longlong param_1,int param_2,int param_3)\n\n{\n  int iVar1;\n  \n  if (param_3 == -1) {\n    param_3 = 4;\n  }\n  iVar1 = 1 << ((byte)param_2 & 7);\n  return CONCAT31((int3)((uint)iVar1 >> 8),\n                  ((byte)iVar1 &\n                  *(byte *)(((longlong)param_2 >> 3) +\n                           *(longlong *)(param_1 + ((longlong)param_3 + 0x75) * 0x10))) != 0);\n}",
+  "fetched_at": "2026-04-26T17:15:18Z"
+}

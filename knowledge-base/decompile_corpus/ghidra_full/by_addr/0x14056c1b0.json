@@ -1,0 +1,7 @@
+{
+  "addr": "0x14056c1b0",
+  "tool": "ghidra",
+  "fact_id": "rva_front_shield_write_impl",
+  "body": "\nvoid FUN_14056c1b0(undefined8 param_1,longlong param_2,float param_3)\n\n{\n  float fVar1;\n  float fVar2;\n  \n  if (param_2 != 0) {\n    if (*(longlong *)(param_2 + 0x298) == 0) {\n      fVar1 = 0.0;\n    }\n    else {\n      fVar1 = (float)FUN_140372320();\n    }\n    fVar2 = 0.0;\n    if ((0.0 <= param_3) && (fVar2 = fVar1, param_3 <= fVar1)) {\n      fVar2 = param_3;\n    }\n    if ((*(longlong *)(param_2 + 0xf0) != 0) &&\n       (*(float *)(*(longlong *)(param_2 + 0xf0) + 0xf8) = fVar2,\n       *(int *)(param_2 + 0x50) == DAT_140a286f0)) {\n      *(byte *)(param_2 + 0x3a0) = *(byte *)(param_2 + 0x3a0) | 1;\n    }\n  }\n  return;\n}\n\n",
+  "fetched_at": "2026-04-26T16:43:52Z"
+}

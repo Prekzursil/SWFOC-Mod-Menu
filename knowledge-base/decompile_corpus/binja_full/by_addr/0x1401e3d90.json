@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401e3d90",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1401e3dab        arg1[1].d = 0xffffffff\n1401e3db4        *arg1 = &GUIGadgetClass::`vftable'\n1401e3db7        arg1[4] = 0\n1401e3dbb        void* rax = &arg1[2]\n1401e3dc9        if (arg1[5] u>= 0x10)\n1401e3dcb        rax = arg1[2]\n1401e3dcf        *rax = 0\n1401e3dd2        arg1[6].d = 0xffffffff\n1401e3ddd        void* rax_1 = &arg1[0xb]\n1401e3de0        arg1[0xd] = 0\n1401e3de9        if (arg1[0xe] u>= 8)\n1401e3deb        rax_1 = arg1[0xb]\n1401e3dee        *rax_1 = 0\n1401e3df1        arg1[0xf].w = 0x101\n1401e3dfe        __builtin_memset(&arg1[0x10], 0, 0x13)\n1401e3e13        sub_14001eb00(&arg1[0xb])\n1401e3e18        int64_t rdx = arg1[5]\n1401e3e20        if (rdx u>= 0x10)\n1401e3e22        void* rcx_1 = arg1[2]\n1401e3e30        if (rdx + 1 u>= 0x1000)\n1401e3e32        void* r8_1 = *(rcx_1 - 8)\n1401e3e45        if (rcx_1 - r8_1 - 8 u> 0x1f)\n1401e3e8a        _invalid_parameter_noinfo_noreturn()\n1401e3e8a        noreturn\n1401e3e47        rcx_1 = r8_1\n1401e3e4a        j_sub_1407864b8(rcx_1)\n1401e3e4f        arg1[4] = 0\n1401e3e53        arg1[5] = 0xf\n1401e3e5b        arg1[2].b = 0\n1401e3e63        if ((arg2 & 1) != 0)\n1401e3e6d        j_sub_1407864b8(arg1)\n1401e3e89        return arg1",
+  "fetched_at": "2026-04-26T17:26:56Z"
+}

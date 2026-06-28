@@ -1,0 +1,7 @@
+{
+  "addr": "0x140705df0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined1 __thiscall\nPersonalFlameThrowerAbilityClass::vfunction32_for_IXMLLoadableClass\n          (PersonalFlameThrowerAbilityClass *this,undefined8 param_1,undefined8 param_2)\n\n{\n  char cVar1;\n  \n  cVar1 = FUN_14048df60();\n  if (cVar1 == '\\0') {\n    return 0;\n  }\n  FUN_1407060e0(this,param_1,param_2);\n  GUIGadgetClass::vfunction3();\n  return 1;\n}",
+  "fetched_at": "2026-04-26T17:52:32Z"
+}

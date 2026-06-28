@@ -1,0 +1,7 @@
+{
+  "addr": "0x140440ad0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "GarrisonEventClass * __thiscall GarrisonEventClass::GarrisonEventClass(GarrisonEventClass *this)\n\n{\n  ScheduledEventClass::ScheduledEventClass((ScheduledEventClass *)this);\n  (this->GarrisonEventClass_data).offset_0x0 = 0x3fffff;\n  this->vftablePtr = &vftable;\n  (this->GarrisonEventClass_data).offset_0x4 = 0x3fffff;\n  (this->EventClass_data).offset_0x8 = 0x34;\n  return this;\n}",
+  "fetched_at": "2026-04-26T17:52:45Z"
+}

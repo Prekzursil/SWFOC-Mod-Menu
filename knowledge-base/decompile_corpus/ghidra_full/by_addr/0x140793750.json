@@ -1,0 +1,7 @@
+{
+  "addr": "0x140793750",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* Library Function - Single Match\n    __acrt_GetDateFormatEx\n   \n   Libraries: Visual Studio 2017 Release, Visual Studio 2019 Release */\n\nvoid __acrt_GetDateFormatEx\n               (undefined8 param_1,DWORD param_2,SYSTEMTIME *param_3,LPCWSTR param_4,LPWSTR param_5,\n               int param_6,undefined8 param_7)\n\n{\n  LCID Locale;\n  void *pvVar1;\n  \n  pvVar1 = try_get_function(8,\"GetDateFormatEx\",(module_id *)&DAT_1408d8238,\n                            (module_id *)\"GetDateFormatEx\");\n  if (pvVar1 == (void *)0x0) {\n    Locale = __acrt_LocaleNameToLCID(param_1,0);\n    GetDateFormatW(Locale,param_2,param_3,param_4,param_5,param_6);\n  }\n  else {\n    (*(code *)PTR__guard_dispatch_icall_1407fdcd8)\n              (param_1,param_2,param_3,param_4,param_5,param_6,param_7);\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T18:53:03Z"
+}

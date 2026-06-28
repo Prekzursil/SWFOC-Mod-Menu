@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401abb60",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1401abb6a        void* i = data_140a70a40\n1401abb71        int32_t rdi = 0\n1401abb76        while (i != 0)\n1401abb8a        rdi += 1\n1401abb91        i = *(i + 8)\n1401abba6        return zx.q(rdi)",
+  "fetched_at": "2026-04-26T17:25:24Z"
+}

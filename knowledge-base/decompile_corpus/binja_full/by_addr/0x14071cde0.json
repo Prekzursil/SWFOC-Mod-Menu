@@ -1,0 +1,7 @@
+{
+  "addr": "0x14071cde0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14071ce09        if (arg2 != 0 && arg3 != 0 && sub_14048d820(arg1, arg2, arg3, 0) != 0 && sub_14048e100(arg1, arg2, arg3, 0) == 0)\n14071ce38        void* rdi_1 = arg2[0x20]\n14071ce5f        if (rdi_1 != 0 && *(rdi_1 + 0x3a0) s<= 0 && *(rdi_1 + 0x39c) == 0x3fffff)\n14071ce6d        sub_1403a9880(arg2)\n14071ce79        *(rdi_1 + 0x3a4) = arg3[0xf].d\n14071ce8c        *(rdi_1 + 0x3a8) = *(arg3 + 0x7c)\n14071ce96        *(rdi_1 + 0x3ac) = arg3[0x10].d\n14071ce9c        int64_t var_28\n14071ce9c        sub_14020acd0(&var_28, &arg2[0xf], &arg3[0xf])\n14071cea6        var_28 = 0\n14071ceb2        sub_1403a8710(arg2, &var_28)\n14071cec5        sub_1402a64f0(*(data_140b15418 + 0x18), arg3)\n14071ced5        uint128_t zmm0_1\n14071ced5        zmm0_1.d = _mm_cvtepi32_ps(zx.o(data_140b0a340)).d f* *(arg1 + 0x190)\n14071cedd        int32_t rax_4 = int.d(zmm0_1.d)\n14071cee1        *(rdi_1 + 0x3a0) = rax_4\n14071cee9        if (rax_4 s<= 0)\n14071ceeb        *(rdi_1 + 0x3a0) = 1\n14071cef5        void* rcx_6 = data_140b15418\n14071cf01        int32_t r8_2 = arg2[0xb].d\n14071cf0c        int64_t* rdx_4 = *(arg1 + 0x128)\n14071cf13        int64_t var_18 = 0\n14071cf1c        int32_t var_10_1 = 0\n14071cf37        sub_14029f810(*(rcx_6 + 0x18), rdx_4, r8_2, rdi_1 + 0x3a4, &var_18, 1, 0)\n14071cf41        return 1\n14071cf45        return 0",
+  "fetched_at": "2026-04-26T17:28:09Z"
+}

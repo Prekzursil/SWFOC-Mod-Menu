@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407a021c",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1407a022a        int32_t mxcsr\n1407a022a        *arg1 = __acrt_fenv_get_control(mxcsr)\n1407a0231        arg1[1] = __acrt_fenv_get_status(mxcsr)\n1407a023b        return 0",
+  "fetched_at": "2026-04-26T17:32:19Z"
+}

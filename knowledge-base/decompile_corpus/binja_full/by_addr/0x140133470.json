@@ -1,0 +1,7 @@
+{
+  "addr": "0x140133470",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14013347e        int64_t* rcx = *(arg1 + 0xd8)\n140133488        if (rcx != 0)\n140133492        (**rcx)(rcx, 1)\n140133497        struct alTerrainRender::alD3dTerrainRender::VTable** result = sub_14013eb30(arg1)\n14013349c        *(arg1 + 0xd8) = result\n1401334a6        if (result != 0)\n1401334bb        sub_140137bf0(arg1, 0, *(arg1 + 0x10), 0, *(arg1 + 0x14))\n1401334c0        int64_t* rcx_3 = *(arg1 + 0xd8)\n1401334c7        int64_t r9_1\n1401334c7        r9_1.b = 1\n1401334d5        result = (*(*rcx_3 + 0x28))(rcx_3, 1, 1, r9_1)\n1401334d8        int32_t i = 0\n1401334e0        if (*(arg1 + 0x138) s> 0)\n1401334e7        void** rsi_1 = nullptr\n1401334fe        result = sub_14014f060(*(rsi_1 + *(arg1 + 0x130)), arg1)\n140133503        i += 1\n140133505        rsi_1 = &rsi_1[1]\n14013350f        do while (i s< *(arg1 + 0x138))\n140133516        int64_t* rcx_6 = *(arg1 + 0xd8)\n14013351d        char rdi = data_140a62649\n140133529        data_140a62649 = 0\n140133533        if (rcx_6 != 0)\n140133538        result = (*(*rcx_6 + 0x40))(rcx_6)\n14013353b        data_140a62649 = rdi\n140133547        return result",
+  "fetched_at": "2026-04-26T17:10:58Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x1404f3324",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall TransportBehaviorClass::vfunction3(TransportBehaviorClass *this,uint param_1)\n\n{\n  ~TransportBehaviorClass((TransportBehaviorClass *)&this[-1].RootClass_data.offset_0x338,param_1);\n  return;\n}",
+  "fetched_at": "2026-04-26T18:18:10Z"
+}

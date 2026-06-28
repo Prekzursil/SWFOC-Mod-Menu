@@ -1,0 +1,7 @@
+{
+  "addr": "0x1400bd150",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nvoid FUN_1400bd150(int param_1)\n\n{\n  LPCSTR lpFileName;\n  \n  if ((param_1 == 1) && (DAT_140a11804 != -1)) {\n    if (DAT_140a61f61 != '\\0') {\n      lpFileName = (LPCSTR)((longlong)DAT_140a11804 * 0x20 + DAT_140a61f68);\n      if (0xf < *(ulonglong *)(lpFileName + 0x18)) {\n        lpFileName = *(LPCSTR *)lpFileName;\n      }\n      DeleteFileA(lpFileName);\n      FUN_1400be650();\n      return;\n    }\n    FUN_1400545f0(&PTR_vftable_140a10b18);\n    FUN_140053c10(&PTR_vftable_140a10b18);\n    FUN_1400bdbb0();\n    return;\n  }\n  return;\n}\n\n",
+  "fetched_at": "2026-04-26T17:00:12Z"
+}

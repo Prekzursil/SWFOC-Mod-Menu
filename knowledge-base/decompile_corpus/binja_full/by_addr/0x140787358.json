@@ -1,0 +1,7 @@
+{
+  "addr": "0x140787358",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14078736b        if (arg2 != 0)\n14078736d        *arg2 = arg1\n140787373        uint64_t result\n140787373        if (arg1 != 0)\n140787392        uint64_t result_1\n140787392        _LocaleUpdate::_LocaleUpdate(&result_1, arg3)\n140787397        int64_t var_38 = arg1\n14078739f        int64_t arg_8 = (zx.o(0)).q\n1407873a5        int64_t* var_30_1 = arg2\n1407873ad        if (arg2 != 0)\n1407873af        *arg2 = arg1\n1407873c1        void var_20\n1407873c1        int32_t rax_1\n1407873c1        int512_t zmm0_1\n1407873c1        rax_1, zmm0_1 = sub_140784ea4(&var_20, &var_38, &arg_8)\n1407873c6        result = zx.q(rax_1 - 2)\n1407873cc        if (result.d u<= 1)\n1407873ce        result, zmm0_1 = _errno()\n1407873d3        *result = 0x22\n1407873de        zmm0_1.o = zx.o(arg_8)\n1407873e4        char var_10\n1407873e4        if (var_10 != 0)\n1407873e6        result = result_1\n1407873eb        *(result + 0x3a8) &= 0xfffffffd\n14078737a        *_errno() = 0x16\n140787380        int512_t zmm0\n140787380        result, zmm0 = _invalid_parameter_noinfo()\n140787385        zmm0.o = zx.o(0)\n1407873fc        return result",
+  "fetched_at": "2026-04-26T17:31:20Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x14042fee0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "SetUnitAbilityModeEventClass * __thiscall\nSetUnitAbilityModeEventClass::SetUnitAbilityModeEventClass\n          (SetUnitAbilityModeEventClass *this,undefined1 param_1)\n\n{\n  ScheduledEventClass::ScheduledEventClass((ScheduledEventClass *)this);\n  (this->SetUnitAbilityModeEventClass_data).offset_0x204 = param_1;\n  this->vftablePtr = &vftable;\n  (this->SetUnitAbilityModeEventClass_data).offset_0x1fc = 0;\n  (this->SetUnitAbilityModeEventClass_data).offset_0x208 = 0;\n  (this->SetUnitAbilityModeEventClass_data).offset_0x210 = 0;\n  (this->EventClass_data).offset_0x8 = 0x2b;\n  (this->SetUnitAbilityModeEventClass_data).offset_0x214 = 0x101;\n  (this->SetUnitAbilityModeEventClass_data).offset_0x218 = 0x3fffff;\n  return this;\n}",
+  "fetched_at": "2026-04-26T17:50:27Z"
+}

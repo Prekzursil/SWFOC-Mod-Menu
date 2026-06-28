@@ -1,0 +1,7 @@
+{
+  "addr": "0x1405db3f0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1405db405        int32_t* rax = nullptr\n1405db40a        *arg1 = 0\n1405db410        arg1[2] = 0\n1405db414        int128_t* r14 = arg2\n1405db417        arg1[3] = 0\n1405db420        void* rbp = arg2[2]\n1405db424        if (arg2[3] u>= 0x10)\n1405db426        r14 = *arg2\n1405db432        int64_t rsi\n1405db432        if (rbp u>= 0x10)\n1405db44f        rsi = rbp | 0xf\n1405db456        if (rsi u> 0x7fffffffffffffff)\n1405db456        rsi = 0x7fffffffffffffff\n1405db465        if (rsi + 1 u>= 0x1000)\n1405db46e        if (rsi + 0x28 u<= rsi + 1)\n1405db4dc        stdext::threads::_Throw_lock_error()\n1405db4dc        noreturn\n1405db473        int64_t rax_2 = operator new(rsi + 0x28)\n1405db47e        if (rax_2 == 0)\n1405db4d6        _invalid_parameter_noinfo_noreturn()\n1405db4d6        noreturn\n1405db484        rax = (rax_2 + 0x27) & 0xffffffffffffffe0\n1405db488        *(rax - 8) = rax_2\n1405db491        if (rsi != -1)\n1405db493        rax = operator new(rsi + 1)\n1405db49c        *arg1 = rax\n1405db4a5        memcpy(rax, r14, rbp + 1)\n1405db438        rsi = 0xf\n1405db43d        *arg1 = *r14\n1405db4aa        arg1[2] = rbp\n1405db4ae        arg1[3] = rsi\n1405db4c4        arg1[4].d = arg2[4].d\n1405db4d5        return arg1",
+  "fetched_at": "2026-04-26T17:38:22Z"
+}

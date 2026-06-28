@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406d85e0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1406d85f1        struct VisiblePerceptualEvaluatorClass<class PlanetForcePerceptualEvaluatorClass>::FoggedPerceptualEvaluatorClass<class PlanetForcePerceptualEvaluatorClass>::VTable** result = arg1\n1406d85f4        *arg1 = &FoggedPerceptualUnitEvaluatorClass<class PlanetForcePerceptualEvaluatorClass>::`vftable'{for `FoggedPerceptualEvaluatorClass<class PlanetForcePerceptualEvaluatorClass>'}\n1406d8600        arg1[3] = &FoggedPerceptualUnitEvaluatorClass<class PlanetForcePerceptualEvaluatorClass>::`vftable'{for `AIDiagnosticsClass'}\n1406d8612        arg1[0x16] = &SignalListenerClass::`vftable'{for `MultiLinkedListMember'}\n1406d8615        sub_14020a820(&arg1[0x16])\n1406d8624        *result = &FoggedPerceptualEvaluatorClass<class PlanetForcePerceptualEvaluatorClass>::`vftable'{for `VisiblePerceptualEvaluatorClass<class PlanetForcePerceptualEvaluatorClass>'}\n1406d862e        result[3] = &FoggedPerceptualEvaluatorClass<class PlanetForcePerceptualEvaluatorClass>::`vftable'{for `AIDiagnosticsClass'}\n1406d8632        sub_1406d84e0(result)\n1406d863a        if ((arg2 & 1) != 0)\n1406d8644        j_sub_1407864b8(result)\n1406d8656        return result",
+  "fetched_at": "2026-04-26T17:25:44Z"
+}

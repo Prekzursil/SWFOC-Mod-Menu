@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406b9a70",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall\nSpacePerceptionSystemClass::vfunction1(SpacePerceptionSystemClass *this,uint param_1)\n\n{\n  scalar_deleting_destructor\n            ((SpacePerceptionSystemClass *)&this[-1].SignalListenerClass_data.offset_0x8,param_1);\n  return;\n}",
+  "fetched_at": "2026-04-26T17:37:40Z"
+}

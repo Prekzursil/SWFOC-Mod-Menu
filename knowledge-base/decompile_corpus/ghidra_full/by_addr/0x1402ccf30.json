@@ -1,0 +1,7 @@
+{
+  "addr": "0x1402ccf30",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_1402ccf30(longlong param_1,undefined8 param_2,undefined8 param_3,undefined4 param_4)\n\n{\n  char cVar1;\n  BOOL BVar2;\n  int iStackX_c;\n  tagCURSORINFO local_38;\n  \n  local_38.cbSize = 0x18;\n  local_38.flags = 0;\n  iStackX_c = 0;\n  BVar2 = GetCursorInfo(&local_38);\n  if (BVar2 == 0) {\n    local_38.ptScreenPos.x = 0;\n    local_38.ptScreenPos.y = 0;\n  }\n  else {\n    iStackX_c = local_38.ptScreenPos.y;\n  }\n  *(float *)(param_1 + 0x390) = (float)local_38.ptScreenPos.x;\n  *(float *)(param_1 + 0x394) = (float)iStackX_c;\n  *(undefined4 *)(param_1 + 0x398) = *(undefined4 *)(param_1 + 0x390);\n  *(undefined4 *)(param_1 + 0x39c) = *(undefined4 *)(param_1 + 0x394);\n  if (1 < *(uint *)(param_1 + 0x37c)) {\n    FUN_1402cbb80(param_1);\n  }\n  cVar1 = FUN_1404a5ef0(param_1,DAT_140b15418,param_2,param_3,param_4);\n  if (cVar1 != '\\0') {\n    *(undefined4 *)(param_1 + 0x37c) = 3;\n    *(undefined1 *)(param_1 + 0x34a) = 1;\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T18:30:14Z"
+}

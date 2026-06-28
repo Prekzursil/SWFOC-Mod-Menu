@@ -1,0 +1,7 @@
+{
+  "addr": "0x14062b190",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14062b19d        void* rcx = *(arg1 + 0x28)\n14062b1a1        void* rdi = *(rcx + 0x1d8)\n14062b1ab        if (rdi == 0)\n14062b1ab        return \n14062b1b1        void* rax_1 = data_140b15418\n14062b1c0        int32_t rsi_1\n14062b1c0        if (rax_1 != 0)\n14062b1c6        rsi_1 = *(rax_1 + 0x10)\n14062b1c2        rsi_1 = 0\n14062b1d6        if (sub_140397d90(rcx, 0xa) == 0)\n14062b1ee        return sub_1402149d0(\"Object is trying to activate LURE behavior but does not have LURE unit ability!\") __tailcall\n14062b1f6        sub_1404c30a0(arg1)\n14062b1fb        *(rdi + 8) = 0\n14062b202        *(rdi + 0xc) = rsi_1\n14062b205        void* rcx_3 = *(arg1 + 0x28)\n14062b209        void* rax = *(rcx_3 + 0x2b0)\n14062b213        if (rax != 0)\n14062b213        rcx_3 = rax\n14062b21e        if (*(rcx_3 + 0x348) == 0xff)\n14062b23a        sub_14062af80(arg1)\n14062b23a        return \n14062b220        void* rcx_4 = *(rcx_3 + 0x110)\n14062b22a        if (rcx_4 == 0)\n14062b22a        return \n14062b22c        rax = sub_1404ec820(rcx_4)\n14062b235        if (*(arg1 + 0x28) == rax)\n14062b23a        sub_14062af80(arg1)\n14062b24e        return ",
+  "fetched_at": "2026-04-26T17:24:03Z"
+}

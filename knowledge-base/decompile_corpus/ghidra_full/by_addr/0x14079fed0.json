@@ -1,0 +1,7 @@
+{
+  "addr": "0x14079fed0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* WARNING: Removing unreachable block (ram,0x000140780aef) */\n/* Library Function - Single Match\n    _strnicoll\n   \n   Libraries: Visual Studio 2017 Release, Visual Studio 2019 Release */\n\nint __cdecl _strnicoll(char *_Str1,char *_Str2,size_t _MaxCount)\n\n{\n  int iVar1;\n  ulong *puVar2;\n  \n  if (DAT_140b3c49c != 0) {\n    iVar1 = _strnicoll_l(_Str1,_Str2,_MaxCount,(_locale_t)0x0);\n    return iVar1;\n  }\n  if (((_Str1 != (char *)0x0) && (_Str2 != (char *)0x0)) && (_MaxCount < 0x80000000)) {\n    iVar1 = __ascii_strnicmp(_Str1,_Str2,_MaxCount);\n    return iVar1;\n  }\n  puVar2 = __doserrno();\n  *puVar2 = 0x16;\n  FUN_1407711ac();\n  return 0x7fffffff;\n}",
+  "fetched_at": "2026-04-26T18:54:14Z"
+}

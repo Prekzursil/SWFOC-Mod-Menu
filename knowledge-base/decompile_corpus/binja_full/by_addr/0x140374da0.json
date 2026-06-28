@@ -1,0 +1,7 @@
+{
+  "addr": "0x140374da0",
+  "tool": "binary_ninja",
+  "fact_id": "rva_has_combat_behavior",
+  "body": "140374db4        int64_t result\n140374db4        result.b = ((*(arg1 + 0x1aa0) - *(arg1 + 0x1a98)) & 0xfffffffffffffff8) != 0\n140374db7        return result",
+  "fetched_at": "2026-04-26T16:43:17Z"
+}

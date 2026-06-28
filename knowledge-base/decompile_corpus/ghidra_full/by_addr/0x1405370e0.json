@@ -1,0 +1,7 @@
+{
+  "addr": "0x1405370e0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall RevealBehaviorClass::vfunction10(RevealBehaviorClass *this,undefined **param_1)\n\n{\n  undefined4 uVar1;\n  longlong lVar2;\n  float fVar3;\n  \n  SpawnIndigenousUnitsBehaviorClass::vbase_destructor\n            ((SpawnIndigenousUnitsBehaviorClass *)this,param_1);\n  uVar1 = FUN_140294a70(&DAT_140a16fd0);\n  lVar2 = FUN_14035e330(DAT_140b15418,uVar1);\n  if (lVar2 == 0) {\n    *(float *)&this->field_0x48 = DAT_140805898 * DAT_140805898;\n    return;\n  }\n  fVar3 = (*(float *)(lVar2 + 0x30) + *(float *)(lVar2 + 0x2c)) / DAT_1408007d4;\n  *(float *)&this->field_0x48 = fVar3 * fVar3;\n  if (DAT_140b15418 == 0) {\n                    /* WARNING: Could not recover jumptable at 0x000140537151. Too many branches */\n                    /* WARNING: Treating indirect jump as call */\n    (*this->vftablePtr->vfunction7)(this,(longlong)param_1,0);\n    return;\n  }\n                    /* WARNING: Could not recover jumptable at 0x00014053716c. Too many branches */\n                    /* WARNING: Treating indirect jump as call */\n  (*this->vftablePtr->vfunction7)(this,(longlong)param_1,*(int *)(DAT_140b15418 + 0x10));\n  return;\n}",
+  "fetched_at": "2026-04-26T18:30:16Z"
+}

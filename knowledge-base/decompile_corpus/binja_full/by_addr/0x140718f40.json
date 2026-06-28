@@ -1,0 +1,7 @@
+{
+  "addr": "0x140718f40",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140718f51        struct IXMLLoadableClass::SpecialAbilityClass::VTable** result = arg1\n140718f54        *arg1 = &SensorJammingAbilityClass::`vftable'{for `SpecialAbilityClass'}\n140718f60        arg1[1] = &SensorJammingAbilityClass::`vftable'{for `RefCountClass'}\n140718f70        int64_t rdx = result[0x33]\n140718f7b        if (rdx u>= 0x10)\n140718f7d        void* rcx_1 = result[0x30]\n140718f8e        if (rdx + 1 u>= 0x1000)\n140718f90        void* r8_1 = *(rcx_1 - 8)\n140718fa3        if (rcx_1 - r8_1 - 8 u> 0x1f)\n140718ff3        _invalid_parameter_noinfo_noreturn()\n140718ff3        noreturn\n140718fa5        rcx_1 = r8_1\n140718fa8        j_sub_1407864b8(rcx_1)\n140718fb0        result[0x32] = 0\n140718fbb        result[0x33] = 0xf\n140718fc6        result[0x30].b = 0\n140718fcd        sub_14048c8d0(result)\n140718fd6        if ((arg2 & 1) != 0)\n140718fe0        j_sub_1407864b8(result)\n140718ff2        return result",
+  "fetched_at": "2026-04-26T17:27:59Z"
+}

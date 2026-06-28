@@ -1,0 +1,7 @@
+{
+  "addr": "0x14040d0d0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "FormationClass * __thiscall FormationClass::FormationClass(FormationClass *this)\n\n{\n  int iVar1;\n  \n  (this->MultiLinkedListMember_data).offset_0x0 = (longlong *)0x0;\n  this->vftablePtr = &vftable;\n  FUN_14040d660(&this->SignalListenerClass_data);\n  (this->FormationClass_data).offset_0x1a0 = 0;\n  iVar1 = FUN_1401ffb40(&DAT_140a13e24,1,(int)(float)DAT_140b0a340);\n  (this->FormationClass_data).offset_0xf0 = (int)(float)DAT_140b0a340 + iVar1 + DAT_140b0a320;\n  iVar1 = DAT_140b0a320 + -500;\n  (this->FormationClass_data).offset_0x170 = this;\n  (this->FormationClass_data).offset_0xf4 = iVar1;\n  return this;\n}",
+  "fetched_at": "2026-04-26T17:45:23Z"
+}

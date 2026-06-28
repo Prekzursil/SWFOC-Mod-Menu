@@ -1,0 +1,7 @@
+{
+  "addr": "0x14015e0b0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall alSimpleRenderTask::vfunction3(alSimpleRenderTask *this)\n\n{\n                    /* WARNING: Could not recover jumptable at 0x00014015e0b7. Too many branches */\n                    /* WARNING: Treating indirect jump as call */\n  (**(code **)(*(this->alRenderTask_data).offset_0x0 + 0x48))();\n  return;\n}",
+  "fetched_at": "2026-04-26T17:23:53Z"
+}

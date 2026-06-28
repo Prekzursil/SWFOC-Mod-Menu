@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407f2440",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1407f244b        sub_140479810(&data_140b31160)\n1407f2469        sub_1402d36c0(&data_140b31190:8, &data_140b31190:8, *(data_140b31190:8 + 8))\n1407f247a        j_sub_1407864b8(data_140b31190:8)\n1407f247f        int64_t rdx_1 = data_140b31190.q\n1407f248a        if (rdx_1 u>= 0x10)\n1407f248c        void* rcx_1 = data_140b31178\n1407f249d        if (rdx_1 + 1 u>= 0x1000)\n1407f249f        void* r8_2 = *(rcx_1 - 8)\n1407f24b2        if (rcx_1 - r8_2 - 8 u> 0x1f)\n1407f253a        _invalid_parameter_noinfo_noreturn()\n1407f253a        noreturn\n1407f24b8        rcx_1 = r8_2\n1407f24bb        j_sub_1407864b8(rcx_1)\n1407f24c0        void* rcx_4 = data_140b31168\n1407f24c7        data_140b31188 = 0\n1407f24d2        data_140b31190.q = 0xf\n1407f24dd        data_140b31178.b = 0\n1407f24e9        void** rbx = *(rcx_4 + 8)\n1407f24f1        if (*(rbx + 0x19) == 0)\n1407f2505        sub_14006c2e0(&data_140b31168, &data_140b31168, rbx[2])\n1407f250a        void** rcx_3 = rbx\n1407f2512        rbx = *rbx\n1407f2515        j_sub_1407864b8(rcx_3)\n1407f251e        do while (*(rbx + 0x19) == 0)\n1407f2520        rcx_4 = data_140b31168\n1407f2535        return j_sub_1407864b8(rcx_4) __tailcall",
+  "fetched_at": "2026-04-26T17:37:06Z"
+}

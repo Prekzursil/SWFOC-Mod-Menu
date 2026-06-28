@@ -1,0 +1,7 @@
+{
+  "addr": "0x1402060b0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall PacketHandlerClass::vfunction2(PacketHandlerClass *this)\n\n{\n  char cVar1;\n  longlong lVar2;\n  \n  if (1 < DAT_140a14b60) {\n    FUN_14022e470(this,1);\n  }\n  cVar1 = (this->ThreadClass_data).offset_0x0;\n  while (cVar1 != '\\0') {\n    Sleep(3);\n    if (DAT_140a7c478 == '\\0') {\n      lVar2 = (this->PacketHandlerClass_data).offset_0xb8;\n      if (lVar2 != 0) {\n        FUN_14023c3a0(lVar2,0);\n      }\n      FUN_140206940(this);\n    }\n    cVar1 = (this->ThreadClass_data).offset_0x0;\n  }\n  (this->ThreadClass_data).offset_0x1 = 1;\n  return;\n}",
+  "fetched_at": "2026-04-26T17:56:48Z"
+}

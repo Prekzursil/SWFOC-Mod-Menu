@@ -1,0 +1,7 @@
+{
+  "addr": "0x140716164",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall\nLaserDefenseAbilityClass::vfunction3_for_RefCountClass(LaserDefenseAbilityClass *this,uint param_1)\n\n{\n  scalar_deleting_destructor\n            ((LaserDefenseAbilityClass *)&this[-1].LaserDefenseAbilityClass_data.field_0xb8,param_1)\n  ;\n  return;\n}",
+  "fetched_at": "2026-04-26T17:56:37Z"
+}

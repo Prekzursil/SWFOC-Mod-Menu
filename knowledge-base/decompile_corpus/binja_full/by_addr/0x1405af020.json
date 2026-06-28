@@ -1,0 +1,7 @@
+{
+  "addr": "0x1405af020",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1405af026        struct ScheduledEventClass::FleetManagementEventClass::VTable** result = arg1\n1405af029        sub_140512c50(arg1)\n1405af035        result[4].d = 8\n1405af03c        *result = &FleetManagementEventClass::`vftable'{for `ScheduledEventClass'}\n1405af042        result[9].d = 0x3fffff\n1405af049        *(result + 0x4c) = 0x3fffff\n1405af050        result[0xa].d = 0x3fffff\n1405af057        *(result + 0x54) = 0x3fffff\n1405af05e        *(result + 0x5c) = 0xfffffffe\n1405af06a        return result",
+  "fetched_at": "2026-04-26T17:37:14Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407a30c0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1407a30cd        int32_t result = sub_1407a30f0(arg1)\n1407a30d6        if (result != 0)\n1407a30ed        return result\n1407a30dc        lm_init(*(arg1 + 0x28))\n1407a30e1        return result",
+  "fetched_at": "2026-04-26T17:32:24Z"
+}

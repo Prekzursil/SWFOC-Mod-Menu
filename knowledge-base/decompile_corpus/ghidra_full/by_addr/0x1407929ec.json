@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407929ec",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* Library Function - Single Match\n    int __cdecl x_ismbbtype_l(struct __crt_locale_pointers * __ptr64,unsigned int,int,int)\n   \n   Libraries: Visual Studio 2015, Visual Studio 2017, Visual Studio 2019 */\n\nint __cdecl x_ismbbtype_l(__crt_locale_pointers *param_1,uint param_2,int param_3,int param_4)\n\n{\n  uint uVar1;\n  int iVar2;\n  longlong local_28;\n  longlong *local_20;\n  longlong local_18;\n  char local_10;\n  \n  _LocaleUpdate::_LocaleUpdate((_LocaleUpdate *)&local_28,param_1);\n  if ((*(byte *)((ulonglong)(param_2 & 0xff) + 0x19 + local_18) & (byte)param_4) == 0) {\n    if (param_3 == 0) {\n      uVar1 = 0;\n    }\n    else {\n      uVar1 = (uint)*(ushort *)(*local_20 + (ulonglong)(param_2 & 0xff) * 2) & param_3;\n    }\n    iVar2 = 0;\n    if (uVar1 == 0) goto LAB_140792a3e;\n  }\n  iVar2 = 1;\nLAB_140792a3e:\n  if (local_10 != '\\0') {\n    *(uint *)(local_28 + 0x3a8) = *(uint *)(local_28 + 0x3a8) & 0xfffffffd;\n  }\n  return iVar2;\n}",
+  "fetched_at": "2026-04-26T18:52:55Z"
+}

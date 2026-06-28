@@ -1,0 +1,7 @@
+{
+  "addr": "0x140138d90",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "MultiLinkedListClass<class_alTerrainShadowBlob> * __thiscall\nMultiLinkedListClass<class_alTerrainShadowBlob>::scalar_deleting_destructor\n          (MultiLinkedListClass<class_alTerrainShadowBlob> *this,uint param_1)\n\n{\n  undefined1 *puVar1;\n  undefined1 local_res8 [8];\n  \n                    /* inlined destructor:\n                       MultiLinkedListClass<class_alTerrainShadowBlob>::~MultiLinkedListClass<class_alTerrainShadowBlob>\n                        */\n  this->vftablePtr = &vftable;\n  puVar1 = *(undefined1 **)&(this->MultiLinkedListClass<class_alTerrainShadowBlob>_data).offset_0x8;\n  while ((MultiLinkedListClass<class_alTerrainShadowBlob>_data *)puVar1 !=\n         &this->MultiLinkedListClass<class_alTerrainShadowBlob>_data) {\n    FUN_14020ac80(this,local_res8);\n    puVar1 = *(undefined1 **)\n              &(this->MultiLinkedListClass<class_alTerrainShadowBlob>_data).offset_0x8;\n  }\n  GenericMultiLinkedList::~GenericMultiLinkedList((GenericMultiLinkedList *)this);\n  if ((param_1 & 1) != 0) {\n    thunk_FUN_1407864b8(this,0x48);\n  }\n  return this;\n}",
+  "fetched_at": "2026-04-26T17:14:20Z"
+}

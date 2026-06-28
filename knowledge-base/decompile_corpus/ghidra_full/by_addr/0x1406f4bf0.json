@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406f4bf0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "ulonglong __thiscall\nCombatBonusAbilityClass::vfunction6_for_IXMLLoadableClass\n          (CombatBonusAbilityClass *this,longlong param_1,longlong param_2)\n\n{\n  ulonglong in_RAX;\n  longlong lVar1;\n  \n  if ((param_1 != 0) && (param_2 != 0)) {\n    in_RAX = FUN_14048e290(this,param_2);\n    if ((char)in_RAX != '\\0') {\n      if ((this->CombatBonusAbilityClass_data).offset_0x48 == 0) {\n        in_RAX = FUN_14039a230(param_2,*(undefined4 *)(param_1 + 0x58),0);\n        if ((char)in_RAX == '\\0') goto LAB_1406f4c49;\n      }\n      else {\n        lVar1 = FUN_140294bc0(&DAT_140a16fd0,*(undefined4 *)(param_2 + 0x58));\n        in_RAX = 0;\n        if (lVar1 != 0) {\n          in_RAX = *(ulonglong *)(lVar1 + 0x68);\n        }\n        if (in_RAX != (this->CombatBonusAbilityClass_data).offset_0x48) goto LAB_1406f4c49;\n      }\n      in_RAX = *(ulonglong *)(param_1 + 0x298);\n      if ((*(longlong *)(param_2 + 0x298) != *(longlong *)(in_RAX + 0x1b60)) &&\n         (*(longlong *)(param_2 + 0x298) != *(longlong *)(in_RAX + 0x1b50))) {\n        if (*(longlong *)(param_2 + 0xf0) == 0) {\n          in_RAX = FUN_140390fc0(param_2);\n        }\n        return CONCAT71((int7)(in_RAX >> 8),1);\n      }\n    }\n  }\nLAB_1406f4c49:\n  return in_RAX & 0xffffffffffffff00;\n}",
+  "fetched_at": "2026-04-26T17:48:08Z"
+}

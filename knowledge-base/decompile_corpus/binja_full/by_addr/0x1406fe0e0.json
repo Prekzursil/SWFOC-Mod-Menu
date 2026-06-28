@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406fe0e0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1406fe0e6        struct SpecialAbilityClass::ForceTelekinesisAbilityClass::VTable** result = arg1\n1406fe0e9        sub_14048c780(arg1)\n1406fe0f5        result[8].w = 1\n1406fe0fb        *result = &ForceTelekinesisAbilityClass::`vftable'{for `SpecialAbilityClass'}\n1406fe105        result[1] = &ForceTelekinesisAbilityClass::`vftable'{for `RefCountClass'}\n1406fe10b        __builtin_memset(&result[0x2f], 0, 0x18)\n1406fe123        *(result + 0x3c) = 9\n1406fe12f        return result",
+  "fetched_at": "2026-04-26T17:26:51Z"
+}

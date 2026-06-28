@@ -1,0 +1,7 @@
+{
+  "addr": "0x1402218c0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1402218d0        *arg1 = &SignalDispatcherClass::`vftable'\n1402218d7        sub_140222470(&arg1[0xc])\n1402218dc        void* rcx_1 = arg1[9]\n1402218e3        if (rcx_1 != 0)\n1402218f7        if (((arg1[0xb] - rcx_1) & 0xfffffffffffffff8) u>= 0x1000)\n1402218f9        void* r8_1 = *(rcx_1 - 8)\n14022190c        if (rcx_1 - r8_1 - 8 u> 0x1f)\n140221932        _invalid_parameter_noinfo_noreturn()\n140221932        noreturn\n14022190e        rcx_1 = r8_1\n140221911        j_sub_1407864b8(rcx_1)\n140221918        __builtin_memset(&arg1[9], 0, 0x18)\n14022192d        return sub_14007b260(&arg1[1]) __tailcall",
+  "fetched_at": "2026-04-26T17:29:11Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x140727cd0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined8 __thiscall\nSurvivalInstantiationMarshallerClass::vfunction2(undefined8 param_1,int param_2,longlong param_3)\n\n{\n  undefined8 uVar1;\n  longlong lVar2;\n  longlong lVar3;\n  \n  lVar3 = *(longlong *)(*(longlong *)(param_3 + 0xd0) + (longlong)param_2 * 8);\n  if ((*(int *)(lVar3 + 0x960) != 0) &&\n     (lVar2 = *(longlong *)(*(longlong *)(lVar3 + 0x958) + 8), *(char *)(lVar2 + 0x67) == '\\0')) {\n    lVar3 = lVar2;\n  }\n  lVar2 = FUN_1404b06d0(*(undefined8 *)(param_3 + 0x28),0);\n  if (lVar2 == 0) {\n    return 0;\n  }\n  uVar1 = FUN_140588a90(*(undefined8 *)(lVar2 + 0x58),lVar3);\n  return uVar1;\n}",
+  "fetched_at": "2026-04-26T18:00:30Z"
+}

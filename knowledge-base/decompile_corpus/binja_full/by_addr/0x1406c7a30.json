@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406c7a30",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1406c7a4b        struct AIDiagnosticsClass::ServicedAISystemClass::VTable** rbx = arg1\n1406c7a4e        *arg1 = &AIGoalSystemClass::`vftable'{for `ServicedAISystemClass'}\n1406c7a58        sub_140615680(&arg1[0x32])\n1406c7a61        sub_140721820(&rbx[7])\n1406c7a6d        sub_140721820(&rbx[0x1b])\n1406c7a72        void* rcx_3 = rbx[0x54]\n1406c7a7c        if (rcx_3 != 0)\n1406c7a93        if (((rbx[0x56] - rcx_3) & 0xfffffffffffffff8) u>= 0x1000)\n1406c7a95        void* r8_1 = *(rcx_3 - 8)\n1406c7aa8        if (rcx_3 - r8_1 - 8 u> 0x1f)\n1406c7b1e        _invalid_parameter_noinfo_noreturn()\n1406c7b1e        noreturn\n1406c7aaa        rcx_3 = r8_1\n1406c7aad        j_sub_1407864b8(rcx_3)\n1406c7ab4        __builtin_memset(&rbx[0x54], 0, 0x18)\n1406c7ad0        sub_14007b260(&rbx[0x4c])\n1406c7adc        sub_14007b260(&rbx[0x44])\n1406c7ae8        sub_140610ae0(&rbx[0x32])\n1406c7af4        sub_140721450(&rbx[0x1b])\n1406c7afd        sub_140721450(&rbx[7])\n1406c7b19        return sub_14064c290(rbx) __tailcall",
+  "fetched_at": "2026-04-26T17:25:18Z"
+}

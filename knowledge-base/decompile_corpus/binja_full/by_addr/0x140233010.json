@@ -1,0 +1,7 @@
+{
+  "addr": "0x140233010",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1402330a2        char rbx = sub_140233de0(arg2, arg1 + 0x90, arg1 + 0xc0, arg3, arg4) & 1 & sub_140233de0(arg2, arg1 + 0x9c, arg1 + 0xcc, &arg3[3], &arg4[1]) & sub_140233de0(arg2, arg1 + 0xa8, arg1 + 0xd8, &arg3[6], &arg4[2])\n1402330e3        return sub_140233de0(arg2, arg1 + 0xb4, arg1 + 0xe4, &arg3[9], &arg4[3]) & rbx",
+  "fetched_at": "2026-04-26T17:29:47Z"
+}

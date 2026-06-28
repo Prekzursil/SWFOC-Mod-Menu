@@ -1,0 +1,7 @@
+{
+  "addr": "0x140709bc0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140709bc6        struct SpecialAbilityClass::RedirectBlasterAbilityClass::VTable** result = arg1\n140709bc9        sub_14048c780(arg1)\n140709bd5        *(result + 0x184) = 0x43340000\n140709bdf        *result = &RedirectBlasterAbilityClass::`vftable'{for `SpecialAbilityClass'}\n140709be9        result[1] = &RedirectBlasterAbilityClass::`vftable'{for `RefCountClass'}\n140709bef        result[0x2f] = 0\n140709bf6        result[0x30].d = 0\n140709bfc        result[0x31].b = 0\n140709c05        result[8].w = 1\n140709c0b        *(result + 0x3c) = 0xa\n140709c17        return result",
+  "fetched_at": "2026-04-26T17:27:25Z"
+}

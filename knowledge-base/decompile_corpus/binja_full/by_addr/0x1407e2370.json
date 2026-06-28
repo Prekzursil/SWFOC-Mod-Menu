@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407e2370",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1407e2370        *arg1 = arg2\n1407e2373        arg1[1] = arg3\n1407e2377        arg1[3] = arg4\n1407e237b        arg1[4] = arg5\n1407e237f        arg1[5] = arg6\n1407e2383        arg1[6] = arg7\n1407e2387        arg1[7] = arg8\n1407e238b        arg1[8] = arg9\n1407e238f        arg1[9] = arg10\n1407e2398        void arg_8\n1407e2398        arg1[2] = &arg_8\n1407e23a0        arg1[0xa] = __return_addr\n1407e23a4        arg1[0xb].d = arg11\n1407e23a8        int16_t x87status\n1407e23a8        int16_t temp0\n1407e23a8        temp0, x87status = __fnstcw_memmem16(arg12)\n1407e23a8        *(arg1 + 0x5c) = temp0\n1407e23ab        *(arg1 + 0x60) = arg13\n1407e23b0        *(arg1 + 0x70) = arg14\n1407e23b5        *(arg1 + 0x80) = arg15\n1407e23be        *(arg1 + 0x90) = arg16\n1407e23c7        *(arg1 + 0xa0) = arg17\n1407e23d0        *(arg1 + 0xb0) = arg18\n1407e23d9        *(arg1 + 0xc0) = arg19\n1407e23e2        *(arg1 + 0xd0) = arg20\n1407e23eb        *(arg1 + 0xe0) = arg21\n1407e23f4        *(arg1 + 0xf0) = arg22\n1407e23ff        return 0",
+  "fetched_at": "2026-04-26T17:34:16Z"
+}

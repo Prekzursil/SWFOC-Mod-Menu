@@ -1,0 +1,7 @@
+{
+  "addr": "0x14021adb0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14021adc4        if (arg1[1] == 0)\n14021adc6        int64_t result\n14021adc6        result.b = 0\n14021add2        return result\n14021add8        int64_t* rbx = &arg1[5]\n14021addf        if (rbx == 0)\n14021ae1d        rbx = arg3\n14021adf1        if (WaitForSingleObject(*rbx, 0x2710) == WAIT_OBJECT_0)\n14021ae13        rbx[1] = 0\n14021adf3        rbx[1]\n14021ae22        int64_t* rdx_2 = *arg1\n14021ae25        void** rax_2 = *rdx_2\n14021ae2b        int64_t* rdi\n14021ae2b        if (rax_2 == rdx_2)\n14021ae46        label_14021ae46:\n14021ae46        rdi.b = 0\n14021ae30        while (true)\n14021ae30        void* rcx_2 = rax_2[2]\n14021ae3c        if (rcx_2 != 0 && *(rcx_2 + 0x20) == arg2)\n14021ae99        rdi.b = 1\n14021ae9c        break\n14021ae3e        rax_2 = *rax_2\n14021ae44        if (rax_2 == rdx_2)\n14021ae44        goto label_14021ae46\n14021ae4c        if (rbx != 0)\n14021ae4e        rbx[1]\n14021ae52        HANDLE hMutex = *rbx\n14021ae55        rbx[1] = 0\n14021ae65        if (ReleaseMutex(hMutex) == 0)\n14021ae67        GetLastError()\n14021ae98        return zx.q(rdi.b)",
+  "fetched_at": "2026-04-26T17:28:45Z"
+}

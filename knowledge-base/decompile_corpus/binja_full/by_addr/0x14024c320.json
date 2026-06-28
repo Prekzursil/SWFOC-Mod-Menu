@@ -1,0 +1,7 @@
+{
+  "addr": "0x14024c320",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14024c32e        int64_t* rax = sub_1407b9da0(arg1, 1)\n14024c333        int128_t zmm0 = data_140802a40\n14024c344        struct LuaVar::LuaValue<class std::string, 6>::VTable* const var_38 = &LuaValue<class std::string, 6>::`vftable'{for `LuaVar'}\n14024c349        int32_t var_30 = 0\n14024c34d        void* var_28 = nullptr\n14024c35d        int64_t* rcx = *rax\n14024c363        (*(*rcx + 0x58))(rcx, &var_28)\n14024c36e        sub_140247700(arg1, &var_38)\n14024c373        int64_t rdx_2 = zmm0:8.q\n14024c37c        if (rdx_2 u>= 0x10)\n14024c37e        void* rcx_2 = var_28\n14024c386        void* rax_2 = rcx_2\n14024c390        if (rdx_2 + 1 u>= 0x1000)\n14024c392        rcx_2 = *(rcx_2 - 8)\n14024c3a5        if (rax_2 - rcx_2 - 8 u> 0x1f)\n14024c3b7        _invalid_parameter_noinfo_noreturn()\n14024c3b7        noreturn\n14024c3a7        j_sub_1407864b8(rcx_2)\n14024c3b6        return 1",
+  "fetched_at": "2026-04-26T17:30:29Z"
+}

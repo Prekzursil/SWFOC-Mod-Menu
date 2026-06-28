@@ -1,0 +1,7 @@
+{
+  "addr": "0x140019c10",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140019c1b        if (data_140b318ee == 0)\n140019c1d        data_140a2bb68 = 0\n140019c28        data_140a2bb70 = 0\n140019c32        data_140a2bb74 = 0x80000000\n140019c53        data_140a2bb68 = HeapAlloc(GetProcessHeap(), HEAP_NONE, 0x8340)\n140019c60        int32_t rax_4 = data_140a2bb74 & 0x80001068\n140019c65        data_140a2bb70 = 0\n140019c74        data_140b318ee = 1\n140019c7b        data_140a2bb74 = rax_4 | 0x1068\n140019c8c        return atexit(sub_1407f3550) __tailcall",
+  "fetched_at": "2026-04-26T16:51:02Z"
+}

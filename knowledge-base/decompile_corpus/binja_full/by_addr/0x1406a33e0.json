@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406a33e0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1406a33ea        int64_t* rdi = *(arg3 + 0x10)\n1406a3400        char const* const rdx\n1406a3400        if (((*(arg3 + 0x18) - rdi) & 0xfffffffffffffff8) != 8)\n1406a3402        rdx = \"Game_Message -- invalid number of parameters.  Expected 1, got %d.\"\n1406a3413        if (data_140b31410 != 0)\n1406a341e        int64_t* rdi_1 = *rdi\n1406a3424        if (rdi_1 != 0)\n1406a342c        void* i\n1406a342c        i, arg3 = (*(*rdi_1 + 0x20))(rdi_1)\n1406a3432        while (i != 0)\n1406a3443        if (i == &data_140a157d0)\n1406a3470        (**rdi_1)(rdi_1)\n1406a348a        int32_t var_18[0x4]\n1406a348a        int128_t* rax_6 = sub_1401f93e0(&var_18, 0xff, 0xff, 0xff, 0xff)\n1406a34be        sub_1402dd630(&data_140b27f60, sub_1401fa680(&data_140a7bc58, &rdi_1[2], 1), rax_6, 1, nullptr)\n1406a34d3        (*(*rdi_1 + 8))(rdi_1)\n1406a34e2        return 0\n1406a3445        i = *(i + 8)\n1406a344e        rdx = \"Game_Message -- invalid type for parameter 1.  Expected string.\"\n1406a3415        rdx = \"Game_Message -- no method for text display found.\"\n1406a3458        sub_140248190(arg2, rdx, arg3)\n1406a3469        return 0",
+  "fetched_at": "2026-04-26T17:21:28Z"
+}

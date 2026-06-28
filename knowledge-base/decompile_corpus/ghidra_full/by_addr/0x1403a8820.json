@@ -1,0 +1,7 @@
+{
+  "addr": "0x1403a8820",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_1403a8820(longlong param_1,int param_2)\n\n{\n  GUIDataPackClass *this;\n  GUIDataPackClass *pGVar1;\n  \n  pGVar1 = *(GUIDataPackClass **)(param_1 + 0x1b0);\n  if (param_2 == 0) {\n    if (pGVar1 != (GUIDataPackClass *)0x0) {\n      *(undefined4 *)((longlong)&(pGVar1->GUIDataPackClass_data).offset_0x4 + 4) = 0;\n      return;\n    }\n  }\n  else {\n    if (pGVar1 == (GUIDataPackClass *)0x0) {\n      this = (GUIDataPackClass *)FUN_140769c58(0x38);\n      pGVar1 = (GUIDataPackClass *)0x0;\n      if (this != (GUIDataPackClass *)0x0) {\n        pGVar1 = GUIDataPackClass::GUIDataPackClass(this);\n      }\n      *(GUIDataPackClass **)(param_1 + 0x1b0) = pGVar1;\n    }\n    *(int *)((longlong)&(pGVar1->GUIDataPackClass_data).offset_0x4 + 4) = param_2;\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T17:32:40Z"
+}

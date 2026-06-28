@@ -1,0 +1,7 @@
+{
+  "addr": "0x1400b9b30",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1400b9b33        if (arg1 == 0 || (memcmp(arg1, &data_140a622b8, 0x24) == 0 && arg2 == 0))\n1400b9b5d        return \n1400b9b6d        void* rax_1 = operator new(0x20)\n1400b9b79        int64_t var_18_1 = 0x19\n1400b9b87        int64_t var_10_1 = 0x1f\n1400b9b90        __builtin_strncpy(rax_1, \"IDC_LAN_START_GA\", 0x10)\n1400b9b9b        *(rax_1 + 0x10) = 0x4f545455425f454d\n1400b9ba7        *(rax_1 + 0x18) = 0x4e\n1400b9bb1        *(rax_1 + 0x19) = 0\n1400b9bb5        uint64_t rdx = zx.q(data_140a11750)\n1400b9bbb        void* var_28 = rax_1\n1400b9bc0        sub_1401c2a40(&data_140a78510, rdx, &var_28)\n1400b9bce        if (var_10_1 u>= 0x10)\n1400b9bd0        void* rcx = var_28\n1400b9bd8        void* rax_2 = rcx\n1400b9be2        if (var_10_1 + 1 u>= 0x1000)\n1400b9be4        rcx = *(rcx - 8)\n1400b9bf7        if (rax_2 - rcx - 8 u> 0x1f)\n1400b9c54        _invalid_parameter_noinfo_noreturn()\n1400b9c54        noreturn\n1400b9bf9        j_sub_1407864b8(rcx)\n1400b9c03        data_140a622b8 = *arg1\n1400b9c11        data_140a622c8 = *(arg1 + 0x10)\n1400b9c1b        data_140a622d8 = *(arg1 + 0x20)\n1400b9c3f        sub_1403330e0(&data_140b2ba20, sub_1403355d0(&data_140b2ba20, sub_1400fcba0(1, 0)), 0)\n1400b9c44        sub_140101eb0()\n1400b9c53        return ",
+  "fetched_at": "2026-04-26T16:59:56Z"
+}

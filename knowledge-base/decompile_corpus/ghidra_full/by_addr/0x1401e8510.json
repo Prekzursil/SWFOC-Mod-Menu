@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401e8510",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined8 __thiscall GUIGadgetComboboxClass::vfunction8(void)\n\n{\n  return 10;\n}",
+  "fetched_at": "2026-04-26T17:51:44Z"
+}

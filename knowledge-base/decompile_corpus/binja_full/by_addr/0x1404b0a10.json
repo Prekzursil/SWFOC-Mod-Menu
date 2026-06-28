@@ -1,0 +1,7 @@
+{
+  "addr": "0x1404b0a10",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1404b0a13        if (arg2 == 0)\n1404b0a13        return \n1404b0a2c        int64_t* rbx_1 = *(arg1 + 0x38)\n1404b0a37        if (rbx_1 == *(arg1 + 0x40))\n1404b0a37        return \n1404b0a43        int64_t rcx_1\n1404b0a43        while (true)\n1404b0a43        int64_t rax = sub_1405f55e0(*rbx_1)\n1404b0a48        rcx_1 = *(arg1 + 0x40)\n1404b0a4f        if (rax == arg2)\n1404b0a4f        break\n1404b0a51        rbx_1 = &rbx_1[1]\n1404b0a58        if (rbx_1 == rcx_1)\n1404b0a6a        return \n1404b0a6e        if (rbx_1 == rcx_1)\n1404b0a6e        return \n1404b0a75        int64_t* rsi_1 = *rbx_1\n1404b0a7e        (*(*rsi_1 + 0x10))(rsi_1)\n1404b0a8c        (**rsi_1)(rsi_1, 1)\n1404b0a9c        memcpy(rbx_1, &rbx_1[1], *(arg1 + 0x40) - &rbx_1[1])\n1404b0aa1        *(arg1 + 0x40) -= 8\n1404b0ab9        if ((*(*arg2 + 0xe0))(arg2).d != 0)\n1404b0ab9        return \n1404b0abb        int64_t* rcx_6 = *(arg1 + 0x50)\n1404b0ac2        if (rcx_6 != 0)\n1404b0acc        (**rcx_6)(rcx_6, 1)\n1404b0ace        *(arg1 + 0x50) = 0\n1404b0ae6        return ",
+  "fetched_at": "2026-04-26T17:29:44Z"
+}

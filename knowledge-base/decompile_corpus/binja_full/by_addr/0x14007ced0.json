@@ -1,0 +1,7 @@
+{
+  "addr": "0x14007ced0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14007cedf        uint128_t* rsi = arg1[1]\n14007cee6        int64_t rdx = *arg1\n14007ceef        void* rcx_1 = rsi - rdx\n14007cef5        if (arg2 u< rcx_1)\n14007cf3f        arg1[1] = rdx + arg2\n14007cefd        if (arg2 u> rcx_1)\n14007cf09        if (arg2 u> arg1[2] - rdx)\n14007cf16        sub_140079c50(arg1, arg2)\n14007cf2a        return \n14007cf2b        void* rbx_1 = arg2 - rcx_1\n14007cf36        memset(rsi, 0, rbx_1)\n14007cf3f        arg1[1] = rbx_1 + rsi\n14007cf52        return ",
+  "fetched_at": "2026-04-26T16:57:08Z"
+}

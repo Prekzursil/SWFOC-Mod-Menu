@@ -1,0 +1,7 @@
+{
+  "addr": "0x14063fd80",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nchar * __thiscall VehicleThiefBehaviorClass::vfunction9(void)\n\n{\n  return \"VehicleThiefBehaviorClass\";\n}\n\n",
+  "fetched_at": "2026-04-26T17:02:47Z"
+}

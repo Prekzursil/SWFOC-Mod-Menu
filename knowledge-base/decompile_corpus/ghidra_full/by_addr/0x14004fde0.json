@@ -1,0 +1,7 @@
+{
+  "addr": "0x14004fde0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nTheMovementClassManagerClass * FUN_14004fde0(void)\n\n{\n  TheMovementClassManagerClass *this;\n  undefined **local_res8 [4];\n  \n  if (DAT_140a10980 == (TheMovementClassManagerClass *)0x0) {\n    this = (TheMovementClassManagerClass *)FUN_140769c58(0x48);\n    if (this == (TheMovementClassManagerClass *)0x0) {\n      DAT_140a10980 = (TheMovementClassManagerClass *)0x0;\n    }\n    else {\n      DAT_140a10980 = TheMovementClassManagerClass::TheMovementClassManagerClass(this);\n    }\n    local_res8[0] = &PTR_vftable_140a10978;\n    if (DAT_140a7bc10 != DAT_140a7bc18) {\n      *DAT_140a7bc10 = &PTR_vftable_140a10978;\n      DAT_140a7bc10 = DAT_140a7bc10 + 1;\n      return DAT_140a10980;\n    }\n    FUN_14001ded0(&DAT_140a7bc08,DAT_140a7bc10,local_res8);\n  }\n  return DAT_140a10980;\n}\n\n",
+  "fetched_at": "2026-04-26T16:54:41Z"
+}

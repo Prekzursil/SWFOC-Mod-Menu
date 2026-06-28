@@ -1,0 +1,7 @@
+{
+  "addr": "0x140213e40",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "_FILETIME __thiscall FileClass::vfunction13(FileClass *this)\n\n{\n  HANDLE hFile;\n  BOOL BVar1;\n  _FILETIME _Var2;\n  _FILETIME local_res8 [4];\n  \n  if ((((this->FileClass_data).offset_0x0 != -1) &&\n      (hFile = (this->FileClass_data).offset_0x8, hFile != (HANDLE)0xffffffffffffffff)) &&\n     ((this->FileClass_data).offset_0x38 == -1)) {\n    BVar1 = GetFileTime(hFile,(LPFILETIME)0x0,(LPFILETIME)0x0,local_res8);\n    if (BVar1 != 0) {\n      return local_res8[0];\n    }\n  }\n  _Var2.dwLowDateTime = 0;\n  _Var2.dwHighDateTime = 0;\n  return _Var2;\n}",
+  "fetched_at": "2026-04-26T18:00:10Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406223e0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1406223eb        struct BehaviorClass::ExplosionBehaviorClass::VTable** result = operator new(0x40)\n1406223f6        if (result == 0)\n14062242e        return result\n1406223fb        sub_1404c32d0(result)\n140622407        *result = &ExplosionBehaviorClass::`vftable'{for `BehaviorClass'}\n140622411        result[1] = &ExplosionBehaviorClass::`vftable'{for `RefCountClass'}\n14062241c        result[3] = &ExplosionBehaviorClass::`vftable'{for `SignalListenerClass'}\n140622428        return result",
+  "fetched_at": "2026-04-26T17:23:44Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x1403bac70",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1403bac7e        void* rcx = *(arg1 + 0x1a0)\n1403bac85        int128_t zmm6 = arg2\n1403bac8b        int512_t entry_zmm3\n1403bac8b        if (rcx != 0)\n1403bac8d        entry_zmm3 = sub_1407dab30(rcx)\n1403bac92        int64_t* rcx_1 = *(arg1 + 0x328)\n1403bac9c        void* rax_1 = (*(*rcx_1 + 0x78))(rcx_1)\n1403baca2        if (rax_1 != 0)\n1403baca4        *(rax_1 + 0x210) = 0x101\n1403bacc1        sub_14013cf40(sub_1402733e0(*(arg1 + 0x328), 0xffffffff))\n1403bacd4        if (sub_1402cd0c0(&data_140b27a10) == 0)\n1403bace4        entry_zmm3, zmm6 = sub_1402d03f0(*(arg1 + 0x330), *(arg1 + 0x90))\n1403bacfb        int64_t rdx_2\n1403bacfb        int64_t r8\n1403bacfb        int512_t zmm1\n1403bacfb        rdx_2, r8, zmm1 = sub_140261870(*(arg1 + 0x90), 1, 1, 1)\n1403bad00        zmm1.o = zmm6\n1403bad06        sub_140362c30(arg1, rdx_2, r8, entry_zmm3)\n1403bad17        return sub_14013da00(nullptr) __tailcall",
+  "fetched_at": "2026-04-26T17:24:29Z"
+}

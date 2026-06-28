@@ -1,0 +1,7 @@
+{
+  "addr": "0x1405d6dd0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1405d6ddb        struct BehaviorClass::TacticalUnderConstructionBehaviorClass::VTable** result = operator new(0x40)\n1405d6de6        if (result == 0)\n1405d6e1e        return result\n1405d6deb        sub_1404c32d0(result)\n1405d6df7        *result = &TacticalUnderConstructionBehaviorClass::`vftable'{for `BehaviorClass'}\n1405d6e01        result[1] = &TacticalUnderConstructionBehaviorClass::`vftable'{for `RefCountClass'}\n1405d6e0c        result[3] = &TacticalUnderConstructionBehaviorClass::`vftable'{for `SignalListenerClass'}\n1405d6e18        return result",
+  "fetched_at": "2026-04-26T17:38:15Z"
+}

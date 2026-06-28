@@ -1,0 +1,7 @@
+{
+  "addr": "0x1403511c0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1403511cd        if (arg2 == 0)\n1403511cd        return \n1403511da        int32_t i_1 = 0\n1403511f5        int64_t rax_1\n1403511f5        int64_t rdx\n1403511f5        rdx:rax_1 = muls.dp.q(0x6666666666666667, *(arg1 + 0xe8) - *(arg1 + 0xe0))\n1403511f8        int64_t rdx_1 = rdx s>> 5\n140351206        if (rdx_1 == neg.q(rdx_1 u>> 0x3f))\n140351206        return \n140351214        uint64_t i = 0\n1403512b5        int64_t rdx_6\n140351231        uint64_t rdx_4 = i * 0xa\n140351238        i_1 += 1\n14035123b        i = zx.q(i_1)\n140351242        *(*(arg1 + 0xe0) + (rdx_4 << 3) + 0x38) = (int.d(arg2[3] * 255f)).b\n14035125a        *(*(arg1 + 0xe0) + (rdx_4 << 3) + 0x39) = (int.d(*arg2 * 255f)).b\n140351273        *(*(arg1 + 0xe0) + (rdx_4 << 3) + 0x3a) = (int.d(arg2[1] * 255f)).b\n14035128c        *(*(arg1 + 0xe0) + (rdx_4 << 3) + 0x3b) = (int.d(arg2[2] * 255f)).b\n1403512a1        int64_t rax_7\n1403512a1        int64_t rdx_5\n1403512a1        rdx_5:rax_7 = muls.dp.q(0x6666666666666667, *(arg1 + 0xe8) - *(arg1 + 0xe0))\n1403512a4        rdx_6 = rdx_5 s>> 5\n1403512b5        do while (i u< rdx_6 + (rdx_6 u>> 0x3f))\n1403512c3        return ",
+  "fetched_at": "2026-04-26T17:10:02Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x140487870",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1404878bd        char rbx = sub_14021fe20(arg2, 2, arg3, arg4) & 1 & sub_14021ffa0(arg2, 3) & sub_1402200b0(arg2, arg1 + 0x18, 1, nullptr)\n1404878bf        char rax_3 = sub_140220030(arg2)\n1404878c9        void* arg_8 = arg1\n1404878f1        rbx = rbx & rax_3 & sub_14021ffa0(arg2, 4) & sub_1402200b0(arg2, &arg_8, 8, nullptr)\n1404878f3        char rax_6 = sub_140220030(arg2)\n1404878ff        sub_1401fec80(arg_8)\n14048790c        rbx = rbx & rax_6 & sub_14021feb0(arg2)\n140487913        if (*(arg1 + 0x10) == 0)\n1404879af        return zx.q(rbx)\n14048792c        int64_t r8\n14048792c        int512_t zmm1\n14048792c        r8, zmm1 = sub_14027d370(8, \"%s -- \\n\", \"TheGameScoringManagerClass::Save\")\n140487936        char rax_8 = sub_14021fe20(arg2, 0, r8, zmm1)\n140487941        void** rdx_3 = *(arg1 + 0x10) + 0x68\n14048794a        if (rdx_3[3] u>= 0x10)\n14048794c        rdx_3 = *rdx_3\n14048795d        rbx = rbx & rax_8 & sub_140220140(arg2, rdx_3, nullptr)\n14048795f        char rax_10\n14048795f        int64_t r8_1\n14048795f        rax_10, r8_1 = sub_14021feb0(arg2)\n140487984        rbx = rbx & rax_10 & sub_14021fe20(arg2, 1, r8_1, zmm1) & sub_140247e50(*(arg1 + 0x10), arg2)\n14048799c        return sub_14021feb0(arg2) & rbx",
+  "fetched_at": "2026-04-26T17:28:36Z"
+}

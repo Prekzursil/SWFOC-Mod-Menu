@@ -1,0 +1,7 @@
+{
+  "addr": "0x1402fa810",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_1402fa810(longlong param_1)\n\n{\n  longlong *plVar1;\n  longlong *plVar2;\n  \n  plVar1 = (longlong *)FUN_14025ec10(\"data/art/models/i_tactical_corrupt.alo\",0);\n  plVar2 = *(longlong **)(param_1 + 0x27a0);\n  if (plVar2 != plVar1) {\n    if (plVar2 != (longlong *)0x0) {\n      (**(code **)(*plVar2 + 8))(plVar2);\n    }\n    *(longlong **)(param_1 + 0x27a0) = plVar1;\n    plVar2 = (longlong *)0x0;\n    if (plVar1 != (longlong *)0x0) {\n      (**(code **)*plVar1)(plVar1);\n      plVar2 = *(longlong **)(param_1 + 0x27a0);\n    }\n  }\n                    /* WARNING: Could not recover jumptable at 0x0001402fa87d. Too many branches */\n                    /* WARNING: Treating indirect jump as call */\n  (**(code **)(**(longlong **)(param_1 + 0xfb8) + 0x28))(*(longlong **)(param_1 + 0xfb8),plVar2);\n  return;\n}",
+  "fetched_at": "2026-04-26T17:26:38Z"
+}

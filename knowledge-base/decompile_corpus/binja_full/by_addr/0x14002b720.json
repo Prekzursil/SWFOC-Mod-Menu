@@ -1,0 +1,7 @@
+{
+  "addr": "0x14002b720",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14002b738        if (data_140a60db1 == 0 || data_140a60dcc == 0)\n14002b738        return \n14002b743        data_140a60dcc = 0\n14002b74d        void* rax_1 = operator new(0x20)\n14002b759        int64_t var_18_1 = 0x1e\n14002b767        int64_t var_10_1 = 0x1f\n14002b770        __builtin_strncpy(rax_1, \"IDC_INTERNET_START_GAME_BUTTON\", 0x1f)\n14002b79f        uint64_t rdx_1 = zx.q(data_1409cf0b8)\n14002b7a5        void* var_28 = rax_1\n14002b7aa        sub_1401c2a40(&data_140a78510, rdx_1, &var_28)\n14002b7b8        if (var_10_1 u< 0x10)\n14002b7b8        return \n14002b7ba        void* rcx_1 = var_28\n14002b7c2        void* rax_2 = rcx_1\n14002b7cc        if (var_10_1 + 1 u>= 0x1000)\n14002b7ce        rcx_1 = *(rcx_1 - 8)\n14002b7e1        if (rax_2 - rcx_1 - 8 u> 0x1f)\n14002b7ed        _invalid_parameter_noinfo_noreturn()\n14002b7ed        noreturn\n14002b7e3        j_sub_1407864b8(rcx_1)\n14002b7ec        return ",
+  "fetched_at": "2026-04-26T16:52:22Z"
+}

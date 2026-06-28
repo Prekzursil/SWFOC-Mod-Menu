@@ -1,0 +1,7 @@
+{
+  "addr": "0x14020ec90",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_14020ec90(longlong param_1,undefined8 param_2,longlong param_3)\n\n{\n  undefined8 *puVar1;\n  ulonglong uVar2;\n  undefined8 local_res8;\n  longlong local_28;\n  longlong lStack_20;\n  longlong local_18;\n  \n  uVar2 = 0;\n  local_28 = 0;\n  lStack_20 = 0;\n  local_18 = 0;\n  FUN_1402102d0(*(undefined8 *)(param_1 + 0x10),param_2,&local_28);\n  if (lStack_20 - local_28 >> 3 != 0) {\n    do {\n      puVar1 = *(undefined8 **)(param_3 + 8);\n      local_res8 = *(undefined8 *)(*(longlong *)(local_28 + uVar2 * 8) + 8);\n      if (puVar1 == *(undefined8 **)(param_3 + 0x10)) {\n        FUN_14001ded0(param_3,puVar1,&local_res8);\n      }\n      else {\n        *puVar1 = local_res8;\n        *(longlong *)(param_3 + 8) = *(longlong *)(param_3 + 8) + 8;\n      }\n      uVar2 = (ulonglong)((int)uVar2 + 1);\n    } while (uVar2 < (ulonglong)(lStack_20 - local_28 >> 3));\n  }\n  DAT_140a7c664 = DAT_140a7c664 + 1;\n  if (local_28 != 0) {\n    uVar2 = local_18 - local_28 & 0xfffffffffffffff8;\n    if (0xfff < uVar2) {\n      if (0x1f < (local_28 - *(longlong *)(local_28 + -8)) - 8U) {\n                    /* WARNING: Subroutine does not return */\n        FUN_1407711cc(*(longlong *)(local_28 + -8),uVar2 + 0x27);\n      }\n    }\n    thunk_FUN_1407864b8();\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T17:59:23Z"
+}

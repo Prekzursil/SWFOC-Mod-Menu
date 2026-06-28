@@ -1,0 +1,7 @@
+{
+  "addr": "0x14021fb30",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14021fb30        int32_t data = arg3\n14021fb39        HKEY hKey = *arg1\n14021fb3f        if (hKey != 0)\n14021fb5c        RegSetValueExA(hKey, arg2, 0, REG_DWORD, &data, 4)\n14021fb66        return ",
+  "fetched_at": "2026-04-26T17:29:05Z"
+}

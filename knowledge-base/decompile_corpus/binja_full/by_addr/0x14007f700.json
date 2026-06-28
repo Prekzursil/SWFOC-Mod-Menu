@@ -1,0 +1,7 @@
+{
+  "addr": "0x14007f700",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14007f717        int64_t rdx = arg1[2]\n14007f71b        int64_t* rbx = arg1\n14007f721        int64_t r9 = 1\n14007f727        int64_t* rax_2\n14007f727        int64_t r8_1\n14007f727        if (arg1[3] u< 8)\n14007f741        r8_1 = (arg3 - rbx) s>> 1\n14007f744        int64_t rax_3 = rdx - r8_1\n14007f74a        if (rax_3 u< 1)\n14007f74a        r9 = rax_3\n14007f74e        rax_2 = rbx\n14007f72c        r8_1 = (arg3 - *arg1) s>> 1\n14007f72f        int64_t rax_1 = rdx - r8_1\n14007f735        if (rax_1 u< 1)\n14007f735        r9 = rax_1\n14007f739        rax_2 = *arg1\n14007f751        int64_t rdx_1 = rdx - r9\n14007f754        int64_t rsi = r8_1 * 2\n14007f758        rbx[2] = rdx_1\n14007f75c        void* rcx = rsi + rax_2\n14007f76f        memcpy(rcx, rcx + (r9 << 1), ((rdx_1 - r8_1) << 1) + 2)\n14007f779        if (rbx[3] u>= 8)\n14007f77b        rbx = *rbx\n14007f78c        *arg2 = rsi + rbx\n14007f797        return arg2",
+  "fetched_at": "2026-04-26T16:57:17Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x14013f590",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14013f590        *(arg1 + 0x32) &= 0xfe\n14013f59b        *(arg1 + 0x34) = 1\n14013f5a4        arg1[6].w = 0\n14013f5a8        *arg1 = &alRenderable::`vftable'{for `RefCountClass'}\n14013f5b2        arg1[2] = &alRenderable::`vftable'{for `MultiLinkedListMember'}\n14013f5bd        arg1[4] = &alRenderable::`vftable'{for `CullObjectClass'}\n14013f5c4        arg1[1].d = 0\n14013f5c7        arg1[7] = 0x3f800000\n14013f5cf        arg1[8] = 0\n14013f5d3        arg1[9].d = 0\n14013f5d6        *(arg1 + 0x4c) = 0x3f800000\n14013f5de        *(arg1 + 0x54) = 0\n14013f5e2        *(arg1 + 0x5c) = 0\n14013f5e5        arg1[0xc] = 0x3f800000\n14013f5ed        arg1[0xd] = 0x3f800000\n14013f5f5        arg1[0xe] = 0\n14013f5f9        arg1[0xf].d = 0\n14013f5fc        *(arg1 + 0x7c) = 0x3f800000\n14013f604        *(arg1 + 0x84) = 0\n14013f60b        *(arg1 + 0x8c) = 0\n14013f611        arg1[0x12] = 0x3f800000\n14013f61c        arg1[3] = 0\n14013f620        arg1[5] = 0\n14013f624        arg1[6].b |= 0x10\n14013f628        *(arg1 + 0x31) |= 1\n14013f62c        arg1[0x16] = 0\n14013f633        arg1[0x17] = 0\n14013f63a        arg1[0x18].d = 1\n14013f644        *(arg1 + 0xc4) = 0xffffffff\n14013f64e        return arg1",
+  "fetched_at": "2026-04-26T17:19:03Z"
+}

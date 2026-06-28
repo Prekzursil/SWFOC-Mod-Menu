@@ -1,0 +1,7 @@
+{
+  "addr": "0x140741710",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "longlong FUN_140741710(longlong param_1)\n\n{\n  longlong lVar1;\n  longlong lVar2;\n  \n  lVar1 = -1;\n  do {\n    lVar2 = lVar1;\n    lVar1 = lVar2 + 1;\n  } while (*(char *)(param_1 + lVar1) != '\\0');\n  lVar2 = lVar2 + 2;\n  lVar1 = _calloc_base(lVar2,1);\n  if (lVar1 != 0) {\n    if (lVar2 != 0) {\n      FUN_14076bd80(lVar1,param_1,lVar2);\n    }\n    return lVar1;\n  }\n                    /* WARNING: Subroutine does not return */\n  FUN_1407408bc();\n}",
+  "fetched_at": "2026-04-26T18:04:20Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x14052fa90",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14052fab2        if (*(arg1 + 0x610) != 0)\n14052fabc        int32_t i = 0\n14052fac7        if (((arg2[1] - *arg2) s>> 5).d s> 0)\n14052facd        int64_t rsi_1 = 0\n14052fad7        int64_t* rax_2 = sub_140245690(*(arg1 + 0x610))\n14052fadc        int64_t* rdx = rax_2\n14052fae4        if (rax_2[3] u>= 0x10)\n14052fae6        rdx = *rax_2\n14052faec        void** rcx_2 = *arg2 + rsi_1\n14052faf4        if (rcx_2[3] u>= 0x10)\n14052faf6        rcx_2 = *rcx_2\n14052fb00        if (_stricmp(rcx_2, rdx) == 0)\n14052fb29        void* var_28\n14052fb29        sub_14001e680(&var_28, *(arg1 + 0x610) + 0x68)\n14052fb3c        sub_14052e4f0(arg1, &var_28, 0, 1)\n14052fb4a        int64_t var_10\n14052fb4a        if (var_10 u>= 0x10)\n14052fb4c        void* rcx_5 = var_28\n14052fb54        void* rax_6 = rcx_5\n14052fb5e        if (var_10 + 1 u>= 0x1000)\n14052fb60        rcx_5 = *(rcx_5 - 8)\n14052fb73        if (rax_6 - rcx_5 - 8 u> 0x1f)\n14052fb91        _invalid_parameter_noinfo_noreturn()\n14052fb91        noreturn\n14052fb75        j_sub_1407864b8(rcx_5)\n14052fb4a        break\n14052fb06        i += 1\n14052fb0b        rsi_1 += 0x20\n14052fb15        do while (i s< ((arg2[1] - *arg2) s>> 5).d)\n14052fb7f        int32_t result\n14052fb7f        result.b = 1\n14052fb90        return result",
+  "fetched_at": "2026-04-26T17:33:30Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407606b4",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1407606c7        void var_d8\n1407606c7        int64_t rax_1 = __security_cookie ^ &var_d8\n1407606d2        char var_87\n1407606d2        char rax_2 = var_87\n1407606dd        char var_88 = 0x25\n1407606eb        int32_t rdx = *(arg4 + 0x18)\n1407606f7        if ((rdx & 0x20) != 0)\n1407606f7        rax_2 = 0x2b\n1407606ff        var_87 = rax_2\n140760708        char* rax_3 = &var_87\n14076070d        void var_86\n14076070d        if (test_bit(rdx, 5))\n14076070d        rax_3 = &var_86\n140760714        if ((rdx.b & 8) != 0)\n140760716        *rax_3 = 0x23\n140760719        rax_3 = &rax_3[1]\n14076071e        *rax_3 = 0x6c\n140760721        int32_t rcx_3 = rdx & 0xe00\n14076072d        if (rcx_3 == 0x400)\n14076072f        rdx.b = 0x6f\n140760739        if (rcx_3 == 0x800)\n14076073f        rdx.b <<= 3\n140760742        rdx.b = not.b(rdx.b)\n140760744        rdx.b &= 0x20\n140760747        rdx.b |= 0x58\n14076073b        rdx.b = 0x75\n140760757        rax_3[1] = rdx.b\n140760764        rax_3[2] = 0\n140760768        char var_78[0x40]\n140760768        int32_t rax_4 = sub_14021dc70(&var_78, 0x40, &var_88, zx.q(arg6))\n14076078e        char* var_b0 = &var_78\n14076079e        int128_t var_98 = *arg3\n1407607a4        sub_1407572f0(arg1, arg2, &var_98, arg4, arg5, var_b0, sx.q(rax_4))\n1407607b7        __security_check_cookie(rax_1 ^ &var_d8)\n1407607c7        return arg2",
+  "fetched_at": "2026-04-26T17:30:03Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406d4dac",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall\nVisiblePerceptualEvaluatorClass<class_LandLocationPerceptualEvaluatorClass>::\nvfunction1_for_AIDiagnosticsClass\n          (VisiblePerceptualEvaluatorClass<class_LandLocationPerceptualEvaluatorClass> *this,\n          uint param_1)\n\n{\n  scalar_deleting_destructor\n            ((VisiblePerceptualEvaluatorClass<class_LandLocationPerceptualEvaluatorClass> *)\n             &this[-1].PerceptualEvaluatorClass_data.offset_0x30,param_1);\n  return;\n}",
+  "fetched_at": "2026-04-26T17:42:58Z"
+}

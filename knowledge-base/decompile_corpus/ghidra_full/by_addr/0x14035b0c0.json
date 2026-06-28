@@ -1,0 +1,7 @@
+{
+  "addr": "0x14035b0c0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nundefined1 __thiscall\nMostExtreme<float>::vfunction1(MostExtreme<float> *this,float *param_1,float *param_2)\n\n{\n  double dVar1;\n  double dVar2;\n  \n  dVar1 = (double)FUN_1407760bc((double)*param_1);\n  dVar2 = (double)FUN_1407760bc((double)*param_2);\n  if ((float)dVar2 <= (float)dVar1) {\n    dVar1 = (double)FUN_1407760bc((double)*param_1);\n    dVar2 = (double)FUN_1407760bc((double)*param_2);\n    if ((float)dVar1 != (float)dVar2) {\n      return 1;\n    }\n  }\n  return 0;\n}\n\n",
+  "fetched_at": "2026-04-26T17:11:45Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x14058c6e0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14058c6f3        *arg1 = &DeathBehaviorClass::`vftable'{for `BehaviorClass'}\n14058c700        arg1[1] = &DeathBehaviorClass::`vftable'{for `RefCountClass'}\n14058c70b        arg1[3] = &DeathBehaviorClass::`vftable'{for `SignalListenerClass'}\n14058c70f        sub_1404c3310(arg1)\n14058c717        if ((arg2 & 1) != 0)\n14058c721        j_sub_1407864b8(arg1)\n14058c733        return arg1",
+  "fetched_at": "2026-04-26T17:36:12Z"
+}

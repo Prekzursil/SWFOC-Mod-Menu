@@ -1,0 +1,7 @@
+{
+  "addr": "0x14013f1d0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_14013f1d0(int param_1)\n\n{\n  char cVar1;\n  \n  if (param_1 == 1) {\n    cVar1 = FUN_140177260(0x3c);\n    if (cVar1 == '\\0') {\n      param_1 = 0;\n    }\n  }\n  FUN_140178a00(param_1);\n  return;\n}",
+  "fetched_at": "2026-04-26T17:18:30Z"
+}

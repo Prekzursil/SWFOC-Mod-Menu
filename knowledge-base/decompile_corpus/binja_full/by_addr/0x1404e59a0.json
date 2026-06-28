@@ -1,0 +1,7 @@
+{
+  "addr": "0x1404e59a0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1404e59b3        *arg1 = &TheShipNamesManagerClass::`vftable'\n1404e59b9        __builtin_memset(arg1 + 0xc, 0, 0x14)\n1404e59be        arg1[1].b = 0\n1404e59cc        int64_t* rax = operator new(0x20)\n1404e59d8        *rax = rax\n1404e59db        rax[1] = rax\n1404e59df        arg1[2] = rax\n1404e59e3        int64_t r8 = arg1[2]\n1404e59e7        __builtin_memset(&arg1[4], 0, 0x18)\n1404e59f2        arg1[7] = 7\n1404e59fa        arg1[8] = 8\n1404e5a02        *(arg1 + 0xc) = 0x3f800000\n1404e5a09        sub_140048250(&arg1[4], 0x10, r8)\n1404e5a11        __builtin_memset(&arg1[9], 0, 0x19)\n1404e5a21        sub_1404e6b20(arg1)\n1404e5a33        return arg1",
+  "fetched_at": "2026-04-26T17:31:24Z"
+}

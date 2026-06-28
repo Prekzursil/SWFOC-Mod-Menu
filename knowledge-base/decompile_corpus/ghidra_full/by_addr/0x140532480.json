@@ -1,0 +1,7 @@
+{
+  "addr": "0x140532480",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "float FUN_140532480(float param_1,float param_2)\n\n{\n  float fVar1;\n  \n  fVar1 = param_2;\n  if (param_2 < param_1) {\n    fVar1 = param_1;\n    param_1 = param_2;\n  }\n  DAT_140a13e24 = DAT_140851168 * DAT_140a13e24 + DAT_14085116c;\n  return ((float)(DAT_140a13e24 >> 10 & 0x7fff) / DAT_1408511e4) * (fVar1 - param_1) + param_1;\n}",
+  "fetched_at": "2026-04-26T18:29:15Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x1405c32a0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_1405c32a0(longlong param_1,int param_2)\n\n{\n  longlong *plVar1;\n  undefined4 *puVar2;\n  undefined4 local_28;\n  undefined4 local_24;\n  undefined4 local_20;\n  undefined4 local_18;\n  undefined4 local_14;\n  undefined4 local_10;\n  \n  plVar1 = *(longlong **)(param_1 + 0x3b0);\n  if ((plVar1 != (longlong *)0x0) &&\n     ((*(int *)(param_1 + 0x3a8) != param_2 ||\n      (**(int **)(param_1 + 0x3b8) != *(int *)(param_1 + 0x3a8))))) {\n    *(int *)(param_1 + 0x3a8) = param_2;\n    puVar2 = (undefined4 *)(*plVar1 + 0xcc);\n    if (*plVar1 == 0) {\n      puVar2 = (undefined4 *)0x0;\n    }\n    local_18 = *puVar2;\n    local_14 = puVar2[1];\n    local_10 = puVar2[2];\n    puVar2 = (undefined4 *)(*plVar1 + 0xd8);\n    if (*plVar1 == 0) {\n      puVar2 = (undefined4 *)0x0;\n    }\n    local_28 = *puVar2;\n    local_24 = puVar2[1];\n    local_20 = puVar2[2];\n    FUN_1405c2590(param_1,plVar1[1],&local_18,&local_28,param_2);\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T18:44:33Z"
+}

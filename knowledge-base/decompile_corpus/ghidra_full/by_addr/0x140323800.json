@@ -1,0 +1,7 @@
+{
+  "addr": "0x140323800",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nvoid FUN_140323800(undefined8 param_1,undefined8 *param_2)\n\n{\n  undefined8 *puVar1;\n  \n  if ((param_2 != (undefined8 *)0x0) &&\n     (0 < (int)((longlong)(param_2[0x12] - param_2[0x11]) >> 5) +\n          (int)((longlong)(param_2[0xf] - param_2[0xe]) >> 5) +\n          (int)((longlong)(param_2[0xc] - param_2[0xb]) >> 5))) {\n    puVar1 = param_2;\n    if (0xf < (ulonglong)param_2[3]) {\n      puVar1 = (undefined8 *)*param_2;\n    }\n    FUN_140025760(\"WeatherAudioManagerClass::Fade_Out_Active_Loop(): %s\\n\",puVar1);\n    FUN_1402d5a30(&DAT_140b27e60,param_2,DAT_140803520);\n  }\n  return;\n}\n\n",
+  "fetched_at": "2026-04-26T17:00:38Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x14033a4b0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nvoid FUN_14033a4b0(longlong param_1)\n\n{\n  longlong lVar1;\n  longlong *plVar2;\n  \n  lVar1 = FUN_1403355d0();\n  if (lVar1 != 0) {\n    plVar2 = (longlong *)(lVar1 + 0x20);\n    if ((longlong *)(param_1 + 0x38) != plVar2) {\n      if (7 < *(ulonglong *)(lVar1 + 0x38)) {\n        plVar2 = (longlong *)*plVar2;\n      }\n      FUN_1400228a0(param_1 + 0x38,plVar2,*(undefined8 *)(lVar1 + 0x30));\n    }\n    plVar2 = (longlong *)(lVar1 + 0x40);\n    if ((longlong *)(param_1 + 0x58) != plVar2) {\n      if (7 < *(ulonglong *)(lVar1 + 0x58)) {\n        plVar2 = (longlong *)*plVar2;\n      }\n      FUN_1400228a0(param_1 + 0x58,plVar2,*(undefined8 *)(lVar1 + 0x50));\n    }\n    *(undefined4 *)(param_1 + 0x30) = *(undefined4 *)(lVar1 + 0xb8);\n    *(undefined4 *)(param_1 + 0x2c) = *(undefined4 *)(lVar1 + 0xa0);\n    *(undefined4 *)(param_1 + 0x20) = *(undefined4 *)(lVar1 + 0x90);\n    *(undefined4 *)(param_1 + 0x24) = *(undefined4 *)(lVar1 + 0x94);\n    *(undefined4 *)(param_1 + 0x28) = *(undefined4 *)(lVar1 + 0x98);\n    *(undefined4 *)(param_1 + 0xb8) = *(undefined4 *)(lVar1 + 0x108);\n    *(undefined4 *)(param_1 + 0xbc) = *(undefined4 *)(lVar1 + 0x10c);\n    *(undefined1 *)(param_1 + 0x151) = *(undefined1 *)(lVar1 + 0xc6);\n  }\n  return;\n}\n\n",
+  "fetched_at": "2026-04-26T17:04:13Z"
+}

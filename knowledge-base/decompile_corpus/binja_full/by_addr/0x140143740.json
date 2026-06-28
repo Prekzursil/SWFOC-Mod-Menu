@@ -1,0 +1,7 @@
+{
+  "addr": "0x140143740",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140143757        char var_408[0x3ff]\n140143757        strncpy(&var_408, arg2, 0x3ff)\n14014375c        char (* rdx)[0x3ff] = &var_408\n140143761        char var_9 = 0\n14014376e        int64_t rax = -1\n140143775        rax += 1\n14014377c        do while (var_408[rax] != 0)\n14014377e        int32_t rax_1 = rax.d - 1\n140143781        int64_t r8 = sx.q(rax_1)\n140143784        if (rax.d - 1 s>= 0)\n1401437b3        int64_t temp1_1\n140143790        char rcx_1 = var_408[r8]\n140143799        if (rcx_1 == 0x2e)\n14014379b        var_408[r8] = 0\n1401437ab        if (rcx_1 == 0x2f || rcx_1 == 0x5c)\n1401437c0        rdx = &var_408[sx.q(rax_1 + 1)]\n1401437c0        break\n1401437ad        rax_1 -= 1\n1401437af        temp1_1 = r8\n1401437af        r8 -= 1\n1401437b3        do while (temp1_1 - 1 s>= 0)\n1401437c6        char* rcx_3 = arg1 - rdx\n1401437dc        char i\n1401437d0        i = *rdx\n1401437d3        *(rcx_3 + rdx) = i\n1401437d6        rdx = &(*rdx)[1]\n1401437dc        do while (i != 0)\n1401437ee        return _strlwr(arg1)",
+  "fetched_at": "2026-04-26T17:19:45Z"
+}

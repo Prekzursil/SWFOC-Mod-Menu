@@ -1,0 +1,7 @@
+{
+  "addr": "0x14069aa70",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined * __thiscall BaseBlockStatus::vfunction5(void)\n\n{\n  return &DAT_140a44560;\n}",
+  "fetched_at": "2026-04-26T17:20:41Z"
+}

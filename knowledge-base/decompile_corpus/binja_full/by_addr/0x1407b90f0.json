@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407b90f0",
+  "tool": "binary_ninja",
+  "fact_id": "api_lua_load",
+  "body": "1407b90ff        void* const r9 = &data_1408fd01c\n1407b910b        if (arg4 != 0)\n1407b910b        r9 = arg4\n1407b910f        void var_38\n1407b910f        sub_1407c3820(&var_38, arg2, arg3, r9)\n1407b912c        int64_t r8\n1407b912c        r8.b = sub_1407c3840(&var_38) == 0x1b\n1407b913a        return sub_1407bc040(arg1, &var_38)",
+  "fetched_at": "2026-04-26T16:44:27Z"
+}

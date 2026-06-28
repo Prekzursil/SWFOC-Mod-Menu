@@ -1,0 +1,7 @@
+{
+  "addr": "0x140722d50",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "SpaceReinforceBlockStatus * __thiscall\nSpaceReinforceBlockStatus::SpaceReinforceBlockStatus(SpaceReinforceBlockStatus *this)\n\n{\n  LuaMemberFunctionWrapper<class_BlockingStatus>::LuaMemberFunctionWrapper<class_BlockingStatus>\n            ((LuaMemberFunctionWrapper<class_BlockingStatus> *)this);\n  *(undefined8 *)&this->field_0x38 = 0;\n  this->vftablePtr = &vftable;\n  this->vftablePtr = &vftable;\n  *(undefined8 *)&this->field_0x40 = 0;\n  this->offset_0x40 = 0;\n  this->offset_0x48 = 0;\n  this->offset_0x50 = (longlong *)0x0;\n  this->offset_0x58 = 0;\n  *(undefined4 *)((longlong)&this->offset_0x68 + 4) = 0xffffffff;\n  this->offset_0x70 = 0;\n  *(undefined4 *)&this->offset_0x78 = 0xffffffff;\n  *(undefined1 *)((longlong)&this->offset_0x78 + 4) = 1;\n  return this;\n}",
+  "fetched_at": "2026-04-26T17:59:32Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x14024a560",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall\nLuaMemberFunctionWrapper<class_LuaUserVar>::vfunction11\n          (LuaMemberFunctionWrapper<class_LuaUserVar> *this)\n\n{\n                    /* WARNING: Could not recover jumptable at 0x00014024a567. Too many branches */\n                    /* WARNING: Treating indirect jump as call */\n  (**(code **)&(this->RefCountClass_data).field_0x20)\n            (*(undefined8 *)&(this->RefCountClass_data).field_0x28);\n  return;\n}",
+  "fetched_at": "2026-04-26T18:11:11Z"
+}

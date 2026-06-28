@@ -1,0 +1,7 @@
+{
+  "addr": "0x140350c70",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nvoid __thiscall TextComponentClass::vfunction43(TextComponentClass *this)\n\n{\n  longlong lVar1;\n  undefined7 in_register_00000081;\n  \n  lVar1 = (this->TextComponentClass_data).offset_0x8;\n  if (lVar1 != 0) {\n                    /* WARNING: Could not recover jumptable at 0x000140350c89. Too many branches */\n                    /* WARNING: Treating indirect jump as call */\n    (*this->vftablePtr->vfunction42)\n              (this,(short *)(lVar1 + 0x20),CONCAT71(in_register_00000081,1),0);\n    return;\n  }\n  return;\n}\n\n",
+  "fetched_at": "2026-04-26T17:09:55Z"
+}

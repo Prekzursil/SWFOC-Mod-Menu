@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406cc0a0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "float __thiscall CompanyCombatantClass::vfunction31(CompanyCombatantClass *this)\n\n{\n  return *(float *)((longlong)&this->offset_0x48 + 4) / *(float *)&this->offset_0x48;\n}",
+  "fetched_at": "2026-04-26T17:41:03Z"
+}

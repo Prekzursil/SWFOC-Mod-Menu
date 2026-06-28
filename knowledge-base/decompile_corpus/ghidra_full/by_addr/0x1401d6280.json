@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401d6280",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined8 __thiscall GUIGadgetTrackbarSliderClass::vfunction8(void)\n\n{\n  return 5;\n}",
+  "fetched_at": "2026-04-26T17:50:06Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x140698de0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140698de9        int128_t zmm6\n140698de9        int128_t var_18 = zmm6\n140698dee        int64_t rcx = *arg1\n140698df8        int64_t r8_2 = (arg1[1] - rcx) s>> 4\n140698dff        if (r8_2.d != 0)\n140698e0f        float zmm1 = *(rcx + zx.q((r8_2 - 1).d) * 0x10 + 8)\n140698e21        if (not(0f >= zmm1) && r8_2 != 0)\n140698e2f        double zmm0_1 = sub_140532480((zx.o(0)).d, zmm1)\n140698e34        int64_t r10 = *arg1\n140698e37        uint32_t rdi = 0\n140698e43        int32_t r9 = 0\n140698e4a        int32_t rbx_4 = ((arg1[1] - r10) s>> 4).d - 1\n140698e4c        int32_t r11 = rbx_4\n140698e4f        int64_t zmm1_1 = fconvert.d(zmm0_1.d)\n140698e64        while (true)\n140698e64        uint32_t rdx_4 = (r11 + r9) u>> 1\n140698e71        if (rdx_4 == 0)\n140698e82        zmm0_1 = (zx.o(0)).q\n140698e79        zmm0_1 = *(r10 + zx.q(rdx_4 - 1) * 0x10 + 8)\n140698e8d        if (fconvert.d(zmm0_1.d) f< zmm1_1)\n140698ea6        if (zmm1_1 f<= _mm_cvtps_pd(*(r10 + zx.q(rdx_4) * 0x10 + 8)))\n140698ecd        rdi = rdx_4\n140698eaa        if (rdx_4 u>= rbx_4)\n140698eaa        break\n140698eac        r9 = rdx_4 + 1\n140698eb0        continue\n140698e91        if (rdx_4 != 0)\n140698e93        r11 = rdx_4 - 1\n140698e96        continue\n140698ee7        return *(r10 + zx.q(rdi) * 0x10)\n140698ecc        return *(r10 + zx.q(rbx_4) * 0x10)\n140698ef4        return 0",
+  "fetched_at": "2026-04-26T17:20:22Z"
+}

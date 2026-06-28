@@ -1,0 +1,7 @@
+{
+  "addr": "0x1404d7d10",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall SpaceModeClass::vfunction74(SpaceModeClass *this)\n\n{\n  longlong lVar1;\n  undefined8 uVar2;\n  longlong *plVar3;\n  \n  GameModeClass::vfunction74((GameModeClass *)this);\n  lVar1 = *(longlong *)&(this->SpaceModeClass_data).field_0x198;\n  if (lVar1 != 0) {\n    FUN_1407dae70(lVar1,DAT_140b169bc,0);\n    uVar2 = FUN_1407dac70(*(undefined8 *)&(this->SpaceModeClass_data).field_0x198);\n    plVar3 = (longlong *)\n             (**(code **)(*(longlong *)(this->SpaceModeClass_data).offset_0x318 + 0x78))();\n    (**(code **)(*plVar3 + 0xa8))(plVar3,uVar2);\n  }\n  if (DAT_140b15490 != '\\0') {\n    DAT_140a284c4 = 0;\n    FUN_14013ecc0(0);\n    return;\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T18:14:14Z"
+}

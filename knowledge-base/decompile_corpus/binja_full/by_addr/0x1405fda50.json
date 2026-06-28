@@ -1,0 +1,7 @@
+{
+  "addr": "0x1405fda50",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1405fda54        int64_t* rcx = *(arg1 + 0x100)\n1405fda5e        if (rcx == 0)\n1405fdafb        return 0\n1405fda71        struct LuaUserVar::AITargetLocationWrapper::VTable** rax = sub_14060e0a0(rcx, arg2, 1)\n1405fda7c        if (rax == 0)\n1405fda90        return 0\n1405fda96        struct LuaVar::LuaValue<class std::vector<class SmartPtr<class LuaVar> >, 2>::VTable** result = sub_14024a250()\n1405fda9e        struct LuaUserVar::AITargetLocationWrapper::VTable** arg_8 = rax\n1405fdaa9        (*rax)->__offset(0x0).q(rax)\n1405fdaab        int64_t* rdx = result[3]\n1405fdab3        if (rdx == result[4])\n1405fdad0        sub_140144900(&result[2], rdx, &arg_8)\n1405fdab5        *rdx = rax\n1405fdabe        (*rax)->__offset(0x0).q(rax)\n1405fdac0        result[3] = &result[3]->vFunc_1\n1405fdad5        struct LuaUserVar::AITargetLocationWrapper::VTable* rdx_1 = *rax\n1405fdadb        rdx_1->__offset(0x8).q(rax, rdx_1)\n1405fdaf4        return result",
+  "fetched_at": "2026-04-26T17:22:45Z"
+}

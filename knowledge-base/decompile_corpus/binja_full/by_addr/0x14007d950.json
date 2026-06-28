@@ -1,0 +1,7 @@
+{
+  "addr": "0x14007d950",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14007d953        if (arg2 == 0)\n14007d953        return \n14007d95e        int64_t* arg_10 = arg2\n14007d968        int64_t* r9_1 = *(arg1 + 0x38)\n14007d976        int32_t* rdi_2 = *(arg1 + 0x38)\n14007d97e        if (r9_1 == *(arg1 + 0x40))\n14007d9c0        sub_14001ded0(arg1 + 0x30, rdi_2, &arg_10)\n14007d983        if (rdi_2 != r9_1)\n14007d996        *r9_1 = r9_1[-1]\n14007d99c        *(arg1 + 0x38) += 8\n14007d9ae        memcpy(r9_1 - (r9_1 - rdi_2 - 8), rdi_2, r9_1 - rdi_2 - 8)\n14007d9b3        *rdi_2 = arg2\n14007d985        *r9_1 = arg2\n14007d988        *(arg1 + 0x38) += 8\n14007d9d0        void* var_28\n14007d9d0        void** rax = (*(*arg2 + 0x20))(arg2, &var_28)\n14007d9d8        if (rax[3] u>= 0x10)\n14007d9da        *rax\n14007d9e6        if (arg2[4] u>= 0x10)\n14007d9e2        arg2[1]\n14007da03        int64_t var_10\n14007da03        if (var_10 u< 0x10)\n14007da03        return \n14007da05        void* rcx_4 = var_28\n14007da0d        void* rax_3 = rcx_4\n14007da17        if (var_10 + 1 u>= 0x1000)\n14007da19        rcx_4 = *(rcx_4 - 8)\n14007da2c        if (rax_3 - rcx_4 - 8 u> 0x1f)\n14007da3e        _invalid_parameter_noinfo_noreturn()\n14007da3e        noreturn\n14007da2e        j_sub_1407864b8(rcx_4)\n14007da3d        return ",
+  "fetched_at": "2026-04-26T16:57:10Z"
+}

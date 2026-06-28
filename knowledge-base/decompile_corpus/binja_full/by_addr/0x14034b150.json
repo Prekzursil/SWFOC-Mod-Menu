@@ -1,0 +1,7 @@
+{
+  "addr": "0x14034b150",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14034b16d        void* rdx = arg1[0xf5]\n14034b177        *arg1 = &TextButtonComponentClass::`vftable'{for `ButtonComponentClass'}\n14034b17d        if (rdx != 0)\n14034b186        sub_140260f10(&data_140b0a130, rdx)\n14034b18b        int64_t rcx = arg1[0xc0]\n14034b194        arg1[0xf5] = 0\n14034b19e        if (rcx != 0)\n14034b1a3        sub_14034b150(rcx, 1)\n14034b1a8        arg1[0xc0] = 0\n14034b1af        int64_t* rdi = arg1[0xce]\n14034b1b9        if (rdi != 0)\n14034b1be        sub_14026cf20(rdi)\n14034b1cb        j_sub_1407864b8(rdi)\n14034b1d0        arg1[0xce] = 0\n14034b1d7        int64_t* rdi_1 = arg1[0xd8]\n14034b1e1        if (rdi_1 != 0)\n14034b1e6        sub_14026cf20(rdi_1)\n14034b1f3        j_sub_1407864b8(rdi_1)\n14034b1f8        arg1[0xd8] = 0\n14034b1ff        int64_t* rdi_2 = arg1[0xe2]\n14034b209        if (rdi_2 != 0)\n14034b20e        sub_14026cf20(rdi_2)\n14034b21b        j_sub_1407864b8(rdi_2)\n14034b220        arg1[0xe2] = 0\n14034b227        int64_t* rcx_7 = arg1[0xf3]\n14034b231        if (rcx_7 != 0)\n14034b236        (*(*rcx_7 + 8))(rcx_7)\n14034b264        sub_14001eb00(&arg1[0xc9])\n14034b270        sub_14001eb00(&arg1[0xc5])\n14034b27c        sub_14001eb00(&arg1[0xc1])\n14034b284        sub_14034a790(arg1)\n14034b28d        if ((arg2 & 1) != 0)\n14034b297        j_sub_1407864b8(arg1)\n14034b2b3        return arg1",
+  "fetched_at": "2026-04-26T17:07:44Z"
+}

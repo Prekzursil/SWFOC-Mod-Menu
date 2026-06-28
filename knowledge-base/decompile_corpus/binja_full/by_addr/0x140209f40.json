@@ -1,0 +1,7 @@
+{
+  "addr": "0x140209f40",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140209f68        if (*(arg1 + 0x50) != 0 && *arg1 == 4)\n140209f72        EnterCriticalSection(&arg1[0x1a])\n140209f7f        void* result = *(**(arg1 + 0x48) + 0x10)\n140209f86        if (result != 0)\n140209f8b        char rax_2\n140209f8b        if (arg2 != 0)\n140209f93        rax_2 = sub_1402074d0(arg2, result)\n140209f9a        if (arg2 == 0 || rax_2 != 0)\n140209fa5        int64_t* r14_1 = **(arg1 + 0x48)\n140209fa8        void* rdx_1 = *r14_1\n140209fab        *(arg1 + 0x50) -= 1\n140209fb3        *r14_1[1] = rdx_1\n140209fba        *(rdx_1 + 8) = r14_1[1]\n140209fbe        void* rcx_2 = r14_1[2]\n140209fc5        if (rcx_2 != 0)\n140209fc7        int64_t rdx_2 = *(rcx_2 + 0x60)\n140209fcf        (*(rdx_2 + 8))(rcx_2 + 0x60, rdx_2)\n140209fda        j_sub_1407864b8(r14_1)\n140209fe3        LeaveCriticalSection(&arg1[0x1a])\n140209fee        return result\n140209ff7        LeaveCriticalSection(&arg1[0x1a])\n140209ffd        return nullptr",
+  "fetched_at": "2026-04-26T17:28:05Z"
+}

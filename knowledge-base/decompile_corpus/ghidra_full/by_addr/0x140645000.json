@@ -1,0 +1,7 @@
+{
+  "addr": "0x140645000",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nchar * __thiscall SurfaceFXBehaviorClass::vfunction9(void)\n\n{\n  return \"SurfaceFXBehaviorClass\";\n}\n\n",
+  "fetched_at": "2026-04-26T17:03:43Z"
+}

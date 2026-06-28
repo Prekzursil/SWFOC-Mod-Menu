@@ -1,0 +1,7 @@
+{
+  "addr": "0x1405c9c10",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1405c9c1b        struct LocomotorCommonClass::FighterLocomotorBehaviorClass::VTable** result = operator new(0x60)\n1405c9c26        if (result == 0)\n1405c9c70        return result\n1405c9c2b        sub_14042b9f0(result)\n1405c9c37        *result = &FighterLocomotorBehaviorClass::`vftable'{for `LocomotorCommonClass'}\n1405c9c41        result[1] = &FighterLocomotorBehaviorClass::`vftable'{for `RefCountClass'}\n1405c9c4c        result[3] = &FighterLocomotorBehaviorClass::`vftable'{for `SignalListenerClass'}\n1405c9c52        __builtin_memset(&result[8], 0, 0x20)\n1405c9c6a        return result",
+  "fetched_at": "2026-04-26T17:37:52Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x140637e90",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nBehaviorClass * FUN_140637e90(BehaviorClass *param_1,uint param_2)\n\n{\n  BehaviorClass::~BehaviorClass(param_1);\n  if ((param_2 & 1) != 0) {\n    thunk_FUN_1407864b8(param_1,0x40);\n  }\n  return param_1;\n}\n\n",
+  "fetched_at": "2026-04-26T17:01:05Z"
+}

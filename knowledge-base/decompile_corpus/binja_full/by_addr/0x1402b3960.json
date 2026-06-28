@@ -1,0 +1,7 @@
+{
+  "addr": "0x1402b3960",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1402b396f        void* i = *(arg1 + 0x48)\n1402b397d        while (i != arg1 + 0x40)\n1402b3990        struct BaseDataPackClass::RadarMapDataPackClass::VTable** rax = *(i + 0x18)\n1402b3997        int64_t* rcx = &rax[-3]\n1402b399b        if (rax == 0)\n1402b399b        rcx = nullptr\n1402b39a6        if (rcx[0x53] == arg2)\n1402b39a8        sub_14039fc90(rcx)\n1402b39ad        i = *(i + 8)\n1402b39ca        return ",
+  "fetched_at": "2026-04-26T17:33:09Z"
+}

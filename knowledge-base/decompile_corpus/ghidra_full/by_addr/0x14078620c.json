@@ -1,0 +1,7 @@
+{
+  "addr": "0x14078620c",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_14078620c(uint param_1)\n\n{\n  code *pcVar1;\n  \n  common_end_thread(param_1);\n  pcVar1 = (code *)swi(3);\n  (*pcVar1)();\n  return;\n}",
+  "fetched_at": "2026-04-26T18:51:34Z"
+}

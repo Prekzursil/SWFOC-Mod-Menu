@@ -1,0 +1,7 @@
+{
+  "addr": "0x140769ea8",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140769eb9        int32_t rax\n140769eb9        if (data_140b3b928.q != -1)\n140769ecc        rax = _register_onexit_function(&data_140b3b928, arg1)\n140769ebb        rax = sub_14078cde4(arg1)\n140769ed5        if (rax == 0)\n140769ed5        return arg1\n140769ee1        return 0",
+  "fetched_at": "2026-04-26T17:30:17Z"
+}

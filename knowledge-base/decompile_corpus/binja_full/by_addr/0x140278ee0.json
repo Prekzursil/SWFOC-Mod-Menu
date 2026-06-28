@@ -1,0 +1,7 @@
+{
+  "addr": "0x140278ee0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140278eea        int32_t arg_18 = arg3\n140278efd        int64_t* arg_8 = arg2\n140278f0b        if (arg2 != 0)\n140278f13        (**arg2)(arg2)\n140278f15        int64_t r8 = sx.q(arg4) * 3\n140278f19        int64_t** rdx = *(arg1 + (r8 << 3) + 0x18)\n140278f1e        void* rbp = arg1 + (r8 << 3)\n140278f26        if (rdx == *(rbp + 0x20))\n140278f48        sub_140144900(rbp + 0x10, rdx, &arg_8)\n140278f28        *rdx = arg2\n140278f2e        if (arg2 != 0)\n140278f36        (**arg2)(arg2, rdx)\n140278f38        *(rbp + 0x18) += 8\n140278f50        if (arg2 != 0)\n140278f58        (*(*arg2 + 8))(arg2)\n140278f62        int32_t* rdx_1 = *(rbp + 0xb40)\n140278f6a        if (rdx_1 == *(rbp + 0xb48))\n140278f7a        std::vector<struct CHN* __ptr64& __ptr64,struct CHN* __ptr64,class std::allocator<struct CHN* __ptr64> >::_Emplace_reallocate<struct CHN* __ptr64& __ptr64>(rbp + 0xb38, rdx_1, &arg_18)\n140278f6c        *rdx_1 = arg3\n140278f6e        *(rbp + 0xb40) += 4\n140278f91        return ",
+  "fetched_at": "2026-04-26T17:31:59Z"
+}

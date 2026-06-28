@@ -1,0 +1,7 @@
+{
+  "addr": "0x14013cf20",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void thunk_FUN_140178490(int *param_1,int *param_2,undefined4 *param_3)\n\n{\n  longlong lVar1;\n  \n  lVar1 = DAT_140a6e720;\n  if (DAT_140a6d420 == '\\0') {\n    if (param_1 != (int *)0x0) {\n      *param_1 = DAT_140a6d3f8;\n    }\n    if (param_2 != (int *)0x0) {\n      *param_2 = DAT_140a6d3fc;\n    }\n    if (param_3 != (undefined4 *)0x0) {\n      *param_3 = DAT_140a6d400;\n    }\n  }\n  else {\n    if (param_1 != (int *)0x0) {\n      *param_1 = *(int *)(DAT_140a6e720 + 0x28) - *(int *)(DAT_140a6e720 + 0x20);\n    }\n    if (param_2 != (int *)0x0) {\n      *param_2 = *(int *)(lVar1 + 0x2c) - *(int *)(lVar1 + 0x24);\n      return;\n    }\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T17:15:25Z"
+}

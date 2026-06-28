@@ -1,0 +1,7 @@
+{
+  "addr": "0x140619040",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14061905f        void* result\n14061905f        if (sub_14048e070(arg1, arg2, arg3).b != 0)\n140619077        result = sub_140294bc0(&data_140a16fd0, *(sub_1403956c0(arg3) + 4))\n140619090        if (result != 0 && *(*(result + 0x68) + 0x20a8) != 0)\n1406190a9        int128_t var_28\n1406190a9        __builtin_memset(&var_28, 0, 0x18)\n1406190af        sub_140618cb0(arg1, &var_28, arg2)\n1406190b4        void* rcx_2 = var_28.q\n1406190be        void* rbx\n1406190be        rbx.b = rcx_2 != var_28:8.q\n1406190c4        if (rcx_2 != 0)\n1406190cb        void* rax_1 = rcx_2\n1406190dc        int64_t var_18\n1406190dc        if (((var_18 - rcx_2) & 0xfffffffffffffff8) u>= 0x1000)\n1406190de        rcx_2 = *(rcx_2 - 8)\n1406190f1        if (rax_1 - rcx_2 - 8 u> 0x1f)\n14061911d        _invalid_parameter_noinfo_noreturn()\n14061911d        noreturn\n1406190f3        j_sub_1407864b8(rcx_2)\n14061910a        return zx.q(rbx.b)\n140619110        result.b = 0\n14061911c        return result",
+  "fetched_at": "2026-04-26T17:23:32Z"
+}

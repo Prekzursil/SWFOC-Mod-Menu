@@ -1,0 +1,7 @@
+{
+  "addr": "0x140289190",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140289195        int64_t* arg_8 = arg1\n1402891c0        int64_t rax\n1402891c0        int64_t rdx\n1402891c0        rdx:rax = muls.dp.q(0x2aaaaaaaaaaaaaab, arg1[1] - *arg1)\n1402891c6        int64_t rcx_1 = rdx s>> 3\n1402891e2        void* rax_3 = sub_140148a80(arg1, arg2)\n1402891ea        void* arg_20 = rax_3\n1402891f2        int64_t r15 = arg1[1]\n1402891f6        int32_t* rdi = *arg1\n1402891fa        int32_t* var_68 = rdi\n1402891ff        void* var_58 = rax_3\n140289204        void* rbx = rax_3\n140289207        void* var_50 = rax_3\n14028920c        int64_t* var_48 = arg1\n140289211        void* rsi = rax_3\n140289214        void* r14 = rax_3\n14028921a        while (rdi != r15)\n14028921e        *rsi = *rdi\n140289223        *(rsi + 4) = rdi[1]\n140289229        *(rsi + 8) = rdi[2]\n140289234        sub_1404ad4a0(rsi + 0x10, &rdi[4])\n140289239        rbx = rsi + 0x30\n14028923d        r14 = rbx\n140289240        void* var_50_1 = rbx\n140289245        rdi = &rdi[0xc]\n140289249        int32_t* var_68_1 = rdi\n14028924e        rsi = rbx\n140289253        void* var_58_1 = rbx\n140289258        while (true)\n140289258        void* var_60_1 = rbx\n140289260        if (rbx == r14)\n140289260        break\n140289266        sub_1404ad530(rbx + 0x10)\n14028926b        rbx += 0x30\n140289296        return sub_140289070(arg1, rax_3, rcx_1 + (rcx_1 u>> 0x3f), arg2) __tailcall",
+  "fetched_at": "2026-04-26T17:32:22Z"
+}

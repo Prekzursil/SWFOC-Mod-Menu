@@ -1,0 +1,7 @@
+{
+  "addr": "0x140654b70",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140654b73        void* arg_18 = arg3\n140654b86        int32_t rdi = 0\n140654ba4        int32_t r9 = 0\n140654ba7        int32_t i = 0\n140654bb8        int32_t rax = int.d((*arg2 f- *(arg1 + 0xa0)) f/ *(arg1 + 0xb8))\n140654bca        if (rax s> 0)\n140654bca        r9 = rax\n140654bce        int32_t rbp_1 = *(arg1 + 0xb0) - 1\n140654bd0        int32_t arg_8 = r9\n140654be5        int32_t rax_1 = int.d((*arg2 f- *(arg1 + 0xa0) f+ arg2[2]) f/ *(arg1 + 0xb8))\n140654bf5        if (rax_1 s< rbp_1)\n140654bf5        rbp_1 = rax_1\n140654bf8        int32_t r10_1 = *(arg1 + 0xb4) - 1\n140654c1e        int32_t i_1 = int.d((*(arg1 + 0xa4) - (arg2[3] f+ arg2[1])) f/ *(arg1 + 0xbc))\n140654c22        int32_t rax_2 = int.d((*(arg1 + 0xa4) f- arg2[1]) f/ *(arg1 + 0xbc))\n140654c29        if (rax_2 s< r10_1)\n140654c29        r10_1 = rax_2\n140654c2f        int32_t arg_10 = r10_1\n140654c37        if (i_1 s> 0)\n140654c37        i = i_1\n140654c3d        while (i s<= r10_1)\n140654c60        int32_t rbx_1 = r9\n140654c66        if (r9 s<= rbp_1)\n140654c8a        int32_t rax_3 = sub_140654d90(arg1, rbx_1, i, arg3, arg4, arg5, arg6)\n140654c8f        arg3 = arg_18\n140654c97        rdi |= rax_3\n140654c99        rbx_1 += 1\n140654c9d        do while (rbx_1 s<= rbp_1)\n140654c9f        r9 = arg_8\n140654ca7        r10_1 = arg_10\n140654caf        i += 1\n140654cd5        return zx.q(rdi)",
+  "fetched_at": "2026-04-26T17:06:37Z"
+}

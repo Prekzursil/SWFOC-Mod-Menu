@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407b16d0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_1407b16d0(longlong param_1,uint param_2,undefined4 *param_3,undefined8 param_4)\n\n{\n  longlong lVar1;\n  BoxCollisionBodyClass *this;\n  DWORD DVar2;\n  BoxCollisionBodyClass *pBVar3;\n  \n  DVar2 = GetCurrentThreadId();\n  if (((DVar2 != DAT_140a155d0) || (DAT_140a62740 == '\\0')) &&\n     (param_2 < (uint)(*(longlong *)(param_1 + 0x110) - *(longlong *)(param_1 + 0x108) >> 3))) {\n    pBVar3 = (BoxCollisionBodyClass *)FUN_140769c58(0xf0);\n    if (pBVar3 == (BoxCollisionBodyClass *)0x0) {\n      pBVar3 = (BoxCollisionBodyClass *)0x0;\n    }\n    else {\n      pBVar3 = BoxCollisionBodyClass::BoxCollisionBodyClass(pBVar3,param_3,param_4);\n    }\n    lVar1 = *(longlong *)(param_1 + 0x108);\n    this = *(BoxCollisionBodyClass **)(lVar1 + (ulonglong)param_2 * 8);\n    if (this != pBVar3) {\n      if (this != (BoxCollisionBodyClass *)0x0) {\n        (*this->vftablePtr->vfunction2)(this);\n      }\n      *(BoxCollisionBodyClass **)(lVar1 + (ulonglong)param_2 * 8) = pBVar3;\n      if (pBVar3 != (BoxCollisionBodyClass *)0x0) {\n        (*pBVar3->vftablePtr->vfunction1)(pBVar3);\n      }\n    }\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T18:55:34Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x14018b270",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14018b27d        struct RefCountClass::alShaderInstance::VTable** rbx = arg1\n14018b280        *arg1 = &alD3dEffectInstance::`vftable'{for `alShaderInstance'}\n14018b28a        arg1[2] = &alD3dEffectInstance::`vftable'{for `MultiLinkedListMember'}\n14018b28e        sub_14018bd80(arg1)\n14018b293        void* rcx = rbx[7]\n14018b29a        if (rcx != 0)\n14018b2ae        if (((rbx[9] - rcx) & 0xfffffffffffffff8) u>= 0x1000)\n14018b2b0        void* r8_1 = *(rcx - 8)\n14018b2c3        if (rcx - r8_1 - 8 u> 0x1f)\n14018b2f7        _invalid_parameter_noinfo_noreturn()\n14018b2f7        noreturn\n14018b2c5        rcx = r8_1\n14018b2c8        j_sub_1407864b8(rcx)\n14018b2cf        __builtin_memset(&rbx[7], 0, 0x18)\n14018b2db        int64_t* rcx_2 = rbx[6]\n14018b2e2        if (rcx_2 != 0)\n14018b2e7        (*(*rcx_2 + 8))(rcx_2)\n14018b2f2        return sub_1401b5600(rbx) __tailcall",
+  "fetched_at": "2026-04-26T17:24:08Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407b9280",
+  "tool": "ghidra",
+  "fact_id": "api_lua_pcall",
+  "body": "\nvoid FUN_1407b9280(longlong param_1,int param_2,undefined4 param_3,int param_4)\n\n{\n  longlong lVar1;\n  longlong lVar2;\n  longlong local_18;\n  undefined4 local_10;\n  \n  if (param_4 == 0) {\n    lVar2 = *(longlong *)(param_1 + 0x68);\n    lVar1 = 0;\n  }\n  else {\n    if (param_4 < 1) {\n      lVar1 = FUN_1407b9f20(param_1,param_4);\n    }\n    else {\n      lVar1 = *(longlong *)(param_1 + 0x18) + -0x10 + (longlong)param_4 * 0x10;\n    }\n    lVar2 = *(longlong *)(param_1 + 0x68);\n    lVar1 = lVar1 - lVar2;\n  }\n  local_18 = *(longlong *)(param_1 + 0x10) + (longlong)(param_2 + 1) * -0x10;\n  local_10 = param_3;\n  FUN_1407bbbe0(param_1,&LAB_1407b8ae0,&local_18,local_18 - lVar2,lVar1);\n  return;\n}\n\n",
+  "fetched_at": "2026-04-26T16:44:29Z"
+}

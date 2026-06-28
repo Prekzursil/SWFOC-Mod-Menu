@@ -1,0 +1,7 @@
+{
+  "addr": "0x140784a48",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140784a4e        _flushall()\n140784a53        _fcloseall()\n140784a58        int64_t* i = nullptr\n140784a87        while (i != 0x18)\n140784a65        __acrt_stdio_free_buffer_nolock(*(i + data_140b3c0b8))\n140784a79        DeleteCriticalSection(*(i + data_140b3c0b8) + 0x30)\n140784a7f        i = &i[1]\n140784a90        int64_t result = _free_base(data_140b3c0b8)\n140784a95        data_140b3c0b8 = 0\n140784aa2        return result",
+  "fetched_at": "2026-04-26T17:31:12Z"
+}

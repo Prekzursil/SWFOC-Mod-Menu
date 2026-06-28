@@ -1,0 +1,7 @@
+{
+  "addr": "0x1405fa150",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* TaskForceClass member function inherited by GalacticTaskForceClass\n   TaskForceClass member function inherited by SpaceTaskForceClass\n   TaskForceClass member function inherited by LandTaskForceClass */\n\nundefined8 __thiscall TaskForceClass::vfunction29(TaskForceClass *this)\n\n{\n  longlong lVar1;\n  \n  if (this[1].offset_0x50[0x11] != 0) {\n    lVar1 = FUN_1405f6fb0();\n    FUN_1406c7e80(*(undefined8 *)(*(longlong *)(lVar1 + 0x28) + 0x40),this[1].offset_0x50[0x11]);\n  }\n  return 0;\n}",
+  "fetched_at": "2026-04-26T17:24:07Z"
+}

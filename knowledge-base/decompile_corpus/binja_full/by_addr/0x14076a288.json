@@ -1,0 +1,7 @@
+{
+  "addr": "0x14076a288",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14076a28c        __scrt_initialize_default_local_stdio_options()\n14076a297        return 0",
+  "fetched_at": "2026-04-26T17:30:18Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407857cc",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* Library Function - Single Match\n    strtol\n   \n   Library: Visual Studio 2019 Release */\n\nlong __cdecl strtol(char *_Str,char **_EndPtr,int _Radix)\n\n{\n  ulong uVar1;\n  char *local_18;\n  char **local_10;\n  \n  if (_EndPtr != (char **)0x0) {\n    *_EndPtr = _Str;\n  }\n  local_18 = _Str;\n  local_10 = _EndPtr;\n  uVar1 = __crt_strtox::\n          parse_integer<unsigned_long,class___crt_strtox::c_string_character_source<char>_>\n                    (0,&local_18,_Radix,1);\n  return uVar1;\n}",
+  "fetched_at": "2026-04-26T18:51:26Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407468a4",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1407468bb        int128_t zmm1 = *arg3\n1407468e7        int128_t var_38 = *arg4\n1407468ed        int128_t var_28 = zmm1\n140746908        void var_18\n140746908        int32_t arg_10\n140746908        int128_t zmm0_1 = *sub_140746a48(arg1, &var_18, &var_28, &var_38, arg5, arg6, &arg_10)\n140746912        *arg7 = arg_10\n140746917        *arg2 = zmm0_1\n140746920        return arg2",
+  "fetched_at": "2026-04-26T17:29:29Z"
+}

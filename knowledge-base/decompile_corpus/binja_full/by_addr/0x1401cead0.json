@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401cead0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1401ceae1        int64_t* rbx = arg3\n1401ceae4        int64_t rax_1 = *(arg1 + 0xb0) - *(arg1 + 0xa8)\n1401ceaee        int32_t arg_10 = arg2\n1401ceaf8        void* const result\n1401ceaf8        if ((rax_1 & 0xfffffffffffffff8) == 0)\n1401ceb56        label_1401ceb56:\n1401ceb56        result = nullptr\n1401ceb58        rbx[2] = 0\n1401ceb61        if (rbx[3] u>= 8)\n1401ceb63        rbx = *rbx\n1401ceb66        *rbx = 0\n1401ceb0b        void* result_1\n1401ceb0b        sub_1401cacb0(arg1 + 0x1a8, &result_1, &arg_10)\n1401ceb10        result = result_1\n1401ceb1c        if (result == *(arg1 + 0x1b0))\n1401ceb1c        goto label_1401ceb56\n1401ceb1e        void* r8_1 = *(result + 0x18)\n1401ceb25        if (r8_1 == 0)\n1401ceb25        goto label_1401ceb56\n1401ceb27        int64_t* r8_2 = *(r8_1 + 0x98)\n1401ceb31        if (rbx != r8_2)\n1401ceb38        int64_t* rdx_1 = r8_2\n1401ceb3b        if (r8_2[3] u>= 8)\n1401ceb3d        rdx_1 = *r8_2\n1401ceb51        return sub_1400228a0(rbx, rdx_1, r8_2[2]) __tailcall\n1401ceb73        return result",
+  "fetched_at": "2026-04-26T17:26:37Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x140769dc0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140769e04        struct Section_Header* const rdx_1 = &__section_headers\n140769e13        while (true)\n140769e13        struct Section_Header* const var_18_1 = rdx_1\n140769e1a        if (rdx_1 == &data_140000378)\n140769e34        rdx_1 = nullptr\n140769e34        break\n140769e1c        uint64_t virtualAddress = zx.q(rdx_1->virtualAddress)\n140769e2c        if (arg1 - &__dos_header u>= virtualAddress && arg1 - &__dos_header u< zx.q(rdx_1->virtualSize + virtualAddress.d))\n140769e2c        break\n140769e2e        rdx_1 = &rdx_1[1]\n140769e39        uint64_t result\n140769e39        if (rdx_1 == 0)\n140769e3b        result.b = 0\n140769e43        if (rdx_1->characteristics s>= 0)\n140769e49        result.b = 1\n140769e45        result.b = 0\n140769e57        return result",
+  "fetched_at": "2026-04-26T17:30:17Z"
+}

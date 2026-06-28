@@ -1,0 +1,7 @@
+{
+  "addr": "0x140084b40",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nundefined8 FUN_140084b40(longlong param_1)\n\n{\n  undefined1 local_38 [4];\n  int local_34;\n  \n  if (*(longlong *)(param_1 + 0xb8) != 0) {\n    FUN_140084e60(local_38,*(longlong *)(param_1 + 0xb8) + 0x68);\n    if (local_34 == DAT_140a10ff8) {\n      FUN_1404ad8e0(local_38);\n      return 1;\n    }\n    FUN_1404ad8e0(local_38);\n  }\n  return 0;\n}\n\n",
+  "fetched_at": "2026-04-26T16:57:28Z"
+}

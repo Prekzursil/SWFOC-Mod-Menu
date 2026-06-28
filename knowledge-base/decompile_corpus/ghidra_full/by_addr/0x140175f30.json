@@ -1,0 +1,7 @@
+{
+  "addr": "0x140175f30",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined1 * __thiscall alParticleGroup::vfunction7(alParticleGroup *this)\n\n{\n  return &(this->alParticleGroup_data).field_0x1c;\n}",
+  "fetched_at": "2026-04-26T17:26:57Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x14019a5c0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* alScene member function inherited by alSimpleScene */\n\nvoid __thiscall\nalScene::vfunction19_for_RefCountClass\n          (alScene *this,alScene_vftable_for_MultiLinkedListMember *param_1)\n\n{\n  this[2].vftablePtr = param_1;\n  return;\n}",
+  "fetched_at": "2026-04-26T17:37:07Z"
+}

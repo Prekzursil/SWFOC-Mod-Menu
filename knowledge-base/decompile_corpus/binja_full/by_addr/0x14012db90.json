@@ -1,0 +1,7 @@
+{
+  "addr": "0x14012db90",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14012db92        arg1[0x2b].d = *arg2\n14012db9b        *(arg1 + 0x15c) = arg2[1]\n14012dba4        arg1[0x2c].d = arg2[2]\n14012dbad        *(arg1 + 0x164) = *arg3\n14012dbb7        arg1[0x2d].d = arg3[1]\n14012dbbd        int32_t rax_4 = arg3[2]\n14012dbc1        *(arg1 + 0x31) |= 4\n14012dbc5        *(arg1 + 0x16c) = rax_4\n14012dbcb        return sub_14012def0(arg1) __tailcall",
+  "fetched_at": "2026-04-26T17:10:08Z"
+}

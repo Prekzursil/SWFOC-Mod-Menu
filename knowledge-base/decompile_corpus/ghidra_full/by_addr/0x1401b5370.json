@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401b5370",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined8 __thiscall\nalD3dEffectStateManager::vfunction9\n          (alD3dEffectStateManager *this,undefined4 param_1,undefined8 param_2)\n\n{\n  FUN_140177d70(param_1,param_2);\n  return 0;\n}",
+  "fetched_at": "2026-04-26T17:44:28Z"
+}

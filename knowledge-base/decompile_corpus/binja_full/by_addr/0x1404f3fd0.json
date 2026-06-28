@@ -1,0 +1,7 @@
+{
+  "addr": "0x1404f3fd0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1404f3fd3        if (arg2 == 0)\n1404f3fd3        return \n1404f3fe8        void* r14_1 = arg2[0x19]\n1404f3ff8        if (r14_1 == 0)\n1404f3ff8        return \n1404f3ffe        uint64_t rax = *(r14_1 + 0x10)\n1404f4005        if (rax == 0)\n1404f4005        return \n1404f400b        int64_t rcx = sx.q(*(r14_1 + 0x18))\n1404f4017        int32_t rdx = 0\n1404f401c        if (rcx.d s<= 0)\n1404f401c        return \n1404f4025        int64_t rcx_1 = 0\n1404f402b        if (*rax == arg3)\n1404f4040        if (rdx != 0xffffffff && sub_1400475e0(r14_1 + 8, rdx).b != 0)\n1404f4059        sub_1403a8f80(arg3, 0)\n1404f4061        void* rdi_1 = arg1 + 0x18\n1404f4065        void* rbx_2 = arg3 + 0x38\n1404f4069        if (arg1 == 0)\n1404f4069        rdi_1 = nullptr\n1404f4070        if (arg3 == 0)\n1404f4070        rbx_2 = nullptr\n1404f4074        int64_t rax_1\n1404f4074        int512_t zmm1_1\n1404f4074        int512_t zmm2_1\n1404f4074        rax_1, zmm1_1, zmm2_1 = sub_140058570()\n1404f4088        sub_140220eb0(rax_1, rbx_2, rdi_1, 0x28)\n1404f409f        int128_t zmm6\n1404f409f        if (*(r14_1 + 0x18) == 0 && (arg2[0x74].b & 2) == 0)\n1404f40a6        sub_140391310(arg2, 1, zmm2_1, zmm1_1, zmm6)\n1404f4040        break\n1404f402d        rdx += 1\n1404f402f        rcx_1 += 1\n1404f4032        rax += 8\n1404f4039        do while (rcx_1 s< rcx)\n1404f40bc        return ",
+  "fetched_at": "2026-04-26T17:31:40Z"
+}

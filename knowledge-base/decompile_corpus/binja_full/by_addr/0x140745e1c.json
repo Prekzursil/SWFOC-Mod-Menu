@@ -1,0 +1,7 @@
+{
+  "addr": "0x140745e1c",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140745e3b        if (arg2 == data_140b3b5c8)\n140745e49        void var_78\n140745e49        std::_Locinfo::_Locinfo(&var_78, &data_140879944)\n140745e5e        std::locale::_Locimp::_Makeloc(&var_78, 0x3f, arg1, nullptr)\n140745e69        return std::_Locinfo::~_Locinfo(&var_78)\n140745e7a        void arg_10\n140745e7a        std::_Lockit::_Lockit(&arg_10, 0)\n140745e80        int64_t rcx_4 = *(arg1 + 0x18)\n140745e87        if (rcx_4 != 0)\n140745e8d        int64_t rax_2 = j_sub_14078f364(rcx_4 << 3)\n140745e92        *(arg1 + 0x10) = rax_2\n140745e99        if (rax_2 == 0)\n140745eed        __scrt_throw_std_bad_alloc()\n140745eed        noreturn\n140745e9b        int64_t i = *(arg1 + 0x18)\n140745ec9        while (i != 0)\n140745ea1        i -= 1\n140745ea8        int64_t* rcx_6 = *(*(arg2 + 0x10) + (i << 3))\n140745eb0        *(*(arg1 + 0x10) + (i << 3)) = rcx_6\n140745eb7        if (rcx_6 != 0)\n140745ec0        (*(*rcx_6 + 8))()\n140745ed3        return std::_Lockit::~_Lockit(&arg_10)",
+  "fetched_at": "2026-04-26T17:29:27Z"
+}

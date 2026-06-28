@@ -1,0 +1,7 @@
+{
+  "addr": "0x140745e1c",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* Library Function - Single Match\n    private: static void __cdecl std::locale::_Locimp::_Locimp_ctor(class std::locale::_Locimp *\n   __ptr64,class std::locale::_Locimp const & __ptr64)\n   \n   Library: Visual Studio 2019 Release */\n\nvoid __cdecl std::locale::_Locimp::_Locimp_ctor(_Locimp *param_1,_Locimp *param_2)\n\n{\n  longlong lVar1;\n  longlong lVar2;\n  _Lockit local_res10 [8];\n  _Locinfo local_78 [112];\n  \n  if (param_2 == DAT_140b3b5c8) {\n    _Locinfo::_Locinfo(local_78,\"C\");\n    FUN_140745ef4(local_78,0x3f,param_1);\n    _Locinfo::~_Locinfo(local_78);\n  }\n  else {\n    _Lockit::_Lockit(local_res10,0);\n    if (*(longlong *)(param_1 + 0x18) != 0) {\n      lVar2 = _malloc_base(*(longlong *)(param_1 + 0x18) << 3);\n      *(longlong *)(param_1 + 0x10) = lVar2;\n      if (lVar2 == 0) {\n                    /* WARNING: Subroutine does not return */\n        FUN_1407408bc();\n      }\n      lVar2 = *(longlong *)(param_1 + 0x18);\n      while (lVar2 != 0) {\n        lVar2 = lVar2 + -1;\n        lVar1 = *(longlong *)(*(longlong *)(param_2 + 0x10) + lVar2 * 8);\n        *(longlong *)(*(longlong *)(param_1 + 0x10) + lVar2 * 8) = lVar1;\n        if (lVar1 != 0) {\n          (*(code *)PTR__guard_dispatch_icall_1407fdcd8)();\n        }\n      }\n    }\n    _Lockit::~_Lockit(local_res10);\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T18:04:51Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407d47a0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1407d47b8        int32_t i_2 = *(arg1 + 8)\n1407d47be        int32_t rsi = *(arg1 + 4)\n1407d47c8        int64_t r15 = sx.q(i_2 * rsi)\n1407d47ce        char* rax_2 = j_operator new(r15)\n1407d47d3        void* r9 = *(arg1 + 0x10)\n1407d47d7        int32_t* rbp = rax_2\n1407d47da        char* rdx = rax_2\n1407d47df        if (i_2 s> 0)\n1407d47e1        uint64_t i_1 = zx.q(i_2)\n1407d483c        uint64_t i\n1407d47f0        *rdx = 0\n1407d47f3        r9 += 1\n1407d47f6        rdx = &rdx[1]\n1407d47fc        if (rsi s> 1)\n1407d4801        uint64_t j_1 = zx.q(rsi - 1)\n1407d4836        uint64_t j\n1407d4819        uint32_t rax_4 = zx.d(*r9) - zx.d(*(r9 - 1))\n1407d4822        if (rax_4 s< neg.d(arg2) || rax_4 s> arg2)\n1407d4828        rax_4.b = 0xff\n1407d4824        rax_4.b = 0\n1407d482a        *rdx = rax_4.b\n1407d482c        r9 += 1\n1407d482f        rdx = &rdx[1]\n1407d4832        j = j_1\n1407d4832        j_1 -= 1\n1407d4836        do while (j != 1)\n1407d4838        i = i_1\n1407d4838        i_1 -= 1\n1407d483c        do while (i != 1)\n1407d483e        r9 = *(arg1 + 0x10)\n1407d484b        memcpy(r9, rbp, r15)\n1407d4870        return j_sub_1407864b8(rbp) __tailcall",
+  "fetched_at": "2026-04-26T17:34:01Z"
+}

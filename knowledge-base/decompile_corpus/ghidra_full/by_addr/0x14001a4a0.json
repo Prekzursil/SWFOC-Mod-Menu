@@ -1,0 +1,7 @@
+{
+  "addr": "0x14001a4a0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nvoid FUN_14001a4a0(void)\n\n{\n  FleetManagementEventClass::FleetManagementEventClass((FleetManagementEventClass *)&DAT_140b36ed0);\n  atexit(RefCountClass::~RefCountClass);\n  return;\n}\n\n",
+  "fetched_at": "2026-04-26T16:51:09Z"
+}

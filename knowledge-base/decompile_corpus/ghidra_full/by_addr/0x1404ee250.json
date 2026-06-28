@@ -1,0 +1,7 @@
+{
+  "addr": "0x1404ee250",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "HintDataPackClass * __thiscall HintDataPackClass::HintDataPackClass(HintDataPackClass *this)\n\n{\n  (this->HintDataPackClass_data).offset_0x10 = 0xf;\n  this->vftablePtr = &vftable;\n  this->PooledObjectClass<class_HintDataPackClass,20,class_EmptyLockerClass> =\n       (PooledObjectClass<class_HintDataPackClass,20,class_EmptyLockerClass>)0x0;\n  (this->HintDataPackClass_data).offset_0x8 = 0;\n  return this;\n}",
+  "fetched_at": "2026-04-26T18:17:23Z"
+}

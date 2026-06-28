@@ -1,0 +1,7 @@
+{
+  "addr": "0x1402c8360",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall\nLinearInterpolator::vfunction4(LinearInterpolator *this,undefined4 *param_1,undefined4 *param_2)\n\n{\n  longlong lVar1;\n  longlong lVar2;\n  undefined4 *puVar3;\n  \n  if ((this->LinearInterpolator_data).offset_0x0 == '\\0') {\n    lVar1 = (this->LinearInterpolator_data).offset_0x10;\n    lVar2 = (this->LinearInterpolator_data).offset_0x8;\n    FUN_1402c3c10(lVar2,lVar1,lVar1 - lVar2 >> 3,0);\n    (this->LinearInterpolator_data).offset_0x0 = 1;\n  }\n  puVar3 = (undefined4 *)(this->LinearInterpolator_data).offset_0x8;\n  if (1 < (ulonglong)((this->LinearInterpolator_data).offset_0x10 - (longlong)puVar3 >> 3)) {\n    *param_1 = *puVar3;\n    *param_2 = *(undefined4 *)\n                ((this->LinearInterpolator_data).offset_0x8 + -8 +\n                ((this->LinearInterpolator_data).offset_0x10 - (longlong)puVar3 >> 3) * 8);\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T18:29:39Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401ada40",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall alWindGrassParam::vfunction2(alWindGrassParam *this,longlong param_1)\n\n{\n  float fVar1;\n  longlong lVar2;\n  float local_18;\n  float local_14;\n  float local_10;\n  float local_c;\n  \n  lVar2 = *(longlong *)(*(longlong *)(param_1 + 0x1d8) + 8);\n  fVar1 = *(float *)(lVar2 + 0x1ac);\n  local_c = SQRT(fVar1 * fVar1 + *(float *)(lVar2 + 0x1b0) * *(float *)(lVar2 + 0x1b0) +\n                 *(float *)(lVar2 + 0x1b4) * *(float *)(lVar2 + 0x1b4));\n  local_10 = 0.0;\n  if (0.0 < local_c) {\n    local_10 = DAT_1407ffaf8 / local_c;\n  }\n  local_18 = local_10 * *(float *)(lVar2 + 0x1ac);\n  local_14 = local_10 * *(float *)(lVar2 + 0x1b0);\n  local_10 = local_10 * *(float *)(lVar2 + 0x1b4);\n  (**(code **)(**(longlong **)(param_1 + 0x68) + 0x110))\n            (*(longlong **)(param_1 + 0x68),\n             this->PooledObjectClass<class_alD3dSimpleEngineParam,256,class_EmptyLockerClass>,\n             &local_18);\n  return;\n}",
+  "fetched_at": "2026-04-26T17:41:48Z"
+}

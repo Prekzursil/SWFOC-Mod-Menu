@@ -1,0 +1,7 @@
+{
+  "addr": "0x14022ce00",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14022ce09        if (*(arg1 + 0x20) == 0)\n14022ce09        return \n14022ce0b        int64_t* rcx = *(arg1 + 0x18)\n14022ce0f        void** rax = *rcx\n14022ce15        if (rax == rcx)\n14022ce15        return \n14022ce20        while (true)\n14022ce20        int32_t* rbx_1 = rax[2]\n14022ce26        if (*rbx_1 == arg2)\n14022ce43        AIL_pause_stream(*(rbx_1 + 8), 1)\n14022ce49        rbx_1[0xa].b = 1\n14022ce4d        break\n14022ce28        rax = *rax\n14022ce2e        if (rax == rcx)\n14022ce39        return \n14022ce56        return ",
+  "fetched_at": "2026-04-26T17:29:34Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407a021c",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* Library Function - Single Match\n    fegetenv\n   \n   Library: Visual Studio 2019 Release */\n\nundefined8 fegetenv(undefined4 *param_1)\n\n{\n  undefined4 uVar1;\n  \n  uVar1 = __acrt_fenv_get_control();\n  *param_1 = uVar1;\n  uVar1 = __acrt_fenv_get_status();\n  param_1[1] = uVar1;\n  return 0;\n}",
+  "fetched_at": "2026-04-26T18:54:15Z"
+}

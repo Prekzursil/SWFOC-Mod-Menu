@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407a1078",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1407a107e        int32_t mxcsr\n1407a107e        int32_t rax = _get_fpsr(mxcsr)\n1407a108a        int32_t r9 = 0\n1407a1090        if ((rax.b & 0x3f) != 0)\n1407a109b        int32_t rdx_3 = (rax & 1) << 4\n1407a10a1        int32_t r8_2 = rdx_3 | 8\n1407a10a8        if ((rax.b & 4) == 0)\n1407a10a8        r8_2 = rdx_3\n1407a10af        int32_t rcx_3 = r8_2 | 4\n1407a10b6        if ((rax.b & 8) == 0)\n1407a10b6        rcx_3 = r8_2\n1407a10bc        int32_t rdx_5 = rcx_3 | 2\n1407a10c3        if ((rax.b & 0x10) == 0)\n1407a10c3        rdx_5 = rcx_3\n1407a10c9        r9 = rdx_5 | 1\n1407a10cf        if ((rax.b & 0x20) == 0)\n1407a10cf        r9 = rdx_5\n1407a10d6        if ((rax.b & 2) != 0)\n1407a10d8        r9 |= 0x80000\n1407a10e5        return zx.q(r9)",
+  "fetched_at": "2026-04-26T17:32:20Z"
+}

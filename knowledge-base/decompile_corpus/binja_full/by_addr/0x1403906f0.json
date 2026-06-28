@@ -1,0 +1,7 @@
+{
+  "addr": "0x1403906f0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1403906f6        struct BaseDataPackClass::EarthquakeDataPackClass::VTable** rax = *(arg1 + 0x168)\n140390703        if (rax == 0)\n140390708        rax = operator new(zx.q((&rax[0xb]).d))\n140390710        if (rax != 0)\n140390715        struct BaseDataPackClass::EarthquakeDataPackClass::VTable** rax_1 = sub_140563740(rax)\n14039071a        *(arg1 + 0x168) = rax_1\n140390726        return rax_1\n140390727        *(arg1 + 0x168) = rax\n140390733        return rax",
+  "fetched_at": "2026-04-26T17:21:44Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x14032a7a0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14032a7bc        void** rdx_1 = *(arg2 + 0x298) + 0xf8\n14032a7c8        if (rdx_1[3] u>= 0x10)\n14032a7ca        rdx_1 = *rdx_1\n14032a7d4        sub_140327b10(\"STORY EVENT - Planet %s destroyed\\r\\n\", rdx_1)\n14032a7ef        sub_14032e5f0(arg1, 0x17, 0, arg2, 0)\n14032a7f4        int64_t* result = *(arg1 + 0x68)\n14032a7f8        int64_t rsi_1 = *(arg2 + 0x298)\n14032a7ff        void** i = *result\n14032a805        if (i != result)\n14032a81b        result = sub_14052fa40(i[3], rsi_1 + 0xf8)\n14032a820        i = *i\n14032a827        do while (i != *(arg1 + 0x68))\n14032a838        return result",
+  "fetched_at": "2026-04-26T17:01:47Z"
+}

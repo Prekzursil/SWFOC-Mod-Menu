@@ -1,0 +1,7 @@
+{
+  "addr": "0x14034c110",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nlonglong __thiscall TextButtonComponentClass::vfunction49(TextButtonComponentClass *this)\n\n{\n  return (this->TextButtonComponentClass_data).offset_0x1a8;\n}\n\n",
+  "fetched_at": "2026-04-26T17:08:53Z"
+}

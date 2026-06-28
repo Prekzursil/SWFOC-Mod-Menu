@@ -1,0 +1,7 @@
+{
+  "addr": "0x14078eefc",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14078eeff        if (arg1 != 0)\n14078ef09        destroy_ptd_array(arg1)\n14078ef11        _free_base(arg1)\n14078ef1b        return ",
+  "fetched_at": "2026-04-26T17:31:39Z"
+}

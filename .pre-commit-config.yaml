@@ -29,6 +29,8 @@ exclude: |-
     vendor/|
     packages/|
     TestResults/|
+    PetroglyphTools/|
+    knowledge-base/|
     .*\.egg-info/
   )
 

@@ -1,0 +1,7 @@
+{
+  "addr": "0x140524c10",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140524c1e        if (*(arg1 + 0x48) != 0)\n140524c1e        return \n140524c2d        int32_t rcx = *(*(arg1 + 0x28) + 0x34)\n140524c32        int64_t* rbx_1\n140524c32        if (rcx == 0)\n140524c39        int64_t* rax_1 = operator new(0xb0)\n140524c3e        rbx_1 = rax_1\n140524c44        if (rax_1 == 0)\n140524c9f        label_140524c9f:\n140524c9f        rbx_1 = nullptr\n140524c9f        goto label_140524ca1\n140524c49        sub_140690bf0(rax_1)\n140524c55        rbx_1[0x15].d = 0\n140524c5f        *rbx_1 = &GalacticExecutionPathFinderClass::`vftable'{for `AIExecutionPathFinderClass'}\n140524ca1        label_140524ca1:\n140524ca1        *(arg1 + 0x48) = rbx_1\n140524cab        if (rbx_1 != 0)\n140524cb4        int64_t r8_1 = *rbx_1\n140524cbf        (*(r8_1 + 8))(rbx_1, *(*(*(arg1 + 0x28) + 0x28) + 0x28), r8_1)\n140524cc7        sub_1406913e0(*(arg1 + 0x48))\n140524c67        if (rcx == 1)\n140524c6e        int64_t* rax_2 = operator new(0xa8)\n140524c73        rbx_1 = rax_2\n140524c79        if (rax_2 == 0)\n140524c79        goto label_140524c9f\n140524c86        memset(rax_2, 0, 0xa8)\n140524c8e        sub_140690bf0(rbx_1)\n140524c9a        *rbx_1 = &LandExecutionPathFinderClass::`vftable'{for `AIExecutionPathFinderClass'}\n140524c9d        goto label_140524ca1\n140524cd6        return ",
+  "fetched_at": "2026-04-26T17:33:06Z"
+}

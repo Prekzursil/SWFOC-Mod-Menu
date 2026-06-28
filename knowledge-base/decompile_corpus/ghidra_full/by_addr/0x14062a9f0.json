@@ -1,0 +1,7 @@
+{
+  "addr": "0x14062a9f0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "AmbientSFXBehaviorClass * __thiscall\nAmbientSFXBehaviorClass::vfunction4(AmbientSFXBehaviorClass *this,int param_1)\n\n{\n  AmbientSFXBehaviorClass *pAVar1;\n  \n  pAVar1 = (AmbientSFXBehaviorClass *)0x0;\n  if (param_1 == 0x27) {\n    pAVar1 = this;\n  }\n  return pAVar1;\n}",
+  "fetched_at": "2026-04-26T17:31:53Z"
+}

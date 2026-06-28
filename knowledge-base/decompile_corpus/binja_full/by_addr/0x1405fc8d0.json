@@ -1,0 +1,7 @@
+{
+  "addr": "0x1405fc8d0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1405fc8fd        void* rax = *(arg1 + 8)\n1405fc90b        int64_t var_10 = 0xf\n1405fc910        int64_t var_18 = 0xb\n1405fc915        void* var_28\n1405fc915        __builtin_strncpy(&var_28, \"Task Force \", 0xc)\n1405fc920        void* rcx = *(rax + 0xe8)\n1405fc931        void* r9 = rcx + 0x28\n1405fc935        if (*(rcx + 0x40) u>= 0x10)\n1405fc937        r9 = *(rcx + 0x28)\n1405fc93b        void* rsi = *(rcx + 0x38)\n1405fc948        int64_t* rax_2\n1405fc948        if (rsi u> 4)\n1405fc98e        rax_2 = sub_14004f860(&var_28, rsi, 0, r9, rsi)\n1405fc958        void* var_18_1 = rsi + 0xb\n1405fc969        char var_1d[0x5]\n1405fc969        memcpy(&var_1d, r9, rsi)\n1405fc96e        *(&var_1d + rsi) = 0\n1405fc972        rax_2 = &var_28\n1405fc99a        *arg2 = 0\n1405fc99d        arg2[2] = 0\n1405fc9a1        arg2[3] = 0\n1405fc9a8        *arg2 = *rax_2\n1405fc9af        *(arg2 + 0x10) = *(rax_2 + 0x10)\n1405fc9b3        rax_2[3] = 0xf\n1405fc9bc        rax_2[2] = 0\n1405fc9c0        *rax_2 = 0\n1405fc9cb        if (var_10 u>= 0x10)\n1405fc9cd        void* rcx_3 = var_28\n1405fc9d5        void* rax_3 = rcx_3\n1405fc9df        if (var_10 + 1 u>= 0x1000)\n1405fc9e1        rcx_3 = *(rcx_3 - 8)\n1405fc9f4        if (rax_3 - rcx_3 - 8 u> 0x1f)\n1405fca04        _invalid_parameter_noinfo_noreturn()\n1405fca04        noreturn\n1405fc9f6        j_sub_1407864b8(rcx_3)\n1405fca03        return arg2",
+  "fetched_at": "2026-04-26T17:22:42Z"
+}

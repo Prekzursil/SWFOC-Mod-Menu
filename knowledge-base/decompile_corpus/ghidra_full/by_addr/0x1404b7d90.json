@@ -1,0 +1,7 @@
+{
+  "addr": "0x1404b7d90",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_1404b7d90(longlong param_1,int param_2)\n\n{\n  int iVar1;\n  longlong lVar2;\n  \n  iVar1 = *(int *)(param_1 + 0x18) + -1;\n  if (-1 < iVar1) {\n    lVar2 = (longlong)iVar1 * 0x18;\n    do {\n      if (((*(int *)(*(longlong *)(param_1 + 0x10) + 0x14 + lVar2) != param_2) && (-1 < iVar1)) &&\n         (iVar1 < *(int *)(param_1 + 0x18))) {\n        FUN_1404bad70(param_1 + 8,iVar1,iVar1 + 1,(*(int *)(param_1 + 0x18) - iVar1) + -1);\n        *(int *)(param_1 + 0x18) = *(int *)(param_1 + 0x18) + -1;\n      }\n      lVar2 = lVar2 + -0x18;\n      iVar1 = iVar1 + -1;\n    } while (-1 < iVar1);\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T18:08:08Z"
+}

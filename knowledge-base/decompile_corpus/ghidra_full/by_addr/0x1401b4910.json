@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401b4910",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "longlong __thiscall alSimpleSceneIterator::vfunction6(alSimpleSceneIterator *this)\n\n{\n  vfunction4 *pvVar1;\n  code *pcVar2;\n  \n  pvVar1 = (this[3].vftablePtr)->vfunction4;\n  pcVar2 = pvVar1 + -0x10;\n  if (pvVar1 == (vfunction4 *)0x0) {\n    pcVar2 = (code *)0x0;\n  }\n  return (longlong)pcVar2;\n}",
+  "fetched_at": "2026-04-26T17:44:10Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x1405960f0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "BaseEventFactoryClass * __thiscall\nBaseEventFactoryClass::BaseEventFactoryClass(BaseEventFactoryClass *this)\n\n{\n  this->vftablePtr = &vftable;\n  DynamicVectorClass<class_BaseEventFactoryClass*___ptr64>::\n  DynamicVectorClass<class_BaseEventFactoryClass*___ptr64>_Constructor_or_Destructor\n            (&DAT_140b36bc1,this);\n  return this;\n}",
+  "fetched_at": "2026-04-26T18:42:27Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406a3be0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1406a3bf4        void* rbx = *(arg3 + 0x10)\n1406a3c08        int64_t r8_2 = (*(arg3 + 0x18) - rbx) s>> 3\n1406a3c10        if (r8_2 == 2)\n1406a3c23        int64_t* rbx_1 = *(rbx + 8)\n1406a3c2a        void* i\n1406a3c2a        if (rbx_1 != 0)\n1406a3c32        i, r8_2 = (*(*rbx_1 + 0x20))(rbx_1)\n1406a3c38        if (rbx_1 == 0 || i == 0)\n1406a3c59        label_1406a3c59:\n1406a3c59        sub_140248190(arg2, \"DiscreteDistribution::Insert -- invalid type for parameter 2.  Expected number.\", r8_2)\n1406a3c44        while (i != &data_140a157c0)\n1406a3c46        i = *(i + 8)\n1406a3c4d        if (i == 0)\n1406a3c4d        goto label_1406a3c59\n1406a3c7b        (**rbx_1)(rbx_1)\n1406a3c81        int64_t* rcx_5 = **(arg3 + 0x10)\n1406a3c84        int64_t* arg_18 = rcx_5\n1406a3c8c        if (rcx_5 != 0)\n1406a3c91        (**rcx_5)()\n1406a3ca5        sub_1406a38c0(arg1 + 0x28, &arg_18, _mm_cvtpd_ps(zx.o(rbx_1[2])).d)\n1406a3cb0        (*(*rbx_1 + 8))(rbx_1)\n1406a3c1c        sub_140248190(arg2, \"DiscreteDistribution::Insert -- invalid number of parameters.  Expected 2, got %d.\", r8_2)\n1406a3c74        return 0",
+  "fetched_at": "2026-04-26T17:21:35Z"
+}

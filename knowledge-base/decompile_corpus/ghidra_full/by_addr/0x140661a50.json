@@ -1,0 +1,7 @@
+{
+  "addr": "0x140661a50",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nvoid __thiscall\nFoggedPerceptualUnitEvaluatorClass<class_PlanetPerceptualEvaluatorClass>::vfunction2\n          (FoggedPerceptualUnitEvaluatorClass<class_PlanetPerceptualEvaluatorClass> *this,\n          undefined8 param_1,undefined8 param_2,undefined8 *param_3)\n\n{\n  undefined *puVar1;\n  FoggedPerceptualUnitEvaluatorClass<class_PlanetPerceptualEvaluatorClass>_vftable1 *pFVar2;\n  \n  if ((param_3 != (undefined8 *)0x0) &&\n     (puVar1 = (undefined *)(**(code **)*param_3)(param_3), puVar1 != (undefined *)0x0)) {\n    while (puVar1 != &DAT_140a2bee0) {\n      puVar1 = *(undefined **)(puVar1 + 8);\n      if (puVar1 == (undefined *)0x0) {\n        return;\n      }\n    }\n    if ((*(uint *)(param_3 + 1) & *(uint *)&(this->AIDiagnosticsClass_data).offset_0x0) ==\n        *(uint *)&(this->AIDiagnosticsClass_data).offset_0x0) {\n      FUN_14065ac40(&this[-1].SignalListenerClass_data.offset_0x28,param_3[2]);\n      *(undefined1 *)&(this->SignalGeneratorClass_data).offset_0x8 = 1;\n      return;\n    }\n    if ((char)(this->SignalGeneratorClass_data).offset_0x8 != '\\0') {\n      FUN_14065ac40(&this[-1].SignalListenerClass_data.offset_0x28,param_3[2]);\n      pFVar2 = (FoggedPerceptualUnitEvaluatorClass<class_PlanetPerceptualEvaluatorClass>_vftable1 *)\n               (double)DAT_140b0a320;\n      *(undefined1 *)&(this->SignalGeneratorClass_data).offset_0x8 = 0;\n      this->vftablePtr = pFVar2;\n    }\n  }\n  return;\n}\n\n",
+  "fetched_at": "2026-04-26T17:09:05Z"
+}

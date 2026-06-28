@@ -1,0 +1,7 @@
+{
+  "addr": "0x140245ae0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined1 FUN_140245ae0(undefined8 param_1,longlong *param_2)\n\n{\n  int iVar1;\n  undefined1 local_res10 [24];\n  \n  local_res10[0] = 0;\n  iVar1 = (**(code **)(*param_2 + 0x28))(param_2,local_res10,1);\n  if (iVar1 != -1) {\n    (**(code **)(*param_2 + 0x38))(param_2,0xffffffff,1);\n  }\n  return local_res10[0];\n}",
+  "fetched_at": "2026-04-26T18:10:28Z"
+}

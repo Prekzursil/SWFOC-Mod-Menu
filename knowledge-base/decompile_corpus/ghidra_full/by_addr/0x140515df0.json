@@ -1,0 +1,7 @@
+{
+  "addr": "0x140515df0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined8 * FUN_140515df0(undefined8 *param_1,undefined8 *param_2)\n\n{\n  *param_1 = *param_2;\n  DynamicVectorClass<class_NameReferenceClass>::DynamicVectorClass<class_NameReferenceClass>\n            ((DynamicVectorClass<class_NameReferenceClass> *)(param_1 + 1));\n  return param_1;\n}",
+  "fetched_at": "2026-04-26T18:23:30Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x140786fec",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140786fec        int64_t arg_10 = arg2\n140786ff1        int32_t arg_8 = arg1\n140786ffd        __acrt_eagerly_load_locale_apis()\n140787006        int32_t* var_20 = &arg_8\n140787012        int64_t* var_18 = &arg_10\n140787027        int32_t arg_20 = 4\n14078702a        int32_t var_28 = 4\n140787037        void arg_18\n140787037        return __crt_seh_guarded_call<class <lambda_e9ce07acdb0b138e546925ae9f1a2c9c>,class <lambda_2116bde18c9e5f34230805ea4a4660ed>& __ptr64,class <lambda_5d037afbfc54bf1ca80d3d1ee4062886>,char* __ptr64>::operator()<class <lambda_e9ce07acdb0b138e546925ae9f1a2c9c>,class <lambda_2116bde18c9e5f34230805ea4a4660ed>& __ptr64,class <lambda_5d037afbfc54bf1ca80d3d1ee4062886> >(&arg_18, &var_28, &var_20, &arg_20)",
+  "fetched_at": "2026-04-26T17:31:19Z"
+}

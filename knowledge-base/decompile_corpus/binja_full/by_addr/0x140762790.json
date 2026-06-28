@@ -1,0 +1,7 @@
+{
+  "addr": "0x140762790",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1407627ae        void var_38\n1407627ae        int32_t* rax = _Getcvt(&var_38)\n1407627ba        *(arg1 + 0x2c) = *rax\n1407627c1        *(arg1 + 0x3c) = *(rax + 0x10)\n1407627ca        *(arg1 + 0x4c) = *(rax + 0x20)\n1407627d2        *(arg1 + 0x54) = rax[0xa]\n1407627d5        int32_t* rax_2 = _Getdays()\n1407627e0        if (rax_2 != 0)\n1407627e9        std::_Yarn<char>::operator=(arg3 + 8, rax_2)\n1407627f1        free(rax_2)\n1407627fb        char const* const rcx_3 = \":Sun:Sunday:Mon:Monday:Tue:Tuesday:Wed:Wednesday:Thu:Thursday:Fri:Friday:Sat:Saturday\"\n140762805        if (*(arg3 + 8) != 0)\n140762805        rcx_3 = *(arg3 + 8)\n140762811        *(arg1 + 0x10) = std::_Maklocstr<char>(rcx_3)\n140762815        int32_t* rax_4 = _Getmonths()\n140762820        if (rax_4 != 0)\n140762829        std::_Yarn<char>::operator=(arg3 + 0x18, rax_4)\n140762831        free(rax_4)\n14076283b        char const* const rcx_6 = \":Jan:January:Feb:February:Mar:March:Apr:April:May:May:Jun:June:Jul:July:Aug:August:Sep:September:Oct:October:Nov:November:Dec:December\"\n140762845        if (*(arg3 + 0x18) != 0)\n140762845        rcx_6 = *(arg3 + 0x18)\n140762854        *(arg1 + 0x18) = std::_Maklocstr<char>(rcx_6)\n140762861        int32_t* result = std::_Maklocstr<char>(\":AM:am:PM:pm\")\n140762870        *(arg1 + 0x20) = result\n14076287e        return result",
+  "fetched_at": "2026-04-26T17:30:09Z"
+}

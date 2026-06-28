@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407ecbe0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */\n\nvoid FUN_1407ecbe0(void)\n\n{\n  longlong lVar1;\n  \n  if (0xf < DAT_140a13e40) {\n    if (0xfff < DAT_140a13e40 + 1) {\n      lVar1 = *(longlong *)(CONCAT71(DAT_140a13e28._1_7_,(undefined1)DAT_140a13e28) + -8);\n      if (0x1f < (CONCAT71(DAT_140a13e28._1_7_,(undefined1)DAT_140a13e28) - lVar1) - 8U) {\n                    /* WARNING: Subroutine does not return */\n        FUN_1407711cc(lVar1,DAT_140a13e40 + 0x28);\n      }\n    }\n    thunk_FUN_1407864b8();\n  }\n  _DAT_140a13e38 = 0;\n  DAT_140a13e40 = 0xf;\n  DAT_140a13e28._0_1_ = 0;\n  return;\n}",
+  "fetched_at": "2026-04-26T19:02:22Z"
+}

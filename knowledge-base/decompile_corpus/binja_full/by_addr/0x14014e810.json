@@ -1,0 +1,7 @@
+{
+  "addr": "0x14014e810",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14014e847        sub_14014e540(arg1, sub_1401427f0(data_140a62700, \"w_shadow_blob.tga\", 1, 0, 0), 3, nullptr)\n14014e87f        return sub_14014e540(arg1, sub_1401427f0(data_140a62700, \"w_light_blob.tga\", 1, 0, 0), 1, nullptr) __tailcall",
+  "fetched_at": "2026-04-26T17:21:52Z"
+}

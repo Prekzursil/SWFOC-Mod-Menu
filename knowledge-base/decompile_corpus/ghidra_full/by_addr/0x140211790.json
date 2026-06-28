@@ -1,0 +1,7 @@
+{
+  "addr": "0x140211790",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_140211790(float *param_1,float *param_2)\n\n{\n  float fVar1;\n  float fVar2;\n  float fVar3;\n  float fVar4;\n  float fVar5;\n  float fVar6;\n  float fVar7;\n  float fVar8;\n  \n  fVar1 = DAT_1408007c0;\n  fVar5 = *param_1 - param_1[3];\n  if (*param_2 - param_2[3] <= *param_1 - param_1[3]) {\n    fVar5 = *param_2 - param_2[3];\n  }\n  fVar4 = param_1[3] + *param_1;\n  if (param_1[3] + *param_1 <= param_2[3] + *param_2) {\n    fVar4 = param_2[3] + *param_2;\n  }\n  fVar7 = param_1[1] - param_1[4];\n  if (param_2[1] - param_2[4] <= param_1[1] - param_1[4]) {\n    fVar7 = param_2[1] - param_2[4];\n  }\n  fVar8 = param_1[2] - param_1[5];\n  if (param_2[2] - param_2[5] <= param_1[2] - param_1[5]) {\n    fVar8 = param_2[2] - param_2[5];\n  }\n  fVar3 = param_1[4] + param_1[1];\n  if (param_1[4] + param_1[1] <= param_2[4] + param_2[1]) {\n    fVar3 = param_2[4] + param_2[1];\n  }\n  fVar6 = param_1[5] + param_1[2];\n  if (param_1[5] + param_1[2] <= param_2[5] + param_2[2]) {\n    fVar6 = param_2[5] + param_2[2];\n  }\n  fVar2 = (fVar4 + fVar5) * DAT_1408007c0;\n  param_1[3] = ABS(fVar4 - fVar5);\n  *param_1 = fVar2;\n  param_1[1] = (fVar3 + fVar7) * fVar1;\n  param_1[4] = ABS(fVar3 - fVar7);\n  param_1[3] = param_1[3] * fVar1;\n  param_1[2] = (fVar6 + fVar8) * fVar1;\n  param_1[5] = ABS(fVar6 - fVar8);\n  param_1[5] = param_1[5] * fVar1;\n  param_1[4] = param_1[4] * fVar1;\n  return;\n}",
+  "fetched_at": "2026-04-26T17:59:44Z"
+}

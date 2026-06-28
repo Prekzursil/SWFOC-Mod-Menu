@@ -1,0 +1,7 @@
+{
+  "addr": "0x140444310",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140444313        if (arg2 == 0)\n140444313        return \n140444333        struct BaseDataPackClass::GarrisonDataPackClass::VTable** rax = sub_140390830(arg2)\n140444348        if (rax == 0 || rax[1].d != 0)\n140444348        return \n140444358        void* rdi_1 = arg1 + 0x18\n140444361        void* rbx_1 = rdi_1\n14044436a        if (arg1 == 0)\n14044436a        rbx_1 = nullptr\n140444382        sub_140220e90(sub_140058570(), arg2 + 0x38, rbx_1, 0xa)\n14044438a        if (arg1 == 0)\n14044438a        rdi_1 = nullptr\n1404443a2        sub_140220e90(sub_140058570(), arg2 + 0x38, rdi_1, 0x10)\n1404443a7        rax[1].d = 1\n1404443b1        *(rax + 0xc) = arg3\n1404443c0        rax = sub_1402aca60(*(data_140b15418 + 0x18), arg3)\n1404443da        if (rax == 0)\n1404443da        return \n1404443e3        if (*(rax + 0x382) != 0xff)\n1404443e5        struct BaseDataPackClass::GarrisonDataPackClass::VTable* r8_2 = *rax\n1404443ed        rax = r8_2->__offset(0x10).q(rax, 0x50, r8_2)\n14044441a        label_14044441a:\n14044441d        if (rax != 0)\n140444422        (*rax)->__offset(0xe0).q(rax)\n14044440a        if (*(rax + 0x381) != 0xff || rax[0x71].b != 0xff)\n140444414        rax = (*rax)->__offset(0x10).q()\n140444414        goto label_14044441a\n140444436        return ",
+  "fetched_at": "2026-04-26T17:27:20Z"
+}

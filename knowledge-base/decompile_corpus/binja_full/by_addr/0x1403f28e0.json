@@ -1,0 +1,7 @@
+{
+  "addr": "0x1403f28e0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1403f28e6        int64_t rbx = *(arg1 + 0x38)\n1403f28f0        float zmm0\n1403f28f0        if (arg2 s< 0)\n1403f2905        zmm0 = float.s(arg2 u>> 1 | (zx.q(arg2.d) & 1))\n1403f290a        zmm0 = zmm0 + zmm0\n1403f28f2        zmm0 = float.s(arg2)\n1403f2913        float zmm0_1 = ceilf(zmm0 f/ *(arg1 + 4))\n1403f2920        int64_t rax_4 = 0\n1403f2925        if (not(zmm0_1 < 9.22337204e+18f))\n1403f2927        zmm0_1 = zmm0_1 - 9.22337204e+18f\n1403f292e        if (not(zmm0_1 >= 9.22337204e+18f))\n1403f293a        rax_4 = -0x8000000000000000\n1403f2942        int64_t rcx_1 = int.q(zmm0_1) + rax_4\n1403f2945        int64_t rax_5 = 8\n1403f294d        if (rcx_1 u> 8)\n1403f294d        rax_5 = rcx_1\n1403f2954        if (rbx u< rax_5)\n1403f295d        if (rbx u>= 0x200)\n1403f2974        return rax_5\n1403f295f        rbx <<= 3\n1403f296a        if (rbx u< rax_5)\n1403f2974        return rax_5\n1403f296c        return rbx",
+  "fetched_at": "2026-04-26T17:25:23Z"
+}

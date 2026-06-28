@@ -1,0 +1,7 @@
+{
+  "addr": "0x140713a90",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined8 __thiscall\nForceSightAbilityClass::vfunction31_for_IXMLLoadableClass\n          (ForceSightAbilityClass *this,longlong param_1)\n\n{\n  ulonglong in_RAX;\n  \n  if (*(longlong *)(param_1 + 0x100) != 0) {\n    if (*(longlong *)(param_1 + 0xf0) != 0) {\n      in_RAX = FUN_140380b10();\n      if ((char)in_RAX != '\\0') goto LAB_140713b57;\n    }\n    in_RAX = FUN_14039a350(param_1);\n    if ((char)in_RAX == '\\0') {\n      in_RAX = FUN_1403956a0(param_1);\n      if (1 < (int)in_RAX - 0x69U) {\n        if ((int)in_RAX == 0x6b) goto LAB_140713b57;\n        FUN_1403a9880(param_1);\n        FUN_1403a92f0(param_1,0x69,0xffff,0,0,DAT_1407ffaf8,0,0,0,0);\n        in_RAX = FUN_140397d90(param_1,0x34);\n        if (*(longlong *)(in_RAX + 0x1a0) != 0) {\n          in_RAX = FUN_1403a7f70(param_1,1);\n        }\n      }\n      return CONCAT71((int7)(in_RAX >> 8),1);\n    }\n  }\nLAB_140713b57:\n  return in_RAX & 0xffffffffffffff00;\n}",
+  "fetched_at": "2026-04-26T17:56:04Z"
+}

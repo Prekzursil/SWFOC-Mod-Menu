@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406ffda0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "char * __thiscall GarrisonUpgradeAbilityClass::vfunction3_for_IXMLLoadableClass(void)\n\n{\n  return \"Garrison_Upgrade_Ability\";\n}",
+  "fetched_at": "2026-04-26T17:51:05Z"
+}

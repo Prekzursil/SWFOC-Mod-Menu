@@ -1,0 +1,7 @@
+{
+  "addr": "0x14064c290",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14064c297        *arg1 = &ServicedAISystemClass::`vftable'{for `AIDiagnosticsClass'}\n14064c29a        return sub_1405f6540(arg1) __tailcall",
+  "fetched_at": "2026-04-26T17:04:52Z"
+}

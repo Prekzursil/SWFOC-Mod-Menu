@@ -1,0 +1,7 @@
+{
+  "addr": "0x1402ccbf0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1402ccbfa        *(arg1 + 0x34a) = 0\n1402ccc04        *(arg1 + 0x37c) = 0\n1402ccc0e        int64_t* rdi = data_140b15418\n1402ccc18        if (rdi == 0)\n1402ccc18        return \n1402ccc37        if (data_140b16dd2 != 0 && *(arg1 + 0x34e) != 0 && *(arg1 + 0x34f) == 0)\n1402ccc42        sub_14044cd50(&data_140a28c10, 1)\n1402ccc50        sub_14044cb50(&data_140a28c10, 1)\n1402ccc64        if ((*(*rdi + 0xe0))(rdi) != 1 && (*(*rdi + 0xe0))(rdi) == 2)\n1402ccc7d        int32_t rax = sub_14049ebb0(arg1, rdi)\n1402ccc82        *(arg1 + 0x34a) = rax.b\n1402ccc8a        if (rax.b != 0)\n1402ccc8c        *(arg1 + 0x37c) = 1\n1402ccc97        *(arg1 + 0x34b) = 1\n1402ccc9e        *(arg1 + 0x348) = 1\n1402cccac        if (*(arg1 + 0x34a) != 0)\n1402ccce3        label_1402ccce3:\n1402cccea        if (*(arg1 + 0x34e) == 0)\n1402cccec        *(arg1 + 0x34e) = 1\n1402cccea        return \n1402cccb5        if (*(arg1 + 0x34e) != 0)\n1402cccbe        if (*(arg1 + 0x34f) == 0)\n1402cccc9        sub_14044cd50(&data_140a28c10, 0)\n1402cccd7        sub_14044cb50(&data_140a28c10, 1)\n1402cccdc        data_140a28c93 = 1\n1402cccbe        goto label_1402ccce3\n1402cccec        *(arg1 + 0x34e) = 1\n1402cccfd        return ",
+  "fetched_at": "2026-04-26T17:33:42Z"
+}

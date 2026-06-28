@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406139f0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140613a0d        void* result\n140613a0d        if (*(*(arg1 + 0x78) + 0x34) == 0)\n140613a28        int32_t arg_8 = *(**(arg2 + 0x48) + 0x28)\n140613a37        void*** var_28\n140613a37        void* rsi_1 = (*sub_1404e11c0(arg1 + 0x28, &var_28, &arg_8))[3]\n140613a3e        result = sub_140612bd0(arg1, arg2)\n140613a46        if (result == 0)\n140613a96        int128_t zmm6 = *(arg2 + 0x7c)\n140613a9e        int32_t zmm0_1 = *(**(arg2 + 0x48) + 0x30)\n140613aa3        zmm0_1 f- -1f\n140613aac        if (is_unordered.d(zmm0_1, -1f) || not(zmm0_1 f== -1f))\n140613aae        zmm6 = _mm_min_ss(zmm6.d, zmm0_1)\n140613abd        zmm6.d = __maxss_xmmss_memss(zmm6.d, *(arg1 + 0x70)).d f* *(rsi_1 + 0x50)\n140613ac2        zmm6.d = zmm6.d f+ *(rsi_1 + 0x4c)\n140613ac7        zmm6 = _mm_max_ss(zmm6.d, 0)\n140613acb        float zmm0_2\n140613acb        zmm0_2, result = sub_140692780(arg2)\n140613ad8        if (not(zmm6.d f>= zmm0_2))\n140613adf        result.b = 0\n140613aeb        return result\n140613a50        float zmm2 = __maxss_xmmss_memss(*(result + 0x30), *(arg1 + 0x70))\n140613a6d        float zmm1_1 = _mm_max_ss(*(result + 0x28), 0) f+ *(result + 0x2c) f- *(result + 0x38)\n140613a79        if (_mm_max_ss(zmm2 f* *(rsi_1 + 0x50) f+ *(rsi_1 + 0x4c), 0) < zmm1_1)\n140613adf        result.b = 0\n140613aeb        return result\n140613a7b        result.b = 1\n140613a8c        return result",
+  "fetched_at": "2026-04-26T17:23:21Z"
+}

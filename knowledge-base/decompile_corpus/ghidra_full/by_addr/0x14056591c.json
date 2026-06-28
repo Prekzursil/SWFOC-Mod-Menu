@@ -1,0 +1,7 @@
+{
+  "addr": "0x14056591c",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall\nSpecialAbilityDataClass::vfunction3_for_RefCountClass(SpecialAbilityDataClass *this,uint param_1)\n\n{\n  scalar_deleting_destructor\n            ((SpecialAbilityDataClass *)&this[-1].SpecialAbilityDataClass_data.field_0x1a8,param_1);\n  return;\n}",
+  "fetched_at": "2026-04-26T18:39:25Z"
+}

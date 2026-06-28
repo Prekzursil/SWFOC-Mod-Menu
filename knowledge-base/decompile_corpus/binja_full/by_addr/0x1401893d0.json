@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401893d0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1401893df        void* rdi = *(arg1 + 0x108)\n1401893ef        int64_t rax_2\n1401893ef        if (rdi == 0)\n140189425        int32_t rax_3 = sub_140177f50(*(arg1 + 0x20) * *(arg1 + 0x30), 0, *(arg1 + 0x2c), 1, arg1 + 0x78)\n14018942c        if (rax_3 s< 0)\n140189438        OutputDebugStringA(sub_140001000(rax_3))\n140189445        OutputDebugStringA(&data_140819c5c)\n14018944b        int64_t* rcx_5 = *(arg1 + 0x78)\n140189469        int64_t arg_8\n140189469        int32_t rax_6 = (*(*rcx_5 + 0x58))(rcx_5, 0, zx.q(*(arg1 + 0x20) * *(arg1 + 0x30)), &arg_8, 0)\n14018946e        if (rax_6 s< 0)\n14018947a        OutputDebugStringA(sub_140001000(rax_6))\n140189487        OutputDebugStringA(&data_140819c5c)\n14018948d        rax_2 = arg_8\n1401893fb        rax_2 = j_operator new(sx.q(*(arg1 + 0x20) * *(arg1 + 0x30)))\n140189400        *(rdi + 8) = rax_2\n1401894a4        int32_t result = sub_140220730(arg2, rax_2, *(arg1 + 0x20) * *(arg1 + 0x30), nullptr)\n1401894b1        if (*(arg1 + 0x108) == 0)\n1401894b3        int64_t* rcx_9 = *(arg1 + 0x78)\n1401894ba        result = (*(*rcx_9 + 0x60))(rcx_9)\n1401894bf        if (result s< 0)\n1401894cb        OutputDebugStringA(sub_140001000(result))\n1401894d8        return OutputDebugStringA(&data_140819c5c)\n1401894ed        return result",
+  "fetched_at": "2026-04-26T17:24:03Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x14020e600",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14020e61a        int64_t* rax = operator new(0x48)\n14020e61f        int64_t* rbx = rax\n14020e625        if (rax == 0)\n14020e63f        rbx = nullptr\n14020e627        *rax = arg1\n14020e62a        rax[1] = arg2\n14020e62e        rax[4] = 0\n14020e636        rax[5].d = 0\n14020e647        sub_14023e080(arg2, rbx)\n14020e652        int32_t* rax_2 = (*(*arg2 + 8))(arg2)\n14020e65b        *(rbx + 0x2c) = *rax_2\n14020e660        rbx[6].d = rax_2[1]\n14020e666        *(rbx + 0x34) = rax_2[2]\n14020e66c        rbx[7].d = rax_2[3]\n14020e672        *(rbx + 0x3c) = rax_2[4]\n14020e678        rbx[8].d = rax_2[5]\n14020e67f        float* rax_4 = sub_140210480(*(arg1 + 0x10), rbx + 0x2c)\n14020e684        float* rsi_1 = rax_4\n14020e68a        if (rax_4 == 0)\n14020e68c        rsi_1 = *(arg1 + 0x10)\n14020e696        sub_14020f960(rsi_1, rbx)\n14020e6a3        int64_t result = (*(rsi_1 + 0x20) - *(rsi_1 + 0x18)) s>> 3\n14020e6ab        if (result u> 0x10)\n14020e6ad        *(arg1 + 0x20) = 1\n14020e6b1        data_140a7c660 += 1\n14020e6b7        *(arg1 + 0x18) += 1\n14020e6c9        return result",
+  "fetched_at": "2026-04-26T17:28:16Z"
+}

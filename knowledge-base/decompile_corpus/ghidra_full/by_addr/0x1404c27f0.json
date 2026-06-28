@@ -1,0 +1,7 @@
+{
+  "addr": "0x1404c27f0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "OrbitalStructureDummyBehaviorClass * __thiscall\nOrbitalStructureDummyBehaviorClass::vfunction4(OrbitalStructureDummyBehaviorClass *this,int param_1)\n\n{\n  OrbitalStructureDummyBehaviorClass *pOVar1;\n  \n  pOVar1 = (OrbitalStructureDummyBehaviorClass *)0x0;\n  if (param_1 == 0x60) {\n    pOVar1 = this;\n  }\n  return pOVar1;\n}",
+  "fetched_at": "2026-04-26T18:10:25Z"
+}

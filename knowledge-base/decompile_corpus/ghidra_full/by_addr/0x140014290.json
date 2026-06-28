@@ -1,0 +1,7 @@
+{
+  "addr": "0x140014290",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\n/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */\n\nvoid FUN_140014290(void)\n\n{\n  timeBeginPeriod(1);\n  _DAT_140a7bec0 = timeGetTime();\n  atexit((_func_5014 *)&LAB_1407ec6f0);\n  return;\n}\n\n",
+  "fetched_at": "2026-04-26T16:50:06Z"
+}

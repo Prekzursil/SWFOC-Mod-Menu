@@ -1,0 +1,7 @@
+{
+  "addr": "0x140033460",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nulonglong FUN_140033460(longlong param_1,undefined4 param_2)\n\n{\n  longlong *plVar1;\n  int iVar2;\n  uint uVar3;\n  ulonglong in_RAX;\n  \n  if ((DAT_140b155c4 == '\\0') && (in_RAX = 0, DAT_140b15418 != (longlong *)0x0)) {\n    if (DAT_140b15418[5] != 0) {\n      in_RAX = FUN_140342dc0();\n      if ((char)in_RAX == '\\x01') goto LAB_140033519;\n    }\n    iVar2 = FUN_1402127f0(&DAT_140a7c3a8,param_2);\n    plVar1 = DAT_140b15418;\n    if (iVar2 == 0x45) {\n      *(undefined1 *)(param_1 + 0x8e0) = 1;\n      return 1;\n    }\n    if (iVar2 == 0x46) {\n      *(undefined1 *)(param_1 + 0x8e1) = 1;\n      return 1;\n    }\n    uVar3 = iVar2 - 0x47;\n    in_RAX = (ulonglong)uVar3;\n    if (uVar3 == 0) {\n      *(undefined1 *)(param_1 + 0x8e2) = 1;\n      return 1;\n    }\n    if (uVar3 == 1) {\n      *(undefined1 *)(param_1 + 0x8e3) = 1;\n      return 1;\n    }\n    if (((((*(char *)(param_1 + 0x8e3) != '\\0') || (*(char *)(param_1 + 0x8e2) != '\\0')) ||\n         (*(char *)(param_1 + 0x8e1) != '\\0')) || (*(char *)(param_1 + 0x8e0) != '\\0')) &&\n       (DAT_140b15418 != (longlong *)0x0)) {\n      in_RAX = (**(code **)(*DAT_140b15418 + 0xf0))(DAT_140b15418);\n      if ((char)in_RAX != '\\0') {\n        DAT_140b27d59 = 0;\n        *(undefined4 *)(plVar1 + 0x3f) = 0xffffffff;\n      }\n    }\n  }\nLAB_140033519:\n  return in_RAX & 0xffffffffffffff00;\n}\n\n",
+  "fetched_at": "2026-04-26T16:52:41Z"
+}

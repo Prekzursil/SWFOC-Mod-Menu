@@ -1,0 +1,7 @@
+{
+  "addr": "0x1402d07b0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_1402d07b0(longlong param_1)\n\n{\n  if (((*(int *)(param_1 + 0x9c) == 0) && (*(int *)(param_1 + 0xa4) == 0)) &&\n     (*(int *)(param_1 + 0xa0) == 0)) {\n    if (*(int *)(param_1 + 0x88) == 0) {\n      *(undefined4 *)(param_1 + 0x9c) = 2;\n    }\n    else if (*(int *)(param_1 + 0x88) == 1) {\n      *(undefined4 *)(param_1 + 0xa0) = 2;\n    }\n    else {\n      *(undefined4 *)(param_1 + 0xa4) = 2;\n    }\n    FUN_14025fb10(2);\n    thunk_FUN_140181bb0(DAT_1408054d0);\n    return;\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T17:22:34Z"
+}

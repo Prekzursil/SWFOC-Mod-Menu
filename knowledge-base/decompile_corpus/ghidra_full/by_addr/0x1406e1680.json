@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406e1680",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* PlayerPerceptualEvaluatorClass member function inherited by\n   TacticalPlayerPerceptualEvaluatorClass\n   PlayerPerceptualEvaluatorClass member function inherited by LandPlayerPerceptualEvaluatorClass\n   PlayerPerceptualEvaluatorClass member function inherited by SpacePlayerPerceptualEvaluatorClass\n    */\n\nvoid __thiscall PlayerPerceptualEvaluatorClass::vfunction2(PlayerPerceptualEvaluatorClass *this)\n\n{\n  undefined8 *puVar1;\n  \n  puVar1 = &this[-1].SignalListenerClass_data.offset_0x50;\n                    /* WARNING: Could not recover jumptable at 0x0001406e168c. Too many branches */\n                    /* WARNING: Treating indirect jump as call */\n  (**(code **)(*puVar1 + 0x60))(puVar1,0);\n  return;\n}",
+  "fetched_at": "2026-04-26T17:45:17Z"
+}

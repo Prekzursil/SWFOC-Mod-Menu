@@ -1,0 +1,7 @@
+{
+  "addr": "0x14079a384",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* Library Function - Single Match\n    wcspbrk\n   \n   Libraries: Visual Studio 2017 Release, Visual Studio 2019 Release */\n\nwchar_t * __cdecl wcspbrk(wchar_t *_Str,wchar_t *_Control)\n\n{\n  wchar_t wVar1;\n  wchar_t *pwVar2;\n  \n  do {\n    if (*_Str == L'\\0') {\n      return (wchar_t *)0x0;\n    }\n    if (*_Control != L'\\0') {\n      wVar1 = *_Control;\n      pwVar2 = _Control;\n      do {\n        if (wVar1 == *_Str) {\n          return _Str;\n        }\n        pwVar2 = pwVar2 + 1;\n        wVar1 = *pwVar2;\n      } while (wVar1 != L'\\0');\n    }\n    _Str = _Str + 1;\n  } while( true );\n}",
+  "fetched_at": "2026-04-26T18:53:44Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406ff530",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined8 __thiscall\nGalaxyWideUpgradeAbilityClass::vfunction31_for_IXMLLoadableClass\n          (GalaxyWideUpgradeAbilityClass *this,longlong param_1,longlong param_2)\n\n{\n  ulonglong uVar1;\n  longlong lVar2;\n  undefined8 uVar3;\n  \n  uVar1 = (*this->vftablePtr->vfunction6_for_IXMLLoadableClass)(this,param_1,param_2);\n  if ((char)uVar1 != '\\0') {\n    uVar1 = FUN_140397450(param_1);\n    if ((int)uVar1 != 0) {\n      lVar2 = FUN_1403956c0(param_1);\n      uVar3 = FUN_140294bc0(&DAT_140a16fd0,*(undefined4 *)(lVar2 + 4));\n      uVar1 = FUN_1406ff5d0(this,param_1,uVar3);\n      if ((char)uVar1 == '\\x01') {\n        uVar3 = FUN_14048cca0(this,param_1,param_2,uVar1 & 0xff,1);\n        return CONCAT71((int7)((ulonglong)uVar3 >> 8),1);\n      }\n    }\n  }\n  return uVar1 & 0xffffffffffffff00;\n}",
+  "fetched_at": "2026-04-26T17:50:51Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406acb80",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1406acb83        if (arg2 == 0)\n1406acb83        return \n1406acb95        if (arg3 == 1)\n1406acb95        goto label_1406acbee\n1406acba1        if (arg3 != 3 && arg3 != 4)\n1406acb9b        return \n1406acbaa        if (*(arg2 + 0x339) != 0xff)\n1406acbb7        int64_t* rax_2 = (*(*arg2 + 0x10))(arg2, 7)\n1406acbbd        int64_t rdx = *rax_2\n1406acbc0        (*(rdx + 0xb8))(rax_2, rdx)\n1406acbcd        if (*(arg2 + 0x333) == 0xff)\n1406acbcd        goto label_1406acbee\n1406acbda        int64_t* rax_4 = (*(*arg2 + 0x10))(arg2, 1)\n1406acbe0        int64_t rdx_1 = *rax_4\n1406acbe3        (*(rdx_1 + 0xb8))(rax_4, rdx_1)\n1406acbee        label_1406acbee:\n1406acbee        sub_1403a8e50(arg2, 0)\n1406acbfa        if (*(arg2 + 0x33b) != 0xff)\n1406acc07        int64_t* rax_6 = (*(*arg2 + 0x10))(arg2, 9)\n1406acc0d        int64_t rdx_2 = *rax_6\n1406acc10        (*(rdx_2 + 0xb8))(rax_6, rdx_2)\n1406acc16        *(arg2 + 0x3b4) = 0\n1406acc22        return ",
+  "fetched_at": "2026-04-26T17:24:30Z"
+}

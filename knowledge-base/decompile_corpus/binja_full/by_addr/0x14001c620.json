@@ -1,0 +1,7 @@
+{
+  "addr": "0x14001c620",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14001c626        char* rbx = data_140b09e08\n14001c62d        int32_t arg_8 = 0x808\n14001c638        if (rbx == 0)\n14001c642        char* rax_1 = operator new(zx.q((&rbx[0x40]).d))\n14001c649        rbx = rax_1\n14001c64f        if (rax_1 == 0)\n14001c6a7        rbx = nullptr\n14001c651        __builtin_memset(&rbx[4], 0, 0x14)\n14001c659        *rbx = 0\n14001c663        int64_t* rax_2 = operator new(0x20)\n14001c66f        *rax_2 = rax_2\n14001c672        rax_2[1] = rax_2\n14001c676        *(rbx + 8) = rax_2\n14001c67a        int64_t r8_1 = *(rbx + 8)\n14001c67e        __builtin_memset(&rbx[0x18], 0, 0x18)\n14001c689        *(rbx + 0x30) = 7\n14001c691        *(rbx + 0x38) = 8\n14001c699        *(rbx + 4) = 0x3f800000\n14001c6a0        sub_140048250(&rbx[0x18], 0x10, r8_1)\n14001c6af        data_140b09e08 = rbx\n14001c6d2        void*** var_18\n14001c6d2        (*sub_140253fe0(rbx, &var_18, &arg_8))[3] = sub_1406aed50\n14001c6e2        return atexit(sub_1407f8a10) __tailcall",
+  "fetched_at": "2026-04-26T16:51:19Z"
+}

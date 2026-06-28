@@ -1,0 +1,7 @@
+{
+  "addr": "0x1404dc570",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined8 * FUN_1404dc570(undefined8 *param_1,undefined4 param_2,undefined4 param_3)\n\n{\n  char *pcVar1;\n  longlong lVar2;\n  \n  FUN_140048ec0(&DAT_140b31a78,\"CELL_%d_%d\",param_2,param_3);\n  param_1[3] = 0xf;\n  *param_1 = 0;\n  param_1[2] = 0;\n  lVar2 = -1;\n  do {\n    pcVar1 = &DAT_140b31a79 + lVar2;\n    lVar2 = lVar2 + 1;\n  } while (*pcVar1 != '\\0');\n  FUN_140022730(param_1,&DAT_140b31a78);\n  return param_1;\n}",
+  "fetched_at": "2026-04-26T18:15:11Z"
+}

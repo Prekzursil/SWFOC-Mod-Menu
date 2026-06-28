@@ -1,0 +1,7 @@
+{
+  "addr": "0x14071c3c0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "BuzzDroidsAbilityClass * __thiscall\nBuzzDroidsAbilityClass::scalar_deleting_destructor(BuzzDroidsAbilityClass *this,ulonglong param_1)\n\n{\n                    /* inlined destructor: BuzzDroidsAbilityClass::~BuzzDroidsAbilityClass */\n  this->vftablePtr = &vftable_for_IXMLLoadableClass;\n  this->vftablePtr = &vftable_for_RefCountClass;\n  FUN_1404c47c0(&(this->BuzzDroidsAbilityClass_data).field_0x30);\n  FUN_1404c4770(&(this->BuzzDroidsAbilityClass_data).field_0x20);\n  SpecialAbilityClass::~SpecialAbilityClass((SpecialAbilityClass *)this);\n  if ((param_1 & 1) != 0) {\n    thunk_FUN_1407864b8(this,0x1b8);\n  }\n  return this;\n}",
+  "fetched_at": "2026-04-26T17:57:58Z"
+}

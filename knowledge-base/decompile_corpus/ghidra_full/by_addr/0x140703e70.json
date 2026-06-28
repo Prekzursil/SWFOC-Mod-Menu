@@ -1,0 +1,7 @@
+{
+  "addr": "0x140703e70",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "IncomeStreamModAbilityClass * __thiscall\nIncomeStreamModAbilityClass::IncomeStreamModAbilityClass(IncomeStreamModAbilityClass *this)\n\n{\n  SpecialAbilityClass::SpecialAbilityClass((SpecialAbilityClass *)this);\n  (this->IncomeStreamModAbilityClass_data).offset_0x0 = 0x3f800000;\n  this->vftablePtr = &vftable_for_IXMLLoadableClass;\n  (this->IncomeStreamModAbilityClass_data).offset_0x8 = 0x3f800000;\n  this->vftablePtr = &vftable_for_RefCountClass;\n  FUN_1404c3df0(&(this->IncomeStreamModAbilityClass_data).field_0x10);\n  (this->IncomeStreamModAbilityClass_data).offset_0x20 = 0;\n  *(undefined2 *)&(this->RefCountClass_data).field_0x30 = 1;\n  *(undefined4 *)&(this->RefCountClass_data).field_0x2c = 2;\n  return this;\n}",
+  "fetched_at": "2026-04-26T17:52:02Z"
+}

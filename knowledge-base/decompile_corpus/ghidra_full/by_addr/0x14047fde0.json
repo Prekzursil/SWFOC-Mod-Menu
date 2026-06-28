@@ -1,0 +1,7 @@
+{
+  "addr": "0x14047fde0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_14047fde0(void)\n\n{\n  undefined8 *puVar1;\n  \n  if ((DAT_140b31238 != '\\0') && (DAT_140a2a800 != 0)) {\n    puVar1 = &DAT_140a2a7f0;\n    if (0xf < DAT_140a2a808) {\n      puVar1 = DAT_140a2a7f0;\n    }\n    FUN_140025760(\"Hot reloading tactical camera constants - %s\\n\",puVar1);\n    puVar1 = &DAT_140a2a7f0;\n    if (0xf < DAT_140a2a808) {\n      puVar1 = DAT_140a2a7f0;\n    }\n    FUN_14047ffe0(puVar1);\n    return;\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T18:00:03Z"
+}

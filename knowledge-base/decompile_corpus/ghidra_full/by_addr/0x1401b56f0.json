@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401b56f0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* alShaderInstance member function inherited by alD3dEffect */\n\nvoid __thiscall alShaderInstance::vfunction22_for_RefCountClass(void)\n\n{\n  return;\n}",
+  "fetched_at": "2026-04-26T17:44:47Z"
+}

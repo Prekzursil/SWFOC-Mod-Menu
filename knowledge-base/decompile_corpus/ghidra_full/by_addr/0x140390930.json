@@ -1,0 +1,7 @@
+{
+  "addr": "0x140390930",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_140390930(longlong param_1)\n\n{\n  IdleDataPackClass *pIVar1;\n  \n  if (*(longlong *)(param_1 + 0xd8) == 0) {\n    pIVar1 = (IdleDataPackClass *)FUN_140769c58(0x60);\n    if (pIVar1 != (IdleDataPackClass *)0x0) {\n      pIVar1 = IdleDataPackClass::IdleDataPackClass(pIVar1);\n      *(IdleDataPackClass **)(param_1 + 0xd8) = pIVar1;\n      return;\n    }\n    *(undefined8 *)(param_1 + 0xd8) = 0;\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T17:21:50Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x14007ee80",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14007ee86        bool rax = *(arg1 + 0x84)\n14007ee92        if (arg2 == rax)\n14007ef05        return rax\n14007ee94        *(arg1 + 0x84) = arg2\n14007eea0        void* rdx = arg1 + 0x48\n14007eea3        void arg_8\n14007eea3        if (arg2 != 0)\n14007eed9        if (*(arg1 + 0x60) u>= 8)\n14007eedb        rdx = *(arg1 + 0x48)\n14007eef1        sub_14007f7a0(arg1 + 0x48, &arg_8, rdx + (*(arg1 + 0x58) << 1), 0x5f)\n14007eefd        return *(arg1 + 0x84) == 0\n14007eeaa        if (*(arg1 + 0x60) u>= 8)\n14007eeac        rdx = *(arg1 + 0x48)\n14007eebf        sub_14007f700(arg1 + 0x48, &arg_8, rdx + ((*(arg1 + 0x58) - 1) << 1))\n14007eecb        void** rax_3\n14007eecb        rax_3.b = *(arg1 + 0x84) == 0\n14007eed3        return rax_3",
+  "fetched_at": "2026-04-26T16:57:15Z"
+}

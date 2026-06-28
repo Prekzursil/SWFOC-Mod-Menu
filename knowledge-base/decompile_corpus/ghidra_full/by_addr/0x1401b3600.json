@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401b3600",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall alSimpleScene::vfunction24(alSimpleScene *this)\n\n{\n  undefined8 *puVar1;\n  \n  puVar1 = (undefined8 *)FUN_140769c58(0x20);\n  if (puVar1 != (undefined8 *)0x0) {\n    puVar1[1] = this;\n    *puVar1 = &alSimpleSceneIterator::vftable;\n    puVar1[2] = &(this->alSimpleScene_data).offset_0x158;\n    puVar1[3] = (this->alSimpleScene_data).offset_0x168;\n    return;\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T17:43:52Z"
+}

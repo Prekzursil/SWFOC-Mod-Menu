@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401610d0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1401610e0        if (*(arg1 + 0x268) != 0)\n1401610e0        return \n1401610fb        *(arg1 + 0xf8) = 0\n140161109        sub_140170cd0(arg1 + 0xd0, 0)\n14016110e        int32_t i = 0\n140161116        if (*(arg1 + 0x1f4) s> 0)\n140161123        int64_t rcx_1 = sx.q(i) * 0x70\n140161127        int64_t rax_2 = *(arg1 + 0xc8)\n14016112e        int16_t arg_8 = i.w\n140161133        *(rax_2 + rcx_1 + 0x3c) = 0xbf800000\n140161142        *(*(arg1 + 0xc8) + rcx_1 + 0x40) = 0\n14016114d        *(*(arg1 + 0xc8) + rcx_1 + 0x5c) = 0\n140161159        *(*(arg1 + 0xc8) + rcx_1 + 0x5e) = 0\n14016115e        int32_t* rdx_1 = *(arg1 + 0xd8)\n140161166        if (rdx_1 == *(arg1 + 0xe0))\n14016117a        sub_140152690(arg1 + 0xd0, rdx_1, &arg_8)\n140161168        *rdx_1 = i.w\n14016116b        *(arg1 + 0xd8) += 2\n14016117f        i += 1\n140161187        do while (i s< *(arg1 + 0x1f4))\n140161193        *(arg1 + 0x10c) = 0\n140161199        *(arg1 + 0x124) = 0\n14016119f        *(arg1 + 0x194) = 0\n1401611a6        *(arg1 + 0x1bd) = 0\n1401611ad        *(arg1 + 0x290) = 0\n1401611b9        *(arg1 + 0x120) = 0xbf800000\n1401611c3        __builtin_memcpy(arg1 + 0x1dc, \"\\x6b\\x0b\\x5e\\x5d\\x6b\\x0b\\x5e\\x5d\\x6b\\x0b\\x5e\\x5d\\x6b\\x0b\\x5e\\xdd\\x6b\\x0b\\x5e\\xdd\\x6b\\x0b\\x5e\\xdd\", 0x18)\n140161204        return ",
+  "fetched_at": "2026-04-26T17:22:38Z"
+}

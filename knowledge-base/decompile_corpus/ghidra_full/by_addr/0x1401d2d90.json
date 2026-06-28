@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401d2d90",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_1401d2d90(void)\n\n{\n  undefined2 uVar1;\n  int iVar2;\n  uint uVar3;\n  WCHAR local_18;\n  undefined2 local_16;\n  \n  DAT_140a7a0d0 = GetKeyboardLayout(0);\n  if (DAT_140a7bae8 == DAT_140a7a0d0) {\n    return;\n  }\n  DAT_140a13640 = FUN_140200200((ulonglong)DAT_140a7a0d0 & 0xffff);\n  uVar3 = (uint)DAT_140a7a0d0 & 0x3ff;\n  DAT_140a7bae8 = DAT_140a7a0d0;\n  if (uVar3 == 4) {\n    uVar3 = ((uint)DAT_140a7a0d0 & 0xffff) >> 10;\n    DAT_140a7a0d8 = 1;\n    if (uVar3 == 1) {\n      PTR_DAT_140a13648 = &DAT_140a1365c;\n      DAT_140a7a0d8 = 1;\n      DAT_140a7bae8 = DAT_140a7a0d0;\n      return;\n    }\n    if (uVar3 == 2) {\n      PTR_DAT_140a13648 = &DAT_140a13656;\n      iVar2 = FUN_1401d2fe0(0);\n      DAT_140a7a0d8 = iVar2 == 0;\n      if ((undefined2 *)PTR_DAT_140a13648 != &DAT_140a13650) {\n        return;\n      }\n      goto LAB_1401d2e78;\n    }\n  }\n  else {\n    if (uVar3 == 0x11) {\n      DAT_140a7a0d8 = 1;\n      PTR_DAT_140a13648 = &DAT_140a13668;\n      return;\n    }\n    if (uVar3 == 0x12) {\n      DAT_140a7a0d8 = 0;\n      PTR_DAT_140a13648 = &DAT_140a13662;\n      return;\n    }\n  }\n  PTR_DAT_140a13648 = (undefined *)&DAT_140a13650;\nLAB_1401d2e78:\n  GetLocaleInfoW((uint)DAT_140a7a0d0 & 0xffff,3,&local_18,5);\n  *(WCHAR *)PTR_DAT_140a13648 = local_18;\n  uVar1 = FUN_140785a20(local_16);\n  *(undefined2 *)(PTR_DAT_140a13648 + 2) = uVar1;\n  return;\n}",
+  "fetched_at": "2026-04-26T17:49:39Z"
+}

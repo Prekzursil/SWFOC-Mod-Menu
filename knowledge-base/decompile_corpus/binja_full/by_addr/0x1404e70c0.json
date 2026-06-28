@@ -1,0 +1,7 @@
+{
+  "addr": "0x1404e70c0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1404e70d8        *arg1 = &PlanDefinitionManagerClass::`vftable'{for `DatabaseObjectManagerClass<class PlanDefinitionClass>'}\n1404e70de        int64_t* rax = arg1[2]\n1404e70e2        void** i = *rax\n1404e70e8        if (i != rax)\n1404e70f0        int64_t rdx = i[6]\n1404e70f7        if (rdx != 0)\n1404e70ff        (*arg1)->__offset(0x18).q(arg1, rdx)\n1404e7102        i = *i\n1404e7109        do while (i != arg1[2])\n1404e710f        sub_140145610(&arg1[1])\n1404e7117        sub_1404e7010(arg1)\n1404e7120        if ((arg2 & 1) != 0)\n1404e712a        j_sub_1407864b8(arg1)\n1404e7141        return arg1",
+  "fetched_at": "2026-04-26T17:31:27Z"
+}

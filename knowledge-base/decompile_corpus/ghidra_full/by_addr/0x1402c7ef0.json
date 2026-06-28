@@ -1,0 +1,7 @@
+{
+  "addr": "0x1402c7ef0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined4 FUN_1402c7ef0(longlong param_1,ulonglong param_2)\n\n{\n  longlong lVar1;\n  ulonglong uVar2;\n  int iVar3;\n  longlong lVar4;\n  int iVar5;\n  ulonglong uVar6;\n  uint uVar7;\n  \n  uVar7 = ((uint)param_2 ^ 0xdeadbeef) & 0x7fffffff;\n  lVar1 = *(longlong *)(param_1 + 0x120c0);\n  iVar5 = (uVar7 % 0x1f31d) * 0x41a7 + (uVar7 / 0x1f31d) * -0xb14;\n  iVar3 = iVar5 + 0x7fffffff;\n  if (-1 < iVar5) {\n    iVar3 = iVar5;\n  }\n  uVar6 = (longlong)iVar3 & *(ulonglong *)(param_1 + 0x120e8);\n  lVar4 = *(longlong *)(*(longlong *)(param_1 + 0x120d0) + 8 + uVar6 * 0x10);\n  if (lVar4 != lVar1) {\n    uVar2 = *(ulonglong *)(lVar4 + 0x10);\n    if (param_2 < uVar2) {\n      do {\n        if (lVar4 == *(longlong *)(*(longlong *)(param_1 + 0x120d0) + uVar6 * 0x10)) {\n          return 0;\n        }\n        lVar4 = *(longlong *)(lVar4 + 8);\n      } while (param_2 < *(ulonglong *)(lVar4 + 0x10));\n      uVar2 = *(ulonglong *)(lVar4 + 0x10);\n    }\n    if (param_2 <= uVar2) {\n      if (lVar4 == 0) {\n        lVar4 = lVar1;\n      }\n      if (lVar4 != lVar1) {\n        return *(undefined4 *)(lVar4 + 0x18);\n      }\n    }\n  }\n  return 0;\n}",
+  "fetched_at": "2026-04-26T18:29:29Z"
+}

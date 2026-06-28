@@ -1,0 +1,7 @@
+{
+  "addr": "0x14012dae0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14012daf6        int32_t i\n14012daf0        i = *(*(arg1 + 0xf0) + sx.q(arg2) * 0x10)\n14012daf6        while (i != 0)\n14012dafb        if (i == arg3)\n14012db19        i.b = 1\n14012db1b        return i\n14012db0e        i = sx.d(*(*(**(arg1 + 0xe8) + 0x30) + (sx.q(i) << 1)))\n14012db16        i.b = 0\n14012db18        return i",
+  "fetched_at": "2026-04-26T17:10:07Z"
+}

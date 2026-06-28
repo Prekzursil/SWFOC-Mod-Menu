@@ -1,0 +1,7 @@
+{
+  "addr": "0x140718a10",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140718a16        struct SpecialAbilityClass::ClusterBombAbilityClass::VTable** result = arg1\n140718a19        sub_14048c780(arg1)\n140718a25        result[0x2f].d = 0x3f800000\n140718a2f        *result = &ClusterBombAbilityClass::`vftable'{for `SpecialAbilityClass'}\n140718a40        result[1] = &ClusterBombAbilityClass::`vftable'{for `RefCountClass'}\n140718a44        pdb_internal::Array<struct DBI1::SrcMap>::Array<struct DBI1::SrcMap>(&result[0x30])\n140718a4c        result[0x32].d = 1\n140718a5b        return result",
+  "fetched_at": "2026-04-26T17:27:58Z"
+}

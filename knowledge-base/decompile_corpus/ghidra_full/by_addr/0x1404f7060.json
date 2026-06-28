@@ -1,0 +1,7 @@
+{
+  "addr": "0x1404f7060",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "ulonglong FUN_1404f7060(longlong *param_1)\n\n{\n  longlong lVar1;\n  ulonglong uVar2;\n  ulonglong uVar3;\n  ulonglong uVar4;\n  longlong lVar5;\n  ulonglong uVar6;\n  float fVar7;\n  float fVar8;\n  float fVar9;\n  float fVar10;\n  float fVar11;\n  float fVar12;\n  float fVar13;\n  float fVar14;\n  \n  lVar5 = *param_1;\n  uVar3 = param_1[1] - lVar5 >> 3;\n  if (uVar3 == 0) {\n    return 0;\n  }\n  uVar2 = 0;\n  fVar13 = 0.0;\n  fVar7 = 0.0;\n  fVar9 = 0.0;\n  fVar11 = 0.0;\n  uVar4 = uVar2;\n  uVar6 = uVar2;\n  if (uVar3 != 0) {\n    do {\n      lVar1 = *(longlong *)(lVar5 + uVar6 * 8);\n      uVar6 = (ulonglong)((int)uVar6 + 1);\n      fVar7 = fVar7 + *(float *)(lVar1 + 0x78);\n      fVar9 = fVar9 + *(float *)(lVar1 + 0x7c);\n      fVar11 = fVar11 + *(float *)(lVar1 + 0x80);\n    } while (uVar6 < uVar3);\n    fVar14 = DAT_1407ffaf8 / (float)uVar3;\n    do {\n      uVar3 = *(ulonglong *)(lVar5 + uVar2 * 8);\n      fVar10 = *(float *)(uVar3 + 0x7c) - fVar14 * fVar9;\n      fVar8 = *(float *)(uVar3 + 0x78) - fVar14 * fVar7;\n      fVar12 = *(float *)(uVar3 + 0x80) - fVar14 * fVar11;\n      fVar8 = (float)FUN_140776d48(fVar8 * fVar8 + fVar10 * fVar10 + fVar12 * fVar12);\n      if ((uVar4 == 0) || (fVar8 < fVar13)) {\n        uVar4 = uVar3;\n        fVar13 = fVar8;\n      }\n      lVar5 = *param_1;\n      uVar2 = (ulonglong)((int)uVar2 + 1);\n    } while (uVar2 < (ulonglong)(param_1[1] - lVar5 >> 3));\n  }\n  return uVar4;\n}",
+  "fetched_at": "2026-04-26T18:19:01Z"
+}

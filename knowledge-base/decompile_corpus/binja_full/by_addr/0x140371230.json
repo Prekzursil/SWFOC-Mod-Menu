@@ -1,0 +1,7 @@
+{
+  "addr": "0x140371230",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140371243        if (arg2 != 0)\n140371250        int64_t rax_2 = (*(*arg2 + 0x10))(arg2, 6)\n140371256        if (rax_2 != 0)\n14037126b        return sub_140400370(rax_2, arg1, arg2) __tailcall\n140371283        data_140b15920\n140371290        return zx.q(*(arg1 + 0x890))",
+  "fetched_at": "2026-04-26T17:15:30Z"
+}

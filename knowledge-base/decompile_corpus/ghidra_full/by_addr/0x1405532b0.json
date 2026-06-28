@@ -1,0 +1,7 @@
+{
+  "addr": "0x1405532b0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall IdleDataPackClass::~IdleDataPackClass(IdleDataPackClass *this)\n\n{\n  *(undefined4 *)&this->PooledObjectClass<class_IdleDataPackClass,20,class_EmptyLockerClass> = 0;\n  this->vftablePtr = &vftable;\n  FUN_1402da8d0(&this->IdleDataPackClass_data);\n  return;\n}",
+  "fetched_at": "2026-04-26T18:38:16Z"
+}

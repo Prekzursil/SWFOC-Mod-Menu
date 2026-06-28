@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407021f0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1407021f6        struct SpecialAbilityClass::HeroAssassinAbilityClass::VTable** result = arg1\n1407021f9        sub_14048c780(arg1)\n140702205        result[0x2f].w = 0\n14070220e        *result = &HeroAssassinAbilityClass::`vftable'{for `SpecialAbilityClass'}\n140702218        result[1] = &HeroAssassinAbilityClass::`vftable'{for `RefCountClass'}\n14070221e        *(result + 0x17c) = 0\n140702228        *(result + 0x17a) = 0\n14070222f        result[8].w = 1\n140702235        *(result + 0x3c) = 8\n140702241        return result",
+  "fetched_at": "2026-04-26T17:27:04Z"
+}

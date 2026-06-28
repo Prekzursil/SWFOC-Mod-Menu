@@ -1,0 +1,7 @@
+{
+  "addr": "0x1402aa200",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1402aa217        *(arg1 + 0x460) = 0\n1402aa221        void* i = *(arg1 + 0x220)\n1402aa22e        if (i == arg1 + 0x218)\n1402aa2f7        return arg1 + 0x450\n1402aa250        void* rax_1 = *(i + 0x18)\n1402aa257        void* rbx_1 = rax_1 - 0x18\n1402aa25b        if (rax_1 == 0)\n1402aa25b        rbx_1 = nullptr\n1402aa268        if (rbx_1 != 0 && *(rbx_1 + 0x58) == arg2)\n1402aa274        int32_t rax_2 = *(arg1 + 0x460)\n1402aa279        int32_t rcx_2 = (*(arg1 + 0x464) * 2) s>> 1\n1402aa27d        if (rax_2 s>= rcx_2)\n1402aa291        int32_t rdx_2 = rcx_2 s/ 0xa\n1402aa296        if (rdx_2 s< 0xa)\n1402aa296        rdx_2 = 0xa\n1402aa2a2        sub_140047aa0(arg1 + 0x450, rdx_2 + rcx_2, 0, 1)\n1402aa2a7        rax_2 = *(arg1 + 0x460)\n1402aa2b1        *(*(arg1 + 0x458) + (sx.q(rax_2) << 3)) = rbx_1\n1402aa2b5        *(arg1 + 0x460) += 1\n1402aa2b8        i = *(i + 8)\n1402aa2bf        do while (i != arg1 + 0x218)\n1402aa2e3        return arg1 + 0x450",
+  "fetched_at": "2026-04-26T17:32:59Z"
+}

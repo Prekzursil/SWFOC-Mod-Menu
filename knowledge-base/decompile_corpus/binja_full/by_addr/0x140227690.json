@@ -1,0 +1,7 @@
+{
+  "addr": "0x140227690",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140227699        SOCKET s = *(arg1 + 0x10)\n1402276a1        if (s == -1)\n1402276a1        return \n1402276a3        closesocket(s)\n1402276a9        *(arg1 + 0x10) = -1\n1402276b1        int32_t temp0_1 = data_140a7e308\n1402276b1        data_140a7e308 -= 1\n1402276b8        if (temp0_1 == 1)\n1402276bf        return WSACleanup() __tailcall\n1402276cb        return ",
+  "fetched_at": "2026-04-26T17:29:23Z"
+}

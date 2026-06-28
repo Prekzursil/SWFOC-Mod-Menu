@@ -1,0 +1,7 @@
+{
+  "addr": "0x14042e200",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14042e207        return \"TacticalBuildObjectsBehaviorClass\"",
+  "fetched_at": "2026-04-26T17:26:46Z"
+}

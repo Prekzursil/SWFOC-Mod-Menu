@@ -1,0 +1,7 @@
+{
+  "addr": "0x1405c28e0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1405c28fc        if (arg2 != 0 && arg1 != 0)\n1405c2902        void* rax_1 = *(arg2 + 0x68)\n1405c2912        if (rax_1 == 0 || *(rax_1 + 0x108) == 0)\n1405c2918        void* rax_2 = *(arg1 + 0x68)\n1405c2928        if (rax_2 == 0 || *(rax_2 + 0x108) == 0)\n1405c2934        char rax_3 = sub_1402824f0(arg2, arg1)\n1405c293b        if (rax_3 == 0)\n1405c2941        uint64_t* rdi_1 = *(arg1 + 0x68)\n1405c2949        if (rdi_1 == *(arg2 + 0x68))\n1405c2951        if (data_140a7c475 != rax_3)\n1405c296e        int32_t rcx_2\n1405c296e        rcx_2.b = sub_1402823e0(arg2, sub_140294a40(&data_140a16fd0)) != 0\n1405c297d        return zx.q(rcx_2)\n1405c298f        if (sub_1402d8cf0(rdi_1, &data_140b16ae0) != 0)\n1405c29a0        return 3\n1405c29ab        int32_t rax_9 = sub_1402d8cf0(rdi_1, &data_140b16b20)\n1405c29b0        char temp0 = rax_9.b\n1405c29b0        rax_9.b = neg.b(rax_9.b)\n1405c29c1        return zx.q(sbb.d(rax_9, rax_9, temp0 != 0) + 5)\n1405c29d1        return 2",
+  "fetched_at": "2026-04-26T17:37:33Z"
+}

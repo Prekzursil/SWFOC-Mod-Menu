@@ -1,0 +1,7 @@
+{
+  "addr": "0x140795bec",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "double FUN_140795bec(double param_1,double param_2)\n\n{\n  return param_1 + param_2;\n}",
+  "fetched_at": "2026-04-26T18:53:16Z"
+}

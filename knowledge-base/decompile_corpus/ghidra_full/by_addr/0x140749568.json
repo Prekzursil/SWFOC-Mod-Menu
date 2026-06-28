@@ -1,0 +1,7 @@
+{
+  "addr": "0x140749568",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "wchar_t * FUN_140749568(char *param_1,undefined8 param_2,_Cvtvec *param_3)\n\n{\n  int iVar1;\n  wchar_t *pwVar2;\n  longlong lVar3;\n  size_t sVar4;\n  wchar_t *pwVar5;\n  longlong lVar6;\n  size_t sVar8;\n  char *pcVar9;\n  wchar_t local_res8 [4];\n  undefined8 local_res20;\n  undefined8 local_38 [2];\n  longlong lVar7;\n  \n  lVar3 = 0;\n  local_res20 = 0;\n  lVar6 = -1;\n  do {\n    lVar7 = lVar6;\n    lVar6 = lVar7 + 1;\n  } while (param_1[lVar6] != '\\0');\n  sVar8 = lVar7 + 2;\n  sVar4 = sVar8;\n  pcVar9 = param_1;\n  while ((sVar4 != 0 &&\n         (iVar1 = _Mbrtowc(local_res8,pcVar9,sVar4,(mbstate_t *)&local_res20,param_3), 0 < iVar1)))\n  {\n    lVar3 = lVar3 + 1;\n    pcVar9 = pcVar9 + iVar1;\n    sVar4 = sVar4 - (longlong)iVar1;\n  }\n  lVar3 = lVar3 + 1;\n  pwVar2 = (wchar_t *)_calloc_base(lVar3,2);\n  if (pwVar2 != (wchar_t *)0x0) {\n    local_38[0] = 0;\n    pwVar5 = pwVar2;\n    while ((lVar3 != 0 &&\n           (iVar1 = _Mbrtowc(pwVar5,param_1,sVar8,(mbstate_t *)local_38,param_3), 0 < iVar1))) {\n      pwVar5 = pwVar5 + 1;\n      param_1 = param_1 + iVar1;\n      lVar3 = lVar3 + -1;\n    }\n    *pwVar5 = L'\\0';\n    return pwVar2;\n  }\n                    /* WARNING: Subroutine does not return */\n  FUN_1407408bc();\n}",
+  "fetched_at": "2026-04-26T18:05:46Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x140244cc0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_140244cc0(void)\n\n{\n  longlong lVar1;\n  longlong *plVar2;\n  longlong *plVar3;\n  longlong *plVar4;\n  \n  plVar4 = (longlong *)*DAT_140b09d88;\n  plVar2 = DAT_140b09d88;\n  if (plVar4 != DAT_140b09d88) {\n    do {\n      plVar3 = *(longlong **)plVar4[6];\n      if (plVar3 != (longlong *)plVar4[6]) {\n        do {\n          lVar1 = plVar3[2];\n          if (*(char *)(lVar1 + 0x123) == '\\0') {\n            *(undefined1 *)(lVar1 + 0x124) = 0;\n            FUN_1402488e0(lVar1);\n          }\n          else {\n            plVar2 = plVar4 + 2;\n            if (0xf < (ulonglong)plVar4[5]) {\n              plVar2 = (longlong *)*plVar2;\n            }\n            FUN_140025760(\"LuaScript::Free_Script_Pool -- Script: %s:%8.8X is still in use.\\n\",\n                          plVar2,lVar1);\n            *(undefined1 *)(lVar1 + 0x124) = 0;\n          }\n          plVar3 = (longlong *)*plVar3;\n          plVar2 = DAT_140b09d88;\n        } while (plVar3 != (longlong *)plVar4[6]);\n      }\n      plVar4 = (longlong *)*plVar4;\n    } while (plVar4 != plVar2);\n  }\n  FUN_140249020(&DAT_140b09d80);\n  return;\n}",
+  "fetched_at": "2026-04-26T18:10:11Z"
+}

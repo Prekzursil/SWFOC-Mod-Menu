@@ -1,0 +1,7 @@
+{
+  "addr": "0x1405d78a0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall TacticalBuildEventClass::vfunction5(TacticalBuildEventClass *this)\n\n{\n  longlong lVar1;\n  longlong *plVar2;\n  longlong lVar3;\n  \n  FUN_140294bc0(&DAT_140a16fd0,\n                *(undefined4 *)((longlong)&(this->TacticalBuildEventClass_data).offset_0x4 + 4));\n  lVar1 = FUN_140408130(&DAT_140b2f020,\n                        *(undefined4 *)&(this->TacticalBuildEventClass_data).offset_0x4);\n  if (((lVar1 != 0) &&\n      (plVar2 = (longlong *)\n                FUN_1402aca60(*(undefined8 *)(DAT_140b15418 + 0x18),\n                              (this->TacticalBuildEventClass_data).offset_0x0),\n      plVar2 != (longlong *)0x0)) &&\n     (lVar3 = (**(code **)(*plVar2 + 0x10))(plVar2,0x29), lVar3 != 0)) {\n    FUN_14042dbd0(lVar3,plVar2,lVar1,\n                  *(undefined4 *)((longlong)&(this->TacticalBuildEventClass_data).offset_0x4 + 4),1,\n                  1);\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T18:45:38Z"
+}

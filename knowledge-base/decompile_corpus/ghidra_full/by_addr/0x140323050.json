@@ -1,0 +1,7 @@
+{
+  "addr": "0x140323050",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nDynamicVectorClass<class_WeatherSFXEventClass> * __thiscall\nDynamicVectorClass<class_WeatherSFXEventClass>::scalar_deleting_destructor\n          (DynamicVectorClass<class_WeatherSFXEventClass> *this,uint param_1)\n\n{\n  ~DynamicVectorClass<class_WeatherSFXEventClass>(this);\n  if ((param_1 & 1) != 0) {\n    thunk_FUN_1407864b8(this,0x18);\n  }\n  return this;\n}\n\n",
+  "fetched_at": "2026-04-26T17:00:29Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x140566f50",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "ulonglong FUN_140566f50(longlong *param_1)\n\n{\n  longlong lVar1;\n  char cVar2;\n  int iVar3;\n  int iVar4;\n  longlong lVar5;\n  ulonglong uVar6;\n  float local_res8 [2];\n  \n  if (param_1[5] != 0) {\n    cVar2 = FUN_14039a390();\n    if (cVar2 != '\\0') {\n      uVar6 = (**(code **)(*param_1 + 0x140))(param_1);\n      return uVar6;\n    }\n    iVar3 = DAT_140b153fc;\n    if (DAT_140b15418 != (longlong *)0x0) {\n      iVar3 = (**(code **)(*DAT_140b15418 + 0xe0))();\n    }\n    lVar5 = param_1[5];\n    lVar1 = *(longlong *)(lVar5 + 0x2b0);\n    if (((lVar1 != 0) && (*(char *)(lVar1 + 0x348) != -1)) && (iVar3 == 2)) {\n      lVar5 = lVar1;\n    }\n    lVar1 = *(longlong *)(lVar5 + 0xa8);\n    uVar6 = (**(code **)(*param_1 + 0x140))(param_1);\n    local_res8[0] = 0.0;\n    if (lVar1 == 0) {\n      return uVar6;\n    }\n    lVar1 = *(longlong *)(lVar1 + 0x1f0);\n    if (lVar1 == 0) {\n      return uVar6;\n    }\n    iVar4 = FUN_1404160a0(lVar1,lVar5,0,local_res8);\n    if (iVar4 != 0) {\n      return (ulonglong)(uint)(local_res8[0] + (float)uVar6);\n    }\n    if (iVar3 == 1) {\n      if (*(char *)(param_1[5] + 0x33d) != -1) {\n        return uVar6;\n      }\n    }\n    else if (iVar3 == 2) {\n      return uVar6;\n    }\n  }\n  return 0;\n}",
+  "fetched_at": "2026-04-26T18:39:36Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x140604970",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "byte __thiscall\nPlayerWrapper::vfunction15(PlayerWrapper *this,undefined8 param_1,undefined8 param_2)\n\n{\n  byte bVar1;\n  byte bVar2;\n  byte bVar3;\n  \n  bVar1 = FUN_14021ffa0(param_2,0);\n  bVar2 = FUN_1402200b0(param_2,&(this->RefCountClass_data).field_0x20,8);\n  bVar3 = FUN_140220030(param_2);\n  return bVar3 & bVar1 & 1 & bVar2;\n}",
+  "fetched_at": "2026-04-26T17:25:15Z"
+}

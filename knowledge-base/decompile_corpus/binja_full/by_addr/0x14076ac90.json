@@ -1,0 +1,7 @@
+{
+  "addr": "0x14076ac90",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14076ac9b        SetUnhandledExceptionFilter(nullptr)\n14076aca4        UnhandledExceptionFilter(arg1)\n14076acbd        noreturn TerminateProcess(GetCurrentProcess(), 0xc0000409) __tailcall",
+  "fetched_at": "2026-04-26T17:30:20Z"
+}

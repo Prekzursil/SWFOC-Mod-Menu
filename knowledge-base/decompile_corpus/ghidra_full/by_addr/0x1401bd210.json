@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401bd210",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_1401bd210(undefined8 *param_1,undefined8 *param_2)\n\n{\n  undefined1 local_118 [272];\n  \n  FUN_1401bde60(\"--------------------------------------\\r\\n\");\n  FUN_1401bde60(\"ArtProcessClass::Copy_Maps\\r\\n\");\n  FUN_1401bde60(\"--------------------------------------\\r\\n\\r\\n\");\n  if (0xf < (ulonglong)param_2[3]) {\n    param_2 = (undefined8 *)*param_2;\n  }\n  if (0xf < (ulonglong)param_1[3]) {\n    param_1 = (undefined8 *)*param_1;\n  }\n  FUN_140048ec0(local_118,\"xcopy /D /C /F /Y /R /I \\\"%s\\\" \\\"%s\\\"\",param_1,param_2);\n  FUN_1401bdd40(local_118);\n  return;\n}",
+  "fetched_at": "2026-04-26T17:45:47Z"
+}

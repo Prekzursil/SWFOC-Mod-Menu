@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407ddfb0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1407ddfb0        return RtlUnwind(TargetFrame, TargetIp, ExceptionRecord, ReturnValue) __tailcall",
+  "fetched_at": "2026-04-26T17:34:09Z"
+}

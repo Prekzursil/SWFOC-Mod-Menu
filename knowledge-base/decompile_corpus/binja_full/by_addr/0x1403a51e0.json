@@ -1,0 +1,7 @@
+{
+  "addr": "0x1403a51e0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1403a51fc        int64_t* result = sub_140294a40(&data_140a16fd0)\n1403a5201        int32_t i_1 = 0\n1403a5206        if (arg2 == result)\n1403a5214        if (data_140b1574e == 0)\n1403a5216        int32_t i = 0\n1403a521f        if (arg1[0x51].b s> 0)\n1403a522f        int64_t* rcx_1 = *(arg1[0x4f] + (sx.q(i.b) << 3))\n1403a5236        result = (*(*rcx_1 + 0xa0))(rcx_1, arg2)\n1403a523e        if (result.b == 0)\n1403a52bf        if (*(arg1 + 0x39f) != 0)\n1403a52c1        *(arg1 + 0x39f) = 0\n1403a52cf        if (arg1[0x54] != 0)\n1403a52d4        result = sub_1403a5840(arg1)\n1403a52bf        goto label_1403a5273\n1403a5240        result = zx.q(sx.d(arg1[0x51].b))\n1403a5247        i += 1\n1403a524b        do while (i s< result.d)\n1403a5254        if (*(arg1 + 0x39f) == 0)\n1403a5256        *(arg1 + 0x39f) = 1\n1403a5264        if (arg1[0x54] != 0)\n1403a5269        result = sub_14038c730(arg1)\n1403a5273        label_1403a5273:\n1403a527a        if (arg1[0x51].b s> 0)\n1403a528e        int64_t* rcx_4 = *(arg1[0x4f] + (sx.q(i_1.b) << 3))\n1403a5295        (*(*rcx_4 + 0xa8))(rcx_4, arg2)\n1403a529b        result = zx.q(sx.d(arg1[0x51].b))\n1403a52a2        i_1 += 1\n1403a52a6        do while (i_1 s< result.d)\n1403a52b7        return result",
+  "fetched_at": "2026-04-26T17:24:02Z"
+}

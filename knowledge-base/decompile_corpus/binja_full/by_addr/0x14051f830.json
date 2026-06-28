@@ -1,0 +1,7 @@
+{
+  "addr": "0x14051f830",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14051f83f        int64_t* rdi = arg1[1]\n14051f84d        if (rdi == arg1[2])\n14051f887        return sub_1405145e0(arg1, rdi, arg2) __tailcall\n14051f852        sub_1404c3d60(rdi, arg2)\n14051f857        int32_t result = arg2[2].d\n14051f85a        rdi[2].d = result\n14051f85d        arg1[1] += 0x18\n14051f871        return result",
+  "fetched_at": "2026-04-26T17:32:58Z"
+}

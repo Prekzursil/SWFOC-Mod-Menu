@@ -1,0 +1,7 @@
+{
+  "addr": "0x1403b7fd0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "longlong __thiscall LandModeClass::vfunction50(LandModeClass *this)\n\n{\n  return (longlong)\n         ((this->LandModeClass_data).offset_0x3a0 - (this->LandModeClass_data).offset_0x398) >> 3;\n}",
+  "fetched_at": "2026-04-26T17:34:59Z"
+}

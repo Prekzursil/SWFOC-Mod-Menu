@@ -1,0 +1,7 @@
+{
+  "addr": "0x14053b720",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "AIPlanetBuildQueueClass * __thiscall\nAIPlanetBuildQueueClass::scalar_deleting_destructor(AIPlanetBuildQueueClass *this,uint param_1)\n\n{\n  int iVar1;\n  undefined **ppuVar2;\n  undefined8 *puVar3;\n  undefined1 local_res8 [8];\n  \n                    /* inlined destructor: AIPlanetBuildQueueClass::~AIPlanetBuildQueueClass */\n  this->vftablePtr = &vftable;\n  ppuVar2 = (this->SignalListenerClass_data).offset_0x0;\n  iVar1 = *(int *)(ppuVar2 + 6);\n  while (iVar1 != 0) {\n    puVar3 = (undefined8 *)FUN_14020ac80(ppuVar2,local_res8);\n    if (puVar3 != (undefined8 *)0x0) {\n      (**(code **)*puVar3)(puVar3,1);\n    }\n    ppuVar2 = (this->SignalListenerClass_data).offset_0x0;\n    iVar1 = *(int *)(ppuVar2 + 6);\n  }\n  if (ppuVar2 != (undefined **)0x0) {\n    (**(code **)(*ppuVar2 + 8))(ppuVar2,1);\n  }\n  FUN_140369ff0(&(this->SignalListenerClass_data).offset_0x28);\n  ppuVar2 = (this->SignalListenerClass_data).offset_0x8;\n  if (ppuVar2 != (undefined **)0x0) {\n    (**(code **)(ppuVar2[6] + 8))(ppuVar2 + 6);\n  }\n                    /* inlined destructor: SignalListenerClass::~SignalListenerClass */\n  this->vftablePtr = (AIPlanetBuildQueueClass_vftable *)&SignalListenerClass::vftable;\n  MultiLinkedListMember::~MultiLinkedListMember((MultiLinkedListMember *)this);\n  if ((param_1 & 1) != 0) {\n    thunk_FUN_1407864b8(this,0x58);\n  }\n  return this;\n}",
+  "fetched_at": "2026-04-26T18:34:39Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x140647380",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nBeaconBehaviorClass * __thiscall BeaconBehaviorClass::BeaconBehaviorClass(BeaconBehaviorClass *this)\n\n{\n  BehaviorClass::BehaviorClass((BehaviorClass *)this);\n  *(undefined4 *)&this->field_0x40 = 0xffffffff;\n  this->vftablePtr = &vftable;\n  this->vftablePtr = &vftable;\n  this->vftablePtr = &vftable;\n  return this;\n}\n\n",
+  "fetched_at": "2026-04-26T17:04:09Z"
+}

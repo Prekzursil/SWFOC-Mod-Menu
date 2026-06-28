@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407bfed0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "int * FUN_1407bfed0(longlong param_1,int param_2)\n\n{\n  int *piVar1;\n  double dVar2;\n  int local_res18;\n  int iStackX_1c;\n  \n  if ((0 < param_2) && (param_2 <= *(int *)(param_1 + 0x38))) {\n    return (int *)(*(longlong *)(param_1 + 0x18) + -0x10 + (longlong)param_2 * 0x10);\n  }\n  dVar2 = (double)param_2 + DAT_140854f30;\n  iStackX_1c = (int)((ulonglong)dVar2 >> 0x20);\n  local_res18 = SUB84(dVar2,0);\n  piVar1 = (int *)(*(longlong *)(param_1 + 0x20) +\n                  ((ulonglong)(uint)(iStackX_1c + local_res18) %\n                  (ulonglong)((1 << (*(byte *)(param_1 + 0xb) & 0x1f)) - 1U | 1)) * 0x28);\n  while ((*piVar1 != 3 || (*(double *)(piVar1 + 2) != (double)param_2))) {\n    piVar1 = *(int **)(piVar1 + 8);\n    if (piVar1 == (int *)0x0) {\n      return &DAT_1408fd750;\n    }\n  }\n  return piVar1 + 4;\n}",
+  "fetched_at": "2026-04-26T18:56:44Z"
+}

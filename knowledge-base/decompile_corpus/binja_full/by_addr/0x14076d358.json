@@ -1,0 +1,7 @@
+{
+  "addr": "0x14076d358",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14076d358        arg1[2] = 0\n14076d364        *arg1 = &std::__non_rtti_object::`vftable'{for `std::bad_typeid'}\n14076d36a        arg1[1] = arg2\n14076d36e        return arg1",
+  "fetched_at": "2026-04-26T17:30:27Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407a89b0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1407a89c0        *arg1 = &alLaserBeam::`vftable'{for `alRenderable'}\n1407a89ca        arg1[2] = &alLaserBeam::`vftable'{for `MultiLinkedListMember'}\n1407a89d5        arg1[4] = &alLaserBeam::`vftable'{for `CullObjectClass'}\n1407a89d9        int64_t* rcx = arg1[0x20]\n1407a89e3        if (rcx != 0)\n1407a89e8        (*(*rcx + 8))(rcx)\n1407a89eb        arg1[0x20] = 0\n1407a89ff        sub_1400e5160(&data_140b3cc38, 0)\n1407a8a04        int64_t* rcx_1 = arg1[0x20]\n1407a8a0e        if (rcx_1 != 0)\n1407a8a13        (*(*rcx_1 + 8))(rcx_1)\n1407a8a1e        return sub_14013f770(arg1) __tailcall",
+  "fetched_at": "2026-04-26T17:32:36Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x1400a3cb0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1400a3cb6        if (arg1 != 0)\n1400a3cbb        if (arg1 == 1)\n1400a3cd8        if (data_140b30690 != 0)\n1400a3ce1        sub_14044f130()\n1400a3ced        char rax_1\n1400a3ced        char rdx_1\n1400a3ced        rax_1, rdx_1 = sub_14028af60(&data_140b153e0)\n1400a3cf4        if (rax_1 == 0)\n1400a3d70        int64_t* rcx_8 = data_140b15418\n1400a3d7a        int32_t rax_10\n1400a3d7a        if (rcx_8 != 0)\n1400a3d87        rax_10, rdx_1 = (*(*rcx_8 + 0xe0))(rcx_8)\n1400a3d7c        rax_10 = data_140b153fc\n1400a3d8f        if (rax_10 == 0)\n1400a3d98        sub_140055690(&data_140a10b18, rdx_1)\n1400a3d9d        sub_1400a3be0()\n1400a3da8        return sub_14005f6b0(1) __tailcall\n1400a3d0d        if (timeGetTime() - data_140b0a370 - data_140a7bec0 u> 0x7530)\n1400a3d1d        sub_1404994c0(sub_140294a70(&data_140a16fd0))\n1400a3d28        return sub_14005f6b0(0) __tailcall\n1400a3d37        struct RefCountClass::EventClass::VTable** rax_7 = operator new(0x48)\n1400a3d3f        struct ScheduledEventClass::QuitGameEventClass::VTable** rbx\n1400a3d3f        if (rax_7 == 0)\n1400a3d4e        rbx = nullptr\n1400a3d49        rbx = sub_1404993f0(rax_7)\n1400a3d6b        return sub_1403b01f0(&data_140b2ed18, rbx) __tailcall\n1400a3cc0        if (arg1 != 3)\n1400a3ccf        return \n1400a3cc6        return sub_1400a2fe0() __tailcall",
+  "fetched_at": "2026-04-26T16:58:55Z"
+}

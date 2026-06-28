@@ -1,0 +1,7 @@
+{
+  "addr": "0x14026edd0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14026ede0        *arg1 = &DrawPrimitiveClass::`vftable'\n14026ede3        void* rcx = arg1[7]\n14026edea        if (rcx != 0)\n14026edef        sub_14025c490(rcx, arg1)\n14026edf9        struct DrawPrimitiveClass::VTable** arg_8 = arg1\n14026ee05        sub_1400474a0(&data_140a16ce8, &arg_8)\n14026ee13        return sub_1401f9440() __tailcall",
+  "fetched_at": "2026-04-26T17:31:44Z"
+}

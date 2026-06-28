@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407b8d80",
+  "tool": "ghidra",
+  "fact_id": "api_lua_error",
+  "body": "\nundefined8 FUN_1407b8d80(void)\n\n{\n  FUN_1407babe0();\n  return 0;\n}\n\n",
+  "fetched_at": "2026-04-26T16:44:23Z"
+}

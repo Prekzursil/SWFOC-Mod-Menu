@@ -1,0 +1,7 @@
+{
+  "addr": "0x140653340",
+  "tool": "binary_ninja",
+  "fact_id": "rva_ai_tactical_perception_grid_ctor",
+  "body": "140653349        *arg1 = &TacticalPerceptionGridClass::`vftable'{for `SignalListenerClass'}\n14065334f        __builtin_memset(&arg1[1], 0, 0xbc)\n1406533c9        arg1[0x19] = 0\n1406533d0        return arg1",
+  "fetched_at": "2026-04-26T16:44:07Z"
+}

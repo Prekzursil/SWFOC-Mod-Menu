@@ -1,0 +1,7 @@
+{
+  "addr": "0x14062bea0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14062beab        struct LocomotorCommonClass::LandTeamInfantryLocomotorBehaviorClass::VTable** result = operator new(0x40)\n14062beb6        if (result == 0)\n14062beee        return result\n14062bebb        sub_14042b9f0(result)\n14062bec7        *result = &LandTeamInfantryLocomotorBehaviorClass::`vftable'{for `LocomotorCommonClass'}\n14062bed1        result[1] = &LandTeamInfantryLocomotorBehaviorClass::`vftable'{for `RefCountClass'}\n14062bedc        result[3] = &LandTeamInfantryLocomotorBehaviorClass::`vftable'{for `SignalListenerClass'}\n14062bee8        return result",
+  "fetched_at": "2026-04-26T17:24:05Z"
+}

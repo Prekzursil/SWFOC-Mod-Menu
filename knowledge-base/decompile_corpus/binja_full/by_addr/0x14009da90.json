@@ -1,0 +1,7 @@
+{
+  "addr": "0x14009da90",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14009da9a        int64_t rdi = data_140a61ea0\n14009daa1        int64_t* rbx = data_140a61e98\n14009daab        if (rbx == rdi)\n14009dae3        data_140a61ea0 = rbx\n14009daf4        return \n14009dabc        sub_14001eb00(rbx)\n14009dac1        rbx = &rbx[6]\n14009dac8        do while (rbx != rdi)\n14009dad1        data_140a61ea0 = data_140a61e98\n14009dae2        return ",
+  "fetched_at": "2026-04-26T16:58:43Z"
+}

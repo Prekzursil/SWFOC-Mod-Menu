@@ -1,0 +1,7 @@
+{
+  "addr": "0x14032a840",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14032a84a        int32_t arg_18 = arg3\n14032a864        int64_t rax = sub_140294bc0(&data_140a16fd0, *(arg2 + 0x58))\n14032a87f        int64_t* var_28\n14032a87f        sub_14001e680(&var_28, *(arg2 + 0x298) + 0xf8)\n14032a88a        int64_t* rdx_3 = &var_28\n14032a896        int64_t var_10\n14032a896        if (var_10 u>= 0x10)\n14032a896        rdx_3 = var_28\n14032a89c        sub_140327b10(\"STORY - POLITICAL CONTROL %s\\r\\n\", rdx_3)\n14032a8b9        int64_t result = sub_14032e5f0(arg1, 0xb, rax, arg2, &arg_18)\n14032a8c7        if (var_10 u< 0x10)\n14032a906        return result\n14032a8c9        int64_t* rcx_2 = var_28\n14032a8d1        int64_t* rax_1 = rcx_2\n14032a8db        if (var_10 + 1 u>= 0x1000)\n14032a8dd        rcx_2 = rcx_2[-1]\n14032a8f0        if (rax_1 - rcx_2 - 8 u> 0x1f)\n14032a907        _invalid_parameter_noinfo_noreturn()\n14032a907        noreturn\n14032a8f2        return j_sub_1407864b8(rcx_2)",
+  "fetched_at": "2026-04-26T17:01:48Z"
+}

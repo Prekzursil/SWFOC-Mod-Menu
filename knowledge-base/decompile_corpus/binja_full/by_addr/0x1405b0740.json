@@ -1,0 +1,7 @@
+{
+  "addr": "0x1405b0740",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1405b0751        struct IXMLLoadableClass::SpecialAbilityClass::VTable** result = arg1\n1405b0754        *arg1 = &TacticalBribeAbilityClass::`vftable'{for `SpecialAbilityClass'}\n1405b0760        arg1[1] = &TacticalBribeAbilityClass::`vftable'{for `RefCountClass'}\n1405b076b        sub_1404c47c0(&arg1[0x37])\n1405b0777        sub_1404c47c0(&result[0x35])\n1405b0783        sub_1404c4770(&result[0x32])\n1405b078f        sub_1404c4770(&result[0x30])\n1405b0797        sub_14048c8d0(result)\n1405b079f        if ((arg2 & 1) != 0)\n1405b07a9        j_sub_1407864b8(result)\n1405b07bb        return result",
+  "fetched_at": "2026-04-26T17:37:15Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x140649200",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140649211        arg1[0x12].d = arg6\n14064921c        *(arg1 + 0xda) = arg7\n140649222        int64_t rax_2 = *arg1\n140649225        arg1[0x11] = arg2\n140649231        arg1[0x13] = arg3\n140649238        uint64_t r8 = zx.q(arg1[1].d)\n14064923c        arg1[0x14] = arg4\n140649243        arg1[5].b = 1\n140649247        *(arg1 + 0xc) = 0x11\n14064924e        int64_t result = (*(rax_2 + 8))(arg5, 2, r8)\n140649255        int32_t rdi = 0x32\n14064925a        while (arg1[5].b != 0)\n140649270        int32_t temp0_1 = rdi\n140649270        rdi -= 1\n140649273        if (temp0_1 - 1 s< 0)\n140649273        break\n140649284        arg1[5].b = 0\n140649288        (*(*arg1 + 8))(arg1, 3, zx.q(arg1[1].d))\n14064928e        arg1[1].d = *(arg1 + 0xc)\n140649291        uint32_t rax_5 = timeGetTime()\n140649297        uint64_t r8_2 = zx.q(arg1[1].d)\n1406492b1        int64_t rax_7 = *arg1\n1406492b8        *(arg1 + 0x2c) = float.s(zx.q(rax_5 - data_140a7bec0)) / 1000f\n1406492bd        result = (*(rax_7 + 8))(arg1, 2, r8_2)\n1406492d5        return result",
+  "fetched_at": "2026-04-26T17:04:38Z"
+}

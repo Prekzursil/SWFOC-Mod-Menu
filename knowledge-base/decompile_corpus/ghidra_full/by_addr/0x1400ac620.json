@@ -1,0 +1,7 @@
+{
+  "addr": "0x1400ac620",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nvoid FUN_1400ac620(longlong param_1)\n\n{\n  int iVar1;\n  size_t sVar2;\n  void *_Buf1;\n  char *_Buf2;\n  int iVar3;\n  int local_res10;\n  undefined4 local_res14;\n  \n  _Buf2 = \"IDC_EDIT_DEPLOY\";\n  iVar3 = 0x18;\n  do {\n    sVar2 = 0xffffffffffffffff;\n    do {\n      sVar2 = sVar2 + 1;\n    } while (_Buf2[sVar2] != '\\0');\n    _Buf1 = (void *)(param_1 + 8);\n    if (0xf < *(ulonglong *)(param_1 + 0x20)) {\n      _Buf1 = *(void **)(param_1 + 8);\n    }\n    if (*(size_t *)(param_1 + 0x18) == sVar2) {\n      iVar1 = memcmp(_Buf1,_Buf2,*(size_t *)(param_1 + 0x18));\n      if (iVar1 == 0) {\n        local_res10 = *(int *)(param_1 + 0x2c);\n        local_res14 = *(undefined4 *)(param_1 + 0x34);\n        if (2 < local_res10 - 0x10U) {\n          FUN_1400ac6d0(iVar3,&local_res10);\n        }\n      }\n    }\n    iVar3 = iVar3 + 1;\n    _Buf2 = _Buf2 + 0x20;\n  } while (iVar3 < 0x2e);\n  return;\n}\n\n",
+  "fetched_at": "2026-04-26T16:59:13Z"
+}

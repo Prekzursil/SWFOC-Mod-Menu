@@ -1,0 +1,7 @@
+{
+  "addr": "0x140581c60",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140581c70        int64_t* rcx = *(arg1 + 0x60)\n140581c77        if (rcx == 0)\n140581c91        return sub_140022730(arg2, \"NULL\", zx.q((rcx + 4).d)) __tailcall\n140581c9b        void** rax_2 = sub_1403973b0(rcx) + 0xf8\n140581ca6        if (rax_2[3] u>= 0x10)\n140581ca8        *rax_2\n140581cc6        return sub_140200cd0(arg2, \"GameObject: %8.8X, Type: %s\", *(arg1 + 0x60)) __tailcall",
+  "fetched_at": "2026-04-26T17:35:28Z"
+}

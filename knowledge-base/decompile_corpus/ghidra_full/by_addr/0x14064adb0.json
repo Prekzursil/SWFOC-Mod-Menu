@@ -1,0 +1,7 @@
+{
+  "addr": "0x14064adb0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nundefined8 FUN_14064adb0(longlong param_1,float param_2)\n\n{\n  undefined8 uVar1;\n  float fVar2;\n  float fVar3;\n  uint uVar4;\n  \n  fVar2 = (float)FUN_140692780(*(undefined8 *)\n                                (*(longlong *)(*(longlong *)(param_1 + 0xa0) + 0xf0) + 0x88));\n  fVar3 = (float)FUN_140692ca0(*(undefined8 *)\n                                (*(longlong *)(*(longlong *)(param_1 + 0xa0) + 0xf0) + 0x88));\n  if (-1 < (int)(fVar3 - param_2)) {\n    fVar2 = (float)FUN_140692ca0(*(undefined8 *)\n                                  (*(longlong *)(*(longlong *)(param_1 + 0xa0) + 0xf0) + 0x88));\n    if (fVar2 <= param_2) {\n      param_2 = fVar2;\n    }\n    uVar4 = (uint)param_2 ^ DAT_140800860;\n    uVar1 = FUN_1405f7020(*(undefined8 *)(*(longlong *)(param_1 + 0xa0) + 0xf0));\n    FUN_14027f370(uVar1,uVar4,0);\n    FUN_1406939c0(*(undefined8 *)(*(longlong *)(*(longlong *)(param_1 + 0xa0) + 0xf0) + 0x88),\n                  param_2);\n    return 1;\n  }\n  if (fVar2 < param_2) {\n    FUN_140693170(*(undefined8 *)(*(longlong *)(*(longlong *)(param_1 + 0xa0) + 0xf0) + 0x88),\n                  param_2 - fVar2);\n  }\n  return 0;\n}\n\n",
+  "fetched_at": "2026-04-26T17:04:50Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x140687e80",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined8 __thiscall TerrainCollisionClass::vfunction7_for_SignalListenerClass(void)\n\n{\n  return (ulonglong)DAT_1408007e0;\n}",
+  "fetched_at": "2026-04-26T17:14:58Z"
+}

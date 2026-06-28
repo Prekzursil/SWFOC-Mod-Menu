@@ -1,0 +1,7 @@
+{
+  "addr": "0x140390d90",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140390d96        struct BaseDataPackClass::RadarMapDataPackClass::VTable** rax = *(arg1 + 0x200)\n140390da3        if (rax == 0)\n140390da8        rax = operator new(zx.q((&rax[4]).d))\n140390db0        if (rax != 0)\n140390db5        struct BaseDataPackClass::RadarMapDataPackClass::VTable** rax_1 = sub_140532990(rax)\n140390dba        *(arg1 + 0x200) = rax_1\n140390dc6        return rax_1\n140390dc7        *(arg1 + 0x200) = rax\n140390dd3        return rax",
+  "fetched_at": "2026-04-26T17:21:59Z"
+}

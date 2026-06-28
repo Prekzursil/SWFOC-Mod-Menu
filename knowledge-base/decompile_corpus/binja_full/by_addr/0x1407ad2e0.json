@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407ad2e0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1407ad2ed        struct alRenderable::alSplineRenderer::VTable** result = arg1\n1407ad2f0        sub_14013f590(arg1)\n1407ad2fc        *result = &alSplineRenderer::`vftable'{for `alRenderable'}\n1407ad306        result[2] = &alSplineRenderer::`vftable'{for `MultiLinkedListMember'}\n1407ad311        result[4] = &alSplineRenderer::`vftable'{for `CullObjectClass'}\n1407ad315        result[0x19] = arg2\n1407ad31f        if (arg2 != 0)\n1407ad327        (**arg2)(arg2)\n1407ad32c        result[0x1d].d = 0xffffffff\n1407ad340        return result",
+  "fetched_at": "2026-04-26T17:32:43Z"
+}

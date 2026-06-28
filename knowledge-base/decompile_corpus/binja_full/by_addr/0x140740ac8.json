@@ -1,0 +1,7 @@
+{
+  "addr": "0x140740ac8",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140740ad5        int32_t temp0 = data_140a44b48\n140740ad5        data_140a44b48 += 1\n140740adc        if (temp0 == 0xffffffff)\n140740ade        void* i = &data_140b3b480\n140740afb        while (i != &data_140b3b5c0)\n140740ae8        _Mtxinit(i)\n140740af4        i += 0x28\n140740b0a        return arg1",
+  "fetched_at": "2026-04-26T17:29:16Z"
+}

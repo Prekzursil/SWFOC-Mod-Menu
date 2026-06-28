@@ -1,0 +1,7 @@
+{
+  "addr": "0x140484c30",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140484c44        *arg1 = &DatabaseObjectManagerClass<class DifficultyAdjustmentClass>::`vftable'{for `DatabaseUIntConversionClass'}\n140484c47        int64_t* rax = arg1[2]\n140484c4b        void** i = *rax\n140484c51        if (i != rax)\n140484c53        int64_t rdx_1 = i[6]\n140484c5a        if (rdx_1 != 0)\n140484c62        (*arg1)->vFunc_3(arg1, rdx_1)\n140484c62        noreturn\n140484c65        i = *i\n140484c6c        do while (i != arg1[2])\n140484c72        sub_140145610(&arg1[1])\n140484c7b        sub_1401450b0(&arg1[1])\n140484c8d        return sub_14023af60(arg1) __tailcall",
+  "fetched_at": "2026-04-26T17:28:31Z"
+}

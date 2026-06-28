@@ -1,0 +1,7 @@
+{
+  "addr": "0x140711290",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1407112a3        *arg1 = &VehicleThiefAbilityClass::`vftable'{for `SpecialAbilityClass'}\n1407112b0        arg1[1] = &VehicleThiefAbilityClass::`vftable'{for `RefCountClass'}\n1407112b6        *(arg1 + 0x17c) = 0\n1407112bd        arg1[0x2f].d = 0\n1407112c3        sub_14048c8d0(arg1)\n1407112cb        if ((arg2 & 1) != 0)\n1407112d5        j_sub_1407864b8(arg1)\n1407112e7        return arg1",
+  "fetched_at": "2026-04-26T17:27:42Z"
+}

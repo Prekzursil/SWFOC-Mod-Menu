@@ -1,0 +1,7 @@
+{
+  "addr": "0x140372320",
+  "tool": "binary_ninja",
+  "fact_id": "rva_get_max_front_shield",
+  "body": "140372336        if (arg2 == 0)\n140372338        int512_t zmm0\n140372338        zmm0.o = *(arg1 + 0xdd0)\n140372350        return zmm0\n140372360        void var_178\n140372360        sub_140535cb0(&var_178)\n140372374        int128_t zmm6\n140372374        if (sub_140395c70(arg2, &var_178) != 0)\n140372387        struct ComparisonOp<float>::GreaterThan<float>::VTable* const arg_10 = &GreaterThan<float>::`vftable'{for `ComparisonOp<float>'}\n1403723a6        struct CalculationOp<float>::Plus<float>::VTable* const arg_18 = &Plus<float>::`vftable'{for `CalculationOp<float>'}\n1403723be        void var_f8\n1403723be        zmm6.d = sub_14033fb70(&var_f8, &arg_18, &arg_10).d f+ 1f\n1403723c6        zmm6.d = zmm6.d f* *(arg1 + 0xdd0)\n140372376        zmm6 = *(arg1 + 0xdd0)\n1403723d3        sub_140535fb0(&var_178)\n1403723e0        int512_t zmm0_2\n1403723e0        zmm0_2.o = zmm6\n1403723f3        return zmm0_2",
+  "fetched_at": "2026-04-26T16:43:16Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x14027b590",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14027b596        if (arg1 - 0x4f u> 7)\n14027b5b1        int64_t rax\n14027b5b1        rax.b = 0\n14027b5b3        return rax\n14027b5a2        jump_table_14027b5b4[sx.q(arg1 - 0x4f)]\n14027b5ae        int64_t rax_1\n14027b5ae        rax_1.b = 1\n14027b5b0        return rax_1",
+  "fetched_at": "2026-04-26T17:32:00Z"
+}

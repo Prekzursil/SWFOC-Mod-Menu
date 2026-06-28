@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407bd730",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1407bd744        int64_t* i = *arg2\n1407bd747        int32_t rdi = 0\n1407bd74c        int64_t* i_1 = arg2\n1407bd755        while (i != 0)\n1407bd770        uint32_t r8 = zx.d(*(i + 9))\n1407bd778        if (r8 s<= arg3)\n1407bd78d        rdi += 1\n1407bd78f        *i_1 = *i\n1407bd7ac        switch (zx.d(i[1].b) - 4)\n1407bd7ee        case 0\n1407bd805        sub_1407bf7e0(arg1, i, i[2].d + 0x19, 0)\n1407bd7d6        case 1\n1407bd7d6        sub_1407bfd20(arg1, i)\n1407bd7c1        case 2\n1407bd7c1        sub_1407ba0c0(arg1, i)\n1407bd7f8        case 3\n1407bd805        sub_1407bf7e0(arg1, i, i[3].d + 0x20, 0)\n1407bd7e3        case 4\n1407bd7e3        sub_1407b8620(arg1, i)\n1407bd7b4        case 5\n1407bd7b4        sub_1407ba110(arg1, i)\n1407bd7c8        case 6\n1407bd805        sub_1407bf7e0(arg1, i, 0x28, 0)\n1407bd77a        r8.b &= 0xfe\n1407bd77e        i_1 = i\n1407bd781        *(i + 9) = r8.b\n1407bd80a        i = *i_1\n1407bd831        return zx.q(rdi)",
+  "fetched_at": "2026-04-26T17:33:28Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x14020a960",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14020a967        *arg1 = &GenericMultiLinkedList::`vftable'\n14020a96a        return &GenericMultiLinkedList::`vftable'",
+  "fetched_at": "2026-04-26T17:28:07Z"
+}

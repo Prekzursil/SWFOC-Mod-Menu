@@ -1,0 +1,7 @@
+{
+  "addr": "0x1405e8e20",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "ActionClass * __thiscall ActionClass::ActionClass(ActionClass *this)\n\n{\n                    /* inlined constructor: ActionClass::ActionClass */\n  (this->ActionClass_data).offset_0x18 = 0xf;\n  this->vftablePtr = &vftable;\n  (this->ActionClass_data).offset_0x0 = 0;\n  (this->ActionClass_data).offset_0x10 = 0;\n  FUN_1404c3df0(&(this->ActionClass_data).field_0x20);\n  FUN_1404c3df0(&(this->ActionClass_data).field_0x30);\n  (this->ActionClass_data).offset_0x40 = 0xffffffff;\n  (this->ActionClass_data).offset_0x48 = &LinearInterpolator::vftable.deleting_destructor;\n  (this->ActionClass_data).offset_0x70 = &LinearInterpolator::vftable.deleting_destructor;\n  (this->ActionClass_data).offset_0x44 = 0;\n  (this->ActionClass_data).offset_0x50 = 0;\n  (this->ActionClass_data).offset_0x58 = 0;\n  (this->ActionClass_data).offset_0x60 = 0;\n  (this->ActionClass_data).offset_0x68 = 0;\n  (this->ActionClass_data).offset_0x78 = 0;\n  (this->ActionClass_data).offset_0x80 = 0;\n  (this->ActionClass_data).offset_0x88 = 0;\n  (this->ActionClass_data).offset_0x90 = 0;\n  (this->ActionClass_data).offset_0x98 = 0;\n  (this->ActionClass_data).offset_0xa0 = 0;\n  (this->ActionClass_data).offset_0xa8 = 0;\n  (this->ActionClass_data).offset_0xb0 = 0;\n  (this->ActionClass_data).offset_0xb8 = 0;\n  return this;\n}",
+  "fetched_at": "2026-04-26T18:46:17Z"
+}

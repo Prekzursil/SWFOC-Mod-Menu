@@ -1,0 +1,7 @@
+{
+  "addr": "0x14078d4e4",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14078d4fb        int64_t rax = _calloc_base(1, 0x158)\n14078d508        **arg1 = rax\n14078d50b        int64_t result = _free_base(0)\n14078d513        if (rax == 0)\n14078d571        return result\n14078d51d        int64_t var_38 = *arg1\n14078d530        int64_t var_30_1 = arg1[1]\n14078d53e        int64_t var_28_1 = arg1[2]\n14078d547        int64_t var_20_1 = arg1[3]\n14078d550        int64_t var_18_1 = arg1[4]\n14078d55a        int32_t arg_10 = 4\n14078d55e        int32_t arg_18 = 4\n14078d562        void arg_8\n14078d562        return __crt_seh_guarded_call<class <lambda_d67e8342c384adda8f857579ab50b2ae>,class <lambda_30712929f77e709619002f448b6a9510>& __ptr64,class <lambda_4525336fd7e478d965fb7ca7a337cad8>,void>::operator()<class <lambda_d67e8342c384adda8f857579ab50b2ae>,class <lambda_30712929f77e709619002f448b6a9510>& __ptr64,class <lambda_4525336fd7e478d965fb7ca7a337cad8> >(&arg_8, &arg_18, &var_38, &arg_10)",
+  "fetched_at": "2026-04-26T17:31:34Z"
+}

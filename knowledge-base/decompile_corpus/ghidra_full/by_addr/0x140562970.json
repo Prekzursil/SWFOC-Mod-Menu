@@ -1,0 +1,7 @@
+{
+  "addr": "0x140562970",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "AbilityCountdownDataPackClass * __thiscall\nAbilityCountdownDataPackClass::AbilityCountdownDataPackClass(AbilityCountdownDataPackClass *this)\n\n{\n  this->vftablePtr = &vftable;\n  FUN_14076c430(&this->\n                 PooledObjectClass<class_AbilityCountdownDataPackClass,20,class_EmptyLockerClass>,0,\n                0x2b5);\n  (this->AbilityCountdownDataPackClass_data).offset_0x2b0 = 0;\n  return this;\n}",
+  "fetched_at": "2026-04-26T18:39:06Z"
+}

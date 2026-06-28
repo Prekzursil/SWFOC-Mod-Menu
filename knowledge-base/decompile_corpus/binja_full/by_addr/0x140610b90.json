@@ -1,0 +1,7 @@
+{
+  "addr": "0x140610b90",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140610bad        *arg1 = &AIBudgetClass::`vftable'{for `AIDiagnosticsClass'}\n140610bb3        int64_t* rax = arg1[6]\n140610bb7        void** i = *rax\n140610bbd        if (i != rax)\n140610bc0        int64_t* rcx_1 = i[3]\n140610bc4        int64_t* j = rcx_1[0xd]\n140610bcc        while (j != rcx_1[0xe])\n140610bd0        int64_t* rcx = *j\n140610bd6        if (rcx != 0)\n140610be0        (**rcx)(rcx, 1)\n140610be2        rcx_1 = i[3]\n140610be6        j = &j[1]\n140610bf3        if (rcx_1 != 0)\n140610bfd        (**rcx_1)(rcx_1, 1)\n140610bff        i = *i\n140610c06        do while (i != arg1[6])\n140610c0c        sub_1400db9f0(&arg1[5])\n140610c15        sub_14007b260(&arg1[5])\n140610c1d        sub_1405f6540(arg1)\n140610c26        if ((arg2 & 1) != 0)\n140610c30        j_sub_1407864b8(arg1)\n140610c4c        return arg1",
+  "fetched_at": "2026-04-26T17:23:13Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x140390f20",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_140390f20(longlong param_1)\n\n{\n  DynamicVectorClass<struct_SquadLeaderDataPackClass::LeaderTrailStruct> *pDVar1;\n  \n  if (*(longlong *)(param_1 + 0xe0) == 0) {\n    pDVar1 = (DynamicVectorClass<struct_SquadLeaderDataPackClass::LeaderTrailStruct> *)\n             FUN_140769c58(0x28);\n    if (pDVar1 != (DynamicVectorClass<struct_SquadLeaderDataPackClass::LeaderTrailStruct> *)0x0) {\n      pDVar1 = DynamicVectorClass<struct_SquadLeaderDataPackClass::LeaderTrailStruct>::\n               DynamicVectorClass<struct_SquadLeaderDataPackClass::LeaderTrailStruct>(pDVar1);\n      *(DynamicVectorClass<struct_SquadLeaderDataPackClass::LeaderTrailStruct> **)(param_1 + 0xe0) =\n           pDVar1;\n      return;\n    }\n    *(undefined8 *)(param_1 + 0xe0) = 0;\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T17:29:01Z"
+}

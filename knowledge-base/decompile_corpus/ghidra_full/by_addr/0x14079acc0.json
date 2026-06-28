@@ -1,0 +1,7 @@
+{
+  "addr": "0x14079acc0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* WARNING: Function: __security_check_cookie replaced with injection: security_check_cookie */\n\nuint FUN_14079acc0(wchar_t *param_1)\n\n{\n  int iVar1;\n  uint uVar2;\n  errno_t eVar3;\n  longlong lVar4;\n  longlong lVar5;\n  undefined1 auStackY_138 [32];\n  wchar_t local_108 [120];\n  ulonglong local_18;\n  longlong lVar6;\n  \n  local_18 = DAT_140a44b98 ^ (ulonglong)auStackY_138;\n  lVar4 = FUN_14078f07c();\n  iVar1 = __acrt_GetLocaleInfoEx\n                    (param_1,(-(uint)(*(int *)(lVar4 + 0xb0) != 0) & 0xfffff002) + 0x1001,local_108)\n  ;\n  if (iVar1 == 0) {\n    *(undefined4 *)(lVar4 + 0xa8) = 0;\n    uVar2 = 1;\n  }\n  else {\n    iVar1 = _wcsicmp(*(wchar_t **)(lVar4 + 0x98),local_108);\n    if (iVar1 == 0) {\n      lVar5 = -1;\n      do {\n        lVar6 = lVar5;\n        lVar5 = lVar6 + 1;\n      } while (param_1[lVar5] != L'\\0');\n      eVar3 = wcsncpy_s((wchar_t *)(lVar4 + 0x2f0),0x55,param_1,lVar6 + 2);\n      if (eVar3 != 0) {\n                    /* WARNING: Subroutine does not return */\n        _invoke_watson((wchar_t *)0x0,(wchar_t *)0x0,(wchar_t *)0x0,0,0);\n      }\n      *(uint *)(lVar4 + 0xa8) = *(uint *)(lVar4 + 0xa8) | 4;\n    }\n    uVar2 = ~(*(uint *)(lVar4 + 0xa8) >> 2) & 1;\n  }\n  return uVar2;\n}",
+  "fetched_at": "2026-04-26T18:53:48Z"
+}

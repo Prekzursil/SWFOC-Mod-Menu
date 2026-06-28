@@ -1,0 +1,7 @@
+{
+  "addr": "0x140708150",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14070815c        int64_t result = sub_14048f2c0(arg1)\n140708170        if (not(-1f f<= *(arg1 + 0x178)))\n140708177        void* r8_1 = arg1 + 0x18\n14070817b        if (*(arg1 + 0x30) u>= 0x10)\n14070817d        r8_1 = *r8_1\n14070818c        char var_108[0x100]\n14070818c        sscanf_s(&var_108, \"Error: (%s) Percentage_Income_Modifier cannot be less than -1.0\", r8_1)\n140708196        result = sub_1402149d0(&var_108)\n14070819b        *(arg1 + 0x178) = 0\n1407081ad        return result",
+  "fetched_at": "2026-04-26T17:27:21Z"
+}

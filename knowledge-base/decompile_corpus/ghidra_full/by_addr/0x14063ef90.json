@@ -1,0 +1,7 @@
+{
+  "addr": "0x14063ef90",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nTelekinesisTargetBehaviorClass * __thiscall\nTelekinesisTargetBehaviorClass::vfunction4(TelekinesisTargetBehaviorClass *this,int param_1)\n\n{\n  TelekinesisTargetBehaviorClass *pTVar1;\n  \n  pTVar1 = (TelekinesisTargetBehaviorClass *)0x0;\n  if (param_1 == 0x30) {\n    pTVar1 = this;\n  }\n  return pTVar1;\n}\n\n",
+  "fetched_at": "2026-04-26T17:02:35Z"
+}

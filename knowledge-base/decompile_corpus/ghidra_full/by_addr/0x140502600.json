@@ -1,0 +1,7 @@
+{
+  "addr": "0x140502600",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall\nAffectedByShieldBehaviorClass::vfunction8(AffectedByShieldBehaviorClass *this,longlong param_1)\n\n{\n  if (param_1 != 0) {\n    FUN_1403901e0(param_1);\n    return;\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T18:20:25Z"
+}

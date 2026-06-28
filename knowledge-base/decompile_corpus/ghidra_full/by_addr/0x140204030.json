@@ -1,0 +1,7 @@
+{
+  "addr": "0x140204030",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined8 * __thiscall PlayerProfileClass::vfunction3(void)\n\n{\n  return &DAT_140a14b40;\n}",
+  "fetched_at": "2026-04-26T17:56:12Z"
+}

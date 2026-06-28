@@ -1,0 +1,7 @@
+{
+  "addr": "0x14079358c",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* Library Function - Single Match\n    __acrt_EnumSystemLocalesEx\n   \n   Libraries: Visual Studio 2017 Release, Visual Studio 2019 Release */\n\nvoid __acrt_EnumSystemLocalesEx\n               (undefined8 param_1,undefined4 param_2,undefined8 param_3,undefined8 param_4)\n\n{\n  void *pvVar1;\n  undefined8 local_res8;\n  undefined1 local_28 [4];\n  undefined4 local_24;\n  undefined4 local_20 [2];\n  undefined8 *local_18 [2];\n  \n  local_res8 = param_1;\n  pvVar1 = try_get_function(2,\"EnumSystemLocalesEx\",(module_id *)&DAT_1408d81f8,\n                            (module_id *)\"EnumSystemLocalesEx\");\n  if (pvVar1 == (void *)0x0) {\n    local_18[0] = &local_res8;\n    local_24 = 4;\n    local_20[0] = 4;\n    operator()<>(local_28,local_20,local_18,&local_24);\n  }\n  else {\n    (*(code *)PTR__guard_dispatch_icall_1407fdcd8)(local_res8,param_2,param_3,param_4);\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T18:53:01Z"
+}

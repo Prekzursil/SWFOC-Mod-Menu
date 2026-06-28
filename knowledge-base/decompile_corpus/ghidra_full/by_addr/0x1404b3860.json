@@ -1,0 +1,7 @@
+{
+  "addr": "0x1404b3860",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall SetAbilityAutofireEventClass::vfunction5(SetAbilityAutofireEventClass *this)\n\n{\n  char cVar1;\n  longlong lVar2;\n  int iVar3;\n  longlong lVar4;\n  \n  iVar3 = 0;\n  if (0 < *(int *)&(this->SetAbilityAutofireEventClass_data).offset_0x10) {\n    lVar4 = 0;\n    do {\n      lVar2 = FUN_1402aca60(*(undefined8 *)(DAT_140b15418 + 0x18),\n                            *(undefined4 *)\n                             (lVar4 + (this->SetAbilityAutofireEventClass_data).offset_0x8));\n      if ((lVar2 != 0) &&\n         (((*(longlong *)(lVar2 + 0x2b0) == 0 ||\n           (*(char *)(*(longlong *)(lVar2 + 0x2b0) + 0x348) == -1)) &&\n          (cVar1 = FUN_1403986b0(lVar2,(this->SetAbilityAutofireEventClass_data).offset_0x1c),\n          cVar1 != '\\0')))) {\n        FUN_1403a78b0(lVar2,(this->SetAbilityAutofireEventClass_data).offset_0x1c,\n                      *(undefined1 *)&this[1].vftablePtr,0xbeef);\n      }\n      iVar3 = iVar3 + 1;\n      lVar4 = lVar4 + 4;\n    } while (iVar3 < *(int *)&(this->SetAbilityAutofireEventClass_data).offset_0x10);\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T18:07:15Z"
+}

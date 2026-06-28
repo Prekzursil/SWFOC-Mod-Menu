@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401f0590",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "GUIGadgetCheckboxClass * __thiscall\nGUIGadgetCheckboxClass::GUIGadgetCheckboxClass(GUIGadgetCheckboxClass *this)\n\n{\n  GUIGadgetClass::GUIGadgetClass((GUIGadgetClass *)this);\n  this->vftablePtr = &vftable;\n  TextureRectClass::TextureRectClass\n            ((TextureRectClass *)&(this->GUIGadgetCheckboxClass_data).field_0x8);\n  DrawTextClass::DrawTextClass((DrawTextClass *)&(this->GUIGadgetCheckboxClass_data).field_0x98);\n  (this->GUIGadgetCheckboxClass_data).offset_0x160 = 0;\n  (this->GUIGadgetCheckboxClass_data).offset_0x168 = 0;\n  (this->GUIGadgetCheckboxClass_data).offset_0x170 = 0;\n  (this->GUIGadgetCheckboxClass_data).offset_0x178 = 0;\n  FUN_14025c490(DAT_140a619f0,&(this->GUIGadgetCheckboxClass_data).field_0x8);\n  FUN_14025c490(DAT_140a619f0,&(this->GUIGadgetCheckboxClass_data).field_0x98);\n  GUIGadgetClass::vfunction25((GUIGadgetClass *)this);\n  *(undefined1 *)((longlong)&(this->GUIGadgetClass_data).offset_0x70 + 1) = 1;\n  (this->GUIGadgetCheckboxClass_data).offset_0x0 = 0;\n  return this;\n}",
+  "fetched_at": "2026-04-26T17:52:51Z"
+}

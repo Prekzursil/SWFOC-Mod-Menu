@@ -1,0 +1,7 @@
+{
+  "addr": "0x14071eeb0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "char * __thiscall AttackActionClass::vfunction3(void)\n\n{\n  return \"Attack_Action\";\n}",
+  "fetched_at": "2026-04-26T17:58:45Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x1404706b0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1404706c5        int64_t* result = operator new(0x30)\n1404706cd        if (result == 0)\n1404706f3        return result\n1404706e4        return sub_1405ee0e0(result, *(*(arg1 + 0x30) + (sx.q(arg2) << 3))) __tailcall",
+  "fetched_at": "2026-04-26T17:28:08Z"
+}

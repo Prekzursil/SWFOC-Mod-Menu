@@ -1,0 +1,7 @@
+{
+  "addr": "0x14058b8d0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14058b8db        struct BehaviorClass::DamageTrackingBehaviorClass::VTable** result = operator new(0x40)\n14058b8e6        if (result == 0)\n14058b91e        return result\n14058b8eb        sub_1404c32d0(result)\n14058b8f7        *result = &DamageTrackingBehaviorClass::`vftable'{for `BehaviorClass'}\n14058b901        result[1] = &DamageTrackingBehaviorClass::`vftable'{for `RefCountClass'}\n14058b90c        result[3] = &DamageTrackingBehaviorClass::`vftable'{for `SignalListenerClass'}\n14058b918        return result",
+  "fetched_at": "2026-04-26T17:36:11Z"
+}

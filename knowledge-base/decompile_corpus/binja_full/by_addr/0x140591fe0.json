@@ -1,0 +1,7 @@
+{
+  "addr": "0x140591fe0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140592011        if (sub_1404c36f0(arg1) == 0 && *(*(arg1 + 0x28) + 0xf0) != 0)\n14059201c        sub_1404c2f70(arg1, arg2, arg3)\n140592032        if (sub_140397d90(*(arg1 + 0x28), 5) == 0)\n14059203b        sub_1402149d0(\"Object is trying to activate BarrageArea behavior but does not have Barrage unit ability!\")\n14059204e        if (*(*(arg1 + 0x28) + 0x178) != 0)\n14059205b        int64_t rax_5 = (*(*arg2 + 0x10))(arg2, 1)\n140592061        if (rax_5 == 0)\n140592063        int64_t* rcx_3 = *(arg1 + 0x28)\n140592082        int64_t var_18 = rax_5\n140592087        int32_t var_10_1 = rax_5.d\n14059208b        int128_t zmm6\n14059208b        sub_14038a350(rcx_3, (rax_5 + 5).d, 0, &var_18, arg4, zmm6, 0xffffffff, 0x3fffff)\n1405920a4        return 0x650000",
+  "fetched_at": "2026-04-26T17:36:20Z"
+}

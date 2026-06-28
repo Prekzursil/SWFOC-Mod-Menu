@@ -1,0 +1,7 @@
+{
+  "addr": "0x1403b4ce0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1403b4cf0        *arg1 = &SingletonInstance<class LandZonePathFinderClass>::`vftable'{for `SingletonManager'}\n1403b4cf6        if ((arg2 & 1) != 0)\n1403b4cfd        j_sub_1407864b8(arg1)\n1403b4d0a        return arg1",
+  "fetched_at": "2026-04-26T17:24:22Z"
+}

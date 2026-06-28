@@ -1,0 +1,7 @@
+{
+  "addr": "0x1402dfc00",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1402dfc1e        if (arg2 == 0)\n1402dfd02        return nullptr\n1402dfc29        void* var_28 = nullptr\n1402dfc35        int64_t var_18_1 = 0\n1402dfc3a        int64_t var_10_1 = 7\n1402dfc43        sub_1401f9fe0(&data_140a7bc58, arg2, &var_28)\n1402dfca8        struct BaseComponentClass::SelectComponentClass::VTable** result = sub_1402df0c0(arg1, sub_140347b50(((zx.q(arg4) << 2) + 0x1e0).d), &var_28, arg3, arg5, arg6, arg7, arg8, arg9, arg10)\n1402dfcb9        if (var_10_1 u>= 8)\n1402dfcbb        void* rcx_2 = var_28\n1402dfcc8        void* rax_8 = rcx_2\n1402dfcd2        if ((var_10_1 << 1) + 2 u>= 0x1000)\n1402dfcd4        rcx_2 = *(rcx_2 - 8)\n1402dfce7        if (rax_8 - rcx_2 - 8 u> 0x1f)\n1402dfd03        _invalid_parameter_noinfo_noreturn()\n1402dfd03        noreturn\n1402dfce9        j_sub_1407864b8(rcx_2)\n1402dfcee        return result",
+  "fetched_at": "2026-04-26T17:22:43Z"
+}

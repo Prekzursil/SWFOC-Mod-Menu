@@ -1,0 +1,7 @@
+{
+  "addr": "0x14043b470",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14043b492        if (arg2[0x69].b == 0xff)\n14043b4f4        (*(*arg1 + 0x18))(arg1, arg3, 0)\n14043b49f        struct SignalListenerClass::FormationClass::VTable** result = (*(*arg2 + 0x10))(arg2, 0x16)\n14043b4a8        if (result == 0)\n14043b517        return result\n14043b4ad        int32_t rsi_1 = 0\n14043b4b6        if (sub_140405300(result) s> 0)\n14043b4e5        int32_t rax_3\n14043b4d6        (*(*arg1 + 0x18))(arg1, sub_1404052d0(result, rsi_1), 0)\n14043b4dc        rsi_1 += 1\n14043b4de        rax_3 = sub_140405300(result)\n14043b4e5        do while (rsi_1 s< rax_3)\n14043b4fd        return sub_1404f7360(arg1)",
+  "fetched_at": "2026-04-26T17:27:12Z"
+}

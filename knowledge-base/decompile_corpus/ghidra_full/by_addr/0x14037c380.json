@@ -1,0 +1,7 @@
+{
+  "addr": "0x14037c380",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "ulonglong FUN_14037c380(longlong param_1,int param_2,undefined8 param_3)\n\n{\n  longlong *plVar1;\n  longlong *in_RAX;\n  ulonglong uVar2;\n  \n  if (param_2 != 0) {\n    for (in_RAX = *(longlong **)(*(longlong *)(param_1 + 0x18) + 0x1a98);\n        in_RAX != *(longlong **)(*(longlong *)(param_1 + 0x18) + 0x1aa0); in_RAX = in_RAX + 1) {\n      plVar1 = (longlong *)*in_RAX;\n      if ((plVar1 != (longlong *)0x0) && (param_2 == (int)plVar1[7])) {\n        in_RAX = (longlong *)FUN_14037c270(param_1,plVar1,0);\n        if ((((char)in_RAX != '\\0') &&\n            (in_RAX = (longlong *)FUN_14037be10(param_1,plVar1), (int)in_RAX == 1)) &&\n           ((*(longlong *)(param_1 + 0x10) == 0 ||\n            (in_RAX = (longlong *)FUN_14039b0b0(*(longlong *)(param_1 + 0x10),plVar1),\n            (char)in_RAX != '\\0')))) {\n                    /* WARNING: Could not recover jumptable at 0x00014037c428. Too many branches */\n                    /* WARNING: Treating indirect jump as call */\n          uVar2 = (**(code **)(*plVar1 + 0x28))(plVar1,*(undefined8 *)(param_1 + 0x10),param_3);\n          return uVar2;\n        }\n        break;\n      }\n    }\n  }\n  return (ulonglong)in_RAX & 0xffffffffffffff00;\n}",
+  "fetched_at": "2026-04-26T17:19:07Z"
+}

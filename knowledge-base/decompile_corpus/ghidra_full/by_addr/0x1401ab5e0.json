@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401ab5e0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_1401ab5e0(float *param_1,undefined8 *param_2,undefined8 *param_3,undefined8 *param_4)\n\n{\n  float local_38;\n  float local_34;\n  float local_30;\n  \n  *(undefined8 *)param_1 = *param_2;\n  param_1[2] = *(float *)(param_2 + 1);\n  *(undefined8 *)(param_1 + 3) = *param_3;\n  param_1[5] = *(float *)(param_3 + 1);\n  *(undefined8 *)(param_1 + 6) = *param_4;\n  param_1[8] = *(float *)(param_4 + 1);\n  local_38 = param_1[3] - *param_1;\n  local_34 = param_1[4] - param_1[1];\n  local_30 = param_1[5] - param_1[2];\n  D3DXVec3Normalize(param_1 + 9,&local_38);\n  param_1[0xc] = param_1[8] * param_1[10] - param_1[7] * param_1[0xb];\n  param_1[0xd] = param_1[6] * param_1[0xb] - param_1[9] * param_1[8];\n  param_1[0xe] = param_1[9] * param_1[7] - param_1[6] * param_1[10];\n  D3DXMatrixLookAtLH(param_1 + 0xf,param_1,param_1 + 3,param_1 + 6);\n  D3DXMatrixInverse(param_1 + 0x1f,0,param_1 + 0xf);\n  param_1[0x2b] = 0.0;\n  param_1[0x2c] = 0.0;\n  param_1[0x2d] = 0.0;\n  return;\n}",
+  "fetched_at": "2026-04-26T17:40:38Z"
+}

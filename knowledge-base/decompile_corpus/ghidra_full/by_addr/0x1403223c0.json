@@ -1,0 +1,7 @@
+{
+  "addr": "0x1403223c0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nulonglong FUN_1403223c0(void)\n\n{\n  ulonglong uVar1;\n  \n  uVar1 = (ulonglong)DAT_140a17250;\n  if ((((DAT_140a17250 != 4) && (DAT_140a17250 != 0xffffffff)) &&\n      (uVar1 = (ulonglong)DAT_140b2b398, -1 < DAT_140b2b398)) &&\n     ((&PTR_s_Hero_Clash_Obiwan_Vader__Vader_0_140a17260)[uVar1] != (undefined *)0x0)) {\n    return CONCAT71((int7)(int3)((uint)DAT_140b2b398 >> 8),1);\n  }\n  return uVar1 & 0xffffffffffffff00;\n}\n\n",
+  "fetched_at": "2026-04-26T17:00:14Z"
+}

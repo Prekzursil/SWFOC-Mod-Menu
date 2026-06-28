@@ -1,0 +1,7 @@
+{
+  "addr": "0x1400124e0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1400124e9        int64_t rax = operator new(0x20)\n1400124f5        data_140a10d50 = 0x15\n140012500        data_140a10d58 = 0x1f\n14001250b        __builtin_strncpy(rax, \".\\\\ConsoleCommands.txt\", 0x16)\n14001252c        data_140a10d40 = rax\n140012537        return atexit(sub_1407e7360) __tailcall",
+  "fetched_at": "2026-04-26T16:49:33Z"
+}

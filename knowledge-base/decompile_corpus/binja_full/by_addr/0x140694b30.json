@@ -1,0 +1,7 @@
+{
+  "addr": "0x140694b30",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140694b41        sub_140497bd0(arg1 + 0x60)\n140694b4d        struct ComparisonOp<float>::GreaterThan<float>::VTable* const arg_8 = &GreaterThan<float>::`vftable'{for `ComparisonOp<float>'}\n140694b63        struct CalculationOp<float>::Plus<float>::VTable* const arg_10 = &Plus<float>::`vftable'{for `CalculationOp<float>'}\n140694b93        return _mm_max_ss(0x3f800000, (sub_14033fb70(arg1 + 0x60, &arg_10, &arg_8) + 1f) f* *(arg1 + 0x58))",
+  "fetched_at": "2026-04-26T17:19:42Z"
+}

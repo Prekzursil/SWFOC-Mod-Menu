@@ -1,0 +1,7 @@
+{
+  "addr": "0x1405f83c0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1405f83ca        int128_t zmm6\n1405f83ca        int128_t var_18 = zmm6\n1405f83e9        int128_t zmm7\n1405f83e9        zmm7.d = float.s(zx.q(timeGetTime() - data_140a7bec0))\n1405f83ee        zmm7.d = zmm7.d f/ 1000f\n1405f83f6        zmm7.d = zmm7.d f- *(arg1 + 0x2c)\n1405f8417        int32_t zmm0 = float.s(zx.q(timeGetTime() - data_140a7bec0)) f/ 1000f f- *(arg2 + 0x2c)\n1405f841c        zmm7.d f- zmm0\n1405f8421        uint64_t result\n1405f8421        bool cond:1\n1405f8421        if (is_unordered.d(zmm7.d, zmm0) || zmm7.d f!= zmm0)\n1405f8443        cond:1 = zmm7.d f> zmm0\n1405f842a        int128_t zmm0_1 = sub_140370e60(*(arg1 + 0x88))\n1405f8439        float zmm0_2\n1405f8439        zmm0_2, result = sub_140370e60(*(arg2 + 0x88))\n1405f843e        cond:1 = zmm0_1.d f> zmm0_2\n1405f844b        result.b = cond:1\n1405f845d        return result",
+  "fetched_at": "2026-04-26T17:22:38Z"
+}

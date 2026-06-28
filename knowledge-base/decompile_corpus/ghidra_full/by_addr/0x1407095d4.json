@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407095d4",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall\nPoliticalTransitionBonusAbilityClass::vfunction3_for_RefCountClass\n          (PoliticalTransitionBonusAbilityClass *this,uint param_1)\n\n{\n  scalar_deleting_destructor\n            ((PoliticalTransitionBonusAbilityClass *)\n             &this[-1].PoliticalTransitionBonusAbilityClass_data,param_1);\n  return;\n}",
+  "fetched_at": "2026-04-26T17:53:32Z"
+}

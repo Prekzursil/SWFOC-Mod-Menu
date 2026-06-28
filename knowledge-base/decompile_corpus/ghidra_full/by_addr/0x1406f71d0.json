@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406f71d0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "EarthquakeAttackAbilityClass * __thiscall\nEarthquakeAttackAbilityClass::scalar_deleting_destructor\n          (EarthquakeAttackAbilityClass *this,uint param_1)\n\n{\n                    /* inlined destructor:\n                       EarthquakeAttackAbilityClass::~EarthquakeAttackAbilityClass */\n  this->vftablePtr = &vftable_for_IXMLLoadableClass;\n  this->vftablePtr = &vftable_for_RefCountClass;\n  *(undefined8 *)((longlong)&(this->EarthquakeAttackAbilityClass_data).offset_0x0 + 4) = 0;\n  *(undefined4 *)&(this->EarthquakeAttackAbilityClass_data).offset_0x0 = 0;\n  *(undefined8 *)((longlong)&(this->EarthquakeAttackAbilityClass_data).offset_0x8 + 4) = 0;\n  *(undefined4 *)((longlong)&(this->EarthquakeAttackAbilityClass_data).offset_0x10 + 4) = 0;\n  SpecialAbilityClass::~SpecialAbilityClass((SpecialAbilityClass *)this);\n  if ((param_1 & 1) != 0) {\n    thunk_FUN_1407864b8(this,400);\n  }\n  return this;\n}",
+  "fetched_at": "2026-04-26T17:48:49Z"
+}

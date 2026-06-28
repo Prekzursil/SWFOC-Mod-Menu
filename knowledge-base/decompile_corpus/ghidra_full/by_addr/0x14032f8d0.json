@@ -1,0 +1,7 @@
+{
+  "addr": "0x14032f8d0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nvoid FUN_14032f8d0(longlong param_1)\n\n{\n  undefined8 *puVar1;\n  undefined8 uVar2;\n  ulonglong uVar3;\n  undefined8 *puVar4;\n  \n  if (*(ulonglong *)(param_1 + 0x10) != 0) {\n    if (*(ulonglong *)(param_1 + 0x10) < *(ulonglong *)(param_1 + 0x38) >> 3) {\n      FUN_140023670(param_1,**(undefined8 **)(param_1 + 8),*(undefined8 **)(param_1 + 8));\n      return;\n    }\n    puVar4 = *(undefined8 **)(param_1 + 8);\n    *(undefined8 *)puVar4[1] = 0;\n    puVar4 = (undefined8 *)*puVar4;\n    while (puVar4 != (undefined8 *)0x0) {\n      puVar1 = (undefined8 *)*puVar4;\n      thunk_FUN_1407864b8(puVar4,0x38);\n      puVar4 = puVar1;\n    }\n    *(undefined8 *)*(undefined8 *)(param_1 + 8) = *(undefined8 *)(param_1 + 8);\n    *(longlong *)(*(longlong *)(param_1 + 8) + 8) = *(longlong *)(param_1 + 8);\n    *(undefined8 *)(param_1 + 0x10) = 0;\n    puVar4 = *(undefined8 **)(param_1 + 0x18);\n    uVar3 = (*(longlong *)(param_1 + 0x20) - (longlong)puVar4) + 7U >> 3;\n    if (*(undefined8 **)(param_1 + 0x20) < puVar4) {\n      uVar3 = 0;\n    }\n    if (uVar3 != 0) {\n      uVar2 = *(undefined8 *)(param_1 + 8);\n      for (; uVar3 != 0; uVar3 = uVar3 - 1) {\n        *puVar4 = uVar2;\n        puVar4 = puVar4 + 1;\n      }\n    }\n  }\n  return;\n}\n\n",
+  "fetched_at": "2026-04-26T17:02:36Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x14018b840",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall\nalD3dEffectInstance::vfunction19_for_RefCountClass\n          (alD3dEffectInstance *this,int param_2,undefined4 param_3)\n\n{\n  longlong *plVar1;\n  undefined4 local_res18 [4];\n  \n  local_res18[0] = param_3;\n  FUN_14018cfb0();\n  plVar1 = *(longlong **)(*(longlong *)&this->field_0x38 + (longlong)param_2 * 8);\n  (**(code **)(*plVar1 + 0x20))(plVar1,local_res18);\n  return;\n}",
+  "fetched_at": "2026-04-26T17:33:08Z"
+}

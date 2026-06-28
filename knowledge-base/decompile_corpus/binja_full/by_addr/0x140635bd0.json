@@ -1,0 +1,7 @@
+{
+  "addr": "0x140635bd0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140635be3        *arg1 = &ParticleBehaviorClass::`vftable'{for `BehaviorClass'}\n140635bf0        arg1[1] = &ParticleBehaviorClass::`vftable'{for `RefCountClass'}\n140635bfb        arg1[3] = &ParticleBehaviorClass::`vftable'{for `SignalListenerClass'}\n140635bff        sub_1404c3310(arg1)\n140635c07        if ((arg2 & 1) != 0)\n140635c11        j_sub_1407864b8(arg1)\n140635c23        return arg1",
+  "fetched_at": "2026-04-26T17:24:24Z"
+}

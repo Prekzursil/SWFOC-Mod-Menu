@@ -1,0 +1,7 @@
+{
+  "addr": "0x14022e400",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14022e406        int64_t* rbx = *arg1\n14022e40c        if (rbx != 0)\n14022e414        rbx[3] = GetCurrentThread()\n14022e41e        rbx[4].d = GetCurrentThreadId()\n14022e427        rbx[1].b = 1\n14022e42b        (*(*rbx + 8))(rbx)\n14022e42e        *(rbx + 9) = 1\n14022e439        return 0",
+  "fetched_at": "2026-04-26T17:29:36Z"
+}

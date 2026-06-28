@@ -1,0 +1,7 @@
+{
+  "addr": "0x140769ff4",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14076a004        EnterCriticalSection(&data_140b3b968)\n14076a017        uint64_t rdx = zx.q(data_140b3b9a0)\n14076a01d        int32_t rax_1 = data_140a44b60 + 1\n14076a01f        data_140a44b60 = rax_1\n14076a025        *arg1 = rax_1\n14076a040        TEB* gsbase\n14076a040        *(0xd4 + *(gsbase->ThreadLocalStoragePointer + (rdx << 3))) = data_140a44b60\n14076a044        LeaveCriticalSection(&data_140b3b968)\n14076a04f        return _Init_thread_notify() __tailcall",
+  "fetched_at": "2026-04-26T17:30:18Z"
+}

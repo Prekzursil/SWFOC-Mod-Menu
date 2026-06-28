@@ -1,0 +1,7 @@
+{
+  "addr": "0x1403d5530",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1403d555a        int32_t rax = sub_14034c770(*(arg1 + 0x21a0), 0)\n1403d556e        int32_t rax_1 = sub_14034c770(*(arg1 + 0x21a0), 1)\n1403d557f        int32_t rax_2 = sub_14034c770(*(arg1 + 0x2160), 0)\n1403d5584        int64_t r8 = *(arg1 + 0xde0)\n1403d559b        int64_t* rdx_1 = sx.q(rax_2) * 0x188 + r8\n1403d559e        struct ScheduledEventClass::FleetManagementEventClass::VTable** rdi = rdx_1[sx.q(rax_1) + 1]\n1403d55a3        void* rbp = *rdx_1\n1403d55a9        void** result = sx.q(rax) * 0x188\n1403d55b0        void* const rsi = *(result + r8)\n1403d55b7        if (rdi != 0)\n1403d55c3        int64_t rax_3 = sub_140294bc0(&data_140a16fd0, rdi[0xb].d)\n1403d55d2        result = sub_140294a40(&data_140a16fd0)\n1403d55da        if (rax_3 != result)\n1403d55da        rdi = nullptr\n1403d55e1        if (rsi != rbp)\n1403d55f1        rdi = nullptr\n1403d55e3        rsi = nullptr\n1403d55ed        if (data_140b305eb == 0)\n1403d5632        return result\n1403d560f        return sub_1403d51f0(arg1, rdi, rbp, rax_1, rsi, 0, nullptr)",
+  "fetched_at": "2026-04-26T17:24:58Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x140622480",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall StarshipLocomotorBehaviorClass::vfunction33(StarshipLocomotorBehaviorClass *this)\n\n{\n  undefined *puVar1;\n  \n  puVar1 = this->offset_0x18[0x15];\n  if ((puVar1 != (undefined *)0x0) && (*(int *)(puVar1 + 0x48) == 8)) {\n    FUN_140559250(puVar1,1);\n    return;\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T17:30:16Z"
+}

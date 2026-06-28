@@ -1,0 +1,7 @@
+{
+  "addr": "0x140286100",
+  "tool": "binary_ninja",
+  "fact_id": "rva_unlock_tech_remove",
+  "body": "14028610a        int64_t* result = *(arg1 + 0x1c8)\n140286111        if (result != 0)\n140286113        int64_t rcx = sx.q(*(arg1 + 0x1d0))\n140286117        int32_t rdx = 0\n14028611b        if (rcx.d s> 0)\n140286120        int64_t rcx_1 = 0\n140286125        while (*result != arg2)\n140286127        rdx += 1\n140286129        rcx_1 += 1\n14028612c        result = &result[1]\n140286133        if (rcx_1 s>= rcx)\n140286135        return result\n140286139        if (rdx != 0xffffffff)\n14028613e        return sub_1400475e0(arg1 + 0x1c0, rdx) __tailcall\n140286143        return result",
+  "fetched_at": "2026-04-26T16:43:11Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x1405c5f70",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1405c5f8d        arg1[1] = 0\n1405c5f94        *arg1 = &SignalListenerClass::`vftable'{for `MultiLinkedListMember'}\n1405c5f9d        sub_1405f6520(&arg1[2])\n1405c5fae        *arg1 = &CollisionClass::`vftable'{for `SignalListenerClass'}\n1405c5fb8        arg1[0xc] = 0\n1405c5fbc        arg1[0xd] = 0\n1405c5fc0        arg1[2] = &CollisionClass::`vftable'{for `AIDiagnosticsClass'}\n1405c5fc4        __builtin_memset(&arg1[8], 0, 0x20)\n1405c5fd4        arg1[0xe].d = 0\n1405c5fdc        arg1[7].d = arg2\n1405c5fe5        *(arg1 + 0x64) = data_140b0a320\n1405c5fee        *(arg1 + 0x6c) = data_140b0a320\n1405c5ffe        return arg1",
+  "fetched_at": "2026-04-26T17:37:37Z"
+}

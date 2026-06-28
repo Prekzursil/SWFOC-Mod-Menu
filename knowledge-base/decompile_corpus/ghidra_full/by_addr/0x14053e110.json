@@ -1,0 +1,7 @@
+{
+  "addr": "0x14053e110",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall\nAffectedByShieldDataPackClass::~AffectedByShieldDataPackClass(AffectedByShieldDataPackClass *this)\n\n{\n  this->vftablePtr = &vftable;\n  if ((this->PooledObjectClass<class_AffectedByShieldDataPackClass,20,class_EmptyLockerClass> !=\n       (PooledObjectClass<class_AffectedByShieldDataPackClass,20,class_EmptyLockerClass>)0x0) &&\n     (*(int *)((longlong)\n               this->\n               PooledObjectClass<class_AffectedByShieldDataPackClass,20,class_EmptyLockerClass> +\n              0x50) < 0x3fffff)) {\n    FUN_1402a6280(*(undefined8 *)(DAT_140b15418 + 0x18));\n    this->PooledObjectClass<class_AffectedByShieldDataPackClass,20,class_EmptyLockerClass> =\n         (PooledObjectClass<class_AffectedByShieldDataPackClass,20,class_EmptyLockerClass>)0x0;\n    (this->AffectedByShieldDataPackClass_data).offset_0x8 = 0x3fffff;\n    return;\n  }\n  (this->AffectedByShieldDataPackClass_data).offset_0x8 = 0x3fffff;\n  this->PooledObjectClass<class_AffectedByShieldDataPackClass,20,class_EmptyLockerClass> =\n       (PooledObjectClass<class_AffectedByShieldDataPackClass,20,class_EmptyLockerClass>)0x0;\n  return;\n}",
+  "fetched_at": "2026-04-26T18:34:55Z"
+}

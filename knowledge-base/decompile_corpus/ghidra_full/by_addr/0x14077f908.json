@@ -1,0 +1,7 @@
+{
+  "addr": "0x14077f908",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* Library Function - Single Match\n    private: bool __cdecl __crt_stdio_input::input_processor<wchar_t,class\n   __crt_stdio_input::string_input_adapter<wchar_t> >::write_integer(unsigned __int64) __ptr64\n   \n   Library: Visual Studio 2019 Release */\n\nbool __thiscall\n__crt_stdio_input::input_processor<wchar_t,class___crt_stdio_input::string_input_adapter<wchar_t>_>\n::write_integer(input_processor<wchar_t,class___crt_stdio_input::string_input_adapter<wchar_t>_>\n                *this,__uint64 param_1)\n\n{\n  __uint64 *p_Var1;\n  bool bVar2;\n  ulong *puVar3;\n  __uint64 _Var4;\n  \n  *(longlong *)(this + 0x68) = *(longlong *)(this + 0x68) + 8;\n  p_Var1 = *(__uint64 **)(*(longlong *)(this + 0x68) + -8);\n  if (p_Var1 == (__uint64 *)0x0) {\n    puVar3 = __doserrno();\n    *puVar3 = 0x16;\n    FUN_1407711ac();\nLAB_14077f937:\n    bVar2 = false;\n  }\n  else {\n    _Var4 = format_string_parser<char>::length((format_string_parser<char> *)(this + 0x20));\n    if (_Var4 == 1) {\n      *(char *)p_Var1 = (char)param_1;\n    }\n    else if (_Var4 == 2) {\n      *(short *)p_Var1 = (short)param_1;\n    }\n    else if (_Var4 == 4) {\n      *(int *)p_Var1 = (int)param_1;\n    }\n    else {\n      if (_Var4 != 8) goto LAB_14077f937;\n      *p_Var1 = param_1;\n    }\n    bVar2 = true;\n  }\n  return bVar2;\n}",
+  "fetched_at": "2026-04-26T18:50:54Z"
+}

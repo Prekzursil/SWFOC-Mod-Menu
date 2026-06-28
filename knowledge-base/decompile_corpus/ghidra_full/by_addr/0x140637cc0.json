@@ -1,0 +1,7 @@
+{
+  "addr": "0x140637cc0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nchar * __thiscall CorruptSystemsBehaviorClass::vfunction9(void)\n\n{\n  return \"CorruptSystemsBehaviorClass\";\n}\n\n",
+  "fetched_at": "2026-04-26T17:01:00Z"
+}

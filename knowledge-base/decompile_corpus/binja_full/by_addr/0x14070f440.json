@@ -1,0 +1,7 @@
+{
+  "addr": "0x14070f440",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14070f453        *arg1 = &SystemSpyAbilityClass::`vftable'{for `SpecialAbilityClass'}\n14070f460        arg1[1] = &SystemSpyAbilityClass::`vftable'{for `RefCountClass'}\n14070f466        __builtin_memset(&arg1[0x2f], 0, 0x18)\n14070f47b        sub_14048c8d0(arg1)\n14070f483        if ((arg2 & 1) != 0)\n14070f48d        j_sub_1407864b8(arg1)\n14070f49f        return arg1",
+  "fetched_at": "2026-04-26T17:27:39Z"
+}

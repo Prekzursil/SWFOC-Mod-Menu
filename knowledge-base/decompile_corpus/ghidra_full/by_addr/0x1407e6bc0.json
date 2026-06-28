@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407e6bc0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void SingletonInstance<class_TheGameScoringManagerClass>::\n     SingletonInstance<class_TheGameScoringManagerClass>_Constructor_or_Destructor(void)\n\n{\n  PTR_vftable_140a10998 = (undefined *)&vftable;\n  return;\n}",
+  "fetched_at": "2026-04-26T19:00:55Z"
+}

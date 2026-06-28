@@ -1,0 +1,7 @@
+{
+  "addr": "0x14018fd50",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "ulonglong __thiscall\nalD3dTerrainRender::vfunction10(alD3dTerrainRender *this,int param_1,int param_2)\n\n{\n  uint uVar1;\n  ulonglong in_RAX;\n  \n  if (-1 < param_1) {\n    uVar1 = *(uint *)&this[2].vftablePtr;\n    in_RAX = (ulonglong)uVar1;\n    if (((param_1 < (int)uVar1) && (-1 < param_2)) &&\n       (param_2 < *(int *)((longlong)&this[2].vftablePtr + 4))) {\n      return (ulonglong)\n             (byte)(&(this[4].vftablePtr)->deleting_destructor)[(int)(uVar1 * param_2 + param_1)]\n                   [0xd8];\n    }\n  }\n  return in_RAX & 0xffffffffffffff00;\n}",
+  "fetched_at": "2026-04-26T17:34:22Z"
+}

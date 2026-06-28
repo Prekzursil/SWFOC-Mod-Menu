@@ -1,0 +1,7 @@
+{
+  "addr": "0x1402e9cb0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1402e9cc4        int32_t i = 0\n1402e9ccc        if (*(arg1 + 0x27b8) s<= 0)\n1402e9d45        *(arg1 + 0x27b8) = 0\n1402e9d55        return \n1402e9cd3        int64_t rsi = 0\n1402e9ce0        int64_t* rcx = *(arg1 + 0xfb8)\n1402e9cf5        (*(*rcx + 0x30))(rcx, *(*(arg1 + 0x27b0) + rsi))\n1402e9cf8        int64_t* r14_1 = *(arg1 + 0x27b0)\n1402e9cff        int64_t* rcx_1 = *(r14_1 + rsi)\n1402e9d06        if (rcx_1 != 0)\n1402e9d0b        (*(*rcx_1 + 8))(rcx_1)\n1402e9d0e        *(r14_1 + rsi) = 0\n1402e9d12        i += 1\n1402e9d14        rsi += 8\n1402e9d1e        do while (i s< *(arg1 + 0x27b8))\n1402e9d2a        *(arg1 + 0x27b8) = 0\n1402e9d3f        return ",
+  "fetched_at": "2026-04-26T17:22:53Z"
+}

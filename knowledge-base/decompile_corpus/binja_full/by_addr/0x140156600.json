@@ -1,0 +1,7 @@
+{
+  "addr": "0x140156600",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140156610        int512_t result\n140156610        if (*(arg1 + 0xec) s>= 0 && sub_14022fe40(arg1 + 0x20) s> 0)\n14015662d        result.o = *(*(arg1 + 0x1b0) + (sx.q(*(arg1 + 0xec)) << 2))\n140156637        return result\n140156638        result.o = zx.o(0)\n140156640        return result",
+  "fetched_at": "2026-04-26T17:22:25Z"
+}

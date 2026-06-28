@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407e03b0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1407e03c0        *arg1 = &alLightningBolt::`vftable'{for `alRenderable'}\n1407e03ca        arg1[2] = &alLightningBolt::`vftable'{for `MultiLinkedListMember'}\n1407e03d5        arg1[4] = &alLightningBolt::`vftable'{for `CullObjectClass'}\n1407e03d9        void* rcx = arg1[0x70]\n1407e03e3        if (rcx != 0)\n1407e03fa        if (((arg1[0x72] - rcx) & 0xffffffffffffffe0) u>= 0x1000)\n1407e03fc        void* r8_1 = *(rcx - 8)\n1407e040f        if (rcx - r8_1 - 8 u> 0x1f)\n1407e0449        _invalid_parameter_noinfo_noreturn()\n1407e0449        noreturn\n1407e0411        rcx = r8_1\n1407e0414        j_sub_1407864b8(rcx)\n1407e041b        __builtin_memset(&arg1[0x70], 0, 0x18)\n1407e0437        sub_1407b34f0(&arg1[0x19])\n1407e0444        return sub_14013f770(arg1) __tailcall",
+  "fetched_at": "2026-04-26T17:34:12Z"
+}

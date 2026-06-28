@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407bb9e0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1407bb9f9        int16_t rax = *(arg1 + 0x8a) + 1\n1407bb9ff        *(arg1 + 0x8a) = rax\n1407bba13        if (rax == 0xc8)\n1407bba1f        sub_1407bad30(arg1, \"C stack overflow\", arg3)\n1407bba1f        noreturn\n1407bba81        if (rax u>= 0xe1)\n1407bba8b        sub_1407bc470(arg1, 5)\n1407bba8b        noreturn\n1407bba2a        int32_t* rax_1\n1407bba2a        int512_t zmm0\n1407bba2a        int512_t zmm1\n1407bba2a        rax_1, zmm0, zmm1 = sub_1407bbda0(arg1, arg2)\n1407bba32        if (rax_1 == 0)\n1407bba37        rax_1 = sub_1407c6720(arg1, zmm1, zmm0)\n1407bba44        sub_1407bbcb0(arg1, arg3.d, rax_1)\n1407bba49        void* rcx_4 = arg1[4]\n1407bba52        *(arg1 + 0x8a) -= 1\n1407bba59        int32_t result = *(rcx_4 + 0x70)\n1407bba5f        if (*(rcx_4 + 0x74) u< result)\n1407bba78        return result\n1407bba64        return sub_1407bc850(arg1)",
+  "fetched_at": "2026-04-26T17:33:20Z"
+}

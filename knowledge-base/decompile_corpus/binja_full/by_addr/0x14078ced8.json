@@ -1,0 +1,7 @@
+{
+  "addr": "0x14078ced8",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14078cedc        __dcrt_uninitialize_environments_nolock()\n14078cee1        int64_t result\n14078cee1        result.b = 1\n14078cee7        return result",
+  "fetched_at": "2026-04-26T17:31:32Z"
+}

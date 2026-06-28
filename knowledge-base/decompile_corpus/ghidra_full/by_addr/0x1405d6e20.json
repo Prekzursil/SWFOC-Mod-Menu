@@ -1,0 +1,7 @@
+{
+  "addr": "0x1405d6e20",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall\nTacticalUnderConstructionBehaviorClass::vfunction17\n          (TacticalUnderConstructionBehaviorClass *this,longlong param_1,longlong param_2)\n\n{\n  if (param_2 == *(longlong *)(*(longlong *)(param_1 + 0x138) + 8)) {\n    *(undefined8 *)(*(longlong *)(param_1 + 0x138) + 8) = 0;\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T18:45:34Z"
+}

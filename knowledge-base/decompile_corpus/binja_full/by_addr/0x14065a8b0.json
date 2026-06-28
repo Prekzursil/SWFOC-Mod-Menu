@@ -1,0 +1,7 @@
+{
+  "addr": "0x14065a8b0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14065a8be        struct SignalGeneratorClass::VTable** rax = operator new(0xe8)\n14065a8c6        if (rax != 0)\n14065a8ce        struct GameObjectPerceptualEvaluatorClass::PlanetPerceptualEvaluatorClass::VTable** result = sub_140659cf0(rax, arg1)\n14065a8d9        if (result != 0)\n14065a8e1        (*result)->vFunc_8(result)\n14065a8ec        return result\n14065a8f4        return 0",
+  "fetched_at": "2026-04-26T17:07:26Z"
+}

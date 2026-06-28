@@ -1,0 +1,7 @@
+{
+  "addr": "0x140769ae4",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* Library Function - Single Match\n    __crtCompareStringW\n   \n   Library: Visual Studio 2019 Release */\n\nint __cdecl\n__crtCompareStringW(LPCWSTR _LocaleName,DWORD _DwCmpFlags,LPCWSTR _LpString1,int _CchCount1,\n                   LPCWSTR _LpString2,int _CchCount2)\n\n{\n  int iVar1;\n  \n  if (0 < _CchCount1) {\n    _CchCount1 = FUN_14078baa0(_LpString1,(longlong)_CchCount1);\n  }\n  if (0 < _CchCount2) {\n    _CchCount2 = FUN_14078baa0(_LpString2,(longlong)_CchCount2);\n  }\n  if ((_CchCount1 == 0) || (_CchCount2 == 0)) {\n    iVar1 = (_CchCount1 - _CchCount2 >> 0x1f & 0xfffffffeU) + 3;\n    if (_CchCount1 - _CchCount2 == 0) {\n      iVar1 = 2;\n    }\n  }\n  else {\n    iVar1 = CompareStringEx(_LocaleName,_DwCmpFlags,_LpString1,_CchCount1,_LpString2,_CchCount2,\n                            (LPNLSVERSIONINFO)0x0,(LPVOID)0x0,0);\n  }\n  return iVar1;\n}",
+  "fetched_at": "2026-04-26T18:09:45Z"
+}

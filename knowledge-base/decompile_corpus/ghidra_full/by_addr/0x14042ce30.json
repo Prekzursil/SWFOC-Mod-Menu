@@ -1,0 +1,7 @@
+{
+  "addr": "0x14042ce30",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* LocomotorCommonClass member function inherited by LandTeamContainerLocomotorBehaviorClass\n   LocomotorCommonClass member function inherited by FighterLocomotorBehaviorClass\n   LocomotorCommonClass member function inherited by LocomotorBehaviorClass\n   LocomotorCommonClass member function inherited by StarshipLocomotorBehaviorClass\n   LocomotorCommonClass member function inherited by LandTeamInfantryLocomotorBehaviorClass */\n\nvoid __thiscall LocomotorCommonClass::vfunction44(LocomotorCommonClass *this)\n\n{\n  undefined8 uVar1;\n  int in_EDX;\n  \n  uVar1 = (*this->vftablePtr->vfunction47)(this,in_EDX);\n  if ((char)uVar1 != '\\0') {\n    FUN_140557b10(this->offset_0x18[0x15],this->offset_0x18);\n    return;\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T17:49:34Z"
+}

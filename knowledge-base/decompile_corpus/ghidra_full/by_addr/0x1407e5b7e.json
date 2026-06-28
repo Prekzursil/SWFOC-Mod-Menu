@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407e5b7e",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_1407e5b7e(undefined8 param_1,longlong param_2)\n\n{\n  if ((*(uint *)(param_2 + 0x38) & 4) != 0) {\n    *(uint *)(param_2 + 0x38) = *(uint *)(param_2 + 0x38) & 0xfffffffb;\n    FUN_14001eaa0(param_2 + 0xb0);\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T19:00:42Z"
+}

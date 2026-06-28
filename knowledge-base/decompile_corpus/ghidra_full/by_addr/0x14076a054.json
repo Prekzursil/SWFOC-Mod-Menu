@@ -1,0 +1,7 @@
+{
+  "addr": "0x14076a054",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* Library Function - Single Match\n    _Init_thread_header\n   \n   Library: Visual Studio 2019 Release */\n\nvoid _Init_thread_header(int *param_1)\n\n{\n  EnterCriticalSection((LPCRITICAL_SECTION)&DAT_140b3b968);\n  do {\n    if (*param_1 == 0) {\n      *param_1 = -1;\nLAB_14076a0a8:\n                    /* WARNING: Could not recover jumptable at 0x00014076a0b4. Too many branches */\n                    /* WARNING: Treating indirect jump as call */\n      LeaveCriticalSection((LPCRITICAL_SECTION)&DAT_140b3b968);\n      return;\n    }\n    if (*param_1 != -1) {\n      *(undefined4 *)\n       (*(longlong *)((longlong)ThreadLocalStoragePointer + (ulonglong)_tls_index * 8) + 0xd4) =\n           DAT_140a44b60;\n      goto LAB_14076a0a8;\n    }\n    _Init_thread_wait(100);\n  } while( true );\n}",
+  "fetched_at": "2026-04-26T18:09:57Z"
+}

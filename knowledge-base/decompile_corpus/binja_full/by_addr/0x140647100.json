@@ -1,0 +1,7 @@
+{
+  "addr": "0x140647100",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14064710b        struct BehaviorClass::StunnableBehaviorClass::VTable** result = operator new(0x40)\n140647116        if (result == 0)\n14064714e        return result\n14064711b        sub_1404c32d0(result)\n140647127        *result = &StunnableBehaviorClass::`vftable'{for `BehaviorClass'}\n140647131        result[1] = &StunnableBehaviorClass::`vftable'{for `RefCountClass'}\n14064713c        result[3] = &StunnableBehaviorClass::`vftable'{for `SignalListenerClass'}\n140647148        return result",
+  "fetched_at": "2026-04-26T17:04:04Z"
+}

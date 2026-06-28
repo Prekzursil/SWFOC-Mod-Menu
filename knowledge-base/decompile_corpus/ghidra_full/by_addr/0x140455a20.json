@@ -1,0 +1,7 @@
+{
+  "addr": "0x140455a20",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall StoryEventVictoryClass::vfunction4(StoryEventVictoryClass *this,longlong param_1)\n\n{\n  longlong lVar1;\n  \n  lVar1._0_1_ = this[1].SignalGeneratorClass_data.offset_0x0;\n  lVar1._1_3_ = *(undefined3 *)&this[1].SignalGeneratorClass_data.field_0x1;\n  lVar1._4_4_ = this[1].SignalGeneratorClass_data.offset_0x4;\n  if (lVar1 == 0) {\n    FUN_140467540(\n                 \"ERROR! STORY_VICTORY - Can\\'t trigger event, we couldn\\'t find the player at startup.\\r\\n\"\n                 );\n    return;\n  }\n  if (lVar1 == param_1) {\n    FUN_140455db0(this,0,0);\n    return;\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T17:55:54Z"
+}

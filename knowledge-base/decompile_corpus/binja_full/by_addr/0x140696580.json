@@ -1,0 +1,7 @@
+{
+  "addr": "0x140696580",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1406965b9        char rbx = sub_14021ffa0(arg3, 7) & 1 & sub_1402200b0(arg3, &data_140a44488, 4, nullptr)\n1406965cc        return sub_140220030(arg3) & rbx",
+  "fetched_at": "2026-04-26T17:20:02Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407f3630",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1407f3634        int64_t rcx = data_140a2bb50\n1407f363b        struct DynamicVectorClass<class SpeechEventReferenceClass* __ptr64>::VTable* const result = &DynamicVectorClass<class SpeechEventReferenceClass* __ptr64>::`vftable'\n1407f3642        data_140a2bb48 = &DynamicVectorClass<class SpeechEventReferenceClass* __ptr64>::`vftable'\n1407f364c        if (rcx != 0)\n1407f3658        if ((data_140a2bb5c & 0x80000000) == 0)\n1407f3674        j_sub_1407864b8(rcx)\n1407f366c        HeapFree(GetProcessHeap(), HEAP_NONE, data_140a2bb50)\n1407f3679        result = nullptr\n1407f367b        data_140a2bb5c &= 0x80000000\n1407f3685        data_140a2bb50 = 0\n1407f368c        data_140a2bb58 = 0\n1407f3696        return result",
+  "fetched_at": "2026-04-26T17:37:15Z"
+}

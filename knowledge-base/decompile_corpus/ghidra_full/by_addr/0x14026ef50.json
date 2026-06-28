@@ -1,0 +1,7 @@
+{
+  "addr": "0x14026ef50",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* DrawPrimitiveClass member function inherited by TextureRectClass\n   DrawPrimitiveClass member function inherited by FillRectClass\n   DrawPrimitiveClass member function inherited by DrawRectClass\n   DrawPrimitiveClass member function inherited by DrawLineSegmentClass */\n\nvoid __thiscall\nDrawPrimitiveClass::vfunction21\n          (DrawPrimitiveClass *this,float *param_1,float *param_2,float *param_3,float *param_4)\n\n{\n  float fVar1;\n  \n  fVar1 = *(float *)((longlong)&(this->DrawPrimitiveClass_data).offset_0x10 + 4);\n  *param_1 = fVar1;\n  *param_2 = fVar1 + *(float *)((longlong)&(this->DrawPrimitiveClass_data).offset_0x18 + 4);\n  fVar1 = *(float *)&(this->DrawPrimitiveClass_data).offset_0x18;\n  *param_3 = fVar1;\n  *param_4 = fVar1 + (float)(this->DrawPrimitiveClass_data).offset_0x20;\n  return;\n}",
+  "fetched_at": "2026-04-26T18:19:20Z"
+}

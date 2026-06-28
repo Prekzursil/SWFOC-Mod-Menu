@@ -1,0 +1,7 @@
+{
+  "addr": "0x14078d6ac",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14078d6d2        if (wcscpy_s(arg1, arg2, arg3) != 0)\n14078d73c        int64_t var_18_2 = 0\n14078d748        _invoke_watson()\n14078d748        noreturn\n14078d6de        if (*(arg3 + 0x80) != 0)\n14078d6e7        int16_t* var_18_1 = arg3 + 0x80\n14078d6f6        sub_14078de64(arg1, arg2, 2)\n14078d6fb        void* result = arg3 + 0x100\n14078d705        if (*result == 0)\n14078d738        return result\n14078d70e        void* result_1 = result\n14078d71f        return sub_14078de64(arg1, arg2, 2)",
+  "fetched_at": "2026-04-26T17:31:34Z"
+}

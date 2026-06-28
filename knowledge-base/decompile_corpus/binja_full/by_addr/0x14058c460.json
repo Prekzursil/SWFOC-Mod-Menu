@@ -1,0 +1,7 @@
+{
+  "addr": "0x14058c460",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14058c467        *arg1 = &LureDataPackClass::`vftable'{for `BaseDataPackClass'}\n14058c46c        arg1[1] = 0\n14058c470        arg1[2].d = 0\n14058c473        arg1[3] = 0\n14058c47a        return arg1",
+  "fetched_at": "2026-04-26T17:36:11Z"
+}

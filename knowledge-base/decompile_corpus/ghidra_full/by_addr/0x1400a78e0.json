@@ -1,0 +1,7 @@
+{
+  "addr": "0x1400a78e0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\n/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */\n\nvoid FUN_1400a78e0(int *param_1)\n\n{\n  DWORD DVar1;\n  int iVar2;\n  int *_Buf1;\n  \n  iVar2 = *param_1;\n  if (iVar2 != 0) {\n    if (iVar2 == 1) {\n      _Buf1 = param_1 + 2;\n      if (0xf < *(ulonglong *)(param_1 + 8)) {\n        _Buf1 = *(int **)_Buf1;\n      }\n      if (*(longlong *)(param_1 + 6) == 0x1f) {\n        iVar2 = memcmp(_Buf1,\"IDC_INTERNET_WAIT_CANCEL_BUTTON\",0x1f);\n        if (iVar2 == 0) goto LAB_1400a795d;\n      }\n    }\n    else if ((iVar2 == 0xc) && (DAT_140a61ee4 != 0)) {\n      DVar1 = timeGetTime();\n      if ((uint)(DAT_140a61ee0 + DAT_140a61ee4) < DVar1 - _DAT_140a7bec0) {\n        DAT_140a61ee4 = 0;\n        FUN_1400a7980();\n        return;\n      }\n    }\n    return;\n  }\nLAB_1400a795d:\n  FUN_1400a7980();\n  return;\n}\n\n",
+  "fetched_at": "2026-04-26T16:59:03Z"
+}

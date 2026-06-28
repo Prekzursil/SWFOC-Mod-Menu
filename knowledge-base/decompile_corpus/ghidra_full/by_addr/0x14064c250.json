@@ -1,0 +1,7 @@
+{
+  "addr": "0x14064c250",
+  "tool": "ghidra",
+  "fact_id": "rva_ai_serviced_system_ctor",
+  "body": "\nServicedAISystemClass * __thiscall\nServicedAISystemClass::ServicedAISystemClass(ServicedAISystemClass *this,undefined8 param_1)\n\n{\n  AIDiagnosticsClass::AIDiagnosticsClass((AIDiagnosticsClass *)this);\n  (this->ServicedAISystemClass_data).offset_0x0 = param_1;\n  this->vftablePtr = &vftable;\n  (this->ServicedAISystemClass_data).offset_0x8 = 0;\n  return this;\n}\n\n",
+  "fetched_at": "2026-04-26T16:44:07Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x14062fc70",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "char __thiscall TeamLocomotorBehaviorClass::vfunction53(TeamLocomotorBehaviorClass *this)\n\n{\n  bool bVar1;\n  char cVar2;\n  char cVar3;\n  int iVar4;\n  longlong lVar5;\n  longlong *plVar6;\n  int iVar7;\n  \n  lVar5 = (**(code **)(*this->offset_0x18 + 0x10))(this->offset_0x18,0x16);\n  if (lVar5 == 0) {\n    return '\\0';\n  }\n  cVar3 = '\\0';\n  bVar1 = false;\n  iVar7 = 0;\n  iVar4 = FUN_140405300(lVar5);\n  if (0 < iVar4) {\n    do {\n      plVar6 = (longlong *)FUN_1404052d0(lVar5,iVar7);\n      if (((plVar6 != (longlong *)0x0) &&\n          (plVar6 = (longlong *)(**(code **)(*plVar6 + 0x10))(plVar6,1), plVar6 != (longlong *)0x0))\n         && (cVar2 = (**(code **)(*plVar6 + 0x220))(plVar6), cVar2 != '\\0')) {\n        if (bVar1) {\n          if (cVar3 != '\\0') goto LAB_14062fd04;\n        }\n        else {\n          bVar1 = true;\nLAB_14062fd04:\n          cVar3 = (**(code **)(*plVar6 + 0x1a0))(plVar6);\n          if (cVar3 != '\\0') {\n            cVar3 = '\\x01';\n            goto LAB_14062fd1a;\n          }\n        }\n        cVar3 = '\\0';\n      }\nLAB_14062fd1a:\n      iVar7 = iVar7 + 1;\n      iVar4 = FUN_140405300(lVar5);\n    } while (iVar7 < iVar4);\n  }\n  return cVar3;\n}",
+  "fetched_at": "2026-04-26T17:33:09Z"
+}

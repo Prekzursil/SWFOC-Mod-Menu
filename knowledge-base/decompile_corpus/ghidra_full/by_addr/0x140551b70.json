@@ -1,0 +1,7 @@
+{
+  "addr": "0x140551b70",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined4 __thiscall\nAmbientSFXDataPackClass::vfunction2(AmbientSFXDataPackClass *this,undefined8 param_1)\n\n{\n  char cVar1;\n  undefined4 uVar2;\n  int iVar3;\n  \n  uVar2 = FUN_1402204a0(param_1);\n  cVar1 = (char)uVar2;\n  while (cVar1 != '\\0') {\n    iVar3 = FUN_1402205a0(param_1);\n    if (iVar3 == 1) {\n      cVar1 = FUN_140220610(param_1);\n      while (cVar1 != '\\0') {\n        iVar3 = FUN_140220710(param_1);\n        if (iVar3 == 0) {\n          FUN_140220730(param_1,&this->\n                                 PooledObjectClass<class_AmbientSFXDataPackClass,20,class_EmptyLockerClass>\n                        ,4,0);\n        }\n        FUN_1402206a0(param_1);\n        cVar1 = FUN_140220610(param_1);\n      }\n    }\n    FUN_140220520(param_1);\n    uVar2 = FUN_1402204a0(param_1);\n    cVar1 = (char)uVar2;\n  }\n  return CONCAT31((int3)((uint)uVar2 >> 8),1);\n}",
+  "fetched_at": "2026-04-26T18:38:05Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x14078b938",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* Library Function - Single Match\n    __strncnt\n   \n   Library: Visual Studio 2019 Release */\n\nsize_t __cdecl __strncnt(char *_String,size_t _Cnt)\n\n{\n  char cVar1;\n  size_t sVar2;\n  \n  sVar2 = 0;\n  cVar1 = *_String;\n  while ((cVar1 != '\\0' && (sVar2 != _Cnt))) {\n    sVar2 = sVar2 + 1;\n    cVar1 = _String[sVar2];\n  }\n  return sVar2;\n}",
+  "fetched_at": "2026-04-26T18:51:54Z"
+}

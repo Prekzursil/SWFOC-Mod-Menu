@@ -1,0 +1,7 @@
+{
+  "addr": "0x14062b020",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14062b02b        struct BehaviorClass::LureBehaviorClass::VTable** result = operator new(0x40)\n14062b036        if (result == 0)\n14062b0f4        return result\n14062b03f        sub_1404c32d0(result)\n14062b044        void* rcx_1 = result[5]\n14062b04f        *result = &LureBehaviorClass::`vftable'{for `BehaviorClass'}\n14062b059        result[1] = &LureBehaviorClass::`vftable'{for `RefCountClass'}\n14062b064        result[3] = &LureBehaviorClass::`vftable'{for `SignalListenerClass'}\n14062b06b        if (rcx_1 == 0)\n14062b0a0        label_14062b0a0:\n14062b0a0        void* rdi_1 = result[5]\n14062b0a7        if (rdi_1 != 0)\n14062b0a9        void* rdi_2 = *(rdi_1 + 0x1d8)\n14062b0b3        if (rdi_2 != 0)\n14062b0b5        void* rax_2 = *(rdi_2 + 0x18)\n14062b0bc        if (rax_2 != 0)\n14062b0cc        sub_1402a6280(*(data_140b15418 + 0x18), *(rax_2 + 0x50))\n14062b0d1        *(rdi_2 + 0x18) = 0\n14062b0dc        sub_1404c30b0(result)\n14062b075        if (*(rcx_1 + 0x1d8) != 0)\n14062b084        if (sub_140397d90(rcx_1, 0xa) != 0)\n14062b084        goto label_14062b0a0\n14062b08d        sub_1402149d0(\"Object is trying to deactivate LURE behavior but does not have LURE unit ability!\")\n14062b0ee        return result",
+  "fetched_at": "2026-04-26T17:24:03Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x1404f3a20",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1404f3a23        void* entry_rdx\n1404f3a23        if (entry_rdx == 0)\n1404f3a23        return \n1404f3a37        void* rbp_1 = *(entry_rdx + 0xc8)\n1404f3a41        if (rbp_1 == 0)\n1404f3a41        return \n1404f3a48        int32_t i = 0\n1404f3a4d        if (*(rbp_1 + 0x18) s<= 0)\n1404f3a4d        return \n1404f3a59        int64_t** rsi_1 = nullptr\n1404f3a64        int64_t* rbx_1 = *(rsi_1 + *(rbp_1 + 0x10))\n1404f3a6b        if (rbx_1 != 0)\n1404f3a77        int512_t entry_zmm1\n1404f3a77        int512_t entry_zmm2\n1404f3a77        int128_t zmm6\n1404f3a77        if (sub_14039a600(rbx_1) != 0)\n1404f3a7f        void* entry_r8\n1404f3a7f        entry_rdx, entry_zmm1, entry_zmm2, zmm6 = sub_1403a01f0(rbx_1, entry_r8)\n1404f3a87        if (entry_r8 != 0)\n1404f3a8f        sub_14039fe20(entry_r8, rbx_1)\n1404f3a94        entry_rdx.b = 1\n1404f3a99        int64_t rax\n1404f3a99        rax, entry_rdx, entry_zmm1, entry_zmm2, zmm6 = sub_140391310(rbx_1, entry_rdx.b, entry_zmm2, entry_zmm1, zmm6)\n1404f3a9e        i += 1\n1404f3aa0        rsi_1 = &rsi_1[1]\n1404f3aa7        do while (i s< *(rbp_1 + 0x18))\n1404f3ac3        return ",
+  "fetched_at": "2026-04-26T17:31:39Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407b9a60",
+  "tool": "binary_ninja",
+  "fact_id": "api_lua_settable",
+  "body": "1407b9a6b        void* rax_2\n1407b9a6b        if (arg2 s<= 0)\n1407b9a81        rax_2 = sub_1407b9f20(arg1, arg2)\n1407b9a7c        rax_2 = arg1[3] - 0x10 + (sx.q(arg2) << 4)\n1407b9a86        void* r8 = arg1[2]\n1407b9a98        int64_t result = sub_1407c8140(arg1, rax_2, r8 - 0x20, r8 - 0x10)\n1407b9a9d        arg1[2] -= 0x20\n1407b9aa7        return result",
+  "fetched_at": "2026-04-26T16:44:33Z"
+}

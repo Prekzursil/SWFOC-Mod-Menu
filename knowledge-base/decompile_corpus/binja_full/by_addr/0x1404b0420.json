@@ -1,0 +1,7 @@
+{
+  "addr": "0x1404b0420",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1404b0429        void* var_48 = nullptr\n1404b0432        void* rdx = *(arg1 + 8)\n1404b043b        int64_t var_30 = 0xf\n1404b0444        int64_t var_38 = 4\n1404b044d        __builtin_strncpy(&var_48, \"(AI)\", 5)\n1404b045e        void* var_28\n1404b045e        sub_14001e680(&var_28, *(rdx + 0x30))\n1404b0478        sub_140058010(arg2, zx.q(arg3), &var_28, &var_48)\n1404b0486        int64_t var_10\n1404b0486        if (var_10 u>= 0x10)\n1404b0488        void* rcx_2 = var_28\n1404b0490        void* rax_1 = rcx_2\n1404b049a        if (var_10 + 1 u>= 0x1000)\n1404b049c        rcx_2 = *(rcx_2 - 8)\n1404b04af        if (var_10 + 1 u>= 0x1000 && rax_1 - rcx_2 - 8 u> 0x1f)\n1404b04f8        _invalid_parameter_noinfo_noreturn()\n1404b04f8        noreturn\n1404b04b1        j_sub_1407864b8(rcx_2)\n1404b04bf        if (var_30 u< 0x10)\n1404b04f7        return arg2\n1404b04c1        void* rcx_3 = var_48\n1404b04c9        void* rax_4 = rcx_3\n1404b04d3        if (var_30 + 1 u>= 0x1000)\n1404b04d5        rcx_3 = *(rcx_3 - 8)\n1404b04e8        if (var_30 + 1 u>= 0x1000 && rax_4 - rcx_3 - 8 u> 0x1f)\n1404b04f8        _invalid_parameter_noinfo_noreturn()\n1404b04f8        noreturn\n1404b04ea        j_sub_1407864b8(rcx_3)\n1404b04f7        return arg2",
+  "fetched_at": "2026-04-26T17:29:38Z"
+}

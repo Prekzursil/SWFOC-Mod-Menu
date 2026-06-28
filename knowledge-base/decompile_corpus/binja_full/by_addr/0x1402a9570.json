@@ -1,0 +1,7 @@
+{
+  "addr": "0x1402a9570",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1402a957c        *(arg1 + 0x400) = 0\n1402a9589        if (arg2 == 0)\n1402a966e        return arg1 + 0x3f0\n1402a9592        if (arg3 == 0)\n1402a9594        arg3 = arg1 + 0x38\n1402a9598        void* i = *(arg3 + 0x10)\n1402a95a3        if (i == arg3 + 8)\n1402a9661        return arg1 + 0x3f0\n1402a95b0        void* rax_1 = *(i + 0x18)\n1402a95b7        void* rbx_1 = rax_1 - 0x18\n1402a95bb        if (rax_1 == 0)\n1402a95bb        rbx_1 = nullptr\n1402a95cb        if (rbx_1 != 0 && *(rbx_1 + 0x298) == arg2)\n1402a95f7        int32_t rax_3 = *(arg1 + 0x400)\n1402a95fc        int32_t rcx_2 = (*(arg1 + 0x404) * 2) s>> 1\n1402a9600        if (rax_3 s>= rcx_2)\n1402a9607        int64_t r9\n1402a9607        r9.b = 1\n1402a9614        int32_t rdx_3 = rcx_2 s/ 0xa\n1402a961d        if (rdx_3 s< 0xa)\n1402a961d        rdx_3 = 0xa\n1402a9628        sub_140047aa0(arg1 + 0x3f0, rdx_3 + rcx_2, 0, r9.b)\n1402a962d        rax_3 = *(arg1 + 0x400)\n1402a9637        *(*(arg1 + 0x3f8) + (sx.q(rax_3) << 3)) = rbx_1\n1402a9642        *(arg1 + 0x400) += 1\n1402a9654        return arg1 + 0x3f0\n1402a95cd        i = *(i + 8)\n1402a95d4        do while (i != arg3 + 8)\n1402a95e7        return arg1 + 0x3f0",
+  "fetched_at": "2026-04-26T17:32:58Z"
+}

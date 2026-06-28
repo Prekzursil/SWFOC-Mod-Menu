@@ -1,0 +1,7 @@
+{
+  "addr": "0x140784914",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* Library Function - Single Match\n    __acrt_initialize_stdio\n   \n   Libraries: Visual Studio 2017 Release, Visual Studio 2019 Release */\n\nundefined8 __acrt_initialize_stdio(void)\n\n{\n  longlong lVar1;\n  longlong lVar2;\n  undefined4 *puVar3;\n  longlong lVar4;\n  undefined *puVar5;\n  \n  lVar1 = 0;\n  lVar4 = 3;\n  if (DAT_140b3c0b0 == 0) {\n    DAT_140b3c0b0 = 0x200;\n  }\n  else if (DAT_140b3c0b0 < 3) {\n    DAT_140b3c0b0 = 3;\n  }\n  DAT_140b3c0b8 = _calloc_base((longlong)DAT_140b3c0b0,8);\n  _free_base(0);\n  if (DAT_140b3c0b8 == 0) {\n    DAT_140b3c0b0 = 3;\n    DAT_140b3c0b8 = _calloc_base(3,8);\n    _free_base(0);\n    if (DAT_140b3c0b8 == 0) {\n      return 0xffffffff;\n    }\n  }\n  puVar3 = &DAT_140a44be8;\n  puVar5 = &DAT_140a44bd0;\n  lVar2 = lVar1;\n  do {\n    __acrt_InitializeCriticalSectionEx(puVar5 + 0x30,4000,0);\n    *(undefined **)(lVar1 + DAT_140b3c0b8) = puVar5;\n    if (*(longlong *)((&DAT_140b3c4d0)[lVar2 >> 6] + 0x28 + (ulonglong)((uint)lVar2 & 0x3f) * 0x48)\n        + 2U < 3) {\n      *puVar3 = 0xfffffffe;\n    }\n    lVar2 = lVar2 + 1;\n    puVar5 = puVar5 + 0x58;\n    lVar1 = lVar1 + 8;\n    puVar3 = puVar3 + 0x16;\n    lVar4 = lVar4 + -1;\n  } while (lVar4 != 0);\n  return 0;\n}",
+  "fetched_at": "2026-04-26T18:51:20Z"
+}

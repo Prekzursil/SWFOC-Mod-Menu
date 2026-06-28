@@ -1,0 +1,7 @@
+{
+  "addr": "0x14064c350",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nulonglong __thiscall\nServicedAISystemClass::vfunction6(ServicedAISystemClass *this,undefined8 param_1)\n\n{\n  char cVar1;\n  byte bVar2;\n  int iVar3;\n  ulonglong uVar4;\n  byte bVar5;\n  undefined8 local_res18;\n  \n  uVar4 = FUN_1402205a0(param_1);\n  if ((int)uVar4 != 0) {\n    return uVar4 & 0xffffffffffffff00;\n  }\n  bVar5 = 1;\n  cVar1 = FUN_140220610(param_1);\n  while (cVar1 != '\\0') {\n    iVar3 = FUN_140220710(param_1);\n    if (iVar3 == 0) {\n      FUN_140220730(param_1,&(this->ServicedAISystemClass_data).offset_0x8,4);\n    }\n    else if (iVar3 == 1) {\n      local_res18 = 0;\n      bVar2 = FUN_140220730(param_1,&local_res18,8);\n      bVar5 = bVar5 & bVar2;\n      FUN_1401fe2d0(local_res18,this);\n    }\n    FUN_1402206a0(param_1);\n    cVar1 = FUN_140220610(param_1);\n  }\n  return (ulonglong)bVar5;\n}\n\n",
+  "fetched_at": "2026-04-26T17:04:55Z"
+}

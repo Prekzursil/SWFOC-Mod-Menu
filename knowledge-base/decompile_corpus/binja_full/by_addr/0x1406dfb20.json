@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406dfb20",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1406dfb2f        void* rsi = arg1[0x13]\n1406dfb3d        *arg1 = &PlayerPerceptualEvaluatorClass::`vftable'{for `PerceptualEvaluatorClass'}\n1406dfb47        arg1[3] = &PlayerPerceptualEvaluatorClass::`vftable'{for `AIDiagnosticsClass'}\n1406dfb52        arg1[0x11] = &PlayerPerceptualEvaluatorClass::`vftable'{for `SignalListenerClass'}\n1406dfb5f        if (rsi != 0)\n1406dfb76        sub_140220eb0(sub_140058570(), rsi, &arg1[0x11], 0)\n1406dfb7b        arg1[0x13] = 0\n1406dfb94        arg1[0x11] = &SignalListenerClass::`vftable'{for `MultiLinkedListMember'}\n1406dfb9b        sub_14020a820(&arg1[0x11])\n1406dfbb2        return sub_14064c9a0(arg1) __tailcall",
+  "fetched_at": "2026-04-26T17:25:54Z"
+}

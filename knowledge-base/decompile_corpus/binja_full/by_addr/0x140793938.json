@@ -1,0 +1,7 @@
+{
+  "addr": "0x140793938",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140793961        int64_t rax = try_get_function(0xf, \"GetUserDefaultLocaleName\", &data_1408d8280, \"GetUserDefaultLocaleName\")\n140793969        if (rax == 0)\n140793989        return __acrt_LCIDToLocaleName(GetUserDefaultLCID(), arg1, arg2, 0)\n140793998        return rax(arg1, zx.q(arg2))",
+  "fetched_at": "2026-04-26T17:31:51Z"
+}

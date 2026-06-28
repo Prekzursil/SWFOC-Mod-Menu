@@ -1,0 +1,7 @@
+{
+  "addr": "0x140390a20",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_140390a20(longlong param_1)\n\n{\n  LandObstacleDataPackClass *pLVar1;\n  \n  if (*(longlong *)(param_1 + 0x208) == 0) {\n    pLVar1 = (LandObstacleDataPackClass *)FUN_140769c58(0x10);\n    if (pLVar1 != (LandObstacleDataPackClass *)0x0) {\n      pLVar1 = LandObstacleDataPackClass::LandObstacleDataPackClass(pLVar1);\n      *(LandObstacleDataPackClass **)(param_1 + 0x208) = pLVar1;\n      return;\n    }\n    *(undefined8 *)(param_1 + 0x208) = 0;\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T17:21:52Z"
+}

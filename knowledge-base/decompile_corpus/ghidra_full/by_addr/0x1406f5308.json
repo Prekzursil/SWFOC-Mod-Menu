@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406f5308",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall\nConcentrateFireAttackAbilityClass::vfunction3_for_RefCountClass\n          (ConcentrateFireAttackAbilityClass *this,uint param_1)\n\n{\n  scalar_deleting_destructor\n            ((ConcentrateFireAttackAbilityClass *)\n             &this[-1].ConcentrateFireAttackAbilityClass_data.offset_0x8,param_1);\n  return;\n}",
+  "fetched_at": "2026-04-26T17:48:11Z"
+}

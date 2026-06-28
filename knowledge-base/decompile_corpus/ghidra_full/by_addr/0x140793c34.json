@@ -1,0 +1,7 @@
+{
+  "addr": "0x140793c34",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* Library Function - Single Match\n    __acrt_RoUninitialize\n   \n   Libraries: Visual Studio 2017 Release, Visual Studio 2019 Release */\n\nvoid __acrt_RoUninitialize(void)\n\n{\n  void *pvVar1;\n  \n  pvVar1 = try_get_function(0x1b,\"RoUninitialize\",(module_id *)&DAT_1408d8338,\n                            (module_id *)&DAT_1408d833c);\n  if (pvVar1 != (void *)0x0) {\n    (*(code *)PTR__guard_dispatch_icall_1407fdcd8)();\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T18:53:06Z"
+}

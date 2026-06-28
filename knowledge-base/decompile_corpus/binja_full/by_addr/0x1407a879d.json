@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407a879d",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1407a879d        return D3DXCreateBuffer() __tailcall",
+  "fetched_at": "2026-04-26T17:32:32Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x140724c40",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140724c53        if (arg2 == 0)\n140724c61        return 0\n140724c6c        struct AITargetLocationClass::TacticalUnitAITargetLocationClass::VTable** result_1 = operator new(0x38)\n140724c71        struct AITargetLocationClass::TacticalUnitAITargetLocationClass::VTable** result = result_1\n140724c77        if (result_1 == 0)\n140724caf        result = result_1\n140724c7b        result[2] = arg1\n140724c7f        result[4] = 0\n140724c8a        *result = &TacticalUnitAITargetLocationClass::`vftable'{for `AITargetLocationClass'}\n140724c94        result[3] = &TacticalUnitAITargetLocationClass::`vftable'{for `SignalListenerClass'}\n140724c98        result[1].d = 0\n140724c9b        result[5] = 0\n140724c9f        result[6].d = 0x3fffff\n140724ca6        *(result + 0x34) = 0xffffffff\n140724cb8        sub_1407251f0(result, arg2)\n140724ccf        return result",
+  "fetched_at": "2026-04-26T17:28:27Z"
+}

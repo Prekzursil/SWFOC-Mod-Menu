@@ -1,0 +1,7 @@
+{
+  "addr": "0x14067ea00",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nvoid __thiscall\nMovingVsMovingCollisionClass::vfunction2_for_AIDiagnosticsClass(MovingVsMovingCollisionClass *this)\n\n{\n  undefined8 *puVar1;\n  \n  puVar1 = (undefined8 *)FUN_140769c58(0x10);\n  if (puVar1 != (undefined8 *)0x0) {\n    *puVar1 = &MovingVsMovingCollisionDiagnosticsNodeClass::vftable;\n    puVar1[1] = &this[-1].offset_0xc8;\n    return;\n  }\n  return;\n}\n\n",
+  "fetched_at": "2026-04-26T17:11:52Z"
+}

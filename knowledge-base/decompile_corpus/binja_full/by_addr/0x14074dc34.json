@@ -1,0 +1,7 @@
+{
+  "addr": "0x14074dc34",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14074dc4b        char rsi = 0\n14074dc4d        int32_t arg_8 = 0\n14074dc5c        if (arg1 != 0 && *arg1 == 0)\n14074dc65        struct std::locale::facet::std::numpunct<wchar_t>::VTable** rax_1 = operator new(0x30)\n14074dc6a        struct std::locale::facet::std::numpunct<wchar_t>::VTable** rbx_1 = rax_1\n14074dc6d        struct std::locale::facet::std::numpunct<wchar_t>::VTable** arg_18 = rax_1\n14074dc78        void var_88\n14074dc78        if (rax_1 == 0)\n14074dccf        rbx_1 = nullptr\n14074dc7a        void* rax_2 = *(arg2 + 8)\n14074dc81        void* rdx\n14074dc81        if (rax_2 == 0)\n14074dc92        rdx = &data_1407ff8a8\n14074dc83        rdx = *(rax_2 + 0x28)\n14074dc8a        if (rdx == 0)\n14074dc8c        rdx = rax_2 + 0x30\n14074dc9e        int32_t* rax_3 = std::_Locinfo::_Locinfo(&var_88, rdx)\n14074dca4        rsi = 1\n14074dca9        arg_8 = 1\n14074dcb0        rbx_1[1].d = 0\n14074dcbb        *rbx_1 = &std::numpunct<wchar_t>::`vftable'{for `std::locale::facet'}\n14074dcc7        std::numpunct<wchar_t>::_Init(rbx_1, rax_3, 1)\n14074dcd1        *arg1 = rbx_1\n14074dcd8        if ((rsi & 1) != 0)\n14074dcdf        std::_Locinfo::~_Locinfo(&var_88)\n14074dcfb        return 4",
+  "fetched_at": "2026-04-26T17:29:46Z"
+}

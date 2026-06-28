@@ -1,0 +1,7 @@
+{
+  "addr": "0x140260490",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140260496        struct DrawPrimitiveClass::TextureRectClass::VTable** result = arg1\n140260499        sub_14026ed80(arg1)\n1402604a0        result[0xd] = 0xf\n1402604a8        result[9].d = 0\n1402604b2        result[0xa] = 0\n1402604b6        result[0xc] = 0\n1402604ba        *result = &TextureRectClass::`vftable'{for `DrawPrimitiveClass'}\n1402604c4        result[8] = &TextureRectClass::`vftable'{for `RefCountClass'}\n1402604cb        result[0xe].b = 0\n1402604ce        result[0xf] = 0\n1402604d2        result[0x10].d = 0\n1402604d8        *(result + 0x84) = 0x3f800000\n1402604e3        *(result + 0x8c) = 0x3f800000\n1402604f2        return result",
+  "fetched_at": "2026-04-26T17:31:12Z"
+}

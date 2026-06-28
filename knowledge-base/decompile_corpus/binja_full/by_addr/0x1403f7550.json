@@ -1,0 +1,7 @@
+{
+  "addr": "0x1403f7550",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1403f755b        struct BehaviorClass::PlanetaryBehaviorClass::VTable** result = operator new(0x40)\n1403f7566        if (result == 0)\n1403f759e        return result\n1403f756b        sub_1404c32d0(result)\n1403f7577        *result = &PlanetaryBehaviorClass::`vftable'{for `BehaviorClass'}\n1403f7581        result[1] = &PlanetaryBehaviorClass::`vftable'{for `RefCountClass'}\n1403f758c        result[3] = &PlanetaryBehaviorClass::`vftable'{for `SignalListenerClass'}\n1403f7598        return result",
+  "fetched_at": "2026-04-26T17:25:27Z"
+}

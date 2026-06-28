@@ -1,0 +1,7 @@
+{
+  "addr": "0x140371310",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140371310        int128_t zmm1 = *(arg1 + 0x16b4)\n140371318        int512_t result\n140371318        result.o = zx.o(0)\n14037131e        if (zmm1.d f<= 0f)\n140371324        result.o = data_140b16cb0\n14037132c        return result\n140371320        result.o = zmm1\n140371323        return result",
+  "fetched_at": "2026-04-26T17:15:33Z"
+}

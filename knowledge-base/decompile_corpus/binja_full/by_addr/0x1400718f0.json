@@ -1,0 +1,7 @@
+{
+  "addr": "0x1400718f0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140071903        if (*(arg1 + 0x344) == 0)\n140071903        return \n140071909        void* rcx = *(arg1 + 0x2b8)\n140071921        int64_t r9_1 = 0\n140071924        void* r8_2 = *(arg1 + 0x2c0) - rcx\n140071927        int64_t rax_1\n140071927        void* rdx\n140071927        rdx:rax_1 = muls.dp.q(-0x75270d0456c797dd, r8_2)\n14007192d        int64_t rdx_2 = (rdx + r8_2) s>> 8\n14007193b        if (rdx_2 == neg.q(rdx_2 u>> 0x3f))\n14007193b        return \n140071941        int32_t* rax_3 = rcx + 0xa0\n14007194b        while (*rax_3 != arg2)\n14007194d        r9_1 += 1\n140071950        rax_3 = &rax_3[0x76]\n140071959        if (r9_1 u>= r8_2 s/ 0x1d8)\n140071960        return \n14007196b        void* rbp_1 = *(arg1 + 0x2c0)\n14007197e        void* rdi_2 = r9_1 * 0x1d8 + rcx\n140071981        void* rbx_1 = rdi_2 + 0x1d8\n14007198b        if (rbx_1 != rbp_1)\n14007198d        void* rdi_3 = rdi_2 - rbx_1\n140071997        common_splitpath_internal<char,class <lambda_0a29fbdbce7e818b875cecd280c47f0b>,class <lambda_7224c10e0d9cf27ffd5accaa7469d6af> >(rdi_3 + rbx_1, rbx_1)\n14007199c        rbx_1 += 0x1d8\n1400719a6        do while (rbx_1 != rbp_1)\n1400719a8        rbp_1 = *(arg1 + 0x2c0)\n1400719b6        sub_14001ece0(rbp_1 - 0x1d8)\n1400719bb        *(arg1 + 0x2c0) -= 0x1d8\n1400719c9        sub_14006deb0(arg1)\n1400719e2        return ",
+  "fetched_at": "2026-04-26T16:56:27Z"
+}

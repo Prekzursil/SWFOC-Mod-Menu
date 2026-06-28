@@ -1,0 +1,7 @@
+{
+  "addr": "0x14028bc80",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14028bc8e        int32_t i = 0\n14028bc93        if (*(arg1 + 0x50) s> 0)\n14028bc9a        int64_t* rdi_1 = nullptr\n14028bca4        void* rcx = *(rdi_1 + *(arg1 + 0x48))\n14028bcab        if (rcx != 0)\n14028bcb1        sub_1402b59b0(*(rcx + 0x18))\n14028bcba        int64_t* rcx_2 = *(rdi_1 + *(arg1 + 0x48))\n14028bcc1        (*(*rcx_2 + 0x98))(rcx_2)\n14028bcc7        i += 1\n14028bcc9        rdi_1 = &rdi_1[1]\n14028bcd0        do while (i s< *(arg1 + 0x50))\n14028bce3        if (data_140b270a1 != 0)\n14028bce5        void* rax_4 = *(arg1 + 0x38)\n14028bcff        if (rax_4 != 0 && *(arg1 + 0x2c) s> 0 && *(*(rax_4 + 0x18) + 0x618) == 0)\n14028bd0c        sub_14028d7f0(arg1, 0x3fffff, 0)\n14028bd11        uint32_t rax_6 = timeGetTime()\n14028bd17        *(arg1 + 0x1e8) = rax_6\n14028bd22        return rax_6\n14028bd2a        if (*(arg1 + 0xf0) != 0)\n14028bd2f        *(arg1 + 0x178) = 0\n14028bd36        sub_14028f590(arg1)\n14028bd3b        uint32_t rax_7 = timeGetTime()\n14028bd41        *(arg1 + 0x1e8) = rax_7\n14028bd4c        return rax_7",
+  "fetched_at": "2026-04-26T17:32:29Z"
+}

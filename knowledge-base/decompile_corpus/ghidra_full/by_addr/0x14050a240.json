@@ -1,0 +1,7 @@
+{
+  "addr": "0x14050a240",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall\nCollisionSystemClass::vfunction2_for_SignalListenerClass\n          (CollisionSystemClass *this,longlong param_1,int param_2,undefined8 param_3)\n\n{\n  longlong lVar1;\n  undefined8 uVar2;\n  longlong lVar3;\n  \n  if (param_2 == 0x10) {\n    lVar3 = 0;\n    lVar1 = param_1 + -0x38;\n    if (param_1 == 0) {\n      lVar1 = lVar3;\n    }\n    if (lVar1 != 0) {\n      lVar3 = lVar1 + 0x18;\n    }\n    FUN_14020abe0(this->offset_0xc8,lVar3);\n    uVar2 = FUN_140058570();\n    FUN_140220eb0(uVar2,param_1,this,0x10);\n  }\n  else if (param_2 == 0x1c) {\n    FUN_140504880(this,param_3);\n    return;\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T18:21:18Z"
+}

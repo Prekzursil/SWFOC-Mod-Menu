@@ -1,0 +1,7 @@
+{
+  "addr": "0x140761ea0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140761eb2        int16_t* result = arg2\n140761eb8        if (arg2 != arg3)\n140761ec9        *result = _Towlower(*result, arg1 + 0x10)\n140761ecc        result = &result[1]\n140761ed3        do while (result != arg3)\n140761ee7        return result",
+  "fetched_at": "2026-04-26T17:30:06Z"
+}

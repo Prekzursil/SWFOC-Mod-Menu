@@ -1,0 +1,7 @@
+{
+  "addr": "0x1405b40f0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1405b40fc        int64_t result = sub_14048f2c0(arg1)\n1405b4105        char var_108[0x100]\n1405b4105        if (*(arg1 + 0x3c) != 6)\n1405b410c        void* r8_1 = arg1 + 0x18\n1405b4110        if (*(arg1 + 0x30) u>= 0x10)\n1405b4112        r8_1 = *r8_1\n1405b4121        sscanf_s(&var_108, \"Error: (%s) The only currently supported Activation_Style is Ground_Activated.\", r8_1)\n1405b412b        result = sub_1402149d0(&var_108)\n1405b4130        *(arg1 + 0x3c) = 6\n1405b413b        if (*(arg1 + 0x41) == 0)\n1405b4142        void* r8_2 = arg1 + 0x18\n1405b4146        if (*(arg1 + 0x30) u>= 0x10)\n1405b4148        r8_2 = *r8_2\n1405b4157        sscanf_s(&var_108, \"Error: (%s) This ability must cause the owner to despawn. Set Causes_Despawn to Yes.\", r8_2)\n1405b4161        result = sub_1402149d0(&var_108)\n1405b4166        *(arg1 + 0x41) = 1\n1405b417d        if (*(arg1 + 0x17c) == 1 && not((zx.o(0)).d f< *(arg1 + 0x180)))\n1405b4184        void* r8_3 = arg1 + 0x18\n1405b4188        if (*(arg1 + 0x30) u>= 0x10)\n1405b418a        r8_3 = *r8_3\n1405b4199        sscanf_s(&var_108, \"Error: (%s) If you turn on Can_Halt_Credit_Production you must\\ngive a valid time value for Duration_Of_Credit_Halt!\", r8_3)\n1405b41a3        result = sub_1402149d0(&var_108)\n1405b41a8        *(arg1 + 0x180) = 0x41200000\n1405b41ba        return result",
+  "fetched_at": "2026-04-26T17:37:29Z"
+}

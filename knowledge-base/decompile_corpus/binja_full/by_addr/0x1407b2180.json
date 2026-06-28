@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407b2180",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1407b2186        if (arg1 != 0)\n1407b218b        if (arg1 == 1)\n1407b21c3        struct CollisionBodyClass::BoxCollisionBodyClass::VTable** rax_2 = operator new(0xf0)\n1407b21cb        if (rax_2 != 0)\n1407b21d4        rax_2[1].d = 0\n1407b21db        *rax_2 = &BoxCollisionBodyClass::`vftable'{for `CollisionBodyClass'}\n1407b21de        rax_2[0xe].d = 1\n1407b21e9        return rax_2\n1407b2190        if (arg1 == 2)\n1407b2197        struct CollisionBodyClass::PlaneCollisionBodyClass::VTable** rax_1 = operator new(0x88)\n1407b219f        if (rax_1 != 0)\n1407b21a8        rax_1[1].d = 0\n1407b21af        *rax_1 = &PlaneCollisionBodyClass::`vftable'{for `CollisionBodyClass'}\n1407b21b2        rax_1[0xe].d = 2\n1407b21bd        return rax_1\n1407b21f0        return 0",
+  "fetched_at": "2026-04-26T17:32:56Z"
+}

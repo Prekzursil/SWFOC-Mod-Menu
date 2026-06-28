@@ -1,0 +1,7 @@
+{
+  "addr": "0x14055be30",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "SelectionDataPackClass * __thiscall\nSelectionDataPackClass::SelectionDataPackClass(SelectionDataPackClass *this)\n\n{\n  *(undefined1 *)&this->PooledObjectClass<class_SelectionDataPackClass,20,class_EmptyLockerClass> =\n       0;\n  this->vftablePtr = &vftable;\n  (this->SelectionDataPackClass_data).offset_0x0 = (longlong *)0x0;\n  (this->SelectionDataPackClass_data).offset_0x8 = (longlong *)0x0;\n  (this->SelectionDataPackClass_data).offset_0x10 = (longlong *)0x0;\n  (this->SelectionDataPackClass_data).offset_0x18 = (longlong *)0x0;\n  (this->SelectionDataPackClass_data).offset_0x20 = (longlong *)0x0;\n  (this->SelectionDataPackClass_data).offset_0x30 = 0;\n  (this->SelectionDataPackClass_data).offset_0x40 = 0;\n  (this->SelectionDataPackClass_data).offset_0x50 = 0;\n  (this->SelectionDataPackClass_data).offset_0x28 = 1;\n  (this->SelectionDataPackClass_data).offset_0x48 = 7;\n  return this;\n}",
+  "fetched_at": "2026-04-26T18:38:38Z"
+}

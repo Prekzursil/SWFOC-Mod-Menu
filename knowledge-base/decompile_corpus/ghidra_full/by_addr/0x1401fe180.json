@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401fe180",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "int FUN_1401fe180(undefined8 *param_1)\n\n{\n  ulonglong uVar1;\n  size_t _Size;\n  int iVar2;\n  size_t sVar3;\n  undefined8 *_Buf1;\n  undefined **ppuVar4;\n  int iVar5;\n  \n  uVar1 = param_1[3];\n  ppuVar4 = &PTR_s_COLOR_NONE_140a13bf8;\n  _Size = param_1[2];\n  iVar5 = 0;\n  while( true ) {\n    sVar3 = 0xffffffffffffffff;\n    do {\n      sVar3 = sVar3 + 1;\n    } while ((*ppuVar4)[sVar3] != '\\0');\n    _Buf1 = param_1;\n    if (0xf < uVar1) {\n      _Buf1 = (undefined8 *)*param_1;\n    }\n    if ((_Size == sVar3) && (iVar2 = memcmp(_Buf1,*ppuVar4,_Size), iVar2 == 0)) break;\n    iVar5 = iVar5 + 1;\n    ppuVar4 = ppuVar4 + 2;\n    if (0x140a13db7 < (longlong)ppuVar4) {\n      return -1;\n    }\n  }\n  return iVar5 + -1;\n}",
+  "fetched_at": "2026-04-26T17:54:52Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x140141db0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_140141db0(longlong param_1)\n\n{\n  LPVOID lpMem;\n  HANDLE hHeap;\n  \n  lpMem = *(LPVOID *)(param_1 + 0x1b8);\n  if (lpMem != (LPVOID)0x0) {\n    if ((*(uint *)(param_1 + 0x1c4) & 0x80000000) == 0) {\n      FUN_14001eef0(lpMem,3);\n    }\n    else {\n      hHeap = GetProcessHeap();\n      HeapFree(hHeap,0,lpMem);\n    }\n    *(uint *)(param_1 + 0x1c4) = *(uint *)(param_1 + 0x1c4) & 0x80000000;\n    *(undefined8 *)(param_1 + 0x1b8) = 0;\n    *(undefined4 *)(param_1 + 0x1c0) = 0;\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T17:19:32Z"
+}

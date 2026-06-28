@@ -1,0 +1,7 @@
+{
+  "addr": "0x140047880",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\n/* DrawPrimitiveClass member function inherited by TextureRectClass\n   DrawPrimitiveClass member function inherited by DrawTextClass\n   DrawPrimitiveClass member function inherited by FillRectClass\n   DrawPrimitiveClass member function inherited by DrawRectClass\n   DrawPrimitiveClass member function inherited by DrawLineSegmentClass\n   DrawPrimitiveClass member function inherited by TeletypeTextClass */\n\nundefined4 __thiscall DrawPrimitiveClass::vfunction14(DrawPrimitiveClass *this)\n\n{\n  return *(undefined4 *)&(this->DrawPrimitiveClass_data).offset_0x10;\n}\n\n",
+  "fetched_at": "2026-04-26T16:53:56Z"
+}

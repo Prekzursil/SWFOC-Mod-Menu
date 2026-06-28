@@ -1,0 +1,7 @@
+{
+  "addr": "0x140194680",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "alD3dTerrainRenderTask * __thiscall\nalSplineRendererRenderTask::scalar_deleting_destructor\n          (alSplineRendererRenderTask *this,uint param_1)\n\n{\n                    /* inlined destructor: alRenderTask::~alRenderTask */\n  this->vftablePtr = (alSplineRendererRenderTask_vftable *)&alRenderTask::vftable;\n  MultiLinkedListMember::~MultiLinkedListMember((MultiLinkedListMember *)this);\n  if ((param_1 & 1) != 0) {\n    thunk_FUN_1407864b8(this,0x70);\n  }\n  return (alD3dTerrainRenderTask *)this;\n}",
+  "fetched_at": "2026-04-26T17:35:05Z"
+}

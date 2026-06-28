@@ -1,0 +1,7 @@
+{
+  "addr": "0x140560980",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "DynamicVectorClass<struct_SquadLeaderDataPackClass::LeaderTrailStruct> * __thiscall\nDynamicVectorClass<struct_SquadLeaderDataPackClass::LeaderTrailStruct>::scalar_deleting_destructor\n          (DynamicVectorClass<struct_SquadLeaderDataPackClass::LeaderTrailStruct> *this,uint param_1\n          )\n\n{\n  ~DynamicVectorClass<struct_SquadLeaderDataPackClass::LeaderTrailStruct>(this);\n  if ((param_1 & 1) != 0) {\n    thunk_FUN_1407864b8(this,0x18);\n  }\n  return this;\n}",
+  "fetched_at": "2026-04-26T18:38:54Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x140562270",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "TacticalSuperWeaponDataPackClass * __thiscall\nTacticalSuperWeaponDataPackClass::TacticalSuperWeaponDataPackClass\n          (TacticalSuperWeaponDataPackClass *this)\n\n{\n  *(undefined1 *)\n   &this->PooledObjectClass<class_TacticalSuperWeaponDataPackClass,20,class_EmptyLockerClass> = 0;\n  this->vftablePtr = &vftable;\n  (this->TacticalSuperWeaponDataPackClass_data).offset_0x0 = 0;\n  (this->TacticalSuperWeaponDataPackClass_data).offset_0x8 = 0;\n  (this->TacticalSuperWeaponDataPackClass_data).offset_0x10 = 0;\n  (this->TacticalSuperWeaponDataPackClass_data).offset_0x18 = 0;\n  (this->TacticalSuperWeaponDataPackClass_data).offset_0x20 = 0;\n  (this->TacticalSuperWeaponDataPackClass_data).offset_0x44 = 0;\n  (this->TacticalSuperWeaponDataPackClass_data).offset_0x24 = 0x3f800000;\n  (this->TacticalSuperWeaponDataPackClass_data).offset_0x28 = 0x3f800000;\n  (this->TacticalSuperWeaponDataPackClass_data).offset_0x2c = 0x3f800000;\n  (this->TacticalSuperWeaponDataPackClass_data).offset_0x30 = 0x3f800000;\n  (this->TacticalSuperWeaponDataPackClass_data).offset_0x34 = 0x3f800000;\n  (this->TacticalSuperWeaponDataPackClass_data).offset_0x38 = 0x3f800000;\n  (this->TacticalSuperWeaponDataPackClass_data).offset_0x3c = 0x3fffff;\n  (this->TacticalSuperWeaponDataPackClass_data).offset_0x40 = 0x41200000;\n  return this;\n}",
+  "fetched_at": "2026-04-26T18:39:02Z"
+}

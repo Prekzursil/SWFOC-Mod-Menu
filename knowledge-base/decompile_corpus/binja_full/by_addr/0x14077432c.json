@@ -1,0 +1,7 @@
+{
+  "addr": "0x14077432c",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14077433b        arg1[4] += 8\n140774347        int32_t rsi = arg1[7].d\n14077434d        int32_t r8 = *(arg1 + 0x3c)\n140774351        int16_t rdx = *(arg1 + 0x42)\n140774355        wchar16 const* const rbx = *(arg1[4] - 8)\n14077435e        arg1[9] = rbx\n140774362        if (rsi == 0xffffffff)\n140774362        rsi = 0x7fffffff\n14077436f        int32_t result\n14077436f        if (__crt_stdio_output::is_wide_character_specifier<wchar_t>((*arg1).d, rdx, r8) == 0)\n140774395        if (rbx == 0)\n140774397        rbx = \"(null)\"\n14077439e        arg1[9] = \"(null)\"\n1407743a2        int32_t result_1 = 0\n1407743a7        if (rsi s> 0)\n1407743ac        while (*rbx != 0)\n1407743bb        wchar16 const* const rcx_3 = rbx + 1\n1407743cb        if ((zx.d(*(**arg1[1] + (zx.q(*rbx) << 1))) & 0x8000) == 0)\n1407743cb        rcx_3 = rbx\n1407743cf        result_1 += 1\n1407743d2        rbx = rcx_3 + 1\n1407743d9        if (result_1 s>= rsi)\n1407743d9        break\n1407743db        result = result_1\n140774374        if (rbx == 0)\n140774376        rbx = u\"(null)\"\n14077437d        arg1[9] = u\"(null)\"\n140774387        *(arg1 + 0x54) = 1\n14077438b        int64_t r11\n14077438b        result = wcsnlen(rbx, sx.q(rsi), r11)\n1407743de        arg1[0xa].d = result\n1407743e1        result.b = 1\n1407743f2        return result",
+  "fetched_at": "2026-04-26T17:30:48Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x140232370",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140232384        int128_t zmm7 = arg6\n1402323b1        *(arg1 + 4) = 0\n1402323b5        int128_t zmm10 = arg4\n1402323b9        arg1[4] = 0\n1402323c0        *(arg1 + 0x14) = 0x3f800000\n1402323c8        int128_t zmm9\n1402323c8        zmm9.d = arg2.d f+ arg3\n1402323cd        *(arg1 + 0x1c) = 0\n1402323d9        arg4.d = 1f / (arg3 f- arg2.d)\n1402323dd        arg1[9] = 0\n1402323e0        *(arg1 + 0x28) = 0x3f800000\n1402323e8        *(arg1 + 0x30) = 0\n1402323ec        arg1[0xe] = 0\n1402323ef        arg1[0xf] = 0x3f800000\n1402323fd        float zmm0 = arg5 f- zmm10.d\n140232402        zmm9.d = (zmm9 ^ 0x80000000).d f* arg4.d\n140232407        zmm10.d = zmm10.d f+ arg5\n14023240c        arg1[3] = zmm9.d\n140232418        float zmm5 = 1f / zmm0\n140232429        zmm0 = arg7 f- zmm7.d\n14023242d        zmm10.d = (zmm10 ^ 0x80000000).d f* zmm5\n140232432        zmm7.d = zmm7.d f+ arg7\n14023243b        int128_t zmm8\n14023243b        zmm8.d = 1f / zmm0\n14023244e        zmm7.d = (zmm7 ^ 0x80000000).d f* zmm8.d\n140232453        *arg1 = arg4.d * 2f\n140232462        arg1[7] = zmm10.d\n14023246d        arg1[5] = zmm5 * 2f\n140232484        arg1[0xb] = zmm7.d\n14023248e        arg1[0xa] = zmm8.d * -2f\n140232497        return 0",
+  "fetched_at": "2026-04-26T17:29:46Z"
+}

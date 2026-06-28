@@ -1,0 +1,7 @@
+{
+  "addr": "0x1403bbb60",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall\nLandModeClass::vfunction57(LandModeClass *this,ulonglong param_1,ulonglong param_2,float *param_3)\n\n{\n  float fVar1;\n  float fVar2;\n  float fVar3;\n  float fVar4;\n  float fVar5;\n  longlong *plVar6;\n  int local_res10 [2];\n  undefined1 local_28 [32];\n  \n  fVar5 = DAT_1408054e8;\n  FUN_140136120((this->LandModeClass_data).offset_0x330,param_1,param_2,\n                ((int)(param_3[2] * DAT_1408054e8) & 0xffU) +\n                ((int)(param_3[1] * DAT_1408054e8) & 0xffU) * 0x100 +\n                ((int)(*param_3 * DAT_1408054e8) & 0xffU) * 0x10000 +\n                (int)(param_3[3] * DAT_1408054e8) * 0x1000000);\n  FUN_140133bf0((this->LandModeClass_data).offset_0x330,param_1 & 0xffffffff,param_2 & 0xffffffff,\n                param_1 & 0xffffffff,(int)param_2,0,0,1);\n  fVar1 = *param_3;\n  fVar2 = param_3[3];\n  local_res10[0] = (int)param_2 * 0x10000 + (int)param_1;\n  fVar3 = param_3[2];\n  fVar4 = param_3[1];\n  plVar6 = (longlong *)FUN_1403b4d40(&(this->LandModeClass_data).offset_0x3b0,local_28,local_res10);\n  *(uint *)(*plVar6 + 0x14) =\n       ((int)(fVar3 * fVar5) & 0xffU) + ((int)(fVar4 * fVar5) & 0xffU) * 0x100 +\n       ((int)(fVar1 * fVar5) & 0xffU) * 0x10000 + (int)(fVar2 * fVar5) * 0x1000000;\n  FUN_1401f9440(param_3);\n  return;\n}",
+  "fetched_at": "2026-04-26T17:35:40Z"
+}

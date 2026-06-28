@@ -1,0 +1,7 @@
+{
+  "addr": "0x140769e7c",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* Library Function - Single Match\n    __scrt_uninitialize_crt\n   \n   Library: Visual Studio 2019 Release */\n\nundefined1 __scrt_uninitialize_crt(undefined1 param_1,char param_2)\n\n{\n  if ((DAT_140b3b920 == '\\0') || (param_2 == '\\0')) {\n    __acrt_uninitialize();\n    __vcrt_uninitialize(param_1);\n  }\n  return 1;\n}",
+  "fetched_at": "2026-04-26T18:09:53Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x140095770",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140095770        int128_t zmm0 = data_140a621e8\n140095777        int32_t result = data_140a62208\n14009577d        int128_t zmm1 = data_140a621f8\n140095784        data_140a61e40.d = result\n14009578a        data_140a61e20 = zmm0\n140095791        data_140a61e30 = zmm1\n140095798        return result",
+  "fetched_at": "2026-04-26T16:58:21Z"
+}

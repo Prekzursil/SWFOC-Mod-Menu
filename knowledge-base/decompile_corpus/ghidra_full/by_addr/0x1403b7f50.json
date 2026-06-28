@@ -1,0 +1,7 @@
+{
+  "addr": "0x1403b7f50",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined8 __thiscall LandModeClass::vfunction49(LandModeClass *this,float *param_1)\n\n{\n  int iVar1;\n  undefined8 uVar2;\n  longlong lVar3;\n  int iVar4;\n  \n  iVar4 = (int)((DAT_140b36ba0 + *param_1) / DAT_140b36b98);\n  iVar1 = (int)((DAT_140b36ba4 + param_1[1]) / DAT_140b36b9c);\n  if ((((-1 < iVar4) && (iVar4 < DAT_140b36b90)) && (-1 < iVar1)) &&\n     ((iVar1 < DAT_140b36b94 &&\n      (lVar3 = (longlong)(iVar1 * DAT_140b36b90 + iVar4) * 0x1c + DAT_140b36ba8, lVar3 != 0)))) {\n                    /* WARNING: Could not recover jumptable at 0x0001403b7fc1. Too many branches */\n                    /* WARNING: Treating indirect jump as call */\n    uVar2 = (*this->vftablePtr->vfunction56)\n                      (this,(uint)*(ushort *)(lVar3 + 0x18),(uint)*(ushort *)(lVar3 + 0x1a));\n    return uVar2;\n  }\n  return 0;\n}",
+  "fetched_at": "2026-04-26T17:34:58Z"
+}

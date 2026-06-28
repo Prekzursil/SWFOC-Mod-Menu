@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401fe290",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "DynamicVectorClass<class_SaveLoadClass::ObjectPointerPairClass> * __thiscall\nDynamicVectorClass<class_SaveLoadClass::ObjectPointerPairClass>::scalar_deleting_destructor\n          (DynamicVectorClass<class_SaveLoadClass::ObjectPointerPairClass> *this,uint param_1)\n\n{\n  ~DynamicVectorClass<class_SaveLoadClass::ObjectPointerPairClass>(this);\n  if ((param_1 & 1) != 0) {\n    thunk_FUN_1407864b8(this,0x18);\n  }\n  return this;\n}",
+  "fetched_at": "2026-04-26T17:54:55Z"
+}

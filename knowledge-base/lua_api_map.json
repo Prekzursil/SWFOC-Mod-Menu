@@ -1,0 +1,356 @@
+{
+  "binary": "StarWarsG.exe v1.121.13.7360 x86_64",
+  "lua_version": "5.0.2",
+  "image_base": "0x140000000",
+  "analysis_method": "Ghidra static decompilation",
+  "analysis_date": "2026-04-04",
+  "functions": {
+    "lua_open": {
+      "rva": "0x7B8930",
+      "signature": "lua_State* lua_open()",
+      "confidence": "confirmed",
+      "evidence": "MinHook hooked, 400+ states captured"
+    },
+    "lua_checkstack": {
+      "rva": "0x7B8BC0",
+      "signature": "int lua_checkstack(lua_State* L, int extra)",
+      "confidence": "confirmed",
+      "evidence": "Ghidra: checks (top-base>>4)+extra > 0x800 (LUA_MAXCSTACK=2048)"
+    },
+    "lua_concat": {
+      "rva": "0x7B8C40",
+      "signature": "void lua_concat(lua_State* L, int n)",
+      "confidence": "confirmed",
+      "evidence": "Ghidra: if n>1 calls concat, if n==0 pushes empty string"
+    },
+    "lua_cpcall": {
+      "rva": "0x7B8CD0",
+      "signature": "int lua_cpcall(lua_State* L, lua_CFunction func, void* ud)",
+      "confidence": "confirmed",
+      "evidence": "Ghidra: checks top-1 is function (tag==6, C flag), calls luaD_pcall variant"
+    },
+    "lua_error": {
+      "rva": "0x7B8D80",
+      "signature": "int lua_error(lua_State* L)",
+      "confidence": "confirmed",
+      "evidence": "Ghidra: calls luaG_errormsg, returns 0"
+    },
+    "lua_getfenv": {
+      "rva": "0x7B8D90",
+      "signature": "void lua_getfenv(lua_State* L, int idx)",
+      "confidence": "confirmed",
+      "evidence": "Ghidra: checks tag==6 + C flag, reads env from closure+0x20 or L+0xA0"
+    },
+    "lua_getgccount": {
+      "rva": "0x7B8DF0",
+      "signature": "int lua_getgccount(lua_State* L)",
+      "confidence": "confirmed",
+      "evidence": "Ghidra: returns global_State+0x74 >> 10 (total bytes in KB)"
+    },
+    "lua_getgcthreshold": {
+      "rva": "0x7B8E00",
+      "signature": "int lua_getgcthreshold(lua_State* L)",
+      "confidence": "confirmed",
+      "evidence": "Ghidra: returns global_State+0x70 >> 10 (GC threshold in KB)"
+    },
+    "lua_getmetatable": {
+      "rva": "0x7B8E10",
+      "signature": "int lua_getmetatable(lua_State* L, int idx)",
+      "confidence": "confirmed",
+      "evidence": "Ghidra: checks tag==5||7 (TABLE/USERDATA), reads metatable at gc+0x10, pushes type=5. WAS MISLABELED as lua_gettable — caused crash at 0x7BF920"
+    },
+    "lua_gettable": {
+      "rva": "0x7B8E90",
+      "signature": "void lua_gettable(lua_State* L, int idx)",
+      "confidence": "confirmed",
+      "evidence": "Ghidra: resolves table at idx, calls luaV_gettable(L, t, top-1, 0), copies result to top-1"
+    },
+    "lua_gettop": {
+      "rva": "0x7B8EF0",
+      "signature": "int lua_gettop(lua_State* L)",
+      "confidence": "confirmed",
+      "evidence": "Bytes: 48 8B 41 10 48 2B 41 18 48 C1 F8 04 C3 — (top-base)>>4"
+    },
+    "lua_insert": {
+      "rva": "0x7B8F00",
+      "signature": "void lua_insert(lua_State* L, int idx)",
+      "confidence": "confirmed",
+      "evidence": "Ghidra: shifts values above idx up by 1 slot, copies top to idx"
+    },
+    "lua_iscfunction": {
+      "rva": "0x7B8F60",
+      "signature": "int lua_iscfunction(lua_State* L, int idx)",
+      "confidence": "confirmed",
+      "evidence": "Ghidra: checks tag==6 (FUNCTION) && gc+0x0a != 0 (isC flag)"
+    },
+    "lua_isnumber": {
+      "rva": "0x7B8FB0",
+      "signature": "int lua_isnumber(lua_State* L, int idx)",
+      "confidence": "confirmed",
+      "evidence": "Ghidra: checks tag==3 or calls tonumber conversion"
+    },
+    "lua_isstring": {
+      "rva": "0x7B9010",
+      "signature": "int lua_isstring(lua_State* L, int idx)",
+      "confidence": "confirmed",
+      "evidence": "Ghidra: checks tag-3 < 2 (NUMBER or STRING — Lua coercion rule)"
+    },
+    "lua_equal": {
+      "rva": "0x7B9060",
+      "signature": "int lua_equal(lua_State* L, int idx1, int idx2)",
+      "confidence": "confirmed",
+      "evidence": "Ghidra: resolves 2 stack indices, calls luaV_equalobj comparison"
+    },
+    "lua_load": {
+      "rva": "0x7B90F0",
+      "signature": "int lua_load(lua_State* L, lua_Chunkreader reader, void* data, const char* chunkname)",
+      "confidence": "confirmed",
+      "evidence": "Ghidra: calls parser/compiler chain, then lua_pushclosure"
+    },
+    "lua_newtable": {
+      "rva": "0x7B9140",
+      "signature": "void lua_newtable(lua_State* L)",
+      "confidence": "confirmed",
+      "evidence": "FoCAPI exact match + DLL self-test PASSED. Ghidra: pushes type=5"
+    },
+    "lua_newthread": {
+      "rva": "0x7B9190",
+      "signature": "lua_State* lua_newthread(lua_State* L)",
+      "confidence": "confirmed",
+      "evidence": "Ghidra: GC check, creates thread, pushes type=8 (LUA_TTHREAD)"
+    },
+    "lua_newuserdata": {
+      "rva": "0x7B91D0",
+      "signature": "void* lua_newuserdata(lua_State* L, size_t size)",
+      "confidence": "confirmed",
+      "evidence": "Ghidra: allocates Udata, pushes type=7, returns gc+0x20 (data ptr)"
+    },
+    "lua_next": {
+      "rva": "0x7B9220",
+      "signature": "int lua_next(lua_State* L, int idx)",
+      "confidence": "confirmed",
+      "evidence": "Ghidra: hash traversal on table at idx, pushes key+value or pops key"
+    },
+    "lua_pcall": {
+      "rva": "0x7B9280",
+      "signature": "int lua_pcall(lua_State* L, int nargs, int nresults, int errfunc)",
+      "confidence": "confirmed",
+      "evidence": "Ghidra: 4 params, computes func=top-(nargs+1)*16, resolves errfunc, calls luaD_pcall at 0x7BBBE0"
+    },
+    "lua_pushboolean": {
+      "rva": "0x7B9320",
+      "signature": "void lua_pushboolean(lua_State* L, int b)",
+      "confidence": "confirmed",
+      "evidence": "Bytes: writes type=1 based on EDX value"
+    },
+    "lua_pushcclosure": {
+      "rva": "0x7B9340",
+      "signature": "void lua_pushcclosure(lua_State* L, lua_CFunction fn, int n)",
+      "confidence": "confirmed",
+      "evidence": "FoCAPI exact match + DLL registration works"
+    },
+    "lua_pushfstring": {
+      "rva": "0x7B9640",
+      "signature": "const char* lua_pushfstring(lua_State* L, const char* fmt, ...)",
+      "confidence": "confirmed",
+      "evidence": "Ghidra: wraps luaO_pushfstring (format string builder with %d,%s,%c,%f)"
+    },
+    "lua_pushlightuserdata": {
+      "rva": "0x7B9480",
+      "signature": "void lua_pushlightuserdata(lua_State* L, void* p)",
+      "confidence": "confirmed",
+      "evidence": "Bytes: writes type=2, value from RDX"
+    },
+    "lua_pushlstring": {
+      "rva": "0x7B94A0",
+      "signature": "void lua_pushlstring(lua_State* L, const char* s, size_t len)",
+      "confidence": "confirmed",
+      "evidence": "Ghidra: GC check, pushes type=4, calls string intern with (L, data, length). Previously mislabeled as lua_pushstring"
+    },
+    "lua_pushnil": {
+      "rva": "0x7B9510",
+      "signature": "void lua_pushnil(lua_State* L)",
+      "confidence": "confirmed",
+      "evidence": "Bytes: writes type=0, 16 bytes total"
+    },
+    "lua_pushnumber": {
+      "rva": "0x7B9520",
+      "signature": "void lua_pushnumber(lua_State* L, lua_Number n)",
+      "confidence": "confirmed",
+      "evidence": "Bytes: movsd [rax+8],xmm1 + type=3. DLL self-test PASSED"
+    },
+    "lua_pushstring": {
+      "rva": "0x7B9540",
+      "signature": "const char* lua_pushstring(lua_State* L, const char* s)",
+      "confidence": "confirmed",
+      "evidence": "FoCAPI RVA, DLL self-test PASSED. Handles NULL → pushnil"
+    },
+    "lua_pushvalue": {
+      "rva": "0x7B9600",
+      "signature": "void lua_pushvalue(lua_State* L, int idx)",
+      "confidence": "confirmed",
+      "evidence": "Ghidra: copies TValue at idx to top, increments top by 0x10"
+    },
+    "lua_lessthan": {
+      "rva": "0x7B9690",
+      "signature": "int lua_lessthan(lua_State* L, int idx1, int idx2)",
+      "confidence": "confirmed",
+      "evidence": "Ghidra: resolves 2 indices, calls luaV_lessthan comparison"
+    },
+    "lua_rawget": {
+      "rva": "0x7B9720",
+      "signature": "void lua_rawget(lua_State* L, int idx)",
+      "confidence": "confirmed",
+      "evidence": "Ghidra: direct hash lookup via luaH_get, no metamethods"
+    },
+    "lua_rawgeti": {
+      "rva": "0x7B9770",
+      "signature": "void lua_rawgeti(lua_State* L, int idx, int n)",
+      "confidence": "confirmed",
+      "evidence": "Ghidra: calls luaH_getnum(table_hash, n), copies to top"
+    },
+    "lua_rawset": {
+      "rva": "0x7B97C0",
+      "signature": "void lua_rawset(lua_State* L, int idx)",
+      "confidence": "confirmed",
+      "evidence": "Ghidra: calls luaH_set, pops key+value (top -= 0x20)"
+    },
+    "lua_rawseti": {
+      "rva": "0x7B9820",
+      "signature": "void lua_rawseti(lua_State* L, int idx, int n)",
+      "confidence": "confirmed",
+      "evidence": "FoCAPI RVA, DLL self-test PASSED"
+    },
+    "lua_remove": {
+      "rva": "0x7B9880",
+      "signature": "void lua_remove(lua_State* L, int idx)",
+      "confidence": "confirmed",
+      "evidence": "Ghidra: shifts elements down from idx+1, decrements top"
+    },
+    "lua_replace": {
+      "rva": "0x7B98E0",
+      "signature": "void lua_replace(lua_State* L, int idx)",
+      "confidence": "confirmed",
+      "evidence": "Ghidra: copies top to idx, decrements top"
+    },
+    "lua_setfenv": {
+      "rva": "0x7B9930",
+      "signature": "int lua_setfenv(lua_State* L, int idx)",
+      "confidence": "confirmed",
+      "evidence": "Ghidra: checks tag==6 + C flag, stores top value into closure+0x20"
+    },
+    "lua_setgcthreshold": {
+      "rva": "0x7B9990",
+      "signature": "void lua_setgcthreshold(lua_State* L, int newthreshold)",
+      "confidence": "confirmed",
+      "evidence": "Ghidra: sets global_State+0x70 = newthreshold << 10, triggers GC if needed"
+    },
+    "lua_setmetatable": {
+      "rva": "0x7B99D0",
+      "signature": "int lua_setmetatable(lua_State* L, int idx)",
+      "confidence": "confirmed",
+      "evidence": "Ghidra: checks tag==5||7, sets gc+0x10 to metatable, pops 1. WAS MISLABELED as lua_settop — accidentally worked for pop because non-table values return 0 and decrement top"
+    },
+    "lua_settable": {
+      "rva": "0x7B9A60",
+      "signature": "void lua_settable(lua_State* L, int idx)",
+      "confidence": "confirmed",
+      "evidence": "FoCAPI RVA, DLL registration + global set PASSED"
+    },
+    "lua_settop": {
+      "rva": "0x7B9AB0",
+      "signature": "void lua_settop(lua_State* L, int idx)",
+      "confidence": "confirmed",
+      "evidence": "Ghidra: if idx<0, top += (idx+1)*16; if idx>=0, fills with nil then sets top = base+idx*16. THE REAL lua_settop (0x7B99D0 was lua_setmetatable)"
+    },
+    "lua_strlen": {
+      "rva": "0x7B9B10",
+      "signature": "size_t lua_strlen(lua_State* L, int idx)",
+      "confidence": "confirmed",
+      "evidence": "Ghidra: checks tag==4, calls conversion, returns gc_obj+0x10 (TString.len). Previously candidate for tostring"
+    },
+    "lua_toboolean": {
+      "rva": "0x7B9B70",
+      "signature": "int lua_toboolean(lua_State* L, int idx)",
+      "confidence": "confirmed",
+      "evidence": "Ghidra: returns 0 if nil (tag==0) or false (tag==1 && value==0), 1 otherwise"
+    },
+    "lua_tonumber": {
+      "rva": "0x7B9BC0",
+      "signature": "lua_Number lua_tonumber(lua_State* L, int idx)",
+      "confidence": "confirmed",
+      "evidence": "DLL self-test: returned 12345.0 correctly. WAS MISLABELED as lua_tostring in rvas.h"
+    },
+    "lua_topointer": {
+      "rva": "0x7B9C20",
+      "signature": "const void* lua_topointer(lua_State* L, int idx)",
+      "confidence": "confirmed",
+      "evidence": "Ghidra: returns gc/value ptr for types 2,5,6,7,8; for userdata returns gc+0x20"
+    },
+    "lua_tolstring": {
+      "rva": "0x7B9CC0",
+      "signature": "const char* lua_tolstring(lua_State* L, int idx, size_t* len)",
+      "confidence": "confirmed",
+      "evidence": "Ghidra: checks tag==4, calls luaV_tostring if needed, returns gc+0x18 (char* past TString header), GC check after"
+    },
+    "lua_tothread": {
+      "rva": "0x7B9D60",
+      "signature": "lua_State* lua_tothread(lua_State* L, int idx)",
+      "confidence": "confirmed",
+      "evidence": "Ghidra: checks tag==8 (LUA_TTHREAD), returns gc pointer"
+    },
+    "lua_touserdata": {
+      "rva": "0x7B9DA0",
+      "signature": "void* lua_touserdata(lua_State* L, int idx)",
+      "confidence": "confirmed",
+      "evidence": "Ghidra: tag==2 returns value, tag==7 returns gc+0x20"
+    },
+    "lua_type": {
+      "rva": "0x7B9E00",
+      "signature": "int lua_type(lua_State* L, int idx)",
+      "confidence": "confirmed",
+      "evidence": "DLL self-test: returned 4 for string, 3 for number"
+    },
+    "lua_typename": {
+      "rva": "0x7B9E40",
+      "signature": "const char* lua_typename(lua_State* L, int tp)",
+      "confidence": "confirmed",
+      "evidence": "Ghidra: returns type name from string array, -1 → 'no value'"
+    }
+  },
+  "internal_functions": {
+    "luaD_call": {"rva": "0x7BB9E0", "evidence": "Ghidra: 'C stack overflow' at nCcalls=200"},
+    "luaD_pcall": {"rva": "0x7BBBE0", "evidence": "Called by lua_pcall"},
+    "luaV_gettable": {"rva": "0x7C7F80", "evidence": "Called by lua_gettable"},
+    "luaV_tostring": {"rva": "0x7C83C0", "evidence": "Called by lua_tolstring"},
+    "luaO_pushfstring": {"rva": "0x7C33D0", "evidence": "String formatter, called by lua_pushfstring"},
+    "luaU_undump": {"rva": "0x7C5020", "evidence": "Binary chunk reader"},
+    "luaH_get": {"rva": "0x7BFD90", "evidence": "Called by lua_rawget"},
+    "luaH_set": {"rva": "0x7C02E0", "evidence": "Called by lua_rawset"},
+    "luaH_getnum": {"rva": "0x7BFED0", "evidence": "Called by lua_rawgeti"},
+    "luaC_checkGC": {"rva": "0x7BC850", "evidence": "GC threshold check, called by many API functions"},
+    "luaG_errormsg": {"rva": "0x7BABE0", "evidence": "Called by lua_error"}
+  },
+  "corrections": {
+    "0x7B99D0": "Was labeled lua_settop → ACTUALLY lua_setmetatable",
+    "0x7B9AB0": "Is the REAL lua_settop (not previously identified)",
+    "0x7B8E10": "Was labeled lua_gettable → ACTUALLY lua_getmetatable (caused crash at 0x7BF920)",
+    "0x7B8E90": "Is the REAL lua_gettable (not previously identified)",
+    "0x7B94A0": "Was labeled lua_pushstring → ACTUALLY lua_pushlstring (takes length param)",
+    "0x7B9BC0": "Was labeled lua_tostring → ACTUALLY lua_tonumber (returns double in XMM0)",
+    "0x7B9B10": "Was candidate for lua_tostring → ACTUALLY lua_strlen (returns size_t length)"
+  },
+  "not_found": {
+    "lua_call": "Not identified in static analysis. May be inlined or use lua_pcall exclusively. lua_pcall at 0x7B9280 covers this need.",
+    "lua_xmove": "Not identified. Transfers values between threads.",
+    "lua_dump": "Not identified. Dumps compiled function to binary.",
+    "lua_tocfunction": "Not identified. Extracts C function pointer.",
+    "lua_getn": "Not identified. Gets table length (Lua 5.0 specific).",
+    "lua_setn": "Not identified. Sets table length hint.",
+    "luaL_ref": "In lauxlib section, not in lapi cluster.",
+    "luaL_loadstring": "In lauxlib section, not in lapi cluster.",
+    "luaL_dostring": "Macro: luaL_loadstring + lua_pcall."
+  },
+  "total_identified": 48,
+  "total_confirmed": 48
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x140652390",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nScriptPerceptualEvaluatorClass_vftable_for_SignalGeneratorClass * __thiscall\nScriptPerceptualEvaluatorClass::vfunction7_for_SignalGeneratorClass\n          (ScriptPerceptualEvaluatorClass *this)\n\n{\n  return this[1].vftablePtr;\n}\n\n",
+  "fetched_at": "2026-04-26T17:06:20Z"
+}

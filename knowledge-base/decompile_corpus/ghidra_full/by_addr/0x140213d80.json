@@ -1,0 +1,7 @@
+{
+  "addr": "0x140213d80",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "ulonglong __thiscall FileClass::vfunction9(FileClass *this)\n\n{\n  uint uVar1;\n  undefined4 extraout_var;\n  \n  if ((this->FileClass_data).offset_0x60 != 0) {\n    return (ulonglong)(uint)(this->FileClass_data).offset_0x78;\n  }\n                    /* WARNING: Could not recover jumptable at 0x000140213d97. Too many branches */\n                    /* WARNING: Treating indirect jump as call */\n  uVar1 = (*this->vftablePtr->vfunction8)(this,0,1);\n  return CONCAT44(extraout_var,uVar1);\n}",
+  "fetched_at": "2026-04-26T18:00:06Z"
+}

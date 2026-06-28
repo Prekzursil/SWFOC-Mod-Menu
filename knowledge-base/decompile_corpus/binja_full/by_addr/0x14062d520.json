@@ -1,0 +1,7 @@
+{
+  "addr": "0x14062d520",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14062d526        int64_t* rdx = arg1[5]\n14062d535        void* rcx = rdx[0x53]\n14062d53f        if (rcx == 0)\n14062d53f        return \n14062d550        float zmm0_1[0x4]\n14062d550        int32_t zmm6_1\n14062d550        float zmm7_1[0x4]\n14062d550        zmm0_1, zmm6_1, zmm7_1 = sub_140370f00(rcx, rdx)\n14062d55d        void* rdi_1 = *(arg1[5] + 0xa8)\n14062d567        if (rdi_1 == 0)\n14062d567        return \n14062d56d        float var_28_1[0x4] = zmm7_1\n14062d580        if (0f f<= zmm6_1)\n14062d58b        zmm7_1 = _mm_min_ss(zmm0_1[0], zmm6_1)\n14062d582        zmm7_1 = zx.o(0)\n14062d58f        zmm6_1 = *(rdi_1 + 0xec)\n14062d59a        if (not(zmm7_1[0] f<= zmm6_1))\n14062d5a2        (*(*arg1 + 0x2d8))(arg1)\n14062d5a8        zmm0_1[0] = zmm0_1[0] f+ zmm6_1\n14062d5b0        if (0f <= zmm0_1[0])\n14062d5ba        zmm6_1 = _mm_min_ss(zmm7_1[0], zmm0_1[0])\n14062d5b2        zmm6_1 = (zx.o(0)).d\n14062d5c3        if (not(zmm6_1 f<= zmm7_1[0]))\n14062d5cb        (*(*arg1 + 0x2e0))(arg1)\n14062d5d5        int32_t zmm1_1 = zmm6_1 f- zmm0_1[0]\n14062d5db        if (zmm7_1[0] f<= zmm1_1)\n14062d5e6        zmm6_1 = _mm_min_ss(zmm0_1[0], zmm1_1)\n14062d5dd        zmm6_1 = zmm7_1[0]\n14062d5f5        *(rdi_1 + 0xec) = zmm6_1\n14062d612        return ",
+  "fetched_at": "2026-04-26T17:24:07Z"
+}

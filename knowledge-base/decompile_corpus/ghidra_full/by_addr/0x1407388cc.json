@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407388cc",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall SpaceMovementBlockStatus::vfunction1(SpaceMovementBlockStatus *this,uint param_1)\n\n{\n  scalar_deleting_destructor((SpaceMovementBlockStatus *)&this[-1].offset_0x60,param_1);\n  return;\n}",
+  "fetched_at": "2026-04-26T18:02:40Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x14013ef10",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined1 thunk_FUN_1401766d0(void)\n\n{\n  return DAT_140a6d420;\n}",
+  "fetched_at": "2026-04-26T17:17:20Z"
+}

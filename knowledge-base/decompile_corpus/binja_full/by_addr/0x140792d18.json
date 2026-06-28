@@ -1,0 +1,7 @@
+{
+  "addr": "0x140792d18",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140792d27        int64_t i_1 = arg2\n140792d2a        char* rdi = arg1\n140792d30        if (arg1 == 0)\n140792d37        *_errno() = 0x16\n140792d3d        _invalid_parameter_noinfo()\n140792d42        return 0xffffffff\n140792d4f        void* var_28\n140792d4f        _LocaleUpdate::_LocaleUpdate(&var_28, arg3)\n140792d5d        void* var_18\n140792d5d        int32_t rdx_1\n140792d5d        int32_t rbx_1\n140792d5d        if (*(var_18 + 8) != 0)\n140792d63        rbx_1 = -1\n140792d66        rdx_1 = -1\n140792d90        int64_t i\n140792d70        if (i_1 == 0 && *rdi == i_1.b)\n140792d70        goto label_140792da4\n140792d72        char rcx_1 = *rdi\n140792d76        if (rcx_1 == 0)\n140792d99        *_errno() = 0x16\n140792d9f        _invalid_parameter_noinfo()\n140792d9f        goto label_140792da4\n140792d82        void var_20\n140792d82        rdx_1 = _mbbtype_l(rcx_1, rdx_1, &var_20)\n140792d84        rdi = &rdi[1]\n140792d87        i = i_1\n140792d8a        i_1 -= 1\n140792d90        do while (i != 0)\n140792d5f        rbx_1 = 0\n140792da4        label_140792da4:\n140792da4        rdx_1 = rbx_1\n140792dab        char var_10\n140792dab        if (var_10 != 0)\n140792dad        void* rcx_2 = var_28\n140792db2        *(rcx_2 + 0x3a8) &= 0xfffffffd\n140792db9        return zx.q(rdx_1)",
+  "fetched_at": "2026-04-26T17:31:50Z"
+}

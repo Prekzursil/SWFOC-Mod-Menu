@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407f4970",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1407f497b        sub_14001e870(&data_140b38ab0)\n1407f4987        data_140b38a80 = &RefCountClass::`vftable'{for `IRefCountClass'}\n1407f4992        return &RefCountClass::`vftable'{for `IRefCountClass'}",
+  "fetched_at": "2026-04-26T17:37:33Z"
+}

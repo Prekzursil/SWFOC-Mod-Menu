@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401a1c70",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "longlong __thiscall alQuantizedAnim::vfunction9(alQuantizedAnim *this)\n\n{\n  return (*(longlong *)&(this->RefCountClass_data).field_0x38 -\n         *(longlong *)&(this->RefCountClass_data).field_0x30) / 0x88;\n}",
+  "fetched_at": "2026-04-26T17:38:34Z"
+}

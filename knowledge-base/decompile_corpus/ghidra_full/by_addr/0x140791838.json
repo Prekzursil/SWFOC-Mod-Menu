@@ -1,0 +1,7 @@
+{
+  "addr": "0x140791838",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* Library Function - Single Match\n    ungetc\n   \n   Libraries: Visual Studio 2017 Release, Visual Studio 2019 Release */\n\nint __cdecl ungetc(int _Ch,FILE *_File)\n\n{\n  int iVar1;\n  ulong *puVar2;\n  \n  if (_File == (FILE *)0x0) {\n    puVar2 = __doserrno();\n    *puVar2 = 0x16;\n    FUN_1407711ac();\n    iVar1 = -1;\n  }\n  else {\n    FUN_140784aa4(_File);\n    iVar1 = _ungetc_nolock(_Ch,_File);\n    FUN_140784ab0(_File);\n  }\n  return iVar1;\n}",
+  "fetched_at": "2026-04-26T18:52:48Z"
+}

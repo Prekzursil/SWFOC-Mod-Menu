@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407976b8",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1407976b8        return common_expand_argv_wildcards<char>(arg1, arg2) __tailcall",
+  "fetched_at": "2026-04-26T17:32:01Z"
+}

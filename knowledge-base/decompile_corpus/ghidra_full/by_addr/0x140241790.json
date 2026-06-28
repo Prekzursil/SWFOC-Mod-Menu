@@ -1,0 +1,7 @@
+{
+  "addr": "0x140241790",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "SignalListClass * __thiscall\nSignalListClass::scalar_deleting_destructor(SignalListClass *this,uint param_1)\n\n{\n  undefined1 *puVar1;\n  undefined1 local_res8 [8];\n  \n                    /* inlined destructor: RefCountClass::~RefCountClass */\n  this->vftablePtr = (SignalListClass_vftable1 *)&RefCountClass::vftable;\n                    /* inlined destructor:\n                       MultiLinkedListClass<class_SignalListenerClass>::~MultiLinkedListClass<class_SignalListenerClass>\n                        */\n  this->vftablePtr =\n       (SignalListClass_vftable0 *)&MultiLinkedListClass<class_SignalListenerClass>::vftable;\n  puVar1 = *(undefined1 **)&this->field_0x10;\n  while (puVar1 != &this->field_0x8) {\n    FUN_14020ac80(this,local_res8);\n    puVar1 = *(undefined1 **)&this->field_0x10;\n  }\n  GenericMultiLinkedList::~GenericMultiLinkedList((GenericMultiLinkedList *)this);\n  if ((param_1 & 1) != 0) {\n    thunk_FUN_1407864b8(this,0x60);\n  }\n  return this;\n}",
+  "fetched_at": "2026-04-26T18:09:43Z"
+}

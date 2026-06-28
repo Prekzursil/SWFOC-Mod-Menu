@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401a7fd0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1401a801e        uint32_t var_20 = zx.d(*(arg1 + 0xf))\n1401a8022        uint32_t var_28 = zx.d(*(arg1 + 0xe))\n1401a802d        uint32_t var_30 = zx.d(*(arg1 + 0xd))\n1401a8032        uint32_t var_38 = zx.d(arg1[3].b)\n1401a8037        uint32_t var_40 = zx.d(*(arg1 + 0xb))\n1401a803b        uint32_t var_48 = zx.d(*(arg1 + 0xa))\n1401a803f        uint32_t var_50 = zx.d(*(arg1 + 9))\n1401a8043        uint32_t var_58 = zx.d(arg1[2].b)\n1401a8051        uint32_t var_60 = zx.d(*(arg1 + 6))\n1401a8056        uint32_t var_68 = zx.d(arg1[1].w)\n1401a8065        int32_t rcx_1 = 0\n1401a807a        if (sub_1401a84b0(arg2, sx.q(arg3), \"{%0.8X-%0.4X-%0.4X-%0.2X%0.2X-%0.2X%0.2X%0.2X%0.2X%0.2X%0.2X}\", zx.q(*arg1)) s< 0)\n1401a807a        rcx_1 = -0x7fffbffb\n1401a808c        return zx.q(rcx_1)",
+  "fetched_at": "2026-04-26T17:25:15Z"
+}

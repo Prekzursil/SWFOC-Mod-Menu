@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406b8fd0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined8 __thiscall\nLandPerceptionSystemClass::vfunction11(LandPerceptionSystemClass *this,longlong param_1)\n\n{\n  longlong lVar1;\n  longlong local_res8;\n  longlong local_res10;\n  \n  local_res10 = param_1;\n  lVar1 = FUN_1405f55e0((this->ServicedAISystemClass_data).offset_0x0);\n  if ((lVar1 != 0) && (param_1 != 0)) {\n    FUN_1401ff780(&(this->SignalListenerClass_data).field_0x18,&local_res8,&local_res10);\n    if (local_res8 != *(longlong *)&(this->SignalListenerClass_data).field_0x20) {\n      return *(undefined8 *)(local_res8 + 0x18);\n    }\n  }\n  return 0;\n}",
+  "fetched_at": "2026-04-26T17:37:31Z"
+}

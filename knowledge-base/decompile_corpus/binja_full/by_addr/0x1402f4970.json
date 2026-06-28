@@ -1,0 +1,7 @@
+{
+  "addr": "0x1402f4970",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1402f4976        uint64_t result = zx.q(*(arg1 + 0x2148))\n1402f4995        int32_t i = 0\n1402f4998        *(arg1 + 0x2144) = result.d\n1402f499e        *(arg1 + 0x20) = 0\n1402f49a6        if (*(arg1 + 0x18) s> 0)\n1402f49b2        int64_t rsi_1 = 0\n1402f49c0        result = *(arg1 + 0x10)\n1402f49c4        struct ButtonComponentClass::TextButtonComponentClass::VTable** rbp_1 = *(rsi_1 + result)\n1402f49cb        if (rbp_1 != 0)\n1402f49d0        sub_14034af40(rbp_1)\n1402f49dd        result = j_sub_1407864b8(rbp_1)\n1402f49e2        i += 1\n1402f49e4        rsi_1 += 8\n1402f49eb        do while (i s< *(arg1 + 0x18))\n1402f49f7        int64_t lpMem = *(arg1 + 0x10)\n1402f49fe        if (lpMem != 0)\n1402f4a07        if ((*(arg1 + 0x1c) & 0x80000000) == 0)\n1402f4a22        result = j_sub_1407864b8(lpMem)\n1402f4a17        result = HeapFree(GetProcessHeap(), HEAP_NONE, lpMem)\n1402f4a27        *(arg1 + 0x1c) &= 0x80000000\n1402f4a2e        *(arg1 + 0x10) = 0\n1402f4a32        *(arg1 + 0x18) = 0\n1402f4a43        *(arg1 + 0x30) = 0\n1402f4a47        *(arg1 + 0x38) = 0\n1402f4a4b        *(arg1 + 0x2138) = 0\n1402f4a57        if (arg2 == 0)\n1402f4a77        return result\n1402f4a62        *(arg1 + 0x598) = *(arg1 + 0x59c)\n1402f4a6d        return sub_1402e7620(arg1) __tailcall",
+  "fetched_at": "2026-04-26T17:22:58Z"
+}

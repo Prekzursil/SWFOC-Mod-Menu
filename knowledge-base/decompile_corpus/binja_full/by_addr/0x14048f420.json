@@ -1,0 +1,7 @@
+{
+  "addr": "0x14048f420",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14048f42a        int64_t lpMem = arg1[1]\n14048f42e        struct DynamicVectorClass<class BlackMarketItemClass* __ptr64>::VTable* const result = &DynamicVectorClass<class BlackMarketItemClass* __ptr64>::`vftable'\n14048f435        *arg1 = &DynamicVectorClass<class BlackMarketItemClass* __ptr64>::`vftable'\n14048f43e        if (lpMem != 0)\n14048f447        if ((*(arg1 + 0x14) & 0x80000000) == 0)\n14048f462        j_sub_1407864b8(lpMem)\n14048f457        HeapFree(GetProcessHeap(), HEAP_NONE, lpMem)\n14048f467        result = nullptr\n14048f469        *(arg1 + 0x14) &= 0x80000000\n14048f470        arg1[1] = 0\n14048f474        arg1[2].d = 0\n14048f481        return result",
+  "fetched_at": "2026-04-26T17:29:00Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x140164010",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140164016        *(arg1 + 0x2cc) = arg2\n14016401c        void* rbx = arg1\n140164021        if (arg2 == 0)\n140164021        return \n140164030        while (true)\n140164030        void* rax = *(rbx + 0x118)\n14016403e        if (*(rax + 0x1107) == 0)\n14016403e        break\n140164040        void* rdx = *(rax + 0x1108)\n14016404a        if (rdx != 0)\n14016404c        void* rcx = *(rbx + 0x100)\n140164056        if (rcx != 0)\n140164061        int64_t rax_1\n140164061        int64_t rdx_2\n140164061        rax_1, rdx_2 = sub_140172d60(rcx, *(rdx + 0x410), nullptr)\n140164069        if (rax_1 != 0)\n14016406b        rdx_2.b = 1\n140164070        sub_140164010(rax_1, rdx_2)\n14016407c        void* rdx_3 = *(*(rbx + 0x118) + 0x1110)\n140164086        if (rdx_3 == 0)\n140164086        break\n140164088        void* rcx_2 = *(rbx + 0x100)\n140164092        if (rcx_2 == 0)\n140164092        break\n14016409d        rax = sub_140172d60(rcx_2, *(rdx_3 + 0x410), nullptr)\n1401640a2        rbx = rax\n1401640a8        if (rax == 0)\n1401640a8        break\n1401640aa        *(rax + 0x2cc) = 1\n1401640bb        return ",
+  "fetched_at": "2026-04-26T17:22:43Z"
+}

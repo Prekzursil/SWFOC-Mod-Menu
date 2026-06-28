@@ -1,0 +1,7 @@
+{
+  "addr": "0x14038f900",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "ulonglong FUN_14038f900(longlong param_1,undefined8 *param_2)\n\n{\n  longlong *plVar1;\n  char cVar2;\n  undefined8 uVar3;\n  ulonglong uVar4;\n  \n  plVar1 = *(longlong **)(param_1 + 0x2a0);\n  if (plVar1 == (longlong *)0x0) {\n    uVar4 = 0;\n  }\n  else if (*(char *)((longlong)plVar1 + 0x8c) == '\\0') {\n    cVar2 = FUN_1402641a0(plVar1);\n    uVar4 = (ulonglong)(cVar2 == '\\x01');\n  }\n  else {\n    uVar3 = (**(code **)(*plVar1 + 0x38))();\n    uVar4 = FUN_14020c850(param_2 + 3,plVar1 + 0x12,uVar3,*param_2);\n    if ((char)uVar4 != '\\0') {\n      uVar3 = ActionDrivenHeroClashClass::vfunction5\n                        (*(ActionDrivenHeroClashClass **)(param_1 + 0x2a0));\n      param_2[1] = uVar3;\n      uVar4 = uVar4 & 0xff;\n    }\n  }\n  return uVar4;\n}",
+  "fetched_at": "2026-04-26T17:21:25Z"
+}

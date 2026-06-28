@@ -1,0 +1,7 @@
+{
+  "addr": "0x14048fc80",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "ScheduledEventClass * __thiscall EventFactoryClass<class_InvadeEventClass,9>::vfunction1(void)\n\n{\n  ScheduledEventClass *this;\n  \n  this = (ScheduledEventClass *)FUN_140769c58(0x250);\n  if (this != (ScheduledEventClass *)0x0) {\n    ScheduledEventClass::ScheduledEventClass(this);\n    *(undefined4 *)((longlong)&this[8].vftablePtr + 4) = 0;\n    this->vftablePtr = (ScheduledEventClass_vftable *)&InvadeEventClass::vftable;\n    *(undefined4 *)&this[8].field_0x8 = 0x3fffff;\n    this[8].field_0xc = 0;\n    (this->EventClass_data).offset_0x8 = 9;\n    return this;\n  }\n  return (ScheduledEventClass *)0x0;\n}",
+  "fetched_at": "2026-04-26T18:02:19Z"
+}

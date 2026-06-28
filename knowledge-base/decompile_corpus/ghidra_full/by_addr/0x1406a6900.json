@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406a6900",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined8 __thiscall LuaResumeModeBasedMusicClass::vfunction11(void)\n\n{\n  FUN_14028e800(&DAT_140b153e0,1);\n  return 0;\n}",
+  "fetched_at": "2026-04-26T17:21:57Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x140546a90",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined * __thiscall LuaScrollCameraTo::vfunction5(void)\n\n{\n  return &DAT_140a437c8;\n}",
+  "fetched_at": "2026-04-26T18:37:14Z"
+}

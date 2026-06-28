@@ -1,0 +1,7 @@
+{
+  "addr": "0x140797f68",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140797f7f        return update_thread_multibyte_data_internal(__acrt_getptd(), &data_140b3cbc0) __tailcall",
+  "fetched_at": "2026-04-26T17:32:02Z"
+}

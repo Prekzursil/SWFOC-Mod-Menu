@@ -1,0 +1,7 @@
+{
+  "addr": "0x1405f7020",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_1405f7020(longlong param_1)\n\n{\n  CombatantBehaviorClass::vfunction47(*(CombatantBehaviorClass **)(param_1 + 0x58));\n  return;\n}",
+  "fetched_at": "2026-04-26T17:23:42Z"
+}

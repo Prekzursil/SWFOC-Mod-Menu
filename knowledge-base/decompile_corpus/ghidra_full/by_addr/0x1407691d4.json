@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407691d4",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* Library Function - Single Match\n    _Getcoll\n   \n   Library: Visual Studio 2019 Release */\n\n_Collvec * __cdecl _Getcoll(_Collvec *__return_storage_ptr__)\n\n{\n  UINT UVar1;\n  wchar_t **ppwVar2;\n  wchar_t *pwVar3;\n  \n  UVar1 = ___lc_collate_cp_func();\n  __return_storage_ptr__->_Page = UVar1;\n  ppwVar2 = ___lc_locale_name_func();\n  pwVar3 = ppwVar2[1];\n  __return_storage_ptr__->_LocaleName = pwVar3;\n  if (pwVar3 != (wchar_t *)0x0) {\n    pwVar3 = (wchar_t *)FUN_140788fac();\n    __return_storage_ptr__->_LocaleName = pwVar3;\n  }\n  return __return_storage_ptr__;\n}",
+  "fetched_at": "2026-04-26T18:09:39Z"
+}

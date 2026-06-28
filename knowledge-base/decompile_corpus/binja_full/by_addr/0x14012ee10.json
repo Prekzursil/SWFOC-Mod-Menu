@@ -1,0 +1,7 @@
+{
+  "addr": "0x14012ee10",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14012ee23        *arg1 = &ReferenceListClass<class alExtraRenderPass>::`vftable'{for `GenericMultiLinkedList'}\n14012ee31        if (sub_14012ef50(arg1) != 0)\n14012ee5f        int64_t i\n14012ee3b        int64_t* arg_8\n14012ee3b        void* rax_1 = sub_14020ac80(arg1, &arg_8)\n14012ee4c        if (rax_1 != 0 && rax_1 != 0x10)\n14012ee51        (*(*(rax_1 - 0x10) + 8))(rax_1 - 0x10)\n14012ee57        i = sub_14012ef50(arg1)\n14012ee5f        do while (i != 0)\n14012ee64        sub_14020a960(arg1)\n14012ee6d        if ((arg2 & 1) != 0)\n14012ee77        j_sub_1407864b8(arg1)\n14012ee89        return arg1",
+  "fetched_at": "2026-04-26T17:10:20Z"
+}

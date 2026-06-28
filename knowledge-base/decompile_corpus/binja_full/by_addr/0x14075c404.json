@@ -1,0 +1,7 @@
+{
+  "addr": "0x14075c404",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14075c41f        void var_b8\n14075c41f        int64_t rax_1 = __security_cookie ^ &var_b8\n14075c442        int64_t* rcx = *(*(arg5 + 0x40) + 8)\n14075c4f9        (*(*rcx + 8))()\n14075c475        char* var_80\n14075c475        char var_70\n14075c475        int32_t rax_6 = sub_14075339c(arg1, &var_70, arg3, arg4, arg4, *(arg5 + 0x18), &var_80)\n14075c485        if (rcx != 0)\n14075c4f9        int64_t* rax_13 = (*(*rcx + 0x10))()\n14075c49a        if (rax_13 != 0)\n14075c4f9        (**rax_13)(rax_13, 1)\n14075c4af        if (var_70 != 0)\n14075c4d1        int32_t var_88\n14075c4d1        *arg7 = _Stoulx(&var_70, &var_80, rax_6, &var_88)\n14075c4e2        if (var_80 == &var_70 || var_88 != 0)\n14075c4e4        *arg6 = 2\n14075c4b1        *arg6 = 2\n14075c4b7        *arg7 = 0\n14075c4f7        if (std::istreambuf_iterator<wchar_t,struct std::char_traits<wchar_t> >::equal(arg3, arg4) != 0)\n14075c4f9        *arg6 |= 1\n14075c500        *arg2 = *arg3\n14075c50f        __security_check_cookie(rax_1 ^ &var_b8)\n14075c524        return arg2",
+  "fetched_at": "2026-04-26T17:29:58Z"
+}

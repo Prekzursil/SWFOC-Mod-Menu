@@ -1,0 +1,7 @@
+{
+  "addr": "0x1405370c0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1405370c7        return \"RevealBehaviorClass\"",
+  "fetched_at": "2026-04-26T17:33:49Z"
+}

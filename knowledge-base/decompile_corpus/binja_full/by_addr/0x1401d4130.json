@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401d4130",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1401d4141        keybd_event(arg1, 0, 0, 0)\n1401d4158        return keybd_event(arg1, 0, KEYEVENTF_KEYUP, 0) __tailcall",
+  "fetched_at": "2026-04-26T17:26:45Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406eaa80",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1406eaa8f        int64_t* rbx = *(arg3 + 0x10)\n1406eaaa0        int64_t r8_2 = (*(arg3 + 0x18) - rbx) s>> 3\n1406eaaa8        if (r8_2 != 1)\n1406eaab4        sub_140248190(arg2, \"Enable_Attack_Positioning - Invalid number of parameters.  Expected 1, got %d\", r8_2)\n1406eaaca        return 0\n1406eaacb        int64_t* rbx_1 = *rbx\n1406eaad1        if (rbx_1 != 0)\n1406eaad9        void* i\n1406eaad9        i, r8_2 = (*(*rbx_1 + 0x20))(rbx_1)\n1406eaadf        while (i != 0)\n1406eaaeb        if (i == &data_140a157b0)\n1406eab1d        (**rbx_1)(rbx_1)\n1406eab1f        int64_t rcx_4 = *(arg1 + 0x78)\n1406eab23        int32_t j_1 = 0\n1406eab36        if ((*(arg1 + 0x80) - rcx_4) s>> 3 != 0)\n1406eab38        uint64_t j = 0\n1406eab44        int64_t* rax_8 = sub_1405791e0(*(rcx_4 + (j << 3)))\n1406eab51        int64_t r8_3 = *rax_8\n1406eab54        void* rax_9 = (*(r8_3 + 0x10))(rax_8, 0x12, r8_3)\n1406eab5b        if (rax_9 != 0)\n1406eab64        sub_1404f6450(rax_9, rbx_1[2].b)\n1406eab69        rcx_4 = *(arg1 + 0x78)\n1406eab6d        j_1 += 1\n1406eab79        j = zx.q(j_1)\n1406eab82        do while (j u< (*(arg1 + 0x80) - rcx_4) s>> 3)\n1406eab8a        (*(*rbx_1 + 8))(rbx_1)\n1406eab9e        return 0\n1406eaaed        i = *(i + 8)\n1406eab00        sub_140248190(arg2, \"Enable_Attack_Positioning - Invalid type for parameter 1.  Expected boolean.\", r8_2)\n1406eab16        return 0",
+  "fetched_at": "2026-04-26T17:26:13Z"
+}

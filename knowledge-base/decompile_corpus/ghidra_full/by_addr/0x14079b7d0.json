@@ -1,0 +1,7 @@
+{
+  "addr": "0x14079b7d0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* Library Function - Single Match\n    ProcessCodePage\n   \n   Libraries: Visual Studio 2017 Release, Visual Studio 2019 Release */\n\nUINT ProcessCodePage(wchar_t *param_1,longlong param_2)\n\n{\n  int iVar1;\n  UINT UVar2;\n  UINT local_res8 [2];\n  \n  if (((param_1 == (wchar_t *)0x0) || (*param_1 == L'\\0')) ||\n     (iVar1 = wcscmp(param_1,L\"ACP\"), iVar1 == 0)) {\n    iVar1 = GetLocaleInfoW(*(LCID *)(param_2 + 8),0x20001004,(LPWSTR)local_res8,2);\n    if (iVar1 != 0) {\n      if (local_res8[0] != 0) {\n        return local_res8[0];\n      }\n      UVar2 = GetACP();\n      return UVar2;\n    }\n  }\n  else {\n    iVar1 = wcscmp(param_1,L\"OCP\");\n    if (iVar1 != 0) {\n      UVar2 = _wtol(param_1);\n      return UVar2;\n    }\n    iVar1 = GetLocaleInfoW(*(LCID *)(param_2 + 8),0x2000000b,(LPWSTR)local_res8,2);\n    if (iVar1 != 0) {\n      return local_res8[0];\n    }\n  }\n  return 0;\n}",
+  "fetched_at": "2026-04-26T18:53:53Z"
+}

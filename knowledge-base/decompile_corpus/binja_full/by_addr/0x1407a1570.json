@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407a1570",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1407a1570        int32_t arg_20 = arg4\n1407a1587        return uncompress2(arg1, arg2, arg3, &arg_20)",
+  "fetched_at": "2026-04-26T17:32:22Z"
+}

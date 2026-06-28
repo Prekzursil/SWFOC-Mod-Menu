@@ -1,0 +1,7 @@
+{
+  "addr": "0x140793080",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140793087        if (arg1 != 0)\n1407930b2        return HeapSize(data_140b3cc00, HEAP_NONE, arg1) __tailcall\n14079308e        *_errno() = 0x16\n140793094        _invalid_parameter_noinfo()\n1407930a1        return -1",
+  "fetched_at": "2026-04-26T17:31:50Z"
+}

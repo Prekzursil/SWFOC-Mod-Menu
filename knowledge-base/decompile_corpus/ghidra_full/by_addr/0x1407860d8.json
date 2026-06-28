@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407860d8",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* Library Function - Single Match\n    struct __acrt_thread_parameter * __ptr64 __cdecl create_thread_parameter(void * __ptr64\n   const,void * __ptr64 const)\n   \n   Libraries: Visual Studio 2015 Release, Visual Studio 2017 Release, Visual Studio 2019 Release */\n\n__acrt_thread_parameter * __cdecl create_thread_parameter(void *param_1,void *param_2)\n\n{\n  __acrt_thread_parameter *p_Var1;\n  __acrt_thread_parameter *p_Var2;\n  \n  p_Var1 = (__acrt_thread_parameter *)_calloc_base(1);\n  _free_base(0);\n  p_Var2 = (__acrt_thread_parameter *)0x0;\n  if (p_Var1 != (__acrt_thread_parameter *)0x0) {\n    *(void **)p_Var1 = param_1;\n    *(void **)(p_Var1 + 8) = param_2;\n    GetModuleHandleExW(4,param_1,(HMODULE *)(p_Var1 + 0x18));\n    p_Var2 = p_Var1;\n  }\n  return p_Var2;\n}",
+  "fetched_at": "2026-04-26T18:51:34Z"
+}

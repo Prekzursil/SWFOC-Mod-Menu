@@ -1,0 +1,7 @@
+{
+  "addr": "0x140227400",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140227400        return WSAGetLastError() __tailcall",
+  "fetched_at": "2026-04-26T17:29:23Z"
+}

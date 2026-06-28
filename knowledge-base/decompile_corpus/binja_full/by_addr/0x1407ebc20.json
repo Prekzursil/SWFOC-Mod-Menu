@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407ebc20",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1407ebc33        data_140a12ae0 = &ReferenceListClass<class alDrawPrimitive>::`vftable'{for `GenericMultiLinkedList'}\n1407ebc41        while (true)\n1407ebc41        void* rax_1 = data_140a12af0\n1407ebc4b        int64_t rcx_1\n1407ebc4b        if (rax_1 != &data_140a12ae8)\n1407ebc4d        int64_t rax_2 = *(rax_1 + 0x18)\n1407ebc54        rcx_1 = rax_2 - 0x10\n1407ebc58        if (rax_2 == 0)\n1407ebc58        rcx_1 = 0\n1407ebc5f        if (rax_1 == &data_140a12ae8 || rcx_1 == 0)\n1407ebc99        return sub_14020a960(&data_140a12ae0) __tailcall\n1407ebc6d        int64_t* arg_8\n1407ebc6d        void* rax_3 = sub_14020ac80(&data_140a12ae0, &arg_8)\n1407ebc75        if (rax_3 != 0 && rax_3 != 0x10)\n1407ebc83        (*(*(rax_3 - 0x10) + 8))(rax_3 - 0x10)",
+  "fetched_at": "2026-04-26T17:35:51Z"
+}

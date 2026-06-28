@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407a5af0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1407a5af7        *(arg1 + 0xb40) = arg1 + 0xbc\n1407a5b05        *(arg1 + 0xb50) = &data_1408e0598\n1407a5b13        *(arg1 + 0xb58) = arg1 + 0x9b0\n1407a5b21        *(arg1 + 0xb68) = &data_1408e05b8\n1407a5b2f        *(arg1 + 0xb70) = arg1 + 0xaa4\n1407a5b3d        *(arg1 + 0xb80) = &data_1408e05d8\n1407a5b46        *(arg1 + 0x1710) = 0\n1407a5b4d        *(arg1 + 0x1714) = 0\n1407a5b53        return init_block(arg1) __tailcall",
+  "fetched_at": "2026-04-26T17:32:27Z"
+}

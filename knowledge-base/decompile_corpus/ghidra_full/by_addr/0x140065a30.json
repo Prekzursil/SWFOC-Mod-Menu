@@ -1,0 +1,7 @@
+{
+  "addr": "0x140065a30",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nvoid FUN_140065a30(undefined8 param_1)\n\n{\n  if (DAT_140a61fc8 == '\\x01') {\n    FUN_1400c6440(1);\n  }\n  thunk_FUN_14003f220(&DAT_140a60df0);\n  FUN_14028f320(&DAT_140b153e0,1);\n  FUN_140297630(&DAT_140a16fd0,0);\n  FUN_1400338e0(&DAT_140a60df0);\n  FUN_1401c1e00(&DAT_140a78510);\n  FUN_1401fece0(1);\n  FUN_140056480(param_1,0,0xffffffff,3,1);\n  FUN_1401fece0(0);\n  FUN_140033850(&DAT_140a60df0);\n  return;\n}\n\n",
+  "fetched_at": "2026-04-26T16:55:43Z"
+}

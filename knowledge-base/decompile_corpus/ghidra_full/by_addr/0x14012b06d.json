@@ -1,0 +1,7 @@
+{
+  "addr": "0x14012b06d",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nvoid CallNtPowerInformation(void)\n\n{\n                    /* WARNING: Could not recover jumptable at 0x00014012b06d. Too many branches */\n                    /* WARNING: Treating indirect jump as call */\n  CallNtPowerInformation();\n  return;\n}\n\n",
+  "fetched_at": "2026-04-26T17:07:52Z"
+}

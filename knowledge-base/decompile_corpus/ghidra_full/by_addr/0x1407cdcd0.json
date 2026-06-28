@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407cdcd0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined ** FUN_1407cdcd0(undefined8 param_1,undefined8 *param_2)\n\n{\n  int iVar1;\n  ulong *puVar2;\n  undefined **ppuVar3;\n  longlong lVar4;\n  \n  if (param_2 == (undefined8 *)0x0) {\n    puVar2 = __doserrno();\n    ppuVar3 = (undefined **)FUN_1407ddd10(*puVar2);\n    return ppuVar3;\n  }\n  iVar1 = ferror((FILE *)*param_2);\n  if (iVar1 != 0) {\n    puVar2 = __doserrno();\n    lVar4 = FUN_1407ddd10(*puVar2);\n    if (lVar4 == 0) {\n      return &PTR_1407ff8a8;\n    }\n  }\n  return (undefined **)0x0;\n}",
+  "fetched_at": "2026-04-26T18:57:36Z"
+}

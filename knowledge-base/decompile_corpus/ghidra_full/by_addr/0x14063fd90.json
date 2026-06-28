@@ -1,0 +1,7 @@
+{
+  "addr": "0x14063fd90",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nVehicleThiefBehaviorClass * __thiscall\nVehicleThiefBehaviorClass::vfunction4(VehicleThiefBehaviorClass *this,int param_1)\n\n{\n  VehicleThiefBehaviorClass *pVVar1;\n  \n  pVVar1 = (VehicleThiefBehaviorClass *)0x0;\n  if (param_1 == 0x32) {\n    pVVar1 = this;\n  }\n  return pVVar1;\n}\n\n",
+  "fetched_at": "2026-04-26T17:02:48Z"
+}

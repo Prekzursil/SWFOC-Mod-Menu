@@ -1,0 +1,7 @@
+{
+  "addr": "0x140277f30",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140277f38        int128_t zmm2\n140277f38        zmm2.d = (*(arg1 + 0x60)).d f- *(arg1 + 0x58)\n140277f42        float zmm3 = *(arg1 + 0x5c) f- *(arg1 + 0x54)\n140277f47        zmm2 ^= data_140800860\n140277f51        *(arg1 + 0x64) = zmm2.d\n140277f61        *(arg1 + 0x68) = zmm3\n140277f6a        int32_t temp0 = _mm_sqrt_ss(0, zmm2.d f* zmm2.d + zmm3 * zmm3)\n140277f74        if (not(temp0 f<= 0f))\n140277f7e        float zmm0 = 1f f/ temp0\n140277f82        zmm2.d = zmm2.d f* zmm0\n140277f86        zmm3 = zmm3 * zmm0\n140277f8a        *(arg1 + 0x64) = zmm2.d\n140277f8f        *(arg1 + 0x68) = zmm3\n140277f94        zmm2.d = zmm2.d f* zmm2.d\n140277f9f        zmm2.d = zmm2.d f+ zmm3 * zmm3\n140277fa3        float result = _mm_sqrt_ss(0, zmm2.d)\n140277faa        if (not(result != 0f))\n140277fac        *(arg1 + 0x64) = 0x3f800000\n140277fb3        return result",
+  "fetched_at": "2026-04-26T17:31:57Z"
+}

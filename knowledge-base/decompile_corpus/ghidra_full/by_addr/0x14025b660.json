@@ -1,0 +1,7 @@
+{
+  "addr": "0x14025b660",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* DrawTextClass member function inherited by TeletypeTextClass */\n\nundefined1 * __thiscall DrawTextClass::vfunction8(DrawTextClass *this)\n\n{\n  return &(this->DrawTextClass_data).field_0x58;\n}",
+  "fetched_at": "2026-04-26T18:14:08Z"
+}

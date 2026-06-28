@@ -1,0 +1,7 @@
+{
+  "addr": "0x140772a3c",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* Library Function - Single Match\n    private: bool __cdecl __crt_stdio_output::output_processor<char,class\n   __crt_stdio_output::stream_output_adapter<char>,class\n   __crt_stdio_output::standard_base<char,class __crt_stdio_output::stream_output_adapter<char> >\n   >::state_case_normal(void) __ptr64\n   \n   Library: Visual Studio 2019 Release */\n\nbool __thiscall\n__crt_stdio_output::\noutput_processor<char,class___crt_stdio_output::stream_output_adapter<char>,class___crt_stdio_output::standard_base<char,class___crt_stdio_output::stream_output_adapter<char>_>_>\n::state_case_normal(output_processor<char,class___crt_stdio_output::stream_output_adapter<char>,class___crt_stdio_output::standard_base<char,class___crt_stdio_output::stream_output_adapter<char>_>_>\n                    *this)\n\n{\n  char cVar1;\n  int iVar2;\n  ulong *puVar3;\n  \n  cVar1 = state_case_normal_tchar(this,0);\n  if (cVar1 != '\\0') {\n    if ((((*(uint *)(*(longlong *)(this + 0x468) + 0x14) >> 0xc & 1) == 0) ||\n        (*(longlong *)(*(longlong *)(this + 0x468) + 8) != 0)) &&\n       (iVar2 = _fputc_nolock((int)(char)this[0x41],*(undefined8 *)(this + 0x468)), iVar2 == -1)) {\n      *(undefined4 *)(this + 0x28) = 0xffffffff;\n    }\n    else {\n      *(int *)(this + 0x28) = *(int *)(this + 0x28) + 1;\n    }\n    return true;\n  }\n  puVar3 = __doserrno();\n  *puVar3 = 0x16;\n  FUN_1407711ac();\n  return false;\n}",
+  "fetched_at": "2026-04-26T18:50:08Z"
+}

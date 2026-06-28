@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406cba40",
+  "tool": "binary_ninja",
+  "fact_id": "rva_squadron_combatant_ctor",
+  "body": "1406cba4d        struct CombatantBehaviorClass::SquadronCombatantClass::VTable** result = arg1\n1406cba50        sub_1406383e0(arg1)\n1406cba55        result[8] = arg2\n1406cba60        *result = &SquadronCombatantClass::`vftable'{for `CombatantBehaviorClass'}\n1406cba6a        result[1] = &SquadronCombatantClass::`vftable'{for `RefCountClass'}\n1406cba75        result[3] = &SquadronCombatantClass::`vftable'{for `SignalListenerClass'}\n1406cba79        result[0xb].d = 0\n1406cba80        *(result + 0x5c) = 0\n1406cba84        void* rax = *(arg2 + 0xc0)\n1406cba8b        result[9] = rax\n1406cba93        result[0xa] = *(rax + 0x70)\n1406cba9a        result[5] = arg2\n1406cbaa8        return result",
+  "fetched_at": "2026-04-26T16:44:14Z"
+}

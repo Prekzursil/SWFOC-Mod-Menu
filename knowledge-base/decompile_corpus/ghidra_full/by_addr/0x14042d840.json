@@ -1,0 +1,7 @@
+{
+  "addr": "0x14042d840",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall\nTacticalBuildObjectsBehaviorClass::vfunction1(TacticalBuildObjectsBehaviorClass *this,uint param_1)\n\n{\n  ~TacticalBuildObjectsBehaviorClass\n            ((TacticalBuildObjectsBehaviorClass *)&this[-1].RootClass_data.offset_0x328,param_1);\n  return;\n}",
+  "fetched_at": "2026-04-26T17:49:47Z"
+}

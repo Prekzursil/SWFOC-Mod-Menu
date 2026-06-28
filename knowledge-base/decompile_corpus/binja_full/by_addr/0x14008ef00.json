@@ -1,0 +1,7 @@
+{
+  "addr": "0x14008ef00",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14008ef09        void* rax = operator new(0x20)\n14008ef15        int64_t var_18 = 0x10\n14008ef23        int64_t var_10 = 0x1f\n14008ef33        __builtin_strncpy(rax, \"IDC_BEGIN_BUTTON\", 0x11)\n14008ef3d        uint64_t rdx = zx.q(data_140a110d4)\n14008ef43        void* var_28 = rax\n14008ef48        sub_1401c30d0(&data_140a78510, rdx, &var_28, 0, var_28)\n14008ef56        if (var_10 u>= 0x10)\n14008ef58        void* rcx_1 = var_28\n14008ef60        void* rax_1 = rcx_1\n14008ef6a        if (var_10 + 1 u>= 0x1000)\n14008ef6c        rcx_1 = *(rcx_1 - 8)\n14008ef7f        if (rax_1 - rcx_1 - 8 u> 0x1f)\n14008efda        _invalid_parameter_noinfo_noreturn()\n14008efda        noreturn\n14008ef81        j_sub_1407864b8(rcx_1)\n14008ef93        data_140a61d50 = data_140a61dd4\n14008ef9e        data_140a61d4c = zx.o(0).d\n14008efa6        __builtin_memset(&data_140a61d88, 0, 0x24)\n14008efc0        __builtin_memset(&data_140a61d60, 0, 0x24)\n14008efc7        data_140a61d39 = 1\n14008efd9        return 0",
+  "fetched_at": "2026-04-26T16:57:54Z"
+}

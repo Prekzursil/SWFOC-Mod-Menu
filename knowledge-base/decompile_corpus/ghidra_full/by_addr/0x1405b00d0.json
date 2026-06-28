@@ -1,0 +1,7 @@
+{
+  "addr": "0x1405b00d0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "BlackMarketItemClass * __thiscall\nBlackMarketItemClass::scalar_deleting_destructor(BlackMarketItemClass *this,uint param_1)\n\n{\n  ~BlackMarketItemClass(this);\n  if ((param_1 & 1) != 0) {\n    thunk_FUN_1407864b8(this,0x120);\n  }\n  return this;\n}",
+  "fetched_at": "2026-04-26T18:43:34Z"
+}

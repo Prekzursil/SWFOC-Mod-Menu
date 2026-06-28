@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407423ac",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "bad_cast * __thiscall std::bad_cast::bad_cast(bad_cast *this)\n\n{\n  (this->exception_data).offset_0x8 = 0;\n  (this->exception_data).offset_0x0 = \"bad cast\";\n  this->vftablePtr = &vftable;\n  return this;\n}",
+  "fetched_at": "2026-04-26T18:04:31Z"
+}

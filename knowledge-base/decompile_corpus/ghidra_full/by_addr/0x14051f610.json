@@ -1,0 +1,7 @@
+{
+  "addr": "0x14051f610",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_14051f610(longlong *param_1,longlong param_2)\n\n{\n  longlong lVar1;\n  undefined8 *puVar2;\n  longlong *plVar3;\n  \n  lVar1 = *param_1;\n  if (param_1[1] != 0x492492492492492) {\n    plVar3 = (longlong *)FUN_140769c58(0x38);\n    FUN_14001e680(plVar3 + 2,param_2);\n    *(undefined4 *)(plVar3 + 6) = *(undefined4 *)(param_2 + 0x20);\n    param_1[1] = param_1[1] + 1;\n    puVar2 = *(undefined8 **)(lVar1 + 8);\n    *plVar3 = lVar1;\n    plVar3[1] = (longlong)puVar2;\n    *(longlong **)(lVar1 + 8) = plVar3;\n    *puVar2 = plVar3;\n    return;\n  }\n                    /* WARNING: Subroutine does not return */\n  FUN_1407408dc(\"list too long\");\n}",
+  "fetched_at": "2026-04-26T18:25:51Z"
+}

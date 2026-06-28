@@ -1,0 +1,7 @@
+{
+  "addr": "0x140138490",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14013849a        void* lpMem = arg1[1]\n14013849e        struct DynamicVectorClass<class alTerrain::Shadow_Blob_Bucket>::VTable* const result = &DynamicVectorClass<class alTerrain::Shadow_Blob_Bucket>::`vftable'\n1401384a5        *arg1 = &DynamicVectorClass<class alTerrain::Shadow_Blob_Bucket>::`vftable'\n1401384ae        if (lpMem != 0)\n1401384b7        if ((*(arg1 + 0x14) & 0x80000000) == 0)\n1401384d7        sub_140138a30(lpMem, 3)\n1401384c7        HeapFree(GetProcessHeap(), HEAP_NONE, lpMem)\n1401384dc        result = nullptr\n1401384de        *(arg1 + 0x14) &= 0x80000000\n1401384e5        arg1[1] = 0\n1401384e9        arg1[2].d = 0\n1401384f6        return result",
+  "fetched_at": "2026-04-26T17:12:05Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x140198450",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined8 __thiscall alD3dRenderTarget::vfunction2(alD3dRenderTarget *this)\n\n{\n  undefined8 in_RAX;\n  \n  if (this->vftablePtr != (alD3dRenderTarget_vftable2 *)0x0) {\n    in_RAX = (**(code **)(this->vftablePtr->vfunction1 + 0x10))();\n    this->vftablePtr = (alD3dRenderTarget_vftable2 *)0x0;\n  }\n  if ((longlong *)this->offset_0x10 != (longlong *)0x0) {\n    in_RAX = (**(code **)(*(longlong *)this->offset_0x10 + 8))();\n    this->offset_0x10 = 0;\n  }\n  return CONCAT71((int7)((ulonglong)in_RAX >> 8),1);\n}",
+  "fetched_at": "2026-04-26T17:36:14Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x14076da94",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14076daae        int64_t arg_18\n14076daae        int64_t rcx = *_GetEstablisherFrame(arg1, arg2, arg3, &arg_18)\n14076dab1        int64_t result = sx.q(*(arg3 + 0x1c))\n14076dab5        arg_18 = rcx\n14076dabe        if (arg4 s> *(result + rcx + 4))\n14076dac0        *(result + rcx + 4) = arg4\n14076dace        return result",
+  "fetched_at": "2026-04-26T17:30:31Z"
+}

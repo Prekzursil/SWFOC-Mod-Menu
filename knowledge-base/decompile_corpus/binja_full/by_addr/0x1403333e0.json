@@ -1,0 +1,7 @@
+{
+  "addr": "0x1403333e0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1403333ef        int64_t* rbx = arg1 + 0x130\n1403333ff        if (rbx == 0)\n140333447        rbx = arg3\n140333411        if (WaitForSingleObject(*rbx, 0x2710) == WAIT_OBJECT_0)\n140333441        rbx[1] = \"BroadcasterClass::Add_Player\"\n140333413        rbx[1]\n140333454        if (arg2[3] u>= 8)\n140333456        *arg2\n140333471        void* const rcx_3 = 0xe0\n140333479        if (arg2[0x18].b == 0)\n140333479        rcx_3 = 0xc8\n14033347f        sub_140333250(rcx_3 + arg1, arg2)\n140333484        int64_t result = *(arg1 + 0x1a0)\n14033348e        if (result != 0)\n140333493        result = result(arg2)\n140333498        if (rbx != 0)\n14033349a        rbx[1]\n14033349e        HANDLE hMutex = *rbx\n1403334a1        rbx[1] = 0\n1403334a9        result = ReleaseMutex(hMutex)\n1403334b1        if (result.d == 0)\n1403334b3        result = GetLastError()\n1403334e0        return result",
+  "fetched_at": "2026-04-26T17:03:08Z"
+}

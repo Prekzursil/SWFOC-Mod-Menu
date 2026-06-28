@@ -1,0 +1,7 @@
+{
+  "addr": "0x14026efa0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "int FUN_14026efa0(longlong *param_1)\n\n{\n  float fVar1;\n  float fVar2;\n  float fVar3;\n  float fVar4;\n  float fVar5;\n  float fVar6;\n  float fVar7;\n  int iVar8;\n  float *pfVar9;\n  longlong lVar10;\n  float fVar11;\n  \n  pfVar9 = (float *)(**(code **)(*param_1 + 0x30))();\n  fVar7 = DAT_1408054e8;\n  fVar11 = *pfVar9 * DAT_1408054e8;\n  lVar10 = (**(code **)(*param_1 + 0x30))(param_1);\n  fVar1 = *(float *)(lVar10 + 4);\n  lVar10 = (**(code **)(*param_1 + 0x30))(param_1);\n  fVar2 = *(float *)(lVar10 + 8);\n  lVar10 = (**(code **)(*param_1 + 0x30))(param_1);\n  fVar3 = *(float *)(lVar10 + 0xc);\n  pfVar9 = (float *)(**(code **)(*param_1 + 0x38))(param_1);\n  fVar4 = *pfVar9;\n  lVar10 = (**(code **)(*param_1 + 0x38))(param_1);\n  fVar5 = *(float *)(lVar10 + 4);\n  lVar10 = (**(code **)(*param_1 + 0x38))(param_1);\n  fVar6 = *(float *)(lVar10 + 8);\n  lVar10 = (**(code **)(*param_1 + 0x38))(param_1);\n  if ((int)param_1[3] == 1) {\n    iVar8 = 1;\n    if (((int)(fVar6 * fVar7) & 0xffU) + ((int)(fVar5 * fVar7) & 0xffU) +\n        ((int)(fVar4 * fVar7) & 0xffU) + ((int)(fVar2 * fVar7) & 0xffU) +\n        ((int)(fVar1 * fVar7) & 0xffU) + ((int)fVar11 & 0xffU) == 0) {\n      iVar8 = 0;\n    }\n  }\n  else if ((((int)param_1[3] != 2) || ((char)(int)(fVar3 * fVar7) != '\\0')) ||\n          (iVar8 = (int)(*(float *)(lVar10 + 0xc) * fVar7), (char)iVar8 != '\\0')) {\n    iVar8 = 1;\n  }\n  return iVar8;\n}",
+  "fetched_at": "2026-04-26T18:19:22Z"
+}

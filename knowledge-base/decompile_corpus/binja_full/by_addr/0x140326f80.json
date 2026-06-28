@@ -1,0 +1,7 @@
+{
+  "addr": "0x140326f80",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140326f83        if (arg2 == 0)\n140326f83        return \n140326f8e        void* rax = *(arg2 + 0x298)\n140326f9c        if (*(rax + 0x13) == 0)\n140326f9c        return \n140326fa7        void* rbx_1 = *(arg2 + 0x2b0)\n140326fb1        if (rbx_1 == 0)\n140326fb1        return \n140326fbe        while (*(rbx_1 + 0x335) == 0xff)\n140326fc0        rbx_1 = *(rbx_1 + 0x2b0)\n140326fca        if (rbx_1 == 0)\n140326fd6        return \n140326fe3        int64_t* var_28\n140326fe3        sub_14001e680(&var_28, rax + 0xf8)\n140326fee        int64_t* rdx_1 = &var_28\n140326ffa        int64_t var_10\n140326ffa        if (var_10 u>= 0x10)\n140326ffa        rdx_1 = var_28\n140327000        sub_140327b10(\"STORY - HERO DEFEATED %s\\r\\n\", rdx_1)\n140327019        sub_14032e5f0(arg1, 0x12, 0, &var_28, rbx_1)\n140327027        if (var_10 u< 0x10)\n140327027        return \n140327029        int64_t* rcx_2 = var_28\n140327031        int64_t* rax_1 = rcx_2\n14032703b        if (var_10 + 1 u>= 0x1000)\n14032703d        rcx_2 = rcx_2[-1]\n140327050        if (rax_1 - rcx_2 - 8 u> 0x1f)\n140327062        _invalid_parameter_noinfo_noreturn()\n140327062        noreturn\n140327052        j_sub_1407864b8(rcx_2)\n140327061        return ",
+  "fetched_at": "2026-04-26T17:01:21Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x14078eefc",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_14078eefc(__acrt_ptd *param_1)\n\n{\n  if (param_1 != (__acrt_ptd *)0x0) {\n    destroy_ptd_array(param_1);\n    _free_base(param_1);\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T18:52:27Z"
+}

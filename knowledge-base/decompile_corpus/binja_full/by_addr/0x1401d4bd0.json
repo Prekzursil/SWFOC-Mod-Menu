@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401d4bd0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1401d4be3        *arg1 = &GUIGadgetTrackbarSliderClass::`vftable'{for `GUIGadgetClass'}\n1401d4be9        sub_1401d7880(arg1)\n1401d4bf5        *(arg1 + 0x9c) = 0\n1401d4bff        arg1[0x14].d = 0x42c80000\n1401d4c09        *(arg1 + 0xac) = 0\n1401d4c12        sub_140260500(&arg1[0x67])\n1401d4c1e        sub_140260500(&arg1[0x55])\n1401d4c2a        sub_140260500(&arg1[0x43])\n1401d4c36        sub_140260500(&arg1[0x31])\n1401d4c42        sub_140260500(&arg1[0x1f])\n1401d4c4e        sub_1401cb190(&arg1[0x1c])\n1401d4c56        sub_1401e3cb0(arg1)\n1401d4c5e        if ((arg2 & 1) != 0)\n1401d4c68        j_sub_1407864b8(arg1)\n1401d4c7a        return arg1",
+  "fetched_at": "2026-04-26T17:26:46Z"
+}

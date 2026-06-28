@@ -1,0 +1,7 @@
+{
+  "addr": "0x1405c62a0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1405c62a0        void* result = *(arg2 + 0x298)\n1405c62ae        if (*(result + 0x169c) == 5)\n1405c62c0        *(arg1 + 0x3c) = 0x40490fdb\n1405c62c5        *(arg1 + 0x40) = 0x3f800000\n1405c62ca        return result\n1405c62d3        uint128_t zmm0\n1405c62d3        zmm0.q = 0x400921fb54442d18 f* 0.75\n1405c62e7        *(arg1 + 0x3c) = _mm_cvtpd_ps(zmm0).d\n1405c62ec        *(arg1 + 0x40) = 0x3f400000\n1405c62f1        return result",
+  "fetched_at": "2026-04-26T17:37:37Z"
+}

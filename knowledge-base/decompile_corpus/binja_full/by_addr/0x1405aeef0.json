@@ -1,0 +1,7 @@
+{
+  "addr": "0x1405aeef0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1405aeefb        struct ScheduledEventClass::SetupPhaseTriggerEndEventClass::VTable** result = operator new(0x48)\n1405aef06        if (result == 0)\n1405aef2f        return result\n1405aef0b        sub_140512c50(result)\n1405aef17        result[4].d = 0x20\n1405aef1e        *result = &SetupPhaseTriggerEndEventClass::`vftable'{for `ScheduledEventClass'}\n1405aef29        return result",
+  "fetched_at": "2026-04-26T17:37:14Z"
+}

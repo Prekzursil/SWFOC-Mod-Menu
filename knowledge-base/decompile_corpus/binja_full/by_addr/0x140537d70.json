@@ -1,0 +1,7 @@
+{
+  "addr": "0x140537d70",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140537d83        *arg1 = &ObjectTrackingSystemClass::`vftable'{for `SignalListenerClass'}\n140537d89        sub_140537f00(arg1)\n140537d8e        void* rcx = arg1[0xa]\n140537d95        if (rcx != 0)\n140537da9        if (((arg1[0xc] - rcx) & 0xfffffffffffffff8) u>= 0x1000)\n140537dab        void* r8_1 = *(rcx - 8)\n140537dbe        if (rcx - r8_1 - 8 u> 0x1f)\n140537e12        _invalid_parameter_noinfo_noreturn()\n140537e12        noreturn\n140537dc0        rcx = r8_1\n140537dc3        j_sub_1407864b8(rcx)\n140537dca        __builtin_memset(&arg1[0xa], 0, 0x18)\n140537dda        sub_14007b260(&arg1[2])\n140537de9        *arg1 = &SignalListenerClass::`vftable'{for `MultiLinkedListMember'}\n140537dec        sub_14020a820(arg1)\n140537df5        if ((arg2 & 1) != 0)\n140537dff        j_sub_1407864b8(arg1)\n140537e11        return arg1",
+  "fetched_at": "2026-04-26T17:33:50Z"
+}

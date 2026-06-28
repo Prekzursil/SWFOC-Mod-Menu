@@ -1,0 +1,7 @@
+{
+  "addr": "0x140690420",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140690429        struct AIFreeStoreClass::SpaceFreeStoreClass::VTable** result = arg1\n14069042c        sub_1404d22b0(arg1, arg2, 0)\n140690438        *result = &SpaceFreeStoreClass::`vftable'{for `AIFreeStoreClass'}\n140690442        result[5] = &SpaceFreeStoreClass::`vftable'{for `SignalListenerClass'}\n14069044e        return result",
+  "fetched_at": "2026-04-26T17:17:23Z"
+}

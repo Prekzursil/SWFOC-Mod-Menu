@@ -1,0 +1,7 @@
+{
+  "addr": "0x1405835c0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1405835c6        int32_t* result = arg2\n1405835c9        uint64_t zmm8[0x2]\n1405835c9        sub_140583930(arg1, arg2, arg3, arg4, zmm8)\n1405835ce        int64_t* rcx = data_140b15418\n1405835dd        int32_t var_28\n1405835dd        (*(*rcx + 0x208))(rcx, &var_28)\n1405835e3        float zmm1[0x4] = var_28\n1405835e9        int32_t zmm3 = *result\n1405835f0        int32_t var_1c\n1405835f0        zmm1[0] = zmm1[0] f- var_1c\n1405835f6        zmm1[0] = zmm1[0] f+ var_1c\n1405835ff        if (not(zmm1[0] f> zmm3))\n140583604        zmm1 = _mm_min_ss(zmm1[0], zmm3)\n140583608        int32_t zmm0 = result[1]\n14058360d        *result = zmm1[0]\n140583611        int32_t var_24\n140583611        zmm1 = var_24\n14058361a        int32_t var_18\n14058361a        zmm1[0] = zmm1[0] f- var_18\n140583620        zmm1[0] = zmm1[0] f+ var_18\n140583629        if (not(zmm1[0] f> zmm0))\n14058362e        zmm1 = _mm_min_ss(zmm1[0], zmm0)\n140583632        float zmm2[0x4] = result[2]\n14058363a        zmm0 = 0xc59c4000\n140583642        bool cond:0 = -5000f > zmm2[0]\n140583645        result[1] = zmm1[0]\n14058364a        if (not(cond:0))\n140583654        zmm0 = _mm_min_ss(0x459c4000, zmm2[0])\n140583658        result[2] = zmm0\n140583662        return result",
+  "fetched_at": "2026-04-26T17:35:49Z"
+}

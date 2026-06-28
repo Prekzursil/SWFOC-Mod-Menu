@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407f0870",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_1407f0870(void)\n\n{\n  DynamicVectorClass<class_TooltipClass::ProgressBarClass*___ptr64>::\n  ~DynamicVectorClass<class_TooltipClass::ProgressBarClass*___ptr64>\n            ((DynamicVectorClass<class_TooltipClass::ProgressBarClass*___ptr64> *)\n             &PTR_vftable_140a28770);\n  DynamicVectorClass<struct_tagPOINT>::~DynamicVectorClass<struct_tagPOINT>\n            ((DynamicVectorClass<struct_tagPOINT> *)&PTR_vftable_140a28758);\n  DynamicVectorClass<class_TextureRectClass*___ptr64>::\n  ~DynamicVectorClass<class_TextureRectClass*___ptr64>\n            ((DynamicVectorClass<class_TextureRectClass*___ptr64> *)&PTR_vftable_140a28740);\n  DynamicVectorClass<float>::~DynamicVectorClass<float>\n            ((DynamicVectorClass<float> *)&PTR_vftable_140a28728);\n  DynamicVectorClass<class_DrawTextClass*___ptr64>::\n  ~DynamicVectorClass<class_DrawTextClass*___ptr64>\n            ((DynamicVectorClass<class_DrawTextClass*___ptr64> *)&PTR_vftable_140a28710);\n  return;\n}",
+  "fetched_at": "2026-04-26T19:03:10Z"
+}

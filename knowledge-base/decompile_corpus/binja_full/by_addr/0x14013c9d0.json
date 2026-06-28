@@ -1,0 +1,7 @@
+{
+  "addr": "0x14013c9d0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14013c9e4        *arg1 = &alEmitter::`vftable'{for `alRenderable'}\n14013c9f0        arg1[2] = &alEmitter::`vftable'{for `MultiLinkedListMember'}\n14013c9fb        arg1[4] = &alEmitter::`vftable'{for `CullObjectClass'}\n14013c9ff        int64_t* rcx = arg1[0x19]\n14013ca09        if (rcx != 0)\n14013ca0e        (*(*rcx + 8))(rcx)\n14013ca11        arg1[0x19] = 0\n14013ca25        sub_140172a60(arg1[0x1a], 0)\n14013ca2a        int64_t* rcx_2 = arg1[0x19]\n14013ca34        if (rcx_2 != 0)\n14013ca39        (*(*rcx_2 + 8))(rcx_2)\n14013ca3c        arg1[0x19] = 0\n14013ca50        sub_140172a60(arg1[0x1a], 1)\n14013ca55        int64_t* rcx_4 = arg1[0x1a]\n14013ca5f        if (rcx_4 != 0)\n14013ca64        (*(*rcx_4 + 8))(rcx_4)\n14013ca67        arg1[0x1a] = 0\n14013ca72        int64_t* rcx_5 = arg1[0x19]\n14013ca7c        if (rcx_5 != 0)\n14013ca81        (*(*rcx_5 + 8))(rcx_5)\n14013ca87        sub_14013f770(arg1)\n14013ca90        if ((arg2 & 1) != 0)\n14013ca9a        j_sub_1407864b8(arg1)\n14013caac        return arg1",
+  "fetched_at": "2026-04-26T17:15:15Z"
+}

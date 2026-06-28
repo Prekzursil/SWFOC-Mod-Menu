@@ -1,0 +1,7 @@
+{
+  "addr": "0x140621350",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "char * __thiscall CashPointBehaviorClass::vfunction9(void)\n\n{\n  return \"CashPointBehaviorClass\";\n}",
+  "fetched_at": "2026-04-26T17:29:55Z"
+}

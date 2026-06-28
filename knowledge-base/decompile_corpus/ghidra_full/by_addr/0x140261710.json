@@ -1,0 +1,7 @@
+{
+  "addr": "0x140261710",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_140261710(longlong param_1,float param_2,float *param_3)\n\n{\n  float fVar1;\n  float fVar2;\n  float fVar3;\n  longlong lVar4;\n  float fVar5;\n  float fVar6;\n  float fVar7;\n  float fVar8;\n  float fVar9;\n  float fVar10;\n  float fVar11;\n  \n  fVar5 = DAT_1407ffaf8;\n  lVar4 = *(longlong *)(param_1 + 0x40);\n  fVar9 = (float)(*(uint *)(lVar4 + 8) ^ DAT_140800860);\n  fVar10 = (float)(*(uint *)(lVar4 + 0x18) ^ DAT_140800860);\n  fVar11 = (float)(*(uint *)(lVar4 + 0x28) ^ DAT_140800860);\n  fVar1 = *(float *)(lVar4 + 0x2c);\n  fVar2 = *(float *)(lVar4 + 0xc);\n  fVar8 = param_2 - fVar1;\n  fVar3 = *(float *)(lVar4 + 0x1c);\n  param_3[2] = param_2;\n  fVar5 = fVar5 / ((fVar1 + fVar11) - fVar1);\n  fVar7 = ((fVar2 + fVar9) - fVar2) * fVar5 * fVar8;\n  fVar6 = ((fVar3 + fVar10) - fVar3) * fVar5 * fVar8;\n  *param_3 = fVar7 + fVar2;\n  param_3[1] = fVar6 + fVar3;\n  fVar5 = ABS(fVar1 - param_2);\n  if (fVar5 < SQRT(fVar6 * fVar6 + fVar7 * fVar7 + fVar8 * fVar8)) {\n    *param_3 = fVar9 * fVar5 + fVar2;\n    param_3[1] = fVar10 * fVar5 + fVar3;\n    param_3[2] = fVar11 * fVar5 + fVar1;\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T18:15:49Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406cafe0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1406cafef        int64_t r8 = *(arg1 + 0x2a0)\n1406caff6        uint64_t rbx = 0\n1406cb008        int64_t i = (*(arg1 + 0x2a8) - r8) s>> 3\n1406cb00f        if (i != 0)\n1406cb015        int32_t* rcx = r8 + (rbx << 3)\n1406cb019        if (*(r8 + (rbx << 3)) == arg2)\n1406cb029        memcpy(rcx, &rcx[2], *(arg1 + 0x2a8) - &rcx[2])\n1406cb02e        *(arg1 + 0x2a8) -= 8\n1406cb036        rbx = zx.q(rbx.d - 1)\n1406cb038        r8 = *(arg1 + 0x2a0)\n1406cb03f        rbx = zx.q(rbx.d + 1)\n1406cb04b        i = zx.q(rbx.d)\n1406cb054        do while (i u< (*(arg1 + 0x2a8) - r8) s>> 3)\n1406cb065        return i",
+  "fetched_at": "2026-04-26T17:25:23Z"
+}

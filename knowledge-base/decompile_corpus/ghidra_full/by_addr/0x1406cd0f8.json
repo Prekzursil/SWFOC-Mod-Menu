@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406cd0f8",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall\nGalacticTaskForceClass::vfunction1_for_SignalListenerClass\n          (GalacticTaskForceClass *this,ulonglong param_1)\n\n{\n  scalar_deleting_destructor\n            ((GalacticTaskForceClass *)&this[-1].GalacticTaskForceClass_data.field_0x68,param_1);\n  return;\n}",
+  "fetched_at": "2026-04-26T17:41:28Z"
+}

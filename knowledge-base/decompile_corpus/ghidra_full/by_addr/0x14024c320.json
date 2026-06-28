@@ -1,0 +1,7 @@
+{
+  "addr": "0x14024c320",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */\n\nundefined8\nLuaValue<class_std::basic_string<char,struct_std::char_traits<char>,class_std::allocator<char>_>,6>\n::\nLuaValue<class_std::basic_string<char,struct_std::char_traits<char>,class_std::allocator<char>_>,6>_Constructor_or_Destructor\n          (undefined8 param_1)\n\n{\n  undefined8 *puVar1;\n  LuaValue<class_std::basic_string<char,struct_std::char_traits<char>,class_std::allocator<char>_>,6>_vftable\n  *local_38;\n  undefined4 local_30;\n  longlong local_28 [2];\n  undefined8 local_18;\n  ulonglong uStack_10;\n  \n  puVar1 = (undefined8 *)FUN_1407b9da0();\n  local_38 = &vftable;\n  local_30 = 0;\n  local_28[0] = 0;\n  local_18 = _DAT_140802a40;\n  uStack_10 = _UNK_140802a48;\n  (**(code **)(*(longlong *)*puVar1 + 0x58))((longlong *)*puVar1,local_28);\n  FUN_140247700(param_1,&local_38);\n  if (0xf < uStack_10) {\n    if (0xfff < uStack_10 + 1) {\n      if (0x1f < (local_28[0] - *(longlong *)(local_28[0] + -8)) - 8U) {\n                    /* WARNING: Subroutine does not return */\n        FUN_1407711cc(*(longlong *)(local_28[0] + -8),uStack_10 + 0x28);\n      }\n    }\n    thunk_FUN_1407864b8();\n  }\n  return 1;\n}",
+  "fetched_at": "2026-04-26T18:11:26Z"
+}

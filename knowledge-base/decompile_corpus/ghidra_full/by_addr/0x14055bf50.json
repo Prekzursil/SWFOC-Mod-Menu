@@ -1,0 +1,7 @@
+{
+  "addr": "0x14055bf50",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined8 __thiscall\nSelectionDataPackClass::vfunction2(SelectionDataPackClass *this,undefined8 param_1)\n\n{\n  char cVar1;\n  int iVar2;\n  undefined8 uVar3;\n  PooledObjectClass<class_SelectionDataPackClass,20,class_EmptyLockerClass> *pPVar4;\n  \n  uVar3 = FUN_140220610(param_1);\n  cVar1 = (char)uVar3;\n  do {\n    if (cVar1 == '\\0') {\n      return CONCAT71((int7)((ulonglong)uVar3 >> 8),1);\n    }\n    iVar2 = FUN_140220710(param_1);\n    if (iVar2 == 0) {\n      pPVar4 = &this->PooledObjectClass<class_SelectionDataPackClass,20,class_EmptyLockerClass>;\nLAB_14055bfac:\n      FUN_140220730(param_1,pPVar4);\n    }\n    else {\n      if (iVar2 == 1) {\n        pPVar4 = (PooledObjectClass<class_SelectionDataPackClass,20,class_EmptyLockerClass> *)\n                 &(this->SelectionDataPackClass_data).offset_0x28;\n        goto LAB_14055bfac;\n      }\n      if (iVar2 == 2) {\n        FUN_1402209a0(param_1,&(this->SelectionDataPackClass_data).offset_0x30,0);\n      }\n      else if (iVar2 == 3) {\n        pPVar4 = (PooledObjectClass<class_SelectionDataPackClass,20,class_EmptyLockerClass> *)\n                 &(this->SelectionDataPackClass_data).offset_0x50;\n        goto LAB_14055bfac;\n      }\n    }\n    FUN_1402206a0(param_1);\n    uVar3 = FUN_140220610(param_1);\n    cVar1 = (char)uVar3;\n  } while( true );\n}",
+  "fetched_at": "2026-04-26T18:38:39Z"
+}

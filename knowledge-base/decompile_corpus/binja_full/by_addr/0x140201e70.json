@@ -1,0 +1,7 @@
+{
+  "addr": "0x140201e70",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140201e7e        if (*(arg1 + 0x10) != 0)\n140201e84        enum WAIT_EVENT rax_1 = WaitForSingleObject(*(arg1 + 8), arg2)\n140201e94        if (rax_1 != WAIT_TIMEOUT && rax_1 != WAIT_FAILED)\n140201e9f        int32_t rbx = *(*(arg1 + 0x10) + 0x14)\n140201ea6        ReleaseMutex(*(arg1 + 8))\n140201eb8        return zx.q(rbx)\n140201ec0        return 0",
+  "fetched_at": "2026-04-26T17:27:43Z"
+}

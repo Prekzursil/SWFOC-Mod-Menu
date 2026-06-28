@@ -1,0 +1,7 @@
+{
+  "addr": "0x140340080",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nvoid __thiscall\nRetreatCoordinatorClass::vfunction4(RetreatCoordinatorClass *this,undefined4 param_1)\n\n{\n  vfunction5(this);\n  *(undefined4 *)&(this->RefCountClass_data).offset_0x8 = 0;\n  *(undefined4 *)&(this->RefCountClass_data).offset_0x10 = param_1;\n  return;\n}\n\n",
+  "fetched_at": "2026-04-26T17:05:34Z"
+}

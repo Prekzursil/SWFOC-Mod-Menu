@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401385f0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1401385f9        void* rcx = *(arg1 + 0x68)\n140138600        if (rcx != 0)\n140138614        if (((*(arg1 + 0x78) - rcx) & 0xfffffffffffffff8) u>= 0x1000)\n140138616        void* r8_1 = *(rcx - 8)\n140138629        if (rcx - r8_1 - 8 u> 0x1f)\n140138687        _invalid_parameter_noinfo_noreturn()\n140138687        noreturn\n14013862b        rcx = r8_1\n14013862e        j_sub_1407864b8(rcx)\n140138635        __builtin_memset(arg1 + 0x68, 0, 0x18)\n140138651        *(arg1 + 0x20) = &MultiLinkedListClass<class alTerrainShadowBlob>::`vftable'{for `GenericMultiLinkedList'}\n140138659        while (*(arg1 + 0x30) != arg1 + 0x28)\n140138669        int64_t* arg_8\n140138669        sub_14020ac80(arg1 + 0x20, &arg_8)\n140138682        return sub_14020a960(arg1 + 0x20) __tailcall",
+  "fetched_at": "2026-04-26T17:12:37Z"
+}

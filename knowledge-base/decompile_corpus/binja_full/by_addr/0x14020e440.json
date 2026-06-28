@@ -1,0 +1,7 @@
+{
+  "addr": "0x14020e440",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14020e452        *arg1 = &TreeCullClass::`vftable'{for `CullSystemClass'}\n14020e458        int64_t* rcx = data_140a7c680\n14020e45f        int64_t r8 = data_140a7c688\n14020e469        if (rcx != r8)\n14020e47f        int32_t* rdx_1\n14020e470        rdx_1 = &rcx[1]\n14020e477        if (arg1 == *rcx)\n14020e486        memcpy(rcx, rdx_1, r8 - rdx_1)\n14020e48b        data_140a7c688 -= 8\n14020e48b        break\n14020e479        rcx = rdx_1\n14020e47f        do while (rdx_1 != r8)\n14020e493        int32_t* rcx_1 = arg1[2]\n14020e497        arg1[1] = 0\n14020e49f        sub_14020f600(rcx_1)\n14020e4a4        void* rcx_2 = arg1[2]\n14020e4a8        int64_t* i = *(rcx_2 + 0x18)\n14020e4b0        while (i != *(rcx_2 + 0x20))\n14020e4c0        void* rdi_1 = *i\n14020e4ca        sub_14023e0a0(*(rdi_1 + 8), rdi_1)\n14020e4d7        j_sub_1407864b8(rdi_1)\n14020e4dc        rcx_2 = arg1[2]\n14020e4e0        i = &i[1]\n14020e4f8        *(rcx_2 + 0x20) = *(rcx_2 + 0x18)\n14020e4fc        void* rcx_5 = arg1[2]\n14020e500        arg1[3] = 0\n14020e50b        if (rcx_5 != 0)\n14020e512        sub_1402116d0(rcx_5, 1)\n14020e51e        *arg1 = &CullSystemClass::`vftable'\n14020e526        return &CullSystemClass::`vftable'",
+  "fetched_at": "2026-04-26T17:28:15Z"
+}

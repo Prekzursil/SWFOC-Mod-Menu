@@ -1,0 +1,7 @@
+{
+  "addr": "0x1405cf3b0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1405cf3b6        struct MovementCoordinatorClass::SpaceMovementCoordinatorClass::VTable** result = arg1\n1405cf3b9        sub_1404f68e0(arg1, arg2)\n1405cf3c5        *result = &SpaceMovementCoordinatorClass::`vftable'{for `MovementCoordinatorClass'}\n1405cf3d0        return result",
+  "fetched_at": "2026-04-26T17:37:56Z"
+}

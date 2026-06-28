@@ -1,0 +1,7 @@
+{
+  "addr": "0x1405494b0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */\n\nint __thiscall ShieldBehaviorClass::vfunction6(ShieldBehaviorClass *this)\n\n{\n  float fVar1;\n  \n  fVar1 = DAT_1407ffaf8;\n  if (this->offset_0x18 != (undefined **)0x0) {\n    fVar1 = (float)FUN_140398010(this->offset_0x18,3);\n  }\n  return (int)((float)DAT_140b0a340 * fVar1 * _DAT_140b15b54 + DAT_1408007c0);\n}",
+  "fetched_at": "2026-04-26T18:37:27Z"
+}

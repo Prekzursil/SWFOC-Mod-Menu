@@ -1,0 +1,7 @@
+{
+  "addr": "0x140018850",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nvoid FUN_140018850(void)\n\n{\n  DynamicVectorClass<class_GameObjectClass*___ptr64>::\n  DynamicVectorClass<class_GameObjectClass*___ptr64>\n            ((DynamicVectorClass<class_GameObjectClass*___ptr64> *)&DAT_140b30350);\n  atexit((_func_5014 *)&LAB_1407f16d0);\n  return;\n}\n\n",
+  "fetched_at": "2026-04-26T16:50:45Z"
+}

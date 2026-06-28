@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406510f0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nvoid __thiscall\nVisiblePerceptualEvaluatorClass<class_PlanetTypePerceptualEvaluatorClass>::\nvfunction2_for_AIDiagnosticsClass\n          (VisiblePerceptualEvaluatorClass<class_PlanetTypePerceptualEvaluatorClass> *this)\n\n{\n  undefined8 *puVar1;\n  \n  puVar1 = (undefined8 *)FUN_140769c58(0x30);\n  if (puVar1 != (undefined8 *)0x0) {\n    puVar1[1] = 0;\n    puVar1[5] = &this[-1].PerceptualEvaluatorClass_data.offset_0x30;\n    *puVar1 = &VisibleEvaluatorDiagnosticsNodeClass<class_PlanetTypePerceptualEvaluatorClass>::\n               vftable;\n    puVar1[3] = 0;\n    puVar1[4] = 0xf;\n    return;\n  }\n  return;\n}\n\n",
+  "fetched_at": "2026-04-26T17:06:14Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x140591fe0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined8 __thiscall\nBarrageAreaBehaviorClass::vfunction7(BarrageAreaBehaviorClass *this,longlong *param_1,int param_2)\n\n{\n  char cVar1;\n  longlong lVar2;\n  longlong local_18;\n  undefined4 local_10;\n  \n  cVar1 = FUN_1404c36f0();\n  if ((cVar1 == '\\0') && (this->offset_0x18[0x1e] != (undefined *)0x0)) {\n    BehaviorClass::vfunction7((BehaviorClass *)this,param_1,param_2);\n    lVar2 = FUN_140397d90(this->offset_0x18,5);\n    if (lVar2 == 0) {\n      FUN_1402149d0(\n                   \"Object is trying to activate BarrageArea behavior but does not have Barrage unit ability!\"\n                   );\n    }\n    else if (this->offset_0x18[0x2f] != (undefined *)0x0) {\n      local_18 = (**(code **)(*param_1 + 0x10))(param_1,1);\n      if (local_18 == 0) {\n        local_10 = 0;\n        FUN_14038a350(this->offset_0x18,5,0,&local_18,0xffffffff,0x3fffff);\n      }\n    }\n  }\n  return 0x650000;\n}",
+  "fetched_at": "2026-04-26T18:42:12Z"
+}

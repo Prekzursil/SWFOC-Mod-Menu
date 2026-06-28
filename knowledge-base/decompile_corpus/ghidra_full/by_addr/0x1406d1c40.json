@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406d1c40",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall\nLandLocationPerceptualEvaluatorClass::vfunction1\n          (LandLocationPerceptualEvaluatorClass *this,uint param_1)\n\n{\n  SpaceLocationPerceptualEvaluatorClass::scalar_deleting_destructor\n            ((SpaceLocationPerceptualEvaluatorClass *)&this[-1].SignalListenerClass_data.offset_0x50\n             ,param_1);\n  return;\n}",
+  "fetched_at": "2026-04-26T17:42:03Z"
+}

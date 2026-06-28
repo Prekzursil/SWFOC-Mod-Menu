@@ -1,0 +1,7 @@
+{
+  "addr": "0x140564a10",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140564a17        *arg1 = &CorruptSystemsDataPackClass::`vftable'{for `BaseDataPackClass'}\n140564a1a        return &CorruptSystemsDataPackClass::`vftable'{for `BaseDataPackClass'}",
+  "fetched_at": "2026-04-26T17:34:30Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x1404747e0",
+  "tool": "binary_ninja",
+  "fact_id": "rva_ai_the_ai_data_mgr_ctor",
+  "body": "1404747f0        *arg1 = &TheAIDataManagerClass::`vftable'\n1404747f7        sub_140254520(&arg1[1])\n1404747fe        arg1[9].b = 0\n140474802        __builtin_memset(&arg1[0xa], 0, 0x38)\n140474829        return arg1",
+  "fetched_at": "2026-04-26T16:43:42Z"
+}

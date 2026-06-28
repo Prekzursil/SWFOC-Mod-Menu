@@ -1,0 +1,7 @@
+{
+  "addr": "0x140786ce0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* Library Function - Single Match\n    __pctype_func\n   \n   Library: Visual Studio 2019 Release */\n\nushort * __cdecl __pctype_func(void)\n\n{\n  longlong lVar1;\n  undefined8 *local_res8 [4];\n  \n  lVar1 = FUN_14078f07c();\n  local_res8[0] = *(undefined8 **)(lVar1 + 0x90);\n  __acrt_update_locale_info(lVar1,local_res8);\n  return (ushort *)*local_res8[0];\n}",
+  "fetched_at": "2026-04-26T18:51:40Z"
+}

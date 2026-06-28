@@ -1,0 +1,7 @@
+{
+  "addr": "0x14079626c",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14079627f        if (arg1 == 0)\n140796284        return _malloc_base(arg2)\n14079628e        if (arg2 != 0)\n14079629b        if (arg2 u<= -0x20)\n1407962c8        int32_t i\n1407962d9        int64_t result = HeapReAlloc(data_140b3cc00, HEAP_NONE, arg1, arg2)\n1407962e2        if (result != 0)\n1407962b4        return result\n1407962bc        if (sub_14078ec1c() == 0)\n1407962bc        break\n1407962c1        i = _callnewh(arg2)\n1407962c8        do while (i != 0)\n1407962a2        *_errno() = 0xc\n140796290        _free_base(arg1)\n1407962a8        return 0",
+  "fetched_at": "2026-04-26T17:31:58Z"
+}

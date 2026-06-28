@@ -1,0 +1,7 @@
+{
+  "addr": "0x140690bf0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140690c03        *arg1 = &AIExecutionPathFinderClass::`vftable'\n140690c09        __builtin_memset(&arg1[1], 0, 0x61)\n140690c3e        __builtin_memset(arg1 + 0x6c, 0, 0x14)\n140690c4c        int64_t* rax = operator new(0x20)\n140690c56        *rax = rax\n140690c59        rax[1] = rax\n140690c5d        arg1[0xe] = rax\n140690c61        __builtin_memset(&arg1[0x10], 0, 0x18)\n140690c79        arg1[0x13] = 7\n140690c84        arg1[0x14] = 8\n140690c8f        *(arg1 + 0x6c) = 0x3f800000\n140690c96        int64_t** i = operator new(0x80)\n140690c9b        arg1[0x10] = i\n140690ca2        void* rcx = &i[0x10]\n140690ca9        arg1[0x11] = rcx\n140690cb0        arg1[0x12] = rcx\n140690cba        while (i != rcx)\n140690cc0        *i = rax\n140690cc3        i = &i[1]\n140690cd9        return arg1",
+  "fetched_at": "2026-04-26T17:18:53Z"
+}

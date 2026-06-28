@@ -1,0 +1,7 @@
+{
+  "addr": "0x1403474e0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1403474eb        uint64_t result = sub_14030e610()\n1403474f0        int64_t* rdx = data_140b302e8\n1403474fa        if (rdx == 0)\n14034751a        return result\n140347507        int512_t zmm2\n140347507        zmm2.o = zx.o(0)\n140347511        return sub_1402d5290(&data_140b27e60, rdx, zmm2, 0, 0)",
+  "fetched_at": "2026-04-26T17:06:49Z"
+}

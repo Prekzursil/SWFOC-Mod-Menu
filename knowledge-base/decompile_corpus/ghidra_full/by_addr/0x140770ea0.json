@@ -1,0 +1,7 @@
+{
+  "addr": "0x140770ea0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* Library Function - Single Match\n    _CallSettingFrame\n   \n   Library: Visual Studio 2019 Release */\n\nvoid _CallSettingFrame(undefined8 param_1,undefined8 *param_2)\n\n{\n  code *pcVar1;\n  undefined8 uVar2;\n  \n  pcVar1 = (code *)_NLG_Notify(param_1,*param_2);\n  (*pcVar1)();\n  uVar2 = FUN_140770b30();\n  _NLG_Notify(uVar2,*param_2,2);\n  return;\n}",
+  "fetched_at": "2026-04-26T18:11:58Z"
+}

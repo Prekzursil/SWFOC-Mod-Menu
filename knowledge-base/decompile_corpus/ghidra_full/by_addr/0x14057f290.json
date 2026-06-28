@@ -1,0 +1,7 @@
+{
+  "addr": "0x14057f290",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall GenericSignalBlockStatus::vfunction2(GenericSignalBlockStatus *this)\n\n{\n  *(undefined1 *)&this->offset_0x8 = 1;\n  return;\n}",
+  "fetched_at": "2026-04-26T18:40:59Z"
+}

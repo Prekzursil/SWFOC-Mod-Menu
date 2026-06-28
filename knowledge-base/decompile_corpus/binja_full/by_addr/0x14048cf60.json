@@ -1,0 +1,7 @@
+{
+  "addr": "0x14048cf60",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14048cf73        if (arg3 != 0)\n14048cfa6        void* rcx = *(arg3 + 0x2a0)\n14048cfb0        if (rcx != 0)\n14048cfb7        int64_t* rax_1 = sub_1402648b0(rcx)\n14048cfc2        if (rax_1 == 0)\n14048cfc4        *arg2 = rax_1\n14048cfc7        arg2[3] = 0xf\n14048cfcf        arg2[2] = 4\n14048cfdd        __builtin_strncpy(arg2, \"ROOT\", 4)\n14048cfe2        *(arg2 + 4) = rax_1.b\n14048cff5        return arg2\n14048cffb        char** rbx = *arg4\n14048d002        if (rbx == arg4[1])\n14048d027        label_14048d027:\n14048d027        *arg2 = 0\n14048d02e        arg2[3] = 0xf\n14048d036        arg2[2] = 4\n14048d044        __builtin_strncpy(arg2, \"ROOT\", 5)\n14048d009        while (true)\n14048d009        char* rdx = rbx\n14048d00c        if (rbx[3] u>= 0x10)\n14048d00e        rdx = *rbx\n14048d01b        if (sub_14012d2a0(rax_1, rdx) s>= 0)\n14048d068        sub_14001e680(arg2, rbx)\n14048d06d        break\n14048d01d        rbx = &rbx[4]\n14048d025        if (rbx == arg4[1])\n14048d025        goto label_14048d027\n14048d061        return arg2\n14048cf75        *arg2 = 0\n14048cf7c        arg2[3] = 0xf\n14048cf84        arg2[2] = 4\n14048cf92        __builtin_strncpy(arg2, \"ROOT\", 5)\n14048cfa5        return arg2",
+  "fetched_at": "2026-04-26T17:28:56Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x140550ed0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140550edf        int32_t rdi = 0\n140550ee8        arg1[2] = 0\n140550eef        arg1[3] = 0\n140550ef6        *arg1 = &AIDataPackClass::`vftable'{for `BaseDataPackClass'}\n140550ef9        int32_t rsi = 0\n140550f02        arg1[1] = &DynamicVectorClass<class PerceptionGridEntryClass* __ptr64>::`vftable'\n140550f0d        arg1[4].d = 0\n140550f10        arg1[0xa] = &DynamicVectorClass<bool>::`vftable'\n140550f14        *(arg1 + 0x24) = 0\n140550f18        arg1[5] = 0\n140550f1c        arg1[6] = 0\n140550f20        arg1[7].w = 0x100\n140550f29        arg1[0xb] = 0\n140550f2d        arg1[0xc] = 0\n140550f31        __builtin_memset(arg1 + 0x3c, 0, 0x14)\n140550f35        void* rax = data_140b15418\n140550f3f        if (rax != 0)\n140550f41        rsi = *(rax + 0x10)\n140550f60        arg1[4].d = sub_1401ffb40(&data_140a13e24, 0, 0x12c) - 0x12c + rsi\n140550f63        void* rax_2 = data_140b15418\n140550f6d        if (rax_2 != 0)\n140550f6f        rdi = *(rax_2 + 0x10)\n140550f96        *(arg1 + 0x34) = sub_1401ffb40(&data_140a13e24, 0, 0x96) - 0x96 + rdi\n140550fa3        return arg1",
+  "fetched_at": "2026-04-26T17:34:17Z"
+}

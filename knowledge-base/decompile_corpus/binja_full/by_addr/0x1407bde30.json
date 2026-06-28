@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407bde30",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1407bde36        int64_t* rdx = *(arg1 + 0x40)\n1407bde3d        int64_t r8 = *rdx\n1407bde44        *rdx = r8 - 1\n1407bde47        int64_t* rcx = *(arg1 + 0x40)\n1407bde4e        void* result\n1407bde4e        uint32_t rdx_1\n1407bde4e        if (r8 == 0)\n1407bde60        result = sub_1407c37d0(rcx)\n1407bde65        rdx_1 = result.d\n1407bde50        char* rax_1 = rcx[1]\n1407bde54        rdx_1 = zx.d(*rax_1)\n1407bde57        result = &rax_1[1]\n1407bde5a        rcx[1] = result\n1407bde67        arg1[1] += 1\n1407bde6a        bool cond:0 = arg1[1] s<= 0x7ffffffd\n1407bde71        *arg1 = rdx_1\n1407bde73        if (cond:0)\n1407bdf0c        return result\n1407bde8a        int64_t rdi\n1407bde8a        int64_t arg_8 = rdi\n1407bde96        gzprintf(*(arg1 + 0x38), \"too many %s (limit=%d)\", \"lines in a chunk\")\n1407bde9b        int64_t r8_1 = sx.q(arg1[4])\n1407bdea2        int32_t rdx_2 = r8_1.d\n1407bdeab        if (rdx_2 == 0x116)\n1407bdeec        *(arg1 + 0x18)\n1407bdeb5        if (rdx_2 == 0x11d || rdx_2 == 0x11e)\n1407bdee7        **(arg1 + 0x48)\n1407bdebe        if (r8_1.d s>= 0x101)\n1407bded9        (&alLensFlare::`vftable'{for `alRenderable'}.vFunc_12)[r8_1]\n1407bdecb        gzprintf(*(arg1 + 0x38), &data_1408fd594, r8_1)\n1407bdefd        sub_1407bdfc0(arg1)\n1407bdefd        noreturn",
+  "fetched_at": "2026-04-26T17:33:29Z"
+}

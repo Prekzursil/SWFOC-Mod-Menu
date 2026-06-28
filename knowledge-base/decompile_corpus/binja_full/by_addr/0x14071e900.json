@@ -1,0 +1,7 @@
+{
+  "addr": "0x14071e900",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14071e91b        arg1[0x1b].d = 0xffffffff\n14071e92c        *(arg1 + 0xdc) = 0xffff\n14071e936        *arg1 = &AttackActionClass::`vftable'{for `ActionClass'}\n14071e93b        arg1[0x20] = 0\n14071e941        arg1[0x1c] = 0x3f800000\n14071e94f        arg1[0x1d].d = 0x3f800000\n14071e959        int64_t* rax = &arg1[0x1e]\n14071e961        if (arg1[0x21] u>= 0x10)\n14071e963        rax = arg1[0x1e]\n14071e966        *rax = 0\n14071e969        arg1[0x24].b = 1\n14071e970        *(arg1 + 0x124) = 0\n14071e976        arg1[0x25] = -1\n14071e988        sub_1404c47c0(&arg1[0x22])\n14071e98d        int64_t rdx = arg1[0x21]\n14071e995        if (rdx u>= 0x10)\n14071e997        void* rcx_1 = arg1[0x1e]\n14071e9a4        if (rdx + 1 u>= 0x1000)\n14071e9a6        void* r8_1 = *(rcx_1 - 8)\n14071e9b9        if (rcx_1 - r8_1 - 8 u> 0x1f)\n14071ea11        _invalid_parameter_noinfo_noreturn()\n14071ea11        noreturn\n14071e9bb        rcx_1 = r8_1\n14071e9be        j_sub_1407864b8(rcx_1)\n14071e9ca        arg1[0x20] = 0\n14071e9ce        arg1[0x21] = 0xf\n14071e9d6        arg1[0x1e].b = 0\n14071e9d9        sub_1404c4770(&arg1[0x19])\n14071e9e1        sub_1405e8f80(arg1)\n14071e9ea        if ((arg2 & 1) != 0)\n14071e9f4        j_sub_1407864b8(arg1)\n14071ea10        return arg1",
+  "fetched_at": "2026-04-26T17:28:13Z"
+}

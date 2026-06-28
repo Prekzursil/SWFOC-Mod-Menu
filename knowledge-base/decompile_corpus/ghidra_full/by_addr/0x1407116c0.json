@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407116c0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall\nWeatherproofAbilityClass::vfunction3_for_RefCountClass(WeatherproofAbilityClass *this,uint param_1)\n\n{\n  scalar_deleting_destructor\n            ((WeatherproofAbilityClass *)&this[-1].WeatherproofAbilityClass_data,param_1);\n  return;\n}",
+  "fetched_at": "2026-04-26T17:55:28Z"
+}

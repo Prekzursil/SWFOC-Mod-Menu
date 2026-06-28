@@ -1,0 +1,7 @@
+{
+  "addr": "0x140632700",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140632713        *arg1 = &GuardSpawnHouseBehaviorClass::`vftable'{for `BehaviorClass'}\n140632720        arg1[1] = &GuardSpawnHouseBehaviorClass::`vftable'{for `RefCountClass'}\n14063272b        arg1[3] = &GuardSpawnHouseBehaviorClass::`vftable'{for `SignalListenerClass'}\n14063272f        sub_1404c3310(arg1)\n140632737        if ((arg2 & 1) != 0)\n140632741        j_sub_1407864b8(arg1)\n140632753        return arg1",
+  "fetched_at": "2026-04-26T17:24:16Z"
+}

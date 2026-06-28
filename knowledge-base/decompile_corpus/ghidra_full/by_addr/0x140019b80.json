@@ -1,0 +1,7 @@
+{
+  "addr": "0x140019b80",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nvoid FUN_140019b80(void)\n\n{\n  HANDLE hHeap;\n  \n  if (DAT_140b318ef == '\\0') {\n    DAT_140a2bb80 = (LPVOID)0x0;\n    DAT_140a2bb88 = 0;\n    DAT_140a2bb8c = 0x80000000;\n    hHeap = GetProcessHeap();\n    DAT_140a2bb80 = HeapAlloc(hHeap,0,16000);\n    DAT_140a2bb88 = 0;\n    DAT_140a2bb8c = DAT_140a2bb8c & 0x800007d0 | 2000;\n    DAT_140b318ef = '\\x01';\n  }\n  atexit(DynamicVectorClass<class_FactionReferenceClass*___ptr64>::\n         DynamicVectorClass<class_FactionReferenceClass*___ptr64>_Constructor_or_Destructor);\n  return;\n}\n\n",
+  "fetched_at": "2026-04-26T16:51:01Z"
+}

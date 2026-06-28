@@ -1,0 +1,7 @@
+{
+  "addr": "0x1404c2cf0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1404c2cf9        struct BehaviorClass::TooltipDummyBehaviorClass::VTable** result = operator new(0x40)\n1404c2d03        if (result == 0)\n1404c2d49        return 0\n1404c2d05        result[2].d = 0\n1404c2d08        __builtin_memset(&result[4], 0, 0x14)\n1404c2d13        *(result + 0x3c) = 0\n1404c2d1d        *result = &TooltipDummyBehaviorClass::`vftable'{for `BehaviorClass'}\n1404c2d27        result[1] = &TooltipDummyBehaviorClass::`vftable'{for `RefCountClass'}\n1404c2d32        result[3] = &TooltipDummyBehaviorClass::`vftable'{for `SignalListenerClass'}\n1404c2d36        *(result + 0x34) = 1\n1404c2d41        return result",
+  "fetched_at": "2026-04-26T17:30:26Z"
+}

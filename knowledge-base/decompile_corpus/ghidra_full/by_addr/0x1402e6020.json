@@ -1,0 +1,7 @@
+{
+  "addr": "0x1402e6020",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined8 FUN_1402e6020(undefined8 param_1,longlong *param_2,longlong param_3)\n\n{\n  char cVar1;\n  longlong lVar2;\n  ulonglong uVar3;\n  longlong lVar4;\n  longlong lVar5;\n  \n  if ((((param_2 != (longlong *)0x0) && (param_3 != 0)) &&\n      (*(char *)((longlong)param_2 + 0x336) != -1)) &&\n     (((lVar2 = param_2[0x56], lVar2 == 0 || (*(char *)(lVar2 + 0x335) == -1)) || (lVar2 != param_3)\n      ))) {\n    lVar2 = (**(code **)(*param_2 + 0x10))(param_2,4);\n    if (((lVar2 != 0) &&\n        (uVar3 = DynamicVectorClass<class_GameObjectClass*___ptr64>::\n                 DynamicVectorClass<class_GameObjectClass*___ptr64>_Constructor_or_Destructor\n                           (lVar2,(longlong)param_2), (char)uVar3 != '\\0')) &&\n       (cVar1 = FUN_140375220(*(undefined8 *)(param_3 + 0x298),param_3), cVar1 != '\\0')) {\n      lVar4 = FUN_140294bc0(&DAT_140a16fd0,(int)param_2[0xb]);\n      if (lVar4 != 0) {\n        lVar5 = FUN_1403956c0(param_3);\n        cVar1 = FUN_1402823c0(lVar4,*(undefined4 *)(lVar5 + 0xc));\n        if ((cVar1 == '\\0') && (cVar1 = FUN_140431770(lVar2,param_2,param_3), cVar1 != '\\x01')) {\n          return 1;\n        }\n      }\n    }\n  }\n  return 0;\n}",
+  "fetched_at": "2026-04-26T17:24:55Z"
+}

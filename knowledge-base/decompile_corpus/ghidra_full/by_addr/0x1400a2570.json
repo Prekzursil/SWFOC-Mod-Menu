@@ -1,0 +1,7 @@
+{
+  "addr": "0x1400a2570",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nvoid FUN_1400a2570(void)\n\n{\n  undefined4 uVar1;\n  undefined4 uVar2;\n  undefined4 uVar3;\n  char *local_38 [2];\n  undefined8 local_28;\n  ulonglong local_20;\n  \n  local_38[0] = (char *)FUN_140769c58(0x20);\n  uVar2 = s_IDC_SCROLL_SPEED_SLIDER_140805eb8._12_4_;\n  uVar1 = s_IDC_SCROLL_SPEED_SLIDER_140805eb8._8_4_;\n  uVar3 = s_IDC_SCROLL_SPEED_SLIDER_140805eb8._4_4_;\n  local_28 = 0x17;\n  local_20 = 0x1f;\n  *(undefined4 *)local_38[0] = s_IDC_SCROLL_SPEED_SLIDER_140805eb8._0_4_;\n  *(undefined4 *)(local_38[0] + 4) = uVar3;\n  *(undefined4 *)(local_38[0] + 8) = uVar1;\n  *(undefined4 *)(local_38[0] + 0xc) = uVar2;\n  *(undefined4 *)(local_38[0] + 0x10) = s_IDC_SCROLL_SPEED_SLIDER_140805eb8._16_4_;\n  *(undefined2 *)(local_38[0] + 0x14) = s_IDC_SCROLL_SPEED_SLIDER_140805eb8._20_2_;\n  local_38[0][0x16] = s_IDC_SCROLL_SPEED_SLIDER_140805eb8[0x16];\n  local_38[0][0x17] = '\\0';\n  uVar3 = FUN_1401c8fc0(&DAT_140a78510,DAT_140a113c0,local_38);\n  if (0xf < local_20) {\n    if (0xfff < local_20 + 1) {\n      if ((char *)0x1f < local_38[0] + (-8 - *(longlong *)(local_38[0] + -8))) {\n                    /* WARNING: Subroutine does not return */\n        FUN_1407711cc(*(longlong *)(local_38[0] + -8),local_20 + 0x28);\n      }\n    }\n    thunk_FUN_1407864b8();\n  }\n  FUN_1401d5fd0(uVar3,0,DAT_1408007d8,10);\n  return;\n}\n\n",
+  "fetched_at": "2026-04-26T16:58:51Z"
+}

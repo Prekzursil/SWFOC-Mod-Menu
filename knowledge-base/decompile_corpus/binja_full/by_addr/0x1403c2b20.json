@@ -1,0 +1,7 @@
+{
+  "addr": "0x1403c2b20",
+  "tool": "binary_ninja",
+  "fact_id": "rva_galactic_camera_ctor",
+  "body": "1403c2b2f        *arg1 = &GalacticCameraClass::`vftable'\n1403c2b3b        __builtin_memset(&arg1[1], 0, 0x38)\n1403c2b53        arg1[8] = 0x3f800000\n1403c2b5b        arg1[9].b = 0\n1403c2b5e        *(arg1 + 0x4c) = 0\n1403c2b62        arg1[0xb] = 0\n1403c2b66        arg1[0xc].d = 0\n1403c2b69        sub_1403c2c00(arg1)\n1403c2b76        return arg1",
+  "fetched_at": "2026-04-26T16:43:31Z"
+}

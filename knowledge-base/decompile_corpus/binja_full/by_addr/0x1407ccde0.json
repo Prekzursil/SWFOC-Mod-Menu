@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407ccde0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1407ccdef        void* rcx = arg1[1]\n1407ccdf8        int32_t var_18 = 3\n1407cce00        void* rax = sub_1407bfd90(rcx, &var_18)\n1407cce08        if (*rax == 3)\n1407cce14        return zx.q(int.d(fconvert.t(*(rax + 8))))\n1407cce15        int32_t rcx_1 = arg1[8].d\n1407cce1d        void* rdi = *arg1\n1407cce2a        if (rcx_1 + 1 s> *(rdi + 0x4c))\n1407cce53        *(rdi + 0x10) = sub_1407bf6f0(arg1[4], *(rdi + 0x10), rdi + 0x4c, 0x10, 0x3ffff, \"constant table overflow\")\n1407cce57        rcx_1 = arg1[8].d\n1407cce6a        int32_t* rcx_5 = (sx.q(rcx_1) << 4) + *(rdi + 0x10)\n1407cce6e        *rcx_5 = var_18\n1407cce75        *(rcx_5 + 8) = arg2\n1407cce81        int32_t* rax_6 = sub_1407c02e0(arg1[4], arg1[1], &var_18)\n1407cce8b        *rax_6 = 3\n1407cce9a        *(rax_6 + 8) = _mm_cvtepi32_pd(zx.q(arg1[8].d))\n1407cce9f        int32_t result = arg1[8].d\n1407ccea5        arg1[8].d = result + 1\n1407ccead        return result",
+  "fetched_at": "2026-04-26T17:33:51Z"
+}

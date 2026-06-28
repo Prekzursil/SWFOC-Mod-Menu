@@ -1,0 +1,7 @@
+{
+  "addr": "0x140790a38",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined8\nFUN_140790a38(undefined4 param_1,undefined8 param_2,undefined8 param_3,undefined8 param_4,\n             undefined8 param_5,undefined8 param_6,undefined8 param_7)\n\n{\n  int iVar1;\n  undefined4 local_38 [2];\n  undefined8 local_30;\n  undefined8 local_28;\n  undefined8 local_20;\n  undefined8 local_18;\n  \n  local_20 = param_5;\n  local_18 = param_6;\n  local_38[0] = param_1;\n  local_30 = param_3;\n  local_28 = param_4;\n  _ctrlfp(param_7,0xffc0);\n  iVar1 = FUN_14078d050(local_38);\n  if (iVar1 == 0) {\n    _set_errno_from_matherr(param_1);\n  }\n  return local_18;\n}",
+  "fetched_at": "2026-04-26T18:52:39Z"
+}

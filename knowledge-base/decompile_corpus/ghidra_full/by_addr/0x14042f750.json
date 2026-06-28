@@ -1,0 +1,7 @@
+{
+  "addr": "0x14042f750",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "AbilityCountdownBehaviorClass * __thiscall\nAbilityCountdownBehaviorClass::vfunction4(AbilityCountdownBehaviorClass *this,int param_1)\n\n{\n  AbilityCountdownBehaviorClass *pAVar1;\n  \n  pAVar1 = (AbilityCountdownBehaviorClass *)0x0;\n  if (param_1 == 0x46) {\n    pAVar1 = this;\n  }\n  return pAVar1;\n}",
+  "fetched_at": "2026-04-26T17:50:15Z"
+}

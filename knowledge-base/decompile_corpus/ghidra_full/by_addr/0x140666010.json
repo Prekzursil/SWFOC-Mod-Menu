@@ -1,0 +1,7 @@
+{
+  "addr": "0x140666010",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nGalacticPlayerPerceptualEvaluatorClass * __thiscall\nGalacticPlayerPerceptualEvaluatorClass::scalar_deleting_destructor\n          (GalacticPlayerPerceptualEvaluatorClass *this,uint param_1)\n\n{\n                    /* inlined destructor:\n                       GalacticPlayerPerceptualEvaluatorClass::~GalacticPlayerPerceptualEvaluatorClass\n                        */\n  this->vftablePtr = &vftable;\n  this->vftablePtr = &vftable;\n  this->vftablePtr = &vftable;\n  vfunction13(this,(undefined **)0x0);\n  PlayerPerceptualEvaluatorClass::~PlayerPerceptualEvaluatorClass\n            ((PlayerPerceptualEvaluatorClass *)this);\n  if ((param_1 & 1) != 0) {\n    thunk_FUN_1407864b8(this,0xb8);\n  }\n  return this;\n}\n\n",
+  "fetched_at": "2026-04-26T17:09:35Z"
+}

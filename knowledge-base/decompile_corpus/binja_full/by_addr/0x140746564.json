@@ -1,0 +1,7 @@
+{
+  "addr": "0x140746564",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14074658c        void* rax = _errno()\n14074659a        int32_t rsi = *rax\n14074659c        *rax = 0\n1407465a7        uint128_t result = sub_140787400(arg1, arg2)\n1407465aa        *arg4 = *rax\n1407465ad        *rax = rsi\n1407465b2        if (arg3 != 0)\n1407465c4        uint128_t zmm0\n1407465c4        zmm0, result = pow(0x4024000000000000, _mm_cvtepi32_pd(zx.q(arg3)))\n1407465c9        result.q = result.q f* zmm0.q\n1407465ed        return result",
+  "fetched_at": "2026-04-26T17:29:28Z"
+}

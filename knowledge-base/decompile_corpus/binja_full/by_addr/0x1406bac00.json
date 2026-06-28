@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406bac00",
+  "tool": "binary_ninja",
+  "fact_id": "rva_ai_planning_system_ctor",
+  "body": "1406bac0a        struct ServicedAISystemClass::AIPlanningSystemClass::VTable** result = arg1\n1406bac0d        sub_14064c250(arg1, arg2)\n1406bac1b        *result = &AIPlanningSystemClass::`vftable'{for `ServicedAISystemClass'}\n1406bac1e        result[7] = 0\n1406bac22        result[8].b = 0\n1406bac29        result[9].d = 0\n1406bac2c        result[0xa] = 0\n1406bac30        result[0xb] = 0\n1406bac34        int64_t* rax = operator new(0x20)\n1406bac40        *rax = rax\n1406bac43        rax[1] = rax\n1406bac47        result[0xa] = rax\n1406bac4b        int64_t r8 = result[0xa]\n1406bac4f        __builtin_memset(&result[0xc], 0, 0x18)\n1406bac5a        result[0xf] = 7\n1406bac62        result[0x10] = 8\n1406bac6d        result[9].d = 0x40800000\n1406bac74        sub_140048250(&result[0xc], 0x10, r8)\n1406bac7c        result[4].b = 0\n1406bac8a        return result",
+  "fetched_at": "2026-04-26T16:44:12Z"
+}

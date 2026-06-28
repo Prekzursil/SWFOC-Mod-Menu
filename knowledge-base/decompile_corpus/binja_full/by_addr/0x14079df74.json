@@ -1,0 +1,7 @@
+{
+  "addr": "0x14079df74",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14079df93        int64_t var_38\n14079df93        __builtin_memset(&var_38, 0, 0x29)\n14079dfc2        void* var_58\n14079dfc2        _LocaleUpdate::_LocaleUpdate(&var_58, nullptr)\n14079dfcb        uint32_t r8 = 0xfde9\n14079dfd5        void* var_50\n14079dfd5        char var_40\n14079dfd5        if (*(var_50 + 0xc) != 0xfde9)\n14079dfea        int32_t rax_2 = __acrt_AreFileApisANSI()\n14079dff1        if (rax_2 != 0)\n14079e00f        if (var_40 != 0)\n14079e011        void* rax_4 = var_58\n14079e015        *(rax_4 + 0x3a8) &= 0xfffffffd\n14079e01c        r8 = 0\n14079dff6        if (var_40 != rax_2.b)\n14079dff8        void* rax_3 = var_58\n14079dffc        *(rax_3 + 0x3a8) &= 0xfffffffd\n14079e003        r8 = 1\n14079dfdb        if (var_40 != 0)\n14079dfdd        void* rax_1 = var_58\n14079dfe1        *(rax_1 + 0x3a8) &= 0xfffffffd\n14079e02d        PWSTR var_28\n14079e02d        int32_t rbx_1\n14079e02d        if (__acrt_mbs_to_wcs_cp<struct __crt_win32_buffer_internal_dynamic_resizing>(arg3, &var_38, r8) == 0)\n14079e041        int32_t var_68_1 = arg7\n14079e05b        rbx_1 = _wsopen_nolock(arg1, arg2, var_28, arg4, arg5, arg6)\n14079e02f        rbx_1 = -1\n14079e061        char var_10\n14079e061        if (var_10 != 0)\n14079e067        _free_base(var_28)\n14079e08a        return zx.q(rbx_1)",
+  "fetched_at": "2026-04-26T17:32:15Z"
+}

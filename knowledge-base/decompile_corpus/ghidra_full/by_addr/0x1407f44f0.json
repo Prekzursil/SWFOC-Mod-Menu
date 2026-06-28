@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407f44f0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */\n\nvoid RefCountClass::RefCountClass_Constructor_or_Destructor(void)\n\n{\n  FID_conflict__Tidy_deallocate(&DAT_140b37b58);\n  _DAT_140b37b30 = &vftable;\n  return;\n}",
+  "fetched_at": "2026-04-26T19:03:52Z"
+}

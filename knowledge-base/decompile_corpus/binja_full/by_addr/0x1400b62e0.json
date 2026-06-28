@@ -1,0 +1,7 @@
+{
+  "addr": "0x1400b62e0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1400b62eb        if (data_140a61f28 == 0)\n1400b62eb        return \n1400b62ff        sub_140333e30(&data_140b2ba20, sub_1400b9400)\n1400b6312        sub_140333ef0(&data_140b2ba20, sub_1400b9410)\n1400b6325        sub_140333db0(&data_140b2ba20, sub_1400b9420)\n1400b6338        sub_140333e70(&data_140b2ba20, &data_1400b9950)\n1400b634b        sub_140333e90(&data_140b2ba20, sub_1400b9960)\n1400b635e        sub_140333ed0(&data_140b2ba20, sub_1400b99b0)\n1400b6371        sub_140333df0(&data_140b2ba20, sub_140101030)\n1400b6384        sub_140333f10(&data_140b2ba20, sub_1400b99c0)\n1400b6397        sub_140333dd0(&data_140b2ba20, sub_1400b9b30)\n1400b63aa        sub_140333eb0(&data_140b2ba20, sub_1400b9c60)\n1400b63bd        sub_140333e10(&data_140b2ba20, sub_1400b9ca0)\n1400b63c2        sub_1400fc8d0()\n1400b63c7        sub_1400fc9a0()\n1400b63cc        sub_1400fca60()\n1400b63d1        sub_140102170()\n1400b63e6        sub_1401c1d20(&data_140a78510, data_140a11750, 1)\n1400b63eb        data_140a11750 = 0xffffffff\n1400b63f5        data_140a61f28 = 0\n1400b6400        return ",
+  "fetched_at": "2026-04-26T16:59:49Z"
+}

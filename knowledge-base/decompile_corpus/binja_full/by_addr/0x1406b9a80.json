@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406b9a80",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1406b9aa1        *arg1 = &SpacePerceptionSystemClass::`vftable'{for `AIPerceptionSystemClass'}\n1406b9aae        arg1[0x1a] = &SpacePerceptionSystemClass::`vftable'{for `SignalListenerClass'}\n1406b9ab5        int64_t rsi = arg1[0x1d]\n1406b9abc        int64_t* rbx = arg1[0x1c]\n1406b9ac6        if (rbx != rsi)\n1406b9ac8        int64_t* rcx = *rbx\n1406b9ace        if (rcx != 0)\n1406b9ad3        (*(*rcx + 8))(rcx)\n1406b9ad6        rbx = &rbx[1]\n1406b9add        do while (rbx != rsi)\n1406b9adf        rbx = arg1[0x1c]\n1406b9ae9        arg1[0x1d] = rbx\n1406b9af0        sub_1404e0220(arg1)\n1406b9afc        sub_1400466c0(&arg1[0x1c])\n1406b9b0f        arg1[0x1a] = &SignalListenerClass::`vftable'{for `MultiLinkedListMember'}\n1406b9b16        sub_14020a820(&arg1[0x1a])\n1406b9b1e        sub_1404dafd0(arg1)\n1406b9b27        if ((arg2 & 1) != 0)\n1406b9b31        j_sub_1407864b8(arg1)\n1406b9b51        return arg1",
+  "fetched_at": "2026-04-26T17:24:51Z"
+}

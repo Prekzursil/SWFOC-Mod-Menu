@@ -1,0 +1,7 @@
+{
+  "addr": "0x14013ef20",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14013ef2b        int32_t result\n14013ef2b        result.b = sub_1401766e0() == 0\n14013ef32        return result",
+  "fetched_at": "2026-04-26T17:17:21Z"
+}

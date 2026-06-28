@@ -1,0 +1,7 @@
+{
+  "addr": "0x1402095d0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall\nReferenceListClass<class_PacketClass>::~ReferenceListClass<class_PacketClass>\n          (ReferenceListClass<class_PacketClass> *this)\n\n{\n  longlong lVar1;\n  undefined1 local_res8 [32];\n  \n  this->vftablePtr = &vftable;\n  lVar1 = FUN_140209670();\n  while (lVar1 != 0) {\n    lVar1 = FUN_14020ac80(this,local_res8);\n    if ((lVar1 != 0) && (lVar1 != 0x50)) {\n      (**(code **)(*(longlong *)(lVar1 + 0x10) + 8))(lVar1 + 0x10);\n    }\n    lVar1 = FUN_140209670(this);\n  }\n  GenericMultiLinkedList::~GenericMultiLinkedList((GenericMultiLinkedList *)this);\n  return;\n}",
+  "fetched_at": "2026-04-26T17:57:47Z"
+}

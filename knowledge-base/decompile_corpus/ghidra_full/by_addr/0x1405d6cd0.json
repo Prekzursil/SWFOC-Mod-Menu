@@ -1,0 +1,7 @@
+{
+  "addr": "0x1405d6cd0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall TacticalSuperWeaponEventClass::vfunction5(TacticalSuperWeaponEventClass *this)\n\n{\n  int iVar1;\n  longlong *plVar2;\n  longlong lVar3;\n  \n  plVar2 = (longlong *)\n           FUN_1402aca60(*(undefined8 *)(DAT_140b15418 + 0x18),\n                         *(undefined4 *)&(this->TacticalSuperWeaponEventClass_data).offset_0x0);\n  if ((plVar2 != (longlong *)0x0) && ((this->EventClass_data).offset_0xc == (int)plVar2[0xb])) {\n    lVar3 = (**(code **)(*plVar2 + 0x10))(plVar2,0x2c);\n    if (lVar3 != 0) {\n      iVar1 = *(int *)((longlong)&(this->TacticalSuperWeaponEventClass_data).offset_0x0 + 4);\n      if (iVar1 == 1) {\n        FUN_14042a140(lVar3);\n        return;\n      }\n      if (iVar1 == 2) {\n        FUN_14042a200(lVar3);\n        return;\n      }\n    }\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T18:45:32Z"
+}

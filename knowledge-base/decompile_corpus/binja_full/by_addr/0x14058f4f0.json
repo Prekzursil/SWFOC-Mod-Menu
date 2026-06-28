@@ -1,0 +1,7 @@
+{
+  "addr": "0x14058f4f0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14058f4fb        struct BehaviorClass::DeployTroopersBehaviorClass::VTable** result = operator new(0x40)\n14058f506        if (result == 0)\n14058f5eb        return 0\n14058f514        sub_1404c32d0(result)\n14058f523        *result = &DeployTroopersBehaviorClass::`vftable'{for `BehaviorClass'}\n14058f52d        result[1] = &DeployTroopersBehaviorClass::`vftable'{for `RefCountClass'}\n14058f538        result[3] = &DeployTroopersBehaviorClass::`vftable'{for `SignalListenerClass'}\n14058f53c        sub_1404c30b0(result)\n14058f541        void* rcx_2 = result[5]\n14058f548        if (rcx_2 != 0)\n14058f558        int64_t rax = sub_140397d90(rcx_2, 0x26)\n14058f566        sub_1403a8e50(result[5], 0)\n14058f56e        if (rax == 0)\n14058f577        sub_1402149d0(\"Object is trying to deactivate DEPLOY_TROOPERS behavior but does not have DEPLOY_TROOPERS unit ability!\")\n14058f58e        return result\n14058f5a2        if (sub_14039b950(result[5], 0x26, 1) == 0)\n14058f5a4        void* rax_3 = result[5]\n14058f5ad        void* rbx_2 = rax_3 + 0x38\n14058f5b1        if (rax_3 == 0)\n14058f5b1        rbx_2 = nullptr\n14058f5ca        sub_140220eb0(sub_140058570(), rbx_2, &result[3], 0x28)\n14058f5e1        return result",
+  "fetched_at": "2026-04-26T17:36:18Z"
+}

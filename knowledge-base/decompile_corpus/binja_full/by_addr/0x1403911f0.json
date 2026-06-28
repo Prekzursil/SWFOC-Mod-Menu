@@ -1,0 +1,7 @@
+{
+  "addr": "0x1403911f0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1403911f6        struct BaseDataPackClass::VehicleThiefDataPackClass::VTable** rax = *(arg1 + 0x180)\n140391203        if (rax == 0)\n140391208        rax = operator new(zx.q((&rax[3]).d))\n140391210        if (rax != 0)\n140391215        struct BaseDataPackClass::VehicleThiefDataPackClass::VTable** rax_1 = sub_140562010(rax)\n14039121a        *(arg1 + 0x180) = rax_1\n140391226        return rax_1\n140391227        *(arg1 + 0x180) = rax\n140391233        return rax",
+  "fetched_at": "2026-04-26T17:23:37Z"
+}

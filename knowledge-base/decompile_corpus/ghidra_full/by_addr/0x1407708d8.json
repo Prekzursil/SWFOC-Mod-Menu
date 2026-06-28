@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407708d8",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* Library Function - Single Match\n    void __cdecl _CallMemberFunction2(void * __ptr64 const,void * __ptr64 const,void * __ptr64\n   const,int)\n   \n   Library: Visual Studio 2019 Release */\n\nvoid __cdecl _CallMemberFunction2(void *param_1,void *param_2,void *param_3,int param_4)\n\n{\n                    /* WARNING: Could not recover jumptable at 0x0001407708e4. Too many branches */\n                    /* WARNING: Treating indirect jump as call */\n  (*param_2)(param_1,param_3,param_4);\n  return;\n}",
+  "fetched_at": "2026-04-26T18:11:45Z"
+}

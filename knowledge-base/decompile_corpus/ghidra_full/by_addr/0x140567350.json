@@ -1,0 +1,7 @@
+{
+  "addr": "0x140567350",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "ulonglong FUN_140567350(longlong *param_1,longlong param_2,undefined8 param_3)\n\n{\n  ulonglong in_RAX;\n  longlong *plVar1;\n  ulonglong uVar2;\n  \n  if ((param_1 != (longlong *)0x0) && (param_2 != 0)) {\n    plVar1 = (longlong *)(**(code **)(*param_1 + 0x10))(param_1,9);\n    in_RAX = 0;\n    if (plVar1 != (longlong *)0x0) {\n                    /* WARNING: Could not recover jumptable at 0x000140567390. Too many branches */\n                    /* WARNING: Treating indirect jump as call */\n      uVar2 = (**(code **)(*plVar1 + 0x160))(plVar1,param_2,param_3);\n      return uVar2;\n    }\n  }\n  return in_RAX & 0xffffffffffffff00;\n}",
+  "fetched_at": "2026-04-26T18:39:38Z"
+}

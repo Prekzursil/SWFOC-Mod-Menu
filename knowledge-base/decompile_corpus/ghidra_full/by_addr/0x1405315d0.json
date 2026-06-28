@@ -1,0 +1,7 @@
+{
+  "addr": "0x1405315d0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "SpawnIndigenousUnitsBehaviorClass * __thiscall\nSpawnIndigenousUnitsBehaviorClass::vfunction4(SpawnIndigenousUnitsBehaviorClass *this,int param_1)\n\n{\n  SpawnIndigenousUnitsBehaviorClass *pSVar1;\n  \n  pSVar1 = (SpawnIndigenousUnitsBehaviorClass *)0x0;\n  if (param_1 == 0x1b) {\n    pSVar1 = this;\n  }\n  return pSVar1;\n}",
+  "fetched_at": "2026-04-26T18:29:08Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x14076d9c8",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14076d9d3        uint32_t result = __vcrt_FlsAlloc(__vcrt_freefls)\n14076d9d8        data_140a44bb0 = result\n14076d9e1        if (result == 0xffffffff)\n14076da08        result.b = 0\n14076d9f3        if (__vcrt_FlsSetValue(result, &data_140b3bf50) == 0)\n14076da03        __vcrt_uninitialize_ptd()\n14076da08        result.b = 0\n14076d9f5        data_140b3bfc8 = 0xfffffffe\n14076d9ff        result.b = 1\n14076da0e        return result",
+  "fetched_at": "2026-04-26T17:30:29Z"
+}

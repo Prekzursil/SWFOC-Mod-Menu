@@ -1,0 +1,7 @@
+{
+  "addr": "0x140635e80",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nvoid __thiscall\nGarrisonVehicleBehaviorClass::vfunction27\n          (GarrisonVehicleBehaviorClass *this,undefined8 param_1,undefined8 *param_2)\n\n{\n  undefined **ppuVar1;\n  \n  ppuVar1 = this->offset_0x18;\n  if (ppuVar1 == (undefined **)0x0) {\n    *param_2 = 0;\n    *(undefined4 *)(param_2 + 1) = 0;\n    return;\n  }\n  *(undefined4 *)param_2 = *(undefined4 *)(ppuVar1 + 0xf);\n  *(undefined4 *)((longlong)param_2 + 4) = *(undefined4 *)((longlong)ppuVar1 + 0x7c);\n  *(undefined4 *)(param_2 + 1) = *(undefined4 *)(ppuVar1 + 0x10);\n  return;\n}\n\n",
+  "fetched_at": "2026-04-26T17:00:06Z"
+}

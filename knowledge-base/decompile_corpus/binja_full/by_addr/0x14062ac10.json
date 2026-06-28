@@ -1,0 +1,7 @@
+{
+  "addr": "0x14062ac10",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14062ac1b        struct BehaviorClass::DebrisBehaviorClass::VTable** result = operator new(0x40)\n14062ac26        if (result == 0)\n14062ac5e        return result\n14062ac2b        sub_1404c32d0(result)\n14062ac37        *result = &DebrisBehaviorClass::`vftable'{for `BehaviorClass'}\n14062ac41        result[1] = &DebrisBehaviorClass::`vftable'{for `RefCountClass'}\n14062ac4c        result[3] = &DebrisBehaviorClass::`vftable'{for `SignalListenerClass'}\n14062ac58        return result",
+  "fetched_at": "2026-04-26T17:24:01Z"
+}

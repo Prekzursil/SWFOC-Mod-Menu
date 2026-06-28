@@ -1,0 +1,7 @@
+{
+  "addr": "0x14078f324",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* Library Function - Single Match\n    _free_base\n   \n   Libraries: Visual Studio 2015 Release, Visual Studio 2017 Release, Visual Studio 2019 Release */\n\nvoid _free_base(LPVOID param_1)\n\n{\n  BOOL BVar1;\n  DWORD DVar2;\n  ulong uVar3;\n  ulong *puVar4;\n  \n  if ((param_1 != (LPVOID)0x0) && (BVar1 = HeapFree(DAT_140b3cc00,0,param_1), BVar1 == 0)) {\n    puVar4 = __doserrno();\n    DVar2 = GetLastError();\n    uVar3 = __acrt_errno_from_os_error(DVar2);\n    *puVar4 = uVar3;\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T18:52:30Z"
+}

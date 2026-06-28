@@ -1,0 +1,7 @@
+{
+  "addr": "0x14071ed40",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14071eda0        char rax\n14071eda0        int512_t zmm2\n14071eda0        int32_t zmm6\n14071eda0        rax, zmm2, zmm6 = sub_1403a92f0(*(arg1 + 0xa0), *(arg1 + 0xd8), *(arg1 + 0xdc), 0, 0x3dcccccd, *(arg1 + 0xe0), 0, 0, 0, 0)\n14071eda7        if (rax == 0)\n14071ede2        char rax_1\n14071ede2        rax_1, zmm2 = sub_1403a92f0(*(arg1 + 0xa0), 5, 0xffff, 0, zmm6, *(arg1 + 0xe0), 0, 0, 0, 0)\n14071ede9        if (rax_1 != 1)\n14071eea3        *(arg1 + 0x120) = 1\n14071eeaa        return 0\n14071edef        *(arg1 + 0xd8) = 5\n14071edf9        *(arg1 + 0xdc) = 0xffff\n14071ee03        int64_t* rdx_1 = *(arg1 + 0x110)\n14071ee0d        if (rdx_1 != 0)\n14071ee25        sub_1402d5320(&data_140b27e60, rdx_1, *(arg1 + 0xa0), zx.o(0), zmm2, 0)\n14071ee31        int64_t var_68\n14071ee31        sub_140549d70(&var_68, 0)\n14071ee42        var_68 = *(arg1 + 0xa0)\n14071ee4d        int32_t var_50_1 = *(arg1 + 0x128)\n14071ee58        int64_t var_48_1 = *(arg1 + 0xa8)\n14071ee64        int64_t var_30_1 = *(arg1 + 0xd0)\n14071ee6c        sub_14054ade0(&var_68)\n14071ee76        sub_14071f050(arg1, 1)\n14071ee7b        *(arg1 + 0x124) += 1\n14071ee83        *(arg1 + 0x12c) = arg2\n14071eea2        return 1",
+  "fetched_at": "2026-04-26T17:28:14Z"
+}

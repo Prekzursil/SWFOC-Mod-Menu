@@ -1,0 +1,7 @@
+{
+  "addr": "0x14028a950",
+  "tool": "binary_ninja",
+  "fact_id": "rva_game_mode_manager_get_mode_by_type",
+  "body": "14028a964        int32_t i = 0\n14028a96e        if (*(arg1 + 0x50) s> 0)\n14028a970        int64_t* rdi_1 = nullptr\n14028a976        int64_t* rcx = *(rdi_1 + *(arg1 + 0x48))\n14028a985        if ((*(*rcx + 0xe0))(rcx) == arg2)\n14028a9b0        return *(*(arg1 + 0x48) + (sx.q(i) << 3))\n14028a987        i += 1\n14028a989        rdi_1 = &rdi_1[1]\n14028a990        do while (i s< *(arg1 + 0x50))\n14028a992        return 0",
+  "fetched_at": "2026-04-26T16:43:12Z"
+}

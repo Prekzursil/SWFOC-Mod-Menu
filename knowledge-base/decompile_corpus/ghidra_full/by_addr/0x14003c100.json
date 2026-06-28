@@ -1,0 +1,7 @@
+{
+  "addr": "0x14003c100",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nvoid FUN_14003c100(undefined8 param_1,longlong param_2,longlong param_3,char param_4)\n\n{\n  longlong lVar1;\n  undefined4 uVar2;\n  EscortEventClass *this;\n  EscortEventClass *pEVar3;\n  longlong lVar4;\n  undefined8 uVar5;\n  \n  FUN_140036140();\n  this = (EscortEventClass *)FUN_140769c58(0x50);\n  pEVar3 = (EscortEventClass *)0x0;\n  uVar2 = 0;\n  if (this != (EscortEventClass *)0x0) {\n    pEVar3 = EscortEventClass::EscortEventClass(this);\n  }\n  if (param_3 != 0) {\n    uVar2 = *(undefined4 *)(*(longlong *)(param_3 + 0x20) + 0x20);\n  }\n  FUN_1403b01e0(pEVar3,*(undefined4 *)(param_2 + 0x50),uVar2);\n  OutgoingEventQueueClass::vfunction2((OutgoingEventQueueClass *)&DAT_140b2ed18,(longlong *)pEVar3);\n  if (((param_4 == '\\x01') && (lVar4 = FUN_140038290(param_1,1), lVar4 != 0)) &&\n     (lVar1 = *(longlong *)(*(longlong *)(lVar4 + 0x298) + 0xfd0), lVar1 != 0)) {\n    FUN_1402d5320(&DAT_140b27e60,lVar1,lVar4,0,0);\n  }\n  DAT_140b29fc0 = 0;\n  uVar2 = FUN_140294a70(&DAT_140a16fd0);\n  uVar5 = FUN_1402ad080(*(undefined8 *)(DAT_140b15418 + 0x18),uVar2);\n  FUN_14032ee40(DAT_140b15418 + 0xa0,uVar5,param_2);\n  return;\n}\n\n",
+  "fetched_at": "2026-04-26T16:53:16Z"
+}

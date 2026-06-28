@@ -1,0 +1,7 @@
+{
+  "addr": "0x1404dac90",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1404daca9        *arg1 = *arg2\n1404dacaf        arg1[1] = 0\n1404dacb6        arg1[2] = 0\n1404dacbd        int64_t* rax_1 = operator new(0x20)\n1404dacc9        *rax_1 = rax_1\n1404daccc        rax_1[1] = rax_1\n1404dacd0        arg1[1] = rax_1\n1404dacd4        int64_t r8 = arg1[1]\n1404dacd8        __builtin_memset(&arg1[3], 0, 0x18)\n1404dace4        sub_140048250(&arg1[3], 0x10, r8)\n1404dace9        int64_t rcx_1 = arg1[1]\n1404dacfb        arg1[1] = arg2[1]\n1404dacff        int64_t rax_3 = arg2[2]\n1404dad03        arg2[1] = rcx_1\n1404dad07        int64_t rcx_2 = arg1[2]\n1404dad0b        arg1[2] = rax_3\n1404dad0f        int64_t rax_4 = arg2[3]\n1404dad13        arg2[2] = rcx_2\n1404dad17        int64_t rcx_3 = arg1[3]\n1404dad1b        arg1[3] = rax_4\n1404dad1f        int64_t rax_5 = arg2[4]\n1404dad23        arg2[3] = rcx_3\n1404dad27        int64_t rcx_4 = arg1[4]\n1404dad2b        arg1[4] = rax_5\n1404dad2f        int64_t rax_6 = arg2[5]\n1404dad33        arg2[4] = rcx_4\n1404dad37        int64_t rcx_5 = arg1[5]\n1404dad3b        arg1[5] = rax_6\n1404dad3f        int64_t rax_7 = arg2[6]\n1404dad43        arg2[6] = 7\n1404dad4b        arg2[5] = rcx_5\n1404dad4f        arg1[6] = rax_7\n1404dad53        int64_t rax_8 = arg2[7]\n1404dad57        arg2[7] = 8\n1404dad5f        arg1[7] = rax_8\n1404dad70        return arg1",
+  "fetched_at": "2026-04-26T17:31:11Z"
+}

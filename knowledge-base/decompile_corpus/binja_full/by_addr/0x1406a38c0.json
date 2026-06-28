@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406a38c0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1406a38d3        int128_t zmm6 = zx.o(0)\n1406a38dc        if (not(0f f< arg3))\n1406a38de        int64_t* rcx = *arg2\n1406a38e4        if (rcx != 0)\n1406a38e9        (*(*rcx + 8))(rcx)\n1406a38ec        int64_t rax\n1406a38ec        rax.b = 0\n1406a38fe        return rax\n1406a38ff        int64_t rdx = *arg1\n1406a390c        int64_t** rsi = arg1[1]\n1406a3916        int32_t rax_4 = ((rsi - rdx) s>> 4).d\n1406a391c        if (rax_4 != 0)\n1406a3924        zmm6 = *(rdx + zx.q(rax_4 - 1) * 0x10 + 8)\n1406a392a        int64_t* rbx = *arg2\n1406a392d        zmm6.d = zmm6.d f+ arg3\n1406a3931        int64_t* var_28 = rbx\n1406a3939        if (rbx != 0)\n1406a3941        (**rbx)(rbx)\n1406a3943        rsi = arg1[1]\n1406a3947        int32_t var_20 = zmm6.d\n1406a3951        if (rsi == arg1[2])\n1406a397a        sub_1406a34f0(arg1, rsi, &var_28)\n1406a3953        *rsi = rbx\n1406a3959        if (rbx != 0)\n1406a3961        (**rbx)(rbx)\n1406a3963        arg1[1] += 0x10\n1406a3968        rsi[1].d = zmm6.d\n1406a3987        if (rbx != 0)\n1406a398f        (*(*rbx + 8))(rbx)\n1406a3992        int64_t* rcx_7 = *arg2\n1406a399d        if (rcx_7 != 0)\n1406a39a2        (*(*rcx_7 + 8))(rcx_7)\n1406a39aa        rax_4.b = 1\n1406a39b7        return rax_4",
+  "fetched_at": "2026-04-26T17:21:32Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x140546970",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined * __thiscall LuaHideSubObject::vfunction5(void)\n\n{\n  return &DAT_140a438e8;\n}",
+  "fetched_at": "2026-04-26T18:37:07Z"
+}

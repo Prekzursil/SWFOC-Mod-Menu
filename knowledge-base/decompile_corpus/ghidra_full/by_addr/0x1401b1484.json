@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401b1484",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall alD3dEffect::vfunction1(alD3dEffect *this,uint param_1)\n\n{\n  scalar_deleting_destructor((alD3dEffect *)&this[-1].alD3dEffect_data.offset_0x140,param_1);\n  return;\n}",
+  "fetched_at": "2026-04-26T17:43:10Z"
+}

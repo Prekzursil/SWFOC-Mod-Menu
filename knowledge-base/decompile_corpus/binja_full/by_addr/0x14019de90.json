@@ -1,0 +1,7 @@
+{
+  "addr": "0x14019de90",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14019de92        arg1[5] = 0xf\n14019dea1        arg1[1].d = 0\n14019dea4        *arg1 = &alRawAnim::`vftable'{for `alAnim'}\n14019deae        arg1[7] = &DynamicVectorClass<class alRawAnim::alRawJointAnim>::`vftable'\n14019deb5        arg1[2] = 0\n14019deb9        arg1[4] = 0\n14019debd        arg1[8] = 0\n14019dec1        arg1[9] = 0\n14019dec5        return arg1",
+  "fetched_at": "2026-04-26T17:24:49Z"
+}

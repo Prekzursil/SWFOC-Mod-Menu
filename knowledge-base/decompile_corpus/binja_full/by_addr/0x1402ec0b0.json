@@ -1,0 +1,7 @@
+{
+  "addr": "0x1402ec0b0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1402ec0ce        int32_t rbp = arg2\n1402ec0d0        float* r14 = arg9\n1402ec0de        int32_t var_68 = 0xff\n1402ec0e6        void* rbx = arg1\n1402ec12a        int32_t var_48[0x4]\n1402ec12a        int32_t* result = sub_1401f93e0(&var_48, zx.d((int.d(*r14 * 255f)).b) u>> 1, zx.d((int.d(r14[1] * 255f)).b) u>> 1, zx.d((int.d(r14[2] * 255f)).b) u>> 1, 0xff)\n1402ec12f        int32_t rsi = 0\n1402ec134        if (arg4 s> 0)\n1402ec157        int128_t zmm6 = 0x3fc00000\n1402ec1f7        int32_t* result_1\n1402ec185        var_68.b = 0\n1402ec18a        result, zmm6 = sub_1402ebf50(rbx, 0x1ea, arg8, rbp, 0, zmm6.d, arg6, 0)\n1402ec18f        result_1 = result\n1402ec195        if (result != 0)\n1402ec19d        float* rdx_3 = r14\n1402ec1a3        if (rsi s>= arg3)\n1402ec1a5        rdx_3 = &var_48\n1402ec1aa        (*(*result + 0x10))(result_1, rdx_3)\n1402ec1da        rbp = int.d(fconvert.t(*(*(*result_1 + 0x2a8))(result_1, &arg9))) + sub_14034c770(result_1, 1)\n1402ec1e5        result = sub_140353ad0(result_1, sx.q(arg7), 2)\n1402ec1ea        rbx = arg1\n1402ec1f2        rsi += 1\n1402ec1f7        do while (rsi s< arg4)\n1402ec217        if (result_1 != 0 && arg5 != 0)\n1402ec223        return sub_140353ad0(result_1, 1, 0)\n1402ec24e        return result",
+  "fetched_at": "2026-04-26T17:22:54Z"
+}

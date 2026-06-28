@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401ae560",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall alD3dEffect::vfunction12(alD3dEffect *this)\n\n{\n  uint uVar1;\n  \n  if (this->offset_0x68 != 0) {\n    if ((this->alD3dEffect_data).offset_0x8 != -1) {\n      (**(code **)(*(longlong *)this->offset_0x60 + 0x200))();\n      (**(code **)(*(longlong *)this->offset_0x60 + 0x210))();\n    }\n    (**(code **)(*(longlong *)this->offset_0x60 + 0x218))();\n    if (*(int *)&this->offset_0x80 != 0) {\n      uVar1 = FUN_140177240();\n      if (uVar1 < 0x101) {\n        FUN_140177820(0);\n        FUN_140177ff0(0);\n      }\n    }\n    FUN_140196a40((this->alD3dEffect_data).offset_0x18);\n    FUN_140177790();\n    return;\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T17:42:18Z"
+}

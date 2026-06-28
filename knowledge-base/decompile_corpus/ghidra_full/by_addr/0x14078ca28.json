@@ -1,0 +1,7 @@
+{
+  "addr": "0x14078ca28",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* Library Function - Single Match\n    __dcrt_get_or_create_wide_environment_nolock\n   \n   Libraries: Visual Studio 2017 Release, Visual Studio 2019 Release */\n\nlonglong __dcrt_get_or_create_wide_environment_nolock(void)\n\n{\n  int iVar1;\n  longlong lVar2;\n  \n  lVar2 = DAT_140b3c440;\n  if ((DAT_140b3c440 == 0) &&\n     ((DAT_140b3c438 == 0 ||\n      ((iVar1 = common_initialize_environment_nolock<wchar_t>(), lVar2 = DAT_140b3c440, iVar1 != 0\n       && (iVar1 = initialize_environment_by_cloning_nolock<wchar_t>(), lVar2 = DAT_140b3c440,\n          iVar1 != 0)))))) {\n    lVar2 = 0;\n  }\n  return lVar2;\n}",
+  "fetched_at": "2026-04-26T18:52:05Z"
+}

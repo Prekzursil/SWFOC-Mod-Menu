@@ -1,0 +1,7 @@
+{
+  "addr": "0x14013d310",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "bool FUN_14013d310(longlong param_1)\n\n{\n  int iVar1;\n  \n  if (param_1 != 0) {\n    iVar1 = FUN_140198380(param_1,0);\n    return iVar1 == 0;\n  }\n  return false;\n}",
+  "fetched_at": "2026-04-26T17:15:36Z"
+}

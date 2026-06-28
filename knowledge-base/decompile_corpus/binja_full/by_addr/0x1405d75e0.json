@@ -1,0 +1,7 @@
+{
+  "addr": "0x1405d75e0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1405d75eb        void* rcx = arg2[0x54]\n1405d75fc        if (rcx == 0)\n1405d75fc        return \n1405d7607        int64_t* rax = sub_1402648b0(rcx)\n1405d760c        int64_t* rdi_1 = rax\n1405d7612        if (rax == 0)\n1405d7612        return \n1405d7620        rax = sub_14012dca0(rax)\n1405d7625        int32_t rbp_1 = rax.d\n1405d762a        if (rax.d == 0xffffffff)\n1405d762a        return \n1405d7648        float zmm1_1 = 1f f- sub_140396df0(arg2).d\n1405d764c        int32_t i = 0\n1405d7655        uint128_t zmm0_1\n1405d7655        zmm0_1.d = _mm_cvtepi32_ps(zx.o(rbp_1 + 1)).d f* zmm1_1\n1405d7659        zmm0_1.d = zmm0_1.d f+ 0.5f\n1405d7661        rax = zx.q(int.d(zmm0_1.d))\n1405d7667        if (rax.d s< 0)\n1405d7669        rax = nullptr\n1405d766f        if (rax.d s> rbp_1)\n1405d766f        rax = zx.q(rbp_1)\n1405d7678        if (rax.d == arg2[0x60].d)\n1405d7678        return \n1405d767a        arg2[0x60].d = rax.d\n1405d7680        *(rdi_1 + 0xc4) = rax.d\n1405d7689        if (arg3 == 0 || sub_14012d6d0(rdi_1).d s<= 0)\n1405d7695        return \n1405d76a5        void* rax_1 = sub_14012d6f0(rdi_1, i)\n1405d76ae        if ((*(rax_1 + 0x31) & 0x20) != 0)\n1405d76b0        *(rax_1 + 0x30) |= 1\n1405d76b7        i += 1\n1405d76b9        rax = sub_14012d6d0(rdi_1)\n1405d76c0        do while (i s< rax.d)\n1405d76dc        return ",
+  "fetched_at": "2026-04-26T17:38:16Z"
+}

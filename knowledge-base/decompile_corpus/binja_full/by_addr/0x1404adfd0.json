@@ -1,0 +1,7 @@
+{
+  "addr": "0x1404adfd0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1404adfd6        struct ScheduledEventClass::ResumeGameEventClass::VTable** result = arg1\n1404adfd9        sub_140512c50(arg1)\n1404adfe5        result[4].d = 0x33\n1404adfec        *result = &ResumeGameEventClass::`vftable'{for `ScheduledEventClass'}\n1404adff7        return result",
+  "fetched_at": "2026-04-26T17:29:35Z"
+}

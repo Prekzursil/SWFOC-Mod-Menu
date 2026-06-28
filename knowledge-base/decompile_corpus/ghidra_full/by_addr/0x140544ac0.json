@@ -1,0 +1,7 @@
+{
+  "addr": "0x140544ac0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined8 __thiscall LuaStartCinematicMode::vfunction11(void)\n\n{\n  FUN_1402cca80(&DAT_140b27a10,0);\n  return 0;\n}",
+  "fetched_at": "2026-04-26T18:35:26Z"
+}

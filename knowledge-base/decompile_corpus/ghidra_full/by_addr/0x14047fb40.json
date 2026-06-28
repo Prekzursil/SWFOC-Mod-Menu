@@ -1,0 +1,7 @@
+{
+  "addr": "0x14047fb40",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "TheDebugWindowManagerClass * __thiscall\nTheDebugWindowManagerClass::TheDebugWindowManagerClass(TheDebugWindowManagerClass *this)\n\n{\n  this->vftablePtr = &vftable;\n  this->Singleton<class_TheDebugWindowManagerClass> =\n       (Singleton<class_TheDebugWindowManagerClass>)0x0;\n  (this->TheDebugWindowManagerClass_data).offset_0x0 = 0;\n  (this->TheDebugWindowManagerClass_data).offset_0x8 = 0;\n  (this->TheDebugWindowManagerClass_data).offset_0x28 = 0;\n  return this;\n}",
+  "fetched_at": "2026-04-26T17:59:57Z"
+}

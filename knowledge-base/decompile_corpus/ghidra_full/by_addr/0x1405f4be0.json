@@ -1,0 +1,7 @@
+{
+  "addr": "0x1405f4be0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "TacticalAIManagerClass * __thiscall\nTacticalAIManagerClass::TacticalAIManagerClass(TacticalAIManagerClass *this)\n\n{\n  AIDiagnosticsClass::AIDiagnosticsClass((AIDiagnosticsClass *)this);\n  (this->TacticalAIManagerClass_data).offset_0x8 = 0xffffffffffffffff;\n  this->vftablePtr = &vftable;\n  (this->TacticalAIManagerClass_data).offset_0x0 = 0;\n  (this->TacticalAIManagerClass_data).offset_0x10 = 0;\n  (this->TacticalAIManagerClass_data).offset_0x18 = 0;\n  (this->TacticalAIManagerClass_data).offset_0x20 = 0;\n  (this->TacticalAIManagerClass_data).offset_0x28 = 0;\n  (this->TacticalAIManagerClass_data).offset_0x30 = 0;\n  (this->TacticalAIManagerClass_data).offset_0x38 = 0;\n  (this->TacticalAIManagerClass_data).offset_0x40 = 0;\n  return this;\n}",
+  "fetched_at": "2026-04-26T17:22:56Z"
+}

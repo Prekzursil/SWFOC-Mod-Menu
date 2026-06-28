@@ -1,0 +1,7 @@
+{
+  "addr": "0x14078f2c4",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* Library Function - Single Match\n    __acrt_initialize_ptd\n   \n   Libraries: Visual Studio 2017 Release, Visual Studio 2019 Release */\n\nundefined4 __acrt_initialize_ptd(void)\n\n{\n  longlong lVar1;\n  \n  DAT_140a44db0 = __acrt_FlsAlloc(FUN_14078eefc);\n  if (DAT_140a44db0 != -1) {\n    lVar1 = __acrt_getptd_noexit();\n    if (lVar1 != 0) {\n      return 1;\n    }\n    __acrt_uninitialize_ptd(0);\n  }\n  return 0;\n}",
+  "fetched_at": "2026-04-26T18:52:29Z"
+}

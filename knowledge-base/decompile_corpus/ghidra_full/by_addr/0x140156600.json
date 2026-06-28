@@ -1,0 +1,7 @@
+{
+  "addr": "0x140156600",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined4 FUN_140156600(longlong param_1)\n\n{\n  int iVar1;\n  \n  if (-1 < *(int *)(param_1 + 0xec)) {\n    iVar1 = FUN_14022fe40(param_1 + 0x20);\n    if (0 < iVar1) {\n      return *(undefined4 *)\n              (*(longlong *)(param_1 + 0x1b0) + (longlong)*(int *)(param_1 + 0xec) * 4);\n    }\n  }\n  return 0;\n}",
+  "fetched_at": "2026-04-26T17:22:50Z"
+}

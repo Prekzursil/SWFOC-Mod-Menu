@@ -1,0 +1,7 @@
+{
+  "addr": "0x1404c1fa0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "byte __thiscall\nPerformanceMetricsEventClass::vfunction6(PerformanceMetricsEventClass *this,longlong param_1)\n\n{\n  byte bVar1;\n  byte bVar2;\n  byte bVar3;\n  \n  if (param_1 != 0) {\n    bVar1 = EventClass::vfunction6((EventClass *)this,param_1);\n    bVar2 = FUN_1402046f0(param_1,*(undefined4 *)&this[1].vftablePtr,0xc);\n    bVar3 = FUN_1402046f0(param_1,*(undefined4 *)((longlong)&this[1].vftablePtr + 4),7);\n    return bVar3 & bVar1 & bVar2;\n  }\n  return 0;\n}",
+  "fetched_at": "2026-04-26T18:09:33Z"
+}

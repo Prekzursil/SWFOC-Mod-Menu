@@ -1,0 +1,7 @@
+{
+  "addr": "0x140480480",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14048049c        if (arg2[2] == 0 || *(arg1 + 0x30) == 0)\n14048055a        return 0\n1404804af        if (arg2[3] u>= 0x10)\n1404804b1        arg2 = *arg2\n1404804b9        char var_108[0x100]\n1404804b9        char* rcx = &var_108 - arg2\n1404804cc        char i\n1404804c0        i = *arg2\n1404804c3        *(rcx + arg2) = i\n1404804c6        arg2 += 1\n1404804cc        do while (i != 0)\n1404804d3        _strupr(&var_108)\n1404804dd        int64_t rax_1 = -1\n1404804e4        rax_1 += 1\n1404804eb        do while (var_108[rax_1] != 0)\n1404804f9        int32_t rax_2 = sub_140215a30(&var_108, rax_1.d, 0)\n1404804fe        void** rcx_3 = *(arg1 + 0x28)\n140480504        void** r8 = rcx_3\n140480507        void** rax_3 = rcx_3[1]\n14048050f        while (*(rax_3 + 0x19) == 0)\n140480514        if (rax_3[4].d u>= rax_2)\n14048051c        rcx_3 = rax_3\n14048051f        rax_3 = *rax_3\n140480516        rax_3 = rax_3[2]\n140480536        if (*(rcx_3 + 0x19) == 0 && rax_2 u>= rcx_3[4].d && rcx_3 != r8)\n140480538        return rcx_3[5]\n14048054f        return 0",
+  "fetched_at": "2026-04-26T17:28:26Z"
+}

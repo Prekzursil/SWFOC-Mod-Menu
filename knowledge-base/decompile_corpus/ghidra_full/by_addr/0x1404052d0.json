@@ -1,0 +1,7 @@
+{
+  "addr": "0x1404052d0",
+  "tool": "ghidra",
+  "fact_id": "rva_get_hardpoint",
+  "body": "\nundefined8 FUN_1404052d0(longlong param_1,int param_2)\n\n{\n  longlong lVar1;\n  \n  if ((((*(longlong *)(param_1 + 0x28) != 0) &&\n       (lVar1 = *(longlong *)(*(longlong *)(param_1 + 0x28) + 0x110), lVar1 != 0)) && (-1 < param_2)\n      ) && (param_2 < *(int *)(lVar1 + 0x18))) {\n    return *(undefined8 *)(*(longlong *)(lVar1 + 0x10) + (longlong)param_2 * 8);\n  }\n  return 0;\n}\n\n",
+  "fetched_at": "2026-04-26T16:43:36Z"
+}

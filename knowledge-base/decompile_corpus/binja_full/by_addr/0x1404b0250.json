@@ -1,0 +1,7 @@
+{
+  "addr": "0x1404b0250",
+  "tool": "binary_ninja",
+  "fact_id": "rva_ai_enable_as_actor",
+  "body": "1404b0253        if (arg2 == 0)\n1404b0253        return \n1404b026c        int64_t* rbx_1 = *(arg1 + 0x38)\n1404b027c        if (rbx_1 == *(arg1 + 0x40))\n1404b02ab        label_1404b02ab:\n1404b02ab        void* rax = sub_1405f5160((*(*arg2 + 0xe0))(arg2), arg1)\n1404b02b0        void* arg_10 = rax\n1404b02b8        if (rax != 0)\n1404b02ba        *(rax + 0x68) = 1\n1404b02be        int32_t* rdx_1 = *(arg1 + 0x40)\n1404b02c6        if (rdx_1 == *(arg1 + 0x48))\n1404b02e9        sub_14001ded0(arg1 + 0x38, rdx_1, &arg_10)\n1404b02c8        *rdx_1 = rax\n1404b02cb        *(arg1 + 0x40) += 8\n1404b0283        int64_t rcx_1\n1404b0283        while (true)\n1404b0283        int64_t rax_1 = sub_1405f55e0(*rbx_1)\n1404b0288        rcx_1 = *(arg1 + 0x40)\n1404b028f        if (rax_1 == arg2)\n1404b028f        break\n1404b0291        rbx_1 = &rbx_1[1]\n1404b0298        if (rbx_1 == rcx_1)\n1404b0298        goto label_1404b02ab\n1404b02d5        if (rbx_1 == rcx_1)\n1404b02d5        goto label_1404b02ab\n1404b02da        *(*rbx_1 + 0x68) = 1\n1404b0303        return ",
+  "fetched_at": "2026-04-26T16:43:44Z"
+}

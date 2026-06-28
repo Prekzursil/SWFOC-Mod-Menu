@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406eeef0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "char * __thiscall ArcSweepAttackAbilityClass::vfunction3_for_IXMLLoadableClass(void)\n\n{\n  return \"Arc_Sweep_Attack_Ability\";\n}",
+  "fetched_at": "2026-04-26T17:46:56Z"
+}

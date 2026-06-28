@@ -1,0 +1,7 @@
+{
+  "addr": "0x1404af870",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1404af886        *arg1 = &AIPlayerClass::`vftable'{for `AIDiagnosticsClass'}\n1404af889        int32_t i_1 = 0\n1404af88b        void* r8 = arg1[7]\n1404af89b        void* r9 = r8\n1404af8a5        if ((arg1[8] - r8) s>> 3 != 0)\n1404af8ac        uint64_t i = 0\n1404af8b0        int64_t* rbx_1 = *(r8 + (i << 3))\n1404af8b7        if (rbx_1 != 0)\n1404af8bf        (*(*rbx_1 + 0x10))(rbx_1)\n1404af8cd        (**rbx_1)(rbx_1, 1)\n1404af8cf        r8 = arg1[7]\n1404af8d3        i_1 += 1\n1404af8d9        r9 = r8\n1404af8df        i = zx.q(i_1)\n1404af8e8        do while (i u< (arg1[8] - r8) s>> 3)\n1404af8f4        arg1[8] = r8\n1404af8fb        if (r8 != 0)\n1404af90f        if (((arg1[9] - r9) & 0xfffffffffffffff8) u>= 0x1000)\n1404af911        void* rcx_2 = *(r9 - 8)\n1404af924        if (r9 - rcx_2 - 8 u> 0x1f)\n1404af972        _invalid_parameter_noinfo_noreturn()\n1404af972        noreturn\n1404af926        r9 = rcx_2\n1404af92c        j_sub_1407864b8(r9)\n1404af931        __builtin_memset(&arg1[7], 0, 0x18)\n1404af94c        sub_1405f6540(arg1)\n1404af955        if ((arg2 & 1) != 0)\n1404af95f        j_sub_1407864b8(arg1)\n1404af971        return arg1",
+  "fetched_at": "2026-04-26T17:29:37Z"
+}

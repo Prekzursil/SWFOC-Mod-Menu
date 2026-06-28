@@ -1,0 +1,7 @@
+{
+  "addr": "0x14079a75c",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* Library Function - Single Match\n    _updatetlocinfoEx_nolock\n   \n   Libraries: Visual Studio 2017 Release, Visual Studio 2019 Release */\n\nundefined ** _updatetlocinfoEx_nolock(longlong *param_1,undefined **param_2)\n\n{\n  undefined **ppuVar1;\n  \n  if ((param_2 == (undefined **)0x0) || (param_1 == (longlong *)0x0)) {\n    param_2 = (undefined **)0x0;\n  }\n  else {\n    ppuVar1 = (undefined **)*param_1;\n    if (ppuVar1 != param_2) {\n      *param_1 = (longlong)param_2;\n      __acrt_add_locale_ref(param_2);\n      if (((ppuVar1 != (undefined **)0x0) &&\n          (__acrt_release_locale_ref(ppuVar1), *(int *)(ppuVar1 + 2) == 0)) &&\n         (ppuVar1 != &PTR_DAT_140a44dc0)) {\n        __acrt_free_locale(ppuVar1);\n      }\n    }\n  }\n  return param_2;\n}",
+  "fetched_at": "2026-04-26T18:53:46Z"
+}

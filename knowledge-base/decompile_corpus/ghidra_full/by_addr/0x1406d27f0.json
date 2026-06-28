@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406d27f0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "SpaceShipPerceptualEvaluatorClass * FUN_1406d27f0(undefined **param_1,undefined **param_2)\n\n{\n  SpaceShipPerceptualEvaluatorClass *pSVar1;\n  \n  if ((param_2 != (undefined **)0x0) && (param_1 != (undefined **)0x0)) {\n    pSVar1 = (SpaceShipPerceptualEvaluatorClass *)FUN_140769c58(0x1f0);\n    if (pSVar1 == (SpaceShipPerceptualEvaluatorClass *)0x0) {\n      pSVar1 = (SpaceShipPerceptualEvaluatorClass *)0x0;\n    }\n    else {\n      pSVar1 = SpaceShipPerceptualEvaluatorClass::SpaceShipPerceptualEvaluatorClass(pSVar1,param_1);\n    }\n    (*pSVar1->vftablePtr->vfunction9)(pSVar1);\n    (*pSVar1->vftablePtr->vfunction10)(pSVar1,param_2);\n    return pSVar1;\n  }\n  return (SpaceShipPerceptualEvaluatorClass *)0x0;\n}",
+  "fetched_at": "2026-04-26T17:42:17Z"
+}

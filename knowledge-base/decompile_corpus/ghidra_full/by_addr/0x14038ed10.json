@@ -1,0 +1,7 @@
+{
+  "addr": "0x14038ed10",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_14038ed10(longlong *param_1)\n\n{\n  longlong *plVar1;\n  char cVar2;\n  longlong lVar3;\n  int iVar4;\n  undefined4 local_18;\n  undefined4 local_14;\n  undefined4 local_10;\n  \n  plVar1 = DAT_140b15418;\n  if (((*(char *)((longlong)param_1 + 0x3c9) == '\\0') && (DAT_140b15418 != (longlong *)0x0)) &&\n     (cVar2 = (**(code **)(*DAT_140b15418 + 0xf0))(DAT_140b15418), cVar2 != '\\0')) {\n    iVar4 = 0;\n    if ('\\0' < (char)param_1[0x51]) {\n      do {\n        (**(code **)(**(longlong **)(param_1[0x4f] + (longlong)(char)iVar4 * 8) + 0xc0))();\n        iVar4 = iVar4 + 1;\n      } while (iVar4 < (char)param_1[0x51]);\n    }\n    lVar3 = (**(code **)(*param_1 + 0x10))(param_1,1);\n    if (param_1[0x54] != 0) {\n      FUN_140264c80(param_1[0x54],1);\n    }\n    if (lVar3 != 0) {\n      lVar3 = (**(code **)(*plVar1 + 0x230))(plVar1);\n      if (lVar3 == 0) {\n        return;\n      }\n      lVar3 = FUN_140508ec0(lVar3);\n      if (lVar3 != 0) {\n        FUN_14020abe0(lVar3,param_1 + 3);\n      }\n    }\n    local_18 = 0x3f800000;\n    local_10 = 0;\n    local_14 = 0x3f800000;\n    FUN_1403abb80(param_1,&local_18);\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T17:21:18Z"
+}

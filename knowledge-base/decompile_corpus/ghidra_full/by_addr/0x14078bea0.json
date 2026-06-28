@@ -1,0 +1,7 @@
+{
+  "addr": "0x14078bea0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* Library Function - Single Match\n    public: __cdecl <lambda_6e4b09c48022b2350581041d5f6b0c4c>::operator()(void)const __ptr64\n   \n   Libraries: Visual Studio 2017 Release, Visual Studio 2019 Release */\n\nvoid __thiscall\n<lambda_6e4b09c48022b2350581041d5f6b0c4c>::operator()\n          (<lambda_6e4b09c48022b2350581041d5f6b0c4c> *this)\n\n{\n  undefined *puVar1;\n  \n  if (DAT_140b3c328 != '\\0') {\n    return;\n  }\n  LOCK();\n  DAT_140b3c318 = 1;\n  UNLOCK();\n  if (**(int **)this == 0) {\n    if (DAT_140b3c320 != DAT_140a44b98) {\n      (*(code *)PTR__guard_dispatch_icall_1407fdcd8)(0,0,0);\n    }\n    puVar1 = &DAT_140b3c458;\n  }\n  else {\n    if (**(int **)this != 1) goto LAB_14078bf10;\n    puVar1 = &DAT_140b3c470;\n  }\n  _execute_onexit_table(puVar1);\nLAB_14078bf10:\n  if (**(int **)this == 0) {\n    _initterm(&DAT_1407ff5c8,&DAT_1407ff5e8);\n  }\n  _initterm(&DAT_1407ff5f0,&DAT_1407ff5f8);\n  if (**(int **)(this + 8) == 0) {\n    DAT_140b3c328 = '\\x01';\n    **(undefined1 **)(this + 0x10) = 1;\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T18:51:57Z"
+}

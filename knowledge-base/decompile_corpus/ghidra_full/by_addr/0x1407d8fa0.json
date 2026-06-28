@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407d8fa0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* BlockingStatus member function inherited by BinkMovieBlockStatus\n   BlockingStatus member function inherited by LightningEffectBlockStatus */\n\nbyte __thiscall\nBlockingStatus::vfunction16(BlockingStatus *this,undefined8 param_1,undefined8 param_2)\n\n{\n  char cVar1;\n  byte bVar2;\n  int iVar3;\n  byte bVar4;\n  \n  bVar4 = 1;\n  cVar1 = FUN_1402204a0(param_2);\n  while (cVar1 != '\\0') {\n    iVar3 = FUN_1402205a0(param_2);\n    if (iVar3 == 0) {\n      bVar2 = FUN_14024ab30(param_2,&(this->RefCountClass_data).field_0x20,param_1);\n      bVar4 = bVar4 & bVar2;\n    }\n    FUN_140220520(param_2);\n    cVar1 = FUN_1402204a0(param_2);\n  }\n  return bVar4;\n}",
+  "fetched_at": "2026-04-26T18:58:40Z"
+}

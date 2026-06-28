@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407f4d10",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */\n\nvoid RefCountClass::RefCountClass_Constructor_or_Destructor(void)\n\n{\n  _DAT_140b38b38 = &vftable;\n  return;\n}",
+  "fetched_at": "2026-04-26T19:04:05Z"
+}

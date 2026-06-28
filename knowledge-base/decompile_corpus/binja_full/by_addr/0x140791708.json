@@ -1,0 +1,7 @@
+{
+  "addr": "0x140791708",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140791708        return fgetc(arg1) __tailcall",
+  "fetched_at": "2026-04-26T17:31:45Z"
+}

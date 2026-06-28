@@ -1,0 +1,7 @@
+{
+  "addr": "0x140390fc0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_140390fc0(longlong param_1)\n\n{\n  DynamicVectorClass<int> *pDVar1;\n  \n  if (*(longlong *)(param_1 + 0xf0) == 0) {\n    pDVar1 = (DynamicVectorClass<int> *)FUN_140769c58(0x1a0);\n    if (pDVar1 != (DynamicVectorClass<int> *)0x0) {\n      pDVar1 = DynamicVectorClass<int>::DynamicVectorClass<int>(pDVar1);\n      *(DynamicVectorClass<int> **)(param_1 + 0xf0) = pDVar1;\n      return;\n    }\n    *(undefined8 *)(param_1 + 0xf0) = 0;\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T17:29:03Z"
+}

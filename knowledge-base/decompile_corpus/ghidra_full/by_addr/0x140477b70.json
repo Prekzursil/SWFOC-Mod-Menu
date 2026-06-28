@@ -1,0 +1,7 @@
+{
+  "addr": "0x140477b70",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined4 FUN_140477b70(longlong param_1,uint param_2)\n\n{\n  longlong lVar1;\n  int iVar2;\n  longlong lVar3;\n  int iVar4;\n  longlong *plVar5;\n  uint uVar6;\n  \n  uVar6 = (param_2 ^ 0xdeadbeef) & 0x7fffffff;\n  lVar1 = *(longlong *)(param_1 + 0x10);\n  iVar4 = (uVar6 % 0x1f31d) * 0x41a7 + (uVar6 / 0x1f31d) * -0xb14;\n  iVar2 = iVar4 + 0x7fffffff;\n  if (-1 < iVar4) {\n    iVar2 = iVar4;\n  }\n  plVar5 = (longlong *)\n           (((longlong)iVar2 & *(ulonglong *)(param_1 + 0x38)) * 0x10 +\n           *(longlong *)(param_1 + 0x20));\n  lVar3 = plVar5[1];\n  if (lVar3 != lVar1) {\n    iVar2 = *(int *)(lVar3 + 0x10);\n    iVar4 = iVar2 - param_2;\n    if ((int)param_2 < iVar2) {\n      do {\n        if (lVar3 == *plVar5) {\n          return 0;\n        }\n        lVar3 = *(longlong *)(lVar3 + 8);\n      } while ((int)param_2 < *(int *)(lVar3 + 0x10));\n      iVar2 = *(int *)(lVar3 + 0x10);\n      iVar4 = iVar2 - param_2;\n    }\n    if (SBORROW4(iVar2,param_2) == iVar4 < 0) {\n      if (lVar3 == 0) {\n        lVar3 = lVar1;\n      }\n      if (lVar3 != lVar1) {\n        return *(undefined4 *)(lVar3 + 0x14);\n      }\n    }\n  }\n  return 0;\n}",
+  "fetched_at": "2026-04-26T17:59:07Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x14004fc30",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nTheAIDataManagerClass * FUN_14004fc30(void)\n\n{\n  TheAIDataManagerClass *this;\n  undefined **local_res8 [4];\n  \n  if (DAT_140a10960 == (TheAIDataManagerClass *)0x0) {\n    this = (TheAIDataManagerClass *)FUN_140769c58(0x88);\n    if (this == (TheAIDataManagerClass *)0x0) {\n      DAT_140a10960 = (TheAIDataManagerClass *)0x0;\n    }\n    else {\n      DAT_140a10960 = TheAIDataManagerClass::TheAIDataManagerClass(this);\n    }\n    local_res8[0] = &PTR_vftable_140a10958;\n    if (DAT_140a7bc10 != DAT_140a7bc18) {\n      *DAT_140a7bc10 = &PTR_vftable_140a10958;\n      DAT_140a7bc10 = DAT_140a7bc10 + 1;\n      return DAT_140a10960;\n    }\n    FUN_14001ded0(&DAT_140a7bc08,DAT_140a7bc10,local_res8);\n  }\n  return DAT_140a10960;\n}\n\n",
+  "fetched_at": "2026-04-26T16:54:40Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x14042f640",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14042f64b        struct BehaviorClass::AbilityCountdownBehaviorClass::VTable** result = operator new(0x40)\n14042f656        if (result == 0)\n14042f68e        return result\n14042f65b        sub_1404c32d0(result)\n14042f667        *result = &AbilityCountdownBehaviorClass::`vftable'{for `BehaviorClass'}\n14042f671        result[1] = &AbilityCountdownBehaviorClass::`vftable'{for `RefCountClass'}\n14042f67c        result[3] = &AbilityCountdownBehaviorClass::`vftable'{for `SignalListenerClass'}\n14042f688        return result",
+  "fetched_at": "2026-04-26T17:26:49Z"
+}

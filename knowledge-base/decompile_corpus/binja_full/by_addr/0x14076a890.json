@@ -1,0 +1,7 @@
+{
+  "addr": "0x14076a890",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14076a897        if (arg1 == __security_cookie)\n14076a899        int64_t rcx = rol.q(arg1, 0x10)\n14076a8a2        if ((rcx.w & 0xffff) == 0)\n14076a8a4        return \n14076a8a5        arg1 = ror.q(rcx, 0x10)\n14076a8a9        noreturn __report_gsfailure(arg1) __tailcall",
+  "fetched_at": "2026-04-26T17:30:19Z"
+}

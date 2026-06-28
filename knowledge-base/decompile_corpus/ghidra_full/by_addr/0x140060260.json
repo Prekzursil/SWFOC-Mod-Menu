@@ -1,0 +1,7 @@
+{
+  "addr": "0x140060260",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nundefined8 FUN_140060260(undefined8 *param_1)\n\n{\n  int iVar1;\n  FILE *_File;\n  char *pcVar2;\n  undefined8 uVar3;\n  undefined4 extraout_var;\n  byte local_208 [512];\n  \n  if ((param_1 == (undefined8 *)0x0) && (param_1 = &DAT_140a10d40, 0xf < DAT_140a10d58)) {\n    param_1 = DAT_140a10d40;\n  }\n  _File = (FILE *)FUN_14078013c(param_1,&DAT_140803298);\n  if (_File == (FILE *)0x0) {\n    return 0;\n  }\n  local_208[0] = 0;\n  pcVar2 = common_fgets<char>(local_208,0x1ff,_File);\n  while (pcVar2 != (char *)0x0) {\n    if ((0x2d < local_208[0]) ||\n       ((0x200000002401U >> ((longlong)(char)local_208[0] & 0x3fU) & 1) == 0)) {\n      uVar3 = FUN_14001fb80();\n      FUN_14007e040(uVar3,local_208);\n    }\n    pcVar2 = common_fgets<char>(local_208,0x1ff,_File);\n  }\n  iVar1 = fclose(_File);\n  return CONCAT71((int7)(CONCAT44(extraout_var,iVar1) >> 8),1);\n}\n\n",
+  "fetched_at": "2026-04-26T16:55:32Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406355a0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "char * __thiscall HolsterWeaponBehaviorClass::vfunction9(void)\n\n{\n  return \"HolsterWeaponBehaviorClass\";\n}",
+  "fetched_at": "2026-04-26T17:34:43Z"
+}

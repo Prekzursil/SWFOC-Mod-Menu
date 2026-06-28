@@ -1,0 +1,7 @@
+{
+  "addr": "0x14034bef0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nundefined8 __thiscall ModelComponentClass::vfunction75(ModelComponentClass *this)\n\n{\n  deleting_destructor *pdVar1;\n  undefined8 uVar2;\n  \n  if ((this[1].vftablePtr != (ModelComponentClass_vftable *)0x0) &&\n     (pdVar1 = (this[1].vftablePtr)->deleting_destructor, pdVar1 != (deleting_destructor *)0x0)) {\n                    /* WARNING: Could not recover jumptable at 0x00014034bf07. Too many branches */\n                    /* WARNING: Treating indirect jump as call */\n    uVar2 = (**(code **)(*(longlong *)pdVar1 + 0x48))();\n    return uVar2;\n  }\n  return 0;\n}\n\n",
+  "fetched_at": "2026-04-26T17:08:05Z"
+}

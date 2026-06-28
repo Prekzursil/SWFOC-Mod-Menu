@@ -1,0 +1,7 @@
+{
+  "addr": "0x140715eb0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140715eba        struct SpecialAbilityClass::LaserDefenseAbilityClass::VTable** result = arg1\n140715ebd        sub_14048c780(arg1)\n140715ecb        *result = &LaserDefenseAbilityClass::`vftable'{for `SpecialAbilityClass'}\n140715edc        result[0x2f].d = 0\n140715ee2        result[1] = &LaserDefenseAbilityClass::`vftable'{for `RefCountClass'}\n140715ee6        sub_1401f92f0(result + 0x17c)\n140715eeb        result[0x33] = 0\n140715ef9        result[0x32] = &DynamicVectorClass<class std::string>::`vftable'\n140715f07        __builtin_memset(&result[0x34], 0, 0x3c)\n140715f3e        *(result + 0x1dc) = 5\n140715f49        *(result + 0x1e4) = 0\n140715f4f        result[0x3d] = 0\n140715f56        result[0x3f] = 0\n140715f5d        result[0x40] = 0xf\n140715f68        result[0x41] = 0\n140715f6f        result[0x43] = 0\n140715f76        result[0x44] = 0xf\n140715f81        result[0x45].d = 0\n140715f87        sub_1404c3ee0(&result[0x46])\n140715f99        return result",
+  "fetched_at": "2026-04-26T17:27:54Z"
+}

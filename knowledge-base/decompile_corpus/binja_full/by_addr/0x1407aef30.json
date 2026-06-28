@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407aef30",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1407aef34        int128_t zmm5 = arg2[1]\n1407aef39        float zmm2 = *arg2\n1407aef40        float zmm4 = arg2[2]\n1407aef66        int128_t zmm6\n1407aef66        zmm6.d = zmm5.d f* *(arg1 + 0x54)\n1407aef6b        float zmm3 = zmm5.d f* *(arg1 + 0x44) + zmm2 f* *(arg1 + 0x40)\n1407aef6f        zmm5.d = zmm5.d f* *(arg1 + 0x64)\n1407aef92        zmm6.d = zmm6.d f+ zmm2 f* *(arg1 + 0x50)\n1407aefa5        zmm5.d = zmm5.d f+ zmm2 f* *(arg1 + 0x60)\n1407aefbd        zmm6.d = zmm6.d f+ zmm4 f* *(arg1 + 0x58) f+ *(arg1 + 0x5c)\n1407aefc8        zmm6.d = zmm6.d f- *(arg1 + 0x7c)\n1407aefcd        zmm5.d = zmm5.d f+ zmm4 f* *(arg1 + 0x68) f+ *(arg1 + 0x6c)\n1407aefd1        zmm5.d = zmm5.d f- *(arg1 + 0x80)\n1407af013        int64_t result\n1407af013        if (not(((zmm3 + zmm4 f* *(arg1 + 0x48) f+ *(arg1 + 0x4c) f- *(arg1 + 0x78)) & 0x7fffffff) f> *(arg1 + 0x84)) && not((zmm6.d & 0x7fffffff) f> *(arg1 + 0x88)) && not((zmm5.d & 0x7fffffff) f> *(arg1 + 0x8c)))\n1407af015        result.b = 1\n1407af01f        return result\n1407af024        result.b = 0\n1407af02a        return result",
+  "fetched_at": "2026-04-26T17:32:45Z"
+}

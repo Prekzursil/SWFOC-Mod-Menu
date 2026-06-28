@@ -1,0 +1,7 @@
+{
+  "addr": "0x1404dd970",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */\n\nundefined8 __thiscall\nAIGoalTargetPerceptionNodeClass::vfunction5\n          (AIGoalTargetPerceptionNodeClass *this,undefined8 param_1)\n\n{\n  if (*(int *)(*(longlong *)((longlong)ThreadLocalStoragePointer + (ulonglong)_tls_index * 8) + 0xd4\n              ) < DAT_140b31a28) {\n    _Init_thread_header(&DAT_140b31a28);\n    if (DAT_140b31a28 == -1) {\n      _DAT_140b31a18 = _DAT_140802a40;\n      DAT_140b31a20 = _UNK_140802a48;\n      DAT_140b31a08 = 0;\n      atexit(FUN_1407f37c0);\n      _Init_thread_footer(&DAT_140b31a28);\n    }\n  }\n  FUN_140200cd0(&DAT_140b31a08,\"Goal Functions(%d)\",\n                (this->AIDiagnosticsNodeClass_data).offset_0x10 -\n                *(longlong *)&(this->AIDiagnosticsNodeClass_data).field_0x8 >> 3);\n  FUN_14001e680(param_1,&DAT_140b31a08);\n  return param_1;\n}",
+  "fetched_at": "2026-04-26T18:15:24Z"
+}

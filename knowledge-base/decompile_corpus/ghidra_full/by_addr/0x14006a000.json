@@ -1,0 +1,7 @@
+{
+  "addr": "0x14006a000",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nSteamClass * __thiscall SteamClass::SteamClass(SteamClass *this)\n\n{\n  this->vftablePtr = &vftable;\n  this->Singleton<class_SteamClass> = (Singleton<class_SteamClass>)0x0;\n  (this->SteamClass_data).offset_0x0 = 0;\n  return this;\n}\n\n",
+  "fetched_at": "2026-04-26T16:55:53Z"
+}

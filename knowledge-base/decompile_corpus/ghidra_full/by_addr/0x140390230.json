@@ -1,0 +1,7 @@
+{
+  "addr": "0x140390230",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_140390230(longlong param_1)\n\n{\n  AmbientSFXDataPackClass *pAVar1;\n  \n  if (*(longlong *)(param_1 + 0x128) == 0) {\n    pAVar1 = (AmbientSFXDataPackClass *)FUN_140769c58(0x10);\n    if (pAVar1 != (AmbientSFXDataPackClass *)0x0) {\n      pAVar1 = AmbientSFXDataPackClass::AmbientSFXDataPackClass(pAVar1);\n      *(AmbientSFXDataPackClass **)(param_1 + 0x128) = pAVar1;\n      return;\n    }\n    *(undefined8 *)(param_1 + 0x128) = 0;\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T17:21:32Z"
+}

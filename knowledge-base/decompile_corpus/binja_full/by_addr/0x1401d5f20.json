@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401d5f20",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1401d5f32        struct GUIGadgetClass::VTable** rax = operator new(0x508)\n1401d5f3a        struct GUIGadgetClass::GUIGadgetTrackbarSliderClass::VTable** result\n1401d5f3a        if (rax == 0)\n1401d5f49        result = nullptr\n1401d5f44        result = sub_1401d49e0(rax)\n1401d5f56        result[1].d = *(arg1 + 8)\n1401d5f5c        if (&result[2] != arg1 + 0x10)\n1401d5f63        int32_t* rdx_1 = arg1 + 0x10\n1401d5f66        if (*(arg1 + 0x28) u>= 0x10)\n1401d5f68        rdx_1 = *(arg1 + 0x10)\n1401d5f6f        sub_140022730(&result[2], rdx_1, *(arg1 + 0x20))\n1401d5f7b        result[6].d = *(arg1 + 0x30)\n1401d5f86        *(result + 0x34) = *(arg1 + 0x34)\n1401d5f8d        *(result + 0x44) = *(arg1 + 0x44)\n1401d5f93        result[9].d = *(arg1 + 0x48)\n1401d5f99        *(result + 0x4c) = *(arg1 + 0x4c)\n1401d5f9f        result[0xa].d = *(arg1 + 0x50)\n1401d5fa5        if (&result[0xb] != arg1 + 0x58)\n1401d5fac        int32_t* rdx_2 = arg1 + 0x58\n1401d5faf        if (*(arg1 + 0x70) u>= 8)\n1401d5fb1        rdx_2 = *(arg1 + 0x58)\n1401d5fb8        sub_1400228a0(&result[0xb], rdx_2, *(arg1 + 0x68))\n1401d5fca        return result",
+  "fetched_at": "2026-04-26T17:26:46Z"
+}

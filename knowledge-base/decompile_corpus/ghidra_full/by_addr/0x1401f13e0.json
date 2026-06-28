@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401f13e0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "GUIGadgetRadiobuttonClass * __thiscall\nGUIGadgetRadiobuttonClass::scalar_deleting_destructor(GUIGadgetRadiobuttonClass *this,uint param_1)\n\n{\n                    /* inlined destructor: GUIGadgetRadiobuttonClass::~GUIGadgetRadiobuttonClass */\n  this->vftablePtr = &vftable;\n  FUN_14025c490(DAT_140a619f0,&(this->GUIGadgetRadiobuttonClass_data).field_0xa0);\n  FUN_14025c490(DAT_140a619f0,&(this->GUIGadgetRadiobuttonClass_data).field_0x10);\n  GUIGadgetClass::vfunction25((GUIGadgetClass *)this);\n  (this->GUIGadgetRadiobuttonClass_data).offset_0x0 = 0;\n  (this->GUIGadgetRadiobuttonClass_data).offset_0x4 = 0;\n  (this->GUIGadgetRadiobuttonClass_data).offset_0x8 = 0;\n  DrawTextClass::~DrawTextClass((DrawTextClass *)&(this->GUIGadgetRadiobuttonClass_data).field_0xa0)\n  ;\n  TextureRectClass::~TextureRectClass\n            ((TextureRectClass *)&(this->GUIGadgetRadiobuttonClass_data).field_0x10);\n  GUIGadgetClass::~GUIGadgetClass((GUIGadgetClass *)this);\n  if ((param_1 & 1) != 0) {\n    thunk_FUN_1407864b8(this,0x240);\n  }\n  return this;\n}",
+  "fetched_at": "2026-04-26T17:53:02Z"
+}

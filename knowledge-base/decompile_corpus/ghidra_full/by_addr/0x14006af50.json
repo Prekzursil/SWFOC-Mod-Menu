@@ -1,0 +1,7 @@
+{
+  "addr": "0x14006af50",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nSteamClass * __thiscall SteamClass::scalar_deleting_destructor(SteamClass *this,ulonglong param_1)\n\n{\n                    /* inlined destructor: SteamClass::~SteamClass */\n  this->vftablePtr = &vftable;\n  if (this->Singleton<class_SteamClass> != (Singleton<class_SteamClass>)0x0) {\n    (**(code **)(*(longlong *)this->Singleton<class_SteamClass> + 8))();\n  }\n  if ((param_1 & 1) != 0) {\n    thunk_FUN_1407864b8(this,0x18);\n  }\n  return this;\n}\n\n",
+  "fetched_at": "2026-04-26T16:55:57Z"
+}

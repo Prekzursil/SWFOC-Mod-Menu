@@ -1,0 +1,7 @@
+{
+  "addr": "0x1402d8d40",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1402d8d44        uint64_t result = -1\n1402d8d50        result += 1\n1402d8d57        do while (arg1[result] != 0)\n1402d8d5e        int64_t* r9 = arg2\n1402d8d61        if (arg2[3] u>= 0x10)\n1402d8d63        r9 = *arg2\n1402d8d66        int64_t r8 = arg2[2]\n1402d8d6d        if (r8 == result && memcmp(r9, arg1, r8).d == 0)\n1402d8d7e        result.b = 1\n1402d8d84        return result\n1402d8d85        result.b = 0\n1402d8d8b        return result",
+  "fetched_at": "2026-04-26T17:22:34Z"
+}

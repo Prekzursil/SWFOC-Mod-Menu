@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407bc0d0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1407bc0df        int64_t rbx\n1407bc0df        int64_t var_8 = rbx\n1407bc0e7        int32_t var_18 = 0\n1407bc0f8        int64_t var_128 = *(arg1 + 0xc0)\n1407bc102        *(arg1 + 0xc0) = &var_128\n1407bc10e        void var_148\n1407bc10e        void var_118\n1407bc10e        int64_t rbp\n1407bc10e        int64_t rsi\n1407bc10e        int64_t rdi\n1407bc10e        int64_t r12\n1407bc10e        int64_t r13\n1407bc10e        int64_t r14\n1407bc10e        int64_t r15\n1407bc10e        int32_t mxcsr\n1407bc10e        int16_t x87control\n1407bc10e        int128_t zmm6\n1407bc10e        int128_t zmm7\n1407bc10e        int128_t zmm8\n1407bc10e        int128_t zmm9\n1407bc10e        int128_t zmm10\n1407bc10e        int128_t zmm11\n1407bc10e        int128_t zmm12\n1407bc10e        int128_t zmm13\n1407bc10e        int128_t zmm14\n1407bc10e        int128_t zmm15\n1407bc10e        _setjmpex(&var_118, &var_148, rbx, rbp, rsi, rdi, r12, r13, r14, r15, mxcsr, x87control, zmm6, zmm7, zmm8, zmm9, zmm10, zmm11, zmm12, zmm13, zmm14, zmm15)\n1407bc12a        arg2(arg1, arg3)\n1407bc136        *(arg1 + 0xc0) = var_128\n1407bc14c        return zx.q(var_18)",
+  "fetched_at": "2026-04-26T17:33:21Z"
+}

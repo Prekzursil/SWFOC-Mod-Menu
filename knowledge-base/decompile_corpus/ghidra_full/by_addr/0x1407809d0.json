@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407809d0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* Library Function - Single Match\n    __acrt_errno_map_os_error\n   \n   Library: Visual Studio 2019 Release */\n\nvoid __acrt_errno_map_os_error(undefined4 param_1)\n\n{\n  undefined4 uVar1;\n  longlong lVar2;\n  undefined4 *puVar3;\n  \n  lVar2 = __acrt_getptd_noexit();\n  if (lVar2 == 0) {\n    puVar3 = &DAT_140a44bc4;\n  }\n  else {\n    puVar3 = (undefined4 *)(lVar2 + 0x24);\n  }\n  *puVar3 = param_1;\n  lVar2 = __acrt_getptd_noexit();\n  puVar3 = (undefined4 *)&DAT_140a44bc0;\n  if (lVar2 != 0) {\n    puVar3 = (undefined4 *)(lVar2 + 0x20);\n  }\n  uVar1 = __acrt_errno_from_os_error(param_1);\n  *puVar3 = uVar1;\n  return;\n}",
+  "fetched_at": "2026-04-26T18:51:01Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x1405e6860",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1405e6863        if (arg2 != 0)\n1405e6870        sub_1406b7bf0(arg2)\n1405e687d        j_sub_1407864b8(arg2)\n1405e6887        return ",
+  "fetched_at": "2026-04-26T17:38:29Z"
+}

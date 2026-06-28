@@ -1,0 +1,7 @@
+{
+  "addr": "0x14068a9b0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_14068a9b0(void)\n\n{\n  DynamicVectorClass<class_std::basic_string<char,struct_std::char_traits<char>,class_std::allocator<char>_>_>\n  *this;\n  \n  this = (DynamicVectorClass<class_std::basic_string<char,struct_std::char_traits<char>,class_std::allocator<char>_>_>\n          *)FUN_140769c58(0x240);\n  if (this != (DynamicVectorClass<class_std::basic_string<char,struct_std::char_traits<char>,class_std::allocator<char>_>_>\n               *)0x0) {\n    DynamicVectorClass<class_std::basic_string<char,struct_std::char_traits<char>,class_std::allocator<char>_>_>\n    ::\n    DynamicVectorClass<class_std::basic_string<char,struct_std::char_traits<char>,class_std::allocator<char>_>_>\n              (this);\n    return;\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T17:16:10Z"
+}

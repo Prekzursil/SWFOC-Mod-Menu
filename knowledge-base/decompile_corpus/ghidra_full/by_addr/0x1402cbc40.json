@@ -1,0 +1,7 @@
+{
+  "addr": "0x1402cbc40",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void HeroClashManagerClass::vbase_destructor(longlong param_1,longlong param_2)\n\n{\n  char cVar1;\n  \n  if (((param_2 == *(longlong *)(param_1 + 0x358)) && (*(int *)(param_1 + 0x37c) == 3)) &&\n     (*(char *)(param_1 + 0x34a) != '\\0')) {\n    cVar1 = FUN_1402cda20();\n    if (cVar1 == '\\0') {\n      *(undefined8 *)(param_1 + 0x358) = 0;\n      FUN_1402cbb80(param_1);\n      return;\n    }\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T18:30:02Z"
+}

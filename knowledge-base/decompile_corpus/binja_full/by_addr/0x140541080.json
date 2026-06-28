@@ -1,0 +1,7 @@
+{
+  "addr": "0x140541080",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14054108a        int64_t* rcx = data_140b15418\n14054109a        char rax_1\n14054109a        int64_t r8\n14054109a        rax_1, r8 = (*(*rcx + 0xf0))(rcx)\n1405410a2        if (rax_1 == 0)\n1405410ae        sub_140248190(arg2, \"LuaAllowLocalizedSFX -- Command only valid in a land tactical game.\", r8)\n1405410bf        return 0\n1405410c9        int64_t* rbx = *(arg3 + 0x10)\n1405410d8        char const* const rdx\n1405410d8        if ((*(arg3 + 0x18) - rbx) s>> 3 u>= 1)\n1405410e3        int64_t* rbx_1 = *rbx\n1405410e9        if (rbx_1 != 0)\n1405410f1        void* i\n1405410f1        i, r8 = (*(*rbx_1 + 0x20))(rbx_1)\n1405410f7        while (i != 0)\n140541103        if (i == &data_140a157b0)\n140541135        (**rbx_1)(rbx_1)\n14054113e        data_140b27ee0 = rbx_1[2].b\n140541144        data_140b27ee4 = 3\n140541151        (*(*rbx_1 + 8))(rbx_1)\n140541165        return 0\n140541105        i = *(i + 8)\n14054110e        rdx = \"LuaAllowLocalizedSFX -- invalid type for parameter 1.  Expected bool.\"\n1405410da        rdx = \"LuaAllowLocalizedSFX -- Expected bool parameter 1\"\n140541118        sub_140248190(arg2, rdx, r8)\n14054112e        return 0",
+  "fetched_at": "2026-04-26T17:33:57Z"
+}

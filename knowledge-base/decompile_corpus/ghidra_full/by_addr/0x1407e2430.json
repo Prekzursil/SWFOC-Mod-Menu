@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407e2430",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_1407e2430(longlong *param_1)\n\n{\n  longlong *TargetFrame;\n  PVOID TargetIp;\n  PVOID in_SSP;\n  DWORD local_28;\n  DWORD local_24;\n  _EXCEPTION_RECORD *local_20;\n  PVOID local_18;\n  DWORD local_10;\n  longlong *local_8;\n  \n  local_8 = param_1;\n  if (*param_1 != 0) {\n    do {\n      local_28 = 0x80000026;\n      local_24 = 0;\n      local_20 = (_EXCEPTION_RECORD *)0x0;\n      local_18 = (PVOID)0x0;\n      local_10 = 1;\n      TargetIp = (PVOID)local_8[10];\n      TargetFrame = (longlong *)*local_8;\n      RtlUnwind(TargetFrame,TargetIp,(PEXCEPTION_RECORD)&stack0xffffffffffffffd8,in_SSP);\n      local_8 = TargetFrame;\n      in_SSP = TargetIp;\n    } while( true );\n  }\n  MXCSR = (undefined4)param_1[0xb];\n                    /* WARNING: Could not recover jumptable at 0x0001407e24dc. Too many branches */\n                    /* WARNING: Treating indirect jump as call */\n  (*(code *)param_1[10])(param_1,(code *)param_1[10]);\n  return;\n}",
+  "fetched_at": "2026-04-26T18:59:29Z"
+}

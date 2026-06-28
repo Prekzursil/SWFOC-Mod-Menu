@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401e75d0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* GUIGadgetEditboxClass member function inherited by GUIGadgetIMEEditboxClass */\n\nvoid __thiscall GUIGadgetEditboxClass::vfunction16(GUIGadgetEditboxClass *this)\n\n{\n  undefined4 *puVar1;\n  char cVar2;\n  \n  GUIGadgetClass::vfunction16((GUIGadgetClass *)this);\n  if (((*(char *)&(this->GUIGadgetClass_data).offset_0x70 != '\\0') &&\n      ((this->GUIGadgetClass_data).offset_0x8a != '\\0')) &&\n     (puVar1 = &(this->GUIGadgetEditboxClass_data).offset_0x84, *puVar1 = *puVar1 + -1,\n     (int)(this->GUIGadgetEditboxClass_data).offset_0x84 < 1)) {\n    cVar2 = (this->GUIGadgetEditboxClass_data).offset_0x80;\n    (this->GUIGadgetEditboxClass_data).offset_0x80 = cVar2 == '\\0';\n    if (cVar2 == '\\0') {\n                    /* WARNING: Could not recover jumptable at 0x0001401e761d. Too many branches */\n                    /* WARNING: Treating indirect jump as call */\n      (*this->vftablePtr->vfunction26)(this);\n      return;\n    }\n                    /* WARNING: Could not recover jumptable at 0x0001401e7629. Too many branches */\n                    /* WARNING: Treating indirect jump as call */\n    (*this->vftablePtr->vfunction27)(this);\n    return;\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T17:51:33Z"
+}

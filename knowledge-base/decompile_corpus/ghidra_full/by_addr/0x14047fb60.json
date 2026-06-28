@@ -1,0 +1,7 @@
+{
+  "addr": "0x14047fb60",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "TheDebugWindowManagerClass * __thiscall\nTheDebugWindowManagerClass::scalar_deleting_destructor\n          (TheDebugWindowManagerClass *this,uint param_1)\n\n{\n  HWND hWnd;\n  \n                    /* inlined destructor: TheDebugWindowManagerClass::~TheDebugWindowManagerClass\n                        */\n  this->vftablePtr = &vftable;\n  if (this->Singleton<class_TheDebugWindowManagerClass> !=\n      (Singleton<class_TheDebugWindowManagerClass>)0x0) {\n    hWnd = *(HWND *)((longlong)this->Singleton<class_TheDebugWindowManagerClass> + 0x30);\n    if (hWnd != (HWND)0x0) {\n      SendMessageA(hWnd,0x10,0,0);\n    }\n    if (this->Singleton<class_TheDebugWindowManagerClass> !=\n        (Singleton<class_TheDebugWindowManagerClass>)0x0) {\n      (**(code **)(*(longlong *)this->Singleton<class_TheDebugWindowManagerClass> + 8))();\n      this->Singleton<class_TheDebugWindowManagerClass> =\n           (Singleton<class_TheDebugWindowManagerClass>)0x0;\n    }\n  }\n  if ((param_1 & 1) != 0) {\n    thunk_FUN_1407864b8(this,0x40);\n  }\n  return this;\n}",
+  "fetched_at": "2026-04-26T17:59:58Z"
+}

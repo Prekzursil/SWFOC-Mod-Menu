@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407be9e0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1407be9f0        int64_t rcx = sx.q(*(arg1 + 0x10))\n1407be9f4        int32_t r9 = rcx.d\n1407be9fe        if (r9 == 0x116)\n1407bea46        *(arg1 + 0x18)\n1407bea0a        if (r9 == 0x11d || r9 == 0x11e)\n1407bea41        **(arg1 + 0x48)\n1407bea12        if (rcx.d s>= 0x101)\n1407bea33        (&alLensFlare::`vftable'{for `alRenderable'}.vFunc_12)[rcx]\n1407bea22        gzprintf(*(arg1 + 0x38), &data_1408fd594, zx.q(rcx.d))\n1407bea61        noreturn sub_1407bdfc0(arg1) __tailcall",
+  "fetched_at": "2026-04-26T17:33:30Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x14039a180",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14039a191        if (*(arg1 + 0x2a0) != 0)\n14039a19d        void var_48\n14039a19d        sub_140278e50(&var_48)\n14039a1ae        sub_1402647e0(*(arg1 + 0x2a0), &var_48)\n14039a1ba        int128_t zmm0_1 = sub_1402647a0(*(arg1 + 0x2a0))\n14039a1d5        uint128_t zmm1\n14039a1d5        zmm1.d = _mm_cvtepi32_ps(zx.o(sub_1402647c0(*(arg1 + 0x2a0)))).d f- 2f\n14039a1dd        int32_t var_2c\n14039a1dd        zmm1.d = zmm1.d f- var_2c\n14039a1eb        if (zmm0_1.d f>= zmm1.d)\n14039a21a        label_14039a21a:\n14039a21a        sub_140278e80(&var_48)\n14039a21f        int64_t rax_3\n14039a21f        rax_3.b = 1\n14039a226        return rax_3\n14039a1ed        void* rcx_4 = *(arg1 + 0x2a0)\n14039a1f7        if (rcx_4 != 0 && sub_140264800(rcx_4) == 2)\n14039a201        goto label_14039a21a\n14039a208        sub_140278e80(&var_48)\n14039a20d        int64_t rax\n14039a20d        rax.b = 0\n14039a214        return rax",
+  "fetched_at": "2026-04-26T17:23:51Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x14010a7c0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nvoid FUN_14010a7c0(longlong *param_1)\n\n{\n  longlong lVar1;\n  undefined1 local_1b8 [432];\n  \n  FUN_14010ea10(local_1b8);\n  if (DAT_140a62540 == DAT_140a62548) {\n    FUN_14010c540(&DAT_140a62538,DAT_140a62540,local_1b8);\n  }\n  else {\n    FUN_14010e5f0(DAT_140a62540,local_1b8);\n    DAT_140a62540 = DAT_140a62540 + 0x1a8;\n  }\n  lVar1 = (longlong)((int)((DAT_140a62540 - DAT_140a62538) / 0x1a8) + -1) * 0x1a8;\n  FUN_14010ab40(param_1,lVar1 + DAT_140a62538);\n  if (DAT_140a62360 == 0) {\n    DynamicVectorClass<class_GameObjectClass*___ptr64>::\n    DynamicVectorClass<class_GameObjectClass*___ptr64>_Constructor_or_Destructor\n              (param_1,DAT_140a62538 + lVar1);\n  }\n  else if (DAT_140a62360 == 1) {\n    FUN_14010a8e0(param_1,DAT_140a62538 + lVar1);\n  }\n  else if (DAT_140a62360 == 2) {\n    DynamicVectorClass<class_GameObjectClass*___ptr64>::\n    DynamicVectorClass<class_GameObjectClass*___ptr64>_Constructor_or_Destructor\n              (param_1,DAT_140a62538 + lVar1);\n  }\n  FUN_14010ed20(local_1b8);\n  return;\n}\n\n",
+  "fetched_at": "2026-04-26T17:06:09Z"
+}

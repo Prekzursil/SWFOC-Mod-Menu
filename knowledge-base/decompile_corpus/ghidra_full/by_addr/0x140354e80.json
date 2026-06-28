@@ -1,0 +1,7 @@
+{
+  "addr": "0x140354e80",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nvoid __thiscall ModelComponentClass::scalar_deleting_destructor(ModelComponentClass *this)\n\n{\n  ModelComponentClass_vftable *this_00;\n  \n  this_00 = this[1].vftablePtr;\n  if (this_00 != (ModelComponentClass_vftable *)0x0) {\n    ~ModelComponentClass((ModelComponentClass *)this_00);\n    thunk_FUN_1407864b8(this_00,0x20);\n    this[1].vftablePtr = (ModelComponentClass_vftable *)0x0;\n    return;\n  }\n  this[1].vftablePtr = (ModelComponentClass_vftable *)0x0;\n  return;\n}\n\n",
+  "fetched_at": "2026-04-26T17:11:01Z"
+}

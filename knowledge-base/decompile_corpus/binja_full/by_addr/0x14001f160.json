@@ -1,0 +1,7 @@
+{
+  "addr": "0x14001f160",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14001f172        if ((arg2 & 2) == 0)\n14001f23c        sub_14001ec10(arg1)\n14001f245        if ((arg2 & 1) != 0)\n14001f24f        j_sub_1407864b8(arg1)\n14001f261        return arg1\n14001f186        int64_t i = *(arg1 - 8)\n14001f195        if (i != 0)\n14001f19e        void* rbx_2 = arg1 + 0x20 + i * 0x28\n14001f1b0        int64_t rdx = *(rbx_2 - 0x28)\n14001f1b4        rbx_2 -= 0x28\n14001f1b8        i -= 1\n14001f1bf        if (rdx u>= 0x10)\n14001f1c1        void* rcx = *(rbx_2 - 0x18)\n14001f1cf        if (rdx + 1 u>= 0x1000)\n14001f1d1        void* r8_1 = *(rcx - 8)\n14001f1e4        if (rcx - r8_1 - 8 u> 0x1f)\n14001f262        _invalid_parameter_noinfo_noreturn()\n14001f262        noreturn\n14001f1e6        rcx = r8_1\n14001f1e9        j_sub_1407864b8(rcx)\n14001f1ee        *(rbx_2 - 8) = 0\n14001f1f2        *rbx_2 = 0xf\n14001f1f9        *(rbx_2 - 0x18) = 0\n14001f200        do while (i != 0)\n14001f206        if ((arg2 & 1) != 0)\n14001f21a        j_sub_1407864b8(arg1 - 8)\n14001f23b        return arg1 - 8",
+  "fetched_at": "2026-04-26T16:51:39Z"
+}

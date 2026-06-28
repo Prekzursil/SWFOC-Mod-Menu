@@ -1,0 +1,7 @@
+{
+  "addr": "0x1403ef220",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1403ef234        *arg1 = &PerceptionParameterBindingsClass::`vftable'\n1403ef237        int64_t* rax = arg1[2]\n1403ef23b        void** i = *rax\n1403ef241        if (i != rax)\n1403ef250        int64_t* rcx = i[3]\n1403ef25d        if ((*(*rcx + 0x28))(rcx) == 2)\n1403ef263        sub_14024a4b0(&i[3])\n1403ef268        i = *i\n1403ef26f        do while (i != arg1[2])\n1403ef284        return sub_1400465e0(&arg1[1]) __tailcall",
+  "fetched_at": "2026-04-26T17:25:20Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x140569540",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140569550        uint64_t result = sub_1404c36f0(arg1)\n140569557        if (result.b != 1)\n14056955d        int64_t* rbx_1 = *(arg1 + 0x28)\n140569564        if (rbx_1 != 0)\n140569572        int32_t rax = sub_1403956a0(rbx_1)\n14056957e        result = sub_14039a320(rbx_1, 1)\n140569595        if (result.b == 0 || *(rbx_1[0x53] + 0xaf) != 0)\n1405695ce        if (arg2 != 0)\n1405695d0        result = rbx_1[0x53]\n1405695db        if (arg2 == 0 || *(result + 0x37) != 1)\n1405695ec        int64_t* rax_3 = (*(*rbx_1 + 0x10))(rbx_1, 1)\n1405695f2        if (rax_3 != 0)\n1405695f4        int64_t rdx_3 = *rax_3\n1405695fa        result = (*(rdx_3 + 0x1a8))(rax_3, rdx_3)\n140569602        if (rax_3 == 0 || result.b == 0)\n140569606        result = sub_14027b590(rax)\n14056960d        if (result.b == 0)\n14056960f        result = zx.q(rax - 5)\n140569615        if (result.d u> 1)\n14056961a        result = sub_140397040(rbx_1)\n140569621        if (result.b == 0)\n140569673        return sub_1403a92f0(rbx_1, 6, 0, 1, sub_1401ffbb0(&data_140a13e24, 0x3e4ccccd, 0x3f400000), 0x3f800000, 0, 0, 0, 0)\n140569597        void* rdx_1 = rbx_1[0x1e]\n1405695ae        if (*(rdx_1 + 0xf4) != 0 && rax != 0x19)\n1405695c6        return sub_140391260(rbx_1, rdx_1) __tailcall\n140569687        return result",
+  "fetched_at": "2026-04-26T17:34:36Z"
+}

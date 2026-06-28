@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407c3650",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1407c3650        int32_t r8_2 = *arg1\n1407c365c        if (r8_2 != *arg2)\n1407c3660        return 0\n1407c3664        if (r8_2 == 0)\n1407c36b6        return 1\n1407c366a        if (r8_2 == 1)\n1407c36ab        int32_t rdx_2\n1407c36ab        rdx_2.b = arg1[2] == arg2[2]\n1407c36b0        return zx.q(rdx_2)\n1407c3676        if (r8_2 == 2 || r8_2 != 3)\n1407c369b        int32_t rdx_1\n1407c369b        rdx_1.b = *(arg1 + 8) == *(arg2 + 8)\n1407c36a0        return zx.q(rdx_1)\n1407c3678        double zmm0 = *(arg1 + 8)\n1407c367d        double temp2 = *(arg2 + 8)\n1407c367d        zmm0 - temp2\n1407c3684        if (not(is_unordered.q(zmm0, temp2)) && not(zmm0 != temp2))\n1407c368b        return zx.q(r8_2 - 2)\n1407c3690        return 0",
+  "fetched_at": "2026-04-26T17:33:39Z"
+}

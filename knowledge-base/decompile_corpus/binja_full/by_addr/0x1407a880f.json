@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407a880f",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1407a880f        return D3DXCreateCubeTextureFromFileInMemory() __tailcall",
+  "fetched_at": "2026-04-26T17:32:34Z"
+}

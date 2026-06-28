@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407eae80",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1407eae84        void* rcx = data_140a12390\n1407eae8b        struct DynamicVectorClass<class alTerrain::Shadow_Blob_Bucket>::VTable* const result = &DynamicVectorClass<class alTerrain::Shadow_Blob_Bucket>::`vftable'\n1407eae92        data_140a12388 = &DynamicVectorClass<class alTerrain::Shadow_Blob_Bucket>::`vftable'\n1407eae9c        if (rcx != 0)\n1407eaea8        if ((data_140a1239c & 0x80000000) == 0)\n1407eaec9        sub_140138a30(rcx, 3)\n1407eaebc        HeapFree(GetProcessHeap(), HEAP_NONE, data_140a12390)\n1407eaece        result = nullptr\n1407eaed0        data_140a1239c &= 0x80000000\n1407eaeda        data_140a12390 = 0\n1407eaee1        data_140a12398 = 0\n1407eaeeb        return result",
+  "fetched_at": "2026-04-26T17:35:18Z"
+}

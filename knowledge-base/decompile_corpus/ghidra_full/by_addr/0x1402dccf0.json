@@ -1,0 +1,7 @@
+{
+  "addr": "0x1402dccf0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_1402dccf0(undefined8 param_1,int param_2)\n\n{\n  int iVar1;\n  longlong lVar2;\n  int iVar3;\n  \n  iVar3 = 0x1a5;\n  if (0x1a4 < DAT_140b279f0 + 0x1a4) {\n    do {\n      lVar2 = FUN_140347b50(iVar3);\n      if ((lVar2 != 0) && (iVar1 = FUN_14034c770(lVar2,0), param_2 == iVar1)) {\n        FUN_140346ea0(lVar2);\n      }\n      iVar3 = iVar3 + 1;\n    } while (iVar3 <= DAT_140b279f0 + 0x1a4);\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T17:24:16Z"
+}

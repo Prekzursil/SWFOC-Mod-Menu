@@ -1,0 +1,7 @@
+{
+  "addr": "0x140784a48",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* Library Function - Single Match\n    __acrt_uninitialize_stdio\n   \n   Library: Visual Studio 2019 Release */\n\nvoid __acrt_uninitialize_stdio(bool param_1)\n\n{\n  longlong lVar1;\n  \n  common_flush_all(param_1);\n  _fcloseall();\n  lVar1 = 0;\n  do {\n    __acrt_stdio_free_buffer_nolock(*(undefined8 *)(lVar1 + DAT_140b3c0b8));\n    DeleteCriticalSection((LPCRITICAL_SECTION)(*(longlong *)(lVar1 + DAT_140b3c0b8) + 0x30));\n    lVar1 = lVar1 + 8;\n  } while (lVar1 != 0x18);\n  _free_base(DAT_140b3c0b8);\n  DAT_140b3c0b8 = 0;\n  return;\n}",
+  "fetched_at": "2026-04-26T18:51:21Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x1405703f0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140570400        *arg1 = &std::_Facet_base::`vftable'\n140570406        if ((arg2 & 1) != 0)\n14057040d        j_sub_1407864b8(arg1)\n14057041a        return arg1",
+  "fetched_at": "2026-04-26T17:34:56Z"
+}

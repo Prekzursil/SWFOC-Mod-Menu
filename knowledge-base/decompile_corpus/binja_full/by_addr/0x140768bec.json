@@ -1,0 +1,7 @@
+{
+  "addr": "0x140768bec",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140768c05        void arg_8\n140768c05        void* r14 = &arg_8\n140768c0d        char* rdi = arg1\n140768c10        uint32_t rcx = zx.d(*arg1)\n140768c13        if (arg2 != 0)\n140768c13        r14 = arg2\n140768c25        while (isspace(rcx) != 0)\n140768c1f        rdi = &rdi[1]\n140768c22        rcx = zx.d(*rdi)\n140768c2e        int64_t rbx\n140768c2e        rbx.b = *rdi\n140768c35        if (((rbx - 0x2b).b & 0xfd) == 0)\n140768c3b        rdi = &rdi[1]\n140768c37        rbx.b = 0x2b\n140768c4f        int64_t result = _Stoullx(rdi, r14, arg3, arg4)\n140768c62        if (rdi == *r14)\n140768c64        *r14 = arg1\n140768c8f        if (result != 0 || (rbx.b == 0x2b && result u> 0x7fffffffffffffff) || (rbx.b == 0x2d && result u> -0x8000000000000000))\n140768c71        goto label_140768c91\n140768c8f        if ((arg1 == *r14 && result != 0) || (rbx.b == 0x2b && result u> 0x7fffffffffffffff) || (rbx.b == 0x2d && result u> -0x8000000000000000))\n140768c91        label_140768c91:\n140768c91        void* rax_4 = _errno()\n140768c96        *rax_4 = 0x22\n140768c9f        if (arg4 != 0)\n140768ca1        *arg4 = 1\n140768ca8        rbx.b -= 0x2d\n140768cab        char temp0_1 = rbx.b\n140768cab        rbx.b = neg.b(rbx.b)\n140768cb0        return sbb.q(rax_4, rax_4, temp0_1 != 0) + -0x8000000000000000\n140768cbe        if (rbx.b == 0x2d)\n140768cbe        return neg.q(result)\n140768cc2        return result",
+  "fetched_at": "2026-04-26T17:30:15Z"
+}

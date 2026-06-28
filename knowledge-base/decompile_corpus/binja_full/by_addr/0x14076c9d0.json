@@ -1,0 +1,7 @@
+{
+  "addr": "0x14076c9d0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14076c9d4        uint64_t rax\n14076c9d4        if (arg3 u>= 0x10)\n14076c9de        arg2 = zx.d(arg2.b) * 0x1010101\n14076c9e5        uint128_t zmm0 = _mm_shuffle_epi32(zx.o(arg2), 0)\n14076c9f0        char zmm1[0x10] = *arg1\n14076c9f4        arg1 = &arg1[1]\n14076c9f8        int64_t temp0_2 = arg3\n14076c9f8        arg3 -= 0x10\n14076ca05        uint64_t rflags_1\n14076ca05        rax, rflags_1 = _bit_scan_forward(zx.q(_mm_movemask_epi8(_mm_cmpeq_epi8(zmm1, zmm0))))\n14076ca09        if (temp0_2 != 0x10)\n14076ca38        return &(*arg1)[rax - 0x10]\n14076ca0f        do while (arg3 u>= 0x10)\n14076ca14        if (arg3 != 0)\n14076ca2d        int64_t i\n14076ca20        rax.b = *arg1\n14076ca22        arg1 = &(*arg1)[1]\n14076ca25        rax.b ^= arg2.b\n14076ca27        if (rax.b == 0)\n14076ca3d        return &(*arg1)[-1]\n14076ca29        i = arg3\n14076ca29        arg3 -= 1\n14076ca2d        do while (i != 1)\n14076ca32        return 0",
+  "fetched_at": "2026-04-26T17:30:26Z"
+}

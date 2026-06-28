@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407dcba0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined8 * __thiscall\nLightningEffectClass::vfunction7_for_RefCountClass(LightningEffectClass *this)\n\n{\n  undefined8 *puVar1;\n  \n  puVar1 = &(this->LightningEffectClass_data).offset_0xa0;\n  if (0xf < (ulonglong)(this->LightningEffectClass_data).offset_0xb8) {\n    puVar1 = (undefined8 *)*puVar1;\n  }\n  return puVar1;\n}",
+  "fetched_at": "2026-04-26T18:58:56Z"
+}

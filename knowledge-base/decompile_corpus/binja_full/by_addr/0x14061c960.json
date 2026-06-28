@@ -1,0 +1,7 @@
+{
+  "addr": "0x14061c960",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14061c96b        struct BehaviorClass::SkyDomeBehaviorClass::VTable** result = operator new(0x58)\n14061c976        if (result == 0)\n14061c9c5        return result\n14061c97b        sub_1404c32d0(result)\n14061c987        result[8] = 0\n14061c98f        *result = &SkyDomeBehaviorClass::`vftable'{for `BehaviorClass'}\n14061c999        result[1] = &SkyDomeBehaviorClass::`vftable'{for `RefCountClass'}\n14061c9a4        result[3] = &SkyDomeBehaviorClass::`vftable'{for `SignalListenerClass'}\n14061c9ab        result[9] = 0\n14061c9b3        result[0xa].d = 0xffffffff\n14061c9bf        return result",
+  "fetched_at": "2026-04-26T17:23:38Z"
+}

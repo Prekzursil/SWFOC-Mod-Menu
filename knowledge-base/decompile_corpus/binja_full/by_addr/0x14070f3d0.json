@@ -1,0 +1,7 @@
+{
+  "addr": "0x14070f3d0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14070f3d6        struct SpecialAbilityClass::SystemSpyAbilityClass::VTable** result = arg1\n14070f3d9        sub_14048c780(arg1)\n14070f3e5        result[0x2f] = 0x41f00000\n14070f3f0        *result = &SystemSpyAbilityClass::`vftable'{for `SpecialAbilityClass'}\n14070f3fa        result[1] = &SystemSpyAbilityClass::`vftable'{for `RefCountClass'}\n14070f401        result[0x30] = 0\n14070f40c        result[0x31] = 0\n14070f417        result[8].w = 0x101\n14070f41d        *(result + 0x3c) = 6\n14070f429        return result",
+  "fetched_at": "2026-04-26T17:27:39Z"
+}

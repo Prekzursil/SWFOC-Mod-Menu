@@ -1,0 +1,7 @@
+{
+  "addr": "0x140689ad0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140689ad6        struct ScheduledEventClass::AllyEventClass::VTable** result = arg1\n140689ad9        sub_140512c50(arg1)\n140689ae5        result[9].d = 0xffffffff\n140689aec        *result = &AllyEventClass::`vftable'{for `ScheduledEventClass'}\n140689af2        result[4].d = 0x23\n140689afe        return result",
+  "fetched_at": "2026-04-26T17:15:26Z"
+}

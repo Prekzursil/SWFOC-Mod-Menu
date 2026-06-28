@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401889d0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1401889e4        int64_t* rcx = *(arg1 + 0x70)\n1401889eb        if (rcx != 0)\n1401889f0        (*(*rcx + 0x10))(rcx)\n1401889f3        *(arg1 + 0x70) = 0\n1401889f7        int64_t* rcx_1 = *(arg1 + 0x78)\n1401889fe        if (rcx_1 != 0)\n140188a03        (*(*rcx_1 + 0x10))(rcx_1)\n140188a06        *(arg1 + 0x78) = 0\n140188a0a        void* rdi = *(arg1 + 0x98)\n140188a14        if (rdi != 0)\n140188a19        sub_1401a2130(rdi)\n140188a26        j_sub_1407864b8(rdi)\n140188a2b        *(arg1 + 0x98) = 0\n140188a32        void* rdi_1 = *(arg1 + 0xa0)\n140188a3c        if (rdi_1 != 0)\n140188a41        j_sub_1401b4ec0(rdi_1)\n140188a4e        j_sub_1407864b8(rdi_1)\n140188a53        *(arg1 + 0xa0) = 0\n140188a5a        int64_t* rdi_2 = *(arg1 + 0x108)\n140188a64        if (rdi_2 != 0)\n140188a66        int64_t rcx_6 = *rdi_2\n140188a6c        if (rcx_6 != 0)\n140188a6e        j_sub_1407864b8(rcx_6)\n140188a73        *rdi_2 = 0\n140188a76        int64_t rcx_7 = rdi_2[1]\n140188a7d        if (rcx_7 != 0)\n140188a7f        j_sub_1407864b8(rcx_7)\n140188a84        rdi_2[1] = 0\n140188a90        j_sub_1407864b8(rdi_2)\n140188a95        *(arg1 + 0x108) = 0\n140188aa6        float zmm1 = data_140a6e748\n140188ac2        uint128_t result = _mm_cvtepi32_ps(zx.o(*(arg1 + 0x30) * *(arg1 + 0x20) + *(arg1 + 0x24) * 6))\n140188ac9        data_140a6e748 = zmm1 f- result.d\n140188ad6        return result",
+  "fetched_at": "2026-04-26T17:24:02Z"
+}

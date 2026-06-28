@@ -1,0 +1,7 @@
+{
+  "addr": "0x140294bc0",
+  "tool": "binary_ninja",
+  "fact_id": "rva_player_list_find_by_id",
+  "body": "140294bc7        if (arg2 s>= 0 && arg2 s< *(arg1 + 0x28))\n140294bd4        return *(*(arg1 + 0x20) + (sx.q(arg2) << 3))\n140294bd7        return 0",
+  "fetched_at": "2026-04-26T16:43:13Z"
+}

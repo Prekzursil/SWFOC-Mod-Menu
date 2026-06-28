@@ -1,0 +1,7 @@
+{
+  "addr": "0x140092850",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nvoid __thiscall LoadingThreadClass::~LoadingThreadClass(LoadingThreadClass *this)\n\n{\n  longlong *plVar1;\n  ulonglong uVar2;\n  longlong lVar3;\n  longlong lVar4;\n  \n  this->vftablePtr = &vftable;\n  plVar1 = (this->LoadingThreadClass_data).offset_0x0;\n  if (plVar1 != (longlong *)0x0) {\n    (**(code **)(*plVar1 + 8))();\n    (this->LoadingThreadClass_data).offset_0x0 = (longlong *)0x0;\n  }\n  uVar2 = (this->LoadingThreadClass_data).offset_0x30;\n  if (0xf < uVar2) {\n    lVar3 = (this->LoadingThreadClass_data).offset_0x18;\n    lVar4 = lVar3;\n    if (0xfff < uVar2 + 1) {\n      lVar4 = *(longlong *)(lVar3 + -8);\n      if (0x1f < (lVar3 - lVar4) - 8U) {\n                    /* WARNING: Subroutine does not return */\n        FUN_1407711cc(lVar3 - lVar4,uVar2 + 0x28);\n      }\n    }\n    thunk_FUN_1407864b8(lVar4);\n  }\n  (this->LoadingThreadClass_data).offset_0x28 = 0;\n  (this->LoadingThreadClass_data).offset_0x30 = 0xf;\n  *(undefined1 *)&(this->LoadingThreadClass_data).offset_0x18 = 0;\n  plVar1 = (this->LoadingThreadClass_data).offset_0x0;\n  if (plVar1 != (longlong *)0x0) {\n    (**(code **)(*plVar1 + 8))();\n  }\n  ThreadClass::~ThreadClass((ThreadClass *)this);\n  return;\n}\n\n",
+  "fetched_at": "2026-04-26T16:58:13Z"
+}

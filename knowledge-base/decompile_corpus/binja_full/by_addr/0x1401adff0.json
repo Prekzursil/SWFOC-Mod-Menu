@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401adff0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1401adffe        struct alD3dSimpleEngineParam::_EngineParam_Get_D3d_Model_View_Projection_Transform::VTable** result = operator new(0x10)\n1401ae006        if (result == 0)\n1401ae021        return result\n1401ae00f        result[1] = arg1\n1401ae013        *result = &_EngineParam_Get_D3d_Model_View_Projection_Transform::`vftable'{for `alD3dSimpleEngineParam'}\n1401ae01b        return result",
+  "fetched_at": "2026-04-26T17:25:31Z"
+}

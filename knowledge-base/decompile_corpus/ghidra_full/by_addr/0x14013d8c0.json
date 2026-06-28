@@ -1,0 +1,7 @@
+{
+  "addr": "0x14013d8c0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void thunk_FUN_140196890(int param_1,undefined4 *param_2,undefined4 *param_3,undefined4 *param_4,\n                        undefined4 *param_5)\n\n{\n  longlong lVar1;\n  \n  lVar1 = (longlong)param_1;\n  if (param_2 != (undefined4 *)0x0) {\n    *param_2 = *(undefined4 *)(&DAT_140a70148 + lVar1 * 0xc);\n    param_2[1] = *(undefined4 *)(&DAT_140a7014c + lVar1 * 0xc);\n    param_2[2] = *(undefined4 *)(&DAT_140a70150 + lVar1 * 0xc);\n  }\n  if (param_3 != (undefined4 *)0x0) {\n    *param_3 = *(undefined4 *)(&DAT_140a703e8 + lVar1 * 0xc);\n    param_3[1] = *(undefined4 *)(&DAT_140a703ec + lVar1 * 0xc);\n    param_3[2] = *(undefined4 *)(&DAT_140a703f0 + lVar1 * 0xc);\n  }\n  if (param_4 != (undefined4 *)0x0) {\n    *param_4 = *(undefined4 *)(&DAT_140a70058 + lVar1 * 0xc);\n    param_4[1] = *(undefined4 *)(&DAT_140a7005c + lVar1 * 0xc);\n    param_4[2] = *(undefined4 *)(&DAT_140a70060 + lVar1 * 0xc);\n  }\n  if (param_5 != (undefined4 *)0x0) {\n    *param_5 = (&DAT_140a70550)[lVar1];\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T17:16:04Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x140636960",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nundefined8 __thiscall\nConfuseBehaviorClass::vfunction7(ConfuseBehaviorClass *this,undefined8 param_1,int param_2)\n\n{\n  byte bVar1;\n  undefined *puVar2;\n  \n  BehaviorClass::vfunction7((BehaviorClass *)this,param_1,param_2);\n  bVar1 = *(byte *)((longlong)this->offset_0x18 + 0x3a2);\n  if ((char)bVar1 < '\\0') {\n    *(byte *)((longlong)this->offset_0x18 + 0x3a2) = bVar1 & 0x7f;\n    FUN_1403a8e50(this->offset_0x18,0);\n    puVar2 = this->offset_0x18[0x56];\n    if (((puVar2 != (undefined *)0x0) && (puVar2[0x348] != -1)) && ((puVar2[0x3a2] & 0x80) != 0)) {\n      FUN_1403a8e50(puVar2,0);\n      puVar2[0x3a2] = puVar2[0x3a2] & 0x7f;\n    }\n    (*this->vftablePtr->vfunction25)(this);\n  }\n  return 0x650000;\n}\n\n",
+  "fetched_at": "2026-04-26T17:00:31Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x1405f6870",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "PlanBehaviorClass * __thiscall PlanBehaviorClass::PlanBehaviorClass(PlanBehaviorClass *this)\n\n{\n                    /* inlined constructor: SignalListenerClass::SignalListenerClass */\n  this->vftablePtr =\n       (PlanBehaviorClass_vftable_for_SignalListenerClass *)&SignalListenerClass::vftable;\n                    /* inlined constructor: RefCountClass::RefCountClass */\n  (this->MultiLinkedListMember_data).offset_0x0 = (longlong *)0x0;\n  this->vftablePtr = (PlanBehaviorClass_vftable_for_RefCountClass *)&RefCountClass::vftable;\n  *(undefined4 *)&this->offset_0x8 = 0;\n  AIDiagnosticsClass::AIDiagnosticsClass((AIDiagnosticsClass *)&this->vftablePtr);\n  this->vftablePtr = &vftable_for_SignalListenerClass;\n  this->vftablePtr = &vftable_for_RefCountClass;\n  this->vftablePtr = &vftable_for_AIDiagnosticsClass;\n  this->offset_0x38 = (longlong *)0x0;\n  this->offset_0x40 = 0;\n  this->offset_0x48 = 0;\n  this->offset_0x58 = 0;\n  this->offset_0x60 = 0;\n  *(undefined8 *)&this->offset_0x68 = 0;\n  this->offset_0x50 = 0;\n  *(undefined1 *)&this->offset_0x70 = 0;\n  this->offset_0x78 = (undefined **)0x0;\n  this->offset_0x80 = 0;\n  *(undefined1 *)&this->offset_0x88 = 1;\n  this->offset_0x90 = 0;\n  *(undefined1 *)&this->offset_0x98 = 0;\n  return this;\n}",
+  "fetched_at": "2026-04-26T17:23:33Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407738a0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1407738b9        switch (arg1)\n1407738cc        case 0, 3, 0xa\n1407738cc        return 4\n1407738c0        case 1\n1407738c0        return 1\n1407738c6        case 2\n1407738c6        return 2\n1407738d2        case 4, 5, 6, 7, 9, 0xb\n1407738d2        return 8\n1407738d5        return 0",
+  "fetched_at": "2026-04-26T17:30:47Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x14062e020",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "char * __thiscall IdleBehaviorClass::vfunction9(void)\n\n{\n  return \"IdleBehaviorClass\";\n}",
+  "fetched_at": "2026-04-26T17:32:42Z"
+}

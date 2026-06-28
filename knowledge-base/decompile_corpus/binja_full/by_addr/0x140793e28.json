@@ -1,0 +1,7 @@
+{
+  "addr": "0x140793e28",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140793e30        if (arg1 == 0)\n140793e32        void* i = &data_140b3c8e0\n140793e5f        while (i != &data_140b3c980)\n140793e39        HMODULE hLibModule = *i\n140793e3f        if (hLibModule != 0)\n140793e45        if (hLibModule != -1)\n140793e47        FreeLibrary(hLibModule)\n140793e4d        *i = 0\n140793e51        i += 8\n140793e61        void* result\n140793e61        result.b = 1\n140793e68        return result",
+  "fetched_at": "2026-04-26T17:31:53Z"
+}

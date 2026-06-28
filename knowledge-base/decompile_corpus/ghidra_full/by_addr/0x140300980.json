@@ -1,0 +1,7 @@
+{
+  "addr": "0x140300980",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */\n\nvoid FUN_140300980(longlong param_1)\n\n{\n  undefined8 local_38;\n  undefined8 uStack_30;\n  undefined4 local_28;\n  undefined4 uStack_24;\n  undefined4 uStack_20;\n  undefined4 uStack_1c;\n  undefined4 local_18;\n  undefined4 uStack_14;\n  undefined4 uStack_10;\n  undefined4 uStack_c;\n  \n  if ((*(char *)(param_1 + 0x2699) == '\\0') && (*(longlong *)(param_1 + 0xfd8) != 0)) {\n    FUN_14013d820(*(undefined8 *)(*(longlong *)(param_1 + 0xfe0) + 0x40));\n    local_38 = _DAT_140800820;\n    uStack_30 = _UNK_140800828;\n    local_18 = _DAT_140800840;\n    uStack_14 = _UNK_140800844;\n    uStack_10 = _UNK_140800848;\n    uStack_c = _UNK_14080084c;\n    local_28 = _DAT_140800830;\n    uStack_24 = _UNK_140800834;\n    uStack_20 = _UNK_140800838;\n    uStack_1c = _UNK_14080083c;\n    FUN_14013d850(&local_38);\n                    /* WARNING: Could not recover jumptable at 0x0001403009eb. Too many branches */\n                    /* WARNING: Treating indirect jump as call */\n    (**(code **)(**(longlong **)(param_1 + 0xfd8) + 0x50))(*(longlong **)(param_1 + 0xfd8),0);\n    return;\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T17:27:07Z"
+}

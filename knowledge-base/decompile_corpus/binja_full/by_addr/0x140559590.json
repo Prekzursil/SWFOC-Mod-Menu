@@ -1,0 +1,7 @@
+{
+  "addr": "0x140559590",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140559593        if (arg2 == arg3)\n140559593        return \n1405595a2        int64_t* rbx_1 = arg2\n1405595a8        sub_14040db50(rbx_1)\n1405595ad        rbx_1 = &rbx_1[0xe]\n1405595b4        do while (rbx_1 != arg3)\n1405595c0        return ",
+  "fetched_at": "2026-04-26T17:34:21Z"
+}

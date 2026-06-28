@@ -1,0 +1,7 @@
+{
+  "addr": "0x1404764d0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_1404764d0(longlong param_1,alD3dTextureEffectParam *param_2)\n\n{\n  longlong lVar1;\n  alD3dTextureEffectParam *paVar2;\n  \n  if (param_2 != (alD3dTextureEffectParam *)0x0) {\n    lVar1 = FUN_140047820(param_2);\n    if ((lVar1 != 0) && (lVar1 = FUN_14004fcc0(), *(longlong *)(lVar1 + 8) != 0)) {\n      lVar1 = FUN_140047820(param_2);\n      if (lVar1 != 0) {\n        lVar1 = FUN_140047820(param_2);\n        *(undefined8 *)(lVar1 + 0x58) = 0;\n      }\n      FUN_140047820(param_2);\n      lVar1 = FUN_14004fcc0();\n      FUN_14047fbe0(*(undefined8 *)(lVar1 + 8));\n      alD3dTextureEffectParam::vfunction5(param_2,(longlong *)0x0);\n    }\n    if ((param_2 != *(alD3dTextureEffectParam **)(param_1 + 0xa8)) &&\n       (paVar2 = *(alD3dTextureEffectParam **)(param_1 + 0xb0),\n       paVar2 != (alD3dTextureEffectParam *)0x0)) {\n      while (paVar2 != param_2) {\n        paVar2 = (alD3dTextureEffectParam *)(paVar2->alD3dEffectParamInterface_data).offset_0x0;\n        if (paVar2 == (alD3dTextureEffectParam *)0x0) {\n          return;\n        }\n      }\n      FUN_140476440(param_1);\n      lVar1 = (paVar2->alD3dEffectParamInterface_data).offset_0x0;\n      *(longlong *)(param_1 + 0xb0) = lVar1;\n      if (lVar1 == 0) {\n        *(undefined1 *)(param_1 + 0xb8) = 0;\n      }\n    }\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T17:58:45Z"
+}

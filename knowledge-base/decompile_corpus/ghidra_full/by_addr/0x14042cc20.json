@@ -1,0 +1,7 @@
+{
+  "addr": "0x14042cc20",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* LocomotorCommonClass member function inherited by LandTeamContainerLocomotorBehaviorClass\n   LocomotorCommonClass member function inherited by FighterLocomotorBehaviorClass\n   LocomotorCommonClass member function inherited by WalkLocomotorBehaviorClass\n   LocomotorCommonClass member function inherited by LocomotorBehaviorClass\n   LocomotorCommonClass member function inherited by StarshipLocomotorBehaviorClass\n   LocomotorCommonClass member function inherited by SimpleSpaceLocomotorBehaviorClass\n   LocomotorCommonClass member function inherited by LandTeamInfantryLocomotorBehaviorClass\n   LocomotorCommonClass member function inherited by BikeLocomotorBehaviorClass\n   LocomotorCommonClass member function inherited by FlyingLocomotorBehaviorClass\n   LocomotorCommonClass member function inherited by JetPackLocomotorBehaviorClass\n   LocomotorCommonClass member function inherited by LandBomberLocomotorBehaviorClass */\n\nbool __thiscall LocomotorCommonClass::vfunction58(LocomotorCommonClass *this)\n\n{\n  longlong lVar1;\n  \n  if (this->offset_0x18[0x15] != (undefined *)0x0) {\n    lVar1 = FUN_1405569b0();\n    if (lVar1 != 0) {\n      return *(int *)(lVar1 + 0x48) == 1;\n    }\n  }\n  return false;\n}",
+  "fetched_at": "2026-04-26T17:49:28Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x140790884",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14079088e        int64_t i = 0\n1407908b5        while (i u< 0x400)\n140790897        CRITICAL_SECTION* rcx_1 = *(i + &data_140b3c4d0)\n14079089e        if (rcx_1 != 0)\n1407908a0        __acrt_lowio_destroy_handle_array(rcx_1)\n1407908a5        *(i + &data_140b3c4d0) = 0\n1407908aa        i += 8\n1407908bc        int64_t result\n1407908bc        result.b = 1\n1407908c3        return result",
+  "fetched_at": "2026-04-26T17:31:43Z"
+}

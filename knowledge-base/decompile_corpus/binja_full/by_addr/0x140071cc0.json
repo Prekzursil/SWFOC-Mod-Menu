@@ -1,0 +1,7 @@
+{
+  "addr": "0x140071cc0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140071cc6        int64_t var_10 = 0xf\n140071cd6        int64_t* var_28 = nullptr\n140071cdb        int64_t var_18 = 0\n140071ce6        int64_t* rcx = *(SteamInternal_ContextInit(&data_140a10e00) + 0x18)\n140071cff        sub_140200cd0(&var_28, \"http://store.steampowered.com/news/?appids=%d\", zx.q((*(*rcx + 0x48))(rcx)))\n140071d0b        int64_t rax_3 = SteamInternal_ContextInit(&data_140a10e00)\n140071d17        int64_t* rdx = &var_28\n140071d1c        if (var_10 u>= 0x10)\n140071d1c        rdx = var_28\n140071d22        int64_t* rcx_2 = *(rax_3 + 0x10)\n140071d29        int64_t result = (*(*rcx_2 + 0xf0))(rcx_2, rdx)\n140071d38        if (var_10 u< 0x10)\n140071d6c        return result\n140071d3a        int64_t* rcx_3 = var_28\n140071d42        int64_t* rax_5 = rcx_3\n140071d4c        if (var_10 + 1 u>= 0x1000)\n140071d4e        rcx_3 = rcx_3[-1]\n140071d61        if (rax_5 - rcx_3 - 8 u> 0x1f)\n140071d6d        _invalid_parameter_noinfo_noreturn()\n140071d6d        noreturn\n140071d63        return j_sub_1407864b8(rcx_3)",
+  "fetched_at": "2026-04-26T16:56:28Z"
+}

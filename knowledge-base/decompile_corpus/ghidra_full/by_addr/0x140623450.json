@@ -1,0 +1,7 @@
+{
+  "addr": "0x140623450",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined1 FUN_140623450(undefined8 param_1,longlong param_2)\n\n{\n  undefined8 uVar1;\n  undefined1 local_28 [4];\n  float local_24;\n  float local_20;\n  undefined1 local_18 [16];\n  \n  uVar1 = FUN_140623340();\n  FUN_14020acd0(local_18,param_2 + 0x78,uVar1);\n  FUN_14020b100(local_18,local_28,param_2 + 0x84);\n  if (((local_24 <= DAT_14085c064) || (DAT_14085c068 <= local_24)) &&\n     ((local_20 <= DAT_14085c064 || (DAT_14085c068 <= local_20)))) {\n    return 0;\n  }\n  return 1;\n}",
+  "fetched_at": "2026-04-26T17:30:24Z"
+}

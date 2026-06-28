@@ -1,0 +1,7 @@
+{
+  "addr": "0x140712d20",
+  "tool": "binary_ninja",
+  "fact_id": "rva_ability_berserker",
+  "body": "140712d26        struct SpecialAbilityClass::BerserkerAbilityClass::VTable** result = arg1\n140712d29        sub_14048c780(arg1)\n140712d35        *result = &BerserkerAbilityClass::`vftable'{for `SpecialAbilityClass'}\n140712d3f        result[1] = &BerserkerAbilityClass::`vftable'{for `RefCountClass'}\n140712d45        __builtin_memset(&result[0x2f], 0, 0x18)\n140712d62        return result",
+  "fetched_at": "2026-04-26T16:44:20Z"
+}

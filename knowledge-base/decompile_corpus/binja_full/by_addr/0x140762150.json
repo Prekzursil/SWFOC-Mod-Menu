@@ -1,0 +1,7 @@
+{
+  "addr": "0x140762150",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140762167        void var_58\n140762167        int64_t rax_1 = __security_cookie ^ &var_58\n14076217d        int32_t rdi = 0\n140762188        *arg5 = arg3\n14076218e        int64_t rbx = *arg2\n140762193        void var_38\n140762193        int32_t rax_2 = _Wcrtomb(&var_38, 0, arg2, arg1 + 0x10)\n14076219a        if (rax_2 s> 0)\n1407621a8        int64_t rsi_1 = sx.q(rax_2 - 1)\n1407621ae        if (arg4 - *arg5 s< rsi_1)\n1407621b0        *arg2 = rbx\n1407621b3        rdi = 1\n1407621bc        if (rax_2 - 1 s> 0)\n1407621c9        memcpy(*arg5, &var_38, rsi_1)\n1407621ce        *arg5 += rsi_1\n14076219c        rdi = 2\n1407621db        __security_check_cookie(rax_1 ^ &var_58)\n1407621f0        return zx.q(rdi)",
+  "fetched_at": "2026-04-26T17:30:07Z"
+}

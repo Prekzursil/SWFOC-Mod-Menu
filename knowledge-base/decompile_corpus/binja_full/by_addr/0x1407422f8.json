@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407422f8",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1407422fd        int32_t* arg_8 = arg1\n14074230f        std::_Lockit::_Lockit(arg1, 0)\n140742317        *(arg1 + 8) = 0\n14074231b        arg1[4].b = 0\n14074231e        *(arg1 + 0x18) = 0\n140742322        arg1[8].b = 0\n140742325        *(arg1 + 0x28) = 0\n140742329        arg1[0xc].w = 0\n14074232d        *(arg1 + 0x38) = 0\n140742331        arg1[0x10].w = 0\n140742335        *(arg1 + 0x48) = 0\n140742339        arg1[0x14].b = 0\n14074233c        *(arg1 + 0x58) = 0\n140742340        arg1[0x18].b = 0\n140742346        if (arg2 == 0)\n140742369        sub_140740924(\"bad locale name\")\n140742369        noreturn\n14074234e        std::_Locinfo::_Locinfo_ctor(arg1, arg2)\n140742361        return arg1",
+  "fetched_at": "2026-04-26T17:29:22Z"
+}

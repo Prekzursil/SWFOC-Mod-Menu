@@ -1,0 +1,7 @@
+{
+  "addr": "0x14036beb0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "longlong * FUN_14036beb0(longlong *param_1,longlong *param_2)\n\n{\n  longlong lVar1;\n  longlong lVar2;\n  ulonglong uVar3;\n  longlong lVar4;\n  longlong lVar5;\n  ulonglong uVar6;\n  \n  if (param_1 != param_2) {\n    lVar5 = *param_1;\n    lVar1 = param_2[1];\n    lVar2 = *param_2;\n    uVar3 = (lVar1 - lVar2) / 0x28;\n    uVar6 = (param_1[1] - lVar5) / 0x28;\n    if (uVar6 < uVar3) {\n      if ((ulonglong)((param_1[2] - lVar5) / 0x28) < uVar3) {\n        FUN_140379110(param_1,uVar3);\n        lVar5 = *param_1;\n        uVar6 = 0;\n      }\n      lVar4 = lVar2 + uVar6 * 0x28;\n      FUN_140366930(lVar2,lVar4,lVar5);\n      lVar5 = param_1[1];\n      for (; lVar4 != lVar1; lVar4 = lVar4 + 0x28) {\n        FUN_14001e680(lVar5,lVar4);\n        *(undefined4 *)(lVar5 + 0x20) = *(undefined4 *)(lVar4 + 0x20);\n        lVar5 = lVar5 + 0x28;\n      }\n      FUN_14032f9f0(lVar5,lVar5,param_1);\n      param_1[1] = lVar5;\n    }\n    else {\n      lVar4 = lVar5 + uVar3 * 0x28;\n      FUN_140366930(lVar2,lVar1,lVar5);\n      FUN_14032f9f0(lVar4,param_1[1],param_1);\n      param_1[1] = lVar4;\n    }\n  }\n  return param_1;\n}",
+  "fetched_at": "2026-04-26T17:15:09Z"
+}

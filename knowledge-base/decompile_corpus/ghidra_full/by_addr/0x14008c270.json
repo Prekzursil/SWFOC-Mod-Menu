@@ -1,0 +1,7 @@
+{
+  "addr": "0x14008c270",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nvoid FUN_14008c270(void)\n\n{\n  int iVar1;\n  int iVar2;\n  ResumeGameEventClass *pRVar3;\n  \n  if ((DAT_140a61c83 != '\\0') && (DAT_140a61d24 != '\\0')) {\n    iVar1 = FUN_140490750(&DAT_140a61ce0,2);\n    iVar2 = FUN_140294b80(&DAT_140a16fd0);\n    if (iVar1 == iVar2) {\n      pRVar3 = (ResumeGameEventClass *)FUN_140769c58(0x50);\n      if (pRVar3 == (ResumeGameEventClass *)0x0) {\n        pRVar3 = (ResumeGameEventClass *)0x0;\n      }\n      else {\n        pRVar3 = ResumeGameEventClass::ResumeGameEventClass(pRVar3);\n      }\n      FUN_1404ae100(pRVar3,0);\n      OutgoingEventQueueClass::vfunction2\n                ((OutgoingEventQueueClass *)&DAT_140b2ed18,(longlong *)pRVar3);\n      FUN_1404908b0(&DAT_140a61ce0);\n      return;\n    }\n  }\n  return;\n}\n\n",
+  "fetched_at": "2026-04-26T16:57:45Z"
+}

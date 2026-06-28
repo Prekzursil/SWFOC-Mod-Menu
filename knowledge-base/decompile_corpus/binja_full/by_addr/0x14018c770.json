@@ -1,0 +1,7 @@
+{
+  "addr": "0x14018c770",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14018c780        *arg1 = &alD3dEffectParamInterface::`vftable'\n14018c786        if ((arg2 & 1) != 0)\n14018c78d        j_sub_1407864b8(arg1)\n14018c79a        return arg1",
+  "fetched_at": "2026-04-26T17:24:11Z"
+}

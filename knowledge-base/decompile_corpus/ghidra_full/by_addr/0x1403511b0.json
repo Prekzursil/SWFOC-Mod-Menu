@@ -1,0 +1,7 @@
+{
+  "addr": "0x1403511b0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\n/* ButtonComponentClass member function inherited by TextButtonComponentClass */\n\nvoid __thiscall ButtonComponentClass::vfunction8(ButtonComponentClass *this,undefined4 param_2)\n\n{\n  *(undefined4 *)&(this->ButtonComponentClass_data).offset_0x88 = param_2;\n  return;\n}\n\n",
+  "fetched_at": "2026-04-26T17:10:02Z"
+}

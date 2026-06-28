@@ -1,0 +1,7 @@
+{
+  "addr": "0x1405c3ca0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall\nSquadLeaderBehaviorClass::vfunction8(SquadLeaderBehaviorClass *this,longlong param_1)\n\n{\n  if (param_1 != 0) {\n    FUN_140390f20(param_1);\n    return;\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T18:44:36Z"
+}

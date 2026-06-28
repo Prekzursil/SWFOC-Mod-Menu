@@ -1,0 +1,7 @@
+{
+  "addr": "0x1402271b0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall WinsockAsyncSocketImpl::vfunction6(WinsockAsyncSocketImpl *this)\n\n{\n  undefined **s;\n  int local_res8 [2];\n  char local_res10 [24];\n  \n  local_res8[0] = 4;\n  s = (this->RefCountClass_data).offset_0x8;\n  if (s != (undefined **)0xffffffffffffffff) {\n    getsockopt((SOCKET)s,0xffff,0x1007,local_res10,local_res8);\n    local_res10[0] = '\\0';\n    local_res10[1] = '\\0';\n    local_res10[2] = '\\0';\n    local_res10[3] = '\\0';\n    setsockopt((SOCKET)(this->RefCountClass_data).offset_0x8,0xffff,0x1007,local_res10,local_res8[0]\n              );\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T18:04:51Z"
+}

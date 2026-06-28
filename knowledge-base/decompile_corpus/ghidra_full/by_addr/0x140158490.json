@@ -1,0 +1,7 @@
+{
+  "addr": "0x140158490",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall\nalTerrainTrack::vfunction1_for_MultiLinkedListMember(alTerrainTrack *this,uint param_1)\n\n{\n  scalar_deleting_destructor((alTerrainTrack *)&this[-1].alTerrainTrack_data.offset_0x1d0,param_1);\n  return;\n}",
+  "fetched_at": "2026-04-26T17:23:01Z"
+}

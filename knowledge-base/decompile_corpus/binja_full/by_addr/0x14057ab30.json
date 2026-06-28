@@ -1,0 +1,7 @@
+{
+  "addr": "0x14057ab30",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14057ab48        int64_t* rbx_1\n14057ab48        if (arg3 != 0)\n14057ab4e        rbx_1 = *(arg3 + 0x10)\n14057ab5f        if (arg3 == 0 || ((*(arg3 + 0x18) - rbx_1) & 0xfffffffffffffff8) == 0)\n14057abea        sub_140248190(arg2, \"GameObjectWrapper::Lua_Is_In_End_Cinematic -- Missing required boolean parameter.\", arg3)\n14057ab65        int64_t* rbx_2 = *rbx_1\n14057ab6b        void* i\n14057ab6b        if (rbx_2 != 0)\n14057ab73        i, arg3 = (*(*rbx_2 + 0x20))(rbx_2)\n14057ab79        if (rbx_2 == 0 || i == 0)\n14057ab90        label_14057ab90:\n14057ab90        rbx_2 = nullptr\n14057ab85        while (i != &data_140a157b0)\n14057ab87        i = *(i + 8)\n14057ab8e        if (i == 0)\n14057ab8e        goto label_14057ab90\n14057abad        arg3 = (**rbx_2)(rbx_2)\n14057ab92        void* rcx_1 = *(arg1 + 0x60)\n14057ab99        if (rcx_1 == 0)\n14057abbb        sub_140248190(arg2, \"GameObjectWrapper::In_End_Cinematic -- Object invalid\", arg3)\n14057ab9f        *(rcx_1 + 0x3c9) = rbx_2[2].b\n14057abc3        if (rbx_2 != 0)\n14057abcb        (*(*rbx_2 + 8))(rbx_2)\n14057ac00        return 0",
+  "fetched_at": "2026-04-26T17:35:13Z"
+}

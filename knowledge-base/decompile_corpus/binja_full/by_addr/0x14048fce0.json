@@ -1,0 +1,7 @@
+{
+  "addr": "0x14048fce0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14048fce6        struct ScheduledEventClass::InvadeEventClass::VTable** result = arg1\n14048fce9        sub_140512c50(arg1)\n14048fcf5        *(result + 0x244) = 0\n14048fcff        *result = &InvadeEventClass::`vftable'{for `ScheduledEventClass'}\n14048fd05        result[0x49].d = 0x3fffff\n14048fd0f        *(result + 0x24c) = 0\n14048fd16        result[4].d = 9\n14048fd22        return result",
+  "fetched_at": "2026-04-26T17:29:01Z"
+}

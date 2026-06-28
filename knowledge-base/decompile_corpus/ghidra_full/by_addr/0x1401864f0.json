@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401864f0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined4 FUN_1401864f0(longlong param_1,LPCSTR param_2,undefined4 param_3,undefined1 param_4)\n\n{\n  longlong lVar1;\n  DWORD DVar2;\n  undefined4 uVar3;\n  undefined4 *puVar4;\n  HRSRC hResInfo;\n  HGLOBAL hResData;\n  LPVOID pvVar5;\n  undefined8 uVar6;\n  \n  puVar4 = (undefined4 *)FUN_140769c58(0x18);\n  if (puVar4 != (undefined4 *)0x0) {\n    *(undefined8 *)(puVar4 + 2) = 0;\n  }\n  *(undefined4 **)(param_1 + 0x70) = puVar4;\n  *puVar4 = param_3;\n  *(undefined1 *)(param_1 + 0x68) = param_4;\n  hResInfo = FindResourceA((HMODULE)0x0,param_2,\"TEXTURE\");\n  uVar3 = (int)hResInfo;\n  if (hResInfo != (HRSRC)0x0) {\n    hResData = LoadResource((HMODULE)0x0,hResInfo);\n    pvVar5 = LockResource(hResData);\n    DVar2 = SizeofResource((HMODULE)0x0,hResInfo);\n    lVar1 = *(longlong *)(param_1 + 0x70);\n    uVar6 = thunk_FUN_140769c58(DVar2);\n    *(undefined8 *)(lVar1 + 8) = uVar6;\n    *(DWORD *)(lVar1 + 0x10) = DVar2;\n    FUN_14076bd80(uVar6,pvVar5,(longlong)(int)DVar2);\n    uVar3 = 1;\n  }\n  return uVar3;\n}",
+  "fetched_at": "2026-04-26T17:32:03Z"
+}

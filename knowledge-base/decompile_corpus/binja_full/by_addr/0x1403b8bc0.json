@@ -1,0 +1,7 @@
+{
+  "addr": "0x1403b8bc0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1403b8bd2        int64_t rbp\n1403b8bd2        rbp.b = 1\n1403b8bdc        if (sub_1402204a0(arg2) != 0)\n1403b8cab        char i\n1403b8bfe        if (sub_1402205a0(arg2) == 0)\n1403b8c09        struct RefCountClass::AIHintZoneClass::VTable** rax_2 = operator new(0x158)\n1403b8c11        struct RefCountClass::AIHintZoneClass::VTable** arg_18\n1403b8c11        struct RefCountClass::AIHintZoneClass::VTable** rbx_1\n1403b8c11        if (rax_2 == 0)\n1403b8c32        rbx_1 = nullptr\n1403b8c35        arg_18 = nullptr\n1403b8c16        struct RefCountClass::AIHintZoneClass::VTable** rax_3 = sub_1405a8cc0(rax_2)\n1403b8c1b        arg_18 = rax_3\n1403b8c20        rbx_1 = rax_3\n1403b8c26        if (rax_3 != 0)\n1403b8c2e        (*rax_3)->__offset(0x0).q(rbx_1)\n1403b8c3a        int64_t* rdx = *(arg1 + 0x3a8)\n1403b8c48        if (rdx == *(arg1 + 0x3b0))\n1403b8c70        sub_140144900(arg1 + 0x3a0, rdx, &arg_18)\n1403b8c4a        *rdx = rbx_1\n1403b8c50        if (rbx_1 != 0)\n1403b8c58        (*rbx_1)->__offset(0x0).q(rbx_1, rdx)\n1403b8c5a        *(arg1 + 0x3a8) += 8\n1403b8c78        if (rbx_1 != 0)\n1403b8c80        (*rbx_1)->__offset(0x8).q(rbx_1)\n1403b8c96        rbp.b &= sub_1405a9100(*(*(arg1 + 0x3a8) - 8), arg2)\n1403b8c9c        sub_140220520(arg2)\n1403b8ca4        i = sub_1402204a0(arg2)\n1403b8cab        do while (i != 0)\n1403b8ccc        return zx.q(rbp.b)",
+  "fetched_at": "2026-04-26T17:24:27Z"
+}

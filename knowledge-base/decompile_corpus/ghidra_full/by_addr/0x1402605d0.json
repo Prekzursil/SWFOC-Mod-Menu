@@ -1,0 +1,7 @@
+{
+  "addr": "0x1402605d0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall TextureRectClass::vfunction10_for_DrawPrimitiveClass(TextureRectClass *this)\n\n{\n  longlong *plVar1;\n  longlong *plVar2;\n  undefined ***pppuVar3;\n  \n  if ((this->RefCountClass_data).field_0x28 != '\\0') {\n    pppuVar3 = &(this->RefCountClass_data).offset_0x8;\n    if (0xf < *(ulonglong *)&(this->RefCountClass_data).field_0x20) {\n      pppuVar3 = (undefined ***)*pppuVar3;\n    }\n    plVar2 = (longlong *)FUN_14025e990(pppuVar3,1,0);\n    plVar1 = *(longlong **)&(this->RefCountClass_data).field_0x30;\n    if (plVar1 != plVar2) {\n      if (plVar1 != (longlong *)0x0) {\n        (**(code **)(*plVar1 + 8))();\n      }\n      *(longlong **)&(this->RefCountClass_data).field_0x30 = plVar2;\n      if (plVar2 != (longlong *)0x0) {\n        (**(code **)*plVar2)(plVar2);\n      }\n    }\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T18:15:28Z"
+}

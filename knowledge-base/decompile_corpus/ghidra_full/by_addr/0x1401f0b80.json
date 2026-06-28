@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401f0b80",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall GUIGadgetCheckboxClass::vfunction12(GUIGadgetCheckboxClass *this)\n\n{\n  undefined8 uVar1;\n  longlong lVar2;\n  undefined1 local_18 [16];\n  \n  lVar2 = *(longlong *)&(this->GUIGadgetCheckboxClass_data).field_0x8;\n  uVar1 = FUN_1401f93e0(local_18,0xff,0xff,0xff,0xff);\n  (**(code **)(lVar2 + 0x28))(&(this->GUIGadgetCheckboxClass_data).field_0x8,uVar1);\n  FUN_1401f9440(local_18);\n  lVar2 = FUN_1401c3140(&DAT_140a78510,*(undefined4 *)(this->GUIGadgetClass_data).offset_0x78,\n                        &(this->GUIGadgetClass_data).offset_0x8,5);\n  (**(code **)(*(longlong *)&(this->GUIGadgetCheckboxClass_data).field_0x98 + 0xc0))\n            (&(this->GUIGadgetCheckboxClass_data).field_0x98,lVar2 + 0x2c);\n  (**(code **)(*(longlong *)&(this->GUIGadgetCheckboxClass_data).field_0x98 + 200))\n            (&(this->GUIGadgetCheckboxClass_data).field_0x98,lVar2 + 0x3c);\n  *(undefined1 *)&(this->GUIGadgetClass_data).offset_0x70 = 1;\n  return;\n}",
+  "fetched_at": "2026-04-26T17:52:56Z"
+}

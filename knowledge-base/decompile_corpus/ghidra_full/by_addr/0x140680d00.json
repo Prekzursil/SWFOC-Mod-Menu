@@ -1,0 +1,7 @@
+{
+  "addr": "0x140680d00",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nundefined4 __thiscall\nMovingVsMovingCollisionClass::vfunction9_for_SignalListenerClass\n          (MovingVsMovingCollisionClass *this,longlong param_2,undefined1 *param_3)\n\n{\n  int iVar1;\n  undefined1 uVar2;\n  longlong lVar3;\n  undefined4 uVar4;\n  \n  if (*(int *)(param_2 + 0x50) == (int)this->offset_0x70) {\n    uVar2 = *(undefined1 *)((longlong)&this->offset_0xa8 + 6);\n  }\n  else {\n    if (*(int *)(param_2 + 0x50) != *(int *)&this->field_0x7c) goto LAB_140680d38;\n    uVar2 = *(undefined1 *)((longlong)&this->offset_0xa8 + 5);\n  }\n  *param_3 = uVar2;\nLAB_140680d38:\n  uVar4 = FUN_140370f00(*(undefined8 *)(param_2 + 0x298));\n  if ((*(int *)&this->field_0x7c != 0x3fffff) && ((int)this->offset_0x70 != 0x3fffff)) {\n    lVar3 = FUN_1405c7100(this,param_2);\n    if (lVar3 != 0) {\n      iVar1 = *(int *)(param_2 + 0x50);\n      if (((iVar1 == *(int *)&this->field_0x7c) || (iVar1 == (int)this->offset_0x70)) &&\n         (*(int *)&this->offset_0x68 != 0)) {\n        if (iVar1 == *(int *)&this->field_0x7c) {\n          return *(undefined4 *)((longlong)&this->offset_0x70 + 4);\n        }\n        if (iVar1 == (int)this->offset_0x70) {\n          return *(undefined4 *)&this->offset_0x78;\n        }\n      }\n    }\n  }\n  return uVar4;\n}\n\n",
+  "fetched_at": "2026-04-26T17:12:37Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x14012f3e0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14012f3f8        *arg1 = &alTerrainShadowBlob::`vftable'{for `RefCountClass'}\n14012f405        arg1[1].d = 0\n14012f408        arg1[2] = &alTerrainShadowBlob::`vftable'{for `MultiLinkedListMember'}\n14012f40c        arg1[3] = 0\n14012f410        arg1[0x13] = 0\n14012f41e        sub_1401f92f0(&arg1[0x17])\n14012f428        arg1[0x1c].d = 0\n14012f44e        int64_t var_18\n14012f44e        *(arg1 + 0xb8) = *sub_1401f93e0(&var_18, 0xff, 0xff, 0xff, 0xff)\n14012f475        arg1[4] = 0\n14012f47c        arg1[0x1e] = 0\n14012f483        arg1[0x1d] = 0\n14012f48a        *(arg1 + 0x2c) = 0x101\n14012f490        *(arg1 + 0xe4) = 0\n14012f497        arg1[0x22] = 0\n14012f49e        *(arg1 + 0x94) = 0\n14012f4a5        int32_t arg_8 = 0x3f800000\n14012f4ad        int32_t arg_c = 0x3f800000\n14012f4b5        var_18 = 0\n14012f4ba        int32_t var_10 = 0\n14012f4be        sub_14012f570(arg1, &var_18, zx.o(0), &arg_8, 0x3f800000)\n14012f4d5        return arg1",
+  "fetched_at": "2026-04-26T17:10:32Z"
+}

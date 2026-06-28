@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407f81f0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1407f81f6        void* rbx = data_140b09e08\n1407f8200        if (rbx != 0)\n1407f8205        sub_14007b260(rbx)\n1407f8212        j_sub_1407864b8(rbx)\n1407f8217        data_140b09e08 = 0\n1407f8227        return ",
+  "fetched_at": "2026-04-26T17:38:15Z"
+}

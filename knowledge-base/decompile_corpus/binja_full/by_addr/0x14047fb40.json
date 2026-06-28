@@ -1,0 +1,7 @@
+{
+  "addr": "0x14047fb40",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14047fb47        *arg1 = &TheDebugWindowManagerClass::`vftable'\n14047fb4c        __builtin_memset(&arg1[1], 0, 0x18)\n14047fb58        arg1[7].b = 0\n14047fb5e        return arg1",
+  "fetched_at": "2026-04-26T17:28:25Z"
+}

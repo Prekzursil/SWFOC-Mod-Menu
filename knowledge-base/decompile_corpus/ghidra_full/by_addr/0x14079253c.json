@@ -1,0 +1,7 @@
+{
+  "addr": "0x14079253c",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */\n/* Library Function - Single Match\n    _openfile\n   \n   Library: Visual Studio 2019 Release */\n\nFILE * __cdecl _openfile(char *_Filename,char *_Mode,int _ShFlag,FILE *_File)\n\n{\n  uint *puVar1;\n  undefined8 uVar2;\n  errno_t eVar3;\n  undefined8 *puVar4;\n  FILE *pFVar5;\n  int local_res18 [2];\n  int local_28;\n  uint uStack_24;\n  char local_18 [16];\n  \n  puVar4 = (undefined8 *)__acrt_stdio_parse_mode<char>(local_18);\n  uVar2 = *puVar4;\n  pFVar5 = (FILE *)0x0;\n  if ((char)*(undefined4 *)(puVar4 + 1) != '\\0') {\n    local_28 = (int)uVar2;\n    eVar3 = FID_conflict__sopen_s(local_res18,_Filename,local_28,_ShFlag,0x180);\n    if (eVar3 == 0) {\n      _DAT_140b3c0c0 = _DAT_140b3c0c0 + 1;\n      uStack_24 = (uint)((ulonglong)uVar2 >> 0x20);\n      LOCK();\n      puVar1 = (uint *)((longlong)&_File->_base + 4);\n      *puVar1 = *puVar1 | uStack_24;\n      UNLOCK();\n      *(undefined4 *)&_File->_base = 0;\n      _File->_tmpfname = (char *)0x0;\n      *(undefined8 *)&_File->_cnt = 0;\n      _File->_ptr = (char *)0x0;\n      _File->_flag = local_res18[0];\n      pFVar5 = _File;\n    }\n  }\n  return pFVar5;\n}",
+  "fetched_at": "2026-04-26T18:52:53Z"
+}

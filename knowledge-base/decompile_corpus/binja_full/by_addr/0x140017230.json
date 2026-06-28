@@ -1,0 +1,7 @@
+{
+  "addr": "0x140017230",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140017246        __builtin_strncpy(&data_140a170d0, \"Recordings\", 0xa)\n140017255        return atexit(sub_1407ef060) __tailcall",
+  "fetched_at": "2026-04-26T16:50:24Z"
+}

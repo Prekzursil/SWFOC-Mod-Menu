@@ -1,0 +1,7 @@
+{
+  "addr": "0x140760ba8",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140760bbb        void var_c8\n140760bbb        int64_t rax_1 = __security_cookie ^ &var_c8\n140760beb        char var_78[0x40]\n140760beb        int32_t rax_2 = sub_14021dc70(&var_78, 0x40, &data_1408cfa08, arg6)\n140760c10        char* var_a0 = &var_78\n140760c20        int128_t var_88 = *arg3\n140760c26        sub_1407572f0(arg1, arg2, &var_88, arg4, arg5, var_a0, sx.q(rax_2))\n140760c39        __security_check_cookie(rax_1 ^ &var_c8)\n140760c49        return arg2",
+  "fetched_at": "2026-04-26T17:30:03Z"
+}

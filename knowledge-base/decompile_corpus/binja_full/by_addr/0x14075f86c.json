@@ -1,0 +1,7 @@
+{
+  "addr": "0x14075f86c",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14075f879        void var_48\n14075f879        int64_t rax_1 = __security_cookie ^ &var_48\n14075f881        int64_t var_28 = 0\n14075f899        char var_20\n14075f899        int32_t result = _Wcrtomb(&var_20, arg2, &var_28, arg1 + 0x30)\n14075f89e        char rdx = var_20\n14075f8a6        if (result != 1)\n14075f8a6        rdx = arg3\n14075f8a9        result.b = rdx\n14075f8b3        __security_check_cookie(rax_1 ^ &var_48)\n14075f8bd        return result",
+  "fetched_at": "2026-04-26T17:30:01Z"
+}

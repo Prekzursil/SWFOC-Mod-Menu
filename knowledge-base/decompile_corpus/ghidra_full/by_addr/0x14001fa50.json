@@ -1,0 +1,7 @@
+{
+  "addr": "0x14001fa50",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nundefined8 * __thiscall SwitchSidesCommand::vfunction5(SwitchSidesCommand *this,undefined8 *param_1)\n\n{\n  param_1[3] = 0xf;\n  *param_1 = 0;\n  param_1[2] = 0;\n  FUN_140022730(param_1,\"Switch players in playback mode\",0x1f);\n  return param_1;\n}\n\n",
+  "fetched_at": "2026-04-26T16:51:45Z"
+}

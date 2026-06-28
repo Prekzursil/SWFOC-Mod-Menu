@@ -1,0 +1,7 @@
+{
+  "addr": "0x140579800",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined * __thiscall GenericSignalBlockStatus::vfunction5(void)\n\n{\n  return &DAT_140a44950;\n}",
+  "fetched_at": "2026-04-26T18:40:37Z"
+}

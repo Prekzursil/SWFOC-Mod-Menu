@@ -1,0 +1,7 @@
+{
+  "addr": "0x1404c2cd0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "TooltipDummyBehaviorClass * __thiscall\nTooltipDummyBehaviorClass::vfunction4(TooltipDummyBehaviorClass *this,int param_1)\n\n{\n  TooltipDummyBehaviorClass *pTVar1;\n  \n  pTVar1 = (TooltipDummyBehaviorClass *)0x0;\n  if (param_1 == 0x68) {\n    pTVar1 = this;\n  }\n  return pTVar1;\n}",
+  "fetched_at": "2026-04-26T18:10:52Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x140179000",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140179003        if (arg1 == 0)\n140179003        return \n140179019        int64_t* rcx = data_140a6d480\n140179030        int64_t* arg_8\n140179030        (*(*rcx + 0x90))(rcx, 0, 0, 0, &arg_8)\n140179036        int64_t* rcx_1 = arg_8\n140179041        void var_28\n140179041        if (rcx_1 == 0 || (*(*rcx_1 + 0x60))(rcx_1, &var_28) != 0)\n140179050        return \n140179052        int64_t* rcx_2 = arg_8\n14017906b        int32_t var_38\n14017906b        int32_t rax = (*(*rcx_2 + 0x68))(rcx_2, &var_38, 0, 0x2000)\n140179070        if (rax != 0)\n140179070        return \n140179090        int64_t* var_58_1\n140179090        var_58_1.d = rax\n140179094        int64_t var_30\n140179094        int32_t var_c\n140179094        BinkCopyToBuffer(arg1, var_30, zx.q(var_38), zx.q(var_c), var_58_1, rax, 5)\n14017909a        int64_t* rcx_4 = arg_8\n1401790a5        (*(*rcx_4 + 0x70))(rcx_4)\n1401790ad        return ",
+  "fetched_at": "2026-04-26T17:23:24Z"
+}

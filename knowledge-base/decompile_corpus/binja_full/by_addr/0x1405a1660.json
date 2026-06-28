@@ -1,0 +1,7 @@
+{
+  "addr": "0x1405a1660",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1405a1698        int128_t zmm9\n1405a1698        zmm9.d = (*(arg1 + 0x140)).d f* 2f\n1405a16a1        float arg_8 = 0f\n1405a16fc        float var_60 = zmm9.d * 0f f+ arg2[2]\n1405a1701        float var_64 = (*arg3).d f* zmm9.d f+ arg2[1]\n1405a1706        float var_68 = (*(arg3 + 4) ^ data_140800860).d f* zmm9.d f+ *arg2\n1405a170b        float zmm8\n1405a170b        float zmm9_1\n1405a170b        float zmm10_1\n1405a170b        float zmm11_1\n1405a170b        zmm8, zmm9_1, zmm10_1, zmm11_1 = sub_1405a50d0(arg1, arg2, &var_68, 0xbf800000, &arg_8)\n1405a1721        float zmm4 = arg2[2]\n1405a172b        float zmm2_1 = arg2[1]\n1405a1735        float zmm1_1 = *arg2\n1405a1750        arg_8 = 0f\n1405a1778        float var_60_1 = zmm4 - zmm9_1 * zmm8\n1405a177e        float var_64_1 = zmm2_1 - zmm10_1 * zmm9_1\n1405a1784        var_68 = zmm1_1 - zmm11_1 * zmm9_1\n1405a178a        int512_t result\n1405a178a        int128_t zmm7_1\n1405a178a        result, zmm7_1 = sub_1405a50d0(arg1, arg2, &var_68, 0xbf800000, &arg_8)\n1405a178f        zmm7_1.d = zmm7_1.d f+ arg_8\n1405a17b3        result.o = zmm7_1\n1405a17c4        return result",
+  "fetched_at": "2026-04-26T17:36:49Z"
+}

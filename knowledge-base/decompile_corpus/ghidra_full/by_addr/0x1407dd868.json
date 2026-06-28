@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407dd868",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* Library Function - Single Match\n    _local_unwind\n   \n   Libraries: Visual Studio 2017 Release, Visual Studio 2019 Release */\n\nvoid _local_unwind(PVOID param_1,PVOID param_2)\n\n{\n  RtlUnwind(param_1,param_2,(PEXCEPTION_RECORD)0x0,(PVOID)0x0);\n  return;\n}",
+  "fetched_at": "2026-04-26T18:59:04Z"
+}

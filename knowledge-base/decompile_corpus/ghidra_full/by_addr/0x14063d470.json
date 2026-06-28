@@ -1,0 +1,7 @@
+{
+  "addr": "0x14063d470",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nvoid __thiscall\nFlyingLocomotorBehaviorClass::vfunction11\n          (FlyingLocomotorBehaviorClass *this,undefined **param_1,char param_2)\n\n{\n  undefined *puVar1;\n  longlong lVar2;\n  longlong lVar3;\n  \n  BehaviorClass::vfunction11((BehaviorClass *)this,param_1);\n  if ((param_2 != '\\0') && (lVar2 = (**(code **)(*DAT_140b15418 + 0x238))(), lVar2 != 0)) {\n    puVar1 = this->offset_0x18[0x15];\n    if ((puVar1 != (undefined *)0x0) && (lVar3 = FUN_1405569b0(puVar1), lVar3 != 0)) {\n      FUN_14053a900(lVar2,this->offset_0x18,lVar3 + 0x18);\n      return;\n    }\n    if ((*(int *)(puVar1 + 0x48) == 0) && (*(float *)(puVar1 + 0xec) == 0.0)) {\n      FUN_140559250(puVar1,0x16);\n    }\n    FUN_14053acf0(lVar2,this->offset_0x18,1);\n  }\n  return;\n}\n\n",
+  "fetched_at": "2026-04-26T17:02:23Z"
+}

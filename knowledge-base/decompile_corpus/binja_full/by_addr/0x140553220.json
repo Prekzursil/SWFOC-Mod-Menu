@@ -1,0 +1,7 @@
+{
+  "addr": "0x140553220",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140553233        *arg1 = &IdleDataPackClass::`vftable'{for `BaseDataPackClass'}\n140553239        *(arg1 + 0xc) = 0\n14055323e        arg1[2].b = 0\n140553241        __builtin_memset(arg1 + 0x14, 0, 0x14)\n14055324f        int64_t* rax = operator new(0x18)\n14055325b        *rax = rax\n14055325e        rax[1] = rax\n140553262        arg1[3] = rax\n140553266        int64_t r8 = arg1[3]\n14055326a        __builtin_memset(&arg1[5], 0, 0x18)\n140553275        arg1[8] = 7\n14055327d        arg1[9] = 8\n140553285        *(arg1 + 0x14) = 0x3f800000\n14055328c        sub_140048250(&arg1[5], 0x10, r8)\n140553294        arg1[0xa] = 0\n140553298        arg1[0xb].d = 0\n14055329b        *(arg1 + 0x5c) = 0xffffffff\n1405532a2        arg1[1].d = 0\n1405532af        return arg1",
+  "fetched_at": "2026-04-26T17:34:18Z"
+}

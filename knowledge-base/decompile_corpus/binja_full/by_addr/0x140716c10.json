@@ -1,0 +1,7 @@
+{
+  "addr": "0x140716c10",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140716c24        *arg1 = &ForceConfuseAbilityClass::`vftable'{for `SpecialAbilityClass'}\n140716c30        arg1[1] = &ForceConfuseAbilityClass::`vftable'{for `RefCountClass'}\n140716c36        __builtin_memset(&arg1[0x2f], 0, 0x14)\n140716c51        sub_1404c4770(&arg1[0x32])\n140716c59        sub_14048c8d0(arg1)\n140716c61        if ((arg2 & 1) != 0)\n140716c6b        j_sub_1407864b8(arg1)\n140716c7d        return arg1",
+  "fetched_at": "2026-04-26T17:27:55Z"
+}

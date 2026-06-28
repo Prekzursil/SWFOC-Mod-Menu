@@ -1,0 +1,7 @@
+{
+  "addr": "0x1402531a0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_1402531a0(longlong param_1)\n\n{\n  if (param_1 != DAT_140b09e78) {\n    FUN_140048df0(&DAT_140b09ea8,0);\n    DAT_140b09e71 = 0;\n    DAT_140a15834 = 0xffffffff;\n    DAT_140b09e74 = 1;\n    DAT_140b09e78 = param_1;\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T18:12:18Z"
+}

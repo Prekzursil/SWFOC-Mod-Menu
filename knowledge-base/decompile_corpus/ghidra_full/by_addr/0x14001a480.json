@@ -1,0 +1,7 @@
+{
+  "addr": "0x14001a480",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nvoid FUN_14001a480(void)\n\n{\n  FacingEventClass::FacingEventClass((FacingEventClass *)&DAT_140b37bf0);\n  atexit(RefCountClass::~RefCountClass);\n  return;\n}\n\n",
+  "fetched_at": "2026-04-26T16:51:09Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x140798c38",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140798c66        if (arg2 != 0 && divu.dp.q(-0x20, arg2) u< arg3)\n140798c6d        *_errno() = 0xc\n140798c73        return nullptr\n140798c7a        int64_t rdi_1\n140798c7a        if (arg1 == 0)\n140798c86        rdi_1 = 0\n140798c81        rdi_1 = _msize_base(arg1)\n140798c88        uint64_t rbx_1 = arg2 * arg3\n140798c92        void* result = _realloc_base(arg1, rbx_1)\n140798ca2        if (result != 0 && rdi_1 u< rbx_1)\n140798cb0        memset(result + rdi_1, 0, rbx_1 - rdi_1)\n140798cb5        return result",
+  "fetched_at": "2026-04-26T17:32:04Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407965f4",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140796603        bool cond:0 = arg1 - 0xfde8 u<= 1\n140796615        uint64_t rdx\n140796615        bool cond:1_1\n140796615        if (arg1 u> 0xc435)\n140796639        if (arg1 == 0xd698)\n140796661        rdx = 0\n140796641        if (arg1 u<= 0xdea9)\n14079665b        rdx = zx.q(arg2) & 0xffffff7f\n140796651        if (arg1 u> 0xdeb3 && arg1 != 0xfde8)\n140796653        cond:1_1 = arg1 == 0xfde9\n140796653        goto label_140796659\n140796661        rdx = 0\n14079662c        if (arg1 - 0xc42c u> 9 || not(test_bit(0x2a7, arg1 - 0xc42c)))\n14079662e        cond:1_1 = arg1 == 0x2a\n140796659        label_140796659:\n140796659        if (cond:1_1)\n140796661        rdx = 0\n14079665b        rdx = zx.q(arg2) & 0xffffff7f\n140796661        rdx = 0\n14079666b        int64_t r9 = arg5\n140796670        int32_t* r8 = arg6\n140796673        if (cond:0 != 0)\n140796673        r8 = nullptr\n140796677        if (cond:0 != 0)\n140796677        r9 = 0\n140796680        if (cond:0 != 0 && arg6 != 0)\n140796682        *arg6 = 0\n140796684        arg6 = r8\n14079668c        arg5 = r9\n14079669a        return WideCharToMultiByte(arg1, rdx, arg3, zx.q(arg4)) __tailcall",
+  "fetched_at": "2026-04-26T17:31:58Z"
+}

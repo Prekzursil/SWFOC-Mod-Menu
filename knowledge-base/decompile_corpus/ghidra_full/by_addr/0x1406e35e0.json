@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406e35e0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "PerceptualEvaluatorClass * __thiscall\nGameForcePerceptualEvaluatorClass::~GameForcePerceptualEvaluatorClass(int param_1,int param_2)\n\n{\n  PerceptualEvaluatorClass *this;\n  \n  if ((param_1 != -1) && (param_2 != -1)) {\n    this = (PerceptualEvaluatorClass *)FUN_140769c58(0x90);\n    if (this != (PerceptualEvaluatorClass *)0x0) {\n      PerceptualEvaluatorClass::~PerceptualEvaluatorClass(this);\n      *(int *)&this[1].vftablePtr = param_1;\n      this->vftablePtr =\n           (PerceptualEvaluatorClass_vftable_for_SignalGeneratorClass *)\n           &vftable_for_SignalGeneratorClass;\n      *(int *)((longlong)&this[1].vftablePtr + 4) = param_2;\n      this->vftablePtr =\n           (PerceptualEvaluatorClass_vftable_for_AIDiagnosticsClass *)\n           &vftable_for_AIDiagnosticsClass;\n      (*(code *)\n        PTR__VisiblePerceptualEvaluatorClass<class_GameForcePerceptualEvaluatorClass>_1408c1a50)\n                (this);\n      return this;\n    }\n  }\n  return (PerceptualEvaluatorClass *)0x0;\n}",
+  "fetched_at": "2026-04-26T17:45:37Z"
+}

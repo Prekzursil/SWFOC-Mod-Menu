@@ -1,0 +1,7 @@
+{
+  "addr": "0x140549190",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall ShieldBehaviorClass::vfunction8(ShieldBehaviorClass *this,longlong param_1)\n\n{\n  longlong lVar1;\n  undefined4 uVar2;\n  \n  if (param_1 != 0) {\n    FUN_140390fc0(param_1);\n    lVar1 = *(longlong *)(param_1 + 0xf0);\n    if ((lVar1 != 0) && (*(longlong *)(param_1 + 0x298) != 0)) {\n      uVar2 = FUN_1403725f0(*(longlong *)(param_1 + 0x298),0);\n      FUN_140549810(this,param_1,uVar2);\n      *(undefined1 *)(lVar1 + 0x131) = 0;\n    }\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T18:37:26Z"
+}

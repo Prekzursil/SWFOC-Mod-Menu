@@ -1,0 +1,7 @@
+{
+  "addr": "0x14021dc70",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "int FUN_14021dc70(undefined8 param_1,undefined8 param_2,undefined8 param_3,undefined8 param_4)\n\n{\n  int iVar1;\n  undefined8 *puVar2;\n  undefined8 local_res20;\n  \n  local_res20 = param_4;\n  puVar2 = (undefined8 *)FUN_140022b20();\n  iVar1 = __stdio_common_vsprintf_s(*puVar2,param_1,param_2,param_3,0,&local_res20);\n  if (iVar1 < 0) {\n    iVar1 = -1;\n  }\n  return iVar1;\n}",
+  "fetched_at": "2026-04-26T18:02:26Z"
+}

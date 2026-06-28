@@ -1,0 +1,7 @@
+{
+  "addr": "0x140793a00",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140793a23        int64_t rax = try_get_function(0x13, \"IsValidLocaleName\", &data_1408d82b0, \"IsValidLocaleName\")\n140793a2e        if (rax == 0)\n140793a4f        return IsValidLocale(__acrt_LocaleNameToLCID(arg1, 0), LCID_INSTALLED) __tailcall\n140793a35        return rax(arg1) __tailcall",
+  "fetched_at": "2026-04-26T17:31:52Z"
+}

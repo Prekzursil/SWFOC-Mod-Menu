@@ -1,0 +1,7 @@
+{
+  "addr": "0x14079deb0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* Library Function - Single Match\n    int __cdecl truncate_ctrl_z_if_present(int)\n   \n   Libraries: Visual Studio 2017 Release, Visual Studio 2019 Release */\n\nint __cdecl truncate_ctrl_z_if_present(int param_1)\n\n{\n  byte bVar1;\n  int iVar2;\n  ulong uVar3;\n  __int64 _Var4;\n  ulong *puVar5;\n  short local_res8 [4];\n  \n  bVar1 = *(byte *)((&DAT_140b3c4d0)[(longlong)param_1 >> 6] + 0x38 +\n                   (ulonglong)(param_1 & 0x3f) * 0x48);\n  if (((bVar1 & 0x48) == 0) && ((char)bVar1 < '\\0')) {\n    _Var4 = common_lseek_nolock<__int64>(param_1,-1,2);\n    if (_Var4 == -1) {\n      puVar5 = __doserrno();\n      if (*puVar5 == 0x83) goto LAB_14079df5f;\n    }\n    else {\n      local_res8[0] = 0;\n      iVar2 = _read_nolock(param_1,local_res8,1);\n      if ((iVar2 == 0) && (local_res8[0] == 0x1a)) {\n        iVar2 = _chsize_nolock(param_1,_Var4);\n        if (iVar2 == -1) goto LAB_14079df12;\n      }\n      _Var4 = common_lseek_nolock<__int64>(param_1,0,0);\n      if (_Var4 != -1) goto LAB_14079df5f;\n    }\nLAB_14079df12:\n    puVar5 = __doserrno();\n    uVar3 = *puVar5;\n  }\n  else {\nLAB_14079df5f:\n    uVar3 = 0;\n  }\n  return uVar3;\n}",
+  "fetched_at": "2026-04-26T18:54:03Z"
+}

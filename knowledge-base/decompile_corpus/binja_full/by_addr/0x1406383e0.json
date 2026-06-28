@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406383e0",
+  "tool": "binary_ninja",
+  "fact_id": "rva_combatant_behavior_ctor",
+  "body": "1406383e6        struct ICombatantBehaviorClass::CombatantBehaviorClass::VTable** result = arg1\n1406383e9        sub_1404c32d0(arg1)\n1406383f5        *result = &CombatantBehaviorClass::`vftable'{for `ICombatantBehaviorClass'}\n1406383ff        result[1] = &CombatantBehaviorClass::`vftable'{for `RefCountClass'}\n14063840a        result[3] = &CombatantBehaviorClass::`vftable'{for `SignalListenerClass'}\n140638416        return result",
+  "fetched_at": "2026-04-26T16:44:05Z"
+}

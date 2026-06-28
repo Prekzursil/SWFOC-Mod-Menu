@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406d5ac0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined8 __thiscall\nLandLocationPerceptualEvaluatorClass::vfunction18\n          (LandLocationPerceptualEvaluatorClass *this,longlong param_1,longlong *param_2,\n          undefined1 param_3)\n\n{\n  longlong *plVar1;\n  longlong lVar2;\n  undefined8 uVar3;\n  \n  if ((this->SignalListenerClass_data).offset_0x10 != (undefined **)0x0) {\n    plVar1 = (longlong *)FUN_14028a950(&DAT_140b153e0,1);\n    if (plVar1 == (longlong *)0x0) {\n      return 0;\n    }\n    lVar2 = (**(code **)(*plVar1 + 0x180))\n                      (plVar1,(this->SignalListenerClass_data).offset_0x10 + 0xf);\n    if ((lVar2 != 0) && (lVar2 != (this->SignalListenerClass_data).offset_0x58)) {\n      lVar2 = (*this->vftablePtr->vfunction14)(this,lVar2);\n    }\n    if ((this->SignalListenerClass_data).offset_0x58 == 0) {\n      *param_2 = 0;\n      return CONCAT71((int7)((ulonglong)lVar2 >> 8),1);\n    }\n  }\n  uVar3 = TacticalLocationPerceptualEvaluatorClass::vfunction18\n                    ((TacticalLocationPerceptualEvaluatorClass *)this,param_1,param_2,param_3);\n  return uVar3;\n}",
+  "fetched_at": "2026-04-26T17:43:12Z"
+}

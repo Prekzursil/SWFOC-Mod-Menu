@@ -1,0 +1,7 @@
+{
+  "addr": "0x14068aad0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_14068aad0(void)\n\n{\n  PermanentWeaponSwapAbilityClass *this;\n  \n  this = (PermanentWeaponSwapAbilityClass *)FUN_140769c58(0x180);\n  if (this != (PermanentWeaponSwapAbilityClass *)0x0) {\n    PermanentWeaponSwapAbilityClass::PermanentWeaponSwapAbilityClass(this);\n    return;\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T17:16:14Z"
+}

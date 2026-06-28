@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406cd360",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1406cd37a        struct LuaVar::LuaUserVar::VTable** rax = operator new(0x128)\n1406cd382        struct TaskForceClass::GalacticTaskForceClass::VTable** result\n1406cd382        if (rax == 0)\n1406cd391        result = nullptr\n1406cd38c        result = sub_1406cce20(rax)\n1406cd39c        result[4].d = 0x815\n1406cd3a6        (*result)->vFunc_19(result, arg1, arg2)\n1406cd3be        return result",
+  "fetched_at": "2026-04-26T17:25:29Z"
+}

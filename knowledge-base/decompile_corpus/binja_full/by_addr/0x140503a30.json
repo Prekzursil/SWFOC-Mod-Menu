@@ -1,0 +1,7 @@
+{
+  "addr": "0x140503a30",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140503a45        int64_t* rbx = *arg1\n140503a4b        int64_t* rcx = *arg2\n140503a5c        (*(*rcx + 0x60))(rcx)\n140503a68        (*(*rbx + 0x60))(rbx)\n140503a6e        if (not(arg4.d f<= arg4.d))\n140503a73        int64_t rcx_2 = *arg2\n140503a76        *arg2 = *arg1\n140503a79        *arg1 = rcx_2\n140503a7c        int64_t* rcx_3 = *arg3\n140503a7f        int64_t* rbx_1 = *arg2\n140503a85        (*(*rcx_3 + 0x60))(rcx_3)\n140503a91        int64_t result = (*(*rbx_1 + 0x60))(rbx_1)\n140503a97        if (not(arg4.d f<= arg4.d))\n140503a99        int64_t* rcx_5 = *arg3\n140503a9f        *arg3 = *arg2\n140503aa2        *arg2 = rcx_5\n140503aa8        int64_t* rbx_2 = *arg1\n140503aab        (*(*rcx_5 + 0x60))()\n140503ab7        result = (*(*rbx_2 + 0x60))(rbx_2)\n140503abd        if (not(arg4.d f<= arg4.d))\n140503abf        result = *arg1\n140503ac2        int64_t rcx_7 = *arg2\n140503ac5        *arg2 = result\n140503ac8        *arg1 = rcx_7\n140503ae5        return result",
+  "fetched_at": "2026-04-26T17:31:59Z"
+}

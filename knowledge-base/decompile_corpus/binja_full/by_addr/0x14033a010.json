@@ -1,0 +1,7 @@
+{
+  "addr": "0x14033a010",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14033a031        int16_t var_18[0x8]\n14033a031        sub_140022b30(&var_18, 8, &data_14085ecd8, zx.q(*(arg2 + 0x9c)))\n14033a03b        void* r8 = -ffffffffffffffff\n14033a042        r8 += 1\n14033a04b        do while (var_18[r8] != 0)\n14033a05f        return sub_1400228a0(arg2, &var_18, r8)",
+  "fetched_at": "2026-04-26T17:04:09Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x14048fc00",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */\n\nvoid __thiscall SaveGameEventClass::vfunction5(SaveGameEventClass *this)\n\n{\n  int iVar1;\n  \n  iVar1 = FUN_140294a70(&DAT_140a16fd0);\n  if ((this->EventClass_data).offset_0xc != iVar1) {\n    (this->SaveGameEventClass_data).offset_0x0 = 0xffffffff;\n                    /* WARNING: Could not recover jumptable at 0x00014048fc2b. Too many branches */\n                    /* WARNING: Treating indirect jump as call */\n    (*_DAT_140b313d8)(0xffffffff,&(this->SaveGameEventClass_data).offset_0x8);\n    return;\n  }\n                    /* WARNING: Could not recover jumptable at 0x00014048fc3e. Too many branches */\n                    /* WARNING: Treating indirect jump as call */\n  (*_DAT_140b313d8)((this->SaveGameEventClass_data).offset_0x0,\n                    &(this->SaveGameEventClass_data).offset_0x8);\n  return;\n}",
+  "fetched_at": "2026-04-26T18:02:18Z"
+}

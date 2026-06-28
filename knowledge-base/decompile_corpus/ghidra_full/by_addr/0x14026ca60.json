@@ -1,0 +1,7 @@
+{
+  "addr": "0x14026ca60",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall DrawRectClass::vfunction23(DrawRectClass *this,undefined4 param_2)\n\n{\n  *(undefined4 *)&(this->RefCountClass_data).field_0x28 = param_2;\n  return;\n}",
+  "fetched_at": "2026-04-26T18:18:52Z"
+}

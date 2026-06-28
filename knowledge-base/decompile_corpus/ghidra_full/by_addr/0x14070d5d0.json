@@ -1,0 +1,7 @@
+{
+  "addr": "0x14070d5d0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "RetreatProtectionAbilityClass * __thiscall\nRetreatProtectionAbilityClass::scalar_deleting_destructor\n          (RetreatProtectionAbilityClass *this,uint param_1)\n\n{\n                    /* inlined destructor:\n                       RetreatProtectionAbilityClass::~RetreatProtectionAbilityClass */\n  this->vftablePtr = &vftable_for_IXMLLoadableClass;\n  this->vftablePtr = &vftable_for_RefCountClass;\n  SpecialAbilityClass::~SpecialAbilityClass((SpecialAbilityClass *)this);\n  if ((param_1 & 1) != 0) {\n    thunk_FUN_1407864b8(this,0x180);\n  }\n  return this;\n}",
+  "fetched_at": "2026-04-26T17:54:30Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407b31b0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "char * __thiscall al3DCable::vfunction7_for_RefCountClass(void)\n\n{\n  return \"al3DCable\";\n}",
+  "fetched_at": "2026-04-26T18:55:42Z"
+}

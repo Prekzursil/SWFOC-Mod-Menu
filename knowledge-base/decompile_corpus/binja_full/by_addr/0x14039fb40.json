@@ -1,0 +1,7 @@
+{
+  "addr": "0x14039fb40",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14039fb4f        int64_t* rdi = arg1[0x56]\n14039fb5f        struct SignalDataClass::AbilitySignalDataClass::VTable* const var_18 = &AbilitySignalDataClass::`vftable'{for `SignalDataClass'}\n14039fb64        int32_t var_10 = 0\n14039fb77        if (rdi == 0 || rdi[0x69].b == 0xff)\n14039fb79        rdi = arg1\n14039fb8a        int32_t rax = sub_140374b50(arg1[0x53], 0)\n14039fb8f        int32_t var_10_1 = rax\n14039fb95        if (rax != 0 && sub_14039b480(arg1, rax, 1, 1) != 0)\n14039fbaf        void* rbx_1 = &rdi[7]\n14039fbb3        if (rdi == 0)\n14039fbb3        rbx_1 = nullptr\n14039fbcd        sub_140220ed0(sub_140058570(), rbx_1, 0x2c, &var_18)\n14039fbde        int32_t result = sub_140374b50(arg1[0x53], 1)\n14039fbe3        int32_t result_1 = result\n14039fbe9        if (result != 0)\n14039fbf7        result = sub_14039b480(arg1, result, 1, 1)\n14039fbfe        if (result.b != 0)\n14039fc03        void* rbx_2 = &rdi[7]\n14039fc07        if (rdi == 0)\n14039fc07        rbx_2 = nullptr\n14039fc21        return sub_140220ed0(sub_140058570(), rbx_2, 0x2c, &var_18)\n14039fc3a        return result",
+  "fetched_at": "2026-04-26T17:23:58Z"
+}

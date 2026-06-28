@@ -1,0 +1,7 @@
+{
+  "addr": "0x14023b560",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14023b569        bool cond:0 = data_140b09390 != 0\n14023b573        int64_t arg_18 = 0\n14023b57f        char rax_1\n14023b57f        if (not(cond:0))\n14023b581        rax_1 = sub_14023b830()\n14023b588        if (cond:0 || rax_1 != 0)\n14023b596        if (data_140b093b0:8 == 0)\n14023b619        return &data_140b09440\n14023b5a5        int32_t var_5e8\n14023b5a5        memset(&var_5e8, 0, 0x5dc)\n14023b5aa        var_5e8 = 0x5dc\n14023b5e8        if (data_140b093b0:8(GetCurrentProcess(), arg1, &arg_18, &var_5e8, var_5e8, arg1, 0, 0x5bc) != 0)\n14023b605        void var_5cc\n14023b605        sscanf_s(&data_140b09440, \"%s + %p\", &var_5cc)\n14023b619        return &data_140b09440\n14023b624        return 0",
+  "fetched_at": "2026-04-26T17:30:00Z"
+}

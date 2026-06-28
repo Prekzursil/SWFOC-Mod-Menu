@@ -1,0 +1,7 @@
+{
+  "addr": "0x14027b6f0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14027b70a        if (sub_140220610(arg2) != 0)\n14027b798        char i\n14027b723        int32_t rax = sub_140220710(arg2)\n14027b72b        if (rax u<= 8)\n14027b739        int64_t rdx\n14027b739        int32_t r8_1\n14027b739        switch (rax)\n14027b73b        case 0\n14027b73b        rdx = arg1 + 0xc\n14027b775        r8_1 = 4\n14027b741        case 1\n14027b741        rdx = arg1 + 0x10\n14027b775        r8_1 = 4\n14027b747        case 2\n14027b747        rdx = arg1 + 0x14\n14027b775        r8_1 = 4\n14027b74d        case 3\n14027b74d        rdx = arg1 + 0x18\n14027b775        r8_1 = 4\n14027b753        case 4\n14027b753        rdx = arg1 + 0x1c\n14027b775        r8_1 = 4\n14027b759        case 5\n14027b759        rdx = arg1 + 0x20\n14027b75d        r8_1 = 1\n14027b765        case 6\n14027b765        rdx = arg1 + 0x24\n14027b775        r8_1 = 4\n14027b76b        case 7\n14027b76b        rdx = arg1 + 0x28\n14027b775        r8_1 = 4\n14027b771        case 8\n14027b771        rdx = arg1 + 0x2c\n14027b775        r8_1 = 4\n14027b781        sub_140220730(arg2, rdx, r8_1, nullptr)\n14027b789        sub_1402206a0(arg2)\n14027b791        i = sub_140220610(arg2)\n14027b798        do while (i != 0)\n14027b7ab        return 1",
+  "fetched_at": "2026-04-26T17:32:01Z"
+}

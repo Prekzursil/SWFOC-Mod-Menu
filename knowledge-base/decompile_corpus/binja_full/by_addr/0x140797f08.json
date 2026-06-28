@@ -1,0 +1,7 @@
+{
+  "addr": "0x140797f08",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140797f13        if (data_140b3cbcc == 0)\n140797f1c        data_140b3cbb8 = &data_140a454a0\n140797f31        data_140b3cbc0 = &data_140a45160\n140797f38        data_140b3cbb0 = &data_140a45390\n140797f55        setmbcp_internal(0xfffffffd, 1, __acrt_getptd_head(), &data_140b3cbc0)\n140797f5a        data_140b3cbcc = 1\n140797f61        uint64_t result\n140797f61        result.b = 1\n140797f67        return result",
+  "fetched_at": "2026-04-26T17:32:02Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x1404ad310",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1404ad310        void* rax_3 = data_140b15418\n1404ad31a        int32_t rdx\n1404ad31a        if (rax_3 != 0)\n1404ad320        rdx = *(rax_3 + 0x10)\n1404ad31c        rdx = 0\n1404ad326        int32_t rax_1 = arg1[1] - rdx\n1404ad32a        if (rax_1 + *arg1 s< 0)\n1404ad32f        return zx.o(0)\n1404ad342        uint128_t result\n1404ad342        result.d = _mm_cvtepi32_ps(zx.o(rax_1 + *arg1)).d f/ _mm_cvtepi32_ps(zx.o(data_140b0a340)).d\n1404ad346        return result",
+  "fetched_at": "2026-04-26T17:29:32Z"
+}

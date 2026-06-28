@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407930c4",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* Library Function - Single Match\n    _mbsdec_l\n   \n   Libraries: Visual Studio 2017 Release, Visual Studio 2019 Release */\n\nuchar * __cdecl _mbsdec_l(uchar *_Start,uchar *_Pos,_locale_t _Locale)\n\n{\n  ulong *puVar1;\n  byte *pbVar2;\n  longlong local_28 [2];\n  longlong local_18;\n  char local_10;\n  \n  if ((_Start == (uchar *)0x0) || (_Pos == (uchar *)0x0)) {\n    puVar1 = __doserrno();\n    *puVar1 = 0x16;\n    FUN_1407711ac();\n  }\n  else if (_Start < _Pos) {\n    _LocaleUpdate::_LocaleUpdate((_LocaleUpdate *)local_28,(__crt_locale_pointers *)_Locale);\n    pbVar2 = _Pos + -1;\n    if (*(int *)(local_18 + 8) != 0) {\n      do {\n        pbVar2 = pbVar2 + -1;\n        if (pbVar2 < _Start) break;\n      } while ((*(byte *)((ulonglong)*pbVar2 + 0x19 + local_18) & 4) != 0);\n      pbVar2 = _Pos + (-1 - (ulonglong)((int)_Pos - (int)pbVar2 & 1));\n    }\n    if (local_10 == '\\0') {\n      return pbVar2;\n    }\n    *(uint *)(local_28[0] + 0x3a8) = *(uint *)(local_28[0] + 0x3a8) & 0xfffffffd;\n    return pbVar2;\n  }\n  return (uchar *)0x0;\n}",
+  "fetched_at": "2026-04-26T18:52:59Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x140770a80",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140770a9a        int32_t result\n140770a9a        if (__vcrt_InitializeCriticalSectionEx(&data_140b3bfd0, 0xfa0, 0) == 0)\n140770aa6        __vcrt_uninitialize_locks()\n140770aab        result.b = 0\n140770a9c        data_140b3bff8 += 1\n140770aa2        result.b = 1\n140770ab1        return result",
+  "fetched_at": "2026-04-26T17:30:39Z"
+}

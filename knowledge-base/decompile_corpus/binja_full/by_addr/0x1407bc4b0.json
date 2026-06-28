@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407bc4b0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1407bc4ca        void* rdi = arg1[0xb]\n1407bc4ce        int64_t rsi = sx.q(arg2)\n1407bc4d1        if (*(arg1 + 0x8a) u> 0)\n1407bc4da        sub_1407bad30(arg1, \"attempt to yield across metamethod/C-call boundary\", arg3)\n1407bc4da        noreturn\n1407bc4e3        if ((*(rdi + 0x10) & 1) != 0)\n1407bc4e9        if ((*(rdi - 0x20) & 1) != 0)\n1407bc4f5        sub_1407bad30(arg1, \"cannot yield a C function\", arg3)\n1407bc4f5        noreturn\n1407bc4fa        int64_t rcx_1 = arg1[3]\n1407bc50c        if (arg1[2] - rsi * 0x10 u> rcx_1)\n1407bc510        if (rsi.d s> 0)\n1407bc512        int64_t r9_1 = 0\n1407bc515        int64_t r10_1 = 0\n1407bc520        int64_t rcx_2 = arg1[3]\n1407bc524        r10_1 += 0x10\n1407bc528        int64_t rdx = r9_1\n1407bc52b        r9_1 += 1\n1407bc535        int32_t* rdx_3 = ((rdx - rsi) << 4) + arg1[2]\n1407bc53b        *(rcx_2 + r10_1 - 0x10) = *rdx_3\n1407bc544        *(rcx_2 + r10_1 - 8) = *(rdx_3 + 8)\n1407bc54c        do while (r9_1 s< rsi)\n1407bc54e        rcx_1 = arg1[3]\n1407bc559        arg1[2] = (rsi << 4) + rcx_1\n1407bc55d        *(rdi + 0x10) |= 0x10\n1407bc575        return 0xffffffff",
+  "fetched_at": "2026-04-26T17:33:21Z"
+}

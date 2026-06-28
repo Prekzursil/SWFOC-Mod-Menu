@@ -1,0 +1,7 @@
+{
+  "addr": "0x140579b10",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140579b20        int64_t* rcx = *(arg1 + 0x60)\n140579b27        if (rcx != 0)\n140579b3d        int64_t rax_2\n140579b3d        rax_2, arg3 = (*(*rcx + 0x10))(rcx, 3)\n140579b43        int64_t rax_4\n140579b43        if (rax_2 != 0)\n140579b4d        rax_4 = *(*(arg1 + 0x60) + 0xb8)\n140579b57        if (rax_2 == 0 || rax_4 == 0)\n140579bd3        sub_140248190(arg2, \"GameObjectWrapper::Get_Starbase_Level -- This object is not a planet.\", arg3)\n140579b5f        if (rax_4 != -0x138)\n140579b66        int64_t* rax_6 = operator new(0x18)\n140579b6e        if (rax_6 == 0)\n140579bc4        return sub_140256d40(arg1, rax_6) __tailcall\n140579b8d        uint128_t zmm0 = _mm_cvtepi32_ps(zx.o(*(*(*(arg1 + 0x60) + 0xb8) + 0x148)))\n140579b90        *rax_6 = &LuaValue<double, 4>::`vftable'{for `LuaVar'}\n140579b96        rax_6[1].d = 0\n140579ba0        rax_6[2] = _mm_cvtps_pd(zmm0.q)\n140579baf        return sub_140256d40(arg1, rax_6) __tailcall\n140579bd3        sub_140248190(arg2, \"GameObjectWrapper::Get_Starbase_Level -- this object is already dead.\", arg3)\n140579be4        return 0",
+  "fetched_at": "2026-04-26T17:35:10Z"
+}

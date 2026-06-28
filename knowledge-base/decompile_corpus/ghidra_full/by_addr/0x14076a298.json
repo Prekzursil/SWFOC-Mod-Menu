@@ -1,0 +1,7 @@
+{
+  "addr": "0x14076a298",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_14076a298(void)\n\n{\n  ulonglong uVar1;\n  \n  FUN_14076aab0();\n  uVar1 = DrawPrimitiveClass::vfunction19();\n  FUN_14078ec24(uVar1 & 0xffffffff);\n  return;\n}",
+  "fetched_at": "2026-04-26T18:10:01Z"
+}

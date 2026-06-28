@@ -1,0 +1,7 @@
+{
+  "addr": "0x14071cd70",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14071cd81        struct IXMLLoadableClass::SpecialAbilityClass::VTable** result = arg1\n14071cd84        *arg1 = &SummonAbilityClass::`vftable'{for `SpecialAbilityClass'}\n14071cd90        arg1[1] = &SummonAbilityClass::`vftable'{for `RefCountClass'}\n14071cd9b        sub_1404c47c0(&arg1[0x33])\n14071cda7        sub_1404c4770(&result[0x30])\n14071cdaf        sub_14048c8d0(result)\n14071cdb7        if ((arg2 & 1) != 0)\n14071cdc1        j_sub_1407864b8(result)\n14071cdd3        return result",
+  "fetched_at": "2026-04-26T17:28:09Z"
+}

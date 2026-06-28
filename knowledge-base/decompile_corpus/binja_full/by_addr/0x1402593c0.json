@@ -1,0 +1,7 @@
+{
+  "addr": "0x1402593c0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1402593c4        void* rax = *(arg1 + 0x38)\n1402593ce        if (rax != 0)\n1402593d4        int64_t* r8 = *(arg1 + 0x40)\n1402593db        if (r8 != 0)\n1402593fd        int64_t* arg_20\n1402593fd        int64_t* rbx = *sub_140243640(rax, &arg_20, r8, arg3, 0)\n140259403        struct LuaVar::LuaValue<class std::vector<class SmartPtr<class LuaVar> >, 2>::VTable** result\n140259403        if (rbx != 0)\n140259413        result = sub_14024a250()\n140259416        int64_t* arg_8 = rbx\n140259421        (**rbx)(rbx)\n140259423        int64_t** rdx_1 = result[3]\n14025942b        if (rdx_1 == result[4])\n140259448        sub_140144900(&result[2], rdx_1, &arg_8)\n14025942d        *rdx_1 = rbx\n140259436        (**rbx)(rbx)\n140259438        result[3] = &result[3]->vFunc_1\n14025944d        int64_t rdx_2 = *rbx\n140259453        (*(rdx_2 + 8))(rbx, rdx_2)\n140259405        result = nullptr\n14025945b        int64_t* rcx_5 = arg_20\n140259468        if (rcx_5 != 0)\n14025946a        int64_t rdx_3 = *rcx_5\n14025946d        (*(rdx_3 + 8))(rcx_5, rdx_3)\n14025947c        return result\n140259483        return 0",
+  "fetched_at": "2026-04-26T17:30:57Z"
+}

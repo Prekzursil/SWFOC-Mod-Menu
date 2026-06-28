@@ -1,0 +1,7 @@
+{
+  "addr": "0x140635e00",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140635e0b        struct GarrisonTransportBehaviorClass::GarrisonVehicleBehaviorClass::VTable** result = operator new(0x40)\n140635e16        if (result == 0)\n140635e4e        return result\n140635e1b        sub_1404c32d0(result)\n140635e27        *result = &GarrisonVehicleBehaviorClass::`vftable'{for `GarrisonTransportBehaviorClass'}\n140635e31        result[1] = &GarrisonVehicleBehaviorClass::`vftable'{for `RefCountClass'}\n140635e3c        result[3] = &GarrisonVehicleBehaviorClass::`vftable'{for `SignalListenerClass'}\n140635e48        return result",
+  "fetched_at": "2026-04-26T17:24:25Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406967c0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */\n\nLuaMemberFunctionWrapper<class_LuaUserVar> * FUN_1406967c0(undefined4 param_1)\n\n{\n  LuaMemberFunctionWrapper<class_LuaUserVar> *this;\n  \n  this = (LuaMemberFunctionWrapper<class_LuaUserVar> *)FUN_140769c58(0x28);\n  if (this != (LuaMemberFunctionWrapper<class_LuaUserVar> *)0x0) {\n    this->vftablePtr = (LuaMemberFunctionWrapper<class_LuaUserVar>_vftable *)0x0;\n    (this->RefCountClass_data).offset_0x0 = (undefined **)0x0;\n    (this->RefCountClass_data).offset_0x8 = (undefined **)0x0;\n    (this->RefCountClass_data).offset_0x10 = 0;\n    (this->RefCountClass_data).offset_0x18 = (undefined **)0x0;\n    LuaMemberFunctionWrapper<class_LuaUserVar>::LuaMemberFunctionWrapper<class_LuaUserVar>\n              (this,0,'\\x01');\n                    /* inlined constructor: ProduceObjectClass::ProduceObjectClass */\n    this->vftablePtr =\n         (LuaMemberFunctionWrapper<class_LuaUserVar>_vftable *)&ProduceObjectClass::vftable;\n    *(undefined4 *)&(this->RefCountClass_data).offset_0x18 = param_1;\n    return this;\n  }\n  _DAT_00000020 = param_1;\n  return (LuaMemberFunctionWrapper<class_LuaUserVar> *)0x0;\n}",
+  "fetched_at": "2026-04-26T17:20:06Z"
+}

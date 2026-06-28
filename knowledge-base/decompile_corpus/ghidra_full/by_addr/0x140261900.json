@@ -1,0 +1,7 @@
+{
+  "addr": "0x140261900",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_140261900(longlong param_1,float *param_2,float *param_3,float *param_4,float *param_5,\n                  undefined4 *param_6,undefined4 *param_7)\n\n{\n  longlong lVar1;\n  float fVar2;\n  float fVar3;\n  float fVar4;\n  float fVar5;\n  \n  lVar1 = *(longlong *)(param_1 + 0x40);\n  if (param_6 != (undefined4 *)0x0) {\n    *param_6 = *(undefined4 *)(lVar1 + 0x30);\n  }\n  if (param_7 != (undefined4 *)0x0) {\n    *param_7 = *(undefined4 *)(lVar1 + 0x34);\n  }\n  if (*(int *)(lVar1 + 0x44) == 0) {\n    fVar4 = (float)FUN_1407813c0(*(undefined4 *)(lVar1 + 0x48));\n    fVar3 = DAT_140819920;\n    fVar5 = fVar4 / *(float *)(lVar1 + 0x4c);\n    if (param_2 != (float *)0x0) {\n      *param_2 = fVar4 * DAT_140819920;\n    }\n    fVar2 = DAT_1408007c0;\n    if (param_3 != (float *)0x0) {\n      *param_3 = fVar4 * DAT_1408007c0;\n    }\n    if (param_4 != (float *)0x0) {\n      *param_4 = fVar5 * fVar2;\n    }\n    if (param_5 != (float *)0x0) {\n      *param_5 = fVar5 * fVar3;\n    }\n  }\n  else {\n    if (param_2 != (float *)0x0) {\n      *param_2 = *(float *)(lVar1 + 0x50);\n    }\n    if (param_3 != (float *)0x0) {\n      *param_3 = *(float *)(lVar1 + 0x54);\n    }\n    if (param_5 != (float *)0x0) {\n      *param_5 = *(float *)(lVar1 + 0x58);\n    }\n    if (param_4 != (float *)0x0) {\n      *param_4 = *(float *)(lVar1 + 0x5c);\n    }\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T18:15:51Z"
+}

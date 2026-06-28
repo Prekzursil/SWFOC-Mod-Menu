@@ -1,0 +1,7 @@
+{
+  "addr": "0x140162a20",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_140162a20(longlong param_1,undefined8 param_2,undefined4 param_3)\n\n{\n  int iVar1;\n  undefined4 uVar2;\n  int iVar3;\n  longlong lVar4;\n  \n  if ((*(int *)(param_1 + 0x2c4) != 0) && (*(int *)(param_1 + 0xf8) != 0)) {\n    FUN_140165cd0();\n    FUN_14013d400(0,*(undefined8 *)(*(longlong *)(param_1 + 0x118) + 0x8c8),0);\n    lVar4 = *(longlong *)(param_1 + 0x118);\n    iVar1 = *(int *)(lVar4 + 0x418);\n    if ((iVar1 == 4) || (((iVar1 == 5 || (iVar1 == 6)) || (iVar1 == 0xb)))) {\n      FUN_14013d400(1,*(undefined8 *)(lVar4 + 0xcd0),0);\n      lVar4 = *(longlong *)(param_1 + 0x118);\n    }\n    iVar1 = *(int *)(param_1 + 0x2c4);\n    uVar2 = *(undefined4 *)(lVar4 + 0x418);\n    if (*(char *)(lVar4 + 0x87e) != '\\0') {\n      uVar2 = 2;\n    }\n    if (*(int *)(lVar4 + 0x86c) == 0) {\n      iVar3 = iVar1 / 3 + (iVar1 >> 0x1f) +\n              (int)(((longlong)iVar1 / 3 + ((longlong)iVar1 >> 0x3f) & 0xffffffffU) >> 0x1f);\n    }\n    else {\n      iVar3 = (int)((iVar1 >> 0x1f & 3U) + iVar1) >> 2;\n    }\n    thunk_FUN_1401805b0(param_3,*(undefined4 *)(param_1 + 0x2c0),0xffffffff,0,iVar1,iVar3,\n                        *(undefined4 *)(param_1 + 0x2c8),uVar2,*(char *)(lVar4 + 0x1358) != '\\0',0);\n    *(undefined4 *)(param_1 + 0x2c4) = 0;\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T17:24:33Z"
+}

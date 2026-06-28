@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406654a0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nvoid __thiscall\nPlanetAITargetLocationClass::vfunction1(PlanetAITargetLocationClass *this,ulonglong param_1)\n\n{\n  scalar_deleting_destructor((PlanetAITargetLocationClass *)&this[-1].offset_0x78,param_1);\n  return;\n}\n\n",
+  "fetched_at": "2026-04-26T17:09:21Z"
+}

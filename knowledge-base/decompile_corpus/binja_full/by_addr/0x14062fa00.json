@@ -1,0 +1,7 @@
+{
+  "addr": "0x14062fa00",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14062fa12        char rax = sub_14042c890(arg1)\n14062fa17        int64_t* rcx = *(arg1 + 0x28)\n14062fa20        char rbp = rax\n14062fa23        int64_t r8 = *rcx\n14062fa26        void* result = (*(r8 + 0x10))(rcx, 0x16, r8)\n14062fa30        if (result == 0)\n14062fa41        return result\n14062fa4a        int32_t rdi = 0\n14062fa53        if (sub_140405300(result) s> 0)\n14062faa6        int32_t rax_6\n14062fa5a        int64_t* rax_2 = sub_1404052d0(result, rdi)\n14062fa62        if (rax_2 != 0)\n14062fa64        int64_t r8_1 = *rax_2\n14062fa6f        int64_t* rax_3 = (*(r8_1 + 0x10))(rax_2, 1, r8_1)\n14062fa79        if (rax_3 != 0)\n14062fa7b        int64_t rdx_2 = *rax_3\n14062fa89        if ((*(rdx_2 + 0x220))(rax_3, rdx_2) != 0)\n14062fa8b        int64_t rdx_3 = *rax_3\n14062fa97        rbp &= (*(rdx_3 + 0x150))(rax_3, rdx_3)\n14062fa9d        rdi += 1\n14062fa9f        rax_6 = sub_140405300(result)\n14062faa6        do while (rdi s< rax_6)\n14062fac0        return zx.q(rbp)",
+  "fetched_at": "2026-04-26T17:24:11Z"
+}

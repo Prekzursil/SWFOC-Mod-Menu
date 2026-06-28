@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407eba40",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void DynamicVectorClass<class_std::basic_string<char,struct_std::char_traits<char>,class_std::allocator<char>_>_>\n     ::\n     DynamicVectorClass<class_std::basic_string<char,struct_std::char_traits<char>,class_std::allocator<char>_>_>_Constructor_or_Destructor\n               (void)\n\n{\n  HANDLE hHeap;\n  \n  PTR_vftable_140a12a00 = (undefined *)&vftable;\n  if (DAT_140a12a08 != (LPVOID)0x0) {\n    if ((DAT_140a12a14 & 0x80000000) == 0) {\n      FUN_14001eef0(DAT_140a12a08,3);\n    }\n    else {\n      hHeap = GetProcessHeap();\n      HeapFree(hHeap,0,DAT_140a12a08);\n    }\n    DAT_140a12a14 = DAT_140a12a14 & 0x80000000;\n    DAT_140a12a08 = (LPVOID)0x0;\n    DAT_140a12a10 = 0;\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T19:02:07Z"
+}

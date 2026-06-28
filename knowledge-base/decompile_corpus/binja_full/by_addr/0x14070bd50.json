@@ -1,0 +1,7 @@
+{
+  "addr": "0x14070bd50",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14070bd61        arg1[0x2f].d = 0\n14070bd6b        *arg1 = &ReduceTechnologyPriceAbilityClass::`vftable'{for `SpecialAbilityClass'}\n14070bd7a        arg1[1] = &ReduceTechnologyPriceAbilityClass::`vftable'{for `RefCountClass'}\n14070bd7e        sub_14048c8d0(arg1)\n14070bd86        if ((arg2 & 1) != 0)\n14070bd90        j_sub_1407864b8(arg1)\n14070bda2        return arg1",
+  "fetched_at": "2026-04-26T17:27:29Z"
+}

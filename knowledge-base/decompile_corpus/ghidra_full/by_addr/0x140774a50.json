@@ -1,0 +1,7 @@
+{
+  "addr": "0x140774a50",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* Library Function - Single Match\n    __stdio_common_vsprintf_s\n   \n   Library: Visual Studio 2019 Release */\n\nint __stdio_common_vsprintf_s\n              (__uint64 param_1,char *param_2,__uint64 param_3,char *param_4,\n              __crt_locale_pointers *param_5,char *param_6)\n\n{\n  int iVar1;\n  ulong *puVar2;\n  \n  if (((param_4 == (char *)0x0) || (param_2 == (char *)0x0)) || (param_3 == 0)) {\n    puVar2 = __doserrno();\n    *puVar2 = 0x16;\n  }\n  else {\n    iVar1 = common_vsprintf<class___crt_stdio_output::format_validation_base,char>\n                      (param_1,param_2,param_3,param_4,param_5,param_6);\n    if (iVar1 < 0) {\n      *param_2 = '\\0';\n    }\n    if (iVar1 != -2) {\n      return iVar1;\n    }\n    puVar2 = __doserrno();\n    *puVar2 = 0x22;\n  }\n  FUN_1407711ac();\n  return -1;\n}",
+  "fetched_at": "2026-04-26T18:50:20Z"
+}

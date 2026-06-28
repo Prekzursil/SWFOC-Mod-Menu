@@ -1,0 +1,7 @@
+{
+  "addr": "0x14076ac90",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* Library Function - Single Match\n    __raise_securityfailure\n   \n   Libraries: Visual Studio 2015 Release, Visual Studio 2017 Release, Visual Studio 2019 Release */\n\nvoid __raise_securityfailure(_EXCEPTION_POINTERS *param_1)\n\n{\n  HANDLE hProcess;\n  \n  SetUnhandledExceptionFilter((LPTOP_LEVEL_EXCEPTION_FILTER)0x0);\n  UnhandledExceptionFilter(param_1);\n  hProcess = GetCurrentProcess();\n                    /* WARNING: Could not recover jumptable at 0x00014076acbd. Too many branches */\n                    /* WARNING: Treating indirect jump as call */\n  TerminateProcess(hProcess,0xc0000409);\n  return;\n}",
+  "fetched_at": "2026-04-26T18:10:22Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x14027cea0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14027cead        int64_t rdi = sx.q(arg2)\n14027cebe        if (rdi.d != sub_140294a70(&data_140a16fd0))\n14027cee3        return zx.q(*(*(arg1 + 0xc78) + (rdi << 3) + 4))\n14027cecd        return zx.q(*(arg1 + 0x40))",
+  "fetched_at": "2026-04-26T17:32:04Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407e590b",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_1407e590b(undefined8 param_1,longlong param_2)\n\n{\n  if ((*(uint *)(param_2 + 0x3c) & 0x10) != 0) {\n    *(uint *)(param_2 + 0x3c) = *(uint *)(param_2 + 0x3c) & 0xffffffef;\n    FID_conflict__Tidy_deallocate(param_2 + 0xd8);\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T19:00:38Z"
+}

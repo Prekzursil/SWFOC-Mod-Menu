@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407b6820",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_1407b6820(longlong param_1,float param_2)\n\n{\n  float fVar1;\n  undefined8 uVar2;\n  undefined8 uVar3;\n  undefined1 local_res8 [16];\n  undefined1 local_res18 [8];\n  undefined1 local_res20 [8];\n  undefined1 local_68 [8];\n  undefined1 local_60 [16];\n  undefined1 local_50 [16];\n  undefined1 local_40 [40];\n  \n  fVar1 = *(float *)(param_1 + 0x144);\n  if (0.0 < fVar1) {\n    if (*(char *)(param_1 + 0x148) != '\\0') {\n      return;\n    }\n    if (param_2 <= fVar1) {\n      uVar2 = FUN_1401f9860(param_1 + 0x130,local_40,param_2 / fVar1);\n      uVar3 = FUN_1401f9860(param_1 + 0x120,local_50,DAT_1407ffaf8 - param_2 / fVar1);\n      FUN_1401f9700(uVar3,local_60,uVar2);\n      FUN_1401f9440(local_50);\n      FUN_1401f9440(local_40);\n      FUN_1401f94d0(local_60,local_res18,local_res20,local_68,local_res8);\n      *(uint *)(param_1 + 0x140) =\n           CONCAT31(CONCAT21(CONCAT11(local_res8[0],local_res18[0]),local_res20[0]),local_68[0]);\n      FUN_1401f9440(local_60);\n      return;\n    }\n    FUN_1401f94d0(param_1 + 0x130,local_res18,local_res20,local_68,local_res8);\n    *(undefined1 *)(param_1 + 0x148) = 1;\n  }\n  else {\n    FUN_1401f94d0(param_1 + 0x120,local_res18,local_res20,local_68,local_res8);\n  }\n  *(uint *)(param_1 + 0x140) =\n       CONCAT31(CONCAT21(CONCAT11(local_res8[0],local_res18[0]),local_res20[0]),local_68[0]);\n  return;\n}",
+  "fetched_at": "2026-04-26T18:55:53Z"
+}

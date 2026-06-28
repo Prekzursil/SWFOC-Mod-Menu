@@ -1,0 +1,7 @@
+{
+  "addr": "0x140325150",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nvoid FUN_140325150(longlong param_1)\n\n{\n  if (*(longlong *)(param_1 + 0x40) != 0) {\n    FUN_1402d5a30(&DAT_140b27e60,*(longlong *)(param_1 + 0x40),0);\n    *(undefined8 *)(param_1 + 0x40) = 0;\n  }\n  FUN_140324200(param_1);\n  return;\n}\n\n",
+  "fetched_at": "2026-04-26T17:00:49Z"
+}

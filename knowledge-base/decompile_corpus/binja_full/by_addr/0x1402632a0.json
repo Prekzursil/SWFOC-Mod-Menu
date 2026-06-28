@@ -1,0 +1,7 @@
+{
+  "addr": "0x1402632a0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1402632a6        int32_t i_2 = 0\n1402632aa        if (arg2 == 0)\n1402632e5        int32_t i\n1402632dc        if (ShowCursor(0) s<= 0)\n1402632dc        break\n1402632de        i = i_2\n1402632e0        i_2 += 1\n1402632e5        do while (i s< 0x64)\n1402632ec        return sub_14013eac0() __tailcall\n1402632c6        int32_t i_1\n1402632bd        if (ShowCursor(1) s> 0)\n1402632bd        break\n1402632bf        i_1 = i_2\n1402632c1        i_2 += 1\n1402632c6        do while (i_1 s< 0x64)\n1402632cd        return sub_14013ea90() __tailcall",
+  "fetched_at": "2026-04-26T17:31:19Z"
+}

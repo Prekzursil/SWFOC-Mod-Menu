@@ -1,0 +1,7 @@
+{
+  "addr": "0x140222a70",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "int __thiscall RAMFileClass::vfunction7(RAMFileClass *this,undefined8 param_1,int param_2)\n\n{\n  undefined8 *puVar1;\n  int iVar2;\n  int iVar3;\n  LPVOID pvVar4;\n  \n  if ((((this->RAMFileClass_data).offset_0x14 != '\\0') &&\n      (pvVar4 = (this->RAMFileClass_data).offset_0x0, pvVar4 != (LPVOID)0x0)) &&\n     ((this->FileClass_data).offset_0x0 == 1)) {\n    iVar2 = (this->RAMFileClass_data).offset_0x10;\n    iVar3 = *(int *)&(this->RAMFileClass_data).offset_0x8;\n    if (iVar2 - iVar3 < param_2) {\n      FUN_140222d30(this,param_2 + (iVar3 - iVar2));\n      iVar3 = *(int *)&(this->RAMFileClass_data).offset_0x8;\n      pvVar4 = (this->RAMFileClass_data).offset_0x0;\n    }\n    FUN_14076bd80((longlong)iVar3 + (longlong)pvVar4,param_1,param_2);\n    iVar2 = *(int *)((longlong)&(this->RAMFileClass_data).offset_0x8 + 4);\n    puVar1 = &(this->RAMFileClass_data).offset_0x8;\n    *(int *)puVar1 = *(int *)puVar1 + param_2;\n    iVar3 = *(int *)&(this->RAMFileClass_data).offset_0x8;\n    if (iVar2 <= iVar3) {\n      iVar2 = iVar3;\n    }\n    *(int *)((longlong)&(this->RAMFileClass_data).offset_0x8 + 4) = iVar2;\n    return param_2;\n  }\n  return 0;\n}",
+  "fetched_at": "2026-04-26T18:03:59Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x140202390",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "u_long * FUN_140202390(u_long *param_1,longlong param_2)\n\n{\n  u_short uVar1;\n  u_long uVar2;\n  \n  param_1[0] = 0;\n  param_1[1] = 0;\n  uVar1 = ntohs(*(u_short *)(param_2 + 2));\n  uVar2 = *(u_long *)(param_2 + 4);\n  *(u_short *)(param_1 + 1) = uVar1;\n  uVar2 = ntohl(uVar2);\n  *param_1 = uVar2;\n  return param_1;\n}",
+  "fetched_at": "2026-04-26T17:55:51Z"
+}

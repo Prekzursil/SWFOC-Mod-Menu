@@ -1,0 +1,7 @@
+{
+  "addr": "0x14055b570",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14055b57c        arg1[4].d = 0xffffffff\n14055b583        struct BaseDataPackClass::ProjectileDataPackClass::VTable* const result = &ProjectileDataPackClass::`vftable'{for `BaseDataPackClass'}\n14055b58a        arg1[3] = 0\n14055b58e        *arg1 = &ProjectileDataPackClass::`vftable'{for `BaseDataPackClass'}\n14055b5a2        arg1[0xb] = 0x3fffff\n14055b5aa        arg1[1] = 0\n14055b5ae        arg1[2].d = 0xffffffff\n14055b5b5        __builtin_memset(arg1 + 0x94, 0, 0x18)\n14055b5bc        int64_t* rcx = arg1[6]\n14055b5c3        if (rcx != 0)\n14055b5c8        result = (*(*rcx + 8))(rcx)\n14055b5cb        arg1[6] = 0\n14055b5cf        *(arg1 + 0x3c) = 0xdd5e0b6b\n14055b5d6        arg1[8].d = 0xdd5e0b6b\n14055b5dd        *(arg1 + 0x44) = 0xdd5e0b6b\n14055b5e4        int64_t* rcx_1 = arg1[9]\n14055b5eb        if (rcx_1 != 0)\n14055b5f0        result = (*(*rcx_1 + 8))(rcx_1)\n14055b5f3        arg1[9] = 0\n14055b5f7        arg1[0xa].b = 0\n14055b5fb        *(arg1 + 0x64) = 0\n14055b5ff        *(arg1 + 0x24) = 0\n14055b603        *(arg1 + 0x2c) = 0\n14055b606        arg1[0x16] = 0\n14055b60d        int64_t* rcx_2 = arg1[9]\n14055b614        if (rcx_2 != 0)\n14055b619        result = (*(*rcx_2 + 8))(rcx_2)\n14055b61c        int64_t* rcx_3 = arg1[6]\n14055b623        if (rcx_3 == 0)\n14055b635        return result\n14055b628        return (*(*rcx_3 + 8))(rcx_3)",
+  "fetched_at": "2026-04-26T17:34:23Z"
+}

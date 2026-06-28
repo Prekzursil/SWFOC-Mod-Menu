@@ -1,0 +1,7 @@
+{
+  "addr": "0x140325ea0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140325ea7        *arg1 = &DynamicVectorClass<class DynamicVectorClass<class std::string> >::`vftable'\n140325eaa        return sub_140326b80(arg1) __tailcall",
+  "fetched_at": "2026-04-26T17:00:56Z"
+}

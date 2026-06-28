@@ -1,0 +1,7 @@
+{
+  "addr": "0x140175e00",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "alParticleGroupRenderTask * __thiscall\nalLightningBoltRenderTask::scalar_deleting_destructor(alLightningBoltRenderTask *this,uint param_1)\n\n{\n                    /* inlined destructor: alRenderTask::~alRenderTask */\n  this->vftablePtr = (alLightningBoltRenderTask_vftable *)&alRenderTask::vftable;\n  MultiLinkedListMember::~MultiLinkedListMember((MultiLinkedListMember *)this);\n  if ((param_1 & 1) != 0) {\n    thunk_FUN_1407864b8(this,0x78);\n  }\n  return (alParticleGroupRenderTask *)this;\n}",
+  "fetched_at": "2026-04-26T17:26:55Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401b9cb0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "DynamicVectorClass<struct_alD3dTerrainPatch::Zbounds> * __thiscall\nDynamicVectorClass<struct_alD3dTerrainPatch::Zbounds>::scalar_deleting_destructor\n          (DynamicVectorClass<struct_alD3dTerrainPatch::Zbounds> *this,uint param_1)\n\n{\n  ~DynamicVectorClass<struct_alD3dTerrainPatch::Zbounds>(this);\n  if ((param_1 & 1) != 0) {\n    thunk_FUN_1407864b8(this,0x18);\n  }\n  return this;\n}",
+  "fetched_at": "2026-04-26T17:45:20Z"
+}

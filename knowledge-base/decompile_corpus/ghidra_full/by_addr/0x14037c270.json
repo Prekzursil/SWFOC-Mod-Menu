@@ -1,0 +1,7 @@
+{
+  "addr": "0x14037c270",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "bool FUN_14037c270(longlong param_1,longlong param_2,longlong *param_3)\n\n{\n  undefined1 uVar1;\n  int iVar2;\n  \n  if (((((*(byte *)(*(longlong *)(param_1 + 0x10) + 0x3a0) & 0x80) == 0) &&\n       (DAT_140b15490 != '\\x01')) && (param_2 != 0)) &&\n     ((param_3 != (longlong *)0x0 || (param_3 = DAT_140b15418, DAT_140b15418 != (longlong *)0x0))))\n  {\n    switch(*(int *)(param_2 + 0x3c) + -1) {\n    case 0:\n      return true;\n    case 1:\n    case 8:\n    case 9:\n    case 10:\n                    /* WARNING: Could not recover jumptable at 0x00014037c2e4. Too many branches */\n                    /* WARNING: Treating indirect jump as call */\n      uVar1 = (**(code **)(*param_3 + 0xf0))(param_3);\n      return (bool)uVar1;\n    case 2:\n    case 5:\n    case 6:\n    case 7:\n      iVar2 = (**(code **)(*param_3 + 0xe0))(param_3);\n      return iVar2 == 0;\n    case 3:\n      iVar2 = (**(code **)(*param_3 + 0xe0))(param_3);\n      return iVar2 == 2;\n    case 4:\n      iVar2 = (**(code **)(*param_3 + 0xe0))(param_3);\n      return iVar2 == 1;\n    case 0xb:\n      uVar1 = FUN_14028afb0(&DAT_140b153e0);\n      return (bool)uVar1;\n    }\n  }\n  return false;\n}",
+  "fetched_at": "2026-04-26T17:19:06Z"
+}

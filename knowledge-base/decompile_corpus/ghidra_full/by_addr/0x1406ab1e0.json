@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406ab1e0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "vector<struct_CHN*___ptr64,class_std::allocator<struct_CHN*___ptr64>_> * __thiscall\nActionDrivenHeroClashClass::vfunction7\n          (ActionDrivenHeroClashClass *this,\n          vector<struct_CHN*___ptr64,class_std::allocator<struct_CHN*___ptr64>_> *param_1)\n\n{\n  std::vector<struct_CHN*___ptr64,class_std::allocator<struct_CHN*___ptr64>_>::\n  vector<struct_CHN*___ptr64,class_std::allocator<struct_CHN*___ptr64>_>\n            (param_1,(vector<struct_CHN*___ptr64,class_std::allocator<struct_CHN*___ptr64>_> *)\n                     &(this->ActionDrivenHeroClashClass_data).offset_0x18);\n  return param_1;\n}",
+  "fetched_at": "2026-04-26T17:35:25Z"
+}

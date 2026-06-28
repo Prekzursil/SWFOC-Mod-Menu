@@ -1,0 +1,7 @@
+{
+  "addr": "0x1405630a0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall\nDeployTroopersDataPackClass::~DeployTroopersDataPackClass(DeployTroopersDataPackClass *this)\n\n{\n  this->vftablePtr = &vftable;\n  ::DynamicVectorClass<class_GameObjectClass*___ptr64>::\n  ~DynamicVectorClass<class_GameObjectClass*___ptr64>\n            ((DynamicVectorClass<class_GameObjectClass*___ptr64> *)\n             &(this->DeployTroopersDataPackClass_data).offset_0x38);\n  ::DynamicVectorClass<class_GameObjectClass*___ptr64>::\n  ~DynamicVectorClass<class_GameObjectClass*___ptr64>\n            ((DynamicVectorClass<class_GameObjectClass*___ptr64> *)\n             &(this->DeployTroopersDataPackClass_data).offset_0x18);\n  ::DynamicVectorClass<class_GameObjectClass*___ptr64>::\n  ~DynamicVectorClass<class_GameObjectClass*___ptr64>\n            ((DynamicVectorClass<class_GameObjectClass*___ptr64> *)\n             &this->DeployTroopersDataPackClass_data);\n  return;\n}",
+  "fetched_at": "2026-04-26T18:39:09Z"
+}

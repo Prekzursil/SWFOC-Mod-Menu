@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407100cc",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall\nTractorBeamAttackAbilityClass::vfunction3_for_RefCountClass\n          (TractorBeamAttackAbilityClass *this,uint param_1)\n\n{\n  scalar_deleting_destructor\n            ((TractorBeamAttackAbilityClass *)\n             &this[-1].TractorBeamAttackAbilityClass_data.offset_0x8,param_1);\n  return;\n}",
+  "fetched_at": "2026-04-26T17:55:09Z"
+}

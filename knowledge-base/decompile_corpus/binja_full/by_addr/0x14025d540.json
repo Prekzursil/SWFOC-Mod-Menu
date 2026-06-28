@@ -1,0 +1,7 @@
+{
+  "addr": "0x14025d540",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14025d547        void** rbx = arg2\n14025d550        if (arg1 != arg2)\n14025d557        if (arg2[3] u>= 0x10)\n14025d559        arg2 = *arg2\n14025d560        sub_140022730(arg1, arg2, rbx[2])\n14025d570        arg1[4].d = rbx[4].d\n14025d576        if (&arg1[5] != &rbx[5])\n14025d585        sub_14025cbc0(&arg1[5], rbx[5], rbx[6])\n14025d58e        arg1[8] = rbx[8]\n14025d596        arg1[9] = rbx[9]\n14025d59d        arg1[0xa].d = rbx[0xa].d\n14025d5a3        *(arg1 + 0x54) = *(rbx + 0x54)\n14025d5aa        arg1[0xb] = rbx[0xb]\n14025d5b2        arg1[0xc] = rbx[0xc]\n14025d5ba        arg1[0xd] = rbx[0xd]\n14025d5c2        arg1[0xe] = rbx[0xe]\n14025d5ca        arg1[0xf] = rbx[0xf]\n14025d5d4        arg1[0x10].d = rbx[0x10].d\n14025d5eb        if (&arg1[0x11] != &rbx[0x11])\n14025d5fb        int32_t* rsi_1 = arg1[0x11]\n14025d603        int32_t* r14_1 = rbx[0x11]\n14025d60a        void* rbp_2 = rbx[0x12] - r14_1\n14025d613        int64_t rdx_3 = rbp_2 s>> 2\n14025d61e        if (rdx_3 u> (arg1[0x13] - rsi_1) s>> 2)\n14025d623        sub_1401a4af0(&arg1[0x11], rdx_3)\n14025d628        rsi_1 = arg1[0x11]\n14025d634        memcpy(rsi_1, r14_1, rbp_2)\n14025d64c        arg1[0x12] = rsi_1 + rbp_2\n14025d659        return arg1",
+  "fetched_at": "2026-04-26T17:31:07Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407d8c70",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "ParameterClass * __thiscall\nParameterClass::ParameterClass(ParameterClass *this,undefined **param_1,undefined8 param_2)\n\n{\n  *(undefined4 *)&(this->RefCountClass_data).offset_0x0 = 0;\n  this->vftablePtr = &vftable;\n  (this->RefCountClass_data).offset_0x8 = param_1;\n  (this->RefCountClass_data).offset_0x10 = param_2;\n  return this;\n}",
+  "fetched_at": "2026-04-26T18:58:37Z"
+}

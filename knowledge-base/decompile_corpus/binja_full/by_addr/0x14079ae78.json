@@ -1,0 +1,7 @@
+{
+  "addr": "0x14079ae78",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14079ae85        void var_48\n14079ae85        int64_t rax_1 = __security_cookie ^ &var_48\n14079ae9f        void var_28\n14079ae9f        int32_t rax_2 = __acrt_GetLocaleInfoEx(arg1, 0x59, &var_28, 9)\n14079aea6        int32_t rax_3\n14079aea6        if (rax_2 != 0)\n14079aeb6        rax_3 = wcsncmp(&var_28, arg1, 9)\n14079aebd        int64_t result\n14079aebd        if (rax_2 == 0 || rax_3 != 0)\n14079aec6        result = 0\n14079aebf        result = 1\n14079aed0        __security_check_cookie(rax_1 ^ &var_48)\n14079aeda        return result",
+  "fetched_at": "2026-04-26T17:32:09Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x140333040",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140333049        int64_t* rcx = *arg1\n14033304f        if (rcx == 0)\n14033304f        return \n140333056        rcx[1]\n14033305a        rcx[1] = 0\n14033306d        if (ReleaseMutex(*rcx) == 0)\n14033306f        GetLastError()\n140333092        *arg1 = 0\n14033309e        return ",
+  "fetched_at": "2026-04-26T17:03:03Z"
+}

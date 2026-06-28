@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406b84b0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "LandGoalSystemClass * __thiscall\nGalacticGoalSystemClass::scalar_deleting_destructor(GalacticGoalSystemClass *this,uint param_1)\n\n{\n  AIGoalSystemClass::~AIGoalSystemClass((AIGoalSystemClass *)this);\n  if ((param_1 & 1) != 0) {\n    thunk_FUN_1407864b8(this,0x2b8);\n  }\n  return (LandGoalSystemClass *)this;\n}",
+  "fetched_at": "2026-04-26T17:37:17Z"
+}

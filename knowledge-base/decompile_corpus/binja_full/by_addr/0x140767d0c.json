@@ -1,0 +1,7 @@
+{
+  "addr": "0x140767d0c",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140767d31        int32_t rax_1 = std::_Getloctxt<class std::istreambuf_iterator<char,struct std::char_traits<char> >,char>(arg3, arg4, nullptr, *(arg1 + 0x18), 0)\n140767d3a        if (rax_1 s>= 0)\n140767d4d        *(arg6 + 0x10) = rax_1 s>> 1\n140767d41        *arg5 |= 2\n140767d56        *arg2 = *arg3\n140767d64        return arg2",
+  "fetched_at": "2026-04-26T17:30:14Z"
+}

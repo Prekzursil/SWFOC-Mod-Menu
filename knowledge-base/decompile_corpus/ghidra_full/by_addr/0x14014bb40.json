@@ -1,0 +1,7 @@
+{
+  "addr": "0x14014bb40",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined * __thiscall alLightSource::vfunction5_for_RefCountClass(void)\n\n{\n  return &DAT_140a12518;\n}",
+  "fetched_at": "2026-04-26T17:21:18Z"
+}

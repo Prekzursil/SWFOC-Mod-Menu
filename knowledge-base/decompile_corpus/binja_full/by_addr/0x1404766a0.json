@@ -1,0 +1,7 @@
+{
+  "addr": "0x1404766a0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1404766ce        int64_t var_10 = 0xf\n1404766de        int64_t var_18 = 8\n1404766eb        void* var_28\n1404766eb        __builtin_strncpy(&var_28, \"Fixedsys\", 9)\n1404766fa        int32_t* rax = sub_140260cc0(&data_140b0a130, &var_28, 9, 0, 0, 0, 0x3f800000)\n140476707        *(arg1 + 0x10) = rax\n14047670b        void* rbx\n14047670b        rbx.b = rax != 0\n140476712        if (var_10 u>= 0x10)\n140476714        void* rcx = var_28\n14047671c        void* rax_1 = rcx\n140476726        if (var_10 + 1 u>= 0x1000)\n140476728        rcx = *(rcx - 8)\n14047673b        if (rax_1 - rcx - 8 u> 0x1f)\n14047674b        _invalid_parameter_noinfo_noreturn()\n14047674b        noreturn\n14047673d        j_sub_1407864b8(rcx)\n14047674a        return zx.q(rbx.b)",
+  "fetched_at": "2026-04-26T17:28:13Z"
+}

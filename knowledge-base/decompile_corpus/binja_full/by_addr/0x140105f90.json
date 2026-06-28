@@ -1,0 +1,7 @@
+{
+  "addr": "0x140105f90",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140105f94        uint32_t result = zx.d(arg1)\n140105f97        void* rcx = data_140a622f0\n140105fa1        if (rcx == 0)\n140105fc7        return result\n140105fbe        return sub_140271700(rcx, _mm_cvtepi32_ps(zx.o(result)).d, 1, (zx.o(0)).d, 0x3f800000)",
+  "fetched_at": "2026-04-26T17:05:35Z"
+}

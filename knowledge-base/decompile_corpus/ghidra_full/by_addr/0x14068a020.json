@@ -1,0 +1,7 @@
+{
+  "addr": "0x14068a020",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_14068a020(void)\n\n{\n  AbsorbBlasterAbilityClass *this;\n  \n  this = (AbsorbBlasterAbilityClass *)FUN_140769c58(0x188);\n  if (this != (AbsorbBlasterAbilityClass *)0x0) {\n    AbsorbBlasterAbilityClass::AbsorbBlasterAbilityClass(this);\n    return;\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T17:15:29Z"
+}

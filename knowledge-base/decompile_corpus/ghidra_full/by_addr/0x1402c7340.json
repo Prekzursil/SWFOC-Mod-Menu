@@ -1,0 +1,7 @@
+{
+  "addr": "0x1402c7340",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "LinearInterpolator * __thiscall\nLinearInterpolator::scalar_deleting_destructor(LinearInterpolator *this,uint param_1)\n\n{\n  ~LinearInterpolator(this);\n  if ((param_1 & 1) != 0) {\n    thunk_FUN_1407864b8(this,0x28);\n  }\n  return this;\n}",
+  "fetched_at": "2026-04-26T18:29:12Z"
+}

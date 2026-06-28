@@ -1,0 +1,7 @@
+{
+  "addr": "0x140213db0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "DWORD __thiscall FileClass::vfunction10(FileClass *this)\n\n{\n  HANDLE hFile;\n  DWORD DVar1;\n  \n  hFile = (this->FileClass_data).offset_0x8;\n  if (((hFile != (HANDLE)0xffffffffffffffff) || ((this->FileClass_data).offset_0x38 != -1)) &&\n     ((this->FileClass_data).offset_0x0 != -1)) {\n    if (hFile != (HANDLE)0xffffffffffffffff) {\n                    /* WARNING: Could not recover jumptable at 0x000140213dd7. Too many branches */\n                    /* WARNING: Treating indirect jump as call */\n      DVar1 = GetFileSize(hFile,(LPDWORD)0x0);\n      return DVar1;\n    }\n    DVar1 = FUN_14021abe0(DAT_140a7d080,(this->FileClass_data).offset_0x38);\n    return DVar1;\n  }\n  return 0xffffffff;\n}",
+  "fetched_at": "2026-04-26T18:00:07Z"
+}

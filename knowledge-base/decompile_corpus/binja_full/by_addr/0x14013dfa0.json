@@ -1,0 +1,7 @@
+{
+  "addr": "0x14013dfa0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14013dfbf        struct alMesh::alD3dMesh::VTable** rax = operator new(0x110)\n14013dfc9        struct alMesh::alD3dMesh::VTable** result\n14013dfc9        if (rax == 0)\n14013dfd8        result = nullptr\n14013dfd3        result = sub_140186730(rax)\n14013dff5        if (sub_140187d40(result, arg1, arg2) != 0)\n14013dff5        return result\n14013e006        return nullptr",
+  "fetched_at": "2026-04-26T17:16:21Z"
+}

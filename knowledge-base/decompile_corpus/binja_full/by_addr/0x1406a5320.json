@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406a5320",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1406a5334        *arg1 = &LuaFOWCellsClass::`vftable'{for `LuaUserVar'}\n1406a5339        void* rcx = arg1[5]\n1406a5340        if (rcx != 0)\n1406a5354        if (((arg1[7] - rcx) & 0xfffffffffffffffc) u>= 0x1000)\n1406a5356        void* r8_1 = *(rcx - 8)\n1406a5369        if (rcx - r8_1 - 8 u> 0x1f)\n1406a53aa        _invalid_parameter_noinfo_noreturn()\n1406a53aa        noreturn\n1406a536b        rcx = r8_1\n1406a536e        j_sub_1407864b8(rcx)\n1406a5375        __builtin_memset(&arg1[5], 0, 0x18)\n1406a5384        sub_140249eb0(arg1)\n1406a538d        if ((arg2 & 1) != 0)\n1406a5397        j_sub_1407864b8(arg1)\n1406a53a9        return arg1",
+  "fetched_at": "2026-04-26T17:21:47Z"
+}

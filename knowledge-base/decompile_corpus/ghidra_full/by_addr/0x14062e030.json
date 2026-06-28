@@ -1,0 +1,7 @@
+{
+  "addr": "0x14062e030",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "IdleBehaviorClass * __thiscall IdleBehaviorClass::vfunction4(IdleBehaviorClass *this,int param_1)\n\n{\n  IdleBehaviorClass *pIVar1;\n  \n  pIVar1 = (IdleBehaviorClass *)0x0;\n  if (param_1 == 7) {\n    pIVar1 = this;\n  }\n  return pIVar1;\n}",
+  "fetched_at": "2026-04-26T17:32:43Z"
+}

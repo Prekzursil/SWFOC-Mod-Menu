@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407ed730",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1407ed73b        sub_14021d1b0(&data_140a7d0a0)\n1407ed750        data_140a7e040.o = data_140852e70\n1407ed757        data_140a7e08c = 0\n1407ed75d        data_140a7e06c:4.d = 0\n1407ed763        data_140a7e078 = 0\n1407ed769        data_140a7e058:4.d = 0\n1407ed76f        data_140a7e064 = 0\n1407ed775        data_140a7e050 = 0\n1407ed77b        data_140a7e07c = 0xbf800000\n1407ed785        data_140a7e080.d = 0xbf800000\n1407ed78f        data_140a7e080:4.d = 0\n1407ed799        data_140a7e088 = 0xbf800000\n1407ed7a3        data_140a7e068 = 0xbf800000\n1407ed7ad        data_140a7e06c.d = 0xbf800000\n1407ed7b7        data_140a7e074 = 0xbf800000\n1407ed7c1        data_140a7e054 = 0xbf800000\n1407ed7cb        data_140a7e058.d = 0xbf800000\n1407ed7d5        data_140a7e060 = 0xbf800000\n1407ed7df        sub_14022c470(&data_140a7dfe0)\n1407ed7eb        sub_140229970(&data_140a7d530)\n1407ed7f7        j_sub_140228d40(&data_140a7d108)\n1407ed807        return sub_14022bba0(&data_140a7d0b0) __tailcall",
+  "fetched_at": "2026-04-26T17:36:12Z"
+}

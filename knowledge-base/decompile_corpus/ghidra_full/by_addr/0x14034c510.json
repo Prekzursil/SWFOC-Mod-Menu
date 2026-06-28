@@ -1,0 +1,7 @@
+{
+  "addr": "0x14034c510",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nulonglong FUN_14034c510(undefined8 param_1,undefined4 *param_2,undefined4 *param_3,\n                       undefined4 *param_4,undefined4 *param_5)\n\n{\n  ulonglong uVar1;\n  undefined4 local_18;\n  undefined4 local_14;\n  undefined4 local_10;\n  undefined4 local_c;\n  \n  uVar1 = FUN_140239500(&DAT_140b2bc90,param_1,&local_18,&local_14,&local_10,&local_c);\n  if ((char)uVar1 != '\\0') {\n    *param_2 = local_18;\n    *param_3 = local_14;\n    *param_4 = local_10;\n    *param_5 = local_c;\n    return CONCAT71((uint7)(uint3)((uint)local_c >> 8),1);\n  }\n  return uVar1 & 0xffffffffffffff00;\n}\n\n",
+  "fetched_at": "2026-04-26T17:09:04Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x140546c50",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined * __thiscall WaitForGroundbaseClass::vfunction5(void)\n\n{\n  return &DAT_140a44540;\n}",
+  "fetched_at": "2026-04-26T18:37:23Z"
+}

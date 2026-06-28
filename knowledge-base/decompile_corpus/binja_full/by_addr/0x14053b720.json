@@ -1,0 +1,7 @@
+{
+  "addr": "0x14053b720",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14053b734        *arg1 = &AIPlanetBuildQueueClass::`vftable'{for `SignalListenerClass'}\n14053b739        int64_t* rcx = arg1[2]\n14053b741        while (rcx[6].d != 0)\n14053b748        int64_t* arg_8\n14053b748        int64_t* rax_1 = sub_14020ac80(rcx, &arg_8)\n14053b750        if (rax_1 != 0)\n14053b752        int64_t r8_1 = *rax_1\n14053b75d        (*r8_1)(rax_1, 1, r8_1)\n14053b760        rcx = arg1[2]\n14053b76d        if (rcx != 0)\n14053b777        (*(*rcx + 8))(rcx, 1)\n14053b77e        sub_140369ff0(&arg1[7])\n14053b783        void* rcx_3 = arg1[3]\n14053b78a        if (rcx_3 != 0)\n14053b794        (*(*(rcx_3 + 0x30) + 8))(rcx_3 + 0x30)\n14053b7a1        *arg1 = &SignalListenerClass::`vftable'{for `MultiLinkedListMember'}\n14053b7a4        sub_14020a820(arg1)\n14053b7ad        if ((arg2 & 1) != 0)\n14053b7b7        j_sub_1407864b8(arg1)\n14053b7c9        return arg1",
+  "fetched_at": "2026-04-26T17:33:54Z"
+}

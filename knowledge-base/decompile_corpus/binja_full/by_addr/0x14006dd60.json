@@ -1,0 +1,7 @@
+{
+  "addr": "0x14006dd60",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14006dd76        int64_t* rcx = *(SteamInternal_ContextInit(&data_140a10e00) + 8)\n14006dd87        void arg_10\n14006dd87        return *(*(*rcx + 0x10))(rcx, &arg_10)",
+  "fetched_at": "2026-04-26T16:56:14Z"
+}

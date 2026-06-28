@@ -1,0 +1,7 @@
+{
+  "addr": "0x14033fa70",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nundefined1 __thiscall\nGreaterThan<float>::vfunction1(GreaterThan<float> *this,float *param_1,float *param_2)\n\n{\n  if ((*param_2 < *param_1 || *param_2 == *param_1) && (*param_1 != *param_2)) {\n    return 1;\n  }\n  return 0;\n}\n\n",
+  "fetched_at": "2026-04-26T17:04:57Z"
+}

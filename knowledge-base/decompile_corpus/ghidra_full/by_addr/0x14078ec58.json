@@ -1,0 +1,7 @@
+{
+  "addr": "0x14078ec58",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_14078ec58(void)\n\n{\n  longlong lVar1;\n  \n  lVar1 = FUN_14078f07c();\n  if (*(longlong *)(lVar1 + 0x18) != 0) {\n    (*(code *)PTR__guard_dispatch_icall_1407fdcd8)();\n  }\n                    /* WARNING: Subroutine does not return */\n  FUN_140788f54();\n}",
+  "fetched_at": "2026-04-26T18:52:25Z"
+}

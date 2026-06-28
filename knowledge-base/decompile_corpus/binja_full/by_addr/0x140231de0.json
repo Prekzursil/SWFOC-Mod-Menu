@@ -1,0 +1,7 @@
+{
+  "addr": "0x140231de0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140231de4        float zmm3 = -3.40282347e+38f\n140231dec        char result = 0\n140231df3        int32_t i = 0\n140231dfb        void* rdx = arg2 + 8\n140231e23        float zmm4 = zmm3\n140231e2e        float zmm2 = (*arg1).d f* *(rdx - 8) + *(arg1 + 4) f* *(rdx - 4) + (*(arg1 + 8)).d f* *rdx\n140231e35        if (not(zmm2 <= zmm3))\n140231e37        zmm3 = zmm2\n140231e3d        char result_1 = i.b\n140231e44        if (zmm2 <= zmm4)\n140231e44        result_1 = result\n140231e47        i += 1\n140231e4a        rdx += 0xc\n140231e4e        result = result_1\n140231e58        do while (i s< 0x100)\n140231e67        return result",
+  "fetched_at": "2026-04-26T17:29:46Z"
+}

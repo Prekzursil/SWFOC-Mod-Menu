@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407089d0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "PoliticalControlBonusAbilityClass * __thiscall\nPoliticalControlBonusAbilityClass::PoliticalControlBonusAbilityClass\n          (PoliticalControlBonusAbilityClass *this)\n\n{\n  SpecialAbilityClass::SpecialAbilityClass((SpecialAbilityClass *)this);\n  (this->PoliticalControlBonusAbilityClass_data).offset_0x0 = 1;\n  this->vftablePtr = &vftable_for_IXMLLoadableClass;\n  this->vftablePtr = &vftable_for_RefCountClass;\n  *(undefined2 *)&(this->RefCountClass_data).field_0x30 = 1;\n  *(undefined4 *)&(this->RefCountClass_data).field_0x2c = 3;\n  return this;\n}",
+  "fetched_at": "2026-04-26T17:53:17Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x1405f4d60",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall TacticalAIDiagnosticsNodeClass::vfunction4(TacticalAIDiagnosticsNodeClass *this)\n\n{\n  longlong lVar1;\n  undefined8 uVar2;\n  \n  lVar1 = (this->AIDiagnosticsNodeClass_data).offset_0x0;\n  uVar2 = FUN_14004faa0();\n  FUN_140475af0(uVar2,*(undefined8 *)(lVar1 + 0x38));\n  lVar1 = (this->AIDiagnosticsNodeClass_data).offset_0x0;\n  uVar2 = FUN_14004faa0();\n  FUN_140475af0(uVar2,*(undefined8 *)(lVar1 + 0x40));\n  lVar1 = (this->AIDiagnosticsNodeClass_data).offset_0x0;\n  uVar2 = FUN_14004faa0();\n  FUN_140475af0(uVar2,*(undefined8 *)(lVar1 + 0x48));\n  lVar1 = (this->AIDiagnosticsNodeClass_data).offset_0x0;\n  uVar2 = FUN_14004faa0();\n  FUN_140475af0(uVar2,*(undefined8 *)(lVar1 + 0x50));\n  lVar1 = (this->AIDiagnosticsNodeClass_data).offset_0x0;\n  uVar2 = FUN_14004faa0();\n  FUN_140475af0(uVar2,*(undefined8 *)(lVar1 + 0x58));\n  lVar1 = (this->AIDiagnosticsNodeClass_data).offset_0x0;\n  uVar2 = FUN_14004faa0();\n  FUN_140475af0(uVar2,*(undefined8 *)(lVar1 + 0x60));\n  return;\n}",
+  "fetched_at": "2026-04-26T17:22:57Z"
+}

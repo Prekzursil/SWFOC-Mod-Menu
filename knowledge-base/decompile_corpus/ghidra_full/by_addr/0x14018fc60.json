@@ -1,0 +1,7 @@
+{
+  "addr": "0x14018fc60",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall alD3dTerrainRender::vfunction9(alD3dTerrainRender *this)\n\n{\n  byte bVar1;\n  longlong *plVar2;\n  int iVar3;\n  int iVar4;\n  \n  plVar2 = (longlong *)FUN_1401427f0(DAT_140a62700,\"W_Generic_White.tga\",1,1,0);\n  if (plVar2 != (longlong *)0x0) {\n    (**(code **)*plVar2)(plVar2);\n  }\n  FUN_140196c10(plVar2);\n  FUN_140196c70(this + 0x1b);\n  FUN_140196ce0(this + 0x1d);\n  iVar3 = 0;\n  *(undefined1 *)&this[0x82].vftablePtr = 1;\n  if (0 < *(int *)((longlong)&this[2].vftablePtr + 4)) {\n    do {\n      iVar4 = 0;\n      if (0 < *(int *)&this[2].vftablePtr) {\n        do {\n          bVar1 = FUN_1401b7690((&(this[4].vftablePtr)->deleting_destructor)\n                                [iVar3 * *(int *)&this[2].vftablePtr + iVar4]);\n          *(byte *)&this[0x82].vftablePtr = *(byte *)&this[0x82].vftablePtr & bVar1;\n          iVar4 = iVar4 + 1;\n        } while (iVar4 < *(int *)&this[2].vftablePtr);\n      }\n      iVar3 = iVar3 + 1;\n    } while (iVar3 < *(int *)((longlong)&this[2].vftablePtr + 4));\n  }\n  FUN_140196c10(0);\n  if (plVar2 == (longlong *)0x0) {\n    return;\n  }\n                    /* WARNING: Could not recover jumptable at 0x00014018fd32. Too many branches */\n                    /* WARNING: Treating indirect jump as call */\n  (**(code **)(*plVar2 + 8))(plVar2);\n  return;\n}",
+  "fetched_at": "2026-04-26T17:34:21Z"
+}

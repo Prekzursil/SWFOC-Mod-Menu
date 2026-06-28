@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406a6920",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined8 __thiscall LuaStopAllMusicClass::vfunction11(void)\n\n{\n  FUN_1402d2790(&DAT_140b27dc0);\n  return 0;\n}",
+  "fetched_at": "2026-04-26T17:21:58Z"
+}

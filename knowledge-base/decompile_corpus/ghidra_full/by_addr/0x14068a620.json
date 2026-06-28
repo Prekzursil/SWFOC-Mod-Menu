@@ -1,0 +1,7 @@
+{
+  "addr": "0x14068a620",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_14068a620(void)\n\n{\n  ForceHealingAbilityClass *this;\n  \n  this = (ForceHealingAbilityClass *)FUN_140769c58(0x1c0);\n  if (this != (ForceHealingAbilityClass *)0x0) {\n    ForceHealingAbilityClass::ForceHealingAbilityClass(this);\n    return;\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T17:15:54Z"
+}

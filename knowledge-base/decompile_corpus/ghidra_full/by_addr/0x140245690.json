@@ -1,0 +1,7 @@
+{
+  "addr": "0x140245690",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* AIFreeStoreClass member function inherited by GalacticFreeStoreClass\n   AIFreeStoreClass member function inherited by SpaceFreeStoreClass\n   AIFreeStoreClass member function inherited by LandFreeStoreClass */\n\nundefined8 * __thiscall AIFreeStoreClass::vfunction28_for_LuaUserVar(AIFreeStoreClass *this)\n\n{\n  return &this->offset_0x80;\n}",
+  "fetched_at": "2026-04-26T18:10:14Z"
+}

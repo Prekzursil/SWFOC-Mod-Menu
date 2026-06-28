@@ -1,0 +1,7 @@
+{
+  "addr": "0x14062aca0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14062acad        sub_1404c2f90(arg1, arg2)\n14062acb2        void* rax = *(arg2 + 0x298)\n14062acc0        void* rdi = *(arg2 + 0x130)\n14062acd4        int32_t rax_1 = sub_1401ffb40(&data_140a13e24, *(rax + 0x1b90), *(rax + 0x1b94))\n14062acdb        struct IRootClass::RootClass::VTable** result\n14062acdb        if (rax_1 s<= 0)\n14062acf4        result = nullptr\n14062acef        result = zx.q(rax_1 * data_140b0a340 + *(*(*(arg2 + 0x2b8) + 0x20) + 0x10))\n14062acf6        *(rdi + 8) = result.d\n14062ad00        if ((*(arg2 + 0x3a0) & 0x40) == 0)\n14062ad02        result = *(arg2 + 0x298)\n14062ad09        int64_t* rdx_2 = result[0x374]\n14062ad13        if (rdx_2 != 0)\n14062ad1b        result = sub_14038d190(arg2, rdx_2, 0)\n14062ad20        *(rdi + 0x10) = result\n14062ad2e        return result",
+  "fetched_at": "2026-04-26T17:24:02Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401e74b0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1401e74c3        arg1[0x24].d = arg2\n1401e74ce        void* rdi = &arg1[0x1e]\n1401e74d5        bool cond:0 = *(rdi + 0x18) u< 8\n1401e74da        int64_t rbp = *(rdi + 0x10)\n1401e74de        int32_t* var_28 = nullptr\n1401e74e3        int64_t var_18 = 0\n1401e74e8        int64_t var_10 = 0\n1401e74ed        if (not(cond:0))\n1401e74ef        rdi = *rdi\n1401e74f6        int64_t var_10_1\n1401e74f6        if (rbp u>= 8)\n1401e7522        int64_t rbx_2 = rbp | 7\n1401e7529        if (rbx_2 u> 0x7ffffffffffffffe)\n1401e7529        rbx_2 = 0x7ffffffffffffffe\n1401e7531        int32_t* rax_1 = sub_1400226c0(&var_28, rbx_2 + 1)\n1401e753e        var_28 = rax_1\n1401e7549        memcpy(rax_1, rdi, (rbp << 1) + 2)\n1401e754e        var_10_1 = rbx_2\n1401e74fb        var_10_1 = 7\n1401e7504        var_28.o = *rdi\n1401e7563        int64_t var_18_1 = rbp\n1401e7568        int64_t result = (*(*arg1 + 0xa0))(arg1, &var_28)\n1401e7586        if (var_10_1 u< 8)\n1401e75bf        return result\n1401e7588        int32_t* rcx_3 = var_28\n1401e7595        int32_t* rax_3 = rcx_3\n1401e759f        if ((var_10_1 << 1) + 2 u>= 0x1000)\n1401e75a1        rcx_3 = *(rcx_3 - 8)\n1401e75b4        if (rax_3 - rcx_3 - 8 u> 0x1f)\n1401e75c0        _invalid_parameter_noinfo_noreturn()\n1401e75c0        noreturn\n1401e75b6        return j_sub_1407864b8(rcx_3)",
+  "fetched_at": "2026-04-26T17:27:00Z"
+}

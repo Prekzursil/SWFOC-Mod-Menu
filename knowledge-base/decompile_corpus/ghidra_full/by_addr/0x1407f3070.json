@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407f3070",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */\n\nvoid FUN_1407f3070(void)\n\n{\n  longlong lVar1;\n  longlong lVar2;\n  ulonglong uVar3;\n  \n  FUN_14048b820(&DAT_140b31330);\n  FUN_1402d36c0(&DAT_140b313b0,&DAT_140b313b0,*(undefined8 *)(DAT_140b313b0 + 8));\n  thunk_FUN_1407864b8(DAT_140b313b0,0x50);\n  if (DAT_140b31398 != 0) {\n    uVar3 = DAT_140b313a8 - DAT_140b31398 & 0xfffffffffffffff8;\n    lVar2 = DAT_140b31398;\n    if (0xfff < uVar3) {\n      lVar2 = *(longlong *)(DAT_140b31398 + -8);\n      uVar3 = uVar3 + 0x27;\n      lVar1 = DAT_140b31398 - lVar2;\n      if (0x1f < lVar1 - 8U) goto LAB_1407f3174;\n    }\n    thunk_FUN_1407864b8(lVar2,uVar3);\n    DAT_140b31398 = 0;\n    _DAT_140b313a0 = 0;\n    DAT_140b313a8 = 0;\n  }\n  FUN_14007b260(&DAT_140b31358);\n  if (0xf < DAT_140b31350) {\n    lVar1 = CONCAT71(DAT_140b31338._1_7_,(undefined1)DAT_140b31338);\n    lVar2 = lVar1;\n    if (0xfff < DAT_140b31350 + 1) {\n      lVar2 = *(longlong *)(lVar1 + -8);\n      uVar3 = DAT_140b31350 + 0x28;\n      lVar1 = lVar1 - lVar2;\n      if (0x1f < lVar1 - 8U) {\nLAB_1407f3174:\n                    /* WARNING: Subroutine does not return */\n        FUN_1407711cc(lVar1,uVar3);\n      }\n    }\n    thunk_FUN_1407864b8(lVar2);\n  }\n  _DAT_140b31348 = 0;\n  DAT_140b31350 = 0xf;\n  DAT_140b31338._0_1_ = 0;\n  return;\n}",
+  "fetched_at": "2026-04-26T19:03:37Z"
+}

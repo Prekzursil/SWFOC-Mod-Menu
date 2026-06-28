@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407cdbe0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1407cdbf4        int32_t* rdi = *arg2\n1407cdbff        int32_t rbx = 0\n1407cdc09        if (rdi != sub_140784a34(0))\n1407cdc13        rbx = fclose(rdi)\n1407cdc25        sub_1407bf7e0(*(arg1 + 0x30), arg2, 0x208, 0)\n1407cdc40        return zx.q(rbx)",
+  "fetched_at": "2026-04-26T17:33:52Z"
+}

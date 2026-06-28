@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407f50d0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1407f50d4        int64_t rdx = data_140b39270:8\n1407f50dd        data_140b391e8 = 0\n1407f50e3        data_140b39090 = 0\n1407f50f1        data_140b391e0 = &LogWindowItem::`vftable'{for `DebugTreeItem'}\n1407f50fc        if (rdx u>= 0x10)\n1407f50fe        void* rcx_1 = data_140b39260.q\n1407f5108        void* rax_1 = rcx_1\n1407f5112        if (rdx + 1 u>= 0x1000)\n1407f5114        rcx_1 = *(rcx_1 - 8)\n1407f5127        if (rax_1 - rcx_1 - 8 u> 0x1f)\n1407f5161        _invalid_parameter_noinfo_noreturn()\n1407f5161        noreturn\n1407f5129        j_sub_1407864b8(rcx_1)\n1407f513d        data_140b39270 = data_140802a40\n1407f5145        data_140b39260 = 0\n1407f514c        sub_140066600(&data_140b39248)\n1407f515c        return sub_1405f5eb0(&data_140b391e0) __tailcall",
+  "fetched_at": "2026-04-26T17:37:36Z"
+}

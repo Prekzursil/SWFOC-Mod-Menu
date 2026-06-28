@@ -1,0 +1,7 @@
+{
+  "addr": "0x14020e2f0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14020e303        int16_t result\n14020e303        result.b = (GetKeyState(9) u>> 0xf).b & 1\n14020e309        return result",
+  "fetched_at": "2026-04-26T17:28:15Z"
+}

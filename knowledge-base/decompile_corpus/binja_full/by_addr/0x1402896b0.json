@@ -1,0 +1,7 @@
+{
+  "addr": "0x1402896b0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1402896c0        *arg1 = &SingletonInstance<class TheAIClass>::`vftable'{for `SingletonManager'}\n1402896c6        if ((arg2 & 1) != 0)\n1402896cd        j_sub_1407864b8(arg1)\n1402896da        return arg1",
+  "fetched_at": "2026-04-26T17:32:23Z"
+}

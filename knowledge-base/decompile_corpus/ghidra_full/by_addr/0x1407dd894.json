@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407dd894",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* Library Function - Single Match\n    longjmp\n   \n   Libraries: Visual Studio 2017 Release, Visual Studio 2019 Release */\n\nvoid __cdecl longjmp(_JBTYPE *_Buf,int _Value)\n\n{\n  __except_validate_jump_buffer();\n  FUN_1407e2430(_Buf,_Value);\n  return;\n}",
+  "fetched_at": "2026-04-26T18:59:04Z"
+}

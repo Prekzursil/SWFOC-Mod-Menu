@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407a884b",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1407a884b        return K32GetModuleBaseNameA(hProcess, hModule, lpBaseName, nSize) __tailcall",
+  "fetched_at": "2026-04-26T17:32:35Z"
+}

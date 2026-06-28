@@ -1,0 +1,7 @@
+{
+  "addr": "0x1404aff50",
+  "tool": "ghidra",
+  "fact_id": "rva_ai_player_class_simple_factory",
+  "body": "\nAIPlayerClass * FUN_1404aff50(longlong param_1)\n\n{\n  AIPlayerClass *pAVar1;\n  \n  if (((param_1 != 0) &&\n      (pAVar1 = (AIPlayerClass *)FUN_140769c58(0x60), pAVar1 != (AIPlayerClass *)0x0)) &&\n     (pAVar1 = AIPlayerClass::AIPlayerClass(pAVar1,param_1,0), pAVar1 != (AIPlayerClass *)0x0)) {\n    return pAVar1;\n  }\n  return (AIPlayerClass *)0x0;\n}\n\n",
+  "fetched_at": "2026-04-26T16:43:43Z"
+}

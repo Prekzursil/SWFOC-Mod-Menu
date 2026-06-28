@@ -1,0 +1,7 @@
+{
+  "addr": "0x140795f58",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* Library Function - Single Match\n    _set_errno_from_matherr\n   \n   Libraries: Visual Studio 2012 Release, Visual Studio 2015 Release, Visual Studio 2017 Release,\n   Visual Studio 2019 Release */\n\nvoid _set_errno_from_matherr(int param_1)\n\n{\n  ulong *puVar1;\n  \n  if (param_1 == 1) {\n    puVar1 = __doserrno();\n    *puVar1 = 0x21;\n  }\n  else if (param_1 - 2U < 2) {\n    puVar1 = __doserrno();\n    *puVar1 = 0x22;\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T18:53:17Z"
+}

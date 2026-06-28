@@ -1,0 +1,7 @@
+{
+  "addr": "0x1405469e0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined * __thiscall LuaMasterVolumeRestore::vfunction5(void)\n\n{\n  return &DAT_140a439c8;\n}",
+  "fetched_at": "2026-04-26T18:37:10Z"
+}

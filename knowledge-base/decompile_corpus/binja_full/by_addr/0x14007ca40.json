@@ -1,0 +1,7 @@
+{
+  "addr": "0x14007ca40",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14007ca46        void* result = arg2\n14007ca4c        if (arg3 != 0)\n14007ca4e        void* rax_1 = arg2 + 0x38\n14007caab        int64_t i\n14007ca63        rax_1 += 0x60\n14007ca81        __builtin_memset(result, 0, 0x60)\n14007ca84        result += 0x60\n14007ca88        *(rax_1 - 0x88) = 0\n14007ca8f        *(rax_1 - 0x80) = 0xf\n14007ca97        *(rax_1 - 0x78) = 0\n14007ca9b        *(rax_1 - 0x68) = 0\n14007ca9f        *(rax_1 - 0x60) = 0xf\n14007caa7        i = arg3\n14007caa7        arg3 -= 1\n14007caab        do while (i != 1)\n14007cab6        sub_140079530(result, result)\n14007cac3        return result",
+  "fetched_at": "2026-04-26T16:57:04Z"
+}

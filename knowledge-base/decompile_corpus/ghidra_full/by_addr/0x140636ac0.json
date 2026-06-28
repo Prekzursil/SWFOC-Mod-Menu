@@ -1,0 +1,7 @@
+{
+  "addr": "0x140636ac0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nchar * __thiscall InfectionBehaviorClass::vfunction9(void)\n\n{\n  return \"InfectionBehaviorClass\";\n}\n\n",
+  "fetched_at": "2026-04-26T17:00:36Z"
+}

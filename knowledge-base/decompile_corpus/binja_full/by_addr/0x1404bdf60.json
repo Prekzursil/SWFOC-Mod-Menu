@@ -1,0 +1,7 @@
+{
+  "addr": "0x1404bdf60",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1404bdf79        sub_1401ffb40(&data_140a13e20, 1, 3)\n1404bdf9e        void var_28\n1404bdf9e        return sscanf_s(&var_28, \"%s%d\", *(arg1 + 0xd8))",
+  "fetched_at": "2026-04-26T17:30:05Z"
+}

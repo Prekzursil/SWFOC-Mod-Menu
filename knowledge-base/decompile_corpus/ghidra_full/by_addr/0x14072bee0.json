@@ -1,0 +1,7 @@
+{
+  "addr": "0x14072bee0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall\nContrastInstantiationMarshallerClass::vfunction6\n          (ContrastInstantiationMarshallerClass *this,longlong param_1)\n\n{\n  longlong lVar1;\n  float fVar2;\n  float fVar3;\n  \n  *(undefined4 *)&this[1].vftablePtr = *(undefined4 *)(param_1 + 0x1ac);\n  FUN_1406c5de0(param_1);\n  FUN_1406bf2d0(&DAT_140b3a618,&DAT_140b3a600);\n  FUN_1406bf2d0(&DAT_140b3a648,&DAT_140b3a630);\n  lVar1 = *(longlong *)(param_1 + 0x50);\n  if (*(char *)(lVar1 + 0xb4) != '\\0') {\n    fVar3 = *(float *)(param_1 + 0x30);\n    fVar2 = *(float *)(**(longlong **)(*(longlong *)(param_1 + 0x20) + 0x48) + 0x30);\n    if (0.0 < fVar2) {\n      fVar3 = fVar3 + fVar2 * *(float *)(param_1 + 0x34);\n    }\n    fVar2 = *(float *)(lVar1 + 0xb0) + *(float *)(lVar1 + 0xac);\n    if (fVar2 <= fVar3) {\n      fVar2 = fVar3;\n    }\n    *(float *)(param_1 + 0x3c) = fVar2;\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T18:00:59Z"
+}

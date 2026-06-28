@@ -1,0 +1,7 @@
+{
+  "addr": "0x140354880",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nvoid __thiscall BarComponentClass::vfunction5(BarComponentClass *this,undefined4 param_1)\n\n{\n  longlong lVar1;\n  longlong lVar2;\n  ulonglong uVar3;\n  ulonglong uVar4;\n  ulonglong uVar5;\n  \n  lVar2 = (this->BarComponentClass_data).offset_0x8 - (this->BarComponentClass_data).offset_0x0;\n  uVar5 = 0;\n  lVar1 = lVar2 >> 0x3f;\n  uVar3 = uVar5;\n  if (lVar2 / 0x50 + lVar1 != lVar1) {\n    do {\n      uVar4 = (ulonglong)((int)uVar3 + 1);\n      *(undefined4 *)((this->BarComponentClass_data).offset_0x0 + 0x34 + uVar3 * 0x50) = param_1;\n      uVar3 = uVar4;\n    } while (uVar4 < (ulonglong)\n                     (((this->BarComponentClass_data).offset_0x8 -\n                      (this->BarComponentClass_data).offset_0x0) / 0x50));\n  }\n  lVar2 = (this->BarComponentClass_data).offset_0x20 - (this->BarComponentClass_data).offset_0x18;\n  lVar1 = lVar2 >> 0x3f;\n  if (lVar2 / 0x50 + lVar1 != lVar1) {\n    do {\n      uVar3 = (ulonglong)((int)uVar5 + 1);\n      *(undefined4 *)((this->BarComponentClass_data).offset_0x18 + 0x34 + uVar5 * 0x50) = param_1;\n      uVar5 = uVar3;\n    } while (uVar3 < (ulonglong)\n                     (((this->BarComponentClass_data).offset_0x20 -\n                      (this->BarComponentClass_data).offset_0x18) / 0x50));\n  }\n  *(undefined4 *)((longlong)&(this->BarComponentClass_data).offset_0x1a0 + 4) = param_1;\n  return;\n}\n\n",
+  "fetched_at": "2026-04-26T17:10:42Z"
+}

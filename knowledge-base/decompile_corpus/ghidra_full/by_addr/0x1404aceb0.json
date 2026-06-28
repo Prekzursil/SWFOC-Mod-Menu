@@ -1,0 +1,7 @@
+{
+  "addr": "0x1404aceb0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "ulonglong FUN_1404aceb0(int param_1,uint param_2)\n\n{\n  char *in_RAX;\n  \n  if (param_2 < 6) {\n    in_RAX = IMAGE_DOS_HEADER_140000000.e_magic +\n             (&switchD_1404acec9::switchdataD_1404acee0)[(int)param_2];\n    switch(param_2) {\n    case 1:\n    case 3:\nswitchD_1404acec9_caseD_1:\n      return CONCAT71((int7)((ulonglong)in_RAX >> 8),1);\n    case 2:\n    case 4:\n      in_RAX = (char *)(longlong)param_1;\n      if ((&DAT_140875d70)[(longlong)in_RAX] != 0x14) goto switchD_1404acec9_caseD_1;\n    }\n  }\n  return (ulonglong)in_RAX & 0xffffffffffffff00;\n}",
+  "fetched_at": "2026-04-26T18:05:29Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x14023bb70",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14023bb82        int32_t* rdi = arg1\n14023bb85        int64_t i_1 = 0xc\n14023bba0        int64_t i\n14023bb93        Concurrency::details::HardwareAffinity::HardwareAffinity(rdi)\n14023bb98        rdi = &rdi[4]\n14023bb9c        i = i_1\n14023bb9c        i_1 -= 1\n14023bba0        do while (i != 1)\n14023bba8        sub_140241940(arg1, (i_1 + 0x20).d)\n14023bbbf        return arg1",
+  "fetched_at": "2026-04-26T17:30:01Z"
+}

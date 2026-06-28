@@ -1,0 +1,7 @@
+{
+  "addr": "0x140784a34",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* Library Function - Single Match\n    __acrt_iob_func\n   \n   Library: Visual Studio 2019 Release */\n\nundefined * __acrt_iob_func(ulonglong param_1)\n\n{\n  return &DAT_140a44bd0 + (param_1 & 0xffffffff) * 0x58;\n}",
+  "fetched_at": "2026-04-26T18:51:21Z"
+}

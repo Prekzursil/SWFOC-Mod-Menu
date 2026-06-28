@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406f9a10",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1406f9a23        *arg1 = &EnergyWeaponAttackAbilityClass::`vftable'{for `SpecialAbilityClass'}\n1406f9a30        arg1[1] = &EnergyWeaponAttackAbilityClass::`vftable'{for `RefCountClass'}\n1406f9a34        int64_t rdx = arg1[0x37]\n1406f9a3f        if (rdx u>= 0x10)\n1406f9a41        void* rcx = arg1[0x34]\n1406f9a52        if (rdx + 1 u>= 0x1000)\n1406f9a54        void* r8_1 = *(rcx - 8)\n1406f9a67        if (rcx - r8_1 - 8 u> 0x1f)\n1406f9ac3        _invalid_parameter_noinfo_noreturn()\n1406f9ac3        noreturn\n1406f9a69        rcx = r8_1\n1406f9a6c        j_sub_1407864b8(rcx)\n1406f9a78        arg1[0x36] = 0\n1406f9a83        arg1[0x37] = 0xf\n1406f9a8e        arg1[0x34].b = 0\n1406f9a9d        sub_14048c8d0(arg1)\n1406f9aa6        if ((arg2 & 1) != 0)\n1406f9ab0        j_sub_1407864b8(arg1)\n1406f9ac2        return arg1",
+  "fetched_at": "2026-04-26T17:26:44Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x14062b8d0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall\nIonStunEffectBehaviorClass::vfunction10(IonStunEffectBehaviorClass *this,undefined **param_1)\n\n{\n  SpawnIndigenousUnitsBehaviorClass::vbase_destructor\n            ((SpawnIndigenousUnitsBehaviorClass *)this,param_1);\n  if (param_1[0x54] != (undefined *)0x0) {\n    FUN_140265ae0(param_1[0x54],2);\n  }\n                    /* WARNING: Could not recover jumptable at 0x00014062b90d. Too many branches */\n                    /* WARNING: Treating indirect jump as call */\n  (*this->vftablePtr->vfunction25)(this);\n  return;\n}",
+  "fetched_at": "2026-04-26T17:32:18Z"
+}

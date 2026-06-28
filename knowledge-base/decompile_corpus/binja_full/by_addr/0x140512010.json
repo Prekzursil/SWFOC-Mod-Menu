@@ -1,0 +1,7 @@
+{
+  "addr": "0x140512010",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140512021        struct LuaVar::LuaUserVar::VTable** rax = operator new(0x60)\n140512026        struct BlockingStatus::FormationBlockStatus::VTable** rbx = rax\n14051202c        if (rax == 0)\n140512077        rax[4].d = arg1\n14051207f        return rax\n140512031        sub_1407d8d80(rax)\n14051203f        *rbx = &FormationBlockStatus::`vftable'{for `BlockingStatus'}\n140512049        __builtin_memset(&rbx[7], 0, 0x20)\n140512059        rbx[6] = &FormationBlockStatus::`vftable'{for `SignalListenerClass'}\n14051205d        rbx[0xb] = 0\n140512064        rbx[4].d = arg1\n140512071        return rbx",
+  "fetched_at": "2026-04-26T17:32:16Z"
+}

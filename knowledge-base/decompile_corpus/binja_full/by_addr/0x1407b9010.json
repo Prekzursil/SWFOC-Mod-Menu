@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407b9010",
+  "tool": "binary_ninja",
+  "fact_id": "api_lua_isstring",
+  "body": "1407b9016        void* rax_2\n1407b9016        if (arg2 s<= 0)\n1407b9037        rax_2 = sub_1407b9f20(arg1, arg2)\n1407b903c        label_1407b903c:\n1407b9049        if (rax_2 != 0 && *rax_2 - 3 u<= 1)\n1407b9054        return 1\n1407b9027        rax_2 = *(arg1 + 0x18) - 0x10 + (sx.q(arg2) << 4)\n1407b902e        if (rax_2 u< *(arg1 + 0x10))\n1407b902e        goto label_1407b903c\n1407b9036        return 0",
+  "fetched_at": "2026-04-26T16:44:27Z"
+}

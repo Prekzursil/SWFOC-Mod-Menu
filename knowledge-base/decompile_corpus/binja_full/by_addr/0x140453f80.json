@@ -1,0 +1,7 @@
+{
+  "addr": "0x140453f80",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140453f83        if (arg2 == 0)\n140453f83        return \n140453f89        int64_t rax = sx.q(*(arg1 + 0x364))\n140453f90        int32_t r8_1 = *arg2\n140453f96        if (rax.d u> 6)\n140453f96        return \n140453faa        switch (rax)\n140453fb3        case 0, 1\n140453fb3        if (r8_1 s> arg1[0x6c].d)\n140453fba        return sub_140455db0(arg1, nullptr, 0) __tailcall\n140453fc6        case 2\n140453fc6        if (r8_1 s< arg1[0x6c].d)\n140453fcd        return sub_140455db0(arg1, nullptr, 0) __tailcall\n140453fd9        case 3\n140453fd9        if (r8_1 == arg1[0x6c].d)\n140453fe0        return sub_140455db0(arg1, nullptr, 0) __tailcall\n140453fec        case 5\n140453fec        if (r8_1 s>= arg1[0x6c].d)\n140453ff3        return sub_140455db0(arg1, nullptr, 0) __tailcall\n140453fff        case 6\n140453fff        if (r8_1 s<= arg1[0x6c].d)\n140454006        return sub_140455db0(arg1, nullptr, 0) __tailcall\n14045400b        return ",
+  "fetched_at": "2026-04-26T17:27:43Z"
+}

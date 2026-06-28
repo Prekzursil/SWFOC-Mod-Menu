@@ -1,0 +1,7 @@
+{
+  "addr": "0x140331cc0",
+  "tool": "binary_ninja",
+  "fact_id": "rva_find_planet_type",
+  "body": "140331cc0        int64_t rax_4 = sx.q(*(arg1 + 0x18))\n140331cc4        int32_t r8 = 0\n140331cc9        if (rax_4.d s> 0)\n140331ccb        int64_t* r10_1 = *(arg1 + 0x10)\n140331cd2        int64_t* rdx_1 = r10_1\n140331cd5        int64_t rcx = 0\n140331cea        if (*(*rdx_1 + 0x108) != 0)\n140331d05        return r10_1[sx.q(r8)]\n140331cec        r8 += 1\n140331cef        rcx += 1\n140331cf2        rdx_1 = &rdx_1[1]\n140331cf9        do while (rcx s< rax_4)\n140331cfd        return 0",
+  "fetched_at": "2026-04-26T16:43:15Z"
+}

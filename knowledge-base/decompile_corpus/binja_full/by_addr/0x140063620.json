@@ -1,0 +1,7 @@
+{
+  "addr": "0x140063620",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140063620        int32_t entry_r8\n140063620        int32_t arg_18 = entry_r8\n140063629        SetCapture(arg1)\n140063644        double entry_zmm2[0x2]\n140063644        if (sub_14044b3f0(&data_140a28c10) == 0 && sub_1402cc3e0(&data_140b27a10, 8, nullptr, arg2, entry_zmm2) == 0)\n14006366f        void var_18\n14006366f        sub_14026cb30(&var_18, &arg_18)\n14006368f        char result = sub_1401c3660(&data_140a78510, 4, 0, &var_18, nullptr)\n140063696        if (result != 0)\n1400636ef        return result\n140063698        int512_t zmm1\n140063698        int512_t zmm2\n140063698        zmm1, zmm2 = sub_140065d00()\n14006369d        int32_t rcx_1 = arg_18\n1400636b7        zmm1.o = zx.o(sx.d(rcx_1.w))\n1400636c9        zmm1.o = _mm_cvtepi32_ps(zmm1.o)\n1400636d0        uint128_t zmm0 = _mm_cvtepi32_ps(zx.o(sx.d((rcx_1 u>> 0x10).w)))\n1400636d3        int32_t arg_20 = zmm1.d\n1400636d9        int32_t arg_24 = zmm0.d\n1400636e8        return sub_140030fc0(&data_140a60df0, 4, &arg_20, 0, zmm1, zmm2, 0)\n1400636e9        return 1",
+  "fetched_at": "2026-04-26T16:55:38Z"
+}

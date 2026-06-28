@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401fea70",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1401fea76        int32_t rax = data_140a13df4\n1401fea80        data_140a13df0 = 0\n1401fea8b        if (rax * 2 s< 0x4e20)\n1401fea9f        sub_1401ff8c0(&data_140a13de0, 0x2710, 0, 1)\n1401feaa4        int32_t rax_2 = data_140a13e0c\n1401feaac        data_140a13e08 = 0\n1401feab7        if (rax_2 * 2 s< 0x4e20)\n1401feacb        sub_1401ff8c0(&data_140a13df8, 0x2710, 0, 1)\n1401fead7        sub_1400db9f0(&data_140a7bfc0)\n1401feae3        data_140a7bf30 = data_140a7bf28\n1401feaea        int32_t rax_5 = data_140a13dc4\n1401feaf2        data_140a13dc0 = 0\n1401feafd        if (rax_5 * 2 s< 0x4e20)\n1401feb11        sub_1401ff8c0(&data_140a13db0, 0x2710, 0, 1)\n1401feb16        int32_t rax_7 = data_140a13ddc\n1401feb1e        data_140a13dd8 = 0\n1401feb29        if (rax_7 * 2 s< 0x4e20)\n1401feb3d        sub_1401ff8c0(&data_140a13dc8, 0x2710, 0, 1)\n1401feb49        sub_1400db9f0(&data_140a7bf40)\n1401feb4e        int64_t result = data_140a7bf10\n1401feb55        data_140a7bf18 = result\n1401feb61        return result",
+  "fetched_at": "2026-04-26T17:27:36Z"
+}

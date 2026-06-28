@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401f1f30",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall GUIGadgetRadiobuttonClass::vfunction25(GUIGadgetRadiobuttonClass *this)\n\n{\n  FUN_14025c490(DAT_140a619f0,&(this->GUIGadgetRadiobuttonClass_data).field_0xa0);\n  FUN_14025c490(DAT_140a619f0,&(this->GUIGadgetRadiobuttonClass_data).field_0x10);\n  GUIGadgetClass::vfunction25((GUIGadgetClass *)this);\n  return;\n}",
+  "fetched_at": "2026-04-26T17:53:08Z"
+}

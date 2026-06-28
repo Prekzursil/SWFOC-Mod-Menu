@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407ddfc0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "alRenderablePlane * __thiscall alRenderablePlane::alRenderablePlane(alRenderablePlane *this)\n\n{\n  alRenderable::alRenderable((alRenderable *)this);\n  this->vftablePtr = &vftable_for_RefCountClass;\n  this->vftablePtr = &vftable_for_MultiLinkedListMember;\n  this->vftablePtr = &vftable_for_CullObjectClass;\n  (this->alRenderablePlane_data).offset_0x8 = 0;\n  (this->alRenderablePlane_data).offset_0xc = 0;\n  (this->alRenderablePlane_data).offset_0x10 = 0;\n  (this->alRenderablePlane_data).offset_0x1c = 0;\n  (this->alRenderablePlane_data).offset_0x20 = 0;\n  (this->alRenderablePlane_data).offset_0x24 = 0;\n  (this->alRenderablePlane_data).offset_0x0 = 0x3f800000;\n  (this->alRenderablePlane_data).offset_0x4 = 0;\n  (this->alRenderablePlane_data).offset_0x14 = 0x3f800000;\n  (this->alRenderablePlane_data).offset_0x18 = 0;\n  (this->alRenderablePlane_data).offset_0x28 = 0x3f800000;\n  (this->alRenderablePlane_data).offset_0x2c = 0;\n  (this->alRenderablePlane_data).offset_0x30 = 0;\n  (this->alRenderablePlane_data).offset_0x34 = 0;\n  (this->alRenderablePlane_data).offset_0x38 = 0x3f800000;\n  (this->alRenderablePlane_data).offset_0x3c = 0;\n  (this->alRenderablePlane_data).offset_0x40 = (undefined8 *)0x0;\n  (this->alRenderablePlane_data).offset_0x48 = (longlong *)0x0;\n  FUN_1407df380(&(this->alRenderablePlane_data).field_0x50);\n  return this;\n}",
+  "fetched_at": "2026-04-26T18:59:09Z"
+}

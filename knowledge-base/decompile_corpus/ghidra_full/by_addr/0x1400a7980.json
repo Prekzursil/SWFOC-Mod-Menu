@@ -1,0 +1,7 @@
+{
+  "addr": "0x1400a7980",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nvoid FUN_1400a7980(void)\n\n{\n  undefined8 uVar1;\n  longlong lVar2;\n  \n  if (DAT_140a61edc == 1) {\n    uVar1 = FUN_140025770();\n    FUN_14006dc90(uVar1);\n    if (DAT_140a61ed8 != '\\0') {\n      FUN_1401c1d20(&DAT_140a78510,DAT_140a11510,1);\n      DAT_140a11510 = 0xffffffff;\n      DAT_140a61ed8 = '\\0';\n    }\n    FUN_1400c58e0();\n    return;\n  }\n  if (DAT_140a61edc != 2) {\n    if (DAT_140a61edc == 3) {\n      uVar1 = FUN_140025770();\n      FUN_14006dc90(uVar1);\n      if (DAT_140a61ed8 != '\\0') {\n        FUN_1401c1d20(&DAT_140a78510,DAT_140a11510,1);\n        DAT_140a11510 = 0xffffffff;\n        DAT_140a61ed8 = '\\0';\n      }\n      lVar2 = FUN_14007bfb0();\n      if (*(char *)(lVar2 + 0xc) == '\\0') {\n        uVar1 = FUN_14007bfb0();\n        FUN_140025b60(uVar1);\n        return;\n      }\n    }\n    return;\n  }\n  uVar1 = FUN_140025770();\n  FUN_14006dc90(uVar1);\n  if (DAT_140a61ed8 != '\\0') {\n    FUN_1401c1d20(&DAT_140a78510,DAT_140a11510,1);\n    DAT_140a11510 = 0xffffffff;\n    DAT_140a61ed8 = '\\0';\n  }\n  uVar1 = FUN_14007bfb0();\n  FUN_140025b60(uVar1);\n  return;\n}\n\n",
+  "fetched_at": "2026-04-26T16:59:03Z"
+}

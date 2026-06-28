@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406f0240",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1406f0253        *arg1 = &BattlefieldModifierAbilityClass::`vftable'{for `SpecialAbilityClass'}\n1406f0260        arg1[1] = &BattlefieldModifierAbilityClass::`vftable'{for `RefCountClass'}\n1406f0266        __builtin_memset(&arg1[0x2f], 0, 0x1f)\n1406f028e        sub_14048c8d0(arg1)\n1406f0296        if ((arg2 & 1) != 0)\n1406f02a0        j_sub_1407864b8(arg1)\n1406f02b2        return arg1",
+  "fetched_at": "2026-04-26T17:26:22Z"
+}

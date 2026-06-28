@@ -1,0 +1,7 @@
+{
+  "addr": "0x1403f2e60",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_1403f2e60(undefined8 *param_1,undefined8 *param_2)\n\n{\n  undefined8 uVar1;\n  \n  if (param_1 != param_2) {\n    uVar1 = *param_1;\n    *param_1 = *param_2;\n    *param_2 = uVar1;\n    uVar1 = param_1[1];\n    param_1[1] = param_2[1];\n    param_2[1] = uVar1;\n    uVar1 = param_1[2];\n    param_1[2] = param_2[2];\n    param_2[2] = uVar1;\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T17:40:40Z"
+}

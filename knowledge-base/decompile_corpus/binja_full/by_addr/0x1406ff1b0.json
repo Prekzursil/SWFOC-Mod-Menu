@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406ff1b0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1406ff1b6        struct SpecialAbilityClass::GalacticStealthAbilityClass::VTable** result = arg1\n1406ff1b9        sub_14048c780(arg1)\n1406ff1c5        result[0x2f].d = 0\n1406ff1cf        *result = &GalacticStealthAbilityClass::`vftable'{for `SpecialAbilityClass'}\n1406ff1d9        result[1] = &GalacticStealthAbilityClass::`vftable'{for `RefCountClass'}\n1406ff1e0        result[8].w = 1\n1406ff1e6        *(result + 0x3c) = 3\n1406ff1f2        return result",
+  "fetched_at": "2026-04-26T17:26:54Z"
+}

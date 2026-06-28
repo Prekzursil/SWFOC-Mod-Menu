@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407a9190",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1407a9190        void* const* result = &__return_addr\n1407a91ba        int64_t rbx_2 = (data_140b3cc40 - data_140b3cc38) s>> 3\n1407a91c3        if (rbx_2.d != 0)\n1407a91ee        if (arg2 s< 0 || arg3 s< 0 || data_140a457c8 s< 0 || data_140a457cc s< 0)\n1407a92d3        result = sub_1400e5160(&data_140b3cc38, 0)\n1407a9206        int128_t var_38\n1407a9206        __builtin_memcpy(&var_38, \"\\x00\\x00\\x80\\x3f\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x80\\x3f\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x80\\x3f\\x00\\x00\\x00\\x00\", 0x30)\n1407a9219        wWinMainCRTStartup(&var_38)\n1407a9237        sub_14013d400(0, *(*data_140b3cc38 + 0x100), 0, 0)\n1407a925d        char rax_2 = data_140b3cc30\n1407a9288        if ((*(*arg1 + 0x28) & 0x7fffffff) f< 0.5f)\n1407a9288        rax_2 = 0\n1407a9290        int32_t rcx_1\n1407a9290        rcx_1.b = rax_2 != 0\n1407a92b5        j_sub_1401805b0(arg2, data_140a457c8, arg3, data_140a457cc, (rbx_2 * 3).d * 2, (rbx_2 << 2).d, 0, 1, rcx_1, 0)\n1407a92c3        result = sub_1400e5160(&data_140b3cc38, 0)\n1407a92da        data_140b3cc28 = 0\n1407a92e1        data_140a457c8 = 0xffffffff\n1407a92eb        data_140a457cc = 0xffffffff\n1407a930d        return result",
+  "fetched_at": "2026-04-26T17:32:37Z"
+}

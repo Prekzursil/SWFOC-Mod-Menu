@@ -1,0 +1,7 @@
+{
+  "addr": "0x140769330",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140769358        int32_t i_3 = ((arg2 - arg1) s>> 1).d\n140769360        int32_t rbx = 0\n140769362        int32_t i_4 = ((arg4 - arg3) s>> 1).d\n140769365        wchar16* r14 = arg3\n14076936b        PWSTR rcx_1\n14076936b        if (arg5 != 0)\n140769378        rcx_1 = *(arg5 + 8)\n140769372        rcx_1 = *(___lc_locale_name_func() + 8)\n14076937f        if (rcx_1 != 0)\n1407693d9        int32_t rax_3 = __crtCompareStringW(rcx_1, SORT_STRINGSORT, arg1, i_3, r14, i_4)\n1407693e0        if (rax_3 != 0)\n1407693f4        return zx.q(rax_3 - 2)\n1407693e7        *_errno() = 0x16\n1407693ed        return 0x7fffffff\n140769383        int32_t i_2 = i_4\n140769385        if (i_3 s< i_4)\n140769385        i_2 = i_3\n140769388        int64_t i_1 = sx.q(i_2)\n140769393        if (i_1 != 0)\n140769395        void* r15_1 = arg1 - r14\n1407693aa        int64_t i\n140769398        int16_t rdx = *(r15_1 + r14)\n14076939d        wchar16 temp0_1 = *r14\n1407693a1        if (rdx != temp0_1)\n1407693bf        rbx = (sbb.d(0, 0, rdx u< temp0_1) & 0xfffffffe) + 1\n1407693bf        goto label_1407693c1\n1407693a3        r14 = &r14[1]\n1407693a7        i = i_1\n1407693a7        i_1 -= 1\n1407693aa        do while (i != 1)\n1407693ae        if (i_3 == i_4)\n1407693c1        label_1407693c1:\n1407693c1        return zx.q(rbx)\n1407693b5        if (i_3 s< i_4)\n1407693b5        return 0xffffffff\n140769411        return 1",
+  "fetched_at": "2026-04-26T17:30:15Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x140640f90",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140640f94        void* rcx = *(*(arg1 + 0x28) + 0xa8)\n140640f9e        if (rcx != 0)\n140640fa0        int64_t rax = sx.q(*(rcx + 0x48))\n140640fa7        if (rax.d u> 0x13)\n140640fc9        return 1\n140640fc2        switch (rax)\n140640fc9        case 1, 2, 3, 4, 5, 6, 7, 8, 9, 0xa, 0xb, 0xc, 0xd, 0xe\n140640fc9        return 1\n140640fcf        return 2",
+  "fetched_at": "2026-04-26T17:03:12Z"
+}

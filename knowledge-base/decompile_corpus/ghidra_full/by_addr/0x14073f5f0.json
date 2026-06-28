@@ -1,0 +1,7 @@
+{
+  "addr": "0x14073f5f0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined8 __thiscall\nZoneReachabilityClass::vfunction8(ZoneReachabilityClass *this,longlong *param_2,int param_3)\n\n{\n  char cVar1;\n  longlong lVar2;\n  undefined8 uVar3;\n  undefined8 uVar4;\n  uint uVar5;\n  \n  if ((((param_2 != (longlong *)0x0) &&\n       (lVar2 = (**(code **)(*param_2 + 0x40))(param_2), lVar2 != 0)) &&\n      (*(int *)(*(longlong *)(param_2[2] + 0x28) + 0x34) == 1)) &&\n     ((param_3 - 6U < 5 &&\n      (lVar2 = *(longlong *)(*(longlong *)(*(longlong *)(param_2[2] + 0x28) + 0x50) + 0x48),\n      lVar2 != 0)))) {\n    uVar3 = (**(code **)(*(this->RefCountClass_data).offset_0x8 + 0x40))();\n    uVar4 = (**(code **)(*param_2 + 0x40))(param_2);\n    uVar3 = FUN_140690f10(lVar2,uVar4,uVar3);\n    uVar5 = 0;\n    if ((((param_3 != 6) &&\n         ((uVar5 = DAT_140b16d7c, param_3 != 7 && (uVar5 = DAT_140b16d80, param_3 != 8)))) &&\n        (uVar5 = DAT_140b16d84, param_3 != 9)) && (uVar5 = 0, param_3 == 10)) {\n      uVar5 = DAT_140800804;\n    }\n    cVar1 = FUN_1406913a0(uVar3,uVar5,0,1000);\n    if (cVar1 != '\\0') {\n      uVar3 = FUN_140691370(uVar3);\n      return uVar3;\n    }\n  }\n  return (ulonglong)DAT_140800804;\n}",
+  "fetched_at": "2026-04-26T18:03:41Z"
+}

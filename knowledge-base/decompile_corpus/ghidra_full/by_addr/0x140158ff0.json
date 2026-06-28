@@ -1,0 +1,7 @@
+{
+  "addr": "0x140158ff0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_140158ff0(longlong param_1,int *param_2,int *param_3,undefined4 *param_4)\n\n{\n  ulonglong uVar1;\n  char cVar2;\n  longlong lVar3;\n  bool bVar4;\n  \n  *param_2 = 0;\n  *param_3 = 0;\n  *param_4 = 0;\n  uVar1 = (*(longlong *)(param_1 + 0xa0) - *(longlong *)(param_1 + 0x98)) / 0x2c;\n  if ((2 < uVar1) &&\n     (((lVar3 = *(longlong *)(param_1 + 0x100) - *(longlong *)(param_1 + 0xf8),\n       lVar3 = lVar3 / 6 + (lVar3 >> 0x3f), *(int *)(param_1 + 100) != 0xc ||\n       (cVar2 = thunk_FUN_140182880(0xc), cVar2 != '\\0')) &&\n      (bVar4 = DAT_140a62864 != 0,\n      *param_2 = ((int)((*(longlong *)(param_1 + 0x100) - *(longlong *)(param_1 + 0xf8)) / 0xc) / 2)\n                 * 4 + -4, bVar4)))) {\n    *param_3 = *param_3 + (((int)(lVar3 >> 1) - (int)(lVar3 >> 0x3f)) + (int)uVar1 * 4) * 2 + -2;\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T17:23:09Z"
+}

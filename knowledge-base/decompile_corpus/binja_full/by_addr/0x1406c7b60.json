@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406c7b60",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1406c7b84        *arg1 = &AIGoalSystemClass::`vftable'{for `ServicedAISystemClass'}\n1406c7b91        sub_140615680(&arg1[0x32])\n1406c7b9a        sub_140721820(&arg1[7])\n1406c7ba6        sub_140721820(&arg1[0x1b])\n1406c7bab        void* rcx_3 = arg1[0x54]\n1406c7bb5        if (rcx_3 != 0)\n1406c7bcc        if (((arg1[0x56] - rcx_3) & 0xfffffffffffffff8) u>= 0x1000)\n1406c7bce        void* r8_1 = *(rcx_3 - 8)\n1406c7be1        if (rcx_3 - r8_1 - 8 u> 0x1f)\n1406c7c78        _invalid_parameter_noinfo_noreturn()\n1406c7c78        noreturn\n1406c7be7        rcx_3 = r8_1\n1406c7bea        j_sub_1407864b8(rcx_3)\n1406c7bf1        __builtin_memset(&arg1[0x54], 0, 0x18)\n1406c7c0d        sub_14007b260(&arg1[0x4c])\n1406c7c19        sub_14007b260(&arg1[0x44])\n1406c7c25        sub_140610ae0(&arg1[0x32])\n1406c7c31        sub_140721450(&arg1[0x1b])\n1406c7c3a        sub_140721450(&arg1[7])\n1406c7c42        sub_14064c290(arg1)\n1406c7c4b        if ((arg2 & 1) != 0)\n1406c7c55        j_sub_1407864b8(arg1)\n1406c7c77        return arg1",
+  "fetched_at": "2026-04-26T17:25:18Z"
+}

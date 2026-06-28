@@ -1,0 +1,7 @@
+{
+  "addr": "0x14012db30",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nundefined8 FUN_14012db30(longlong param_1,int param_2)\n\n{\n  int *piVar1;\n  int iVar2;\n  int *piVar3;\n  int iVar4;\n  \n  if (param_2 != 0) {\n    piVar1 = *(int **)(param_1 + 0xf0);\n    iVar2 = 0;\n    iVar4 = (int)(*(longlong *)(param_1 + 0xf8) - (longlong)piVar1 >> 4);\n    piVar3 = piVar1;\n    if (0 < iVar4) {\n      do {\n        if (*piVar3 ==\n            (int)*(short *)(*(longlong *)(**(longlong **)(param_1 + 0xe8) + 0x30) +\n                           (longlong)param_2 * 2)) {\n          return *(undefined8 *)(piVar1 + (longlong)iVar2 * 4 + 2);\n        }\n        iVar2 = iVar2 + 1;\n        piVar3 = piVar3 + 4;\n      } while (iVar2 < iVar4);\n    }\n  }\n  return 0;\n}\n\n",
+  "fetched_at": "2026-04-26T17:10:07Z"
+}

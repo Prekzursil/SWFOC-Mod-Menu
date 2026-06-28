@@ -1,0 +1,7 @@
+{
+  "addr": "0x140691710",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140691735        void* rbp = nullptr\n140691737        *arg1 = &RefCountClass::`vftable'{for `IRefCountClass'}\n140691744        arg1[1].d = 0\n140691747        arg1[2] = &SignalListenerClass::`vftable'{for `MultiLinkedListMember'}\n14069174e        arg1[3] = 0\n14069175c        sub_1405f6520(&arg1[4])\n140691761        arg1[9] = arg3\n14069176c        *arg1 = &InstantiatedGoalClass::`vftable'{for `RefCountClass'}\n140691776        arg1[2] = &InstantiatedGoalClass::`vftable'{for `SignalListenerClass'}\n140691781        arg1[4] = &InstantiatedGoalClass::`vftable'{for `AIDiagnosticsClass'}\n140691785        arg1[0xa] = 0\n140691789        arg1[0xb] = arg4\n14069178d        __builtin_memset(&arg1[0xc], 0, 0x30)\n1406917ab        arg1[0x12] = arg2\n1406917b5        if (arg4 != 0 && (*(*arg4 + 0x30))(arg4) != 0)\n1406917c5        int64_t* rcx_2 = arg1[0xb]\n1406917cc        void* rax_4 = (*(*rcx_2 + 0x30))(rcx_2)\n1406917d2        if (rax_4 != 0)\n1406917d4        rbp = rax_4 + 0x38\n1406917ed        sub_140220e90(sub_140058570(), rbp, &arg1[2], 0x10)\n14069180c        arg1[0xe].d = data_140b0a320\n14069181d        return arg1",
+  "fetched_at": "2026-04-26T17:19:03Z"
+}

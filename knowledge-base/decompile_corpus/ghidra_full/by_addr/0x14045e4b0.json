@@ -1,0 +1,7 @@
+{
+  "addr": "0x14045e4b0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall StoryEventDestroyClass::vfunction5(StoryEventDestroyClass *this)\n\n{\n  bool bVar1;\n  uint uVar2;\n  ulonglong uVar3;\n  \n  if ((0 < *(int *)&(this->StoryEventClass_data).offset_0x320) &&\n     (bVar1 = (float)(this->StoryEventClass_data).offset_0x2f0 != DAT_14080080c,\n     *(undefined1 *)((longlong)&(this->StoryEventClass_data).offset_0x34 + 1) = 0, bVar1)) {\n    _guard_check_icall();\n  }\n  uVar2 = 0;\n  if (*(longlong *)&this[1].StoryEventClass_data.field_0x40 -\n      this[1].StoryEventClass_data.offset_0x38 >> 2 != 0) {\n    uVar3 = 0;\n    do {\n      uVar2 = uVar2 + 1;\n      *(undefined4 *)(this[1].StoryEventClass_data.offset_0x20 + uVar3 * 4) =\n           *(undefined4 *)(this[1].StoryEventClass_data.offset_0x38 + uVar3 * 4);\n      uVar3 = (ulonglong)uVar2;\n    } while (uVar3 < (ulonglong)\n                     (*(longlong *)&this[1].StoryEventClass_data.field_0x40 -\n                      this[1].StoryEventClass_data.offset_0x38 >> 2));\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T17:56:22Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406aff10",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1406aff29        *arg1 = &ExploreAreaBlockStatus::`vftable'{for `BlockingStatus'}\n1406aff35        arg1[6] = &ExploreAreaBlockStatus::`vftable'{for `SignalListenerClass'}\n1406aff39        int64_t* rcx = arg1[8]\n1406aff40        if (rcx != 0)\n1406aff4a        (*(*rcx + 8))(rcx, 1)\n1406aff54        arg1[8] = 0\n1406aff60        arg1[6] = &SignalListenerClass::`vftable'{for `MultiLinkedListMember'}\n1406aff64        sub_14020a820(&arg1[6])\n1406aff69        int64_t* rcx_2 = arg1[5]\n1406aff70        if (rcx_2 != 0)\n1406aff75        (*(*rcx_2 + 8))(rcx_2)\n1406aff7b        sub_140249eb0(arg1)\n1406aff84        if ((arg2 & 1) != 0)\n1406aff8e        j_sub_1407864b8(arg1)\n1406affa5        return arg1",
+  "fetched_at": "2026-04-26T17:24:38Z"
+}

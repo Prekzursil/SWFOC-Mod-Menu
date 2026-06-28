@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407410dc",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1407410f0        int64_t rsi\n1407410f0        rsi.b = arg1\n1407410f9        void arg_8\n1407410f9        std::_Lockit::_Lockit(&arg_8, 0)\n1407410ff        struct std::locale::facet::std::locale::_Locimp::VTable** result = data_140b3b618\n140741109        if (result == 0)\n140741111        struct std::locale::facet::std::locale::_Locimp::VTable** result_1 = std::locale::_Locimp::_New_Locimp(0)\n140741116        result = result_1\n14074111c        std::locale::_Setgloballocale(result_1)\n140741121        result[4].d = 0x3f\n140741128        int64_t rcx_2 = result[5]\n140741136        if (rcx_2 != &data_140879944)\n14074113b        if (rcx_2 != 0)\n14074113d        free(rcx_2)\n140741142        result[5] = 0\n140741147        void* const rdi_1 = &data_140879944\n14074114a        rdi_1 += 1\n140741150        do while (*rdi_1 != 0)\n14074115b        void* rax_1 = j_sub_14078f364(rdi_1 - 0x140879943)\n140741160        result[5] = rax_1\n140741167        if (rax_1 != 0)\n140741172        memcpy(rax_1)\n140741177        data_140b3b5c8 = result\n140741172        (*result)->vFunc_1(result)\n140741195        data_140b3b5f8 = data_140b3b5c8\n14074119f        if (rsi.b != 0)\n140741172        (*result)->vFunc_1(result)\n1407411b7        std::_Lockit::~_Lockit(&arg_8)\n1407411d3        return result",
+  "fetched_at": "2026-04-26T17:29:19Z"
+}

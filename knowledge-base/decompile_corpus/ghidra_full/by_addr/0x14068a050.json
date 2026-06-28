@@ -1,0 +1,7 @@
+{
+  "addr": "0x14068a050",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_14068a050(void)\n\n{\n  ArcSweepAttackAbilityClass *this;\n  \n  this = (ArcSweepAttackAbilityClass *)FUN_140769c58(0x1b8);\n  if (this != (ArcSweepAttackAbilityClass *)0x0) {\n    ArcSweepAttackAbilityClass::ArcSweepAttackAbilityClass(this);\n    return;\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T17:15:30Z"
+}

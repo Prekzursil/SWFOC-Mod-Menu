@@ -1,0 +1,7 @@
+{
+  "addr": "0x14001a5c0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nvoid FUN_14001a5c0(void)\n\n{\n  MoveToObjectEventClass::MoveToObjectEventClass((MoveToObjectEventClass *)&DAT_140b372a0);\n  atexit(RefCountClass::~RefCountClass);\n  return;\n}\n\n",
+  "fetched_at": "2026-04-26T16:51:12Z"
+}

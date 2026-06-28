@@ -1,0 +1,7 @@
+{
+  "addr": "0x1404ad1d0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "ulonglong __thiscall DebugEventClass::vfunction7(DebugEventClass *this,longlong param_1)\n\n{\n  byte bVar1;\n  uint uVar2;\n  ulonglong in_RAX;\n  ulonglong uVar3;\n  \n  if (param_1 == 0) {\n    return in_RAX & 0xffffffffffffff00;\n  }\n  uVar2 = ScheduledEventClass::vfunction7((ScheduledEventClass *)this,param_1);\n  uVar3 = (ulonglong)(uVar2 & 0xff);\n  if ((byte)uVar2 != 0) {\n    bVar1 = FUN_140204930(param_1,&this->DebugEventClass_data);\n    uVar3 = (ulonglong)((byte)uVar2 & bVar1);\n  }\n  return uVar3;\n}",
+  "fetched_at": "2026-04-26T18:05:34Z"
+}

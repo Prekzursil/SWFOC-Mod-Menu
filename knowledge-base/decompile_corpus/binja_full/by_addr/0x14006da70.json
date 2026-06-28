@@ -1,0 +1,7 @@
+{
+  "addr": "0x14006da70",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14006da89        int64_t* rbx = arg3\n14006da9a        int64_t* rcx = *(SteamInternal_ContextInit(&data_140a10e00) + 0x20)\n14006da9e        if (rbx[3] u>= 0x10)\n14006daa0        rbx = *rbx\n14006daac        char* rax_2 = (*(*rcx + 0x98))(rcx, arg2, rbx)\n14006dab5        if (rax_2 == 0)\n14006dafc        return rax_2\n14006dab7        void* r8_1 = -ffffffffffffffff\n14006dac0        r8_1 += 1\n14006dac8        do while (*(rax_2 + r8_1) != 0)\n14006dad0        sub_140022730(arg4, rax_2, r8_1)\n14006dada        int64_t* rax_3\n14006dada        rax_3.b = arg4[2] != 0\n14006daec        return rax_3",
+  "fetched_at": "2026-04-26T16:56:13Z"
+}

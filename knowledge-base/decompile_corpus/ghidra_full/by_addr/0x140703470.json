@@ -1,0 +1,7 @@
+{
+  "addr": "0x140703470",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined1 __thiscall\nHeroProtectionAbilityClass::vfunction6_for_IXMLLoadableClass\n          (HeroProtectionAbilityClass *this,longlong param_1,longlong param_2)\n\n{\n  float fVar1;\n  char cVar2;\n  longlong lVar3;\n  longlong lVar4;\n  bool bVar5;\n  \n  if (((param_1 != 0) && (param_2 != 0)) && (*(char *)(param_2 + 0x335) != -1)) {\n    if (param_1 == param_2) {\n      return 1;\n    }\n    lVar3 = FUN_140294bc0(&DAT_140a16fd0,*(undefined4 *)(param_1 + 0x58));\n    if (lVar3 != 0) {\n      lVar4 = FUN_1403956c0(param_2);\n      fVar1 = *(float *)&(this->HeroProtectionAbilityClass_data).offset_0x0;\n      if (fVar1 <= DAT_1407ffaf8) {\n        if (DAT_1407ffaf8 <= fVar1) {\n          return 0;\n        }\n        cVar2 = FUN_1402823c0(lVar3,*(undefined4 *)(lVar4 + 0xc));\n        bVar5 = cVar2 == '\\x01';\n      }\n      else {\n        cVar2 = FUN_1402823c0(lVar3,*(undefined4 *)(lVar4 + 0xc));\n        bVar5 = cVar2 == '\\0';\n      }\n      if (!bVar5) {\n        return 1;\n      }\n    }\n  }\n  return 0;\n}",
+  "fetched_at": "2026-04-26T17:51:49Z"
+}

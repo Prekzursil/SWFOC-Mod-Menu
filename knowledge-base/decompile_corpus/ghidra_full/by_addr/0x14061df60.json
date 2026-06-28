@@ -1,0 +1,7 @@
+{
+  "addr": "0x14061df60",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "longlong __thiscall WalkLocomotorBehaviorClass::vfunction39(WalkLocomotorBehaviorClass *this)\n\n{\n  undefined *puVar1;\n  uint7 uVar2;\n  \n  puVar1 = this->offset_0x18[0x15];\n  uVar2 = (uint7)((ulonglong)this->offset_0x18 >> 8);\n  if (puVar1 == (undefined *)0x0) {\n    return (ulonglong)uVar2 << 8;\n  }\n  return CONCAT71(uVar2,*(int *)(puVar1 + 0x48) == 0x18);\n}",
+  "fetched_at": "2026-04-26T17:29:30Z"
+}

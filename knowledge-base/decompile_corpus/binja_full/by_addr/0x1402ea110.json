@@ -1,0 +1,7 @@
+{
+  "addr": "0x1402ea110",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1402ea121        if (*arg1 == 0)\n1402ea36f        void* const* result\n1402ea36f        result.b = 1\n1402ea379        return result\n1402ea136        void* var_28\n1402ea136        sub_14001e680(&var_28, arg1 + 0x610)\n1402ea13e        sub_1402fc390(arg1)\n1402ea302        char rax_30 = sub_14030ae50(arg1, &var_28, *(arg1 + 0xfe8), *(arg1 + 0x2880), *(arg1 + 0x2890), *(arg1 + 0x27c8), *(arg1 + 0x27d0), *(arg1 + 0x27d8), *(arg1 + 0x27e0), *(arg1 + 0x27e8), *(arg1 + 0x27f0), *(arg1 + 0x27f8), *(arg1 + 0x2800), *(arg1 + 0x2808), *(arg1 + 0x2810), *(arg1 + 0x2818), *(arg1 + 0x2820), *(arg1 + 0x2828), *(arg1 + 0x2830), *(arg1 + 0x2838), *(arg1 + 0x2840), *(arg1 + 0x2848), *(arg1 + 0x2850), *(arg1 + 0x2858), *(arg1 + 0x2860), *(arg1 + 0x2868), *(arg1 + 0x2878), *(arg1 + 0x2870), *(arg1 + 0x2888), *(arg1 + 0x2898), *(arg1 + 0x28a0), *(arg1 + 0x28a8), *(arg1 + 0x28b0), *(arg1 + 0x28b8), 1)\n1402ea311        if (*(arg1 + 0x211c) == 1)\n1402ea316        sub_1403d3200(arg1)\n1402ea327        int64_t var_10\n1402ea327        if (var_10 u>= 0x10)\n1402ea329        void* rcx_4 = var_28\n1402ea334        void* rax_31 = rcx_4\n1402ea33e        if (var_10 + 1 u>= 0x1000)\n1402ea340        rcx_4 = *(rcx_4 - 8)\n1402ea353        if (rax_31 - rcx_4 - 8 u> 0x1f)\n1402ea37a        _invalid_parameter_noinfo_noreturn()\n1402ea37a        noreturn\n1402ea355        j_sub_1407864b8(rcx_4)\n1402ea36e        return zx.q(rax_30)",
+  "fetched_at": "2026-04-26T17:22:53Z"
+}

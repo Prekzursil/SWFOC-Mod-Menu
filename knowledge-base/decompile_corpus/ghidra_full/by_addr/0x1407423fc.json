@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407423fc",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_1407423fc(longlong *param_1)\n\n{\n  if (*param_1 != 0) {\n    (*(code *)PTR__guard_dispatch_icall_1407fdcd8)(*param_1,1);\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T18:04:33Z"
+}

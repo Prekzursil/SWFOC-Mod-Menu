@@ -1,0 +1,7 @@
+{
+  "addr": "0x14070ca30",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "char * __thiscall RepairAbilityClass::vfunction3_for_IXMLLoadableClass(void)\n\n{\n  return \"Repair_Ability\";\n}",
+  "fetched_at": "2026-04-26T17:54:19Z"
+}

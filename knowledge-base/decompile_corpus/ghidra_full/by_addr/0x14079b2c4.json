@@ -1,0 +1,7 @@
+{
+  "addr": "0x14079b2c4",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* Library Function - Single Match\n    GetLcidFromLangCountry\n   \n   Libraries: Visual Studio 2017 Release, Visual Studio 2019 Release */\n\nvoid GetLcidFromLangCountry(uint *param_1)\n\n{\n  short sVar1;\n  uint uVar2;\n  longlong lVar3;\n  short *psVar4;\n  int iVar5;\n  longlong lVar6;\n  longlong lVar7;\n  int iVar8;\n  \n  lVar3 = FUN_14078f07c();\n  lVar6 = -1;\n  lVar7 = -1;\n  iVar8 = 0;\n  do {\n    lVar7 = lVar7 + 1;\n  } while (*(short *)(*(longlong *)(lVar3 + 0x98) + lVar7 * 2) != 0);\n  *(uint *)(lVar3 + 0xb0) = (uint)(lVar7 == 3);\n  do {\n    lVar6 = lVar6 + 1;\n  } while (*(short *)(*(longlong *)(lVar3 + 0xa0) + lVar6 * 2) != 0);\n  *(uint *)(lVar3 + 0xb4) = (uint)(lVar6 == 3);\n  param_1[1] = 0;\n  iVar5 = 2;\n  if (*(int *)(lVar3 + 0xb0) == 0) {\n    psVar4 = *(short **)(lVar3 + 0x98);\n    while( true ) {\n      sVar1 = *psVar4;\n      psVar4 = psVar4 + 1;\n      if ((0x19 < (ushort)(sVar1 - 0x41U)) && (iVar5 = iVar8, 0x19 < (ushort)(sVar1 - 0x61U)))\n      break;\n      iVar8 = iVar8 + 1;\n    }\n  }\n  *(int *)(lVar3 + 0xac) = iVar5;\n  EnumSystemLocalesW(FUN_14079b42c,1);\n  uVar2 = *param_1;\n  if ((uVar2 >> 8 & 1) == 0 || ((uVar2 & 7) == 0 || (uVar2 >> 9 & 1) == 0)) {\n    *param_1 = 0;\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T18:53:51Z"
+}

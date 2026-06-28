@@ -1,0 +1,7 @@
+{
+  "addr": "0x1403f9470",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "PlanetaryBehaviorClass * __thiscall\nPlanetaryBehaviorClass::vfunction4(PlanetaryBehaviorClass *this,int param_1)\n\n{\n  PlanetaryBehaviorClass *pPVar1;\n  \n  pPVar1 = (PlanetaryBehaviorClass *)0x0;\n  if (param_1 == 3) {\n    pPVar1 = this;\n  }\n  return pPVar1;\n}",
+  "fetched_at": "2026-04-26T17:41:59Z"
+}

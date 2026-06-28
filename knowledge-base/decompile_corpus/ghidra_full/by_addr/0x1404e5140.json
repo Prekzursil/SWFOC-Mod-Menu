@@ -1,0 +1,7 @@
+{
+  "addr": "0x1404e5140",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_1404e5140(longlong param_1)\n\n{\n  longlong *plVar1;\n  longlong *plVar2;\n  longlong lVar3;\n  int iVar4;\n  longlong lVar5;\n  longlong lVar6;\n  undefined1 local_28 [16];\n  \n  lVar5 = *(longlong *)(param_1 + 0x50);\n  lVar3 = *(longlong *)(param_1 + 0x48);\n  iVar4 = 0;\n  if (0 < (int)(lVar5 - lVar3 >> 4)) {\n    lVar6 = 0;\n    do {\n      plVar1 = (longlong *)FUN_14022b3f0(param_1 + 8,local_28,(longlong)iVar4 * 0x10 + lVar3);\n      plVar2 = *(longlong **)(lVar6 + lVar3 + 8);\n      lVar5 = *plVar1;\n      plVar1 = *(longlong **)(lVar5 + 0x18);\n      if (plVar1 != plVar2) {\n        if (plVar1 != (longlong *)0x0) {\n          (**(code **)(*plVar1 + 8))(plVar1);\n          plVar2 = *(longlong **)(lVar6 + lVar3 + 8);\n        }\n        *(longlong **)(lVar5 + 0x18) = plVar2;\n        if (plVar2 != (longlong *)0x0) {\n          (**(code **)*plVar2)();\n        }\n      }\n      lVar5 = *(longlong *)(param_1 + 0x50);\n      iVar4 = iVar4 + 1;\n      lVar3 = *(longlong *)(param_1 + 0x48);\n      lVar6 = lVar6 + 0x10;\n    } while (iVar4 < (int)(lVar5 - lVar3 >> 4));\n  }\n  if (lVar3 == lVar5) {\n    *(longlong *)(param_1 + 0x50) = lVar3;\n    return;\n  }\n  do {\n    if (*(longlong **)(lVar3 + 8) != (longlong *)0x0) {\n      (**(code **)(**(longlong **)(lVar3 + 8) + 8))();\n    }\n    lVar3 = lVar3 + 0x10;\n  } while (lVar3 != lVar5);\n  *(undefined8 *)(param_1 + 0x50) = *(undefined8 *)(param_1 + 0x48);\n  return;\n}",
+  "fetched_at": "2026-04-26T18:16:17Z"
+}

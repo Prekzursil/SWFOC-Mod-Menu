@@ -1,0 +1,7 @@
+{
+  "addr": "0x140770b34",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140770b34        return _guard_check_icall",
+  "fetched_at": "2026-04-26T17:30:39Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x14001ccf0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14001ccfc        return sub_140689200(0xb, \"Current_Target_Destroyed\") __tailcall",
+  "fetched_at": "2026-04-26T16:51:22Z"
+}

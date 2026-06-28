@@ -1,0 +1,7 @@
+{
+  "addr": "0x14007dca0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14007dcb6        *(arg1 + 0x60) = 7\n14007dcbe        __builtin_memset(&arg1[0xc], 0, 0x38)\n14007dce9        *(arg1 + 0x58) = 0\n14007dced        *(arg1 + 0x68) = &DynamicVectorClass<class std::wstring>::`vftable'\n14007dcf1        __builtin_memset(&arg1[0x38], 0, 0x15)\n14007dd06        *arg1 = 0\n14007dd0b        *(arg1 + 8) = 0\n14007dd0f        arg1[8].b = 0\n14007dd18        *(arg1 + 0x8c) = sub_1402164b0()\n14007dd21        *(arg1 + 0x90) = 0\n14007dd27        *(arg1 + 0x94) = arg2\n14007dd32        __builtin_memset(&arg1[0x50], 0, 0x18)\n14007dd47        *(arg1 + 0xc0) = 0\n14007dd4e        arg1[0x64].b = 0\n14007dd5a        *(arg1 + 0x98) = arg3\n14007dd6a        return arg1",
+  "fetched_at": "2026-04-26T16:57:12Z"
+}

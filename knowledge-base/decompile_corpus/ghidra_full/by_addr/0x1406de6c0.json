@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406de6c0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "HintPerceptualEvaluatorClass * __thiscall\nHintPerceptualEvaluatorClass::vfunction1_for_SignalGeneratorClass\n          (HintPerceptualEvaluatorClass *this,ulonglong param_1)\n\n{\n  ulonglong uVar1;\n  longlong lVar2;\n  longlong lVar3;\n  \n  FUN_14007b260(&(this->HintPerceptualEvaluatorClass_data).offset_0x20);\n  uVar1 = (this->HintPerceptualEvaluatorClass_data).offset_0x18;\n  if (0xf < uVar1) {\n    lVar2 = (this->HintPerceptualEvaluatorClass_data).offset_0x0;\n    lVar3 = lVar2;\n    if (0xfff < uVar1 + 1) {\n      lVar3 = *(longlong *)(lVar2 + -8);\n      if (0x1f < (lVar2 - lVar3) - 8U) {\n                    /* WARNING: Subroutine does not return */\n        FUN_1407711cc(lVar2 - lVar3,uVar1 + 0x28);\n      }\n    }\n    thunk_FUN_1407864b8(lVar3);\n  }\n  (this->HintPerceptualEvaluatorClass_data).offset_0x10 = 0;\n  (this->HintPerceptualEvaluatorClass_data).offset_0x18 = 0xf;\n  *(undefined1 *)&(this->HintPerceptualEvaluatorClass_data).offset_0x0 = 0;\n  PerceptualEvaluatorClass::~PerceptualEvaluatorClass((PerceptualEvaluatorClass *)this);\n  if ((param_1 & 1) != 0) {\n    thunk_FUN_1407864b8(this,0xe8);\n  }\n  return this;\n}",
+  "fetched_at": "2026-04-26T17:44:39Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x14013e700",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_14013e700(void)\n\n{\n  HANDLE hHeap;\n  \n  if (DAT_140a124f0 != (LPVOID)0x0) {\n    if ((DAT_140a124fc & 0x80000000) == 0) {\n      FUN_14001eef0(DAT_140a124f0,3);\n    }\n    else {\n      hHeap = GetProcessHeap();\n      HeapFree(hHeap,0,DAT_140a124f0);\n    }\n    DAT_140a124fc = DAT_140a124fc & 0x80000000;\n    DAT_140a124f0 = (LPVOID)0x0;\n    DAT_140a124f8 = 0;\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T17:16:35Z"
+}

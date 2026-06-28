@@ -1,0 +1,7 @@
+{
+  "addr": "0x140138490",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nvoid __thiscall\nDynamicVectorClass<class_alTerrain::Shadow_Blob_Bucket>::\n~DynamicVectorClass<class_alTerrain::Shadow_Blob_Bucket>\n          (DynamicVectorClass<class_alTerrain::Shadow_Blob_Bucket> *this)\n\n{\n  uint *puVar1;\n  MultiLinkedListClass<class_alTerrainShadowBlob> *this_00;\n  HANDLE hHeap;\n  \n  this_00 = (this->DynamicVectorClass<class_alTerrain::Shadow_Blob_Bucket>_data).offset_0x0;\n  this->vftablePtr = &vftable;\n  if (this_00 != (MultiLinkedListClass<class_alTerrainShadowBlob> *)0x0) {\n    if (((this->DynamicVectorClass<class_alTerrain::Shadow_Blob_Bucket>_data).offset_0xc &\n        0x80000000) == 0) {\n      MultiLinkedListClass<class_alTerrainShadowBlob>::\n      ~MultiLinkedListClass<class_alTerrainShadowBlob>(this_00,3);\n    }\n    else {\n      hHeap = GetProcessHeap();\n      HeapFree(hHeap,0,this_00);\n    }\n    puVar1 = &(this->DynamicVectorClass<class_alTerrain::Shadow_Blob_Bucket>_data).offset_0xc;\n    *puVar1 = *puVar1 & 0x80000000;\n    (this->DynamicVectorClass<class_alTerrain::Shadow_Blob_Bucket>_data).offset_0x0 = (LPVOID)0x0;\n    (this->DynamicVectorClass<class_alTerrain::Shadow_Blob_Bucket>_data).offset_0x8 = 0;\n  }\n  return;\n}\n\n",
+  "fetched_at": "2026-04-26T17:12:05Z"
+}

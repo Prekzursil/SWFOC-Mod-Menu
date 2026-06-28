@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401fdcf0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1401fdcff        int64_t rsi = arg1[1]\n1401fdd06        void* rbx = *arg1\n1401fdd0c        if (rbx == rsi)\n1401fdd40        arg1[1] = rbx\n1401fdd4e        return \n1401fdd13        sub_1401fdb70(rbx)\n1401fdd18        rbx += 0x1b0\n1401fdd22        do while (rbx != rsi)\n1401fdd27        arg1[1] = *arg1\n1401fdd3a        return ",
+  "fetched_at": "2026-04-26T17:27:35Z"
+}

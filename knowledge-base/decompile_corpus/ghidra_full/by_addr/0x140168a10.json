@@ -1,0 +1,7 @@
+{
+  "addr": "0x140168a10",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_140168a10(longlong param_1,longlong param_2)\n\n{\n  float *pfVar1;\n  undefined8 *puVar2;\n  int iVar3;\n  longlong lVar4;\n  int local_res8;\n  undefined4 uStackX_c;\n  \n  iVar3 = 0;\n  uStackX_c = 0;\n  if (0 < *(int *)(param_1 + 500)) {\n    lVar4 = 0;\n    do {\n      pfVar1 = (float *)(*(longlong *)(param_1 + 200) + 0x3c + lVar4);\n      if ((0.0 < *pfVar1 || *pfVar1 == 0.0) &&\n         (*(char *)(*(longlong *)(param_1 + 200) + 0x6e + lVar4) != '\\0')) {\n        puVar2 = *(undefined8 **)(param_2 + 8);\n        if (puVar2 == *(undefined8 **)(param_2 + 0x10)) {\n          local_res8 = iVar3;\n          FUN_140045580(param_2,puVar2,&local_res8);\n        }\n        else {\n          *puVar2 = CONCAT44(uStackX_c,iVar3);\n          *(longlong *)(param_2 + 8) = *(longlong *)(param_2 + 8) + 8;\n        }\n      }\n      iVar3 = iVar3 + 1;\n      lVar4 = lVar4 + 0x70;\n    } while (iVar3 < *(int *)(param_1 + 500));\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T17:25:02Z"
+}

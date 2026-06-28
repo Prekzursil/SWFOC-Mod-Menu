@@ -1,0 +1,7 @@
+{
+  "addr": "0x140258ce0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140258ce4        void* rax = *(arg1 + 0x38)\n140258cf2        if (rax == 0)\n140258d09        return sub_140200cd0(arg2, \"%s: (NULL)\", \"No-RTTI-In-Release\") __tailcall\n140258d0e        void** rax_2 = rax + 0x68\n140258d17        if (rax_2[3] u>= 0x10)\n140258d19        rax_2 = *rax_2\n140258d23        void** var_18 = rax_2\n140258d3b        return sub_140200cd0(arg2, \"%s:%p, Name: %s\", \"No-RTTI-In-Release\")",
+  "fetched_at": "2026-04-26T17:30:56Z"
+}

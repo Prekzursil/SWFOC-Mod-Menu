@@ -1,0 +1,7 @@
+{
+  "addr": "0x14075ad6c",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14075ad84        int64_t var_18 = arg1 + 0x10\n14075ad92        int32_t rax_1 = std::_LStrcoll<uint16_t>(arg2, arg3, arg4, arg5)\n14075ad9d        int64_t result\n14075ad9d        result.b = rax_1 != 0\n14075ada5        if (rax_1 s< 0)\n14075ada5        return 0xffffffff\n14075adad        return result",
+  "fetched_at": "2026-04-26T17:29:55Z"
+}

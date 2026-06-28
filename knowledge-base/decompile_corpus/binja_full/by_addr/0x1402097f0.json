@@ -1,0 +1,7 @@
+{
+  "addr": "0x1402097f0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14020980a        struct ThreadClass::PacketHandlerClass::VTable** rdi = arg5\n140209815        char* rbx = arg2\n14020981e        if (rdi == 0)\n140209825        struct ThreadClass::VTable** rax_1\n140209825        struct PGNetAsyncSocketImpl::WinsockAsyncSocketImpl::VTable** r9\n140209825        rax_1, r9 = operator new(0x118)\n14020982d        if (rax_1 == 0)\n140209843        rdi = nullptr\n140209839        struct ThreadClass::PacketHandlerClass::VTable** rax_2\n140209839        rax_2, r9 = sub_1402053b0(rax_1, \"PacketHandler Thread\")\n14020983e        rdi = rax_2\n140209857        if (sub_1402056d0(rdi, arg6, 0, r9) == 0)\n1402098dd        if (rdi != 0)\n1402098ea        (*rdi)->__offset(0x0).q(rdi, 1)\n1402098ec        return 0\n14020985d        arg1[0xc].b = 1\n140209861        *(arg1 + 0x58) = arg3\n140209865        int64_t rax_4 = -1\n14020986c        *(arg1 + 0x60) = arg4\n140209870        arg1[7].b = 1\n140209874        rax_4 += 1\n14020987b        do while (rbx[rax_4] != 0)\n140209882        char* rax_6 = j_operator new(sx.q(rax_4.d + 1))\n140209887        *(arg1 + 8) = rax_6\n14020989f        char i\n140209890        i = *rbx\n140209893        rbx = &rbx[1]\n140209897        *rax_6 = i\n140209899        rax_6 = &rax_6[1]\n14020989f        do while (i != 0)\n1402098ae        sub_140206580(rdi, sub_14020a180, arg1)\n1402098b5        *(arg1 + 0x28) = rdi\n1402098b9        *arg1 = 1\n1402098d9        return 1",
+  "fetched_at": "2026-04-26T17:28:04Z"
+}

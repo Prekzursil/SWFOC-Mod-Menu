@@ -1,0 +1,7 @@
+{
+  "addr": "0x140636160",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nGarrisonStructureBehaviorClass * __thiscall\nGarrisonStructureBehaviorClass::vfunction4(GarrisonStructureBehaviorClass *this,int param_1)\n\n{\n  GarrisonStructureBehaviorClass *pGVar1;\n  \n  pGVar1 = (GarrisonStructureBehaviorClass *)0x0;\n  if (param_1 == 0x50) {\n    pGVar1 = this;\n  }\n  return pGVar1;\n}\n\n",
+  "fetched_at": "2026-04-26T17:00:17Z"
+}

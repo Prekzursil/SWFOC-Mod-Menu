@@ -1,0 +1,7 @@
+{
+  "addr": "0x14068b0a0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_14068b0a0(void)\n\n{\n  SummonAbilityClass *this;\n  \n  this = (SummonAbilityClass *)FUN_140769c58(0x1a8);\n  if (this != (SummonAbilityClass *)0x0) {\n    SummonAbilityClass::SummonAbilityClass(this);\n    return;\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T17:16:38Z"
+}

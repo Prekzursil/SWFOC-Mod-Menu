@@ -1,0 +1,7 @@
+{
+  "addr": "0x140163b50",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140163b50        uint64_t result = *(arg1 + 0x100)\n140163b67        if (*(result + 0xc8) == 0 || data_140a12648 != 0)\n140163b6d        bool cond:0_1 = *(arg1 + 0xf8) s<= 0\n140163b7b        *(arg1 + 0x1bd) = 0\n140163b82        if (not(cond:0_1))\n140163b95        return sub_14016f660(arg1 + 0x1c4, arg1 + 0x1dc, arg1 + 0x1e8) __tailcall\n140163bc6        float zmm0 = *(arg1 + 0x1d8)\n140163bd2        *(arg1 + 0x1d4) &= 0x7fffffff\n140163be2        result = zx.q(zmm0) & 0x7fffffff\n140163bec        zmm0 = *(arg1 + 0x1d0) * 0.5f\n140163bf0        *(arg1 + 0x1d8) = result.d\n140163bfa        float zmm1 = *(arg1 + 0x1d8) * 0.5f\n140163bfe        __builtin_memcpy(arg1 + 0x1c4, \"\\x00\\x00\\x00\\x3f\\x00\\x00\\x00\\x3f\\x00\\x00\\x00\\x3f\\x00\\x00\\x80\\x3f\\x00\\x00\\x80\\x3f\\x00\\x00\\x80\\x3f\", 0x18)\n140163c05        *(arg1 + 0x1d0) = zmm0\n140163c11        zmm0 = *(arg1 + 0x1d4) * 0.5f\n140163c1d        *(arg1 + 0x1d8) = zmm1\n140163c2b        *(arg1 + 0x1d4) = zmm0\n140163c31        return result",
+  "fetched_at": "2026-04-26T17:22:43Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x1405b18b0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "GalacticSabotageAbilityClass * __thiscall\nGalacticSabotageAbilityClass::scalar_deleting_destructor\n          (GalacticSabotageAbilityClass *this,uint param_1)\n\n{\n                    /* inlined destructor:\n                       GalacticSabotageAbilityClass::~GalacticSabotageAbilityClass */\n  (this->GalacticSabotageAbilityClass_data).offset_0x0 = 0;\n  this->vftablePtr = &vftable_for_IXMLLoadableClass;\n  (this->GalacticSabotageAbilityClass_data).offset_0x4 = 0;\n  this->vftablePtr = &vftable_for_RefCountClass;\n  (this->GalacticSabotageAbilityClass_data).offset_0x8 = 0;\n  SpecialAbilityClass::~SpecialAbilityClass((SpecialAbilityClass *)this);\n  if ((param_1 & 1) != 0) {\n    thunk_FUN_1407864b8(this,400);\n  }\n  return this;\n}",
+  "fetched_at": "2026-04-26T18:43:47Z"
+}

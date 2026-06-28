@@ -1,0 +1,7 @@
+{
+  "addr": "0x1403a8550",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1403a8565        int64_t* rcx = data_140b15418\n1403a8571        int128_t zmm6 = data_140b26f7c\n1403a8579        int32_t arg_8 = data_140b26f80\n1403a8582        int32_t result\n1403a8582        if (rcx != 0)\n1403a858f        result = (*(*rcx + 0xe0))(rcx)\n1403a8584        result = data_140b153fc\n1403a8598        if (result == 2)\n1403a85a2        zmm6 = data_140b26f84\n1403a85aa        arg_8 = data_140b26f88\n1403a85b0        void* rbx = *(arg1 + 0xf0)\n1403a85ba        if (rbx == 0)\n1403a8621        return result\n1403a85cb        void var_38\n1403a85cb        sub_1404ad4c0(&var_38, arg1, -1, 0)\n1403a85d0        int64_t* rcx_2 = *(rbx + 0x138)\n1403a85f8        int32_t arg_10 = 0\n1403a8600        sub_14038c850(rcx_2, &arg_8, &arg_10, &var_38, \"Elevated_Vulnerability\", zmm6.d)\n1403a860a        return sub_1404ad530(&var_38)",
+  "fetched_at": "2026-04-26T17:24:07Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407d6420",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1407d6429        sub_14029c770(arg1)\n1407d6438        *arg1 = &DynamicVectorRefClass<class ParameterClass* __ptr64>::`vftable'{for `DynamicVectorClass<class ParameterClass* __ptr64>'}\n1407d643b        sub_14029c770(arg1)\n1407d6448        return sub_1407d6620(arg1) __tailcall",
+  "fetched_at": "2026-04-26T17:34:02Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407ddc48",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* Library Function - Single Match\n    fread\n   \n   Libraries: Visual Studio 2017 Release, Visual Studio 2019 Release */\n\nsize_t __cdecl fread(void *_DstBuf,size_t _ElementSize,size_t _Count,FILE *_File)\n\n{\n  size_t sVar1;\n  \n  sVar1 = fread_s(_DstBuf,0xffffffffffffffff,_ElementSize,_Count,_File);\n  return sVar1;\n}",
+  "fetched_at": "2026-04-26T18:59:06Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x1404f4690",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1404f46b0        sub_1404f40c0(arg1, arg2, arg3)\n1404f46b5        void* r9 = arg3[0x17]\n1404f46bf        int64_t* rax = *(r9 + 0xe0)\n1404f46c9        if (rax != 0)\n1404f46cb        int64_t rcx = sx.q(*(r9 + 0xe8))\n1404f46d2        int32_t rdx = 0\n1404f46d7        if (rcx.d s> 0)\n1404f46dc        int64_t rcx_1 = 0\n1404f46e3        if (*rax == arg2)\n1404f46f8        if (rdx != 0xffffffff)\n1404f4701        sub_1400475e0(r9 + 0xd8, rdx)\n1404f46f8        break\n1404f46e5        rdx += 1\n1404f46e7        rcx_1 += 1\n1404f46ea        rax = &rax[1]\n1404f46f1        do while (rcx_1 s< rcx)\n1404f4711        void* rax_2 = (*(*arg3 + 0x10))(arg3, 3)\n1404f4714        void* rbp = rax_2 + 0x18\n1404f471b        if (rax_2 == 0)\n1404f471d        rbp = nullptr\n1404f4723        void* rbx = &arg2[7]\n1404f4727        if (arg2 == 0)\n1404f4727        rbx = nullptr\n1404f472b        int64_t rax_3\n1404f472b        uint64_t zmm2[0x2]\n1404f472b        rax_3, zmm2 = sub_140058570()\n1404f473f        sub_140220eb0(rax_3, rbx, rbp, 0x28)\n1404f4750        *(arg2[0x19] + 0x40) = 0\n1404f4754        sub_1403a8f80(arg2, 0)\n1404f4763        int32_t zmm1 = *(arg3 + 0x7c)\n1404f476b        int32_t var_18 = arg3[0xf].d\n1404f477c        int32_t var_10 = arg3[0x10].d\n1404f4782        int32_t var_14 = zmm1\n1404f47a7        return sub_1403a8f90(arg2, &var_18, 0, zmm2)",
+  "fetched_at": "2026-04-26T17:31:40Z"
+}

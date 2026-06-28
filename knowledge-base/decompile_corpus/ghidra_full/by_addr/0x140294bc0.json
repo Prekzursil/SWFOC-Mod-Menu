@@ -1,0 +1,7 @@
+{
+  "addr": "0x140294bc0",
+  "tool": "ghidra",
+  "fact_id": "rva_player_list_find_by_id",
+  "body": "\nundefined8 FUN_140294bc0(longlong param_1,int param_2)\n\n{\n  if ((-1 < param_2) && (param_2 < *(int *)(param_1 + 0x28))) {\n    return *(undefined8 *)(*(longlong *)(param_1 + 0x20) + (longlong)param_2 * 8);\n  }\n  return 0;\n}\n\n",
+  "fetched_at": "2026-04-26T16:43:13Z"
+}

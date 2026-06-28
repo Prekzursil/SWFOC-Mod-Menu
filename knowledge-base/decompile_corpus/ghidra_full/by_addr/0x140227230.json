@@ -1,0 +1,7 @@
+{
+  "addr": "0x140227230",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "ulonglong __thiscall\nWinsockAsyncSocketImpl::vfunction7(WinsockAsyncSocketImpl *this,ulonglong *param_1)\n\n{\n  int iVar1;\n  int iVar2;\n  ulonglong uVar3;\n  undefined *puVar4;\n  int iVar5;\n  u_long local_res8 [2];\n  \n  iVar5 = 0;\n  local_res8[0] = 0;\n  iVar1 = ioctlsocket((SOCKET)(this->RefCountClass_data).offset_0x8,0x4004667f,local_res8);\n  if (iVar1 == 0) {\n    *param_1 = (ulonglong)local_res8[0];\n    return CONCAT71((uint7)(uint3)(local_res8[0] >> 8),1);\n  }\n  iVar2 = (*this->vftablePtr->WSAGetLastError)(this);\n  iVar1 = 10000;\n  if (iVar2 != 10000) {\n    puVar4 = &DAT_140853cc0;\n    do {\n      if (iVar1 == -1) break;\n      iVar1 = *(int *)(puVar4 + 0x10);\n      puVar4 = puVar4 + 0x10;\n      iVar5 = iVar5 + 1;\n    } while (iVar1 != iVar2);\n  }\n  uVar3 = FUN_140025760(\"%s - ioctlsocket failed reading number of pending bytes. Error code %d - %s\\n.\\n\"\n                        ,\"WinsockAsyncSocketImpl::Get_Read_Bytes_Available\",iVar2,\n                        (&PTR_s_WSABASEERR_140853cc8)[(longlong)iVar5 * 2]);\n  return uVar3 & 0xffffffffffffff00;\n}",
+  "fetched_at": "2026-04-26T18:04:51Z"
+}

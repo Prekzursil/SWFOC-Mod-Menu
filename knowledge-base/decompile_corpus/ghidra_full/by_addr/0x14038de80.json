@@ -1,0 +1,7 @@
+{
+  "addr": "0x14038de80",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined8 FUN_14038de80(longlong param_1,undefined8 param_2)\n\n{\n  undefined8 uVar1;\n  float fVar2;\n  float fVar3;\n  float local_res8;\n  undefined4 local_resc;\n  float local_res10 [2];\n  undefined4 local_res18 [2];\n  float local_res20;\n  float local_res24;\n  float local_58;\n  float local_54;\n  float local_50;\n  float local_4c;\n  \n  uVar1 = *(undefined8 *)(param_1 + 0x298);\n  FUN_140396850(param_1,local_res10,local_res18);\n  fVar3 = ((DAT_1408007dc * DAT_1408007d4) / DAT_1408007f4) * *(float *)(param_1 + 0x8c);\n  fVar2 = fVar3;\n  if (0x1d000000 < ((uint)fVar3 & 0x7f800000)) {\n    local_res8 = fVar3;\n    fVar2 = (float)FUN_140776650(fVar3);\n  }\n  local_54 = DAT_1407ffaf8;\n  local_res8 = fVar3;\n  if (0x1d000000 < ((uint)fVar3 & 0x7f800000)) {\n    local_54 = (float)FUN_140776150(fVar3);\n  }\n  local_res24 = *(float *)(param_1 + 0x7c);\n  local_58 = (float)((uint)fVar2 ^ DAT_140800860);\n  local_res20 = *(float *)(param_1 + 0x78);\n  local_50 = local_54;\n  local_4c = fVar2;\n  fVar2 = (float)FUN_140372020(uVar1);\n  fVar3 = (float)FUN_1403721f0(uVar1);\n  local_res24 = local_res24 + fVar2 * local_4c + local_54 * fVar3;\n  local_res20 = local_res20 + fVar2 * local_50 + local_58 * fVar3;\n  local_res8 = local_res10[0];\n  local_resc = local_res18[0];\n  FUN_14020d080(param_2,&local_res20,&local_res8,&local_50,&local_58);\n  return param_2;\n}",
+  "fetched_at": "2026-04-26T17:21:09Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406360b0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nvoid __thiscall GarrisonVehicleBehaviorClass::vfunction32(GarrisonVehicleBehaviorClass *this)\n\n{\n  FUN_1403ac100(this->offset_0x18,0);\n  return;\n}\n\n",
+  "fetched_at": "2026-04-26T17:00:13Z"
+}

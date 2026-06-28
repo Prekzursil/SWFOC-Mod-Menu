@@ -1,0 +1,7 @@
+{
+  "addr": "0x14021d740",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "char * FUN_14021d740(void)\n\n{\n  longlong lVar1;\n  \n  lVar1 = FUN_140216870();\n  if (lVar1 != 0) {\n    lVar1 = FUN_140216870();\n    return (char *)(lVar1 + 0x60);\n  }\n  return \"autobuild\";\n}",
+  "fetched_at": "2026-04-26T18:02:18Z"
+}

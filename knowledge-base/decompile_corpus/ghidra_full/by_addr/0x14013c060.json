@@ -1,0 +1,7 @@
+{
+  "addr": "0x14013c060",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall alEmitter::vfunction14_for_RefCountClass(alEmitter *this,longlong *param_1)\n\n{\n  longlong *plVar1;\n  int iVar2;\n  undefined4 uVar3;\n  undefined *puVar4;\n  alEmitter *paVar5;\n  int iVar6;\n  \n  FUN_1401737b0((this->alEmitter_data).offset_0x8,this);\n  (**(code **)(*param_1 + 0xa8))(param_1,(this->alEmitter_data).offset_0x8);\n  if ((((this->alEmitter_data).offset_0x228 == 0) &&\n      (plVar1 = (longlong *)(this->alRenderable_data).offset_0x18, plVar1 != (longlong *)0x0)) &&\n     (puVar4 = (undefined *)(**(code **)(*plVar1 + 0x20))(plVar1), puVar4 != (undefined *)0x0)) {\n    while (puVar4 != &DAT_140a12370) {\n      puVar4 = *(undefined **)(puVar4 + 8);\n      if (puVar4 == (undefined *)0x0) {\n        return;\n      }\n    }\n    iVar2 = FUN_14012d6d0(plVar1);\n    iVar6 = 0;\n    if (0 < iVar2) {\n      do {\n        paVar5 = (alEmitter *)FUN_14012d6f0(plVar1,iVar6);\n        if (this == paVar5) {\n          uVar3 = FUN_14012d730(plVar1,iVar6);\n          (this->alEmitter_data).offset_0x228 = uVar3;\n        }\n        iVar6 = iVar6 + 1;\n      } while (iVar6 < iVar2);\n    }\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T17:14:59Z"
+}

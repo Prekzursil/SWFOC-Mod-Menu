@@ -1,0 +1,7 @@
+{
+  "addr": "0x140437130",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "char * __thiscall AsteroidFieldDamageBehaviorClass::vfunction9(void)\n\n{\n  return \"AsteroidFieldDamageBehaviorClass\";\n}",
+  "fetched_at": "2026-04-26T17:51:51Z"
+}

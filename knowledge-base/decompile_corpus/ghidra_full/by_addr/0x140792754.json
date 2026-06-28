@@ -1,0 +1,7 @@
+{
+  "addr": "0x140792754",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* Library Function - Single Match\n    unsigned __int64 __cdecl __crt_mbstring::__mbrtowc_utf8(wchar_t * __ptr64,char const *\n   __ptr64,unsigned __int64,struct _Mbstatet * __ptr64)\n   \n   Library: Visual Studio 2019 Release */\n\n__uint64 __cdecl\n__crt_mbstring::__mbrtowc_utf8(wchar_t *param_1,char *param_2,__uint64 param_3,_Mbstatet *param_4)\n\n{\n  __uint64 _Var1;\n  wchar32 local_18 [4];\n  \n  _Var1 = __mbrtoc32_utf8(local_18,param_2,param_3,param_4);\n  if (_Var1 < 5) {\n    if (0xffff < (uint)local_18[0]) {\n      local_18[0] = L'�';\n    }\n    if (param_1 != (wchar_t *)0x0) {\n      *param_1 = (wchar_t)local_18[0];\n    }\n  }\n  return _Var1;\n}",
+  "fetched_at": "2026-04-26T18:52:54Z"
+}

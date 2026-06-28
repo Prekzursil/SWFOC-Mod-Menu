@@ -1,0 +1,7 @@
+{
+  "addr": "0x140019100",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\n/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */\n\nvoid FUN_140019100(void)\n\n{\n  longlong lVar1;\n  undefined8 *puVar2;\n  \n  DAT_140a2a150 = FUN_140769c58(0x40);\n  *(longlong *)DAT_140a2a150 = DAT_140a2a150;\n  *(longlong *)(DAT_140a2a150 + 8) = DAT_140a2a150;\n  *(longlong *)(DAT_140a2a150 + 0x10) = DAT_140a2a150;\n  *(undefined2 *)(DAT_140a2a150 + 0x18) = 0x101;\n  puVar2 = &DAT_140a2a128;\n  if (0xf < DAT_140a2a140) {\n    puVar2 = DAT_140a2a128;\n  }\n  DAT_140a2a120 = 0;\n  _DAT_140a2a138 = 0;\n  *(undefined1 *)puVar2 = 0;\n  lVar1 = DAT_140a2a150;\n  _DAT_140a2a148 = 0;\n  FUN_140476ae0(&DAT_140a2a150,&DAT_140a2a150,*(undefined8 *)(DAT_140a2a150 + 8));\n  *(longlong *)(lVar1 + 8) = lVar1;\n  *(longlong *)lVar1 = lVar1;\n  *(longlong *)(lVar1 + 0x10) = lVar1;\n  _DAT_140a2a158 = 0;\n  atexit(FUN_1407f2340);\n  return;\n}\n\n",
+  "fetched_at": "2026-04-26T16:50:51Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x140790548",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14079055c        void* result\n14079055c        if (__acrt_should_use_temporary_buffer(arg1).b == 0)\n140790603        result.b = 0\n14079056f        int64_t* rdi_1\n14079056f        if (arg1 != sub_140784a34(1))\n140790587        if (arg1 == sub_140784a34(2))\n140790589        rdi_1 = &data_140b3c4c0\n140790589        goto label_140790590\n140790603        result.b = 0\n140790571        rdi_1 = &data_140b3c4b8\n140790590        label_140790590:\n140790590        data_140b3c0c0 += 1\n14079059e        if ((*(arg1 + 0x14) & 0x4c0) != 0)\n140790603        result.b = 0\n1407905a0        *(arg1 + 0x14) |= 0x282\n1407905a8        result = *rdi_1\n1407905ae        if (result != 0)\n1407905e9        label_1407905e9:\n1407905e9        arg1[1] = result\n1407905f0        *arg1 = *rdi_1\n1407905f3        arg1[2].d = 0x1000\n1407905fa        arg1[4].d = 0x1000\n1407905bc        *rdi_1 = _malloc_base(0x1000)\n1407905bf        _free_base(0)\n1407905c4        result = *rdi_1\n1407905ca        if (result != 0)\n1407905ca        goto label_1407905e9\n1407905d0        arg1[2].d = 2\n1407905d7        arg1[1] = arg1 + 0x1c\n1407905db        *arg1 = arg1 + 0x1c\n1407905de        arg1[4].d = 2\n1407905e5        result.b = 1\n14079060f        return result",
+  "fetched_at": "2026-04-26T17:31:42Z"
+}

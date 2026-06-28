@@ -1,0 +1,7 @@
+{
+  "addr": "0x140635c30",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140635c3b        struct BehaviorClass::ParticleBehaviorClass::VTable** result = operator new(0x48)\n140635c46        if (result == 0)\n140635c82        return result\n140635c4b        sub_1404c32d0(result)\n140635c57        result[8].b = 0\n140635c5b        *result = &ParticleBehaviorClass::`vftable'{for `BehaviorClass'}\n140635c65        result[1] = &ParticleBehaviorClass::`vftable'{for `RefCountClass'}\n140635c70        result[3] = &ParticleBehaviorClass::`vftable'{for `SignalListenerClass'}\n140635c7c        return result",
+  "fetched_at": "2026-04-26T17:24:24Z"
+}

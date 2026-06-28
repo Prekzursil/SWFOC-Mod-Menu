@@ -1,0 +1,7 @@
+{
+  "addr": "0x140054cc0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140054cc7        if (arg2 s< 0 || arg2 s>= *(arg1 + 0x10))\n140054d16        return 0\n140054cd0        void* r11_2 = sx.q(arg2) * 0x70 + *(arg1 + 8)\n140054cd9        int64_t* rdx = r11_2 + 8\n140054cdd        int64_t* r9_1 = rdx\n140054ce0        if (*(r11_2 + 0x20) u>= 8)\n140054ce2        r9_1 = *rdx\n140054ce5        int64_t r10_1 = rdx[2]\n140054ced        if (r10_1 == 0xa)\n140054cef        wchar16 const* const rcx = u\"[AutoSave]\"\n140054cf6        int64_t r8_1 = r10_1\n140054d08        while (*(r9_1 - u\"[AutoSave]\" + rcx) == *rcx)\n140054d0a        rcx = &rcx[1]\n140054d0e        int64_t temp0_1 = r8_1\n140054d0e        r8_1 -= 1\n140054d12        if (temp0_1 == 1)\n140054d16        return 0\n140054d1c        if (rdx[3] u>= 8)\n140054d1e        rdx = *rdx\n140054d25        if (r10_1 == 0xb)\n140054d27        wchar16 const* const rax_4 = u\"[QuickSave]\"\n140054d2e        int64_t r8_2 = r10_1\n140054d3b        while (*(rdx - u\"[QuickSave]\" + rax_4) == *rax_4)\n140054d3d        rax_4 = &rax_4[1]\n140054d41        int64_t temp1_1 = r8_2\n140054d41        r8_2 -= 1\n140054d45        if (temp1_1 == 1)\n140054d4c        return 1\n140054d8f        return zx.q(0x2f6257ff - ((zx.d(*(r11_2 + 0x50)) + (zx.d(*(r11_2 + 0x48)) * 0x16d + zx.d(*(r11_2 + 0x4a)) * 0x1f + zx.d(*(r11_2 + 0x4e))) * 0x18) * 0x3c + zx.d(*(r11_2 + 0x52))) * 0x3c - zx.d(*(r11_2 + 0x54)))",
+  "fetched_at": "2026-04-26T16:54:53Z"
+}

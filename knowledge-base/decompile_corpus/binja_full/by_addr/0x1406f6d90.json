@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406f6d90",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1406f6d97        return \"Detect_Hero_Ability\"",
+  "fetched_at": "2026-04-26T17:26:39Z"
+}

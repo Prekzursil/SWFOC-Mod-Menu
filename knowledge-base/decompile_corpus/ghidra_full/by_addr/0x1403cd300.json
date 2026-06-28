@@ -1,0 +1,7 @@
+{
+  "addr": "0x1403cd300",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_1403cd300(longlong param_1)\n\n{\n  char cVar1;\n  SpecialAbilityEventClass *pSVar2;\n  longlong *plVar3;\n  \n  pSVar2 = (SpecialAbilityEventClass *)FUN_140769c58(0x158);\n  if (pSVar2 == (SpecialAbilityEventClass *)0x0) {\n    pSVar2 = (SpecialAbilityEventClass *)0x0;\n  }\n  else {\n    pSVar2 = SpecialAbilityEventClass::SpecialAbilityEventClass(pSVar2);\n  }\n  FUN_1404b5400(pSVar2,*(undefined4 *)(param_1 + 0x2b74),*(undefined4 *)(param_1 + 0x2b78),\n                DAT_140b27940);\n  OutgoingEventQueueClass::vfunction2((OutgoingEventQueueClass *)&DAT_140b2ed18,(longlong *)pSVar2);\n  *(undefined1 *)(param_1 + 0x2b70) = 0;\n  *(undefined4 *)(param_1 + 0x2b74) = 0x3fffff;\n  *(undefined4 *)(param_1 + 0x2b78) = 0x3fffff;\n  plVar3 = (longlong *)FUN_140347b50(0x3b9);\n  cVar1 = FUN_14034ce60(plVar3);\n  if (cVar1 == '\\0') {\n    (**(code **)(*plVar3 + 0x80))(plVar3,1);\n    (**(code **)(*plVar3 + 0x78))(plVar3,1);\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T17:37:41Z"
+}

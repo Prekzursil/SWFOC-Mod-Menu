@@ -1,0 +1,7 @@
+{
+  "addr": "0x14018b120",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14018b126        struct alShaderInstance::alD3dEffectInstance::VTable** result = arg1\n14018b129        sub_1401b5580(arg1)\n14018b135        *result = &alD3dEffectInstance::`vftable'{for `alShaderInstance'}\n14018b13f        result[2] = &alD3dEffectInstance::`vftable'{for `MultiLinkedListMember'}\n14018b145        __builtin_memset(&result[6], 0, 0x30)\n14018b165        return result",
+  "fetched_at": "2026-04-26T17:24:08Z"
+}

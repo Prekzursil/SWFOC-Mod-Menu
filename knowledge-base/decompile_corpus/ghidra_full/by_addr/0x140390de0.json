@@ -1,0 +1,7 @@
+{
+  "addr": "0x140390de0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_140390de0(longlong param_1)\n\n{\n  SelectionDataPackClass *pSVar1;\n  \n  if (*(longlong *)(param_1 + 0xb0) == 0) {\n    pSVar1 = (SelectionDataPackClass *)FUN_140769c58(0x68);\n    if (pSVar1 != (SelectionDataPackClass *)0x0) {\n      pSVar1 = SelectionDataPackClass::SelectionDataPackClass(pSVar1);\n      *(SelectionDataPackClass **)(param_1 + 0xb0) = pSVar1;\n      return;\n    }\n    *(undefined8 *)(param_1 + 0xb0) = 0;\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T17:22:00Z"
+}

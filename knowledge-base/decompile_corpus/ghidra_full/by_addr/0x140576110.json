@@ -1,0 +1,7 @@
+{
+  "addr": "0x140576110",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined8 FUN_140576110(longlong param_1,undefined8 param_2,longlong param_3)\n\n{\n  char cVar1;\n  char *pcVar2;\n  undefined1 local_18 [16];\n  \n  if (*(longlong *)(param_1 + 0x60) != 0) {\n    if ((param_3 == 0) ||\n       ((*(longlong *)(param_3 + 0x18) - (longlong)*(undefined8 **)(param_3 + 0x10) &\n        0xfffffffffffffff8U) == 0)) {\n      pcVar2 = \n      \"GameObjectWrapper::Face_Immediate -- Missing required position or gameobject parameter.\";\n    }\n    else {\n      cVar1 = FUN_1404990b0(**(undefined8 **)(param_3 + 0x10),local_18,0);\n      if (cVar1 != '\\0') {\n        FUN_140394440(*(undefined8 *)(param_1 + 0x60),local_18);\n        return 0;\n      }\n      pcVar2 = \"GameObjectWrapper::Face_Immediate -- could not extract a position from parameter 1.\"\n      ;\n    }\n    FUN_140248190(param_2,pcVar2);\n  }\n  return 0;\n}",
+  "fetched_at": "2026-04-26T18:40:24Z"
+}

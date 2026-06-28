@@ -1,0 +1,7 @@
+{
+  "addr": "0x14003c990",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nvoid FUN_14003c990(longlong param_1)\n\n{\n  longlong lVar1;\n  \n  if ((DAT_140b15418 != 0) && (*(char *)(DAT_140b15418 + 0x98) != '\\0')) {\n    lVar1 = FUN_140294a40(&DAT_140a16fd0);\n    *(int *)(param_1 + 0x58) = (int)*(float *)(lVar1 + 0x70);\n    FUN_1403e6dc0(&DAT_140b27f60);\n    return;\n  }\n  return;\n}\n\n",
+  "fetched_at": "2026-04-26T16:53:18Z"
+}

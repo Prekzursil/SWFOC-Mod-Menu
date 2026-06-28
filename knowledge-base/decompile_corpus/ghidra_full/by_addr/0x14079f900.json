@@ -1,0 +1,7 @@
+{
+  "addr": "0x14079f900",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "char * __cdecl common_getenv<char>(char *param_1)\n\n{\n  ulong *puVar1;\n  ulonglong uVar2;\n  char *pcVar3;\n  \n  if ((param_1 != (char *)0x0) && (uVar2 = FUN_14078b950(param_1,0x7fff), uVar2 < 0x7fff)) {\n    __acrt_lock(0xb);\n    pcVar3 = common_getenv_nolock<char>(param_1);\n    __acrt_unlock(0xb);\n    return pcVar3;\n  }\n  puVar1 = __doserrno();\n  *puVar1 = 0x16;\n  FUN_1407711ac();\n  return (char *)0x0;\n}",
+  "fetched_at": "2026-04-26T18:54:11Z"
+}

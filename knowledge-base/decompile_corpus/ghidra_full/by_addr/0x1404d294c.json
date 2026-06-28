@@ -1,0 +1,7 @@
+{
+  "addr": "0x1404d294c",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall\nAIFreeStoreClass::vfunction1_for_SignalListenerClass(AIFreeStoreClass *this,uint param_1)\n\n{\n  scalar_deleting_destructor\n            ((AIFreeStoreClass *)&this[-1].AIFreeStoreClass_data.offset_0x78,param_1);\n  return;\n}",
+  "fetched_at": "2026-04-26T18:13:17Z"
+}

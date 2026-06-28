@@ -1,0 +1,7 @@
+{
+  "addr": "0x140400240",
+  "tool": "ghidra",
+  "fact_id": "rva_get_adjusted_cost",
+  "body": "\nulonglong FUN_140400240(undefined8 param_1,longlong param_2,longlong param_3)\n\n{\n  char cVar1;\n  int iVar2;\n  longlong lVar3;\n  float fVar4;\n  float fVar5;\n  float fVar6;\n  undefined8 uVar7;\n  undefined4 uVar8;\n  \n  if (param_2 == 0) {\n    return (ulonglong)DAT_140819830;\n  }\n  iVar2 = FUN_1403711c0(param_2,0);\n  fVar6 = DAT_1407ffaf8;\n  uVar8 = 0;\n  fVar4 = DAT_1407ffaf8;\n  if ((param_3 != 0) && (*(longlong *)(param_3 + 0xd0) != 0)) {\n    uVar7 = FUN_140559c10(*(longlong *)(param_3 + 0xd0),param_3,param_2);\n    fVar4 = (float)uVar7;\n    uVar8 = (undefined4)((ulonglong)uVar7 >> 0x20);\n  }\n  cVar1 = FUN_1403a0910(param_3);\n  lVar3 = FUN_140294bc0(&DAT_140a16fd0,*(undefined4 *)(param_3 + 0x58));\n  fVar5 = fVar6;\n  if (((lVar3 != 0) && (lVar3 = *(longlong *)(lVar3 + 0x68), lVar3 != 0)) &&\n     (*(char *)(lVar3 + 0x10b) == '\\0')) {\n    fVar5 = (float)FUN_14033e3e0(lVar3,cVar1 != '\\0');\n  }\n  if (*(int *)(param_2 + 0x894) != 0) {\n    lVar3 = FUN_140294bc0(&DAT_140a16fd0,*(undefined4 *)(param_3 + 0x58));\n    if (lVar3 != 0) {\n      uVar7 = Plus<float>::Plus<float>_Constructor_or_Destructor(lVar3);\n      fVar6 = (float)uVar7;\n    }\n  }\n  return CONCAT44(uVar8,fVar4 * (float)iVar2 * fVar5 * fVar6);\n}\n\n",
+  "fetched_at": "2026-04-26T16:43:35Z"
+}

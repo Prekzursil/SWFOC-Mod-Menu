@@ -1,0 +1,7 @@
+{
+  "addr": "0x140768190",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* std::_Mpunct<char> member function inherited by std::moneypunct<char,1>\n   std::_Mpunct<char> member function inherited by std::moneypunct<char,0> */\n\nundefined8 * __thiscall std::_Mpunct<char>::vfunction9(_Mpunct<char> *this,undefined8 *param_1)\n\n{\n  _Mpunct<char>_vftable *p_Var1;\n  \n  p_Var1 = this[3].vftablePtr;\n  *param_1 = 0;\n  param_1[2] = 0;\n  param_1[3] = 0xf;\n  *(undefined1 *)param_1 = 0;\n  FUN_1401dc3a0(param_1,p_Var1);\n  return param_1;\n}",
+  "fetched_at": "2026-04-26T18:09:30Z"
+}

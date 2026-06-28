@@ -1,0 +1,7 @@
+{
+  "addr": "0x140504550",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140504565        __builtin_memset(arg1, 0, 0x18)\n140504570        int32_t* r14 = *arg2\n140504573        int64_t rbp = arg2[1]\n14050457a        if (r14 != rbp)\n140504581        void* rbp_1 = rbp - r14\n14050458c        int64_t rbx_2 = rbp_1 s>> 2\n140504593        int32_t* rax_1 = sub_140048c40(arg1, rbx_2)\n140504598        *arg1 = rax_1\n14050459e        arg1[1] = rax_1\n1405045ac        arg1[2] = &rax_1[rbx_2]\n1405045b3        memcpy(rax_1, r14, rbp_1)\n1405045c6        arg1[1] = &rax_1[rbx_2]\n1405045dd        return arg1",
+  "fetched_at": "2026-04-26T17:32:00Z"
+}

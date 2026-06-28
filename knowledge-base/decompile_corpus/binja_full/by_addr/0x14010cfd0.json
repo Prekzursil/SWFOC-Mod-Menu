@@ -1,0 +1,7 @@
+{
+  "addr": "0x14010cfd0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14010cffd        void var_1b8\n14010cffd        if (arg4(arg2, arg1) != 0)\n14010d007        EnumC13Lines::clone(&var_1b8, arg2)\n14010d012        sub_14010f070(arg2, arg1)\n14010d01f        sub_14010f070(arg1, &var_1b8)\n14010d029        sub_14010ed20(&var_1b8)\n14010d034        char result = arg4(arg3, arg2)\n14010d038        if (result != 0)\n14010d042        EnumC13Lines::clone(&var_1b8, arg3)\n14010d04d        sub_14010f070(arg3, arg2)\n14010d05a        sub_14010f070(arg2, &var_1b8)\n14010d064        sub_14010ed20(&var_1b8)\n14010d06f        result = arg4(arg2, arg1)\n14010d073        if (result != 0)\n14010d07b        return sub_14010dff0(arg2, arg1)\n14010d098        return result",
+  "fetched_at": "2026-04-26T17:06:28Z"
+}

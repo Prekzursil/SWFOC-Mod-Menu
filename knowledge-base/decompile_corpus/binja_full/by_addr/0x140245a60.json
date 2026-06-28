@@ -1,0 +1,7 @@
+{
+  "addr": "0x140245a60",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140245a6c        if (arg2 == 0)\n140245a75        return 0\n140245a80        struct FileClass::VTable** rax_1 = operator new(0x88)\n140245a88        struct FileClass::VTable** result\n140245a88        if (rax_1 == 0)\n140245a97        result = nullptr\n140245a92        result = sub_140213010(rax_1)\n140245ab2        if ((*result)->vFunc_2(result, arg2, 0, 0, 0) != 0)\n140245adb        return result\n140245abf        (*result)->vFunc_0(result, 1)\n140245acd        return 0",
+  "fetched_at": "2026-04-26T17:30:19Z"
+}

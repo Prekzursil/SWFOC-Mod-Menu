@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407863c0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1407863c0        char* rdx = arg2 - arg1\n1407863c6        if (arg3 == 0)\n140786434        return 0\n1407863ce        if ((arg1.d & 7) != 0)\n1407863ce        goto label_1407863d0\n14078640e        while (true)\n14078640e        if (((rdx + arg1).d & 0xfff) u<= 0xff8)\n140786410        int64_t rax_4 = *arg1\n140786417        if (rax_4 == *(rdx + arg1))\n140786419        arg1 = &arg1[8]\n14078641d        int64_t temp2_1 = arg3\n14078641d        arg3 -= 8\n140786421        if (temp2_1 u<= 8)\n140786434        return 0\n140786430        if ((-0x7f7f7f7f7f7f7f80 & not.q(rax_4) & (-0x101010101010101 + rax_4)) != 0)\n140786434        return 0\n140786430        continue\n1407863d0        label_1407863d0:\n1407863d0        uint64_t rax_1 = zx.q(*arg1)\n1407863d3        char temp0_1 = *(rdx + arg1)\n1407863d6        if (rax_1.b != temp0_1)\n14078643c        return sbb.q(rax_1, rax_1, rax_1.b u< temp0_1) | 1\n1407863d8        arg1 = &arg1[1]\n1407863db        int64_t temp1_1 = arg3\n1407863db        arg3 -= 1\n1407863de        if (temp1_1 == 1)\n140786434        return 0\n1407863e2        if (rax_1.b == 0)\n140786434        return 0\n1407863eb        if ((arg1 & 7) != 0)\n1407863eb        break",
+  "fetched_at": "2026-04-26T17:31:17Z"
+}

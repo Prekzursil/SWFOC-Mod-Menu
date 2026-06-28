@@ -1,0 +1,7 @@
+{
+  "addr": "0x140632120",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14063212d        sub_1404c3000(arg1, arg2)\n140632139        *(*(arg2 + 0xf0) + 0x88) = arg1\n140632140        int64_t* result = arg1[5]\n140632144        void* rcx = result[0x54]\n14063214e        if (rcx != 0)\n140632154        result = sub_1402648b0(rcx)\n14063215c        if (result != 0)\n140632162        void* rcx_1 = arg1[5]\n14063217f        void** rbx_2 = *(rcx_1 + 0x298) + 0x560\n140632190        if (rbx_2[3] u>= 0x10)\n140632192        rbx_2 = *rbx_2\n1406321a7        int32_t rax_2 = sub_14012d2a0(sub_1402648b0(*(rcx_1 + 0x2a0)), rbx_2)\n1406321ac        void* rcx_4 = arg1[5]\n1406321b6        char r15_1 = 0\n1406321bf        if (rax_2 s>= 0)\n1406321bf        r15_1 = 1\n1406321ca        void** rbx_4 = *(rcx_4 + 0x298) + 0x540\n1406321d6        if (rbx_4[3] u>= 0x10)\n1406321d8        rbx_4 = *rbx_4\n1406321ed        result = sub_14012d2a0(sub_1402648b0(*(rcx_4 + 0x2a0)), rbx_4)\n1406321f6        if (result.d s>= 0)\n1406321f8        void* rbx_5 = *(arg2 + 0xf0)\n140632202        if (rbx_5 != 0)\n140632204        *(rbx_5 + 0x40) = result.d\n14063221f        result = sub_14012d430(sub_1402648b0(*(arg1[5] + 0x2a0)), result.d, 1)\n140632227        if (r15_1 != 0)\n140632229        *(rbx_5 + 0x44) = rax_2\n140632246        return sub_14012d430(sub_1402648b0(*(arg1[5] + 0x2a0)), rax_2, 1)\n140632265        return result",
+  "fetched_at": "2026-04-26T17:24:15Z"
+}

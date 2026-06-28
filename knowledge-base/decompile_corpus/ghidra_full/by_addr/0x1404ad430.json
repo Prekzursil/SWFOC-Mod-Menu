@@ -1,0 +1,7 @@
+{
+  "addr": "0x1404ad430",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "byte FUN_1404ad430(longlong param_1,undefined8 param_2,undefined4 param_3)\n\n{\n  byte bVar1;\n  byte bVar2;\n  byte bVar3;\n  byte bVar4;\n  \n  bVar1 = FUN_14021ffa0(param_2,param_3);\n  bVar2 = FUN_1402200b0(param_2,param_1,4);\n  bVar3 = FUN_1402200b0(param_2,param_1 + 4,4);\n  bVar4 = FUN_140220030(param_2);\n  return bVar4 & bVar1 & 1 & bVar2 & bVar3;\n}",
+  "fetched_at": "2026-04-26T18:05:43Z"
+}

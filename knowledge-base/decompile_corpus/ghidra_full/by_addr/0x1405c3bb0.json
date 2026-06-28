@@ -1,0 +1,7 @@
+{
+  "addr": "0x1405c3bb0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_1405c3bb0(longlong param_1,char param_2)\n\n{\n  longlong *plVar1;\n  longlong lVar2;\n  \n  lVar2 = *(longlong *)(param_1 + 0x78);\n  if (lVar2 == 0) {\n    return;\n  }\n  if (param_2 == '\\0') {\n    if (*(char *)(lVar2 + 0x3c4) != '\\0') {\n      if ((*(longlong *)(*(longlong *)(lVar2 + 0x3b0) + 0x10) != 0) &&\n         (plVar1 = *(longlong **)(*(longlong *)(lVar2 + 0x3b0) + 8), plVar1 != (longlong *)0x0)) {\n        (**(code **)(*plVar1 + 0x30))();\n      }\n      *(undefined1 *)(lVar2 + 0x3c4) = 0;\n      return;\n    }\n  }\n  else if (*(char *)(lVar2 + 0x3c4) == '\\0') {\n    if ((*(longlong *)(*(longlong *)(lVar2 + 0x3b0) + 0x10) != 0) &&\n       (plVar1 = *(longlong **)(*(longlong *)(lVar2 + 0x3b0) + 8), plVar1 != (longlong *)0x0)) {\n      (**(code **)(*plVar1 + 0x28))();\n      *(undefined1 *)(lVar2 + 0x3c4) = 1;\n      return;\n    }\n    *(undefined1 *)(lVar2 + 0x3c4) = 0;\n    return;\n  }\n  *(char *)(lVar2 + 0x3c4) = param_2;\n  return;\n}",
+  "fetched_at": "2026-04-26T18:44:35Z"
+}

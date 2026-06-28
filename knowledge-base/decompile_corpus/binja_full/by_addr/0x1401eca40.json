@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401eca40",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1401eca77        sub_1402606b0(&arg1[0x2b], arg1[0x4f].d, *(arg1 + 0x27c), arg1[0x50].d, *(arg1 + 0x284))\n1401ecaa1        sub_1402606b0(&arg1[0x3d], arg1[0x55].d, *(arg1 + 0x2ac), arg1[0x56].d, *(arg1 + 0x2b4))\n1401ecac1        int64_t rax_2\n1401ecac1        int64_t rdx_2\n1401ecac1        rdx_2:rax_2 = muls.dp.q(0xe38e38e38e38e39, arg1[0x17] - arg1[0x16])\n1401ecac4        int32_t i_1 = 0\n1401ecac6        int64_t rdx_3 = rdx_2 s>> 3\n1401ecad4        if (rdx_3 != neg.q(rdx_3 u>> 0x3f))\n1401ecad6        uint64_t i = 0\n1401ecb3c        int64_t rdx_7\n1401ecb0d        sub_1402606b0(i * 0x90 + arg1[0x16], arg1[0x5b].d, *(arg1 + 0x2dc), arg1[0x5c].d, *(arg1 + 0x2e4))\n1401ecb19        i_1 += 1\n1401ecb25        int64_t rax_6\n1401ecb25        int64_t rdx_6\n1401ecb25        rdx_6:rax_6 = muls.dp.q(0xe38e38e38e38e39, arg1[0x17] - arg1[0x16])\n1401ecb28        i = zx.q(i_1)\n1401ecb2b        rdx_7 = rdx_6 s>> 3\n1401ecb3c        do while (i u< rdx_7 + (rdx_7 u>> 0x3f))\n1401ecb63        sub_1402606b0(&arg1[0x19], arg1[0x5d].d, *(arg1 + 0x2ec), arg1[0x5e].d, *(arg1 + 0x2f4))\n1401ecb75        int64_t result = (*(*arg1 + 0x50))(arg1, zx.q(*(arg1 + 0x9c)))\n1401ecb7d        arg1[0xf].b = 1\n1401ecb8b        return result",
+  "fetched_at": "2026-04-26T17:27:11Z"
+}

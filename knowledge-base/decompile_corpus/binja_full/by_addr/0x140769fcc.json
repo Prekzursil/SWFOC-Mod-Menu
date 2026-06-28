@@ -1,0 +1,7 @@
+{
+  "addr": "0x140769fcc",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140769fd7        int64_t result = DeleteCriticalSection(&data_140b3b968)\n140769fdd        HANDLE hObject = data_140b3b960\n140769fe7        if (hObject == 0)\n140769ff3        return result\n140769fe9        return CloseHandle(hObject)",
+  "fetched_at": "2026-04-26T17:30:18Z"
+}

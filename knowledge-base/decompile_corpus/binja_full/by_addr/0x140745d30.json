@@ -1,0 +1,7 @@
+{
+  "addr": "0x140745d30",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140745d54        void arg_8\n140745d54        std::_Lockit::_Lockit(&arg_8, 0)\n140745d5e        if (*(arg1 + 0x18) u<= arg3)\n140745d60        int64_t i = arg3 + 1\n140745d6c        if (i u< 0x28)\n140745d6c        i = 0x28\n140745d7c        int64_t rax_1 = realloc(*(arg1 + 0x10), i << 3)\n140745d84        if (rax_1 == 0)\n140745e15        __scrt_throw_std_bad_alloc()\n140745e15        noreturn\n140745d8a        *(arg1 + 0x10) = rax_1\n140745da5        while (*(arg1 + 0x18) u< i)\n140745d98        *(*(arg1 + 0x10) + (*(arg1 + 0x18) << 3)) = 0\n140745d9d        *(arg1 + 0x18) += 1\n140745d9d        (*(*arg2 + 8))(arg2)\n140745dbb        int64_t* rcx_4 = *(*(arg1 + 0x10) + (arg3 << 3))\n140745dc2        if (rcx_4 != 0)\n140745d9d        int64_t* rax_3 = (*(*rcx_4 + 0x10))()\n140745dd7        if (rax_3 != 0)\n140745d9d        (**rax_3)(rax_3, 1, rax_3)\n140745df1        *(*(arg1 + 0x10) + (arg3 << 3)) = arg2\n140745e14        return std::_Lockit::~_Lockit(&arg_8)",
+  "fetched_at": "2026-04-26T17:29:27Z"
+}

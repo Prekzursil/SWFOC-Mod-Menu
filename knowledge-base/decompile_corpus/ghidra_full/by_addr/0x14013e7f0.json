@@ -1,0 +1,7 @@
+{
+  "addr": "0x14013e7f0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void thunk_FUN_140178d40(undefined8 *param_1)\n\n{\n  longlong *plVar1;\n  int iVar2;\n  longlong *aplStackX_10 [3];\n  \n  aplStackX_10[0] = (longlong *)0x0;\n  if ((DAT_140a6e720 == 0) ||\n     (plVar1 = *(longlong **)(DAT_140a6e720 + 0x30), plVar1 == (longlong *)0x0)) {\n    iVar2 = (**(code **)(*DAT_140a6d480 + 0x90))(DAT_140a6d480,0,0,0,aplStackX_10);\n  }\n  else {\n    iVar2 = (**(code **)(*plVar1 + 0x28))(plVar1,0,0,aplStackX_10);\n  }\n  if ((iVar2 == 0) && (aplStackX_10[0] != (longlong *)0x0)) {\n    if (0xf < (ulonglong)param_1[3]) {\n      param_1 = (undefined8 *)*param_1;\n    }\n    D3DXSaveSurfaceToFileA(param_1,2,aplStackX_10[0],0,0);\n    (**(code **)(*aplStackX_10[0] + 0x10))();\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T17:16:38Z"
+}

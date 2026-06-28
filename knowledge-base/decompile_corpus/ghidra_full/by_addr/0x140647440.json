@@ -1,0 +1,7 @@
+{
+  "addr": "0x140647440",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nchar * __thiscall BeaconBehaviorClass::vfunction9(void)\n\n{\n  return \"BeaconBehaviorClass\";\n}\n\n",
+  "fetched_at": "2026-04-26T17:04:12Z"
+}

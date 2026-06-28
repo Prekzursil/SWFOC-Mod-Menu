@@ -1,0 +1,7 @@
+{
+  "addr": "0x1404292e0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "TacticalSpecialAbilityEventClass * __thiscall\nTacticalSpecialAbilityEventClass::TacticalSpecialAbilityEventClass\n          (TacticalSpecialAbilityEventClass *this)\n\n{\n  ScheduledEventClass::ScheduledEventClass((ScheduledEventClass *)this);\n  (this->TacticalSpecialAbilityEventClass_data).offset_0x0 = 0x3fffff;\n  this->vftablePtr = &vftable;\n  (this->TacticalSpecialAbilityEventClass_data).offset_0x204 = 0;\n  (this->TacticalSpecialAbilityEventClass_data).offset_0x20c = 0;\n  (this->EventClass_data).offset_0x8 = 0x28;\n  return this;\n}",
+  "fetched_at": "2026-04-26T17:48:30Z"
+}

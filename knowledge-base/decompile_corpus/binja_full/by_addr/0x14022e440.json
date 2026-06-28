@@ -1,0 +1,7 @@
+{
+  "addr": "0x14022e440",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14022e44f        *(arg1 + 0x18) = GetCurrentThread()\n14022e453        uint32_t result = GetCurrentThreadId()\n14022e459        *(arg1 + 0x20) = result\n14022e45c        *(arg1 + 8) = 1\n14022e465        return result",
+  "fetched_at": "2026-04-26T17:29:36Z"
+}

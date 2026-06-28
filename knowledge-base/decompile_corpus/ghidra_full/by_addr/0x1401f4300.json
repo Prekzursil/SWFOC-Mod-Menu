@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401f4300",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_1401f4300(longlong param_1)\n\n{\n  int iVar1;\n  int iVar2;\n  int iVar3;\n  \n  iVar1 = *(int *)(param_1 + 0x2c4);\n  iVar3 = *(int *)(param_1 + 0x2cc);\n  iVar2 = iVar1;\n  if (iVar3 <= iVar1) {\n    iVar2 = iVar3;\n  }\n  if (iVar1 <= iVar3) {\n    iVar1 = iVar3;\n  }\n  FUN_1401f67f0(param_1,iVar2,1);\n  for (iVar3 = iVar2; iVar3 < iVar1; iVar3 = iVar3 + 1) {\n    FUN_1401d2890(param_1 + 0x298,iVar2);\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T17:53:31Z"
+}

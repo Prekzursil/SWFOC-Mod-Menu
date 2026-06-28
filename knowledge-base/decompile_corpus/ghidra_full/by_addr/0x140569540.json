@@ -1,0 +1,7 @@
+{
+  "addr": "0x140569540",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall TargetingBehaviorClass::vfunction48(TargetingBehaviorClass *this,char param_1)\n\n{\n  undefined **ppuVar1;\n  char cVar2;\n  int iVar3;\n  longlong *plVar4;\n  undefined7 in_register_00000011;\n  undefined4 uVar5;\n  \n  cVar2 = FUN_1404c36f0();\n  if ((cVar2 != '\\x01') && (ppuVar1 = this->offset_0x18, ppuVar1 != (undefined **)0x0)) {\n    iVar3 = FUN_1403956a0(ppuVar1);\n    cVar2 = FUN_14039a320(ppuVar1,CONCAT71(in_register_00000011,1));\n    if ((cVar2 == '\\0') || (ppuVar1[0x53][0xaf] != '\\0')) {\n      if ((((param_1 == '\\0') || (ppuVar1[0x53][0x37] != '\\x01')) &&\n          ((plVar4 = (longlong *)(**(code **)(*ppuVar1 + 0x10))(ppuVar1,1),\n           plVar4 == (longlong *)0x0 ||\n           (cVar2 = (**(code **)(*plVar4 + 0x1a8))(plVar4), cVar2 == '\\0')))) &&\n         (((cVar2 = FUN_14027b590(iVar3), cVar2 == '\\0' && (1 < iVar3 - 5U)) &&\n          (cVar2 = FUN_140397040(ppuVar1), cVar2 == '\\0')))) {\n        uVar5 = FUN_1401ffbb0(&DAT_140a13e24,DAT_1408007b8,DAT_140803514);\n        FUN_1403a92f0(ppuVar1,6,0,1,uVar5,DAT_1407ffaf8,0,0,0,0);\n      }\n    }\n    else if ((ppuVar1[0x1e][0xf4] != '\\0') && (iVar3 != 0x19)) {\n      FUN_140391260(ppuVar1);\n      return;\n    }\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T18:39:46Z"
+}

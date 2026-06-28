@@ -1,0 +1,7 @@
+{
+  "addr": "0x140124730",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nvoid FUN_140124730(int param_1)\n\n{\n  char cVar1;\n  QuitGameEventClass *pQVar2;\n  undefined8 *puVar3;\n  \n  if (param_1 != 0) {\n    if (param_1 == 1) {\n      cVar1 = FUN_14028af60(&DAT_140b153e0);\n      if (cVar1 != '\\0') {\n        if (DAT_140a62618 != '\\0') {\n          FUN_1401c1d20(&DAT_140a78510,DAT_140a122c8,1);\n          DAT_140a122c8 = 0xffffffff;\n          DAT_140a62618 = '\\0';\n        }\n        pQVar2 = (QuitGameEventClass *)FUN_140769c58(0x48);\n        if (pQVar2 == (QuitGameEventClass *)0x0) {\n          pQVar2 = (QuitGameEventClass *)0x0;\n        }\n        else {\n          pQVar2 = QuitGameEventClass::QuitGameEventClass(pQVar2);\n        }\n        _guard_check_icall();\n        OutgoingEventQueueClass::vfunction2\n                  ((OutgoingEventQueueClass *)&DAT_140b2ed18,(longlong *)pQVar2);\n        return;\n      }\n      if (DAT_140a62618 != '\\0') {\n        FUN_1401c1d20(&DAT_140a78510,DAT_140a122c8,1);\n        DAT_140a122c8 = 0xffffffff;\n        DAT_140a62618 = '\\0';\n      }\n      FUN_14005f6b0(1);\n      return;\n    }\n    if (param_1 != 3) {\n      return;\n    }\n  }\n  puVar3 = &DAT_140a122d0;\n  if (0xf < DAT_140a122e8) {\n    puVar3 = DAT_140a122d0;\n  }\n  FUN_140123d70(puVar3,DAT_140a62619);\n  return;\n}\n\n",
+  "fetched_at": "2026-04-26T17:07:30Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406019f0",
+  "tool": "binary_ninja",
+  "fact_id": "rva_lua_player_wrapper_create",
+  "body": "140601a03        if (arg1 == 0)\n140601a11        return 0\n140601a15        if (arg2 == 0)\n140601a86        struct LuaVar::LuaUserVar::VTable** rax_4 = sub_140602020(0x803)\n140601a8b        rax_4[5] = arg1\n140601a99        return rax_4\n140601a17        void* rcx = data_140b397c8\n140601a28        int64_t var_28 = arg1\n140601a2d        int64_t var_20 = arg2\n140601a32        int64_t var_18 = 0\n140601a3b        void* var_38\n140601a3b        sub_140258fe0(rcx, &var_38, &var_28)\n140601a45        char var_30\n140601a45        if (var_30 == 0)\n140601a80        return *(var_38 + 0x20)\n140601a4c        struct LuaVar::LuaUserVar::VTable** rax_1 = sub_140602020(0x803)\n140601a51        void* rcx_1 = var_38\n140601a56        rax_1[5] = arg1\n140601a5a        *(rcx_1 + 0x20) = rax_1\n140601a5e        rax_1[6] = arg2\n140601a6c        return rax_1",
+  "fetched_at": "2026-04-26T16:43:55Z"
+}

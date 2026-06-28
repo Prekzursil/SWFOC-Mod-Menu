@@ -1,0 +1,7 @@
+{
+  "addr": "0x140175d80",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "alParticleGroup * __thiscall\nalParticleGroup::scalar_deleting_destructor(alParticleGroup *this,ulonglong param_1)\n\n{\n                    /* inlined destructor: alParticleGroup::~alParticleGroup */\n  this->vftablePtr = &vftable;\n  this->vftablePtr = &vftable;\n  this->vftablePtr = &vftable;\n  FUN_140172a60(this,1);\n  (this->alParticleGroup_data).offset_0x18 = 0xffffffff;\n  FUN_1400466c0(&this->alParticleGroup_data);\n  alRenderable::~alRenderable((alRenderable *)this);\n  if ((param_1 & 1) != 0) {\n    thunk_FUN_1407864b8(this,0x340);\n  }\n  return this;\n}",
+  "fetched_at": "2026-04-26T17:26:54Z"
+}

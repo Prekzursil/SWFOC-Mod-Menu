@@ -1,0 +1,7 @@
+{
+  "addr": "0x14046e9d0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "bool __thiscall\nEnumConversionClass<enum_GameObjectCategoryType>::vfunction2\n          (EnumConversionClass<enum_GameObjectCategoryType> *this,undefined8 *param_1,\n          undefined8 *param_2)\n\n{\n  undefined8 uVar1;\n  longlong lVar2;\n  undefined8 uVar3;\n  EnumConversionClass<enum_GameObjectCategoryType>_vftable *pEVar4;\n  bool bVar5;\n  vfunction1 *local_res8;\n  undefined1 local_18 [16];\n  \n  if (0xf < (ulonglong)param_1[3]) {\n    param_1 = (undefined8 *)*param_1;\n  }\n  uVar1 = FUN_140200350(param_1);\n  uVar3 = FUN_140200ad0(uVar1);\n  uVar1 = FUN_14011f9c0(this + 9,uVar3);\n  lVar2 = FUN_14011f570(this + 9,local_18,uVar3,uVar1);\n  pEVar4 = *(EnumConversionClass<enum_GameObjectCategoryType>_vftable **)(lVar2 + 8);\n  if (pEVar4 == (EnumConversionClass<enum_GameObjectCategoryType>_vftable *)0x0) {\n    pEVar4 = this[10].vftablePtr;\n  }\n  bVar5 = pEVar4 != this[10].vftablePtr;\n  if (bVar5) {\n    local_res8 = pEVar4[1].vfunction1;\n  }\n  *param_2 = local_res8;\n  return bVar5;\n}",
+  "fetched_at": "2026-04-26T17:58:02Z"
+}

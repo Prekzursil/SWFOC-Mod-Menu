@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407d04c0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined8 FUN_1407d04c0(undefined8 param_1)\n\n{\n  int iVar1;\n  \n  FUN_1407b9ab0(param_1,1);\n  FUN_1407b91d0(param_1,0);\n  iVar1 = FUN_1407b9b70(param_1,1);\n  if (iVar1 == 0) {\n    return 1;\n  }\n  iVar1 = FUN_1407b9e00(param_1,1);\n  if (iVar1 == 1) {\n    FUN_1407b9140();\n    FUN_1407b9600(param_1,0xffffffff);\n    FUN_1407b9320(param_1,1);\n    FUN_1407b97c0(param_1,0xffffd8ee);\n    goto LAB_1407d059b;\n  }\n  iVar1 = FUN_1407b8e10(param_1,1);\n  if (iVar1 == 0) {\nLAB_1407d057a:\n    FUN_1407cdf80(param_1,1,\"boolean or proxy expected\");\n  }\n  else {\n    FUN_1407b9720(param_1,0xffffd8ee);\n    iVar1 = FUN_1407b9b70(param_1,0xffffffff);\n    FUN_1407b9ab0(param_1,0xfffffffe);\n    if (iVar1 == 0) goto LAB_1407d057a;\n  }\n  FUN_1407b8e10(param_1,1);\nLAB_1407d059b:\n  FUN_1407b99d0(param_1,2);\n  return 1;\n}",
+  "fetched_at": "2026-04-26T18:58:01Z"
+}

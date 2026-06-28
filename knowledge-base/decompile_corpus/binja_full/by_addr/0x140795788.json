@@ -1,0 +1,7 @@
+{
+  "addr": "0x140795788",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1407957a8        void var_f8\n1407957a8        int64_t rax_1 = __security_cookie ^ &var_f8\n1407957af        int64_t rdi = arg5\n1407957b8        int64_t var_b0 = arg3.q\n1407957c1        int64_t var_b8 = arg4\n1407957c9        char rbx = arg1.b\n1407957cb        int32_t rax_2\n1407957cb        int128_t zmm6_1\n1407957cb        rax_2, zmm6_1 = _handle_exc(arg1, &var_b8, rdi)\n1407957d2        if (rax_2 == 0)\n1407957dc        int32_t var_68\n1407957dc        int32_t var_68_1 = var_68 & 0xfffffffe\n1407957fc        int32_t var_c8\n1407957fc        void var_a8\n1407957fc        _raise_exc_ex(&var_a8, &arg5, rbx, arg2, &var_b0, &var_b8, var_c8 & rax_2)\n1407957fc        noreturn\n140795807        int32_t rax_3 = _errcode(rbx)\n140795819        uint64_t result\n140795819        if (__acrt_has_user_matherr() == 0 || rax_3 == 0)\n14079583e        _set_errno_from_matherr(rax_3)\n14079584b        result = _ctrlfp(rdi.d, 0xffc0)\n140795850        int512_t zmm0_1\n140795850        zmm0_1.o = zx.o(var_b8)\n140795835        result = _umatherr(rax_3, arg2, zmm6_1.q, (zx.o(0)).q, var_b8, rdi.d)\n14079585c        __security_check_cookie(rax_1 ^ &var_f8)\n140795878        return result",
+  "fetched_at": "2026-04-26T17:31:56Z"
+}

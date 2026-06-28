@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407e2b40",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1407e2b40        void* arg_10 = arg2\n1407e2b62        std::_Default_allocator_traits<class std::allocator<struct std::_Container_proxy> >::deallocate(*(arg2 + 0xd8), *(arg2 + 0xc8), *(arg2 + 0xc0))\n1407e2b6b        sub_14076b00c(nullptr, nullptr)\n1407e2b6b        noreturn",
+  "fetched_at": "2026-04-26T17:34:17Z"
+}

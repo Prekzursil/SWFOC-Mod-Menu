@@ -1,0 +1,7 @@
+{
+  "addr": "0x14006bc00",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14006bc17        EnterCriticalSection(&data_140a61b68)\n14006bc21        if (arg2 != *(arg1 + 0x20))\n14006bc27        void** i = *(arg1 + 0x10)\n14006bc2b        void** i_3 = i\n14006bc2e        void** i_1 = i[1]\n14006bc36        while (*(i_1 + 0x19) == 0)\n14006bc3c        if (i_1[4] u>= arg2)\n14006bc44        i = i_1\n14006bc47        i_1 = *i_1\n14006bc3e        i_1 = i_1[2]\n14006bc67        if (*(i + 0x19) == 0 && arg2 u>= i[4] && i != i_3)\n14006bc69        int64_t* r8_1 = i[2]\n14006bc6d        int64_t* i_4 = i\n14006bc75        if (*(r8_1 + 0x19) == 0)\n14006bc96        int64_t* r8_2 = *r8_1\n14006bc9e        if (*(r8_2 + 0x19) == 0)\n14006bcaa        int64_t* rax_1\n14006bca0        rax_1 = *r8_2\n14006bca3        r8_2 = rax_1\n14006bcaa        do while (*(rax_1 + 0x19) == 0)\n14006bc77        void** i_2 = i[1]\n14006bc7f        if (*(i_2 + 0x19) == 0)\n14006bc85        while (i == i_2[2])\n14006bc87        i = i_2\n14006bc8a        i_2 = i_2[1]\n14006bc92        if (*(i_2 + 0x19) != 0)\n14006bc92        break\n14006bcbd        j_sub_1407864b8(sub_140069ba0(arg1 + 0x10, i_4))\n14006bcd2        int64_t* rcx_2 = *(SteamInternal_ContextInit(&data_140a10e00) + 0x40)\n14006bcd9        (*(*rcx_2 + 0x20))(rcx_2, arg2)\n14006bced        return LeaveCriticalSection(&data_140a61b68) __tailcall",
+  "fetched_at": "2026-04-26T16:56:00Z"
+}

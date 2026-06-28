@@ -1,0 +1,7 @@
+{
+  "addr": "0x140255c10",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined * __thiscall LuaDebugBreak::vfunction5(void)\n\n{\n  return &DAT_140a15868;\n}",
+  "fetched_at": "2026-04-26T18:12:45Z"
+}

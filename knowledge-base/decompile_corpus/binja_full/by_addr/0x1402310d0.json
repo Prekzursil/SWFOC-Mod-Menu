@@ -1,0 +1,7 @@
+{
+  "addr": "0x1402310d0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1402310d4        int64_t rax = *(arg1 + 0x28)\n1402310f2        int64_t rdx_1 = sx.q(data_140a7e3a0) * 2\n14023110a        int128_t zmm6\n14023110a        zmm6.d = (*(rax + (rdx_1 << 3) + 0xc)).d f* 3f\n14023110e        zmm6.d = zmm6.d f* arg2\n140231112        zmm6.d = zmm6.d f+ *(rax + (rdx_1 << 3) + 8) * 2f\n140231116        zmm6.d = zmm6.d f* arg2\n14023111a        zmm6.d = zmm6.d f+ *(rax + (rdx_1 << 3) + 4)\n140231120        int64_t rax_1 = *(arg1 + 0x40)\n14023113c        zmm6.d = zmm6.d f* zmm6.d\n140231148        float zmm4 = (*(rax_1 + (rdx_1 << 3) + 0xc) * 3f * arg2 + *(rax_1 + (rdx_1 << 3) + 8) * 2f) * arg2 f+ *(rax_1 + (rdx_1 << 3) + 4)\n14023114e        int64_t rax_2 = *(arg1 + 0x58)\n14023117a        arg2 = (*(rax_2 + (rdx_1 << 3) + 0xc) * 3f * arg2 + *(rax_2 + (rdx_1 << 3) + 8) * 2f) * arg2 f+ *(rax_2 + (rdx_1 << 3) + 4)\n140231194        return sqrtf(zmm4 * zmm4 f+ zmm6.d + arg2 * arg2) __tailcall",
+  "fetched_at": "2026-04-26T17:29:45Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407710fc",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */\n\nvoid FUN_1407710fc(wchar_t *param_1,wchar_t *param_2,wchar_t *param_3,uint param_4,uintptr_t param_5\n                  )\n\n{\n  longlong lVar1;\n  byte bVar2;\n  \n  lVar1 = __acrt_getptd_noexit();\n  if (((lVar1 == 0) || (*(longlong *)(lVar1 + 0x3b8) == 0)) &&\n     (bVar2 = (byte)DAT_140a44b98 & 0x3f,\n     (DAT_140a44b98 ^ _DAT_140b3c0a8) >> bVar2 == 0 &&\n     (DAT_140a44b98 ^ _DAT_140b3c0a8) << 0x40 - bVar2 == 0)) {\n                    /* WARNING: Subroutine does not return */\n    _invoke_watson(param_1,param_2,param_3,param_4,param_5);\n  }\n  (*(code *)PTR__guard_dispatch_icall_1407fdcd8)(param_1,param_2,param_3,param_4,param_5);\n  return;\n}",
+  "fetched_at": "2026-04-26T18:12:04Z"
+}

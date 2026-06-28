@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407921a8",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* Library Function - Single Match\n    __acrt_stdio_flush_nolock\n   \n   Library: Visual Studio 2019 Release */\n\nundefined8 __acrt_stdio_flush_nolock(FILE *param_1)\n\n{\n  uint *puVar1;\n  char *_Buf;\n  int _FileHandle;\n  uint uVar2;\n  uint uVar3;\n  \n  uVar3 = *(uint *)((longlong)&param_1->_base + 4);\n  if ((((byte)uVar3 & 3) == 2) && ((uVar3 & 0xc0) != 0)) {\n    uVar3 = *(int *)&param_1->_ptr - param_1->_cnt;\n    *(undefined4 *)&param_1->_base = 0;\n    _Buf = *(char **)&param_1->_cnt;\n    param_1->_ptr = _Buf;\n    if (0 < (int)uVar3) {\n      _FileHandle = _fileno(param_1);\n      uVar2 = _write(_FileHandle,_Buf,uVar3);\n      if (uVar3 != uVar2) {\n        LOCK();\n        puVar1 = (uint *)((longlong)&param_1->_base + 4);\n        *puVar1 = *puVar1 | 0x10;\n        UNLOCK();\n        return 0xffffffff;\n      }\n      if ((*(uint *)((longlong)&param_1->_base + 4) >> 2 & 1) != 0) {\n        LOCK();\n        puVar1 = (uint *)((longlong)&param_1->_base + 4);\n        *puVar1 = *puVar1 & 0xfffffffd;\n        UNLOCK();\n      }\n    }\n  }\n  return 0;\n}",
+  "fetched_at": "2026-04-26T18:52:52Z"
+}

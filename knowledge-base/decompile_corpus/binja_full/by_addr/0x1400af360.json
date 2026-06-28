@@ -1,0 +1,7 @@
+{
+  "addr": "0x1400af360",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1400af377        char const* const rbx = \"IDC_EDIT_DROID_ADVISOR\"\n1400af3ef        uint64_t result\n1400af37e        int32_t i = 0x43\n1400af3ef        while (i s< 0x5a)\n1400af390        result = -1\n1400af397        result += 1\n1400af39e        do while (rbx[result] != 0)\n1400af3a5        char* rcx = arg1 + 8\n1400af3a9        if (*(arg1 + 0x20) u>= 0x10)\n1400af3ab        rcx = *(arg1 + 8)\n1400af3af        int64_t r8_1 = *(arg1 + 0x18)\n1400af3b6        if (r8_1 == result)\n1400af3bb        result = memcmp(rcx, rbx, r8_1)\n1400af3c2        if (result.d == 0)\n1400af3c4        int32_t rcx_1 = *(arg1 + 0x2c)\n1400af3ca        int32_t arg_14 = *(arg1 + 0x34)\n1400af3ce        int32_t arg_10 = rcx_1\n1400af3d2        result = zx.q(rcx_1 - 0x10)\n1400af3d8        if (result.d u> 2)\n1400af3e1        result = sub_1400af410(i, &arg_10)\n1400af3e6        i += 1\n1400af3e8        rbx = &rbx[0x20]\n1400af405        return result",
+  "fetched_at": "2026-04-26T16:59:19Z"
+}

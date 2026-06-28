@@ -1,0 +1,7 @@
+{
+  "addr": "0x140496730",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14049673f        *arg1 = 0\n140496741        *(arg1 + 8) = 0\n140496745        *(arg1 + 0x10) = 0\n14049674c        int64_t* rax = operator new(0x38)\n140496758        *rax = rax\n14049675b        rax[1] = rax\n14049675f        *(arg1 + 8) = rax\n140496763        int64_t r8 = *(arg1 + 8)\n140496767        __builtin_memset(&arg1[6], 0, 0x18)\n140496772        *(arg1 + 0x30) = 7\n14049677a        *(arg1 + 0x38) = 8\n140496782        *arg1 = 0x3f800000\n140496788        sub_140048250(&arg1[6], 0x10, r8)\n14049679a        return arg1",
+  "fetched_at": "2026-04-26T17:29:11Z"
+}

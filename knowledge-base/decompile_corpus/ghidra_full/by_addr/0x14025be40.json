@@ -1,0 +1,7 @@
+{
+  "addr": "0x14025be40",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall DrawTextClass::vfunction25(DrawTextClass *this,undefined8 *param_1)\n\n{\n  undefined8 uVar1;\n  \n  uVar1 = param_1[1];\n  *(undefined8 *)&(this->DrawTextClass_data).field_0x48 = *param_1;\n  *(undefined8 *)&(this->DrawTextClass_data).field_0x50 = uVar1;\n  return;\n}",
+  "fetched_at": "2026-04-26T18:14:23Z"
+}

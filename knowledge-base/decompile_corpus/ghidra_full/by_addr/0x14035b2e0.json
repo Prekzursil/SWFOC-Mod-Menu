@@ -1,0 +1,7 @@
+{
+  "addr": "0x14035b2e0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nvoid __thiscall GameModeClass::vfunction7(GameModeClass *this)\n\n{\n  *(undefined1 *)((longlong)&this[0x13].vftablePtr + 2) = 1;\n  return;\n}\n\n",
+  "fetched_at": "2026-04-26T17:11:49Z"
+}

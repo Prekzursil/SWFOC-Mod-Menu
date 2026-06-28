@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407e7150",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_1407e7150(void)\n\n{\n  if (DAT_140a61a70 != (HMODULE)0x0) {\n    FreeLibrary(DAT_140a61a70);\n    DAT_140a61a70 = (HMODULE)0x0;\n    DAT_140a61a78 = 0;\n  }\n  DynamicVectorClass<struct_SaveLoadManagerClass::SaveGameStruct>::\n  ~DynamicVectorClass<struct_SaveLoadManagerClass::SaveGameStruct>\n            ((DynamicVectorClass<struct_SaveLoadManagerClass::SaveGameStruct> *)\n             &PTR_vftable_140a10b18);\n  return;\n}",
+  "fetched_at": "2026-04-26T19:01:01Z"
+}

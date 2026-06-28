@@ -1,0 +1,7 @@
+{
+  "addr": "0x140025770",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140025774        int64_t result = data_1409cf058\n14002577e        if (result != 0)\n1400257fa        return result\n140025785        struct CCallbackImpl<24>::CCallback<class SteamPeerLobbyClass, struct LobbyInvite_t, 0>::VTable** rax\n140025785        int512_t zmm0_1\n140025785        rax, zmm0_1 = operator new(0x350)\n14002578d        if (rax == 0)\n1400257a0        data_1409cf058 = 0\n140025797        data_1409cf058 = sub_14006ca10(rax, zmm0_1)\n1400257ab        int32_t* rdx_1 = data_140a7bc10\n1400257b9        bool cond:0_1 = rdx_1 == data_140a7bc18\n1400257c0        void** arg_8 = &data_1409cf050\n1400257c5        if (cond:0_1)\n1400257ea        sub_14001ded0(&data_140a7bc08, rdx_1, &arg_8)\n1400257ef        return data_1409cf058\n1400257c7        *rdx_1 = &data_1409cf050\n1400257ca        data_140a7bc10 += 8\n1400257dd        return data_1409cf058",
+  "fetched_at": "2026-04-26T16:52:06Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x14076cd88",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14076cd8b        uint128_t* r8 = arg1\n14076cd9a        uint32_t temp0_1[0x4] = _mm_shuffle_epi32(_mm_shufflelo_epi16(zx.o(arg2), 0), 0)\n14076cdad        while (true)\n14076cdad        int64_t rax_3\n14076cdad        if ((zx.q(r8.d) & 0xfff) u> 0xff0)\n14076cdd6        if (*r8 == arg2)\n14076ce00        return r8\n14076cddc        if (*r8 == 0)\n14076cdfc        return 0\n14076cdde        rax_3 = 2\n14076cdaf        uint128_t zmm0 = *r8\n14076cdc3        uint32_t temp0_4 = _mm_movemask_epi8(_mm_cmpeq_epi16(zx.o(0), zmm0) | _mm_cmpeq_epi16(zmm0, temp0_1))\n14076cdc9        if (temp0_4 != 0)\n14076cde8        uint64_t rflags\n14076cde8        int32_t temp0_5\n14076cde8        temp0_5, rflags = _bit_scan_forward(temp0_4)\n14076cdeb        void* r8_1 = r8 + zx.q(temp0_5)\n14076cdf2        if (*r8_1 == arg2)\n14076cdf2        return r8_1\n14076cdf9        return nullptr\n14076cdcb        rax_3 = 0x10\n14076cde3        r8 += rax_3",
+  "fetched_at": "2026-04-26T17:30:27Z"
+}

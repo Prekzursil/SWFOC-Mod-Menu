@@ -1,0 +1,7 @@
+{
+  "addr": "0x14012b06d",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14012b06d        return CallNtPowerInformation(InformationLevel, InputBuffer, InputBufferLength, OutputBuffer, OutputBufferLength) __tailcall",
+  "fetched_at": "2026-04-26T17:07:52Z"
+}

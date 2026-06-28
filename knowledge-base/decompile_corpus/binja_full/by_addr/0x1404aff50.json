@@ -1,0 +1,7 @@
+{
+  "addr": "0x1404aff50",
+  "tool": "binary_ninja",
+  "fact_id": "rva_ai_player_class_simple_factory",
+  "body": "1404aff5c        if (arg1 != 0)\n1404aff63        struct AIDiagnosticsClass::VTable** rax_1 = operator new(0x60)\n1404aff6b        if (rax_1 != 0)\n1404aff76        struct AIDiagnosticsClass::AIPlayerClass::VTable** result = sub_1404af810(rax_1, arg1, 0)\n1404aff7e        if (result != 0)\n1404aff87        return result\n1404aff80        return nullptr",
+  "fetched_at": "2026-04-26T16:43:43Z"
+}

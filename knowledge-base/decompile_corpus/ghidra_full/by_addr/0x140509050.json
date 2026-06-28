@@ -1,0 +1,7 @@
+{
+  "addr": "0x140509050",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined8 * __thiscall\nCollisionSystemDiagnosticsNodeClass::vfunction5\n          (CollisionSystemDiagnosticsNodeClass *this,undefined8 *param_1)\n\n{\n  param_1[3] = 0xf;\n  *param_1 = 0;\n  param_1[2] = 0;\n  FUN_140022730(param_1,\"Collision System\",0x10);\n  return param_1;\n}",
+  "fetched_at": "2026-04-26T18:21:10Z"
+}

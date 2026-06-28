@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406287e0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "char * __thiscall HuntBehaviorClass::vfunction9(void)\n\n{\n  return \"HuntBehaviorClass\";\n}",
+  "fetched_at": "2026-04-26T17:31:19Z"
+}

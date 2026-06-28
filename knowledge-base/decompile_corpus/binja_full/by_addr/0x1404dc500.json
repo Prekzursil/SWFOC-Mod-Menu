@@ -1,0 +1,7 @@
+{
+  "addr": "0x1404dc500",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1404dc522        sscanf_s(&data_140b31a30, \"PLAYER_%d\", zx.q(*(arg2 + 0x4c)))\n1404dc529        arg1[3] = 0xf\n1404dc531        *arg1 = 0\n1404dc534        void* r8_1 = -ffffffffffffffff\n1404dc53b        arg1[2] = 0\n1404dc540        r8_1 += 1\n1404dc547        do while (*(&data_140b31a30 + r8_1) != 0)\n1404dc54f        sub_140022730(arg1, &data_140b31a30, r8_1)\n1404dc561        return arg1",
+  "fetched_at": "2026-04-26T17:31:13Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x140202260",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140202268        void* result = *(arg1 + 0x10)\n140202275        if (result == 0)\n14020227e        return result\n140202284        int32_t r9 = 0\n140202287        int32_t rbp = *(result + 0x14)\n14020228d        if (arg3 u< rbp)\n14020228d        rbp = arg3\n140202293        if (rbp != 0)\n140202299        void* rax = *(arg1 + 0x10)\n1402022ad        void* rdx_1 = zx.q(*(rax + 0xc)) + rax + 0x18\n1402022c0        if (*(*(arg1 + 0x10) + 0xc) + rbp u<= **(arg1 + 0x10))\n140202315        memcpy(arg2, rdx_1, zx.q(rbp))\n140202327        *(*(arg1 + 0x10) + 0xc) += rbp\n1402022dc        void* r8_3 = zx.q(**(arg1 + 0x10) - *(*(arg1 + 0x10) + 0xc))\n1402022e2        int32_t rsi_2 = rbp - r8_3.d\n1402022e8        memcpy(arg2, rdx_1, r8_3)\n1402022f7        memcpy(zx.q(r8_3.d) + arg2, rax + 0x18, zx.q(rsi_2))\n140202305        *(*(arg1 + 0x10) + 0xc) = rsi_2\n14020232f        r9 = rbp\n14020235c        int32_t rax_8\n14020235c        int32_t r8_6\n140202344        r8_6 = *(*(arg1 + 0x10) + 0x14)\n14020234b        void* rcx_6 = *(arg1 + 0x10)\n140202351        rax_8 = r8_6\n140202354        if (rax_8 == *(rcx_6 + 0x14))\n140202354        *(rcx_6 + 0x14) = r8_6 - rbp\n140202354        rax_8 = *(rcx_6 + 0x14)\n14020235c        do while (r8_6 != rax_8)\n14020236d        return zx.q(r9)",
+  "fetched_at": "2026-04-26T17:27:44Z"
+}

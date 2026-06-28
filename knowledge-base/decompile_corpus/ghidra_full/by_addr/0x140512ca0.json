@@ -1,0 +1,7 @@
+{
+  "addr": "0x140512ca0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* ScheduledEventClass member function inherited by StopMovementEventClass */\n\nundefined4 __thiscall ScheduledEventClass::vfunction7(ScheduledEventClass *this,longlong param_1)\n\n{\n  uint uVar1;\n  undefined4 uVar2;\n  \n  uVar1 = EventClass::vfunction7((EventClass *)this,param_1);\n  if ((param_1 != 0) && ((char)uVar1 != '\\0')) {\n    uVar1 = FUN_1402051c0(param_1,0x1a);\n    if ((char)uVar1 != '\\0') {\n      uVar2 = FUN_1402043b0(param_1,0x1a);\n      (this->ScheduledEventClass_data).offset_0x0 = uVar2;\n      return CONCAT31((int3)((uint)uVar2 >> 8),1);\n    }\n  }\n  return uVar1 & 0xffffff00;\n}",
+  "fetched_at": "2026-04-26T18:22:42Z"
+}

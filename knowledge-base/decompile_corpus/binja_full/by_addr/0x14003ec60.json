@@ -1,0 +1,7 @@
+{
+  "addr": "0x14003ec60",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14003ec70        int64_t* rcx = data_140b15418\n14003ec7a        if (rcx == 0)\n14003ec7a        return \n14003ec88        int64_t* rax = (*(*rcx + 0x100))(rcx)\n14003ec94        if (rax == 0)\n14003ec94        return \n14003ec9a        int64_t* rcx_1 = *(arg1 + 0x918)\n14003eca8        int64_t r8_1 = *rcx_1\n14003ecab        int64_t* rax_2 = (*(r8_1 + 0x20))(rcx_1, 0, r8_1)\n14003ecc0        int32_t var_2c_1 = *arg2\n14003ecce        int32_t var_c_1 = arg2[2]\n14003ecd4        int32_t var_1c_1 = arg2[1]\n14003ecda        int64_t var_38 = 0x3f800000\n14003ece3        int32_t var_30_1 = 0\n14003eceb        int32_t var_28_1 = 0\n14003ecf3        int64_t var_24_1 = 0x3f800000\n14003ecfc        int64_t var_18_1 = 0\n14003ed05        int32_t var_10_1 = 0x3f800000\n14003ed10        (*(*rax_2 + 0x28))(rax_2, &var_38)\n14003ed1c        (*(*rax + 0x28))(rax, rax_2)\n14003ed1f        int64_t rax_5 = *rax_2\n14003ed25        int64_t* arg_18 = rax_2\n14003ed2a        (*rax_5)(rax_2)\n14003ed2c        int64_t* rdx_2 = *(arg1 + 0x908)\n14003ed3a        if (rdx_2 == *(arg1 + 0x910))\n14003ed5d        sub_140045680(arg1 + 0x900, rdx_2, &arg_18)\n14003ed3c        *rdx_2 = rax_2\n14003ed45        (**rax_2)(rax_2)\n14003ed47        *(arg1 + 0x908) += 8\n14003ed68        (*(*rax_2 + 8))(rax_2)\n14003ed7f        return ",
+  "fetched_at": "2026-04-26T16:53:22Z"
+}

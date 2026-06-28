@@ -1,0 +1,7 @@
+{
+  "addr": "0x14015e290",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14015e2a3        *arg1 = &alRenderTask::`vftable'{for `MultiLinkedListMember'}\n14015e2a9        sub_14020a820(arg1)\n14015e2b1        if ((arg2 & 1) != 0)\n14015e2bb        j_sub_1407864b8(arg1)\n14015e2cd        return arg1",
+  "fetched_at": "2026-04-26T17:22:35Z"
+}

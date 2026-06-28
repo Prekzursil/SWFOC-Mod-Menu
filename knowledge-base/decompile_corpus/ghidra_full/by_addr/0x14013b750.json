@@ -1,0 +1,7 @@
+{
+  "addr": "0x14013b750",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "alBlobFlushTask * __thiscall\nalLensFlareTask::scalar_deleting_destructor(alLensFlareTask *this,uint param_1)\n\n{\n                    /* inlined destructor: alRenderTask::~alRenderTask */\n  this->vftablePtr = (alLensFlareTask_vftable *)&alRenderTask::vftable;\n  MultiLinkedListMember::~MultiLinkedListMember((MultiLinkedListMember *)this);\n  if ((param_1 & 1) != 0) {\n    thunk_FUN_1407864b8(this,0x88);\n  }\n  return (alBlobFlushTask *)this;\n}",
+  "fetched_at": "2026-04-26T17:14:47Z"
+}

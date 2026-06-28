@@ -1,0 +1,7 @@
+{
+  "addr": "0x1403f7490",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall\nPlanetaryBehaviorClass::vfunction15(PlanetaryBehaviorClass *this,longlong param_1,longlong param_2)\n\n{\n  int iVar1;\n  longlong lVar2;\n  longlong lVar3;\n  longlong lVar4;\n  longlong lVar5;\n  \n  iVar1 = *(int *)(param_2 + 0x180);\n  lVar2 = *(longlong *)(param_1 + 0x298);\n  if (0 < (longlong)iVar1) {\n    lVar5 = 0;\n    do {\n      lVar3 = *(longlong *)(*(longlong *)(param_2 + 0x178) + lVar5 * 8);\n      lVar4 = *(longlong *)(lVar3 + 0x40);\n      if ((((*(longlong *)(lVar3 + 0x30) == lVar2) ||\n           (lVar4 = *(longlong *)(lVar3 + 0x30), *(longlong *)(lVar3 + 0x40) == lVar2)) &&\n          (lVar4 = FUN_1402a87d0(*(undefined8 *)(param_1 + 0x2b8),lVar4,0),\n          0 < *(int *)(lVar4 + 0x10))) && (**(longlong **)(lVar4 + 8) != 0)) {\n        FUN_1403f5e10(this,param_1,**(longlong **)(lVar4 + 8),lVar3,0);\n      }\n      lVar5 = lVar5 + 1;\n    } while (lVar5 < iVar1);\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T17:41:14Z"
+}

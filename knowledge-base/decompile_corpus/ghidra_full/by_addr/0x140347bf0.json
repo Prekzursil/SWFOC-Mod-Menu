@@ -1,0 +1,7 @@
+{
+  "addr": "0x140347bf0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nvoid FUN_140347bf0(int param_1)\n\n{\n  if ((longlong *)(&DAT_140a174e8)[(longlong)param_1 * 9] != (longlong *)0x0) {\n                    /* WARNING: Could not recover jumptable at 0x000140347c0a. Too many branches */\n                    /* WARNING: Treating indirect jump as call */\n    (**(code **)(*(longlong *)(&DAT_140a174e8)[(longlong)param_1 * 9] + 0x78))();\n    return;\n  }\n  return;\n}\n\n",
+  "fetched_at": "2026-04-26T17:07:22Z"
+}

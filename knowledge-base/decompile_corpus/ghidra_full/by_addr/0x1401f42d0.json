@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401f42d0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall GUIGadgetIMEEditboxClass::vfunction26(GUIGadgetIMEEditboxClass *this)\n\n{\n  undefined1 *puVar1;\n  \n  (this->GUIGadgetIMEEditboxClass_data).offset_0x31 = '\\x01';\n  if ((this->GUIGadgetIMEEditboxClass_data).field_0x30 != '\\0') {\n    (this->GUIGadgetEditboxClass_data).offset_0x84 = 0xf;\n    (this->GUIGadgetEditboxClass_data).offset_0x80 = 1;\n    FUN_1401f5340(this,0);\n    return;\n  }\n  (this->GUIGadgetEditboxClass_data).offset_0x84 = 0xf;\n  (this->GUIGadgetEditboxClass_data).offset_0x80 = 1;\n  puVar1 = &(this->GUIGadgetEditboxClass_data).field_0x1a8;\n                    /* WARNING: Could not recover jumptable at 0x0001401e5175. Too many branches */\n                    /* WARNING: Treating indirect jump as call */\n  (**(code **)(*(longlong *)puVar1 + 0x28))(puVar1,&(this->GUIGadgetEditboxClass_data).field_0x2c);\n  return;\n}",
+  "fetched_at": "2026-04-26T17:53:30Z"
+}

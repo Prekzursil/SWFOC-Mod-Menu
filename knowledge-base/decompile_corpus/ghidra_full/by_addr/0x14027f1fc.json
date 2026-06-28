@@ -1,0 +1,7 @@
+{
+  "addr": "0x14027f1fc",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall PlayerClass::vfunction3(PlayerClass *this,uint param_1)\n\n{\n  scalar_deleting_destructor((PlayerClass *)&this[-1].PlayerClass_data.offset_0x3c8,param_1);\n  return;\n}",
+  "fetched_at": "2026-04-26T18:21:55Z"
+}

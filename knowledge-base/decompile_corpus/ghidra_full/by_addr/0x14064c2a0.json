@@ -1,0 +1,7 @@
+{
+  "addr": "0x14064c2a0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nServicedAISystemClass * __thiscall\nServicedAISystemClass::scalar_deleting_destructor(ServicedAISystemClass *this,uint param_1)\n\n{\n                    /* inlined destructor: ServicedAISystemClass::~ServicedAISystemClass */\n  this->vftablePtr = &vftable;\n  AIDiagnosticsClass::~AIDiagnosticsClass((AIDiagnosticsClass *)this);\n  if ((param_1 & 1) != 0) {\n    thunk_FUN_1407864b8(this,0x38);\n  }\n  return this;\n}\n\n",
+  "fetched_at": "2026-04-26T17:04:53Z"
+}

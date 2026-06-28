@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401e7920",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1401e7942        *arg1 = &GUIGadgetComboboxClass::`vftable'{for `GUIGadgetClass'}\n1401e7956        sub_14025c490(data_140a619f0, &arg1[0x42])\n1401e7969        sub_14025c490(data_140a619f0, &arg1[0x1e])\n1401e797c        sub_14025c490(data_140a619f0, &arg1[0x30])\n1401e7984        arg1[0x73].b = 0\n1401e798b        sub_1401e3ed0(arg1)\n1401e7992        void* rax = &arg1[0x13]\n1401e7999        arg1[0x1c] = 0\n1401e79a0        arg1[0x15] = 0\n1401e79af        if (arg1[0x16] u>= 8)\n1401e79b1        rax = arg1[0x13]\n1401e79b8        *rax = 0\n1401e79c1        arg1[0x1d].b = 0\n1401e79c7        *(arg1 + 0x399) = 0\n1401e79d4        arg1[0x1b].d = 0xffffffff\n1401e79da        sub_14025b390(&arg1[0x5a])\n1401e79e6        sub_140260500(&arg1[0x42])\n1401e79f2        sub_140260500(&arg1[0x30])\n1401e79fe        sub_140260500(&arg1[0x1e])\n1401e7a22        sub_14001eb00(&arg1[0x13])\n1401e7a2a        sub_1401e3cb0(arg1)\n1401e7a33        if ((arg2 & 1) != 0)\n1401e7a3d        j_sub_1407864b8(arg1)\n1401e7a5d        return arg1",
+  "fetched_at": "2026-04-26T17:27:00Z"
+}

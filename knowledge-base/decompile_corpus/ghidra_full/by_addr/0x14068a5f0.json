@@ -1,0 +1,7 @@
+{
+  "addr": "0x14068a5f0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_14068a5f0(void)\n\n{\n  ForceConfuseAbilityClass *this;\n  \n  this = (ForceConfuseAbilityClass *)FUN_140769c58(0x1a0);\n  if (this != (ForceConfuseAbilityClass *)0x0) {\n    ForceConfuseAbilityClass::ForceConfuseAbilityClass(this);\n    return;\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T17:15:54Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x14050e8c0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14050e8d7        sub_14050fcd0(arg1)\n14050e8dc        int32_t rdx = arg1[0x14].d\n14050e8f7        if (arg2 s>= rdx && arg2 s< arg1[0x15].d + rdx)\n14050e8fd        int32_t rcx = *(arg1 + 0xa4)\n14050e913        if (arg3 s>= rcx && arg3 s< rcx + *(arg1 + 0xac))\n14050e936        int32_t r9_3 = *(*(arg1[3] + (sx.q(arg1[0x16].d) << 3)) + (zx.q((arg3 - *(arg1 + 0xa4)) * arg1[0xd].d - rdx + arg2) << 2))\n14050e93e        if (r9_3 != 0xffffffff)\n14050e97c        data_140a13e20 = 0x41c64e6d * ((r9_3 * 0x41c64e6d + 0xbdf) * 0x41c64e6d + 0xbdf) + 0xbdf\n14050e98b        int32_t r9_10 = (((r9_3 * 0x41c64e6d + 0xbdf) u>> 8 & 0x3fc) | (((r9_3 * 0x41c64e6d + 0xbdf) * 0x41c64e6d + 0xbdf) & 0x3fc00)) u>> 2 | ((0x41c64e6d * ((r9_3 * 0x41c64e6d + 0xbdf) * 0x41c64e6d + 0xbdf) + 0xbdf) & 0x3fc00) << 6\n14050e9a0        return zx.q(r9_10)\n14050e9b2        return 0",
+  "fetched_at": "2026-04-26T17:32:10Z"
+}

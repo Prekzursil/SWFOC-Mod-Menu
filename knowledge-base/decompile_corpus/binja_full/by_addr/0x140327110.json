@@ -1,0 +1,7 @@
+{
+  "addr": "0x140327110",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140327115        int32_t arg_18 = arg3\n14032712c        void** rdx_1 = *(arg2 + 0x298) + 0xf8\n140327138        if (rdx_1[3] u>= 0x10)\n14032713a        rdx_1 = *rdx_1\n140327144        sub_140327b10(\"STORY - BASE DESTROYED on planet %s\\r\\n\", rdx_1)\n14032716f        return sub_14032e5f0(arg1, 7, 0, arg2, &arg_18)",
+  "fetched_at": "2026-04-26T17:01:23Z"
+}

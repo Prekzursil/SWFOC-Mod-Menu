@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406deb90",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1406deba3        struct SignalGeneratorClass::VTable** rax = operator new(0xe8)\n1406debab        if (rax != 0)\n1406debb4        struct PerceptualEvaluatorClass::HintPerceptualEvaluatorClass::VTable** result = sub_1406de5f0(rax)\n1406debbf        if (result != 0)\n1406debd9        if (&result[0x11] != arg1)\n1406debe0        int64_t* rdx = arg1\n1406debe3        if (arg1[3] u>= 0x10)\n1406debe5        rdx = *arg1\n1406debef        sub_140022730(&result[0x11], rdx, arg1[2])\n1406debfb        sub_1400db9f0(&result[0x15])\n1406dec00        int64_t* rax_1 = *(arg2 + 8)\n1406dec04        void** i = *rax_1\n1406dec0a        if (i != rax_1)\n1406dec10        int64_t* rcx_3 = data_140b310a8\n1406dec1b        int32_t arg_18 = 0xffffffff\n1406dec30        void var_38\n1406dec30        if ((*(*rcx_3 + 0x20))(rcx_3, &i[2], &arg_18) != 0 && sub_1404dd6d0(&result[0x11], arg_18, &var_38) != 0)\n1406dec61        int32_t arg_24 = i[6].d\n1406dec67        int32_t arg_20 = arg_18\n1406dec6b        void*** var_30\n1406dec6b        sub_1406de370(&result[0x15], &var_30, &arg_20)\n1406dec70        i = *i\n1406dec77        do while (i != *(arg2 + 8))\n1406dec8d        return result\n1406dec97        return 0",
+  "fetched_at": "2026-04-26T17:25:51Z"
+}

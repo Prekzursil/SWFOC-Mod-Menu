@@ -1,0 +1,7 @@
+{
+  "addr": "0x140771944",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* Library Function - Single Match\n    bool __cdecl __crt_stdio_output::is_wide_character_specifier<wchar_t>(unsigned\n   __int64,wchar_t,enum __crt_stdio_output::length_modifier)\n   \n   Libraries: Visual Studio 2019 Debug, Visual Studio 2019 Release */\n\nbool __cdecl\n__crt_stdio_output::is_wide_character_specifier<wchar_t>\n          (__uint64 param_1,wchar_t param_2,length_modifier param_3)\n\n{\n  bool bVar1;\n  \n  if (param_3 == 2) {\n    bVar1 = false;\n  }\n  else {\n    if (((param_3 == 3) || (param_3 == 0xc)) || (param_3 == 0xd)) {\n      return true;\n    }\n    bVar1 = (param_1 & 4) != 0;\n    if ((param_2 + L'ﾝ' & 0xffefU) != 0) {\n      return (param_1 & 4) == 0;\n    }\n  }\n  return bVar1;\n}",
+  "fetched_at": "2026-04-26T18:50:02Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x14006c1f0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nvoid FUN_14006c1f0(undefined8 param_1,undefined8 param_2)\n\n{\n  undefined8 uVar1;\n  int iVar2;\n  uint uVar4;\n  ulonglong uVar3;\n  \n  uVar1 = FUN_140202430(param_2);\n  FUN_140025760(\"SteamAsyncSocketImpl::On_Peer_Disconnect -- Address: %s\",uVar1);\n  uVar3 = FUN_14006be20(param_1,param_2);\n  uVar4 = (uint)(uVar3 >> 0x20);\n  iVar2 = (int)uVar3;\n  if (((((uVar3 & 0xf0000000000000) != 0) && ((uVar4 & 0xf00000) < 0xb00000)) &&\n      (((int)uVar4 >> 0x18) - 1U < 4)) &&\n     (((uVar4 & 0xf00000) != 0x100000 || ((iVar2 != 0 && ((uVar4 & 0xfffff) < 5)))))) {\n    if ((uVar4 & 0xf00000) == 0x700000) {\n      if (iVar2 == 0) {\n        return;\n      }\n      if ((uVar3 & 0xfffff00000000) != 0) {\n        return;\n      }\n    }\n    else if (((uVar4 & 0xf00000) == 0x300000) && (iVar2 == 0)) {\n      return;\n    }\n    FUN_14006bc00(param_1,uVar3);\n  }\n  return;\n}\n\n",
+  "fetched_at": "2026-04-26T16:56:04Z"
+}

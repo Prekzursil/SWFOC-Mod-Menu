@@ -1,0 +1,7 @@
+{
+  "addr": "0x14035cf20",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\n/* GameModeClass member function inherited by GalacticModeClass\n   GameModeClass member function inherited by SpaceModeClass */\n\nvoid __thiscall GameModeClass::vfunction76(GameModeClass *this,longlong param_1)\n\n{\n  int iVar1;\n  int iVar2;\n  vfunction2 *pvVar3;\n  float fVar4;\n  float fVar5;\n  \n  if (*(char *)(*(longlong *)(param_1 + 0x298) + 0x76) != '\\0') {\n    fVar5 = *(float *)((longlong)&this[2].vftablePtr + 4) -\n            *(float *)(*(longlong *)(param_1 + 0x298) + 0x1f94);\n    fVar4 = DAT_1408054d0;\n    if ((DAT_1408054d0 <= fVar5) && (fVar4 = DAT_1407ffaf8, fVar5 <= DAT_1407ffaf8)) {\n      fVar4 = fVar5;\n    }\n    *(float *)((longlong)&this[2].vftablePtr + 4) = fVar4;\n  }\n  if ((*(char *)(param_1 + 0x361) != -1) || (*(char *)(param_1 + 0x369) != -1)) {\n    iVar1 = *(int *)(param_1 + 0x58);\n    if ((-1 < iVar1) &&\n       ((iVar1 < *(int *)&this[0x3d].vftablePtr && (*(longlong *)(param_1 + 0x298) != 0)))) {\n      iVar2 = *(int *)(*(longlong *)(param_1 + 0x298) + 0x1de4);\n      if ((-1 < iVar2) &&\n         ((iVar2 < *(int *)(&(this[0x3c].vftablePtr)->vfunction3 + (longlong)iVar1 * 3) &&\n          (pvVar3 = (&(this[0x3c].vftablePtr)->vfunction2)[(longlong)iVar1 * 3],\n          *(longlong *)(pvVar3 + (longlong)iVar2 * 8) == param_1)))) {\n        *(undefined8 *)(pvVar3 + (longlong)iVar2 * 8) = 0;\n      }\n    }\n  }\n  return;\n}\n\n",
+  "fetched_at": "2026-04-26T17:11:58Z"
+}

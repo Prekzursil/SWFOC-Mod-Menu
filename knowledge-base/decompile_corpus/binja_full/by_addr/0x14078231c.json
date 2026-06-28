@@ -1,0 +1,7 @@
+{
+  "addr": "0x14078231c",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140782329        char* result = arg1\n14078232c        if (data_140b3c49c != 0)\n14078236c        _strlwr_s_l(arg1, -ffffffffffffffff, nullptr)\n140782331        if (arg1 == 0)\n140782338        *_errno() = 0x16\n14078233e        _invalid_parameter_noinfo()\n140782343        return nullptr\n140782347        arg1.b = *arg1\n140782349        char* result_1 = result\n140782361        while (arg1.b != 0)\n140782353        if ((&arg1[-0x41]).b u<= 0x19)\n140782355        arg1.b += 0x20\n140782358        *result_1 = arg1.b\n14078235a        result_1 = &result_1[1]\n14078235d        arg1.b = *result_1\n140782371        return result",
+  "fetched_at": "2026-04-26T17:31:10Z"
+}

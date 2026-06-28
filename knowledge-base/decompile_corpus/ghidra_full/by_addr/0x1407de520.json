@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407de520",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined1 __thiscall alRenderablePlane::vfunction17_for_RefCountClass(void)\n\n{\n  return 0;\n}",
+  "fetched_at": "2026-04-26T18:59:12Z"
+}

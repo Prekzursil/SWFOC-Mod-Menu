@@ -1,0 +1,7 @@
+{
+  "addr": "0x1404c25b0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1404c25b9        struct BehaviorClass::GroundBaseDummyBehaviorClass::VTable** result = operator new(0x40)\n1404c25c3        if (result == 0)\n1404c2609        return 0\n1404c25c5        result[2].d = 0\n1404c25c8        __builtin_memset(&result[4], 0, 0x14)\n1404c25d3        *(result + 0x3c) = 0\n1404c25dd        *result = &GroundBaseDummyBehaviorClass::`vftable'{for `BehaviorClass'}\n1404c25e7        result[1] = &GroundBaseDummyBehaviorClass::`vftable'{for `RefCountClass'}\n1404c25f2        result[3] = &GroundBaseDummyBehaviorClass::`vftable'{for `SignalListenerClass'}\n1404c25f6        *(result + 0x34) = 1\n1404c2601        return result",
+  "fetched_at": "2026-04-26T17:30:19Z"
+}

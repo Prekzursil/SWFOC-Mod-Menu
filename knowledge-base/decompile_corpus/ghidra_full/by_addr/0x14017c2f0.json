@@ -1,0 +1,7 @@
+{
+  "addr": "0x14017c2f0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_14017c2f0(void)\n\n{\n  undefined8 *puVar1;\n  int iVar2;\n  uint uVar3;\n  ulonglong uVar4;\n  ulonglong uVar5;\n  ulonglong uVar6;\n  \n  uVar5 = 0;\n  uVar4 = uVar5;\n  uVar6 = uVar5;\n  iVar2 = DAT_140a12938;\n  if (0 < DAT_140a12938) {\n    do {\n      puVar1 = *(undefined8 **)(uVar6 + DAT_140a12930);\n      if (puVar1 != (undefined8 *)0x0) {\n        (**(code **)*puVar1)(puVar1,1);\n        iVar2 = DAT_140a12938;\n      }\n      uVar3 = (int)uVar4 + 1;\n      uVar4 = (ulonglong)uVar3;\n      uVar6 = uVar6 + 8;\n    } while ((int)uVar3 < iVar2);\n  }\n  FUN_140139170(&PTR_vftable_140a12928);\n  uVar4 = uVar5;\n  iVar2 = DAT_140a12950;\n  if (0 < DAT_140a12950) {\n    do {\n      if (*(longlong **)(uVar5 + DAT_140a12948) != (longlong *)0x0) {\n        (**(code **)(**(longlong **)(uVar5 + DAT_140a12948) + 0x10))();\n        *(undefined8 *)(uVar5 + DAT_140a12948) = 0;\n        iVar2 = DAT_140a12950;\n      }\n      uVar3 = (int)uVar4 + 1;\n      uVar5 = uVar5 + 8;\n      uVar4 = (ulonglong)uVar3;\n    } while ((int)uVar3 < iVar2);\n  }\n  FUN_140139170(&PTR_vftable_140a12940);\n  return;\n}",
+  "fetched_at": "2026-04-26T17:28:54Z"
+}

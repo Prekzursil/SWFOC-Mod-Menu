@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401dc0e0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1401dc0fb        int32_t r10_2 = (arg3 ^ 0xdeadbeef) & 0x7fffffff\n1401dc11d        int32_t rax_1 = r10_2 u/ 0x1f31d * 0xb14\n1401dc124        int32_t rcx = r10_2 u% 0x1f31d * 0x41a7\n1401dc12b        int32_t rcx_1 = rcx - rax_1\n1401dc12d        int32_t rax_2 = rcx_1 + 0x7fffffff\n1401dc133        if (rcx - rax_1 s>= 0)\n1401dc133        rax_2 = rcx_1\n1401dc145        int64_t* rax_4 = *(arg1 + 0x20) + ((sx.q(rax_2) & *(arg1 + 0x38)) << 4)\n1401dc148        void* rcx_5 = *(arg1 + 0x10)\n1401dc14c        void* rdx_1 = rax_4[1]\n1401dc153        if (rdx_1 != rcx_5)\n1401dc158        int32_t temp3_1 = *(rdx_1 + 0x10)\n1401dc158        bool cond:1_1 = temp3_1 s< arg3\n1401dc15c        if (temp3_1 s> arg3)\n1401dc163        if (rdx_1 == *rax_4)\n1401dc163        goto label_1401dc19c\n1401dc165        rdx_1 = *(rdx_1 + 8)\n1401dc16d        do while (arg3 s< *(rdx_1 + 0x10))\n1401dc16f        cond:1_1 = *(rdx_1 + 0x10) s< arg3\n1401dc173        if (not(cond:1_1))\n1401dc178        if (rdx_1 == 0)\n1401dc178        rdx_1 = rcx_5\n1401dc17f        if (rdx_1 != rcx_5)\n1401dc188        sub_14001e680(arg2, rdx_1 + 0x18)\n1401dc195        return arg2\n1401dc19c        label_1401dc19c:\n1401dc19c        *arg2 = 0\n1401dc1aa        arg2[3] = 0xf\n1401dc1b5        arg2[2] = 0xb\n1401dc1bd        memcpy(arg2, \"-BAD VALUE-\", 0xb)\n1401dc1c5        *(arg2 + 0xb) = 0\n1401dc1ce        return arg2",
+  "fetched_at": "2026-04-26T17:26:49Z"
+}

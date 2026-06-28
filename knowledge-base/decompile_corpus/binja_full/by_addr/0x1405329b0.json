@@ -1,0 +1,7 @@
+{
+  "addr": "0x1405329b0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1405329b6        int64_t* rdx = arg1[2]\n1405329c1        *arg1 = &RadarMapDataPackClass::`vftable'{for `BaseDataPackClass'}\n1405329ca        if (rdx == 0)\n1405329e9        arg1[2] = 0\n1405329ed        arg1[3].d = 0\n1405329f5        return 0\n1405329d3        sub_140358630(&data_140b2bcb0, rdx)\n1405329da        arg1[2] = 0\n1405329de        arg1[3].d = 0\n1405329e6        return 0",
+  "fetched_at": "2026-04-26T17:33:39Z"
+}

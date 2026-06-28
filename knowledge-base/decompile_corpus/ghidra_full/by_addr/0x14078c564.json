@@ -1,0 +1,7 @@
+{
+  "addr": "0x14078c564",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* Library Function - Single Match\n    int __cdecl common_initialize_environment_nolock<wchar_t>(void)\n   \n   Libraries: Visual Studio 2017 Release, Visual Studio 2019 Release */\n\nint __cdecl common_initialize_environment_nolock<wchar_t>(void)\n\n{\n  longlong lVar1;\n  int iVar2;\n  longlong lVar3;\n  longlong lVar4;\n  \n  iVar2 = 0;\n  if (DAT_140b3c440 == 0) {\n    lVar3 = __dcrt_get_wide_environment_from_os();\n    if (lVar3 == 0) {\n      iVar2 = -1;\n    }\n    else {\n      lVar4 = FUN_14078c6d4(lVar3);\n      lVar1 = lVar4;\n      if (lVar4 == 0) {\n        iVar2 = -1;\n        lVar4 = DAT_140b3c440;\n        lVar1 = DAT_140b3c448;\n      }\n      DAT_140b3c448 = lVar1;\n      DAT_140b3c440 = lVar4;\n      _free_base(0);\n    }\n    _free_base(lVar3);\n  }\n  else {\n    iVar2 = 0;\n  }\n  return iVar2;\n}",
+  "fetched_at": "2026-04-26T18:52:02Z"
+}

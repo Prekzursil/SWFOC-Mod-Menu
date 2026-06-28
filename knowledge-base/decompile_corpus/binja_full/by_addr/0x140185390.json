@@ -1,0 +1,7 @@
+{
+  "addr": "0x140185390",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140185398        *(arg1 + 0x18) = arg2\n14018539b        __builtin_memset(arg1, 0, 0x15)\n1401853c0        int32_t rax = sub_140177f50(0x17ffe8, 0x208, arg2, 0, arg1)\n1401853c5        *(arg1 + 8) = 0xffff\n1401853ce        if (rax s< 0)\n1401853da        OutputDebugStringA(sub_140001000(rax))\n1401853e7        OutputDebugStringA(&data_140819c5c)\n1401853f5        return arg1",
+  "fetched_at": "2026-04-26T17:23:58Z"
+}

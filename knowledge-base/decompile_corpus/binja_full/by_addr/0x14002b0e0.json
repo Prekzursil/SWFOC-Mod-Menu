@@ -1,0 +1,7 @@
+{
+  "addr": "0x14002b0e0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14002b0fd        if (data_140a60db0 == 0 || data_140a60db1 != 0)\n14002b0fd        return \n14002b108        sub_1400fcba0(4, 0)\n14002b11c        if (arg2 == 0 || data_140a60db1 != 0)\n14002b12a        return \n14002b12a        sub_14006de30(sub_140025770())\n14002b134        void* rax_2 = operator new(0x20)\n14002b140        int64_t var_18 = 0x1e\n14002b14e        int64_t var_10 = 0x1f\n14002b157        __builtin_strncpy(rax_2, \"IDC_INTERNET_START_GAME_BUTTON\", 0x1f)\n14002b186        uint64_t rdx = zx.q(data_1409cf0b8)\n14002b18c        void* var_28 = rax_2\n14002b191        sub_1401c2a40(&data_140a78510, rdx, &var_28)\n14002b19f        if (var_10 u>= 0x10)\n14002b1a1        void* rcx_1 = var_28\n14002b1a9        void* rax_3 = rcx_1\n14002b1b3        if (var_10 + 1 u>= 0x1000)\n14002b1b5        rcx_1 = *(rcx_1 - 8)\n14002b1c8        if (rax_3 - rcx_1 - 8 u> 0x1f)\n14002b1df        _invalid_parameter_noinfo_noreturn()\n14002b1df        noreturn\n14002b1ca        j_sub_1407864b8(rcx_1)\n14002b1d4        return sub_140101eb0() __tailcall\n14002b1de        return ",
+  "fetched_at": "2026-04-26T16:52:20Z"
+}

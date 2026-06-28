@@ -1,0 +1,7 @@
+{
+  "addr": "0x1405608c0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1405608c7        *(arg1 + 0x1c) = 0x80000000\n1405608ce        *arg1 = &SquadLeaderDataPackClass::`vftable'{for `BaseDataPackClass'}\n1405608d8        arg1[1] = &DynamicVectorClass<struct SquadLeaderDataPackClass::LeaderTrailStruct>::`vftable'\n1405608de        arg1[2] = 0\n1405608e2        arg1[3].d = 0\n1405608e5        arg1[4].d = 0\n1405608e8        *(arg1 + 0x24) = 0\n1405608ee        return arg1",
+  "fetched_at": "2026-04-26T17:34:25Z"
+}

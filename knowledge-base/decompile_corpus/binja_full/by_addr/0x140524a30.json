@@ -1,0 +1,7 @@
+{
+  "addr": "0x140524a30",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140524a37        return \"TacticalSellBehaviorClass\"",
+  "fetched_at": "2026-04-26T17:33:05Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x14068b040",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_14068b040(void)\n\n{\n  StealthAbilityClass *this;\n  \n  this = (StealthAbilityClass *)FUN_140769c58(400);\n  if (this != (StealthAbilityClass *)0x0) {\n    StealthAbilityClass::StealthAbilityClass(this);\n    return;\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T17:16:36Z"
+}

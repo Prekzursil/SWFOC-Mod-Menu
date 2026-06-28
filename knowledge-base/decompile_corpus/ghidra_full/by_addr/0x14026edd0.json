@@ -1,0 +1,7 @@
+{
+  "addr": "0x14026edd0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall DrawPrimitiveClass::~DrawPrimitiveClass(DrawPrimitiveClass *this)\n\n{\n  longlong lVar1;\n  DrawPrimitiveClass *local_res8 [4];\n  \n  this->vftablePtr = &vftable;\n  lVar1 = (this->DrawPrimitiveClass_data).offset_0x30;\n  if (lVar1 != 0) {\n    FUN_14025c490(lVar1,this);\n  }\n  local_res8[0] = this;\n  FUN_1400474a0(&PTR_vftable_140a16ce8,local_res8);\n  FUN_1401f9440(&this->DrawPrimitiveClass_data);\n  return;\n}",
+  "fetched_at": "2026-04-26T18:19:17Z"
+}

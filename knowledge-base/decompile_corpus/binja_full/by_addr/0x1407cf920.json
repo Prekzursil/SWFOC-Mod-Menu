@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407cf920",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1407cf92e        sub_1407ce130(arg1, 1)\n1407cf93b        int32_t rax = sub_1407b9b70(arg1, 1)\n1407cf945        if (rax == 0)\n1407cf96b        noreturn sub_1407ce300(arg1, &data_140802464, sub_1407ce8c0(arg1, rax + 2, \"assertion failed!\", nullptr)) __tailcall\n1407cf975        sub_1407b9ab0(arg1, 1)\n1407cf984        return 1",
+  "fetched_at": "2026-04-26T17:33:56Z"
+}

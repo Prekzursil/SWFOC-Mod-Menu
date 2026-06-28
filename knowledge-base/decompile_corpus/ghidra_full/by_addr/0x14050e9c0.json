@@ -1,0 +1,7 @@
+{
+  "addr": "0x14050e9c0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "uint FUN_14050e9c0(longlong param_1,int param_2,int param_3)\n\n{\n  longlong lVar1;\n  int iVar2;\n  uint uVar3;\n  uint uVar4;\n  \n  FUN_14050fcd0();\n  iVar2 = *(int *)(param_1 + 0xa0);\n  if ((iVar2 <= param_2) && (param_2 < *(int *)(param_1 + 0xa8) + iVar2)) {\n    if ((*(int *)(param_1 + 0xa4) <= param_3) &&\n       (param_3 < *(int *)(param_1 + 0xa4) + *(int *)(param_1 + 0xac))) {\n      lVar1 = (longlong)*(int *)(param_1 + 0xb0) * 8;\n      uVar3 = *(uint *)(*(longlong *)(*(longlong *)(param_1 + 0x18) + lVar1) +\n                       (ulonglong)\n                       (uint)(((param_3 - *(int *)(param_1 + 0xa4)) * *(int *)(param_1 + 0x68) -\n                              iVar2) + param_2) * 4);\n      if (uVar3 != 0xffffffff) {\n        uVar4 = *(int *)(*(longlong *)(*(longlong *)(*(longlong *)(param_1 + 0x30) + lVar1) + 0x10)\n                         + 0x14 + (ulonglong)uVar3 * 0x1c) * DAT_140851168 + DAT_14085116c;\n        uVar3 = uVar4 * DAT_140851168 + DAT_14085116c;\n        DAT_140a13e20 = DAT_140851168 * uVar3 + DAT_14085116c;\n        return (uVar4 >> 8 & 0x3fc | uVar3 & 0x3fc00) >> 2 | (DAT_140a13e20 & 0x3fc00) << 6;\n      }\n    }\n  }\n  return 0;\n}",
+  "fetched_at": "2026-04-26T18:21:57Z"
+}

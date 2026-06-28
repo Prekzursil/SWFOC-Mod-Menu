@@ -1,0 +1,7 @@
+{
+  "addr": "0x14050e8c0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "uint FUN_14050e8c0(longlong param_1,int param_2,int param_3)\n\n{\n  int iVar1;\n  uint uVar2;\n  uint uVar3;\n  \n  FUN_14050fcd0();\n  iVar1 = *(int *)(param_1 + 0xa0);\n  if ((iVar1 <= param_2) && (param_2 < *(int *)(param_1 + 0xa8) + iVar1)) {\n    if ((*(int *)(param_1 + 0xa4) <= param_3) &&\n       ((param_3 < *(int *)(param_1 + 0xa4) + *(int *)(param_1 + 0xac) &&\n        (iVar1 = *(int *)(*(longlong *)\n                           (*(longlong *)(param_1 + 0x18) + (longlong)*(int *)(param_1 + 0xb0) * 8)\n                         + (ulonglong)\n                           (uint)(((param_3 - *(int *)(param_1 + 0xa4)) * *(int *)(param_1 + 0x68) -\n                                  iVar1) + param_2) * 4), iVar1 != -1)))) {\n      uVar3 = iVar1 * DAT_140851168 + DAT_14085116c;\n      uVar2 = uVar3 * DAT_140851168 + DAT_14085116c;\n      DAT_140a13e20 = DAT_140851168 * uVar2 + DAT_14085116c;\n      return (uVar3 >> 8 & 0x3fc | uVar2 & 0x3fc00) >> 2 | (DAT_140a13e20 & 0x3fc00) << 6;\n    }\n  }\n  return 0;\n}",
+  "fetched_at": "2026-04-26T18:21:56Z"
+}

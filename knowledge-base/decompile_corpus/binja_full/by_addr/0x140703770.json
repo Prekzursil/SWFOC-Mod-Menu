@@ -1,0 +1,7 @@
+{
+  "addr": "0x140703770",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14070377c        int64_t result = sub_14048f2c0(arg1)\n14070378b        if (not(0f f<= *(arg1 + 0x178)))\n140703792        void* r8_1 = arg1 + 0x18\n140703796        if (*(arg1 + 0x30) u>= 0x10)\n140703798        r8_1 = *r8_1\n1407037a7        char var_108[0x100]\n1407037a7        sscanf_s(&var_108, \"Error: (%s) Neutralization_Cost_Multiplier must be a positive value!\", r8_1)\n1407037b1        result = sub_1402149d0(&var_108)\n1407037b6        *(arg1 + 0x178) = 0x3f800000\n1407037c8        return result",
+  "fetched_at": "2026-04-26T17:27:09Z"
+}

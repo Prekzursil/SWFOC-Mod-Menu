@@ -1,0 +1,7 @@
+{
+  "addr": "0x14048f1b0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */\n\nundefined1 FUN_14048f1b0(undefined8 param_1,undefined8 param_2,undefined8 param_3)\n\n{\n  DAT_140b313c0 = param_1;\n  _DAT_140b313c8 = param_2;\n  _DAT_140b313d0 = param_3;\n  return 1;\n}",
+  "fetched_at": "2026-04-26T18:02:05Z"
+}

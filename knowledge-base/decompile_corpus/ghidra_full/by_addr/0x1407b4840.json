@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407b4840",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "ulonglong FUN_1407b4840(longlong param_1,uint param_2,undefined4 *param_3,char param_4)\n\n{\n  undefined4 uVar1;\n  longlong lVar2;\n  int iVar3;\n  int iVar4;\n  DWORD DVar5;\n  undefined4 extraout_var;\n  ulonglong uVar6;\n  longlong lVar7;\n  \n  if (param_4 == '\\0') {\n    DVar5 = GetCurrentThreadId();\n    uVar6 = CONCAT44(extraout_var,DVar5);\n    if ((DVar5 == DAT_140a155d0) && (DAT_140a62740 != '\\0')) goto LAB_1407b48d7;\n  }\n  lVar2 = *(longlong *)(param_1 + 0x38);\n  lVar7 = *(longlong *)(param_1 + 0x40) - lVar2;\n  lVar7 = SUB168(SEXT816(-0x7777777777777777) * SEXT816(lVar7),8) + lVar7;\n  uVar6 = 0;\n  iVar3 = (int)(lVar7 >> 5);\n  iVar4 = (int)(lVar7 >> 0x3f);\n  if ((iVar3 != iVar4) && (param_2 <= (uint)(iVar3 - iVar4))) {\n    lVar7 = (ulonglong)param_2 * 0x3c;\n    *(undefined4 *)(lVar7 + lVar2) = *param_3;\n    *(undefined4 *)(lVar7 + 4 + lVar2) = param_3[1];\n    uVar1 = param_3[2];\n    *(undefined4 *)(lVar7 + 8 + lVar2) = uVar1;\n    *(undefined1 *)(param_1 + 0x149) = 1;\n    return CONCAT71((uint7)(uint3)((uint)uVar1 >> 8),1);\n  }\nLAB_1407b48d7:\n  return uVar6 & 0xffffffffffffff00;\n}",
+  "fetched_at": "2026-04-26T18:55:49Z"
+}

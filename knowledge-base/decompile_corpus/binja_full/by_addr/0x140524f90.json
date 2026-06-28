@@ -1,0 +1,7 @@
+{
+  "addr": "0x140524f90",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140524fa5        if (data_140a10970 == 0)\n140524fac        struct AIDiagnosticsManagerClass::VTable** rax_1 = operator new(0xc0)\n140524fb4        if (rax_1 == 0)\n140524fc7        data_140a10970 = 0\n140524fbe        data_140a10970 = sub_140475660(rax_1)\n140524fd2        int32_t* rdx_1 = data_140a7bc10\n140524fe0        bool cond:1_1 = rdx_1 == data_140a7bc18\n140524fe7        void** arg_8 = &data_140a10968\n140524fec        if (cond:1_1)\n140525007        sub_14001ded0(&data_140a7bc08, rdx_1, &arg_8)\n140524fee        *rdx_1 = &data_140a10968\n140524ff1        data_140a7bc10 += 8\n140525027        void* var_28\n140525027        void** result = sub_140475c90(data_140a10970, (*(*arg1 + 0x20))(arg1, &var_28))\n140525035        int64_t var_10\n140525035        if (var_10 u< 0x10)\n14052506f        return result\n140525037        void* rcx_3 = var_28\n14052503f        void* rax_5 = rcx_3\n140525049        if (var_10 + 1 u>= 0x1000)\n14052504b        rcx_3 = *(rcx_3 - 8)\n14052505e        if (rax_5 - rcx_3 - 8 u> 0x1f)\n140525070        _invalid_parameter_noinfo_noreturn()\n140525070        noreturn\n140525060        return j_sub_1407864b8(rcx_3)",
+  "fetched_at": "2026-04-26T17:33:07Z"
+}

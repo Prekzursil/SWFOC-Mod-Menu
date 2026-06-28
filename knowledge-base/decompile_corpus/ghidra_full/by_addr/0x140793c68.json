@@ -1,0 +1,7 @@
+{
+  "addr": "0x140793c68",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* Library Function - Single Match\n    __acrt_can_use_vista_locale_apis\n   \n   Libraries: Visual Studio 2017 Release, Visual Studio 2019 Release */\n\nbool __acrt_can_use_vista_locale_apis(void)\n\n{\n  void *pvVar1;\n  \n  pvVar1 = try_get_function(1,\"CompareStringEx\",(module_id *)&DAT_1408d81e0,\n                            (module_id *)\"CompareStringEx\");\n  return pvVar1 != (void *)0x0;\n}",
+  "fetched_at": "2026-04-26T18:53:07Z"
+}

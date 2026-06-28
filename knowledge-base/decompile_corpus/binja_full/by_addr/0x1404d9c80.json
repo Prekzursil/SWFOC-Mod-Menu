@@ -1,0 +1,7 @@
+{
+  "addr": "0x1404d9c80",
+  "tool": "binary_ninja",
+  "fact_id": "rva_ai_the_ai_class_ctor",
+  "body": "1404d9c87        *(arg1 + 0xc) = 1\n1404d9c8e        *arg1 = &TheAIClass::`vftable'\n1404d9c94        arg1[1].d = 0x1010101\n1404d9c9b        return arg1",
+  "fetched_at": "2026-04-26T16:43:45Z"
+}

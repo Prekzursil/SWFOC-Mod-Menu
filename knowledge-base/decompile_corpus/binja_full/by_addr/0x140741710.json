@@ -1,0 +1,7 @@
+{
+  "addr": "0x140741710",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140741722        void* rax = -ffffffffffffffff\n140741726        rax += 1\n14074172d        do while (*(arg1 + rax) != 0)\n14074173b        int32_t* result = calloc(rax + 1, 1)\n140741746        if (result == 0)\n14074176e        __scrt_throw_std_bad_alloc()\n14074176e        noreturn\n14074174b        if (rax != -1)\n140741756        memcpy(result, arg1, rax + 1)\n14074176d        return result",
+  "fetched_at": "2026-04-26T17:29:20Z"
+}

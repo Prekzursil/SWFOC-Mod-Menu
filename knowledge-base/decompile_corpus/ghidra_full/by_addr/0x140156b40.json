@@ -1,0 +1,7 @@
+{
+  "addr": "0x140156b40",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined8 *\nFUN_140156b40(longlong param_1,undefined8 *param_2,undefined4 param_3,undefined4 param_4,\n             undefined8 *param_5)\n\n{\n  int iVar1;\n  undefined1 local_18 [8];\n  float local_10;\n  \n  iVar1 = *(int *)(param_1 + 0x1a8);\n  if (iVar1 == 0) {\n    if (param_5 != (undefined8 *)0x0) {\n      *param_5 = 0;\n      *(undefined4 *)(param_5 + 1) = 0x3f800000;\n    }\n    local_10 = (float)FUN_140136650(*(undefined8 *)(param_1 + 0xf0),param_3);\n    local_10 = local_10 + DAT_1407ffaf8;\n  }\n  else if (iVar1 == 1) {\n    FUN_140135350(*(undefined8 *)(param_1 + 0xf0),0,param_4,local_18,param_5);\n  }\n  else {\n    if (iVar1 != 2) {\n      *(undefined4 *)(param_2 + 1) = 0;\n      goto LAB_140156bfd;\n    }\n    FUN_140135350(*(undefined8 *)(param_1 + 0xf0),1,param_4,local_18,param_5);\n    local_10 = local_10 + *(float *)(param_1 + 0x100);\n  }\n  *(float *)(param_2 + 1) = local_10;\nLAB_140156bfd:\n  *param_2 = 0;\n  return param_2;\n}",
+  "fetched_at": "2026-04-26T17:22:55Z"
+}

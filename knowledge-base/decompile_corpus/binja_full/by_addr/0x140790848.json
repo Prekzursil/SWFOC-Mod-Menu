@@ -1,0 +1,7 @@
+{
+  "addr": "0x140790848",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140790853        __vcrt_unlock(7)\n140790858        char rbx = 0\n140790863        if (__acrt_lowio_ensure_fh_exists(0) == 0)\n140790865        initialize_inherited_file_handles_nolock()\n14079086a        initialize_stdio_handles_nolock()\n14079086f        rbx = 1\n140790876        __vcrt_lock(7)\n14079087b        int64_t result\n14079087b        result.b = rbx\n140790882        return result",
+  "fetched_at": "2026-04-26T17:31:43Z"
+}

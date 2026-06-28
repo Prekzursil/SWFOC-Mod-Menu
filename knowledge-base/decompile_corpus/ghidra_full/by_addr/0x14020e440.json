@@ -1,0 +1,7 @@
+{
+  "addr": "0x14020e440",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall TreeCullClass::~TreeCullClass(TreeCullClass *this)\n\n{\n  longlong *plVar1;\n  longlong lVar2;\n  longlong *plVar3;\n  \n  this->vftablePtr = &vftable;\n  plVar3 = DAT_140a7c680;\n  do {\n    plVar1 = plVar3;\n    if (plVar1 == DAT_140a7c688) goto LAB_14020e493;\n    plVar3 = plVar1 + 1;\n  } while (this != (TreeCullClass *)*plVar1);\n  FUN_14076bd80(plVar1,plVar3,(longlong)DAT_140a7c688 - (longlong)plVar3);\n  DAT_140a7c688 = DAT_140a7c688 + -1;\nLAB_14020e493:\n  (this->TreeCullClass_data).offset_0x0 = 0;\n  FUN_14020f600((this->TreeCullClass_data).offset_0x8);\n  lVar2 = (this->TreeCullClass_data).offset_0x8;\n  plVar3 = *(longlong **)(lVar2 + 0x18);\n  if (plVar3 != *(longlong **)(lVar2 + 0x20)) {\n    do {\n      lVar2 = *plVar3;\n      ~TreeCullClass(*(TreeCullClass **)(lVar2 + 8),lVar2);\n      thunk_FUN_1407864b8(lVar2,0x48);\n      lVar2 = (this->TreeCullClass_data).offset_0x8;\n      plVar3 = plVar3 + 1;\n    } while (plVar3 != *(longlong **)(lVar2 + 0x20));\n  }\n  *(undefined8 *)(lVar2 + 0x20) = *(undefined8 *)(lVar2 + 0x18);\n  lVar2 = (this->TreeCullClass_data).offset_0x8;\n  (this->TreeCullClass_data).offset_0x10 = 0;\n  if (lVar2 != 0) {\n    FUN_1402116d0(lVar2,1);\n  }\n                    /* inlined destructor: CullSystemClass::~CullSystemClass */\n  this->vftablePtr = (TreeCullClass_vftable *)&CullSystemClass::vftable;\n  return;\n}",
+  "fetched_at": "2026-04-26T17:59:14Z"
+}

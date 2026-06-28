@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407961c4",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1407961d2        uint32_t rcx_1 = (arg1 u>> 0x20).d\n1407961e0        if (rcx_1 == 0x7ff00000 && arg1.d == 0)\n1407961e7        return 1\n1407961f2        if (rcx_1 == 0xfff00000 && arg1.d == 0)\n1407961f9        return 2\n140796207        uint16_t rdx_1 = (arg1 u>> 0x30).w & 0x7ff8\n14079620f        if (rdx_1 == 0x7ff8)\n140796216        return 3\n14079622d        if (rdx_1 == 0x7ff0 && ((rcx_1 & 0x7ffff) != 0 || arg1.d != 0))\n140796234        return 4\n140796237        return 0",
+  "fetched_at": "2026-04-26T17:31:58Z"
+}

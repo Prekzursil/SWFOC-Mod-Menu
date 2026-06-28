@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407f3f50",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1407f3f71        sub_1404fc6e0(&data_140a2bd00)\n1407f3f78        char const (** rbx)[0x6] = &data_140a2bdd0:4\n1407f3f7f        int64_t i = 6\n1407f3fda        while (i != 0)\n1407f3f90        int64_t lpMem = *(rbx - 0x24)\n1407f3f94        rbx = &rbx[-3]\n1407f3f98        i -= 1\n1407f3f9b        *(rbx - 0x14) = &DynamicVectorClass<class GameObjectClass* __ptr64>::`vftable'\n1407f3fa2        if (lpMem != 0)\n1407f3faa        if ((*rbx & 0x80000000) == 0)\n1407f3fc5        j_sub_1407864b8(lpMem)\n1407f3fba        HeapFree(GetProcessHeap(), HEAP_NONE, lpMem)\n1407f3fca        *rbx &= 0x80000000\n1407f3fd0        *(rbx - 0xc) = 0\n1407f3fd4        *(rbx - 4) = 0\n1407f3fe3        sub_1404fb910(&data_140a2bd18)\n1407f4009        return sub_140046490(&data_140a2bd00) __tailcall",
+  "fetched_at": "2026-04-26T17:37:21Z"
+}

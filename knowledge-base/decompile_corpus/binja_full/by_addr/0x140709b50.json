@@ -1,0 +1,7 @@
+{
+  "addr": "0x140709b50",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140709b5c        int64_t result = sub_14048f2c0(arg1)\n140709b7c        if (0f f> *(arg1 + 0x178) || not(*(arg1 + 0x178) f< 1f))\n140709b83        void* r8_1 = arg1 + 0x18\n140709b87        if (*(arg1 + 0x30) u>= 0x10)\n140709b89        r8_1 = *r8_1\n140709b98        char var_108[0x100]\n140709b98        sscanf_s(&var_108, \"Error: (%s) Time_Reduction_Percentage must be >= 0.0 and < 1.0\", r8_1)\n140709ba2        result = sub_1402149d0(&var_108)\n140709ba7        *(arg1 + 0x178) = 0\n140709bb9        return result",
+  "fetched_at": "2026-04-26T17:27:25Z"
+}

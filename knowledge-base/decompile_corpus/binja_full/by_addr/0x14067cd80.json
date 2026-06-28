@@ -1,0 +1,7 @@
+{
+  "addr": "0x14067cd80",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14067cd87        int32_t rcx = *arg1\n14067cd8b        int32_t rax\n14067cd8b        if (rcx s>= 0)\n14067cd91        rax = arg1[1]\n14067cdae        if (rax s>= 0 && rcx s< data_140b36b90 && rax s< data_140b36b94)\n14067cdcf        int32_t rdi = *(*(data_140a443a8 + 0x298) + 0x1688)\n14067cddc        int32_t rax_2 = sub_14050e610(&data_140a2be20, arg1, 0)\n14067cdeb        if (data_140a10980 == 0)\n14067cdf2        struct TheMovementClassManagerClass::VTable** rax_3 = operator new(0x48)\n14067cdfa        if (rax_3 == 0)\n14067ce0d        data_140a10980 = 0\n14067ce04        data_140a10980 = sub_140477900(rax_3)\n14067ce18        int32_t* rdx_1 = data_140a7bc10\n14067ce26        bool cond:2_1 = rdx_1 == data_140a7bc18\n14067ce2d        void** arg_8 = &data_140a10978\n14067ce32        if (cond:2_1)\n14067ce4d        sub_14001ded0(&data_140a7bc08, rdx_1, &arg_8)\n14067ce34        *rdx_1 = &data_140a10978\n14067ce37        data_140a7bc10 += 8\n14067ce6e        int32_t rax_6\n14067ce6e        rax_6.b = (sub_140477b70(data_140a10980, rdi) & rax_2) == rax_2\n14067ce75        return rax_6\n14067ce76        rax.b = 0\n14067ce7c        return rax",
+  "fetched_at": "2026-04-26T17:11:42Z"
+}

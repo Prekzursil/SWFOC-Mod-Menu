@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401e83b0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall GUIGadgetComboboxClass::vfunction12(GUIGadgetComboboxClass *this)\n\n{\n  longlong *plVar1;\n  longlong lVar2;\n  undefined8 uVar3;\n  undefined1 local_18 [16];\n  \n  plVar1 = (longlong *)(this->GUIGadgetComboboxClass_data).offset_0x48;\n  if (plVar1 != (longlong *)0x0) {\n    (**(code **)(*plVar1 + 0x58))();\n  }\n  lVar2 = *(longlong *)&(this->GUIGadgetComboboxClass_data).field_0x58;\n  uVar3 = FUN_1401f92f0(local_18);\n  (**(code **)(lVar2 + 0x28))(&(this->GUIGadgetComboboxClass_data).field_0x58,uVar3);\n  FUN_1401f9440(local_18);\n  lVar2 = *(longlong *)&(this->GUIGadgetComboboxClass_data).field_0xe8;\n  uVar3 = FUN_1401f92f0(local_18);\n  (**(code **)(lVar2 + 0x28))(&(this->GUIGadgetComboboxClass_data).field_0xe8,uVar3);\n  FUN_1401f9440(local_18);\n  lVar2 = *(longlong *)&(this->GUIGadgetComboboxClass_data).field_0x178;\n  uVar3 = FUN_1401f92f0(local_18);\n  (**(code **)(lVar2 + 0x28))(&(this->GUIGadgetComboboxClass_data).field_0x178,uVar3);\n  FUN_1401f9440(local_18);\n  *(undefined1 *)&(this->GUIGadgetClass_data).offset_0x70 = 1;\n  return;\n}",
+  "fetched_at": "2026-04-26T17:51:41Z"
+}

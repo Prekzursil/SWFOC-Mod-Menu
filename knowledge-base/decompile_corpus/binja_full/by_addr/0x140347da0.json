@@ -1,0 +1,7 @@
+{
+  "addr": "0x140347da0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140347daa        int32_t i = 0\n140347dac        char const (** rbx)[0x12] = &data_140a174e0\n140347df1        void* result\n140347dca        result = sub_1402f5bf0(&data_140b27f60, *rbx)\n140347dd2        if (result != 0)\n140347dd4        *(result + 0x98) = rbx\n140347ddb        *(result + 0xa8) = i\n140347de1        rbx[1] = result\n140347de5        i += 1\n140347de7        rbx = &rbx[9]\n140347df1        do while (i s< 0x3c5)\n140347dfd        return result",
+  "fetched_at": "2026-04-26T17:07:27Z"
+}

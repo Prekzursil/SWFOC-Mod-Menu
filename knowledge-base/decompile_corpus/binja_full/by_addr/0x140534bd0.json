@@ -1,0 +1,7 @@
+{
+  "addr": "0x140534bd0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140534bd6        struct RetreatCoordinatorClass::LandRetreatCoordinatorClass::VTable** result = arg1\n140534bd9        sub_14033f930(arg1)\n140534be5        *result = &LandRetreatCoordinatorClass::`vftable'{for `RetreatCoordinatorClass'}\n140534bef        result[1] = &LandRetreatCoordinatorClass::`vftable'{for `RefCountClass'}\n140534bfb        return result",
+  "fetched_at": "2026-04-26T17:33:45Z"
+}

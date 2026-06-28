@@ -1,0 +1,7 @@
+{
+  "addr": "0x1403fe0a0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1403fe0af        uint128_t result = zx.o(0)\n1403fe0be        if (not(0f f> arg2.d))\n1403fe0c9        void* rbx_1 = *(arg1 + 0x28)\n1403fe0d0        if (rbx_1 != 0)\n1403fe0d6        void* rbx_2 = *(rbx_1 + 0xb8)\n1403fe0e0        if (rbx_2 != 0)\n1403fe0ef        void* rax_1 = sub_14028a950(&data_140b153e0, 0)\n1403fe0f7        if (rax_1 != 0)\n1403fe0fd        int32_t rcx = *(rax_1 + 0x10)\n1403fe108        result = _mm_cvtepi32_ps(zx.o(data_140b0a340))\n1403fe10f        void* rdi_1 = *(rbx_2 + 0x240)\n1403fe116        int32_t var_34_1 = rcx\n1403fe11a        int64_t var_30_1 = arg3\n1403fe11f        result.d = result.d f* arg2.d\n1403fe123        result.d = result.d f+ 0.5f\n1403fe13d        int32_t var_24_1 = arg5\n1403fe152        if (*(rbx_2 + 0x248) == 0x666666666666666)\n1403fe1a7        std::_Xruntime_error(\"list too long\")\n1403fe1a7        noreturn\n1403fe159        void** rax_5 = operator new(0x28)\n1403fe15e        result = ((int.q(result.d)).d + rcx).o\n1403fe169        *(rax_5 + 0x10) = result\n1403fe16d        rax_5[4] = arg4.q\n1403fe172        *(rbx_2 + 0x248) += 1\n1403fe179        void** rcx_1 = *(rdi_1 + 8)\n1403fe17d        *rax_5 = rdi_1\n1403fe180        rax_5[1] = rcx_1\n1403fe184        *(rdi_1 + 8) = rax_5\n1403fe188        *rcx_1 = rax_5\n1403fe19f        return result",
+  "fetched_at": "2026-04-26T17:25:37Z"
+}

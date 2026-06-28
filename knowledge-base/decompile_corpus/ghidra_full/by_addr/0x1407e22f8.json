@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407e22f8",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined8 FUN_1407e22f8(void)\n\n{\n  ulonglong *puVar1;\n  \n  puVar1 = (ulonglong *)FUN_140022b20();\n  *puVar1 = *puVar1 | 4;\n  puVar1 = (ulonglong *)FUN_140058a00();\n  *puVar1 = *puVar1 | 2;\n  return 0;\n}",
+  "fetched_at": "2026-04-26T18:59:28Z"
+}

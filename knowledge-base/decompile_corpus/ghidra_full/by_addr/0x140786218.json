@@ -1,0 +1,7 @@
+{
+  "addr": "0x140786218",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* Library Function - Single Match\n    ceil\n   \n   Libraries: Visual Studio 2015 Release, Visual Studio 2017 Release, Visual Studio 2019 Release */\n\ndouble __cdecl ceil(double _X)\n\n{\n  double dVar1;\n  double dVar2;\n  \n  dVar1 = ABS(_X);\n  dVar2 = _X;\n  if ((ulonglong)dVar1 < 0x4340000000000000) {\n    if ((ulonglong)dVar1 < 0x3ff0000000000000) {\n      if ((dVar1 != 0.0) && (dVar2 = DAT_140854f30, _X != dVar1)) {\n        dVar2 = -0.0;\n      }\n    }\n    else {\n      dVar2 = (double)(~((1L << (0x33U - (char)((ulonglong)_X >> 0x34) & 0x3f)) - 1U) &\n                      (ulonglong)_X);\n      if ((_X == dVar1) && (dVar2 != _X)) {\n        dVar2 = dVar2 + DAT_140854f30;\n      }\n    }\n  }\n  else if (0x7ff0000000000000 < (ulonglong)dVar1) {\n    dVar2 = (double)_handle_nan(_X);\n    return dVar2;\n  }\n  return dVar2;\n}",
+  "fetched_at": "2026-04-26T18:51:34Z"
+}

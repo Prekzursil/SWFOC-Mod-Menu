@@ -1,0 +1,7 @@
+{
+  "addr": "0x1404d6520",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1404d652e        int64_t result\n1404d652e        result.b = *(*(arg1 + 0x88) + (sx.q(arg2) << 3)) == arg3\n1404d6531        return result",
+  "fetched_at": "2026-04-26T17:31:03Z"
+}

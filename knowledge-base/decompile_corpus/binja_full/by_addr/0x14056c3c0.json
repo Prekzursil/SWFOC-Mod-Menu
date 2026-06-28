@@ -1,0 +1,7 @@
+{
+  "addr": "0x14056c3c0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14056c3cf        int64_t* i = arg1[1]\n14056c3da        *arg1 = &HeroClashManagerClass::`vftable'{for `HeroClashManagerInterface'}\n14056c3e2        void** rbx = *i\n14056c3e8        while (rbx != i)\n14056c3f0        int64_t* rcx = rbx[2]\n14056c3f7        if (rcx != 0)\n14056c401        (**rcx)(rcx, 1)\n14056c403        rbx = *rbx\n14056c406        i = arg1[1]\n14056c413        *i[1] = 0\n14056c41a        int64_t* i_3 = *i\n14056c420        if (i_3 != 0)\n14056c435        int64_t* i_1\n14056c422        i_1 = *i_3\n14056c42a        j_sub_1407864b8(i_3)\n14056c42f        i_3 = i_1\n14056c435        do while (i_1 != 0)\n14056c437        int64_t* rax_3 = arg1[1]\n14056c43b        *rax_3 = rax_3\n14056c43e        void* rax_4 = arg1[1]\n14056c442        *(rax_4 + 8) = rax_4\n14056c446        arg1[2] = 0\n14056c44e        int64_t* rcx_1 = arg1[1]\n14056c456        *rcx_1[1] = 0\n14056c45d        int64_t* i_4 = *rcx_1\n14056c463        if (i_4 != 0)\n14056c483        int64_t* i_2\n14056c470        i_2 = *i_4\n14056c478        j_sub_1407864b8(i_4)\n14056c47d        i_4 = i_2\n14056c483        do while (i_2 != 0)\n14056c48e        j_sub_1407864b8(arg1[1])\n14056c497        if ((arg2 & 1) != 0)\n14056c4a1        j_sub_1407864b8(arg1)\n14056c4b8        return arg1",
+  "fetched_at": "2026-04-26T17:34:53Z"
+}

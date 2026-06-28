@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407412bc",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1407412c0        int64_t rdx = *(arg1 + 0x48)\n1407412c7        if (rdx != 0)\n1407412cb        setlocale(0, rdx)\n1407412d4        return ",
+  "fetched_at": "2026-04-26T17:29:19Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x1404f6fb0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1404f6fc2        struct SignalListenerClass::FormationClass::VTable** rax = operator new(0x290)\n1404f6fca        if (rax != 0)\n1404f6fcf        struct SignalListenerClass::FormationClass::VTable** result = sub_14040d0d0(rax)\n1404f6fd4        struct SignalListenerClass::FormationClass::VTable** result_1 = result\n1404f6fdf        if (result != 0)\n1404f6fe1        int32_t rdx = data_140a2bcf0\n1404f6fea        data_140a2bcf0 = rdx + 1\n1404f6ff4        result[0x51].d = rdx\n1404f6ffa        int32_t* rdx_1 = *(arg1 + 0x18)\n1404f7002        if (rdx_1 == *(arg1 + 0x20))\n1404f702a        sub_14001ded0(arg1 + 0x10, rdx_1, &result_1)\n1404f7035        sub_140423c00(result, arg1)\n1404f7047        return result\n1404f7004        *rdx_1 = result\n1404f700a        *(arg1 + 0x18) += 8\n1404f7012        sub_140423c00(result, arg1)\n1404f7024        return result\n1404f7054        return 0",
+  "fetched_at": "2026-04-26T17:31:45Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x1403bac00",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall LandModeClass::vfunction61(LandModeClass *this)\n\n{\n  undefined8 uVar1;\n  \n  if (-1 < *(int *)&(this->LandModeClass_data).field_0x1c8) {\n    uVar1 = FUN_1402aca60(*(undefined8 *)&(this->LandModeClass_data).field_0x10);\n    FUN_1402b68d0(*(undefined8 *)&(this->LandModeClass_data).field_0x10,uVar1);\n    *(undefined4 *)&(this->LandModeClass_data).field_0x1c8 = 0xffffffff;\n  }\n  if (-1 < *(int *)&(this->LandModeClass_data).field_0x1cc) {\n    uVar1 = FUN_1402aca60(*(undefined8 *)&(this->LandModeClass_data).field_0x10);\n    FUN_1402b68d0(*(undefined8 *)&(this->LandModeClass_data).field_0x10,uVar1);\n    *(undefined4 *)&(this->LandModeClass_data).field_0x1cc = 0xffffffff;\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T17:35:27Z"
+}

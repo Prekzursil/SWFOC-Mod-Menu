@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407be050",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_1407be050(undefined8 param_1)\n\n{\n  char cVar1;\n  undefined **ppuVar2;\n  int iVar3;\n  longlong lVar4;\n  \n  ppuVar2 = &PTR_DAT_1408fd400;\n  iVar3 = 0;\n  do {\n    lVar4 = -1;\n    do {\n      lVar4 = lVar4 + 1;\n    } while ((*ppuVar2)[lVar4] != '\\0');\n    lVar4 = FUN_1407bf8f0(param_1);\n    cVar1 = (char)iVar3;\n    ppuVar2 = ppuVar2 + 1;\n    iVar3 = iVar3 + 1;\n    *(byte *)(lVar4 + 9) = *(byte *)(lVar4 + 9) | 0x10;\n    *(char *)(lVar4 + 10) = cVar1 + '\\x01';\n  } while (iVar3 < 0x15);\n  return;\n}",
+  "fetched_at": "2026-04-26T18:56:35Z"
+}

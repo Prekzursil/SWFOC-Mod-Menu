@@ -1,0 +1,7 @@
+{
+  "addr": "0x14078ceb4",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined1 FUN_14078ceb4(void)\n\n{\n  _initialize_onexit_table(&DAT_140b3c458);\n  _initialize_onexit_table(&DAT_140b3c470);\n  return 1;\n}",
+  "fetched_at": "2026-04-26T18:52:09Z"
+}

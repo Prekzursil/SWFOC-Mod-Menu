@@ -1,0 +1,7 @@
+{
+  "addr": "0x140047940",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\n/* GameModeClass member function inherited by LandModeClass\n   GameModeClass member function inherited by GalacticModeClass\n   GameModeClass member function inherited by SpaceModeClass */\n\nGameModeClass_vftable * __thiscall GameModeClass::vfunction41(GameModeClass *this)\n\n{\n  return this[0x53].vftablePtr;\n}\n\n",
+  "fetched_at": "2026-04-26T16:53:59Z"
+}

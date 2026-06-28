@@ -1,0 +1,7 @@
+{
+  "addr": "0x14032f270",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14032f273        if (arg2 == 0)\n14032f273        return \n14032f297        char* rax_1 = arg2\n14032f2af        char var_108[0x100]\n14032f2af        char i\n14032f2a0        i = *rax_1\n14032f2a4        *(&var_108 - arg2 + rax_1) = i\n14032f2a8        rax_1 = &rax_1[1]\n14032f2af        do while (i != 0)\n14032f2b8        sub_140467540(\"- Speech done - %s\\r\\n\", arg2)\n14032f2d8        sub_14032e5f0(arg1, 0x1e, 0, &var_108, 0)\n14032f2ec        void var_188\n14032f2ec        sscanf_s(&var_188, \"TEXT_SPEECH_%s\", arg2)\n14032f2fd        sub_1402ff290(&data_140b27f60, &var_188)\n14032f312        return ",
+  "fetched_at": "2026-04-26T17:02:30Z"
+}

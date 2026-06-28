@@ -1,0 +1,7 @@
+{
+  "addr": "0x14019dcf0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_14019dcf0(void)\n\n{\n  int iVar1;\n  longlong lVar2;\n  longlong *plVar3;\n  longlong *plVar4;\n  longlong *plVar5;\n  int iVar6;\n  longlong lVar7;\n  longlong lVar8;\n  longlong *plVar9;\n  undefined1 local_res8 [8];\n  \n  iVar6 = (int)((longlong)DAT_140a705b8 - (longlong)DAT_140a705b0 >> 3);\n  plVar9 = DAT_140a705b0;\n  if (0 < iVar6) {\n    lVar8 = 0;\n    do {\n      lVar2 = plVar9[lVar8];\n      iVar1 = *(int *)(lVar2 + 0x1390);\n      while (0 < iVar1) {\n        lVar7 = FUN_14020ac80(lVar2 + 0x1360,local_res8);\n        if ((lVar7 != 0) && ((longlong *)(lVar7 + -0x10) != (longlong *)0x0)) {\n          (**(code **)(*(longlong *)(lVar7 + -0x10) + 8))();\n        }\n        plVar9 = DAT_140a705b0;\n        iVar1 = *(int *)(lVar2 + 0x1390);\n      }\n      lVar8 = lVar8 + 1;\n    } while (lVar8 < iVar6);\n  }\n  plVar4 = DAT_140a705b8;\n  plVar5 = DAT_140a705b8;\n  plVar3 = plVar9;\n  if ((longlong)DAT_140a705b8 - (longlong)plVar9 >> 3 != 0) {\n    for (; plVar5 = plVar9, plVar3 != plVar4; plVar3 = plVar3 + 1) {\n      if ((longlong *)*plVar3 != (longlong *)0x0) {\n        (**(code **)(*(longlong *)*plVar3 + 8))();\n      }\n    }\n  }\n  DAT_140a705b8 = plVar5;\n  return;\n}",
+  "fetched_at": "2026-04-26T17:37:34Z"
+}

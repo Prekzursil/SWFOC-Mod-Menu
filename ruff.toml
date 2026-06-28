@@ -14,7 +14,14 @@ line-length = 100
 # bridge/Ghidra scripts): vendored RE tooling reproduced verbatim for provenance,
 # not first-party-maintained Python; out of scope for the lean lint lane
 # (consistent with this repo treating Python as auxiliary tooling).
-extend-exclude = ["bridge", "swfoc_lua_bridge", "swfoc_overlay", "swfoc_toolkit", "ghidra_scripts"]
+#
+# PetroglyphTools (third-party SWFOC modding tools, C#) and knowledge-base
+# (reverse-engineering notes + machine-generated decompile/data JSON) were
+# incorporated 2026-06-28 as vendored/data trees. They carry no first-party
+# Python (PetroglyphTools is C#; knowledge-base is JSON/Markdown/SQLite), so this
+# is a no-op for the linter today, but they are listed here for the same reason
+# as the RE editor trees above: explicit, greppable out-of-scope intent.
+extend-exclude = ["bridge", "swfoc_lua_bridge", "swfoc_overlay", "swfoc_toolkit", "ghidra_scripts", "PetroglyphTools", "knowledge-base"]
 
 [lint]
 # Default-aligned ruff rule set (pyflakes F + pycodestyle E/W + import-sort I).

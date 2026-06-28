@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407cfa70",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1407cfa7e        sub_1407ce130(arg1, 2)\n1407cfa8b        sub_1407b9ab0(arg1, 2)\n1407cfa98        sub_1407b8f00(arg1, 1)\n1407cfab6        int32_t rdx\n1407cfab6        rdx.b = sub_1407b9280(arg1, 0, 0xffffffff, 1) == 0\n1407cfab9        sub_1407b9320(arg1, rdx)\n1407cfac6        sub_1407b98e0(arg1, 1)\n1407cfad3        return sub_1407b8ef0(arg1) __tailcall",
+  "fetched_at": "2026-04-26T17:33:56Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x14035ac50",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14035ac69        float zmm3 = -0.5f * -1f\n14035ac70        *arg1 = 1\n14035ac77        float zmm5 = -0.5f * -1f\n14035ac7e        arg1[1] = 0\n14035ac82        float zmm2 = -0.5f * -1f\n14035ac89        arg1[6] = 0\n14035aca4        arg1[5] = 0\n14035acac        arg1[7].d = 0xffffffff\n14035acb7        arg1[9] = 0\n14035accd        *(arg1 + 0x1c) = (zmm3 - -0.5f) & 0x7fffffff\n14035acd4        arg1[0xa].d = 0\n14035acd7        arg1[2].d = (zmm3 - 0.5f) * 0.5f\n14035ace3        *(arg1 + 0x3c) = 0x100\n14035ace9        arg1[3].d = (zmm5 - 0.5f) * 0.5f\n14035acf2        arg1[8].d = 0x3dcccccd\n14035acf9        *(arg1 + 0x44) = 0x3dcccccd\n14035ad0e        *(arg1 + 0x14) = (zmm2 - 0.5f) * 0.5f\n14035ad1c        arg1[4].d = (zmm2 - -0.5f) & 0x7fffffff\n14035ad28        float zmm1 = arg1[4].d f* 0.5f\n14035ad2c        *(arg1 + 0x1c) = *(arg1 + 0x1c) * 0.5f\n14035ad3f        arg1[4].d = zmm1\n14035ad44        *(arg1 + 0x24) = (zmm5 - -0.5f) & 0x7fffffff\n14035ad57        *(arg1 + 0x24) = *(arg1 + 0x24) * 0.5f\n14035ad60        return arg1",
+  "fetched_at": "2026-04-26T17:11:44Z"
+}

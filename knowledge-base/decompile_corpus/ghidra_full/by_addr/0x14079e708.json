@@ -1,0 +1,7 @@
+{
+  "addr": "0x14079e708",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "int FUN_14079e708(uint param_1,wchar_t *param_2,int param_3)\n\n{\n  wchar_t *_Src;\n  int iVar1;\n  int iVar2;\n  int iVar3;\n  errno_t eVar4;\n  int iVar5;\n  \n  if (((((param_1 & 0xfffff3ff) != 0) || (param_1 == 0xc00)) &&\n      ((param_2 != (wchar_t *)0x0 || (param_3 < 1)))) && (-1 < param_3)) {\n    iVar5 = 0;\n    iVar3 = 0xe3;\n    do {\n      iVar2 = (iVar3 + iVar5) / 2;\n      if (param_1 == *(uint *)(&DAT_1408dab30 + (longlong)iVar2 * 0x10)) goto LAB_14079e792;\n      iVar1 = iVar2 + -1;\n      if (-1 < (int)(param_1 - *(uint *)(&DAT_1408dab30 + (longlong)iVar2 * 0x10))) {\n        iVar1 = iVar3;\n        iVar5 = iVar2 + 1;\n      }\n      iVar3 = iVar1;\n    } while (iVar5 <= iVar3);\n    iVar2 = -1;\nLAB_14079e792:\n    if (-1 < iVar2) {\n      _Src = (wchar_t *)(&PTR_DAT_1408dab38)[(longlong)iVar2 * 2];\n      iVar3 = FUN_14078baa0(_Src,0x55);\n      if (0 < param_3) {\n        if (param_3 <= iVar3) {\n          return 0;\n        }\n        eVar4 = wcscpy_s(param_2,(longlong)param_3,_Src);\n        if (eVar4 != 0) {\n                    /* WARNING: Subroutine does not return */\n          _invoke_watson((wchar_t *)0x0,(wchar_t *)0x0,(wchar_t *)0x0,0,0);\n        }\n      }\n      return iVar3 + 1;\n    }\n  }\n  return 0;\n}",
+  "fetched_at": "2026-04-26T18:54:05Z"
+}

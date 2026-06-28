@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407e9560",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1407e956d        struct DynamicVectorClass<class PlayerClass* __ptr64>::VTable* result = sub_1400cca00(&data_140a62058)\n1407e9572        int64_t* rbx = data_140a62040\n1407e957c        if (rbx != 0)\n1407e9587        int64_t rdi_1 = data_140a62048\n1407e9591        if (rbx != rdi_1)\n1407e9593        void* rcx_1 = *rbx\n1407e9599        if (rcx_1 != 0)\n1407e95a3        (*(*(rcx_1 + 0x18) + 8))(rcx_1 + 0x18)\n1407e95a6        rbx = &rbx[1]\n1407e95ad        do while (rbx != rdi_1)\n1407e95af        rbx = data_140a62040\n1407e95d0        if (((data_140a62050 - rbx) & 0xfffffffffffffff8) u>= 0x1000)\n1407e95d2        int64_t* rax_1 = rbx[-1]\n1407e95e5        if (rbx - rax_1 - 8 u> 0x1f)\n1407e960e        _invalid_parameter_noinfo_noreturn()\n1407e960e        noreturn\n1407e95e7        rbx = rax_1\n1407e95ed        result = j_sub_1407864b8(rbx)\n1407e95f5        __builtin_memset(&data_140a62040, 0, 0x18)\n1407e960d        return result",
+  "fetched_at": "2026-04-26T17:35:08Z"
+}

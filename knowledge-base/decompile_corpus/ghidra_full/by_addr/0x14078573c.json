@@ -1,0 +1,7 @@
+{
+  "addr": "0x14078573c",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* Library Function - Multiple Matches With Different Base Names\n    bool __cdecl __crt_strtox::parse_floating_point_possible_nan_is_ind<char,class\n   __crt_strtox::c_string_character_source<char> >(char & __ptr64,class\n   __crt_strtox::c_string_character_source<char> & __ptr64)\n    bool __cdecl __crt_strtox::parse_floating_point_possible_nan_is_snan<char,class\n   __crt_strtox::c_string_character_source<char> >(char & __ptr64,class\n   __crt_strtox::c_string_character_source<char> & __ptr64)\n   \n   Libraries: Visual Studio 2017 Release, Visual Studio 2019 Release */\n\nundefined8\nFID_conflict_parse_floating_point_possible_nan_is_snan<char,class___crt_strtox::c_string_character_source<char>_>\n          (char *param_1,undefined8 *param_2)\n\n{\n  longlong lVar1;\n  char cVar2;\n  \n  cVar2 = *param_1;\n  lVar1 = 0;\n  while ((cVar2 == \"IND)ind)sqrt\"[lVar1] || (cVar2 == \"IND)ind)sqrt\"[lVar1 + 4]))) {\n    lVar1 = lVar1 + 1;\n    cVar2 = *(char *)*param_2;\n    *param_2 = (char *)*param_2 + 1;\n    *param_1 = cVar2;\n    if (lVar1 == 4) {\n      return 1;\n    }\n  }\n  return 0;\n}",
+  "fetched_at": "2026-04-26T18:51:25Z"
+}

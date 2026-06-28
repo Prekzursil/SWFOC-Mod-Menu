@@ -1,0 +1,7 @@
+{
+  "addr": "0x1404763a0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1404763a9        void* rax = operator new(0x20)\n1404763b5        int64_t var_18 = 0x14\n1404763be        int64_t var_10 = 0x1f\n1404763c7        __builtin_strncpy(rax, \"      AI Diagnostics\", 0x15)\n1404763d7        void* var_28 = rax\n1404763e9        void** result = sub_140475c90(sub_14004faa0(), &var_28)\n1404763f7        if (var_10 u< 0x10)\n14047642b        return result\n1404763f9        void* rcx_1 = var_28\n140476401        void* rax_2 = rcx_1\n14047640b        if (var_10 + 1 u>= 0x1000)\n14047640d        rcx_1 = *(rcx_1 - 8)\n140476420        if (rax_2 - rcx_1 - 8 u> 0x1f)\n14047642c        _invalid_parameter_noinfo_noreturn()\n14047642c        noreturn\n140476422        return j_sub_1407864b8(rcx_1)",
+  "fetched_at": "2026-04-26T17:28:13Z"
+}

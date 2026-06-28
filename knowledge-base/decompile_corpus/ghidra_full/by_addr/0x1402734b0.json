@@ -1,0 +1,7 @@
+{
+  "addr": "0x1402734b0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined8 __thiscall RtsSceneClass::vfunction16(RtsSceneClass *this)\n\n{\n  return (this->RefCountClass_data).offset_0x78;\n}",
+  "fetched_at": "2026-04-26T18:20:20Z"
+}

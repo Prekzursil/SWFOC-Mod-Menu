@@ -1,0 +1,7 @@
+{
+  "addr": "0x14019d070",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14019d077        int64_t i_1 = arg3\n14019d07a        int64_t* result = arg2\n14019d080        if (arg3 != 0)\n14019d08b        int64_t* rbx_1 = &arg2[5]\n14019d10d        int64_t i\n14019d0b5        *result = 0\n14019d0bb        __builtin_memset(&rbx_1[-4], 0, 0x20)\n14019d0cb        *rbx_1 = 0\n14019d0ce        sub_140153a90(result, 0x20)\n14019d0dd        int64_t rax_1\n14019d0dd        int64_t rdx_2\n14019d0dd        rdx_2:rax_1 = muls.dp.q(0x2aaaaaaaaaaaaaab, *rbx_1 - rbx_1[-2])\n14019d0e0        int64_t rdx_3 = rdx_2 s>> 1\n14019d0f1        if (rdx_3 + (rdx_3 u>> 0x3f) u< 0x20)\n14019d0fc        sub_140153a90(&rbx_1[-2], 0x20)\n14019d101        result = &result[6]\n14019d105        rbx_1 = &rbx_1[6]\n14019d109        i = i_1\n14019d109        i_1 -= 1\n14019d10d        do while (i != 1)\n14019d12c        return result",
+  "fetched_at": "2026-04-26T17:24:47Z"
+}

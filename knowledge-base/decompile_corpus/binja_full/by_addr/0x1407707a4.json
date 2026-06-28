@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407707a4",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1407707b8        int32_t rbp = 0\n1407707bf        int32_t result\n1407707bf        if (*arg1 s<= 0)\n140770811        label_140770811:\n140770811        result.b = 0\n1407707c1        int64_t rsi_1 = 0\n1407707c3        while (true)\n1407707c3        int64_t rax = _GetImageBase()\n1407707d4        void* rax_5\n1407707d4        if (*(sx.q(arg1[1]) + rax + rsi_1 + 4) == 0)\n1407707f1        rax_5 = nullptr\n1407707d6        int64_t rax_2 = _GetImageBase()\n1407707ec        rax_5 = _GetImageBase() + sx.q(*(sx.q(arg1[1]) + rax_2 + rsi_1 + 4))\n140770805        if (__std_type_info_compare(rax_5 + 8, &class std::bad_exception `RTTI Type Descriptor'.spare) == 0)\n140770828        result.b = 1\n14077082a        break\n140770807        rbp += 1\n140770809        rsi_1 += 0x14\n14077080f        if (rbp s>= *arg1)\n14077080f        goto label_140770811\n140770827        return result",
+  "fetched_at": "2026-04-26T17:30:38Z"
+}

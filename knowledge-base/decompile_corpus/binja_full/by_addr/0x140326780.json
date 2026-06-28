@@ -1,0 +1,7 @@
+{
+  "addr": "0x140326780",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14032678f        int64_t* rbx = arg2\n140326795        if (arg2[3] u>= 0x10)\n140326797        arg2 = *arg2\n1403267a1        sub_140327b10(\"STORY EVENT - Attack hardpoint %s\\r\\n\", arg2)\n1403267ae        void* var_28\n1403267ae        sub_14001e680(&var_28, rbx)\n1403267cb        int64_t result = sub_14032e5f0(arg1, 0x28, 0, &var_28, 0)\n1403267d9        int64_t var_10\n1403267d9        if (var_10 u< 0x10)\n140326813        return result\n1403267db        void* rcx_2 = var_28\n1403267e3        void* rax = rcx_2\n1403267ed        if (var_10 + 1 u>= 0x1000)\n1403267ef        rcx_2 = *(rcx_2 - 8)\n140326802        if (rax - rcx_2 - 8 u> 0x1f)\n140326814        _invalid_parameter_noinfo_noreturn()\n140326814        noreturn\n140326804        return j_sub_1407864b8(rcx_2)",
+  "fetched_at": "2026-04-26T17:01:06Z"
+}

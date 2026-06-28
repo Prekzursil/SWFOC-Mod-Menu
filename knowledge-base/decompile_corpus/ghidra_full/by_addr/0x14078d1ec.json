@@ -1,0 +1,7 @@
+{
+  "addr": "0x14078d1ec",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* Library Function - Single Match\n    _set_fmode\n   \n   Library: Visual Studio 2012 Release */\n\nerrno_t __cdecl _set_fmode(int _Mode)\n\n{\n  errno_t eVar1;\n  ulong *puVar2;\n  \n  if (((_Mode - 0x4000U & 0xffff3fff) == 0) && (_Mode != 0xc000)) {\n    LOCK();\n    UNLOCK();\n    eVar1 = 0;\n    DAT_140b3cc08 = _Mode;\n  }\n  else {\n    puVar2 = __doserrno();\n    *puVar2 = 0x16;\n    FUN_1407711ac();\n    eVar1 = 0x16;\n  }\n  return eVar1;\n}",
+  "fetched_at": "2026-04-26T18:52:14Z"
+}

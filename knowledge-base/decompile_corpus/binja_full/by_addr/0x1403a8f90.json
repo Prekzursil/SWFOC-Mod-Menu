@@ -1,0 +1,7 @@
+{
+  "addr": "0x1403a8f90",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1403a8f93        if (arg3 != 0)\n1403a8fc0        label_1403a8fc0:\n1403a8fc0        arg1[0xf].d = *arg2\n1403a8fc6        *(arg1 + 0x7c) = arg2[1]\n1403a8fcc        arg1[0x10].d = arg2[2]\n1403a8fd5        if (arg3 != 0)\n1403a8fdb        return sub_1403ac530(arg1, zx.q(arg3), arg4) __tailcall\n1403a8fe0        *(arg1 + 0x3a1) |= 1\n1403a8fe0        return \n1403a8f95        float zmm0 = arg1[0xf].d\n1403a8f9a        float temp0_1 = *arg2\n1403a8f9a        zmm0 - temp0_1\n1403a8f9f        if (is_unordered.d(zmm0, temp0_1) || zmm0 != temp0_1)\n1403a8f9d        goto label_1403a8fc0\n1403a8fa1        zmm0 = *(arg1 + 0x7c)\n1403a8fa6        float temp1_1 = arg2[1]\n1403a8fa6        zmm0 - temp1_1\n1403a8fac        if (is_unordered.d(zmm0, temp1_1) || zmm0 != temp1_1)\n1403a8faa        goto label_1403a8fc0\n1403a8fae        zmm0 = arg1[0x10].d\n1403a8fb6        float temp2_1 = arg2[2]\n1403a8fb6        zmm0 - temp2_1\n1403a8fbc        if (is_unordered.d(zmm0, temp2_1) || not(zmm0 == temp2_1))\n1403a8fba        goto label_1403a8fc0\n1403a8fe7        return ",
+  "fetched_at": "2026-04-26T17:24:09Z"
+}

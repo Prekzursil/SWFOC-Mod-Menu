@@ -1,0 +1,7 @@
+{
+  "addr": "0x14018dbc0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14018dbd3        int64_t* rcx = *(arg1 + 0x78)\n14018dbdc        int32_t* rdi = arg2\n14018dbef        int32_t var_48\n14018dbef        if ((*(*rcx + 0x98))(rcx, 0, &var_48, 0, 0) != 0)\n14018dca1        int32_t rax_1\n14018dca1        rax_1.b = 0\n14018dcaa        return rax_1\n14018dbf5        int64_t* rcx_1 = *(arg1 + 0x78)\n14018dc01        int32_t* var_40\n14018dc01        int32_t* rbx = var_40\n14018dc09        void var_38\n14018dc09        int32_t i_2\n14018dc09        if (rcx_1 != 0 && (*(*rcx_1 + 0x88))(rcx_1, 0, &var_38) == 0 && i_2 s> 0)\n14018dc33        uint64_t i_1 = zx.q(i_2)\n14018dc42        int64_t r14_1 = sx.q(var_48)\n14018dc4e        int32_t var_20\n14018dc4e        int64_t rsi_1 = sx.q(var_20 << 2)\n14018dc69        uint64_t i\n14018dc5a        memcpy(rdi, rbx, rsi_1)\n14018dc5f        rdi += rsi_1\n14018dc62        rbx += r14_1\n14018dc65        i = i_1\n14018dc65        i_1 -= 1\n14018dc69        do while (i != 1)\n14018dc80        int64_t* rcx_4 = *(arg1 + 0x78)\n14018dc89        (*(*rcx_4 + 0xa0))(rcx_4, 0)\n14018dc97        int64_t rax_7\n14018dc97        rax_7.b = 1\n14018dca0        return rax_7",
+  "fetched_at": "2026-04-26T17:24:15Z"
+}

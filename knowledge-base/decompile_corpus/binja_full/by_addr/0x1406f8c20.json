@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406f8c20",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1406f8c46        uint64_t result\n1406f8c46        if ((*(*arg1 + 0x28))().b == 0)\n1406f8ce3        result.b = 0\n1406f8c56        if (sub_14039a600(arg3).b != 0)\n1406f8c5e        int512_t zmm1_1\n1406f8c5e        int512_t zmm2_1\n1406f8c5e        zmm1_1, zmm2_1 = sub_1403a01f0(arg3, arg2)\n1406f8c69        sub_14039fe20(arg2, arg3)\n1406f8c71        zmm2_1.o = zx.o(0)\n1406f8c79        int512_t zmm1_2\n1406f8c79        int512_t zmm2_2\n1406f8c79        zmm1_2, zmm2_2 = sub_14048eb10(arg3, nullptr, zmm2_1, 0, zmm1_1)\n1406f8c81        sub_14048cf20(arg3, zmm1_2, zmm2_2)\n1406f8c8f        sub_14048e4d0(arg1, arg2, arg3)\n1406f8c94        result.b = 1\n1406f8c9f        if (*(arg3 + 0x335) == 0xff)\n1406f8ce3        result.b = 0\n1406f8cac        result = (*(*arg3 + 0x10))(arg3, 3)\n1406f8caf        uint64_t result_1 = result\n1406f8cb5        if (result == 0)\n1406f8ce3        result.b = 0\n1406f8cc1        if (sub_1403fa0d0(result).b == 0)\n1406f8ce3        result.b = 0\n1406f8cc9        sub_1403fad70(result_1, arg2)\n1406f8cd4        sub_1403a0500(arg2, arg3)\n1406f8cdc        sub_1403ff1f0(result_1)\n1406f8c8f        sub_14048e4d0(arg1, arg2, arg3)\n1406f8c94        result.b = 1\n1406f8cfa        return result",
+  "fetched_at": "2026-04-26T17:26:43Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401524a0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_1401524a0(longlong param_1)\n\n{\n  float fVar1;\n  float fVar2;\n  float fVar3;\n  float fVar4;\n  float fVar5;\n  undefined4 local_58;\n  undefined4 local_54;\n  undefined4 local_50;\n  float local_48;\n  float local_44;\n  float local_40;\n  \n  local_58 = *(undefined4 *)(param_1 + 0xa4);\n  local_54 = *(undefined4 *)(param_1 + 0xa8);\n  local_50 = *(undefined4 *)(param_1 + 0xac);\n  FUN_140135350(*(undefined8 *)(param_1 + 0x20),local_58,local_54,&local_58,&local_48);\n  fVar2 = *(float *)(param_1 + 0x30);\n  fVar3 = *(float *)(param_1 + 0x34);\n  fVar4 = (float)((uint)((fVar3 * local_44 + fVar2 * local_48) * (DAT_1407ffaf8 / local_40)) ^\n                 DAT_140800860);\n  fVar5 = fVar3 * fVar3 + fVar2 * fVar2 + fVar4 * fVar4;\n  if (0.0 < fVar5) {\n    fVar1 = (float)(0x5f375a86 - ((int)fVar5 >> 1));\n    fVar1 = (DAT_1408007d0 - fVar5 * DAT_1408007c0 * fVar1 * fVar1) * fVar1;\n    fVar1 = (DAT_1408007d0 - fVar1 * fVar5 * DAT_1408007c0 * fVar1) * fVar1;\n    fVar2 = fVar1 * fVar2;\n    fVar3 = fVar1 * fVar3;\n    fVar4 = fVar1 * fVar4;\n  }\n  *(uint *)(param_1 + 0x218) =\n       (((uint)(longlong)((fVar2 + DAT_1407ffaf8) * DAT_1408198c0) & 0xff) << 8 |\n       (uint)(longlong)((fVar3 + DAT_1407ffaf8) * DAT_1408198c0) & 0xff) << 8 |\n       (uint)(longlong)((fVar4 + DAT_1407ffaf8) * DAT_1408198c0) & 0xff;\n  return;\n}",
+  "fetched_at": "2026-04-26T17:22:18Z"
+}

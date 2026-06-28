@@ -1,0 +1,7 @@
+{
+  "addr": "0x14077ed10",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* Library Function - Single Match\n    private: bool __cdecl\n   __crt_stdio_input::format_string_parser<char>::scan_optional_field_width(void) __ptr64\n   \n   Library: Visual Studio 2019 Release */\n\nbool __thiscall\n__crt_stdio_input::format_string_parser<char>::scan_optional_field_width\n          (format_string_parser<char> *this)\n\n{\n  char *pcVar1;\n  uint uVar2;\n  longlong lVar3;\n  longlong local_res8 [4];\n  \n  pcVar1 = *(char **)(this + 8);\n  if ((byte)(*pcVar1 - 0x30U) < 10) {\n    uVar2 = (int)*pcVar1 - 0x30;\n  }\n  else if ((byte)(*pcVar1 + 0x9fU) < 0x1a) {\n    uVar2 = (int)*pcVar1 - 0x57;\n  }\n  else if ((byte)(*pcVar1 + 0xbfU) < 0x1a) {\n    uVar2 = (int)*pcVar1 - 0x37;\n  }\n  else {\n    uVar2 = 0xffffffff;\n  }\n  if (uVar2 < 10) {\n    local_res8[0] = 0;\n    lVar3 = strtoull(pcVar1,local_res8,10);\n    if ((lVar3 == 0) || (local_res8[0] == *(longlong *)(this + 8))) {\n      *(undefined4 *)(this + 0x14) = 0;\n      *(undefined2 *)(this + 0x18) = 0;\n      *(undefined8 *)(this + 0x20) = 0;\n      *(undefined4 *)(this + 0x28) = 0;\n      *(undefined4 *)(this + 0x30) = 0;\n      this[0x1a] = (format_string_parser<char>)0x0;\n      this[0x2c] = (format_string_parser<char>)0x0;\n      *(undefined4 *)(this + 0x10) = 0x16;\n      return false;\n    }\n    *(longlong *)(this + 0x20) = lVar3;\n    *(longlong *)(this + 8) = local_res8[0];\n  }\n  return true;\n}",
+  "fetched_at": "2026-04-26T18:50:50Z"
+}

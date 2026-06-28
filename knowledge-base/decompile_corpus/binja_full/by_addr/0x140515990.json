@@ -1,0 +1,7 @@
+{
+  "addr": "0x140515990",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140515990        int64_t* result = arg3\n140515996        if (arg1 != arg2)\n14051599f        void* r8 = arg1 + 0x38\n1405159a3        void* r9_2 = result - arg1\n1405159b0        *result = 0\n1405159b3        *(r9_2 + r8 - 0x28) = 0\n1405159b8        *(r9_2 + r8 - 0x20) = 0\n1405159bd        int128_t zmm0 = *(r8 - 0x38)\n1405159c2        r8 += 0x50\n1405159c6        *result = zmm0\n1405159ce        *(result + 0x10) = *(r8 - 0x78)\n1405159d2        *(r8 - 0x78) = 0\n1405159d6        result = &result[0xa]\n1405159da        *(r8 - 0x70) = 0xf\n1405159e2        *(r8 - 0x88) = 0\n1405159e9        *(r9_2 + r8 - 0x68) = 0\n1405159ee        *(r9_2 + r8 - 0x58) = 0\n1405159f3        *(r9_2 + r8 - 0x50) = 0\n1405159fd        *(r9_2 + r8 - 0x68) = *(r8 - 0x68)\n140515a08        *(r9_2 + r8 - 0x58) = *(r8 - 0x58)\n140515a0e        *(r8 - 0x58) = 0\n140515a12        *(r8 - 0x50) = 0xf\n140515a1a        *(r8 - 0x68) = 0\n140515a22        *(r9_2 + r8 - 0x48) = *(r8 - 0x48)\n140515a2b        *(r9_2 + r8 - 0x40) = *(r8 - 0x40)\n140515a37        do while (r8 - 0x38 != arg2)\n140515a3d        return result",
+  "fetched_at": "2026-04-26T17:32:29Z"
+}

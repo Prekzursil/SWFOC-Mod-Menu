@@ -1,0 +1,7 @@
+{
+  "addr": "0x14075adb0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14075add6        int32_t rax_1 = _Wcscoll(arg2, arg3, arg4, arg5, arg1 + 0x10)\n14075ade1        int64_t result\n14075ade1        result.b = rax_1 != 0\n14075ade9        if (rax_1 s< 0)\n14075ade9        return 0xffffffff\n14075adf1        return result",
+  "fetched_at": "2026-04-26T17:29:55Z"
+}

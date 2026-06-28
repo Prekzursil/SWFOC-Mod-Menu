@@ -1,0 +1,7 @@
+{
+  "addr": "0x1405b20b0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1405b20b7        return \"Galactic_Sabotage_Ability\"",
+  "fetched_at": "2026-04-26T17:37:28Z"
+}

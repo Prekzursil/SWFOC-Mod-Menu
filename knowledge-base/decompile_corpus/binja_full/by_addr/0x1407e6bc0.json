@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407e6bc0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1407e6bc7        data_140a10998 = &SingletonInstance<class TheGameScoringManagerClass>::`vftable'{for `SingletonManager'}\n1407e6bce        return &SingletonInstance<class TheGameScoringManagerClass>::`vftable'{for `SingletonManager'}",
+  "fetched_at": "2026-04-26T17:34:50Z"
+}

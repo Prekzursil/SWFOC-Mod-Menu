@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406ffae0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1406ffaec        int64_t result = sub_14048f2c0(arg1)\n1406ffaf5        if (*(arg1 + 0x3c) != 3)\n1406ffafc        void* r8_1 = arg1 + 0x18\n1406ffb00        if (*(arg1 + 0x30) u>= 0x10)\n1406ffb02        r8_1 = *r8_1\n1406ffb11        char var_108[0x100]\n1406ffb11        sscanf_s(&var_108, \"Error: (%s) The only currently supported Activation_Style is Galactic_Automatic.\", r8_1)\n1406ffb1b        result = sub_1402149d0(&var_108)\n1406ffb20        *(arg1 + 0x3c) = 3\n1406ffb27        *(arg1 + 0x41) = 0\n1406ffb33        return result",
+  "fetched_at": "2026-04-26T17:26:57Z"
+}

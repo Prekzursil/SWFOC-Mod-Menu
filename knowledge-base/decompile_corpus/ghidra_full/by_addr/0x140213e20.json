@@ -1,0 +1,7 @@
+{
+  "addr": "0x140213e20",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined1 __thiscall FileClass::vfunction12(FileClass *this)\n\n{\n  if (((this->FileClass_data).offset_0x8 == (HANDLE)0xffffffffffffffff) &&\n     ((this->FileClass_data).offset_0x38 == -1)) {\n    return 0;\n  }\n  return 1;\n}",
+  "fetched_at": "2026-04-26T18:00:09Z"
+}

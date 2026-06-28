@@ -1,0 +1,7 @@
+{
+  "addr": "0x14070a2e0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14070a2f3        *arg1 = &ReduceProductionPriceAbilityClass::`vftable'{for `SpecialAbilityClass'}\n14070a300        arg1[1] = &ReduceProductionPriceAbilityClass::`vftable'{for `RefCountClass'}\n14070a306        arg1[0x2f] = 0\n14070a30d        arg1[0x30].b = 0\n14070a313        sub_14048c8d0(arg1)\n14070a31b        if ((arg2 & 1) != 0)\n14070a325        j_sub_1407864b8(arg1)\n14070a337        return arg1",
+  "fetched_at": "2026-04-26T17:27:27Z"
+}

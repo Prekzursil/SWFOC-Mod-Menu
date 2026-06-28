@@ -1,0 +1,7 @@
+{
+  "addr": "0x14060eb60",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "PositionWrapper * __thiscall\nPositionWrapper::scalar_deleting_destructor(PositionWrapper *this,uint param_1)\n\n{\n  LuaUserVar::~LuaUserVar((LuaUserVar *)this);\n  if ((param_1 & 1) != 0) {\n    thunk_FUN_1407864b8(this,0x38);\n  }\n  return this;\n}",
+  "fetched_at": "2026-04-26T17:26:52Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x1405118d0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */\n\nLuaMemberFunctionWrapper<class_BlockingStatus> * FUN_1405118d0(undefined4 param_1)\n\n{\n  LuaMemberFunctionWrapper<class_BlockingStatus> *this;\n  \n  this = (LuaMemberFunctionWrapper<class_BlockingStatus> *)FUN_140769c58(0x48);\n  if (this != (LuaMemberFunctionWrapper<class_BlockingStatus> *)0x0) {\n                    /* inlined constructor: InvasionBlockStatus::InvasionBlockStatus */\n    LuaMemberFunctionWrapper<class_BlockingStatus>::LuaMemberFunctionWrapper<class_BlockingStatus>\n              (this);\n    *(undefined2 *)&(this->RefCountClass_data).field_0x38 = 0;\n    *(undefined8 *)&(this->RefCountClass_data).field_0x30 = 0;\n    this->vftablePtr =\n         (LuaMemberFunctionWrapper<class_BlockingStatus>_vftable *)&InvasionBlockStatus::vftable;\n    *(InvasionBlockStatus_vftable1 **)&(this->RefCountClass_data).field_0x28 =\n         &InvasionBlockStatus::vftable;\n    *(undefined4 *)&(this->RefCountClass_data).offset_0x18 = param_1;\n    return this;\n  }\n  _DAT_00000020 = param_1;\n  return (LuaMemberFunctionWrapper<class_BlockingStatus> *)0x0;\n}",
+  "fetched_at": "2026-04-26T18:22:16Z"
+}

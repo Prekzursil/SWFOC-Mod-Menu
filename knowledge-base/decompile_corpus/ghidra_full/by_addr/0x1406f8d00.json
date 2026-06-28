@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406f8d00",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "char * __thiscall EliminateHeroAbilityClass::vfunction3_for_IXMLLoadableClass(void)\n\n{\n  return \"Eliminate_Hero_Ability\";\n}",
+  "fetched_at": "2026-04-26T17:49:12Z"
+}

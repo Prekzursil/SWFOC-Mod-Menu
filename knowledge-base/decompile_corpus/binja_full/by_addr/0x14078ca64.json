@@ -1,0 +1,7 @@
+{
+  "addr": "0x14078ca64",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14078ca6f        uninitialize_environment_internal<wchar_t>(&data_140b3c438)\n14078ca7b        uninitialize_environment_internal<char>(&data_140b3c440)\n14078ca87        free_environment<wchar_t>(data_140b3c450)\n14078ca97        return free_environment<wchar_t>(data_140b3c448) __tailcall",
+  "fetched_at": "2026-04-26T17:31:31Z"
+}

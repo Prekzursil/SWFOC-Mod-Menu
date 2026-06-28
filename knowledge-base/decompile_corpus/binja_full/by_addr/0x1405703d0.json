@@ -1,0 +1,7 @@
+{
+  "addr": "0x1405703d0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1405703d7        *arg1 = &std::_Facet_base::`vftable'\n1405703da        return &std::_Facet_base::`vftable'",
+  "fetched_at": "2026-04-26T17:34:56Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x14063be90",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14063be90        int64_t* result = *arg1\n14063be96        if (result != 0)\n14063be98        char r8_1 = result[5].b\n14063be9d        char rax = 0\n14063bea2        if (r8_1 s> 0)\n14063bebf        if ((*(*(*result + (sx.q(rax) << 3)) + 0x3a0) & 2) == 0)\n14063bece        return result\n14063bec1        rax += 1\n14063bec6        do while (rax s< r8_1)\n14063beca        return 0",
+  "fetched_at": "2026-04-26T17:02:02Z"
+}

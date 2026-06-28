@@ -1,0 +1,7 @@
+{
+  "addr": "0x14063ea50",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14063ea79        *arg2 = sub_14020b710(*arg2)\n14063ea87        arg2[1] = sub_14020b710(arg2[1])\n14063ea96        arg2[2] = sub_14020b710(arg2[2])\n14063eaa4        *arg3 = sub_14020b710(*arg3)\n14063eab2        arg3[1] = sub_14020b710(arg3[1])\n14063eabc        uint32_t zmm0_6[0x4] = sub_14020b710(arg3[2])\n14063eac1        uint32_t zmm1[0x4] = *arg3\n14063eac7        arg3[2] = zmm0_6[0]\n14063eacf        zmm0_6 = *arg2\n14063ead3        *arg1 = 0\n14063ead6        arg1[1].d = 0\n14063ead9        uint32_t zmm0_7[0x4]\n14063ead9        int128_t zmm6_1\n14063ead9        zmm0_7, zmm6_1 = sub_14063efd0(zmm0_6, zmm1, arg4)\n14063eade        uint32_t zmm1_1[0x4] = arg3[1]\n14063eae6        *arg1 = zmm0_7[0]\n14063eaef        uint32_t zmm0_8[0x4]\n14063eaef        int128_t zmm6_2\n14063eaef        zmm0_8, zmm6_2 = sub_14063efd0(arg2[1], zmm1_1, zmm6_1)\n14063eaf4        uint32_t zmm1_2[0x4] = arg3[2]\n14063eafc        *(arg1 + 4) = zmm0_8[0]\n14063eb18        arg1[1].d = sub_14063efd0(arg2[2], zmm1_2, zmm6_2)\n14063eb27        return arg1",
+  "fetched_at": "2026-04-26T17:02:27Z"
+}

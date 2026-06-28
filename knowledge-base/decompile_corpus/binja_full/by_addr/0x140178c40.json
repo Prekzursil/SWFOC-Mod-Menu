@@ -1,0 +1,7 @@
+{
+  "addr": "0x140178c40",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140178c43        if (arg1 == 0)\n140178c43        return \n140178c4b        __chkstk(0x1020)\n140178c53        int64_t rax_1 = *arg1\n140178c60        int32_t arg_8 = 0\n140178c6e        (*(rax_1 + 0x20))(arg1, 0, &arg_8)\n140178c7c        if (arg_8 u< 0x1000)\n140178c8b        uint128_t var_1008[0x100]\n140178c8b        memset(&var_1008, 0, 0x1000)\n140178ca3        (*(*arg1 + 0x20))(arg1, &var_1008, &arg_8)\n140178cae        return ",
+  "fetched_at": "2026-04-26T17:23:24Z"
+}

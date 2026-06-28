@@ -1,0 +1,7 @@
+{
+  "addr": "0x1404b2010",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1404b2010        int512_t result\n1404b2010        result.o = data_140b15980\n1404b2018        return result",
+  "fetched_at": "2026-04-26T17:29:45Z"
+}

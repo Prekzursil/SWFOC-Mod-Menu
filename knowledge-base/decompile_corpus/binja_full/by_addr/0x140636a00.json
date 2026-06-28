@@ -1,0 +1,7 @@
+{
+  "addr": "0x140636a00",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140636a13        *arg1 = &InfectionBehaviorClass::`vftable'{for `BehaviorClass'}\n140636a20        arg1[1] = &InfectionBehaviorClass::`vftable'{for `RefCountClass'}\n140636a2b        arg1[3] = &InfectionBehaviorClass::`vftable'{for `SignalListenerClass'}\n140636a2f        sub_1404c3310(arg1)\n140636a37        if ((arg2 & 1) != 0)\n140636a41        j_sub_1407864b8(arg1)\n140636a53        return arg1",
+  "fetched_at": "2026-04-26T17:00:34Z"
+}

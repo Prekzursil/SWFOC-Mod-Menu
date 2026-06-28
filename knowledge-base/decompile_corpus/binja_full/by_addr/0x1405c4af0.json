@@ -1,0 +1,7 @@
+{
+  "addr": "0x1405c4af0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1405c4b12        uint64_t rdi = zx.q(arg2)\n1405c4b22        TEB* gsbase\n1405c4b22        if (data_140b395d8 s> *(0xd4 + *(gsbase->ThreadLocalStoragePointer + (zx.q(data_140b3b9a0) << 3))))\n1405c4b54        _Init_thread_header(&data_140b395d8)\n1405c4b60        if (data_140b395d8 == 0xffffffff)\n1405c4b69        atexit(&data_1407f5870)\n1405c4b75        _Init_thread_footer(&data_140b395d8)\n1405c4b24        int64_t rcx = *arg1\n1405c4b39        if (rdi u< (arg1[1] - rcx) s>> 3)\n1405c4b4c        return rcx + (rdi << 3)\n1405c4b3b        return &data_140a44100",
+  "fetched_at": "2026-04-26T17:37:36Z"
+}

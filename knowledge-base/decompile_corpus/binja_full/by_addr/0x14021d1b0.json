@@ -1,0 +1,7 @@
+{
+  "addr": "0x14021d1b0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14021d1b6        *arg1 = 0\n14021d1bb        *(arg1 + 4) = 0\n14021d1c1        arg1[8] = 0\n14021d1c4        *(arg1 + 0xc) = 0\n14021d1f7        *(arg1 + 0x1024) = 0x3f800000\n14021d201        *(arg1 + 0x1028) = 0x3f800000\n14021d20b        *(arg1 + 0xfa0) = 0xbf800000\n14021d215        *(arg1 + 0xfa4) = 0xbf800000\n14021d21f        *(arg1 + 0xfa8) = 0\n14021d225        *(arg1 + 0xfac) = 0xbf800000\n14021d22f        *(arg1 + 0xfb0) = 0\n14021d235        *(arg1 + 0xfb4) = 0xbf800000\n14021d23f        *(arg1 + 0xfb8) = 0xbf800000\n14021d249        *(arg1 + 0xfbc) = 0\n14021d24f        *(arg1 + 0xfc0) = 0xbf800000\n14021d259        *(arg1 + 0xfc4) = 0\n14021d25f        *(arg1 + 0xfc8) = 0xbf800000\n14021d269        *(arg1 + 0xfcc) = 0xbf800000\n14021d273        *(arg1 + 0xfd0) = 0\n14021d279        *(arg1 + 0xfd4) = 0xbf800000\n14021d283        *(arg1 + 0xfd8) = 0\n14021d289        *(arg1 + 0xfdc) = 0xbf800000\n14021d293        *(arg1 + 0xfe0) = 0xbf800000\n14021d29d        *(arg1 + 0xfe4) = 0\n14021d2a3        *(arg1 + 0xfe8) = 0xbf800000\n14021d2ad        __builtin_memset(&arg1[0xfec], 0, 0x38)\n14021d2b7        sub_140228d40(&arg1[0x68])\n14021d2c3        sub_14022acc0(&arg1[0x490])\n14021d2cc        sub_14022c3b0(&arg1[0x10])\n14021d2dd        return sub_14022d2e0(&arg1[0xf40]) __tailcall",
+  "fetched_at": "2026-04-26T17:28:58Z"
+}

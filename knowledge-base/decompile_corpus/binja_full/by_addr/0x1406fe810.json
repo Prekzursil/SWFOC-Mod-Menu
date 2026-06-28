@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406fe810",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1406fe824        *arg1 = &ForceWhirlwindAbilityClass::`vftable'{for `SpecialAbilityClass'}\n1406fe830        arg1[1] = &ForceWhirlwindAbilityClass::`vftable'{for `RefCountClass'}\n1406fe836        __builtin_memset(&arg1[0x34], 0, 0x14)\n1406fe851        sub_1402c7170(&arg1[0x2f])\n1406fe859        sub_14048c8d0(arg1)\n1406fe861        if ((arg2 & 1) != 0)\n1406fe86b        j_sub_1407864b8(arg1)\n1406fe87d        return arg1",
+  "fetched_at": "2026-04-26T17:26:52Z"
+}

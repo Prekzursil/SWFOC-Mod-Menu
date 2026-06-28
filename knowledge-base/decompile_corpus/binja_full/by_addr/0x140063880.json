@@ -1,0 +1,7 @@
+{
+  "addr": "0x140063880",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140063880        int32_t arg_18 = arg3\n140063889        ReleaseCapture()\n14006389c        void var_38\n14006389c        sub_14026cb30(&var_38, &arg_18)\n1400638bc        char result\n1400638bc        uint128_t zmm6\n1400638bc        uint128_t zmm7\n1400638bc        result, zmm6, zmm7 = sub_1401c3660(&data_140a78510, 3, 0, &var_38, nullptr)\n1400638c3        if (result == 0)\n1400638c9        uint128_t var_18_1 = zmm6\n1400638ce        uint128_t var_28_1 = zmm7\n1400638d3        int512_t zmm1_1\n1400638d3        int512_t zmm2_1\n1400638d3        zmm1_1, zmm2_1 = sub_140065d00()\n1400638d8        int32_t rcx_1 = arg_18\n1400638e5        bool cond:0_1 = data_140a60edc:3.b != 0\n1400638f3        uint128_t zmm6_1 = _mm_cvtepi32_ps(zx.o(sx.d(rcx_1.w)))\n1400638fa        zmm7 = _mm_cvtepi32_ps(zx.o(sx.d((rcx_1 u>> 0x10).w)))\n140063906        int32_t arg_20\n140063906        int32_t arg_24\n140063906        if (not(cond:0_1) && data_140a60eec == 0)\n140063910        arg_20 = zmm6_1.d\n14006391e        arg_24 = zmm7.d\n14006392e        result, zmm1_1, zmm2_1, zmm6_1, zmm7 = sub_1402f6c30(&data_140b27f60, 3, &arg_20)\n140063935        if (cond:0_1 || data_140a60eec != 0 || result == 0)\n140063943        sub_140307860(&data_140b27f60, 0, 0)\n14006394b        arg_20 = zmm6_1.d\n14006395c        arg_24 = zmm7.d\n140063978        result = sub_140030fc0(&data_140a60df0, 3, &arg_20, 0, zmm1_1, zmm2_1, 0)\n14006398b        return result",
+  "fetched_at": "2026-04-26T16:55:38Z"
+}

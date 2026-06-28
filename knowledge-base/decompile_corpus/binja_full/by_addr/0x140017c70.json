@@ -1,0 +1,7 @@
+{
+  "addr": "0x140017c70",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140017c85        int64_t rax_1 = HeapAlloc(GetProcessHeap(), HEAP_NONE, 0x59d80)\n140017c92        data_140a28598 = 0\n140017c9c        data_140a28590 = rax_1\n140017cb3        data_140a2859c = (data_140a2859c & 0x8000b3b0) | 0xb3b0\n140017cbd        return atexit(sub_1407f0110) __tailcall",
+  "fetched_at": "2026-04-26T16:50:32Z"
+}

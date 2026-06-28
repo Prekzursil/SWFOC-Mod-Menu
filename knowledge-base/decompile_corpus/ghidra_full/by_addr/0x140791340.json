@@ -1,0 +1,7 @@
+{
+  "addr": "0x140791340",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* WARNING: Removing unreachable block (ram,0x000140791359) */\n/* Library Function - Single Match\n    __acrt_initialize_fma3\n   \n   Libraries: Visual Studio 2015 Release, Visual Studio 2017 Release, Visual Studio 2019 Release */\n\nundefined8 __acrt_initialize_fma3(void)\n\n{\n  longlong lVar1;\n  byte in_XCR0;\n  \n  DAT_140b3c8d4 = 0;\n  lVar1 = cpuid_Version_info(1);\n  if ((*(uint *)(lVar1 + 0xc) & 0x18001000) == 0x18001000) {\n    DAT_140b3c8d4 = (uint)((in_XCR0 & 6) == 6);\n  }\n  DAT_140b3c8d8 = DAT_140b3c8d4;\n  return 0;\n}",
+  "fetched_at": "2026-04-26T18:52:45Z"
+}

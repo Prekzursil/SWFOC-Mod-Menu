@@ -1,0 +1,7 @@
+{
+  "addr": "0x1404b5d80",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1404b5d8a        int64_t lpMem = arg1[1]\n1404b5d8e        struct DynamicVectorClass<class SimpleModifierListClass<enum tVisibilityLevelType>* __ptr64>::VTable* const result = &DynamicVectorClass<class SimpleModifierListClass<enum tVisibilityLevelType>* __ptr64>::`vftable'\n1404b5d95        *arg1 = &DynamicVectorClass<class SimpleModifierListClass<enum tVisibilityLevelType>* __ptr64>::`vftable'\n1404b5d9e        if (lpMem != 0)\n1404b5da7        if ((*(arg1 + 0x14) & 0x80000000) == 0)\n1404b5dc2        j_sub_1407864b8(lpMem)\n1404b5db7        HeapFree(GetProcessHeap(), HEAP_NONE, lpMem)\n1404b5dc7        result = nullptr\n1404b5dc9        *(arg1 + 0x14) &= 0x80000000\n1404b5dd0        arg1[1] = 0\n1404b5dd4        arg1[2].d = 0\n1404b5de1        return result",
+  "fetched_at": "2026-04-26T17:29:56Z"
+}

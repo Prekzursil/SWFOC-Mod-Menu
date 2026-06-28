@@ -1,0 +1,7 @@
+{
+  "addr": "0x14079130c",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* Library Function - Single Match\n    _set_statfp\n   \n   Libraries: Visual Studio 2017 Release, Visual Studio 2019 Release */\n\nvoid _set_statfp(uint param_1)\n\n{\n  uint uVar1;\n  \n  uVar1 = _get_fpsr();\n  FUN_14079d110(uVar1 | param_1 & 0x3f);\n  return;\n}",
+  "fetched_at": "2026-04-26T18:52:44Z"
+}

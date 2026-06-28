@@ -1,0 +1,7 @@
+{
+  "addr": "0x14064c290",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nvoid __thiscall ServicedAISystemClass::~ServicedAISystemClass(ServicedAISystemClass *this)\n\n{\n  this->vftablePtr = &vftable;\n  AIDiagnosticsClass::~AIDiagnosticsClass((AIDiagnosticsClass *)this);\n  return;\n}\n\n",
+  "fetched_at": "2026-04-26T17:04:52Z"
+}

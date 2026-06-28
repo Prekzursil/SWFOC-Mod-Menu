@@ -1,0 +1,7 @@
+{
+  "addr": "0x14068afb0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_14068afb0(void)\n\n{\n  SpecialAbilityActionClass *this;\n  \n  this = (SpecialAbilityActionClass *)FUN_140769c58(0xf8);\n  if (this != (SpecialAbilityActionClass *)0x0) {\n    SpecialAbilityActionClass::SpecialAbilityActionClass(this);\n    return;\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T17:16:34Z"
+}

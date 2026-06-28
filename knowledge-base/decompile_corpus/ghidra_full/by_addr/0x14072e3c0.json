@@ -1,0 +1,7 @@
+{
+  "addr": "0x14072e3c0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* TacticalLocationPerceptualEvaluatorClass member function inherited by\n   LandLocationPerceptualEvaluatorClass\n   TacticalLocationPerceptualEvaluatorClass member function inherited by\n   SpaceLocationPerceptualEvaluatorClass */\n\nvoid __thiscall\nTacticalLocationPerceptualEvaluatorClass::vfunction10\n          (TacticalLocationPerceptualEvaluatorClass *this,longlong param_1,double *param_2)\n\n{\n  double dVar1;\n  int iVar2;\n  double dVar3;\n  \n  (*this->vftablePtr->vfunction11)(this,param_1,param_2);\n  dVar3 = (double)DAT_140b0a340;\n  dVar1 = *param_2;\n  *param_2 = dVar3 * dVar1;\n  iVar2 = 0;\n  if (DAT_140b15418 != 0) {\n    iVar2 = *(int *)(DAT_140b15418 + 0x10);\n  }\n  *param_2 = (dVar3 * dVar1) / (double)iVar2;\n  return;\n}",
+  "fetched_at": "2026-04-26T18:01:28Z"
+}

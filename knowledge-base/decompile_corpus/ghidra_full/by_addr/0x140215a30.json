@@ -1,0 +1,7 @@
+{
+  "addr": "0x140215a30",
+  "tool": "ghidra",
+  "fact_id": "rva_crc32_hash",
+  "body": "\nuint FUN_140215a30(byte *param_1,uint param_2,uint param_3)\n\n{\n  byte bVar1;\n  ulonglong uVar2;\n  \n  param_3 = ~param_3;\n  if (0 < (int)param_2) {\n    uVar2 = (ulonglong)param_2;\n    do {\n      bVar1 = *param_1;\n      param_1 = param_1 + 1;\n      param_3 = param_3 >> 8 ^\n                *(uint *)(&DAT_140a14d20 + (((ulonglong)bVar1 ^ (ulonglong)param_3) & 0xff) * 4);\n      uVar2 = uVar2 - 1;\n    } while (uVar2 != 0);\n  }\n  return ~param_3;\n}\n\n",
+  "fetched_at": "2026-04-26T16:42:55Z"
+}

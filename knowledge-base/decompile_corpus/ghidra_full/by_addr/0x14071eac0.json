@@ -1,0 +1,7 @@
+{
+  "addr": "0x14071eac0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined8 __thiscall\nAttackActionClass::vfunction4(AttackActionClass *this,longlong param_2,longlong param_3)\n\n{\n  undefined8 uVar1;\n  char cVar2;\n  \n  if ((param_2 != 0) && (param_3 != 0)) {\n    cVar2 = FUN_14039a450(param_2,*(undefined4 *)(param_3 + 0x58),0);\n    if (cVar2 != '\\0') {\n      uVar1 = FUN_1405e91a0(this,param_2,param_3);\n      return uVar1;\n    }\n  }\n  return 0;\n}",
+  "fetched_at": "2026-04-26T17:58:41Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x140739f90",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140739f96        struct BlockingStatus::SpaceAmbushBlockStatus::VTable** result = arg1\n140739f99        sub_1407d8d80(arg1)\n140739fa0        result[0xa].d = 0xffffffff\n140739fae        result[7] = 0\n140739fb2        *result = &SpaceAmbushBlockStatus::`vftable'{for `BlockingStatus'}\n140739fbc        result[6] = &SpaceAmbushBlockStatus::`vftable'{for `SignalListenerClass'}\n140739fc3        result[8].d = 0\n140739fc6        *(result + 0x44) = 0\n140739fca        result[9] = 0\n140739fce        *(result + 0x54) = 0\n140739fd1        result[0xb].d = 0x5d5e0b6b\n140739fd8        result[0xc] = 0\n140739fdc        result[0xd] = 0\n140739fe5        return result",
+  "fetched_at": "2026-04-26T17:29:06Z"
+}

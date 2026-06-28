@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407f5590",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1407f559a        int64_t i_1 = 2\n1407f559f        int32_t* rbx = &data_140b39530\n1407f55c0        int64_t result\n1407f55c0        int64_t i\n1407f55b0        rbx -= 0x10\n1407f55b7        result = sub_14020b8b0(rbx)\n1407f55bc        i = i_1\n1407f55bc        i_1 -= 1\n1407f55c0        do while (i != 1)\n1407f55cc        return result",
+  "fetched_at": "2026-04-26T17:37:37Z"
+}

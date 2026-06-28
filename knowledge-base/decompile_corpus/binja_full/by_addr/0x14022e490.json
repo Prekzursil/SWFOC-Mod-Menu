@@ -1,0 +1,7 @@
+{
+  "addr": "0x14022e490",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14022e496        void* arg_8 = arg1\n14022e4a0        *(arg1 + 9) = 0\n14022e4ad        *(arg1 + 8) = 0\n14022e4c1        HANDLE result = _beginthreadex(nullptr, 0, sub_14022e400, &arg_8, THREAD_CREATE_RUN_IMMEDIATELY, nullptr)\n14022e4c9        if (result != 0)\n14022e4cf        *(arg1 + 0x18) = result\n14022e4d7        while (*(arg1 + 8) == 0)\n14022e4db        int64_t rax_1 = *(arg1 + 0x10)\n14022e4e7        int32_t var_10_1 = *(arg1 + 0x20)\n14022e4f4        int32_t rax_4 = data_140a155a8\n14022e4fa        int32_t rcx_1 = (data_140a155ac * 2) s>> 1\n14022e4fe        if (rax_4 s>= rcx_1)\n14022e512        int32_t rdx_3 = rcx_1 s/ 0xa\n14022e51b        if (rdx_3 s< 0xa)\n14022e51b        rdx_3 = 0xa\n14022e52a        sub_14022eb30(&data_140a15598, rdx_3 + rcx_1, 0, 1)\n14022e52f        rax_4 = data_140a155a8\n14022e53d        result = data_140a155a0\n14022e547        *(result + sx.q(rax_4) * 0x10) = rax_1.o\n14022e54b        data_140a155a8 += 1\n14022e556        return result",
+  "fetched_at": "2026-04-26T17:29:36Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x140592650",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "StealthAbilityClass * __thiscall\nStealthAbilityClass::scalar_deleting_destructor(StealthAbilityClass *this,uint param_1)\n\n{\n                    /* inlined destructor: StealthAbilityClass::~StealthAbilityClass */\n  this->vftablePtr = &vftable_for_IXMLLoadableClass;\n  this->vftablePtr = &vftable_for_RefCountClass;\n  FUN_1401f9470(&this->StealthAbilityClass_data,0,0,0,0xff);\n  (this->StealthAbilityClass_data).offset_0x10 = 0;\n  FUN_1401f9440(&this->StealthAbilityClass_data);\n  SpecialAbilityClass::~SpecialAbilityClass((SpecialAbilityClass *)this);\n  if ((param_1 & 1) != 0) {\n    thunk_FUN_1407864b8(this,400);\n  }\n  return this;\n}",
+  "fetched_at": "2026-04-26T18:42:15Z"
+}

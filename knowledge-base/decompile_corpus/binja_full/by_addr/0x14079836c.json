@@ -1,0 +1,7 @@
+{
+  "addr": "0x14079836c",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140798380        PWSTR penv = GetEnvironmentStringsW()\n140798386        int32_t* result = nullptr\n14079838e        if (penv != 0)\n140798390        PWSTR penv_1 = penv\n140798396        if (*penv != 0)\n140798398        int64_t rax = -1\n14079839c        rax += 1\n1407983a4        do while (penv_1[rax] != 0)\n1407983ab        penv_1 = &penv_1[rax + 1]\n1407983b3        do while (*penv_1 != 0)\n1407983bf        int64_t rbp_5 = ((penv_1 - penv + 2) s>> 1) * 2\n1407983c5        int32_t* result_1 = _malloc_base(rbp_5)\n1407983d0        if (result_1 != 0)\n1407983db        memcpy(result_1, penv, rbp_5)\n1407983e0        result = result_1\n1407983e5        _free_base(0)\n1407983ed        FreeEnvironmentStringsW(penv)\n14079840a        return result",
+  "fetched_at": "2026-04-26T17:32:03Z"
+}

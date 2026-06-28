@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401f82e0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "GUIGadgetIMELocaleIndicatorClass * __thiscall\nGUIGadgetIMELocaleIndicatorClass::GUIGadgetIMELocaleIndicatorClass\n          (GUIGadgetIMELocaleIndicatorClass *this)\n\n{\n  GUIGadgetTextClass::GUIGadgetTextClass((GUIGadgetTextClass *)this);\n  this->vftablePtr = &vftable;\n  return this;\n}",
+  "fetched_at": "2026-04-26T17:53:50Z"
+}

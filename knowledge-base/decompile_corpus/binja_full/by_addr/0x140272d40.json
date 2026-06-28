@@ -1,0 +1,7 @@
+{
+  "addr": "0x140272d40",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140272d54        *arg1 = &RtsSceneClass::`vftable'{for `SceneClass'}\n140272d59        int64_t* rcx = arg1[0x10]\n140272d63        if (rcx != 0)\n140272d68        (*(*rcx + 8))(rcx)\n140272d6b        arg1[0x10] = 0\n140272d7d        sub_140272540(&arg1[0x11])\n140272d82        int64_t* rcx_2 = arg1[0x10]\n140272d8c        if (rcx_2 != 0)\n140272d91        (*(*rcx_2 + 8))(rcx_2)\n140272d97        sub_140266a90(arg1)\n140272da0        if ((arg2 & 1) != 0)\n140272daa        j_sub_1407864b8(arg1)\n140272dbc        return arg1",
+  "fetched_at": "2026-04-26T17:31:50Z"
+}

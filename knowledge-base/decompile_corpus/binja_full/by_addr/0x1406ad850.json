@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406ad850",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1406ad856        struct BlockingStatus::UnitMovementBlockStatus::VTable** result = arg1\n1406ad859        sub_1407d8d80(arg1)\n1406ad867        *result = &UnitMovementBlockStatus::`vftable'{for `BlockingStatus'}\n1406ad871        result[7] = 0\n1406ad875        result[6] = &UnitMovementBlockStatus::`vftable'{for `SignalListenerClass'}\n1406ad87c        result[8].b = 0\n1406ad87f        result[9] = 0\n1406ad883        result[0xa] = 0\n1406ad887        result[0xb].d = 0xffffffff\n1406ad893        return result",
+  "fetched_at": "2026-04-26T17:24:31Z"
+}

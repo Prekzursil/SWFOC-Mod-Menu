@@ -1,0 +1,7 @@
+{
+  "addr": "0x1400cc1a0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1400cc1a9        int64_t rbp\n1400cc1a9        rbp.b = 1\n1400cc1ae        data_140a7c478 = 1\n1400cc1b5        Sleep(0)\n1400cc1cc        int32_t i = 0\n1400cc1d5        if (((data_140a16fd8 - data_140a16fd0) s>> 3).d s<= 0)\n1400cc2ad        data_140a7c478 = 0\n1400cc2c0        return 1\n1400cc1fa        void* rax_3 = sub_140294bc0(&data_140a16fd0, i)\n1400cc20b        if (rax_3 != 0 && *(rax_3 + 0x62) != 0)\n1400cc20d        uint64_t* rbx_1 = *(rax_3 + 0x428)\n1400cc217        if (rbx_1 != 0)\n1400cc21c        sub_14022ef80(rbx_1)\n1400cc22b        if (sub_14022ef00(rbx_1) != 0)\n1400cc23f        if (*(rbx_1 + 0x35) != 0 && &data_140a118f0 != rbx_1)\n1400cc246        void* rdx_2 = &rbx_1[7]\n1400cc249        if (rbx_1[0xa] u>= 0x10)\n1400cc24b        rdx_2 = rbx_1[7]\n1400cc255        sub_140022730(&data_140a11928, rdx_2, rbx_1[9])\n1400cc262        sub_1400ccf10(rbx_1, 1)\n1400cc267        *(rax_3 + 0x428) = 0\n1400cc22d        rbp.b = 0\n1400cc275        i += 1\n1400cc284        do while (i s< ((data_140a16fd8 - data_140a16fd0) s>> 3).d)\n1400cc29d        data_140a7c478 = 0\n1400cc2ac        return zx.q(rbp.b)",
+  "fetched_at": "2026-04-26T17:01:14Z"
+}

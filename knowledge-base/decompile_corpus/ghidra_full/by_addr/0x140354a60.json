@@ -1,0 +1,7 @@
+{
+  "addr": "0x140354a60",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nvoid __thiscall TextButtonComponentClass::vfunction38(TextButtonComponentClass *this)\n\n{\n  longlong lVar1;\n  char in_stack_00000030;\n  \n  lVar1 = 0x684;\n  if (in_stack_00000030 == '\\0') {\n    lVar1 = 0x6d4;\n  }\n  FUN_1401f9470((longlong)&this->vftablePtr + lVar1);\n  return;\n}\n\n",
+  "fetched_at": "2026-04-26T17:10:47Z"
+}

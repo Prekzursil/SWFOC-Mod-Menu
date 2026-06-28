@@ -1,0 +1,7 @@
+{
+  "addr": "0x140580460",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14058047a        if (*(arg1 + 0x60) != 0)\n14058047c        int64_t* rbx_1 = *(arg3 + 0x10)\n140580487        int64_t r8_2 = (*(arg3 + 0x18) - rbx_1) s>> 3\n14058048f        if (r8_2 != 1)\n14058049b        sub_140248190(arg2, \"GameObjectWrapper::Set_In_Limbo -- invalid number of parameters.  Expected 1, got %d.\", r8_2)\n1405804b1        return 0\n1405804b2        int64_t* rbx_2 = *rbx_1\n1405804b8        if (rbx_2 != 0)\n1405804c0        void* i\n1405804c0        i, r8_2 = (*(*rbx_2 + 0x20))(rbx_2)\n1405804c6        while (i != 0)\n1405804d3        if (i == &data_140a157b0)\n140580505        (**rbx_2)(rbx_2)\n14058050f        *(*(arg1 + 0x60) + 0x3a7) = rbx_2[2].b\n14058051b        (*(*rbx_2 + 8))(rbx_2)\n14058052f        return 0\n1405804d5        i = *(i + 8)\n1405804e8        sub_140248190(arg2, \"GameObjectWrapper::Set_In_Limbo -- invalid type for parameter 1.  Expected boolean.\", r8_2)\n1405804fe        return 0",
+  "fetched_at": "2026-04-26T17:35:21Z"
+}

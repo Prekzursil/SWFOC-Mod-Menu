@@ -1,0 +1,7 @@
+{
+  "addr": "0x14042a4f0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "ulonglong FUN_14042a4f0(longlong param_1,float *param_2)\n\n{\n  float fVar1;\n  float fVar2;\n  float fVar3;\n  float fVar4;\n  longlong lVar5;\n  longlong lVar6;\n  ulonglong uVar7;\n  float fVar8;\n  float fVar9;\n  float fVar10;\n  float fVar11;\n  \n  uVar7 = FUN_14042a330();\n  if (uVar7 != 0) {\n    lVar5 = *(longlong *)(param_1 + 0x28);\n    fVar1 = *(float *)(*(longlong *)(lVar5 + 0x298) + 0x213c);\n    if (0.0 < fVar1) {\n      fVar2 = *(float *)(uVar7 + 0x7c);\n      fVar9 = *(float *)(lVar5 + 0x7c) - fVar2;\n      fVar3 = *(float *)(uVar7 + 0x78);\n      fVar11 = *(float *)(lVar5 + 0x78) - fVar3;\n      fVar4 = *(float *)(uVar7 + 0x80);\n      fVar10 = *(float *)(lVar5 + 0x80) - fVar4;\n      fVar8 = (float)FUN_140776d48(fVar11 * fVar11 + fVar9 * fVar9 + fVar10 * fVar10);\n      if (0.0 < fVar8) {\n        fVar8 = DAT_1407ffaf8 / fVar8;\n        fVar11 = fVar11 * fVar8;\n        fVar9 = fVar9 * fVar8;\n        fVar10 = fVar10 * fVar8;\n      }\n      lVar5 = *(longlong *)(param_1 + 0x28);\n      lVar6 = *(longlong *)(lVar5 + 0x298);\n      fVar8 = fVar4 + fVar10 * fVar1;\n      if (*(char *)(lVar6 + 0x8e) == '\\x01') {\n        fVar8 = fVar4;\n      }\n      fVar4 = *(float *)(lVar6 + 0x21b0);\n      *param_2 = fVar3 + fVar11 * fVar1;\n      param_2[1] = fVar2 + fVar9 * fVar1;\n      param_2[2] = fVar8 + fVar4;\n      return CONCAT71((int7)((ulonglong)lVar5 >> 8),1);\n    }\n  }\n  return uVar7 & 0xffffffffffffff00;\n}",
+  "fetched_at": "2026-04-26T17:48:54Z"
+}

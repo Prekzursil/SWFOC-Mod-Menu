@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407a5d10",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1407a5d10        int32_t rax_2 = *(arg1 + 0x1714)\n1407a5d1c        if (rax_2 s> 8)\n1407a5d2d        *(zx.q(*(arg1 + 0x28)) + *(arg1 + 0x10)) = *(arg1 + 0x1710)\n1407a5d31        *(arg1 + 0x28) += 1\n1407a5d50        *(zx.q(*(arg1 + 0x28)) + *(arg1 + 0x10)) = *(arg1 + 0x1711)\n1407a5d53        *(arg1 + 0x28) += 1\n1407a5d3f        if (rax_2 s> 0)\n1407a5d50        *(zx.q(*(arg1 + 0x28)) + *(arg1 + 0x10)) = *(arg1 + 0x1710)\n1407a5d53        *(arg1 + 0x28) += 1\n1407a5d59        *(arg1 + 0x1710) = 0\n1407a5d61        *(arg1 + 0x1714) = 0\n1407a5d68        return 0",
+  "fetched_at": "2026-04-26T17:32:28Z"
+}

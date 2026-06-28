@@ -1,0 +1,7 @@
+{
+  "addr": "0x140734730",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "TacticalStructurePerceptualEvaluatorClass * __thiscall\nTacticalStructurePerceptualEvaluatorClass::TacticalStructurePerceptualEvaluatorClass\n          (TacticalStructurePerceptualEvaluatorClass *this,undefined **param_1)\n\n{\n  TacticalObjectPerceptualEvaluatorClass::TacticalObjectPerceptualEvaluatorClass\n            ((TacticalObjectPerceptualEvaluatorClass *)this,param_1);\n  this->vftablePtr = &vftable;\n  this->vftablePtr = &vftable;\n  this->vftablePtr = &vftable;\n  return this;\n}",
+  "fetched_at": "2026-04-26T18:02:11Z"
+}

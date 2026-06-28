@@ -1,0 +1,7 @@
+{
+  "addr": "0x1402dcbf0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "DynamicVectorClass<class_CorruptionChoiceProperties> * __thiscall\nDynamicVectorClass<class_CorruptionChoiceProperties>::scalar_deleting_destructor\n          (DynamicVectorClass<class_CorruptionChoiceProperties> *this,ulonglong param_1)\n\n{\n                    /* inlined destructor:\n                       DynamicVectorClass<class_CorruptionChoiceProperties>::~DynamicVectorClass<class_CorruptionChoiceProperties>\n                        */\n  this->vftablePtr = &vftable;\n  FUN_1402e7560();\n  if ((param_1 & 1) != 0) {\n    thunk_FUN_1407864b8(this,0x18);\n  }\n  return this;\n}",
+  "fetched_at": "2026-04-26T17:24:14Z"
+}

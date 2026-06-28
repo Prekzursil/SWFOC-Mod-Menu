@@ -1,0 +1,7 @@
+{
+  "addr": "0x14076d908",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14076d91e        if (data_140a44bb0 == 0xffffffff)\n14076d920        return nullptr\n14076d927        enum WIN32_ERROR dwErrCode = GetLastError()\n14076d935        void* result_1 = __vcrt_FlsGetValue(data_140a44bb0)\n14076d93e        void* const result = nullptr\n14076d943        if (result_1 != -1)\n14076d948        if (result_1 == 0)\n14076d95c        if (__vcrt_FlsSetValue(data_140a44bb0, -1) != 0)\n14076d966        void* result_4 = calloc(1, 0x80)\n14076d96b        uint32_t rcx_3 = data_140a44bb0\n14076d971        void* const result_3 = result_4\n14076d977        if (result_4 == 0)\n14076d99f        __vcrt_FlsSetValue(rcx_3, 0)\n14076d983        if (__vcrt_FlsSetValue(rcx_3, result_4) == 0)\n14076d99f        __vcrt_FlsSetValue(data_140a44bb0, 0)\n14076d985        void* const result_2 = result_3\n14076d988        *(result_3 + 0x78) = 0xfffffffe\n14076d98f        result_3 = nullptr\n14076d992        result = result_2\n14076d9a7        free(result_3)\n14076d94a        result = result_1\n14076d9ae        SetLastError(dwErrCode)\n14076d9b4        return result",
+  "fetched_at": "2026-04-26T17:30:29Z"
+}

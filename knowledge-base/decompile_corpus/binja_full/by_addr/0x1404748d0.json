@@ -1,0 +1,7 @@
+{
+  "addr": "0x1404748d0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1404748e5        void* rax = sub_14004fc30()\n14047490d        void var_a8\n14047490d        void* rcx_2 = sub_14011f570(rax + 8, &var_a8, arg1, sub_14011f9c0(rax + 8, arg1))[1]\n140474914        if (rcx_2 == 0)\n140474916        rcx_2 = *(rax + 0x10)\n14047491e        int64_t* rax_2\n14047491e        if (rcx_2 != *(rax + 0x10))\n140474924        int64_t rdi_1 = *(rcx_2 + 0x30)\n140474930        void var_98\n140474930        sub_1402131e0(&var_98, arg1)\n140474944        struct FileClass::VTable** rcx_5 = &var_98\n14047494b        if (sub_140213840(&var_98, 0, 0) != 0)\n140474956        int64_t rax_4 = sub_140213e40(rcx_5)\n140474963        sub_1402138d0(&var_98)\n14047496d        sub_1402132f0(&var_98)\n140474975        rax_2.b = rax_4 == rdi_1\n14047494d        sub_1402132f0(rcx_5)\n140474952        rax_2.b = 1\n140474920        rax_2.b = 0\n14047498c        return rax_2.b",
+  "fetched_at": "2026-04-26T17:28:11Z"
+}

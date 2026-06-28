@@ -1,0 +1,7 @@
+{
+  "addr": "0x14070a2c8",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall\nReduceProductionPriceAbilityClass::vfunction3_for_RefCountClass\n          (ReduceProductionPriceAbilityClass *this,uint param_1)\n\n{\n  scalar_deleting_destructor\n            ((ReduceProductionPriceAbilityClass *)\n             &this[-1].ReduceProductionPriceAbilityClass_data.offset_0x8,param_1);\n  return;\n}",
+  "fetched_at": "2026-04-26T17:53:46Z"
+}

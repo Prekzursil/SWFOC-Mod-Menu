@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407bfb30",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1407bfb44        int64_t rsi = sx.q(arg2)\n1407bfb57        uint128_t* rax = sub_1407bf7e0(arg1, 0, 0, (rsi << 3).d)\n1407bfb5c        uint128_t** rbx = *(arg1 + 0x20)\n1407bfb65        if (rsi.d s> 0)\n1407bfb73        memset(rax, 0, rsi << 3)\n1407bfb78        uint64_t r8_3 = zx.q(*(rbx + 0xc))\n1407bfb7c        int32_t i = 0\n1407bfb82        if (r8_3.d s> 0)\n1407bfb84        int64_t* r11_1 = nullptr\n1407bfb93        int64_t* j_1 = *(r11_1 + *rbx)\n1407bfb9a        if (j_1 != 0)\n1407bfbbe        int64_t* j\n1407bfba0        j = *j_1\n1407bfba7        int64_t rcx_2 = sx.q(*(j_1 + 0xc)) & (rsi - 1)\n1407bfbb2        *j_1 = *(rax + (rcx_2 << 3))\n1407bfbb5        *(rax + (rcx_2 << 3)) = j_1\n1407bfbb8        j_1 = j\n1407bfbbe        do while (j != 0)\n1407bfbc0        r8_3 = zx.q(*(rbx + 0xc))\n1407bfbc4        i += 1\n1407bfbc7        r11_1 = &r11_1[1]\n1407bfbce        do while (i s< r8_3.d)\n1407bfbe1        int64_t result = sub_1407bf7e0(arg1, *rbx, (r8_3 << 3).d, 0)\n1407bfbeb        *(rbx + 0xc) = rsi.d\n1407bfbf3        *rbx = rax\n1407bfc00        return result",
+  "fetched_at": "2026-04-26T17:33:32Z"
+}

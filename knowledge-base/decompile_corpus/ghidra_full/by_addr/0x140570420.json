@@ -1,0 +1,7 @@
+{
+  "addr": "0x140570420",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "wstring_convert<class_std::codecvt_utf8<wchar_t,1114111,0>,wchar_t,class_std::allocator<wchar_t>,class_std::allocator<char>_>\n* __thiscall\nstd::\nwstring_convert<class_std::codecvt_utf8<wchar_t,1114111,0>,wchar_t,class_std::allocator<wchar_t>,class_std::allocator<char>_>\n::scalar_deleting_destructor\n          (wstring_convert<class_std::codecvt_utf8<wchar_t,1114111,0>,wchar_t,class_std::allocator<wchar_t>,class_std::allocator<char>_>\n           *this,uint param_1)\n\n{\n  ~wstring_convert<class_std::codecvt_utf8<wchar_t,1114111,0>,wchar_t,class_std::allocator<wchar_t>,class_std::allocator<char>_>\n            (this);\n  if ((param_1 & 1) != 0) {\n    thunk_FUN_1407864b8(this,0x78);\n  }\n  return this;\n}",
+  "fetched_at": "2026-04-26T18:40:12Z"
+}

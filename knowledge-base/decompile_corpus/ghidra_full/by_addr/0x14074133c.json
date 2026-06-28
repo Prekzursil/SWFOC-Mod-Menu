@@ -1,0 +1,7 @@
+{
+  "addr": "0x14074133c",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* Library Function - Single Match\n    private: static void __cdecl std::locale::_Setgloballocale(void * __ptr64)\n   \n   Library: Visual Studio 2019 Release */\n\nvoid __cdecl std::locale::_Setgloballocale(void *param_1)\n\n{\n  if (DAT_140b3b620 == '\\0') {\n    DAT_140b3b620 = '\\x01';\n    FUN_14074832c(FUN_1407413ac);\n  }\n  DAT_140b3b618 = param_1;\n  return;\n}",
+  "fetched_at": "2026-04-26T18:04:17Z"
+}

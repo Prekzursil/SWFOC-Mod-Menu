@@ -1,0 +1,7 @@
+{
+  "addr": "0x1404c1ac0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1404c1acb        struct EventClass::FrameInfoEventClass::VTable** result = operator new(0x38)\n1404c1ad6        if (result == 0)\n1404c1aff        return result\n1404c1adb        sub_1405126c0(result)\n1404c1ae7        result[4].d = 0\n1404c1aee        *result = &FrameInfoEventClass::`vftable'{for `EventClass'}\n1404c1af9        return result",
+  "fetched_at": "2026-04-26T17:30:10Z"
+}

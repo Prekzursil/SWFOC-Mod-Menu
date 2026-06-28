@@ -1,0 +1,7 @@
+{
+  "addr": "0x140390880",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140390891        if (*(arg1 + 0x2d0) != 0)\n140390891        return \n140390898        struct DynamicVectorClass<class HardPointClass* __ptr64>::VTable** rax_1 = operator new(0x18)\n1403908a2        if (rax_1 != 0)\n1403908ab        rax_1[1] = 0\n1403908af        *rax_1 = &DynamicVectorClass<class HardPointClass* __ptr64>::`vftable'\n1403908b2        rax_1[2] = 0\n1403908b6        *(arg1 + 0x2d0) = rax_1\n1403908c2        return \n1403908c6        *(arg1 + 0x2d0) = 0\n1403908d2        return ",
+  "fetched_at": "2026-04-26T17:21:48Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x140144430",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14014444a        struct alAnim::alQuantizedAnim::VTable** rax = operator new(0xa8)\n140144452        struct alAnim::alQuantizedAnim::VTable** rbx\n140144452        if (rax == 0)\n140144461        rbx = nullptr\n14014445c        rbx = sub_14019f990(rax)\n140144473        if (sub_14019fb80(rbx, arg2, arg3) != 0)\n14014447b        sub_140149f50(arg3, rbx)\n140144480        int64_t result\n140144480        result.b = 1\n140144491        return result\n140144495        if (rbx != 0)\n1401444a2        (*rbx)->`scalar deleting destructor'(rbx, 1)\n1401444b6        return 0",
+  "fetched_at": "2026-04-26T17:19:54Z"
+}

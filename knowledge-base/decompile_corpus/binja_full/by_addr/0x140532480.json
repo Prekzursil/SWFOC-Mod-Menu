@@ -1,0 +1,7 @@
+{
+  "addr": "0x140532480",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140532483        float zmm2 = arg1\n140532486        if (not(arg1 <= arg2))\n140532488        zmm2 = arg2\n14053248b        arg2 = arg1\n1405324a2        int32_t rax_1 = 0x41c64e6d * data_140a13e24 + 0xbdf\n1405324a8        data_140a13e24 = rax_1\n1405324cb        return float.s(zx.q(rax_1 u>> 0xa) & 0x7fff) / 32767f * (arg2 - zmm2) + zmm2",
+  "fetched_at": "2026-04-26T17:33:36Z"
+}

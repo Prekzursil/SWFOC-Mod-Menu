@@ -1,0 +1,7 @@
+{
+  "addr": "0x140281400",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined8\nDynamicVectorClass<class_PlayerClass*___ptr64>::\nDynamicVectorClass<class_PlayerClass*___ptr64>_Constructor_or_Destructor(longlong param_1)\n\n{\n  HANDLE hHeap;\n  undefined8 uVar1;\n  DynamicVectorClass<class_PlayerClass*___ptr64>_vftable *local_28;\n  undefined8 *local_20;\n  ulonglong local_18;\n  \n  uVar1 = 0;\n  local_28 = &vftable;\n  local_20 = (undefined8 *)0x0;\n  local_18 = 0;\n  FUN_140294910(&DAT_140a16fd0,*(undefined4 *)(param_1 + 0x4c),&local_28);\n  if (0 < (int)local_18) {\n    uVar1 = *local_20;\n  }\n  local_28 = &vftable;\n  if (local_20 != (undefined8 *)0x0) {\n    if ((local_18 & 0x8000000000000000) != 0) {\n      hHeap = GetProcessHeap();\n      HeapFree(hHeap,0,local_20);\n      return uVar1;\n    }\n    thunk_FUN_1407864b8();\n  }\n  return uVar1;\n}",
+  "fetched_at": "2026-04-26T18:22:18Z"
+}

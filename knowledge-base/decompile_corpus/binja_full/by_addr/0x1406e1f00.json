@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406e1f00",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1406e1f08        int64_t result\n1406e1f08        result.b = 1\n1406e1f0e        *arg3 = _mm_cvtepi32_pd(zx.q(data_140a2a4d8))\n1406e1f13        return result",
+  "fetched_at": "2026-04-26T17:25:59Z"
+}

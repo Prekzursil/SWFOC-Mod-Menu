@@ -1,0 +1,7 @@
+{
+  "addr": "0x14043b320",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14043b335        if (arg1 == 0 || arg2 == 0)\n14043b413        int64_t rax\n14043b413        rax.b = 0\n14043b41a        return rax\n14043b345        int64_t var_38 = 0\n14043b34e        float var_30 = 0f\n14043b356        int64_t var_28 = 0\n14043b35f        float var_20 = 0f\n14043b367        sub_14041a9b0(arg1, &var_38)\n14043b374        sub_14041a9b0(arg2, &var_28)\n14043b385        float zmm0 = var_38.d f- data_140b2f268\n14043b38d        float zmm1 = var_38:4.d f- data_140b2f26c\n14043b39b        float zmm2 = var_30 f- data_140b2f270\n14043b3b7        int128_t zmm0_1\n14043b3b7        int512_t zmm6\n14043b3b7        zmm0_1, zmm6 = sqrtf(zmm0 * zmm0 + zmm1 * zmm1 + zmm2 * zmm2)\n14043b3c2        zmm6.o = zmm0_1\n14043b3cb        zmm0_1.d = var_28.d.d f- data_140b2f268\n14043b3d3        float zmm1_1 = var_28:4.d f- data_140b2f26c\n14043b3e1        zmm2 = var_20 f- data_140b2f270\n14043b3e9        zmm0_1.d = zmm0_1.d f* zmm0_1.d\n14043b3f5        zmm0_1.d = zmm0_1.d f+ zmm1_1 * zmm1_1\n14043b3f9        zmm0_1.d = zmm0_1.d f+ zmm2 * zmm2\n14043b3fd        int64_t rax_1\n14043b3fd        float zmm0_2\n14043b3fd        float zmm6_1\n14043b3fd        rax_1, zmm0_2, zmm6_1 = sqrtf(zmm0_1.d)\n14043b40a        rax_1.b = zmm0_2 >= zmm6_1\n14043b412        return rax_1",
+  "fetched_at": "2026-04-26T17:27:12Z"
+}

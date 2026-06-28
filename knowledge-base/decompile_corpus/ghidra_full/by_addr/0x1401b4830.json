@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401b4830",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall alSimpleScene::vfunction1(alSimpleScene *this,uint param_1)\n\n{\n  scalar_deleting_destructor((alSimpleScene *)&this[-1].alSimpleScene_data.offset_0x1b0,param_1);\n  return;\n}",
+  "fetched_at": "2026-04-26T17:44:03Z"
+}

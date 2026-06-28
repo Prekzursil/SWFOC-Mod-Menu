@@ -1,0 +1,7 @@
+{
+  "addr": "0x14033f930",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14033f941        arg1[3] = -1\n14033f949        arg1[2].d = 0\n14033f953        arg1[7] = 0\n14033f95a        arg1[8] = 0\n14033f95e        *arg1 = &RetreatCoordinatorClass::`vftable'{for `RootClass'}\n14033f968        arg1[1] = &RetreatCoordinatorClass::`vftable'{for `RefCountClass'}\n14033f973        arg1[6] = &DynamicVectorClass<class GameObjectClass* __ptr64>::`vftable'\n14033f977        arg1[4] = 0\n14033f97b        arg1[5].d = 0\n14033f97e        arg1[9] = &DynamicVectorClass<class GameObjectClass* __ptr64>::`vftable'\n14033f982        __builtin_memset(&arg1[0xa], 0, 0x14)\n14033f98d        __builtin_memset(&arg1[0xd], 0, 0x17)\n14033f9a0        arg1[0x10] = 0\n14033f9a7        int64_t rdi = arg1[7]\n14033f9ae        if (rdi != 0)\n14033f9b3        j_sub_1407864b8(rdi)\n14033f9b8        *(arg1 + 0x44) &= 0x80000000\n14033f9bf        arg1[7] = 0\n14033f9c3        arg1[8].d = 0\n14033f9c6        int64_t lpMem = arg1[0xa]\n14033f9cd        if (lpMem != 0)\n14033f9d6        if ((*(arg1 + 0x5c) & 0x80000000) == 0)\n14033f9f1        j_sub_1407864b8(lpMem)\n14033f9e6        HeapFree(GetProcessHeap(), HEAP_NONE, lpMem)\n14033f9f6        *(arg1 + 0x5c) &= 0x80000000\n14033f9fd        arg1[0xa] = 0\n14033fa01        arg1[0xb].d = 0\n14033fa16        return arg1",
+  "fetched_at": "2026-04-26T17:04:55Z"
+}

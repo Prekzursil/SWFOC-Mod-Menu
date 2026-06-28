@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407cf6e0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1407cf6f8        double zmm0 = sub_1407b9bc0(arg1, 2)\n1407cf70c        sub_1407ce2c0(arg1, 1, 5)\n1407cf714        zmm0 - 0.0\n1407cf71a        if (not(is_unordered.q(zmm0, 0.0)) && not(zmm0 != 0.0))\n1407cf724        int32_t rax_1 = sub_1407b9e00(arg1, 2)\n1407cf72c        if (rax_1 == 0xffffffff)\n1407cf73c        sub_1407b94a0(arg1, \"ipairs\", zx.q(rax_1 + 7))\n1407cf749        sub_1407b9720(arg1, 0xffffd8ef)\n1407cf756        sub_1407b9600(arg1, 1)\n1407cf761        sub_1407b9520(arg1, (zx.o(0)).q)\n1407cf77a        return 3\n1407cf77b        double zmm6 = zmm0 + 1.0\n1407cf789        sub_1407b9520(arg1, zmm6)\n1407cf79b        sub_1407b9770(arg1, 1, int.d(zmm6))\n1407cf7a8        int32_t rax_3 = sub_1407b9e00(arg1, 0xffffffff)\n1407cf7b2        int32_t rax_4 = neg.d(rax_3)\n1407cf7c3        return zx.q(sbb.d(rax_4, rax_4, rax_3 != 0)) & 2",
+  "fetched_at": "2026-04-26T17:33:56Z"
+}

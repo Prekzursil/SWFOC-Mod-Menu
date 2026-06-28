@@ -1,0 +1,7 @@
+{
+  "addr": "0x1402e7ed0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1402e7ee1        int32_t rdx = *(arg1 + 0x2af4)\n1402e7eed        if (rdx == 0x3fffff)\n1402e7eed        return \n1402e7f03        struct DynamicVectorClass<class GameObjectClass* __ptr64>::VTable* i = sub_1402aca60(*(data_140b15418 + 0x18), rdx)\n1402e7f0e        if (i == 0)\n1402e7f0e        return \n1402e7f14        int64_t rax = sx.q(*(arg1 + 0x1df8))\n1402e7f1d        if (rax.d s<= 0)\n1402e7f45        label_1402e7f45:\n1402e7f48        int32_t rax_1 = *(arg1 + 0x1df8)\n1402e7f4d        int32_t rcx_5 = (*(arg1 + 0x1dfc) * 2) s>> 1\n1402e7f51        if (rax_1 s>= rcx_5)\n1402e7f65        int32_t rdx_4 = rcx_5 s/ 0xa\n1402e7f6e        if (rdx_4 s< 0xa)\n1402e7f6e        rdx_4 = 0xa\n1402e7f79        sub_140047aa0(arg1 + 0x1de8, rdx_4 + rcx_5, 0, 1)\n1402e7f7e        rax_1 = *(arg1 + 0x1df8)\n1402e7f88        *(*(arg1 + 0x1df0) + (sx.q(rax_1) << 3)) = i\n1402e7f8c        *(arg1 + 0x1df8) += 1\n1402e7f1f        int64_t* rcx_2 = *(arg1 + 0x1df0)\n1402e7f26        int64_t rdx_1 = 0\n1402e7f2b        while (*rcx_2 != i)\n1402e7f2d        rdx_1 += 1\n1402e7f30        rcx_2 = &rcx_2[1]\n1402e7f37        if (rdx_1 s>= rax)\n1402e7f37        goto label_1402e7f45\n1402e7f9f        sub_140307190(arg1, 0x37, 0x37, arg3)\n1402e7fab        if (*(arg1 + 0x2041) == 0)\n1402e7fb8        (*(*arg2 + 0x2e8))(arg2, 0, 0)\n1402e7fce        return ",
+  "fetched_at": "2026-04-26T17:22:52Z"
+}

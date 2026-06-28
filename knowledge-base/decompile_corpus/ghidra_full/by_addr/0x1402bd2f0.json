@@ -1,0 +1,7 @@
+{
+  "addr": "0x1402bd2f0",
+  "tool": "ghidra",
+  "fact_id": "rva_select_object_engine",
+  "body": "\nlonglong FUN_1402bd2f0(undefined8 param_1,undefined8 param_2,undefined4 param_3)\n\n{\n  longlong lVar1;\n  \n  lVar1 = FUN_1402aca60();\n  if (lVar1 != 0) {\n    FUN_1402bd360(param_1,lVar1,param_3);\n    FUN_14032f1b0(DAT_140b15418 + 0xa0,lVar1,param_3);\n    return lVar1;\n  }\n  return 0;\n}\n\n",
+  "fetched_at": "2026-04-26T16:43:14Z"
+}

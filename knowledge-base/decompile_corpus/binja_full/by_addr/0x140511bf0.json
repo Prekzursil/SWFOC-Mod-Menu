@@ -1,0 +1,7 @@
+{
+  "addr": "0x140511bf0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140511bff        int64_t* rdi = arg4\n140511c05        void* const rsi = arg1\n140511c0b        void* i\n140511c0b        if (arg4 != 0)\n140511c13        i = (**arg4)(arg4)\n140511c18        if (arg4 == 0 || i == 0)\n140511c2f        label_140511c2f:\n140511c2f        i.b = 0\n140511c24        while (i != &data_140a2bf50)\n140511c26        i = *(i + 8)\n140511c2d        if (i == 0)\n140511c2d        goto label_140511c2f\n140511c75        i.b = 1\n140511c35        if (i.b == 0)\n140511c35        rdi = nullptr\n140511c3c        if (arg3 != 0xf)\n140511c41        if (arg3 == 0x13)\n140511c9e        return sub_1406006b0(sub_1406021a0(rsi - 0x30), 8, nullptr, 0) __tailcall\n140511c46        if (arg3 == 0x14)\n140511c70        return sub_1406006b0(sub_1406021a0(rsi - 0x30), arg3 - 0xb, nullptr, 0) __tailcall\n140511ca6        if (rdi != 0)\n140511cac        *(rsi + 0x10) = rdi[1].b\n140511cb6        *(rsi + 0x11) = 1\n140511cba        if (rsi == 0x30)\n140511cba        rsi = nullptr\n140511cc9        return sub_140220ef0(sub_140058570(), rsi)\n140511cdd        return i",
+  "fetched_at": "2026-04-26T17:32:15Z"
+}

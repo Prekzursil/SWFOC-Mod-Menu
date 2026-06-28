@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406a8ae0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1406a8aea        int64_t* rbx = *(arg3 + 0x10)\n1406a8af8        int64_t r8_2 = (*(arg3 + 0x18) - rbx) s>> 3\n1406a8b00        if (r8_2 != 1)\n1406a8b0c        sub_140248190(arg2, \"Remove_Planet_Highlight -- invalid number of parameters.  Expected 1, got %d.\", r8_2)\n1406a8b1d        return 0\n1406a8b1e        int64_t* rbx_1 = *rbx\n1406a8b24        if (rbx_1 != 0)\n1406a8b2c        void* i\n1406a8b2c        i, r8_2 = (*(*rbx_1 + 0x20))(rbx_1)\n1406a8b32        while (i != 0)\n1406a8b43        if (i == &data_140a157d0)\n1406a8b70        (**rbx_1)(rbx_1)\n1406a8b77        void* rdx = &rbx_1[2]\n1406a8b7b        if (rbx_1[5] u>= 0x10)\n1406a8b7d        rdx = *rdx\n1406a8b87        sub_1402f8dd0(&data_140b27f60, rdx)\n1406a8b92        (*(*rbx_1 + 8))(rbx_1)\n1406a8ba1        return 0\n1406a8b45        i = *(i + 8)\n1406a8b58        sub_140248190(arg2, \"Remove_Planet_Highlight -- invalid type for parameter 1.  Expected strng.\", r8_2)\n1406a8b69        return 0",
+  "fetched_at": "2026-04-26T17:24:26Z"
+}

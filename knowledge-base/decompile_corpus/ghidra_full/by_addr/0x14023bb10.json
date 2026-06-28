@@ -1,0 +1,7 @@
+{
+  "addr": "0x14023bb10",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_14023bb10(void)\n\n{\n  HANDLE pvVar1;\n  \n  if (DAT_140b09390 != '\\0') {\n    if (DAT_140b093d8 != (code *)0x0) {\n      pvVar1 = GetCurrentProcess();\n      (*DAT_140b093d8)(pvVar1,0);\n    }\n    if (DAT_140b093a0 != (code *)0x0) {\n      pvVar1 = GetCurrentProcess();\n      (*DAT_140b093a0)(pvVar1);\n    }\n    FUN_14023b7b0();\n    DAT_140b09390 = '\\0';\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T18:08:25Z"
+}

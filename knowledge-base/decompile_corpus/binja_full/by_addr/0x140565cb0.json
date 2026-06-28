@@ -1,0 +1,7 @@
+{
+  "addr": "0x140565cb0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140565cb7        arg1[1].d = 0\n140565cbe        *arg1 = &InvulnerableDataPackClass::`vftable'{for `BaseDataPackClass'}\n140565cc1        return &InvulnerableDataPackClass::`vftable'{for `BaseDataPackClass'}",
+  "fetched_at": "2026-04-26T17:34:31Z"
+}

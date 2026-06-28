@@ -1,0 +1,7 @@
+{
+  "addr": "0x1403c41c0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1403c41c6        struct ScheduledEventClass::MoveThroughObjectsEventClass::VTable** result = arg1\n1403c41c9        sub_140512c50(arg1)\n1403c41d5        result[0xc].d = 0x3fffff\n1403c41dc        *result = &MoveThroughObjectsEventClass::`vftable'{for `ScheduledEventClass'}\n1403c41e1        __builtin_memset(&result[9], 0, 0x18)\n1403c41f0        result[4].d = 0xa\n1403c41fc        return result",
+  "fetched_at": "2026-04-26T17:24:43Z"
+}

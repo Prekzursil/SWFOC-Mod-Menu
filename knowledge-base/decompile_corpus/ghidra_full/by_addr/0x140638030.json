@@ -1,0 +1,7 @@
+{
+  "addr": "0x140638030",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nchar * __thiscall DynamicTransformBehaviorClass::vfunction9(void)\n\n{\n  return \"DynamicTransformBehaviorClass\";\n}\n\n",
+  "fetched_at": "2026-04-26T17:01:14Z"
+}

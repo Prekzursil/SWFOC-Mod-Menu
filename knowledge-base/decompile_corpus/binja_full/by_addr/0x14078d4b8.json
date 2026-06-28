@@ -1,0 +1,7 @@
+{
+  "addr": "0x14078d4b8",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14078d4b8        int64_t* arg_20 = arg4\n14078d4c8        <lambda_2a444430fde8c29194d880d93eed5e8f>::operator()(arg3)\n14078d4ce        int64_t* result = *arg4\n14078d4d1        void* rcx_1 = *result\n14078d4d4        *(rcx_1 + 0x3a8) &= 0xffffffef\n14078d4e0        return result",
+  "fetched_at": "2026-04-26T17:31:33Z"
+}

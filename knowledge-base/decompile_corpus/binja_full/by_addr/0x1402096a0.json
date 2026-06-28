@@ -1,0 +1,7 @@
+{
+  "addr": "0x1402096a0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1402096ac        arg1[6] = 0xffffffff\n1402096b3        *arg1 = 0\n1402096b8        *(arg1 + 8) = 0\n1402096bf        *(arg1 + 0x10) = 0\n1402096c5        arg1[7].b = 0\n1402096c9        __builtin_memset(&arg1[8], 0, 0x11)\n1402096d5        *(arg1 + 0x34) = 0\n1402096dd        sub_140202370(&arg1[0x10], 0, 0)\n1402096e5        *(arg1 + 0x48) = 0\n1402096e9        *(arg1 + 0x50) = 0\n1402096ed        int64_t* rax = operator new(0x18)\n1402096fb        *rax = rax\n1402096fe        rax[1] = rax\n140209702        *(arg1 + 0x48) = rax\n140209706        *(arg1 + 0x58) = 0\n14020970a        *(arg1 + 0x60) = 0\n14020970e        InitializeCriticalSectionAndSpinCount(&arg1[0x1a], 0xfa0)\n140209721        return arg1",
+  "fetched_at": "2026-04-26T17:28:04Z"
+}

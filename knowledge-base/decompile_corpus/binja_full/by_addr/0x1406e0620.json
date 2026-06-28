@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406e0620",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1406e0635        void* rcx = *(arg1 + 0x98)\n1406e0642        void* rax\n1406e0642        if (rcx != 0)\n1406e064f        if (sub_1402814d0(rcx).b == 0)\n1406e06cf        label_1406e06cf:\n1406e06cf        *arg3 = 0\n1406e06d6        rax.b = 1\n1406e06e7        return rax\n1406e0651        rax = *(arg1 + 0x98)\n1406e065c        if (*(rax + 0x62) != 0)\n1406e065c        goto label_1406e06cf\n1406e065e        void* rbx_1 = *(rax + 0x360)\n1406e0668        if (rbx_1 != 0)\n1406e066a        int32_t rdx = data_140a43f88\n1406e0678        int32_t arg_8 = 0xffffffff\n1406e0687        if (sub_1405f3f00(arg2, rdx, &arg_8).b != 0)\n1406e0690        int32_t rax_1\n1406e0690        if (*(rbx_1 + 0x58) != arg_8)\n1406e06b6        rax_1.b = 1\n1406e06bb        *arg3 = _mm_cvtps_pd(0)\n1406e06ce        return rax_1\n1406e069a        rax_1.b = 1\n1406e069f        *arg3 = _mm_cvtps_pd(0x3f800000)\n1406e06b2        return rax_1\n1406e06ed        rax.b = 0\n1406e06f9        return rax",
+  "fetched_at": "2026-04-26T17:25:55Z"
+}

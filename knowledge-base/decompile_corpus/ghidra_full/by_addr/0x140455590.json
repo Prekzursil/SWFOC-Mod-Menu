@@ -1,0 +1,7 @@
+{
+  "addr": "0x140455590",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall StoryEventRetreatClass::vfunction4(StoryEventRetreatClass *this,longlong param_1)\n\n{\n  char cVar1;\n  \n  if (param_1 != 0) {\n    if (*(int *)&this[1].SignalGeneratorClass_data == 1) {\n      if (param_1 != *(longlong *)((this->StoryEventClass_data).offset_0x210 + 0x638)) {\n        return;\n      }\n    }\n    else {\n      if (*(int *)&this[1].SignalGeneratorClass_data != 3) {\n        return;\n      }\n      cVar1 = FUN_1402824f0(param_1,*(undefined8 *)\n                                     ((this->StoryEventClass_data).offset_0x210 + 0x638));\n      if (cVar1 == '\\0') {\n        return;\n      }\n    }\n    FUN_140455db0(this,0,0);\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T17:55:51Z"
+}

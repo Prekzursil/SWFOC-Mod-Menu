@@ -1,0 +1,7 @@
+{
+  "addr": "0x14079799c",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* Library Function - Single Match\n    int __cdecl getSystemCP(int)\n   \n   Libraries: Visual Studio 2017 Release, Visual Studio 2019 Release */\n\nint __cdecl getSystemCP(int param_1)\n\n{\n  longlong local_28;\n  longlong local_20;\n  char local_10;\n  \n  _LocaleUpdate::_LocaleUpdate((_LocaleUpdate *)&local_28,(__crt_locale_pointers *)0x0);\n  DAT_140b3cbc8 = 0;\n  if (param_1 == -2) {\n    DAT_140b3cbc8 = 1;\n    param_1 = GetOEMCP();\n  }\n  else if (param_1 == -3) {\n    DAT_140b3cbc8 = 1;\n    param_1 = GetACP();\n  }\n  else if (param_1 == -4) {\n    DAT_140b3cbc8 = 1;\n    param_1 = *(UINT *)(local_20 + 0xc);\n  }\n  if (local_10 != '\\0') {\n    *(uint *)(local_28 + 0x3a8) = *(uint *)(local_28 + 0x3a8) & 0xfffffffd;\n  }\n  return param_1;\n}",
+  "fetched_at": "2026-04-26T18:53:29Z"
+}

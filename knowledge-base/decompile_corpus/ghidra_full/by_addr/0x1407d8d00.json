@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407d8d00",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* ParameterClass member function inherited by\n   SimpleParameterClass<class_std::basic_string<char,struct_std::char_traits<char>,class_std::allocator<char>_>,5>\n   ParameterClass member function inherited by RangedParameterClass<float,4> */\n\nvoid __thiscall ParameterClass::vfunction5(ParameterClass *this,undefined8 param_1)\n\n{\n  int iVar1;\n  \n  iVar1 = (*this->vftablePtr->vfunction2)(this);\n  FUN_1400e9400(param_1,\"|%s|%s|%s|\\n\",(this->RefCountClass_data).offset_0x8,\n                (&PTR_s_Boolean_140a46320)[iVar1],(this->RefCountClass_data).offset_0x10);\n  return;\n}",
+  "fetched_at": "2026-04-26T18:58:38Z"
+}

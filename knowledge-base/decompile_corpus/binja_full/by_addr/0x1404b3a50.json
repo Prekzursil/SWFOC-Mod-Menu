@@ -1,0 +1,7 @@
+{
+  "addr": "0x1404b3a50",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1404b3a60        *arg1 = &EventQueueClass::`vftable'\n1404b3a67        int64_t result = j_sub_1407864b8(arg1[4])\n1404b3a6c        arg1[4] = 0\n1404b3a79        return result",
+  "fetched_at": "2026-04-26T17:29:51Z"
+}

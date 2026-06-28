@@ -1,0 +1,7 @@
+{
+  "addr": "0x140429320",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140429326        struct TacticalSpecialAbilityEventClass::TacticalSpecialAbilityWithDummyTargetEventClass::VTable** result = arg1\n140429329        sub_140512c50(arg1)\n140429330        result[9] = 0x3fffff\n14042933f        *(result + 0x24c) = 0\n140429346        *result = &TacticalSpecialAbilityWithDummyTargetEventClass::`vftable'{for `TacticalSpecialAbilityEventClass'}\n14042934c        __builtin_memset(result + 0x254, 0, 0x14)\n140429360        result[4].d = 0x39\n14042936c        return result",
+  "fetched_at": "2026-04-26T17:26:36Z"
+}

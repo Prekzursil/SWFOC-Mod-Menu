@@ -1,0 +1,7 @@
+{
+  "addr": "0x1405f51e0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "AIExecutionSystemClass * __thiscall TacticalAIManagerClass::vfunction8(TacticalAIManagerClass *this)\n\n{\n  int iVar1;\n  AIExecutionSystemClass *pAVar2;\n  \n  iVar1 = *(int *)((longlong)&(this->TacticalAIManagerClass_data).offset_0x8 + 4);\n  if (((iVar1 != 0) && (iVar1 != 1)) && (iVar1 != 2)) {\n    return (AIExecutionSystemClass *)0x0;\n  }\n  pAVar2 = (AIExecutionSystemClass *)FUN_140769c58(0x58);\n  if (pAVar2 == (AIExecutionSystemClass *)0x0) {\n    return (AIExecutionSystemClass *)0x0;\n  }\n  pAVar2 = AIExecutionSystemClass::AIExecutionSystemClass(pAVar2,this);\n  return pAVar2;\n}",
+  "fetched_at": "2026-04-26T17:23:03Z"
+}

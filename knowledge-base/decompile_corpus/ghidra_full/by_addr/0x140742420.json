@@ -1,0 +1,7 @@
+{
+  "addr": "0x140742420",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* Library Function - Single Match\n    public: __cdecl std::_Locinfo::~_Locinfo(void) __ptr64\n   \n   Libraries: Visual Studio 2012 Release, Visual Studio 2019 Release */\n\nvoid __thiscall std::_Locinfo::~_Locinfo(_Locinfo *this)\n\n{\n  _Locinfo_dtor(this);\n  if (*(longlong *)(this + 0x58) != 0) {\n    FUN_1407864b8();\n  }\n  *(undefined8 *)(this + 0x58) = 0;\n  if (*(longlong *)(this + 0x48) != 0) {\n    FUN_1407864b8();\n  }\n  *(undefined8 *)(this + 0x48) = 0;\n  if (*(longlong *)(this + 0x38) != 0) {\n    FUN_1407864b8();\n  }\n  *(undefined8 *)(this + 0x38) = 0;\n  if (*(longlong *)(this + 0x28) != 0) {\n    FUN_1407864b8();\n  }\n  *(undefined8 *)(this + 0x28) = 0;\n  if (*(longlong *)(this + 0x18) != 0) {\n    FUN_1407864b8();\n  }\n  *(undefined8 *)(this + 0x18) = 0;\n  if (*(longlong *)(this + 8) != 0) {\n    FUN_1407864b8();\n  }\n  *(undefined8 *)(this + 8) = 0;\n  _Lockit::~_Lockit((_Lockit *)this);\n  return;\n}",
+  "fetched_at": "2026-04-26T18:04:34Z"
+}

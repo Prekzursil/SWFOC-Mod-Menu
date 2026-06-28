@@ -1,0 +1,7 @@
+{
+  "addr": "0x140748368",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14074837b        *arg1 = ___lc_codepage_func()\n140748382        int64_t rax_1 = calloc(0x100, 2)\n140748387        *(arg1 + 8) = rax_1\n14074838e        if (rax_1 == 0)\n1407483f5        int64_t rax_3 = __pctype_func()\n1407483fa        arg1[4] = 0\n1407483fe        *(arg1 + 8) = rax_3\n140748390        int128_t* rax_2 = __pctype_func()\n140748395        int128_t* rcx = *(arg1 + 8)\n140748399        int64_t i_1 = 4\n1407483ea        int64_t i\n1407483a5        *rcx = *rax_2\n1407483ac        rcx[1] = rax_2[1]\n1407483b4        rcx[2] = rax_2[2]\n1407483bc        rcx[3] = rax_2[3]\n1407483c4        rcx[4] = rax_2[4]\n1407483cc        rcx[5] = rax_2[5]\n1407483d4        rcx[6] = rax_2[6]\n1407483d8        rcx = &rcx[8]\n1407483db        int128_t zmm1 = rax_2[7]\n1407483df        rax_2 = &rax_2[8]\n1407483e2        rcx[-1] = zmm1\n1407483e6        i = i_1\n1407483e6        i_1 -= 1\n1407483ea        do while (i != 1)\n1407483ec        arg1[4] = 1\n140748407        int64_t rcx_1 = *(___lc_locale_name_func() + 8)\n14074840b        *(arg1 + 0x18) = rcx_1\n140748412        if (rcx_1 != 0)\n140748419        *(arg1 + 0x18) = sub_140788fac(rcx_1)\n140748425        return arg1",
+  "fetched_at": "2026-04-26T17:29:33Z"
+}

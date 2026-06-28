@@ -1,0 +1,7 @@
+{
+  "addr": "0x14063c290",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nundefined8 __thiscall FlyingLocomotorBehaviorClass::vfunction57(FlyingLocomotorBehaviorClass *this)\n\n{\n  undefined *puVar1;\n  longlong lVar2;\n  undefined **ppuVar3;\n  undefined8 uVar4;\n  \n  ppuVar3 = this->offset_0x18;\n  puVar1 = ppuVar3[0x15];\n  if (puVar1 != (undefined *)0x0) {\n    ppuVar3 = (undefined **)LocomotorCommonClass::vfunction57((LocomotorCommonClass *)this);\n    if (((char)ppuVar3 != '\\0') && (lVar2 = *(longlong *)(puVar1 + 0x1f0), lVar2 != 0)) {\n      ppuVar3 = (undefined **)FUN_14041b260(lVar2);\n      if ((char)ppuVar3 == '\\0') {\n        uVar4 = FUN_14041af10(lVar2);\n        ppuVar3 = (undefined **)FUN_140583670(uVar4,8);\n        if ((char)ppuVar3 == '\\0') goto LAB_14063c2e8;\n      }\n      return CONCAT71((int7)((ulonglong)ppuVar3 >> 8),1);\n    }\n  }\nLAB_14063c2e8:\n  return (ulonglong)ppuVar3 & 0xffffffffffffff00;\n}\n\n",
+  "fetched_at": "2026-04-26T17:02:17Z"
+}

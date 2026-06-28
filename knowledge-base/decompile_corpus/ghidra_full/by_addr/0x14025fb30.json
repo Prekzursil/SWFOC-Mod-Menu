@@ -1,0 +1,7 @@
+{
+  "addr": "0x14025fb30",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_14025fb30(void)\n\n{\n  char cVar1;\n  \n  thunk_FUN_140181c50();\n  if (DAT_140b0a108 != 0) {\n    cVar1 = thunk_FUN_140181c20();\n    if (cVar1 != '\\0') {\n      thunk_FUN_140181af0(DAT_140b0a108);\n    }\n    DAT_140b0a108 = 0;\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T18:15:14Z"
+}

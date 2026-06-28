@@ -1,0 +1,7 @@
+{
+  "addr": "0x1404765b0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1404765b9        *arg2 = 0\n1404765c0        arg2[3] = 0xf\n1404765cb        arg2[2] = 0xf\n1404765e0        memcpy(arg2, \"Root Diagnostic\", 0xf)\n1404765e8        *(arg2 + 0xf) = 0\n1404765f1        return arg2",
+  "fetched_at": "2026-04-26T17:28:13Z"
+}

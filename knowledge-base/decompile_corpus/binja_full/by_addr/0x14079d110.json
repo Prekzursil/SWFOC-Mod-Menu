@@ -1,0 +1,7 @@
+{
+  "addr": "0x14079d110",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14079d110        int32_t rcx\n14079d110        int32_t arg_8 = rcx\n14079d119        return ",
+  "fetched_at": "2026-04-26T17:32:11Z"
+}

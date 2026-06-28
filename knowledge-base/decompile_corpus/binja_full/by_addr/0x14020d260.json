@@ -1,0 +1,7 @@
+{
+  "addr": "0x14020d260",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14020d268        int128_t zmm0 = arg1[6] ^ data_140800860\n14020d26f        float zmm3 = arg1[7]\n14020d277        float zmm2 = zmm0.d f* arg1[1]\n14020d27c        float zmm1 = zmm3\n14020d289        zmm0.d = zmm0.d f* *arg1\n14020d29a        zmm3 = zmm3 f* arg1[2] f+ zmm0.d f+ arg1[4]\n14020d29f        arg2[1] = zmm2 + zmm1 f* arg1[3] f+ arg1[5]\n14020d2a4        *arg2 = zmm3\n14020d2a8        return arg2",
+  "fetched_at": "2026-04-26T17:28:12Z"
+}

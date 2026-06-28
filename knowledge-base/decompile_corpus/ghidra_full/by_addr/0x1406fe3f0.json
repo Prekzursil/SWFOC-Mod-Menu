@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406fe3f0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "char * __thiscall ForceTelekinesisAbilityClass::vfunction3_for_IXMLLoadableClass(void)\n\n{\n  return \"Force_Telekinesis_Ability\";\n}",
+  "fetched_at": "2026-04-26T17:50:25Z"
+}

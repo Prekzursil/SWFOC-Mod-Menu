@@ -1,0 +1,7 @@
+{
+  "addr": "0x14023abb0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14023abbc        int64_t* r8 = arg1 + 0x10\n14023abc0        if (*(arg1 + 0x28) u>= 0x10)\n14023abc2        r8 = *r8\n14023abd4        void text\n14023abd4        sscanf_s(&text, \"xml parse error - File %s: %s\\n\", r8)\n14023abfa        return MessageBoxA(nullptr, &text, \"Expect Strange Bugs...\", MB_ICONHAND)",
+  "fetched_at": "2026-04-26T17:29:59Z"
+}

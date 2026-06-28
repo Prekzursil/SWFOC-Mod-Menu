@@ -1,0 +1,7 @@
+{
+  "addr": "0x140193e70",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140193e76        void* rax = *(arg1 + 0x3f8)\n140193e97        if (rax != 0 && *(rax + 0x50) == *(arg1 + 0x3f0) && data_140a12ad4 == 0)\n140193ea5        return *(arg1 + 0x3f8)\n140193eb0        struct RefCountClass::alRenderTarget::VTable** rax_3 = operator new(0x68)\n140193eb8        struct alRenderTarget::alD3dRenderTarget::VTable** rdi\n140193eb8        if (rax_3 == 0)\n140193ec7        rdi = nullptr\n140193ec2        rdi = sub_140197f80(rax_3)\n140193ec9        struct alRenderTarget::alD3dRenderTarget::VTable** rcx_1 = *(arg1 + 0x3f8)\n140193ed3        if (rcx_1 != rdi)\n140193ed8        if (rcx_1 != 0)\n140193edd        (*rcx_1)->vFunc_1(rcx_1)\n140193ee0        *(arg1 + 0x3f8) = rdi\n140193ee7        rcx_1 = rdi\n140193eed        if (rdi != 0)\n140193ef2        (*rdi)->__offset(0x0).q(rcx_1)\n140193ef4        rcx_1 = *(arg1 + 0x3f8)\n140193efb        int32_t rdx = *(arg1 + 0x3f0)\n140193f0a        sub_1401981b0(rcx_1, rdx, rdx, 0x15)\n140193f22        if (std::operator!=<void __cdecl ()>(*(arg1 + 0x3f8)) == 0)\n140193f24        int64_t* result = *(arg1 + 0x3f8)\n140193f2e        if (result == 0)\n140193f56        return result\n140193f33        (*(*result + 8))(result)\n140193f36        *(arg1 + 0x3f8) = 0\n140193f4d        return *(arg1 + 0x3f8)",
+  "fetched_at": "2026-04-26T17:24:24Z"
+}

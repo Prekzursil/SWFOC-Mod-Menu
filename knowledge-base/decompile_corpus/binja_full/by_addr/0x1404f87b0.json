@@ -1,0 +1,7 @@
+{
+  "addr": "0x1404f87b0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1404f87bb        struct BehaviorClass::LandObstacleBehaviorClass::VTable** result = operator new(0x40)\n1404f87c6        if (result == 0)\n1404f87fe        return result\n1404f87cb        sub_1404c32d0(result)\n1404f87d7        *result = &LandObstacleBehaviorClass::`vftable'{for `BehaviorClass'}\n1404f87e1        result[1] = &LandObstacleBehaviorClass::`vftable'{for `RefCountClass'}\n1404f87ec        result[3] = &LandObstacleBehaviorClass::`vftable'{for `SignalListenerClass'}\n1404f87f8        return result",
+  "fetched_at": "2026-04-26T17:31:47Z"
+}

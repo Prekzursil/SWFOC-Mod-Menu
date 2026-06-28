@@ -1,0 +1,7 @@
+{
+  "addr": "0x140448cb0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140448cb3        if (arg2 == 0)\n140448cb3        return \n140448cd2        int32_t i = 0\n140448ce0        if (*(arg1 + 0x278) s<= 0)\n140448ce0        return \n140448ceb        void* rbx_1 = 0x20\n140448cfb        char* rdx_2 = *(arg1 + 0x270) - 0x20 + rbx_1\n140448d03        if (*(rdx_2 + 0x18) u>= 0x10)\n140448d05        rdx_2 = *rdx_2\n140448d0f        char* rcx_1 = *(arg2 + 0x298) + 0xf8\n140448d1b        if (*(rcx_1 + 0x18) u>= 0x10)\n140448d1d        rcx_1 = *rcx_1\n140448d27        if (_stricmp(rcx_1, rdx_2) == 0)\n140448d30        char* rcx_2 = rbx_1 + *(arg1 + 0x270)\n140448d37        char* rdx_3\n140448d37        if (arg3 == 0)\n140448d51        if (*(rcx_2 + 0x18) u>= 0x10)\n140448d53        rcx_2 = *rcx_2\n140448d56        rdx_3 = \"space\"\n140448d3e        if (*(rcx_2 + 0x18) u>= 0x10)\n140448d40        rcx_2 = *rcx_2\n140448d43        rdx_3 = \"land\"\n140448d64        if (_stricmp(rcx_2, rdx_3) == 0)\n140448d85        sub_140446780(arg1 + 0x268, i + 1)\n140448d93        sub_140446780(arg1 + 0x268, i)\n140448d93        break\n140448d66        i += 2\n140448d69        rbx_1 += 0x40\n140448d73        do while (i s< *(arg1 + 0x278))\n140448db2        return ",
+  "fetched_at": "2026-04-26T17:27:27Z"
+}

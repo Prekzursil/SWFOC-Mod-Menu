@@ -1,0 +1,7 @@
+{
+  "addr": "0x140592e30",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined1 __thiscall\nStealthAbilityClass::vfunction6_for_IXMLLoadableClass\n          (StealthAbilityClass *this,longlong param_1,longlong param_2)\n\n{\n  if ((param_1 != 0) && ((param_2 == 0 || (param_2 == param_1)))) {\n    return 1;\n  }\n  return 0;\n}",
+  "fetched_at": "2026-04-26T18:42:17Z"
+}

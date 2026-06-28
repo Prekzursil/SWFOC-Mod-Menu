@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406c9a40",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* AIGoalSystemClass member function inherited by LandGoalSystemClass\n   AIGoalSystemClass member function inherited by SpaceGoalSystemClass */\n\nundefined8 __thiscall AIGoalSystemClass::vfunction9(AIGoalSystemClass *this,longlong param_1)\n\n{\n  longlong *plVar1;\n  longlong lVar2;\n  ulonglong uVar3;\n  \n  plVar1 = (longlong *)\n           (**(code **)(**(longlong **)((this->ServicedAISystemClass_data).offset_0x0 + 0x38) + 0x40\n                       ))();\n  uVar3 = 0;\n  lVar2 = *plVar1;\n  if (plVar1[1] - lVar2 >> 3 != 0) {\n    do {\n      lVar2 = (**(code **)(**(longlong **)(lVar2 + uVar3 * 8) + 0x30))();\n      if (lVar2 == param_1) {\n        return *(undefined8 *)(*plVar1 + uVar3 * 8);\n      }\n      lVar2 = *plVar1;\n      uVar3 = (ulonglong)((int)uVar3 + 1);\n    } while (uVar3 < (ulonglong)(plVar1[1] - lVar2 >> 3));\n  }\n  return 0;\n}",
+  "fetched_at": "2026-04-26T17:40:19Z"
+}

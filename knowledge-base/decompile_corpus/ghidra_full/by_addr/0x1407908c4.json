@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407908c4",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* Library Function - Single Match\n    iswctype\n   \n   Library: Visual Studio 2019 Release */\n\nint __cdecl iswctype(wint_t _C,wctype_t _Type)\n\n{\n  uint uVar1;\n  BOOL BVar2;\n  WORD local_res8 [4];\n  WCHAR local_res18 [8];\n  \n  if (_C == 0xffff) {\nLAB_140790923:\n    uVar1 = 0;\n  }\n  else {\n    if (_C < 0x100) {\n      local_res8[0] = *(WORD *)(PTR_DAT_140a44ce8 + (ulonglong)_C * 2);\n    }\n    else {\n      local_res8[0] = 0;\n      local_res18[0] = _C;\n      BVar2 = GetStringTypeW(1,local_res18,1,local_res8);\n      if (BVar2 == 0) goto LAB_140790923;\n    }\n    uVar1 = (uint)(local_res8[0] & _Type);\n  }\n  return uVar1;\n}",
+  "fetched_at": "2026-04-26T18:52:39Z"
+}

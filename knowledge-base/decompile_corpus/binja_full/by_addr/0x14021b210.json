@@ -1,0 +1,7 @@
+{
+  "addr": "0x14021b210",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14021b224        if (arg1[1] == 0)\n14021b232        return 0\n14021b238        int64_t* rbx = &arg1[5]\n14021b23f        if (rbx == 0)\n14021b27d        rbx = arg3\n14021b251        if (WaitForSingleObject(*rbx, 0x2710) == WAIT_OBJECT_0)\n14021b273        rbx[1] = 0\n14021b253        rbx[1]\n14021b282        int64_t* rcx_2 = *arg1\n14021b285        void** rax_4 = *rcx_2\n14021b28b        void* const result\n14021b28b        if (rax_4 == rcx_2)\n14021b2a6        label_14021b2a6:\n14021b2a6        result = nullptr\n14021b290        while (true)\n14021b290        result = rax_4[2]\n14021b29c        if (result != 0 && *(result + 0x20) == arg2)\n14021b29c        break\n14021b29e        rax_4 = *rax_4\n14021b2a4        if (rax_4 == rcx_2)\n14021b2a4        goto label_14021b2a6\n14021b2ab        if (rbx != 0)\n14021b2ad        rbx[1]\n14021b2b1        HANDLE hMutex = *rbx\n14021b2b4        rbx[1] = 0\n14021b2c4        if (ReleaseMutex(hMutex) == 0)\n14021b2c6        GetLastError()\n14021b2f6        return result",
+  "fetched_at": "2026-04-26T17:28:45Z"
+}

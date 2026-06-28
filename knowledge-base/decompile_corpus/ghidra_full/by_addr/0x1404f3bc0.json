@@ -1,0 +1,7 @@
+{
+  "addr": "0x1404f3bc0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "TransportBehaviorClass * __thiscall\nTransportBehaviorClass::vfunction4(TransportBehaviorClass *this,int param_1)\n\n{\n  TransportBehaviorClass *pTVar1;\n  \n  pTVar1 = (TransportBehaviorClass *)0x0;\n  if (param_1 == 5) {\n    pTVar1 = this;\n  }\n  return pTVar1;\n}",
+  "fetched_at": "2026-04-26T18:18:22Z"
+}

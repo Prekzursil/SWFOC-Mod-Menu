@@ -1,0 +1,7 @@
+{
+  "addr": "0x140372320",
+  "tool": "ghidra",
+  "fact_id": "rva_get_max_front_shield",
+  "body": "\nulonglong __thiscall FUN_140372320(void *this,longlong param_2)\n\n{\n  char cVar1;\n  undefined8 uVar2;\n  float fVar3;\n  undefined4 uVar4;\n  GreaterThan<float>_vftable *local_res10;\n  Plus<float>_vftable *local_res18 [2];\n  undefined1 local_178 [128];\n  undefined1 local_f8 [240];\n  \n  if (param_2 == 0) {\n    return (ulonglong)*(uint *)((longlong)this + 0xdd0);\n  }\n  FUN_140535cb0(local_178,0);\n  cVar1 = FUN_140395c70(param_2,local_178);\n  if (cVar1 == '\\0') {\n    fVar3 = *(float *)((longlong)this + 0xdd0);\n    uVar4 = 0;\n  }\n  else {\n                    /* inlined constructor or destructor (approx location) for GreaterThan<float> */\n    local_res10 = &GreaterThan<float>::vftable;\n                    /* inlined constructor or destructor (approx location) for Plus<float> */\n    local_res18[0] = &Plus<float>::vftable;\n    uVar2 = FUN_14033fb70(local_f8,local_res18,&local_res10);\n    uVar4 = (undefined4)((ulonglong)uVar2 >> 0x20);\n    fVar3 = ((float)uVar2 + DAT_1407ffaf8) * *(float *)((longlong)this + 0xdd0);\n  }\n  FUN_140535fb0(local_178);\n  return CONCAT44(uVar4,fVar3);\n}\n\n",
+  "fetched_at": "2026-04-26T16:43:16Z"
+}

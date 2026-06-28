@@ -1,0 +1,7 @@
+{
+  "addr": "0x140780628",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* Library Function - Single Match\n    mbstowcs\n   \n   Library: Visual Studio 2019 Release */\n\nsize_t __cdecl mbstowcs(wchar_t *_Dest,char *_Source,size_t _MaxCount)\n\n{\n  __uint64 _Var1;\n  undefined **ppuVar2;\n  \n  if (DAT_140b3c49c == 0) {\n    ppuVar2 = &PTR_PTR_140a44f18;\n  }\n  else {\n    ppuVar2 = (undefined **)0x0;\n  }\n  _Var1 = _mbstowcs_l_helper(_Dest,_Source,_MaxCount,(__crt_locale_pointers *)ppuVar2);\n  return _Var1;\n}",
+  "fetched_at": "2026-04-26T18:50:59Z"
+}

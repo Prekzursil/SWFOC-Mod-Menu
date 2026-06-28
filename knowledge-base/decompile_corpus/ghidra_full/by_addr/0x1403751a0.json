@@ -1,0 +1,7 @@
+{
+  "addr": "0x1403751a0",
+  "tool": "ghidra",
+  "fact_id": "rva_faction_affiliation_check",
+  "body": "\nulonglong FUN_1403751a0(longlong param_1,longlong param_2)\n\n{\n  longlong *plVar1;\n  longlong lVar2;\n  int iVar3;\n  \n  plVar1 = *(longlong **)(param_1 + 0xef0);\n  iVar3 = (int)(*(longlong *)(param_1 + 0xef8) - (longlong)plVar1 >> 3);\n  if (0 < iVar3) {\n    lVar2 = 0;\n    do {\n      if (*plVar1 == param_2) {\n        return CONCAT71((int7)((ulonglong)plVar1 >> 8),1);\n      }\n      lVar2 = lVar2 + 1;\n      plVar1 = plVar1 + 1;\n    } while (lVar2 < iVar3);\n  }\n  return (ulonglong)plVar1 & 0xffffffffffffff00;\n}\n\n",
+  "fetched_at": "2026-04-26T16:43:17Z"
+}

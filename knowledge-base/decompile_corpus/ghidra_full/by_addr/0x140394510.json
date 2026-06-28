@@ -1,0 +1,7 @@
+{
+  "addr": "0x140394510",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_140394510(longlong param_1)\n\n{\n  longlong *plVar1;\n  char cVar2;\n  longlong lVar3;\n  longlong lVar4;\n  int iVar5;\n  \n  iVar5 = (int)*(char *)(param_1 + 0x288);\n  while (iVar5 = iVar5 + -1, -1 < iVar5) {\n    plVar1 = *(longlong **)(*(longlong *)(param_1 + 0x278) + (longlong)(char)iVar5 * 8);\n    (**(code **)(*plVar1 + 0x68))(plVar1,param_1);\n  }\n  cVar2 = (**(code **)(*DAT_140b15418 + 0xf0))();\n  if ((((cVar2 != '\\0') && (0 < *(int *)(*(longlong *)(param_1 + 0x298) + 0x2120))) &&\n      (lVar3 = FUN_140294bc0(&DAT_140a16fd0,*(undefined4 *)(param_1 + 0x58)), lVar3 != 0)) &&\n     (iVar5 = 0, 0 < (int)(DAT_140a16fd8 - DAT_140a16fd0 >> 3))) {\n    do {\n      lVar4 = FUN_140294bc0(&DAT_140a16fd0,iVar5);\n      if ((lVar4 != 0) && (cVar2 = FUN_1402823e0(lVar3,lVar4), cVar2 != '\\0')) {\n        FUN_140289010(lVar4);\n      }\n      iVar5 = iVar5 + 1;\n    } while (iVar5 < (int)(DAT_140a16fd8 - DAT_140a16fd0 >> 3));\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T17:29:26Z"
+}

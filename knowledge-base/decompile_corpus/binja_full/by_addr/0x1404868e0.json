@@ -1,0 +1,7 @@
+{
+  "addr": "0x1404868e0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1404868ed        if (*(arg1 + 0x19) != 0)\n1404868ed        return \n140486902        sub_14027d370(8, \"%s -- \\n\", \"TheGameScoringManagerClass::Player_List_Reset\")\n140486907        void* rcx = *(arg1 + 0x10)\n14048690e        if (rcx != 0)\n140486910        sub_1402488e0(rcx)\n140486915        int64_t* rcx_1 = *(arg1 + 0x10)\n14048691c        if (rcx_1 != 0)\n140486921        (*(*rcx_1 + 8))(rcx_1)\n140486924        *(arg1 + 0x10) = 0\n140486934        if (data_140b15b10 == 0)\n14048693e        return \n14048693e        char* rdx = &data_140b15b00\n14048694b        if (data_140b15b18 u>= 0x10)\n14048694b        rdx = data_140b15b00\n14048695b        return sub_1404854e0(arg1, rdx, 0, 1) __tailcall\n140486965        return ",
+  "fetched_at": "2026-04-26T17:28:35Z"
+}

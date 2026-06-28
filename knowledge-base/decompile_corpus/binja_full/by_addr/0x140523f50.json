@@ -1,0 +1,7 @@
+{
+  "addr": "0x140523f50",
+  "tool": "binary_ninja",
+  "fact_id": "rva_production_event_ctor",
+  "body": "140523f56        struct ScheduledEventClass::ProductionEventClass::VTable** result = arg1\n140523f59        sub_140512c50(arg1)\n140523f65        result[4].d = 7\n140523f6c        *result = &ProductionEventClass::`vftable'{for `ScheduledEventClass'}\n140523f77        return result",
+  "fetched_at": "2026-04-26T16:43:47Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x1403df5a0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1403df5b3        if (arg2 != 0)\n1403df5bc        if (arg3 == data_140b278b0)\n1403df5da        label_1403df5da:\n1403df5da        struct RefCountClass::EventClass::VTable** rax_2 = operator new(0x50)\n1403df5e2        struct ScheduledEventClass::SetGUIIndexEventClass::VTable** rsi_1\n1403df5e2        if (rax_2 == 0)\n1403df5f1        rsi_1 = nullptr\n1403df5ec        rsi_1 = sub_1405b1170(rax_2)\n1403df5fc        sub_1405b06b0(rsi_1, *(arg2 + 0x50), arg3)\n1403df60b        sub_1403b01f0(&data_140b2ed18, rsi_1)\n1403df5be        void* rax_1 = *(arg2 + 0x1b0)\n1403df5ce        if (rax_1 != 0 && *(rax_1 + 0x32) != 0)\n1403df5ce        goto label_1403df5da\n1403df624        return sub_1403a87c0(arg2, arg3) __tailcall",
+  "fetched_at": "2026-04-26T17:25:07Z"
+}

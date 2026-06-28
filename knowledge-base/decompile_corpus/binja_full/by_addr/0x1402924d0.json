@@ -1,0 +1,7 @@
+{
+  "addr": "0x1402924d0",
+  "tool": "binary_ninja",
+  "fact_id": "rva_player_list_set_current_by_faction",
+  "body": "1402924df        uint64_t rbx = arg4\n1402924f0        if (arg3 == 0 && rbx == 0)\n1402924eb        return \n1402924f6        int64_t* rcx = data_140b15418\n140292500        uint64_t rax\n140292500        if (rcx != 0)\n14029250d        rax = (*(*rcx + 0xe0))(rcx)\n140292502        rax = zx.q(data_140b153fc)\n140292515        if (rax.d != 0)\n140292515        return \n14029251a        if (rbx == 0)\n14029251f        rax = sub_1404af360(arg3)\n140292524        rbx = rax\n14029252a        if (rax != 0)\n14029252a        goto label_14029252c\n14029252a        return \n14029252c        label_14029252c:\n14029252c        int64_t* r10_1 = *arg1\n14029252f        int32_t rcx_2 = 0\n140292538        int32_t r9_2 = ((arg1[1] - r10_1) s>> 3).d\n14029253f        if (r9_2 s<= 0)\n14029253f        return \n140292541        int64_t* rdx = r10_1\n140292547        while (true)\n140292547        int64_t r8 = *(*rdx + 0x68)\n140292553        if (r8 != 0 && r8 == rbx)\n140292570        arg1[6].d = rcx_2\n14029257a        *(r10_1[sx.q(rcx_2)] + 0x62) = 1\n14029257a        break\n140292555        rcx_2 += 1\n140292557        rdx = &rdx[1]\n14029255e        if (rcx_2 s>= r9_2)\n14029256f        return \n14029258d        return ",
+  "fetched_at": "2026-04-26T16:43:12Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x140332eb0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140332ecb        if (arg2 != 0)\n140332ecd        *arg1 = arg2\n140332ee0        if (WaitForSingleObject(*arg2, 0x2710) != WAIT_OBJECT_0)\n140332ee2        arg2[1]\n140332f1a        return arg1\n140332f48        arg2[1] = arg3\n140332f5e        return arg1",
+  "fetched_at": "2026-04-26T17:03:00Z"
+}

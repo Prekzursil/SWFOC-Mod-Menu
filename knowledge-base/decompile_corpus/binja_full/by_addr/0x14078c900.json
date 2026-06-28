@@ -1,0 +1,7 @@
+{
+  "addr": "0x14078c900",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14078c90f        int64_t* rdi = data_140b3c438\n14078c919        if (rdi != 0)\n14078c997        while (true)\n14078c997        uint8_t* result = *rdi\n14078c99d        if (result == 0)\n14078c92d        return result\n14078c92e        int32_t var_10_1 = 0\n14078c937        int64_t var_18_1 = 0\n14078c944        int32_t rax_1 = __acrt_MultiByteToWideChar(0, 0, result, 0xffffffff)\n14078c949        int64_t rsi_1 = sx.q(rax_1)\n14078c94e        if (rax_1 == 0)\n14078c94e        break\n14078c958        uint128_t* rax_2 = _calloc_base(rsi_1, 2)\n14078c963        if (rax_2 != 0)\n14078c96c        int32_t var_10_2 = rsi_1.d\n14078c974        uint128_t* var_18_2 = rax_2\n14078c980        if (__acrt_MultiByteToWideChar(0, 0, *rdi, 0xffffffff) != 0)\n14078c987        j_common_set_variable_in_environment_nolock<wchar_t>(rax_2, 0)\n14078c98e        _free_base(0)\n14078c993        rdi = &rdi[1]\n14078c993        continue\n14078c9a7        _free_base(rax_2)\n14078c9ac        break\n14078c91b        return 0xffffffff",
+  "fetched_at": "2026-04-26T17:31:30Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x140390d90",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_140390d90(longlong param_1)\n\n{\n  RadarMapDataPackClass *pRVar1;\n  \n  if (*(longlong *)(param_1 + 0x200) == 0) {\n    pRVar1 = (RadarMapDataPackClass *)FUN_140769c58(0x20);\n    if (pRVar1 != (RadarMapDataPackClass *)0x0) {\n      pRVar1 = RadarMapDataPackClass::RadarMapDataPackClass(pRVar1);\n      *(RadarMapDataPackClass **)(param_1 + 0x200) = pRVar1;\n      return;\n    }\n    *(undefined8 *)(param_1 + 0x200) = 0;\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T17:21:59Z"
+}

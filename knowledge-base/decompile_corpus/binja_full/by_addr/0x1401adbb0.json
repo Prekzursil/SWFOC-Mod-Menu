@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401adbb0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1401adbbe        struct alD3dSimpleEngineParam::alD3dSkyCubeTextureEngineParam::VTable** result = operator new(0x10)\n1401adbc6        if (result == 0)\n1401adbe1        return result\n1401adbcf        result[1] = arg1\n1401adbd3        *result = &alD3dSkyCubeTextureEngineParam::`vftable'{for `alD3dSimpleEngineParam'}\n1401adbdb        return result",
+  "fetched_at": "2026-04-26T17:25:29Z"
+}

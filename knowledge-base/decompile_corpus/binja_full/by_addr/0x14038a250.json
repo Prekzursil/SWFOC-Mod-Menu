@@ -1,0 +1,7 @@
+{
+  "addr": "0x14038a250",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14038a254        return sub_14038a310(arg1 - 8, arg2) __tailcall",
+  "fetched_at": "2026-04-26T17:20:53Z"
+}

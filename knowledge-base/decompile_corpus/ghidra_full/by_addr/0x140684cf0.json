@@ -1,0 +1,7 @@
+{
+  "addr": "0x140684cf0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall\nMovingVsStoppedCollisionClass::vfunction4_for_SignalListenerClass\n          (MovingVsStoppedCollisionClass *this)\n\n{\n  if ((*(uint *)&this->offset_0x60 != 0) && (*(uint *)&this->offset_0x60 <= DAT_140b0a320)) {\n    *(undefined4 *)&this->offset_0x60 = 0;\n    FUN_1405c6970();\n    *(undefined4 *)&this->offset_0x68 = 0;\n  }\n                    /* WARNING: Could not recover jumptable at 0x000140684d3b. Too many branches */\n                    /* WARNING: Treating indirect jump as call */\n  (*(code *)(IMAGE_DOS_HEADER_140000000.e_magic +\n            *(uint *)(&LAB_140684f64 + (longlong)*(int *)&this->offset_0x68 * 4)))\n            (IMAGE_DOS_HEADER_140000000.e_magic +\n             *(uint *)(&LAB_140684f64 + (longlong)*(int *)&this->offset_0x68 * 4));\n  return;\n}",
+  "fetched_at": "2026-04-26T17:14:33Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407864d4",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* Library Function - Single Match\n    __acrt_initialize_locks\n   \n   Libraries: Visual Studio 2017 Release, Visual Studio 2019 Release */\n\nundefined4 __acrt_initialize_locks(void)\n\n{\n  int iVar1;\n  uint uVar2;\n  ulonglong uVar3;\n  \n  uVar3 = 0;\n  do {\n    iVar1 = __acrt_InitializeCriticalSectionEx(&DAT_140b3c0d0 + uVar3 * 0x28,4000,0);\n    if (iVar1 == 0) {\n      __acrt_uninitialize_locks(0);\n      return 0;\n    }\n    DAT_140b3c300 = DAT_140b3c300 + 1;\n    uVar2 = (int)uVar3 + 1;\n    uVar3 = (ulonglong)uVar2;\n  } while (uVar2 < 0xe);\n  return 1;\n}",
+  "fetched_at": "2026-04-26T18:51:36Z"
+}

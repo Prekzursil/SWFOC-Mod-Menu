@@ -1,0 +1,7 @@
+{
+  "addr": "0x1404d8d10",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1404d8d28        void* result = *(arg1 + 0x18)\n1404d8d2f        int128_t zmm6\n1404d8d2f        int128_t var_28 = zmm6\n1404d8d36        void* rdi = *(result + 0x2f8)\n1404d8d3d        void* rsi = result + 0x2f0\n1404d8d47        if (rdi == rsi)\n1404d8dbc        label_1404d8dbc:\n1404d8dbc        result.b = 0\n1404d8d50        while (true)\n1404d8d50        result = *(rdi + 0x18)\n1404d8d57        void* rbx_1 = result - 0x18\n1404d8d5b        if (result == 0)\n1404d8d5b        rbx_1 = nullptr\n1404d8d62        if (rbx_1 != 0 && sub_14039a230(rbx_1, arg2, 0).b == 0)\n1404d8d7c        float zmm2 = *(*(rbx_1 + 0x298) + 0x1df8)\n1404d8d87        if (not(0f >= zmm2))\n1404d8d93        float zmm1 = *(rbx_1 + 0x78) - *arg3\n1404d8d98        float zmm0 = *(rbx_1 + 0x7c) - arg3[1]\n1404d8db1        if (zmm2 * zmm2 > zmm1 * zmm1 + zmm0 * zmm0)\n1404d8ddc        result.b = 1\n1404d8dde        break\n1404d8db3        rdi = *(rdi + 8)\n1404d8dba        if (rdi == rsi)\n1404d8dba        goto label_1404d8dbc\n1404d8ddb        return result",
+  "fetched_at": "2026-04-26T17:31:07Z"
+}

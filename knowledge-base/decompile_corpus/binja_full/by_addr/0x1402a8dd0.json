@@ -1,0 +1,7 @@
+{
+  "addr": "0x1402a8dd0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1402a8de9        void* i = *(arg1 + 0x48)\n1402a8df9        uint128_t zmm6 = 0x7fefffffffffffff\n1402a8e04        data_140b1567c = 0\n1402a8e0b        int32_t* r14 = arg2\n1402a8e0e        data_140a170b0 = 0xfffffffe\n1402a8e18        int64_t* result = nullptr\n1402a8e1e        while (i != arg1 + 0x40)\n1402a8e30        void* rax_1 = *(i + 0x18)\n1402a8e37        int64_t* result_1 = rax_1 - 0x18\n1402a8e3b        if (rax_1 == 0)\n1402a8e3b        result_1 = nullptr\n1402a8e5a        if (result_1 != arg3 && (result_1[0x74].b & 2) == 0 && result_1[0xb].d != 0xffffffff && *(result_1 + 0x335) != 0xff)\n1402a8e5f        char rax_2\n1402a8e5f        rax_2, arg2 = sub_1402c0510(result_1, arg2.b)\n1402a8e66        if (rax_2 != 0)\n1402a8e6e        int32_t var_38\n1402a8e6e        arg2 = &var_38\n1402a8e73        int32_t zmm1_1 = r14[0x1f]\n1402a8e7c        var_38 = r14[0x1e]\n1402a8e8b        int32_t var_30_1 = r14[0x20]\n1402a8e91        int32_t var_34_1 = zmm1_1\n1402a8e97        uint128_t zmm0_2 = sub_140397640(result_1, arg2)\n1402a8ea0        if (not(zmm6.q f<= zmm0_2.q))\n1402a8ea2        zmm6 = zmm0_2\n1402a8ea5        result = result_1\n1402a8ea8        i = *(i + 8)\n1402a8edb        return result",
+  "fetched_at": "2026-04-26T17:32:58Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x140245750",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined * __thiscall\nLuaValue<class_std::map<class_SmartPtr<class_LuaVar>,class_SmartPtr<class_LuaVar>,class_LuaHashCompare,class_std::allocator<struct_std::pair<class_SmartPtr<class_LuaVar>_const_,class_SmartPtr<class_LuaVar>_>_>_>,1>\n::vfunction5(void)\n\n{\n  return &DAT_140a157e0;\n}",
+  "fetched_at": "2026-04-26T18:10:20Z"
+}

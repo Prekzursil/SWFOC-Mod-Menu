@@ -1,0 +1,7 @@
+{
+  "addr": "0x140740900",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_140740900(undefined8 param_1)\n\n{\n  out_of_range local_28;\n  \n  std::out_of_range::out_of_range(&local_28,param_1);\n                    /* WARNING: Subroutine does not return */\n  _CxxThrowException(&local_28,(ThrowInfo *)&DAT_1409cafa0);\n}",
+  "fetched_at": "2026-04-26T18:03:56Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x140202430",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140202434        int32_t r8 = *arg1\n14020244c        uint32_t var_18 = zx.d(arg1[1].w)\n140202451        uint32_t var_20 = zx.d(r8.b)\n14020245f        uint32_t var_28 = zx.d((r8 u>> 8).b)\n140202472        sscanf_s(&data_140a7c1b0, \"%d.%d.%d.%d:%u\", zx.q(r8 u>> 0x18))\n140202482        return &data_140a7c1b0",
+  "fetched_at": "2026-04-26T17:27:44Z"
+}

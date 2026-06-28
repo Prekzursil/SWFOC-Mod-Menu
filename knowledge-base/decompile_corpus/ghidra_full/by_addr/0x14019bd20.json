@@ -1,0 +1,7 @@
+{
+  "addr": "0x14019bd20",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_14019bd20(longlong *param_1,undefined8 param_2)\n\n{\n  longlong lVar1;\n  uint uVar2;\n  ulonglong uVar3;\n  \n  uVar2 = 0;\n  lVar1 = param_1[1] - *param_1 >> 0x3f;\n  if ((param_1[1] - *param_1) / 0x30 + lVar1 != lVar1) {\n    uVar3 = 0;\n    do {\n      FUN_14019c9d0(uVar3 * 0x30 + *param_1,param_2);\n      uVar2 = uVar2 + 1;\n      uVar3 = (ulonglong)uVar2;\n    } while (uVar3 < (ulonglong)((param_1[1] - *param_1) / 0x30));\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T17:37:17Z"
+}

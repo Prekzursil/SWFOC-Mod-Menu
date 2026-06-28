@@ -1,0 +1,7 @@
+{
+  "addr": "0x14005fdb0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14005fdb6        void* var_28 = nullptr\n14005fdbf        void* r8 = -ffffffffffffffff\n14005fdc6        int64_t var_18 = 0\n14005fdcf        int64_t var_10 = 0xf\n14005fde0        r8 += 1\n14005fde8        do while (*(arg1 + r8) != 0)\n14005fdf2        sub_140022730(&var_28, arg1, r8)\n14005fe03        int64_t rax = sub_1403303d0(&data_140a172d0, &var_28)\n14005fe14        if (var_10 u>= 0x10)\n14005fe16        void* rcx_1 = var_28\n14005fe1e        void* rax_1 = rcx_1\n14005fe28        if (var_10 + 1 u>= 0x1000)\n14005fe2a        rcx_1 = *(rcx_1 - 8)\n14005fe3d        if (rax_1 - rcx_1 - 8 u> 0x1f)\n14005fe82        _invalid_parameter_noinfo_noreturn()\n14005fe82        noreturn\n14005fe3f        j_sub_1407864b8(rcx_1)\n14005fe47        int64_t var_18_1 = 0\n14005fe57        int64_t var_10_1 = 0xf\n14005fe60        var_28.b = 0\n14005fe65        void* result = sub_140294d30(&data_140a16fd0, rax)\n14005fe6d        if (result == 0)\n14005fe81        return result\n14005fe77        return sub_14005fe90(result) __tailcall",
+  "fetched_at": "2026-04-26T16:55:31Z"
+}

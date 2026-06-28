@@ -1,0 +1,7 @@
+{
+  "addr": "0x140793c34",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140793c52        int64_t result = try_get_function(0x1b, \"RoUninitialize\", &data_1408d8338, &data_1408d833c)\n140793c5a        if (result == 0)\n140793c66        return result\n140793c5c        return result()",
+  "fetched_at": "2026-04-26T17:31:52Z"
+}

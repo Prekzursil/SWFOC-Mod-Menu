@@ -1,0 +1,7 @@
+{
+  "addr": "0x140702250",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140702261        arg1[0x2f].w = 0\n14070226a        *arg1 = &HeroAssassinAbilityClass::`vftable'{for `SpecialAbilityClass'}\n140702276        *(arg1 + 0x17a) = 0\n14070227d        arg1[1] = &HeroAssassinAbilityClass::`vftable'{for `RefCountClass'}\n140702286        *(arg1 + 0x17c) = 0\n14070228d        sub_14048c8d0(arg1)\n140702295        if ((arg2 & 1) != 0)\n14070229f        j_sub_1407864b8(arg1)\n1407022b1        return arg1",
+  "fetched_at": "2026-04-26T17:27:06Z"
+}

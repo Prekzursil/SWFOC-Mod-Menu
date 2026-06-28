@@ -1,0 +1,7 @@
+{
+  "addr": "0x14013c200",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14013c20a        void* result = *(arg1 + 0xd0)\n14013c219        float zmm6[0x4] = arg2\n14013c222        if (result != 0)\n14013c229        int32_t rbx_1 = 0\n14013c23e        int32_t rdi_3 = ((*(result + 0xd8) - *(result + 0xd0)) s>> 3).d\n14013c244        if (rdi_3 s> 0)\n14013c26a        result, zmm6 = sub_14015e8b0(sub_140172d60(*(arg1 + 0xd0), rbx_1, nullptr), zmm6, arg3)\n14013c26f        rbx_1 += 1\n14013c273        do while (rbx_1 s< rdi_3)\n14013c28e        return result",
+  "fetched_at": "2026-04-26T17:15:01Z"
+}

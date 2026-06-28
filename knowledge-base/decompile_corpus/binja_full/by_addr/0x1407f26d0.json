@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407f26d0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1407f26d4        int64_t* rcx = data_140a2a4d0\n1407f26db        struct DynamicVectorClass<struct StoryDialogGoal>::VTable* const result = &DynamicVectorClass<struct StoryDialogGoal>::`vftable'\n1407f26e2        data_140a2a4c8 = &DynamicVectorClass<struct StoryDialogGoal>::`vftable'\n1407f26ec        if (rcx != 0)\n1407f26f8        if ((data_140a2a4dc & 0x80000000) == 0)\n1407f2719        sub_14047d820(rcx, 3)\n1407f270c        HeapFree(GetProcessHeap(), HEAP_NONE, data_140a2a4d0)\n1407f271e        result = nullptr\n1407f2720        data_140a2a4dc &= 0x80000000\n1407f272a        data_140a2a4d0 = 0\n1407f2731        data_140a2a4d8 = 0\n1407f273b        return result",
+  "fetched_at": "2026-04-26T17:37:06Z"
+}

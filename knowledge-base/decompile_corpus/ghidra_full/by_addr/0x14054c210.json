@@ -1,0 +1,7 @@
+{
+  "addr": "0x14054c210",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall WeaponBehaviorClass::vfunction10(WeaponBehaviorClass *this,undefined **param_1)\n\n{\n  undefined *puVar1;\n  char cVar2;\n  undefined4 uVar3;\n  longlong lVar4;\n  float fVar5;\n  \n  SpawnIndigenousUnitsBehaviorClass::vbase_destructor\n            ((SpawnIndigenousUnitsBehaviorClass *)this,param_1);\n  puVar1 = param_1[0x1e];\n  fVar5 = (float)FUN_140373630(param_1[0x53],0);\n  lVar4 = FUN_140373670(param_1[0x53],*(undefined4 *)((longlong)param_1 + 0x324));\n  cVar2 = FUN_140378e50(param_1[0x53]);\n  if ((cVar2 == '\\0') || (lVar4 == 0)) {\n    uVar3 = *(undefined4 *)(param_1[0x53] + 0x4f0);\n  }\n  else {\n    fVar5 = (float)FUN_140373630(lVar4,0);\n    uVar3 = *(undefined4 *)(lVar4 + 0x4f0);\n  }\n  *(undefined4 *)(puVar1 + 0x28) = uVar3;\n  uVar3 = FUN_1401ffb40(&DAT_140a13e24,0,(longlong)((float)DAT_140b0a340 * fVar5));\n  *(undefined4 *)(puVar1 + 0x24) = uVar3;\n  FUN_14054cb00(this);\n  return;\n}",
+  "fetched_at": "2026-04-26T18:37:39Z"
+}

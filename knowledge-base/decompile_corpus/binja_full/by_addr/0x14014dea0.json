@@ -1,0 +1,7 @@
+{
+  "addr": "0x14014dea0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14014deb3        *arg1 = &DynamicVectorClass<struct alRenderableMesh::SubMesh>::`vftable'\n14014deb9        sub_14014e020(arg1)\n14014dec1        if ((arg2 & 1) != 0)\n14014decb        j_sub_1407864b8(arg1)\n14014dedd        return arg1",
+  "fetched_at": "2026-04-26T17:21:40Z"
+}

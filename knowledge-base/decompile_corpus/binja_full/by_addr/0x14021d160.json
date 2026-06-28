@@ -1,0 +1,7 @@
+{
+  "addr": "0x14021d160",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14021d164        int64_t rcx = *(arg1 + 0xff0)\n14021d16e        if (rcx != 0)\n14021d17a        int64_t result_1 = 0\n14021d18f        if (AIL_platform_property(rcx, 4, &result_1, 0, 0) != 0)\n14021d191        int64_t result = result_1\n14021d199        if (result != 0)\n14021d1a1        return result\n14021d19b        return 0",
+  "fetched_at": "2026-04-26T17:28:58Z"
+}

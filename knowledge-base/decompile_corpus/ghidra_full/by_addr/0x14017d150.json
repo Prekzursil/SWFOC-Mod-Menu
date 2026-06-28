@@ -1,0 +1,7 @@
+{
+  "addr": "0x14017d150",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "char * __thiscall alD3dVertexType<class_alD3dVertNC>::vfunction5(void)\n\n{\n  return \"alD3dVertNC\";\n}",
+  "fetched_at": "2026-04-26T17:29:43Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x14071b560",
+  "tool": "ghidra",
+  "fact_id": "rva_ability_drain_life",
+  "body": "\nvoid __thiscall\nDrainLifeAbilityClass::vfunction29_for_IXMLLoadableClass\n          (DrainLifeAbilityClass *this,undefined8 param_1,undefined8 param_2,undefined8 param_3)\n\n{\n  FUN_140518520(&DAT_140b38c10,param_1,param_2,this,param_3,0);\n  return;\n}\n\n",
+  "fetched_at": "2026-04-26T16:44:20Z"
+}

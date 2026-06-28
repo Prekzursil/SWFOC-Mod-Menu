@@ -1,0 +1,7 @@
+{
+  "addr": "0x14048fa80",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "SaveGameEventClass * __thiscall SaveGameEventClass::SaveGameEventClass(SaveGameEventClass *this)\n\n{\n  ScheduledEventClass::ScheduledEventClass((ScheduledEventClass *)this);\n  (this->SaveGameEventClass_data).offset_0x0 = 0xffffffff;\n  this->vftablePtr = &vftable;\n  (this->SaveGameEventClass_data).offset_0x8 = 0;\n  (this->SaveGameEventClass_data).offset_0x18 = 0;\n  (this->SaveGameEventClass_data).offset_0x20 = 7;\n  (this->EventClass_data).offset_0x8 = 0x24;\n  return this;\n}",
+  "fetched_at": "2026-04-26T18:02:15Z"
+}

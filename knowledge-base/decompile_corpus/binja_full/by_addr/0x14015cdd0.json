@@ -1,0 +1,7 @@
+{
+  "addr": "0x14015cdd0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14015cdda        int32_t zmm1 = (zx.o(0)).d\n14015cddd        float zmm2 = *arg2 - *arg3\n14015cde8        float zmm0\n14015cde8        if (zmm2 != 0f)\n14015cdff        zmm1 = 0x3f800000\n14015ce07        zmm0 = (arg2[1] f- arg3[1]) / zmm2\n14015cdea        zmm0 = 1f\n14015ce0b        *arg1 = zmm1\n14015ce0f        arg1[1] = zmm0\n14015ce14        arg1[2] = 0\n14015ce1b        sub_140139800(arg1)\n14015ce28        return arg1",
+  "fetched_at": "2026-04-26T17:22:32Z"
+}

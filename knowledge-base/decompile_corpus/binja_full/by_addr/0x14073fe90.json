@@ -1,0 +1,7 @@
+{
+  "addr": "0x14073fe90",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14073fea8        int64_t rsi\n14073fea8        rsi.b = 1\n14073feb2        if (sub_140220610(arg2) != 0)\n14073ff82        char i\n14073fec3        int32_t var_18 = 0x5d5e0b6b\n14073fecb        int32_t var_14 = 0x5d5e0b6b\n14073fed3        int32_t var_10 = 0x5d5e0b6b\n14073fee3        if (sub_140220710(arg2) == 0xe)\n14073ff09        rsi.b &= sub_140220730(arg2, &var_18, 4, nullptr)\n14073ff20        rsi.b &= sub_140220730(arg2, &var_14, 4, nullptr)\n14073ff2c        rsi.b &= sub_140220730(arg2, &var_10, 4, nullptr)\n14073fee5        rsi.b = 0\n14073ff2f        int32_t* rdx_3 = arg3[1]\n14073ff37        if (rdx_3 == arg3[2])\n14073ff6b        std::vector<struct GSISymbolEntry,struct GSISymbolEntry,class std::allocator<struct GSISymbolEntry> >::_Emplace_reallocate<struct GSISymbolEntry>(arg3, rdx_3, &var_18)\n14073ff43        *rdx_3 = var_18\n14073ff4d        rdx_3[1] = var_14\n14073ff58        rdx_3[2] = var_10\n14073ff5d        arg3[1] = &rdx_3[3]\n14073ff73        sub_1402206a0(arg2)\n14073ff7b        i = sub_140220610(arg2)\n14073ff82        do while (i != 0)\n14073ff9b        return zx.q(rsi.b)",
+  "fetched_at": "2026-04-26T17:29:14Z"
+}

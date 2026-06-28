@@ -1,0 +1,7 @@
+{
+  "addr": "0x140638570",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nundefined1 __thiscall CombatantBehaviorClass::vfunction41(CombatantBehaviorClass *this)\n\n{\n  undefined1 uVar1;\n  \n  if (this->offset_0x18 == (undefined **)0x0) {\n    return 0;\n  }\n  uVar1 = FUN_14038e480();\n  return uVar1;\n}\n\n",
+  "fetched_at": "2026-04-26T17:01:19Z"
+}

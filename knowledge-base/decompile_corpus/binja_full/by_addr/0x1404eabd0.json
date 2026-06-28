@@ -1,0 +1,7 @@
+{
+  "addr": "0x1404eabd0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1404eabe9        int64_t* rcx = *arg1\n1404eabf1        if (rcx != 0)\n1404eabf6        (*(*rcx + 8))(rcx)\n1404eabf9        *arg1 = 0\n1404eabfc        int64_t lpMem = arg1[2]\n1404eac03        if (lpMem != 0)\n1404eac0c        if ((*(arg1 + 0x1c) & 0x80000000) == 0)\n1404eac27        j_sub_1407864b8(lpMem)\n1404eac1c        HeapFree(GetProcessHeap(), HEAP_NONE, lpMem)\n1404eac2c        *(arg1 + 0x1c) &= 0x80000000\n1404eac33        arg1[2] = 0\n1404eac37        arg1[3].d = 0\n1404eac3a        arg1[4].d = 0x3fffff\n1404eac48        arg1[5] = 0\n1404eac4c        arg1[6].d = 0xffffffff\n1404eac53        *(arg1 + 0x34) = 0\n1404eac57        int64_t lpMem_1 = arg1[2]\n1404eac5b        arg1[1] = &DynamicVectorClass<class Vector3>::`vftable'\n1404eac62        if (lpMem_1 != 0)\n1404eac6b        if ((*(arg1 + 0x1c) & 0x80000000) == 0)\n1404eac86        j_sub_1407864b8(lpMem_1)\n1404eac7b        HeapFree(GetProcessHeap(), HEAP_NONE, lpMem_1)\n1404eac8b        *(arg1 + 0x1c) &= 0x80000000\n1404eac92        arg1[2] = 0\n1404eac96        arg1[3].d = 0\n1404eac99        int64_t* rcx_5 = *arg1\n1404eac9f        if (rcx_5 != 0)\n1404eaca4        (*(*rcx_5 + 8))(rcx_5)\n1404eacab        if ((arg2 & 1) != 0)\n1404eacb5        j_sub_1407864b8(arg1)\n1404eacd1        return arg1",
+  "fetched_at": "2026-04-26T17:31:32Z"
+}

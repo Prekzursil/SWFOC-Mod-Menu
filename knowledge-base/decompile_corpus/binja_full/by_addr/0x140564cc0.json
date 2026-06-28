@@ -1,0 +1,7 @@
+{
+  "addr": "0x140564cc0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140564cd3        if (arg2 == 0)\n140564cd5        int64_t result\n140564cd5        result.b = 0\n140564ce1        return result\n140564cea        int64_t rsi\n140564cea        rsi.b = 1\n140564cf4        if (sub_1402204a0(arg2) != 0)\n140564d9f        char i\n140564d0a        if (sub_1402205a0(arg2) == 0)\n140564d1b        if (sub_140220610(arg2) != 0)\n140564d8b        char j\n140564d23        int32_t rax_3 = sub_140220710(arg2)\n140564d2a        if (rax_3 == 0)\n140564d74        sub_140220730(arg2, arg1 + 8, 0x38, nullptr)\n140564d2f        if (rax_3 == 1)\n140564d74        sub_140220730(arg2, arg1 + 0x40, 0x14, nullptr)\n140564d34        if (rax_3 == 2)\n140564d74        sub_140220730(arg2, arg1 + 0x54, 4, nullptr)\n140564d39        if (rax_3 == 3)\n140564d74        sub_140220730(arg2, arg1 + 0x58, 1, nullptr)\n140564d3b        rsi.b = 0\n140564d7c        sub_1402206a0(arg2)\n140564d84        j = sub_140220610(arg2)\n140564d8b        do while (j != 0)\n140564d0c        rsi.b = 0\n140564d90        sub_140220520(arg2)\n140564d98        i = sub_1402204a0(arg2)\n140564d9f        do while (i != 0)\n140564db8        return zx.q(rsi.b)",
+  "fetched_at": "2026-04-26T17:34:30Z"
+}

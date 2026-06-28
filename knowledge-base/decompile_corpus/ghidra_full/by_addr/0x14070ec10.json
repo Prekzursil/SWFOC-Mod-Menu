@@ -1,0 +1,7 @@
+{
+  "addr": "0x14070ec10",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "char * __thiscall StarbaseUpgradeAbilityClass::vfunction3_for_IXMLLoadableClass(void)\n\n{\n  return \"Starbase_Upgrade_Ability\";\n}",
+  "fetched_at": "2026-04-26T17:54:54Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407f62c0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1407f62c4        int64_t rcx = data_140a442b0\n1407f62cb        struct DynamicVectorClass<class GameObjectClass* __ptr64>::VTable* const result = &DynamicVectorClass<class GameObjectClass* __ptr64>::`vftable'\n1407f62d2        data_140a442a8 = &DynamicVectorClass<class GameObjectClass* __ptr64>::`vftable'\n1407f62dc        if (rcx != 0)\n1407f62e8        if ((data_140a442bc & 0x80000000) == 0)\n1407f6304        j_sub_1407864b8(rcx)\n1407f62fc        HeapFree(GetProcessHeap(), HEAP_NONE, data_140a442b0)\n1407f6309        result = nullptr\n1407f630b        data_140a442bc &= 0x80000000\n1407f6315        data_140a442b0 = 0\n1407f631c        data_140a442b8 = 0\n1407f6326        return result",
+  "fetched_at": "2026-04-26T17:37:52Z"
+}

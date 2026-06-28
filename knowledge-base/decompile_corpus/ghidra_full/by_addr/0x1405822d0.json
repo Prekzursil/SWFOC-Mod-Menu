@@ -1,0 +1,7 @@
+{
+  "addr": "0x1405822d0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* std::codecvt<wchar_t,char,struct__Mbstatet> member function inherited by\n   std::codecvt_utf8<wchar_t,1114111,0> */\n\nvoid __thiscall\nstd::codecvt<wchar_t,char,struct__Mbstatet>::vfunction2\n          (codecvt<wchar_t,char,struct__Mbstatet> *this)\n\n{\n  LOCK();\n  *(int *)&this->_Crt_new_delete = *(int *)&this->_Crt_new_delete + 1;\n  UNLOCK();\n  return;\n}",
+  "fetched_at": "2026-04-26T18:41:10Z"
+}

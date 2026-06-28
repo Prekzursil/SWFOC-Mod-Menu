@@ -1,0 +1,7 @@
+{
+  "addr": "0x140579b10",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined8\nLuaValue<double,4>::LuaValue<double,4>_Constructor_or_Destructor\n          (longlong param_1,undefined8 param_2)\n\n{\n  int iVar1;\n  longlong lVar2;\n  longlong *plVar3;\n  char *pcVar4;\n  \n  plVar3 = *(longlong **)(param_1 + 0x60);\n  if (plVar3 == (longlong *)0x0) {\n    pcVar4 = \"GameObjectWrapper::Get_Starbase_Level -- this object is already dead.\";\n  }\n  else {\n    lVar2 = (**(code **)(*plVar3 + 0x10))(plVar3,3);\n    if ((lVar2 != 0) && (lVar2 = *(longlong *)(*(longlong *)(param_1 + 0x60) + 0xb8), lVar2 != 0)) {\n      if (lVar2 == -0x138) {\n        return 0;\n      }\n      plVar3 = (longlong *)FUN_140769c58(0x18);\n      if (plVar3 == (longlong *)0x0) {\n        plVar3 = GetEvent::~GetEvent((GetEvent *)param_1,(longlong *)0x0);\n        return plVar3;\n      }\n      iVar1 = *(int *)(*(longlong *)(*(longlong *)(param_1 + 0x60) + 0xb8) + 0x148);\n      *plVar3 = (longlong)&vftable;\n      *(undefined4 *)(plVar3 + 1) = 0;\n      plVar3[2] = (longlong)(double)iVar1;\n      plVar3 = GetEvent::~GetEvent((GetEvent *)param_1,plVar3);\n      return plVar3;\n    }\n    pcVar4 = \"GameObjectWrapper::Get_Starbase_Level -- This object is not a planet.\";\n  }\n  FUN_140248190(param_2,pcVar4);\n  return 0;\n}",
+  "fetched_at": "2026-04-26T18:40:38Z"
+}

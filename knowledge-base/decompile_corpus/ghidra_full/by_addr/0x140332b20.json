@@ -1,0 +1,7 @@
+{
+  "addr": "0x140332b20",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\n/* DatabaseObjectManagerClass<class_FactionClass> member function inherited by\n   FactionTypeConverterClass */\n\nundefined1 __thiscall\nDatabaseObjectManagerClass<class_FactionClass>::vfunction2\n          (DatabaseObjectManagerClass<class_FactionClass> *this,undefined8 param_1,longlong *param_2\n          )\n\n{\n  longlong lVar1;\n  \n  lVar1 = FUN_140331c40();\n  if (lVar1 != 0) {\n    *param_2 = lVar1;\n    return 1;\n  }\n  return 0;\n}\n\n",
+  "fetched_at": "2026-04-26T17:02:55Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x140401c50",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "ProductionBehaviorClass * __thiscall\nProductionBehaviorClass::vfunction4(ProductionBehaviorClass *this,int param_1)\n\n{\n  ProductionBehaviorClass *pPVar1;\n  \n  pPVar1 = (ProductionBehaviorClass *)0x0;\n  if (param_1 == 6) {\n    pPVar1 = this;\n  }\n  return pPVar1;\n}",
+  "fetched_at": "2026-04-26T17:43:24Z"
+}

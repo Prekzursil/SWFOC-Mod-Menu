@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407692d8",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1407692dc        int32_t lCData = 0\n1407692f9        GetLocaleInfoEx(*(___lc_locale_name_func() + 0x28), 0x22, &lCData, 2)\n1407692ff        uint32_t rcx_1 = zx.d(lCData.w)\n140769307        if (rcx_1 == 0x30)\n140769325        return 2\n14076930c        if (rcx_1 == 0x31)\n14076931e        return 1\n140769311        if (rcx_1 == 0x32)\n140769317        return 3\n140769313        return 0",
+  "fetched_at": "2026-04-26T17:30:15Z"
+}

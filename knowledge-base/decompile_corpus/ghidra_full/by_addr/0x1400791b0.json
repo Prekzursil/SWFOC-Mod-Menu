@@ -1,0 +1,7 @@
+{
+  "addr": "0x1400791b0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\n/* WARNING: Function: __chkstk replaced with injection: alloca_probe */\n\nvoid FUN_1400791b0(longlong param_1)\n\n{\n  uint uVar1;\n  longlong lVar2;\n  longlong lVar3;\n  undefined1 local_4008 [16376];\n  undefined8 uStack_10;\n  \n  uStack_10 = 0x1400791c5;\n  FUN_140079530(*(undefined8 *)(param_1 + 0x328),*(undefined8 *)(param_1 + 0x330),param_1 + 0x328);\n  *(undefined8 *)(param_1 + 0x330) = *(undefined8 *)(param_1 + 0x328);\n  lVar2 = SteamInternal_ContextInit(&PTR_FUN_140a10e00);\n  uVar1 = (**(code **)(**(longlong **)(lVar2 + 0x70) + 0x1c8))\n                    (*(longlong **)(lVar2 + 0x70),local_4008,0x800);\n  if (0x800 < uVar1) {\n    uVar1 = 0x800;\n  }\n  lVar2 = SteamInternal_ContextInit(&PTR_FUN_140a10e00);\n  lVar2 = (**(code **)(**(longlong **)(lVar2 + 0x70) + 0x10))\n                    (*(longlong **)(lVar2 + 0x70),local_4008,uVar1);\n  if (lVar2 != -1) {\n    lVar3 = SteamInternal_ContextInit(&PTR_FUN_140a10e00);\n    lVar2 = (**(code **)(**(longlong **)(lVar3 + 0x70) + 0x18))(*(longlong **)(lVar3 + 0x70),lVar2);\n    if (lVar2 != 0) {\n      if (*(longlong *)(param_1 + 0x148) != 0) {\n        SteamAPI_UnregisterCallResult(param_1 + 0x138);\n      }\n      *(longlong *)(param_1 + 0x148) = lVar2;\n      *(code **)(param_1 + 0x158) = FUN_140072c90;\n      *(longlong *)(param_1 + 0x150) = param_1;\n      SteamAPI_RegisterCallResult(param_1 + 0x138,lVar2);\n    }\n  }\n  return;\n}\n\n",
+  "fetched_at": "2026-04-26T16:56:49Z"
+}

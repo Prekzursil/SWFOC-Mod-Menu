@@ -1,0 +1,7 @@
+{
+  "addr": "0x140508e30",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "DynamicLandPathFinderClass * FUN_140508e30(void)\n\n{\n  DynamicLandPathFinderClass *this;\n  undefined **local_res8 [4];\n  \n  if (DAT_140a2be10 == (DynamicLandPathFinderClass *)0x0) {\n    this = (DynamicLandPathFinderClass *)FUN_140769c58(0x198);\n    if (this == (DynamicLandPathFinderClass *)0x0) {\n      DAT_140a2be10 = (DynamicLandPathFinderClass *)0x0;\n    }\n    else {\n      DAT_140a2be10 = DynamicLandPathFinderClass::DynamicLandPathFinderClass(this);\n    }\n    local_res8[0] = &PTR_vftable_140a2be08;\n    if (DAT_140a7bc10 != DAT_140a7bc18) {\n      *DAT_140a7bc10 = &PTR_vftable_140a2be08;\n      DAT_140a7bc10 = DAT_140a7bc10 + 1;\n      return DAT_140a2be10;\n    }\n    FUN_14001ded0(&DAT_140a7bc08,DAT_140a7bc10,local_res8);\n  }\n  return DAT_140a2be10;\n}",
+  "fetched_at": "2026-04-26T18:21:06Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x14042e200",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "char * __thiscall TacticalBuildObjectsBehaviorClass::vfunction9(void)\n\n{\n  return \"TacticalBuildObjectsBehaviorClass\";\n}",
+  "fetched_at": "2026-04-26T17:49:54Z"
+}

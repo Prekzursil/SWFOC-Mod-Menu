@@ -1,0 +1,7 @@
+{
+  "addr": "0x140278350",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall\nTeletypeTextClass::vfunction3_for_RefCountClass(TeletypeTextClass *this,uint param_1)\n\n{\n  vfunction1_for_DrawPrimitiveClass\n            ((TeletypeTextClass *)&this[-1].TeletypeTextClass_data.field_0x60,param_1);\n  return;\n}",
+  "fetched_at": "2026-04-26T18:20:52Z"
+}

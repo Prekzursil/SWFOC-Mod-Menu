@@ -1,0 +1,7 @@
+{
+  "addr": "0x140766b10",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140766b36        int32_t rax_1 = _Strcoll(arg2, arg3, arg4, arg5, arg1 + 0x10)\n140766b41        int64_t result\n140766b41        result.b = rax_1 != 0\n140766b49        if (rax_1 s< 0)\n140766b49        return 0xffffffff\n140766b51        return result",
+  "fetched_at": "2026-04-26T17:30:13Z"
+}

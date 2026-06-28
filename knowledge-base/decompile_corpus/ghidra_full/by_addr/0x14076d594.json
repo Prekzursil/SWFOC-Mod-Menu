@@ -1,0 +1,7 @@
+{
+  "addr": "0x14076d594",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* Library Function - Single Match\n    __AdjustPointer\n   \n   Library: Visual Studio 2019 Release */\n\nlonglong __AdjustPointer(longlong param_1,int *param_2)\n\n{\n  longlong lVar1;\n  \n  lVar1 = *param_2 + param_1;\n  if (-1 < param_2[1]) {\n    lVar1 = lVar1 + (longlong)*(int *)((longlong)param_2[2] + *(longlong *)(param_2[1] + param_1)) +\n                    (longlong)param_2[1];\n  }\n  return lVar1;\n}",
+  "fetched_at": "2026-04-26T18:11:04Z"
+}

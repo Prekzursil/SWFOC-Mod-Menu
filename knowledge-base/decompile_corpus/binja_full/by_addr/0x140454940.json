@@ -1,0 +1,7 @@
+{
+  "addr": "0x140454940",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140454946        uint64_t rdx = zx.q(arg1[0x6c].d)\n140454955        if (data_140b15498 != rdx.d)\n14045497a        return \n14045495e        sub_140467540(\"STORY EVENT - Difficulty level %s triggered\\r\\n\", rdx)\n140454970        return sub_140455db0(arg1, nullptr, 0) __tailcall",
+  "fetched_at": "2026-04-26T17:27:43Z"
+}

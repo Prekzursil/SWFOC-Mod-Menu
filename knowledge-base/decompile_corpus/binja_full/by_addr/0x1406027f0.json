@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406027f0",
+  "tool": "binary_ninja",
+  "fact_id": "rva_lua_get_credits",
+  "body": "1406027fe        if (*(arg1 + 0x28) == 0)\n140602807        return 0\n140602812        int64_t* rax_1 = operator new(0x18)\n14060281d        if (rax_1 == 0)\n1406028cb        return 0\n140602833        float zmm0[0x2] = _mm_cvtps_pd(*(*(arg1 + 0x28) + 0x70))\n140602836        rax_1[1].d = 0\n140602840        *rax_1 = &LuaValue<double, 4>::`vftable'{for `LuaVar'}\n140602843        rax_1[2] = zmm0\n140602848        struct LuaVar::LuaValue<class std::vector<class SmartPtr<class LuaVar> >, 2>::VTable** result = sub_14024a250()\n14060284d        int64_t rdx = *rax_1\n140602856        int64_t* arg_8 = rax_1\n14060285b        (*rdx)(rax_1, rdx)\n14060285d        int64_t* rdx_1 = result[3]\n140602865        if (rdx_1 == result[4])\n14060289c        sub_140144900(&result[2], rdx_1, &arg_8)\n1406028a7        (*(*rax_1 + 8))(rax_1)\n1406028bc        return result\n140602867        *rdx_1 = rax_1\n140602870        (**rax_1)(rax_1)\n140602872        result[3] = &result[3]->vFunc_1\n14060287d        (*(*rax_1 + 8))(rax_1)\n140602892        return result",
+  "fetched_at": "2026-04-26T16:43:58Z"
+}

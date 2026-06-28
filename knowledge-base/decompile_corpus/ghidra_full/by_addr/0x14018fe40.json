@@ -1,0 +1,7 @@
+{
+  "addr": "0x14018fe40",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall alD3dTerrainRender::vfunction14(alD3dTerrainRender *this)\n\n{\n  FUN_1401b7690((this[4].vftablePtr)->vfunction4);\n  return;\n}",
+  "fetched_at": "2026-04-26T17:34:25Z"
+}

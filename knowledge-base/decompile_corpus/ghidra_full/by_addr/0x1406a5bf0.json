@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406a5bf0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "byte __thiscall\nLuaFOWCellsClass::vfunction15(LuaFOWCellsClass *this,undefined8 param_1,undefined8 param_2)\n\n{\n  byte bVar1;\n  byte bVar2;\n  byte bVar3;\n  byte bVar4;\n  byte bVar5;\n  byte bVar6;\n  byte bVar7;\n  byte bVar8;\n  byte bVar9;\n  ulonglong uVar10;\n  longlong lVar11;\n  \n  bVar1 = FUN_14021fe20(param_2,0);\n  bVar2 = FUN_14021ffa0(param_2,2);\n  bVar3 = FUN_1402200b0(param_2,&(this->RefCountClass_data).field_0x38,4);\n  bVar4 = FUN_140220030(param_2);\n  bVar5 = FUN_14021feb0(param_2);\n  uVar10 = *(longlong *)&(this->RefCountClass_data).field_0x28 -\n           *(longlong *)&(this->RefCountClass_data).field_0x20 >> 2;\n  bVar6 = FUN_14021fe20(param_2,1);\n  bVar6 = bVar6 & 1;\n  if ((int)uVar10 != 0) {\n    lVar11 = 0;\n    uVar10 = uVar10 & 0xffffffff;\n    do {\n      bVar7 = FUN_14021ffa0(param_2,3);\n      bVar8 = FUN_1402200b0(param_2,*(longlong *)&(this->RefCountClass_data).field_0x20 + lVar11,4);\n      bVar9 = FUN_140220030(param_2);\n      bVar6 = bVar6 & bVar7 & bVar8 & bVar9;\n      lVar11 = lVar11 + 4;\n      uVar10 = uVar10 - 1;\n    } while (uVar10 != 0);\n  }\n  bVar7 = FUN_14021feb0(param_2);\n  return bVar7 & bVar6 & bVar1 & 1 & bVar2 & bVar3 & bVar4 & bVar5;\n}",
+  "fetched_at": "2026-04-26T17:21:51Z"
+}

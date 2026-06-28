@@ -1,0 +1,7 @@
+{
+  "addr": "0x14068b100",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_14068b100(void)\n\n{\n  SystemSpyAbilityClass *this;\n  \n  this = (SystemSpyAbilityClass *)FUN_140769c58(400);\n  if (this != (SystemSpyAbilityClass *)0x0) {\n    SystemSpyAbilityClass::SystemSpyAbilityClass(this);\n    return;\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T17:16:39Z"
+}

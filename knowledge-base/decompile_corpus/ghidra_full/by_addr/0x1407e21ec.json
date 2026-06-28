@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407e21ec",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall\nalLightningBolt::vfunction1_for_MultiLinkedListMember(alLightningBolt *this,uint param_1)\n\n{\n  scalar_deleting_destructor((alLightningBolt *)&this[-1].alLightningBolt_data.offset_0x2d8,param_1)\n  ;\n  return;\n}",
+  "fetched_at": "2026-04-26T18:59:26Z"
+}

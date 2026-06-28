@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407a3980",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_1407a3980(longlong param_1)\n\n{\n  longlong lVar1;\n  \n  *(int *)(param_1 + 0x58) = *(int *)(param_1 + 0x44) * 2;\n  *(undefined2 *)(*(longlong *)(param_1 + 0x68) + (ulonglong)(*(int *)(param_1 + 0x74) - 1) * 2) = 0\n  ;\n  FUN_14076c430(*(undefined8 *)(param_1 + 0x68),0,(ulonglong)(*(int *)(param_1 + 0x74) - 1) * 2);\n  lVar1 = (longlong)*(int *)(param_1 + 0xac);\n  *(uint *)(param_1 + 0xa8) = (uint)*(ushort *)(&DAT_1408df0f2 + lVar1 * 0x10);\n  *(uint *)(param_1 + 0xb4) = (uint)*(ushort *)(&DAT_1408df0f0 + lVar1 * 0x10);\n  *(uint *)(param_1 + 0xb8) = (uint)*(ushort *)(&DAT_1408df0f4 + lVar1 * 0x10);\n  *(uint *)(param_1 + 0xa4) = (uint)*(ushort *)(&DAT_1408df0f6 + lVar1 * 0x10);\n  *(undefined8 *)(param_1 + 0x90) = 0;\n  *(undefined4 *)(param_1 + 0x84) = 0;\n  *(undefined4 *)(param_1 + 0x9c) = 0;\n  *(undefined4 *)(param_1 + 0x170c) = 0;\n  *(undefined4 *)(param_1 + 0xa0) = 2;\n  *(undefined4 *)(param_1 + 0x88) = 2;\n  *(undefined4 *)(param_1 + 0x70) = 0;\n  return;\n}",
+  "fetched_at": "2026-04-26T18:54:28Z"
+}

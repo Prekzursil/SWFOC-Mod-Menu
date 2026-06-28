@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406f7fb0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined8 __thiscall\nEatAttackAbilityClass::vfunction7_for_IXMLLoadableClass\n          (EatAttackAbilityClass *this,longlong param_1)\n\n{\n  ulonglong in_RAX;\n  \n  if (param_1 != 0) {\n    in_RAX = (**(code **)(*DAT_140b15418 + 0xe0))();\n    if ((int)in_RAX == 1) {\n      in_RAX = FUN_1403956a0(param_1);\n      if (((int)in_RAX == (this->EatAttackAbilityClass_data).offset_0x18) ||\n         ((int)in_RAX == (this->EatAttackAbilityClass_data).offset_0x58)) {\n        return CONCAT71((int7)(in_RAX >> 8),1);\n      }\n    }\n  }\n  return in_RAX & 0xffffffffffffff00;\n}",
+  "fetched_at": "2026-04-26T17:49:04Z"
+}

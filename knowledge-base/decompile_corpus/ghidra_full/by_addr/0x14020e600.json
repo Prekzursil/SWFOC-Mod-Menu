@@ -1,0 +1,7 @@
+{
+  "addr": "0x14020e600",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall TreeCullClass::vfunction2(TreeCullClass *this,longlong *param_1)\n\n{\n  undefined8 *puVar1;\n  undefined4 *puVar2;\n  longlong lVar3;\n  \n  puVar1 = (undefined8 *)FUN_140769c58(0x48);\n  if (puVar1 == (undefined8 *)0x0) {\n    puVar1 = (undefined8 *)0x0;\n  }\n  else {\n    *puVar1 = this;\n    puVar1[1] = param_1;\n    puVar1[4] = 0;\n    *(undefined4 *)(puVar1 + 5) = 0;\n  }\n  FUN_14023e080(param_1,puVar1);\n  puVar2 = (undefined4 *)(**(code **)(*param_1 + 8))(param_1);\n  *(undefined4 *)((longlong)puVar1 + 0x2c) = *puVar2;\n  *(undefined4 *)(puVar1 + 6) = puVar2[1];\n  *(undefined4 *)((longlong)puVar1 + 0x34) = puVar2[2];\n  *(undefined4 *)(puVar1 + 7) = puVar2[3];\n  *(undefined4 *)((longlong)puVar1 + 0x3c) = puVar2[4];\n  *(undefined4 *)(puVar1 + 8) = puVar2[5];\n  lVar3 = FUN_140210480((this->TreeCullClass_data).offset_0x8);\n  if (lVar3 == 0) {\n    lVar3 = (this->TreeCullClass_data).offset_0x8;\n  }\n  FUN_14020f960(lVar3,puVar1);\n  if (0x10 < (ulonglong)(*(longlong *)(lVar3 + 0x20) - *(longlong *)(lVar3 + 0x18) >> 3)) {\n    (this->TreeCullClass_data).offset_0x18 = 1;\n  }\n  DAT_140a7c660 = DAT_140a7c660 + 1;\n  puVar1 = &(this->TreeCullClass_data).offset_0x10;\n  *(int *)puVar1 = *(int *)puVar1 + 1;\n  return;\n}",
+  "fetched_at": "2026-04-26T17:59:17Z"
+}

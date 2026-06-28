@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406ac770",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined8 __thiscall MeleeHeroClashClass::vfunction5(MeleeHeroClashClass *this)\n\n{\n  if ((this->MeleeHeroClashClass_data).offset_0x28 == 4) {\n    return (this->MeleeHeroClashClass_data).offset_0x30;\n  }\n  return 0;\n}",
+  "fetched_at": "2026-04-26T17:35:37Z"
+}

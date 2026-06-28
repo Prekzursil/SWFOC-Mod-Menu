@@ -1,0 +1,7 @@
+{
+  "addr": "0x140168520",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140168524        int64_t r9 = *(arg1 + 0xc8)\n14016852b        void* r8 = *(arg1 + 0x118)\n14016853d        int64_t rdx = sx.q(arg2) * 0x70\n140168554        float zmm1 = *(rdx + r9 + 0x54) f* *(rdx + r9 + 0x3c) * 31f\n14016855c        int32_t rax_1 = int.d(zmm1)\n140168562        uint128_t zmm0\n140168562        if (rax_1 s<= 0)\n140168564        zmm0 = *(r8 + 0x664)\n140168572        if (rax_1 s< 0x1f)\n140168586        int64_t rax_2 = sx.q(rax_1)\n140168588        zmm1 = zmm1 f- _mm_cvtepi32_ps(zx.o(rax_1)).d\n14016858f        zmm0.d = 1f - zmm1\n14016859d        zmm0.d = zmm0.d f* *(r8 + (rax_2 << 2) + 0x664)\n1401685a7        zmm0.d = zmm0.d f+ zmm1 f* *(r8 + (rax_2 << 2) + 0x668)\n140168574        zmm0 = *(r8 + 0x6e0)\n1401685be        uint128_t result\n1401685be        result.d = (*(rdx + r9 + 0x50)).d f+ 1f\n1401685c2        result.d = result.d f* zmm0.d\n1401685ce        result.d = result.d f* *sub_140173400(*(arg1 + 0x100), 1)\n1401685d5        if (result.d f< 0f)\n1401685eb        return zx.o(0)\n1401685d7        result.d = result.d f* 0.5f\n1401685df        return result",
+  "fetched_at": "2026-04-26T17:22:46Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x140631e90",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "TurretBehaviorClass * __thiscall\nTurretBehaviorClass::vfunction4(TurretBehaviorClass *this,int param_1)\n\n{\n  TurretBehaviorClass *pTVar1;\n  \n  pTVar1 = (TurretBehaviorClass *)0x0;\n  if (param_1 == 0xb) {\n    pTVar1 = this;\n  }\n  return pTVar1;\n}",
+  "fetched_at": "2026-04-26T17:33:53Z"
+}

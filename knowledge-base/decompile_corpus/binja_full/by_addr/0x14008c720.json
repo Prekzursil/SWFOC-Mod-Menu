@@ -1,0 +1,7 @@
+{
+  "addr": "0x14008c720",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14008c728        arg1[3] = 7\n14008c730        *arg1 = 0\n14008c736        arg1[2] = 0\n14008c73a        void* r8 = -ffffffffffffffff\n14008c741        r8 += 1\n14008c749        do while (*(arg2 + (r8 << 1)) != 0)\n14008c74b        sub_1400228a0(arg1, arg2, r8)\n14008c758        return arg1",
+  "fetched_at": "2026-04-26T16:57:47Z"
+}

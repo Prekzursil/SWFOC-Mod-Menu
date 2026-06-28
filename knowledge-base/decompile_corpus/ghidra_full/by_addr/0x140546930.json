@@ -1,0 +1,7 @@
+{
+  "addr": "0x140546930",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined * __thiscall LuaGameRandom::vfunction5(void)\n\n{\n  return &DAT_140a43a78;\n}",
+  "fetched_at": "2026-04-26T18:37:06Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406864b0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1406864c3        *arg1 = &StoppedVsStoppedCollisionClass::`vftable'{for `CollisionClass'}\n1406864d0        arg1[2] = &StoppedVsStoppedCollisionClass::`vftable'{for `AIDiagnosticsClass'}\n1406864d4        sub_1405c6000(arg1)\n1406864dc        if ((arg2 & 1) != 0)\n1406864e6        j_sub_1407864b8(arg1)\n1406864f8        return arg1",
+  "fetched_at": "2026-04-26T17:14:40Z"
+}

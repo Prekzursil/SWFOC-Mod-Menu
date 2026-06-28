@@ -1,0 +1,7 @@
+{
+  "addr": "0x14071f5a0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall SpecialAbilityActionClass::vfunction8(SpecialAbilityActionClass *this)\n\n{\n  int *piVar1;\n  undefined1 uVar2;\n  undefined7 extraout_var;\n  \n  if ((((this->ActionClass_data).offset_0x98 != 0) && ((this->ActionClass_data).offset_0xa0 != 0))\n     && ((this->SpecialAbilityActionClass_data).offset_0x28 != '\\x01')) {\n    uVar2 = (*this->vftablePtr->vfunction3)();\n    piVar1 = (int *)((longlong)&(this->SpecialAbilityActionClass_data).offset_0x20 + 4);\n    *piVar1 = *piVar1 - (int)CONCAT71(extraout_var,uVar2);\n    if (*(int *)((longlong)&(this->SpecialAbilityActionClass_data).offset_0x20 + 4) < 1) {\n      (this->SpecialAbilityActionClass_data).offset_0x28 = 1;\n    }\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T17:58:55Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401ebd30",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1401ebd3a        struct GUIGadgetClass::GUIGadgetVScrollbarClass::VTable** result = arg1\n1401ebd3d        sub_1401e3c30(arg1)\n1401ebd4b        *result = &GUIGadgetVScrollbarClass::`vftable'{for `GUIGadgetClass'}\n1401ebd55        __builtin_memset(&result[0x16], 0, 0x18)\n1401ebd6a        sub_140260490(&result[0x19])\n1401ebd76        sub_140260490(&result[0x2b])\n1401ebd82        sub_140260490(&result[0x3d])\n1401ebd8a        __builtin_memset(&result[0x4f], 0, 0xf0)\n1401ebe5c        sub_1401ed4e0(result)\n1401ebe64        result[0x13].d = 0\n1401ebe6a        result[0x14] = 0\n1401ebe71        result[0x15].b = 0\n1401ebe78        *(result + 0x9c) = 1\n1401ebe89        return result",
+  "fetched_at": "2026-04-26T17:27:10Z"
+}

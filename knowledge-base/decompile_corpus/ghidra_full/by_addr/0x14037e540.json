@@ -1,0 +1,7 @@
+{
+  "addr": "0x14037e540",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall LineSubClass::vfunction1_for_MultiLinkedListMember(LineSubClass *this,uint param_1)\n\n{\n  scalar_deleting_destructor((LineSubClass *)&this[-1].LineSubClass_data.offset_0x8b8,param_1);\n  return;\n}",
+  "fetched_at": "2026-04-26T17:19:35Z"
+}

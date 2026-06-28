@@ -1,0 +1,7 @@
+{
+  "addr": "0x140663720",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nPlanetReachabilityClass * __thiscall\nPlanetReachabilityClass::scalar_deleting_destructor(PlanetReachabilityClass *this,uint param_1)\n\n{\n  ulonglong uVar1;\n  longlong lVar2;\n  ulonglong uVar3;\n  longlong lVar4;\n  undefined8 *puVar5;\n  longlong lVar6;\n  \n  lVar6 = 0xb;\n  puVar5 = &(this->PlanetReachabilityClass_data).offset_0x138;\n  lVar4 = 0xb;\n  do {\n    puVar5 = puVar5 + -2;\n    FUN_14020b8b0(puVar5);\n    lVar4 = lVar4 + -1;\n  } while (lVar4 != 0);\n  puVar5 = (undefined8 *)&(this->PlanetReachabilityClass_data).field_0x88;\n  do {\n    lVar4 = puVar5[-3];\n    lVar6 = lVar6 + -1;\n    if (lVar4 != 0) {\n      uVar3 = puVar5[-1] - lVar4 & 0xfffffffffffffff8;\n      lVar2 = lVar4;\n      if (0xfff < uVar3) {\n        lVar2 = *(longlong *)(lVar4 + -8);\n        uVar1 = (lVar4 - lVar2) - 8;\n        if (0x1f < uVar1) {\n                    /* WARNING: Subroutine does not return */\n          FUN_1407711cc(uVar1,uVar3 + 0x27);\n        }\n      }\n      thunk_FUN_1407864b8(lVar2);\n      puVar5[-3] = 0;\n      puVar5[-2] = 0;\n      puVar5[-1] = 0;\n    }\n    puVar5 = puVar5 + -3;\n  } while (lVar6 != 0);\n                    /* inlined destructor: RefCountClass::~RefCountClass */\n  this->vftablePtr = (PlanetReachabilityClass_vftable *)&RefCountClass::vftable;\n  if ((param_1 & 1) != 0) {\n    thunk_FUN_1407864b8(this,0x208);\n  }\n  return this;\n}\n\n",
+  "fetched_at": "2026-04-26T17:09:12Z"
+}

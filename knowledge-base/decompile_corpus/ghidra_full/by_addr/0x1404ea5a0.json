@@ -1,0 +1,7 @@
+{
+  "addr": "0x1404ea5a0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall\nLobbingSuperweaponBehaviorClass::vfunction10\n          (LobbingSuperweaponBehaviorClass *this,undefined **param_1)\n\n{\n  undefined *puVar1;\n  longlong lVar2;\n  longlong lVar3;\n  float fVar4;\n  \n  SpawnIndigenousUnitsBehaviorClass::vbase_destructor\n            ((SpawnIndigenousUnitsBehaviorClass *)this,param_1);\n  puVar1 = param_1[0x2b];\n  if (puVar1 != (undefined *)0x0) {\n    lVar2 = *(longlong *)(param_1[0x57] + 0x20);\n    *(undefined4 *)(puVar1 + 8) = 0;\n    fVar4 = (float)FUN_140373630(param_1[0x53],0);\n    *(int *)(puVar1 + 0xc) = (int)(longlong)(fVar4 * (float)DAT_140b0a340) + *(int *)(lVar2 + 0x10);\n    if (*(char *)(param_1 + 0x6f) != -1) {\n      lVar3 = (**(code **)(*param_1 + 0x10))(param_1,0x46);\n      if (lVar3 != 0) {\n        FUN_14042fb70(lVar3,0x2f);\n      }\n    }\n    FUN_14035c520(lVar2,param_1);\n    puVar1 = param_1[0x1e];\n    if (puVar1 != (undefined *)0x0) {\n      *(undefined4 *)(puVar1 + 0x54) = 0;\n      *(undefined8 *)(puVar1 + 0x58) = 0x42340000;\n    }\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T18:16:53Z"
+}

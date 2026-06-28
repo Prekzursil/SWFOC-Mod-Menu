@@ -1,0 +1,7 @@
+{
+  "addr": "0x140773d94",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140773d9d        int32_t rcx = *(arg1 + 0x3c)\n140773da3        bool rax\n140773da3        if (rcx == 2)\n140773dc1        rax = false\n140773dc3        label_140773dc3:\n140773dc5        if (rax != 0)\n140773dc5        goto label_140773dc7\n140773e17        label_140773e17:\n140773e17        uint64_t r8_2 = *(arg1 + 0x460)\n140773e21        if (r8_2 == 0)\n140773e21        r8_2 = arg1 + 0x58\n140773e25        *(arg1 + 0x20) += 8\n140773e31        *r8_2 = *(*(arg1 + 0x20) - 8)\n140773e34        *(arg1 + 0x50) = 1\n140773dad        if (rcx != 3 && rcx != 0xc)\n140773db3        if (*(arg1 + 0x3c) == 0xd)\n140773db3        goto label_140773e17\n140773dbc        rax = ((*(arg1 + 0x41) - 0x63) & 0xef) != 0\n140773dbf        goto label_140773dc3\n140773dc7        label_140773dc7:\n140773dc7        *(arg1 + 0x20) += 8\n140773dd0        void* rdx_1 = *(arg1 + 0x460)\n140773ddf        void* r8\n140773ddf        if (rdx_1 != 0)\n140773df4        r8 = *(arg1 + 0x458) u>> 1\n140773de1        r8 = 0x200\n140773de7        rdx_1 = arg1 + 0x58\n140773e0b        if (_wctomb_s_l(arg1 + 0x50, rdx_1, r8, *(*(arg1 + 0x20) - 8), *(arg1 + 8)).d != 0)\n140773e0d        *(arg1 + 0x40) = 1\n140773e3f        uint64_t result\n140773e3f        result.b = 1\n140773e41        void* rdx_2 = *(arg1 + 0x460)\n140773e4b        if (rdx_2 == 0)\n140773e4b        rdx_2 = arg1 + 0x58\n140773e4f        *(arg1 + 0x48) = rdx_2\n140773e58        return result",
+  "fetched_at": "2026-04-26T17:30:48Z"
+}

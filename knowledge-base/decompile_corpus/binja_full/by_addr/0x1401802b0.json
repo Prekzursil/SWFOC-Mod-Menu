@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401802b0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1401802b0        void* r10 = data_140a6fe68\n1401802c3        *arg2 = *(r10 + 0x20) + (sx.q(*(r10 + 0x34)) << 1)\n1401802c6        int32_t result = *(r10 + 0x30)\n1401802ca        *arg3 = result\n1401802cd        *(r10 + 0x34) += arg1\n1401802d1        *(r10 + 0x30) += arg1\n1401802d5        return result",
+  "fetched_at": "2026-04-26T17:23:51Z"
+}

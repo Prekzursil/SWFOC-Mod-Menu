@@ -1,0 +1,7 @@
+{
+  "addr": "0x1402440f0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "LuaMemberFunctionWrapper<class_LuaScriptClass> * FUN_1402440f0(undefined8 *param_1)\n\n{\n  LuaMemberFunctionWrapper<class_LuaScriptClass> *pLVar1;\n  longlong lVar2;\n  longlong lVar3;\n  \n  pLVar1 = (LuaMemberFunctionWrapper<class_LuaScriptClass> *)FUN_140769c58(0x138);\n  if (pLVar1 == (LuaMemberFunctionWrapper<class_LuaScriptClass> *)0x0) {\n    pLVar1 = (LuaMemberFunctionWrapper<class_LuaScriptClass> *)0x0;\n  }\n  else {\n    pLVar1 = LuaMemberFunctionWrapper<class_LuaScriptClass>::\n             LuaMemberFunctionWrapper<class_LuaScriptClass>(pLVar1);\n  }\n  if (0xf < (ulonglong)param_1[3]) {\n    param_1 = (undefined8 *)*param_1;\n  }\n  lVar2 = FUN_1402011a0(param_1);\n  lVar3 = -1;\n  do {\n    lVar3 = lVar3 + 1;\n  } while (*(char *)(lVar2 + lVar3) != '\\0');\n  FUN_140022730(&(pLVar1->RefCountClass_data).offset_0x60,lVar2);\n  FUN_140244d80(&(pLVar1->RefCountClass_data).offset_0x60,&(pLVar1->RefCountClass_data).offset_0x80)\n  ;\n  return pLVar1;\n}",
+  "fetched_at": "2026-04-26T18:10:08Z"
+}

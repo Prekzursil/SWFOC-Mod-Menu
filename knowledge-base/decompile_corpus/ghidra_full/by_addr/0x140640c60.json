@@ -1,0 +1,7 @@
+{
+  "addr": "0x140640c60",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nundefined4 * __thiscall\nJetPackLocomotorBehaviorClass::vfunction74(JetPackLocomotorBehaviorClass *this,undefined4 *param_1)\n\n{\n  undefined **ppuVar1;\n  \n  ppuVar1 = this->offset_0x18;\n  if ((ppuVar1[0x15] != (undefined *)0x0) && (*(int *)(ppuVar1[0x15] + 0x48) != 0x13)) {\n    FUN_14020acd0(param_1,ppuVar1 + 0xf);\n    return param_1;\n  }\n  *param_1 = *(undefined4 *)((longlong)ppuVar1 + 0x84);\n  param_1[1] = *(undefined4 *)(ppuVar1 + 0x11);\n  param_1[2] = *(undefined4 *)((longlong)ppuVar1 + 0x8c);\n  return param_1;\n}\n\n",
+  "fetched_at": "2026-04-26T17:03:09Z"
+}

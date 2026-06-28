@@ -1,0 +1,7 @@
+{
+  "addr": "0x140644f40",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140644f4b        struct BehaviorClass::SurfaceFXBehaviorClass::VTable** result = operator new(0x60)\n140644f56        if (result == 0)\n140644f9f        return result\n140644f5b        sub_1404c32d0(result)\n140644f67        *result = &SurfaceFXBehaviorClass::`vftable'{for `BehaviorClass'}\n140644f71        result[1] = &SurfaceFXBehaviorClass::`vftable'{for `RefCountClass'}\n140644f7c        result[3] = &SurfaceFXBehaviorClass::`vftable'{for `SignalListenerClass'}\n140644f82        __builtin_memset(&result[8], 0, 0x19)\n140644f99        return result",
+  "fetched_at": "2026-04-26T17:03:41Z"
+}

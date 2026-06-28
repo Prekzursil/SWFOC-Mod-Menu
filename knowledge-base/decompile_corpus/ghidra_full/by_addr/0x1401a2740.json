@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401a2740",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined8 FUN_1401a2740(longlong param_1,undefined8 param_2)\n\n{\n  undefined4 local_res8 [2];\n  \n  FUN_14021fe20(param_2,0x1201);\n  FUN_1401a4a70(param_2,0,param_1);\n  FUN_1401a4a70(param_2,1,param_1 + 0xc);\n  local_res8[0] = (undefined4)((*(longlong *)(param_1 + 0x20) - *(longlong *)(param_1 + 0x18)) / 10)\n  ;\n  FUN_14021ffa0(param_2,2);\n  FUN_1402200b0(param_2,local_res8,4);\n  FUN_140220030(param_2);\n  local_res8[0] = (undefined4)(*(longlong *)(param_1 + 0x38) - *(longlong *)(param_1 + 0x30) >> 1);\n  FUN_14021ffa0(param_2,3);\n  FUN_1402200b0(param_2,local_res8,4);\n  FUN_140220030(param_2);\n  FUN_14021feb0(param_2);\n  FUN_14021fe20(param_2,0x1202);\n  FUN_1402200b0(param_2,*(undefined8 *)(param_1 + 0x18),\n                (int)((*(longlong *)(param_1 + 0x20) - *(longlong *)(param_1 + 0x18)) / 10) * 10,0);\n  FUN_14021feb0(param_2);\n  FUN_14021fe20(param_2,0x1203);\n  FUN_1402200b0(param_2,*(longlong *)(param_1 + 0x30),\n                (int)(*(longlong *)(param_1 + 0x38) - *(longlong *)(param_1 + 0x30) >> 1) * 2,0);\n  FUN_14021feb0(param_2);\n  return 1;\n}",
+  "fetched_at": "2026-04-26T17:38:50Z"
+}

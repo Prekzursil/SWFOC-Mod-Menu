@@ -1,0 +1,7 @@
+{
+  "addr": "0x1402d36c0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1402d36d4        void** rbx = arg3\n1402d36dd        if (*(arg3 + 0x19) != 0)\n1402d36dd        return \n1402d36fa        sub_1402d36c0(arg1, arg2, rbx[2])\n1402d36ff        void** rdi_1 = rbx\n1402d3702        rbx = *rbx\n1402d3709        sub_14001ec10(&rdi_1[4])\n1402d3716        j_sub_1407864b8(rdi_1)\n1402d371f        do while (*(rbx + 0x19) == 0)\n1402d3735        return ",
+  "fetched_at": "2026-04-26T17:22:28Z"
+}

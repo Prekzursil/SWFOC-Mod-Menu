@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406a5b00",
+  "tool": "ghidra",
+  "fact_id": "rva_fow_reveal_all_impl",
+  "body": "\nundefined8 FUN_1406a5b00(undefined8 param_1,undefined8 param_2,longlong param_3)\n\n{\n  CombatantBehaviorClass *this;\n  char cVar1;\n  undefined *puVar2;\n  undefined **ppuVar3;\n  undefined8 uVar4;\n  char *pcVar5;\n  \n  uVar4 = param_2;\n  cVar1 = (**(code **)(*DAT_140b15418 + 0xf0))();\n  if (cVar1 == '\\0') {\n    FUN_140248190(param_2,\"LuaFOWRevealCommandClass -- Command only valid in a tactical game.\");\n    return 0;\n  }\n  if (*(longlong *)(param_3 + 0x18) - (longlong)*(undefined8 **)(param_3 + 0x10) >> 3 == 0) {\n    pcVar5 = \"LuaFOWRevealCommandClass -- Requires at least 1 parameters: (player).\";\n  }\n  else {\n    this = (CombatantBehaviorClass *)**(undefined8 **)(param_3 + 0x10);\n    if (this != (CombatantBehaviorClass *)0x0) {\n      for (puVar2 = (undefined *)(*this->vftablePtr->vfunction3)(this,(int)uVar4);\n          puVar2 != (undefined *)0x0; puVar2 = *(undefined **)(puVar2 + 8)) {\n        if (puVar2 == &DAT_140a44260) {\n          (*this->vftablePtr->vfunction1)(this);\n          ppuVar3 = CombatantBehaviorClass::vfunction47(this);\n          FUN_14035d4f0(DAT_140b15418,*(undefined4 *)((longlong)ppuVar3 + 0x4c));\n          (*this->vftablePtr->vfunction2)(this);\n          return 0;\n        }\n      }\n    }\n    pcVar5 = \"LuaFOWRevealCommandClass -- Expected player object as first parameter.\";\n  }\n  FUN_140248190(param_2,pcVar5);\n  return 0;\n}\n\n",
+  "fetched_at": "2026-04-26T16:44:10Z"
+}

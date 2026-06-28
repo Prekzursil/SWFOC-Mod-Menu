@@ -1,0 +1,7 @@
+{
+  "addr": "0x140267f10",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall SceneClass::vfunction9(SceneClass *this,undefined **param_1)\n\n{\n  undefined **ppuVar1;\n  \n  ppuVar1 = (this->RefCountClass_data).offset_0x8;\n  if (ppuVar1 != param_1) {\n    if (ppuVar1 != (undefined **)0x0) {\n      (**(code **)(*ppuVar1 + 8))();\n    }\n    (this->RefCountClass_data).offset_0x8 = param_1;\n    if (param_1 != (undefined **)0x0) {\n      (**(code **)*param_1)(param_1);\n    }\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T18:18:06Z"
+}

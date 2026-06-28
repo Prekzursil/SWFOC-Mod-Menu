@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401bd210",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1401bd21d        void** rbx = arg1\n1401bd242        sub_1401bde60(\"--------------------------------------\\r\\n\\r\\n\", sub_1401bde60(\"ArtProcessClass::Copy_Maps\\r\\n\", sub_1401bde60(\"--------------------------------------\\r\\n\", arg2)))\n1401bd24c        if (arg2[3] u>= 0x10)\n1401bd24e        *arg2\n1401bd256        if (rbx[3] u>= 0x10)\n1401bd258        rbx = *rbx\n1401bd26d        void var_118\n1401bd26d        sscanf_s(&var_118, \"xcopy /D /C /F /Y /R /I \"%s\" \"%s\"\", rbx)\n1401bd28c        return sub_1401bdd40(&var_118)",
+  "fetched_at": "2026-04-26T17:26:01Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x14077fec4",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* Library Function - Single Match\n    _fclose_nolock\n   \n   Library: Visual Studio 2019 Release */\n\nint __cdecl _fclose_nolock(FILE *_File)\n\n{\n  int iVar1;\n  int iVar2;\n  ulong *puVar3;\n  \n  if (_File == (FILE *)0x0) {\n    puVar3 = __doserrno();\n    *puVar3 = 0x16;\n    FUN_1407711ac();\n    iVar1 = -1;\n  }\n  else {\n    iVar1 = -1;\n    if ((*(uint *)((longlong)&_File->_base + 4) >> 0xd & 1) != 0) {\n      iVar1 = __acrt_stdio_flush_nolock();\n      __acrt_stdio_free_buffer_nolock(_File);\n      iVar2 = _fileno(_File);\n      iVar2 = _close(iVar2);\n      if (iVar2 < 0) {\n        iVar1 = -1;\n      }\n      else if (_File->_tmpfname != (char *)0x0) {\n        _free_base();\n        _File->_tmpfname = (char *)0x0;\n      }\n    }\n    __acrt_stdio_free_stream(_File);\n  }\n  return iVar1;\n}",
+  "fetched_at": "2026-04-26T18:50:56Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407d0b20",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1407d0b4a        int64_t arg_10\n1407d0b4a        char* rax = sub_1407ce8c0(arg1, 2, &data_1407ff8a8, &arg_10)\n1407d0b72        int32_t i = int.d(sub_1407ce9b0(arg1, 3, 0x3ff0000000000000))\n1407d0b87        int32_t rsi = int.d(sub_1407ce9b0(arg1, 4, zx.o(0)))\n1407d0b8b        sub_1407ce2c0(arg1, 1, 5)\n1407d0b92        if (rsi == 0)\n1407d0b9f        rsi = sub_1407ce440(arg1, rsi + 1)\n1407d0ba9        void var_228\n1407d0ba9        sub_1407ce050(arg1, &var_228)\n1407d0bb0        while (i s<= rsi)\n1407d0bcb        sub_1407b9770(arg1, 1, i)\n1407d0bd8        int32_t rax_2 = sub_1407b9010(arg1, 0xffffffff)\n1407d0bdf        if (rax_2 == 0)\n1407d0bee        sub_1407cdf80(arg1, rax_2 + 1)\n1407d0bee        noreturn\n1407d0bf8        sub_1407cdec0(&var_228)\n1407d0bff        if (i != rsi)\n1407d0c11        sub_1407cde20(&var_228, rax, arg_10)\n1407d0c16        i += 1\n1407d0c21        sub_1407cea70(&var_228)\n1407d0c43        return 1",
+  "fetched_at": "2026-04-26T17:33:57Z"
+}

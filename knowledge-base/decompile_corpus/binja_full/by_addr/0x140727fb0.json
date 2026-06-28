@@ -1,0 +1,7 @@
+{
+  "addr": "0x140727fb0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140727fb4        int64_t rdx = data_140b3a6b0\n140727fdb        void* rcx_2 = *(*(*(*(*(arg2 + 0x20) + 0x90) + 0x28) + 0x50) + 0x38)\n140727fdf        if ((rdx - data_140b3a6a8) s>> 3 != 0)\n140727fdf        rdx = data_140b3a6a8\n140727fe7        data_140b3a6b0 = rdx\n140727ff5        return sub_1404d3830(rcx_2, &data_140b3a6a8) __tailcall",
+  "fetched_at": "2026-04-26T17:28:32Z"
+}

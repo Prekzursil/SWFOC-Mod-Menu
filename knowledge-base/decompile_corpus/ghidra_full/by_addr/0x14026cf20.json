@@ -1,0 +1,7 @@
+{
+  "addr": "0x14026cf20",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_14026cf20(longlong *param_1)\n\n{\n  longlong *local_res8 [4];\n  \n  if ((longlong *)*param_1 != (longlong *)0x0) {\n    (**(code **)(*(longlong *)*param_1 + 8))();\n    *param_1 = 0;\n  }\n  local_res8[0] = param_1;\n  FUN_1400474a0(&PTR_vftable_140a16cc0,local_res8);\n  FID_conflict__Tidy_deallocate(param_1 + 4);\n  if ((longlong *)param_1[1] != (longlong *)0x0) {\n    (**(code **)(*(longlong *)param_1[1] + 8))();\n  }\n  if ((longlong *)*param_1 != (longlong *)0x0) {\n                    /* WARNING: Could not recover jumptable at 0x00014026cf7c. Too many branches */\n                    /* WARNING: Treating indirect jump as call */\n    (**(code **)(*(longlong *)*param_1 + 8))();\n    return;\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T18:19:01Z"
+}

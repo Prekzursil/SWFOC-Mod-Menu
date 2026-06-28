@@ -1,0 +1,7 @@
+{
+  "addr": "0x140770dd4",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* Library Function - Single Match\n    __vcrt_FlsSetValue\n   \n   Library: Visual Studio 2019 Release */\n\nvoid __vcrt_FlsSetValue(DWORD param_1,LPVOID param_2)\n\n{\n  longlong lVar1;\n  \n  lVar1 = FUN_140770bac(3,\"FlsSetValue\",&DAT_1408d1cf8,\"FlsSetValue\");\n  if (lVar1 == 0) {\n    TlsSetValue(param_1,param_2);\n  }\n  else {\n    (*(code *)PTR__guard_dispatch_icall_1407fdcd8)();\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T18:11:56Z"
+}

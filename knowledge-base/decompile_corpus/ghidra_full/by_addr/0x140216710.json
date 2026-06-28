@@ -1,0 +1,7 @@
+{
+  "addr": "0x140216710",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined8 FUN_140216710(void)\n\n{\n  FARPROC pFVar1;\n  HANDLE pvVar2;\n  INT_PTR IVar3;\n  undefined1 local_58 [56];\n  undefined8 local_20;\n  \n  if ((DAT_140a7d070 == (HMODULE)0x0) &&\n     (DAT_140a7d070 = LoadLibraryA(\"psapi.dll\"), DAT_140a7d070 == (HMODULE)0x0)) {\n    return 0;\n  }\n  pFVar1 = GetProcAddress(DAT_140a7d070,\"GetProcessMemoryInfo\");\n  if (pFVar1 != (FARPROC)0x0) {\n    pvVar2 = GetCurrentProcess();\n    IVar3 = (*pFVar1)(pvVar2,local_58,0x48);\n    if ((int)IVar3 != 0) {\n      return local_20;\n    }\n  }\n  return 0;\n}",
+  "fetched_at": "2026-04-26T18:00:58Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x1402456a0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1402456aa        int64_t* rax = sub_1407ba5d0(*(arg1 + 0x58), arg2)\n1402456b5        if (rax != 0)\n1402456bc        struct LuaVar::LuaValue<void (__cdecl*)(),8>::VTable** result = operator new(0x18)\n1402456c4        if (result != 0)\n1402456cd        result[1].d = 0\n1402456d4        *result = &LuaValue<void (__cdecl*)(),8>::`vftable'{for `LuaVar'}\n1402456d7        result[2] = rax\n1402456e0        return result\n1402456e8        return 0",
+  "fetched_at": "2026-04-26T17:30:18Z"
+}

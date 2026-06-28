@@ -1,0 +1,7 @@
+{
+  "addr": "0x14076b00c",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* Library Function - Single Match\n    _CxxThrowException\n   \n   Library: Visual Studio 2019 Release */\n\nvoid __stdcall _CxxThrowException(void *pExceptionObject,ThrowInfo *pThrowInfo)\n\n{\n  ULONG_PTR UVar1;\n  PVOID local_38;\n  ULONG_PTR local_30;\n  void *local_28;\n  ThrowInfo *local_20;\n  PVOID local_18;\n  \n  UVar1 = 0x19930520;\n  if ((pThrowInfo != (ThrowInfo *)0x0) && ((pThrowInfo->attributes & 0x10) != 0)) {\n    pThrowInfo = *(ThrowInfo **)(*(longlong *)(*(longlong *)pExceptionObject + -8) + 0x30);\n    (*(code *)PTR__guard_dispatch_icall_1407fdcd8)();\n  }\n  local_38 = RtlPcToFileHeader(pThrowInfo,&local_38);\n  if ((pThrowInfo != (ThrowInfo *)0x0) &&\n     (((pThrowInfo->attributes & 8) != 0 || (local_38 == (PVOID)0x0)))) {\n    UVar1 = 0x1994000;\n  }\n  local_30 = UVar1;\n  local_28 = pExceptionObject;\n  local_20 = pThrowInfo;\n  local_18 = local_38;\n  RaiseException(0xe06d7363,1,4,&local_30);\n  return;\n}",
+  "fetched_at": "2026-04-26T18:10:30Z"
+}

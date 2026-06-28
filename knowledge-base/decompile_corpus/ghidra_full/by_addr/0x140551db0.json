@@ -1,0 +1,7 @@
+{
+  "addr": "0x140551db0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "CashPointDataPackClass * __thiscall\nCashPointDataPackClass::CashPointDataPackClass(CashPointDataPackClass *this)\n\n{\n  *(undefined4 *)&this->PooledObjectClass<class_CashPointDataPackClass,8,class_EmptyLockerClass> =\n       0xffffffff;\n  this->vftablePtr = &vftable;\n  *(undefined4 *)\n   &(this->PooledObjectClass<class_CashPointDataPackClass,8,class_EmptyLockerClass>).field_0x4 = 0;\n  return this;\n}",
+  "fetched_at": "2026-04-26T18:38:07Z"
+}

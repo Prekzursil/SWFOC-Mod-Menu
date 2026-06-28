@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407c30c0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1407c30c6        void* rax = *(arg1 + 0x20)\n1407c30cd        uint64_t r8 = zx.q(*(rax + 0x44))\n1407c30d4        if (r8.d != 0)\n1407c30e5        sub_1407bf7e0(arg1, *(rax + 0x38), (r8 << 3).d, 0)\n1407c30ea        rax = *(arg1 + 0x20)\n1407c30ee        uint64_t r8_2 = zx.q(*(rax + 0x54))\n1407c30f5        if (r8_2.d != 0)\n1407c3109        sub_1407bf7e0(arg1, *(rax + 0x48), (r8_2 << 3).d, 0)\n1407c310e        rax = *(arg1 + 0x20)\n1407c3112        uint64_t r8_4 = zx.q(*(rax + 0x64))\n1407c3119        if (r8_4.d != 0)\n1407c312d        sub_1407bf7e0(arg1, *(rax + 0x58), (r8_4 << 3).d, 0)\n1407c3132        rax = *(arg1 + 0x20)\n1407c3138        *(rax + 0x40) = 0\n1407c313f        *(*(arg1 + 0x20) + 0x38) = 0\n1407c3147        *(*(arg1 + 0x20) + 0x44) = 0\n1407c314e        *(*(arg1 + 0x20) + 0x50) = 0\n1407c3155        *(*(arg1 + 0x20) + 0x48) = 0\n1407c315d        *(*(arg1 + 0x20) + 0x54) = 0\n1407c3164        *(*(arg1 + 0x20) + 0x60) = 0\n1407c316b        *(*(arg1 + 0x20) + 0x58) = 0\n1407c3173        *(*(arg1 + 0x20) + 0x64) = 0\n1407c3176        void* result = *(arg1 + 0x20)\n1407c317a        *(result + 0x68) = 0\n1407c3182        return result",
+  "fetched_at": "2026-04-26T17:33:36Z"
+}

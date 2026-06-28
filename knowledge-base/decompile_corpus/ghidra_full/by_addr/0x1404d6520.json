@@ -1,0 +1,7 @@
+{
+  "addr": "0x1404d6520",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* AIFreeStoreClass member function inherited by GalacticFreeStoreClass\n   AIFreeStoreClass member function inherited by SpaceFreeStoreClass\n   AIFreeStoreClass member function inherited by LandFreeStoreClass */\n\nundefined8 __thiscall\nAIFreeStoreClass::vfunction32_for_LuaUserVar(AIFreeStoreClass *this,int param_1,longlong param_2)\n\n{\n  return CONCAT71((int7)((ulonglong)this->offset_0x80 >> 8),\n                  *(longlong *)(this->offset_0x80 + (longlong)param_1 * 8) == param_2);\n}",
+  "fetched_at": "2026-04-26T18:13:48Z"
+}

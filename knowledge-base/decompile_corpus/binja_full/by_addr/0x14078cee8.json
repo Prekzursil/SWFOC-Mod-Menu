@@ -1,0 +1,7 @@
+{
+  "addr": "0x14078cee8",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14078ceee        uint64_t __security_cookie_1 = __security_cookie\n14078cef8        sub_1407710f4(__security_cookie_1)\n14078cf00        sub_14078bc78(__security_cookie_1)\n14078cf08        _initp_misc_winsig(__security_cookie_1)\n14078cf10        sub_14078d048(__security_cookie_1)\n14078cf18        sub_14078c0d4(__security_cookie_1)\n14078cf1d        int64_t result\n14078cf1d        result.b = 1\n14078cf24        return result",
+  "fetched_at": "2026-04-26T17:31:32Z"
+}

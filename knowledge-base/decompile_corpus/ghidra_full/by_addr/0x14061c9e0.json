@@ -1,0 +1,7 @@
+{
+  "addr": "0x14061c9e0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "SkyDomeBehaviorClass * __thiscall\nSkyDomeBehaviorClass::vfunction4(SkyDomeBehaviorClass *this,int param_1)\n\n{\n  SkyDomeBehaviorClass *pSVar1;\n  \n  pSVar1 = (SkyDomeBehaviorClass *)0x0;\n  if (param_1 == 0x3b) {\n    pSVar1 = this;\n  }\n  return pSVar1;\n}",
+  "fetched_at": "2026-04-26T17:29:17Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x14058f4f0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "BehaviorClass * FUN_14058f4f0(void)\n\n{\n  char cVar1;\n  BehaviorClass *this;\n  longlong lVar2;\n  undefined8 uVar3;\n  undefined **ppuVar4;\n  \n  this = (BehaviorClass *)FUN_140769c58(0x40);\n  if (this == (BehaviorClass *)0x0) {\n    return (BehaviorClass *)0x0;\n  }\n                    /* inlined constructor: DeployTroopersBehaviorClass::DeployTroopersBehaviorClass\n                        */\n  BehaviorClass::BehaviorClass(this);\n  this->vftablePtr = (BehaviorClass_vftable0 *)&DeployTroopersBehaviorClass::vftable;\n  this->vftablePtr = (BehaviorClass_vftable1 *)&DeployTroopersBehaviorClass::vftable;\n  this->vftablePtr = (BehaviorClass_vftable2 *)&DeployTroopersBehaviorClass::vftable;\n  BehaviorClass::vfunction25(this);\n  if (this->offset_0x18 != (undefined **)0x0) {\n    lVar2 = FUN_140397d90(this->offset_0x18,0x26);\n    FUN_1403a8e50(this->offset_0x18,0);\n    if (lVar2 == 0) {\n      FUN_1402149d0(\n                   \"Object is trying to deactivate DEPLOY_TROOPERS behavior but does not have DEPLOY_TROOPERS unit ability!\"\n                   );\n      return this;\n    }\n    cVar1 = FUN_14039b950(this->offset_0x18,0x26,1);\n    if (cVar1 == '\\0') {\n      ppuVar4 = this->offset_0x18 + 7;\n      if (this->offset_0x18 == (undefined **)0x0) {\n        ppuVar4 = (undefined **)0x0;\n      }\n      uVar3 = FUN_140058570();\n      FUN_140220eb0(uVar3,ppuVar4,&this->vftablePtr,0x28);\n    }\n  }\n  return this;\n}",
+  "fetched_at": "2026-04-26T18:42:03Z"
+}

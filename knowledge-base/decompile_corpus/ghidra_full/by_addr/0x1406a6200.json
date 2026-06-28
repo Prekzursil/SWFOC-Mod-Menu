@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406a6200",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined * __thiscall LightningEffectBlockStatus::vfunction5(void)\n\n{\n  return &DAT_140a44770;\n}",
+  "fetched_at": "2026-04-26T17:21:54Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x140201ef0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140201f01        uint64_t rbp = zx.q(arg3)\n140201f07        if (*(arg1 + 0x10) != 0)\n140201f14        enum WAIT_EVENT rax_1 = WaitForSingleObject(*(arg1 + 8), arg4)\n140201f28        if (rax_1 != WAIT_TIMEOUT && rax_1 != WAIT_FAILED)\n140201f37        int32_t rbx = 0\n140201f46        if (*(*(arg1 + 0x10) + 0x14) + rbp.d u<= **(arg1 + 0x10))\n140201f4c        void* rax_4 = *(arg1 + 0x10)\n140201f61        void* r9_1 = zx.q(*(rax_4 + 0x10)) + rax_4 + 0x18\n140201f74        if (*(*(arg1 + 0x10) + 0x10) + rbp.d u<= **(arg1 + 0x10))\n140201fbf        memcpy(r9_1, arg2, rbp)\n140201fd1        *(*(arg1 + 0x10) + 0x10) += rbp.d\n140201f8b        void* r8_1 = zx.q(**(arg1 + 0x10) - *(*(arg1 + 0x10) + 0x10))\n140201f91        int32_t rdi_2 = rbp.d - r8_1.d\n140201f97        memcpy(r9_1, arg2, r8_1)\n140201fa6        memcpy(rax_4 + 0x18, zx.q(r8_1.d) + arg2, zx.q(rdi_2))\n140201faf        *(*(arg1 + 0x10) + 0x10) = rdi_2\n140201fd8        rbx = rbp.d\n140201fe8        *(*(arg1 + 0x10) + 0x14) += rbp.d\n140201fef        ReleaseMutex(*(arg1 + 8))\n140202004        return zx.q(rbx)\n14020200f        return 0",
+  "fetched_at": "2026-04-26T17:27:43Z"
+}

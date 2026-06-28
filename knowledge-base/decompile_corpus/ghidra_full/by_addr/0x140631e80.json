@@ -1,0 +1,7 @@
+{
+  "addr": "0x140631e80",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "char * __thiscall TurretBehaviorClass::vfunction9(void)\n\n{\n  return \"TurretBehaviorClass\";\n}",
+  "fetched_at": "2026-04-26T17:33:52Z"
+}

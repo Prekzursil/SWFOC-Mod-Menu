@@ -1,0 +1,7 @@
+{
+  "addr": "0x1403857d0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "float __thiscall FUN_1403857d0(void *this)\n\n{\n  char cVar1;\n  float fVar2;\n  float fVar3;\n  GreaterThan<float>_vftable *local_res8;\n  Plus<float>_vftable *local_res10 [3];\n  undefined1 local_178 [256];\n  undefined1 local_78 [112];\n  \n  if ((*(longlong *)((longlong)this + 0x20) != 0) && (*(longlong *)((longlong)this + 0x10) != 0)) {\n    fVar3 = *(float *)(*(longlong *)((longlong)this + 0x20) + 0x238);\n    FUN_140535cb0(local_178,0);\n    cVar1 = FUN_140395c70(*(undefined8 *)((longlong)this + 0x10),local_178);\n    if (cVar1 == '\\x01') {\n                    /* inlined constructor or destructor (approx location) for GreaterThan<float> */\n      local_res8 = &GreaterThan<float>::vftable;\n                    /* inlined constructor or destructor (approx location) for Plus<float> */\n      local_res10[0] = &Plus<float>::vftable;\n      fVar2 = (float)FUN_14033fb70(local_78,local_res10,&local_res8);\n      fVar3 = fVar3 * (fVar2 + DAT_1407ffaf8);\n    }\n    if (*(char *)(*(longlong *)((longlong)this + 0x10) + 0x3a7) == '\\x01') {\n      fVar3 = fVar3 * DAT_140b278ac;\n    }\n    FUN_140535fb0(local_178);\n    return fVar3;\n  }\n  return 0.0;\n}",
+  "fetched_at": "2026-04-26T17:20:26Z"
+}

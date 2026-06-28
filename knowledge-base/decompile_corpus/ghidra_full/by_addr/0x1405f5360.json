@@ -1,0 +1,7 @@
+{
+  "addr": "0x1405f5360",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall TacticalAIManagerClass::vfunction7(TacticalAIManagerClass *this)\n\n{\n  AIPlanningSystemClass *this_00;\n  \n  this_00 = (AIPlanningSystemClass *)FUN_140769c58(0x88);\n  if (this_00 != (AIPlanningSystemClass *)0x0) {\n    AIPlanningSystemClass::AIPlanningSystemClass(this_00,this);\n    return;\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T17:23:06Z"
+}

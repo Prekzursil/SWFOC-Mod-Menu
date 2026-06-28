@@ -1,0 +1,7 @@
+{
+  "addr": "0x140369a90",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140369a9a        int64_t lpMem = arg1[1]\n140369a9e        struct DynamicVectorClass<class MultiNameReferenceClass* __ptr64>::VTable* const result = &DynamicVectorClass<class MultiNameReferenceClass* __ptr64>::`vftable'\n140369aa5        *arg1 = &DynamicVectorClass<class MultiNameReferenceClass* __ptr64>::`vftable'\n140369aae        if (lpMem != 0)\n140369ab7        if ((*(arg1 + 0x14) & 0x80000000) == 0)\n140369ad2        j_sub_1407864b8(lpMem)\n140369ac7        HeapFree(GetProcessHeap(), HEAP_NONE, lpMem)\n140369ad7        result = nullptr\n140369ad9        *(arg1 + 0x14) &= 0x80000000\n140369ae0        arg1[1] = 0\n140369ae4        arg1[2].d = 0\n140369af1        return result",
+  "fetched_at": "2026-04-26T17:14:59Z"
+}

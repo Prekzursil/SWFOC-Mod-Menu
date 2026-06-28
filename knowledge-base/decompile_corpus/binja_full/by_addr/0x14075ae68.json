@@ -1,0 +1,7 @@
+{
+  "addr": "0x14075ae68",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14075ae73        *arg2 = 0\n14075ae79        arg2[2] = 0\n14075ae7d        arg2[3] = 0\n14075ae86        std::basic_string<wchar_t,struct std::char_traits<wchar_t>,class std::allocator<wchar_t> >::_Construct_lv_contents(arg2, arg3)\n14075ae93        return arg2",
+  "fetched_at": "2026-04-26T17:29:56Z"
+}

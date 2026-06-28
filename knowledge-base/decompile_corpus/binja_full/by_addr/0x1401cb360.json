@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401cb360",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1401cb378        *arg1 = &GUIGadgetListboxClass::`vftable'{for `GUIGadgetClass'}\n1401cb37e        sub_1401d0fe0(arg1)\n1401cb388        sub_1401cdd60(arg1, 0)\n1401cb38f        arg1[0x18].w = 1\n1401cb39f        arg1[0x13] = 0\n1401cb3a6        arg1[0x14].d = 0\n1401cb3ac        __builtin_memset(&arg1[0x1a], 0, 0x11)\n1401cb3c1        arg1[0x32].b = 0\n1401cb3c8        arg1[0x33].d = 0\n1401cb3ce        arg1[0x34].b = 0\n1401cb3d5        *(arg1 + 0xc4) = 0xffffffff\n1401cb3df        arg1[0x19].w = 1\n1401cb3e8        sub_14007b260(&arg1[0x35])\n1401cb3f4        sub_14026edd0(&arg1[0x29])\n1401cb400        sub_14026edd0(&arg1[0x21])\n1401cb40c        sub_1401cb190(&arg1[0x1e])\n1401cb411        void* rcx_5 = arg1[0x15]\n1401cb41b        if (rcx_5 != 0)\n1401cb432        if (((arg1[0x17] - rcx_5) & 0xfffffffffffffff8) u>= 0x1000)\n1401cb434        void* r8_1 = *(rcx_5 - 8)\n1401cb447        if (rcx_5 - r8_1 - 8 u> 0x1f)\n1401cb494        _invalid_parameter_noinfo_noreturn()\n1401cb494        noreturn\n1401cb449        rcx_5 = r8_1\n1401cb44c        j_sub_1407864b8(rcx_5)\n1401cb451        __builtin_memset(&arg1[0x15], 0, 0x18)\n1401cb469        sub_1401e3cb0(arg1)\n1401cb472        if ((arg2 & 1) != 0)\n1401cb47c        j_sub_1407864b8(arg1)\n1401cb493        return arg1",
+  "fetched_at": "2026-04-26T17:26:34Z"
+}

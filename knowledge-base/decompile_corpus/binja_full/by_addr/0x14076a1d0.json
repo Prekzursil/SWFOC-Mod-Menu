@@ -1,0 +1,7 @@
+{
+  "addr": "0x14076a1d0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14076a1db        sub_14078d020(2)\n14076a1e7        _set_fmode(0x4000)\n14076a1fd        data_140b3c4a4 = 0\n14076a206        if (__scrt_initialize_onexit_tables(1) != 0)\n14076a208        _RTC_Initialize()\n14076a214        atexit(_RTC_Terminate)\n14076a227        if (_configure_narrow_argv(1) == 0)\n14076a229        sub_14076abd0()\n14076a235        if (sub_14076abfc() != 0)\n14076a23e        __setusermatherr(sub_14017d070)\n14076a254        _configthreadlocale(0)\n14076a260        if (sub_14017dc70() != 0)\n14076a262        _initialize_narrow_environment()\n14076a26c        j_sub_14017d070()\n14076a27a        return 0\n14076a280        __scrt_fastfail(7)\n14076a285        breakpoint",
+  "fetched_at": "2026-04-26T17:30:18Z"
+}

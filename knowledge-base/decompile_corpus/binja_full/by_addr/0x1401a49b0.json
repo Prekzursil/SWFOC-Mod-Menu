@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401a49b0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1401a49c4        int64_t rcx = *(arg1 + 0x40)\n1401a49cd        if (rcx != 0)\n1401a49d2        sub_1401a49b0(rcx, 1)\n1401a49d7        *(arg1 + 0x40) = 0\n1401a49db        int64_t rcx_1 = *(arg1 + 0x48)\n1401a49e2        if (rcx_1 != 0)\n1401a49e9        sub_1401a49b0(rcx_1, 1)\n1401a49ee        *(arg1 + 0x48) = 0\n1401a49f2        void* rcx_3 = *(arg1 + 0x28)\n1401a49f9        if (rcx_3 != 0)\n1401a4a0d        if (((*(arg1 + 0x38) - rcx_3) & 0xfffffffffffffffc) u>= 0x1000)\n1401a4a0f        void* r8_1 = *(rcx_3 - 8)\n1401a4a22        if (rcx_3 - r8_1 - 8 u> 0x1f)\n1401a4a5e        _invalid_parameter_noinfo_noreturn()\n1401a4a5e        noreturn\n1401a4a24        rcx_3 = r8_1\n1401a4a27        j_sub_1407864b8(rcx_3)\n1401a4a2c        __builtin_memset(arg1 + 0x28, 0, 0x18)\n1401a4a3c        if ((arg2 & 1) != 0)\n1401a4a46        j_sub_1407864b8(arg1)\n1401a4a5d        return arg1",
+  "fetched_at": "2026-04-26T17:25:03Z"
+}

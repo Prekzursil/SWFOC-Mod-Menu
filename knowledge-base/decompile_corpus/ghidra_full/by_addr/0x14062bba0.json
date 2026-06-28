@@ -1,0 +1,7 @@
+{
+  "addr": "0x14062bba0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined8 __thiscall\nIonStunEffectBehaviorClass::vfunction7\n          (IonStunEffectBehaviorClass *this,longlong param_1,int param_2)\n\n{\n  BehaviorClass::vfunction7((BehaviorClass *)this,param_1,param_2);\n  if (*(longlong *)(param_1 + 0x2a0) != 0) {\n    FUN_140265ae0(*(longlong *)(param_1 + 0x2a0),2);\n  }\n  (*this->vftablePtr->vfunction25)(this);\n  return 0x650000;\n}",
+  "fetched_at": "2026-04-26T17:32:20Z"
+}

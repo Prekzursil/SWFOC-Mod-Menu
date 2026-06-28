@@ -1,0 +1,7 @@
+{
+  "addr": "0x14075f3ec",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined8 * __thiscall\nstd::\ntime_get<unsigned_short,class_std::istreambuf_iterator<unsigned_short,struct_std::char_traits<unsigned_short>_>_>\n::vfunction7(time_get<unsigned_short,class_std::istreambuf_iterator<unsigned_short,struct_std::char_traits<unsigned_short>_>_>\n             *this,undefined8 *param_1,undefined8 *param_2,undefined8 param_3,undefined8 param_4,\n            uint *param_5,longlong param_6)\n\n{\n  undefined8 uVar1;\n  int iVar2;\n  \n  iVar2 = FUN_140748ab8(param_2,param_3,0,this[1].vftablePtr,0);\n  if (iVar2 < 0) {\n    *param_5 = *param_5 | 2;\n  }\n  else {\n    *(int *)(param_6 + 0x18) = iVar2 >> 1;\n  }\n  uVar1 = param_2[1];\n  *param_1 = *param_2;\n  param_1[1] = uVar1;\n  return param_1;\n}",
+  "fetched_at": "2026-04-26T18:08:01Z"
+}

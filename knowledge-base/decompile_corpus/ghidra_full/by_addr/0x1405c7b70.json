@@ -1,0 +1,7 @@
+{
+  "addr": "0x1405c7b70",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "longlong * FUN_1405c7b70(undefined8 param_1)\n\n{\n  byte bVar1;\n  byte bVar2;\n  byte bVar3;\n  byte bVar4;\n  byte bVar5;\n  char cVar6;\n  longlong *plVar7;\n  byte local_res10 [8];\n  int local_res18 [4];\n  \n  bVar1 = FUN_1402204a0();\n  bVar2 = FUN_140220610(param_1);\n  local_res18[0] = 0;\n  bVar3 = FUN_140220730(param_1,local_res18,4,0);\n  if (local_res18[0] == 1) {\n    plVar7 = (longlong *)FUN_140687db0(0,0);\n  }\n  else if (local_res18[0] == 2) {\n    plVar7 = (longlong *)FUN_140686de0(0,0,0);\n  }\n  else if (local_res18[0] == 3) {\n    plVar7 = (longlong *)FUN_1406843b0(0,0,0);\n  }\n  else {\n    if (local_res18[0] != 4) {\n      return (longlong *)0x0;\n    }\n    plVar7 = (longlong *)FUN_140680420(0,0,0);\n  }\n  if (plVar7 != (longlong *)0x0) {\n    bVar4 = FUN_1402206a0(param_1);\n    bVar5 = FUN_140220520(param_1);\n    FUN_1402204a0(param_1);\n    local_res10[0] = 1;\n    cVar6 = FUN_1402204a0(param_1);\n    while (cVar6 != '\\0') {\n      cVar6 = (**(code **)(*plVar7 + 0x70))(plVar7,param_1,local_res10);\n      if (cVar6 == '\\0') {\n        local_res10[0] = 0;\n      }\n      FUN_140220520(param_1);\n      cVar6 = FUN_1402204a0(param_1);\n    }\n    if ((local_res10[0] & bVar1 & 1 & bVar2 & bVar3 & bVar4 & bVar5) != 0) {\n      FUN_140220520(param_1);\n      return plVar7;\n    }\n    (**(code **)*plVar7)(plVar7,1);\n  }\n  return (longlong *)0x0;\n}",
+  "fetched_at": "2026-04-26T18:44:55Z"
+}

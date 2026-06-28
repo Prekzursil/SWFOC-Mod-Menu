@@ -1,0 +1,7 @@
+{
+  "addr": "0x140185920",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140185937        int64_t rsi = sx.q(arg2)\n14018593d        if (rsi.d != 4)\n140185948        int32_t r9_1 = rsi.d\n14018594b        int32_t rbx_1 = arg1[2].d\n140185950        if (arg2 == 0)\n14018598d        int32_t temp0_1\n14018598d        int32_t temp1_1\n14018598d        temp0_1:temp1_1 = muls.dp.d(0x55555556, rbx_1)\n14018598d        arg2 = temp0_1\n140185994        rbx_1 s/= 3\n14018595c        if (r9_1 == 1 || r9_1 == 2)\n140185983        rbx_1 -= 2\n140185962        if (r9_1 == 3)\n14018597a        int32_t temp5_1\n14018597a        int32_t temp6_1\n14018597a        temp5_1:temp6_1 = sx.q(rbx_1)\n14018597a        arg2 = temp5_1\n14018597f        rbx_1 = (temp6_1 - arg2) s>> 1\n140185968        if (r9_1 == 4)\n14018596c        int32_t temp7_1\n14018596c        int32_t temp8_1\n14018596c        temp7_1:temp8_1 = sx.q(rbx_1)\n14018596d        arg2 = temp7_1 & 3\n140185973        rbx_1 = (arg2 + temp8_1) s>> 2\n140185999        sub_140177db0(zx.q(arg1[3].d), arg2)\n1401859ac        sub_140177df0(0, *arg1, 0, 0x18)\n1401859c1        sub_140177e90(zx.q((&data_140a129e0)[rsi]), zx.q(*(arg1 + 0xc)), zx.q(rbx_1))\n1401859d8        if (arg3 != 0)\n1401859dd        *(arg1 + 0xc) += arg1[2].d\n1401859e0        arg1[2].d = 0\n1401859e7        int32_t result\n1401859e7        result.b = 1\n1401859ee        return result",
+  "fetched_at": "2026-04-26T17:23:58Z"
+}

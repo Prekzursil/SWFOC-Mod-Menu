@@ -1,0 +1,7 @@
+{
+  "addr": "0x140185d30",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "alD3dTexture * __thiscall alD3dTexture::alD3dTexture(alD3dTexture *this)\n\n{\n  *(undefined8 *)&this->field_0x38 = 0xf;\n  *(undefined4 *)&this->offset_0x0 = 0;\n  this->vftablePtr = &vftable;\n  this->offset_0x10 = 0;\n  this->vftablePtr = &vftable;\n  this->offset_0x18 = (undefined **)0x0;\n  *(undefined8 *)&this->field_0x30 = 7;\n  FUN_14076bd80(&this->offset_0x18,\"unnamed\",7);\n  *(undefined1 *)((longlong)&this->offset_0x18 + 7) = 0;\n  this->offset_0x40 = 0;\n  this->offset_0x50 = (longlong *)0x0;\n  this->offset_0x58 = 0xf;\n  this->offset_0x68 = 0;\n  *(undefined8 *)&this->field_0x40 = 0;\n  *(undefined1 *)&this->offset_0x60 = 1;\n  return this;\n}",
+  "fetched_at": "2026-04-26T17:31:54Z"
+}

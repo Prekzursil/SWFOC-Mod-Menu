@@ -1,0 +1,7 @@
+{
+  "addr": "0x14057d460",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14057d478        int64_t* rbx_1\n14057d478        if (arg3 != 0)\n14057d47e        rbx_1 = *(arg3 + 0x10)\n14057d48f        if (arg3 == 0 || ((*(arg3 + 0x18) - rbx_1) & 0xfffffffffffffff8) == 0)\n14057d52c        sub_140248190(arg2, \"GameObjectWrapper::Lua_Set_Prefer_Ground_Over_Space -- Missing required boolean parameter.\", arg3)\n14057d495        int64_t* rbx_2 = *rbx_1\n14057d49b        void* i\n14057d49b        if (rbx_2 != 0)\n14057d4a3        i, arg3 = (*(*rbx_2 + 0x20))(rbx_2)\n14057d4a9        if (rbx_2 == 0 || i == 0)\n14057d4c0        label_14057d4c0:\n14057d4c0        rbx_2 = nullptr\n14057d4b5        while (i != &data_140a157b0)\n14057d4b7        i = *(i + 8)\n14057d4be        if (i == 0)\n14057d4be        goto label_14057d4c0\n14057d4ef        arg3 = (**rbx_2)(rbx_2)\n14057d4c2        int64_t* rcx_1 = *(arg1 + 0x60)\n14057d4c9        void* rax_5\n14057d4c9        if (rcx_1 != 0)\n14057d4d3        rax_5, arg3 = (*(*rcx_1 + 0x10))(rcx_1, 0x12)\n14057d4d9        if (rcx_1 == 0 || rax_5 == 0)\n14057d4fd        sub_140248190(arg2, \"GameObjectWrapper::Lua_Set_Prefer_Ground_Over_Space -- Object invalid or missing Unit_AI behavior.\", arg3)\n14057d4e2        sub_1404f6460(rax_5, rbx_2[2].b)\n14057d505        if (rbx_2 != 0)\n14057d50d        (*(*rbx_2 + 8))(rbx_2)\n14057d542        return 0",
+  "fetched_at": "2026-04-26T17:35:17Z"
+}

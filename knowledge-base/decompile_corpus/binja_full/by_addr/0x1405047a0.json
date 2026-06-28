@@ -1,0 +1,7 @@
+{
+  "addr": "0x1405047a0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1405047b8        *arg1 = &CollisionSystemClass::`vftable'{for `SignalListenerClass'}\n1405047c5        arg1[2] = &CollisionSystemClass::`vftable'{for `AIDiagnosticsClass'}\n1405047c9        sub_140506f00(arg1)\n1405047ce        void* rcx = arg1[0x18]\n1405047d8        if (rcx != 0)\n1405047ef        if (((arg1[0x1a] - rcx) & 0xfffffffffffffff8) u>= 0x1000)\n1405047f1        void* r8_1 = *(rcx - 8)\n140504804        if (rcx - r8_1 - 8 u> 0x1f)\n140504878        _invalid_parameter_noinfo_noreturn()\n140504878        noreturn\n140504806        rcx = r8_1\n140504809        j_sub_1407864b8(rcx)\n140504810        __builtin_memset(&arg1[0x18], 0, 0x18)\n140504829        sub_140504720(&arg1[0xf])\n140504832        sub_14007b260(&arg1[7])\n14050483b        sub_1405f6540(&arg1[2])\n14050484a        *arg1 = &SignalListenerClass::`vftable'{for `MultiLinkedListMember'}\n14050484d        sub_14020a820(arg1)\n140504856        if ((arg2 & 1) != 0)\n140504860        j_sub_1407864b8(arg1)\n140504877        return arg1",
+  "fetched_at": "2026-04-26T17:32:00Z"
+}

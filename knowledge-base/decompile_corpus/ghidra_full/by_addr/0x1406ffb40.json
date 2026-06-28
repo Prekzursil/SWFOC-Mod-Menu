@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406ffb40",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "GarrisonUpgradeAbilityClass * __thiscall\nGarrisonUpgradeAbilityClass::GarrisonUpgradeAbilityClass(GarrisonUpgradeAbilityClass *this)\n\n{\n  SpecialAbilityClass::SpecialAbilityClass((SpecialAbilityClass *)this);\n  (this->GarrisonUpgradeAbilityClass_data).offset_0x0 = 0;\n  this->vftablePtr = &vftable_for_IXMLLoadableClass;\n  this->vftablePtr = &vftable_for_RefCountClass;\n  DynamicVectorClass<class_NameReferenceClass>::DynamicVectorClass<class_NameReferenceClass>\n            ((DynamicVectorClass<class_NameReferenceClass> *)\n             &(this->GarrisonUpgradeAbilityClass_data).field_0x8);\n  return this;\n}",
+  "fetched_at": "2026-04-26T17:51:01Z"
+}

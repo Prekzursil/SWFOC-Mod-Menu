@@ -1,0 +1,7 @@
+{
+  "addr": "0x140552650",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "DebrisDataPackClass * __thiscall DebrisDataPackClass::DebrisDataPackClass(DebrisDataPackClass *this)\n\n{\n  this->vftablePtr = &vftable;\n  *(undefined4 *)&this->PooledObjectClass<class_DebrisDataPackClass,20,class_EmptyLockerClass> = 0;\n  (this->DebrisDataPackClass_data).offset_0x0 = 0;\n  return this;\n}",
+  "fetched_at": "2026-04-26T18:38:11Z"
+}

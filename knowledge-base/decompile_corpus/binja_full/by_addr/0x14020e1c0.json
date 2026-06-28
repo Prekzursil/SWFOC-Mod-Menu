@@ -1,0 +1,7 @@
+{
+  "addr": "0x14020e1c0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14020e1d8        if (arg2 s>= 0)\n14020e1e7        bool c_1 = test_bit(GetKeyState(0x10), 0xf)\n14020e1ec        char rax_2\n14020e1ec        if (not(c_1))\n14020e1f1        rax_2 = GetKeyState(0x14)\n14020e1f7        data_140a7c570 = 0\n14020e200        if (c_1 || (rax_2 & 1) != 0)\n14020e202        data_140a7c570 = 0x80\n14020e21d        int16_t rax_3\n14020e21d        rax_3.b = (GetKeyState(0x12) u>> 8).b & 0x80\n14020e21f        data_140a7c572 = rax_3.b\n14020e238        int16_t rax_4\n14020e238        rax_4.b = (GetKeyState(0x11) u>> 8).b & 0x80\n14020e23a        data_140a7c571 = rax_4.b\n14020e275        wchar16 pwszBuff[0x10]\n14020e275        if (ToUnicodeEx(arg1, MapVirtualKeyExA(zx.d(arg1.b), MAPVK_VK_TO_VSC, arg3), &data_140a7c560, &pwszBuff, 0xa, 0, arg3) == 1)\n14020e289        return zx.q(pwszBuff[0])\n14020e277        return 0",
+  "fetched_at": "2026-04-26T17:28:15Z"
+}

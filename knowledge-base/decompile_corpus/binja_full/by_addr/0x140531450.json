@@ -1,0 +1,7 @@
+{
+  "addr": "0x140531450",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14053145b        struct BehaviorClass::SpawnIndigenousUnitsBehaviorClass::VTable** result = operator new(0x40)\n140531466        if (result == 0)\n14053149e        return result\n14053146b        sub_1404c32d0(result)\n140531477        *result = &SpawnIndigenousUnitsBehaviorClass::`vftable'{for `BehaviorClass'}\n140531481        result[1] = &SpawnIndigenousUnitsBehaviorClass::`vftable'{for `RefCountClass'}\n14053148c        result[3] = &SpawnIndigenousUnitsBehaviorClass::`vftable'{for `SignalListenerClass'}\n140531498        return result",
+  "fetched_at": "2026-04-26T17:33:33Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x14071c820",
+  "tool": "ghidra",
+  "fact_id": "rva_ability_shield_flare",
+  "body": "\nShieldFlareAbilityClass * __thiscall\nShieldFlareAbilityClass::ShieldFlareAbilityClass(ShieldFlareAbilityClass *this)\n\n{\n  SpecialAbilityClass::SpecialAbilityClass((SpecialAbilityClass *)this);\n  this->vftablePtr = &vftable_for_IXMLLoadableClass;\n  this->vftablePtr = &vftable_for_RefCountClass;\n  (this->ShieldFlareAbilityClass_data).offset_0x0 = 0;\n  (this->ShieldFlareAbilityClass_data).offset_0x8 = 0;\n  return this;\n}\n\n",
+  "fetched_at": "2026-04-26T16:44:21Z"
+}

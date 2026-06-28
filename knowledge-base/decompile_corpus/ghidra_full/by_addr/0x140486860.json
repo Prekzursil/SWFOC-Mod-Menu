@@ -1,0 +1,7 @@
+{
+  "addr": "0x140486860",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "longlong * FUN_140486860(longlong *param_1)\n\n{\n  undefined8 *puVar1;\n  longlong *plVar2;\n  longlong *local_res8;\n  \n  if (param_1 == (longlong *)0x0) {\n    return (longlong *)0x0;\n  }\n  plVar2 = LuaValue<class_std::vector<class_SmartPtr<class_LuaVar>,class_std::allocator<class_SmartPtr<class_LuaVar>_>_>,2>\n           ::\n           ~LuaValue<class_std::vector<class_SmartPtr<class_LuaVar>,class_std::allocator<class_SmartPtr<class_LuaVar>_>_>,2>\n                     ();\n  local_res8 = param_1;\n  (**(code **)*param_1)(param_1);\n  puVar1 = (undefined8 *)plVar2[3];\n  if (puVar1 == (undefined8 *)plVar2[4]) {\n    FUN_140144900(plVar2 + 2,puVar1,&local_res8);\n  }\n  else {\n    *puVar1 = param_1;\n    (**(code **)*param_1)(param_1);\n    plVar2[3] = plVar2[3] + 8;\n  }\n  (**(code **)(*param_1 + 8))(param_1);\n  return plVar2;\n}",
+  "fetched_at": "2026-04-26T18:00:50Z"
+}

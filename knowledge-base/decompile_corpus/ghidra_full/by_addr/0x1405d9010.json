@@ -1,0 +1,7 @@
+{
+  "addr": "0x1405d9010",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "Draw3DTextCrawlClass * __thiscall\nDraw3DTextCrawlClass::scalar_deleting_destructor(Draw3DTextCrawlClass *this,uint param_1)\n\n{\n  ~Draw3DTextCrawlClass(this);\n  if ((param_1 & 1) != 0) {\n    thunk_FUN_1407864b8(this,0xf8);\n  }\n  return this;\n}",
+  "fetched_at": "2026-04-26T18:45:44Z"
+}

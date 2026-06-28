@@ -1,0 +1,7 @@
+{
+  "addr": "0x140178010",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14017801b        int64_t* rcx = data_140a6d480\n14017804e        return (*(*rcx + 0x158))(rcx, zx.q(arg1), arg2, zx.q(arg3), arg4, arg5, arg6)",
+  "fetched_at": "2026-04-26T17:23:20Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x14067e0c0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14067e0c0        char arg_18 = arg3\n14067e0c9        int64_t r8 = arg1[3]\n14067e0d3        void* var_38\n14067e0d3        void* var_28\n14067e0d3        if (r8 u< arg2)\n14067e0d5        int64_t rcx = *arg1\n14067e0e3        void* rcx_1\n14067e0e3        if (r8 s>= 0 || neg.q(r8) == 0)\n14067e103        rcx_1 = rcx + (r8 u>> 5 << 2)\n14067e0f7        rcx_1 = rcx - ((not.q(r8) u>> 5 << 2) + 4)\n14067e10a        var_28 = rcx_1\n14067e115        uint64_t var_20_1 = zx.q(r8.d) & 0x1f\n14067e137        sub_1403f2980(arg1, &var_38, &var_28, arg2 - r8, &arg_18)\n14067e140        return \n14067e141        if (r8 u<= arg2)\n14067e141        return \n14067e147        int64_t r9_2 = *arg1\n14067e155        if (r8 s>= 0 || neg.q(r8) == 0)\n14067e181        var_38 = r9_2 + (r8 u>> 5 << 2)\n14067e16f        var_38 = r9_2 - ((not.q(r8) u>> 5 << 2) + 4)\n14067e18a        uint64_t var_30_1 = zx.q(r8.d) & 0x1f\n14067e19a        if (arg2 s>= 0 || neg.q(arg2) == 0)\n14067e1c3        var_28 = r9_2 + (arg2 u>> 5 << 2)\n14067e1b1        var_28 = r9_2 - ((not.q(arg2) u>> 5 << 2) + 4)\n14067e1d5        var_38.o = var_38.o\n14067e1db        uint64_t var_20_2 = zx.q(arg2.d) & 0x1f\n14067e1f2        var_28.o = var_28.o\n14067e1f8        void var_18\n14067e1f8        sub_14067ddc0(arg1, &var_18, &var_28, &var_38)\n14067e201        return ",
+  "fetched_at": "2026-04-26T17:11:49Z"
+}

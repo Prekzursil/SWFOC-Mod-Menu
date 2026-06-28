@@ -1,0 +1,7 @@
+{
+  "addr": "0x14071cc50",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14071cc64        int64_t result = sub_14048f2c0(arg1)\n14071cc69        int32_t zmm6 = (zx.o(0)).d\n14071cc73        char var_118[0x100]\n14071cc73        if (not(0f f< *(arg1 + 0x178)))\n14071cc7a        void* r8_1 = arg1 + 0x18\n14071cc7e        if (*(arg1 + 0x30) u>= 0x10)\n14071cc80        r8_1 = *r8_1\n14071cc8f        sscanf_s(&var_118, \"Error: (%s) Max_Damage_Per_Victim must be greater than zero.\", r8_1)\n14071cc99        result, zmm6 = sub_1402149d0(&var_118)\n14071cc9e        *(arg1 + 0x178) = 0x42c80000\n14071ccaf        if (not(zmm6 f< *(arg1 + 0x17c)))\n14071ccb6        void* r8_2 = arg1 + 0x18\n14071ccba        if (*(arg1 + 0x30) u>= 0x10)\n14071ccbc        r8_2 = *r8_2\n14071cccb        sscanf_s(&var_118, \"Error: (%s) Damage_Radius must be greater than zero.\", r8_2)\n14071ccd5        result = sub_1402149d0(&var_118)\n14071ccda        *(arg1 + 0x17c) = 0x42c80000\n14071ccf4        return result",
+  "fetched_at": "2026-04-26T17:28:09Z"
+}

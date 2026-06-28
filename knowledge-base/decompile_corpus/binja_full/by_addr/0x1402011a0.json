@@ -1,0 +1,7 @@
+{
+  "addr": "0x1402011a0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1402011cb        TEB* gsbase\n1402011cb        void* rdi = *(gsbase->ThreadLocalStoragePointer + (zx.q(data_140b3b9a0) << 3))\n1402011cf        int32_t rax_1 = *(0xd0 + rdi)\n1402011d4        if ((rax_1.b & 1) == 0)\n1402011d9        *(rdi + 0xc8) = 0xf\n1402011e2        *(0xd0 + rdi) = rax_1 | 1\n1402011ee        *(rdi + 0xb0) = 0\n1402011f2        *(rdi + 0xc0) = 0\n1402011f7        sub_14076a4e0(sub_1407ece00)\n1402011fc        void* result_1 = rdi + 0xb0\n1402011ff        void* r8 = -ffffffffffffffff\n140201206        r8 += 1\n14020120e        do while (*(arg1 + r8) != 0)\n140201216        sub_140022730(result_1, arg1, r8)\n140201220        if (*(result_1 + 0x18) u>= 0x10)\n140201222        result_1 = *result_1\n14020123a        char* rbx_1 = strrchr(result_1, 0x5c)\n14020123d        void* rax_4 = strrchr(result_1, 0x2f)\n140201245        if (rax_4 u> rbx_1)\n140201245        rbx_1 = rax_4\n14020124c        void* result\n14020124c        if (rbx_1 == 0)\n140201256        result = result_1\n14020124e        *rbx_1 = 0\n140201251        result = &rbx_1[1]\n140201261        void* rax_5 = strrchr(result, 0x2e)\n140201269        if (rax_5 != 0)\n14020126b        *rax_5 = 0\n140201280        return result",
+  "fetched_at": "2026-04-26T17:27:42Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x14068a6b0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_14068a6b0(void)\n\n{\n  ForceTelekinesisAbilityClass *this;\n  \n  this = (ForceTelekinesisAbilityClass *)FUN_140769c58(400);\n  if (this != (ForceTelekinesisAbilityClass *)0x0) {\n    ForceTelekinesisAbilityClass::ForceTelekinesisAbilityClass(this);\n    return;\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T17:15:57Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x140512c50",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "ScheduledEventClass * __thiscall ScheduledEventClass::ScheduledEventClass(ScheduledEventClass *this)\n\n{\n                    /* inlined constructor: ScheduledEventClass::ScheduledEventClass */\n  EventClass::EventClass((EventClass *)this);\n  (this->ScheduledEventClass_data).offset_0x0 = 0xffffffff;\n  this->vftablePtr = &vftable;\n  (this->ScheduledEventClass_data).offset_0x8 =\n       &DynamicVectorClass<int>::vftable.deleting_destructor;\n  (this->ScheduledEventClass_data).offset_0x10 = 0;\n  (this->ScheduledEventClass_data).offset_0x18 = 0;\n  (this->ScheduledEventClass_data).offset_0x1c = 0x80000000;\n  return this;\n}",
+  "fetched_at": "2026-04-26T18:22:41Z"
+}

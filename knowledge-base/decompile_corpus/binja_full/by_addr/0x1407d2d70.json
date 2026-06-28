@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407d2d70",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1407d2d85        sub_1407ce2c0(arg1, 1, 6)\n1407d2d92        void var_228\n1407d2d92        sub_1407ce050(arg1, &var_228)\n1407d2da6        int32_t rax\n1407d2da6        int64_t r8\n1407d2da6        rax, r8 = sub_1407b8cd0(arg1)\n1407d2dad        if (rax != 0)\n1407d2dc3        sub_1407cea70(&var_228)\n1407d2dd5        return 1\n1407d2db9        sub_1407ce300(arg1, \"unable to dump given function\", r8)\n1407d2db9        noreturn",
+  "fetched_at": "2026-04-26T17:33:59Z"
+}

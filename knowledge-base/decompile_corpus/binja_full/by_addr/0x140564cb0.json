@@ -1,0 +1,7 @@
+{
+  "addr": "0x140564cb0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140564cb7        *arg1 = &DynamicTransformDataPackClass::`vftable'{for `BaseDataPackClass'}\n140564cba        return &DynamicTransformDataPackClass::`vftable'{for `BaseDataPackClass'}",
+  "fetched_at": "2026-04-26T17:34:30Z"
+}

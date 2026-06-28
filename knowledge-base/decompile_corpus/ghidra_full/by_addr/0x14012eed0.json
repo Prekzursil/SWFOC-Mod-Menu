@@ -1,0 +1,7 @@
+{
+  "addr": "0x14012eed0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nalHModel * __thiscall alHModel::scalar_deleting_destructor(alHModel *this,uint param_1)\n\n{\n  ~alHModel(this);\n  if ((param_1 & 1) != 0) {\n    thunk_FUN_1407864b8(this,0x1f8);\n  }\n  return this;\n}\n\n",
+  "fetched_at": "2026-04-26T17:10:22Z"
+}

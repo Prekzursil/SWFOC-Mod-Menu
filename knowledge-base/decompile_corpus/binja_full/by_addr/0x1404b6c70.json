@@ -1,0 +1,7 @@
+{
+  "addr": "0x1404b6c70",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1404b6c9d        int32_t result\n1404b6c9d        if (arg2 != 0 && arg4 u<= 5)\n1404b6ca6        result = sub_1404b7ab0(arg1, arg3)\n1404b6cad        if (arg2 == 0 || arg4 u> 5 || result s>= 0)\n1404b6d8c        result.b = 0\n1404b6cb6        int32_t r8 = *(arg1 + 0x18)\n1404b6cc1        int32_t r14_1 = *(arg2 + 0x11c)\n1404b6ccd        int128_t zmm6 = *arg3\n1404b6cd6        int128_t zmm7 = arg3[1]\n1404b6cdb        int32_t rcx_2 = (*(arg1 + 0x1c) * 2) s>> 1\n1404b6ce3        int128_t zmm8 = arg3[2]\n1404b6cec        if (r8 s>= rcx_2)\n1404b6d00        int32_t rdx_3 = rcx_2 s/ 0xa\n1404b6d09        if (rdx_3 s< 0xa)\n1404b6d09        rdx_3 = 0xa\n1404b6d15        sub_1404bb730(arg1 + 8, rdx_3 + rcx_2, 0, 1)\n1404b6d1a        r8 = *(arg1 + 0x18)\n1404b6d1e        int64_t rcx_4 = *(arg1 + 0x10)\n1404b6d25        int64_t rdx_5 = sx.q(r8) * 3\n1404b6d2d        *(arg1 + 0x18) = r8 + 1\n1404b6d37        *(rcx_4 + (rdx_5 << 3) + 4) = zmm6.d\n1404b6d42        *(rcx_4 + (rdx_5 << 3) + 8) = zmm7.d\n1404b6d4d        *(rcx_4 + (rdx_5 << 3) + 0xc) = zmm8.d\n1404b6d5a        *(rcx_4 + (rdx_5 << 3)) = r14_1\n1404b6d63        *(rcx_4 + (rdx_5 << 3) + 0x14) = arg5\n1404b6d67        *(rcx_4 + (rdx_5 << 3) + 0x10) = arg4\n1404b6d77        if (*(arg2 + 0x110) u>= 0x10)\n1404b6d79        *(arg2 + 0xf8)\n1404b6d88        result.b = 1\n1404b6da2        return result",
+  "fetched_at": "2026-04-26T17:29:57Z"
+}

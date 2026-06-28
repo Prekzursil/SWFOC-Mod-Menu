@@ -1,0 +1,7 @@
+{
+  "addr": "0x14061a250",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14061a256        struct SpecialAbilityClass::BlackMarketAbilityClass::VTable** result = arg1\n14061a259        sub_14048c780(arg1)\n14061a26b        *result = &BlackMarketAbilityClass::`vftable'{for `SpecialAbilityClass'}\n14061a27e        result[1] = &BlackMarketAbilityClass::`vftable'{for `RefCountClass'}\n14061a282        sub_14001e5d0(&result[0x2f], 1, 5)\n14061a296        sub_14001e5d0(&result[0x32], 1, 5)\n14061a29e        result[0x35] = 0x3f800000\n14061a2a9        result[8].w = 0x101\n14061a2af        *(result + 0x3c) = 6\n14061a2bb        return result",
+  "fetched_at": "2026-04-26T17:23:35Z"
+}

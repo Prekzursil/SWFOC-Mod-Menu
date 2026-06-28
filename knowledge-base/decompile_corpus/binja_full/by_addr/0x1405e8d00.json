@@ -1,0 +1,7 @@
+{
+  "addr": "0x1405e8d00",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1405e8d1d        *arg1 = &ActionClass::`vftable'{for `IXMLLoadableClass'}\n1405e8d2b        sub_14001e680(&arg1[1], arg2 + 8)\n1405e8d38        sub_1404c3d60(&arg1[5], arg2 + 0x28)\n1405e8d45        sub_1404c3d60(&arg1[7], arg2 + 0x38)\n1405e8d51        arg1[9].d = *(arg2 + 0x48)\n1405e8d5b        *(arg1 + 0x4c) = *(arg2 + 0x4c)\n1405e8d5e        sub_1405e8ee0(&arg1[0xa], arg2 + 0x50)\n1405e8d6b        sub_1405e8ee0(&arg1[0xf], arg2 + 0x78)\n1405e8d7e        arg1[0x14] = *(arg2 + 0xa0)\n1405e8d8c        arg1[0x15] = *(arg2 + 0xa8)\n1405e8d95        __builtin_memset(&arg1[0x16], 0, 0x18)\n1405e8da0        int32_t* r15 = *(arg2 + 0xb0)\n1405e8da7        int64_t rbp = *(arg2 + 0xb8)\n1405e8db1        if (r15 != rbp)\n1405e8db8        void* rbp_1 = rbp - r15\n1405e8dc1        int64_t rdi_2 = rbp_1 s>> 3\n1405e8dc8        void* rax_4 = sub_140022650(&arg1[0x16], rdi_2)\n1405e8dcd        arg1[0x16] = rax_4\n1405e8dd3        arg1[0x17] = rax_4\n1405e8dde        arg1[0x18] = rax_4 + (rdi_2 << 3)\n1405e8de2        int32_t* rbx_1 = arg1[0x16]\n1405e8de8        memcpy(rbx_1, r15, rbp_1)\n1405e8df6        arg1[0x17] = &rbx_1[rdi_2 * 2]\n1405e8e10        return arg1",
+  "fetched_at": "2026-04-26T17:38:30Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x14058f4e0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall\nDeployTroopersBehaviorClass::vfunction8(DeployTroopersBehaviorClass *this,longlong param_1)\n\n{\n  if (param_1 != 0) {\n    FUN_140390650(param_1);\n    return;\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T18:42:03Z"
+}

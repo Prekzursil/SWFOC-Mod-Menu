@@ -1,0 +1,7 @@
+{
+  "addr": "0x140288f40",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140288f57        if (sub_14028afb0(&data_140b153e0) == 1)\n140288f59        int512_t zmm0\n140288f59        zmm0.o = 0xbf800000\n140288f61        *(arg1 + 0x74) = 0xbf800000\n140288f6d        return zmm0\n140288f6e        void* rcx = data_140b15418\n140288f7a        int32_t r8 = *(arg1 + 0x4c)\n140288f8f        double var_18 = 0.0\n140288f98        int32_t var_10 = 0\n140288fbb        void* rax_1 = sub_1402a9ff0(*(rcx + 0x18), 3, r8, 0xffffffff, &var_18, 0, 0x7fffffff, 0xffffffff)\n140288fc3        if (rax_1 == 0)\n140288fcf        return *(arg1 + 0x74)\n140288fd5        int32_t zmm1 = *(arg1 + 0x70)\n140288fe5        uint128_t zmm0_1\n140288fe5        zmm0_1.d = __maxss_xmmss_memss(_mm_cvtepi32_ps(zx.o(*(rax_1 + 0x10))).d, 0x3f800000).d f* data_140b1597c\n140288fed        int32_t temp0_2 = _mm_min_ss(zmm1, zmm0_1.d)\n140288ff1        *(arg1 + 0x74) = zmm0_1.d\n140288ff6        *(arg1 + 0x70) = temp0_2\n140289000        return zmm0_1",
+  "fetched_at": "2026-04-26T17:32:20Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x14078d4b8",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* Library Function - Single Match\n    public: void __cdecl __crt_seh_guarded_call<void>::operator()<class\n   <lambda_7f2adfce497ff2baa965cd4f576ecfd1>,class <lambda_2a444430fde8c29194d880d93eed5e8f> &\n   __ptr64,class <lambda_8dff2cf36a5417162780cd64fa2883ef> & __ptr64>(class\n   <lambda_7f2adfce497ff2baa965cd4f576ecfd1> && __ptr64,class\n   <lambda_2a444430fde8c29194d880d93eed5e8f> & __ptr64,class\n   <lambda_8dff2cf36a5417162780cd64fa2883ef> & __ptr64) __ptr64\n   \n   Libraries: Visual Studio 2017 Release, Visual Studio 2019 Release */\n\nvoid __thiscall\n__crt_seh_guarded_call<void>::\noperator()<class_<lambda_7f2adfce497ff2baa965cd4f576ecfd1>,class_<lambda_2a444430fde8c29194d880d93eed5e8f>&___ptr64,class_<lambda_8dff2cf36a5417162780cd64fa2883ef>&___ptr64>\n          (__crt_seh_guarded_call<void> *this,<lambda_7f2adfce497ff2baa965cd4f576ecfd1> *param_1,\n          <lambda_2a444430fde8c29194d880d93eed5e8f> *param_2,\n          <lambda_8dff2cf36a5417162780cd64fa2883ef> *param_3)\n\n{\n  <lambda_2a444430fde8c29194d880d93eed5e8f>::operator()(param_2);\n  *(uint *)(**(longlong **)param_3 + 0x3a8) = *(uint *)(**(longlong **)param_3 + 0x3a8) & 0xffffffef\n  ;\n  return;\n}",
+  "fetched_at": "2026-04-26T18:52:16Z"
+}

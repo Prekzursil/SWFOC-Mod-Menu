@@ -1,0 +1,7 @@
+{
+  "addr": "0x140390470",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_140390470(longlong param_1)\n\n{\n  CashPointDataPackClass *pCVar1;\n  \n  if (*(longlong *)(param_1 + 0x198) == 0) {\n    pCVar1 = (CashPointDataPackClass *)FUN_140769c58(0x10);\n    if (pCVar1 != (CashPointDataPackClass *)0x0) {\n      pCVar1 = CashPointDataPackClass::CashPointDataPackClass(pCVar1);\n      *(CashPointDataPackClass **)(param_1 + 0x198) = pCVar1;\n      return;\n    }\n    *(undefined8 *)(param_1 + 0x198) = 0;\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T17:21:38Z"
+}

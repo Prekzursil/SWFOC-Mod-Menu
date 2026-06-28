@@ -1,0 +1,7 @@
+{
+  "addr": "0x1404ad2e0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1404ad2e0        void* rax_3 = data_140b15418\n1404ad2ea        int32_t rdx = 0\n1404ad2f0        if (rax_3 != 0)\n1404ad2f2        rdx = *(rax_3 + 0x10)\n1404ad2f8        int32_t rax_1 = arg1[1] - rdx\n1404ad2fc        if (rax_1 + *arg1 s< 0)\n1404ad2fc        return 0\n1404ad300        return zx.q(rax_1 + *arg1)",
+  "fetched_at": "2026-04-26T17:29:32Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x140740e68",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140740e6d        struct std::locale::facet::std::locale::_Locimp::VTable** arg_8 = arg1\n140740e7d        arg1[1].d = 1\n140740e8b        *arg1 = &std::locale::_Locimp::`vftable'{for `std::locale::facet'}\n140740e91        arg1[2] = 0\n140740e99        arg1[3] = *(arg2 + 0x18)\n140740ea0        arg1[4].d = *(arg2 + 0x20)\n140740ea3        int32_t rax_1\n140740ea3        rax_1.b = *(arg2 + 0x24)\n140740ea6        *(arg1 + 0x24) = rax_1.b\n140740ead        void* rdx = *(arg2 + 0x28)\n140740eb4        if (rdx == 0)\n140740eb6        rdx = arg2 + 0x30\n140740eba        arg1[5] = 0\n140740ebd        arg1[6].b = 0\n140740ec1        std::_Yarn<char>::operator=(&arg1[5], rdx)\n140740ecd        sub_140745e1c(arg1, arg2)\n140740ee0        return arg1",
+  "fetched_at": "2026-04-26T17:29:17Z"
+}

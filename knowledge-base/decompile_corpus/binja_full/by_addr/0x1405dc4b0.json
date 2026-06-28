@@ -1,0 +1,7 @@
+{
+  "addr": "0x1405dc4b0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1405dc4b6        struct StoryEventClass::StoryEventSelectPlanetClass::VTable** result = arg1\n1405dc4b9        sub_1404501d0(arg1)\n1405dc4c5        *result = &StoryEventSelectPlanetClass::`vftable'{for `StoryEventClass'}\n1405dc4ca        __builtin_memset(&result[0x6c], 0, 0x1c)\n1405dc4ed        return result",
+  "fetched_at": "2026-04-26T17:38:23Z"
+}

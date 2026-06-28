@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407a87d9",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1407a87d9        return D3DXMatrixOrthoRH() __tailcall",
+  "fetched_at": "2026-04-26T17:32:33Z"
+}

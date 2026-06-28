@@ -1,0 +1,7 @@
+{
+  "addr": "0x1405e67d0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "TheAIGoalTypeManagerClass * __thiscall\nTheAIGoalTypeManagerClass::scalar_deleting_destructor(TheAIGoalTypeManagerClass *this,uint param_1)\n\n{\n  longlong *plVar1;\n  longlong *plVar2;\n  \n                    /* inlined destructor: TheAIGoalTypeManagerClass::~TheAIGoalTypeManagerClass */\n  this->vftablePtr = &vftable;\n  plVar1 = (this->DatabaseObjectManagerClass<class_AIGoalTypeClass>_data).offset_0x8;\n  plVar2 = (longlong *)*plVar1;\n  if (plVar2 != plVar1) {\n    do {\n      if (plVar2[6] != 0) {\n        (*this->vftablePtr->deleting_destructor)(this,(uint)plVar2[6]);\n      }\n      plVar2 = (longlong *)*plVar2;\n    } while (plVar2 != (this->DatabaseObjectManagerClass<class_AIGoalTypeClass>_data).offset_0x8);\n  }\n  FUN_140145610(&this->DatabaseObjectManagerClass<class_AIGoalTypeClass>_data);\n  DatabaseObjectManagerClass<class_AIGoalTypeClass>::\n  ~DatabaseObjectManagerClass<class_AIGoalTypeClass>\n            ((DatabaseObjectManagerClass<class_AIGoalTypeClass> *)this);\n  if ((param_1 & 1) != 0) {\n    thunk_FUN_1407864b8(this,0x48);\n  }\n  return this;\n}",
+  "fetched_at": "2026-04-26T18:46:10Z"
+}

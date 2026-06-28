@@ -1,0 +1,7 @@
+{
+  "addr": "0x140740710",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140740710        arg1[2] = 0\n14074071c        arg1[1] = \"bad allocation\"\n140740727        *arg1 = &std::bad_alloc::`vftable'{for `std::exception'}\n14074072d        return arg1",
+  "fetched_at": "2026-04-26T17:29:15Z"
+}

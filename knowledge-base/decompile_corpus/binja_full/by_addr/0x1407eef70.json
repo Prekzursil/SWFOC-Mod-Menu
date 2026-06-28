@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407eef70",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1407eef77        data_140a170b8 = &SingletonInstance<class TheFighterCellOccupationManagerClass>::`vftable'{for `SingletonManager'}\n1407eef7e        return &SingletonInstance<class TheFighterCellOccupationManagerClass>::`vftable'{for `SingletonManager'}",
+  "fetched_at": "2026-04-26T17:36:22Z"
+}

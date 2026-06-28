@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406b74a0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "DatabaseObjectManagerClass<class_AIGoalProposalFunctionClass> * __thiscall\nDatabaseObjectManagerClass<class_AIGoalProposalFunctionClass>::scalar_deleting_destructor\n          (DatabaseObjectManagerClass<class_AIGoalProposalFunctionClass> *this,uint param_1)\n\n{\n  ~DatabaseObjectManagerClass<class_AIGoalProposalFunctionClass>(this);\n  if ((param_1 & 1) != 0) {\n    thunk_FUN_1407864b8(this,0x48);\n  }\n  return this;\n}",
+  "fetched_at": "2026-04-26T17:37:06Z"
+}

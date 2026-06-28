@@ -1,0 +1,7 @@
+{
+  "addr": "0x14073bb58",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall LandMovementBlockStatus::vfunction1(LandMovementBlockStatus *this,uint param_1)\n\n{\n  scalar_deleting_destructor((LandMovementBlockStatus *)&this[-1].offset_0x60,param_1);\n  return;\n}",
+  "fetched_at": "2026-04-26T18:03:11Z"
+}

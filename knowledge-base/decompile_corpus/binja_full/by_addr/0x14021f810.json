@@ -1,0 +1,7 @@
+{
+  "addr": "0x14021f810",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14021f819        HKEY hKey = *arg1\n14021f81f        if (hKey != 0)\n14021f821        RegCloseKey(hKey)\n14021f827        *arg1 = 0\n14021f833        return ",
+  "fetched_at": "2026-04-26T17:29:04Z"
+}

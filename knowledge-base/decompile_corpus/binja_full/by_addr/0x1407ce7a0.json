@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407ce7a0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1407ce7b2        uint64_t j_2 = zx.q(arg4)\n1407ce7b5        int64_t* r14 = arg3\n1407ce7c1        int32_t rsi_1\n1407ce7c1        if (arg2 == 0)\n1407ce830        rsi_1 = not.d(j_2.d)\n1407ce7c3        int512_t zmm0_1\n1407ce7c3        int512_t zmm1_1\n1407ce7c3        zmm0_1, zmm1_1 = sub_1407b9540(arg1, arg2)\n1407ce7d0        sub_1407b8e90(arg1, 0xffffd8ef, zmm0_1, zmm1_1)\n1407ce7dd        int32_t rax_1 = sub_1407b9e00(arg1, 0xffffffff)\n1407ce7e4        if (rax_1 == 0)\n1407ce7ec        sub_1407b9ab0(arg1, rax_1 - 2)\n1407ce7f4        sub_1407b9140(arg1)\n1407ce7ff        sub_1407b9540(arg1, arg2)\n1407ce80c        sub_1407b9600(arg1, 0xfffffffe)\n1407ce819        sub_1407b9a60(arg1, 0xffffd8ef)\n1407ce823        rsi_1 = not.d(j_2.d)\n1407ce827        sub_1407b8f00(arg1, rsi_1)\n1407ce832        char* i = *r14\n1407ce838        while (i != 0)\n1407ce856        sub_1407b9540(arg1, i)\n1407ce85d        if (j_2.d s> 0)\n1407ce85f        uint64_t j_1 = j_2\n1407ce870        uint64_t j\n1407ce867        sub_1407b9600(arg1, rsi_1)\n1407ce86c        j = j_1\n1407ce86c        j_1 -= 1\n1407ce870        do while (j != 1)\n1407ce87c        sub_1407b9340(arg1, r14[1], j_2.d)\n1407ce887        sub_1407b9a60(arg1, 0xfffffffd - j_2.d)\n1407ce88c        i = r14[2]\n1407ce890        r14 = &r14[2]\n1407ce8b5        return sub_1407b9ab0(arg1, rsi_1) __tailcall",
+  "fetched_at": "2026-04-26T17:33:54Z"
+}

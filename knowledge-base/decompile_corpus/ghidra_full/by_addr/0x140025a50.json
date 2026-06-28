@@ -1,0 +1,7 @@
+{
+  "addr": "0x140025a50",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nvoid __thiscall\nSingletonInstance<class_SteamLobbyDialogClass>::scalar_deleting_destructor\n          (SingletonInstance<class_SteamLobbyDialogClass> *this)\n\n{\n  if (this[1].vftablePtr != (SingletonInstance<class_SteamLobbyDialogClass>_vftable *)0x0) {\n    SingletonInstance<class_DatabaseConversionSystemClass>::\n    ~SingletonInstance<class_DatabaseConversionSystemClass>\n              ((SingletonInstance<class_DatabaseConversionSystemClass> *)this);\n    if (this[1].vftablePtr != (SingletonInstance<class_SteamLobbyDialogClass>_vftable *)0x0) {\n      thunk_FUN_1407864b8(this[1].vftablePtr,0x10);\n    }\n    this[1].vftablePtr = (SingletonInstance<class_SteamLobbyDialogClass>_vftable *)0x0;\n  }\n  return;\n}\n\n",
+  "fetched_at": "2026-04-26T16:52:09Z"
+}

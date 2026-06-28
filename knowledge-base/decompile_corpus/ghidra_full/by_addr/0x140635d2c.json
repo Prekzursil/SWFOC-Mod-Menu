@@ -1,0 +1,7 @@
+{
+  "addr": "0x140635d2c",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* GarrisonableBehaviorClass member function inherited by GarrisonVehicleBehaviorClass\n   GarrisonableBehaviorClass member function inherited by GarrisonHoverTransportBehaviorClass\n   GarrisonableBehaviorClass member function inherited by GarrisonStructureBehaviorClass */\n\nvoid __thiscall GarrisonableBehaviorClass::vfunction3(GarrisonableBehaviorClass *this,uint param_1)\n\n{\n  ~GarrisonableBehaviorClass\n            ((GarrisonableBehaviorClass *)&this[-1].RootClass_data.offset_0x338,param_1);\n  return;\n}",
+  "fetched_at": "2026-04-26T17:34:55Z"
+}

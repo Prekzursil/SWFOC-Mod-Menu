@@ -1,0 +1,7 @@
+{
+  "addr": "0x140396ce0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140396cea        void* rax = *(arg1 + 0x2d0)\n140396d27        if (rax == 0 || arg3 s< 0 || arg3 s>= *(rax + 0x10))\n140396cff        *arg2 = *(arg1 + 0x78)\n140396d04        arg2[1] = *(arg1 + 0x7c)\n140396d0d        arg2[2] = *(arg1 + 0x80)\n140396d1d        return arg2\n140396d30        void* rdx = *(*(rax + 8) + (sx.q(arg3) << 3))\n140396d63        if (rdx == 0 || *(*(rdx + 0x20) + 0x4c) == 0)\n140396d3c        *arg2 = *(arg1 + 0x78)\n140396d41        arg2[1] = *(arg1 + 0x7c)\n140396d4a        arg2[2] = *(arg1 + 0x80)\n140396d5a        return arg2\n140396d6a        int32_t rsi = *(rdx + 0x2c)\n140396d70        void var_38\n140396d70        if (rsi != 0xffffffff && sub_14012d2c0(sub_1402648b0(*(arg1 + 0x2a0)), rsi, &var_38) == 1)\n140396da5        int32_t var_2c\n140396da5        *arg2 = var_2c\n140396daf        int32_t var_c\n140396daf        arg2[2] = var_c\n140396db4        int32_t var_1c\n140396db4        arg2[1] = var_1c\n140396dc3        return arg2\n140396dcc        *arg2 = *(arg1 + 0x78)\n140396dd1        arg2[1] = *(arg1 + 0x7c)\n140396dda        arg2[2] = *(arg1 + 0x80)\n140396dea        return arg2",
+  "fetched_at": "2026-04-26T17:23:44Z"
+}

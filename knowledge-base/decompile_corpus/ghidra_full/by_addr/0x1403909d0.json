@@ -1,0 +1,7 @@
+{
+  "addr": "0x1403909d0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_1403909d0(longlong param_1)\n\n{\n  InvulnerableDataPackClass *pIVar1;\n  \n  if (*(longlong *)(param_1 + 0x1f8) == 0) {\n    pIVar1 = (InvulnerableDataPackClass *)FUN_140769c58(0x10);\n    if (pIVar1 != (InvulnerableDataPackClass *)0x0) {\n      pIVar1 = InvulnerableDataPackClass::InvulnerableDataPackClass(pIVar1);\n      *(InvulnerableDataPackClass **)(param_1 + 0x1f8) = pIVar1;\n      return;\n    }\n    *(undefined8 *)(param_1 + 0x1f8) = 0;\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T17:21:51Z"
+}

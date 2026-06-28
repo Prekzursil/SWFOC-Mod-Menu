@@ -1,0 +1,7 @@
+{
+  "addr": "0x140046ed0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nDynamicVectorClass<class_TargetingHUDReticleClass> * __thiscall\nDynamicVectorClass<class_TargetingHUDReticleClass>::scalar_deleting_destructor\n          (DynamicVectorClass<class_TargetingHUDReticleClass> *this,ulonglong param_1)\n\n{\n                    /* inlined destructor:\n                       DynamicVectorClass<class_TargetingHUDReticleClass>::~DynamicVectorClass<class_TargetingHUDReticleClass>\n                        */\n  this->vftablePtr = &vftable;\n  FUN_1400472a0();\n  if ((param_1 & 1) != 0) {\n    thunk_FUN_1407864b8(this,0x18);\n  }\n  return this;\n}\n\n",
+  "fetched_at": "2026-04-26T16:53:49Z"
+}

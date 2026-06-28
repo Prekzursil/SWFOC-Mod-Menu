@@ -1,0 +1,7 @@
+{
+  "addr": "0x14007c360",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nvoid __thiscall\nCCallResult<class_SteamPeerLobbyClass,struct_LobbyMatchList_t>::vfunction2\n          (CCallResult<class_SteamPeerLobbyClass,struct_LobbyMatchList_t> *this,undefined8 param_1)\n\n{\n  this[2].vftablePtr = (CCallResult<class_SteamPeerLobbyClass,struct_LobbyMatchList_t>_vftable *)0x0\n  ;\n                    /* WARNING: Could not recover jumptable at 0x00014007c372. Too many branches */\n                    /* WARNING: Treating indirect jump as call */\n  (*(code *)this[4].vftablePtr)(this[3].vftablePtr,param_1,0);\n  return;\n}\n\n",
+  "fetched_at": "2026-04-26T16:57:00Z"
+}

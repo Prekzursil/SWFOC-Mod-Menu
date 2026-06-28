@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406fb080",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1406fb08c        int64_t result = sub_14048f2c0(arg1)\n1406fb09b        if (not(0f f<= *(arg1 + 0x178)))\n1406fb0a2        void* r8_1 = arg1 + 0x18\n1406fb0a6        if (*(arg1 + 0x30) u>= 0x10)\n1406fb0a8        r8_1 = *r8_1\n1406fb0b7        char var_108[0x100]\n1406fb0b7        sscanf_s(&var_108, \"Error: (%s) Enhancement_Percentage cannot be less than zero.\", r8_1)\n1406fb0c1        result = sub_1402149d0(&var_108)\n1406fb0c6        *(arg1 + 0x178) = 0\n1406fb0d8        return result",
+  "fetched_at": "2026-04-26T17:26:47Z"
+}

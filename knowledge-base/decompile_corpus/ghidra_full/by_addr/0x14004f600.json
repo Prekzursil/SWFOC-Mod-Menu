@@ -1,0 +1,7 @@
+{
+  "addr": "0x14004f600",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nuint FUN_14004f600(undefined8 *param_1,undefined8 *param_2)\n\n{\n  ulonglong uVar1;\n  ulonglong uVar2;\n  uint uVar3;\n  undefined8 *_Buf1;\n  ulonglong _Size;\n  undefined8 *_Buf2;\n  \n  _Buf2 = param_2;\n  if (0xf < (ulonglong)param_2[3]) {\n    _Buf2 = (undefined8 *)*param_2;\n  }\n  _Buf1 = param_1;\n  if (0xf < (ulonglong)param_1[3]) {\n    _Buf1 = (undefined8 *)*param_1;\n  }\n  uVar1 = param_2[2];\n  uVar2 = param_1[2];\n  _Size = uVar2;\n  if (uVar1 < uVar2) {\n    _Size = uVar1;\n  }\n  uVar3 = memcmp(_Buf1,_Buf2,_Size);\n  if (uVar3 == 0) {\n    if (uVar2 < uVar1) {\n      return 1;\n    }\n    uVar3 = 0;\n  }\n  return uVar3 >> 0x1f;\n}\n\n",
+  "fetched_at": "2026-04-26T16:54:35Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x1404dad80",
+  "tool": "ghidra",
+  "fact_id": "rva_ai_perception_system_ctor",
+  "body": "\nAIPerceptionSystemClass * __thiscall\nAIPerceptionSystemClass::AIPerceptionSystemClass(AIPerceptionSystemClass *this,undefined8 param_1)\n\n{\n  undefined8 *puVar1;\n  longlong lVar2;\n  \n  ServicedAISystemClass::ServicedAISystemClass((ServicedAISystemClass *)this,param_1);\n  this->vftablePtr = &vftable;\n  FUN_14040cfc0(&this->AIPerceptionSystemClass_data);\n  (this->AIPerceptionSystemClass_data).offset_0x40 = 0;\n  (this->AIPerceptionSystemClass_data).offset_0x44 = 0;\n  (this->AIPerceptionSystemClass_data).offset_0x48 = 0;\n  (this->AIPerceptionSystemClass_data).offset_0x50 = 0;\n  lVar2 = FUN_140769c58(0x40);\n  puVar1 = &(this->AIPerceptionSystemClass_data).offset_0x58;\n  *(longlong *)lVar2 = lVar2;\n  *(longlong *)(lVar2 + 8) = lVar2;\n  (this->AIPerceptionSystemClass_data).offset_0x48 = lVar2;\n  *puVar1 = 0;\n  (this->AIPerceptionSystemClass_data).offset_0x60 = 0;\n  (this->AIPerceptionSystemClass_data).offset_0x68 = 0;\n  (this->AIPerceptionSystemClass_data).offset_0x70 = 7;\n  (this->AIPerceptionSystemClass_data).offset_0x78 = 8;\n  (this->AIPerceptionSystemClass_data).offset_0x44 = 0x3f800000;\n  FUN_140048250(puVar1,0x10,(this->AIPerceptionSystemClass_data).offset_0x48);\n  (this->AIPerceptionSystemClass_data).offset_0x80 = 0;\n  (this->AIPerceptionSystemClass_data).offset_0x88 = 0;\n  (this->AIPerceptionSystemClass_data).offset_0x90 = 0;\n  return this;\n}\n\n",
+  "fetched_at": "2026-04-26T16:43:45Z"
+}

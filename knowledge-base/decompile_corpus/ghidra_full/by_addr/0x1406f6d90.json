@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406f6d90",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "char * __thiscall DetectHeroAbilityClass::vfunction3_for_IXMLLoadableClass(void)\n\n{\n  return \"Detect_Hero_Ability\";\n}",
+  "fetched_at": "2026-04-26T17:48:44Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407b90f0",
+  "tool": "ghidra",
+  "fact_id": "api_lua_load",
+  "body": "\nvoid FUN_1407b90f0(undefined8 param_1,undefined8 param_2,undefined8 param_3,undefined *param_4)\n\n{\n  int iVar1;\n  undefined *puVar2;\n  undefined1 local_38 [48];\n  \n  puVar2 = &DAT_1408fd01c;\n  if (param_4 != (undefined *)0x0) {\n    puVar2 = param_4;\n  }\n  FUN_1407c3820(local_38,param_2,param_3,puVar2);\n  iVar1 = FUN_1407c3840(local_38);\n  FUN_1407bc040(param_1,local_38,iVar1 == 0x1b);\n  return;\n}\n\n",
+  "fetched_at": "2026-04-26T16:44:27Z"
+}

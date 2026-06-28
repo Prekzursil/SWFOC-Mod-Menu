@@ -1,0 +1,7 @@
+{
+  "addr": "0x140197df0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_140197df0(int param_1,undefined4 *param_2)\n\n{\n  uint uVar1;\n  uint uVar2;\n  longlong lVar3;\n  undefined4 uVar4;\n  \n  *param_2 = 3;\n  lVar3 = (longlong)param_1;\n  param_2[1] = *(undefined4 *)(&DAT_140a700b8 + lVar3 * 0x10);\n  param_2[2] = *(undefined4 *)(&DAT_140a700bc + lVar3 * 0x10);\n  param_2[3] = *(undefined4 *)(&DAT_140a700c0 + lVar3 * 0x10);\n  param_2[4] = 0x3f800000;\n  param_2[5] = *(undefined4 *)(&DAT_140a703b8 + lVar3 * 0x10);\n  param_2[6] = *(undefined4 *)(&DAT_140a703bc + lVar3 * 0x10);\n  param_2[7] = *(undefined4 *)(&DAT_140a703c0 + lVar3 * 0x10);\n  param_2[8] = 0;\n  if (param_1 == 0) {\n    param_2[9] = DAT_140a70080;\n    param_2[10] = DAT_140a70084;\n    uVar4 = DAT_1407ffaf8;\n    param_2[0xb] = DAT_140a70088;\n  }\n  else {\n    *(undefined8 *)(param_2 + 9) = 0;\n    uVar4 = 0;\n    param_2[0xb] = 0;\n  }\n  param_2[0xc] = uVar4;\n  uVar2 = DAT_140800860;\n  *(undefined8 *)(param_2 + 0xe) = 0;\n  param_2[0xd] = 0;\n  param_2[0x10] = *(uint *)(&DAT_140a70148 + lVar3 * 0xc) ^ uVar2;\n  param_2[0x11] = *(uint *)(&DAT_140a7014c + lVar3 * 0xc) ^ uVar2;\n  uVar1 = *(uint *)(&DAT_140a70150 + lVar3 * 0xc);\n  param_2[0x13] = 0x49742400;\n  param_2[0x12] = uVar1 ^ uVar2;\n  *(undefined8 *)(param_2 + 0x14) = 0x3f800000;\n  *(undefined8 *)(param_2 + 0x16) = 0x358637bd;\n  param_2[0x19] = 0x40490e56;\n  param_2[0x18] = 0x40490e56;\n  return;\n}",
+  "fetched_at": "2026-04-26T17:36:02Z"
+}

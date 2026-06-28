@@ -1,0 +1,7 @@
+{
+  "addr": "0x1404d77c0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "char * __thiscall SpaceModeClass::vfunction30(void)\n\n{\n  return \"SpaceMode\";\n}",
+  "fetched_at": "2026-04-26T18:14:10Z"
+}

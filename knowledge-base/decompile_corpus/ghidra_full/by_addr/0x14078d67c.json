@@ -1,0 +1,7 @@
+{
+  "addr": "0x14078d67c",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* Library Function - Single Match\n    __acrt_uninitialize_locale\n   \n   Libraries: Visual Studio 2017 Release, Visual Studio 2019 Release */\n\nvoid __acrt_uninitialize_locale(void)\n\n{\n  <lambda_3e16ef9562a7dcce91392c22ab16ea36> local_res8 [8];\n  undefined4 local_res10 [2];\n  undefined4 local_res18 [4];\n  \n  local_res10[0] = 4;\n  local_res18[0] = 4;\n  __crt_seh_guarded_call<void>::\n  operator()<class_<lambda_410d79af7f07d98d83a3f525b3859a53>,class_<lambda_3e16ef9562a7dcce91392c22ab16ea36>&___ptr64,class_<lambda_38119f0e861e05405d8a144b9b982f0a>_>\n            ((__crt_seh_guarded_call<void> *)local_res8,\n             (<lambda_410d79af7f07d98d83a3f525b3859a53> *)local_res18,local_res8,\n             (<lambda_38119f0e861e05405d8a144b9b982f0a> *)local_res10);\n  return;\n}",
+  "fetched_at": "2026-04-26T18:52:18Z"
+}

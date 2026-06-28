@@ -1,0 +1,7 @@
+{
+  "addr": "0x14079bc2c",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14079bc33        if (arg1 == 0)\n14079bc35        *arg3 = 0\n14079bc45        if (arg2 != 0)\n14079bc51        if ((arg2 & 0xffffff80) != 0)\n14079bc5d        char* i_2\n14079bc5d        char r10\n14079bc5d        if ((arg2 & 0xfffff800) == 0)\n14079bc5f        i_2 = 1\n14079bc65        r10 = 0xc0\n14079bc70        if ((arg2 & 0xffff0000) != 0)\n14079bc98        if ((arg2 & 0xffe00000) != 0 || arg2 u> 0x10ffff)\n14079bcc7        label_14079bcc7:\n14079bcc7        *arg3 = 0\n14079bcd0        *_errno() = 0x2a\n14079bcd6        return -ffffffffffffffff\n14079bc9a        i_2 = 3\n14079bca0        r10 = 0xf0\n14079bc7d        if (arg2 - 0xd800 u<= 0x7ff)\n14079bc7d        goto label_14079bcc7\n14079bc7f        i_2 = 2\n14079bc85        r10 = 0xe0\n14079bca3        char* i_1 = i_2\n14079bcb7        char* i\n14079bca6        int32_t rax\n14079bca6        rax.b = arg2.b\n14079bca8        arg2 u>>= 6\n14079bcab        rax.b &= 0x3f\n14079bcad        rax.b |= 0x80\n14079bcaf        *(i_1 + arg1) = rax.b\n14079bcb3        i = i_1\n14079bcb3        i_1 -= 1\n14079bcb7        do while (i != 1)\n14079bcb9        arg2.b |= r10\n14079bcc0        *arg1 = arg2.b\n14079bcc2        *arg3 &= i_1\n14079bcde        return &i_2[1]\n14079bc53        *arg1 = arg2.b\n14079bc47        *arg1 = arg2.b\n14079bc35        *arg3 = 0\n14079bc39        return 1",
+  "fetched_at": "2026-04-26T17:32:10Z"
+}

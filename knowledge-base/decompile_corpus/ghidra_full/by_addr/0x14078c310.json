@@ -1,0 +1,7 @@
+{
+  "addr": "0x14078c310",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* Library Function - Single Match\n    __acrt_allocate_buffer_for_argv\n   \n   Library: Visual Studio 2019 Release */\n\nundefined8 __acrt_allocate_buffer_for_argv(ulonglong param_1,ulonglong param_2,ulonglong param_3)\n\n{\n  undefined1 auVar1 [16];\n  undefined8 uVar2;\n  \n  if ((param_1 < 0x1fffffffffffffff) &&\n     (auVar1._8_8_ = 0, auVar1._0_8_ = param_3,\n     param_2 < SUB168((ZEXT816(0) << 0x40 | ZEXT816(0xffffffffffffffff)) / auVar1,0))) {\n    if (param_2 * param_3 < ~(param_1 * 8)) {\n      uVar2 = _calloc_base(param_1 * 8 + param_2 * param_3,1);\n      _free_base(0);\n      return uVar2;\n    }\n  }\n  return 0;\n}",
+  "fetched_at": "2026-04-26T18:52:01Z"
+}

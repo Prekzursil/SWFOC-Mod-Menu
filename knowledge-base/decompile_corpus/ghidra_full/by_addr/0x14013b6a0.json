@@ -1,0 +1,7 @@
+{
+  "addr": "0x14013b6a0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "alBlob * __thiscall alBlob::scalar_deleting_destructor(alBlob *this,uint param_1)\n\n{\n  ulonglong uVar1;\n  \n                    /* inlined destructor: alBlob::~alBlob */\n  this->vftablePtr = &vftable;\n  this->vftablePtr = &vftable;\n  uVar1 = 0;\n  this->vftablePtr = &vftable;\n  if (DAT_140a62670 - DAT_140a62668 >> 3 != 0) {\n    do {\n      *(undefined8 *)(DAT_140a62668 + uVar1 * 8) = 0;\n      uVar1 = (ulonglong)((int)uVar1 + 1);\n    } while (uVar1 < (ulonglong)(DAT_140a62670 - DAT_140a62668 >> 3));\n  }\n  DAT_140a62670 = DAT_140a62668;\n  FUN_1401f9440(&(this->alBlob_data).offset_0x4c);\n  alRenderable::~alRenderable((alRenderable *)this);\n  if ((param_1 & 1) != 0) {\n    thunk_FUN_1407864b8(this,0x170);\n  }\n  return this;\n}",
+  "fetched_at": "2026-04-26T17:14:46Z"
+}

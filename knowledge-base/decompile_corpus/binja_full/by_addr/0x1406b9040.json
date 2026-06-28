@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406b9040",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1406b9054        int64_t* rax = sub_1405f55e0(*(arg1 + 0x28))\n1406b905c        if (rax != 0)\n1406b9062        int64_t r8_1 = *rax\n1406b906b        int64_t i = (*(r8_1 + 0x180))(rax, arg2, r8_1)\n1406b9078        if (i != 0)\n1406b908c        int32_t rcx_4 = (i.d ^ 0xdeadbeef) & 0x7fffffff\n1406b909e        void* rdx_2 = *(arg1 + 0x100)\n1406b90b2        int32_t rax_2 = rcx_4 u/ 0x1f31d * 0xb14\n1406b90b9        int32_t rcx_6 = rcx_4 u% 0x1f31d * 0x41a7\n1406b90bf        int32_t rcx_7 = rcx_6 - rax_2\n1406b90c1        int32_t rax_3 = rcx_7 + 0x7fffffff\n1406b90c7        if (rcx_6 - rax_2 s>= 0)\n1406b90c7        rax_3 = rcx_7\n1406b90d8        int64_t* rcx_11 = ((sx.q(rax_3) & *(arg1 + 0x128)) << 4) + *(arg1 + 0x110)\n1406b90df        void* rax_4 = rcx_11[1]\n1406b90e6        if (rax_4 != rdx_2)\n1406b90eb        int64_t temp3_1 = *(rax_4 + 0x10)\n1406b90eb        bool cond:1_1 = temp3_1 u< i\n1406b90ef        if (temp3_1 u> i)\n1406b90f4        if (rax_4 == *rcx_11)\n1406b912d        return 0\n1406b90f6        rax_4 = *(rax_4 + 8)\n1406b90fe        do while (i u< *(rax_4 + 0x10))\n1406b9100        cond:1_1 = *(rax_4 + 0x10) u< i\n1406b9104        if (not(cond:1_1))\n1406b9109        if (rax_4 == 0)\n1406b9109        rax_4 = rdx_2\n1406b9110        if (rax_4 != rdx_2)\n1406b9120        return *(rax_4 + 0x18)\n1406b912d        return 0",
+  "fetched_at": "2026-04-26T17:24:50Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x14017c570",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_14017c570(int param_1,undefined8 param_2,undefined8 param_3)\n\n{\n  longlong *plVar1;\n  \n  FUN_1401abd30(param_2);\n  plVar1 = *(longlong **)(DAT_140a12930 + (longlong)param_1 * 8);\n                    /* WARNING: Could not recover jumptable at 0x00014017c5b3. Too many branches */\n                    /* WARNING: Treating indirect jump as call */\n  (**(code **)(*plVar1 + 0x48))(plVar1,param_2,param_3);\n  return;\n}",
+  "fetched_at": "2026-04-26T17:29:01Z"
+}

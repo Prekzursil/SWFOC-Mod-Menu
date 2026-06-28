@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401a59e0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "float FUN_1401a59e0(undefined4 *param_1)\n\n{\n  float fVar1;\n  uint uVar2;\n  uint uVar3;\n  uint uVar4;\n  \n  switch(*param_1) {\n  default:\n    return SQRT((float)param_1[0xe] * (float)param_1[0xe] +\n                (float)param_1[0xf] * (float)param_1[0xf] +\n                (float)param_1[0x10] * (float)param_1[0x10]);\n  case 1:\n    break;\n  case 2:\n    fVar1 = (float)param_1[7] * (float)param_1[7];\n    return SQRT(fVar1 + fVar1 + fVar1);\n  case 3:\n    return (float)param_1[8];\n  case 4:\n  case 5:\n    return SQRT((float)param_1[0xc] * (float)param_1[0xc] + (float)param_1[10] * (float)param_1[10])\n    ;\n  }\n  uVar3 = param_1[3];\n  if ((float)(param_1[3] & DAT_140818eb0) <= (float)(param_1[6] & DAT_140818eb0)) {\n    uVar3 = param_1[6];\n  }\n  uVar4 = param_1[2];\n  if ((float)(param_1[2] & DAT_140818eb0) <= (float)(param_1[5] & DAT_140818eb0)) {\n    uVar4 = param_1[5];\n  }\n  uVar2 = param_1[1];\n  if ((float)(uVar2 & DAT_140818eb0) <= (float)(param_1[4] & DAT_140818eb0)) {\n    uVar2 = param_1[4];\n  }\n  return SQRT((float)(uVar2 & DAT_140818eb0) * (float)(uVar2 & DAT_140818eb0) +\n              (float)(uVar4 & DAT_140818eb0) * (float)(uVar4 & DAT_140818eb0) +\n              (float)(uVar3 & DAT_140818eb0) * (float)(uVar3 & DAT_140818eb0));\n}",
+  "fetched_at": "2026-04-26T17:39:18Z"
+}

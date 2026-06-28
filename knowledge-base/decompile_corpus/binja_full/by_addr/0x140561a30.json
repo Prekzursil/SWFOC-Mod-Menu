@@ -1,0 +1,7 @@
+{
+  "addr": "0x140561a30",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140561a37        *(arg1 + 0x4c) = 0x3fffff\n140561a3e        *arg1 = &TelekinesisDataPackClass::`vftable'{for `BaseDataPackClass'}\n140561a43        __builtin_memset(&arg1[1], 0, 0x44)\n140561a69        arg1[0xa].d = 0x3fffff\n140561a70        return arg1",
+  "fetched_at": "2026-04-26T17:34:26Z"
+}

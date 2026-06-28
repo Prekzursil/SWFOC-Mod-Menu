@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407d2950",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1407d2973        int64_t arg_10\n1407d2973        int64_t rax = sub_1407ce170(arg1, 1, &arg_10)\n1407d2978        int32_t rsi = arg_10.d\n1407d298c        int32_t rbx = int.d(sub_1407ce220(arg1, 2))\n1407d2992        if (rbx s< 0)\n1407d2996        rbx = rbx + 1 + rsi\n1407d29a5        int32_t rsi_1 = arg_10.d\n1407d29b2        int32_t rcx_2 = int.d(sub_1407ce9b0(arg1, 3, -0x4010000000000000))\n1407d29b8        if (rcx_2 s< 0)\n1407d29bc        rcx_2 = rcx_2 + 1 + rsi_1\n1407d29be        int32_t rax_1 = arg_10.d\n1407d29c6        if (rbx s< 1)\n1407d29c6        rbx = 1\n1407d29cc        if (rcx_2 s> rax_1)\n1407d29cc        rcx_2 = rax_1\n1407d29d1        char* rdx_1\n1407d29d1        void* r8_1\n1407d29d1        if (rbx s> rcx_2)\n1407d29e5        rdx_1 = &data_1407ff8a8\n1407d29ec        r8_1 = nullptr\n1407d29d9        rdx_1 = rax - 1 + zx.q(rbx)\n1407d29e0        r8_1 = sx.q(rcx_2 - rbx + 1)\n1407d29f2        sub_1407b94a0(arg1, rdx_1, r8_1)\n1407d2a0c        return 1",
+  "fetched_at": "2026-04-26T17:33:59Z"
+}

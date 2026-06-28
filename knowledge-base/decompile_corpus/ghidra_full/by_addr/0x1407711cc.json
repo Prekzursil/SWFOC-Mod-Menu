@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407711cc",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_1407711cc(void)\n\n{\n  FUN_1407710fc();\n                    /* WARNING: Subroutine does not return */\n  _invoke_watson((wchar_t *)0x0,(wchar_t *)0x0,(wchar_t *)0x0,0,0);\n}",
+  "fetched_at": "2026-04-26T18:12:05Z"
+}

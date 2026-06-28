@@ -1,0 +1,7 @@
+{
+  "addr": "0x140542180",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14054218a        int64_t* rbx = *(arg3 + 0x10)\n1405421a0        if ((*(arg3 + 0x18) - rbx) s>> 3 u< 1)\n1405421ac        sub_140248190(arg2, \"LuaFadeScreenOut -- Expected float parameter 1\", arg3)\n1405421bd        return 0\n1405421be        int64_t* rbx_1 = *rbx\n1405421c9        void* i\n1405421c9        if (rbx_1 != 0)\n1405421d1        (**rbx_1)(rbx_1)\n1405421d9        i, arg3 = (*(*rbx_1 + 0x20))(rbx_1)\n1405421df        int64_t* rdi\n1405421df        if (rbx_1 == 0 || i == 0)\n1405421f6        label_1405421f6:\n1405421f6        rdi = nullptr\n1405421fb        if (rbx_1 != 0)\n140542203        arg3 = (*(*rbx_1 + 8))(rbx_1)\n1405421eb        while (i != &data_140a157c0)\n1405421ed        i = *(i + 8)\n1405421f4        if (i == 0)\n1405421f4        goto label_1405421f6\n140542246        (**rbx_1)(rbx_1)\n140542248        rdi = rbx_1\n140542203        arg3 = (*(*rbx_1 + 8))(rbx_1)\n140542209        if (rdi != 0)\n14054225d        sub_14044b300(&data_140a28c10, _mm_cvtpd_ps(zx.o(rdi[2])))\n140542268        (*(*rdi + 8))(rdi)\n14054227c        return 0\n140542215        sub_140248190(arg2, \"LuaFadeScreenOut -- Invalid parameter 1, expected a float\", arg3)\n140542229        sub_14044b300(&data_140a28c10, 0x3f000000)\n14054223f        return 0",
+  "fetched_at": "2026-04-26T17:33:58Z"
+}

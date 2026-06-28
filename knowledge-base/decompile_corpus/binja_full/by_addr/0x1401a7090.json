@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401a7090",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1401a70b0        int32_t rcx = 0\n1401a70b9        if (RegSetValueExA(arg1, arg2, 0, REG_BINARY, arg3, 0x10) != NO_ERROR)\n1401a70b9        rcx = -0x7fffbffb\n1401a70c2        return zx.q(rcx)",
+  "fetched_at": "2026-04-26T17:25:09Z"
+}

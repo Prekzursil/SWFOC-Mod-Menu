@@ -1,0 +1,7 @@
+{
+  "addr": "0x14013d030",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14013d030        uint32_t rax_1 = zx.d(arg1)\n14013d036        uint32_t r10_1 = rax_1 | 2\n14013d03f        if (arg2 == 0)\n14013d03f        r10_1 = rax_1\n14013d046        uint32_t rcx_1 = r10_1 | 4\n14013d051        if (arg3 == 0)\n14013d051        rcx_1 = r10_1\n14013d055        return sub_1401788a0(rcx_1, arg4, arg5) __tailcall",
+  "fetched_at": "2026-04-26T17:15:28Z"
+}

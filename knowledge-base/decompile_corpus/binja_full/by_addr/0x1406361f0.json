@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406361f0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1406361fb        struct BehaviorClass::DisableForceAbilitiesBehaviorClass::VTable** result = operator new(0x40)\n140636206        if (result == 0)\n14063623e        return result\n14063620b        sub_1404c32d0(result)\n140636217        *result = &DisableForceAbilitiesBehaviorClass::`vftable'{for `BehaviorClass'}\n140636221        result[1] = &DisableForceAbilitiesBehaviorClass::`vftable'{for `RefCountClass'}\n14063622c        result[3] = &DisableForceAbilitiesBehaviorClass::`vftable'{for `SignalListenerClass'}\n140636238        return result",
+  "fetched_at": "2026-04-26T17:00:21Z"
+}

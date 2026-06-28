@@ -1,0 +1,7 @@
+{
+  "addr": "0x140650910",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140650928        *arg1 = &VisiblePerceptualEvaluatorClass<class PlanetTypePerceptualEvaluatorClass>::`vftable'{for `PerceptualEvaluatorClass'}\n14065093c        arg1[3] = &VisiblePerceptualEvaluatorClass<class PlanetTypePerceptualEvaluatorClass>::`vftable'{for `AIDiagnosticsClass'}\n140650952        sub_14064c540(&arg1[0x14], &arg1[0x14], arg1[0x14]->__offset(0x8).q)\n140650963        j_sub_1407864b8(arg1[0x14])\n14065096b        sub_14064c9a0(arg1)\n140650974        if ((arg2 & 1) != 0)\n14065097e        j_sub_1407864b8(arg1)\n140650995        return arg1",
+  "fetched_at": "2026-04-26T17:06:09Z"
+}

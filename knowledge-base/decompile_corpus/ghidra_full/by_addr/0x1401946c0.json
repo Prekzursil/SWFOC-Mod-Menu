@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401946c0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "alTerrainRender * __thiscall\nalTerrainRender::scalar_deleting_destructor(alTerrainRender *this,ulonglong param_1)\n\n{\n                    /* inlined destructor: alTerrainRender::~alTerrainRender */\n  this->vftablePtr = &vftable;\n  if ((param_1 & 1) != 0) {\n    thunk_FUN_1407864b8(this,8);\n  }\n  return this;\n}",
+  "fetched_at": "2026-04-26T17:35:06Z"
+}

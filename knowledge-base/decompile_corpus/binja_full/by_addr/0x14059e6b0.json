@@ -1,0 +1,7 @@
+{
+  "addr": "0x14059e6b0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14059e6b6        uint64_t result\n14059e6b6        if (arg1 - 6 u<= 0x10)\n14059e6b6        switch (arg1)\n14059e6d6        case 6, 7, 0xf, 0x10, 0x11, 0x12, 0x14, 0x15, 0x16\n14059e6d6        result.b = 1\n14059e6d8        return result\n14059e6d9        result.b = 0\n14059e6db        return result",
+  "fetched_at": "2026-04-26T17:36:46Z"
+}

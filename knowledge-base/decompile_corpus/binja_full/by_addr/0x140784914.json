@@ -1,0 +1,7 @@
+{
+  "addr": "0x140784914",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14078492d        int32_t rax = data_140b3c0b0\n140784933        void** rbx = nullptr\n140784935        int64_t i_1 = 3\n14078493c        if (rax == 0)\n14078493e        rax = 0x200\n140784947        if (rax s< 3)\n140784947        rax = 3\n140784952        data_140b3c0b0 = rax\n14078495f        data_140b3c0b8 = _calloc_base(sx.q(rax), 8)\n140784966        _free_base(0)\n140784972        if (data_140b3c0b8 == 0)\n140784979        data_140b3c0b0 = 3\n140784989        data_140b3c0b8 = _calloc_base(3, 8)\n140784990        _free_base(0)\n14078499c        if (data_140b3c0b8 == 0)\n14078499e        return 0xffffffff\n1407849a3        int64_t rbp_1 = 0\n1407849a6        void* rsi_1 = &data_140a44be8\n1407849ad        void* r14_1 = &data_140a44bd0\n140784a14        int64_t i\n1407849c0        __acrt_InitializeCriticalSectionEx(r14_1 + 0x30, 0xfa0, 0)\n1407849da        *(rbx + data_140b3c0b8) = r14_1\n1407849f9        if (*((&data_140b3c4d0)[rbp_1 s>> 6] + (zx.q(rbp_1.d) & 0x3f) * 0x48 + 0x28) + 2 u<= 2)\n1407849fb        *rsi_1 = 0xfffffffe\n140784a01        rbp_1 += 1\n140784a04        r14_1 += 0x58\n140784a08        rbx = &rbx[1]\n140784a0c        rsi_1 += 0x58\n140784a10        i = i_1\n140784a10        i_1 -= 1\n140784a14        do while (i != 1)\n140784a16        return 0",
+  "fetched_at": "2026-04-26T17:31:12Z"
+}

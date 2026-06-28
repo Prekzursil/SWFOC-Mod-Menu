@@ -1,0 +1,7 @@
+{
+  "addr": "0x14076aa5c",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* Library Function - Single Match\n    __scrt_is_managed_app\n   \n   Library: Visual Studio 2019 Release */\n\nulonglong __scrt_is_managed_app(void)\n\n{\n  HMODULE pHVar1;\n  ulonglong uVar2;\n  int *piVar3;\n  \n  pHVar1 = GetModuleHandleW((LPCWSTR)0x0);\n  if ((((pHVar1 == (HMODULE)0x0) || ((short)pHVar1->unused != 0x5a4d)) ||\n      (piVar3 = (int *)((longlong)&pHVar1->unused + (longlong)pHVar1[0xf].unused), *piVar3 != 0x4550\n      )) || (((pHVar1 = (HMODULE)0x20b, (short)piVar3[6] != 0x20b || ((uint)piVar3[0x21] < 0xf)) ||\n             (piVar3[0x3e] == 0)))) {\n    uVar2 = (ulonglong)pHVar1 & 0xffffffffffffff00;\n  }\n  else {\n    uVar2 = 0x201;\n  }\n  return uVar2;\n}",
+  "fetched_at": "2026-04-26T18:10:13Z"
+}

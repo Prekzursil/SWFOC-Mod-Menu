@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401a4bb0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1401a4bb5        int64_t arg_10 = arg2\n1401a4bba        int64_t* arg_8 = arg1\n1401a4bd4        int64_t rdi_2 = (arg1[1] - *arg1) s>> 2\n1401a4bd8        int32_t* rax = sub_140048c40(arg1, arg2)\n1401a4be0        int32_t* arg_18 = rax\n1401a4be9        int32_t* rdx = *arg1\n1401a4bf2        memcpy(rax, rdx, arg1[1] - rdx)\n1401a4c11        return sub_140048380(arg1, rax, rdi_2, arg2) __tailcall",
+  "fetched_at": "2026-04-26T17:25:04Z"
+}

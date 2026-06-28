@@ -1,0 +1,7 @@
+{
+  "addr": "0x14026c710",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14026c724        *arg1 = &DrawRectClass::`vftable'{for `DrawPrimitiveClass'}\n14026c730        arg1[8] = &DrawRectClass::`vftable'{for `RefCountClass'}\n14026c734        void* rcx = arg1[7]\n14026c73b        if (rcx != 0)\n14026c740        sub_14025c490(rcx, arg1)\n14026c745        int64_t* rcx_1 = arg1[0xa]\n14026c74c        if (rcx_1 != 0)\n14026c756        (**rcx_1)(rcx_1, 1)\n14026c758        int64_t* rcx_2 = arg1[0xb]\n14026c75f        if (rcx_2 != 0)\n14026c769        (**rcx_2)(rcx_2, 1)\n14026c76b        int64_t* rcx_3 = arg1[0xc]\n14026c772        if (rcx_3 != 0)\n14026c77c        (**rcx_3)(rcx_3, 1)\n14026c77e        int64_t* rcx_4 = arg1[0xd]\n14026c785        if (rcx_4 != 0)\n14026c78f        (**rcx_4)(rcx_4, 1)\n14026c796        __builtin_memset(&arg1[0xa], 0, 0x20)\n14026c7ad        arg1[8] = &RefCountClass::`vftable'{for `IRefCountClass'}\n14026c7b1        sub_14026edd0(arg1)\n14026c7ba        if ((arg2 & 1) != 0)\n14026c7c4        j_sub_1407864b8(arg1)\n14026c7d6        return arg1",
+  "fetched_at": "2026-04-26T17:31:40Z"
+}

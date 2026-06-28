@@ -1,0 +1,7 @@
+{
+  "addr": "0x1404c2e80",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1404c2e87        return \"StarshipDummyBehaviorClass\"",
+  "fetched_at": "2026-04-26T17:30:27Z"
+}

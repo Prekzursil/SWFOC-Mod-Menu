@@ -1,0 +1,7 @@
+{
+  "addr": "0x14058d830",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14058d83a        int512_t entry_zmm2\n14058d83a        return sub_14058cf90(arg1, *(arg1 + 0x28), 2, entry_zmm2) __tailcall",
+  "fetched_at": "2026-04-26T17:36:12Z"
+}

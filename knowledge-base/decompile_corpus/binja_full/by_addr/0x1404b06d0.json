@@ -1,0 +1,7 @@
+{
+  "addr": "0x1404b06d0",
+  "tool": "binary_ninja",
+  "fact_id": "rva_ai_release_credits_tactical",
+  "body": "1404b06e9        int64_t rax = sub_14028a950(&data_140b153e0, arg2)\n1404b06f4        if (rax != 0)\n1404b06f6        int64_t* rbx_1 = *(arg1 + 0x38)\n1404b06fe        if (rbx_1 != *(arg1 + 0x40))\n1404b0718        int64_t rcx_1\n1404b0703        int64_t rax_1 = sub_1405f55e0(*rbx_1)\n1404b0708        rcx_1 = *(arg1 + 0x40)\n1404b070f        if (rax_1 == rax)\n1404b072f        if (rbx_1 != rcx_1)\n1404b0743        return *rbx_1\n1404b072f        break\n1404b0711        rbx_1 = &rbx_1[1]\n1404b0718        do while (rbx_1 != rcx_1)\n1404b072b        return 0",
+  "fetched_at": "2026-04-26T16:43:45Z"
+}

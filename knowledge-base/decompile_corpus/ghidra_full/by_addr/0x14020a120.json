@@ -1,0 +1,7 @@
+{
+  "addr": "0x14020a120",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "longlong FUN_14020a120(int *param_1,longlong param_2)\n\n{\n  char cVar1;\n  longlong lVar2;\n  \n  if (((*param_1 == 4) && (*(longlong *)(param_1 + 8) != 0)) &&\n     (lVar2 = FUN_14023cc10(), lVar2 != 0)) {\n    if ((param_2 != 0) && (cVar1 = FUN_1402074d0(param_2,lVar2), cVar1 == '\\0')) {\n      return 0;\n    }\n    return lVar2;\n  }\n  return 0;\n}",
+  "fetched_at": "2026-04-26T17:58:00Z"
+}

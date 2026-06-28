@@ -1,0 +1,7 @@
+{
+  "addr": "0x14070d580",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14070d586        struct SpecialAbilityClass::RetreatProtectionAbilityClass::VTable** result = arg1\n14070d589        sub_14048c780(arg1)\n14070d595        result[8].w = 1\n14070d59b        *result = &RetreatProtectionAbilityClass::`vftable'{for `SpecialAbilityClass'}\n14070d5a5        result[1] = &RetreatProtectionAbilityClass::`vftable'{for `RefCountClass'}\n14070d5ab        result[0x2f] = 0\n14070d5b5        *(result + 0x3c) = 2\n14070d5c1        return result",
+  "fetched_at": "2026-04-26T17:27:35Z"
+}

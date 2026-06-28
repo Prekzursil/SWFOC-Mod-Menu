@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407bbcb0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1407bbcc6        int32_t* i = arg3\n1407bbcc9        int32_t i_1 = arg2\n1407bbcce        if ((*(arg1 + 0x8c) & 2) != 0)\n1407bbcd0        void* rsi = i - *(arg1 + 0x68)\n1407bbcdd        sub_1407bbaa0(arg1, 1)\n1407bbce2        void* rax_1 = *(arg1 + 0x58)\n1407bbcea        if ((*(rax_1 + 0x10) & 1) == 0)\n1407bbcf0        while (*(rax_1 + 0x28) != 0)\n1407bbd00        void* rax_2 = *(arg1 + 0x58)\n1407bbd0c        *(rax_2 + 0x28) -= 1\n1407bbd13        sub_1407bbaa0(arg1, 4)\n1407bbd18        rax_1 = *(arg1 + 0x58)\n1407bbd22        *(rax_1 + 0x28) -= 1\n1407bbd25        i = rsi + *(arg1 + 0x68)\n1407bbd29        *(arg1 + 0x58) -= 0x30\n1407bbd36        int32_t* result = *(arg1 + 0x18) - 0x10\n1407bbd3d        *(arg1 + 0x18) = **(arg1 + 0x58)\n1407bbd43        if (i_1 != 0)\n1407bbd49        while (i u< *(arg1 + 0x10))\n1407bbd4b        int32_t* i_2 = i\n1407bbd4e        int32_t* result_1 = result\n1407bbd51        result = &result[4]\n1407bbd55        i = &i[4]\n1407bbd5b        *result_1 = *i_2\n1407bbd62        *(result_1 + 8) = *(i_2 + 8)\n1407bbd66        int32_t i_3 = i_1\n1407bbd66        i_1 -= 1\n1407bbd69        if (i_3 == 1)\n1407bbd69        break\n1407bbd6d        while (i_1 s> 0)\n1407bbd71        *result = 0\n1407bbd73        i_1 -= 1\n1407bbd75        result = &result[4]\n1407bbd87        *(arg1 + 0x10) = result\n1407bbd90        return result",
+  "fetched_at": "2026-04-26T17:33:20Z"
+}

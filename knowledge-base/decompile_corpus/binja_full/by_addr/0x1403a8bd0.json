@@ -1,0 +1,7 @@
+{
+  "addr": "0x1403a8bd0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1403a8bdf        struct BaseDataPackClass::LightEffectDataPackClass::VTable** rbx = *(arg1 + 0x1a8)\n1403a8bed        if (arg2 != 0)\n1403a8c4a        if (rbx == 0)\n1403a8c4f        struct BaseDataPackClass::LightEffectDataPackClass::VTable** rax = operator new(zx.q((&rbx[8]).d))\n1403a8c57        if (rax == 0)\n1403a8c66        rbx = nullptr\n1403a8c61        rbx = sub_1404ee420(rax)\n1403a8c68        *(arg1 + 0x1a8) = rbx\n1403a8c6f        rbx[1].d = arg2\n1403a8bf2        if (rbx != 0)\n1403a8c00        if (rbx[6] != 0 || rbx[7] != 0)\n1403a8c30        rbx[1].d = 0\n1403a8c46        return \n1403a8c05        sub_1404ee450(rbx)\n1403a8c10        j_sub_1407864b8(rbx)\n1403a8c15        *(arg1 + 0x1a8) = 0\n1403a8c81        return ",
+  "fetched_at": "2026-04-26T17:24:08Z"
+}

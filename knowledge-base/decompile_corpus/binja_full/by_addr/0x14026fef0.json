@@ -1,0 +1,7 @@
+{
+  "addr": "0x14026fef0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14026fefa        int64_t lpMem = arg1[1]\n14026fefe        struct DynamicVectorClass<struct WindowsFontClass::tFontCharacterStruct>::VTable* const result = &DynamicVectorClass<struct WindowsFontClass::tFontCharacterStruct>::`vftable'\n14026ff05        *arg1 = &DynamicVectorClass<struct WindowsFontClass::tFontCharacterStruct>::`vftable'\n14026ff0e        if (lpMem != 0)\n14026ff17        if ((*(arg1 + 0x14) & 0x80000000) == 0)\n14026ff32        j_sub_1407864b8(lpMem)\n14026ff27        HeapFree(GetProcessHeap(), HEAP_NONE, lpMem)\n14026ff37        result = nullptr\n14026ff39        *(arg1 + 0x14) &= 0x80000000\n14026ff40        arg1[1] = 0\n14026ff44        arg1[2].d = 0\n14026ff51        return result",
+  "fetched_at": "2026-04-26T17:31:45Z"
+}

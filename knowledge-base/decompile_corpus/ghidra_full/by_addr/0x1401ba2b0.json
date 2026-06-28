@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401ba2b0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_1401ba2b0(longlong param_1,int *param_2)\n\n{\n  int iVar1;\n  longlong lVar2;\n  undefined8 uVar3;\n  int iVar4;\n  undefined4 local_38;\n  int iStack_34;\n  undefined8 uStack_30;\n  int local_28;\n  int local_20;\n  undefined4 uStack_1c;\n  undefined8 uStack_18;\n  int local_10;\n  \n  iVar4 = *param_2;\n  iVar1 = param_2[1];\n  *(undefined8 *)(param_1 + 0x1c) = 0x3f800000;\n  *(undefined4 *)(param_1 + 0x24) = 0;\n  iVar4 = iVar4 + (iVar1 - iVar4) / 2;\n  *(float *)(param_1 + 0x28) = (float)iVar4 * (float)param_2[4];\n  local_28 = param_2[4];\n  uStack_30 = *(undefined8 *)(param_2 + 2);\n  _local_38 = CONCAT44(iVar4,(int)*(undefined8 *)param_2);\n  lVar2 = FUN_140769c58(0x40);\n  uVar3 = 0;\n  if (lVar2 != 0) {\n    uVar3 = FUN_1401ba000(lVar2,&local_38);\n  }\n  *(undefined8 *)(param_1 + 0x38) = uVar3;\n  uStack_18 = *(undefined8 *)(param_2 + 2);\n  local_10 = param_2[4];\n  _local_20 = CONCAT44((int)((ulonglong)*(undefined8 *)param_2 >> 0x20),iVar4);\n  lVar2 = FUN_140769c58(0x40);\n  if (lVar2 != 0) {\n    uVar3 = FUN_1401ba000(lVar2,&local_20);\n    *(undefined8 *)(param_1 + 0x30) = uVar3;\n    return;\n  }\n  *(undefined8 *)(param_1 + 0x30) = 0;\n  return;\n}",
+  "fetched_at": "2026-04-26T17:45:26Z"
+}

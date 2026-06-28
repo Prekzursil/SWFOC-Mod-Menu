@@ -1,0 +1,7 @@
+{
+  "addr": "0x14001f9f0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nundefined8 * __thiscall ConsoleCommand::vfunction5(ConsoleCommand *this,undefined8 *param_1)\n\n{\n  param_1[3] = 0xf;\n  *param_1 = 0;\n  param_1[2] = 0;\n  return param_1;\n}\n\n",
+  "fetched_at": "2026-04-26T16:51:44Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x140226820",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "DynamicVectorClass<struct_UPnPDeviceInfoStruct> * __thiscall\nDynamicVectorClass<struct_UPnPDeviceInfoStruct>::scalar_deleting_destructor\n          (DynamicVectorClass<struct_UPnPDeviceInfoStruct> *this,uint param_1)\n\n{\n  ~DynamicVectorClass<struct_UPnPDeviceInfoStruct>(this);\n  if ((param_1 & 1) != 0) {\n    thunk_FUN_1407864b8(this,0x18);\n  }\n  return this;\n}",
+  "fetched_at": "2026-04-26T18:04:38Z"
+}

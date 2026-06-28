@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401ba520",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1401ba54b        *arg1 = &alD3dIncludeHandler::`vftable'{for `ID3DXInclude'}\n1401ba55e        char var_308[0x100]\n1401ba55e        void var_208\n1401ba55e        void var_108\n1401ba55e        void arg_8\n1401ba55e        _splitpath(arg2, &arg_8, &var_308, &var_108, arg2, &var_208)\n1401ba580        _makepath(&arg1[1], &arg_8, &var_308, nullptr, nullptr)\n1401ba590        return arg1",
+  "fetched_at": "2026-04-26T17:25:56Z"
+}

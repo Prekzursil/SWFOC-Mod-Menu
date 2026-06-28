@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407aa7d0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1407aa7ed        int64_t rbx_2 = (data_140b3cc98 - data_140b3cc90) s>> 3\n1407aa7f3        if (rbx_2.d == 0)\n1407aa7f3        return \n1407aa808        if (arg2 s>= 0 && data_140a457f0 s>= 0)\n1407aa821        int128_t var_38\n1407aa821        __builtin_memcpy(&var_38, \"\\x00\\x00\\x80\\x3f\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x80\\x3f\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x80\\x3f\\x00\\x00\\x00\\x00\", 0x30)\n1407aa837        wWinMainCRTStartup(&var_38)\n1407aa855        sub_14013d400(0, *(*data_140b3cc90 + 0x100), 0, 0)\n1407aa898        j_sub_1401805b0(arg2, data_140a457f0, 0xffffffff, 0, (rbx_2 << 2).d, rbx_2.d, 4, 1, 0, 0)\n1407aa8a6        sub_1400e5160(&data_140b3cc90, 0)\n1407aa8ab        data_140b3cc80 = 0\n1407aa8b6        data_140a457f0 = 0xffffffff\n1407aa8d0        return ",
+  "fetched_at": "2026-04-26T17:32:38Z"
+}

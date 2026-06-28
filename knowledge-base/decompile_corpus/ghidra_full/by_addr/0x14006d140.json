@@ -1,0 +1,7 @@
+{
+  "addr": "0x14006d140",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nvoid FUN_14006d140(longlong param_1)\n\n{\n  longlong lVar1;\n  \n  lVar1 = SteamInternal_ContextInit(&PTR_FUN_140a10e00);\n  lVar1 = (**(code **)(**(longlong **)(lVar1 + 0x20) + 0x68))(*(longlong **)(lVar1 + 0x20),2,0x12);\n  if (lVar1 != 0) {\n    if (*(longlong *)(param_1 + 0xf8) != 0) {\n      SteamAPI_UnregisterCallResult(param_1 + 0xe8);\n    }\n    *(longlong *)(param_1 + 0xf8) = lVar1;\n    *(code **)(param_1 + 0x108) = FUN_140072b60;\n    *(longlong *)(param_1 + 0x100) = param_1;\n    SteamAPI_RegisterCallResult(param_1 + 0xe8,lVar1);\n  }\n  return;\n}\n\n",
+  "fetched_at": "2026-04-26T16:56:09Z"
+}

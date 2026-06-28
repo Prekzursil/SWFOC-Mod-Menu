@@ -1,0 +1,7 @@
+{
+  "addr": "0x1403a8c90",
+  "tool": "binary_ninja",
+  "fact_id": "rva_set_speed_override",
+  "body": "1403a8c90        void* result = *(arg1 + 0xa8)\n1403a8c9a        if (result != 0)\n1403a8c9c        *(result + 0x2a0) = arg2\n1403a8ca4        *(result + 0x29c) = 1\n1403a8cab        return result",
+  "fetched_at": "2026-04-26T16:43:28Z"
+}

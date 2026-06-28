@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401d5fd0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1401d5fd0        arg1.d = arg1.d f+ 9.99999975e-05f\n1401d5fe1        uint128_t zmm3 = _mm_cvtepi32_ps(zx.o(arg4))\n1401d5ff7        arg1.d = _mm_cvtepi32_ps(zx.o(int.d((arg3 - arg2) f* arg1.d f* zmm3.d))).d f/ zmm3.d\n1401d5ffb        arg1.d = arg1.d f+ arg2\n1401d5fff        return arg1",
+  "fetched_at": "2026-04-26T17:26:47Z"
+}

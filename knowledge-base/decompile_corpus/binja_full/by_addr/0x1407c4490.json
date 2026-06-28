@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407c4490",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1407c44a8        void* arg_10\n1407c44a8        sub_1407c3980(arg1, &arg_10, 8)\n1407c44ad        void* rdi = arg_10\n1407c44b5        if (rdi == 0)\n1407c44c3        return 0\n1407c44d3        void* rax_1 = sub_1407c3890(*arg1, arg1[2], rdi)\n1407c44ec        if (sub_1407c38e0(arg1[1], rax_1, sx.q(rdi.d)) == 0)\n1407c451a        return sub_1407bf8f0(*arg1, rax_1, rdi - 1) __tailcall\n1407c44fc        sub_1407bad30(*arg1, \"unexpected end of file in %s\", arg1[5])\n1407c44fc        noreturn",
+  "fetched_at": "2026-04-26T17:33:40Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x140451290",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1404512a0        if (*(arg1 + 0x36c) != 0)\n1404512a9        sub_140467540(\"\\n!!! STORY_ELAPSED is already initialized when activated\\r\\n\", arg2)\n1404512ae        uint64_t rax = data_140b15418\n1404512b8        if (rax != 0)\n1404512ba        rax = zx.q(*(rax + 0x10))\n1404512c1        void* rdx = arg1 + 0x18\n1404512c8        uint128_t zmm0\n1404512c8        zmm0.d = _mm_cvtepi32_ps(zx.o(rax.d)).d f* data_140b0a344\n1404512d0        *(arg1 + 0x36c) = 1\n1404512d7        *(arg1 + 0x360) = zmm0.d\n1404512e4        if (*(rdx + 0x18) u>= 0x10)\n1404512e6        rdx = *rdx\n1404512f8        zmm0.d = (*(arg1 + 0x368)).d f+ *(arg1 + 0x360)\n140451308        _mm_cvtps_pd(*(arg1 + 0x360))\n14045130b        _mm_cvtps_pd(zmm0.q)\n14045131d        return sub_140467540(\"STORY_OBJECTIVE_TIMEOUT %s starting timer at time %f, end time %f\\r\\n\", rdx) __tailcall",
+  "fetched_at": "2026-04-26T17:27:40Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407b9600",
+  "tool": "binary_ninja",
+  "fact_id": "api_lua_pushvalue",
+  "body": "1407b9609        void* rax_2\n1407b9609        if (arg2 s<= 0)\n1407b961f        rax_2 = sub_1407b9f20(arg1, arg2)\n1407b961a        rax_2 = *(arg1 + 0x18) - 0x10 + (sx.q(arg2) << 4)\n1407b9626        int32_t* rdx_2 = *(arg1 + 0x10)\n1407b962a        *rdx_2 = *rax_2\n1407b962c        int64_t result = *(rax_2 + 8)\n1407b9630        *(rdx_2 + 8) = result\n1407b9634        *(arg1 + 0x10) += 0x10\n1407b963d        return result",
+  "fetched_at": "2026-04-26T16:44:31Z"
+}

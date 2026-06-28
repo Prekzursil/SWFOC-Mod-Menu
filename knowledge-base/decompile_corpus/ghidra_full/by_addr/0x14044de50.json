@@ -1,0 +1,7 @@
+{
+  "addr": "0x14044de50",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_14044de50(undefined8 param_1,char param_2)\n\n{\n  char cVar1;\n  \n  if (DAT_140b30690 != 0) {\n    cVar1 = FUN_14028af60(&DAT_140b153e0);\n    if ((cVar1 == '\\0') && ((*(int *)(DAT_140b30690 + 0x11c) != 0) != (bool)param_2)) {\n                    /* WARNING: Could not recover jumptable at 0x00014044de8f. Too many branches */\n                    /* WARNING: Treating indirect jump as call */\n      BinkPause(DAT_140b30690,param_2);\n      return;\n    }\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T17:54:54Z"
+}

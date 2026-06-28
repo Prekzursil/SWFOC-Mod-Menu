@@ -1,0 +1,7 @@
+{
+  "addr": "0x14042f820",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14042f841        int32_t rax = sub_140371ba0(*(*(arg1 + 0x28) + 0x298), 0)\n14042f84a        void* rcx_3 = *(*(arg1 + 0x28) + 0x298)\n14042f853        int32_t rax_1\n14042f853        int32_t rbx\n14042f853        if (arg2 != rax)\n14042f859        rbx = 1\n14042f867        if (arg2 == sub_140371ba0(rcx_3, 1))\n14042f86d        rcx_3 = *(*(arg1 + 0x28) + 0x298)\n14042f86d        goto label_14042f876\n14042f855        rbx = 0\n14042f876        label_14042f876:\n14042f876        rax_1 = sub_140374b50(rcx_3, rbx)\n14042f87d        if (rax_1 != 0)\n14042f896        if (rax_1 s> 0 && rax_1 s< 0x4d)\n14042f898        void* rcx_4 = *(arg1 + 0x28)\n14042f89f        if (rcx_4 != 0)\n14042f8a1        int64_t rdx_1 = *(rcx_4 + 0x1e8)\n14042f8ab        if (rdx_1 != 0)\n14042f8b4        int64_t rax_3\n14042f8b4        rax_3.b = *(rdx_1 + (sx.q(rax_1) << 2) + 8) s<= 0\n14042f8c6        return rax_3\n14042f881        rax_1.b = 0\n14042f892        return rax_1\n14042f8cc        rax_1.b = 1\n14042f8d8        return rax_1",
+  "fetched_at": "2026-04-26T17:26:50Z"
+}

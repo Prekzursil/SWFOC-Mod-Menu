@@ -1,0 +1,7 @@
+{
+  "addr": "0x14034d940",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14034d94f        void* result = *(arg1 + 0x98)\n14034d96d        if (result == 0 || *(result + 0x40) == 0)\n14034da28        return result\n14034d99b        int512_t zmm2\n14034d99b        zmm2.o = zx.o(0)\n14034d9a3        int64_t var_10_1 = 0xf\n14034d9ac        int64_t var_18_1 = 0xe\n14034d9b5        void* var_28\n14034d9b5        __builtin_strncpy(&var_28, \"GUI_Drop_Fleet\", 0xf)\n14034d9c8        sub_1402d5010(&data_140b27e60, &var_28, zmm2, 0, 0)\n14034d9d6        if (var_10_1 u>= 0x10)\n14034d9d8        void* rcx = var_28\n14034d9e0        void* rax = rcx\n14034d9ea        if (var_10_1 + 1 u>= 0x1000)\n14034d9ec        rcx = *(rcx - 8)\n14034d9ff        if (rax - rcx - 8 u> 0x1f)\n14034da29        _invalid_parameter_noinfo_noreturn()\n14034da29        noreturn\n14034da01        j_sub_1407864b8(rcx)\n14034da16        return (*(*(arg1 + 0x98) + 0x40))(arg1, arg2, arg3)",
+  "fetched_at": "2026-04-26T17:09:37Z"
+}

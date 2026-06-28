@@ -1,0 +1,7 @@
+{
+  "addr": "0x14079a6ec",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14079a6f6        void* rax = __acrt_getptd()\n14079a710        void* result\n14079a710        if ((data_140a44f90 & *(rax + 0x3a8)) != 0)\n14079a712        result = *(rax + 0x90)\n14079a718        if ((data_140a44f90 & *(rax + 0x3a8)) == 0 || result == 0)\n14079a71f        __vcrt_unlock(4)\n14079a734        result = _updatetlocinfoEx_nolock(rax + 0x90, data_140b3c4c8)\n14079a73c        __vcrt_lock(4)\n14079a744        if (result == 0)\n14079a754        abort()\n14079a754        noreturn\n14079a753        return result",
+  "fetched_at": "2026-04-26T17:32:07Z"
+}

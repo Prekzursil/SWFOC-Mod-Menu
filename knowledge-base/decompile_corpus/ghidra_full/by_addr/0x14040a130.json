@@ -1,0 +1,7 @@
+{
+  "addr": "0x14040a130",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "SpecialWeaponFireEventClass * __thiscall\nSpecialWeaponFireEventClass::SpecialWeaponFireEventClass(SpecialWeaponFireEventClass *this)\n\n{\n  ScheduledEventClass::ScheduledEventClass((ScheduledEventClass *)this);\n  (this->SpecialWeaponFireEventClass_data).offset_0x0 = 0x3fffff;\n  this->vftablePtr = &vftable;\n  (this->SpecialWeaponFireEventClass_data).offset_0x4 = 0x3fffff;\n  (this->SpecialWeaponFireEventClass_data).offset_0x8 = 0xffffffff;\n  (this->EventClass_data).offset_0x8 = 0x19;\n  return this;\n}",
+  "fetched_at": "2026-04-26T17:44:57Z"
+}

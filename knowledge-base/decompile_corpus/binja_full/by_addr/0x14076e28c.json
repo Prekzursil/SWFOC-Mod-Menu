@@ -1,0 +1,7 @@
+{
+  "addr": "0x14076e28c",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14076e2c4        void arg_10\n14076e2c4        int64_t* rax = __FrameHandler4::GetEstablisherFrame(arg2, arg4, arg5, &arg_10)\n14076e2df        if (arg7 != 0)\n14076e2ea        BuildCatchObjectInternal<class __FrameHandler4>(arg1, rax, arg6, arg7)\n14076e313        int64_t rcx_3\n14076e313        rcx_3.b = arg9\n14076e31d        char var_48 = rcx_3.b\n14076e35c        return sub_14076b834(arg2, arg1, arg3, rax, _GetImageBase() + sx.q(arg6[2].d), arg5.d, *arg8, arg8[2], arg6, arg4.b)",
+  "fetched_at": "2026-04-26T17:30:35Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x14079a93c",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14079a946        int16_t* rdx = *arg1\n14079a949        int64_t r8 = -1\n14079a952        r8 += 1\n14079a95a        do while (rdx[r8] != 0)\n14079a962        int32_t rax\n14079a962        rax.b = r8 == 3\n14079a965        arg1[3].d = rax\n14079a968        int32_t rcx\n14079a968        if (r8 != 3)\n14079a971        int32_t r9_1 = 0\n14079a977        if (rdx != 0)\n14079a982        while (true)\n14079a982        int16_t r8_1 = *rdx\n14079a986        rdx = &rdx[1]\n14079a99d        if (r8_1 - 0x41 u> 0x19 && r8_1 - 0x61 u> 0x19)\n14079a99d        break\n14079a99f        r9_1 += 1\n14079a9a4        rcx = r9_1\n14079a979        rcx = 0\n14079a96a        rcx = 2\n14079a9aa        *(arg1 + 0x14) = rcx\n14079a9bb        uint64_t result = __acrt_EnumSystemLocalesEx(LanguageEnumProcEx, 3, 0, 0)\n14079a9c4        if ((arg1[2].b & 4) == 0)\n14079a9c6        arg1[2].d = 0\n14079a9d3        return result",
+  "fetched_at": "2026-04-26T17:32:08Z"
+}

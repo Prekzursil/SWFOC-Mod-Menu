@@ -1,0 +1,7 @@
+{
+  "addr": "0x1404e0a30",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_1404e0a30(longlong *param_1,ulonglong param_2)\n\n{\n  longlong lVar1;\n  undefined8 *puVar2;\n  undefined8 *puVar3;\n  undefined8 *puVar4;\n  ulonglong uVar5;\n  longlong lVar6;\n  undefined1 local_res8 [8];\n  \n  puVar2 = (undefined8 *)param_1[1];\n  lVar6 = *param_1;\n  lVar1 = ((longlong)puVar2 - lVar6) / 6 + ((longlong)puVar2 - lVar6 >> 0x3f);\n  uVar5 = (lVar1 >> 3) - (lVar1 >> 0x3f);\n  if (param_2 < uVar5) {\n    puVar3 = (undefined8 *)(param_2 * 0x30 + lVar6);\n    for (puVar4 = puVar3; puVar4 != puVar2; puVar4 = puVar4 + 6) {\n      FUN_14001ec10(puVar4);\n    }\n    param_1[1] = (longlong)puVar3;\n    return;\n  }\n  if (uVar5 < param_2) {\n    if ((ulonglong)((param_1[2] - lVar6) / 0x30) < param_2) {\n      FUN_1404da290(param_1,param_2,local_res8);\n      return;\n    }\n    for (lVar6 = param_2 - uVar5; lVar6 != 0; lVar6 = lVar6 + -1) {\n      *puVar2 = 0;\n      puVar2[1] = 0;\n      puVar2[3] = 0;\n      puVar2[4] = 0xf;\n      *(undefined1 *)(puVar2 + 5) = 0;\n      puVar2 = puVar2 + 6;\n    }\n    param_1[1] = (longlong)puVar2;\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T18:15:46Z"
+}

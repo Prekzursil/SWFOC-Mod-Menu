@@ -1,0 +1,7 @@
+{
+  "addr": "0x140512c50",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140512c56        struct EventClass::ScheduledEventClass::VTable** result = arg1\n140512c59        sub_1405126c0(arg1)\n140512c65        result[5].d = 0xffffffff\n140512c6c        *result = &ScheduledEventClass::`vftable'{for `EventClass'}\n140512c76        result[6] = &DynamicVectorClass<int32_t>::`vftable'\n140512c7c        result[7] = 0\n140512c80        result[8].d = 0\n140512c86        *(result + 0x44) = 0x80000000\n140512c92        return result",
+  "fetched_at": "2026-04-26T17:32:19Z"
+}

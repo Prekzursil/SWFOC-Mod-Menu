@@ -1,0 +1,7 @@
+{
+  "addr": "0x1400440f0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nfloat * FUN_1400440f0(undefined8 param_1,float *param_2,float *param_3)\n\n{\n  char cVar1;\n  int iVar2;\n  float local_58;\n  float local_54;\n  float local_50;\n  float local_48;\n  float local_44;\n  float local_40;\n  \n  param_2[0] = 0.0;\n  param_2[1] = 0.0;\n  param_2[2] = 0.0;\n  if ((DAT_140b15418 != (longlong *)0x0) &&\n     (cVar1 = (**(code **)(*DAT_140b15418 + 0xf0))(), cVar1 != '\\0')) {\n    iVar2 = DAT_140b153fc;\n    if (DAT_140b15418 != (longlong *)0x0) {\n      iVar2 = (**(code **)(*DAT_140b15418 + 0xe0))();\n    }\n    if (iVar2 == 1) {\n      if (DAT_140b15418 != (longlong *)0x0) {\n        FUN_1403bb2d0(DAT_140b15418,(int)*param_3,(int)param_3[1],param_2);\n      }\n    }\n    else {\n      iVar2 = DAT_140b153fc;\n      if (DAT_140b15418 != (longlong *)0x0) {\n        iVar2 = (**(code **)(*DAT_140b15418 + 0xe0))();\n      }\n      if (iVar2 == 2) {\n        FUN_140261a70(DAT_140b15418[0x12],(int)*param_3,(int)param_3[1],&local_58,&local_48);\n        param_2[2] = 0.0;\n        *param_2 = (((local_58 + local_48) - local_58) / ((local_40 + local_50) - local_50)) *\n                   (0.0 - local_50) + local_58;\n        param_2[1] = (((local_44 + local_54) - local_54) / ((local_40 + local_50) - local_50)) *\n                     (0.0 - local_50) + local_54;\n      }\n    }\n  }\n  return param_2;\n}\n\n",
+  "fetched_at": "2026-04-26T16:53:32Z"
+}

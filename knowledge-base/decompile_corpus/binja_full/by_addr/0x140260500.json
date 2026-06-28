@@ -1,0 +1,7 @@
+{
+  "addr": "0x140260500",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140260510        *arg1 = &TextureRectClass::`vftable'{for `DrawPrimitiveClass'}\n14026051a        arg1[8] = &TextureRectClass::`vftable'{for `RefCountClass'}\n14026051e        int64_t* rcx = arg1[0xf]\n140260525        if (rcx != 0)\n14026052a        (*(*rcx + 8))(rcx)\n14026052d        arg1[0xf] = 0\n140260535        int64_t rdx = arg1[0xd]\n14026053d        if (rdx u>= 0x10)\n14026053f        void* rcx_1 = arg1[0xa]\n14026054d        if (rdx + 1 u>= 0x1000)\n14026054f        void* r8_1 = *(rcx_1 - 8)\n140260562        if (rcx_1 - r8_1 - 8 u> 0x1f)\n140260598        _invalid_parameter_noinfo_noreturn()\n140260598        noreturn\n140260564        rcx_1 = r8_1\n140260567        j_sub_1407864b8(rcx_1)\n140260573        arg1[0xc] = 0\n14026057b        arg1[0xd] = 0xf\n140260586        arg1[0xa].b = 0\n14026058a        arg1[8] = &RefCountClass::`vftable'{for `IRefCountClass'}\n140260593        return sub_14026edd0(arg1) __tailcall",
+  "fetched_at": "2026-04-26T17:31:12Z"
+}

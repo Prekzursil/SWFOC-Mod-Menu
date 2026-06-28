@@ -1,0 +1,7 @@
+{
+  "addr": "0x14058f820",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14058f827        return \"DeployTroopersBehaviorClass\"",
+  "fetched_at": "2026-04-26T17:36:19Z"
+}

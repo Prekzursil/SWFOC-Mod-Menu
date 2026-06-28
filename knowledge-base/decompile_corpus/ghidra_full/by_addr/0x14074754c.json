@@ -1,0 +1,7 @@
+{
+  "addr": "0x14074754c",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined1 __thiscall std::ctype<char>::vfunction9(ctype<char> *this,undefined1 param_1)\n\n{\n  return param_1;\n}",
+  "fetched_at": "2026-04-26T18:05:13Z"
+}

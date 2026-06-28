@@ -1,0 +1,7 @@
+{
+  "addr": "0x140227160",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall FUN_140227160(void *this)\n\n{\n                    /* inlined constructor or destructor (approx location) for\n                       WinsockAsyncSocketImpl */\n  *(WinsockAsyncSocketImpl_vftable **)this = &WinsockAsyncSocketImpl::vftable;\n  if (*(SOCKET *)((longlong)this + 0x10) != 0xffffffffffffffff) {\n    closesocket(*(SOCKET *)((longlong)this + 0x10));\n    *(undefined8 *)((longlong)this + 0x10) = 0xffffffffffffffff;\n    DAT_140a7e308 = DAT_140a7e308 + -1;\n    if (DAT_140a7e308 == 0) {\n      WSACleanup();\n    }\n  }\n                    /* inlined constructor or destructor (approx location) for RefCountClass */\n  *(RefCountClass_vftable **)this = &RefCountClass::vftable;\n  return;\n}",
+  "fetched_at": "2026-04-26T18:04:50Z"
+}

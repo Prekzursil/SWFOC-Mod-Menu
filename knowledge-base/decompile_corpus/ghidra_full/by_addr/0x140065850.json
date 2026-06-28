@@ -1,0 +1,7 @@
+{
+  "addr": "0x140065850",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nvoid FUN_140065850(void)\n\n{\n  undefined4 *puVar1;\n  undefined8 uVar2;\n  undefined1 local_88 [16];\n  undefined1 local_78 [16];\n  undefined1 local_68 [16];\n  \n  FUN_1401f93e0(local_88,0,0,0,0xff);\n  puVar1 = (undefined4 *)FUN_1401f9320(local_68,local_88);\n  uVar2 = 0;\n  FillRectClass::FillRectClass\n            ((FillRectClass *)&stack0xffffffffffffffa8,0,0,DAT_1407ffaf8,DAT_1407ffaf8,puVar1);\n  FUN_14025c080(DAT_140a619f0,&stack0xffffffffffffffa8);\n  FUN_1401f93e0(local_78,0xff,0xff,0xff,0xff,puVar1,uVar2);\n  FUN_1401f9440(local_78);\n  FillRectClass::~FillRectClass((FillRectClass *)&stack0xffffffffffffffa8);\n  FUN_1401f9440(local_88);\n  uVar2 = FUN_14004fba0();\n  FUN_140262490(uVar2,1);\n  FUN_1400c58e0();\n  return;\n}\n\n",
+  "fetched_at": "2026-04-26T16:55:42Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x140690e40",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140690e58        *arg1 = &AIExecutionPathFinderClass::`vftable'\n140690e64        arg1[2] = arg1[1]\n140690e68        arg1[4] = 0\n140690e73        j_sub_1407864b8(arg1[6])\n140690e78        int64_t rcx_1 = arg1[5]\n140690e7f        arg1[6] = 0\n140690e83        j_sub_1407864b8(rcx_1)\n140690e8c        arg1[5] = 0\n140690e90        sub_14007b260(&arg1[0xd])\n140690e99        sub_140690ce0(&arg1[7])\n140690e9e        void* rcx_4 = arg1[1]\n140690ea5        if (rcx_4 != 0)\n140690eb9        if (((arg1[3] - rcx_4) & 0xfffffffffffffff0) u>= 0x1000)\n140690ebb        void* r8_1 = *(rcx_4 - 8)\n140690ece        if (rcx_4 - r8_1 - 8 u> 0x1f)\n140690f0a        _invalid_parameter_noinfo_noreturn()\n140690f0a        noreturn\n140690ed0        rcx_4 = r8_1\n140690ed3        j_sub_1407864b8(rcx_4)\n140690ed8        __builtin_memset(&arg1[1], 0, 0x18)\n140690ee8        if ((arg2 & 1) != 0)\n140690ef2        j_sub_1407864b8(arg1)\n140690f09        return arg1",
+  "fetched_at": "2026-04-26T17:18:56Z"
+}

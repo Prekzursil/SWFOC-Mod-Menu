@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406d3320",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "TacticalObjectPerceptualEvaluatorClass * __thiscall\nLandUnitPerceptualEvaluatorClass::scalar_deleting_destructor\n          (LandUnitPerceptualEvaluatorClass *this,uint param_1)\n\n{\n  GameObjectPerceptualEvaluatorClass::~GameObjectPerceptualEvaluatorClass\n            ((GameObjectPerceptualEvaluatorClass *)this);\n  if ((param_1 & 1) != 0) {\n    thunk_FUN_1407864b8(this,0xb8);\n  }\n  return (TacticalObjectPerceptualEvaluatorClass *)this;\n}",
+  "fetched_at": "2026-04-26T17:42:28Z"
+}

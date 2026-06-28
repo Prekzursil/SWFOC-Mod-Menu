@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401a6fe0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined8 FUN_1401a6fe0(HKEY param_1,LPCSTR param_2,BYTE *param_3)\n\n{\n  LSTATUS LVar1;\n  longlong lVar2;\n  undefined8 uVar3;\n  \n  if (param_3 == (BYTE *)0x0) {\n    return 0x80070057;\n  }\n  lVar2 = -1;\n  do {\n    lVar2 = lVar2 + 1;\n  } while (param_3[lVar2] != '\\0');\n  LVar1 = RegSetValueExA(param_1,param_2,0,1,param_3,(int)lVar2 + 1);\n  uVar3 = 0;\n  if (LVar1 != 0) {\n    uVar3 = 0x80004005;\n  }\n  return uVar3;\n}",
+  "fetched_at": "2026-04-26T17:39:33Z"
+}

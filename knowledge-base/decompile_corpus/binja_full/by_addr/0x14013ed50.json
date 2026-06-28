@@ -1,0 +1,7 @@
+{
+  "addr": "0x14013ed50",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14013ed8e        char result = sub_140176160(arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9)\n14013ed95        if (result == 0)\n14013ed9b        return result\n14013ed9c        sub_14017b110()\n14013eda1        sub_140195820()\n14013eda6        int64_t rax_5\n14013eda6        rax_5.b = 1\n14013eda8        data_140a626bd = 1\n14013edaf        data_140a626b8 = 1\n14013edba        return 1",
+  "fetched_at": "2026-04-26T17:17:15Z"
+}

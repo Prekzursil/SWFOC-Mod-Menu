@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401f70d0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1401f70dd        int32_t rbx = 0\n1401f70e6        int32_t result = lstrlenW(data_140a7baa0)\n1401f70ee        if (result s> 0)\n1401f7107        sub_1401f4fa0(arg1, zx.q(*sub_1401d2200(&data_140a7baa0, rbx)))\n1401f7113        rbx += 1\n1401f7115        result = lstrlenW(data_140a7baa0)\n1401f711d        do while (rbx s< result)\n1401f7129        return result",
+  "fetched_at": "2026-04-26T17:27:24Z"
+}

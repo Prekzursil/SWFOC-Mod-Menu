@@ -1,0 +1,7 @@
+{
+  "addr": "0x1403551b0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\n/* ButtonComponentClass member function inherited by TextButtonComponentClass */\n\nvoid __thiscall ButtonComponentClass::vfunction69(ButtonComponentClass *this)\n\n{\n  longlong lVar1;\n  code *UNRECOVERED_JUMPTABLE;\n  \n  lVar1 = (this->BaseComponentClass_data).offset_0x78;\n  if (((lVar1 != 0) && ((*(byte *)(lVar1 + 0x3e0) & 0x10) != 0)) &&\n     (*(int *)&(this->ButtonComponentClass_data).offset_0x378 == 3)) {\n    lVar1 = (this->BaseComponentClass_data).offset_0x90;\n    *(undefined4 *)&(this->ButtonComponentClass_data).offset_0x378 = 1;\n    if ((lVar1 != 0) &&\n       (UNRECOVERED_JUMPTABLE = *(code **)(lVar1 + 0x38), UNRECOVERED_JUMPTABLE != (code *)0x0)) {\n                    /* WARNING: Could not recover jumptable at 0x0001403551ed. Too many branches */\n                    /* WARNING: Treating indirect jump as call */\n      (*UNRECOVERED_JUMPTABLE)();\n      return;\n    }\n  }\n  return;\n}\n\n",
+  "fetched_at": "2026-04-26T17:11:08Z"
+}

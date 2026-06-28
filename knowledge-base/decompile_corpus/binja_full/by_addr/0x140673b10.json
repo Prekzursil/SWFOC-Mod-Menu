@@ -1,0 +1,7 @@
+{
+  "addr": "0x140673b10",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140673b23        *arg1 = &DynamicLandPathFinderClass::`vftable'\n140673b29        __builtin_memset(&arg1[1], 0, 0x34)\n140673b44        __builtin_memset(&arg1[8], 0, 0x1c)\n140673b53        __builtin_memset(&arg1[0xc], 0, 0x1c)\n140673b62        __builtin_memset(&arg1[0x10], 0, 0x58)\n140673bb6        sub_14054e620(&arg1[0x1b])\n140673bbe        __builtin_memset(&arg1[0x24], 0, 0x24)\n140673be0        __builtin_memset(&arg1[0x29], 0, 0x48)\n140673c1f        arg1[0x32].d = 0x3fffff\n140673c29        *(arg1 + 0x194) = 1\n140673c3a        return arg1",
+  "fetched_at": "2026-04-26T17:11:06Z"
+}

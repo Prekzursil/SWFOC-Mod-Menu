@@ -1,0 +1,7 @@
+{
+  "addr": "0x14023a0d0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14023a0d6        char* r9 = *(arg1 + 0x38)\n14023a0dd        int64_t r8 = *(arg1 + 0x40)\n14023a0eb        int64_t rax_1\n14023a0eb        while (true)\n14023a0eb        int64_t rdx = sx.q(*r9)\n14023a0fb        if (rdx.b u> 0x20 || not(test_bit(0x100002600, rdx)))\n14023a0fd        rax_1 = r8\n14023a10d        if (rdx.b != 0x2f && rdx.b != 0x3e && rdx.b != 0x3d)\n14023a10f        r8 = *(arg1 + 0x40)\n14023a116        if (r9 u>= r8)\n14023a116        break\n14023a118        *(arg1 + 0x4c) += 1\n14023a11b        r9 = &r9[1]\n14023a11e        *(arg1 + 0x38) = r9\n14023a122        continue\n14023a124        rax_1 = r8\n14023a12a        if (r9 u>= rax_1)\n14023a12a        break\n14023a15a        *arg2 = *r9\n14023a161        **(arg1 + 0x38) = 0\n14023a164        char* rax_3\n14023a164        rax_3.b = 1\n14023a166        *(arg1 + 0x38) += 1\n14023a16f        return rax_3\n14023a135        if (*(arg1 + 0x28) u>= 0x10)\n14023a137        *(arg1 + 0x10)\n14023a13a        *(arg1 + 0x4c)\n14023a13e        *(arg1 + 0x48)\n14023a14e        rax_1.b = 0\n14023a155        return rax_1",
+  "fetched_at": "2026-04-26T17:29:58Z"
+}

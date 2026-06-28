@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401e3ed0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall GUIGadgetClass::vfunction25(GUIGadgetClass *this)\n\n{\n  longlong **pplVar1;\n  undefined8 **ppuVar2;\n  \n  pplVar1 = &(this->GUIGadgetClass_data).offset_0x8;\n  (this->GUIGadgetClass_data).offset_0x0 = 0xffffffff;\n  (this->GUIGadgetClass_data).offset_0x18 = 0;\n  if (0xf < (this->GUIGadgetClass_data).offset_0x20) {\n    pplVar1 = (longlong **)*pplVar1;\n  }\n  *(undefined1 *)pplVar1 = 0;\n  ppuVar2 = &(this->GUIGadgetClass_data).offset_0x50;\n  (this->GUIGadgetClass_data).offset_0x60 = 0;\n  (this->GUIGadgetClass_data).offset_0x28 = 0xffffffff;\n  if (7 < (this->GUIGadgetClass_data).offset_0x68) {\n    ppuVar2 = (undefined8 **)*ppuVar2;\n  }\n  *(undefined2 *)ppuVar2 = 0;\n  (this->GUIGadgetClass_data).offset_0x70 = 0x101;\n  (this->GUIGadgetClass_data).offset_0x80 = 0;\n  (this->GUIGadgetClass_data).offset_0x78 = 0;\n  (this->GUIGadgetClass_data).offset_0x88 = 0;\n  (this->GUIGadgetClass_data).offset_0x8a = 0;\n  return;\n}",
+  "fetched_at": "2026-04-26T17:51:07Z"
+}

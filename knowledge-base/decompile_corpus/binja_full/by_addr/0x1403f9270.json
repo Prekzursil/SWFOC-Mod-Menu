@@ -1,0 +1,7 @@
+{
+  "addr": "0x1403f9270",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1403f927a        void* rbp = *(*(arg1 + 0x28) + 0xb8)\n1403f9288        if (*(rbp + 0x148) s> 0)\n1403f929c        return sub_140294bc0(&data_140a16fd0, *(rbp + 0x13c)) __tailcall\n1403f92b0        int64_t* rdi = nullptr\n1403f92b7        int64_t r14 = sx.q(*(rbp + 0xd0))\n1403f92c1        if (r14 s> 0)\n1403f92c7        int64_t rsi_1 = 0\n1403f92d7        int64_t* rbx_1 = *(*(rbp + 0xc8) + (rsi_1 << 3))\n1403f92de        if (rbx_1 != 0)\n1403f92eb        int64_t rax_4 = (*(*rbx_1 + 0x10))(rbx_1, 4)\n1403f92f1        if (rax_4 != 0 && sub_1404327b0(rax_4, rbx_1) u<= 2)\n1403f930d        if (sub_1403a9760(rbx_1) == 0)\n1403f933e        return sub_140294bc0(&data_140a16fd0, rbx_1[0xb].d)\n1403f9312        if (rdi == 0)\n1403f9312        rdi = rbx_1\n1403f9316        rsi_1 += 1\n1403f931c        do while (rsi_1 s< r14)\n1403f9321        if (rdi != 0)\n1403f932d        return sub_140294bc0(&data_140a16fd0, rdi[0xb].d)\n1403f9345        return 0",
+  "fetched_at": "2026-04-26T17:25:31Z"
+}

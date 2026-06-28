@@ -1,0 +1,7 @@
+{
+  "addr": "0x14079572c",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "ushort FUN_14079572c(undefined8 param_1)\n\n{\n  return (ushort)((ulonglong)param_1 >> 0x30) & 0x8000;\n}",
+  "fetched_at": "2026-04-26T18:53:14Z"
+}

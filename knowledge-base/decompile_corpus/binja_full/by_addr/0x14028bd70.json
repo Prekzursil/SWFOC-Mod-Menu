@@ -1,0 +1,7 @@
+{
+  "addr": "0x14028bd70",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14028bdef        int64_t result\n14028bdef        if (arg2 == 0x3fffff || arg3 - 1 u> 1 || arg4 == 0xffffffff || arg5[2] == 0 || arg6[2] == 0 || *(arg1 + 0xf0) == 1 || *(arg1 + 0x38) == 0)\n14028bee1        sub_14001eaa0(arg6)\n14028bee6        result.b = 0\n14028bdfc        sub_14028c640(arg1 + 0xf0)\n14028be08        *(arg1 + 0xf0) = 1\n14028be12        *(arg1 + 0xf4) = arg3\n14028be19        *(arg1 + 0xf8) = arg4\n14028be20        *(arg1 + 0xfc) = arg2\n14028be27        sub_1401dc3c0(arg1 + 0x100, arg5)\n14028be36        sub_1401dc3c0(arg1 + 0x120, arg6)\n14028be45        *(arg1 + 0x140) = arg7\n14028be54        *(arg1 + 0x168) = arg9\n14028be61        *(arg1 + 0x16c) = arg10\n14028be6f        *(arg1 + 0x170) = arg11\n14028be7d        *(arg1 + 0x171) = arg12\n14028be8a        *(arg1 + 0x174) = arg13\n14028be98        *(arg1 + 0x179) = arg14\n14028bea6        *(arg1 + 0x17a) = arg15\n14028beb6        if (arg8 != 0 && arg8[2] != 0)\n14028bebf        sub_1401dc3c0(arg1 + 0x148, arg8)\n14028bec7        data_140b30545 = 1\n14028bece        data_140b305ed = 1\n14028bed5        sub_14001eaa0(arg6)\n14028beda        result.b = 1\n14028bf06        return result",
+  "fetched_at": "2026-04-26T17:32:31Z"
+}

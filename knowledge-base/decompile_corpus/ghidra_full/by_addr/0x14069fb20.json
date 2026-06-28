@@ -1,0 +1,7 @@
+{
+  "addr": "0x14069fb20",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "ReinforceBlockStatus * __thiscall\nReinforceBlockStatus::scalar_deleting_destructor(ReinforceBlockStatus *this,ulonglong param_1)\n\n{\n                    /* inlined destructor: ReinforceBlockStatus::~ReinforceBlockStatus */\n  this->vftablePtr = &vftable;\n  this->vftablePtr = &vftable;\n  FUN_1406a1930();\n  if ((longlong *)this->offset_0x40 != (longlong *)0x0) {\n    (**(code **)(*(longlong *)this->offset_0x40 + 8))();\n  }\n                    /* inlined destructor: SignalListenerClass::~SignalListenerClass */\n  this->vftablePtr = (ReinforceBlockStatus_vftable1 *)&SignalListenerClass::vftable;\n  MultiLinkedListMember::~MultiLinkedListMember((MultiLinkedListMember *)&this->vftablePtr);\n  if (*(longlong **)&this->field_0x28 != (longlong *)0x0) {\n    (**(code **)(**(longlong **)&this->field_0x28 + 8))();\n  }\n  LuaUserVar::~LuaUserVar((LuaUserVar *)this);\n  if ((param_1 & 1) != 0) {\n    thunk_FUN_1407864b8(this,0x68);\n  }\n  return this;\n}",
+  "fetched_at": "2026-04-26T17:21:11Z"
+}

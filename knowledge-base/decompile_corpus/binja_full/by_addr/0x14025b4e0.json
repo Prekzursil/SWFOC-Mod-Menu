@@ -1,0 +1,7 @@
+{
+  "addr": "0x14025b4e0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14025b4f4        *arg1 = &DrawTextClass::`vftable'{for `DrawPrimitiveClass'}\n14025b500        arg1[8] = &DrawTextClass::`vftable'{for `RefCountClass'}\n14025b504        int64_t* rcx = arg1[0x18]\n14025b50e        if (rcx != 0)\n14025b518        (**rcx)(rcx, 1)\n14025b521        arg1[0x18] = 0\n14025b548        arg1[8] = &RefCountClass::`vftable'{for `IRefCountClass'}\n14025b54c        sub_14026cf20(&arg1[0xa])\n14025b554        sub_14026edd0(arg1)\n14025b55d        if ((arg2 & 1) != 0)\n14025b567        j_sub_1407864b8(arg1)\n14025b579        return arg1",
+  "fetched_at": "2026-04-26T17:31:02Z"
+}

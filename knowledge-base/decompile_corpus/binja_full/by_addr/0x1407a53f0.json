@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407a53f0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1407a5416        if (arg3 == 0 || *arg3 != 0x31 || arg4 != 0x58)\n1407a54e0        return 0xfffffffa\n1407a541f        if (arg1 == 0)\n1407a542e        return zx.q((arg1 - 2).d)\n1407a542f        int64_t (* rax_1)(int64_t arg1, int32_t arg2, int32_t arg3) = *(arg1 + 0x30)\n1407a543f        *(arg1 + 0x20) = 0\n1407a5446        int64_t rcx\n1407a5446        if (rax_1 != 0)\n1407a545b        rcx = *(arg1 + 0x40)\n1407a5448        rax_1 = sub_1407a7a00\n1407a544f        *(arg1 + 0x40) = 0\n1407a5453        *(arg1 + 0x30) = sub_1407a7a00\n1407a5457        rcx = 0\n1407a5463        if (*(arg1 + 0x38) == 0)\n1407a546c        *(arg1 + 0x38) = sub_1407a7a10\n1407a547b        void** rax_2 = rax_1(rcx, 1, 0x1bf0)\n1407a5483        if (rax_2 == 0)\n1407a5485        return zx.q((rax_2 - 4).d)\n1407a549d        *(arg1 + 0x28) = rax_2\n1407a54a6        *rax_2 = arg1\n1407a54a9        rax_2[8] = 0\n1407a54ad        rax_2[1].d = 0x3f34\n1407a54b4        int32_t rax_4 = sub_1407a5530(arg1, arg2)\n1407a54bd        if (rax_4 != 0)\n1407a54c6        (*(arg1 + 0x38))(*(arg1 + 0x40), rax_2)\n1407a54c9        *(arg1 + 0x28) = 0\n1407a54cd        return zx.q(rax_4)",
+  "fetched_at": "2026-04-26T17:32:26Z"
+}

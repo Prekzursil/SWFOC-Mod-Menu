@@ -1,0 +1,7 @@
+{
+  "addr": "0x140579810",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined * __thiscall UnitAnimationBlockStatus::vfunction5(void)\n\n{\n  return &DAT_140a44930;\n}",
+  "fetched_at": "2026-04-26T18:40:37Z"
+}

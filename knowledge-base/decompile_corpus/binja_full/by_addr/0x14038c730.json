@@ -1,0 +1,7 @@
+{
+  "addr": "0x14038c730",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14038c73d        int64_t* result = sub_140397680(arg1)\n14038c748        if (result != 0)\n14038c74e        void* rcx = arg1[0x54]\n14038c758        if (rcx != 0)\n14038c75e        void* rax = sub_140264a30(rcx)\n14038c766        if (rax != 0)\n14038c77c        *(rax + 0x32) ^= (*(arg1[0x53] + 0x86) ^ *(rax + 0x32)) & 1\n14038c77f        void* rcx_2 = arg1[0x5c]\n14038c78e        void* rax_1\n14038c78e        void* rax_2\n14038c78e        if (rcx_2 != 0)\n14038c790        rax_1 = sub_140397680(rcx_2)\n14038c79b        rax_2 = sub_140397680(arg1)\n14038c7a3        if (rcx_2 == 0 || rax_1 != rax_2)\n14038c806        result = (*(*result + 0x28))(result, arg1[0x54])\n14038c81a        if (arg1[0x5c] != 0 && *(arg1 + 0x39e) == 0)\n14038c826        result = sub_14029bfe0(arg1[0x57], arg1)\n14038c82b        *(arg1 + 0x39e) = 1\n14038c7a5        result = arg1[0x5c]\n14038c7ac        void* rcx_4 = result[0x54]\n14038c7b6        if (rcx_4 != 0)\n14038c7b8        result = sub_1402648b0(rcx_4)\n14038c7bd        arg1[0x5f] = result\n14038c7ca        int512_t entry_zmm2\n14038c7ca        if (result != 0)\n14038c7f4        return sub_14012d770(result, sub_140264a30(arg1[0x54]), arg1[0x5e].d, entry_zmm2) __tailcall\n14038c841        return result",
+  "fetched_at": "2026-04-26T17:20:59Z"
+}

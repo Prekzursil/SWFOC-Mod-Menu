@@ -1,0 +1,7 @@
+{
+  "addr": "0x140680ce0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nundefined8 __thiscall MovingVsMovingCollisionClass::vfunction7_for_SignalListenerClass(void)\n\n{\n  return (ulonglong)DAT_1407ffaf8;\n}\n\n",
+  "fetched_at": "2026-04-26T17:12:17Z"
+}

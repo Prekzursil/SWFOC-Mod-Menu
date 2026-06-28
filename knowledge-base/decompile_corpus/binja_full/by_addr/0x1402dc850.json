@@ -1,0 +1,7 @@
+{
+  "addr": "0x1402dc850",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1402dc862        if ((arg2 & 2) == 0)\n1402dc936        sub_1402db920(arg1)\n1402dc93f        if ((arg2 & 1) != 0)\n1402dc949        j_sub_1407864b8(arg1)\n1402dc95b        return arg1\n1402dc876        int64_t i = *(arg1 - 8)\n1402dc889        if (i != 0)\n1402dc88b        void* rbx_1 = arg1 + i * 0x70 + 0x28\n1402dc8a0        rbx_1 -= 0x70\n1402dc8a4        i -= 1\n1402dc8b4        sub_14001eb00(rbx_1 + 8)\n1402dc8b9        int64_t rdx = *rbx_1\n1402dc8c0        if (rdx u>= 0x10)\n1402dc8c2        void* rcx_2 = *(rbx_1 - 0x18)\n1402dc8d0        if (rdx + 1 u>= 0x1000)\n1402dc8d2        void* r8_1 = *(rcx_2 - 8)\n1402dc8e5        if (rcx_2 - r8_1 - 8 u> 0x1f)\n1402dc95c        _invalid_parameter_noinfo_noreturn()\n1402dc95c        noreturn\n1402dc8e7        rcx_2 = r8_1\n1402dc8ea        j_sub_1407864b8(rcx_2)\n1402dc8ef        *(rbx_1 - 8) = 0\n1402dc8f3        *rbx_1 = 0xf\n1402dc8fa        *(rbx_1 - 0x18) = 0\n1402dc901        do while (i != 0)\n1402dc907        if ((arg2 & 1) != 0)\n1402dc909        *(arg1 - 8)\n1402dc914        j_sub_1407864b8(arg1 - 8)\n1402dc935        return arg1 - 8",
+  "fetched_at": "2026-04-26T17:22:40Z"
+}

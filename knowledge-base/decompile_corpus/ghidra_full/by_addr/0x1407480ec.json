@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407480ec",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* Library Function - Single Match\n    protected: virtual char const * __ptr64 __cdecl std::ctype<char>::do_toupper(char * __ptr64,char\n   const * __ptr64)const __ptr64\n   \n   Library: Visual Studio 2019 Release */\n\nchar * __thiscall std::ctype<char>::do_toupper(ctype<char> *this,char *param_1,char *param_2)\n\n{\n  int iVar1;\n  \n  if (param_1 != param_2) {\n    do {\n      iVar1 = _Toupper((uint)(byte)*param_1,(_Ctypevec *)(this + 1));\n      *param_1 = (byte)iVar1;\n      param_1 = param_1 + 1;\n    } while (param_1 != param_2);\n  }\n  return (char *)(byte *)param_1;\n}",
+  "fetched_at": "2026-04-26T18:05:25Z"
+}

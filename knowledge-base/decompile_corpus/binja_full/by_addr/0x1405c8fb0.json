@@ -1,0 +1,7 @@
+{
+  "addr": "0x1405c8fb0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1405c8fba        void* rax = *(arg1 + 0x28)\n1405c8fd9        int32_t var_38 = *(rax + 0x84)\n1405c8fe7        int32_t var_30 = *(rax + 0x8c)\n1405c8ff5        uint32_t zmm0_1[0x4] = sub_14020b6d0(*(rax + 0x88))\n1405c8ffa        int32_t zmm1 = *arg3\n1405c8ffe        uint32_t zmm6[0x4] = zmm0_1\n1405c9007        zmm0_1 = zx.o(0)\n1405c9017        if (not(zmm1 f< (arg2.d & 0x7fffffff)))\n1405c9019        zmm0_1[0].q = fconvert.d(arg2.d)\n1405c901d        zmm6[0] = zmm6[0] f+ arg2.d\n1405c9021        zmm0_1 = sub_1407760bc(zmm0_1)\n1405c9035        *arg3 = *arg3 f- fconvert.s(zmm0_1[0].q)\n1405c903e        if (not(arg2.d f<= 0f))\n1405c9040        zmm6[0] = zmm6[0] f+ zmm1\n1405c904f        *arg3 = 0\n1405c9049        if (not(0f f<= arg2.d))\n1405c904b        zmm6[0] = zmm6[0] f- zmm1\n1405c904f        *arg3 = 0\n1405c9066        int32_t var_34 = sub_14020b710(zmm6[0])\n1405c9085        return sub_1403a8710(*(arg1 + 0x28), &var_38)",
+  "fetched_at": "2026-04-26T17:37:50Z"
+}

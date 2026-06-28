@@ -1,0 +1,7 @@
+{
+  "addr": "0x14067a840",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14067a849        uint32_t result = sub_14067a030(arg1)\n14067a855        if (*(arg1 + 0x142) != 0)\n14067a880        int64_t rax\n14067a880        int64_t rdx_3\n14067a880        rdx_3:rax = muls.dp.q(0x4ec4ec4ec4ec4ec5, *(arg1 + 0xe0) - *(arg1 + 0xd8))\n14067a883        int64_t rdx_4 = rdx_3 s>> 4\n14067a88a        result = (rdx_4 u>> 0x3f).d\n14067a894        if (rdx_4.d + result u> 1)\n14067a89f        int32_t i = 1\n14067a92a        int64_t rdx_10\n14067a8aa        int32_t* rax_2 = sub_14054fe50(arg1 + 0xd8, i - 1)\n14067a8b8        int32_t zmm1 = rax_2[1]\n14067a8bd        int32_t var_18 = *rax_2\n14067a8c8        int32_t var_10_1 = rax_2[2]\n14067a8ce        int32_t var_14_1 = zmm1\n14067a8d4        int32_t* rax_3 = sub_14054fe50(arg1 + 0xd8, i)\n14067a8ea        zmm1 = rax_3[1]\n14067a8ef        int32_t var_28 = *rax_3\n14067a8fa        int32_t var_20_1 = rax_3[2]\n14067a900        int32_t var_24_1 = zmm1\n14067a906        sub_14067a960(arg1, &var_18, &var_28)\n14067a915        i += 1\n14067a917        int64_t rax_4\n14067a917        int64_t rdx_9\n14067a917        rdx_9:rax_4 = muls.dp.q(0x4ec4ec4ec4ec4ec5, *(arg1 + 0xe0) - *(arg1 + 0xd8))\n14067a91a        rdx_10 = rdx_9 s>> 4\n14067a921        result = (rdx_10 u>> 0x3f).d\n14067a92a        do while (i u< rdx_10.d + result)\n14067a946        if (*(arg1 + 0x141) == 0)\n14067a95a        return result\n14067a950        return sub_14067a5c0(arg1) __tailcall",
+  "fetched_at": "2026-04-26T17:11:31Z"
+}

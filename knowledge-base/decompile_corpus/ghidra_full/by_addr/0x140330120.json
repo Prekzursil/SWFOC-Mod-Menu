@@ -1,0 +1,7 @@
+{
+  "addr": "0x140330120",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nDatabaseObjectManagerClass<class_FactionClass> * __thiscall\nFactionTypeConverterClass::scalar_deleting_destructor(FactionTypeConverterClass *this,uint param_1)\n\n{\n  DatabaseObjectManagerClass<class_FactionClass>::~DatabaseObjectManagerClass<class_FactionClass>\n            ((DatabaseObjectManagerClass<class_FactionClass> *)this);\n  if ((param_1 & 1) != 0) {\n    thunk_FUN_1407864b8(this,0x48);\n  }\n  return (DatabaseObjectManagerClass<class_FactionClass> *)this;\n}\n\n",
+  "fetched_at": "2026-04-26T17:02:44Z"
+}

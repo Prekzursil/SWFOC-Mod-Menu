@@ -1,0 +1,7 @@
+{
+  "addr": "0x14021fae0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14021fae6        HKEY hKey = *arg1\n14021faec        int32_t result = *arg4\n14021faef        int32_t lpcbData = result\n14021faf6        if (hKey != 0)\n14021fb0d        RegQueryValueExA(hKey, arg2, nullptr, nullptr, arg3, &lpcbData)\n14021fb13        result = lpcbData\n14021fb17        *arg4 = result\n14021fb1e        return result",
+  "fetched_at": "2026-04-26T17:29:04Z"
+}

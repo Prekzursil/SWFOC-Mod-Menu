@@ -1,0 +1,7 @@
+{
+  "addr": "0x1403c5f30",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "DynamicVectorClass<struct_UIMarkerHeaderData> * __thiscall\nDynamicVectorClass<struct_UIMarkerHeaderData>::scalar_deleting_destructor\n          (DynamicVectorClass<struct_UIMarkerHeaderData> *this,ulonglong param_1)\n\n{\n  uint *puVar1;\n  DynamicVectorClass<struct_UIMarkerHeaderData>_vftable *lpMem;\n  HANDLE hHeap;\n  \n  lpMem = this[1].vftablePtr;\n                    /* inlined destructor:\n                       DynamicVectorClass<struct_UIMarkerHeaderData>::~DynamicVectorClass<struct_UIMarkerHeaderData>\n                        */\n  this->vftablePtr = &vftable;\n  if (lpMem != (DynamicVectorClass<struct_UIMarkerHeaderData>_vftable *)0x0) {\n    if (((ulonglong)this[2].vftablePtr & 0x8000000000000000) == 0) {\n      thunk_FUN_1407864b8(lpMem);\n    }\n    else {\n      hHeap = GetProcessHeap();\n      HeapFree(hHeap,0,lpMem);\n    }\n    puVar1 = (uint *)((longlong)&this[2].vftablePtr + 4);\n    *puVar1 = *puVar1 & 0x80000000;\n    this[1].vftablePtr = (DynamicVectorClass<struct_UIMarkerHeaderData>_vftable *)0x0;\n    *(undefined4 *)&this[2].vftablePtr = 0;\n  }\n  if ((param_1 & 1) != 0) {\n    thunk_FUN_1407864b8(this,0x18);\n  }\n  return this;\n}",
+  "fetched_at": "2026-04-26T17:37:12Z"
+}

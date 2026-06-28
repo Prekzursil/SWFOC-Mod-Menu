@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406f7660",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined1 * __thiscall\nEarthquakeAttackAbilityClass::vfunction32_for_IXMLLoadableClass\n          (EarthquakeAttackAbilityClass *this,longlong param_1,longlong *param_2)\n\n{\n  longlong lVar1;\n  SignalDispatcherClass *this_00;\n  undefined8 uVar2;\n  undefined **local_res10;\n  \n  if ((param_1 != 0) && (param_2 != (longlong *)0x0)) {\n    FUN_1403a92f0(param_1,0x27,0xffff,0,DAT_1408007b8,DAT_1407ffaf8,0,0,0,0);\n    FUN_14048e920(this,param_1,param_2,0);\n    lVar1 = (**(code **)(*param_2 + 0x10))(param_2,0x31);\n    uVar2 = 0;\n    if (lVar1 != 0) {\n      FUN_1406330f0(lVar1,param_2);\n      if (DAT_140a10b50 == (SignalDispatcherClass *)0x0) {\n        this_00 = (SignalDispatcherClass *)FUN_140769c58(0x78);\n        if (this_00 == (SignalDispatcherClass *)0x0) {\n          DAT_140a10b50 = (SignalDispatcherClass *)0x0;\n        }\n        else {\n          DAT_140a10b50 = SignalDispatcherClass::~SignalDispatcherClass(this_00);\n        }\n        local_res10 = &PTR_vftable_140a10b48;\n        if (DAT_140a7bc10 == DAT_140a7bc18) {\n          FUN_14001ded0(&DAT_140a7bc08,DAT_140a7bc10,&local_res10);\n        }\n        else {\n          *DAT_140a7bc10 = &PTR_vftable_140a10b48;\n          DAT_140a7bc10 = DAT_140a7bc10 + 1;\n        }\n      }\n      uVar2 = FUN_140220ed0(DAT_140a10b50,param_1 + 0x38,0x29);\n    }\n    return (undefined1 *)CONCAT71((int7)((ulonglong)uVar2 >> 8),1);\n  }\n  return &stack0x00000000;\n}",
+  "fetched_at": "2026-04-26T17:48:55Z"
+}

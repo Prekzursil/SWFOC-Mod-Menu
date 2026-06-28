@@ -1,0 +1,7 @@
+{
+  "addr": "0x14018ab60",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_14018ab60(undefined8 param_1,longlong param_2)\n\n{\n  int iVar1;\n  DWORD DVar2;\n  ulonglong uVar3;\n  LPCVOID pvVar4;\n  longlong *local_res18;\n  longlong *local_res20;\n  longlong *local_a8;\n  longlong *local_a0;\n  FileClass local_98;\n  \n  iVar1 = D3DXCreateEffectCompilerFromFileA(param_1,0,0,0x100,&local_res20,&local_a0);\n  if (-1 < iVar1) {\n    iVar1 = (**(code **)(*local_res20 + 0x1d8))(local_res20,0x100,&local_res18,&local_a8);\n    if (-1 < iVar1) {\n      FileClass::FileClass(&local_98,param_2);\n      uVar3 = FileClass::vfunction2(&local_98,1,0);\n      if ((char)uVar3 != '\\0') {\n        DVar2 = (**(code **)(*local_res18 + 0x20))();\n        pvVar4 = (LPCVOID)(**(code **)(*local_res18 + 0x18))();\n        FileClass::vfunction7(&local_98,pvVar4,DVar2);\n        FileClass::vfunction5(&local_98);\n      }\n      FileClass::~FileClass(&local_98);\n    }\n    if (local_res18 != (longlong *)0x0) {\n      (**(code **)(*local_res18 + 0x10))();\n      local_res18 = (longlong *)0x0;\n    }\n    if (local_a8 != (longlong *)0x0) {\n      (**(code **)(*local_a8 + 0x10))();\n    }\n  }\n  if (local_res20 != (longlong *)0x0) {\n    (**(code **)(*local_res20 + 0x10))();\n    local_res20 = (longlong *)0x0;\n  }\n  if (local_a0 != (longlong *)0x0) {\n    (**(code **)(*local_a0 + 0x10))();\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T17:32:49Z"
+}

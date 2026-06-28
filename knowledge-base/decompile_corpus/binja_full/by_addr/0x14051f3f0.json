@@ -1,0 +1,7 @@
+{
+  "addr": "0x14051f3f0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14051f401        if (arg2 u<= 0x666666666666666)\n14051f407        int64_t rcx = arg2 * 0x28\n14051f416        if (rcx u< 0x1000)\n14051f445        if (rcx == 0)\n14051f456        return 0\n14051f44b        return operator new(rcx) __tailcall\n14051f41f        if (rcx + 0x27 u> rcx)\n14051f424        int64_t rax_3 = operator new(rcx + 0x27)\n14051f42f        if (rax_3 == 0)\n14051f45d        _invalid_parameter_noinfo_noreturn()\n14051f45d        noreturn\n14051f435        void* result = (rax_3 + 0x27) & 0xffffffffffffffe0\n14051f439        *(result - 8) = rax_3\n14051f441        return result\n14051f457        stdext::threads::_Throw_lock_error()\n14051f457        noreturn",
+  "fetched_at": "2026-04-26T17:32:56Z"
+}

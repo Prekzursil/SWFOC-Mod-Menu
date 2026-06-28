@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401432b0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1401432cd        struct RefCountClass::alRenderable::VTable** rax = operator new(0x2f8)\n1401432d5        struct alRenderable::alEmitter::VTable** rbx\n1401432d5        if (rax == 0)\n1401432e4        rbx = nullptr\n1401432df        rbx = sub_14013b820(rax)\n1401432ee        char var_408[0x400]\n1401432ee        sub_140143740(&var_408, arg2)\n1401432fe        char (* rax_2)[0x400] = &var_408\n14014331c        char i\n140143310        i = *rax_2\n140143313        *(rbx - &var_408 + 0xd8 + rax_2) = i\n140143316        rax_2 = &(*rax_2)[1]\n14014331c        do while (i != 0)\n14014333d        return sub_140143190(arg1, rbx)",
+  "fetched_at": "2026-04-26T17:19:42Z"
+}

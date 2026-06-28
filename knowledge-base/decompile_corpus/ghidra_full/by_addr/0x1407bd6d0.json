@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407bd6d0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_1407bd6d0(longlong *param_1,longlong param_2)\n\n{\n  char cVar1;\n  \n  while( true ) {\n    *(byte *)(param_2 + 9) = *(byte *)(param_2 + 9) | 1;\n    cVar1 = *(char *)(param_2 + 8);\n    if (cVar1 == '\\x05') {\n      *(longlong *)(param_2 + 0x30) = *param_1;\n      *param_1 = param_2;\n      return;\n    }\n    if (cVar1 == '\\x06') {\n      *(longlong *)(param_2 + 0x10) = *param_1;\n      *param_1 = param_2;\n      return;\n    }\n    if (cVar1 != '\\a') break;\n    param_2 = *(longlong *)(param_2 + 0x10);\n    if ((*(byte *)(param_2 + 9) & 0x11) != 0) {\n      return;\n    }\n  }\n  if (cVar1 == '\\b') {\n    *(longlong *)(param_2 + 0xb8) = *param_1;\n    *param_1 = param_2;\n    return;\n  }\n  if (cVar1 != '\\t') {\n    return;\n  }\n  *(longlong *)(param_2 + 0x68) = *param_1;\n  *param_1 = param_2;\n  return;\n}",
+  "fetched_at": "2026-04-26T18:56:32Z"
+}

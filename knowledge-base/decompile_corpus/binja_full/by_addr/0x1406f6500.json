@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406f6500",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1406f650a        struct SpecialAbilityClass::DemolitionAbilityClass::VTable** result = arg1\n1406f650d        sub_14048c780(arg1)\n1406f651b        *result = &DemolitionAbilityClass::`vftable'{for `SpecialAbilityClass'}\n1406f652c        result[0x2f] = 0\n1406f6533        result[1] = &DemolitionAbilityClass::`vftable'{for `RefCountClass'}\n1406f6537        result[0x30] = 0\n1406f653e        result[0x31].d = 0\n1406f6544        pdb_internal::Array<struct DBI1::SrcMap>::Array<struct DBI1::SrcMap>(&result[0x32])\n1406f654c        result[0x34] = 1\n1406f6557        result[0x35] = 0\n1406f655e        result[0x36] = 0\n1406f6565        result[8].w = 1\n1406f656b        *(result + 0x3c) = 9\n1406f657c        return result",
+  "fetched_at": "2026-04-26T17:26:37Z"
+}

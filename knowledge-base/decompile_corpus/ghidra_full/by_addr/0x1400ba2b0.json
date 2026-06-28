@@ -1,0 +1,7 @@
+{
+  "addr": "0x1400ba2b0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nvoid FUN_1400ba2b0(void)\n\n{\n  undefined8 *puVar1;\n  undefined8 *puVar2;\n  \n  FUN_140053c10(&PTR_vftable_140a10b18);\n  puVar1 = (undefined8 *)FUN_140054ed0(&PTR_vftable_140a10b18);\n  if (puVar1[2] != 0) {\n    puVar2 = puVar1;\n    if (7 < (ulonglong)puVar1[3]) {\n      puVar2 = (undefined8 *)*puVar1;\n    }\n    FUN_140025760(\"Broadcasting LAN SaveGame List [%ls]\\n\",puVar2);\n    FUN_1403397c0(&DAT_140b2ba20,0xd,puVar1);\n    return;\n  }\n  return;\n}\n\n",
+  "fetched_at": "2026-04-26T16:59:58Z"
+}

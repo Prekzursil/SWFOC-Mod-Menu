@@ -1,0 +1,7 @@
+{
+  "addr": "0x14053b5c0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14053b5d3        arg1[1] = 0\n14053b5da        *arg1 = &AIPlanetBuildQueueClass::`vftable'{for `SignalListenerClass'}\n14053b5dd        arg1[2] = 0\n14053b5e1        arg1[3] = 0\n14053b5e5        arg1[6].d = 0\n14053b5e8        __builtin_memset(&arg1[7], 0, 0x1c)\n14053b5f4        arg1[4].d = 0xffffffff\n14053b5fb        arg1[5] = 0\n14053b602        *(arg1 + 0x54) = arg2\n14053b608        struct GenericMultiLinkedList::MultiLinkedListClass<class AIPlanetBuildTaskClass>::VTable** rax = operator new(0x48)\n14053b610        if (rax == 0)\n14053b656        rax = nullptr\n14053b616        rax[6].d = 0\n14053b619        __builtin_memset(&rax[2], 0, 0x18)\n14053b625        rax[2] = &rax[1]\n14053b629        rax[5] = 0\n14053b62d        rax[1] = &rax[1]\n14053b637        *rax = &MultiLinkedListClass<class AIPlanetBuildTaskClass>::`vftable'{for `GenericMultiLinkedList'}\n14053b63a        *(rax + 0x34) = 1\n14053b641        rax[7].d = 0xfffffc19\n14053b648        rax[8] = 0\n14053b64c        rax[4] = 0\n14053b650        rax[3] = 0\n14053b659        arg1[2] = rax\n14053b674        uint128_t zmm0\n14053b674        zmm0.d = _mm_cvtepi32_ps(zx.o(data_140b0a340)).d f+ 0.5f\n14053b686        arg1[6].d = sub_1401ffb40(&data_140a13e24, 1, int.d(zmm0.d))\n14053b696        return arg1",
+  "fetched_at": "2026-04-26T17:33:54Z"
+}

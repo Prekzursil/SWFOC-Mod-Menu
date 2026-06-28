@@ -1,0 +1,7 @@
+{
+  "addr": "0x140509090",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140509093        if (arg2 == 0)\n140509093        return \n1405090a3        int64_t* rax = arg2[0x15]\n1405090b3        if (rax == 0)\n1405090b3        return \n1405090b5        *(rax + 0xec) = 0\n1405090bf        int32_t rdx = *(arg1 + 0xb8)\n1405090c8        *(arg1 + 0xb8) = rdx + 1\n1405090d1        struct CollisionClass::TerrainCollisionClass::VTable** rax_2 = sub_140687db0(arg2, rdx)\n1405090d9        if (rax_2 != 0)\n14050910d        sub_1405049e0(arg1, rax_2)\n14050910d        return \n1405090e6        rax = (*(*arg2 + 0x10))(arg2, 1)\n1405090ec        if (rax != 0)\n140509100        jump(*(*rax + 0x140))\n14050911c        return ",
+  "fetched_at": "2026-04-26T17:32:04Z"
+}

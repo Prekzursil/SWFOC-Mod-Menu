@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401a7290",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1401a729d        uint32_t lpcbData = 0x10\n1401a72c7        enum REG_VALUE_TYPE type\n1401a72c7        if (RegQueryValueExA(arg1, arg2, nullptr, &type, arg3, &lpcbData) != NO_ERROR)\n1401a72c9        bool cond:0_1 = type != REG_BINARY\n1401a72d1        *arg3 = *arg4\n1401a72d4        if (not(cond:0_1))\n1401a72e2        return 0\n1401a72f2        return 0x80004005",
+  "fetched_at": "2026-04-26T17:25:11Z"
+}

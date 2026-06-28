@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401b9bc0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1401b9bca        int64_t lpMem = arg1[1]\n1401b9bce        struct DynamicVectorClass<struct alD3dTerrainPatch::Zbounds>::VTable* const result = &DynamicVectorClass<struct alD3dTerrainPatch::Zbounds>::`vftable'\n1401b9bd5        *arg1 = &DynamicVectorClass<struct alD3dTerrainPatch::Zbounds>::`vftable'\n1401b9bde        if (lpMem != 0)\n1401b9be7        if ((*(arg1 + 0x14) & 0x80000000) == 0)\n1401b9c02        j_sub_1407864b8(lpMem)\n1401b9bf7        HeapFree(GetProcessHeap(), HEAP_NONE, lpMem)\n1401b9c07        result = nullptr\n1401b9c09        *(arg1 + 0x14) &= 0x80000000\n1401b9c10        arg1[1] = 0\n1401b9c14        arg1[2].d = 0\n1401b9c21        return result",
+  "fetched_at": "2026-04-26T17:25:54Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x140785a20",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_140785a20(wint_t param_1)\n\n{\n  _towlower_l(param_1,(_locale_t)0x0);\n  return;\n}",
+  "fetched_at": "2026-04-26T18:51:29Z"
+}

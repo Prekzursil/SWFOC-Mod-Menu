@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407f9340",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void InstantiationMarshallerClass::InstantiationMarshallerClass_Constructor_or_Destructor(void)\n\n{\n  PTR_vftable_140a449a0 = (undefined *)&vftable;\n  return;\n}",
+  "fetched_at": "2026-04-26T19:05:01Z"
+}

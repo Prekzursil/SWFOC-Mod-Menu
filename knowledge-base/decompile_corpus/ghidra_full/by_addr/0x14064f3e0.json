@@ -1,0 +1,7 @@
+{
+  "addr": "0x14064f3e0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nbool __thiscall\nFunctionPerceptualEvaluatorClass::vfunction2_for_SignalGeneratorClass\n          (FunctionPerceptualEvaluatorClass *this,longlong param_1,double *param_2)\n\n{\n  bool bVar1;\n  \n  if (this[1].vftablePtr == (FunctionPerceptualEvaluatorClass_vftable_for_SignalGeneratorClass *)0x0\n     ) {\n    return false;\n  }\n                    /* WARNING: Could not recover jumptable at 0x00014064f3f3. Too many branches */\n                    /* WARNING: Treating indirect jump as call */\n  bVar1 = PerceptionFunctionClass::Evaluate\n                    ((PerceptionFunctionClass *)this[1].vftablePtr,\n                     *(PerceptionContextClass **)(param_1 + 0x58),param_2);\n  return bVar1;\n}\n\n",
+  "fetched_at": "2026-04-26T17:05:54Z"
+}

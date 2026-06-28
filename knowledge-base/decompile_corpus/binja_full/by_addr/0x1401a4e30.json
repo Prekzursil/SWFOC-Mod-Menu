@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401a4e30",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1401a4e41        srand(timeGetTime())\n1401a4e48        __builtin_memcpy(&arg1[4], \"\\x00\\x00\\x80\\x3f\\x00\\x00\\x80\\x3f\\x00\\x00\\x80\\x3f\\x00\\x00\\x00\\x3f\\x00\\x00\\x80\\x3f\\x00\", 0x15)\n1401a4e4f        *(arg1 + 4) = 0\n1401a4e53        arg1[3] = 0\n1401a4e59        arg1[0xb].b = 0\n1401a4e93        arg1[0xa] = 0x3f800000\n1401a4e9a        __builtin_memcpy(&arg1[0xc], \"\\x00\\x00\\x00\\x40\\x00\\x00\\x80\\x3f\\x00\\x00\\x80\\x3f\\x00\\x00\\x80\\x3f\\x00\\x00\\x80\\x3f\\x00\", 0x15)\n1401a4ea8        *arg1 = 2\n1401a4eb3        return arg1",
+  "fetched_at": "2026-04-26T17:25:05Z"
+}

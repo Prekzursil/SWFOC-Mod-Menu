@@ -1,0 +1,7 @@
+{
+  "addr": "0x14021ce30",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */\n\nvoid FUN_14021ce30(longlong param_1,uint param_2,float param_3,float param_4)\n\n{\n  DWORD DVar1;\n  longlong lVar2;\n  float fVar3;\n  float fVar4;\n  \n  if (param_2 < 4) {\n    lVar2 = (longlong)(int)param_2 + 200;\n    fVar3 = 0.0;\n    if (0.0 <= param_3) {\n      fVar3 = param_3;\n    }\n    fVar4 = DAT_1407ffaf8;\n    if (fVar3 <= DAT_1407ffaf8) {\n      fVar4 = fVar3;\n    }\n    *(float *)(param_1 + 4 + lVar2 * 0x14) = fVar4;\n    fVar3 = fVar4 - *(float *)(param_1 + lVar2 * 0x14);\n    *(float *)(param_1 + 8 + lVar2 * 0x14) = fVar3;\n    if (0.0 < param_4) {\n      *(float *)(param_1 + 8 + lVar2 * 0x14) = fVar3 / param_4;\n    }\n    fVar3 = *(float *)(param_1 + 8 + lVar2 * 0x14) / DAT_1408007f8;\n    *(float *)(param_1 + 8 + lVar2 * 0x14) = fVar3;\n    if ((fVar3 == 0.0) || (param_4 == 0.0)) {\n      *(float *)(param_1 + lVar2 * 0x14) = fVar4;\n    }\n    DVar1 = timeGetTime();\n    FUN_14021caf0(param_1,DVar1 - _DAT_140a7bec0,param_1 + 0x1000,param_1 + 0x100c,param_1 + 0x1018,\n                  1);\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T18:01:53Z"
+}

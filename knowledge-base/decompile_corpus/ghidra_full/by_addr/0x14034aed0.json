@@ -1,0 +1,7 @@
+{
+  "addr": "0x14034aed0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nvoid __thiscall IconComponentClass::~IconComponentClass(IconComponentClass *this)\n\n{\n  longlong *plVar1;\n  \n  this->vftablePtr = &vftable;\n  plVar1 = (longlong *)(this->IconComponentClass_data).offset_0x160;\n  if (plVar1 != (longlong *)0x0) {\n    (**(code **)(*plVar1 + 8))();\n  }\n  plVar1 = (longlong *)(this->IconComponentClass_data).offset_0x110;\n  if (plVar1 != (longlong *)0x0) {\n    (**(code **)(*plVar1 + 8))();\n  }\n  plVar1 = (longlong *)(this->IconComponentClass_data).offset_0xc0;\n  if (plVar1 != (longlong *)0x0) {\n    (**(code **)(*plVar1 + 8))();\n  }\n                    /* inlined destructor: BaseComponentClass::~BaseComponentClass */\n  this->vftablePtr = (IconComponentClass_vftable *)&BaseComponentClass::vftable;\n  FUN_1401f9440(&(this->BaseComponentClass_data).offset_0x68);\n  return;\n}\n\n",
+  "fetched_at": "2026-04-26T17:07:40Z"
+}

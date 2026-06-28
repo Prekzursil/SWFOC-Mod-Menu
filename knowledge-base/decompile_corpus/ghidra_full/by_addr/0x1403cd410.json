@@ -1,0 +1,7 @@
+{
+  "addr": "0x1403cd410",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_1403cd410(longlong param_1)\n\n{\n  longlong lVar1;\n  \n  if (*(longlong *)(param_1 + 0x2150) != 0) {\n    lVar1 = FUN_140294a40(&DAT_140a16fd0);\n    lVar1 = DynamicVectorClass<class_PlayerClass*___ptr64>::\n            DynamicVectorClass<class_PlayerClass*___ptr64>_Constructor_or_Destructor(lVar1);\n    if (*(int *)(*(longlong *)(param_1 + 0x2150) + 0x58) == *(int *)(lVar1 + 0x4c)) {\n      FUN_1403dd020(param_1);\n      return;\n    }\n  }\n  FUN_1403dcf20(param_1);\n  return;\n}",
+  "fetched_at": "2026-04-26T17:37:43Z"
+}

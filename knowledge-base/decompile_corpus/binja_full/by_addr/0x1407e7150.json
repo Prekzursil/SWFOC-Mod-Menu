@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407e7150",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1407e7154        HMODULE hLibModule = data_140a61a70\n1407e715e        if (hLibModule != 0)\n1407e7160        FreeLibrary(hLibModule)\n1407e7168        data_140a61a70 = 0\n1407e716f        data_140a61a78 = 0\n1407e7181        return sub_1400581c0(&data_140a10b18) __tailcall",
+  "fetched_at": "2026-04-26T17:34:53Z"
+}

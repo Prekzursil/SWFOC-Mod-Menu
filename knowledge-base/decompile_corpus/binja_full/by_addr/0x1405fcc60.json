@@ -1,0 +1,7 @@
+{
+  "addr": "0x1405fcc60",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1405fcc75        int64_t rax = *(arg1 + 0x80)\n1405fcc7c        int32_t r14 = 0\n1405fcc7f        *arg2 = 0\n1405fcc85        arg2[1].d = 0\n1405fcc8c        int64_t rdx = *(arg1 + 0x78)\n1405fcc90        int32_t i_1 = 0\n1405fcc9d        if ((rax - rdx) s>> 3 == 0)\n1405fcd61        return arg2\n1405fcca8        uint64_t i = 0\n1405fcd1a        uint128_t zmm0\n1405fcd1a        float zmm1\n1405fccb0        void* rcx = *(rdx + (i << 3))\n1405fccb7        if (rcx != 0 && sub_1405791e0(rcx) != 0)\n1405fcccb        void* rax_4 = sub_1405791e0(*(*(arg1 + 0x78) + (i << 3)))\n1405fccd0        r14 += 1\n1405fccd8        zmm0.d = (*(rax_4 + 0x78)).d f+ *arg2\n1405fcce1        zmm1 = *(rax_4 + 0x7c) f+ *(arg2 + 4)\n1405fcce6        *arg2 = zmm0.d\n1405fccf2        zmm0.d = (*(rax_4 + 0x80)).d f+ arg2[1].d\n1405fccf7        *(arg2 + 4) = zmm1\n1405fccfc        arg2[1].d = zmm0.d\n1405fcd01        rdx = *(arg1 + 0x78)\n1405fcd05        i_1 += 1\n1405fcd11        i = zx.q(i_1)\n1405fcd1a        do while (i u< (*(arg1 + 0x80) - rdx) s>> 3)\n1405fcd27        if (r14 s> 0)\n1405fcd39        uint128_t zmm2\n1405fcd39        zmm2.d = 1f f/ _mm_cvtepi32_ps(zx.o(r14)).d\n1405fcd43        zmm1 = zmm2.d f* *arg2\n1405fcd47        zmm0.d = zmm2.d f* *(arg2 + 4)\n1405fcd4c        zmm2.d = zmm2.d f* arg2[1].d\n1405fcd51        *arg2 = zmm1\n1405fcd55        *(arg2 + 4) = zmm0.d\n1405fcd5a        arg2[1].d = zmm2.d\n1405fcd79        return arg2",
+  "fetched_at": "2026-04-26T17:22:43Z"
+}

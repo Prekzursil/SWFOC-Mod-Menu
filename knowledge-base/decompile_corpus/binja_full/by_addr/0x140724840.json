@@ -1,0 +1,7 @@
+{
+  "addr": "0x140724840",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140724858        if (arg1 != 0)\n140724863        int64_t* result = operator new(0x30)\n14072486e        if (result != 0)\n140724885        __builtin_memset(result, 0, 0x18)\n14072488f        result[5] = 0xf\n140724897        result[4] = 0\n14072489e        if (&result[2] != arg2)\n1407248a5        int64_t* rdx = arg2\n1407248a8        if (arg2[3] u>= 0x10)\n1407248aa        rdx = *arg2\n1407248b4        sub_140022730(&result[2], rdx, arg2[2])\n1407248c6        if (sub_140724960(result, arg1) != 0)\n140724936        return result\n1407248c8        int64_t rdx_2 = result[5]\n1407248d0        if (rdx_2 u>= 0x10)\n1407248d2        void* rcx_2 = result[2]\n1407248df        if (rdx_2 + 1 u>= 0x1000)\n1407248e1        void* r8_2 = *(rcx_2 - 8)\n1407248f4        if (rcx_2 - r8_2 - 8 u> 0x1f)\n14072494d        _invalid_parameter_noinfo_noreturn()\n14072494d        noreturn\n1407248f6        rcx_2 = r8_2\n1407248f9        j_sub_1407864b8(rcx_2)\n140724903        result[4] = 0\n14072490a        result[5] = 0xf\n140724912        result[2].b = 0\n140724915        j_sub_1407864b8(result)\n14072491a        return nullptr\n14072494c        return 0",
+  "fetched_at": "2026-04-26T17:28:26Z"
+}

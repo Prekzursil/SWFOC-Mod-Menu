@@ -1,0 +1,7 @@
+{
+  "addr": "0x140799224",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140799239        int64_t rbx = sx.q(arg1)\n140799246        if (arg1 s>= 0 && rbx.d u< data_140b3c8d0)\n140799258        int64_t rsi_2 = rbx s>> 6\n14079925c        uint64_t rdi_1 = (zx.q(rbx.d) & 0x3f) * 9\n140799260        int64_t rax_3 = (&data_140b3c4d0)[rsi_2]\n140799271        if ((*(rax_3 + (rdi_1 << 3) + 0x38) & 1) != 0 && *(rax_3 + (rdi_1 << 3) + 0x28) != -1)\n140799273        int32_t rax_4 = sub_14078d018()\n14079927b        if (rax_4 == 1)\n14079927f        if (rbx.d == 0)\n14079929e        SetStdHandle(STD_INPUT_HANDLE, nullptr)\n140799283        if (rbx.d == rax_4)\n14079929e        SetStdHandle(STD_OUTPUT_HANDLE, nullptr)\n140799287        if (rbx.d - rax_4 == rax_4)\n14079929e        SetStdHandle(STD_ERROR_HANDLE, nullptr)\n1407992a8        *((&data_140b3c4d0)[rsi_2] + (rdi_1 << 3) + 0x28) = -1\n1407992ae        return 0\n1407992b7        *_errno() = 9\n1407992c2        *__doserrno() = 0\n1407992c5        return 0xffffffff",
+  "fetched_at": "2026-04-26T17:32:06Z"
+}

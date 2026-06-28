@@ -1,0 +1,7 @@
+{
+  "addr": "0x140581300",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140581315        if (*(arg1 + 0x60) != 0)\n14058133c        TEB* gsbase\n14058133c        if (data_140b393c8 s> *(0xd4 + *(gsbase->ThreadLocalStoragePointer + (zx.q(data_140b3b9a0) << 3))))\n140581401        arg3 = _Init_thread_header(&data_140b393c8)\n14058140d        if (data_140b393c8 == 0xffffffff)\n14058141a        atexit(sub_1407f5360)\n140581426        arg3 = _Init_thread_footer(&data_140b393c8)\n140581342        int64_t* rdx = data_140b393b8\n14058135a        if ((rdx - data_140b393b0) s>> 3 != 0)\n14058135a        rdx = data_140b393b0\n140581362        bool cond:1_1 = rdx == data_140b393c0\n140581369        data_140b393b8 = rdx\n140581370        int64_t rax_3 = *(arg1 + 0x60)\n140581374        int64_t arg_8 = rax_3\n140581379        if (cond:1_1)\n140581394        arg3, arg4 = sub_140045580(&data_140b393b0, rdx, &arg_8)\n14058137b        *rdx = rax_3\n14058137e        data_140b393b8 += 8\n140581399        int64_t* rbx_1 = data_140b15418\n1405813a3        if (rbx_1 != 0)\n1405813ab        int64_t rax_5\n1405813ab        rax_5, arg3 = (*(*rbx_1 + 0x228))(rbx_1)\n1405813b4        if (rax_5 != 0)\n1405813cc        sub_1404261f0((*(*rbx_1 + 0x228))(rbx_1), &data_140b393b0, arg4)\n1405813dd        return 0\n1405813e8        sub_140248190(arg2, \"GameObjectWrapper::Stop -- This command only works in tactical modes.\", arg3)\n1405813f9        return 0",
+  "fetched_at": "2026-04-26T17:35:24Z"
+}

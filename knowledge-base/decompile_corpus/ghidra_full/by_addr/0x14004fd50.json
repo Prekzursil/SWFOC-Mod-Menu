@@ -1,0 +1,7 @@
+{
+  "addr": "0x14004fd50",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nTheGameScoringManagerClass * FUN_14004fd50(void)\n\n{\n  TheGameScoringManagerClass *this;\n  undefined **local_res8 [4];\n  \n  if (DAT_140a109a0 == (TheGameScoringManagerClass *)0x0) {\n    this = (TheGameScoringManagerClass *)FUN_140769c58(0x20);\n    if (this == (TheGameScoringManagerClass *)0x0) {\n      DAT_140a109a0 = (TheGameScoringManagerClass *)0x0;\n    }\n    else {\n      DAT_140a109a0 = TheGameScoringManagerClass::TheGameScoringManagerClass(this);\n    }\n    local_res8[0] = &PTR_vftable_140a10998;\n    if (DAT_140a7bc10 != DAT_140a7bc18) {\n      *DAT_140a7bc10 = &PTR_vftable_140a10998;\n      DAT_140a7bc10 = DAT_140a7bc10 + 1;\n      return DAT_140a109a0;\n    }\n    FUN_14001ded0(&DAT_140a7bc08,DAT_140a7bc10,local_res8);\n  }\n  return DAT_140a109a0;\n}\n\n",
+  "fetched_at": "2026-04-26T16:54:40Z"
+}

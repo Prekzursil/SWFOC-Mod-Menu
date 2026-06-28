@@ -1,0 +1,7 @@
+{
+  "addr": "0x14003bc30",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14003bc33        if (arg2 == 0)\n14003bc33        return \n14003bc57        int512_t zmm2_1 = sub_140036140(arg1)\n14003bc66        if (sub_14003afe0() == 0)\n14003bc7b        zmm2_1.o = zx.o(0)\n14003bc82        sub_1402d5290(&data_140b27e60, data_140b301c8, zmm2_1, 0, 0)\n14003bc82        return \n14003bc8e        struct RefCountClass::EventClass::VTable** rax_2 = operator new(0x250)\n14003bc96        int64_t* rbx_1\n14003bc96        if (rax_2 == 0)\n14003bca5        rbx_1 = nullptr\n14003bca0        rbx_1 = sub_1403aee50(rax_2)\n14003bcb0        sub_1403af190(rbx_1, *(arg2 + 0x50), nullptr)\n14003bcbf        sub_1403b01f0(&data_140b2ed18, rbx_1)\n14003bcc8        if (arg3 != 1)\n14003bcc8        return \n14003bcd4        int32_t zmm1_1 = *(arg2 + 0x7c)\n14003bcdc        int32_t var_18 = *(arg2 + 0x78)\n14003bcea        int32_t var_10_1 = *(arg2 + 0x80)\n14003bcf0        int32_t var_14_1 = zmm1_1\n14003bcf6        sub_1400442f0(arg1, &var_18, zmm2_1)\n14003bd0f        return ",
+  "fetched_at": "2026-04-26T16:53:15Z"
+}

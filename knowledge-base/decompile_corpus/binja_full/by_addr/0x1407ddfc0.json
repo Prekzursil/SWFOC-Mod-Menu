@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407ddfc0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1407ddfc6        struct alRenderable::alRenderablePlane::VTable** result = arg1\n1407ddfc9        sub_14013f590(arg1)\n1407ddfd5        *result = &alRenderablePlane::`vftable'{for `alRenderable'}\n1407ddfe6        result[2] = &alRenderablePlane::`vftable'{for `MultiLinkedListMember'}\n1407ddff1        result[4] = &alRenderablePlane::`vftable'{for `CullObjectClass'}\n1407ddff7        result[0x1a] = 0\n1407ddffe        result[0x1b].d = 0\n1407de004        *(result + 0xe4) = 0\n1407de00b        *(result + 0xec) = 0\n1407de011        result[0x19] = 0x3f800000\n1407de01c        *(result + 0xdc) = 0x3f800000\n1407de027        result[0x1e] = 0x3f800000\n1407de032        result[0x1f] = 0\n1407de039        result[0x20] = 0x3f800000\n1407de044        result[0x21] = 0\n1407de04b        result[0x22] = 0\n1407de052        sub_1407df380(&result[0x23])\n1407de05f        return result",
+  "fetched_at": "2026-04-26T17:34:09Z"
+}

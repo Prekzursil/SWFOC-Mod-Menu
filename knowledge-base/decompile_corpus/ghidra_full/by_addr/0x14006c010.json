@@ -1,0 +1,7 @@
+{
+  "addr": "0x14006c010",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nbool __thiscall\nSteamAsyncSocketImpl::vfunction9\n          (SteamAsyncSocketImpl *this,undefined8 param_1,ulonglong param_2,ulonglong *param_3,\n          undefined8 param_4)\n\n{\n  char cVar1;\n  undefined8 uVar2;\n  longlong lVar3;\n  \n  uVar2 = FUN_14006be20(this,param_4);\n  lVar3 = SteamInternal_ContextInit(&PTR_FUN_140a10e00);\n  cVar1 = (**(code **)**(undefined8 **)(lVar3 + 0x40))\n                    (*(undefined8 **)(lVar3 + 0x40),uVar2,param_1,param_2 & 0xffffffff,0,\n                     *(undefined4 *)&(this->RefCountClass_data).field_0x20);\n  if (cVar1 != '\\0') {\n    *param_3 = param_2;\n    *(undefined4 *)&(this->RefCountClass_data).field_0x28 = 0;\n  }\n  else {\n    *(undefined4 *)&(this->RefCountClass_data).field_0x28 = 0x2733;\n  }\n  return cVar1 != '\\0';\n}\n\n",
+  "fetched_at": "2026-04-26T16:56:03Z"
+}

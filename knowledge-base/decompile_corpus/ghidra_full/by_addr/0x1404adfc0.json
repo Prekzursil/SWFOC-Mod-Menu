@@ -1,0 +1,7 @@
+{
+  "addr": "0x1404adfc0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined8 __thiscall EventFactoryClass<class_ResumeGameEventClass,51>::vfunction2(void)\n\n{\n  return 0x33;\n}",
+  "fetched_at": "2026-04-26T18:06:05Z"
+}

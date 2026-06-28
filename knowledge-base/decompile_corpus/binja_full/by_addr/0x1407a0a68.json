@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407a0a68",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1407a0a99        BOOL rax = WriteConsoleW(data_140a457a0, arg1, arg2, arg3, nullptr)\n1407a0a9f        BOOL rbx = rax\n1407a0aa3        if (rax == 0 && GetLastError() == ERROR_INVALID_HANDLE)\n1407a0ab0        HANDLE hObject = data_140a457a0\n1407a0abb        if (hObject u<= -3)\n1407a0abd        CloseHandle(hObject)\n1407a0ae8        HANDLE hConsoleOutput = CreateFileW(u\"CONOUT$\", 0x40000000, FILE_SHARE_READ | FILE_SHARE_WRITE, nullptr, OPEN_EXISTING, SECURITY_ANONYMOUS, nullptr)\n1407a0afa        data_140a457a0 = hConsoleOutput\n1407a0b0d        rbx = WriteConsoleW(hConsoleOutput, arg1, arg2, arg3, nullptr)\n1407a0b25        return zx.q(rbx)",
+  "fetched_at": "2026-04-26T17:32:20Z"
+}

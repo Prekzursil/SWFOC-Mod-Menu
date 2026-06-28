@@ -1,0 +1,7 @@
+{
+  "addr": "0x14023b7b0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14023b7b4        HMODULE hLibModule = data_140b09398\n14023b7be        int64_t result = 0\n14023b7c7        __builtin_memset(&data_140b093a0, 0, 0x98)\n14023b809        if (hLibModule != 0)\n14023b80b        result = FreeLibrary(hLibModule)\n14023b811        data_140b09398 = 0\n14023b820        return result",
+  "fetched_at": "2026-04-26T17:30:00Z"
+}

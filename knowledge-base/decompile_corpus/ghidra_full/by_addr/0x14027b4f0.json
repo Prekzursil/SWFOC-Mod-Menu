@@ -1,0 +1,7 @@
+{
+  "addr": "0x14027b4f0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined4 FUN_14027b4f0(int *param_1)\n\n{\n  switch(*param_1 + -5) {\n  case 0:\n  case 0x14:\n  case 0x15:\n  case 0x1a:\n  case 0x1c:\n  case 0x1d:\n  case 0x1e:\n  case 0x20:\n  case 0x21:\n  case 0x22:\n  case 0x23:\n  case 0x28:\n  case 0x29:\n  case 0x2a:\n  case 0x3a:\n  case 0x3b:\n    return 1;\n  default:\n    return 0;\n  }\n}",
+  "fetched_at": "2026-04-26T18:21:11Z"
+}

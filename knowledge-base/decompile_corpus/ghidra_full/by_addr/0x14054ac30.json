@@ -1,0 +1,7 @@
+{
+  "addr": "0x14054ac30",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall WeaponBehaviorClass::vfunction25(WeaponBehaviorClass *this)\n\n{\n  undefined4 uVar1;\n  undefined **ppuVar2;\n  undefined *puVar3;\n  undefined8 uVar4;\n  longlong lVar5;\n  longlong lVar6;\n  int iVar7;\n  \n  BehaviorClass::vfunction25((BehaviorClass *)this);\n  ppuVar2 = this->offset_0x18;\n  puVar3 = ppuVar2[0x1e];\n  if (((puVar3 != (undefined *)0x0) && (*(WeaponBehaviorClass **)(puVar3 + 0x80) == this)) &&\n     (iVar7 = 0, 0 < *(int *)(puVar3 + 0xd0))) {\n    do {\n      if (0 < *(int *)(*(longlong *)(puVar3 + 200) + (longlong)iVar7 * 4)) {\n        *(undefined4 *)(*(longlong *)(puVar3 + 200) + (longlong)iVar7 * 4) = 0;\n        lVar6 = (longlong)(char)iVar7 * 4;\n        uVar1 = *(undefined4 *)(lVar6 + *(longlong *)(puVar3 + 0xa8));\n        uVar4 = FUN_1402648b0(ppuVar2[0x54]);\n        lVar5 = FUN_14012d6f0(uVar4,uVar1);\n        *(byte *)(lVar5 + 0x30) = *(byte *)(lVar5 + 0x30) | 1;\n        if (iVar7 < (char)puVar3[0xe8]) {\n          lVar6 = FUN_14012d6f0(uVar4,*(undefined4 *)(lVar6 + *(longlong *)(puVar3 + 0xd8)));\n          *(byte *)(lVar6 + 0x30) = *(byte *)(lVar6 + 0x30) | 1;\n        }\n      }\n      iVar7 = iVar7 + 1;\n    } while (iVar7 < *(int *)(puVar3 + 0xd0));\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T18:37:36Z"
+}

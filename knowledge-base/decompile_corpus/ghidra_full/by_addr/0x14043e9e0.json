@@ -1,0 +1,7 @@
+{
+  "addr": "0x14043e9e0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined8 * FUN_14043e9e0(undefined8 *param_1,undefined8 *param_2,undefined8 *param_3)\n\n{\n  longlong lVar1;\n  ulonglong uVar2;\n  undefined8 uVar3;\n  undefined8 *puVar4;\n  undefined8 *puVar5;\n  \n  puVar5 = param_3;\n  if (0xf < (ulonglong)param_3[3]) {\n    puVar5 = (undefined8 *)*param_3;\n  }\n  lVar1 = param_2[2];\n  uVar2 = param_3[2];\n  if ((ulonglong)(param_2[3] - lVar1) < uVar2) {\n    param_2 = (undefined8 *)FUN_14004f860(param_2,uVar2,0,puVar5,uVar2);\n  }\n  else {\n    param_2[2] = lVar1 + uVar2;\n    puVar4 = param_2;\n    if (0xf < (ulonglong)param_2[3]) {\n      puVar4 = (undefined8 *)*param_2;\n    }\n    FUN_14076bd80((undefined1 *)((longlong)puVar4 + lVar1),puVar5,uVar2);\n    ((undefined1 *)((longlong)puVar4 + lVar1))[uVar2] = 0;\n  }\n  *param_1 = 0;\n  param_1[2] = 0;\n  param_1[3] = 0;\n  uVar3 = param_2[1];\n  *param_1 = *param_2;\n  param_1[1] = uVar3;\n  uVar3 = param_2[3];\n  param_1[2] = param_2[2];\n  param_1[3] = uVar3;\n  param_2[2] = 0;\n  *(undefined1 *)param_2 = 0;\n  param_2[3] = 0xf;\n  return param_1;\n}",
+  "fetched_at": "2026-04-26T17:52:30Z"
+}

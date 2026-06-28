@@ -1,0 +1,7 @@
+{
+  "addr": "0x140756c7c",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140756c90        int32_t* rcx\n140756c90        if (*(arg1 + 0x44) == 0)\n140756c98        rcx = *(arg3 + 0x70)\n140756c92        rcx = *(arg3 + 0x68)\n140756ca1        *(arg1 + 0x20) = std::_Maklocwcs(rcx)\n140756ca5        void* const rcx_1 = &data_1407ff7e8\n140756cb0        if (*(arg3 + 0x56) u<= 4)\n140756cb2        rcx_1 = *(arg3 + 0x88)\n140756cbe        *(arg1 + 0x28) = std::_Maklocwcs(rcx_1)\n140756cc2        void* const rcx_2 = &data_1408d07dc\n140756ccd        if (*(arg3 + 0x57) u<= 4)\n140756ccf        rcx_2 = *(arg3 + 0x90)\n140756cdb        *(arg1 + 0x30) = std::_Maklocwcs(rcx_2)\n140756ce6        *(arg1 + 0x18) = **(arg3 + 0x78)\n140756cea        int16_t* result = *(arg3 + 0x80)\n140756cf9        *(arg1 + 0x1a) = *result\n140756d02        return result",
+  "fetched_at": "2026-04-26T17:29:52Z"
+}

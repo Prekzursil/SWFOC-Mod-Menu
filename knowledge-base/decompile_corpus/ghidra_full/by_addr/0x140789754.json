@@ -1,0 +1,7 @@
+{
+  "addr": "0x140789754",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* Library Function - Single Match\n    int __cdecl compute_iso_week_internal(int,int,int)\n   \n   Library: Visual Studio 2019 Release */\n\nint __cdecl compute_iso_week_internal(int param_1,int param_2,int param_3)\n\n{\n  bool bVar1;\n  int iVar2;\n  int iVar3;\n  int iVar4;\n  int iVar5;\n  \n  iVar2 = ((param_3 - (param_2 + 6) % 7) + 7) / 7;\n  bVar1 = __crt_time_is_leap_year<int>(param_1);\n  iVar5 = param_3 - (uint)bVar1;\n  iVar4 = ((param_2 - param_3) + 0x173) % 7;\n  iVar3 = (int)(bVar1 + 0x16d + iVar4) % 7;\n  if ((((iVar5 < 0x16c) || (iVar3 != 2)) && ((iVar5 < 0x16b || (iVar3 != 3)))) &&\n     ((iVar5 < 0x16a || (iVar3 != 4)))) {\n    if (iVar4 - 2U < 3) {\n      iVar2 = iVar2 + 1;\n    }\n  }\n  else {\n    iVar2 = -1;\n  }\n  return iVar2;\n}",
+  "fetched_at": "2026-04-26T18:51:50Z"
+}

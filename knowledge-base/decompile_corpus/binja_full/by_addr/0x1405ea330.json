@@ -1,0 +1,7 @@
+{
+  "addr": "0x1405ea330",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1405ea342        struct ActionClass::MoveActionClass::VTable** result = operator new(0xf8)\n1405ea34d        if (result == 0)\n1405ea43a        return result\n1405ea359        sub_1405e8d00(result, arg1)\n1405ea365        *result = &MoveActionClass::`vftable'{for `ActionClass'}\n1405ea36e        result[0x19].d = *(arg1 + 0xc8)\n1405ea37a        *(result + 0xcc) = *(arg1 + 0xcc)\n1405ea386        result[0x1a].d = *(arg1 + 0xd0)\n1405ea392        *(result + 0xd4) = *(arg1 + 0xd4)\n1405ea39e        result[0x1b].d = *(arg1 + 0xd8)\n1405ea3aa        *(result + 0xdc) = *(arg1 + 0xdc)\n1405ea3b6        result[0x1c].d = *(arg1 + 0xe0)\n1405ea3c3        *(result + 0xe4) = *(arg1 + 0xe4)\n1405ea3d3        *(result + 0xe5) = *(arg1 + 0xe5)\n1405ea3e0        *(result + 0xe6) = *(arg1 + 0xe6)\n1405ea3ed        *(result + 0xe7) = *(arg1 + 0xe7)\n1405ea3fa        result[0x1d].b = *(arg1 + 0xe8)\n1405ea407        *(result + 0xe9) = *(arg1 + 0xe9)\n1405ea413        *(result + 0xec) = *(arg1 + 0xec)\n1405ea41f        result[0x1e].d = *(arg1 + 0xf0)\n1405ea42f        return result",
+  "fetched_at": "2026-04-26T17:38:32Z"
+}

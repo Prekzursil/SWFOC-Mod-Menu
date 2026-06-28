@@ -1,0 +1,7 @@
+{
+  "addr": "0x140477980",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140477999        *arg1 = &TheMovementClassManagerClass::`vftable'\n1404779a2        sub_140365f10(&arg1[1])\n1404779ab        sub_1402da8d0(&arg1[1])\n1404779b4        if ((arg2 & 1) != 0)\n1404779be        j_sub_1407864b8(arg1)\n1404779d5        return arg1",
+  "fetched_at": "2026-04-26T17:28:15Z"
+}

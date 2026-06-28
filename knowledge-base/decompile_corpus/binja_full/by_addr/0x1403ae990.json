@@ -1,0 +1,7 @@
+{
+  "addr": "0x1403ae990",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1403ae9a3        if (arg2 == 0)\n1403ae9a5        int64_t result\n1403ae9a5        result.b = 0\n1403ae9b1        return result\n1403ae9b7        char rax = sub_140512ca0(arg1, arg2)\n1403ae9bc        char rdi = rax\n1403ae9c1        if (rax != 0)\n1403ae9f3        if (sub_1402051c0(arg2, data_140b09cac + 8 + ((data_140b09c5c + data_140b09c6c + data_140b09c7c) << 1)) != 0)\n1403aea0b        *(arg1 + 0x48) = sub_140204800(arg2, 1)\n1403aea1d        *(arg1 + 0x4c) = sub_140204800(arg2, 2)\n1403aea2f        *(arg1 + 0x50) = sub_140204800(arg2, 3)\n1403aea41        *(arg1 + 0x54) = sub_140204800(arg2, 1)\n1403aea53        *(arg1 + 0x58) = sub_140204800(arg2, 2)\n1403aea65        *(arg1 + 0x5c) = sub_140204800(arg2, 3)\n1403aea77        *(arg1 + 0x60) = sub_140204800(arg2, 6)\n1403aea84        *(arg1 + 0x64) = sub_1402043b0(arg2, 8)\n1403aea9a        return zx.q(rdi)\n1403aea9b        rdi = 0\n1403aeab1        return zx.q(rdi)",
+  "fetched_at": "2026-04-26T17:24:14Z"
+}

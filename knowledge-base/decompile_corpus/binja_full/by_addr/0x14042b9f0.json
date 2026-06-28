@@ -1,0 +1,7 @@
+{
+  "addr": "0x14042b9f0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14042b9f9        struct LocomotorInterfaceClass::LocomotorCommonClass::VTable** result = arg1\n14042b9fc        __builtin_memset(arg1, 0, 0x40)\n14042ba0b        sub_1404c32d0(arg1)\n14042ba17        *result = &LocomotorCommonClass::`vftable'{for `LocomotorInterfaceClass'}\n14042ba21        result[1] = &LocomotorCommonClass::`vftable'{for `RefCountClass'}\n14042ba2c        result[3] = &LocomotorCommonClass::`vftable'{for `SignalListenerClass'}\n14042ba37        if (data_140b2f1e0 == 0)\n14042ba57        __builtin_memcpy(&data_140b2f1f0, \"\\x00\\x00\\x80\\x3f\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x80\\x3f\\x00\\x00\\x80\\x3f\\x00\\x00\\x80\\x3f\\x00\\x00\\x80\\x3f\\x00\\x00\\x00\\x00\\x00\\x00\\x80\\x3f\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x80\\x3f\\x00\\x00\\x00\\x40\\x00\\x00\\x40\\x40\", 0x40)\n14042ba81        data_140b2f1e0 = 1\n14042ba88        int128_t var_48\n14042ba88        sub_1402324a0(&data_140b2f1f0, &var_48)\n14042ba92        data_140b2f1f0 = var_48\n14042ba9e        int128_t var_38\n14042ba9e        data_140b2f200 = var_38\n14042baaa        int128_t var_28\n14042baaa        data_140b2f210 = var_28\n14042bab6        int128_t var_18\n14042bab6        data_140b2f220 = var_18\n14042bac5        return result",
+  "fetched_at": "2026-04-26T17:26:41Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x140455ce0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined8 FUN_140455ce0(longlong param_1,undefined8 param_2,undefined4 param_3)\n\n{\n  longlong lVar1;\n  undefined8 uVar2;\n  longlong lVar3;\n  bool bVar4;\n  \n  lVar1 = *(longlong *)(*(longlong *)(*(longlong *)(param_1 + 0x228) + 0x638) + 0x68);\n  uVar2 = FUN_1403956c0(param_2);\n  lVar3 = FUN_140331b70(&DAT_140a172d0,uVar2);\n  switch(param_3) {\n  case 0:\n    goto switchD_140455d2d_caseD_0;\n  case 1:\n    bVar4 = lVar1 == lVar3;\n    break;\n  case 2:\n    if (*(char *)(lVar3 + 0x108) != '\\0') {\n      return 1;\n    }\n    return 0;\n  case 3:\n    if (lVar3 == lVar1) {\n      return 0;\n    }\n  case 6:\n    bVar4 = *(char *)(lVar3 + 0x108) == '\\0';\n    break;\n  case 4:\n    if (*(char *)(lVar3 + 0x108) != '\\0') {\n      return 1;\n    }\n    bVar4 = lVar3 == lVar1;\n    break;\n  case 5:\n    if (*(char *)(lVar3 + 0x108) != '\\0') {\n      return 1;\n    }\n    if (lVar3 == lVar1) {\n      return 0;\n    }\n    return 1;\n  default:\n    goto switchD_140455d2d_default;\n  }\n  if (!bVar4) {\nswitchD_140455d2d_default:\n    return 0;\n  }\nswitchD_140455d2d_caseD_0:\n  return 1;\n}",
+  "fetched_at": "2026-04-26T17:55:56Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x1404758c0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "AIDiagnosticsNodeClass * __thiscall\nRootAIDiagnosticsNodeClass::scalar_deleting_destructor\n          (RootAIDiagnosticsNodeClass *this,ulonglong param_1)\n\n{\n                    /* inlined destructor: AIDiagnosticsNodeClass::~AIDiagnosticsNodeClass */\n  this->vftablePtr = (RootAIDiagnosticsNodeClass_vftable *)&AIDiagnosticsNodeClass::vftable;\n  if ((param_1 & 1) != 0) {\n    thunk_FUN_1407864b8(this,8);\n  }\n  return (AIDiagnosticsNodeClass *)this;\n}",
+  "fetched_at": "2026-04-26T17:58:39Z"
+}

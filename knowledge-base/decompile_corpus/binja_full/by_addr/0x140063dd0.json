@@ -1,0 +1,7 @@
+{
+  "addr": "0x140063dd0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140063de7        uint16_t r9_1 = (zx.q(arg1) u>> 0x10).w\n140063ded        int32_t r8 = sx.d(r9_1)\n140063e05        uint128_t zmm0 = _mm_cvtepi32_ps(zx.o(r8))\n140063e1b        int16_t rdx_3 = (r8 s/ 0x78).w\n140063e20        int32_t arg_18 = zmm0.d\n140063e26        uint128_t zmm1 = _mm_cvtepi32_ps(zx.o(r8))\n140063e29        int16_t rdi = neg.w(rdx_3)\n140063e34        if (r9_1 s>= 0)\n140063e34        rdi = rdx_3\n140063e38        int32_t arg_1c = zmm1.d\n140063e3e        char rax_2 = sub_1401c3c40(&data_140a78510)\n140063e45        int64_t arg_20\n140063e45        char rax_3\n140063e45        double entry_zmm2[0x2]\n140063e45        if (rax_2 == 1)\n140063e4c        arg_20 = 0\n140063e69        rax_3, zmm0, entry_zmm2 = sub_1401c3660(&data_140a78510, zx.q((r8 s>> 0x1f & 1) + 9), zx.q(arg1), &arg_20, nullptr)\n140063e70        if ((rax_2 != 1 || rax_3 != 1) && sub_14044b3f0(&data_140a28c10) == 0)\n140063e9d        int512_t zmm1_1\n140063e9d        int512_t zmm2\n140063e9d        rax_3, zmm1_1, zmm2 = sub_1402cc3e0(&data_140b27a10, 0xc, &arg_18, zmm0, entry_zmm2)\n140063ea4        if (rax_3 == 0)\n140063eb0        arg_20 = arg_18.q\n140063edc        return sub_140030fc0(&data_140a60df0, (r8 s>> 0x1f & 1) + 9, &arg_20, 0, zmm1_1, zmm2, sx.d(rdi))\n140063eee        return 1",
+  "fetched_at": "2026-04-26T16:55:40Z"
+}

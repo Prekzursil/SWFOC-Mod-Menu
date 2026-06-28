@@ -1,0 +1,7 @@
+{
+  "addr": "0x140205870",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14020588a        if (*(arg1 + 0x98) != 0)\n140205890        int64_t* rbx_1 = arg1 + 0xd0\n14020589a        if (rbx_1 == 0)\n1402058e2        rbx_1 = arg2\n1402058ac        if (WaitForSingleObject(*rbx_1, 0x2710) == WAIT_OBJECT_0)\n1402058dc        rbx_1[1] = \"PacketHandlerClass::Shutdown\"\n1402058ae        rbx_1[1]\n1402058e7        int64_t* rcx_2 = *(arg1 + 0x98)\n1402058f1        if (rcx_2 != 0)\n1402058f6        (*(*rcx_2 + 8))(rcx_2)\n1402058f9        *(arg1 + 0x98) = 0\n140205907        if (rbx_1 != 0)\n140205909        rbx_1[1]\n14020590d        HANDLE hMutex = *rbx_1\n140205910        rbx_1[1] = 0\n140205920        if (ReleaseMutex(hMutex) == 0)\n140205922        GetLastError()\n140205943        sub_14022e560(arg1)\n14020594f        EnterCriticalSection(arg1 + 0xa8)\n14020595d        while (*(arg1 + 0x90) != 0)\n140205975        sub_140209540(&data_140a14b80, *(**(arg1 + 0x88) + 0x10))\n140205981        int64_t* rbx_2 = **(arg1 + 0x88)\n140205984        void* rdx_4 = *rbx_2\n140205987        *(arg1 + 0x90) -= 1\n140205992        *rbx_2[1] = rdx_4\n140205999        *(rdx_4 + 8) = rbx_2[1]\n14020599d        void* rcx_6 = rbx_2[2]\n1402059a4        if (rcx_6 != 0)\n1402059ae        (*(*(rcx_6 + 0x60) + 8))(rcx_6 + 0x60)\n1402059b9        j_sub_1407864b8(rbx_2)\n1402059de        return LeaveCriticalSection(arg1 + 0xa8) __tailcall",
+  "fetched_at": "2026-04-26T17:27:53Z"
+}

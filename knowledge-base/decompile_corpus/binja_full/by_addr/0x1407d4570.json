@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407d4570",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1407d4584        int64_t r8 = sx.q(arg2)\n1407d4594        int64_t rbp = sx.q(arg1[r8 * 2 + 5].d)\n1407d459c        if (rbp.d == 0xffffffff)\n1407d45a9        sub_1407ce300(arg1[2], \"unfinished capture\", r8)\n1407d45a9        noreturn\n1407d45d9        char* rdx = arg1[(r8 + 2) * 2]\n1407d45e0        if (rbp.d != 0xfffffffe)\n1407d45bc        return sub_1407b94a0(arg1[2], rdx, rbp)\n1407d45f4        return sub_1407b9520(arg1[2], float.d(rdx - *arg1 + 1))",
+  "fetched_at": "2026-04-26T17:34:01Z"
+}

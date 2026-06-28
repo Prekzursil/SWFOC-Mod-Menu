@@ -1,0 +1,7 @@
+{
+  "addr": "0x14001a660",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nvoid FUN_14001a660(void)\n\n{\n  PlaceBeaconEventClass::PlaceBeaconEventClass((PlaceBeaconEventClass *)&DAT_140b38a80);\n  atexit(RefCountClass::~RefCountClass);\n  return;\n}\n\n",
+  "fetched_at": "2026-04-26T16:51:13Z"
+}

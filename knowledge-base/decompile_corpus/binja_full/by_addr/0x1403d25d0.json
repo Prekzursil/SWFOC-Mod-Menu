@@ -1,0 +1,7 @@
+{
+  "addr": "0x1403d25d0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1403d25e1        if (*(arg1 + 0x2930) == 0)\n1403d25e1        return \n1403d25f1        int64_t* rax = sub_140347b50(0x242)\n1403d25fc        if (rax == 0)\n1403d25fc        return \n1403d2602        int64_t r8_1 = *rax\n1403d2605        int64_t rdx\n1403d2605        rdx.b = 1\n1403d260f        (*(r8_1 + 0x78))(rax, rdx, r8_1)\n1403d2613        int64_t r8_2 = *rax\n1403d2616        int64_t rdx_1\n1403d2616        rdx_1.b = 1\n1403d261b        (*(r8_2 + 0x80))(rax, rdx_1, r8_2)\n1403d2622        int32_t i = 0\n1403d262a        if (*(arg1 + 0x2948) s> 0)\n1403d2631        int64_t* rbx_2 = nullptr\n1403d2647        struct ButtonComponentClass::TextButtonComponentClass::VTable** rbp_1 = *(rbx_2 + *(arg1 + 0x2940))\n1403d264e        if (rbp_1 != 0)\n1403d2653        sub_14034af40(rbp_1)\n1403d2660        j_sub_1407864b8(rbp_1)\n1403d2665        i += 1\n1403d2667        rbx_2 = &rbx_2[1]\n1403d2671        do while (i s< *(arg1 + 0x2948))\n1403d2678        *(arg1 + 0x2948) = 0\n1403d2682        int64_t rsi_1 = *(arg1 + 0x2918)\n1403d2689        int64_t* rbx_3 = *(arg1 + 0x2910)\n1403d2693        if (rbx_3 != rsi_1)\n1403d2698        sub_1404b3e40(rbx_3)\n1403d269d        rbx_3 = &rbx_3[0xd]\n1403d26a4        do while (rbx_3 != rsi_1)\n1403d26a6        rbx_3 = *(arg1 + 0x2910)\n1403d26b2        *(arg1 + 0x2918) = rbx_3\n1403d26b9        *(arg1 + 0x2930) = 0\n1403d26c4        *(arg1 + 0x2928) = 0x3fffff\n1403d26d8        return ",
+  "fetched_at": "2026-04-26T17:24:56Z"
+}

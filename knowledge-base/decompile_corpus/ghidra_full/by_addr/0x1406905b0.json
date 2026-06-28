@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406905b0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined * __thiscall SpaceFreeStoreClass::vfunction5_for_LuaUserVar(void)\n\n{\n  return &DAT_140a44468;\n}",
+  "fetched_at": "2026-04-26T17:17:26Z"
+}

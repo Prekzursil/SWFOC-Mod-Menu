@@ -1,0 +1,7 @@
+{
+  "addr": "0x140546640",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined * __thiscall FindBestLocalThreatCenterClass::vfunction5(void)\n\n{\n  return &DAT_140a448b0;\n}",
+  "fetched_at": "2026-04-26T18:35:38Z"
+}

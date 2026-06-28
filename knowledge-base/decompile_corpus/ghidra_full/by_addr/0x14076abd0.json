@@ -1,0 +1,7 @@
+{
+  "addr": "0x14076abd0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_14076abd0(void)\n\n{\n                    /* WARNING: Could not recover jumptable at 0x00014076abd7. Too many branches */\n                    /* WARNING: Treating indirect jump as call */\n  InitializeSListHead(&DAT_140b3b9c0);\n  return;\n}",
+  "fetched_at": "2026-04-26T18:10:17Z"
+}

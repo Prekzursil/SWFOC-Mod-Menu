@@ -1,0 +1,7 @@
+{
+  "addr": "0x140327110",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nvoid FUN_140327110(undefined8 param_1,longlong param_2,undefined4 param_3)\n\n{\n  undefined8 *puVar1;\n  undefined4 local_res18 [4];\n  \n  puVar1 = (undefined8 *)(*(longlong *)(param_2 + 0x298) + 0xf8);\n  if (0xf < *(ulonglong *)(*(longlong *)(param_2 + 0x298) + 0x110)) {\n    puVar1 = (undefined8 *)*puVar1;\n  }\n  local_res18[0] = param_3;\n  FUN_140327b10(\"STORY - BASE DESTROYED on planet %s\\r\\n\",puVar1);\n  FUN_14032e5f0(param_1,7,0,param_2,local_res18);\n  return;\n}\n\n",
+  "fetched_at": "2026-04-26T17:01:23Z"
+}

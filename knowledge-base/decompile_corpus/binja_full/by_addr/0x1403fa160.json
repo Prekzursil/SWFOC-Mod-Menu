@@ -1,0 +1,7 @@
+{
+  "addr": "0x1403fa160",
+  "tool": "binary_ninja",
+  "fact_id": "rva_planet_faction_change_initial",
+  "body": "1403fa177        void* rsi = arg2[0x17]\n1403fa18d        void var_38\n1403fa18d        sub_140084e60(&var_38, rsi + 0x68, arg3)\n1403fa19a        int32_t arg_10 = 0xffffffff\n1403fa1ab        int32_t rax = sub_1403f6af0(arg1, arg2, &arg_10)\n1403fa1b0        int32_t rcx_2 = arg_10\n1403fa1b9        *(rsi + 0x6c) = rcx_2\n1403fa1bc        *(rsi + 0x74) = rcx_2\n1403fa1c3        uint128_t zmm0 = _mm_cvtepi32_ps(zx.o(rax))\n1403fa1c6        *(rsi + 0x9c) = rcx_2\n1403fa1d3        *(rsi + 0x68) = zmm0.d\n1403fa1d8        *(rsi + 0x70) = zmm0.d\n1403fa1e1        *(rsi + 0x98) = int.d(zmm0.d)\n1403fa1ee        struct SignalDataClass::PlanetaryDataPackClass::PlanetFactionChangeClass::VTable* const var_68 = &PlanetaryDataPackClass::PlanetFactionChangeClass::`vftable'{for `SignalDataClass'}\n1403fa1f3        int64_t var_50 = 0\n1403fa1fb        void* rax_2 = sub_140294bc0(&data_140a16fd0, *(rsi + 0x6c))\n1403fa200        void* var_48 = rax_2\n1403fa208        int64_t var_60 = 0\n1403fa214        int64_t var_58 = *(rax_2 + 0x68)\n1403fa219        int64_t* var_40 = arg2\n1403fa221        sub_14038e5a0(arg2, *(rsi + 0x6c), nullptr)\n1403fa23b        sub_140220ed0(sub_140058570(), &arg2[7], 0xe, &var_68)\n1403fa24c        var_68 = &SignalDataClass::`vftable'\n1403fa26e        return sub_1404ad8e0(&var_38)",
+  "fetched_at": "2026-04-26T16:43:33Z"
+}

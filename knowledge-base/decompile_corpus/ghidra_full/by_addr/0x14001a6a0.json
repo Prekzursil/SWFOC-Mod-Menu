@@ -1,0 +1,7 @@
+{
+  "addr": "0x14001a6a0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nvoid FUN_14001a6a0(void)\n\n{\n  QuitGameEventClass::QuitGameEventClass((QuitGameEventClass *)&DAT_140b37ae0);\n  atexit(RefCountClass::~RefCountClass);\n  return;\n}\n\n",
+  "fetched_at": "2026-04-26T16:51:14Z"
+}

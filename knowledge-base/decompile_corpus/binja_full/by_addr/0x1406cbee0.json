@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406cbee0",
+  "tool": "binary_ninja",
+  "fact_id": "rva_company_combatant_ctor",
+  "body": "1406cbeed        struct CombatantBehaviorClass::CompanyCombatantClass::VTable** result = arg1\n1406cbef0        sub_1406383e0(arg1)\n1406cbef5        result[8] = arg2\n1406cbf00        *result = &CompanyCombatantClass::`vftable'{for `CombatantBehaviorClass'}\n1406cbf0a        result[1] = &CompanyCombatantClass::`vftable'{for `RefCountClass'}\n1406cbf15        result[3] = &CompanyCombatantClass::`vftable'{for `SignalListenerClass'}\n1406cbf1b        __builtin_memset(&result[0xa], 0, 0x11)\n1406cbf26        void* rax = *(arg2 + 0xc8)\n1406cbf2d        result[9] = rax\n1406cbf35        result[0xa] = *(rax + 0x48)\n1406cbf3c        result[5] = arg2\n1406cbf4a        return result",
+  "fetched_at": "2026-04-26T16:44:14Z"
+}

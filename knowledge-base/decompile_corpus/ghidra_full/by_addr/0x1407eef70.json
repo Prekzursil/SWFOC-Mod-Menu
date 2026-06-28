@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407eef70",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void SingletonInstance<class_TheFighterCellOccupationManagerClass>::\n     SingletonInstance<class_TheFighterCellOccupationManagerClass>_Constructor_or_Destructor(void)\n\n{\n  PTR_vftable_140a170b8 = (undefined *)&vftable;\n  return;\n}",
+  "fetched_at": "2026-04-26T19:02:51Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x1404c31b0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "SpecialWeaponSourceDummyBehaviorClass * __thiscall\nSpecialWeaponSourceDummyBehaviorClass::vfunction4\n          (SpecialWeaponSourceDummyBehaviorClass *this,int param_1)\n\n{\n  SpecialWeaponSourceDummyBehaviorClass *pSVar1;\n  \n  pSVar1 = (SpecialWeaponSourceDummyBehaviorClass *)0x0;\n  if (param_1 == 99) {\n    pSVar1 = this;\n  }\n  return pSVar1;\n}",
+  "fetched_at": "2026-04-26T18:11:17Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406cbfd0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall CompanyCombatantClass::vfunction29(CompanyCombatantClass *this,char param_1)\n\n{\n  longlong lVar1;\n  bool bVar2;\n  \n  lVar1 = *(longlong *)&this->field_0x40;\n  if ((param_1 == '\\x01') && (*(char *)&this->offset_0x50 == '\\0')) {\n    bVar2 = (*this->vftablePtr->vfunction27)(this);\n    if (!bVar2) {\n      *(undefined1 *)&this->offset_0x50 = 1;\n      (*this->vftablePtr->vfunction38)(this);\n    }\n  }\n  if (lVar1 != 0) {\n    *(char *)(lVar1 + 0x3a5) = param_1;\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T17:41:00Z"
+}

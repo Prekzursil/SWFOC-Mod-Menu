@@ -1,0 +1,7 @@
+{
+  "addr": "0x140653660",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nPerceptionGridEntryClass * __thiscall\nPerceptionGridEntryClass::scalar_deleting_destructor(PerceptionGridEntryClass *this,uint param_1)\n\n{\n  ~PerceptionGridEntryClass(this);\n  if ((param_1 & 1) != 0) {\n    thunk_FUN_1407864b8(this,0xb8);\n  }\n  return this;\n}\n\n",
+  "fetched_at": "2026-04-26T17:06:28Z"
+}

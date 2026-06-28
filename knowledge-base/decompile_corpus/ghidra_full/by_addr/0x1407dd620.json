@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407dd620",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall\nLightningEffectClass::vfunction9_for_RefCountClass(LightningEffectClass *this,undefined8 param_1)\n\n{\n  longlong *plVar1;\n  ulonglong uVar2;\n  \n  uVar2 = 0;\n  if ((longlong)\n      ((this->LightningEffectClass_data).offset_0xc8 - (this->LightningEffectClass_data).offset_0xc0\n      ) >> 3 != 0) {\n    do {\n      plVar1 = *(longlong **)((this->LightningEffectClass_data).offset_0xc0 + uVar2 * 8);\n      (**(code **)(*plVar1 + 0x40))(plVar1,param_1);\n      uVar2 = (ulonglong)((int)uVar2 + 1);\n    } while (uVar2 < (ulonglong)\n                     ((longlong)\n                      ((this->LightningEffectClass_data).offset_0xc8 -\n                      (this->LightningEffectClass_data).offset_0xc0) >> 3));\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T18:59:02Z"
+}

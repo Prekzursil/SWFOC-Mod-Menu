@@ -1,0 +1,7 @@
+{
+  "addr": "0x1404967a0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1404967ab        __builtin_memset(arg1, 0, 0x30)\n1404967c2        *(arg1 + 0x30) = arg2\n1404967c9        sub_140496730(arg1 + 0x38)\n1404967d2        sub_140496730(arg1 + 0x78)\n1404967df        return arg1",
+  "fetched_at": "2026-04-26T17:29:12Z"
+}

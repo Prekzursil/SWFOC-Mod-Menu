@@ -1,0 +1,7 @@
+{
+  "addr": "0x140373e30",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140373e35        int64_t r9 = sx.q(arg2)\n140373e3f        if (r9.d u<= 5)\n140373e56        void* r10_3 = arg1 + ((r9 + ((r9 + 0xad) << 1)) << 3)\n140373e85        int32_t temp1_1\n140373e6a        int64_t rax_1\n140373e6a        int64_t rdx_2\n140373e6a        rdx_2:rax_1 = muls.dp.q(0x2aaaaaaaaaaaaaab, *(r10_3 + 8) - *r10_3)\n140373e6d        int64_t rdx_3 = rdx_2 s>> 2\n140373e7b        if (rdx_3 != neg.q(rdx_3 u>> 0x3f))\n140373e92        if (arg3 s>= 0)\n140373e9a        uint64_t rdx_5 = zx.q(r9.d) * 3\n140373e9e        int64_t r9_1 = *(arg1 + (rdx_5 << 3) + 0xad0)\n140373eb1        int64_t rax_5\n140373eb1        int64_t rdx_6\n140373eb1        rdx_6:rax_5 = muls.dp.q(0x2aaaaaaaaaaaaaab, *(arg1 + (rdx_5 << 3) + 0xad8) - r9_1)\n140373eb4        int64_t rdx_7 = rdx_6 s>> 2\n140373ec5        if (arg3 s< rdx_7.d + (rdx_7 u>> 0x3f).d)\n140373ed8        return *(r9_1 + sx.q(arg3) * 0x18 + 8)\n140373e92        break\n140373e7d        r10_3 -= 0x18\n140373e81        temp1_1 = r9.d\n140373e81        r9 = zx.q(r9.d - 1)\n140373e85        do while (temp1_1 - 1 s>= 0)\n140373e8e        return 0",
+  "fetched_at": "2026-04-26T17:16:39Z"
+}

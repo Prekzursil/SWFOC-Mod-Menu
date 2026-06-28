@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407dd760",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* Library Function - Single Match\n    __GSHandlerCheck_SEH\n   \n   Libraries: Visual Studio 2017 Release, Visual Studio 2019 Release */\n\nvoid __GSHandlerCheck_SEH\n               (_EXCEPTION_RECORD *param_1,void *param_2,_CONTEXT *param_3,\n               _DISPATCHER_CONTEXT *param_4)\n\n{\n  uint uVar1;\n  uint *puVar2;\n  \n  puVar2 = *(uint **)(param_4 + 0x38);\n  uVar1 = *puVar2;\n  __GSHandlerCheckCommon(param_2,param_4,puVar2 + (ulonglong)uVar1 * 4 + 1);\n  if ((puVar2[(ulonglong)uVar1 * 4 + 1] & ((param_1->ExceptionFlags & 0x66) != 0) + 1) != 0) {\n    __C_specific_handler(param_1,param_2,param_3,param_4);\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T18:59:03Z"
+}

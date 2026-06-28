@@ -1,0 +1,7 @@
+{
+  "addr": "0x14013e160",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void thunk_FUN_14018a3b0(longlong param_1)\n\n{\n  int iVar1;\n  int iVar2;\n  undefined8 ****ppppuVar3;\n  undefined8 ****ppppuVar4;\n  longlong lVar5;\n  undefined8 ***apppuStack_28 [2];\n  undefined8 uStack_18;\n  ulonglong uStack_10;\n  \n  uStack_10 = 0xf;\n  apppuStack_28[0] = (undefined8 ****)0x0;\n  lVar5 = -1;\n  uStack_18 = 0;\n  do {\n    lVar5 = lVar5 + 1;\n  } while (*(char *)(param_1 + lVar5) != '\\0');\n  FUN_140022730(apppuStack_28,param_1);\n  iVar2 = DAT_140a12a14 * 2 >> 1;\n  if (iVar2 <= DAT_140a12a10) {\n    iVar1 = iVar2 / 10;\n    if (iVar2 / 10 < 10) {\n      iVar1 = 10;\n    }\n    FUN_140069970(&PTR_vftable_140a12a00,iVar1 + iVar2,0,1);\n  }\n  lVar5 = (longlong)DAT_140a12a10;\n  DAT_140a12a10 = DAT_140a12a10 + 1;\n  ppppuVar3 = (undefined8 ****)(lVar5 * 0x20 + DAT_140a12a08);\n  if (ppppuVar3 != apppuStack_28) {\n    ppppuVar4 = apppuStack_28;\n    if (0xf < uStack_10) {\n      ppppuVar4 = (undefined8 ****)apppuStack_28[0];\n    }\n    FUN_140022730(ppppuVar3,ppppuVar4,uStack_18);\n  }\n  if (0xf < uStack_10) {\n    if (0xfff < uStack_10 + 1) {\n      if (0x1f < (ulonglong)((longlong)apppuStack_28[0] + (-8 - (longlong)apppuStack_28[0][-1]))) {\n                    /* WARNING: Subroutine does not return */\n        FUN_1407711cc(apppuStack_28[0][-1],uStack_10 + 0x28);\n      }\n    }\n    thunk_FUN_1407864b8();\n    return;\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T17:16:24Z"
+}

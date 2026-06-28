@@ -1,0 +1,7 @@
+{
+  "addr": "0x1405c8fb0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_1405c8fb0(longlong param_1,float param_2,float *param_3)\n\n{\n  float fVar1;\n  longlong lVar2;\n  float fVar3;\n  double dVar4;\n  undefined4 local_38;\n  undefined4 local_34;\n  undefined4 local_30;\n  \n  lVar2 = *(longlong *)(param_1 + 0x28);\n  local_38 = *(undefined4 *)(lVar2 + 0x84);\n  local_30 = *(undefined4 *)(lVar2 + 0x8c);\n  fVar3 = (float)FUN_14020b6d0(*(undefined4 *)(lVar2 + 0x88));\n  fVar1 = *param_3;\n  if (fVar1 < ABS(param_2)) {\n    if (param_2 <= 0.0) {\n      if (0.0 <= param_2) goto LAB_1405c9055;\n      fVar3 = fVar3 - fVar1;\n    }\n    else {\n      fVar3 = fVar3 + fVar1;\n    }\n    *param_3 = 0.0;\n  }\n  else {\n    fVar3 = fVar3 + param_2;\n    dVar4 = (double)FUN_1407760bc((double)param_2);\n    *param_3 = *param_3 - (float)dVar4;\n  }\nLAB_1405c9055:\n  local_34 = FUN_14020b710(fVar3);\n  FUN_1403a8710(*(undefined8 *)(param_1 + 0x28),&local_38);\n  return;\n}",
+  "fetched_at": "2026-04-26T18:45:01Z"
+}

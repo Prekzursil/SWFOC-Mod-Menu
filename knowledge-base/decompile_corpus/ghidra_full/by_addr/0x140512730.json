@@ -1,0 +1,7 @@
+{
+  "addr": "0x140512730",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined4 __thiscall EventClass::vfunction7(EventClass *this,longlong param_1)\n\n{\n  uint in_EAX;\n  undefined4 uVar1;\n  \n  uVar1 = DAT_140a16fb4;\n  if (param_1 != 0) {\n    in_EAX = FUN_1402051c0(param_1,DAT_140a16fb4);\n    if ((char)in_EAX != '\\0') {\n      uVar1 = FUN_1402043b0(param_1,uVar1);\n      (this->EventClass_data).offset_0xc = uVar1;\n      return CONCAT31((int3)((uint)uVar1 >> 8),1);\n    }\n  }\n  return in_EAX & 0xffffff00;\n}",
+  "fetched_at": "2026-04-26T18:22:35Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x140640ff0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nlonglong __thiscall JetPackLocomotorBehaviorClass::vfunction57(JetPackLocomotorBehaviorClass *this)\n\n{\n  undefined *puVar1;\n  uint7 uVar2;\n  \n  puVar1 = this->offset_0x18[0x15];\n  uVar2 = (uint7)((ulonglong)this->offset_0x18 >> 8);\n  if ((puVar1 != (undefined *)0x0) && (*(int *)(puVar1 + 0x48) != 0x16)) {\n    return CONCAT71(uVar2,1);\n  }\n  return (ulonglong)uVar2 << 8;\n}\n\n",
+  "fetched_at": "2026-04-26T17:03:13Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x1405d7ee0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined8 FUN_1405d7ee0(longlong *param_1)\n\n{\n  ulonglong uVar1;\n  ulonglong uVar2;\n  \n  uVar1 = param_1[1] - *param_1 >> 3;\n  if (uVar1 == 0) {\n    return 0;\n  }\n  uVar2 = (ulonglong)*(uint *)(param_1 + 3);\n  if (uVar1 <= uVar2) {\n    uVar2 = (ulonglong)((int)uVar1 - 1);\n  }\n  return *(undefined8 *)(*param_1 + uVar2 * 8);\n}",
+  "fetched_at": "2026-04-26T18:45:41Z"
+}

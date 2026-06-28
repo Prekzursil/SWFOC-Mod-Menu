@@ -1,0 +1,7 @@
+{
+  "addr": "0x1404d75a0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall SpaceModeClass::vfunction85(SpaceModeClass *this)\n\n{\n  FUN_140306290(&DAT_140b27f60,2);\n  FUN_1402f8ff0(&DAT_140b27f60);\n  (*this->vftablePtr->vfunction87)(this);\n  FUN_140358b00(&DAT_140b2bcb0,2,*(undefined4 *)&this->SpaceModeClass_data);\n  (*this->vftablePtr->vfunction88)(this);\n  GameModeClass::vfunction85((GameModeClass *)this);\n  return;\n}",
+  "fetched_at": "2026-04-26T18:14:05Z"
+}

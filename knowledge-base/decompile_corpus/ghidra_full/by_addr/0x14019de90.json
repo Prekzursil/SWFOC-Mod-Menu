@@ -1,0 +1,7 @@
+{
+  "addr": "0x14019de90",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "DynamicVectorClass<class_alRawAnim::alRawJointAnim> * __thiscall\nDynamicVectorClass<class_alRawAnim::alRawJointAnim>::\nDynamicVectorClass<class_alRawAnim::alRawJointAnim>\n          (DynamicVectorClass<class_alRawAnim::alRawJointAnim> *this)\n\n{\n  this[5].vftablePtr = (DynamicVectorClass<class_alRawAnim::alRawJointAnim>_vftable *)0xf;\n                    /* inlined constructor: alRawAnim::alRawAnim */\n  *(undefined4 *)&this[1].vftablePtr = 0;\n  this->vftablePtr =\n       (DynamicVectorClass<class_alRawAnim::alRawJointAnim>_vftable *)&alRawAnim::vftable;\n  this[7].vftablePtr = &vftable;\n  this[2].vftablePtr = (DynamicVectorClass<class_alRawAnim::alRawJointAnim>_vftable *)0x0;\n  this[4].vftablePtr = (DynamicVectorClass<class_alRawAnim::alRawJointAnim>_vftable *)0x0;\n  this[8].vftablePtr = (DynamicVectorClass<class_alRawAnim::alRawJointAnim>_vftable *)0x0;\n  this[9].vftablePtr = (DynamicVectorClass<class_alRawAnim::alRawJointAnim>_vftable *)0x0;\n  return this;\n}",
+  "fetched_at": "2026-04-26T17:37:37Z"
+}

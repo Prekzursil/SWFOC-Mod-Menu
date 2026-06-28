@@ -1,0 +1,7 @@
+{
+  "addr": "0x140220e90",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_140220e90(undefined8 param_1,longlong param_2,longlong param_3,undefined4 param_4)\n\n{\n  if ((param_2 != 0) && (param_3 != 0)) {\n    SignalListClass::SignalListClass_Constructor_or_Destructor(param_2,param_4,param_3);\n    return;\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T18:03:31Z"
+}

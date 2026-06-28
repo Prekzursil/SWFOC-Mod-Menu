@@ -1,0 +1,7 @@
+{
+  "addr": "0x140489c40",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140489c5c        if (*(arg2 + 0x10) != 0 && *(arg1 + 0x38) != 0)\n140489c67        if (*(arg2 + 0x18) u>= 0x10)\n140489c69        arg2 = *arg2\n140489c71        char var_118[0x110]\n140489c71        char* rcx = &var_118 - arg2\n140489c8c        char i\n140489c80        i = *arg2\n140489c83        *(rcx + arg2) = i\n140489c86        arg2 += 1\n140489c8c        do while (i != 0)\n140489c93        _strupr(&var_118)\n140489c9d        int64_t rax_1 = -1\n140489ca4        rax_1 += 1\n140489cab        do while (var_118[rax_1] != 0)\n140489cb7        int32_t rax_2 = sub_140215a30(&var_118, rax_1.d, 0)\n140489cbc        void** rdx_1 = *(arg1 + 0x30)\n140489cc0        void** r8_1 = rdx_1\n140489cc3        void** rcx_3 = rdx_1[1]\n140489ccb        while (*(rcx_3 + 0x19) == 0)\n140489cd3        if (rcx_3[4].d u>= rax_2)\n140489cdb        rdx_1 = rcx_3\n140489cde        rcx_3 = *rcx_3\n140489cd5        rcx_3 = rcx_3[2]\n140489cf5        if (*(rdx_1 + 0x19) == 0 && rax_2 u>= rdx_1[4].d && rdx_1 != r8_1)\n140489cf7        void* rbx_1 = rdx_1[5]\n140489cfe        if (rbx_1 != 0)\n140489d05        struct RefCountClass::Draw3DTextCrawlClass::VTable** rax_3 = operator new(0xf8)\n140489d0d        if (rax_3 != 0)\n140489d22        return sub_1405d8840(rax_3, rbx_1)\n140489d2d        return 0",
+  "fetched_at": "2026-04-26T17:28:42Z"
+}

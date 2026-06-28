@@ -1,0 +1,7 @@
+{
+  "addr": "0x140198790",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1401987ae        *arg1 = &alD3dRenderTarget::`vftable'{for `alRenderTarget'}\n1401987ba        arg1[2] = &alD3dRenderTarget::`vftable'{for `MultiLinkedListMember'}\n1401987c5        arg1[4] = &alD3dRenderTarget::`vftable'{for `alD3dResource'}\n1401987c9        int64_t* rcx = arg1[8]\n1401987d0        if (rcx != 0)\n1401987d5        (*(*rcx + 0x10))(rcx)\n1401987d8        arg1[8] = 0\n1401987e0        int64_t* rcx_1 = arg1[7]\n1401987e7        if (rcx_1 != 0)\n1401987ec        (*(*rcx_1 + 8))(rcx_1)\n1401987ef        arg1[7] = 0\n1401987fb        sub_1401aba70(&arg1[4])\n140198804        sub_14020a820(&arg1[2])\n140198810        *arg1 = &RefCountClass::`vftable'{for `IRefCountClass'}\n140198817        if ((arg2 & 1) != 0)\n140198821        j_sub_1407864b8(arg1)\n14019883d        return arg1",
+  "fetched_at": "2026-04-26T17:24:36Z"
+}

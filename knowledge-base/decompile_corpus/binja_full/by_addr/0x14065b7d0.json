@@ -1,0 +1,7 @@
+{
+  "addr": "0x14065b7d0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14065b7d0        void* rax_1 = *(arg1 + 0x98)\n14065b7da        if (rax_1 == 0)\n14065b7dc        return rax_1\n14065b7ec        void* rax\n14065b7ec        rax.b = 1\n14065b7f1        *arg3 = _mm_cvtps_pd(*(*(rax_1 + 0x298) + 0x800))\n14065b7f6        return rax",
+  "fetched_at": "2026-04-26T17:07:35Z"
+}

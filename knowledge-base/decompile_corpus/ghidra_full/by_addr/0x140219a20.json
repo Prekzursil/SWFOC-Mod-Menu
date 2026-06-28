@@ -1,0 +1,7 @@
+{
+  "addr": "0x140219a20",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined1 FUN_140219a20(longlong param_1,undefined8 param_2,undefined8 param_3)\n\n{\n  undefined8 uVar1;\n  undefined1 uVar2;\n  DWORD DVar3;\n  BOOL BVar4;\n  longlong lVar5;\n  char *pcVar6;\n  undefined8 *puVar7;\n  undefined8 *local_res20;\n  \n  lVar5 = FUN_14021b210();\n  if (lVar5 == 0) {\n    return 0;\n  }\n  puVar7 = (undefined8 *)(param_1 + 0x28);\n  if (puVar7 == (undefined8 *)0x0) {\n    uVar2 = FUN_140240370(lVar5 + 0x28,param_3);\n    if (local_res20 == (undefined8 *)0x0) {\n      return uVar2;\n    }\n  }\n  else {\n    DVar3 = WaitForSingleObject((HANDLE)*puVar7,10000);\n    local_res20 = puVar7;\n    if (DVar3 == 0) {\n      *(undefined8 *)(param_1 + 0x30) = 0;\n      uVar2 = FUN_140240370(lVar5 + 0x28,param_3);\n    }\n    else {\n      pcVar6 = \"Unknown\";\n      if (*(char **)(param_1 + 0x30) != (char *)0x0) {\n        pcVar6 = *(char **)(param_1 + 0x30);\n      }\n      FUN_140025760(\"ThreadLockMutexClass -- Failed to obtain mutex within 10 seconds (current owner is %s)\\n\"\n                    ,pcVar6);\n      uVar2 = FUN_140240370(lVar5 + 0x28,param_3);\n    }\n  }\n  uVar1 = local_res20[1];\n  local_res20[1] = 0;\n  BVar4 = ReleaseMutex((HANDLE)*local_res20);\n  if (BVar4 == 0) {\n    DVar3 = GetLastError();\n    FUN_140025760(\"ReleaseMutex failed with error code %d - %s (mutex owner is %s)\\n\",DVar3,\n                  \"RunDebugBuild\",uVar1);\n  }\n  return uVar2;\n}",
+  "fetched_at": "2026-04-26T18:01:21Z"
+}

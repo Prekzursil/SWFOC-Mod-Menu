@@ -1,0 +1,7 @@
+{
+  "addr": "0x1404c1e50",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall FrameSyncEventClass::vfunction5(void)\n\n{\n  if (DAT_140b318c8 != (code *)0x0) {\n                    /* WARNING: Could not recover jumptable at 0x0001404c1e5c. Too many branches */\n                    /* WARNING: Treating indirect jump as call */\n    (*DAT_140b318c8)();\n    return;\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T18:09:28Z"
+}

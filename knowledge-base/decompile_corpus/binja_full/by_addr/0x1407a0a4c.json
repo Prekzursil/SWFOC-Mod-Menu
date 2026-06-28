@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407a0a4c",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1407a0a50        HANDLE hObject = data_140a457a0\n1407a0a5b        if (hObject u<= -3)\n1407a0a5d        CloseHandle(hObject)\n1407a0a67        return ",
+  "fetched_at": "2026-04-26T17:32:20Z"
+}

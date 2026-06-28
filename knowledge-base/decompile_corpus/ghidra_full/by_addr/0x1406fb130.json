@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406fb130",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "FindWeaknessAbilityClass * __thiscall\nFindWeaknessAbilityClass::scalar_deleting_destructor(FindWeaknessAbilityClass *this,uint param_1)\n\n{\n                    /* inlined destructor: FindWeaknessAbilityClass::~FindWeaknessAbilityClass */\n  this->vftablePtr = &vftable_for_IXMLLoadableClass;\n  this->vftablePtr = &vftable_for_RefCountClass;\n  (this->FindWeaknessAbilityClass_data).offset_0x0 = 0;\n  SpecialAbilityClass::~SpecialAbilityClass((SpecialAbilityClass *)this);\n  if ((param_1 & 1) != 0) {\n    thunk_FUN_1407864b8(this,0x180);\n  }\n  return this;\n}",
+  "fetched_at": "2026-04-26T17:49:49Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407865e8",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* Library Function - Single Match\n    ___lc_collate_cp_func\n   \n   Libraries: Visual Studio 2015 Release, Visual Studio 2017 Release, Visual Studio 2019 Release */\n\nUINT __cdecl ___lc_collate_cp_func(void)\n\n{\n  longlong lVar1;\n  longlong local_res8 [4];\n  \n  lVar1 = FUN_14078f07c();\n  local_res8[0] = *(longlong *)(lVar1 + 0x90);\n  __acrt_update_locale_info(lVar1,local_res8);\n  return *(UINT *)(local_res8[0] + 0x14);\n}",
+  "fetched_at": "2026-04-26T18:51:39Z"
+}

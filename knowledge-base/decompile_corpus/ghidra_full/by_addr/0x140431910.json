@@ -1,0 +1,7 @@
+{
+  "addr": "0x140431910",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall\nFleetBehaviorClass::vfunction17(FleetBehaviorClass *this,longlong param_1,longlong param_2)\n\n{\n  longlong lVar1;\n  \n  FUN_140434d30();\n  lVar1 = *(longlong *)(param_1 + 0xc0);\n  if (*(longlong *)(lVar1 + 0x40) == param_2) {\n    *(undefined8 *)(lVar1 + 0x40) = 0;\n    *(undefined4 *)(lVar1 + 0x48) = 0xfffffffe;\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T17:50:51Z"
+}

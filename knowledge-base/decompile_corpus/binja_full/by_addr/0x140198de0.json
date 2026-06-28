@@ -1,0 +1,7 @@
+{
+  "addr": "0x140198de0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140198de6        struct alD3dTexture::alD3dTextureCube::VTable** result = arg1\n140198de9        sub_140185d30(arg1)\n140198df5        result[0xf] = 0\n140198dfd        *result = &alD3dTextureCube::`vftable'{for `alD3dTexture'}\n140198e07        result[2] = &alD3dTextureCube::`vftable'{for `MultiLinkedListMember'}\n140198e13        return result",
+  "fetched_at": "2026-04-26T17:24:38Z"
+}

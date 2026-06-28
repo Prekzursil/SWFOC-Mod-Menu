@@ -1,0 +1,7 @@
+{
+  "addr": "0x14061c9f0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined8 __thiscall\nSkyDomeBehaviorClass::vfunction7(SkyDomeBehaviorClass *this,longlong param_1,int param_2)\n\n{\n  undefined4 uVar1;\n  longlong *plVar2;\n  undefined *puVar3;\n  \n  BehaviorClass::vfunction7((BehaviorClass *)this,param_1,param_2);\n  plVar2 = (longlong *)\n           ActionDrivenHeroClashClass::vfunction5(*(ActionDrivenHeroClashClass **)(param_1 + 0x2a0))\n  ;\n  if (plVar2 != *(longlong **)&this->field_0x40) {\n    *(undefined4 *)&this->offset_0x40 = 0xffffffff;\n    if (plVar2 != (longlong *)0x0) {\n      for (puVar3 = (undefined *)(**(code **)(*plVar2 + 0x20))(plVar2); puVar3 != (undefined *)0x0;\n          puVar3 = *(undefined **)(puVar3 + 8)) {\n        if (puVar3 == &DAT_140a12370) {\n          *(longlong **)&this->field_0x48 = plVar2;\n          uVar1 = FUN_14012d2a0(plVar2,PTR_DAT_140a442a0);\n          *(undefined4 *)&this->offset_0x40 = uVar1;\n          *(longlong **)&this->field_0x40 = plVar2;\n          return 0;\n        }\n      }\n    }\n    *(undefined8 *)&this->field_0x48 = 0;\n    *(longlong **)&this->field_0x40 = plVar2;\n  }\n  return 0;\n}",
+  "fetched_at": "2026-04-26T17:29:18Z"
+}

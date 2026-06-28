@@ -1,0 +1,7 @@
+{
+  "addr": "0x140370f00",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140370f13        float zmm2[0x4]\n140370f13        if (arg2 != 0)\n140370f2a        void* rax_2 = (*(*arg2 + 0x10))(arg2, 0x16)\n140370f30        if (rax_2 != 0)\n140370f3f        int32_t zmm0_1 = sub_1404049e0(rax_2)\n140370f4c        zmm2 = _mm_min_ss((*(arg1 + 0x37c))[0], zmm0_1)\n140370f32        zmm2 = *(arg1 + 0x37c)\n140370f15        zmm2 = *(arg1 + 0x37c)\n140370f60        return sub_140376990(arg1, arg2, zmm2) __tailcall",
+  "fetched_at": "2026-04-26T17:15:25Z"
+}

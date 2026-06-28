@@ -1,0 +1,7 @@
+{
+  "addr": "0x140353350",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nvoid FUN_140353350(longlong param_1,float *param_2)\n\n{\n  float fVar1;\n  longlong *plVar2;\n  undefined8 uVar3;\n  float local_68;\n  float local_64;\n  undefined1 local_58 [16];\n  float local_48;\n  float local_44;\n  undefined1 local_38 [12];\n  float local_2c;\n  float local_1c;\n  \n  plVar2 = DAT_140b28f20;\n  if (DAT_140b28f20 != (longlong *)0x0) {\n    (**(code **)*DAT_140b28f20)(DAT_140b28f20);\n    (**(code **)(*plVar2 + 8))(plVar2);\n  }\n  FUN_140261a70(plVar2,(int)*param_2,(int)param_2[1],&local_68,local_58);\n  if ((*(longlong *)(param_1 + 0x80) == 0) ||\n     (-1 < *(char *)(*(longlong *)(param_1 + 0x80) + 0x3e2))) {\n    uVar3 = FUN_1402648b0(*(undefined8 *)(*(longlong *)(param_1 + 0x88) + 200));\n    FUN_14012d2c0(uVar3,*(undefined4 *)(param_1 + 0xa0),local_38);\n    local_44 = local_1c;\n    local_48 = local_2c;\n  }\n  else {\n    FUN_140261a70(plVar2,(int)*param_2,(int)param_2[1],&local_68,local_58);\n    FUN_140261a70(plVar2,(int)*(float *)(param_1 + 0x30),(int)*(float *)(param_1 + 0x34),&local_48,\n                  local_58);\n  }\n  *(float *)(param_1 + 0x3c) = local_44 - local_64;\n  *(float *)(param_1 + 0x38) = local_48 - local_68;\n  *(float *)(param_1 + 0x30) = *param_2;\n  fVar1 = param_2[1];\n  *(byte *)(param_1 + 0xc0) = *(byte *)(param_1 + 0xc0) & 0xfe;\n  *(float *)(param_1 + 0x34) = fVar1;\n  return;\n}\n\n",
+  "fetched_at": "2026-04-26T17:10:20Z"
+}

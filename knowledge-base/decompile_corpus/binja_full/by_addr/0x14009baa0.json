@@ -1,0 +1,7 @@
+{
+  "addr": "0x14009baa0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14009baba        if (data_140a61e70 == 0)\n14009baba        return \n14009bac5        void* rax_1 = operator new(0x20)\n14009bad1        int64_t var_18_1 = 0x18\n14009badf        int64_t var_10_1 = 0x1f\n14009baeb        __builtin_strncpy(rax_1, \"IDC_DISCONNECT_CHAT_LIST\", 0x19)\n14009baff        int32_t rcx = data_140a61e74\n14009bb05        int32_t rdx = data_140a112c0\n14009bb0b        void* var_28 = rax_1\n14009bb13        data_140a61e74 = rcx + 1\n14009bb42        sub_1401c3c50(&data_140a78510, rdx, &var_28, arg1, rcx, arg2, arg2.b, 0, 0, 1, 0)\n14009bb50        if (var_10_1 u< 0x10)\n14009bb50        return \n14009bb52        void* rcx_1 = var_28\n14009bb5a        void* rax_3 = rcx_1\n14009bb64        if (var_10_1 + 1 u>= 0x1000)\n14009bb66        rcx_1 = *(rcx_1 - 8)\n14009bb79        if (rax_3 - rcx_1 - 8 u> 0x1f)\n14009bb91        _invalid_parameter_noinfo_noreturn()\n14009bb91        noreturn\n14009bb7b        j_sub_1407864b8(rcx_1)\n14009bb90        return ",
+  "fetched_at": "2026-04-26T16:58:38Z"
+}

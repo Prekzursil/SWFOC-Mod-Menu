@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406a3bd0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined * __thiscall LuaDiscreteDistributionClass::vfunction5(void)\n\n{\n  return &DAT_140a446e0;\n}",
+  "fetched_at": "2026-04-26T17:21:34Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x14032a3b0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14032a3c5        void** rdx = *(arg3 + 0x68)\n14032a3d1        if (rdx[3] u>= 0x10)\n14032a3d3        rdx = *rdx\n14032a3dd        sub_140327b10(\"STORY - %s LOST SPACE BATTLE\\r\\n\", rdx)\n14032a3e7        int32_t arg_18 = 1\n14032a413        return sub_14032e5f0(arg1, 0x14, arg3, &arg_18, arg2)",
+  "fetched_at": "2026-04-26T17:01:43Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x14076aa54",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined8 __thiscall DrawPrimitiveClass::vfunction19(void)\n\n{\n  return 0;\n}",
+  "fetched_at": "2026-04-26T18:10:12Z"
+}

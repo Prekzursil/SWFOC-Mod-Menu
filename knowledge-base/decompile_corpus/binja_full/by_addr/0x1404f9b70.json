@@ -1,0 +1,7 @@
+{
+  "addr": "0x1404f9b70",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1404f9b76        void* rdx = *arg1\n1404f9b7f        if (rdx != 0)\n1404f9b8f        int64_t i = *(rdx - 8)\n1404f9ba0        void* rbx_1 = rdx + i * 0x48\n1404f9ba7        if (i != 0)\n1404f9bc0        rbx_1 -= 0x48\n1404f9bc4        i -= 1\n1404f9bcb        *rbx_1 = &MultiLinkedListClass<class GameObjectClass>::`vftable'{for `GenericMultiLinkedList'}\n1404f9bd2        while (*(rbx_1 + 0x10) != rbx_1 + 8)\n1404f9be8        int64_t* arg_8\n1404f9be8        sub_14020ac80(rbx_1, &arg_8)\n1404f9bf6        sub_14020a960(rbx_1)\n1404f9bfe        do while (i != 0)\n1404f9c00        *(rdx - 8)\n1404f9c1c        j_sub_1407864b8(rdx - 8)\n1404f9c32        *arg1 = 0\n1404f9c35        arg1[1] = 0\n1404f9c3f        return 0",
+  "fetched_at": "2026-04-26T17:31:50Z"
+}

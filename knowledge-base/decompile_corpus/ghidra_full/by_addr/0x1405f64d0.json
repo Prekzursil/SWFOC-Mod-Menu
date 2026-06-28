@@ -1,0 +1,7 @@
+{
+  "addr": "0x1405f64d0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall AIDiagsNode::vfunction10(AIDiagsNode *this)\n\n{\n  alD3dTextureEffectParam *this_00;\n  \n  this_00 = (alD3dTextureEffectParam *)(this->RefCountClass_data).offset_0x50;\n  (this->RefCountClass_data).offset_0x50 = (longlong *)0x0;\n  if (this_00 != (alD3dTextureEffectParam *)0x0) {\n    alD3dTextureEffectParam::vfunction5(this_00,(longlong *)0x0);\n    return;\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T17:23:24Z"
+}

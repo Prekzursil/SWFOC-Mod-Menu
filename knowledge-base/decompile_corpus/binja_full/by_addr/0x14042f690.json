@@ -1,0 +1,7 @@
+{
+  "addr": "0x14042f690",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14042f697        return \"AbilityCountdownBehaviorClass\"",
+  "fetched_at": "2026-04-26T17:26:49Z"
+}

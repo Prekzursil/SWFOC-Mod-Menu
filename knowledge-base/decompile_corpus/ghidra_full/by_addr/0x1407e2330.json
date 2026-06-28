@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407e2330",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* WARNING: This is an inlined function */\n\nvoid _guard_dispatch_icall(void)\n\n{\n  code *UNRECOVERED_JUMPTABLE;\n  \n                    /* WARNING: Could not recover jumptable at 0x0001407e2330. Too many branches */\n                    /* WARNING: Treating indirect jump as call */\n  (*UNRECOVERED_JUMPTABLE)();\n  return;\n}",
+  "fetched_at": "2026-04-26T18:59:28Z"
+}

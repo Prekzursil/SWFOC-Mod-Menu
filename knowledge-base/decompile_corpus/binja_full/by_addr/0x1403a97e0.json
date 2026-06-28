@@ -1,0 +1,7 @@
+{
+  "addr": "0x1403a97e0",
+  "tool": "binary_ninja",
+  "fact_id": "rva_take_damage_property_dispatch",
+  "body": "1403a97f7        if (arg1[0x6f].b == 0xff)\n1403a97f7        return \n1403a9801        uint64_t rax = (*(*arg1 + 0x10))(arg1, 0x46)\n1403a9807        if (rax == 0)\n1403a9807        return \n1403a9811        if (arg3 != 0)\n1403a981d        return sub_14042fde0(rax, arg2) __tailcall\n1403a9822        sub_14042f320(rax, arg2)\n1403a9831        return ",
+  "fetched_at": "2026-04-26T16:43:29Z"
+}

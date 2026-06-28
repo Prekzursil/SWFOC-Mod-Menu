@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407b8930",
+  "tool": "binary_ninja",
+  "fact_id": "api_lua_open",
+  "body": "1407b8947        int64_t* result = sub_1407bf7e0(nullptr, 0, 0, 0xd0)\n1407b8954        if (result != 0)\n1407b895d        result[1].w = 8\n1407b8974        *result = 0\n1407b8977        result[0xd] = 0\n1407b897b        result[0xe].d = 0\n1407b898c        *(result + 0x8d) = 1\n1407b8995        *(result + 0x8c) = 0\n1407b899c        __builtin_memset(&result[0x12], 0, 0x14)\n1407b89a3        __builtin_memset(&result[0x16], 0, 0x20)\n1407b89aa        result[0x11].d = 0\n1407b89b4        result[0x10] = 0\n1407b89e0        __builtin_memset(&result[4], 0, 0x40)\n1407b89eb        if (sub_1407bc0d0(result, sub_1407b8430, 0) == 0)\n1407b8a10        return result\n1407b89f0        sub_1407b8350(result)\n1407b8a02        return 0",
+  "fetched_at": "2026-04-26T16:44:22Z"
+}

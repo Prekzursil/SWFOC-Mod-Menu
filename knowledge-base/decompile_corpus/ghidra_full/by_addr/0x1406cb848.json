@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406cb848",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall BaseCombatantClass::vfunction3(BaseCombatantClass *this)\n\n{\n  FUN_1406cb860(&this[-1].RootClass_data.offset_0x338);\n  return;\n}",
+  "fetched_at": "2026-04-26T17:40:36Z"
+}

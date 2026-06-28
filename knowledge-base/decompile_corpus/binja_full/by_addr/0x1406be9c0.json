@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406be9c0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1406be9c2        *(arg1 + 0x4c) = 0x101\n1406be9cf        arg1[1] = 0\n1406be9d3        *arg1 = &PotentialPlanClass::`vftable'{for `SignalListenerClass'}\n1406be9dd        arg1[2] = &PotentialPlanClass::`vftable'{for `RefCountClass'}\n1406be9e4        arg1[3].d = 0\n1406be9e7        __builtin_memset(&arg1[4], 0, 0x2c)\n1406be9fe        __builtin_memset(&arg1[0xa], 0, 0xb1)\n1406bea8c        *(arg1 + 0x104) = 0xffffffff\n1406bea96        __builtin_memset(&arg1[0x21], 0, 0x90)\n1406beb14        arg1[0x33] = -1\n1406beb1f        arg1[0x34].w = 0\n1406beb26        *(arg1 + 0x1a4) = 0\n1406beb2d        __builtin_memset(&arg1[0x36], 0, 0x60)\n1406beb81        return arg1",
+  "fetched_at": "2026-04-26T17:25:01Z"
+}

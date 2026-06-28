@@ -1,0 +1,7 @@
+{
+  "addr": "0x140294a70",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140294a70        int64_t rdx = *arg1\n140294a81        if ((arg1[1] - rdx) s>> 3 != 0)\n140294a87        void* rcx = *(rdx + (sx.q(arg1[6].d) << 3))\n140294a8e        if (rcx != 0)\n140294a93        return zx.q(*(rcx + 0x4c))\n140294a99        return 0xffffffff",
+  "fetched_at": "2026-04-26T17:32:38Z"
+}

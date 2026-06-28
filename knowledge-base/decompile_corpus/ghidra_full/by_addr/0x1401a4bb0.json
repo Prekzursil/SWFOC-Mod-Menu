@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401a4bb0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* Library Function - Single Match\n    private: void __cdecl std::vector<unsigned __int64,class std::allocator<unsigned __int64>\n   >::_Reallocate_exactly(unsigned __int64) __ptr64\n   \n   Library: Visual Studio 2019 Release */\n\nvoid __thiscall\nstd::vector<unsigned___int64,class_std::allocator<unsigned___int64>_>::_Reallocate_exactly\n          (vector<unsigned___int64,class_std::allocator<unsigned___int64>_> *this,__uint64 param_1)\n\n{\n  longlong lVar1;\n  longlong lVar2;\n  undefined8 uVar3;\n  \n  lVar1 = *(longlong *)(this + 8);\n  lVar2 = *(longlong *)this;\n  uVar3 = FUN_140048c40();\n  FUN_14076bd80(uVar3,*(longlong *)this,*(longlong *)(this + 8) - *(longlong *)this);\n  FUN_140048380(this,uVar3,lVar1 - lVar2 >> 2,param_1);\n  return;\n}",
+  "fetched_at": "2026-04-26T17:39:06Z"
+}

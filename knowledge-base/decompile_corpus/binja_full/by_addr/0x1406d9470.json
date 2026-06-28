@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406d9470",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1406d948d        double* r14 = arg3\n1406d9493        void* result\n1406d9493        if (arg1[0x13] == 0)\n1406d953f        result.b = 0\n1406d9499        int32_t i = 0\n1406d949b        *arg3 = 0\n1406d94b5        if ((*(*arg1 + 0x58))(arg4, arg1[0x13], *(*(arg2 + 0x58) + 0x50)).b == 0)\n1406d953b        result.b = 1\n1406d94c2        void* rsi_1 = *(arg1[0x13] + 0xb8)\n1406d94cc        if (rsi_1 == 0)\n1406d953f        result.b = 0\n1406d94d4        if (*(rsi_1 + 0x160) s> 0)\n1406d94d6        int64_t* rdi_1 = nullptr\n1406d94e7        void* rcx = *(rdi_1 + *(rsi_1 + 0x158))\n1406d94ee        if (rcx != 0)\n1406d9508        *r14 = fconvert.d(sub_140370e60(*(rcx + 0x298))) + *r14\n1406d950d        i += 1\n1406d950f        rdi_1 = &rdi_1[1]\n1406d9519        do while (i s< *(rsi_1 + 0x160))\n1406d9525        int32_t zmm0_1\n1406d9525        zmm0_1, result = sub_1404b8000(rsi_1, -1)\n1406d9536        *r14 = fconvert.d(zmm0_1) + *r14\n1406d953b        result.b = 1\n1406d9556        return result",
+  "fetched_at": "2026-04-26T17:25:45Z"
+}

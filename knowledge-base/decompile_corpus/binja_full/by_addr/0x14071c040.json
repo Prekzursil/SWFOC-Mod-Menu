@@ -1,0 +1,7 @@
+{
+  "addr": "0x14071c040",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14071c054        *arg1 = &BlastAbilityClass::`vftable'{for `SpecialAbilityClass'}\n14071c060        arg1[1] = &BlastAbilityClass::`vftable'{for `RefCountClass'}\n14071c06b        sub_1404c4770(&arg1[0x32])\n14071c077        sub_1404c4770(&arg1[0x30])\n14071c07f        sub_14048c8d0(arg1)\n14071c087        if ((arg2 & 1) != 0)\n14071c091        j_sub_1407864b8(arg1)\n14071c0a3        return arg1",
+  "fetched_at": "2026-04-26T17:28:07Z"
+}

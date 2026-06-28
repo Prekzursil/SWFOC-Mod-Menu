@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401d21d0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_1401d21d0(undefined8 *param_1)\n\n{\n  thunk_FUN_1407864b8(*param_1);\n  if (param_1[4] != 0) {\n                    /* WARNING: Could not recover jumptable at 0x0001401d21f1. Too many branches */\n                    /* WARNING: Treating indirect jump as call */\n    (*(code *)PTR_FUN_140a13628)(param_1 + 4);\n    return;\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T17:49:22Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x140186730",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14018673f        *arg1 = &alD3dMesh::`vftable'{for `alMesh'}\n140186744        arg1[0x11] = 0\n140186752        arg1[2] = &alD3dMesh::`vftable'{for `MultiLinkedListMember'}\n14018675d        arg1[0x10] = &DynamicVectorClass<int32_t>::`vftable'\n140186764        arg1[0x12] = 0\n14018676b        arg1[1].d = 0\n14018676e        arg1[4] = 0\n140186772        arg1[5].d = 0xffffffff\n140186779        *(arg1 + 0x2c) = 0\n14018677d        *(arg1 + 0x34) = 1\n14018678c        arg1[3] = 0\n140186790        __builtin_memset(&arg1[8], 0, 0x40)\n1401867a8        arg1[0x17].d = 0x40000000\n1401867b2        float zmm0 = arg1[0x17].d\n1401867c4        *(arg1 + 0xbc) = 0x40000000\n1401867ce        int32_t rax_1 = zmm0 & 0x7fffffff\n1401867d2        zmm0 = *(arg1 + 0xbc)\n1401867e0        arg1[0x17].d = rax_1\n1401867ea        *(arg1 + 0xb4) = 0x40000000\n1401867f4        int32_t rax_3 = zmm0 & 0x7fffffff\n140186800        zmm0 = *(arg1 + 0xb4) * 0.5f\n140186804        *(arg1 + 0xbc) = rax_3\n140186815        float zmm1 = *(arg1 + 0xbc) * 0.5f\n140186819        arg1[0x13] = 0\n140186820        *(arg1 + 0xb4) = zmm0\n140186830        zmm0 = arg1[0x17].d f* 0.5f\n140186834        arg1[0x14] = 0\n14018683b        *(arg1 + 0xbc) = zmm1\n140186843        arg1[0x15] = 0\n14018684a        arg1[0x17].d = zmm0\n140186852        arg1[0x16].d = 0\n140186858        __builtin_memset(&arg1[0x18], 0, 0x50)\n14018689e        return arg1",
+  "fetched_at": "2026-04-26T17:24:00Z"
+}

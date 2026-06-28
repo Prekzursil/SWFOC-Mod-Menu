@@ -1,0 +1,7 @@
+{
+  "addr": "0x14037e930",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14037e948        struct alRenderable::LineSubClass::VTable** result_1 = operator new(0x990)\n14037e94d        struct alRenderable::LineSubClass::VTable** result = result_1\n14037e953        if (result_1 == 0)\n14037ea32        result = nullptr\n14037e966        int32_t rdi_1 = *(arg1 + 0x968)\n14037e96d        sub_14013f590(result_1)\n14037e974        *(result + 0x114) = 0\n14037e982        result[0x23].d = 0\n14037e988        *result = &LineSubClass::`vftable'{for `alRenderable'}\n14037e999        *(result + 0x11c) = 2\n14037e9a3        result[2] = &LineSubClass::`vftable'{for `MultiLinkedListMember'}\n14037e9ae        result[4] = &LineSubClass::`vftable'{for `CullObjectClass'}\n14037e9b2        result[0x24].b = 0\n14037e9b9        sub_1401f92f0(result + 0x124)\n14037e9c3        result[0x27] = 0\n14037e9ca        result[0x28] = 0\n14037e9d1        __builtin_memset(&result[0x12a], 0, 0x18)\n14037e9e6        result[0x12d].d = rdi_1\n14037e9f1        __builtin_memset(&result[0x12e], 0, 0x18)\n14037e9f8        *(result + 0x98c) = 1\n14037ea02        *(result + 0x124) = 0\n14037ea09        *(result + 0x12c) = 0\n14037ea0f        result[0x26].d = 0x3f800000\n14037ea27        result[0x129] = 0\n14037ea7e        sub_14037eaa0(result, arg1 + 0xcc, arg1 + 0xd8, arg1 + 0x148, arg1 + 0x124, *(arg1 + 0xc8), arg1 + 0x548, *(arg1 + 0x98c))\n14037ea96        return result",
+  "fetched_at": "2026-04-26T17:19:39Z"
+}

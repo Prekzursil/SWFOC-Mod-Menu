@@ -1,0 +1,7 @@
+{
+  "addr": "0x1405a50d0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1405a50e6        float* rdi = arg3\n1405a50ee        float* rsi = arg2\n1405a50fc        if (*(arg1 + 0x148) != 0 && not(arg4 f< 0f))\n1405a5106        int32_t var_38\n1405a5106        var_38.q = arg5\n1405a510b        return sub_1405a51f0(arg1, arg2, arg3, arg4, var_38)\n1405a511e        int32_t zmm0 = *arg2 f- *arg3\n1405a5123        float zmm1 = arg2[1] f- arg3[1]\n1405a512e        float zmm2 = arg2[2] f- arg3[2]\n1405a5164        if ((sqrtf(zmm0 f* zmm0 f+ zmm1 * zmm1 f+ zmm2 * zmm2) & 0x7f800000) != 0x7f800000)\n1405a518a        int32_t rax_3 = sub_14050e780(&data_140a2be20, rsi, 0)\n1405a519e        int32_t rax_4\n1405a519e        float zmm6_2\n1405a519e        rax_4, zmm6_2 = sub_14050e780(&data_140a2be20, rdi, 0)\n1405a51c6        return sub_1405a5810(arg1, rsi, rax_3, rdi, rax_4, zmm6_2, arg5)\n1405a516e        *arg5 = 0\n1405a5174        uint64_t result\n1405a5174        result.b = 0\n1405a51e4        return result",
+  "fetched_at": "2026-04-26T17:36:56Z"
+}

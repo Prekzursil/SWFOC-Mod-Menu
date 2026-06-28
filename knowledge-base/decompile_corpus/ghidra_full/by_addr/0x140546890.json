@@ -1,0 +1,7 @@
+{
+  "addr": "0x140546890",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined * __thiscall LuaFadeOff::vfunction5(void)\n\n{\n  return &DAT_140a437e8;\n}",
+  "fetched_at": "2026-04-26T18:37:02Z"
+}

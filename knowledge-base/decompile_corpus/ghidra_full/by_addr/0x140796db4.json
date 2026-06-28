@@ -1,0 +1,7 @@
+{
+  "addr": "0x140796db4",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_140796db4(wchar_t *param_1,wchar_t *param_2,undefined8 param_3,undefined4 param_4)\n\n{\n  errno_t eVar1;\n  \n  eVar1 = wcsncpy_s(param_2,0x40,param_1,0x20);\n  if (eVar1 == 0) {\n    __acrt_WideCharToMultiByte(param_4,0,param_1,0xffffffff,param_3,0x40,0,0);\n    return;\n  }\n                    /* WARNING: Subroutine does not return */\n  _invoke_watson((wchar_t *)0x0,(wchar_t *)0x0,(wchar_t *)0x0,0,0);\n}",
+  "fetched_at": "2026-04-26T18:53:26Z"
+}

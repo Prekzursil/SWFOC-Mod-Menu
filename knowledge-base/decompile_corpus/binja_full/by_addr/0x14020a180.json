@@ -1,0 +1,7 @@
+{
+  "addr": "0x14020a180",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14020a18c        if (arg2 != 0 && sub_14020a290(arg2, arg1) != 0)\n14020a1a9        arg2[0xf] = timeGetTime() - data_140a7bec0\n14020a1ac        int32_t result\n14020a1ac        result.b = 1\n14020a1b3        return result\n14020a1bb        return 0",
+  "fetched_at": "2026-04-26T17:28:06Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x14071e710",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "PermanentWeaponSwapAbilityClass * __thiscall\nPermanentWeaponSwapAbilityClass::PermanentWeaponSwapAbilityClass\n          (PermanentWeaponSwapAbilityClass *this)\n\n{\n  SpecialAbilityClass::SpecialAbilityClass((SpecialAbilityClass *)this);\n  (this->PermanentWeaponSwapAbilityClass_data).offset_0x0 = 0;\n  this->vftablePtr = &vftable_for_IXMLLoadableClass;\n  this->vftablePtr = &vftable_for_RefCountClass;\n  return this;\n}",
+  "fetched_at": "2026-04-26T17:58:33Z"
+}

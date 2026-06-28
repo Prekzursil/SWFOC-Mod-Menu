@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407408dc",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_1407408dc(undefined8 param_1)\n\n{\n  length_error local_28;\n  \n  std::length_error::length_error(&local_28,param_1);\n                    /* WARNING: Subroutine does not return */\n  _CxxThrowException(&local_28,(ThrowInfo *)&DAT_1409caf38);\n}",
+  "fetched_at": "2026-04-26T18:03:55Z"
+}

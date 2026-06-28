@@ -1,0 +1,7 @@
+{
+  "addr": "0x140552870",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall DemolitionDataPackClass::~DemolitionDataPackClass(DemolitionDataPackClass *this)\n\n{\n  (this->DemolitionDataPackClass_data).offset_0x0 = 0x3fffff;\n  this->vftablePtr = &vftable;\n  this->PooledObjectClass<class_DemolitionDataPackClass,20,class_EmptyLockerClass> =\n       (PooledObjectClass<class_DemolitionDataPackClass,20,class_EmptyLockerClass>)0x0;\n  (this->DemolitionDataPackClass_data).offset_0x8 = 0;\n  (this->DemolitionDataPackClass_data).offset_0x18 = 0;\n  (this->DemolitionDataPackClass_data).offset_0x20 = 0;\n  (this->DemolitionDataPackClass_data).offset_0x30 = 0;\n  (this->DemolitionDataPackClass_data).offset_0x38 = 0;\n  (this->DemolitionDataPackClass_data).offset_0x10 = 0;\n  (this->DemolitionDataPackClass_data).offset_0x28 = 1;\n  (this->DemolitionDataPackClass_data).offset_0x2c = 0xffffffff;\n  return;\n}",
+  "fetched_at": "2026-04-26T18:38:13Z"
+}

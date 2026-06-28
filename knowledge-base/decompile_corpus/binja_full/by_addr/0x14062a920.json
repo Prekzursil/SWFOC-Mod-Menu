@@ -1,0 +1,7 @@
+{
+  "addr": "0x14062a920",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14062a933        *arg1 = &AmbientSFXBehaviorClass::`vftable'{for `BehaviorClass'}\n14062a940        arg1[1] = &AmbientSFXBehaviorClass::`vftable'{for `RefCountClass'}\n14062a94b        arg1[3] = &AmbientSFXBehaviorClass::`vftable'{for `SignalListenerClass'}\n14062a94f        sub_1404c3310(arg1)\n14062a957        if ((arg2 & 1) != 0)\n14062a961        j_sub_1407864b8(arg1)\n14062a973        return arg1",
+  "fetched_at": "2026-04-26T17:23:59Z"
+}

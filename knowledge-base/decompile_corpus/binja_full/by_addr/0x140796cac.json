@@ -1,0 +1,7 @@
+{
+  "addr": "0x140796cac",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140796cc5        void var_248\n140796cc5        int64_t rax_1 = __security_cookie ^ &var_248\n140796cdc        data_140a45150 = 0xffffffff\n140796ce8        data_140b3caf0 = 0\n140796cf3        data_140a45140 = 0xffffffff\n140796cfe        int64_t var_228\n140796cfe        void var_218\n140796cfe        int32_t rax_2 = j_common_getenv_s<wchar_t>(&var_228, &var_218, 0x100, &data_1408d9aa0)\n140796d05        void* rdi_1\n140796d05        if (rax_2 == 0)\n140796d07        rdi_1 = &var_218\n140796d11        if (rax_2 == 0x22)\n140796d20        void* rax_3 = _malloc_base(var_228 * 2)\n140796d25        rdi_1 = rax_3\n140796d2b        void var_220\n140796d2b        if (rax_3 != 0)\n140796d51        if (j_common_getenv_s<wchar_t>(&var_220, rdi_1, var_228, &data_1408d9aa0) == 0)\n140796d5a        _free_base(0)\n140796d2f        _free_base(rdi_1)\n140796d13        rdi_1 = nullptr\n140796d2f        _free_base(nullptr)\n140796d13        rdi_1 = nullptr\n140796d13        rdi_1 = nullptr\n140796d64        void* rbx = rdi_1\n140796d6a        if (rdi_1 == &var_218)\n140796d6a        rbx = nullptr\n140796d76        if (rdi_1 == 0 || *rdi_1 == 0)\n140796d82        tzset_from_system_nolock()\n140796d7b        sub_140796890(rdi_1)\n140796d8a        int64_t result = _free_base(rbx)\n140796d9a        __security_check_cookie(rax_1 ^ &var_248)\n140796db3        return result",
+  "fetched_at": "2026-04-26T17:32:00Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x14058f870",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall\nDeployTroopersBehaviorClass::vfunction10(DeployTroopersBehaviorClass *this,undefined **param_1)\n\n{\n  SpawnIndigenousUnitsBehaviorClass::vbase_destructor\n            ((SpawnIndigenousUnitsBehaviorClass *)this,param_1);\n  BehaviorClass::vfunction25((BehaviorClass *)this);\n  return;\n}",
+  "fetched_at": "2026-04-26T18:42:06Z"
+}

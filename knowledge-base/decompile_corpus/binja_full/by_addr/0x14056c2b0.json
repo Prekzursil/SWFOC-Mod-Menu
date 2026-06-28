@@ -1,0 +1,7 @@
+{
+  "addr": "0x14056c2b0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14056c2c0        *arg1 = &HeroClashManagerClass::`vftable'{for `HeroClashManagerInterface'}\n14056c2c5        arg1[1] = 0\n14056c2c9        arg1[2] = 0\n14056c2d0        int64_t* rax = operator new(0x18)\n14056c2d5        *rax = rax\n14056c2d8        rax[1] = rax\n14056c2dc        arg1[1] = rax\n14056c2e8        return arg1",
+  "fetched_at": "2026-04-26T17:34:53Z"
+}

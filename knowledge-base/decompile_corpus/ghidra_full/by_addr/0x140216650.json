@@ -1,0 +1,7 @@
+{
+  "addr": "0x140216650",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "ulonglong FUN_140216650(void)\n\n{\n  HMODULE hModule;\n  FARPROC pFVar1;\n  FARPROC pFVar2;\n  INT_PTR IVar3;\n  undefined1 local_88 [8];\n  ulonglong local_80;\n  undefined4 local_48 [2];\n  ulonglong local_40;\n  \n  hModule = GetModuleHandleA(\"Kernel32.dll\");\n  if (hModule != (HMODULE)0x0) {\n    pFVar1 = GetProcAddress(hModule,\"GlobalMemoryStatusEx\");\n    pFVar2 = GetProcAddress(hModule,\"GlobalMemoryStatus\");\n    if (pFVar1 != (FARPROC)0x0) {\n      local_48[0] = 0x40;\n      IVar3 = (*pFVar1)(local_48);\n      if ((int)IVar3 != 0) {\n        return local_40 >> 10;\n      }\n    }\n    if (pFVar2 != (FARPROC)0x0) {\n      (*pFVar2)(local_88);\n      return local_80 >> 10;\n    }\n  }\n  return 0;\n}",
+  "fetched_at": "2026-04-26T18:00:57Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x14059e5b0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined8 FUN_14059e5b0(float *param_1,float param_2)\n\n{\n  undefined8 uVar1;\n  float fVar2;\n  float fVar3;\n  float fVar4;\n  float fVar5;\n  float fVar6;\n  float local_58;\n  float local_54;\n  float local_4c;\n  float local_48;\n  \n  if (DAT_140b15418 == (longlong *)0x0) {\n    return 0;\n  }\n  (**(code **)(*DAT_140b15418 + 0x208))(DAT_140b15418,&local_58);\n  fVar4 = local_58 - local_4c;\n  fVar2 = param_2 * DAT_1408007d4;\n  fVar6 = (local_58 + local_4c) - (local_58 - local_4c);\n  fVar5 = local_54 - local_48;\n  fVar3 = (local_54 + local_48) - (local_54 - local_48);\n  if ((fVar2 < fVar6) && (fVar2 < fVar3)) {\n    fVar4 = fVar4 + param_2;\n    fVar5 = fVar5 + param_2;\n    fVar6 = fVar6 - fVar2;\n    fVar3 = fVar3 - fVar2;\n  }\n  if ((((*param_1 < fVar4) || (fVar4 + fVar6 <= *param_1)) || (param_1[1] < fVar5)) ||\n     (fVar3 + fVar5 <= param_1[1])) {\n    uVar1 = 0;\n  }\n  else {\n    uVar1 = 1;\n  }\n  return uVar1;\n}",
+  "fetched_at": "2026-04-26T18:42:41Z"
+}

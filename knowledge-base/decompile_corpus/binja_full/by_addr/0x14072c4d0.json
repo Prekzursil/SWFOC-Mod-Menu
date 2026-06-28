@@ -1,0 +1,7 @@
+{
+  "addr": "0x14072c4d0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14072c4e5        struct PerceptualEvaluatorClass::VisiblePerceptualEvaluatorClass<class TacticalLocationPerceptualEvaluatorClass>::VTable** result = arg1\n14072c4e8        sub_14064c900(arg1)\n14072c4f9        *result = &VisiblePerceptualEvaluatorClass<class TacticalLocationPerceptualEvaluatorClass>::`vftable'{for `PerceptualEvaluatorClass'}\n14072c503        result[3] = &VisiblePerceptualEvaluatorClass<class TacticalLocationPerceptualEvaluatorClass>::`vftable'{for `AIDiagnosticsClass'}\n14072c509        int128_t zmm0 = *arg2\n14072c50c        result[0x13].d = arg3\n14072c512        *(result + 0x9c) = 0\n14072c518        *(result + 0x88) = zmm0\n14072c51f        result[0x14] = 0\n14072c526        result[0x15] = 0\n14072c52d        int64_t* rax = operator new(0x80)\n14072c537        *rax = rax\n14072c53a        rax[1] = rax\n14072c53e        rax[2] = rax\n14072c542        rax[3].w = 0x101\n14072c548        result[0x14] = rax\n14072c55c        return result",
+  "fetched_at": "2026-04-26T17:28:43Z"
+}

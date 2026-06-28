@@ -1,0 +1,7 @@
+{
+  "addr": "0x140690460",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140690473        *arg1 = &SpaceFreeStoreClass::`vftable'{for `AIFreeStoreClass'}\n140690480        arg1[5] = &SpaceFreeStoreClass::`vftable'{for `SignalListenerClass'}\n140690484        sub_1404d2780(arg1)\n14069048c        if ((arg2 & 1) != 0)\n140690496        j_sub_1407864b8(arg1)\n1406904a8        return arg1",
+  "fetched_at": "2026-04-26T17:17:25Z"
+}

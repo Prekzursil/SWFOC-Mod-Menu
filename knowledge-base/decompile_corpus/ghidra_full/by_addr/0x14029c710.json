@@ -1,0 +1,7 @@
+{
+  "addr": "0x14029c710",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_14029c710(longlong param_1)\n\n{\n  DynamicVectorClass<int> *this;\n  HANDLE hHeap;\n  \n  this = *(DynamicVectorClass<int> **)(param_1 + 8);\n  if (this != (DynamicVectorClass<int> *)0x0) {\n    if ((*(uint *)(param_1 + 0x14) & 0x80000000) == 0) {\n      DynamicVectorClass<int>::DynamicVectorClass<int>(this,3);\n    }\n    else {\n      hHeap = GetProcessHeap();\n      HeapFree(hHeap,0,this);\n    }\n    *(uint *)(param_1 + 0x14) = *(uint *)(param_1 + 0x14) & 0x80000000;\n    *(undefined8 *)(param_1 + 8) = 0;\n    *(undefined4 *)(param_1 + 0x10) = 0;\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T18:25:57Z"
+}

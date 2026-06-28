@@ -1,0 +1,7 @@
+{
+  "addr": "0x14035cf20",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14035cf20        int64_t result = *(arg2 + 0x298)\n14035cf2b        if (*(result + 0x76) != 0)\n14035cf32        float zmm1 = *(arg1 + 0x14) f- *(result + 0x1f94)\n14035cf3a        int32_t zmm0 = 0x3e800000\n14035cf45        if (not(0.25f > zmm1))\n14035cf4f        zmm0 = _mm_min_ss(0x3f800000, zmm1)\n14035cf53        *(arg1 + 0x14) = zmm0\n14035cf68        if (*(arg2 + 0x361) != 0xff || *(arg2 + 0x369) != 0xff)\n14035cf6a        result = sx.q(*(arg2 + 0x58))\n14035cf78        if (result.d s>= 0 && result.d s< *(arg1 + 0x1e8))\n14035cf7a        void* r8_1 = *(arg2 + 0x298)\n14035cf84        if (r8_1 != 0)\n14035cf86        int64_t r8_2 = sx.q(*(r8_1 + 0x1de4))\n14035cf90        if (r8_2.d s>= 0)\n14035cf92        int64_t rcx = *(arg1 + 0x1e0)\n14035cf99        void* r9_1 = result * 3\n14035cfa2        if (r8_2.d s< *(rcx + (r9_1 << 3) + 0x10))\n14035cfa4        int64_t rcx_1 = *(rcx + (r9_1 << 3) + 8)\n14035cfad        if (*(rcx_1 + (r8_2 << 3)) == arg2)\n14035cfaf        *(rcx_1 + (r8_2 << 3)) = 0\n14035cfb7        return result",
+  "fetched_at": "2026-04-26T17:11:58Z"
+}

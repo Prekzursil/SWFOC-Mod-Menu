@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407ad780",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1407ad793        void* rcx = *(arg1 + 0xc8)\n1407ad7aa        if (rcx == 0 || *(arg1 + 0xe8) == 0xffffffff)\n1407ad7aa        return \n1407ad7c8        int64_t rax_1\n1407ad7c8        int64_t rdx_2\n1407ad7c8        rdx_2:rax_1 = muls.dp.q(0x4924924924924925, *(rcx + 0x98) - *(rcx + 0x90))\n1407ad7d6        int64_t rbx_2 = rdx_2 s>> 3\n1407ad7e1        int32_t rbx_3 = rbx_2.d + (rbx_2 u>> 0x3f).d\n1407ad7e6        if (rbx_3 == 0)\n1407ad7e6        return \n1407ad7ec        int64_t rax = sub_14022fe40(rcx)\n1407ad7f3        if (rax.d s<= 0)\n1407ad7f3        return \n1407ad80c        int128_t var_38\n1407ad80c        __builtin_memcpy(&var_38, \"\\x00\\x00\\x80\\x3f\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x80\\x3f\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x80\\x3f\\x00\\x00\\x00\\x00\", 0x30)\n1407ad826        int32_t rdi_1 = ((zx.q(rax.d + rbx_3 + (rax << 1).d) << 1) + -fffffffffffffffe).d\n1407ad831        int32_t temp0_1\n1407ad831        int32_t temp1_1\n1407ad831        temp0_1:temp1_1 = sx.q(rdi_1)\n1407ad844        sub_14013d400(0, nullptr, 0, 0)\n1407ad84e        wWinMainCRTStartup(&var_38)\n1407ad884        j_sub_1401805b0(arg3, *(arg1 + 0xe8), 0xffffffff, 0, rdi_1, (temp1_1 - temp0_1) s>> 1, 3, 2, 0, 0)\n1407ad891        *(arg1 + 0xe8) = 0xffffffff\n1407ad8b3        return ",
+  "fetched_at": "2026-04-26T17:32:44Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x140390380",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_140390380(longlong param_1)\n\n{\n  BombDataPackClass *pBVar1;\n  \n  if (*(longlong *)(param_1 + 400) == 0) {\n    pBVar1 = (BombDataPackClass *)FUN_140769c58(0x18);\n    if (pBVar1 != (BombDataPackClass *)0x0) {\n      pBVar1 = BombDataPackClass::BombDataPackClass(pBVar1);\n      *(BombDataPackClass **)(param_1 + 400) = pBVar1;\n      return;\n    }\n    *(undefined8 *)(param_1 + 400) = 0;\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T17:21:35Z"
+}

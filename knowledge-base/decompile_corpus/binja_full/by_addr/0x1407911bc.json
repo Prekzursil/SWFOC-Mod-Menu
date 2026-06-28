@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407911bc",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1407911c9        int32_t result = arg1\n1407911e4        if ((result & 0x7f800000) == 0x7f800000)\n1407911ec        if ((result & 0x7fffff) != 0)\n140791236        return result | 0x400000\n1407911f4        result = 0xffc00000\n140791204        int32_t var_18_1 = 1\n14079122b        _handle_errorf(arg2, arg3, 0xffc00000, 1, 8, 0x21, arg1, 0)\n140791244        return result",
+  "fetched_at": "2026-04-26T17:31:44Z"
+}

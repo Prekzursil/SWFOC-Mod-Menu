@@ -1,0 +1,7 @@
+{
+  "addr": "0x14074133c",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14074134c        if (data_140b3b620 == 0)\n140741355        data_140b3b620 = 1\n14074135c        _Atexit(tidy_global)\n140741361        data_140b3b618 = arg1\n14074136d        return ",
+  "fetched_at": "2026-04-26T17:29:19Z"
+}

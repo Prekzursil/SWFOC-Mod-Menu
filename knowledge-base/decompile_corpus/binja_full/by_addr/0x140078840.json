@@ -1,0 +1,7 @@
+{
+  "addr": "0x140078840",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140078857        if (*(arg1 + 0x344) == 0)\n140078857        return \n14007885d        void* r10_1 = *(arg1 + 0x2d0)\n14007886b        void* r9_2 = *(arg1 + 0x2d8) - r10_1\n140078878        void* rbx_1 = nullptr\n140078887        int64_t rax\n140078887        void* rdx\n140078887        rdx:rax = muls.dp.q(-0x75270d0456c797dd, r9_2)\n14007888d        int64_t rdx_2 = (rdx + r9_2) s>> 8\n140078898        int64_t i_1 = r9_2 s/ 0x1d8\n14007889b        if (rdx_2 != neg.q(rdx_2 u>> 0x3f))\n14007889d        uint64_t i_2 = i_1\n1400788b3        int64_t i\n1400788a4        if (*(r10_1 + 0x68) == arg2)\n1400788a4        rbx_1 = r10_1\n1400788a8        r10_1 += 0x1d8\n1400788af        i = i_1\n1400788af        i_1 -= 1\n1400788b3        do while (i != 1)\n1400788c0        void arg_8\n1400788c0        void arg_20\n1400788c0        if (rbx_1 != 0 && *(rbx_1 + 0x90) != arg3)\n1400788e7        *(rbx_1 + 0x90) = sub_140073a50(arg1, arg3, i_2.d, (i_1 - 1).d, &arg_20, &arg_8).d\n1400788f9        if (*(arg1 + 0x344) != 0)\n1400788fb        *(arg1 + 0x346) = 1\n140078950        *(arg1 + 0x224) = ((*(arg1 + 0x2d8) - *(arg1 + 0x2d0)) s/ 0x1d8).d + ((*(arg1 + 0x2c0) - *(arg1 + 0x2b8)) s/ 0x1d8).d\n140078962        return ",
+  "fetched_at": "2026-04-26T16:56:47Z"
+}

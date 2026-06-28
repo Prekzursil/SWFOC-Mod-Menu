@@ -1,0 +1,7 @@
+{
+  "addr": "0x14001d990",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14001d9a0        *arg1 = &SingletonInstance<class SteamPeerLobbyClass>::`vftable'{for `SingletonManager'}\n14001d9a6        if ((arg2 & 1) != 0)\n14001d9ad        j_sub_1407864b8(arg1)\n14001d9ba        return arg1",
+  "fetched_at": "2026-04-26T16:51:28Z"
+}

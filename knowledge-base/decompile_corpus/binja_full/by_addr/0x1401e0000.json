@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401e0000",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1401e0003        int64_t rdx\n1401e0003        rdx.b = 1\n1401e0005        jump(*(*arg1 + 0x50))",
+  "fetched_at": "2026-04-26T17:26:52Z"
+}

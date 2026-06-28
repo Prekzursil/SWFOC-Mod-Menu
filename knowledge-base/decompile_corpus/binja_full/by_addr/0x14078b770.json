@@ -1,0 +1,7 @@
+{
+  "addr": "0x14078b770",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14078b78d        return _Wcsftime_l(arg1, arg2, arg3, arg4, arg5, nullptr)",
+  "fetched_at": "2026-04-26T17:31:24Z"
+}

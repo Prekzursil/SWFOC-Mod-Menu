@@ -1,0 +1,7 @@
+{
+  "addr": "0x1405fda50",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* TaskForceClass member function inherited by GalacticTaskForceClass\n   TaskForceClass member function inherited by SpaceTaskForceClass\n   TaskForceClass member function inherited by LandTaskForceClass */\n\nlonglong * __thiscall TaskForceClass::vfunction31(TaskForceClass *this,undefined8 param_1)\n\n{\n  undefined8 *puVar1;\n  longlong *plVar2;\n  longlong *plVar3;\n  longlong *local_res8;\n  \n  if (this[1].offset_0x60 == 0) {\n    return (longlong *)0x0;\n  }\n  plVar2 = (longlong *)FUN_14060e0a0(this[1].offset_0x60,param_1,1);\n  if (plVar2 == (longlong *)0x0) {\n    return (longlong *)0x0;\n  }\n  plVar3 = LuaValue<class_std::vector<class_SmartPtr<class_LuaVar>,class_std::allocator<class_SmartPtr<class_LuaVar>_>_>,2>\n           ::\n           ~LuaValue<class_std::vector<class_SmartPtr<class_LuaVar>,class_std::allocator<class_SmartPtr<class_LuaVar>_>_>,2>\n                     ();\n  local_res8 = plVar2;\n  (**(code **)*plVar2)(plVar2);\n  puVar1 = (undefined8 *)plVar3[3];\n  if (puVar1 == (undefined8 *)plVar3[4]) {\n    FUN_140144900(plVar3 + 2,puVar1,&local_res8);\n  }\n  else {\n    *puVar1 = plVar2;\n    (**(code **)*plVar2)(plVar2);\n    plVar3[3] = plVar3[3] + 8;\n  }\n  (**(code **)(*plVar2 + 8))(plVar2);\n  return plVar3;\n}",
+  "fetched_at": "2026-04-26T17:24:35Z"
+}

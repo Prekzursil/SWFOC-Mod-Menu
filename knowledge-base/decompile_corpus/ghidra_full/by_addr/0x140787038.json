@@ -1,0 +1,7 @@
+{
+  "addr": "0x140787038",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */\n\ndouble FUN_140787038(double param_1,undefined4 *param_2)\n\n{\n  int iVar1;\n  ulong *puVar2;\n  undefined8 uVar3;\n  undefined8 uVar4;\n  undefined4 uVar5;\n  double dVar6;\n  ushort uStackX_e;\n  \n  uVar5 = SUB84(param_1,0);\n  if (param_2 == (undefined4 *)0x0) {\n    puVar2 = __doserrno();\n    *puVar2 = 0x16;\n    FUN_1407711ac();\n    return 0.0;\n  }\n  uVar3 = _ctrlfp(0x1f80,0xffc0);\n  uStackX_e = (ushort)((ulonglong)param_1 >> 0x30);\n  if ((uStackX_e & 0x7ff0) == 0x7ff0) {\n    *param_2 = 0xffffffff;\n    iVar1 = _sptype(uVar5);\n    if (((iVar1 != 1) && (iVar1 != 2)) && (iVar1 != 3)) {\n      uVar4 = 8;\n      dVar6 = param_1 + DAT_140854f30;\nLAB_1407870c4:\n      dVar6 = (double)FUN_140795788(uVar4,0x17,uVar5,dVar6,uVar3);\n      return dVar6;\n    }\n  }\n  else {\n    if ((param_1 == _DAT_140869958) && (iVar1 = FUN_14079572c(uVar5), iVar1 != 0)) {\n      *param_2 = 0;\n      uVar4 = 0;\n      dVar6 = DAT_1408d5038;\n      goto LAB_1407870c4;\n    }\n    param_1 = (double)FUN_14079605c(uVar5,param_2);\n  }\n  _ctrlfp(uVar3,0xffc0);\n  return param_1;\n}",
+  "fetched_at": "2026-04-26T18:51:42Z"
+}

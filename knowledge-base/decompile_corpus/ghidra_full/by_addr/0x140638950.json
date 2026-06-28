@@ -1,0 +1,7 @@
+{
+  "addr": "0x140638950",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\n/* CombatantBehaviorClass member function inherited by BaseCombatantClass\n   CombatantBehaviorClass member function inherited by SquadronCombatantClass\n   CombatantBehaviorClass member function inherited by CompanyCombatantClass */\n\nCombatantBehaviorClass * __thiscall\nCombatantBehaviorClass::vfunction4(CombatantBehaviorClass *this,int param_1)\n\n{\n  CombatantBehaviorClass *pCVar1;\n  \n  pCVar1 = (CombatantBehaviorClass *)0x0;\n  if (param_1 == 0x13) {\n    pCVar1 = this;\n  }\n  return pCVar1;\n}\n\n",
+  "fetched_at": "2026-04-26T17:01:29Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x1402d8cf0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "ulonglong FUN_1402d8cf0(undefined8 *param_1,undefined8 *param_2)\n\n{\n  int iVar1;\n  undefined4 extraout_var;\n  undefined8 *_Buf2;\n  undefined8 *_Buf1;\n  \n  _Buf2 = param_2;\n  if (0xf < (ulonglong)param_2[3]) {\n    _Buf2 = (undefined8 *)*param_2;\n  }\n  _Buf1 = param_1;\n  if (0xf < (ulonglong)param_1[3]) {\n    _Buf1 = (undefined8 *)*param_1;\n  }\n  if (param_1[2] == param_2[2]) {\n    iVar1 = memcmp(_Buf1,_Buf2,param_1[2]);\n    _Buf1 = (undefined8 *)CONCAT44(extraout_var,iVar1);\n    if (iVar1 == 0) {\n      return CONCAT71((int7)((ulonglong)_Buf1 >> 8),1);\n    }\n  }\n  return (ulonglong)_Buf1 & 0xffffffffffffff00;\n}",
+  "fetched_at": "2026-04-26T17:23:29Z"
+}

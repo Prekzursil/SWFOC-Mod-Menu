@@ -1,0 +1,7 @@
+{
+  "addr": "0x1402228d0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall RAMFileClass::~RAMFileClass(RAMFileClass *this)\n\n{\n  LPVOID lpMem;\n  HANDLE hHeap;\n  \n  lpMem = (this->RAMFileClass_data).offset_0x0;\n  this->vftablePtr = &vftable;\n  if (lpMem != (LPVOID)0x0) {\n    hHeap = GetProcessHeap();\n    HeapFree(hHeap,0,lpMem);\n  }\n  (this->RAMFileClass_data).offset_0x0 = (LPVOID)0x0;\n  FileClass::~FileClass((FileClass *)this);\n  return;\n}",
+  "fetched_at": "2026-04-26T18:03:54Z"
+}

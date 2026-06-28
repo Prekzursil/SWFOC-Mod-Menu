@@ -1,0 +1,7 @@
+{
+  "addr": "0x14068a590",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_14068a590(void)\n\n{\n  FindWeaknessAbilityClass *this;\n  \n  this = (FindWeaknessAbilityClass *)FUN_140769c58(0x180);\n  if (this != (FindWeaknessAbilityClass *)0x0) {\n    FindWeaknessAbilityClass::FindWeaknessAbilityClass(this);\n    return;\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T17:15:52Z"
+}

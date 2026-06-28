@@ -1,0 +1,7 @@
+{
+  "addr": "0x140260630",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14026063a        int64_t* rbx = arg1 + 0x50\n140260644        if (rbx != arg2)\n14026064b        int32_t* rax_1 = arg2\n14026064e        if (arg2[3] u>= 0x10)\n140260650        rax_1 = *arg2\n14026065d        sub_140022730(rbx, rax_1, arg2[2])\n140260667        if (rbx[3] u>= 0x10)\n140260669        rbx = *rbx\n14026066f        arg2.b = 1\n140260674        struct RefCountClass::TextureClass::VTable** result = sub_14025e990(rbx, arg2.b, 0)\n140260679        int64_t* rcx_2 = *(arg1 + 0x78)\n14026067d        struct RefCountClass::TextureClass::VTable** result_1 = result\n140260683        if (rcx_2 != result)\n140260688        if (rcx_2 != 0)\n14026068a        int64_t rdx_1 = *rcx_2\n14026068d        result = (*(rdx_1 + 8))(rcx_2, rdx_1)\n140260690        *(arg1 + 0x78) = result_1\n140260697        if (result_1 != 0)\n14026069f        return (*result_1)->__offset(0x0).q(result_1)\n1402606ab        return result",
+  "fetched_at": "2026-04-26T17:31:13Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x14029b890",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14029b8a3        *arg1 = &DynamicVectorRefClass<class GameObjectClass* __ptr64>::`vftable'{for `DynamicVectorClass<class GameObjectClass* __ptr64>'}\n14029b8a9        sub_14029c770(arg1)\n14029b8b1        sub_140046490(arg1)\n14029b8b9        if ((arg2 & 1) != 0)\n14029b8c3        j_sub_1407864b8(arg1)\n14029b8d5        return arg1",
+  "fetched_at": "2026-04-26T17:32:44Z"
+}

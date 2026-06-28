@@ -1,0 +1,7 @@
+{
+  "addr": "0x14001d820",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14001d820        int128_t result = data_1408fcb60\n14001d82e        __builtin_memcpy(&data_140b3cca8, \"\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x3e\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x3e\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x3e\\x00\\x00\\x00\\x3e\", 0x20)\n14001d83c        return result",
+  "fetched_at": "2026-04-26T16:51:27Z"
+}

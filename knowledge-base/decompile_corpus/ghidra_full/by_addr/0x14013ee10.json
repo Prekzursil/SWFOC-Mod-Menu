@@ -1,0 +1,7 @@
+{
+  "addr": "0x14013ee10",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "bool thunk_FUN_1401768f0(void)\n\n{\n  int iVar1;\n  \n  iVar1 = (**(code **)(*DAT_140a6d480 + 0x18))();\n  return iVar1 == 0;\n}",
+  "fetched_at": "2026-04-26T17:17:16Z"
+}

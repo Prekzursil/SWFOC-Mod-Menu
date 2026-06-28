@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401aa0f0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1401aa0fe        int128_t zmm6 = arg5\n1401aa109        __builtin_memset(&arg1[4], 0, 0x58)\n1401aa124        *arg1 = arg2\n1401aa133        arg1[1] = 0x3f800000\n1401aa13a        arg1[2] = 0x3f800000\n1401aa141        arg1[3] = 0x3f800000\n1401aa156        int32_t var_48 = arg3.d\n1401aa15c        int32_t var_44 = arg4.d\n1401aa163        int32_t var_40 = zmm6.d\n1401aa169        int64_t result = D3DXVec3Normalize(&arg1[0x10], &var_48)\n1401aa16e        arg1[0xd] = arg3.d\n1401aa178        arg1[0xe] = arg4.d\n1401aa184        arg1[0xf] = zmm6.d\n1401aa18e        arg1[0x13] = 0x447a0000\n1401aa19a        return result",
+  "fetched_at": "2026-04-26T17:25:21Z"
+}

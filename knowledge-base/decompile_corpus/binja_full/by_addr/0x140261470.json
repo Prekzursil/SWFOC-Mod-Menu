@@ -1,0 +1,7 @@
+{
+  "addr": "0x140261470",
+  "tool": "binary_ninja",
+  "fact_id": "rva_camera_class_ctor",
+  "body": "140261489        *arg1 = &CameraClass::`vftable'{for `RefCountClass'}\n14026148e        arg1[1].d = 0\n140261496        int64_t* rax = operator new(0x308)\n14026149e        int64_t* rbx\n14026149e        if (rax == 0)\n1402614ad        rbx = nullptr\n1402614a8        rbx = sub_140140100(rax)\n1402614b0        arg1[8] = rbx\n1402614be        *rbx = 0x3f800000\n1402614c5        rbx[1].d = 0\n1402614c8        *(rbx + 0xc) = 0xc2700000\n1402614cf        rbx[2].d = 0\n1402614d2        *(rbx + 0x14) = 0x3f800000\n1402614da        *(rbx + 0x1c) = 0\n1402614de        *(rbx + 0x24) = 0\n1402614e1        rbx[5] = 0x3f800000\n1402614e9        sub_14022d390(rbx, rbx + 0x84)\n1402614f1        sub_1401417c0(rbx)\n1402614f6        int32_t* rbx_1 = arg1[8]\n1402614fd        rbx_1[0x11] = 0\n140261500        rbx_1[0x12] = 0x3f800000\n140261507        rbx_1[0x13] = 0x3faaaaab\n14026150e        sub_140141260(rbx_1)\n140261516        sub_1401417c0(rbx_1)\n14026152d        return arg1",
+  "fetched_at": "2026-04-26T16:42:56Z"
+}

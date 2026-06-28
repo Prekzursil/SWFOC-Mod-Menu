@@ -1,0 +1,7 @@
+{
+  "addr": "0x14068ab30",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void FUN_14068ab30(void)\n\n{\n  PlanetDestructionAbilityClass *this;\n  \n  this = (PlanetDestructionAbilityClass *)FUN_140769c58(0x178);\n  if (this != (PlanetDestructionAbilityClass *)0x0) {\n    PlanetDestructionAbilityClass::PlanetDestructionAbilityClass(this);\n    return;\n  }\n  return;\n}",
+  "fetched_at": "2026-04-26T17:16:15Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x1405fdc80",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1405fdc8f        int64_t* rbx = *(arg3 + 0x10)\n1405fdca0        int64_t r8_2 = (*(arg3 + 0x18) - rbx) s>> 3\n1405fdca8        if (r8_2 != 1)\n1405fdcb4        sub_140248190(arg2, \"Set_Plan_Result - invalid number of parameters; expected 1, got %d\", r8_2)\n1405fdcca        return 0\n1405fdccb        int64_t* rbx_1 = *rbx\n1405fdcd1        if (rbx_1 != 0)\n1405fdcd9        void* i\n1405fdcd9        i, r8_2 = (*(*rbx_1 + 0x20))(rbx_1)\n1405fdcdf        while (i != 0)\n1405fdceb        if (i == &data_140a157b0)\n1405fdd1d        (**rbx_1)(rbx_1)\n1405fdd2a        *(*(arg1 + 0xf0) + 0xa8) = rbx_1[2].b\n1405fdd36        (*(*rbx_1 + 8))(rbx_1)\n1405fdd4a        return 0\n1405fdced        i = *(i + 8)\n1405fdd00        sub_140248190(arg2, \"Set_Plan_Result - invalid type for parameter 1.  Expected boolean.\", r8_2)\n1405fdd16        return 0",
+  "fetched_at": "2026-04-26T17:22:46Z"
+}

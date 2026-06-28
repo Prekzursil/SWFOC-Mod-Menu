@@ -1,0 +1,7 @@
+{
+  "addr": "0x14056bd10",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14056bd23        *arg1 = &EnergyPoolBehaviorClass::`vftable'{for `BehaviorClass'}\n14056bd30        arg1[1] = &EnergyPoolBehaviorClass::`vftable'{for `RefCountClass'}\n14056bd3b        arg1[3] = &EnergyPoolBehaviorClass::`vftable'{for `SignalListenerClass'}\n14056bd3f        sub_1404c3310(arg1)\n14056bd47        if ((arg2 & 1) != 0)\n14056bd51        j_sub_1407864b8(arg1)\n14056bd63        return arg1",
+  "fetched_at": "2026-04-26T17:34:53Z"
+}

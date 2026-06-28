@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401d49e0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1401d49ea        struct GUIGadgetClass::GUIGadgetTrackbarSliderClass::VTable** result = arg1\n1401d49ed        sub_1401e3c30(arg1)\n1401d49fb        *result = &GUIGadgetTrackbarSliderClass::`vftable'{for `GUIGadgetClass'}\n1401d4a05        __builtin_memset(&result[0x16], 0, 0x48)\n1401d4a44        sub_140260490(&result[0x1f])\n1401d4a50        sub_140260490(&result[0x31])\n1401d4a5c        sub_140260490(&result[0x43])\n1401d4a68        sub_140260490(&result[0x55])\n1401d4a74        sub_140260490(&result[0x67])\n1401d4a7c        __builtin_memset(&result[0x79], 0, 0x140)\n1401d4b94        sub_1401d7880(result)\n1401d4b9c        *(result + 0x9c) = 0\n1401d4ba2        result[0x14].d = 0x42c80000\n1401d4bac        *(result + 0xac) = 0\n1401d4bb3        result[0x13].b = 1\n1401d4bc4        return result",
+  "fetched_at": "2026-04-26T17:26:46Z"
+}

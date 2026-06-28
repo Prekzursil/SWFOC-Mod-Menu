@@ -1,0 +1,7 @@
+{
+  "addr": "0x140624190",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140624197        return \"BurningBehaviorClass\"",
+  "fetched_at": "2026-04-26T17:23:47Z"
+}

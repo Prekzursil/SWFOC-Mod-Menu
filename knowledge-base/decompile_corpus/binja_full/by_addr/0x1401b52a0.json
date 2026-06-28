@@ -1,0 +1,7 @@
+{
+  "addr": "0x1401b52a0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1401b52a4        arg1[1].d -= 1\n1401b52ab        if (arg1[1].d != 1)\n1401b52c7        return zx.q(arg1[1].d)\n1401b52b9        *arg1 = &alD3dEffectStateManager::`vftable'{for `ID3DXEffectStateManager'}\n1401b52bc        j_sub_1407864b8(arg1)\n1401b52c1        return 0",
+  "fetched_at": "2026-04-26T17:25:46Z"
+}

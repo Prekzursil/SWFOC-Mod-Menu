@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407146f0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "140714704        int64_t result = sub_14048f2c0(arg1)\n140714709        int32_t zmm6 = (zx.o(0)).d\n140714713        char var_118[0x100]\n140714713        if (not(0f f<= *(arg1 + 0x178)))\n14071471a        void* r8_1 = arg1 + 0x18\n14071471e        if (*(arg1 + 0x30) u>= 0x10)\n140714720        r8_1 = *r8_1\n14071472f        sscanf_s(&var_118, \"Error: (%s) Activation_Min_Range cannot be less than zero.\", r8_1)\n140714739        result, zmm6 = sub_1402149d0(&var_118)\n14071473e        *(arg1 + 0x178) = 0\n14071474f        if (not(zmm6 f<= *(arg1 + 0x17c)))\n140714756        void* r8_2 = arg1 + 0x18\n14071475a        if (*(arg1 + 0x30) u>= 0x10)\n14071475c        r8_2 = *r8_2\n14071476b        sscanf_s(&var_118, \"Error: (%s) Activation_Max_Range cannot be less than zero.\", r8_2)\n140714775        result, zmm6 = sub_1402149d0(&var_118)\n14071477a        *(arg1 + 0x178) = 0\n14071478b        if (not(zmm6 f< *(arg1 + 0x180)))\n140714792        void* r8_3 = arg1 + 0x18\n140714796        if (*(arg1 + 0x30) u>= 0x10)\n140714798        r8_3 = *r8_3\n1407147a7        sscanf_s(&var_118, \"Error: (%s) Catch_Dist cannot be less than or equal to zero.\", r8_3)\n1407147b1        result = sub_1402149d0(&var_118)\n1407147b6        *(arg1 + 0x180) = 0x41200000\n1407147d0        return result",
+  "fetched_at": "2026-04-26T17:27:51Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x1404292e0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1404292e6        struct ScheduledEventClass::TacticalSpecialAbilityEventClass::VTable** result = arg1\n1404292e9        sub_140512c50(arg1)\n1404292f5        result[9] = 0x3fffff\n1404292fd        *result = &TacticalSpecialAbilityEventClass::`vftable'{for `ScheduledEventClass'}\n140429302        *(result + 0x24c) = 0\n140429309        *(result + 0x254) = 0\n140429312        result[4].d = 0x28\n14042931e        return result",
+  "fetched_at": "2026-04-26T17:26:36Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x140426dc0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined8 FUN_140426dc0(longlong param_1,undefined8 param_2)\n\n{\n  ulonglong uVar1;\n  ulonglong uVar2;\n  \n  FUN_14021fe20(param_2,1);\n  FUN_14021ffa0(param_2,2);\n  FUN_1402200b0(param_2,param_1 + 0x20,4);\n  FUN_140220030(param_2);\n  FUN_14021ffa0(param_2,3);\n  FUN_1402200b0(param_2,param_1 + 0x24,4);\n  FUN_140220030(param_2);\n  FUN_14021feb0(param_2);\n  uVar2 = 0;\n  uVar1 = 0;\n  if (*(longlong *)(param_1 + 0x10) - *(longlong *)(param_1 + 8) >> 3 != 0) {\n    do {\n      FUN_14021fe20(param_2,0);\n      FUN_1404f7e80(*(undefined8 *)(*(longlong *)(param_1 + 8) + uVar2 * 8));\n      FUN_14021feb0(param_2);\n      uVar2 = (ulonglong)((int)uVar2 + 1);\n      uVar1 = *(longlong *)(param_1 + 0x10) - *(longlong *)(param_1 + 8) >> 3;\n    } while (uVar2 < uVar1);\n  }\n  return CONCAT71((int7)(uVar1 >> 8),1);\n}",
+  "fetched_at": "2026-04-26T17:47:59Z"
+}

@@ -1,0 +1,7 @@
+{
+  "addr": "0x140705dc0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall\nPersonalFlameThrowerAbilityClass::vfunction29_for_IXMLLoadableClass\n          (PersonalFlameThrowerAbilityClass *this,undefined8 param_1,undefined8 param_2,\n          undefined8 param_3)\n\n{\n  FUN_140519470(&DAT_140b38c10,param_1,param_2,this,param_3,0);\n  return;\n}",
+  "fetched_at": "2026-04-26T17:52:31Z"
+}

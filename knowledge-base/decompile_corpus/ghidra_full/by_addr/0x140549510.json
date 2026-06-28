@@ -1,0 +1,7 @@
+{
+  "addr": "0x140549510",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "void __thiscall ShieldBehaviorClass::vfunction10(ShieldBehaviorClass *this,undefined **param_1)\n\n{\n  SpawnIndigenousUnitsBehaviorClass::vbase_destructor\n            ((SpawnIndigenousUnitsBehaviorClass *)this,param_1);\n  *(undefined4 *)&this->field_0x40 = 0;\n  FUN_140549cd0(this,param_1);\n  return;\n}",
+  "fetched_at": "2026-04-26T18:37:28Z"
+}

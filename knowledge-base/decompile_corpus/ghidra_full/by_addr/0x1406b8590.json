@@ -1,0 +1,7 @@
+{
+  "addr": "0x1406b8590",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "undefined8 __thiscall\nGalacticGoalSystemClass::vfunction9(GalacticGoalSystemClass *this,longlong *param_1)\n\n{\n  int iVar1;\n  longlong *plVar2;\n  longlong lVar3;\n  longlong *plVar4;\n  \n  plVar4 = (longlong *)param_1[0x56];\n  if (plVar4 == (longlong *)0x0) {\nLAB_1406b85c1:\n    if (*(char *)((longlong)param_1 + 0x335) == -1) {\n      return 0;\n    }\n  }\n  else {\n    if (*(char *)((longlong)plVar4 + 0x335) != -1) goto LAB_1406b85d2;\n    if (*(char *)((longlong)plVar4 + 0x336) == -1) goto LAB_1406b85c1;\n    param_1 = (longlong *)plVar4[0x56];\n  }\n  plVar4 = param_1;\n  if (param_1 == (longlong *)0x0) {\n    return 0;\n  }\nLAB_1406b85d2:\n  plVar2 = (longlong *)\n           (**(code **)(**(longlong **)((this->ServicedAISystemClass_data).offset_0x0 + 0x38) + 0x40\n                       ))();\n  lVar3 = (**(code **)(*plVar4 + 0x10))(plVar4,3);\n  if (lVar3 == 0) {\n    return 0;\n  }\n  iVar1 = FUN_1403f8500(lVar3);\n  return *(undefined8 *)(*plVar2 + (longlong)iVar1 * 8);\n}",
+  "fetched_at": "2026-04-26T17:37:19Z"
+}

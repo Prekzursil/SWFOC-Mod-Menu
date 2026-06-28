@@ -1,0 +1,7 @@
+{
+  "addr": "0x1407dd8c0",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "1407dd8cd        char* rbx = arg1\n1407dd8d8        void* var_28\n1407dd8d8        _LocaleUpdate::_LocaleUpdate(&var_28, arg3)\n1407dd8e5        uint64_t result\n1407dd8e5        if (rbx == 0 || arg2 == 0)\n1407dd8ec        *_errno() = 0x16\n1407dd8f2        _invalid_parameter_noinfo()\n1407dd95f        result = 0x7fffffff\n1407dd8f9        void* var_20\n1407dd8f9        void* rax_1 = var_20\n1407dd8fe        int64_t rdx_1 = *(rax_1 + 0x130)\n1407dd908        if (rdx_1 != 0)\n1407dd94b        int32_t rax_4 = __acrt_CompareStringA(&var_20, rdx_1, 0x1000, rbx, 0xffffffff, arg2, 0xffffffff, *(rax_1 + 0x14))\n1407dd952        if (rax_4 != 0)\n1407dd966        result = zx.q(rax_4 - 2)\n1407dd959        *_errno() = 0x16\n1407dd95f        result = 0x7fffffff\n1407dd90a        void* rdi_1 = arg2 - rbx\n1407dd90d        while (true)\n1407dd90d        rax_1.b = *rbx\n1407dd90f        char temp0_1 = *(rbx + rdi_1)\n1407dd912        if (rax_1.b != temp0_1)\n1407dd921        result = zx.q(sbb.d(rax_1.d, rax_1.d, rax_1.b u< temp0_1)) | 1\n1407dd924        break\n1407dd914        rbx = &rbx[1]\n1407dd919        if (rax_1.b == 0)\n1407dd91b        result = 0\n1407dd91d        break\n1407dd96e        char var_10\n1407dd96e        if (var_10 != 0)\n1407dd970        void* rcx_2 = var_28\n1407dd975        *(rcx_2 + 0x3a8) &= 0xfffffffd\n1407dd986        return result",
+  "fetched_at": "2026-04-26T17:34:08Z"
+}

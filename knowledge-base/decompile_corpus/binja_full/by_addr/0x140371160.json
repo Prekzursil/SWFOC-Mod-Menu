@@ -1,0 +1,7 @@
+{
+  "addr": "0x140371160",
+  "tool": "binary_ninja",
+  "fact_id": null,
+  "body": "14037116f        int512_t result\n14037116f        if (arg2 == 0)\n140371171        result.o = *(arg1 + 0x37c)\n14037117e        return result\n14037118a        void* rax_1 = (*(*arg2 + 0x10))(arg2, 0x16)\n140371190        if (rax_1 != 0)\n1403711a3        int32_t zmm0 = sub_1404049e0(rax_1)\n1403711bc        return _mm_min_ss(*(arg1 + 0x37c), zmm0)\n140371192        result.o = *(arg1 + 0x37c)\n14037119f        return result",
+  "fetched_at": "2026-04-26T17:15:30Z"
+}

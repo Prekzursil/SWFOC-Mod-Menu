@@ -1,0 +1,7 @@
+{
+  "addr": "0x14034cdb0",
+  "tool": "ghidra",
+  "fact_id": null,
+  "body": "\nvoid __thiscall ShellComponentClass::vfunction16(ShellComponentClass *this,byte param_1)\n\n{\n  byte *pbVar1;\n  \n  if (((this->ShellComponentClass_data).offset_0x0 != (longlong *)0x0) &&\n     ((this->ShellComponentClass_data).offset_0x8 != param_1)) {\n    (this->ShellComponentClass_data).offset_0x8 = param_1;\n    FUN_140264c80();\n    FUN_140264670((this->ShellComponentClass_data).offset_0x0,param_1 ^ 1);\n    pbVar1 = &(this->BaseComponentClass_data).offset_0xb8;\n    *pbVar1 = *pbVar1 & 0xfd;\n    pbVar1 = &(this->BaseComponentClass_data).offset_0xb8;\n    *pbVar1 = *pbVar1 | param_1 * '\\x02';\n  }\n  return;\n}\n\n",
+  "fetched_at": "2026-04-26T17:09:23Z"
+}
